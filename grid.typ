@@ -1,4 +1,4 @@
-#let lm_grid(cols, ratio: 4) = {
+#let lm_grid(cols) = {
   set page(
     width: 11in,
     height: 11in,
@@ -7,6 +7,7 @@
 
   let page_width = 11in
   let page_height = 11in
+  let ratio = 4
 
   // Adjust remaining width/height after accounting for double-width first row/column
   let first_cell_width = page_width / (cols * (1/ratio))
