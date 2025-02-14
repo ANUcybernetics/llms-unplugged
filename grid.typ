@@ -43,13 +43,16 @@
         let x = if i == 0 { 0in }
                else if i == 1 { first_cell_width }
                else { first_cell_width + cell_width * (i - 1) }
-        let line_weight = if calc.rem(i - 1, 4) == 0 { 1pt } else { 0.5pt }
+        let line_weight = if i <= 2 { 1.5pt }
+                         else if calc.rem(i - 2, 4) == 0 { 1pt }
+                         else { 0.5pt }
+        let line_color = if i <= 2 { black } else { gray }
         place(
           dx: x,
           line(
             length: page_height,
             angle: 90deg,
-            stroke: line_weight + gray
+            stroke: line_weight + line_color
           )
         )
       }
@@ -59,12 +62,15 @@
         let y = if i == 0 { 0in }
                else if i == 1 { first_cell_height }
                else { first_cell_height + cell_height * (i - 1) }
-        let line_weight = if calc.rem(i - 1, 4) == 0 { 1pt } else { 0.5pt }
+        let line_weight = if i <= 2 { 1.5pt }
+                         else if calc.rem(i - 2, 4) == 0 { 1pt }
+                         else { 0.5pt }
+        let line_color = if i <= 2 { black } else { gray }
         place(
           dy: y,
           line(
             length: page_width,
-            stroke: line_weight + gray
+            stroke: line_weight + line_color
           )
         )
       }
@@ -72,4 +78,4 @@
   )
 }
 
-#lm_grid(33)
+#lm_grid(34)
