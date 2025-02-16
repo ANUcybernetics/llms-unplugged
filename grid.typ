@@ -1,4 +1,4 @@
-#let lm_grid(cols) = {
+#let lm_grid(size) = {
   // A3
   set page(
     width: 420mm,
@@ -11,12 +11,12 @@
   let ratio = 4
 
   // Adjust remaining width/height after accounting for double-width first row/column
-  let first_cell_width = page_width / ((cols + 1) * (1/ratio))
-  let first_cell_height = page_height / ((cols + 1) * (1/ratio))
+  let first_cell_width = page_width / ((size + 1) * (1/ratio))
+  let first_cell_height = page_height / ((size + 1) * (1/ratio))
   let remaining_width = page_width - first_cell_width
   let remaining_height = page_height - first_cell_height
-  let cell_width = remaining_width / cols
-  let cell_height = remaining_height / cols
+  let cell_width = remaining_width / size
+  let cell_height = remaining_height / size
 
   block(
     width: page_width,
@@ -40,7 +40,7 @@
       )
 
       // Vertical lines
-      for i in range(cols + 2) {
+      for i in range(size + 2) {
         let x = if i == 0 { 0mm }
                 else if i == 1 { first_cell_width }
                 else { first_cell_width + cell_width * (i - 1) }
@@ -57,7 +57,7 @@
               }
 
               // Horizontal lines
-              for i in range(cols + 2) {
+              for i in range(size + 2) {
                 let y = if i == 0 { 0mm }
                        else if i == 1 { first_cell_height }
                        else { first_cell_height + cell_height * (i - 1) }
