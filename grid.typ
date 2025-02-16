@@ -45,7 +45,7 @@
                 else if i == 1 { first_cell_width }
                 else { first_cell_width + cell_width * (i - 1) }
                 let line_weight = if calc.rem(i - 1, 4) == 0 { 1.5pt } else { 0.5pt }
-                let line_color = if calc.rem(i - 1, 4) == 0 { black } else { gray }
+                let line_color = if calc.rem(i - 1, 4) == 0 { luma(50) } else { luma(100) }
                 place(
                   dx: x,
                   line(
@@ -62,7 +62,7 @@
                        else if i == 1 { first_cell_height }
                        else { first_cell_height + cell_height * (i - 1) }
                 let line_weight = if calc.rem(i - 1, 4) == 0 { 1.5pt } else { 0.5pt }
-                let line_color = if calc.rem(i - 1, 4) == 0 { black } else { gray }
+                let line_color = if calc.rem(i - 1, 4) == 0 { luma(50) } else { luma(100) }
         place(
           dy: y,
           line(
@@ -76,3 +76,5 @@
 }
 
 #lm_grid(32)
+
+#lm_grid(48)
