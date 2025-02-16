@@ -11,12 +11,12 @@
   let ratio = 4
 
   // Adjust remaining width/height after accounting for double-width first row/column
-  let first_cell_width = page_width / (cols * (1/ratio))
-  let first_cell_height = page_height / (cols * (1/ratio))
+  let first_cell_width = page_width / ((cols + 1) * (1/ratio))
+  let first_cell_height = page_height / ((cols + 1) * (1/ratio))
   let remaining_width = page_width - first_cell_width
   let remaining_height = page_height - first_cell_height
-  let cell_width = remaining_width / (cols - 1)
-  let cell_height = remaining_height / (cols - 1)
+  let cell_width = remaining_width / cols
+  let cell_height = remaining_height / cols
 
   block(
     width: page_width,
@@ -40,7 +40,7 @@
       )
 
       // Vertical lines
-      for i in range(cols + 1) {
+      for i in range(cols + 2) {
         let x = if i == 0 { 0mm }
                 else if i == 1 { first_cell_width }
                 else { first_cell_width + cell_width * (i - 1) }
@@ -57,7 +57,7 @@
               }
 
               // Horizontal lines
-              for i in range(cols + 1) {
+              for i in range(cols + 2) {
                 let y = if i == 0 { 0mm }
                        else if i == 1 { first_cell_height }
                        else { first_cell_height + cell_height * (i - 1) }
@@ -75,4 +75,4 @@
   )
 }
 
-#lm_grid(33)
+#lm_grid(32)
