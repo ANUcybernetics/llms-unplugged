@@ -1,12 +1,13 @@
 #let lm_grid(cols) = {
+  // A3
   set page(
-    width: 11in,
-    height: 11in,
+    width: 420mm,
+    height: 297mm,
     margin: 0pt
   )
 
-  let page_width = 11in
-  let page_height = 11in
+  let page_width = 420mm
+  let page_height = 297mm
   let ratio = 4
 
   // Adjust remaining width/height after accounting for double-width first row/column
@@ -23,8 +24,8 @@
     {
       // Add logo and text to first cell
       place(
-        dx: 0in,
-        dy: 0in,
+        dx: 0mm,
+        dy: 0mm,
         box(
           width: first_cell_width,
           height: first_cell_height,
@@ -40,32 +41,28 @@
 
       // Vertical lines
       for i in range(cols + 1) {
-        let x = if i == 0 { 0in }
-               else if i == 1 { first_cell_width }
-               else { first_cell_width + cell_width * (i - 1) }
-        let line_weight = if i <= 2 { 1.5pt }
-                         else if calc.rem(i - 2, 4) == 0 { 1pt }
-                         else { 0.5pt }
-        let line_color = if i <= 2 { black } else { gray }
-        place(
-          dx: x,
-          line(
-            length: page_height,
-            angle: 90deg,
-            stroke: line_weight + line_color
-          )
-        )
-      }
+        let x = if i == 0 { 0mm }
+                else if i == 1 { first_cell_width }
+                else { first_cell_width + cell_width * (i - 1) }
+                let line_weight = if calc.rem(i - 1, 4) == 0 { 1.5pt } else { 0.5pt }
+                let line_color = if calc.rem(i - 1, 4) == 0 { black } else { gray }
+                place(
+                  dx: x,
+                  line(
+                    length: page_height,
+                    angle: 90deg,
+                    stroke: line_weight + line_color
+                  )
+                )
+              }
 
-      // Horizontal lines
-      for i in range(cols + 1) {
-        let y = if i == 0 { 0in }
-               else if i == 1 { first_cell_height }
-               else { first_cell_height + cell_height * (i - 1) }
-        let line_weight = if i <= 2 { 1.5pt }
-                         else if calc.rem(i - 2, 4) == 0 { 1pt }
-                         else { 0.5pt }
-        let line_color = if i <= 2 { black } else { gray }
+              // Horizontal lines
+              for i in range(cols + 1) {
+                let y = if i == 0 { 0mm }
+                       else if i == 1 { first_cell_height }
+                       else { first_cell_height + cell_height * (i - 1) }
+                let line_weight = if calc.rem(i - 1, 4) == 0 { 1.5pt } else { 0.5pt }
+                let line_color = if calc.rem(i - 1, 4) == 0 { black } else { gray }
         place(
           dy: y,
           line(
@@ -78,4 +75,4 @@
   )
 }
 
-#lm_grid(34)
+#lm_grid(33)
