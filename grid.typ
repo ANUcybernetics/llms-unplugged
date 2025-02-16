@@ -33,7 +33,7 @@
             top: first_cell_height * 0.1,
             bottom: first_cell_height * 0.1,
             align(center + horizon)[
-              #image("ANU_Secondary_Horizontal_GoldBlack.png", width: first_cell_width * 0.6)
+              #image("ANU_Secondary_Horizontal_GoldBlack.png", width: first_cell_width * 0.75)
             ]
           )
         )
