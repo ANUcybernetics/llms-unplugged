@@ -1,4 +1,6 @@
 #let lm_grid(size) = {
+  set text(font: "Public Sans", size: 10pt)
+
   // A3
   set page(
     width: 420mm,
@@ -33,7 +35,9 @@
             top: first_cell_height * 0.1,
             bottom: first_cell_height * 0.1,
             align(center + horizon)[
-              #image("ANU_Secondary_Horizontal_GoldBlack.png", width: first_cell_width * 0.75)
+              #text(size: 1.55em)[My First LM]
+
+              Cybernetic Studio
             ]
           )
         )
