@@ -24,7 +24,7 @@ This work is a project of the _Cybernetic Studio_ at the
 
 ## Licence
 
-MIT
+CC BY-NC-SA 4.0
 
 Fun With Dick and Jane reader: public domain (pdf downloaded from
 [archive.org](https://ia800907.us.archive.org/31/items/funwithdickjane0000gray/funwithdickjane0000gray.pdf))
