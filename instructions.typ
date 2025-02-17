@@ -20,32 +20,36 @@ You'll need:
 
 The training procedure is:
 
-+ write the _first_ word of the text in both of the first
-  blank row and column on the grid---they'll be the spaces directly
-  below and to the left of the logo in the top-left-hand corner
++ write the _first_ word of the text in the first
+  blank *row* on the grid (for the first word, this will be the space directly
+  below the logo in the top-left-hand corner)
 
-+ look at the _next_ (i.e.~the second) word in your
-  text: if it's a new word that doesn't already have a row/column on
-  your grid write that word in the next availble blank column & row on
-  the grid (but if you have already seen that word and it's already on the
-  grid, you don't need to do anything)
++ look at the _next_ (i.e.~the second) word in your text: write it in the
+  first blank *column* on the grid
 
-+ make a tally score mark in the first word's row and the second word's
-  column, so that the grid cell contains a count of the number of times
-  you've seen the two (row and col) words _following_ each other
++ make a tally score mark in the *first grid cell* (i.e.~the first word's row
+  and the second word's column), so that the grid cell contains a count of
+  the number of times you've seen the second word _following_ the second one
 
-+ go back to step 2, and continue through your text until you've
-  finished (or until you've filled up the grid)
++ go back to step 1, but this time writing the _second_ word on the next blank
+  row and the _third_ word on the next blank column... and make a tally score
+  mark in the corresponding cell
 
-Once you're done, your grid (with the tally scores in each grid cell)
-#emph[is] your language model.
++ continue through your text, each time writing the next word in the next
+  blank (unless you've seen that word before and it already has a row/column)
+  and add a new tally mark in the corresponding grid cell
+
+Once you're done, your grid (and the total tally scores in each grid cell) is
+what's called a _co-occurance table_, which keeps track of how often each word
+in your text follows each other word. *This #emph[is] your language model.*
 
 #pagebreak()
 
 == Inference Phase
 <inference>
 
-Now comes the fun part: you can use your model to generate new text.
+Now comes the fun part: you can use your model to generate new text
+(this is called _inference_ in Machine Learning jargon).
 
 + choose one of the words in your model as your starting word (this is
   your "prompt") and write it down---this is the
