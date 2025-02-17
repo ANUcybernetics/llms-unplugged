@@ -9,6 +9,7 @@
 Ever wanted to train your own Language Model by hand? Now you can.
 
 == Training Phase
+<training>
 
 You'll need:
 
@@ -19,11 +20,11 @@ You'll need:
 
 The training procedure is:
 
-+ write the #emph[first] word of the text in both of the first
++ write the _first_ word of the text in both of the first
   blank row and column on the grid---they'll be the spaces directly
   below and to the left of the logo in the top-left-hand corner
 
-+ look at the #emph[next] (i.e.~the second) word in your
++ look at the _next_ (i.e.~the second) word in your
   text: if it's a new word that doesn't already have a row/column on
   your grid write that word in the next availble blank column & row on
   the grid (but if you have already seen that word and it's already on the
@@ -31,7 +32,7 @@ The training procedure is:
 
 + make a tally score mark in the first word's row and the second word's
   column, so that the grid cell contains a count of the number of times
-  you've seen the two (row and col) words #emph[following] each other
+  you've seen the two (row and col) words _following_ each other
 
 + go back to step 2, and continue through your text until you've
   finished (or until you've filled up the grid)
@@ -42,6 +43,7 @@ Once you're done, your grid (with the tally scores in each grid cell)
 #pagebreak()
 
 == Inference Phase
+<inference>
 
 Now comes the fun part: you can use your model to generate new text.
 
@@ -64,13 +66,6 @@ Now comes the fun part: you can use your model to generate new text.
 
 If you want to write a new sentence, go back to step 1 and choose a new
 starting word (prompt).
-
-A note on random choice: you can use a dice roll, an online random
-number generator (e.g.~#link("https://randomnumbergen.com")[this one];),
-or some other approach. If you only have a uniform random number
-generator (e.g.~a dice), you can simulate weighted random choice (which
-is what you need---because your generated text needs to follow the same
-probability distribution as specified by the tallies in the model grid).
 
 == Extension activities
 
@@ -102,3 +97,42 @@ but there's evidence that a sufficiently large N-gram model can get you
 Having said that, GPT-4 has around 1.75T parameters, which when printed out (assuming one
 1cm#super[2] grid cell per parameter) would cover almost ten thousand (9932)
 #link("https://en.wikipedia.org/wiki/Melbourne_Cricket_Ground")[MCGs].
+
+== Appendix: weighted randomness with dice
+<weighted-randomness>
+
+You'll need a source of "weighted" random numbers for the "select the next word based on the tally scores" part of the
+Inference procedure described above.
+
+If you've got a D20 (a 20-sided die) there are a couple of different ways to do this:
+
+- if the total number of tally scores in the row is less than or equal to 20,
+  then just roll the dice and count along the row until you reach the
+  (cumulative) count of tallies you rolled---if you go "off the end" of the row, re-roll
+  the dice
+
+- you can tally up the count for each grid cell, and then "split" the range
+  of the D20 (which will always be a number between 1 and 20) into segments, e.g.
+  - if there's 1 tally score in one cell and one in another, then the first
+    cell gets the range 1-10 and the second cell gets the range 11-20
+  - if there's 3 tally scores in one cell and 2 in another, then the first
+    cell gets the range 1-12 and the second cell gets the range 13-20
+  - if there's 1 tally score in one cell and 2 in another, then the first
+    cell gets the range 1-8 and the second cell gets the range 9-20 (note this
+    one is a bit off because 20 doesn't divide evenly by 3, but it's close enough)
+
+There are pros and cons to both approaches: the first is simpler but if you roll a number higher
+than the total number of tallies in the row then you have to do a lot of re-rolling. The second
+doesn't require re-rolls, but involves a bit of head-maths to figure out the ranges.
+
+// TODO make a nice diagram of the above "partition the D20 range" approach
+// #import "@preview/cetz:0.3.2"
+// #cetz.canvas({
+//   import cetz.draw: *
+
+//   let anu-gold = rgb("#be830e")
+//   let anu-copper = rgb("#be4e0e")
+//   let anu-teal = rgb("#0085ad")
+
+//   rect((0, 0), (rel: (1, 1)), radius: .1, stroke: anu-copper)
+// })
