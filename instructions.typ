@@ -2,7 +2,7 @@
 
 #show: doc => anu-template(
   title: "My First LM Instructions",
-  author: "Cybernetic Studio",
+  subtitle: "A Cybernetic Studio Project",
   doc,
 )
 

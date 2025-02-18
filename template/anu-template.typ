@@ -1,6 +1,7 @@
 #let anu-template(
   title: "",
-  author: "",
+  subtitle: none,
+  author: none,
   body
 ) = {
   // ANU theme colors
@@ -85,8 +86,15 @@
   v(10em)
   align(left)[
     #text(font: public-sans, weight: "regular", size: 24pt)[#title]
-    #v(1em)
-    #text(size: 18pt)[#author]
+    #if subtitle != none {
+      v(0.1em)
+      linebreak()
+      text(font: public-sans, weight: "regular", size: 18pt, style: "italic")[#subtitle]
+    }
+    #if author != none {
+      v(1em)
+      text(size: 18pt)[#author]
+    }
   ]
   v(3em)
 
