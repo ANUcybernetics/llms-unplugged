@@ -3,7 +3,7 @@
 #show: doc => anu-template(
   title: "My First LM Instructions",
   author: "Cybernetic Studio",
-  doc
+  doc,
 )
 
 Ever wanted to train your own Language Model by hand? Now you can.
