@@ -103,26 +103,18 @@ Having said that, GPT-4 has around 1.75T parameters, which when printed out (ass
 You'll need a source of "weighted" random numbers for the "select the next word based on the tally scores" part of the
 Inference procedure described above.
 
-If you've got a D20 (a 20-sided die) there are a couple of different ways to do this:
+If you've got a d6 (a normal 6-sided die) it's not too tricky. Here's an example:
 
-- if the total number of tally scores in the row is less than or equal to 20,
-  then just roll the dice and count along the row until you reach the
-  (cumulative) count of tallies you rolled---if you go "off the end" of the row, re-roll
-  the dice
+- if there's one column (i.e. one potential next word) with one tally mark and another with
+  two tally marks, then roll the dice---if it's 1 or 2 choose the first column, otherwise choose
+  the second column
 
-- you can tally up the count for each grid cell, and then "split" the range
-  of the D20 (which will always be a number between 1 and 20) into segments, e.g.
-  - if there's 1 tally score in one cell and one in another, then the first
-    cell gets the range 1-10 and the second cell gets the range 11-20
-  - if there's 3 tally scores in one cell and 2 in another, then the first
-    cell gets the range 1-12 and the second cell gets the range 13-20
-  - if there's 1 tally score in one cell and 2 in another, then the first
-    cell gets the range 1-8 and the second cell gets the range 9-20 (note this
-    one is a bit off because 20 doesn't divide evenly by 3, but it's close enough)
+Remember: it doesn't actually matter the _absoulte_ number of tallies in each column, just the _relative_
+number of tallies compared to all the other columns. So if the two potential
+next words have e.g. 1 tally each or 4 tallies each it doesn't matter, you just need
+to choose between them such that there's an equal chance of each one (so dice 1-3 means the first one, 4-6 means the second one).
 
-There are pros and cons to both approaches: the first is simpler but if you roll a number higher
-than the total number of tallies in the row then you have to do a lot of re-rolling. The second
-doesn't require re-rolls, but involves a bit of head-maths to figure out the ranges.
+If you end up with a larger language model and need more than a D6, you could use a d20 (a 20-sided die) and use a similar approach.
 
 // TODO make a nice diagram of the above "partition the D20 range" approach
 // #import "@preview/cetz:0.3.2"
