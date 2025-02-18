@@ -20,24 +20,19 @@ You'll need:
 
 The training procedure is:
 
-+ write the _first_ word of the text in the first
-  blank *row* on the grid (for the first word, this will be the space directly
-  below the logo in the top-left-hand corner)
++ write the _first_ word of the text in the *first
+  blank row* and *first blank column* on the grid (in both cases it'll be right up
+  near the logo in the top-left-hand corner)
 
-+ look at the _next_ (i.e.~the second) word in your text: write it in the
-  first blank *column* on the grid
++ look at the _next_ word in your text: write it in theh
+  *next blank row* and *next blank column* on the grid (which will be the second row and second column)
 
-+ make a tally score mark in the *first grid cell* (i.e.~the first word's row
-  and the second word's column), so that the grid cell contains a count of
-  the number of times you've seen the second word _following_ the second one
++ make a tally score mark in the *first row, second column* grid cell, so that the grid cell contains a count of
+  the number of times you've seen the second word following the first one
 
-+ go back to step 1, but this time writing the _second_ word on the next blank
-  row and the _third_ word on the next blank column... and make a tally score
-  mark in the corresponding cell
-
-+ continue through your text, each time writing the next word in the next
-  blank (unless you've seen that word before and it already has a row/column)
-  and add a new tally mark in the corresponding grid cell
++ return to step 2 and continue through your text, and each time check if the next word is one
+  you've seen already in the text (and if not, write it in the *next blank row* and
+  *next blank column* as before) and add a new tally mark in the corresponding grid cell
 
 Once you're done, your grid (and the total tally scores in each grid cell) is
 what's called a _co-occurance table_, which keeps track of how often each word
