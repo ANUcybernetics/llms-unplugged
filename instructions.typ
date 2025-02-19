@@ -1,9 +1,8 @@
 #import "template/anu-template.typ": anu-template
 
-#show: doc => anu-template(
+#show: anu-template.with(
   title: "My First LM Instructions",
-  subtitle: "A Cybernetic Studio Project",
-  doc,
+  subtitle: "A Cybernetic Studio Project"
 )
 
 Ever wanted to train your own Language Model by hand? Now you can.
