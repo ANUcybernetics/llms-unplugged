@@ -102,7 +102,7 @@
   align(left)[
     #text(font: public-sans, weight: "regular", size: 24pt)[#title]
     #if subtitle != none {
-      v(0.1em)
+      v(0em) // not sure why this is necessary
       linebreak()
       text(font: public-sans, weight: "regular", size: 16pt, style: "italic", fill: anu-colors.gold)[#subtitle]
     }
