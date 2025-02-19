@@ -103,7 +103,7 @@
     #if subtitle != none {
       v(0.1em)
       linebreak()
-      text(font: public-sans, weight: "regular", size: 16pt, style: "italic")[#subtitle]
+      text(font: public-sans, weight: "regular", size: 16pt, style: "italic", fill: anu-gold)[#subtitle]
     }
     #if author != none {
       v(1em)
