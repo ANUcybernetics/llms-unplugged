@@ -34,7 +34,7 @@
         )
       )
 
-      // ANU logo only on first page
+      // logos only on first page
       if counter(page).get().first() == 1 {
         place(
           top + left,
@@ -46,7 +46,21 @@
             height: 2.5cm,
             place(
               center + horizon,
-              image("./ANU_Secondary_Horizontal_GoldBlack.png", width: 4.7cm)
+              image("./ANU_Secondary_Horizontal_GoldBlack.svg", width: 4.7cm)
+            )
+          )
+        )
+        place(
+          top + right,
+          dx: -1.11cm,
+          dy: 2cm,
+          rect(
+            fill: anu-white,
+            width: 5cm,
+            height: 2.5cm,
+            place(
+              center + horizon,
+              image("./ANU_SOCY_MARK_CMYK.svg", height: 2cm)
             )
           )
         )
