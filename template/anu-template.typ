@@ -80,7 +80,7 @@
 
   // Link styling
   show link: it => {
-    set text(fill: anu-teal)
+    set text(fill: anu-unilink-gold)
     it
   }
 
