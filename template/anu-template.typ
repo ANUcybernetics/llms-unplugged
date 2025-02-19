@@ -1,18 +1,19 @@
+#let anu-colors = (
+  white: white,
+  gold: rgb("#be830e"),
+  unilink-gold: rgb("#945F00"),
+  unilink-blue: rgb("#00549E"),
+  black: black,
+  copper: rgb("#be4e0e"),
+  teal: rgb("#0085ad")
+)
+
 #let anu-template(
   title: "",
   subtitle: none,
   author: none,
   body
 ) = {
-  // ANU theme colors
-  let anu-white = white
-  let anu-gold = rgb("#be830e")
-  let anu-unilink-gold = rgb("#945F00")
-  let anu-unilink-blue = rgb("#00549E")
-  let anu-black = black
-  let anu-copper = rgb("#be4e0e")
-  let anu-teal = rgb("#0085ad")
-
   // Page setup
   set page(
     paper: "a4",
@@ -30,7 +31,7 @@
         rect(
          width: 0.75pt,
           height: 100%,
-          fill: anu-gold
+          fill: anu-colors.gold
         )
       )
 
@@ -41,7 +42,7 @@
           dx: 1.11cm,
           dy: 2cm,
           rect(
-            fill: anu-white,
+            fill: anu-colors.white,
             width: 5cm,
             height: 2.5cm,
             place(
@@ -55,7 +56,7 @@
           dx: -1.11cm,
           dy: 2cm,
           rect(
-            fill: anu-white,
+            fill: anu-colors.white,
             width: 5cm,
             height: 2.5cm,
             place(
@@ -80,13 +81,13 @@
 
   // Link styling
   show link: it => {
-    set text(fill: anu-unilink-gold)
+    set text(fill: anu-colors.unilink-gold)
     it
   }
 
   // Citation styling
   show cite: it => {
-    set text(fill: anu-copper)
+    set text(fill: anu-colors.copper)
     it
   }
 
@@ -103,7 +104,7 @@
     #if subtitle != none {
       v(0.1em)
       linebreak()
-      text(font: public-sans, weight: "regular", size: 16pt, style: "italic", fill: anu-gold)[#subtitle]
+      text(font: public-sans, weight: "regular", size: 16pt, style: "italic", fill: anu-colors.gold)[#subtitle]
     }
     #if author != none {
       v(1em)
