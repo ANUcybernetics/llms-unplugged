@@ -1,7 +1,7 @@
 #import "template/anu-template.typ": anu-template, anu-colors
 
 #show: anu-template.with(
-  title: "My First LM Instructions",
+  title: [_My First LM_ Instructions],
   subtitle: "A Cybernetic Studio Project"
 )
 
