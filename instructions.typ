@@ -1,4 +1,4 @@
-#import "template/anu-template.typ": anu-template, anu-colors
+#import "@local/anu-typst-template:0.1.0": *
 
 #show: anu-template.with(
   title: [_My First LM_ Instructions],
