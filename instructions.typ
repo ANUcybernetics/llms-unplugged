@@ -2,7 +2,8 @@
 
 #show: anu-template.with(
   title: [_My First LM_ Instructions],
-  subtitle: "A Cybernetic Studio Project"
+  subtitle: "A Cybernetic Studio Project",
+  socy_logo: true
 )
 
 Ever wanted to train your own Language Model by hand? Now you can.
