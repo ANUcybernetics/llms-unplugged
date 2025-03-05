@@ -1,3 +1,5 @@
+import csv
+import os
 import re
 import sys
 from collections import defaultdict
@@ -30,6 +32,30 @@ def create_bigram_model(words):
 
     return bigram_counts
 
+def write_bigram_csv(bigram_counts, filename):
+    """Write bigram counts to a CSV file with rows and columns sorted alphabetically."""
+    # Get all unique words from the bigrams to create the header and row labels
+    vocab = sorted(set(word for bigram in bigram_counts.keys() for word in bigram))
+
+    # Create CSV output filename by replacing the extension
+    csv_filename = os.path.splitext(filename)[0] + '.csv'
+
+    with open(csv_filename, 'w', newline='', encoding='utf-8') as csvfile:
+        writer = csv.writer(csvfile)
+
+        # Write the header row
+        writer.writerow([''] + vocab)
+
+        # Write each row with counts
+        for row_word in vocab:
+            row_data = [row_word]
+            for col_word in vocab:
+                count = bigram_counts.get((row_word, col_word), 0)
+                row_data.append(count if count > 0 else '')
+            writer.writerow(row_data)
+
+    return csv_filename
+
 def main():
     if len(sys.argv) != 2:
         print("Usage: uv run create_unigram_model.py <filename>")
@@ -54,6 +80,10 @@ def main():
     vocab = set(word for bigram in bigram_counts.keys() for word in bigram)
     print(f"\nVocabulary size: {len(vocab)}")
     print(f"Total unique bigrams: {len(bigram_counts)}")
+
+    # Write bigram counts to CSV
+    csv_filename = write_bigram_csv(bigram_counts, filename)
+    print(f"\nBigram counts written to {csv_filename}")
 
 if __name__ == "__main__":
     main()
