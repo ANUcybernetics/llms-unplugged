@@ -2,17 +2,7 @@
 
 #let bigram_grid(csv_path) = {
   // Parse the CSV file
-  let csv_content = read(csv_path)
-  let lines = csv_content.split("\n").filter(line => line.trim() != "")
-  let headers = lines.at(0).split(",")
-  let data = lines.slice(1).map(line => {
-    let values = line.split(",")
-    let row = (:)
-    for (i, header) in headers.enumerate() {
-      row.insert(header.trim(), values.at(i).trim())
-    }
-    return row
-  })
+  let data = csv(csv_path, row-type: dictionary)
 
   // Get the vocabulary (unique words)
   let vocabulary = (:)
