@@ -33,9 +33,13 @@ def create_bigram_model(words):
     return bigram_counts
 
 def write_bigram_csv(bigram_counts, filename):
-    """Write bigram counts to a CSV file with rows and columns sorted alphabetically."""
-    # Get all unique words from the bigrams to create the header and row labels
+    """Write bigram counts to a CSV file with five columns: current_word, next_word,
+    current_word_index, next_word_index, and count."""
+    # Get all unique words from the bigrams and sort them alphabetically
     vocab = sorted(set(word for bigram in bigram_counts.keys() for word in bigram))
+
+    # Create a mapping from word to index
+    word_to_index = {word: idx for idx, word in enumerate(vocab)}
 
     # Create CSV output filename by replacing the extension
     csv_filename = os.path.splitext(filename)[0] + '.csv'
@@ -44,15 +48,13 @@ def write_bigram_csv(bigram_counts, filename):
         writer = csv.writer(csvfile)
 
         # Write the header row
-        writer.writerow([''] + vocab)
+        writer.writerow(['current_word', 'next_word', 'current_word_index', 'next_word_index', 'count'])
 
-        # Write each row with counts
-        for row_word in vocab:
-            row_data = [row_word]
-            for col_word in vocab:
-                count = bigram_counts.get((row_word, col_word), 0)
-                row_data.append(count if count > 0 else '')
-            writer.writerow(row_data)
+        # Write each bigram with its count
+        for (current_word, next_word), count in bigram_counts.items():
+            current_word_index = word_to_index[current_word]
+            next_word_index = word_to_index[next_word]
+            writer.writerow([current_word, next_word, current_word_index, next_word_index, count])
 
     return csv_filename
 
