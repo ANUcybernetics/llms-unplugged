@@ -18,8 +18,9 @@ def read_file(filename):
         sys.exit(1)
 
 def tokenize(text):
-    """Split text into words, removing punctuation."""
-    return re.findall(r'\b\w+\b', text.lower())
+    """Split text into words, removing all non-alphanumeric characters and tokens that contain only numbers."""
+    words = re.findall(r'\w+', text.lower())
+    return [word for word in words if not word.isdigit()]
 
 def create_bigram_model(words):
     """Create a dictionary of bigram counts."""
