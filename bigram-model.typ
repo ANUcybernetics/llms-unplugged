@@ -140,14 +140,26 @@
 
         // Skip zero counts
         if count > 0 {
+          // Calculate fill percentage (10% for count=1, 100% for count>=10)
+          let fill_percentage = calc.min(10 + (count - 1) * 10, 100)
+          let fill_value = 100 - fill_percentage  // Invert so higher counts are darker
+          let fill_color = luma(fill_value)
+
+          let text_color = if fill_value >= 50 { white } else { black }
+
           place(
             dx: first_cell_width + cell_width * next_index,
             dy: first_cell_height + cell_height * current_index,
             box(
               width: cell_width,
               height: cell_height,
+              fill: fill_color,
               align(center + horizon)[
-                #text(size: 10pt, weight: if count > 5 { "bold" } else { "regular" })[#count]
+                #text(
+                  fill: text_color,
+                  size: 24pt,
+                  weight: "black"
+                )[#count]
               ]
             )
           )
