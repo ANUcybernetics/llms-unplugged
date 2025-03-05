@@ -2,8 +2,6 @@
   // Parse the CSV file
   let data = csv(csv_path, row-type: dictionary)
 
-  set text(font: "Public Sans", size: 14pt)
-
   // Get the vocabulary (unique words)
   let vocabulary = (:)
   let max_index = 0
@@ -115,7 +113,7 @@
             box(
               width: first_cell_width,
               height: cell_height,
-              align(center + horizon)[#text(size: 8pt)[#word]]
+              align(center + horizon)[#text(size: 10pt)[#word]]
             )
           )
 
@@ -127,7 +125,7 @@
               width: cell_width,
               height: first_cell_height,
               align(center + horizon)[
-                #rotate(90deg)[#text(size: 8pt)[#word]]
+                #rotate(90deg)[#text(size: 10pt)[#word]]
               ]
             )
           )
@@ -143,11 +141,13 @@
         // Skip zero counts
         if count > 0 {
           place(
-            dx: first_cell_width + cell_width * next_index + cell_width/2,
-            dy: first_cell_height + cell_height * current_index + cell_height/2,
+            dx: first_cell_width + cell_width * next_index,
+            dy: first_cell_height + cell_height * current_index,
             box(
+              width: cell_width,
+              height: cell_height,
               align(center + horizon)[
-                #text(size: 8pt, weight: if count > 5 { "bold" } else { "regular" })[#count]
+                #text(size: 10pt, weight: if count > 5 { "bold" } else { "regular" })[#count]
               ]
             )
           )
