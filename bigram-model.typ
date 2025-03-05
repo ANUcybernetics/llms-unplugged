@@ -68,7 +68,9 @@
         let x = if i == 0 { 0mm }
                 else if i == 1 { first_cell_width }
                 else { first_cell_width + cell_width * (i - 1) }
-        let line_weight = if calc.rem(i - 1, 4) == 0 { 1.5pt } else { 0.5pt }
+                let line_weight = if calc.rem(i - 1, 16) == 0 { 2.5pt }
+                                   else if calc.rem(i - 1, 4) == 0 { 1.5pt }
+                                   else { 0.5pt }
         let line_color = if calc.rem(i - 1, 4) == 0 { luma(50) } else { luma(100) }
         place(
           dx: x,
