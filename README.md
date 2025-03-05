@@ -28,3 +28,5 @@ CC BY-NC-SA 4.0
 
 Fun With Dick and Jane reader: public domain (pdf downloaded from
 [archive.org](https://ia800907.us.archive.org/31/items/funwithdickjane0000gray/funwithdickjane0000gray.pdf))
+
+[Eugene Onegin translated by Babette Deutsch: public domain](https://archive.org/stream/in.ernet.dli.2015.165902/2015.165902.Eugene-Onegin-A-Novel-In-Verse_djvu.txt)

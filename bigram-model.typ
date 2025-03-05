@@ -165,4 +165,4 @@
   )
 }
 
-#bigram_grid("data/onegin.csv", title: "Eugene Onegin")
+#bigram_grid("data/onegin-deutsch.csv", title: "Eugene Onegin")
