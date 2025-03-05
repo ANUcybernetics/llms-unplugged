@@ -1,4 +1,4 @@
-#let bigram_grid(csv_path) = {
+#let bigram_grid(csv_path, title: "My First LM") = {
   // Parse the CSV file
   let data = csv(csv_path, row-type: dictionary)
 
@@ -58,11 +58,7 @@
           pad(
             top: first_cell_height * 0.1,
             bottom: first_cell_height * 0.1,
-            align(center + horizon)[
-              #text(size: 1.55em)[My First LM]
-
-              Cybernetic Studio
-            ]
+            align(center + horizon)[#text(size: 1.55em)[#title]]
           )
         )
       )
@@ -167,4 +163,4 @@
   )
 }
 
-#bigram_grid("data/onegin.csv")
+#bigram_grid("data/onegin.csv", title: "Eugene Onegin")
