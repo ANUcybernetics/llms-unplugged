@@ -1,5 +1,4 @@
-grid.pdf
-bigram-model.pdf
-instructions.pdf
+# ignore all pdfs in the top level (assume they're auto-generated)
+*.pdf
 
 data/
