@@ -165,4 +165,6 @@
   )
 }
 
-#bigram_grid("data/onegin-deutsch.csv", title: "Eugene Onegin")
+#let csv_file = sys.inputs.at("data")
+#let title = sys.inputs.at("title")
+#bigram_grid(csv_file, title: title)

@@ -15,6 +15,25 @@ printer).
 
 After you've printed out the grid, See `instructions.typ`.
 
+## Automatic grid generation
+
+This is more fun if you do it yourself, but if you have a text file and you want
+to generate the (bigram) LM grid for it, there's a couple of scripts in this
+repo which will do it for you. Say you've got your text in a file called
+`true-blue.txt`.
+
+First, generate the "counts" file of how often words follow other words:
+
+    uv run generate_counts.py `true-blue.txt`
+
+Then, typeset the grid with:
+
+    typst compile bigram-model.typ \
+      --input data=true-blue.csv \
+      --input title="True Blue"
+
+The final grid will be in `bigram-model.pdf`.
+
 ## Author
 
 Ben Swift
