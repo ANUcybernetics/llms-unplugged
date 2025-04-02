@@ -30,8 +30,8 @@
   // Set fixed cell dimensions
   let cell_width = 10mm
   let cell_height = 10mm
-  let first_cell_width = 30mm  // Wider first column for word display
-  let first_cell_height = 30mm // Taller first row for rotated words
+  let first_cell_width = 50mm  // Wider first column for word display
+  let first_cell_height = 50mm // Taller first row for rotated words
 
   // Calculate page dimensions based on fixed cell sizes
   let page_width = first_cell_width + (cell_width * size)
@@ -111,7 +111,7 @@
             box(
               width: first_cell_width,
               height: cell_height,
-              align(center + horizon)[#text(size: 10pt)[#word]]
+              align(center + horizon)[#text(size: 20pt)[#word]]
             )
           )
 
@@ -123,7 +123,7 @@
               width: cell_width,
               height: first_cell_height,
               align(center + horizon)[
-                #rotate(90deg)[#text(size: 10pt)[#word]]
+                #rotate(90deg)[#text(size: 20pt)[#word]]
               ]
             )
           )
@@ -153,7 +153,7 @@
               align(center + horizon)[
                 #text(
                   fill: white,
-                  size: 24pt,
+                  size: 30pt,
                   weight: "black"
                 )[#count]
               ]
