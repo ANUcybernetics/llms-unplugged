@@ -215,7 +215,7 @@ fn convert_to_entries(
 
 /// Saves the N-gram follow entries to a JSON file
 pub fn save_to_json<P: AsRef<Path>>(entries: &[WordFollowEntry], path: P) -> io::Result<()> {
-    // Convert entries to the required format: [["prefix_word1", "prefix_word2", ...], ["follower", count], ...]
+    // Convert entries to the required format: [["prefix_word1", "prefix_word2", ...], ["follower", cumulative_count], ...]
     let formatted_entries: Vec<Vec<serde_json::Value>> = entries
         .iter()
         .map(|entry| {
@@ -228,9 +228,16 @@ pub fn save_to_json<P: AsRef<Path>>(entries: &[WordFollowEntry], path: P) -> io:
                 .collect();
             formatted_entry.push(serde_json::Value::Array(prefix_values));
 
-            // Subsequent elements are the follower pairs
-            for (follower, count) in &entry.followers {
-                formatted_entry.push(serde_json::json!([follower, count]));
+            // Calculate running cumulative counts
+            let mut cumulative_count = 0;
+            // Create a sorted copy of followers for cumulative counting
+            let mut sorted_followers = entry.followers.clone();
+            sorted_followers.sort_by(|a, b| a.0.cmp(&b.0)); // Ensure alphabetical order
+            
+            // Subsequent elements are the follower pairs with cumulative counts
+            for (follower, count) in sorted_followers {
+                cumulative_count += count;
+                formatted_entry.push(serde_json::json!([follower, cumulative_count]));
             }
 
             formatted_entry
@@ -459,19 +466,20 @@ mod tests {
         let json: Vec<Vec<serde_json::Value>> =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
-        // Expected format: [ [["prefix"], ["follower1", count1], ["follower2", count2]], ... ]
+        // Expected format: [ [["prefix"], ["follower1", cumulative_count1], ["follower2", cumulative_count2]], ... ]
         assert_eq!(json.len(), 2);
 
         // Check first entry (prefix ["hello"])
         assert_eq!(json[0].len(), 3); // Prefix array + 2 follower pairs
         assert_eq!(json[0][0], serde_json::json!(["hello"])); // Prefix is an array
-        assert_eq!(json[0][1], serde_json::json!(["again", 1]));
-        assert_eq!(json[0][2], serde_json::json!(["world", 1]));
+        // Followers are sorted alphabetically, so "again" comes first, then "world"
+        assert_eq!(json[0][1], serde_json::json!(["again", 1])); // First follower has count 1
+        assert_eq!(json[0][2], serde_json::json!(["world", 2])); // Second follower has cumulative count 2 (1+1)
 
         // Check second entry (prefix ["world"])
         assert_eq!(json[1].len(), 2); // Prefix array + 1 follower pair
         assert_eq!(json[1][0], serde_json::json!(["world"])); // Prefix is an array
-        assert_eq!(json[1][1], serde_json::json!(["hello", 1]));
+        assert_eq!(json[1][1], serde_json::json!(["hello", 1])); // Only one follower, cumulative count is 1
 
         Ok(())
     }
@@ -499,19 +507,55 @@ mod tests {
         let json: Vec<Vec<serde_json::Value>> =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
-        // Expected format: [ [["prefix1", "prefix2"], ["follower", count]], ... ]
+        // Expected format: [ [["prefix1", "prefix2"], ["follower", cumulative_count]], ... ]
         assert_eq!(json.len(), 2);
 
         // Check first entry (prefix ["the", "quick"])
         assert_eq!(json[0].len(), 2); // Prefix array + 1 follower pair
         assert_eq!(json[0][0], serde_json::json!(["the", "quick"])); // Prefix is an array with 2 elements
-        assert_eq!(json[0][1], serde_json::json!(["brown", 1]));
+        assert_eq!(json[0][1], serde_json::json!(["brown", 1])); // Only one follower, so cumulative count = 1
 
         // Check second entry (prefix ["quick", "brown"])
         assert_eq!(json[1].len(), 2); // Prefix array + 1 follower pair
         assert_eq!(json[1][0], serde_json::json!(["quick", "brown"])); // Prefix is an array with 2 elements
-        assert_eq!(json[1][1], serde_json::json!(["fox", 1]));
+        assert_eq!(json[1][1], serde_json::json!(["fox", 1])); // Only one follower, so cumulative count = 1
 
+        Ok(())
+    }
+    
+    #[test]
+    fn test_save_to_json_cumulative_counts() -> io::Result<()> {
+        // Test data with multiple followers having different counts
+        let entries = vec![
+            WordFollowEntry {
+                prefix: vec!["the".to_string()],
+                // Note: The order here shouldn't matter since we sort alphabetically in save_to_json
+                followers: vec![
+                    ("dog".to_string(), 5),   // Highest occurrence count
+                    ("cat".to_string(), 3),   // Middle occurrence count
+                    ("bird".to_string(), 2),  // Lowest occurrence count
+                ],
+            },
+        ];
+
+        let temp_file = NamedTempFile::new()?;
+        let path = temp_file.path().to_owned();
+
+        save_to_json(&entries, &path)?;
+
+        // Read the file back and verify cumulative counts
+        let json: Vec<Vec<serde_json::Value>> =
+            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+
+        assert_eq!(json.len(), 1);
+        assert_eq!(json[0][0], serde_json::json!(["the"]));
+        
+        // Followers should be sorted alphabetically, with cumulative counts
+        // bird (2) -> cat (2+3=5) -> dog (5+5=10)
+        assert_eq!(json[0][1], serde_json::json!(["bird", 2]));  // First follower: bird with count 2
+        assert_eq!(json[0][2], serde_json::json!(["cat", 5]));   // Second follower: cat with cumulative count 5
+        assert_eq!(json[0][3], serde_json::json!(["dog", 10]));  // Third follower: dog with cumulative count 10
+        
         Ok(())
     }
 }
