@@ -46,13 +46,6 @@
 
 #pagebreak()
 
-// Introduction
-#heading(level: 1, [Introduction])
-
-This document contains a visualization of n-gram counts extracted from a text corpus. Each section represents a prefix (the first n-1 words of the n-gram), and the entries within each section show the words that follow that prefix, along with their frequency counts.
-
-#pagebreak()
-
 // Loop through each item in the JSON array to create sections
 #for item in data {
   // The first element is the prefix array
