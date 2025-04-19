@@ -30,21 +30,21 @@
 }
 
 // Title page
-#align(center)[
-  #block(text(font: "Libertinus Serif", weight: "bold", size: 24pt)[
-    N-Gram Language Model
-  ])
-  #v(1cm)
-  #block(text(font: "Libertinus Serif", style: "italic", size: 14pt)[
-    Generated from corpus analysis
-  ])
-  #v(3cm)
-  #block[
-    #datetime.today().display("[day] [month repr:long] [year]")
-  ]
-]
+// #align(center)[
+//   #block(text(font: "Libertinus Serif", weight: "bold", size: 24pt)[
+//     N-Gram Language Model
+//   ])
+//   #v(1cm)
+//   #block(text(font: "Libertinus Serif", style: "italic", size: 14pt)[
+//     Generated from corpus analysis
+//   ])
+//   #v(3cm)
+//   #block[
+//     #datetime.today().display("[day] [month repr:long] [year]")
+//   ]
+// ]
+// #pagebreak()
 
-#pagebreak()
 // Loop through each item in the JSON array to create sections
 #for item in data {
   // The first element is the prefix array
