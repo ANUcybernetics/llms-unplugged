@@ -57,11 +57,10 @@
   // Process follower entries (all elements after the first one)
   let followers = item.slice(1)
 
-  // Use a grid layout for the follower entries to prevent line breaks
-  grid(
-    columns: (1fr, 1fr, 1fr),
-    column-gutter: 0.5cm,
-    row-gutter: 0.5cm,
+  // Use normal line-breaking with horizontal padding between entries
+  stack(
+    dir: ltr,
+    spacing: 0.5cm,
     ..followers.map(follower => {
       follower-entry(follower.at(0), follower.at(1))
     })
