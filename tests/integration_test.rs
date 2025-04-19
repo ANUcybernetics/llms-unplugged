@@ -11,9 +11,10 @@ fn test_cli_end_to_end() -> io::Result<()> {
     // Create a temporary input file
     let input_path = temp_dir.path().join("input.txt");
     let mut input_file = File::create(&input_path)?;
-    writeln!(input_file, "The quick brown fox jumps over the lazy dog.")?;
-    writeln!(input_file, "The fox is quick and the dog is lazy.")?;
-    writeln!(input_file, "Quick brown foxes jump.")?;
+    writeln!(input_file, "The quick, Brown fox jumps over the lazy dog.")?;
+    writeln!(input_file, "The FOX is quick and the dog is lazy?")?;
+    writeln!(input_file, "Quick brown foxes jump! 123 456")?;
+    writeln!(input_file, "Ignore---these words ###")?;
     input_file.flush()?;
     
     // Create a path for the output file
@@ -36,12 +37,14 @@ fn test_cli_end_to_end() -> io::Result<()> {
         return Ok(());
     }
     
-    // Run the CLI tool
+    // Run the CLI tool (using default n=2 for bigrams)
     let status = Command::new(exe_path)
         .arg("--input")
         .arg(&input_path)
         .arg("--output")
         .arg(&output_path)
+        // .arg("--n") // Optional: Add this line to test different N values
+        // .arg("3")
         .status()?;
     
     assert!(status.success(), "CLI command failed");
@@ -58,54 +61,113 @@ fn test_cli_end_to_end() -> io::Result<()> {
     // Verify we have some entries
     assert!(!json.is_empty(), "JSON output is empty");
     
-    // Verify structure (each entry should be an array with at least one element)
+    // --- Start verification for N-gram structure, normalization, and filtering ---
+    let mut found_prefix_the = false;
+    let mut found_prefix_quick = false;
+    let mut found_prefix_123 = false;
+    let mut found_prefix_ignorethese = false;
+    let mut found_invalid_chars_word = false; // Flag if any word (prefix or follower) has invalid chars
+    let mut the_followed_by_quick_count = 0;
+    let mut quick_followed_by_brown_count = 0;
+
+    // Verify structure (each entry should be an array: [prefix_array, follower_pair, ...])
     for entry in &json {
-        assert!(entry.len() >= 1, "Entry does not have the expected structure");
-        assert!(entry[0].is_string(), "First element of entry is not a string");
+        assert!(entry.len() >= 2, "Entry should have at least a prefix array and one follower pair: {:?}", entry);
         
-        // Check follower pairs (if any)
-        for i in 1..entry.len() {
-            if let serde_json::Value::Array(follower_pair) = &entry[i] {
-                assert_eq!(follower_pair.len(), 2, "Follower pair does not have exactly 2 elements");
-                assert!(follower_pair[0].is_string(), "Follower word is not a string");
-                assert!(follower_pair[1].is_number(), "Follower count is not a number");
-            } else {
-                panic!("Expected follower pair to be an array");
-            }
-        }
-    }
-    
-    // Verify all entries are properly alphabetically sorted
-    let mut prev_word = String::new();
-    for entry in &json {
-        let current_word = entry[0].as_str().unwrap_or_default();
-        if !prev_word.is_empty() {
-            assert!(
-                current_word > prev_word.as_str(),
-                "Words not sorted: '{}' should come after '{}'",
-                current_word,
-                prev_word
-            );
-        }
-        prev_word = current_word.to_string();
+        // Verify prefix array
+        let prefix_val = &entry[0];
+        assert!(prefix_val.is_array(), "First element should be the prefix array: {:?}", prefix_val);
+        let prefix_arr = prefix_val.as_array().unwrap();
+        assert_eq!(prefix_arr.len(), 1, "Prefix array should have size 1 for n=2 (bigrams): {:?}", prefix_arr); // n=2 means prefix size 1
         
-        // Verify followers are alphabetically sorted
+        let prefix_word = prefix_arr[0].as_str().unwrap_or("");
+        assert!(!prefix_word.is_empty(), "Prefix word should not be empty");
+        
+        // Check prefix word normalization (all lowercase alphanumeric)
+        if prefix_word.chars().any(|c| !c.is_lowercase() && !c.is_numeric()) {
+             found_invalid_chars_word = true;
+        }
+
+        // Track specific prefixes
+        if prefix_word == "the" { found_prefix_the = true; }
+        if prefix_word == "quick" { found_prefix_quick = true; }
+        if prefix_word == "123" { found_prefix_123 = true; }
+        if prefix_word == "ignorethese" { found_prefix_ignorethese = true; }
+        
+        // Check follower pairs
         let mut prev_follower = String::new();
         for i in 1..entry.len() {
-            if let serde_json::Value::Array(follower_entry) = &entry[i] {
-                let follower = follower_entry[0].as_str().unwrap_or_default();
-                if !prev_follower.is_empty() {
-                    assert!(
-                        follower > prev_follower.as_str(),
-                        "Followers not sorted: '{}' should come after '{}'",
-                        follower,
-                        prev_follower
-                    );
-                }
-                prev_follower = follower.to_string();
+            let follower_pair = &entry[i];
+            assert!(follower_pair.is_array(), "Follower entry should be an array [word, count]: {:?}", follower_pair);
+            let follower_arr = follower_pair.as_array().unwrap();
+            assert_eq!(follower_arr.len(), 2, "Follower pair should have 2 elements [word, count]: {:?}", follower_arr);
+            
+            let follower_word = follower_arr[0].as_str().unwrap_or("");
+            assert!(!follower_word.is_empty(), "Follower word should not be empty");
+            assert!(follower_arr[1].is_number(), "Follower count should be a number: {:?}", follower_arr[1]);
+
+            // Check follower word normalization
+            if follower_word.chars().any(|c| !c.is_lowercase() && !c.is_numeric()) {
+                found_invalid_chars_word = true;
+            }
+
+            // Check follower sorting
+            if !prev_follower.is_empty() {
+                 assert!(
+                     follower_word > prev_follower.as_str(),
+                     "Followers not sorted for prefix '{}': '{}' should come after '{}'",
+                     prefix_word,
+                     follower_word,
+                     prev_follower
+                 );
+            }
+            prev_follower = follower_word.to_string();
+
+            // Count specific follow occurrences
+            if prefix_word == "the" && follower_word == "quick" {
+                the_followed_by_quick_count += follower_arr[1].as_u64().unwrap_or(0) as usize;
+            }
+            if prefix_word == "quick" && follower_word == "brown" {
+                quick_followed_by_brown_count += follower_arr[1].as_u64().unwrap_or(0) as usize;
             }
         }
     }
+
+    // Verify overall prefix sorting
+    let mut prev_prefix: Option<Vec<String>> = None;
+    for entry in &json {
+        let current_prefix: Vec<String> = entry[0]
+            .as_array().unwrap()
+            .iter()
+            .map(|v| v.as_str().unwrap_or("").to_string())
+            .collect();
+            
+        if let Some(ref prev) = prev_prefix {
+            assert!(
+                current_prefix > *prev,
+                "Prefixes not sorted: {:?} should come after {:?}",
+                current_prefix,
+                prev
+            );
+        }
+        prev_prefix = Some(current_prefix);
+    }
+
+    // --- Final assertions for normalization/filtering and counts ---
+    assert!(found_prefix_the, "Prefix ['the'] not found");
+    assert!(found_prefix_quick, "Prefix ['quick'] (from 'quick'/'Quick') not found");
+    assert!(found_prefix_123, "Prefix ['123'] not found");
+    assert!(found_prefix_ignorethese, "Prefix ['ignorethese'] (from 'Ignore---these') not found");
+    assert!(!found_invalid_chars_word, "Found word (prefix or follower) containing non-lowercase-alphanumeric characters");
+    
+    // Based on input:
+    // "the quick" -> count 1
+    // "the fox" -> count 1
+    // "the dog" -> count 1
+    // "the lazy" -> count 1
+    // "quick brown" -> count 2 (from "quick, Brown" and "Quick brown")
+    assert_eq!(the_followed_by_quick_count, 1, "Expected prefix ['the'] to be followed by 'quick' exactly once");
+    assert_eq!(quick_followed_by_brown_count, 2, "Expected prefix ['quick'] to be followed by 'brown' exactly twice");
     
     Ok(())
 }

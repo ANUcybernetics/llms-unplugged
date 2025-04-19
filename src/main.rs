@@ -13,12 +13,16 @@ struct Args {
     /// Output JSON file for results
     #[arg(short, long)]
     output: PathBuf,
+
+    /// The size of the N-gram (e.g., 2 for bigrams, 3 for trigrams).
+    #[arg(short, long, default_value_t = 2)]
+    n: usize,
 }
 
 fn main() {
     let args = Args::parse();
 
-    match process_file(&args.input) {
+    match process_file(&args.input, args.n) {
         Ok(entries) => {
             match save_to_json(&entries, &args.output) {
                 Ok(_) => println!("Successfully wrote word statistics to '{}'", args.output.display()),
