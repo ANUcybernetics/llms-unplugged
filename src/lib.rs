@@ -7,7 +7,7 @@ use std::path::Path;
 use std::collections::VecDeque;
 
 /// Contains summary statistics for processed text
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ProcessingStats {
     /// Total number of tokens in the text
     pub total_tokens: usize,
@@ -29,101 +29,149 @@ pub struct WordFollowEntry {
     pub followers: Vec<(String, usize)>,
 }
 
-/// Processes a text file and returns N-gram following statistics along with summary statistics
-pub fn process_file<P: AsRef<Path>>(
-    path: P,
+/// A counter for tracking n-gram occurrences in text
+#[derive(Debug)]
+pub struct NGramCounter {
+    /// Mapping of n-gram prefixes to their following words and counts
+    prefix_map: HashMap<Vec<String>, HashMap<String, usize>>,
+    /// Size of n-gram (e.g., 2 for bigrams, 3 for trigrams)
     n: usize,
-) -> io::Result<(Vec<WordFollowEntry>, ProcessingStats)> {
-    let mut stats = ProcessingStats {
-        total_tokens: 0,
-        unique_ngrams: 0,
-        total_ngram_occurrences: 0,
-        most_common_ngram: None,
-    };
+    /// Statistics gathered during processing
+    stats: ProcessingStats,
+    /// Sliding window for processing text
+    window: VecDeque<String>,
+}
 
-    if n < 2 {
-        // N-gram requires at least a prefix (n-1) and a follower (1), so n must be >= 2
-        // Consider returning an error instead? For now, returning empty.
-        eprintln!("Warning: N must be 2 or greater for N-gram analysis. Returning empty results.");
-        return Ok((Vec::new(), stats));
+impl NGramCounter {
+    /// Creates a new NGramCounter with the specified n-gram size
+    pub fn new(n: usize) -> Self {
+        if n < 2 {
+            eprintln!("Warning: N must be 2 or greater for N-gram analysis. Defaulting to 2.");
+            return Self::new(2);
+        }
+        
+        let prefix_size = n - 1;
+        
+        NGramCounter {
+            prefix_map: HashMap::new(),
+            n,
+            stats: ProcessingStats {
+                total_tokens: 0,
+                unique_ngrams: 0,
+                total_ngram_occurrences: 0,
+                most_common_ngram: None,
+            },
+            window: VecDeque::with_capacity(prefix_size),
+        }
     }
-    let prefix_size = n - 1;
-
-    let file = File::open(path)?;
-    let reader = BufReader::new(file);
-
-    // Map to store prefix -> following word -> count
-    let mut follow_map: HashMap<Vec<String>, HashMap<String, usize>> = HashMap::new();
-
-    // Use a deque to maintain the sliding window for the prefix
-    let mut window: VecDeque<String> = VecDeque::with_capacity(prefix_size);
-
-    // Process each line
-    for line_result in reader.lines() {
-        let line = line_result?;
-        let words = tokenize_line(&line);
-
+    
+    /// Process a single line of text
+    pub fn process_line(&mut self, line: &str) {
+        let words = tokenize_line(line);
+        let prefix_size = self.n - 1;
+        
         // Add to token count
-        stats.total_tokens += words.len();
-
+        self.stats.total_tokens += words.len();
+        
         // Process each word
         for word in words {
             // If the window is full (contains n-1 words), we have a complete N-gram prefix
-            if window.len() == prefix_size {
-                let prefix = window.iter().cloned().collect::<Vec<String>>();
+            if self.window.len() == prefix_size {
+                let prefix = self.window.iter().cloned().collect::<Vec<String>>();
                 let follower = word.clone();
-
+                
                 // Update the frequency map
-                follow_map
+                self.prefix_map
                     .entry(prefix)
                     .or_insert_with(HashMap::new)
                     .entry(follower)
                     .and_modify(|count| {
                         *count += 1;
-                        stats.total_ngram_occurrences += 1;
+                        self.stats.total_ngram_occurrences += 1;
                     })
                     .or_insert_with(|| {
-                        stats.total_ngram_occurrences += 1;
+                        self.stats.total_ngram_occurrences += 1;
                         1
                     });
-
+                
                 // Slide the window: remove the oldest word
-                window.pop_front();
+                self.window.pop_front();
             }
             // Add the current word to the window
-            window.push_back(word);
+            self.window.push_back(word);
         }
     }
-
-    // Find the most common n-gram
-    let mut most_common_count = 0;
-    let mut most_common_prefix = None;
-    let mut most_common_follower = None;
-
-    for (prefix, followers) in &follow_map {
-        for (follower, count) in followers {
-            if *count > most_common_count {
-                most_common_count = *count;
-                most_common_prefix = Some(prefix.clone());
-                most_common_follower = Some(follower.clone());
+    
+    /// Process a file containing text
+    pub fn process_file<P: AsRef<Path>>(&mut self, path: P) -> io::Result<()> {
+        let file = File::open(path)?;
+        let reader = BufReader::new(file);
+        
+        // Process each line
+        for line_result in reader.lines() {
+            let line = line_result?;
+            self.process_line(&line);
+        }
+        
+        // Calculate additional statistics after processing
+        self.calculate_statistics();
+        
+        Ok(())
+    }
+    
+    /// Calculate statistics after processing
+    fn calculate_statistics(&mut self) {
+        // Find the most common n-gram
+        let mut most_common_count = 0;
+        let mut most_common_prefix = None;
+        let mut most_common_follower = None;
+        
+        for (prefix, followers) in &self.prefix_map {
+            for (follower, count) in followers {
+                if *count > most_common_count {
+                    most_common_count = *count;
+                    most_common_prefix = Some(prefix.clone());
+                    most_common_follower = Some(follower.clone());
+                }
             }
         }
+        
+        if let (Some(prefix), Some(follower)) = (most_common_prefix, most_common_follower) {
+            self.stats.most_common_ngram = Some((prefix, follower, most_common_count));
+        }
+        
+        // Set the count of unique n-grams
+        self.stats.unique_ngrams = self.prefix_map.len();
     }
-
-    if let (Some(prefix), Some(follower)) = (most_common_prefix, most_common_follower) {
-        stats.most_common_ngram = Some((prefix, follower, most_common_count));
+    
+    /// Get the results as a sorted list of WordFollowEntry
+    pub fn get_entries(&self) -> Vec<WordFollowEntry> {
+        let mut result = convert_to_entries(&self.prefix_map);
+        
+        // Sort entries lexicographically by prefix
+        result.sort_by(|a, b| a.prefix.cmp(&b.prefix));
+        
+        result
     }
+    
+    /// Get the statistics collected during processing
+    pub fn get_stats(&self) -> &ProcessingStats {
+        &self.stats
+    }
+}
 
-    // Set the count of unique n-grams
-    stats.unique_ngrams = follow_map.len();
-
-    // Convert the HashMap into the required format
-    let mut result = convert_to_entries(follow_map);
-
-    // Sort entries lexicographically by prefix
-    result.sort_by(|a, b| a.prefix.cmp(&b.prefix));
-
-    Ok((result, stats))
+/// Processes a text file and returns N-gram following statistics along with summary statistics
+pub fn process_file<P: AsRef<Path>>(
+    path: P,
+    n: usize,
+) -> io::Result<(Vec<WordFollowEntry>, ProcessingStats)> {
+    let mut counter = NGramCounter::new(n);
+    counter.process_file(path)?;
+    
+    let entries = counter.get_entries();
+    let stats = counter.get_stats().clone();
+    
+    Ok((entries, stats))
 }
 
 /// Tokenizes a line into normalized words
@@ -145,17 +193,20 @@ pub fn tokenize_line(line: &str) -> Vec<String> {
 
 /// Converts the internal N-gram HashMap representation to the required output format
 fn convert_to_entries(
-    follow_map: HashMap<Vec<String>, HashMap<String, usize>>,
+    follow_map: &HashMap<Vec<String>, HashMap<String, usize>>,
 ) -> Vec<WordFollowEntry> {
     follow_map
-        .into_iter()
+        .iter()
         .map(|(prefix, followers)| {
-            let mut follower_entries: Vec<(String, usize)> = followers.into_iter().collect();
+            let mut follower_entries: Vec<(String, usize)> = followers
+                .iter()
+                .map(|(word, count)| (word.clone(), *count))
+                .collect();
             // Sort followers alphabetically by word
             follower_entries.sort_by(|a, b| a.0.cmp(&b.0));
 
             WordFollowEntry {
-                prefix, // Changed from word
+                prefix: prefix.clone(), // Changed from word
                 followers: follower_entries,
             }
         })

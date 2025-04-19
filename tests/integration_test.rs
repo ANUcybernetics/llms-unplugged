@@ -39,9 +39,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
 
     // Run the CLI tool (using default n=2 for bigrams)
     let status = Command::new(exe_path)
-        .arg("--input")
         .arg(&input_path)
-        .arg("--output")
         .arg(&output_path)
         // .arg("--n") // Optional: Add this line to test different N values
         // .arg("3")
