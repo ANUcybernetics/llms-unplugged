@@ -2,3 +2,8 @@
 *.pdf
 
 data/
+
+
+# Added by cargo
+
+/target
