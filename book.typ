@@ -45,7 +45,6 @@
 ]
 
 #pagebreak()
-
 // Loop through each item in the JSON array to create sections
 #for item in data {
   // The first element is the prefix array
@@ -56,15 +55,13 @@
 
   // Process follower entries (all elements after the first one)
   let followers = item.slice(1)
-
-  // Use normal line-breaking with horizontal padding between entries
-  stack(
-    dir: ltr,
-    spacing: 0.5cm,
-    ..followers.map(follower => {
-      follower-entry(follower.at(0), follower.at(1))
-    })
-  )
+  // Display followers in the normal flow of text without a container
+  for (i, follower) in followers.enumerate() {
+    follower-entry(follower.at(0), follower.at(1))
+    if i < followers.len() - 1 {
+      h(0.5cm) // Add horizontal spacing between entries
+    }
+  }
 
   // Add space after each section
   v(1cm)
