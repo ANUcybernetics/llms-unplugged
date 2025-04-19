@@ -64,5 +64,5 @@
   }
 
   // Add space after each section
-  v(1cm)
+  v(0.2em)
 }
