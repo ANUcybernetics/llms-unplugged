@@ -15,7 +15,7 @@
     fill: black,
     inset: 8pt,
     radius: 2pt,
-    width: 100%,
+    width: auto,
     [#prefix.join(" ")]
   )
 }
