@@ -23,9 +23,25 @@ fn main() {
     let args = Args::parse();
 
     match process_file(&args.input, args.n) {
-        Ok(entries) => {
+        Ok((entries, stats)) => {
             match save_to_json(&entries, &args.output) {
-                Ok(_) => println!("Successfully wrote word statistics to '{}'", args.output.display()),
+                Ok(_) => {
+                    println!("Successfully wrote word statistics to '{}'", args.output.display());
+                    
+                    // Print summary statistics
+                    println!("\nSummary Statistics:");
+                    println!("-------------------");
+                    println!("Total tokens in text: {}", stats.total_tokens);
+                    println!("Unique {}-gram prefixes: {}", args.n-1, stats.unique_ngrams);
+                    println!("Total {}-gram occurrences: {}", args.n, stats.total_ngram_occurrences);
+                    
+                    // Print most common n-gram if available
+                    if let Some((prefix, follower, count)) = stats.most_common_ngram {
+                        let prefix_str = prefix.join(" ");
+                        println!("Most common {}-gram: '{}' followed by '{}' ({} occurrences)", 
+                                args.n, prefix_str, follower, count);
+                    }
+                },
                 Err(e) => eprintln!("Error writing output file: {}", e),
             }
         },
