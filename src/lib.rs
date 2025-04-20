@@ -17,6 +17,8 @@ pub struct ProcessingStats {
     pub total_ngram_occurrences: usize,
     /// Most common n-gram prefix and its most common follower
     pub most_common_ngram: Option<(Vec<String>, String, usize)>,
+    /// Prefix with the most cumulative followers
+    pub most_popular_prefix: Option<(Vec<String>, usize)>,
 }
 
 /// Represents an N-gram prefix and its following words with their counts
@@ -60,6 +62,7 @@ impl NGramCounter {
                 unique_ngrams: 0,
                 total_ngram_occurrences: 0,
                 most_common_ngram: None,
+                most_popular_prefix: None,
             },
             window: VecDeque::with_capacity(prefix_size),
         }
@@ -125,8 +128,22 @@ impl NGramCounter {
         let mut most_common_count = 0;
         let mut most_common_prefix = None;
         let mut most_common_follower = None;
+        
+        // Find the prefix with the most cumulative followers
+        let mut most_popular_prefix = None;
+        let mut most_popular_prefix_count = 0;
 
         for (prefix, followers) in &self.prefix_map {
+            // Calculate the cumulative count for this prefix
+            let total_followers: usize = followers.values().sum();
+            
+            // Check if this is the prefix with the most followers
+            if total_followers > most_popular_prefix_count {
+                most_popular_prefix_count = total_followers;
+                most_popular_prefix = Some(prefix.clone());
+            }
+            
+            // Continue with existing logic for finding the most common specific n-gram
             for (follower, count) in followers {
                 if *count > most_common_count {
                     most_common_count = *count;
@@ -138,6 +155,10 @@ impl NGramCounter {
 
         if let (Some(prefix), Some(follower)) = (most_common_prefix, most_common_follower) {
             self.stats.most_common_ngram = Some((prefix, follower, most_common_count));
+        }
+        
+        if let Some(prefix) = most_popular_prefix {
+            self.stats.most_popular_prefix = Some((prefix, most_popular_prefix_count));
         }
 
         // Set the count of unique n-grams

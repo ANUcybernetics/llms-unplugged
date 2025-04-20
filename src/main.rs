@@ -46,6 +46,13 @@ fn main() {
                         println!("Most common {}-gram: '{}' followed by '{}' ({} occurrences)", 
                                 args.n, prefix_str, follower, count);
                     }
+                    
+                    // Print prefix with most cumulative followers if available
+                    if let Some((prefix, count)) = &stats.most_popular_prefix {
+                        let prefix_str = prefix.join(" ");
+                        println!("Prefix with most followers: '{}' ({} total followers)", 
+                                prefix_str, count);
+                    }
                 },
                 Err(e) => eprintln!("Error writing output file: {}", e),
             }
