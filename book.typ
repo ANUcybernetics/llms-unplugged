@@ -29,11 +29,7 @@
 
 // Function to create a formatted follower entry
 #let follower-entry(word, count) = {
-  box(
-    width: auto,
-    inset: (x: 3pt, y: 2pt),
-    [#text(weight: "bold")[#count] #text[|] #word]
-  )
+    [#count #text[|] #word]
 }
 
 // Title page
@@ -58,18 +54,17 @@
   let prefix = item.at(0)
 
   // Create section heading with the prefix
-  heading(level: 2, prefix-heading(prefix))
+  text(prefix.join(" "), weight: "bold")
+
+  h(1em)
 
   // Process follower entries (all elements after the first one)
   let followers = item.slice(1)
   // Display followers in the normal flow of text without a container
   for (i, follower) in followers.enumerate() {
-    follower-entry(follower.at(0), follower.at(1))
-    if i < followers.len() - 1 {
-      h(0.5cm) // Add horizontal spacing between entries
-    }
+    [#follower.at(1)#text[|]#follower.at(0)]
+    h(0.5em)
   }
 
-  // Add space after each section
-  v(0.2em)
+  v(0.1em)
 }
