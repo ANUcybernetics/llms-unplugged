@@ -98,9 +98,17 @@ fn test_cli_end_to_end() -> io::Result<()> {
             found_prefix_quick = true;
         }
 
-        // Check follower pairs
+        // Verify the second element is the total count
+        let total_count_val = &entry[1];
+        assert!(
+            total_count_val.is_number(),
+            "Second element should be the total count: {:?}",
+            total_count_val
+        );
+
+        // Check follower pairs (starting from index 2 now that we have total count as second element)
         let mut prev_follower = String::new();
-        for i in 1..entry.len() {
+        for i in 2..entry.len() {
             let follower_pair = &entry[i];
             assert!(
                 follower_pair.is_array(),

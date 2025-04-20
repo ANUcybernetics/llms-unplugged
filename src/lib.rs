@@ -236,7 +236,7 @@ fn convert_to_entries(
 
 /// Saves the N-gram follow entries to a JSON file
 pub fn save_to_json<P: AsRef<Path>>(entries: &[WordFollowEntry], path: P) -> io::Result<()> {
-    // Convert entries to the required format: ["joined prefix", ["follower", cumulative_count], ...]
+    // Convert entries to the required format: ["joined prefix", total_count, ["follower", cumulative_count], ...]
     let formatted_entries: Vec<Vec<serde_json::Value>> = entries
         .iter()
         .map(|entry| {
@@ -244,6 +244,11 @@ pub fn save_to_json<P: AsRef<Path>>(entries: &[WordFollowEntry], path: P) -> io:
             // First element is the joined prefix string
             let joined_prefix = entry.prefix.join(" ");
             formatted_entry.push(serde_json::Value::String(joined_prefix));
+
+            // Calculate the total count for all followers
+            let total_count: usize = entry.followers.iter().map(|(_, count)| count).sum();
+            // Second element is the total count for the prefix
+            formatted_entry.push(serde_json::json!(total_count));
 
             // Calculate running cumulative counts
             let mut cumulative_count = 0;
@@ -483,20 +488,22 @@ mod tests {
         let json: Vec<Vec<serde_json::Value>> =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
-        // Expected format: [ ["prefix", ["follower1", cumulative_count1], ["follower2", cumulative_count2]], ... ]
+        // Expected format: [ ["prefix", total_count, ["follower1", cumulative_count1], ["follower2", cumulative_count2]], ... ]
         assert_eq!(json.len(), 2);
 
         // Check first entry (prefix "hello")
-        assert_eq!(json[0].len(), 3); // Prefix string + 2 follower pairs
+        assert_eq!(json[0].len(), 4); // Prefix string + total count + 2 follower pairs
         assert_eq!(json[0][0], serde_json::json!("hello")); // Prefix is a string
+        assert_eq!(json[0][1], serde_json::json!(2)); // Total count is 2 (1+1)
         // Followers are sorted alphabetically, so "again" comes first, then "world"
-        assert_eq!(json[0][1], serde_json::json!(["again", 1])); // First follower has count 1
-        assert_eq!(json[0][2], serde_json::json!(["world", 2])); // Second follower has cumulative count 2 (1+1)
+        assert_eq!(json[0][2], serde_json::json!(["again", 1])); // First follower has count 1
+        assert_eq!(json[0][3], serde_json::json!(["world", 2])); // Second follower has cumulative count 2 (1+1)
 
         // Check second entry (prefix "world")
-        assert_eq!(json[1].len(), 2); // Prefix string + 1 follower pair
+        assert_eq!(json[1].len(), 3); // Prefix string + total count + 1 follower pair
         assert_eq!(json[1][0], serde_json::json!("world")); // Prefix is a string
-        assert_eq!(json[1][1], serde_json::json!(["hello", 1])); // Only one follower, cumulative count is 1
+        assert_eq!(json[1][1], serde_json::json!(1)); // Total count is 1
+        assert_eq!(json[1][2], serde_json::json!(["hello", 1])); // Only one follower, cumulative count is 1
 
         Ok(())
     }
@@ -524,18 +531,20 @@ mod tests {
         let json: Vec<Vec<serde_json::Value>> =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
-        // Expected format: [ ["joined prefix", ["follower", cumulative_count]], ... ]
+        // Expected format: [ ["joined prefix", total_count, ["follower", cumulative_count]], ... ]
         assert_eq!(json.len(), 2);
 
         // Check first entry (prefix "the quick")
-        assert_eq!(json[0].len(), 2); // Prefix string + 1 follower pair
+        assert_eq!(json[0].len(), 3); // Prefix string + total count + 1 follower pair
         assert_eq!(json[0][0], serde_json::json!("the quick")); // Prefix is a string with joined words
-        assert_eq!(json[0][1], serde_json::json!(["brown", 1])); // Only one follower, so cumulative count = 1
+        assert_eq!(json[0][1], serde_json::json!(1)); // Total count is 1
+        assert_eq!(json[0][2], serde_json::json!(["brown", 1])); // Only one follower, so cumulative count = 1
 
         // Check second entry (prefix "quick brown")
-        assert_eq!(json[1].len(), 2); // Prefix string + 1 follower pair
+        assert_eq!(json[1].len(), 3); // Prefix string + total count + 1 follower pair
         assert_eq!(json[1][0], serde_json::json!("quick brown")); // Prefix is a string with joined words
-        assert_eq!(json[1][1], serde_json::json!(["fox", 1])); // Only one follower, so cumulative count = 1
+        assert_eq!(json[1][1], serde_json::json!(1)); // Total count is 1
+        assert_eq!(json[1][2], serde_json::json!(["fox", 1])); // Only one follower, so cumulative count = 1
 
         Ok(())
     }
@@ -564,12 +573,14 @@ mod tests {
 
         assert_eq!(json.len(), 1);
         assert_eq!(json[0][0], serde_json::json!("the"));
+        // Total count for this prefix should be 10 (5+3+2)
+        assert_eq!(json[0][1], serde_json::json!(10));
 
         // Followers should be sorted alphabetically, with cumulative counts
         // bird (2) -> cat (2+3=5) -> dog (5+5=10)
-        assert_eq!(json[0][1], serde_json::json!(["bird", 2])); // First follower: bird with count 2
-        assert_eq!(json[0][2], serde_json::json!(["cat", 5])); // Second follower: cat with cumulative count 5
-        assert_eq!(json[0][3], serde_json::json!(["dog", 10])); // Third follower: dog with cumulative count 10
+        assert_eq!(json[0][2], serde_json::json!(["bird", 2])); // First follower: bird with count 2
+        assert_eq!(json[0][3], serde_json::json!(["cat", 5])); // Second follower: cat with cumulative count 5
+        assert_eq!(json[0][4], serde_json::json!(["dog", 10])); // Third follower: dog with cumulative count 10
 
         Ok(())
     }

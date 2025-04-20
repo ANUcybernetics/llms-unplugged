@@ -29,7 +29,7 @@
   h(0.5em)
 
   // Process follower entries
-  let followers = item.slice(1)
+  let followers = item.slice(2)
   for follower in followers {
     box([#text(weight: "semibold")[#follower.at(1)]#text(fill: luma(80%))[|]#text(fill: luma(20%))[#follower.at(0)]])
     h(0.5em)
