@@ -14,8 +14,8 @@
   columns: 3,
   header: {
     set align(left)
-    text(weight: "bold")[#context current_prefix.get()]
-    line(length: 100%, stroke: 0.5pt)
+    text(weight: "bold")[#context current_prefix.at(here())]
+    line(length: 100%, stroke: 0.5pt + luma(50%))
   }
 )
 
@@ -38,6 +38,7 @@
 #for (i, item) in data.enumerate() {
   // The first element is the prefix
   let prefix = item.at(0)
+  current_prefix.update(prefix)
 
   text(prefix, size: 1.2em, weight: "bold")
 
@@ -51,6 +52,4 @@
   }
 
   v(0.1em)
-
-  current_prefix.update(data.at(i+1, default: (" ")).at(0))
 }
