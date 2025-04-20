@@ -1,6 +1,6 @@
 // Set the document properties and font
 #set document(title: "N-Gram Language Model")
-#set text(font: "Libertinus Serif", size: 10pt)
+#set text(font: "Libertinus Serif", size: 8pt)
 
 // Load the JSON data
 #let data = json("out.json")
@@ -10,6 +10,7 @@
 
 #set page(
   margin: (x: 2cm, y: 2cm),
+  columns: 3,
   header: {
     set align(left)
     text(weight: "bold")[#context current_prefix.get().join(" ")]
