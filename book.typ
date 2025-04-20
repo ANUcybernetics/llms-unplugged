@@ -57,7 +57,7 @@
   // Create section heading with the prefix
   text(prefix.join(" "), weight: "bold")
 
-  h(1em)
+  h(0.4em)
 
   // Process follower entries (all elements after the first one)
   let followers = item.slice(1)
