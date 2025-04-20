@@ -10,11 +10,11 @@
 
 #set page(
   "a5",
-  margin: (x: 2cm, y: 2cm),
+  // margin: (x: 2cm, y: 2cm),
   columns: 3,
   header: {
     set align(left)
-    text(weight: "bold")[#context current_prefix.get().join(" ")]
+    text(weight: "bold")[#context current_prefix.get()]
     line(length: 100%, stroke: 0.5pt)
   }
 )
@@ -35,26 +35,22 @@
 // ]
 // #pagebreak()
 
-// Loop through each item in the JSON array to create sections
-#for item in data {
-  // The first element is the prefix array
+#for (i, item) in data.enumerate() {
+  // The first element is the prefix
   let prefix = item.at(0)
 
-  // TODO one way to fix the "off by one" error is to set the *next* prefix here (or at the end of this loop at least)
-  current_prefix.update(prefix)
-
-  // Create section heading with the prefix
-  text(prefix.join(" "), weight: "bold")
+  text(prefix, weight: "bold")
 
   h(0.4em)
 
-  // Process follower entries (all elements after the first one)
+  // Process follower entries
   let followers = item.slice(1)
-  // Display followers in the normal flow of text without a container
   for follower in followers {
     box([#follower.at(1)#text[|]#follower.at(0)])
     h(0.5em)
   }
 
   v(0.1em)
+
+  current_prefix.update(data.at(i+1, default: (" ")).at(0))
 }

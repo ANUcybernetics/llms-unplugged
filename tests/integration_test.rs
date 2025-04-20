@@ -74,23 +74,16 @@ fn test_cli_end_to_end() -> io::Result<()> {
             entry
         );
 
-        // Verify prefix array
+        // Verify prefix string
         let prefix_val = &entry[0];
         assert!(
-            prefix_val.is_array(),
-            "First element should be the prefix array: {:?}",
+            prefix_val.is_string(),
+            "First element should be the prefix string: {:?}",
             prefix_val
         );
-        let prefix_arr = prefix_val.as_array().unwrap();
-        assert_eq!(
-            prefix_arr.len(),
-            1,
-            "Prefix array should have size 1 for n=2 (bigrams): {:?}",
-            prefix_arr
-        ); // n=2 means prefix size 1
 
-        let prefix_word = prefix_arr[0].as_str().unwrap_or("");
-        assert!(!prefix_word.is_empty(), "Prefix word should not be empty");
+        let prefix_word = prefix_val.as_str().unwrap_or("");
+        assert!(!prefix_word.is_empty(), "Prefix string should not be empty");
 
         // Check prefix word normalization (should be all lowercase alphabetic)
         if prefix_word.chars().any(|c| !c.is_lowercase()) {
@@ -161,19 +154,14 @@ fn test_cli_end_to_end() -> io::Result<()> {
     }
 
     // Verify overall prefix sorting
-    let mut prev_prefix: Option<Vec<String>> = None;
+    let mut prev_prefix: Option<String> = None;
     for entry in &json {
-        let current_prefix: Vec<String> = entry[0]
-            .as_array()
-            .unwrap()
-            .iter()
-            .map(|v| v.as_str().unwrap_or("").to_string())
-            .collect();
+        let current_prefix = entry[0].as_str().unwrap_or("").to_string();
 
         if let Some(ref prev) = prev_prefix {
             assert!(
                 current_prefix > *prev,
-                "Prefixes not sorted: {:?} should come after {:?}",
+                "Prefixes not sorted: '{}' should come after '{}'",
                 current_prefix,
                 prev
             );
@@ -182,10 +170,10 @@ fn test_cli_end_to_end() -> io::Result<()> {
     }
 
     // --- Final assertions for normalization/filtering and counts ---
-    assert!(found_prefix_the, "Prefix ['the'] not found");
+    assert!(found_prefix_the, "Prefix 'the' not found");
     assert!(
         found_prefix_quick,
-        "Prefix ['quick'] (from 'quick'/'Quick') not found"
+        "Prefix 'quick' (from 'quick'/'Quick') not found"
     );
     assert!(
         !found_invalid_chars_word,
@@ -200,12 +188,12 @@ fn test_cli_end_to_end() -> io::Result<()> {
     // "quick brown" -> count 2 (from "quick, Brown" and "Quick brown") (cumulative)
     assert!(
         the_followed_by_quick_count >= 1,
-        "Expected prefix ['the'] to be followed by 'quick' at least once, found {}",
+        "Expected prefix 'the' to be followed by 'quick' at least once, found {}",
         the_followed_by_quick_count
     );
     assert!(
         quick_followed_by_brown_count >= 2,
-        "Expected prefix ['quick'] to be followed by 'brown' at least twice, found {}",
+        "Expected prefix 'quick' to be followed by 'brown' at least twice, found {}",
         quick_followed_by_brown_count
     );
 
