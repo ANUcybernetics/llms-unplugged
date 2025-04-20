@@ -1,23 +1,30 @@
 // Set the document properties and font
 #set document(title: "N-Gram Language Model")
-#set text(font: "Libertinus Serif", size: 11pt)
-#set page(margin: (x: 2cm, y: 2cm))
+#set text(font: "Libertinus Serif", size: 10pt)
 
 // Load the JSON data
 #let data = json("out.json")
 
+// Create a state variable to track the current prefix
+#let current_prefix = state("current-prefix", data.at(0).at(0))
+
+#set page(
+  margin: (x: 2cm, y: 2cm),
+  header: {
+    set align(left)
+    text(weight: "bold")[#context current_prefix.get().join(" ")]
+    line(length: 100%, stroke: 0.5pt)
+  }
+)
+
 // Function to create a styled heading from a prefix
 #let prefix-heading(prefix) = {
-  set text(fill: white, weight: "bold")
-  set align(left)
+  // Update the current prefix state
+  current_prefix.update(prefix)
 
-  box(
-    fill: black,
-    inset: 8pt,
-    radius: 2pt,
-    width: auto,
-    [#prefix.join(" ")]
-  )
+  set align(left)
+  text(weight: "bold")[#prefix.join(" ")]
+  line(length: 100%, stroke: 0.5pt)
 }
 
 // Function to create a formatted follower entry
