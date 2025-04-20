@@ -9,6 +9,7 @@
 #let current_prefix = state("current-prefix", data.at(0).at(0))
 
 #set page(
+  "a5",
   margin: (x: 2cm, y: 2cm),
   columns: 3,
   header: {
@@ -17,21 +18,6 @@
     line(length: 100%, stroke: 0.5pt)
   }
 )
-
-// Function to create a styled heading from a prefix
-#let prefix-heading(prefix) = {
-  // Update the current prefix state
-  current_prefix.update(prefix)
-
-  set align(left)
-  text(weight: "bold")[#prefix.join(" ")]
-  line(length: 100%, stroke: 0.5pt)
-}
-
-// Function to create a formatted follower entry
-#let follower-entry(word, count) = {
-    [#count #text[|] #word]
-}
 
 // Title page
 // #align(center)[
