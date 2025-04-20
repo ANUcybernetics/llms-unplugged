@@ -49,9 +49,9 @@ impl NGramCounter {
             eprintln!("Warning: N must be 2 or greater for N-gram analysis. Defaulting to 2.");
             return Self::new(2);
         }
-        
+
         let prefix_size = n - 1;
-        
+
         NGramCounter {
             prefix_map: HashMap::new(),
             n,
@@ -64,22 +64,22 @@ impl NGramCounter {
             window: VecDeque::with_capacity(prefix_size),
         }
     }
-    
+
     /// Process a single line of text
     pub fn process_line(&mut self, line: &str) {
         let words = tokenize_line(line);
         let prefix_size = self.n - 1;
-        
+
         // Add to token count
         self.stats.total_tokens += words.len();
-        
+
         // Process each word
         for word in words {
             // If the window is full (contains n-1 words), we have a complete N-gram prefix
             if self.window.len() == prefix_size {
                 let prefix = self.window.iter().cloned().collect::<Vec<String>>();
                 let follower = word.clone();
-                
+
                 // Update the frequency map
                 self.prefix_map
                     .entry(prefix)
@@ -93,7 +93,7 @@ impl NGramCounter {
                         self.stats.total_ngram_occurrences += 1;
                         1
                     });
-                
+
                 // Slide the window: remove the oldest word
                 self.window.pop_front();
             }
@@ -101,31 +101,31 @@ impl NGramCounter {
             self.window.push_back(word);
         }
     }
-    
+
     /// Process a file containing text
     pub fn process_file<P: AsRef<Path>>(&mut self, path: P) -> io::Result<()> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
-        
+
         // Process each line
         for line_result in reader.lines() {
             let line = line_result?;
             self.process_line(&line);
         }
-        
+
         // Calculate additional statistics after processing
         self.calculate_statistics();
-        
+
         Ok(())
     }
-    
+
     /// Calculate statistics after processing
     fn calculate_statistics(&mut self) {
         // Find the most common n-gram
         let mut most_common_count = 0;
         let mut most_common_prefix = None;
         let mut most_common_follower = None;
-        
+
         for (prefix, followers) in &self.prefix_map {
             for (follower, count) in followers {
                 if *count > most_common_count {
@@ -135,25 +135,25 @@ impl NGramCounter {
                 }
             }
         }
-        
+
         if let (Some(prefix), Some(follower)) = (most_common_prefix, most_common_follower) {
             self.stats.most_common_ngram = Some((prefix, follower, most_common_count));
         }
-        
+
         // Set the count of unique n-grams
         self.stats.unique_ngrams = self.prefix_map.len();
     }
-    
+
     /// Get the results as a sorted list of WordFollowEntry
     pub fn get_entries(&self) -> Vec<WordFollowEntry> {
         let mut result = convert_to_entries(&self.prefix_map);
-        
+
         // Sort entries lexicographically by prefix
         result.sort_by(|a, b| a.prefix.cmp(&b.prefix));
-        
+
         result
     }
-    
+
     /// Get the statistics collected during processing
     pub fn get_stats(&self) -> &ProcessingStats {
         &self.stats
@@ -167,16 +167,16 @@ pub fn process_file<P: AsRef<Path>>(
 ) -> io::Result<(Vec<WordFollowEntry>, ProcessingStats)> {
     let mut counter = NGramCounter::new(n);
     counter.process_file(path)?;
-    
+
     let entries = counter.get_entries();
     let stats = counter.get_stats().clone();
-    
+
     Ok((entries, stats))
 }
 
 /// Tokenizes a line into normalized words
 pub fn tokenize_line(line: &str) -> Vec<String> {
-    line.split_whitespace()
+    line.split(|c: char| c.is_whitespace() || c == '-')
         .filter_map(|s| {
             // Extract only alphanumeric characters and convert to lowercase
             let word: String = s
@@ -233,7 +233,7 @@ pub fn save_to_json<P: AsRef<Path>>(entries: &[WordFollowEntry], path: P) -> io:
             // Create a sorted copy of followers for cumulative counting
             let mut sorted_followers = entry.followers.clone();
             sorted_followers.sort_by(|a, b| a.0.cmp(&b.0)); // Ensure alphabetical order
-            
+
             // Subsequent elements are the follower pairs with cumulative counts
             for (follower, count) in sorted_followers {
                 cumulative_count += count;
@@ -522,21 +522,19 @@ mod tests {
 
         Ok(())
     }
-    
+
     #[test]
     fn test_save_to_json_cumulative_counts() -> io::Result<()> {
         // Test data with multiple followers having different counts
-        let entries = vec![
-            WordFollowEntry {
-                prefix: vec!["the".to_string()],
-                // Note: The order here shouldn't matter since we sort alphabetically in save_to_json
-                followers: vec![
-                    ("dog".to_string(), 5),   // Highest occurrence count
-                    ("cat".to_string(), 3),   // Middle occurrence count
-                    ("bird".to_string(), 2),  // Lowest occurrence count
-                ],
-            },
-        ];
+        let entries = vec![WordFollowEntry {
+            prefix: vec!["the".to_string()],
+            // Note: The order here shouldn't matter since we sort alphabetically in save_to_json
+            followers: vec![
+                ("dog".to_string(), 5),  // Highest occurrence count
+                ("cat".to_string(), 3),  // Middle occurrence count
+                ("bird".to_string(), 2), // Lowest occurrence count
+            ],
+        }];
 
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
@@ -549,13 +547,13 @@ mod tests {
 
         assert_eq!(json.len(), 1);
         assert_eq!(json[0][0], serde_json::json!(["the"]));
-        
+
         // Followers should be sorted alphabetically, with cumulative counts
         // bird (2) -> cat (2+3=5) -> dog (5+5=10)
-        assert_eq!(json[0][1], serde_json::json!(["bird", 2]));  // First follower: bird with count 2
-        assert_eq!(json[0][2], serde_json::json!(["cat", 5]));   // Second follower: cat with cumulative count 5
-        assert_eq!(json[0][3], serde_json::json!(["dog", 10]));  // Third follower: dog with cumulative count 10
-        
+        assert_eq!(json[0][1], serde_json::json!(["bird", 2])); // First follower: bird with count 2
+        assert_eq!(json[0][2], serde_json::json!(["cat", 5])); // Second follower: cat with cumulative count 5
+        assert_eq!(json[0][3], serde_json::json!(["dog", 10])); // Third follower: dog with cumulative count 10
+
         Ok(())
     }
 }
