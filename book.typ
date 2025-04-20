@@ -22,14 +22,19 @@
 #for (i, item) in data.enumerate() {
   // The first element is the prefix
   let prefix = item.at(0)
+  let total_count = item.at(1)
+  let followers = item.slice(2)
   current_prefix.update(prefix)
 
   text(prefix, size: 1.2em, weight: "bold")
+  if followers.len() > 1 {
+    h(0.3em)
+    box(outset: 0.12em, fill: luma(40%))[#text(weight: "bold", fill: white)[#total_count]]
+  }
 
-  h(0.5em)
+  h(0.6em)
 
   // Process follower entries
-  let followers = item.slice(2)
   for follower in followers {
     box([#text(weight: "semibold")[#follower.at(1)]#text(fill: luma(80%))[|]#text(fill: luma(20%))[#follower.at(0)]])
     h(0.5em)
