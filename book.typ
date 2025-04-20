@@ -53,6 +53,7 @@
 #for item in data {
   // The first element is the prefix array
   let prefix = item.at(0)
+  current_prefix.update(prefix)
 
   // Create section heading with the prefix
   text(prefix.join(" "), weight: "bold")
