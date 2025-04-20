@@ -63,7 +63,7 @@
   let followers = item.slice(1)
   // Display followers in the normal flow of text without a container
   for (i, follower) in followers.enumerate() {
-    [#follower.at(1)#text[|]#follower.at(0)]
+    box([#follower.at(1)#text[|]#follower.at(0)])
     h(0.5em)
   }
 
