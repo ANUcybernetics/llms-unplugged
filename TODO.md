@@ -4,8 +4,7 @@
 
 - better handling of ' contractions
 - off-by-one error in sticky page heading
-- (maybe) have the words show up in grey
-- display the total count (and dice indicators) next to each prefix
+- display dice indicators next to each prefix
 - (maybe) do some normalisation for the dice indicators (e.g. for "clean d6"
   ones)
 - handle capitalized tokens
