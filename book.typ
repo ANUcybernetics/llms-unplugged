@@ -6,7 +6,7 @@
 #let data = json("out.json")
 
 // Create a state variable to track the current prefix
-#let current_prefix = state("current-prefix", data.at(0).at(0))
+#let current_prefix = state("current-prefix", "")
 
 #set page(
   "a5",
