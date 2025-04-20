@@ -39,6 +39,8 @@
 #for item in data {
   // The first element is the prefix array
   let prefix = item.at(0)
+
+  // TODO one way to fix the "off by one" error is to set the *next* prefix here (or at the end of this loop at least)
   current_prefix.update(prefix)
 
   // Create section heading with the prefix
@@ -49,7 +51,7 @@
   // Process follower entries (all elements after the first one)
   let followers = item.slice(1)
   // Display followers in the normal flow of text without a container
-  for (i, follower) in followers.enumerate() {
+  for follower in followers {
     box([#follower.at(1)#text[|]#follower.at(0)])
     h(0.5em)
   }
