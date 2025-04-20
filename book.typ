@@ -41,7 +41,7 @@
 
   text(prefix, size: 1.2em, weight: "bold")
 
-  h(0.4em)
+  h(0.5em)
 
   // Process follower entries
   let followers = item.slice(1)
