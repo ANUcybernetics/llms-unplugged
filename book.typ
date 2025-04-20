@@ -39,14 +39,14 @@
   // The first element is the prefix
   let prefix = item.at(0)
 
-  text(prefix, weight: "bold")
+  text(prefix, size: 1.2em, weight: "bold")
 
   h(0.4em)
 
   // Process follower entries
   let followers = item.slice(1)
   for follower in followers {
-    box([#follower.at(1)#text[|]#follower.at(0)])
+    box([#text(weight: "semibold")[#follower.at(1)]#text(fill: luma(80%))[|]#text(fill: luma(20%))[#follower.at(0)]])
     h(0.5em)
   }
 
