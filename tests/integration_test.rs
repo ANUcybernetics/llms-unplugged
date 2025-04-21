@@ -38,7 +38,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
     }
 
     // Run the CLI tool (using default n=2 for bigrams)
-    let status = Command::new(exe_path)
+    let status = Command::new(&exe_path)
         .arg(&input_path)
         .arg(&output_path)
         // .arg("--n") // Optional: Add this line to test different N values
@@ -47,6 +47,15 @@ fn test_cli_end_to_end() -> io::Result<()> {
 
     assert!(status.success(), "CLI command failed");
     assert!(output_path.exists(), "Output file was not created");
+    
+    // Run again with the optimise flag
+    let status_optimised = Command::new(exe_path)
+        .arg(&input_path)
+        .arg(&output_path)
+        .arg("--optimise")
+        .status()?;
+    
+    assert!(status_optimised.success(), "CLI command with --optimise flag failed");
 
     // Parse the output JSON
     let output_file = File::open(&output_path)?;
