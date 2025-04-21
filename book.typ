@@ -26,17 +26,21 @@
   let followers = item.slice(2)
   current_prefix.update(prefix)
 
-  text(prefix, size: 1.2em, weight: "bold")
-  if followers.len() > 1 {
-    h(0.3em)
-    box(outset: 0.12em, fill: luma(40%))[#text(weight: "bold", fill: white)[#total_count]]
+  text(prefix, size: 1.5em, weight: "bold")
+  if total_count != 120 {
+    h(0.5em)
+    box(outset: 0.12em, stroke: 0.5pt + black)[#text(weight: "bold")[#total_count]]
   }
 
   h(0.6em)
 
   // Process follower entries
   for follower in followers {
-    box([#text(weight: "semibold")[#follower.at(1)]#text(fill: luma(80%))[|]#text(fill: luma(20%))[#follower.at(0)]])
+    if followers.len() > 1 {
+      box([#text(weight: "semibold")[#follower.at(1)]#text(fill: luma(80%))[|]#text(fill: luma(20%))[#follower.at(0)]])
+    } else {
+      box([#text(fill: luma(20%))[#follower.at(0)]])
+    }
     h(0.5em)
   }
 
