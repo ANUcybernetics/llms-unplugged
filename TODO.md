@@ -2,7 +2,6 @@
 
 ## Rust lib
 
-- add the links to the prefix
 - off-by-one error in sticky page heading
 - display dice indicators next to each prefix
 - (probably not) candy stripe the rows

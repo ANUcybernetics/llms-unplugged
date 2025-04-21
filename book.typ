@@ -18,7 +18,6 @@
     line(length: 100%, stroke: 0.5pt + luma(50%))
   }
 )
-
 #for (i, item) in data.enumerate() {
   // The first element is the prefix
   let prefix = item.at(0)
@@ -26,7 +25,10 @@
   let followers = item.slice(2)
   current_prefix.update(prefix)
 
-  text(prefix, size: 1.3em, weight: "bold")
+  // this is the prefix text with a label
+  [#text(prefix, size: 1.3em, weight: "bold")#label("prefix-" + prefix)]
+
+  // the dice roll number
   if total_count != 120 {
     h(0.5em)
     box(outset: 0.12em, stroke: 0.5pt + black)[#text(weight: "bold")[#total_count]]
@@ -34,12 +36,12 @@
 
   h(0.6em)
 
-  // Process follower entries
+  // the followers for this prefix (with weights)
   for follower in followers {
     if followers.len() > 1 {
-      box([#text[#follower.at(1)]#text(fill: luma(80%))[|]#text(fill: luma(30%))[#follower.at(0)]])
+      box([#text[#follower.at(1)]#text(fill: luma(80%))[|]#link(label("prefix-" + follower.at(0)))[#text(fill: luma(30%))[#follower.at(0)]]])
     } else {
-      box([#text(fill: luma(20%))[#follower.at(0)]])
+      box([#link(label("prefix-" + follower.at(0)))[#text(fill: luma(30%))[#follower.at(0)]]])
     }
     h(0.5em)
   }
