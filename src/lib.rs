@@ -19,10 +19,6 @@ pub struct ProcessingStats {
     pub most_common_ngram: Option<(Vec<String>, String, usize)>,
     /// Prefix with the most cumulative followers
     pub most_popular_prefix: Option<(Vec<String>, usize)>,
-    /// Count histogram for prefixes with counts 1-24
-    pub count_histogram: [usize; 24],
-    /// Count of prefixes with total follower count of 25 or more
-    pub count_25_plus: usize,
 }
 
 /// Represents an N-gram prefix and its following words with their counts
@@ -67,8 +63,6 @@ impl NGramCounter {
                 total_ngram_occurrences: 0,
                 most_common_ngram: None,
                 most_popular_prefix: None,
-                count_histogram: [0; 24],
-                count_25_plus: 0,
             },
             window: VecDeque::with_capacity(prefix_size),
         }
@@ -139,21 +133,9 @@ impl NGramCounter {
         let mut most_popular_prefix = None;
         let mut most_popular_prefix_count = 0;
 
-        // Reset the count distribution statistics
-        self.stats.count_histogram = [0; 24];
-        self.stats.count_25_plus = 0;
-
         for (prefix, followers) in &self.prefix_map {
             // Calculate the cumulative count for this prefix
             let total_followers: usize = followers.values().sum();
-
-            // Count distribution statistics
-            if total_followers < 25 {
-                // Array is 0-indexed but counts are 1-indexed, so subtract 1
-                self.stats.count_histogram[total_followers - 1] += 1;
-            } else {
-                self.stats.count_25_plus += 1;
-            }
 
             // Check if this is the prefix with the most followers
             if total_followers > most_popular_prefix_count {
@@ -264,41 +246,60 @@ pub fn save_to_json<P: AsRef<Path>>(
         .map(|entry| {
             let mut formatted_entry = Vec::new();
             // First element is the joined prefix string
-            let joined_prefix = entry.prefix.join(" ");
-            formatted_entry.push(serde_json::Value::String(joined_prefix));
+            let prefix_str = entry.prefix.join(" ");
+            formatted_entry.push(serde_json::Value::String(prefix_str.clone()));
 
             // Calculate the total count for all followers
             let total_count: usize = entry.followers.iter().map(|(_, count)| count).sum();
 
-            // Apply optimisation multiplier if enabled
-            let multiplier = if optimise {
-                if entry.followers.len() > 1 && total_count <= 24 && 24 % total_count == 0 {
-                    // If the total divides 24 cleanly, multiply to make it 24
-                    24 / total_count
+            // Sort followers alphabetically by word
+            let mut sorted_followers = entry.followers.clone();
+            sorted_followers.sort_by(|a, b| a.0.cmp(&b.0));
+
+            // First calculate cumulative counts based on original values
+            let mut cumulative_counts = Vec::new();
+            let mut running_count = 0;
+
+            for (follower, count) in &sorted_followers {
+                running_count += count;
+                cumulative_counts.push((follower.clone(), running_count));
+            }
+
+            // Now apply optimisation if needed
+            if optimise {
+                let follower_count = entry.followers.len();
+                if follower_count > 120 {
+                    eprintln!(
+                        "Warning: Prefix '{}' has {} followers which is more than 120. Not optimising.",
+                        prefix_str,
+                        follower_count
+                    );
+                    // Use original cumulative counts and total
+                    formatted_entry.push(serde_json::json!(total_count));
+
+                    for (follower, cumulative) in cumulative_counts {
+                        formatted_entry.push(serde_json::json!([follower, cumulative]));
+                    }
                 } else {
-                    // No modification for counts that don't divide 24 cleanly or are > 24
-                    1
+                    // Scale the cumulative counts to a total of 120
+                    formatted_entry.push(serde_json::json!(120));
+
+                    // Scaling for each cumulative value (total_count → 120)
+                    let scaling_factor = 120.0 / total_count as f64;
+
+                    for (follower, cumulative) in cumulative_counts {
+                        // Round to nearest integer instead of ceiling to ensure the last value is exactly 120
+                        let scaled_cumulative = (cumulative as f64 * scaling_factor).round() as usize;
+                        formatted_entry.push(serde_json::json!([follower, scaled_cumulative]));
+                    }
                 }
             } else {
-                1
-            };
+                // No optimization - use original values
+                formatted_entry.push(serde_json::json!(total_count));
 
-            // Second element is the total count for the prefix (optimised if enabled)
-            let optimised_total_count = total_count * multiplier;
-            formatted_entry.push(serde_json::json!(optimised_total_count));
-
-            // Calculate running cumulative counts
-            let mut cumulative_count = 0;
-            // Create a sorted copy of followers for cumulative counting
-            let mut sorted_followers = entry.followers.clone();
-            sorted_followers.sort_by(|a, b| a.0.cmp(&b.0)); // Ensure alphabetical order
-
-            // Subsequent elements are the follower pairs with cumulative counts
-            for (follower, count) in sorted_followers {
-                // Apply the same multiplier to individual counts
-                let optimised_count = count * multiplier;
-                cumulative_count += optimised_count;
-                formatted_entry.push(serde_json::json!([follower, cumulative_count]));
+                for (follower, cumulative) in cumulative_counts {
+                    formatted_entry.push(serde_json::json!([follower, cumulative]));
+                }
             }
 
             formatted_entry
@@ -315,71 +316,6 @@ mod tests {
     use super::*;
     use std::io::Write;
     use tempfile::NamedTempFile;
-
-    #[test]
-    fn test_count_histogram() -> io::Result<()> {
-        // Create a test case with various counts
-        let mut counter = NGramCounter::new(2);
-
-        // Add some prefixes with different counts
-        let prefix1 = vec!["the".to_string()];
-        let prefix2 = vec!["to".to_string()];
-        let prefix3 = vec!["and".to_string()];
-        let prefix25 = vec!["big".to_string()];
-
-        counter.prefix_map.insert(prefix1.clone(), {
-            let mut map = HashMap::new();
-            map.insert("dog".to_string(), 1);
-            map
-        });
-
-        counter.prefix_map.insert(prefix2.clone(), {
-            let mut map = HashMap::new();
-            map.insert("be".to_string(), 1);
-            map.insert("go".to_string(), 1);
-            map
-        });
-
-        counter.prefix_map.insert(prefix3.clone(), {
-            let mut map = HashMap::new();
-            map.insert("then".to_string(), 2);
-            map.insert("the".to_string(), 3);
-            map.insert("but".to_string(), 1);
-            map
-        });
-
-        // Add a prefix with 25+ count
-        counter.prefix_map.insert(prefix25.clone(), {
-            let mut map = HashMap::new();
-            for i in 0..30 {
-                map.insert(format!("word{}", i), 1);
-            }
-            map
-        });
-
-        // Calculate statistics
-        counter.calculate_statistics();
-
-        // Check count histogram
-        assert_eq!(
-            counter.stats.count_histogram[0], 1,
-            "Expected 1 prefix with count 1"
-        );
-        assert_eq!(
-            counter.stats.count_histogram[1], 1,
-            "Expected 1 prefix with count 2"
-        );
-        assert_eq!(
-            counter.stats.count_histogram[5], 1,
-            "Expected 1 prefix with count 6"
-        );
-        assert_eq!(
-            counter.stats.count_25_plus, 1,
-            "Expected 1 prefix with count 25+"
-        );
-
-        Ok(())
-    }
 
     #[test]
     fn test_tokenize_line() {
@@ -515,27 +451,6 @@ mod tests {
             "Expected 8 total bigram occurrences"
         );
 
-        // Check count histogram - we should have:
-        // - 4 prefixes with count 1 (again->world, be->ignored, number->will, will->be)
-        // - 2 prefixes with count 2 (hello->again/world, world->hello/number)
-        assert_eq!(
-            stats.count_histogram[0], 4,
-            "Expected 4 prefixes with count 1"
-        );
-        assert_eq!(
-            stats.count_histogram[1], 2,
-            "Expected 2 prefixes with count 2"
-        );
-        for i in 2..24 {
-            assert_eq!(
-                stats.count_histogram[i],
-                0,
-                "Expected 0 prefixes with count {}",
-                i + 1
-            );
-        }
-        assert_eq!(stats.count_25_plus, 0, "Expected 0 prefixes with count 25+");
-
         Ok(())
     }
 
@@ -637,14 +552,17 @@ mod tests {
         let json_opt: Vec<Vec<serde_json::Value>> =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
-        // Check optimised values (hello has count=2, should be multiplied by 12 to get 24)
-        assert_eq!(json_opt[0][1], serde_json::json!(24)); // Total count is 24 (2*12)
-        assert_eq!(json_opt[0][2], serde_json::json!(["again", 12])); // First follower has count 12 (1*12)
-        assert_eq!(json_opt[0][3], serde_json::json!(["world", 24])); // Second follower has cumulative count 24 (2*12)
+        // Check optimised values (hello has count=2, should be scaled to 120)
+        assert_eq!(json_opt[0][1], serde_json::json!(120)); // Total count is 120
 
-        // No optimization for count=1
-        assert_eq!(json_opt[1][1], serde_json::json!(1)); // Total count stays 1
-        assert_eq!(json_opt[1][2], serde_json::json!(["hello", 1])); // No change for count 1
+        // For total=2, scaling factor is 120/2 = 60
+        // With rounding, the first cumulative (1) gets scaled to round(1*60) = 60
+        // The second cumulative (2) gets scaled to round(2*60) = 120
+        assert_eq!(json_opt[0][2], serde_json::json!(["again", 60])); // First follower has count 60
+        assert_eq!(json_opt[0][3], serde_json::json!(["world", 120])); // Second follower has cumulative count 120
+
+        assert_eq!(json_opt[1][1], serde_json::json!(120));
+        assert_eq!(json_opt[1][2], serde_json::json!(["hello", 120])); // No change for count 1
 
         Ok(())
     }
@@ -726,19 +644,21 @@ mod tests {
         assert_eq!(json[0][3], serde_json::json!(["cat", 5])); // Second follower: cat with cumulative count 5
         assert_eq!(json[0][4], serde_json::json!(["dog", 10])); // Third follower: dog with cumulative count 10
 
-        // Test with optimisation (total count is 10, so no multiplier should be applied)
+        // Test with optimisation (with the new implementation, we always scale to 120)
         save_to_json(&entries, &path, true)?;
 
         let json_opt: Vec<Vec<serde_json::Value>> =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
-        // Values should be unchanged as total count of 10 is not subject to multiplication
-        assert_eq!(json_opt[0][1], serde_json::json!(10)); // Total count remains 10
-        assert_eq!(json_opt[0][2], serde_json::json!(["bird", 2]));
-        assert_eq!(json_opt[0][3], serde_json::json!(["cat", 5]));
-        assert_eq!(json_opt[0][4], serde_json::json!(["dog", 10]));
+        // With the new implementation, all optimized entries scale to 120
+        assert_eq!(json_opt[0][1], serde_json::json!(120)); // Total count is scaled to 120
+        // Scaling factor is 120/10 = 12
+        // With rounding: bird(2) -> round(2*12) = 24, cat(5) -> round(5*12) = 60, dog(10) -> round(10*12) = 120
+        assert_eq!(json_opt[0][2], serde_json::json!(["bird", 24]));
+        assert_eq!(json_opt[0][3], serde_json::json!(["cat", 60]));
+        assert_eq!(json_opt[0][4], serde_json::json!(["dog", 120]));
 
-        // Test with count = 2 (should be optimised by multiplying by 12)
+        // Test with count = 2 (should be optimised to scale to 120)
         let entries_to_optimise = vec![WordFollowEntry {
             prefix: vec!["test".to_string()],
             followers: vec![("one".to_string(), 1), ("two".to_string(), 1)],
@@ -749,12 +669,13 @@ mod tests {
         let json_optimised: Vec<Vec<serde_json::Value>> =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
-        // Total count is 2, should be multiplied by 12 to reach 24
-        assert_eq!(json_optimised[0][1], serde_json::json!(24)); // 2*12=24
-        assert_eq!(json_optimised[0][2], serde_json::json!(["one", 12])); // 1*12=12
-        assert_eq!(json_optimised[0][3], serde_json::json!(["two", 24])); // 2*12=24
+        // Total count is 2, scaling factor is 120/2 = 60
+        // With rounding: one(1) -> round(1*60) = 60, two(2) -> round(2*60) = 120
+        assert_eq!(json_optimised[0][1], serde_json::json!(120)); // Total count is 120
+        assert_eq!(json_optimised[0][2], serde_json::json!(["one", 60])); // First follower's cumulative count
+        assert_eq!(json_optimised[0][3], serde_json::json!(["two", 120])); // Second follower's cumulative count
 
-        // Test with count = 3 (should be optimised by multiplying by 8)
+        // Test with count = 3 (optimised for 120-sided die)
         let entries_count_3 = vec![WordFollowEntry {
             prefix: vec!["count3".to_string()],
             followers: vec![
@@ -769,11 +690,12 @@ mod tests {
         let json_count_3: Vec<Vec<serde_json::Value>> =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
-        // Total count is 3, should be multiplied by 8 to reach 24
-        assert_eq!(json_count_3[0][1], serde_json::json!(24)); // 3*8=24
-        assert_eq!(json_count_3[0][2], serde_json::json!(["a", 8])); // 1*8=8
-        assert_eq!(json_count_3[0][3], serde_json::json!(["b", 16])); // 2*8=16
-        assert_eq!(json_count_3[0][4], serde_json::json!(["c", 24])); // 3*8=24
+        // Total count is 3, scaling factor is 120/3 = 40
+        // With rounding: a(1) -> round(1*40) = 40, b(2) -> round(2*40) = 80, c(3) -> round(3*40) = 120
+        assert_eq!(json_count_3[0][1], serde_json::json!(120)); // Total is 120
+        assert_eq!(json_count_3[0][2], serde_json::json!(["a", 40])); // First follower's cumulative count
+        assert_eq!(json_count_3[0][3], serde_json::json!(["b", 80])); // Second follower's cumulative count
+        assert_eq!(json_count_3[0][4], serde_json::json!(["c", 120])); // Third follower's cumulative count
 
         Ok(())
     }

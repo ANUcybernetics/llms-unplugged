@@ -17,8 +17,9 @@ fn test_cli_end_to_end() -> io::Result<()> {
     writeln!(input_file, "Ignore---these words ###")?;
     input_file.flush()?;
 
-    // Create a path for the output file
+    // Create paths for the output files
     let output_path = temp_dir.path().join("output.json");
+    let output_path_optimized = temp_dir.path().join("output_optimized.json");
 
     // Get the path to the binary directory
     let mut exe_path = std::env::current_dir()?;
@@ -37,7 +38,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
         return Ok(());
     }
 
-    // Run the CLI tool (using default n=2 for bigrams)
+    // Run the CLI tool without optimization (using default n=2 for bigrams)
     let status = Command::new(&exe_path)
         .arg(&input_path)
         .arg(&output_path)
@@ -48,25 +49,29 @@ fn test_cli_end_to_end() -> io::Result<()> {
     assert!(status.success(), "CLI command failed");
     assert!(output_path.exists(), "Output file was not created");
     
-    // Run again with the optimise flag
-    let status_optimised = Command::new(exe_path)
+    // Run again with the optimise flag to a different output file
+    let status_optimised = Command::new(&exe_path)
         .arg(&input_path)
-        .arg(&output_path)
+        .arg(&output_path_optimized)
         .arg("--optimise")
         .status()?;
     
     assert!(status_optimised.success(), "CLI command with --optimise flag failed");
+    assert!(output_path_optimized.exists(), "Optimized output file was not created");
 
-    // Parse the output JSON
+    // Parse the regular output JSON
     let output_file = File::open(&output_path)?;
     let reader = BufReader::new(output_file);
     let json: Vec<Vec<serde_json::Value>> = serde_json::from_reader(reader)?;
 
+    // Parse the optimized output JSON
+    let output_file_optimized = File::open(&output_path_optimized)?;
+    let reader_optimized = BufReader::new(output_file_optimized);
+    let json_optimized: Vec<Vec<serde_json::Value>> = serde_json::from_reader(reader_optimized)?;
+
     // Verify structure and content
     assert!(!json.is_empty(), "JSON output is empty");
-
-    // Verify we have some entries
-    assert!(!json.is_empty(), "JSON output is empty");
+    assert!(!json_optimized.is_empty(), "Optimized JSON output is empty");
 
     // --- Start verification for N-gram structure, normalization, and filtering ---
     let mut found_prefix_the = false;
@@ -213,6 +218,56 @@ fn test_cli_end_to_end() -> io::Result<()> {
         "Expected prefix 'quick' to be followed by 'brown' at least twice, found {}",
         quick_followed_by_brown_count
     );
+    
+    // --- Now test the optimized version specifically ---
+    
+    // Check if prefixes with multiple followers have their total count set to 120
+    // and the last follower's cumulative count is also 120
+    let mut found_optimized_scaling = false;
+    
+    for entry in &json_optimized {
+        // Skip entries with just one follower as they won't be optimized
+        if entry.len() <= 3 {
+            continue;
+        }
+        
+        // Get total count (should be 120 for entries with multiple followers)
+        let total_count = entry[1].as_u64().unwrap_or(0);
+        
+        // Get the last follower's cumulative count
+        let last_follower = &entry[entry.len() - 1];
+        let last_follower_arr = last_follower.as_array().unwrap();
+        let last_follower_cumulative = last_follower_arr[1].as_u64().unwrap_or(0);
+        
+        // If this is an optimized entry (has multiple followers)
+        if total_count == 120 && last_follower_cumulative == 120 {
+            found_optimized_scaling = true;
+            
+            // Test that cumulative counts are monotonically increasing
+            let mut prev_cumulative = 0;
+            for i in 2..entry.len() {
+                let follower_pair = &entry[i];
+                let follower_arr = follower_pair.as_array().unwrap();
+                let current_cumulative = follower_arr[1].as_u64().unwrap_or(0);
+                
+                assert!(
+                    current_cumulative > prev_cumulative,
+                    "Cumulative counts should be strictly increasing"
+                );
+                
+                prev_cumulative = current_cumulative;
+            }
+        }
+    }
+    
+    // Only assert if we have entries that should be optimized (with multiple followers)
+    // If our test file is too simple, this might not be triggered
+    if json_optimized.iter().any(|e| e.len() > 3) {
+        assert!(
+            found_optimized_scaling,
+            "No optimized entries found with scaling to 120"
+        );
+    }
 
     Ok(())
 }
