@@ -5,6 +5,7 @@ use std::io::{self, BufRead, BufReader};
 use std::path::Path;
 
 use std::collections::VecDeque;
+use std::sync::OnceLock;
 
 /// Contains summary statistics for processed text
 #[derive(Debug, Clone)]
@@ -169,8 +170,19 @@ impl NGramCounter {
     pub fn get_entries(&self) -> Vec<WordFollowEntry> {
         let mut result = convert_to_entries(&self.prefix_map);
 
-        // Sort entries lexicographically by prefix
-        result.sort_by(|a, b| a.prefix.cmp(&b.prefix));
+        // Sort entries lexicographically by prefix (case-insensitive)
+        result.sort_by(|a, b| {
+            // Compare each component of the prefix case-insensitively
+            for (a_word, b_word) in a.prefix.iter().zip(b.prefix.iter()) {
+                let cmp = a_word.to_lowercase().cmp(&b_word.to_lowercase());
+                if cmp != std::cmp::Ordering::Equal {
+                    return cmp;
+                }
+            }
+            
+            // If prefixes have different lengths but one is a prefix of the other
+            a.prefix.len().cmp(&b.prefix.len())
+        });
 
         result
     }
@@ -195,19 +207,65 @@ pub fn process_file<P: AsRef<Path>>(
     Ok((entries, stats))
 }
 
+/// Returns a reference to the case exception map
+fn case_exceptions() -> &'static HashMap<String, String> {
+    static CASE_EXCEPTIONS: OnceLock<HashMap<String, String>> = OnceLock::new();
+    CASE_EXCEPTIONS.get_or_init(|| {
+        let mut map = HashMap::new();
+        // Add words that should have specific casing
+        map.insert("i".to_string(), "I".to_string());
+        map.insert("i've".to_string(), "I've".to_string());
+        map.insert("i'm".to_string(), "I'm".to_string());
+        map.insert("i'd".to_string(), "I'd".to_string());
+        map.insert("i'll".to_string(), "I'll".to_string());
+        map
+    })
+}
+
 /// Tokenizes a line into normalized words
 pub fn tokenize_line(line: &str) -> Vec<String> {
+    // First, split by whitespace and hyphens
     line.split(|c: char| c.is_whitespace() || c == '-')
         .filter_map(|s| {
-            // Extract only alphanumeric characters and convert to lowercase
-            let word: String = s
-                .chars()
-                .filter(|c| c.is_alphabetic())
-                .flat_map(|c| c.to_lowercase())
-                .collect();
-
+            // Skip empty tokens or tokens that are just apostrophes
+            if s.trim().is_empty() || s.trim() == "'" {
+                return None;
+            }
+            
+            // Replace all double quotes
+            let s_no_quotes = s.replace('"', "");
+            
+            // Process characters to keep apostrophes only in the middle of words
+            let mut result = String::new();
+            let chars: Vec<char> = s_no_quotes.chars().collect();
+            
+            for (i, c) in chars.iter().enumerate() {
+                if c.is_alphabetic() {
+                    // Keep alphabetic characters (lowercased)
+                    result.push_str(&c.to_lowercase().collect::<String>());
+                } else if *c == '\'' {
+                    // Keep apostrophes only if they're between alphabetic characters
+                    let prev_is_alpha = i > 0 && chars[i-1].is_alphabetic();
+                    let next_is_alpha = i < chars.len() - 1 && chars[i+1].is_alphabetic();
+                    
+                    if prev_is_alpha && next_is_alpha {
+                        result.push('\'');
+                    }
+                }
+                // Ignore all other characters
+            }
+            
             // Only keep non-empty words
-            if !word.is_empty() { Some(word) } else { None }
+            if !result.is_empty() {
+                // Apply case exceptions if the word matches
+                if let Some(exception) = case_exceptions().get(&result) {
+                    Some(exception.clone())
+                } else {
+                    Some(result)
+                }
+            } else {
+                None
+            }
         })
         .collect()
 }
@@ -223,8 +281,8 @@ fn convert_to_entries(
                 .iter()
                 .map(|(word, count)| (word.clone(), *count))
                 .collect();
-            // Sort followers alphabetically by word
-            follower_entries.sort_by(|a, b| a.0.cmp(&b.0));
+            // Sort followers alphabetically by word (case-insensitive)
+            follower_entries.sort_by(|a, b| a.0.to_lowercase().cmp(&b.0.to_lowercase()));
 
             WordFollowEntry {
                 prefix: prefix.clone(), // Changed from word
@@ -252,9 +310,9 @@ pub fn save_to_json<P: AsRef<Path>>(
             // Calculate the total count for all followers
             let total_count: usize = entry.followers.iter().map(|(_, count)| count).sum();
 
-            // Sort followers alphabetically by word
+            // Sort followers alphabetically by word (case-insensitive)
             let mut sorted_followers = entry.followers.clone();
-            sorted_followers.sort_by(|a, b| a.0.cmp(&b.0));
+            sorted_followers.sort_by(|a, b| a.0.to_lowercase().cmp(&b.0.to_lowercase()));
 
             // First calculate cumulative counts based on original values
             let mut cumulative_counts = Vec::new();
@@ -331,10 +389,54 @@ mod tests {
     }
 
     #[test]
+    fn test_tokenize_line_special_cases() {
+        let line = "I think that I am thinking and I'm sure that I said so.";
+        let tokens = tokenize_line(line);
+        assert_eq!(
+            tokens,
+            vec![
+                "I", "think", "that", "I", "am", "thinking", "and", "I'm", "sure", "that", "I",
+                "said", "so"
+            ]
+        );
+    }
+
+    #[test]
     fn test_tokenize_line_filters_numbers() {
         let line = "abc123 456def 789 alpha2beta";
         let tokens = tokenize_line(line);
         assert_eq!(tokens, vec!["abc", "def", "alphabeta"]);
+    }
+
+    #[test]
+    fn test_tokenize_line_handles_contractions() {
+        let line = "Don't can't won't I've I'm you're they'll it's 'quote' he'd we've 'ello goin'";
+        let tokens = tokenize_line(line);
+        assert_eq!(
+            tokens,
+            vec![
+                "don't", "can't", "won't", "I've", "I'm", "you're", "they'll", "it's", "quote",
+                "he'd", "we've", "ello", "goin"
+            ]
+        );
+    }
+    
+    #[test]
+    fn test_tokenize_line_handles_apostrophes() {
+        let line = "'ello 'tis 'twas '90s goin' talkin' 'n' writin' can't don't won't";
+        let tokens = tokenize_line(line);
+        assert_eq!(
+            tokens,
+            vec!["ello", "tis", "twas", "s", "goin", "talkin", "n", "writin", "can't", "don't", "won't"]
+        );
+        
+        // Test the specific problematic case with quotes
+        let complex_line = "'Bobbie, Bobbie!' she said, 'Come and kiss me, Bobbie!'";
+        let complex_tokens = tokenize_line(complex_line);
+        assert_eq!(
+            complex_tokens,
+            vec!["bobbie", "bobbie", "she", "said", "come", "and", "kiss", "me", "bobbie"]
+        );
     }
 
     #[test]
