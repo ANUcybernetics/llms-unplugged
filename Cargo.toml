@@ -3,6 +3,7 @@ name = "my_first_lm"
 version = "0.1.0"
 edition = "2024"
 license = "MIT"
+authors = ["Ben Swift <ben@benswift.me>"]
 
 [dependencies]
 clap = { version = "4.4", features = ["derive"] }
