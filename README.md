@@ -1,38 +1,60 @@
 # My First LM
 
-Ever wanted to train your own Language Model by hand? Now you can.
+This project provides tools to process text, calculate n-gram statistics (like word frequencies following a sequence of n-1 words), and generate a "rollable" n-gram language model booklet using [Typst](https://typst.app/). You can use this to explore the statistical patterns in a text corpus in a hands-on way.
 
-## Use
+This project is implemented in Rust.
 
-Using [typst](https://typst.app/), generate the `grid.pdf` file with
+## Installation
 
-    typst compile grid.typ
+You will need:
 
-Rrint it out on A3 paper (or bigger, if you have access to a large format
-printer).
+1.  **Rust:** Install the Rust toolchain (including `cargo`) from [https://rustup.rs/](https://rustup.rs/).
+2.  **Typst:** Install Typst from [https://github.com/typst/typst/](https://github.com/typst/typst/).
 
-## Instructions
+## Usage
 
-After you've printed out the grid, See `instructions.typ`.
+The process involves two main steps: generating the n-gram statistics from your text file using the Rust program, and then typesetting those statistics into a booklet using Typst.
 
-## Automatic grid generation
+1.  **Build the Statistics Generator:**
+    Navigate to the project directory in your terminal and build the Rust executable:
+    ```bash
+    cargo build --release
+    ```
+    This will create an executable file at `target/release/my_first_lm`.
 
-This is more fun if you do it yourself, but if you have a text file and you want
-to generate the (bigram) LM grid for it, there's a couple of scripts in this
-repo which will do it for you. Say you've got your text in a file called
-`true-blue.txt`.
+2.  **Generate N-gram Statistics:**
+    Run the compiled executable, providing your input text file and specifying an output JSON file.
 
-First, generate the "counts" file of how often words follow other words:
+    ```bash
+    ./target/release/my_first_lm <input_text_file> <output_json_file> [OPTIONS]
+    ```
 
-    uv run generate_counts.py `true-blue.txt`
+    **Arguments:**
+    *   `<input_text_file>`: Path to the text file you want to analyze.
+    *   `<output_json_file>`: Path where the generated n-gram statistics (in JSON format) will be saved.
 
-Then, typeset the grid with:
+    **Options:**
+    *   `-n <N>`: The size of the n-gram (e.g., `2` for bigrams, `3` for trigrams). Defaults to `2`.
+    *   `--optimise`: Scale follower counts to sum to 120, suitable for rolling a 120-sided die. If a prefix has more than 120 unique followers, optimisation is skipped for that prefix. Defaults to `false`.
 
-    typst compile bigram-model.typ \
-      --input data=true-blue.csv \
-      --input title="True Blue"
+    **Example (generating optimised bigram statistics):**
+    Let's say you have your text in `true-blue.txt`.
+    ```bash
+    ./target/release/my_first_lm true-blue.txt true-blue.json -n 2 --optimise
+    ```
+    This command reads `true-blue.txt`, calculates bigram statistics, optimises the counts for a d120 roll, and saves the result to `true-blue.json`.
 
-The final grid will be in `bigram-model.pdf`.
+3.  **Generate the Booklet:**
+    The `book.typ` file is designed to read the statistics from a file named `out.json` in the same directory. Rename the JSON file you generated in the previous step to `out.json`:
+    ```bash
+    # If you generated true-blue.json in the previous step
+    mv true-blue.json out.json
+    ```
+    Now, compile the Typst file to create the PDF booklet:
+    ```bash
+    typst compile book.typ book.pdf
+    ```
+    The final, printable booklet will be in `book.pdf`. Print it out, cut it up, and follow the assembly instructions (you might need to devise these!) to create your physical language model.
 
 ## Author
 
@@ -41,11 +63,8 @@ Ben Swift
 This work is a project of the _Cybernetic Studio_ at the
 [ANU School of Cybernetics](https://cybernetics.anu.edu.au).
 
-## Licence
+## License
 
-CC BY-NC-SA 4.0
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-Fun With Dick and Jane reader: public domain (pdf downloaded from
-[archive.org](https://ia800907.us.archive.org/31/items/funwithdickjane0000gray/funwithdickjane0000gray.pdf))
-
-[Eugene Onegin translated by Babette Deutsch: public domain](https://archive.org/stream/in.ernet.dli.2015.165902/2015.165902.Eugene-Onegin-A-Novel-In-Verse_djvu.txt)
+Source text licenses used as input for the language model remain as described in their original sources.
