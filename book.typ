@@ -31,7 +31,7 @@
   // the dice roll number
   if total_count != 120 {
     h(0.5em)
-    box(outset: 0.12em, stroke: 0.5pt + black)[#text(weight: "bold")[#total_count]]
+    box[♢ #text(weight: "bold")[#total_count] ♢]
   }
 
   h(0.6em)
