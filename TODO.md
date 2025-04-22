@@ -3,8 +3,8 @@
 ## Rust lib
 
 - off-by-one error in sticky page heading
-- display dice indicators next to each prefix
-- (probably not) candy stripe the rows
+- add top-k (and even temperature) params
+- add the ability to generate new text from a model
 - add the stats to the json output (and display in the book?)
 
 ## Docs
