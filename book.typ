@@ -10,7 +10,7 @@
 
 #set page(
   "a5",
-  // margin: (x: 2cm, y: 2cm),
+  margin: (x: 1cm, y: 1cm),
   columns: 3,
   header: {
     set align(left)
