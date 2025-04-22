@@ -12,11 +12,11 @@
   "a5",
   margin: (x: 1cm, y: 1cm),
   columns: 3,
-  header: {
-    set align(left)
-    text(weight: "bold")[#context current_prefix.at(here())]
-    line(length: 100%, stroke: 0.5pt + luma(50%))
-  }
+  // header: {
+  //   set align(left)
+  //   text(weight: "bold")[#context current_prefix.at(here())]
+  //   line(length: 100%, stroke: 0.5pt + luma(50%))
+  // }
 )
 #for (i, item) in data.enumerate() {
   // The first element is the prefix
