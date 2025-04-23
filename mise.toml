@@ -1,2 +1,10 @@
 [tools]
 rust = "latest"
+
+[tasks]
+test = "cargo test"
+build = "cargo build"
+run = "cargo run"
+check = "cargo check"
+fmt = "cargo fmt"
+clippy = "cargo clippy"
