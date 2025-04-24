@@ -10,8 +10,8 @@ struct Args {
     #[arg(index = 1)]
     input: PathBuf,
 
-    /// Output JSON file for results
-    #[arg(index = 2)]
+    /// Output JSON file for results (defaults to "model.json")
+    #[arg(short, long, default_value = "model.json")]
     output: PathBuf,
 
     /// The size of the N-gram (e.g., 2 for bigrams, 3 for trigrams).
@@ -22,7 +22,7 @@ struct Args {
     /// Scales the counts so they sum to 120, using ceiling rounding to ensure
     /// counts of at least 1. For prefixes with more than 120 followers,
     /// the counts are left unchanged.
-    #[arg(short, long, default_value_t = false)]
+    #[arg(long = "scale-to-d120", default_value_t = false)]
     optimise: bool,
 }
 
@@ -40,7 +40,7 @@ fn main() {
                 Ok(_) => {
                     println!("Successfully wrote word statistics to '{}'", args.output.display());
                     if args.optimise {
-                        println!("Applied count optimisation for dice rolling");
+                        println!("Applied count scaling for d120 dice rolling");
                     }
                     
                     // Print summary statistics

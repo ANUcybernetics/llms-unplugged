@@ -23,32 +23,40 @@ The process involves two main steps: generating the n-gram statistics from your 
     This will create an executable file at `target/release/my_first_lm`.
 
 2.  **Generate N-gram Statistics:**
-    Run the compiled executable, providing your input text file and specifying an output JSON file.
+    Run the compiled executable, providing your input text file and optionally specifying an output JSON file.
 
     ```bash
-    ./target/release/my_first_lm <input_text_file> <output_json_file> [OPTIONS]
+    ./target/release/my_first_lm <input_text_file> [OPTIONS]
     ```
 
     **Arguments:**
     *   `<input_text_file>`: Path to the text file you want to analyze.
-    *   `<output_json_file>`: Path where the generated n-gram statistics (in JSON format) will be saved.
 
     **Options:**
-    *   `-n <N>`: The size of the n-gram (e.g., `2` for bigrams, `3` for trigrams). Defaults to `2`.
-    *   `--optimise`: Scale follower counts to sum to 120, suitable for rolling a 120-sided die. If a prefix has more than 120 unique followers, optimisation is skipped for that prefix. Defaults to `false`.
+    *   `-o, --output <output_json_file>`: Path where the generated n-gram statistics (in JSON format) will be saved. Defaults to `model.json`.
+    *   `-n, --n <N>`: The size of the n-gram (e.g., `2` for bigrams, `3` for trigrams). Defaults to `2`.
+    *   `--scale-to-d120`: Scale follower counts to sum to 120, suitable for rolling a 120-sided die. If a prefix has more than 120 unique followers, scaling is skipped for that prefix. Defaults to `false`.
 
-    **Example (generating optimised bigram statistics):**
+    **Example (generating d120-scaled bigram statistics):**
     Let's say you have your text in `true-blue.txt`.
     ```bash
-    ./target/release/my_first_lm true-blue.txt true-blue.json -n 2 --optimise
+    ./target/release/my_first_lm true-blue.txt -o true-blue.json -n 2 --scale-to-d120
     ```
-    This command reads `true-blue.txt`, calculates bigram statistics, optimises the counts for a d120 roll, and saves the result to `true-blue.json`.
+    This command reads `true-blue.txt`, calculates bigram statistics, scales the counts for a d120 roll, and saves the result to `true-blue.json`.
+
+    Or simply:
+    ```bash
+    ./target/release/my_first_lm true-blue.txt --scale-to-d120
+    ```
+    This command will save the result to the default filename `model.json`.
 
 3.  **Generate the Booklet:**
-    The `book.typ` file is designed to read the statistics from a file named `out.json` in the same directory. Rename the JSON file you generated in the previous step to `out.json`:
+    The `book.typ` file is designed to read the statistics from a file named `out.json` in the same directory. Rename your generated JSON file to `out.json` (or create a symbolic link):
     ```bash
-    # If you generated true-blue.json in the previous step
-    mv true-blue.json out.json
+    # If you kept the default model.json name
+    mv model.json out.json
+    # Or if you generated a custom-named file in the previous step
+    # mv true-blue.json out.json
     ```
     Now, compile the Typst file to create the PDF booklet:
     ```bash

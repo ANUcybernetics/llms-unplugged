@@ -38,9 +38,34 @@ fn test_cli_end_to_end() -> io::Result<()> {
         return Ok(());
     }
 
+    // Test with both default output filename and no scaling
+    let default_pure_output_path = temp_dir.path().join("model.json");
+    // Clean up any existing model.json from previous test
+    if default_pure_output_path.exists() {
+        std::fs::remove_file(&default_pure_output_path)?;
+    }
+    
+    let status_pure_default = Command::new(&exe_path)
+        .arg(&input_path)
+        .status()?;
+    
+    assert!(status_pure_default.success(), "CLI command with completely default settings failed");
+    assert!(default_pure_output_path.exists(), "Default output file (model.json) was not created with default settings");
+    
+    // Test the default output filename behavior with scaling enabled
+    let default_output_path = temp_dir.path().join("model.json");
+    let status_default = Command::new(&exe_path)
+        .arg(&input_path)
+        .arg("--scale-to-d120")
+        .status()?;
+    
+    assert!(status_default.success(), "CLI command with default output failed");
+    assert!(default_output_path.exists(), "Default output file (model.json) was not created");
+    
     // Run the CLI tool without optimization (using default n=2 for bigrams)
     let status = Command::new(&exe_path)
         .arg(&input_path)
+        .arg("-o")
         .arg(&output_path)
         // .arg("--n") // Optional: Add this line to test different N values
         // .arg("3")
@@ -49,14 +74,15 @@ fn test_cli_end_to_end() -> io::Result<()> {
     assert!(status.success(), "CLI command failed");
     assert!(output_path.exists(), "Output file was not created");
     
-    // Run again with the optimise flag to a different output file
+    // Run again with the scale-to-d120 flag to a different output file
     let status_optimised = Command::new(&exe_path)
         .arg(&input_path)
+        .arg("-o")
         .arg(&output_path_optimized)
-        .arg("--optimise")
+        .arg("--scale-to-d120")
         .status()?;
     
-    assert!(status_optimised.success(), "CLI command with --optimise flag failed");
+    assert!(status_optimised.success(), "CLI command with --scale-to-d120 flag failed");
     assert!(output_path_optimized.exists(), "Optimized output file was not created");
 
     // Parse the regular output JSON

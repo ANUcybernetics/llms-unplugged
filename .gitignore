@@ -3,7 +3,8 @@
 
 data/
 
-out.json
+# default model name
+model.json
 
 # Added by cargo
 

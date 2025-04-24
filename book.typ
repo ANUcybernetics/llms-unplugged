@@ -1,9 +1,9 @@
-// Set the document properties and font
+// Set the document prophaydoserties and font
 #set document(title: "N-Gram Language Model")
 #set text(font: "Libertinus Serif", size: 8pt)
 
 // Load the JSON data
-#let data = json("out.json")
+#let data = json("model.json")
 
 // Create a state variable to track the current prefix
 #let current_prefix = state("current-prefix", "")
@@ -41,7 +41,7 @@
     if followers.len() > 1 {
       box([#text[#follower.at(1)]#text(fill: luma(80%))[|]#link(label("prefix-" + follower.at(0)))[#text[#follower.at(0)]]])
     } else {
-      box([#link(label("prefix-" + follower.at(0)))[#text(fill: luma(30%))[#follower.at(0)]]])
+      box([#link(label("prefix-" + follower.at(0)))[#follower.at(0)]])
     }
     h(0.5em)
   }
