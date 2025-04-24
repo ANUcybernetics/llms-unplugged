@@ -224,49 +224,53 @@ fn case_exceptions() -> &'static HashMap<String, String> {
 
 /// Tokenizes a line into normalized words
 pub fn tokenize_line(line: &str) -> Vec<String> {
-    // First, split by whitespace and hyphens
-    line.split(|c: char| c.is_whitespace() || c == '-')
-        .filter_map(|s| {
-            // Skip empty tokens or tokens that are just apostrophes
-            if s.trim().is_empty() || s.trim() == "'" {
-                return None;
+    let mut tokens = Vec::new();
+    let mut current_token = String::new();
+    
+    // Process character by character
+    for c in line.chars() {
+        if c.is_ascii_alphabetic() || c == '\'' {
+            // Add alphabetic characters and apostrophes to the current token
+            current_token.push(c.to_lowercase().next().unwrap_or(c));
+        } else {
+            // Non-alphabetic and non-apostrophe character ends the current token
+            if !current_token.is_empty() {
+                tokens.push(current_token.clone());
+                current_token.clear();
+            }
+        }
+    }
+    
+    // Add the last token if there is one
+    if !current_token.is_empty() {
+        tokens.push(current_token);
+    }
+    
+    // Filter any empty tokens, strip apostrophes at beginning and end, and apply case exceptions
+    tokens.into_iter()
+        .filter(|token| !token.is_empty() && token != "'")
+        .map(|token| {
+            // Strip apostrophes at beginning and end
+            let mut cleaned_token = token.to_string();
+            
+            // Remove leading apostrophe if present
+            if cleaned_token.starts_with('\'') {
+                cleaned_token.remove(0);
             }
             
-            // Replace all double quotes
-            let s_no_quotes = s.replace('"', "");
-            
-            // Process characters to keep apostrophes only in the middle of words
-            let mut result = String::new();
-            let chars: Vec<char> = s_no_quotes.chars().collect();
-            
-            for (i, c) in chars.iter().enumerate() {
-                if c.is_alphabetic() {
-                    // Keep alphabetic characters (lowercased)
-                    result.push_str(&c.to_lowercase().collect::<String>());
-                } else if *c == '\'' {
-                    // Keep apostrophes only if they're between alphabetic characters
-                    let prev_is_alpha = i > 0 && chars[i-1].is_alphabetic();
-                    let next_is_alpha = i < chars.len() - 1 && chars[i+1].is_alphabetic();
-                    
-                    if prev_is_alpha && next_is_alpha {
-                        result.push('\'');
-                    }
-                }
-                // Ignore all other characters
+            // Remove trailing apostrophe if present
+            if cleaned_token.ends_with('\'') {
+                cleaned_token.pop();
             }
             
-            // Only keep non-empty words
-            if !result.is_empty() {
-                // Apply case exceptions if the word matches
-                if let Some(exception) = case_exceptions().get(&result) {
-                    Some(exception.clone())
-                } else {
-                    Some(result)
-                }
+            // Apply case exceptions if the word matches
+            if let Some(exception) = case_exceptions().get(&cleaned_token) {
+                exception.clone()
             } else {
-                None
+                cleaned_token
             }
         })
+        .filter(|token| !token.is_empty()) // Ensure we don't have any empty tokens after stripping
         .collect()
 }
 
@@ -405,7 +409,7 @@ mod tests {
     fn test_tokenize_line_filters_numbers() {
         let line = "abc123 456def 789 alpha2beta";
         let tokens = tokenize_line(line);
-        assert_eq!(tokens, vec!["abc", "def", "alphabeta"]);
+        assert_eq!(tokens, vec!["abc", "def", "alpha", "beta"]);
     }
 
     #[test]
@@ -415,7 +419,7 @@ mod tests {
         assert_eq!(
             tokens,
             vec![
-                "don't", "can't", "won't", "I've", "I'm", "you're", "they'll", "it's", "quote",
+                "don't", "can't", "won't", "I've", "I'm", "you're", "they'll", "it's", "quote", 
                 "he'd", "we've", "ello", "goin"
             ]
         );
