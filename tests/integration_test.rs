@@ -1,7 +1,81 @@
 use std::fs::File;
 use std::io::{self, BufReader, Write};
+use std::path::Path; // Import Path
 use std::process::Command;
 use tempfile::TempDir;
+
+// Helper function to run the full pipeline for a given n
+fn run_cli_and_typst_test(n: usize, exe_path: &Path, temp_dir: &TempDir) -> io::Result<()> {
+    let input_path = temp_dir.path().join(format!("input_n{}.txt", n));
+    let model_path = temp_dir.path().join("model.json"); // CLI output, in temp_dir
+    let book_pdf_path = temp_dir.path().join("book.pdf"); // Typst output, in temp_dir
+
+    // Determine path to the actual book.typ relative to crate root
+    let mut crate_root = std::env::current_dir()?;
+    // Assuming tests are run from the 'my_first_lm' directory
+    if !crate_root.ends_with("my_first_lm") {
+        // If tests run from workspace root, adjust the path
+        if crate_root.join("my_first_lm").is_dir() {
+            crate_root.push("my_first_lm");
+        } else {
+            panic!("Could not determine crate root for test. CWD: {:?}", crate_root);
+        }
+    }
+    let actual_book_typ_path = crate_root.join("book.typ");
+
+    assert!(
+        actual_book_typ_path.exists(),
+        "Actual book.typ not found at: {:?}",
+        actual_book_typ_path
+    );
+
+    // --- 1. Create test input file ---
+    {
+        let mut input_file = File::create(&input_path)?;
+        writeln!(input_file, "Test line for n={}.", n)?;
+        writeln!(input_file, "Another test line. Quick brown fox.")?;
+        input_file.flush()?;
+    }
+
+    // --- 2. Run my_first_lm CLI to generate model.json in temp_dir ---
+    let cli_status = Command::new(exe_path)
+        .arg(&input_path) // Use the full path to input
+        .arg("--n")
+        .arg(n.to_string())
+        .current_dir(temp_dir.path()) // IMPORTANT: Run CLI in temp_dir to output model.json here
+        .status()?;
+
+    assert!(cli_status.success(), "CLI command failed for n={}", n);
+    assert!(
+        model_path.exists(),
+        "model.json was not created in temp_dir for n={}",
+        n
+    );
+
+    // --- 3. Run typst compile using the actual book.typ ---
+    // Run typst in temp_dir so it finds the model.json created there.
+    let typst_status = Command::new("typst")
+        .arg("compile")
+        .arg(&actual_book_typ_path) // Path to the *actual* book.typ
+        .arg(&book_pdf_path) // Explicitly specify output path in temp_dir
+        .current_dir(temp_dir.path()) // IMPORTANT: Run Typst in temp_dir to find model.json
+        .output()?; // Use output() to capture stderr if needed
+
+    // Check Typst command success via status code and stderr
+    assert!(
+        typst_status.status.success(),
+        "typst compile failed for n={}. Stderr:\n{}",
+        n,
+        String::from_utf8_lossy(&typst_status.stderr)
+    );
+    assert!(
+        book_pdf_path.exists(),
+        "book.pdf was not created in temp_dir for n={}",
+        n
+    );
+
+    Ok(())
+}
 
 #[test]
 fn test_cli_end_to_end() -> io::Result<()> {
@@ -296,6 +370,49 @@ fn test_cli_end_to_end() -> io::Result<()> {
             "No optimized entries found with scaling to 120"
         );
     }
+
+    Ok(())
+}
+
+// New test case for Typst compilation
+#[test]
+fn test_cli_to_typst_pdf() -> io::Result<()> {
+    // Create a temporary directory
+    let temp_dir = TempDir::new()?;
+
+    // Get the path to the binary
+    let mut exe_path = std::env::current_dir()?;
+    exe_path.push("target");
+    exe_path.push("debug");
+    exe_path.push("my_first_lm");
+    if cfg!(windows) {
+        exe_path.set_extension("exe");
+    }
+
+    // Skip if binary doesn't exist
+    if !exe_path.exists() {
+        println!(
+            "Skipping test_cli_to_typst_pdf: Binary not found at {:?}",
+            exe_path
+        );
+        return Ok(());
+    }
+
+    // Skip if typst command is not found
+    if Command::new("typst").arg("--version").output().is_err() {
+        println!("Skipping test_cli_to_typst_pdf: 'typst' command not found in PATH.");
+        return Ok(());
+    }
+
+    // Run the test for n=2 (bigrams)
+    println!("Running Typst compilation test for n=2...");
+    run_cli_and_typst_test(2, &exe_path, &temp_dir)?;
+    println!("Typst compilation test for n=2 PASSED.");
+
+    // Run the test for n=3 (trigrams)
+    println!("Running Typst compilation test for n=3...");
+    run_cli_and_typst_test(3, &exe_path, &temp_dir)?;
+    println!("Typst compilation test for n=3 PASSED.");
 
     Ok(())
 }
