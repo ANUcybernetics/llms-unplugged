@@ -46,7 +46,8 @@ fn test_cli_end_to_end() -> io::Result<()> {
     }
     
     let status_pure_default = Command::new(&exe_path)
-        .arg(&input_path)
+        .arg(&input_path) // Use the full path to input within the temp dir
+        .current_dir(temp_dir.path()) // Set CWD to temp dir
         .status()?;
     
     assert!(status_pure_default.success(), "CLI command with completely default settings failed");
@@ -55,8 +56,9 @@ fn test_cli_end_to_end() -> io::Result<()> {
     // Test the default output filename behavior with scaling enabled
     let default_output_path = temp_dir.path().join("model.json");
     let status_default = Command::new(&exe_path)
-        .arg(&input_path)
+        .arg(&input_path) // Use the full path to input within the temp dir
         .arg("--scale-to-d120")
+        .current_dir(temp_dir.path()) // Set CWD to temp dir
         .status()?;
     
     assert!(status_default.success(), "CLI command with default output failed");

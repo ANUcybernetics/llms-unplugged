@@ -224,11 +224,14 @@ fn case_exceptions() -> &'static HashMap<String, String> {
 
 /// Tokenizes a line into normalized words
 pub fn tokenize_line(line: &str) -> Vec<String> {
+    // Normalize specific non-ASCII characters like ’ to '
+    let normalized_line = line.replace('’', "'");
+
     let mut tokens = Vec::new();
     let mut current_token = String::new();
     
     // Process character by character
-    for c in line.chars() {
+    for c in normalized_line.chars() {
         if c.is_ascii_alphabetic() || c == '\'' {
             // Add alphabetic characters and apostrophes to the current token
             current_token.push(c.to_lowercase().next().unwrap_or(c));
@@ -433,13 +436,21 @@ mod tests {
             tokens,
             vec!["ello", "tis", "twas", "s", "goin", "talkin", "n", "writin", "can't", "don't", "won't"]
         );
-        
+
         // Test the specific problematic case with quotes
         let complex_line = "'Bobbie, Bobbie!' she said, 'Come and kiss me, Bobbie!'";
         let complex_tokens = tokenize_line(complex_line);
         assert_eq!(
             complex_tokens,
             vec!["bobbie", "bobbie", "she", "said", "come", "and", "kiss", "me", "bobbie"]
+        );
+
+        // Test non-ascii apostrophe normalization
+        let non_ascii_line = "It’s a test with ’90s style goin’ talkin’.";
+        let non_ascii_tokens = tokenize_line(non_ascii_line);
+        assert_eq!(
+            non_ascii_tokens,
+            vec!["it's", "a", "test", "with", "s", "style", "goin", "talkin"]
         );
     }
 
