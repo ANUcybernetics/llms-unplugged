@@ -1,4 +1,3 @@
-// Set the document prophaydoserties and font
 #set document(title: "N-Gram Language Model")
 #set text(font: "Libertinus Serif", size: 8pt)
 
