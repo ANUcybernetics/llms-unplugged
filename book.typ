@@ -39,9 +39,9 @@
   // the followers for this prefix (with weights)
   for follower in followers {
     if followers.len() > 1 {
-      box([#text[#follower.at(1)]#text(fill: luma(80%))[|]#link(label("prefix-" + follower.at(0)))[#text[#follower.at(0)]]])
+      box([#text[#follower.at(1)]#text(fill: luma(80%))[|]#text[#follower.at(0)]])
     } else {
-      box([#link(label("prefix-" + follower.at(0)))[#follower.at(0)]])
+      box([#follower.at(0)])
     }
     h(0.5em)
   }
