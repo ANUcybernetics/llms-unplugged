@@ -1,5 +1,6 @@
 #set document(title: "Title", author: "Author", description: "An N-gram Language Model")
 #set text(font: "Libertinus Serif", size: 8pt)
+#let book_url = "https://www.gutenberg.org/ebooks/84"
 
 // Load the JSON data
 #let data = json("model.json")
@@ -54,8 +55,8 @@
     #text(size: 0.9em)[
       Credits: Software design, implementation and typesetting by Ben Swift for the Cybernetic Studio.
 
-      Based on the text of the book _The Sun Also Rises_ by Ernst Hemingway, available from
-      #link("https://www.gutenberg.org/ebooks/67138")[Project Gutenberg at `https://www.gutenberg.org/ebooks/67138`].
+      Based on the text of the book #text(style: "italic")[#context document.title] by #text[#context document.author.first()], available from
+      #link(book_url)[Project Gutenberg at #raw(book_url)].
     ]
     #v(0.5cm)
     #text(size: 0.9em)[
