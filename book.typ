@@ -109,7 +109,7 @@
 // Main content with original layout
 #set page(
   "a5",
-  margin: (x: 1cm, y: 1cm),
+  margin: (x: 1.5cm, y: 1.5cm),
   columns: 3,
   numbering: "1/1"
   // header: {
