@@ -111,6 +111,7 @@
   "a5",
   margin: (x: 1cm, y: 1cm),
   columns: 3,
+  numbering: "1/1"
   // header: {
   //   set align(left)
   //   text(weight: "bold")[#context current_prefix.at(here())]
