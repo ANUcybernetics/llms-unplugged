@@ -52,15 +52,15 @@
     ]
     #v(0.5cm)
     #text(size: 0.9em)[
-      The source code for the tool used to create this model is available under an MIT Licence from
-      #link("https://github.com/ANUcybernetics/my-first-lm")[`https://github.com/ANUcybernetics/my-first-lm`]
-    ]
-    #v(0.5cm)
-    #text(size: 0.9em)[
       Credits: Software design, implementation and typesetting by Ben Swift for the Cybernetic Studio.
 
       Based on the text of the book _The Sun Also Rises_ by Ernst Hemingway, available from
       #link("https://www.gutenberg.org/ebooks/67138")[Project Gutenberg at `https://www.gutenberg.org/ebooks/67138`].
+    ]
+    #v(0.5cm)
+    #text(size: 0.9em)[
+      The source code for the tool used to create this model is available under an MIT Licence from
+      #link("https://github.com/ANUcybernetics/my-first-lm")[`https://github.com/ANUcybernetics/my-first-lm`]
     ]
   ]
   pagebreak()
