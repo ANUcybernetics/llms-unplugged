@@ -108,9 +108,9 @@
 
 // Main content with original layout
 #set page(
-  "a5",
+  "a4",
   margin: (x: 1.5cm, y: 1.5cm),
-  columns: 3,
+  columns: 4,
   numbering: "1/1"
   // header: {
   //   set align(left)
