@@ -3,6 +3,7 @@
 ## Rust lib
 
 - add top-k (and even temperature) params
+- filter out roman numerals as well (they're probably artefacts)
 - (maybe) add a diamond per dice required (for > 120 cases)
 - refactor the "scale to dice" stuff into a new module, which supports
   arbitrary-sided die (d120 by default) and also multiple different sampling
@@ -22,3 +23,11 @@
 ## Dice
 
 - <https://www.mathartfun.com/DiceLabDice.html> ␃
+
+## initial book run
+
+- single origin: frankenstein, crime and punishment, aotd, cloudstreet
+
+- collections: hemingway, harry potter, simple wiki, banjo patterson
+
+- multiple n-grams: colected seuss n = 2..4 at least
