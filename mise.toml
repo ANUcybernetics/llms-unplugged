@@ -9,4 +9,4 @@ check = "cargo check"
 fmt = "cargo fmt"
 clippy = "cargo clippy"
 
-book = 'cargo run {{arg(name="file")}} --scale-to-d120 && typst compile book.typ'
+book = 'cargo run {{arg(name="file")}} --scale-d 120 && typst compile book.typ'
