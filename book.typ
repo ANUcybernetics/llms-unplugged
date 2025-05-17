@@ -2,6 +2,9 @@
 #set text(font: "Libertinus Serif", size: 8pt)
 #let book_url = "https://www.gutenberg.org/ebooks/84"
 
+// how many sided die will the book be optimised for?
+#let dice_d = 120
+
 // Load the JSON data
 #let data = json("model.json")
 
@@ -130,9 +133,9 @@
   [#text(prefix, size: 1.3em, weight: "bold")#label("prefix-" + prefix)]
 
   // the dice roll number
-  if total_count != 120 {
-    h(0.5em)
-    box[♢ #text(weight: "bold")[#total_count]]
+  if total_count != dice_d {
+    h(0.3em)
+    [(#box[#text(weight: "bold")[#str(total_count).len()]♢])]
   }
 
   h(0.6em)
