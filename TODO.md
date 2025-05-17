@@ -4,10 +4,8 @@
 
 - add top-k (and even temperature) params
 - filter out roman numerals as well (they're probably artefacts)
-- (maybe) add a diamond per dice required (for > 120 cases)
-- refactor the "scale to dice" stuff into a new module, which supports
-  arbitrary-sided die (d120 by default) and also multiple different sampling
-  strategies based on <https://rentry.co/samplers>
+- support multiple different sampling strategies based on
+  <https://rentry.co/samplers>
 - add the ability to generate new text from a model
 - in stats, print % of non-120 words, and maybe a breakdown of 3/4/5 dice words
 - add the stats to the json output (and display in the book?)
