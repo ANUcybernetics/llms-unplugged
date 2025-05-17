@@ -92,8 +92,9 @@ fn test_cli_end_to_end() -> io::Result<()> {
     input_file.flush()?;
 
     // Create paths for the output files
-    let output_path = temp_dir.path().join("output.json");
-    let output_path_optimized = temp_dir.path().join("output_optimized.json");
+    let output_path_no_scale_arg = temp_dir.path().join("output_no_scale_arg.json"); // For 10^k-1 scaling
+    let output_path_d120 = temp_dir.path().join("output_d120.json");        // For --scale-d 120
+    let output_path_d3 = temp_dir.path().join("output_d3.json");          // For --scale-d 3
 
     // Get the path to the binary directory
     let mut exe_path = std::env::current_dir()?;
@@ -112,70 +113,53 @@ fn test_cli_end_to_end() -> io::Result<()> {
         return Ok(());
     }
 
-    // Test with both default output filename and no scaling
-    let default_pure_output_path = temp_dir.path().join("model.json");
-    // Clean up any existing model.json from previous test
-    if default_pure_output_path.exists() {
-        std::fs::remove_file(&default_pure_output_path)?;
-    }
-    
-    let status_pure_default = Command::new(&exe_path)
-        .arg(&input_path) // Use the full path to input within the temp dir
-        .current_dir(temp_dir.path()) // Set CWD to temp dir
-        .status()?;
-    
-    assert!(status_pure_default.success(), "CLI command with completely default settings failed");
-    assert!(default_pure_output_path.exists(), "Default output file (model.json) was not created with default settings");
-    
-    // Test the default output filename behavior with scaling enabled
-    let default_output_path = temp_dir.path().join("model.json");
-    let status_default = Command::new(&exe_path)
-        .arg(&input_path) // Use the full path to input within the temp dir
-        .arg("--scale-to-d120")
-        .current_dir(temp_dir.path()) // Set CWD to temp dir
-        .status()?;
-    
-    assert!(status_default.success(), "CLI command with default output failed");
-    assert!(default_output_path.exists(), "Default output file (model.json) was not created");
-    
-    // Run the CLI tool without optimization (using default n=2 for bigrams)
-    let status = Command::new(&exe_path)
+    // Run CLI: no scaling args (default 10^k-1)
+    let status_no_scale_arg = Command::new(&exe_path)
         .arg(&input_path)
         .arg("-o")
-        .arg(&output_path)
-        // .arg("--n") // Optional: Add this line to test different N values
-        // .arg("3")
+        .arg(&output_path_no_scale_arg)
         .status()?;
+    assert!(status_no_scale_arg.success(), "CLI command with no scaling args failed");
+    assert!(output_path_no_scale_arg.exists(), "output_no_scale_arg.json was not created");
 
-    assert!(status.success(), "CLI command failed");
-    assert!(output_path.exists(), "Output file was not created");
-    
-    // Run again with the scale-to-d120 flag to a different output file
-    let status_optimised = Command::new(&exe_path)
+    // Run CLI: --scale-d 120
+    let status_d120 = Command::new(&exe_path)
         .arg(&input_path)
         .arg("-o")
-        .arg(&output_path_optimized)
-        .arg("--scale-to-d120")
+        .arg(&output_path_d120)
+        .arg("--scale-d")
+        .arg("120")
         .status()?;
-    
-    assert!(status_optimised.success(), "CLI command with --scale-to-d120 flag failed");
-    assert!(output_path_optimized.exists(), "Optimized output file was not created");
+    assert!(status_d120.success(), "CLI command with --scale-d 120 failed");
+    assert!(output_path_d120.exists(), "output_d120.json was not created");
 
-    // Parse the regular output JSON
-    let output_file = File::open(&output_path)?;
-    let reader = BufReader::new(output_file);
-    let json: Vec<Vec<serde_json::Value>> = serde_json::from_reader(reader)?;
+    // Run CLI: --scale-d 3
+    let status_d3 = Command::new(&exe_path)
+        .arg(&input_path)
+        .arg("-o")
+        .arg(&output_path_d3)
+        .arg("--scale-d")
+        .arg("3")
+        .status()?;
+    assert!(status_d3.success(), "CLI command with --scale-d 3 failed");
+    assert!(output_path_d3.exists(), "output_d3.json was not created");
 
-    // Parse the optimized output JSON
-    let output_file_optimized = File::open(&output_path_optimized)?;
-    let reader_optimized = BufReader::new(output_file_optimized);
-    let json_optimized: Vec<Vec<serde_json::Value>> = serde_json::from_reader(reader_optimized)?;
+    // Parse the JSON outputs
+    let json_no_scale_arg: Vec<Vec<serde_json::Value>> =
+        serde_json::from_reader(BufReader::new(File::open(&output_path_no_scale_arg)?))?;
+    let json_d120: Vec<Vec<serde_json::Value>> =
+        serde_json::from_reader(BufReader::new(File::open(&output_path_d120)?))?;
+    let json_d3: Vec<Vec<serde_json::Value>> =
+        serde_json::from_reader(BufReader::new(File::open(&output_path_d3)?))?;
 
     // Verify structure and content
-    assert!(!json.is_empty(), "JSON output is empty");
-    assert!(!json_optimized.is_empty(), "Optimized JSON output is empty");
+    assert!(!json_no_scale_arg.is_empty(), "JSON output (no_scale_arg) is empty");
+    assert!(!json_d120.is_empty(), "JSON output (d120) is empty");
+    assert!(!json_d3.is_empty(), "JSON output (d3) is empty");
 
-    // --- Start verification for N-gram structure, normalization, and filtering ---
+    // --- Verification for N-gram structure, normalization, and filtering (using json_no_scale_arg as representative) ---
+    // This part primarily checks tokenization, prefix/follower structure, sorting - which should be consistent.
+    // Specific count values will be checked later for each scaling case.
     let mut found_prefix_the = false;
     let mut found_prefix_quick = false;
     let mut found_invalid_chars_word = false; // Flag if any word (prefix or follower) has invalid chars
@@ -183,7 +167,8 @@ fn test_cli_end_to_end() -> io::Result<()> {
     let mut quick_followed_by_brown_count = 0;
 
     // Verify structure (each entry should be an array: [prefix_array, follower_pair, ...])
-    for entry in &json {
+    // Using json_no_scale_arg for general structure checks
+    for entry in &json_no_scale_arg {
         assert!(
             entry.len() >= 2,
             "Entry should have at least a prefix array and one follower pair: {:?}",
@@ -279,7 +264,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
 
     // Verify overall prefix sorting
     let mut prev_prefix: Option<String> = None;
-    for entry in &json {
+    for entry in &json_no_scale_arg {
         let current_prefix = entry[0].as_str().unwrap_or("").to_string();
 
         if let Some(ref prev) = prev_prefix {
@@ -320,56 +305,113 @@ fn test_cli_end_to_end() -> io::Result<()> {
         "Expected prefix 'quick' to be followed by 'brown' at least twice, found {}",
         quick_followed_by_brown_count
     );
-    
-    // --- Now test the optimized version specifically ---
-    
-    // Check if prefixes with multiple followers have their total count set to 120
-    // and the last follower's cumulative count is also 120
-    let mut found_optimized_scaling = false;
-    
-    for entry in &json_optimized {
-        // Skip entries with just one follower as they won't be optimized
-        if entry.len() <= 3 {
-            continue;
+
+    // --- Test scaling for json_no_scale_arg (10^k-1) ---
+    for entry in &json_no_scale_arg {
+        let prefix_str = entry[0].as_str().unwrap();
+        let total_scaled_count = entry[1].as_u64().unwrap();
+        
+        // Example: prefix "the", original total 4 -> k=1, scales to 9
+        // followers: "dog" (1), "fox" (1), "lazy" (1), "quick" (1)
+        // Scaled: dog(2), fox(5), lazy(7), quick(9)
+        if prefix_str == "the" {
+            assert_eq!(total_scaled_count, 9, "Prefix 'the' (no-scale-arg) total count");
+            assert_eq!(entry[2], serde_json::json!(["dog", 2]));
+            assert_eq!(entry[3], serde_json::json!(["fox", 5]));
+            assert_eq!(entry[4], serde_json::json!(["lazy", 7]));
+            assert_eq!(entry[5], serde_json::json!(["quick", 9]));
         }
-        
-        // Get total count (should be 120 for entries with multiple followers)
-        let total_count = entry[1].as_u64().unwrap_or(0);
-        
-        // Get the last follower's cumulative count
-        let last_follower = &entry[entry.len() - 1];
-        let last_follower_arr = last_follower.as_array().unwrap();
-        let last_follower_cumulative = last_follower_arr[1].as_u64().unwrap_or(0);
-        
-        // If this is an optimized entry (has multiple followers)
-        if total_count == 120 && last_follower_cumulative == 120 {
-            found_optimized_scaling = true;
-            
-            // Test that cumulative counts are monotonically increasing
-            let mut prev_cumulative = 0;
-            for i in 2..entry.len() {
-                let follower_pair = &entry[i];
-                let follower_arr = follower_pair.as_array().unwrap();
-                let current_cumulative = follower_arr[1].as_u64().unwrap_or(0);
-                
-                assert!(
-                    current_cumulative > prev_cumulative,
-                    "Cumulative counts should be strictly increasing"
-                );
-                
-                prev_cumulative = current_cumulative;
-            }
+        // Example: prefix "quick", original total 3 -> k=1, scales to 9
+        // followers: "and" (1), "brown" (2) -> cum: "and":1, "brown":3
+        // Scaled: and(3), brown(9)
+        if prefix_str == "quick" {
+            assert_eq!(total_scaled_count, 9, "Prefix 'quick' (no-scale-arg) total count");
+            assert_eq!(entry[2], serde_json::json!(["and", 3]));
+            assert_eq!(entry[3], serde_json::json!(["brown", 9]));
         }
     }
     
-    // Only assert if we have entries that should be optimized (with multiple followers)
-    // If our test file is too simple, this might not be triggered
-    if json_optimized.iter().any(|e| e.len() > 3) {
-        assert!(
-            found_optimized_scaling,
-            "No optimized entries found with scaling to 120"
-        );
+    // --- Test scaling for json_d120 (--scale-d 120) ---
+    let mut found_d120_scaling_the = false;
+    let mut found_d120_scaling_quick = false;
+    for entry in &json_d120 {
+        let prefix_str = entry[0].as_str().unwrap();
+        let total_scaled_count = entry[1].as_u64().unwrap();
+        let num_followers_in_json = entry.len() - 2;
+
+        if num_followers_in_json == 0 { continue; } // Skip if no followers
+
+        let last_follower_pair = entry.last().unwrap().as_array().unwrap();
+        let last_follower_cumulative = last_follower_pair[1].as_u64().unwrap();
+
+        if prefix_str == "the" { // 4 unique followers, original total 4. Scales to [1,120]
+            assert_eq!(total_scaled_count, 120, "Prefix 'the' (d120) total count");
+            assert_eq!(last_follower_cumulative, 120, "Prefix 'the' (d120) last follower cumulative");
+            // Expected: ["the", 120, ["dog", 30], ["fox", 60], ["lazy", 90], ["quick", 120]]
+            assert_eq!(entry[2], serde_json::json!(["dog", 30]));
+            assert_eq!(entry[3], serde_json::json!(["fox", 60]));
+            assert_eq!(entry[4], serde_json::json!(["lazy", 90]));
+            assert_eq!(entry[5], serde_json::json!(["quick", 120]));
+            found_d120_scaling_the = true;
+        }
+        if prefix_str == "quick" { // 2 unique followers, original total 3. Scales to [1,120]
+            assert_eq!(total_scaled_count, 120, "Prefix 'quick' (d120) total count");
+            assert_eq!(last_follower_cumulative, 120, "Prefix 'quick' (d120) last follower cumulative");
+            // Expected: ["quick", 120, ["and", 40], ["brown", 120]]
+            assert_eq!(entry[2], serde_json::json!(["and", 40]));
+            assert_eq!(entry[3], serde_json::json!(["brown", 120]));
+            found_d120_scaling_quick = true;
+        }
+        // Check strictly increasing property for [1,d] scaling
+        if total_scaled_count == 120 && num_followers_in_json > 0 { // Assuming 120 implies [1,d] scaling for this test data
+             let mut prev_cumulative = 0;
+             for i in 2..entry.len() {
+                 let follower_arr = entry[i].as_array().unwrap();
+                 let current_cumulative = follower_arr[1].as_u64().unwrap();
+                 assert!(current_cumulative > prev_cumulative, "Cumulative counts not strictly increasing for {}: {} !> {}", prefix_str, current_cumulative, prev_cumulative);
+                 if i < entry.len() -1 { // Not the last element
+                    assert!(current_cumulative < total_scaled_count, "Intermediate cumulative count {} must be < total {} for {}", current_cumulative, total_scaled_count, prefix_str);
+                 }
+                 prev_cumulative = current_cumulative;
+             }
+        }
     }
+    assert!(found_d120_scaling_the, "Did not find and verify 'the' prefix for d120 scaling");
+    assert!(found_d120_scaling_quick, "Did not find and verify 'quick' prefix for d120 scaling");
+
+    // --- Test scaling for json_d3 (--scale-d 3) ---
+    let mut found_d3_scaling_the_as_10k = false;
+    let mut found_d3_scaling_quick_as_d3 = false;
+    for entry in &json_d3 {
+        let prefix_str = entry[0].as_str().unwrap();
+        let total_scaled_count = entry[1].as_u64().unwrap();
+         let num_followers_in_json = entry.len() - 2;
+
+        if num_followers_in_json == 0 { continue; }
+
+        let last_follower_pair = entry.last().unwrap().as_array().unwrap();
+        let last_follower_cumulative = last_follower_pair[1].as_u64().unwrap();
+
+        if prefix_str == "the" { // 4 unique followers > 3. Scales to 10^k-1 (total 9)
+            assert_eq!(total_scaled_count, 9, "Prefix 'the' (d3) total count (should be 10^k-1)");
+            assert_eq!(last_follower_cumulative, 9, "Prefix 'the' (d3) last follower cumulative");
+            assert_eq!(entry[2], serde_json::json!(["dog", 2]));
+            assert_eq!(entry[3], serde_json::json!(["fox", 5]));
+            assert_eq!(entry[4], serde_json::json!(["lazy", 7]));
+            assert_eq!(entry[5], serde_json::json!(["quick", 9]));
+            found_d3_scaling_the_as_10k = true;
+        }
+        if prefix_str == "quick" { // 2 unique followers <= 3. Scales to [1,3]
+            assert_eq!(total_scaled_count, 3, "Prefix 'quick' (d3) total count");
+            assert_eq!(last_follower_cumulative, 3, "Prefix 'quick' (d3) last follower cumulative");
+            // Expected: ["quick", 3, ["and", 1], ["brown", 3]]
+            assert_eq!(entry[2], serde_json::json!(["and", 1]));
+            assert_eq!(entry[3], serde_json::json!(["brown", 3]));
+            found_d3_scaling_quick_as_d3 = true;
+        }
+    }
+    assert!(found_d3_scaling_the_as_10k, "Did not find and verify 'the' prefix for d3 (10^k-1) scaling");
+    assert!(found_d3_scaling_quick_as_d3, "Did not find and verify 'quick' prefix for d3 ([1,3]) scaling");
 
     Ok(())
 }

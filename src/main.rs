@@ -18,12 +18,12 @@ struct Args {
     #[arg(short, long, default_value_t = 2)]
     n: usize,
     
-    /// Optimise count values for a 120-sided die:
-    /// Scales the counts so they sum to 120, using ceiling rounding to ensure
-    /// counts of at least 1. For prefixes with more than 120 followers,
-    /// the counts are left unchanged.
-    #[arg(long = "scale-to-d120", default_value_t = false)]
-    optimise: bool,
+    /// Optional value 'd' to scale counts.
+    /// If present, for prefixes with <= d followers, counts are scaled to [1, d].
+    /// For prefixes with > d followers (or if this arg is not passed),
+    /// counts are scaled to [0, 10^n - 1] (smallest n-digit number range).
+    #[arg(long = "scale-d")]
+    scale_d: Option<u32>,
 }
 
 fn main() {
@@ -36,11 +36,13 @@ fn main() {
             let entries = counter.get_entries();
             let stats = counter.get_stats();
             
-            match save_to_json(&entries, &args.output, args.optimise) {
+            match save_to_json(&entries, &args.output, args.scale_d) {
                 Ok(_) => {
                     println!("Successfully wrote word statistics to '{}'", args.output.display());
-                    if args.optimise {
-                        println!("Applied count scaling for d120 dice rolling");
+                    if let Some(d) = args.scale_d {
+                        println!("Applied count scaling with d={}", d);
+                    } else {
+                        println!("Applied default count scaling to [0, 10^n-1] range");
                     }
                     
                     // Print summary statistics

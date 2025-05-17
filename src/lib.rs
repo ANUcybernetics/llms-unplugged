@@ -179,7 +179,7 @@ impl NGramCounter {
                     return cmp;
                 }
             }
-            
+
             // If prefixes have different lengths but one is a prefix of the other
             a.prefix.len().cmp(&b.prefix.len())
         });
@@ -229,7 +229,7 @@ pub fn tokenize_line(line: &str) -> Vec<String> {
 
     let mut tokens = Vec::new();
     let mut current_token = String::new();
-    
+
     // Process character by character
     for c in normalized_line.chars() {
         if c.is_ascii_alphabetic() || c == '\'' {
@@ -243,29 +243,29 @@ pub fn tokenize_line(line: &str) -> Vec<String> {
             }
         }
     }
-    
+
     // Add the last token if there is one
     if !current_token.is_empty() {
         tokens.push(current_token);
     }
-    
+
     // Filter any empty tokens, strip apostrophes at beginning and end, and apply case exceptions
     tokens.into_iter()
         .filter(|token| !token.is_empty() && token != "'")
         .map(|token| {
             // Strip apostrophes at beginning and end
             let mut cleaned_token = token.to_string();
-            
+
             // Remove leading apostrophe if present
             if cleaned_token.starts_with('\'') {
                 cleaned_token.remove(0);
             }
-            
+
             // Remove trailing apostrophe if present
             if cleaned_token.ends_with('\'') {
                 cleaned_token.pop();
             }
-            
+
             // Apply case exceptions if the word matches
             if let Some(exception) = case_exceptions().get(&cleaned_token) {
                 exception.clone()
@@ -303,71 +303,120 @@ fn convert_to_entries(
 pub fn save_to_json<P: AsRef<Path>>(
     entries: &[WordFollowEntry],
     path: P,
-    optimise: bool,
+    scale_d: Option<u32>, // Changed from optimise: bool
 ) -> io::Result<()> {
     // Convert entries to the required format: ["joined prefix", total_count, ["follower", cumulative_count], ...]
     let formatted_entries: Vec<Vec<serde_json::Value>> = entries
         .iter()
         .map(|entry| {
-            let mut formatted_entry = Vec::new();
+            let mut formatted_entry_json = Vec::new();
             // First element is the joined prefix string
             let prefix_str = entry.prefix.join(" ");
-            formatted_entry.push(serde_json::Value::String(prefix_str.clone()));
+            formatted_entry_json.push(serde_json::Value::String(prefix_str.clone()));
 
-            // Calculate the total count for all followers
-            let total_count: usize = entry.followers.iter().map(|(_, count)| count).sum();
+            // Calculate the total sum of occurrences for all followers
+            let total_original_count: usize = entry.followers.iter().map(|(_, count)| count).sum();
 
             // Sort followers alphabetically by word (case-insensitive)
+            // Also get the number of unique followers for decision making
             let mut sorted_followers = entry.followers.clone();
             sorted_followers.sort_by(|a, b| a.0.to_lowercase().cmp(&b.0.to_lowercase()));
+            let num_unique_followers = sorted_followers.len();
 
-            // First calculate cumulative counts based on original values
-            let mut cumulative_counts = Vec::new();
+            // Calculate original cumulative counts
+            let mut original_cumulative_counts = Vec::new();
             let mut running_count = 0;
-
             for (follower, count) in &sorted_followers {
                 running_count += count;
-                cumulative_counts.push((follower.clone(), running_count));
+                original_cumulative_counts.push((follower.clone(), running_count));
             }
 
-            // Now apply optimisation if needed
-            if optimise {
-                let follower_count = entry.followers.len();
-                if follower_count > 120 {
-                    eprintln!(
-                        "Warning: Prefix '{}' has {} followers which is more than 120. Not optimising.",
-                        prefix_str,
-                        follower_count
-                    );
-                    // Use original cumulative counts and total
-                    formatted_entry.push(serde_json::json!(total_count));
-
-                    for (follower, cumulative) in cumulative_counts {
-                        formatted_entry.push(serde_json::json!([follower, cumulative]));
-                    }
+            // Determine scaling strategy and apply it
+            let (json_total_for_prefix, scaled_follower_values_json) =
+                if total_original_count == 0 {
+                    // If there are no follower occurrences, total is 0, no follower data.
+                    (serde_json::json!(0), Vec::new())
                 } else {
-                    // Scale the cumulative counts to a total of 120
-                    formatted_entry.push(serde_json::json!(120));
+                    let mut scale_target_d_value: Option<u32> = None;
 
-                    // Scaling for each cumulative value (total_count → 120)
-                    let scaling_factor = 120.0 / total_count as f64;
-
-                    for (follower, cumulative) in cumulative_counts {
-                        // Round to nearest integer instead of ceiling to ensure the last value is exactly 120
-                        let scaled_cumulative = (cumulative as f64 * scaling_factor).round() as usize;
-                        formatted_entry.push(serde_json::json!([follower, scaled_cumulative]));
+                    match scale_d {
+                        Some(d_param) => {
+                            if num_unique_followers <= d_param as usize {
+                                scale_target_d_value = Some(d_param);
+                            } else {
+                                // Number of unique followers > d_param, so use 10^k-1 scaling
+                            }
+                        }
+                        None => {
+                            // No scale_d provided, use 10^k-1 scaling
+                        }
                     }
-                }
-            } else {
-                // No optimization - use original values
-                formatted_entry.push(serde_json::json!(total_count));
 
-                for (follower, cumulative) in cumulative_counts {
-                    formatted_entry.push(serde_json::json!([follower, cumulative]));
-                }
-            }
+                    if let Some(d_target) = scale_target_d_value {
+                        // Scale to [1, d_target]
+                        // The JSON total count field will be d_target
+                        let actual_json_total = serde_json::json!(d_target);
+                        let scaling_factor = d_target as f64 / total_original_count as f64;
 
-            formatted_entry
+                        let mut processed_followers_json: Vec<serde_json::Value> = Vec::new();
+                        let mut prev_scaled_cumulative_val = 0;
+                        let num_followers_for_prefix = original_cumulative_counts.len();
+
+                        // Ensure total_original_count is not zero before division,
+                        // which is guaranteed by the `if total_original_count == 0` check earlier.
+                        // Also, num_followers_for_prefix will be > 0 if total_original_count > 0.
+
+                        for (i, (follower_word, original_cumul)) in original_cumulative_counts.iter().enumerate() {
+                            let current_scaled_cumulative_val: usize;
+                            if num_followers_for_prefix == 0 { // Should not happen due to earlier check
+                                current_scaled_cumulative_val = 0;
+                            } else if i == num_followers_for_prefix - 1 { // Last follower
+                                current_scaled_cumulative_val = d_target as usize;
+                            } else {
+                                let scaled_raw = *original_cumul as f64 * scaling_factor;
+                                // Apply ceil, ensure at least 1
+                                let mut val = (scaled_raw.ceil() as usize).max(1);
+                                // Ensure strictly increasing order
+                                val = val.max(prev_scaled_cumulative_val + 1);
+                                // Do not exceed d_target (unless it's the last value, which is forced to d_target)
+                                // This also prevents issues if d_target is small, like d_target = 1, num_followers = 1.
+                                val = val.min(d_target as usize);
+                                current_scaled_cumulative_val = val;
+                            }
+                            processed_followers_json.push(serde_json::json!([follower_word, current_scaled_cumulative_val]));
+                            // Update prev_scaled_cumulative_val, ensuring it doesn't exceed d_target
+                            // if current_scaled_cumulative_val was capped at d_target (for the last element).
+                            prev_scaled_cumulative_val = current_scaled_cumulative_val.min(d_target as usize);
+                        }
+                        (actual_json_total, processed_followers_json)
+                    } else {
+                        // This implies scale_to_10_pow_k_minus_1 is true
+                        // Scale to [0, 10^k - 1]
+                        // k is the number of digits in total_original_count
+                        let k_digits = total_original_count.to_string().len() as u32;
+                        // max_val is 10^k_digits - 1 (e.g., if count is 75, k=2, max_val=99)
+                        // If count is 0, k_digits=1, max_val=9. Handled by total_original_count == 0 check earlier.
+                        let max_val_for_scaling = 10_u32.pow(k_digits).saturating_sub(1);
+                        
+                        let actual_json_total = serde_json::json!(max_val_for_scaling);
+                        // total_original_count is guaranteed > 0 here by the outer if condition
+                        let scaling_factor = max_val_for_scaling as f64 / total_original_count as f64;
+
+                        let followers_json_list: Vec<serde_json::Value> = original_cumulative_counts
+                            .iter()
+                            .map(|(follower_word, original_cumul)| {
+                                let scaled_cumul = (*original_cumul as f64 * scaling_factor).round() as usize;
+                                serde_json::json!([follower_word, scaled_cumul])
+                            })
+                            .collect();
+                        (actual_json_total, followers_json_list)
+                    }
+                };
+            
+            formatted_entry_json.push(json_total_for_prefix);
+            formatted_entry_json.extend(scaled_follower_values_json);
+
+            formatted_entry_json
         })
         .collect();
 
@@ -422,12 +471,12 @@ mod tests {
         assert_eq!(
             tokens,
             vec![
-                "don't", "can't", "won't", "I've", "I'm", "you're", "they'll", "it's", "quote", 
+                "don't", "can't", "won't", "I've", "I'm", "you're", "they'll", "it's", "quote",
                 "he'd", "we've", "ello", "goin"
             ]
         );
     }
-    
+
     #[test]
     fn test_tokenize_line_handles_apostrophes() {
         let line = "'ello 'tis 'twas '90s goin' talkin' 'n' writin' can't don't won't";
@@ -639,47 +688,53 @@ mod tests {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
-        // Test without optimisation first
-        save_to_json(&entries, &path, false)?;
-
-        // Read the file back and verify the new JSON structure
-        let json: Vec<Vec<serde_json::Value>> =
+        // Test with scale_d = None (default 10^k-1 scaling)
+        save_to_json(&entries, &path, None)?;
+        let json_none: Vec<Vec<serde_json::Value>> =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
-        // Expected format: [ ["prefix", total_count, ["follower1", cumulative_count1], ["follower2", cumulative_count2]], ... ]
-        assert_eq!(json.len(), 2);
+        assert_eq!(json_none.len(), 2);
+        // Prefix "hello": total_original_count=2 (k=1, max_val=9). Followers: "again", "world"
+        assert_eq!(json_none[0][0], serde_json::json!("hello"));
+        assert_eq!(json_none[0][1], serde_json::json!(9)); // Total scaled to 9
+        assert_eq!(json_none[0][2], serde_json::json!(["again", 5])); // (1/2 * 9).round() = 5
+        assert_eq!(json_none[0][3], serde_json::json!(["world", 9])); // (2/2 * 9).round() = 9
+        // Prefix "world": total_original_count=1 (k=1, max_val=9)
+        assert_eq!(json_none[1][0], serde_json::json!("world"));
+        assert_eq!(json_none[1][1], serde_json::json!(9)); // Total scaled to 9
+        assert_eq!(json_none[1][2], serde_json::json!(["hello", 9])); // (1/1 * 9).round() = 9
 
-        // Check first entry (prefix "hello")
-        assert_eq!(json[0].len(), 4); // Prefix string + total count + 2 follower pairs
-        assert_eq!(json[0][0], serde_json::json!("hello")); // Prefix is a string
-        assert_eq!(json[0][1], serde_json::json!(2)); // Total count is 2 (1+1)
-        // Followers are sorted alphabetically, so "again" comes first, then "world"
-        assert_eq!(json[0][2], serde_json::json!(["again", 1])); // First follower has count 1
-        assert_eq!(json[0][3], serde_json::json!(["world", 2])); // Second follower has cumulative count 2 (1+1)
+        // Test with scale_d = Some(120)
+        // "hello": 2 unique followers <= 120. Scale to [1, 120].
+        // "world": 1 unique follower <= 120. Scale to [1, 120].
+        save_to_json(&entries, &path, Some(120))?;
+        let json_d120: Vec<Vec<serde_json::Value>> =
+            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+        
+        assert_eq!(json_d120[0][0], serde_json::json!("hello"));
+        assert_eq!(json_d120[0][1], serde_json::json!(120)); // Total scaled to 120
+        assert_eq!(json_d120[0][2], serde_json::json!(["again", 60])); // ceil(1/2 * 120).max(1) = 60
+        assert_eq!(json_d120[0][3], serde_json::json!(["world", 120])); // Last element is 120
+        
+        assert_eq!(json_d120[1][0], serde_json::json!("world"));
+        assert_eq!(json_d120[1][1], serde_json::json!(120)); // Total scaled to 120
+        assert_eq!(json_d120[1][2], serde_json::json!(["hello", 120])); // Last element is 120
 
-        // Check second entry (prefix "world")
-        assert_eq!(json[1].len(), 3); // Prefix string + total count + 1 follower pair
-        assert_eq!(json[1][0], serde_json::json!("world")); // Prefix is a string
-        assert_eq!(json[1][1], serde_json::json!(1)); // Total count is 1
-        assert_eq!(json[1][2], serde_json::json!(["hello", 1])); // Only one follower, cumulative count is 1
-
-        // Now test with optimisation
-        save_to_json(&entries, &path, true)?;
-
-        let json_opt: Vec<Vec<serde_json::Value>> =
+        // Test with scale_d = Some(1)
+        // "hello": 2 unique followers > 1. Scale to 10^k-1 (total 9).
+        // "world": 1 unique follower <= 1. Scale to [1, 1].
+        save_to_json(&entries, &path, Some(1))?;
+        let json_d1: Vec<Vec<serde_json::Value>> =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
-        // Check optimised values (hello has count=2, should be scaled to 120)
-        assert_eq!(json_opt[0][1], serde_json::json!(120)); // Total count is 120
+        assert_eq!(json_d1[0][0], serde_json::json!("hello"));
+        assert_eq!(json_d1[0][1], serde_json::json!(9)); // Total scaled to 9 (10^k-1 rule)
+        assert_eq!(json_d1[0][2], serde_json::json!(["again", 5]));
+        assert_eq!(json_d1[0][3], serde_json::json!(["world", 9]));
 
-        // For total=2, scaling factor is 120/2 = 60
-        // With rounding, the first cumulative (1) gets scaled to round(1*60) = 60
-        // The second cumulative (2) gets scaled to round(2*60) = 120
-        assert_eq!(json_opt[0][2], serde_json::json!(["again", 60])); // First follower has count 60
-        assert_eq!(json_opt[0][3], serde_json::json!(["world", 120])); // Second follower has cumulative count 120
-
-        assert_eq!(json_opt[1][1], serde_json::json!(120));
-        assert_eq!(json_opt[1][2], serde_json::json!(["hello", 120])); // No change for count 1
+        assert_eq!(json_d1[1][0], serde_json::json!("world"));
+        assert_eq!(json_d1[1][1], serde_json::json!(1)); // Total scaled to 1 ([1,d] rule)
+        assert_eq!(json_d1[1][2], serde_json::json!(["hello", 1])); // Last element is 1
 
         Ok(())
     }
@@ -690,39 +745,57 @@ mod tests {
         let entries = vec![
             WordFollowEntry {
                 prefix: vec!["the".to_string(), "quick".to_string()],
-                followers: vec![("brown".to_string(), 1)],
+                followers: vec![("brown".to_string(), 1)], // 1 unique follower
             },
             WordFollowEntry {
                 prefix: vec!["quick".to_string(), "brown".to_string()],
-                followers: vec![("fox".to_string(), 1)],
+                followers: vec![("fox".to_string(), 1)], // 1 unique follower
             },
         ];
 
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
-        save_to_json(&entries, &path, false)?;
-
-        // Read the file back and verify the JSON structure for trigrams
-        let json: Vec<Vec<serde_json::Value>> =
+        // Test with scale_d = None (default 10^k-1 scaling)
+        // Both entries: total_original_count=1 (k=1, max_val=9)
+        save_to_json(&entries, &path, None)?;
+        let json_none: Vec<Vec<serde_json::Value>> =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
-        // Expected format: [ ["joined prefix", total_count, ["follower", cumulative_count]], ... ]
-        assert_eq!(json.len(), 2);
+        assert_eq!(json_none.len(), 2);
+        // Entry ["the", "quick"]
+        assert_eq!(json_none[0][0], serde_json::json!("the quick"));
+        assert_eq!(json_none[0][1], serde_json::json!(9)); // Total scaled to 9
+        assert_eq!(json_none[0][2], serde_json::json!(["brown", 9])); // (1/1 * 9).round() = 9
+        // Entry ["quick", "brown"]
+        assert_eq!(json_none[1][0], serde_json::json!("quick brown"));
+        assert_eq!(json_none[1][1], serde_json::json!(9)); // Total scaled to 9
+        assert_eq!(json_none[1][2], serde_json::json!(["fox", 9])); // (1/1 * 9).round() = 9
 
-        // Check first entry (prefix "the quick")
-        assert_eq!(json[0].len(), 3); // Prefix string + total count + 1 follower pair
-        assert_eq!(json[0][0], serde_json::json!("the quick")); // Prefix is a string with joined words
-        assert_eq!(json[0][1], serde_json::json!(1)); // Total count is 1
-        assert_eq!(json[0][2], serde_json::json!(["brown", 1])); // Only one follower, so cumulative count = 1
+        // Test with scale_d = Some(60)
+        // Both entries: 1 unique follower <= 60. Scale to [1, 60].
+        save_to_json(&entries, &path, Some(60))?;
+        let json_d60: Vec<Vec<serde_json::Value>> =
+            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+        
+        assert_eq!(json_d60[0][0], serde_json::json!("the quick"));
+        assert_eq!(json_d60[0][1], serde_json::json!(60)); // Total scaled to 60
+        assert_eq!(json_d60[0][2], serde_json::json!(["brown", 60])); // Last element is 60
+        
+        assert_eq!(json_d60[1][0], serde_json::json!("quick brown"));
+        assert_eq!(json_d60[1][1], serde_json::json!(60)); // Total scaled to 60
+        assert_eq!(json_d60[1][2], serde_json::json!(["fox", 60])); // Last element is 60
+        
+        // Test with scale_d = Some(0)
+        // Both entries: 1 unique follower > 0. Scale to 10^k-1 (total 9)
+        save_to_json(&entries, &path, Some(0))?;
+        let json_d0: Vec<Vec<serde_json::Value>> =
+            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
-        // Check second entry (prefix "quick brown")
-        assert_eq!(json[1].len(), 3); // Prefix string + total count + 1 follower pair
-        assert_eq!(json[1][0], serde_json::json!("quick brown")); // Prefix is a string with joined words
-        assert_eq!(json[1][1], serde_json::json!(1)); // Total count is 1
-        assert_eq!(json[1][2], serde_json::json!(["fox", 1])); // Only one follower, so cumulative count = 1
-
-        // No need to test optimisation here as counts of 1 don't get modified
+        assert_eq!(json_d0[0][1], serde_json::json!(9));
+        assert_eq!(json_d0[0][2], serde_json::json!(["brown", 9]));
+        assert_eq!(json_d0[1][1], serde_json::json!(9));
+        assert_eq!(json_d0[1][2], serde_json::json!(["fox", 9]));
 
         Ok(())
     }
@@ -730,50 +803,57 @@ mod tests {
     #[test]
     fn test_save_to_json_cumulative_counts() -> io::Result<()> {
         // Test data with multiple followers having different counts
+        // Prefix "the": followers bird(2), cat(3), dog(5). Total original = 10. 3 unique followers.
+        // Original cumulative: bird:2, cat:5, dog:10
         let entries = vec![WordFollowEntry {
             prefix: vec!["the".to_string()],
-            // Note: The order here shouldn't matter since we sort alphabetically in save_to_json
             followers: vec![
-                ("dog".to_string(), 5),  // Highest occurrence count
-                ("cat".to_string(), 3),  // Middle occurrence count
-                ("bird".to_string(), 2), // Lowest occurrence count
+                ("dog".to_string(), 5),
+                ("cat".to_string(), 3),
+                ("bird".to_string(), 2),
             ],
         }];
 
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
-        // Test without optimisation
-        save_to_json(&entries, &path, false)?;
-
-        // Read the file back and verify cumulative counts
-        let json: Vec<Vec<serde_json::Value>> =
+        // Test with scale_d = None (default 10^k-1 scaling)
+        // total_original_count=10 (k=2, max_val=99). Factor = 9.9
+        save_to_json(&entries, &path, None)?;
+        let json_none: Vec<Vec<serde_json::Value>> =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
-        assert_eq!(json.len(), 1);
-        assert_eq!(json[0][0], serde_json::json!("the"));
-        // Total count for this prefix should be 10 (5+3+2)
-        assert_eq!(json[0][1], serde_json::json!(10));
+        assert_eq!(json_none.len(), 1);
+        assert_eq!(json_none[0][0], serde_json::json!("the"));
+        assert_eq!(json_none[0][1], serde_json::json!(99)); // Total scaled to 99
+        assert_eq!(json_none[0][2], serde_json::json!(["bird", 20])); // (2 * 9.9).round() = 20
+        assert_eq!(json_none[0][3], serde_json::json!(["cat", 50]));  // (5 * 9.9).round() = 50
+        assert_eq!(json_none[0][4], serde_json::json!(["dog", 99]));  // (10 * 9.9).round() = 99
 
-        // Followers should be sorted alphabetically, with cumulative counts
-        // bird (2) -> cat (2+3=5) -> dog (5+5=10)
-        assert_eq!(json[0][2], serde_json::json!(["bird", 2])); // First follower: bird with count 2
-        assert_eq!(json[0][3], serde_json::json!(["cat", 5])); // Second follower: cat with cumulative count 5
-        assert_eq!(json[0][4], serde_json::json!(["dog", 10])); // Third follower: dog with cumulative count 10
-
-        // Test with optimisation (with the new implementation, we always scale to 120)
-        save_to_json(&entries, &path, true)?;
-
-        let json_opt: Vec<Vec<serde_json::Value>> =
+        // Test with scale_d = Some(120)
+        // 3 unique followers <= 120. Scale to [1, 120]. Factor = 120/10 = 12.
+        save_to_json(&entries, &path, Some(120))?;
+        let json_d120: Vec<Vec<serde_json::Value>> =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
-        // With the new implementation, all optimized entries scale to 120
-        assert_eq!(json_opt[0][1], serde_json::json!(120)); // Total count is scaled to 120
-        // Scaling factor is 120/10 = 12
-        // With rounding: bird(2) -> round(2*12) = 24, cat(5) -> round(5*12) = 60, dog(10) -> round(10*12) = 120
-        assert_eq!(json_opt[0][2], serde_json::json!(["bird", 24]));
-        assert_eq!(json_opt[0][3], serde_json::json!(["cat", 60]));
-        assert_eq!(json_opt[0][4], serde_json::json!(["dog", 120]));
+        assert_eq!(json_d120[0][1], serde_json::json!(120)); // Total scaled to 120
+        // bird (orig 2): ceil(2*12).max(1)=24. prev=0. max(24,1)=24.
+        assert_eq!(json_d120[0][2], serde_json::json!(["bird", 24]));
+        // cat (orig 5): ceil(5*12).max(1)=60. prev=24. max(60, 24+1)=60.
+        assert_eq!(json_d120[0][3], serde_json::json!(["cat", 60]));
+        // dog (orig 10): last element, so 120.
+        assert_eq!(json_d120[0][4], serde_json::json!(["dog", 120]));
+
+        // Test with scale_d = Some(2)
+        // 3 unique followers > 2. Scale to 10^k-1 (total 99).
+        save_to_json(&entries, &path, Some(2))?;
+        let json_d2: Vec<Vec<serde_json::Value>> =
+            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+        
+        assert_eq!(json_d2[0][1], serde_json::json!(99)); // Total scaled to 99
+        assert_eq!(json_d2[0][2], serde_json::json!(["bird", 20]));
+        assert_eq!(json_d2[0][3], serde_json::json!(["cat", 50]));
+        assert_eq!(json_d2[0][4], serde_json::json!(["dog", 99]));
 
         // Test with count = 2 (should be optimised to scale to 120)
         let entries_to_optimise = vec![WordFollowEntry {
@@ -781,7 +861,7 @@ mod tests {
             followers: vec![("one".to_string(), 1), ("two".to_string(), 1)],
         }];
 
-        save_to_json(&entries_to_optimise, &path, true)?;
+        save_to_json(&entries_to_optimise, &path, Some(120))?;
 
         let json_optimised: Vec<Vec<serde_json::Value>> =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
@@ -802,7 +882,7 @@ mod tests {
             ],
         }];
 
-        save_to_json(&entries_count_3, &path, true)?;
+        save_to_json(&entries_count_3, &path, Some(120))?;
 
         let json_count_3: Vec<Vec<serde_json::Value>> =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;

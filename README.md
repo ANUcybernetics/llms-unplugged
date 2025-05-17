@@ -35,20 +35,22 @@ The process involves two main steps: generating the n-gram statistics from your 
     **Options:**
     *   `-o, --output <output_json_file>`: Path where the generated n-gram statistics (in JSON format) will be saved. Defaults to `model.json`.
     *   `-n, --n <N>`: The size of the n-gram (e.g., `2` for bigrams, `3` for trigrams). Defaults to `2`.
-    *   `--scale-to-d120`: Scale follower counts to sum to 120, suitable for rolling a 120-sided die. If a prefix has more than 120 unique followers, scaling is skipped for that prefix. Defaults to `false`.
+    *   `--scale-d <D>`: Optional integer value `D` to control count scaling.
+        *   If provided, and a prefix has a number of unique followers less than or equal to `D`, its follower counts are scaled to the range `[1, D]`. The total count for the prefix in the JSON will be `D`.
+        *   If a prefix has more unique followers than `D`, or if `--scale-d` is not provided, its follower counts are scaled to the range `[0, 10^k - 1]`, where `k` is the number of digits in the original total follower count for that prefix. The total count in the JSON becomes `10^k - 1`.
 
-    **Example (generating d120-scaled bigram statistics):**
-    Let's say you have your text in `true-blue.txt`.
+    **Example (generating d120-style scaled bigram statistics):**
+    Let's say you have your text in `true-blue.txt`. To get behavior similar to the old d120 scaling (where counts are scaled to 120 if there are 120 or fewer unique followers):
     ```bash
-    ./target/release/my_first_lm true-blue.txt -o true-blue.json -n 2 --scale-to-d120
+    ./target/release/my_first_lm true-blue.txt -o true-blue.json -n 2 --scale-d 120
     ```
-    This command reads `true-blue.txt`, calculates bigram statistics, scales the counts for a d120 roll, and saves the result to `true-blue.json`.
+    This command reads `true-blue.txt`, calculates bigram statistics. For prefixes with 120 or fewer unique followers, it scales counts to the range [1, 120]. For other prefixes, it uses the `[0, 10^k-1]` scaling. The result is saved to `true-blue.json`.
 
-    Or simply:
+    Or simply, to use `--scale-d 120` with the default output `model.json`:
     ```bash
-    ./target/release/my_first_lm true-blue.txt --scale-to-d120
+    ./target/release/my_first_lm true-blue.txt --scale-d 120
     ```
-    This command will save the result to the default filename `model.json`.
+    If you omit `--scale-d` entirely, all prefixes will use the `[0, 10^k-1]` scaling.
 
 3.  **Generate the Booklet:**
     The `book.typ` file is designed to read the statistics from a file named `out.json` in the same directory. Rename your generated JSON file to `out.json` (or create a symbolic link):
