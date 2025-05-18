@@ -130,7 +130,7 @@
   current_prefix.update(prefix)
 
   // this is the prefix text with a label
-  [#text(prefix, size: 1.3em, weight: "bold")#label("prefix-" + prefix)]
+  [#text(prefix, size: 1.5em, weight: "bold")#label("prefix-" + prefix)]
 
   // the dice roll number
   if total_count != dice_d {
@@ -143,7 +143,7 @@
   // the followers for this prefix (with weights)
   for follower in followers {
     if followers.len() > 1 {
-      box([#text[#follower.at(1)]|#text[#follower.at(0)]])
+      box([#text(weight: "semibold")[#follower.at(1)]|#text[#follower.at(0)]])
     } else {
       box([#follower.at(0)])
     }
