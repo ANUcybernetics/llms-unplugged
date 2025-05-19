@@ -2,8 +2,9 @@
 
 ## Rust lib
 
-- add top-k (and even temperature) params
-- filter out roman numerals as well (they're probably artefacts)
+- add top-k param
+- filter out roman numerals as well (or, refactor out a proper "sanitisation"
+  module to do the is it real/is it junk filtering in a more principled way)
 - support multiple different sampling strategies based on
   <https://rentry.co/samplers>
 - add the ability to generate new text from a model
