@@ -83,8 +83,16 @@ fn main() {
         },
         Err(e) => {
             if e.kind() == std::io::ErrorKind::InvalidData {
-                eprintln!("Error in frontmatter: {}", e);
-                eprintln!("The input file must contain YAML frontmatter with title, author, and url fields");
+                eprintln!("Error: {}", e);
+                eprintln!("\nYour input file must begin with valid YAML frontmatter.");
+                eprintln!("Frontmatter format:");
+                eprintln!("---");
+                eprintln!("title: Your Document Title");
+                eprintln!("author: Author Name");
+                eprintln!("url: https://example.com/document-url");
+                eprintln!("---");
+                eprintln!("\nThe frontmatter must appear at the beginning of the file.");
+                std::process::exit(1);
             } else {
                 eprintln!("Error processing input file: {}", e);
             }

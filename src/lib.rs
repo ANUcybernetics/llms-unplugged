@@ -132,12 +132,24 @@ impl NGramCounter {
 
     /// Process a file containing text with frontmatter
     pub fn process_file<P: AsRef<Path>>(&mut self, path: P) -> io::Result<()> {
-        // Read the entire file content
-        let content = std::fs::read_to_string(&path)?;
+        use std::io::{BufRead, BufReader};
         
-        // Try to extract frontmatter
-        let content_to_process = match extract(&content) {
-            Ok((frontmatter, content_without_frontmatter)) => {
+        // Read only the first 100 lines to check for frontmatter
+        let file = File::open(&path)?;
+        let reader = BufReader::new(file);
+        
+        let mut first_lines = String::new();
+        let max_frontmatter_lines = 100;
+        
+        for line in reader.lines().take(max_frontmatter_lines) {
+            let line = line?;
+            first_lines.push_str(&line);
+            first_lines.push('\n');
+        }
+        
+        // Try to extract frontmatter from the first lines
+        match extract(&first_lines) {
+            Ok((frontmatter, _)) => {
                 // Try to extract required fields
                 let title = frontmatter.get("title").and_then(|v| v.as_str());
                 let author = frontmatter.get("author").and_then(|v| v.as_str());
@@ -151,25 +163,51 @@ impl NGramCounter {
                         url: url.to_string(),
                         n: self.n,
                     });
-                    content_without_frontmatter
                 } else {
-                    // Missing required fields, use default metadata
-                    eprintln!("Warning: Frontmatter missing required fields (title, author, url). Using default metadata.");
-                    self.metadata = None;
-                    content.as_str()
+                    // Missing required fields, return error
+                    return Err(io::Error::new(
+                        io::ErrorKind::InvalidData,
+                        "Frontmatter missing required fields (title, author, url)."
+                    ));
                 }
             },
             Err(_) => {
-                // Failed to extract frontmatter, use default metadata
-                eprintln!("Warning: No valid frontmatter found. Using default metadata.");
-                self.metadata = None;
-                content.as_str()
+                // Failed to extract frontmatter, return error
+                return Err(io::Error::new(
+                    io::ErrorKind::InvalidData,
+                    "No valid YAML frontmatter found. Input must start with '---', contain valid YAML key-value pairs, and end with '---'."
+                ));
             }
         };
         
-        // Process the content
-        for line in content_to_process.lines() {
-            self.process_line(line);
+        // Now process the content, skipping the frontmatter section
+        let file = File::open(&path)?;
+        let reader = BufReader::new(file);
+        
+        // Variables to track frontmatter boundaries
+        let mut in_frontmatter = false;
+        let mut frontmatter_ended = false;
+        
+        for line in reader.lines() {
+            let line = line?;
+            
+            // Check for frontmatter delimiter
+            if line.trim() == "---" {
+                if !in_frontmatter {
+                    // First delimiter - beginning of frontmatter
+                    in_frontmatter = true;
+                } else {
+                    // Second delimiter - end of frontmatter
+                    in_frontmatter = false;
+                    frontmatter_ended = true;
+                }
+                continue; // Skip the delimiter line
+            }
+            
+            // Only process content after frontmatter has ended
+            if !in_frontmatter && frontmatter_ended {
+                self.process_line(&line);
+            }
         }
 
         // Calculate additional statistics after processing

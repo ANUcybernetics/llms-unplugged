@@ -119,25 +119,25 @@ fn test_frontmatter_errors() -> io::Result<()> {
 
         let output = Command::new(&exe_path).arg(&input_path).output()?;
 
-        // With the new implementation, missing frontmatter should succeed with warning
+        // With the new implementation, missing frontmatter should fail
         assert!(
-            output.status.success(),
-            "CLI should succeed even with missing frontmatter"
+            !output.status.success(),
+            "CLI should fail with missing frontmatter"
         );
 
-        // Error output should contain warning about missing frontmatter
+        // Error output should contain error about missing frontmatter
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
-            stderr_message.contains("Warning: No valid frontmatter found"),
-            "Should output warning about missing frontmatter: {}",
+            stderr_message.contains("Error: No valid YAML frontmatter found"),
+            "Should output error about missing frontmatter: {}",
             stderr_message
         );
 
-        // Standard output should show successful processing
-        let stdout_message = String::from_utf8_lossy(&output.stdout);
+        // Error message should include instructions
         assert!(
-            stdout_message.contains("Successfully wrote"),
-            "Output should indicate successful processing"
+            stderr_message.contains("must begin with valid YAML frontmatter"),
+            "Should include instructions about frontmatter format: {}",
+            stderr_message
         );
     }
 
@@ -154,17 +154,17 @@ fn test_frontmatter_errors() -> io::Result<()> {
 
         let output = Command::new(&exe_path).arg(&input_path).output()?;
 
-        // Should succeed with warning
+        // Should fail with error
         assert!(
-            output.status.success(),
-            "CLI should succeed with missing title"
+            !output.status.success(),
+            "CLI should fail with missing title"
         );
 
-        // Warning message should mention missing fields
+        // Error message should mention missing fields
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
-            stderr_message.contains("Warning: Frontmatter missing required fields"),
-            "Should warn about missing required fields: {}",
+            stderr_message.contains("Error: Frontmatter missing required fields"),
+            "Should error about missing required fields: {}",
             stderr_message
         );
     }
@@ -182,17 +182,17 @@ fn test_frontmatter_errors() -> io::Result<()> {
 
         let output = Command::new(&exe_path).arg(&input_path).output()?;
 
-        // Should succeed with warning
+        // Should fail with error
         assert!(
-            output.status.success(),
-            "CLI should succeed with missing author"
+            !output.status.success(),
+            "CLI should fail with missing author"
         );
 
-        // Warning message should mention missing fields
+        // Error message should mention missing fields
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
-            stderr_message.contains("Warning: Frontmatter missing required fields"),
-            "Should warn about missing required fields: {}",
+            stderr_message.contains("Error: Frontmatter missing required fields"),
+            "Should error about missing required fields: {}",
             stderr_message
         );
     }
@@ -210,17 +210,17 @@ fn test_frontmatter_errors() -> io::Result<()> {
 
         let output = Command::new(&exe_path).arg(&input_path).output()?;
 
-        // Should succeed with warning
+        // Should fail with error
         assert!(
-            output.status.success(),
-            "CLI should succeed with missing url"
+            !output.status.success(),
+            "CLI should fail with missing url"
         );
 
-        // Warning message should mention missing fields
+        // Error message should mention missing fields
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
-            stderr_message.contains("Warning: Frontmatter missing required fields"),
-            "Should warn about missing required fields: {}",
+            stderr_message.contains("Error: Frontmatter missing required fields"),
+            "Should error about missing required fields: {}",
             stderr_message
         );
     }
@@ -243,24 +243,25 @@ fn test_frontmatter_errors() -> io::Result<()> {
 
         let output = Command::new(&exe_path).arg(&input_path).output()?;
 
-        // Should succeed with warning
+        // Should fail
         assert!(
-            output.status.success(),
-            "CLI should succeed even with malformed YAML"
+            !output.status.success(),
+            "CLI should fail with malformed YAML"
         );
 
-        // Standard output should show successful processing
-        let stdout_message = String::from_utf8_lossy(&output.stdout);
-        assert!(
-            stdout_message.contains("Successfully wrote"),
-            "Output should indicate successful processing"
-        );
-
-        // Warning should be logged
+        // Error message should be meaningful
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
-            !stderr_message.is_empty(),
-            "Should output some warning or error message for malformed frontmatter"
+            stderr_message.contains("Error"),
+            "Should output error message for malformed frontmatter: {}",
+            stderr_message
+        );
+        
+        // Should provide guidance
+        assert!(
+            stderr_message.contains("frontmatter"),
+            "Error should mention frontmatter: {}",
+            stderr_message
         );
     }
 
