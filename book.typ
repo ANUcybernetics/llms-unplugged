@@ -29,8 +29,9 @@
   set text(size: 12pt)
   align(horizon)[
     #text(size: 1.2em)[An N-gram Language Model of]
-    #text(style: "italic")[#context metadata.title] by
-    #text[#context metadata.author]
+    #text(size: 1.2em, style: "italic")[#context metadata.title] by
+    #text(size: 1.2em)[#context metadata.author]
+    #text(size: 1.2em)[(N = #context metadata.n)]
     #v(0.7cm)
 
     #text(size: 1em)[© 2025 Cybernetic Studio]
@@ -57,13 +58,12 @@
     ]
     #v(0.5cm)
     #text(size: 0.9em)[
+      Credits: software design, implementation and typesetting by Ben Swift for the Cybernetic Studio.
     ]
     #v(0.5cm)
     #text(size: 0.9em)[
-      Credits: software design, implementation and typesetting by Ben Swift for the Cybernetic Studio.
-
       Based on the text of the book #text(style: "italic")[#context metadata.title] by
-      #text[#context metadata.author.first()], available from #link(metadata.url)[#raw(metadata.url)].
+      #text[#context metadata.author], available from\ #link(metadata.url)[#raw(metadata.url)].
     ]
     #v(0.5cm)
     #text(size: 0.9em)[
