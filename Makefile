@@ -3,6 +3,15 @@
 # Define directories
 OUT_DIR := out
 
+# Define input files
+STANDARD_TEXTS := collected-hemingway frankenstein cloudstreet TinyStories-sample
+SEUSS_OUTPUTS := dr-seuss-2 dr-seuss-3 dr-seuss-4
+
+# Generate PDF target lists
+STANDARD_PDFS := $(patsubst %,$(OUT_DIR)/%.pdf,$(STANDARD_TEXTS))
+SEUSS_PDFS := $(patsubst %,$(OUT_DIR)/%.pdf,$(SEUSS_OUTPUTS))
+ALL_PDFS := $(STANDARD_PDFS) $(SEUSS_PDFS)
+
 # Define common variables
 TOOL := target/release/my_first_lm
 TYPST := typst compile book.typ
@@ -11,26 +20,19 @@ TYPST := typst compile book.typ
 $(shell mkdir -p $(OUT_DIR))
 
 # Default target to build all PDFs
-all: $(OUT_DIR)/collected-hemingway.pdf $(OUT_DIR)/frankenstein.pdf $(OUT_DIR)/cloudstreet.pdf $(OUT_DIR)/dr-seuss-2.pdf $(OUT_DIR)/dr-seuss-3.pdf $(OUT_DIR)/dr-seuss-4.pdf
+all: $(ALL_PDFS)
 	@echo "All processing complete!"
 
 # Build the release version
 $(TOOL):
 	cargo build --release
 
-# Rules for each output file
-$(OUT_DIR)/collected-hemingway.pdf: data/collected-hemingway.txt book.typ $(TOOL)
+# Pattern rule for standard text files
+$(OUT_DIR)/%.pdf: data/%.txt book.typ $(TOOL)
 	$(TOOL) --scale-d 120 $<
 	$(TYPST) $@
 
-$(OUT_DIR)/frankenstein.pdf: data/frankenstein.txt book.typ $(TOOL)
-	$(TOOL) --scale-d 120 $<
-	$(TYPST) $@
-
-$(OUT_DIR)/cloudstreet.pdf: data/cloudstreet.txt book.typ $(TOOL)
-	$(TOOL) --scale-d 120 $<
-	$(TYPST) $@
-
+# Special rules for Dr. Seuss with different n values
 $(OUT_DIR)/dr-seuss-2.pdf: data/dr-seuss.txt book.typ $(TOOL)
 	$(TOOL) --scale-d 120 --n 2 $<
 	$(TYPST) $@
