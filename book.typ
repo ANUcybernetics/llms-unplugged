@@ -16,9 +16,9 @@
   set page(margin: (x: 2.5cm, y: 2.5cm))
   align(center + horizon)[
     #v(2cm)
-    #text(weight: "bold", size: 5em)[#context metadata.title]
+    #text(weight: "bold", size: 4em)[#context metadata.title]
     #v(1cm)
-    #text(size: 3em)[An N-gram Language Model]
+    #text(size: 2.5em)[An N-gram Language Model]
   ]
   pagebreak()
 }
@@ -29,10 +29,12 @@
   set text(size: 12pt)
   align(horizon)[
     #text(size: 1.2em)[An N-gram Language Model of]
-    #text(size: 1.2em, style: "italic")[#context metadata.title] by
+    #text(size: 1.2em, style: "italic")[#context metadata.title by]
     #text(size: 1.2em)[#context metadata.author]
+    #v(0.5cm)
+
     #text(size: 1.2em)[(N = #context metadata.n)]
-    #v(0.7cm)
+    #v(1cm)
 
     #text(size: 1em)[© 2025 Cybernetic Studio]
     #v(0.5cm)
