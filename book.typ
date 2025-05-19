@@ -16,11 +16,9 @@
   set page(margin: (x: 2.5cm, y: 2.5cm))
   align(center + horizon)[
     #v(2cm)
-    #text(weight: "bold", size: 2.5em)[#context document.title]
+    #text(weight: "bold", size: 5em)[#context document.title]
     #v(1cm)
-    #text(size: 1.2em)[#context document.description]
-    #v(5cm)
-    #text(size: 1.2em)[2025]
+    #text(size: 3em)[#context document.description]
   ]
   pagebreak()
 }
