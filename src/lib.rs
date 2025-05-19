@@ -356,41 +356,72 @@ pub fn save_to_json<P: AsRef<Path>>(
 
                     if let Some(d_target) = scale_target_d_value {
                         // Scale to [1, d_target]
-                        // The JSON total count field will be d_target
-                        let actual_json_total = serde_json::json!(d_target);
                         let scaling_factor = d_target as f64 / total_original_count as f64;
-
-                        let mut processed_followers_json: Vec<serde_json::Value> = Vec::new();
-                        let mut prev_scaled_cumulative_val = 0;
                         let num_followers_for_prefix = original_cumulative_counts.len();
-
-                        // Ensure total_original_count is not zero before division,
-                        // which is guaranteed by the `if total_original_count == 0` check earlier.
-                        // Also, num_followers_for_prefix will be > 0 if total_original_count > 0.
-
-                        for (i, (follower_word, original_cumul)) in original_cumulative_counts.iter().enumerate() {
-                            let current_scaled_cumulative_val: usize;
-                            if num_followers_for_prefix == 0 { // Should not happen due to earlier check
-                                current_scaled_cumulative_val = 0;
-                            } else if i == num_followers_for_prefix - 1 { // Last follower
-                                current_scaled_cumulative_val = d_target as usize;
+                        
+                        // Pre-compute scaled values to check for duplicates
+                        let mut scaled_values = Vec::with_capacity(num_followers_for_prefix);
+                        let mut prev_scaled_val = 0;
+                        let mut has_duplicates = false;
+                        
+                        // First pass: calculate and check for duplicates
+                        for (i, (_, original_cumul)) in original_cumulative_counts.iter().enumerate() {
+                            let scaled_val: usize;
+                            if i == num_followers_for_prefix - 1 { // Last follower
+                                scaled_val = d_target as usize;
                             } else {
                                 let scaled_raw = *original_cumul as f64 * scaling_factor;
                                 // Apply ceil, ensure at least 1
                                 let mut val = (scaled_raw.ceil() as usize).max(1);
                                 // Ensure strictly increasing order
-                                val = val.max(prev_scaled_cumulative_val + 1);
-                                // Do not exceed d_target (unless it's the last value, which is forced to d_target)
-                                // This also prevents issues if d_target is small, like d_target = 1, num_followers = 1.
+                                val = val.max(prev_scaled_val + 1);
+                                // Do not exceed d_target
                                 val = val.min(d_target as usize);
-                                current_scaled_cumulative_val = val;
+                                scaled_val = val;
                             }
-                            processed_followers_json.push(serde_json::json!([follower_word, current_scaled_cumulative_val]));
-                            // Update prev_scaled_cumulative_val, ensuring it doesn't exceed d_target
-                            // if current_scaled_cumulative_val was capped at d_target (for the last element).
-                            prev_scaled_cumulative_val = current_scaled_cumulative_val.min(d_target as usize);
+                            
+                            // Check for non-increasing sequence or duplicates
+                            if (i > 0 && scaled_val <= prev_scaled_val) || scaled_values.contains(&scaled_val) {
+                                has_duplicates = true;
+                                break;
+                            }
+                            
+                            scaled_values.push(scaled_val);
+                            prev_scaled_val = scaled_val.min(d_target as usize);
                         }
-                        (actual_json_total, processed_followers_json)
+                        
+                        // If duplicates found, switch to 10^k-1 scaling
+                        if has_duplicates {
+                            // Scale to [0, 10^k - 1]
+                            let k_digits = total_original_count.to_string().len() as u32;
+                            let max_val_for_scaling = 10_u32.pow(k_digits).saturating_sub(1);
+                            
+                            let actual_json_total = serde_json::json!(max_val_for_scaling);
+                            let scaling_factor = max_val_for_scaling as f64 / total_original_count as f64;
+
+                            let followers_json_list: Vec<serde_json::Value> = original_cumulative_counts
+                                .iter()
+                                .map(|(follower_word, original_cumul)| {
+                                    let scaled_cumul = (*original_cumul as f64 * scaling_factor).round() as usize;
+                                    serde_json::json!([follower_word, scaled_cumul])
+                                })
+                                .collect();
+                            (actual_json_total, followers_json_list)
+                        } else {
+                            // No duplicates, proceed with [1, d_target] scaling
+                            let actual_json_total = serde_json::json!(d_target);
+                            let mut processed_followers_json = Vec::with_capacity(num_followers_for_prefix);
+                            
+                            // Second pass: create the JSON values using the pre-computed scaled values
+                            for ((follower_word, _), scaled_val) in 
+                                original_cumulative_counts.iter().zip(scaled_values.iter()) {
+                                processed_followers_json.push(
+                                    serde_json::json!([follower_word, scaled_val])
+                                );
+                            }
+                            
+                            (actual_json_total, processed_followers_json)
+                        }
                     } else {
                         // This implies scale_to_10_pow_k_minus_1 is true
                         // Scale to [0, 10^k - 1]
@@ -932,6 +963,84 @@ mod tests {
         assert_eq!(json_count_3[0][3], serde_json::json!(["b", 80])); // Second follower's cumulative count
         assert_eq!(json_count_3[0][4], serde_json::json!(["c", 120])); // Third follower's cumulative count
 
+        Ok(())
+    }
+    
+    #[test]
+    fn test_save_to_json_duplicate_scaling() -> io::Result<()> {
+        // Test case where followers would be scaled to the same value with d-scaling
+        // This should force a switch to 10^k-1 scaling
+        let entries = vec![WordFollowEntry {
+            prefix: vec!["duplicate".to_string()],
+            followers: vec![
+                ("first".to_string(), 1),
+                ("second".to_string(), 1),
+                ("third".to_string(), 1),
+                ("fourth".to_string(), 1),  // With scale_d = 3, these identical counts would create duplicates
+            ],
+        }];
+
+        let temp_file = NamedTempFile::new()?;
+        let path = temp_file.path().to_owned();
+
+        // With scale_d = 3, we'd normally use [1,3] scaling
+        // But since we have 4 followers with identical counts, they'd get scaled to the same values
+        // So we should switch to 10^k-1 scaling (total is 4, so k=1, max_val=9)
+        save_to_json(&entries, &path, Some(3))?;
+        let json_result: Vec<Vec<serde_json::Value>> =
+            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+        
+        // Total count is 4, so k=1, max_val=9
+        assert_eq!(json_result[0][1], serde_json::json!(9));
+        
+        // Check that values are properly scaled and not duplicates
+        let first_val = json_result[0][2][1].as_u64().unwrap();
+        let second_val = json_result[0][3][1].as_u64().unwrap();
+        let third_val = json_result[0][4][1].as_u64().unwrap();
+        let fourth_val = json_result[0][5][1].as_u64().unwrap();
+        
+        // Values should be strictly increasing in 10^k-1 scaling
+        assert!(first_val < second_val, "Values should be strictly increasing");
+        assert!(second_val < third_val, "Values should be strictly increasing");
+        assert!(third_val < fourth_val, "Values should be strictly increasing");
+        assert_eq!(fourth_val, 9, "Last value should be the maximum");
+        
+        // Test edge case with scale_d = 1 and multiple identical followers
+        let entries_edge = vec![WordFollowEntry {
+            prefix: vec!["edge".to_string()],
+            followers: vec![
+                ("a".to_string(), 1),
+                ("b".to_string(), 1),
+            ],
+        }];
+        
+        // With scale_d = 1, we can't scale 2 followers uniquely to [1,1]
+        save_to_json(&entries_edge, &path, Some(1))?;
+        let json_edge: Vec<Vec<serde_json::Value>> =
+            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+        
+        // Should use 10^k-1 scaling (k=1 because total is 2, so max is 9)
+        assert_eq!(json_edge[0][1], serde_json::json!(9));
+        
+        // Another test with mixed counts
+        let entries_mixed = vec![WordFollowEntry {
+            prefix: vec!["mixed".to_string()],
+            followers: vec![
+                ("a".to_string(), 1),
+                ("b".to_string(), 99),
+            ],
+        }];
+        
+        // With scale_d = 2, the scaling would be very uneven but should work
+        save_to_json(&entries_mixed, &path, Some(2))?;
+        let json_mixed: Vec<Vec<serde_json::Value>> =
+            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+        
+        // If it used scale_d=2, the total would be 2
+        assert_eq!(json_mixed[0][1], serde_json::json!(2));
+        assert_eq!(json_mixed[0][2][1], serde_json::json!(1)); // first follower
+        assert_eq!(json_mixed[0][3][1], serde_json::json!(2)); // second follower
+        
         Ok(())
     }
 }
