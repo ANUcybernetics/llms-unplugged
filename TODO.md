@@ -15,7 +15,8 @@
 
 ## Typst template
 
-- bugfix for labels for n > 2; handle case where there's no label for a bigram
+- bugfix for labels for n > 2; handle case where there's no label for a bigram,
+  also add "orphaned n-gram %" to stats
 - instructions
 - page header with the current prefix (maybe)
 
