@@ -288,8 +288,11 @@ fn convert_to_entries(
                 .iter()
                 .map(|(word, count)| (word.clone(), *count))
                 .collect();
-            // Sort followers alphabetically by word (case-insensitive)
-            follower_entries.sort_by(|a, b| a.0.to_lowercase().cmp(&b.0.to_lowercase()));
+            // Sort followers by count (largest to smallest)
+            // If counts are equal, then sort alphabetically by word (case-insensitive)
+            follower_entries.sort_by(|a, b| {
+                b.1.cmp(&a.1).then_with(|| a.0.to_lowercase().cmp(&b.0.to_lowercase()))
+            });
 
             WordFollowEntry {
                 prefix: prefix.clone(), // Changed from word
@@ -317,18 +320,17 @@ pub fn save_to_json<P: AsRef<Path>>(
             // Calculate the total sum of occurrences for all followers
             let total_original_count: usize = entry.followers.iter().map(|(_, count)| count).sum();
 
-            // Sort followers alphabetically by word (case-insensitive)
-            // Also get the number of unique followers for decision making
-            let mut sorted_followers = entry.followers.clone();
-            sorted_followers.sort_by(|a, b| a.0.to_lowercase().cmp(&b.0.to_lowercase()));
-            let num_unique_followers = sorted_followers.len();
+            // Followers are already sorted by count (largest to smallest) from convert_to_entries
+            // Get number of unique followers (no need to sort as we only need the count)
+            let num_unique_followers = entry.followers.len();
 
             // Calculate original cumulative counts
             let mut original_cumulative_counts = Vec::new();
-            let mut running_count = 0;
-            for (follower, count) in &sorted_followers {
-                running_count += count;
-                original_cumulative_counts.push((follower.clone(), running_count));
+            let mut running_sum = 0;
+
+            for (follower, count) in &entry.followers {
+                running_sum += count;
+                original_cumulative_counts.push((follower.clone(), running_sum));
             }
 
             // Determine scaling strategy and apply it
@@ -428,8 +430,40 @@ pub fn save_to_json<P: AsRef<Path>>(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::io::Write;
+    use std::io::{Write, BufReader};
     use tempfile::NamedTempFile;
+    
+    #[test]
+    fn test_follower_sort_order() {
+        // Test the sorting of followers by count (largest to smallest)
+        let mut counter = NGramCounter::new(2);
+        counter.process_line("the cat sat on the mat and the cat ate");
+        
+        // Get entries and check sorting
+        let entries = counter.get_entries();
+        
+        // Find entry for "the"
+        let the_entry = entries.iter().find(|e| e.prefix == vec!["the"]).unwrap();
+        
+        // Check that followers are sorted by count (largest to smallest)
+        assert_eq!(the_entry.followers[0].0, "cat"); // "cat" should be first (count = 2)
+        assert_eq!(the_entry.followers[0].1, 2);
+        assert_eq!(the_entry.followers[1].0, "mat"); // "mat" should be second (count = 1)
+        assert_eq!(the_entry.followers[1].1, 1);
+        
+        // Test equal counts with alphabetical tiebreaker
+        let mut counter2 = NGramCounter::new(2);
+        counter2.process_line("he no test he yes test");
+        
+        let entries2 = counter2.get_entries();
+        let he_entry = entries2.iter().find(|e| e.prefix == vec!["he"]).unwrap();
+        
+        // Both followers have count 1, so should be sorted alphabetically
+        assert_eq!(he_entry.followers[0].0, "no"); // "no" comes before "yes" alphabetically
+        assert_eq!(he_entry.followers[0].1, 1);
+        assert_eq!(he_entry.followers[1].0, "yes");
+        assert_eq!(he_entry.followers[1].1, 1);
+    }
 
     #[test]
     fn test_tokenize_line() {
@@ -677,7 +711,7 @@ mod tests {
         let entries = vec![
             WordFollowEntry {
                 prefix: vec!["hello".to_string()],
-                followers: vec![("again".to_string(), 1), ("world".to_string(), 1)],
+                followers: vec![("world".to_string(), 2), ("again".to_string(), 1)],
             },
             WordFollowEntry {
                 prefix: vec!["world".to_string()],
@@ -694,11 +728,11 @@ mod tests {
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
         assert_eq!(json_none.len(), 2);
-        // Prefix "hello": total_original_count=2 (k=1, max_val=9). Followers: "again", "world"
+        // Prefix "hello": total_original_count=3 (k=1, max_val=9). Followers: "world"(2), "again"(1)
         assert_eq!(json_none[0][0], serde_json::json!("hello"));
         assert_eq!(json_none[0][1], serde_json::json!(9)); // Total scaled to 9
-        assert_eq!(json_none[0][2], serde_json::json!(["again", 5])); // (1/2 * 9).round() = 5
-        assert_eq!(json_none[0][3], serde_json::json!(["world", 9])); // (2/2 * 9).round() = 9
+        assert_eq!(json_none[0][2], serde_json::json!(["world", 6])); // (2/3 * 9).round() = 6
+        assert_eq!(json_none[0][3], serde_json::json!(["again", 9])); // (3/3 * 9).round() = 9 (last element)
         // Prefix "world": total_original_count=1 (k=1, max_val=9)
         assert_eq!(json_none[1][0], serde_json::json!("world"));
         assert_eq!(json_none[1][1], serde_json::json!(9)); // Total scaled to 9
@@ -713,8 +747,8 @@ mod tests {
         
         assert_eq!(json_d120[0][0], serde_json::json!("hello"));
         assert_eq!(json_d120[0][1], serde_json::json!(120)); // Total scaled to 120
-        assert_eq!(json_d120[0][2], serde_json::json!(["again", 60])); // ceil(1/2 * 120).max(1) = 60
-        assert_eq!(json_d120[0][3], serde_json::json!(["world", 120])); // Last element is 120
+        assert_eq!(json_d120[0][2], serde_json::json!(["world", 80])); // (2/3 * 120).round() = 80
+        assert_eq!(json_d120[0][3], serde_json::json!(["again", 120])); // Last element is 120
         
         assert_eq!(json_d120[1][0], serde_json::json!("world"));
         assert_eq!(json_d120[1][1], serde_json::json!(120)); // Total scaled to 120
@@ -729,8 +763,8 @@ mod tests {
 
         assert_eq!(json_d1[0][0], serde_json::json!("hello"));
         assert_eq!(json_d1[0][1], serde_json::json!(9)); // Total scaled to 9 (10^k-1 rule)
-        assert_eq!(json_d1[0][2], serde_json::json!(["again", 5]));
-        assert_eq!(json_d1[0][3], serde_json::json!(["world", 9]));
+        assert_eq!(json_d1[0][2], serde_json::json!(["world", 6])); // (2/3 * 9).round() = 6
+        assert_eq!(json_d1[0][3], serde_json::json!(["again", 9])); // Last element is 9
 
         assert_eq!(json_d1[1][0], serde_json::json!("world"));
         assert_eq!(json_d1[1][1], serde_json::json!(1)); // Total scaled to 1 ([1,d] rule)
@@ -803,8 +837,9 @@ mod tests {
     #[test]
     fn test_save_to_json_cumulative_counts() -> io::Result<()> {
         // Test data with multiple followers having different counts
-        // Prefix "the": followers bird(2), cat(3), dog(5). Total original = 10. 3 unique followers.
-        // Original cumulative: bird:2, cat:5, dog:10
+        // Prefix "the": followers dog(5), cat(3), bird(2) - sorted by count from largest to smallest
+        // Total original = 10. 3 unique followers.
+        // Original cumulative: dog:5, cat:8, bird:10
         let entries = vec![WordFollowEntry {
             prefix: vec!["the".to_string()],
             followers: vec![
@@ -826,9 +861,9 @@ mod tests {
         assert_eq!(json_none.len(), 1);
         assert_eq!(json_none[0][0], serde_json::json!("the"));
         assert_eq!(json_none[0][1], serde_json::json!(99)); // Total scaled to 99
-        assert_eq!(json_none[0][2], serde_json::json!(["bird", 20])); // (2 * 9.9).round() = 20
-        assert_eq!(json_none[0][3], serde_json::json!(["cat", 50]));  // (5 * 9.9).round() = 50
-        assert_eq!(json_none[0][4], serde_json::json!(["dog", 99]));  // (10 * 9.9).round() = 99
+        assert_eq!(json_none[0][2], serde_json::json!(["dog", 50])); // (5/10 * 99).round() = 50
+        assert_eq!(json_none[0][3], serde_json::json!(["cat", 79])); // (8/10 * 99).round() = 79
+        assert_eq!(json_none[0][4], serde_json::json!(["bird", 99])); // (10/10 * 99).round() = 99
 
         // Test with scale_d = Some(120)
         // 3 unique followers <= 120. Scale to [1, 120]. Factor = 120/10 = 12.
@@ -837,12 +872,12 @@ mod tests {
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
         assert_eq!(json_d120[0][1], serde_json::json!(120)); // Total scaled to 120
-        // bird (orig 2): ceil(2*12).max(1)=24. prev=0. max(24,1)=24.
-        assert_eq!(json_d120[0][2], serde_json::json!(["bird", 24]));
-        // cat (orig 5): ceil(5*12).max(1)=60. prev=24. max(60, 24+1)=60.
-        assert_eq!(json_d120[0][3], serde_json::json!(["cat", 60]));
-        // dog (orig 10): last element, so 120.
-        assert_eq!(json_d120[0][4], serde_json::json!(["dog", 120]));
+        // dog (orig 5): ceil(5*12).max(1)=60. prev=0. max(60, 1)=60.
+        assert_eq!(json_d120[0][2], serde_json::json!(["dog", 60]));
+        // cat (orig 8): ceil(8*12).max(1)=96. prev=60. max(96, 60+1)=96.
+        assert_eq!(json_d120[0][3], serde_json::json!(["cat", 96]));
+        // bird (orig 10): last element, so 120.
+        assert_eq!(json_d120[0][4], serde_json::json!(["bird", 120]));
 
         // Test with scale_d = Some(2)
         // 3 unique followers > 2. Scale to 10^k-1 (total 99).
@@ -851,14 +886,15 @@ mod tests {
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
         
         assert_eq!(json_d2[0][1], serde_json::json!(99)); // Total scaled to 99
-        assert_eq!(json_d2[0][2], serde_json::json!(["bird", 20]));
-        assert_eq!(json_d2[0][3], serde_json::json!(["cat", 50]));
-        assert_eq!(json_d2[0][4], serde_json::json!(["dog", 99]));
+        assert_eq!(json_d2[0][2], serde_json::json!(["dog", 50])); // (5/10 * 99).round() = 50
+        assert_eq!(json_d2[0][3], serde_json::json!(["cat", 79])); // (8/10 * 99).round() = 79
+        assert_eq!(json_d2[0][4], serde_json::json!(["bird", 99])); // (10/10 * 99).round() = 99
 
         // Test with count = 2 (should be optimised to scale to 120)
         let entries_to_optimise = vec![WordFollowEntry {
             prefix: vec!["test".to_string()],
             followers: vec![("one".to_string(), 1), ("two".to_string(), 1)],
+            // When counts are equal, they'll be sorted alphabetically: "one" before "two"
         }];
 
         save_to_json(&entries_to_optimise, &path, Some(120))?;
@@ -867,6 +903,7 @@ mod tests {
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
         // Total count is 2, scaling factor is 120/2 = 60
+        // With equal counts, followers are sorted alphabetically: "one" before "two"
         // With rounding: one(1) -> round(1*60) = 60, two(2) -> round(2*60) = 120
         assert_eq!(json_optimised[0][1], serde_json::json!(120)); // Total count is 120
         assert_eq!(json_optimised[0][2], serde_json::json!(["one", 60])); // First follower's cumulative count
@@ -880,6 +917,7 @@ mod tests {
                 ("b".to_string(), 1),
                 ("c".to_string(), 1),
             ],
+            // With equal counts, followers should be sorted alphabetically
         }];
 
         save_to_json(&entries_count_3, &path, Some(120))?;
@@ -888,7 +926,7 @@ mod tests {
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
         // Total count is 3, scaling factor is 120/3 = 40
-        // With rounding: a(1) -> round(1*40) = 40, b(2) -> round(2*40) = 80, c(3) -> round(3*40) = 120
+        // With alphabetical sorting (all counts are 1): a(1) -> 40, b(2) -> 80, c(3) -> 120
         assert_eq!(json_count_3[0][1], serde_json::json!(120)); // Total is 120
         assert_eq!(json_count_3[0][2], serde_json::json!(["a", 40])); // First follower's cumulative count
         assert_eq!(json_count_3[0][3], serde_json::json!(["b", 80])); // Second follower's cumulative count
