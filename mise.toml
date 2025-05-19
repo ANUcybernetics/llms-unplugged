@@ -12,6 +12,7 @@ clippy = "cargo clippy"
 book = 'cargo run {{arg(name="file")}} --scale-d 120 && typst compile book.typ'
 
 all = '''
+cargo run -- --scale-d 120 data/collected-hemingway.txt && typst compile book.typ out/collected-hemingway.pdf
 cargo run -- --scale-d 120 data/frankenstein.txt && typst compile book.typ out/frankenstein.pdf
 cargo run -- --scale-d 120 data/cloudstreet.txt && typst compile book.typ out/cloudstreet.pdf
 cargo run -- --scale-d 120 --n 2 data/dr-seuss.txt && typst compile book.typ out/dr-seuss-2.pdf
