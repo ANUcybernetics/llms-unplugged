@@ -4,7 +4,7 @@
 OUT_DIR := out
 
 # Define common variables
-CARGO := cargo run --
+TOOL := target/release/my_first_lm
 TYPST := typst compile book.typ
 
 # Ensure output directory exists
@@ -14,29 +14,33 @@ $(shell mkdir -p $(OUT_DIR))
 all: $(OUT_DIR)/collected-hemingway.pdf $(OUT_DIR)/frankenstein.pdf $(OUT_DIR)/cloudstreet.pdf $(OUT_DIR)/dr-seuss-2.pdf $(OUT_DIR)/dr-seuss-3.pdf $(OUT_DIR)/dr-seuss-4.pdf
 	@echo "All processing complete!"
 
+# Build the release version
+$(TOOL):
+	cargo build --release
+
 # Rules for each output file
-$(OUT_DIR)/collected-hemingway.pdf: data/collected-hemingway.txt book.typ
-	$(CARGO) --scale-d 120 $<
+$(OUT_DIR)/collected-hemingway.pdf: data/collected-hemingway.txt book.typ $(TOOL)
+	$(TOOL) --scale-d 120 $<
 	$(TYPST) $@
 
-$(OUT_DIR)/frankenstein.pdf: data/frankenstein.txt book.typ
-	$(CARGO) --scale-d 120 $<
+$(OUT_DIR)/frankenstein.pdf: data/frankenstein.txt book.typ $(TOOL)
+	$(TOOL) --scale-d 120 $<
 	$(TYPST) $@
 
-$(OUT_DIR)/cloudstreet.pdf: data/cloudstreet.txt book.typ
-	$(CARGO) --scale-d 120 $<
+$(OUT_DIR)/cloudstreet.pdf: data/cloudstreet.txt book.typ $(TOOL)
+	$(TOOL) --scale-d 120 $<
 	$(TYPST) $@
 
-$(OUT_DIR)/dr-seuss-2.pdf: data/dr-seuss.txt book.typ
-	$(CARGO) --scale-d 120 --n 2 $<
+$(OUT_DIR)/dr-seuss-2.pdf: data/dr-seuss.txt book.typ $(TOOL)
+	$(TOOL) --scale-d 120 --n 2 $<
 	$(TYPST) $@
 
-$(OUT_DIR)/dr-seuss-3.pdf: data/dr-seuss.txt book.typ
-	$(CARGO) --scale-d 120 --n 3 $<
+$(OUT_DIR)/dr-seuss-3.pdf: data/dr-seuss.txt book.typ $(TOOL)
+	$(TOOL) --scale-d 120 --n 3 $<
 	$(TYPST) $@
 
-$(OUT_DIR)/dr-seuss-4.pdf: data/dr-seuss.txt book.typ
-	$(CARGO) --scale-d 120 --n 4 $<
+$(OUT_DIR)/dr-seuss-4.pdf: data/dr-seuss.txt book.typ $(TOOL)
+	$(TOOL) --scale-d 120 --n 4 $<
 	$(TYPST) $@
 
 # Clean target to remove generated files
