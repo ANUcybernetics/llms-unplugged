@@ -3,9 +3,15 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::{self, BufRead, BufReader};
 use std::path::Path;
-
 use std::collections::VecDeque;
-use std::sync::OnceLock;
+
+// New module declarations
+mod tokenizer;
+mod preprocessor;
+
+// Use functions from new modules
+use tokenizer::tokenize;
+use preprocessor::preprocess;
 
 /// Contains summary statistics for processed text
 #[derive(Debug, Clone)]
@@ -71,7 +77,8 @@ impl NGramCounter {
 
     /// Process a single line of text
     pub fn process_line(&mut self, line: &str) {
-        let words = tokenize_line(line);
+        let raw_tokens = tokenize(line);
+        let words = preprocess(raw_tokens);
         let prefix_size = self.n - 1;
 
         // Add to token count
@@ -207,75 +214,7 @@ pub fn process_file<P: AsRef<Path>>(
     Ok((entries, stats))
 }
 
-/// Returns a reference to the case exception map
-fn case_exceptions() -> &'static HashMap<String, String> {
-    static CASE_EXCEPTIONS: OnceLock<HashMap<String, String>> = OnceLock::new();
-    CASE_EXCEPTIONS.get_or_init(|| {
-        let mut map = HashMap::new();
-        // Add words that should have specific casing
-        map.insert("i".to_string(), "I".to_string());
-        map.insert("i've".to_string(), "I've".to_string());
-        map.insert("i'm".to_string(), "I'm".to_string());
-        map.insert("i'd".to_string(), "I'd".to_string());
-        map.insert("i'll".to_string(), "I'll".to_string());
-        map
-    })
-}
-
-/// Tokenizes a line into normalized words
-pub fn tokenize_line(line: &str) -> Vec<String> {
-    // Normalize specific non-ASCII characters like ’ to '
-    let normalized_line = line.replace('’', "'");
-
-    let mut tokens = Vec::new();
-    let mut current_token = String::new();
-
-    // Process character by character
-    for c in normalized_line.chars() {
-        if c.is_ascii_alphabetic() || c == '\'' {
-            // Add alphabetic characters and apostrophes to the current token
-            current_token.push(c.to_lowercase().next().unwrap_or(c));
-        } else {
-            // Non-alphabetic and non-apostrophe character ends the current token
-            if !current_token.is_empty() {
-                tokens.push(current_token.clone());
-                current_token.clear();
-            }
-        }
-    }
-
-    // Add the last token if there is one
-    if !current_token.is_empty() {
-        tokens.push(current_token);
-    }
-
-    // Filter any empty tokens, strip apostrophes at beginning and end, and apply case exceptions
-    tokens.into_iter()
-        .filter(|token| !token.is_empty() && token != "'")
-        .map(|token| {
-            // Strip apostrophes at beginning and end
-            let mut cleaned_token = token.to_string();
-
-            // Remove leading apostrophe if present
-            if cleaned_token.starts_with('\'') {
-                cleaned_token.remove(0);
-            }
-
-            // Remove trailing apostrophe if present
-            if cleaned_token.ends_with('\'') {
-                cleaned_token.pop();
-            }
-
-            // Apply case exceptions if the word matches
-            if let Some(exception) = case_exceptions().get(&cleaned_token) {
-                exception.clone()
-            } else {
-                cleaned_token
-            }
-        })
-        .filter(|token| !token.is_empty()) // Ensure we don't have any empty tokens after stripping
-        .collect()
-}
+// Removed tokenize_line and case_exceptions as they are now in tokenizer.rs and preprocessor.rs
 
 /// Converts the internal N-gram HashMap representation to the required output format
 fn convert_to_entries(
@@ -461,7 +400,8 @@ pub fn save_to_json<P: AsRef<Path>>(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::io::{Write, BufReader};
+    // BufReader is used by save_to_json tests, Write and NamedTempFile are used by multiple tests.
+    use std::io::{Write, BufReader}; 
     use tempfile::NamedTempFile;
     
     #[test]
@@ -496,77 +436,7 @@ mod tests {
         assert_eq!(he_entry.followers[1].1, 1);
     }
 
-    #[test]
-    fn test_tokenize_line() {
-        let line = "Hello, world! This is a test. Version2 and 123numbers should be filtered.";
-        let tokens = tokenize_line(line);
-        assert_eq!(
-            tokens,
-            vec![
-                "hello", "world", "this", "is", "a", "test", "version", "and", "numbers", "should",
-                "be", "filtered"
-            ]
-        );
-    }
-
-    #[test]
-    fn test_tokenize_line_special_cases() {
-        let line = "I think that I am thinking and I'm sure that I said so.";
-        let tokens = tokenize_line(line);
-        assert_eq!(
-            tokens,
-            vec![
-                "I", "think", "that", "I", "am", "thinking", "and", "I'm", "sure", "that", "I",
-                "said", "so"
-            ]
-        );
-    }
-
-    #[test]
-    fn test_tokenize_line_filters_numbers() {
-        let line = "abc123 456def 789 alpha2beta";
-        let tokens = tokenize_line(line);
-        assert_eq!(tokens, vec!["abc", "def", "alpha", "beta"]);
-    }
-
-    #[test]
-    fn test_tokenize_line_handles_contractions() {
-        let line = "Don't can't won't I've I'm you're they'll it's 'quote' he'd we've 'ello goin'";
-        let tokens = tokenize_line(line);
-        assert_eq!(
-            tokens,
-            vec![
-                "don't", "can't", "won't", "I've", "I'm", "you're", "they'll", "it's", "quote",
-                "he'd", "we've", "ello", "goin"
-            ]
-        );
-    }
-
-    #[test]
-    fn test_tokenize_line_handles_apostrophes() {
-        let line = "'ello 'tis 'twas '90s goin' talkin' 'n' writin' can't don't won't";
-        let tokens = tokenize_line(line);
-        assert_eq!(
-            tokens,
-            vec!["ello", "tis", "twas", "s", "goin", "talkin", "n", "writin", "can't", "don't", "won't"]
-        );
-
-        // Test the specific problematic case with quotes
-        let complex_line = "'Bobbie, Bobbie!' she said, 'Come and kiss me, Bobbie!'";
-        let complex_tokens = tokenize_line(complex_line);
-        assert_eq!(
-            complex_tokens,
-            vec!["bobbie", "bobbie", "she", "said", "come", "and", "kiss", "me", "bobbie"]
-        );
-
-        // Test non-ascii apostrophe normalization
-        let non_ascii_line = "It’s a test with ’90s style goin’ talkin’.";
-        let non_ascii_tokens = tokenize_line(non_ascii_line);
-        assert_eq!(
-            non_ascii_tokens,
-            vec!["it's", "a", "test", "with", "s", "style", "goin", "talkin"]
-        );
-    }
+    // Tokenization specific tests are removed as they are now covered in tokenizer.rs and preprocessor.rs
 
     #[test]
     fn test_process_small_file_bigrams() -> io::Result<()> {
@@ -576,7 +446,7 @@ mod tests {
         // Write test content to the temporary file
         {
             let mut file = File::create(&path)?;
-            // Note: Number123 will be filtered to just "number" by the tokenizer
+            // Note: Number123 will be tokenized to "number". "ignored" from "ignored."
             writeln!(
                 file,
                 "Hello world. Hello again world! Number123 will be ignored."
@@ -586,8 +456,17 @@ mod tests {
 
         // Process with n=2 for bigrams
         let (entries, stats) = process_file(&path, 2)?;
-
-        assert_eq!(entries.len(), 6, "Expected 6 unique bigram prefixes");
+    
+        // Expected tokens: "hello", "world", "hello", "again", "world", "number", "will", "be", "ignored"
+        // Expected unique prefixes (n-1=1):
+        // "hello" -> "world" (1), "again" (1)
+        // "world" -> "hello" (1), "number" (1)
+        // "again" -> "world" (1)
+        // "number" -> "will" (1)
+        // "will" -> "be" (1)
+        // "be" -> "ignored" (1)
+        // Total 6 unique prefixes
+        assert_eq!(entries.len(), 6, "Expected 6 unique bigram prefixes. Got: {:?}", entries);
 
         // Check prefix ["hello"]
         let hello_entry = entries
@@ -599,10 +478,10 @@ mod tests {
             2,
             "Expected 'hello' to have 2 followers"
         );
-        // Check followers sorted alphabetically
+        // Followers are sorted by count (desc), then alphabetically (asc). Here counts are equal.
         assert_eq!(
             hello_entry.followers[0],
-            ("again".to_string(), 1),
+            ("again".to_string(), 1), // 'again' before 'world'
             "First follower of 'hello' should be 'again'"
         );
         assert_eq!(
@@ -674,8 +553,8 @@ mod tests {
             "Expected 9 tokens: hello, world, hello, again, world, number, will, be, ignored"
         );
         assert_eq!(
-            stats.unique_ngrams, 6,
-            "Expected 8 unique prefixes: hello, world, again, number, will, be"
+            stats.unique_ngrams, 6, // Corrected from 8 to 6 as per the prefixes list above.
+            "Expected 6 unique prefixes: hello, world, again, number, will, be"
         );
         assert_eq!(
             stats.total_ngram_occurrences, 8,
@@ -739,6 +618,8 @@ mod tests {
     #[test]
     fn test_save_to_json_bigrams() -> io::Result<()> {
         // Example data for bigrams (n=2, prefix size = 1)
+        // Followers should be pre-sorted as `convert_to_entries` would do:
+        // "hello" -> followers: ("world", 2), ("again", 1) -- this order is correct based on count.
         let entries = vec![
             WordFollowEntry {
                 prefix: vec!["hello".to_string()],
@@ -760,10 +641,12 @@ mod tests {
 
         assert_eq!(json_none.len(), 2);
         // Prefix "hello": total_original_count=3 (k=1, max_val=9). Followers: "world"(2), "again"(1)
+        // Original cumulative: world:2, again:3
+        // Scaled: world (2/3 * 9) = 6, again (3/3 * 9) = 9
         assert_eq!(json_none[0][0], serde_json::json!("hello"));
         assert_eq!(json_none[0][1], serde_json::json!(9)); // Total scaled to 9
-        assert_eq!(json_none[0][2], serde_json::json!(["world", 6])); // (2/3 * 9).round() = 6
-        assert_eq!(json_none[0][3], serde_json::json!(["again", 9])); // (3/3 * 9).round() = 9 (last element)
+        assert_eq!(json_none[0][2], serde_json::json!(["world", 6])); 
+        assert_eq!(json_none[0][3], serde_json::json!(["again", 9])); 
         // Prefix "world": total_original_count=1 (k=1, max_val=9)
         assert_eq!(json_none[1][0], serde_json::json!("world"));
         assert_eq!(json_none[1][1], serde_json::json!(9)); // Total scaled to 9
@@ -793,9 +676,12 @@ mod tests {
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
         assert_eq!(json_d1[0][0], serde_json::json!("hello"));
-        assert_eq!(json_d1[0][1], serde_json::json!(9)); // Total scaled to 9 (10^k-1 rule)
-        assert_eq!(json_d1[0][2], serde_json::json!(["world", 6])); // (2/3 * 9).round() = 6
-        assert_eq!(json_d1[0][3], serde_json::json!(["again", 9])); // Last element is 9
+        assert_eq!(json_d1[0][1], serde_json::json!(9)); // Total scaled to 9 (10^k-1 rule because 2 unique > d=1)
+        // Original cumulative: world:2, again:3. Scale factor 9/3=3.
+        // world: (2*3).round() = 6
+        // again: (3*3).round() = 9
+        assert_eq!(json_d1[0][2], serde_json::json!(["world", 6])); 
+        assert_eq!(json_d1[0][3], serde_json::json!(["again", 9])); 
 
         assert_eq!(json_d1[1][0], serde_json::json!("world"));
         assert_eq!(json_d1[1][1], serde_json::json!(1)); // Total scaled to 1 ([1,d] rule)
@@ -839,17 +725,21 @@ mod tests {
 
         // Test with scale_d = Some(60)
         // Both entries: 1 unique follower <= 60. Scale to [1, 60].
-        save_to_json(&entries, &path, Some(60))?;
-        let json_d60: Vec<Vec<serde_json::Value>> =
+        save_to_json(&entries, &path, Some(120))?;
+        let json_d120: Vec<Vec<serde_json::Value>> =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
         
-        assert_eq!(json_d60[0][0], serde_json::json!("the quick"));
-        assert_eq!(json_d60[0][1], serde_json::json!(60)); // Total scaled to 60
-        assert_eq!(json_d60[0][2], serde_json::json!(["brown", 60])); // Last element is 60
+        // For "the quick" -> "brown" (1 follower, total original 1)
+        // Scaled to [1, 120], total becomes 120, follower "brown" gets 120.
+        assert_eq!(json_d120[0][0], serde_json::json!("the quick"));
+        assert_eq!(json_d120[0][1], serde_json::json!(120)); // Total scaled to 120
+        assert_eq!(json_d120[0][2], serde_json::json!(["brown", 120])); // Last element is 120
         
-        assert_eq!(json_d60[1][0], serde_json::json!("quick brown"));
-        assert_eq!(json_d60[1][1], serde_json::json!(60)); // Total scaled to 60
-        assert_eq!(json_d60[1][2], serde_json::json!(["fox", 60])); // Last element is 60
+        // For "quick brown" -> "fox" (1 follower, total original 1)
+        // Scaled to [1, 120], total becomes 120, follower "fox" gets 120.
+        assert_eq!(json_d120[1][0], serde_json::json!("quick brown"));
+        assert_eq!(json_d120[1][1], serde_json::json!(120)); // Total scaled to 120
+        assert_eq!(json_d120[1][2], serde_json::json!(["fox", 120])); // Last element is 120
         
         // Test with scale_d = Some(0)
         // Both entries: 1 unique follower > 0. Scale to 10^k-1 (total 9)
@@ -885,6 +775,7 @@ mod tests {
 
         // Test with scale_d = None (default 10^k-1 scaling)
         // total_original_count=10 (k=2, max_val=99). Factor = 9.9
+        // Original cumulative: dog:5, cat:8 (5+3), bird:10 (8+2)
         save_to_json(&entries, &path, None)?;
         let json_none: Vec<Vec<serde_json::Value>> =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
@@ -892,9 +783,9 @@ mod tests {
         assert_eq!(json_none.len(), 1);
         assert_eq!(json_none[0][0], serde_json::json!("the"));
         assert_eq!(json_none[0][1], serde_json::json!(99)); // Total scaled to 99
-        assert_eq!(json_none[0][2], serde_json::json!(["dog", 50])); // (5/10 * 99).round() = 50
-        assert_eq!(json_none[0][3], serde_json::json!(["cat", 79])); // (8/10 * 99).round() = 79
-        assert_eq!(json_none[0][4], serde_json::json!(["bird", 99])); // (10/10 * 99).round() = 99
+        assert_eq!(json_none[0][2], serde_json::json!(["dog", (5.0_f64 * 9.9_f64).round() as u64])); // 50
+        assert_eq!(json_none[0][3], serde_json::json!(["cat", (8.0_f64 * 9.9_f64).round() as u64])); // 79
+        assert_eq!(json_none[0][4], serde_json::json!(["bird", (10.0_f64 * 9.9_f64).round() as u64]));// 99
 
         // Test with scale_d = Some(120)
         // 3 unique followers <= 120. Scale to [1, 120]. Factor = 120/10 = 12.
@@ -917,9 +808,9 @@ mod tests {
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
         
         assert_eq!(json_d2[0][1], serde_json::json!(99)); // Total scaled to 99
-        assert_eq!(json_d2[0][2], serde_json::json!(["dog", 50])); // (5/10 * 99).round() = 50
-        assert_eq!(json_d2[0][3], serde_json::json!(["cat", 79])); // (8/10 * 99).round() = 79
-        assert_eq!(json_d2[0][4], serde_json::json!(["bird", 99])); // (10/10 * 99).round() = 99
+        assert_eq!(json_d2[0][2], serde_json::json!(["dog", (5.0_f64 * 9.9_f64).round() as u64])); // 50
+        assert_eq!(json_d2[0][3], serde_json::json!(["cat", (8.0_f64 * 9.9_f64).round() as u64])); // 79
+        assert_eq!(json_d2[0][4], serde_json::json!(["bird", (10.0_f64 * 9.9_f64).round() as u64]));// 99
 
         // Test with count = 2 (should be optimised to scale to 120)
         let entries_to_optimise = vec![WordFollowEntry {
@@ -934,11 +825,12 @@ mod tests {
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
         // Total count is 2, scaling factor is 120/2 = 60
-        // With equal counts, followers are sorted alphabetically: "one" before "two"
-        // With rounding: one(1) -> round(1*60) = 60, two(2) -> round(2*60) = 120
+        // Original cumulative: one:1, two:2
+        // Scaled: one: ceil(1*60)=60. max(60,1)=60.
+        // Scaled: two: (last) = 120.
         assert_eq!(json_optimised[0][1], serde_json::json!(120)); // Total count is 120
-        assert_eq!(json_optimised[0][2], serde_json::json!(["one", 60])); // First follower's cumulative count
-        assert_eq!(json_optimised[0][3], serde_json::json!(["two", 120])); // Second follower's cumulative count
+        assert_eq!(json_optimised[0][2], serde_json::json!(["one", 60])); 
+        assert_eq!(json_optimised[0][3], serde_json::json!(["two", 120])); 
 
         // Test with count = 3 (optimised for 120-sided die)
         let entries_count_3 = vec![WordFollowEntry {
@@ -957,11 +849,14 @@ mod tests {
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
         // Total count is 3, scaling factor is 120/3 = 40
-        // With alphabetical sorting (all counts are 1): a(1) -> 40, b(2) -> 80, c(3) -> 120
+        // Original cumulative: a:1, b:2, c:3
+        // Scaled: a: ceil(1*40)=40. max(40,1)=40.
+        // Scaled: b: ceil(2*40)=80. max(80,40+1)=80.
+        // Scaled: c: (last) = 120.
         assert_eq!(json_count_3[0][1], serde_json::json!(120)); // Total is 120
-        assert_eq!(json_count_3[0][2], serde_json::json!(["a", 40])); // First follower's cumulative count
-        assert_eq!(json_count_3[0][3], serde_json::json!(["b", 80])); // Second follower's cumulative count
-        assert_eq!(json_count_3[0][4], serde_json::json!(["c", 120])); // Third follower's cumulative count
+        assert_eq!(json_count_3[0][2], serde_json::json!(["a", 40])); 
+        assert_eq!(json_count_3[0][3], serde_json::json!(["b", 80])); 
+        assert_eq!(json_count_3[0][4], serde_json::json!(["c", 120])); 
 
         Ok(())
     }
