@@ -1,9 +1,10 @@
 use serde::Serialize;
 use std::collections::HashMap;
 use std::fs::File;
-use std::io::{self, BufRead, BufReader};
+use std::io;
 use std::path::Path;
 use std::collections::VecDeque;
+use frontmatter_gen::extract;
 
 // New module declarations
 mod tokenizer;
@@ -12,6 +13,19 @@ mod preprocessor;
 // Use functions from new modules
 use tokenizer::tokenize;
 use preprocessor::preprocess;
+
+/// Contains metadata from the frontmatter of the processed file
+#[derive(Debug, Clone, Serialize)]
+pub struct Metadata {
+    /// Title of the document
+    pub title: String,
+    /// Author of the document
+    pub author: String,
+    /// URL related to the document
+    pub url: String,
+    /// Size of n-gram used for processing
+    pub n: usize,
+}
 
 /// Contains summary statistics for processed text
 #[derive(Debug, Clone)]
@@ -49,6 +63,8 @@ pub struct NGramCounter {
     stats: ProcessingStats,
     /// Sliding window for processing text
     window: VecDeque<String>,
+    /// Metadata from the frontmatter of the processed file
+    metadata: Option<Metadata>,
 }
 
 impl NGramCounter {
@@ -72,6 +88,7 @@ impl NGramCounter {
                 most_popular_prefix: None,
             },
             window: VecDeque::with_capacity(prefix_size),
+            metadata: None,
         }
     }
 
@@ -113,15 +130,46 @@ impl NGramCounter {
         }
     }
 
-    /// Process a file containing text
+    /// Process a file containing text with frontmatter
     pub fn process_file<P: AsRef<Path>>(&mut self, path: P) -> io::Result<()> {
-        let file = File::open(path)?;
-        let reader = BufReader::new(file);
-
-        // Process each line
-        for line_result in reader.lines() {
-            let line = line_result?;
-            self.process_line(&line);
+        // Read the entire file content
+        let content = std::fs::read_to_string(&path)?;
+        
+        // Try to extract frontmatter
+        let content_to_process = match extract(&content) {
+            Ok((frontmatter, content_without_frontmatter)) => {
+                // Try to extract required fields
+                let title = frontmatter.get("title").and_then(|v| v.as_str());
+                let author = frontmatter.get("author").and_then(|v| v.as_str());
+                let url = frontmatter.get("url").and_then(|v| v.as_str());
+                
+                // If all required fields are present, create metadata
+                if let (Some(title), Some(author), Some(url)) = (title, author, url) {
+                    self.metadata = Some(Metadata {
+                        title: title.to_string(),
+                        author: author.to_string(),
+                        url: url.to_string(),
+                        n: self.n,
+                    });
+                    content_without_frontmatter
+                } else {
+                    // Missing required fields, use default metadata
+                    eprintln!("Warning: Frontmatter missing required fields (title, author, url). Using default metadata.");
+                    self.metadata = None;
+                    content.as_str()
+                }
+            },
+            Err(_) => {
+                // Failed to extract frontmatter, use default metadata
+                eprintln!("Warning: No valid frontmatter found. Using default metadata.");
+                self.metadata = None;
+                content.as_str()
+            }
+        };
+        
+        // Process the content
+        for line in content_to_process.lines() {
+            self.process_line(line);
         }
 
         // Calculate additional statistics after processing
@@ -198,20 +246,26 @@ impl NGramCounter {
     pub fn get_stats(&self) -> &ProcessingStats {
         &self.stats
     }
+    
+    /// Get the metadata from the frontmatter
+    pub fn get_metadata(&self) -> Option<&Metadata> {
+        self.metadata.as_ref()
+    }
 }
 
-/// Processes a text file and returns N-gram following statistics along with summary statistics
+/// Processes a text file and returns N-gram following statistics along with summary statistics and metadata
 pub fn process_file<P: AsRef<Path>>(
     path: P,
     n: usize,
-) -> io::Result<(Vec<WordFollowEntry>, ProcessingStats)> {
+) -> io::Result<(Vec<WordFollowEntry>, ProcessingStats, Option<Metadata>)> {
     let mut counter = NGramCounter::new(n);
     counter.process_file(path)?;
 
     let entries = counter.get_entries();
     let stats = counter.get_stats().clone();
+    let metadata = counter.get_metadata().cloned();
 
-    Ok((entries, stats))
+    Ok((entries, stats, metadata))
 }
 
 // Removed tokenize_line and case_exceptions as they are now in tokenizer.rs and preprocessor.rs
@@ -245,7 +299,8 @@ fn convert_to_entries(
 pub fn save_to_json<P: AsRef<Path>>(
     entries: &[WordFollowEntry],
     path: P,
-    scale_d: Option<u32>, // Changed from optimise: bool
+    scale_d: Option<u32>,
+    metadata: Option<&Metadata>
 ) -> io::Result<()> {
     // Convert entries to the required format: ["joined prefix", total_count, ["follower", cumulative_count], ...]
     let formatted_entries: Vec<Vec<serde_json::Value>> = entries
@@ -392,8 +447,25 @@ pub fn save_to_json<P: AsRef<Path>>(
         })
         .collect();
 
+    // Build the full output object with metadata and data
+    let mut output = serde_json::Map::new();
+    
+    // Add metadata if available
+    if let Some(meta) = metadata {
+        output.insert("metadata".to_string(), serde_json::to_value(meta)?);
+    } else {
+        // Create minimal metadata with just the n value
+        let mut meta_map = serde_json::Map::new();
+        meta_map.insert("n".to_string(), serde_json::Value::Number(serde_json::Number::from(entries[0].prefix.len() + 1)));
+        output.insert("metadata".to_string(), serde_json::Value::Object(meta_map));
+    }
+    
+    // Add data
+    output.insert("data".to_string(), serde_json::to_value(formatted_entries)?);
+    
+    // Write to file
     let file = File::create(path)?;
-    serde_json::to_writer_pretty(file, &formatted_entries)?;
+    serde_json::to_writer_pretty(file, &output)?;
     Ok(())
 }
 
@@ -443,9 +515,13 @@ mod tests {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
-        // Write test content to the temporary file
+        // Write test content to the temporary file with frontmatter
         {
             let mut file = File::create(&path)?;
+            writeln!(
+                file,
+                "---\ntitle: Test Document\nauthor: Test Author\nurl: https://example.com\n---"
+            )?;
             // Note: Number123 will be tokenized to "number". "ignored" from "ignored."
             writeln!(
                 file,
@@ -455,7 +531,7 @@ mod tests {
         }
 
         // Process with n=2 for bigrams
-        let (entries, stats) = process_file(&path, 2)?;
+        let (entries, stats, metadata) = process_file(&path, 2)?;
     
         // Expected tokens: "hello", "world", "hello", "again", "world", "number", "will", "be", "ignored"
         // Expected unique prefixes (n-1=1):
@@ -560,6 +636,13 @@ mod tests {
             stats.total_ngram_occurrences, 8,
             "Expected 8 total bigram occurrences"
         );
+        
+        // Check metadata
+        let metadata = metadata.expect("Metadata should be present");
+        assert_eq!(metadata.title, "Test Document");
+        assert_eq!(metadata.author, "Test Author");
+        assert_eq!(metadata.url, "https://example.com");
+        assert_eq!(metadata.n, 2);
 
         Ok(())
     }
@@ -569,15 +652,19 @@ mod tests {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
-        // Write to the file and explicitly flush
+        // Write to the file with frontmatter and explicitly flush
         {
             let mut file = File::create(&path)?;
+            writeln!(
+                file,
+                "---\ntitle: Trigram Test\nauthor: Trigram Author\nurl: https://trigram.example.com\n---"
+            )?;
             writeln!(file, "The quick brown fox jumps over the lazy dog")?;
             file.flush()?;
         }
 
         // Process with n=3 for trigrams
-        let (entries, stats) = process_file(&path, 3)?;
+        let (entries, stats, metadata) = process_file(&path, 3)?;
 
         // For n=3, each prefix is 2 words
         // Expected trigrams: [the, quick] -> brown, [quick, brown] -> fox, etc.
@@ -611,6 +698,13 @@ mod tests {
         assert_eq!(stats.total_tokens, 9); // the, quick, brown, fox, jumps, over, the, lazy, dog
         assert!(stats.unique_ngrams > 0);
         assert!(stats.total_ngram_occurrences > 0);
+        
+        // Check metadata
+        let metadata = metadata.expect("Metadata should be present");
+        assert_eq!(metadata.title, "Trigram Test");
+        assert_eq!(metadata.author, "Trigram Author");
+        assert_eq!(metadata.url, "https://trigram.example.com");
+        assert_eq!(metadata.n, 3);
 
         Ok(())
     }
@@ -633,59 +727,86 @@ mod tests {
 
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
+        
+        // Create metadata
+        let metadata = Metadata {
+            title: "Test Bigrams".to_string(),
+            author: "Test Author".to_string(),
+            url: "https://example.com/bigrams".to_string(),
+            n: 2,
+        };
 
         // Test with scale_d = None (default 10^k-1 scaling)
-        save_to_json(&entries, &path, None)?;
-        let json_none: Vec<Vec<serde_json::Value>> =
+        save_to_json(&entries, &path, None, Some(&metadata))?;
+        let json_none: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+        
+        // Extract the data array
+        let data = json_none.get("data").expect("Should have data field")
+            .as_array().expect("Data should be an array");
 
-        assert_eq!(json_none.len(), 2);
+        assert_eq!(data.len(), 2);
         // Prefix "hello": total_original_count=3 (k=1, max_val=9). Followers: "world"(2), "again"(1)
         // Original cumulative: world:2, again:3
         // Scaled: world (2/3 * 9) = 6, again (3/3 * 9) = 9
-        assert_eq!(json_none[0][0], serde_json::json!("hello"));
-        assert_eq!(json_none[0][1], serde_json::json!(9)); // Total scaled to 9
-        assert_eq!(json_none[0][2], serde_json::json!(["world", 6])); 
-        assert_eq!(json_none[0][3], serde_json::json!(["again", 9])); 
+        assert_eq!(data[0][0], serde_json::json!("hello"));
+        assert_eq!(data[0][1], serde_json::json!(9)); // Total scaled to 9
+        assert_eq!(data[0][2], serde_json::json!(["world", 6])); 
+        assert_eq!(data[0][3], serde_json::json!(["again", 9])); 
         // Prefix "world": total_original_count=1 (k=1, max_val=9)
-        assert_eq!(json_none[1][0], serde_json::json!("world"));
-        assert_eq!(json_none[1][1], serde_json::json!(9)); // Total scaled to 9
-        assert_eq!(json_none[1][2], serde_json::json!(["hello", 9])); // (1/1 * 9).round() = 9
+        assert_eq!(data[1][0], serde_json::json!("world"));
+        assert_eq!(data[1][1], serde_json::json!(9)); // Total scaled to 9
+        assert_eq!(data[1][2], serde_json::json!(["hello", 9])); // (1/1 * 9).round() = 9
+        
+        // Check metadata
+        let meta = json_none.get("metadata").expect("Should have metadata field");
+        assert_eq!(meta.get("title").unwrap(), "Test Bigrams");
+        assert_eq!(meta.get("author").unwrap(), "Test Author");
+        assert_eq!(meta.get("url").unwrap(), "https://example.com/bigrams");
+        assert_eq!(meta.get("n").unwrap(), 2);
 
         // Test with scale_d = Some(120)
         // "hello": 2 unique followers <= 120. Scale to [1, 120].
         // "world": 1 unique follower <= 120. Scale to [1, 120].
-        save_to_json(&entries, &path, Some(120))?;
-        let json_d120: Vec<Vec<serde_json::Value>> =
+        save_to_json(&entries, &path, Some(120), Some(&metadata))?;
+        let json_d120: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
         
-        assert_eq!(json_d120[0][0], serde_json::json!("hello"));
-        assert_eq!(json_d120[0][1], serde_json::json!(120)); // Total scaled to 120
-        assert_eq!(json_d120[0][2], serde_json::json!(["world", 80])); // (2/3 * 120).round() = 80
-        assert_eq!(json_d120[0][3], serde_json::json!(["again", 120])); // Last element is 120
+        // Extract the data array
+        let data_d120 = json_d120.get("data").expect("Should have data field")
+            .as_array().expect("Data should be an array");
         
-        assert_eq!(json_d120[1][0], serde_json::json!("world"));
-        assert_eq!(json_d120[1][1], serde_json::json!(120)); // Total scaled to 120
-        assert_eq!(json_d120[1][2], serde_json::json!(["hello", 120])); // Last element is 120
+        assert_eq!(data_d120[0][0], serde_json::json!("hello"));
+        assert_eq!(data_d120[0][1], serde_json::json!(120)); // Total scaled to 120
+        assert_eq!(data_d120[0][2], serde_json::json!(["world", 80])); // (2/3 * 120).round() = 80
+        assert_eq!(data_d120[0][3], serde_json::json!(["again", 120])); // Last element is 120
+        
+        assert_eq!(data_d120[1][0], serde_json::json!("world"));
+        assert_eq!(data_d120[1][1], serde_json::json!(120)); // Total scaled to 120
+        assert_eq!(data_d120[1][2], serde_json::json!(["hello", 120])); // Last element is 120
 
         // Test with scale_d = Some(1)
         // "hello": 2 unique followers > 1. Scale to 10^k-1 (total 9).
         // "world": 1 unique follower <= 1. Scale to [1, 1].
-        save_to_json(&entries, &path, Some(1))?;
-        let json_d1: Vec<Vec<serde_json::Value>> =
+        save_to_json(&entries, &path, Some(1), Some(&metadata))?;
+        let json_d1: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+            
+        // Extract the data array
+        let data_d1 = json_d1.get("data").expect("Should have data field")
+            .as_array().expect("Data should be an array");
 
-        assert_eq!(json_d1[0][0], serde_json::json!("hello"));
-        assert_eq!(json_d1[0][1], serde_json::json!(9)); // Total scaled to 9 (10^k-1 rule because 2 unique > d=1)
+        assert_eq!(data_d1[0][0], serde_json::json!("hello"));
+        assert_eq!(data_d1[0][1], serde_json::json!(9)); // Total scaled to 9 (10^k-1 rule because 2 unique > d=1)
         // Original cumulative: world:2, again:3. Scale factor 9/3=3.
         // world: (2*3).round() = 6
         // again: (3*3).round() = 9
-        assert_eq!(json_d1[0][2], serde_json::json!(["world", 6])); 
-        assert_eq!(json_d1[0][3], serde_json::json!(["again", 9])); 
+        assert_eq!(data_d1[0][2], serde_json::json!(["world", 6])); 
+        assert_eq!(data_d1[0][3], serde_json::json!(["again", 9])); 
 
-        assert_eq!(json_d1[1][0], serde_json::json!("world"));
-        assert_eq!(json_d1[1][1], serde_json::json!(1)); // Total scaled to 1 ([1,d] rule)
-        assert_eq!(json_d1[1][2], serde_json::json!(["hello", 1])); // Last element is 1
+        assert_eq!(data_d1[1][0], serde_json::json!("world"));
+        assert_eq!(data_d1[1][1], serde_json::json!(1)); // Total scaled to 1 ([1,d] rule)
+        assert_eq!(data_d1[1][2], serde_json::json!(["hello", 1])); // Last element is 1
 
         Ok(())
     }
@@ -706,51 +827,78 @@ mod tests {
 
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
+        
+        // Create metadata
+        let metadata = Metadata {
+            title: "Test Trigrams".to_string(),
+            author: "Test Author".to_string(),
+            url: "https://example.com/trigrams".to_string(),
+            n: 3,
+        };
 
         // Test with scale_d = None (default 10^k-1 scaling)
         // Both entries: total_original_count=1 (k=1, max_val=9)
-        save_to_json(&entries, &path, None)?;
-        let json_none: Vec<Vec<serde_json::Value>> =
+        save_to_json(&entries, &path, None, Some(&metadata))?;
+        let json_none: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+            
+        // Extract the data array
+        let data = json_none.get("data").expect("Should have data field")
+            .as_array().expect("Data should be an array");
 
-        assert_eq!(json_none.len(), 2);
+        assert_eq!(data.len(), 2);
         // Entry ["the", "quick"]
-        assert_eq!(json_none[0][0], serde_json::json!("the quick"));
-        assert_eq!(json_none[0][1], serde_json::json!(9)); // Total scaled to 9
-        assert_eq!(json_none[0][2], serde_json::json!(["brown", 9])); // (1/1 * 9).round() = 9
+        assert_eq!(data[0][0], serde_json::json!("the quick"));
+        assert_eq!(data[0][1], serde_json::json!(9)); // Total scaled to 9
+        assert_eq!(data[0][2], serde_json::json!(["brown", 9])); // (1/1 * 9).round() = 9
         // Entry ["quick", "brown"]
-        assert_eq!(json_none[1][0], serde_json::json!("quick brown"));
-        assert_eq!(json_none[1][1], serde_json::json!(9)); // Total scaled to 9
-        assert_eq!(json_none[1][2], serde_json::json!(["fox", 9])); // (1/1 * 9).round() = 9
+        assert_eq!(data[1][0], serde_json::json!("quick brown"));
+        assert_eq!(data[1][1], serde_json::json!(9)); // Total scaled to 9
+        assert_eq!(data[1][2], serde_json::json!(["fox", 9])); // (1/1 * 9).round() = 9
+        
+        // Check metadata
+        let meta = json_none.get("metadata").expect("Should have metadata field");
+        assert_eq!(meta.get("title").unwrap(), "Test Trigrams");
+        assert_eq!(meta.get("author").unwrap(), "Test Author");
+        assert_eq!(meta.get("url").unwrap(), "https://example.com/trigrams");
+        assert_eq!(meta.get("n").unwrap(), 3);
 
         // Test with scale_d = Some(60)
         // Both entries: 1 unique follower <= 60. Scale to [1, 60].
-        save_to_json(&entries, &path, Some(120))?;
-        let json_d120: Vec<Vec<serde_json::Value>> =
+        save_to_json(&entries, &path, Some(120), Some(&metadata))?;
+        let json_d120: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+            
+        // Extract the data array
+        let data_d120 = json_d120.get("data").expect("Should have data field")
+            .as_array().expect("Data should be an array");
         
         // For "the quick" -> "brown" (1 follower, total original 1)
         // Scaled to [1, 120], total becomes 120, follower "brown" gets 120.
-        assert_eq!(json_d120[0][0], serde_json::json!("the quick"));
-        assert_eq!(json_d120[0][1], serde_json::json!(120)); // Total scaled to 120
-        assert_eq!(json_d120[0][2], serde_json::json!(["brown", 120])); // Last element is 120
+        assert_eq!(data_d120[0][0], serde_json::json!("the quick"));
+        assert_eq!(data_d120[0][1], serde_json::json!(120)); // Total scaled to 120
+        assert_eq!(data_d120[0][2], serde_json::json!(["brown", 120])); // Last element is 120
         
         // For "quick brown" -> "fox" (1 follower, total original 1)
         // Scaled to [1, 120], total becomes 120, follower "fox" gets 120.
-        assert_eq!(json_d120[1][0], serde_json::json!("quick brown"));
-        assert_eq!(json_d120[1][1], serde_json::json!(120)); // Total scaled to 120
-        assert_eq!(json_d120[1][2], serde_json::json!(["fox", 120])); // Last element is 120
+        assert_eq!(data_d120[1][0], serde_json::json!("quick brown"));
+        assert_eq!(data_d120[1][1], serde_json::json!(120)); // Total scaled to 120
+        assert_eq!(data_d120[1][2], serde_json::json!(["fox", 120])); // Last element is 120
         
         // Test with scale_d = Some(0)
         // Both entries: 1 unique follower > 0. Scale to 10^k-1 (total 9)
-        save_to_json(&entries, &path, Some(0))?;
-        let json_d0: Vec<Vec<serde_json::Value>> =
+        save_to_json(&entries, &path, Some(0), Some(&metadata))?;
+        let json_d0: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+            
+        // Extract the data array
+        let data_d0 = json_d0.get("data").expect("Should have data field")
+            .as_array().expect("Data should be an array");
 
-        assert_eq!(json_d0[0][1], serde_json::json!(9));
-        assert_eq!(json_d0[0][2], serde_json::json!(["brown", 9]));
-        assert_eq!(json_d0[1][1], serde_json::json!(9));
-        assert_eq!(json_d0[1][2], serde_json::json!(["fox", 9]));
+        assert_eq!(data_d0[0][1], serde_json::json!(9));
+        assert_eq!(data_d0[0][2], serde_json::json!(["brown", 9]));
+        assert_eq!(data_d0[1][1], serde_json::json!(9));
+        assert_eq!(data_d0[1][2], serde_json::json!(["fox", 9]));
 
         Ok(())
     }
@@ -772,45 +920,72 @@ mod tests {
 
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
+        
+        // Create metadata
+        let metadata = Metadata {
+            title: "Cumulative Test".to_string(),
+            author: "Test Author".to_string(),
+            url: "https://example.com/cumulative".to_string(),
+            n: 2,
+        };
 
         // Test with scale_d = None (default 10^k-1 scaling)
         // total_original_count=10 (k=2, max_val=99). Factor = 9.9
         // Original cumulative: dog:5, cat:8 (5+3), bird:10 (8+2)
-        save_to_json(&entries, &path, None)?;
-        let json_none: Vec<Vec<serde_json::Value>> =
+        save_to_json(&entries, &path, None, Some(&metadata))?;
+        let json_none: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+            
+        // Extract the data array
+        let data = json_none.get("data").expect("Should have data field")
+            .as_array().expect("Data should be an array");
 
-        assert_eq!(json_none.len(), 1);
-        assert_eq!(json_none[0][0], serde_json::json!("the"));
-        assert_eq!(json_none[0][1], serde_json::json!(99)); // Total scaled to 99
-        assert_eq!(json_none[0][2], serde_json::json!(["dog", (5.0_f64 * 9.9_f64).round() as u64])); // 50
-        assert_eq!(json_none[0][3], serde_json::json!(["cat", (8.0_f64 * 9.9_f64).round() as u64])); // 79
-        assert_eq!(json_none[0][4], serde_json::json!(["bird", (10.0_f64 * 9.9_f64).round() as u64]));// 99
+        assert_eq!(data.len(), 1);
+        assert_eq!(data[0][0], serde_json::json!("the"));
+        assert_eq!(data[0][1], serde_json::json!(99)); // Total scaled to 99
+        assert_eq!(data[0][2], serde_json::json!(["dog", (5.0_f64 * 9.9_f64).round() as u64])); // 50
+        assert_eq!(data[0][3], serde_json::json!(["cat", (8.0_f64 * 9.9_f64).round() as u64])); // 79
+        assert_eq!(data[0][4], serde_json::json!(["bird", (10.0_f64 * 9.9_f64).round() as u64]));// 99
+        
+        // Check metadata
+        let meta = json_none.get("metadata").expect("Should have metadata field");
+        assert_eq!(meta.get("title").unwrap(), "Cumulative Test");
+        assert_eq!(meta.get("author").unwrap(), "Test Author");
+        assert_eq!(meta.get("url").unwrap(), "https://example.com/cumulative");
+        assert_eq!(meta.get("n").unwrap(), 2);
 
         // Test with scale_d = Some(120)
         // 3 unique followers <= 120. Scale to [1, 120]. Factor = 120/10 = 12.
-        save_to_json(&entries, &path, Some(120))?;
-        let json_d120: Vec<Vec<serde_json::Value>> =
+        save_to_json(&entries, &path, Some(120), Some(&metadata))?;
+        let json_d120: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+            
+        // Extract the data array
+        let data_d120 = json_d120.get("data").expect("Should have data field")
+            .as_array().expect("Data should be an array");
 
-        assert_eq!(json_d120[0][1], serde_json::json!(120)); // Total scaled to 120
+        assert_eq!(data_d120[0][1], serde_json::json!(120)); // Total scaled to 120
         // dog (orig 5): ceil(5*12).max(1)=60. prev=0. max(60, 1)=60.
-        assert_eq!(json_d120[0][2], serde_json::json!(["dog", 60]));
+        assert_eq!(data_d120[0][2], serde_json::json!(["dog", 60]));
         // cat (orig 8): ceil(8*12).max(1)=96. prev=60. max(96, 60+1)=96.
-        assert_eq!(json_d120[0][3], serde_json::json!(["cat", 96]));
+        assert_eq!(data_d120[0][3], serde_json::json!(["cat", 96]));
         // bird (orig 10): last element, so 120.
-        assert_eq!(json_d120[0][4], serde_json::json!(["bird", 120]));
+        assert_eq!(data_d120[0][4], serde_json::json!(["bird", 120]));
 
         // Test with scale_d = Some(2)
         // 3 unique followers > 2. Scale to 10^k-1 (total 99).
-        save_to_json(&entries, &path, Some(2))?;
-        let json_d2: Vec<Vec<serde_json::Value>> =
+        save_to_json(&entries, &path, Some(2), Some(&metadata))?;
+        let json_d2: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+            
+        // Extract the data array
+        let data_d2 = json_d2.get("data").expect("Should have data field")
+            .as_array().expect("Data should be an array");
         
-        assert_eq!(json_d2[0][1], serde_json::json!(99)); // Total scaled to 99
-        assert_eq!(json_d2[0][2], serde_json::json!(["dog", (5.0_f64 * 9.9_f64).round() as u64])); // 50
-        assert_eq!(json_d2[0][3], serde_json::json!(["cat", (8.0_f64 * 9.9_f64).round() as u64])); // 79
-        assert_eq!(json_d2[0][4], serde_json::json!(["bird", (10.0_f64 * 9.9_f64).round() as u64]));// 99
+        assert_eq!(data_d2[0][1], serde_json::json!(99)); // Total scaled to 99
+        assert_eq!(data_d2[0][2], serde_json::json!(["dog", (5.0_f64 * 9.9_f64).round() as u64])); // 50
+        assert_eq!(data_d2[0][3], serde_json::json!(["cat", (8.0_f64 * 9.9_f64).round() as u64])); // 79
+        assert_eq!(data_d2[0][4], serde_json::json!(["bird", (10.0_f64 * 9.9_f64).round() as u64]));// 99
 
         // Test with count = 2 (should be optimised to scale to 120)
         let entries_to_optimise = vec![WordFollowEntry {
@@ -818,19 +993,31 @@ mod tests {
             followers: vec![("one".to_string(), 1), ("two".to_string(), 1)],
             // When counts are equal, they'll be sorted alphabetically: "one" before "two"
         }];
+        
+        // Different metadata for this test
+        let metadata_opt = Metadata {
+            title: "Optimized Test".to_string(),
+            author: "Optimizer".to_string(),
+            url: "https://example.com/optimized".to_string(),
+            n: 2,
+        };
 
-        save_to_json(&entries_to_optimise, &path, Some(120))?;
+        save_to_json(&entries_to_optimise, &path, Some(120), Some(&metadata_opt))?;
 
-        let json_optimised: Vec<Vec<serde_json::Value>> =
+        let json_optimised: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+            
+        // Extract the data array
+        let data_opt = json_optimised.get("data").expect("Should have data field")
+            .as_array().expect("Data should be an array");
 
         // Total count is 2, scaling factor is 120/2 = 60
         // Original cumulative: one:1, two:2
         // Scaled: one: ceil(1*60)=60. max(60,1)=60.
         // Scaled: two: (last) = 120.
-        assert_eq!(json_optimised[0][1], serde_json::json!(120)); // Total count is 120
-        assert_eq!(json_optimised[0][2], serde_json::json!(["one", 60])); 
-        assert_eq!(json_optimised[0][3], serde_json::json!(["two", 120])); 
+        assert_eq!(data_opt[0][1], serde_json::json!(120)); // Total count is 120
+        assert_eq!(data_opt[0][2], serde_json::json!(["one", 60])); 
+        assert_eq!(data_opt[0][3], serde_json::json!(["two", 120])); 
 
         // Test with count = 3 (optimised for 120-sided die)
         let entries_count_3 = vec![WordFollowEntry {
@@ -842,21 +1029,33 @@ mod tests {
             ],
             // With equal counts, followers should be sorted alphabetically
         }];
+        
+        // Different metadata for this test
+        let metadata_count3 = Metadata {
+            title: "Count3 Test".to_string(),
+            author: "Counter".to_string(),
+            url: "https://example.com/count3".to_string(),
+            n: 2,
+        };
 
-        save_to_json(&entries_count_3, &path, Some(120))?;
+        save_to_json(&entries_count_3, &path, Some(120), Some(&metadata_count3))?;
 
-        let json_count_3: Vec<Vec<serde_json::Value>> =
+        let json_count_3: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+            
+        // Extract the data array
+        let data_count3 = json_count_3.get("data").expect("Should have data field")
+            .as_array().expect("Data should be an array");
 
         // Total count is 3, scaling factor is 120/3 = 40
         // Original cumulative: a:1, b:2, c:3
         // Scaled: a: ceil(1*40)=40. max(40,1)=40.
         // Scaled: b: ceil(2*40)=80. max(80,40+1)=80.
         // Scaled: c: (last) = 120.
-        assert_eq!(json_count_3[0][1], serde_json::json!(120)); // Total is 120
-        assert_eq!(json_count_3[0][2], serde_json::json!(["a", 40])); 
-        assert_eq!(json_count_3[0][3], serde_json::json!(["b", 80])); 
-        assert_eq!(json_count_3[0][4], serde_json::json!(["c", 120])); 
+        assert_eq!(data_count3[0][1], serde_json::json!(120)); // Total is 120
+        assert_eq!(data_count3[0][2], serde_json::json!(["a", 40])); 
+        assert_eq!(data_count3[0][3], serde_json::json!(["b", 80])); 
+        assert_eq!(data_count3[0][4], serde_json::json!(["c", 120])); 
 
         Ok(())
     }
@@ -877,28 +1076,47 @@ mod tests {
 
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
+        
+        // Create metadata
+        let metadata = Metadata {
+            title: "Duplicate Test".to_string(),
+            author: "Duplicate Author".to_string(),
+            url: "https://example.com/duplicate".to_string(),
+            n: 2,
+        };
 
         // With scale_d = 3, we'd normally use [1,3] scaling
         // But since we have 4 followers with identical counts, they'd get scaled to the same values
         // So we should switch to 10^k-1 scaling (total is 4, so k=1, max_val=9)
-        save_to_json(&entries, &path, Some(3))?;
-        let json_result: Vec<Vec<serde_json::Value>> =
+        save_to_json(&entries, &path, Some(3), Some(&metadata))?;
+        let json_result: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+            
+        // Extract the data array
+        let data = json_result.get("data").expect("Should have data field")
+            .as_array().expect("Data should be an array");
         
         // Total count is 4, so k=1, max_val=9
-        assert_eq!(json_result[0][1], serde_json::json!(9));
+        assert_eq!(data[0][1], serde_json::json!(9));
         
         // Check that values are properly scaled and not duplicates
-        let first_val = json_result[0][2][1].as_u64().unwrap();
-        let second_val = json_result[0][3][1].as_u64().unwrap();
-        let third_val = json_result[0][4][1].as_u64().unwrap();
-        let fourth_val = json_result[0][5][1].as_u64().unwrap();
+        let first_val = data[0][2][1].as_u64().unwrap();
+        let second_val = data[0][3][1].as_u64().unwrap();
+        let third_val = data[0][4][1].as_u64().unwrap();
+        let fourth_val = data[0][5][1].as_u64().unwrap();
         
         // Values should be strictly increasing in 10^k-1 scaling
         assert!(first_val < second_val, "Values should be strictly increasing");
         assert!(second_val < third_val, "Values should be strictly increasing");
         assert!(third_val < fourth_val, "Values should be strictly increasing");
         assert_eq!(fourth_val, 9, "Last value should be the maximum");
+        
+        // Check metadata
+        let meta = json_result.get("metadata").expect("Should have metadata field");
+        assert_eq!(meta.get("title").unwrap(), "Duplicate Test");
+        assert_eq!(meta.get("author").unwrap(), "Duplicate Author");
+        assert_eq!(meta.get("url").unwrap(), "https://example.com/duplicate");
+        assert_eq!(meta.get("n").unwrap(), 2);
         
         // Test edge case with scale_d = 1 and multiple identical followers
         let entries_edge = vec![WordFollowEntry {
@@ -909,13 +1127,25 @@ mod tests {
             ],
         }];
         
+        // Different metadata for edge case
+        let metadata_edge = Metadata {
+            title: "Edge Test".to_string(),
+            author: "Edge Author".to_string(),
+            url: "https://example.com/edge".to_string(),
+            n: 2,
+        };
+        
         // With scale_d = 1, we can't scale 2 followers uniquely to [1,1]
-        save_to_json(&entries_edge, &path, Some(1))?;
-        let json_edge: Vec<Vec<serde_json::Value>> =
+        save_to_json(&entries_edge, &path, Some(1), Some(&metadata_edge))?;
+        let json_edge: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+            
+        // Extract the data array
+        let data_edge = json_edge.get("data").expect("Should have data field")
+            .as_array().expect("Data should be an array");
         
         // Should use 10^k-1 scaling (k=1 because total is 2, so max is 9)
-        assert_eq!(json_edge[0][1], serde_json::json!(9));
+        assert_eq!(data_edge[0][1], serde_json::json!(9));
         
         // Another test with mixed counts
         let entries_mixed = vec![WordFollowEntry {
@@ -926,15 +1156,27 @@ mod tests {
             ],
         }];
         
+        // Different metadata for mixed case
+        let metadata_mixed = Metadata {
+            title: "Mixed Test".to_string(),
+            author: "Mixed Author".to_string(),
+            url: "https://example.com/mixed".to_string(),
+            n: 2,
+        };
+        
         // With scale_d = 2, the scaling would be very uneven but should work
-        save_to_json(&entries_mixed, &path, Some(2))?;
-        let json_mixed: Vec<Vec<serde_json::Value>> =
+        save_to_json(&entries_mixed, &path, Some(2), Some(&metadata_mixed))?;
+        let json_mixed: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
+            
+        // Extract the data array
+        let data_mixed = json_mixed.get("data").expect("Should have data field")
+            .as_array().expect("Data should be an array");
         
         // If it used scale_d=2, the total would be 2
-        assert_eq!(json_mixed[0][1], serde_json::json!(2));
-        assert_eq!(json_mixed[0][2][1], serde_json::json!(1)); // first follower
-        assert_eq!(json_mixed[0][3][1], serde_json::json!(2)); // second follower
+        assert_eq!(data_mixed[0][1], serde_json::json!(2));
+        assert_eq!(data_mixed[0][2][1], serde_json::json!(1)); // first follower
+        assert_eq!(data_mixed[0][3][1], serde_json::json!(2)); // second follower
         
         Ok(())
     }

@@ -6,7 +6,9 @@
 #let dice_d = 120
 
 // Load the JSON data
-#let data = json("model.json")
+#let json_data = json("model.json")
+#let data = json_data.data
+#let metadata = json_data.metadata
 
 // Create a state variable to track the current prefix
 #let current_prefix = state("current-prefix", "")
@@ -28,20 +30,26 @@
   set page(margin: (x: 2.5cm, y: 2.5cm))
   set text(size: 12pt)
   align(horizon)[
-    #text(size: 1.2em)[#context document.description of #context document.title]
+    #text(size: 1.2em)[An N-gram Language Model of]
+    #text(style: "italic")[#context document.title] by
+    #text[#context document.author.first()]
     #v(0.7cm)
+
     #text(size: 1em)[© 2025 Cybernetic Studio]
     #v(0.5cm)
+
     #text(size: 0.9em)[
       This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0).
     ]
     #v(0.5cm)
+
     #text(size: 0.9em)[ISBN: 978-0-00000-000-0]
     #v(0.5cm)
     #text(size: 0.9em)[Published by Cybernetic Studio Press]
     #v(0.5cm)
     #text(size: 0.9em)[First Edition]
     #v(0.5cm)
+
     #text(size: 0.9em, style: "italic")[
       Disclaimer: this reference contains a statistical language model derived from text corpus analysis.
       The patterns within represent probabilistic relationships between words and their sequences---any new
@@ -119,6 +127,29 @@
   //   line(length: 100%, stroke: 0.5pt + luma(50%))
   // }
 )
+
+// Add metadata section at the top
+#let has_complete_metadata = metadata != none and "title" in metadata and "author" in metadata and "url" in metadata and "n" in metadata
+
+#align(center)[
+  #if has_complete_metadata [
+    #text(metadata.title, size: 2em, weight: "bold")
+    #linebreak()
+    #text[By #metadata.author]
+    #linebreak()
+    #link(metadata.url)[#metadata.url]
+    #linebreak()
+  ]
+  
+  // N-gram size should always be available
+  #if "n" in metadata [
+    #text[N-gram size: #metadata.n]
+  ] else [
+    #text[N-gram model]
+  ]
+]
+
+#pagebreak()
 
 #for (i, item) in data.enumerate() {
   // The first element is the prefix

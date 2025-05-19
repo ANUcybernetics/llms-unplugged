@@ -35,14 +35,24 @@ fn main() {
         Ok(()) => {
             let entries = counter.get_entries();
             let stats = counter.get_stats();
+            let metadata = counter.get_metadata();
             
-            match save_to_json(&entries, &args.output, args.scale_d) {
+            match save_to_json(&entries, &args.output, args.scale_d, metadata) {
                 Ok(_) => {
                     println!("Successfully wrote word statistics to '{}'", args.output.display());
                     if let Some(d) = args.scale_d {
                         println!("Applied count scaling with d={}", d);
                     } else {
                         println!("Applied default count scaling to [0, 10^n-1] range");
+                    }
+                    
+                    // Print metadata information
+                    if let Some(meta) = metadata {
+                        println!("\nDocument Metadata:");
+                        println!("------------------");
+                        println!("Title: {}", meta.title);
+                        println!("Author: {}", meta.author);
+                        println!("URL: {}", meta.url);
                     }
                     
                     // Print summary statistics
@@ -71,6 +81,13 @@ fn main() {
                 Err(e) => eprintln!("Error writing output file: {}", e),
             }
         },
-        Err(e) => eprintln!("Error processing input file: {}", e),
+        Err(e) => {
+            if e.kind() == std::io::ErrorKind::InvalidData {
+                eprintln!("Error in frontmatter: {}", e);
+                eprintln!("The input file must contain YAML frontmatter with title, author, and url fields");
+            } else {
+                eprintln!("Error processing input file: {}", e);
+            }
+        },
     }
 }
