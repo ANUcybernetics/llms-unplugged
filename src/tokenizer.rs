@@ -34,14 +34,22 @@ pub fn tokenize(line: &str) -> Vec<String> {
             // Strip apostrophes at beginning and end
             let mut cleaned_token = token; // Already a String
 
-            // Remove leading apostrophe if present
-            if cleaned_token.starts_with('\'') {
+            // Repeatedly remove leading apostrophes
+            while cleaned_token.starts_with('\'') {
+                if cleaned_token.len() == 1 { // Token is just "'" or became "'"
+                    cleaned_token.clear(); // Make it empty to be filtered out later
+                    break;
+                }
                 cleaned_token.remove(0);
             }
 
-            // Remove trailing apostrophe if present
-            // Check length again as it might be a single quote token that became empty
-            if !cleaned_token.is_empty() && cleaned_token.ends_with('\'') {
+            // Repeatedly remove trailing apostrophes
+            // Check length again as it might have been all apostrophes or became empty
+            while !cleaned_token.is_empty() && cleaned_token.ends_with('\'') {
+                 if cleaned_token.len() == 1 { // Token is just "'" or became "'"
+                    cleaned_token.clear(); // Make it empty to be filtered out later
+                    break;
+                }
                 cleaned_token.pop();
             }
             cleaned_token
@@ -151,5 +159,62 @@ mod tests {
         assert_eq!(tokenize(" leading space"), vec!["leading", "space"]);
         assert_eq!(tokenize("trailing space "), vec!["trailing", "space"]);
         assert_eq!(tokenize("token1 token2"), vec!["token", "token"]); // "token1" -> "token"
+    }
+
+    #[test]
+    fn test_tokenize_double_single_quotes_around_sentence() {
+        let line = "''You two are so...''";
+        let tokens = tokenize(line);
+        assert_eq!(tokens, vec!["you", "two", "are", "so"]);
+    }
+
+    #[test]
+    fn test_tokenize_single_quote_around_contraction_phrase() {
+        let line = "'don't worry daisy'";
+        let tokens = tokenize(line);
+        assert_eq!(tokens, vec!["don't", "worry", "daisy"]);
+    }
+
+    #[test]
+    fn test_tokenize_handles_mixed_quoting_and_contractions() {
+        let line = "''I'm not sure,'' she said, '''tis a problem.'";
+        let tokens = tokenize(line);
+        assert_eq!(
+            tokens,
+            vec!["i'm", "not", "sure", "she", "said", "tis", "a", "problem"]
+        );
+    }
+
+    #[test]
+    fn test_tokenize_single_quotes_within_word_not_stripped() {
+        // This case should not occur with current tokenization rules that split on non-alpha/non-apostrophe,
+        // but ensures that if a token like "o'clock" was somehow formed, internal apostrophes aren't stripped.
+        // The current tokenizer would split "o'clock" into "o" and "clock" if spaces or punctuation surrounded it.
+        // However, if we imagine a scenario where it's a single token, this test makes sense.
+        // For now, it will likely pass due to how tokens are split.
+        let line = "o'clock"; 
+        let tokens = tokenize(line);
+        assert_eq!(tokens, vec!["o'clock"]);
+    }
+
+    #[test]
+    fn test_tokenize_multiple_leading_and_trailing_apostrophes() {
+        let line = "'''word'''";
+        let tokens = tokenize(line);
+        assert_eq!(tokens, vec!["word"]);
+    }
+
+    #[test]
+    fn test_tokenize_apostrophes_only_token() {
+        let line = "'''";
+        let tokens = tokenize(line);
+        assert_eq!(tokens, Vec::<String>::new());
+    }
+    
+    #[test]
+    fn test_tokenize_apostrophe_with_contraction() {
+        let line = "''can't''";
+        let tokens = tokenize(line);
+        assert_eq!(tokens, vec!["can't"]);
     }
 }
