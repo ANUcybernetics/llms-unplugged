@@ -417,10 +417,10 @@ fn test_cli_end_to_end() -> io::Result<()> {
     let mut found_prefix_quick = false;
     let mut found_invalid_chars_word = false; // Flag if any word (prefix or follower) has invalid chars
     let mut the_followed_by_quick_count = 0;
-    let mut quick_followed_by_brown_count = 0;
+    let mut _quick_followed_by_brown_count = 0;
 
     // Get the data array from the restructured JSON
-    let data_no_scale_arg = json_no_scale_arg.get("data").unwrap().as_array().unwrap();
+    let _data_no_scale_arg = json_no_scale_arg.get("data").unwrap().as_array().unwrap();
 
     // Verify structure (each entry should be an array: [prefix_array, follower_pair, ...])
     // Using json_no_scale_arg for general structure checks
@@ -508,7 +508,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
                 the_followed_by_quick_count += follower_arr[1].as_u64().unwrap_or(0) as usize;
             }
             if prefix_word == "quick" && follower_word == "brown" {
-                quick_followed_by_brown_count += follower_arr[1].as_u64().unwrap_or(0) as usize;
+                _quick_followed_by_brown_count += follower_arr[1].as_u64().unwrap_or(0) as usize;
             }
         }
     }
