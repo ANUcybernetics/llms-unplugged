@@ -18,7 +18,10 @@ fn run_cli_and_typst_test(n: usize, exe_path: &Path, temp_dir: &TempDir) -> io::
         if crate_root.join("my_first_lm").is_dir() {
             crate_root.push("my_first_lm");
         } else {
-            panic!("Could not determine crate root for test. CWD: {:?}", crate_root);
+            panic!(
+                "Could not determine crate root for test. CWD: {:?}",
+                crate_root
+            );
         }
     }
     let actual_book_typ_path = crate_root.join("book.typ");
@@ -114,13 +117,14 @@ fn test_frontmatter_errors() -> io::Result<()> {
         writeln!(input_file, "The program should exit with an error.")?;
         input_file.flush()?;
 
-        let output = Command::new(&exe_path)
-            .arg(&input_path)
-            .output()?;
-        
+        let output = Command::new(&exe_path).arg(&input_path).output()?;
+
         // With the new implementation, missing frontmatter should succeed with warning
-        assert!(output.status.success(), "CLI should succeed even with missing frontmatter");
-            
+        assert!(
+            output.status.success(),
+            "CLI should succeed even with missing frontmatter"
+        );
+
         // Error output should contain warning about missing frontmatter
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
@@ -128,7 +132,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
             "Should output warning about missing frontmatter: {}",
             stderr_message
         );
-            
+
         // Standard output should show successful processing
         let stdout_message = String::from_utf8_lossy(&output.stdout);
         assert!(
@@ -148,13 +152,14 @@ fn test_frontmatter_errors() -> io::Result<()> {
         writeln!(input_file, "This file is missing the title field.")?;
         input_file.flush()?;
 
-        let output = Command::new(&exe_path)
-            .arg(&input_path)
-            .output()?;
-        
+        let output = Command::new(&exe_path).arg(&input_path).output()?;
+
         // Should succeed with warning
-        assert!(output.status.success(), "CLI should succeed with missing title");
-        
+        assert!(
+            output.status.success(),
+            "CLI should succeed with missing title"
+        );
+
         // Warning message should mention missing fields
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
@@ -175,13 +180,14 @@ fn test_frontmatter_errors() -> io::Result<()> {
         writeln!(input_file, "This file is missing the author field.")?;
         input_file.flush()?;
 
-        let output = Command::new(&exe_path)
-            .arg(&input_path)
-            .output()?;
-        
+        let output = Command::new(&exe_path).arg(&input_path).output()?;
+
         // Should succeed with warning
-        assert!(output.status.success(), "CLI should succeed with missing author");
-        
+        assert!(
+            output.status.success(),
+            "CLI should succeed with missing author"
+        );
+
         // Warning message should mention missing fields
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
@@ -202,13 +208,14 @@ fn test_frontmatter_errors() -> io::Result<()> {
         writeln!(input_file, "This file is missing the url field.")?;
         input_file.flush()?;
 
-        let output = Command::new(&exe_path)
-            .arg(&input_path)
-            .output()?;
-        
+        let output = Command::new(&exe_path).arg(&input_path).output()?;
+
         // Should succeed with warning
-        assert!(output.status.success(), "CLI should succeed with missing url");
-        
+        assert!(
+            output.status.success(),
+            "CLI should succeed with missing url"
+        );
+
         // Warning message should mention missing fields
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
@@ -228,23 +235,27 @@ fn test_frontmatter_errors() -> io::Result<()> {
         writeln!(input_file, "url: https://example.com")?;
         writeln!(input_file, "malformed: - this is not valid YAML")?; // Malformed YAML
         writeln!(input_file, "---")?;
-        writeln!(input_file, "This file has malformed YAML in the frontmatter.")?;
+        writeln!(
+            input_file,
+            "This file has malformed YAML in the frontmatter."
+        )?;
         input_file.flush()?;
 
-        let output = Command::new(&exe_path)
-            .arg(&input_path)
-            .output()?;
-        
+        let output = Command::new(&exe_path).arg(&input_path).output()?;
+
         // Should succeed with warning
-        assert!(output.status.success(), "CLI should succeed even with malformed YAML");
-        
+        assert!(
+            output.status.success(),
+            "CLI should succeed even with malformed YAML"
+        );
+
         // Standard output should show successful processing
         let stdout_message = String::from_utf8_lossy(&output.stdout);
         assert!(
             stdout_message.contains("Successfully wrote"),
             "Output should indicate successful processing"
         );
-        
+
         // Warning should be logged
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
@@ -278,8 +289,8 @@ fn test_cli_end_to_end() -> io::Result<()> {
 
     // Create paths for the output files
     let output_path_no_scale_arg = temp_dir.path().join("output_no_scale_arg.json"); // For 10^k-1 scaling
-    let output_path_d120 = temp_dir.path().join("output_d120.json");        // For --scale-d 120
-    let output_path_d3 = temp_dir.path().join("output_d3.json");          // For --scale-d 3
+    let output_path_d120 = temp_dir.path().join("output_d120.json"); // For --scale-d 120
+    let output_path_d3 = temp_dir.path().join("output_d3.json"); // For --scale-d 3
 
     // Get the path to the binary directory
     let mut exe_path = std::env::current_dir()?;
@@ -304,8 +315,14 @@ fn test_cli_end_to_end() -> io::Result<()> {
         .arg("-o")
         .arg(&output_path_no_scale_arg)
         .status()?;
-    assert!(status_no_scale_arg.success(), "CLI command with no scaling args failed");
-    assert!(output_path_no_scale_arg.exists(), "output_no_scale_arg.json was not created");
+    assert!(
+        status_no_scale_arg.success(),
+        "CLI command with no scaling args failed"
+    );
+    assert!(
+        output_path_no_scale_arg.exists(),
+        "output_no_scale_arg.json was not created"
+    );
 
     // Run CLI: --scale-d 120
     let status_d120 = Command::new(&exe_path)
@@ -315,8 +332,14 @@ fn test_cli_end_to_end() -> io::Result<()> {
         .arg("--scale-d")
         .arg("120")
         .status()?;
-    assert!(status_d120.success(), "CLI command with --scale-d 120 failed");
-    assert!(output_path_d120.exists(), "output_d120.json was not created");
+    assert!(
+        status_d120.success(),
+        "CLI command with --scale-d 120 failed"
+    );
+    assert!(
+        output_path_d120.exists(),
+        "output_d120.json was not created"
+    );
 
     // Run CLI: --scale-d 3
     let status_d3 = Command::new(&exe_path)
@@ -338,22 +361,52 @@ fn test_cli_end_to_end() -> io::Result<()> {
         serde_json::from_reader(BufReader::new(File::open(&output_path_d3)?))?;
 
     // Verify structure and content
-    assert!(json_no_scale_arg.is_object(), "JSON output (no_scale_arg) should be an object");
-    assert!(json_d120.is_object(), "JSON output (d120) should be an object");
+    assert!(
+        json_no_scale_arg.is_object(),
+        "JSON output (no_scale_arg) should be an object"
+    );
+    assert!(
+        json_d120.is_object(),
+        "JSON output (d120) should be an object"
+    );
     assert!(json_d3.is_object(), "JSON output (d3) should be an object");
-    
+
     // Check for metadata and data keys
-    assert!(json_no_scale_arg.get("metadata").is_some(), "JSON output (no_scale_arg) should have metadata");
-    assert!(json_no_scale_arg.get("data").is_some(), "JSON output (no_scale_arg) should have data");
-    assert!(json_d120.get("metadata").is_some(), "JSON output (d120) should have metadata");
-    assert!(json_d120.get("data").is_some(), "JSON output (d120) should have data");
-    assert!(json_d3.get("metadata").is_some(), "JSON output (d3) should have metadata");
-    assert!(json_d3.get("data").is_some(), "JSON output (d3) should have data");
-    
+    assert!(
+        json_no_scale_arg.get("metadata").is_some(),
+        "JSON output (no_scale_arg) should have metadata"
+    );
+    assert!(
+        json_no_scale_arg.get("data").is_some(),
+        "JSON output (no_scale_arg) should have data"
+    );
+    assert!(
+        json_d120.get("metadata").is_some(),
+        "JSON output (d120) should have metadata"
+    );
+    assert!(
+        json_d120.get("data").is_some(),
+        "JSON output (d120) should have data"
+    );
+    assert!(
+        json_d3.get("metadata").is_some(),
+        "JSON output (d3) should have metadata"
+    );
+    assert!(
+        json_d3.get("data").is_some(),
+        "JSON output (d3) should have data"
+    );
+
     // Check metadata fields
     let metadata = json_no_scale_arg.get("metadata").unwrap();
-    assert!(metadata.get("title").is_some(), "Metadata should have title");
-    assert!(metadata.get("author").is_some(), "Metadata should have author");
+    assert!(
+        metadata.get("title").is_some(),
+        "Metadata should have title"
+    );
+    assert!(
+        metadata.get("author").is_some(),
+        "Metadata should have author"
+    );
     assert!(metadata.get("url").is_some(), "Metadata should have url");
     assert!(metadata.get("n").is_some(), "Metadata should have n");
 
@@ -512,7 +565,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
         let entry_arr = entry.as_array().unwrap();
         let prefix_str = entry_arr[0].as_str().unwrap_or("");
         let total_scaled = entry_arr[1].as_u64().unwrap_or(0);
-        
+
         // Example: prefix "the", original total 4 -> k=1, scales to 9
         // followers: "dog" (1), "fox" (1), "lazy" (1), "quick" (1)
         // Scaled: dog(2), fox(5), lazy(7), quick(9)
@@ -532,7 +585,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
             assert_eq!(entry_arr[3], serde_json::json!(["and", 9]));
         }
     }
-    
+
     // --- Test scaling for json_d120 (--scale-d 120) ---
     let mut found_d120_scaling_the = false;
     let mut found_d120_scaling_quick = false;
@@ -547,14 +600,20 @@ fn test_cli_end_to_end() -> io::Result<()> {
         // Debug line no longer needed
         // println!("DEBUG Entry for '{}': {:?}", prefix_str, entry);
 
-        if num_followers_in_json == 0 { continue; } // Skip if no followers
+        if num_followers_in_json == 0 {
+            continue;
+        } // Skip if no followers
 
         let last_follower_pair = entry_arr.last().unwrap().as_array().unwrap();
         let last_follower_cumulative = last_follower_pair[1].as_u64().unwrap();
 
-        if prefix_str == "the" { // 4 unique followers, original total 4. Scales to [1,120]
+        if prefix_str == "the" {
+            // 4 unique followers, original total 4. Scales to [1,120]
             assert_eq!(total_scaled, 120, "Prefix 'the' (d120) total count");
-            assert_eq!(last_follower_cumulative, 120, "Prefix 'the' (d120) last follower cumulative");
+            assert_eq!(
+                last_follower_cumulative, 120,
+                "Prefix 'the' (d120) last follower cumulative"
+            );
             // Followers are sorted: dog, fox, lazy, quick
             assert_eq!(entry_arr[2], serde_json::json!(["dog", 30]));
             assert_eq!(entry_arr[3], serde_json::json!(["fox", 60]));
@@ -562,9 +621,13 @@ fn test_cli_end_to_end() -> io::Result<()> {
             assert_eq!(entry_arr[5], serde_json::json!(["quick", 120]));
             found_d120_scaling_the = true;
         }
-        if prefix_str == "quick" { // 2 unique followers, original total 3. Scales to [1,120]
+        if prefix_str == "quick" {
+            // 2 unique followers, original total 3. Scales to [1,120]
             assert_eq!(total_scaled, 120, "Prefix 'quick' (d120) total count");
-            assert_eq!(last_follower_cumulative, 120, "Prefix 'quick' (d120) last follower cumulative");
+            assert_eq!(
+                last_follower_cumulative, 120,
+                "Prefix 'quick' (d120) last follower cumulative"
+            );
             // Followers are now sorted by count (largest to smallest)
             // Expected: ["quick", 120, ["brown", 80], ["and", 120]]
             assert_eq!(entry_arr[2], serde_json::json!(["brown", 80]));
@@ -572,21 +635,41 @@ fn test_cli_end_to_end() -> io::Result<()> {
             found_d120_scaling_quick = true;
         }
         // Check strictly increasing property for [1,d] scaling
-        if total_scaled == 120 && num_followers_in_json > 0 { // Assuming 120 implies [1,d] scaling for this test data
-             let mut prev_cumulative = 0;
-             for i in 2..entry_arr.len() {
-                 let follower_arr = entry_arr[i].as_array().unwrap();
-                 let current_cumulative = follower_arr[1].as_u64().unwrap();
-                 assert!(current_cumulative > prev_cumulative, "Cumulative counts not strictly increasing for {}: {} !> {}", prefix_str, current_cumulative, prev_cumulative);
-                 if i < entry_arr.len() -1 { // Not the last element
-                    assert!(current_cumulative < total_scaled, "Intermediate cumulative count {} must be < total {} for {}", current_cumulative, total_scaled, prefix_str);
-                 }
-                 prev_cumulative = current_cumulative;
-             }
+        if total_scaled == 120 && num_followers_in_json > 0 {
+            // Assuming 120 implies [1,d] scaling for this test data
+            let mut prev_cumulative = 0;
+            for i in 2..entry_arr.len() {
+                let follower_arr = entry_arr[i].as_array().unwrap();
+                let current_cumulative = follower_arr[1].as_u64().unwrap();
+                assert!(
+                    current_cumulative > prev_cumulative,
+                    "Cumulative counts not strictly increasing for {}: {} !> {}",
+                    prefix_str,
+                    current_cumulative,
+                    prev_cumulative
+                );
+                if i < entry_arr.len() - 1 {
+                    // Not the last element
+                    assert!(
+                        current_cumulative < total_scaled,
+                        "Intermediate cumulative count {} must be < total {} for {}",
+                        current_cumulative,
+                        total_scaled,
+                        prefix_str
+                    );
+                }
+                prev_cumulative = current_cumulative;
+            }
         }
     }
-    assert!(found_d120_scaling_the, "Did not find and verify 'the' prefix for d120 scaling");
-    assert!(found_d120_scaling_quick, "Did not find and verify 'quick' prefix for d120 scaling");
+    assert!(
+        found_d120_scaling_the,
+        "Did not find and verify 'the' prefix for d120 scaling"
+    );
+    assert!(
+        found_d120_scaling_quick,
+        "Did not find and verify 'quick' prefix for d120 scaling"
+    );
 
     // --- Test scaling for json_d3 (--scale-d 3) ---
     let mut found_d3_scaling_the_as_10k = false;
@@ -599,23 +682,36 @@ fn test_cli_end_to_end() -> io::Result<()> {
         let total_scaled = entry_arr[1].as_u64().unwrap_or(0);
         let num_followers_in_json = entry_arr.len() - 2;
 
-        if num_followers_in_json == 0 { continue; }
+        if num_followers_in_json == 0 {
+            continue;
+        }
 
         let last_follower_pair = entry_arr.last().unwrap().as_array().unwrap();
         let last_follower_cumulative = last_follower_pair[1].as_u64().unwrap();
 
-        if prefix_str == "the" { // 4 unique followers > 3. Scales to 10^k-1 (total 9)
-            assert_eq!(total_scaled, 9, "Prefix 'the' (d3) total count (should be 10^k-1)");
-            assert_eq!(last_follower_cumulative, 9, "Prefix 'the' (d3) last follower cumulative");
+        if prefix_str == "the" {
+            // 4 unique followers > 3. Scales to 10^k-1 (total 9)
+            assert_eq!(
+                total_scaled, 9,
+                "Prefix 'the' (d3) total count (should be 10^k-1)"
+            );
+            assert_eq!(
+                last_follower_cumulative, 9,
+                "Prefix 'the' (d3) last follower cumulative"
+            );
             assert_eq!(entry_arr[2], serde_json::json!(["dog", 2]));
             assert_eq!(entry_arr[3], serde_json::json!(["fox", 5]));
             assert_eq!(entry_arr[4], serde_json::json!(["lazy", 7]));
             assert_eq!(entry_arr[5], serde_json::json!(["quick", 9]));
             found_d3_scaling_the_as_10k = true;
         }
-        if prefix_str == "quick" { // 2 unique followers <= 3. Scales to [1,3]
+        if prefix_str == "quick" {
+            // 2 unique followers <= 3. Scales to [1,3]
             assert_eq!(total_scaled, 3, "Prefix 'quick' (d3) total count");
-            assert_eq!(last_follower_cumulative, 3, "Prefix 'quick' (d3) last follower cumulative");
+            assert_eq!(
+                last_follower_cumulative, 3,
+                "Prefix 'quick' (d3) last follower cumulative"
+            );
             // Followers are now sorted by count (largest to smallest)
             // Expected: ["quick", 3, ["brown", 2], ["and", 3]]
             assert_eq!(entry_arr[2], serde_json::json!(["brown", 2]));
@@ -623,8 +719,14 @@ fn test_cli_end_to_end() -> io::Result<()> {
             found_d3_scaling_quick_as_d3 = true;
         }
     }
-    assert!(found_d3_scaling_the_as_10k, "Did not find and verify 'the' prefix for d3 (10^k-1) scaling");
-    assert!(found_d3_scaling_quick_as_d3, "Did not find and verify 'quick' prefix for d3 ([1,3]) scaling");
+    assert!(
+        found_d3_scaling_the_as_10k,
+        "Did not find and verify 'the' prefix for d3 (10^k-1) scaling"
+    );
+    assert!(
+        found_d3_scaling_quick_as_d3,
+        "Did not find and verify 'quick' prefix for d3 ([1,3]) scaling"
+    );
 
     Ok(())
 }
