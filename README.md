@@ -1,9 +1,24 @@
 # My First LM
 
-This project provides tools to process text, calculate N-gram statistics (like
-word frequencies, but based on sequences of), and typeset an N-gram language
-model booklet. You can use this to explore the statistical patterns in a text
-corpus in a hands-on way by generating new text through dice rolling.
+Can you make your own language model---from scratch---in 20 minutes with just
+pen and paper? This repo contains a couple of software tools to help answer that
+question. (Spoiler: yep.)
+
+The repo contains:
+
+- a Typst file (`lm-grid.typ`) and instructions (`instructions.typ`)for creating
+  a word co-occurence matrix that can be used as a
+  [bigram language model](https://en.wikipedia.org/wiki/Word_n-gram_language_model).
+
+- a command-line tool (written in Rust) for processing a text corpus and
+  typesetting it into an "N-gram model book", which can then be used for all
+  sorts of fun things (e.g. dice-roll-powered proto-ChatGPT)
+
+Why? Because it helps to make a simple version of something by hand to better
+understand what's going on.
+
+This is a [Cybernetic Studio](https://github.com/ANUcybernetics/) artefact by
+[Ben Swift](https://benswift.me) as part of the _Human-Scale AI_ project.
 
 ## Installation
 
@@ -13,6 +28,11 @@ You will need:
     [https://rustup.rs/](https://rustup.rs/).
 2.  **Typst:** Install [Typst](https://typst.app/) from
     [https://github.com/typst/typst/](https://github.com/typst/typst/).
+
+To generate the grid & instructions for the DIY version of this procedure,
+simply typeset the `lm-grid.typ` and `instructions.typ` files and you're done.
+
+To produce an N-gram book, read on...
 
 ## Usage
 
@@ -125,7 +145,7 @@ This work is a project of the _Cybernetic Studio_ at the
 ## License
 
 Source code for this project is licensed under the MIT License. See the
-[LICENSE](LICENSE) file for details.
+[LICENSE](./LICENSE) file for details.
 
 The typeset "N-gram model booklets" are licenced under a CC BY-NC 4.0 license.
 
