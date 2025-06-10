@@ -85,6 +85,10 @@ You'll need:
 == Training Phase
 <training>
 
+The first part of creating and using your own language model is to _train_ it.
+Training is the process of "feeding" the model a bunch of text
+so that it learns the patterns & relationships between words in that text.
+
 Here's a worked example. Say you want to train your model on the text:
 
 #training-data[#orange-text[See] Spot run. Run, Spot, run.]
@@ -139,10 +143,11 @@ your text follows each other word. *This grid #emph[is] your language model.*
 == Prediction Phase
 <prediction>
 
-Now comes the fun part: you can use your model to generate new text (this is
+After you've trained your model, now comes the fun part: you can use your model to generate new text (this is
 called _prediction_ in Machine Learning jargon).
 
-Choose one of the words in your model as your starting word (this is your "prompt") and write it down. Let's choose "Spot"---Write it down on your notepad.
+Again, here's an example. Choose one of the words in your model as your starting word
+(this is your "prompt") and write it down. Let's choose "Spot"---Write it down on your notepad.
 
 #notepad[Spot]
 
