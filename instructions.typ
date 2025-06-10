@@ -212,27 +212,43 @@ If you train it on more data (in the training phase above) you'll get more inter
 If you want to write a new sentence, go back to step 1 and choose a new starting
 word (prompt).
 
-== Extension activities
+A note on randomness: say you've got a different model (grid) which looks like this:
 
-+ train a new model with a different training text, and compare the output
-  generated text from the two models
+#create-grid(
+  ("see", "spot", "run", "away"),
+  (
+    "see,spot": "|",
+    "spot,run": "||",
+    "run,run": "|",
+    "run,spot": "||",
+    "run,away": "|||",
+    "away,spot": "|",
+    "away,away": "||"
+  ),
+  highlight: (x, y) => {
+    if y == 3 { rgb("ffeeee") }
+    else { white }
+  }
+)
 
-+ swap your model with another group's model, and continue the training procedure
-  with your text but with their model as a starting point
+Assuming your current word is still "run", the next word should be "spot" (2/6 = 1/3 of the time),
+run (1/6 of the time) and away (3/6 = 1/2 of the time). If you've got a 6-sided die, it's easy:
+roll the die and if it's a 1 or 2, choose "spot"; if it's a 3, choose "run"; if it's a 4, 5 or 6,
+choose "away". If the total number of tally marks in your row doesn't divide evenly into number of sides
+your die has, just do your best. For example, if you're using a 20-sided die and you're currently on the "away"
+row in the grid above above, if the roll is 1-7 choose "spot" and otherwise choose "away" (7/20 isn't
+exactly the same as 1/3, but it's close enough).
 
-+ re-train your model, but with include special "tokens" for punctuation (e.g.~a
-  "full stop" token, a "comma" token, etc.) and include these in your model
-
-+ try training a model with a different "n-gram" size (e.g.~a bigram model where
-  you look at two successive words to determine the next word), although note that
-  the grid gets pretty big pretty fast---if there are $n$ distinct words in your
-  text then you'll need $n^2$ rows in your grid
+// Remember: it doesn't actually matter the _absoulte_ number of tallies in each
+// column, just the _relative_ number of tallies compared to all the other columns.
+// So if the two potential next words have e.g. 1 tally each or 4 tallies each it
+// doesn't matter, you just need to choose between them such that there's an equal
+// chance of each one (so dice 1-3 means the first one, 4-6 means the second one).
 
 == Further reading
 
-The specific type of model you've built is called a unigram model (a type of
-#link("https://en.wikipedia.org/wiki/N-gram")["n-gram" model];, where "n" is 1).
-Each "next word" choice is determined by the "current word" only. These models are
+The specific type of model you've built is called an #link("https://en.wikipedia.org/wiki/N-gram")["n-gram" model].
+Each next word choice is determined by the current word only. These models are
 different (and less sophisticated) than the Transformer-based models like GPT
 which now dominate the LLM landscape, but there's evidence that a sufficiently
 large n-gram model can get you #link("https://arxiv.org/abs/2407.12034")[almost
@@ -243,26 +259,6 @@ Having said that, GPT-4 has around 1.75T parameters, which when printed out
 to cover #link("https://en.wikipedia.org/wiki/Melbourne_Cricket_Ground")[the MCG]
 _ten thousand times_.
 
-== Appendix: weighted randomness with dice
-<weighted-randomness>
-
-You'll need a source of "weighted" random numbers for the "select the next word
-based on the tally scores" part of the Prediction procedure described above.
-
-If you've got a d6 (a normal 6-sided die) it's not too tricky. Here's an example:
-
-- if there's one column (i.e. one potential next word) with one tally mark and
-  another with two tally marks, then roll the dice---if it's 1 or 2 choose the
-  first column, otherwise choose the second column
-
-Remember: it doesn't actually matter the _absoulte_ number of tallies in each
-column, just the _relative_ number of tallies compared to all the other columns.
-So if the two potential next words have e.g. 1 tally each or 4 tallies each it
-doesn't matter, you just need to choose between them such that there's an equal
-chance of each one (so dice 1-3 means the first one, 4-6 means the second one).
-
-If you end up with a larger language model and need more than a D6, you could use
-a d20 (a 20-sided die) and use a similar approach.
 // TODO make a nice diagram of the above "partition the D20 range" approach
 // #import "@preview/cetz:0.3.2"
 // #cetz.canvas({
