@@ -123,7 +123,7 @@ Now we've reached the end of the sentence, but this language model doesn't care 
 
 Note that this is the first time the next word ("run") is a word you've already seen, so you don't need to add a new row & column to the grid (just add a tally to the grid cell that's already there).
 
-Keep following this procedure until you reach the end of the text. When it's all done, your grid should look like this:
+Keep following this procedure until you reach the end of the text. When it's all done, your grid should look like this: *this grid #emph[is] your language model.*
 
 #create-grid(
   ("see", "spot", "run"),
@@ -135,9 +135,9 @@ Keep following this procedure until you reach the end of the text. When it's all
   )
 )
 
-That grid (and the total tally scores in each grid cell) is
+The grid (and the total tally scores in each grid cell) is
 what's called a _co-occurance table_, which keeps track of how often each word in
-your text follows each other word. *This grid #emph[is] your language model.*
+your text follows each other word.
 
 #pagebreak()
 
