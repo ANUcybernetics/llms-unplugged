@@ -39,8 +39,11 @@
   else { white }
 }
 
-#let create-grid(headers, tallies, highlight: none) = {
+#let create-grid(headers, tallies, highlight: none, header-keys: none, row-headers: none, col-headers: none) = {
   let n = headers.len()
+  let keys = if header-keys != none { header-keys } else { headers }
+  let row-hdrs = if row-headers != none { row-headers } else { headers }
+  let col-hdrs = if col-headers != none { col-headers } else { headers }
   table(
     columns: (1fr,) * (n + 1),
     align: center + horizon,
@@ -49,15 +52,17 @@
     // Empty top-left cell
     [],
     // Column headers
-    ..headers.map(h => strong(h)),
+    ..col-hdrs.map(h => strong(h)),
 
     // Rows
     ..{
       let cells = ()
-      for (i, row-header) in headers.enumerate() {
+      for (i, row-header) in row-hdrs.enumerate() {
         cells.push(strong(row-header))
-        for (j, col-header) in headers.enumerate() {
-          let key = row-header + "," + col-header
+        for (j, col-header) in col-hdrs.enumerate() {
+          let row-key = keys.at(i)
+          let col-key = keys.at(j)
+          let key = row-key + "," + col-key
           if key in tallies {
             cells.push(tallies.at(key))
           } else {
@@ -96,31 +101,27 @@ Here's a worked example. Say you want to train your model on the text:
 "See" is the first word (shown in orange, above), so put that in the first row and column of the grid.
 Just do it lowercase---the model ignores capitalisation.
 
-#create-grid(("see",), (:))
+#create-grid(("see",), (:), col-headers: (orange-text[see],), row-headers: (orange-text[see],))
+
+#blue-text[Spot] follows #orange-text[See], so add a tally to the spot row/see column
 
 #training-data[#orange-text[See] #blue-text[Spot] run. Run, Spot, run.]
 
-#blue-text[Spot] follows #orange-text[See], so add a tally to the Spot row/See column
+#create-grid(("see", "spot"), ("see,spot": "|"), col-headers: ([see], blue-text[spot]), row-headers: (orange-text[see], [spot]))
 
-#create-grid(("see", "spot"), ("see,spot": "|"))
-
-Now we shift along by one word:
+Now we shift along by one word and repeat the process:
 
 #training-data[See #orange-text[Spot] #blue-text[run]. Run, Spot, run.]
 
-The grid now looks like this:
+#create-grid(("see", "spot", "run"), ("see,spot": "|", "spot,run": "|"), col-headers: ([see], [spot], blue-text[run]), row-headers: ([see], orange-text[spot], [run]))
 
-#create-grid(("see", "spot", "run"), ("see,spot": "|", "spot,run": "|"))
-
-Now we've reached the end of the sentence, but this language model doesn't know anything about sentences, so just keep going word-by-word:
+Now we've reached the end of the sentence, but this language model doesn't care about that---just keep going word-by-word:
 
 #training-data[See Spot #orange-text[run]. #blue-text[Run], Spot, run.]
 
-Here for the first time the next word ("run") is a word you've already seen .
+#create-grid(("see", "spot", "run"), ("see,spot": "|", "spot,run": "|", "run,run": "|"), col-headers: ([see], [spot], blue-text[run]), row-headers: ([see], [spot], orange-text[run]))
 
-This means you don't need to add a new row & column to the grid, just add a tally to the grid cell that's already there:
-
-#create-grid(("see", "spot", "run"), ("see,spot": "|", "spot,run": "|", "run,run": "|"))
+Note that this is the first time the next word ("run") is a word you've already seen, so you don't need to add a new row & column to the grid (just add a tally to the grid cell that's already there).
 
 Keep following this procedure until you reach the end of the text. When it's all done, your grid should look like this:
 
