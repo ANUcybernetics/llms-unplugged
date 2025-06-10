@@ -6,63 +6,202 @@
   socy_logo: true
 )
 
+// AIDEV-NOTE: Helper functions for visual aids
+#let orange-text(content) = text(fill: rgb("#ff6600"), content)
+#let blue-text(content) = text(fill: rgb("#0066cc"), content)
+
+#let notepad(content) = {
+  rect(
+    fill: rgb("fffacd"),
+    stroke: 1pt + rgb("daa520"),
+    radius: 3pt,
+    inset: 10pt,
+    width: 100%,
+  )[
+    #text(font: "Libertinus Serif", size: 12pt)[#content]
+  ]
+}
+
+#let training-data(content) = {
+  rect(
+    fill: rgb("#f0f8ff"),
+    stroke: 1pt + rgb("#4682b4"),
+    radius: 3pt,
+    inset: 10pt,
+    width: 100%,
+  )[
+    #text(font: "Libertinus Serif", size: 16pt)[#content]
+  ]
+}
+
+#let highlight-row(row-name) = (x, y) => {
+  if y == 0 and x > 0 { rgb("ffcccc") }
+  else { white }
+}
+
+#let create-grid(headers, tallies, highlight: none) = {
+  let n = headers.len()
+  table(
+    columns: (1fr,) * (n + 1),
+    align: center + horizon,
+    fill: if highlight != none { highlight } else { (x, y) => white },
+
+    // Empty top-left cell
+    [],
+    // Column headers
+    ..headers.map(h => strong(h)),
+
+    // Rows
+    ..{
+      let cells = ()
+      for (i, row-header) in headers.enumerate() {
+        cells.push(strong(row-header))
+        for (j, col-header) in headers.enumerate() {
+          let key = row-header + "," + col-header
+          if key in tallies {
+            cells.push(tallies.at(key))
+          } else {
+            cells.push([])
+          }
+        }
+      }
+      cells
+    }
+  )
+}
+
 Ever wanted to train your own Language Model by hand? Now you can.
+
+== Materials
+
+You'll need:
+
+- a grid (to write on)
+- a pen (to write with)
+- some text (to train your model on---a paragraph from the newspaper, a page from a
+  kids book, etc.)
+- a die (to roll)
 
 == Training Phase
 <training>
 
-You'll need:
+Here's a worked example. Say you want to train your model on the text:
 
-- a nice fine-tipped pen
-- a grid printout
-- a couple of paragraphs of text (a paragraph from the newspaper, a page from a
-  kids book, etc.)
+#training-data[#orange-text[See] Spot run. Run, Spot, run.]
 
-The training procedure is:
+Step 1: "See" is the first word (shown in orange, above), so put that in the first row and column of the grid:
 
-+ write the _first_ word of the text in the *first blank row* and *first blank
-  column* on the grid (in both cases it'll be right up near the logo in the
-  top-left-hand corner)
+#create-grid(("See",), (:))
 
-+ look at the _next_ word in your text: write it in theh *next blank row* and
-  *next blank column* on the grid (which will be the second row and second column)
+#training-data[#orange-text[See] #blue-text[Spot] run. Run, Spot, run.]
 
-+ make a tally score mark in the *first row, second column* grid cell, so that
-  the grid cell contains a count of the number of times you've seen the second
-  word following the first one
+Step 2: #blue-text[Spot] follows #orange-text[See], so add a tally to the Spot row/See column
 
-+ return to step 2 and continue through your text, and each time check if the next
-  word is one you've seen already in the text (and if not, write it in the *next
-  blank row* and *next blank column* as before) and add a new tally mark in the
-  corresponding grid cell
+#create-grid(("See", "Spot"), ("See,Spot": "|"))
 
-Once you're done, your grid (and the total tally scores in each grid cell) is
+Now we shift along by one word:
+
+#training-data[See #orange-text[Spot] #blue-text[run]. Run, Spot, run.]
+
+The grid now looks like this:
+
+#create-grid(("See", "Spot", "run"), ("See,Spot": "|", "Spot,run": "|"))
+
+Now we've reached the end of the sentence, but this language model doesn't know anything about sentences, so just keep going word-by-word:
+
+#training-data[See Spot #orange-text[run]. #blue-text[Run], Spot, run.]
+
+Here for the first time the next word ("run") is a word you've already seen (don't worry about the fact that it's capitalised this
+time---the model doesn't know about capitalisation either).
+
+This means you don't need to add a new row & column to the grid, just add a tally to the grid cell that's already there:
+
+#create-grid(("See", "Spot", "run"), ("See,Spot": "|", "Spot,run": "|", "run,Run": "|"))
+
+Keep following this procedure until you reach the end of the text. When it's all done, your grid should look like this:
+
+#create-grid(
+  ("See", "Spot", "run", "Run"),
+  (
+    "See,Spot": "|",
+    "Spot,run": "||",
+    "run,Run": "|",
+    "Run,Spot": "|"
+  )
+)
+
+That grid (and the total tally scores in each grid cell) is
 what's called a _co-occurance table_, which keeps track of how often each word in
-your text follows each other word. *This #emph[is] your language model.*
+your text follows each other word. *This grid #emph[is] your language model.*
 
 #pagebreak()
 
-== Inference Phase
-<inference>
+== Prediction Phase
+<prediction>
 
 Now comes the fun part: you can use your model to generate new text (this is
-called _inference_ in Machine Learning jargon).
+called _prediction_ in Machine Learning jargon).
 
-+ choose one of the words in your model as your starting word (this is your
-  "prompt") and write it down---this is the start of your "generated text"
+Choose one of the words in your model as your starting word (this is your "prompt") and write it down. Let's choose "Spot"---Write it down on your notepad.
 
-+ look along the row corresponding to that word:
+#notepad[Spot]
 
-  - if there's only one grid cell in the row that has any tally marks in it,
-    that's your next word
-  - if there are multiple grid cells with tally marks, choose one at random
-    (weighted by the number of tally scores, so that e.g.~if one grid cell has 2
-    marks and one has 3, then choose the first grid cell 40% of the time and the
-    second grid cell 60% of the time)
+Find the "Spot" row on your grid.
 
-+ write down the chosen word in your generated text, and repeat step 2 until
-  you've generated as much text as you like (feel free to add punctuation as
-  necessary to make the generated text make sense)
+#create-grid(
+  ("See", "Spot", "run", "Run"),
+  (
+    "See,Spot": "|",
+    "Spot,run": "||",
+    "run,Run": "|",
+    "Run,Spot": "|"
+  ),
+  highlight: (x, y) => {
+    if y == 2 { rgb("ffeeee") }
+    else { white }
+  }
+)
+
+There's only one grid cell with a tally mark: "run". That's your next word.
+
+#notepad[Spot run]
+
+Now find the "run" row on your grid.
+
+#create-grid(
+  ("See", "Spot", "run", "Run"),
+  (
+    "See,Spot": "|",
+    "Spot,run": "||",
+    "run,Run": "|",
+    "Run,Spot": "|"
+  ),
+  highlight: (x, y) => {
+    if y == 3 { rgb("ffeeee") }
+    else { white }
+  }
+)
+
+Looking along the "run" row, there are two grid cells with tally marks: "run" and "Spot". We need
+to choose one of them at random, and the fact that they each have the same number of
+tally marks (1) means we want each option to be equally likely.
+
+So, assuming you've got a 20-sided dice, you can roll it and if it's 1-10, choose "run", and if it's 11-20, choose "Spot".
+
+For example, if you rolled a 15, you would choose "Spot", and your model's output sentence (so far) would be
+
+#notepad[Spot run Spot]
+
+Now "Spot" is your current word again, and so (just like above) you only have one option for the next word:
+
+#notepad[Spot run Spot run]
+
+Keep going with this procedure until you decide that sentence is complete (it's your call). As a final step, you can punctuate it however you like, e.g.
+
+#notepad[Spot - run Spot. Run!]
+
+You can probably see that in this _very simple_ example, the generated text will only bounce back and forth between "run" and "Spot". That's because this is a very simple language model and it's trained on a _very_ small dataset.
+If you train it on more data (in the training phase above) you'll get more interesting sentences.
 
 If you want to write a new sentence, go back to step 1 and choose a new starting
 word (prompt).
