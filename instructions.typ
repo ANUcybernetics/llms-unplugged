@@ -241,7 +241,7 @@ _ten thousand times_.
 <weighted-randomness>
 
 You'll need a source of "weighted" random numbers for the "select the next word
-based on the tally scores" part of the Inference procedure described above.
+based on the tally scores" part of the Prediction procedure described above.
 
 If you've got a d6 (a normal 6-sided die) it's not too tricky. Here's an example:
 
