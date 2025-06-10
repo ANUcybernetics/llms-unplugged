@@ -7,8 +7,8 @@
 )
 
 // AIDEV-NOTE: Helper functions for visual aids
-#let orange-text(content) = text(fill: rgb("#ff6600"), content)
-#let blue-text(content) = text(fill: rgb("#0066cc"), content)
+#let orange-text(content) = text(weight: "bold", fill: rgb("#ff6600"), content)
+#let blue-text(content) = text(weight: "bold", fill: rgb("#0066cc"), content)
 
 #let notepad(content) = {
   rect(
@@ -89,15 +89,16 @@ Here's a worked example. Say you want to train your model on the text:
 
 #training-data[#orange-text[See] Spot run. Run, Spot, run.]
 
-Step 1: "See" is the first word (shown in orange, above), so put that in the first row and column of the grid:
+"See" is the first word (shown in orange, above), so put that in the first row and column of the grid.
+Just do it lowercase---the model ignores capitalisation.
 
-#create-grid(("See",), (:))
+#create-grid(("see",), (:))
 
 #training-data[#orange-text[See] #blue-text[Spot] run. Run, Spot, run.]
 
-Step 2: #blue-text[Spot] follows #orange-text[See], so add a tally to the Spot row/See column
+#blue-text[Spot] follows #orange-text[See], so add a tally to the Spot row/See column
 
-#create-grid(("See", "Spot"), ("See,Spot": "|"))
+#create-grid(("see", "spot"), ("see,spot": "|"))
 
 Now we shift along by one word:
 
@@ -105,28 +106,27 @@ Now we shift along by one word:
 
 The grid now looks like this:
 
-#create-grid(("See", "Spot", "run"), ("See,Spot": "|", "Spot,run": "|"))
+#create-grid(("see", "spot", "run"), ("see,spot": "|", "spot,run": "|"))
 
 Now we've reached the end of the sentence, but this language model doesn't know anything about sentences, so just keep going word-by-word:
 
 #training-data[See Spot #orange-text[run]. #blue-text[Run], Spot, run.]
 
-Here for the first time the next word ("run") is a word you've already seen (don't worry about the fact that it's capitalised this
-time---the model doesn't know about capitalisation either).
+Here for the first time the next word ("run") is a word you've already seen .
 
 This means you don't need to add a new row & column to the grid, just add a tally to the grid cell that's already there:
 
-#create-grid(("See", "Spot", "run"), ("See,Spot": "|", "Spot,run": "|", "run,Run": "|"))
+#create-grid(("see", "spot", "run"), ("see,spot": "|", "spot,run": "|", "run,run": "|"))
 
 Keep following this procedure until you reach the end of the text. When it's all done, your grid should look like this:
 
 #create-grid(
-  ("See", "Spot", "run", "Run"),
+  ("see", "spot", "run"),
   (
-    "See,Spot": "|",
-    "Spot,run": "||",
-    "run,Run": "|",
-    "Run,Spot": "|"
+    "see,spot": "|",
+    "spot,run": "||",
+    "run,run": "|",
+    "run,spot": "|"
   )
 )
 
@@ -149,12 +149,12 @@ Choose one of the words in your model as your starting word (this is your "promp
 Find the "Spot" row on your grid.
 
 #create-grid(
-  ("See", "Spot", "run", "Run"),
+  ("see", "spot", "run"),
   (
-    "See,Spot": "|",
-    "Spot,run": "||",
-    "run,Run": "|",
-    "Run,Spot": "|"
+    "see,spot": "|",
+    "spot,run": "||",
+    "run,run": "|",
+    "run,spot": "|"
   ),
   highlight: (x, y) => {
     if y == 2 { rgb("ffeeee") }
@@ -169,12 +169,12 @@ There's only one grid cell with a tally mark: "run". That's your next word.
 Now find the "run" row on your grid.
 
 #create-grid(
-  ("See", "Spot", "run", "Run"),
+  ("see", "spot", "run"),
   (
-    "See,Spot": "|",
-    "Spot,run": "||",
-    "run,Run": "|",
-    "Run,Spot": "|"
+    "see,spot": "|",
+    "spot,run": "||",
+    "run,run": "|",
+    "run,spot": "|"
   ),
   highlight: (x, y) => {
     if y == 3 { rgb("ffeeee") }
