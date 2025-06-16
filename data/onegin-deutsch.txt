@@ -1,3 +1,9 @@
+---
+title: Eugene Onegin
+author: Aleksandr Sergeevich Pushkin, translated by Babette Deutsch
+url: https://www.gutenberg.org/ebooks/23997/
+---
+
 Eugene Onegin
 
 
