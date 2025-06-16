@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 use std::sync::OnceLock;
 
 /// Returns a reference to the case exception map.
@@ -19,33 +19,16 @@ fn case_exceptions() -> &'static HashMap<String, String> {
 }
 
 /// Returns a set of lowercase Roman numerals to be filtered.
-fn roman_numerals_to_filter() -> &'static HashSet<String> {
-    static ROMAN_NUMERALS: OnceLock<HashSet<String>> = OnceLock::new();
-    ROMAN_NUMERALS.get_or_init(|| {
-        let mut set = HashSet::new();
-        // Add common lowercase Roman numerals.
-        // Single characters
-        set.insert("i".to_string()); // Note: This will be caught by case_exceptions first if it's standalone "i"
-        set.insert("v".to_string());
-        set.insert("x".to_string());
-        set.insert("l".to_string());
-        set.insert("c".to_string());
-        set.insert("d".to_string());
-        set.insert("m".to_string());
-        // Common small combinations (add more if necessary, keeping it simple)
-        set.insert("ii".to_string());
-        set.insert("iii".to_string());
-        set.insert("iv".to_string());
-        set.insert("vi".to_string());
-        set.insert("vii".to_string());
-        set.insert("viii".to_string());
-        set.insert("ix".to_string());
-        set.insert("xi".to_string());
-        // Add more complex forms if required, but this covers many simple cases.
-        // For a truly robust Roman numeral parser, a more complex regex or algorithm
-        // would be needed, but that's beyond "simple" and "no new dependencies".
-        set
-    })
+fn is_roman_numeral(s: &str) -> bool {
+    // Simple regex-like approach: check if string contains only roman numeral characters
+    // and is not empty
+    if s.is_empty() {
+        return false;
+    }
+
+    // Check if all characters are valid roman numeral characters (lowercase)
+    s.chars()
+        .all(|c| matches!(c, 'i' | 'v' | 'x' | 'l' | 'c' | 'd' | 'm'))
 }
 
 /// Preprocesses a list of tokens:
@@ -54,7 +37,6 @@ fn roman_numerals_to_filter() -> &'static HashSet<String> {
 /// - Filters out the specific string "<|endoftext|>".
 pub fn preprocess(tokens: Vec<String>) -> Vec<String> {
     let exceptions = case_exceptions();
-    let roman_numerals = roman_numerals_to_filter();
     let end_of_text_marker = "<|endoftext|>";
 
     tokens
@@ -70,10 +52,10 @@ pub fn preprocess(tokens: Vec<String>) -> Vec<String> {
             // The case exception for "i" to "I" should take precedence if "i" is not part of a larger Roman numeral.
             // If the token is "i", and it's in case_exceptions, it will be processed there.
             // If it's "ii", "iii", etc., it should be caught here.
-            if token != "i" && roman_numerals.contains(&token) {
+            if token != "i" && is_roman_numeral(&token) {
                 return None;
             }
-            
+
             // 3. Apply case exceptions
             if let Some(exception_case) = exceptions.get(&token) {
                 Some(exception_case.clone())
@@ -97,10 +79,7 @@ mod tests {
             "happy".to_string(),
         ];
         let processed = preprocess(tokens);
-        assert_eq!(
-            processed,
-            vec!["I", "think", "I'm", "happy"]
-        );
+        assert_eq!(processed, vec!["I", "think", "I'm", "happy"]);
     }
 
     #[test]
@@ -109,9 +88,9 @@ mod tests {
             "chapter".to_string(),
             "iv".to_string(), // should be filtered
             "section".to_string(),
-            "i".to_string(),   // should become "I" due to case exception, not filtered as "i" numeral
+            "i".to_string(), // should become "I" due to case exception, not filtered as "i" numeral
             "part".to_string(),
-            "x".to_string(),   // should be filtered
+            "x".to_string(), // should be filtered
             "appendix".to_string(),
             "m".to_string(), // should be filtered
             "notaroman".to_string(),
@@ -139,26 +118,28 @@ mod tests {
     #[test]
     fn test_preprocess_combined() {
         let tokens = vec![
-            "i".to_string(),         // -> "I"
-            "saw".to_string(),       // -> "saw"
-            "part".to_string(),      // -> "part"
-            "ii".to_string(),        // filtered
-            "of".to_string(),        // -> "of"
-            "the".to_string(),       // -> "the"
-            "book".to_string(),      // -> "book"
+            "i".to_string(),             // -> "I"
+            "saw".to_string(),           // -> "saw"
+            "part".to_string(),          // -> "part"
+            "ii".to_string(),            // filtered
+            "of".to_string(),            // -> "of"
+            "the".to_string(),           // -> "the"
+            "book".to_string(),          // -> "book"
             "<|endoftext|>".to_string(), // filtered
-            "i'll".to_string(),      // -> "I'll"
-            "read".to_string(),      // -> "read"
-            "v".to_string(),         // filtered
-            "later".to_string(),     // -> "later"
+            "i'll".to_string(),          // -> "I'll"
+            "read".to_string(),          // -> "read"
+            "v".to_string(),             // filtered
+            "later".to_string(),         // -> "later"
         ];
         let processed = preprocess(tokens);
         assert_eq!(
             processed,
-            vec!["I", "saw", "part", "of", "the", "book", "I'll", "read", "later"]
+            vec![
+                "I", "saw", "part", "of", "the", "book", "I'll", "read", "later"
+            ]
         );
     }
-    
+
     #[test]
     fn test_roman_numeral_i_is_exception_not_filtered() {
         // "i" alone should be treated by case_exceptions, not filtered as a Roman numeral
@@ -175,7 +156,7 @@ mod tests {
         let processed_iii = preprocess(tokens_iii);
         assert_eq!(processed_iii, Vec::<String>::new());
     }
-    
+
     #[test]
     fn test_empty_input() {
         let tokens: Vec<String> = vec![];
