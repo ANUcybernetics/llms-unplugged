@@ -44,8 +44,8 @@
     ]
     #v(0.5cm)
 
-    #text(size: 0.9em)[ISBN: 978-0-00000-000-0]
-    #v(0.5cm)
+    // #text(size: 0.9em)[ISBN: 978-0-00000-000-0]
+    // #v(0.5cm)
     #text(size: 0.9em)[Published by Cybernetic Studio Press]
     #v(0.5cm)
     #text(size: 0.9em)[First Edition]
