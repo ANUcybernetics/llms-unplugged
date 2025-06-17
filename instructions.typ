@@ -9,8 +9,8 @@
 )
 
 // AIDEV-NOTE: Helper functions for visual aids
-#let orange-text(content) = text(fill: anu-colors.copper, content)
-#let blue-text(content) = text(fill: anu-colors.unilink-blue, content)
+#let orange-text(content) = text(weight: "semibold", fill: anu-colors.copper, content)
+#let blue-text(content) = text(weight: "semibold", fill: anu-colors.unilink-blue, content)
 
 #let notepad(content) = {
   rect(
@@ -55,13 +55,13 @@
     // Empty top-left cell
     [],
     // Column headers
-    ..col-hdrs.map(h => strong(h)),
+    ..col-hdrs.map(h => text(weight: "semibold", h)),
 
     // Rows
     ..{
       let cells = ()
       for (i, row-header) in row-hdrs.enumerate() {
-        cells.push(strong(row-header))
+        cells.push(text(weight: "semibold", row-header))
         for (j, col-header) in col-hdrs.enumerate() {
           let row-key = keys.at(i)
           let col-key = keys.at(j)
