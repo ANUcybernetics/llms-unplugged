@@ -245,6 +245,72 @@ exactly the same as 1/3, but it's close enough).
 // doesn't matter, you just need to choose between them such that there's an equal
 // chance of each one (so dice 1-3 means the first one, 4-6 means the second one).
 
+== Sampling from a pre-calculated n-gram booket
+<prediction-booklet>
+
+You've probably noticed that filling out the tally marks on the grid becomes pretty tricky when the vocabulary
+size is large. You need _lots_ of rows and columns, but most of the grid cells end up empty.
+
+As a result, when dealing with larger language models it's often more convenient to represent the model in a
+different "booklet" format---more like a dictionary. The cool maths kids call this a _sparse_ representation of the model
+(the grid view is a _dense_ representation of the same information).
+
+If you're using a pre-calcualted n-gram booklet, here's how to use it to generate new text. Start with a
+single word (your initial prompt) as before. Instead of looking for your current word's row in the grid, you
+look up the current word in a larger booklet (just like looking up a word in the dictionary---it's
+in alphabetical order). It'll look something like this:
+
+#block[
+  #set text(font: "Libertinus Serif", size: 12pt)
+  #text("see", size: 16pt, weight: "bold")
+  #h(0.6em)
+  #box([#text(weight: "semibold")[12]|#text[her]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[15]|#text[him]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[18]|#text[you]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[18]|#text[them]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[25]|#text[the]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[32]|#text[spot]])
+]
+
+#v(0.3em)
+
+#block[
+  #set text(font: "Libertinus Serif", size: 12pt)
+  #text("run", size: 16pt, weight: "bold")
+  #h(0.3em)
+  (#box[#text(weight: "bold")[2]♢])
+  #h(0.6em)
+  #box([#text(weight: "semibold")[6]|#text[slower]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[8]|#text[hard]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[10]|#text[now]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[12]|#text[free]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[15]|#text[wild]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[18]|#text[back]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[22]|#text[around]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[25]|#text[together]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[28]|#text[quickly]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[32]|#text[home]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[45]|#text[away]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[78]|#text[fast]])
+]
+Then, all the potential next words are listed with the "dice roll" values pre-calculated.
+
 #pagebreak()
 
 == Sampling procedures
