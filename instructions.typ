@@ -263,7 +263,7 @@ _ten thousand times_.
 
 #pagebreak()
 
-== Sampling from a pre-calculated n-gram booket
+== Prediction Phase redux (n-gram booket)
 <prediction-booklet>
 
 You've probably noticed that filling out the tally marks on the grid becomes pretty tricky when the vocabulary
@@ -366,7 +366,7 @@ depends on your purpose in using the language model.
 
 === Weighted random sampling
 
-(This is the procedure you jus followed in the <prediction> section; refer back to that section for a detailed
+(This is the procedure you just followed in the <prediction> section; refer back to that section for a detailed
 walkthrough.)
 
 You might choose this sampling procedure if your purpose in using the language model is to generate text with the
