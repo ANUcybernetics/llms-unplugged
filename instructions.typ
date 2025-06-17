@@ -9,13 +9,13 @@
 )
 
 // AIDEV-NOTE: Helper functions for visual aids
-#let orange-text(content) = text(weight: "bold", fill: rgb("#ff6600"), content)
-#let blue-text(content) = text(weight: "bold", fill: rgb("#0066cc"), content)
+#let orange-text(content) = text(fill: anu-colors.copper, content)
+#let blue-text(content) = text(fill: anu-colors.unilink-blue, content)
 
 #let notepad(content) = {
   rect(
-    fill: rgb("fffacd"),
-    stroke: 1pt + rgb("daa520"),
+    fill: anu-colors.gold-tint,
+    stroke: 1pt + anu-colors.gold,
     radius: 3pt,
     inset: 10pt,
     width: 100%,
@@ -26,18 +26,18 @@
 
 #let training-data(content) = {
   rect(
-    fill: rgb("#f0f8ff"),
-    stroke: 1pt + rgb("#4682b4"),
+    fill: anu-colors.teal-tint,
+    stroke: 1pt + anu-colors.teal,
     radius: 3pt,
     inset: 10pt,
     width: 100%,
   )[
-    #text(font: "Libertinus Serif", size: 16pt)[#content]
+    #text(font: "Libertinus Serif", size: 12pt)[#content]
   ]
 }
 
 #let highlight-row(row-name) = (x, y) => {
-  if y == 0 and x > 0 { rgb("ffcccc") }
+  if y == 0 and x > 0 { anu-colors.copper-tint }
   else { white }
 }
 
@@ -165,7 +165,7 @@ Find the "Spot" row on your grid.
     "run,spot": "|"
   ),
   highlight: (x, y) => {
-    if y == 2 { rgb("ffeeee") }
+    if y == 2 { anu-colors.copper-tint }
     else { white }
   }
 )
@@ -185,7 +185,7 @@ Now find the "run" row on your grid.
     "run,spot": "|"
   ),
   highlight: (x, y) => {
-    if y == 3 { rgb("ffeeee") }
+    if y == 3 { anu-colors.copper-tint }
     else { white }
   }
 )
@@ -228,7 +228,7 @@ A note on randomness: say you've got a different model (grid) which looks like t
     "away,away": "||"
   ),
   highlight: (x, y) => {
-    if y == 3 { rgb("ffeeee") }
+    if y == 3 { anu-colors.copper-tint }
     else { white }
   }
 )
@@ -444,9 +444,9 @@ text, microdose LSD and become one with the universe.
 // #cetz.canvas({
 //   import cetz.draw: *
 
-//   let anu-gold = rgb("#be830e")
-//   let anu-copper = rgb("#be4e0e")
-//   let anu-teal = rgb("#0085ad")
+//   let anu-gold = anu-colors.gold
+//   let anu-copper = anu-colors.copper
+//   let anu-teal = anu-colors.teal
 
 //   rect((0, 0), (rel: (1, 1)), radius: .1, stroke: anu-copper)
 // })
