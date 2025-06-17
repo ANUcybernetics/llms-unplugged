@@ -245,6 +245,94 @@ exactly the same as 1/3, but it's close enough).
 // doesn't matter, you just need to choose between them such that there's an equal
 // chance of each one (so dice 1-3 means the first one, 4-6 means the second one).
 
+#pagebreak()
+
+== Sampling procedures
+
+Even after the training phase when model is constructed, you can choose different sampling procedures to
+generate text with different characteristics. There's no "best" sampling procedure---which one you choose
+depends on your purpose in using the language model.
+
+=== Weighted random sampling
+
+(This is the procedure you jus followed in the <prediction> section; refer back to that section for a detailed
+walkthrough.)
+
+You might choose this sampling procedure if your purpose in using the language model is to generate text with the
+same co-occurance (which words follow which other words) frequencies as the original
+training data.
+
+1. choose any word from the vocabulary as your initial prompt (write it down)
+2. find the row in your grid/entry in the model booklet that corresponds to your current word
+3. roll the dice to choose (or "sample") the next word and write it down
+4. use this new word as your next prompt and repeat the process (i.e. return to step 2)
+
+Continue until you have generated your desired amount of text (e.g., a complete
+sentence or paragraph).
+
+=== Haiku sampling
+
+Haiku (俳句) is a type of short form poetry that originated in Japan (#link("https://en.wikipedia.org/wiki/Haiku")[Wikipedia]).
+
+You might choose this sampling procedure if your purpose in using the language model is to make new haikus.
+
+1. choose any word from the vocabulary as your initial prompt (write it down)
+2. count the number of syllables on your current notepad line
+3. roll the dice and select the next word (as per the weighted random sampling procedure),
+  *but* if that word takes you _over_ the syllable limit (5 for the first and third lines, 7
+  for the second line) roll again until you get a word that fits
+4. use this new word as your next prompt and repeat the process (i.e. return to step 2)
+
+Repeat as many times as you like (either by choosing a new prompt for the new
+haiku, or by continuing on from the last word of your previous one).
+
+=== No-repeat workday sampling
+
+You might choose this sampling procedure if your purpose in using the language model is to never
+repeat a word in a sentence (for whatever reason).
+
+1. choose any word from the vocabulary as your initial prompt (write it down)
+2. roll the dice and select the next word (as per the weighted random sampling procedure),
+  *but* if the dice roll selects a word that has already been used in the current sentence,
+  roll again until you get a new word that that you haven't used yet---if the _only_
+  next word candidate is used, start a new sentence (i.e. return to step 1)
+3. use this new word as your next prompt and repeat the process (i.e. return to step 2)
+
+=== Non-sequitur sampling
+
+1. choose any word from the vocabulary as your initial prompt (write it down)
+2. of all the potential next words, find the one that is _least_ likely to follow the current word
+   (if you're using the booklet, this will be at the end of the list)
+3. if there are several equally unlikely next words, choose one at random with a dice roll
+4. use this new word as your next prompt and repeat the process (i.e. return to step 2)
+
+You might choose this sampling procedure if your purpose in using the language model is to generate
+text that is surprising and makes unexpected twists and turns.
+
+=== Two-year-old sampling
+
+You might choose this sampling procedure if your purpose in using the language model is to generate
+text that could plausibly have been said by a two-year-old.
+
+1. choose any one-syllable word from the vocabulary as your initial prompt (write it down)
+2.
+   - *if* any of the potential next words are one-syllable words, select from those words
+     _only_ as per the weighted random sampling procedure
+   - *otherwise* select the word(s) with the next fewest syllablyes as per the weighted random sampling procedure
+3. use this new word as your next prompt and repeat the process (i.e. return to step 2)
+
+=== Poetry slam sampling (slampling?)
+
+You might choose this sampling procedure if your purpose in using the language model is to generate
+text, microdose LSD and become one with the universe.
+
+1. choose any word from the vocabulary as your initial prompt (write it down)
+2.
+  - *if* any of the potential next words rhyme with the current word, select from those _rhyming words
+    only_ as per the weighted random sampling procedure
+  - *otherwise* select the next word as per the weighted random sampling procedure
+3. use this new word as your next prompt and repeat the process (i.e. return to step 2)
+
 == Further reading
 
 The specific type of model you've built is called an #link("https://en.wikipedia.org/wiki/N-gram")["n-gram" model].
