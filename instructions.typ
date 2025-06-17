@@ -46,6 +46,7 @@
   let keys = if header-keys != none { header-keys } else { headers }
   let row-hdrs = if row-headers != none { row-headers } else { headers }
   let col-hdrs = if col-headers != none { col-headers } else { headers }
+  v(0.5em)
   table(
     columns: (1fr,) * (n + 1),
     align: center + horizon,
@@ -75,6 +76,7 @@
       cells
     }
   )
+  v(0.5em)
 }
 
 Ever wanted to train your own Language Model by hand? Now you can.
@@ -104,6 +106,9 @@ Here's a worked example. Say you want to train your model on the text:
 Just do it lowercase---the model ignores capitalisation.
 
 #create-grid(("see",), (:), col-headers: (orange-text[see],), row-headers: (orange-text[see],))
+
+// helpful to keep things grouped together
+#pagebreak()
 
 #blue-text[Spot] follows #orange-text[See], so add a tally to the spot row/see column
 
