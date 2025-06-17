@@ -239,11 +239,22 @@ your die has, just do your best. For example, if you're using a 20-sided die and
 row in the grid above above, if the roll is 1-7 choose "spot" and otherwise choose "away" (7/20 isn't
 exactly the same as 1/3, but it's close enough).
 
-// Remember: it doesn't actually matter the _absoulte_ number of tallies in each
-// column, just the _relative_ number of tallies compared to all the other columns.
-// So if the two potential next words have e.g. 1 tally each or 4 tallies each it
-// doesn't matter, you just need to choose between them such that there's an equal
-// chance of each one (so dice 1-3 means the first one, 4-6 means the second one).
+== Further reading
+
+The specific type of model you've built is called an #link("https://en.wikipedia.org/wiki/N-gram")["n-gram" model].
+Each next word choice is determined by the current word only. These models are
+different (and less sophisticated) than the Transformer-based models like GPT
+which now dominate the LLM landscape, but there's evidence that a sufficiently
+large n-gram model can get you #link("https://arxiv.org/abs/2407.12034")[almost
+80% of the way there to a fancier GPT-based model].
+
+Having said that, GPT-4 has around 1.75T parameters, which when printed out
+(assuming one 1cm#super[2] grid cell per parameter) would cover 175km#super[2]---enough
+to cover #link("https://en.wikipedia.org/wiki/Melbourne_Cricket_Ground")[the MCG]
+_ten thousand times_.
+
+
+#pagebreak()
 
 == Sampling from a pre-calculated n-gram booket
 <prediction-booklet>
@@ -255,61 +266,88 @@ As a result, when dealing with larger language models it's often more convenient
 different "booklet" format---more like a dictionary. The cool maths kids call this a _sparse_ representation of the model
 (the grid view is a _dense_ representation of the same information).
 
-If you're using a pre-calcualted n-gram booklet, here's how to use it to generate new text. Start with a
+If you're using a pre-calculated n-gram booklet, here's how to use it to generate new text. Start with a
 single word (your initial prompt) as before. Instead of looking for your current word's row in the grid, you
 look up the current word in a larger booklet (just like looking up a word in the dictionary---it's
-in alphabetical order). It'll look something like this:
+in alphabetical order). If the current word is "see" its entry in the booklet will look something like this:
 
 #block[
-  #set text(font: "Libertinus Serif", size: 12pt)
+  #set text(font: "Libertinus Serif", size: 10pt)
+
+  #line(length: 100%, stroke: 0.5pt + luma(50%))
+  #v(0.1em)
   #text("see", size: 16pt, weight: "bold")
   #h(0.6em)
-  #box([#text(weight: "semibold")[12]|#text[her]])
+  #box([#text(weight: "semibold")[40]|#text[her]])
   #h(0.5em)
-  #box([#text(weight: "semibold")[15]|#text[him]])
+  #box([#text(weight: "semibold")[60]|#text[him]])
   #h(0.5em)
-  #box([#text(weight: "semibold")[18]|#text[you]])
+  #box([#text(weight: "semibold")[80]|#text[you]])
   #h(0.5em)
-  #box([#text(weight: "semibold")[18]|#text[them]])
+  #box([#text(weight: "semibold")[90]|#text[them]])
   #h(0.5em)
-  #box([#text(weight: "semibold")[25]|#text[the]])
+  #box([#text(weight: "semibold")[100]|#text[the]])
   #h(0.5em)
-  #box([#text(weight: "semibold")[32]|#text[spot]])
+  #box([#text(weight: "semibold")[110]|#text[spot]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[115]|#text[more]])
+  #v(0.1em)
+  #line(length: 100%, stroke: 0.5pt + luma(50%))
 ]
 
-#v(0.3em)
+The smaller words following "see" are the potential candidates for the next word, and each one has a number
+corresponding to how likely it is to be chosen (just like you did by hand with the tally marks in the grid earlier).
+
+In these booklets the "weight" numbers have been pre-calcuated based on a 120-sided die (a d120), so to sample the next word you can
+roll a d120 die and count along until you find the first option
+with a number that's greater than or equal to the number you rolled. In the above example,
+if you rolled a 65, your next word would be "you".
+
+There's one extra scenario to consider: some of the words in the booklet have more than 120 possible next words, so we can't roll a d120 to select the next one.
+Instead, some words have a small ♢ indicator like so:
 
 #block[
-  #set text(font: "Libertinus Serif", size: 12pt)
+  #set text(font: "Libertinus Serif", size: 10pt)
+  #line(length: 100%, stroke: 0.5pt + luma(50%))
+  #v(0.1em)
   #text("run", size: 16pt, weight: "bold")
   #h(0.3em)
-  (#box[#text(weight: "bold")[2]♢])
+  (#box[#text(weight: "bold")[3]♢])
   #h(0.6em)
-  #box([#text(weight: "semibold")[6]|#text[slower]])
+  #box([#text(weight: "semibold")[350]|#text[slower]])
   #h(0.5em)
-  #box([#text(weight: "semibold")[8]|#text[hard]])
+  #box([#text(weight: "semibold")[580]|#text[hard]])
   #h(0.5em)
-  #box([#text(weight: "semibold")[10]|#text[now]])
+  #box([#text(weight: "semibold")[750]|#text[now]])
   #h(0.5em)
-  #box([#text(weight: "semibold")[12]|#text[free]])
+  #box([#text(weight: "semibold")[867]|#text[free]])
   #h(0.5em)
-  #box([#text(weight: "semibold")[15]|#text[wild]])
+  #box([#text(weight: "semibold")[899]|#text[wild]])
   #h(0.5em)
-  #box([#text(weight: "semibold")[18]|#text[back]])
+  #box([#text(weight: "semibold")[923]|#text[back]])
   #h(0.5em)
-  #box([#text(weight: "semibold")[22]|#text[around]])
+  #box([#text(weight: "semibold")[956]|#text[around]])
   #h(0.5em)
-  #box([#text(weight: "semibold")[25]|#text[together]])
+  #box([#text(weight: "semibold")[979]|#text[together]])
   #h(0.5em)
-  #box([#text(weight: "semibold")[28]|#text[quickly]])
+  #box([#text(weight: "semibold")[985]|#text[quickly]])
   #h(0.5em)
-  #box([#text(weight: "semibold")[32]|#text[home]])
+  #box([#text(weight: "semibold")[989]|#text[home]])
   #h(0.5em)
-  #box([#text(weight: "semibold")[45]|#text[away]])
+  #box([#text(weight: "semibold")[994]|#text[away]])
   #h(0.5em)
-  #box([#text(weight: "semibold")[78]|#text[fast]])
+  #box([#text(weight: "semibold")[997]|#text[fast]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[998]|#text[uphill]])
+  #h(0.5em)
+  #box([#text(weight: "semibold")[999]|#text[downhill]])
+  #v(0.1em)
+  #line(length: 100%, stroke: 0.5pt + luma(50%))
 ]
-Then, all the potential next words are listed with the "dice roll" values pre-calculated.
+
+The #box[#text(font: "Libertinus Serif", weight: "bold")[3]♢] means that you need to find 3 × d10 (10-sided dice) and roll them. Choose them in any order to
+create a 3-digit number (e.g. if you rolled a 3, a 4 and an 8 your number would be 348) and then repeat the procedure as before
+(scanning along the candidates until you find the first number greater than or equal to 348).
 
 #pagebreak()
 
@@ -398,20 +436,6 @@ text, microdose LSD and become one with the universe.
     only_ as per the weighted random sampling procedure
   - *otherwise* select the next word as per the weighted random sampling procedure
 3. use this new word as your next prompt and repeat the process (i.e. return to step 2)
-
-== Further reading
-
-The specific type of model you've built is called an #link("https://en.wikipedia.org/wiki/N-gram")["n-gram" model].
-Each next word choice is determined by the current word only. These models are
-different (and less sophisticated) than the Transformer-based models like GPT
-which now dominate the LLM landscape, but there's evidence that a sufficiently
-large n-gram model can get you #link("https://arxiv.org/abs/2407.12034")[almost
-80% of the way there to a fancier GPT-based model].
-
-Having said that, GPT-4 has around 1.75T parameters, which when printed out
-(assuming one 1cm#super[2] grid cell per parameter) would cover 175km#super[2]---enough
-to cover #link("https://en.wikipedia.org/wiki/Melbourne_Cricket_Ground")[the MCG]
-_ten thousand times_.
 
 // TODO make a nice diagram of the above "partition the D20 range" approach
 // #import "@preview/cetz:0.3.2"
