@@ -91,7 +91,7 @@ You'll need:
   kids book, etc.)
 - a die (to roll)
 
-== Training Phase
+== Part 1: Training
 <training>
 
 The first part of creating and using your own language model is to _train_ it.
@@ -148,7 +148,7 @@ your text follows each other word.
 
 #pagebreak()
 
-== Prediction Phase
+== Part 2: Prediction
 <prediction>
 
 After you've trained your model, now comes the fun part: you can use your model to generate new text (this is
@@ -214,7 +214,7 @@ Keep going with this procedure until you decide that sentence is complete (it's 
 #notepad[Spot - run Spot. Run!]
 
 You can probably see that in this _very simple_ example, the generated text will only bounce back and forth between "run" and "Spot". That's because this is a very simple language model and it's trained on a _very_ small dataset.
-If you train it on more data (in the training phase above) you'll get more interesting sentences.
+If you train it on more data you'll get more interesting sentences.
 
 If you want to write a new sentence, go back to step 1 and choose a new starting
 word (prompt).
@@ -246,7 +246,7 @@ your die has, just do your best. For example, if you're using a 20-sided die and
 row in the grid above above, if the roll is 1-7 choose "spot" and otherwise choose "away" (7/20 isn't
 exactly the same as 1/3, but it's close enough).
 
-== Further reading
+=== Further reading
 
 The specific type of model you've built is called an #link("https://en.wikipedia.org/wiki/N-gram")["n-gram" model].
 Each next word choice is determined by the current word only. These models are
@@ -263,20 +263,16 @@ _ten thousand times_.
 
 #pagebreak()
 
-== Prediction Phase redux (n-gram booket)
+== Part 3: Predictions with a pre-trained model
 <prediction-booklet>
 
-You've probably noticed that filling out the tally marks on the grid becomes pretty tricky when the vocabulary
-size is large. You need _lots_ of rows and columns, but most of the grid cells end up empty.
+Most of the time you won't want to train your own model from scratch.  This _My First LM_ toolkit has you
+covered there as well---in the form of pre-trained model "booklets".
 
-As a result, when dealing with larger language models it's often more convenient to represent the model in a
-different "booklet" format---more like a dictionary. The cool maths kids call this a _sparse_ representation of the model
-(the grid view is a _dense_ representation of the same information).
-
-If you're using a pre-calculated n-gram booklet, here's how to use it to generate new text. Start with a
-single word (your initial prompt) as before. Instead of looking for your current word's row in the grid, you
-look up the current word in a larger booklet (just like looking up a word in the dictionary---it's
-in alphabetical order). If the current word is "see" its entry in the booklet will look something like this:
+They're not quite the same as the "grid" model you trained in Step @training. Filling out the tally marks
+on the grid becomes pretty tricky when the vocabulary size is large. You need _lots_ of rows and columns, but most
+of the grid cells end up empty. So for larger language models (like in the booklets) it's more convenient to represent the model in a
+format that's more like a dictionary. Here's an example for the word "see":
 
 #block[
   #set text(font: "Libertinus Serif", size: 10pt)
@@ -302,7 +298,14 @@ in alphabetical order). If the current word is "see" its entry in the booklet wi
   #line(length: 100%, stroke: 0.5pt + luma(50%))
 ]
 
-The smaller words following "see" are the potential candidates for the next word, and each one has a number
+The cool maths kids call this a _sparse_ representation of the model
+(the grid view is a _dense_ representation of the same information).
+
+Here's how to interpret the booklet model for prediction---to generate new text. Start with a
+single word (your initial prompt) as before, and "look it up" in your larger booklet (just like looking up a word in the dictionary---it's
+in alphabetical order).
+
+In the example above the smaller words following "see" are the potential candidates for the next word, and each one has a number
 corresponding to how likely it is to be chosen (just like you did by hand with the tally marks in the grid earlier).
 
 In these booklets the "weight" numbers have been pre-calcuated based on a 120-sided die (a d120), so to sample the next word you can
