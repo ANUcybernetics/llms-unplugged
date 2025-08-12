@@ -6,14 +6,16 @@ BIGRAM_DIR := $(OUT_DIR)/bigram
 TRIGRAM_DIR := $(OUT_DIR)/trigram
 
 # Define input files
-STANDARD_TEXTS := collected-hemingway frankenstein cloudstreet TinyStories-sample
+STANDARD_TEXTS := collected-hemingway frankenstein cloudstreet TinyStories-10k TinyStories-20k TinyStories-100k
 SEUSS_OUTPUTS := dr-seuss-2 dr-seuss-3 dr-seuss-4
+TINYSTORIES_OUTPUTS := TinyStories-10k-4 TinyStories-20k-4
 
 # Generate PDF target lists
 STANDARD_BIGRAM_PDFS := $(patsubst %,$(BIGRAM_DIR)/%.pdf,$(STANDARD_TEXTS))
 STANDARD_TRIGRAM_PDFS := $(patsubst %,$(TRIGRAM_DIR)/%.pdf,$(STANDARD_TEXTS))
 SEUSS_PDFS := $(patsubst %,$(OUT_DIR)/%.pdf,$(SEUSS_OUTPUTS))
-ALL_PDFS := $(STANDARD_BIGRAM_PDFS) $(STANDARD_TRIGRAM_PDFS) $(SEUSS_PDFS)
+TINYSTORIES_PDFS := $(patsubst %,$(OUT_DIR)/%.pdf,$(TINYSTORIES_OUTPUTS))
+ALL_PDFS := $(STANDARD_BIGRAM_PDFS) $(STANDARD_TRIGRAM_PDFS) $(SEUSS_PDFS) $(TINYSTORIES_PDFS)
 
 # Define common variables
 TOOL := target/release/my_first_lm
@@ -54,6 +56,18 @@ $(OUT_DIR)/dr-seuss-3.pdf: data/dr-seuss.txt book.typ $(TOOL)
 	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
 
 $(OUT_DIR)/dr-seuss-4.pdf: data/dr-seuss.txt book.typ $(TOOL)
+	$(TOOL) --scale-d 120 --n 4 $<
+	$(TYPST) $@
+	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
+
+# Special rule for TinyStories-10k with n=4
+$(OUT_DIR)/TinyStories-10k-4.pdf: data/TinyStories-10k.txt book.typ $(TOOL)
+	$(TOOL) --scale-d 120 --n 4 $<
+	$(TYPST) $@
+	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
+
+# Special rule for TinyStories-20k with n=4
+$(OUT_DIR)/TinyStories-20k-4.pdf: data/TinyStories-20k.txt book.typ $(TOOL)
 	$(TOOL) --scale-d 120 --n 4 $<
 	$(TYPST) $@
 	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
