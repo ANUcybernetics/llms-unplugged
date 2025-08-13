@@ -3,6 +3,9 @@
 // how many sided die will the book be optimised for?
 #let dice_d = 120
 
+// Get paper size from sys.inputs (defaults to a4)
+#let paper_size = sys.inputs.at("paper_size", default: "a4")
+
 // Load the JSON data
 #let json_data = json("model.json")
 #let data = json_data.data
@@ -124,7 +127,7 @@
 
 // Main content with original layout
 #set page(
-  "a4",
+  paper_size,
   margin: (x: 1.5cm, y: 1.5cm),
   columns: 4,
   numbering: "1/1"

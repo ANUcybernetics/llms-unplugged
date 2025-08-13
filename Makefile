@@ -2,27 +2,25 @@
 
 # Define directories
 OUT_DIR := out
-BIGRAM_DIR := $(OUT_DIR)/bigram
-TRIGRAM_DIR := $(OUT_DIR)/trigram
 
 # Define input files
-STANDARD_TEXTS := collected-hemingway frankenstein cloudstreet TinyStories-10k TinyStories-20k TinyStories-100k
-SEUSS_OUTPUTS := dr-seuss-2 dr-seuss-3 dr-seuss-4
-TINYSTORIES_OUTPUTS := TinyStories-10k-4 TinyStories-20k-4
+BIGRAM_TEXTS := collected-hemingway frankenstein cloudstreet
+TRIGRAM_TEXTS := TinyStories-100k
+
+# Define paper sizes
+PAPER_SIZES := a4 a5
 
 # Generate PDF target lists
-STANDARD_BIGRAM_PDFS := $(patsubst %,$(BIGRAM_DIR)/%.pdf,$(STANDARD_TEXTS))
-STANDARD_TRIGRAM_PDFS := $(patsubst %,$(TRIGRAM_DIR)/%.pdf,$(STANDARD_TEXTS))
-SEUSS_PDFS := $(patsubst %,$(OUT_DIR)/%.pdf,$(SEUSS_OUTPUTS))
-TINYSTORIES_PDFS := $(patsubst %,$(OUT_DIR)/%.pdf,$(TINYSTORIES_OUTPUTS))
-ALL_PDFS := $(STANDARD_BIGRAM_PDFS) $(STANDARD_TRIGRAM_PDFS) $(SEUSS_PDFS) $(TINYSTORIES_PDFS)
+BIGRAM_PDFS := $(foreach text,$(BIGRAM_TEXTS),$(foreach size,$(PAPER_SIZES),$(OUT_DIR)/$(text)-bigram-$(size).pdf))
+TRIGRAM_PDFS := $(foreach text,$(TRIGRAM_TEXTS),$(foreach size,$(PAPER_SIZES),$(OUT_DIR)/$(text)-trigram-$(size).pdf))
+ALL_PDFS := $(BIGRAM_PDFS) $(TRIGRAM_PDFS)
 
 # Define common variables
 TOOL := target/release/my_first_lm
-TYPST := typst compile book.typ
+TYPST := typst compile
 
-# Ensure output directories exist
-$(shell mkdir -p $(OUT_DIR) $(BIGRAM_DIR) $(TRIGRAM_DIR))
+# Ensure output directory exists
+$(shell mkdir -p $(OUT_DIR))
 
 # Default target to build all PDFs
 all: $(ALL_PDFS)
@@ -32,49 +30,31 @@ all: $(ALL_PDFS)
 $(TOOL):
 	cargo build --release
 
-# Pattern rule for bigram PDFs
-$(BIGRAM_DIR)/%.pdf: data/%.txt book.typ $(TOOL)
+# Pattern rule for bigram PDFs with paper size
+$(OUT_DIR)/%-bigram-a4.pdf: data/%.txt book.typ $(TOOL)
 	$(TOOL) --scale-d 120 --n 2 $<
-	$(TYPST) $@
+	$(TYPST) --input paper_size=a4 book.typ $@
 	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
 
-# Pattern rule for trigram PDFs
-$(TRIGRAM_DIR)/%.pdf: data/%.txt book.typ $(TOOL)
-	$(TOOL) --scale-d 120 --n 3 $<
-	$(TYPST) $@
-	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
-
-# Special rules for Dr. Seuss with different n values
-$(OUT_DIR)/dr-seuss-2.pdf: data/dr-seuss.txt book.typ $(TOOL)
+$(OUT_DIR)/%-bigram-a5.pdf: data/%.txt book.typ $(TOOL)
 	$(TOOL) --scale-d 120 --n 2 $<
-	$(TYPST) $@
+	$(TYPST) --input paper_size=a5 book.typ $@
 	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
 
-$(OUT_DIR)/dr-seuss-3.pdf: data/dr-seuss.txt book.typ $(TOOL)
+# Pattern rule for trigram PDFs with paper size
+$(OUT_DIR)/%-trigram-a4.pdf: data/%.txt book.typ $(TOOL)
 	$(TOOL) --scale-d 120 --n 3 $<
-	$(TYPST) $@
+	$(TYPST) --input paper_size=a4 book.typ $@
 	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
 
-$(OUT_DIR)/dr-seuss-4.pdf: data/dr-seuss.txt book.typ $(TOOL)
-	$(TOOL) --scale-d 120 --n 4 $<
-	$(TYPST) $@
-	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
-
-# Special rule for TinyStories-10k with n=4
-$(OUT_DIR)/TinyStories-10k-4.pdf: data/TinyStories-10k.txt book.typ $(TOOL)
-	$(TOOL) --scale-d 120 --n 4 $<
-	$(TYPST) $@
-	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
-
-# Special rule for TinyStories-20k with n=4
-$(OUT_DIR)/TinyStories-20k-4.pdf: data/TinyStories-20k.txt book.typ $(TOOL)
-	$(TOOL) --scale-d 120 --n 4 $<
-	$(TYPST) $@
+$(OUT_DIR)/%-trigram-a5.pdf: data/%.txt book.typ $(TOOL)
+	$(TOOL) --scale-d 120 --n 3 $<
+	$(TYPST) --input paper_size=a5 book.typ $@
 	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
 
 # Clean target to remove generated files
 .PHONY: clean
 clean:
-	rm -f $(OUT_DIR)/*.pdf $(BIGRAM_DIR)/*.pdf $(TRIGRAM_DIR)/*.pdf
+	rm -f $(OUT_DIR)/*.pdf
 
 .PHONY: all
