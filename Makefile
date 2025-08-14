@@ -5,7 +5,7 @@ OUT_DIR := out
 
 # Define input files
 BIGRAM_TEXTS := collected-hemingway frankenstein cloudstreet
-TRIGRAM_TEXTS := TinyStories-100k
+TRIGRAM_TEXTS := TinyStories-20k
 
 # Define paper sizes
 PAPER_SIZES := a4 a5
