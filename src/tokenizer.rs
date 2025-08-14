@@ -28,7 +28,8 @@ pub fn tokenize(line: &str) -> Vec<String> {
     }
 
     // Filter any empty tokens, strip apostrophes at beginning and end
-    tokens.into_iter()
+    tokens
+        .into_iter()
         .filter(|token| !token.is_empty() && token != "'")
         .map(|token| {
             // Strip apostrophes at beginning and end
@@ -36,7 +37,8 @@ pub fn tokenize(line: &str) -> Vec<String> {
 
             // Repeatedly remove leading apostrophes
             while cleaned_token.starts_with('\'') {
-                if cleaned_token.len() == 1 { // Token is just "'" or became "'"
+                if cleaned_token.len() == 1 {
+                    // Token is just "'" or became "'"
                     cleaned_token.clear(); // Make it empty to be filtered out later
                     break;
                 }
@@ -46,7 +48,8 @@ pub fn tokenize(line: &str) -> Vec<String> {
             // Repeatedly remove trailing apostrophes
             // Check length again as it might have been all apostrophes or became empty
             while !cleaned_token.is_empty() && cleaned_token.ends_with('\'') {
-                 if cleaned_token.len() == 1 { // Token is just "'" or became "'"
+                if cleaned_token.len() == 1 {
+                    // Token is just "'" or became "'"
                     cleaned_token.clear(); // Make it empty to be filtered out later
                     break;
                 }
@@ -66,10 +69,7 @@ mod tests {
     fn test_tokenize_simple_line() {
         let line = "Hello, world! This is a test.";
         let tokens = tokenize(line);
-        assert_eq!(
-            tokens,
-            vec!["hello", "world", "this", "is", "a", "test"]
-        );
+        assert_eq!(tokens, vec!["hello", "world", "this", "is", "a", "test"]);
     }
 
     #[test]
@@ -78,10 +78,18 @@ mod tests {
         let tokens = tokenize(line);
         assert_eq!(
             tokens,
-            vec!["version", "and", "numbers", "shouldn't", "be", "filtered", "don't"]
+            vec![
+                "version",
+                "and",
+                "numbers",
+                "shouldn't",
+                "be",
+                "filtered",
+                "don't"
+            ]
         );
     }
-    
+
     #[test]
     fn test_tokenize_special_cases_lowercase() {
         let line = "I think that I am thinking and I'm sure that I said so.";
@@ -115,24 +123,28 @@ mod tests {
         );
     }
 
-
     #[test]
     fn test_tokenize_handles_apostrophes() {
         let line = "'ello 'tis 'twas '90s goin' talkin' 'n' writin' can't don't won't";
         let tokens = tokenize(line);
         assert_eq!(
             tokens,
-            vec!["ello", "tis", "twas", "s", "goin", "talkin", "n", "writin", "can't", "don't", "won't"]
+            vec![
+                "ello", "tis", "twas", "s", "goin", "talkin", "n", "writin", "can't", "don't",
+                "won't"
+            ]
         );
     }
-    
+
     #[test]
     fn test_tokenize_complex_case_from_original() {
         let complex_line = "'Bobbie, Bobbie!' she said, 'Come and kiss me, Bobbie!'";
         let complex_tokens = tokenize(complex_line);
         assert_eq!(
             complex_tokens,
-            vec!["bobbie", "bobbie", "she", "said", "come", "and", "kiss", "me", "bobbie"]
+            vec![
+                "bobbie", "bobbie", "she", "said", "come", "and", "kiss", "me", "bobbie"
+            ]
         );
     }
 
@@ -192,7 +204,7 @@ mod tests {
         // The current tokenizer would split "o'clock" into "o" and "clock" if spaces or punctuation surrounded it.
         // However, if we imagine a scenario where it's a single token, this test makes sense.
         // For now, it will likely pass due to how tokens are split.
-        let line = "o'clock"; 
+        let line = "o'clock";
         let tokens = tokenize(line);
         assert_eq!(tokens, vec!["o'clock"]);
     }
@@ -210,7 +222,7 @@ mod tests {
         let tokens = tokenize(line);
         assert_eq!(tokens, Vec::<String>::new());
     }
-    
+
     #[test]
     fn test_tokenize_apostrophe_with_contraction() {
         let line = "''can't''";

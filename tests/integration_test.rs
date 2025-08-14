@@ -211,10 +211,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
         let output = Command::new(&exe_path).arg(&input_path).output()?;
 
         // Should fail with error
-        assert!(
-            !output.status.success(),
-            "CLI should fail with missing url"
-        );
+        assert!(!output.status.success(), "CLI should fail with missing url");
 
         // Error message should mention missing fields
         let stderr_message = String::from_utf8_lossy(&output.stderr);
@@ -256,7 +253,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
             "Should output error message for malformed frontmatter: {}",
             stderr_message
         );
-        
+
         // Should provide guidance
         assert!(
             stderr_message.contains("frontmatter"),
