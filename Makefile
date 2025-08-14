@@ -33,23 +33,23 @@ $(TOOL):
 # Pattern rule for bigram PDFs with paper size
 $(OUT_DIR)/%-bigram-a4.pdf: data/%.txt book.typ $(TOOL)
 	$(TOOL) --scale-d 120 --n 2 $<
-	$(TYPST) --input paper_size=a4 book.typ $@
+	$(TYPST) --input paper_size=a4 --input columns=4 book.typ $@
 	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
 
 $(OUT_DIR)/%-bigram-a5.pdf: data/%.txt book.typ $(TOOL)
 	$(TOOL) --scale-d 120 --n 2 $<
-	$(TYPST) --input paper_size=a5 book.typ $@
+	$(TYPST) --input paper_size=a5 --input columns=3 book.typ $@
 	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
 
 # Pattern rule for trigram PDFs with paper size
 $(OUT_DIR)/%-trigram-a4.pdf: data/%.txt book.typ $(TOOL)
 	$(TOOL) --scale-d 120 --n 3 $<
-	$(TYPST) --input paper_size=a4 book.typ $@
+	$(TYPST) --input paper_size=a4 --input columns=4 book.typ $@
 	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
 
 $(OUT_DIR)/%-trigram-a5.pdf: data/%.txt book.typ $(TOOL)
 	$(TOOL) --scale-d 120 --n 3 $<
-	$(TYPST) --input paper_size=a5 book.typ $@
+	$(TYPST) --input paper_size=a5 --input columns=3 book.typ $@
 	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
 
 # Clean target to remove generated files

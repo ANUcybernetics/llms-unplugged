@@ -1,10 +1,12 @@
-#set text(font: "Libertinus Serif", size: 8pt)
+// Get configuration from sys.inputs
+#let paper_size = sys.inputs.at("paper_size", default: "a4")
+#let font_size = sys.inputs.at("font_size", default: "8pt")
+#let num_columns = sys.inputs.at("columns", default: "4")
+
+#set text(font: "Libertinus Serif", size: eval(font_size))
 
 // how many sided die will the book be optimised for?
 #let dice_d = 120
-
-// Get paper size from sys.inputs (defaults to a4)
-#let paper_size = sys.inputs.at("paper_size", default: "a4")
 
 // Load the JSON data
 #let json_data = json("model.json")
@@ -129,7 +131,7 @@
 #set page(
   paper_size,
   margin: (x: 1.5cm, y: 1.5cm),
-  columns: 4,
+  columns: int(num_columns),
   numbering: "1/1"
   // header: {
   //   set align(left)
