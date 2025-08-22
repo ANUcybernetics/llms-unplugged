@@ -6,8 +6,8 @@ question. (Spoiler: yep.)
 
 The repo contains:
 
-- a Typst file (`lm-grid.typ`) and instructions (`instructions.typ`) for creating
-  a word co-occurence matrix that can be used as a
+- a Typst file (`lm-grid.typ`) and instructions (`instructions.typ`) for
+  creating a word co-occurence matrix that can be used as a
   [bigram language model](https://en.wikipedia.org/wiki/Word_n-gram_language_model).
 
 - a command-line tool (written in Rust) for processing a text corpus and
