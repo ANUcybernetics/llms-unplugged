@@ -122,7 +122,7 @@ def output_tsv_matrix(
     
     The format is:
     - First row: empty cell, then all vocabulary words
-    - Subsequent rows: word, then counts for that word followed by each vocabulary word
+    - Subsequent rows: word, then cumulative counts along the row
     - Empty cells for zero counts
     
     Args:
@@ -133,13 +133,17 @@ def output_tsv_matrix(
     header = [''] + vocabulary
     print('\t'.join(header))
     
-    # Print each row
+    # Print each row with cumulative counts
     for first_word in vocabulary:
         row = [first_word]
+        cumulative = 0
         for second_word in vocabulary:
             count = matrix.get(first_word, {}).get(second_word, 0)
-            # Use empty string for zero counts
-            row.append(str(count) if count > 0 else '')
+            if count > 0:
+                cumulative += count
+                row.append(str(cumulative))
+            else:
+                row.append('')
         print('\t'.join(row))
 
 
@@ -158,7 +162,7 @@ def main(
     
     The output is a tab-separated table with:
     - Sorted vocabulary in first row and first column
-    - Cell (i,j) contains count of times word i is followed by word j
+    - Cell (i,j) contains cumulative count up to and including word j for row i
     - Empty cells (not 0) when count is zero
     """
     try:
