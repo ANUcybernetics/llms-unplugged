@@ -10,6 +10,7 @@ Tokenization rules:
 - Strip all punctuation except apostrophes
 - Treat hyphens as whitespace
 - Downcase all words except "I" which remains uppercase
+- Remove numbers and roman numerals
 - Remove empty tokens
 """
 
@@ -42,17 +43,37 @@ def tokenise_text(text: str) -> list[str]:
     # Split into tokens
     tokens = text.split()
     
+    # Regex to match roman numerals (lowercase)
+    roman_pattern = re.compile(r'^m{0,4}(cm|cd|d?c{0,3})(xc|xl|l?x{0,3})(ix|iv|v?i{0,3})$')
+    
     # Process each token
     processed_tokens = []
     for token in tokens:
         if not token:  # Skip empty tokens
             continue
+        
+        # Strip leading and trailing single quotes (quote marks)
+        # But keep internal apostrophes
+        token = token.strip("'")
+        
+        if not token:  # Skip if stripping quotes left nothing
+            continue
             
         # Downcase everything except "I"
         if token.upper() == 'I':
-            processed_tokens.append('I')
+            processed = 'I'
         else:
-            processed_tokens.append(token.lower())
+            processed = token.lower()
+        
+        # Skip tokens that start with a number (includes pure numbers)
+        if processed and processed[0].isdigit():
+            continue
+            
+        # Skip roman numerals (check after downcasing)
+        if roman_pattern.match(processed):
+            continue
+        
+        processed_tokens.append(processed)
     
     return processed_tokens
 
