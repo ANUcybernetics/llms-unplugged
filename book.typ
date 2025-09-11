@@ -2,6 +2,7 @@
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
 #let font_size = sys.inputs.at("font_size", default: "8pt")
 #let num_columns = sys.inputs.at("columns", default: "4")
+#let subtitle = sys.inputs.at("subtitle", default: "")
 
 #set text(font: "Libertinus Serif", size: eval(font_size))
 
@@ -37,6 +38,10 @@
     #text(weight: "bold", size: 4em)[#context metadata.title]
     #v(1cm)
     #text(size: 2.5em)[A #context model-type(metadata.n) language model]
+    #if subtitle != "" {
+      v(0.5cm)
+      text(size: 2em)[#subtitle]
+    }
   ]
   pagebreak()
 }

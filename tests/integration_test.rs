@@ -61,11 +61,15 @@ fn run_cli_and_typst_test(n: usize, exe_path: &Path, temp_dir: &TempDir) -> io::
         n
     );
 
-    // --- 3. Run typst compile using the actual book.typ ---
+    // --- 3. Copy book.typ to temp_dir and run typst compile ---
+    // Copy book.typ to temp_dir so it can find model.json in the same directory
+    let temp_book_typ_path = temp_dir.path().join("book.typ");
+    std::fs::copy(&actual_book_typ_path, &temp_book_typ_path)?;
+    
     // Run typst in temp_dir so it finds the model.json created there.
     let typst_status = Command::new("typst")
         .arg("compile")
-        .arg(&actual_book_typ_path) // Path to the *actual* book.typ
+        .arg("book.typ") // Use the local copy in temp_dir
         .arg(&book_pdf_path) // Explicitly specify output path in temp_dir
         .current_dir(temp_dir.path()) // IMPORTANT: Run Typst in temp_dir to find model.json
         .output()?; // Use output() to capture stderr if needed

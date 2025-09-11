@@ -46,7 +46,7 @@ pub struct ProcessingStats {
 #[derive(Serialize, Debug, PartialEq, Eq, Hash, Clone)] // Added Eq, Hash, Clone for HashMap key
 pub struct NGramPrefix(Vec<String>); // Wrapper struct for clarity and potential future methods
 
-#[derive(Serialize, Debug, PartialEq)]
+#[derive(Serialize, Debug, PartialEq, Clone)]
 pub struct WordFollowEntry {
     pub prefix: Vec<String>, // Changed from word: String
     pub followers: Vec<(String, usize)>,
@@ -332,6 +332,91 @@ fn convert_to_entries(
             }
         })
         .collect()
+}
+
+/// Splits entries into multiple books based on the first letter of the prefix
+pub fn split_entries_into_books(
+    entries: &[WordFollowEntry],
+    num_books: usize,
+) -> Vec<(String, Vec<WordFollowEntry>)> {
+    if num_books <= 1 {
+        // No splitting, return all entries in one book
+        return vec![("".to_string(), entries.to_vec())];
+    }
+    
+    // Calculate total number of followers across all entries to balance books
+    let total_followers: usize = entries
+        .iter()
+        .map(|e| e.followers.iter().map(|(_, count)| count).sum::<usize>())
+        .sum();
+    
+    let target_per_book = total_followers / num_books;
+    
+    let mut books = Vec::new();
+    let mut current_book = Vec::new();
+    let mut current_count = 0;
+    let mut current_first_letter = None;
+    let mut book_start_letter = None;
+    
+    for entry in entries {
+        // Get the first letter of the prefix (lowercase for comparison)
+        let first_letter = entry.prefix[0]
+            .chars()
+            .next()
+            .unwrap_or('?')
+            .to_lowercase()
+            .to_string();
+        
+        // Track the start letter for this book
+        if book_start_letter.is_none() {
+            book_start_letter = Some(first_letter.clone());
+        }
+        
+        // Check if we should start a new book
+        let entry_count: usize = entry.followers.iter().map(|(_, count)| count).sum();
+        
+        // Start a new book if:
+        // 1. We've reached our target count AND
+        // 2. The first letter has changed AND
+        // 3. We haven't already created the maximum number of books
+        if current_count > 0 
+            && current_count + entry_count > target_per_book 
+            && current_first_letter.as_ref() != Some(&first_letter)
+            && books.len() < num_books - 1 {
+            
+            // Save the current book with its range
+            let end_letter = current_first_letter.as_ref().unwrap();
+            let start = book_start_letter.as_ref().unwrap();
+            let book_name = if start == end_letter {
+                start.to_uppercase()
+            } else {
+                format!("{}-{}", start.to_uppercase(), end_letter.to_uppercase())
+            };
+            
+            books.push((book_name, current_book));
+            current_book = Vec::new();
+            current_count = 0;
+            book_start_letter = Some(first_letter.clone());
+        }
+        
+        current_book.push(entry.clone());
+        current_count += entry_count;
+        current_first_letter = Some(first_letter);
+    }
+    
+    // Add the last book
+    if !current_book.is_empty() {
+        let start = book_start_letter.unwrap_or_else(|| "?".to_string());
+        let end = current_first_letter.unwrap_or_else(|| "?".to_string());
+        let book_name = if start == end {
+            start.to_uppercase()
+        } else {
+            format!("{}-{}", start.to_uppercase(), end.to_uppercase())
+        };
+        books.push((book_name, current_book));
+    }
+    
+    books
 }
 
 /// Saves the N-gram follow entries to a JSON file
@@ -1306,5 +1391,110 @@ mod tests {
         assert_eq!(data_mixed[0][3][1], serde_json::json!(2)); // second follower
 
         Ok(())
+    }
+    
+    #[test]
+    fn test_split_entries_into_books() {
+        // Create test entries with various prefixes
+        let entries = vec![
+            WordFollowEntry {
+                prefix: vec!["apple".to_string()],
+                followers: vec![("pie".to_string(), 3), ("juice".to_string(), 2)],
+            },
+            WordFollowEntry {
+                prefix: vec!["banana".to_string()],
+                followers: vec![("split".to_string(), 1)],
+            },
+            WordFollowEntry {
+                prefix: vec!["cherry".to_string()],
+                followers: vec![("pie".to_string(), 2)],
+            },
+            WordFollowEntry {
+                prefix: vec!["date".to_string()],
+                followers: vec![("palm".to_string(), 1)],
+            },
+            WordFollowEntry {
+                prefix: vec!["elderberry".to_string()],
+                followers: vec![("wine".to_string(), 1)],
+            },
+            WordFollowEntry {
+                prefix: vec!["fig".to_string()],
+                followers: vec![("tree".to_string(), 2)],
+            },
+            WordFollowEntry {
+                prefix: vec!["grape".to_string()],
+                followers: vec![("vine".to_string(), 3), ("juice".to_string(), 1)],
+            },
+            WordFollowEntry {
+                prefix: vec!["honeydew".to_string()],
+                followers: vec![("melon".to_string(), 1)],
+            },
+        ];
+        
+        // Test with no splitting (1 book)
+        let books = split_entries_into_books(&entries, 1);
+        assert_eq!(books.len(), 1);
+        assert_eq!(books[0].0, "");
+        assert_eq!(books[0].1.len(), 8);
+        
+        // Test with 2 books
+        let books = split_entries_into_books(&entries, 2);
+        assert_eq!(books.len(), 2);
+        // First book should contain entries starting with a-d/e
+        assert!(books[0].0.contains("-") || books[0].0.len() == 1);
+        // Second book should contain remaining entries
+        assert!(books[1].0.contains("-") || books[1].0.len() == 1);
+        // Total entries should be preserved
+        let total_entries: usize = books.iter().map(|(_, entries)| entries.len()).sum();
+        assert_eq!(total_entries, 8);
+        
+        // Test with 3 books
+        let books = split_entries_into_books(&entries, 3);
+        assert_eq!(books.len(), 3);
+        let total_entries: usize = books.iter().map(|(_, entries)| entries.len()).sum();
+        assert_eq!(total_entries, 8);
+        
+        // Test that entries are not duplicated or lost
+        for book in &books {
+            for entry in &book.1 {
+                // Check that each entry appears in original list
+                assert!(entries.iter().any(|e| e.prefix == entry.prefix));
+            }
+        }
+    }
+    
+    #[test]
+    fn test_split_entries_balanced() {
+        // Create entries with uneven distribution of followers
+        let entries = vec![
+            WordFollowEntry {
+                prefix: vec!["a".to_string()],
+                followers: vec![("x".to_string(), 100)], // Heavy entry
+            },
+            WordFollowEntry {
+                prefix: vec!["b".to_string()],
+                followers: vec![("y".to_string(), 1)],
+            },
+            WordFollowEntry {
+                prefix: vec!["c".to_string()],
+                followers: vec![("z".to_string(), 1)],
+            },
+            WordFollowEntry {
+                prefix: vec!["d".to_string()],
+                followers: vec![("w".to_string(), 100)], // Heavy entry
+            },
+        ];
+        
+        // Split into 2 books - should balance by follower count
+        let books = split_entries_into_books(&entries, 2);
+        assert_eq!(books.len(), 2);
+        
+        // Both books should have entries
+        assert!(books[0].1.len() > 0);
+        assert!(books[1].1.len() > 0);
+        
+        // Total entries preserved
+        let total_entries: usize = books.iter().map(|(_, entries)| entries.len()).sum();
+        assert_eq!(total_entries, 4);
     }
 }

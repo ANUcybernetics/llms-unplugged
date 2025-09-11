@@ -1,6 +1,7 @@
 use clap::Parser;
-use my_first_lm::{NGramCounter, save_to_json};
-use std::path::PathBuf;
+use my_first_lm::{NGramCounter, save_to_json, split_entries_into_books};
+use std::path::{Path, PathBuf};
+use std::process::Command;
 
 /// A simple language model builder that processes text files and outputs word following statistics
 #[derive(Parser, Debug)]
@@ -24,6 +25,14 @@ struct Args {
     /// counts are scaled to [0, 10^n - 1] (smallest n-digit number range).
     #[arg(long = "scale-d")]
     scale_d: Option<u32>,
+
+    /// Number of books to split the output into (default 1 = no splitting)
+    #[arg(short = 'b', long = "books", default_value_t = 1)]
+    num_books: usize,
+
+    /// Run typst compile on the generated JSON files to create PDFs
+    #[arg(long = "typst")]
+    run_typst: bool,
 }
 
 fn main() {
@@ -37,17 +46,51 @@ fn main() {
             let stats = counter.get_stats();
             let metadata = counter.get_metadata();
 
-            match save_to_json(&entries, &args.output, args.scale_d, metadata) {
-                Ok(_) => {
-                    println!(
-                        "Successfully wrote word statistics to '{}'",
-                        args.output.display()
-                    );
-                    if let Some(d) = args.scale_d {
-                        println!("Applied count scaling with d={}", d);
-                    } else {
-                        println!("Applied default count scaling to [0, 10^n-1] range");
+            // Split entries into books if requested
+            let books = split_entries_into_books(&entries, args.num_books);
+            
+            // Save each book to a separate file
+            let mut all_success = true;
+            let output_stem = args.output.file_stem().unwrap_or_default().to_str().unwrap_or("model");
+            let output_dir = args.output.parent().unwrap_or(Path::new("."));
+            
+            for (i, (book_range, book_entries)) in books.iter().enumerate() {
+                let output_file = if args.num_books == 1 {
+                    args.output.clone()
+                } else {
+                    let filename = format!("{}_book_{}.json", output_stem, i + 1);
+                    output_dir.join(filename)
+                };
+                
+                match save_to_json(book_entries, &output_file, args.scale_d, metadata) {
+                    Ok(_) => {
+                        if args.num_books > 1 {
+                            println!(
+                                "Successfully wrote book {} ({}) to '{}'",
+                                i + 1,
+                                book_range,
+                                output_file.display()
+                            );
+                        } else {
+                            println!(
+                                "Successfully wrote word statistics to '{}'",
+                                output_file.display()
+                            );
+                        }
                     }
+                    Err(e) => {
+                        eprintln!("Error writing output file '{}': {}", output_file.display(), e);
+                        all_success = false;
+                    }
+                }
+            }
+            
+            if all_success {
+                if let Some(d) = args.scale_d {
+                    println!("Applied count scaling with d={}", d);
+                } else {
+                    println!("Applied default count scaling to [0, 10^n-1] range");
+                }
 
                     // Print metadata information
                     if let Some(meta) = metadata {
@@ -89,8 +132,73 @@ fn main() {
                             prefix_str, count
                         );
                     }
+                
+                // Run typst if requested
+                if args.run_typst && all_success {
+                    println!("\nRunning typst compile...");
+                    for (i, (book_range, _)) in books.iter().enumerate() {
+                        let json_file = if args.num_books == 1 {
+                            args.output.clone()
+                        } else {
+                            let filename = format!("{}_book_{}.json", output_stem, i + 1);
+                            output_dir.join(filename)
+                        };
+                        
+                        let pdf_file = json_file.with_extension("pdf");
+                        
+                        // Prepare the subtitle for multi-book outputs
+                        let subtitle = if args.num_books > 1 {
+                            format!("{} (book {} of {})", book_range, i + 1, args.num_books)
+                        } else {
+                            String::new()
+                        };
+                        
+                        // Copy JSON file to model.json temporarily (required by book.typ)
+                        let model_json_path = output_dir.join("model.json");
+                        if json_file != model_json_path {
+                            if let Err(e) = std::fs::copy(&json_file, &model_json_path) {
+                                eprintln!("Error copying {} to model.json: {}", json_file.display(), e);
+                                continue;
+                            }
+                        }
+                        
+                        // Run typst with the subtitle parameter
+                        let mut typst_cmd = Command::new("typst");
+                        typst_cmd.arg("compile");
+                        
+                        if !subtitle.is_empty() {
+                            typst_cmd.arg("--input");
+                            typst_cmd.arg(format!("subtitle={}", subtitle));
+                        }
+                        
+                        typst_cmd.arg("book.typ");
+                        typst_cmd.arg(&pdf_file);
+                        
+                        match typst_cmd.output() {
+                            Ok(output) => {
+                                if output.status.success() {
+                                    println!("Successfully created PDF: {}", pdf_file.display());
+                                } else {
+                                    eprintln!("Typst compile failed for {}", pdf_file.display());
+                                    if !output.stderr.is_empty() {
+                                        eprintln!("Error: {}", String::from_utf8_lossy(&output.stderr));
+                                    }
+                                }
+                            }
+                            Err(e) => {
+                                eprintln!("Failed to run typst: {}", e);
+                                eprintln!("Make sure typst is installed and in your PATH");
+                            }
+                        }
+                        
+                        // Clean up temporary model.json if it was created
+                        if json_file != model_json_path && model_json_path.exists() {
+                            let _ = std::fs::remove_file(&model_json_path);
+                        }
+                    }
                 }
-                Err(e) => eprintln!("Error writing output file: {}", e),
+            } else {
+                eprintln!("Error writing output files");
             }
         }
         Err(e) => {

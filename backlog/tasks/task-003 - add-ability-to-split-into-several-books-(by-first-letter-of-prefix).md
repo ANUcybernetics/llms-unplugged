@@ -1,9 +1,10 @@
 ---
 id: task-003
 title: add ability to split into several books (by first letter of prefix)
-status: To Do
+status: Done
 assignee: []
-created_date: "2025-09-10 12:10"
+created_date: '2025-09-10 12:10'
+updated_date: '2025-09-11 01:44'
 labels: []
 dependencies: []
 ---
