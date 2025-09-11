@@ -163,14 +163,13 @@
     if part == "." or part == "," {
       // Display punctuation in a rounded box with vertical centering
       box(
-        baseline: 0.25em,  // Vertically center the box
         rect(
           fill: none,
           stroke: 0.5pt + black,
-          radius: 3pt,
-          inset: (x: 3pt, y: 0pt),
-          outset: (y: 2pt),
-          [#text(part, size: 1.5em, weight: "bold", baseline: -0.2em)]
+          radius: 1pt,
+          inset: (x: 2pt, y: 0pt),
+          outset: (y: 0pt),
+          [#text(part, size: 1.5em, weight: "bold", baseline: -0.3em)]
         )
       )
     } else {
@@ -199,26 +198,24 @@
       // Display punctuation in a rounded box with special styling
       if followers.len() > 1 {
         box([#text(weight: "semibold")[#follower.at(1)]|#box(
-          baseline: 0.15em,  // Vertically center the box
           rect(
             fill: none,
             stroke: 0.5pt + black,
-            radius: 3pt,
-            inset: (x: 3pt, y: 0pt),
-            outset: (y: 1pt),
-            [#text(weight: "bold", baseline: -0.15em)[#word]]
+            radius: 1pt,
+            inset: (x: 2pt, y: 0pt),
+            outset: (y: 0pt),
+            [#text(weight: "bold", baseline: -0.25em)[#word]]
           )
         )])
       } else {
         box(
-          baseline: 0.15em,  // Vertically center the box
           rect(
             fill: none,
             stroke: 0.5pt + black,
-            radius: 3pt,
-            inset: (x: 3pt, y: 0pt),
-            outset: (y: 1pt),
-            [#text(weight: "bold", baseline: -0.15em)[#word]]
+            radius: 1pt,
+            inset: (x: 2pt, y: 0pt),
+            outset: (y: 0pt),
+            [#text(weight: "bold", baseline: -0.25em)[#word]]
           )
         )
       }
