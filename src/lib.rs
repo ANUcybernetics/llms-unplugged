@@ -25,6 +25,20 @@ pub struct Metadata {
     pub url: String,
     /// Size of n-gram used for processing
     pub n: usize,
+    /// Book information for multi-book outputs
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub book_info: Option<BookInfo>,
+}
+
+/// Information about a specific book in a multi-book set
+#[derive(Debug, Clone, Serialize)]
+pub struct BookInfo {
+    /// Book number (1-indexed)
+    pub number: usize,
+    /// Total number of books
+    pub total: usize,
+    /// Letter range for this book (e.g., "A-D")
+    pub letter_range: String,
 }
 
 /// Contains summary statistics for processed text
@@ -162,6 +176,7 @@ impl NGramCounter {
                         author: author.to_string(),
                         url: url.to_string(),
                         n: self.n,
+                        book_info: None,
                     });
                 } else {
                     // Missing required fields, return error
@@ -908,6 +923,7 @@ mod tests {
             author: "Test Author".to_string(),
             url: "https://example.com/bigrams".to_string(),
             n: 2,
+            book_info: None,
         };
 
         // Test with scale_d = None (default 10^k-1 scaling)
@@ -1019,6 +1035,7 @@ mod tests {
             author: "Test Author".to_string(),
             url: "https://example.com/trigrams".to_string(),
             n: 3,
+            book_info: None,
         };
 
         // Test with scale_d = None (default 10^k-1 scaling)
@@ -1123,6 +1140,7 @@ mod tests {
             author: "Test Author".to_string(),
             url: "https://example.com/cumulative".to_string(),
             n: 2,
+            book_info: None,
         };
 
         // Test with scale_d = None (default 10^k-1 scaling)
@@ -1225,6 +1243,7 @@ mod tests {
             author: "Optimizer".to_string(),
             url: "https://example.com/optimized".to_string(),
             n: 2,
+            book_info: None,
         };
 
         save_to_json(&entries_to_optimise, &path, Some(120), Some(&metadata_opt))?;
@@ -1264,6 +1283,7 @@ mod tests {
             author: "Counter".to_string(),
             url: "https://example.com/count3".to_string(),
             n: 2,
+            book_info: None,
         };
 
         save_to_json(&entries_count_3, &path, Some(120), Some(&metadata_count3))?;
@@ -1314,6 +1334,7 @@ mod tests {
             author: "Duplicate Author".to_string(),
             url: "https://example.com/duplicate".to_string(),
             n: 2,
+            book_info: None,
         };
 
         // With scale_d = 3, we'd normally use [1,3] scaling
@@ -1375,6 +1396,7 @@ mod tests {
             author: "Edge Author".to_string(),
             url: "https://example.com/edge".to_string(),
             n: 2,
+            book_info: None,
         };
 
         // With scale_d = 1, we can't scale 2 followers uniquely to [1,1]
@@ -1404,6 +1426,7 @@ mod tests {
             author: "Mixed Author".to_string(),
             url: "https://example.com/mixed".to_string(),
             n: 2,
+            book_info: None,
         };
 
         // With scale_d = 2, the scaling would be very uneven but should work

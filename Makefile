@@ -43,11 +43,13 @@ $(OUT_DIR)/%-bigram-a5.pdf: data/%.txt book.typ $(TOOL)
 $(OUT_DIR)/%-trigram-a4.stamp: data/%.txt book.typ $(TOOL)
 	$(TOOL) --scale-d 120 --n 3 -b $(TRIGRAM_BOOKS) $< -o $(OUT_DIR)/$*-trigram.json
 	@for i in $$(seq 1 $(TRIGRAM_BOOKS)); do \
-		cp $(OUT_DIR)/$*-trigram_book_$$i.json model.json; \
-		$(TYPST) --input paper_size=a4 --input columns=4 --input subtitle="Book $$i of $(TRIGRAM_BOOKS)" book.typ $(OUT_DIR)/$*-trigram-a4-book$$i.pdf; \
-		echo "Pages in $(OUT_DIR)/$*-trigram-a4-book$$i.pdf: $$(pdfinfo $(OUT_DIR)/$*-trigram-a4-book$$i.pdf | grep Pages | awk '{print $$2}')"; \
-		rm model.json; \
-		rm $(OUT_DIR)/$*-trigram_book_$$i.json; \
+		if [ -f $(OUT_DIR)/$*-trigram_book_$$i.json ]; then \
+			cp $(OUT_DIR)/$*-trigram_book_$$i.json model.json; \
+			$(TYPST) --input paper_size=a4 --input columns=4 book.typ $(OUT_DIR)/$*-trigram-a4-book$$i.pdf; \
+			echo "Pages in $(OUT_DIR)/$*-trigram-a4-book$$i.pdf: $$(pdfinfo $(OUT_DIR)/$*-trigram-a4-book$$i.pdf | grep Pages | awk '{print $$2}')"; \
+			rm model.json; \
+			rm $(OUT_DIR)/$*-trigram_book_$$i.json; \
+		fi; \
 	done
 	@touch $@
 	@echo "Created $(TRIGRAM_BOOKS) books for $*-trigram-a4"
@@ -55,11 +57,13 @@ $(OUT_DIR)/%-trigram-a4.stamp: data/%.txt book.typ $(TOOL)
 $(OUT_DIR)/%-trigram-a5.stamp: data/%.txt book.typ $(TOOL)
 	$(TOOL) --scale-d 120 --n 3 -b $(TRIGRAM_BOOKS) $< -o $(OUT_DIR)/$*-trigram.json
 	@for i in $$(seq 1 $(TRIGRAM_BOOKS)); do \
-		cp $(OUT_DIR)/$*-trigram_book_$$i.json model.json; \
-		$(TYPST) --input paper_size=a5 --input columns=3 --input subtitle="Book $$i of $(TRIGRAM_BOOKS)" book.typ $(OUT_DIR)/$*-trigram-a5-book$$i.pdf; \
-		echo "Pages in $(OUT_DIR)/$*-trigram-a5-book$$i.pdf: $$(pdfinfo $(OUT_DIR)/$*-trigram-a5-book$$i.pdf | grep Pages | awk '{print $$2}')"; \
-		rm model.json; \
-		rm $(OUT_DIR)/$*-trigram_book_$$i.json; \
+		if [ -f $(OUT_DIR)/$*-trigram_book_$$i.json ]; then \
+			cp $(OUT_DIR)/$*-trigram_book_$$i.json model.json; \
+			$(TYPST) --input paper_size=a5 --input columns=3 book.typ $(OUT_DIR)/$*-trigram-a5-book$$i.pdf; \
+			echo "Pages in $(OUT_DIR)/$*-trigram-a5-book$$i.pdf: $$(pdfinfo $(OUT_DIR)/$*-trigram-a5-book$$i.pdf | grep Pages | awk '{print $$2}')"; \
+			rm model.json; \
+			rm $(OUT_DIR)/$*-trigram_book_$$i.json; \
+		fi; \
 	done
 	@touch $@
 	@echo "Created $(TRIGRAM_BOOKS) books for $*-trigram-a5"

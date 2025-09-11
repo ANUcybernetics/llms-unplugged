@@ -38,7 +38,12 @@
     #text(weight: "bold", size: 4em)[#context metadata.title]
     #v(1cm)
     #text(size: 2.5em)[A #context model-type(metadata.n) language model]
-    #if subtitle != "" {
+    // Use book_info from metadata if available, otherwise fall back to subtitle parameter
+    #context if metadata.at("book_info", default: none) != none {
+      v(0.5cm)
+      let book_info = metadata.book_info
+      text(size: 2em)[#book_info.letter_range (Book #book_info.number of #book_info.total)]
+    } else if subtitle != "" {
       v(0.5cm)
       text(size: 2em)[#subtitle]
     }

@@ -62,7 +62,22 @@ fn main() {
                     output_dir.join(filename)
                 };
                 
-                match save_to_json(book_entries, &output_file, args.scale_d, metadata) {
+                // Create metadata with book info if splitting into multiple books
+                let book_metadata = if args.num_books > 1 {
+                    metadata.map(|m| {
+                        let mut m_clone = m.clone();
+                        m_clone.book_info = Some(my_first_lm::BookInfo {
+                            number: i + 1,
+                            total: books.len(),
+                            letter_range: book_range.clone(),
+                        });
+                        m_clone
+                    })
+                } else {
+                    metadata.cloned()
+                };
+                
+                match save_to_json(book_entries, &output_file, args.scale_d, book_metadata.as_ref()) {
                     Ok(_) => {
                         if args.num_books > 1 {
                             println!(
