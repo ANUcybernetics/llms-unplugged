@@ -6,6 +6,9 @@ data/
 # default model name
 model.json
 
+# output directory for generated files
+out/
+
 # Added by cargo
 
 /target

@@ -8,7 +8,7 @@ BIGRAM_TEXTS := collected-hemingway frankenstein cloudstreet
 TRIGRAM_TEXTS := TinyStories-20k
 
 # Number of books to split trigrams into
-TRIGRAM_BOOKS := 4
+TRIGRAM_BOOKS := 6
 
 # Define paper sizes
 PAPER_SIZES := a4 a5
@@ -38,10 +38,9 @@ $(OUT_DIR)/%-bigram-a5.pdf: data/%.txt book.typ $(TOOL)
 	$(TYPST) --input paper_size=a5 --input columns=3 book.typ $@
 	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
 
-# Define targets for trigram books using explicit rules
-# This approach builds all books for a given text and size together
-.PHONY: trigram-%-a4
-trigram-%-a4: data/%.txt book.typ $(TOOL)
+# Pattern rule for trigram book sets using a stamp file
+# The stamp file tracks when the entire set was built
+$(OUT_DIR)/%-trigram-a4.stamp: data/%.txt book.typ $(TOOL)
 	$(TOOL) --scale-d 120 --n 3 -b $(TRIGRAM_BOOKS) $< -o $(OUT_DIR)/$*-trigram.json
 	@for i in $$(seq 1 $(TRIGRAM_BOOKS)); do \
 		cp $(OUT_DIR)/$*-trigram_book_$$i.json model.json; \
@@ -50,10 +49,10 @@ trigram-%-a4: data/%.txt book.typ $(TOOL)
 		rm model.json; \
 		rm $(OUT_DIR)/$*-trigram_book_$$i.json; \
 	done
+	@touch $@
 	@echo "Created $(TRIGRAM_BOOKS) books for $*-trigram-a4"
 
-.PHONY: trigram-%-a5
-trigram-%-a5: data/%.txt book.typ $(TOOL)
+$(OUT_DIR)/%-trigram-a5.stamp: data/%.txt book.typ $(TOOL)
 	$(TOOL) --scale-d 120 --n 3 -b $(TRIGRAM_BOOKS) $< -o $(OUT_DIR)/$*-trigram.json
 	@for i in $$(seq 1 $(TRIGRAM_BOOKS)); do \
 		cp $(OUT_DIR)/$*-trigram_book_$$i.json model.json; \
@@ -62,24 +61,18 @@ trigram-%-a5: data/%.txt book.typ $(TOOL)
 		rm model.json; \
 		rm $(OUT_DIR)/$*-trigram_book_$$i.json; \
 	done
+	@touch $@
 	@echo "Created $(TRIGRAM_BOOKS) books for $*-trigram-a5"
 
-# Phony targets for building all trigram books
-.PHONY: trigrams-a4
-trigrams-a4: $(foreach text,$(TRIGRAM_TEXTS),trigram-$(text)-a4)
+# Generate stamp file targets for trigrams
+TRIGRAM_STAMPS := $(foreach text,$(TRIGRAM_TEXTS),$(foreach size,$(PAPER_SIZES),$(OUT_DIR)/$(text)-trigram-$(size).stamp))
 
-.PHONY: trigrams-a5
-trigrams-a5: $(foreach text,$(TRIGRAM_TEXTS),trigram-$(text)-a5)
-
-.PHONY: trigrams
-trigrams: trigrams-a4 trigrams-a5
-
-# Updated all target
+# Default target to build everything
 .PHONY: all
-all: $(BIGRAM_PDFS) trigrams
+all: $(BIGRAM_PDFS) $(TRIGRAM_STAMPS)
 	@echo "All processing complete!"
 
 # Clean target to remove generated files
 .PHONY: clean
 clean:
-	rm -f $(OUT_DIR)/*.pdf $(OUT_DIR)/*.json
+	rm -f $(OUT_DIR)/*.pdf $(OUT_DIR)/*.json $(OUT_DIR)/*.stamp
