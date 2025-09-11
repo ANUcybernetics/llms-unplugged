@@ -446,8 +446,8 @@ fn test_cli_end_to_end() -> io::Result<()> {
         let prefix_word = prefix_val.as_str().unwrap_or("");
         assert!(!prefix_word.is_empty(), "Prefix string should not be empty");
 
-        // Check prefix word normalization (should be all lowercase alphabetic)
-        if prefix_word.chars().any(|c| !c.is_lowercase()) {
+        // Check prefix word normalization (should be all lowercase alphabetic or punctuation)
+        if prefix_word != "." && prefix_word != "," && prefix_word.chars().any(|c| !c.is_lowercase()) {
             found_invalid_chars_word = true;
         }
 
@@ -495,8 +495,8 @@ fn test_cli_end_to_end() -> io::Result<()> {
                 follower_arr[1]
             );
 
-            // Check follower word normalization (should be all lowercase alphabetic)
-            if follower_word.chars().any(|c| !c.is_lowercase()) {
+            // Check follower word normalization (should be all lowercase alphabetic or punctuation)
+            if follower_word != "." && follower_word != "," && follower_word.chars().any(|c| !c.is_lowercase()) {
                 found_invalid_chars_word = true;
             }
 
@@ -578,13 +578,18 @@ fn test_cli_end_to_end() -> io::Result<()> {
             assert_eq!(entry_arr[4], serde_json::json!(["lazy", 7]));
             assert_eq!(entry_arr[5], serde_json::json!(["quick", 9]));
         }
-        // Example: prefix "quick", original total 3 -> k=1, scales to 9
-        // followers: "brown" (2), "and" (1) -> sorted by count (largest to smallest)
-        // Scaled: brown(6), and(9)
+        // Example: prefix "quick", with punctuation tokenization:
+        // "quick, Brown" -> "quick" followed by ","
+        // "Quick brown" -> "quick" followed by "brown"
+        // "quick and" -> "quick" followed by "and"
+        // So followers: "," (1), "brown" (1), "and" (1) -> total 3
+        // With total 3 -> k=1, scales to 9
+        // Scaled: ","(3), "and"(6), "brown"(9) (alphabetical when counts equal)
         if prefix_str == "quick" {
             assert_eq!(total_scaled, 9, "Prefix 'quick' (no-scale-arg) total count");
-            assert_eq!(entry_arr[2], serde_json::json!(["brown", 6]));
-            assert_eq!(entry_arr[3], serde_json::json!(["and", 9]));
+            assert_eq!(entry_arr[2], serde_json::json!([",", 3]));
+            assert_eq!(entry_arr[3], serde_json::json!(["and", 6]));
+            assert_eq!(entry_arr[4], serde_json::json!(["brown", 9]));
         }
     }
 
@@ -630,10 +635,13 @@ fn test_cli_end_to_end() -> io::Result<()> {
                 last_follower_cumulative, 120,
                 "Prefix 'quick' (d120) last follower cumulative"
             );
-            // Followers are now sorted by count (largest to smallest)
-            // Expected: ["quick", 120, ["brown", 80], ["and", 120]]
-            assert_eq!(entry_arr[2], serde_json::json!(["brown", 80]));
-            assert_eq!(entry_arr[3], serde_json::json!(["and", 120]));
+            // Followers are now sorted by count (all equal), then alphabetical
+            // With punctuation: "," (1), "brown" (1), "and" (1)
+            // Total 3 followers, scaled to [1, 120]
+            // Expected: ["quick", 120, [",", 40], ["and", 80], ["brown", 120]]
+            assert_eq!(entry_arr[2], serde_json::json!([",", 40]));
+            assert_eq!(entry_arr[3], serde_json::json!(["and", 80]));
+            assert_eq!(entry_arr[4], serde_json::json!(["brown", 120]));
             found_d120_scaling_quick = true;
         }
         // Check strictly increasing property for [1,d] scaling
@@ -714,10 +722,13 @@ fn test_cli_end_to_end() -> io::Result<()> {
                 last_follower_cumulative, 3,
                 "Prefix 'quick' (d3) last follower cumulative"
             );
-            // Followers are now sorted by count (largest to smallest)
-            // Expected: ["quick", 3, ["brown", 2], ["and", 3]]
-            assert_eq!(entry_arr[2], serde_json::json!(["brown", 2]));
-            assert_eq!(entry_arr[3], serde_json::json!(["and", 3]));
+            // Followers are now sorted by count (all equal), then alphabetical
+            // With punctuation: "," (1), "brown" (1), "and" (1)
+            // Total 3 followers, scaled to [1, 3]
+            // Expected: ["quick", 3, [",", 1], ["and", 2], ["brown", 3]]
+            assert_eq!(entry_arr[2], serde_json::json!([",", 1]));
+            assert_eq!(entry_arr[3], serde_json::json!(["and", 2]));
+            assert_eq!(entry_arr[4], serde_json::json!(["brown", 3]));
             found_d3_scaling_quick_as_d3 = true;
         }
     }

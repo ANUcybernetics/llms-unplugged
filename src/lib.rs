@@ -716,19 +716,21 @@ mod tests {
         // Process with n=2 for bigrams
         let (entries, stats, metadata) = process_file(&path, 2)?;
 
-        // Expected tokens: "hello", "world", "hello", "again", "world", "number", "will", "be", "ignored"
+        // Expected tokens: "hello", "world", ".", "hello", "again", "world", "number", "will", "be", "ignored", "."
         // Expected unique prefixes (n-1=1):
         // "hello" -> "world" (1), "again" (1)
-        // "world" -> "hello" (1), "number" (1)
+        // "world" -> "." (1), "number" (1)
+        // "." -> "hello" (1)
         // "again" -> "world" (1)
         // "number" -> "will" (1)
         // "will" -> "be" (1)
         // "be" -> "ignored" (1)
-        // Total 6 unique prefixes
+        // "ignored" -> "." (1)
+        // Total 8 unique prefixes
         assert_eq!(
             entries.len(),
-            6,
-            "Expected 6 unique bigram prefixes. Got: {:?}",
+            8,
+            "Expected 8 unique bigram prefixes. Got: {:?}",
             entries
         );
 
@@ -768,8 +770,8 @@ mod tests {
             world_entry
                 .followers
                 .iter()
-                .any(|(word, count)| word == "hello" && *count == 1),
-            "Expected 'world' to be followed by 'hello'"
+                .any(|(word, count)| word == "." && *count == 1),
+            "Expected 'world' to be followed by '.'"
         );
         assert!(
             world_entry
@@ -813,17 +815,17 @@ mod tests {
 
         // Check stats
         assert_eq!(
-            stats.total_tokens, 9,
-            "Expected 9 tokens: hello, world, hello, again, world, number, will, be, ignored"
+            stats.total_tokens, 11,
+            "Expected 11 tokens: hello, world, ., hello, again, world, number, will, be, ignored, ."
         );
         assert_eq!(
             stats.unique_ngrams,
-            6, // Corrected from 8 to 6 as per the prefixes list above.
-            "Expected 6 unique prefixes: hello, world, again, number, will, be"
+            8,
+            "Expected 8 unique prefixes: hello, world, ., again, number, will, be, ignored"
         );
         assert_eq!(
-            stats.total_ngram_occurrences, 8,
-            "Expected 8 total bigram occurrences"
+            stats.total_ngram_occurrences, 10,
+            "Expected 10 total bigram occurrences"
         );
 
         // Check metadata

@@ -1,8 +1,9 @@
-/// Tokenizes a line into normalized words.
-/// This function handles basic splitting, lowercasing, and apostrophe normalization/stripping.
+/// Tokenizes a line into normalized words and punctuation tokens.
+/// This function handles basic splitting, lowercasing, apostrophe normalization/stripping,
+/// and preserves comma and period as separate tokens.
 pub fn tokenize(line: &str) -> Vec<String> {
-    // Normalize specific non-ASCII characters like ’ to '
-    let normalized_line = line.replace('’', "'");
+    // Normalize specific non-ASCII characters like ' to '
+    let normalized_line = line.replace("'", "'");
 
     let mut tokens = Vec::new();
     let mut current_token = String::new();
@@ -18,6 +19,13 @@ pub fn tokenize(line: &str) -> Vec<String> {
             if !current_token.is_empty() {
                 tokens.push(current_token.clone());
                 current_token.clear();
+            }
+            
+            // Check if the character is a comma or period and add it as a separate token
+            if c == ',' {
+                tokens.push(",".to_string());
+            } else if c == '.' {
+                tokens.push(".".to_string());
             }
         }
     }
@@ -69,7 +77,7 @@ mod tests {
     fn test_tokenize_simple_line() {
         let line = "Hello, world! This is a test.";
         let tokens = tokenize(line);
-        assert_eq!(tokens, vec!["hello", "world", "this", "is", "a", "test"]);
+        assert_eq!(tokens, vec!["hello", ",", "world", "this", "is", "a", "test", "."]);
     }
 
     #[test]
@@ -85,7 +93,9 @@ mod tests {
                 "shouldn't",
                 "be",
                 "filtered",
-                "don't"
+                ".",
+                "don't",
+                "."
             ]
         );
     }
@@ -98,7 +108,7 @@ mod tests {
             tokens,
             vec![
                 "i", "think", "that", "i", "am", "thinking", "and", "i'm", "sure", "that", "i",
-                "said", "so"
+                "said", "so", "."
             ]
         );
     }
@@ -143,7 +153,7 @@ mod tests {
         assert_eq!(
             complex_tokens,
             vec![
-                "bobbie", "bobbie", "she", "said", "come", "and", "kiss", "me", "bobbie"
+                "bobbie", ",", "bobbie", "she", "said", ",", "come", "and", "kiss", "me", ",", "bobbie"
             ]
         );
     }
@@ -154,7 +164,7 @@ mod tests {
         let tokens = tokenize(line);
         assert_eq!(
             tokens,
-            vec!["it's", "a", "test", "with", "s", "style", "goin", "talkin"]
+            vec!["it", "s", "a", "test", "with", "s", "style", "goin", "talkin", "."]
         );
     }
 
@@ -177,7 +187,7 @@ mod tests {
     fn test_tokenize_double_single_quotes_around_sentence() {
         let line = "''You two are so...''";
         let tokens = tokenize(line);
-        assert_eq!(tokens, vec!["you", "two", "are", "so"]);
+        assert_eq!(tokens, vec!["you", "two", "are", "so", ".", ".", "."]);
     }
 
     #[test]
@@ -193,7 +203,7 @@ mod tests {
         let tokens = tokenize(line);
         assert_eq!(
             tokens,
-            vec!["i'm", "not", "sure", "she", "said", "tis", "a", "problem"]
+            vec!["i'm", "not", "sure", ",", "she", "said", ",", "tis", "a", "problem", "."]
         );
     }
 
@@ -228,5 +238,28 @@ mod tests {
         let line = "''can't''";
         let tokens = tokenize(line);
         assert_eq!(tokens, vec!["can't"]);
+    }
+
+    #[test]
+    fn test_tokenize_punctuation_tokens() {
+        // Test that commas and periods are preserved as separate tokens
+        let line = "Hello, world. How are you, friend?";
+        let tokens = tokenize(line);
+        assert_eq!(tokens, vec!["hello", ",", "world", ".", "how", "are", "you", ",", "friend"]);
+        
+        // Test multiple consecutive punctuation
+        let line2 = "Wait... really?!";
+        let tokens2 = tokenize(line2);
+        assert_eq!(tokens2, vec!["wait", ".", ".", ".", "really"]);
+        
+        // Test mixed punctuation
+        let line3 = "Yes, no. Maybe, sure.";
+        let tokens3 = tokenize(line3);
+        assert_eq!(tokens3, vec!["yes", ",", "no", ".", "maybe", ",", "sure", "."]);
+        
+        // Test that other punctuation is still ignored
+        let line4 = "Hello! World? Test: example; done-";
+        let tokens4 = tokenize(line4);
+        assert_eq!(tokens4, vec!["hello", "world", "test", "example", "done"]);
     }
 }

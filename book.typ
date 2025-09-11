@@ -158,7 +158,19 @@
   current_prefix.update(prefix)
 
   // this is the prefix text with a label
-  [#text(prefix, size: 1.5em, weight: "bold")#label("prefix-" + prefix)]
+  // Check if the prefix is a punctuation token
+  if prefix == "." or prefix == "," {
+    [#box(
+      rect(
+        fill: luma(240),
+        stroke: 0.5pt + luma(150),
+        radius: 3pt,
+        inset: (x: 3pt, y: 1pt)
+      )[#text(prefix, size: 1.5em, weight: "bold")]
+    )#label("prefix-" + prefix)]
+  } else {
+    [#text(prefix, size: 1.5em, weight: "bold")#label("prefix-" + prefix)]
+  }
 
   // the dice roll number
   if total_count != dice_d {
@@ -170,10 +182,36 @@
 
   // the followers for this prefix (with weights)
   for follower in followers {
-    if followers.len() > 1 {
-      box([#text(weight: "semibold")[#follower.at(1)]|#text[#follower.at(0)]])
+    let word = follower.at(0)
+    // Check if this is a punctuation token
+    if word == "." or word == "," {
+      // Display punctuation in a rounded box with special styling
+      if followers.len() > 1 {
+        box(
+          rect(
+            fill: luma(240),
+            stroke: 0.5pt + luma(150),
+            radius: 3pt,
+            inset: (x: 3pt, y: 1pt)
+          )[#text(weight: "semibold")[#follower.at(1)]|#text(weight: "bold")[#word]]
+        )
+      } else {
+        box(
+          rect(
+            fill: luma(240),
+            stroke: 0.5pt + luma(150),
+            radius: 3pt,
+            inset: (x: 3pt, y: 1pt)
+          )[#text(weight: "bold")[#word]]
+        )
+      }
     } else {
-      box([#follower.at(0)])
+      // Display regular words normally
+      if followers.len() > 1 {
+        box([#text(weight: "semibold")[#follower.at(1)]|#text[#follower.at(0)]])
+      } else {
+        box([#follower.at(0)])
+      }
     }
     h(0.5em)
   }
