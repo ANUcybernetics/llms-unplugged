@@ -410,38 +410,24 @@ pub fn split_entries_into_books(
     let total_chars = cumulative_chars;
     let target_per_book = total_chars / num_books;
     
-    // Find split points at letter boundaries closest to ideal targets
-    let mut split_indices = vec![0];
+    // Calculate target thresholds for each book
+    let thresholds: Vec<usize> = (1..num_books)
+        .map(|i| target_per_book * i)
+        .collect();
     
-    for book_num in 1..num_books {
-        let ideal_cumulative = target_per_book * book_num;
-        
-        // Find the letter group boundary closest to the ideal split
-        let mut best_group_idx = 0;
-        let mut best_distance = total_chars;
-        
-        for (idx, &(_, end_idx, _, cum_chars)) in letter_groups.iter().enumerate() {
-            // Don't split at a boundary we've already used
-            if end_idx <= split_indices[split_indices.len() - 1] {
-                continue;
-            }
-            
-            // Don't split too close to the end
-            let remaining_books = num_books - book_num;
-            let remaining_chars = total_chars - cum_chars;
-            if remaining_books > 0 && remaining_chars < (target_per_book * remaining_books / 2) {
-                break;
-            }
-            
-            let distance = (cum_chars as i64 - ideal_cumulative as i64).abs() as usize;
-            if distance < best_distance {
-                best_distance = distance;
-                best_group_idx = idx;
-            }
+    // Find the first letter group that exceeds each threshold
+    let mut split_indices = vec![0];
+    let mut group_idx = 0;
+    
+    for threshold in thresholds {
+        // Find first group whose cumulative chars exceeds this threshold
+        while group_idx < letter_groups.len() && letter_groups[group_idx].3 <= threshold {
+            group_idx += 1;
         }
         
-        if best_group_idx < letter_groups.len() {
-            split_indices.push(letter_groups[best_group_idx].1);
+        if group_idx < letter_groups.len() {
+            split_indices.push(letter_groups[group_idx].1);
+            group_idx += 1; // Move past this split for the next threshold
         }
     }
     
