@@ -349,7 +349,7 @@ fn convert_to_entries(
         .collect()
 }
 
-/// Splits entries into multiple books based on the first letter of the prefix
+/// Splits entries into multiple books based on estimated rendered size
 pub fn split_entries_into_books(
     entries: &[WordFollowEntry],
     num_books: usize,
@@ -359,10 +359,11 @@ pub fn split_entries_into_books(
         return vec![("".to_string(), entries.to_vec())];
     }
     
-    // Single pass: build cumulative counts and track letter boundaries
-    let mut letter_boundaries = Vec::new();  // (index, letter, cumulative_count)
+    // Group entries by first letter and calculate cumulative character counts
+    let mut letter_groups = Vec::new();
     let mut current_letter = String::new();
-    let mut cumulative_count = 0;
+    let mut current_start_idx = 0;
+    let mut cumulative_chars = 0usize;
     
     for (i, entry) in entries.iter().enumerate() {
         let first_letter = entry.prefix[0]
@@ -372,60 +373,79 @@ pub fn split_entries_into_books(
             .to_lowercase()
             .to_string();
         
-        let entry_count: usize = entry.followers.iter().map(|(_, count)| count).sum();
-        cumulative_count += entry_count;
+        // Calculate total characters for this entry (prefix + all followers with counts)
+        let prefix_chars: usize = entry.prefix.iter().map(|s| s.len()).sum();
+        let follower_chars: usize = entry.followers.iter()
+            .map(|(word, count)| word.len() * count)
+            .sum();
+        let entry_chars = prefix_chars + follower_chars;
         
-        // Record boundary when letter changes
+        // When letter changes, record the group
+        if first_letter != current_letter && !current_letter.is_empty() {
+            letter_groups.push((
+                current_start_idx,
+                i,
+                current_letter.clone(),
+                cumulative_chars,
+            ));
+            current_start_idx = i;
+        }
+        
         if first_letter != current_letter {
-            if !current_letter.is_empty() {
-                letter_boundaries.push((i, current_letter.clone(), cumulative_count - entry_count));
-            }
             current_letter = first_letter;
         }
+        cumulative_chars += entry_chars;
     }
     
-    // Add final boundary
-    letter_boundaries.push((entries.len(), current_letter, cumulative_count));
+    // Add final group
+    if !current_letter.is_empty() {
+        letter_groups.push((
+            current_start_idx,
+            entries.len(),
+            current_letter,
+            cumulative_chars,
+        ));
+    }
     
-    let total_count = cumulative_count;
-    let target_per_book = total_count / num_books;
+    let total_chars = cumulative_chars;
+    let target_per_book = total_chars / num_books;
     
-    // Find split points by looking for letter boundaries nearest to ideal split positions
-    let mut split_indices = vec![0];  // Start with index 0
+    // Find split points at letter boundaries closest to ideal targets
+    let mut split_indices = vec![0];
     
     for book_num in 1..num_books {
         let ideal_cumulative = target_per_book * book_num;
         
-        // Find the letter boundary closest to the ideal split point
-        let mut best_boundary_idx = 0;
-        let mut best_distance = total_count;  // Start with max possible distance
+        // Find the letter group boundary closest to the ideal split
+        let mut best_group_idx = 0;
+        let mut best_distance = total_chars;
         
-        for (idx, (entry_idx, _letter, cum_count)) in letter_boundaries.iter().enumerate() {
-            // Don't consider boundaries we've already used or passed
-            if *entry_idx <= split_indices[split_indices.len() - 1] {
+        for (idx, &(_, end_idx, _, cum_chars)) in letter_groups.iter().enumerate() {
+            // Don't split at a boundary we've already used
+            if end_idx <= split_indices[split_indices.len() - 1] {
                 continue;
             }
             
-            // Don't split too close to the end (leave room for remaining books)
+            // Don't split too close to the end
             let remaining_books = num_books - book_num;
-            let remaining_count = total_count - cum_count;
-            if remaining_books > 0 && remaining_count < (target_per_book * remaining_books / 2) {
+            let remaining_chars = total_chars - cum_chars;
+            if remaining_books > 0 && remaining_chars < (target_per_book * remaining_books / 2) {
                 break;
             }
             
-            let distance = (*cum_count as i64 - ideal_cumulative as i64).abs() as usize;
+            let distance = (cum_chars as i64 - ideal_cumulative as i64).abs() as usize;
             if distance < best_distance {
                 best_distance = distance;
-                best_boundary_idx = idx;
+                best_group_idx = idx;
             }
         }
         
-        if best_boundary_idx > 0 {
-            split_indices.push(letter_boundaries[best_boundary_idx].0);
+        if best_group_idx < letter_groups.len() {
+            split_indices.push(letter_groups[best_group_idx].1);
         }
     }
     
-    split_indices.push(entries.len());  // End with the last index
+    split_indices.push(entries.len());
     
     // Build books from the split indices
     let mut books = Vec::new();
