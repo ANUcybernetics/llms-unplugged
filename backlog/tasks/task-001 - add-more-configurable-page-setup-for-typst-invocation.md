@@ -1,7 +1,7 @@
 ---
 id: task-001
 title: add more configurable page setup for typst invocation
-status: In Progress
+status: Done
 assignee: []
 created_date: "2025-08-14 01:17"
 labels: []
@@ -26,11 +26,13 @@ and a4.
 Completed the implementation:
 
 1. **Updated book.typ** to accept configurable parameters:
+
    - Added `font_size` parameter (defaults to "8pt")
    - Added `columns` parameter (defaults to "4")
    - Modified the text and page setup to use these parameters
 
 2. **Updated Makefile** to pass column configuration:
+
    - a4 PDFs: use 4 columns
    - a5 PDFs: use 3 columns
    - Font size remains at default 8pt for both
