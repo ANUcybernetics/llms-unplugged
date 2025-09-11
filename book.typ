@@ -158,19 +158,30 @@
   current_prefix.update(prefix)
 
   // this is the prefix text with a label
-  // Check if the prefix is a punctuation token
-  if prefix == "." or prefix == "," {
-    [#box(
-      rect(
-        fill: luma(240),
-        stroke: 0.5pt + luma(150),
-        radius: 3pt,
-        inset: (x: 3pt, y: 1pt)
-      )[#text(prefix, size: 1.5em, weight: "bold")]
-    )#label("prefix-" + prefix)]
-  } else {
-    [#text(prefix, size: 1.5em, weight: "bold")#label("prefix-" + prefix)]
-  }
+  // Split prefix into words and display each with appropriate styling
+  [#for (i, part) in prefix.split(" ").enumerate() {
+    if part == "." or part == "," {
+      // Display punctuation in a rounded box with vertical centering
+      box(
+        baseline: 0.25em,  // Vertically center the box
+        rect(
+          fill: none,
+          stroke: 0.5pt + black,
+          radius: 3pt,
+          inset: (x: 3pt, y: 0pt),
+          outset: (y: 2pt),
+          [#text(part, size: 1.5em, weight: "bold", baseline: -0.2em)]
+        )
+      )
+    } else {
+      // Display regular words normally
+      text(part, size: 1.5em, weight: "bold")
+    }
+    // Add space between parts except for the last one
+    if i < prefix.split(" ").len() - 1 {
+      h(0.3em)
+    }
+  }#label("prefix-" + prefix)]
 
   // the dice roll number
   if total_count != dice_d {
@@ -187,22 +198,28 @@
     if word == "." or word == "," {
       // Display punctuation in a rounded box with special styling
       if followers.len() > 1 {
-        box(
+        box([#text(weight: "semibold")[#follower.at(1)]|#box(
+          baseline: 0.15em,  // Vertically center the box
           rect(
-            fill: luma(240),
-            stroke: 0.5pt + luma(150),
+            fill: none,
+            stroke: 0.5pt + black,
             radius: 3pt,
-            inset: (x: 3pt, y: 1pt)
-          )[#text(weight: "semibold")[#follower.at(1)]|#text(weight: "bold")[#word]]
-        )
+            inset: (x: 3pt, y: 0pt),
+            outset: (y: 1pt),
+            [#text(weight: "bold", baseline: -0.15em)[#word]]
+          )
+        )])
       } else {
         box(
+          baseline: 0.15em,  // Vertically center the box
           rect(
-            fill: luma(240),
-            stroke: 0.5pt + luma(150),
+            fill: none,
+            stroke: 0.5pt + black,
             radius: 3pt,
-            inset: (x: 3pt, y: 1pt)
-          )[#text(weight: "bold")[#word]]
+            inset: (x: 3pt, y: 0pt),
+            outset: (y: 1pt),
+            [#text(weight: "bold", baseline: -0.15em)[#word]]
+          )
         )
       }
     } else {
