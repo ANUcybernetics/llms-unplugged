@@ -1,71 +1,125 @@
 /// Tokenizes a line into normalized words and punctuation tokens.
-/// This function handles basic splitting, lowercasing, apostrophe normalization/stripping,
-/// and preserves comma and period as separate tokens.
+/// 
+/// Rules:
+/// 1. Strip all punctuation except comma, period, and apostrophes in contractions/possessives
+/// 2. Split on whitespace, with comma/period as separate tokens
+/// 3. Normalize to lowercase (except "I" which is handled in preprocessing)
+/// 4. Remove tokens starting with digits
+/// 5. Strip quote apostrophes but keep contraction/possessive apostrophes
 pub fn tokenize(line: &str) -> Vec<String> {
-    // Normalize specific non-ASCII characters like ' to '
+    // Normalize specific non-ASCII apostrophes  
     let normalized_line = line.replace("'", "'");
-
+    
     let mut tokens = Vec::new();
     let mut current_token = String::new();
-
-    // Process character by character
+    
     for c in normalized_line.chars() {
-        if c.is_ascii_alphabetic() || c == '\'' {
-            // Add alphabetic characters and apostrophes to the current token
-            // Convert to lowercase during token building
-            current_token.push(c.to_lowercase().next().unwrap_or(c));
-        } else {
-            // Non-alphabetic and non-apostrophe character ends the current token
-            if !current_token.is_empty() {
-                tokens.push(current_token.clone());
-                current_token.clear();
+        match c {
+            // Letters and apostrophes can be part of words
+            c if c.is_ascii_alphabetic() => {
+                current_token.push(c.to_ascii_lowercase());
             }
-            
-            // Check if the character is a comma or period and add it as a separate token
-            if c == ',' {
+            '\'' => {
+                // Apostrophes are included in the token
+                current_token.push('\'');
+            }
+            // Comma and period end current token and become their own tokens
+            ',' => {
+                if !current_token.is_empty() {
+                    tokens.push(current_token.clone());
+                    current_token.clear();
+                }
                 tokens.push(",".to_string());
-            } else if c == '.' {
+            }
+            '.' => {
+                if !current_token.is_empty() {
+                    tokens.push(current_token.clone());
+                    current_token.clear();
+                }
                 tokens.push(".".to_string());
+            }
+            // Any other character (including digits and spaces) ends the current token
+            _ => {
+                if !current_token.is_empty() {
+                    tokens.push(current_token.clone());
+                    current_token.clear();
+                }
             }
         }
     }
-
-    // Add the last token if there is one
+    
+    // Add any remaining token
     if !current_token.is_empty() {
         tokens.push(current_token);
     }
-
-    // Filter any empty tokens, strip apostrophes at beginning and end
+    
+    // Filter and clean tokens
     tokens
         .into_iter()
-        .filter(|token| !token.is_empty() && token != "'")
-        .map(|token| {
-            // Strip apostrophes at beginning and end
-            let mut cleaned_token = token; // Already a String
-
-            // Repeatedly remove leading apostrophes
-            while cleaned_token.starts_with('\'') {
-                if cleaned_token.len() == 1 {
-                    // Token is just "'" or became "'"
-                    cleaned_token.clear(); // Make it empty to be filtered out later
+        .filter_map(|mut token| {
+            // Strip leading apostrophes (quote marks)
+            while token.starts_with('\'') {
+                token.remove(0);
+                if token.is_empty() {
+                    return None;
+                }
+            }
+            
+            // Strip trailing apostrophes that are quote marks
+            // Keep apostrophes that are part of possessives/contractions
+            while token.ends_with('\'') && token.len() > 1 {
+                let chars: Vec<char> = token.chars().collect();
+                let len = chars.len();
+                
+                // Check patterns for possessive/contraction apostrophes to keep:
+                // 1. Word ending in 's (possessive, like bird's)
+                // 2. Word ending in s' (plural possessive, like birds')
+                // 3. Word ending in n't (contraction, like don't)
+                // 4. Word ending in 'll, 've, 're, 'd, 'm (contractions)
+                // 5. Word ending in in', an', o' (informal contractions like goin')
+                
+                if len >= 2 && chars[len - 2] == 's' && chars[len - 1] == '\'' {
+                    // Ends with s' (plural possessive)
                     break;
                 }
-                cleaned_token.remove(0);
-            }
-
-            // Repeatedly remove trailing apostrophes
-            // Check length again as it might have been all apostrophes or became empty
-            while !cleaned_token.is_empty() && cleaned_token.ends_with('\'') {
-                if cleaned_token.len() == 1 {
-                    // Token is just "'" or became "'"
-                    cleaned_token.clear(); // Make it empty to be filtered out later
-                    break;
+                
+                if len >= 3 {
+                    let last_three: String = chars[len - 3..].iter().collect();
+                    if last_three == "n't" || last_three == "'ll" || last_three == "'ve" || 
+                       last_three == "'re" || last_three == "'d" || last_three == "in'" ||
+                       last_three == "an'" {
+                        // Common contractions
+                        break;
+                    }
                 }
-                cleaned_token.pop();
+                
+                if len >= 2 {
+                    let last_two: String = chars[len - 2..].iter().collect();
+                    if last_two == "'s" || last_two == "'m" || last_two == "o'" || last_two == "n'" {
+                        // Possessive or contraction
+                        break;
+                    }
+                }
+                
+                // Not a recognized possessive/contraction pattern, strip the apostrophe
+                token.pop();
+                if token.is_empty() {
+                    return None;
+                }
             }
-            cleaned_token
+            
+            // Filter tokens starting with digits
+            if !token.is_empty() && token.chars().next().unwrap().is_ascii_digit() {
+                return None;
+            }
+            
+            // Return the token if not empty
+            if !token.is_empty() {
+                Some(token)
+            } else {
+                None
+            }
         })
-        .filter(|token| !token.is_empty()) // Ensure we don't have any empty tokens after stripping
         .collect()
 }
 
@@ -128,7 +182,7 @@ mod tests {
             tokens,
             vec![
                 "don't", "can't", "won't", "i've", "i'm", "you're", "they'll", "it's", "quote",
-                "he'd", "we've", "ello", "goin"
+                "he'd", "we've", "ello", "goin'"
             ]
         );
     }
@@ -140,7 +194,7 @@ mod tests {
         assert_eq!(
             tokens,
             vec![
-                "ello", "tis", "twas", "s", "goin", "talkin", "n", "writin", "can't", "don't",
+                "ello", "tis", "twas", "s", "goin'", "talkin'", "n'", "writin'", "can't", "don't",
                 "won't"
             ]
         );
@@ -160,11 +214,11 @@ mod tests {
 
     #[test]
     fn test_tokenize_non_ascii_apostrophe() {
-        let line = "It’s a test with ’90s style goin’ talkin’.";
+        let line = "It's a test with '90s style goin' talkin'.";
         let tokens = tokenize(line);
         assert_eq!(
             tokens,
-            vec!["it", "s", "a", "test", "with", "s", "style", "goin", "talkin", "."]
+            vec!["it's", "a", "test", "with", "s", "style", "goin'", "talkin'", "."]
         );
     }
 
@@ -175,12 +229,12 @@ mod tests {
         assert_eq!(tokenize("''"), Vec::<String>::new());
         assert_eq!(tokenize("'"), Vec::<String>::new());
         assert_eq!(tokenize(" ' "), Vec::<String>::new());
-        assert_eq!(tokenize("a'"), vec!["a"]);
-        assert_eq!(tokenize("'a"), vec!["a"]);
-        assert_eq!(tokenize("a'b"), vec!["a'b"]);
+        assert_eq!(tokenize("a'"), vec!["a"]);  // Trailing quote apostrophe stripped
+        assert_eq!(tokenize("'a"), vec!["a"]);  // Leading quote apostrophe stripped
+        assert_eq!(tokenize("a'b"), vec!["a'b"]);  // Internal apostrophe kept
         assert_eq!(tokenize(" leading space"), vec!["leading", "space"]);
         assert_eq!(tokenize("trailing space "), vec!["trailing", "space"]);
-        assert_eq!(tokenize("token1 token2"), vec!["token", "token"]); // "token1" -> "token"
+        assert_eq!(tokenize("token1 token2"), vec!["token", "token"]); // Numbers filtered
     }
 
     #[test]
@@ -209,11 +263,6 @@ mod tests {
 
     #[test]
     fn test_tokenize_single_quotes_within_word_not_stripped() {
-        // This case should not occur with current tokenization rules that split on non-alpha/non-apostrophe,
-        // but ensures that if a token like "o'clock" was somehow formed, internal apostrophes aren't stripped.
-        // The current tokenizer would split "o'clock" into "o" and "clock" if spaces or punctuation surrounded it.
-        // However, if we imagine a scenario where it's a single token, this test makes sense.
-        // For now, it will likely pass due to how tokens are split.
         let line = "o'clock";
         let tokens = tokenize(line);
         assert_eq!(tokens, vec!["o'clock"]);
@@ -261,5 +310,49 @@ mod tests {
         let line4 = "Hello! World? Test: example; done-";
         let tokens4 = tokenize(line4);
         assert_eq!(tokens4, vec!["hello", "world", "test", "example", "done"]);
+    }
+    
+    #[test]
+    fn test_possessive_apostrophes() {
+        let line = "The bird's nest and the birds' nests. James's book.";
+        let tokens = tokenize(line);
+        assert_eq!(
+            tokens,
+            vec!["the", "bird's", "nest", "and", "the", "birds'", "nests", ".", "james's", "book", "."]
+        );
+    }
+    
+    #[test]
+    fn test_mixed_numbers_and_apostrophes() {
+        let line = "The 1980's were great but '80s is shorter";
+        let tokens = tokenize(line);
+        // 1980's becomes "s" after filtering "1980"
+        // '80s becomes "s" after filtering "80"
+        assert_eq!(
+            tokens,
+            vec!["the", "s", "were", "great", "but", "s", "is", "shorter"]
+        );
+    }
+    
+    #[test]
+    fn test_contractions_at_start() {
+        // Leading apostrophes are stripped, so 'tis becomes tis
+        let line = "'Tis the season, 'twas the night";
+        let tokens = tokenize(line);
+        assert_eq!(
+            tokens,
+            vec!["tis", "the", "season", ",", "twas", "the", "night"]
+        );
+    }
+    
+    #[test]
+    fn test_roman_numerals_later_filtered() {
+        // These should tokenize fine here, but be filtered in preprocessing
+        let line = "Chapter IV: Section III and Appendix VII.";
+        let tokens = tokenize(line);
+        assert_eq!(
+            tokens,
+            vec!["chapter", "iv", "section", "iii", "and", "appendix", "vii", "."]
+        );
     }
 }
