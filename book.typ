@@ -165,9 +165,9 @@
       box(
         rect(
           fill: none,
-          stroke: 0.5pt + black,
+          stroke: 0.25pt + black,
           radius: 1pt,
-          inset: (x: 2pt, y: 0pt),
+          inset: (x: 1pt, y: 0pt),
           outset: (y: 0pt),
           [#text(part, size: 1.5em, weight: "bold", baseline: -0.3em)]
         )
@@ -200,9 +200,9 @@
         box([#text(weight: "semibold")[#follower.at(1)]|#box(
           rect(
             fill: none,
-            stroke: 0.5pt + black,
+            stroke: 0.25pt + black,
             radius: 1pt,
-            inset: (x: 2pt, y: 0pt),
+            inset: (x: 1pt, y: 0pt),
             outset: (y: 0pt),
             [#text(weight: "bold", baseline: -0.25em)[#word]]
           )
@@ -211,9 +211,9 @@
         box(
           rect(
             fill: none,
-            stroke: 0.5pt + black,
+            stroke: 0.25pt + black,
             radius: 1pt,
-            inset: (x: 2pt, y: 0pt),
+            inset: (x: 1pt, y: 0pt),
             outset: (y: 0pt),
             [#text(weight: "bold", baseline: -0.25em)[#word]]
           )
