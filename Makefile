@@ -20,11 +20,14 @@ BIGRAM_PDFS := $(foreach text,$(BIGRAM_TEXTS),$(foreach size,$(PAPER_SIZES),$(OU
 TOOL := target/release/my_first_lm
 TYPST := typst compile
 
+# Track Rust source files for automatic rebuilding
+RUST_SOURCES := $(wildcard src/*.rs) $(wildcard src/**/*.rs) Cargo.toml Cargo.lock
+
 # Ensure output directory exists
 $(shell mkdir -p $(OUT_DIR))
 
-# Build the release version
-$(TOOL):
+# Build the release version when any Rust source changes
+$(TOOL): $(RUST_SOURCES)
 	cargo build --release
 
 # Pattern rule for bigram PDFs with paper size
