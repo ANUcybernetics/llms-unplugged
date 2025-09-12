@@ -1,11 +1,14 @@
-/// Tokenizes a line into normalized words and punctuation tokens.
+/// Tokenizes a line into words and punctuation tokens, preserving original capitalization.
 /// 
 /// Rules:
 /// 1. Strip all punctuation except comma, period, and apostrophes in contractions/possessives
 /// 2. Split on whitespace, with comma/period as separate tokens
-/// 3. Normalize to lowercase (except "I" which is handled in preprocessing)
+/// 3. **Preserve original capitalization** (normalization happens later in NGramCounter)
 /// 4. Remove tokens starting with digits
 /// 5. Strip quote apostrophes but keep contraction/possessive apostrophes
+/// 
+/// Note: This function returns tokens with their original capitalization intact.
+/// The NGramCounter handles smart normalization based on consistency.
 pub fn tokenize(line: &str) -> Vec<String> {
     // Normalize specific non-ASCII apostrophes  
     let normalized_line = line.replace("'", "'");
@@ -17,7 +20,7 @@ pub fn tokenize(line: &str) -> Vec<String> {
         match c {
             // Letters and apostrophes can be part of words
             c if c.is_ascii_alphabetic() => {
-                current_token.push(c.to_ascii_lowercase());
+                current_token.push(c);  // Keep original case
             }
             '\'' => {
                 // Apostrophes are included in the token
@@ -131,7 +134,7 @@ mod tests {
     fn test_tokenize_simple_line() {
         let line = "Hello, world! This is a test.";
         let tokens = tokenize(line);
-        assert_eq!(tokens, vec!["hello", ",", "world", "this", "is", "a", "test", "."]);
+        assert_eq!(tokens, vec!["Hello", ",", "world", "This", "is", "a", "test", "."]);
     }
 
     #[test]
@@ -141,14 +144,14 @@ mod tests {
         assert_eq!(
             tokens,
             vec![
-                "version",
+                "Version",
                 "and",
                 "numbers",
                 "shouldn't",
                 "be",
                 "filtered",
                 ".",
-                "don't",
+                "Don't",
                 "."
             ]
         );
@@ -161,7 +164,7 @@ mod tests {
         assert_eq!(
             tokens,
             vec![
-                "i", "think", "that", "i", "am", "thinking", "and", "i'm", "sure", "that", "i",
+                "I", "think", "that", "I", "am", "thinking", "and", "I'm", "sure", "that", "I",
                 "said", "so", "."
             ]
         );
@@ -181,7 +184,7 @@ mod tests {
         assert_eq!(
             tokens,
             vec![
-                "don't", "can't", "won't", "i've", "i'm", "you're", "they'll", "it's", "quote",
+                "Don't", "can't", "won't", "I've", "I'm", "you're", "they'll", "it's", "quote",
                 "he'd", "we've", "ello", "goin'"
             ]
         );
@@ -207,7 +210,7 @@ mod tests {
         assert_eq!(
             complex_tokens,
             vec![
-                "bobbie", ",", "bobbie", "she", "said", ",", "come", "and", "kiss", "me", ",", "bobbie"
+                "Bobbie", ",", "Bobbie", "she", "said", ",", "Come", "and", "kiss", "me", ",", "Bobbie"
             ]
         );
     }
@@ -218,7 +221,7 @@ mod tests {
         let tokens = tokenize(line);
         assert_eq!(
             tokens,
-            vec!["it's", "a", "test", "with", "s", "style", "goin'", "talkin'", "."]
+            vec!["It's", "a", "test", "with", "s", "style", "goin'", "talkin'", "."]
         );
     }
 
@@ -241,7 +244,7 @@ mod tests {
     fn test_tokenize_double_single_quotes_around_sentence() {
         let line = "''You two are so...''";
         let tokens = tokenize(line);
-        assert_eq!(tokens, vec!["you", "two", "are", "so", ".", ".", "."]);
+        assert_eq!(tokens, vec!["You", "two", "are", "so", ".", ".", "."]);
     }
 
     #[test]
@@ -257,7 +260,7 @@ mod tests {
         let tokens = tokenize(line);
         assert_eq!(
             tokens,
-            vec!["i'm", "not", "sure", ",", "she", "said", ",", "tis", "a", "problem", "."]
+            vec!["I'm", "not", "sure", ",", "she", "said", ",", "tis", "a", "problem", "."]
         );
     }
 
@@ -294,22 +297,22 @@ mod tests {
         // Test that commas and periods are preserved as separate tokens
         let line = "Hello, world. How are you, friend?";
         let tokens = tokenize(line);
-        assert_eq!(tokens, vec!["hello", ",", "world", ".", "how", "are", "you", ",", "friend"]);
+        assert_eq!(tokens, vec!["Hello", ",", "world", ".", "How", "are", "you", ",", "friend"]);
         
         // Test multiple consecutive punctuation
         let line2 = "Wait... really?!";
         let tokens2 = tokenize(line2);
-        assert_eq!(tokens2, vec!["wait", ".", ".", ".", "really"]);
+        assert_eq!(tokens2, vec!["Wait", ".", ".", ".", "really"]);
         
         // Test mixed punctuation
         let line3 = "Yes, no. Maybe, sure.";
         let tokens3 = tokenize(line3);
-        assert_eq!(tokens3, vec!["yes", ",", "no", ".", "maybe", ",", "sure", "."]);
+        assert_eq!(tokens3, vec!["Yes", ",", "no", ".", "Maybe", ",", "sure", "."]);
         
         // Test that other punctuation is still ignored
         let line4 = "Hello! World? Test: example; done-";
         let tokens4 = tokenize(line4);
-        assert_eq!(tokens4, vec!["hello", "world", "test", "example", "done"]);
+        assert_eq!(tokens4, vec!["Hello", "World", "Test", "example", "done"]);
     }
     
     #[test]
@@ -318,7 +321,7 @@ mod tests {
         let tokens = tokenize(line);
         assert_eq!(
             tokens,
-            vec!["the", "bird's", "nest", "and", "the", "birds'", "nests", ".", "james's", "book", "."]
+            vec!["The", "bird's", "nest", "and", "the", "birds'", "nests", ".", "James's", "book", "."]
         );
     }
     
@@ -330,7 +333,7 @@ mod tests {
         // '80s becomes "s" after filtering "80"
         assert_eq!(
             tokens,
-            vec!["the", "s", "were", "great", "but", "s", "is", "shorter"]
+            vec!["The", "s", "were", "great", "but", "s", "is", "shorter"]
         );
     }
     
@@ -341,7 +344,7 @@ mod tests {
         let tokens = tokenize(line);
         assert_eq!(
             tokens,
-            vec!["tis", "the", "season", ",", "twas", "the", "night"]
+            vec!["Tis", "the", "season", ",", "twas", "the", "night"]
         );
     }
     
@@ -352,7 +355,7 @@ mod tests {
         let tokens = tokenize(line);
         assert_eq!(
             tokens,
-            vec!["chapter", "iv", "section", "iii", "and", "appendix", "vii", "."]
+            vec!["Chapter", "IV", "Section", "III", "and", "Appendix", "VII", "."]
         );
     }
 }

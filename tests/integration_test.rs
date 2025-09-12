@@ -446,8 +446,10 @@ fn test_cli_end_to_end() -> io::Result<()> {
         let prefix_word = prefix_val.as_str().unwrap_or("");
         assert!(!prefix_word.is_empty(), "Prefix string should not be empty");
 
-        // Check prefix word normalization (should be all lowercase alphabetic or punctuation)
-        if prefix_word != "." && prefix_word != "," && prefix_word.chars().any(|c| !c.is_lowercase()) {
+        // Check prefix word is valid (alphabetic with possible capitalization or punctuation)
+        // We now preserve capitalization, so uppercase letters are allowed
+        if prefix_word != "." && prefix_word != "," && 
+           !prefix_word.chars().all(|c| c.is_alphabetic() || c == '\'') {
             found_invalid_chars_word = true;
         }
 
@@ -495,8 +497,10 @@ fn test_cli_end_to_end() -> io::Result<()> {
                 follower_arr[1]
             );
 
-            // Check follower word normalization (should be all lowercase alphabetic or punctuation)
-            if follower_word != "." && follower_word != "," && follower_word.chars().any(|c| !c.is_lowercase()) {
+            // Check follower word is valid (alphabetic with possible capitalization or punctuation)
+            // We now preserve capitalization, so uppercase letters are allowed
+            if follower_word != "." && follower_word != "," && 
+               !follower_word.chars().all(|c| c.is_alphabetic() || c == '\'') {
                 found_invalid_chars_word = true;
             }
 
@@ -515,7 +519,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
         }
     }
 
-    // Verify overall prefix sorting
+    // Verify overall prefix sorting (case-insensitive due to capitalization preservation)
     let mut prev_prefix: Option<String> = None;
     let data_arr = json_no_scale_arg.get("data").unwrap().as_array().unwrap();
     for entry in data_arr {
@@ -523,9 +527,11 @@ fn test_cli_end_to_end() -> io::Result<()> {
         let current_prefix = entry_arr[0].as_str().unwrap_or("").to_string();
 
         if let Some(ref prev) = prev_prefix {
+            // Use case-insensitive comparison since we now preserve capitalization
+            let cmp = current_prefix.to_lowercase().cmp(&prev.to_lowercase());
             assert!(
-                current_prefix > *prev,
-                "Prefixes not sorted: '{}' should come after '{}'",
+                cmp != std::cmp::Ordering::Less,
+                "Prefixes not sorted (case-insensitive): '{}' should come after '{}'",
                 current_prefix,
                 prev
             );
@@ -541,7 +547,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
     );
     assert!(
         !found_invalid_chars_word,
-        "Found word (prefix or follower) containing non-lowercase-alphabetic characters"
+        "Found word (prefix or follower) containing invalid characters (non-alphabetic except apostrophes)"
     );
 
     // Based on input:

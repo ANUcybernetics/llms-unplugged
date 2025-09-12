@@ -48,11 +48,12 @@ pub fn preprocess(tokens: Vec<String>) -> Vec<String> {
             }
 
             // 2. Filter Roman numerals (check before applying case exceptions for "i")
-            // We assume tokens are already lowercased by the tokenizer.
+            // Check lowercase version for Roman numerals since capitalization can vary
             // The case exception for "i" to "I" should take precedence if "i" is not part of a larger Roman numeral.
             // If the token is "i", and it's in case_exceptions, it will be processed there.
             // If it's "ii", "iii", etc., it should be caught here.
-            if token != "i" && is_roman_numeral(&token) {
+            let lowercase_token = token.to_lowercase();
+            if lowercase_token != "i" && is_roman_numeral(&lowercase_token) {
                 return None;
             }
 

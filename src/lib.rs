@@ -79,6 +79,8 @@ pub struct NGramCounter {
     window: VecDeque<String>,
     /// Metadata from the frontmatter of the processed file
     metadata: Option<Metadata>,
+    /// Maps lowercase token -> canonical form (either original case or lowercase if multiple variants seen)
+    canonical_forms: HashMap<String, String>,
 }
 
 impl NGramCounter {
@@ -103,13 +105,49 @@ impl NGramCounter {
             },
             window: VecDeque::with_capacity(prefix_size),
             metadata: None,
+            canonical_forms: HashMap::new(),
+        }
+    }
+
+    /// Get the canonical form of a token, updating tracking if needed
+    fn get_canonical_form(&mut self, token: &str) -> String {
+        let lowercase = token.to_lowercase();
+        
+        // Special case: "I" should never be normalized to lowercase
+        if lowercase == "i" {
+            return token.to_string(); // Keep original form, will be fixed in preprocessing
+        }
+        
+        // Check if we've seen this token before (in any form)
+        match self.canonical_forms.get(&lowercase) {
+            Some(canonical) if canonical != token => {
+                // Different capitalization seen - switch to lowercase
+                self.canonical_forms.insert(lowercase.clone(), lowercase.clone());
+                lowercase
+            }
+            Some(canonical) => {
+                // Same form seen before
+                canonical.clone()
+            }
+            None => {
+                // First time seeing this token - store original form
+                self.canonical_forms.insert(lowercase.clone(), token.to_string());
+                token.to_string()
+            }
         }
     }
 
     /// Process a single line of text
     pub fn process_line(&mut self, line: &str) {
         let raw_tokens = tokenize(line);
-        let words = preprocess(raw_tokens);
+        
+        // Apply canonical form tracking before preprocessing
+        let canonical_tokens: Vec<String> = raw_tokens
+            .into_iter()
+            .map(|token| self.get_canonical_form(&token))
+            .collect();
+        
+        let words = preprocess(canonical_tokens);
         let prefix_size = self.n - 1;
 
         // Add to token count
@@ -276,7 +314,39 @@ impl NGramCounter {
 
     /// Get the results as a sorted list of WordFollowEntry
     pub fn get_entries(&self) -> Vec<WordFollowEntry> {
-        let mut result = convert_to_entries(&self.prefix_map);
+        // Apply final canonical forms to all entries
+        let mut normalized_map: HashMap<Vec<String>, HashMap<String, usize>> = HashMap::new();
+        
+        for (prefix, followers) in &self.prefix_map {
+            // Normalize each word in the prefix using the final canonical forms
+            let normalized_prefix: Vec<String> = prefix.iter()
+                .map(|word| {
+                    // The canonical form should always exist since we track everything
+                    let lowercase = word.to_lowercase();
+                    self.canonical_forms.get(&lowercase)
+                        .unwrap_or(word)
+                        .clone()
+                })
+                .collect();
+            
+            // Normalize followers too
+            let normalized_followers = followers.iter()
+                .map(|(word, count)| {
+                    let lowercase = word.to_lowercase();
+                    let canonical = self.canonical_forms.get(&lowercase)
+                        .cloned()
+                        .unwrap_or_else(|| word.clone());
+                    (canonical, *count)
+                });
+            
+            // Merge into normalized map
+            let entry = normalized_map.entry(normalized_prefix).or_insert_with(HashMap::new);
+            for (word, count) in normalized_followers {
+                *entry.entry(word).or_insert(0) += count;
+            }
+        }
+        
+        let mut result = convert_to_entries(&normalized_map);
 
         // Sort entries lexicographically by prefix (case-insensitive)
         result.sort_by(|a, b| {
@@ -711,7 +781,8 @@ mod tests {
                 file,
                 "---\ntitle: Test Document\nauthor: Test Author\nurl: https://example.com\n---"
             )?;
-            // Note: Number123 will be tokenized to "number". "ignored" from "ignored."
+            // Test capitalization: "Hello" appears twice (consistent) -> stays "Hello"
+            // "Number123" -> "Number" (digits removed), "!" is not preserved
             writeln!(
                 file,
                 "Hello world. Hello again world! Number123 will be ignored."
@@ -740,11 +811,11 @@ mod tests {
             entries
         );
 
-        // Check prefix ["hello"]
+        // Check prefix ["Hello"] - preserved since consistent capitalization
         let hello_entry = entries
             .iter()
-            .find(|e| e.prefix == vec!["hello".to_string()])
-            .expect("Prefix ['hello'] not found in entries");
+            .find(|e| e.prefix == vec!["Hello".to_string()])
+            .expect("Prefix ['Hello'] not found in entries");
         assert_eq!(
             hello_entry.followers.len(),
             2,
@@ -763,6 +834,8 @@ mod tests {
         );
 
         // Check prefix ["world"]
+        // "world" appears twice: "Hello world." and "again world!"
+        // Since "!" is not preserved, second "world" is followed by "Number"
         let world_entry = entries
             .iter()
             .find(|e| e.prefix == vec!["world".to_string()])
@@ -770,7 +843,8 @@ mod tests {
         assert_eq!(
             world_entry.followers.len(),
             2,
-            "Expected 'world' to have 2 followers"
+            "Expected 'world' to have 2 followers, got: {:?}",
+            world_entry.followers
         );
         assert!(
             world_entry
@@ -783,8 +857,8 @@ mod tests {
             world_entry
                 .followers
                 .iter()
-                .any(|(word, count)| word == "number" && *count == 1),
-            "Expected 'world' to be followed by 'number'"
+                .any(|(word, count)| word == "Number" && *count == 1),
+            "Expected 'world' to be followed by 'Number'"
         );
 
         // Check prefix ["again"]
@@ -803,11 +877,11 @@ mod tests {
             "Follower of 'again' should be 'world'"
         );
 
-        // Check prefix ["number"]
+        // Check prefix ["Number"] - preserved capitalization
         let number_entry = entries
             .iter()
-            .find(|e| e.prefix == vec!["number".to_string()])
-            .expect("Prefix ['number'] not found in entries");
+            .find(|e| e.prefix == vec!["Number".to_string()])
+            .expect("Prefix ['Number'] not found in entries");
         assert_eq!(
             number_entry.followers.len(),
             1,

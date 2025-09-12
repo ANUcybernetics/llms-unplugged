@@ -28,19 +28,24 @@ fn test_possessive_apostrophes_preserved() -> io::Result<()> {
     let entries = counter.get_entries();
     
     // Check that possessives are preserved as single tokens
+    // "The" appears 4 times at start of sentences, "the" appears once mid-sentence
+    // When we see both capitalizations, it normalizes to lowercase "the"
+    let has_the = entries.iter().any(|e| e.prefix == vec!["the"]);
+    assert!(has_the, "Should have 'the' as a token");
+    
     let has_birds = entries.iter().any(|e| e.prefix == vec!["bird's"]);
     assert!(has_birds, "Should have 'bird's' as a token");
     
     let has_birds_plural = entries.iter().any(|e| e.prefix == vec!["birds'"]);
     assert!(has_birds_plural, "Should have 'birds'' as a token");
     
-    let has_james = entries.iter().any(|e| e.prefix == vec!["james's"]);
-    assert!(has_james, "Should have 'james's' as a token");
+    let has_james = entries.iter().any(|e| e.prefix == vec!["James's"]);
+    assert!(has_james, "Should have 'James's' as a token (capitalized)");
     
     let has_childrens = entries.iter().any(|e| e.prefix == vec!["children's"]);
     assert!(has_childrens, "Should have 'children's' as a token");
     
-    // Ensure they're not split
+    // Ensure they're not split into standalone 's'
     let has_just_s = entries.iter().any(|e| e.prefix == vec!["s"]);
     assert!(!has_just_s, "Should not have standalone 's' from possessives");
     
@@ -71,8 +76,9 @@ fn test_contractions_preserved() -> io::Result<()> {
     
     let entries = counter.get_entries();
     
-    // Check that contractions are preserved
-    let contractions = vec!["can't", "it's", "don't", "we'll", "they're", "you've", "I'm", "I'd"];
+    // Check that contractions are preserved with proper capitalization
+    // "I" contractions always uppercase, "Don't" keeps capital D
+    let contractions = vec!["can't", "it's", "Don't", "we'll", "They're", "you've", "I'm", "I'd"];
     for contraction in &contractions {
         let found = entries.iter().any(|e| {
             e.prefix.contains(&contraction.to_string()) || 
@@ -108,12 +114,12 @@ fn test_quote_marks_stripped() -> io::Result<()> {
     
     let entries = counter.get_entries();
     
-    // Check that quoted words have quotes stripped
+    // Check that quoted words have quotes stripped and capitalization preserved
     let has_hello = entries.iter().any(|e| {
-        e.prefix.contains(&"hello".to_string()) || 
-        e.followers.iter().any(|f| f.0 == "hello")
+        e.prefix.contains(&"Hello".to_string()) || 
+        e.followers.iter().any(|f| f.0 == "Hello")
     });
-    assert!(has_hello, "Should have 'hello' without quotes");
+    assert!(has_hello, "Should have 'Hello' without quotes (capital preserved)");
     
     let has_best = entries.iter().any(|e| {
         e.prefix.contains(&"best".to_string()) || 
@@ -122,10 +128,10 @@ fn test_quote_marks_stripped() -> io::Result<()> {
     assert!(has_best, "Should have 'best' without quotes");
     
     let has_triple = entries.iter().any(|e| {
-        e.prefix.contains(&"triple".to_string()) || 
-        e.followers.iter().any(|f| f.0 == "triple")
+        e.prefix.contains(&"Triple".to_string()) || 
+        e.followers.iter().any(|f| f.0 == "Triple")
     });
-    assert!(has_triple, "Should have 'triple' without quotes");
+    assert!(has_triple, "Should have 'Triple' without quotes (capital preserved)");
     
     Ok(())
 }
@@ -173,24 +179,27 @@ fn test_numbers_filtered() -> io::Result<()> {
     });
     assert!(!has_2024, "Should not have '2024'");
     
-    // Check that text parts are preserved
+    // Check that text parts are preserved (with proper capitalization)
+    // "Version2" appears once, so "Version" should be preserved
     let has_version = entries.iter().any(|e| {
-        e.prefix.contains(&"version".to_string()) || 
-        e.followers.iter().any(|f| f.0 == "version")
+        e.prefix.contains(&"Version".to_string()) || 
+        e.followers.iter().any(|f| f.0 == "Version")
     });
-    assert!(has_version, "Should have 'version' part");
+    assert!(has_version, "Should have 'Version' part");
     
+    // "test" appears multiple times in lowercase
     let has_test = entries.iter().any(|e| {
         e.prefix.contains(&"test".to_string()) || 
         e.followers.iter().any(|f| f.0 == "test")
     });
     assert!(has_test, "Should have 'test' part");
     
+    // "Section3" appears once, so "Section" should be preserved
     let has_section = entries.iter().any(|e| {
-        e.prefix.contains(&"section".to_string()) || 
-        e.followers.iter().any(|f| f.0 == "section")
+        e.prefix.contains(&"Section".to_string()) || 
+        e.followers.iter().any(|f| f.0 == "Section")
     });
-    assert!(has_section, "Should have 'section' part");
+    assert!(has_section, "Should have 'Section' part");
     
     Ok(())
 }
@@ -325,24 +334,24 @@ fn test_case_normalization() -> io::Result<()> {
     
     let entries = counter.get_entries();
     
-    // Check that most words are lowercase
+    // Check that words preserve their original capitalization (appear only once)
     let has_hello = entries.iter().any(|e| {
-        e.prefix.contains(&"hello".to_string()) || 
-        e.followers.iter().any(|f| f.0 == "hello")
+        e.prefix.contains(&"HELLO".to_string()) || 
+        e.followers.iter().any(|f| f.0 == "HELLO")
     });
-    assert!(has_hello, "Should have 'hello' in lowercase");
+    assert!(has_hello, "Should have 'HELLO' in original form");
     
     let has_world = entries.iter().any(|e| {
-        e.prefix.contains(&"world".to_string()) || 
-        e.followers.iter().any(|f| f.0 == "world")
+        e.prefix.contains(&"World".to_string()) || 
+        e.followers.iter().any(|f| f.0 == "World")
     });
-    assert!(has_world, "Should have 'world' in lowercase");
+    assert!(has_world, "Should have 'World' in original form");
     
     let has_mixed = entries.iter().any(|e| {
-        e.prefix.contains(&"mixed".to_string()) || 
-        e.followers.iter().any(|f| f.0 == "mixed")
+        e.prefix.contains(&"MiXeD".to_string()) || 
+        e.followers.iter().any(|f| f.0 == "MiXeD")
     });
-    assert!(has_mixed, "Should have 'mixed' in lowercase");
+    assert!(has_mixed, "Should have 'MiXeD' in original form");
     
     // Check that 'I' is uppercase
     let has_uppercase_i = entries.iter().any(|e| {
@@ -384,17 +393,25 @@ fn test_complex_real_world_sentences() -> io::Result<()> {
     
     let entries = counter.get_entries();
     
-    // Check key tokens are preserved correctly
+    // Check key tokens are preserved correctly with proper capitalization
     let expected_tokens = vec![
-        "bird's", "wasn't", "tree's", "don't", "I'll", "weren't", "it's", "james's", "isn't"
+        ("bird's", "bird's"),
+        ("wasn't", "wasn't"),
+        ("tree's", "tree's"),
+        ("Don't", "Don't"),  // Capitalized at start of quote
+        ("I'll", "I'll"),    // I is always uppercase
+        ("weren't", "weren't"),
+        ("It's", "It's"),    // Capitalized at start of sentence
+        ("James's", "James's"), // Proper name, capitalized
+        ("isn't", "isn't")
     ];
     
-    for token in &expected_tokens {
+    for (expected, display) in &expected_tokens {
         let found = entries.iter().any(|e| {
-            e.prefix.iter().any(|w| w.to_lowercase() == token.to_lowercase()) || 
-            e.followers.iter().any(|f| f.0.to_lowercase() == token.to_lowercase())
+            e.prefix.contains(&expected.to_string()) || 
+            e.followers.iter().any(|f| f.0 == *expected)
         });
-        assert!(found, "Should have '{}' as a token", token);
+        assert!(found, "Should have '{}' as a token", display);
     }
     
     // Ensure "1980's" becomes just "s" after filtering "1980"
