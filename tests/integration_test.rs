@@ -270,6 +270,150 @@ fn test_frontmatter_errors() -> io::Result<()> {
 }
 
 #[test]
+fn test_cli_raw_flag() -> io::Result<()> {
+    // Create a temporary directory for test files
+    let temp_dir = TempDir::new()?;
+
+    // Create a temporary input file
+    let input_path = temp_dir.path().join("input.txt");
+    let mut input_file = File::create(&input_path)?;
+    // Add frontmatter
+    writeln!(input_file, "---")?;
+    writeln!(input_file, "title: Raw Output Test")?;
+    writeln!(input_file, "author: Test Author")?;
+    writeln!(input_file, "url: https://test.com")?;
+    writeln!(input_file, "---")?;
+    writeln!(input_file, "The cat sat. The cat ran. The dog sat.")?;
+    input_file.flush()?;
+
+    let output_path_raw = temp_dir.path().join("output_raw.json");
+    let output_path_scaled = temp_dir.path().join("output_scaled.json");
+
+    // Get the path to the binary
+    let mut exe_path = std::env::current_dir()?;
+    exe_path.push("target");
+    exe_path.push("debug");
+    exe_path.push("my_first_lm");
+
+    if cfg!(windows) {
+        exe_path.set_extension("exe");
+    }
+
+    // Skip the test if the binary doesn't exist
+    if !exe_path.exists() {
+        println!("Skipping test: Binary not found at {:?}", exe_path);
+        return Ok(());
+    }
+
+    // Run with --raw flag
+    let status_raw = Command::new(&exe_path)
+        .arg(&input_path)
+        .arg("-o")
+        .arg(&output_path_raw)
+        .arg("--raw")
+        .status()?;
+    assert!(status_raw.success(), "CLI command with --raw failed");
+    assert!(output_path_raw.exists(), "Raw output file was not created");
+
+    // Run without --raw flag (default scaling)
+    let status_scaled = Command::new(&exe_path)
+        .arg(&input_path)
+        .arg("-o")
+        .arg(&output_path_scaled)
+        .status()?;
+    assert!(status_scaled.success(), "CLI command without --raw failed");
+    assert!(output_path_scaled.exists(), "Scaled output file was not created");
+
+    // Parse JSON outputs
+    let json_raw: serde_json::Value =
+        serde_json::from_reader(BufReader::new(File::open(&output_path_raw)?))?;
+    let json_scaled: serde_json::Value =
+        serde_json::from_reader(BufReader::new(File::open(&output_path_scaled)?))?;
+
+    // Get data arrays
+    let data_raw = json_raw.get("data").unwrap().as_array().unwrap();
+    let data_scaled = json_scaled.get("data").unwrap().as_array().unwrap();
+
+    // Find "the" prefix in both outputs
+    let mut the_raw_total = None;
+    let mut the_scaled_total = None;
+
+    for entry in data_raw {
+        if entry[0].as_str().unwrap() == "the" {
+            the_raw_total = Some(entry[1].as_u64().unwrap());
+            break;
+        }
+    }
+
+    for entry in data_scaled {
+        if entry[0].as_str().unwrap() == "the" {
+            the_scaled_total = Some(entry[1].as_u64().unwrap());
+            break;
+        }
+    }
+
+    // Raw should have actual count (2), scaled should be different
+    assert_eq!(the_raw_total, Some(2), "Raw output should have actual count");
+    assert_ne!(the_raw_total, the_scaled_total, "Raw and scaled totals should differ");
+
+    Ok(())
+}
+
+#[test]
+fn test_cli_incompatible_flags() -> io::Result<()> {
+    // Create a temporary directory
+    let temp_dir = TempDir::new()?;
+
+    // Create a temporary input file
+    let input_path = temp_dir.path().join("input.txt");
+    let mut input_file = File::create(&input_path)?;
+    writeln!(input_file, "---")?;
+    writeln!(input_file, "title: Test")?;
+    writeln!(input_file, "author: Test")?;
+    writeln!(input_file, "url: https://test.com")?;
+    writeln!(input_file, "---")?;
+    writeln!(input_file, "Test text.")?;
+    input_file.flush()?;
+
+    // Get the path to the binary
+    let mut exe_path = std::env::current_dir()?;
+    exe_path.push("target");
+    exe_path.push("debug");
+    exe_path.push("my_first_lm");
+
+    if cfg!(windows) {
+        exe_path.set_extension("exe");
+    }
+
+    // Skip if binary doesn't exist
+    if !exe_path.exists() {
+        println!("Skipping test: Binary not found at {:?}", exe_path);
+        return Ok(());
+    }
+
+    // Try to run with both --raw and --scale-d flags
+    let output = Command::new(&exe_path)
+        .arg(&input_path)
+        .arg("--raw")
+        .arg("--scale-d")
+        .arg("10")
+        .output()?;
+
+    // Should fail with error
+    assert!(!output.status.success(), "CLI should fail with incompatible flags");
+
+    // Check error message
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(
+        stderr.contains("Cannot use both --raw and --scale-d"),
+        "Should output error about incompatible flags: {}",
+        stderr
+    );
+
+    Ok(())
+}
+
+#[test]
 fn test_cli_end_to_end() -> io::Result<()> {
     // Create a temporary directory for test files
     let temp_dir = TempDir::new()?;

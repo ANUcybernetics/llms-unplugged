@@ -549,6 +549,7 @@ pub fn save_to_json<P: AsRef<Path>>(
     path: P,
     scale_d: Option<u32>,
     metadata: Option<&Metadata>,
+    raw: bool,
 ) -> io::Result<()> {
     // Convert entries to the required format: ["joined prefix", total_count, ["follower", cumulative_count], ...]
     let formatted_entries: Vec<Vec<serde_json::Value>> = entries
@@ -580,6 +581,16 @@ pub fn save_to_json<P: AsRef<Path>>(
             {
                 // If there are no follower occurrences, total is 0, no follower data.
                 (serde_json::json!(0), Vec::new())
+            } else if raw {
+                // Raw output mode - no scaling
+                let actual_json_total = serde_json::json!(total_original_count);
+                let followers_json_list: Vec<serde_json::Value> = original_cumulative_counts
+                    .iter()
+                    .map(|(follower_word, original_cumul)| {
+                        serde_json::json!([follower_word, original_cumul])
+                    })
+                    .collect();
+                (actual_json_total, followers_json_list)
             } else {
                 let mut scale_target_d_value: Option<u32> = None;
 
@@ -1009,7 +1020,7 @@ mod tests {
         };
 
         // Test with scale_d = None (default 10^k-1 scaling)
-        save_to_json(&entries, &path, None, Some(&metadata))?;
+        save_to_json(&entries, &path, None, Some(&metadata), false)?;
         let json_none: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1045,7 +1056,7 @@ mod tests {
         // Test with scale_d = Some(120)
         // "hello": 2 unique followers <= 120. Scale to [1, 120].
         // "world": 1 unique follower <= 120. Scale to [1, 120].
-        save_to_json(&entries, &path, Some(120), Some(&metadata))?;
+        save_to_json(&entries, &path, Some(120), Some(&metadata), false)?;
         let json_d120: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1068,7 +1079,7 @@ mod tests {
         // Test with scale_d = Some(1)
         // "hello": 2 unique followers > 1. Scale to 10^k-1 (total 9).
         // "world": 1 unique follower <= 1. Scale to [1, 1].
-        save_to_json(&entries, &path, Some(1), Some(&metadata))?;
+        save_to_json(&entries, &path, Some(1), Some(&metadata), false)?;
         let json_d1: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1122,7 +1133,7 @@ mod tests {
 
         // Test with scale_d = None (default 10^k-1 scaling)
         // Both entries: total_original_count=1 (k=1, max_val=9)
-        save_to_json(&entries, &path, None, Some(&metadata))?;
+        save_to_json(&entries, &path, None, Some(&metadata), false)?;
         let json_none: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1154,7 +1165,7 @@ mod tests {
 
         // Test with scale_d = Some(60)
         // Both entries: 1 unique follower <= 60. Scale to [1, 60].
-        save_to_json(&entries, &path, Some(120), Some(&metadata))?;
+        save_to_json(&entries, &path, Some(120), Some(&metadata), false)?;
         let json_d120: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1179,7 +1190,7 @@ mod tests {
 
         // Test with scale_d = Some(0)
         // Both entries: 1 unique follower > 0. Scale to 10^k-1 (total 9)
-        save_to_json(&entries, &path, Some(0), Some(&metadata))?;
+        save_to_json(&entries, &path, Some(0), Some(&metadata), false)?;
         let json_d0: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1228,7 +1239,7 @@ mod tests {
         // Test with scale_d = None (default 10^k-1 scaling)
         // total_original_count=10 (k=2, max_val=99). Factor = 9.9
         // Original cumulative: dog:5, cat:8 (5+3), bird:10 (8+2)
-        save_to_json(&entries, &path, None, Some(&metadata))?;
+        save_to_json(&entries, &path, None, Some(&metadata), false)?;
         let json_none: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1266,7 +1277,7 @@ mod tests {
 
         // Test with scale_d = Some(120)
         // 3 unique followers <= 120. Scale to [1, 120]. Factor = 120/10 = 12.
-        save_to_json(&entries, &path, Some(120), Some(&metadata))?;
+        save_to_json(&entries, &path, Some(120), Some(&metadata), false)?;
         let json_d120: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1287,7 +1298,7 @@ mod tests {
 
         // Test with scale_d = Some(2)
         // 3 unique followers > 2. Scale to 10^k-1 (total 99).
-        save_to_json(&entries, &path, Some(2), Some(&metadata))?;
+        save_to_json(&entries, &path, Some(2), Some(&metadata), false)?;
         let json_d2: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1328,7 +1339,7 @@ mod tests {
             book_info: None,
         };
 
-        save_to_json(&entries_to_optimise, &path, Some(120), Some(&metadata_opt))?;
+        save_to_json(&entries_to_optimise, &path, Some(120), Some(&metadata_opt), false)?;
 
         let json_optimised: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
@@ -1368,7 +1379,7 @@ mod tests {
             book_info: None,
         };
 
-        save_to_json(&entries_count_3, &path, Some(120), Some(&metadata_count3))?;
+        save_to_json(&entries_count_3, &path, Some(120), Some(&metadata_count3), false)?;
 
         let json_count_3: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
@@ -1422,7 +1433,7 @@ mod tests {
         // With scale_d = 3, we'd normally use [1,3] scaling
         // But since we have 4 followers with identical counts, they'd get scaled to the same values
         // So we should switch to 10^k-1 scaling (total is 4, so k=1, max_val=9)
-        save_to_json(&entries, &path, Some(3), Some(&metadata))?;
+        save_to_json(&entries, &path, Some(3), Some(&metadata), false)?;
         let json_result: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1482,7 +1493,7 @@ mod tests {
         };
 
         // With scale_d = 1, we can't scale 2 followers uniquely to [1,1]
-        save_to_json(&entries_edge, &path, Some(1), Some(&metadata_edge))?;
+        save_to_json(&entries_edge, &path, Some(1), Some(&metadata_edge), false)?;
         let json_edge: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1512,7 +1523,7 @@ mod tests {
         };
 
         // With scale_d = 2, the scaling would be very uneven but should work
-        save_to_json(&entries_mixed, &path, Some(2), Some(&metadata_mixed))?;
+        save_to_json(&entries_mixed, &path, Some(2), Some(&metadata_mixed), false)?;
         let json_mixed: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1530,7 +1541,128 @@ mod tests {
 
         Ok(())
     }
-    
+
+    #[test]
+    fn test_save_to_json_raw_output() -> Result<(), Box<dyn std::error::Error>> {
+        use serde_json::Value;
+        use std::fs;
+        use tempfile::NamedTempFile;
+
+        // Create test entries with known counts
+        let entries = vec![
+            WordFollowEntry {
+                prefix: vec!["the".to_string()],
+                followers: vec![
+                    ("dog".to_string(), 3),
+                    ("cat".to_string(), 2),
+                    ("bird".to_string(), 1),
+                ],
+            },
+            WordFollowEntry {
+                prefix: vec!["a".to_string()],
+                followers: vec![
+                    ("house".to_string(), 5),
+                    ("tree".to_string(), 4),
+                ],
+            },
+        ];
+
+        let metadata = Metadata {
+            title: "Test Document".to_string(),
+            author: "Test Author".to_string(),
+            url: "https://test.com".to_string(),
+            n: 2,
+            book_info: None,
+        };
+
+        // Test with raw=true (no scaling)
+        let temp_file = NamedTempFile::new()?;
+        let path = temp_file.path();
+
+        save_to_json(&entries, &path, None, Some(&metadata), true)?;
+
+        let content = fs::read_to_string(&path)?;
+        let json: Value = serde_json::from_str(&content)?;
+
+        // Check the data array
+        let data = json.get("data").expect("Should have data field")
+            .as_array().expect("Data should be an array");
+
+        // First entry: "the" with raw cumulative counts
+        assert_eq!(data[0][0], serde_json::json!("the"));
+        assert_eq!(data[0][1], serde_json::json!(6)); // Total: 3+2+1=6
+        assert_eq!(data[0][2], serde_json::json!(["dog", 3])); // Raw cumulative: 3
+        assert_eq!(data[0][3], serde_json::json!(["cat", 5])); // Raw cumulative: 3+2=5
+        assert_eq!(data[0][4], serde_json::json!(["bird", 6])); // Raw cumulative: 3+2+1=6
+
+        // Second entry: "a" with raw cumulative counts
+        assert_eq!(data[1][0], serde_json::json!("a"));
+        assert_eq!(data[1][1], serde_json::json!(9)); // Total: 5+4=9
+        assert_eq!(data[1][2], serde_json::json!(["house", 5])); // Raw cumulative: 5
+        assert_eq!(data[1][3], serde_json::json!(["tree", 9])); // Raw cumulative: 5+4=9
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_save_to_json_raw_vs_scaled() -> Result<(), Box<dyn std::error::Error>> {
+        use serde_json::Value;
+        use std::fs;
+        use tempfile::NamedTempFile;
+
+        // Create test entries
+        let entries = vec![
+            WordFollowEntry {
+                prefix: vec!["test".to_string()],
+                followers: vec![
+                    ("word1".to_string(), 10),
+                    ("word2".to_string(), 8),
+                    ("word3".to_string(), 7),
+                ],
+            },
+        ];
+
+        let metadata = Metadata {
+            title: "Test".to_string(),
+            author: "Test".to_string(),
+            url: "https://test.com".to_string(),
+            n: 2,
+            book_info: None,
+        };
+
+        // Test raw output
+        let raw_file = NamedTempFile::new()?;
+        save_to_json(&entries, raw_file.path(), None, Some(&metadata), true)?;
+
+        let raw_content = fs::read_to_string(raw_file.path())?;
+        let raw_json: Value = serde_json::from_str(&raw_content)?;
+        let raw_data = raw_json.get("data").unwrap().as_array().unwrap();
+
+        // Check raw values
+        assert_eq!(raw_data[0][1], serde_json::json!(25)); // Total: 10+8+7=25
+        assert_eq!(raw_data[0][2][1], serde_json::json!(10)); // First cumulative
+        assert_eq!(raw_data[0][3][1], serde_json::json!(18)); // Second cumulative
+        assert_eq!(raw_data[0][4][1], serde_json::json!(25)); // Third cumulative
+
+        // Test scaled output (default scaling)
+        let scaled_file = NamedTempFile::new()?;
+        save_to_json(&entries, scaled_file.path(), None, Some(&metadata), false)?;
+
+        let scaled_content = fs::read_to_string(scaled_file.path())?;
+        let scaled_json: Value = serde_json::from_str(&scaled_content)?;
+        let scaled_data = scaled_json.get("data").unwrap().as_array().unwrap();
+
+        // With total 25, should scale to [0, 99] range
+        assert_eq!(scaled_data[0][1], serde_json::json!(99)); // Scaled total
+
+        // Values should be different from raw
+        assert_ne!(scaled_data[0][2][1], raw_data[0][2][1]);
+        assert_ne!(scaled_data[0][3][1], raw_data[0][3][1]);
+        assert_ne!(scaled_data[0][4][1], raw_data[0][4][1]);
+
+        Ok(())
+    }
+
     #[test]
     fn test_split_entries_into_books() {
         // Create test entries with various prefixes

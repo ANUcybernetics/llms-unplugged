@@ -33,10 +33,23 @@ struct Args {
     /// Run typst compile on the generated JSON files to create PDFs
     #[arg(long = "typst")]
     run_typst: bool,
+
+    /// Output raw counts without scaling
+    #[arg(long = "raw")]
+    raw: bool,
 }
 
 fn main() {
     let args = Args::parse();
+
+    // Check for incompatible flags
+    if args.raw && args.scale_d.is_some() {
+        eprintln!("Error: Cannot use both --raw and --scale-d flags together.");
+        eprintln!("  --raw outputs unscaled counts");
+        eprintln!("  --scale-d applies scaling to counts");
+        eprintln!("Please use only one of these options.");
+        std::process::exit(1);
+    }
 
     // Create an NGramCounter and process the file
     let mut counter = NGramCounter::new(args.n);
@@ -77,7 +90,7 @@ fn main() {
                     metadata.cloned()
                 };
                 
-                match save_to_json(book_entries, &output_file, args.scale_d, book_metadata.as_ref()) {
+                match save_to_json(book_entries, &output_file, args.scale_d, book_metadata.as_ref(), args.raw) {
                     Ok(_) => {
                         if args.num_books > 1 {
                             println!(
@@ -101,7 +114,9 @@ fn main() {
             }
             
             if all_success {
-                if let Some(d) = args.scale_d {
+                if args.raw {
+                    println!("Output raw counts without scaling");
+                } else if let Some(d) = args.scale_d {
                     println!("Applied count scaling with d={}", d);
                 } else {
                     println!("Applied default count scaling to [0, 10^n-1] range");
