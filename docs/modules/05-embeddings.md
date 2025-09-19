@@ -1,5 +1,6 @@
 ---
 title: "Word Embeddings"
+socy_logo: true
 prereqs: ["04-context-columns.md"]
 ---
 

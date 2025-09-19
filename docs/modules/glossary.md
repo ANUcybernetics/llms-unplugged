@@ -1,5 +1,6 @@
 ---
 title: "Glossary: The Language of Language Models"
+socy_logo: true
 ---
 
 ## Glossary

@@ -1,5 +1,6 @@
 ---
 title: "Trigram Model"
+socy_logo: true
 prereqs: ["01-basic-training.md", "02-basic-inference.md"]
 ---
 

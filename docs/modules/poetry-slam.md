@@ -1,5 +1,6 @@
 ---
 title: "Poetry Slam"
+socy_logo: true
 ---
 
 ## Description

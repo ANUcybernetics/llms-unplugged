@@ -1,5 +1,6 @@
 ---
 title: "Basic Inference (Generating Text)"
+socy_logo: true
 prereqs: ["01-basic-training.md", "00-weighted-randomness.md"]
 ---
 

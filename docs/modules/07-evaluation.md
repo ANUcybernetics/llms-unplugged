@@ -1,5 +1,6 @@
 ---
 title: "Evaluating Your Language Model"
+socy_logo: true
 prereqs: ["00-weighted-randomness.md"]
 ---
 

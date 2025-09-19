@@ -1,5 +1,6 @@
 ---
 title: "Weighted Randomness"
+socy_logo: true
 prereqs: []
 ---
 

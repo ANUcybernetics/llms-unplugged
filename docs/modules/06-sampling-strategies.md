@@ -1,5 +1,6 @@
 ---
 title: "Sampling Strategies"
+socy_logo: true
 prereqs:
   ["00-weighted-randomness.md", "01-basic-training.md", "02-basic-inference.md"]
 ---

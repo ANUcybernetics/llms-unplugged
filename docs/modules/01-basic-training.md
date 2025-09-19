@@ -1,5 +1,6 @@
 ---
 title: "Basic Training (Building the Matrix)"
+socy_logo: true
 prereqs: []
 ---
 
