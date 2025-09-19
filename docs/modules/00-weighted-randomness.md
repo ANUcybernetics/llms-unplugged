@@ -138,10 +138,9 @@ Given this ice-cream shop's sales data, try each method:
 
 ## Appendix: d20 partition tables
 
-| 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  | 11  | 12  | 13  | 14  | 15  | 16  | 17  | 18  | 19  | 20  |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1   | .   | .   | .   | .   | .   | .   | .   | .   | 10  | 11  | .   | .   | .   | .   | .   | .   | .   | .   | 20  |
-| 1   | .   | .   | .   | .   | .   | 7   | 8   | .   | .   | .   | .   | .   | 14  | 15  | .   | .   | .   | .   | 20  |
-| 1   | .   | .   | .   | 5   | 6   | .   | .   | .   | 10  | 11  | .   | .   | .   | 15  | 16  | .   | .   | .   | 20  |
-| 1   | .   | .   | 4   | 5   | .   | .   | 8   | 9   | .   | .   | 12  | 13  | .   | .   | 16  | 17  | .   | .   | 20  |
-| 1   | .   | 3   | 4   | .   | 6   | 7   | .   | 9   | 10  | .   | 12  | 13  | .   | 15  | 16  | .   | 18  | 19  | 20  |
+```{=typst}
+#figure(
+  image("dice-mappings.svg", width: 100%),
+  caption: [d20 partition tables showing how to divide a d20 into equal groups for different numbers of outcomes (2--9)]
+)
+```
