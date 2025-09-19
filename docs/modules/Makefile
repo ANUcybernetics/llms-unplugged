@@ -3,7 +3,7 @@
 # Input and output directories
 INPUT_DIR = .
 OUTPUT_DIR = output
-TEMPLATE = template.typ
+TEMPLATE = anu
 
 # Find all markdown files in the current directory
 MD_FILES := $(wildcard $(INPUT_DIR)/*.md)
@@ -24,8 +24,8 @@ combined: $(OUTPUT_DIR) $(PDF_FILES)
 $(OUTPUT_DIR):
 	mkdir -p $(OUTPUT_DIR)
 
-# Convert markdown to PDF using pandoc with Typst template
-$(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.md $(TEMPLATE)
+# Convert markdown to PDF using pandoc with built-in ANU Typst template
+$(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.md
 	@echo "Processing $<..."
 	pandoc $< -o $@ --pdf-engine=typst --template=$(TEMPLATE)
 
