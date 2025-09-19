@@ -147,7 +147,8 @@ This work is a project of the _Cybernetic Studio_ at the
 Source code for this project is licensed under the MIT License. See the
 [LICENSE](./LICENSE) file for details.
 
-The typeset "N-gram model booklets" are licenced under a CC BY-NC 4.0 license.
+Documentation (in `docs/`) and any typeset "N-gram model booklets" are licenced
+under a CC BY-NC 4.0 license.
 
 Source text licenses used as input for the language model remain as described in
 their original sources.
