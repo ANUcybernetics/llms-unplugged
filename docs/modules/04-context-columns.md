@@ -50,30 +50,32 @@ Tokenised: `i` `run` `,` `fast` `.` `you` `run` `to` `me` `.`
 
 Enhanced model with context columns:
 
-<table>
-<tr>
-<th></th>
-<th>`i`</th>
-<th>`you`</th>
-<th>`run`</th>
-<th>`,`</th>
-<th>`fast`</th>
-<th>`to`</th>
-<th>`me`</th>
-<th>`.`</th>
-<th style="transform: rotate(-90deg); writing-mode: vertical-rl; white-space: nowrap;">after verb</th>
-<th style="transform: rotate(-90deg); writing-mode: vertical-rl; white-space: nowrap;">after pronoun</th>
-<th style="transform: rotate(-90deg); writing-mode: vertical-rl; white-space: nowrap;">after preposition</th>
-</tr>
-<tr><td>`i`</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>`you`</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>`run`</td><td></td><td></td><td></td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td>2</td><td></td></tr>
-<tr><td>`,`</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>`fast`</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td></tr>
-<tr><td>`to`</td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td>1</td><td></td><td></td></tr>
-<tr><td>`me`</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>1</td></tr>
-<tr><td>`.`</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-</table>
+```{=typst}
+#table(
+  columns: (1fr,) * 12,
+  align: center + horizon,
+  [],
+  [`i`],
+  [`you`],
+  [`run`],
+  [`,`],
+  [`fast`],
+  [`to`],
+  [`me`],
+  [`.`],
+  [#v(-3em)#rotate(-90deg)[after verb]],
+  [#v(-3em)#rotate(-90deg)[after pronoun]],
+  [#v(-3em)#rotate(-90deg)[after preposition]],
+  [`i`], [], [], [1], [], [], [], [], [], [], [], [],
+  [`you`], [], [], [1], [], [], [], [], [], [], [], [],
+  [`run`], [], [], [], [1], [], [1], [], [], [], [2], [],
+  [`,`], [], [], [], [], [1], [], [], [], [], [], [],
+  [`fast`], [], [], [], [], [], [], [], [1], [], [], [],
+  [`to`], [], [], [], [], [], [], [1], [], [1], [], [],
+  [`me`], [], [], [], [], [], [], [], [1], [], [], [1],
+  [`.`], [], [1], [], [], [], [], [], [], [], [], []
+)
+```
 
 When generating after `run` (a verb):
 
