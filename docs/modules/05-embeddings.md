@@ -63,30 +63,3 @@ Distance between `spot` and `run`:
 The smaller value (4 vs 7) indicates that `see` and `spot` are closer (more
 similar) than `spot` and `run`.
 
-## Discussion questions
-
-- which words cluster together? why?
-- do grammatically similar words have similar embeddings?
-- can you predict which words will be close before calculating?
-- how do context columns affect word similarity?
-- what information is captured in these vectors?
-
-## Connection to modern LLMs
-
-Word embeddings revolutionised NLP by turning words into numbers that computers
-can process:
-
-- **dimensions**: your 8D vectors → GPT uses 768--1536 dimensions
-- **learning**: you used occurrence patterns → modern models learn from billions
-  of contexts
-- **semantic capture**: industrial embeddings encode meaning so well that
-  "`king` - `man` + `woman` ≈ `queen`" actually works
-- **foundation**: every modern language model starts by converting words to
-  embeddings
-
-The breakthrough insight: words with similar meanings appear in similar
-contexts, so their usage patterns (and thus embeddings) are similar. Your
-hand-calculated vectors demonstrate this principle: `cat` and `dog` would have
-similar embeddings because they both follow `the` and precede `ran` or `sat`.
-This discovery enabled computers to finally "understand" that words have
-relationships and meanings beyond just their spelling.

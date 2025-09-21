@@ -54,26 +54,3 @@ Model:
 | `.`    | 2     |        | 1     | 1      |     |     |
 | `,`    |       | 2      |       |        |     |     |
 
-## Discussion questions
-
-- what patterns emerge in your model?
-- which words have many possible followers vs just one?
-- how does including punctuation as "words" help with sentence structure?
-- which words appear most frequently in your training data?
-- are there any empty rows? What does that mean?
-- how could you use this model to generate _new_ text in the style of your
-  input/training data?
-
-## Connection to modern LLMs
-
-This counting process is exactly what happens during the "training" phase of
-language models:
-
-- **training data**: your paragraph vs trillions of words from the internet
-- **learning/training process**: hand counting vs automated counting by
-  computers
-- **storage**: your paper model vs billions of parameters in memory
-
-The key insight: "training" a language model means counting patterns in text.
-Your hand-built model contains the same type of information that GPT
-stores---at a vastly smaller scale.

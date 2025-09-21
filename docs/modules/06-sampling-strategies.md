@@ -198,38 +198,3 @@ Generate the same prompt with different strategies:
 Compare results - which strategy creates the most interesting text for different
 purposes?
 
-## Discussion questions
-
-- which strategy produces the most "human-like" text?
-- when would you want predictable vs surprising output?
-- how do constraints (haiku, no-repeat) spark creativity?
-- can you invent your own sampling strategy?
-
-## Connection to modern LLMs
-
-ChatGPT and other modern models use these same mechanisms:
-
-**Temperature control**:
-
-- **temperature parameter**: divides probabilities just like you divide
-  tallies - higher temperature means more random output
-
-**Truncation techniques**:
-
-- **top-k sampling**: only consider k most likely tokens (truncates rest to
-  zero)
-- **top-p (nucleus) sampling**: consider tokens until cumulative probability
-  reaches p (dynamic truncation)
-- **repetition penalty**: discourage repeating recent tokens
-- **frequency penalty**: discourage common tokens
-- **presence penalty**: discourage any repetition
-
-Your paper model demonstrates that "creativity" in AI comes from two controls:
-adjusting temperature (probability distribution shape) and applying truncation
-strategies (which tokens to exclude). The same trained model can produce
-scholarly essays (low temperature, strict truncation) or wild poetry (high
-temperature, constraint-based truncation) just by changing these parameters!
-
-The key insight: generation control is as important as training data. Your paper
-model proves that creative output comes not from the model itself, but from how
-you control temperature and which tokens you truncate from consideration.
