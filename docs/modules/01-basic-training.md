@@ -4,23 +4,26 @@ socy_logo: true
 prereqs: []
 ---
 
-## Description
-
-Build a word co-occurence model that tracks which words follow other words in
-text. This activity demonstrates how language models "learn" patterns from
-training data by counting word transitions.
+Build a bigram (word co-occurence) language model that tracks which words follow
+other words in text. This activity demonstrates how language models "learn"
+patterns from training data by counting word transitions.
 
 ## You will need
 
 - a short text (e.g. a few pages from a kids book, but can be anything)
-- blank matrix (a grid or table for tracking word patterns)
+- grid paper (for tracking word patterns)
 - pen and pencil
 
 ## Key idea
 
-Language models learn by counting patterns in text. Training means building a
-model (also called a grid or table) that tracks which words follow other
-words---transforming text into statistical patterns that can generate new text.
+Language models learn by counting patterns in text. "Training" means
+building/constructing a model (shown in this activity as a grid or table) that
+tracks which words follow other words. This model can be used to (among other
+things) generate new text.
+
+## Glossary
+
+TODO (maybe tokens/vocab)
 
 ## Algorithm
 
@@ -35,15 +38,27 @@ words---transforming text into statistical patterns that can generate new text.
 
 ## Example
 
+TODO tally scores would be _great_.
+
 Original text: _"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot,
 jump."_
 
-Tokenised: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,` `spot` `,`
-`run` `.` `jump` `,` `spot` `,` `jump` `.`
+After tokenisation: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,`
+`spot` `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`
 
-Vocabulary: `see`, `spot`, `run`, `jump`, `.`, `,`
+After `see` `spot`:
 
-Model:
+|        | `see` | `spot` |     |     |     |     |
+| ------ | ----- | ------ | --- | --- | --- | --- |
+| `see`  |       | 1      |     |     |     |     |
+| `spot` |       |        |     |     |     |     |
+|        |       |        |     |     |     |     |
+|        |       |        |     |     |     |     |
+|        |       |        |     |     |     |     |
+|        |       |        |     |     |     |     |
+
+Completed model (after `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,`
+`spot` `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`):
 
 |        | `see` | `spot` | `run` | `jump` | `.` | `,` |
 | ------ | ----- | ------ | ----- | ------ | --- | --- |
@@ -53,4 +68,3 @@ Model:
 | `jump` |       |        |       |        | 2   |     |
 | `.`    | 2     |        | 1     | 1      |     |     |
 | `,`    |       | 2      |       |        |     |     |
-
