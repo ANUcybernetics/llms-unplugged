@@ -14,15 +14,15 @@ purpose, from maximising accuracy to embracing chaos, from creating structured
 poetry to mimicking child speech. Understanding these strategies reveals how
 modern LLMs control their output style.
 
-## Materials
+## You will need
 
-- a completed word co-occurrence matrix from an earlier module
+- a completed word co-occurrence model from an earlier module
 - 20-sided dice (d20)
 - notepad for tracking generated text
 - syllable reference sheet (optional)
 - rhyming dictionary (optional)
 
-## Core concepts
+## Key idea
 
 The same trained model can produce scholarly essays or wild poetry just by
 changing how you sample from it. This involves two key mechanisms:
@@ -34,7 +34,7 @@ changing how you sample from it. This involves two key mechanisms:
   tokens' probabilities to zero (e.g., top-k, top-p, or constraint-based
   filtering)
 
-## Activity steps
+## Algorithm
 
 ### Temperature Control
 
@@ -80,7 +80,7 @@ This is what you learned in Basic Inference - the foundation all others build
 upon. It's useful for general text generation that mirrors training data
 patterns.
 
-1. find current word's row in matrix
+1. find current word's row in model
 2. roll d20 proportional to tally marks
 3. select next word based on roll
 4. repeat with new word
@@ -204,16 +204,6 @@ purposes?
 - when would you want predictable vs surprising output?
 - how do constraints (haiku, no-repeat) spark creativity?
 - can you invent your own sampling strategy?
-
-## Activity variations
-
-Create your own custom sampling strategy that combines elements:
-
-- "academic sampling": Prefer longer words, no repetition, temperature 2
-- "sports commentary sampling": High energy (exclamation marks), repetition
-  allowed, name-checking
-- "cooking recipe sampling": Imperative mood, measurement words, sequential
-  structure
 
 ## Connection to modern LLMs
 

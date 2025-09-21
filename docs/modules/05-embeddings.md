@@ -7,23 +7,23 @@ prereqs: ["04-context-columns.md"]
 ## Description
 
 Transform words into numerical vectors using their behavioural patterns from
-your matrix. This activity demonstrates how language models create mathematical
+your model. This activity demonstrates how language models create mathematical
 representations of words that capture meaning through usage patterns---a
 foundational concept in modern NLP.
 
-## Materials
+## You will need
 
-- your completed matrix with context columns
+- your completed model with context columns
 - ruler for measuring distances (optional)
 - paper for plotting word vectors
 
-## Core concepts
+## Key idea
 
 Words become numbers through their usage patterns. Each word's row in your
-matrix is its embedding---a numerical fingerprint that captures meaning through
+model is its embedding---a numerical fingerprint that captures meaning through
 context. Similar words have similar embeddings.
 
-## Activity steps
+## Algorithm
 
 1. **create word vectors**: Use each word's full row (transition counts +
    context columns) as its "embedding"
@@ -44,7 +44,7 @@ Original text: _"See Spot run. Run, Spot, run."_
 
 Tokenised: `see` `spot` `run` `.` `run` `,` `spot` `,` `run` `.`
 
-Word vectors from our enhanced matrix:
+Word vectors from our enhanced model:
 
 | word   | dim. 1 | dim. 2 | dim. 3 | dim. 4 | dim. 5 | dim. 6 | dim. 7 | dim. 8 |
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
@@ -70,33 +70,6 @@ similar) than `spot` and `run`.
 - can you predict which words will be close before calculating?
 - how do context columns affect word similarity?
 - what information is captured in these vectors?
-
-## Activity variations
-
-### Word clustering
-
-- calculate all pairwise distances
-- create a similarity matrix
-- group words with distance < 3
-- name the emergent categories
-
-### Mystery word game
-
-- facilitator provides an embedding vector
-- participants deduce the word from its pattern
-- "This word appears twice after commas..."
-
-### Synonym search
-
-- find word pairs with smallest distances
-- are they actually synonyms or just grammatically similar?
-- discuss the difference between syntactic and semantic similarity
-
-### Vector arithmetic (advanced)
-
-- add two word vectors together
-- find the closest word to the result
-- does `spot` + `run` ≈ something meaningful?
 
 ## Connection to modern LLMs
 

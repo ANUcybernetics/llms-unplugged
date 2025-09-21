@@ -11,21 +11,21 @@ quantitative metrics and qualitative assessment. This module introduces
 perplexity, accuracy, and human evaluation methods that work with your physical
 token-based models.
 
-## Materials
+## You will need
 
-- your completed frequency matrices from previous modules
+- your completed frequency models from previous modules
 - test sentences (provided or create your own)
 - calculator (optional, for perplexity)
 - evaluation scorecards (templates provided)
 
-## Core concepts
+## Key idea
 
 How do we know if our language model is working well? Real LLMs use the same
 evaluation approaches we'll explore here---measuring how surprised the model is
 by real text (perplexity) and how well it generates sensible completions
 (qualitative assessment).
 
-## Activity steps
+## Algorithm
 
 ### Method 1: Accuracy on Next-Word Prediction
 
@@ -170,19 +170,3 @@ Claude!
 - what's missing from these evaluation methods?
 - how might context length affect evaluation?
 - why might a model with higher perplexity sometimes be preferable?
-
-## Activity variations
-
-### A/B Testing
-
-Create evaluation cards where testers don't know which model generated which
-text:
-
-1. generate 10 completions from Model A
-2. generate 10 completions from Model B
-3. mix randomly
-4. have classmates rate without knowing the source
-5. reveal and analyse results
-
-This mirrors how real LLM companies conduct preference testing between model
-versions.

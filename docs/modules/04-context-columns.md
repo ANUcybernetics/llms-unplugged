@@ -6,32 +6,32 @@ prereqs: ["01-basic-training.md", "02-basic-inference.md"]
 
 ## Description
 
-Enhance your word co-occurence matrix with context columns that capture
+Enhance your word co-occurence model with context columns that capture
 grammatical and semantic patterns. This activity introduces the concept of
 attention---selectively focusing on relevant context---which is the key
 innovation behind transformer models like GPT.
 
-## Materials
+## You will need
 
 - same as basic-training module
-- your completed word co-occurence matrix from
+- your completed word co-occurence model from
   [basic training](01-basic-training.md)
 - different coloured pens for context columns
 
-## Core concepts
+## Key idea
 
 Attention means selectively focusing on relevant context. By adding grammatical
-context columns to your matrix, you manually implement what transformers learn
+context columns to your model, you manually implement what transformers learn
 automatically---which previous words matter most for prediction.
 
-## Activity steps
+## Algorithm
 
 1. **identify patterns** in your text (let participants discover these)
    - which words come after action words (verbs)?
    - which words follow `i`, `you`, `they` (pronouns)?
    - which words come after `in`, `on`, `at` (prepositions)?
    - how do these patterns differ from random transitions?
-2. **add context columns** to your existing word co-occurence matrix:
+2. **add context columns** to your existing word co-occurence model:
    - after_verb: count if this word appears after doing/action words
    - after_pronoun: count if this word follows `i`/`you`/`they`/etc.
    - after_preposition: count if this word comes after
@@ -48,18 +48,32 @@ Original text: _"I run, fast. You run to me."_
 
 Tokenised: `i` `run` `,` `fast` `.` `you` `run` `to` `me` `.`
 
-Enhanced matrix with context columns:
+Enhanced model with context columns:
 
-|       | `i` | `you` | `run` | `,` | `fast` | `to` | `me` | `.` | after verb | after pronoun | after preposition |
-| ----- | --- | ----- | ----- | --- | ------ | ---- | ---- | --- | ---------- | ------------- | ----------------- |
-| `i`   | 0   | 0     | 1     | 0   | 0      | 0    | 0    | 0   | 0          | 0             | 0                 |
-| `you` | 0   | 0     | 1     | 0   | 0      | 0    | 0    | 0   | 0          | 0             | 0                 |
-| `run` | 0   | 0     | 0     | 1   | 0      | 1    | 0    | 0   | 0          | 2             | 0                 |
-| `,`   | 0   | 0     | 0     | 0   | 1      | 0    | 0    | 0   | 0          | 0             | 0                 |
-| `fast`| 0   | 0     | 0     | 0   | 0      | 0    | 0    | 1   | 0          | 0             | 0                 |
-| `to`  | 0   | 0     | 0     | 0   | 0      | 0    | 1    | 0   | 1          | 0             | 0                 |
-| `me`  | 0   | 0     | 0     | 0   | 0      | 0    | 0    | 1   | 0          | 0             | 1                 |
-| `.`   | 0   | 1     | 0     | 0   | 0      | 0    | 0    | 0   | 0          | 0             | 0                 |
+<table>
+<tr>
+<th></th>
+<th>`i`</th>
+<th>`you`</th>
+<th>`run`</th>
+<th>`,`</th>
+<th>`fast`</th>
+<th>`to`</th>
+<th>`me`</th>
+<th>`.`</th>
+<th style="transform: rotate(-90deg); writing-mode: vertical-rl; white-space: nowrap;">after verb</th>
+<th style="transform: rotate(-90deg); writing-mode: vertical-rl; white-space: nowrap;">after pronoun</th>
+<th style="transform: rotate(-90deg); writing-mode: vertical-rl; white-space: nowrap;">after preposition</th>
+</tr>
+<tr><td>`i`</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>`you`</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>`run`</td><td></td><td></td><td></td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td>2</td><td></td></tr>
+<tr><td>`,`</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>`fast`</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td></tr>
+<tr><td>`to`</td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td>1</td><td></td><td></td></tr>
+<tr><td>`me`</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>1</td></tr>
+<tr><td>`.`</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
 
 When generating after `run` (a verb):
 
@@ -76,13 +90,6 @@ When generating after `run` (a verb):
 - what happens when multiple contexts apply at once?
 - are grammatical contexts (verb→object, pronoun→verb) more reliable than
   word-specific ones (`word_a`→`word_b`)?
-
-## Activity variations
-
-- **context discovery**: teams compete to find the most useful context pattern
-- **ablation study**: generate with and without each context column
-- **custom contexts**: design context columns for different text types (poetry,
-  dialogue, recipes)
 
 ## Connection to modern LLMs
 

@@ -14,25 +14,25 @@ words (two previous words + the next word). As you'd expect, the model you've
 been working with in [Basic Training](./01-basic-training.md) is called a bigram
 model.
 
-## Materials
+## You will need
 
 - same as basic training module
-- additional paper for the three-column matrix
+- additional paper for the three-column model
 
-## Core concepts
+## Key idea
 
 More context leads to better predictions. A trigram model considers two previous
 words instead of one, demonstrating the trade-off between context length and
 data requirements that shapes all language models.
 
-## Activity steps
+## Algorithm
 
-1. **create a three-column matrix** with headers: Word1 | Word2 | Word3
+1. **create a three-column model** with headers: Word1 | Word2 | Word3
 2. **extract all word triples** from your text
    - slide a 3-word window through the text
    - include punctuation tokens
 3. **count occurrences** of each unique triple
-4. **generate text** using your trigram matrix:
+4. **generate text** using your trigram model:
    - start with any two words (or `.` + first word)
    - find all rows where Word1 and Word2 match your current pair
    - roll d20 weighted by the counts
@@ -70,15 +70,6 @@ To generate the next word after `.` + `run`:
 - how many rows would you need for a 100-word text?
 - can you find word pairs that always lead to the same next word?
 - what's the tradeoff between context length and data requirements?
-
-## Activity variations
-
-- **comparison challenge**: generate text from the same prompt with basic
-  (bigram) model vs trigram
-- **sparse data problem**: try to generate with a word pair that appears only
-  once---what should you do in this case?
-- **context competition**: teams predict the next word given two words of
-  context
 
 ## Connection to modern LLMs
 

@@ -6,23 +6,23 @@ prereqs: ["01-basic-training.md", "00-weighted-randomness.md"]
 
 ## Description
 
-Use your trained matrix to generate new text through weighted random sampling.
+Use your trained model to generate new text through weighted random sampling.
 This activity demonstrates how language models produce text by predicting one
 word at a time based on learnt patterns.
 
-## Materials
+## You will need
 
-- your completed word co-occurence matrix from basic-training
+- your completed word co-occurence model from basic-training
 - 20-sided dice (d20) for weighted sampling
 - paper for writing generated text
 
-## Core concepts
+## Key idea
 
 Text generation happens one word at a time through weighted random sampling.
-Your trained matrix provides the probabilities; dice rolls provide the
+Your trained model provides the probabilities; dice rolls provide the
 randomness that creates variety in output.
 
-## Activity steps
+## Algorithm
 
 1. **choose a starting word**---pick any word from your vocabulary
 2. **look at that word's row** to see possible next words and their counts
@@ -35,16 +35,16 @@ randomness that creates variety in output.
 
 ## Example
 
-Using the matrix from basic-training:
+Using the model from basic-training:
 
 |        | `see` | `spot` | `run` | `jump` | `.` | `,` |
 | ------ | ----- | ------ | ----- | ------ | --- | --- |
-| `see`  | 0     | 2      | 0     | 0      | 0   | 0   |
-| `spot` | 0     | 0      | 2     | 2      | 0   | 0   |
-| `run`  | 0     | 0      | 0     | 0      | 2   | 0   |
-| `jump` | 0     | 0      | 0     | 0      | 2   | 0   |
-| `.`    | 2     | 0      | 1     | 1      | 0   | 0   |
-| `,`    | 0     | 2      | 0     | 0      | 0   | 0   |
+| `see`  |       | 2      |       |        |     |     |
+| `spot` |       |        | 2     | 2      |     |     |
+| `run`  |       |        |       |        | 2   |     |
+| `jump` |       |        |       |        | 2   |     |
+| `.`    | 2     |        | 1     | 1      |     |     |
+| `,`    |       | 2      |       |        |     |     |
 
 To generate the next word after `see`:
 
