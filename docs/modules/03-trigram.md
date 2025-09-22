@@ -32,6 +32,10 @@ data requirements that shapes all language models.
    - choose Word3, then shift: new pair = (old Word2, chosen Word3)
    - continue until desired length
 
+```{=typst}
+#import "llm-utils.typ": *
+```
+
 ## Example
 
 Original text: _"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot,
@@ -42,23 +46,23 @@ After tokenisation: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,`
 
 | Word1  | Word2  | Word3  | Count |
 | ------ | ------ | ------ | ----- |
-| `see`  | `spot` | `run`  | 1     |
-| `spot` | `run`  | `.`    | 1     |
-| `run`  | `.`    | `see`  | 1     |
-| `.`    | `see`  | `spot` | 1     |
-| `see`  | `spot` | `jump` | 1     |
-| `spot` | `jump` | `.`    | 1     |
-| `jump` | `.`    | `run`  | 1     |
-| `.`    | `run`  | `,`    | 1     |
-| `run`  | `,`    | `spot` | 1     |
-| `,`    | `spot` | `,`    | 2     |
-| `spot` | `,`    | `run`  | 1     |
-| `,`    | `run`  | `.`    | 1     |
-| `run`  | `.`    | `jump` | 1     |
-| `.`    | `jump` | `,`    | 1     |
-| `jump` | `,`    | `spot` | 1     |
-| `spot` | `,`    | `jump` | 1     |
-| `,`    | `jump` | `.`    | 1     |
+| `see`  | `spot` | `run`  | `#tally(1)`{=typst} |
+| `spot` | `run`  | `.`    | `#tally(1)`{=typst} |
+| `run`  | `.`    | `see`  | `#tally(1)`{=typst} |
+| `.`    | `see`  | `spot` | `#tally(1)`{=typst} |
+| `see`  | `spot` | `jump` | `#tally(1)`{=typst} |
+| `spot` | `jump` | `.`    | `#tally(1)`{=typst} |
+| `jump` | `.`    | `run`  | `#tally(1)`{=typst} |
+| `.`    | `run`  | `,`    | `#tally(1)`{=typst} |
+| `run`  | `,`    | `spot` | `#tally(1)`{=typst} |
+| `,`    | `spot` | `,`    | `#tally(2)`{=typst} |
+| `spot` | `,`    | `run`  | `#tally(1)`{=typst} |
+| `,`    | `run`  | `.`    | `#tally(1)`{=typst} |
+| `run`  | `.`    | `jump` | `#tally(1)`{=typst} |
+| `.`    | `jump` | `,`    | `#tally(1)`{=typst} |
+| `jump` | `,`    | `spot` | `#tally(1)`{=typst} |
+| `spot` | `,`    | `jump` | `#tally(1)`{=typst} |
+| `,`    | `jump` | `.`    | `#tally(1)`{=typst} |
 
 To generate the next word after `see` + `spot`:
 

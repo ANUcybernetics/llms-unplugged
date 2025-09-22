@@ -35,6 +35,10 @@ through context. Similar words have similar embeddings.
    - group words by similarity
    - discover emergent categories
 
+```{=typst}
+#import "llm-utils.typ": *
+```
+
 ## Example
 
 Original text: _"See Spot run. Run, Spot, run."_
@@ -43,11 +47,11 @@ Tokenised: `see` `spot` `run` `.` `run` `,` `spot` `,` `run` `.`
 
 Word vectors from our enhanced model:
 
-| word   | dim. 1 | dim. 2 | dim. 3 | dim. 4 | dim. 5 | dim. 6 | dim. 7 | dim. 8 |
-| ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
-| `see`  | 0      | 1      | 0      | 0      | 0      | 0      | 0      | 0      |
-| `spot` | 0      | 0      | 2      | 0      | 0      | 0      | 1      | 0      |
-| `run`  | 0      | 0      | 0      | 2      | 0      | 0      | 0      | 2      |
+| word   | dim. 1 | dim. 2              | dim. 3              | dim. 4              | dim. 5 | dim. 6 | dim. 7              | dim. 8              |
+| ------ | ------ | ------------------- | ------------------- | ------------------- | ------ | ------ | ------------------- | ------------------- |
+| `see`  |        | `#tally(1)`{=typst} |                     |                     |        |        |                     |                     |
+| `spot` |        |                     | `#tally(2)`{=typst} |                     |        |        | `#tally(1)`{=typst} |                     |
+| `run`  |        |                     |                     | `#tally(2)`{=typst} |        |        |                     | `#tally(2)`{=typst} |
 
 Distance between `see` and `spot`:
 

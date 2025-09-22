@@ -36,18 +36,22 @@ randomness that creates variety in output.
 
 You can **try different starting words** to see how it affects the output.
 
+```{=typst}
+#import "llm-utils.typ": *
+```
+
 ## Example
 
 Here's a pre-trained language model grid:
 
 |        | `see` | `spot` | `run` | `jump` | `.` | `,` |
 | ------ | ----- | ------ | ----- | ------ | --- | --- |
-| `see`  |       | 2      |       |        |     |     |
-| `spot` |       |        | 2     | 2      |     |     |
-| `run`  |       |        |       |        | 2   |     |
-| `jump` |       |        |       |        | 2   |     |
-| `.`    | 2     |        | 1     | 1      |     |     |
-| `,`    |       | 2      |       |        |     |     |
+| `see`  |       | `#tally(2)`{=typst} |       |        |     |     |
+| `spot` |       |        | `#tally(2)`{=typst} | `#tally(2)`{=typst} |     |     |
+| `run`  |       |        |       |        | `#tally(2)`{=typst} |     |
+| `jump` |       |        |       |        | `#tally(2)`{=typst} |     |
+| `.`    | `#tally(2)`{=typst} |        | `#tally(1)`{=typst} | `#tally(1)`{=typst} |     |     |
+| `,`    |       | `#tally(2)`{=typst} |       |        |     |     |
 
 To generate the next word after `see`:
 
