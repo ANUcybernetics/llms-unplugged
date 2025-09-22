@@ -19,7 +19,7 @@ Language models learn by counting patterns in text. "Training" means
 building/constructing a model (shown in this activity as a grid or table) that
 tracks which words follow other words.
 
-## Glossary
+## Key terms
 
 - **token**: the smallest "chunk" of text your model works with---each word or
   punctuation mark (`.`, `,`) is a token
@@ -30,12 +30,14 @@ tracks which words follow other words.
 
 1. **tokenise and extract vocabulary** from your text:
    - convert everything to lowercase
-   - treat commas and full stops as separate tokens (and ignore any other
-     punctuation)
-2. **create a model** with words on both axes (rows = current word, columns =
-   next word)
-3. **count transitions**---keep a tally of how many times each word is followed
-   by each other word
+   - treat words, commas and full stops as "tokens" and ignore anything else
+     (e.g. other punctuation)
+2. **fill out the grid** starting with the first and second words in your text:
+   - add a tally mark to the first row/second column to indicate that the first
+     word (row) is followed by the second word (column), adding the words to the
+     row/column headers if they're not already present
+   - look at the next (overlapping) pair of words and repeat the process (rows =
+     current word, columns = next word), adding a new tally mark to the cell
 
 ## Example
 
