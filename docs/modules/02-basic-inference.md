@@ -4,8 +4,6 @@ socy_logo: true
 prereqs: ["01-basic-training.md", "00-weighted-randomness.md"]
 ---
 
-## Description
-
 Use a pre-trained model to generate new text through weighted random sampling.
 
 ## You will need

@@ -4,8 +4,6 @@ socy_logo: true
 prereqs: ["01-basic-training.md", "02-basic-inference.md"]
 ---
 
-## Description
-
 Extend the basic model to consider two words of context instead of one, leading
 to better text generation.
 
