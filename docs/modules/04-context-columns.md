@@ -1,36 +1,31 @@
 ---
-title: "Context Columns (Attention-Lite)"
+title: "Context Columns"
 socy_logo: true
 prereqs: ["01-basic-training.md", "02-basic-inference.md"]
 ---
 
-## Description
-
-Enhance your word co-occurence model with context columns that capture
-grammatical and semantic patterns. This activity introduces the concept of
-attention---selectively focusing on relevant context---which is the key
-innovation behind transformer models like GPT.
+Enhance your word bigram model with context columns that capture grammatical and
+semantic patterns.
 
 ## You will need
 
 - same as basic-training module
-- your completed word co-occurence model from
-  [basic training](01-basic-training.md)
-- different coloured pens for context columns
+- your completed word co-occurence model from _Basic Training_
 
 ## Key idea
 
-Attention means selectively focusing on relevant context. By adding grammatical
-context columns to your model, you manually implement what transformers learn
-automatically---which previous words matter most for prediction.
+This activity introduces the concept of attention---selectively focusing on
+relevant context---which is the key innovation behind transformer models like
+GPT. By adding grammatical context columns to your model, you manually implement
+what transformers learn automatically---which previous words matter most for
+prediction.
 
 ## Algorithm
 
-1. **identify patterns** in your text (let participants discover these)
-   - which words come after action words (verbs)?
-   - which words follow `i`, `you`, `they` (pronouns)?
-   - which words come after `in`, `on`, `at` (prepositions)?
-   - how do these patterns differ from random transitions?
+1. **identify patterns** in your text:
+   - which words follow _verbs_?
+   - which words follow _pronouns_ (e.g. I, you, they)?
+   - which words follow _prepositions_ (e.g. in, on, at)?
 2. **add context columns** to your existing word co-occurence model:
    - after_verb: count if this word appears after doing/action words
    - after_pronoun: count if this word follows `i`/`you`/`they`/etc.
@@ -41,6 +36,9 @@ automatically---which previous words matter most for prediction.
    - sum the base transition counts with relevant context columns
    - weight your d20 rolls by these combined scores
    - context makes common patterns more likely
+
+If you like, you can add your own context columns (based on patterns which _you_
+think are important).
 
 ## Example
 
@@ -80,6 +78,8 @@ Enhanced model with context columns:
 When generating after `run` (a verb):
 
 - check `run` row: next words are `,` (1) or `to` (1)
-- check **after verb** column: `to` has value 1 (appears after verbs)
-- combine both signals: `to` is strongly predicted after `run`
-- this captures the verb→preposition pattern
+- check all context columns: for `to` the **after verb** column has value 1
+  (appears after verbs)
+- combine both signals: roll a dice to choose either `,` (1) or `to` (1+1=2)
+- proceed as per _Basic Inference_ (but with the additional weighting for the
+  context columns)
