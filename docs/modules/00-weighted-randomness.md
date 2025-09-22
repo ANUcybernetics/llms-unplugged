@@ -12,7 +12,7 @@ others---the fundamental operation behind all language model text generation.
 Choose one or more approaches based on available materials:
 
 - paper tokens and a bag/container
-- 20-sided dice (d20) & 6-sided dice (d6)
+- 20-sided dice (d20)
 - coloured marbles or beads
 - paper for frequency matrices (also called grids or tables)
 
@@ -40,10 +40,10 @@ day, but you want to (overall) eat vanilla ice-cream 50% of the time, chocolate
 - add 3 brown beads to the bag (corresponding to chocolate)
 - add 2 red beads to the bag (corresponding to strawberry)
 
-Then draw a bead from the bag---that's your ice-cream choice for today.
+Draw a bead from the bag---that's your ice-cream choice for today.
 
-Note: it doesn't actually matter what the colours are, as long as they are
-distinct.
+It doesn't actually matter what the colours are, as long as you remember which
+ones correspond to which outcomes.
 
 ## Algorithm 2: Dice with ranges
 
@@ -53,14 +53,16 @@ distinct.
 
 ### Example
 
-For the same desired outcomes as the previous example, divide the full range of
-a d20 (1--20) like so:
+- for 67% vanilla/33% chocolate, roll a d20 and 1-14→`vanilla`,
+  15-20→`chocolate`
+- for 50% vanilla/30% chocolate/20% strawberry, roll a d20 and 1-10→`vanilla`,
+  11-16→`chocolate`, 17-20→`strawberry`
 
-- 1-10 → `vanilla`, 11-16 → `chocolate`, 17-20 → `strawberry`
+You can use any dice (d6, d10, d20, d120, etc.), it will just change the number
+ranges corresponding to each outcome.
+
+### d20 dice roll → outcome mapping table
 
 ```{=typst}
-#figure(
-  image("dice-mappings.svg", width: 100%),
-  caption: [d20 partition tables showing how to divide a d20 into equal groups for different numbers of outcomes (2--9)]
-)
+#figure(image("dice-mappings.svg", width: 100%))
 ```
