@@ -1,9 +1,9 @@
 ---
 id: task-005
 title: Convert module files from markdown to pure typst
-status: Completed
+status: Done
 assignee: []
-created_date: '2025-09-22 11:01'
+created_date: "2025-09-22 11:01"
 labels: []
 dependencies: []
 ---
@@ -11,12 +11,19 @@ dependencies: []
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Convert all markdown files in docs/modules/ to pure typst format while maintaining the anu template styling and ensuring the build process continues to work
+
+Convert all markdown files in docs/modules/ to pure typst format while
+maintaining the anu template styling and ensuring the build process continues to
+work
+
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Purpose & user problem
 
-The current hybrid markdown/typst approach is becoming unwieldy with complex formatting requirements (automatic tally marks, consistent table formatting, full-width tables). Pure typst files will provide better control and cleaner code.
+The current hybrid markdown/typst approach is becoming unwieldy with complex
+formatting requirements (automatic tally marks, consistent table formatting,
+full-width tables). Pure typst files will provide better control and cleaner
+code.
 
 ## Success criteria
 
@@ -26,13 +33,15 @@ The current hybrid markdown/typst approach is becoming unwieldy with complex for
   glossary, poetry-slam, instructors-notes)
 - Modules use the anu template for consistent styling
 - Tables automatically apply tally marks to numeric values
-- Tables have consistent formatting (equal-width columns, fixed-height rows, full width)
+- Tables have consistent formatting (equal-width columns, fixed-height rows,
+  full width)
 - `make combined` continues to work correctly
 - Module files can share common utilities via an include
 
 ## Scope & constraints
 
 ### In scope
+
 - Convert all .md files in docs/modules/ to .typ format
 - Create a shared utility library for common functions (tally, table formatting)
 - Update Makefile to handle .typ source files
@@ -40,6 +49,7 @@ The current hybrid markdown/typst approach is becoming unwieldy with complex for
 - Preserve anu template styling
 
 ### Out of scope
+
 - Converting other documentation files (only focusing on modules)
 - Changing the PDF output format or style
 - Modifying the anu template itself
@@ -47,16 +57,19 @@ The current hybrid markdown/typst approach is becoming unwieldy with complex for
 ## Technical considerations
 
 1. **File structure**:
+
    - Keep module files in `docs/modules/`
    - Use `llm-utils.typ` for shared utilities (already exists)
    - Each module file should import both anu template and utilities
 
 2. **Table formatting**:
+
    - Use a custom `lm-table` function for consistent formatting
    - Automatically apply `tally()` to numeric cells
    - Ensure full-width tables with equal column widths
 
 3. **Build process**:
+
    - Update Makefile to handle .typ source files directly
    - May need to adjust the combine step for typst files
    - Ensure backwards compatibility or clean migration
@@ -87,7 +100,9 @@ The current hybrid markdown/typst approach is becoming unwieldy with complex for
 
 ## Notes
 
-- Current hybrid approach uses pandoc to convert md to typst, then includes raw typst blocks
+- Current hybrid approach uses pandoc to convert md to typst, then includes raw
+  typst blocks
 - Pure typst will eliminate the pandoc conversion step for modules
 - Need to ensure prereqs metadata is preserved for module dependencies
-- Consider whether to keep markdown for simpler docs and only convert modules with complex formatting
+- Consider whether to keep markdown for simpler docs and only convert modules
+  with complex formatting

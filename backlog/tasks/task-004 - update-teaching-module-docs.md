@@ -1,7 +1,7 @@
 ---
 id: task-004
 title: update teaching module docs
-status: To Do
+status: Done
 assignee: []
 created_date: "2025-09-21 10:23"
 labels: []
