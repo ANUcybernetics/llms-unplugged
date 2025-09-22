@@ -39,9 +39,25 @@ tracks which words follow other words.
    - shift along by one word (so the second word becomes your "first" word)
    - repeat until you've gone through the entire text
 
-## Example
+```{=typst}
+#let tally(n) = {
+  if n == 0 { return [] }
+  let groups = int(n / 5)
+  let remainder = calc.rem(n, 5)
+  let marks = ""
+  for i in range(groups) {
+    marks += "卌 "
+  }
+  if remainder > 0 {
+    for i in range(remainder) {
+      marks += "|"
+    }
+  }
+  marks
+}
+```
 
-TODO tally scores would be _great_.
+## Example
 
 Original text: _"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot,
 jump."_
@@ -53,7 +69,7 @@ After `see` `spot` the grid is:
 
 |        | `see` | `spot` |     |     |     |     |
 | ------ | ----- | ------ | --- | --- | --- | --- |
-| `see`  |       | 1      |     |     |     |     |
+| `see`  |       | `#tally(1)`{=typst} |     |     |     |     |
 | `spot` |       |        |     |     |     |     |
 |        |       |        |     |     |     |     |
 |        |       |        |     |     |     |     |
@@ -64,9 +80,9 @@ After the full text the grid is:
 
 |        | `see` | `spot` | `run` | `jump` | `.` | `,` |
 | ------ | ----- | ------ | ----- | ------ | --- | --- |
-| `see`  |       | 2      |       |        |     |     |
-| `spot` |       |        | 2     | 2      |     |     |
-| `run`  |       |        |       |        | 2   |     |
-| `jump` |       |        |       |        | 2   |     |
-| `.`    | 2     |        | 1     | 1      |     |     |
-| `,`    |       | 2      |       |        |     |     |
+| `see`  |       | `#tally(2)`{=typst} |       |        |     |     |
+| `spot` |       |        | `#tally(2)`{=typst} | `#tally(2)`{=typst} |     |     |
+| `run`  |       |        |       |        | `#tally(2)`{=typst} |     |
+| `jump` |       |        |       |        | `#tally(2)`{=typst} |     |
+| `.`    | `#tally(2)`{=typst} |        | `#tally(1)`{=typst} | `#tally(1)`{=typst} |     |     |
+| `,`    |       | `#tally(2)`{=typst} |       |        |     |     |
