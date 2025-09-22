@@ -17,6 +17,9 @@
 // Create a state variable to track the current prefix
 #let current_prefix = state("current-prefix", "")
 
+// States to track first and last entries on each page for guide words
+#let page_entries = state("page-entries", ())
+
 // Function to get model type string from n value
 #let model-type(n) = {
   if n == 1 {
@@ -142,12 +145,34 @@
   paper_size,
   margin: (x: 1.5cm, y: 1.5cm),
   columns: int(num_columns),
-  numbering: "1/1"
-  // header: {
-  //   set align(left)
-  //   text(weight: "bold")[#context current_prefix.at(here())]
-  //   line(length: 100%, stroke: 0.5pt + luma(50%))
-  // }
+  numbering: "1/1",
+  header: context {
+    // Get the entries for this page
+    let entries = page_entries.final()
+    let current-page = here().page()
+
+    // Skip guide words on first few pages (frontmatter)
+    if current-page <= 2 {
+      return
+    }
+
+    // Find entries on this page
+    let page-words = ()
+    for entry in entries {
+      if entry.page == current-page {
+        page-words.push(entry.prefix)
+      }
+    }
+
+    if page-words.len() > 0 {
+      let first = page-words.first()
+      let last = page-words.last()
+      align(center)[
+        #smallcaps(first) — #smallcaps(last)
+      ]
+    }
+  },
+  header-ascent: 30%
 )
 
 #for (i, item) in data.enumerate() {
@@ -156,6 +181,15 @@
   let total_count = item.at(1)
   let followers = item.slice(2)
   current_prefix.update(prefix)
+
+  // Record this entry's location for guide words
+  context {
+    let loc = here()
+    page_entries.update(entries => {
+      entries.push((prefix: prefix, page: loc.page()))
+      entries
+    })
+  }
 
   // this is the prefix text with a label
   // Split prefix into words and display each with appropriate styling
