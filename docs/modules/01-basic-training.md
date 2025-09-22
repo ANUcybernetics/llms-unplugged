@@ -1,12 +1,11 @@
 ---
-title: "Basic Training (Building the Model)"
+title: "Basic Training"
 socy_logo: true
 prereqs: []
 ---
 
 Build a bigram (word co-occurence) language model that tracks which words follow
-other words in text. This activity demonstrates how language models "learn"
-patterns from training data by counting word transitions.
+which other words in text.
 
 ## You will need
 
@@ -18,12 +17,14 @@ patterns from training data by counting word transitions.
 
 Language models learn by counting patterns in text. "Training" means
 building/constructing a model (shown in this activity as a grid or table) that
-tracks which words follow other words. This model can be used to (among other
-things) generate new text.
+tracks which words follow other words.
 
 ## Glossary
 
-TODO (maybe tokens/vocab)
+- **token**: the smallest "chunk" of text your model works with---each word or
+  punctuation mark (`.`, `,`) is a token
+- **vocabulary**: all the unique tokens your model "knows about"---the words
+  across the top and side of your grid are your vocabulary
 
 ## Algorithm
 
