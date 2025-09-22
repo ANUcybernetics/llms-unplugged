@@ -6,6 +6,7 @@
   socy_logo: true,
 )
 
+
 Learn how to make random choices where some options are more likely than
 others---the fundamental operation behind all language model text generation.
 

@@ -6,6 +6,7 @@
   socy_logo: true,
 )
 
+
 Build a bigram (word co-occurence) language model that tracks which words follow
 which other words in text.
 
@@ -51,28 +52,28 @@ Prepared text: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,` `spot`
 
 After `see` `spot` the grid is:
 
-#table(
-  columns: 7,
-  align: (col, row) => if row == 0 { center } else { left },
-  table.header([],[`see`],[`spot`],[],[],[],[]),
-  [`see`], [], [#tally(1)], [], [], [], [],
-  [`spot`], [], [], [], [], [], [],
-  [], [], [], [], [], [], [],
-  [], [], [], [], [], [], [],
-  [], [], [], [], [], [], [],
-  [], [], [], [], [], [], [],
+#lm-grid(
+  ([],[`see`],[`spot`],[],[],[],[]),
+  (
+    ([`see`], [], 1, [], [], [], []),
+    ([`spot`], [], [], [], [], [], []),
+    ([], [], [], [], [], [], []),
+    ([], [], [], [], [], [], []),
+    ([], [], [], [], [], [], []),
+    ([], [], [], [], [], [], []),
+  )
 )
 
 After the full text the grid is:
 
-#table(
-  columns: 7,
-  align: (col, row) => if row == 0 { center } else { left },
-  table.header([],[`see`],[`spot`],[`run`],[`jump`],[`.`],[`,`]),
-  [`see`], [], [#tally(2)], [], [], [], [],
-  [`spot`], [], [], [#tally(2)], [#tally(2)], [], [],
-  [`run`], [], [], [], [], [#tally(2)], [],
-  [`jump`], [], [], [], [], [#tally(2)], [],
-  [`.`], [#tally(2)], [], [#tally(1)], [#tally(1)], [], [],
-  [`,`], [], [#tally(2)], [], [], [], [],
+#lm-grid(
+  ([],[`see`],[`spot`],[`run`],[`jump`],[`.`],[`,`]),
+  (
+    ([`see`], [], 2, [], [], [], []),
+    ([`spot`], [], [], 2, 2, [], []),
+    ([`run`], [], [], [], [], 2, []),
+    ([`jump`], [], [], [], [], 2, []),
+    ([`.`], 2, [], 1, 1, [], []),
+    ([`,`], [], 2, [], [], [], []),
+  )
 )

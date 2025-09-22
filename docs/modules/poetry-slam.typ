@@ -6,6 +6,7 @@
   socy_logo: true,
 )
 
+
 == Description
 
 A flexible culminating activity where teams compete to generate the best beat

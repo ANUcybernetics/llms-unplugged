@@ -6,6 +6,7 @@
   socy_logo: true,
 )
 
+
 == Module 00: Weighted Randomness
 
 === Discussion questions

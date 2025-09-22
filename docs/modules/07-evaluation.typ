@@ -6,6 +6,7 @@
   socy_logo: true,
 )
 
+
 Learn how to measure whether your language model is "good" through both
 quantitative metrics and qualitative assessment. This module introduces
 perplexity, accuracy, and human evaluation methods that work with your physical
@@ -41,14 +42,13 @@ by real text (perplexity) and how well it generates sensible completions
 
 Test sentence: "see spot run"
 
-#table(
-  columns: 5,
-  align: (col, row) => if row == 0 { center } else { left },
-  table.header([Position],[Context],[Actual Next],[Model's Top Pick],[Correct?]),
-  [1], [`see`], [`spot`], [`spot`], [✓],
-  [2], [`spot`], [`run`], [`run`], [✓],
+#lm-table(
+  ([Position],[Context],[Actual Next],[Model's Top Pick],[Correct?]),
+  (
+    ([1], [`see`], [`spot`], [`spot`], [✓]),
+    ([2], [`spot`], [`run`], [`run`], [✓]),
+  )
 )
-
 Accuracy: 2/2 = 100%
 
 === Method 2: Perplexity (Surprise Score)
@@ -67,14 +67,13 @@ Accuracy: 2/2 = 100%
 
 Sentence: "see spot run"
 
-#table(
-  columns: 4,
-  align: (col, row) => if row == 0 { center } else { left },
-  table.header([Word],[Context],[Probability],[Surprise Points]),
-  [`spot`], [`see`], [4/5 = 80%], [1 (high prob)],
-  [`run`], [`spot`], [2/5 = 40%], [2 (medium prob)],
+#lm-table(
+  ([Word],[Context],[Probability],[Surprise Points]),
+  (
+    ([`spot`], [`see`], [4/5 = 80%], [1 (high prob)]),
+    ([`run`], [`spot`], [2/5 = 40%], [2 (medium prob)]),
+  )
 )
-
 Average surprise: 1.5 points (lower is better)
 
 === Method 3: Completion Quality (Human Evaluation)
@@ -129,14 +128,13 @@ Score each 0-3 points, average across completions.
 
 === Example
 
-#table(
-  columns: 4,
-  align: (col, row) => if row == 0 { center } else { left },
-  table.header([Prompt],[Bigram Output],[Trigram Output],[Winner]),
-  ["I see"], ["I see the the"], ["I see spot run"], [Trigram],
-  ["the dog"], ["the dog spot"], ["the dog barked loudly"], [Trigram],
+#lm-table(
+  ([Prompt],[Bigram Output],[Trigram Output],[Winner]),
+  (
+    (["I see"], ["I see the the"], ["I see spot run"], [Trigram]),
+    (["the dog"], ["the dog spot"], ["the dog barked loudly"], [Trigram]),
+  )
 )
-
 == Example
 
 Using your model from a previous module:

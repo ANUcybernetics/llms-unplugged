@@ -6,6 +6,7 @@
   socy_logo: true,
 )
 
+
 Transform words into numerical vectors using their patterns from your language
 model.
 
@@ -45,15 +46,14 @@ Tokenised: `see` `spot` `run` `.` `run` `,` `spot` `,` `run` `.`
 
 Word vectors from our enhanced model:
 
-#table(
-  columns: 9,
-  align: (col, row) => if row == 0 { center } else { left },
-  table.header([word],[dim. 1],[dim. 2],[dim. 3],[dim. 4],[dim. 5],[dim. 6],[dim. 7],[dim. 8]),
-  [`see`], [], [#tally(1)], [], [], [], [], [], [],
-  [`spot`], [], [], [#tally(2)], [], [], [], [#tally(1)], [],
-  [`run`], [], [], [], [#tally(2)], [], [], [], [#tally(2)],
+#lm-table(
+  ([word],[dim. 1],[dim. 2],[dim. 3],[dim. 4],[dim. 5],[dim. 6],[dim. 7],[dim. 8]),
+  (
+    ([`see`], [], 1, [], [], [], [], [], []),
+    ([`spot`], [], [], 2, [], [], [], 1, []),
+    ([`run`], [], [], [], 2, [], [], [], 2),
+  )
 )
-
 Distance between `see` and `spot`:
 
 |0-0| + |1-0| + |0-2| + |0-0| + |0-0| + |0-0| + |0-1| + |0-0| = 4

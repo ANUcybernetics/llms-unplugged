@@ -6,6 +6,7 @@
   socy_logo: true,
 )
 
+
 Use a pre-trained model to generate new text through weighted random sampling.
 
 == You will need
@@ -42,16 +43,16 @@ You can *try different starting words* to see how it affects the output.
 
 Here's a pre-trained language model grid:
 
-#table(
-  columns: 7,
-  align: (col, row) => if row == 0 { center } else { left },
-  table.header([],[`see`],[`spot`],[`run`],[`jump`],[`.`],[`,`]),
-  [`see`], [], [#tally(2)], [], [], [], [],
-  [`spot`], [], [], [#tally(2)], [#tally(2)], [], [],
-  [`run`], [], [], [], [], [#tally(2)], [],
-  [`jump`], [], [], [], [], [#tally(2)], [],
-  [`.`], [#tally(2)], [], [#tally(1)], [#tally(1)], [], [],
-  [`,`], [], [#tally(2)], [], [], [], [],
+#lm-grid(
+  ([],[`see`],[`spot`],[`run`],[`jump`],[`.`],[`,`]),
+  (
+    ([`see`], [], 2, [], [], [], []),
+    ([`spot`], [], [], 2, 2, [], []),
+    ([`run`], [], [], [], [], 2, []),
+    ([`jump`], [], [], [], [], 2, []),
+    ([`.`], 2, [], 1, 1, [], []),
+    ([`,`], [], 2, [], [], [], []),
+  )
 )
 
 To generate the next word after `see`:

@@ -6,6 +6,7 @@
   socy_logo: true,
 )
 
+
 == Glossary
 
 This glossary connects the physical activities you've been doing with the
@@ -78,20 +79,19 @@ technical terms used in modern language models.
 
 === Connections to your activities
 
-#table(
-  columns: 2,
-  align: (col, row) => if row == 0 { center } else { left },
-  table.header([Your Activity],[Real LLM Equivalent]),
-  [Tallying word pairs], [Counting n-grams during training],
-  [Rolling d20 for next word], [Sampling from probability distribution],
-  [Matrix rows/columns], [Weight matrices in neural networks],
-  [Adding context columns], [Learning attention patterns],
-  [Calculating word distances], [Computing embedding similarities],
-  [Dividing tallies by temperature], [Applying temperature to logits],
-  [Keeping top 3 beam paths], [Beam search with beam width 3],
-  [Checking if model predicts correctly], [Computing cross-entropy loss],
+#lm-table(
+  ([Your Activity],[Real LLM Equivalent]),
+  (
+    ([Tallying word pairs], [Counting n-grams during training]),
+    ([Rolling d20 for next word], [Sampling from probability distribution]),
+    ([Matrix rows/columns], [Weight matrices in neural networks]),
+    ([Adding context columns], [Learning attention patterns]),
+    ([Calculating word distances], [Computing embedding similarities]),
+    ([Dividing tallies by temperature], [Applying temperature to logits]),
+    ([Keeping top 3 beam paths], [Beam search with beam width 3]),
+    ([Checking if model predicts correctly], [Computing cross-entropy loss]),
+  )
 )
-
 === Key insights
 
 + *Scale is the main difference*: your 6×6 matrix vs billions of parameters,

@@ -6,6 +6,7 @@
   socy_logo: true,
 )
 
+
 Extend the basic model to consider two words of context instead of one, leading
 to better text generation.
 
@@ -42,27 +43,27 @@ jump."_
 After tokenisation: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,`
 `spot` `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`
 
-#table(
-  columns: 4,
-  align: (col, row) => if row == 0 { center } else { left },
-  table.header([Word1],[Word2],[Word3],[Count]),
-  [`see`], [`spot`], [`run`], [#tally(1)],
-  [`spot`], [`run`], [`.`], [#tally(1)],
-  [`run`], [`.`], [`see`], [#tally(1)],
-  [`.`], [`see`], [`spot`], [#tally(1)],
-  [`see`], [`spot`], [`jump`], [#tally(1)],
-  [`spot`], [`jump`], [`.`], [#tally(1)],
-  [`jump`], [`.`], [`run`], [#tally(1)],
-  [`.`], [`run`], [`,`], [#tally(1)],
-  [`run`], [`,`], [`spot`], [#tally(1)],
-  [`,`], [`spot`], [`,`], [#tally(2)],
-  [`spot`], [`,`], [`run`], [#tally(1)],
-  [`,`], [`run`], [`.`], [#tally(1)],
-  [`run`], [`.`], [`jump`], [#tally(1)],
-  [`.`], [`jump`], [`,`], [#tally(1)],
-  [`jump`], [`,`], [`spot`], [#tally(1)],
-  [`spot`], [`,`], [`jump`], [#tally(1)],
-  [`,`], [`jump`], [`.`], [#tally(1)],
+#lm-table(
+  ([Word1],[Word2],[Word3],[Count]),
+  (
+    ([`see`], [`spot`], [`run`], 1),
+    ([`spot`], [`run`], [`.`], 1),
+    ([`run`], [`.`], [`see`], 1),
+    ([`.`], [`see`], [`spot`], 1),
+    ([`see`], [`spot`], [`jump`], 1),
+    ([`spot`], [`jump`], [`.`], 1),
+    ([`jump`], [`.`], [`run`], 1),
+    ([`.`], [`run`], [`,`], 1),
+    ([`run`], [`,`], [`spot`], 1),
+    ([`,`], [`spot`], [`,`], 2),
+    ([`spot`], [`,`], [`run`], 1),
+    ([`,`], [`run`], [`.`], 1),
+    ([`run`], [`.`], [`jump`], 1),
+    ([`.`], [`jump`], [`,`], 1),
+    ([`jump`], [`,`], [`spot`], 1),
+    ([`spot`], [`,`], [`jump`], 1),
+    ([`,`], [`jump`], [`.`], 1),
+  )
 )
 
 To generate the next word after `see` + `spot`:

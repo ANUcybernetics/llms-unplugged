@@ -6,6 +6,7 @@
   socy_logo: true,
 )
 
+
 Enhance your word bigram model with context columns that capture grammatical and
 semantic patterns.
 
@@ -50,31 +51,30 @@ Tokenised: `i` `run` `,` `fast` `.` `you` `run` `to` `me` `.`
 
 Enhanced model with context columns:
 
-#table(
-  columns: (1fr,) * 12,
-  align: center + horizon,
-  [],
-  [`i`],
-  [`you`],
-  [`run`],
-  [`,`],
-  [`fast`],
-  [`to`],
-  [`me`],
-  [`.`],
-  [#v(-3em)#rotate(-90deg)[after verb]],
-  [#v(-3em)#rotate(-90deg)[after pronoun]],
-  [#v(-3em)#rotate(-90deg)[after preposition]],
-  [`i`], [], [], [#tally(1)], [], [], [], [], [], [], [], [],
-  [`you`], [], [], [#tally(1)], [], [], [], [], [], [], [], [],
-  [`run`], [], [], [], [#tally(1)], [], [#tally(1)], [], [], [], [#tally(2)], [],
-  [`,`], [], [], [], [], [#tally(1)], [], [], [], [], [], [],
-  [`fast`], [], [], [], [], [], [], [], [#tally(1)], [], [], [],
-  [`to`], [], [], [], [], [], [], [#tally(1)], [], [#tally(1)], [], [],
-  [`me`], [], [], [], [], [], [], [], [#tally(1)], [], [], [#tally(1)],
-  [`.`], [], [#tally(1)], [], [], [], [], [], [], [], [], []
+#lm-grid(
+  ([],
+   [`i`],
+   [`you`],
+   [`run`],
+   [`,`],
+   [`fast`],
+   [`to`],
+   [`me`],
+   [`.`],
+   [#v(-3em)#rotate(-90deg)[after verb]],
+   [#v(-3em)#rotate(-90deg)[after pronoun]],
+   [#v(-3em)#rotate(-90deg)[after preposition]]),
+  (
+    ([`i`], [], [], 1, [], [], [], [], [], [], [], []),
+    ([`you`], [], [], 1, [], [], [], [], [], [], [], []),
+    ([`run`], [], [], [], 1, [], 1, [], [], [], 2, []),
+    ([`,`], [], [], [], [], 1, [], [], [], [], [], []),
+    ([`fast`], [], [], [], [], [], [], [], 1, [], [], []),
+    ([`to`], [], [], [], [], [], [], 1, [], 1, [], []),
+    ([`me`], [], [], [], [], [], [], [], 1, [], [], 1),
+    ([`.`], [], 1, [], [], [], [], [], [], [], [], [])
+  )
 )
-
 When generating after `run` (a verb):
 
 - check `run` row: next words are `,` (1) or `to` (1)
