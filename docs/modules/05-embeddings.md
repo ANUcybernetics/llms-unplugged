@@ -4,12 +4,8 @@ socy_logo: true
 prereqs: ["04-context-columns.md"]
 ---
 
-## Description
-
-Transform words into numerical vectors using their behavioural patterns from
-your model. This activity demonstrates how language models create mathematical
-representations of words that capture meaning through usage patterns---a
-foundational concept in modern NLP.
+Transform words into numerical vectors using their patterns from your language
+model.
 
 ## You will need
 
@@ -19,18 +15,19 @@ foundational concept in modern NLP.
 
 ## Key idea
 
-Words become numbers through their usage patterns. Each word's row in your
-model is its embedding---a numerical fingerprint that captures meaning through
-context. Similar words have similar embeddings.
+Language models create mathematical representations of words that capture
+meaning through usage patterns. Each word's row in your model is its
+embedding under that model---a numerical fingerprint that captures meaning
+through context. Similar words have similar embeddings.
 
 ## Algorithm
 
-1. **create word vectors**: Use each word's full row (transition counts +
+1. **create word vectors**: use each word's full row (transition counts +
    context columns) as its "embedding"
    - each number becomes one dimension of the vector
    - include both next-word counts and context signals
 2. **calculate word similarity**:
-   - use Manhattan distance: sum of absolute differences
+   - use the "Manhattan distance": sum of absolute differences
    - smaller distances means words are (more) similar
    - distance reveals grammatical and semantic relationships
 3. **explore relationships**:
@@ -62,4 +59,3 @@ Distance between `spot` and `run`:
 
 The smaller value (4 vs 7) indicates that `see` and `spot` are closer (more
 similar) than `spot` and `run`.
-
