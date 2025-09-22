@@ -12,13 +12,13 @@
 // Load the JSON data
 #let json_data = json("model.json")
 #let data = json_data.data
-#let metadata = json_data.metadata
+#let doc_metadata = json_data.metadata
 
 // Create a state variable to track the current prefix
 #let current_prefix = state("current-prefix", "")
 
-// States to track first and last entries on each page for guide words
-#let page_entries = state("page-entries", ())
+// We'll use doc_metadata to track entries instead of state
+// since state.final() might not work properly in headers
 
 // Function to get model type string from n value
 #let model-type(n) = {
@@ -38,13 +38,13 @@
   set page(margin: (x: 2.5cm, y: 2.5cm))
   align(center + horizon)[
     #v(2cm)
-    #text(weight: "bold", size: 4em)[#context metadata.title]
+    #text(weight: "bold", size: 4em)[#context doc_metadata.title]
     #v(1cm)
-    #text(size: 2.5em)[A #context model-type(metadata.n) language model]
-    // Use book_info from metadata if available, otherwise fall back to subtitle parameter
-    #context if metadata.at("book_info", default: none) != none {
+    #text(size: 2.5em)[A #context model-type(doc_metadata.n) language model]
+    // Use book_info from doc_metadata if available, otherwise fall back to subtitle parameter
+    #context if doc_metadata.at("book_info", default: none) != none {
       v(0.5cm)
-      let book_info = metadata.book_info
+      let book_info = doc_metadata.book_info
       text(size: 2em)[#book_info.letter_range (Book #book_info.number of #book_info.total)]
     } else if subtitle != "" {
       v(0.5cm)
@@ -59,9 +59,9 @@
   set page(margin: (x: 2.5cm, y: 2.5cm))
   set text(size: 12pt)
   align(horizon)[
-    #text(size: 1.2em)[A #context model-type(metadata.n) language model of]
-    #text(size: 1.2em, style: "italic")[#context metadata.title by]
-    #text(size: 1.2em)[#context metadata.author]
+    #text(size: 1.2em)[A #context model-type(doc_metadata.n) language model of]
+    #text(size: 1.2em, style: "italic")[#context doc_metadata.title by]
+    #text(size: 1.2em)[#context doc_metadata.author]
     #v(0.5cm)
 
     #text(size: 1em)[© 2025 Cybernetic Studio]
@@ -79,8 +79,8 @@
     #text(size: 0.9em)[First Edition]
     #v(0.5cm)
     #text(size: 0.9em)[
-      Text frequency counts from the text #text(style: "italic")[#context metadata.title] by
-      #text[#context metadata.author], available from\ #link(metadata.url)[#raw(metadata.url)].
+      Text frequency counts from the text #text(style: "italic")[#context doc_metadata.title] by
+      #text[#context doc_metadata.author], available from\ #link(doc_metadata.url)[#raw(doc_metadata.url)].
     ]
     #v(0.5cm)
     #text(size: 0.9em)[
@@ -107,7 +107,7 @@
   align(left)[
     #heading(level: 1)[Introduction]
     #v(0.5cm)
-    This reference contains a statistical #context model-type(metadata.n) language model that shows the probabilistic
+    This reference contains a statistical #context model-type(doc_metadata.n) language model that shows the probabilistic
     relationships between word sequences. Each entry displays a prefix followed by possible
     continuations with their associated probabilities.
 
@@ -130,7 +130,7 @@
   v(1cm)
   // A simple table of contents would be difficult to generate for all prefixes
   // For a real book, you might want to generate sections based on first letters or similar
-  [The following pages contain all #context model-type(metadata.n) sequences organized alphabetically by prefix.]
+  [The following pages contain all #context model-type(doc_metadata.n) sequences organized alphabetically by prefix.]
   pagebreak()
 }
 
@@ -147,8 +147,6 @@
   columns: int(num_columns),
   numbering: "1/1",
   header: context {
-    // Get the entries for this page
-    let entries = page_entries.final()
     let current-page = here().page()
 
     // Skip guide words on first few pages (frontmatter)
@@ -156,20 +154,36 @@
       return
     }
 
-    // Find entries on this page
-    let page-words = ()
-    for entry in entries {
-      if entry.page == current-page {
-        page-words.push(entry.prefix)
-      }
-    }
+    // Query ALL metadata entries up to this point
+    let all-entries = query(<prefix-entry>)
 
-    if page-words.len() > 0 {
-      let first = page-words.first()
-      let last = page-words.last()
-      align(center)[
-        #smallcaps(first) — #smallcaps(last)
-      ]
+    // Find entries on this page
+    let page-entries = all-entries.filter(m => m.location().page() == current-page)
+
+    if page-entries.len() > 0 {
+      // There are new prefixes on this page
+      let prefixes = page-entries.map(e => e.value)
+      let first = prefixes.first()
+      let last = prefixes.last()
+
+      if first == last {
+        align(center)[
+          #smallcaps(first)
+        ]
+      } else {
+        align(center)[
+          #smallcaps(first) — #smallcaps(last)
+        ]
+      }
+    } else {
+      // No new prefixes on this page - use the last prefix before this page
+      let entries-before = all-entries.filter(m => m.location().page() < current-page)
+      if entries-before.len() > 0 {
+        let last-prefix = entries-before.last().value
+        align(center)[
+          #smallcaps(last-prefix)
+        ]
+      }
     }
   },
   header-ascent: 30%
@@ -182,18 +196,9 @@
   let followers = item.slice(2)
   current_prefix.update(prefix)
 
-  // Record this entry's location for guide words
-  context {
-    let loc = here()
-    page_entries.update(entries => {
-      entries.push((prefix: prefix, page: loc.page()))
-      entries
-    })
-  }
-
   // this is the prefix text with a label
   // Split prefix into words and display each with appropriate styling
-  [#for (i, part) in prefix.split(" ").enumerate() {
+  [#metadata(prefix) <prefix-entry>#for (i, part) in prefix.split(" ").enumerate() {
     if part == "." or part == "," {
       // Display punctuation in a rounded box with vertical centering
       box(
