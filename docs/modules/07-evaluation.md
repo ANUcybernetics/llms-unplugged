@@ -1,12 +1,10 @@
 ---
-title: "Evaluating Your Language Model"
+title: "Model Evaluation"
 socy_logo: true
 prereqs: ["00-weighted-randomness.md"]
 ---
 
-## Description
-
-Learn how to measure whether your DIY language model is "good" through both
+Learn how to measure whether your language model is "good" through both
 quantitative metrics and qualitative assessment. This module introduces
 perplexity, accuracy, and human evaluation methods that work with your physical
 token-based models.
