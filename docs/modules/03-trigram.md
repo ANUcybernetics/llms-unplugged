@@ -6,13 +6,8 @@ prereqs: ["01-basic-training.md", "02-basic-inference.md"]
 
 ## Description
 
-Extend the basic model to consider two words of context instead of one. This
-activity demonstrates how additional context improves prediction quality and
-introduces the concept of variable-length context windows that modern language
-models use. This is called a trigram model because it works in groups of three
-words (two previous words + the next word). As you'd expect, the model you've
-been working with in [Basic Training](./01-basic-training.md) is called a bigram
-model.
+Extend the basic model to consider two words of context instead of one, leading
+to better text generation.
 
 ## You will need
 
@@ -41,25 +36,37 @@ data requirements that shapes all language models.
 
 ## Example
 
-Original text: _"See Spot run. Run, Spot, run."_
+Original text: _"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot,
+jump."_
 
-Tokenised: `see` `spot` `run` `.` `run` `,` `spot` `,` `run` `.`
+After tokenisation: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,`
+`spot` `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`
 
 | Word1  | Word2  | Word3  | Count |
 | ------ | ------ | ------ | ----- |
 | `see`  | `spot` | `run`  | 1     |
 | `spot` | `run`  | `.`    | 1     |
-| `run`  | `.`    | `run`  | 1     |
+| `run`  | `.`    | `see`  | 1     |
+| `.`    | `see`  | `spot` | 1     |
+| `see`  | `spot` | `jump` | 1     |
+| `spot` | `jump` | `.`    | 1     |
+| `jump` | `.`    | `run`  | 1     |
 | `.`    | `run`  | `,`    | 1     |
 | `run`  | `,`    | `spot` | 1     |
-| `,`    | `spot` | `,`    | 1     |
+| `,`    | `spot` | `,`    | 2     |
 | `spot` | `,`    | `run`  | 1     |
 | `,`    | `run`  | `.`    | 1     |
+| `run`  | `.`    | `jump` | 1     |
+| `.`    | `jump` | `,`    | 1     |
+| `jump` | `,`    | `spot` | 1     |
+| `spot` | `,`    | `jump` | 1     |
+| `,`    | `jump` | `.`    | 1     |
 
-To generate the next word after `.` + `run`:
+To generate the next word after `see` + `spot`:
 
-- `.` + `run` → `,` (only option)
-- `run` + `,` → `spot` (only option)
-- `,` + `spot` → `,` (only option from our limited text)
-- Creates: "run, spot,"
+- `see` + `spot` → `run` (50% chance) or `jump` (50% chance)
+  - if `run`: `spot` + `run` → `.` (only option)
+  - if `jump`: `spot` + `jump` → `.` (only option)
 
+After the above steps, the full output text is _"See Spot run."_ or _"See Spot
+jump."_
