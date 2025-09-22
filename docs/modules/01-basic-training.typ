@@ -53,7 +53,6 @@ After `see` `spot` the grid is:
 
 #table(
   columns: 7,
-  stroke: 1pt,
   align: (col, row) => if row == 0 { center } else { left },
   table.header([],[`see`],[`spot`],[],[],[],[]),
   [`see`], [], [#tally(1)], [], [], [], [],
@@ -68,7 +67,6 @@ After the full text the grid is:
 
 #table(
   columns: 7,
-  stroke: 1pt,
   align: (col, row) => if row == 0 { center } else { left },
   table.header([],[`see`],[`spot`],[`run`],[`jump`],[`.`],[`,`]),
   [`see`], [], [#tally(2)], [], [], [], [],

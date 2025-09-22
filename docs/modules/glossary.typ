@@ -80,7 +80,6 @@ technical terms used in modern language models.
 
 #table(
   columns: 2,
-  stroke: 1pt,
   align: (col, row) => if row == 0 { center } else { left },
   table.header([Your Activity],[Real LLM Equivalent]),
   [Tallying word pairs], [Counting n-grams during training],

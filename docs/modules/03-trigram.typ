@@ -44,7 +44,6 @@ After tokenisation: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,`
 
 #table(
   columns: 4,
-  stroke: 1pt,
   align: (col, row) => if row == 0 { center } else { left },
   table.header([Word1],[Word2],[Word3],[Count]),
   [`see`], [`spot`], [`run`], [#tally(1)],

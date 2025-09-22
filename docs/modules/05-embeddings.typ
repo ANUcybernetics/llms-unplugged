@@ -47,7 +47,6 @@ Word vectors from our enhanced model:
 
 #table(
   columns: 9,
-  stroke: 1pt,
   align: (col, row) => if row == 0 { center } else { left },
   table.header([word],[dim. 1],[dim. 2],[dim. 3],[dim. 4],[dim. 5],[dim. 6],[dim. 7],[dim. 8]),
   [`see`], [], [#tally(1)], [], [], [], [], [], [],

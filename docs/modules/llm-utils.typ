@@ -31,7 +31,6 @@
   figure(
     table(
       columns: headers.len(),
-      stroke: 1pt,
       align: (col, row) => if row == 0 { center } else { left },
       table.header(..headers.map(h => [*#h*])),
       ..processed-data.flatten()

@@ -44,7 +44,6 @@ Here's a pre-trained language model grid:
 
 #table(
   columns: 7,
-  stroke: 1pt,
   align: (col, row) => if row == 0 { center } else { left },
   table.header([],[`see`],[`spot`],[`run`],[`jump`],[`.`],[`,`]),
   [`see`], [], [#tally(2)], [], [], [], [],

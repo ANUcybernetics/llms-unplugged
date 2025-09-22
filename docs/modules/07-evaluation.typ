@@ -43,7 +43,6 @@ Test sentence: "see spot run"
 
 #table(
   columns: 5,
-  stroke: 1pt,
   align: (col, row) => if row == 0 { center } else { left },
   table.header([Position],[Context],[Actual Next],[Model's Top Pick],[Correct?]),
   [1], [`see`], [`spot`], [`spot`], [✓],
@@ -70,7 +69,6 @@ Sentence: "see spot run"
 
 #table(
   columns: 4,
-  stroke: 1pt,
   align: (col, row) => if row == 0 { center } else { left },
   table.header([Word],[Context],[Probability],[Surprise Points]),
   [`spot`], [`see`], [4/5 = 80%], [1 (high prob)],
@@ -133,7 +131,6 @@ Score each 0-3 points, average across completions.
 
 #table(
   columns: 4,
-  stroke: 1pt,
   align: (col, row) => if row == 0 { center } else { left },
   table.header([Prompt],[Bigram Output],[Trigram Output],[Winner]),
   ["I see"], ["I see the the"], ["I see spot run"], [Trigram],
