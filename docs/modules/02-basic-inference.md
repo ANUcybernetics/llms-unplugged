@@ -1,14 +1,12 @@
 ---
-title: "Basic Inference (Generating Text)"
+title: "Basic Inference"
 socy_logo: true
 prereqs: ["01-basic-training.md", "00-weighted-randomness.md"]
 ---
 
 ## Description
 
-Use your trained model to generate new text through weighted random sampling.
-This activity demonstrates how language models produce text by predicting one
-word at a time based on learnt patterns.
+Use a pre-trained model to generate new text through weighted random sampling.
 
 ## You will need
 
@@ -18,24 +16,31 @@ word at a time based on learnt patterns.
 
 ## Key idea
 
-Text generation happens one word at a time through weighted random sampling.
-Your trained model provides the probabilities; dice rolls provide the
+Language models generate text by predicting one word at a time based on learnt
+patterns. Your trained model provides the probabilities; dice rolls provide the
 randomness that creates variety in output.
+
+## Glossary
+
+- **inference**: the process of using your trained model to generate new text
+- **weighted random sampling**: choosing the next token with probability
+  proportional to its frequency
 
 ## Algorithm
 
 1. **choose a starting word**---pick any word from your vocabulary
 2. **look at that word's row** to see possible next words and their counts
-3. **roll dice weighted by the counts** (see
-   [weighted-sampling](./00-weighted-randomness.md) module for techniques)
+3. **roll dice weighted by the counts** (see the _Weighted Random Sampling_
+   activity card for details)
 4. **write down the chosen word** and use that as your next starting word
-5. **repeat** until you reach desired length or a natural stopping point (e.g. a
-   full stop `.`)
-6. **try different starting words** to see how it affects the output
+5. **repeat** from step 2 until you reach the desired length or a natural
+   stopping point (e.g. a full stop `.`)
+
+You can **try different starting words** to see how it affects the output.
 
 ## Example
 
-Using the model from basic-training:
+Here's a pre-trained language model grid:
 
 |        | `see` | `spot` | `run` | `jump` | `.` | `,` |
 | ------ | ----- | ------ | ----- | ------ | --- | --- |
@@ -48,22 +53,15 @@ Using the model from basic-training:
 
 To generate the next word after `see`:
 
-- `see` → `spot` (only option, 2 occurrences)
-- `spot` → `run` or `jump` (50/50 chance, both have 2)
-- let's say dice picks: `jump`
-- `jump` → `.` (only option, 2 occurrences)
-- `.` → `see` (50%), `run` (25%), or `jump` (25%)
-- let's say dice picks: `see`
-- `see` → `spot` (only option)
-- creates: "see spot jump. see spot"
+- `see` (row) → `spot` (column); it's the only option, so write down `spot` as
+  next word
+- `spot` → `run` or `jump`; both have 2 occurrences, so each has a 50%
+  chance---roll dice to choose
+- let's say dice picks `jump`; write it down
+- `jump` → `.`; it's the only option, so write down `.`
+- `.` → `see` (50%), `run` (25%), or `jump` (25%); three possible choices for
+  next word
+- let's say dice picks `see`; write it down
+- `see` → `spot`; it's the only option, so write down `spot`
 
-To generate the next word after `spot`:
-
-- `spot` → `run` or `jump` (50/50 chance)
-- let's say dice picks: `run`
-- `run` → `.` (only option, 2 occurrences)
-- `.` → `see` (50%), `run` (25%), or `jump` (25%)
-- let's say dice picks: `see`
-- `see` → `spot` (only option)
-- creates: "spot run. see spot"
-
+After the above steps, the full output text is _"see spot jump. see spot"_
