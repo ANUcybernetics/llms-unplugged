@@ -19,25 +19,25 @@ Language models learn by counting patterns in text. "Training" means
 building/constructing a model (shown in this activity as a grid or table) that
 tracks which words follow other words.
 
-## Key terms
-
-- **token**: the smallest "chunk" of text your model works with---each word or
-  punctuation mark (`.`, `,`) is a token
-- **vocabulary**: all the unique tokens your model "knows about"---the words
-  across the top and side of your grid are your vocabulary
-
 ## Algorithm
 
-1. **tokenise and extract vocabulary** from your text:
+1. **prepare your text**:
+
    - convert everything to lowercase
-   - treat words, commas and full stops as "tokens" and ignore anything else
-     (e.g. other punctuation)
-2. **fill out the grid** starting with the first and second words in your text:
-   - add a tally mark to the first row/second column to indicate that the first
-     word (row) is followed by the second word (column), adding the words to the
-     row/column headers if they're not already present
-   - look at the next (overlapping) pair of words and repeat the process (rows =
-     current word, columns = next word), adding a new tally mark to the cell
+   - treat words, commas and full stops as separate "words" (ignore other
+     punctuation)
+
+2. **set up your grid**:
+
+   - take the first word from your text
+   - write it in both the first row header and first column header of your grid
+
+3. **fill in the grid** one _word pair_ at a time:
+   - find the row for the first word and the column for the second word
+   - add a tally mark in that cell (if the word isn't in the grid yet, add a new
+     row _and_ column for it)
+   - shift along by one word (so the second word becomes your "first" word)
+   - repeat until you've gone through the entire text
 
 ## Example
 
@@ -46,10 +46,10 @@ TODO tally scores would be _great_.
 Original text: _"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot,
 jump."_
 
-After tokenisation: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,`
-`spot` `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`
+Prepared text: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,` `spot`
+`,` `run` `.` `jump` `,` `spot` `,` `jump` `.`
 
-After `see` `spot`:
+After `see` `spot` the grid is:
 
 |        | `see` | `spot` |     |     |     |     |
 | ------ | ----- | ------ | --- | --- | --- | --- |
@@ -60,8 +60,7 @@ After `see` `spot`:
 |        |       |        |     |     |     |     |
 |        |       |        |     |     |     |     |
 
-Completed model (after `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,`
-`spot` `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`):
+After the full text the grid is:
 
 |        | `see` | `spot` | `run` | `jump` | `.` | `,` |
 | ------ | ----- | ------ | ----- | ------ | --- | --- |
