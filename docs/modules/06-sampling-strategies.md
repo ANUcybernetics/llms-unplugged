@@ -5,24 +5,22 @@ prereqs:
   ["00-weighted-randomness.md", "01-basic-training.md", "02-basic-inference.md"]
 ---
 
-## Description
-
 Even after your model is trained, you have creative control over how it
-generates text. This module explores different sampling strategies---ways to
-select the next word during generation. Each strategy serves a different
-purpose, from maximising accuracy to embracing chaos, from creating structured
-poetry to mimicking child speech. Understanding these strategies reveals how
-modern LLMs control their output style.
+generates text.
 
 ## You will need
 
-- a completed word co-occurrence model from an earlier module
-- 20-sided dice (d20)
-- notepad for tracking generated text
-- syllable reference sheet (optional)
-- rhyming dictionary (optional)
+- a completed model model from an earlier module
 
 ## Key idea
+
+There are lots of different sampling strategies---ways to select the next word
+during generation. Each strategy serves a different purpose, from maximising
+accuracy to embracing chaos, from creating structured poetry to mimicking child
+speech. Understanding these strategies reveals how modern LLMs control their
+output style.
+
+## Algorithm
 
 The same trained model can produce scholarly essays or wild poetry just by
 changing how you sample from it. This involves two key mechanisms:
@@ -33,8 +31,6 @@ changing how you sample from it. This involves two key mechanisms:
 - **truncation** techniques that narrow the viable token pool by setting some
   tokens' probabilities to zero (e.g., top-k, top-p, or constraint-based
   filtering)
-
-## Algorithm
 
 ### Temperature Control
 
@@ -197,4 +193,3 @@ Generate the same prompt with different strategies:
 
 Compare results - which strategy creates the most interesting text for different
 purposes?
-
