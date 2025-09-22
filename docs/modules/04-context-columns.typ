@@ -1,18 +1,20 @@
----
-title: "Context Columns"
-socy_logo: true
-prereqs: ["01-basic-training.md", "02-basic-inference.md"]
----
+#import "@local/anu-typst-template:0.1.0": *
+#import "llm-utils.typ": *
+
+#show: anu-template.with(
+  title: [Context Columns],
+  socy_logo: true,
+)
 
 Enhance your word bigram model with context columns that capture grammatical and
 semantic patterns.
 
-## You will need
+== You will need
 
 - same as basic-training module
 - your completed word co-occurence model from _Basic Training_
 
-## Key idea
+== Key idea
 
 This activity introduces the concept of attention---selectively focusing on
 relevant context---which is the key innovation behind transformer models like
@@ -20,18 +22,18 @@ GPT. By adding grammatical context columns to your model, you manually implement
 what transformers learn automatically---which previous words matter most for
 prediction.
 
-## Algorithm
+== Algorithm
 
-1. **identify patterns** in your text:
++ *identify patterns* in your text:
    - which words follow _verbs_?
    - which words follow _pronouns_ (e.g. I, you, they)?
    - which words follow _prepositions_ (e.g. in, on, at)?
-2. **add context columns** to your existing word co-occurence model:
++ *add context columns* to your existing word co-occurence model:
    - after_verb: count if this word appears after doing/action words
    - after_pronoun: count if this word follows `i`/`you`/`they`/etc.
    - after_preposition: count if this word comes after
      `in`/`on`/`at`/`with`/`to`/etc.
-3. **generate with context weighting**:
++ *generate with context weighting*:
    - start with a word and check its row
    - sum the base transition counts with relevant context columns
    - weight your d20 rolls by these combined scores
@@ -40,7 +42,7 @@ prediction.
 If you like, you can add your own context columns (based on patterns which _you_
 think are important).
 
-## Example
+== Example
 
 Original text: _"I run, fast. You run to me."_
 
@@ -48,8 +50,6 @@ Tokenised: `i` `run` `,` `fast` `.` `you` `run` `to` `me` `.`
 
 Enhanced model with context columns:
 
-```{=typst}
-#import "llm-utils.typ": *
 #table(
   columns: (1fr,) * 12,
   align: center + horizon,
@@ -74,12 +74,11 @@ Enhanced model with context columns:
   [`me`], [], [], [], [], [], [], [], [#tally(1)], [], [], [#tally(1)],
   [`.`], [], [#tally(1)], [], [], [], [], [], [], [], [], []
 )
-```
 
 When generating after `run` (a verb):
 
 - check `run` row: next words are `,` (1) or `to` (1)
-- check all context columns: for `to` the **after verb** column has value 1
+- check all context columns: for `to` the *after verb* column has value 1
   (appears after verbs)
 - combine both signals: roll a dice to choose either `,` (1) or `to` (1+1=2)
 - proceed as per _Basic Inference_ (but with the additional weighting for the

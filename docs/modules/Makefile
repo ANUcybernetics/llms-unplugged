@@ -1,16 +1,20 @@
-# Makefile for converting markdown files to PDF using Typst
+# Makefile for converting markdown files and typst files to PDF
 
 # Input and output directories
 INPUT_DIR = .
 OUTPUT_DIR = output
 TEMPLATE = anu
 
-# Find all markdown files in the current directory
+# Find all markdown and typst source files
 MD_FILES := $(wildcard $(INPUT_DIR)/*.md)
-# Generate corresponding PDF names in output directory
-PDF_FILES := $(patsubst $(INPUT_DIR)/%.md,$(OUTPUT_DIR)/%.pdf,$(MD_FILES))
-# Intermediate Typst files
-TYP_FILES := $(patsubst $(INPUT_DIR)/%.md,$(OUTPUT_DIR)/%.typ,$(MD_FILES))
+TYP_SOURCE_FILES := $(wildcard $(INPUT_DIR)/*.typ)
+# Exclude llm-utils.typ as it's just a utility library
+TYP_SOURCE_FILES := $(filter-out ./llm-utils.typ,$(TYP_SOURCE_FILES))
+
+# Generate corresponding PDF names
+MD_PDF_FILES := $(patsubst $(INPUT_DIR)/%.md,$(OUTPUT_DIR)/%.pdf,$(MD_FILES))
+TYP_PDF_FILES := $(patsubst $(INPUT_DIR)/%.typ,$(OUTPUT_DIR)/%.pdf,$(TYP_SOURCE_FILES))
+PDF_FILES := $(MD_PDF_FILES) $(TYP_PDF_FILES)
 
 # Default target
 all: $(OUTPUT_DIR) $(PDF_FILES)
@@ -26,8 +30,13 @@ $(OUTPUT_DIR):
 
 # Convert markdown to PDF using pandoc with built-in ANU Typst template
 $(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.md
-	@echo "Processing $<..."
+	@echo "Processing markdown $<..."
 	pandoc $< -o $@ --pdf-engine=typst --template=$(TEMPLATE)
+
+# Compile typst files directly to PDF
+$(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.typ llm-utils.typ
+	@echo "Processing typst $<..."
+	typst compile $< $@
 
 # Clean target to remove generated files
 clean:

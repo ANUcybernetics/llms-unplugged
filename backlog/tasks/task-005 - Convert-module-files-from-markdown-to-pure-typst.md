@@ -1,7 +1,7 @@
 ---
 id: task-005
 title: Convert module files from markdown to pure typst
-status: To Do
+status: Completed
 assignee: []
 created_date: '2025-09-22 11:01'
 labels: []
