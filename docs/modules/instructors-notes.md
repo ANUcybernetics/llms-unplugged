@@ -4,6 +4,16 @@ socy_logo: true
 prereqs: []
 ---
 
+## Module 00: Weighted Randomness
+
+### Discussion questions
+
+- which method feels most "random" to you, and why?
+- which is fastest for getting repeated random selections?
+- how would you handle weights like 17, 23, 41?
+- what happens when one option has 95% probability?
+- can you invent your own weighted random selection method?
+
 ## Module 01: Basic Training (Building the Model)
 
 ### Discussion questions
@@ -27,8 +37,8 @@ language models:
 - **storage**: your paper model vs billions of parameters in memory
 
 The key insight: "training" a language model means counting patterns in text.
-Your hand-built model contains the same type of information that GPT
-stores---at a vastly smaller scale.
+Your hand-built model contains the same type of information that GPT stores---at
+a vastly smaller scale.
 
 ## Module 02: Basic Inference (Generating Text)
 
