@@ -258,9 +258,9 @@
             fill: none,
             stroke: 0.25pt + black,
             radius: 1pt,
-            inset: (x: 1pt, y: 0pt),
+            inset: (x: 0.1em, y: 0pt),
             outset: (y: 0pt),
-            [#text(weight: "bold", baseline: -0.25em)[#word]]
+            [#text(weight: "bold", baseline: -0.2em)[#word]]
           )
         )])
       } else {
@@ -269,9 +269,9 @@
             fill: none,
             stroke: 0.25pt + black,
             radius: 1pt,
-            inset: (x: 1pt, y: 0pt),
+            inset: (x: 0.1em, y: 0pt),
             outset: (y: 0pt),
-            [#text(weight: "bold", baseline: -0.25em)[#word]]
+            [#text(weight: "bold", baseline: -0.2em)[#word]]
           )
         )
       }
