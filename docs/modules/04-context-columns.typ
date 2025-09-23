@@ -91,9 +91,9 @@ Model with context columns:
 
 Starting word: `run` (a verb):
 
-+ check `run` row: next words are `,` (1) or `to` (1)
-+ check all context columns: for `to` the *after verb* column has value 1
++ check `run` row: potential next words are `,` (1) or `to` (1)
++ check all context columns: for `to` the *after verb* column has a count of 1
   (appears after verbs)
-+ combine both signals: roll a dice to choose either `,` (1) or `to` (1+1=2)
++ combine both counts: roll a dice to choose either `,` (1) or `to` ($1+1=2$)
 + repeat from step 1 until you reach the desired length _or_ a natural stopping
   point (e.g. a full stop `.`)
