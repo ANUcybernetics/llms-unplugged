@@ -50,8 +50,8 @@ $(OUT_DIR)/%-trigram-a4.stamp: data/%.txt book.typ $(TOOL)
 			cp $(OUT_DIR)/$*-trigram_book_$$i.json model.json; \
 			$(TYPST) --input paper_size=a4 --input columns=4 book.typ $(OUT_DIR)/$*-trigram-a4-book$$i.pdf; \
 			echo "Pages in $(OUT_DIR)/$*-trigram-a4-book$$i.pdf: $$(pdfinfo $(OUT_DIR)/$*-trigram-a4-book$$i.pdf | grep Pages | awk '{print $$2}')"; \
-			rm model.json; \
-			rm $(OUT_DIR)/$*-trigram_book_$$i.json; \
+			rm -f model.json; \
+			rm -f $(OUT_DIR)/$*-trigram_book_$$i.json; \
 		fi; \
 	done
 	@touch $@
@@ -64,8 +64,8 @@ $(OUT_DIR)/%-trigram-a5.stamp: data/%.txt book.typ $(TOOL)
 			cp $(OUT_DIR)/$*-trigram_book_$$i.json model.json; \
 			$(TYPST) --input paper_size=a5 --input columns=3 book.typ $(OUT_DIR)/$*-trigram-a5-book$$i.pdf; \
 			echo "Pages in $(OUT_DIR)/$*-trigram-a5-book$$i.pdf: $$(pdfinfo $(OUT_DIR)/$*-trigram-a5-book$$i.pdf | grep Pages | awk '{print $$2}')"; \
-			rm model.json; \
-			rm $(OUT_DIR)/$*-trigram_book_$$i.json; \
+			rm -f model.json; \
+			rm -f $(OUT_DIR)/$*-trigram_book_$$i.json; \
 		fi; \
 	done
 	@touch $@
