@@ -49,7 +49,7 @@ Original text: _"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot,
 Prepared text: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,` `spot`
 `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`
 
-After the first two words (`see` `spot`) the grid is:
+After the first two words (`see` `spot`) the model is:
 
 #lm-grid(
   ([], [`see`], [`spot`], [], [], [], []),
@@ -63,7 +63,7 @@ After the first two words (`see` `spot`) the grid is:
   ),
 )
 
-After the full text the grid is:
+After the full text the model is:
 
 #lm-grid(
   ([], [`see`], [`spot`], [`run`], [`jump`], [`.`], [`,`]),
