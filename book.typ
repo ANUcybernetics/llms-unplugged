@@ -213,28 +213,39 @@
       return
     }
 
-    // Get all prefix entries and determine guide words for this page
+    // Get all entries to find what's on the current page and previous pages
     let all-entries = query(metadata)
-    let page-entries = all-entries.filter(m => (
-      m.location().page() == current-page
-    ))
 
-    let guide-text = if page-entries.len() > 0 {
-      // New prefixes on this page
-      let prefixes = page-entries.map(e => e.value)
-      let first = prefixes.first()
-      let last = prefixes.last()
-      if first == last { first } else { first + " — " + last }
-    } else {
-      // No new prefixes - use last prefix before this page
-      let entries-before = all-entries.filter(m => (
-        m.location().page() < current-page
-      ))
-      if entries-before.len() > 0 {
-        entries-before.last().value
-      } else {
-        ""
+    // Separate entries by page
+    let entries-on-current-page = ()
+    let last-prefix-before-page = none
+
+    for entry in all-entries {
+      let entry-page = entry.location().page()
+      if entry-page == current-page {
+        entries-on-current-page.push(entry.value)
+      } else if entry-page < current-page {
+        // Keep track of the last prefix before current page
+        last-prefix-before-page = entry.value
       }
+    }
+
+    let guide-text = if entries-on-current-page.len() > 0 {
+      // We have entries on this page
+      let first = entries-on-current-page.first()
+      let last = entries-on-current-page.last()
+      if first == last {
+        // Single prefix on page
+        first
+      } else {
+        // Multiple prefixes on page - show range
+        first + " — " + last
+      }
+    } else if last-prefix-before-page != none {
+      // Continuation page (no new prefixes)
+      last-prefix-before-page
+    } else {
+      ""
     }
 
     // Display guide words and horizontal rule
