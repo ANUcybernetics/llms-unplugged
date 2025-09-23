@@ -27,8 +27,8 @@ output style.
 The same trained model can produce scholarly essays or wild poetry just by
 changing how you sample from it. This involves two key mechanisms:
 
-- *temperature* controls the randomness by adjusting the relative likelihood
-  of probable vs improbable tokens (flattening or sharpening the probability
+- *temperature* controls the randomness by adjusting the relative likelihood of
+  probable vs improbable tokens (flattening or sharpening the probability
   distribution)
 - *truncation* techniques that narrow the viable token pool by setting some
   tokens' probabilities to zero (e.g., top-k, top-p, or constraint-based
@@ -46,20 +46,20 @@ Take your tally counts and divide them by a temperature factor:
 - `.` (1)
 
 + *temperature = 1 (normal)*: use original tallies
-   - use counts as-is: 4, 2, 1, 1
-   - roll d8: 1-4→`spot`, 5-6→`run`, 7→`jump`, 8→`.`
-   - strong preference for `spot`
-   - most faithful to training data
+  - use counts as-is: 4, 2, 1, 1
+  - roll d8: 1-4→`spot`, 5-6→`run`, 7→`jump`, 8→`.`
+  - strong preference for `spot`
+  - most faithful to training data
 + *temperature = 2 (warmer)*: divide tallies by 2, round down (min 1)
-   - divide by 2 (round down, min 1): 2, 1, 1, 1
-   - roll d5: 1-2→`spot`, 3→`run`, 4→`jump`, 5→`.`
-   - less bias toward `spot`
-   - more balanced probabilities
+  - divide by 2 (round down, min 1): 2, 1, 1, 1
+  - roll d5: 1-2→`spot`, 3→`run`, 4→`jump`, 5→`.`
+  - less bias toward `spot`
+  - more balanced probabilities
 + *temperature = 3 (hot)*: divide tallies by 3, round down (min 1)
-   - divide by 3 (round down, min 1): 1, 1, 1, 1
-   - roll d4: 1→`spot`, 2→`run`, 3→`jump`, 4→`.`
-   - completely uniform!
-   - nearly uniform random selection
+  - divide by 3 (round down, min 1): 1, 1, 1, 1
+  - roll d4: 1→`spot`, 2→`run`, 3→`jump`, 4→`.`
+  - completely uniform!
+  - nearly uniform random selection
 
 The division naturally flattens probability differences:
 
@@ -176,8 +176,8 @@ good!
 
 Advanced technique: Blend multiple strategies!
 
-- *haiku + temperature 3*: wild but structured poetry (using temperature
-  control from above)
+- *haiku + temperature 3*: wild but structured poetry (using temperature control
+  from above)
 - *no-repeat + alliteration*: diverse but musical
 - *two-year-old + temperature 1*: simple words, faithful to training data
   (normal temperature)

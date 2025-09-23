@@ -25,26 +25,26 @@ data requirements that shapes all language models.
 
 + *create a three-column model* with headers: Word1 | Word2 | Word3
 + *extract all word triples* from your text
-   - slide a 3-word window through the text
-   - include punctuation tokens
+  - slide a 3-word window through the text
+  - include punctuation tokens
 + *count occurrences* of each unique triple
 + *generate text* using your trigram model:
-   - start with any two words (or `.` + first word)
-   - find all rows where Word1 and Word2 match your current pair
-   - roll d20 weighted by the counts
-   - choose Word3, then shift: new pair = (old Word2, chosen Word3)
-   - continue until desired length
+  - start with any two words (or `.` + first word)
+  - find all rows where Word1 and Word2 match your current pair
+  - roll d20 weighted by the counts
+  - choose Word3, then shift: new pair = (old Word2, chosen Word3)
+  - continue until desired length
 
 == Example
 
 Original text: _"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot,
-jump."_
+  jump."_
 
 After tokenisation: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,`
 `spot` `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`
 
 #lm-table(
-  ([Word1],[Word2],[Word3],[Count]),
+  ([Word1], [Word2], [Word3], [Count]),
   (
     ([`see`], [`spot`], [`run`], 1),
     ([`spot`], [`run`], [`.`], 1),
@@ -63,7 +63,7 @@ After tokenisation: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,`
     ([`jump`], [`,`], [`spot`], 1),
     ([`spot`], [`,`], [`jump`], 1),
     ([`,`], [`jump`], [`.`], 1),
-  )
+  ),
 )
 
 To generate the next word after `see` + `spot`:
@@ -73,4 +73,4 @@ To generate the next word after `see` + `spot`:
   - if `jump`: `spot` + `jump` → `.` (only option)
 
 After the above steps, the full output text is _"See Spot run."_ or _"See Spot
-jump."_
+  jump."_

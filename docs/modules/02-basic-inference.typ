@@ -32,10 +32,10 @@ randomness that creates variety in output.
 + *choose a starting word*---pick any word from your vocabulary
 + *look at that word's row* to see possible next words and their counts
 + *roll dice weighted by the counts* (see the _Weighted Random Sampling_
-   activity card for details)
+  activity card for details)
 + *write down the chosen word* and use that as your next starting word
-+ *repeat* from step 2 until you reach the desired length or a natural
-   stopping point (e.g. a full stop `.`)
++ *repeat* from step 2 until you reach the desired length or a natural stopping
+  point (e.g. a full stop `.`)
 
 You can *try different starting words* to see how it affects the output.
 
@@ -44,7 +44,7 @@ You can *try different starting words* to see how it affects the output.
 Here's a pre-trained language model grid:
 
 #lm-grid(
-  ([],[`see`],[`spot`],[`run`],[`jump`],[`.`],[`,`]),
+  ([], [`see`], [`spot`], [`run`], [`jump`], [`.`], [`,`]),
   (
     ([`see`], [], 2, [], [], [], []),
     ([`spot`], [], [], 2, 2, [], []),
@@ -52,7 +52,7 @@ Here's a pre-trained language model grid:
     ([`jump`], [], [], [], [], 2, []),
     ([`.`], 2, [], 1, 1, [], []),
     ([`,`], [], 2, [], [], [], []),
-  )
+  ),
 )
 
 To generate the next word after `see`:

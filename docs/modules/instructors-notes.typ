@@ -35,8 +35,7 @@ This counting process is exactly what happens during the "training" phase of
 language models:
 
 - *training data*: your paragraph vs trillions of words from the internet
-- *learning/training process*: hand counting vs automated counting by
-  computers
+- *learning/training process*: hand counting vs automated counting by computers
 - *storage*: your paper model vs billions of parameters in memory
 
 The key insight: "training" a language model means counting patterns in text.
@@ -89,8 +88,8 @@ The trigram model bridges the gap between simple word-pair models and modern
 transformers:
 
 - *context windows*: GPT models use variable context from 2 to 8,000+ tokens
-- *sparse data problem*: with more context, you need exponentially more
-  training data
+- *sparse data problem*: with more context, you need exponentially more training
+  data
 
 Your trigram model shows why longer context helps---`see` + `spot` predicts
 `run` perfectly, while just `spot` could be followed by `run` or `,`. This is
@@ -172,13 +171,12 @@ ChatGPT and other modern models use these same mechanisms:
 
 *Temperature control*:
 
-- *temperature parameter*: divides probabilities just like you divide
-  tallies - higher temperature means more random output
+- *temperature parameter*: divides probabilities just like you divide tallies -
+  higher temperature means more random output
 
 *Truncation techniques*:
 
-- *top-k sampling*: only consider k most likely tokens (truncates rest to
-  zero)
+- *top-k sampling*: only consider k most likely tokens (truncates rest to zero)
 - *top-p (nucleus) sampling*: consider tokens until cumulative probability
   reaches p (dynamic truncation)
 - *repetition penalty*: discourage repeating recent tokens

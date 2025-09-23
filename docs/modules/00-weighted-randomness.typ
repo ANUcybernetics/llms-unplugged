@@ -6,7 +6,6 @@
   socy_logo: true,
 )
 
-
 Learn how to make random choices where some options are more likely than
 others---the fundamental operation behind all language model text generation.
 
@@ -29,8 +28,8 @@ _on average_.
 == Algorithm 1: Beads in a Bag
 
 - *materials*: coloured beads, bag
-- *setup*: count out a number of beads corresponding to the desired weights
-  for each outcome
+- *setup*: count out a number of beads corresponding to the desired weights for
+  each outcome
 - *sampling procedure*: shake the bag, then draw one bead without looking
 
 === Example

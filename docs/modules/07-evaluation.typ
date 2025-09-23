@@ -43,11 +43,11 @@ by real text (perplexity) and how well it generates sensible completions
 Test sentence: "see spot run"
 
 #lm-table(
-  ([Position],[Context],[Actual Next],[Model's Top Pick],[Correct?]),
+  ([Position], [Context], [Actual Next], [Model's Top Pick], [Correct?]),
   (
     ([1], [`see`], [`spot`], [`spot`], [✓]),
     ([2], [`spot`], [`run`], [`run`], [✓]),
-  )
+  ),
 )
 Accuracy: 2/2 = 100%
 
@@ -60,19 +60,19 @@ Accuracy: 2/2 = 100%
   - perplexity = 2^(average surprise)
 - *pros*: standard metric used by all LLMs, captures uncertainty
 - *cons*: requires logarithms or pre-calculated tables
-- *potential tweaks*: use simplified "surprise points" (1 point if
-  probability > 50%, 2 if 25-50%, 3 if 10-25%, 4 if < 10%)
+- *potential tweaks*: use simplified "surprise points" (1 point if probability >
+  50%, 2 if 25-50%, 3 if 10-25%, 4 if < 10%)
 
 === Example
 
 Sentence: "see spot run"
 
 #lm-table(
-  ([Word],[Context],[Probability],[Surprise Points]),
+  ([Word], [Context], [Probability], [Surprise Points]),
   (
     ([`spot`], [`see`], [4/5 = 80%], [1 (high prob)]),
     ([`run`], [`spot`], [2/5 = 40%], [2 (medium prob)]),
-  )
+  ),
 )
 Average surprise: 1.5 points (lower is better)
 
@@ -129,28 +129,28 @@ Score each 0-3 points, average across completions.
 === Example
 
 #lm-table(
-  ([Prompt],[Bigram Output],[Trigram Output],[Winner]),
+  ([Prompt], [Bigram Output], [Trigram Output], [Winner]),
   (
     (["I see"], ["I see the the"], ["I see spot run"], [Trigram]),
     (["the dog"], ["the dog spot"], ["the dog barked loudly"], [Trigram]),
-  )
+  ),
 )
 == Example
 
 Using your model from a previous module:
 
 + *accuracy test*
-   - use these test sentences: "see spot", "spot can", "I see"
-   - check top prediction for each next word
-   - calculate accuracy percentage
+  - use these test sentences: "see spot", "spot can", "I see"
+  - check top prediction for each next word
+  - calculate accuracy percentage
 + *perplexity test*
-   - use surprise points system
-   - evaluate on: "see spot run and play"
-   - average the surprise scores
+  - use surprise points system
+  - evaluate on: "see spot run and play"
+  - average the surprise scores
 + *generation test*
-   - start with "the"
-   - generate 5 different 4-word sentences
-   - rate each for quality (0-3)
+  - start with "the"
+  - generate 5 different 4-word sentences
+  - rate each for quality (0-3)
 + *comparison* (if you have multiple models)
-   - blind test 5 completions from each
-   - which performs better overall?
+  - blind test 5 completions from each
+  - which performs better overall?

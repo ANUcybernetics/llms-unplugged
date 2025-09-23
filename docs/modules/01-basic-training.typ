@@ -45,7 +45,7 @@ tracks which words follow other words.
 == Example
 
 Original text: _"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot,
-jump."_
+  jump."_
 
 Prepared text: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,` `spot`
 `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`
@@ -53,7 +53,7 @@ Prepared text: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,` `spot`
 After `see` `spot` the grid is:
 
 #lm-grid(
-  ([],[`see`],[`spot`],[],[],[],[]),
+  ([], [`see`], [`spot`], [], [], [], []),
   (
     ([`see`], [], 1, [], [], [], []),
     ([`spot`], [], [], [], [], [], []),
@@ -61,13 +61,13 @@ After `see` `spot` the grid is:
     ([], [], [], [], [], [], []),
     ([], [], [], [], [], [], []),
     ([], [], [], [], [], [], []),
-  )
+  ),
 )
 
 After the full text the grid is:
 
 #lm-grid(
-  ([],[`see`],[`spot`],[`run`],[`jump`],[`.`],[`,`]),
+  ([], [`see`], [`spot`], [`run`], [`jump`], [`.`], [`,`]),
   (
     ([`see`], [], 2, [], [], [], []),
     ([`spot`], [], [], 2, 2, [], []),
@@ -75,5 +75,5 @@ After the full text the grid is:
     ([`jump`], [], [], [], [], 2, []),
     ([`.`], 2, [], 1, 1, [], []),
     ([`,`], [], 2, [], [], [], []),
-  )
+  ),
 )

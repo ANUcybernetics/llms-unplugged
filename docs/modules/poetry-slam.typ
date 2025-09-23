@@ -42,26 +42,26 @@ But you can also incorporate techniques from any of the subsequent modules.
 
 + *setup phase*:
 
-   - each team identifies which modules they've completed
-   - select your best model configuration from available tools
-   - if you have module 04: choose which context columns to use
-   - if you have module 06: select your sampling strategy
-   - if you have module 03: decide whether to use bigram or trigram
+  - each team identifies which modules they've completed
+  - select your best model configuration from available tools
+  - if you have module 04: choose which context columns to use
+  - if you have module 06: select your sampling strategy
+  - if you have module 03: decide whether to use bigram or trigram
 
 + *poetry generation round*:
 
-   - generate a 20-30 word poem using your available techniques
-   - basic teams (modules 01-02): focus on creative prompt selection
-   - if you have module 04: use context columns for rhythm and flow
-   - if you have module 05: apply embedding similarity for word substitutions
-   - if you have module 06: apply your chosen sampling strategy
+  - generate a 20-30 word poem using your available techniques
+  - basic teams (modules 01-02): focus on creative prompt selection
+  - if you have module 04: use context columns for rhythm and flow
+  - if you have module 05: apply embedding similarity for word substitutions
+  - if you have module 06: apply your chosen sampling strategy
 
 + *team choices* (based on completed modules):
-   - *everyone*: starting word/prompt selection
-   - *if module 03*: bigram vs trigram
-   - *if module 04*: which context columns to activate
-   - *if module 06*: which sampling strategy to use
-   - *if module 05*: whether to use similarity-based substitutions
+  - *everyone*: starting word/prompt selection
+  - *if module 03*: bigram vs trigram
+  - *if module 04*: which context columns to activate
+  - *if module 06*: which sampling strategy to use
+  - *if module 05*: whether to use similarity-based substitutions
 
 == Example Performances
 
@@ -142,8 +142,8 @@ of which modules you've completed:
   generate creative text, showing that the foundation is statistical patterns
 - *each layer adds capability*: as teams complete more modules, they gain more
   control - just like how GPT layers many techniques
-- *no single magic component*: teams with all modules don't automatically
-  win - success comes from using available tools creatively
+- *no single magic component*: teams with all modules don't automatically win -
+  success comes from using available tools creatively
 
 The key insight: Modern language models are essentially doing what you're doing,
 just scaled up:
@@ -152,10 +152,8 @@ just scaled up:
   foundation)
 - *if you add module 03*: you're adding context awareness (like attention)
 - *if you add module 04*: you're adding structure (like special tokens)
-- *if you add module 05*: you're adding semantic understanding (like
-  embeddings)
-- *if you add module 06*: you're adding creative control (like GPT's
-  parameters)
+- *if you add module 05*: you're adding semantic understanding (like embeddings)
+- *if you add module 06*: you're adding creative control (like GPT's parameters)
 
 Your poetry slam proves that "intelligence" in AI builds incrementally. Whether
 you have 2 modules or 6, you're demonstrating the same principles that power

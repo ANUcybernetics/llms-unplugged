@@ -19,24 +19,24 @@ model.
 == Key idea
 
 Language models create mathematical representations of words that capture
-meaning through usage patterns. Each word's row in your model is its
-embedding under that model---a numerical fingerprint that captures meaning
-through context. Similar words have similar embeddings.
+meaning through usage patterns. Each word's row in your model is its embedding
+under that model---a numerical fingerprint that captures meaning through
+context. Similar words have similar embeddings.
 
 == Algorithm
 
-+ *create word vectors*: use each word's full row (transition counts +
-   context columns) as its "embedding"
-   - each number becomes one dimension of the vector
-   - include both next-word counts and context signals
++ *create word vectors*: use each word's full row (transition counts + context
+  columns) as its "embedding"
+  - each number becomes one dimension of the vector
+  - include both next-word counts and context signals
 + *calculate word similarity*:
-   - use the "Manhattan distance": sum of absolute differences
-   - smaller distances means words are (more) similar
-   - distance reveals grammatical and semantic relationships
+  - use the "Manhattan distance": sum of absolute differences
+  - smaller distances means words are (more) similar
+  - distance reveals grammatical and semantic relationships
 + *explore relationships*:
-   - find closest word pairs
-   - group words by similarity
-   - discover emergent categories
+  - find closest word pairs
+  - group words by similarity
+  - discover emergent categories
 
 == Example
 
@@ -47,12 +47,22 @@ Tokenised: `see` `spot` `run` `.` `run` `,` `spot` `,` `run` `.`
 Word vectors from our enhanced model:
 
 #lm-table(
-  ([word],[dim. 1],[dim. 2],[dim. 3],[dim. 4],[dim. 5],[dim. 6],[dim. 7],[dim. 8]),
+  (
+    [word],
+    [dim. 1],
+    [dim. 2],
+    [dim. 3],
+    [dim. 4],
+    [dim. 5],
+    [dim. 6],
+    [dim. 7],
+    [dim. 8],
+  ),
   (
     ([`see`], [], 1, [], [], [], [], [], []),
     ([`spot`], [], [], 2, [], [], [], 1, []),
     ([`run`], [], [], [], 2, [], [], [], 2),
-  )
+  ),
 )
 Distance between `see` and `spot`:
 
