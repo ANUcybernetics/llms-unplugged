@@ -6,7 +6,6 @@
   socy_logo: true,
 )
 
-
 Enhance your word bigram model with context columns that capture grammatical and
 semantic patterns.
 
@@ -25,31 +24,41 @@ prediction.
 
 == Algorithm
 
-+ *identify patterns* in your text:
-  - which words follow _verbs_?
-  - which words follow _pronouns_ (e.g. I, you, they)?
-  - which words follow _prepositions_ (e.g. in, on, at)?
-+ *add context columns* to your existing word co-occurence model:
-  - after_verb: count if this word appears after doing/action words
-  - after_pronoun: count if this word follows `i`/`you`/`they`/etc.
-  - after_preposition: count if this word comes after
-    `in`/`on`/`at`/`with`/`to`/etc.
-+ *generate with context weighting*:
-  - start with a word and check its row
-  - sum the base transition counts with relevant context columns
-  - weight your d20 rolls by these combined scores
-  - context makes common patterns more likely
+=== Training
+
++ *add context columns* to your existing bigram model: _after verb_, _after
+    pronoun_ and _after preposition_
++ *training*: proceed as per _Basic Training_, but each time after updating the
+  cell count according to the usual "_column_ word follows _row_ word"
+  procedure:
+  - if the _row_ word is a verb, increment the value in the _column_ word's
+    _after verb_ column
+  - if the _row_ word is a pronoun (I/you/they etc.), increment the value in the
+    _column_ word's _after pronoun_ column
+  - if the _row_ word is a preposition (in/on/at/with/to etc.), increment the
+    value in the _column_ word's _after preposition_ column
+
+=== Inference
+
++ *choose a starting word* as per _Basic Inference_
++ check its row to identify the "normal" transition counts, but _also_ check if
+  the starting word is a verb/pronoun/preposition and if so add the values from
+  the relevant "context" column before using a d20 to choose the next word
++ *repeat* from step 2 until you reach the desired length _or_ a natural
+  stopping point (e.g. a full stop `.`)
 
 If you like, you can add your own context columns (based on patterns which _you_
 think are important).
 
 == Example
 
+=== Training
+
 Original text: _"I run, fast. You run to me."_
 
-Tokenised: `i` `run` `,` `fast` `.` `you` `run` `to` `me` `.`
+Prepared text: `i` `run` `,` `fast` `.` `you` `run` `to` `me` `.`
 
-Enhanced model with context columns:
+Model with context columns:
 
 #lm-grid(
   (
@@ -77,11 +86,14 @@ Enhanced model with context columns:
     ([`.`], [], 1, [], [], [], [], [], [], [], [], []),
   ),
 )
-When generating after `run` (a verb):
 
-- check `run` row: next words are `,` (1) or `to` (1)
-- check all context columns: for `to` the *after verb* column has value 1
+=== Inference
+
+Starting word: `run` (a verb):
+
++ check `run` row: next words are `,` (1) or `to` (1)
++ check all context columns: for `to` the *after verb* column has value 1
   (appears after verbs)
-- combine both signals: roll a dice to choose either `,` (1) or `to` (1+1=2)
-- proceed as per _Basic Inference_ (but with the additional weighting for the
-  context columns)
++ combine both signals: roll a dice to choose either `,` (1) or `to` (1+1=2)
++ repeat from step 1 until you reach the desired length _or_ a natural stopping
+  point (e.g. a full stop `.`)
