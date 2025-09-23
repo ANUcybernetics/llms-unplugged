@@ -6,7 +6,6 @@
   socy_logo: true,
 )
 
-
 Build a bigram (word co-occurence) language model that tracks which words follow
 which other words in text.
 
@@ -50,7 +49,7 @@ Original text: _"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot,
 Prepared text: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,` `spot`
 `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`
 
-After `see` `spot` the grid is:
+After the first two words (`see` `spot`) the grid is:
 
 #lm-grid(
   ([], [`see`], [`spot`], [], [], [], []),
