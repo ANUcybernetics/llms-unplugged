@@ -33,6 +33,36 @@
   }
 }
 
+// Function to display text with punctuation in boxes
+#let display-with-punctuation(text-content, size: 1.5em, weight: "bold") = {
+  let parts = text-content.split(" ")
+  for (i, part) in parts.enumerate() {
+    if part == "." or part == "," {
+      // Display punctuation in a rounded box
+      box(
+        rect(
+          fill: none,
+          stroke: 0.25pt + black,
+          radius: 1pt,
+          inset: (x: 1pt, y: 0pt),
+          outset: (y: 0pt),
+          [#text(part, size: if size == 1.5em { 1em } else { size }, weight: weight, baseline: -0.3em)]
+        )
+      )
+    } else if part == "—" {
+      // Em dash separator
+      text(" — ")
+    } else {
+      // Regular words
+      text(part, size: size, weight: weight)
+    }
+    // Add space between parts
+    if i < parts.len() - 1 and parts.at(i + 1) != "—" and part != "—" {
+      h(0.3em)
+    }
+  }
+}
+
 // Title page function
 #let title-page() = {
   set page(margin: (x: 2.5cm, y: 2.5cm))
@@ -180,33 +210,7 @@
       let is-odd = calc.odd(current-page)
 
       // Create the guide word display (styled like prefix text)
-      let guide-display = text(size: 1.5em, weight: "bold")[
-        #for (i, part) in guide-text.split(" ").enumerate() {
-          if part == "." or part == "," {
-            // Display punctuation in a rounded box (matching prefix style)
-            box(
-              rect(
-                fill: none,
-                stroke: 0.25pt + black,
-                radius: 1pt,
-                inset: (x: 1pt, y: 0pt),
-                outset: (y: 0pt),
-                [#text(part, size: 1em, weight: "bold", baseline: -0.3em)]
-              )
-            )
-          } else if part == "—" {
-            // Em dash separator
-            text(" — ")
-          } else {
-            // Regular words
-            text(part)
-          }
-          // Add space between parts except for the last one
-          if i < guide-text.split(" ").len() - 1 and guide-text.split(" ").at(i + 1) != "—" and part != "—" {
-            h(0.3em)
-          }
-        }
-      ]
+      let guide-display = display-with-punctuation(guide-text, size: 1.5em, weight: "bold")
 
       // Position guide words on outer edge
       if is-odd {
@@ -232,34 +236,12 @@
   current_prefix.update(prefix)
 
   // this is the prefix text with a label
-  // Split prefix into words and display each with appropriate styling
-  [#metadata(prefix) <prefix-entry>#for (i, part) in prefix.split(" ").enumerate() {
-    if part == "." or part == "," {
-      // Display punctuation in a rounded box with vertical centering
-      box(
-        rect(
-          fill: none,
-          stroke: 0.25pt + black,
-          radius: 1pt,
-          inset: (x: 1pt, y: 0pt),
-          outset: (y: 0pt),
-          [#text(part, size: 1.5em, weight: "bold", baseline: -0.3em)]
-        )
-      )
-    } else {
-      // Display regular words normally
-      text(part, size: 1.5em, weight: "bold")
-    }
-    // Add space between parts except for the last one
-    if i < prefix.split(" ").len() - 1 {
-      h(0.3em)
-    }
-  }#label("prefix-" + prefix)]
+  [#metadata(prefix) <prefix-entry>#display-with-punctuation(prefix, size: 1.5em, weight: "bold")#label("prefix-" + prefix)]
 
-  // the dice roll number
+  // the dice roll number (showing digit count as a compression indicator)
   if total_count != dice_d {
     h(0.3em)
-    [(#box[#text(weight: "bold")[#str(total_count).len()]♢])]
+    box[#text(weight: "bold")[#str(total_count).len()]♢]
   }
 
   h(0.6em)
@@ -267,9 +249,9 @@
   // the followers for this prefix (with weights)
   for follower in followers {
     let word = follower.at(0)
-    // Check if this is a punctuation token
+    // Create the display for this follower
     if word == "." or word == "," {
-      // Display punctuation in a rounded box with special styling
+      // Punctuation in a rounded box with count
       if followers.len() > 1 {
         box([#text(weight: "semibold")[#follower.at(1)]|#box(
           rect(
@@ -294,11 +276,11 @@
         )
       }
     } else {
-      // Display regular words normally
+      // Regular word with count
       if followers.len() > 1 {
-        box([#text(weight: "semibold")[#follower.at(1)]|#text[#follower.at(0)]])
+        box([#text(weight: "semibold")[#follower.at(1)]|#text[#word]])
       } else {
-        box([#follower.at(0)])
+        box([#word])
       }
     }
     h(0.5em)
