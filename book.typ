@@ -143,7 +143,7 @@
 // Main content with original layout
 #set page(
   paper_size,
-  margin: (x: 1.5cm, y: 2cm),  // Increased top margin for taller header
+  margin: (x: 1.5cm, top: 3cm, bottom: 2cm),  // Different top and bottom margins
   columns: int(num_columns),
   numbering: "1/1",
   header: context {
@@ -216,11 +216,12 @@
       }
 
       // Add horizontal rule
-      v(0.2em)
       line(length: 100%, stroke: 0.5pt)
+      // Add 1.5em space after the header to push main content down further
+      v(1em)
     }
   },
-  header-ascent: 50%  // More space for the header
+  header-ascent: 10%  // Further reduced to bring header content down more
 )
 
 #for (i, item) in data.enumerate() {
