@@ -2,7 +2,7 @@
 
 # Input and output directories
 INPUT_DIR = .
-OUTPUT_DIR = output
+OUTPUT_DIR = out
 TEMPLATE = anu
 
 # Find all markdown and typst source files
