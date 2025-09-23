@@ -25,58 +25,72 @@ Similar words have similar embeddings.
 
 == Algorithm
 
-For this algorithm you'll need two grids: your original bigram model grid and a
-new _embedding distance_ grid (with the same words as row/column headers, but
+For this algorithm you'll need two grids: your original _bigram model_ grid and
+a new _embedding distance_ grid (with the same words as row/column headers, but
 otherwise blank to start with).
 
-The numbers in each word's full row in the bigram model grid (including blanks
-as 0) are its _embedding vector_.
-
 + for the first row and second row in the bigram model, add up the total of the
-  absolute differences between all the cells in the two rows, and write it in
-  the empty cell in the embedding distance grid corresponding to those two words
+  absolute differences between corresponding cells in the two rows and write it
+  in the empty cell for that word pair in the embedding distance grid
 + fill out the embedding distance grid by repeating step 1 for all different
   pairs of rows in the bigram model grid
 
 You can immediately put 0 in all the "main diagonal" cells of the embedding
 distance grid, because the distance between a word and itself is always 0.
 Similarly, you will only need to do the calculation for the "top triangle" of
-the embedding distance grid, because the "bottom triangle" will be the mirror
+the embedding distance grid, because the "bottom triangle" will be a mirror
 image due to the symmetry of the distance calculation
 
 == Example
 
-Original text: _"See Spot run. Run, Spot, run."_
+Original text: _"See Spot. Spot runs."_
 
-Tokenised: `see` `spot` `run` `.` `run` `,` `spot` `,` `run` `.`
+Prepared text: `see` `spot` `.` `spot` `runs` `.`
 
-Word vectors from our enhanced model:
+Bigram model grid:
 
-#lm-table(
+#lm-grid(
+  ([], [`see`], [`spot`], [`.`], [`runs`]),
   (
-    [word],
-    [dim. 1],
-    [dim. 2],
-    [dim. 3],
-    [dim. 4],
-    [dim. 5],
-    [dim. 6],
-    [dim. 7],
-    [dim. 8],
-  ),
-  (
-    ([`see`], [], 1, [], [], [], [], [], []),
-    ([`spot`], [], [], 2, [], [], [], 1, []),
-    ([`run`], [], [], [], 2, [], [], [], 2),
+    ([`see`], [], 1, [], []),
+    ([`spot`], [], [], 1, 1),
+    ([`.`], [], 1, [], []),
+    ([`runs`], [], [], 1, []),
   ),
 )
-Distance between `see` and `spot`:
 
-|0-0| + |1-0| + |0-2| + |0-0| + |0-0| + |0-0| + |0-1| + |0-0| = 4
+Each row is that word's embedding vector (using 0 for blank cells):
+- `see`: [0, 1, 0, 0]
+- `spot`: [0, 0, 1, 1]
+- `.`: [0, 1, 0, 0]
+- `runs`: [0, 0, 1, 0]
 
-Distance between `spot` and `run`:
+Calculating distance between the first two rows (`see` and `spot`): |0-0| +
+|1-0| + |0-1| + |0-1| = 0 + 1 + 1 + 1 = 3
 
-|0-0| + |0-0| + |2-0| + |0-2| + |0-0| + |0-0| + |1-0| + |0-2| = 7
+Partially filled embedding distance grid:
 
-The smaller value (4 vs 7) indicates that `see` and `spot` are closer (more
-similar) than `spot` and `run`.
+#lm-grid(
+  ([], [`see`], [`spot`], [`.`], [`runs`]),
+  (
+    ([`see`], 0, 3, [], []),
+    ([`spot`], [], 0, [], []),
+    ([`.`], [], [], 0, []),
+    ([`runs`], [], [], [], 0),
+  ),
+)
+
+Complete embedding distance grid:
+
+#lm-grid(
+  ([], [`see`], [`spot`], [`.`], [`runs`]),
+  (
+    ([`see`], 0, 3, 0, 2),
+    ([`spot`], 3, 0, 3, 2),
+    ([`.`], 0, 3, 0, 2),
+    ([`runs`], 2, 2, 2, 0),
+  ),
+)
+
+The distances show that `see` and `.` have identical embeddings (distance = 0),
+while `see` and `spot` are quite different (distance = 3).
