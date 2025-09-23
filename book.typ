@@ -83,7 +83,7 @@
 
 // Title page function
 #let title-page() = {
-  set page(margin: (x: 2.5cm, y: 2.5cm))
+  set page(paper_size, margin: (x: 2.5cm, y: 2.5cm))
   align(center + horizon)[
     #v(2cm)
     #text(weight: "bold", size: 4em)[#context doc_metadata.title]
@@ -105,7 +105,7 @@
 
 // Copyright page
 #let copyright-page() = {
-  set page(margin: (x: 2.5cm, y: 2.5cm))
+  set page(paper_size, margin: (x: 2.5cm, y: 2.5cm))
   set text(size: 12pt)
   align(horizon)[
     #text(size: 1.2em)[A #context model-type(doc_metadata.n) language model of]
@@ -158,7 +158,7 @@
 
 // Introduction page
 #let introduction() = {
-  set page(margin: (x: 2.5cm, y: 2.5cm))
+  set page(paper_size, margin: (x: 2.5cm, y: 2.5cm))
   align(left)[
     #heading(level: 1)[Introduction]
     #v(0.5cm)
@@ -183,7 +183,7 @@
 
 // Table of contents
 #let table-of-contents() = {
-  set page(margin: (x: 2.5cm, y: 2.5cm))
+  set page(paper_size, margin: (x: 2.5cm, y: 2.5cm))
   heading(level: 1)[Contents]
   v(1cm)
   // A simple table of contents would be difficult to generate for all prefixes
