@@ -6,36 +6,28 @@
   socy_logo: true,
 )
 
-
 Use a pre-trained model to generate new text through weighted random sampling.
 
 == You will need
 
-- your completed word co-occurence model from basic-training
-- 20-sided dice (d20) for weighted sampling
-- paper for writing generated text
+- your completed model (i.e. the word co-occurence grid) from _Basic Training_
+- d20 (or similar) for weighted sampling
+- paper for writing down the generated "output text"
 
 == Key idea
 
 Language models generate text by predicting one word at a time based on learnt
-patterns. Your trained model provides the probabilities; dice rolls provide the
-randomness that creates variety in output.
-
-== Glossary
-
-- *inference*: the process of using your trained model to generate new text
-- *weighted random sampling*: choosing the next token with probability
-  proportional to its frequency
+patterns. Your trained model provides the "next word" options and their
+probabilities; dice rolls provide the randomness to choose one of those options.
 
 == Algorithm
 
-+ *choose a starting word*---pick any word from your vocabulary
-+ *look at that word's row* to see possible next words and their counts
-+ *roll dice weighted by the counts* (see the _Weighted Random Sampling_
-  activity card for details)
++ *choose a starting word*---pick any word from the first column of your grid
++ *look at that word's row* to identify all possible next words and their counts
++ *roll dice weighted by the counts* (see the _Weighted Random Sampling_ module)
 + *write down the chosen word* and use that as your next starting word
-+ *repeat* from step 2 until you reach the desired length or a natural stopping
-  point (e.g. a full stop `.`)
++ *repeat* from step 2 until you reach the desired length _or_ a natural
+  stopping point (e.g. a full stop `.`)
 
 You can *try different starting words* to see how it affects the output.
 
