@@ -20,6 +20,18 @@
 // We'll use doc_metadata to track entries instead of state
 // since state.final() might not work properly in headers
 
+// Function to create a punctuation box with consistent styling
+#let punct-box(content, baseline: -0.2em) = box(
+  rect(
+    fill: none,
+    stroke: 0.25pt + black,
+    radius: 1pt,
+    inset: (x: 0.1em, y: 0pt),
+    outset: (y: 0pt),
+    text(content, weight: "bold", baseline: baseline),
+  ),
+)
+
 // Function to get model type string from n value
 #let model-type(n) = {
   if n == 1 {
@@ -39,6 +51,12 @@
   for (i, part) in parts.enumerate() {
     if part == "." or part == "," {
       // Display punctuation in a rounded box
+      let styled-punct = text(
+        part,
+        size: size,
+        weight: weight,
+        baseline: -0.2em,
+      )
       box(
         rect(
           fill: none,
@@ -46,7 +64,7 @@
           radius: 1pt,
           inset: (x: 0.1em, y: 0pt),
           outset: (y: 0pt),
-          [#text(part, size: size, weight: weight, baseline: -0.2em)],
+          styled-punct,
         ),
       )
     } else if part == "—" {
@@ -272,36 +290,21 @@
   // the followers for this prefix (with weights)
   for follower in followers {
     let word = follower.at(0)
+    let count = follower.at(1)
+    let show-count = followers.len() > 1
+
     // Create the display for this follower
     if word == "." or word == "," {
-      // Punctuation in a rounded box with count
-      if followers.len() > 1 {
-        box([#text(weight: "semibold")[#follower.at(1)]|#box(
-            rect(
-              fill: none,
-              stroke: 0.25pt + black,
-              radius: 1pt,
-              inset: (x: 0.1em, y: 0pt),
-              outset: (y: 0pt),
-              [#text(weight: "bold", baseline: -0.2em)[#word]],
-            ),
-          )])
+      // Punctuation in a rounded box with optional count
+      if show-count {
+        box([#text(weight: "semibold")[#count]|#punct-box(word)])
       } else {
-        box(
-          rect(
-            fill: none,
-            stroke: 0.25pt + black,
-            radius: 1pt,
-            inset: (x: 0.1em, y: 0pt),
-            outset: (y: 0pt),
-            [#text(weight: "bold", baseline: -0.2em)[#word]],
-          ),
-        )
+        punct-box(word)
       }
     } else {
-      // Regular word with count
-      if followers.len() > 1 {
-        box([#text(weight: "semibold")[#follower.at(1)]|#text[#word]])
+      // Regular word with optional count
+      if show-count {
+        box([#text(weight: "semibold")[#count]|#text[#word]])
       } else {
         box([#word])
       }
