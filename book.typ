@@ -143,7 +143,7 @@
 // Main content with original layout
 #set page(
   paper_size,
-  margin: (x: 1.5cm, y: 1.5cm),
+  margin: (x: 1.5cm, y: 2cm),  // Increased top margin for taller header
   columns: int(num_columns),
   numbering: "1/1",
   header: context {
@@ -154,39 +154,73 @@
       return
     }
 
-    // Query ALL metadata entries up to this point
+    // Get all prefix entries and determine guide words for this page
     let all-entries = query(<prefix-entry>)
-
-    // Find entries on this page
     let page-entries = all-entries.filter(m => m.location().page() == current-page)
 
-    if page-entries.len() > 0 {
-      // There are new prefixes on this page
+    let guide-text = if page-entries.len() > 0 {
+      // New prefixes on this page
       let prefixes = page-entries.map(e => e.value)
       let first = prefixes.first()
       let last = prefixes.last()
-
-      if first == last {
-        align(center)[
-          #smallcaps(first)
-        ]
-      } else {
-        align(center)[
-          #smallcaps(first) — #smallcaps(last)
-        ]
-      }
+      if first == last { first } else { first + " — " + last }
     } else {
-      // No new prefixes on this page - use the last prefix before this page
+      // No new prefixes - use last prefix before this page
       let entries-before = all-entries.filter(m => m.location().page() < current-page)
       if entries-before.len() > 0 {
-        let last-prefix = entries-before.last().value
-        align(center)[
-          #smallcaps(last-prefix)
-        ]
+        entries-before.last().value
+      } else {
+        ""
       }
     }
+
+    // Display guide words and horizontal rule
+    if guide-text != "" {
+      // Position based on odd/even page
+      let is-odd = calc.odd(current-page)
+
+      // Create the guide word display (styled like prefix text)
+      let guide-display = text(size: 1.5em, weight: "bold")[
+        #for (i, part) in guide-text.split(" ").enumerate() {
+          if part == "." or part == "," {
+            // Display punctuation in a rounded box (matching prefix style)
+            box(
+              rect(
+                fill: none,
+                stroke: 0.25pt + black,
+                radius: 1pt,
+                inset: (x: 1pt, y: 0pt),
+                outset: (y: 0pt),
+                [#text(part, size: 1em, weight: "bold", baseline: -0.3em)]
+              )
+            )
+          } else if part == "—" {
+            // Em dash separator
+            text(" — ")
+          } else {
+            // Regular words
+            text(part)
+          }
+          // Add space between parts except for the last one
+          if i < guide-text.split(" ").len() - 1 and guide-text.split(" ").at(i + 1) != "—" and part != "—" {
+            h(0.3em)
+          }
+        }
+      ]
+
+      // Position guide words on outer edge
+      if is-odd {
+        align(right)[#guide-display]
+      } else {
+        align(left)[#guide-display]
+      }
+
+      // Add horizontal rule
+      v(0.2em)
+      line(length: 100%, stroke: 0.5pt)
+    }
   },
-  header-ascent: 30%
+  header-ascent: 50%  // More space for the header
 )
 
 #for (i, item) in data.enumerate() {
