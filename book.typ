@@ -44,14 +44,14 @@
           fill: none,
           stroke: 0.25pt + black,
           radius: 1pt,
-          inset: (x: 1pt, y: 0pt),
+          inset: (x: 0.1em, y: 0pt),
           outset: (y: 0pt),
-          [#text(part, size: if size == 1.5em { 1em } else { size }, weight: weight, baseline: -0.3em)]
+          [#text(part, size: size, weight: weight, baseline: -0.2em)]
         )
       )
     } else if part == "—" {
       // Em dash separator
-      text(" — ")
+      text(" — ", size: size, weight: weight)
     } else {
       // Regular words
       text(part, size: size, weight: weight)
