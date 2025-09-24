@@ -1,4 +1,5 @@
 #import "utils.typ": *
+#import "@local/anu-typst-template:0.1.0": anu-colors
 
 #show: module-card.with(
   title: [Context Columns],
@@ -55,44 +56,81 @@ think are important).
 
 == Example (training)
 
-Original text: _"I run, fast. You run to me."_
+Original text: _"I run fast. You run to me."_
 
 Model with context columns:
 
-#lm-grid(
-  (
-    [],
-    [`i`],
-    [`you`],
-    [`run`],
-    [`,`],
-    [`fast`],
-    [`to`],
-    [`me`],
-    [`.`],
-    [#v(-4em)#rotate(-90deg)[after~verb]],
-    [#v(-4em)#rotate(-90deg)[after~pronoun]],
-    [#v(-4em)#rotate(-90deg)[after~preposition]],
-  ),
-  (
-    ([`i`], [], [], 1, [], [], [], [], [], [], [], []),
-    ([`you`], [], [], 1, [], [], [], [], [], [], [], []),
-    ([`run`], [], [], [], 1, [], 1, [], [], [], 2, []),
-    ([`,`], [], [], [], [], 1, [], [], [], [], [], []),
-    ([`fast`], [], [], [], [], [], [], [], 1, [], [], []),
-    ([`to`], [], [], [], [], [], [], 1, [], 1, [], []),
-    ([`me`], [], [], [], [], [], [], [], 1, [], [], 1),
-    ([`.`], [], 1, [], [], [], [], [], [], [], [], []),
-  ),
+#table(
+  columns: 11,
+  rows: (auto, 2.4em),
+  align: (col, row) => if row == 0 { center } else { left },
+
+  // Headers
+  [],
+  [`i`],
+  [`you`],
+  [`run`],
+  [`fast`],
+  [`to`],
+  [`me`],
+  [`.`],
+  [#v(-4em)#rotate(-90deg)[#text(fill: anu-colors.teal-3)[after~verb]]],
+  [#v(-4em)#rotate(-90deg)[#text(fill: anu-colors.teal-3)[after~pronoun]]],
+  [#v(-4em)#rotate(-90deg)[#text(fill: anu-colors.teal-3)[after~preposition]]],
+
+  // Rows
+  [`i`], [], [], [|], [], [], [], [], [], [], [],
+
+  [`you`], [], [], [|], [], [], [], [], [], [], [],
+
+  [`run`],
+  [],
+  [],
+  [],
+  [|],
+  [|],
+  [],
+  [],
+  [#text(fill: anu-colors.teal-3)[||]],
+  [],
+  [],
+
+  [`fast`], [], [], [], [], [], [], [|], [], [], [],
+
+  [`to`],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [|],
+  [],
+  [#text(fill: anu-colors.teal-3)[|]],
+  [],
+  [],
+
+  [`me`],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [|],
+  [],
+  [],
+  [#text(fill: anu-colors.teal-3)[|]],
+
+  [`.`], [], [|], [], [], [], [], [], [], [], [],
 )
 
 == Example (inference)
 
 Starting word: `run` (a verb):
 
-+ check `run` row: potential next words are `,` (1) or `to` (1)
++ check `run` row: potential next words are `fast` (1) or `to` (1)
 + check all context columns: for `to` the *after verb* column has a count of 1
   (appears after verbs)
-+ combine both counts: roll a dice to choose either `,` (1) or `to` ($1+1=2$)
++ combine both counts: roll a dice to choose either `fast` (1) or `to` ($1+1=2$)
 + repeat from step 1 until you reach the desired length _or_ a natural stopping
   point (e.g. a full stop `.`)
