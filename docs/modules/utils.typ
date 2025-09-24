@@ -9,7 +9,7 @@
     title: title,
     subtitle: subtitle,
     page_numbering: false,
-    // studio_logo: true,
+    studio_logo: true,
     dark: true,
   )
 
