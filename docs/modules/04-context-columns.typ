@@ -27,9 +27,7 @@ automatically---which previous words matter most for prediction.
 
 #pagebreak()
 
-== Algorithm
-
-=== Training
+== Algorithm (training)
 
 + *add context columns* to your existing bigram model: _after verb_, _after
     pronoun_ and _after preposition_
@@ -43,7 +41,7 @@ automatically---which previous words matter most for prediction.
   - if the _row_ word is a preposition (in/on/at/with/to etc.), increment the
     value in the _column_ word's _after preposition_ column
 
-=== Inference
+== Algorithm (inference)
 
 + *choose a starting word* as per _Basic Inference_
 + check its row to identify the "normal" transition counts, but _also_ check if
@@ -55,13 +53,9 @@ automatically---which previous words matter most for prediction.
 If you like, you can add your own context columns (based on patterns which _you_
 think are important).
 
-== Example
-
-=== Training
+== Example (training)
 
 Original text: _"I run, fast. You run to me."_
-
-Prepared text: `i` `run` `,` `fast` `.` `you` `run` `to` `me` `.`
 
 Model with context columns:
 
@@ -76,9 +70,9 @@ Model with context columns:
     [`to`],
     [`me`],
     [`.`],
-    [#v(-3em)#rotate(-90deg)[after verb]],
-    [#v(-3em)#rotate(-90deg)[after pronoun]],
-    [#v(-3em)#rotate(-90deg)[after preposition]],
+    [#v(-4em)#rotate(-90deg)[after~verb]],
+    [#v(-4em)#rotate(-90deg)[after~pronoun]],
+    [#v(-4em)#rotate(-90deg)[after~preposition]],
   ),
   (
     ([`i`], [], [], 1, [], [], [], [], [], [], [], []),
@@ -92,7 +86,7 @@ Model with context columns:
   ),
 )
 
-=== Inference
+== Example (inference)
 
 Starting word: `run` (a verb):
 
