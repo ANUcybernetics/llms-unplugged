@@ -35,27 +35,6 @@ data requirements that shapes all language models.
   a new row if it's a triple you've never seen before and set the count to 1
   (note: row order doesn't matter)
 
-== Algorithm (inference)
-
-+ pick any row from your table; write down _word 1_ and _word 2_ from that row
-  as your starting words
-+ find all rows where _word 1_ and _word 2_ are exact matches for your two
-  starting words, and make note of their _count_ columns
-+ as per _Basic Inference_ roll a d20 weighted by the counts and select the
-  _word 3_ associated with the chosen row
-+ move along by _one_ word (so _word 2_ becomes your new _word 1_ and _word 3_
-  becomes your new _word 2_) and repeat from step 2
-
-== Example (inference)
-
-+ from the table on the right, choose `see` + `spot` as your starting _word 1_
-  and _word 2_:
-+ find all rows with _word 1_ = `see` and _word 2_ = `spot`; in this case rows 1
-  and 5 (both have _count_ == 1)
-+ roll a d20 and write down the _word 3_ from the row chosen by the dice roll
-+ move along by _one_ word (so _word 1_ is `spot` and _word 2_ is either `run`
-  or `jump` depending on your dice roll) and repeat from step 2
-
 == Example (training)
 
 Original text: _"See Spot run. See Spot jump."_
@@ -83,3 +62,24 @@ After the full text the model is:
     ([`spot`], [`jump`], [`.`], 1),
   ),
 )
+
+== Algorithm (inference)
+
++ pick any row from your table; write down _word 1_ and _word 2_ from that row
+  as your starting words
++ find all rows where _word 1_ and _word 2_ are exact matches for your two
+  starting words, and make note of their _count_ columns
++ as per _Basic Inference_ roll a d20 weighted by the counts and select the
+  _word 3_ associated with the chosen row
++ move along by _one_ word (so _word 2_ becomes your new _word 1_ and _word 3_
+  becomes your new _word 2_) and repeat from step 2
+
+== Example (inference)
+
++ from the table on the right, choose `see` + `spot` as your starting _word 1_
+  and _word 2_:
++ find all rows with _word 1_ = `see` and _word 2_ = `spot`; in this case rows 1
+  and 5 (both have _count_ == 1)
++ roll a d20 and write down the _word 3_ from the row chosen by the dice roll
++ move along by _one_ word (so _word 1_ is `spot` and _word 2_ is either `run`
+  or `jump` depending on your dice roll) and repeat from step 2
