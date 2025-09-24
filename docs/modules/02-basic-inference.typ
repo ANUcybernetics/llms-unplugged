@@ -1,6 +1,6 @@
 #import "utils.typ": *
 
-#show: module-doc.with(
+#show: module-card.with(
   title: [Basic Inference],
   subtitle: "My First LM Module #2",
 )

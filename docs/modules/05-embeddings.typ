@@ -1,6 +1,6 @@
 #import "utils.typ": *
 
-#show: module-doc.with(
+#show: module-card.with(
   title: [Word Embeddings],
   subtitle: "My First LM Module #5",
 )

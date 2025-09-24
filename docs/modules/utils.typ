@@ -1,6 +1,6 @@
 // Standard module template for consistent formatting
-// Usage: #show: module-doc.with(title: [Your Title], subtitle: "Your Subtitle")
-#let module-doc(title: none, subtitle: none, body) = {
+// Usage: #show: module-card.with(title: [Your Title], subtitle: "Your Subtitle")
+#let module-card(title: none, subtitle: none, body) = {
   import "@local/anu-typst-template:0.1.0": *
 
   set page(paper: "a5", flipped: true, columns: 2, numbering: none)

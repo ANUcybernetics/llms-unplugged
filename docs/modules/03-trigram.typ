@@ -1,6 +1,6 @@
 #import "utils.typ": *
 
-#show: module-doc.with(
+#show: module-card.with(
   title: [Trigram Model],
   subtitle: "My First LM Module #3",
 )
