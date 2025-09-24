@@ -1,6 +1,9 @@
 #import "utils.typ": *
 
-#show: module-doc.with(title: [Word Embeddings], subtitle: "My First LM Module #5")
+#show: module-doc.with(
+  title: [Word Embeddings],
+  subtitle: "My First LM Module #5",
+)
 
 Transform words into numerical vectors using their patterns from your language
 model.
@@ -10,6 +13,11 @@ model.
 - your completed bigram model grid (including context columns if you have them)
 - more grid paper (for similarity matrix)
 - ruler and graph paper for plotting and measuring word vectors (optional)
+
+== Your goal
+
+To create a similarity matrix (another square grid) which captures how similar
+(or different) all the words in your bigram model are.
 
 == Key idea
 

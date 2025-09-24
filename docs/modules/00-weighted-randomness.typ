@@ -1,6 +1,9 @@
 #import "utils.typ": *
 
-#show: module-doc.with(title: [Weighted Randomness], subtitle: "My First LM Module #0")
+#show: module-doc.with(
+  title: [Weighted Randomness],
+  subtitle: "My First LM Module #0",
+)
 
 Learn how to make random choices where some options are more likely than
 others---the fundamental operation behind all language model text generation.
@@ -13,6 +16,11 @@ Choose one or more approaches based on available materials:
 - 20-sided dice (d20)
 - coloured marbles or beads
 - paper for frequency matrices (also called grids or tables)
+
+== Your goal
+
+To randomly choose from a fixed set of outcomes according to a given probability
+distribution.
 
 == Key idea
 

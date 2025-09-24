@@ -1,6 +1,9 @@
 #import "utils.typ": *
 
-#show: module-doc.with(title: [Context Columns], subtitle: "My First LM Module #4")
+#show: module-doc.with(
+  title: [Context Columns],
+  subtitle: "My First LM Module #4",
+)
 
 Enhance your word bigram model with context columns that capture grammatical and
 semantic patterns.
@@ -9,6 +12,11 @@ semantic patterns.
 
 - same as basic-training module
 - your completed word co-occurence model from _Basic Training_
+
+== Your goal
+
+To add new "context" columns to an existing bigram model and generate text from
+your newly context-aware model.
 
 == Key idea
 

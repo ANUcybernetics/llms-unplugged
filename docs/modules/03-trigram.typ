@@ -1,6 +1,9 @@
 #import "utils.typ": *
 
-#show: module-doc.with(title: [Trigram Model], subtitle: "My First LM Module #3")
+#show: module-doc.with(
+  title: [Trigram Model],
+  subtitle: "My First LM Module #3",
+)
 
 Extend the basic model to consider _two_ words of context instead of one,
 leading to better text generation.
@@ -9,6 +12,12 @@ leading to better text generation.
 
 - same as _Basic Training_ module
 - additional paper for the three-column model
+
+== Your goal
+
+To create a trigram language model (a table this time, not a grid like your
+bigram model from _Basic Training_) that captures the patterns in your input
+text data.
 
 == Key idea
 

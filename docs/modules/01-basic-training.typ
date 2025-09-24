@@ -1,6 +1,9 @@
 #import "utils.typ": *
 
-#show: module-doc.with(title: [Basic Training], subtitle: "My First LM Module #1")
+#show: module-doc.with(
+  title: [Basic Training],
+  subtitle: "My First LM Module #1",
+)
 
 Build a bigram (word co-occurence) language model that tracks which words follow
 which other words in text.
@@ -10,6 +13,11 @@ which other words in text.
 - a short text (e.g. a few pages from a kids book, but can be anything)
 - grid paper (for tracking word patterns)
 - pen and pencil
+
+== Your goal
+
+To produce a grid---this is your bigram language model---that captures the
+patterns in your input text data.
 
 == Key idea
 

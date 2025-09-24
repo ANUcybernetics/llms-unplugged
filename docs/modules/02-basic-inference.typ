@@ -1,6 +1,9 @@
 #import "utils.typ": *
 
-#show: module-doc.with(title: [Basic Inference], subtitle: "My First LM Module #2")
+#show: module-doc.with(
+  title: [Basic Inference],
+  subtitle: "My First LM Module #2",
+)
 
 Use a pre-trained model to generate new text through weighted random sampling.
 
@@ -9,6 +12,10 @@ Use a pre-trained model to generate new text through weighted random sampling.
 - your completed model (i.e. the word co-occurence grid) from _Basic Training_
 - d20 (or similar) for weighted sampling
 - paper for writing down the generated "output text"
+
+== Your goal
+
+To generate new text (as much as you like!) from your bigram language model.
 
 == Key idea
 
