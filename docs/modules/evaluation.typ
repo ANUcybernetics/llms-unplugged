@@ -1,7 +1,11 @@
 #import "utils.typ": *
 
-#show: module-doc.with(title: [Model Evaluation], subtitle: "My First LM Module #7")
+#show: module-doc.with(
+  title: [Model Evaluation],
+  subtitle: "My First LM Module #7",
+)
 
+// NOTE: not sure if we'll ever use this one
 
 Learn how to measure whether your language model is "good" through both
 quantitative metrics and qualitative assessment. This module introduces
