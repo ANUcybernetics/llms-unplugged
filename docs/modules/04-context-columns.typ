@@ -1,6 +1,8 @@
 #import "@local/anu-typst-template:0.1.0": *
 #import "llm-utils.typ": *
 
+#set page(paper: "a4", flipped: true, columns: 2)
+
 #show: anu-template.with(
   title: [Context Columns],
   socy_logo: true,

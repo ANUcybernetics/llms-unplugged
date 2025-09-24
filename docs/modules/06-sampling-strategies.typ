@@ -1,6 +1,8 @@
 #import "@local/anu-typst-template:0.1.0": *
 #import "llm-utils.typ": *
 
+#set page(paper: "a4", flipped: true, columns: 2)
+
 #show: anu-template.with(
   title: [Sampling Strategies],
   socy_logo: true,
@@ -12,7 +14,7 @@ generates text.
 
 == You will need
 
-- a completed model model from an earlier module
+- a completed model from an earlier module
 
 == Key idea
 
