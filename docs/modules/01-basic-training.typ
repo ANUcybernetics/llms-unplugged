@@ -55,6 +55,8 @@ Original text: _"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot,
 Prepared text: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,` `spot`
 `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`
 
+#colbreak()
+
 After the first two words (`see` `spot`) the model is:
 
 #lm-grid-auto(("see", "spot"), nrows: 6, ncols: 7)

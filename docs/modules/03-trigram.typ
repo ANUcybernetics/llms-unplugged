@@ -27,12 +27,9 @@ data requirements that shapes all language models.
 
 #pagebreak()
 
-== Algorithm
+== Algorithm (training)
 
-=== Training
-
-+ *create a four-column table* with headers _word 1_ | _word 2_ | _word 3_ |
-  _count_ (note this isn't quite the same as the grid from _Basic Inference_)
++ *create a four-column table* (see example on right)
 + *extract all word triples*: for each (overlapping) 3-word "triple" in your
   text increment the _count_ column for that triple (include `,` and `.` as
   words as before), or create a new row if it's a triple you've never seen
@@ -41,25 +38,9 @@ data requirements that shapes all language models.
 Note: the order of the rows doesn't matter, so you can try and keep the rows
 sorted (grouped by _word 1_) but don't stress too much if they get split up.
 
-=== Inference
-
-+ pick any row from your table; write down _word 1_ and _word 2_ from that row
-  as your starting words
-+ find all rows where _word 1_ and _word 2_ are exact matches for your two
-  starting words, and make note of their _count_ columns
-+ as per _Basic Inference_ roll a d20 weighted by the counts and select the
-  _word 3_ associated with the chosen row
-+ move along by _one_ word (so _word 2_ becomes your new _word 1_ and _word 3_
-  becomes your new _word 2_) and repeat from step 2
-
-== Example
-
-=== Training
+=== Example (training)
 
 Original text: _"See Spot run. See Spot jump. See Spot run."_
-
-Prepared text: `see` `spot` `run` `.` `see` `spot` `jump` `.` `see` `spot` `run`
-`.`
 
 After the first four words (`see` `spot` `run` `.`) the model is:
 
@@ -86,7 +67,18 @@ After the full text the model is:
   ),
 )
 
-=== Inference
+== Algorithm (inference)
+
++ pick any row from your table; write down _word 1_ and _word 2_ from that row
+  as your starting words
++ find all rows where _word 1_ and _word 2_ are exact matches for your two
+  starting words, and make note of their _count_ columns
++ as per _Basic Inference_ roll a d20 weighted by the counts and select the
+  _word 3_ associated with the chosen row
++ move along by _one_ word (so _word 2_ becomes your new _word 1_ and _word 3_
+  becomes your new _word 2_) and repeat from step 2
+
+=== Example (inference)
 
 + choose `see` + `spot` as your starting _word 1_ and _word 2_:
 + find all rows with _word 1_ = `see` and _word 2_ = `spot`; in this case the
