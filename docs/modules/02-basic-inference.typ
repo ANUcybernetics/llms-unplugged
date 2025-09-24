@@ -1,13 +1,6 @@
-#import "@local/anu-typst-template:0.1.0": *
-#import "llm-utils.typ": *
+#import "utils.typ": *
 
-#set page(paper: "a4", flipped: true, columns: 2)
-
-#show: anu-template.with(
-  title: [Basic Inference],
-  socy_logo: true,
-  dark: sys.inputs.at("anu_theme", default: "dark") == "dark",
-)
+#show: module-doc.with(title: [Basic Inference])
 
 Use a pre-trained model to generate new text through weighted random sampling.
 
@@ -38,7 +31,28 @@ You can *try different starting words* to see how it affects the output.
 
 Here's a pre-trained language model grid:
 
-#lm-grid-auto(("see", "spot", "run", ".", "see", "spot", "jump", ".", "run", ",", "spot", ",", "run", ".", "jump", ",", "spot", ",", "jump", "."))
+#lm-grid-auto((
+  "see",
+  "spot",
+  "run",
+  ".",
+  "see",
+  "spot",
+  "jump",
+  ".",
+  "run",
+  ",",
+  "spot",
+  ",",
+  "run",
+  ".",
+  "jump",
+  ",",
+  "spot",
+  ",",
+  "jump",
+  ".",
+))
 
 To generate the next word after `see`:
 

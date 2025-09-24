@@ -1,3 +1,19 @@
+// Standard module template for consistent formatting
+// Usage: #show: module-doc.with(title: [Your Title])
+#let module-doc(title: none, body) = {
+  import "@local/anu-typst-template:0.1.0": *
+
+  set page(paper: "a5", flipped: true, columns: 2, numbering: none)
+
+  show: anu-template.with(
+    title: title,
+    studio_logo: true,
+    dark: true,
+  )
+
+  body
+}
+
 // Tally mark function for numeric values
 #let tally(n) = {
   if n == 0 { return [] }

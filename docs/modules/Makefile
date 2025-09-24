@@ -1,8 +1,5 @@
 # Makefile for converting markdown files and typst files to PDF
 
-# Theme configuration (dark or light)
-ANU_THEME = dark
-
 # Input and output directories
 INPUT_DIR = .
 OUTPUT_DIR = out
@@ -11,8 +8,8 @@ TEMPLATE = anu
 # Find all markdown and typst source files
 MD_FILES := $(wildcard $(INPUT_DIR)/*.md)
 TYP_SOURCE_FILES := $(wildcard $(INPUT_DIR)/*.typ)
-# Exclude llm-utils.typ as it's just a utility library
-TYP_SOURCE_FILES := $(filter-out ./llm-utils.typ,$(TYP_SOURCE_FILES))
+# Exclude utils.typ as it's just a utility library
+TYP_SOURCE_FILES := $(filter-out ./utils.typ,$(TYP_SOURCE_FILES))
 
 # Find numbered module files (00-*.typ through 09-*.typ)
 MODULE_FILES := $(wildcard $(INPUT_DIR)/0[0-9]-*.typ)
@@ -41,9 +38,9 @@ $(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.md
 	pandoc $< -o $@ --pdf-engine=typst --template=$(TEMPLATE)
 
 # Compile typst files directly to PDF
-$(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.typ llm-utils.typ
-	@echo "Processing typst $< with theme $(ANU_THEME)..."
-	typst compile --input anu_theme=$(ANU_THEME) $< $@
+$(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.typ utils.typ
+	@echo "Processing typst $<..."
+	typst compile $< $@
 
 # Clean target to remove generated files
 clean:

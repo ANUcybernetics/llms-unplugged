@@ -1,13 +1,6 @@
-#import "@local/anu-typst-template:0.1.0": *
-#import "llm-utils.typ": *
+#import "utils.typ": *
 
-#set page(paper: "a4", flipped: true, columns: 2)
-
-#show: anu-template.with(
-  title: [Basic Training],
-  socy_logo: true,
-  dark: sys.inputs.at("anu_theme", default: "dark") == "dark",
-)
+#show: module-doc.with(title: [Basic Training])
 
 Build a bigram (word co-occurence) language model that tracks which words follow
 which other words in text.
@@ -58,4 +51,25 @@ After the first two words (`see` `spot`) the model is:
 
 After the full text the model is:
 
-#lm-grid-auto(("see", "spot", "run", ".", "see", "spot", "jump", ".", "run", ",", "spot", ",", "run", ".", "jump", ",", "spot", ",", "jump", "."))
+#lm-grid-auto((
+  "see",
+  "spot",
+  "run",
+  ".",
+  "see",
+  "spot",
+  "jump",
+  ".",
+  "run",
+  ",",
+  "spot",
+  ",",
+  "run",
+  ".",
+  "jump",
+  ",",
+  "spot",
+  ",",
+  "jump",
+  ".",
+))

@@ -1,13 +1,6 @@
-#import "@local/anu-typst-template:0.1.0": *
-#import "llm-utils.typ": *
+#import "utils.typ": *
 
-#set page(paper: "a4", flipped: true, columns: 2)
-
-#show: anu-template.with(
-  title: [Sampling Strategies],
-  socy_logo: true,
-  dark: sys.inputs.at("anu_theme", default: "dark") == "dark",
-)
+#show: module-doc.with(title: [Sampling Strategies])
 
 Even after your model is trained, you have creative control over how it
 generates text.

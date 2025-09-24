@@ -1,13 +1,6 @@
-#import "@local/anu-typst-template:0.1.0": *
-#import "llm-utils.typ": *
+#import "utils.typ": *
 
-#set page(paper: "a4", flipped: true, columns: 2)
-
-#show: anu-template.with(
-  title: [Trigram Model],
-  socy_logo: true,
-  dark: sys.inputs.at("anu_theme", default: "dark") == "dark",
-)
+#show: module-doc.with(title: [Trigram Model])
 
 Extend the basic model to consider _two_ words of context instead of one,
 leading to better text generation.

@@ -1,13 +1,6 @@
-#import "@local/anu-typst-template:0.1.0": *
-#import "llm-utils.typ": *
+#import "utils.typ": *
 
-#set page(paper: "a4", flipped: true, columns: 2)
-
-#show: anu-template.with(
-  title: [Weighted Randomness],
-  socy_logo: true,
-  dark: sys.inputs.at("anu_theme", default: "dark") == "dark",
-)
+#show: module-doc.with(title: [Weighted Randomness])
 
 Learn how to make random choices where some options are more likely than
 others---the fundamental operation behind all language model text generation.
