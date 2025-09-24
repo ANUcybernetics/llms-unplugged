@@ -36,17 +36,7 @@ You can *try different starting words* to see how it affects the output.
 
 Here's a pre-trained language model grid:
 
-#lm-grid(
-  ([], [`see`], [`spot`], [`run`], [`jump`], [`.`], [`,`]),
-  (
-    ([`see`], [], 2, [], [], [], []),
-    ([`spot`], [], [], 2, 2, [], []),
-    ([`run`], [], [], [], [], 2, []),
-    ([`jump`], [], [], [], [], 2, []),
-    ([`.`], 2, [], 1, 1, [], []),
-    ([`,`], [], 2, [], [], [], []),
-  ),
-)
+#lm-grid-auto(("see", "spot", "run", ".", "see", "spot", "jump", ".", "run", ",", "spot", ",", "run", ".", "jump", ",", "spot", ",", "jump", "."))
 
 To generate the next word after `see`:
 

@@ -61,3 +61,60 @@
     ..processed-rows.flatten()
   )
 }
+
+// Automatically calculate bigram grid from token sequence
+#let lm-grid-auto(tokens, nrows: none, ncols: none) = {
+  // Get unique tokens for headers and row labels
+  let unique = tokens.dedup()
+
+  // Count bigram occurrences
+  let counts = (:)
+  for i in range(tokens.len() - 1) {
+    let key = tokens.at(i) + "->" + tokens.at(i + 1)
+    counts.insert(key, counts.at(key, default: 0) + 1)
+  }
+
+  // Determine actual dimensions
+  let actual-ncols = if ncols != none { ncols } else { unique.len() + 1 }
+  let actual-nrows = if nrows != none { nrows } else { unique.len() }
+
+  // Build headers (first empty, then tokens up to ncols limit)
+  let headers = ([],)
+  for i in range(actual-ncols - 1) {
+    if i < unique.len() {
+      let token = unique.at(i)
+      headers.push(eval("[`" + token + "`]"))
+    } else {
+      headers.push([])
+    }
+  }
+
+  // Build rows with counts (truncate or pad as needed)
+  let rows = ()
+  for row-idx in range(actual-nrows) {
+    let row = ()
+    if row-idx < unique.len() {
+      let from = unique.at(row-idx)
+      row.push(eval("[`" + from + "`]")) // row header
+      for col-idx in range(actual-ncols - 1) {
+        if col-idx < unique.len() {
+          let to = unique.at(col-idx)
+          let key = from + "->" + to
+          let count = counts.at(key, default: 0)
+          row.push(if count > 0 { count } else { [] })
+        } else {
+          row.push([]) // padding
+        }
+      }
+    } else {
+      // padding row
+      for _ in range(actual-ncols) {
+        row.push([])
+      }
+    }
+    rows.push(row)
+  }
+
+  // Use existing lm-grid function for display
+  lm-grid(headers, rows)
+}

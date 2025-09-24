@@ -52,28 +52,8 @@ Prepared text: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,` `spot`
 
 After the first two words (`see` `spot`) the model is:
 
-#lm-grid(
-  ([], [`see`], [`spot`], [], [], [], []),
-  (
-    ([`see`], [], 1, [], [], [], []),
-    ([`spot`], [], [], [], [], [], []),
-    ([], [], [], [], [], [], []),
-    ([], [], [], [], [], [], []),
-    ([], [], [], [], [], [], []),
-    ([], [], [], [], [], [], []),
-  ),
-)
+#lm-grid-auto(("see", "spot"), nrows: 6, ncols: 7)
 
 After the full text the model is:
 
-#lm-grid(
-  ([], [`see`], [`spot`], [`run`], [`jump`], [`.`], [`,`]),
-  (
-    ([`see`], [], 2, [], [], [], []),
-    ([`spot`], [], [], 2, 2, [], []),
-    ([`run`], [], [], [], [], 2, []),
-    ([`jump`], [], [], [], [], 2, []),
-    ([`.`], 2, [], 1, 1, [], []),
-    ([`,`], [], 2, [], [], [], []),
-  ),
-)
+#lm-grid-auto(("see", "spot", "run", ".", "see", "spot", "jump", ".", "run", ",", "spot", ",", "run", ".", "jump", ",", "spot", ",", "jump", "."))

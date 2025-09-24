@@ -50,15 +50,7 @@ Prepared text: `see` `spot` `.` `spot` `runs` `.`
 
 Bigram model grid:
 
-#lm-grid(
-  ([], [`see`], [`spot`], [`.`], [`runs`]),
-  (
-    ([`see`], [], 1, [], []),
-    ([`spot`], [], [], 1, 1),
-    ([`.`], [], 1, [], []),
-    ([`runs`], [], [], 1, []),
-  ),
-)
+#lm-grid-auto(("see", "spot", ".", "spot", "runs", "."))
 
 Each row is that word's embedding vector (using 0 for blank cells):
 - `see`: [0, 1, 0, 0]
