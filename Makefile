@@ -10,11 +10,18 @@ TRIGRAM_TEXTS := TinyStories-20k
 # Number of books to split trigrams into
 TRIGRAM_BOOKS := 6
 
-# Define paper sizes
-PAPER_SIZES := a4 a5
+# Paper size configuration
+PAPER_SIZE := a4
+
+# Set columns based on paper size
+ifeq ($(PAPER_SIZE),a4)
+COLUMNS := 4
+else ifeq ($(PAPER_SIZE),a5)
+COLUMNS := 3
+endif
 
 # Generate PDF target lists
-BIGRAM_PDFS := $(foreach text,$(BIGRAM_TEXTS),$(foreach size,$(PAPER_SIZES),$(OUT_DIR)/$(text)-bigram-$(size).pdf))
+BIGRAM_PDFS := $(foreach text,$(BIGRAM_TEXTS),$(OUT_DIR)/$(text)-bigram-$(PAPER_SIZE).pdf)
 
 # Define common variables
 TOOL := target/release/my_first_lm
@@ -30,54 +37,35 @@ $(shell mkdir -p $(OUT_DIR))
 $(TOOL): $(RUST_SOURCES)
 	cargo build --release
 
-# Pattern rule for bigram PDFs with paper size
-$(OUT_DIR)/%-bigram-a4.pdf: data/%.txt book.typ $(TOOL)
+# Pattern rule for bigram PDFs
+$(OUT_DIR)/%-bigram-$(PAPER_SIZE).pdf: data/%.txt book.typ $(TOOL)
 	$(TOOL) --n 2 $<
-	$(TYPST) --input paper_size=a4 --input columns=4 book.typ $@
-	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
-
-$(OUT_DIR)/%-bigram-a5.pdf: data/%.txt book.typ $(TOOL)
-	$(TOOL) --n 2 $<
-	$(TYPST) --input paper_size=a5 --input columns=3 book.typ $@
+	$(TYPST) --input paper_size=$(PAPER_SIZE) --input columns=$(COLUMNS) book.typ $@
 	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
 
 # Pattern rule for trigram book sets using a stamp file
 # The stamp file tracks when the entire set was built
-$(OUT_DIR)/%-trigram-a4.stamp: data/%.txt book.typ $(TOOL)
+$(OUT_DIR)/%-trigram-$(PAPER_SIZE).stamp: data/%.txt book.typ $(TOOL)
 	$(TOOL) --n 3 -b $(TRIGRAM_BOOKS) $< -o $(OUT_DIR)/$*-trigram.json
 	@for i in $$(seq 1 $(TRIGRAM_BOOKS)); do \
 		if [ -f $(OUT_DIR)/$*-trigram_book_$$i.json ]; then \
 			cp $(OUT_DIR)/$*-trigram_book_$$i.json model.json; \
-			$(TYPST) --input paper_size=a4 --input columns=4 book.typ $(OUT_DIR)/$*-trigram-a4-book$$i.pdf; \
-			echo "Pages in $(OUT_DIR)/$*-trigram-a4-book$$i.pdf: $$(pdfinfo $(OUT_DIR)/$*-trigram-a4-book$$i.pdf | grep Pages | awk '{print $$2}')"; \
+			$(TYPST) --input paper_size=$(PAPER_SIZE) --input columns=$(COLUMNS) book.typ $(OUT_DIR)/$*-trigram-$(PAPER_SIZE)-book$$i.pdf; \
+			echo "Pages in $(OUT_DIR)/$*-trigram-$(PAPER_SIZE)-book$$i.pdf: $$(pdfinfo $(OUT_DIR)/$*-trigram-$(PAPER_SIZE)-book$$i.pdf | grep Pages | awk '{print $$2}')"; \
 			rm -f model.json; \
 			rm -f $(OUT_DIR)/$*-trigram_book_$$i.json; \
 		fi; \
 	done
 	@touch $@
-	@echo "Created $(TRIGRAM_BOOKS) books for $*-trigram-a4"
-
-$(OUT_DIR)/%-trigram-a5.stamp: data/%.txt book.typ $(TOOL)
-	$(TOOL) --n 3 -b $(TRIGRAM_BOOKS) $< -o $(OUT_DIR)/$*-trigram.json
-	@for i in $$(seq 1 $(TRIGRAM_BOOKS)); do \
-		if [ -f $(OUT_DIR)/$*-trigram_book_$$i.json ]; then \
-			cp $(OUT_DIR)/$*-trigram_book_$$i.json model.json; \
-			$(TYPST) --input paper_size=a5 --input columns=3 book.typ $(OUT_DIR)/$*-trigram-a5-book$$i.pdf; \
-			echo "Pages in $(OUT_DIR)/$*-trigram-a5-book$$i.pdf: $$(pdfinfo $(OUT_DIR)/$*-trigram-a5-book$$i.pdf | grep Pages | awk '{print $$2}')"; \
-			rm -f model.json; \
-			rm -f $(OUT_DIR)/$*-trigram_book_$$i.json; \
-		fi; \
-	done
-	@touch $@
-	@echo "Created $(TRIGRAM_BOOKS) books for $*-trigram-a5"
+	@echo "Created $(TRIGRAM_BOOKS) books for $*-trigram-$(PAPER_SIZE)"
 
 # Generate stamp file targets for trigrams
-TRIGRAM_STAMPS := $(foreach text,$(TRIGRAM_TEXTS),$(foreach size,$(PAPER_SIZES),$(OUT_DIR)/$(text)-trigram-$(size).stamp))
+TRIGRAM_STAMPS := $(foreach text,$(TRIGRAM_TEXTS),$(OUT_DIR)/$(text)-trigram-$(PAPER_SIZE).stamp)
 
-# Default target to build everything
-.PHONY: all
-all: $(BIGRAM_PDFS) $(TRIGRAM_STAMPS)
-	@echo "All processing complete!"
+# Default target to build all booklets
+.PHONY: booklets
+booklets: $(BIGRAM_PDFS) $(TRIGRAM_STAMPS)
+	@echo "All booklets complete!"
 
 # Clean target to remove generated files
 .PHONY: clean
