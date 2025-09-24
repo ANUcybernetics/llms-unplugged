@@ -73,26 +73,24 @@ $|0-0| + |1-0| + |0-1| + |0-1| = 0 + 1 + 1 + 1 = 3$
 Put this distance in the embedding distance grid (note diagonals are already
 pre-filled with 0 as well):
 
-#lm-grid(
-  ([], [`see`], [`spot`], [`.`], [`runs`]),
-  (
-    ([`see`], 0, 3, [], []),
-    ([`spot`], [], 0, [], []),
-    ([`.`], [], [], 0, []),
-    ([`runs`], [], [], [], 0),
-  ),
+#table(
+  columns: 5,
+  [], [`see`], [`spot`], [`.`], [`runs`],
+  [`see`], [0], [3], [], [],
+  [`spot`], [], [0], [], [],
+  [`.`], [], [], [0], [],
+  [`runs`], [], [], [], [0],
 )
 
 Complete embedding distance grid (no need to fill out the bottom triangle):
 
-#lm-grid(
-  ([], [`see`], [`spot`], [`.`], [`runs`]),
-  (
-    ([`see`], 0, 3, 0, 2),
-    ([`spot`], [], 0, 3, 2),
-    ([`.`], [], [], 0, 2),
-    ([`runs`], [], [], [], 0),
-  ),
+#table(
+  columns: 5,
+  [], [`see`], [`spot`], [`.`], [`runs`],
+  [`see`], [0], [3], [0], [2],
+  [`spot`], [], [0], [3], [2],
+  [`.`], [], [], [0], [2],
+  [`runs`], [], [], [], [0],
 )
 
 The distances show that `see` and `.` have identical embeddings (distance = 0),
