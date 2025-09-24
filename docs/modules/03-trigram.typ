@@ -4,7 +4,7 @@
 #show: anu-template.with(
   title: [Trigram Model],
   socy_logo: true,
-  dark: true,
+  dark: sys.inputs.at("anu_theme", default: "dark") == "dark",
 )
 
 Extend the basic model to consider _two_ words of context instead of one,

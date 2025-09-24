@@ -4,7 +4,7 @@
 #show: anu-template.with(
   title: [Poetry Slam],
   socy_logo: true,
-  dark: true,
+  dark: sys.inputs.at("anu_theme", default: "dark") == "dark",
 )
 
 

@@ -4,7 +4,7 @@
 #show: anu-template.with(
   title: [Basic Training],
   socy_logo: true,
-  dark: true,
+  dark: sys.inputs.at("anu_theme", default: "dark") == "dark",
 )
 
 Build a bigram (word co-occurence) language model that tracks which words follow

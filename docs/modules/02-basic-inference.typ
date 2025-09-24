@@ -4,7 +4,7 @@
 #show: anu-template.with(
   title: [Basic Inference],
   socy_logo: true,
-  dark: true,
+  dark: sys.inputs.at("anu_theme", default: "dark") == "dark",
 )
 
 Use a pre-trained model to generate new text through weighted random sampling.

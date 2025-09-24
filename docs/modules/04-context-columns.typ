@@ -4,7 +4,7 @@
 #show: anu-template.with(
   title: [Context Columns],
   socy_logo: true,
-  dark: true,
+  dark: sys.inputs.at("anu_theme", default: "dark") == "dark",
 )
 
 Enhance your word bigram model with context columns that capture grammatical and

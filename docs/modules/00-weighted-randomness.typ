@@ -4,7 +4,7 @@
 #show: anu-template.with(
   title: [Weighted Randomness],
   socy_logo: true,
-  dark: true,
+  dark: sys.inputs.at("anu_theme", default: "dark") == "dark",
 )
 
 Learn how to make random choices where some options are more likely than

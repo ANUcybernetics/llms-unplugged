@@ -1,5 +1,8 @@
 # Makefile for converting markdown files and typst files to PDF
 
+# Theme configuration (dark or light)
+ANU_THEME = dark
+
 # Input and output directories
 INPUT_DIR = .
 OUTPUT_DIR = out
@@ -35,8 +38,8 @@ $(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.md
 
 # Compile typst files directly to PDF
 $(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.typ llm-utils.typ
-	@echo "Processing typst $<..."
-	typst compile $< $@
+	@echo "Processing typst $< with theme $(ANU_THEME)..."
+	typst compile --input anu_theme=$(ANU_THEME) $< $@
 
 # Clean target to remove generated files
 clean:
