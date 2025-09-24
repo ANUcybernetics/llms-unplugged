@@ -1,6 +1,6 @@
 #import "utils.typ": *
 
-#show: module-doc.with(title: [Basic Inference])
+#show: module-doc.with(title: [Basic Inference], subtitle: "My First LM Module #2")
 
 Use a pre-trained model to generate new text through weighted random sampling.
 

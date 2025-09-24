@@ -1,6 +1,6 @@
 #import "utils.typ": *
 
-#show: module-doc.with(title: [Context Columns])
+#show: module-doc.with(title: [Context Columns], subtitle: "My First LM Module #4")
 
 Enhance your word bigram model with context columns that capture grammatical and
 semantic patterns.

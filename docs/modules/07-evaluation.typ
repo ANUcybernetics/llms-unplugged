@@ -1,6 +1,6 @@
 #import "utils.typ": *
 
-#show: module-doc.with(title: [Model Evaluation])
+#show: module-doc.with(title: [Model Evaluation], subtitle: "My First LM Module #7")
 
 
 Learn how to measure whether your language model is "good" through both

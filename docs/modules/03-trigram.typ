@@ -1,6 +1,6 @@
 #import "utils.typ": *
 
-#show: module-doc.with(title: [Trigram Model])
+#show: module-doc.with(title: [Trigram Model], subtitle: "My First LM Module #3")
 
 Extend the basic model to consider _two_ words of context instead of one,
 leading to better text generation.

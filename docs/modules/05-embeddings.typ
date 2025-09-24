@@ -1,6 +1,6 @@
 #import "utils.typ": *
 
-#show: module-doc.with(title: [Word Embeddings])
+#show: module-doc.with(title: [Word Embeddings], subtitle: "My First LM Module #5")
 
 Transform words into numerical vectors using their patterns from your language
 model.

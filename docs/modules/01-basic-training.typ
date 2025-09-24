@@ -1,6 +1,6 @@
 #import "utils.typ": *
 
-#show: module-doc.with(title: [Basic Training])
+#show: module-doc.with(title: [Basic Training], subtitle: "My First LM Module #1")
 
 Build a bigram (word co-occurence) language model that tracks which words follow
 which other words in text.

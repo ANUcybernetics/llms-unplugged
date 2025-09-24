@@ -1,6 +1,6 @@
 #import "utils.typ": *
 
-#show: module-doc.with(title: [Weighted Randomness])
+#show: module-doc.with(title: [Weighted Randomness], subtitle: "My First LM Module #0")
 
 Learn how to make random choices where some options are more likely than
 others---the fundamental operation behind all language model text generation.

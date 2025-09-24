@@ -1,6 +1,6 @@
 #import "utils.typ": *
 
-#show: module-doc.with(title: [Sampling Strategies])
+#show: module-doc.with(title: [Sampling Strategies], subtitle: "My First LM Module #6")
 
 Even after your model is trained, you have creative control over how it
 generates text.
