@@ -4,6 +4,7 @@
 #show: anu-template.with(
   title: [Context Columns],
   socy_logo: true,
+  dark: true,
 )
 
 Enhance your word bigram model with context columns that capture grammatical and

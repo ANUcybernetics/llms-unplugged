@@ -4,6 +4,7 @@
 #show: anu-template.with(
   title: [Poetry Slam],
   socy_logo: true,
+  dark: true,
 )
 
 

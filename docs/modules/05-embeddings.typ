@@ -4,6 +4,7 @@
 #show: anu-template.with(
   title: [Word Embeddings],
   socy_logo: true,
+  dark: true,
 )
 
 Transform words into numerical vectors using their patterns from your language

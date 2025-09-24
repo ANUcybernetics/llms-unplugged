@@ -4,8 +4,8 @@
 #show: anu-template.with(
   title: [Sampling Strategies],
   socy_logo: true,
+  dark: true,
 )
-
 
 Even after your model is trained, you have creative control over how it
 generates text.

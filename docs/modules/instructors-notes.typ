@@ -4,6 +4,7 @@
 #show: anu-template.with(
   title: [Instructor's notes],
   socy_logo: true,
+  dark: true,
 )
 
 

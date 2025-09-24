@@ -4,6 +4,7 @@
 #show: anu-template.with(
   title: [Weighted Randomness],
   socy_logo: true,
+  dark: true,
 )
 
 Learn how to make random choices where some options are more likely than

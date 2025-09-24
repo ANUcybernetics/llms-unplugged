@@ -4,6 +4,7 @@
 #show: anu-template.with(
   title: [Basic Training],
   socy_logo: true,
+  dark: true,
 )
 
 Build a bigram (word co-occurence) language model that tracks which words follow

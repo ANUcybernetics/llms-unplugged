@@ -4,6 +4,7 @@
 #show: anu-template.with(
   title: [Model Evaluation],
   socy_logo: true,
+  dark: true,
 )
 
 

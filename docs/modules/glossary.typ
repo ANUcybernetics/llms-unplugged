@@ -4,6 +4,7 @@
 #show: anu-template.with(
   title: [Glossary: The Language of Language Models],
   socy_logo: true,
+  dark: true,
 )
 
 
