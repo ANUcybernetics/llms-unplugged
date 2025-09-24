@@ -4,10 +4,10 @@
   <style>
     .cell { fill: #f0f0f0; stroke: #888; stroke-width: 0.5; }
     .cell-numbered { fill: #e5cfa3; stroke: #888; stroke-width: 0.5; }
-    .group-divider { stroke: #000; stroke-width: 1.5; }
-    .number-text { font-family: Arial, sans-serif; font-size: 8px; font-weight: 600; text-anchor: middle; }
-    .label-text { font-family: Arial, sans-serif; font-size: 10px; font-weight: bold; }
-    .group-label { font-family: Arial, sans-serif; font-size: 7px; fill: #666; text-anchor: middle; }
+    .group-divider { stroke: #808080; stroke-width: 1.5; }
+    .number-text { font-family: Arial, sans-serif; font-size: 8px; font-weight: 600; text-anchor: middle; fill: #333; }
+    .label-text { font-family: Arial, sans-serif; font-size: 10px; font-weight: bold; fill: #808080; }
+    .group-label { font-family: Arial, sans-serif; font-size: 7px; text-anchor: middle; fill: #808080; }
   </style>
   <!-- Row 2: 2 groups -->
   <g transform="translate(50, 10)">
@@ -22,7 +22,7 @@
     <rect x="380" y="0" width="20" height="20" class="cell-numbered"/>
     <path d="M 20,0 v20 M 40,0 v20 M 60,0 v20 M 80,0 v20 M 100,0 v20 M 120,0 v20 M 140,0 v20 M 160,0 v20 M 180,0 v20 M 220,0 v20 M 240,0 v20 M 260,0 v20 M 280,0 v20 M 300,0 v20 M 320,0 v20 M 340,0 v20 M 360,0 v20 M 380,0 v20" stroke="#888" stroke-width="0.5" fill="none"/>
     <line x1="200" y1="0" x2="200" y2="20" class="group-divider"/>
-    <rect x="0" y="0" width="400" height="20" fill="none" stroke="#000" stroke-width="1.5"/>
+    <rect x="0" y="0" width="400" height="20" fill="none" stroke="#808080" stroke-width="1.5"/>
     <text x="10" y="13" class="number-text">1</text>
     <text x="190" y="13" class="number-text">10</text>
     <text x="210" y="13" class="number-text">11</text>
@@ -46,7 +46,7 @@
     <path d="M 20,0 v20 M 40,0 v20 M 60,0 v20 M 80,0 v20 M 100,0 v20 M 120,0 v20 M 160,0 v20 M 180,0 v20 M 200,0 v20 M 220,0 v20 M 240,0 v20 M 260,0 v20 M 300,0 v20 M 320,0 v20 M 340,0 v20 M 360,0 v20 M 380,0 v20" stroke="#888" stroke-width="0.5" fill="none"/>
     <line x1="140" y1="0" x2="140" y2="20" class="group-divider"/>
     <line x1="280" y1="0" x2="280" y2="20" class="group-divider"/>
-    <rect x="0" y="0" width="400" height="20" fill="none" stroke="#000" stroke-width="1.5"/>
+    <rect x="0" y="0" width="400" height="20" fill="none" stroke="#808080" stroke-width="1.5"/>
     <text x="10" y="13" class="number-text">1</text>
     <text x="130" y="13" class="number-text">7</text>
     <text x="150" y="13" class="number-text">8</text>
@@ -77,7 +77,7 @@
     <line x1="100" y1="0" x2="100" y2="20" class="group-divider"/>
     <line x1="200" y1="0" x2="200" y2="20" class="group-divider"/>
     <line x1="300" y1="0" x2="300" y2="20" class="group-divider"/>
-    <rect x="0" y="0" width="400" height="20" fill="none" stroke="#000" stroke-width="1.5"/>
+    <rect x="0" y="0" width="400" height="20" fill="none" stroke="#808080" stroke-width="1.5"/>
     <text x="10" y="13" class="number-text">1</text>
     <text x="90" y="13" class="number-text">5</text>
     <text x="110" y="13" class="number-text">6</text>
@@ -115,7 +115,7 @@
     <line x1="160" y1="0" x2="160" y2="20" class="group-divider"/>
     <line x1="240" y1="0" x2="240" y2="20" class="group-divider"/>
     <line x1="320" y1="0" x2="320" y2="20" class="group-divider"/>
-    <rect x="0" y="0" width="400" height="20" fill="none" stroke="#000" stroke-width="1.5"/>
+    <rect x="0" y="0" width="400" height="20" fill="none" stroke="#808080" stroke-width="1.5"/>
     <text x="10" y="13" class="number-text">1</text>
     <text x="70" y="13" class="number-text">4</text>
     <text x="90" y="13" class="number-text">5</text>
@@ -160,7 +160,7 @@
     <line x1="220" y1="0" x2="220" y2="20" class="group-divider"/>
     <line x1="280" y1="0" x2="280" y2="20" class="group-divider"/>
     <line x1="340" y1="0" x2="340" y2="20" class="group-divider"/>
-    <rect x="0" y="0" width="400" height="20" fill="none" stroke="#000" stroke-width="1.5"/>
+    <rect x="0" y="0" width="400" height="20" fill="none" stroke="#808080" stroke-width="1.5"/>
     <text x="10" y="13" class="number-text">1</text>
     <text x="70" y="13" class="number-text">4</text>
     <text x="90" y="13" class="number-text">5</text>
@@ -211,7 +211,7 @@
     <line x1="240" y1="0" x2="240" y2="20" class="group-divider"/>
     <line x1="300" y1="0" x2="300" y2="20" class="group-divider"/>
     <line x1="360" y1="0" x2="360" y2="20" class="group-divider"/>
-    <rect x="0" y="0" width="400" height="20" fill="none" stroke="#000" stroke-width="1.5"/>
+    <rect x="0" y="0" width="400" height="20" fill="none" stroke="#808080" stroke-width="1.5"/>
     <text x="10" y="13" class="number-text">1</text>
     <text x="50" y="13" class="number-text">3</text>
     <text x="70" y="13" class="number-text">4</text>
@@ -266,7 +266,7 @@
     <line x1="280" y1="0" x2="280" y2="20" class="group-divider"/>
     <line x1="320" y1="0" x2="320" y2="20" class="group-divider"/>
     <line x1="360" y1="0" x2="360" y2="20" class="group-divider"/>
-    <rect x="0" y="0" width="400" height="20" fill="none" stroke="#000" stroke-width="1.5"/>
+    <rect x="0" y="0" width="400" height="20" fill="none" stroke="#808080" stroke-width="1.5"/>
     <text x="10" y="13" class="number-text">1</text>
     <text x="50" y="13" class="number-text">3</text>
     <text x="70" y="13" class="number-text">4</text>
@@ -325,7 +325,7 @@
     <line x1="280" y1="0" x2="280" y2="20" class="group-divider"/>
     <line x1="320" y1="0" x2="320" y2="20" class="group-divider"/>
     <line x1="360" y1="0" x2="360" y2="20" class="group-divider"/>
-    <rect x="0" y="0" width="400" height="20" fill="none" stroke="#000" stroke-width="1.5"/>
+    <rect x="0" y="0" width="400" height="20" fill="none" stroke="#808080" stroke-width="1.5"/>
     <text x="10" y="13" class="number-text">1</text>
     <text x="50" y="13" class="number-text">3</text>
     <text x="70" y="13" class="number-text">4</text>
