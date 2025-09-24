@@ -19,12 +19,11 @@ struct Args {
     #[arg(short, long, default_value_t = 2)]
     n: usize,
 
-    /// Optional value 'd' to scale counts.
-    /// If present, for prefixes with <= d followers, counts are scaled to [1, d].
-    /// For prefixes with > d followers (or if this arg is not passed),
-    /// counts are scaled to [0, 10^n - 1] (smallest n-digit number range).
-    #[arg(long = "scale-d")]
-    scale_d: Option<u32>,
+    /// Value 'd' to scale counts (default: 10).
+    /// For prefixes with <= d followers, counts are scaled to [1, d].
+    /// For prefixes with > d followers, counts are scaled to [0, 10^n - 1] (smallest n-digit number range).
+    #[arg(long = "scale-d", default_value_t = 10)]
+    scale_d: u32,
 
     /// Number of books to split the output into (default 1 = no splitting)
     #[arg(short = 'b', long = "books", default_value_t = 1)]
@@ -42,14 +41,7 @@ struct Args {
 fn main() {
     let args = Args::parse();
 
-    // Check for incompatible flags
-    if args.raw && args.scale_d.is_some() {
-        eprintln!("Error: Cannot use both --raw and --scale-d flags together.");
-        eprintln!("  --raw outputs unscaled counts");
-        eprintln!("  --scale-d applies scaling to counts");
-        eprintln!("Please use only one of these options.");
-        std::process::exit(1);
-    }
+    // No need to check for incompatible flags - if raw is specified, it overrides scale_d
 
     // Create an NGramCounter and process the file
     let mut counter = NGramCounter::new(args.n);
@@ -90,7 +82,9 @@ fn main() {
                     metadata.cloned()
                 };
                 
-                match save_to_json(book_entries, &output_file, args.scale_d, book_metadata.as_ref(), args.raw) {
+                // Pass scale_d only if not in raw mode
+                let scale_d_param = if args.raw { None } else { Some(args.scale_d) };
+                match save_to_json(book_entries, &output_file, scale_d_param, book_metadata.as_ref(), args.raw) {
                     Ok(_) => {
                         if args.num_books > 1 {
                             println!(
@@ -116,10 +110,8 @@ fn main() {
             if all_success {
                 if args.raw {
                     println!("Output raw counts without scaling");
-                } else if let Some(d) = args.scale_d {
-                    println!("Applied count scaling with d={}", d);
                 } else {
-                    println!("Applied default count scaling to [0, 10^n-1] range");
+                    println!("Applied count scaling with d={}", args.scale_d);
                 }
 
                     // Print metadata information

@@ -28,6 +28,9 @@ pub struct Metadata {
     /// Book information for multi-book outputs
     #[serde(skip_serializing_if = "Option::is_none")]
     pub book_info: Option<BookInfo>,
+    /// Scale_d value used for dice scaling (None if raw mode)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scale_d: Option<u32>,
 }
 
 /// Information about a specific book in a multi-book set
@@ -215,6 +218,7 @@ impl NGramCounter {
                         url: url.to_string(),
                         n: self.n,
                         book_info: None,
+                        scale_d: None, // Will be set during save_to_json
                     });
                 } else {
                     // Missing required fields, return error
@@ -719,7 +723,12 @@ pub fn save_to_json<P: AsRef<Path>>(
 
     // Add metadata if available
     if let Some(meta) = metadata {
-        output.insert("metadata".to_string(), serde_json::to_value(meta)?);
+        // Clone metadata and set scale_d if not in raw mode
+        let mut meta_with_scale = meta.clone();
+        if !raw {
+            meta_with_scale.scale_d = scale_d;
+        }
+        output.insert("metadata".to_string(), serde_json::to_value(meta_with_scale)?);
     } else {
         // Create minimal metadata with just the n value
         let mut meta_map = serde_json::Map::new();
@@ -1017,6 +1026,7 @@ mod tests {
             url: "https://example.com/bigrams".to_string(),
             n: 2,
             book_info: None,
+            scale_d: None,
         };
 
         // Test with scale_d = None (default 10^k-1 scaling)
@@ -1129,6 +1139,7 @@ mod tests {
             url: "https://example.com/trigrams".to_string(),
             n: 3,
             book_info: None,
+            scale_d: None,
         };
 
         // Test with scale_d = None (default 10^k-1 scaling)
@@ -1234,6 +1245,7 @@ mod tests {
             url: "https://example.com/cumulative".to_string(),
             n: 2,
             book_info: None,
+            scale_d: None,
         };
 
         // Test with scale_d = None (default 10^k-1 scaling)
@@ -1337,6 +1349,7 @@ mod tests {
             url: "https://example.com/optimized".to_string(),
             n: 2,
             book_info: None,
+            scale_d: None,
         };
 
         save_to_json(&entries_to_optimise, &path, Some(120), Some(&metadata_opt), false)?;
@@ -1377,6 +1390,7 @@ mod tests {
             url: "https://example.com/count3".to_string(),
             n: 2,
             book_info: None,
+            scale_d: None,
         };
 
         save_to_json(&entries_count_3, &path, Some(120), Some(&metadata_count3), false)?;
@@ -1428,6 +1442,7 @@ mod tests {
             url: "https://example.com/duplicate".to_string(),
             n: 2,
             book_info: None,
+            scale_d: None,
         };
 
         // With scale_d = 3, we'd normally use [1,3] scaling
@@ -1490,6 +1505,7 @@ mod tests {
             url: "https://example.com/edge".to_string(),
             n: 2,
             book_info: None,
+            scale_d: None,
         };
 
         // With scale_d = 1, we can't scale 2 followers uniquely to [1,1]
@@ -1520,6 +1536,7 @@ mod tests {
             url: "https://example.com/mixed".to_string(),
             n: 2,
             book_info: None,
+            scale_d: None,
         };
 
         // With scale_d = 2, the scaling would be very uneven but should work
@@ -1573,6 +1590,7 @@ mod tests {
             url: "https://test.com".to_string(),
             n: 2,
             book_info: None,
+            scale_d: None,
         };
 
         // Test with raw=true (no scaling)
@@ -1628,6 +1646,7 @@ mod tests {
             url: "https://test.com".to_string(),
             n: 2,
             book_info: None,
+            scale_d: None,
         };
 
         // Test raw output

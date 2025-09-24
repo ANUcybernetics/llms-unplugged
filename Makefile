@@ -32,19 +32,19 @@ $(TOOL): $(RUST_SOURCES)
 
 # Pattern rule for bigram PDFs with paper size
 $(OUT_DIR)/%-bigram-a4.pdf: data/%.txt book.typ $(TOOL)
-	$(TOOL) --scale-d 120 --n 2 $<
+	$(TOOL) --n 2 $<
 	$(TYPST) --input paper_size=a4 --input columns=4 book.typ $@
 	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
 
 $(OUT_DIR)/%-bigram-a5.pdf: data/%.txt book.typ $(TOOL)
-	$(TOOL) --scale-d 120 --n 2 $<
+	$(TOOL) --n 2 $<
 	$(TYPST) --input paper_size=a5 --input columns=3 book.typ $@
 	@echo "Pages in $@: $$(pdfinfo $@ | grep Pages | awk '{print $$2}')"
 
 # Pattern rule for trigram book sets using a stamp file
 # The stamp file tracks when the entire set was built
 $(OUT_DIR)/%-trigram-a4.stamp: data/%.txt book.typ $(TOOL)
-	$(TOOL) --scale-d 120 --n 3 -b $(TRIGRAM_BOOKS) $< -o $(OUT_DIR)/$*-trigram.json
+	$(TOOL) --n 3 -b $(TRIGRAM_BOOKS) $< -o $(OUT_DIR)/$*-trigram.json
 	@for i in $$(seq 1 $(TRIGRAM_BOOKS)); do \
 		if [ -f $(OUT_DIR)/$*-trigram_book_$$i.json ]; then \
 			cp $(OUT_DIR)/$*-trigram_book_$$i.json model.json; \
@@ -58,7 +58,7 @@ $(OUT_DIR)/%-trigram-a4.stamp: data/%.txt book.typ $(TOOL)
 	@echo "Created $(TRIGRAM_BOOKS) books for $*-trigram-a4"
 
 $(OUT_DIR)/%-trigram-a5.stamp: data/%.txt book.typ $(TOOL)
-	$(TOOL) --scale-d 120 --n 3 -b $(TRIGRAM_BOOKS) $< -o $(OUT_DIR)/$*-trigram.json
+	$(TOOL) --n 3 -b $(TRIGRAM_BOOKS) $< -o $(OUT_DIR)/$*-trigram.json
 	@for i in $$(seq 1 $(TRIGRAM_BOOKS)); do \
 		if [ -f $(OUT_DIR)/$*-trigram_book_$$i.json ]; then \
 			cp $(OUT_DIR)/$*-trigram_book_$$i.json model.json; \

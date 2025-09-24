@@ -6,13 +6,13 @@
 
 #set text(font: "Libertinus Serif", size: eval(font_size))
 
-// how many sided die will the book be optimised for?
-#let dice_d = 120
-
 // Load the JSON data
 #let json_data = json("model.json")
 #let data = json_data.data
 #let doc_metadata = json_data.metadata
+
+// Get the dice size from metadata (defaults to 10 if not present)
+#let dice_d = doc_metadata.at("scale_d", default: 10)
 
 // Create a state variable to track the current prefix
 #let current_prefix = state("current-prefix", "")
@@ -291,7 +291,9 @@
     )#label("prefix-" + prefix)]
 
   // the dice roll number (showing digit count as a compression indicator)
-  if total_count != dice_d {
+  // Only show when using 10^k scaling (not the specified dice_d)
+  // AND when more than 1 d10 is needed (total_count > 9)
+  if total_count != dice_d and total_count > 9 {
     h(0.3em)
     box[#text(weight: "bold")[#str(total_count).len()]♢]
   }

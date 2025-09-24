@@ -339,21 +339,21 @@ fn test_cli_raw_flag() -> io::Result<()> {
     let mut the_scaled_total = None;
 
     for entry in data_raw {
-        if entry[0].as_str().unwrap() == "the" {
+        if entry[0].as_str().unwrap() == "The" {
             the_raw_total = Some(entry[1].as_u64().unwrap());
             break;
         }
     }
 
     for entry in data_scaled {
-        if entry[0].as_str().unwrap() == "the" {
+        if entry[0].as_str().unwrap() == "The" {
             the_scaled_total = Some(entry[1].as_u64().unwrap());
             break;
         }
     }
 
-    // Raw should have actual count (2), scaled should be different
-    assert_eq!(the_raw_total, Some(2), "Raw output should have actual count");
+    // Raw should have actual count (3), scaled should be different
+    assert_eq!(the_raw_total, Some(3), "Raw output should have actual count");
     assert_ne!(the_raw_total, the_scaled_total, "Raw and scaled totals should differ");
 
     Ok(())
@@ -392,23 +392,16 @@ fn test_cli_incompatible_flags() -> io::Result<()> {
     }
 
     // Try to run with both --raw and --scale-d flags
+    // Now this should succeed, with --raw overriding --scale-d
     let output = Command::new(&exe_path)
         .arg(&input_path)
         .arg("--raw")
         .arg("--scale-d")
-        .arg("10")
+        .arg("120")
         .output()?;
 
-    // Should fail with error
-    assert!(!output.status.success(), "CLI should fail with incompatible flags");
-
-    // Check error message
-    let stderr = String::from_utf8_lossy(&output.stderr);
-    assert!(
-        stderr.contains("Cannot use both --raw and --scale-d"),
-        "Should output error about incompatible flags: {}",
-        stderr
-    );
+    // Should succeed since --raw overrides --scale-d
+    assert!(output.status.success(), "CLI should succeed with --raw overriding --scale-d");
 
     Ok(())
 }
@@ -455,7 +448,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
         return Ok(());
     }
 
-    // Run CLI: no scaling args (default 10^k-1)
+    // Run CLI: no scaling args (default d=10)
     let status_no_scale_arg = Command::new(&exe_path)
         .arg(&input_path)
         .arg("-o")
@@ -711,35 +704,43 @@ fn test_cli_end_to_end() -> io::Result<()> {
         "Expected 'the' to be followed by 'quick' at least once"
     );
 
-    // --- Test scaling for json_no_scale_arg (10^k-1) ---
+    // --- Test scaling for json_no_scale_arg (d=10 default) ---
     let data_arr_2 = json_no_scale_arg.get("data").unwrap().as_array().unwrap();
     for entry in data_arr_2 {
         let entry_arr = entry.as_array().unwrap();
         let prefix_str = entry_arr[0].as_str().unwrap_or("");
         let total_scaled = entry_arr[1].as_u64().unwrap_or(0);
 
-        // Example: prefix "the", original total 4 -> k=1, scales to 9
+        // Example: prefix "the", original total 4 -> d=10 default
         // followers: "dog" (1), "fox" (1), "lazy" (1), "quick" (1)
-        // Scaled: dog(2), fox(5), lazy(7), quick(9)
+        // 4 unique followers <= 10, scale to [1,10]
+        // Scaled with factor 10/4 = 2.5:
+        // dog(1): ceil(1*2.5) = 3
+        // fox(1): ceil(2*2.5) = 5
+        // lazy(1): ceil(3*2.5) = 8
+        // quick(1): last element = 10
         if prefix_str == "the" {
-            assert_eq!(total_scaled, 9, "Prefix 'the' (no-scale-arg) total count");
-            assert_eq!(entry_arr[2], serde_json::json!(["dog", 2]));
+            assert_eq!(total_scaled, 10, "Prefix 'the' (no-scale-arg) total count");
+            assert_eq!(entry_arr[2], serde_json::json!(["dog", 3]));
             assert_eq!(entry_arr[3], serde_json::json!(["fox", 5]));
-            assert_eq!(entry_arr[4], serde_json::json!(["lazy", 7]));
-            assert_eq!(entry_arr[5], serde_json::json!(["quick", 9]));
+            assert_eq!(entry_arr[4], serde_json::json!(["lazy", 8]));
+            assert_eq!(entry_arr[5], serde_json::json!(["quick", 10]));
         }
         // Example: prefix "quick", with punctuation tokenization:
         // "quick, Brown" -> "quick" followed by ","
         // "Quick brown" -> "quick" followed by "brown"
         // "quick and" -> "quick" followed by "and"
         // So followers: "," (1), "brown" (1), "and" (1) -> total 3
-        // With total 3 -> k=1, scales to 9
-        // Scaled: ","(3), "and"(6), "brown"(9) (alphabetical when counts equal)
+        // With d=10 (default): 3 unique followers <= 10, scales to [1, 10]
+        // Scaled with factor 10/3:
+        // ","(1): ceil(1*3.33) = 4
+        // "and"(1): ceil(2*3.33) = 7, max(7, 4+1) = 7
+        // "brown"(1): last element = 10
         if prefix_str == "quick" {
-            assert_eq!(total_scaled, 9, "Prefix 'quick' (no-scale-arg) total count");
-            assert_eq!(entry_arr[2], serde_json::json!([",", 3]));
-            assert_eq!(entry_arr[3], serde_json::json!(["and", 6]));
-            assert_eq!(entry_arr[4], serde_json::json!(["brown", 9]));
+            assert_eq!(total_scaled, 10, "Prefix 'quick' (no-scale-arg) total count");
+            assert_eq!(entry_arr[2], serde_json::json!([",", 4]));
+            assert_eq!(entry_arr[3], serde_json::json!(["and", 7]));
+            assert_eq!(entry_arr[4], serde_json::json!(["brown", 10]));
         }
     }
 

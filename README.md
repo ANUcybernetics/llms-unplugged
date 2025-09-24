@@ -66,18 +66,19 @@ and then typesetting those statistics into a booklet using Typst.
       statistics (in JSON format) will be saved. Defaults to `model.json`.
     - `-n, --n <N>`: The size of the N-gram (e.g., `2` for bigrams, `3` for
       trigrams). Defaults to `2`.
-    - `--scale-d <D>`: Optional integer value `D` to control count scaling.
-      - If provided, and a prefix has a number of unique followers less than or
-        equal to `D`, its follower counts are scaled to the range `[1, D]`. The
-        total count for the prefix in the JSON will be `D`. This is useful to
-        tailor the output to the specific die you intend to do for the random
-        sampling.
-      - If a prefix has more unique followers than `D`, or if `--scale-d` is not
-        provided, its follower counts are scaled to the range `[0, 10^k - 1]`,
-        where `k` is the number of digits in the original total follower count
-        for that prefix. The total count in the JSON becomes `10^k - 1`. To
-        sample a next word from these prefixes, roll the correct amound of d10
-        (indicated by a ♢ next to the word).
+    - `--scale-d <D>`: Integer value `D` to control count scaling (default: 10).
+      - If a prefix has a number of unique followers less than or equal to `D`,
+        its follower counts are scaled to the range `[1, D]`. The total count
+        for the prefix in the JSON will be `D`. This is useful to tailor the
+        output to the specific die you intend to use for random sampling.
+      - If a prefix has more unique followers than `D`, its follower counts are
+        scaled to the range `[0, 10^k - 1]`, where `k` is the number of digits
+        in the original total follower count for that prefix. The total count in
+        the JSON becomes `10^k - 1`. To sample a next word from these prefixes,
+        roll the correct amount of d10 dice (indicated by a ♢ next to the word
+        when more than one die is needed).
+    - `--raw`: Output raw counts without any scaling. This overrides the
+      `--scale-d` parameter if both are provided.
 
     **Example (generating d20-style scaled bigram statistics):** Let's say you
     have your text in `true-blue.txt` and your die of choice is a d20:
@@ -97,8 +98,8 @@ and then typesetting those statistics into a booklet using Typst.
     ./target/release/my_first_lm true-blue.txt --scale-d 20
     ```
 
-    If you omit `--scale-d` entirely, all prefixes will use the `[0, 10^k-1]`
-    scaling.
+    If you omit `--scale-d`, the default value of 10 is used (optimized for d10
+    dice).
 
 3.  **Generate the Booklet:** The `book.typ` file is designed to read the
     statistics from a file named `out.json` in the same directory. Rename your
