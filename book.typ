@@ -113,7 +113,7 @@
     #text(size: 1.2em)[#context doc_metadata.author]
     #v(0.5cm)
 
-    #text(size: 1em)[© 2025 Cybernetic Studio]
+    #text(size: 1em)[© 2025 Ben Swift]
     #v(0.5cm)
 
     #text(size: 0.9em)[
