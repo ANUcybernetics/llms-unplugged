@@ -8,7 +8,7 @@ BIGRAM_TEXTS := collected-hemingway frankenstein cloudstreet
 TRIGRAM_TEXTS := TinyStories-20k
 
 # Number of books to split trigrams into
-TRIGRAM_BOOKS := 6
+TRIGRAM_BOOKS := 3
 
 # Paper size configuration
 PAPER_SIZE := a4
