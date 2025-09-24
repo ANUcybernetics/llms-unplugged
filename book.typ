@@ -100,6 +100,14 @@
       text(size: 2em)[#subtitle]
     }
   ]
+
+  // Cybernetic Studio wordmark
+  place(bottom + right)[
+    #text(font: "Neon Tubes 2", size: 24pt)[
+      Cybernetic\
+      Studio
+    ]
+  ]
   pagebreak()
 }
 
@@ -107,6 +115,7 @@
 #let copyright-page() = {
   set page(paper_size, margin: (x: 2.5cm, y: 2.5cm))
   set text(size: 12pt)
+
   align(horizon)[
     #text(size: 1.2em)[A #context model-type(doc_metadata.n) language model of]
     #text(size: 1.2em, style: "italic")[#context doc_metadata.title by]
