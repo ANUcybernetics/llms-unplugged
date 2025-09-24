@@ -67,7 +67,7 @@
 
   table(
     columns: (1fr,) * headers.len(),
-    rows: (auto, 2.5em),
+    rows: (auto, 2.4em),
     align: alignment,
     table.header(..headers.map(h => [*#h*])),
     ..processed-data.flatten()
@@ -87,7 +87,7 @@
 
   table(
     columns: (1fr,) * headers.len(),
-    rows: (auto, 2.5em),
+    rows: (auto, 2.4em),
     align: (col, row) => if row == 0 { center } else { left },
     table.header(..headers),
     ..processed-rows.flatten()
