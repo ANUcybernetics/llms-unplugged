@@ -20,11 +20,12 @@ your newly context-aware model.
 
 == Key idea
 
-This activity introduces the concept of attention---selectively focusing on
-relevant context---which is the key innovation behind transformer models like
-GPT. By adding grammatical context columns to your model, you manually implement
-what transformers learn automatically---which previous words matter most for
-prediction.
+The concept of attention---selectively focusing on relevant context---is the key
+innovation behind transformer models like GPT. By adding grammatical context
+columns to your model, you manually implement what transformers learn
+automatically---which previous words matter most for prediction.
+
+#pagebreak()
 
 == Algorithm
 

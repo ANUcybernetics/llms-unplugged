@@ -23,6 +23,8 @@ Language models generate text by predicting one word at a time based on learnt
 patterns. Your trained model provides the "next word" options and their
 probabilities; dice rolls provide the randomness to choose one of those options.
 
+#pagebreak()
+
 == Algorithm
 
 + *choose a starting word*---pick any word from the first column of your grid

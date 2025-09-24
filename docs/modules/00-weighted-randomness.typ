@@ -29,6 +29,8 @@ than others. There are ways to do this which ensure certain relationships
 between the outcomes (e.g. one outcome happening twice as often as another one)
 _on average_.
 
+#pagebreak()
+
 == Algorithm 1: Beads in a Bag
 
 - *materials*: coloured beads, bag
@@ -67,6 +69,6 @@ ones correspond to which outcomes.
 You can use any dice (d6, d10, d20, d120, etc.), it will just change the number
 ranges corresponding to each outcome.
 
-=== d20 dice roll → outcome mapping table
+== d20 dice roll → outcome mapping table
 
 #figure(image("dice-mappings.svg", width: 100%))

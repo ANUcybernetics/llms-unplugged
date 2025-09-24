@@ -11,8 +11,7 @@ model.
 == You will need
 
 - your completed bigram model grid (including context columns if you have them)
-- more grid paper (for similarity matrix)
-- ruler and graph paper for plotting and measuring word vectors (optional)
+- another empty grid (same size as your bigram model)
 
 == Your goal
 
@@ -26,6 +25,8 @@ meaning through usage patterns. Each word's row in your model is its embedding
 under that model---a numerical fingerprint that captures meaning through
 context. Distances between words real grammatical and semantic relationships.
 Similar words have similar embeddings.
+
+#pagebreak()
 
 == Algorithm
 
