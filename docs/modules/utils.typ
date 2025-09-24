@@ -13,6 +13,20 @@
     dark: true,
   )
 
+  // Make the first paragraph larger (1.4em) for emphasis with extra spacing
+  let para-count = state("para-count", 0)
+  show par: it => {
+    para-count.update(n => n + 1)
+    context {
+      if para-count.get() == 1 {
+        text(size: 1.4em, it)
+        v(1em)
+      } else {
+        it
+      }
+    }
+  }
+
   body
 }
 
