@@ -67,10 +67,13 @@ and then typesetting those statistics into a booklet using Typst.
     - `-n, --n <N>`: The size of the N-gram (e.g., `2` for bigrams, `3` for
       trigrams). Defaults to `2`.
     - `--scale-d <D>`: Integer value `D` to control count scaling (default: 10).
-      - If a prefix has a number of unique followers less than or equal to `D`,
-        its follower counts are scaled to the range `[1, D]`. The total count
-        for the prefix in the JSON will be `D`. This is useful to tailor the
-        output to the specific die you intend to use for random sampling.
+      - For `D = 10`: Always scales to the range `[0, 9]` to match physical d10
+        dice (which are numbered 0-9). This allows direct use of d10 rolls
+        without mental conversion.
+      - For other `D` values: If a prefix has ≤ `D` unique followers, scales to
+        the range `[1, D]`. The total count for the prefix in the JSON will be
+        `D`. This is useful to tailor the output to the specific die you intend
+        to use for random sampling.
       - If a prefix has more unique followers than `D`, its follower counts are
         scaled to the range `[0, 10^k - 1]`, where `k` is the number of digits
         in the original total follower count for that prefix. The total count in

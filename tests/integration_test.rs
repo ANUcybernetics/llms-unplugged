@@ -713,34 +713,36 @@ fn test_cli_end_to_end() -> io::Result<()> {
 
         // Example: prefix "the", original total 4 -> d=10 default
         // followers: "dog" (1), "fox" (1), "lazy" (1), "quick" (1)
-        // 4 unique followers <= 10, scale to [1,10]
-        // Scaled with factor 10/4 = 2.5:
-        // dog(1): ceil(1*2.5) = 3
-        // fox(1): ceil(2*2.5) = 5
-        // lazy(1): ceil(3*2.5) = 8
-        // quick(1): last element = 10
+        // With d=10 (default): now uses 10^k-1 scaling to get [0, 9] range
+        // Total count = 4, so scale to [0, 9]
+        // Scaled with factor 9/4 = 2.25:
+        // dog(1): round(1*2.25) = 2
+        // fox(1): round(2*2.25) = 5 (4.5 rounds to 5)
+        // lazy(1): round(3*2.25) = 7 (6.75 rounds to 7)
+        // quick(1): round(4*2.25) = 9
         if prefix_str == "the" {
-            assert_eq!(total_scaled, 10, "Prefix 'the' (no-scale-arg) total count");
-            assert_eq!(entry_arr[2], serde_json::json!(["dog", 3]));
+            assert_eq!(total_scaled, 9, "Prefix 'the' (no-scale-arg) total count");
+            assert_eq!(entry_arr[2], serde_json::json!(["dog", 2]));
             assert_eq!(entry_arr[3], serde_json::json!(["fox", 5]));
-            assert_eq!(entry_arr[4], serde_json::json!(["lazy", 8]));
-            assert_eq!(entry_arr[5], serde_json::json!(["quick", 10]));
+            assert_eq!(entry_arr[4], serde_json::json!(["lazy", 7]));
+            assert_eq!(entry_arr[5], serde_json::json!(["quick", 9]));
         }
         // Example: prefix "quick", with punctuation tokenization:
         // "quick, Brown" -> "quick" followed by ","
         // "Quick brown" -> "quick" followed by "brown"
         // "quick and" -> "quick" followed by "and"
         // So followers: "," (1), "brown" (1), "and" (1) -> total 3
-        // With d=10 (default): 3 unique followers <= 10, scales to [1, 10]
-        // Scaled with factor 10/3:
-        // ","(1): ceil(1*3.33) = 4
-        // "and"(1): ceil(2*3.33) = 7, max(7, 4+1) = 7
-        // "brown"(1): last element = 10
+        // With d=10 (default): now uses 10^k-1 scaling to get [0, 9] range
+        // Total count = 3, so scale to [0, 9]
+        // Scaled with factor 9/3 = 3:
+        // ","(1): round(1*3) = 3
+        // "and"(1): round(2*3) = 6
+        // "brown"(1): round(3*3) = 9
         if prefix_str == "quick" {
-            assert_eq!(total_scaled, 10, "Prefix 'quick' (no-scale-arg) total count");
-            assert_eq!(entry_arr[2], serde_json::json!([",", 4]));
-            assert_eq!(entry_arr[3], serde_json::json!(["and", 7]));
-            assert_eq!(entry_arr[4], serde_json::json!(["brown", 10]));
+            assert_eq!(total_scaled, 9, "Prefix 'quick' (no-scale-arg) total count");
+            assert_eq!(entry_arr[2], serde_json::json!([",", 3]));
+            assert_eq!(entry_arr[3], serde_json::json!(["and", 6]));
+            assert_eq!(entry_arr[4], serde_json::json!(["brown", 9]));
         }
     }
 

@@ -600,7 +600,10 @@ pub fn save_to_json<P: AsRef<Path>>(
 
                 match scale_d {
                     Some(d_param) => {
-                        if num_unique_followers <= d_param as usize {
+                        if d_param == 10 {
+                            // For d10, always use 10^k-1 scaling to get 0-9 range
+                            // This makes physical d10 dice (numbered 0-9) work intuitively
+                        } else if num_unique_followers <= d_param as usize {
                             scale_target_d_value = Some(d_param);
                         } else {
                             // Number of unique followers > d_param, so use 10^k-1 scaling
