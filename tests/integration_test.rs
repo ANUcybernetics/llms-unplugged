@@ -899,6 +899,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
 
 // New test case for Typst compilation
 #[test]
+#[ignore = "Requires running from a git repository"]
 fn test_cli_to_typst_pdf() -> io::Result<()> {
     // Create a temporary directory
     let temp_dir = TempDir::new()?;

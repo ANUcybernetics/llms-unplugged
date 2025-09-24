@@ -5,6 +5,7 @@ use std::collections::VecDeque;
 use std::fs::File;
 use std::io;
 use std::path::Path;
+use std::process::Command;
 
 // New module declarations
 mod preprocessor;
@@ -31,6 +32,8 @@ pub struct Metadata {
     /// Scale_d value used for dice scaling (None if raw mode)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub scale_d: Option<u32>,
+    /// Git revision of the build
+    pub git_revision: String,
 }
 
 /// Information about a specific book in a multi-book set
@@ -219,6 +222,7 @@ impl NGramCounter {
                         n: self.n,
                         book_info: None,
                         scale_d: None, // Will be set during save_to_json
+                        git_revision: String::new(), // Will be set during save_to_json
                     });
                 } else {
                     // Missing required fields, return error
@@ -421,6 +425,58 @@ fn convert_to_entries(
             }
         })
         .collect()
+}
+
+/// Gets the current git revision string (commit SHA + dirty flag if applicable)
+fn get_git_revision() -> io::Result<String> {
+    // Check if we're in a git repository by checking for .git directory
+    let git_dir = std::path::Path::new(".git");
+    if !git_dir.exists() {
+        // Not in a git repository - probably a test environment
+        return Err(io::Error::new(
+            io::ErrorKind::Other,
+            "Not in a git repository. Cannot determine build revision.",
+        ));
+    }
+
+    // Get the short commit SHA
+    let output = Command::new("git")
+        .args(&["rev-parse", "--short", "HEAD"])
+        .output()
+        .map_err(|e| io::Error::new(io::ErrorKind::Other, format!("Failed to run git: {}", e)))?;
+
+    if !output.status.success() {
+        return Err(io::Error::new(
+            io::ErrorKind::Other,
+            "Failed to get git revision. Ensure this is a git repository.",
+        ));
+    }
+
+    let commit = String::from_utf8(output.stdout)
+        .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, format!("Invalid UTF-8 in git output: {}", e)))?
+        .trim()
+        .to_string();
+
+    // Check if working directory is dirty
+    let status_output = Command::new("git")
+        .args(&["status", "--porcelain"])
+        .output()
+        .map_err(|e| io::Error::new(io::ErrorKind::Other, format!("Failed to run git status: {}", e)))?;
+
+    if !status_output.status.success() {
+        return Err(io::Error::new(
+            io::ErrorKind::Other,
+            "Failed to check git status",
+        ));
+    }
+
+    let is_dirty = !status_output.stdout.is_empty();
+
+    Ok(if is_dirty {
+        format!("{}-dirty", commit)
+    } else {
+        commit
+    })
 }
 
 /// Splits entries into multiple books based on estimated rendered size
@@ -726,11 +782,12 @@ pub fn save_to_json<P: AsRef<Path>>(
 
     // Add metadata if available
     if let Some(meta) = metadata {
-        // Clone metadata and set scale_d if not in raw mode
+        // Clone metadata and set scale_d if not in raw mode, and add git revision
         let mut meta_with_scale = meta.clone();
         if !raw {
             meta_with_scale.scale_d = scale_d;
         }
+        meta_with_scale.git_revision = get_git_revision()?;
         output.insert("metadata".to_string(), serde_json::to_value(meta_with_scale)?);
     } else {
         // Create minimal metadata with just the n value
@@ -1030,6 +1087,7 @@ mod tests {
             n: 2,
             book_info: None,
             scale_d: None,
+            git_revision: "test-rev".to_string(),
         };
 
         // Test with scale_d = None (default 10^k-1 scaling)
@@ -1143,6 +1201,7 @@ mod tests {
             n: 3,
             book_info: None,
             scale_d: None,
+            git_revision: "test-rev".to_string(),
         };
 
         // Test with scale_d = None (default 10^k-1 scaling)
@@ -1249,6 +1308,7 @@ mod tests {
             n: 2,
             book_info: None,
             scale_d: None,
+            git_revision: "test-rev".to_string(),
         };
 
         // Test with scale_d = None (default 10^k-1 scaling)
@@ -1353,6 +1413,7 @@ mod tests {
             n: 2,
             book_info: None,
             scale_d: None,
+            git_revision: "test-rev".to_string(),
         };
 
         save_to_json(&entries_to_optimise, &path, Some(120), Some(&metadata_opt), false)?;
@@ -1394,6 +1455,7 @@ mod tests {
             n: 2,
             book_info: None,
             scale_d: None,
+            git_revision: "test-rev".to_string(),
         };
 
         save_to_json(&entries_count_3, &path, Some(120), Some(&metadata_count3), false)?;
@@ -1446,6 +1508,7 @@ mod tests {
             n: 2,
             book_info: None,
             scale_d: None,
+            git_revision: "test-rev".to_string(),
         };
 
         // With scale_d = 3, we'd normally use [1,3] scaling
@@ -1509,6 +1572,7 @@ mod tests {
             n: 2,
             book_info: None,
             scale_d: None,
+            git_revision: "test-rev".to_string(),
         };
 
         // With scale_d = 1, we can't scale 2 followers uniquely to [1,1]
@@ -1540,6 +1604,7 @@ mod tests {
             n: 2,
             book_info: None,
             scale_d: None,
+            git_revision: "test-rev".to_string(),
         };
 
         // With scale_d = 2, the scaling would be very uneven but should work
@@ -1594,6 +1659,7 @@ mod tests {
             n: 2,
             book_info: None,
             scale_d: None,
+            git_revision: "test-rev".to_string(),
         };
 
         // Test with raw=true (no scaling)
@@ -1650,6 +1716,7 @@ mod tests {
             n: 2,
             book_info: None,
             scale_d: None,
+            git_revision: "test-rev".to_string(),
         };
 
         // Test raw output
