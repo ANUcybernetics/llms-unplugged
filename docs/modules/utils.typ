@@ -3,7 +3,7 @@
 #let module-card(title: none, subtitle: none, body) = {
   import "@local/anu-typst-template:0.1.0": *
 
-  set page(paper: "a5", flipped: true, columns: 2, numbering: none)
+  set page(flipped: true, columns: 2)
 
   show: anu-template.with(
     title: title,
