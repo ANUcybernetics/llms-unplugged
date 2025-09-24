@@ -66,10 +66,12 @@ Each row is that word's embedding vector (using 0 for blank cells):
 - `.`: [0, 1, 0, 0]
 - `runs`: [0, 0, 1, 0]
 
-Calculating distance between the first two rows (`see` and `spot`): |0-0| +
-|1-0| + |0-1| + |0-1| = 0 + 1 + 1 + 1 = 3
+Calculating distance between the first two rows (`see` and `spot`):
 
-Partially filled embedding distance grid:
+$|0-0| + |1-0| + |0-1| + |0-1| = 0 + 1 + 1 + 1 = 3$
+
+Put this distance in the embedding distance grid (note diagonals are already
+pre-filled with 0 as well):
 
 #lm-grid(
   ([], [`see`], [`spot`], [`.`], [`runs`]),
@@ -81,15 +83,15 @@ Partially filled embedding distance grid:
   ),
 )
 
-Complete embedding distance grid:
+Complete embedding distance grid (no need to fill out the bottom triangle):
 
 #lm-grid(
   ([], [`see`], [`spot`], [`.`], [`runs`]),
   (
     ([`see`], 0, 3, 0, 2),
-    ([`spot`], 3, 0, 3, 2),
-    ([`.`], 0, 3, 0, 2),
-    ([`runs`], 2, 2, 2, 0),
+    ([`spot`], [], 0, 3, 2),
+    ([`.`], [], [], 0, 2),
+    ([`runs`], [], [], [], 0),
   ),
 )
 
