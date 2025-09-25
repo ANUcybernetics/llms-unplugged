@@ -12,6 +12,32 @@
 #let data = json_data.data
 #let doc_metadata = json_data.metadata
 
+// Function to get model type string from n value
+#let model-type(n) = {
+  if n == 1 {
+    "unigram"
+  } else if n == 2 {
+    "bigram"
+  } else if n == 3 {
+    "trigram"
+  } else {
+    str(n) + "-gram"
+  }
+}
+
+// Set PDF metadata
+#set document(
+  title: doc_metadata.title,
+  author: (doc_metadata.author, "Ben Swift"),
+  description: if doc_metadata.at("book_info", default: none) != none {
+    doc_metadata.book_info.letter_range + " (Book " + str(doc_metadata.book_info.number) + " of " + str(doc_metadata.book_info.total) + ")"
+  } else if subtitle != "" {
+    subtitle
+  } else {
+    "A " + model-type(doc_metadata.n) + " language model"
+  },
+)
+
 // Get the dice size from metadata (defaults to 10 if not present)
 #let dice_d = doc_metadata.at("scale_d", default: 10)
 
@@ -32,19 +58,6 @@
     text(content, weight: "bold", baseline: baseline),
   ),
 )
-
-// Function to get model type string from n value
-#let model-type(n) = {
-  if n == 1 {
-    "unigram"
-  } else if n == 2 {
-    "bigram"
-  } else if n == 3 {
-    "trigram"
-  } else {
-    str(n) + "-gram"
-  }
-}
 
 // Function to display text with punctuation in boxes
 #let display-with-punctuation(text-content, size: 1.5em, weight: "bold") = {
