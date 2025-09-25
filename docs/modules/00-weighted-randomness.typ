@@ -1,37 +1,39 @@
 #import "utils.typ": *
 
-#show: module-card.with(
-  title: [Weighted Randomness],
-  subtitle: "My First LM Module #0",
-)
+// Apply base styling (colors, fonts, page setup)
+#show: module-card-setup
 
-#edge-image("gums.jpeg")
+// Title and subtitle
+#module-title([Weighted Randomness], subtitle: "My First LM Module #0")
 
-#box(width: 58%)[
-Learn how to make random choices where some options are more likely than
-others---the fundamental operation behind all language model text generation.
+// First page content with image on right
+#first-page-with-image("images/CYBERNETICS_A_005.jpg")[
+  Learn how to make random choices where some options are more likely than
+  others---the fundamental operation behind all language model text generation.
 
-== You will need
+  == You will need
 
-Choose one or more approaches based on available materials:
+  Choose one or more approaches based on available materials:
 
-- paper tokens and a bag/container
-- 20-sided dice (d20)
-- coloured marbles or beads
-- paper for frequency matrices (also called grids or tables)
+  - paper tokens and a bag/container
+  - 20-sided dice (d20)
+  - coloured marbles or beads
+  - paper for frequency matrices (also called grids or tables)
 
-== Your goal
+  == Your goal
 
-To randomly choose from a fixed set of outcomes according to a given probability
-distribution.
+  To randomly choose from a fixed set of outcomes according to a given probability
+  distribution.
 
-== Key idea
+  == Key idea
 
-Sometimes we need to make random choices where some outcomes are more likely
-than others. There are ways to do this which ensure certain relationships
-between the outcomes (e.g. one outcome happening twice as often as another one)
-_on average_.
+  Sometimes we need to make random choices where some outcomes are more likely
+  than others. There are ways to do this which ensure certain relationships
+  between the outcomes (e.g. one outcome happening twice as often as another one)
+  _on average_.
+]
 
+// Second page content in two columns
 #column-section[
 == Algorithm 1: Beads in a Bag
 
@@ -74,5 +76,4 @@ ranges corresponding to each outcome.
 == d20 dice roll → outcome mapping table
 
 #figure(image("dice-mappings.svg", width: 100%))
-]
 ]

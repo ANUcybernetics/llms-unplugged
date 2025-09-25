@@ -1,77 +1,86 @@
 #import "utils.typ": *
 
-#show: module-card.with(
-  title: [Basic Inference],
-  subtitle: "My First LM Module #2",
-)
+// Apply base styling (colors, fonts, page setup)
+#show: module-card-setup
 
-Use a pre-trained model to generate new text through weighted random sampling.
+// Title and subtitle
+#module-title([Basic Inference], subtitle: "My First LM Module #2")
 
-== You will need
+// First page content with image on right
+#first-page-with-image("images/CYBERNETICS_A_020.jpg")[
+  Use a pre-trained model to generate new text through weighted random sampling.
 
-- your completed model (i.e. the word co-occurence grid) from _Basic Training_
-- d20 (or similar) for weighted sampling
-- paper for writing down the generated "output text"
+  == You will need
 
-== Your goal
+  - your completed model (i.e. the word co-occurence grid) from _Basic Training_
+  - d20 (or similar) for weighted sampling
+  - paper for writing down the generated "output text"
 
-To generate new text (as much as you like!) from your bigram language model.
+  == Your goal
 
-== Key idea
+  To generate new text (as much as you like!) from your bigram language model.
 
-Language models generate text by predicting one word at a time based on learnt
-patterns. Your trained model provides the "next word" options and their
-probabilities; dice rolls provide the randomness to choose one of those options.
+  == Key idea
+
+  Language models generate text by predicting one word at a time based on learnt
+  patterns. Your trained model provides the "next word" options and their
+  probabilities; dice rolls provide the randomness to choose one of those
+  options.
+]
+
+#pagebreak()
 
 #column-section[
-== Algorithm
+  == Algorithm
 
-+ *choose a starting word*---pick any word from the first column of your grid
-+ *look at that word's row* to identify all possible next words and their counts
-+ *roll dice weighted by the counts* (see the _Weighted Random Sampling_ module)
-+ *write down the chosen word* and use that as your next starting word
-+ *repeat* from step 2 until you reach the desired length _or_ a natural
-  stopping point (e.g. a full stop `.`)
+  + *choose a starting word*---pick any word from the first column of your grid
+  + *look at that word's row* to identify all possible next words and their
+    counts
+  + *roll dice weighted by the counts* (see the _Weighted Random Sampling_
+    module)
+  + *write down the chosen word* and use that as your next starting word
+  + *repeat* from step 2 until you reach the desired length _or_ a natural
+    stopping point (e.g. a full stop `.`)
 
-#colbreak()
+  #colbreak()
 
-== Example
+  == Example
 
-#lm-grid-auto((
-  "see",
-  "spot",
-  "run",
-  ".",
-  "see",
-  "spot",
-  "jump",
-  ".",
-  "run",
-  ",",
-  "spot",
-  ",",
-  "run",
-  ".",
-  "jump",
-  ",",
-  "spot",
-  ",",
-  "jump",
-  ".",
-))
+  #lm-grid-auto((
+    "see",
+    "spot",
+    "run",
+    ".",
+    "see",
+    "spot",
+    "jump",
+    ".",
+    "run",
+    ",",
+    "spot",
+    ",",
+    "run",
+    ".",
+    "jump",
+    ",",
+    "spot",
+    ",",
+    "jump",
+    ".",
+  ))
 
 
-- choose (for example) `see` as your starting word
-- `see` (row) → `spot` (column); it's the only option, so write down `spot` as
-  next word
-- `spot` → `run` or `jump`; both have 2 occurrences, so each has a 50%
-  chance---roll dice to choose
-- let's say dice picks `jump`; write it down
-- `jump` → `.`; it's the only option, so write down `.`
-- `.` → `see` (50%), `run` (25%), or `jump` (25%); three possible choices for
-  next word
-- let's say dice picks `see`; write it down
-- `see` → `spot`; it's the only option, so write down `spot`... and so on
+  - choose (for example) `see` as your starting word
+  - `see` (row) → `spot` (column); it's the only option, so write down `spot` as
+    next word
+  - `spot` → `run` or `jump`; both have 2 occurrences, so each has a 50%
+    chance---roll dice to choose
+  - let's say dice picks `jump`; write it down
+  - `jump` → `.`; it's the only option, so write down `.`
+  - `.` → `see` (50%), `run` (25%), or `jump` (25%); three possible choices for
+    next word
+  - let's say dice picks `see`; write it down
+  - `see` → `spot`; it's the only option, so write down `spot`... and so on
 
-After the above steps, the full output text is _"see spot jump. see spot"_
+  After the above steps, the full output text is _"see spot jump. see spot"_
 ]

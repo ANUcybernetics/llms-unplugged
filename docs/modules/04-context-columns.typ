@@ -1,30 +1,34 @@
 #import "utils.typ": *
 #import "@local/anu-typst-template:0.1.0": anu-colors
 
-#show: module-card.with(
-  title: [Context Columns],
-  subtitle: "My First LM Module #4",
-)
+// Apply base styling (colors, fonts, page setup)
+#show: module-card-setup
 
-Enhance your word bigram model with context columns that capture grammatical and
-semantic patterns.
+// Title and subtitle
+#module-title([Context Columns], subtitle: "My First LM Module #4")
 
-== You will need
+// First page content with image on right
+#first-page-with-image("images/CYBERNETICS_A_051.jpg")[
+  Enhance your word bigram model with context columns that capture grammatical and
+  semantic patterns.
 
-- same as basic-training module
-- your completed word co-occurence model from _Basic Training_
+  == You will need
 
-== Your goal
+  - same as basic-training module
+  - your completed word co-occurence model from _Basic Training_
 
-To add new "context" columns to an existing bigram model and generate text from
-your newly context-aware model.
+  == Your goal
 
-== Key idea
+  To add new "context" columns to an existing bigram model and generate text from
+  your newly context-aware model.
 
-The concept of attention---selectively focusing on relevant context---is the key
-innovation behind transformer models like GPT. By adding grammatical context
-columns to your model, you manually implement what transformers learn
-automatically---which previous words matter most for prediction.
+  == Key idea
+
+  The concept of attention---selectively focusing on relevant context---is the key
+  innovation behind transformer models like GPT. By adding grammatical context
+  columns to your model, you manually implement what transformers learn
+  automatically---which previous words matter most for prediction.
+]
 
 #column-section[
 == Algorithm (training)

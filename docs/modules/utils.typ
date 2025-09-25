@@ -1,43 +1,82 @@
-// Standard module template for consistent formatting
-// Usage: #show: module-card.with(title: [Your Title], subtitle: "Your Subtitle", image: "path/to/image.png")
-#let module-card(title: none, subtitle: none, image: none, body) = {
-  import "@local/anu-typst-template:0.1.0": *
+// Import base template for colors and styling
+#import "@local/anu-typst-template:0.1.0": *
 
-  set page(flipped: true)
-
-  show: anu-template.with(
-    title: title,
-    subtitle: subtitle,
-    page_numbering: false,
-    studio_logo: true,
-    dark: true,
+// Base module setup (applies styling without image handling)
+#let module-card-setup(body) = {
+  // Set up page and text styling using ANU colors
+  set page(
+    flipped: true,
+    fill: anu-colors.black,
+    margin: (left: 2.5cm, right: 2.5cm, top: 2.5cm, bottom: 2.5cm),
+    background: place(
+      left,
+      dx: 1.9cm,
+      rect(
+        width: 0.75pt,
+        height: 100%,
+        fill: anu-colors.gold,
+      ),
+    ),
   )
 
-  // Make the first paragraph larger (1.4em) for emphasis with extra spacing
-  let para-count = state("para-count", 0)
-  show par: it => {
-    para-count.update(n => n + 1)
-    context {
-      if para-count.get() == 1 {
-        text(size: 1.4em, it)
-        v(1em)
-      } else {
-        it
-      }
-    }
-  }
+  set text(
+    font: "Public Sans",
+    weight: "light",
+    size: 11pt,
+    fill: anu-colors.white,
+  )
 
-  // Handle first page with image if provided
-  if image != none {
-    place(top + right, dx: 40%, dy: 0pt, block(
-      width: 60%,
-      height: 100%,
-      clip: true,
-      image
-    ))
+  // Style headings
+  show heading: it => {
+    let weight = if it.level >= 2 { "bold" } else { "semibold" }
+    set text(font: "Public Sans", weight: weight)
+    let spacing = if it.level == 1 {
+      (top: 1.2em, bottom: 0.6em)
+    } else if it.level == 2 {
+      (top: 1em, bottom: 0.4em)
+    } else {
+      (top: 0.8em, bottom: 0.3em)
+    }
+    pad(..spacing, it)
   }
 
   body
+}
+
+// Function to create title and subtitle
+#let module-title(title, subtitle: none) = {
+  text(font: "Public Sans", weight: "regular", size: 24pt)[#title]
+  if subtitle != none [
+    #v(0.5em)
+    #text(
+      font: "Public Sans",
+      weight: "regular",
+      size: 16pt,
+      style: "italic",
+      fill: anu-colors.gold,
+    )[#subtitle]
+  ]
+  v(2em)
+}
+
+// Function to place image and constrain first page content
+#let first-page-with-image(image-path, content) = {
+  // Place the image
+  place(
+    top + right,
+    dx: 2.5cm,
+    dy: -2.5cm,
+    box(
+      width: 11.9cm,
+      height: 26cm,
+      clip: true,
+      image(image-path, width: 100%, height: 100%, fit: "cover"),
+    ),
+  )
+
+  // Constrain content width
+  let content-width = 29.7cm - 11.9cm - 2.5cm - 1cm
+  box(width: content-width)[#content]
 }
 
 // Helper function for creating two-column sections
@@ -46,10 +85,85 @@
   columns(2, gutter: 1em, body)
 }
 
-// Helper function for edge-to-edge image on right side
-// Usage: #edge-image("filename.jpg") for default 11.9cm width
-// Usage: #edge-image("filename.jpg", width: 15cm) for custom width
-#let edge-image(filename, width: 11.9cm) = {
+// DEPRECATED: Old module-card function kept for backwards compatibility
+// Use module-card-setup, module-title, and first-page-with-image instead
+#let module-card(title: none, subtitle: none, image-path: none, body) = {
+  import "@local/anu-typst-template:0.1.0": *
+
+  set page(
+    flipped: true,
+    fill: anu-colors.black,
+    margin: (left: 2.5cm, right: 2.5cm, top: 2.5cm, bottom: 2.5cm),
+    background: place(
+      left,
+      dx: 1.9cm,
+      rect(
+        width: 0.75pt,
+        height: 100%,
+        fill: anu-colors.gold,
+      ),
+    ),
+  )
+
+  set text(
+    font: "Public Sans",
+    weight: "light",
+    size: 11pt,
+    fill: anu-colors.white,
+  )
+
+  show heading: it => {
+    let weight = if it.level >= 2 { "bold" } else { "semibold" }
+    set text(font: "Public Sans", weight: weight)
+    let spacing = if it.level == 1 {
+      (top: 1.2em, bottom: 0.6em)
+    } else if it.level == 2 {
+      (top: 1em, bottom: 0.4em)
+    } else {
+      (top: 0.8em, bottom: 0.3em)
+    }
+    pad(..spacing, it)
+  }
+
+  if image-path != none {
+    place(
+      top + right,
+      dx: 0cm,
+      dy: -2.5cm,
+      box(
+        width: 11.9cm,
+        height: 26cm,
+        clip: true,
+        image(image-path, width: 100%, height: 100%, fit: "cover"),
+      ),
+    )
+  }
+
+  text(font: "Public Sans", weight: "regular", size: 24pt)[#title]
+  if subtitle != none [
+    #v(0.5em)
+    #text(
+      font: "Public Sans",
+      weight: "regular",
+      size: 16pt,
+      style: "italic",
+      fill: anu-colors.gold,
+    )[#subtitle]
+  ]
+
+  v(2em)
+
+  if image-path != none {
+    let content-width = 29.7cm - 11.9cm - 2.5cm - 1cm
+    box(width: content-width)[#body]
+  } else {
+    body
+  }
+}
+
+// DEPRECATED: edge-image function kept for backwards compatibility
+// Use first-page-with-image instead
+#let edge-image(filename, width: 11.9cm, body) = {
   place(
     top + right,
     dx: 2.5cm,
@@ -58,9 +172,12 @@
       width: width,
       height: 26cm,
       clip: true,
-      image(filename, width: 100%, height: 100%, fit: "cover")
-    )
+      image(filename, width: 100%, height: 100%, fit: "cover"),
+    ),
   )
+
+  let content-width = 29.7cm - width - 2.5cm - 1cm
+  box(width: content-width)[#body]
 }
 
 // Tally mark function for numeric values
