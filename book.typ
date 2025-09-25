@@ -2,7 +2,7 @@
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
 #let font_size = sys.inputs.at("font_size", default: "8pt")
 #let num_columns = sys.inputs.at("columns", default: "4")
-#let subtitle = sys.inputs.at("subtitle", default: "")
+#let subtitle = sys.inputs.at("subtitle")
 #let json_path = sys.inputs.at("json_path", default: "model.json")
 
 #set text(font: "Libertinus Serif", size: eval(font_size))
@@ -30,11 +30,16 @@
   title: doc_metadata.title,
   author: (doc_metadata.author, "Ben Swift"),
   description: if doc_metadata.at("book_info", default: none) != none {
-    doc_metadata.book_info.letter_range + " (Book " + str(doc_metadata.book_info.number) + " of " + str(doc_metadata.book_info.total) + ")"
-  } else if subtitle != "" {
-    subtitle
+    (
+      doc_metadata.book_info.letter_range
+        + " (Book "
+        + str(doc_metadata.book_info.number)
+        + " of "
+        + str(doc_metadata.book_info.total)
+        + ")"
+    )
   } else {
-    "A " + model-type(doc_metadata.n) + " language model"
+    subtitle
   },
 )
 
@@ -103,13 +108,13 @@
     #text(weight: "bold", size: 4em)[#context doc_metadata.title]
     #v(1cm)
     #text(size: 2.5em)[A #context model-type(doc_metadata.n) language model]
-    // Use book_info from doc_metadata if available, otherwise fall back to subtitle parameter
+    // Use book_info from doc_metadata if available, otherwise use subtitle
     #context if doc_metadata.at("book_info", default: none) != none {
       v(0.5cm)
       let book_info = doc_metadata.book_info
       text(size: 2em)[#book_info.letter_range (Book #book_info.number of
         #book_info.total)]
-    } else if subtitle != "" {
+    } else {
       v(0.5cm)
       text(size: 2em)[#subtitle]
     }

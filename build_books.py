@@ -59,6 +59,16 @@ def build_books(target, input_file, mode="both"):
         # Generate PDF if needed
         output_pdf = out_dir / f"{base_output}.pdf"
         if mode in ["both", "pdf-only"]:
+            # Determine subtitle based on n value
+            if n == 1:
+                subtitle = "a unigram language model"
+            elif n == 2:
+                subtitle = "a bigram language model"
+            elif n == 3:
+                subtitle = "a trigram language model"
+            else:
+                subtitle = f"a {n}-gram language model"
+
             typst_cmd = [
                 "typst",
                 "compile",
@@ -68,6 +78,8 @@ def build_books(target, input_file, mode="both"):
                 f"columns={columns}",
                 "--input",
                 f"json_path={json_file}",
+                "--input",
+                f"subtitle={subtitle}",
                 "book.typ",
                 str(output_pdf),
             ]
@@ -110,6 +122,16 @@ def build_books(target, input_file, mode="both"):
                 if book_json.exists():
                     # Generate PDF directly from book JSON
                     output_pdf = out_dir / f"{base_output}-book{i}.pdf"
+                    # Determine subtitle based on n value
+                    if n == 1:
+                        subtitle = "a unigram language model"
+                    elif n == 2:
+                        subtitle = "a bigram language model"
+                    elif n == 3:
+                        subtitle = "a trigram language model"
+                    else:
+                        subtitle = f"a {n}-gram language model"
+
                     typst_cmd = [
                         "typst",
                         "compile",
@@ -119,6 +141,8 @@ def build_books(target, input_file, mode="both"):
                         f"columns={columns}",
                         "--input",
                         f"json_path={book_json}",
+                        "--input",
+                        f"subtitle={subtitle}",
                         "book.typ",
                         str(output_pdf),
                     ]
