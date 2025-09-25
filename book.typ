@@ -208,30 +208,26 @@
   set page(paper_size, margin: (x: 2.5cm, y: 2.5cm))
   set text(size: 12pt)
 
-  heading(level: 1)[How to use this book]
-
-  v(0.5cm)
-
-  [This book contains a #context model-type(doc_metadata.n) language model that
-    you can use to generate new text with d10 dice. Follow these steps:]
-
-  v(0.5cm)
-
-  heading(level: 2)[Algorithm]
-
   [
+    = How to use this book
+
+    This book contains a #context model-type(doc_metadata.n) language model that
+    you can use to generate new text with d10 dice. Follow these steps:
+
+    == Algorithm
+
     + *Choose a starting word*---pick any bold word from the book
 
     + *Look at that word's entry* to find all possible next words
 
     + *Roll your d10s*:
-      - If you see a number followed by ♢ (like 3♢), roll that many d10s
+      - If you see a number followed by ♢ (like *3*♢), roll that many d10s
       - Otherwise, roll a single d10
       - Read the dice from left to right as a single number (e.g., rolling 4, 7,
         2 gives you 472)
 
     + *Count through the options* to find your next word:
-      - Each word shows its range (e.g., 45\|word means this word covers rolls
+      - Each word shows its range (e.g., *45*\|word means this word covers rolls
         1-45)
       - Find which range your dice roll falls into
       - Write down that word
@@ -240,31 +236,23 @@
 
     + *Continue* until you reach a natural stopping point (like a period) or
       achieve your desired text length
-  ]
 
-  v(0.5cm)
+    == Example
 
-  heading(level: 2)[Example]
+    Let's say you start with the word *"the"* and its entry shows:
 
-  [Let's say you start with the word *"the"* and its entry shows:]
+    #box(inset: (x: 1em))[
+      *the* *2*♢ 34\|cat 66\|dog 100\|end
+    ]
 
-  box(inset: (x: 1em))[
-    *the* 2♢ 34\|cat 66\|dog 100\|end
-  ]
-
-  [
-    - The 2♢ means roll 2 d10s (not just one)
+    - The *2*♢ means roll 2 d10s (not just one)
     - You roll 5 and 8, giving you 58
     - Count through: 1-34 is "cat", 35-66 is "dog", 67-100 is "end"
     - Your roll of 58 falls in the "dog" range (35-66)
     - Write down "dog" and look up its entry to continue
-  ]
 
-  v(0.5cm)
+    == Special symbols
 
-  heading(level: 2)[Special symbols]
-
-  [
     - Bold text = prefix words you can look up
     - Numbers before \| = cumulative count ranges
     - ♢ with number = how many d10s to roll
