@@ -5,7 +5,7 @@
   subtitle: "My First LM Module #0",
 )
 
-#edge-image("gums.jpeg", width: 40%)
+#edge-image("gums.jpeg")
 
 #box(width: 58%)[
 Learn how to make random choices where some options are more likely than

@@ -47,15 +47,16 @@
 }
 
 // Helper function for edge-to-edge image on right side
-// Usage: #edge-image("filename.jpg", width: 40%)
-#let edge-image(filename, width: 40%) = {
+// Usage: #edge-image("filename.jpg") for default 11.9cm width
+// Usage: #edge-image("filename.jpg", width: 15cm) for custom width
+#let edge-image(filename, width: 11.9cm) = {
   place(
     top + right,
-    dx: 10%,
-    dy: -12%,
+    dx: 2.5cm,
+    dy: -2.5cm,
     box(
       width: width,
-      height: 130%,
+      height: 26cm,
       clip: true,
       image(filename, width: 100%, height: 100%, fit: "cover")
     )
