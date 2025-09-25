@@ -103,7 +103,7 @@
 
   // Cybernetic Studio wordmark
   place(bottom + right)[
-    #text(font: "Neon Tubes 2", size: 24pt)[
+    #text(font: "Neon Tubes 2", size: 18pt)[
       Cybernetic\
       Studio
     ]
