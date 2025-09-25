@@ -2,8 +2,8 @@
 """Build n-gram books from text files based on filename pattern.
 
 Usage: build_books.py <target> <input_file>
-Target format: name-n-books-papersize
-Example: frankenstein-3-2-a4 (trigrams, 2 books, A4 paper)
+Target format: name-n-books
+Example: frankenstein-3-2 (trigrams, 2 books)
 """
 
 import sys
@@ -15,21 +15,15 @@ from pathlib import Path
 
 def parse_target(target):
     """Parse target filename into components."""
-    parts = target.rsplit('-', 3)
-    if len(parts) < 4:
+    parts = target.rsplit('-', 2)
+    if len(parts) < 3:
         raise ValueError(f"Invalid target format: {target}")
 
-    name = '-'.join(parts[:-3])
-    n = int(parts[-3])
-    books = int(parts[-2])
-    paper_size = parts[-1].replace('.stamp', '').replace('.pdf', '')
+    name = '-'.join(parts[:-2])
+    n = int(parts[-2])
+    books = int(parts[-1])
 
-    return name, n, books, paper_size
-
-
-def get_columns(paper_size):
-    """Get number of columns based on paper size."""
-    return 4 if paper_size == 'a4' else 3
+    return name, n, books
 
 
 def build_books(target, input_file):
@@ -38,8 +32,11 @@ def build_books(target, input_file):
     out_dir.mkdir(exist_ok=True)
 
     # Parse target
-    name, n, books, paper_size = parse_target(target)
-    columns = get_columns(paper_size)
+    name, n, books = parse_target(target)
+
+    # Hardcode paper size and columns
+    paper_size = 'a4'
+    columns = 4
 
     # Build the n-gram model
     tool = './target/release/my_first_lm'
@@ -52,7 +49,7 @@ def build_books(target, input_file):
         subprocess.run(cmd, check=True)
 
         # Generate PDF
-        output_pdf = out_dir / f"{base_output}-{paper_size}.pdf"
+        output_pdf = out_dir / f"{base_output}.pdf"
         typst_cmd = [
             'typst', 'compile',
             '--input', f'paper_size={paper_size}',
@@ -92,7 +89,7 @@ def build_books(target, input_file):
                 subprocess.run(['cp', str(book_json), 'model.json'], check=True)
 
                 # Generate PDF
-                output_pdf = out_dir / f"{base_output}-{paper_size}-book{i}.pdf"
+                output_pdf = out_dir / f"{base_output}-book{i}.pdf"
                 typst_cmd = [
                     'typst', 'compile',
                     '--input', f'paper_size={paper_size}',
@@ -118,7 +115,7 @@ def build_books(target, input_file):
                 Path('model.json').unlink(missing_ok=True)
                 book_json.unlink(missing_ok=True)
 
-        print(f"Created {books} books for {base_output}-{paper_size}")
+        print(f"Created {books} books for {base_output}")
 
 
 if __name__ == '__main__':
