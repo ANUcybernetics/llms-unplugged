@@ -30,7 +30,10 @@ def build_books(target, input_file, mode="both"):
     mode: "both", "json-only", or "pdf-only"
     """
     out_dir = Path("out")
-    out_dir.mkdir(exist_ok=True)
+    json_dir = out_dir / "json"
+    pdf_dir = out_dir / "pdf"
+    json_dir.mkdir(parents=True, exist_ok=True)
+    pdf_dir.mkdir(parents=True, exist_ok=True)
 
     # Parse target
     name, n, books = parse_target(target)
@@ -44,8 +47,8 @@ def build_books(target, input_file, mode="both"):
     base_output = f"{name}-{n}-{books}"
 
     if books == 1:
-        # Single book - output to unique JSON in out/
-        json_file = out_dir / f"{base_output}.json"
+        # Single book - output to unique JSON in out/json/
+        json_file = json_dir / f"{base_output}.json"
 
         # Generate JSON if needed
         if mode in ["both", "json-only"]:
@@ -57,7 +60,7 @@ def build_books(target, input_file, mode="both"):
                 print(f"JSON already exists: {json_file}")
 
         # Generate PDF if needed
-        output_pdf = out_dir / f"{base_output}.pdf"
+        output_pdf = pdf_dir / f"{base_output}.pdf"
         if mode in ["both", "pdf-only"]:
             # Determine subtitle based on n value
             if n == 1:
@@ -99,13 +102,13 @@ def build_books(target, input_file, mode="both"):
 
     else:
         # Multiple books - use -b flag
-        json_base = out_dir / f"{base_output}.json"
+        json_base = json_dir / f"{base_output}.json"
 
         # Generate JSONs if needed
         if mode in ["both", "json-only"]:
             # Check if all book JSONs exist
             all_exist = all(
-                (out_dir / f"{base_output}_book_{i}.json").exists()
+                (json_dir / f"{base_output}_book_{i}.json").exists()
                 for i in range(1, books + 1)
             )
             if not all_exist:
@@ -118,10 +121,10 @@ def build_books(target, input_file, mode="both"):
         # Generate PDFs if needed
         if mode in ["both", "pdf-only"]:
             for i in range(1, books + 1):
-                book_json = out_dir / f"{base_output}_book_{i}.json"
+                book_json = json_dir / f"{base_output}_book_{i}.json"
                 if book_json.exists():
                     # Generate PDF directly from book JSON
-                    output_pdf = out_dir / f"{base_output}-book{i}.pdf"
+                    output_pdf = pdf_dir / f"{base_output}-book{i}.pdf"
                     # Determine subtitle based on n value
                     if n == 1:
                         subtitle = "a unigram language model"
