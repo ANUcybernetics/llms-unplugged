@@ -81,6 +81,21 @@ $(OUT_DIR)/%-2-2-$(PAPER_SIZE).stamp: data/%.txt book.typ $(TOOL)
 	@touch $@
 	@echo "Created 2 books for $*-2-2-$(PAPER_SIZE)"
 
+# Pattern: n=3, books=2 (split into 2 books)
+$(OUT_DIR)/%-3-2-$(PAPER_SIZE).stamp: data/%.txt book.typ $(TOOL)
+	$(TOOL) --n 3 -b 2 $< -o $(OUT_DIR)/$*-3-2.json
+	@for i in $$(seq 1 2); do \
+		if [ -f $(OUT_DIR)/$*-3-2_book_$$i.json ]; then \
+			cp $(OUT_DIR)/$*-3-2_book_$$i.json model.json; \
+			$(TYPST) --input paper_size=$(PAPER_SIZE) --input columns=$(COLUMNS) book.typ $(OUT_DIR)/$*-3-2-$(PAPER_SIZE)-book$$i.pdf; \
+			echo "Pages in $(OUT_DIR)/$*-3-2-$(PAPER_SIZE)-book$$i.pdf: $$(pdfinfo $(OUT_DIR)/$*-3-2-$(PAPER_SIZE)-book$$i.pdf | grep Pages | awk '{print $$2}')"; \
+			rm -f model.json; \
+			rm -f $(OUT_DIR)/$*-3-2_book_$$i.json; \
+		fi; \
+	done
+	@touch $@
+	@echo "Created 2 books for $*-3-2-$(PAPER_SIZE)"
+
 # Pattern: n=3, books=3 (split into 3 books)
 $(OUT_DIR)/%-3-3-$(PAPER_SIZE).stamp: data/%.txt book.typ $(TOOL)
 	$(TOOL) --n 3 -b 3 $< -o $(OUT_DIR)/$*-3-3.json
@@ -110,6 +125,21 @@ $(OUT_DIR)/%-4-2-$(PAPER_SIZE).stamp: data/%.txt book.typ $(TOOL)
 	done
 	@touch $@
 	@echo "Created 2 books for $*-4-2-$(PAPER_SIZE)"
+
+# Pattern: n=4, books=3 (split into 3 books)
+$(OUT_DIR)/%-4-3-$(PAPER_SIZE).stamp: data/%.txt book.typ $(TOOL)
+	$(TOOL) --n 4 -b 3 $< -o $(OUT_DIR)/$*-4-3.json
+	@for i in $$(seq 1 3); do \
+		if [ -f $(OUT_DIR)/$*-4-3_book_$$i.json ]; then \
+			cp $(OUT_DIR)/$*-4-3_book_$$i.json model.json; \
+			$(TYPST) --input paper_size=$(PAPER_SIZE) --input columns=$(COLUMNS) book.typ $(OUT_DIR)/$*-4-3-$(PAPER_SIZE)-book$$i.pdf; \
+			echo "Pages in $(OUT_DIR)/$*-4-3-$(PAPER_SIZE)-book$$i.pdf: $$(pdfinfo $(OUT_DIR)/$*-4-3-$(PAPER_SIZE)-book$$i.pdf | grep Pages | awk '{print $$2}')"; \
+			rm -f model.json; \
+			rm -f $(OUT_DIR)/$*-4-3_book_$$i.json; \
+		fi; \
+	done
+	@touch $@
+	@echo "Created 3 books for $*-4-3-$(PAPER_SIZE)"
 
 # Default target to build all booklets
 .PHONY: booklets
