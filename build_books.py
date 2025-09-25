@@ -41,8 +41,9 @@ def build_books(target, input_file):
     base_output = f"{name}-{n}-{books}"
 
     if books == 1:
-        # Single book - output directly to model.json
-        cmd = [tool, "--n", str(n), input_file, "-o", "model.json"]
+        # Single book - output to unique JSON in out/
+        json_file = out_dir / f"{base_output}.json"
+        cmd = [tool, "--n", str(n), input_file, "-o", str(json_file)]
         print(f"Running: {' '.join(cmd)}")
         subprocess.run(cmd, check=True)
 
@@ -55,6 +56,8 @@ def build_books(target, input_file):
             f"paper_size={paper_size}",
             "--input",
             f"columns={columns}",
+            "--input",
+            f"json_path={json_file}",
             "book.typ",
             str(output_pdf),
         ]
@@ -72,8 +75,8 @@ def build_books(target, input_file):
         except subprocess.CalledProcessError:
             pass
 
-        # Clean up
-        Path("model.json").unlink(missing_ok=True)
+        # Clean up JSON file
+        json_file.unlink(missing_ok=True)
 
     else:
         # Multiple books - use -b flag
@@ -86,10 +89,7 @@ def build_books(target, input_file):
         for i in range(1, books + 1):
             book_json = out_dir / f"{base_output}_book_{i}.json"
             if book_json.exists():
-                # Copy to model.json
-                subprocess.run(["cp", str(book_json), "model.json"], check=True)
-
-                # Generate PDF
+                # Generate PDF directly from book JSON
                 output_pdf = out_dir / f"{base_output}-book{i}.pdf"
                 typst_cmd = [
                     "typst",
@@ -98,6 +98,8 @@ def build_books(target, input_file):
                     f"paper_size={paper_size}",
                     "--input",
                     f"columns={columns}",
+                    "--input",
+                    f"json_path={book_json}",
                     "book.typ",
                     str(output_pdf),
                 ]
@@ -118,8 +120,7 @@ def build_books(target, input_file):
                 except subprocess.CalledProcessError:
                     pass
 
-                # Clean up
-                Path("model.json").unlink(missing_ok=True)
+                # Clean up JSON file
                 book_json.unlink(missing_ok=True)
 
         print(f"Created {books} books for {base_output}")

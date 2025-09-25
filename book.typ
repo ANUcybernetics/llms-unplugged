@@ -3,11 +3,12 @@
 #let font_size = sys.inputs.at("font_size", default: "8pt")
 #let num_columns = sys.inputs.at("columns", default: "4")
 #let subtitle = sys.inputs.at("subtitle", default: "")
+#let json_path = sys.inputs.at("json_path", default: "model.json")
 
 #set text(font: "Libertinus Serif", size: eval(font_size))
 
 // Load the JSON data
-#let json_data = json("model.json")
+#let json_data = json(json_path)
 #let data = json_data.data
 #let doc_metadata = json_data.metadata
 
