@@ -46,6 +46,22 @@
   columns(2, gutter: 1em, body)
 }
 
+// Helper function for edge-to-edge image on right side
+// Usage: #edge-image("filename.jpg", width: 40%)
+#let edge-image(filename, width: 40%) = {
+  place(
+    top + right,
+    dx: 10%,
+    dy: -12%,
+    box(
+      width: width,
+      height: 130%,
+      clip: true,
+      image(filename, width: 100%, height: 100%, fit: "cover")
+    )
+  )
+}
+
 // Tally mark function for numeric values
 #let tally(n) = {
   if n == 0 { return [] }

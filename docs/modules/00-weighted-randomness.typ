@@ -5,6 +5,9 @@
   subtitle: "My First LM Module #0",
 )
 
+#edge-image("gums.jpeg", width: 40%)
+
+#box(width: 58%)[
 Learn how to make random choices where some options are more likely than
 others---the fundamental operation behind all language model text generation.
 
@@ -71,4 +74,5 @@ ranges corresponding to each outcome.
 == d20 dice roll → outcome mapping table
 
 #figure(image("dice-mappings.svg", width: 100%))
+]
 ]
