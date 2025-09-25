@@ -208,7 +208,34 @@
   // Only show when using 10^k scaling (not the specified dice_d)
   // AND when more than 1 d10 is needed (total_count > 9)
   if total_count != dice_d and total_count > 9 {
-    box[#text(weight: "bold")[#str(total_count).len()]♢]
+    let num-str = str(str(total_count).len())
+    // Create a diamond shape with the number inside
+    box(
+      baseline: -0.25em,
+      height: 1em,
+      rotate(
+        45deg,
+        origin: center,
+        rect(
+          fill: black,
+          width: 0.75em,
+          height: 0.75em,
+          place(
+            center + horizon,
+            rotate(
+              -45deg,
+              origin: center,
+              text(
+                fill: white,
+                weight: "bold",
+                size: 0.65em,
+                num-str,
+              ),
+            ),
+          ),
+        ),
+      ),
+    )
   }
 }
 
@@ -251,11 +278,12 @@
   // Add dice indicator if needed
   let indicator = format-dice-indicator(total_count, dice_d)
   if indicator != none {
-    h(0.3em)
+    h(0.6em)
     indicator
+    h(0.3em)
+  } else {
+    h(0.6em)
   }
-
-  h(0.6em)
 
   // Format the followers
   format-followers(followers)
@@ -279,7 +307,7 @@
     + *Look at that word's entry* to find all possible next words
 
     + *Roll your d10s*:
-      - If you see a number followed by ♢ (like *3*♢), roll that many d10s
+      - If you see a black diamond with a number (like a diamond containing *3*), roll that many d10s
       - Otherwise, roll a single d10
       - Read the dice from left to right as a single number (e.g., rolling 4, 7,
         2 gives you 472)
@@ -312,7 +340,7 @@
       )
     ]
 
-    - The *2*♢ means roll 2 d10s (not just one)
+    - The black diamond with *2* means roll 2 d10s (not just one)
     - You roll 5 and 8, giving you 58
     - Count through: 1-34 is "cat", 35-66 is "dog", 67-100 is "end"
     - Your roll of 58 falls in the "dog" range (35-66)
@@ -322,7 +350,7 @@
 
     - Bold text = prefix words you can look up
     - Numbers before \| = cumulative count ranges
-    - ♢ with number = how many d10s to roll
+    - Black diamond with number = how many d10s to roll
     - Words in boxes (like #punct-box(".")) = punctuation marks
   ]
 
