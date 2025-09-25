@@ -203,6 +203,64 @@
   pagebreak()
 }
 
+// Function to format the dice indicator (diamond with number)
+#let format-dice-indicator(total_count, dice_d) = {
+  // Only show when using 10^k scaling (not the specified dice_d)
+  // AND when more than 1 d10 is needed (total_count > 9)
+  if total_count != dice_d and total_count > 9 {
+    box[#text(weight: "bold")[#str(total_count).len()]♢]
+  }
+}
+
+// Function to format a single follower with its count
+#let format-follower(word, count, show-count: true) = {
+  if word == "." or word == "," {
+    // Punctuation in a rounded box with optional count
+    if show-count {
+      box([#text(weight: "semibold")[#count]|#punct-box(word)])
+    } else {
+      punct-box(word)
+    }
+  } else {
+    // Regular word with optional count
+    if show-count {
+      box([#text(weight: "semibold")[#count]|#text[#word]])
+    } else {
+      box([#word])
+    }
+  }
+}
+
+// Function to format all followers for a prefix
+#let format-followers(followers) = {
+  for follower in followers {
+    let word = follower.at(0)
+    let count = follower.at(1)
+    let show-count = followers.len() > 1
+
+    format-follower(word, count, show-count: show-count)
+    h(0.5em)
+  }
+}
+
+// Function to format a complete entry (prefix + dice indicator + followers)
+#let format-entry(prefix, total_count, followers, dice_d: 10) = {
+  // Format the prefix
+  display-with-punctuation(prefix, size: 1.5em, weight: "bold")
+
+  // Add dice indicator if needed
+  let indicator = format-dice-indicator(total_count, dice_d)
+  if indicator != none {
+    h(0.3em)
+    indicator
+  }
+
+  h(0.6em)
+
+  // Format the followers
+  format-followers(followers)
+}
+
 // Instructions page
 #let instructions-page() = {
   set page(paper_size, margin: (x: 2.5cm, y: 2.5cm))
@@ -242,7 +300,16 @@
     Let's say you start with the word *"the"* and its entry shows:
 
     #box(inset: (x: 1em))[
-      *the* *2*♢ 34\|cat 66\|dog 100\|end
+      #format-entry(
+        "the",
+        100,
+        (
+          ("cat", 34),
+          ("dog", 66),
+          ("end", 100),
+        ),
+        dice_d: 10,
+      )
     ]
 
     - The *2*♢ means roll 2 d10s (not just one)
@@ -355,47 +422,8 @@
   let followers = item.slice(2)
   current_prefix.update(prefix)
 
-  // this is the prefix text with a label
-  [#metadata(prefix) <prefix-entry>#display-with-punctuation(
-      prefix,
-      size: 1.5em,
-      weight: "bold",
-    )#label("prefix-" + prefix)]
-
-  // the dice roll number (showing digit count as a compression indicator)
-  // Only show when using 10^k scaling (not the specified dice_d)
-  // AND when more than 1 d10 is needed (total_count > 9)
-  if total_count != dice_d and total_count > 9 {
-    h(0.3em)
-    box[#text(weight: "bold")[#str(total_count).len()]♢]
-  }
-
-  h(0.6em)
-
-  // the followers for this prefix (with weights)
-  for follower in followers {
-    let word = follower.at(0)
-    let count = follower.at(1)
-    let show-count = followers.len() > 1
-
-    // Create the display for this follower
-    if word == "." or word == "," {
-      // Punctuation in a rounded box with optional count
-      if show-count {
-        box([#text(weight: "semibold")[#count]|#punct-box(word)])
-      } else {
-        punct-box(word)
-      }
-    } else {
-      // Regular word with optional count
-      if show-count {
-        box([#text(weight: "semibold")[#count]|#text[#word]])
-      } else {
-        box([#word])
-      }
-    }
-    h(0.5em)
-  }
+  // Add metadata and label for the prefix
+  [#metadata(prefix) <prefix-entry>#format-entry(prefix, total_count, followers, dice_d: dice_d)#label("prefix-" + prefix)]
 
   v(0.1em)
 }
