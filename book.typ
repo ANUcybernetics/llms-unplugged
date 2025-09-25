@@ -211,15 +211,15 @@
     let num-str = str(str(total_count).len())
     // Create a diamond shape with the number inside
     box(
-      baseline: -0.25em,
+      baseline: -0.3em,
       height: 1em,
       rotate(
         45deg,
         origin: center,
         rect(
           fill: black,
-          width: 0.75em,
-          height: 0.75em,
+          width: 0.7em,
+          height: 0.7em,
           place(
             center + horizon,
             rotate(
@@ -278,9 +278,9 @@
   // Add dice indicator if needed
   let indicator = format-dice-indicator(total_count, dice_d)
   if indicator != none {
-    h(0.6em)
+    h(0.2em)
     indicator
-    h(0.3em)
+    h(0.6em)
   } else {
     h(0.6em)
   }
@@ -307,7 +307,8 @@
     + *Look at that word's entry* to find all possible next words
 
     + *Roll your d10s*:
-      - If you see a black diamond with a number (like a diamond containing *3*), roll that many d10s
+      - If you see a black diamond with a number (like a diamond containing
+        *3*), roll that many d10s
       - Otherwise, roll a single d10
       - Read the dice from left to right as a single number (e.g., rolling 4, 7,
         2 gives you 472)
@@ -451,7 +452,12 @@
   current_prefix.update(prefix)
 
   // Add metadata and label for the prefix
-  [#metadata(prefix) <prefix-entry>#format-entry(prefix, total_count, followers, dice_d: dice_d)#label("prefix-" + prefix)]
+  [#metadata(prefix) <prefix-entry>#format-entry(
+      prefix,
+      total_count,
+      followers,
+      dice_d: dice_d,
+    )#label("prefix-" + prefix)]
 
   v(0.1em)
 }
