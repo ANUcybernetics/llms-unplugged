@@ -297,65 +297,91 @@
   [
     = How to use this book
 
-    This book contains a #context model-type(doc_metadata.n) language model that
-    you can use to generate new text with d10 dice. Follow these steps:
+    This book contains a #context model-type(doc_metadata.n) language model for
+    generating text using only one or more d10 (ten-sided) dice and a pen and
+    paper to write down the generated text, according to the following
+    algorithm.
 
     == Algorithm
 
-    + *Choose a starting word*---pick any bold word from the book
+    To generate new text using the #context model-type(doc_metadata.n) model in
+    this book:
 
-    + *Look at that word's entry* to find all possible next words
+    + *choose a starting word*---pick any bold word from the book (note that
+      punctuation e.g. #punct-box(".") count as words in this model) and write
+      it down
 
-    + *Roll your d10s*:
-      - If you see a black diamond with a number (like a diamond containing
-        *3*), roll that many d10s
-      - Otherwise, roll a single d10
-      - Read the dice from left to right as a single number (e.g., rolling 4, 7,
-        2 gives you 472)
+    + *look up the word's entry* (i.e. use this book like a dictionary) to find
+      all possible _next_ words according to the model
 
-    + *Count through the options* to find your next word:
-      - Each word shows its range (e.g., *45*\|word means this word covers rolls
-        1-45)
-      - Find which range your dice roll falls into
-      - Write down that word
+    + *roll your d10(s)*:
+      - if the word has a "black diamond" indicator then roll that many d10s
+        e.g. for #display-with-punctuation("the")#h(
+          0.2em,
+        )#format-dice-indicator(
+          1000,
+          10,
+        )#h(0.2em) then roll 4 d10s
+      - otherwise, roll a single d10
+      - read the dice from left to right as a single number (e.g., rolling 4, 7
+        and 2 on three dice means your roll is 472)
 
-    + *Use your new word* as the next starting point and repeat from step 2
+    + *scan through the "next word" options* to find your next word the first
+      number which is greater than or equal to your roll indicates your next
+      word (write it down)
 
-    + *Continue* until you reach a natural stopping point (like a period) or
-      achieve your desired text length
+    + using this word as your new word repeat from step 2, continuing this loop
+      until you reach a natural stopping point (like #punct-box(".")) or reach
+      your desired text length
 
-    == Example
+    === Example 1: single d10 (no dice indicator)
 
-    Let's say you start with the word *"the"* and its entry shows:
+    Your current word is *"cat"* and its entry shows:
 
     #box(inset: (x: 1em))[
       #format-entry(
-        "the",
-        100,
+        "cat",
+        10,
         (
-          ("cat", 34),
-          ("dog", 66),
-          ("end", 100),
+          ("sat", 4),
+          ("ran", 7),
+          ("slept", 10),
         ),
         dice_d: 10,
       )
     ]
 
-    - The black diamond with *2* means roll 2 d10s (not just one)
-    - You roll 5 and 8, giving you 58
-    - Count through: 1-34 is "cat", 35-66 is "dog", 67-100 is "end"
-    - Your roll of 58 falls in the "dog" range (35-66)
-    - Write down "dog" and look up its entry to continue
+    - no black diamond means roll just 1 d10
+    - you roll a 6
+    - scan through next word options: #format-follower("ran", 7) is the first
+      one with a number that's greater than or equal to 6
+    - your next word is "ran": write it down, look it up and continue the
+      process
 
-    == Special symbols
+    === Example 2: multiple d10s (with dice indicator)
 
-    - Bold text = prefix words you can look up
-    - Numbers before \| = cumulative count ranges
-    - Black diamond with number = how many d10s to roll
-    - Words in boxes (like #punct-box(".")) = punctuation marks
+    Your current word is *"the"* and its entry shows:
+
+    #box(inset: (x: 1em))[
+      #format-entry(
+        "the",
+        50,
+        (
+          ("cat", 33),
+          ("dog", 66),
+          ("end", 99),
+        ),
+        dice_d: 10,
+      )
+    ]
+
+    - the black diamond with *2* inside means roll 2 d10s (not just one)
+    - you roll 5 and 8, giving you 58
+    - scan through next word options: #format-follower("dog", 66) is the first
+      one with a number that's greater than or equal to 58
+    - your next word is "dog": write it down, look it up and continue the
+      process
   ]
-
-  pagebreak()
 }
 
 // Generate front matter
