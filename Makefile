@@ -17,8 +17,8 @@ PAPER_SIZE := a4
 TARGETS := \
 	$(OUT_DIR)/cloudstreet-2-1-$(PAPER_SIZE).pdf \
 	$(OUT_DIR)/frankenstein-2-1-$(PAPER_SIZE).pdf \
-	$(OUT_DIR)/frankenstein-3-1-$(PAPER_SIZE).pdf \
-	$(OUT_DIR)/frankenstein-4-2-$(PAPER_SIZE).stamp \
+	$(OUT_DIR)/frankenstein-3-2-$(PAPER_SIZE).stamp \
+	$(OUT_DIR)/frankenstein-4-3-$(PAPER_SIZE).stamp \
 	$(OUT_DIR)/collected-hemingway-2-2-$(PAPER_SIZE).stamp \
 	$(OUT_DIR)/TinyStories-20k-3-3-$(PAPER_SIZE).stamp
 
