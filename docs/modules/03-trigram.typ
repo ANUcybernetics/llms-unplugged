@@ -25,8 +25,7 @@ More context leads to better predictions. A trigram model considers two previous
 words instead of one, demonstrating the trade-off between context length and
 data requirements that shapes all language models.
 
-#pagebreak()
-
+#column-section[
 == Algorithm (training)
 
 + *create a four-column table* (see example on right)
@@ -83,3 +82,4 @@ After the full text the model is:
 + roll a d20 and write down the _word 3_ from the row chosen by the dice roll
 + move along by _one_ word (so _word 1_ is `spot` and _word 2_ is either `run`
   or `jump` depending on your dice roll) and repeat from step 2
+]

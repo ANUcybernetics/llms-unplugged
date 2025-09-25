@@ -29,8 +29,7 @@ than others. There are ways to do this which ensure certain relationships
 between the outcomes (e.g. one outcome happening twice as often as another one)
 _on average_.
 
-#pagebreak()
-
+#column-section[
 == Algorithm 1: Beads in a Bag
 
 - *materials*: coloured beads, bag
@@ -72,3 +71,4 @@ ranges corresponding to each outcome.
 == d20 dice roll → outcome mapping table
 
 #figure(image("dice-mappings.svg", width: 100%))
+]

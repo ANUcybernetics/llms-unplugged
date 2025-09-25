@@ -23,8 +23,7 @@ Language models generate text by predicting one word at a time based on learnt
 patterns. Your trained model provides the "next word" options and their
 probabilities; dice rolls provide the randomness to choose one of those options.
 
-#pagebreak()
-
+#column-section[
 == Algorithm
 
 + *choose a starting word*---pick any word from the first column of your grid
@@ -75,3 +74,4 @@ probabilities; dice rolls provide the randomness to choose one of those options.
 - `see` → `spot`; it's the only option, so write down `spot`... and so on
 
 After the above steps, the full output text is _"see spot jump. see spot"_
+]

@@ -26,8 +26,7 @@ innovation behind transformer models like GPT. By adding grammatical context
 columns to your model, you manually implement what transformers learn
 automatically---which previous words matter most for prediction.
 
-#pagebreak()
-
+#column-section[
 == Algorithm (training)
 
 + *add context columns* to your existing bigram model: _after verb_, _after
@@ -134,3 +133,4 @@ Starting word: `run` (a verb):
 + combine both counts: roll a dice to choose either `fast` (1) or `to` ($1+1=2$)
 + repeat from step 1 until you reach the desired length _or_ a natural stopping
   point (e.g. a full stop `.`)
+]

@@ -1,9 +1,9 @@
 // Standard module template for consistent formatting
-// Usage: #show: module-card.with(title: [Your Title], subtitle: "Your Subtitle")
-#let module-card(title: none, subtitle: none, body) = {
+// Usage: #show: module-card.with(title: [Your Title], subtitle: "Your Subtitle", image: "path/to/image.png")
+#let module-card(title: none, subtitle: none, image: none, body) = {
   import "@local/anu-typst-template:0.1.0": *
 
-  set page(flipped: true, columns: 2)
+  set page(flipped: true)
 
   show: anu-template.with(
     title: title,
@@ -27,7 +27,23 @@
     }
   }
 
+  // Handle first page with image if provided
+  if image != none {
+    place(top + right, dx: 40%, dy: 0pt, block(
+      width: 60%,
+      height: 100%,
+      clip: true,
+      image
+    ))
+  }
+
   body
+}
+
+// Helper function for creating two-column sections
+// Usage: #column-section[Your content with #colbreak() calls]
+#let column-section(body) = {
+  columns(2, gutter: 1em, body)
 }
 
 // Tally mark function for numeric values

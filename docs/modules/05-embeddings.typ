@@ -26,8 +26,7 @@ under that model---a numerical fingerprint that captures meaning through
 context. Distances between words real grammatical and semantic relationships.
 Similar words have similar embeddings.
 
-#pagebreak()
-
+#column-section[
 == Algorithm
 
 For this algorithm you'll need two grids: your original _bigram model_ grid and
@@ -91,3 +90,4 @@ Complete embedding distance grid (no need to fill out the bottom triangle):
 
 The distances show that `see` and `.` have identical embeddings (distance = 0),
 while `see` and `spot` are quite different (distance = 3).
+]

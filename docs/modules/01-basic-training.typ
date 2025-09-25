@@ -25,8 +25,7 @@ Language models learn by counting patterns in text. "Training" means
 building/constructing a model (shown in this activity as a grid or table) that
 tracks which words follow other words.
 
-#pagebreak()
-
+#column-section[
 == Algorithm
 
 + *prepare your text*:
@@ -85,3 +84,4 @@ After the full text the model is:
   "jump",
   ".",
 ))
+]
