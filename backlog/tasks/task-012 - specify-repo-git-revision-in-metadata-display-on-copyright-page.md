@@ -1,7 +1,7 @@
 ---
 id: task-012
 title: "specify repo git revision in metadata, display on copyright page"
-status: To Do
+status: Done
 assignee: []
 created_date: "2025-09-24 22:37"
 labels: []

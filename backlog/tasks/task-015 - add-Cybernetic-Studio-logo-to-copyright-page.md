@@ -1,7 +1,7 @@
 ---
 id: task-015
 title: add Cybernetic Studio logo to copyright page
-status: To Do
+status: Done
 assignee: []
 created_date: "2025-09-24 23:24"
 labels: []

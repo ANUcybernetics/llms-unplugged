@@ -1,7 +1,7 @@
 ---
 id: task-011
 title: allow subtitle for module-card function
-status: To Do
+status: Done
 assignee: []
 created_date: "2025-09-24 06:45"
 labels: []
