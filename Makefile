@@ -48,13 +48,13 @@ $(OUT_DIR)/%.pdf $(OUT_DIR)/%.stamp: build_books.py book.typ $(TOOL)
 booklets: $(TARGETS)
 	@echo "All booklets complete!"
 
-# Generate a markdown summary of all PDFs
+# Generate a YAML summary of all PDFs
 .PHONY: summary
 summary:
-	@echo "# Generated booklets" > $(OUT_DIR)/summary.md
-	@echo "" >> $(OUT_DIR)/summary.md
-	@echo "| Title | Subtitle | Pages | Filename |" >> $(OUT_DIR)/summary.md
-	@echo "|-------|----------|-------|----------|" >> $(OUT_DIR)/summary.md
+	@echo "# Generated booklets" > $(OUT_DIR)/summary.yaml
+	@echo "# Generated: $$(date)" >> $(OUT_DIR)/summary.yaml
+	@echo "" >> $(OUT_DIR)/summary.yaml
+	@echo "booklets:" >> $(OUT_DIR)/summary.yaml
 	@for pdf in $(OUT_DIR)/*.pdf; do \
 		if [ -f "$$pdf" ]; then \
 			filename=$$(basename "$$pdf"); \
@@ -64,13 +64,15 @@ summary:
 			pages=$$(echo "$$info" | grep "^Pages:" | awk '{print $$2}'); \
 			if [ -z "$$title" ]; then title="(untitled)"; fi; \
 			if [ -z "$$subtitle" ]; then subtitle="(no subtitle)"; fi; \
-			if [ -z "$$pages" ]; then pages="?"; fi; \
-			echo "| $$title | $$subtitle | $$pages | $$filename |" >> $(OUT_DIR)/summary.md; \
+			if [ -z "$$pages" ]; then pages="0"; fi; \
+			echo "  - title: \"$$title\"" >> $(OUT_DIR)/summary.yaml; \
+			echo "    subtitle: \"$$subtitle\"" >> $(OUT_DIR)/summary.yaml; \
+			echo "    filename: $$filename" >> $(OUT_DIR)/summary.yaml; \
+			echo "    num_pages: $$pages" >> $(OUT_DIR)/summary.yaml; \
+			echo "" >> $(OUT_DIR)/summary.yaml; \
 		fi; \
 	done
-	@echo "" >> $(OUT_DIR)/summary.md
-	@echo "Generated: $$(date)" >> $(OUT_DIR)/summary.md
-	@cat $(OUT_DIR)/summary.md
+	@cat $(OUT_DIR)/summary.yaml
 
 # Clean target to remove entire output directory
 .PHONY: clean
