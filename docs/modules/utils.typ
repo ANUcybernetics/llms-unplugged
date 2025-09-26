@@ -13,7 +13,7 @@
     ),
     page-settings: (
       flipped: true,
-      margin: (left: 2.8cm, right: 2.5cm, top: 2.5cm, bottom: 2.5cm),
+      margin: (left: 2.8cm, right: 2.5cm, top: 2cm, bottom: 2cm),
     ),
     doc,
   )
@@ -41,7 +41,7 @@
     columns: (auto, 11.9cm - 2.5cm),
     column-gutter: 1cm,
     [
-      #v(7em) // Add vertical space to push title down
+      #v(8em) // Add vertical space to push title down
       #text(size: 2em, fill: anu-colors.gold)[*#title*]
 
       #content
