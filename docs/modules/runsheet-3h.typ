@@ -30,56 +30,53 @@
 - Shannon & Markov... folks have been thinking about this question for a long
   time...
 
-== *#t(15)* Part 1: DIY Language Model (training)
-- _My First LM_ activity (in groups of 2)
+== *#t(15)* Basic Training
+- _Basic Training_ module activity (in groups of 2)
 - LoLM: training, model, token
 - discussion/shareback question: "how could you use this grid to make _new_
   sentences that aren't in the training data, but with a similar flavour?"
 
-== *#t(30)* Part 2a: DIY Language Model (inference)
-- activity: sample from model trained in part 1 to generate 3 sentences
+== *#t(30)* Basic Inference
+- _Basic Inference_ module: sample from model trained in previous part to
+  generate 3 sentences
 - LoLM: prompt, completion/response/prediction
 - discussion/shareback question: "how predictable is it (for a given prompt) and
   what factors affect this predictability?"
 
-== *#t(45)* Part 2b: (Slightly Larger) Language Model
-- the generate text activity from 2a, but with a pre-calculated bigram model
-  booklet
-- LoLM: vocabulary, model size
-- discussion/shareback question: "how could you go beyond just _one_ booklet?"
-  (alternatively, if they're anonymised, could ask "guess what the training data
-  was")
+== *#t(45)* Context columns
+- take your model and add context columns, generate 3 more sentences (can train
+  further as well if needed)
+- LoLM: attention
+- discussion/shareback question: "what did you notice about the change in the
+  model's output once the context columns were added?"
 
-== *#t(55)* Part 2c: (Slightly Even Larger) Language Model
-- same as 2b, but with trigram booklet
-- discussion/shareback question: "what's the endgame here?"
-- LoLM: context window
-
-== *#t(65)* _break_
-
-== *#t(75)* Part 3a: Sampling from a Language Model (inference redux)
-- hand out "sampling procedure" cards, group activity (in 4s this time) is to
-  choose 1 and write a page of text (using any/all of your booklets from the
-  previous sections)
+== *#t(60)* Sampling strategies
+- from either the plain bigram or the context-added model, generate sentences
+  with _at least_ two different temperature values and two different truncation
+  strategies
 - LoLM: sampling, temperature/top-k
 - discussion/shareback question: "what influence do different sampling
-  procedures have on the generated text?", or "is the sampling procedure also a
-  source of bias?"
+  procedures have on the generated text?"
 
-== *#t(90)* Part 3b: design your own sampling procedure
-- activity: write it down (so that another group could use it... which they will
-  soon!)
+#line(length: 100%, stroke: (paint: rgb("#D4AF37"), thickness: 1pt))
+*#t(75)* _break_
+#line(length: 100%, stroke: (paint: rgb("#D4AF37"), thickness: 1pt))
 
-== *#t(105)* Grand finale: poetry slam - your group will receive a
-"procedure/recipe" from a different group; you have 15 mins to implement it and
-plan your performance
+== *#t(90)* Design your own algo
+- can combine model + sampling procedure (or hybrid - as long as you can write
+  it down)... you need to do the training (again, can do more)
+- in particular, you get to choose the _purpose_ of the language model
 
-== *#t(120)* performances
-- clap-o-meter (maybe even prizes?)
+== *#t(105)* Performance prep
+- your group will receive a "procedure card" from a different group; you have 15
+  mins to implement it and plan your performance
+
+== *#t(120)* Performances
 - this is your completion task
+- good faith effort required
 
 == *#t(150)* fin
-- the LLM timeline (from the DEWR deck, but with ref. to the specific activities
-  they just did)
-- next steps
-- tfc
+
+// TODO
+// - create "model sheet" template (goal, you will need, algo + examples)
+// - sythetic data card (just add new tallies to the grid)
