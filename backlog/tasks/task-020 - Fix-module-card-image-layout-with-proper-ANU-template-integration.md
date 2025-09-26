@@ -10,7 +10,7 @@ dependencies: []
 
 ## Description
 
-The module cards in docs/modules/\*.typ need a proper layout where:
+The module cards in `docs/modules/*.typ` need a proper layout where:
 
 1. An image appears on the LEFT side of the page (11.9cm wide) as a full-bleed
    background element
@@ -47,5 +47,5 @@ The module cards in docs/modules/\*.typ need a proper layout where:
 
 ## Files affected
 
-- docs/modules/utils.typ (the layout functions)
-- All docs/modules/\*.typ files that use the layout
+- `docs/modules/utils.typ` (the layout functions)
+- All `docs/modules/*.typ` files that use the layout
