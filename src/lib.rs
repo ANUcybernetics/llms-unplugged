@@ -426,7 +426,7 @@ fn convert_to_entries(
         .collect()
 }
 
-/// Gets the current git revision string (commit SHA + dirty flag if applicable)
+/// Gets the current git revision string (commit SHA)
 fn get_git_revision() -> io::Result<String> {
     // Check if we're in a git repository by checking for .git directory
     let git_dir = std::path::Path::new(".git");
@@ -451,31 +451,9 @@ fn get_git_revision() -> io::Result<String> {
         ));
     }
 
-    let commit = String::from_utf8(output.stdout)
-        .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, format!("Invalid UTF-8 in git output: {}", e)))?
-        .trim()
-        .to_string();
-
-    // Check if working directory is dirty
-    let status_output = Command::new("git")
-        .args(&["status", "--porcelain"])
-        .output()
-        .map_err(|e| io::Error::new(io::ErrorKind::Other, format!("Failed to run git status: {}", e)))?;
-
-    if !status_output.status.success() {
-        return Err(io::Error::new(
-            io::ErrorKind::Other,
-            "Failed to check git status",
-        ));
-    }
-
-    let is_dirty = !status_output.stdout.is_empty();
-
-    Ok(if is_dirty {
-        format!("{}-dirty", commit)
-    } else {
-        commit
-    })
+    String::from_utf8(output.stdout)
+        .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, format!("Invalid UTF-8 in git output: {}", e)))
+        .map(|s| s.trim().to_string())
 }
 
 /// Splits entries into multiple books based on estimated rendered size
