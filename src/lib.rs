@@ -16,12 +16,12 @@ use preprocessor::preprocess;
 use tokenizer::tokenize;
 
 /// Helper function to get model type string (e.g., "bigram", "trigram")
-pub fn model_type(n: usize) -> &'static str {
+pub fn model_type_str(n: usize) -> String {
     match n {
-        1 => "unigram",
-        2 => "bigram",
-        3 => "trigram",
-        _ => "n-gram",
+        1 => "unigram".to_string(),
+        2 => "bigram".to_string(),
+        3 => "trigram".to_string(),
+        _ => format!("{}-gram", n),
     }
 }
 
@@ -219,7 +219,7 @@ impl NGramCounter {
                         author: author.to_string(),
                         url: url.to_string(),
                         n: self.n,
-                        subtitle: format!("A {} language model", model_type(self.n)),
+                        subtitle: format!("A {} language model", model_type_str(self.n)),
                         scale_d: None, // Will be set during save_to_json
                         git_revision: String::new(), // Will be set during save_to_json
                     });

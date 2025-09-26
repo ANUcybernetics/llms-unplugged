@@ -80,7 +80,7 @@ fn main() {
                         };
                         m_clone.subtitle = format!(
                             "A {} language model: {} (Book {} of {})",
-                            my_first_lm::model_type(m.n),
+                            my_first_lm::model_type_str(m.n),
                             formatted_range,
                             i + 1,
                             books.len()
