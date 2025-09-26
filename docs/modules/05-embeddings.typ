@@ -19,7 +19,9 @@
   == Your goal
 
   To create a similarity matrix (another square grid) which captures how similar
-  (or different) all the words in your bigram model are.
+  (or different) all the words in your bigram model are. *Stretch goal*: create
+  a visual representation of your words so that similar words are clustered
+  together (and different words are far apart).
 
   == Key idea
 

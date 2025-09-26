@@ -18,7 +18,8 @@
   == Your goal
 
   To add new "context" columns to an existing bigram model and generate text
-  from your newly context-aware model.
+  from your newly context-aware model. *Stretch goal*: add and evaluate your own
+  new context columns.
 
   == Key idea
 

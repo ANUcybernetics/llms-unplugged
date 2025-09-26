@@ -19,7 +19,8 @@
   == Your goal
 
   To produce a grid---this is your bigram language model---that captures the
-  patterns in your input text data.
+  patterns in your input text data. *Stretch goal*: train your model on as much
+  text as possible.
 
   == Key idea
 

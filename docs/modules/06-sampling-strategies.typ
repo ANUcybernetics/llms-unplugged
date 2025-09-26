@@ -17,7 +17,8 @@
   == Your goal
 
   To generate text using the same model, but using at least two different
-  temperature values and at least two different truncation strategies.
+  temperature values and at least two different truncation strategies. *Stretch
+    goal*: come up (and use) with your own truncation strategy.
 
   == Key idea
 

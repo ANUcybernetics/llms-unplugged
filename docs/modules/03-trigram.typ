@@ -19,7 +19,7 @@
 
   To create a trigram language model (a table this time, not a grid like your
   bigram model from _Basic Training_) that captures the patterns in your input
-  text data.
+  text data. *Stretch goal*: generate as much text as possible.
 
   == Key idea
 

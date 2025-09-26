@@ -18,6 +18,7 @@
   == Your goal
 
   To generate new text (as much as you like!) from your bigram language model.
+  *Stretch goal*: generate as much text as possible.
 
   == Key idea
 
