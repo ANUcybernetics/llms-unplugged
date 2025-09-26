@@ -46,15 +46,16 @@
 
   === Temperature control
 
-  If the counts in a given row are
+  If the counts in a given row are:
 
-  - `spot` (4)
-  - `run` (2)
-  - `jump` (1)
-  - `.` (1)
+  #lm-grid(
+    ([], `spot`, `run`, `jump`, `.`),
+    (
+      (`see`, "4", "2", "1", "1"),
+    ),
+  )
 
-  + *temperature = 1 (normal)*:
-    - use counts as-is: 4, 2, 1, 1
+  + *temperature = 1 (normal)*: use counts as-is (4, 2, 1, 1)
     - this means `spot` is 2x as likely as `run`, and 4x as likely as `jump` or
       `.`
   + *temperature = 2 (warmer)*:
@@ -66,18 +67,12 @@
 
   === Truncation: haiku sampling
 
-  Constrain generation to fit the 5-7-5 syllable pattern of haiku poetry. This
-  creates structured poetry with syllable constraints.
-
   + track syllables in current line (5-7-5 pattern)
   + roll dice to select next word as normal
   + if selected word exceeds line's syllable limit, re-roll
   + start new line when syllable count reached
 
   === Truncation: no-repeat sampling
-
-  Never use the same word twice in a sentence. This forces vocabulary diversity
-  and avoids repetitive loops.
 
   + track all words used in current sentence
   + roll dice to select next word as normal
@@ -86,18 +81,12 @@
 
   ==== Truncation: non-sequitur sampling
 
-  Always choose the _least_ likely next word for maximum surprise. Perfect for
-  surrealist poetry, breaking expectations, and comedy.
-
   + find current word's row
   + pick the column with the lowest (non-zero) count
   + if there's a tie, roll a dice and choose equally among the least likely
     options
 
   ==== Truncation: alliteration sampling
-
-  Prefer words starting with the same sound. Perfect for tongue twisters and
-  memorable phrases.
 
   + note first letter/sound of previous word
   + if any next-word options start with same letter/sound, sample only from
