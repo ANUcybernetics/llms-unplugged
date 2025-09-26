@@ -102,9 +102,18 @@
 
 // Title page function
 #let title-page() = {
+  // SOCY logo in top-left
+  place(top + left)[
+    #image("socy-logo-bw.svg", width: 1.8cm)
+  ]
+
   align(center + horizon)[
     #v(2cm)
-    #text(font: "Libertinus Sans", weight: "bold", size: 4em)[#context doc_metadata.title]
+    #text(
+      font: "Libertinus Sans",
+      weight: "bold",
+      size: 4em,
+    )[#context doc_metadata.title]
     #v(1cm)
     #text(font: "Libertinus Sans", size: 2.5em)[#subtitle]
   ]
