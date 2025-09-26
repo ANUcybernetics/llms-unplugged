@@ -11,7 +11,7 @@
 #set page(
   paper: paper_size,
   margin: (
-    inside: 2.4cm,  // Inner margin (towards binding) - 24mm max as requested
+    inside: 2.4cm, // Inner margin (towards binding) - 24mm max as requested
     outside: 1.5cm, // Outer margin (away from binding) - keeps content 10-15mm from edge
     top: 3cm,
     bottom: 2cm,
@@ -104,9 +104,9 @@
 #let title-page() = {
   align(center + horizon)[
     #v(2cm)
-    #text(weight: "bold", size: 4em)[#context doc_metadata.title]
+    #text(font: "Libertinus Sans", weight: "bold", size: 4em)[#context doc_metadata.title]
     #v(1cm)
-    #text(size: 2.5em)[#subtitle]
+    #text(font: "Libertinus Sans", size: 2.5em)[#subtitle]
   ]
 
   // Cybernetic Studio wordmark
