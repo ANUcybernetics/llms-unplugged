@@ -6,6 +6,7 @@ Target format: name-n-books
 Example: frankenstein-3-2 (trigrams, 2 books)
 """
 
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -62,15 +63,10 @@ def build_books(target, input_file, mode="both"):
         # Generate PDF if needed
         output_pdf = pdf_dir / f"{base_output}.pdf"
         if mode in ["both", "pdf-only"]:
-            # Determine subtitle based on n value
-            if n == 1:
-                subtitle = "a unigram language model"
-            elif n == 2:
-                subtitle = "a bigram language model"
-            elif n == 3:
-                subtitle = "a trigram language model"
-            else:
-                subtitle = f"a {n}-gram language model"
+            # Read subtitle from JSON metadata
+            with open(json_file, 'r') as f:
+                json_data = json.load(f)
+            subtitle = json_data.get('metadata', {}).get('subtitle', f'A {n}-gram language model')
 
             typst_cmd = [
                 "typst",
@@ -125,15 +121,10 @@ def build_books(target, input_file, mode="both"):
                 if book_json.exists():
                     # Generate PDF directly from book JSON
                     output_pdf = pdf_dir / f"{base_output}-book{i}.pdf"
-                    # Determine subtitle based on n value
-                    if n == 1:
-                        subtitle = "a unigram language model"
-                    elif n == 2:
-                        subtitle = "a bigram language model"
-                    elif n == 3:
-                        subtitle = "a trigram language model"
-                    else:
-                        subtitle = f"a {n}-gram language model"
+                    # Read subtitle from JSON metadata
+                    with open(book_json, 'r') as f:
+                        json_data = json.load(f)
+                    subtitle = json_data.get('metadata', {}).get('subtitle', f'A {n}-gram language model')
 
                     typst_cmd = [
                         "typst",

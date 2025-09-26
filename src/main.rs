@@ -67,15 +67,24 @@ fn main() {
                     output_dir.join(filename)
                 };
                 
-                // Create metadata with book info if splitting into multiple books
+                // Create metadata with appropriate subtitle for multi-book scenarios
                 let book_metadata = if args.num_books > 1 {
                     metadata.map(|m| {
                         let mut m_clone = m.clone();
-                        m_clone.book_info = Some(my_first_lm::BookInfo {
-                            number: i + 1,
-                            total: books.len(),
-                            letter_range: book_range.clone(),
-                        });
+                        // Update subtitle to include book range info with en dash
+                        let range_parts: Vec<&str> = book_range.split('-').collect();
+                        let formatted_range = if range_parts.len() == 2 {
+                            format!("{}–{}", range_parts[0], range_parts[1])
+                        } else {
+                            book_range.clone()
+                        };
+                        m_clone.subtitle = format!(
+                            "A {} language model: {} (Book {} of {})",
+                            my_first_lm::model_type(m.n),
+                            formatted_range,
+                            i + 1,
+                            books.len()
+                        );
                         m_clone
                     })
                 } else {

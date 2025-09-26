@@ -15,6 +15,16 @@ mod tokenizer;
 use preprocessor::preprocess;
 use tokenizer::tokenize;
 
+/// Helper function to get model type string (e.g., "bigram", "trigram")
+pub fn model_type(n: usize) -> &'static str {
+    match n {
+        1 => "unigram",
+        2 => "bigram",
+        3 => "trigram",
+        _ => "n-gram",
+    }
+}
+
 /// Contains metadata from the frontmatter of the processed file
 #[derive(Debug, Clone, Serialize)]
 pub struct Metadata {
@@ -26,9 +36,8 @@ pub struct Metadata {
     pub url: String,
     /// Size of n-gram used for processing
     pub n: usize,
-    /// Book information for multi-book outputs
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub book_info: Option<BookInfo>,
+    /// Subtitle for the booklet (e.g., "A bigram language model" or "A trigram language model: A-K (Book 1 of 3)")
+    pub subtitle: String,
     /// Scale_d value used for dice scaling (None if raw mode)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub scale_d: Option<u32>,
@@ -36,16 +45,6 @@ pub struct Metadata {
     pub git_revision: String,
 }
 
-/// Information about a specific book in a multi-book set
-#[derive(Debug, Clone, Serialize)]
-pub struct BookInfo {
-    /// Book number (1-indexed)
-    pub number: usize,
-    /// Total number of books
-    pub total: usize,
-    /// Letter range for this book (e.g., "A-D")
-    pub letter_range: String,
-}
 
 /// Contains summary statistics for processed text
 #[derive(Debug, Clone)]
@@ -220,7 +219,7 @@ impl NGramCounter {
                         author: author.to_string(),
                         url: url.to_string(),
                         n: self.n,
-                        book_info: None,
+                        subtitle: format!("A {} language model", model_type(self.n)),
                         scale_d: None, // Will be set during save_to_json
                         git_revision: String::new(), // Will be set during save_to_json
                     });
@@ -1085,7 +1084,7 @@ mod tests {
             author: "Test Author".to_string(),
             url: "https://example.com/bigrams".to_string(),
             n: 2,
-            book_info: None,
+            subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
         };
@@ -1199,7 +1198,7 @@ mod tests {
             author: "Test Author".to_string(),
             url: "https://example.com/trigrams".to_string(),
             n: 3,
-            book_info: None,
+            subtitle: "A trigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
         };
@@ -1306,7 +1305,7 @@ mod tests {
             author: "Test Author".to_string(),
             url: "https://example.com/cumulative".to_string(),
             n: 2,
-            book_info: None,
+            subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
         };
@@ -1411,7 +1410,7 @@ mod tests {
             author: "Optimizer".to_string(),
             url: "https://example.com/optimized".to_string(),
             n: 2,
-            book_info: None,
+            subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
         };
@@ -1453,7 +1452,7 @@ mod tests {
             author: "Counter".to_string(),
             url: "https://example.com/count3".to_string(),
             n: 2,
-            book_info: None,
+            subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
         };
@@ -1506,7 +1505,7 @@ mod tests {
             author: "Duplicate Author".to_string(),
             url: "https://example.com/duplicate".to_string(),
             n: 2,
-            book_info: None,
+            subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
         };
@@ -1570,7 +1569,7 @@ mod tests {
             author: "Edge Author".to_string(),
             url: "https://example.com/edge".to_string(),
             n: 2,
-            book_info: None,
+            subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
         };
@@ -1602,7 +1601,7 @@ mod tests {
             author: "Mixed Author".to_string(),
             url: "https://example.com/mixed".to_string(),
             n: 2,
-            book_info: None,
+            subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
         };
@@ -1657,7 +1656,7 @@ mod tests {
             author: "Test Author".to_string(),
             url: "https://test.com".to_string(),
             n: 2,
-            book_info: None,
+            subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
         };
@@ -1714,7 +1713,7 @@ mod tests {
             author: "Test".to_string(),
             url: "https://test.com".to_string(),
             n: 2,
-            book_info: None,
+            subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
         };

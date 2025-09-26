@@ -40,18 +40,7 @@
 #set document(
   title: doc_metadata.title,
   author: (doc_metadata.author, "Ben Swift"),
-  description: if doc_metadata.at("book_info", default: none) != none {
-    (
-      doc_metadata.book_info.letter_range
-        + " (Book "
-        + str(doc_metadata.book_info.number)
-        + " of "
-        + str(doc_metadata.book_info.total)
-        + ")"
-    )
-  } else {
-    subtitle
-  },
+  description: subtitle,
 )
 
 // Get the dice size from metadata (defaults to 10 if not present)
@@ -117,17 +106,7 @@
     #v(2cm)
     #text(weight: "bold", size: 4em)[#context doc_metadata.title]
     #v(1cm)
-    #text(size: 2.5em)[A #context model-type(doc_metadata.n) language model]
-    // Use book_info from doc_metadata if available, otherwise use subtitle
-    #context if doc_metadata.at("book_info", default: none) != none {
-      v(0.5cm)
-      let book_info = doc_metadata.book_info
-      text(size: 2em)[#book_info.letter_range (Book #book_info.number of
-        #book_info.total)]
-    } else {
-      v(0.5cm)
-      text(size: 2em)[#subtitle]
-    }
+    #text(size: 2.5em)[#subtitle]
   ]
 
   // Cybernetic Studio wordmark
@@ -145,7 +124,7 @@
   set text(size: 12pt)
 
   align(horizon)[
-    #text(size: 1.2em)[A #context model-type(doc_metadata.n) language model of]
+    #text(size: 1.2em)[#subtitle]
     #text(size: 1.2em, style: "italic")[#context doc_metadata.title by]
     #text(size: 1.2em)[#context doc_metadata.author]
     #v(0.5cm)
