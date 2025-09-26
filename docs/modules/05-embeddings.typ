@@ -5,7 +5,7 @@
 
 #module-hero(
   "Word Embeddings",
-  "images/CYBERNETICS_A_061.jpg",
+  "images/CYBERNETICS_A_102.jpg",
 )[
   Transform words into numerical vectors using their patterns from your language
   model.

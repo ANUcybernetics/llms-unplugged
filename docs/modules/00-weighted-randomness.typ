@@ -5,7 +5,7 @@
 
 #module-hero(
   "Weighted Randomness",
-  "images/CYBERNETICS_A_005.jpg",
+  "images/CYBERNETICS_A_010.jpg",
 )[
   Learn how to make random choices where some options are more likely than
   others---the fundamental operation behind all language model text generation.
