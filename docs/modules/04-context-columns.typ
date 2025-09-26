@@ -65,9 +65,9 @@
     [`to`],
     [`me`],
     [`.`],
-    [#v(-4em)#rotate(-90deg)[#text(fill: anu-colors.teal-3)[after~verb]]],
-    [#v(-4em)#rotate(-90deg)[#text(fill: anu-colors.teal-3)[after~pronoun]]],
-    [#v(-4em)#rotate(-90deg)[#text(
+    [#v(-3.5em)#rotate(-90deg)[#text(fill: anu-colors.teal-3)[after~verb]]],
+    [#v(-3.5em)#rotate(-90deg)[#text(fill: anu-colors.teal-3)[after~pronoun]]],
+    [#v(-3.5em)#rotate(-90deg)[#text(
         fill: anu-colors.teal-3,
       )[after~preposition]]],
 
