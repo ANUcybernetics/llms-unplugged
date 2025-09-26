@@ -1,5 +1,6 @@
 // Import base template for colors and styling
 #import "@local/anu-typst-template:0.2.0": *
+#import "@local/anu-typst-template:0.2.0": anu-colors
 
 // Base module setup - applies ANU template with landscape settings
 #let module-setup(body) = {
@@ -12,12 +13,42 @@
     ),
     page-settings: (
       flipped: true,
-      margin: (left: 2.5cm, right: 2.5cm, top: 2.5cm, bottom: 2.5cm),
+      margin: (left: 2.8cm, right: 2.5cm, top: 2.5cm, bottom: 2.5cm),
     ),
     doc,
   )
 
   body
+}
+
+// Hero image and title layout for module first pages
+#let module-hero(title, image-path, content) = {
+  // Place image on right side of first page
+  place(
+    top + right,
+    dx: 2.5cm,
+    dy: -2.5cm,
+    box(
+      width: 11.9cm,
+      height: 26cm,
+      clip: true,
+      image(image-path, width: 100%, height: 100%, fit: "cover"),
+    ),
+  )
+
+  // Create two-column layout with title and content on left, image on right
+  grid(
+    columns: (auto, 11.9cm - 2.5cm),
+    column-gutter: 1cm,
+    [
+      #v(7em) // Add vertical space to push title down
+      #text(size: 2em, fill: anu-colors.gold)[*#title*]
+
+      #content
+    ],
+    [],
+    // Empty right column where the image is
+  )
 }
 
 // Tally mark function for numeric values

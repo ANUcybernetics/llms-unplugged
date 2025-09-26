@@ -3,30 +3,12 @@
 // Apply base styling (colors, fonts, page setup)
 #show: module-setup
 
-// Place image on left side of first page, under the golden rule and logos
-#place(
-  top + left,
-  dx: -2.5cm,
-  dy: -2.5cm,
-  box(
-    width: 11.9cm,
-    height: 26cm,
-    clip: true,
-    image("images/CYBERNETICS_A_027.jpg", width: 100%, height: 100%, fit: "cover"),
-  ),
-)
-
-// Create a two-column layout for the first page
-#grid(
-  columns: (11.9cm - 2.5cm, auto),
-  column-gutter: 1cm,
-  [],  // Empty left column where the image is
-  [
-    = Trigram Model
-    _"My First LM Module #3"_
-
-    Extend the basic model to consider _two_ words of context instead of one,
-    leading to better text generation.
+#module-hero(
+  "Trigram Model",
+  "images/CYBERNETICS_A_027.jpg",
+)[
+  Extend the basic model to consider _two_ words of context instead of one,
+  leading to better text generation.
 
   == You will need
 
@@ -41,11 +23,10 @@
 
   == Key idea
 
-    More context leads to better predictions. A trigram model considers two
-    previous words instead of one, demonstrating the trade-off between context
-    length and data requirements that shapes all language models.
-  ],
-)
+  More context leads to better predictions. A trigram model considers two
+  previous words instead of one, demonstrating the trade-off between context
+  length and data requirements that shapes all language models.
+]
 
 #pagebreak()
 

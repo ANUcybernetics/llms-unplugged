@@ -1,38 +1,14 @@
 #import "utils.typ": *
-#import "@local/anu-typst-template:0.2.0": anu-colors
 
 // Apply base styling (colors, fonts, page setup)
 #show: module-setup
 
-// Place image on left side of first page, under the golden rule and logos
-#place(
-  top + left,
-  dx: -2.5cm,
-  dy: -2.5cm,
-  box(
-    width: 11.9cm,
-    height: 26cm,
-    clip: true,
-    image(
-      "images/CYBERNETICS_A_051.jpg",
-      width: 100%,
-      height: 100%,
-      fit: "cover",
-    ),
-  ),
-)
-
-// Create a two-column layout for the first page
-#grid(
-  columns: (11.9cm - 2.5cm, auto),
-  column-gutter: 1cm,
-  [],  // Empty left column where the image is
-  [
-    = Context Columns
-    _"My First LM Module #4"_
-
-    Enhance your word bigram model with context columns that capture grammatical
-    and semantic patterns.
+#module-hero(
+  "Context Columns",
+  "images/CYBERNETICS_A_051.jpg",
+)[
+  Enhance your word bigram model with context columns that capture grammatical
+  and semantic patterns.
 
   == You will need
 
@@ -46,12 +22,11 @@
 
   == Key idea
 
-    The concept of attention---selectively focusing on relevant context---is the
-    key innovation behind transformer models like GPT. By adding grammatical
-    context columns to your model, you manually implement what transformers learn
-    automatically---which previous words matter most for prediction.
-  ],
-)
+  The concept of attention---selectively focusing on relevant context---is the
+  key innovation behind transformer models like GPT. By adding grammatical
+  context columns to your model, you manually implement what transformers learn
+  automatically---which previous words matter most for prediction.
+]
 
 #pagebreak()
 

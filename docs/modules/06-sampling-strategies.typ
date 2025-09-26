@@ -3,30 +3,12 @@
 // Apply base styling (colors, fonts, page setup)
 #show: module-setup
 
-// Place image on left side of first page, under the golden rule and logos
-#place(
-  top + left,
-  dx: -2.5cm,
-  dy: -2.5cm,
-  box(
-    width: 11.9cm,
-    height: 26cm,
-    clip: true,
-    image("images/CYBERNETICS_A_098.jpg", width: 100%, height: 100%, fit: "cover"),
-  ),
-)
-
-// Create a two-column layout for the first page
-#grid(
-  columns: (11.9cm - 2.5cm, auto),
-  column-gutter: 1cm,
-  [],  // Empty left column where the image is
-  [
-    = Sampling Strategies
-    _"My First LM Module #6"_
-
-    Even after your model is trained, you have creative control over how it
-    generates text.
+#module-hero(
+  "Sampling Strategies",
+  "images/CYBERNETICS_A_098.jpg",
+)[
+  Even after your model is trained, you have creative control over how it
+  generates text.
 
   == You will need
 
@@ -39,13 +21,12 @@
 
   == Key idea
 
-    There are lots of different sampling strategies---ways to select the next word
-    during generation. Each strategy serves a different purpose, from maximising
-    accuracy to embracing chaos, from creating structured poetry to mimicking
-    child speech. Understanding these strategies reveals how modern LLMs control
-    their output style.
-  ],
-)
+  There are lots of different sampling strategies---ways to select the next word
+  during generation. Each strategy serves a different purpose, from maximising
+  accuracy to embracing chaos, from creating structured poetry to mimicking
+  child speech. Understanding these strategies reveals how modern LLMs control
+  their output style.
+]
 
 #pagebreak()
 

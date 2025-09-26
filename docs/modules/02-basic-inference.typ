@@ -3,27 +3,10 @@
 // Apply base styling (colors, fonts, page setup)
 #show: module-setup
 
-// Title and subtitle
-= Basic Inference
-_"My First LM Module #2"_
-
-// First page content with image on left
-// Place image on left side of first page (behind golden rule and logo)
-#place(
-  top + left,
-  dx: -2.5cm,
-  dy: -2.5cm,
-  box(
-    width: 11.9cm,
-    height: 26cm,
-    clip: true,
-    image("images/CYBERNETICS_A_020.jpg", width: 100%, height: 100%, fit: "cover"),
-  ),
-)
-
-// Content now starts after the image on the left
-#h(11.9cm - 2.5cm + 1cm) // Horizontal space to clear the image
-#box(width: 29.7cm - 11.9cm - 2.5cm - 1cm)[
+#module-hero(
+  "Basic Inference",
+  "images/CYBERNETICS_A_020.jpg",
+)[
   Use a pre-trained model to generate new text through weighted random sampling.
 
   == You will need
@@ -38,12 +21,11 @@ _"My First LM Module #2"_
 
   == Key idea
 
-    Language models generate text by predicting one word at a time based on learnt
-    patterns. Your trained model provides the "next word" options and their
-    probabilities; dice rolls provide the randomness to choose one of those
-    options.
-  ],
-)
+  Language models generate text by predicting one word at a time based on learnt
+  patterns. Your trained model provides the "next word" options and their
+  probabilities; dice rolls provide the randomness to choose one of those
+  options.
+]
 
 #pagebreak()
 

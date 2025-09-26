@@ -3,30 +3,12 @@
 // Apply base styling (colors, fonts, page setup)
 #show: module-setup
 
-// Place image on left side of first page, under the golden rule and logos
-#place(
-  top + left,
-  dx: -2.5cm,
-  dy: -2.5cm,
-  box(
-    width: 11.9cm,
-    height: 26cm,
-    clip: true,
-    image("images/CYBERNETICS_A_061.jpg", width: 100%, height: 100%, fit: "cover"),
-  ),
-)
-
-// Create a two-column layout for the first page
-#grid(
-  columns: (11.9cm - 2.5cm, auto),
-  column-gutter: 1cm,
-  [],  // Empty left column where the image is
-  [
-    = Word Embeddings
-    _"My First LM Module #5"_
-
-    Transform words into numerical vectors using their patterns from your language
-    model.
+#module-hero(
+  "Word Embeddings",
+  "images/CYBERNETICS_A_061.jpg",
+)[
+  Transform words into numerical vectors using their patterns from your language
+  model.
 
   == You will need
 
@@ -41,13 +23,12 @@
 
   == Key idea
 
-    Language models create mathematical representations of words that capture
-    meaning through usage patterns. Each word's row in your model is its embedding
-    under that model---a numerical fingerprint that captures meaning through
-    context. Distances between words real grammatical and semantic relationships.
-    Similar words have similar embeddings.
-  ],
-)
+  Language models create mathematical representations of words that capture
+  meaning through usage patterns. Each word's row in your model is its embedding
+  under that model---a numerical fingerprint that captures meaning through
+  context. Distances between words real grammatical and semantic relationships.
+  Similar words have similar embeddings.
+]
 
 #pagebreak()
 
