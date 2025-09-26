@@ -44,17 +44,9 @@
   + fill out the embedding distance grid by repeating step 1 for all different
     pairs of rows in the bigram model grid
 
-  You can immediately put 0 in all the "main diagonal" cells of the embedding
-  distance grid, because the distance between a word and itself is always 0.
-  Similarly, you will only need to do the calculation for the "top triangle" of
-  the embedding distance grid, because the "bottom triangle" will be a mirror
-  image due to the symmetry of the distance calculation
-
   == Example
 
   Original text: _"See Spot. Spot runs."_
-
-  Prepared text: `see` `spot` `.` `spot` `runs` `.`
 
   Bigram model grid:
 
@@ -82,7 +74,8 @@
     [`runs`], [], [], [], [0],
   )
 
-  Complete embedding distance grid (no need to fill out the bottom triangle):
+  Complete embedding distance grid (no need to fill out the bottom
+  triangle---the embedding distance is symmetric):
 
   #table(
     columns: 5,

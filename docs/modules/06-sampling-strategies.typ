@@ -36,8 +36,8 @@
   your model:
 
   - *temperature* controls the randomness by adjusting the relative likelihood
-    of probable vs improbable words (flattening or sharpening the probability
-    distribution)
+    of probable vs improbable words (making things more predictable or more
+    "chaotic")
   - *truncation* narrows the viable "next word options" by setting some options
     counts to zero (e.g., top-k, top-p, or constraint-based filtering)
 
@@ -63,13 +63,6 @@
   + *temperature = 3 (hot)*: divide tallies by 3, round down (min 1)
     - divide all counts by 3 (round down, min 1): 1, 1, 1, 1
     - each word equally likely
-
-  Raising the temperature paramter naturally flattens probability differences:
-
-  - common words (high tallies) become less dominant
-  - rare words (low tallies) get relatively more chance
-  - rounding creates the non-linearity that makes temperature effective
-  - at high temperatures, everything approaches equal probability
 
   === Truncation: haiku sampling
 
