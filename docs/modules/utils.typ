@@ -7,6 +7,7 @@
   show: doc => anu-template(
     title: "",
     dark: true,
+    studio_logo: true,
     page_numbering: false,
     page-settings: (
       flipped: true,
