@@ -41,18 +41,17 @@
 
   === Example
 
-  You buy an ice-cream every day. You want to randomly choose the flavour each
-  day, but you want to (overall) eat vanilla ice-cream 50% of the time,
-  chocolate 30%, and strawberry 20%.
+  You want to randomly choose an ice-cream flavour each day, but you want to
+  (overall) eat vanilla ice-cream 50% of the time, chocolate 30%, and strawberry
+  20%.
 
   - add 5 white beads to the bag (corresponding to vanilla)
   - add 3 brown beads to the bag (corresponding to chocolate)
   - add 2 red beads to the bag (corresponding to strawberry)
 
-  Draw a bead from the bag---that's your ice-cream choice for today.
-
-  It doesn't actually matter what the colours are, as long as you remember which
-  ones correspond to which outcomes.
+  Draw a bead from the bag---that's your ice-cream choice for today. It doesn't
+  actually matter what the colours are, as long as you remember which ones
+  correspond to which outcomes.
 
   == Algorithm 2: dice with ranges
 
