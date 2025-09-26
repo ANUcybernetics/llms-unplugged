@@ -3,42 +3,17 @@
 
 // Base module setup (applies styling without image handling)
 #let module-card-setup(body) = {
-  // Set up page and text styling using ANU colors
-  set page(
-    flipped: true,
-    fill: anu-colors.black,
-    margin: (left: 2.5cm, right: 2.5cm, top: 2.5cm, bottom: 2.5cm),
-    background: place(
-      left,
-      dx: 1.9cm,
-      rect(
-        width: 0.75pt,
-        height: 100%,
-        fill: anu-colors.gold,
-      ),
+  // Use the ANU template with custom page settings for landscape
+  show: doc => anu-template(
+    title: "",
+    dark: true,
+    page_numbering: false,
+    page-settings: (
+      flipped: true,
+      margin: (left: 2.5cm, right: 2.5cm, top: 2.5cm, bottom: 2.5cm),
     ),
+    doc,
   )
-
-  set text(
-    font: "Public Sans",
-    weight: "light",
-    size: 11pt,
-    fill: anu-colors.white,
-  )
-
-  // Style headings
-  show heading: it => {
-    let weight = if it.level >= 2 { "bold" } else { "semibold" }
-    set text(font: "Public Sans", weight: weight)
-    let spacing = if it.level == 1 {
-      (top: 1.2em, bottom: 0.6em)
-    } else if it.level == 2 {
-      (top: 1em, bottom: 0.4em)
-    } else {
-      (top: 0.8em, bottom: 0.3em)
-    }
-    pad(..spacing, it)
-  }
 
   body
 }
