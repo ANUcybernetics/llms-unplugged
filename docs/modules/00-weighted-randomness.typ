@@ -32,7 +32,7 @@
 
 // Second page content in two columns
 #columns(2, gutter: 1em)[
-  == Algorithm 1: Beads in a Bag
+  == Algorithm 1: beads in a bag
 
   - *materials*: coloured beads, bag
   - *setup*: count out a number of beads corresponding to the desired weights
@@ -54,7 +54,7 @@
   It doesn't actually matter what the colours are, as long as you remember which
   ones correspond to which outcomes.
 
-  == Algorithm 2: Dice with ranges
+  == Algorithm 2: dice with ranges
 
   - *materials*: d20 (or d6, d10 as alternatives)
   - *setup*: assign number ranges proportional to weights
