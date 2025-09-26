@@ -49,6 +49,8 @@
     [],
     // Empty right column where the image is
   )
+
+  pagebreak(weak: true)
 }
 
 // Tally mark function for numeric values

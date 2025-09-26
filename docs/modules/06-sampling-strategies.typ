@@ -28,8 +28,6 @@
   their output style.
 ]
 
-#pagebreak()
-
 // Second page content in two columns
 #columns(2, gutter: 1em)[
   == Algorithms (with examples)

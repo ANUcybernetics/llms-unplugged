@@ -27,8 +27,6 @@
   options.
 ]
 
-#pagebreak()
-
 // Second page content in two columns
 #columns(2, gutter: 1em)[
   == Algorithm

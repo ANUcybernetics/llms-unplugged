@@ -28,8 +28,6 @@
   length and data requirements that shapes all language models.
 ]
 
-#pagebreak()
-
 // Second page content in two columns
 #columns(2, gutter: 1em)[
   == Algorithm (training)
