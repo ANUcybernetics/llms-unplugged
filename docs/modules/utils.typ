@@ -8,7 +8,7 @@
     config: (
       theme: "dark",
       logos: ("studio",),
-      hide: ("page-numbers",),
+      hide: ("page-numbers", "title-block"),
     ),
     page-settings: (
       flipped: true,

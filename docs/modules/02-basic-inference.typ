@@ -7,11 +7,11 @@
 = Basic Inference
 _"My First LM Module #2"_
 
-// First page content with image on right
-// Place image on right side of first page
+// First page content with image on left
+// Place image on left side of first page (behind golden rule and logo)
 #place(
-  top + right,
-  dx: 2.5cm,
+  top + left,
+  dx: -2.5cm,
   dy: -2.5cm,
   box(
     width: 11.9cm,
@@ -21,9 +21,9 @@ _"My First LM Module #2"_
   ),
 )
 
-// Content width constraint for first page
-#let content-width = 29.7cm - 11.9cm - 2.5cm - 1cm
-#box(width: content-width)[
+// Content now starts after the image on the left
+#h(11.9cm - 2.5cm + 1cm) // Horizontal space to clear the image
+#box(width: 29.7cm - 11.9cm - 2.5cm - 1cm)[
   Use a pre-trained model to generate new text through weighted random sampling.
 
   == You will need
@@ -38,11 +38,12 @@ _"My First LM Module #2"_
 
   == Key idea
 
-  Language models generate text by predicting one word at a time based on learnt
-  patterns. Your trained model provides the "next word" options and their
-  probabilities; dice rolls provide the randomness to choose one of those
-  options.
-]
+    Language models generate text by predicting one word at a time based on learnt
+    patterns. Your trained model provides the "next word" options and their
+    probabilities; dice rolls provide the randomness to choose one of those
+    options.
+  ],
+)
 
 #pagebreak()
 

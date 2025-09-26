@@ -4,15 +4,10 @@
 // Apply base styling (colors, fonts, page setup)
 #show: module-setup
 
-// Title and subtitle
-= Context Columns
-_"My First LM Module #4"_
-
-// First page content with image on right
-// Place image on right side of first page
+// Place image on left side of first page, under the golden rule and logos
 #place(
-  top + right,
-  dx: 2.5cm,
+  top + left,
+  dx: -2.5cm,
   dy: -2.5cm,
   box(
     width: 11.9cm,
@@ -27,11 +22,17 @@ _"My First LM Module #4"_
   ),
 )
 
-// Content width constraint for first page
-#let content-width = 29.7cm - 11.9cm - 2.5cm - 1cm
-#box(width: content-width)[
-  Enhance your word bigram model with context columns that capture grammatical
-  and semantic patterns.
+// Create a two-column layout for the first page
+#grid(
+  columns: (11.9cm - 2.5cm, auto),
+  column-gutter: 1cm,
+  [],  // Empty left column where the image is
+  [
+    = Context Columns
+    _"My First LM Module #4"_
+
+    Enhance your word bigram model with context columns that capture grammatical
+    and semantic patterns.
 
   == You will need
 
@@ -45,11 +46,12 @@ _"My First LM Module #4"_
 
   == Key idea
 
-  The concept of attention---selectively focusing on relevant context---is the
-  key innovation behind transformer models like GPT. By adding grammatical
-  context columns to your model, you manually implement what transformers learn
-  automatically---which previous words matter most for prediction.
-]
+    The concept of attention---selectively focusing on relevant context---is the
+    key innovation behind transformer models like GPT. By adding grammatical
+    context columns to your model, you manually implement what transformers learn
+    automatically---which previous words matter most for prediction.
+  ],
+)
 
 #pagebreak()
 

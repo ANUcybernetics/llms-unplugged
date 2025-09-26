@@ -3,13 +3,10 @@
 // Apply base styling
 #show: module-setup
 
-= Basic Training
-_My First LM Module #1_
-
-// Place image on right side of first page
+// Place image on left side of first page, under the golden rule and logos
 #place(
-  top + right,
-  dx: 2.5cm,
+  top + left,
+  dx: -2.5cm,
   dy: -2.5cm,
   box(
     width: 11.9cm,
@@ -19,11 +16,17 @@ _My First LM Module #1_
   ),
 )
 
-// Content width constraint for first page
-#let content-width = 29.7cm - 11.9cm - 2.5cm - 1cm
-#box(width: content-width)[
-  Build a bigram (word co-occurence) language model that tracks which words
-  follow which other words in text.
+// Create a two-column layout for the first page
+#grid(
+  columns: (11.9cm - 2.5cm, auto),
+  column-gutter: 1cm,
+  [],  // Empty left column where the image is
+  [
+    = Basic Training
+    _My First LM Module #1_
+
+    Build a bigram (word co-occurence) language model that tracks which words
+    follow which other words in text.
 
   == You will need
 
@@ -36,12 +39,13 @@ _My First LM Module #1_
   To produce a grid---this is your bigram language model---that captures the
   patterns in your input text data.
 
-  == Key idea
+    == Key idea
 
-  Language models learn by counting patterns in text. "Training" means
-  building/constructing a model (shown in this activity as a grid or table) that
-  tracks which words follow other words.
-]
+    Language models learn by counting patterns in text. "Training" means
+    building/constructing a model (shown in this activity as a grid or table) that
+    tracks which words follow other words.
+  ],
+)
 
 #pagebreak()
 
