@@ -7,6 +7,17 @@
 
 #set text(font: "Libertinus Serif", size: eval(font_size))
 
+// Set page margins once for the entire document
+#set page(
+  paper: paper_size,
+  margin: (
+    inside: 2.4cm,  // Inner margin (towards binding) - 24mm max as requested
+    outside: 1.5cm, // Outer margin (away from binding) - keeps content 10-15mm from edge
+    top: 3cm,
+    bottom: 2cm,
+  ),
+)
+
 // Load the JSON data
 #let json_data = json(json_path)
 #let data = json_data.data
@@ -102,7 +113,6 @@
 
 // Title page function
 #let title-page() = {
-  set page(paper_size, margin: (x: 2.5cm, y: 2.5cm))
   align(center + horizon)[
     #v(2cm)
     #text(weight: "bold", size: 4em)[#context doc_metadata.title]
@@ -132,7 +142,6 @@
 
 // Copyright page
 #let copyright-page() = {
-  set page(paper_size, margin: (x: 2.5cm, y: 2.5cm))
   set text(size: 12pt)
 
   align(horizon)[
@@ -187,7 +196,6 @@
 
 // Introduction page
 #let introduction() = {
-  set page(paper_size, margin: (x: 2.5cm, y: 2.5cm))
   align(left)[
     #heading(level: 1)[Introduction]
     #v(0.5cm)
@@ -212,7 +220,6 @@
 
 // Table of contents
 #let table-of-contents() = {
-  set page(paper_size, margin: (x: 2.5cm, y: 2.5cm))
   heading(level: 1)[Contents]
   v(1cm)
   // A simple table of contents would be difficult to generate for all prefixes
@@ -310,7 +317,6 @@
 
 // Instructions page
 #let instructions-page() = {
-  set page(paper_size, margin: (x: 2.5cm, y: 2.5cm))
   set text(size: 12pt)
 
   [
@@ -416,8 +422,6 @@
 
 // Main content with original layout
 #set page(
-  paper_size,
-  margin: (x: 1.5cm, top: 3cm, bottom: 2cm), // Different top and bottom margins
   columns: int(num_columns),
   numbering: "1/1",
   header: context {
