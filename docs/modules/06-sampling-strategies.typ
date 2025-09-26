@@ -73,9 +73,8 @@
 #columns(2, gutter: 1em)[
   == Truncation strategies
 
-  Truncation narrows the viable "next word options" by setting some option
-  counts to zero (e.g., top-k, top-p, or constraint-based filtering). Any
-  truncation strategy can be combined with temperature control.
+  Truncation narrows the viable "next word options" by ruling out some options.
+  Any truncation strategy can be combined with temperature control.
 
   === Haiku sampling
 
@@ -84,20 +83,18 @@
   + if selected word exceeds line's syllable limit, re-roll
   + start new line when syllable count reached
 
+  === Non-sequitur sampling
+
+  + find current word's row
+  + pick the column with the lowest (non-zero) count
+  + if there's a tie, roll dice to choose equally among the least likely options
+
   === No-repeat sampling
 
   + track all words used in current sentence
   + roll dice to select next word as normal
   + if word already used, re-roll
   + if no valid options remain, insert `.` and continue
-
-  #colbreak()
-
-  === Non-sequitur sampling
-
-  + find current word's row
-  + pick the column with the lowest (non-zero) count
-  + if there's a tie, roll dice to choose equally among the least likely options
 
   === Alliteration sampling
 
