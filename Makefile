@@ -56,7 +56,6 @@ summary:
 	@echo "# Generated booklets" > $(OUT_DIR)/summary.yaml
 	@echo "# Generated: $$(date)" >> $(OUT_DIR)/summary.yaml
 	@echo "" >> $(OUT_DIR)/summary.yaml
-	@echo "booklets:" >> $(OUT_DIR)/summary.yaml
 	@for pdf in $(PDF_DIR)/*.pdf; do \
 		if [ -f "$$pdf" ]; then \
 			filename=$$(basename "$$pdf"); \
@@ -67,10 +66,10 @@ summary:
 			if [ -z "$$title" ]; then title="(untitled)"; fi; \
 			if [ -z "$$subtitle" ]; then subtitle="(no subtitle)"; fi; \
 			if [ -z "$$pages" ]; then pages="0"; fi; \
-			echo "  - title: \"$$title\"" >> $(OUT_DIR)/summary.yaml; \
-			echo "    subtitle: \"$$subtitle\"" >> $(OUT_DIR)/summary.yaml; \
-			echo "    filename: $$filename" >> $(OUT_DIR)/summary.yaml; \
-			echo "    num_pages: $$pages" >> $(OUT_DIR)/summary.yaml; \
+			echo "- title: \"$$title\"" >> $(OUT_DIR)/summary.yaml; \
+			echo "  subtitle: \"$$subtitle\"" >> $(OUT_DIR)/summary.yaml; \
+			echo "  filename: $$filename" >> $(OUT_DIR)/summary.yaml; \
+			echo "  num_pages: $$pages" >> $(OUT_DIR)/summary.yaml; \
 			echo "" >> $(OUT_DIR)/summary.yaml; \
 		fi; \
 	done
