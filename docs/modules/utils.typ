@@ -1,13 +1,15 @@
 // Import base template for colors and styling
-#import "@local/anu-typst-template:0.1.0": *
+#import "@local/anu-typst-template:0.2.0": *
 
 // Base module setup - applies ANU template with landscape settings
 #let module-setup(body) = {
-  show: doc => anu-template(
+  show: doc => anu(
     title: "",
-    dark: true,
-    studio_logo: true,
-    page_numbering: false,
+    config: (
+      theme: "dark",
+      logos: ("studio",),
+      hide: ("page-numbers",),
+    ),
     page-settings: (
       flipped: true,
       margin: (left: 2.5cm, right: 2.5cm, top: 2.5cm, bottom: 2.5cm),

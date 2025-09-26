@@ -1,9 +1,10 @@
 #import "utils.typ": *
 
-#show: module-card.with(
-  title: [Model Evaluation],
-  subtitle: "My First LM Module #7",
-)
+// Apply base styling
+#show: module-setup
+
+= Model Evaluation
+_My First LM Module #7_
 
 // NOTE: not sure if we'll ever use this one
 

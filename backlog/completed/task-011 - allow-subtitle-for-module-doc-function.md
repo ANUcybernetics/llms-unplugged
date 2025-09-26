@@ -9,5 +9,5 @@ dependencies: []
 ---
 
 The module-card function in @docs/modules/utils.typ doesn't support a subtitle
-(even though the anu-template does). Update it, and then each module's subtitle
-should be "Module N" where N is the module number (from the filename).
+(even though the anu does). Update it, and then each module's subtitle should be
+"Module N" where N is the module number (from the filename).

@@ -1,10 +1,12 @@
-#import "@local/anu-typst-template:0.1.0": *
-#import "llm-utils.typ": *
+#import "@local/anu-typst-template:0.2.0": *
+#import "utils.typ": *
 
-#show: anu-template.with(
+#show: anu.with(
   title: [Instructor's notes],
-  socy_logo: true,
-  dark: sys.inputs.at("anu_theme", default: "dark") == "dark",
+  config: (
+    theme: sys.inputs.at("anu_theme", default: "dark"),
+    logos: ("socy",),
+  ),
 )
 
 

@@ -28,7 +28,7 @@ make modules
 ## Design constraints
 
 These files use an A4 **landscape** format (29.7cm × 21cm), but otherwise
-inherit all the styling from the main typst `anu-template` theme:
+inherit all the styling from the main typst `anu` theme:
 
 - 2.5cm margins
 - ANU Cybernetic Studio branding
@@ -37,7 +37,7 @@ inherit all the styling from the main typst `anu-template` theme:
 - images: 11.9cm width on right side
 
 Note: the ANU template typst package is on this same machine at
-`~/Library/Application Support/typst/packages/local/anu-typst-template/0.1.0`.
+`~/Library/Application Support/typst/packages/local/anu-typst-template/0.2.0`.
 
 ## Common tasks
 
@@ -48,7 +48,7 @@ Note: the ANU template typst package is on this same machine at
 
 ## Dependencies
 
-- `@local/anu-typst-template:0.1.0` package
+- `@local/anu-typst-template:0.2.0` package
 - Libertinus Serif and Public Sans fonts
 - Typst compiler
 
