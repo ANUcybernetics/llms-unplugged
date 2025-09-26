@@ -28,7 +28,7 @@
   length and data requirements that shapes all language models.
 ]
 
-// Second page content in two columns
+// Training section in two columns
 #columns(2, gutter: 1em)[
   == Algorithm (training)
 
@@ -40,8 +40,6 @@
 
   == Example (training)
 
-  Original text: _"See Spot run. See Spot jump."_
-
   After the first four words (`see` `spot` `run` `.`) the model is:
 
   #lm-table(
@@ -52,7 +50,10 @@
     ),
   )
 
-  After the full text the model is:
+  #colbreak()
+
+  After the full text (`see` `spot` `run` `.` `see` `spot` `jump` `.`) the model
+  is:
 
   #lm-table(
     ([Word1], [Word2], [Word3], [Count]),
@@ -65,7 +66,13 @@
       ([`spot`], [`jump`], [`.`], 1),
     ),
   )
+]
 
+// Gold horizontal rule
+#line(length: 100%, stroke: (paint: rgb("#D4AF37"), thickness: 1pt))
+
+// Inference section in two columns
+#columns(2, gutter: 1em)[
   == Algorithm (inference)
 
   + pick any row from your table; write down _word 1_ and _word 2_ from that row
@@ -77,10 +84,12 @@
   + move along by _one_ word (so _word 2_ becomes your new _word 1_ and _word 3_
     becomes your new _word 2_) and repeat from step 2
 
+  #colbreak()
+
   == Example (inference)
 
-  + from the table on the right, choose `see` + `spot` as your starting _word 1_
-    and _word 2_:
+  + from the table above, choose `see` + `spot` as your starting _word 1_ and
+    _word 2_:
   + find all rows with _word 1_ = `see` and _word 2_ = `spot`; in this case rows
     1 and 5 (both have _count_ == 1)
   + roll a d20 and write down the _word 3_ from the row chosen by the dice roll

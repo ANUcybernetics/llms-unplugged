@@ -28,7 +28,7 @@
   automatically---which previous words matter most for prediction.
 ]
 
-// Second page content in two columns
+// Training section in two columns
 #columns(2, gutter: 1em)[
   == Algorithm (training)
 
@@ -44,24 +44,12 @@
     - if the _row_ word is a preposition (in/on/at/with/to etc.), increment the
       value in the _column_ word's _after preposition_ column
 
-  == Algorithm (inference)
-
-  + *choose a starting word* as per _Basic Inference_
-  + check its row to identify the "normal" transition counts, but _also_ check
-    if the starting word is a verb/pronoun/preposition and if so add the values
-    from the relevant "context" column before using a d20 to choose the next
-    word
-  + *repeat* from step 2 until you reach the desired length _or_ a natural
-    stopping point (e.g. a full stop `.`)
-
-  If you like, you can add your own context columns (based on patterns which
-  _you_ think are important).
+  #colbreak()
 
   == Example (training)
 
-  Original text: _"I run fast. You run to me."_
-
-  Model with context columns:
+  For text _"I run fast. You run to me."_ the model \
+  with context columns is:
 
   #table(
     columns: 11,
@@ -128,6 +116,27 @@
 
     [`.`], [], [|], [], [], [], [], [], [], [], [],
   )
+]
+
+// Gold horizontal rule
+#line(length: 100%, stroke: (paint: rgb("#D4AF37"), thickness: 1pt))
+
+// Inference section in two columns
+#columns(2, gutter: 1em)[
+  == Algorithm (inference)
+
+  + *choose a starting word* as per _Basic Inference_
+  + check its row to identify the "normal" transition counts, but _also_ check
+    if the starting word is a verb/pronoun/preposition and if so add the values
+    from the relevant "context" column before using a d20 to choose the next
+    word
+  + *repeat* from step 2 until you reach the desired length _or_ a natural
+    stopping point (e.g. a full stop `.`)
+
+  If you like, you can add your own context columns (based on patterns which
+  _you_ think are important).
+
+  #colbreak()
 
   == Example (inference)
 
