@@ -41,17 +41,14 @@
 
   === Example
 
-  You want to randomly choose an ice-cream flavour each day, but you want to
-  (overall) eat vanilla ice-cream 50% of the time, chocolate 30%, and strawberry
-  20%.
+  Choose an ice cream flavour: vanilla 50% of the time, chocolate 30%, and
+  strawberry 20%.
 
   - add 5 white beads to the bag (corresponding to vanilla)
   - add 3 brown beads to the bag (corresponding to chocolate)
   - add 2 red beads to the bag (corresponding to strawberry)
 
-  Draw a bead from the bag---that's your ice-cream choice for today. It doesn't
-  actually matter what the colours are, as long as you remember which ones
-  correspond to which outcomes.
+  Draw a bead from the bag---that's your ice-cream choice for today.
 
   == Algorithm 2: dice with ranges
 
@@ -71,5 +68,6 @@
 
   == d20 dice roll → outcome mapping table
 
-  #figure(image("dice-mappings.svg", width: 100%))
+  #v(2cm)
+  #figure(rotate(-90deg, image("dice-mappings.svg", width: 16cm)))
 ]
