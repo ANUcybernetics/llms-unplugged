@@ -2,13 +2,29 @@
 #import "@local/anu-typst-template:0.1.0": anu-colors
 
 // Apply base styling (colors, fonts, page setup)
-#show: module-card-setup
+#show: module-setup
 
 // Title and subtitle
-#module-title([Context Columns], subtitle: "My First LM Module #4")
+= Context Columns
+_"My First LM Module #4"_
 
 // First page content with image on right
-#first-page-with-image("images/CYBERNETICS_A_051.jpg")[
+// Place image on right side of first page
+#place(
+  top + right,
+  dx: 2.5cm,
+  dy: -2.5cm,
+  box(
+    width: 11.9cm,
+    height: 26cm,
+    clip: true,
+    image("images/CYBERNETICS_A_051.jpg", width: 100%, height: 100%, fit: "cover"),
+  ),
+)
+
+// Content width constraint for first page
+#let content-width = 29.7cm - 11.9cm - 2.5cm - 1cm
+#box(width: content-width)[
   Enhance your word bigram model with context columns that capture grammatical and
   semantic patterns.
 
@@ -30,7 +46,10 @@
   automatically---which previous words matter most for prediction.
 ]
 
-#column-section[
+#pagebreak()
+
+// Second page content in two columns
+#columns(2, gutter: 1em)[
 == Algorithm (training)
 
 + *add context columns* to your existing bigram model: _after verb_, _after

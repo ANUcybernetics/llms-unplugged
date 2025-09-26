@@ -1,13 +1,29 @@
 #import "utils.typ": *
 
 // Apply base styling (colors, fonts, page setup)
-#show: module-card-setup
+#show: module-setup
 
 // Title and subtitle
-#module-title([Trigram Model], subtitle: "My First LM Module #3")
+= Trigram Model
+_"My First LM Module #3"_
 
 // First page content with image on right
-#first-page-with-image("images/CYBERNETICS_A_027.jpg")[
+// Place image on right side of first page
+#place(
+  top + right,
+  dx: 2.5cm,
+  dy: -2.5cm,
+  box(
+    width: 11.9cm,
+    height: 26cm,
+    clip: true,
+    image("images/CYBERNETICS_A_027.jpg", width: 100%, height: 100%, fit: "cover"),
+  ),
+)
+
+// Content width constraint for first page
+#let content-width = 29.7cm - 11.9cm - 2.5cm - 1cm
+#box(width: content-width)[
   Extend the basic model to consider _two_ words of context instead of one,
   leading to better text generation.
 
@@ -31,7 +47,8 @@
 
 #pagebreak()
 
-#column-section[
+// Second page content in two columns
+#columns(2, gutter: 1em)[
   == Algorithm (training)
 
   + *create a four-column table* (see example on right)

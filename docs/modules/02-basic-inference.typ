@@ -1,13 +1,29 @@
 #import "utils.typ": *
 
 // Apply base styling (colors, fonts, page setup)
-#show: module-card-setup
+#show: module-setup
 
 // Title and subtitle
-#module-title([Basic Inference], subtitle: "My First LM Module #2")
+= Basic Inference
+_"My First LM Module #2"_
 
 // First page content with image on right
-#first-page-with-image("images/CYBERNETICS_A_020.jpg")[
+// Place image on right side of first page
+#place(
+  top + right,
+  dx: 2.5cm,
+  dy: -2.5cm,
+  box(
+    width: 11.9cm,
+    height: 26cm,
+    clip: true,
+    image("images/CYBERNETICS_A_020.jpg", width: 100%, height: 100%, fit: "cover"),
+  ),
+)
+
+// Content width constraint for first page
+#let content-width = 29.7cm - 11.9cm - 2.5cm - 1cm
+#box(width: content-width)[
   Use a pre-trained model to generate new text through weighted random sampling.
 
   == You will need
@@ -30,7 +46,8 @@
 
 #pagebreak()
 
-#column-section[
+// Second page content in two columns
+#columns(2, gutter: 1em)[
   == Algorithm
 
   + *choose a starting word*---pick any word from the first column of your grid

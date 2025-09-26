@@ -1,13 +1,27 @@
 #import "utils.typ": *
 
-// Apply base styling (colors, fonts, page setup)
-#show: module-card-setup
+// Apply base styling
+#show: module-setup
 
-// Title and subtitle
-#module-title([Weighted Randomness], subtitle: "My First LM Module #0")
+= Weighted Randomness
+_My First LM Module #0_
 
-// First page content with image on right
-#first-page-with-image("images/CYBERNETICS_A_005.jpg")[
+// Place image on right side of first page
+#place(
+  top + right,
+  dx: 2.5cm,
+  dy: -2.5cm,
+  box(
+    width: 11.9cm,
+    height: 26cm,
+    clip: true,
+    image("images/CYBERNETICS_A_005.jpg", width: 100%, height: 100%, fit: "cover"),
+  ),
+)
+
+// Content width constraint for first page
+#let content-width = 29.7cm - 11.9cm - 2.5cm - 1cm
+#box(width: content-width)[
   Learn how to make random choices where some options are more likely than
   others---the fundamental operation behind all language model text generation.
 
@@ -33,8 +47,10 @@
   _on average_.
 ]
 
+#pagebreak()
+
 // Second page content in two columns
-#column-section[
+#columns(2, gutter: 1em)[
 == Algorithm 1: Beads in a Bag
 
 - *materials*: coloured beads, bag

@@ -1,13 +1,29 @@
 #import "utils.typ": *
 
 // Apply base styling (colors, fonts, page setup)
-#show: module-card-setup
+#show: module-setup
 
 // Title and subtitle
-#module-title([Word Embeddings], subtitle: "My First LM Module #5")
+= Word Embeddings
+_"My First LM Module #5"_
 
 // First page content with image on right
-#first-page-with-image("images/CYBERNETICS_A_061.jpg")[
+// Place image on right side of first page
+#place(
+  top + right,
+  dx: 2.5cm,
+  dy: -2.5cm,
+  box(
+    width: 11.9cm,
+    height: 26cm,
+    clip: true,
+    image("images/CYBERNETICS_A_061.jpg", width: 100%, height: 100%, fit: "cover"),
+  ),
+)
+
+// Content width constraint for first page
+#let content-width = 29.7cm - 11.9cm - 2.5cm - 1cm
+#box(width: content-width)[
   Transform words into numerical vectors using their patterns from your language
   model.
 
@@ -31,7 +47,10 @@
   Similar words have similar embeddings.
 ]
 
-#column-section[
+#pagebreak()
+
+// Second page content in two columns
+#columns(2, gutter: 1em)[
   == Algorithm
 
   For this algorithm you'll need two grids: your original _bigram model_ grid
