@@ -32,9 +32,9 @@ inherit all the styling from the main typst `anu-template` theme:
 
 - 2.5cm margins
 - ANU Cybernetic Studio branding
-- Dark theme with gold accents
+- dark theme with gold accents
 - Public Sans font
-- Images: 11.9cm width on right side
+- images: 11.9cm width on right side
 
 Note: the ANU template typst package is on this same machine at
 `~/Library/Application Support/typst/packages/local/anu-typst-template/0.1.0`.
@@ -44,7 +44,7 @@ Note: the ANU template typst package is on this same machine at
 ### Modifying layout
 
 - Edit `utils.typ` for global changes
-- Override locally for specific modules
+- iverride locally for specific modules
 
 ## Dependencies
 
@@ -54,7 +54,10 @@ Note: the ANU template typst package is on this same machine at
 
 ## Notes
 
-- Modules are designed for physical printing and workshop distribution
+- modules are designed for physical printing and workshop distribution
   (_ideally_ on one double-sided sheet, i.e. 2 pages total for each)
-- Each module teaches a specific concept about language models
-- Emphasis on hands-on activities with dice, tokens, paper
+- each module teaches a specific concept about language models
+- emphasis on hands-on activities with dice, tokens, paper
+- when making changes to the template, build one of the modules (e.g.
+  `00-weighted-randomness.typ`) and read the output pdf (it'll only be 2 pages)
+  to see if the changes have been applied correctly
