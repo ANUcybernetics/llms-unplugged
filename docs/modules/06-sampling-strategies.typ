@@ -74,6 +74,12 @@
   Truncation narrows the viable "next word options" by ruling out some options.
   Any truncation strategy can be combined with temperature control.
 
+  === Greedy sampling
+
+  + find current word's row
+  + select the word with the highest count
+  + if there's a tie, roll dice to choose equally among the most likely options
+
   === Haiku sampling
 
   + track syllables in current line (5-7-5 pattern)
