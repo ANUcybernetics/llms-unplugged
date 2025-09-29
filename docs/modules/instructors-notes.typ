@@ -4,7 +4,6 @@
 #show: anu.with(
   title: [Instructor's notes],
   config: (
-    theme: sys.inputs.at("anu_theme", default: "dark"),
     logos: ("socy",),
   ),
 )
