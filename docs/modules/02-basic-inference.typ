@@ -11,21 +11,23 @@
 
   == You will need
 
-  - your completed model (i.e. the word co-occurence grid) from _Basic Training_
-  - d20 (or similar) for weighted sampling
+  - your completed bigram model (i.e. your filled-out grid) from _Basic
+      Training_
+  - d20 (or similar) for weighted sampling (see _Weighted Random Sampling_)
   - paper for writing down the generated "output text"
 
   == Your goal
 
   To generate new text (as much as you like!) from your bigram language model.
-  *Stretch goal*: generate as much text as possible.
+  *Stretch goal*: keep going, generating as much text as possible. Write a whole
+  book!
 
   == Key idea
 
   Language models generate text by predicting one word at a time based on learnt
   patterns. Your trained model provides the "next word" options and their
   probabilities; dice rolls provide the randomness to choose one of those
-  options.
+  options (and this process can be repeated indefinitely).
 ]
 
 // Second page content in two columns
@@ -44,6 +46,8 @@
   #colbreak()
 
   == Example
+
+  Using the same bigram model from the example in _Basic Training_:
 
   #lm-grid-auto((
     "see",

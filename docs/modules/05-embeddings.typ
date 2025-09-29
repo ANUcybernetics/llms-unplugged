@@ -7,29 +7,29 @@
   "Word Embeddings",
   "images/CYBERNETICS_A_102.jpg",
 )[
-  Transform words into numerical vectors using their patterns from your language
-  model.
+  Transform words into numerical vectors that capture meaning---words with
+  similar meanings end up close together in this mathematical space, revealing
+  the semantic relationships between words in your model.
 
   == You will need
 
   - your completed bigram model grid (including context columns if you have
     them)
   - another empty grid (same size as your bigram model)
+  - pen, paper & dice as per _Basic Inference_
 
   == Your goal
 
   To create a similarity matrix (another square grid) which captures how similar
   (or different) all the words in your bigram model are. *Stretch goal*: create
-  a visual representation of your words so that similar words are clustered
-  together (and different words are far apart).
+  a visual representation of this similarity matrix.
 
   == Key idea
 
-  Language models create mathematical representations of words that capture
-  meaning through usage patterns. Each word's row in your model is its embedding
-  under that model---a numerical fingerprint that captures meaning through
-  context. Distances between words real grammatical and semantic relationships.
-  Similar words have similar embeddings.
+  Each word's row in your model is its embedding under that model---a numerical
+  fingerprint that captures meaning through context. Distances between words
+  real grammatical and semantic relationships. Similar words have similar
+  embeddings.
 ]
 
 // Second page content in two columns
@@ -50,27 +50,29 @@
 
   Original text: _"See Spot. Spot runs."_
 
-  Bigram model grid:
+  Completed bigram model grid:
 
   #lm-grid-auto(("see", "spot", ".", "spot", "runs", "."))
 
-  Each row is that word's embedding vector (using 0 for blank cells):
-  - `see`: [0, 1, 0, 0]
-  - `spot`: [0, 0, 1, 1]
-  - `.`: [0, 1, 0, 0]
-  - `runs`: [0, 0, 1, 0]
+  #colbreak()
 
-  Calculating distance between the first two rows (`see` and `spot`):
+  The embedding distance between the first two rows (`see` and `spot`) is the
+  sum of the absolute differences between corresponding elements (0 for blank
+  cells):
 
-  $|0-0| + |1-0| + |0-1| + |0-1| = 0 + 1 + 1 + 1 = 3$
+  $
+    d("see", "spot") & = |0-0| + |1-0| + |0-1| + |0-1| \
+                     & = 0 + 1 + 1 + 1 \
+                     & = 3
+  $
 
   Put this distance in the embedding distance grid (note diagonals are already
   pre-filled with 0 as well):
 
   #table(
-    columns: 5,
+    columns: (1fr, 1fr, 1fr, 1fr, 1fr),
     [], [`see`], [`spot`], [`.`], [`runs`],
-    [`see`], [0], [3], [], [],
+    [`see`], [0], [#text(fill: anu-colors.gold, weight: "bold")[3]], [], [],
     [`spot`], [], [0], [], [],
     [`.`], [], [], [0], [],
     [`runs`], [], [], [], [0],
@@ -80,7 +82,7 @@
   triangle---the embedding distance is symmetric):
 
   #table(
-    columns: 5,
+    columns: (1fr, 1fr, 1fr, 1fr, 1fr),
     [], [`see`], [`spot`], [`.`], [`runs`],
     [`see`], [0], [3], [0], [2],
     [`spot`], [], [0], [3], [2],

@@ -12,32 +12,31 @@
 
   == You will need
 
-  - a short text (e.g. a few pages from a kids book, but can be anything)
-  - grid paper (for tracking word patterns)
-  - pen and pencil
+  - some text (e.g. a few pages from a kids book, but can be anything)
+  - pen, pencil and grid paper
 
   == Your goal
 
-  To produce a grid---this is your bigram language model---that captures the
-  patterns in your input text data. *Stretch goal*: train your model on as much
-  text as possible.
+  To produce a grid that captures the patterns in your input text data. This
+  grid is your _bigram language model_. *Stretch goal*: keep training your model
+  on more input text.
 
   == Key idea
 
   Language models learn by counting patterns in text. "Training" means
-  building/constructing a model (shown in this activity as a grid or table) that
-  tracks which words follow other words.
+  building/constructing a model (i.e. filling out the grid) to track which words
+  follow other words.
 ]
 
 // Second page content in two columns
 #columns(2, gutter: 1em)[
   == Algorithm
 
-  + *prepare your text*:
+  + *preprocess your text*:
 
     - convert everything to lowercase
-    - treat words, commas and full stops as separate "words" (ignore other
-      punctuation)
+    - treat words, commas and full stops as separate "words" (and ignore other
+      punctuation and whitespace)
 
   + *set up your grid*:
 
@@ -56,16 +55,16 @@
   Original text: _"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot,
     jump."_
 
-  Prepared text: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,` `spot`
-  `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`
+  Preprocessed text: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,`
+  `spot` `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`
 
   #colbreak()
 
-  After the first two words (`see` `spot`) the model is:
+  After the first two words (`see` `spot`) the model looks like:
 
   #lm-grid-auto(("see", "spot"), nrows: 6, ncols: 7)
 
-  After the full text the model is:
+  After the full text the model looks like:
 
   #lm-grid-auto((
     "see",

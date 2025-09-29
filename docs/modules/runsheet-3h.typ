@@ -51,9 +51,9 @@
 - discussion/shareback question: "what influence do different sampling
   procedures have on the generated text?"
 
-#line(length: 100%, stroke: (paint: rgb("#D4AF37"), thickness: 1pt))
+#line(length: 100%, stroke: (paint: anu-colors.gold, thickness: 1pt))
 *#t(75)* _break_
-#line(length: 100%, stroke: (paint: rgb("#D4AF37"), thickness: 1pt))
+#line(length: 100%, stroke: (paint: anu-colors.gold, thickness: 1pt))
 
 == *#t(90)* Design your own Language Model algorithm
 - you need to define the _purpose_ of the language model

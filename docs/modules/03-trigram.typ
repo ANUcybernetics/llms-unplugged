@@ -7,19 +7,20 @@
   "Trigram Model",
   "images/CYBERNETICS_A_027.jpg",
 )[
-  Extend the basic model to consider _two_ words of context instead of one,
+  Extend the bigram model to consider _two_ words of context instead of one,
   leading to better text generation.
 
   == You will need
 
   - same as _Basic Training_ module
   - additional paper for the three-column model
+  - pen, paper & dice as per _Basic Inference_
 
   == Your goal
 
-  To create a trigram language model (a table this time, not a grid like your
-  bigram model from _Basic Training_) that captures the patterns in your input
-  text data. *Stretch goal*: generate as much text as possible.
+  To train a trigram language model (a table this time, not a grid like your
+  bigram model from _Basic Training_) and use it to generate text. *Stretch
+    goal*: train on more data, or generate more text.
 
   == Key idea
 
@@ -68,16 +69,19 @@
   )
 ]
 
+Note: the order of the rows doesn't matter, so you can re-order to group them by
+_word 1_ if that helps.
+
 // Gold horizontal rule
-#line(length: 100%, stroke: (paint: rgb("#D4AF37"), thickness: 1pt))
+#line(length: 100%, stroke: (paint: anu-colors.gold, thickness: 1pt))
 
 // Inference section in two columns
 #columns(2, gutter: 1em)[
   == Algorithm (inference)
 
-  + pick any row from your table; write down _word 1_ and _word 2_ from that row
-    as your starting words
-  + find all rows where _word 1_ and _word 2_ are exact matches for your two
+  + pick any row from your table; write down _word 1_ and _word 2_ as your
+    starting words
+  + find *all rows* where _word 1_ and _word 2_ are exact matches for your two
     starting words, and make note of their _count_ columns
   + as per _Basic Inference_ roll a d20 weighted by the counts and select the
     _word 3_ associated with the chosen row
@@ -88,8 +92,8 @@
 
   == Example (inference)
 
-  + from the table above, choose `see` + `spot` as your starting _word 1_ and
-    _word 2_:
+  + from the table above, choose `see` (_word 1_) and `spot` (_word 2_) as your
+    starting words
   + find all rows with _word 1_ = `see` and _word 2_ = `spot`; in this case rows
     1 and 5 (both have _count_ == 1)
   + roll a d20 and write down the _word 3_ from the row chosen by the dice roll

@@ -7,44 +7,41 @@
   "Sampling Strategies",
   "images/CYBERNETICS_A_098.jpg",
 )[
-  Even after your model is trained, you have creative control over how it
-  generates text.
+  During inference the model gives you the options for which word could come
+  next in the generated text, but there are different ways to make the choice.
 
   == You will need
 
   - a completed model from an earlier module
+  - pen, paper & dice as per _Basic Inference_
 
   == Your goal
 
-  To generate text using the same model, but using at least two different
+  To generate text (with the same model) using at least two different
   temperature values and at least two different truncation strategies. *Stretch
-    goal*: come up (and use) with your own truncation strategy.
+    goal*: design and evaluate your own truncation strategy.
 
   == Key idea
 
   There are lots of different sampling strategies---ways to select the next word
-  during generation. Each strategy serves a different purpose, from maximising
-  accuracy to embracing chaos, from creating structured poetry to mimicking
-  child speech. Understanding these strategies reveals how modern LLMs control
-  their output style.
+  during inference (text generation). Each strategy has different strengths and
+  weaknesses, and can significantly influence the generated text even if the
+  rest of the model is identical.
 ]
 
 // Temperature section in two columns
 #columns(2, gutter: 1em)[
   == Temperature control
 
-  Temperature controls the randomness by adjusting the relative likelihood of
-  probable vs improbable words (making things more predictable or more
-  "chaotic").
+  The temperature parameter (a number) controls the randomness by adjusting the
+  relative likelihood of probable vs improbable words. The higher the
+  temperature, the more uniform the distribution becomes, increasing randomness
+  and allowing more sampling from unlikely words.
 
   === Algorithm
 
-  + *temperature = 1 (normal)*: use counts as-is
-  + *temperature > 1 (warmer)*: divide all counts by temperature value (round
+  + when sampling the next word, divide all counts by temperature value (round
     down, min 1)
-  + *temperature < 1 (cooler)*: multiply all counts by 1/temperature (round up)
-
-  The higher the temperature, the more uniform the distribution becomes.
 
   #colbreak()
 
@@ -59,16 +56,16 @@
     ),
   )
 
-  + *temperature = 1*: use counts as-is (4, 2, 1, 1)
+  + if *temperature = 1*: use counts as-is (4, 2, 1, 1)
     - `spot` is 2x as likely as `run`, 4x as likely as `jump` or `.`
-  + *temperature = 2*: divide counts by 2 → (2, 1, 1, 1)
+  + if *temperature = 2*: divide counts by 2 → (2, 1, 1, 1)
     - `spot` still most likely, but only 2x as likely as others
-  + *temperature = 3*: divide counts by 3 → (1, 1, 1, 1)
+  + if *temperature = 4*: divide counts by 4 → (1, 1, 1, 1)
     - all words equally likely
 ]
 
 // Gold horizontal rule
-#line(length: 100%, stroke: (paint: rgb("#D4AF37"), thickness: 1pt))
+#line(length: 100%, stroke: (paint: anu-colors.gold, thickness: 1pt))
 
 // Truncation section in two columns
 #columns(2, gutter: 1em)[
