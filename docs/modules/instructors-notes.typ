@@ -10,7 +10,7 @@
 )
 
 
-== Module 00: Weighted Randomness
+== Weighted randomness
 
 === Discussion questions
 
@@ -20,7 +20,7 @@
 - what happens when one option has 95% probability?
 - can you invent your own weighted random selection method?
 
-== Module 01: Basic Training (Building the Model)
+== Basic training
 
 === Discussion questions
 
@@ -32,7 +32,7 @@
 - how could you use this model to generate _new_ text in the style of your
   input/training data?
 
-=== Connection to modern LLMs
+=== Connection to current LLMs
 
 This counting process is exactly what happens during the "training" phase of
 language models:
@@ -42,10 +42,10 @@ language models:
 - *storage*: your paper model vs billions of parameters in memory
 
 The key insight: "training" a language model means counting patterns in text.
-Your hand-built model contains the same type of information that GPT stores---at
+Your hand-built model contains the same type of information that current LLMs store---at
 a vastly smaller scale.
 
-== Module 02: Basic Inference (Generating Text)
+== Basic inference
 
 === Discussion questions
 
@@ -55,9 +55,9 @@ a vastly smaller scale.
 - how could you make generation less repetitive?
 - does the generated text capture the style of your training text?
 
-=== Connection to modern LLMs
+=== Connection to current LLMs
 
-This generation process is identical to how ChatGPT produces text:
+This generation process is identical to how current LLMs produce text:
 
 - *sequential generation*: both generate one word at a time
 - *probabilistic sampling*: both use weighted random selection (exactly like
@@ -67,15 +67,15 @@ This generation process is identical to how ChatGPT produces text:
 - *no planning*: neither looks ahead---just picks the next word
 - *variability*: same prompt can produce different outputs due to randomness
 
-The surprising fact: ChatGPT's sophisticated responses emerge from this simple
+The fact: sophisticated AI responses emerge from this simple
 process repeated thousands of times. Your paper model demonstrates that language
 generation is fundamentally about sampling from learnt probability
-distributions. The randomness is why ChatGPT gives different responses to the
+distributions. The randomness is why LLMs give different responses to the
 same prompt and why language models can be creative rather than repetitive.
 These physical sampling methods demonstrate the exact mathematical operation
-happening billions of times per second inside ChatGPT.
+happening billions of times per second inside modern language models.
 
-== Module 03: Trigram Model
+== Trigram model
 
 === Discussion questions
 
@@ -85,21 +85,21 @@ happening billions of times per second inside ChatGPT.
 - can you find word pairs that always lead to the same next word?
 - what's the tradeoff between context length and data requirements?
 
-=== Connection to modern LLMs
+=== Connection to current LLMs
 
 The trigram model bridges the gap between simple word-pair models and modern
 transformers:
 
-- *context windows*: GPT models use variable context from 2 to 8,000+ tokens
+- *context windows*: current models use variable context from 2 to 128,000+ tokens
 - *sparse data problem*: with more context, you need exponentially more training
   data
 
 Your trigram model shows why longer context helps---`see` + `spot` predicts
 `run` perfectly, while just `spot` could be followed by `run` or `,`. This is
-why ChatGPT can maintain coherent conversations over many exchanges---it
-considers much more context than just the last word or two.
+why modern LLMs can maintain coherent conversations over many exchanges---they
+consider much more context than just the last word or two.
 
-== Module 04: Context Columns (Attention-Lite)
+== Context columns
 
 === Discussion questions
 
@@ -110,26 +110,26 @@ considers much more context than just the last word or two.
 - are grammatical contexts (verb→object, pronoun→verb) more reliable than
   word-specific ones (`word_a`→`word_b`)?
 
-=== Connection to modern LLMs
+=== Connection to current LLMs
 
 Your hand-crafted context columns are what the "attention mechanism" in
 transformers learns automatically:
 
-- *manual vs learnt*: you chose 3 grammatical contexts; GPT learns hundreds of
+- *manual vs learnt*: you chose 3 grammatical contexts; transformers learn hundreds of
   attention patterns
-- *fixed vs dynamic*: your contexts are the same for all words; GPT adapts
+- *fixed vs dynamic*: your contexts are the same for all words; transformers adapt
   attention per word
 - *the innovation*: instead of pre-defining important contexts, transformers
   learn which previous words to "attend to" for each prediction
 
 This is why it's called "attention"---the model learns to pay attention to
-relevant context. When GPT predicts the next word after "The capital of France
+relevant context. When a model predicts the next word after "The capital of France
 is", it automatically learns to attend strongly to "capital" and "France" while
 ignoring less relevant words. Your grammatical context columns (verb→object,
 pronoun→verb) do this manually, while modern AI discovers these patterns---and
 many more---through learning.
 
-== Module 05: Word Embeddings
+== Word embeddings
 
 === Discussion questions
 
@@ -139,12 +139,12 @@ many more---through learning.
 - how do context columns affect word similarity?
 - what information is captured in these vectors?
 
-=== Connection to modern LLMs
+=== Connection to current LLMs
 
 Word embeddings revolutionised NLP by turning words into numbers that computers
 can process:
 
-- *dimensions*: your 8D vectors → GPT uses 768--1536 dimensions
+- *dimensions*: your 8D vectors → modern models use 768--12,288+ dimensions
 - *learning*: you used occurrence patterns → modern models learn from billions
   of contexts
 - *semantic capture*: industrial embeddings encode meaning so well that
@@ -152,14 +152,14 @@ can process:
 - *foundation*: every modern language model starts by converting words to
   embeddings
 
-The breakthrough insight: words with similar meanings appear in similar
+The insight: words with similar meanings appear in similar
 contexts, so their usage patterns (and thus embeddings) are similar. Your
 hand-calculated vectors demonstrate this principle: `cat` and `dog` would have
 similar embeddings because they both follow `the` and precede `ran` or `sat`.
 This discovery enabled computers to finally "understand" that words have
 relationships and meanings beyond just their spelling.
 
-== Module 06: Sampling Strategies
+== Sampling strategies
 
 === Discussion questions
 
@@ -168,13 +168,13 @@ relationships and meanings beyond just their spelling.
 - how do constraints (haiku, no-repeat) spark creativity?
 - can you invent your own sampling strategy?
 
-=== Connection to modern LLMs
+=== Connection to current LLMs
 
-ChatGPT and other modern models use these same mechanisms:
+Current LLMs use these same mechanisms:
 
 *Temperature control*:
 
-- *temperature parameter*: divides probabilities just like you divide tallies -
+- *temperature parameter*: divides probabilities just like you divide tallies;
   higher temperature means more random output
 
 *Truncation techniques*:
@@ -196,7 +196,7 @@ The key insight: generation control is as important as training data. Your paper
 model proves that creative output comes not from the model itself, but from how
 you control temperature and which tokens you truncate from consideration.
 
-== Module 07: Evaluating Your Language Model
+== Model evaluation
 
 === Discussion questions
 
@@ -206,22 +206,21 @@ you control temperature and which tokens you truncate from consideration.
 - how might context length affect evaluation?
 - why might a model with higher perplexity sometimes be preferable?
 
-=== Connection to modern LLMs
+=== Connection to current LLMs
 
 Modern LLMs use these exact same approaches at massive scale:
 
-- *perplexity*: GPT models report perplexity scores on billions of test tokens
-- *human evaluation*: OpenAI uses human raters to evaluate ChatGPT responses
+- *perplexity*: LLMs report perplexity scores on billions of test tokens
+- *human evaluation*: companies use human raters to evaluate model responses
 - *accuracy benchmarks*: models are tested on standardised question sets
 - *diversity metrics*: repetition penalties prevent boring outputs
 
 The key insight: evaluation is about balancing multiple metrics. A model with
 perfect accuracy might be boring (always predicting `the`), while a creative
 model might produce nonsense. Your physical evaluation mirrors the exact
-trade-offs that OpenAI and Anthropic grapple with when training ChatGPT and
-Claude!
+trade-offs that AI companies grapple with when training their models.
 
-== Glossary: The Language of Language Models
+== Glossary: the language of language models
 
 This glossary connects the physical activities you've been doing with the
 technical terms used in modern language models.
@@ -246,7 +245,7 @@ technical terms used in modern language models.
   (what you built in modules 01-02)
 - *trigram model*: a model using two previous words for prediction (module 03)
 - *context window*: how many previous tokens the model considers. Bigrams have a
-  context window of 1, trigrams have 2, GPT-4 has 128,000+
+  context window of 1, trigrams have 2, modern models have 128,000+
 - *attention mechanism*: the ability to focus on relevant previous words. Your
   context columns (module 04) are a manual form of attention
 - *embeddings*: numerical representations of words. Each row in your matrix is
@@ -278,8 +277,8 @@ technical terms used in modern language models.
 === Modern LLM concepts
 
 - *parameters*: the numbers stored in the model. Each tally mark in your matrix
-  is a parameter. GPT-3 has 175 billion parameters
-- *transformer*: the architecture used by GPT, Claude, etc. It uses attention to
+  is a parameter. Large models have hundreds of billions of parameters
+- *transformer*: the architecture used by modern LLMs. It uses attention to
   process all words in parallel rather than sequentially
 - *fine-tuning*: additional training on specific text. Like adding more tallies
   to your matrix from a new text source
@@ -310,7 +309,7 @@ technical terms used in modern language models.
 + *Scale is the main difference*: your 6×6 matrix vs billions of parameters, but
   the core concepts are identical
 
-+ *Randomness creates variety*: both your dice and ChatGPT use controlled
++ *Randomness creates variety*: both your dice and LLMs use controlled
   randomness to avoid repetitive output
 
 + *Context improves prediction*: more context (bigram → trigram → transformer)
