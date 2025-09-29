@@ -6,6 +6,7 @@
 #module-hero(
   "Basic Training",
   "images/CYBERNETICS_A_009.jpg",
+  "01",
 )[
   Build a bigram (word co-occurence) language model that tracks which words
   follow which other words in text.

@@ -6,6 +6,7 @@
 #module-hero(
   "Word Embeddings",
   "images/CYBERNETICS_A_102.jpg",
+  "05",
 )[
   Transform words into numerical vectors that capture meaning, revealing the
   semantic relationships between words in your model.

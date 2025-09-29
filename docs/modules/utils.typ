@@ -22,7 +22,7 @@
 }
 
 // Hero image and title layout for module first pages
-#let module-hero(title, image-path, content) = {
+#let module-hero(title, image-path, module-number, content) = {
   // Place image on right side of first page
   place(
     top + right,
@@ -33,6 +33,18 @@
       height: 26cm,
       clip: true,
       image(image-path, width: 100%, height: 100%, fit: "cover"),
+    ),
+  )
+
+  // Place module number on top of image
+  place(
+    bottom + right,
+    dx: 2cm,
+    dy: 2cm,
+    text(
+      size: 6cm,
+      fill: white.transparentize(70%),
+      module-number,
     ),
   )
 

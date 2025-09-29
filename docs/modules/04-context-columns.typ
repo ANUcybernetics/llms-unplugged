@@ -6,6 +6,7 @@
 #module-hero(
   "Context Columns",
   "images/CYBERNETICS_A_051.jpg",
+  "04",
 )[
   Enhance the bigram model with context columns that capture grammatical and
   semantic patterns.
