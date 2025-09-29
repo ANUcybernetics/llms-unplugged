@@ -7,9 +7,8 @@
   "Word Embeddings",
   "images/CYBERNETICS_A_102.jpg",
 )[
-  Transform words into numerical vectors that capture meaning---words with
-  similar meanings end up close together in this mathematical space, revealing
-  the semantic relationships between words in your model.
+  Transform words into numerical vectors that capture meaning, revealing the
+  semantic relationships between words in your model.
 
   == You will need
 

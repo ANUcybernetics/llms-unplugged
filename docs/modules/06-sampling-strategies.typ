@@ -7,8 +7,8 @@
   "Sampling Strategies",
   "images/CYBERNETICS_A_098.jpg",
 )[
-  During inference the model gives you the options for which word could come
-  next in the generated text, but there are different ways to make the choice.
+  When generating text the language model gives several different options for
+  which word could come next in the generated text---which one to choose?
 
   == You will need
 

@@ -7,8 +7,8 @@
   "Context Columns",
   "images/CYBERNETICS_A_051.jpg",
 )[
-  Enhance your word bigram model with context columns that capture grammatical
-  and semantic patterns.
+  Enhance the bigram model with context columns that capture grammatical and
+  semantic patterns.
 
   == You will need
 
