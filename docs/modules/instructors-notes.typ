@@ -20,15 +20,35 @@
 - what happens when one option has 95% probability?
 - can you invent your own weighted random selection method?
 
+=== Connection to current LLMs
+
+This weighted selection process is fundamental to how modern language models
+generate text:
+
+- *probability distributions*: neural networks output probability scores for all
+  possible next tokens (50,000+ options), just like your tallies
+- *sampling methods*: LLMs use the exact same weighted random selection you
+  implemented with dice, spinners, or tokens
+- *temperature scaling*: modern models divide probabilities by a "temperature"
+  parameter to control randomness—higher temperature makes selection more random
+- *hardware optimization*: GPUs perform millions of these weighted selections
+  per second, but the mathematical operation is identical to your physical
+  methods
+
+The key insight: sophisticated AI text generation fundamentally relies on the
+same weighted randomness you just implemented by hand. Your dice rolls
+demonstrate the core randomness that makes AI responses varied and creative
+rather than deterministically repetitive.
+
 == Basic training
 
 === Discussion questions
 
-- what patterns emerge in your model?
+- what patterns can you see in your bigram model grid?
 - which words have many possible followers vs just one?
 - how does including punctuation as "words" help with sentence structure?
 - which words appear most frequently in your training data?
-- are there any empty rows? What does that mean?
+- are there any empty rows? what does that mean?
 - how could you use this model to generate _new_ text in the style of your
   input/training data?
 
@@ -42,8 +62,8 @@ language models:
 - *storage*: your paper model vs billions of parameters in memory
 
 The key insight: "training" a language model means counting patterns in text.
-Your hand-built model contains the same type of information that current LLMs store---at
-a vastly smaller scale.
+Your hand-built model contains the same type of information that current LLMs
+store---at a vastly smaller scale.
 
 == Basic inference
 
@@ -51,7 +71,6 @@ a vastly smaller scale.
 
 - how does the starting word affect your generated text?
 - why does the text sometimes get stuck in loops?
-- what happens when a word only has one possible follower?
 - how could you make generation less repetitive?
 - does the generated text capture the style of your training text?
 
@@ -67,13 +86,13 @@ This generation process is identical to how current LLMs produce text:
 - *no planning*: neither looks ahead---just picks the next word
 - *variability*: same prompt can produce different outputs due to randomness
 
-The fact: sophisticated AI responses emerge from this simple
-process repeated thousands of times. Your paper model demonstrates that language
-generation is fundamentally about sampling from learnt probability
-distributions. The randomness is why LLMs give different responses to the
-same prompt and why language models can be creative rather than repetitive.
-These physical sampling methods demonstrate the exact mathematical operation
-happening billions of times per second inside modern language models.
+The fact: sophisticated AI responses emerge from this simple process repeated
+thousands of times. Your paper model demonstrates that language generation is
+fundamentally about sampling from learnt probability distributions. The
+randomness is why LLMs give different responses to the same prompt and why
+language models can be creative rather than repetitive. These physical sampling
+methods demonstrate the exact mathematical operation happening billions of times
+per second inside modern language models.
 
 == Trigram model
 
@@ -90,7 +109,7 @@ happening billions of times per second inside modern language models.
 The trigram model bridges the gap between simple word-pair models and modern
 transformers:
 
-- *context windows*: current models use variable context from 2 to 128,000+ tokens
+- *context windows*: current models use variable context from 2 to \~2M
 - *sparse data problem*: with more context, you need exponentially more training
   data
 
@@ -115,19 +134,19 @@ consider much more context than just the last word or two.
 Your hand-crafted context columns are what the "attention mechanism" in
 transformers learns automatically:
 
-- *manual vs learnt*: you chose 3 grammatical contexts; transformers learn hundreds of
-  attention patterns
-- *fixed vs dynamic*: your contexts are the same for all words; transformers adapt
-  attention per word
+- *manual vs learnt*: you chose 3 grammatical contexts; transformers learn
+  hundreds of attention patterns
+- *fixed vs dynamic*: your contexts are the same for all words; transformers
+  adapt attention per word
 - *the innovation*: instead of pre-defining important contexts, transformers
   learn which previous words to "attend to" for each prediction
 
 This is why it's called "attention"---the model learns to pay attention to
-relevant context. When a model predicts the next word after "The capital of France
-is", it automatically learns to attend strongly to "capital" and "France" while
-ignoring less relevant words. Your grammatical context columns (verb→object,
-pronoun→verb) do this manually, while modern AI discovers these patterns---and
-many more---through learning.
+relevant context. When a model predicts the next word after "The capital of
+France is", it automatically learns to attend strongly to "capital" and "France"
+while ignoring less relevant words. Your grammatical context columns
+(verb→object, pronoun→verb) do this manually, while modern AI discovers these
+patterns---and many more---through learning.
 
 == Word embeddings
 
@@ -144,20 +163,21 @@ many more---through learning.
 Word embeddings revolutionised NLP by turning words into numbers that computers
 can process:
 
-- *dimensions*: your 8D vectors → modern models use 768--12,288+ dimensions
+- *dimensions*: your (e.g.) 8-dimensional vectors → modern models use hundreds
+  or thousands of dimensions
 - *learning*: you used occurrence patterns → modern models learn from billions
   of contexts
-- *semantic capture*: industrial embeddings encode meaning so well that
+- *semantic capture*: state-of-the-art embeddings encode meaning so well that
   "`king` - `man` + `woman` ≈ `queen`" actually works
 - *foundation*: every modern language model starts by converting words to
   embeddings
 
-The insight: words with similar meanings appear in similar
-contexts, so their usage patterns (and thus embeddings) are similar. Your
-hand-calculated vectors demonstrate this principle: `cat` and `dog` would have
-similar embeddings because they both follow `the` and precede `ran` or `sat`.
-This discovery enabled computers to finally "understand" that words have
-relationships and meanings beyond just their spelling.
+The insight: words with similar meanings appear in similar contexts, so their
+usage patterns (and thus embeddings) are similar. Your hand-calculated vectors
+demonstrate this principle: `cat` and `dog` would have similar embeddings
+because they both follow `the` and precede `ran` or `sat`. This discovery
+enabled computers to "understand" that words have relationships and meanings
+beyond just their spelling.
 
 == Sampling strategies
 
@@ -269,7 +289,7 @@ technical terms used in modern language models.
 === Evaluation metrics
 
 - *perplexity*: a measure of how surprised the model is by text. Lower
-  perplexity means the model better predicts real text (module 07)
+  perplexity means the model better predicts real text
 - *accuracy*: percentage of correct next-word predictions
 - *loss*: how wrong the model's predictions are. Training minimises loss by
   adjusting the matrix values
@@ -277,33 +297,18 @@ technical terms used in modern language models.
 === Modern LLM concepts
 
 - *parameters*: the numbers stored in the model. Each tally mark in your matrix
-  is a parameter. Large models have hundreds of billions of parameters
+  is a parameter. Large models have hundreds of billions of parameters.
 - *transformer*: the architecture used by modern LLMs. It uses attention to
-  process all words in parallel rather than sequentially
+  process all words in parallel rather than sequentially.
 - *fine-tuning*: additional training on specific text. Like adding more tallies
-  to your matrix from a new text source
+  to your matrix from a new text source.
 - *prompt*: the starting text you give the model. Your initial word when
-  generating text
+  generating text.
 - *tokenisation*: breaking text into tokens. When you separated "See Spot run."
-  into `see` `spot` `run` `.`, you were tokenising
-- *hallucination*: when models generate plausible-sounding but false
-  information. Happens because models learn patterns, not facts
+  into `see` `spot` `run` `.`, you were tokenising.
+- *hallucination*: when models generate plausible-sounding but false information
+  (because models learn patterns, not facts).
 
-=== Connections to your activities
-
-#lm-table(
-  ([Your Activity], [Real LLM Equivalent]),
-  (
-    ([Tallying word pairs], [Counting n-grams during training]),
-    ([Rolling d20 for next word], [Sampling from probability distribution]),
-    ([Matrix rows/columns], [Weight matrices in neural networks]),
-    ([Adding context columns], [Learning attention patterns]),
-    ([Calculating word distances], [Computing embedding similarities]),
-    ([Dividing tallies by temperature], [Applying temperature to logits]),
-    ([Keeping top 3 beam paths], [Beam search with beam width 3]),
-    ([Checking if model predicts correctly], [Computing cross-entropy loss]),
-  ),
-)
 === Key insights
 
 + *Scale is the main difference*: your 6×6 matrix vs billions of parameters, but
@@ -312,8 +317,8 @@ technical terms used in modern language models.
 + *Randomness creates variety*: both your dice and LLMs use controlled
   randomness to avoid repetitive output
 
-+ *Context improves prediction*: more context (bigram → trigram → transformer)
-  enables better text generation
++ *More context improves prediction*: more context (bigram → trigram → context
+  columns) enables better text generation
 
 + *Embeddings capture meaning*: words used similarly get similar vectors,
   whether hand-calculated or learned by neural networks
@@ -321,6 +326,6 @@ technical terms used in modern language models.
 + *Training is just counting*: at its core, training means observing patterns in
   data, exactly what you did with tally marks
 
-The physical activities you've completed demonstrate the fundamental operations
-of language models. The main advances in modern AI come from doing these same
+The activities you've completed demonstrate the fundamental operations of
+language models. The main advances in modern AI come from doing these same
 operations at massive scale with learned (rather than hand-crafted) patterns.
