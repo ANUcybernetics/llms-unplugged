@@ -251,12 +251,12 @@ technical terms used in modern language models.
   of words
 - *matrix*: a grid or table showing relationships between tokens. Your
   hand-drawn grids are matrices tracking which words follow other words
-- *training*: the process of counting patterns in text to build your matrix.
-  When you tallied word transitions, you were "training" your model
-- *inference*: using your trained matrix to generate new text. Rolling dice to
+- *training*: the process of counting patterns in text to build your grid. When
+  you tallied word transitions, you were "training" your model
+- *inference*: using your trained model to generate new text. Rolling dice to
   select the next word is inference
 - *vocabulary*: all unique tokens your model knows. The words across the top and
-  side of your matrix form your vocabulary
+  side of your grid form your vocabulary
 
 === Model architecture
 
@@ -267,7 +267,7 @@ technical terms used in modern language models.
   context window of 1, trigrams have 2, modern models have 128,000+
 - *attention mechanism*: the ability to focus on relevant previous words. Your
   context columns (module 04) are a manual form of attention
-- *embeddings*: numerical representations of words. Each row in your matrix is
+- *embeddings*: numerical representations of words. Each row in your grid is
   that word's embedding vector (module 05)
 
 === Sampling and generation
@@ -291,16 +291,16 @@ technical terms used in modern language models.
   perplexity means the model better predicts real text
 - *accuracy*: percentage of correct next-word predictions
 - *loss*: how wrong the model's predictions are. Training minimises loss by
-  adjusting the matrix values
+  adjusting the grid's counts
 
 === Modern LLM concepts
 
-- *parameters*: the numbers stored in the model. Each tally mark in your matrix
-  is a parameter. Large models have hundreds of billions of parameters.
+- *parameters*: the numbers stored in the model. Each tally mark in your grid is
+  a parameter. Large models have hundreds of billions of parameters.
 - *transformer*: the architecture used by modern LLMs. It uses attention to
   process all words in parallel rather than sequentially.
 - *fine-tuning*: additional training on specific text. Like adding more tallies
-  to your matrix from a new text source.
+  to your grid from a new text source.
 - *prompt*: the starting text you give the model. Your initial word when
   generating text.
 - *tokenisation*: breaking text into tokens. When you separated "See Spot run."
@@ -310,8 +310,9 @@ technical terms used in modern language models.
 
 === Key insights
 
-+ *Scale is the main difference*: your 6×6 matrix vs billions of parameters, but
-  the core concepts are identical
++ *Scale is the main difference*: your small bigram/trigram models (dozens,
+  perhaps up to hundreds of parameters) vs billions of parameters, but the core
+  concepts are identical
 
 + *Randomness creates variety*: both your dice and LLMs use controlled
   randomness to avoid repetitive output
