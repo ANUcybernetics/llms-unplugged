@@ -47,7 +47,7 @@
   model's output once the context columns were added?"
 
 == *#t(60)* Sampling strategies
-- LoLM: sampling, logits, temperature/truncation
+- LoLM: sampling, temperature/truncation
 - discussion/shareback question: "what influence do different sampling
   procedures have on the generated text?"
 
@@ -55,23 +55,27 @@
 *#t(75)* _break_
 #line(length: 100%, stroke: (paint: anu-colors.gold, thickness: 1pt))
 
-== *#t(90)* Design your own Language Model algorithm
-- you need to define the _purpose_ of the language model
-- can combine/modify any of the algorithms you've encountered already (or even
-  the "bonus" ones) and you're encouraged to futher train your model, too
-- write up your model (on a module card) to give to another group (plus any
-  model grids, etc. they'll need)
+== *#t(90)* Design your own poetry slam language model
+- discuss in your group: what poetic ideas do you want your language model to
+  explore?
+- write up your model on a module card to give to another group (plus any model
+  grids, etc. they'll need)
+- can combine/modify any of the techniques you've encountered already (or invent
+  your own) and you're encouraged to futher train your model, too
 - discussion/shareback question: "what does _your_ model do, and why?"
 
-== *#t(110)* Performance prep
+== *#t(110)* Pre-slam prep
 - your group will receive an "module card" from a different group; you have 10
   mins to implement it and plan your performance
 
-== *#t(120)* Performances
+== *#t(120)* Poetry Slam
+- do a _performance_ of the poetry language model you were given
 - this is your completion task
 - good faith effort required
 
 == *#t(150)* close
+- what was the hardest part of designing your model?
+- what was the hardest part of preparing your performance?
 - how do these language models relate to ChatGPT? similarities? differences?
 - what does it all mean?
 
