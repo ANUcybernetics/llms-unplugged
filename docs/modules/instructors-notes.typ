@@ -70,11 +70,10 @@ directly from Shannon's work in 1948-1951.
 
 === Discussion questions
 
-- what patterns can you see in your bigram model grid?
-- which words have many possible followers vs just one?
+- what can you tell about the input text by looking at the filled-out bigram
+  model grid?
 - how does including punctuation as "words" help with sentence structure?
-- which words appear most frequently in your training data?
-- are there any empty rows? what does that mean?
+- are there any other ways you could have written down this exact same model?
 - how could you use this model to generate _new_ text in the style of your
   input/training data?
 
