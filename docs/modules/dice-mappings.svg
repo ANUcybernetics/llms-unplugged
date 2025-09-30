@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="24 0 428 330" width="428" height="330">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="24 -6 428 336" width="428" height="336">
   <!-- Define styles -->
   <style>
     .cell { fill: #2a2a2a; stroke: #fff; stroke-width: 0.5; }
@@ -7,16 +7,16 @@
     .cell-dividers { stroke: #fff; stroke-width: 0.5; fill: none; }
     .group-divider { stroke: #ffffff; stroke-width: 1.5; }
     .row-border { fill: none; stroke: #ffffff; stroke-width: 1.5; }
-    .number-text { font-family: Arial, sans-serif; font-size: 8px; font-weight: 600; text-anchor: middle; fill: #fff; }
-    .label-text { font-family: Arial, sans-serif; font-size: 10px; font-weight: bold; fill: #ffffff; }
-    .group-label { font-family: Arial, sans-serif; font-size: 7px; text-anchor: middle; fill: #ffffff; }
-    .row-label { font-family: Arial, sans-serif; font-size: 10px; font-weight: bold; fill: #ffffff; }
+    .number-text { font-family: Arial, sans-serif; font-size: 10px; font-weight: 600; text-anchor: middle; fill: #fff; }
+    .label-text { font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; fill: #ffffff; }
+    .group-label { font-family: Arial, sans-serif; font-size: 10px; text-anchor: middle; fill: #ffffff; }
+    .row-label { font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; fill: #ffffff; }
   </style>
   <!-- Row 2: 2 groups -->
   <g transform="translate(50, 10)">
     <text x="-25" y="14" class="row-label">2</text>
-    <text x="100" y="-2" class="group-label">1</text>
-    <text x="300" y="-2" class="group-label">2</text>
+    <text x="100" y="-4" class="group-label">1</text>
+    <text x="300" y="-4" class="group-label">2</text>
     <rect x="0" y="0" width="20" height="20" class="cell-numbered"/>
     <rect x="20" y="0" width="160" height="20" class="cell"/>
     <rect x="180" y="0" width="20" height="20" class="cell-numbered"/>
@@ -34,9 +34,9 @@
   <!-- Row 3: 3 groups (7+7+6) -->
   <g transform="translate(50, 50)">
     <text x="-25" y="14" class="row-label">3</text>
-    <text x="70" y="-2" class="group-label">1</text>
-    <text x="210" y="-2" class="group-label">2</text>
-    <text x="330" y="-2" class="group-label">3</text>
+    <text x="70" y="-4" class="group-label">1</text>
+    <text x="210" y="-4" class="group-label">2</text>
+    <text x="330" y="-4" class="group-label">3</text>
     <rect x="0" y="0" width="20" height="20" class="cell-numbered"/>
     <rect x="20" y="0" width="100" height="20" class="cell"/>
     <rect x="120" y="0" width="20" height="20" class="cell-numbered"/>
@@ -60,10 +60,10 @@
   <!-- Row 4: 4 groups -->
   <g transform="translate(50, 90)">
     <text x="-25" y="14" class="row-label">4</text>
-    <text x="50" y="-2" class="group-label">1</text>
-    <text x="150" y="-2" class="group-label">2</text>
-    <text x="250" y="-2" class="group-label">3</text>
-    <text x="350" y="-2" class="group-label">4</text>
+    <text x="50" y="-4" class="group-label">1</text>
+    <text x="150" y="-4" class="group-label">2</text>
+    <text x="250" y="-4" class="group-label">3</text>
+    <text x="350" y="-4" class="group-label">4</text>
     <rect x="0" y="0" width="20" height="20" class="cell-numbered"/>
     <rect x="20" y="0" width="60" height="20" class="cell"/>
     <rect x="80" y="0" width="20" height="20" class="cell-numbered"/>
@@ -93,11 +93,11 @@
   <!-- Row 5: 5 groups -->
   <g transform="translate(50, 130)">
     <text x="-25" y="14" class="row-label">5</text>
-    <text x="40" y="-2" class="group-label">1</text>
-    <text x="120" y="-2" class="group-label">2</text>
-    <text x="200" y="-2" class="group-label">3</text>
-    <text x="280" y="-2" class="group-label">4</text>
-    <text x="360" y="-2" class="group-label">5</text>
+    <text x="40" y="-4" class="group-label">1</text>
+    <text x="120" y="-4" class="group-label">2</text>
+    <text x="200" y="-4" class="group-label">3</text>
+    <text x="280" y="-4" class="group-label">4</text>
+    <text x="360" y="-4" class="group-label">5</text>
     <rect x="0" y="0" width="20" height="20" class="cell-numbered"/>
     <rect x="20" y="0" width="40" height="20" class="cell"/>
     <rect x="60" y="0" width="20" height="20" class="cell-numbered"/>
@@ -133,12 +133,12 @@
   <!-- Row 6: 6 groups (4+4+3+3+3+3) -->
   <g transform="translate(50, 170)">
     <text x="-25" y="14" class="row-label">6</text>
-    <text x="40" y="-2" class="group-label">1</text>
-    <text x="120" y="-2" class="group-label">2</text>
-    <text x="190" y="-2" class="group-label">3</text>
-    <text x="250" y="-2" class="group-label">4</text>
-    <text x="310" y="-2" class="group-label">5</text>
-    <text x="370" y="-2" class="group-label">6</text>
+    <text x="40" y="-4" class="group-label">1</text>
+    <text x="120" y="-4" class="group-label">2</text>
+    <text x="190" y="-4" class="group-label">3</text>
+    <text x="250" y="-4" class="group-label">4</text>
+    <text x="310" y="-4" class="group-label">5</text>
+    <text x="370" y="-4" class="group-label">6</text>
     <rect x="0" y="0" width="20" height="20" class="cell-numbered"/>
     <rect x="20" y="0" width="40" height="20" class="cell"/>
     <rect x="60" y="0" width="20" height="20" class="cell-numbered"/>
@@ -180,13 +180,13 @@
   <!-- Row 7: 7 groups (3+3+3+3+3+3+2) -->
   <g transform="translate(50, 210)">
     <text x="-25" y="14" class="row-label">7</text>
-    <text x="30" y="-2" class="group-label">1</text>
-    <text x="90" y="-2" class="group-label">2</text>
-    <text x="150" y="-2" class="group-label">3</text>
-    <text x="210" y="-2" class="group-label">4</text>
-    <text x="270" y="-2" class="group-label">5</text>
-    <text x="330" y="-2" class="group-label">6</text>
-    <text x="380" y="-2" class="group-label">7</text>
+    <text x="30" y="-4" class="group-label">1</text>
+    <text x="90" y="-4" class="group-label">2</text>
+    <text x="150" y="-4" class="group-label">3</text>
+    <text x="210" y="-4" class="group-label">4</text>
+    <text x="270" y="-4" class="group-label">5</text>
+    <text x="330" y="-4" class="group-label">6</text>
+    <text x="380" y="-4" class="group-label">7</text>
     <rect x="0" y="0" width="20" height="20" class="cell-numbered"/>
     <rect x="20" y="0" width="20" height="20" class="cell"/>
     <rect x="40" y="0" width="20" height="20" class="cell-numbered"/>
@@ -233,14 +233,14 @@
   <!-- Row 8: 8 groups (3+3+3+3+2+2+2+2) -->
   <g transform="translate(50, 250)">
     <text x="-25" y="14" class="row-label">8</text>
-    <text x="30" y="-2" class="group-label">1</text>
-    <text x="90" y="-2" class="group-label">2</text>
-    <text x="150" y="-2" class="group-label">3</text>
-    <text x="210" y="-2" class="group-label">4</text>
-    <text x="260" y="-2" class="group-label">5</text>
-    <text x="300" y="-2" class="group-label">6</text>
-    <text x="340" y="-2" class="group-label">7</text>
-    <text x="380" y="-2" class="group-label">8</text>
+    <text x="30" y="-4" class="group-label">1</text>
+    <text x="90" y="-4" class="group-label">2</text>
+    <text x="150" y="-4" class="group-label">3</text>
+    <text x="210" y="-4" class="group-label">4</text>
+    <text x="260" y="-4" class="group-label">5</text>
+    <text x="300" y="-4" class="group-label">6</text>
+    <text x="340" y="-4" class="group-label">7</text>
+    <text x="380" y="-4" class="group-label">8</text>
     <rect x="0" y="0" width="20" height="20" class="cell-numbered"/>
     <rect x="20" y="0" width="20" height="20" class="cell"/>
     <rect x="40" y="0" width="20" height="20" class="cell-numbered"/>
@@ -290,15 +290,15 @@
   <!-- Row 9: 9 groups (3+3+2+2+2+2+2+2+2) -->
   <g transform="translate(50, 290)">
     <text x="-25" y="14" class="row-label">9</text>
-    <text x="30" y="-2" class="group-label">1</text>
-    <text x="90" y="-2" class="group-label">2</text>
-    <text x="140" y="-2" class="group-label">3</text>
-    <text x="180" y="-2" class="group-label">4</text>
-    <text x="220" y="-2" class="group-label">5</text>
-    <text x="260" y="-2" class="group-label">6</text>
-    <text x="300" y="-2" class="group-label">7</text>
-    <text x="340" y="-2" class="group-label">8</text>
-    <text x="380" y="-2" class="group-label">9</text>
+    <text x="30" y="-4" class="group-label">1</text>
+    <text x="90" y="-4" class="group-label">2</text>
+    <text x="140" y="-4" class="group-label">3</text>
+    <text x="180" y="-4" class="group-label">4</text>
+    <text x="220" y="-4" class="group-label">5</text>
+    <text x="260" y="-4" class="group-label">6</text>
+    <text x="300" y="-4" class="group-label">7</text>
+    <text x="340" y="-4" class="group-label">8</text>
+    <text x="380" y="-4" class="group-label">9</text>
     <rect x="0" y="0" width="20" height="20" class="cell-numbered"/>
     <rect x="20" y="0" width="20" height="20" class="cell"/>
     <rect x="40" y="0" width="20" height="20" class="cell-numbered"/>
