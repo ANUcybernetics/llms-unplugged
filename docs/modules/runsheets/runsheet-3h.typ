@@ -37,7 +37,7 @@
 - LoLM: prompt, completion/response/prediction
 
 == *#t(45)* Go large
-- LoLM: *Large* Language Model
+- LoLM: model size
 
 == *#t(60)* CYOLMA
 - pick a new module and do it in your group, then teach the rest of us
