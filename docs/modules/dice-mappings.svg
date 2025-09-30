@@ -3,11 +3,11 @@
   <!-- Define styles -->
   <style>
     .cell { fill: #2a2a2a; stroke: #fff; stroke-width: 0.5; }
-    .cell-numbered { fill: #e5cfa3; stroke: #fff; stroke-width: 0.5; }
+    .cell-numbered { fill: #be830e; stroke: #fff; stroke-width: 0.5; }
     .cell-dividers { stroke: #fff; stroke-width: 0.5; fill: none; }
     .group-divider { stroke: #ffffff; stroke-width: 1.5; }
     .row-border { fill: none; stroke: #ffffff; stroke-width: 1.5; }
-    .number-text { font-family: Arial, sans-serif; font-size: 8px; font-weight: 600; text-anchor: middle; fill: #333; }
+    .number-text { font-family: Arial, sans-serif; font-size: 8px; font-weight: 600; text-anchor: middle; fill: #fff; }
     .label-text { font-family: Arial, sans-serif; font-size: 10px; font-weight: bold; fill: #ffffff; }
     .group-label { font-family: Arial, sans-serif; font-size: 7px; text-anchor: middle; fill: #ffffff; }
     .row-label { font-family: Arial, sans-serif; font-size: 10px; font-weight: bold; fill: #ffffff; }
