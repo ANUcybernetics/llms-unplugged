@@ -66,26 +66,6 @@ directly from Shannon's work in 1948-1951.
 - what happens when one option has 95% probability?
 - can you invent your own weighted random selection method?
 
-=== Connection to current LLMs
-
-This weighted selection process is fundamental to how modern language models
-generate text:
-
-- *probability distributions*: neural networks output probability scores for all
-  possible next tokens (50,000+ options), just like your tallies
-- *sampling methods*: LLMs use the exact same weighted random selection you
-  implemented with dice, spinners, or tokens
-- *temperature scaling*: modern models divide probabilities by a "temperature"
-  parameter to control randomness—higher temperature makes selection more random
-- *hardware optimization*: GPUs perform millions of these weighted selections
-  per second, but the mathematical operation is identical to your physical
-  methods
-
-The key insight: sophisticated AI text generation fundamentally relies on the
-same weighted randomness you just implemented by hand. Your dice rolls
-demonstrate the core randomness that makes AI responses varied and creative
-rather than deterministically repetitive.
-
 == Basic training
 
 === Discussion questions
