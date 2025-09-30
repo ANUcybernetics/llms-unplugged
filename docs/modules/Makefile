@@ -7,8 +7,8 @@ OUTPUT_DIR = out
 # Find all typst source files (including subdirectories)
 TYP_SOURCE_FILES := $(shell find $(INPUT_DIR) -name '*.typ' ! -name 'utils.typ')
 
-# Find numbered module files (00-*.typ through 09-*.typ)
-MODULE_FILES := $(wildcard $(INPUT_DIR)/0[0-9]-*.typ)
+# Find numbered module files (00-*.typ through 99-*.typ)
+MODULE_FILES := $(wildcard $(INPUT_DIR)/[0-9][0-9]-*.typ)
 MODULE_PDF_FILES := $(patsubst $(INPUT_DIR)/%.typ,$(OUTPUT_DIR)/%.pdf,$(MODULE_FILES))
 
 # Generate corresponding PDF names
