@@ -34,17 +34,6 @@ on---to demonstrate how higher-order models produce increasingly realistic
 output. This generative approach revealed that language structure emerges from
 statistical dependencies at multiple scales.
 
-=== Discussion questions
-
-- why might Markov have chosen literary text rather than scientific writing for
-  his statistical analysis?
-- what changes between 1913 (Markov) and 1948 (Shannon) that make Shannon's work
-  possible?
-- how do Shannon's human prediction experiments differ from the computational
-  N-gram models?
-- what does it mean for a language to have "entropy"?
-- why is synthetic text generation useful for understanding language structure?
-
 === Connection to current LLMs
 
 Modern language models descend directly from Shannon's work:
