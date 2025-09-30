@@ -23,46 +23,35 @@
   ),
 )
 
-== *#t(0)* intro
-- what does it mean to say that there are _patterns_ in text (language)?
-- is it possible to write down and share just the patterns (and not the full
-  text)? how would _you_ do it? where else have you seen it done? how might this
-  be useful?
+== *#t(0)* Intro
+- why is a language model called a "language model"? what does it mean to "model
+  language"?
+- what ways have you seen this done, or can imagine doing it?
 - Andrei Markov, Claude Shannon and others have been thinking about this
   question for a long time...
 
-== *#t(15)* Basic Training
+== *#t(15)* Basic training
 - LoLM: training, model, token, vocabulary
-- discussion/shareback question: "how could you use this grid to make _new_
-  sentences that exhibit the same patterns as the training data?"
 
-== *#t(30)* Basic Inference
+== *#t(30)* Basic inference
 - LoLM: prompt, completion/response/prediction
-- discussion/shareback question: "how predictable is it (for a given prompt) and
-  what factors affect this predictability?"
 
-== *#t(45)* Context columns
-- LoLM: attention
-- discussion/shareback question: "what did you notice about the change in the
-  model's output once the context columns were added?"
+== *#t(45)* Go large
+- LoLM: *Large* Language Model
 
-== *#t(60)* Sampling strategies
-- LoLM: sampling, temperature/truncation
-- discussion/shareback question: "what influence do different sampling
-  procedures have on the generated text?"
+== *#t(60)* CYOLMA
+- pick a new module and do it in your group, then teach the rest of us
 
 #line(length: 100%, stroke: (paint: anu-colors.gold, thickness: 1pt))
-*#t(75)* _break_
+*#t(80)* _break_
 #line(length: 100%, stroke: (paint: anu-colors.gold, thickness: 1pt))
 
 == *#t(90)* Design your own poetry slam language model
-- discuss in your group: what poetic ideas do you want your language model to
-  explore?
-- write up your model on a module card to give to another group (plus any model
-  grids, etc. they'll need)
+- what *isn't* poetry?
+- think about the purpose: "what does _your_ model do, and why?"
+- write up your model on a blank module card to give to another group
 - can combine/modify any of the techniques you've encountered already (or invent
-  your own) and you're encouraged to futher train your model, too
-- discussion/shareback question: "what does _your_ model do, and why?"
+  your own) and you're also encouraged to futher train your model
 
 == *#t(110)* Pre-slam prep
 - your group will receive an "module card" from a different group; you have 10
@@ -70,15 +59,10 @@
 
 == *#t(120)* Poetry Slam
 - do a _performance_ of the poetry language model you were given
-- this is your completion task
-- good faith effort required
+- this is your completion task (good faith effort required)
 
 == *#t(150)* close
 - what was the hardest part of designing your model?
 - what was the hardest part of preparing your performance?
 - how do these language models relate to ChatGPT? similarities? differences?
 - what does it all mean?
-
-// TODO
-// - create "model sheet" template (goal, you will need, algo + examples)
-// - sythetic data card (just add new tallies to the grid)
