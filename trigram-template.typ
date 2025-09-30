@@ -7,9 +7,6 @@
     logos: ("socy", "studio"),
     hide: ("page-numbers", "title-block"),
   ),
-  page-settings: (
-    paper: "a4",
-  ),
   doc,
 )
 
@@ -25,12 +22,12 @@
   )
 }
 
-#v(2.5cm)
+#v(3cm)
 
 #columns(2, gutter: 1.5em)[
-  #trigram-table(20)
+  #trigram-table(19)
   #colbreak()
-  #trigram-table(20)
+  #trigram-table(19)
 ]
 
 #columns(2, gutter: 1.5em)[
