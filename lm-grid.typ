@@ -37,7 +37,7 @@
             align(center + horizon)[
               #text(size: 1.55em)[My First LM]
 
-              Cybernetic Studio
+              #text(font: "Neon Tubes 2")[Cybernetic Studio]
             ],
           ),
         ),
