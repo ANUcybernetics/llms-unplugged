@@ -9,6 +9,64 @@
 )
 
 
+== Historical context: Markov and Shannon
+
+The N-gram models students build in this workshop have a lineage stretching back
+over a century. Understanding this history helps situate the activities within
+broader developments in probability theory, information theory, and computation.
+
+Andrey Markov introduced his eponymous chains in 1913 while analysing letter
+sequences from Pushkin's "Eugene Onegin". His work was fundamentally
+mathematical---he used the statistical dependencies in text to prove properties
+of stochastic processes. Markov counted letter transitions and calculated
+probabilities, but he never generated synthetic text at different N-gram orders.
+His interest was in the mathematics of dependent random variables, not in
+producing artificial language.
+
+Claude Shannon built on this foundation three decades later. Between 1948 and
+1951, Shannon applied information theory to language and made several crucial
+contributions. First, he used N-gram models to measure entropy and redundancy in
+English, connecting statistical patterns to fundamental limits on compression.
+Second, and most relevant to this workshop, Shannon was the first to
+systematically generate synthetic text at increasing N-gram orders---0-gram
+(random letters), 1-gram (letter frequencies), 2-gram (letter pairs), and so
+on---to demonstrate how higher-order models produce increasingly realistic
+output. This generative approach revealed that language structure emerges from
+statistical dependencies at multiple scales.
+
+=== Discussion questions
+
+- why might Markov have chosen literary text rather than scientific writing for
+  his statistical analysis?
+- what changes between 1913 (Markov) and 1948 (Shannon) that make Shannon's work
+  possible?
+- how do Shannon's human prediction experiments differ from the computational
+  N-gram models?
+- what does it mean for a language to have "entropy"?
+- why is synthetic text generation useful for understanding language structure?
+
+=== Connection to current LLMs
+
+Modern language models descend directly from Shannon's work:
+
+- *scaling up N-grams*: current models use vastly more context (128,000+ tokens
+  vs Shannon's letter pairs), but the core idea remains---longer context enables
+  better prediction
+- *entropy and loss*: neural networks minimise "cross-entropy loss" during
+  training, directly applying Shannon's entropy framework
+- *compression and understanding*: recent research shows that better language
+  models are better compressors, confirming Shannon's 1948 insight about the
+  entropy-compression connection
+- *human evaluation*: Shannon's experiments prefigure modern practices of using
+  human raters to evaluate model quality
+
+The key difference is scale and method. Shannon counted letter transitions by
+hand and generated text manually. Modern models learn patterns from trillions of
+words using neural networks and generate text computationally. But the
+fundamental insight---that language structure can be captured through
+statistical dependencies and revealed through synthetic generation---comes
+directly from Shannon's work in 1948-1951.
+
 == Weighted randomness
 
 === Discussion questions
