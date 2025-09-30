@@ -4,7 +4,7 @@
 #show: anu.with(
   title: [Instructor's notes],
   config: (
-    logos: ("socy",),
+    logos: ("socy", "studio"),
   ),
 )
 

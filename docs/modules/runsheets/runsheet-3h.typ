@@ -19,7 +19,7 @@
   author: start-time.display("[month repr:long] [day], [year]"),
   config: (
     theme: sys.inputs.at("anu_theme", default: "light"),
-    logos: ("socy",),
+    logos: ("socy", "studio"),
   ),
 )
 
@@ -28,7 +28,7 @@
 - is it possible to write down and share just the patterns (and not the full
   text)? how would _you_ do it? where else have you seen it done? how might this
   be useful?
-- Claude Shannon, Andrei Markov, and others have been thinking about this
+- Andrei Markov, Claude Shannon and others have been thinking about this
   question for a long time...
 
 == *#t(15)* Basic Training
