@@ -4,7 +4,7 @@
 #show: module-setup
 
 #module-hero(
-  "Sampling Strategies",
+  "Sampling",
   "images/CYBERNETICS_A_098.jpg",
   "06",
 )[
@@ -24,7 +24,7 @@
 
   == Key idea
 
-  There are lots of different sampling strategies---ways to select the next word
+  There are lots of different sampling algorithms---ways to select the next word
   during inference (text generation). Each strategy has different strengths and
   weaknesses, and can significantly influence the generated text even if the
   rest of the model is identical.
