@@ -18,6 +18,17 @@
     doc,
   )
 
+  // Add CC BY-NC 4.0 watermark to every page
+  set page(footer: place(
+    bottom + left,
+    dy: -0.5cm,
+    text(
+      font: "Neon Tubes 2",
+      size: 9pt,
+      fill: anu-colors.socy-yellow,
+    )[CC BY-NC 4.0],
+  ))
+
   body
 }
 
