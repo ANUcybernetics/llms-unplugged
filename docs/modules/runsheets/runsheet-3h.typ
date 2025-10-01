@@ -54,8 +54,8 @@
   your own) and you're also encouraged to futher train your model
 
 == *#t(110)* Pre-slam prep
-- your group will receive an "module card" from a different group; you have 10
-  mins to implement it and plan your performance
+- your group will receive a new module card from a different group; you have 10
+  mins to generate as much text as you can and plan your one-minute performance
 
 == *#t(120)* Poetry Slam
 - do a _performance_ of the poetry language model you were given
