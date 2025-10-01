@@ -59,7 +59,8 @@
 
 == *#t(120)* Poetry Slam
 - do a _performance_ of the poetry language model you were given
-- this is your completion task (good faith effort required)
+- your model card plus the performance itself is your completion task (good
+  faith effort required)
 
 == *#t(150)* close
 - what was the hardest part of designing your model?
