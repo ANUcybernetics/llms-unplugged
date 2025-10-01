@@ -24,12 +24,14 @@
 }
 
 #module-hero(
-  "Model name:",
+  "Model name",
   "images/CYBERNETICS_A_042.jpg",
   "",
 )[
+  #v(2em)
+  #blank-lines(1)
   == Purpose
-  #blank-lines(5)
+  #blank-lines(4)
   == You will need
   #blank-lines(5)
 ]
