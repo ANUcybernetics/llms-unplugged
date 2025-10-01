@@ -24,23 +24,23 @@
 )
 
 == *#t(0)* Intro
-- why is a language model called a "language model"? what does it mean to "model
-  language"?
+- icebreaker: why is a language model called a "language model"? what does it
+  mean to "model language"?
 - what ways have you seen this done, or can imagine doing it?
 - Andrei Markov, Claude Shannon and others have been thinking about this
   question for a long time...
 
 == *#t(15)* Basic training
-- LoLM: training, model, token, vocabulary
+// - LoLM: training, model, token, vocabulary
 
 == *#t(30)* Basic inference
-- LoLM: prompt, completion/response/prediction
+// - LoLM: prompt, completion/response/prediction
 
 == *#t(45)* Go large
-- LoLM: model size
+// - LoLM: model size
 
-== *#t(60)* CYOLMA
-- pick a new module and do it in your group, then teach the rest of us
+== *#t(60)* Context columns
+// - LoLM: attention, transformer
 
 #line(length: 100%, stroke: (paint: anu-colors.gold, thickness: 1pt))
 *#t(80)* _break_
@@ -50,8 +50,6 @@
 - what *isn't* poetry?
 - think about the purpose: "what does _your_ model do, and why?"
 - write up your model on a blank module card to give to another group
-- can combine/modify any of the techniques you've encountered already (or invent
-  your own) and you're also encouraged to futher train your model
 
 == *#t(110)* Pre-slam prep
 - your group will receive a new module card from a different group; you have 10
