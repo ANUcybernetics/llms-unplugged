@@ -6,7 +6,7 @@
 #module-hero(
   "Synthetic Data",
   "images/CYBERNETICS_B_033.jpg",
-  "08",
+  "09",
 )[
   Use your language model to generate new training data, then train a new model
   on that synthetic data to see how patterns degrade or change.

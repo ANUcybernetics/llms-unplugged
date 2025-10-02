@@ -6,7 +6,7 @@
 #module-hero(
   "Sampling",
   "images/CYBERNETICS_A_098.jpg",
-  "06",
+  "07",
 )[
   When generating text the language model gives several different options for
   which word could come next in the generated text---which one to choose?
