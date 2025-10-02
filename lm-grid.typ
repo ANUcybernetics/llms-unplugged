@@ -31,15 +31,15 @@
         box(
           width: first_cell_width,
           height: first_cell_height,
-          pad(
-            top: first_cell_height * 0.1,
-            bottom: first_cell_height * 0.1,
-            align(center + horizon)[
-              #text(size: 1.55em)[My First LM]
-
-              #text(font: "Neon Tubes 2")[Cybernetic Studio]
-            ],
-          ),
+          fill: black,
+          align(center + horizon)[
+            #block(
+              width: auto,
+              align(right)[
+                #text(font: "Neon Tubes 2", size: 1.8em, fill: rgb("#e6ff44"))[Cybernetic\ Studio]
+              ]
+            )
+          ],
         ),
       )
 
