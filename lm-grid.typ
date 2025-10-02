@@ -36,8 +36,12 @@
             #block(
               width: auto,
               align(right)[
-                #text(font: "Neon Tubes 2", size: 1.8em, fill: rgb("#e6ff44"))[Cybernetic\ Studio]
-              ]
+                #text(
+                  font: "Neon Tubes 2",
+                  size: 1.8em,
+                  fill: rgb("#e6ff44"),
+                )[Cybernetic\ Studio]
+              ],
             )
           ],
         ),
@@ -84,5 +88,6 @@
 }
 
 #lm_grid(32)
+#lm_grid(32)
 
-#lm_grid(48)
+// #lm_grid(48)
