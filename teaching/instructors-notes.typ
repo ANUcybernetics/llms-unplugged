@@ -75,6 +75,40 @@ language models can be creative rather than repetitive. These physical sampling
 methods demonstrate the exact mathematical operation happening billions of times
 per second inside modern language models.
 
+== Pre-trained model inference
+
+=== Discussion questions
+
+- can you guess what text the model was trained on from the generated output?
+- how does using a pre-trained model differ from training your own?
+- what vocabulary size does the booklet model have compared to your hand-built
+  model?
+- why might some word combinations feel more natural than others?
+- without looking at the title: can you identify the training text's genre or
+  style?
+
+=== Connection to current LLMs
+
+This module demonstrates the foundation of how people interact with modern AI:
+
+- *pre-training*: companies train massive models on huge text corpora (like
+  your booklet model, but with trillions of words)
+- *inference as a service*: users generate text without seeing or modifying the
+  underlying model (just like using the booklet)
+- *model distribution*: the booklet format shows how models can be packaged and
+  shared---current LLMs are distributed as parameter files
+- *deterministic inference*: given the same starting word and dice rolls, you
+  get the same output (though randomness creates variety between runs)
+
+The key insight: training and inference are separate processes. Most AI users
+never train models---they use pre-trained ones through APIs or interfaces. Your
+hand-built model from _Basic Training_ gives you insight into what's inside the
+booklet, but you don't need that knowledge to generate text. This separation is
+why companies like OpenAI can provide AI services: they do the expensive
+training once, then millions of users perform inference. The booklet captures
+thousands of training examples in a portable format, just as neural networks
+compress training data into billions of parameters.
+
 == Trigram model
 
 === Discussion questions
@@ -197,6 +231,41 @@ The key insight: generation control is as important as training data. Your paper
 model proves that creative output comes not from the model itself, but from how
 you control temperature and which tokens you truncate from consideration.
 
+== LoRA
+
+=== Discussion questions
+
+- how much training data do you need for the LoRA layer compared to training
+  from scratch?
+- what happens if you scale the LoRA values by 2 or 0.5 before adding them?
+- can you create multiple LoRA layers for different domains?
+- which words change most between base and adapted models?
+- when would you want a separate LoRA layer vs retraining the whole model?
+
+=== Connection to current LLMs
+
+Low-Rank Adaptation revolutionised how modern LLMs are customised:
+
+- *efficiency*: training a LoRA layer requires 100-1000x less computation than
+  full fine-tuning
+- *modularity*: you can have one base model plus many LoRA layers for different
+  tasks (medical, legal, creative writing)
+- *preservation*: the base model stays unchanged, so it retains its general
+  capabilities
+- *combination*: multiple LoRA layers can be combined or switched on-the-fly
+- *distribution*: LoRA layers are small (megabytes vs gigabytes), making them
+  easy to share
+
+The key insight: most model adaptation happens in a small subspace of all
+possible changes. Instead of adjusting billions of parameters, LoRA identifies
+and modifies only the dimensions that matter for the new domain. Your paper
+implementation makes this concrete: rather than recreating the entire grid, you
+only track the changes needed for the new text style. When you add the base and
+LoRA counts together, you're doing exactly what neural networks do when they
+apply LoRA layers during inference. This is why organisations can maintain one
+large foundation model and create thousands of specialised versions through
+lightweight LoRA layers.
+
 == Model evaluation
 
 === Discussion questions
@@ -220,6 +289,44 @@ The key insight: evaluation is about balancing multiple metrics. A model with
 perfect accuracy might be boring (always predicting `the`), while a creative
 model might produce nonsense. Your physical evaluation mirrors the exact
 trade-offs that AI companies grapple with when training their models.
+
+== Synthetic data
+
+=== Discussion questions
+
+- what patterns from the original survived to generation 2?
+- what new patterns emerged that weren't in the original?
+- how does vocabulary shrink or change across generations?
+- can you identify when loops or repetitions started?
+- what would happen if you continued to generation 3, 4, 5?
+
+=== Connection to current LLMs
+
+Model collapse from synthetic data is a major concern in modern AI:
+
+- *training data contamination*: as LLMs generate more web content, future
+  models risk training on AI-generated text rather than human text
+- *mode collapse*: models trained on synthetic data lose diversity and converge
+  toward common patterns (like your `run run` example)
+- *error amplification*: small errors in generation 1 become large errors in
+  generation 2
+- *recursive training*: some research deliberately uses synthetic data to
+  improve models, but this requires careful curation
+- *data provenance*: companies now track whether training data is human-written
+  or AI-generated
+
+The key insight: models trained on their own outputs (or outputs from similar
+models) degrade over generations. Your hand-built demonstration shows why: each
+generation is a lossy sample from probability distributions. Rare patterns get
+lost, common patterns get amplified, and statistical noise becomes signal. This
+is exactly what researchers observe when training neural networks on synthetic
+data---vocabularies shrink, creativity decreases, and outputs become more
+repetitive and stereotyped. Your generation 2 model demonstrates that "training
+data quality" isn't just about correctness---it's about maintaining the
+diversity and richness of patterns that make language interesting. This
+hands-on experience shows why AI companies are concerned about the increasing
+volume of AI-generated text on the internet: if future models train on today's
+AI outputs, we risk a cascade of model collapse.
 
 == Glossary: the language of language models
 
