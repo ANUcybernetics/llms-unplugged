@@ -73,3 +73,15 @@
   #v(1em)
   #figure(image("dice-mappings-d10.svg", width: 100%))
 ]
+
+#pagebreak(weak: true)
+
+== d20 dice roll → outcome mapping table
+
+#figure(image("dice-mappings-d20.svg", width: 90%))
+
+#pagebreak(weak: true)
+
+== d120 dice roll → outcome mapping table
+
+#figure(image("dice-mappings-d120.svg", width: 100%))
