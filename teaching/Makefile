@@ -4,8 +4,8 @@
 INPUT_DIR = .
 OUTPUT_DIR = out
 
-# Find all typst source files (including subdirectories)
-TYP_SOURCE_FILES := $(shell find $(INPUT_DIR) -name '*.typ' ! -name 'utils.typ')
+# Find all typst source files (excluding utils.typ, draft/, and instructions.typ)
+TYP_SOURCE_FILES := $(shell find $(INPUT_DIR) -name '*.typ' ! -name 'utils.typ' ! -path '*/draft/*' ! -name 'instructions.typ')
 
 # Find numbered module files (00-*.typ through 99-*.typ)
 MODULE_FILES := $(wildcard $(INPUT_DIR)/[0-9][0-9]-*.typ)
@@ -31,7 +31,7 @@ $(OUTPUT_DIR):
 $(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.typ utils.typ
 	@echo "Processing typst $<..."
 	@mkdir -p $(dir $@)
-	typst compile $< $@
+	typst compile --root . $< $@
 
 # Clean target to remove generated files
 clean:

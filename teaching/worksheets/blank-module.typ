@@ -1,6 +1,6 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See teaching/LICENSE for details.
-#import "utils.typ": *
+#import "../utils.typ": *
 #import "@local/anu-typst-template:0.2.0": anu-colors
 
 #let blank-lines(n, spacing: 1.2em) = {
