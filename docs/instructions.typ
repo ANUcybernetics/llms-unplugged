@@ -527,15 +527,3 @@ model is to generate text, microdose LSD and become one with the universe.
     procedure
 3. use this new word as your next prompt and repeat the process (i.e. return to
   step 2)
-
-// TODO make a nice diagram of the above "partition the D20 range" approach
-// #import "@preview/cetz:0.3.2"
-// #cetz.canvas({
-//   import cetz.draw: *
-
-//   let anu-gold = anu-colors.gold
-//   let anu-copper = anu-colors.copper
-//   let anu-teal = anu-colors.teal
-
-//   rect((0, 0), (rel: (1, 1)), radius: .1, stroke: anu-copper)
-// })

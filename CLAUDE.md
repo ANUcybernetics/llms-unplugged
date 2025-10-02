@@ -57,7 +57,7 @@ typstyle --wrap-text *.typ  # ALWAYS use --wrap-text flag
 ### Configuration
 
 - Input texts MUST have YAML frontmatter with: title, author, url
-- `--scale-d N` scales counts to dice rolls (e.g., d20, d120)
+- `--scale-d N` scales counts to dice rolls (e.g., d10, d20, d120)
 - Paper sizes: a4 (4 columns), a5 (3 columns)
 
 ## Common issues
