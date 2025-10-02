@@ -200,9 +200,9 @@ This work is a project of the _Cybernetic Studio_ at the
 Source code for this project is licensed under the MIT License. See the
 [LICENSE](./LICENSE) file for details.
 
-Documentation (in `docs/`) and any typeset "N-gram model booklets" are licenced
-under a CC BY-NC-SA 4.0 license. See [docs/LICENSE](./docs/LICENSE) for the full
-license text.
+Documentation (in `teaching/`) and any typeset "N-gram model booklets" are
+licenced under a CC BY-NC-SA 4.0 license. See
+[teaching/LICENSE](./teaching/LICENSE) for the full license text.
 
 Source text licenses used as input for the language model remain as described in
 their original sources.

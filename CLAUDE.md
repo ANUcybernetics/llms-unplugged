@@ -17,7 +17,7 @@ text file → rust CLI → model.json → typst → PDF booklet
 
 - `src/` - Rust source code for N-gram processing
 - `data/` - Input text corpora (\*.txt files with YAML frontmatter)
-- `docs/modules/` - Teaching modules (\*.typ files)
+- `teaching/modules/` - Teaching modules (\*.typ files)
 - `out/` - Generated PDFs and intermediate files
 - `backlog/` - Task management (use `backlog` CLI tool)
 

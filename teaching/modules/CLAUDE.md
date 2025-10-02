@@ -21,7 +21,7 @@ handouts in workshops.
 # Build single module
 typst compile 00-weighted-randomness.typ
 
-# Build all modules (but only when in this docs/modules/ subdirectory)
+# Build all modules (but only when in this teaching/modules/ subdirectory)
 make modules
 ```
 

@@ -1,5 +1,5 @@
 // Copyright (c) 2025 Ben Swift
-// Licensed under CC BY-NC-SA 4.0. See docs/LICENSE for details.
+// Licensed under CC BY-NC-SA 4.0. See teaching/LICENSE for details.
 
 // Get configuration from sys.inputs
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
