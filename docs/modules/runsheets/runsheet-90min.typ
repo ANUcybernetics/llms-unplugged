@@ -32,9 +32,9 @@
 == *#t(30)* Basic inference
 // - LoLM: prompt, completion/response/prediction
 
-== *#t(45)* Pre-trained bigram
+== *#t(45)* Pre-trained bigram model
 
-== *#t(60)* Pre-trained trigram
+== *#t(60)* Pre-trained trigram model
 
 == *#t(75)* close
 - are language models gonna take all our jobs?
