@@ -1,3 +1,5 @@
+// Copyright (c) 2025 Ben Swift
+// Licensed under CC BY-NC-SA 4.0. See docs/LICENSE for details.
 #import "utils.typ": *
 
 // Apply base styling

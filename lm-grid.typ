@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Ben Swift
+// Licensed under CC BY-NC-SA 4.0. See docs/LICENSE for details.
+
 #let lm_grid(size) = {
   set text(font: "Public Sans", size: 10pt)
 

@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Ben Swift
+// Licensed under CC BY-NC-SA 4.0. See docs/LICENSE for details.
+
 // Import base template for colors and styling
 #import "@local/anu-typst-template:0.2.0": *
 #import "@local/anu-typst-template:0.2.0": anu-colors

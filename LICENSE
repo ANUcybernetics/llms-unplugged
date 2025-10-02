@@ -1,3 +1,12 @@
+This project uses dual licensing:
+
+- Source code (Rust files in src/, tests/, and build scripts) is licensed
+  under the MIT License (see below)
+- Documentation and teaching materials (Typst files and generated PDFs in
+  docs/) are licensed under CC BY-NC-SA 4.0 (see docs/LICENSE)
+
+================================================================================
+
 MIT License
 
 Copyright (c) 2025 Ben Swift
