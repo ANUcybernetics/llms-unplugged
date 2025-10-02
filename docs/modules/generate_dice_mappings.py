@@ -69,7 +69,7 @@ def generate_svg(d: int, groups_range: str, output_path: str):
         '    .number-text { font-family: Arial, sans-serif; font-size: 10px; font-weight: 600; text-anchor: middle; fill: #fff; }',
         '    .label-text { font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; fill: #ffffff; }',
         '    .group-label { font-family: Arial, sans-serif; font-size: 10px; text-anchor: middle; fill: #ffffff; }',
-        '    .row-label { font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; fill: #ffffff; }',
+        '    .row-label { font-family: Arial, sans-serif; font-size: 14px; font-weight: 900; fill: #ffffff; }',
         '  </style>',
     ]
 
@@ -93,7 +93,7 @@ def generate_svg(d: int, groups_range: str, output_path: str):
 
         svg_lines.append(f'  <g transform="translate({layout.left_margin}, {y_offset})">')
 
-        svg_lines.append(f'    <text x="-25" y="14" class="row-label">{num_groups}</text>')
+        svg_lines.append(f'    <text x="-25" y="15" class="row-label">{num_groups}</text>')
 
         pos = 0
         for group_idx, group_size in enumerate(group_sizes):
