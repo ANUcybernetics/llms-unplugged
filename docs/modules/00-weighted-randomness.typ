@@ -69,5 +69,5 @@
   == d20 dice roll → outcome mapping table
 
   #v(2cm)
-  #figure(rotate(-90deg, image("dice-mappings.svg", width: 16cm)))
+  #figure(rotate(-90deg, image("dice-mappings-d20.svg", width: 16cm)))
 ]
