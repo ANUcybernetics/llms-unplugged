@@ -108,11 +108,13 @@ def generate_svg(d: int, groups_range: str, output_path: str):
         dice_value = 1
         numbered_cells = []
         cell_divider_positions = []
-        group_divider_positions = []
+        group_borders = []
 
         for group_idx, group_size in enumerate(group_sizes):
             start_value = dice_value
             end_value = dice_value + group_size - 1
+
+            group_start_x = int(current_pos)
 
             first_cell_x = int(current_pos)
             svg_lines.append(f'    <rect x="{first_cell_x}" y="0" width="{layout.cell_width}" height="{layout.row_height}" class="cell-numbered"/>')
@@ -133,8 +135,10 @@ def generate_svg(d: int, groups_range: str, output_path: str):
                 numbered_cells.append((last_cell_x, end_value))
                 current_pos += layout.cell_width
 
+            group_width = group_size * layout.cell_width
+            group_borders.append((group_start_x, group_width))
+
             if group_idx < len(group_sizes) - 1:
-                group_divider_positions.append(int(current_pos))
                 current_pos += row_spacing
 
             dice_value += group_size
@@ -143,10 +147,8 @@ def generate_svg(d: int, groups_range: str, output_path: str):
             path_parts = [f"M {x},0 v{layout.row_height}" for x in cell_divider_positions]
             svg_lines.append(f'    <path d="{" ".join(path_parts)}" class="cell-dividers"/>')
 
-        for x_pos in group_divider_positions:
-            svg_lines.append(f'    <line x1="{x_pos}" y1="0" x2="{x_pos}" y2="{layout.row_height}" class="group-divider"/>')
-
-        svg_lines.append(f'    <rect x="0" y="0" width="{total_width}" height="{layout.row_height}" class="row-border"/>')
+        for group_x, group_w in group_borders:
+            svg_lines.append(f'    <rect x="{group_x}" y="0" width="{group_w}" height="{layout.row_height}" class="row-border"/>')
 
         for cell_x, value in numbered_cells:
             text_x = cell_x + layout.cell_width // 2
