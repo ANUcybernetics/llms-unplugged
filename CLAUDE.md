@@ -17,7 +17,11 @@ text file → rust CLI → model.json → typst → PDF booklet
 
 - `src/` - Rust source code for N-gram processing
 - `data/` - Input text corpora (\*.txt files with YAML frontmatter)
-- `teaching/modules/` - Teaching modules (\*.typ files)
+- `teaching/` - Pen-and-paper templates and teaching modules
+  - `lm-grid.typ`, `instructions.typ` - Manual LM creation materials
+  - `trigram-template.typ` - Trigram booklet template
+  - `modules/` - Teaching modules (\*.typ files)
+- `scripts/` - Helper Python scripts (bigram_counter.py, build_books.py)
 - `out/` - Generated PDFs and intermediate files
 - `backlog/` - Task management (use `backlog` CLI tool)
 
