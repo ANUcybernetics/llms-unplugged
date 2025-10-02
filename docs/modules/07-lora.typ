@@ -5,7 +5,7 @@
 
 #module-hero(
   "LoRA",
-  "images/CYBERNETICS_A_061.jpg",
+  "images/CYBERNETICS_B_032.jpg",
   "07",
 )[
   Efficiently adapt a trained language model to a new domain or style without
@@ -25,9 +25,9 @@
 
   == Key idea
 
-  Low-Rank Adaptation (LoRA) allows you to specialise a language model by
-  adding small adjustments rather than retraining everything. This is efficient
-  because you only track the _changes_ from the base model.
+  Low-Rank Adaptation (LoRA) allows you to specialise a language model by adding
+  small adjustments rather than retraining everything. This is efficient because
+  you only track the _changes_ from the base model.
 ]
 
 // Main content in two columns

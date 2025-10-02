@@ -5,7 +5,7 @@
 
 #module-hero(
   "Synthetic Data",
-  "images/CYBERNETICS_A_005.jpg",
+  "images/CYBERNETICS_B_033.jpg",
   "08",
 )[
   Use your language model to generate new training data, then train a new model
@@ -22,13 +22,13 @@
   To generate synthetic text using your model, then train a new "generation 2"
   model on that synthetic output. Compare the two models to observe what
   patterns are preserved or lost. *Stretch goal*: train a generation 3 model on
-    generation 2 output.
+  generation 2 output.
 
   == Key idea
 
-  Models trained on synthetic data (output from other models) can drift from
-  the original patterns. This demonstrates model collapse and the importance of
-  real training data.
+  Models trained on synthetic data (output from other models) can drift from the
+  original patterns. This demonstrates model collapse and the importance of real
+  training data.
 ]
 
 // Main content in two columns
@@ -66,8 +66,7 @@
   - has different patterns (more `run run`, no `spot jump`)
   - might lose some variety from the original
 
-  Generation 2 model trained on the synthetic output will amplify these
-  changes:
+  Generation 2 model trained on the synthetic output will amplify these changes:
   - `run run` becomes more common
   - `spot jump` disappears entirely
   - new unlikely patterns may emerge
