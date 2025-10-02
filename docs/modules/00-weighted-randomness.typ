@@ -66,8 +66,8 @@
   You can use different dice (d6, d10, d20, d120, etc.), it will just change the
   number ranges corresponding to each outcome.
 
-  == d20 dice roll → outcome mapping table
+  == d10 dice roll → outcome mapping table
 
-  #v(2cm)
-  #figure(rotate(-90deg, image("dice-mappings-d20.svg", width: 16cm)))
+  #v(1em)
+  #figure(image("dice-mappings-d10.svg", width: 100%))
 ]
