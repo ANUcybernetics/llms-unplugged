@@ -1,28 +1,31 @@
-# Teaching modules guide
+# Teaching materials guide
 
 ## Overview
 
-This directory contains Typst-based teaching modules for the "My First LM"
-project. Each module is a landscape-format PDF card designed for physical
-handouts in workshops.
+This directory contains Typst-based teaching materials for the "My First LM"
+project, including modules, worksheets, and runsheets.
 
-## Module structure
+## Directory structure
 
-### File naming
-
-- numbered modules: `00-weighted-randomness.typ`, `01-basic-training.typ`, etc.
-  (each one has an `XX-module-name.typ` name where `XX` is the module number)
-- supporting files: `utils.typ` (shared functions)
-- images in `images/` subdirectory
+- numbered modules (00-09): `00-weighted-randomness.typ`, `01-basic-training.typ`, etc.
+- `worksheets/` - blank templates (lm-grid, trigram-template, blank-module)
+- `draft/` - modules in draft form (evaluation, poetry-slam)
+- `runsheets/` - session runsheets (90min, 3h)
+- `images/` - all images and svg files
+- `utils.typ` - shared functions
+- `instructions.typ`, `instructors-notes.typ` - supporting documentation
 
 ## Build process
 
 ```bash
+# Build all numbered modules and combine them
+make modules
+
+# Build all typst files in teaching/ and subdirectories
+make all
+
 # Build single module
 typst compile 00-weighted-randomness.typ
-
-# Build all modules (but only when in this teaching/modules/ subdirectory)
-make modules
 ```
 
 ## Design constraints

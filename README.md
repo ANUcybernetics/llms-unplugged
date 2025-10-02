@@ -45,7 +45,7 @@ instructions.
 Generate the grid and instructions:
 
 ```bash
-typst compile teaching/lm-grid.typ lm-grid.pdf
+typst compile teaching/worksheets/lm-grid.typ lm-grid.pdf
 typst compile teaching/instructions.typ instructions.pdf
 ```
 
@@ -136,13 +136,21 @@ Structured lesson plans and materials for workshops or courses.
 
 ### What's included
 
-The `teaching/modules/` directory contains Typst files for specific teaching
-topics. Each module is self-contained and can be typeset independently.
+The `teaching/` directory contains:
+
+- numbered modules (00-09): landscape PDF cards for workshop handouts
+- `worksheets/`: blank templates for manual exercises
+- `draft/`: modules in draft form
+- `runsheets/`: session plans (90min, 3h)
 
 ### Quick start
 
 ```bash
-typst compile teaching/modules/module-name.typ output.pdf
+# Build all modules
+cd teaching && make modules
+
+# Build single module
+typst compile 00-weighted-randomness.typ output.pdf
 ```
 
 Modules are designed to work alongside either the pen-and-paper approach or the
@@ -169,7 +177,7 @@ just at a much smaller scale and with shorter context windows.
 
 - `src/` - Rust source code for N-gram processing
 - `data/` - Input text corpora (\*.txt files with YAML frontmatter)
-- `teaching/` - Pen-and-paper templates and teaching modules
+- `teaching/` - Teaching materials (modules, worksheets, runsheets)
 - `scripts/` - Helper Python scripts for analysis
 - `out/` - Generated PDFs and intermediate files
 - `backlog/` - Task management
