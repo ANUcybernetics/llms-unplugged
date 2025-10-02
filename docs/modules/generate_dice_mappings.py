@@ -15,6 +15,7 @@ class LayoutConstants:
     row_spacing: int = 40
     left_margin: int = 50
     top_margin: int = 10
+    group_spacing: int = 4
     color_numbered: str = "#be830e"
     color_cell: str = "#2a2a2a"
 
@@ -47,7 +48,7 @@ def generate_svg(d: int, groups_range: str, output_path: str):
     start, end = map(int, groups_range.split('-'))
     num_rows = end - start + 1
 
-    total_width = d * layout.cell_width
+    total_width = d * layout.cell_width + (end - 1) * layout.group_spacing
     last_row_y = layout.top_margin + (num_rows - 1) * layout.row_spacing
 
     viewbox_x = layout.left_margin - 26
@@ -72,10 +73,17 @@ def generate_svg(d: int, groups_range: str, output_path: str):
         '  </style>',
     ]
 
+    max_spacing = (end - 1) * layout.group_spacing
+
     for row_idx, num_groups in enumerate(range(start, end + 1)):
         y_offset = layout.top_margin + row_idx * layout.row_spacing
 
         group_sizes = partition_dice(d, num_groups)
+
+        if num_groups > 1:
+            row_spacing = max_spacing / (num_groups - 1)
+        else:
+            row_spacing = 0
 
         comment_text = f"  <!-- Row {num_groups}: {num_groups} groups"
         if group_sizes != [d // num_groups] * num_groups:
@@ -87,64 +95,56 @@ def generate_svg(d: int, groups_range: str, output_path: str):
 
         svg_lines.append(f'    <text x="-25" y="14" class="row-label">{num_groups}</text>')
 
-        cell_idx = 0
+        pos = 0
         for group_idx, group_size in enumerate(group_sizes):
-            last_cell_idx = cell_idx + group_size - 1
-            first_cell_center = cell_idx * layout.cell_width + layout.cell_width // 2
-            last_cell_center = last_cell_idx * layout.cell_width + layout.cell_width // 2
-            group_center = int((first_cell_center + last_cell_center) / 2)
+            group_width = group_size * layout.cell_width
+            group_center = int(pos + group_width / 2)
             svg_lines.append(f'    <text x="{group_center}" y="-4" class="group-label">{group_idx + 1}</text>')
-            cell_idx += group_size
+            pos += group_width
+            if group_idx < len(group_sizes) - 1:
+                pos += row_spacing
 
         current_pos = 0
         dice_value = 1
         numbered_cells = []
+        cell_divider_positions = []
+        group_divider_positions = []
 
         for group_idx, group_size in enumerate(group_sizes):
             start_value = dice_value
             end_value = dice_value + group_size - 1
 
-            first_cell_x = current_pos
+            first_cell_x = int(current_pos)
             svg_lines.append(f'    <rect x="{first_cell_x}" y="0" width="{layout.cell_width}" height="{layout.row_height}" class="cell-numbered"/>')
             numbered_cells.append((first_cell_x, start_value))
             current_pos += layout.cell_width
 
             if group_size > 2:
                 middle_width = (group_size - 2) * layout.cell_width
-                svg_lines.append(f'    <rect x="{current_pos}" y="0" width="{middle_width}" height="{layout.row_height}" class="cell"/>')
-                current_pos += middle_width
+                svg_lines.append(f'    <rect x="{int(current_pos)}" y="0" width="{middle_width}" height="{layout.row_height}" class="cell"/>')
+                for i in range(group_size - 2):
+                    cell_divider_positions.append(int(current_pos))
+                    current_pos += layout.cell_width
 
             if group_size > 1:
-                last_cell_x = current_pos
+                cell_divider_positions.append(int(current_pos))
+                last_cell_x = int(current_pos)
                 svg_lines.append(f'    <rect x="{last_cell_x}" y="0" width="{layout.cell_width}" height="{layout.row_height}" class="cell-numbered"/>')
                 numbered_cells.append((last_cell_x, end_value))
                 current_pos += layout.cell_width
 
+            if group_idx < len(group_sizes) - 1:
+                group_divider_positions.append(int(current_pos))
+                current_pos += row_spacing
+
             dice_value += group_size
 
-        divider_positions = []
-        for i in range(1, d):
-            x_pos = i * layout.cell_width
-            is_group_boundary = False
-
-            check_pos = 0
-            for group_size in group_sizes[:-1]:
-                check_pos += group_size * layout.cell_width
-                if x_pos == check_pos:
-                    is_group_boundary = True
-                    break
-
-            if not is_group_boundary:
-                divider_positions.append(x_pos)
-
-        if divider_positions:
-            path_parts = [f"M {x},0 v{layout.row_height}" for x in divider_positions]
+        if cell_divider_positions:
+            path_parts = [f"M {x},0 v{layout.row_height}" for x in cell_divider_positions]
             svg_lines.append(f'    <path d="{" ".join(path_parts)}" class="cell-dividers"/>')
 
-        current_pos = 0
-        for group_idx, group_size in enumerate(group_sizes[:-1]):
-            current_pos += group_size * layout.cell_width
-            svg_lines.append(f'    <line x1="{current_pos}" y1="0" x2="{current_pos}" y2="{layout.row_height}" class="group-divider"/>')
+        for x_pos in group_divider_positions:
+            svg_lines.append(f'    <line x1="{x_pos}" y1="0" x2="{x_pos}" y2="{layout.row_height}" class="group-divider"/>')
 
         svg_lines.append(f'    <rect x="0" y="0" width="{total_width}" height="{layout.row_height}" class="row-border"/>')
 
