@@ -14,7 +14,6 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 from tempfile import NamedTemporaryFile
-from typing import Any
 
 import typer
 
@@ -33,9 +32,7 @@ def run_rust_tool(input_file: Path, output_file: Path) -> None:
         # Try to build it
         print("Building Rust tool...", file=sys.stderr)
         result = subprocess.run(
-            ["cargo", "build", "--release"],
-            capture_output=True,
-            text=True
+            ["cargo", "build", "--release"], capture_output=True, text=True
         )
         if result.returncode != 0:
             print(f"Error building Rust tool: {result.stderr}", file=sys.stderr)
@@ -45,7 +42,7 @@ def run_rust_tool(input_file: Path, output_file: Path) -> None:
     result = subprocess.run(
         [str(rust_binary), str(input_file), "-o", str(output_file), "-n", "2", "--raw"],
         capture_output=True,
-        text=True
+        text=True,
     )
 
     if result.returncode != 0:
@@ -53,7 +50,9 @@ def run_rust_tool(input_file: Path, output_file: Path) -> None:
         raise typer.Exit(1)
 
 
-def parse_json_to_bigram_matrix(json_file: Path) -> tuple[list[str], dict[str, dict[str, int]]]:
+def parse_json_to_bigram_matrix(
+    json_file: Path,
+) -> tuple[list[str], dict[str, dict[str, int]]]:
     """
     Parse the JSON output from the Rust tool into a bigram matrix.
 
@@ -63,7 +62,7 @@ def parse_json_to_bigram_matrix(json_file: Path) -> tuple[list[str], dict[str, d
     Returns:
         Tuple of (sorted vocabulary, matrix as nested dict)
     """
-    with open(json_file, 'r') as f:
+    with open(json_file, "r") as f:
         data = json.load(f)
 
     # Build vocabulary and matrix
@@ -71,7 +70,7 @@ def parse_json_to_bigram_matrix(json_file: Path) -> tuple[list[str], dict[str, d
     matrix = defaultdict(lambda: defaultdict(int))
 
     # Each entry in data['data'] is [prefix, scale, [word1, cum_count1], [word2, cum_count2], ...]
-    for entry in data['data']:
+    for entry in data["data"]:
         if len(entry) < 3:
             continue
 
@@ -97,10 +96,7 @@ def parse_json_to_bigram_matrix(json_file: Path) -> tuple[list[str], dict[str, d
     return sorted_vocab, dict(matrix)
 
 
-def output_tsv_matrix(
-    vocabulary: list[str],
-    matrix: dict[str, dict[str, int]]
-) -> None:
+def output_tsv_matrix(vocabulary: list[str], matrix: dict[str, dict[str, int]]) -> None:
     """
     Output the bigram matrix as a tab-separated table.
 
@@ -114,8 +110,8 @@ def output_tsv_matrix(
         matrix: Nested dictionary of bigram counts
     """
     # Print header row
-    header = [''] + vocabulary
-    print('\t'.join(header))
+    header = [""] + vocabulary
+    print("\t".join(header))
 
     # Print each row with cumulative counts
     for first_word in vocabulary:
@@ -127,8 +123,8 @@ def output_tsv_matrix(
                 cumulative += count
                 row.append(str(cumulative))
             else:
-                row.append('')
-        print('\t'.join(row))
+                row.append("")
+        print("\t".join(row))
 
 
 def main(
@@ -138,8 +134,8 @@ def main(
         exists=True,
         file_okay=True,
         dir_okay=False,
-        readable=True
-    )
+        readable=True,
+    ),
 ) -> None:
     """
     Generate a bigram frequency matrix using the Rust tool and format as TSV.
@@ -151,7 +147,7 @@ def main(
     """
     try:
         # Create a temporary file for the JSON output
-        with NamedTemporaryFile(mode='w', suffix='.json', delete=False) as tmp_file:
+        with NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
             tmp_path = Path(tmp_file.name)
 
         try:
