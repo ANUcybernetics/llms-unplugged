@@ -1,159 +1,169 @@
 # My First LM
 
-Can you make your own language model---from scratch---in 20 minutes with just
-pen and paper? This repo contains a couple of software tools to help answer that
-question. (Spoiler: yep.)
+Understanding how AI language models work starts with building one yourself. This teaching project shows you how to create N-gram language models from scratch---either by hand in 20 minutes with pen and paper, or with automated tools that generate dice-powered text generation booklets.
 
-The repo contains:
+The core insight is simple: language models predict what comes next by counting word patterns. A bigram model asks "after seeing word X, what usually comes next?" By building this yourself rather than treating it as a black box, you develop intuition for how larger models work.
 
-- a Typst file (`lm-grid.typ`) and instructions (`instructions.typ`) for
-  creating a word co-occurence matrix that can be used as a
-  [bigram language model](https://en.wikipedia.org/wiki/Word_n-gram_language_model).
+This is a [Cybernetic Studio](https://github.com/ANUcybernetics/) artefact by [Ben Swift](https://benswift.me) as part of the _Human-Scale AI_ project.
 
-- a command-line tool (written in Rust) for processing a text corpus and
-  typesetting it into an "N-gram model book", which can then be used for all
-  sorts of fun things (e.g. dice-roll-powered proto-ChatGPT)
+## Which path should I take?
 
-Why? Because it helps to make a simple version of something by hand to better
-understand what's going on.
+This project offers three entry points depending on your goals:
 
-This is a [Cybernetic Studio](https://github.com/ANUcybernetics/) artefact by
-[Ben Swift](https://benswift.me) as part of the _Human-Scale AI_ project.
+**Want to understand the fundamentals in 20 minutes?** Use the pen and paper approach with the grid template and step-by-step instructions. No software required.
 
-## Installation
+**Want to generate booklets for dice-based text generation?** Use the automated pipeline: feed in any text file, get a typeset PDF booklet scaled to your favourite dice.
 
-You will need:
+**Teaching a class or workshop?** Explore the teaching modules for structured lesson plans and materials.
 
-1.  **Rust:** Install the Rust toolchain (including `cargo`) from
-    [https://rustup.rs/](https://rustup.rs/).
-2.  **Typst:** Install [Typst](https://typst.app/) from
-    [https://github.com/typst/typst/](https://github.com/typst/typst/).
+## Pen and paper approach
 
-To generate the grid & instructions for the DIY version of this procedure,
-simply typeset the `lm-grid.typ` and `instructions.typ` files and you're done.
+Build a bigram language model by hand using a grid template and guided instructions.
 
-To produce an N-gram book, read on...
+### What you need
 
-## Usage
+- Typst ([install here](https://github.com/typst/typst/))
+- A printer
+- Pen and paper
+- 20 minutes
 
-The process involves two main steps: generating the N-gram statistics from your
-text file using the Rust program (writing them into a file called `model.json`)
-and then typesetting those statistics into a booklet using Typst.
+### Quick start
 
-1.  **Build the Statistics Generator:** Navigate to the project directory in
-    your terminal and build the Rust executable:
+Generate the grid and instructions:
 
-    ```bash
-    cargo build --release
-    ```
+```bash
+typst compile teaching/lm-grid.typ lm-grid.pdf
+typst compile teaching/instructions.typ instructions.pdf
+```
 
-    This will create an executable file at `target/release/my_first_lm`.
+Print both PDFs and follow the instructions to create your own word co-occurrence matrix. Once complete, you can use it to generate new text by following the patterns you've discovered.
 
-2.  **Generate N-gram Statistics:** Run the compiled executable, providing your
-    input text file and optionally specifying an output JSON file.
+## Automated booklet generation
 
-    ```bash
-    ./target/release/my_first_lm <input_text_file> [OPTIONS]
-    ```
+Process any text corpus into a typeset N-gram model booklet for dice-based text generation.
 
-    **Arguments:**
+### What you need
 
-    - `<input_text_file>`: Path to the text file you want to analyze.
+- Rust toolchain ([install here](https://rustup.rs/))
+- Typst ([install here](https://github.com/typst/typst/))
 
-    **Options:**
+### Quick start
 
-    - `-o, --output <output_json_file>`: Path where the generated N-gram
-      statistics (in JSON format) will be saved. Defaults to `model.json`.
-    - `-n, --n <N>`: The size of the N-gram (e.g., `2` for bigrams, `3` for
-      trigrams). Defaults to `2`.
-    - `--scale-d <D>`: Integer value `D` to control count scaling (default: 10).
-      - For `D = 10`: Always scales to the range `[0, 9]` to match physical d10
-        dice (which are numbered 0-9). This allows direct use of d10 rolls
-        without mental conversion.
-      - For other `D` values: If a prefix has ≤ `D` unique followers, scales to
-        the range `[1, D]`. The total count for the prefix in the JSON will be
-        `D`. This is useful to tailor the output to the specific die you intend
-        to use for random sampling.
-      - If a prefix has more unique followers than `D`, its follower counts are
-        scaled to the range `[0, 10^k - 1]`, where `k` is the number of digits
-        in the original total follower count for that prefix. The total count in
-        the JSON becomes `10^k - 1`. To sample a next word from these prefixes,
-        roll the correct amount of d10 dice (indicated by a ♢ next to the word
-        when more than one die is needed).
-    - `--raw`: Output raw counts without any scaling. This overrides the
-      `--scale-d` parameter if both are provided.
+Build the tool and generate a booklet:
 
-    **Example (generating d20-style scaled bigram statistics):** Let's say you
-    have your text in `true-blue.txt` and your die of choice is a d20:
+```bash
+# Build the Rust CLI
+cargo build --release
 
-    ```bash
-    ./target/release/my_first_lm true-blue.txt -o true-blue.json -n 2 --scale-d 20
-    ```
+# Generate N-gram statistics from your text file
+./target/release/my_first_lm data/your-text.txt --scale-d 20 -n 2
 
-    This command reads `true-blue.txt`, calculates bigram statistics. For
-    prefixes with 20 or fewer unique followers, it scales counts to the range
-    [1, 20]. For other prefixes, it uses the `[0, 10^k-1]` scaling. The result
-    is saved to `true-blue.json`.
+# Typeset the booklet
+typst compile book.typ book.pdf
+```
 
-    Or simply, to use `--scale-d 20` with the default output `model.json`:
+The resulting PDF contains your N-gram model formatted for dice-roll-based text generation. For d20 dice, counts are scaled to [1, 20]. For prefixes with many followers, multiple dice rolls may be needed (indicated by ♢ markers).
 
-    ```bash
-    ./target/release/my_first_lm true-blue.txt --scale-d 20
-    ```
+### Input file format
 
-    If you omit `--scale-d`, the default value of 10 is used (optimized for d10
-    dice).
+Your input text file must include YAML frontmatter with these keys:
 
-3.  **Generate the Booklet:** The `book.typ` file is designed to read the
-    statistics from a file named `out.json` in the same directory. Rename your
-    generated JSON file to `out.json` (or create a symbolic link):
-    ```bash
-    # If you kept the default model.json name
-    mv model.json out.json
-    # Or if you generated a custom-named file in the previous step
-    # mv true-blue.json out.json
-    ```
-    Now, compile the Typst file to create the PDF booklet:
-    ```bash
-    typst compile book.typ book.pdf
-    ```
-    The final, printable booklet will be in `book.pdf`. Print it out, cut it up,
-    and follow the assembly instructions (you might need to devise these!) to
-    create your physical language model.
+```yaml
+---
+title: "Title of the Text"
+author: "Author Name"
+url: "https://source.url"
+---
 
-## A note on input data
+Your text content here...
+```
 
-The input data file must have a
-[YAML frontmatter block](https://docs.github.com/en/contributing/writing-for-github-docs/using-yaml-frontmatter)
-with string values for the following three keys:
+The tokenizer lowercases text and removes punctuation (except apostrophes in contractions) to keep the model small.
 
-- the `title` of the text
-- the `author` of the text
-- the `url` of the text
+### Command-line options
 
-These values are passed through to the book frontmatter in the final typeset
-pdf.
+- `-o, --output <file>`: Output JSON file (default: `model.json`)
+- `-n, --n <N>`: N-gram size---2 for bigrams, 3 for trigrams (default: 2)
+- `--scale-d <D>`: Scale counts for a D-sided die (default: 10)
+  - `D = 10`: Scales to [0, 9] for d10 dice
+  - Other values: Scales to [1, D] when possible, or uses multi-die rolling for larger vocabularies
+- `--raw`: Output raw counts without scaling
 
-The tokenizer is deliberately very basic---all punctuation (except for
-contraction apostrophes) are removed, and everything is lowercased except for a
-few exceptions to do with personal pronouns. This is to ensure the final model
-is as small as possible (for a given input text).
+### Batch processing
+
+The `Makefile` handles multiple texts and formats:
+
+```bash
+make all  # Build all configured texts and sizes
+```
+
+### How the pipeline works
+
+```
+text file → Rust CLI → model.json → Typst → PDF booklet
+```
+
+The Rust tool (`src/main.rs`, `src/lib.rs`) processes your text through tokenization (`src/tokenizer.rs`) and preprocessing (`src/preprocessor.rs`) to generate N-gram statistics. The Typst template (`book.typ`) reads `model.json` and typesets it into a printable booklet with guide words, proper pagination, and dice-roll ranges.
+
+For large trigram models, use the `-b` flag to split across multiple books.
+
+## Teaching modules
+
+Structured lesson plans and materials for workshops or courses.
+
+### What's included
+
+The `teaching/modules/` directory contains Typst files for specific teaching topics. Each module is self-contained and can be typeset independently.
+
+### Quick start
+
+```bash
+typst compile teaching/modules/module-name.typ output.pdf
+```
+
+Modules are designed to work alongside either the pen-and-paper approach or the automated tools, depending on your pedagogical goals.
+
+## How it works
+
+An N-gram language model predicts the next word by looking at the previous N-1 words. A bigram (N=2) model only needs the current word to predict the next one. The model counts how often each word follows another in the training text, then uses those counts as probabilities.
+
+For example, if "the" is followed by "cat" 5 times and "dog" 15 times in your training text, the model predicts "dog" is three times more likely after "the". By scaling these counts to dice ranges, you can physically generate text by rolling dice to sample from these probability distributions.
+
+This is fundamentally the same mechanism used by large language models like GPT, just at a much smaller scale and with shorter context windows.
+
+## Development
+
+### Project structure
+
+- `src/` - Rust source code for N-gram processing
+- `data/` - Input text corpora (*.txt files with YAML frontmatter)
+- `teaching/` - Pen-and-paper templates and teaching modules
+- `scripts/` - Helper Python scripts for analysis
+- `out/` - Generated PDFs and intermediate files
+- `backlog/` - Task management
+
+### Testing
+
+```bash
+cargo test
+```
+
+Tests cover capitalization rules, tokenization edge cases, and full integration tests. Test output must be pristine with zero failures.
+
+### Code conventions
+
+Match existing Rust style and patterns. Never commit without running tests. Use the `backlog` CLI tool for task management.
 
 ## Author
 
 Ben Swift
 
-This work is a project of the _Cybernetic Studio_ at the
-[ANU School of Cybernetics](https://cybernetics.anu.edu.au).
+This work is a project of the _Cybernetic Studio_ at the [ANU School of Cybernetics](https://cybernetics.anu.edu.au).
 
 ## License
 
-Source code for this project is licensed under the MIT License. See the
-[LICENSE](./LICENSE) file for details.
+Source code for this project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
 
-Documentation (in `docs/`) and any typeset "N-gram model booklets" are licenced
-under a CC BY-NC-SA 4.0 license. See [docs/LICENSE](./docs/LICENSE) for the full
-license text.
+Documentation (in `docs/`) and any typeset "N-gram model booklets" are licenced under a CC BY-NC-SA 4.0 license. See [docs/LICENSE](./docs/LICENSE) for the full license text.
 
-Source text licenses used as input for the language model remain as described in
-their original sources.
+Source text licenses used as input for the language model remain as described in their original sources.
