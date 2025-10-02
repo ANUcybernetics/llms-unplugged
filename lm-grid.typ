@@ -1,28 +1,27 @@
 #let lm_grid(size) = {
   set text(font: "Public Sans", size: 10pt)
 
-  // A3
   set page(
-    width: 420mm,
-    height: 297mm,
+    "a3",
+    flipped: true,
     margin: 0pt,
   )
 
-  let page_width = 420mm
-  let page_height = 297mm
   let ratio = 4
+  let first_cell_width = 420mm / ((size + 1) * (1 / ratio))
+  let first_cell_height = 297mm / ((size + 1) * (1 / ratio))
+  let cell_width = (420mm - first_cell_width) / size
+  let cell_height = (297mm - first_cell_height) / size
 
-  // Adjust remaining width/height after accounting for double-width first row/column
-  let first_cell_width = page_width / ((size + 1) * (1 / ratio))
-  let first_cell_height = page_height / ((size + 1) * (1 / ratio))
-  let remaining_width = page_width - first_cell_width
-  let remaining_height = page_height - first_cell_height
-  let cell_width = remaining_width / size
-  let cell_height = remaining_height / size
+  let line_style(i) = {
+    let weight = if calc.rem(i - 1, 4) == 0 { 1.5pt } else { 0.5pt }
+    let color = if calc.rem(i - 1, 4) == 0 { luma(50) } else { luma(100) }
+    weight + color
+  }
 
   block(
-    width: page_width,
-    height: page_height,
+    width: 420mm,
+    height: 297mm,
     {
       // Add logo and text to first cell
       place(
@@ -52,16 +51,12 @@
         let x = if i == 0 { 0mm } else if i == 1 { first_cell_width } else {
           first_cell_width + cell_width * (i - 1)
         }
-        let line_weight = if calc.rem(i - 1, 4) == 0 { 1.5pt } else { 0.5pt }
-        let line_color = if calc.rem(i - 1, 4) == 0 { luma(50) } else {
-          luma(100)
-        }
         place(
           dx: x,
           line(
-            length: page_height,
+            length: 297mm,
             angle: 90deg,
-            stroke: line_weight + line_color,
+            stroke: line_style(i),
           ),
         )
       }
@@ -71,15 +66,11 @@
         let y = if i == 0 { 0mm } else if i == 1 { first_cell_height } else {
           first_cell_height + cell_height * (i - 1)
         }
-        let line_weight = if calc.rem(i - 1, 4) == 0 { 1.5pt } else { 0.5pt }
-        let line_color = if calc.rem(i - 1, 4) == 0 { luma(50) } else {
-          luma(100)
-        }
         place(
           dy: y,
           line(
-            length: page_width,
-            stroke: line_weight + line_color,
+            length: 420mm,
+            stroke: line_style(i),
           ),
         )
       }
