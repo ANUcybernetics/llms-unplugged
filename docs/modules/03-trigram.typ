@@ -84,7 +84,7 @@ Note: the order of the rows doesn't matter, so you can re-order to group them by
     starting words
   + find _all rows_ where *word 1* and *word 2* are exact matches for your two
     starting words, and make note of their *count* columns
-  + as per _Basic Inference_ roll a d20 weighted by the counts and select the
+  + as per _Basic Inference_ roll a d10 weighted by the counts and select the
     *word 3* associated with the chosen row
   + move along by _one_ word (so *word 2* becomes your new *word 1* and *word 3*
     becomes your new *word 2*) and repeat from step 2
@@ -97,7 +97,7 @@ Note: the order of the rows doesn't matter, so you can re-order to group them by
     starting words
   + find all rows with *word 1* = `see` and *word 2* = `spot`; in this case rows
     1 and 5 (both have _count_ == 1)
-  + roll a d20 and write down the *word 3* from the row chosen by the dice roll
+  + roll a d10 and write down the *word 3* from the row chosen by the dice roll
   + move along by _one_ word (so *word 1* is `spot` and *word 2* is either `run`
     or `jump` depending on your dice roll) and repeat from step 2
 ]

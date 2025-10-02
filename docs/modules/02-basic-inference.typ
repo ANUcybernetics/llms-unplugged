@@ -14,7 +14,7 @@
 
   - your completed bigram model (i.e. your filled-out grid) from _Basic
       Training_
-  - d20 (or similar) for weighted sampling (see _Weighted Random Sampling_)
+  - d10 (or similar) for weighted sampling (see _Weighted Random Sampling_)
   - paper for writing down the generated "output text"
 
   == Your goal

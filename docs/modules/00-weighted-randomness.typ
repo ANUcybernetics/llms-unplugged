@@ -13,7 +13,7 @@
 
   == You will need
 
-  - 20-sided dice (d20)
+  - 10-sided dice (d10)
   - coloured marbles or beads in a bag
   - paper for frequency matrices (also called grids or tables)
 
@@ -52,16 +52,16 @@
 
   == Algorithm 2: dice with ranges
 
-  - *materials*: d20 (or d6, d10 as alternatives)
+  - *materials*: d10 (or d6, d20 as alternatives)
   - *setup*: assign number ranges proportional to weights (see table, right)
   - *sampling procedure*: roll the die, then look up the corresponding outcome
 
   === Example
 
-  - for 67% vanilla/33% chocolate, roll a d20: 1-14 means `vanilla`, 15-20 means
+  - for 60% vanilla/40% chocolate, roll a d10: 1-6 means `vanilla`, 7-10 means
     `chocolate`
-  - for 50% vanilla/30% chocolate/20% strawberry, roll a d20: 1-10 means
-    `vanilla`, 11-16 means `chocolate`, 17-20 means `strawberry`
+  - for 50% vanilla/30% chocolate/20% strawberry, roll a d10: 1-5 means
+    `vanilla`, 6-8 means `chocolate`, 9-10 means `strawberry`
 
   You can use different dice (d6, d10, d20, d120, etc.), it will just change the
   number ranges corresponding to each outcome.

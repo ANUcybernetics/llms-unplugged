@@ -138,7 +138,7 @@
   + *choose a starting word*
   + check its row to identify the "normal" transition counts, but _also_ check
     if the starting word is a verb/pronoun/preposition and if so add the values
-    from the relevant "context" column before using a d20 to choose the next
+    from the relevant "context" column before using a d10 to choose the next
     word
   + *repeat* from step 2 until you reach the desired length _or_ a natural
     stopping point (e.g. a full stop `.`)
