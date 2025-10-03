@@ -45,7 +45,7 @@ instructions.
 Generate the grid and instructions:
 
 ```bash
-typst compile teaching/worksheets/lm-grid.typ lm-grid.pdf
+typst compile teaching/worksheets/grid.typ grid.pdf
 typst compile teaching/instructions.typ instructions.pdf
 ```
 

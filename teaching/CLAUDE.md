@@ -7,8 +7,9 @@ project, including modules, worksheets, and runsheets.
 
 ## Directory structure
 
-- numbered modules (00-09): `00-weighted-randomness.typ`, `01-basic-training.typ`, etc.
-- `worksheets/` - blank templates (lm-grid, trigram-template, blank-module)
+- numbered modules (00-09): `00-weighted-randomness.typ`,
+  `01-basic-training.typ`, etc.
+- `worksheets/` - blank templates (grid, trigram-template, blank-module)
 - `draft/` - modules in draft form (evaluation, poetry-slam)
 - `runsheets/` - session runsheets (90min, 3h)
 - `images/` - all images and svg files

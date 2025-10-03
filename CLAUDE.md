@@ -19,7 +19,7 @@ text file → rust CLI → model.json → typst → PDF booklet
 - `data/` - Input text corpora (\*.txt files with YAML frontmatter)
 - `teaching/` - Teaching materials (modules, worksheets, runsheets)
   - numbered modules (00-09): landscape PDF cards for workshops
-  - `worksheets/` - blank templates (lm-grid, trigram-template, blank-module)
+  - `worksheets/` - blank templates (grid, trigram-template, blank-module)
   - `draft/` - modules in draft form
   - `runsheets/` - session runsheets
   - `images/` - all images and svg files
