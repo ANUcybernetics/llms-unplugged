@@ -74,14 +74,14 @@
   #figure(image("images/dice-mappings-d10.svg", width: 100%))
 ]
 
-#pagebreak(weak: true)
+// #pagebreak(weak: true)
 
-== d20 dice roll → outcome mapping table
+// == d20 dice roll → outcome mapping table
 
-#figure(image("images/dice-mappings-d20.svg", width: 90%))
+// #figure(image("images/dice-mappings-d20.svg", width: 90%))
 
-#pagebreak(weak: true)
+// #pagebreak(weak: true)
 
-== d120 dice roll → outcome mapping table
+// == d120 dice roll → outcome mapping table
 
-#figure(image("images/dice-mappings-d120.svg", width: 100%))
+// #figure(image("images/dice-mappings-d120.svg", width: 100%))
