@@ -29,8 +29,8 @@
 
 - *icebreaker* (as folks are coming in) why is a language model called a
   "language model"? what does it mean to "model language"?
-- *activity* sit down if you've ever used ChatGPT... how about last
-  month/week/day/hour/5mins?
+- *activity* sit down if you have never used ChatGPT... now if you haven't used
+  it in the last month/week/day/hour/5mins?
 - *what is this about?* how Language Models work (exploiting patterns in text to
   generate new text)
 - *why should I care?* because having better mental models of how our tools work
