@@ -17,7 +17,6 @@
 
   - 10-sided dice (d10)
   - coloured marbles or beads in a bag
-  - paper for frequency matrices (also called grids or tables)
 
   == Your goal
 

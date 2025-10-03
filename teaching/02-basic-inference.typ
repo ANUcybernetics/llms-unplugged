@@ -16,21 +16,20 @@
 
   - your completed bigram model (i.e. your filled-out grid) from _Basic
       Training_
-  - d10 (or similar) for weighted sampling (see _Weighted Random Sampling_)
-  - paper for writing down the generated "output text"
+  - d10 (or similar) for weighted sampling
+  - pen & paper for writing down the generated "output text"
 
   == Your goal
 
-  To generate new text (as much as you like!) from your bigram language model.
-  *Stretch goal*: keep going, generating as much text as possible. Write a whole
-  book!
+  To generate new text from your bigram language model. *Stretch goal*: keep
+  going, generating as much text as possible. Write a whole book!
 
   == Key idea
 
-  Language models generate text by predicting one word at a time based on learnt
-  patterns. Your trained model provides the "next word" options and their
-  probabilities; dice rolls provide the randomness to choose one of those
-  options (and this process can be repeated indefinitely).
+  Language models generate text by predicting one word at a time based on
+  learned patterns. Your trained model provides the "next word" options and
+  their relative probabilities; dice rolls provide the randomness to choose one
+  of those options (and this process can be repeated indefinitely).
 ]
 
 // Second page content in two columns

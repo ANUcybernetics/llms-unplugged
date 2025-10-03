@@ -7,16 +7,17 @@
 
 #module-hero(
   "Pre-trained Model Inference",
-  "images/CYBERNETICS_B_053.jpg",
+  "images/CYBERNETICS_B_033.jpg",
   "03",
 )[
-  Use a pre-trained model to generate new text through weighted random sampling.
+  Use a (slightly larger) pre-trained model to generate new text through
+  weighted random sampling.
 
   == You will need
 
   - a pre-trained model booklet
-  - d10 (ten-sided dice) for weighted sampling
-  - paper for writing down the generated output text
+  - d10 (or similar) for weighted sampling
+  - pen & paper for writing down the generated "output text"
 
   == Your goal
 
@@ -68,10 +69,9 @@
             ),
           ),
         ),
-      ) indicator then roll $n$ d10s
-    - otherwise, roll a single d10
-    - read the dice from left to right as a single number (e.g. rolling 4, 7 and
-      2 on three dice gives 472)
+      ) indicator then roll a d10 _n_ times, otherwise roll it once
+    - interpret these dice rolls as digits from a single number (e.g. if you
+      roll 4, then 7, then 2 then your number is 472)
   + *scan through the "next word" options* to find your next word: the first
     number which is greater than or equal to your roll indicates your next word
     (write it down)
@@ -84,13 +84,15 @@
 
   Your current word is *"cat"* and its entry shows:
 
-  *cat* → #text(weight: "semibold")[4]|sat #text(weight: "semibold")[7]|ran #text(
+  *cat* → #text(weight: "semibold")[4]|sat #text(weight: "semibold")[7]|ran
+  #text(
     weight: "semibold",
   )[10]|slept
 
-  - no indicator means roll just 1 d10
+  - no indicator means roll your (single) d10
   - you roll a 6
-  - scan through options: #text(weight: "semibold")[7]|ran is the first number ≥ 6
+  - scan through options: #text(weight: "semibold")[7]|ran is the first number ≥
+    6
   - your next word is "ran": write it down, look it up and continue
 
   == Example 2: multiple d10s
@@ -127,8 +129,9 @@
     weight: "semibold",
   )[99]|end
 
-  - the indicator with *2* inside means roll 2 d10s
+  - the indicator with *2* inside means roll your d10 twice
   - you roll 5 and 8, giving you 58
-  - scan through options: #text(weight: "semibold")[66]|dog is the first number ≥ 58
+  - scan through options: #text(weight: "semibold")[66]|dog is the first number
+    ≥ 58
   - your next word is "dog": write it down, look it up and continue
 ]

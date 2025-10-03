@@ -10,8 +10,8 @@
   "images/CYBERNETICS_A_009.jpg",
   "01",
 )[
-  Build a bigram (word co-occurence) language model that tracks which words
-  follow which other words in text.
+  Build a bigram language model that tracks which words follow which other words
+  in text.
 
   == You will need
 
@@ -38,8 +38,8 @@
   + *preprocess your text*:
 
     - convert everything to lowercase
-    - treat words, commas and full stops as separate "words" (and ignore other
-      punctuation and whitespace)
+    - treat words, commas and full stops as separate "words" (and ignore all
+      other punctuation and whitespace)
 
   + *set up your grid*:
 
@@ -47,7 +47,8 @@
     - write it in both the first row header and first column header of your grid
 
   + *fill in the grid* one _word pair_ at a time:
-    - find the row for the first word and the column for the second word
+    - find the row for the first word (in your training text) and the column for
+      the second word
     - add a tally mark in that cell (if the word isn't in the grid yet, add a
       new row _and_ column for it)
     - shift along by one word (so the second word becomes your "first" word)
