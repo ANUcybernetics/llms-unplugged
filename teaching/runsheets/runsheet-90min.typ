@@ -66,9 +66,9 @@
 
 = Materials
 
-- [ ] run-sheets (x3)
-- [ ] module cards (x40 sets)
-- [ ] ring-bound bigram booklets (x40)
-- [ ] d10s (x40)
-- [ ] notepads (x40)
-- [ ] pens
+- run-sheets (x3)
+- module cards (x40 sets)
+- ring-bound bigram booklets (x40)
+- d10s (x40)
+- notepads (x40)
+- pens
