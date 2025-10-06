@@ -63,3 +63,12 @@
 - how has this workshop changed how you *think* about language models?
 - how has this workshop changed how you will *use* language models?
 - plug for Cybernetic Studio & launch event
+
+= Materials
+
+- [ ] run-sheets (x3)
+- [ ] module cards (x40 sets)
+- [ ] ring-bound bigram booklets (x40)
+- [ ] d10s (x40)
+- [ ] notepads (x40)
+- [ ] pens
