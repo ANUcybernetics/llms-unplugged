@@ -145,8 +145,9 @@
     #v(0.5cm)
 
     #text(size: 0.9em)[
-      This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike
-      4.0 International License (CC BY-NC-SA 4.0).
+      This work is licensed under a Creative Commons
+      Attribution-NonCommercial-ShareAlike 4.0 International License (CC
+      BY-NC-SA 4.0).
     ]
     #v(0.5cm)
 
@@ -337,7 +338,7 @@
         )#format-dice-indicator(
           1000,
           10,
-        )#h(0.2em) then roll 4 d10s
+        )#h(0.2em) then roll 4 d10s (or roll the same d10 four times)
       - otherwise, roll a single d10
       - read the dice from left to right as a single number (e.g., rolling 4, 7
         and 2 on three dice means your roll is 472)
