@@ -22,10 +22,10 @@ TARGETS := \
 	$(PDF_DIR)/TinyStories-20k-3-3.stamp
 
 WORKSHOP_TARGETS := \
-	$(PDF_DIR)/aus-constitution-2-1.pdf \
+	$(PDF_DIR)/the-old-man-and-the-sea-2-1.pdf \
 	$(PDF_DIR)/beatles-2-1.pdf \
-	$(PDF_DIR)/gospels-web-2-1.pdf \
-	$(PDF_DIR)/dr-seuss-2-1.pdf
+	$(PDF_DIR)/communist-manifesto-2-1.pdf \
+	$(PDF_DIR)/TinyStories-1k-2-1.pdf
 
 # Define common variables
 TOOL := target/release/my_first_lm
