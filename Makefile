@@ -21,6 +21,12 @@ TARGETS := \
 	$(PDF_DIR)/collected-hemingway-2-2.stamp \
 	$(PDF_DIR)/TinyStories-20k-3-3.stamp
 
+WORKSHOP_TARGETS := \
+	$(PDF_DIR)/aus-constitution-2-1.pdf \
+	$(PDF_DIR)/beatles-2-1.pdf \
+	$(PDF_DIR)/gospels-web-2-1.pdf \
+	$(PDF_DIR)/dr-seuss-2-1.pdf
+
 # Define common variables
 TOOL := target/release/my_first_lm
 TYPST := typst compile
@@ -49,6 +55,11 @@ $(PDF_DIR)/%.pdf $(PDF_DIR)/%.stamp: scripts/build_books.py book.typ $(TOOL)
 .PHONY: booklets
 booklets: $(TARGETS)
 	@echo "All booklets complete!"
+
+# Build workshop booklets
+.PHONY: workshop
+workshop: $(WORKSHOP_TARGETS)
+	@echo "Workshop booklets complete!"
 
 # Generate a YAML summary of all PDFs
 .PHONY: summary
