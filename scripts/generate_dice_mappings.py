@@ -45,7 +45,7 @@ def generate_svg(d: int, groups_range: str, output_path: str):
 
     layout = LayoutConstants()
 
-    start, end = map(int, groups_range.split('-'))
+    start, end = map(int, groups_range.split("-"))
     num_rows = end - start + 1
 
     total_width = d * layout.cell_width + (end - 1) * layout.group_spacing
@@ -59,18 +59,18 @@ def generate_svg(d: int, groups_range: str, output_path: str):
     svg_lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{viewbox_x} {viewbox_y} {viewbox_width} {viewbox_height}" width="{viewbox_width}" height="{viewbox_height}">',
-        '  <!-- Define styles -->',
-        '  <style>',
-        '    .cell { fill: #2a2a2a; stroke: #fff; stroke-width: 0.5; }',
-        '    .cell-numbered { fill: #be830e; stroke: #fff; stroke-width: 0.5; }',
-        '    .cell-dividers { stroke: #fff; stroke-width: 0.5; fill: none; }',
-        '    .group-divider { stroke: #ffffff; stroke-width: 1.5; }',
-        '    .row-border { fill: none; stroke: #ffffff; stroke-width: 1.5; }',
-        '    .number-text { font-family: Arial, sans-serif; font-size: 10px; font-weight: 600; text-anchor: middle; fill: #fff; }',
-        '    .label-text { font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; fill: #ffffff; }',
-        '    .group-label { font-family: Arial, sans-serif; font-size: 10px; text-anchor: middle; fill: #ffffff; }',
-        '    .row-label { font-family: Arial, sans-serif; font-size: 14px; font-weight: 900; fill: #ffffff; }',
-        '  </style>',
+        "  <!-- Define styles -->",
+        "  <style>",
+        "    .cell { fill: #2a2a2a; stroke: #fff; stroke-width: 0.5; }",
+        "    .cell-numbered { fill: #be830e; stroke: #fff; stroke-width: 0.5; }",
+        "    .cell-dividers { stroke: #fff; stroke-width: 0.5; fill: none; }",
+        "    .group-divider { stroke: #ffffff; stroke-width: 1.5; }",
+        "    .row-border { fill: none; stroke: #ffffff; stroke-width: 1.5; }",
+        "    .number-text { font-family: Arial, sans-serif; font-size: 10px; font-weight: 600; text-anchor: middle; fill: #fff; }",
+        "    .label-text { font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; fill: #ffffff; }",
+        "    .group-label { font-family: Arial, sans-serif; font-size: 10px; text-anchor: middle; fill: #ffffff; }",
+        "    .row-label { font-family: Arial, sans-serif; font-size: 14px; font-weight: 900; fill: #ffffff; }",
+        "  </style>",
     ]
 
     max_spacing = (end - 1) * layout.group_spacing
@@ -91,15 +91,21 @@ def generate_svg(d: int, groups_range: str, output_path: str):
         comment_text += " -->"
         svg_lines.append(comment_text)
 
-        svg_lines.append(f'  <g transform="translate({layout.left_margin}, {y_offset})">')
+        svg_lines.append(
+            f'  <g transform="translate({layout.left_margin}, {y_offset})">'
+        )
 
-        svg_lines.append(f'    <text x="-25" y="15" class="row-label">{num_groups}</text>')
+        svg_lines.append(
+            f'    <text x="-25" y="15" class="row-label">{num_groups}</text>'
+        )
 
         pos = 0
         for group_idx, group_size in enumerate(group_sizes):
             group_width = group_size * layout.cell_width
             group_center = int(pos + group_width / 2)
-            svg_lines.append(f'    <text x="{group_center}" y="-4" class="group-label">{group_idx + 1}</text>')
+            svg_lines.append(
+                f'    <text x="{group_center}" y="-4" class="group-label">{group_idx + 1}</text>'
+            )
             pos += group_width
             if group_idx < len(group_sizes) - 1:
                 pos += row_spacing
@@ -117,13 +123,17 @@ def generate_svg(d: int, groups_range: str, output_path: str):
             group_start_x = int(current_pos)
 
             first_cell_x = int(current_pos)
-            svg_lines.append(f'    <rect x="{first_cell_x}" y="0" width="{layout.cell_width}" height="{layout.row_height}" class="cell-numbered"/>')
+            svg_lines.append(
+                f'    <rect x="{first_cell_x}" y="0" width="{layout.cell_width}" height="{layout.row_height}" class="cell-numbered"/>'
+            )
             numbered_cells.append((first_cell_x, start_value))
             current_pos += layout.cell_width
 
             if group_size > 2:
                 middle_width = (group_size - 2) * layout.cell_width
-                svg_lines.append(f'    <rect x="{int(current_pos)}" y="0" width="{middle_width}" height="{layout.row_height}" class="cell"/>')
+                svg_lines.append(
+                    f'    <rect x="{int(current_pos)}" y="0" width="{middle_width}" height="{layout.row_height}" class="cell"/>'
+                )
                 for i in range(group_size - 2):
                     cell_divider_positions.append(int(current_pos))
                     current_pos += layout.cell_width
@@ -131,7 +141,9 @@ def generate_svg(d: int, groups_range: str, output_path: str):
             if group_size > 1:
                 cell_divider_positions.append(int(current_pos))
                 last_cell_x = int(current_pos)
-                svg_lines.append(f'    <rect x="{last_cell_x}" y="0" width="{layout.cell_width}" height="{layout.row_height}" class="cell-numbered"/>')
+                svg_lines.append(
+                    f'    <rect x="{last_cell_x}" y="0" width="{layout.cell_width}" height="{layout.row_height}" class="cell-numbered"/>'
+                )
                 numbered_cells.append((last_cell_x, end_value))
                 current_pos += layout.cell_width
 
@@ -144,23 +156,31 @@ def generate_svg(d: int, groups_range: str, output_path: str):
             dice_value += group_size
 
         if cell_divider_positions:
-            path_parts = [f"M {x},0 v{layout.row_height}" for x in cell_divider_positions]
-            svg_lines.append(f'    <path d="{" ".join(path_parts)}" class="cell-dividers"/>')
+            path_parts = [
+                f"M {x},0 v{layout.row_height}" for x in cell_divider_positions
+            ]
+            svg_lines.append(
+                f'    <path d="{" ".join(path_parts)}" class="cell-dividers"/>'
+            )
 
         for group_x, group_w in group_borders:
-            svg_lines.append(f'    <rect x="{group_x}" y="0" width="{group_w}" height="{layout.row_height}" class="row-border"/>')
+            svg_lines.append(
+                f'    <rect x="{group_x}" y="0" width="{group_w}" height="{layout.row_height}" class="row-border"/>'
+            )
 
         for cell_x, value in numbered_cells:
             text_x = cell_x + layout.cell_width // 2
-            svg_lines.append(f'    <text x="{text_x}" y="13" class="number-text">{value}</text>')
+            svg_lines.append(
+                f'    <text x="{text_x}" y="13" class="number-text">{value}</text>'
+            )
 
-        svg_lines.append('  </g>')
+        svg_lines.append("  </g>")
 
-    svg_lines.append('</svg>')
-    svg_lines.append('')
+    svg_lines.append("</svg>")
+    svg_lines.append("")
 
-    with open(output_path, 'w') as f:
-        f.write('\n'.join(svg_lines))
+    with open(output_path, "w") as f:
+        f.write("\n".join(svg_lines))
 
     print(f"Generated SVG: {output_path}")
     print(f"Dice sides: {d}, Groups: {groups_range}, Rows: {num_rows}")
@@ -171,22 +191,17 @@ def main():
         description="Generate dice-mappings SVG for N-gram language model visualization"
     )
     parser.add_argument(
-        '-d', '--dice',
-        type=int,
-        required=True,
-        help='Number of dice sides'
+        "-d", "--dice", type=int, required=True, help="Number of dice sides"
     )
     parser.add_argument(
-        '-g', '--groups',
+        "-g",
+        "--groups",
         type=str,
         required=True,
-        help='Range of group partitions to show, e.g., "2-9"'
+        help='Range of group partitions to show, e.g., "2-9"',
     )
     parser.add_argument(
-        '-o', '--output',
-        type=str,
-        required=True,
-        help='Output file path'
+        "-o", "--output", type=str, required=True, help="Output file path"
     )
 
     args = parser.parse_args()
@@ -194,5 +209,5 @@ def main():
     generate_svg(args.dice, args.groups, args.output)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
