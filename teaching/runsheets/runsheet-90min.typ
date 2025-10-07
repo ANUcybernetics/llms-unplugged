@@ -67,6 +67,7 @@
 = Materials
 
 - run-sheets (x3)
+- fat, fresh whiteboard markers
 - module cards (x40 sets)
 - ring-bound bigram booklets (x40)
 - d10s (x40)
