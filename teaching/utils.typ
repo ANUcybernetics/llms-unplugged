@@ -7,6 +7,8 @@
 
 // Base module setup - applies ANU template with landscape settings
 #let module-setup(body) = {
+  let bleed = 5mm
+
   show: doc => anu(
     title: "",
     config: (
@@ -15,22 +17,86 @@
       hide: ("page-numbers", "title-block"),
     ),
     page-settings: (
-      flipped: true,
-      margin: (left: 3.2cm, right: 1.5cm, top: 1.5cm, bottom: 1.5cm),
+      width: 297mm + 2 * bleed,
+      height: 210mm + 2 * bleed,
+      margin: (
+        left: 3.2cm + bleed,
+        right: 1.5cm + bleed,
+        top: 1.5cm + bleed,
+        bottom: 1.5cm + bleed,
+      ),
     ),
     doc,
   )
 
-  // Add CC BY-NC 4.0 watermark to every page
-  set page(footer: place(
-    bottom + left,
-    dy: -0.5cm,
-    text(
-      font: "Neon Tubes 2",
-      size: 9pt,
-      fill: anu-colors.socy-yellow,
-    )[CC BY-NC 4.0],
-  ))
+  // Add crop marks and CC BY-NC 4.0 watermark to every page
+  set page(
+    foreground: {
+      let mark-length = 8mm
+      let mark-offset = 2mm
+      // Top-left corner
+      place(
+        top + left,
+        dx: bleed - mark-offset,
+        dy: bleed - mark-offset,
+        line(length: mark-length, angle: 0deg, stroke: 0.5pt + white),
+      )
+      place(
+        top + left,
+        dx: bleed - mark-offset,
+        dy: bleed - mark-offset,
+        line(length: mark-length, angle: 90deg, stroke: 0.5pt + white),
+      )
+      // Top-right corner
+      place(
+        top + right,
+        dx: -bleed + mark-offset,
+        dy: bleed - mark-offset,
+        line(length: mark-length, angle: 180deg, stroke: 0.5pt + white),
+      )
+      place(
+        top + right,
+        dx: -bleed + mark-offset,
+        dy: bleed - mark-offset,
+        line(length: mark-length, angle: 90deg, stroke: 0.5pt + white),
+      )
+      // Bottom-left corner
+      place(
+        bottom + left,
+        dx: bleed - mark-offset,
+        dy: -bleed + mark-offset,
+        line(length: mark-length, angle: 0deg, stroke: 0.5pt + white),
+      )
+      place(
+        bottom + left,
+        dx: bleed - mark-offset,
+        dy: -bleed + mark-offset,
+        line(length: mark-length, angle: -90deg, stroke: 0.5pt + white),
+      )
+      // Bottom-right corner
+      place(
+        bottom + right,
+        dx: -bleed + mark-offset,
+        dy: -bleed + mark-offset,
+        line(length: mark-length, angle: 180deg, stroke: 0.5pt + white),
+      )
+      place(
+        bottom + right,
+        dx: -bleed + mark-offset,
+        dy: -bleed + mark-offset,
+        line(length: mark-length, angle: -90deg, stroke: 0.5pt + white),
+      )
+    },
+    footer: place(
+      bottom + left,
+      dy: -0.5cm,
+      text(
+        font: "Neon Tubes 2",
+        size: 9pt,
+        fill: anu-colors.socy-yellow,
+      )[CC BY-NC 4.0],
+    ),
+  )
 
   body
 }
@@ -54,7 +120,7 @@
   place(
     bottom + right,
     dx: 2cm,
-    dy: 2cm,
+    dy: 1.8cm,
     text(
       size: 6cm,
       fill: white.transparentize(70%),
