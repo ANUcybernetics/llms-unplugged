@@ -1,7 +1,7 @@
 ---
 id: task-017
 title: add instructions page to book.typ
-status: To Do
+status: Done
 assignee: []
 created_date: "2025-09-25 01:46"
 labels: []

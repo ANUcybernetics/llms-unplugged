@@ -1,7 +1,7 @@
 ---
 id: task-023
 title: new booklet target
-status: To Do
+status: Done
 assignee: []
 created_date: "2025-10-06 09:31"
 labels: []

@@ -1,7 +1,7 @@
 ---
 id: task-020
 title: Fix module card image layout with proper ANU template integration
-status: To Do
+status: Done
 assignee: []
 created_date: "2025-09-26 01:50"
 labels: []
