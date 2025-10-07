@@ -32,64 +32,79 @@
   // Add crop marks and CC BY-NC 4.0 watermark to every page
   set page(
     foreground: {
-      let mark-length = 8mm
-      let mark-offset = 2mm
+      let mark-length = 3mm
       // Top-left corner
       place(
         top + left,
-        dx: bleed - mark-offset,
-        dy: bleed - mark-offset,
-        line(length: mark-length, angle: 0deg, stroke: 0.5pt + white),
+        line(
+          start: (0mm, bleed),
+          end: (mark-length, bleed),
+          stroke: 0.5pt + white,
+        ),
       )
       place(
         top + left,
-        dx: bleed - mark-offset,
-        dy: bleed - mark-offset,
-        line(length: mark-length, angle: 90deg, stroke: 0.5pt + white),
+        line(
+          start: (bleed, 0mm),
+          end: (bleed, mark-length),
+          stroke: 0.5pt + white,
+        ),
       )
       // Top-right corner
       place(
         top + right,
-        dx: -bleed + mark-offset,
-        dy: bleed - mark-offset,
-        line(length: mark-length, angle: 180deg, stroke: 0.5pt + white),
+        line(
+          start: (0mm, bleed),
+          end: (-mark-length, bleed),
+          stroke: 0.5pt + white,
+        ),
       )
       place(
         top + right,
-        dx: -bleed + mark-offset,
-        dy: bleed - mark-offset,
-        line(length: mark-length, angle: 90deg, stroke: 0.5pt + white),
+        line(
+          start: (-bleed, 0mm),
+          end: (-bleed, mark-length),
+          stroke: 0.5pt + white,
+        ),
       )
       // Bottom-left corner
       place(
         bottom + left,
-        dx: bleed - mark-offset,
-        dy: -bleed + mark-offset,
-        line(length: mark-length, angle: 0deg, stroke: 0.5pt + white),
+        line(
+          start: (0mm, -bleed),
+          end: (mark-length, -bleed),
+          stroke: 0.5pt + white,
+        ),
       )
       place(
         bottom + left,
-        dx: bleed - mark-offset,
-        dy: -bleed + mark-offset,
-        line(length: mark-length, angle: -90deg, stroke: 0.5pt + white),
+        line(
+          start: (bleed, 0mm),
+          end: (bleed, -mark-length),
+          stroke: 0.5pt + white,
+        ),
       )
       // Bottom-right corner
       place(
         bottom + right,
-        dx: -bleed + mark-offset,
-        dy: -bleed + mark-offset,
-        line(length: mark-length, angle: 180deg, stroke: 0.5pt + white),
+        line(
+          start: (0mm, -bleed),
+          end: (-mark-length, -bleed),
+          stroke: 0.5pt + white,
+        ),
       )
       place(
         bottom + right,
-        dx: -bleed + mark-offset,
-        dy: -bleed + mark-offset,
-        line(length: mark-length, angle: -90deg, stroke: 0.5pt + white),
+        line(
+          start: (-bleed, 0mm),
+          end: (-bleed, -mark-length),
+          stroke: 0.5pt + white,
+        ),
       )
     },
     footer: place(
       bottom + left,
-      dy: -0.5cm,
+      dy: -1cm,
       text(
         font: "Neon Tubes 2",
         size: 9pt,
