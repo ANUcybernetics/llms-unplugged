@@ -110,9 +110,9 @@ def generate_svg(d: int, groups_range: str, output_path: str):
 
         if should_disable_rerolls:
             cell_spacing = max_spacing / (d - 1) if d > 1 else 0
-            label_pos = 0
+            label_pos = 0.0
             for i in range(d):
-                label_x = int(label_pos + layout.cell_width // 2)
+                label_x = label_pos + layout.cell_width / 2
                 is_disabled = i + 1 > num_groups
                 label_class = "group-label" if not is_disabled else "group-label-disabled"
                 svg_lines.append(
@@ -122,10 +122,10 @@ def generate_svg(d: int, groups_range: str, output_path: str):
                 if i < d - 1:
                     label_pos += cell_spacing
         else:
-            pos = 0
+            pos = 0.0
             for group_idx, group_size in enumerate(group_sizes):
                 group_width = group_size * layout.cell_width
-                group_center = int(pos + group_width / 2)
+                group_center = pos + group_width / 2
                 svg_lines.append(
                     f'    <text x="{group_center}" y="-4" class="group-label">{group_idx + 1}</text>'
                 )
@@ -133,7 +133,7 @@ def generate_svg(d: int, groups_range: str, output_path: str):
                 if group_idx < len(group_sizes) - 1:
                     pos += row_spacing
 
-        current_pos = 0
+        current_pos = 0.0
         dice_value = 1
         numbered_cells = []
         cell_divider_positions = []
@@ -142,7 +142,7 @@ def generate_svg(d: int, groups_range: str, output_path: str):
         if should_disable_rerolls:
             cell_spacing = max_spacing / (d - 1) if d > 1 else 0
             for i in range(d):
-                cell_x = int(current_pos)
+                cell_x = current_pos
                 is_disabled = dice_value > num_groups
                 cell_class = "cell-numbered-disabled" if is_disabled else "cell-numbered"
                 svg_lines.append(
@@ -161,9 +161,9 @@ def generate_svg(d: int, groups_range: str, output_path: str):
                 start_value = dice_value
                 end_value = dice_value + group_size - 1
 
-                group_start_x = int(current_pos)
+                group_start_x = current_pos
 
-                first_cell_x = int(current_pos)
+                first_cell_x = current_pos
                 svg_lines.append(
                     f'    <rect x="{first_cell_x}" y="0" width="{layout.cell_width}" height="{layout.row_height}" class="cell-numbered"/>'
                 )
@@ -173,15 +173,15 @@ def generate_svg(d: int, groups_range: str, output_path: str):
                 if group_size > 2:
                     middle_width = (group_size - 2) * layout.cell_width
                     svg_lines.append(
-                        f'    <rect x="{int(current_pos)}" y="0" width="{middle_width}" height="{layout.row_height}" class="cell"/>'
+                        f'    <rect x="{current_pos}" y="0" width="{middle_width}" height="{layout.row_height}" class="cell"/>'
                     )
                     for i in range(group_size - 2):
-                        cell_divider_positions.append(int(current_pos))
+                        cell_divider_positions.append(current_pos)
                         current_pos += layout.cell_width
 
                 if group_size > 1:
-                    cell_divider_positions.append(int(current_pos))
-                    last_cell_x = int(current_pos)
+                    cell_divider_positions.append(current_pos)
+                    last_cell_x = current_pos
                     svg_lines.append(
                         f'    <rect x="{last_cell_x}" y="0" width="{layout.cell_width}" height="{layout.row_height}" class="cell-numbered"/>'
                     )
