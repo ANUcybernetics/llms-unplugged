@@ -17,13 +17,13 @@
       hide: ("page-numbers", "title-block"),
     ),
     page-settings: (
-      width: 297mm + 2 * bleed,
-      height: 210mm + 2 * bleed,
+      width: 297mm,
+      height: 210mm,
       margin: (
-        left: 3.2cm + bleed,
-        right: 1.5cm + bleed,
-        top: 1.5cm + bleed,
-        bottom: 1.5cm + bleed,
+        left: 3.2cm,
+        right: 1.6cm,
+        top: 1.6cm,
+        bottom: 1.6cm,
       ),
     ),
     doc,
@@ -135,7 +135,7 @@
   place(
     bottom + right,
     dx: 2cm,
-    dy: 1.8cm,
+    dy: 1.4cm,
     text(
       size: 6cm,
       fill: white.transparentize(70%),
