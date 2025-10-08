@@ -193,7 +193,7 @@
   columns: (1fr, 1fr),
   gutter: 2cm,
   [
-    #v(4cm) // Add vertical space to push title down
+    #v(3cm) // Add vertical space to push title down
     #text(size: 3em, fill: anu-colors.gold)[*Language Model Books*]
 
     #text(size: 1.2em)[
@@ -281,7 +281,7 @@
       language model? if not, how many volumes would you need?
   ],
   [
-    #v(4cm)
+    #v(3cm)
 
     == Worked example
 
@@ -314,46 +314,44 @@
       [
         - look up `hat` in the booklet
         - roll your dice: roll 5 and 4 → get 54
-        - find the next word: first number ≥ 54 is 60, so next word is `was`
+        - find the next word: first number ≥ 54 is 59, so next word is `was`
         - write it down
       ],
       [`the` `hat` `was`],
 
       [
         - look up `was` in the booklet
-        - roll and find the next word: `sitting`
+        - roll 46 and find the next word: first number ≥ 46 is 66, so next word
+          is `sitting`
         - write it down
       ],
       [`the` `hat` `was` `sitting`],
 
       [
         - look up `sitting` in the booklet
-        - roll and find the next word: `on`
+        - roll 7 and find the next word: first number ≥ 7 is 9, so next word is
+          `in`
         - write it down
       ],
-      [`the` `hat` `was` `sitting` `on`],
+      [`the` `hat` `was` `sitting` `in`],
 
       [
-        - look up `on` in the booklet
-        - roll and find the next word: `the`
-        - write it down
+        - look up `in` in the booklet
+        - roll 6 and find the next word: first number ≥ 6 is 9, so next word is
+          `the`
+        - roll again for `the`: roll 450 and find `mat`
+        - write them down
       ],
-      [`the` `hat` `was` `sitting` `on` `the`],
+      [`the` `hat` `was` `sitting` `in` `the` `mat`],
 
       [
-        - look up `the` in the booklet
-        - roll and find the next word: `cat`
-        - write it down
-      ],
-      [`the` `hat` `was` `sitting` `on` `the` `cat`],
-
-      [
-        - look up `cat` in the booklet
-        - roll and find the next word: the period `.`
+        - look up `mat` in the booklet
+        - roll 6 and find the next word: first number ≥ 6 is 9, so the next word
+          is `.`
         - write it down
         - continue this process to generate more text
       ],
-      [`the` `hat` `was` `sitting` `on` `the` `cat` `.`],
+      [`the` `hat` `was` `sitting` `in` `the` `mat` `.`],
     )
   ],
 )
