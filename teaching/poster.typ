@@ -274,11 +274,12 @@
     - what can (and can't) you tell about the model's training data from leafing
       through the pages of a language model book?
     - how many volumes/pages do you think it would take to print out the latest
-      version of ChatGPT in a similar fashion?
-    - can you think of any ways to combine/modify multiple language models to
-      change the character of the generated text?
+      version of ChatGPT?
+    - can you think of ways to combine/modify multiple language models to change
+      the character of the generated text?
     - could you make use of/lose your job to/fall in love with this type of
-      language model? if not, how many volumes would you need?
+      language model? if not, how many volumes would you need before the answer
+      is "yes"?
   ],
   [
     #v(3cm)
@@ -294,7 +295,7 @@
         - choose a starting word: pick any bold word from the booklet
         - write it down as your first word
       ],
-      [`the`],
+      [#h(0.5em)`the`],
 
       [
         - look up `the` in the booklet (like using a dictionary)
@@ -309,7 +310,7 @@
           first number ≥ 27, which is 35, so the next word is `hat`
         - write it down
       ],
-      [`the` `hat`],
+      [#h(0.5em)`the` `hat`],
 
       [
         - look up `hat` in the booklet
@@ -317,7 +318,7 @@
         - find the next word: first number ≥ 54 is 59, so next word is `was`
         - write it down
       ],
-      [`the` `hat` `was`],
+      [#h(0.5em)`the` `hat` `was`],
 
       [
         - look up `was` in the booklet
@@ -325,7 +326,7 @@
         - find the next word: first number ≥ 46 is 66, so next word is `sitting`
         - write it down
       ],
-      [`the` `hat` `was` `sitting`],
+      [#h(0.5em)`the` `hat` `was` `sitting`],
 
       [
         - look up `sitting` in the booklet
@@ -333,7 +334,7 @@
           `in`
         - write it down
       ],
-      [`the` `hat` `was` `sitting` `in`],
+      [#h(0.5em)`the` `hat` `was` `sitting` `in`],
 
       [
         - look up `in` in the booklet
@@ -343,7 +344,7 @@
           `mat`
         - write them down
       ],
-      [`the` `hat` `was` `sitting` `in` `the` `mat`],
+      [#h(0.5em)`the` `hat` `was` `sitting` `in` `the` `mat`],
 
       [
         - look up `mat` in the booklet
@@ -352,7 +353,7 @@
         - write it down
         - continue this process to generate more text
       ],
-      [`the` `hat` `was` `sitting` `in` `the` `mat` `.`],
+      [#h(0.5em)`the` `hat` `was` `sitting` `in` `the` `mat` `.`],
     )
   ],
 )
