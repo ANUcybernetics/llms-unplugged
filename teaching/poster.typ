@@ -122,8 +122,8 @@
 
 // Function to format a complete entry (prefix + dice indicator + followers)
 #let format-entry(prefix, total_count, followers) = {
-  // Format the prefix
-  display-with-punctuation(prefix, size: 1em, weight: "bold")
+  // Format the prefix (larger, like in book.typ)
+  display-with-punctuation(prefix, size: 1.5em, weight: "bold")
 
   // Add dice indicator if needed
   let indicator = format-dice-indicator(total_count)
@@ -135,7 +135,7 @@
     h(0.6em)
   }
 
-  // Format the followers
+  // Format the followers (smaller, default size)
   format-followers(followers)
 }
 
@@ -270,45 +270,70 @@
       )
     ]
 
-    #v(0.8cm)
+    #v(1cm)
 
     === Step-by-step walkthrough
 
-    + *"cat"* has a #box(
-        baseline: -0.3em,
-        height: 1em,
-        rotate(
-          45deg,
-          origin: center,
-          rect(
-            fill: white,
-            stroke: 0.5pt + black,
-            width: 0.7em,
-            height: 0.7em,
-            place(
-              center + horizon,
-              rotate(
-                -45deg,
-                origin: center,
-                text(
-                  fill: black,
-                  weight: "bold",
-                  size: 0.65em,
-                  "2",
+    #grid(
+      columns: (1.2fr, 1fr),
+      gutter: 1.5em,
+      [
+        + *"cat"* has a #box(
+            baseline: -0.3em,
+            height: 1em,
+            rotate(
+              45deg,
+              origin: center,
+              rect(
+                fill: white,
+                stroke: 0.5pt + black,
+                width: 0.7em,
+                height: 0.7em,
+                place(
+                  center + horizon,
+                  rotate(
+                    -45deg,
+                    origin: center,
+                    text(
+                      fill: black,
+                      weight: "bold",
+                      size: 0.65em,
+                      "2",
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-      ) indicator, so roll your d10 twice → you roll 3 and 8 = 38
-    + scan through the followers: first number ≥ 38 is 76, so next word is *in*
-    + *"in"* also needs 2 dice → you roll 7 and 4 = 74
-    + first number ≥ 74 is 74, so next word is *the*
-    + *"the"* needs 2 dice → you roll 2 and 4 = 24
-    + first number ≥ 24 is 24, so next word is *cat*
-    + continue this process to generate: _"cat in the cat in the hat"_
+          ) indicator, so roll your d10 twice → you roll 3 and 8 = 38
+        + scan through the followers: first number ≥ 38 is 76, so next word is *in*
+        + *"in"* also needs 2 dice → you roll 7 and 4 = 74
+        + first number ≥ 74 is 74, so next word is *the*
+        + *"the"* needs 2 dice → you roll 2 and 4 = 24
+        + first number ≥ 24 is 24, so next word is *cat*
+        + continue this process...
+      ],
+      [
+        #v(0.5em)
+        #text(style: "italic")[cat]
 
-    #v(0.8cm)
+        #v(0.5em)
+        #text(style: "italic")[cat in]
+
+        #v(0.5em)
+        #text(style: "italic")[cat in the]
+
+        #v(0.5em)
+        #text(style: "italic")[cat in the cat]
+
+        #v(0.5em)
+        #text(style: "italic")[cat in the cat in]
+
+        #v(0.5em)
+        #text(style: "italic")[cat in the cat in the hat]
+      ],
+    )
+
+    #v(1cm)
 
     == Discussion questions
 
