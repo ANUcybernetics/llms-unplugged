@@ -56,9 +56,10 @@
 
 // Function to format the dice indicator (diamond with number)
 #let format-dice-indicator(total_count) = {
-  // Only show when more than 1 d10 is needed (total_count > 9)
-  if total_count > 9 {
-    let num-str = str(str(total_count).len())
+  // Only show when more than 1 d10 is needed (total_count > 10)
+  if total_count > 10 {
+    // For 0-99 normalization, we need to look at (total_count - 1)
+    let num-str = str(str(total_count - 1).len())
     // Create a diamond shape with the number inside
     box(
       baseline: -0.3em,
@@ -219,22 +220,23 @@
 
       // Pedagogical example with clear patterns
       #let example_entries = (
-        ("cat", 100, ("in", 15), ("sat", 42), ("was", 68), (".", 100)),
-        ("hat", 100, ("on", 25), ("was", 60), (".", 100)),
-        ("in", 100, ("a", 33), ("the", 78), ("my", 100)),
-        ("on", 100, ("a", 25), ("the", 63), ("my", 100)),
-        ("sat", 100, ("down", 40), ("on", 75), (".", 100)),
-        ("sitting", 100, ("on", 55), ("in", 100)),
+        ("cat", 10, ("sat", 5), (".", 9)),
+        ("hat", 100, ("on", 24), ("was", 59), (".", 99)),
+        ("in", 10, ("a", 3), ("the", 9)),
+        ("mat", 10, (".", 9)),
+        ("on", 10, ("a", 2), ("the", 6), ("my", 9)),
+        ("sat", 10, ("on", 9)),
+        ("sitting", 10, ("on", 5), ("in", 9)),
         (
           "the",
-          100,
-          ("cat", 18),
-          ("hat", 35),
-          ("mat", 67),
-          ("sun", 85),
-          ("tree", 100),
+          1000,
+          ("cat", 117),
+          ("hat", 234),
+          ("mat", 566),
+          ("sun", 784),
+          ("tree", 999),
         ),
-        ("was", 100, ("red", 33), ("sitting", 67), (".", 100)),
+        ("was", 100, ("red", 32), ("sitting", 66), (".", 99)),
       )
 
       #let mid = calc.ceil(example_entries.len() / 2)
