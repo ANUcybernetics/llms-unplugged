@@ -303,11 +303,11 @@
             "the",
             size: 1em,
             weight: "bold",
-          )#instruction-dice-indicator("2") means you'll need to roll two d10s
+          )#instruction-dice-indicator("3") means you'll need to roll three d10s
           (or the same one twice)
-        - roll your dice: roll 2 and 7 → combine them to get 27
+        - roll your dice: roll 2, 1 and 7 → combine them to get 217
         - find your next word: scan through the followers until you find the
-          first number ≥ 27, which is 35, so the next word is `hat`
+          first number ≥ 217, which is 234, so the next word is `hat`
         - write it down
       ],
       [#h(0.5em)`the` `hat`],
