@@ -224,6 +224,7 @@
         ("hat", 100, ("on", 24), ("was", 59), (".", 99)),
         ("in", 10, ("a", 3), ("the", 9)),
         ("mat", 10, (".", 9)),
+        ("my", 10, ("cat", 9)),
         ("on", 10, ("a", 2), ("the", 6), ("my", 9)),
         ("sat", 10, ("on", 9)),
         ("sitting", 10, ("on", 5), ("in", 9)),
@@ -304,7 +305,6 @@
             size: 1em,
             weight: "bold",
           )#instruction-dice-indicator("3") means you'll need to roll three d10s
-          (or the same one twice)
         - roll your dice: roll 2, 1 and 7 → combine them to get 217
         - find your next word: scan through the followers until you find the
           first number ≥ 217, which is 234, so the next word is `hat`
@@ -330,30 +330,38 @@
 
       [
         - look up `sitting` in the booklet
-        - roll 7 and find the next word: first number ≥ 7 is 9, so next word is
-          `in`
+        - roll a 3 and find the next word: first number ≥ 3 is 5, so next word
+          is
+          `on`
         - write it down
       ],
-      [#h(0.5em)`the` `hat` `was` `sitting` `in`],
+      [#h(0.5em)`the` `hat` `was` `sitting` `on`],
 
       [
-        - look up `in` in the booklet
-        - roll 6 and find the next word: first number ≥ 6 is 9, so next word is
-          `the`
-        - roll again for `the`: roll 4, 5, and 0 → get 450, so next word is
-          `mat`
-        - write them down
-      ],
-      [#h(0.5em)`the` `hat` `was` `sitting` `in` `the` `mat`],
-
-      [
-        - look up `mat` in the booklet
-        - roll 6 and find the next word: first number ≥ 6 is 9, so the next word
-          is `.`
+        - look up `on` in the booklet
+        - roll an 8 and find the next word: first number ≥ 8 is 9, so next word
+          is
+          `my`
         - write it down
-        - continue this process to generate more text
       ],
-      [#h(0.5em)`the` `hat` `was` `sitting` `in` `the` `mat` `.`],
+      [#h(0.5em)`the` `hat` `was` `sitting` `on` `my`],
+
+      [
+        - look up `my` in the booklet
+        - there's only one follower, so no need to roll dice
+        - the next word is `cat`
+        - write it down
+      ],
+      [#h(0.5em)`the` `hat` `was` `sitting` `on` `my` `cat`],
+
+      [
+        - look up `cat` in the booklet
+        - roll a 7 and find the next word: first number ≥ 7 is 9, so next word
+          is
+          `.`
+        - write it down
+      ],
+      [#h(0.5em)`the` `hat` `was` `sitting` `on` `my` `cat` `.`],
     )
   ],
 )
