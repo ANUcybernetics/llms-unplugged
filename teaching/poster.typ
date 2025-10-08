@@ -241,19 +241,32 @@
         cat_data.data.at(111), // "like"
         cat_data.data.at(141), // "not"
         cat_data.data.at(191), // "the"
-      )
+      ).sorted(key: item => item.at(0))
 
+      #let mid = calc.ceil(selected_entries.len() / 2)
       #grid(
         columns: (1fr, 1fr),
         gutter: 1em,
-        ..selected_entries
-          .enumerate()
-          .map(((i, item)) => {
+        // Left column
+        box[
+          #for item in selected_entries.slice(0, mid) {
             let prefix = item.at(0)
             let total_count = item.at(1)
             let followers = item.slice(2)
-            box[#format-entry(prefix, total_count, followers)]
-          }),
+            format-entry(prefix, total_count, followers)
+            v(0.2em)
+          }
+        ],
+        // Right column
+        box[
+          #for item in selected_entries.slice(mid) {
+            let prefix = item.at(0)
+            let total_count = item.at(1)
+            let followers = item.slice(2)
+            format-entry(prefix, total_count, followers)
+            v(0.2em)
+          }
+        ],
       )
     ]
 
