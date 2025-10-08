@@ -22,7 +22,7 @@ fn test_possessive_apostrophes_preserved() -> io::Result<()> {
         file.flush()?;
     }
     
-    let mut counter = NGramCounter::new(2);
+    let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     
     let entries = counter.get_entries();
@@ -71,7 +71,7 @@ fn test_contractions_preserved() -> io::Result<()> {
         file.flush()?;
     }
     
-    let mut counter = NGramCounter::new(2);
+    let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     
     let entries = counter.get_entries();
@@ -109,7 +109,7 @@ fn test_quote_marks_stripped() -> io::Result<()> {
         file.flush()?;
     }
     
-    let mut counter = NGramCounter::new(2);
+    let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     
     let entries = counter.get_entries();
@@ -155,7 +155,7 @@ fn test_numbers_filtered() -> io::Result<()> {
         file.flush()?;
     }
     
-    let mut counter = NGramCounter::new(2);
+    let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     
     let entries = counter.get_entries();
@@ -223,7 +223,7 @@ fn test_roman_numerals_filtered() -> io::Result<()> {
         file.flush()?;
     }
     
-    let mut counter = NGramCounter::new(2);
+    let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     
     let entries = counter.get_entries();
@@ -266,7 +266,7 @@ fn test_punctuation_handling() -> io::Result<()> {
         file.flush()?;
     }
     
-    let mut counter = NGramCounter::new(2);
+    let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     
     let entries = counter.get_entries();
@@ -329,7 +329,7 @@ fn test_case_normalization() -> io::Result<()> {
         file.flush()?;
     }
     
-    let mut counter = NGramCounter::new(2);
+    let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     
     let entries = counter.get_entries();
@@ -388,7 +388,7 @@ fn test_complex_real_world_sentences() -> io::Result<()> {
         file.flush()?;
     }
     
-    let mut counter = NGramCounter::new(2);
+    let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     
     let entries = counter.get_entries();

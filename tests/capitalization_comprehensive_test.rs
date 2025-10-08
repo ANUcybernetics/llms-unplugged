@@ -38,7 +38,7 @@ fn test_comprehensive_capitalization_scenarios() -> io::Result<()> {
         file.flush()?;
     }
     
-    let mut counter = NGramCounter::new(2);
+    let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     
     let entries = counter.get_entries();
@@ -115,7 +115,7 @@ fn test_capitalization_in_followers() -> io::Result<()> {
         file.flush()?;
     }
     
-    let mut counter = NGramCounter::new(2);
+    let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     
     let entries = counter.get_entries();
@@ -171,7 +171,7 @@ fn test_capitalization_with_punctuation() -> io::Result<()> {
         file.flush()?;
     }
     
-    let mut counter = NGramCounter::new(2);
+    let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     
     let entries = counter.get_entries();
@@ -225,7 +225,7 @@ fn test_capitalization_edge_cases() -> io::Result<()> {
         file.flush()?;
     }
     
-    let mut counter = NGramCounter::new(2);
+    let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     
     let entries = counter.get_entries();

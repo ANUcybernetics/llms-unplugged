@@ -86,14 +86,16 @@ pub struct NGramCounter {
     metadata: Option<Metadata>,
     /// Maps lowercase token -> canonical form (either original case or lowercase if multiple variants seen)
     canonical_forms: HashMap<String, String>,
+    /// Punctuation characters to preserve as separate tokens
+    punctuation: Vec<char>,
 }
 
 impl NGramCounter {
-    /// Creates a new NGramCounter with the specified n-gram size
-    pub fn new(n: usize) -> Self {
+    /// Creates a new NGramCounter with the specified n-gram size and punctuation chars
+    pub fn new(n: usize, punctuation: Vec<char>) -> Self {
         if n < 2 {
             eprintln!("Warning: N must be 2 or greater for N-gram analysis. Defaulting to 2.");
-            return Self::new(2);
+            return Self::new(2, punctuation);
         }
 
         let prefix_size = n - 1;
@@ -111,6 +113,7 @@ impl NGramCounter {
             window: VecDeque::with_capacity(prefix_size),
             metadata: None,
             canonical_forms: HashMap::new(),
+            punctuation,
         }
     }
 
@@ -144,14 +147,14 @@ impl NGramCounter {
 
     /// Process a single line of text
     pub fn process_line(&mut self, line: &str) {
-        let raw_tokens = tokenize(line);
-        
+        let raw_tokens = tokenize(line, &self.punctuation);
+
         // Apply canonical form tracking before preprocessing
         let canonical_tokens: Vec<String> = raw_tokens
             .into_iter()
             .map(|token| self.get_canonical_form(&token))
             .collect();
-        
+
         let words = preprocess(canonical_tokens);
         let prefix_size = self.n - 1;
 
@@ -388,7 +391,8 @@ pub fn process_file<P: AsRef<Path>>(
     path: P,
     n: usize,
 ) -> io::Result<(Vec<WordFollowEntry>, ProcessingStats, Option<Metadata>)> {
-    let mut counter = NGramCounter::new(n);
+    let punctuation = vec![',', '.'];
+    let mut counter = NGramCounter::new(n, punctuation);
     counter.process_file(path)?;
 
     let entries = counter.get_entries();
@@ -795,7 +799,7 @@ mod tests {
     #[test]
     fn test_follower_sort_order() {
         // Test the sorting of followers by count (largest to smallest)
-        let mut counter = NGramCounter::new(2);
+        let mut counter = NGramCounter::new(2, vec![',', '.']);
         counter.process_line("the cat sat on the mat and the cat ate");
 
         // Get entries and check sorting
@@ -811,7 +815,7 @@ mod tests {
         assert_eq!(the_entry.followers[1].1, 1);
 
         // Test equal counts with alphabetical tiebreaker
-        let mut counter2 = NGramCounter::new(2);
+        let mut counter2 = NGramCounter::new(2, vec![',', '.']);
         counter2.process_line("he no test he yes test");
 
         let entries2 = counter2.get_entries();

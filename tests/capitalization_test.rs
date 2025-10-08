@@ -20,7 +20,7 @@ fn test_capitalization_preserved_when_consistent() -> io::Result<()> {
         file.flush()?;
     }
     
-    let mut counter = NGramCounter::new(2);
+    let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     
     let entries = counter.get_entries();
@@ -54,7 +54,7 @@ fn test_capitalization_normalized_when_mixed() -> io::Result<()> {
         file.flush()?;
     }
     
-    let mut counter = NGramCounter::new(2);
+    let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     
     let entries = counter.get_entries();
@@ -88,7 +88,7 @@ fn test_special_case_i_always_uppercase() -> io::Result<()> {
         file.flush()?;
     }
     
-    let mut counter = NGramCounter::new(2);
+    let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     
     let entries = counter.get_entries();
@@ -122,7 +122,7 @@ fn test_unique_capitalization_preserved() -> io::Result<()> {
         file.flush()?;
     }
     
-    let mut counter = NGramCounter::new(2);
+    let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     
     let entries = counter.get_entries();
@@ -167,7 +167,7 @@ fn test_capitalization_tracking_across_document() -> io::Result<()> {
         file.flush()?;
     }
     
-    let mut counter = NGramCounter::new(2);
+    let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     
     let entries = counter.get_entries();

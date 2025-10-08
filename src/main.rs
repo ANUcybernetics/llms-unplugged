@@ -36,6 +36,10 @@ struct Args {
     /// Output raw counts without scaling
     #[arg(long = "raw")]
     raw: bool,
+
+    /// Punctuation characters to preserve as separate tokens (default: ",.")
+    #[arg(short = 'p', long = "punctuation", default_value = ",.")]
+    punctuation: String,
 }
 
 fn main() {
@@ -43,8 +47,11 @@ fn main() {
 
     // No need to check for incompatible flags - if raw is specified, it overrides scale_d
 
+    // Parse punctuation string into Vec<char>
+    let punctuation: Vec<char> = args.punctuation.chars().collect();
+
     // Create an NGramCounter and process the file
-    let mut counter = NGramCounter::new(args.n);
+    let mut counter = NGramCounter::new(args.n, punctuation);
     match counter.process_file(&args.input) {
         Ok(()) => {
             let entries = counter.get_entries();
