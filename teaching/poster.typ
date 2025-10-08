@@ -168,15 +168,16 @@
 
     #text(size: 1.2em)[
       A collection of pre-trained language models in booklet form. Each page
-      contains statistical patterns learned from a text corpus---just like
-      ChatGPT, but small enough to hold in your hands and use with dice.
+      contains statistical patterns learned from text "training data"---just
+      like ChatGPT, but human-scale enough to hold in your hands and generate
+      new text with dice, pen and paper.
     ]
 
     == How it works
 
     Each booklet is organised like a dictionary. Each word shows which words can
-    follow it, with probabilities mapped to dice rolls. Roll the dice, look up
-    the result, write down the next word, and repeat. Some of the larger
+    follow it, with probabilities mapped to d10 dice rolls. Roll the dice, look
+    up the result, write down the next word, and repeat. Some of the larger
     language models are split across multiple booklets (e.g. A--K, L--Z just
     like the phone books of old).
 
@@ -217,10 +218,10 @@
   [
     #v(3cm)
 
-    == Example: generating text
+    == Inference example: generating _new_ text from the model
 
-    Let's generate new text starting with the word *cat*. Here's an excerpt from
-    the booklet:
+    Choose *cat* as your starting word. Look it up in the booklet to find
+    something like this:
 
     #block(
       inset: (x: 0pt, top: 0.5em, bottom: 1em),
@@ -305,7 +306,8 @@
               ),
             ),
           ) indicator, so roll your d10 twice → you roll 3 and 8 = 38
-        + scan through the followers: first number ≥ 38 is 76, so next word is *in*
+        + scan through the followers: first number ≥ 38 is 76, so next word is
+          *in*
         + *"in"* also needs 2 dice → you roll 7 and 4 = 74
         + first number ≥ 74 is 74, so next word is *the*
         + *"the"* needs 2 dice → you roll 2 and 4 = 24
