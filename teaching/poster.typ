@@ -210,18 +210,7 @@
     language models are split across multiple booklets (e.g. A--K, L--Z just
     like the phone books of old).
 
-    == How to generate text
-
-    + *choose a starting word*: pick any bold word from the booklet
-    + *look up the word's entry*: use it like a dictionary
-    + *roll your d10(s)*: the #instruction-dice-indicator([_n_]) indicator tells you how many times
-    + *find your next word*: scan until you find the first number ≥ your roll
-    + *repeat*: write it down, look it up, and continue
-  ],
-  [
-    #v(3cm)
-
-    == Inference example: generating _new_ text from the model
+    == Example booklet excerpt
 
     Choose *cat* as your starting word. Look it up in the booklet to find
     something like this:
@@ -276,49 +265,56 @@
 
     #v(1cm)
 
-    === Step-by-step walkthrough
-
-    #grid(
-      columns: (1.2fr, 1fr),
-      gutter: 1.5em,
-      [
-        + *"cat"* has a #instruction-dice-indicator("2") indicator, so roll your d10 twice → you roll 3 and 8 = 38
-        + scan through the followers: first number ≥ 38 is 76, so next word is
-          *in*
-        + *"in"* also needs 2 dice → you roll 7 and 4 = 74
-        + first number ≥ 74 is 74, so next word is *the*
-        + *"the"* needs 2 dice → you roll 2 and 4 = 24
-        + first number ≥ 24 is 24, so next word is *cat*
-        + continue this process...
-      ],
-      [
-        #v(0.5em)
-        #text(style: "italic")[cat]
-
-        #v(0.5em)
-        #text(style: "italic")[cat in]
-
-        #v(0.5em)
-        #text(style: "italic")[cat in the]
-
-        #v(0.5em)
-        #text(style: "italic")[cat in the cat]
-
-        #v(0.5em)
-        #text(style: "italic")[cat in the cat in]
-
-        #v(0.5em)
-        #text(style: "italic")[cat in the cat in the hat]
-      ],
-    )
-
-    #v(1cm)
-
     == Discussion questions
 
     - can you guess what text the model was trained on?
     - how does using a pre-trained model differ from training your own?
     - why might some word combinations feel more natural than others?
+
+    #v(1cm)
+  ],
+  [
+    #v(3cm)
+
+    == Worked example
+
+    #table(
+      columns: (1.4fr, 1fr),
+      align: (left + horizon, left + horizon),
+      inset: (x: 0em, y: 0.5em),
+      [Instruction], [Current output text],
+      [*Choose a starting word*: pick any bold word from the booklet (e.g.
+        *cat*)],
+      [`cat`],
+
+      [*Look up the word's entry*: find it in the booklet like using a
+        dictionary],
+      [`cat`],
+
+      [*Check the dice indicator*: #instruction-dice-indicator("2") means roll
+        your d10 twice],
+      [`cat`],
+
+      [*Roll your dice*: roll 3 and 8 → combine them to get 38], [`cat` `in`],
+
+      [*Find your next word*: scan through the followers until you find the
+        first number ≥ 38, which is 76, so the next word is *in*],
+      [`cat` `in`],
+
+      [*Write down your word*: add it to your sentence], [`cat` `in` `the`],
+
+      [*Look up the new word*: find *in* in the booklet],
+      [`cat` `in` `the` `cat`],
+
+      [*Roll again*: roll 7 and 4 → get 74], [`cat` `in` `the` `cat` `in`],
+
+      [*Find the next word*: first number ≥ 74 is 74, so next word is *the*],
+      [`cat` `in` `the` `cat` `in` `the` `hat`],
+
+      [*Continue the process*: keep rolling, looking up words, and writing them
+        down to generate new text],
+      [`cat` `in` `the` `cat` `in` `the` `hat`],
+    )
 
     #v(1cm)
   ],
