@@ -192,28 +192,24 @@
   columns: (1fr, 1fr),
   gutter: 2cm,
   [
-    #v(3cm) // Add vertical space to push title down
-    #text(size: 3em, fill: anu-colors.gold)[*My First Language Model*]
+    #v(4cm) // Add vertical space to push title down
+    #text(size: 3em, fill: anu-colors.gold)[*Language Model Books*]
 
     #text(size: 1.2em)[
-      A collection of pre-trained language models in booklet form. Each page
-      contains statistical patterns learned from text "training data"---just
-      like ChatGPT, but human-scale enough to hold in your hands and generate
-      new text with dice, pen and paper.
+      A collection of pre-trained language models in printed book form. Each
+      page contains statistical patterns learned from text "training
+      data"---just like ChatGPT, but human-scale enough to hold in your hands
+      and generate new text with dice, pen and paper.
     ]
 
     == How it works
 
-    Each booklet is organised like a dictionary. Each word shows which words can
-    follow it, with probabilities mapped to d10 dice rolls. Roll the dice, look
-    up the result, write down the next word, and repeat. Some of the larger
-    language models are split across multiple booklets (e.g. A--K, L--Z just
-    like the phone books of old).
+    Each volume is organised like a dictionary. Each word shows which words can
+    follow it, with probabilities mapped to dice rolls. To generate _new_ text
+    from this model all you need to do is roll the dice, look up the result,
+    write down the next word, and repeat (see worked example, right).
 
-    == Example booklet excerpt
-
-    Choose *cat* as your starting word. Look it up in the booklet to find
-    something like this:
+    To give you an idea, here's an excerpt:
 
     #block(
       inset: (x: 0pt, top: 0.5em, bottom: 1em),
@@ -263,18 +259,22 @@
       )
     ]
 
-    #v(1cm)
+    Some of the larger language models are split across multiple volumes (e.g.
+    A--K, L--Z just like the phone books of old).
 
     == Discussion questions
 
-    - can you guess what text the model was trained on?
-    - how does using a pre-trained model differ from training your own?
-    - why might some word combinations feel more natural than others?
-
-    #v(1cm)
+    - what can (and can't) you tell about the model's training data from leafing
+      through the pages of a language model book?
+    - how many volumes/pages do you think it would take to print out the latest
+      version of ChatGPT in a similar fashion?
+    - can you think of any ways to combine/modify multiple language models to
+      change the character of the generated text?
+    - could you lose your job to this type of language model? could you fall in
+      love with this type of language model?
   ],
   [
-    #v(3cm)
+    #v(5.8cm)
 
     == Worked example
 
@@ -283,36 +283,62 @@
       align: (left + horizon, left + horizon),
       inset: (x: 0em, y: 0.5em),
       [Instruction], [Current output text],
-      [*Choose a starting word*: pick any bold word from the booklet (e.g.
-        *cat*)],
+      [
+        - choose a starting word: pick any bold word from the booklet
+        - write it down as your first word
+      ],
       [`cat`],
 
-      [*Look up the word's entry*: find it in the booklet like using a
-        dictionary],
-      [`cat`],
-
-      [*Check the dice indicator*: #instruction-dice-indicator("2") means roll
-        your d10 twice],
-      [`cat`],
-
-      [*Roll your dice*: roll 3 and 8 → combine them to get 38], [`cat`],
-
-      [*Find your next word*: scan through the followers until you find the
-        first number ≥ 38, which is 76, so the next word is `in`],
+      [
+        - look up `cat` in the booklet (like using a dictionary)
+        - the diamond "dice indicator" #display-with-punctuation(
+            "cat",
+            size: 1em,
+            weight: "bold",
+          )#instruction-dice-indicator("2") means you'll need to roll two d10s
+          (or the same one twice)
+        - roll your dice: roll 3 and 8 → combine them to get 38
+        - find your next word: scan through the followers until you find the
+          first number ≥ 38, which is 76, so the next word is `in`
+        - write it down
+      ],
       [`cat` `in`],
 
-      [*Write down your word*: add it to your output text], [`cat` `in` `the`],
+      [
+        - look up `in` in the booklet
+        - roll your dice: roll 7 and 4 → get 74
+        - find the next word: first number ≥ 74 is 74, so next word is `the`
+        - write it down
+      ],
+      [`cat` `in` `the`],
 
-      [*Look up the new word*: find `in` in the booklet],
+      [
+        - look up `the` in the booklet
+        - roll and find the next word: `cat`
+        - write it down
+      ],
       [`cat` `in` `the` `cat`],
 
-      [*Roll again*: roll 7 and 4 → get 74], [`cat` `in` `the` `cat` `in`],
+      [
+        - look up `cat` again
+        - roll and find the next word: `in`
+        - write it down
+      ],
+      [`cat` `in` `the` `cat` `in`],
 
-      [*Find the next word*: first number ≥ 74 is 74, so next word is `the`],
-      [`cat` `in` `the` `cat` `in` `the` `hat`],
+      [
+        - look up `in` again
+        - roll and find the next word: `the`
+        - write it down
+      ],
+      [`cat` `in` `the` `cat` `in` `the`],
 
-      [*Continue the process*: keep rolling, looking up words, and writing them
-        down to generate new text],
+      [
+        - look up `the` again
+        - roll and find the next word: `hat`
+        - write it down
+        - continue this process to generate more text
+      ],
       [`cat` `in` `the` `cat` `in` `the` `hat`],
     )
 
