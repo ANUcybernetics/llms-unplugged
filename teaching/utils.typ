@@ -5,6 +5,79 @@
 #import "@local/anu-typst-template:0.2.0": *
 #import "@local/anu-typst-template:0.2.0": anu-colors
 
+// Draw crop marks at page corners
+#let crop-marks(bleed: 5mm) = {
+  let mark-length = 3mm
+  // Top-left corner
+  place(
+    top + left,
+    line(
+      start: (0mm, bleed),
+      end: (mark-length, bleed),
+      stroke: 0.5pt + white,
+    ),
+  )
+  place(
+    top + left,
+    line(
+      start: (bleed, 0mm),
+      end: (bleed, mark-length),
+      stroke: 0.5pt + white,
+    ),
+  )
+  // Top-right corner
+  place(
+    top + right,
+    line(
+      start: (0mm, bleed),
+      end: (-mark-length, bleed),
+      stroke: 0.5pt + white,
+    ),
+  )
+  place(
+    top + right,
+    line(
+      start: (-bleed, 0mm),
+      end: (-bleed, mark-length),
+      stroke: 0.5pt + white,
+    ),
+  )
+  // Bottom-left corner
+  place(
+    bottom + left,
+    line(
+      start: (0mm, -bleed),
+      end: (mark-length, -bleed),
+      stroke: 0.5pt + white,
+    ),
+  )
+  place(
+    bottom + left,
+    line(
+      start: (bleed, 0mm),
+      end: (bleed, -mark-length),
+      stroke: 0.5pt + white,
+    ),
+  )
+  // Bottom-right corner
+  place(
+    bottom + right,
+    line(
+      start: (0mm, -bleed),
+      end: (-mark-length, -bleed),
+      stroke: 0.5pt + white,
+    ),
+  )
+  place(
+    bottom + right,
+    line(
+      start: (-bleed, 0mm),
+      end: (-bleed, -mark-length),
+      stroke: 0.5pt + white,
+    ),
+  )
+}
+
 // Base module setup - applies ANU template with landscape settings
 #let module-setup(body) = {
   let bleed = 5mm
@@ -31,77 +104,7 @@
 
   // Add crop marks and CC BY-NC 4.0 watermark to every page
   set page(
-    foreground: {
-      let mark-length = 3mm
-      // Top-left corner
-      place(
-        top + left,
-        line(
-          start: (0mm, bleed),
-          end: (mark-length, bleed),
-          stroke: 0.5pt + white,
-        ),
-      )
-      place(
-        top + left,
-        line(
-          start: (bleed, 0mm),
-          end: (bleed, mark-length),
-          stroke: 0.5pt + white,
-        ),
-      )
-      // Top-right corner
-      place(
-        top + right,
-        line(
-          start: (0mm, bleed),
-          end: (-mark-length, bleed),
-          stroke: 0.5pt + white,
-        ),
-      )
-      place(
-        top + right,
-        line(
-          start: (-bleed, 0mm),
-          end: (-bleed, mark-length),
-          stroke: 0.5pt + white,
-        ),
-      )
-      // Bottom-left corner
-      place(
-        bottom + left,
-        line(
-          start: (0mm, -bleed),
-          end: (mark-length, -bleed),
-          stroke: 0.5pt + white,
-        ),
-      )
-      place(
-        bottom + left,
-        line(
-          start: (bleed, 0mm),
-          end: (bleed, -mark-length),
-          stroke: 0.5pt + white,
-        ),
-      )
-      // Bottom-right corner
-      place(
-        bottom + right,
-        line(
-          start: (0mm, -bleed),
-          end: (-mark-length, -bleed),
-          stroke: 0.5pt + white,
-        ),
-      )
-      place(
-        bottom + right,
-        line(
-          start: (-bleed, 0mm),
-          end: (-bleed, -mark-length),
-          stroke: 0.5pt + white,
-        ),
-      )
-    },
+    // foreground: crop-marks(bleed: bleed),  // uncomment to enable crop marks
     footer: place(
       bottom + left,
       dy: -1cm,
