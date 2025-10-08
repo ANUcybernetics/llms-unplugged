@@ -28,62 +28,73 @@
   == Key idea
 
   Low-Rank Adaptation (LoRA) allows you to specialise a language model by adding
-  small adjustments rather than retraining everything. This is efficient because
-  you only track the _changes_ from the base model.
+  small adjustments rather than retraining everything. The LoRA layer is
+  typically much smaller than the base model because you only track the
+  _changes_ from the base model, not the full weights.
 ]
 
 // Main content in two columns
 #columns(2, gutter: 1em)[
   == Algorithm
 
-  + *choose your base model*:
-
-    - use a bigram model you've already trained on some text
+  + *choose an existing bigram model as the "base model"*
 
   + *train a LoRA layer*:
 
-    - create a new grid with the same structure as your base model
-    - process your new domain-specific text using the same algorithm as Basic
-      Training
-    - this grid captures only the new patterns
+    - start with a new grid (same columns as the base model)
+    - process your new domain-specific text using the same algorithm as _Basic
+        Training_, but only include rows for words that appear in your new text
 
   + *apply the adaptation*:
 
-    - when generating text, add the counts from both grids (base + LoRA) for
-      each cell
+    - as per _Basic Inference_, but add the counts from both grids (if current
+      word is in the LoRA grid)
     - optionally scale the LoRA values up or down to control adaptation strength
-
-  #colbreak()
 
   == Example
 
-  Base model trained on general text:
+  *Base model* trained on general text:
 
   #lm-grid(
-    ([], `the`, `a`, `spotted`),
+    ([], `saw`, `they`, `we`, `the`, `a`, `red`),
     (
-      (`saw`, "4", "2", "1"),
+      (`saw`, "", "", "", "4", "2", "1"),
+      (`they`, "", "", "", "2", "1", ""),
+      (`we`, "", "", "", "3", "", ""),
+      (`the`, "", "", "", "", "", ""),
+      (`a`, "", "", "", "", "", ""),
+      (`red`, "", "", "", "", "", ""),
     ),
   )
 
-  LoRA layer trained on nature documentary text:
+  #colbreak(weak: true)
+
+  *LoRA layer* trained on "I saw a red cat. I saw the red dog." (smaller---only
+  1 row):
 
   #lm-grid(
-    ([], `the`, `a`, `spotted`),
+    ([], `saw`, `they`, `we`, `the`, `a`, `red`),
     (
-      (`saw`, "1", "0", "3"),
+      (`saw`, "", "", "", "1", "1", "2"),
     ),
   )
 
-  Combined model (base + LoRA):
+  *Combined model* (add counts):
 
   #lm-grid(
-    ([], `the`, `a`, `spotted`),
+    ([], `saw`, `they`, `we`, `the`, `a`, `red`),
     (
-      (`saw`, "5", "2", "4"),
+      (`saw`, "", "", "", "5", "3", "3"),
+      (`they`, "", "", "", "2", "1", ""),
+      (`we`, "", "", "", "3", "", ""),
+      (`the`, "", "", "", "", "", ""),
+      (`a`, "", "", "", "", "", ""),
+      (`red`, "", "", "", "", "", ""),
     ),
   )
 
-  The word `spotted` is now much more likely after `saw`, reflecting the nature
-  documentary style, while preserving the base patterns.
+  - `saw` row: base (4,2,1) + LoRA (1,1,2) = combined (5,3,3)
+  - `red` now equally likely as `the` after `saw`
+  - other rows: base + zero = unchanged
+  - LoRA is smaller: only 1 row vs 6 in base model
 ]
