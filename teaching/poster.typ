@@ -217,28 +217,24 @@
     )[
       #set text(size: 10pt, font: "Libertinus Serif")
 
-      // Load example data from JSON
-      #let cat_data = json(sys.inputs.at(
-        "poster_example",
-        default: "cat-in-hat.json",
-      ))
-      #let selected_entries = (
-        cat_data.data.at(37), // "cat"
-        cat_data.data.at(46), // "do"
-        cat_data.data.at(78), // "have"
-        cat_data.data.at(97), // "in"
-        cat_data.data.at(111), // "like"
-        cat_data.data.at(141), // "not"
-        cat_data.data.at(191), // "the"
-      ).sorted(key: item => item.at(0))
+      // Pedagogical example with clear patterns
+      #let example_entries = (
+        ("cat", 100, ("in", 15), ("sat", 42), ("was", 68), (".", 100)),
+        ("hat", 100, ("on", 25), ("was", 60), (".", 100)),
+        ("in", 100, ("a", 33), ("the", 78), ("my", 100)),
+        ("on", 100, ("a", 25), ("the", 63), ("my", 100)),
+        ("sat", 100, ("down", 40), ("on", 75), (".", 100)),
+        ("the", 100, ("cat", 18), ("hat", 35), ("mat", 67), ("sun", 85), ("tree", 100)),
+        ("was", 100, ("red", 33), ("sitting", 67), (".", 100)),
+      )
 
-      #let mid = calc.ceil(selected_entries.len() / 2)
+      #let mid = calc.ceil(example_entries.len() / 2)
       #grid(
         columns: (1fr, 1fr),
         gutter: 1em,
         // Left column
         box[
-          #for item in selected_entries.slice(0, mid) {
+          #for item in example_entries.slice(0, mid) {
             let prefix = item.at(0)
             let total_count = item.at(1)
             let followers = item.slice(2)
@@ -248,7 +244,7 @@
         ],
         // Right column
         box[
-          #for item in selected_entries.slice(mid) {
+          #for item in example_entries.slice(mid) {
             let prefix = item.at(0)
             let total_count = item.at(1)
             let followers = item.slice(2)
@@ -287,59 +283,59 @@
         - choose a starting word: pick any bold word from the booklet
         - write it down as your first word
       ],
-      [`cat`],
+      [`the`],
 
       [
-        - look up `cat` in the booklet (like using a dictionary)
+        - look up `the` in the booklet (like using a dictionary)
         - the diamond "dice indicator" #display-with-punctuation(
-            "cat",
+            "the",
             size: 1em,
             weight: "bold",
           )#instruction-dice-indicator("2") means you'll need to roll two d10s
           (or the same one twice)
-        - roll your dice: roll 3 and 8 → combine them to get 38
+        - roll your dice: roll 2 and 7 → combine them to get 27
         - find your next word: scan through the followers until you find the
-          first number ≥ 38, which is 76, so the next word is `in`
+          first number ≥ 27, which is 35, so the next word is `hat`
         - write it down
       ],
-      [`cat` `in`],
+      [`the` `hat`],
 
       [
-        - look up `in` in the booklet
-        - roll your dice: roll 7 and 4 → get 74
-        - find the next word: first number ≥ 74 is 74, so next word is `the`
+        - look up `hat` in the booklet
+        - roll your dice: roll 5 and 4 → get 54
+        - find the next word: first number ≥ 54 is 60, so next word is `was`
         - write it down
       ],
-      [`cat` `in` `the`],
+      [`the` `hat` `was`],
+
+      [
+        - look up `was` in the booklet
+        - roll and find the next word: `sitting`
+        - write it down
+      ],
+      [`the` `hat` `was` `sitting`],
+
+      [
+        - look up `sitting` in the booklet
+        - roll and find the next word: `on`
+        - write it down
+      ],
+      [`the` `hat` `was` `sitting` `on`],
+
+      [
+        - look up `on` in the booklet
+        - roll and find the next word: `the`
+        - write it down
+      ],
+      [`the` `hat` `was` `sitting` `on` `the`],
 
       [
         - look up `the` in the booklet
         - roll and find the next word: `cat`
         - write it down
-      ],
-      [`cat` `in` `the` `cat`],
-
-      [
-        - look up `cat` again
-        - roll and find the next word: `in`
-        - write it down
-      ],
-      [`cat` `in` `the` `cat` `in`],
-
-      [
-        - look up `in` again
-        - roll and find the next word: `the`
-        - write it down
-      ],
-      [`cat` `in` `the` `cat` `in` `the`],
-
-      [
-        - look up `the` again
-        - roll and find the next word: `hat`
-        - write it down
         - continue this process to generate more text
       ],
-      [`cat` `in` `the` `cat` `in` `the` `hat`],
+      [`the` `hat` `was` `sitting` `on` `the` `cat`],
     )
 
     #v(1cm)
