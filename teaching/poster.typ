@@ -10,7 +10,7 @@
 #let punct-box(content, baseline: -0.2em) = box(
   rect(
     fill: none,
-    stroke: 0.25pt + black,
+    stroke: 0.25pt + white,
     radius: 1pt,
     inset: (x: 0.1em, y: 0pt),
     outset: (y: 0pt),
@@ -33,7 +33,7 @@
       box(
         rect(
           fill: none,
-          stroke: 0.25pt + black,
+          stroke: 0.25pt + white,
           radius: 1pt,
           inset: (x: 0.1em, y: 0pt),
           outset: (y: 0pt),
@@ -217,61 +217,14 @@
   [
     #v(3cm)
 
-    == Example
+    == Example: generating text
 
-    Your current word is *the* and its entry shows:
-
-    #text(size: 12pt)[
-      *the* #box(
-        baseline: -0.3em,
-        height: 1em,
-        rotate(
-          45deg,
-          origin: center,
-          rect(
-            fill: white,
-            stroke: 0.5pt + black,
-            width: 0.7em,
-            height: 0.7em,
-            place(
-              center + horizon,
-              rotate(
-                -45deg,
-                origin: center,
-                text(
-                  fill: black,
-                  weight: "bold",
-                  size: 0.65em,
-                  "2",
-                ),
-              ),
-            ),
-          ),
-        ),
-      ) → #text(weight: "semibold")[33]|cat #text(weight: "semibold")[66]|dog
-      #text(
-        weight: "semibold",
-      )[99]|mouse
-    ]
-
-    #v(0.5cm)
-
-    + the indicator with *2* inside means roll your d10 twice
-    + you roll 5 and 8, giving you 58
-    + scan through: #text(weight: "semibold")[66]|dog is the first number ≥ 58
-    + your next word is *dog*
-    + repeat: look up *dog* and continue
-
-    #v(1cm)
-
-    == Booklet excerpt
-
-    Here's what the actual booklet pages look like:
+    Let's generate new text starting with the word *cat*. Here's an excerpt from
+    the booklet:
 
     #block(
-      inset: (x: 1em, y: 0.5em),
-      stroke: 0.5pt + gray,
-      radius: 3pt,
+      inset: (x: 0pt, top: 0.5em, bottom: 1em),
+      stroke: (top: 0.5pt + anu-colors.gold, bottom: 0.5pt + anu-colors.gold),
     )[
       #set text(size: 10pt, font: "Libertinus Serif")
 
@@ -281,32 +234,34 @@
         default: "cat-in-hat.json",
       ))
       #let selected_entries = (
-        cat_data.data.at(3), // "a"
         cat_data.data.at(37), // "cat"
         cat_data.data.at(46), // "do"
         cat_data.data.at(78), // "have"
         cat_data.data.at(97), // "in"
         cat_data.data.at(111), // "like"
+        cat_data.data.at(141), // "not"
         cat_data.data.at(191), // "the"
       )
 
-      #for item in selected_entries {
-        let prefix = item.at(0)
-        let total_count = item.at(1)
-        let followers = item.slice(2)
-        format-entry(prefix, total_count, followers)
-        v(0.2em)
-      }
+      #grid(
+        columns: (1fr, 1fr),
+        gutter: 1em,
+        ..selected_entries
+          .enumerate()
+          .map(((i, item)) => {
+            let prefix = item.at(0)
+            let total_count = item.at(1)
+            let followers = item.slice(2)
+            box[#format-entry(prefix, total_count, followers)]
+          }),
+      )
     ]
 
-    #v(0.5cm)
+    #v(0.8cm)
 
-    == Text generation example
+    === Step-by-step walkthrough
 
-    Here's how to generate new text using the booklet:
-
-    + *Start*: pick "cat" as your starting word
-    + *"cat"* #box(
+    + *"cat"* has a #box(
         baseline: -0.3em,
         height: 1em,
         rotate(
@@ -332,23 +287,21 @@
             ),
           ),
         ),
-      ) → roll 2 dice: 3, 8 = 38; next word is "in" (first ≥ 38 is 76)
-    + *"in"* → roll 2 dice: 7, 4 = 74; next word is "the" (first ≥ 74 is 74)
-    + *"the"* → roll 2 dice: 2, 4 = 24; next word is "cat" (first ≥ 24 is 24)
-    + Continue this process to generate: _"cat in the cat in the hat"_
+      ) indicator, so roll your d10 twice → you roll 3 and 8 = 38
+    + scan through the followers: first number ≥ 38 is 76, so next word is *in*
+    + *"in"* also needs 2 dice → you roll 7 and 4 = 74
+    + first number ≥ 74 is 74, so next word is *the*
+    + *"the"* needs 2 dice → you roll 2 and 4 = 24
+    + first number ≥ 24 is 24, so next word is *cat*
+    + continue this process to generate: _"cat in the cat in the hat"_
 
-    #v(0.5cm)
+    #v(0.8cm)
 
     == Discussion questions
 
-    - can you guess what text the model was trained on from the generated
-      output?
+    - can you guess what text the model was trained on?
     - how does using a pre-trained model differ from training your own?
-    - what vocabulary size does the booklet model have compared to a hand-built
-      model?
     - why might some word combinations feel more natural than others?
-    - without looking at the title: can you identify the training text's genre
-      or style?
 
     #v(1cm)
   ],
