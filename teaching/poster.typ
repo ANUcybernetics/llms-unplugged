@@ -198,8 +198,8 @@
     #text(size: 1.2em)[
       A collection of pre-trained language models in printed book form. Each
       page contains statistical patterns learned from text "training
-      data"---just like ChatGPT, but human-scale enough to hold in your hands
-      and generate new text with dice, pen and paper.
+      data"---just like ChatGPT, but human-scale. You can hold it in your hands,
+      and you can use it to generate new text with just dice, pen and paper.
     ]
 
     == How it works
@@ -224,6 +224,7 @@
         ("in", 100, ("a", 33), ("the", 78), ("my", 100)),
         ("on", 100, ("a", 25), ("the", 63), ("my", 100)),
         ("sat", 100, ("down", 40), ("on", 75), (".", 100)),
+        ("sitting", 100, ("on", 55), ("in", 100)),
         (
           "the",
           100,
@@ -278,7 +279,7 @@
       language model? if not, how many volumes would you need?
   ],
   [
-    #v(5.75cm)
+    #v(4cm)
 
     == Worked example
 
@@ -286,7 +287,7 @@
       columns: (1.4fr, 1fr),
       align: (left + horizon, left + horizon),
       inset: (x: 0em, y: 0.5em),
-      [Instruction], [Current output text],
+      [Instruction], [Generated text],
       [
         - choose a starting word: pick any bold word from the booklet
         - write it down as your first word
@@ -341,11 +342,16 @@
         - look up `the` in the booklet
         - roll and find the next word: `cat`
         - write it down
-        - continue this process to generate more text
       ],
       [`the` `hat` `was` `sitting` `on` `the` `cat`],
-    )
 
-    #v(1cm)
+      [
+        - look up `cat` in the booklet
+        - roll and find the next word: the period `.`
+        - write it down
+        - continue this process to generate more text
+      ],
+      [`the` `hat` `was` `sitting` `on` `the` `cat` `.`],
+    )
   ],
 )
