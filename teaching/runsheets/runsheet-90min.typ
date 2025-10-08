@@ -70,6 +70,7 @@
 - fat, fresh whiteboard markers
 - module cards (x40 sets)
 - ring-bound bigram booklets (x40)
+- grids (x40 at least)
 - d10s (x40)
 - notepads (x40)
 - pens
