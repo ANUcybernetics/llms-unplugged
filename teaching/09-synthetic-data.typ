@@ -55,6 +55,19 @@
     - compare the relative frequencies (counts) in cells that appear in both
     - generate text from both models and compare the outputs
 
+  == Alternative (Joker mode)
+
+  Instead of generating synthetic text from an existing model, create a
+  completely random model:
+
+  - draw a grid with any words you choose in the rows and columns
+  - add tally marks in any cells you want, with any frequencies
+  - this creates a model with no connection to real text patterns
+
+  Try training a generation 2 model on text generated from your random grid.
+  What happens? Does it produce anything recognizable, or does the randomness
+  compound?
+
   #colbreak()
 
   == Example
@@ -78,4 +91,6 @@
   - what patterns were preserved across generations?
   - what patterns were lost or distorted?
   - how might this relate to AI training on AI-generated content?
+  - (for joker mode) can a completely random model produce anything coherent?
+    why or why not?
 ]
