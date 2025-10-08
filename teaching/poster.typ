@@ -190,7 +190,7 @@
 
 // Content: 2-column layout
 #grid(
-  columns: (1fr, 1fr),
+  columns: (5fr, 6fr),
   gutter: 2cm,
   [
     #v(3cm) // Add vertical space to push title down
@@ -286,7 +286,7 @@
     == Worked example
 
     #table(
-      columns: (1.4fr, 1fr),
+      columns: (5fr, 3fr),
       align: (left + horizon, left + horizon),
       inset: (x: 0em, y: 0.5em),
       [Instruction], [Generated text],
@@ -321,8 +321,8 @@
 
       [
         - look up `was` in the booklet
-        - roll 46 and find the next word: first number ≥ 46 is 66, so next word
-          is `sitting`
+        - roll your dice: roll 4 and 6 → get 46
+        - find the next word: first number ≥ 46 is 66, so next word is `sitting`
         - write it down
       ],
       [`the` `hat` `was` `sitting`],
@@ -339,7 +339,8 @@
         - look up `in` in the booklet
         - roll 6 and find the next word: first number ≥ 6 is 9, so next word is
           `the`
-        - roll again for `the`: roll 450 and find `mat`
+        - roll again for `the`: roll 4, 5, and 0 → get 450, so next word is
+          `mat`
         - write them down
       ],
       [`the` `hat` `was` `sitting` `in` `the` `mat`],
