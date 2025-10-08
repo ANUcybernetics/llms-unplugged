@@ -91,8 +91,8 @@ per second inside modern language models.
 
 This module demonstrates the foundation of how people interact with modern AI:
 
-- *pre-training*: companies train massive models on huge text corpora (like
-  your booklet model, but with trillions of words)
+- *pre-training*: companies train massive models on huge text corpora (like your
+  booklet model, but with trillions of words)
 - *inference as a service*: users generate text without seeing or modifying the
   underlying model (just like using the booklet)
 - *model distribution*: the booklet format shows how models can be packaged and
@@ -323,10 +323,10 @@ is exactly what researchers observe when training neural networks on synthetic
 data---vocabularies shrink, creativity decreases, and outputs become more
 repetitive and stereotyped. Your generation 2 model demonstrates that "training
 data quality" isn't just about correctness---it's about maintaining the
-diversity and richness of patterns that make language interesting. This
-hands-on experience shows why AI companies are concerned about the increasing
-volume of AI-generated text on the internet: if future models train on today's
-AI outputs, we risk a cascade of model collapse.
+diversity and richness of patterns that make language interesting. This hands-on
+experience shows why AI companies are concerned about the increasing volume of
+AI-generated text on the internet: if future models train on today's AI outputs,
+we risk a cascade of model collapse.
 
 == Glossary: the language of language models
 
