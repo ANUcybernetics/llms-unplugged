@@ -55,9 +55,10 @@
 }
 
 // Function to format the dice indicator (diamond with number)
-#let format-dice-indicator(num-dice) = {
-  if num-dice > 1 {
-    let num-str = str(num-dice)
+#let format-dice-indicator(total_count) = {
+  // Only show when more than 1 d10 is needed (total_count > 9)
+  if total_count > 9 {
+    let num-str = str(str(total_count).len())
     // Create a diamond shape with the number inside
     box(
       baseline: -0.3em,
@@ -66,7 +67,7 @@
         45deg,
         origin: center,
         rect(
-          fill: black,
+          fill: white,
           width: 0.7em,
           height: 0.7em,
           place(
@@ -75,7 +76,7 @@
               -45deg,
               origin: center,
               text(
-                fill: white,
+                fill: black,
                 weight: "bold",
                 size: 0.65em,
                 num-str,
@@ -120,12 +121,12 @@
 }
 
 // Function to format a complete entry (prefix + dice indicator + followers)
-#let format-entry(prefix, num-dice, followers) = {
+#let format-entry(prefix, total_count, followers) = {
   // Format the prefix
   display-with-punctuation(prefix, size: 1em, weight: "bold")
 
   // Add dice indicator if needed
-  let indicator = format-dice-indicator(num-dice)
+  let indicator = format-dice-indicator(total_count)
   if indicator != none {
     h(0.2em)
     indicator
@@ -274,31 +275,67 @@
     )[
       #set text(size: 10pt, font: "Libertinus Serif")
 
-      // Load example data from JSON if it exists, otherwise use hardcoded example
-      #let example_data = if (
-        sys.inputs.at(
-          "poster_example",
-          default: none,
-        )
-          != none
-      ) {
-        json(sys.inputs.poster_example).data
-      } else {
-        (
-          ("cat", 2, ("sat", 4), ("ran", 7), ("slept", 10)),
-          ("dog", 2, ("barked", 3), ("ran", 6), ("slept", 10)),
-          ("the", 2, ("cat", 33), ("dog", 66), ("mouse", 99)),
-        )
-      }
+      // Load example data from JSON
+      #let cat_data = json(sys.inputs.at(
+        "poster_example",
+        default: "cat-in-hat.json",
+      ))
+      #let selected_entries = (
+        cat_data.data.at(3), // "a"
+        cat_data.data.at(37), // "cat"
+        cat_data.data.at(46), // "do"
+        cat_data.data.at(78), // "have"
+        cat_data.data.at(97), // "in"
+        cat_data.data.at(111), // "like"
+        cat_data.data.at(191), // "the"
+      )
 
-      #for item in example_data {
+      #for item in selected_entries {
         let prefix = item.at(0)
-        let num-dice = item.at(1)
+        let total_count = item.at(1)
         let followers = item.slice(2)
-        format-entry(prefix, num-dice, followers)
+        format-entry(prefix, total_count, followers)
         v(0.2em)
       }
     ]
+
+    #v(0.5cm)
+
+    == Text generation example
+
+    Here's how to generate new text using the booklet:
+
+    + *Start*: pick "cat" as your starting word
+    + *"cat"* #box(
+        baseline: -0.3em,
+        height: 1em,
+        rotate(
+          45deg,
+          origin: center,
+          rect(
+            fill: white,
+            stroke: 0.5pt + black,
+            width: 0.7em,
+            height: 0.7em,
+            place(
+              center + horizon,
+              rotate(
+                -45deg,
+                origin: center,
+                text(
+                  fill: black,
+                  weight: "bold",
+                  size: 0.65em,
+                  "2",
+                ),
+              ),
+            ),
+          ),
+        ),
+      ) → roll 2 dice: 3, 8 = 38; next word is "in" (first ≥ 38 is 76)
+    + *"in"* → roll 2 dice: 7, 4 = 74; next word is "the" (first ≥ 74 is 74)
+    + *"the"* → roll 2 dice: 2, 4 = 24; next word is "cat" (first ≥ 24 is 24)
+    + Continue this process to generate: _"cat in the cat in the hat"_
 
     #v(0.5cm)
 
