@@ -224,7 +224,15 @@
         ("in", 100, ("a", 33), ("the", 78), ("my", 100)),
         ("on", 100, ("a", 25), ("the", 63), ("my", 100)),
         ("sat", 100, ("down", 40), ("on", 75), (".", 100)),
-        ("the", 100, ("cat", 18), ("hat", 35), ("mat", 67), ("sun", 85), ("tree", 100)),
+        (
+          "the",
+          100,
+          ("cat", 18),
+          ("hat", 35),
+          ("mat", 67),
+          ("sun", 85),
+          ("tree", 100),
+        ),
         ("was", 100, ("red", 33), ("sitting", 67), (".", 100)),
       )
 
@@ -266,11 +274,11 @@
       version of ChatGPT in a similar fashion?
     - can you think of any ways to combine/modify multiple language models to
       change the character of the generated text?
-    - could you lose your job to this type of language model? could you fall in
-      love with this type of language model?
+    - could you make use of/lose your job to/fall in love with this type of
+      language model? if not, how many volumes would you need?
   ],
   [
-    #v(5.8cm)
+    #v(5.75cm)
 
     == Worked example
 
