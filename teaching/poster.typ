@@ -120,6 +120,35 @@
   }
 }
 
+// Function to create a dice indicator for instructions/examples
+#let instruction-dice-indicator(content) = box(
+  baseline: -0.3em,
+  height: 1em,
+  rotate(
+    45deg,
+    origin: center,
+    rect(
+      fill: white,
+      stroke: 0.5pt + black,
+      width: 0.7em,
+      height: 0.7em,
+      place(
+        center + horizon,
+        rotate(
+          -45deg,
+          origin: center,
+          text(
+            fill: black,
+            weight: "bold",
+            size: 0.65em,
+            content,
+          ),
+        ),
+      ),
+    ),
+  ),
+)
+
 // Function to format a complete entry (prefix + dice indicator + followers)
 #let format-entry(prefix, total_count, followers) = {
   // Format the prefix (larger, like in book.typ)
@@ -185,33 +214,7 @@
 
     + *choose a starting word*: pick any bold word from the booklet
     + *look up the word's entry*: use it like a dictionary
-    + *roll your d10(s)*: the #box(
-        baseline: -0.3em,
-        height: 1em,
-        rotate(
-          45deg,
-          origin: center,
-          rect(
-            fill: white,
-            stroke: 0.5pt + black,
-            width: 0.7em,
-            height: 0.7em,
-            place(
-              center + horizon,
-              rotate(
-                -45deg,
-                origin: center,
-                text(
-                  fill: black,
-                  weight: "bold",
-                  size: 0.65em,
-                  [_n_],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ) indicator tells you how many times
+    + *roll your d10(s)*: the #instruction-dice-indicator([_n_]) indicator tells you how many times
     + *find your next word*: scan until you find the first number ≥ your roll
     + *repeat*: write it down, look it up, and continue
   ],
@@ -279,33 +282,7 @@
       columns: (1.2fr, 1fr),
       gutter: 1.5em,
       [
-        + *"cat"* has a #box(
-            baseline: -0.3em,
-            height: 1em,
-            rotate(
-              45deg,
-              origin: center,
-              rect(
-                fill: white,
-                stroke: 0.5pt + black,
-                width: 0.7em,
-                height: 0.7em,
-                place(
-                  center + horizon,
-                  rotate(
-                    -45deg,
-                    origin: center,
-                    text(
-                      fill: black,
-                      weight: "bold",
-                      size: 0.65em,
-                      "2",
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ) indicator, so roll your d10 twice → you roll 3 and 8 = 38
+        + *"cat"* has a #instruction-dice-indicator("2") indicator, so roll your d10 twice → you roll 3 and 8 = 38
         + scan through the followers: first number ≥ 38 is 76, so next word is
           *in*
         + *"in"* also needs 2 dice → you roll 7 and 4 = 74
