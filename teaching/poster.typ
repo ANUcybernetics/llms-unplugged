@@ -295,20 +295,20 @@
         your d10 twice],
       [`cat`],
 
-      [*Roll your dice*: roll 3 and 8 → combine them to get 38], [`cat` `in`],
+      [*Roll your dice*: roll 3 and 8 → combine them to get 38], [`cat`],
 
       [*Find your next word*: scan through the followers until you find the
-        first number ≥ 38, which is 76, so the next word is *in*],
+        first number ≥ 38, which is 76, so the next word is `in`],
       [`cat` `in`],
 
-      [*Write down your word*: add it to your sentence], [`cat` `in` `the`],
+      [*Write down your word*: add it to your output text], [`cat` `in` `the`],
 
-      [*Look up the new word*: find *in* in the booklet],
+      [*Look up the new word*: find `in` in the booklet],
       [`cat` `in` `the` `cat`],
 
       [*Roll again*: roll 7 and 4 → get 74], [`cat` `in` `the` `cat` `in`],
 
-      [*Find the next word*: first number ≥ 74 is 74, so next word is *the*],
+      [*Find the next word*: first number ≥ 74 is 74, so next word is `the`],
       [`cat` `in` `the` `cat` `in` `the` `hat`],
 
       [*Continue the process*: keep rolling, looking up words, and writing them
