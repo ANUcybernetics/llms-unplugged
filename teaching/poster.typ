@@ -166,36 +166,18 @@
     #text(size: 3em, fill: anu-colors.gold)[*My First Language Model*]
 
     #text(size: 1.2em)[
-      Generate text using nothing but dice and a pre-trained model booklet. No
-      computer required.
+      A collection of pre-trained language models in booklet form. Each page
+      contains statistical patterns learned from a text corpus---just like
+      ChatGPT, but small enough to hold in your hands and use with dice.
     ]
-
-    #v(1cm)
-
-    == What is this?
-
-    A pre-trained language model in booklet form. Each page contains statistical
-    patterns learned from a text corpus---just like ChatGPT, but small enough to
-    hold in your hands and use with dice.
-
-    #v(0.5cm)
 
     == How it works
 
-    The booklet is organised like a dictionary. Each word shows which words can
+    Each booklet is organised like a dictionary. Each word shows which words can
     follow it, with probabilities mapped to dice rolls. Roll the dice, look up
-    the result, write down the next word, and repeat.
-
-    #v(0.5cm)
-
-    == What's inside
-
-    - thousands of word entries (alphabetically sorted)
-    - probability distributions for next-word prediction
-    - guide words on each page for easy lookup
-    - instructions for weighted random sampling
-
-    #v(0.5cm)
+    the result, write down the next word, and repeat. Some of the larger
+    language models are split across multiple booklets (e.g. A--K, L--Z just
+    like the phone books of old).
 
     == How to generate text
 
@@ -293,10 +275,13 @@
       #set text(size: 10pt, font: "Libertinus Serif")
 
       // Load example data from JSON if it exists, otherwise use hardcoded example
-      #let example_data = if sys.inputs.at(
-        "poster_example",
-        default: none,
-      ) != none {
+      #let example_data = if (
+        sys.inputs.at(
+          "poster_example",
+          default: none,
+        )
+          != none
+      ) {
         json(sys.inputs.poster_example).data
       } else {
         (
