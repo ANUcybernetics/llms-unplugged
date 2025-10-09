@@ -332,7 +332,7 @@
       all possible _next_ words according to the model
 
     + *roll your d10(s)*:
-      - if the word has a "black diamond" dice indicator then roll that many
+      - if the word has a dice indicator (black diamond) then roll that many
         d10s e.g. for #display-with-punctuation("the")#h(
           0.2em,
         )#format-dice-indicator(
