@@ -299,6 +299,8 @@ trade-offs that AI companies grapple with when training their models.
 - how does vocabulary shrink or change across generations?
 - can you identify when loops or repetitions started?
 - what would happen if you continued to generation 3, 4, 5?
+- (for joker mode) can a completely random model produce anything coherent? why or why not?
+- (for joker mode) does randomness compound across generations, or does some structure emerge?
 
 === Connection to current LLMs
 
