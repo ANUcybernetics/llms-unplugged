@@ -24,7 +24,7 @@
   To generate synthetic text using your model, then train a new "generation 2"
   model on that synthetic output. Compare the two models to observe what
   patterns are preserved or lost. *Stretch goal*: train a generation 3 model on
-  generation 2 output. Or go full Joker.
+  generation 2 output. Or go "full Joker".
 
   == Key idea
 
@@ -92,6 +92,17 @@
 
   #colbreak()
 
-  What happens? Does it produce anything recognizable, or does the randomness
-  compound across generations?
+  == Example
+
+  A completely random Joker grid might look like this:
+
+  #lm-grid(
+    ([], `pizza`, `robot`, `moon`, `dance`),
+    (
+      (`pizza`, "3", "", "1", "2"),
+      (`robot`, "1", "4", "", "1"),
+      (`moon`, "", "2", "1", "3"),
+      (`dance`, "2", "1", "2", ""),
+    ),
+  )
 ]
