@@ -78,12 +78,12 @@
 
   Notice how the synthetic text:
   - uses all the same words as the original
-  - has different patterns (more `run run`, no `spot jump`)
+  - has different patterns (more `run` `run`, no `spot` `jump`)
   - might lose some variety from the original
 
   Generation 2 model trained on the synthetic output will amplify these changes:
-  - `run run` becomes more common
-  - `spot jump` disappears entirely
+  - `run` `run` becomes more common
+  - `spot` `jump` disappears entirely
   - new unlikely patterns may emerge
 
   == Discussion questions
