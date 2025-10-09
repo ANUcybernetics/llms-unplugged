@@ -332,22 +332,21 @@
       all possible _next_ words according to the model
 
     + *roll your d10(s)*:
-      - if the word has a "black diamond" indicator then roll that many d10s
-        e.g. for #display-with-punctuation("the")#h(
+      - if the word has a "black diamond" dice indicator then roll that many
+        d10s e.g. for #display-with-punctuation("the")#h(
           0.2em,
         )#format-dice-indicator(
           1000,
           10,
-        )#h(0.2em) then roll 4 d10s (or roll the same d10 four times)
+        )#h(0.2em) then roll 3 d10s (or roll the same d10 three times)
       - otherwise, roll a single d10
-      - read the dice from left to right as a single number (e.g., rolling 4, 7
-        and 2 on three dice means your roll is 472)
+      - read the dice from left to right as a single number (e.g., rolling 2, 1
+        and 7 on three dice means your roll is 217)
 
-    + *scan through the "next word" options* to find your next word the first
-      number which is greater than or equal to your roll indicates your next
-      word (write it down)
+    + *find your next word*: scan through the followers until you find the first
+      number ≥ your roll (write it down)
 
-    + using this word as your new word repeat from step 2, continuing this loop
+    + repeat from step 2 using this word as your new word, continuing this loop
       until you reach a natural stopping point (like #punct-box(".")) or reach
       your desired text length
 
@@ -368,12 +367,11 @@
       )
     ]
 
-    - no black diamond means roll just 1 d10
-    - you roll a 6
-    - scan through next word options: #format-follower("ran", 7) is the first
-      one with a number that's greater than or equal to 6
-    - your next word is "ran": write it down, look it up and continue the
-      process
+    - no dice indicator means roll just 1 d10
+    - roll your dice: roll a 6
+    - find the next word: first number ≥ 6 is #format-follower("ran", 7), so
+      next word is "ran"
+    - write it down, look it up and continue the process
 
     === Example 2: multiple d10s (with dice indicator)
 
@@ -392,12 +390,11 @@
       )
     ]
 
-    - the black diamond with *2* inside means roll 2 d10s (not just one)
-    - you roll 5 and 8, giving you 58
-    - scan through next word options: #format-follower("dog", 66) is the first
-      one with a number that's greater than or equal to 58
-    - your next word is "dog": write it down, look it up and continue the
-      process
+    - the dice indicator with *2* inside means roll 2 d10s (not just one)
+    - roll your dice: roll 5 and 8 → combine them to get 58
+    - find the next word: first number ≥ 58 is #format-follower("dog", 66), so
+      next word is "dog"
+    - write it down, look it up and continue the process
   ]
 
   pagebreak()
