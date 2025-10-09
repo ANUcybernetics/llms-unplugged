@@ -24,7 +24,7 @@
   To generate synthetic text using your model, then train a new "generation 2"
   model on that synthetic output. Compare the two models to observe what
   patterns are preserved or lost. *Stretch goal*: train a generation 3 model on
-  generation 2 output.
+  generation 2 output. Or go full Joker.
 
   == Key idea
 
