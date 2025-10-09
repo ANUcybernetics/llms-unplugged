@@ -43,21 +43,21 @@
 
 == *#t(20)* Basic training
 
-- demo (3mins)
-- group activity (15mins)
-- LoLM: training, model, token, vocabulary (2mins)
+- demo (5mins)
+- group activity (10mins)
+- LoLM: training, model, token, vocabulary (5mins)
 
 == *#t(40)* Basic inference
 
-- demo (3mins)
-- group activity (15mins)
-- LoLM: prompt, completion/response/prediction (2mins)
+- demo (5mins)
+- group activity (10mins)
+- LoLM: prompt, completion/response/prediction (5mins)
 
 == *#t(60)* Pre-trained bigram model
 
-- demo (3mins)
-- group activity (15mins)
-- LoLM: pre-training, foundation model (2mins)
+- demo (5mins)
+- group activity (10mins)
+- LoLM: pre-training, foundation model (5mins)
 
 == *#t(80)* close
 - how has this workshop changed how you *think* about language models?
