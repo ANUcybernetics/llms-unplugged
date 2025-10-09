@@ -78,14 +78,13 @@
   - choose (for example) `see` as your starting word
   - `see` (row) → `spot` (column); it's the only option, so write down `spot` as
     next word
-  - `spot` → `run` or `jump`; both have 2 occurrences, so each has a 50%
-    chance---roll dice to choose
-  - let's say dice picks `jump`; write it down
-  - `jump` → `.`; it's the only option, so write down `.`
-  - `.` → `see` (50%), `run` (25%), or `jump` (25%); three possible choices for
-    next word
+  - `spot` → `run` (25%), `jump` (25%) or `,` (50%); roll dice to choose
+  - let's say dice picks `run`; write it down
+  - `run` → `.` (67%) or `,` (33%); roll dice to choose
+  - let's say dice picks `.`; write it down
+  - `.` → `see` (33%), `run` (33%) or `jump` (33%); roll dice to choose
   - let's say dice picks `see`; write it down
   - `see` → `spot`; it's the only option, so write down `spot`... and so on
 
-  After the above steps, the full output text is _"see spot jump. see spot"_
+  After the above steps, the full output text is _"see spot run. see spot"_
 ]
