@@ -136,7 +136,7 @@
   set text(size: 12pt)
 
   align(horizon)[
-    #text(size: 1.2em)[#subtitle]
+    #text(size: 1.2em)[#subtitle of]
     #text(size: 1.2em, style: "italic")[#context doc_metadata.title by]
     #text(size: 1.2em)[#context doc_metadata.author]
     #v(0.5cm)
