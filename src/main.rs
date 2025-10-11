@@ -100,7 +100,7 @@ fn main() {
                 
                 // Pass scale_d only if not in raw mode
                 let scale_d_param = if args.raw { None } else { Some(args.scale_d) };
-                match save_to_json(book_entries, &output_file, scale_d_param, book_metadata.as_ref(), args.raw) {
+                match save_to_json(book_entries, &output_file, scale_d_param, book_metadata.as_ref(), Some(stats), args.raw) {
                     Ok(_) => {
                         if args.num_books > 1 {
                             println!(

@@ -61,30 +61,47 @@ booklets: $(TARGETS)
 workshop: $(WORKSHOP_TARGETS)
 	@echo "Workshop booklets complete!"
 
-# Generate a YAML summary of all PDFs
+# Generate summary PDF from all models
 .PHONY: summary
-summary:
-	@echo "# Generated booklets" > $(OUT_DIR)/summary.yaml
-	@echo "# Generated: $$(date)" >> $(OUT_DIR)/summary.yaml
-	@echo "" >> $(OUT_DIR)/summary.yaml
-	@for pdf in $(PDF_DIR)/*.pdf; do \
-		if [ -f "$$pdf" ]; then \
-			filename=$$(basename "$$pdf"); \
-			info=$$(pdfinfo "$$pdf" 2>/dev/null); \
-			title=$$(echo "$$info" | grep "^Title:" | sed 's/^Title:[[:space:]]*//' | sed 's/[[:space:]]*$$//'); \
-			subtitle=$$(echo "$$info" | grep "^Subject:" | sed 's/^Subject:[[:space:]]*//' | sed 's/[[:space:]]*$$//'); \
-			pages=$$(echo "$$info" | grep "^Pages:" | awk '{print $$2}'); \
-			if [ -z "$$title" ]; then title="(untitled)"; fi; \
-			if [ -z "$$subtitle" ]; then subtitle="(no subtitle)"; fi; \
-			if [ -z "$$pages" ]; then pages="0"; fi; \
-			echo "- title: \"$$title\"" >> $(OUT_DIR)/summary.yaml; \
-			echo "  subtitle: \"$$subtitle\"" >> $(OUT_DIR)/summary.yaml; \
-			echo "  filename: $$filename" >> $(OUT_DIR)/summary.yaml; \
-			echo "  num_pages: $$pages" >> $(OUT_DIR)/summary.yaml; \
-			echo "" >> $(OUT_DIR)/summary.yaml; \
+summary: $(OUT_DIR)/summary.pdf
+
+$(OUT_DIR)/summary.pdf: summary.typ $(OUT_DIR)/summary.json
+	$(TYPST) summary.typ $@
+
+# Generate summary.json from all JSON models
+.PHONY: summary.json
+summary.json: $(OUT_DIR)/summary.json
+
+$(OUT_DIR)/summary.json: $(wildcard $(JSON_DIR)/*.json)
+	@echo "Generating summary.json from model files..."
+	@echo '[' > $@
+	@first=true; \
+	for json in $(JSON_DIR)/*.json; do \
+		[ -f "$$json" ] || continue; \
+		basename=$$(basename "$$json" .json); \
+		pdf="$(PDF_DIR)/$${basename}.pdf"; \
+		if [ ! -f "$$pdf" ]; then \
+			pdf=$$(echo "$$pdf" | sed 's/_book_[0-9]*\.pdf/.pdf/'); \
 		fi; \
+		if [ ! -f "$$pdf" ]; then \
+			pdf=$$(echo "$(PDF_DIR)/$${basename}" | sed 's/-book[0-9]*/-book1/').pdf; \
+		fi; \
+		pages=0; \
+		if [ -f "$$pdf" ]; then \
+			pages=$$(pdfinfo "$$pdf" 2>/dev/null | grep "^Pages:" | awk '{print $$2}'); \
+		fi; \
+		[ -z "$$pages" ] && pages=0; \
+		if [ "$$first" = true ]; then \
+			first=false; \
+		else \
+			echo ',' >> $@; \
+		fi; \
+		jq --arg pages "$$pages" --arg pdf "$$(basename "$$pdf")" \
+			'.metadata | {title, n, total_tokens: .stats.total_tokens, unique_prefixes: .stats.unique_ngrams, most_common_ngram: .stats.most_common_ngram, most_popular_prefix: .stats.most_popular_prefix, pages: ($$pages | tonumber), pdf_file: $$pdf}' \
+			"$$json" >> $@; \
 	done
-	@cat $(OUT_DIR)/summary.yaml
+	@echo ']' >> $@
+	@echo "Summary written to $@"
 
 # Clean target to remove entire output directory
 .PHONY: clean

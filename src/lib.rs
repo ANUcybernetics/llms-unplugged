@@ -43,11 +43,14 @@ pub struct Metadata {
     pub scale_d: Option<u32>,
     /// Git revision of the build
     pub git_revision: String,
+    /// Summary statistics for the processed text
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub stats: Option<ProcessingStats>,
 }
 
 
 /// Contains summary statistics for processed text
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct ProcessingStats {
     /// Total number of tokens in the text
     pub total_tokens: usize,
@@ -56,8 +59,10 @@ pub struct ProcessingStats {
     /// Total number of n-gram occurrences
     pub total_ngram_occurrences: usize,
     /// Most common n-gram prefix and its most common follower
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub most_common_ngram: Option<(Vec<String>, String, usize)>,
     /// Prefix with the most cumulative followers
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub most_popular_prefix: Option<(Vec<String>, usize)>,
 }
 
@@ -225,6 +230,7 @@ impl NGramCounter {
                         subtitle: format!("A {} language model", model_type_str(self.n)),
                         scale_d: None, // Will be set during save_to_json
                         git_revision: String::new(), // Will be set during save_to_json
+                        stats: None, // Will be set during save_to_json
                     });
                 } else {
                     // Missing required fields, return error
@@ -590,6 +596,7 @@ pub fn save_to_json<P: AsRef<Path>>(
     path: P,
     scale_d: Option<u32>,
     metadata: Option<&Metadata>,
+    stats: Option<&ProcessingStats>,
     raw: bool,
 ) -> io::Result<()> {
     // Convert entries to the required format: ["joined prefix", total_count, ["follower", cumulative_count], ...]
@@ -763,12 +770,13 @@ pub fn save_to_json<P: AsRef<Path>>(
 
     // Add metadata if available
     if let Some(meta) = metadata {
-        // Clone metadata and set scale_d if not in raw mode, and add git revision
+        // Clone metadata and set scale_d if not in raw mode, add git revision, and add stats
         let mut meta_with_scale = meta.clone();
         if !raw {
             meta_with_scale.scale_d = scale_d;
         }
         meta_with_scale.git_revision = get_git_revision()?;
+        meta_with_scale.stats = stats.cloned();
         output.insert("metadata".to_string(), serde_json::to_value(meta_with_scale)?);
     } else {
         // Create minimal metadata with just the n value
@@ -1069,10 +1077,11 @@ mod tests {
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
+            stats: None,
         };
 
         // Test with scale_d = None (default 10^k-1 scaling)
-        save_to_json(&entries, &path, None, Some(&metadata), false)?;
+        save_to_json(&entries, &path, None, Some(&metadata), None, false)?;
         let json_none: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1108,7 +1117,7 @@ mod tests {
         // Test with scale_d = Some(120)
         // "hello": 2 unique followers <= 120. Scale to [1, 120].
         // "world": 1 unique follower <= 120. Scale to [1, 120].
-        save_to_json(&entries, &path, Some(120), Some(&metadata), false)?;
+        save_to_json(&entries, &path, Some(120), Some(&metadata), None, false)?;
         let json_d120: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1131,7 +1140,7 @@ mod tests {
         // Test with scale_d = Some(1)
         // "hello": 2 unique followers > 1. Scale to 10^k-1 (total 9).
         // "world": 1 unique follower <= 1. Scale to [1, 1].
-        save_to_json(&entries, &path, Some(1), Some(&metadata), false)?;
+        save_to_json(&entries, &path, Some(1), Some(&metadata), None, false)?;
         let json_d1: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1183,11 +1192,12 @@ mod tests {
             subtitle: "A trigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
+            stats: None,
         };
 
         // Test with scale_d = None (default 10^k-1 scaling)
         // Both entries: total_original_count=1 (k=1, max_val=9)
-        save_to_json(&entries, &path, None, Some(&metadata), false)?;
+        save_to_json(&entries, &path, None, Some(&metadata), None, false)?;
         let json_none: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1219,7 +1229,7 @@ mod tests {
 
         // Test with scale_d = Some(60)
         // Both entries: 1 unique follower <= 60. Scale to [1, 60].
-        save_to_json(&entries, &path, Some(120), Some(&metadata), false)?;
+        save_to_json(&entries, &path, Some(120), Some(&metadata), None, false)?;
         let json_d120: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1244,7 +1254,7 @@ mod tests {
 
         // Test with scale_d = Some(0)
         // Both entries: 1 unique follower > 0. Scale to 10^k-1 (total 9)
-        save_to_json(&entries, &path, Some(0), Some(&metadata), false)?;
+        save_to_json(&entries, &path, Some(0), Some(&metadata), None, false)?;
         let json_d0: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1290,12 +1300,13 @@ mod tests {
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
+            stats: None,
         };
 
         // Test with scale_d = None (default 10^k-1 scaling)
         // total_original_count=10 (k=2, max_val=99). Factor = 9.9
         // Original cumulative: dog:5, cat:8 (5+3), bird:10 (8+2)
-        save_to_json(&entries, &path, None, Some(&metadata), false)?;
+        save_to_json(&entries, &path, None, Some(&metadata), None, false)?;
         let json_none: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1333,7 +1344,7 @@ mod tests {
 
         // Test with scale_d = Some(120)
         // 3 unique followers <= 120. Scale to [1, 120]. Factor = 120/10 = 12.
-        save_to_json(&entries, &path, Some(120), Some(&metadata), false)?;
+        save_to_json(&entries, &path, Some(120), Some(&metadata), None, false)?;
         let json_d120: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1354,7 +1365,7 @@ mod tests {
 
         // Test with scale_d = Some(2)
         // 3 unique followers > 2. Scale to 10^k-1 (total 99).
-        save_to_json(&entries, &path, Some(2), Some(&metadata), false)?;
+        save_to_json(&entries, &path, Some(2), Some(&metadata), None, false)?;
         let json_d2: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1395,9 +1406,10 @@ mod tests {
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
+            stats: None,
         };
 
-        save_to_json(&entries_to_optimise, &path, Some(120), Some(&metadata_opt), false)?;
+        save_to_json(&entries_to_optimise, &path, Some(120), Some(&metadata_opt), None, false)?;
 
         let json_optimised: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
@@ -1437,9 +1449,10 @@ mod tests {
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
+            stats: None,
         };
 
-        save_to_json(&entries_count_3, &path, Some(120), Some(&metadata_count3), false)?;
+        save_to_json(&entries_count_3, &path, Some(120), Some(&metadata_count3), None, false)?;
 
         let json_count_3: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
@@ -1490,12 +1503,13 @@ mod tests {
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
+            stats: None,
         };
 
         // With scale_d = 3, we'd normally use [1,3] scaling
         // But since we have 4 followers with identical counts, they'd get scaled to the same values
         // So we should switch to 10^k-1 scaling (total is 4, so k=1, max_val=9)
-        save_to_json(&entries, &path, Some(3), Some(&metadata), false)?;
+        save_to_json(&entries, &path, Some(3), Some(&metadata), None, false)?;
         let json_result: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1554,10 +1568,11 @@ mod tests {
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
+            stats: None,
         };
 
         // With scale_d = 1, we can't scale 2 followers uniquely to [1,1]
-        save_to_json(&entries_edge, &path, Some(1), Some(&metadata_edge), false)?;
+        save_to_json(&entries_edge, &path, Some(1), Some(&metadata_edge), None, false)?;
         let json_edge: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1586,10 +1601,11 @@ mod tests {
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
+            stats: None,
         };
 
         // With scale_d = 2, the scaling would be very uneven but should work
-        save_to_json(&entries_mixed, &path, Some(2), Some(&metadata_mixed), false)?;
+        save_to_json(&entries_mixed, &path, Some(2), Some(&metadata_mixed), None, false)?;
         let json_mixed: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1641,13 +1657,14 @@ mod tests {
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
+            stats: None,
         };
 
         // Test with raw=true (no scaling)
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path();
 
-        save_to_json(&entries, &path, None, Some(&metadata), true)?;
+        save_to_json(&entries, &path, None, Some(&metadata), None, true)?;
 
         let content = fs::read_to_string(&path)?;
         let json: Value = serde_json::from_str(&content)?;
@@ -1698,11 +1715,12 @@ mod tests {
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
             git_revision: "test-rev".to_string(),
+            stats: None,
         };
 
         // Test raw output
         let raw_file = NamedTempFile::new()?;
-        save_to_json(&entries, raw_file.path(), None, Some(&metadata), true)?;
+        save_to_json(&entries, raw_file.path(), None, Some(&metadata), None, true)?;
 
         let raw_content = fs::read_to_string(raw_file.path())?;
         let raw_json: Value = serde_json::from_str(&raw_content)?;
@@ -1716,7 +1734,7 @@ mod tests {
 
         // Test scaled output (default scaling)
         let scaled_file = NamedTempFile::new()?;
-        save_to_json(&entries, scaled_file.path(), None, Some(&metadata), false)?;
+        save_to_json(&entries, scaled_file.path(), None, Some(&metadata), None, false)?;
 
         let scaled_content = fs::read_to_string(scaled_file.path())?;
         let scaled_json: Value = serde_json::from_str(&scaled_content)?;
