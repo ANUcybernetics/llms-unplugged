@@ -20,6 +20,23 @@
   }
 }
 
+#let format-number(num) = {
+  if num == none {
+    return "N/A"
+  }
+  let s = str(num)
+  let chars = s.codepoints()
+  let len = chars.len()
+  let result = ""
+  for i in range(len) {
+    if i > 0 and calc.rem(len - i, 3) == 0 {
+      result += ","
+    }
+    result += chars.at(i)
+  }
+  result
+}
+
 #let format-ngram(ngram_data) = {
   if ngram_data == none {
     "N/A"
@@ -46,8 +63,8 @@
   table.header(
     [*Title*],
     [*Type*],
-    [*Total Tokens*],
-    [*Unique Prefixes*],
+    align(right, [*Total Tokens*]),
+    align(right, [*Unique Prefixes*]),
     [*Most Common N-gram*],
     [*Prefix with Most Followers*],
   ),
@@ -55,10 +72,8 @@
     .map(entry => (
       entry.title,
       model-type(entry.n),
-      if entry.total_tokens == none { "N/A" } else { str(entry.total_tokens) },
-      if entry.unique_prefixes == none { "N/A" } else {
-        str(entry.unique_prefixes)
-      },
+      align(right, format-number(entry.total_tokens)),
+      align(right, format-number(entry.unique_prefixes)),
       format-ngram(entry.most_common_ngram),
       format-prefix(entry.most_popular_prefix),
     ))
