@@ -4,9 +4,8 @@
 #import "@local/anu-typst-template:0.2.0": *
 
 #show: anu.with(
-  title: "My First LM: Generated Booklets Summary",
-  subtitle: "Summary of all generated language model booklets",
-  author: "Ben Swift",
+  title: "My First LM Summary",
+  subtitle: "Summary of all generated language model books",
 )
 
 #let summary_data = json("out/summary.json")
@@ -25,10 +24,10 @@
   if ngram_data == none {
     "N/A"
   } else {
-    let prefix = ngram_data.at(0).join(" ")
+    let prefix_parts = ngram_data.at(0).map(p => raw(p)).join(" ")
     let follower = ngram_data.at(1)
     let count = ngram_data.at(2)
-    [#prefix → #follower (#count)]
+    [#prefix_parts → #raw(follower) (#count)]
   }
 }
 
@@ -36,14 +35,14 @@
   if prefix_data == none {
     "N/A"
   } else {
-    let prefix = prefix_data.at(0).join(" ")
+    let prefix_parts = prefix_data.at(0).map(p => raw(p)).join(" ")
     let count = prefix_data.at(1)
-    [#prefix (#count)]
+    [#prefix_parts (#count)]
   }
 }
 
 #table(
-  columns: 7,
+  columns: (2fr, 1fr, 1fr, 1fr, 1fr, 1fr),
   table.header(
     [*Title*],
     [*Type*],
@@ -51,15 +50,17 @@
     [*Unique Prefixes*],
     [*Most Common N-gram*],
     [*Prefix with Most Followers*],
-    [*Pages*],
   ),
-  ..summary_data.map(entry => (
-    entry.title,
-    model-type(entry.n),
-    if entry.total_tokens == none { "N/A" } else { str(entry.total_tokens) },
-    if entry.unique_prefixes == none { "N/A" } else { str(entry.unique_prefixes) },
-    format-ngram(entry.most_common_ngram),
-    format-prefix(entry.most_popular_prefix),
-    str(entry.pages),
-  )).flatten()
+  ..summary_data
+    .map(entry => (
+      entry.title,
+      model-type(entry.n),
+      if entry.total_tokens == none { "N/A" } else { str(entry.total_tokens) },
+      if entry.unique_prefixes == none { "N/A" } else {
+        str(entry.unique_prefixes)
+      },
+      format-ngram(entry.most_common_ngram),
+      format-prefix(entry.most_popular_prefix),
+    ))
+    .flatten(),
 )
