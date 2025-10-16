@@ -112,7 +112,7 @@
         font: "Neon Tubes 2",
         size: 9pt,
         fill: anu-colors.socy-yellow,
-      )[CC BY-NC 4.0],
+      )[© 2025 Ben Swift | CC BY-NC-SA 4.0],
     ),
   )
 

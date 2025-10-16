@@ -5,6 +5,7 @@
 
 #show: anu.with(
   title: [Instructor's notes],
+  footer_text: "© 2025 Ben Swift | CC BY-NC-SA 4.0",
   config: (
     logos: ("socy", "studio"),
   ),

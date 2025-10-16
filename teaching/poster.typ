@@ -175,7 +175,7 @@
   footer_text: text(
     font: "Neon Tubes 2",
     fill: anu-colors.socy-yellow,
-    "CC BY-NC-SA 4.0",
+    "© 2025 Ben Swift | CC BY-NC-SA 4.0",
   ),
   config: (
     theme: "dark",
