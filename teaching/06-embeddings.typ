@@ -30,7 +30,7 @@
 
   Each word's row in your model is its embedding under that model---a numerical
   fingerprint that captures meaning through context. Distances between words
-  real grammatical and semantic relationships. Similar words have similar
+  reveal grammatical and semantic relationships. Similar words have similar
   embeddings.
 ]
 

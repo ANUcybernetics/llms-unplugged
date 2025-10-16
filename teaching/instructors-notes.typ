@@ -21,6 +21,28 @@
 - what happens when one option has 95% probability?
 - can you invent your own weighted random selection method?
 
+=== Connection to current LLMs
+
+This module introduces weighted random sampling before students encounter
+language models. While not specific to LLMs, this operation is fundamental to
+how they work:
+
+- *generation mechanism*: every time an LLM produces a word, it's performing
+  weighted random sampling from a probability distribution
+- *probability distributions*: neural networks output probabilities for
+  thousands of possible next tokens; these probabilities become the "weights"
+  for sampling
+- *physical intuition*: dice and tokens make the mathematics tangible---when
+  students later learn about "sampling from a distribution," they'll have
+  hands-on experience with what that means
+
+The key insight: weighted randomness is a general computational technique with
+applications far beyond language models (simulations, games, procedural
+generation). In the context of language models, this same operation happens
+billions of times during text generation. These physical methods (dice, tokens)
+implement the exact same mathematical operation that occurs inside LLMs when
+they choose the next word.
+
 == Basic training
 
 === Discussion questions
@@ -267,30 +289,6 @@ apply LoRA layers during inference. This is why organisations can maintain one
 large foundation model and create thousands of specialised versions through
 lightweight LoRA layers.
 
-== Model evaluation
-
-=== Discussion questions
-
-- which metric best captures "good" language?
-- how would you weight accuracy vs creativity?
-- what's missing from these evaluation methods?
-- how might context length affect evaluation?
-- why might a model with higher perplexity sometimes be preferable?
-
-=== Connection to current LLMs
-
-Modern LLMs use these exact same approaches at massive scale:
-
-- *perplexity*: LLMs report perplexity scores on billions of test tokens
-- *human evaluation*: companies use human raters to evaluate model responses
-- *accuracy benchmarks*: models are tested on standardised question sets
-- *diversity metrics*: repetition penalties prevent boring outputs
-
-The key insight: evaluation is about balancing multiple metrics. A model with
-perfect accuracy might be boring (always predicting `the`), while a creative
-model might produce nonsense. Your physical evaluation mirrors the exact
-trade-offs that AI companies grapple with when training their models.
-
 == Synthetic data
 
 === Discussion questions
@@ -300,8 +298,10 @@ trade-offs that AI companies grapple with when training their models.
 - how does vocabulary shrink or change across generations?
 - can you identify when loops or repetitions started?
 - what would happen if you continued to generation 3, 4, 5?
-- (for joker mode) can a completely random model produce anything coherent? why or why not?
-- (for joker mode) does randomness compound across generations, or does some structure emerge?
+- (for joker mode) can a completely random model produce anything coherent? why
+  or why not?
+- (for joker mode) does randomness compound across generations, or does some
+  structure emerge?
 
 === Connection to current LLMs
 
