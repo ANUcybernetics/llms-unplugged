@@ -4,7 +4,9 @@
 #import "utils.typ": *
 
 #show: anu.with(
-  title: [Instructor's notes],
+  title: [_My First LM_ Instructor notes],
+  subtitle: [October 2025],
+  author: [Ben Swift],
   footer_text: "© 2025 Ben Swift | CC BY-NC-SA 4.0",
   config: (
     logos: ("socy", "studio"),
