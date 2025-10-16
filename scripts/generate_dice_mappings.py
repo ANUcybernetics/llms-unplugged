@@ -40,10 +40,11 @@ def partition_dice(d: int, n: int) -> list[int]:
     return sizes
 
 
-def generate_svg(d: int, groups_range: str, output_path: str):
+def generate_svg(d: int, groups_range: str, output_path: str, start_index: int = 1):
     """Generate the dice mappings SVG file."""
 
     layout = LayoutConstants()
+    dice_start = start_index
 
     start, end = map(int, groups_range.split("-"))
     num_rows = end - start + 1
@@ -134,7 +135,7 @@ def generate_svg(d: int, groups_range: str, output_path: str):
                     pos += row_spacing
 
         current_pos = 0.0
-        dice_value = 1
+        dice_value = dice_start
         numbered_cells = []
         cell_divider_positions = []
         group_borders = []
@@ -245,10 +246,17 @@ def main():
     parser.add_argument(
         "-o", "--output", type=str, required=True, help="Output file path"
     )
+    parser.add_argument(
+        "-s",
+        "--start-index",
+        type=int,
+        default=1,
+        help="Starting index for dice face values (default: 1)",
+    )
 
     args = parser.parse_args()
 
-    generate_svg(args.dice, args.groups, args.output)
+    generate_svg(args.dice, args.groups, args.output, args.start_index)
 
 
 if __name__ == "__main__":
