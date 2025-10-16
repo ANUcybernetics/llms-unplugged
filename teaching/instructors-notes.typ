@@ -13,9 +13,9 @@
   ),
 )
 
-== Weighted randomness
+= 00. Weighted randomness
 
-=== Discussion questions
+== Discussion questions
 
 - which method feels most "random" to you, and why?
 - which is fastest for getting repeated random selections?
@@ -23,7 +23,7 @@
 - what happens when one option has 95% probability?
 - can you invent your own weighted random selection method?
 
-=== Connection to current LLMs
+== Connection to current LLMs
 
 This module introduces weighted random sampling before students encounter
 language models. While not specific to LLMs, this operation is fundamental to
@@ -45,9 +45,9 @@ billions of times during text generation. These physical methods (dice, tokens)
 implement the exact same mathematical operation that occurs inside LLMs when
 they choose the next word.
 
-== Basic training
+= 01. Basic training
 
-=== Discussion questions
+== Discussion questions
 
 - what can you tell about the input text by looking at the filled-out bigram
   model grid?
@@ -56,7 +56,7 @@ they choose the next word.
 - how could you use this model to generate _new_ text in the style of your
   input/training data?
 
-=== Connection to current LLMs
+== Connection to current LLMs
 
 This counting process is exactly what happens during the "training" phase of
 language models:
@@ -69,9 +69,9 @@ The key insight: "training" a language model means counting patterns in text.
 Your hand-built model contains the same type of information that current LLMs
 store---at a vastly smaller scale.
 
-== Basic inference
+= 02. Basic inference
 
-=== Discussion questions
+== Discussion questions
 
 - how does the starting word affect your generated text?
 - why does the text sometimes get stuck in loops?
@@ -80,7 +80,7 @@ store---at a vastly smaller scale.
 - how could you make generation less repetitive?
 - does the generated text capture the style of your training text?
 
-=== Connection to current LLMs
+== Connection to current LLMs
 
 This generation process is identical to how current LLMs produce text:
 
@@ -100,9 +100,9 @@ language models can be creative rather than repetitive. These physical sampling
 methods demonstrate the exact mathematical operation happening billions of times
 per second inside modern language models.
 
-== Pre-trained model inference
+= 03. Pre-trained model inference
 
-=== Discussion questions
+== Discussion questions
 
 - can you guess what text the model was trained on from the generated output?
 - how does using a pre-trained model differ from training your own?
@@ -112,7 +112,7 @@ per second inside modern language models.
 - without looking at the title: can you identify the training text's genre or
   style?
 
-=== Connection to current LLMs
+== Connection to current LLMs
 
 This module demonstrates the foundation of how people interact with modern AI:
 
@@ -134,9 +134,9 @@ training once, then millions of users perform inference. The booklet captures
 thousands of training examples in a portable format, just as neural networks
 compress training data into billions of parameters.
 
-== Trigram model
+= 04. Trigram model
 
-=== Discussion questions
+== Discussion questions
 
 - how does the trigram output compare to basic (bigram) model output?
 - what happens when you encounter a word pair you've never seen before?
@@ -144,7 +144,7 @@ compress training data into billions of parameters.
 - can you find word pairs that always lead to the same next word?
 - what's the tradeoff between context length and data requirements?
 
-=== Connection to current LLMs
+== Connection to current LLMs
 
 The trigram model bridges the gap between simple word-pair models and modern
 transformers:
@@ -158,9 +158,9 @@ Your trigram model shows why longer context helps---`see` + `spot` predicts
 why modern LLMs can maintain coherent conversations over many exchanges---they
 consider much more context than just the last word or two.
 
-== Context columns
+= 05. Context columns
 
-=== Discussion questions
+== Discussion questions
 
 - which context columns are most useful for your text?
 - can you think of other helpful context patterns?
@@ -169,7 +169,7 @@ consider much more context than just the last word or two.
 - are grammatical contexts (verb→object, pronoun→verb) more reliable than
   word-specific ones (`word_a`→`word_b`)?
 
-=== Connection to current LLMs
+== Connection to current LLMs
 
 Your hand-crafted context columns are what the "attention mechanism" in
 transformers learns automatically:
@@ -188,9 +188,9 @@ while ignoring less relevant words. Your grammatical context columns
 (verb→object, pronoun→verb) do this manually, while modern AI discovers these
 patterns---and many more---through learning.
 
-== Word embeddings
+= 06. Word embeddings
 
-=== Discussion questions
+== Discussion questions
 
 - which words cluster together? why?
 - do grammatically similar words have similar embeddings?
@@ -198,7 +198,7 @@ patterns---and many more---through learning.
 - how do context columns affect word similarity?
 - what information is captured in these vectors?
 
-=== Connection to current LLMs
+== Connection to current LLMs
 
 Word embeddings revolutionised NLP by turning words into numbers that computers
 can process:
@@ -219,16 +219,16 @@ because they both follow `the` and precede `ran` or `sat`. This discovery
 enabled computers to "understand" that words have relationships and meanings
 beyond just their spelling.
 
-== Sampling strategies
+= 07. Sampling strategies
 
-=== Discussion questions
+== Discussion questions
 
 - which strategy produces the most "human-like" text?
 - when would you want predictable vs surprising output?
 - how do constraints (haiku, no-repeat) spark creativity?
 - can you invent your own sampling strategy?
 
-=== Connection to current LLMs
+== Connection to current LLMs
 
 Current LLMs use these same mechanisms:
 
@@ -256,9 +256,9 @@ The key insight: generation control is as important as training data. Your paper
 model proves that creative output comes not from the model itself, but from how
 you control temperature and which tokens you truncate from consideration.
 
-== LoRA
+= 08. LoRA
 
-=== Discussion questions
+== Discussion questions
 
 - how much training data do you need for the LoRA layer compared to training
   from scratch?
@@ -267,7 +267,7 @@ you control temperature and which tokens you truncate from consideration.
 - which words change most between base and adapted models?
 - when would you want a separate LoRA layer vs retraining the whole model?
 
-=== Connection to current LLMs
+== Connection to current LLMs
 
 Low-Rank Adaptation revolutionised how modern LLMs are customised:
 
@@ -291,9 +291,9 @@ apply LoRA layers during inference. This is why organisations can maintain one
 large foundation model and create thousands of specialised versions through
 lightweight LoRA layers.
 
-== Synthetic data
+= 09. Synthetic data
 
-=== Discussion questions
+== Discussion questions
 
 - what patterns from the original survived to generation 2?
 - what new patterns emerged that weren't in the original?
@@ -305,7 +305,7 @@ lightweight LoRA layers.
 - (for joker mode) does randomness compound across generations, or does some
   structure emerge?
 
-=== Connection to current LLMs
+== Connection to current LLMs
 
 Model collapse from synthetic data is a major concern in modern AI:
 
@@ -333,12 +333,12 @@ experience shows why AI companies are concerned about the increasing volume of
 AI-generated text on the internet: if future models train on today's AI outputs,
 we risk a cascade of model collapse.
 
-== Glossary: the language of language models
+= 10. Glossary: the language of language models
 
 This glossary connects the physical activities you've been doing with the
 technical terms used in modern language models.
 
-=== Core concepts
+== Core concepts
 
 - *token*: a single unit of text---in our activities, each word or punctuation
   mark (`.`, `,`) is a token. Modern LLMs use subword tokens that can be parts
@@ -352,7 +352,7 @@ technical terms used in modern language models.
 - *vocabulary*: all unique tokens your model knows. The words across the top and
   side of your grid form your vocabulary
 
-=== Model architecture
+== Model architecture
 
 - *bigram model*: a model that predicts the next word based on one previous word
   (what you built in modules 01-02)
@@ -364,7 +364,7 @@ technical terms used in modern language models.
 - *embeddings*: numerical representations of words. Each row in your grid is
   that word's embedding vector (module 05)
 
-=== Sampling and generation
+== Sampling and generation
 
 - *weighted random sampling*: choosing the next token with probability
   proportional to its frequency. Your dice rolls implement this
@@ -379,7 +379,7 @@ technical terms used in modern language models.
 - *top-p (nucleus) sampling*: considering words until cumulative probability
   reaches p (like including tokens until you have 90% of tallies)
 
-=== Evaluation metrics
+== Evaluation metrics
 
 - *perplexity*: a measure of how surprised the model is by text. Lower
   perplexity means the model better predicts real text
@@ -387,7 +387,7 @@ technical terms used in modern language models.
 - *loss*: how wrong the model's predictions are. Training minimises loss by
   adjusting the grid's counts
 
-=== Modern LLM concepts
+== Modern LLM concepts
 
 - *parameters*: the numbers stored in the model. Each tally mark in your grid is
   a parameter. Large models have hundreds of billions of parameters.
@@ -402,7 +402,7 @@ technical terms used in modern language models.
 - *hallucination*: when models generate plausible-sounding but false information
   (because models learn patterns, not facts).
 
-=== Key insights
+== Key insights
 
 + *Scale is the main difference*: your small bigram/trigram models (dozens,
   perhaps up to hundreds of parameters) vs billions of parameters, but the core
@@ -424,7 +424,7 @@ The activities you've completed demonstrate the fundamental operations of
 language models. The main advances in modern AI come from doing these same
 operations at massive scale with learned (rather than hand-crafted) patterns.
 
-== Historical context: Markov and Shannon
+= 11. Historical context: Markov and Shannon
 
 The N-gram models students build in this workshop have a lineage stretching back
 over a century. Understanding this history helps situate the activities within
@@ -449,7 +449,7 @@ on---to demonstrate how higher-order models produce increasingly realistic
 output. This generative approach revealed that language structure emerges from
 statistical dependencies at multiple scales.
 
-=== Connection to current LLMs
+== Connection to current LLMs
 
 Modern language models descend directly from Shannon's work:
 
