@@ -23,11 +23,6 @@ modules: $(OUTPUT_DIR) $(MODULE_PDF_FILES)
 	@echo "Combining numbered module PDFs into modules.pdf..."
 	pdfunite $(MODULE_PDF_FILES) $(OUTPUT_DIR)/modules.pdf
 
-# Target to create a combined PDF from modules 00-03 only
-sxsw: $(OUTPUT_DIR) $(OUTPUT_DIR)/00-weighted-randomness.pdf $(OUTPUT_DIR)/01-basic-training.pdf $(OUTPUT_DIR)/02-basic-inference.pdf $(OUTPUT_DIR)/03-pretrained-inference.pdf
-	@echo "Combining modules 00-03 into sxsw.pdf..."
-	pdfunite $(OUTPUT_DIR)/00-weighted-randomness.pdf $(OUTPUT_DIR)/01-basic-training.pdf $(OUTPUT_DIR)/02-basic-inference.pdf $(OUTPUT_DIR)/03-pretrained-inference.pdf $(OUTPUT_DIR)/sxsw.pdf
-
 # Target to create a combined PDF with instructor notes followed by all modules
 with-notes: $(OUTPUT_DIR) $(OUTPUT_DIR)/instructors-notes.pdf $(OUTPUT_DIR)/modules.pdf
 	@echo "Combining instructor notes and modules into with-notes.pdf..."
