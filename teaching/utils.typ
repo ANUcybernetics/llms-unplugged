@@ -6,8 +6,8 @@
 #import "@local/anu-typst-template:0.2.0": anu-colors
 
 // Draw crop marks at page corners
-#let crop-marks(bleed: 5mm) = {
-  let mark-length = 3mm
+#let crop-marks(bleed: 3mm) = {
+  let mark-length = 2mm
   // Top-left corner
   place(
     top + left,
@@ -79,8 +79,17 @@
 }
 
 // Base module setup - applies ANU template with landscape settings
-#let module-setup(body) = {
-  let bleed = 5mm
+#let module-setup(bleed: true, body) = {
+  let bleed-amount = 3mm
+  let base-width = 297mm
+  let base-height = 210mm
+
+  let page-width = if bleed { base-width + (2 * bleed-amount) } else {
+    base-width
+  }
+  let page-height = if bleed { base-height + (2 * bleed-amount) } else {
+    base-height
+  }
 
   show: doc => anu(
     title: "",
@@ -90,8 +99,8 @@
       hide: ("page-numbers", "title-block"),
     ),
     page-settings: (
-      width: 297mm,
-      height: 210mm,
+      width: page-width,
+      height: page-height,
       margin: (
         left: 3.2cm,
         right: 1.6cm,
@@ -104,7 +113,7 @@
 
   // Add crop marks and CC BY-NC 4.0 watermark to every page
   set page(
-    // foreground: crop-marks(bleed: bleed),  // uncomment to enable crop marks
+    // foreground: crop-marks(bleed: bleed-amount),  // uncomment to enable crop marks
     footer: place(
       bottom + left,
       dy: -1cm,
