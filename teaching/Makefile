@@ -28,6 +28,11 @@ sxsw: $(OUTPUT_DIR) $(OUTPUT_DIR)/00-weighted-randomness.pdf $(OUTPUT_DIR)/01-ba
 	@echo "Combining modules 00-03 into sxsw.pdf..."
 	pdfjam $(OUTPUT_DIR)/00-weighted-randomness.pdf $(OUTPUT_DIR)/01-basic-training.pdf $(OUTPUT_DIR)/02-basic-inference.pdf $(OUTPUT_DIR)/03-pretrained-inference.pdf -o $(OUTPUT_DIR)/sxsw.pdf --fitpaper false --landscape --paper a4paper
 
+# Target to create a combined PDF with instructor notes followed by all modules
+with-notes: $(OUTPUT_DIR) $(OUTPUT_DIR)/instructors-notes.pdf $(OUTPUT_DIR)/modules.pdf
+	@echo "Combining instructor notes and modules into with-notes.pdf..."
+	pdfunite $(OUTPUT_DIR)/instructors-notes.pdf $(OUTPUT_DIR)/modules.pdf $(OUTPUT_DIR)/with-notes.pdf
+
 # Create output directory if it doesn't exist
 $(OUTPUT_DIR):
 	mkdir -p $(OUTPUT_DIR)
@@ -43,4 +48,4 @@ clean:
 	rm -rf $(OUTPUT_DIR)
 
 # Phony targets
-.PHONY: all clean modules sxsw
+.PHONY: all clean modules sxsw with-notes
