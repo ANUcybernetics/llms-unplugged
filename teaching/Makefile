@@ -21,12 +21,12 @@ all: $(OUTPUT_DIR) $(PDF_FILES)
 # Target to create a combined PDF from numbered modules only
 modules: $(OUTPUT_DIR) $(MODULE_PDF_FILES)
 	@echo "Combining numbered module PDFs into modules.pdf..."
-	pdfjam $(MODULE_PDF_FILES) -o $(OUTPUT_DIR)/modules.pdf --fitpaper false --landscape --paper a4paper
+	pdfunite $(MODULE_PDF_FILES) $(OUTPUT_DIR)/modules.pdf
 
 # Target to create a combined PDF from modules 00-03 only
 sxsw: $(OUTPUT_DIR) $(OUTPUT_DIR)/00-weighted-randomness.pdf $(OUTPUT_DIR)/01-basic-training.pdf $(OUTPUT_DIR)/02-basic-inference.pdf $(OUTPUT_DIR)/03-pretrained-inference.pdf
 	@echo "Combining modules 00-03 into sxsw.pdf..."
-	pdfjam $(OUTPUT_DIR)/00-weighted-randomness.pdf $(OUTPUT_DIR)/01-basic-training.pdf $(OUTPUT_DIR)/02-basic-inference.pdf $(OUTPUT_DIR)/03-pretrained-inference.pdf -o $(OUTPUT_DIR)/sxsw.pdf --fitpaper false --landscape --paper a4paper
+	pdfunite $(OUTPUT_DIR)/00-weighted-randomness.pdf $(OUTPUT_DIR)/01-basic-training.pdf $(OUTPUT_DIR)/02-basic-inference.pdf $(OUTPUT_DIR)/03-pretrained-inference.pdf $(OUTPUT_DIR)/sxsw.pdf
 
 # Target to create a combined PDF with instructor notes followed by all modules
 with-notes: $(OUTPUT_DIR) $(OUTPUT_DIR)/instructors-notes.pdf $(OUTPUT_DIR)/modules.pdf
