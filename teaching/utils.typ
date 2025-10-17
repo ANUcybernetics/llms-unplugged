@@ -79,7 +79,7 @@
 }
 
 // Base module setup - applies ANU template with landscape settings
-#let module-setup(bleed: true, body) = {
+#let module-setup(bleed: false, body) = {
   let bleed-amount = 3mm
   let base-width = 297mm
   let base-height = 210mm
