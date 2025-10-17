@@ -13,6 +13,29 @@
   ),
 )
 
+= Introduction
+
+These instructor notes accompany the _My First LM_ (_My First Language Model_)
+teaching project for building N-gram language models from scratch using both
+manual (pen-and-paper) and automated approaches. They are designed to give
+students hands-on understanding of how language models work by having them
+create working models themselves---either in 20 minutes with grid paper and
+dice, or through automated tools that generate dice-powered text generation
+booklets.
+
+The notes refer to the "module cards" (numbered 00-09) at the end of this PDF.
+Each one is a landscape PDF designed to be used as a workshop handout. The first
+couple (01 and 02) are pre-requisites and should be done in order, and then the
+later ones are bit of a choose-your-own-adventure.
+
+For complete project documentation, build instructions, and the full teaching
+materials repository, see: #link(
+  "https://github.com/ANUcybernetics/my-first-lm",
+). This work is part of the #link(
+  "https://cybernetics.anu.edu.au/cybernetic-studio/",
+)[Cybernetic Studio's] _Human-Scale AI_ project at the ANU School of
+Cybernetics.
+
 = 00. Weighted randomness
 
 == Discussion questions
