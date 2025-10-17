@@ -146,8 +146,8 @@
   // Place module number on top of image
   place(
     bottom + right,
-    dx: 2cm,
-    dy: 1.4cm,
+    dx: 1.5cm,
+    dy: 1.3cm,
     text(
       size: 6cm,
       fill: white.transparentize(70%),
