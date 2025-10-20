@@ -13,6 +13,14 @@ develop intuition for how larger models work.
 This is a [Cybernetic Studio](https://github.com/ANUcybernetics/) artefact by
 [Ben Swift](https://benswift.me) as part of the _Human-Scale AI_ project.
 
+## What's in this repository
+
+This repository contains both teaching materials and software tools. The
+teaching materials (lesson plans, workshop modules, worksheets in the
+`teaching/` directory) can be used standalone without any software installation.
+The software tools (Rust CLI) are only necessary if you want to create your own
+pre-trained N-gram booklets from custom text corpora.
+
 ## Which path should I take?
 
 This project offers three entry points depending on your goals:

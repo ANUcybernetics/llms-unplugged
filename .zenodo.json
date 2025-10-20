@@ -1,6 +1,6 @@
 {
   "title": "My First LM: Teaching N-gram Language Models from Scratch",
-  "description": "A teaching project for understanding AI language models by building N-gram models from scratch. Includes both pen-and-paper approaches (20 minutes with grid templates) and automated tools that generate dice-powered text generation booklets. A Cybernetic Studio project.",
+  "description": "Educational materials for teaching how AI language models work by building N-gram models from scratch. Includes structured lesson plans, workshop modules, pen-and-paper exercises with grid templates, and supporting software tools (Rust CLI) that generate dice-powered text generation booklets. A Cybernetic Studio project.",
   "creators": [
     {
       "name": "Swift, Ben",
@@ -9,18 +9,19 @@
     }
   ],
   "contributors": [],
-  "upload_type": "software",
+  "upload_type": "lesson",
   "access_right": "open",
-  "license": "MIT",
+  "license": "cc-by-nc-sa-4.0",
   "keywords": [
+    "teaching materials",
+    "pedagogy",
+    "education",
+    "AI literacy",
     "language models",
     "n-gram models",
-    "education",
-    "pedagogy",
-    "natural language processing",
-    "teaching materials",
-    "AI literacy",
-    "probabilistic models"
+    "workshop materials",
+    "probabilistic models",
+    "natural language processing"
   ],
   "communities": [
     {
