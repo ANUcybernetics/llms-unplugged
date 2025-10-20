@@ -1,4 +1,4 @@
-# My First LM
+# My First Language Model
 
 Understanding how AI language models work starts with building one yourself.
 This teaching project shows you how to create N-gram language models from
@@ -18,8 +18,9 @@ This is a [Cybernetic Studio](https://github.com/ANUcybernetics/) artefact by
 This repository contains both teaching materials and software tools. The
 teaching materials (lesson plans, workshop modules, worksheets in the
 `teaching/` directory) can be used standalone without any software installation.
-The software tools (Rust CLI) are only necessary if you want to create your own
-pre-trained N-gram booklets from custom text corpora.
+The software tools (the `my_first_lm` CLI tool + other helper scripts) are only
+necessary if you want to create your own pre-trained N-gram booklets from custom
+text corpora.
 
 ## Which path should I take?
 
@@ -33,8 +34,8 @@ required.
 pipeline: feed in any text file, get a typeset PDF booklet scaled to your
 favourite dice.
 
-**Teaching a class or workshop?** Explore the teaching modules for structured
-lesson plans and materials.
+**Teaching a class or workshop?** Explore the teaching modules (especially the
+instructor notes) for structured lesson plans and materials.
 
 ## Pen and paper approach
 
