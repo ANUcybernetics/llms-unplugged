@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "My First LM: Teaching N-gram Language Models from Scratch"
+abstract: "A teaching project for understanding AI language models by building N-gram models from scratch. Includes both pen-and-paper approaches (20 minutes with grid templates) and automated tools that generate dice-powered text generation booklets. A Cybernetic Studio project."
+authors:
+  - family-names: Swift
+    given-names: Ben
+    email: ben.swift@anu.edu.au
+    affiliation: "ANU School of Cybernetics"
+    orcid: "https://orcid.org/0000-0003-2138-5969"
+repository-code: "https://github.com/ANUcybernetics/my-first-lm"
+type: software
+license: MIT
+keywords:
+  - language models
+  - n-gram models
+  - education
+  - pedagogy
+  - natural language processing
+  - teaching materials
+  - AI literacy
+  - probabilistic models
+version: 0.1.0
+date-released: "2025-10-20"
