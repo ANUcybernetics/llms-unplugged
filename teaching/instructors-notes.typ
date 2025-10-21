@@ -35,7 +35,8 @@ couple (01 and 02) are pre-requisites and should be done in order, and then the
 later ones are bit of a choose-your-own-adventure.
 
 TODO a note about the "discussion questions" and "connection to modern LLMs"
-structure. And maybe about links/references.
+structure. And maybe about links/references. And something about the age &
+background of the folks we usually teach it to.
 
 For complete project documentation, build instructions, and the full teaching
 materials repository, see: #link(
@@ -92,7 +93,7 @@ on---to demonstrate how higher-order models produce increasingly realistic
 output. This generative approach revealed that language structure emerges from
 statistical dependencies at multiple scales.
 
-== Connection to current LLMs
+=== Connection to current LLMs
 
 Modern language models descend directly from Shannon's work:
 
