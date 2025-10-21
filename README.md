@@ -61,12 +61,13 @@ You'll need:
 If you've downloaded the release tarball:
 
 ```bash
-# Unpack the release tarball
-tar -xzf my-first-lm-v1.0.0-your-platform.tar.gz
-cd my-first-lm-v1.0.0-your-platform
+# Unpack the release archive
+tar -xzf my_first_lm-v1.0.0.tar.gz
+cd my_first_lm
 
 # Generate N-gram statistics from the included sample text
-./my_first_lm data/frankenstein.txt -n 2
+# (use the binary for your platform from the bin/ directory)
+./bin/my_first_lm-linux-x86_64 data/frankenstein.txt -n 2
 
 # Typeset the booklet
 typst compile book.typ book.pdf

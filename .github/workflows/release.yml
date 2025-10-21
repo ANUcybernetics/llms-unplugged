@@ -82,6 +82,7 @@ jobs:
           mkdir -p release/my_first_lm/bin
           mkdir -p release/my_first_lm/data
           mkdir -p release/my_first_lm/docs
+          mkdir -p release/my_first_lm/scripts
 
           # Copy binaries
           cp artifacts/my_first_lm-linux-x86_64/my_first_lm release/my_first_lm/bin/my_first_lm-linux-x86_64
@@ -99,6 +100,12 @@ jobs:
 
           # Copy data file
           cp data/frankenstein.txt release/my_first_lm/data/
+
+          # Copy typst template
+          cp book.typ release/my_first_lm/
+
+          # Copy scripts
+          cp scripts/*.py release/my_first_lm/scripts/
 
           # Copy PDFs
           cp teaching/out/modules.pdf release/my_first_lm/docs/
