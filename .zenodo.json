@@ -28,6 +28,17 @@
       "identifier": "zenodo"
     }
   ],
-  "related_identifiers": [],
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.17403824",
+      "relation": "isVersionOf",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "https://github.com/ANUcybernetics/my-first-lm",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ],
   "grants": []
 }

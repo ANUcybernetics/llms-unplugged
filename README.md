@@ -206,6 +206,21 @@ tests. Test output must be pristine with zero failures.
 Match existing Rust style and patterns. Never commit without running tests. Use
 the `backlog` CLI tool for task management.
 
+## Citation
+
+If you use these teaching materials, please cite them:
+
+```bibtex
+@misc{swift2025myfirstlm,
+  author = {Swift, Ben},
+  title = {My First LM: Teaching N-gram Language Models from Scratch},
+  year = {2025},
+  publisher = {Zenodo},
+  doi = {10.5281/zenodo.17403824},
+  url = {https://doi.org/10.5281/zenodo.17403824}
+}
+```
+
 ## Author
 
 Ben Swift
