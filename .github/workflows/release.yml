@@ -1,0 +1,126 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build and Release
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            artifact_name: my_first_lm
+            asset_name: my_first_lm-linux-x86_64
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            artifact_name: my_first_lm
+            asset_name: my_first_lm-linux-aarch64
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            artifact_name: my_first_lm
+            asset_name: my_first_lm-macos-x86_64
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            artifact_name: my_first_lm
+            asset_name: my_first_lm-macos-aarch64
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            artifact_name: my_first_lm.exe
+            asset_name: my_first_lm-windows-x86_64.exe
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Install cross-compilation tools (Linux ARM64)
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu
+
+      - name: Build binary
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset_name }}
+          path: target/${{ matrix.target }}/release/${{ matrix.artifact_name }}
+
+  create-release:
+    name: Create Release
+    needs: build-and-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Prepare release directory
+        run: |
+          mkdir -p release/my_first_lm
+          mkdir -p release/my_first_lm/bin
+          mkdir -p release/my_first_lm/data
+          mkdir -p release/my_first_lm/docs
+
+          # Copy binaries
+          cp artifacts/my_first_lm-linux-x86_64/my_first_lm release/my_first_lm/bin/my_first_lm-linux-x86_64
+          cp artifacts/my_first_lm-linux-aarch64/my_first_lm release/my_first_lm/bin/my_first_lm-linux-aarch64
+          cp artifacts/my_first_lm-macos-x86_64/my_first_lm release/my_first_lm/bin/my_first_lm-macos-x86_64
+          cp artifacts/my_first_lm-macos-aarch64/my_first_lm release/my_first_lm/bin/my_first_lm-macos-aarch64
+          cp artifacts/my_first_lm-windows-x86_64.exe/my_first_lm.exe release/my_first_lm/bin/my_first_lm-windows-x86_64.exe
+
+          # Make binaries executable
+          chmod +x release/my_first_lm/bin/my_first_lm-*
+
+          # Copy documentation and metadata
+          cp README.md release/my_first_lm/
+          cp LICENSE release/my_first_lm/
+          cp CITATION.cff release/my_first_lm/
+
+          # Copy data file
+          cp data/frankenstein.txt release/my_first_lm/data/
+
+          # Copy PDFs
+          cp teaching/out/modules.pdf release/my_first_lm/docs/
+          cp teaching/out/instructors-notes.pdf release/my_first_lm/docs/
+          cp teaching/out/worksheets/grid.pdf release/my_first_lm/docs/
+
+      - name: Create tar.gz archive
+        run: |
+          cd release
+          tar -czf my_first_lm-${{ github.ref_name }}.tar.gz my_first_lm/
+
+      - name: Create zip archive
+        run: |
+          cd release
+          zip -r my_first_lm-${{ github.ref_name }}.zip my_first_lm/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            release/my_first_lm-${{ github.ref_name }}.tar.gz
+            release/my_first_lm-${{ github.ref_name }}.zip
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

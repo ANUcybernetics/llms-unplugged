@@ -1,7 +1,15 @@
 # ignore all pdfs in the top level (assume they're auto-generated)
 *.pdf
 
+# but keep the three PDFs needed for releases
+!teaching/out/modules.pdf
+!teaching/out/instructors-notes.pdf
+!teaching/out/worksheets/grid.pdf
+
 data/
+
+# but keep frankenstein.txt for the release
+!data/frankenstein.txt
 
 # default model name
 model.json
