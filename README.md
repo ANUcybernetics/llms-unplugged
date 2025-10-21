@@ -27,15 +27,18 @@ text corpora.
 This project offers three entry points depending on your goals:
 
 **Want to understand the fundamentals in 20 minutes?** Use the pen and paper
-approach with the grid template and step-by-step instructions. No software
-required.
+approach with the [grid template](teaching/out/worksheets/grid.pdf) and
+step-by-step instructions (in [modules 01 and 02](teaching/out/modules.pdf)). No
+software required.
 
 **Want to generate booklets for dice-based text generation?** Use the automated
 pipeline: feed in any text file, get a typeset PDF booklet scaled to your
 favourite dice.
 
-**Teaching a class or workshop?** Explore the teaching modules (especially the
-instructor notes) for structured lesson plans and materials.
+**Teaching a class or workshop?** Explore the
+([teaching modules](teaching/out/modules.pdf)) and
+[instructor notes](teaching/out/instructors-notes.pdf) for structured lesson
+plans and materials.
 
 ## Pen and paper approach
 
@@ -147,9 +150,12 @@ Structured lesson plans and materials for workshops or courses.
 
 The `teaching/` directory contains:
 
-- numbered modules (00-09): landscape PDF cards for workshop handouts ([download modules.pdf](teaching/out/modules.pdf))
-- instructor notes with facilitation guidance ([download instructors-notes.pdf](teaching/out/instructors-notes.pdf))
-- `worksheets/`: blank templates for manual exercises ([download grid.pdf](teaching/out/worksheets/grid.pdf))
+- numbered modules (00-09): landscape PDF cards for workshop handouts
+  ([download modules.pdf](teaching/out/modules.pdf))
+- instructor notes with facilitation guidance
+  ([download instructors-notes.pdf](teaching/out/instructors-notes.pdf))
+- `worksheets/`: blank templates for manual exercises
+  ([download grid.pdf](teaching/out/worksheets/grid.pdf))
 - `draft/`: modules in draft form
 - `runsheets/`: session plans (90min, 3h)
 
