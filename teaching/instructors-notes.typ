@@ -21,30 +21,36 @@
 
 = Overview
 
-These instructor notes accompany the _My First LM_ (_My First Language Model_)
-teaching project for building N-gram language models from scratch using both
-manual (pen-and-paper) and automated approaches. They are designed to give
-students hands-on understanding of how language models work by having them
-create working models themselves---either in 20 minutes with grid paper and
-dice, or through automated tools that generate dice-powered text generation
-booklets.
+These instructor notes accompany the _My First Language Model_ teaching project
+for building language models from scratch using both manual (pen-and-paper) and
+automated approaches. They are designed to give students hands-on understanding
+of how large language models (LLMs) work by having them create working models
+themselves---either in 20 minutes with grid paper and dice, or through automated
+tools that generate dice-powered text generation booklets. This material is made
+available under a #link(
+  "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+)[Creative Commons BY-NC-SA 4.0 License].
 
-The notes refer to the "module cards" (numbered 00-09) at the end of this PDF.
-Each one is a landscape PDF designed to be used as a workshop handout. The first
-couple (01 and 02) are pre-requisites and should be done in order, and then the
-later ones are bit of a choose-your-own-adventure.
+The primary teaching materials are the "module cards" (numbered 00-09) at the
+end of this PDF. Each one is a double-sided landscape PDF designed to be used as
+a workshop handout. The first two modules (01 and 02) are pre-requisites for the
+rest and should be done in order, and then the later ones can be done in
+(almost) any order.
 
-TODO a note about the "discussion questions" and "connection to modern LLMs"
-structure. And maybe about links/references. And something about the age &
-background of the folks we usually teach it to.
+Each module card includes these sections:
 
-For complete project documentation, build instructions, and the full teaching
-materials repository, see: #link(
-  "https://github.com/ANUcybernetics/my-first-lm",
-). This work is part of the #link(
-  "https://cybernetics.anu.edu.au/cybernetic-studio/",
-)[Cybernetic Studio's] _Human-Scale AI_ project at the ANU School of
-Cybernetics.
+- *you will need*: required materials (dice, paper, grids, etc.)
+- *your goal*: what students should accomplish
+- *key idea*: the core concept being demonstrated
+- *algorithm*: step-by-step instructions for the hands-on activity
+- *example*: worked demonstration showing the algorithm in action
+
+This document also includes extra "instructor notes" for each module:
+
+- *discussion questions*: prompts to help students reflect on what they've
+  learned
+- *connection to current LLMs*: how the hands-on activity relates to modern AI
+  systems
 
 == Learning outcomes
 
@@ -52,46 +58,73 @@ The activities in these modules demonstrate the fundamental operations of
 language models. The main advances in modern AI come from doing these same
 operations at massive scale with learned (rather than hand-crafted) patterns.
 
-+ *Scale is the main difference*: your small bigram/trigram models (dozens,
+The primary learning outcome is that students will understand that language
+models---whether ChatGPT or their hand-built version---work the same way: they
+learn by counting patterns in text, then generate new text by repeatedly making
+random choices weighted by what they've seen before.
+
+In addition, students will gain the following key insights as to how modern LLMs
+work (in reference to the activities they'll do themselves in these modules):
++ *scale is the main difference*: your small bigram/trigram models (dozens,
   perhaps up to hundreds of parameters) vs billions of parameters, but the core
   concepts are identical
-
-+ *Randomness creates variety*: both your dice and LLMs use controlled
++ *randomness creates variety*: both your dice and LLMs use controlled
   randomness to avoid repetitive output
-
-+ *More context improves prediction*: more context (bigram → trigram → context
++ *more context improves prediction*: more context (bigram → trigram → context
   columns) enables better text generation
-
-+ *Embeddings capture meaning*: words used similarly get similar vectors,
++ *embeddings capture meaning*: words used similarly get similar vectors,
   whether hand-calculated or learned by neural networks
-
-+ *Training is just counting*: at its core, training means observing patterns in
++ *training is just counting*: at its core, training means observing patterns in
   data, exactly what you did with tally marks
+
+There's a #link(<glossary>)[glossary] at the end of this document. Note that
+while the terms AI/genAI/LLMs get thrown around and used interchangeably these
+days, these modules are fundamentally about _language_ models. While there are
+some similarities to the way that other generative AI models (e.g.
+text-to-image) work, they're beyond the scope of this particular course.
+
+== About these resources
+
+These resources have been developed through the delivery of many workshops and
+courses at the ANU School of Cybernetics over the period 2023--present. It's
+suitable for any audience from high-schoolers up to adults, and no particular
+background in LLMs/AI/Machine Learning is required.
+
+The software tools used to produce all these materials are available at on
+GitHub at #link(
+  "https://github.com/ANUcybernetics/my-first-lm",
+). This work is part of the #link(
+  "https://cybernetics.anu.edu.au/cybernetic-studio/",
+)[Cybernetic Studio's] _Human-Scale AI_ project. If you've got questions or if
+you've used this material successfully in your classroom I'd love to hear about
+it---drop me a line at #link(
+  "mailto:ben.swift@anu.edu.au",
+)[ben.swift\@anu.edu.au].
 
 == Historical context: Markov and Shannon
 
-The N-gram models students build in this workshop have a lineage stretching back
-over a century. Understanding this history helps situate the activities within
-broader developments in probability theory, information theory, and computation.
+The N-gram language models students build in this workshop have a lineage
+stretching back over a century. Understanding this history helps situate the
+activities within broader developments in probability theory, information
+theory, and computation.
 
-Andrey Markov introduced his eponymous chains in 1913 while analysing letter
-sequences from Pushkin's "Eugene Onegin". His work was fundamentally
+Andrey Markov introduced the idea of "Markov Chains" in 1913 while analysing
+letter sequences from Pushkin's "Eugene Onegin". His work was fundamentally
 mathematical---he used the statistical dependencies in text to prove properties
 of stochastic processes. Markov counted letter transitions and calculated
-probabilities, but he never generated synthetic text at different N-gram orders.
-His interest was in the mathematics of dependent random variables, not in
-producing artificial language.
+probabilities, but he never used them to generate synthetic text. His interest
+was in the mathematics of dependent random variables, not in producing
+artificial language.
 
 Claude Shannon built on this foundation three decades later. Between 1948 and
 1951, Shannon applied information theory to language and made several crucial
 contributions. First, he used N-gram models to measure entropy and redundancy in
 English, connecting statistical patterns to fundamental limits on compression.
-Second, and most relevant to this workshop, Shannon was the first to
-systematically generate synthetic text at increasing N-gram orders---0-gram
-(random letters), 1-gram (letter frequencies), 2-gram (letter pairs), and so
-on---to demonstrate how higher-order models produce increasingly realistic
-output. This generative approach revealed that language structure emerges from
-statistical dependencies at multiple scales.
+Second, Shannon was the first to systematically generate synthetic text at
+increasing N-gram orders---0-gram (random letters), 1-gram (letter frequencies),
+2-gram (letter pairs), and so on---to demonstrate how higher-order models
+produce increasingly realistic output. This generative approach revealed that
+language structure emerges from statistical dependencies at multiple scales.
 
 === Connection to current LLMs
 
@@ -113,11 +146,15 @@ hand and generated text manually. Modern models learn patterns from trillions of
 words using neural networks and generate text computationally. But the
 fundamental insight---that language structure can be captured through
 statistical dependencies and revealed through synthetic generation---comes
-directly from Shannon's work in 1948-1951.
+directly from Shannon's work in the mid-twentieth century.
 
 = Module notes
 
 == 00. Weighted randomness
+
+Note: this is a "pre-module"; it's usually ok to start from module 01 and just
+have this module card handy to refer to if students want more detailed
+instruction about weighted random sampling.
 
 === Discussion questions
 
@@ -438,6 +475,7 @@ AI-generated text on the internet: if future models train on today's AI outputs,
 we risk a cascade of model collapse.
 
 = Glossary: the language of language models
+<glossary>
 
 This glossary connects the physical activities you've been doing with the
 technical terms used in modern language models.
