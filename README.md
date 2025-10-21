@@ -24,75 +24,56 @@ text corpora.
 
 ## Which path should I take?
 
-This project offers three entry points depending on your goals:
+This project offers several entry points depending on your goals:
 
 **Want to understand the fundamentals in 20 minutes?** Use the pen and paper
 approach with the [grid template](teaching/out/worksheets/grid.pdf) and
 step-by-step instructions (in [modules 01 and 02](teaching/out/modules.pdf)). No
 software required.
 
-**Want to generate booklets for dice-based text generation?** Use the automated
-pipeline: feed in any text file, get a typeset PDF booklet scaled to your
-favourite dice.
-
 **Teaching a class or workshop?** Explore the
-([teaching modules](teaching/out/modules.pdf)) and
+[teaching modules](teaching/out/modules.pdf) and
 [instructor notes](teaching/out/instructors-notes.pdf) for structured lesson
 plans and materials.
 
-## Pen and paper approach
+**Want to create your own N-gram booklet?** You have two options:
 
-Build a bigram language model by hand using a grid template and guided
-instructions.
+- **Use a pre-built release**: Download the binary for your platform from the
+  [releases page](https://github.com/benswift/my-first-lm/releases), unpack it,
+  and run the `my_first_lm` on a `.txt` file containing your training data (see
+  `data/frankenstein.txt` for an example)
+- **Build from source**: Use the Rust toolchain to compile and customize the
+  tool yourself
 
-### What you need
-
-- Typst ([install here](https://github.com/typst/typst/))
-- A printer
-- Pen and paper
-- 20 minutes
-
-### Quick start
-
-Generate the grid and instructions:
-
-```bash
-typst compile teaching/worksheets/grid.typ grid.pdf
-typst compile teaching/instructions.typ instructions.pdf
-```
-
-Print both PDFs and follow the instructions to create your own word
-co-occurrence matrix. Once complete, you can use it to generate new text by
-following the patterns you've discovered.
-
-## Automated booklet generation
+## Creating your own N-gram booklets
 
 Process any text corpus into a typeset N-gram model booklet for dice-based text
 generation.
 
-### What you need
+You'll need:
 
-- Rust toolchain ([install here](https://rustup.rs/))
-- Typst ([install here](https://github.com/typst/typst/))
+- [Typst](https://github.com/typst/typst/)
+- [Rust toolchain](https://rustup.rs/) (optional---only if you want to modify
+  the tool)
 
-### Quick start
+### Quickstart
 
-Build the tool and generate a booklet:
+If you've downloaded the release tarball:
 
 ```bash
-# Build the Rust CLI
-cargo build --release
+# Unpack the release tarball
+tar -xzf my-first-lm-v1.0.0-your-platform.tar.gz
+cd my-first-lm-v1.0.0-your-platform
 
-# Generate N-gram statistics from your text file
-./target/release/my_first_lm data/your-text.txt --scale-d 20 -n 2
+# Generate N-gram statistics from the included sample text
+./my_first_lm data/frankenstein.txt -n 2
 
 # Typeset the booklet
 typst compile book.typ book.pdf
 ```
 
 The resulting PDF contains your N-gram model formatted for dice-roll-based text
-generation. For d20 dice, counts are scaled to [1, 20]. For prefixes with many
-followers, multiple dice rolls may be needed (indicated by ♢ markers).
+generation. For all options see `--help`.
 
 ### Input file format
 
@@ -120,14 +101,6 @@ contractions) to keep the model small.
     larger vocabularies
 - `--raw`: Output raw counts without scaling
 
-### Batch processing
-
-The `Makefile` handles multiple texts and formats:
-
-```bash
-make all  # Build all configured texts and sizes
-```
-
 ### How the pipeline works
 
 ```
@@ -141,53 +114,6 @@ and typesets it into a printable booklet with guide words, proper pagination,
 and dice-roll ranges.
 
 For large trigram models, use the `-b` flag to split across multiple books.
-
-## Teaching modules
-
-Structured lesson plans and materials for workshops or courses.
-
-### What's included
-
-The `teaching/` directory contains:
-
-- numbered modules (00-09): landscape PDF cards for workshop handouts
-  ([download modules.pdf](teaching/out/modules.pdf))
-- instructor notes with facilitation guidance
-  ([download instructors-notes.pdf](teaching/out/instructors-notes.pdf))
-- `worksheets/`: blank templates for manual exercises
-  ([download grid.pdf](teaching/out/worksheets/grid.pdf))
-- `draft/`: modules in draft form
-- `runsheets/`: session plans (90min, 3h)
-
-### Quick start
-
-```bash
-# Build all modules
-cd teaching && make modules
-
-# Build single module
-typst compile 00-weighted-randomness.typ output.pdf
-```
-
-Modules are designed to work alongside either the pen-and-paper approach or the
-automated tools, depending on your pedagogical goals.
-
-## How it works
-
-An N-gram language model predicts the next word by looking at the previous N-1
-words. A bigram (N=2) model only needs the current word to predict the next one.
-The model counts how often each word follows another in the training text, then
-uses those counts as probabilities.
-
-For example, if "the" is followed by "cat" 5 times and "dog" 15 times in your
-training text, the model predicts "dog" is three times more likely after "the".
-By scaling these counts to dice ranges, you can physically generate text by
-rolling dice to sample from these probability distributions.
-
-This is fundamentally the same mechanism used by large language models like GPT,
-just at a much smaller scale and with shorter context windows.
-
-## Development
 
 ### Project structure
 
@@ -207,11 +133,6 @@ cargo test
 Tests cover capitalization rules, tokenization edge cases, and full integration
 tests. Test output must be pristine with zero failures.
 
-### Code conventions
-
-Match existing Rust style and patterns. Never commit without running tests. Use
-the `backlog` CLI tool for task management.
-
 ## Citation
 
 If you use these teaching materials, please cite them:
@@ -229,7 +150,7 @@ If you use these teaching materials, please cite them:
 
 ## Author
 
-Ben Swift
+(c) 2025 Ben Swift
 
 This work is a project of the _Cybernetic Studio_ at the
 [ANU School of Cybernetics](https://cybernetics.anu.edu.au).
