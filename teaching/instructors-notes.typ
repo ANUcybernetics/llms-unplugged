@@ -31,11 +31,12 @@ available under a #link(
   "https://creativecommons.org/licenses/by-nc-sa/4.0/",
 )[Creative Commons BY-NC-SA 4.0 License].
 
-The primary teaching materials are the "module cards" (numbered 00-09) at the
-end of this PDF. Each one is a double-sided landscape PDF designed to be used as
-a workshop handout. The first two modules (01 and 02) are pre-requisites for the
-rest and should be done in order, and then the later ones can be done in
-(almost) any order.
+The primary teaching materials are the "module cards" (numbered 00-09) in a
+`modules.pdf` file you should have received alongside this
+`instructor-notes.pdf` one. Each one is a double-sided landscape PDF designed to
+be used as a workshop handout. The first two modules (01 and 02) are
+pre-requisites for the rest and should be done in order, and then the later ones
+can be done in (almost) any order.
 
 Each module card includes these sections:
 
