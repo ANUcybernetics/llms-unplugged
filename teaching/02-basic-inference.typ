@@ -15,7 +15,7 @@
   == You will need
 
   - your completed bigram model (i.e. your filled-out grid) from _Basic
-      Training_
+    Training_
   - d10 (or similar) for weighted sampling
   - pen & paper for writing down the generated "output text"
 
@@ -39,8 +39,7 @@
   + *choose a starting word*---pick any word from the first column of your grid
   + *look at that word's row* to identify all possible next words and their
     counts
-  + *roll dice weighted by the counts* (see the _Weighted Random Sampling_
-    module)
+  + *roll dice weighted by the counts* (see the _Weighted Randomness_ module)
   + *write down the chosen word* and use that as your next starting word
   + *repeat* from step 2 until you reach the desired length _or_ a natural
     stopping point (e.g. a full stop `.`)

@@ -290,7 +290,7 @@ compress training data into billions of parameters.
 The trigram model bridges the gap between simple word-pair models and modern
 transformers:
 
-- *context windows*: current models use variable context from 2 to \~2M
+- *context windows*: current models use variable context up to 2 million tokens
 - *sparse data problem*: with more context, you need exponentially more training
   data
 
@@ -360,6 +360,13 @@ because they both follow `the` and precede `ran` or `sat`. This discovery
 enabled computers to "understand" that words have relationships and meanings
 beyond just their spelling.
 
+Note on the activity: while the module focuses on calculating distances between
+embeddings (the similarity matrix), this is pedagogically deliberate. Embeddings
+themselves are just rows of numbers, but distances reveal the relationships
+between words---which is what makes embeddings useful in practice. The activity
+emphasises the practical application of embeddings rather than just their
+construction.
+
 == 07. Sampling strategies
 
 === Discussion questions
@@ -371,14 +378,16 @@ beyond just their spelling.
 
 === Connection to current LLMs
 
-Current LLMs use these same mechanisms:
+Current LLMs use these same mechanisms, though the specific strategies differ:
 
 *Temperature control*:
 
 - *temperature parameter*: divides probabilities just like you divide tallies;
   higher temperature means more random output
+- the module uses manual temperature adjustment, while LLMs do this
+  computationally before every token
 
-*Truncation techniques*:
+*Truncation techniques in modern LLMs*:
 
 - *top-k sampling*: only consider k most likely tokens (truncates rest to zero)
 - *top-p (nucleus) sampling*: consider tokens until cumulative probability
@@ -386,6 +395,14 @@ Current LLMs use these same mechanisms:
 - *repetition penalty*: discourage repeating recent tokens
 - *frequency penalty*: discourage common tokens
 - *presence penalty*: discourage any repetition
+
+*Truncation techniques in this module*:
+
+The module presents different strategies (greedy, haiku, non-sequitur,
+no-repeat, alliteration) that are designed to be performed manually with dice
+rather than computationally. While these aren't the exact techniques used in
+modern LLMs, they demonstrate the same core principle: you can dramatically
+change output behaviour by changing the sampling rules, not the model itself.
 
 Your paper model demonstrates that "creativity" in AI comes from two controls:
 adjusting temperature (probability distribution shape) and applying truncation
