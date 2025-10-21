@@ -4,8 +4,24 @@
 # ///
 
 """
-Bigram counter that uses the Rust CLI tool to generate bigram data,
-then formats it as a tab-separated table for spreadsheet use.
+Bigram counter for manual worksheet creation.
+
+This script processes a text file through the my_first_lm Rust tool to generate
+bigram statistics, then outputs them as a tab-separated table suitable for
+importing into spreadsheet applications. This is useful for creating manual
+bigram worksheets where students can work with the data directly.
+
+The output format is a matrix where:
+- The first row contains the vocabulary (all unique words)
+- The first column contains the vocabulary (all unique words)
+- Each cell (i,j) contains the cumulative count of bigrams from word i up to
+  and including word j
+- Empty cells indicate zero counts
+
+Usage:
+    ./bigram_counter.py data/frankenstein.txt > bigrams.tsv
+
+The script will automatically build the Rust tool if it's not already compiled.
 """
 
 import json
