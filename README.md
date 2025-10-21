@@ -219,7 +219,7 @@ If you use these teaching materials, please cite them:
 ```bibtex
 @misc{swift2025myfirstlm,
   author = {Swift, Ben},
-  title = {My First LM: Teaching N-gram Language Models from Scratch},
+  title = {My First Language Model: Understanding how AI language models work starts with building one yourself.},
   year = {2025},
   publisher = {Zenodo},
   doi = {10.5281/zenodo.17403824},
