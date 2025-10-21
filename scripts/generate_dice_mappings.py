@@ -4,6 +4,29 @@
 # dependencies = []
 # ///
 
+"""
+Generate dice-mapping visualization SVGs for teaching materials.
+
+This script creates SVG diagrams that show how to map dice rolls to N-gram
+groups when the vocabulary size doesn't perfectly match the die size. These
+visualizations help students understand how to handle situations where you need
+to map, for example, 7 options onto a d10 die.
+
+The output shows different partitioning strategies across multiple rows, with
+each row representing a different number of groups. The script automatically
+determines whether to use grouped partitions (for fewer groups) or direct
+one-to-one mappings with disabled values (for many groups).
+
+Usage:
+    generate_dice_mappings.py -d <dice_sides> -g <range> -o <output.svg>
+
+Examples:
+    generate_dice_mappings.py -d 10 -g 2-9 -o dice-d10.svg
+    generate_dice_mappings.py -d 20 -g 2-15 -o dice-d20.svg --start-index 0
+
+The SVGs are designed for inclusion in teaching modules and worksheets.
+"""
+
 import argparse
 from dataclasses import dataclass
 

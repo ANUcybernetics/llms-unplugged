@@ -1,9 +1,27 @@
 #!/usr/bin/env python3
-"""Build n-gram books from text files based on filename pattern.
+"""
+Automated N-gram booklet builder.
 
-Usage: build_books.py <target> <input_file> [--json-only | --pdf-only]
-Target format: name-n-books
-Example: frankenstein-3-2 (trigrams, 2 books)
+This script automates the pipeline for generating N-gram model booklets from
+text files. It handles the full workflow: running the Rust tool to generate
+N-gram statistics, then using Typst to compile those statistics into printable
+PDF booklets.
+
+The script uses a target naming pattern to determine output configuration:
+  Target format: name-n-books
+  Example: frankenstein-3-2 means trigrams split across 2 books
+
+This is useful for batch processing multiple texts or configurations. For large
+trigram models, splitting across multiple books keeps each volume manageable.
+
+Usage:
+    build_books.py <target> <input_file> [--json-only | --pdf-only]
+
+Examples:
+    build_books.py frankenstein-2-1 data/frankenstein.txt
+    build_books.py onegin-3-4 data/onegin.txt --json-only
+
+The script creates output in out/json/ and out/pdf/ directories.
 """
 
 import json
