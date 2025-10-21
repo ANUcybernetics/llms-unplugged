@@ -147,8 +147,9 @@ Structured lesson plans and materials for workshops or courses.
 
 The `teaching/` directory contains:
 
-- numbered modules (00-09): landscape PDF cards for workshop handouts
-- `worksheets/`: blank templates for manual exercises
+- numbered modules (00-09): landscape PDF cards for workshop handouts ([download modules.pdf](teaching/out/modules.pdf))
+- instructor notes with facilitation guidance ([download instructors-notes.pdf](teaching/out/instructors-notes.pdf))
+- `worksheets/`: blank templates for manual exercises ([download grid.pdf](teaching/out/worksheets/grid.pdf))
 - `draft/`: modules in draft form
 - `runsheets/`: session plans (90min, 3h)
 
