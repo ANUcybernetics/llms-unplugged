@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use these teaching materials, please cite them as below."
-title: "My First LM: Teaching N-gram Language Models from Scratch"
+title: "My First Language Model: Understand how AI language models work by building one yourself."
 abstract: "Educational materials for teaching how AI language models work by building N-gram models from scratch. Includes structured lesson plans, workshop modules, pen-and-paper exercises with grid templates, and supporting software tools (Rust CLI) that generate dice-powered text generation booklets. A Cybernetic Studio project."
 authors:
   - family-names: Swift

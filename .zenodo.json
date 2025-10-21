@@ -1,5 +1,5 @@
 {
-  "title": "My First Language Model: Understanding how AI language models work starts with building one yourself.",
+  "title": "My First Language Model: Understand how AI language models work by building one yourself.",
   "description": "Educational materials for teaching how AI language models work by building N-gram models from scratch. Includes structured lesson plans, workshop modules, pen-and-paper exercises with grid templates, and supporting software tools (Rust CLI) that generate dice-powered text generation booklets. A Cybernetic Studio project.",
   "creators": [
     {
