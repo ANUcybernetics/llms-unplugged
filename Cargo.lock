@@ -417,7 +417,7 @@ dependencies = [
 
 [[package]]
 name = "my_first_lm"
-version = "0.1.0"
+version = "1.1.0"
 dependencies = [
  "clap",
  "frontmatter-gen",
