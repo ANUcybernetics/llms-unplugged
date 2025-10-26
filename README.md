@@ -56,6 +56,14 @@ You'll need:
 - [Rust toolchain](https://rustup.rs/) (optional---only if you want to modify
   the tool)
 
+> **NOTE:** currently the Typst files import an "ANU template", which _isn't_ in
+> this repo. The content is all there, and it'd would be trivial to tweak the
+> files to use a different while keeping the content, but I (Ben) haven't got
+> around to it yet... So if you try to compile a module booklet and get an error
+> like `error: package not found (searched for @local/anu-typst-template:0.2.0)`
+> then that's why. In the meantime, the
+> [ready-to-go pdf link](teaching/out/modules.pdf) above works fine.
+
 ### Quickstart
 
 If you've downloaded the release tarball:
