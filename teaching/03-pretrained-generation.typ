@@ -6,7 +6,7 @@
 #show: module-setup
 
 #module-hero(
-  "Pre-trained Model Inference",
+  "Pre-trained Model Generation",
   "images/CYBERNETICS_B_033.jpg",
   "03",
 )[

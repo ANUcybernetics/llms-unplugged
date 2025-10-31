@@ -6,7 +6,7 @@
 #show: module-setup
 
 #module-hero(
-  "Basic Inference",
+  "Basic Generation",
   "images/CYBERNETICS_A_020.jpg",
   "02",
 )[
@@ -85,5 +85,5 @@
   - let's say dice picks `see`; write it down
   - `see` → `spot`; it's the only option, so write down `spot`... and so on
 
-  After the above steps, the full output text is _"see spot run. see spot"_
+  After the above steps, the generated text is _"see spot run. see spot"_
 ]

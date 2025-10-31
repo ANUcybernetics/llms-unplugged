@@ -43,11 +43,11 @@
 
     - start with a new grid (same columns as the base model)
     - process your new domain-specific text using the same algorithm as _Basic
-        Training_, but only include rows for words that appear in your new text
+      Training_, but only include rows for words that appear in your new text
 
   + *apply the adaptation*:
 
-    - as per _Basic Inference_, but add the counts from both grids (if current
+    - as per _Basic Generation_, but add the counts from both grids (if current
       word is in the LoRA grid)
     - optionally scale the LoRA values up or down to control adaptation strength
 

@@ -28,7 +28,7 @@ code.
 ## Success criteria
 
 - All markdown files in docs/modules/ converted to pure typst (11 files total:
-  00-weighted-randomness, 01-basic-training, 02-basic-inference, 03-trigram,
+  00-weighted-randomness, 01-basic-training, 02-basic-generation, 03-trigram,
   04-context-columns, 05-embeddings, 06-sampling-strategies, 07-evaluation,
   glossary, poetry-slam, instructors-notes)
 - Modules use the anu template for consistent styling
@@ -85,7 +85,7 @@ code.
 3. Test build process with single converted file
 4. Convert all remaining .md files in docs/modules/ to .typ format:
    - 00-weighted-randomness.md
-   - 02-basic-inference.md
+   - 02-basic-generation.md
    - 03-trigram.md
    - 04-context-columns.md
    - 05-embeddings.md

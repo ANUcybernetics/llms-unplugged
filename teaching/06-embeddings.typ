@@ -18,7 +18,7 @@
   - your completed bigram model grid (including context columns if you have
     them)
   - another empty grid (same size as your bigram model)
-  - pen, paper & dice as per _Basic Inference_
+  - pen, paper & dice as per _Basic Generation_
 
   == Your goal
 

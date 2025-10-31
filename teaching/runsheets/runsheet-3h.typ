@@ -35,7 +35,7 @@
 == *#t(15)* Basic training
 // - LoLM: training, model, token, vocabulary
 
-== *#t(30)* Basic inference
+== *#t(30)* Basic generation
 // - LoLM: prompt, completion/response/prediction
 
 == *#t(45)* Go large

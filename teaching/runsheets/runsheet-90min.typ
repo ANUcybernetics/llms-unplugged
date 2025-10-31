@@ -47,7 +47,7 @@
 - group activity (10mins)
 - LoLM: training, model, token, vocabulary (5mins)
 
-== *#t(40)* Basic inference
+== *#t(40)* Basic generation
 
 - demo (5mins)
 - group activity (10mins)

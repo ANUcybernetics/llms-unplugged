@@ -39,7 +39,7 @@
 
   + *generate synthetic text*:
 
-    - use your existing model to generate text (as in Basic Inference)
+    - use your existing model to generate text (as in Basic Generation)
     - generate enough text for meaningful training (at least 50-100 words)
     - this is your _synthetic training corpus_
 
@@ -52,7 +52,7 @@
   + *compare the models*:
 
     - look for words that appear in the original but not in generation 2
-    - compare the relative frequencies (counts) in cells that appear in both
+    - compare the counts for cells that appear in both
     - generate text from both models and compare the outputs
 
   #colbreak()

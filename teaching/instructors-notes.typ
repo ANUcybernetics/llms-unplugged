@@ -59,10 +59,11 @@ The activities in these modules demonstrate the fundamental operations of
 language models. The main advances in modern AI come from doing these same
 operations at massive scale with learned (rather than hand-crafted) patterns.
 
-The primary learning outcome is that students will understand that language
-models---whether ChatGPT or their hand-built version---work the same way: they
-learn by counting patterns in text, then generate new text by repeatedly making
-random choices weighted by what they've seen before.
+The primary learning outcome for this material is straightforward: students
+understand that language models---whether ChatGPT or their hand-built
+version---work the same way. They learn by keeping track of the patterns in
+existing text, then generate new text by repeatedly making random choices
+weighted by what they've seen before.
 
 In addition, students will gain the following key insights as to how modern LLMs
 work (in reference to the activities they'll do themselves in these modules):
@@ -211,7 +212,7 @@ The key insight: "training" a language model means counting patterns in text.
 Your hand-built model contains the same type of information that current LLMs
 store---at a vastly smaller scale.
 
-== 02. Basic inference
+== 02. Basic generation
 
 === Discussion questions
 
@@ -242,7 +243,12 @@ language models can be creative rather than repetitive. These physical sampling
 methods demonstrate the exact mathematical operation happening billions of times
 per second inside modern language models.
 
-== 03. Pre-trained model inference
+Note: in AI/ML more broadly, this process of using a trained model to produce
+outputs is commonly called "inference"---you may encounter this term in other
+contexts. In these teaching resources we use "generation" specifically because
+it more clearly describes what language models do: they generate text.
+
+== 03. Pre-trained model generation
 
 === Discussion questions
 
@@ -260,21 +266,21 @@ This module demonstrates the foundation of how people interact with modern AI:
 
 - *pre-training*: companies train massive models on huge text corpora (like your
   booklet model, but with trillions of words)
-- *inference as a service*: users generate text without seeing or modifying the
+- *LLM-as-a-service*: users generate text without seeing or modifying the
   underlying model (just like using the booklet)
 - *model distribution*: the booklet format shows how models can be packaged and
   shared---current LLMs are distributed as parameter files
-- *deterministic inference*: given the same starting word and dice rolls, you
+- *deterministic generation*: given the same starting word and dice rolls, you
   get the same output (though randomness creates variety between runs)
 
-The key insight: training and inference are separate processes. Most AI users
-never train models---they use pre-trained ones through APIs or interfaces. Your
-hand-built model from _Basic Training_ gives you insight into what's inside the
-booklet, but you don't need that knowledge to generate text. This separation is
-why companies like OpenAI can provide AI services: they do the expensive
-training once, then millions of users perform inference. The booklet captures
-thousands of training examples in a portable format, just as neural networks
-compress training data into billions of parameters.
+The key insight: training and text generation are separate processes. Most AI
+users never train models---they use pre-trained ones through APIs or interfaces.
+Your hand-built model from _Basic Training_ gives you insight into what's inside
+the booklet, but you don't need that knowledge to generate text. This separation
+is why companies like OpenAI can provide AI services: they do the expensive
+training once, then millions of users perform text generation. The booklet
+captures thousands of training examples in a portable format, just as neural
+networks compress training data into billions of parameters.
 
 == 04. Trigram model
 
@@ -506,15 +512,17 @@ technical terms used in modern language models.
 - *training*: the process of counting patterns in text to build your grid---when
   you tallied word transitions, you were "training" your model
 - *inference*: using your trained model to generate new text---rolling dice to
-  select the next word is inference
+  select the next word is inference (note: in these teaching resources, we call
+  this process "text generation" or just "generation" because it more clearly
+  describes what language models do)
 - *vocabulary*: all unique tokens your model knows---the words across the top
   and side of your grid form your vocabulary
 - *parameters*: the numbers stored in the model---each tally mark in your grid
   is a parameter. Large models have hundreds of billions of parameters.
 - *fine-tuning*: additional training on specific text, e.g. adding more tallies
   to your grid from a new text source
-- *prompt*: the starting text you give the model; your initial "starting work"
-  word when generating text in the inference phase
+- *prompt*: the starting text you give the model; your initial "starting word"
+  when generating text
 - *tokenisation*: breaking text into tokens---when you separated "See Spot run."
   into `see` `spot` `run` `.`, you were tokenising
 - *bigram model*: a model that predicts the next word based on _one_ previous

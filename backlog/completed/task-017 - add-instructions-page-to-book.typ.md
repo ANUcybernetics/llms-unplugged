@@ -12,7 +12,7 @@ In @book.typ after the copyright page there should be an instructions page on
 how to use the book to generate new text.
 
 It could be based on the algorighm/instructions section in
-@02-basic-inference.typ, but specifically tailored for this book (with examples
+@02-basic-generation.typ, but specifically tailored for this book (with examples
 of e.g. how to interpret the "3♢" indicators and roll multiple d10s, then find
 the next word).
 

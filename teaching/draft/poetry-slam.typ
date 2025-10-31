@@ -16,7 +16,7 @@
 
 A flexible culminating activity where teams compete to generate the best beat
 poetry from their hand-built language models. This Poetry Slam can be run after
-completing module 02 (Basic Inference) or any later module, allowing
+completing module 02 (Basic Generation) or any later module, allowing
 participants to showcase whatever techniques they've learned so far. The
 activity scales naturally - teams with more modules completed have more tools
 available, but creative use of basic techniques can still win!
@@ -27,7 +27,7 @@ Minimum requirements:
 
 - Weighted Random Sampling (module 00)
 - Basic Training (module 01)
-- Basic Inference (module 02)
+- Basic Generation (module 02)
 
 But you can also incorporate techniques from any of the subsequent modules.
 
@@ -72,7 +72,7 @@ But you can also incorporate techniques from any of the subsequent modules.
 
 === Team A (modules 01-02 only):
 
-- *modules completed*: basic training + inference
+- *modules completed*: basic training + generation
 - *strategy*: creative prompt chaining
 - *result*: "run spot see jump play fast run"
 - *technique*: carefully selected starting words for variety

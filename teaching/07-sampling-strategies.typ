@@ -16,20 +16,20 @@
   == You will need
 
   - a completed model from an earlier module
-  - pen, paper & dice as per _Basic Inference_
+  - pen, paper & dice as per _Basic Generation_
 
   == Your goal
 
   To generate text (with the same model) using at least two different
   temperature values and at least two different truncation strategies. *Stretch
-    goal*: design and evaluate your own truncation strategy.
+  goal*: design and evaluate your own truncation strategy.
 
   == Key idea
 
   There are lots of different sampling algorithms---ways to select the next word
-  during inference (text generation). Each strategy has different strengths and
-  weaknesses, and can significantly influence the generated text even if the
-  rest of the model is identical.
+  during text generation. Each strategy has different strengths and weaknesses,
+  and can significantly influence the generated text even if the rest of the
+  model is identical.
 ]
 
 // Temperature section in two columns

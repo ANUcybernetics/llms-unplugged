@@ -16,7 +16,7 @@
   == You will need
 
   - your completed bigram model from _Basic Training_
-  - pen, paper & dice as per _Basic Inference_
+  - pen, paper & dice as per _Basic Generation_
 
   == Your goal
 
@@ -41,7 +41,7 @@
     == Algorithm (training)
 
     + *add context columns* to your existing bigram model: _after verb_, _after
-        pronoun_ and _after preposition_
+      pronoun_ and _after preposition_
     + proceed as per _Basic Training_, but each time after updating the cell
       count for a word pair:
       - if the first word is a verb, increment the value in the second word's
@@ -133,9 +133,9 @@
 // Gold horizontal rule
 #line(length: 100%, stroke: (paint: anu-colors.gold, thickness: 1pt))
 
-// Inference section in two columns
+// Generation section in two columns
 #columns(2, gutter: 1em)[
-  == Algorithm (inference)
+  == Algorithm (generation)
 
   + *choose a starting word*
   + check its row to identify the "normal" transition counts, but _also_ check
@@ -150,7 +150,7 @@
 
   #colbreak()
 
-  == Example (inference)
+  == Example (generation)
 
   Starting word: `run` (a verb):
 
