@@ -77,4 +77,6 @@ practical, hands-on lens.
 
 ## Licence
 
-This website source (c) Ben Swift, MIT
+Website source (c) Ben Swift, MIT
+
+Module/instructor notes pdf files CC BY-SA-NC 4.0
