@@ -1,9 +1,10 @@
 ---
 id: task-7
 title: central location for resource links
-status: To Do
+status: Done
 assignee: []
-created_date: "2025-11-18 20:49"
+created_date: '2025-11-18 20:49'
+updated_date: '2025-11-18 21:14'
 labels: []
 dependencies: []
 ---

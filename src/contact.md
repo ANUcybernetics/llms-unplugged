@@ -27,14 +27,10 @@ hear from you.
 
 All materials are available under a
 [Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-at
-[github.com/ANUcybernetics/my-first-lm](https://github.com/ANUcybernetics/my-first-lm),
-and includes:
+at [github.com/ANUcybernetics/my-first-lm]({{ links.github }}), and includes:
 
-- [Module cards](https://github.com/ANUcybernetics/my-first-lm/blob/main/teaching/out/modules.pdf)
-  (printable PDF handouts)
-- [Instructor notes](https://github.com/ANUcybernetics/my-first-lm/blob/main/teaching/out/instructors-notes.pdf)
-  with pedagogical scaffolding
+- [Module cards]({{ links.modules }}) (printable PDF handouts)
+- [Instructor notes]({{ links.instructor_notes }}) with pedagogical scaffolding
 - Software tools (MIT licensed) for generating custom n-gram booklets
 
 We encourage educators to use, adapt, and improve the material. If you've made

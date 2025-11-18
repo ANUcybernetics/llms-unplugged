@@ -10,8 +10,8 @@ Ready-to-use teaching resources for understanding how large language models
 
 If you're just here for the resources, here they are:
 
-- **[Module cards](https://github.com/ANUcybernetics/my-first-lm/blob/main/teaching/out/modules.pdf)**
-- **[Instructor notes](https://github.com/ANUcybernetics/my-first-lm/blob/main/teaching/out/instructors-notes.pdf)**
+- **[Module cards]({{ links.modules }})**
+- **[Instructor notes]({{ links.instructor_notes }})**
 
 ## What is this?
 
@@ -53,17 +53,15 @@ systems they may have previously thought of as almost magical.
 
 The complete resource pack is available under a
 [Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-at
-[github.com/ANUcybernetics/my-first-lm](https://github.com/ANUcybernetics/my-first-lm):
+at [github.com/ANUcybernetics/my-first-lm]({{ links.github }}):
 
-- **[Module cards](https://github.com/ANUcybernetics/my-first-lm/blob/main/teaching/out/modules.pdf)**:
-  ten double-sided printable handouts, each covering a self-contained activity
-  from basic training and generation through to advanced concepts like
-  embeddings, sampling strategies, and low-rank adaptation
-- **[Instructor notes](https://github.com/ANUcybernetics/my-first-lm/blob/main/teaching/out/instructors-notes.pdf)**:
-  pedagogical scaffolding explaining connections to modern LLMs, discussion
-  questions, and historical context---designed for educators without deep AI
-  expertise
+- **[Module cards]({{ links.modules }})**: ten double-sided printable handouts,
+  each covering a self-contained activity from basic training and generation
+  through to advanced concepts like embeddings, sampling strategies, and
+  low-rank adaptation
+- **[Instructor notes]({{ links.instructor_notes }})**: pedagogical scaffolding
+  explaining connections to modern LLMs, discussion questions, and historical
+  context---designed for educators without deep AI expertise
 - **Software tools**: optional open-source tools to create custom n-gram
   booklets from any text corpus, so you can build domain-specific pre-trained
   models
@@ -75,10 +73,9 @@ particularly engaged audience.
 
 ## Getting started
 
-Follow the links above (or visit the
-[GitHub repository](https://github.com/ANUcybernetics/my-first-lm)) to download
-the materials and start running your own workshops. The modular design means you
-can scale content up or down based on available time and audience
+Follow the links above (or visit the [GitHub repository]({{ links.github }})) to
+download the materials and start running your own workshops. The modular design
+means you can scale content up or down based on available time and audience
 sophistication.
 
 As LLMs become increasingly central to how we work with text and interact with
