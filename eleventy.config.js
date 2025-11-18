@@ -7,6 +7,15 @@ import interlinker from "@photogabble/eleventy-plugin-interlinker";
 import llmsPlugin from "./eleventy-plugin-llms.js";
 
 export default function (eleventyConfig) {
+  // Global site data available in all templates as `site`
+  eleventyConfig.addGlobalData("site", {
+    name: "LLMs Unplugged",
+    url: "https://www.llmsunplugged.org",
+    repository: "https://github.com/ANUcybernetics/llms-unplugged",
+    description:
+      "Ready-to-use teaching resources for understanding how large language models work through hands-on activities.",
+  });
+
   eleventyConfig.addPassthroughCopy("src/assets");
 
   // Configure markdown-it with typographer for em dashes and smart quotes
