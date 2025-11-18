@@ -13,6 +13,8 @@ If you're just here for the resources, here they are:
 - **[Module cards]({{ links.modules }})**
 - **[Instructor notes]({{ links.instructor_notes }})**
 
+![LLMs Unplugged workshop](/assets/images/sxsw-2.jpg)
+
 ## What is this?
 
 ChatGPT arrived in November 2022 and suddenly everyone's using LLMs. Yet most
@@ -50,6 +52,8 @@ consistently helps people build new mental models of how LLMs work, demystifying
 systems they may have previously thought of as almost magical.
 
 ## What's included?
+
+![LLMs Unplugged workshop](/assets/images/sxsw-1.jpg)
 
 The complete resource pack is available under a
 [Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/)
