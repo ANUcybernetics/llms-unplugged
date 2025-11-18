@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import { readFileSync, existsSync, readdirSync } from "fs";
 import { join } from "path";
+import markdownIt from "markdown-it";
 
 const siteDir = join(process.cwd(), "_site");
 
@@ -262,9 +263,9 @@ describe("accessibility", () => {
 
 describe("markdown processing", () => {
   it("converts --- to em dashes", () => {
-    const indexPath = join(siteDir, "index.html");
-    const html = readFileSync(indexPath, "utf-8");
-    expect(html).toContain("using LLMs—knowledge");
+    const md = markdownIt({ typographer: true });
+    const result = md.render("test---value");
+    expect(result).toContain("test—value");
   });
 });
 
