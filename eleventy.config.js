@@ -1,5 +1,6 @@
 import EleventyVitePlugin from "@11ty/eleventy-plugin-vite";
 import tailwindcss from "@tailwindcss/vite";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 import markdownIt from "markdown-it";
 import markdownItFootnote from "markdown-it-footnote";
 import interlinker from "@photogabble/eleventy-plugin-interlinker";
@@ -40,7 +41,17 @@ export default function (eleventyConfig) {
     viteOptions: {
       base: "/",
       publicDir: ".llms-generated",
-      plugins: [tailwindcss()],
+      plugins: [
+        tailwindcss(),
+        viteStaticCopy({
+          targets: [
+            {
+              src: "../src/assets/pdfs/*",
+              dest: "assets/pdfs",
+            },
+          ],
+        }),
+      ],
       build: {
         rollupOptions: {
           input: {
