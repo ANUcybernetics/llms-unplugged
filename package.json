@@ -1,8 +1,14 @@
 {
   "name": "llms-unplugged",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Static website for LLMs Unplugged teaching resources",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ANUcybernetics/llms-unplugged"
+  },
+  "homepage": "https://www.llmsunplugged.org",
+  "author": "ANU School of Cybernetics",
+  "license": "MIT",
   "scripts": {
     "dev": "eleventy --serve",
     "build": "eleventy",
@@ -13,8 +19,6 @@
     "lighthouse:ci": "npm run build && unlighthouse-ci --site ./_site"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
   "type": "module",
   "dependencies": {
     "@11ty/eleventy": "^3.1.2",

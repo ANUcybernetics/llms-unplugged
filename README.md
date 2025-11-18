@@ -74,3 +74,7 @@ src/
 
 LLMs Unplugged is a resource exploring large language models and AI through a
 practical, hands-on lens.
+
+## Licence
+
+This website source (c) Ben Swift, MIT
