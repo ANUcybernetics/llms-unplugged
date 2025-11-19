@@ -5,7 +5,6 @@ use std::collections::VecDeque;
 use std::fs::File;
 use std::io;
 use std::path::Path;
-use std::process::Command;
 
 // New module declarations
 mod preprocessor;
@@ -41,8 +40,8 @@ pub struct Metadata {
     /// Scale_d value used for dice scaling (None if raw mode)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub scale_d: Option<u32>,
-    /// Git revision of the build
-    pub git_revision: String,
+    /// CLI version used to generate this model
+    pub version: String,
     /// Summary statistics for the processed text
     #[serde(skip_serializing_if = "Option::is_none")]
     pub stats: Option<ProcessingStats>,
@@ -229,9 +228,9 @@ impl NGramCounter {
                         url: url.to_string(),
                         n: self.n,
                         subtitle: format!("A {} language model", model_type_str(self.n)),
-                        scale_d: None,               // Will be set during save_to_json
-                        git_revision: String::new(), // Will be set during save_to_json
-                        stats: None,                 // Will be set during save_to_json
+                        scale_d: None, // Will be set during save_to_json
+                        version: env!("CARGO_PKG_VERSION").to_string(),
+                        stats: None, // Will be set during save_to_json
                     });
                 } else {
                     // Missing required fields, return error
@@ -437,46 +436,6 @@ fn convert_to_entries(
             }
         })
         .collect()
-}
-
-/// Gets the current git revision string (commit SHA)
-fn get_git_revision() -> io::Result<String> {
-    // Check if we're in a git repository using git rev-parse
-    let check_output = Command::new("git")
-        .args(["rev-parse", "--is-inside-work-tree"])
-        .output();
-
-    match check_output {
-        Ok(output) if output.status.success() => {}
-        _ => {
-            return Err(io::Error::new(
-                io::ErrorKind::Other,
-                "Not in a git repository. Cannot determine build revision.",
-            ));
-        }
-    }
-
-    // Get the short commit SHA
-    let output = Command::new("git")
-        .args(["rev-parse", "--short", "HEAD"])
-        .output()
-        .map_err(|e| io::Error::new(io::ErrorKind::Other, format!("Failed to run git: {}", e)))?;
-
-    if !output.status.success() {
-        return Err(io::Error::new(
-            io::ErrorKind::Other,
-            "Failed to get git revision. Ensure this is a git repository.",
-        ));
-    }
-
-    String::from_utf8(output.stdout)
-        .map_err(|e| {
-            io::Error::new(
-                io::ErrorKind::InvalidData,
-                format!("Invalid UTF-8 in git output: {}", e),
-            )
-        })
-        .map(|s| s.trim().to_string())
 }
 
 /// Splits entries into multiple books based on estimated rendered size
@@ -787,12 +746,11 @@ pub fn save_to_json<P: AsRef<Path>>(
 
     // Add metadata if available
     if let Some(meta) = metadata {
-        // Clone metadata and set scale_d if not in raw mode, add git revision, and add stats
+        // Clone metadata and set scale_d if not in raw mode, and add stats
         let mut meta_with_scale = meta.clone();
         if !raw {
             meta_with_scale.scale_d = scale_d;
         }
-        meta_with_scale.git_revision = get_git_revision()?;
         meta_with_scale.stats = stats.cloned();
         output.insert(
             "metadata".to_string(),
@@ -1095,7 +1053,7 @@ mod tests {
             n: 2,
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
-            git_revision: "test-rev".to_string(),
+            version: "test".to_string(),
             stats: None,
         };
 
@@ -1210,7 +1168,7 @@ mod tests {
             n: 3,
             subtitle: "A trigram language model".to_string(),
             scale_d: None,
-            git_revision: "test-rev".to_string(),
+            version: "test".to_string(),
             stats: None,
         };
 
@@ -1318,7 +1276,7 @@ mod tests {
             n: 2,
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
-            git_revision: "test-rev".to_string(),
+            version: "test".to_string(),
             stats: None,
         };
 
@@ -1424,7 +1382,7 @@ mod tests {
             n: 2,
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
-            git_revision: "test-rev".to_string(),
+            version: "test".to_string(),
             stats: None,
         };
 
@@ -1474,7 +1432,7 @@ mod tests {
             n: 2,
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
-            git_revision: "test-rev".to_string(),
+            version: "test".to_string(),
             stats: None,
         };
 
@@ -1535,7 +1493,7 @@ mod tests {
             n: 2,
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
-            git_revision: "test-rev".to_string(),
+            version: "test".to_string(),
             stats: None,
         };
 
@@ -1600,7 +1558,7 @@ mod tests {
             n: 2,
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
-            git_revision: "test-rev".to_string(),
+            version: "test".to_string(),
             stats: None,
         };
 
@@ -1640,7 +1598,7 @@ mod tests {
             n: 2,
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
-            git_revision: "test-rev".to_string(),
+            version: "test".to_string(),
             stats: None,
         };
 
@@ -1700,7 +1658,7 @@ mod tests {
             n: 2,
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
-            git_revision: "test-rev".to_string(),
+            version: "test".to_string(),
             stats: None,
         };
 
@@ -1759,7 +1717,7 @@ mod tests {
             n: 2,
             subtitle: "A bigram language model".to_string(),
             scale_d: None,
-            git_revision: "test-rev".to_string(),
+            version: "test".to_string(),
             stats: None,
         };
 

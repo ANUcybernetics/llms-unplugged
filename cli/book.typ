@@ -168,8 +168,8 @@
       Credits: designed and built by Ben Swift for the Cybernetic Studio.
       Typeset in #link("https://github.com/alerque/libertinus")[Libertinus]
       using #link("https://typst.app")[Typst]. The source code for the tool used
-      to create this model (rev #context raw(doc_metadata.git_revision)) is
-      available under an MIT Licence from #link(
+      to create this model (v#context raw(doc_metadata.version)) is available
+      under an MIT Licence from #link(
         "https://github.com/ANUcybernetics/llms-unplugged",
       )[`https://github.com/ANUcybernetics/llms-unplugged`].
 
