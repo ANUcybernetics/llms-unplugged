@@ -1,10 +1,11 @@
 ---
-id: task-17
+id: task-030
 title: move instructor notes back to md
 status: To Do
 assignee: []
-created_date: '2025-11-19 09:54'
-labels: []
+created_date: '2025-11-19 21:21'
+labels:
+  - teaching
 dependencies: []
 ---
 

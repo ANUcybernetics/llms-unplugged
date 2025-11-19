@@ -1,10 +1,11 @@
 ---
-id: task-13
+id: task-026
 title: check if plausible is tracking downloads
 status: To Do
 assignee: []
-created_date: '2025-11-19 06:07'
-labels: []
+created_date: '2025-11-19 21:21'
+labels:
+  - website
 dependencies: []
 ---
 
