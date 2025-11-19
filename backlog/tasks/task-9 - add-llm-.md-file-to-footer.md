@@ -1,9 +1,10 @@
 ---
 id: task-9
 title: add llm .md file to footer
-status: To Do
+status: Done
 assignee: []
-created_date: "2025-11-18 23:56"
+created_date: '2025-11-18 23:56'
+updated_date: '2025-11-19 00:04'
 labels: []
 dependencies: []
 ---
