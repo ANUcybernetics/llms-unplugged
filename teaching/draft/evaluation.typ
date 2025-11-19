@@ -6,7 +6,7 @@
 #show: module-setup
 
 = Model Evaluation
-_My First LM Module #7_
+_LLMs Unplugged Module #7_
 
 // NOTE: not sure if we'll ever use this one
 

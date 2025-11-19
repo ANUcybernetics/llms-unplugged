@@ -57,7 +57,7 @@ systems they may have previously thought of as almost magical.
 
 The complete resource pack is available under a
 [Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-at [github.com/ANUcybernetics/my-first-lm]({{ links.github }}):
+at [github.com/ANUcybernetics/llms-unplugged]({{ links.github }}):
 
 - **[Module cards]({{ links.modules }})**: ten double-sided printable handouts,
   each covering a self-contained activity from basic training and generation

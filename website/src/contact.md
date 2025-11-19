@@ -20,7 +20,7 @@ real learners has been invaluable.
 
 All materials are available under a
 [Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-at [github.com/ANUcybernetics/my-first-lm]({{ links.github }}), and includes:
+at [github.com/ANUcybernetics/llms-unplugged]({{ links.github }}), and includes:
 
 - [Module cards]({{ links.modules }}) (printable PDF handouts)
 - [Instructor notes]({{ links.instructor_notes }}) with pedagogical scaffolding

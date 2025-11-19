@@ -4,7 +4,7 @@
 #import "utils.typ": *
 
 #show: anu.with(
-  title: [My First Language Model],
+  title: [LLMs Unplugged],
   subtitle: [Instructor Notes],
   author: [Ben Swift],
   footer_text: "© 2025 Ben Swift | CC BY-NC-SA 4.0",
@@ -21,8 +21,8 @@
 
 = Overview
 
-These instructor notes accompany the _My First Language Model_ teaching project
-for building language models from scratch using both manual (pen-and-paper) and
+These instructor notes accompany the _LLMs Unplugged_ teaching project for
+building language models from scratch using both manual (pen-and-paper) and
 automated approaches. They are designed to give students hands-on understanding
 of how large language models (LLMs) work by having them create working models
 themselves---either in 20 minutes with grid paper and dice, or through automated
@@ -94,7 +94,7 @@ background in LLMs/AI/Machine Learning is required.
 
 The software tools used to produce all these materials are available at on
 GitHub at #link(
-  "https://github.com/ANUcybernetics/my-first-lm",
+  "https://github.com/ANUcybernetics/llms-unplugged",
 ). This work is part of the #link(
   "https://cybernetics.anu.edu.au/cybernetic-studio/",
 )[Cybernetic Studio's] _Human-Scale AI_ project. If you've got questions or if

@@ -170,7 +170,7 @@
 }
 
 #show: doc => anu(
-  title: "My First Language Model",
+  title: "LLMs Unplugged",
   paper: "a3",
   footer_text: text(
     font: "Neon Tubes 2",

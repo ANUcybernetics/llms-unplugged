@@ -4,7 +4,7 @@
 #import "@local/anu-typst-template:0.2.0": *
 
 #show: anu.with(
-  title: "My First LM Summary",
+  title: "LLMs Unplugged Summary",
   subtitle: "Summary of all generated language model books",
 )
 

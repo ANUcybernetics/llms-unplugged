@@ -170,8 +170,8 @@
       using #link("https://typst.app")[Typst]. The source code for the tool used
       to create this model (rev #context raw(doc_metadata.git_revision)) is
       available under an MIT Licence from #link(
-        "https://github.com/ANUcybernetics/my-first-lm",
-      )[`https://github.com/ANUcybernetics/my-first-lm`].
+        "https://github.com/ANUcybernetics/llms-unplugged",
+      )[`https://github.com/ANUcybernetics/llms-unplugged`].
 
     ]
     #v(0.5cm)
