@@ -5,6 +5,7 @@ import markdownIt from "markdown-it";
 import markdownItFootnote from "markdown-it-footnote";
 import interlinker from "@photogabble/eleventy-plugin-interlinker";
 import llmsPlugin from "./eleventy-plugin-llms.js";
+import path from "path";
 
 export default function (eleventyConfig) {
   // Global site data available in all templates as `site`
@@ -55,7 +56,7 @@ export default function (eleventyConfig) {
         viteStaticCopy({
           targets: [
             {
-              src: "../src/assets/pdfs/*",
+              src: path.join(process.cwd(), "src/assets/pdfs/*"),
               dest: "assets/pdfs",
             },
           ],
