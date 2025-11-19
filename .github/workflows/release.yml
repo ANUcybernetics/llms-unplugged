@@ -48,12 +48,12 @@ jobs:
           sudo apt-get install -y gcc-aarch64-linux-gnu
 
       - name: Run tests
-        run: cargo test --target ${{ matrix.target }}
+        run: cargo test --manifest-path cli/Cargo.toml --target ${{ matrix.target }}
         env:
           CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
 
       - name: Build binary
-        run: cargo build --release --target ${{ matrix.target }}
+        run: cargo build --manifest-path cli/Cargo.toml --release --target ${{ matrix.target }}
         env:
           CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
 
@@ -61,7 +61,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.asset_name }}
-          path: target/${{ matrix.target }}/release/${{ matrix.artifact_name }}
+          path: cli/target/${{ matrix.target }}/release/${{ matrix.artifact_name }}
 
   create-release:
     name: Create Release
@@ -102,15 +102,14 @@ jobs:
           cp data/frankenstein.txt release/llms_unplugged/data/
 
           # Copy typst template
-          cp book.typ release/llms_unplugged/
+          cp cli/book.typ release/llms_unplugged/
 
           # Copy scripts
-          cp scripts/*.py release/llms_unplugged/scripts/
+          cp cli/scripts/*.py release/llms_unplugged/scripts/
 
           # Copy PDFs
-          cp teaching/out/modules.pdf release/llms_unplugged/docs/
-          cp teaching/out/instructors-notes.pdf release/llms_unplugged/docs/
-          cp teaching/out/worksheets/grid.pdf release/llms_unplugged/docs/
+          cp handouts/out/modules.pdf release/llms_unplugged/docs/
+          cp handouts/out/worksheets/grid.pdf release/llms_unplugged/docs/
 
       - name: Create tar.gz archive
         run: |
