@@ -75,6 +75,11 @@ A typical 90-minute workshop covers the core training-to-generation pipeline
 context columns, word embeddings, and synthetic data if you have more time or a
 particularly engaged audience.
 
+These _LLMs Unplugged_ resources will grow over time, including example lesson
+plans, new modules and unplugged activities, and more. Bookmark us and stay
+tuned. And if you'd like to get in touch, email
+[ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au).
+
 ## Getting started
 
 Follow the links above (or visit the [GitHub repository]({{ links.github }})) to
