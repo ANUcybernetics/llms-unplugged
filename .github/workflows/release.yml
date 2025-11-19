@@ -9,8 +9,12 @@ permissions:
   contents: write
 
 jobs:
+  typeset:
+    uses: ./.github/workflows/typeset.yml
+
   build-and-release:
     name: Build and Release
+    needs: typeset
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -65,13 +69,13 @@ jobs:
 
   create-release:
     name: Create Release
-    needs: build-and-release
+    needs: [typeset, build-and-release]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download all artifacts
+      - name: Download all binary artifacts
         uses: actions/download-artifact@v4
         with:
           path: artifacts
@@ -107,9 +111,9 @@ jobs:
           # Copy scripts
           cp cli/scripts/*.py release/llms_unplugged/scripts/
 
-          # Copy PDFs
-          cp handouts/out/modules.pdf release/llms_unplugged/docs/
-          cp handouts/out/worksheets/grid.pdf release/llms_unplugged/docs/
+          # Copy PDFs from typeset artifacts
+          cp artifacts/handout-pdfs/modules.pdf release/llms_unplugged/docs/
+          cp artifacts/handout-pdfs/worksheets/grid.pdf release/llms_unplugged/docs/
 
       - name: Create tar.gz archive
         run: |

@@ -1,0 +1,75 @@
+name: Typeset Handouts
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "handouts/**"
+      - ".github/workflows/typeset.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "handouts/**"
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  typeset:
+    name: Typeset PDFs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Typst
+        uses: typst-community/setup-typst@v4
+
+      - name: Install pdfunite
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+
+      - name: Set up local Typst packages
+        run: |
+          mkdir -p ~/.local/share/typst/packages/local
+          ln -s $GITHUB_WORKSPACE/handouts/packages/local/anu-typst-template ~/.local/share/typst/packages/local/anu-typst-template
+
+      - name: Create output directory
+        run: mkdir -p handouts/out/worksheets handouts/out/runsheets
+
+      - name: Compile individual modules
+        working-directory: handouts
+        run: |
+          for f in [0-9][0-9]-*.typ; do
+            echo "Compiling $f..."
+            typst compile --root . "$f" "out/${f%.typ}.pdf"
+          done
+
+      - name: Compile worksheets
+        working-directory: handouts
+        run: |
+          for f in worksheets/*.typ; do
+            echo "Compiling $f..."
+            typst compile --root . "$f" "out/$f" 2>/dev/null || true
+          done
+
+      - name: Compile runsheets
+        working-directory: handouts
+        run: |
+          for f in runsheets/*.typ; do
+            echo "Compiling $f..."
+            typst compile --root . "$f" "out/$f" 2>/dev/null || true
+          done
+
+      - name: Compile poster
+        working-directory: handouts
+        run: typst compile --root . poster.typ out/poster.pdf
+
+      - name: Combine modules into single PDF
+        working-directory: handouts
+        run: |
+          pdfunite out/[0-9][0-9]-*.pdf out/modules.pdf
+
+      - name: Upload PDF artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: handout-pdfs
+          path: handouts/out/
+          retention-days: 30

@@ -1,0 +1,13 @@
+[package]
+name = "anu-typst-template"
+version = "0.2.0"
+entrypoint = "lib.typ"
+authors = ["Ben Swift"]
+license = "MIT"
+description = "An unofficial template for writing Australian National University documents in typst following the ANU Identity guidelines."
+categories = ["template"]
+
+[template]
+path = "template"
+entrypoint = "document.typ"
+thumbnail = "thumbnail.png"
