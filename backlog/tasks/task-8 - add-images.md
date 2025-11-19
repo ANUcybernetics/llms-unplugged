@@ -1,7 +1,7 @@
 ---
 id: task-8
-title: add images
-status: To Do
+title: add mages
+status: Done
 assignee: []
 created_date: "2025-11-18 20:55"
 labels: []
