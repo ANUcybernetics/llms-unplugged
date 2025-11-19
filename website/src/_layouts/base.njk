@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ description or 'Ready-to-use teaching resources for understanding how large language models work through hands-on activities. No computers required.' }}">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.llmsunplugged.org{{ page.url }}">
+  <meta property="og:title" content="{{ title or 'LLMs Unplugged' }}">
+  <meta property="og:description" content="{{ description or 'Ready-to-use teaching resources for understanding how large language models work through hands-on activities. No computers required.' }}">
+  <meta property="og:image" content="https://www.llmsunplugged.org/og-image.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://www.llmsunplugged.org{{ page.url }}">
+  <meta name="twitter:title" content="{{ title or 'LLMs Unplugged' }}">
+  <meta name="twitter:description" content="{{ description or 'Ready-to-use teaching resources for understanding how large language models work through hands-on activities. No computers required.' }}">
+  <meta name="twitter:image" content="https://www.llmsunplugged.org/og-image.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <meta name="theme-color" content="#be830e">
+
+  <title>{{ title or "LLMs Unplugged" }}</title>
+  <link rel="stylesheet" href="/assets/main.css">
+</head>
+<body class="min-h-screen bg-anu-black text-anu-white flex flex-col">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="border-b border-anu-gold">
+    <nav class="max-w-prose mx-auto px-4" aria-label="Main navigation">
+      <div class="flex items-center justify-between h-16">
+        <a href="/" class="text-lg font-semibold text-anu-white hover:text-anu-gold transition-colors" aria-label="LLMs Unplugged home">
+          Home
+        </a>
+        <ul class="flex gap-6 sm:gap-8">
+          <li>
+            <a href="/about/" class="text-anu-white hover:text-anu-gold-2 transition-colors{% if page.url == '/about/' %} font-semibold{% endif %}" {% if page.url == '/about/' %}aria-current="page"{% endif %}>
+              About
+            </a>
+          </li>
+          <li>
+            <a href="/contact/" class="text-anu-white hover:text-anu-gold-2 transition-colors{% if page.url == '/contact/' %} font-semibold{% endif %}" {% if page.url == '/contact/' %}aria-current="page"{% endif %}>
+              Contact
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content" class="flex-1 max-w-prose mx-auto px-4 py-12 w-full">
+    <article class="prose max-w-none">
+      {{ content | safe }}
+    </article>
+  </main>
+
+  <footer class="border-t border-anu-gold mt-auto">
+    <div class="max-w-prose mx-auto px-4 py-6 text-center text-sm text-anu-white">
+      <p>
+        A <a href="https://cybernetics.anu.edu.au/cybernetic-studio/" class="text-anu-gold-2 hover:text-anu-gold transition-colors">Cybernetic Studio</a> project at the <a href="https://cybernetics.anu.edu.au" class="text-anu-gold-2 hover:text-anu-gold transition-colors">ANU School of Cybernetics</a>.
+      </p>
+      <p class="mt-2">
+        Content © Ben Swift, <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="text-anu-gold-2 hover:text-anu-gold transition-colors">CC BY-NC-SA 4.0</a>.
+        <a href="{{ site.repository }}/blob/main/LICENSE" class="text-anu-gold-2 hover:text-anu-gold transition-colors">Source code MIT</a>.
+      </p>
+      <p class="mt-2">
+        <a href="{{ site.repository }}/blob/main/src{{ page.inputPath | replace('./src', '') }}" class="text-anu-gold-2 hover:text-anu-gold transition-colors">Page source</a>
+        ·
+        <a href="{{ page.inputPath | replace('./src/', '/') }}" class="text-anu-gold-2 hover:text-anu-gold transition-colors" rel="alternate" type="text/markdown">LLM-friendly version</a>
+      </p>
+    </div>
+  </footer>
+
+  <script type="module" src="/assets/main.js"></script>
+</body>
+</html>

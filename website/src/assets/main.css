@@ -1,0 +1,107 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+    --color-anu-white: #ffffff;
+    --color-anu-black: #000000;
+    --color-anu-gold: #be830e;
+    --color-anu-gold-2: hsl(from #be830e h calc(s - 30) 77);
+    --color-anu-gold-4: hsl(from #be830e h s calc(l + 8));
+    --color-anu-unilink-gold: #945f00;
+    --color-anu-teal: #0085ad;
+    --color-anu-copper: #be4e0e;
+    --color-anu-grey-table-alt: #1a1a1a;
+    --color-anu-grey-table-line: #b0b0b0;
+    --container-prose: 65ch;
+}
+
+@layer base {
+    /* Focus visible styles for keyboard navigation */
+    :focus-visible {
+        outline: 2px solid var(--color-anu-gold-2);
+        outline-offset: 2px;
+        border-radius: 0.125rem;
+    }
+
+    /* Remove outline for mouse users */
+    :focus:not(:focus-visible) {
+        outline: none;
+    }
+}
+
+/* Skip link for keyboard navigation */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--color-anu-gold);
+    color: var(--color-anu-black);
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    font-weight: 600;
+    z-index: 100;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+.prose {
+    --tw-prose-body: var(--color-anu-white);
+    --tw-prose-headings: var(--color-anu-white);
+    --tw-prose-links: var(--color-anu-gold-2);
+    --tw-prose-bold: var(--color-anu-white);
+    --tw-prose-counters: var(--color-anu-white);
+    --tw-prose-bullets: var(--color-anu-white);
+    --tw-prose-hr: var(--color-anu-gold);
+    --tw-prose-quotes: var(--color-anu-white);
+    --tw-prose-quote-borders: var(--color-anu-gold);
+    --tw-prose-captions: var(--color-anu-white);
+    --tw-prose-code: var(--color-anu-white);
+    --tw-prose-pre-code: var(--color-anu-white);
+    --tw-prose-pre-bg: var(--color-anu-unilink-gold);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+
+    header,
+    footer {
+        display: none;
+    }
+
+    .skip-link {
+        display: none;
+    }
+
+    main {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .prose a {
+        color: black;
+        text-decoration: underline;
+    }
+
+    .prose a[href^="http"]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.875em;
+    }
+}

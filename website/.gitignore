@@ -1,0 +1,11 @@
+node_modules/
+_site/
+.llms-generated/
+dist/
+.env
+.env.local
+.DS_Store
+*.log
+npm-debug.log*
+.vite-temp/
+.unlighthouse/
