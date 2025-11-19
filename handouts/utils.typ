@@ -120,7 +120,7 @@
         -90deg,
         origin: bottom + left,
         text(
-          font: "Public Sans",
+          font: "IBM Plex Mono",
           weight: "bold",
           size: 12pt,
           fill: anu-colors.socy-yellow,
@@ -131,7 +131,7 @@
       bottom + left,
       dy: -1cm,
       text(
-        font: "Public Sans",
+        font: "IBM Plex Mono",
         weight: "bold",
         size: 9pt,
         fill: anu-colors.socy-yellow,

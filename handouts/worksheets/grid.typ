@@ -39,7 +39,7 @@
               width: auto,
               align(right)[
                 #text(
-                  font: "Public Sans",
+                  font: "IBM Plex Mono",
                   weight: "bold",
                   size: 1.8em,
                   fill: rgb("#e6ff44"),

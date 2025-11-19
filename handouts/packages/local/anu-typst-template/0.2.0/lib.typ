@@ -215,7 +215,7 @@
             -90deg,
             origin: bottom + left,
             text(
-              font: "Neon Tubes 2",
+              font: "IBM Plex Mono",
               size: 12pt,
               fill: if dark { anu-colors.socy-yellow } else {
                 anu-colors.grey-3
