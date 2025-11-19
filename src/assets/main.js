@@ -1,3 +1,9 @@
+import { init } from "@plausible-analytics/tracker";
+
+init({
+  domain: "www.llmsunplugged.org",
+});
+
 // Add a class to enable any progressive enhancement styles
 document.documentElement.classList.add("js-enabled");
 
