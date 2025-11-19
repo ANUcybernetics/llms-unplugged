@@ -173,7 +173,8 @@
   title: "LLMs Unplugged",
   paper: "a3",
   footer_text: text(
-    font: "Neon Tubes 2",
+    font: "Public Sans",
+    weight: "bold",
     fill: anu-colors.socy-yellow,
     "© 2025 Ben Swift | CC BY-NC-SA 4.0",
   ),

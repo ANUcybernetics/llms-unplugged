@@ -26,6 +26,12 @@ jobs:
       - name: Install pdfunite
         run: sudo apt-get update && sudo apt-get install -y poppler-utils
 
+      - name: Install fonts
+        run: |
+          mkdir -p ~/.local/share/fonts
+          cp handouts/fonts/*.otf ~/.local/share/fonts/
+          fc-cache -fv
+
       - name: Set up local Typst packages
         run: |
           mkdir -p ~/.local/share/typst/packages/local
@@ -39,7 +45,7 @@ jobs:
         run: |
           for f in [0-9][0-9]-*.typ; do
             echo "Compiling $f..."
-            typst compile --root . "$f" "out/${f%.typ}.pdf"
+            typst compile --root . --font-path fonts "$f" "out/${f%.typ}.pdf"
           done
 
       - name: Compile worksheets
@@ -47,7 +53,7 @@ jobs:
         run: |
           for f in worksheets/*.typ; do
             echo "Compiling $f..."
-            typst compile --root . "$f" "out/$f" 2>/dev/null || true
+            typst compile --root . --font-path fonts "$f" "out/$f" 2>/dev/null || true
           done
 
       - name: Compile runsheets
@@ -55,12 +61,12 @@ jobs:
         run: |
           for f in runsheets/*.typ; do
             echo "Compiling $f..."
-            typst compile --root . "$f" "out/$f" 2>/dev/null || true
+            typst compile --root . --font-path fonts "$f" "out/$f" 2>/dev/null || true
           done
 
       - name: Compile poster
         working-directory: handouts
-        run: typst compile --root . poster.typ out/poster.pdf
+        run: typst compile --root . --font-path fonts poster.typ out/poster.pdf
 
       - name: Combine modules into single PDF
         working-directory: handouts

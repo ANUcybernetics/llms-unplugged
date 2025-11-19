@@ -39,7 +39,8 @@
               width: auto,
               align(right)[
                 #text(
-                  font: "Neon Tubes 2",
+                  font: "Public Sans",
+                  weight: "bold",
                   size: 1.8em,
                   fill: rgb("#e6ff44"),
                 )[Cybernetic\ Studio]
