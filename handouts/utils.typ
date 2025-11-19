@@ -95,7 +95,7 @@
     title: "",
     config: (
       theme: "dark",
-      logos: ("studio",),
+      logos: (),
       hide: ("page-numbers", "title-block"),
     ),
     page-settings: (
@@ -111,9 +111,21 @@
     doc,
   )
 
-  // Add crop marks and CC BY-NC 4.0 watermark to every page
   set page(
-    // foreground: crop-marks(bleed: bleed-amount),  // uncomment to enable crop marks
+    foreground: place(
+      left + bottom,
+      dx: 1.6cm,
+      dy: -2cm,
+      rotate(
+        -90deg,
+        origin: bottom + left,
+        text(
+          font: "Neon Tubes 2",
+          size: 12pt,
+          fill: anu-colors.socy-yellow,
+        )[LLMs Unplugged #text(fill: anu-colors.grey-3)[|] Cybernetic Studio],
+      ),
+    ),
     footer: place(
       bottom + left,
       dy: -1cm,
