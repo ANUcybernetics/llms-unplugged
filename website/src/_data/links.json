@@ -1,5 +1,5 @@
 {
   "github": "https://github.com/ANUcybernetics/llms-unplugged",
   "modules": "/assets/pdfs/modules.pdf",
-  "instructor_notes": "/assets/pdfs/instructors-notes.pdf"
+  "instructor_notes": "/instructor-notes/"
 }
