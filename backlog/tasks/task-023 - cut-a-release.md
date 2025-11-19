@@ -1,7 +1,7 @@
 ---
 id: task-023
 title: cut a release
-status: To Do
+status: Done
 assignee: []
 created_date: "2025-10-20 22:22"
 labels: []

@@ -1,7 +1,7 @@
 ---
 id: task-022
 title: alternative dice mapping for numbers > n/2
-status: To Do
+status: Done
 assignee: []
 created_date: "2025-10-06 09:19"
 labels: []
