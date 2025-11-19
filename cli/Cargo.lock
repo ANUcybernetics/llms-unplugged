@@ -375,7 +375,7 @@ checksum = "cd945864f07fe9f5371a27ad7b52a172b4b499999f1d97574c9fa68373937e12"
 
 [[package]]
 name = "llms_unplugged"
-version = "1.4.1"
+version = "1.4.2"
 dependencies = [
  "clap",
  "frontmatter-gen",
