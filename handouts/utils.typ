@@ -121,7 +121,6 @@
         origin: bottom + left,
         text(
           font: "IBM Plex Mono",
-          weight: "bold",
           size: 12pt,
           fill: anu-colors.socy-yellow,
         )[LLMs Unplugged #text(fill: anu-colors.grey-3)[|] Cybernetic Studio],
@@ -132,7 +131,6 @@
       dy: -1cm,
       text(
         font: "IBM Plex Mono",
-        weight: "bold",
         size: 9pt,
         fill: anu-colors.socy-yellow,
       )[© 2025 Ben Swift | CC BY-NC-SA 4.0],
