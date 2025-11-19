@@ -1,9 +1,10 @@
 ---
 id: task-10
 title: make licence clearer
-status: To Do
+status: Done
 assignee: []
-created_date: "2025-11-19 00:01"
+created_date: '2025-11-19 00:01'
+updated_date: '2025-11-19 00:05'
 labels: []
 dependencies: []
 ---

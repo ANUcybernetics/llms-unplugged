@@ -165,6 +165,24 @@ describe("navigation", () => {
     expect(html).toContain("Cybernetic Studio");
   });
 
+  it("includes LLM-friendly markdown link in footer", () => {
+    const indexPath = join(siteDir, "index.html");
+    const html = readFileSync(indexPath, "utf-8");
+    expect(html).toContain('href="/index.md"');
+    expect(html).toContain('rel="alternate"');
+    expect(html).toContain('type="text/markdown"');
+    expect(html).toContain("LLM-friendly version");
+  });
+
+  it("includes licensing information in footer", () => {
+    const indexPath = join(siteDir, "index.html");
+    const html = readFileSync(indexPath, "utf-8");
+    expect(html).toContain("Content © Ben Swift");
+    expect(html).toContain("CC BY-NC-SA 4.0");
+    expect(html).toContain("Source code MIT");
+    expect(html).toContain("creativecommons.org/licenses/by-nc-sa/4.0");
+  });
+
   it("generates about page", () => {
     const aboutPath = join(siteDir, "about", "index.html");
     expect(existsSync(aboutPath)).toBe(true);
