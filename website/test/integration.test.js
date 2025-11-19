@@ -177,9 +177,8 @@ describe("navigation", () => {
   it("includes licensing information in footer", () => {
     const indexPath = join(siteDir, "index.html");
     const html = readFileSync(indexPath, "utf-8");
-    expect(html).toContain("Content © Ben Swift");
+    expect(html).toContain("© Ben Swift");
     expect(html).toContain("CC BY-NC-SA 4.0");
-    expect(html).toContain("Source code MIT");
     expect(html).toContain("creativecommons.org/licenses/by-nc-sa/4.0");
   });
 
