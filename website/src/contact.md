@@ -16,16 +16,6 @@ participants across diverse audiences---school students through to senior
 executives in the Australian Public Service. Iterating on these materials with
 real learners has been invaluable.
 
-## Resources and contributions
-
-All materials are available under a
-[Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-at [github.com/ANUcybernetics/llms-unplugged]({{ links.github }}), and includes:
-
-- [Module cards]({{ links.modules }}) (printable PDF handouts)
-- [Instructor notes]({{ links.instructor_notes }}) with pedagogical scaffolding
-- Software tools (MIT licensed) for generating custom n-gram booklets
-
 ## Get in touch
 
 We encourage educators to use, adapt, and improve these resources. If you have
