@@ -19,10 +19,10 @@ This is a [Cybernetic Studio](https://github.com/ANUcybernetics/) artefact by
 
 This repository contains both teaching materials and software tools. The
 teaching materials (lesson plans, workshop modules, worksheets in the
-`teaching/` directory) can be used standalone without any software installation.
-The software tools (the `llms_unplugged` CLI tool + other helper scripts) are
-only necessary if you want to create your own pre-trained N-gram booklets from
-custom text corpora.
+`handouts/` directory) can be used standalone without any software installation.
+The software tools (the `llms_unplugged` CLI tool + other helper scripts in the
+`cli/` directory) are only necessary if you want to create your own pre-trained
+N-gram booklets from custom text corpora.
 
 The `website/` directory contains the source for the project website at
 [www.llmsunplugged.org](https://www.llmsunplugged.org).
@@ -32,14 +32,14 @@ The `website/` directory contains the source for the project website at
 This project offers several entry points depending on your goals:
 
 **Want to understand the fundamentals in 20 minutes?** Use the pen and paper
-approach with the [grid template](teaching/out/worksheets/grid.pdf) and
-step-by-step instructions (in [modules 01 and 02](teaching/out/modules.pdf)). No
+approach with the [grid template](handouts/out/worksheets/grid.pdf) and
+step-by-step instructions (in [modules 01 and 02](handouts/out/modules.pdf)). No
 software required.
 
 **Teaching a class or workshop?** Explore the
-[teaching modules](teaching/out/modules.pdf) and
-[instructor notes](teaching/out/instructors-notes.pdf) for structured lesson
-plans and materials.
+[teaching modules](handouts/out/modules.pdf) and
+[instructor notes](https://www.llmsunplugged.org/instructor-notes/) for
+structured lesson plans and materials.
 
 **Want to create your own N-gram booklet?** You have two options:
 
@@ -67,7 +67,7 @@ You'll need:
 > around to it yet... So if you try to compile a module booklet and get an error
 > like `error: package not found (searched for @local/anu-typst-template:0.2.0)`
 > then that's why. In the meantime, the
-> [ready-to-go pdf link](teaching/out/modules.pdf) above works fine.
+> [ready-to-go pdf link](handouts/out/modules.pdf) above works fine.
 
 ### Quickstart
 
@@ -83,7 +83,7 @@ cd llms_unplugged
 ./bin/llms_unplugged-linux-x86_64 data/frankenstein.txt -n 2
 
 # Typeset the booklet
-typst compile book.typ book.pdf
+typst compile cli/book.typ book.pdf
 ```
 
 The resulting PDF contains your N-gram model formatted for dice-roll-based text
@@ -121,9 +121,9 @@ contractions) to keep the model small.
 text file → Rust CLI → model.json → Typst → PDF booklet
 ```
 
-The Rust tool (`src/main.rs`, `src/lib.rs`) processes your text through
-tokenization (`src/tokenizer.rs`) and preprocessing (`src/preprocessor.rs`) to
-generate N-gram statistics. The Typst template (`book.typ`) reads `model.json`
+The Rust tool (`cli/src/main.rs`, `cli/src/lib.rs`) processes your text through
+tokenization (`cli/src/tokenizer.rs`) and preprocessing (`cli/src/preprocessor.rs`) to
+generate N-gram statistics. The Typst template (`cli/book.typ`) reads `model.json`
 and typesets it into a printable booklet with guide words, proper pagination,
 and dice-roll ranges.
 
@@ -131,19 +131,20 @@ For large trigram models, use the `-b` flag to split across multiple books.
 
 ### Project structure
 
-- `src/` - Rust source code for N-gram processing
+- `cli/` - Rust CLI tool and booklet generation pipeline
+  - `src/` - Rust source code for N-gram processing
+  - `scripts/` - Helper Python scripts for analysis
+  - `book.typ` - Main booklet template
 - `data/` - Input text corpora (\*.txt files with YAML frontmatter)
-- `teaching/` - Teaching materials (modules, worksheets, runsheets)
+- `handouts/` - Teaching materials (modules, worksheets, runsheets)
 - `website/` - Project website source (Eleventy + Tailwind)
-- `scripts/` - Helper Python scripts for analysis
-- `out/` - Generated PDFs and intermediate files
 - `backlog/` - Task management
 
 ### Testing
 
 ```bash
-# Rust CLI tests
-cargo test
+# Rust CLI tests (from cli/ directory)
+cd cli && cargo test
 
 # Website tests (from website/ directory)
 cd website && npm run test
@@ -179,9 +180,9 @@ This work is a project of the _Cybernetic Studio_ at the
 Source code for this project is licensed under the MIT License. See the
 [LICENSE](./LICENSE) file for details.
 
-Documentation (in `teaching/`) and any typeset "N-gram model booklets" are
+Documentation (in `handouts/`) and any typeset "N-gram model booklets" are
 licenced under a CC BY-NC-SA 4.0 license. See
-[teaching/LICENSE](./teaching/LICENSE) for the full license text.
+[handouts/LICENSE](./handouts/LICENSE) for the full license text.
 
 Source text licenses used as input for the language model remain as described in
 their original sources.

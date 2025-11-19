@@ -23,10 +23,6 @@ modules: $(OUTPUT_DIR) $(MODULE_PDF_FILES)
 	@echo "Combining numbered module PDFs into modules.pdf..."
 	pdfunite $(MODULE_PDF_FILES) $(OUTPUT_DIR)/modules.pdf
 
-# Target to create a combined PDF with instructor notes followed by all modules
-mflm-resources: $(OUTPUT_DIR) $(OUTPUT_DIR)/instructors-notes.pdf modules
-	@echo "Combining instructor notes and modules into mflm-resources.pdf..."
-	pdfunite $(OUTPUT_DIR)/instructors-notes.pdf $(OUTPUT_DIR)/modules.pdf $(OUTPUT_DIR)/mflm-resources.pdf
 
 # Create output directory if it doesn't exist
 $(OUTPUT_DIR):
@@ -43,4 +39,4 @@ clean:
 	rm -rf $(OUTPUT_DIR)
 
 # Phony targets
-.PHONY: all clean modules sxswmflm-resources
+.PHONY: all clean modules

@@ -1,9 +1,10 @@
-# Makefile for building all targets
+# Makefile for building N-gram models and booklets
 
 # Define directories
 OUT_DIR := out
 PDF_DIR := $(OUT_DIR)/pdf
 JSON_DIR := $(OUT_DIR)/json
+DATA_DIR := ../data
 
 # ===== Target specification =====
 # Format: name-n-books
@@ -48,7 +49,7 @@ $(TOOL): $(RUST_SOURCES)
 $(PDF_DIR)/%.pdf $(PDF_DIR)/%.stamp: scripts/build_books.py book.typ $(TOOL)
 	$(eval FULLNAME := $(notdir $(basename $@)))
 	$(eval BASE := $(shell echo $(FULLNAME) | sed 's/-[0-9]*-[0-9]*$$//' ))
-	./scripts/build_books.py $(FULLNAME) data/$(BASE).txt
+	./scripts/build_books.py $(FULLNAME) $(DATA_DIR)/$(BASE).txt
 	@if echo "$@" | grep -q '.stamp$$'; then touch $@; fi
 
 # Default target to build all booklets

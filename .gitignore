@@ -1,10 +1,9 @@
 # ignore all pdfs in the top level (assume they're auto-generated)
 *.pdf
 
-# but keep the three PDFs needed for releases
-!teaching/out/modules.pdf
-!teaching/out/instructors-notes.pdf
-!teaching/out/worksheets/grid.pdf
+# but keep the PDFs needed for releases
+!handouts/out/modules.pdf
+!handouts/out/worksheets/grid.pdf
 
 data/
 
@@ -18,5 +17,5 @@ model.json
 out/
 
 # Added by cargo
-
 /target
+cli/target/

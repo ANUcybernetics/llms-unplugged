@@ -17,35 +17,38 @@ text file → rust CLI → model.json → typst → PDF booklet
 
 ## Key directories
 
-- `src/` - Rust source code for N-gram processing
+- `cli/` - Rust CLI tool and booklet generation pipeline
+  - `src/` - Rust source code for N-gram processing
+  - `tests/` - Rust integration tests
+  - `scripts/` - Helper Python scripts (bigram_counter.py, build_books.py)
+  - `book.typ` - Main booklet template (reads from model.json)
 - `data/` - Input text corpora (\*.txt files with YAML frontmatter)
-- `teaching/` - Teaching materials (modules, worksheets, runsheets)
+- `handouts/` - Teaching materials (modules, worksheets, runsheets)
   - numbered modules (00-09): landscape PDF cards for workshops
   - `worksheets/` - blank templates (grid, trigram-template, blank-module)
   - `draft/` - modules in draft form
   - `runsheets/` - session runsheets
   - `images/` - all images and svg files
 - `website/` - Project website source (Eleventy + Tailwind)
-- `scripts/` - Helper Python scripts (bigram_counter.py, build_books.py)
-- `out/` - Generated PDFs and intermediate files
 - `backlog/` - Task management (use `backlog` CLI tool)
 
 ## Essential commands
 
-(useful to know, but mostly the `Makefile` handles this)
-
 ```bash
-# Build the tool
-cargo build --release
+# Build the tool (from cli/ directory)
+cd cli && cargo build --release
 
 # Generate N-gram model
-./target/release/llms_unplugged input.txt --scale-d 120 -n 2  # bigram with d120 scaling
+./cli/target/release/llms_unplugged input.txt --scale-d 120 -n 2  # bigram with d120 scaling
 
 # Generate booklet
-typst compile book.typ output.pdf
+typst compile cli/book.typ output.pdf
 
-# Run all builds
-make all  # builds all configured texts/sizes
+# Build all booklets (from cli/ directory)
+cd cli && make booklets
+
+# Build all handouts (from handouts/ directory)
+cd handouts && make modules
 
 # Format typst files
 typstyle --wrap-text *.typ  # ALWAYS use --wrap-text flag
@@ -55,13 +58,13 @@ typstyle --wrap-text *.typ  # ALWAYS use --wrap-text flag
 
 ### Processing pipeline
 
-- `src/main.rs` - CLI entry point
-- `src/lib.rs` - Core N-gram logic
-- `src/tokenizer.rs` - Text tokenization (lowercases, removes punctuation except
+- `cli/src/main.rs` - CLI entry point
+- `cli/src/lib.rs` - Core N-gram logic
+- `cli/src/tokenizer.rs` - Text tokenization (lowercases, removes punctuation except
   apostrophes)
-- `src/preprocessor.rs` - Text cleaning
-- `book.typ` - Main booklet template (reads from model.json)
-- `Makefile` - Batch processing for multiple texts/formats
+- `cli/src/preprocessor.rs` - Text cleaning
+- `cli/book.typ` - Main booklet template (reads from model.json)
+- `cli/Makefile` - Batch processing for multiple texts/formats
 
 ### Configuration
 
@@ -96,14 +99,14 @@ typstyle --wrap-text *.typ  # ALWAYS use --wrap-text flag
 ## Testing
 
 ```bash
-# Rust CLI tests
-cargo test
+# Rust CLI tests (from cli/ directory)
+cd cli && cargo test
 
 # Website tests (from website/ directory)
 cd website && npm run test
 ```
 
-Test files in `tests/` cover:
+Test files in `cli/tests/` cover:
 
 - Capitalization rules
 - Tokenization edge cases

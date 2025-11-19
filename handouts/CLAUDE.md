@@ -14,7 +14,6 @@ project, including modules, worksheets, and runsheets.
 - `runsheets/` - session runsheets (90min, 3h)
 - `images/` - all images and svg files
 - `utils.typ` - shared functions
-- `instructions.typ`, `instructors-notes.typ` - supporting documentation
 
 ## Build process
 
@@ -22,7 +21,7 @@ project, including modules, worksheets, and runsheets.
 # Build all numbered modules and combine them
 make modules
 
-# Build all typst files in teaching/ and subdirectories
+# Build all typst files in handouts/ and subdirectories
 make all
 
 # Build single module
