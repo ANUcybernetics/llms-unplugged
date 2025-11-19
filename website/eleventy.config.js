@@ -18,6 +18,7 @@ export default function (eleventyConfig) {
   });
 
   eleventyConfig.addPassthroughCopy("src/assets");
+  eleventyConfig.addPassthroughCopy("src/CNAME");
 
   // Configure markdown-it with typographer for em dashes and smart quotes
   const md = markdownIt({

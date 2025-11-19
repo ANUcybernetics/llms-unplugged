@@ -35,7 +35,7 @@
       "scheme": "doi"
     },
     {
-      "identifier": "https://github.com/ANUcybernetics/my-first-lm",
+      "identifier": "https://github.com/ANUcybernetics/llms-unplugged",
       "relation": "isSupplementTo",
       "scheme": "url"
     }
