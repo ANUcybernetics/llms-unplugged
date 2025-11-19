@@ -12,6 +12,12 @@ learners from high school age upwards, with no technical background required.
 Educators, students, and professionals have all found value in the hands-on
 approach.
 
+## Did some of this stuff used to be called "My First Language Model"?
+
+Yep, it sure did... and we still sometimes use that as a workshop title at the
+ANU. But this website and resources are for _all_ the LLMs Unplugged resources,
+not just the ones we use in that particular workshop.
+
 ## Do I need any special materials?
 
 You'll need dice (ideally d10 or d20), paper, and pencils. The PDF booklets can
@@ -26,9 +32,10 @@ includes both building and generating.
 
 ## Can I use these materials in my classroom?
 
-Yes. All materials are released under [CC BY-NC-SA
-4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/), so you can use,
-adapt, and share them for non-commercial educational purposes with attribution.
+Yes. All materials are released under
+[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/), so you
+can use, adapt, and share them for non-commercial educational purposes with
+attribution.
 
 ## What's the difference between bigrams and trigrams?
 
@@ -52,9 +59,9 @@ selection based on patterns in training data---is identical.
 
 ## Can I generate my own booklets from custom text?
 
-Yes. The [source code](https://github.com/ANUcybernetics/llms-unplugged) includes
-tools to process any text file into a printable booklet. You'll need basic
-command-line familiarity to run the tools.
+Yes. The [source code](https://github.com/ANUcybernetics/llms-unplugged)
+includes tools to process any text file into a printable booklet. You'll need
+basic command-line familiarity to run the tools.
 
 ## The generated text is nonsense. Is that right?
 
