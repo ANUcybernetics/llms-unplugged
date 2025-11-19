@@ -48,7 +48,6 @@ pub struct Metadata {
     pub stats: Option<ProcessingStats>,
 }
 
-
 /// Contains summary statistics for processed text
 #[derive(Debug, Clone, Serialize)]
 pub struct ProcessingStats {
@@ -125,17 +124,18 @@ impl NGramCounter {
     /// Get the canonical form of a token, updating tracking if needed
     fn get_canonical_form(&mut self, token: &str) -> String {
         let lowercase = token.to_lowercase();
-        
+
         // Special case: "I" should never be normalized to lowercase
         if lowercase == "i" {
             return token.to_string(); // Keep original form, will be fixed in preprocessing
         }
-        
+
         // Check if we've seen this token before (in any form)
         match self.canonical_forms.get(&lowercase) {
             Some(canonical) if canonical != token => {
                 // Different capitalization seen - switch to lowercase
-                self.canonical_forms.insert(lowercase.clone(), lowercase.clone());
+                self.canonical_forms
+                    .insert(lowercase.clone(), lowercase.clone());
                 lowercase
             }
             Some(canonical) => {
@@ -144,7 +144,8 @@ impl NGramCounter {
             }
             None => {
                 // First time seeing this token - store original form
-                self.canonical_forms.insert(lowercase.clone(), token.to_string());
+                self.canonical_forms
+                    .insert(lowercase.clone(), token.to_string());
                 token.to_string()
             }
         }
@@ -228,9 +229,9 @@ impl NGramCounter {
                         url: url.to_string(),
                         n: self.n,
                         subtitle: format!("A {} language model", model_type_str(self.n)),
-                        scale_d: None, // Will be set during save_to_json
+                        scale_d: None,               // Will be set during save_to_json
                         git_revision: String::new(), // Will be set during save_to_json
-                        stats: None, // Will be set during save_to_json
+                        stats: None,                 // Will be set during save_to_json
                     });
                 } else {
                     // Missing required fields, return error
@@ -332,36 +333,38 @@ impl NGramCounter {
     pub fn get_entries(&self) -> Vec<WordFollowEntry> {
         // Apply final canonical forms to all entries
         let mut normalized_map: HashMap<Vec<String>, HashMap<String, usize>> = HashMap::new();
-        
+
         for (prefix, followers) in &self.prefix_map {
             // Normalize each word in the prefix using the final canonical forms
-            let normalized_prefix: Vec<String> = prefix.iter()
+            let normalized_prefix: Vec<String> = prefix
+                .iter()
                 .map(|word| {
                     // The canonical form should always exist since we track everything
                     let lowercase = word.to_lowercase();
-                    self.canonical_forms.get(&lowercase)
-                        .unwrap_or(word)
-                        .clone()
+                    self.canonical_forms.get(&lowercase).unwrap_or(word).clone()
                 })
                 .collect();
-            
+
             // Normalize followers too
-            let normalized_followers = followers.iter()
-                .map(|(word, count)| {
-                    let lowercase = word.to_lowercase();
-                    let canonical = self.canonical_forms.get(&lowercase)
-                        .cloned()
-                        .unwrap_or_else(|| word.clone());
-                    (canonical, *count)
-                });
-            
+            let normalized_followers = followers.iter().map(|(word, count)| {
+                let lowercase = word.to_lowercase();
+                let canonical = self
+                    .canonical_forms
+                    .get(&lowercase)
+                    .cloned()
+                    .unwrap_or_else(|| word.clone());
+                (canonical, *count)
+            });
+
             // Merge into normalized map
-            let entry = normalized_map.entry(normalized_prefix).or_insert_with(HashMap::new);
+            let entry = normalized_map
+                .entry(normalized_prefix)
+                .or_insert_with(HashMap::new);
             for (word, count) in normalized_followers {
                 *entry.entry(word).or_insert(0) += count;
             }
         }
-        
+
         let mut result = convert_to_entries(&normalized_map);
 
         // Sort entries lexicographically by prefix (case-insensitive)
@@ -438,19 +441,24 @@ fn convert_to_entries(
 
 /// Gets the current git revision string (commit SHA)
 fn get_git_revision() -> io::Result<String> {
-    // Check if we're in a git repository by checking for .git directory
-    let git_dir = std::path::Path::new(".git");
-    if !git_dir.exists() {
-        // Not in a git repository - probably a test environment
-        return Err(io::Error::new(
-            io::ErrorKind::Other,
-            "Not in a git repository. Cannot determine build revision.",
-        ));
+    // Check if we're in a git repository using git rev-parse
+    let check_output = Command::new("git")
+        .args(["rev-parse", "--is-inside-work-tree"])
+        .output();
+
+    match check_output {
+        Ok(output) if output.status.success() => {}
+        _ => {
+            return Err(io::Error::new(
+                io::ErrorKind::Other,
+                "Not in a git repository. Cannot determine build revision.",
+            ));
+        }
     }
 
     // Get the short commit SHA
     let output = Command::new("git")
-        .args(&["rev-parse", "--short", "HEAD"])
+        .args(["rev-parse", "--short", "HEAD"])
         .output()
         .map_err(|e| io::Error::new(io::ErrorKind::Other, format!("Failed to run git: {}", e)))?;
 
@@ -462,7 +470,12 @@ fn get_git_revision() -> io::Result<String> {
     }
 
     String::from_utf8(output.stdout)
-        .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, format!("Invalid UTF-8 in git output: {}", e)))
+        .map_err(|e| {
+            io::Error::new(
+                io::ErrorKind::InvalidData,
+                format!("Invalid UTF-8 in git output: {}", e),
+            )
+        })
         .map(|s| s.trim().to_string())
 }
 
@@ -475,13 +488,13 @@ pub fn split_entries_into_books(
         // No splitting, return all entries in one book
         return vec![("".to_string(), entries.to_vec())];
     }
-    
+
     // Group entries by first letter and calculate cumulative character counts
     let mut letter_groups = Vec::new();
     let mut current_letter = String::new();
     let mut current_start_idx = 0;
     let mut cumulative_chars = 0usize;
-    
+
     for (i, entry) in entries.iter().enumerate() {
         let first_letter = entry.prefix[0]
             .chars()
@@ -489,14 +502,16 @@ pub fn split_entries_into_books(
             .unwrap_or('?')
             .to_lowercase()
             .to_string();
-        
+
         // Calculate total characters for this entry (prefix + all followers with counts)
         let prefix_chars: usize = entry.prefix.iter().map(|s| s.len()).sum();
-        let follower_chars: usize = entry.followers.iter()
+        let follower_chars: usize = entry
+            .followers
+            .iter()
             .map(|(word, count)| word.len() * count)
             .sum();
         let entry_chars = prefix_chars + follower_chars;
-        
+
         // When letter changes, record the group
         if first_letter != current_letter && !current_letter.is_empty() {
             letter_groups.push((
@@ -507,13 +522,13 @@ pub fn split_entries_into_books(
             ));
             current_start_idx = i;
         }
-        
+
         if first_letter != current_letter {
             current_letter = first_letter;
         }
         cumulative_chars += entry_chars;
     }
-    
+
     // Add final group
     if !current_letter.is_empty() {
         letter_groups.push((
@@ -523,46 +538,44 @@ pub fn split_entries_into_books(
             cumulative_chars,
         ));
     }
-    
+
     let total_chars = cumulative_chars;
     let target_per_book = total_chars / num_books;
-    
+
     // Calculate target thresholds for each book
-    let thresholds: Vec<usize> = (1..num_books)
-        .map(|i| target_per_book * i)
-        .collect();
-    
+    let thresholds: Vec<usize> = (1..num_books).map(|i| target_per_book * i).collect();
+
     // Find the first letter group that exceeds each threshold
     let mut split_indices = vec![0];
     let mut group_idx = 0;
-    
+
     for threshold in thresholds {
         // Find first group whose cumulative chars exceeds this threshold
         while group_idx < letter_groups.len() && letter_groups[group_idx].3 <= threshold {
             group_idx += 1;
         }
-        
+
         if group_idx < letter_groups.len() {
             split_indices.push(letter_groups[group_idx].1);
             group_idx += 1; // Move past this split for the next threshold
         }
     }
-    
+
     split_indices.push(entries.len());
-    
+
     // Build books from the split indices
     let mut books = Vec::new();
-    
+
     for i in 0..split_indices.len() - 1 {
         let start_idx = split_indices[i];
         let end_idx = split_indices[i + 1];
-        
+
         if start_idx >= end_idx {
-            continue;  // Skip empty ranges
+            continue; // Skip empty ranges
         }
-        
+
         let book_entries: Vec<WordFollowEntry> = entries[start_idx..end_idx].to_vec();
-        
+
         // Determine the letter range for this book
         let start_letter = book_entries[0].prefix[0]
             .chars()
@@ -570,23 +583,27 @@ pub fn split_entries_into_books(
             .unwrap_or('?')
             .to_lowercase()
             .to_string();
-        
+
         let end_letter = book_entries[book_entries.len() - 1].prefix[0]
             .chars()
             .next()
             .unwrap_or('?')
             .to_lowercase()
             .to_string();
-        
+
         let book_name = if start_letter == end_letter {
             start_letter.to_uppercase()
         } else {
-            format!("{}-{}", start_letter.to_uppercase(), end_letter.to_uppercase())
+            format!(
+                "{}-{}",
+                start_letter.to_uppercase(),
+                end_letter.to_uppercase()
+            )
         };
-        
+
         books.push((book_name, book_entries));
     }
-    
+
     books
 }
 
@@ -777,7 +794,10 @@ pub fn save_to_json<P: AsRef<Path>>(
         }
         meta_with_scale.git_revision = get_git_revision()?;
         meta_with_scale.stats = stats.cloned();
-        output.insert("metadata".to_string(), serde_json::to_value(meta_with_scale)?);
+        output.insert(
+            "metadata".to_string(),
+            serde_json::to_value(meta_with_scale)?,
+        );
     } else {
         // Create minimal metadata with just the n value
         let mut meta_map = serde_json::Map::new();
@@ -968,8 +988,7 @@ mod tests {
             "Expected 11 tokens: hello, world, ., hello, again, world, number, will, be, ignored, ."
         );
         assert_eq!(
-            stats.unique_ngrams,
-            8,
+            stats.unique_ngrams, 8,
             "Expected 8 unique prefixes: hello, world, ., again, number, will, be, ignored"
         );
         assert_eq!(
@@ -1409,7 +1428,14 @@ mod tests {
             stats: None,
         };
 
-        save_to_json(&entries_to_optimise, &path, Some(120), Some(&metadata_opt), None, false)?;
+        save_to_json(
+            &entries_to_optimise,
+            &path,
+            Some(120),
+            Some(&metadata_opt),
+            None,
+            false,
+        )?;
 
         let json_optimised: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
@@ -1452,7 +1478,14 @@ mod tests {
             stats: None,
         };
 
-        save_to_json(&entries_count_3, &path, Some(120), Some(&metadata_count3), None, false)?;
+        save_to_json(
+            &entries_count_3,
+            &path,
+            Some(120),
+            Some(&metadata_count3),
+            None,
+            false,
+        )?;
 
         let json_count_3: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
@@ -1572,7 +1605,14 @@ mod tests {
         };
 
         // With scale_d = 1, we can't scale 2 followers uniquely to [1,1]
-        save_to_json(&entries_edge, &path, Some(1), Some(&metadata_edge), None, false)?;
+        save_to_json(
+            &entries_edge,
+            &path,
+            Some(1),
+            Some(&metadata_edge),
+            None,
+            false,
+        )?;
         let json_edge: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1605,7 +1645,14 @@ mod tests {
         };
 
         // With scale_d = 2, the scaling would be very uneven but should work
-        save_to_json(&entries_mixed, &path, Some(2), Some(&metadata_mixed), None, false)?;
+        save_to_json(
+            &entries_mixed,
+            &path,
+            Some(2),
+            Some(&metadata_mixed),
+            None,
+            false,
+        )?;
         let json_mixed: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1642,10 +1689,7 @@ mod tests {
             },
             WordFollowEntry {
                 prefix: vec!["a".to_string()],
-                followers: vec![
-                    ("house".to_string(), 5),
-                    ("tree".to_string(), 4),
-                ],
+                followers: vec![("house".to_string(), 5), ("tree".to_string(), 4)],
             },
         ];
 
@@ -1670,8 +1714,11 @@ mod tests {
         let json: Value = serde_json::from_str(&content)?;
 
         // Check the data array
-        let data = json.get("data").expect("Should have data field")
-            .as_array().expect("Data should be an array");
+        let data = json
+            .get("data")
+            .expect("Should have data field")
+            .as_array()
+            .expect("Data should be an array");
 
         // First entry: "the" with raw cumulative counts
         assert_eq!(data[0][0], serde_json::json!("the"));
@@ -1696,16 +1743,14 @@ mod tests {
         use tempfile::NamedTempFile;
 
         // Create test entries
-        let entries = vec![
-            WordFollowEntry {
-                prefix: vec!["test".to_string()],
-                followers: vec![
-                    ("word1".to_string(), 10),
-                    ("word2".to_string(), 8),
-                    ("word3".to_string(), 7),
-                ],
-            },
-        ];
+        let entries = vec![WordFollowEntry {
+            prefix: vec!["test".to_string()],
+            followers: vec![
+                ("word1".to_string(), 10),
+                ("word2".to_string(), 8),
+                ("word3".to_string(), 7),
+            ],
+        }];
 
         let metadata = Metadata {
             title: "Test".to_string(),
@@ -1734,7 +1779,14 @@ mod tests {
 
         // Test scaled output (default scaling)
         let scaled_file = NamedTempFile::new()?;
-        save_to_json(&entries, scaled_file.path(), None, Some(&metadata), None, false)?;
+        save_to_json(
+            &entries,
+            scaled_file.path(),
+            None,
+            Some(&metadata),
+            None,
+            false,
+        )?;
 
         let scaled_content = fs::read_to_string(scaled_file.path())?;
         let scaled_json: Value = serde_json::from_str(&scaled_content)?;
@@ -1788,13 +1840,13 @@ mod tests {
                 followers: vec![("melon".to_string(), 1)],
             },
         ];
-        
+
         // Test with no splitting (1 book)
         let books = split_entries_into_books(&entries, 1);
         assert_eq!(books.len(), 1);
         assert_eq!(books[0].0, "");
         assert_eq!(books[0].1.len(), 8);
-        
+
         // Test with 2 books
         let books = split_entries_into_books(&entries, 2);
         assert_eq!(books.len(), 2);
@@ -1805,13 +1857,17 @@ mod tests {
         // Total entries should be preserved
         let total_entries: usize = books.iter().map(|(_, entries)| entries.len()).sum();
         assert_eq!(total_entries, 8);
-        
+
         // Test with 3 books - the algorithm may decide 2 or 3 books is optimal
         let books = split_entries_into_books(&entries, 3);
-        assert!(books.len() >= 2 && books.len() <= 3, "Expected 2 or 3 books, got {}", books.len());
+        assert!(
+            books.len() >= 2 && books.len() <= 3,
+            "Expected 2 or 3 books, got {}",
+            books.len()
+        );
         let total_entries: usize = books.iter().map(|(_, entries)| entries.len()).sum();
         assert_eq!(total_entries, 8);
-        
+
         // Test that entries are not duplicated or lost
         for book in &books {
             for entry in &book.1 {
@@ -1820,7 +1876,7 @@ mod tests {
             }
         }
     }
-    
+
     #[test]
     fn test_split_entries_balanced() {
         // Create entries with uneven distribution of followers
@@ -1842,22 +1898,22 @@ mod tests {
                 followers: vec![("w".to_string(), 100)], // Heavy entry
             },
         ];
-        
+
         // Split into 2 books - should balance by follower count
         let books = split_entries_into_books(&entries, 2);
-        
+
         // Debug output
         eprintln!("Books created: {}", books.len());
         for (name, entries) in &books {
             eprintln!("  Book '{}': {} entries", name, entries.len());
         }
-        
+
         assert_eq!(books.len(), 2);
-        
+
         // Both books should have entries
         assert!(books[0].1.len() > 0);
         assert!(books[1].1.len() > 0);
-        
+
         // Total entries preserved
         let total_entries: usize = books.iter().map(|(_, entries)| entries.len()).sum();
         assert_eq!(total_entries, 4);
