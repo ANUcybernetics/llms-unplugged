@@ -1,4 +1,4 @@
-# My First Language Model
+# LLMs Unplugged
 
 Understanding how AI language models work starts with building one yourself.
 This teaching project shows you how to create N-gram language models from
@@ -10,6 +10,8 @@ word patterns. A bigram model asks "after seeing word X, what usually comes
 next?" By building this yourself rather than treating it as a black box, you
 develop intuition for how larger models work.
 
+**Website**: [www.llmsunplugged.org](https://www.llmsunplugged.org)
+
 This is a [Cybernetic Studio](https://github.com/ANUcybernetics/) artefact by
 [Ben Swift](https://benswift.me) as part of the _Human-Scale AI_ project.
 
@@ -18,9 +20,12 @@ This is a [Cybernetic Studio](https://github.com/ANUcybernetics/) artefact by
 This repository contains both teaching materials and software tools. The
 teaching materials (lesson plans, workshop modules, worksheets in the
 `teaching/` directory) can be used standalone without any software installation.
-The software tools (the `my_first_lm` CLI tool + other helper scripts) are only
-necessary if you want to create your own pre-trained N-gram booklets from custom
-text corpora.
+The software tools (the `llms_unplugged` CLI tool + other helper scripts) are
+only necessary if you want to create your own pre-trained N-gram booklets from
+custom text corpora.
+
+The `website/` directory contains the source for the project website at
+[www.llmsunplugged.org](https://www.llmsunplugged.org).
 
 ## Which path should I take?
 
@@ -39,9 +44,9 @@ plans and materials.
 **Want to create your own N-gram booklet?** You have two options:
 
 - **Use a pre-built release**: Download the binary for your platform from the
-  [releases page](https://github.com/benswift/my-first-lm/releases), unpack it,
-  and run the `my_first_lm` on a `.txt` file containing your training data (see
-  `data/frankenstein.txt` for an example)
+  [releases page](https://github.com/ANUcybernetics/llms-unplugged/releases),
+  unpack it, and run the `llms_unplugged` on a `.txt` file containing your
+  training data (see `data/frankenstein.txt` for an example)
 - **Build from source**: Use the Rust toolchain to compile and customize the
   tool yourself
 
@@ -70,12 +75,12 @@ If you've downloaded the release tarball:
 
 ```bash
 # Unpack the release archive
-tar -xzf my_first_lm-v1.0.0.tar.gz
-cd my_first_lm
+tar -xzf llms_unplugged-v1.0.0.tar.gz
+cd llms_unplugged
 
 # Generate N-gram statistics from the included sample text
 # (use the binary for your platform from the bin/ directory)
-./bin/my_first_lm-linux-x86_64 data/frankenstein.txt -n 2
+./bin/llms_unplugged-linux-x86_64 data/frankenstein.txt -n 2
 
 # Typeset the booklet
 typst compile book.typ book.pdf
@@ -129,6 +134,7 @@ For large trigram models, use the `-b` flag to split across multiple books.
 - `src/` - Rust source code for N-gram processing
 - `data/` - Input text corpora (\*.txt files with YAML frontmatter)
 - `teaching/` - Teaching materials (modules, worksheets, runsheets)
+- `website/` - Project website source (Eleventy + Tailwind)
 - `scripts/` - Helper Python scripts for analysis
 - `out/` - Generated PDFs and intermediate files
 - `backlog/` - Task management
@@ -136,7 +142,11 @@ For large trigram models, use the `-b` flag to split across multiple books.
 ### Testing
 
 ```bash
+# Rust CLI tests
 cargo test
+
+# Website tests (from website/ directory)
+cd website && npm run test
 ```
 
 Tests cover capitalization rules, tokenization edge cases, and full integration
@@ -147,9 +157,9 @@ tests. Test output must be pristine with zero failures.
 If you use these teaching materials, please cite them:
 
 ```bibtex
-@misc{swift2025myfirstlm,
+@misc{swift2025llmsunplugged,
   author = {Swift, Ben},
-  title = {My First Language Model: Understand how AI language models work by building one yourself.},
+  title = {LLMs Unplugged: Understand how AI language models work by building one yourself.},
   year = {2025},
   publisher = {Zenodo},
   doi = {10.5281/zenodo.17403824},

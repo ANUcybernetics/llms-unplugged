@@ -1,4 +1,4 @@
-project_name: "my_first_lm"
+project_name: "llms_unplugged"
 default_status: "To Do"
 statuses: ["To Do", "In Progress", "Done"]
 labels: []

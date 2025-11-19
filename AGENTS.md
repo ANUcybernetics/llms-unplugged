@@ -1,4 +1,4 @@
-# My First LM - Codebase Guide
+# LLMs Unplugged - Codebase Guide
 
 ## Project overview
 
@@ -6,6 +6,8 @@ A teaching project for creating N-gram language models from scratch, with both
 manual (pen-and-paper) and automated tools. The pipeline: text corpus →
 tokenization → N-gram statistics → typeset PDF booklets for dice-based text
 generation.
+
+**Website**: [www.llmsunplugged.org](https://www.llmsunplugged.org)
 
 ## Core workflow
 
@@ -23,6 +25,7 @@ text file → rust CLI → model.json → typst → PDF booklet
   - `draft/` - modules in draft form
   - `runsheets/` - session runsheets
   - `images/` - all images and svg files
+- `website/` - Project website source (Eleventy + Tailwind)
 - `scripts/` - Helper Python scripts (bigram_counter.py, build_books.py)
 - `out/` - Generated PDFs and intermediate files
 - `backlog/` - Task management (use `backlog` CLI tool)
@@ -36,7 +39,7 @@ text file → rust CLI → model.json → typst → PDF booklet
 cargo build --release
 
 # Generate N-gram model
-./target/release/my_first_lm input.txt --scale-d 120 -n 2  # bigram with d120 scaling
+./target/release/llms_unplugged input.txt --scale-d 120 -n 2  # bigram with d120 scaling
 
 # Generate booklet
 typst compile book.typ output.pdf
@@ -93,7 +96,11 @@ typstyle --wrap-text *.typ  # ALWAYS use --wrap-text flag
 ## Testing
 
 ```bash
-cargo test  # run all tests
+# Rust CLI tests
+cargo test
+
+# Website tests (from website/ directory)
+cd website && npm run test
 ```
 
 Test files in `tests/` cover:
@@ -101,6 +108,8 @@ Test files in `tests/` cover:
 - Capitalization rules
 - Tokenization edge cases
 - Full integration tests
+
+No current automated testing for Typst compilation of module files.
 
 ## Notes
 

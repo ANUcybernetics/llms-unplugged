@@ -1,9 +1,12 @@
 [package]
-name = "my_first_lm"
+name = "llms_unplugged"
 version = "1.3.0"
 edition = "2024"
 license = "MIT"
 authors = ["Ben Swift <ben@benswift.me>"]
+description = "CLI tool for generating N-gram language model booklets"
+repository = "https://github.com/ANUcybernetics/llms-unplugged"
+homepage = "https://www.llmsunplugged.org"
 
 [dependencies]
 clap = { version = "4.4", features = ["derive"] }

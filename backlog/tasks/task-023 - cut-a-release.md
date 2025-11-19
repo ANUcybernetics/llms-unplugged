@@ -13,7 +13,7 @@ will trigger the zenodo "mint a DoI" workflow as well.
 
 The release tar/zip should contain:
 
-- a (release) version of the `my_first_lm` CLI (which can be used
+- a (release) version of the `llms_unplugged` CLI (which can be used
   cross-platform)
 - at least one "training" txt file in `data/`
 - the README.md, licence and citation files

@@ -6,7 +6,7 @@
 """
 Bigram counter for manual worksheet creation.
 
-This script processes a text file through the my_first_lm Rust tool to generate
+This script processes a text file through the llms_unplugged Rust tool to generate
 bigram statistics, then outputs them as a tab-separated table suitable for
 importing into spreadsheet applications. This is useful for creating manual
 bigram worksheets where students can work with the data directly.
@@ -36,14 +36,14 @@ import typer
 
 def run_rust_tool(input_file: Path, output_file: Path) -> None:
     """
-    Run the Rust my_first_lm tool to generate bigram JSON output.
+    Run the Rust llms_unplugged tool to generate bigram JSON output.
 
     Args:
         input_file: Path to input text file
         output_file: Path where JSON output will be written
     """
     # Check if the binary exists
-    rust_binary = Path("./target/release/my_first_lm")
+    rust_binary = Path("./target/release/llms_unplugged")
     if not rust_binary.exists():
         # Try to build it
         print("Building Rust tool...", file=sys.stderr)

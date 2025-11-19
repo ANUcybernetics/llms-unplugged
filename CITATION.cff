@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use these teaching materials, please cite them as below."
-title: "My First Language Model: Understand how AI language models work by building one yourself."
+title: "LLMs Unplugged: Understand how AI language models work by building one yourself."
 abstract: "Educational materials for teaching how AI language models work by building N-gram models from scratch. Includes structured lesson plans, workshop modules, pen-and-paper exercises with grid templates, and supporting software tools (Rust CLI) that generate dice-powered text generation booklets. A Cybernetic Studio project."
 authors:
   - family-names: Swift
@@ -8,7 +8,8 @@ authors:
     email: ben.swift@anu.edu.au
     affiliation: "ANU School of Cybernetics"
     orcid: "https://orcid.org/0000-0003-2138-5969"
-repository-code: "https://github.com/ANUcybernetics/my-first-lm"
+repository-code: "https://github.com/ANUcybernetics/llms-unplugged"
+url: "https://www.llmsunplugged.org"
 doi: "10.5281/zenodo.17403824"
 type: dataset
 license: CC-BY-NC-SA-4.0

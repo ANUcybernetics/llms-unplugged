@@ -12,11 +12,11 @@ fn run_cli_and_typst_test(n: usize, exe_path: &Path, temp_dir: &TempDir) -> io::
 
     // Determine path to the actual book.typ relative to crate root
     let mut crate_root = std::env::current_dir()?;
-    // Assuming tests are run from the 'my_first_lm' directory
-    if !crate_root.ends_with("my_first_lm") {
+    // Assuming tests are run from the 'llms_unplugged' directory
+    if !crate_root.ends_with("llms_unplugged") {
         // If tests run from workspace root, adjust the path
-        if crate_root.join("my_first_lm").is_dir() {
-            crate_root.push("my_first_lm");
+        if crate_root.join("llms_unplugged").is_dir() {
+            crate_root.push("llms_unplugged");
         } else {
             panic!(
                 "Could not determine crate root for test. CWD: {:?}",
@@ -46,7 +46,7 @@ fn run_cli_and_typst_test(n: usize, exe_path: &Path, temp_dir: &TempDir) -> io::
         input_file.flush()?;
     }
 
-    // --- 2. Run my_first_lm CLI to generate model.json in temp_dir ---
+    // --- 2. Run llms_unplugged CLI to generate model.json in temp_dir ---
     let cli_status = Command::new(exe_path)
         .arg(&input_path) // Use the full path to input
         .arg("--n")
@@ -65,7 +65,7 @@ fn run_cli_and_typst_test(n: usize, exe_path: &Path, temp_dir: &TempDir) -> io::
     // Copy book.typ to temp_dir so it can find model.json in the same directory
     let temp_book_typ_path = temp_dir.path().join("book.typ");
     std::fs::copy(&actual_book_typ_path, &temp_book_typ_path)?;
-    
+
     // Run typst in temp_dir so it finds the model.json created there.
     let typst_status = Command::new("typst")
         .arg("compile")
@@ -99,7 +99,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
     let mut exe_path = std::env::current_dir()?;
     exe_path.push("target");
     exe_path.push("debug");
-    exe_path.push("my_first_lm");
+    exe_path.push("llms_unplugged");
     if cfg!(windows) {
         exe_path.set_extension("exe");
     }
@@ -293,7 +293,7 @@ fn test_cli_raw_flag() -> io::Result<()> {
     let mut exe_path = std::env::current_dir()?;
     exe_path.push("target");
     exe_path.push("debug");
-    exe_path.push("my_first_lm");
+    exe_path.push("llms_unplugged");
 
     if cfg!(windows) {
         exe_path.set_extension("exe");
@@ -322,7 +322,10 @@ fn test_cli_raw_flag() -> io::Result<()> {
         .arg(&output_path_scaled)
         .status()?;
     assert!(status_scaled.success(), "CLI command without --raw failed");
-    assert!(output_path_scaled.exists(), "Scaled output file was not created");
+    assert!(
+        output_path_scaled.exists(),
+        "Scaled output file was not created"
+    );
 
     // Parse JSON outputs
     let json_raw: serde_json::Value =
@@ -353,8 +356,15 @@ fn test_cli_raw_flag() -> io::Result<()> {
     }
 
     // Raw should have actual count (3), scaled should be different
-    assert_eq!(the_raw_total, Some(3), "Raw output should have actual count");
-    assert_ne!(the_raw_total, the_scaled_total, "Raw and scaled totals should differ");
+    assert_eq!(
+        the_raw_total,
+        Some(3),
+        "Raw output should have actual count"
+    );
+    assert_ne!(
+        the_raw_total, the_scaled_total,
+        "Raw and scaled totals should differ"
+    );
 
     Ok(())
 }
@@ -379,7 +389,7 @@ fn test_cli_incompatible_flags() -> io::Result<()> {
     let mut exe_path = std::env::current_dir()?;
     exe_path.push("target");
     exe_path.push("debug");
-    exe_path.push("my_first_lm");
+    exe_path.push("llms_unplugged");
 
     if cfg!(windows) {
         exe_path.set_extension("exe");
@@ -401,7 +411,10 @@ fn test_cli_incompatible_flags() -> io::Result<()> {
         .output()?;
 
     // Should succeed since --raw overrides --scale-d
-    assert!(output.status.success(), "CLI should succeed with --raw overriding --scale-d");
+    assert!(
+        output.status.success(),
+        "CLI should succeed with --raw overriding --scale-d"
+    );
 
     Ok(())
 }
@@ -435,7 +448,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
     let mut exe_path = std::env::current_dir()?;
     exe_path.push("target");
     exe_path.push("debug");
-    exe_path.push("my_first_lm"); // Add the binary name
+    exe_path.push("llms_unplugged"); // Add the binary name
 
     // On Windows, add .exe extension
     if cfg!(windows) {
@@ -585,8 +598,10 @@ fn test_cli_end_to_end() -> io::Result<()> {
 
         // Check prefix word is valid (alphabetic with possible capitalization or punctuation)
         // We now preserve capitalization, so uppercase letters are allowed
-        if prefix_word != "." && prefix_word != "," && 
-           !prefix_word.chars().all(|c| c.is_alphabetic() || c == '\'') {
+        if prefix_word != "."
+            && prefix_word != ","
+            && !prefix_word.chars().all(|c| c.is_alphabetic() || c == '\'')
+        {
             found_invalid_chars_word = true;
         }
 
@@ -636,8 +651,12 @@ fn test_cli_end_to_end() -> io::Result<()> {
 
             // Check follower word is valid (alphabetic with possible capitalization or punctuation)
             // We now preserve capitalization, so uppercase letters are allowed
-            if follower_word != "." && follower_word != "," && 
-               !follower_word.chars().all(|c| c.is_alphabetic() || c == '\'') {
+            if follower_word != "."
+                && follower_word != ","
+                && !follower_word
+                    .chars()
+                    .all(|c| c.is_alphabetic() || c == '\'')
+            {
                 found_invalid_chars_word = true;
             }
 
@@ -908,7 +927,7 @@ fn test_cli_to_typst_pdf() -> io::Result<()> {
     let mut exe_path = std::env::current_dir()?;
     exe_path.push("target");
     exe_path.push("debug");
-    exe_path.push("my_first_lm");
+    exe_path.push("llms_unplugged");
     if cfg!(windows) {
         exe_path.set_extension("exe");
     }

@@ -28,7 +28,7 @@ WORKSHOP_TARGETS := \
 	$(PDF_DIR)/TinyStories-1k-2-1.pdf
 
 # Define common variables
-TOOL := target/release/my_first_lm
+TOOL := target/release/llms_unplugged
 TYPST := typst compile
 
 # Track Rust source files for automatic rebuilding

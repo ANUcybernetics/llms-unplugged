@@ -62,7 +62,7 @@ def build_books(target, input_file, mode="both"):
     columns = 4
 
     # Build the n-gram model
-    tool = "./target/release/my_first_lm"
+    tool = "./target/release/llms_unplugged"
     base_output = f"{name}-{n}-{books}"
 
     if books == 1:
@@ -82,9 +82,11 @@ def build_books(target, input_file, mode="both"):
         output_pdf = pdf_dir / f"{base_output}.pdf"
         if mode in ["both", "pdf-only"]:
             # Read subtitle from JSON metadata
-            with open(json_file, 'r') as f:
+            with open(json_file, "r") as f:
                 json_data = json.load(f)
-            subtitle = json_data.get('metadata', {}).get('subtitle', f'A {n}-gram language model')
+            subtitle = json_data.get("metadata", {}).get(
+                "subtitle", f"A {n}-gram language model"
+            )
 
             typst_cmd = [
                 "typst",
@@ -106,7 +108,10 @@ def build_books(target, input_file, mode="both"):
             # Show page count
             try:
                 result = subprocess.run(
-                    ["pdfinfo", str(output_pdf)], capture_output=True, text=True, check=True
+                    ["pdfinfo", str(output_pdf)],
+                    capture_output=True,
+                    text=True,
+                    check=True,
                 )
                 for line in result.stdout.split("\n"):
                     if "Pages:" in line:
@@ -126,7 +131,16 @@ def build_books(target, input_file, mode="both"):
                 for i in range(1, books + 1)
             )
             if not all_exist:
-                cmd = [tool, "--n", str(n), "-b", str(books), input_file, "-o", str(json_base)]
+                cmd = [
+                    tool,
+                    "--n",
+                    str(n),
+                    "-b",
+                    str(books),
+                    input_file,
+                    "-o",
+                    str(json_base),
+                ]
                 print(f"Running: {' '.join(cmd)}")
                 subprocess.run(cmd, check=True)
             else:
@@ -140,9 +154,11 @@ def build_books(target, input_file, mode="both"):
                     # Generate PDF directly from book JSON
                     output_pdf = pdf_dir / f"{base_output}-book{i}.pdf"
                     # Read subtitle from JSON metadata
-                    with open(book_json, 'r') as f:
+                    with open(book_json, "r") as f:
                         json_data = json.load(f)
-                    subtitle = json_data.get('metadata', {}).get('subtitle', f'A {n}-gram language model')
+                    subtitle = json_data.get("metadata", {}).get(
+                        "subtitle", f"A {n}-gram language model"
+                    )
 
                     typst_cmd = [
                         "typst",
