@@ -2,6 +2,7 @@ import { init } from "@plausible-analytics/tracker";
 
 init({
   domain: "www.llmsunplugged.org",
+  trackFileDownloads: true,
 });
 
 // Add a class to enable any progressive enhancement styles
