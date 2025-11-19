@@ -1,10 +1,10 @@
 ---
 id: task-032
 title: rejig github actions
-status: In Progress
+status: Done
 assignee: []
 created_date: '2025-11-19 21:57'
-updated_date: '2025-11-19 23:05'
+updated_date: '2025-11-19 23:14'
 labels: []
 dependencies: []
 ---
@@ -48,6 +48,10 @@ Removed from git:
 - handouts/out/worksheets/grid.pdf
 - website/src/assets/pdfs/modules.pdf
 - website/src/assets/pdfs/instructors-notes.pdf
+
+Committed and pushed: a8936ca
+
+Workflow triggered automatically on push
 <!-- SECTION:NOTES:END -->
 
 This project should have the following GH actions:
