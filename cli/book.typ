@@ -204,8 +204,7 @@
     #heading(level: 2)[How to Read This Reference]
     Each entry contains:
     - A bold prefix sequence
-    - Diamond symbols (♢) indicating the number of d10 dice to roll (only shown
-      when more than one die is needed)
+    - Diamond symbols (♦) indicating the number of d10 dice to roll
     - Possible continuations with their occurrence counts
   ]
   pagebreak()
@@ -224,9 +223,8 @@
 
 // Function to format the dice indicator (n diamonds)
 #let format-dice-indicator(total_count, dice_d) = {
-  // Only show when using 10^k scaling (not the specified dice_d)
-  // AND when more than 1 d10 is needed (total_count > 9)
-  if total_count != dice_d and total_count > 9 {
+  // Always show diamonds indicating number of dice needed
+  if total_count != dice_d {
     let num-dice = str(total_count).len()
     // Display num-dice Unicode diamond symbols
     text(
@@ -312,18 +310,14 @@
     + *look up the word's entry* (i.e. use this book like a dictionary) to find
       all possible _next_ words according to the model
 
-    + *roll your d10(s)*:
-      - if the word has dice indicators (black diamonds) then roll that many
-        d10s e.g. for #display-with-punctuation("the")#h(
-          0.2em,
-        )#format-dice-indicator(
-          1000,
-          10,
-        )#h(0.2em) with 3 diamonds, roll 3 d10s (or roll the same d10 three
-        times)
-      - otherwise, roll a single d10
-      - read the dice from left to right as a single number (e.g., rolling 2, 1
-        and 7 on three dice means your roll is 217)
+    + *roll your d10(s)*: check the diamonds next to the word---this shows how
+      many d10s to roll (e.g., #display-with-punctuation("the")#h(
+        0.2em,
+      )#format-dice-indicator(
+        1000,
+        10,
+      )#h(0.2em) means roll 3 d10s). Read the dice from left to right as a
+      single number (e.g., rolling 2, 1 and 7 means your roll is 217)
 
     + *find your next word*: scan through the followers until you find the first
       number ≥ your roll (write it down)
@@ -332,7 +326,7 @@
       until you reach a natural stopping point (like #punct-box(".")) or reach
       your desired text length
 
-    === Example 1: single d10 (no dice indicator)
+    === Example 1: single d10
 
     Your current word is *"cat"* and its entry shows:
 
@@ -349,13 +343,13 @@
       )
     ]
 
-    - no dice indicator means roll just 1 d10
+    - one diamond (♦) means roll 1 d10
     - roll your dice: roll a 6
     - find the next word: first number ≥ 6 is #format-follower("ran", 7), so
       next word is "ran"
     - write it down, look it up and continue the process
 
-    === Example 2: multiple d10s (with dice indicators)
+    === Example 2: multiple d10s
 
     Your current word is *"the"* and its entry shows:
 
@@ -372,7 +366,7 @@
       )
     ]
 
-    - the *2 diamonds* mean roll 2 d10s (not just one)
+    - two diamonds (♦♦) means roll 2 d10s
     - roll your dice: roll 5 and 8 → combine them to get 58
     - find the next word: first number ≥ 58 is #format-follower("dog", 66), so
       next word is "dog"

@@ -56,18 +56,16 @@
 
 // Function to format the dice indicator (n diamonds)
 #let format-dice-indicator(total_count) = {
-  // Only show when more than 1 d10 is needed (total_count > 10)
-  if total_count > 10 {
-    // For 0-99 normalization, we need to look at (total_count - 1)
-    let num-dice = str(total_count - 1).len()
-    // Display num-dice Unicode diamond symbols
-    text(
-      baseline: -0.1em,
-      size: 0.9em,
-      fill: white,
-      "♦" * num-dice,
-    )
-  }
+  // Always show diamonds indicating number of dice needed
+  // For 0-99 normalization, we need to look at (total_count - 1)
+  let num-dice = str(total_count - 1).len()
+  // Display num-dice Unicode diamond symbols
+  text(
+    baseline: -0.1em,
+    size: 0.9em,
+    fill: white,
+    "♦" * num-dice,
+  )
 }
 
 // Function to format a single follower with its count
