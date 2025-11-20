@@ -1,5 +1,5 @@
 ---
-title: My First Language Model
+title: LLMs Unplugged
 description: A Cybernetic Studio workshop
 layout: slides
 templateEngineOverride: njk

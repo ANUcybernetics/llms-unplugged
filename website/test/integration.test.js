@@ -300,8 +300,8 @@ describe("slides integration", () => {
     expect(existsSync(slidesDir)).toBe(true);
   });
 
-  it("generates socy-open-nov deck directory", () => {
-    const deckDir = join(siteDir, "slides", "socy-open-nov");
+  it("generates studio-workshop-2h deck directory", () => {
+    const deckDir = join(siteDir, "slides", "studio-workshop-2h");
     expect(existsSync(deckDir)).toBe(true);
   });
 
@@ -309,7 +309,7 @@ describe("slides integration", () => {
     const slidesIndexPath = join(
       siteDir,
       "slides",
-      "socy-open-nov",
+      "studio-workshop-2h",
       "index.html",
     );
     expect(existsSync(slidesIndexPath)).toBe(true);
@@ -319,7 +319,7 @@ describe("slides integration", () => {
     const slidesIndexPath = join(
       siteDir,
       "slides",
-      "socy-open-nov",
+      "studio-workshop-2h",
       "index.html",
     );
     const html = readFileSync(slidesIndexPath, "utf-8");
@@ -331,7 +331,7 @@ describe("slides integration", () => {
     const slidesIndexPath = join(
       siteDir,
       "slides",
-      "socy-open-nov",
+      "studio-workshop-2h",
       "index.html",
     );
     const html = readFileSync(slidesIndexPath, "utf-8");
@@ -344,7 +344,7 @@ describe("slides integration", () => {
     const slidesIndexPath = join(
       siteDir,
       "slides",
-      "socy-open-nov",
+      "studio-workshop-2h",
       "index.html",
     );
     const html = readFileSync(slidesIndexPath, "utf-8");
