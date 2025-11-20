@@ -10,9 +10,8 @@
   "author": "ANU School of Cybernetics",
   "license": "MIT",
   "scripts": {
-    "dev": "npm run build:slides && eleventy --serve",
-    "build": "eleventy && (test -f .llms-generated/feed.xml && cp .llms-generated/feed.xml _site/feed.xml || true) && npm run build:slides",
-    "build:slides": "cd slides && npm install && npm run build && cp -r dist ../_site/slides",
+    "dev": "eleventy --serve",
+    "build": "eleventy && (test -f .llms-generated/feed.xml && cp .llms-generated/feed.xml _site/feed.xml || true)",
     "preview": "eleventy --serve",
     "pretest": "npm run build",
     "test": "vitest run",
@@ -32,7 +31,8 @@
     "gray-matter": "^4.0.3",
     "markdown-it-anchor": "^9.2.0",
     "markdown-it-footnote": "^4.0.0",
-    "markdown-it-toc-done-right": "^4.2.0"
+    "markdown-it-toc-done-right": "^4.2.0",
+    "reveal.js": "^5.2.1"
   },
   "devDependencies": {
     "@photogabble/eleventy-plugin-interlinker": "^1.1.2",

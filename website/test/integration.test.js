@@ -45,7 +45,9 @@ describe("build output", () => {
   it("includes Tailwind utility classes in CSS", () => {
     const assetsDir = join(siteDir, "assets");
     const files = readdirSync(assetsDir);
-    const cssFile = files.find((f) => f.endsWith(".css"));
+    const cssFile = files.find(
+      (f) => f.startsWith("main") && f.endsWith(".css"),
+    );
     const cssPath = join(assetsDir, cssFile);
     const css = readFileSync(cssPath, "utf-8");
     expect(css).toMatch(/\.min-h-screen/);
@@ -56,7 +58,9 @@ describe("build output", () => {
   it("includes custom ANU color definitions in CSS", () => {
     const assetsDir = join(siteDir, "assets");
     const files = readdirSync(assetsDir);
-    const cssFile = files.find((f) => f.endsWith(".css"));
+    const cssFile = files.find(
+      (f) => f.startsWith("main") && f.endsWith(".css"),
+    );
     const cssPath = join(assetsDir, cssFile);
     const css = readFileSync(cssPath, "utf-8");
     expect(css).toContain("--color-anu-gold");
@@ -66,7 +70,9 @@ describe("build output", () => {
   it("includes prose styling in CSS", () => {
     const assetsDir = join(siteDir, "assets");
     const files = readdirSync(assetsDir);
-    const cssFile = files.find((f) => f.endsWith(".css"));
+    const cssFile = files.find(
+      (f) => f.startsWith("main") && f.endsWith(".css"),
+    );
     const cssPath = join(assetsDir, cssFile);
     const css = readFileSync(cssPath, "utf-8");
     expect(css).toContain(".prose");
@@ -75,7 +81,9 @@ describe("build output", () => {
   it("includes modern CSS features", () => {
     const assetsDir = join(siteDir, "assets");
     const files = readdirSync(assetsDir);
-    const cssFile = files.find((f) => f.endsWith(".css"));
+    const cssFile = files.find(
+      (f) => f.startsWith("main") && f.endsWith(".css"),
+    );
     const cssPath = join(assetsDir, cssFile);
     const css = readFileSync(cssPath, "utf-8");
 
@@ -292,64 +300,55 @@ describe("slides integration", () => {
     expect(existsSync(slidesDir)).toBe(true);
   });
 
-  it("generates example deck directory", () => {
-    const exampleDir = join(siteDir, "slides", "example");
-    expect(existsSync(exampleDir)).toBe(true);
+  it("generates socy-open-nov deck directory", () => {
+    const deckDir = join(siteDir, "slides", "socy-open-nov");
+    expect(existsSync(deckDir)).toBe(true);
   });
 
   it("generates slides index.html", () => {
-    const slidesIndexPath = join(siteDir, "slides", "example", "index.html");
+    const slidesIndexPath = join(
+      siteDir,
+      "slides",
+      "socy-open-nov",
+      "index.html",
+    );
     expect(existsSync(slidesIndexPath)).toBe(true);
   });
 
   it("slides index.html contains valid HTML", () => {
-    const slidesIndexPath = join(siteDir, "slides", "example", "index.html");
+    const slidesIndexPath = join(
+      siteDir,
+      "slides",
+      "socy-open-nov",
+      "index.html",
+    );
     const html = readFileSync(slidesIndexPath, "utf-8");
     expect(html).toContain("<!DOCTYPE html>");
     expect(html).toContain("<html");
   });
 
-  it("slides include theme colours (gold accent)", () => {
-    const slidesDir = join(siteDir, "slides", "example");
-    const files = readdirSync(slidesDir);
-
-    let foundGoldColour = false;
-
-    for (const file of files) {
-      if (file.endsWith(".css") || file.endsWith(".html")) {
-        const filePath = join(slidesDir, file);
-        const content = readFileSync(filePath, "utf-8");
-        if (content.includes("#be830e") || content.includes("be830e")) {
-          foundGoldColour = true;
-          break;
-        }
-      }
-    }
-
-    if (!foundGoldColour) {
-      const assetsDir = join(slidesDir, "assets");
-      if (existsSync(assetsDir)) {
-        const assetFiles = readdirSync(assetsDir);
-        for (const file of assetFiles) {
-          if (file.endsWith(".css")) {
-            const filePath = join(assetsDir, file);
-            const content = readFileSync(filePath, "utf-8");
-            if (content.includes("#be830e") || content.includes("be830e")) {
-              foundGoldColour = true;
-              break;
-            }
-          }
-        }
-      }
-    }
-
-    expect(foundGoldColour).toBe(true);
+  it("slides use reveal.js structure", () => {
+    const slidesIndexPath = join(
+      siteDir,
+      "slides",
+      "socy-open-nov",
+      "index.html",
+    );
+    const html = readFileSync(slidesIndexPath, "utf-8");
+    expect(html).toContain('class="reveal"');
+    expect(html).toContain('class="slides"');
+    expect(html).toContain("<section");
   });
 
   it("slides contain presentation title", () => {
-    const slidesIndexPath = join(siteDir, "slides", "example", "index.html");
+    const slidesIndexPath = join(
+      siteDir,
+      "slides",
+      "socy-open-nov",
+      "index.html",
+    );
     const html = readFileSync(slidesIndexPath, "utf-8");
-    expect(html).toContain("LLMs Unplugged");
+    expect(html).toContain("My First Language Model");
   });
 });
 

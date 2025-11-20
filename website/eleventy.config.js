@@ -9,6 +9,35 @@ import markdownItTocDoneRight from "markdown-it-toc-done-right";
 import interlinker from "@photogabble/eleventy-plugin-interlinker";
 import llmsPlugin from "./eleventy-plugin-llms.js";
 
+function markdownToRevealSlides(content) {
+  const slideMd = markdownIt({
+    html: true,
+    typographer: true,
+  });
+
+  const slides = content.split(/\n---\n/);
+
+  return slides
+    .map((slide) => {
+      const trimmed = slide.trim();
+      if (!trimmed) return "";
+
+      let attrs = "";
+      let slideContent = trimmed;
+
+      const attrMatch = trimmed.match(/^<!--\s*(.+?)\s*-->\n?/);
+      if (attrMatch) {
+        attrs = ` ${attrMatch[1]}`;
+        slideContent = trimmed.slice(attrMatch[0].length);
+      }
+
+      const rendered = slideMd.render(slideContent);
+      return `<section${attrs}>\n${rendered}</section>`;
+    })
+    .filter(Boolean)
+    .join("\n");
+}
+
 export default function (eleventyConfig) {
   // Global site data available in all templates as `site`
   eleventyConfig.addGlobalData("site", {
@@ -20,7 +49,10 @@ export default function (eleventyConfig) {
   });
 
   eleventyConfig.addPassthroughCopy("src/assets");
+  eleventyConfig.addPassthroughCopy("src/images");
   eleventyConfig.addPassthroughCopy("src/CNAME");
+
+  eleventyConfig.addFilter("revealSlides", markdownToRevealSlides);
 
   // RSS plugin
   eleventyConfig.addPlugin(pluginRss);
@@ -110,6 +142,8 @@ export default function (eleventyConfig) {
           input: {
             main: "src/assets/main.js",
             styles: "src/assets/main.css",
+            slides: "src/assets/slides.js",
+            slidesStyles: "src/assets/slides.css",
           },
         },
       },
