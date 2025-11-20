@@ -57,6 +57,7 @@ cd website && npm run build && npm test
 - Test output must be pristine (zero failures)
 - Format Typst files with `typstyle --wrap-text`
 - Never create files unless necessary---prefer editing existing ones
+- reveal.js slide configuration is in `website/src/assets/slides.js`
 
 ## Notes
 
