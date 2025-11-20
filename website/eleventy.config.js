@@ -141,9 +141,7 @@ export default function (eleventyConfig) {
         rollupOptions: {
           input: {
             main: "src/assets/main.js",
-            styles: "src/assets/main.css",
             slides: "src/assets/slides.js",
-            slidesStyles: "src/assets/slides.css",
           },
         },
       },
