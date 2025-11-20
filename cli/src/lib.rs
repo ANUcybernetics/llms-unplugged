@@ -951,7 +951,7 @@ mod tests {
             stats: None,
         };
 
-        // Test with scale_d = None (default 10^k-1 scaling)
+        // Test with default 10^k-1 scaling
         save_to_json(&entries, &path, None, Some(&metadata), None, false)?;
         let json_none: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
@@ -1016,7 +1016,7 @@ mod tests {
             stats: None,
         };
 
-        // Test with scale_d = None (default 10^k-1 scaling)
+        // Test with default 10^k-1 scaling
         // Both entries: total_original_count=1 (k=1, max_val=9)
         save_to_json(&entries, &path, None, Some(&metadata), None, false)?;
         let json_none: serde_json::Value =
@@ -1080,7 +1080,7 @@ mod tests {
             stats: None,
         };
 
-        // Test with scale_d = None (default 10^k-1 scaling)
+        // Test with default 10^k-1 scaling
         // total_original_count=10 (k=2, max_val=99). Factor = 9.9
         // Original cumulative: dog:5, cat:8 (5+3), bird:10 (8+2)
         save_to_json(&entries, &path, None, Some(&metadata), None, false)?;

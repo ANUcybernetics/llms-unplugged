@@ -401,7 +401,7 @@ fn test_cli_incompatible_flags() -> io::Result<()> {
         return Ok(());
     }
 
-    // Test that --raw flag works (no longer have --scale-d to test compatibility)
+    // Test that --raw flag works
     let output = Command::new(&exe_path)
         .arg(&input_path)
         .arg("--raw")

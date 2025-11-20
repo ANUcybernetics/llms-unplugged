@@ -39,8 +39,6 @@ struct Args {
 fn main() {
     let args = Args::parse();
 
-    // No need to check for incompatible flags - if raw is specified, it overrides scale_d
-
     // Parse punctuation string into Vec<char>
     let punctuation: Vec<char> = args.punctuation.chars().collect();
 
