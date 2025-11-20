@@ -115,15 +115,10 @@
   // Format the prefix (larger, like in book.typ)
   display-with-punctuation(prefix, size: 1.5em, weight: "bold")
 
-  // Add dice indicator if needed
-  let indicator = format-dice-indicator(total_count)
-  if indicator != none {
-    h(0.2em)
-    indicator
-    h(0.6em)
-  } else {
-    h(0.6em)
-  }
+  // Add dice indicator
+  h(0.2em)
+  format-dice-indicator(total_count)
+  h(0.6em)
 
   // Format the followers (smaller, default size)
   format-followers(followers)

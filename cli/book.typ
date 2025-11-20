@@ -272,15 +272,10 @@
   // Format the prefix
   display-with-punctuation(prefix, size: 1.5em, weight: "bold")
 
-  // Add dice indicator if needed
-  let indicator = format-dice-indicator(total_count, dice_d)
-  if indicator != none {
-    h(0.2em)
-    indicator
-    h(0.6em)
-  } else {
-    h(0.6em)
-  }
+  // Add dice indicator
+  h(0.2em)
+  format-dice-indicator(total_count, dice_d)
+  h(0.6em)
 
   // Format the followers
   format-followers(followers)
@@ -314,7 +309,7 @@
       many d10s to roll (e.g., #display-with-punctuation("the")#h(
         0.2em,
       )#format-dice-indicator(
-        1000,
+        100,
         10,
       )#h(0.2em) means roll 3 d10s). Read the dice from left to right as a
       single number (e.g., rolling 2, 1 and 7 means your roll is 217)
