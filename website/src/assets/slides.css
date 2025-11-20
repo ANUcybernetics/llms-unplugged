@@ -2,140 +2,160 @@
 @import "reveal.js/dist/theme/black.css";
 
 :root {
-  --r-background-color: #000000;
-  --r-main-color: #ffffff;
-  --r-heading-color: #ffffff;
-  --r-link-color: #be830e;
-  --r-link-color-hover: #d4a843;
-  --r-selection-background-color: rgba(190, 131, 14, 0.5);
-  --r-main-font-size: 42px;
+    --r-background-color: #000000;
+    --r-main-color: #ffffff;
+    --r-heading-color: #ffffff;
+    --r-link-color: #be830e;
+    --r-link-color-hover: #d4a843;
+    --r-selection-background-color: rgba(190, 131, 14, 0.5);
+    --r-main-font-size: 42px;
+}
+
+/* Default slide alignment: top-left with padding */
+.reveal .slides section {
+    text-align: left;
+    top: 0 !important;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.reveal .slides section > * {
+    text-align: left;
+}
+
+/* Fullscreen background images */
+.reveal .slides section[data-background-image] {
+    padding: 3rem;
 }
 
 .reveal {
-  font-family: system-ui, -apple-system, sans-serif;
+    font-family:
+        system-ui,
+        -apple-system,
+        sans-serif;
 }
 
 .reveal h1,
 .reveal h2,
 .reveal h3 {
-  text-transform: none;
-  font-weight: 600;
+    text-transform: none;
+    font-weight: 600;
 }
 
 .reveal h1 {
-  font-size: 2.5em;
+    font-size: 2.5em;
 }
 
 .reveal h2 {
-  font-size: 1.75em;
+    font-size: 1.75em;
 }
 
 .reveal strong {
-  color: #be830e;
+    color: #be830e;
 }
 
 .reveal em {
-  color: #ffffff;
+    color: #ffffff;
 }
 
 .reveal code {
-  background-color: rgba(190, 131, 14, 0.15);
-  padding: 0.2em 0.4em;
-  border-radius: 0.25em;
-  font-size: 0.9em;
+    background-color: rgba(190, 131, 14, 0.15);
+    padding: 0.2em 0.4em;
+    border-radius: 0.25em;
+    font-size: 0.9em;
 }
 
 .reveal pre {
-  background-color: #1a1a1a;
-  border: 1px solid rgba(190, 131, 14, 0.3);
-  border-radius: 0.5em;
+    background-color: #1a1a1a;
+    border: 1px solid rgba(190, 131, 14, 0.3);
+    border-radius: 0.5em;
 }
 
 .reveal ul,
 .reveal ol {
-  text-align: left;
+    text-align: left;
 }
 
 .reveal li {
-  margin: 0.5em 0;
+    margin: 0.5em 0;
 }
 
 .reveal li::marker {
-  color: #be830e;
+    color: #be830e;
 }
 
 .reveal table {
-  border-collapse: collapse;
-  font-size: 0.7em;
+    border-collapse: collapse;
+    font-size: 0.7em;
 }
 
 .reveal th {
-  background-color: rgba(190, 131, 14, 0.2);
-  color: #be830e;
-  font-weight: 600;
-  padding: 0.5em;
-  border-bottom: 2px solid #be830e;
+    background-color: rgba(190, 131, 14, 0.2);
+    color: #be830e;
+    font-weight: 600;
+    padding: 0.5em;
+    border-bottom: 2px solid #be830e;
 }
 
 .reveal td {
-  padding: 0.5em;
-  border-bottom: 1px solid #333333;
+    padding: 0.5em;
+    border-bottom: 1px solid #333333;
 }
 
 .reveal blockquote {
-  border-left: 4px solid #be830e;
-  padding-left: 1em;
-  font-style: italic;
+    border-left: 4px solid #be830e;
+    padding-left: 1em;
+    font-style: italic;
 }
 
 .reveal .progress {
-  color: #be830e;
+    color: #be830e;
 }
 
 .reveal .controls {
-  color: #be830e;
+    color: #be830e;
 }
 
 /* Layout utilities */
 .reveal .grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  align-items: center;
-  height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+    height: 100%;
 }
 
 .reveal .grid-3 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1rem;
-  align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    align-items: center;
 }
 
 .reveal .center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
 }
 
 .reveal .left {
-  text-align: left;
+    text-align: left;
 }
 
 /* Image styling */
 .reveal img {
-  max-height: 60vh;
-  border-radius: 0.5rem;
+    max-height: 60vh;
+    border-radius: 0.5rem;
 }
 
 .reveal .r-stretch img {
-  max-height: none;
+    max-height: none;
 }
 
 /* Section divider slides */
 .reveal section[data-background-color="#1a1a1a"] h1 {
-  font-size: 3em;
+    font-size: 3em;
 }

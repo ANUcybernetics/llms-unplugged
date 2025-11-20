@@ -6,6 +6,7 @@ import Notes from "reveal.js/plugin/notes/notes.esm.js";
 Reveal.initialize({
   hash: true,
   slideNumber: true,
-  transition: "slide",
+  transition: "fade",
+  transitionSpeed: "fast",
   plugins: [Markdown, Highlight, Notes],
 });
