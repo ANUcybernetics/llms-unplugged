@@ -1,8 +1,14 @@
-import { init } from "@plausible-analytics/tracker";
+import { init, track } from "@plausible-analytics/tracker";
 
 init({
   domain: "www.llmsunplugged.org",
-  trackFileDownloads: true,
+});
+
+document.addEventListener("click", (event) => {
+  const link = event.target.closest('a[href$=".pdf"]');
+  if (link) {
+    track("File Download", { props: { url: link.getAttribute("href") } });
+  }
 });
 
 // Add a class to enable any progressive enhancement styles

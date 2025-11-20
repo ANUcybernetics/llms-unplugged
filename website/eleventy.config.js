@@ -1,11 +1,9 @@
 import EleventyVitePlugin from "@11ty/eleventy-plugin-vite";
 import tailwindcss from "@tailwindcss/vite";
-import { viteStaticCopy } from "vite-plugin-static-copy";
 import markdownIt from "markdown-it";
 import markdownItFootnote from "markdown-it-footnote";
 import interlinker from "@photogabble/eleventy-plugin-interlinker";
 import llmsPlugin from "./eleventy-plugin-llms.js";
-import path from "path";
 
 export default function (eleventyConfig) {
   // Global site data available in all templates as `site`
@@ -52,17 +50,7 @@ export default function (eleventyConfig) {
     viteOptions: {
       base: "/",
       publicDir: ".llms-generated",
-      plugins: [
-        tailwindcss(),
-        viteStaticCopy({
-          targets: [
-            {
-              src: path.join(process.cwd(), "src/assets/pdfs/*"),
-              dest: "assets/pdfs",
-            },
-          ],
-        }),
-      ],
+      plugins: [tailwindcss()],
       build: {
         rollupOptions: {
           input: {
