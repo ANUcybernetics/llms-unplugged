@@ -8,5 +8,8 @@ Reveal.initialize({
   slideNumber: true,
   transition: "fade",
   transitionSpeed: "fast",
+  width: "100%",
+  height: "100%",
+  margin: 0.04,
   plugins: [Markdown, Highlight, Notes],
 });
