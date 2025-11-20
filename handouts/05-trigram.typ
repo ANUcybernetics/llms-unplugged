@@ -8,7 +8,7 @@
 #module-hero(
   "Trigram Model",
   "images/CYBERNETICS_A_027.jpg",
-  "04",
+  "05",
 )[
   Extend the bigram model to consider _two_ words of context instead of one,
   leading to better text generation.

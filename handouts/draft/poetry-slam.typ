@@ -35,9 +35,9 @@ But you can also incorporate techniques from any of the subsequent modules.
 
 - your completed word co-occurrence matrix (from module 01-02)
 - any additional materials from completed modules:
-  - context columns (if you've done module 04)
-  - word embeddings (if you've done module 05)
-  - sampling strategy notes (if you've done module 06)
+  - sampling strategy notes (if you've done module 04)
+  - context columns (if you've done module 06)
+  - word embeddings (if you've done module 07)
 - score sheets for evaluation
 - timer for poetry performances
 - optional: microphone for dramatic readings
@@ -49,24 +49,24 @@ But you can also incorporate techniques from any of the subsequent modules.
 
   - each team identifies which modules they've completed
   - select your best model configuration from available tools
-  - if you have module 04: choose which context columns to use
-  - if you have module 06: select your sampling strategy
+  - if you have module 04: select your sampling strategy
+  - if you have module 06: choose which context columns to use
   - if you have module 03: decide whether to use bigram or trigram
 
 + *poetry generation round*:
 
   - generate a 20-30 word poem using your available techniques
   - basic teams (modules 01-02): focus on creative prompt selection
-  - if you have module 04: use context columns for rhythm and flow
-  - if you have module 05: apply embedding similarity for word substitutions
-  - if you have module 06: apply your chosen sampling strategy
+  - if you have module 04: apply your chosen sampling strategy
+  - if you have module 06: use context columns for rhythm and flow
+  - if you have module 07: apply embedding similarity for word substitutions
 
 + *team choices* (based on completed modules):
   - *everyone*: starting word/prompt selection
   - *if module 03*: bigram vs trigram
-  - *if module 04*: which context columns to activate
-  - *if module 06*: which sampling strategy to use
-  - *if module 05*: whether to use similarity-based substitutions
+  - *if module 04*: which sampling strategy to use
+  - *if module 06*: which context columns to activate
+  - *if module 07*: whether to use similarity-based substitutions
 
 == Example Performances
 
@@ -77,7 +77,7 @@ But you can also incorporate techniques from any of the subsequent modules.
 - *result*: "run spot see jump play fast run"
 - *technique*: carefully selected starting words for variety
 
-=== Team B (modules 01-04):
+=== Team B (modules 01-06):
 
 - *modules completed*: through context columns
 - *model*: bigram for simplicity
@@ -85,9 +85,9 @@ But you can also incorporate techniques from any of the subsequent modules.
 - *result*: "see spot run. spot jumps high. good dog."
 - *technique*: Used full stops to create clear sentences
 
-=== Team C (modules 01-03 + 06):
+=== Team C (modules 01-05):
 
-- *modules completed*: trigram + sampling strategies (skipped 04-05)
+- *modules completed*: trigram + sampling strategies (skipped 06-07)
 - *model*: trigram for better flow
 - *sampling*: poetry slam (rhyme-seeking) strategy
 - *result*: "run fun sun! spot got hot! see me free!"
@@ -95,7 +95,7 @@ But you can also incorporate techniques from any of the subsequent modules.
 
 === Team D (all modules):
 
-- *modules completed*: all through module 06
+- *modules completed*: all through module 07
 - *model*: trigram
 - *context columns*: all available
 - *sampling*: non-sequitur for surprise
@@ -156,9 +156,9 @@ just scaled up:
 - *if you have modules 01-02*: you're doing core statistical generation (GPT's
   foundation)
 - *if you add module 03*: you're adding context awareness (like attention)
-- *if you add module 04*: you're adding structure (like special tokens)
-- *if you add module 05*: you're adding semantic understanding (like embeddings)
-- *if you add module 06*: you're adding creative control (like GPT's parameters)
+- *if you add module 04*: you're adding creative control (like GPT's parameters)
+- *if you add module 06*: you're adding structure (like special tokens)
+- *if you add module 07*: you're adding semantic understanding (like embeddings)
 
 Your poetry slam proves that "intelligence" in AI builds incrementally. Whether
 you have 2 modules or 6, you're demonstrating the same principles that power
