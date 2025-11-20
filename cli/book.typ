@@ -168,8 +168,9 @@
       Credits: designed and built by Ben Swift for the Cybernetic Studio.
       Typeset in #link("https://github.com/alerque/libertinus")[Libertinus]
       using #link("https://typst.app")[Typst]. The source code for the tool used
-      to create this model (v#context raw(doc_metadata.version)) is available
-      under an MIT Licence from #link(
+      to create this model#context if "version" in doc_metadata [
+        (v#raw(doc_metadata.version))
+      ] is available under an MIT Licence from #link(
         "https://github.com/ANUcybernetics/llms-unplugged",
       )[`https://github.com/ANUcybernetics/llms-unplugged`].
 
@@ -203,8 +204,8 @@
     #heading(level: 2)[How to Read This Reference]
     Each entry contains:
     - A bold prefix sequence
-    - A diamond symbol (♢) followed by a number indicating the total occurrence
-      count (only when not equal to 120)
+    - Diamond symbols (♢) indicating the number of d10 dice to roll (only shown
+      when more than one die is needed)
     - Possible continuations with their occurrence counts
   ]
   pagebreak()
@@ -221,38 +222,18 @@
   pagebreak()
 }
 
-// Function to format the dice indicator (diamond with number)
+// Function to format the dice indicator (n diamonds)
 #let format-dice-indicator(total_count, dice_d) = {
   // Only show when using 10^k scaling (not the specified dice_d)
   // AND when more than 1 d10 is needed (total_count > 9)
   if total_count != dice_d and total_count > 9 {
-    let num-str = str(str(total_count).len())
-    // Create a diamond shape with the number inside
-    box(
-      baseline: -0.3em,
-      height: 1em,
-      rotate(
-        45deg,
-        origin: center,
-        rect(
-          fill: black,
-          width: 0.7em,
-          height: 0.7em,
-          place(
-            center + horizon,
-            rotate(
-              -45deg,
-              origin: center,
-              text(
-                fill: white,
-                weight: "bold",
-                size: 0.65em,
-                num-str,
-              ),
-            ),
-          ),
-        ),
-      ),
+    let num-dice = str(total_count).len()
+    // Display num-dice Unicode diamond symbols
+    text(
+      baseline: -0.1em,
+      size: 0.9em,
+      fill: black,
+      "♦" * num-dice,
     )
   }
 }
@@ -332,13 +313,14 @@
       all possible _next_ words according to the model
 
     + *roll your d10(s)*:
-      - if the word has a dice indicator (black diamond) then roll that many
+      - if the word has dice indicators (black diamonds) then roll that many
         d10s e.g. for #display-with-punctuation("the")#h(
           0.2em,
         )#format-dice-indicator(
           1000,
           10,
-        )#h(0.2em) then roll 3 d10s (or roll the same d10 three times)
+        )#h(0.2em) with 3 diamonds, roll 3 d10s (or roll the same d10 three
+        times)
       - otherwise, roll a single d10
       - read the dice from left to right as a single number (e.g., rolling 2, 1
         and 7 on three dice means your roll is 217)
@@ -373,7 +355,7 @@
       next word is "ran"
     - write it down, look it up and continue the process
 
-    === Example 2: multiple d10s (with dice indicator)
+    === Example 2: multiple d10s (with dice indicators)
 
     Your current word is *"the"* and its entry shows:
 
@@ -390,7 +372,7 @@
       )
     ]
 
-    - the dice indicator with *2* inside means roll 2 d10s (not just one)
+    - the *2 diamonds* mean roll 2 d10s (not just one)
     - roll your dice: roll 5 and 8 → combine them to get 58
     - find the next word: first number ≥ 58 is #format-follower("dog", 66), so
       next word is "dog"

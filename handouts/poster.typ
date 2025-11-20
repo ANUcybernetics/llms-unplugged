@@ -54,38 +54,18 @@
   }
 }
 
-// Function to format the dice indicator (diamond with number)
+// Function to format the dice indicator (n diamonds)
 #let format-dice-indicator(total_count) = {
   // Only show when more than 1 d10 is needed (total_count > 10)
   if total_count > 10 {
     // For 0-99 normalization, we need to look at (total_count - 1)
-    let num-str = str(str(total_count - 1).len())
-    // Create a diamond shape with the number inside
-    box(
-      baseline: -0.3em,
-      height: 1em,
-      rotate(
-        45deg,
-        origin: center,
-        rect(
-          fill: white,
-          width: 0.7em,
-          height: 0.7em,
-          place(
-            center + horizon,
-            rotate(
-              -45deg,
-              origin: center,
-              text(
-                fill: black,
-                weight: "bold",
-                size: 0.65em,
-                num-str,
-              ),
-            ),
-          ),
-        ),
-      ),
+    let num-dice = str(total_count - 1).len()
+    // Display num-dice Unicode diamond symbols
+    text(
+      baseline: -0.1em,
+      size: 0.9em,
+      fill: white,
+      "♦" * num-dice,
     )
   }
 }
@@ -121,34 +101,16 @@
   }
 }
 
-// Function to create a dice indicator for instructions/examples
-#let instruction-dice-indicator(content) = box(
-  baseline: -0.3em,
-  height: 1em,
-  rotate(
-    45deg,
-    origin: center,
-    rect(
-      fill: white,
-      stroke: 0.5pt + black,
-      width: 0.7em,
-      height: 0.7em,
-      place(
-        center + horizon,
-        rotate(
-          -45deg,
-          origin: center,
-          text(
-            fill: black,
-            weight: "bold",
-            size: 0.65em,
-            content,
-          ),
-        ),
-      ),
-    ),
-  ),
-)
+// Function to create dice indicators for instructions/examples
+#let instruction-dice-indicator(num-dice) = {
+  text(
+    baseline: -0.1em,
+    size: 0.9em,
+    fill: white,
+    stroke: 0.5pt + black,
+    "♦" * num-dice,
+  )
+}
 
 // Function to format a complete entry (prefix + dice indicator + followers)
 #let format-entry(prefix, total_count, followers) = {
@@ -301,11 +263,11 @@
 
       [
         - look up `the` in the booklet (like using a dictionary)
-        - the diamond "dice indicator" #display-with-punctuation(
+        - the dice indicators #display-with-punctuation(
             "the",
             size: 1em,
             weight: "bold",
-          )#instruction-dice-indicator("3") means you'll need to roll three d10s
+          )#instruction-dice-indicator(3) show you'll need to roll three d10s
         - roll your dice: roll 2, 1 and 7 → combine them to get 217
         - find your next word: scan through the followers until you find the
           first number ≥ 217, which is 234, so the next word is `hat`
