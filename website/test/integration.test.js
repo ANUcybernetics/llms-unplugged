@@ -292,20 +292,25 @@ describe("slides integration", () => {
     expect(existsSync(slidesDir)).toBe(true);
   });
 
+  it("generates example deck directory", () => {
+    const exampleDir = join(siteDir, "slides", "example");
+    expect(existsSync(exampleDir)).toBe(true);
+  });
+
   it("generates slides index.html", () => {
-    const slidesIndexPath = join(siteDir, "slides", "index.html");
+    const slidesIndexPath = join(siteDir, "slides", "example", "index.html");
     expect(existsSync(slidesIndexPath)).toBe(true);
   });
 
   it("slides index.html contains valid HTML", () => {
-    const slidesIndexPath = join(siteDir, "slides", "index.html");
+    const slidesIndexPath = join(siteDir, "slides", "example", "index.html");
     const html = readFileSync(slidesIndexPath, "utf-8");
     expect(html).toContain("<!DOCTYPE html>");
     expect(html).toContain("<html");
   });
 
   it("slides include theme colours (gold accent)", () => {
-    const slidesDir = join(siteDir, "slides");
+    const slidesDir = join(siteDir, "slides", "example");
     const files = readdirSync(slidesDir);
 
     let foundGoldColour = false;
@@ -342,7 +347,7 @@ describe("slides integration", () => {
   });
 
   it("slides contain presentation title", () => {
-    const slidesIndexPath = join(siteDir, "slides", "index.html");
+    const slidesIndexPath = join(siteDir, "slides", "example", "index.html");
     const html = readFileSync(slidesIndexPath, "utf-8");
     expect(html).toContain("LLMs Unplugged");
   });

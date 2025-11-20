@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "slidev --open",
-    "build": "slidev build --out dist --base /slides/",
+    "dev": "slidev decks/example.md --open",
+    "dev:deck": "slidev",
+    "build": "node build-all.js",
     "export": "slidev export"
   },
   "dependencies": {

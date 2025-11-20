@@ -1,5 +1,5 @@
 ---
-theme: ./theme
+theme: ../theme
 title: LLMs Unplugged
 info: |
   Teaching language models through hands-on activities
