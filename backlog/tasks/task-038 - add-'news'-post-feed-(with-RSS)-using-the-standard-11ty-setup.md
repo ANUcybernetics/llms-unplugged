@@ -3,8 +3,8 @@ id: task-038
 title: add 'news' post feed (with RSS) using the standard 11ty setup
 status: Done
 assignee: []
-created_date: '2025-11-20 00:12'
-updated_date: '2025-11-20 00:24'
+created_date: "2025-11-20 00:12"
+updated_date: "2025-11-20 00:24"
 labels: []
 dependencies: []
 ---
@@ -23,7 +23,9 @@ Make sure it all works with the vite setup in a natural way.
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
+
 Implemented news feed with:
+
 - News collection in src/news/ with posts using news/ URL prefix
 - Post layout (post.njk) with date, tags, and back link
 - Paginated news index at /news/ (10 items per page)
@@ -33,6 +35,7 @@ Implemented news feed with:
 - Sample posts created for testing
 
 Technical notes:
+
 - RSS plugin: @11ty/eleventy-plugin-rss
 - Tags: events, resources, articles
 - feed.xml copied via build script due to Vite publicDir timing issue
