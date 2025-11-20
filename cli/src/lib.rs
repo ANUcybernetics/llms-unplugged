@@ -566,7 +566,6 @@ pub fn split_entries_into_books(
 pub fn save_to_json<P: AsRef<Path>>(
     entries: &[WordFollowEntry],
     path: P,
-    _scale_d: Option<u32>,
     metadata: Option<&Metadata>,
     stats: Option<&ProcessingStats>,
     raw: bool,
@@ -952,7 +951,7 @@ mod tests {
         };
 
         // Test with default 10^k-1 scaling
-        save_to_json(&entries, &path, None, Some(&metadata), None, false)?;
+        save_to_json(&entries, &path, Some(&metadata), None, false)?;
         let json_none: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1018,7 +1017,7 @@ mod tests {
 
         // Test with default 10^k-1 scaling
         // Both entries: total_original_count=1 (k=1, max_val=9)
-        save_to_json(&entries, &path, None, Some(&metadata), None, false)?;
+        save_to_json(&entries, &path, Some(&metadata), None, false)?;
         let json_none: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1083,7 +1082,7 @@ mod tests {
         // Test with default 10^k-1 scaling
         // total_original_count=10 (k=2, max_val=99). Factor = 9.9
         // Original cumulative: dog:5, cat:8 (5+3), bird:10 (8+2)
-        save_to_json(&entries, &path, None, Some(&metadata), None, false)?;
+        save_to_json(&entries, &path, Some(&metadata), None, false)?;
         let json_none: serde_json::Value =
             serde_json::from_reader(BufReader::new(File::open(&path)?))?;
 
@@ -1158,7 +1157,7 @@ mod tests {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path();
 
-        save_to_json(&entries, &path, None, Some(&metadata), None, true)?;
+        save_to_json(&entries, &path, Some(&metadata), None, true)?;
 
         let content = fs::read_to_string(&path)?;
         let json: Value = serde_json::from_str(&content)?;
@@ -1214,7 +1213,7 @@ mod tests {
 
         // Test raw output
         let raw_file = NamedTempFile::new()?;
-        save_to_json(&entries, raw_file.path(), None, Some(&metadata), None, true)?;
+        save_to_json(&entries, raw_file.path(), Some(&metadata), None, true)?;
 
         let raw_content = fs::read_to_string(raw_file.path())?;
         let raw_json: Value = serde_json::from_str(&raw_content)?;
@@ -1228,14 +1227,7 @@ mod tests {
 
         // Test scaled output (default scaling)
         let scaled_file = NamedTempFile::new()?;
-        save_to_json(
-            &entries,
-            scaled_file.path(),
-            None,
-            Some(&metadata),
-            None,
-            false,
-        )?;
+        save_to_json(&entries, scaled_file.path(), Some(&metadata), None, false)?;
 
         let scaled_content = fs::read_to_string(scaled_file.path())?;
         let scaled_json: Value = serde_json::from_str(&scaled_content)?;

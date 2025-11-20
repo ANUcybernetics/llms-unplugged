@@ -95,11 +95,10 @@ fn main() {
                     metadata.cloned()
                 };
 
-                // Always use default d10 scaling (None parameter means 10^k-1 scaling)
+                // Always use default d10 scaling (10^k-1)
                 match save_to_json(
                     book_entries,
                     &output_file,
-                    None,
                     book_metadata.as_ref(),
                     Some(stats),
                     args.raw,
