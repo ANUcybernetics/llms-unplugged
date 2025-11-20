@@ -90,7 +90,7 @@ export default function (eleventyConfig) {
   });
 
   eleventyConfig.addPlugin(pluginTOC, {
-    tags: ["h2", "h3"],
+    tags: ["h2"],
     wrapper: "nav",
   });
 
