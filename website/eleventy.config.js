@@ -3,7 +3,9 @@ import pluginRss from "@11ty/eleventy-plugin-rss";
 import tailwindcss from "@tailwindcss/vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import markdownIt from "markdown-it";
+import markdownItAnchor from "markdown-it-anchor";
 import markdownItFootnote from "markdown-it-footnote";
+import pluginTOC from "eleventy-plugin-toc";
 import interlinker from "@photogabble/eleventy-plugin-interlinker";
 import llmsPlugin from "./eleventy-plugin-llms.js";
 import path from "path";
@@ -66,7 +68,12 @@ export default function (eleventyConfig) {
   const md = markdownIt({
     html: true,
     typographer: true,
-  }).use(markdownItFootnote);
+  })
+    .use(markdownItFootnote)
+    .use(markdownItAnchor, {
+      permalink: markdownItAnchor.permalink.headerLink(),
+      slugify: eleventyConfig.getFilter("slugify"),
+    });
 
   // Customize footnote rendering to use Tailwind classes
   md.renderer.rules.footnote_block_open = () =>
@@ -81,6 +88,11 @@ export default function (eleventyConfig) {
   eleventyConfig.addPlugin(interlinker, {
     deadLinkReport: "console",
     errorOnDeadLinks: true,
+  });
+
+  eleventyConfig.addPlugin(pluginTOC, {
+    tags: ["h2", "h3"],
+    wrapper: "nav",
   });
 
   eleventyConfig.addPlugin(llmsPlugin, {

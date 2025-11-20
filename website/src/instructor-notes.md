@@ -1,6 +1,7 @@
 ---
 layout: base.njk
 title: Instructor notes
+toc: true
 ---
 
 # Instructor notes
