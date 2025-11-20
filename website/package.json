@@ -32,8 +32,7 @@
     "eleventy-plugin-toc": "^1.1.5",
     "gray-matter": "^4.0.3",
     "markdown-it-anchor": "^9.2.0",
-    "markdown-it-footnote": "^4.0.0",
-    "vite-plugin-static-copy": "^3.1.4"
+    "markdown-it-footnote": "^4.0.0"
   },
   "devDependencies": {
     "@photogabble/eleventy-plugin-interlinker": "^1.1.2",
