@@ -61,8 +61,8 @@ export default function (eleventyConfig, options = {}) {
     try {
       await fs.access(feedSrc);
       await fs.copyFile(feedSrc, feedDest);
-    } catch {
-      // feed.xml doesn't exist
+    } catch (err) {
+      console.error(`[llmsPlugin] Failed to copy feed.xml: ${err.message}`);
     }
   });
 }

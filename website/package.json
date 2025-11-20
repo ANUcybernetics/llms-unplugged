@@ -11,7 +11,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "eleventy --serve",
-    "build": "eleventy && cp .llms-generated/feed.xml _site/feed.xml",
+    "build": "eleventy && test -f .llms-generated/feed.xml && cp .llms-generated/feed.xml _site/feed.xml",
     "preview": "eleventy --serve",
     "pretest": "npm run build",
     "test": "vitest run",
