@@ -109,11 +109,10 @@ contractions) to keep the model small.
 
 - `-o, --output <file>`: Output JSON file (default: `model.json`)
 - `-n, --n <N>`: N-gram size---2 for bigrams, 3 for trigrams (default: 2)
-- `--scale-d <D>`: Scale counts for a D-sided die (default: 10)
-  - `D = 10`: Scales to [0, 9] for d10 dice
-  - Other values: Scales to [1, D] when possible, or uses multi-die rolling for
-    larger vocabularies
 - `--raw`: Output raw counts without scaling
+- `-b <N>`: Split large models across N books
+
+By default, counts are scaled for d10 dice using 10^k-1 scaling (e.g., 0-9, 0-99, 0-999), making it easy to add more dice for larger ranges.
 
 ### How the pipeline works
 
