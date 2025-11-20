@@ -19,12 +19,6 @@ struct Args {
     #[arg(short, long, default_value_t = 2)]
     n: usize,
 
-    /// Value 'd' to scale counts (default: 10).
-    /// For prefixes with <= d followers, counts are scaled to [1, d].
-    /// For prefixes with > d followers, counts are scaled to [0, 10^n - 1] (smallest n-digit number range).
-    #[arg(long = "scale-d", default_value_t = 10)]
-    scale_d: u32,
-
     /// Number of books to split the output into (default 1 = no splitting)
     #[arg(short = 'b', long = "books", default_value_t = 1)]
     num_books: usize,
@@ -103,12 +97,11 @@ fn main() {
                     metadata.cloned()
                 };
 
-                // Pass scale_d only if not in raw mode
-                let scale_d_param = if args.raw { None } else { Some(args.scale_d) };
+                // Always use default d10 scaling (None parameter means 10^k-1 scaling)
                 match save_to_json(
                     book_entries,
                     &output_file,
-                    scale_d_param,
+                    None,
                     book_metadata.as_ref(),
                     Some(stats),
                     args.raw,
@@ -143,7 +136,7 @@ fn main() {
                 if args.raw {
                     println!("Output raw counts without scaling");
                 } else {
-                    println!("Applied count scaling with d={}", args.scale_d);
+                    println!("Applied count scaling with d10");
                 }
 
                 // Print metadata information

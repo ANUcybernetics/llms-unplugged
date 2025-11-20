@@ -46,8 +46,7 @@
   description: subtitle,
 )
 
-// Get the dice size from metadata (defaults to 10 if not present)
-#let dice_d = doc_metadata.at("scale_d", default: 10)
+
 
 // Create a state variable to track the current prefix
 #let current_prefix = state("current-prefix", "")
@@ -222,9 +221,9 @@
 }
 
 // Function to format the dice indicator (n diamonds)
-#let format-dice-indicator(total_count, dice_d) = {
+#let format-dice-indicator(total_count) = {
   // Always show diamonds indicating number of dice needed
-  if total_count != dice_d {
+  if total_count != 10 {
     let num-dice = str(total_count).len()
     // Display num-dice Unicode diamond symbols
     text(
@@ -268,13 +267,13 @@
 }
 
 // Function to format a complete entry (prefix + dice indicator + followers)
-#let format-entry(prefix, total_count, followers, dice_d: 10) = {
+#let format-entry(prefix, total_count, followers) = {
   // Format the prefix
   display-with-punctuation(prefix, size: 1.5em, weight: "bold")
 
   // Add dice indicator
   h(0.2em)
-  format-dice-indicator(total_count, dice_d)
+  format-dice-indicator(total_count)
   h(0.6em)
 
   // Format the followers
@@ -308,11 +307,9 @@
     + *roll your d10(s)*: check the diamonds next to the word---this shows how
       many d10s to roll (e.g., #display-with-punctuation("the")#h(
         0.2em,
-      )#format-dice-indicator(
-        100,
-        10,
-      )#h(0.2em) means roll 3 d10s). Read the dice from left to right as a
-      single number (e.g., rolling 2, 1 and 7 means your roll is 217)
+      )#format-dice-indicator(100)#h(0.2em) means roll 3 d10s). Read the dice
+      from left to right as a single number (e.g., rolling 2, 1 and 7 means your
+      roll is 217)
 
     + *find your next word*: scan through the followers until you find the first
       number ≥ your roll (write it down)
@@ -334,7 +331,6 @@
           ("ran", 7),
           ("slept", 10),
         ),
-        dice_d: 10,
       )
     ]
 
@@ -357,7 +353,6 @@
           ("dog", 66),
           ("end", 99),
         ),
-        dice_d: 10,
       )
     ]
 
@@ -467,7 +462,6 @@
       prefix,
       total_count,
       followers,
-      dice_d: dice_d,
     )#label("prefix-" + prefix)]
 
   v(0.1em)

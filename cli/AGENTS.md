@@ -29,7 +29,7 @@ text file → Rust CLI → model.json → Typst → PDF booklet
 cargo build --release
 
 # Generate N-gram model
-./target/release/llms_unplugged ../data/frankenstein.txt -n 2 --scale-d 120
+./target/release/llms_unplugged ../data/frankenstein.txt -n 2
 
 # Generate booklet
 typst compile book.typ output.pdf
@@ -48,7 +48,6 @@ cargo test
 
 - `-o, --output <file>` - Output JSON file (default: model.json)
 - `-n, --n <N>` - N-gram size: 2 for bigrams, 3 for trigrams (default: 2)
-- `--scale-d <D>` - Scale counts for a D-sided die (default: 10)
 - `--raw` - Output raw counts without scaling
 - `-b <N>` - Split large models across N books
 
@@ -67,7 +66,7 @@ Your text content here...
 
 ## Configuration
 
-- `--scale-d N` scales counts to dice rolls (e.g., d10, d20, d120)
+- Counts are always scaled for d10 dice using 10^k-1 scaling (e.g., 0-9, 0-99, 0-999)
 - Paper sizes configured in book.typ: a4 (4 columns), a5 (3 columns)
 - Typst inputs: paper_size, font_size, columns, subtitle
 

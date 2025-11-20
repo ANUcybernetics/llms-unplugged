@@ -37,9 +37,6 @@ pub struct Metadata {
     pub n: usize,
     /// Subtitle for the booklet (e.g., "A bigram language model" or "A trigram language model: A-K (Book 1 of 3)")
     pub subtitle: String,
-    /// Scale_d value used for dice scaling (None if raw mode)
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub scale_d: Option<u32>,
     /// CLI version used to generate this model
     pub version: String,
     /// Summary statistics for the processed text
@@ -228,7 +225,6 @@ impl NGramCounter {
                         url: url.to_string(),
                         n: self.n,
                         subtitle: format!("A {} language model", model_type_str(self.n)),
-                        scale_d: None, // Will be set during save_to_json
                         version: env!("CARGO_PKG_VERSION").to_string(),
                         stats: None, // Will be set during save_to_json
                     });
@@ -570,7 +566,7 @@ pub fn split_entries_into_books(
 pub fn save_to_json<P: AsRef<Path>>(
     entries: &[WordFollowEntry],
     path: P,
-    scale_d: Option<u32>,
+    _scale_d: Option<u32>,
     metadata: Option<&Metadata>,
     stats: Option<&ProcessingStats>,
     raw: bool,
@@ -589,7 +585,7 @@ pub fn save_to_json<P: AsRef<Path>>(
 
             // Followers are already sorted by count (largest to smallest) from convert_to_entries
             // Get number of unique followers (no need to sort as we only need the count)
-            let num_unique_followers = entry.followers.len();
+            let _num_unique_followers = entry.followers.len();
 
             // Calculate original cumulative counts
             let mut original_cumulative_counts = Vec::new();
@@ -616,122 +612,24 @@ pub fn save_to_json<P: AsRef<Path>>(
                     .collect();
                 (actual_json_total, followers_json_list)
             } else {
-                let mut scale_target_d_value: Option<u32> = None;
+                // Always use 10^k-1 scaling for d10 (0-9 range on each die)
+                // k is the number of digits in total_original_count
+                let k_digits = total_original_count.to_string().len() as u32;
+                // max_val is 10^k_digits - 1 (e.g., if count is 75, k=2, max_val=99)
+                let max_val_for_scaling = 10_u32.pow(k_digits).saturating_sub(1);
 
-                match scale_d {
-                    Some(d_param) => {
-                        if d_param == 10 {
-                            // For d10, always use 10^k-1 scaling to get 0-9 range
-                            // This makes physical d10 dice (numbered 0-9) work intuitively
-                        } else if num_unique_followers <= d_param as usize {
-                            scale_target_d_value = Some(d_param);
-                        } else {
-                            // Number of unique followers > d_param, so use 10^k-1 scaling
-                        }
-                    }
-                    None => {
-                        // No scale_d provided, use 10^k-1 scaling
-                    }
-                }
+                let actual_json_total = serde_json::json!(max_val_for_scaling);
+                let scaling_factor = max_val_for_scaling as f64 / total_original_count as f64;
 
-                if let Some(d_target) = scale_target_d_value {
-                    // Scale to [1, d_target]
-                    let scaling_factor = d_target as f64 / total_original_count as f64;
-                    let num_followers_for_prefix = original_cumulative_counts.len();
-
-                    // Pre-compute scaled values to check for duplicates
-                    let mut scaled_values = Vec::with_capacity(num_followers_for_prefix);
-                    let mut prev_scaled_val = 0;
-                    let mut has_duplicates = false;
-
-                    // First pass: calculate and check for duplicates
-                    for (i, (_, original_cumul)) in original_cumulative_counts.iter().enumerate() {
-                        let scaled_val: usize;
-                        if i == num_followers_for_prefix - 1 {
-                            // Last follower
-                            scaled_val = d_target as usize;
-                        } else {
-                            let scaled_raw = *original_cumul as f64 * scaling_factor;
-                            // Apply ceil, ensure at least 1
-                            let mut val = (scaled_raw.ceil() as usize).max(1);
-                            // Ensure strictly increasing order
-                            val = val.max(prev_scaled_val + 1);
-                            // Do not exceed d_target
-                            val = val.min(d_target as usize);
-                            scaled_val = val;
-                        }
-
-                        // Check for non-increasing sequence or duplicates
-                        if (i > 0 && scaled_val <= prev_scaled_val)
-                            || scaled_values.contains(&scaled_val)
-                        {
-                            has_duplicates = true;
-                            break;
-                        }
-
-                        scaled_values.push(scaled_val);
-                        prev_scaled_val = scaled_val.min(d_target as usize);
-                    }
-
-                    // If duplicates found, switch to 10^k-1 scaling
-                    if has_duplicates {
-                        // Scale to [0, 10^k - 1]
-                        let k_digits = total_original_count.to_string().len() as u32;
-                        let max_val_for_scaling = 10_u32.pow(k_digits).saturating_sub(1);
-
-                        let actual_json_total = serde_json::json!(max_val_for_scaling);
-                        let scaling_factor =
-                            max_val_for_scaling as f64 / total_original_count as f64;
-
-                        let followers_json_list: Vec<serde_json::Value> =
-                            original_cumulative_counts
-                                .iter()
-                                .map(|(follower_word, original_cumul)| {
-                                    let scaled_cumul =
-                                        (*original_cumul as f64 * scaling_factor).round() as usize;
-                                    serde_json::json!([follower_word, scaled_cumul])
-                                })
-                                .collect();
-                        (actual_json_total, followers_json_list)
-                    } else {
-                        // No duplicates, proceed with [1, d_target] scaling
-                        let actual_json_total = serde_json::json!(d_target);
-                        let mut processed_followers_json =
-                            Vec::with_capacity(num_followers_for_prefix);
-
-                        // Second pass: create the JSON values using the pre-computed scaled values
-                        for ((follower_word, _), scaled_val) in
-                            original_cumulative_counts.iter().zip(scaled_values.iter())
-                        {
-                            processed_followers_json
-                                .push(serde_json::json!([follower_word, scaled_val]));
-                        }
-
-                        (actual_json_total, processed_followers_json)
-                    }
-                } else {
-                    // This implies scale_to_10_pow_k_minus_1 is true
-                    // Scale to [0, 10^k - 1]
-                    // k is the number of digits in total_original_count
-                    let k_digits = total_original_count.to_string().len() as u32;
-                    // max_val is 10^k_digits - 1 (e.g., if count is 75, k=2, max_val=99)
-                    // If count is 0, k_digits=1, max_val=9. Handled by total_original_count == 0 check earlier.
-                    let max_val_for_scaling = 10_u32.pow(k_digits).saturating_sub(1);
-
-                    let actual_json_total = serde_json::json!(max_val_for_scaling);
-                    // total_original_count is guaranteed > 0 here by the outer if condition
-                    let scaling_factor = max_val_for_scaling as f64 / total_original_count as f64;
-
-                    let followers_json_list: Vec<serde_json::Value> = original_cumulative_counts
-                        .iter()
-                        .map(|(follower_word, original_cumul)| {
-                            let scaled_cumul =
-                                (*original_cumul as f64 * scaling_factor).round() as usize;
-                            serde_json::json!([follower_word, scaled_cumul])
-                        })
-                        .collect();
-                    (actual_json_total, followers_json_list)
-                }
+                let followers_json_list: Vec<serde_json::Value> = original_cumulative_counts
+                    .iter()
+                    .map(|(follower_word, original_cumul)| {
+                        let scaled_cumul =
+                            (*original_cumul as f64 * scaling_factor).round() as usize;
+                        serde_json::json!([follower_word, scaled_cumul])
+                    })
+                    .collect();
+                (actual_json_total, followers_json_list)
             };
 
             formatted_entry_json.push(json_total_for_prefix);
@@ -746,15 +644,12 @@ pub fn save_to_json<P: AsRef<Path>>(
 
     // Add metadata if available
     if let Some(meta) = metadata {
-        // Clone metadata and set scale_d if not in raw mode, and add stats
-        let mut meta_with_scale = meta.clone();
-        if !raw {
-            meta_with_scale.scale_d = scale_d;
-        }
-        meta_with_scale.stats = stats.cloned();
+        // Clone metadata and add stats
+        let mut meta_with_stats = meta.clone();
+        meta_with_stats.stats = stats.cloned();
         output.insert(
             "metadata".to_string(),
-            serde_json::to_value(meta_with_scale)?,
+            serde_json::to_value(meta_with_stats)?,
         );
     } else {
         // Create minimal metadata with just the n value
@@ -1052,7 +947,6 @@ mod tests {
             url: "https://example.com/bigrams".to_string(),
             n: 2,
             subtitle: "A bigram language model".to_string(),
-            scale_d: None,
             version: "test".to_string(),
             stats: None,
         };
@@ -1091,55 +985,6 @@ mod tests {
         assert_eq!(meta.get("url").unwrap(), "https://example.com/bigrams");
         assert_eq!(meta.get("n").unwrap(), 2);
 
-        // Test with scale_d = Some(120)
-        // "hello": 2 unique followers <= 120. Scale to [1, 120].
-        // "world": 1 unique follower <= 120. Scale to [1, 120].
-        save_to_json(&entries, &path, Some(120), Some(&metadata), None, false)?;
-        let json_d120: serde_json::Value =
-            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
-
-        // Extract the data array
-        let data_d120 = json_d120
-            .get("data")
-            .expect("Should have data field")
-            .as_array()
-            .expect("Data should be an array");
-
-        assert_eq!(data_d120[0][0], serde_json::json!("hello"));
-        assert_eq!(data_d120[0][1], serde_json::json!(120)); // Total scaled to 120
-        assert_eq!(data_d120[0][2], serde_json::json!(["world", 80])); // (2/3 * 120).round() = 80
-        assert_eq!(data_d120[0][3], serde_json::json!(["again", 120])); // Last element is 120
-
-        assert_eq!(data_d120[1][0], serde_json::json!("world"));
-        assert_eq!(data_d120[1][1], serde_json::json!(120)); // Total scaled to 120
-        assert_eq!(data_d120[1][2], serde_json::json!(["hello", 120])); // Last element is 120
-
-        // Test with scale_d = Some(1)
-        // "hello": 2 unique followers > 1. Scale to 10^k-1 (total 9).
-        // "world": 1 unique follower <= 1. Scale to [1, 1].
-        save_to_json(&entries, &path, Some(1), Some(&metadata), None, false)?;
-        let json_d1: serde_json::Value =
-            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
-
-        // Extract the data array
-        let data_d1 = json_d1
-            .get("data")
-            .expect("Should have data field")
-            .as_array()
-            .expect("Data should be an array");
-
-        assert_eq!(data_d1[0][0], serde_json::json!("hello"));
-        assert_eq!(data_d1[0][1], serde_json::json!(9)); // Total scaled to 9 (10^k-1 rule because 2 unique > d=1)
-        // Original cumulative: world:2, again:3. Scale factor 9/3=3.
-        // world: (2*3).round() = 6
-        // again: (3*3).round() = 9
-        assert_eq!(data_d1[0][2], serde_json::json!(["world", 6]));
-        assert_eq!(data_d1[0][3], serde_json::json!(["again", 9]));
-
-        assert_eq!(data_d1[1][0], serde_json::json!("world"));
-        assert_eq!(data_d1[1][1], serde_json::json!(1)); // Total scaled to 1 ([1,d] rule)
-        assert_eq!(data_d1[1][2], serde_json::json!(["hello", 1])); // Last element is 1
-
         Ok(())
     }
 
@@ -1167,7 +1012,6 @@ mod tests {
             url: "https://example.com/trigrams".to_string(),
             n: 3,
             subtitle: "A trigram language model".to_string(),
-            scale_d: None,
             version: "test".to_string(),
             stats: None,
         };
@@ -1204,49 +1048,6 @@ mod tests {
         assert_eq!(meta.get("url").unwrap(), "https://example.com/trigrams");
         assert_eq!(meta.get("n").unwrap(), 3);
 
-        // Test with scale_d = Some(60)
-        // Both entries: 1 unique follower <= 60. Scale to [1, 60].
-        save_to_json(&entries, &path, Some(120), Some(&metadata), None, false)?;
-        let json_d120: serde_json::Value =
-            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
-
-        // Extract the data array
-        let data_d120 = json_d120
-            .get("data")
-            .expect("Should have data field")
-            .as_array()
-            .expect("Data should be an array");
-
-        // For "the quick" -> "brown" (1 follower, total original 1)
-        // Scaled to [1, 120], total becomes 120, follower "brown" gets 120.
-        assert_eq!(data_d120[0][0], serde_json::json!("the quick"));
-        assert_eq!(data_d120[0][1], serde_json::json!(120)); // Total scaled to 120
-        assert_eq!(data_d120[0][2], serde_json::json!(["brown", 120])); // Last element is 120
-
-        // For "quick brown" -> "fox" (1 follower, total original 1)
-        // Scaled to [1, 120], total becomes 120, follower "fox" gets 120.
-        assert_eq!(data_d120[1][0], serde_json::json!("quick brown"));
-        assert_eq!(data_d120[1][1], serde_json::json!(120)); // Total scaled to 120
-        assert_eq!(data_d120[1][2], serde_json::json!(["fox", 120])); // Last element is 120
-
-        // Test with scale_d = Some(0)
-        // Both entries: 1 unique follower > 0. Scale to 10^k-1 (total 9)
-        save_to_json(&entries, &path, Some(0), Some(&metadata), None, false)?;
-        let json_d0: serde_json::Value =
-            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
-
-        // Extract the data array
-        let data_d0 = json_d0
-            .get("data")
-            .expect("Should have data field")
-            .as_array()
-            .expect("Data should be an array");
-
-        assert_eq!(data_d0[0][1], serde_json::json!(9));
-        assert_eq!(data_d0[0][2], serde_json::json!(["brown", 9]));
-        assert_eq!(data_d0[1][1], serde_json::json!(9));
-        assert_eq!(data_d0[1][2], serde_json::json!(["fox", 9]));
-
         Ok(())
     }
 
@@ -1275,7 +1076,6 @@ mod tests {
             url: "https://example.com/cumulative".to_string(),
             n: 2,
             subtitle: "A bigram language model".to_string(),
-            scale_d: None,
             version: "test".to_string(),
             stats: None,
         };
@@ -1319,313 +1119,6 @@ mod tests {
         assert_eq!(meta.get("url").unwrap(), "https://example.com/cumulative");
         assert_eq!(meta.get("n").unwrap(), 2);
 
-        // Test with scale_d = Some(120)
-        // 3 unique followers <= 120. Scale to [1, 120]. Factor = 120/10 = 12.
-        save_to_json(&entries, &path, Some(120), Some(&metadata), None, false)?;
-        let json_d120: serde_json::Value =
-            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
-
-        // Extract the data array
-        let data_d120 = json_d120
-            .get("data")
-            .expect("Should have data field")
-            .as_array()
-            .expect("Data should be an array");
-
-        assert_eq!(data_d120[0][1], serde_json::json!(120)); // Total scaled to 120
-        // dog (orig 5): ceil(5*12).max(1)=60. prev=0. max(60, 1)=60.
-        assert_eq!(data_d120[0][2], serde_json::json!(["dog", 60]));
-        // cat (orig 8): ceil(8*12).max(1)=96. prev=60. max(96, 60+1)=96.
-        assert_eq!(data_d120[0][3], serde_json::json!(["cat", 96]));
-        // bird (orig 10): last element, so 120.
-        assert_eq!(data_d120[0][4], serde_json::json!(["bird", 120]));
-
-        // Test with scale_d = Some(2)
-        // 3 unique followers > 2. Scale to 10^k-1 (total 99).
-        save_to_json(&entries, &path, Some(2), Some(&metadata), None, false)?;
-        let json_d2: serde_json::Value =
-            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
-
-        // Extract the data array
-        let data_d2 = json_d2
-            .get("data")
-            .expect("Should have data field")
-            .as_array()
-            .expect("Data should be an array");
-
-        assert_eq!(data_d2[0][1], serde_json::json!(99)); // Total scaled to 99
-        assert_eq!(
-            data_d2[0][2],
-            serde_json::json!(["dog", (5.0_f64 * 9.9_f64).round() as u64])
-        ); // 50
-        assert_eq!(
-            data_d2[0][3],
-            serde_json::json!(["cat", (8.0_f64 * 9.9_f64).round() as u64])
-        ); // 79
-        assert_eq!(
-            data_d2[0][4],
-            serde_json::json!(["bird", (10.0_f64 * 9.9_f64).round() as u64])
-        ); // 99
-
-        // Test with count = 2 (should be optimised to scale to 120)
-        let entries_to_optimise = vec![WordFollowEntry {
-            prefix: vec!["test".to_string()],
-            followers: vec![("one".to_string(), 1), ("two".to_string(), 1)],
-            // When counts are equal, they'll be sorted alphabetically: "one" before "two"
-        }];
-
-        // Different metadata for this test
-        let metadata_opt = Metadata {
-            title: "Optimized Test".to_string(),
-            author: "Optimizer".to_string(),
-            url: "https://example.com/optimized".to_string(),
-            n: 2,
-            subtitle: "A bigram language model".to_string(),
-            scale_d: None,
-            version: "test".to_string(),
-            stats: None,
-        };
-
-        save_to_json(
-            &entries_to_optimise,
-            &path,
-            Some(120),
-            Some(&metadata_opt),
-            None,
-            false,
-        )?;
-
-        let json_optimised: serde_json::Value =
-            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
-
-        // Extract the data array
-        let data_opt = json_optimised
-            .get("data")
-            .expect("Should have data field")
-            .as_array()
-            .expect("Data should be an array");
-
-        // Total count is 2, scaling factor is 120/2 = 60
-        // Original cumulative: one:1, two:2
-        // Scaled: one: ceil(1*60)=60. max(60,1)=60.
-        // Scaled: two: (last) = 120.
-        assert_eq!(data_opt[0][1], serde_json::json!(120)); // Total count is 120
-        assert_eq!(data_opt[0][2], serde_json::json!(["one", 60]));
-        assert_eq!(data_opt[0][3], serde_json::json!(["two", 120]));
-
-        // Test with count = 3 (optimised for 120-sided die)
-        let entries_count_3 = vec![WordFollowEntry {
-            prefix: vec!["count3".to_string()],
-            followers: vec![
-                ("a".to_string(), 1),
-                ("b".to_string(), 1),
-                ("c".to_string(), 1),
-            ],
-            // With equal counts, followers should be sorted alphabetically
-        }];
-
-        // Different metadata for this test
-        let metadata_count3 = Metadata {
-            title: "Count3 Test".to_string(),
-            author: "Counter".to_string(),
-            url: "https://example.com/count3".to_string(),
-            n: 2,
-            subtitle: "A bigram language model".to_string(),
-            scale_d: None,
-            version: "test".to_string(),
-            stats: None,
-        };
-
-        save_to_json(
-            &entries_count_3,
-            &path,
-            Some(120),
-            Some(&metadata_count3),
-            None,
-            false,
-        )?;
-
-        let json_count_3: serde_json::Value =
-            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
-
-        // Extract the data array
-        let data_count3 = json_count_3
-            .get("data")
-            .expect("Should have data field")
-            .as_array()
-            .expect("Data should be an array");
-
-        // Total count is 3, scaling factor is 120/3 = 40
-        // Original cumulative: a:1, b:2, c:3
-        // Scaled: a: ceil(1*40)=40. max(40,1)=40.
-        // Scaled: b: ceil(2*40)=80. max(80,40+1)=80.
-        // Scaled: c: (last) = 120.
-        assert_eq!(data_count3[0][1], serde_json::json!(120)); // Total is 120
-        assert_eq!(data_count3[0][2], serde_json::json!(["a", 40]));
-        assert_eq!(data_count3[0][3], serde_json::json!(["b", 80]));
-        assert_eq!(data_count3[0][4], serde_json::json!(["c", 120]));
-
-        Ok(())
-    }
-
-    #[test]
-    fn test_save_to_json_duplicate_scaling() -> io::Result<()> {
-        // Test case where followers would be scaled to the same value with d-scaling
-        // This should force a switch to 10^k-1 scaling
-        let entries = vec![WordFollowEntry {
-            prefix: vec!["duplicate".to_string()],
-            followers: vec![
-                ("first".to_string(), 1),
-                ("second".to_string(), 1),
-                ("third".to_string(), 1),
-                ("fourth".to_string(), 1), // With scale_d = 3, these identical counts would create duplicates
-            ],
-        }];
-
-        let temp_file = NamedTempFile::new()?;
-        let path = temp_file.path().to_owned();
-
-        // Create metadata
-        let metadata = Metadata {
-            title: "Duplicate Test".to_string(),
-            author: "Duplicate Author".to_string(),
-            url: "https://example.com/duplicate".to_string(),
-            n: 2,
-            subtitle: "A bigram language model".to_string(),
-            scale_d: None,
-            version: "test".to_string(),
-            stats: None,
-        };
-
-        // With scale_d = 3, we'd normally use [1,3] scaling
-        // But since we have 4 followers with identical counts, they'd get scaled to the same values
-        // So we should switch to 10^k-1 scaling (total is 4, so k=1, max_val=9)
-        save_to_json(&entries, &path, Some(3), Some(&metadata), None, false)?;
-        let json_result: serde_json::Value =
-            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
-
-        // Extract the data array
-        let data = json_result
-            .get("data")
-            .expect("Should have data field")
-            .as_array()
-            .expect("Data should be an array");
-
-        // Total count is 4, so k=1, max_val=9
-        assert_eq!(data[0][1], serde_json::json!(9));
-
-        // Check that values are properly scaled and not duplicates
-        let first_val = data[0][2][1].as_u64().unwrap();
-        let second_val = data[0][3][1].as_u64().unwrap();
-        let third_val = data[0][4][1].as_u64().unwrap();
-        let fourth_val = data[0][5][1].as_u64().unwrap();
-
-        // Values should be strictly increasing in 10^k-1 scaling
-        assert!(
-            first_val < second_val,
-            "Values should be strictly increasing"
-        );
-        assert!(
-            second_val < third_val,
-            "Values should be strictly increasing"
-        );
-        assert!(
-            third_val < fourth_val,
-            "Values should be strictly increasing"
-        );
-        assert_eq!(fourth_val, 9, "Last value should be the maximum");
-
-        // Check metadata
-        let meta = json_result
-            .get("metadata")
-            .expect("Should have metadata field");
-        assert_eq!(meta.get("title").unwrap(), "Duplicate Test");
-        assert_eq!(meta.get("author").unwrap(), "Duplicate Author");
-        assert_eq!(meta.get("url").unwrap(), "https://example.com/duplicate");
-        assert_eq!(meta.get("n").unwrap(), 2);
-
-        // Test edge case with scale_d = 1 and multiple identical followers
-        let entries_edge = vec![WordFollowEntry {
-            prefix: vec!["edge".to_string()],
-            followers: vec![("a".to_string(), 1), ("b".to_string(), 1)],
-        }];
-
-        // Different metadata for edge case
-        let metadata_edge = Metadata {
-            title: "Edge Test".to_string(),
-            author: "Edge Author".to_string(),
-            url: "https://example.com/edge".to_string(),
-            n: 2,
-            subtitle: "A bigram language model".to_string(),
-            scale_d: None,
-            version: "test".to_string(),
-            stats: None,
-        };
-
-        // With scale_d = 1, we can't scale 2 followers uniquely to [1,1]
-        save_to_json(
-            &entries_edge,
-            &path,
-            Some(1),
-            Some(&metadata_edge),
-            None,
-            false,
-        )?;
-        let json_edge: serde_json::Value =
-            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
-
-        // Extract the data array
-        let data_edge = json_edge
-            .get("data")
-            .expect("Should have data field")
-            .as_array()
-            .expect("Data should be an array");
-
-        // Should use 10^k-1 scaling (k=1 because total is 2, so max is 9)
-        assert_eq!(data_edge[0][1], serde_json::json!(9));
-
-        // Another test with mixed counts
-        let entries_mixed = vec![WordFollowEntry {
-            prefix: vec!["mixed".to_string()],
-            followers: vec![("a".to_string(), 1), ("b".to_string(), 99)],
-        }];
-
-        // Different metadata for mixed case
-        let metadata_mixed = Metadata {
-            title: "Mixed Test".to_string(),
-            author: "Mixed Author".to_string(),
-            url: "https://example.com/mixed".to_string(),
-            n: 2,
-            subtitle: "A bigram language model".to_string(),
-            scale_d: None,
-            version: "test".to_string(),
-            stats: None,
-        };
-
-        // With scale_d = 2, the scaling would be very uneven but should work
-        save_to_json(
-            &entries_mixed,
-            &path,
-            Some(2),
-            Some(&metadata_mixed),
-            None,
-            false,
-        )?;
-        let json_mixed: serde_json::Value =
-            serde_json::from_reader(BufReader::new(File::open(&path)?))?;
-
-        // Extract the data array
-        let data_mixed = json_mixed
-            .get("data")
-            .expect("Should have data field")
-            .as_array()
-            .expect("Data should be an array");
-
-        // If it used scale_d=2, the total would be 2
-        assert_eq!(data_mixed[0][1], serde_json::json!(2));
-        assert_eq!(data_mixed[0][2][1], serde_json::json!(1)); // first follower
-        assert_eq!(data_mixed[0][3][1], serde_json::json!(2)); // second follower
-
         Ok(())
     }
 
@@ -1657,7 +1150,6 @@ mod tests {
             url: "https://test.com".to_string(),
             n: 2,
             subtitle: "A bigram language model".to_string(),
-            scale_d: None,
             version: "test".to_string(),
             stats: None,
         };
@@ -1716,7 +1208,6 @@ mod tests {
             url: "https://test.com".to_string(),
             n: 2,
             subtitle: "A bigram language model".to_string(),
-            scale_d: None,
             version: "test".to_string(),
             stats: None,
         };
