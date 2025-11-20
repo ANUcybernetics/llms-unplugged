@@ -49,14 +49,9 @@ jobs:
         working-directory: website
         run: npm run build
 
-      - name: Verify critical assets
+      - name: Check for broken links
         working-directory: website
-        run: |
-          echo "Checking critical assets in _site..."
-          test -f _site/assets/pdfs/modules.pdf || (echo "ERROR: modules.pdf missing" && exit 1)
-          test -f _site/index.html || (echo "ERROR: index.html missing" && exit 1)
-          test -f _site/instructor-notes/index.html || (echo "ERROR: instructor-notes missing" && exit 1)
-          echo "All critical assets present"
+        run: npm run check-links
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

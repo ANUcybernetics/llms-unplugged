@@ -17,6 +17,7 @@
     "pretest": "npm run build",
     "test": "vitest run",
     "test:watch": "vitest",
+    "check-links": "linkinator _site/index.html --recurse --skip 'https://.*'",
     "lighthouse": "unlighthouse --site http://localhost:8080",
     "lighthouse:ci": "npm run build && unlighthouse-ci --site ./_site"
   },
@@ -37,6 +38,7 @@
     "@playwright/test": "^1.56.1",
     "@tailwindcss/vite": "^4.1.16",
     "@vitejs/plugin-basic-ssl": "^2.1.0",
+    "linkinator": "^7.5.0",
     "markdown-it": "^14.1.0",
     "unlighthouse": "^0.17.4",
     "vite": "^7.1.12",
