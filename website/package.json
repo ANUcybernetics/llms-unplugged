@@ -11,7 +11,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "npm run build:slides && eleventy --serve",
-    "build": "eleventy && test -f .llms-generated/feed.xml && cp .llms-generated/feed.xml _site/feed.xml && npm run build:slides",
+    "build": "eleventy && (test -f .llms-generated/feed.xml && cp .llms-generated/feed.xml _site/feed.xml || true) && npm run build:slides",
     "build:slides": "cd slides && npm install && npm run build && cp -r dist ../_site/slides",
     "preview": "eleventy --serve",
     "pretest": "npm run build",
