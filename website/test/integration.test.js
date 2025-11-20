@@ -286,6 +286,68 @@ describe("markdown processing", () => {
   });
 });
 
+describe("slides integration", () => {
+  it("generates slides directory in build output", () => {
+    const slidesDir = join(siteDir, "slides");
+    expect(existsSync(slidesDir)).toBe(true);
+  });
+
+  it("generates slides index.html", () => {
+    const slidesIndexPath = join(siteDir, "slides", "index.html");
+    expect(existsSync(slidesIndexPath)).toBe(true);
+  });
+
+  it("slides index.html contains valid HTML", () => {
+    const slidesIndexPath = join(siteDir, "slides", "index.html");
+    const html = readFileSync(slidesIndexPath, "utf-8");
+    expect(html).toContain("<!DOCTYPE html>");
+    expect(html).toContain("<html");
+  });
+
+  it("slides include theme colours (gold accent)", () => {
+    const slidesDir = join(siteDir, "slides");
+    const files = readdirSync(slidesDir);
+
+    let foundGoldColour = false;
+
+    for (const file of files) {
+      if (file.endsWith(".css") || file.endsWith(".html")) {
+        const filePath = join(slidesDir, file);
+        const content = readFileSync(filePath, "utf-8");
+        if (content.includes("#be830e") || content.includes("be830e")) {
+          foundGoldColour = true;
+          break;
+        }
+      }
+    }
+
+    if (!foundGoldColour) {
+      const assetsDir = join(slidesDir, "assets");
+      if (existsSync(assetsDir)) {
+        const assetFiles = readdirSync(assetsDir);
+        for (const file of assetFiles) {
+          if (file.endsWith(".css")) {
+            const filePath = join(assetsDir, file);
+            const content = readFileSync(filePath, "utf-8");
+            if (content.includes("#be830e") || content.includes("be830e")) {
+              foundGoldColour = true;
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    expect(foundGoldColour).toBe(true);
+  });
+
+  it("slides contain presentation title", () => {
+    const slidesIndexPath = join(siteDir, "slides", "index.html");
+    const html = readFileSync(slidesIndexPath, "utf-8");
+    expect(html).toContain("LLMs Unplugged");
+  });
+});
+
 describe("llms.txt plugin", () => {
   it("copies markdown source files to output directory", () => {
     expect(existsSync(join(siteDir, "index.md"))).toBe(true);

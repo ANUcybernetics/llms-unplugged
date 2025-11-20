@@ -1,0 +1,18 @@
+{
+  "name": "llms-unplugged-slides",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "slidev --open",
+    "build": "slidev build --out dist --base /slides/",
+    "export": "slidev export"
+  },
+  "dependencies": {
+    "@slidev/cli": "^51.5.0",
+    "@slidev/theme-default": "latest"
+  },
+  "devDependencies": {
+    "playwright-chromium": "^1.56.1"
+  }
+}

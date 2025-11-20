@@ -1,0 +1,8 @@
+{
+  "name": "slidev-theme-anu-dark",
+  "version": "1.0.0",
+  "slidev": {
+    "colorSchema": "dark",
+    "highlighter": "shiki"
+  }
+}
