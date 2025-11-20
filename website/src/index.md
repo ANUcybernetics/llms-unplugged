@@ -1,6 +1,7 @@
 ---
 layout: base.njk
 title: LLMs Unplugged
+templateEngineOverride: njk,md
 ---
 
 # LLMs Unplugged
@@ -86,6 +87,23 @@ Follow the links above (or visit the [GitHub repository]({{ links.github }})) to
 download the materials and start running your own workshops. The modular design
 means you can scale content up or down based on available time and audience
 sophistication.
+
+{% set events = collections.news | filterByTag("events") | head(3) %}
+{% if events.length %}
+
+<section class="my-12 p-6 border border-anu-gold/30 rounded-lg not-prose">
+  <h2 class="text-xl font-semibold mb-4 text-anu-gold">Upcoming events</h2>
+  <ul class="space-y-4">
+    {% for event in events %}
+    <li>
+      <a href="{{ event.url }}" class="text-anu-gold-2 hover:text-anu-gold transition-colors font-medium">{{ event.data.title }}</a>
+      <span class="text-sm text-anu-white/70 block">{{ event.date | readableDate }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  <a href="/news/" class="mt-4 inline-block text-sm text-anu-gold-2 hover:text-anu-gold transition-colors">View all news →</a>
+</section>
+{% endif %}
 
 As LLMs become increasingly central to how we work with text and interact with
 digital systems, hands-on understanding becomes not just pedagogically valuable

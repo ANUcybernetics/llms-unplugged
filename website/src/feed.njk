@@ -1,0 +1,27 @@
+---json
+{
+  "permalink": "feed.xml",
+  "eleventyExcludeFromCollections": true
+}
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:base="{{ site.url }}/">
+  <title>{{ site.name }}</title>
+  <subtitle>{{ site.description }}</subtitle>
+  <link href="{{ site.url }}/feed.xml" rel="self"/>
+  <link href="{{ site.url }}/"/>
+  <updated>{{ collections.news | getNewestCollectionItemDate | dateToRfc3339 }}</updated>
+  <id>{{ site.url }}/</id>
+  <author>
+    <name>Ben Swift</name>
+  </author>
+  {%- for post in collections.news | reverse | head(20) %}
+  <entry>
+    <title>{{ post.data.title }}</title>
+    <link href="{{ post.url | absoluteUrl(site.url) }}"/>
+    <updated>{{ post.date | dateToRfc3339 }}</updated>
+    <id>{{ post.url | absoluteUrl(site.url) }}</id>
+    <content type="html">{{ post.templateContent | htmlToAbsoluteUrls(site.url) }}</content>
+  </entry>
+  {%- endfor %}
+</feed>

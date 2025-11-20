@@ -1,4 +1,5 @@
 import EleventyVitePlugin from "@11ty/eleventy-plugin-vite";
+import pluginRss from "@11ty/eleventy-plugin-rss";
 import tailwindcss from "@tailwindcss/vite";
 import markdownIt from "markdown-it";
 import markdownItFootnote from "markdown-it-footnote";
@@ -17,6 +18,47 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy("src/CNAME");
+
+  // RSS plugin
+  eleventyConfig.addPlugin(pluginRss);
+
+  // Date filters for news posts
+  eleventyConfig.addFilter("readableDate", (dateObj) => {
+    return new Date(dateObj).toLocaleDateString("en-AU", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  });
+
+  eleventyConfig.addFilter("htmlDateString", (dateObj) => {
+    return new Date(dateObj).toISOString().split("T")[0];
+  });
+
+  // Filter collection by tag
+  eleventyConfig.addFilter("filterByTag", (collection, tag) => {
+    return collection.filter(
+      (item) => item.data.tags && item.data.tags.includes(tag),
+    );
+  });
+
+  // String starts with check for navigation highlighting
+  eleventyConfig.addFilter("startswith", (str, prefix) => {
+    return str && str.startsWith(prefix);
+  });
+
+  // Head filter for limiting array items
+  eleventyConfig.addFilter("head", (array, n) => {
+    if (!Array.isArray(array)) return [];
+    return array.slice(0, n);
+  });
+
+  // News collection - all posts in src/news/
+  eleventyConfig.addCollection("news", (collectionApi) => {
+    return collectionApi
+      .getFilteredByGlob("src/news/*.md")
+      .sort((a, b) => b.date - a.date);
+  });
 
   // Configure markdown-it with typographer for em dashes and smart quotes
   const md = markdownIt({

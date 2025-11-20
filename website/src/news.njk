@@ -1,0 +1,71 @@
+---
+layout: base.njk
+title: News
+pagination:
+  data: collections.news
+  size: 10
+  alias: posts
+permalink: "news/{% if pagination.pageNumber > 0 %}page/{{ pagination.pageNumber + 1 }}/{% endif %}"
+---
+
+<h1>News</h1>
+
+<p class="text-anu-white/70 mb-8">Updates, events, and resources from the LLMs Unplugged project.</p>
+
+{% if posts.length %}
+<ul class="space-y-8 not-prose">
+  {% for post in posts %}
+  <li class="border-b border-anu-gold/30 pb-8">
+    <article>
+      <h2 class="text-xl font-semibold mb-2">
+        <a href="{{ post.url }}" class="text-anu-gold-2 hover:text-anu-gold transition-colors">{{ post.data.title }}</a>
+      </h2>
+      <div class="flex flex-wrap items-center gap-4 text-sm text-anu-white/70 mb-3">
+        <time datetime="{{ post.date | htmlDateString }}">{{ post.date | readableDate }}</time>
+        {% if post.data.tags | length > 1 %}
+        <div class="flex gap-2">
+          {% for tag in post.data.tags %}
+            {% if tag != "news" %}
+            <span class="px-2 py-1 bg-anu-gold/20 text-anu-gold rounded text-xs">{{ tag }}</span>
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      {% if post.data.description %}
+      <p class="text-anu-white/80">{{ post.data.description }}</p>
+      {% endif %}
+    </article>
+  </li>
+  {% endfor %}
+</ul>
+
+{% if pagination.pages.length > 1 %}
+<nav class="mt-12 flex justify-center gap-4 not-prose" aria-label="News pagination">
+  {% if pagination.href.previous %}
+  <a href="{{ pagination.href.previous }}" class="px-4 py-2 border border-anu-gold text-anu-gold-2 hover:bg-anu-gold hover:text-anu-black transition-colors rounded">
+    ← Newer
+  </a>
+  {% endif %}
+
+  <span class="px-4 py-2 text-anu-white/70">
+    Page {{ pagination.pageNumber + 1 }} of {{ pagination.pages.length }}
+  </span>
+
+  {% if pagination.href.next %}
+  <a href="{{ pagination.href.next }}" class="px-4 py-2 border border-anu-gold text-anu-gold-2 hover:bg-anu-gold hover:text-anu-black transition-colors rounded">
+    Older →
+  </a>
+  {% endif %}
+</nav>
+{% endif %}
+
+{% else %}
+<p>No news posts yet.</p>
+{% endif %}
+
+<div class="mt-12 not-prose">
+  <a href="/feed.xml" class="text-anu-gold-2 hover:text-anu-gold transition-colors text-sm">
+    RSS feed
+  </a>
+</div>

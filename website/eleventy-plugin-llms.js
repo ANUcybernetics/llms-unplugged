@@ -51,6 +51,20 @@ export default function (eleventyConfig, options = {}) {
       }
     }
   });
+
+  // Copy feed.xml to llms-generated after Eleventy generates it
+  eleventyConfig.on("eleventy.after", async ({ dir }) => {
+    const generatedDir = ".llms-generated";
+    const feedSrc = path.join(dir.output, "feed.xml");
+    const feedDest = path.join(generatedDir, "feed.xml");
+
+    try {
+      await fs.access(feedSrc);
+      await fs.copyFile(feedSrc, feedDest);
+    } catch {
+      // feed.xml doesn't exist
+    }
+  });
 }
 
 async function findMarkdownFiles(dir) {
