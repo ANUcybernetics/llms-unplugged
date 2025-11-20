@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
 import markdownItFootnote from "markdown-it-footnote";
-import pluginTOC from "eleventy-plugin-toc";
+import markdownItTocDoneRight from "markdown-it-toc-done-right";
 import interlinker from "@photogabble/eleventy-plugin-interlinker";
 import llmsPlugin from "./eleventy-plugin-llms.js";
 
@@ -72,6 +72,10 @@ export default function (eleventyConfig) {
     .use(markdownItAnchor, {
       permalink: markdownItAnchor.permalink.headerLink(),
       slugify: eleventyConfig.getFilter("slugify"),
+    })
+    .use(markdownItTocDoneRight, {
+      listType: "ul",
+      level: [2],
     });
 
   // Customize footnote rendering to use Tailwind classes
@@ -87,11 +91,6 @@ export default function (eleventyConfig) {
   eleventyConfig.addPlugin(interlinker, {
     deadLinkReport: "console",
     errorOnDeadLinks: true,
-  });
-
-  eleventyConfig.addPlugin(pluginTOC, {
-    tags: ["h2"],
-    wrapper: "nav",
   });
 
   eleventyConfig.addPlugin(llmsPlugin, {

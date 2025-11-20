@@ -63,9 +63,6 @@
 
   <main id="main-content" class="flex-1 max-w-prose mx-auto px-4 py-12 w-full">
     <article class="prose max-w-none">
-      {% if toc %}
-      {{ content | toc | safe }}
-      {% endif %}
       {{ content | safe }}
     </article>
   </main>

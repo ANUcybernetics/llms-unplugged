@@ -1,10 +1,11 @@
 ---
 layout: base.njk
 title: Instructor notes
-toc: true
 ---
 
 # Instructor notes
+
+${toc}
 
 These notes accompany the _LLMs Unplugged_ teaching project for building
 language models from scratch using both manual (pen-and-paper) and automated
