@@ -133,7 +133,10 @@
         font: "IBM Plex Mono",
         size: 9pt,
         fill: anu-colors.socy-yellow,
-      )[© 2025 Ben Swift | CC BY-NC-SA 4.0],
+      )[© 2025 Ben Swift #text(fill: anu-colors.grey-3)[|] #sys.inputs.at(
+          "version",
+          default: "",
+        ) #text(fill: anu-colors.grey-3)[|] CC BY-NC-SA 4.0],
     ),
   )
 

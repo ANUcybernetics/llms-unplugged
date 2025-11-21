@@ -32,7 +32,7 @@ $(OUTPUT_DIR):
 $(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.typ utils.typ
 	@echo "Processing typst $<..."
 	@mkdir -p $(dir $@)
-	typst compile --root . $< $@
+	typst compile --root . --input version="v$$(jq -r .version ../website/package.json)" $< $@
 
 # Clean target to remove generated files
 clean:
