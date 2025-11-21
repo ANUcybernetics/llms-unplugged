@@ -2,7 +2,7 @@
 
 # Input and output directories
 INPUT_DIR = .
-OUTPUT_DIR = out
+OUTPUT_DIR = ../website/src/assets/pdf
 
 # Find all typst source files (excluding utils.typ, draft/, and instructions.typ)
 TYP_SOURCE_FILES := $(shell find $(INPUT_DIR) -name '*.typ' ! -name 'utils.typ' ! -path '*/draft/*' ! -name 'instructions.typ')
