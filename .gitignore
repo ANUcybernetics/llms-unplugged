@@ -1,6 +1,7 @@
-# ignore all pdfs except modules.pdf
+# ignore all pdfs except specific ones needed for release
 *.pdf
 !website/src/assets/pdfs/modules.pdf
+!website/src/assets/pdfs/worksheets/grid.pdf
 
 data/
 
