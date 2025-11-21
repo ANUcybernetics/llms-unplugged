@@ -12,17 +12,47 @@
     --anu-light-grey: #e6e6e6;
     --anu-dark-grey: #0d0d0d;
     --anu-black: #000000;
+
+    /* Black/Grey tints */
+    --anu-grey-1: hsl(from var(--anu-black) h s 90);
+    --anu-grey-2: hsl(from var(--anu-black) h s 72);
+    --anu-grey-3: hsl(from var(--anu-black) h s 55);
+    --anu-grey-4: hsl(from var(--anu-black) h s 38);
+
+    /* Gold tints */
     --anu-gold: #be830e;
     --anu-gold-tint: #f5edde;
+    --anu-gold-1: hsl(from var(--anu-gold) h calc(s - 50) 94);
+    --anu-gold-2: hsl(from var(--anu-gold) h calc(s - 30) 77);
+    --anu-gold-3: hsl(from var(--anu-gold) h calc(s - 15) 66);
+    --anu-gold-4: hsl(from var(--anu-gold) h s calc(l + 8));
     --anu-unilink-gold: #945f00;
+    --anu-unilink-blue: #00549e;
+
+    /* Accent palette */
+    --anu-teal: #0085ad;
+    --anu-copper: #be4e0e;
+    --anu-copper-2: hsl(from var(--anu-copper) h calc(s - 30) 77);
+    --anu-copper-3: hsl(from var(--anu-copper) h calc(s - 15) 66);
+
+    /* Dark theme defaults (mirrors marp-anu dark) */
+    --theme-bg: var(--anu-black);
+    --theme-text: var(--anu-white);
+    --theme-link: var(--anu-gold-2);
+    --theme-code-bg: var(--anu-unilink-gold);
+    --theme-code-border: var(--anu-gold-4);
+    --theme-table-alt-bg: #1a1a1a;
+    --theme-table-border: var(--anu-white);
+    --theme-table-line: #b0b0b0;
+    --theme-footer: var(--anu-white);
 
     /* Reveal.js variables */
-    --r-background-color: var(--anu-white);
-    --r-main-color: var(--anu-black);
+    --r-background-color: var(--theme-bg);
+    --r-main-color: var(--theme-text);
     --r-heading-color: var(--anu-gold);
-    --r-link-color: var(--anu-unilink-gold);
+    --r-link-color: var(--theme-link);
     --r-link-color-hover: var(--anu-gold);
-    --r-selection-background-color: rgba(190, 131, 14, 0.5);
+    --r-selection-background-color: rgba(148, 95, 0, 0.5);
     --r-main-font-size: 1.5rem;
     --r-heading-font: "Public Sans", sans-serif;
     --r-main-font: "Public Sans", sans-serif;
@@ -33,6 +63,7 @@
 .reveal {
     font-family: var(--r-main-font);
     font-weight: 300;
+    color: var(--r-main-color);
 }
 
 /* Default slide alignment: top-left with padding matching Marp */
@@ -46,6 +77,8 @@
     box-sizing: border-box;
     height: 100%;
     width: 100%;
+    background: var(--r-background-color);
+    color: var(--r-main-color);
 }
 
 .reveal .slides section > * {
@@ -87,6 +120,7 @@
     font-size: 1.5rem;
     margin: 0 0 1rem 0;
     line-height: 1.4;
+    color: var(--r-main-color);
 }
 
 /* Strong and emphasis */
@@ -102,7 +136,7 @@
 
 /* Links */
 .reveal a {
-    color: var(--r-link-color);
+    color: var(--theme-link);
     text-decoration: none;
 }
 
@@ -113,14 +147,14 @@
 
 /* Inline code */
 .reveal code {
-    background: var(--anu-gold-tint);
-    color: var(--r-main-color);
+    background: var(--theme-code-bg);
+    color: var(--theme-text);
     padding: 0.15em 0.3em;
     margin: 0 0.1em;
     font-size: 90%;
     border-radius: 4px;
     font-family: var(--r-code-font);
-    border: 1px solid var(--anu-gold);
+    border: 1px solid var(--theme-code-border);
 }
 
 /* Code blocks */
@@ -135,6 +169,7 @@
     background: transparent;
     border: none;
     padding: 0;
+    color: var(--anu-light-grey);
 }
 
 /* Lists */
@@ -165,18 +200,18 @@
 .reveal td {
     padding: 0.75rem 1rem;
     text-align: left;
-    border-bottom: 1px solid #808080;
+    border-bottom: 1px solid var(--theme-table-line);
 }
 
 .reveal thead th {
     background-color: var(--r-background-color);
     color: var(--r-main-color);
     font-weight: 600;
-    border-bottom: 2px solid var(--r-main-color);
+    border-bottom: 2px solid var(--theme-table-border);
 }
 
 .reveal thead th:nth-child(even) {
-    background-color: #f0f0f0;
+    background-color: var(--theme-table-alt-bg);
 }
 
 .reveal tbody td {
@@ -185,11 +220,15 @@
 }
 
 .reveal tbody td:nth-child(even) {
-    background-color: #f0f0f0;
+    background-color: var(--theme-table-alt-bg);
 }
 
 .reveal tbody tr.highlight td {
     background-color: var(--anu-gold-tint);
+}
+
+.reveal tbody tr.highlight td:nth-child(even) {
+    background-color: var(--anu-gold-3);
 }
 
 .reveal tbody tr:last-child td {
@@ -300,7 +339,7 @@
 
 .reveal section.title h2,
 .reveal section.title p {
-    color: var(--anu-dark-grey);
+    color: var(--anu-light-grey);
     font-size: 2rem;
     font-weight: 300;
     text-transform: none;
@@ -315,6 +354,7 @@
     justify-content: center;
     align-items: flex-start;
     background: var(--anu-black);
+    color: var(--anu-white);
 }
 
 .reveal section[data-background-color="#1a1a1a"] h1,
@@ -342,6 +382,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+    color: var(--anu-white);
 }
 
 .reveal section.impact h1 {
