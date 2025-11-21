@@ -16,6 +16,8 @@ participants across diverse audiences---school students through to senior
 executives in the Australian Public Service. Iterating on these materials with
 real learners has been invaluable.
 
+![LLMs Unplugged workshop in action](/assets/images/workshop-3.jpg)
+
 ## Get in touch
 
 We encourage educators to use, adapt, and improve these resources. If you have

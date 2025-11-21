@@ -50,6 +50,9 @@ tangible. When you roll dice and look up words in a table, you're doing exactly
 what a computer does---just slower. This builds genuine understanding rather
 than treating AI as a black box.
 
+![Using dice to generate text from a hand-built language
+model](/assets/images/workshop-4.jpg)
+
 ## How does this relate to ChatGPT and other LLMs?
 
 Modern LLMs use the same fundamental principle: predict the next token based on
@@ -73,3 +76,5 @@ of statistical language modelling. Trigrams produce noticeably better results.
 
 Please [open an issue](https://github.com/ANUcybernetics/llms-unplugged/issues)
 on GitHub or [contact us](/contact/). We appreciate corrections and suggestions.
+
+![Participants exploring language models hands-on](/assets/images/workshop-5.jpg)

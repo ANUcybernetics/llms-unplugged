@@ -29,6 +29,9 @@ code, participants build working models with pen, paper, and dice. This hands-on
 approach makes sophisticated AI concepts accessible to anyone, regardless of
 technical background.
 
+![Workshop participants building language models with pen and
+paper](/assets/images/workshop-1.jpg)
+
 ## AI Unplugged resources
 
 As machine learning and artificial intelligence became more prominent in public
@@ -78,6 +81,9 @@ by hand, calculated probabilities manually, and generated synthetic text using
 hand-drawn tables and selection based on frequencies. Modern LLMs use the same
 fundamental approach but at vastly greater scale and with learned rather than
 hand-crafted statistics.
+
+![Counting word transitions to build a statistical language
+model](/assets/images/workshop-2.jpg)
 
 ## Connection to modern LLMs
 
