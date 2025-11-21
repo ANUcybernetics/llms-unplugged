@@ -107,9 +107,9 @@ jobs:
           # Copy scripts
           cp cli/scripts/*.py release/llms_unplugged/scripts/
 
-          # Copy PDFs from committed handouts
-          cp handouts/out/modules.pdf release/llms_unplugged/docs/
-          cp handouts/out/worksheets/grid.pdf release/llms_unplugged/docs/
+          # Copy PDFs from committed website assets
+          cp website/src/assets/pdfs/modules.pdf release/llms_unplugged/docs/
+          cp website/src/assets/pdfs/grid.pdf release/llms_unplugged/docs/
 
       - name: Create tar.gz archive
         run: |
