@@ -58,6 +58,7 @@
     --r-main-font: "Public Sans", sans-serif;
     --r-code-font:
         "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    --r-main-font-size: 1.65rem;
 }
 
 .reveal {
