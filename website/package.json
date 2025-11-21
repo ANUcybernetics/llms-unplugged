@@ -10,9 +10,10 @@
   "author": "ANU School of Cybernetics",
   "license": "MIT",
   "scripts": {
-    "dev": "eleventy --serve",
-    "build": "eleventy && (test -f .llms-generated/feed.xml && cp .llms-generated/feed.xml _site/feed.xml || true)",
-    "preview": "eleventy --serve",
+    "ensure-pdfs": "node scripts/ensure-pdfs.js",
+    "dev": "npm run ensure-pdfs && eleventy --serve",
+    "build": "npm run ensure-pdfs && eleventy && (test -f .llms-generated/feed.xml && cp .llms-generated/feed.xml _site/feed.xml || true)",
+    "preview": "npm run ensure-pdfs && eleventy --serve",
     "pretest": "npm run build",
     "test": "vitest run",
     "test:watch": "vitest",

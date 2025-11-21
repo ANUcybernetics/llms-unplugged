@@ -21,6 +21,10 @@ npm run dev
 Starts the 11ty dev server with live reload at http://localhost:8080
 and runs Linkinator against the built `_site` output after each
 rebuild (console output only; the server keeps running on failures).
+Before the server starts, `npm run ensure-pdfs` checks for
+`src/assets/pdfs/modules.pdf`, symlinking to `handouts/out/` (or
+running `make modules` in `handouts/`) if the PDFs aren't present so
+local PDF links work.
 
 ## Build
 
@@ -29,7 +33,8 @@ npm run build
 ```
 
 Builds assets with Vite, then generates the static site with 11ty. Output goes
-to `_site/`
+to `_site/`. The build also runs `npm run ensure-pdfs` so PDF links are
+populated in production builds.
 
 ## Test
 
