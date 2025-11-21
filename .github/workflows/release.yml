@@ -70,6 +70,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: Download all binary artifacts
         uses: actions/download-artifact@v4
@@ -109,7 +111,7 @@ jobs:
 
           # Copy PDFs from committed website assets
           cp website/src/assets/pdfs/modules.pdf release/llms_unplugged/docs/
-          cp website/src/assets/pdfs/grid.pdf release/llms_unplugged/docs/
+          cp website/src/assets/pdfs/worksheets/grid.pdf release/llms_unplugged/docs/
 
       - name: Create tar.gz archive
         run: |
