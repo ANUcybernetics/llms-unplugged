@@ -30,7 +30,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Create PDF directory
-        run: mkdir -p website/src/assets/pdfs
+        run: |
+          rm -f website/src/assets/pdfs
+          mkdir -p website/src/assets/pdfs
 
       - name: Download PDF artifacts
         uses: actions/download-artifact@v4
