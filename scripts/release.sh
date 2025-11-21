@@ -27,8 +27,11 @@ jq ".version = \"$VERSION\"" website/package.json > website/package.json.tmp && 
 
 jq ". + {version: \"$VERSION\"}" .zenodo.json > .zenodo.json.tmp && mv .zenodo.json.tmp .zenodo.json
 
+echo "Regenerating modules.pdf with new version..."
+cd website && npm run ensure-pdfs && cd ..
+
 echo "Committing version bump..."
-git add cli/Cargo.toml website/package.json .zenodo.json
+git add cli/Cargo.toml website/package.json .zenodo.json website/src/assets/pdfs/modules.pdf
 git commit -m "Bump version to $VERSION"
 
 echo "Creating tag v$VERSION..."
