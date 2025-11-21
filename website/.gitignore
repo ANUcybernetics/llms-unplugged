@@ -12,3 +12,4 @@ slides/dist/
 npm-debug.log*
 .vite-temp/
 .unlighthouse/
+website/src/assets/pdfs
