@@ -2,7 +2,7 @@
 
 # Input and output directories
 INPUT_DIR = .
-OUTPUT_DIR = ../website/src/assets/pdf
+OUTPUT_DIR = ../website/src/assets/pdfs
 
 # Find all typst source files (excluding utils.typ, draft/, and instructions.typ)
 TYP_SOURCE_FILES := $(shell find $(INPUT_DIR) -name '*.typ' ! -name 'utils.typ' ! -path '*/draft/*' ! -name 'instructions.typ')
@@ -36,7 +36,7 @@ $(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.typ utils.typ
 
 # Clean target to remove generated files
 clean:
-	rm -rf $(OUTPUT_DIR)
+	rm -f $(PDF_FILES) $(OUTPUT_DIR)/modules.pdf
 
 # Phony targets
 .PHONY: all clean
