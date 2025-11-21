@@ -31,7 +31,7 @@ Build Your Own Language Model with Dick and Jane
 
 ---
 
-<!-- class="center" -->
+<!-- .slide: class="center" -->
 
 ## Acknowledgement of Country
 
@@ -49,7 +49,7 @@ Build Your Own Language Model with Dick and Jane
 
 ---
 
-<!-- class="center" -->
+<!-- .slide: class="center" -->
 
 **activity**
 
@@ -57,7 +57,7 @@ everyone stand up
 
 ---
 
-<!-- class="center" -->
+<!-- .slide: class="center" -->
 
 sit down if you
 
@@ -65,7 +65,7 @@ have **never** used ChatGPT
 
 ---
 
-<!-- class="center" -->
+<!-- .slide: class="center" -->
 
 sit down if you
 
@@ -73,7 +73,7 @@ haven't used it in the last **month**
 
 ---
 
-<!-- class="center" -->
+<!-- .slide: class="center" -->
 
 sit down if you
 
@@ -81,7 +81,7 @@ haven't used it in the last **week**
 
 ---
 
-<!-- class="center" -->
+<!-- .slide: class="center" -->
 
 sit down if you
 
@@ -89,7 +89,7 @@ haven't used it in the last **day**
 
 ---
 
-<!-- class="center" -->
+<!-- .slide: class="center" -->
 
 sit down if you
 
@@ -97,7 +97,7 @@ haven't used it in the last **hour**
 
 ---
 
-<!-- class="center" -->
+<!-- .slide: class="center" -->
 
 sit down if you
 
@@ -227,7 +227,7 @@ Our trained model grid from earlier:
 
 ---
 
-<!-- class="center" -->
+<!-- .slide: class="center" -->
 
 ![bigram booklet](/images/slides/bigram-booklet-excerpt.png)
 
@@ -315,7 +315,7 @@ Generate text using your model, but
 
 ---
 
-<!-- class="center" -->
+<!-- .slide: class="center" -->
 
 [www.llmsunplugged.org](https://www.llmsunplugged.org)
 
@@ -338,6 +338,6 @@ Questions?
 
 ---
 
-<!-- class="center" -->
+<!-- .slide: class="center" -->
 
 ![ANU logo](/images/slides/ANU_Primary_Horizontal_GoldWhite.svg)

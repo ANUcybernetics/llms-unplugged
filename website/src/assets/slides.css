@@ -1,5 +1,7 @@
+@import "reveal.js/dist/reset.css";
 @import "reveal.js/dist/reveal.css";
 @import "reveal.js/dist/theme/black.css";
+@import "reveal.js/plugin/highlight/monokai.css";
 
 :root {
     --r-background-color: #000000;

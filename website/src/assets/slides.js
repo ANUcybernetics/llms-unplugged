@@ -11,5 +11,11 @@ Reveal.initialize({
   width: "100%",
   height: "100%",
   margin: 0.04,
+  markdown: {
+    separator: /^---$/m,
+    separatorVertical: /^--$/m,
+    separatorNotes: /^Note:/m,
+    smartypants: true,
+  },
   plugins: [Markdown, Highlight, Notes],
 });

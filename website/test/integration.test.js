@@ -340,6 +340,19 @@ describe("slides integration", () => {
     expect(html).toContain("<section");
   });
 
+  it("slides defer markdown parsing to Reveal", () => {
+    const slidesIndexPath = join(
+      siteDir,
+      "slides",
+      "studio-workshop-2h",
+      "index.html",
+    );
+    const html = readFileSync(slidesIndexPath, "utf-8");
+    expect(html).toContain("data-markdown");
+    expect(html).toContain('data-separator="^---$"');
+    expect(html).toContain("textarea data-template");
+  });
+
   it("slides contain presentation title", () => {
     const slidesIndexPath = join(
       siteDir,

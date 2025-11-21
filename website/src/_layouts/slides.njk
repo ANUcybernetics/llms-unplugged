@@ -11,7 +11,16 @@
 <body>
   <div class="reveal">
     <div class="slides">
-      {{ content | revealSlides | safe }}
+      <section
+        data-markdown
+        data-separator="^---$"
+        data-separator-vertical="^--$"
+        data-separator-notes="^Note:"
+      >
+        <textarea data-template>
+{{ content | safe }}
+        </textarea>
+      </section>
     </div>
   </div>
   <script type="module" src="/assets/slides.js"></script>
