@@ -37,13 +37,12 @@
           align(center + horizon)[
             #block(
               width: auto,
-              align(right)[
+              align(left)[
                 #text(
                   font: "IBM Plex Mono",
-                  weight: "bold",
                   size: 1.8em,
                   fill: rgb("#e6ff44"),
-                )[Cybernetic\ Studio]
+                )[LLMs\ Unplugged]
               ],
             )
           ],
