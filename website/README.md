@@ -19,6 +19,8 @@ npm run dev
 ```
 
 Starts the 11ty dev server with live reload at http://localhost:8080
+and runs Linkinator against the built `_site` output after each
+rebuild (console output only; the server keeps running on failures).
 
 ## Build
 

@@ -1,3 +1,7 @@
+import { execFile } from "node:child_process";
+import path from "node:path";
+import { promisify } from "node:util";
+
 import EleventyVitePlugin from "@11ty/eleventy-plugin-vite";
 import pluginRss from "@11ty/eleventy-plugin-rss";
 import tailwindcss from "@tailwindcss/vite";
@@ -6,7 +10,6 @@ import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
 import markdownItFootnote from "markdown-it-footnote";
 import markdownItTocDoneRight from "markdown-it-toc-done-right";
-import interlinker from "@photogabble/eleventy-plugin-interlinker";
 import llmsPlugin from "./eleventy-plugin-llms.js";
 
 export default function (eleventyConfig) {
@@ -89,17 +92,49 @@ export default function (eleventyConfig) {
 
   eleventyConfig.setLibrary("md", md);
 
-  eleventyConfig.addPlugin(interlinker, {
-    deadLinkReport: "console",
-    errorOnDeadLinks: true,
-  });
-
   eleventyConfig.addPlugin(llmsPlugin, {
     siteUrl: "https://www.llmsunplugged.org",
     siteName: "LLMs Unplugged",
     siteDescription:
       "Ready-to-use teaching resources for understanding how large language models work through hands-on activities.",
   });
+
+  const execFileAsync = promisify(execFile);
+  const runLinkCheck = process.argv.includes("--serve");
+  let linkCheckInFlight = false;
+
+  if (runLinkCheck) {
+    eleventyConfig.on("eleventy.after", async ({ dir }) => {
+      if (linkCheckInFlight) return;
+      linkCheckInFlight = true;
+      const linkinatorBin = path.join(
+        process.cwd(),
+        "node_modules",
+        ".bin",
+        "linkinator",
+      );
+      try {
+        const { stdout, stderr } = await execFileAsync(linkinatorBin, [
+          path.join(dir.output, "index.html"),
+          "--recurse",
+          "--skip",
+          "https://.*",
+        ]);
+        if (stdout) console.log(`[linkinator]\n${stdout.trim()}`);
+        if (stderr) console.error(`[linkinator]\n${stderr.trim()}`);
+      } catch (error) {
+        if (error.stdout) console.log(`[linkinator]\n${error.stdout.trim()}`);
+        if (error.stderr) console.error(`[linkinator]\n${error.stderr.trim()}`);
+        console.error(
+          `[linkinator] Link check failed (exit ${
+            error.code ?? "unknown"
+          }, see output above)`,
+        );
+      } finally {
+        linkCheckInFlight = false;
+      }
+    });
+  }
 
   eleventyConfig.addPlugin(EleventyVitePlugin, {
     viteOptions: {
