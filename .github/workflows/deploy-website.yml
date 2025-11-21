@@ -29,6 +29,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Create PDF directory
+        run: mkdir -p website/src/assets/pdfs
+
       - name: Download PDF artifacts
         uses: actions/download-artifact@v4
         with:
