@@ -320,6 +320,14 @@
     background-position: center;
 }
 
+.reveal section.half-bg-right {
+    padding-right: 55%;
+}
+
+.reveal section.half-bg-left {
+    padding-left: 55%;
+}
+
 /* Center alignment utility */
 .reveal .center,
 .reveal section.center {

@@ -3,22 +3,11 @@ title: Example presentation
 description: Subtitle and description here
 layout: slides
 templateEngineOverride: njk
----
-
-<div class="grid-2 fill-height" style="grid-template-columns: 3fr 2fr;">
-<div>
+<!-- .slide: class="half-bg-right" data-background-image="/images/slides/socy-glider/CYBERNETICS_A_013.jpg" data-background-size="50% 100%" data-background-position="100% 50%" data-background-repeat="no-repeat" -->
 
 # Title
 
 Subtitle/description
-
-</div>
-<div
-  class="half-bleed-right"
-  style='background-image: url("/images/slides/socy-glider/CYBERNETICS_A_013.jpg");'
->
-</div>
-</div>
 
 Note: speaker notes go in comments like this
 
@@ -33,24 +22,15 @@ Note: speaker notes go in comments like this
 
 ---
 
-## Text and image slide
+<!-- .slide: class="half-bg-left" data-background-image="/images/slides/socy-glider/CYBERNETICS_A_125.jpg" data-background-size="50% 100%" data-background-position="0% 50%" data-background-repeat="no-repeat" -->
 
-<div class="grid-2">
-<div>
+## Text and image slide
 
 - level 1
   - level 2
     - level 3
       - level 4
         - level 5
-
-</div>
-<div>
-
-![](/images/slides/socy-glider/CYBERNETICS_A_125.jpg)
-
-</div>
-</div>
 
 ---
 
