@@ -5,7 +5,7 @@ layout: slides
 templateEngineOverride: njk
 ---
 
-<!-- .slide: class="half-bg-right" data-background-image="/images/slides/socy-glider/CYBERNETICS_A_013.jpg" data-background-size="50% 100%" data-background-position="100% 50%" data-background-repeat="no-repeat" -->
+<!-- .slide: class="half-bg-right" data-background-image="/images/slides/socy-glider/CYBERNETICS_A_013.jpg" -->
 
 # Title
 
@@ -24,7 +24,7 @@ Note: speaker notes go in comments like this
 
 ---
 
-<!-- .slide: class="half-bg-left" data-background-image="/images/slides/socy-glider/CYBERNETICS_A_125.jpg" data-background-size="50% 100%" data-background-position="0% 50%" data-background-repeat="no-repeat" -->
+<!-- .slide: class="half-bg-left" data-background-image="/images/slides/socy-glider/CYBERNETICS_A_125.jpg" -->
 
 ## Text and image slide
 

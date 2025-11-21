@@ -320,12 +320,25 @@
     background-position: center;
 }
 
-.reveal section.half-bg-right {
+.reveal .slides section.half-bg-right {
     padding-right: 55%;
 }
 
-.reveal section.half-bg-left {
+.reveal .slides section.half-bg-left {
     padding-left: 55%;
+}
+
+/* Clip background images to half the slide */
+.reveal .slide-background.half-bg-right .slide-background-content {
+    clip-path: inset(0 0 0 50%);
+    background-size: auto 100%;
+    background-position: calc(50% + 25vw) center;
+}
+
+.reveal .slide-background.half-bg-left .slide-background-content {
+    clip-path: inset(0 50% 0 0);
+    background-size: auto 100%;
+    background-position: calc(50% - 25vw) center;
 }
 
 /* Center alignment utility */
@@ -463,6 +476,7 @@
 /* Background image slides with darker overlay */
 .reveal section[data-background-image] {
     padding: 3rem;
+    background: transparent;
 }
 
 .reveal section[data-background-image].center,
