@@ -40,5 +40,6 @@
       "scheme": "url"
     }
   ],
-  "grants": []
+  "grants": [],
+  "version": "1.4.3"
 }
