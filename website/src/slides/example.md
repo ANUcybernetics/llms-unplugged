@@ -5,19 +5,17 @@ layout: slides
 templateEngineOverride: njk
 ---
 
+<div class="grid-2 fill-height" style="grid-template-columns: 3fr 2fr;">
+<div>
+
 # Title
 
 Subtitle/description
 
-<div class="grid-2">
-<div>
-
-<!-- left column intentionally left blank to keep title/subtitle on the left -->
-
 </div>
-<div class="center">
+<div class="image-fill">
 
-<img src="/images/slides/socy-glider/CYBERNETICS_A_013.jpg" alt="Glider" style="width: 40%; height: auto;" />
+<img src="/images/slides/socy-glider/CYBERNETICS_A_013.jpg" alt="Glider" />
 
 </div>
 </div>
