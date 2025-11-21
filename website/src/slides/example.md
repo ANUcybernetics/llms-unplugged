@@ -3,6 +3,8 @@ title: Example presentation
 description: Subtitle and description here
 layout: slides
 templateEngineOverride: njk
+---
+
 <!-- .slide: class="half-bg-right" data-background-image="/images/slides/socy-glider/CYBERNETICS_A_013.jpg" data-background-size="50% 100%" data-background-position="100% 50%" data-background-repeat="no-repeat" -->
 
 # Title
