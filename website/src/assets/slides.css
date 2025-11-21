@@ -311,6 +311,15 @@
     object-fit: cover;
 }
 
+.reveal .half-bleed-right {
+    position: relative;
+    margin: -4rem -5rem -4rem 0;
+    height: calc(100% + 8rem);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
 /* Center alignment utility */
 .reveal .center,
 .reveal section.center {

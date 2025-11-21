@@ -13,10 +13,10 @@ templateEngineOverride: njk
 Subtitle/description
 
 </div>
-<div class="image-fill">
-
-<img src="/images/slides/socy-glider/CYBERNETICS_A_013.jpg" alt="Glider" />
-
+<div
+  class="half-bleed-right"
+  style='background-image: url("/images/slides/socy-glider/CYBERNETICS_A_013.jpg");'
+>
 </div>
 </div>
 
