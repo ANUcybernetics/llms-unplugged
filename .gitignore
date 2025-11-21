@@ -1,6 +1,6 @@
-# ignore all pdfs except website assets
+# ignore all pdfs except modules.pdf
 *.pdf
-!website/src/assets/pdfs/**/*.pdf
+!website/src/assets/pdfs/modules.pdf
 
 data/
 
