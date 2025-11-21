@@ -16,12 +16,12 @@ TYP_PDF_FILES := $(patsubst $(INPUT_DIR)/%.typ,$(OUTPUT_DIR)/%.pdf,$(TYP_SOURCE_
 PDF_FILES := $(TYP_PDF_FILES)
 
 # Default target
-all: $(OUTPUT_DIR) $(PDF_FILES)
+all: $(OUTPUT_DIR) $(PDF_FILES) $(OUTPUT_DIR)/modules.pdf
 
-# Target to create a combined PDF from numbered modules only
-modules: $(OUTPUT_DIR) $(MODULE_PDF_FILES)
+# Combined PDF from numbered modules
+$(OUTPUT_DIR)/modules.pdf: $(MODULE_PDF_FILES)
 	@echo "Combining numbered module PDFs into modules.pdf..."
-	pdfunite $(MODULE_PDF_FILES) $(OUTPUT_DIR)/modules.pdf
+	pdfunite $(MODULE_PDF_FILES) $@
 
 
 # Create output directory if it doesn't exist
@@ -39,4 +39,4 @@ clean:
 	rm -rf $(OUTPUT_DIR)
 
 # Phony targets
-.PHONY: all clean modules
+.PHONY: all clean
