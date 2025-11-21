@@ -5,9 +5,7 @@ on:
     branches: [main]
     paths:
       - "website/**"
-      - "handouts/**"
       - ".github/workflows/deploy-website.yml"
-      - ".github/workflows/typeset.yml"
   workflow_dispatch:
 
 permissions:
@@ -20,25 +18,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  typeset:
-    uses: ./.github/workflows/typeset.yml
-
   build:
     runs-on: ubuntu-latest
-    needs: typeset
     steps:
       - uses: actions/checkout@v4
-
-      - name: Create PDF directory
-        run: |
-          rm -f website/src/assets/pdfs
-          mkdir -p website/src/assets/pdfs
-
-      - name: Download PDF artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: handout-pdfs
-          path: website/src/assets/pdfs
 
       - uses: actions/setup-node@v4
         with:

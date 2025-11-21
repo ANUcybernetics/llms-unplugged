@@ -9,102 +9,73 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const websiteDir = path.resolve(__dirname, "..");
 const repoRoot = path.resolve(websiteDir, "..");
-const handoutsOut = path.join(repoRoot, "handouts", "out");
+const handoutsDir = path.join(repoRoot, "handouts");
+const handoutsOut = path.join(handoutsDir, "out");
 const pdfTarget = path.join(websiteDir, "src", "assets", "pdfs");
 const requiredPdf = "modules.pdf";
 
 const log = (msg) => console.log(`[ensure-pdfs] ${msg}`);
+const warn = (msg) => console.warn(`[ensure-pdfs] ⚠️  ${msg}`);
 
-const hasRequiredPdf = (dir) =>
-  fs.existsSync(path.join(dir, requiredPdf));
+const hasRequiredPdf = (dir) => fs.existsSync(path.join(dir, requiredPdf));
 
-const ensureHandoutsBuilt = () => {
-  if (hasRequiredPdf(handoutsOut)) return;
-
-  log(
-    `Missing ${requiredPdf} in handouts/out; running \`make modules\` (handouts/)...`,
-  );
+const buildModules = () => {
+  log("Building modules.pdf...");
   const result = spawnSync("make", ["modules"], {
-    cwd: path.join(repoRoot, "handouts"),
+    cwd: handoutsDir,
     stdio: "inherit",
   });
 
   if (result.status !== 0) {
-    throw new Error("`make modules` failed; PDFs could not be generated");
+    throw new Error("`make modules` failed");
   }
 
   if (!hasRequiredPdf(handoutsOut)) {
-    throw new Error(
-      `Expected ${requiredPdf} after build but did not find it in ${handoutsOut}`,
-    );
+    throw new Error(`Expected ${requiredPdf} after build but not found`);
   }
 };
 
-const copyPdfs = () => {
+const copyPdf = () => {
+  const src = path.join(handoutsOut, requiredPdf);
+  const dest = path.join(pdfTarget, requiredPdf);
   fs.mkdirSync(pdfTarget, { recursive: true });
-  fs.cpSync(handoutsOut, pdfTarget, { recursive: true });
-  log(`Copied PDFs from ${handoutsOut} to ${pdfTarget}`);
+  fs.copyFileSync(src, dest);
+  log(`Copied ${requiredPdf} to ${pdfTarget}`);
 };
 
-const ensureTargetPresent = () => {
-  if (!fs.existsSync(pdfTarget)) {
-    try {
-      fs.symlinkSync(handoutsOut, pdfTarget, "dir");
-      log(`Created symlink ${pdfTarget} -> ${handoutsOut}`);
-      return;
-    } catch (error) {
-      log(
-        `Symlink failed (${error.message}); falling back to copying PDFs instead.`,
-      );
-      copyPdfs();
-      return;
-    }
-  }
-
-  const stat = fs.lstatSync(pdfTarget);
-
-  if (stat.isSymbolicLink()) {
-    const resolved = fs.realpathSync(pdfTarget);
-    if (resolved === handoutsOut) {
-      log("Existing PDFs symlink is already pointing at handouts/out.");
-      return;
-    }
-
-    throw new Error(
-      `PDF path ${pdfTarget} is a symlink to ${resolved}; remove or update it.`,
-    );
-  }
-
-  if (stat.isDirectory()) {
-    if (hasRequiredPdf(pdfTarget)) {
-      log("PDF directory already populated; leaving as-is.");
-      return;
-    }
-
-    log(
-      "PDF directory exists but missing required files; copying fresh PDFs into place.",
-    );
-    copyPdfs();
-    return;
-  }
-
-  throw new Error(
-    `${pdfTarget} exists but is not a directory or symlink; remove or rename it.`,
+const checkGitStatus = () => {
+  const result = spawnSync(
+    "git",
+    ["diff", "--quiet", "--", path.join(pdfTarget, requiredPdf)],
+    { cwd: repoRoot },
   );
+  return result.status === 0;
 };
 
 const main = () => {
-  if (hasRequiredPdf(pdfTarget)) {
-    log("PDFs already present at src/assets/pdfs; nothing to do.");
+  // Always rebuild to check for changes
+  buildModules();
+
+  const targetPdf = path.join(pdfTarget, requiredPdf);
+  const sourcePdf = path.join(handoutsOut, requiredPdf);
+
+  if (!fs.existsSync(targetPdf)) {
+    copyPdf();
+    warn(`${requiredPdf} was missing - please commit the new PDF`);
     return;
   }
 
-  ensureHandoutsBuilt();
-  ensureTargetPresent();
+  // Compare file contents
+  const sourceContent = fs.readFileSync(sourcePdf);
+  const targetContent = fs.readFileSync(targetPdf);
 
-  if (!hasRequiredPdf(pdfTarget)) {
-    throw new Error(`Still missing ${requiredPdf} in ${pdfTarget}`);
+  if (!sourceContent.equals(targetContent)) {
+    copyPdf();
+    warn(`${requiredPdf} has changed - please commit the updated PDF`);
+    return;
   }
+
+  log(`${requiredPdf} is up to date`);
 };
 
 try {
