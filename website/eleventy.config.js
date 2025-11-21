@@ -5,6 +5,7 @@ import { promisify } from "node:util";
 import EleventyVitePlugin from "@11ty/eleventy-plugin-vite";
 import pluginRss from "@11ty/eleventy-plugin-rss";
 import tailwindcss from "@tailwindcss/vite";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 
 import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
@@ -140,7 +141,17 @@ export default function (eleventyConfig) {
     viteOptions: {
       base: "/",
       publicDir: ".llms-generated",
-      plugins: [tailwindcss()],
+      plugins: [
+        tailwindcss(),
+        viteStaticCopy({
+          targets: [
+            {
+              src: "../src/assets/pdfs/*",
+              dest: "assets/pdfs",
+            },
+          ],
+        }),
+      ],
       build: {
         rollupOptions: {
           input: {
