@@ -9,7 +9,18 @@ templateEngineOverride: njk
 
 Subtitle/description
 
-![](/images/slides/socy-glider/CYBERNETICS_A_013.jpg)
+<div class="grid-2">
+<div>
+
+<!-- left column intentionally left blank to keep title/subtitle on the left -->
+
+</div>
+<div class="center">
+
+<img src="/images/slides/socy-glider/CYBERNETICS_A_013.jpg" alt="Glider" style="width: 40%; height: auto;" />
+
+</div>
+</div>
 
 Note: speaker notes go in comments like this
 
