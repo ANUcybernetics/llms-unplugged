@@ -31,7 +31,7 @@ $(OUTPUT_DIR):
 
 # Compile typst files directly to PDF
 # SOURCE_DATE_EPOCH=0 ensures reproducible builds (no timestamp metadata)
-$(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.typ utils.typ
+$(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.typ utils.typ ../website/package.json
 	@echo "Processing typst $<..."
 	@mkdir -p $(dir $@)
 	SOURCE_DATE_EPOCH=0 typst compile --root . --input version="v$$(jq -r .version ../website/package.json)" $< $@
