@@ -1,13 +1,67 @@
 import EleventyVitePlugin from "@11ty/eleventy-plugin-vite";
 import pluginRss from "@11ty/eleventy-plugin-rss";
 import tailwindcss from "@tailwindcss/vite";
-import { viteStaticCopy } from "vite-plugin-static-copy";
-
+import fs from "node:fs/promises";
+import path from "node:path";
 import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
 import markdownItFootnote from "markdown-it-footnote";
 import markdownItTocDoneRight from "markdown-it-toc-done-right";
 import llmsPlugin from "./eleventy-plugin-llms.js";
+import { viteStaticCopy } from "vite-plugin-static-copy";
+
+function preservePassthroughOutputs() {
+  let rootDir;
+  let outDir;
+
+  async function fileExists(filePath) {
+    try {
+      await fs.access(filePath);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async function copyMatchingFiles(current, destinationRoot, extension) {
+    const entries = await fs.readdir(current, { withFileTypes: true });
+    for (const entry of entries) {
+      const sourcePath = path.join(current, entry.name);
+      const relativePath = path.relative(rootDir, sourcePath);
+      const destinationPath = path.join(destinationRoot, relativePath);
+
+      if (entry.isDirectory()) {
+        await copyMatchingFiles(sourcePath, destinationRoot, extension);
+      } else if (path.extname(entry.name) === extension) {
+        await fs.mkdir(path.dirname(destinationPath), { recursive: true });
+        await fs.copyFile(sourcePath, destinationPath);
+      }
+    }
+  }
+
+  return {
+    name: "preserve-eleventy-passthrough",
+    apply: "build",
+    configResolved(config) {
+      rootDir = config.root;
+      outDir = config.build.outDir;
+    },
+    async closeBundle() {
+      const passthroughFiles = ["CNAME", "feed.xml", "favicon.svg", "llms.txt"];
+
+      for (const file of passthroughFiles) {
+        const sourcePath = path.join(rootDir, file);
+        if (await fileExists(sourcePath)) {
+          const destinationPath = path.join(outDir, file);
+          await fs.mkdir(path.dirname(destinationPath), { recursive: true });
+          await fs.copyFile(sourcePath, destinationPath);
+        }
+      }
+
+      await copyMatchingFiles(rootDir, outDir, ".md");
+    },
+  };
+}
 
 export default function (eleventyConfig) {
   // Global site data available in all templates as `site`
@@ -108,37 +162,17 @@ export default function (eleventyConfig) {
       plugins: [
         tailwindcss(),
         viteStaticCopy({
-          structured: true,
           targets: [
             {
-              src: "../src/assets/pdfs/*",
-              dest: "assets/pdfs",
-            },
-            {
-              src: "llms.txt",
-              dest: ".",
-            },
-            {
-              src: "feed.xml",
-              dest: ".",
-            },
-            {
-              src: "CNAME",
-              dest: ".",
-            },
-            {
-              src: "favicon.svg",
-              dest: ".",
-            },
-            {
-              src: "**/*.md",
+              src: "assets/pdfs/**/*",
               dest: ".",
             },
           ],
+          structured: true,
         }),
+        preservePassthroughOutputs(),
       ],
       build: {
-        emptyOutDir: false,
         rollupOptions: {
           input: {
             main: "src/assets/main.js",
