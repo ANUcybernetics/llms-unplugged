@@ -16,7 +16,7 @@
     "pretest": "npm run build",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check:links": "linkinator _site/index.html --recurse --skip 'https://.*'",
+    "check:links": "npm run build && linkinator _site/index.html --recurse --skip 'https://.*'",
     "lighthouse": "unlighthouse --site http://localhost:8080",
     "lighthouse:ci": "npm run build && unlighthouse-ci --site ./_site"
   },
