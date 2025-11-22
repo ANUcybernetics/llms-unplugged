@@ -1,0 +1,13 @@
+---
+permalink: "llms.txt"
+eleventyExcludeFromCollections: true
+---
+# {{ site.name }}
+
+> {{ site.description }}
+
+## Documentation
+
+{% for doc in collections.llmsDocs %}
+- [{{ doc.title }}]({{ ("/" + doc.relativePath) | absoluteUrl(site.url) }})
+{% endfor %}
