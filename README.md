@@ -120,8 +120,8 @@ By default, counts are scaled for d10 dice using 10^k-1 scaling (e.g., 0-9, 0-99
 text file → Rust CLI → model.json → Typst → PDF booklet
 ```
 
-The Rust tool (`cli/src/main.rs`, `cli/src/lib.rs`) processes your text through
-tokenization (`cli/src/tokenizer.rs`) and preprocessing (`cli/src/preprocessor.rs`) to
+The Rust tool (`cli/src/main.rs`, `cli/src/lib.rs`) processes your text through a
+unified normalizer (`cli/src/text.rs`) to
 generate N-gram statistics. The Typst template (`cli/book.typ`) reads `model.json`
 and typesets it into a printable booklet with guide words, proper pagination,
 and dice-roll ranges.

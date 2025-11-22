@@ -1,6 +1,5 @@
 use serde::Serialize;
-use std::collections::HashMap;
-use std::collections::VecDeque;
+use std::collections::{BTreeMap, HashMap, VecDeque};
 use std::fs::File;
 use std::io;
 use std::path::Path;
@@ -66,11 +65,11 @@ pub struct WordFollowEntry {
     pub followers: Vec<(String, usize)>,
 }
 
-/// A counter for tracking n-gram occurrences in text
-#[derive(Debug)]
-pub struct NGramCounter {
-    /// Mapping of n-gram prefixes to their following words and counts
-    prefix_map: HashMap<Vec<String>, HashMap<String, usize>>,
+    /// A counter for tracking n-gram occurrences in text
+    #[derive(Debug)]
+    pub struct NGramCounter {
+        /// Mapping of n-gram prefixes to their following words and counts
+        prefix_map: BTreeMap<Vec<String>, HashMap<String, usize>>,
     /// Size of n-gram (e.g., 2 for bigrams, 3 for trigrams)
     n: usize,
     /// Statistics gathered during processing
@@ -94,7 +93,7 @@ impl NGramCounter {
         let prefix_size = n - 1;
 
         NGramCounter {
-            prefix_map: HashMap::new(),
+            prefix_map: BTreeMap::new(),
             n,
             stats: ProcessingStats {
                 total_tokens: 0,
@@ -243,23 +242,7 @@ impl NGramCounter {
 
     /// Get the results as a sorted list of WordFollowEntry
     pub fn get_entries(&self) -> Vec<WordFollowEntry> {
-        let mut result = convert_to_entries(&self.prefix_map);
-
-        // Sort entries lexicographically by prefix (case-insensitive)
-        result.sort_by(|a, b| {
-            // Compare each component of the prefix case-insensitively
-            for (a_word, b_word) in a.prefix.iter().zip(b.prefix.iter()) {
-                let cmp = a_word.to_lowercase().cmp(&b_word.to_lowercase());
-                if cmp != std::cmp::Ordering::Equal {
-                    return cmp;
-                }
-            }
-
-            // If prefixes have different lengths but one is a prefix of the other
-            a.prefix.len().cmp(&b.prefix.len())
-        });
-
-        result
+        convert_to_entries(&self.prefix_map)
     }
 
     /// Get the statistics collected during processing
@@ -331,7 +314,7 @@ fn parse_frontmatter(frontmatter_raw: &str, n: usize) -> io::Result<Metadata> {
 
 /// Converts the internal N-gram HashMap representation to the required output format
 fn convert_to_entries(
-    follow_map: &HashMap<Vec<String>, HashMap<String, usize>>,
+    follow_map: &BTreeMap<Vec<String>, HashMap<String, usize>>,
 ) -> Vec<WordFollowEntry> {
     follow_map
         .iter()
@@ -570,7 +553,7 @@ mod tests {
         assert_eq!(he_entry.followers[1].1, 1);
     }
 
-    // Tokenization specific tests are removed as they are now covered in tokenizer.rs and preprocessor.rs
+    // Tokenization-specific tests live alongside the normalizer in text.rs
 
     #[test]
     fn test_process_small_file_bigrams() -> io::Result<()> {

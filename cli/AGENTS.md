@@ -15,9 +15,8 @@ text file → Rust CLI → model.json → Typst → PDF booklet
 
 - `src/main.rs` - CLI entry point with argument parsing
 - `src/lib.rs` - Core N-gram processing logic
-- `src/tokenizer.rs` - Text tokenization (lowercases, removes punctuation except
-  apostrophes)
-- `src/preprocessor.rs` - Text cleaning and preprocessing
+- `src/text.rs` - Unified tokenization/normalization pipeline (case handling,
+  punctuation tokens, filters)
 - `book.typ` - Main booklet template (reads from model.json)
 - `Makefile` - Batch processing for multiple texts/formats
 - `scripts/build_books.py` - Python helper for building multiple booklets
