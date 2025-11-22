@@ -39,7 +39,7 @@ jobs:
 
       - name: Check for broken links
         working-directory: website
-        run: npm run check-links
+        run: npm run check:links
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
