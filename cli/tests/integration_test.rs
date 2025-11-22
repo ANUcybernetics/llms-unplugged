@@ -132,7 +132,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
         // Error output should contain error about missing frontmatter
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
-            stderr_message.contains("Error: No valid YAML frontmatter found"),
+            stderr_message.contains("Input must start with '---'"),
             "Should output error about missing frontmatter: {}",
             stderr_message
         );
@@ -167,8 +167,8 @@ fn test_frontmatter_errors() -> io::Result<()> {
         // Error message should mention missing fields
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
-            stderr_message.contains("Error: Frontmatter missing required fields"),
-            "Should error about missing required fields: {}",
+            stderr_message.contains("Frontmatter missing required field 'title'."),
+            "Should error about missing title: {}",
             stderr_message
         );
     }
@@ -195,8 +195,8 @@ fn test_frontmatter_errors() -> io::Result<()> {
         // Error message should mention missing fields
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
-            stderr_message.contains("Error: Frontmatter missing required fields"),
-            "Should error about missing required fields: {}",
+            stderr_message.contains("Frontmatter missing required field 'author'."),
+            "Should error about missing author: {}",
             stderr_message
         );
     }
@@ -220,8 +220,8 @@ fn test_frontmatter_errors() -> io::Result<()> {
         // Error message should mention missing fields
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
-            stderr_message.contains("Error: Frontmatter missing required fields"),
-            "Should error about missing required fields: {}",
+            stderr_message.contains("Frontmatter missing required field 'url'."),
+            "Should error about missing url: {}",
             stderr_message
         );
     }
@@ -342,14 +342,14 @@ fn test_cli_raw_flag() -> io::Result<()> {
     let mut the_scaled_total = None;
 
     for entry in data_raw {
-        if entry[0].as_str().unwrap() == "The" {
+        if entry[0].as_str().unwrap() == "the" {
             the_raw_total = Some(entry[1].as_u64().unwrap());
             break;
         }
     }
 
     for entry in data_scaled {
-        if entry[0].as_str().unwrap() == "The" {
+        if entry[0].as_str().unwrap() == "the" {
             the_scaled_total = Some(entry[1].as_u64().unwrap());
             break;
         }

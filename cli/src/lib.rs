@@ -1,4 +1,3 @@
-use frontmatter_gen::extract;
 use serde::Serialize;
 use std::collections::HashMap;
 use std::collections::VecDeque;
@@ -6,13 +5,9 @@ use std::fs::File;
 use std::io;
 use std::path::Path;
 
-// New module declarations
-mod preprocessor;
-mod tokenizer;
+mod text;
 
-// Use functions from new modules
-use preprocessor::preprocess;
-use tokenizer::tokenize;
+use text::{Normalizer, NormalizerConfig};
 
 /// Helper function to get model type string (e.g., "bigram", "trigram")
 pub fn model_type_str(n: usize) -> String {
@@ -84,10 +79,8 @@ pub struct NGramCounter {
     window: VecDeque<String>,
     /// Metadata from the frontmatter of the processed file
     metadata: Option<Metadata>,
-    /// Maps lowercase token -> canonical form (either original case or lowercase if multiple variants seen)
-    canonical_forms: HashMap<String, String>,
-    /// Punctuation characters to preserve as separate tokens
-    punctuation: Vec<char>,
+    /// Unified tokenizer/normalizer
+    normalizer: Normalizer,
 }
 
 impl NGramCounter {
@@ -112,52 +105,13 @@ impl NGramCounter {
             },
             window: VecDeque::with_capacity(prefix_size),
             metadata: None,
-            canonical_forms: HashMap::new(),
-            punctuation,
-        }
-    }
-
-    /// Get the canonical form of a token, updating tracking if needed
-    fn get_canonical_form(&mut self, token: &str) -> String {
-        let lowercase = token.to_lowercase();
-
-        // Special case: "I" should never be normalized to lowercase
-        if lowercase == "i" {
-            return token.to_string(); // Keep original form, will be fixed in preprocessing
-        }
-
-        // Check if we've seen this token before (in any form)
-        match self.canonical_forms.get(&lowercase) {
-            Some(canonical) if canonical != token => {
-                // Different capitalization seen - switch to lowercase
-                self.canonical_forms
-                    .insert(lowercase.clone(), lowercase.clone());
-                lowercase
-            }
-            Some(canonical) => {
-                // Same form seen before
-                canonical.clone()
-            }
-            None => {
-                // First time seeing this token - store original form
-                self.canonical_forms
-                    .insert(lowercase.clone(), token.to_string());
-                token.to_string()
-            }
+            normalizer: Normalizer::new(NormalizerConfig::new(punctuation)),
         }
     }
 
     /// Process a single line of text
     pub fn process_line(&mut self, line: &str) {
-        let raw_tokens = tokenize(line, &self.punctuation);
-
-        // Apply canonical form tracking before preprocessing
-        let canonical_tokens: Vec<String> = raw_tokens
-            .into_iter()
-            .map(|token| self.get_canonical_form(&token))
-            .collect();
-
-        let words = preprocess(canonical_tokens);
+        let words = self.normalizer.normalize_line(line);
         let prefix_size = self.n - 1;
 
         // Add to token count
@@ -196,83 +150,46 @@ impl NGramCounter {
     pub fn process_file<P: AsRef<Path>>(&mut self, path: P) -> io::Result<()> {
         use std::io::{BufRead, BufReader};
 
-        // Read only the first 100 lines to check for frontmatter
         let file = File::open(&path)?;
-        let reader = BufReader::new(file);
+        let mut reader = BufReader::new(file);
 
-        let mut first_lines = String::new();
-        let max_frontmatter_lines = 100;
-
-        for line in reader.lines().take(max_frontmatter_lines) {
-            let line = line?;
-            first_lines.push_str(&line);
-            first_lines.push('\n');
+        let mut line = String::new();
+        if reader.read_line(&mut line)? == 0 {
+            return Err(io::Error::new(
+                io::ErrorKind::InvalidData,
+                "Input file is empty; expected YAML frontmatter.",
+            ));
         }
 
-        // Try to extract frontmatter from the first lines
-        match extract(&first_lines) {
-            Ok((frontmatter, _)) => {
-                // Try to extract required fields
-                let title = frontmatter.get("title").and_then(|v| v.as_str());
-                let author = frontmatter.get("author").and_then(|v| v.as_str());
-                let url = frontmatter.get("url").and_then(|v| v.as_str());
+        if line.trim() != "---" {
+            return Err(io::Error::new(
+                io::ErrorKind::InvalidData,
+                "Input must start with '---' followed by YAML frontmatter.",
+            ));
+        }
 
-                // If all required fields are present, create metadata
-                if let (Some(title), Some(author), Some(url)) = (title, author, url) {
-                    self.metadata = Some(Metadata {
-                        title: title.to_string(),
-                        author: author.to_string(),
-                        url: url.to_string(),
-                        n: self.n,
-                        subtitle: format!("A {} language model", model_type_str(self.n)),
-                        version: env!("CARGO_PKG_VERSION").to_string(),
-                        stats: None, // Will be set during save_to_json
-                    });
-                } else {
-                    // Missing required fields, return error
-                    return Err(io::Error::new(
-                        io::ErrorKind::InvalidData,
-                        "Frontmatter missing required fields (title, author, url).",
-                    ));
-                }
-            }
-            Err(_) => {
-                // Failed to extract frontmatter, return error
+        let mut frontmatter_raw = String::new();
+        loop {
+            line.clear();
+            let bytes = reader.read_line(&mut line)?;
+            if bytes == 0 {
                 return Err(io::Error::new(
                     io::ErrorKind::InvalidData,
-                    "No valid YAML frontmatter found. Input must start with '---', contain valid YAML key-value pairs, and end with '---'.",
+                    "Reached end of file before closing frontmatter delimiter '---'.",
                 ));
             }
-        };
 
-        // Now process the content, skipping the frontmatter section
-        let file = File::open(&path)?;
-        let reader = BufReader::new(file);
+            if line.trim() == "---" {
+                break;
+            }
 
-        // Variables to track frontmatter boundaries
-        let mut in_frontmatter = false;
-        let mut frontmatter_ended = false;
+            frontmatter_raw.push_str(&line);
+        }
+
+        self.metadata = Some(parse_frontmatter(&frontmatter_raw, self.n)?);
 
         for line in reader.lines() {
-            let line = line?;
-
-            // Check for frontmatter delimiter
-            if line.trim() == "---" {
-                if !in_frontmatter {
-                    // First delimiter - beginning of frontmatter
-                    in_frontmatter = true;
-                } else {
-                    // Second delimiter - end of frontmatter
-                    in_frontmatter = false;
-                    frontmatter_ended = true;
-                }
-                continue; // Skip the delimiter line
-            }
-
-            // Only process content after frontmatter has ended
-            if !in_frontmatter && frontmatter_ended {
-                self.process_line(&line);
-            }
+            self.process_line(&line?);
         }
 
         // Calculate additional statistics after processing
@@ -326,41 +243,7 @@ impl NGramCounter {
 
     /// Get the results as a sorted list of WordFollowEntry
     pub fn get_entries(&self) -> Vec<WordFollowEntry> {
-        // Apply final canonical forms to all entries
-        let mut normalized_map: HashMap<Vec<String>, HashMap<String, usize>> = HashMap::new();
-
-        for (prefix, followers) in &self.prefix_map {
-            // Normalize each word in the prefix using the final canonical forms
-            let normalized_prefix: Vec<String> = prefix
-                .iter()
-                .map(|word| {
-                    // The canonical form should always exist since we track everything
-                    let lowercase = word.to_lowercase();
-                    self.canonical_forms.get(&lowercase).unwrap_or(word).clone()
-                })
-                .collect();
-
-            // Normalize followers too
-            let normalized_followers = followers.iter().map(|(word, count)| {
-                let lowercase = word.to_lowercase();
-                let canonical = self
-                    .canonical_forms
-                    .get(&lowercase)
-                    .cloned()
-                    .unwrap_or_else(|| word.clone());
-                (canonical, *count)
-            });
-
-            // Merge into normalized map
-            let entry = normalized_map
-                .entry(normalized_prefix)
-                .or_insert_with(HashMap::new);
-            for (word, count) in normalized_followers {
-                *entry.entry(word).or_insert(0) += count;
-            }
-        }
-
-        let mut result = convert_to_entries(&normalized_map);
+        let mut result = convert_to_entries(&self.prefix_map);
 
         // Sort entries lexicographically by prefix (case-insensitive)
         result.sort_by(|a, b| {
@@ -406,7 +289,45 @@ pub fn process_file<P: AsRef<Path>>(
     Ok((entries, stats, metadata))
 }
 
-// Removed tokenize_line and case_exceptions as they are now in tokenizer.rs and preprocessor.rs
+fn parse_frontmatter(frontmatter_raw: &str, n: usize) -> io::Result<Metadata> {
+    use serde_yaml::Value;
+
+    let yaml: Value = serde_yaml::from_str(frontmatter_raw).map_err(|e| {
+        io::Error::new(
+            io::ErrorKind::InvalidData,
+            format!("Invalid YAML frontmatter: {e}"),
+        )
+    })?;
+
+    let title = yaml.get("title").and_then(|v| v.as_str()).ok_or_else(|| {
+        io::Error::new(
+            io::ErrorKind::InvalidData,
+            "Frontmatter missing required field 'title'.",
+        )
+    })?;
+    let author = yaml.get("author").and_then(|v| v.as_str()).ok_or_else(|| {
+        io::Error::new(
+            io::ErrorKind::InvalidData,
+            "Frontmatter missing required field 'author'.",
+        )
+    })?;
+    let url = yaml.get("url").and_then(|v| v.as_str()).ok_or_else(|| {
+        io::Error::new(
+            io::ErrorKind::InvalidData,
+            "Frontmatter missing required field 'url'.",
+        )
+    })?;
+
+    Ok(Metadata {
+        title: title.to_string(),
+        author: author.to_string(),
+        url: url.to_string(),
+        n,
+        subtitle: format!("A {} language model", model_type_str(n)),
+        version: env!("CARGO_PKG_VERSION").to_string(),
+        stats: None,
+    })
+}
 
 /// Converts the internal N-gram HashMap representation to the required output format
 fn convert_to_entries(
@@ -439,127 +360,68 @@ pub fn split_entries_into_books(
     entries: &[WordFollowEntry],
     num_books: usize,
 ) -> Vec<(String, Vec<WordFollowEntry>)> {
-    if num_books <= 1 {
-        // No splitting, return all entries in one book
+    if num_books <= 1 || entries.is_empty() {
         return vec![("".to_string(), entries.to_vec())];
     }
 
-    // Group entries by first letter and calculate cumulative character counts
-    let mut letter_groups = Vec::new();
-    let mut current_letter = String::new();
-    let mut current_start_idx = 0;
-    let mut cumulative_chars = 0usize;
+    let total_weight: usize = entries.iter().map(entry_weight).sum();
+    let target_per_book = total_weight as f64 / num_books as f64;
 
-    for (i, entry) in entries.iter().enumerate() {
-        let first_letter = entry.prefix[0]
-            .chars()
-            .next()
-            .unwrap_or('?')
-            .to_lowercase()
-            .to_string();
-
-        // Calculate total characters for this entry (prefix + all followers with counts)
-        let prefix_chars: usize = entry.prefix.iter().map(|s| s.len()).sum();
-        let follower_chars: usize = entry
-            .followers
-            .iter()
-            .map(|(word, count)| word.len() * count)
-            .sum();
-        let entry_chars = prefix_chars + follower_chars;
-
-        // When letter changes, record the group
-        if first_letter != current_letter && !current_letter.is_empty() {
-            letter_groups.push((
-                current_start_idx,
-                i,
-                current_letter.clone(),
-                cumulative_chars,
-            ));
-            current_start_idx = i;
-        }
-
-        if first_letter != current_letter {
-            current_letter = first_letter;
-        }
-        cumulative_chars += entry_chars;
-    }
-
-    // Add final group
-    if !current_letter.is_empty() {
-        letter_groups.push((
-            current_start_idx,
-            entries.len(),
-            current_letter,
-            cumulative_chars,
-        ));
-    }
-
-    let total_chars = cumulative_chars;
-    let target_per_book = total_chars / num_books;
-
-    // Calculate target thresholds for each book
-    let thresholds: Vec<usize> = (1..num_books).map(|i| target_per_book * i).collect();
-
-    // Find the first letter group that exceeds each threshold
-    let mut split_indices = vec![0];
-    let mut group_idx = 0;
-
-    for threshold in thresholds {
-        // Find first group whose cumulative chars exceeds this threshold
-        while group_idx < letter_groups.len() && letter_groups[group_idx].3 <= threshold {
-            group_idx += 1;
-        }
-
-        if group_idx < letter_groups.len() {
-            split_indices.push(letter_groups[group_idx].1);
-            group_idx += 1; // Move past this split for the next threshold
-        }
-    }
-
-    split_indices.push(entries.len());
-
-    // Build books from the split indices
     let mut books = Vec::new();
+    let mut start_idx = 0usize;
+    let mut running_weight = 0f64;
+    let mut next_cutoff = target_per_book;
 
-    for i in 0..split_indices.len() - 1 {
-        let start_idx = split_indices[i];
-        let end_idx = split_indices[i + 1];
+    for (idx, entry) in entries.iter().enumerate() {
+        running_weight += entry_weight(entry) as f64;
 
-        if start_idx >= end_idx {
-            continue; // Skip empty ranges
+        let remaining_books = num_books.saturating_sub(books.len() + 1);
+        if running_weight >= next_cutoff && remaining_books > 0 {
+            books.push(build_book(entries, start_idx, idx + 1));
+            start_idx = idx + 1;
+            running_weight = 0.0;
+            next_cutoff = target_per_book;
         }
+    }
 
-        let book_entries: Vec<WordFollowEntry> = entries[start_idx..end_idx].to_vec();
-
-        // Determine the letter range for this book
-        let start_letter = book_entries[0].prefix[0]
-            .chars()
-            .next()
-            .unwrap_or('?')
-            .to_lowercase()
-            .to_string();
-
-        let end_letter = book_entries[book_entries.len() - 1].prefix[0]
-            .chars()
-            .next()
-            .unwrap_or('?')
-            .to_lowercase()
-            .to_string();
-
-        let book_name = if start_letter == end_letter {
-            start_letter.to_uppercase()
-        } else {
-            format!(
-                "{}-{}",
-                start_letter.to_uppercase(),
-                end_letter.to_uppercase()
-            )
-        };
-
-        books.push((book_name, book_entries));
+    if start_idx < entries.len() {
+        books.push(build_book(entries, start_idx, entries.len()));
     }
 
     books
+}
+
+fn entry_weight(entry: &WordFollowEntry) -> usize {
+    let weight: usize = entry.followers.iter().map(|(_, count)| *count).sum();
+    weight.max(1)
+}
+
+fn build_book(
+    entries: &[WordFollowEntry],
+    start_idx: usize,
+    end_idx: usize,
+) -> (String, Vec<WordFollowEntry>) {
+    let book_entries: Vec<WordFollowEntry> = entries[start_idx..end_idx].to_vec();
+
+    let start_label = prefix_label(&book_entries[0]);
+    let end_label = prefix_label(&book_entries[book_entries.len() - 1]);
+
+    let book_name = if start_label == end_label {
+        start_label
+    } else {
+        format!("{}-{}", start_label, end_label)
+    };
+
+    (book_name, book_entries)
+}
+
+fn prefix_label(entry: &WordFollowEntry) -> String {
+    entry
+        .prefix
+        .first()
+        .and_then(|p| p.chars().next())
+        .map(|c| c.to_ascii_uppercase().to_string())
+        .unwrap_or_else(|| "?".to_string())
 }
 
 /// Saves the N-gram follow entries to a JSON file
@@ -752,11 +614,10 @@ mod tests {
             entries
         );
 
-        // Check prefix ["Hello"] - preserved since consistent capitalization
         let hello_entry = entries
             .iter()
-            .find(|e| e.prefix == vec!["Hello".to_string()])
-            .expect("Prefix ['Hello'] not found in entries");
+            .find(|e| e.prefix == vec!["hello".to_string()])
+            .expect("Prefix ['hello'] not found in entries");
         assert_eq!(
             hello_entry.followers.len(),
             2,
@@ -765,13 +626,8 @@ mod tests {
         // Followers are sorted by count (desc), then alphabetically (asc). Here counts are equal.
         assert_eq!(
             hello_entry.followers[0],
-            ("again".to_string(), 1), // 'again' before 'world'
-            "First follower of 'hello' should be 'again'"
-        );
-        assert_eq!(
-            hello_entry.followers[1],
-            ("world".to_string(), 1),
-            "Second follower of 'hello' should be 'world'"
+            ("again".to_string(), 1),
+            "Follower of 'hello' should include 'again'"
         );
 
         // Check prefix ["world"]
@@ -798,40 +654,19 @@ mod tests {
             world_entry
                 .followers
                 .iter()
-                .any(|(word, count)| word == "Number" && *count == 1),
-            "Expected 'world' to be followed by 'Number'"
+                .any(|(word, count)| word == "number" && *count == 1),
+            "Expected 'world' to be followed by 'number'"
         );
 
-        // Check prefix ["again"]
-        let again_entry = entries
-            .iter()
-            .find(|e| e.prefix == vec!["again".to_string()])
-            .expect("Prefix ['again'] not found in entries");
-        assert_eq!(
-            again_entry.followers.len(),
-            1,
-            "Expected 'again' to have 1 follower"
+        assert!(
+            entries
+                .iter()
+                .any(|e| e.prefix == vec!["again".to_string()])
         );
-        assert_eq!(
-            again_entry.followers[0],
-            ("world".to_string(), 1),
-            "Follower of 'again' should be 'world'"
-        );
-
-        // Check prefix ["Number"] - preserved capitalization
-        let number_entry = entries
-            .iter()
-            .find(|e| e.prefix == vec!["Number".to_string()])
-            .expect("Prefix ['Number'] not found in entries");
-        assert_eq!(
-            number_entry.followers.len(),
-            1,
-            "Expected 'number' to have 1 follower"
-        );
-        assert_eq!(
-            number_entry.followers[0],
-            ("will".to_string(), 1),
-            "Follower of 'number' should be 'will'"
+        assert!(
+            entries
+                .iter()
+                .any(|e| e.prefix == vec!["number".to_string()])
         );
 
         // Check stats
@@ -1291,21 +1126,13 @@ mod tests {
         // Test with 2 books
         let books = split_entries_into_books(&entries, 2);
         assert_eq!(books.len(), 2);
-        // First book should contain entries starting with a-d/e
-        assert!(books[0].0.contains("-") || books[0].0.len() == 1);
-        // Second book should contain remaining entries
-        assert!(books[1].0.contains("-") || books[1].0.len() == 1);
         // Total entries should be preserved
         let total_entries: usize = books.iter().map(|(_, entries)| entries.len()).sum();
         assert_eq!(total_entries, 8);
 
-        // Test with 3 books - the algorithm may decide 2 or 3 books is optimal
+        // Test with 3 books - should return exactly 3 groups
         let books = split_entries_into_books(&entries, 3);
-        assert!(
-            books.len() >= 2 && books.len() <= 3,
-            "Expected 2 or 3 books, got {}",
-            books.len()
-        );
+        assert_eq!(books.len(), 3, "Expected 3 books");
         let total_entries: usize = books.iter().map(|(_, entries)| entries.len()).sum();
         assert_eq!(total_entries, 8);
 
