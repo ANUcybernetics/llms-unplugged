@@ -37,9 +37,22 @@ Yes. All materials are released under
 can use, adapt, and share them for non-commercial educational purposes with
 attribution.
 
+## Can I use these materials in a paid workshop?
+
+The NC (Non-Commercial) clause in our licence has
+[some ambiguity](https://www.artslaw.com.au/information-sheet/creative-commons)
+around paid educational activities. Our intention is that educators at schools,
+universities, and non-profit organisations can use these materials in workshops
+that charge cost-recovery fees. However, for-profit companies cannot run paid
+workshops using these materials under the CC-BY-SA 4.0 license. If you're a
+commercial training provider interested in using these resources, please
+[contact us](/contact/)---we're happy to discuss alternative licensing
+arrangements.
+
 ## What's the difference between bigrams and trigrams?
 
 Bigrams predict the next word based on one previous word. Trigrams use two
+
 previous words, producing more coherent text but requiring larger lookup tables.
 We recommend starting with bigrams.
 
