@@ -26,6 +26,23 @@
     width: 420mm,
     height: 297mm,
     {
+      // Add zebra striping (every second row)
+      for i in range(size) {
+        if calc.rem(i, 2) == 1 {
+          let y = first_cell_height + cell_height * i
+          place(
+            dx: 0mm,
+            dy: y,
+            rect(
+              width: 420mm,
+              height: cell_height,
+              fill: luma(220),
+              stroke: none,
+            ),
+          )
+        }
+      }
+
       // Add logo and text to first cell
       place(
         dx: 0mm,
