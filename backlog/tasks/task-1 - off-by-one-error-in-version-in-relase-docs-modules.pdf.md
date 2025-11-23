@@ -1,9 +1,10 @@
 ---
 id: task-1
 title: off-by-one error in version in relase docs/modules.pdf
-status: To Do
+status: Done
 assignee: []
 created_date: '2025-11-21 11:30'
+updated_date: '2025-11-23 09:35'
 labels: []
 dependencies: []
 ---

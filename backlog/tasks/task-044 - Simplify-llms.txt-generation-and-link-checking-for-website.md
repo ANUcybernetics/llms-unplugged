@@ -1,9 +1,10 @@
 ---
 id: task-044
 title: Simplify llms.txt generation and link checking for website
-status: To Do
+status: Done
 assignee: []
 created_date: '2025-11-22 04:05'
+updated_date: '2025-11-23 09:34'
 labels:
   - website
   - tooling

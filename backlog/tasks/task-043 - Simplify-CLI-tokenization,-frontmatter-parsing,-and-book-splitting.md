@@ -1,9 +1,10 @@
 ---
 id: task-043
 title: 'Simplify CLI tokenization, frontmatter parsing, and book splitting'
-status: To Do
+status: Done
 assignee: []
 created_date: '2025-11-22 04:05'
+updated_date: '2025-11-23 09:34'
 labels:
   - cli
   - refactoring
