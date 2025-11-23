@@ -37,7 +37,7 @@
 /* Skip link for keyboard navigation */
 .skip-link {
     position: absolute;
-    top: -40px;
+    top: 0;
     left: 0;
     background: var(--color-anu-gold);
     color: var(--color-anu-black);
@@ -45,10 +45,11 @@
     text-decoration: none;
     font-weight: 600;
     z-index: 100;
+    transform: translateY(-100%);
 }
 
 .skip-link:focus {
-    top: 0;
+    transform: translateY(0);
 }
 
 .prose {
