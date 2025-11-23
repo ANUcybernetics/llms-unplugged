@@ -87,6 +87,10 @@
     text-decoration: none;
 }
 
+.prose a:hover {
+    text-decoration: underline;
+}
+
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
     *,
