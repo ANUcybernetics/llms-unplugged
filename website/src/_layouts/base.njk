@@ -26,10 +26,10 @@
   <title>{{ title or "LLMs Unplugged" }}</title>
   <link rel="stylesheet" href="/assets/main.css">
 </head>
-<body class="min-h-screen bg-anu-black text-anu-white flex flex-col">
+<body class="min-h-screen bg-anu-black text-anu-white print:bg-anu-white print:text-anu-black flex flex-col">
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <header class="border-b border-anu-gold">
+  <header class="border-b border-anu-gold print:hidden">
     <nav class="max-w-prose mx-auto px-4" aria-label="Main navigation">
       <div class="flex items-center justify-between h-16">
         <a href="/" class="text-lg font-semibold text-anu-white hover:text-anu-gold transition-colors" aria-label="LLMs Unplugged home">
@@ -61,13 +61,13 @@
     </nav>
   </header>
 
-  <main id="main-content" class="flex-1 max-w-prose mx-auto px-4 py-12 w-full">
-    <article class="prose max-w-none">
+  <main id="main-content" class="flex-1 max-w-prose mx-auto px-4 py-12 w-full print:max-w-full print:mx-0 print:p-4">
+    <article class="prose max-w-none print:max-w-full">
       {{ content | safe }}
     </article>
   </main>
 
-  <footer class="border-t border-anu-gold mt-auto">
+  <footer class="border-t border-anu-gold mt-auto print:hidden">
     <div class="max-w-prose mx-auto px-4 py-6 text-sm text-anu-white">
       <p>
         © Ben Swift, <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="text-anu-gold-2 hover:text-anu-gold transition-colors">CC BY-NC-SA 4.0</a>.

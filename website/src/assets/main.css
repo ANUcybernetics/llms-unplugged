@@ -7,6 +7,7 @@
     --color-anu-gold: #be830e;
     --color-anu-gold-2: hsl(from #be830e h calc(s - 30) 77);
     --color-anu-gold-4: hsl(from #be830e h s calc(l + 8));
+    --color-anu-gold-tint: hsl(from #be830e h calc(s - 30) 90);
     --color-anu-unilink-gold: #945f00;
     --color-anu-teal: #0085ad;
     --color-anu-copper: #be4e0e;
@@ -60,6 +61,26 @@
     --tw-prose-code: var(--color-anu-white);
     --tw-prose-pre-code: var(--color-anu-white);
     --tw-prose-pre-bg: var(--color-anu-unilink-gold);
+
+    @media print {
+        --tw-prose-body: var(--color-anu-black);
+        --tw-prose-headings: var(--color-anu-gold);
+        --tw-prose-links: var(--color-anu-gold);
+        --tw-prose-bold: var(--color-anu-black);
+        --tw-prose-counters: var(--color-anu-black);
+        --tw-prose-bullets: var(--color-anu-black);
+        --tw-prose-hr: var(--color-anu-gold);
+        --tw-prose-quotes: var(--color-anu-black);
+        --tw-prose-quote-borders: var(--color-anu-gold);
+        --tw-prose-captions: var(--color-anu-black);
+        --tw-prose-code: var(--color-anu-black);
+        --tw-prose-pre-code: var(--color-anu-black);
+        --tw-prose-pre-bg: var(--color-anu-gold-tint);
+    }
+}
+
+.prose a {
+    text-decoration: none;
 }
 
 /* Reduced motion support */
@@ -75,33 +96,77 @@
 
 /* Print styles */
 @media print {
-    body {
-        background: white;
-        color: black;
+    /* Page break controls */
+    .prose h1,
+    .prose h2,
+    .prose h3,
+    .prose h4,
+    .prose h5,
+    .prose h6 {
+        page-break-after: avoid;
     }
 
-    header,
-    footer {
-        display: none;
+    .prose h1,
+    .prose h2 {
+        page-break-before: auto;
     }
 
-    .skip-link {
-        display: none;
+    .prose p,
+    .prose ul,
+    .prose ol {
+        page-break-inside: avoid;
+        orphans: 3;
+        widows: 3;
     }
 
-    main {
-        max-width: 100%;
-        margin: 0;
-        padding: 0;
+    .prose table,
+    .prose img {
+        page-break-inside: avoid;
     }
 
-    .prose a {
-        color: black;
-        text-decoration: underline;
-    }
-
+    /* Print URLs after external links */
     .prose a[href^="http"]::after {
         content: " (" attr(href) ")";
         font-size: 0.875em;
+    }
+
+    /* Code blocks */
+    .prose code {
+        background: var(--color-anu-gold-tint);
+        border-radius: 0.125rem;
+    }
+
+    .prose pre {
+        background: var(--color-anu-gold-tint);
+        border: 1px solid var(--color-anu-gold);
+    }
+
+    .prose pre code {
+        background: transparent;
+    }
+
+    /* Tables */
+    .prose table {
+        border: 1px solid var(--color-anu-gold);
+    }
+
+    .prose th {
+        background: var(--color-anu-gold);
+        color: var(--color-anu-white);
+        border-bottom: 1px solid var(--color-anu-gold);
+    }
+
+    .prose td {
+        border-bottom: 1px solid var(--color-anu-grey-table-line);
+    }
+
+    .prose tbody tr:nth-child(odd) {
+        background: var(--color-anu-gold-tint);
+    }
+
+    /* Remove effects */
+    * {
+        box-shadow: none !important;
+        text-shadow: none !important;
     }
 }
