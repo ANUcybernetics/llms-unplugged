@@ -1,8 +1,9 @@
-use clap::Parser;
+use clap::{Args, Parser, Subcommand};
 use llms_unplugged::{
-    Metadata, NGramCounter, ProcessingStats, WordFollowEntry, save_to_json,
+    Metadata, NGramCounter, ProcessingStats, WordFollowEntry, render_bigram_tsv, save_to_json,
     split_entries_into_books,
 };
+use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
 use std::process::Command;
@@ -10,7 +11,23 @@ use std::process::Command;
 /// A simple language model builder that processes text files and outputs word following statistics
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
-struct Args {
+struct Cli {
+    #[command(subcommand)]
+    command: Commands,
+}
+
+#[derive(Subcommand, Debug)]
+enum Commands {
+    /// Generate JSON model files.
+    Build(BuildArgs),
+    /// Generate PDFs (and JSON if needed).
+    Pdf(PdfArgs),
+    /// Export a bigram TSV matrix for spreadsheets.
+    Tsv(TsvArgs),
+}
+
+#[derive(Args, Debug, Clone)]
+struct BuildArgs {
     /// Input text file to process
     #[arg(index = 1)]
     input: PathBuf,
@@ -27,9 +44,64 @@ struct Args {
     #[arg(short = 'b', long = "books", default_value_t = 1)]
     num_books: usize,
 
-    /// Run typst compile on the generated JSON files to create PDFs
-    #[arg(long = "typst")]
-    run_typst: bool,
+    /// Output raw counts without scaling
+    #[arg(long = "raw")]
+    raw: bool,
+
+    /// Punctuation characters to preserve as separate tokens (default: ",.")
+    #[arg(short = 'p', long = "punctuation", default_value = ",.")]
+    punctuation: String,
+}
+
+#[derive(Args, Debug, Clone)]
+struct PdfArgs {
+    /// Input text file to process
+    #[arg(index = 1)]
+    input: PathBuf,
+
+    /// Name-N-books triple (e.g. frankenstein-3-2) to match Makefile targets
+    #[arg(long)]
+    target: Option<String>,
+
+    /// Override base name for outputs (defaults to input stem)
+    #[arg(long)]
+    base_name: Option<String>,
+
+    /// The size of the N-gram (e.g., 2 for bigrams, 3 for trigrams)
+    #[arg(short, long, default_value_t = 2)]
+    n: usize,
+
+    /// Number of books to split the output into (default 1 = no splitting)
+    #[arg(short = 'b', long = "books", default_value_t = 1)]
+    num_books: usize,
+
+    /// Output directory for generated assets (expects json/ and pdf/ inside)
+    #[arg(long, default_value = "out")]
+    out_dir: PathBuf,
+
+    /// Path to the Typst template (defaults to book.typ)
+    #[arg(long, default_value = "book.typ")]
+    template: PathBuf,
+
+    /// Paper size passed to Typst (e.g. a4, a5)
+    #[arg(long, default_value = "a4")]
+    paper_size: String,
+
+    /// Number of columns passed to Typst
+    #[arg(long, default_value_t = 4)]
+    columns: usize,
+
+    /// Force a subtitle instead of using metadata subtitle from JSON
+    #[arg(long)]
+    subtitle: Option<String>,
+
+    /// Only run Typst; expect JSON to already exist
+    #[arg(long)]
+    pdf_only: bool,
+
+    /// Only generate JSON; skip Typst
+    #[arg(long)]
+    json_only: bool,
 
     /// Output raw counts without scaling
     #[arg(long = "raw")]
@@ -40,9 +112,30 @@ struct Args {
     punctuation: String,
 }
 
+#[derive(Args, Debug, Clone)]
+struct TsvArgs {
+    /// Input text file to process
+    #[arg(index = 1)]
+    input: PathBuf,
+
+    /// Optional output path (defaults to stdout)
+    #[arg(short, long)]
+    output: Option<PathBuf>,
+
+    /// Punctuation characters to preserve as separate tokens (default: ",.")
+    #[arg(short = 'p', long = "punctuation", default_value = ",.")]
+    punctuation: String,
+}
+
 fn main() {
-    let args = Args::parse();
-    match run(&args) {
+    let cli = Cli::parse();
+    let result = match &cli.command {
+        Commands::Build(args) => run_build_command(args),
+        Commands::Pdf(args) => run_pdf_command(args),
+        Commands::Tsv(args) => run_tsv_command(args),
+    };
+
+    match result {
         Ok(_) => {}
         Err(CliError::Processing(err)) => {
             if err.kind() == io::ErrorKind::InvalidData {
@@ -61,7 +154,7 @@ fn main() {
                 std::process::exit(1);
             }
         }
-        Err(CliError::Typst(err)) => {
+        Err(CliError::Typst(err)) | Err(CliError::InvalidArgs(err)) => {
             eprintln!("{err}");
             std::process::exit(1);
         }
@@ -72,30 +165,181 @@ fn main() {
 enum CliError {
     Processing(io::Error),
     Typst(String),
+    InvalidArgs(String),
 }
 
-fn run(args: &Args) -> Result<(), CliError> {
-    let punctuation: Vec<char> = args.punctuation.chars().collect();
-    let mut counter = NGramCounter::new(args.n, punctuation);
+#[derive(Debug, Clone)]
+struct BuildConfig {
+    input: PathBuf,
+    output: PathBuf,
+    n: usize,
+    num_books: usize,
+    raw: bool,
+    punctuation: Vec<char>,
+}
+
+#[derive(Debug, Clone)]
+struct BookArtifact {
+    range: String,
+    json_path: PathBuf,
+    subtitle: Option<String>,
+}
+
+#[derive(Debug, Clone)]
+struct BuildOutcome {
+    written: Vec<BookArtifact>,
+    stats: ProcessingStats,
+    metadata: Option<Metadata>,
+    entries: Vec<WordFollowEntry>,
+}
+
+#[derive(Debug, Clone)]
+struct TypstOptions {
+    template: PathBuf,
+    paper_size: String,
+    columns: usize,
+    subtitle_override: Option<String>,
+}
+
+fn run_build_command(args: &BuildArgs) -> Result<(), CliError> {
+    let config = BuildConfig {
+        input: args.input.clone(),
+        output: args.output.clone(),
+        n: args.n,
+        num_books: args.num_books,
+        raw: args.raw,
+        punctuation: args.punctuation.chars().collect(),
+    };
+
+    let outcome = build_model(&config)?;
+    print_summary(&outcome.stats, outcome.metadata.as_ref(), args.n, args.raw);
+    Ok(())
+}
+
+fn run_tsv_command(args: &TsvArgs) -> Result<(), CliError> {
+    let config = BuildConfig {
+        input: args.input.clone(),
+        output: PathBuf::from("tsv-output.json"), // unused placeholder
+        n: 2,
+        num_books: 1,
+        raw: true,
+        punctuation: args.punctuation.chars().collect(),
+    };
+
+    let outcome = build_model(&config)?;
+    if outcome.metadata.as_ref().map(|m| m.n != 2).unwrap_or(false) {
+        return Err(CliError::InvalidArgs(
+            "TSV export only supports bigrams (n=2).".to_string(),
+        ));
+    }
+
+    let tsv = render_bigram_tsv(&outcome.entries).map_err(CliError::InvalidArgs)?;
+    if let Some(path) = &args.output {
+        fs::write(path, tsv).map_err(CliError::Processing)?;
+        println!("Wrote TSV to {}", path.display());
+    } else {
+        print!("{tsv}");
+    }
+
+    Ok(())
+}
+
+fn run_pdf_command(args: &PdfArgs) -> Result<(), CliError> {
+    if args.pdf_only && args.json_only {
+        return Err(CliError::InvalidArgs(
+            "Cannot combine --pdf-only and --json-only.".to_string(),
+        ));
+    }
+
+    let (base_name, n, books) = if let Some(target) = &args.target {
+        parse_target(target)?
+    } else {
+        (
+            args.base_name
+                .clone()
+                .unwrap_or_else(|| derive_base_name(&args.input)),
+            args.n,
+            args.num_books,
+        )
+    };
+
+    let json_dir = args.out_dir.join("json");
+    let pdf_dir = args.out_dir.join("pdf");
+    let base_json = json_dir.join(format!("{base_name}.json"));
+
+    let mut written = if args.pdf_only {
+        existing_book_artifacts(&base_json, books)?
+    } else {
+        let config = BuildConfig {
+            input: args.input.clone(),
+            output: base_json.clone(),
+            n,
+            num_books: books,
+            raw: args.raw,
+            punctuation: args.punctuation.chars().collect(),
+        };
+        let outcome = build_model(&config)?;
+        print_summary(&outcome.stats, outcome.metadata.as_ref(), n, args.raw);
+        outcome.written
+    };
+
+    if args.json_only {
+        return Ok(());
+    }
+
+    let opts = TypstOptions {
+        template: args.template.clone(),
+        paper_size: args.paper_size.clone(),
+        columns: args.columns,
+        subtitle_override: args.subtitle.clone(),
+    };
+
+    for book in &mut written {
+        if book.subtitle.is_none() {
+            book.subtitle = load_subtitle_from_json(&book.json_path)?;
+        }
+    }
+
+    run_typst_for_books(&written, &pdf_dir, &opts)?;
+
+    Ok(())
+}
+
+fn build_model(config: &BuildConfig) -> Result<BuildOutcome, CliError> {
+    let mut counter = NGramCounter::new(config.n, config.punctuation.clone());
     counter
-        .process_file(&args.input)
+        .process_file(&config.input)
         .map_err(CliError::Processing)?;
 
     let entries = counter.get_entries();
     let stats = counter.get_stats().clone();
     let metadata = counter.get_metadata().cloned();
-    let books = split_entries_into_books(&entries, args.num_books);
+    let books = split_entries_into_books(&entries, config.num_books);
 
-    let written = write_books(&books, &args.output, metadata.as_ref(), &stats, args.raw)
-        .map_err(CliError::Processing)?;
+    let written = write_books(
+        &books,
+        &config.output,
+        metadata.as_ref(),
+        &stats,
+        config.raw,
+    )
+    .map_err(|err| {
+        if err.kind() == io::ErrorKind::NotFound {
+            CliError::Processing(io::Error::new(
+                io::ErrorKind::NotFound,
+                format!("Output directory not found for {}", config.output.display()),
+            ))
+        } else {
+            CliError::Processing(err)
+        }
+    })?;
 
-    print_summary(&stats, metadata.as_ref(), args.n, args.raw);
-
-    if args.run_typst {
-        run_typst(&written, args.num_books).map_err(CliError::Typst)?;
-    }
-
-    Ok(())
+    Ok(BuildOutcome {
+        written,
+        stats,
+        metadata,
+        entries,
+    })
 }
 
 fn write_books(
@@ -104,13 +348,17 @@ fn write_books(
     metadata: Option<&Metadata>,
     stats: &ProcessingStats,
     raw: bool,
-) -> io::Result<Vec<(String, PathBuf)>> {
+) -> io::Result<Vec<BookArtifact>> {
     let output_stem = output
         .file_stem()
         .unwrap_or_default()
         .to_str()
         .unwrap_or("model");
     let output_dir = output.parent().unwrap_or(Path::new("."));
+
+    if let Some(parent) = output.parent() {
+        fs::create_dir_all(parent)?;
+    }
 
     let mut written = Vec::new();
 
@@ -121,11 +369,17 @@ fn write_books(
             output_dir.join(format!("{}_book_{}.json", output_stem, index + 1))
         };
 
+        if let Some(parent) = output_file.parent() {
+            fs::create_dir_all(parent)?;
+        }
+
         let book_metadata = if books.len() > 1 {
             metadata.map(|m| multi_book_metadata(m, range, index, books.len()))
         } else {
             metadata.cloned()
         };
+
+        let subtitle = book_metadata.as_ref().map(|m| m.subtitle.clone());
 
         save_to_json(
             entries,
@@ -149,7 +403,11 @@ fn write_books(
             );
         }
 
-        written.push((range.clone(), output_file));
+        written.push(BookArtifact {
+            range: range.clone(),
+            json_path: output_file,
+            subtitle,
+        });
     }
 
     if raw {
@@ -174,58 +432,184 @@ fn multi_book_metadata(base: &Metadata, range: &str, index: usize, total_books: 
     clone
 }
 
-fn run_typst(written: &[(String, PathBuf)], num_books: usize) -> Result<(), String> {
+fn run_typst_for_books(
+    written: &[BookArtifact],
+    pdf_dir: &Path,
+    opts: &TypstOptions,
+) -> Result<(), CliError> {
     println!("\nRunning typst compile...");
 
-    for (index, (range, json_file)) in written.iter().enumerate() {
-        let output_dir = json_file.parent().unwrap_or(Path::new("."));
-        let pdf_file = json_file.with_extension("pdf");
+    let template_dir = opts
+        .template
+        .parent()
+        .map(Path::to_path_buf)
+        .unwrap_or_else(|| PathBuf::from("."));
+    let template_name = opts
+        .template
+        .file_name()
+        .ok_or_else(|| CliError::InvalidArgs("Invalid template path".to_string()))?;
 
-        let subtitle = if num_books > 1 {
-            format!("{} (book {} of {})", range, index + 1, num_books)
-        } else {
-            String::new()
-        };
-
-        let model_json_path = output_dir.join("model.json");
-        if json_file != &model_json_path {
-            std::fs::copy(json_file, &model_json_path).map_err(|e| {
-                format!("Error copying {} to model.json: {}", json_file.display(), e)
-            })?;
+    for (index, book) in written.iter().enumerate() {
+        let json_path = fs::canonicalize(&book.json_path).unwrap_or(book.json_path.clone());
+        let pdf_path = pdf_name_for(&book.json_path, pdf_dir);
+        if let Some(parent) = pdf_path.parent() {
+            fs::create_dir_all(parent).map_err(CliError::Processing)?;
         }
 
         let mut typst_cmd = Command::new("typst");
         typst_cmd.arg("compile");
+        typst_cmd.arg("--input");
+        typst_cmd.arg(format!("paper_size={}", opts.paper_size));
+        typst_cmd.arg("--input");
+        typst_cmd.arg(format!("columns={}", opts.columns));
+        typst_cmd.arg("--input");
+        typst_cmd.arg(format!("json_path={}", json_path.display()));
 
-        if !subtitle.is_empty() {
+        if let Some(subtitle) = opts
+            .subtitle_override
+            .clone()
+            .or_else(|| book.subtitle.clone())
+        {
             typst_cmd.arg("--input");
             typst_cmd.arg(format!("subtitle={}", subtitle));
         }
 
-        typst_cmd.arg("book.typ");
-        typst_cmd.arg(&pdf_file);
+        typst_cmd.arg(template_name);
+        typst_cmd.arg(&pdf_path);
+        typst_cmd.current_dir(&template_dir);
 
-        let output = typst_cmd
-            .output()
-            .map_err(|e| format!("Failed to run typst for {}: {}", json_file.display(), e))?;
+        let output = typst_cmd.output().map_err(|e| {
+            CliError::Typst(format!(
+                "Failed to run typst for {}: {}",
+                json_path.display(),
+                e
+            ))
+        })?;
 
         if !output.status.success() {
             let stderr = String::from_utf8_lossy(&output.stderr);
-            return Err(format!(
+            return Err(CliError::Typst(format!(
                 "Typst compile failed for {}: {}",
-                pdf_file.display(),
+                pdf_path.display(),
                 stderr
-            ));
+            )));
         }
 
-        if json_file != &model_json_path && model_json_path.exists() {
-            let _ = std::fs::remove_file(&model_json_path);
-        }
-
-        println!("Successfully created PDF: {}", pdf_file.display());
+        log_pdf_pages(&pdf_path);
+        let range_label = if book.range.is_empty() {
+            String::new()
+        } else {
+            format!(" ({})", book.range)
+        };
+        println!(
+            "Successfully created PDF {} of {}{} at {}",
+            index + 1,
+            written.len(),
+            range_label,
+            pdf_path.display()
+        );
     }
 
     Ok(())
+}
+
+fn pdf_name_for(json_path: &Path, pdf_dir: &Path) -> PathBuf {
+    let stem = json_path
+        .file_stem()
+        .unwrap_or_default()
+        .to_string_lossy()
+        .replace("_book_", "-book");
+    pdf_dir.join(format!("{stem}.pdf"))
+}
+
+fn log_pdf_pages(pdf_path: &Path) {
+    if let Ok(output) = Command::new("pdfinfo").arg(pdf_path).output() {
+        if output.status.success() {
+            for line in String::from_utf8_lossy(&output.stdout).lines() {
+                if line.starts_with("Pages:") {
+                    println!(
+                        "Pages in {}: {}",
+                        pdf_path.display(),
+                        line.trim_start_matches("Pages:").trim()
+                    );
+                }
+            }
+        }
+    }
+}
+
+fn parse_target(target: &str) -> Result<(String, usize, usize), CliError> {
+    let parts: Vec<&str> = target.rsplitn(3, '-').collect();
+    if parts.len() != 3 {
+        return Err(CliError::InvalidArgs(format!(
+            "Invalid target format: {target}"
+        )));
+    }
+    let books = parts[0]
+        .parse::<usize>()
+        .map_err(|_| CliError::InvalidArgs(format!("Invalid books value in target: {target}")))?;
+    let n = parts[1]
+        .parse::<usize>()
+        .map_err(|_| CliError::InvalidArgs(format!("Invalid n value in target: {target}")))?;
+    let name = parts[2].to_string();
+    Ok((name, n, books))
+}
+
+fn derive_base_name(input: &Path) -> String {
+    input
+        .file_stem()
+        .unwrap_or_default()
+        .to_string_lossy()
+        .to_string()
+}
+
+fn existing_book_artifacts(base_json: &Path, books: usize) -> Result<Vec<BookArtifact>, CliError> {
+    let mut artifacts = Vec::new();
+    if books == 1 {
+        if !base_json.exists() {
+            return Err(CliError::InvalidArgs(format!(
+                "Expected JSON at {} but it does not exist",
+                base_json.display()
+            )));
+        }
+        artifacts.push(BookArtifact {
+            range: String::new(),
+            json_path: base_json.to_path_buf(),
+            subtitle: load_subtitle_from_json(base_json)?,
+        });
+    } else {
+        for i in 0..books {
+            let path = base_json.parent().unwrap_or(Path::new(".")).join(format!(
+                "{}_book_{}.json",
+                base_json.file_stem().unwrap_or_default().to_string_lossy(),
+                i + 1
+            ));
+            if !path.exists() {
+                return Err(CliError::InvalidArgs(format!(
+                    "Expected JSON at {} but it does not exist",
+                    path.display()
+                )));
+            }
+            artifacts.push(BookArtifact {
+                range: String::new(),
+                json_path: path.clone(),
+                subtitle: load_subtitle_from_json(&path)?,
+            });
+        }
+    }
+    Ok(artifacts)
+}
+
+fn load_subtitle_from_json(path: &Path) -> Result<Option<String>, CliError> {
+    let file = fs::File::open(path).map_err(CliError::Processing)?;
+    let json: serde_json::Value =
+        serde_json::from_reader(file).map_err(|e| CliError::InvalidArgs(e.to_string()))?;
+    let subtitle = json
+        .get("metadata")
+        .and_then(|m| m.get("subtitle"))
+        .and_then(|s| s.as_str())
+        .map(|s| s.to_string());
+    Ok(subtitle)
 }
 
 fn print_summary(stats: &ProcessingStats, metadata: Option<&Metadata>, n: usize, raw: bool) {
@@ -272,6 +656,7 @@ fn print_summary(stats: &ProcessingStats, metadata: Option<&Metadata>, n: usize,
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::path::PathBuf;
     use tempfile::TempDir;
 
     fn stub_metadata() -> Metadata {
@@ -330,11 +715,56 @@ mod tests {
         let written = write_books(&books, &output_path, Some(&meta), &stub_stats(), true).unwrap();
 
         assert_eq!(written.len(), 2);
-        assert!(written[0].1.exists());
-        assert!(written[1].1.exists());
+        assert!(written[0].json_path.exists());
+        assert!(written[1].json_path.exists());
         assert!(
-            written[0].1.to_string_lossy().contains("_book_1"),
+            written[0].json_path.to_string_lossy().contains("_book_1"),
             "Multi-book outputs should get numbered filenames"
         );
+        assert!(
+            written[0]
+                .subtitle
+                .as_ref()
+                .is_some_and(|s| s.contains("Book 1 of 2")),
+            "Per-book subtitle should include book index"
+        );
+    }
+
+    #[test]
+    fn parses_makefile_target_names() {
+        let (name, n, books) = parse_target("TinyStories-20k-3-3").unwrap();
+        assert_eq!(name, "TinyStories-20k");
+        assert_eq!(n, 3);
+        assert_eq!(books, 3);
+    }
+
+    #[test]
+    fn pdf_names_replace_underscores_for_books() {
+        let pdf_dir = PathBuf::from("out/pdf");
+        let json = PathBuf::from("out/json/frankenstein-3-2_book_1.json");
+        let pdf = pdf_name_for(&json, &pdf_dir);
+        assert!(pdf.ends_with("frankenstein-3-2-book1.pdf"));
+    }
+
+    #[test]
+    fn renders_bigram_tsv() {
+        let entries = vec![
+            WordFollowEntry {
+                prefix: vec!["a".into()],
+                followers: vec![("b".into(), 2), ("c".into(), 1)],
+            },
+            WordFollowEntry {
+                prefix: vec!["b".into()],
+                followers: vec![("c".into(), 3)],
+            },
+        ];
+
+        let tsv = render_bigram_tsv(&entries).unwrap();
+        // header: a b c
+        assert!(tsv.lines().next().unwrap().contains("\ta\tb\tc"));
+        // cumulative row for a: b=2, c=3
+        assert!(tsv.contains("a\t\t2\t3"));
+        // cumulative row for b: c=3
+        assert!(tsv.contains("b\t\t\t3"));
     }
 }

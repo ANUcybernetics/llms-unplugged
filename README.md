@@ -78,12 +78,9 @@ If you've downloaded the release tarball:
 tar -xzf llms_unplugged-v1.0.0.tar.gz
 cd llms_unplugged
 
-# Generate N-gram statistics from the included sample text
+# Generate a booklet (JSON + PDF) from the included sample text
 # (use the binary for your platform from the bin/ directory)
-./bin/llms_unplugged-linux-x86_64 data/frankenstein.txt -n 2
-
-# Typeset the booklet
-typst compile cli/book.typ book.pdf
+./bin/llms_unplugged-linux-x86_64 pdf --target frankenstein-2-1 --input data/frankenstein.txt --out-dir out
 ```
 
 The resulting PDF contains your N-gram model formatted for dice-roll-based text
@@ -105,14 +102,20 @@ Your text content here...
 The tokenizer lowercases text and removes punctuation (except apostrophes in
 contractions) to keep the model small.
 
-### Command-line options
+### Subcommands and key options
 
-- `-o, --output <file>`: Output JSON file (default: `model.json`)
-- `-n, --n <N>`: N-gram size---2 for bigrams, 3 for trigrams (default: 2)
-- `--raw`: Output raw counts without scaling
-- `-b <N>`: Split large models across N books
+- `build` - Produce JSON only.
+  - `--n <N>`: N-gram size (default 2)
+  - `--books <N>`: Split large models into multiple JSON files
+  - `--raw`: Emit raw counts (no dice scaling)
+- `pdf` - Produce PDFs (and JSON if needed).
+  - `--target name-n-books`: Matches Makefile targets (e.g. `frankenstein-3-2`)
+  - `--paper-size`, `--columns`, `--template book.typ`, `--subtitle`
+  - `--pdf-only` / `--json-only` for incremental builds
+- `tsv` - Export a bigram TSV matrix for spreadsheets (n=2 only).
 
-By default, counts are scaled for d10 dice using 10^k-1 scaling (e.g., 0-9, 0-99, 0-999), making it easy to add more dice for larger ranges.
+By default, counts are scaled for d10 dice using 10^k-1 scaling (e.g., 0-9,
+0-99, 0-999), making it easy to add more dice for larger ranges.
 
 ### How the pipeline works
 
@@ -120,19 +123,17 @@ By default, counts are scaled for d10 dice using 10^k-1 scaling (e.g., 0-9, 0-99
 text file → Rust CLI → model.json → Typst → PDF booklet
 ```
 
-The Rust tool (`cli/src/main.rs`, `cli/src/lib.rs`) processes your text through a
-unified normalizer (`cli/src/text.rs`) to
-generate N-gram statistics. The Typst template (`cli/book.typ`) reads `model.json`
-and typesets it into a printable booklet with guide words, proper pagination,
-and dice-roll ranges.
+The Rust tool (`cli/src/main.rs`, `cli/src/lib.rs`) processes your text through
+a unified normalizer (`cli/src/text.rs`) to generate N-gram statistics. The
+Typst template (`cli/book.typ`) reads `model.json` and typesets it into a
+printable booklet with guide words, proper pagination, and dice-roll ranges.
 
 For large trigram models, use the `-b` flag to split across multiple books.
 
 ### Project structure
 
 - `cli/` - Rust CLI tool and booklet generation pipeline
-  - `src/` - Rust source code for N-gram processing
-  - `scripts/` - Helper Python scripts for analysis
+  - `src/` - Rust source code for N-gram processing and CLI
   - `book.typ` - Main booklet template
 - `data/` - Input text corpora (\*.txt files with YAML frontmatter)
 - `handouts/` - Teaching materials (modules, worksheets, runsheets)

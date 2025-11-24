@@ -46,10 +46,10 @@ $(TOOL): $(RUST_SOURCES)
 
 # Generic rule for all n-gram book configurations
 # The Python script parses the full target name to extract n and books
-$(PDF_DIR)/%.pdf $(PDF_DIR)/%.stamp: scripts/build_books.py book.typ $(TOOL)
+$(PDF_DIR)/%.pdf $(PDF_DIR)/%.stamp: book.typ $(TOOL)
 	$(eval FULLNAME := $(notdir $(basename $@)))
 	$(eval BASE := $(shell echo $(FULLNAME) | sed 's/-[0-9]*-[0-9]*$$//' ))
-	./scripts/build_books.py $(FULLNAME) $(DATA_DIR)/$(BASE).txt
+	$(TOOL) pdf --target $(FULLNAME) --input $(DATA_DIR)/$(BASE).txt --out-dir $(OUT_DIR)
 	@if echo "$@" | grep -q '.stamp$$'; then touch $@; fi
 
 # Default target to build all booklets

@@ -1,5 +1,5 @@
 use serde::Serialize;
-use std::collections::{BTreeMap, HashMap, VecDeque};
+use std::collections::{BTreeMap, BTreeSet, HashMap, VecDeque};
 use std::fs::File;
 use std::io;
 use std::path::Path;
@@ -65,11 +65,11 @@ pub struct WordFollowEntry {
     pub followers: Vec<(String, usize)>,
 }
 
-    /// A counter for tracking n-gram occurrences in text
-    #[derive(Debug)]
-    pub struct NGramCounter {
-        /// Mapping of n-gram prefixes to their following words and counts
-        prefix_map: BTreeMap<Vec<String>, HashMap<String, usize>>,
+/// A counter for tracking n-gram occurrences in text
+#[derive(Debug)]
+pub struct NGramCounter {
+    /// Mapping of n-gram prefixes to their following words and counts
+    prefix_map: BTreeMap<Vec<String>, HashMap<String, usize>>,
     /// Size of n-gram (e.g., 2 for bigrams, 3 for trigrams)
     n: usize,
     /// Statistics gathered during processing
@@ -512,6 +512,61 @@ pub fn save_to_json<P: AsRef<Path>>(
     let file = File::create(path)?;
     serde_json::to_writer_pretty(file, &output)?;
     Ok(())
+}
+
+/// Render a bigram frequency matrix as TSV, matching the legacy Python script.
+///
+/// Rows and columns share the same sorted vocabulary. Cells contain cumulative
+/// counts across the row; empty strings represent zero counts.
+pub fn render_bigram_tsv(entries: &[WordFollowEntry]) -> Result<String, String> {
+    let mut vocab = BTreeSet::new();
+    let mut matrix: BTreeMap<String, HashMap<String, usize>> = BTreeMap::new();
+
+    for entry in entries {
+        if entry.prefix.len() != 1 {
+            return Err("TSV export only supports bigrams (n=2)".to_string());
+        }
+
+        let prefix = entry.prefix[0].clone();
+        vocab.insert(prefix.clone());
+
+        for (follower, count) in &entry.followers {
+            vocab.insert(follower.clone());
+            matrix
+                .entry(prefix.clone())
+                .or_default()
+                .insert(follower.clone(), *count);
+        }
+    }
+
+    let vocab: Vec<String> = vocab.into_iter().collect();
+    let mut output = String::new();
+
+    // Header row
+    output.push_str(&format!("\t{}\n", vocab.join("\t")));
+
+    for first in &vocab {
+        output.push_str(first);
+        let mut cumulative = 0usize;
+        for second in &vocab {
+            let count = matrix
+                .get(first)
+                .and_then(|row| row.get(second))
+                .copied()
+                .unwrap_or(0);
+
+            if count > 0 {
+                cumulative += count;
+                output.push('\t');
+                output.push_str(&cumulative.to_string());
+            } else {
+                output.push('\t');
+            }
+        }
+        output.push('\n');
+    }
+
+    Ok(output)
 }
 
 #[cfg(test)]

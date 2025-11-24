@@ -48,6 +48,7 @@ fn run_cli_and_typst_test(n: usize, exe_path: &Path, temp_dir: &TempDir) -> io::
 
     // --- 2. Run llms_unplugged CLI to generate model.json in temp_dir ---
     let cli_status = Command::new(exe_path)
+        .arg("build")
         .arg(&input_path) // Use the full path to input
         .arg("--n")
         .arg(n.to_string())
@@ -121,7 +122,10 @@ fn test_frontmatter_errors() -> io::Result<()> {
         writeln!(input_file, "The program should exit with an error.")?;
         input_file.flush()?;
 
-        let output = Command::new(&exe_path).arg(&input_path).output()?;
+        let output = Command::new(&exe_path)
+            .arg("build")
+            .arg(&input_path)
+            .output()?;
 
         // With the new implementation, missing frontmatter should fail
         assert!(
@@ -156,7 +160,10 @@ fn test_frontmatter_errors() -> io::Result<()> {
         writeln!(input_file, "This file is missing the title field.")?;
         input_file.flush()?;
 
-        let output = Command::new(&exe_path).arg(&input_path).output()?;
+        let output = Command::new(&exe_path)
+            .arg("build")
+            .arg(&input_path)
+            .output()?;
 
         // Should fail with error
         assert!(
@@ -184,7 +191,10 @@ fn test_frontmatter_errors() -> io::Result<()> {
         writeln!(input_file, "This file is missing the author field.")?;
         input_file.flush()?;
 
-        let output = Command::new(&exe_path).arg(&input_path).output()?;
+        let output = Command::new(&exe_path)
+            .arg("build")
+            .arg(&input_path)
+            .output()?;
 
         // Should fail with error
         assert!(
@@ -212,7 +222,10 @@ fn test_frontmatter_errors() -> io::Result<()> {
         writeln!(input_file, "This file is missing the url field.")?;
         input_file.flush()?;
 
-        let output = Command::new(&exe_path).arg(&input_path).output()?;
+        let output = Command::new(&exe_path)
+            .arg("build")
+            .arg(&input_path)
+            .output()?;
 
         // Should fail with error
         assert!(!output.status.success(), "CLI should fail with missing url");
@@ -242,7 +255,10 @@ fn test_frontmatter_errors() -> io::Result<()> {
         )?;
         input_file.flush()?;
 
-        let output = Command::new(&exe_path).arg(&input_path).output()?;
+        let output = Command::new(&exe_path)
+            .arg("build")
+            .arg(&input_path)
+            .output()?;
 
         // Should fail
         assert!(
@@ -307,6 +323,7 @@ fn test_cli_raw_flag() -> io::Result<()> {
 
     // Run with --raw flag
     let status_raw = Command::new(&exe_path)
+        .arg("build")
         .arg(&input_path)
         .arg("-o")
         .arg(&output_path_raw)
@@ -317,6 +334,7 @@ fn test_cli_raw_flag() -> io::Result<()> {
 
     // Run without --raw flag (default scaling)
     let status_scaled = Command::new(&exe_path)
+        .arg("build")
         .arg(&input_path)
         .arg("-o")
         .arg(&output_path_scaled)
@@ -401,16 +419,17 @@ fn test_cli_incompatible_flags() -> io::Result<()> {
         return Ok(());
     }
 
-    // Test that --raw flag works
+    // Test that mutually exclusive flags for pdf are rejected (--json-only + --pdf-only)
     let output = Command::new(&exe_path)
+        .arg("pdf")
         .arg(&input_path)
-        .arg("--raw")
+        .arg("--pdf-only")
+        .arg("--json-only")
         .output()?;
 
-    // Should succeed
     assert!(
-        output.status.success(),
-        "CLI should succeed with --raw flag"
+        !output.status.success(),
+        "CLI should fail when both --pdf-only and --json-only are provided"
     );
 
     Ok(())
@@ -458,6 +477,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
 
     // Run CLI with default d10 scaling
     let status = Command::new(&exe_path)
+        .arg("build")
         .arg(&input_path)
         .arg("-o")
         .arg(&output_path)

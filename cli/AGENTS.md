@@ -19,7 +19,6 @@ text file → Rust CLI → model.json → Typst → PDF booklet
   punctuation tokens, filters)
 - `book.typ` - Main booklet template (reads from model.json)
 - `Makefile` - Batch processing for multiple texts/formats
-- `scripts/build_books.py` - Python helper for building multiple booklets
 
 ## Essential commands
 
@@ -27,11 +26,14 @@ text file → Rust CLI → model.json → Typst → PDF booklet
 # Build the tool
 cargo build --release
 
-# Generate N-gram model
-./target/release/llms_unplugged ../data/frankenstein.txt -n 2
+# Generate JSON
+./target/release/llms_unplugged build ../data/frankenstein.txt --n 2 --output out/json/frankenstein-2-1.json
 
-# Generate booklet
-typst compile book.typ output.pdf
+# Generate PDFs (and JSON if needed)
+./target/release/llms_unplugged pdf --target frankenstein-2-1 --input ../data/frankenstein.txt --out-dir out
+
+# Export bigram TSV for spreadsheets
+./target/release/llms_unplugged tsv ../data/frankenstein.txt > bigrams.tsv
 
 # Build all configured booklets
 make booklets
@@ -65,7 +67,8 @@ Your text content here...
 
 ## Configuration
 
-- Counts are always scaled for d10 dice using 10^k-1 scaling (e.g., 0-9, 0-99, 0-999)
+- Counts are always scaled for d10 dice using 10^k-1 scaling (e.g., 0-9, 0-99,
+  0-999)
 - Paper sizes configured in book.typ: a4 (4 columns), a5 (3 columns)
 - Typst inputs: paper_size, font_size, columns, subtitle
 
