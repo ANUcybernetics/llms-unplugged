@@ -41,12 +41,17 @@ for example:
 - [AI Unplugged](https://www.aiunplugged.org) by Lindner, Seegerer and Romeike
 - Northwestern University's
   [AI Unplugged Resources](https://sites.northwestern.edu/aiunplugged/)
+- [CS In Schools](https://csinschools.io/) by Toan Huynh and Hugh Williams has
+  some material on AI Unplugged (including one activity in their
+  [Generative AI](https://csinschools.io/courses/introduction-to-artificial-intelligence/lessons/lesson-3-generative-ai/)
+  worksheet that uses a simiar "counting bigrams" approach to _LLMs Unplugged_
+  Module 1)
 
 These collections cover classification, clustering, computer vision, and
 artificial neural network concepts. However, they contain limited material
-specifically about language models or text generation---a gap that became
-particularly acute after ChatGPT's November 2022 release shifted what "AI" means
-to most people. _LLMs Unplugged_ aims to fill that gap.
+specifically about language models and especially text _generation_---a gap that
+became particularly acute after ChatGPT's November 2022 release shifted what
+"AI" means to most people. _LLMs Unplugged_ aims to fill that gap.
 
 ## Historical foundations
 
