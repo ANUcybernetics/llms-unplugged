@@ -18,9 +18,9 @@ TODO add a one paragraph description of what LLMs Unplugged is.
 npm run dev
 ```
 
-Starts the 11ty dev server with live reload at http://localhost:8080.
-Run `npm run check:links` separately after a build when you want to
-scan for broken links.
+Starts the 11ty dev server with live reload at http://localhost:8080. Run
+`npm run check:links` separately after a build when you want to scan for broken
+links.
 
 ## Build
 

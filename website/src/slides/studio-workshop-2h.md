@@ -134,9 +134,11 @@ by exploiting patterns in text to generate new text
 
 ## Training example
 
-**Original text**: *"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot, jump."*
+**Original text**: _"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot,
+jump."_
 
-**Preprocessed text**: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,` `spot` `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`
+**Preprocessed text**: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,`
+`spot` `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`
 
 **After training** the model should look like:
 
@@ -151,7 +153,7 @@ by exploiting patterns in text to generate new text
 
 ---
 
-## The *language* of language models
+## The _language_ of language models
 
 <div class="grid-2">
 <div class="left">
@@ -200,7 +202,7 @@ Our trained model grid from earlier:
 
 ---
 
-## The *language* of language models
+## The _language_ of language models
 
 <div class="grid-2">
 <div class="left">
@@ -239,7 +241,7 @@ Our trained model grid from earlier:
 
 ---
 
-## The *language* of language models
+## The _language_ of language models
 
 <div class="grid-2">
 <div class="left">
@@ -274,11 +276,11 @@ Generate text using your model, but
 3. if selected word exceeds line's syllable limit, re-roll
 4. start new line when syllable count reached
 
-(you can either use *your* new language model or the "booklet" one we gave you)
+(you can either use _your_ new language model or the "booklet" one we gave you)
 
 ---
 
-## The *language* of language models
+## The _language_ of language models
 
 <div class="grid-2">
 <div class="left">

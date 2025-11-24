@@ -17,9 +17,12 @@ Note: speaker notes go in comments like this
 
 ## Example text slide
 
-- Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
-- Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
-- Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur
+- Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+  incididunt ut labore et dolore magna aliqua
+- Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+  aliquip ex ea commodo consequat
+- Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+  eu fugiat nulla pariatur
 - You can use `inline code` for highlighting
 
 ---
@@ -125,7 +128,10 @@ use the **center** class
 <div class="grid-2">
 <div>
 
-The School of Cybernetics is on a mission to establish Cybernetics as an important tool for navigating major societal transformations, through capability building, policy development and safe, sustainable and responsible approaches to new systems.
+The School of Cybernetics is on a mission to establish Cybernetics as an
+important tool for navigating major societal transformations, through capability
+building, policy development and safe, sustainable and responsible approaches to
+new systems.
 
 </div>
 <div>
@@ -146,6 +152,7 @@ This is the second column text.
 
 <!-- .slide: class="center" -->
 
-> "What other histories should we tell? And what other voices are we missing as we make our histories of the future?"
+> "What other histories should we tell? And what other voices are we missing as
+> we make our histories of the future?"
 >
 > - _Book of Genevieve, chapter 3 verse 16_
