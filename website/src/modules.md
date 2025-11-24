@@ -7,9 +7,8 @@ permalink: /modules/
 
 # Modules
 
-The main _LLMs Unplugged_ teaching content now lives here as an Eleventy
-collection. Each module has a short overview, dependency hints, and a link to
-its printable PDF card.
+Here are the main _LLMs Unplugged_ teaching modules. Each module has a short
+overview, dependency hints, and a link to its printable PDF card.
 
 [Download the full PDF bundle]({{ links.modules_pdf }})
 
