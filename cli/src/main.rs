@@ -439,11 +439,14 @@ fn run_typst_for_books(
 ) -> Result<(), CliError> {
     println!("\nRunning typst compile...");
 
+    let typst_bin = typst_command_path();
     let template_dir = opts
         .template
         .parent()
+        .filter(|p| !p.as_os_str().is_empty())
         .map(Path::to_path_buf)
         .unwrap_or_else(|| PathBuf::from("."));
+    let template_dir_canon = fs::canonicalize(&template_dir).unwrap_or(template_dir.clone());
     let template_name = opts
         .template
         .file_name()
@@ -451,19 +454,23 @@ fn run_typst_for_books(
 
     for (index, book) in written.iter().enumerate() {
         let json_path = fs::canonicalize(&book.json_path).unwrap_or(book.json_path.clone());
+        let json_for_typst = json_path
+            .strip_prefix(&template_dir_canon)
+            .map(Path::to_path_buf)
+            .unwrap_or(json_path.clone());
         let pdf_path = pdf_name_for(&book.json_path, pdf_dir);
         if let Some(parent) = pdf_path.parent() {
             fs::create_dir_all(parent).map_err(CliError::Processing)?;
         }
 
-        let mut typst_cmd = Command::new("typst");
+        let mut typst_cmd = Command::new(&typst_bin);
         typst_cmd.arg("compile");
         typst_cmd.arg("--input");
         typst_cmd.arg(format!("paper_size={}", opts.paper_size));
         typst_cmd.arg("--input");
         typst_cmd.arg(format!("columns={}", opts.columns));
         typst_cmd.arg("--input");
-        typst_cmd.arg(format!("json_path={}", json_path.display()));
+        typst_cmd.arg(format!("json_path={}", json_for_typst.display()));
 
         if let Some(subtitle) = opts
             .subtitle_override
@@ -479,11 +486,18 @@ fn run_typst_for_books(
         typst_cmd.current_dir(&template_dir);
 
         let output = typst_cmd.output().map_err(|e| {
-            CliError::Typst(format!(
-                "Failed to run typst for {}: {}",
-                json_path.display(),
-                e
-            ))
+            if e.kind() == io::ErrorKind::NotFound {
+                CliError::Typst(format!(
+                    "Typst binary not found at '{}'. Install typst or set TYPST_BIN to the binary path.",
+                    typst_bin.display()
+                ))
+            } else {
+                CliError::Typst(format!(
+                    "Failed to run typst for {}: {}",
+                    json_path.display(),
+                    e
+                ))
+            }
         })?;
 
         if !output.status.success() {
@@ -535,6 +549,14 @@ fn log_pdf_pages(pdf_path: &Path) {
                 }
             }
         }
+    }
+}
+
+fn typst_command_path() -> PathBuf {
+    if let Ok(path) = std::env::var("TYPST_BIN") {
+        PathBuf::from(path)
+    } else {
+        PathBuf::from("typst")
     }
 }
 

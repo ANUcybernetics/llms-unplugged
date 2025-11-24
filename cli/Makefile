@@ -31,6 +31,7 @@ WORKSHOP_TARGETS := \
 # Define common variables
 TOOL := target/release/llms_unplugged
 TYPST := typst compile
+TYPST_BIN ?= $(shell command -v typst 2>/dev/null || echo /opt/homebrew/bin/typst)
 
 # Track Rust source files for automatic rebuilding
 RUST_SOURCES := $(wildcard src/*.rs) $(wildcard src/**/*.rs) Cargo.toml Cargo.lock
@@ -49,7 +50,7 @@ $(TOOL): $(RUST_SOURCES)
 $(PDF_DIR)/%.pdf $(PDF_DIR)/%.stamp: book.typ $(TOOL)
 	$(eval FULLNAME := $(notdir $(basename $@)))
 	$(eval BASE := $(shell echo $(FULLNAME) | sed 's/-[0-9]*-[0-9]*$$//' ))
-	$(TOOL) pdf --target $(FULLNAME) --input $(DATA_DIR)/$(BASE).txt --out-dir $(OUT_DIR)
+	TYPST_BIN=$(TYPST_BIN) $(TOOL) pdf --target $(FULLNAME) --input $(DATA_DIR)/$(BASE).txt --out-dir $(OUT_DIR)
 	@if echo "$@" | grep -q '.stamp$$'; then touch $@; fi
 
 # Default target to build all booklets
