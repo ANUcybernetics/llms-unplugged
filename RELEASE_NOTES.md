@@ -7,4 +7,6 @@
 - PDF builds mirror prior Python helper behavior (`--target name-n-books`,
   paper/column inputs, subtitles) directly in Rust; Python scripts were removed.
 - Makefile in `cli/` now calls `llms_unplugged pdf` for booklet targets.
+- Typst invocation now respects `TYPST_BIN` (path to typst binary); defaults to
+  `typst` on PATH.
 - Docs (README, AGENTS) updated to reflect the subcommand workflow.
