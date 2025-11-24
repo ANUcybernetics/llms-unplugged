@@ -49,6 +49,7 @@ fn run_cli_and_typst_test(n: usize, exe_path: &Path, temp_dir: &TempDir) -> io::
     // --- 2. Run llms_unplugged CLI to generate model.json in temp_dir ---
     let cli_status = Command::new(exe_path)
         .arg("build")
+        .arg("--input")
         .arg(&input_path) // Use the full path to input
         .arg("--n")
         .arg(n.to_string())
@@ -124,6 +125,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
 
         let output = Command::new(&exe_path)
             .arg("build")
+            .arg("--input")
             .arg(&input_path)
             .output()?;
 
@@ -162,6 +164,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
 
         let output = Command::new(&exe_path)
             .arg("build")
+            .arg("--input")
             .arg(&input_path)
             .output()?;
 
@@ -193,6 +196,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
 
         let output = Command::new(&exe_path)
             .arg("build")
+            .arg("--input")
             .arg(&input_path)
             .output()?;
 
@@ -224,6 +228,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
 
         let output = Command::new(&exe_path)
             .arg("build")
+            .arg("--input")
             .arg(&input_path)
             .output()?;
 
@@ -257,6 +262,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
 
         let output = Command::new(&exe_path)
             .arg("build")
+            .arg("--input")
             .arg(&input_path)
             .output()?;
 
@@ -324,6 +330,7 @@ fn test_cli_raw_flag() -> io::Result<()> {
     // Run with --raw flag
     let status_raw = Command::new(&exe_path)
         .arg("build")
+        .arg("--input")
         .arg(&input_path)
         .arg("-o")
         .arg(&output_path_raw)
@@ -335,6 +342,7 @@ fn test_cli_raw_flag() -> io::Result<()> {
     // Run without --raw flag (default scaling)
     let status_scaled = Command::new(&exe_path)
         .arg("build")
+        .arg("--input")
         .arg(&input_path)
         .arg("-o")
         .arg(&output_path_scaled)
@@ -422,6 +430,7 @@ fn test_cli_incompatible_flags() -> io::Result<()> {
     // Test that mutually exclusive flags for pdf are rejected (--json-only + --pdf-only)
     let output = Command::new(&exe_path)
         .arg("pdf")
+        .arg("--input")
         .arg(&input_path)
         .arg("--pdf-only")
         .arg("--json-only")
@@ -478,6 +487,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
     // Run CLI with default d10 scaling
     let status = Command::new(&exe_path)
         .arg("build")
+        .arg("--input")
         .arg(&input_path)
         .arg("-o")
         .arg(&output_path)

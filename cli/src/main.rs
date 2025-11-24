@@ -29,7 +29,7 @@ enum Commands {
 #[derive(Args, Debug, Clone)]
 struct BuildArgs {
     /// Input text file to process
-    #[arg(index = 1)]
+    #[arg(short = 'i', long = "input", value_name = "INPUT")]
     input: PathBuf,
 
     /// Output JSON file for results (defaults to "model.json")
@@ -56,7 +56,7 @@ struct BuildArgs {
 #[derive(Args, Debug, Clone)]
 struct PdfArgs {
     /// Input text file to process
-    #[arg(index = 1)]
+    #[arg(short = 'i', long = "input", value_name = "INPUT")]
     input: PathBuf,
 
     /// Name-N-books triple (e.g. frankenstein-3-2) to match Makefile targets
@@ -115,7 +115,7 @@ struct PdfArgs {
 #[derive(Args, Debug, Clone)]
 struct TsvArgs {
     /// Input text file to process
-    #[arg(index = 1)]
+    #[arg(short = 'i', long = "input", value_name = "INPUT")]
     input: PathBuf,
 
     /// Optional output path (defaults to stdout)
