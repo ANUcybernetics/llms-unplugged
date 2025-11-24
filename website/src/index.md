@@ -11,7 +11,8 @@ Ready-to-use teaching resources for understanding how large language models
 
 If you're just here for the resources, here they are:
 
-- **[Module cards]({{ links.modules }})**
+- **[Module cards]({{ links.modules }})** ([PDF
+  bundle]({{ links.modules_pdf }}))
 - **[Instructor notes]({{ links.instructor_notes }})**
 
 ![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-2.jpg)
@@ -63,7 +64,8 @@ at [github.com/ANUcybernetics/llms-unplugged]({{ links.github }}):
 - **[Module cards]({{ links.modules }})**: ten double-sided printable handouts,
   each covering a self-contained activity from basic training and generation
   through to advanced concepts like embeddings, sampling strategies, and
-  low-rank adaptation
+  low-rank adaptation. Read them online or download the [printable PDF
+  bundle]({{ links.modules_pdf }}).
 - **[Instructor notes]({{ links.instructor_notes }})**: pedagogical scaffolding
   explaining connections to modern LLMs, discussion questions, and historical
   context---designed for educators without deep AI expertise

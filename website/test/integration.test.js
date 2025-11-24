@@ -150,6 +150,7 @@ describe("navigation", () => {
   it("includes all navigation links", () => {
     const indexPath = join(siteDir, "index.html");
     const html = readFileSync(indexPath, "utf-8");
+    expect(html).toContain('href="/modules/"');
     expect(html).toContain('href="/about/"');
     expect(html).toContain('href="/contact/"');
   });
@@ -202,6 +203,52 @@ describe("navigation", () => {
     expect(existsSync(contactPath)).toBe(true);
     const html = readFileSync(contactPath, "utf-8");
     expect(html).toContain("Contact");
+  });
+});
+
+describe("modules collection", () => {
+  it("generates modules index page", () => {
+    const modulesIndexPath = join(siteDir, "modules", "index.html");
+    expect(existsSync(modulesIndexPath)).toBe(true);
+    const html = readFileSync(modulesIndexPath, "utf-8");
+    expect(html).toContain("Modules");
+    expect(html).toContain("Weighted Randomness");
+    expect(html).toContain("Basic Training");
+    expect(html).toContain("Basic Generation");
+    expect(html).toContain("Sampling");
+  });
+
+  it("generates individual module pages with PDF links", () => {
+    const weightedPath = join(
+      siteDir,
+      "modules",
+      "weighted-randomness",
+      "index.html",
+    );
+    const basicPath = join(siteDir, "modules", "basic-training", "index.html");
+    const basicGenPath = join(
+      siteDir,
+      "modules",
+      "basic-generation",
+      "index.html",
+    );
+    const samplingPath = join(siteDir, "modules", "sampling", "index.html");
+    expect(existsSync(weightedPath)).toBe(true);
+    expect(existsSync(basicPath)).toBe(true);
+    expect(existsSync(basicGenPath)).toBe(true);
+    expect(existsSync(samplingPath)).toBe(true);
+
+    const weightedHtml = readFileSync(weightedPath, "utf-8");
+    expect(weightedHtml).toContain("/assets/pdfs/00-weighted-randomness.pdf");
+
+    const basicHtml = readFileSync(basicPath, "utf-8");
+    expect(basicHtml).toContain("bigram language model");
+
+    const basicGenHtml = readFileSync(basicGenPath, "utf-8");
+    expect(basicGenHtml).toContain("/assets/pdfs/02-basic-generation.pdf");
+
+    const samplingHtml = readFileSync(samplingPath, "utf-8");
+    expect(samplingHtml).toContain("/assets/pdfs/04-sampling-strategies.pdf");
   });
 });
 
@@ -410,6 +457,9 @@ describe("llms.txt plugin", () => {
     );
     expect(llmsTxt).toContain(
       "[Contact](https://www.llmsunplugged.org/contact.md)",
+    );
+    expect(llmsTxt).toContain(
+      "[Weighted Randomness](https://www.llmsunplugged.org/modules/weighted-randomness.md)",
     );
   });
 

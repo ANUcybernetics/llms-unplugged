@@ -102,6 +102,16 @@ export default function (eleventyConfig) {
     );
   });
 
+  // Modules collection - ordered by `order` frontmatter, then title
+  eleventyConfig.addCollection("modules", (collectionApi) => {
+    return collectionApi.getFilteredByGlob("src/modules/*.md").sort((a, b) => {
+      const orderA = Number.isFinite(a.data.order) ? a.data.order : 999;
+      const orderB = Number.isFinite(b.data.order) ? b.data.order : 999;
+      if (orderA !== orderB) return orderA - orderB;
+      return (a.data.title || "").localeCompare(b.data.title || "");
+    });
+  });
+
   // String starts with check for navigation highlighting
   eleventyConfig.addFilter("startswith", (str, prefix) => {
     return str && str.startsWith(prefix);

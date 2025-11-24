@@ -37,6 +37,11 @@
         </a>
         <ul class="flex gap-6 sm:gap-8">
           <li>
+            <a href="/modules/" class="text-anu-white hover:text-anu-gold-2 transition-colors{% if page.url | startswith('/modules/') %} font-semibold{% endif %}" {% if page.url | startswith('/modules/') %}aria-current="page"{% endif %}>
+              Modules
+            </a>
+          </li>
+          <li>
             <a href="/about/" class="text-anu-white hover:text-anu-gold-2 transition-colors{% if page.url == '/about/' %} font-semibold{% endif %}" {% if page.url == '/about/' %}aria-current="page"{% endif %}>
               About
             </a>

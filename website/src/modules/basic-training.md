@@ -1,0 +1,76 @@
+---
+title: Basic Training
+description:
+  Build a bigram language model that tracks which words follow which other words
+  in text.
+order: 1
+pdf: /assets/pdfs/01-basic-training.pdf
+keyIdea:
+  Language models learn by counting patterns in text and tracking which words
+  follow other words.
+dependsOn:
+  - Weighted Randomness
+hero: /assets/images/workshop-2.jpg
+templateEngineOverride: njk,md
+---
+
+# Basic Training
+
+> Prefer a printable copy? [Download the PDF handout]({{ pdf }}).
+
+Build a bigram language model that tracks which words follow which other words
+in text.
+
+{% if hero %} ![Participants filling out a language model grid]({{ hero }})
+{% endif %}
+
+## You will need
+
+- some text (e.g. a few pages from a kids book, but it can be anything)
+- pen, pencil, and grid paper
+
+## Your goal
+
+Produce a grid that captures the patterns in your input text data. This grid is
+your bigram language model. Stretch goal: keep training your model on more input
+text.
+
+## Key idea
+
+Language models learn by counting patterns in text. Training means building a
+model (filling out the grid) to track which words follow other words.
+
+## Algorithm
+
+1. **Preprocess your text**
+   - convert everything to lowercase
+   - treat words, commas, and full stops as separate "words" (ignore other
+     punctuation and whitespace)
+2. **Set up your grid**
+   - take the first word from your text
+   - write it in both the first row header and first column header of your grid
+3. **Fill in the grid** one word pair at a time
+   - find the row for the first word (in your training text) and the column for
+     the second word
+   - add a tally mark in that cell (if the word isn't in the grid yet, add a new
+     row and column for it)
+   - shift along by one word (so the second word becomes your "first" word) and
+     repeat until you've gone through the entire text
+
+## Example
+
+Original text: _"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot,
+jump."_
+
+Preprocessed text:
+
+```
+see spot run . see spot jump . run , spot , run . jump , spot , jump .
+```
+
+- After the first two words (`see` `spot`), your grid has a `1` where the `see`
+  row meets the `spot` column.
+- As you continue through the text, you add rows/columns for new words and tally
+  the transitions each time you see a new word pair.
+- By the end, the grid shows which words tend to follow which others. Those
+  counts are the core of your hand-built bigram model.
