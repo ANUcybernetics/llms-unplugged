@@ -189,6 +189,12 @@
     .prose code {
         background: var(--color-anu-gold-tint);
         border-radius: 0.125rem;
+        padding: 0.125rem 0.25rem;
+    }
+
+    .prose code::before,
+    .prose code::after {
+        content: none;
     }
 
     .prose pre {
