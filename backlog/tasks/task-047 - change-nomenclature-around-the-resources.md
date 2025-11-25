@@ -41,3 +41,12 @@ I want to change the nomenclature throughout this whole project:
   5. **Adaptation and data**
      - 08 - LoRA
      - 09 - Synthetic Data
+
+This will require lots of changes to the codebase. I want to be consistent...
+don't keep any of the old nomenclature for "backwards compat"; no-one is using
+this yet so we can make the changes now and keep it simple.
+
+In terms of the website layout, I'd like to have the main topics/ page have a
+list of the topics (with a description of each), and then topics/TOPIC_NAME/
+pages which have a list of the actual lessons. So the main modules/ pages (which
+lists all the modules) won't exist anymore.
