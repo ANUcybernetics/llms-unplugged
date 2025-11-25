@@ -66,6 +66,7 @@
       <header class="mb-8 not-prose">
         <h1 class="text-3xl font-bold mb-2">{{ title }}</h1>
         <div class="flex flex-wrap items-center gap-4 text-sm text-anu-white/70">
+          <span>{{ author }}</span>
           <time datetime="{{ date | htmlDateString }}">{{ date | readableDate }}</time>
           {% if tags | length > 1 %}
           <div class="flex gap-2">

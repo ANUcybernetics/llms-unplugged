@@ -21,6 +21,7 @@ permalink: "news/{% if pagination.pageNumber > 0 %}page/{{ pagination.pageNumber
         <a href="{{ post.url }}" class="text-anu-gold-2 hover:text-anu-gold transition-colors">{{ post.data.title }}</a>
       </h2>
       <div class="flex flex-wrap items-center gap-4 text-sm text-anu-white/70 mb-3">
+        <span>{{ post.data.author }}</span>
         <time datetime="{{ post.date | htmlDateString }}">{{ post.date | readableDate }}</time>
         {% if post.data.tags | length > 1 %}
         <div class="flex gap-2">
