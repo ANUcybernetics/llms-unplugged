@@ -1,6 +1,7 @@
 import EleventyVitePlugin from "@11ty/eleventy-plugin-vite";
 import pluginRss from "@11ty/eleventy-plugin-rss";
 import tailwindcss from "@tailwindcss/vite";
+import checker from "vite-plugin-checker";
 import fs from "node:fs/promises";
 import path from "node:path";
 import markdownIt from "markdown-it";
@@ -171,6 +172,15 @@ export default function (eleventyConfig) {
       base: "/",
       plugins: [
         tailwindcss(),
+        checker({
+          eslint: {
+            lintCommand: 'eslint "src/**/*.js"',
+            useFlatConfig: true,
+          },
+          stylelint: {
+            lintCommand: 'stylelint "src/**/*.css"',
+          },
+        }),
         viteStaticCopy({
           targets: [
             {

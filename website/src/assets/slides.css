@@ -8,10 +8,10 @@
 
 :root {
     /* ANU colour palette */
-    --anu-white: #ffffff;
+    --anu-white: #fff;
     --anu-light-grey: #e6e6e6;
     --anu-dark-grey: #0d0d0d;
-    --anu-black: #000000;
+    --anu-black: #000;
 
     /* Black/Grey tints */
     --anu-grey-1: hsl(from var(--anu-black) h s 90);
@@ -52,13 +52,12 @@
     --r-heading-color: var(--anu-gold);
     --r-link-color: var(--theme-link);
     --r-link-color-hover: var(--anu-gold);
-    --r-selection-background-color: rgba(148, 95, 0, 0.5);
-    --r-main-font-size: 1.5rem;
+    --r-selection-background-color: rgb(148 95 0 / 50%);
+    --r-main-font-size: 1.65rem;
     --r-heading-font: "Public Sans", sans-serif;
     --r-main-font: "Public Sans", sans-serif;
     --r-code-font:
-        "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-    --r-main-font-size: 1.65rem;
+        "SFMono-Regular", consolas, "Liberation Mono", menlo, courier, monospace;
 }
 
 .reveal {
@@ -91,7 +90,7 @@
     font-size: 3.5rem;
     line-height: 1.1;
     text-transform: uppercase;
-    margin: 0 0 1rem 0;
+    margin: 0 0 1rem;
     font-weight: bold;
     color: var(--r-heading-color);
 }
@@ -100,7 +99,7 @@
     font-size: 2.5rem;
     line-height: 1.2;
     text-transform: none;
-    margin: 0 0 2rem 0;
+    margin: 0 0 2rem;
     font-weight: bold;
     color: var(--r-heading-color);
 }
@@ -110,7 +109,7 @@
 .reveal h5,
 .reveal h6 {
     text-transform: none;
-    margin: 0 0 2rem 0;
+    margin: 0 0 2rem;
     font-weight: bold;
     color: var(--r-heading-color);
 }
@@ -119,7 +118,7 @@
 .reveal p,
 .reveal li {
     font-size: 1.5rem;
-    margin: 0 0 1rem 0;
+    margin: 0 0 1rem;
     line-height: 1.4;
     color: var(--r-main-color);
 }
@@ -177,7 +176,7 @@
 .reveal ul,
 .reveal ol {
     text-align: left;
-    margin: 0 0 1rem 0;
+    margin: 0 0 1rem;
 }
 
 .reveal li {
@@ -244,7 +243,7 @@
     margin: 2rem auto;
     width: 80%;
     font-style: italic;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    text-shadow: 0 0 10px rgb(0 0 0 / 70%);
 }
 
 .reveal blockquote p {
@@ -490,5 +489,5 @@
 .reveal section[data-background-image] p,
 .reveal section[data-background-image] li {
     color: var(--anu-white);
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    text-shadow: 0 0 10px rgb(0 0 0 / 70%);
 }

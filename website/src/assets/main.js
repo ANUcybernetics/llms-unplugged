@@ -17,7 +17,7 @@ document.documentElement.classList.add("js-enabled");
 // Improve skip-link behavior by moving focus to the main content target
 const skipLink = document.querySelector(".skip-link");
 if (skipLink) {
-  skipLink.addEventListener("click", (event) => {
+  skipLink.addEventListener("click", () => {
     const targetId = skipLink.getAttribute("href")?.slice(1);
     if (!targetId) return;
 

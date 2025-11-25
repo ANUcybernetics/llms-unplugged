@@ -1,10 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300..900;1,300..900&display=swap");
 @import "tailwindcss";
+
 @plugin "@tailwindcss/typography";
 
 @theme {
-    --color-anu-white: #ffffff;
-    --color-anu-black: #000000;
+    --color-anu-white: #fff;
+    --color-anu-black: #000;
     --color-anu-gold: #be830e;
     --color-anu-gold-2: hsl(from #be830e h calc(s - 30) 77);
     --color-anu-gold-4: hsl(from #be830e h s calc(l + 8));
@@ -16,14 +17,14 @@
     --color-anu-grey-table-line: #b0b0b0;
     --container-prose: 65ch;
     --font-body:
-        "Public Sans", "Inter", "Helvetica Neue", Arial, "Noto Sans", system-ui,
+        "Public Sans", "Inter", "Helvetica Neue", arial, "Noto Sans", system-ui,
         -apple-system, "Segoe UI", sans-serif;
     --font-heading:
-        "Public Sans", "Inter", "Helvetica Neue", Arial, "Noto Sans", system-ui,
+        "Public Sans", "Inter", "Helvetica Neue", arial, "Noto Sans", system-ui,
         -apple-system, "Segoe UI", sans-serif;
     --font-mono:
-        "SFMono-Regular", "JetBrains Mono", "Fira Code", Menlo, Monaco,
-        Consolas, "Liberation Mono", monospace;
+        "SFMono-Regular", "JetBrains Mono", "Fira Code", menlo, monaco,
+        consolas, "Liberation Mono", monospace;
     --leading-body: 1.65;
     --tracking-tight: -0.02em;
     --tracking-title: -0.03em;
@@ -32,14 +33,14 @@
 @layer base {
     html {
         font-size: 18px;
-        text-rendering: optimizeLegibility;
+        text-rendering: optimizelegibility;
     }
 
     body {
         font-family: var(--font-body);
         line-height: var(--leading-body);
         letter-spacing: -0.005em;
-        text-rendering: optimizeLegibility;
+        text-rendering: optimizelegibility;
         -webkit-font-smoothing: antialiased;
     }
 
@@ -103,6 +104,7 @@
     --tw-prose-code: var(--color-anu-white);
     --tw-prose-pre-code: var(--color-anu-white);
     --tw-prose-pre-bg: var(--color-anu-unilink-gold);
+
     font-family: var(--font-body);
     line-height: var(--leading-body);
     letter-spacing: -0.006em;
@@ -222,25 +224,25 @@
     .prose h4,
     .prose h5,
     .prose h6 {
-        page-break-after: avoid;
+        break-after: avoid;
     }
 
     .prose h1,
     .prose h2 {
-        page-break-before: auto;
+        break-before: auto;
     }
 
     .prose p,
     .prose ul,
     .prose ol {
-        page-break-inside: avoid;
+        break-inside: avoid;
         orphans: 3;
         widows: 3;
     }
 
     .prose table,
     .prose img {
-        page-break-inside: avoid;
+        break-inside: avoid;
     }
 
     /* Print URLs after external links */

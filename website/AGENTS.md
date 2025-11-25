@@ -16,6 +16,7 @@ is no separate `vite.config.js`.
 - Tailwind CSS v4.1.16 (`@tailwindcss/vite` plugin)
 - Vitest 4.0.3 (unit/integration testing)
 - Playwright 1.56.1 (browser testing)
+- ESLint + Stylelint (linting via `vite-plugin-checker`)
 
 ### Critical architectural constraints
 
@@ -50,7 +51,8 @@ package.json            # Dependencies and scripts
 
 - `npm run dev` - dev server at http://localhost:8080 with HMR
 - `npm run build` - production build to `_site/`
-- `npm test` - run Vitest tests (requires prior build)
+- `npm test` - lint, build, then run Vitest tests
+- `npm run lint` - run ESLint and Stylelint
 - `npm run preview` - serve the built `_site/` directory
 
 ## Build process
