@@ -23,8 +23,7 @@ templateEngineOverride: njk,md
 Efficiently adapt a trained language model to a new domain or style without
 retraining the whole thing.
 
-{% if hero %} ![Facilitator explaining model adaptations]({{ hero }})
-{% endif %}
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 ## You will need
 

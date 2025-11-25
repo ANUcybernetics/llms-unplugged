@@ -21,8 +21,7 @@ templateEngineOverride: njk,md
 Learn how to make random choices where some options are more likely than
 others—an operation at the core of all generative AI.
 
-{% if hero %} ![Students rolling dice during an unplugged activity]({{ hero }})
-{% endif %}
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 ## You will need
 

@@ -23,8 +23,7 @@ templateEngineOverride: njk,md
 Use a pre-trained (hand-built) bigram model to generate new text through
 weighted random sampling.
 
-{% if hero %} ![Group writing on paper during an unplugged activity]({{ hero }})
-{% endif %}
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 ## You will need
 

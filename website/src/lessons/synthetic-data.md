@@ -22,8 +22,7 @@ templateEngineOverride: njk,md
 Use your language model to generate new training data, then train a new model on
 that synthetic data to watch patterns change.
 
-{% if hero %} ![Participant comparing two sets of generated text]({{ hero }})
-{% endif %}
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 ## You will need
 

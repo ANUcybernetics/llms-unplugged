@@ -22,8 +22,7 @@ templateEngineOverride: njk,md
 Build a bigram language model that tracks which words follow which other words
 in text.
 
-{% if hero %} ![Participants filling out a language model grid]({{ hero }})
-{% endif %}
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 ## You will need
 

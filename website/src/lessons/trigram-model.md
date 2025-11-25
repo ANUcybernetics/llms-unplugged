@@ -22,8 +22,7 @@ templateEngineOverride: njk,md
 Extend the bigram model to consider two words of context instead of one, leading
 to better generation.
 
-{% if hero %} ![Participants comparing two grids side by side]({{ hero }})
-{% endif %}
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 ## You will need
 

@@ -22,8 +22,7 @@ templateEngineOverride: njk,md
 Use a (slightly larger) pre-trained model booklet to generate new text through
 weighted random sampling.
 
-{% if hero %} ![Participant flipping through a model booklet]({{ hero }})
-{% endif %}
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 ## You will need
 

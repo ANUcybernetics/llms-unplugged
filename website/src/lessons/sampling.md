@@ -22,9 +22,7 @@ templateEngineOverride: njk,md
 When generating text, your model offers several options for the next word.
 Sampling strategies decide which one to pick.
 
-{% if hero %}
-![Students comparing output from different sampling settings]({{ hero }})
-{% endif %}
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 ## You will need
 

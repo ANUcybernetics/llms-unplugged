@@ -23,8 +23,7 @@ templateEngineOverride: njk,md
 Transform words into numerical vectors that capture meaning, revealing semantic
 relationships between words in your model.
 
-{% if hero %} ![Workshop participant comparing counts across a grid]({{ hero }})
-{% endif %}
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 ## You will need
 

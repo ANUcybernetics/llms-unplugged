@@ -23,7 +23,7 @@ templateEngineOverride: njk,md
 Enhance the bigram model with context columns that capture grammatical and
 semantic patterns.
 
-{% if hero %} ![Hands rolling dice over a worksheet]({{ hero }}) {% endif %}
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 ## You will need
 
