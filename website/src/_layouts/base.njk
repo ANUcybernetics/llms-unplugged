@@ -40,10 +40,21 @@
         {% set navPages = collections.all | eleventyNavigation %}
         <ul class="hidden sm:flex gap-6 sm:gap-8">
           {% for entry in navPages %}
-          <li>
-            <a href="{{ entry.url }}" class="text-anu-white hover:text-anu-gold-2 transition-colors{% if page.url | startswith(entry.url) %} font-semibold{% endif %}"{% if page.url | startswith(entry.url) %} aria-current="page"{% endif %}>
-              {{ entry.title }}
+          <li class="relative{% if entry.children.length %} group{% endif %}">
+            <a href="{{ entry.url }}" class="text-anu-white hover:text-anu-gold-2 transition-colors{% if page.url | startswith(entry.url) %} font-semibold{% endif %}"{% if page.url | startswith(entry.url) %} aria-current="page"{% endif %}{% if entry.children.length %} aria-haspopup="true"{% endif %}>
+              {{ entry.title }}{% if entry.children.length %}<span class="ml-1 text-xs" aria-hidden="true">▾</span>{% endif %}
             </a>
+            {% if entry.children.length %}
+            <ul class="absolute left-0 top-full mt-1 py-2 bg-anu-black border border-anu-gold/40 rounded min-w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all z-50">
+              {% for child in entry.children %}
+              <li>
+                <a href="{{ child.url }}" class="block px-4 py-2 text-anu-white hover:text-anu-gold-2 hover:bg-anu-gold/10 transition-colors{% if page.url == child.url %} font-semibold{% endif %}"{% if page.url == child.url %} aria-current="page"{% endif %}>
+                  {{ child.title }}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+            {% endif %}
           </li>
           {% endfor %}
         </ul>
@@ -66,12 +77,23 @@
 
       {# Mobile navigation #}
       <div id="mobile-menu" class="hidden sm:hidden pb-4" aria-label="Mobile navigation">
-        <ul class="flex flex-col gap-2">
+        <ul class="flex flex-col gap-1">
           {% for entry in navPages %}
           <li>
             <a href="{{ entry.url }}" class="block py-2 text-anu-white hover:text-anu-gold-2 transition-colors{% if page.url | startswith(entry.url) %} font-semibold{% endif %}"{% if page.url | startswith(entry.url) %} aria-current="page"{% endif %}>
               {{ entry.title }}
             </a>
+            {% if entry.children.length %}
+            <ul class="pl-4 flex flex-col gap-1 border-l border-anu-gold/30 ml-2">
+              {% for child in entry.children %}
+              <li>
+                <a href="{{ child.url }}" class="block py-1 text-sm text-anu-white/80 hover:text-anu-gold-2 transition-colors{% if page.url == child.url %} font-semibold text-anu-white{% endif %}"{% if page.url == child.url %} aria-current="page"{% endif %}>
+                  {{ child.title }}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+            {% endif %}
           </li>
           {% endfor %}
         </ul>

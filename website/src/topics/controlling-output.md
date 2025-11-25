@@ -1,7 +1,9 @@
 ---
-layout: base.njk
 title: Controlling output
-templateEngineOverride: njk,md
+eleventyNavigation:
+  key: Controlling output
+  parent: Topics
+  order: 3
 ---
 
 # Controlling output

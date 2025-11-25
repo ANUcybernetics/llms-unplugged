@@ -1,7 +1,9 @@
 ---
-layout: base.njk
 title: How models "understand"
-templateEngineOverride: njk,md
+eleventyNavigation:
+  key: How models "understand"
+  parent: Topics
+  order: 4
 ---
 
 # How models "understand"

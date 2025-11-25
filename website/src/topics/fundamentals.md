@@ -1,7 +1,9 @@
 ---
-layout: base.njk
 title: Fundamentals
-templateEngineOverride: njk,md
+eleventyNavigation:
+  key: Fundamentals
+  parent: Topics
+  order: 1
 ---
 
 # Fundamentals

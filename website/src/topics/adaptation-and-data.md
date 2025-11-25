@@ -1,7 +1,9 @@
 ---
-layout: base.njk
 title: Adaptation and data
-templateEngineOverride: njk,md
+eleventyNavigation:
+  key: Adaptation and data
+  parent: Topics
+  order: 5
 ---
 
 # Adaptation and data

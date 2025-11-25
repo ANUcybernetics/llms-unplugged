@@ -1,7 +1,9 @@
 ---
-layout: base.njk
 title: Scaling up
-templateEngineOverride: njk,md
+eleventyNavigation:
+  key: Scaling up
+  parent: Topics
+  order: 2
 ---
 
 # Scaling up
