@@ -12,13 +12,12 @@ Ready-to-use teaching resources for understanding how large language models
 ![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-2.jpg)
 
 These resources are available under a
-[Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-at [github.com/ANUcybernetics/llms-unplugged]({{ links.github }}). They're
-organised into [lessons]({{ links.topics }}) (grouped into topics), with each
-covering a self-contained activity from basic training and generation through to
-advanced concepts like embeddings, sampling strategies, and model fine-tuning.
-Each lesson also includes instructor notes: pedagogical scaffolding explaining
-connections to modern LLMs, discussion questions, and historical
+[Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+They're organised into [lessons]({{ links.topics }}) (grouped into topics), with
+each covering a self-contained activity from basic training and generation
+through to advanced concepts like embeddings, sampling strategies, and model
+fine-tuning. Each lesson also includes instructor notes: pedagogical scaffolding
+explaining connections to modern LLMs, discussion questions, and historical
 context---designed for educators without deep AI expertise
 
 Finally (and optionally!) there are [software tools]({{ links.github }}):
