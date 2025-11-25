@@ -21,7 +21,7 @@ Explore how models use context and represent word meaning through embeddings.
     </h2>
     <p class="text-anu-white/90 mb-3">{{ lesson.data.description }}</p>
     {% if lesson.data.keyIdea %}
-    <p class="text-sm text-anu-white/70 mb-2"><strong>Key idea:</strong> {{ lesson.data.keyIdea }}</p>
+    <p class="text-sm text-anu-white mb-2"><strong>Key idea:</strong> {{ lesson.data.keyIdea }}</p>
     {% endif %}
     {% if lesson.data.dependsOn and lesson.data.dependsOn.length %}
     <div class="text-sm text-anu-white/70 mt-2">Depends on: {{ lesson.data.dependsOn | join(", ") }}</div>
