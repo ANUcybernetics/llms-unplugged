@@ -1,6 +1,9 @@
 ---
 layout: base.njk
 title: FAQ
+eleventyNavigation:
+  key: FAQ
+  order: 4
 ---
 
 # Frequently asked questions

@@ -3,6 +3,9 @@ layout: base.njk
 title: Topics
 templateEngineOverride: njk,md
 permalink: /topics/
+eleventyNavigation:
+  key: Topics
+  order: 1
 ---
 
 # Topics

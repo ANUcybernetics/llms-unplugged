@@ -35,32 +35,45 @@
         <a href="/" class="text-lg font-semibold text-anu-white hover:text-anu-gold transition-colors" aria-label="LLMs Unplugged home">
           Home
         </a>
-        <ul class="flex gap-6 sm:gap-8">
+
+        {# Desktop navigation #}
+        {% set navPages = collections.all | eleventyNavigation %}
+        <ul class="hidden sm:flex gap-6 sm:gap-8">
+          {% for entry in navPages %}
           <li>
-            <a href="/topics/" class="text-anu-white hover:text-anu-gold-2 transition-colors{% if page.url | startswith('/topics/') %} font-semibold{% endif %}" {% if page.url | startswith('/topics/') %}aria-current="page"{% endif %}>
-              Topics
+            <a href="{{ entry.url }}" class="text-anu-white hover:text-anu-gold-2 transition-colors{% if page.url | startswith(entry.url) %} font-semibold{% endif %}"{% if page.url | startswith(entry.url) %} aria-current="page"{% endif %}>
+              {{ entry.title }}
             </a>
           </li>
+          {% endfor %}
+        </ul>
+
+        {# Mobile menu button #}
+        <button
+          type="button"
+          class="sm:hidden p-2 text-anu-white hover:text-anu-gold transition-colors"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Open menu"
+          data-menu-toggle
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path class="menu-icon-open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            <path class="menu-icon-close hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      {# Mobile navigation #}
+      <div id="mobile-menu" class="hidden sm:hidden pb-4" aria-label="Mobile navigation">
+        <ul class="flex flex-col gap-2">
+          {% for entry in navPages %}
           <li>
-            <a href="/about/" class="text-anu-white hover:text-anu-gold-2 transition-colors{% if page.url == '/about/' %} font-semibold{% endif %}" {% if page.url == '/about/' %}aria-current="page"{% endif %}>
-              About
+            <a href="{{ entry.url }}" class="block py-2 text-anu-white hover:text-anu-gold-2 transition-colors{% if page.url | startswith(entry.url) %} font-semibold{% endif %}"{% if page.url | startswith(entry.url) %} aria-current="page"{% endif %}>
+              {{ entry.title }}
             </a>
           </li>
-          <li>
-            <a href="/news/" class="text-anu-white hover:text-anu-gold-2 transition-colors{% if page.url | startswith('/news/') %} font-semibold{% endif %}">
-              News
-            </a>
-          </li>
-          <li>
-            <a href="/faq/" class="text-anu-white hover:text-anu-gold-2 transition-colors{% if page.url == '/faq/' %} font-semibold{% endif %}" {% if page.url == '/faq/' %}aria-current="page"{% endif %}>
-              FAQ
-            </a>
-          </li>
-          <li>
-            <a href="/contact/" class="text-anu-white hover:text-anu-gold-2 transition-colors{% if page.url == '/contact/' %} font-semibold{% endif %}" {% if page.url == '/contact/' %}aria-current="page"{% endif %}>
-              Contact
-            </a>
-          </li>
+          {% endfor %}
         </ul>
       </div>
     </nav>

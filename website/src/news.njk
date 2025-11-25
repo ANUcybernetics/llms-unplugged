@@ -6,6 +6,9 @@ pagination:
   size: 10
   alias: posts
 permalink: "news/{% if pagination.pageNumber > 0 %}page/{{ pagination.pageNumber + 1 }}/{% endif %}"
+eleventyNavigation:
+  key: News
+  order: 3
 ---
 
 <h1>News</h1>

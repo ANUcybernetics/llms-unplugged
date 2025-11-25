@@ -1,5 +1,6 @@
 import EleventyVitePlugin from "@11ty/eleventy-plugin-vite";
 import pluginRss from "@11ty/eleventy-plugin-rss";
+import pluginNavigation from "@11ty/eleventy-navigation";
 import tailwindcss from "@tailwindcss/vite";
 import checker from "vite-plugin-checker";
 import fs from "node:fs/promises";
@@ -80,8 +81,9 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/favicon.svg");
   eleventyConfig.addPassthroughCopy("src/**/*.md");
 
-  // RSS plugin
+  // Plugins
   eleventyConfig.addPlugin(pluginRss);
+  eleventyConfig.addPlugin(pluginNavigation);
 
   // Date filters for news posts
   eleventyConfig.addFilter("readableDate", (dateObj) => {
