@@ -105,9 +105,11 @@ describe("lmGrid", () => {
     expect(html).toContain("卌");
   });
 
-  it("leaves zero cells empty", () => {
+  it("leaves zero cells with nbsp for consistent height", () => {
     const html = lmGrid(["", "see"], [["see", 0]]);
-    expect(html).toContain('<td class="px-2 py-2 text-center font-mono"></td>');
+    expect(html).toContain(
+      '<td class="px-2 py-2 h-10 text-center font-mono">&nbsp;</td>',
+    );
   });
 });
 

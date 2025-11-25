@@ -94,8 +94,8 @@ function lmTable(headers, data) {
 function lmGrid(headers, rows) {
   const headerRow = headers
     .map((h) => {
-      const content = h ? `<code>${escapeHtml(h)}</code>` : "";
-      return `<th class="px-2 py-2 text-center font-semibold min-w-[3rem]">${content}</th>`;
+      const content = h ? `<code>${escapeHtml(h)}</code>` : "&nbsp;";
+      return `<th class="px-2 py-2 h-10 text-center font-semibold min-w-[3rem] bg-anu-gold/10">${content}</th>`;
     })
     .join("");
 
@@ -107,10 +107,10 @@ function lmGrid(headers, rows) {
           if (i === 0) {
             const content = processed
               ? `<code>${escapeHtml(processed)}</code>`
-              : "";
-            return `<td class="px-2 py-2 text-left font-semibold">${content}</td>`;
+              : "&nbsp;";
+            return `<td class="px-2 py-2 h-10 text-center font-semibold min-w-[3rem] bg-anu-gold/10">${content}</td>`;
           }
-          return `<td class="px-2 py-2 text-center font-mono">${escapeHtml(processed)}</td>`;
+          return `<td class="px-2 py-2 h-10 text-center font-mono">${escapeHtml(processed) || "&nbsp;"}</td>`;
         })
         .join("");
       return `<tr class="border-b border-anu-gold/30">${cells}</tr>`;
@@ -119,7 +119,7 @@ function lmGrid(headers, rows) {
 
   return `<div class="overflow-x-auto my-6">
 <table class="border-collapse border border-anu-gold/50 text-sm">
-<thead class="bg-anu-gold/10">
+<thead>
 <tr class="border-b border-anu-gold">${headerRow}</tr>
 </thead>
 <tbody>${bodyRows}</tbody>
