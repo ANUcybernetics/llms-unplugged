@@ -53,12 +53,19 @@ yields fluent text.
 
 ## Example
 
-Using the sample bigram model from _Basic Training_:
+Using the same bigram model from the example in _Basic Training_:
 
-- Start at `see` → only `spot` is available, so write `spot`.
-- `spot` → options are `run` (25%), `jump` (25%), `,` (50%); roll to choose.
-- Suppose you roll `run`; then `run` → `.` (67%) or `,` (33%); roll again.
-- Suppose you get `.`; then `.` → `see`, `run`, or `jump` (roughly equal); roll
-  again.
+{% lmGrid "see spot run . see spot jump . run , spot , run . jump , spot , jump ." %}
 
-Continuing this loop might yield `see spot run. see spot ...`.
+- choose (for example) `see` as your starting word
+- `see` (row) → `spot` (column); it's the only option, so write down `spot` as
+  next word
+- `spot` → `run` (25%), `jump` (25%) or `,` (50%); roll dice to choose
+- let's say dice picks `run`; write it down
+- `run` → `.` (67%) or `,` (33%); roll dice to choose
+- let's say dice picks `.`; write it down
+- `.` → `see` (33%), `run` (33%) or `jump` (33%); roll dice to choose
+- let's say dice picks `see`; write it down
+- `see` → `spot`; it's the only option, so write down `spot`... and so on
+
+After the above steps, the generated text is _"see spot run. see spot"_

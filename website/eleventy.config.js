@@ -11,6 +11,13 @@ import markdownItFootnote from "markdown-it-footnote";
 import markdownItTocDoneRight from "markdown-it-toc-done-right";
 import llmsPlugin from "./eleventy-plugin-llms.js";
 import { viteStaticCopy } from "vite-plugin-static-copy";
+import {
+  tally,
+  lmTable,
+  lmGrid,
+  lmGridAuto,
+  parseTokens,
+} from "./src/_utils/lm-utils.js";
 
 function preservePassthroughOutputs() {
   let rootDir;
@@ -136,6 +143,27 @@ export default function (eleventyConfig) {
     return collectionApi
       .getFilteredByGlob("src/news/*.md")
       .sort((a, b) => b.date - a.date);
+  });
+
+  // Language model shortcodes for lesson content
+  // Tally marks: {% tally 7 %} → "卌 ||"
+  eleventyConfig.addShortcode("tally", (n) => tally(n));
+
+  // Bigram grid from tokens: {% lmGrid "see spot run . see spot jump ." %}
+  // Optional rows/cols: {% lmGrid "see spot", 6, 7 %}
+  eleventyConfig.addShortcode("lmGrid", (tokenString, nrows, ncols) => {
+    const tokens = parseTokens(tokenString);
+    const options = {};
+    if (nrows != null) options.nrows = nrows;
+    if (ncols != null) options.ncols = ncols;
+    return lmGridAuto(tokens, options);
+  });
+
+  // Generic table: {% lmTable headers, data %}
+  // headers: array of column names
+  // data: 2D array of cell values (numbers become tally marks)
+  eleventyConfig.addShortcode("lmTable", (headers, data) => {
+    return lmTable(headers, data);
   });
 
   // Configure markdown-it with typographer for em dashes and smart quotes

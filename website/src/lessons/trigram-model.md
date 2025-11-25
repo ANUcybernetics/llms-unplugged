@@ -48,17 +48,17 @@ cost: more rows to track and more data needed.
 
 ### Example (training)
 
-After `see spot run .` the table has rows:
+After the first four words (`see` `spot` `run` `.`) the model is:
 
-- `see | spot | run | 1`
-- `spot | run | . | 1`
+{% lmTable ["word 1", "word 2", "word 3", "count"], [["`see`", "`spot`", "`run`", 1], ["`spot`", "`run`", "`.`", 1]] %}
 
-After `see spot run . see spot jump .` the table grows to include:
+After the full text (`see` `spot` `run` `.` `see` `spot` `jump` `.`) the model
+is:
 
-- `run | . | see | 1`
-- `. | see | spot | 1`
-- `see | spot | jump | 1`
-- `spot | jump | . | 1`
+{% lmTable ["word 1", "word 2", "word 3", "count"], [["`see`", "`spot`", "`run`", 1], ["`spot`", "`run`", "`.`", 1], ["`run`", "`.`", "`see`", 1], ["`.`", "`see`", "`spot`", 1], ["`see`", "`spot`", "`jump`", 1], ["`spot`", "`jump`", "`.`", 1]] %}
+
+Note: the order of the rows doesn't matter, so you can re-order to group them by
+_word 1_ if that helps.
 
 ## Algorithm (generation)
 

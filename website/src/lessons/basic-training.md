@@ -62,15 +62,13 @@ model (filling out the grid) to track which words follow other words.
 Original text: _"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot,
 jump."_
 
-Preprocessed text:
+Preprocessed text: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,`
+`spot` `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`
 
-```
-see spot run . see spot jump . run , spot , run . jump , spot , jump .
-```
+After the first two words (`see` `spot`) the model looks like:
 
-- After the first two words (`see` `spot`), your grid has a `1` where the `see`
-  row meets the `spot` column.
-- As you continue through the text, you add rows/columns for new words and tally
-  the transitions each time you see a new word pair.
-- By the end, the grid shows which words tend to follow which others. Those
-  counts are the core of your hand-built bigram model.
+{% lmGrid "see spot", 6, 7 %}
+
+After the full text the model looks like:
+
+{% lmGrid "see spot run . see spot jump . run , spot , run . jump , spot , jump ." %}
