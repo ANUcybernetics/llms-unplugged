@@ -62,3 +62,37 @@ the next word, and repeat.
 - **Multiple d10s:** Current word `the` with a `2` indicator and options
   `33|cat`, `66|dog`, `99|end`. Roll twice; a 5 and 8 combine to 58, so you
   choose `dog`.
+
+## Instructor notes
+
+### Discussion questions
+
+- can you guess what text the model was trained on from the generated output?
+- how does using a pre-trained model differ from training your own?
+- what vocabulary size does the booklet model have compared to your hand-built
+  model?
+- why might some word combinations feel more natural than others?
+- without looking at the title: can you identify the training text's genre or
+  style?
+
+### Connection to current LLMs
+
+This lesson demonstrates the foundation of how people interact with modern AI:
+
+- **pre-training**: companies train massive models on huge text corpora (like
+  your booklet model, but with trillions of words)
+- **LLM-as-a-service**: users generate text without seeing or modifying the
+  underlying model (just like using the booklet)
+- **model distribution**: the booklet format shows how models can be packaged
+  and shared—current LLMs are distributed as parameter files
+- **deterministic generation**: given the same starting word and dice rolls, you
+  get the same output (though randomness creates variety between runs)
+
+The key insight: training and text generation are separate processes. Most AI
+users never train models—they use pre-trained ones through APIs or interfaces.
+Your hand-built model from _Basic Training_ gives you insight into what's inside
+the booklet, but you don't need that knowledge to generate text. This separation
+is why companies like OpenAI can provide AI services: they do the expensive
+training once, then millions of users perform text generation. The booklet
+captures thousands of training examples in a portable format, just as neural
+networks compress training data into billions of parameters.

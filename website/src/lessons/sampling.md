@@ -69,3 +69,37 @@ temperature.
   reroll; if nothing valid remains, insert `.` and continue.
 - **Alliteration:** prefer options that start with the same letter/sound as the
   previous word; otherwise sample normally.
+
+## Instructor notes
+
+### Discussion questions
+
+- which strategy produces the most "human-like" text?
+- when would you want predictable vs surprising output?
+- how do constraints (haiku, no-repeat) spark creativity?
+- can you invent your own sampling strategy?
+
+### Connection to current LLMs
+
+Current LLMs use these same mechanisms, though the specific strategies differ.
+
+- **Temperature control:** the temperature parameter divides probabilities just
+  like you divide tallies; higher temperature means more random output. The
+  lesson uses manual temperature adjustment, while LLMs do this computationally
+  before every token.
+- **Truncation techniques in modern LLMs:** top-k sampling (only consider k most
+  likely tokens), top-p/nucleus sampling (consider tokens until cumulative
+  probability reaches p), repetition penalties, frequency penalties, and
+  presence penalties all prune options before sampling.
+- **Truncation techniques in this lesson:** greedy, haiku, non-sequitur,
+  no-repeat, and alliteration are designed for dice-based sampling but embody
+  the same idea—changing which tokens are eligible before you roll.
+
+Your paper model demonstrates that "creativity" in AI comes from two controls:
+adjusting temperature (probability distribution shape) and applying truncation
+strategies (which tokens to exclude). The same trained model can produce
+scholarly essays (low temperature, strict truncation) or wild poetry (high
+temperature, constraint-based truncation) just by changing these parameters. The
+key insight: generation control is as important as training data. Creative
+output comes not from the model itself, but from how you control temperature and
+which tokens you truncate from consideration.

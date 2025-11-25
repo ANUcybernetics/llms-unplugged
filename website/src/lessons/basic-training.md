@@ -73,3 +73,28 @@ After the first two words (`see` `spot`) the model looks like:
 After the full text the model looks like:
 
 {% lmGrid "see spot run . see spot jump . run , spot , run . jump , spot , jump ." %}
+
+## Instructor notes
+
+### Discussion questions
+
+- what can you tell about the input text by looking at the filled-out bigram
+  model grid?
+- how does including punctuation as "words" help with sentence structure?
+- are there any other ways you could have written down this exact same model?
+- how could you use this model to generate _new_ text in the style of your
+  input/training data?
+
+### Connection to current LLMs
+
+This counting process is exactly what happens during the "training" phase of
+language models:
+
+- **training data**: your paragraph vs trillions of words from the internet
+- **learning/training process**: hand counting vs automated counting by
+  computers
+- **storage**: your paper model vs billions of parameters in memory
+
+The key insight: "training" a language model means counting patterns in text.
+Your hand-built model contains the same type of information that current LLMs
+store—at a vastly smaller scale.

@@ -65,3 +65,41 @@ Text: `See Spot. Spot runs.`
 
 You’ll find `see` and `.` can end up very similar (distance 0) while `see` and
 `spot` differ more, revealing structure in your corpus.
+
+## Instructor notes
+
+### Discussion questions
+
+- which words cluster together? why?
+- do grammatically similar words have similar embeddings?
+- can you predict which words will be close before calculating?
+- how do context columns affect word similarity?
+- what information is captured in these vectors?
+
+### Connection to current LLMs
+
+Word embeddings revolutionised NLP by turning words into numbers that computers
+can process:
+
+- **dimensions**: your (e.g.) 8-dimensional vectors → modern models use hundreds
+  or thousands of dimensions
+- **learning**: you used occurrence patterns → modern models learn from billions
+  of contexts
+- **semantic capture**: state-of-the-art embeddings encode meaning so well that
+  "`king` - `man` + `woman` ≈ `queen`" actually works
+- **foundation**: every modern language model starts by converting words to
+  embeddings
+
+The insight: words with similar meanings appear in similar contexts, so their
+usage patterns (and thus embeddings) are similar. Your hand-calculated vectors
+demonstrate this principle: `cat` and `dog` would have similar embeddings
+because they both follow `the` and precede `ran` or `sat`. This discovery
+enabled computers to "understand" that words have relationships and meanings
+beyond just their spelling.
+
+Note on the activity: while the lesson focuses on calculating distances between
+embeddings (the similarity matrix), this is pedagogically deliberate. Embeddings
+themselves are just rows of numbers, but distances reveal the relationships
+between words—which is what makes embeddings useful in practice. The activity
+emphasises the practical application of embeddings rather than just their
+construction.

@@ -65,3 +65,38 @@ can be much smaller. During generation you add LoRA counts to the base counts
   with extra counts toward `the`, `a`, `red`.
 - Combined sampling uses base + LoRA counts, making `red` more likely after
   `saw` while leaving other rows unchanged.
+
+## Instructor notes
+
+### Discussion questions
+
+- how much training data do you need for the LoRA layer compared to training
+  from scratch?
+- what happens if you scale the LoRA values by 2 or 0.5 before adding them?
+- can you create multiple LoRA layers for different domains?
+- which words change most between base and adapted models?
+- when would you want a separate LoRA layer vs retraining the whole model?
+
+### Connection to current LLMs
+
+Low-Rank Adaptation revolutionised how modern LLMs are customised:
+
+- **efficiency**: training a LoRA layer requires 100-1000x less computation than
+  full fine-tuning
+- **modularity**: you can have one base model plus many LoRA layers for
+  different tasks (medical, legal, creative writing)
+- **preservation**: the base model stays unchanged, so it retains its general
+  capabilities
+- **combination**: multiple LoRA layers can be combined or switched on-the-fly
+- **distribution**: LoRA layers are small (megabytes vs gigabytes), making them
+  easy to share
+
+The key insight: most model adaptation happens in a small subspace of all
+possible changes. Instead of adjusting billions of parameters, LoRA identifies
+and modifies only the dimensions that matter for the new domain. Your paper
+implementation makes this concrete: rather than recreating the entire grid, you
+only track the changes needed for the new text style. When you add the base and
+LoRA counts together, you're doing exactly what neural networks do when they
+apply LoRA layers during inference. This is why organisations can maintain one
+large foundation model and create thousands of specialised versions through
+lightweight LoRA layers.

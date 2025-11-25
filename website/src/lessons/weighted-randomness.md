@@ -84,3 +84,39 @@ A quick reference for common splits:
 - 50/30/20: 1-5 for 50%, 6-8 for 30%, 9-10 for 20%
 
 Adjust the ranges to match whatever probabilities you need.
+
+## Instructor notes
+
+Note: this is a "pre-lesson"; it's usually ok to start from lesson 01 and just
+have this lesson card handy to refer to if students want more detailed
+instruction about weighted random sampling.
+
+### Discussion questions
+
+- which method feels most "random" to you, and why?
+- which is fastest for getting repeated random selections?
+- how would you handle weights like 17, 23, 41?
+- what happens when one option has 95% probability?
+- can you invent your own weighted random selection method?
+
+### Connection to current LLMs
+
+This lesson introduces weighted random sampling before students encounter
+language models. While not specific to LLMs, this operation is fundamental to
+how they work:
+
+- **generation mechanism**: every time an LLM produces a word, it's performing
+  weighted random sampling from a probability distribution
+- **probability distributions**: neural networks output probabilities for
+  thousands of possible next tokens; these probabilities become the "weights"
+  for sampling
+- **physical intuition**: dice and tokens make the mathematics tangible—when
+  students later learn about "sampling from a distribution," they'll have
+  hands-on experience with what that means
+
+The key insight: weighted randomness is a general computational technique with
+applications far beyond language models (simulations, games, procedural
+generation). In the context of language models, this same operation happens
+billions of times during text generation. These physical methods (dice, tokens)
+implement the exact same mathematical operation that occurs inside LLMs when
+they choose the next word.

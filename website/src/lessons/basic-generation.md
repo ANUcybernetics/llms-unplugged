@@ -70,3 +70,39 @@ Using the same bigram model from the example in _Basic Training_:
 - `see` → `spot`; it's the only option, so write down `spot`... and so on
 
 After the above steps, the generated text is _"see spot run. see spot"_
+
+## Instructor notes
+
+### Discussion questions
+
+- how does the starting word affect your generated text?
+- why does the text sometimes get stuck in loops?
+- if this is a _bigram_ (i.e. 2-gram) model, how would a unigram (1-gram) model
+  work?
+- how could you make generation less repetitive?
+- does the generated text capture the style of your training text?
+
+### Connection to current LLMs
+
+This generation process is identical to how current LLMs produce text:
+
+- **sequential generation**: both generate one word at a time
+- **probabilistic sampling**: both use weighted random selection (exactly like
+  your dice or tokens)
+- **probability distribution**: neural network outputs probabilities for all
+  50,000+ possible next tokens
+- **no planning**: neither looks ahead—just picks the next word
+- **variability**: same prompt can produce different outputs due to randomness
+
+The fact: sophisticated AI responses emerge from this simple process repeated
+thousands of times. Your paper model demonstrates that language generation is
+fundamentally about sampling from learned probability distributions. The
+randomness is why LLMs give different responses to the same prompt and why
+language models can be creative rather than repetitive. These physical sampling
+methods demonstrate the exact mathematical operation happening billions of times
+per second inside modern language models.
+
+Note: in AI/ML more broadly, this process of using a trained model to produce
+outputs is commonly called "inference"—you may encounter this term in other
+contexts. In these teaching resources we use "generation" specifically because
+it more clearly describes what language models do: they generate text.

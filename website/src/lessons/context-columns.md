@@ -64,3 +64,33 @@ column (if applicable).
 
 You can add your own context columns for patterns you care about, then include
 them in the combined counts when sampling.
+
+## Instructor notes
+
+### Discussion questions
+
+- which context columns are most useful for your text?
+- can you think of other helpful context patterns?
+- how do context columns reduce repetition in generated text?
+- what happens when multiple contexts apply at once?
+- are grammatical contexts (verb→object, pronoun→verb) more reliable than
+  word-specific ones (`word_a`→`word_b`)?
+
+### Connection to current LLMs
+
+Your hand-crafted context columns are what the "attention mechanism" in
+transformers learns automatically:
+
+- **manual vs learnt**: you chose 3 grammatical contexts; transformers learn
+  hundreds of attention patterns
+- **fixed vs dynamic**: your contexts are the same for all words; transformers
+  adapt attention per word
+- **the innovation**: instead of pre-defining important contexts, transformers
+  learn which previous words to "attend to" for each prediction
+
+This is why it's called "attention"—the model learns to pay attention to
+relevant context. When a model predicts the next word after "The capital of
+France is", it automatically learns to attend strongly to "capital" and "France"
+while ignoring less relevant words. Your grammatical context columns
+(verb→object, pronoun→verb) do this manually, while modern AI discovers these
+patterns—and many more—through learning.

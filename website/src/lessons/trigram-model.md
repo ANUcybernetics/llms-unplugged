@@ -72,3 +72,28 @@ _word 1_ if that helps.
    and repeat from step 2.
 
 This mirrors Basic Generation but with two-word context instead of one.
+
+## Instructor notes
+
+### Discussion questions
+
+- how does the trigram output compare to basic (bigram) model output?
+- what happens when you encounter a word pair you've never seen before?
+- how many rows would you need for a 100-word text?
+- can you find word pairs that always lead to the same next word?
+- what's the tradeoff between context length and data requirements?
+
+### Connection to current LLMs
+
+The trigram model bridges the gap between simple word-pair models and modern
+transformers:
+
+- **context windows**: current models use variable context up to 2 million
+  tokens
+- **sparse data problem**: with more context, you need exponentially more
+  training data
+
+Your trigram model shows why longer context helps—`see` + `spot` predicts `run`
+perfectly, while just `spot` could be followed by `run` or `,`. This is why
+modern LLMs can maintain coherent conversations over many exchanges—they
+consider much more context than just the last word or two.
