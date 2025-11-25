@@ -81,8 +81,8 @@ suitable for any audience from high-schoolers up to adults, and no particular
 background in LLMs/AI/Machine Learning is required.
 
 The software tools used to produce all these materials are available at on
-GitHub at <https://github.com/ANUcybernetics/llms-unplugged>. This work is part
-of the [Cybernetic Studio's](https://cybernetics.anu.edu.au/cybernetic-studio/)
+GitHub at <{{ links.github }}>. This work is part of the
+[Cybernetic Studio's](https://cybernetics.anu.edu.au/cybernetic-studio/)
 _Human-Scale AI_ project. If you've got questions or if you've used this
 material successfully in your classroom I'd love to hear about it---drop me a
 line at <ben.swift@anu.edu.au>.

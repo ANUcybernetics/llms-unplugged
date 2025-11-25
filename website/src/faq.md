@@ -75,9 +75,9 @@ selection based on patterns in training data---is identical.
 
 ## Can I generate my own booklets from custom text?
 
-Yes. The [source code](https://github.com/ANUcybernetics/llms-unplugged)
-includes tools to process any text file into a printable booklet. You'll need
-basic command-line familiarity to run the tools.
+Yes. The [source code]({{ links.github }}) includes tools to process any text
+file into a printable booklet. You'll need basic command-line familiarity to run
+the tools.
 
 ## The generated text is nonsense. Is that right?
 
@@ -87,7 +87,7 @@ of statistical language modelling. Trigrams produce noticeably better results.
 
 ## I found an error in the materials.
 
-Please [open an issue](https://github.com/ANUcybernetics/llms-unplugged/issues)
-on GitHub or [contact us](/contact/). We appreciate corrections and suggestions.
+Please [open an issue]({{ links.github }}/issues) on GitHub or
+[contact us](/contact/). We appreciate corrections and suggestions.
 
 ![Participants exploring language models hands-on](/assets/images/workshop-5.jpg)

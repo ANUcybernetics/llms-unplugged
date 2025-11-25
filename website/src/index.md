@@ -65,9 +65,9 @@ at [github.com/ANUcybernetics/llms-unplugged]({{ links.github }}):
 - **[Instructor notes]({{ links.instructor_notes }})**: pedagogical scaffolding
   explaining connections to modern LLMs, discussion questions, and historical
   context---designed for educators without deep AI expertise
-- **[Software tools](github.com/ANUcybernetics/llms-unplugged)**: optional
-  open-source tools to create custom n-gram booklets from any text corpus, so
-  you can build domain-specific pre-trained models
+- **[Software tools]({{ links.github }})**: optional open-source tools to create
+  custom n-gram booklets from any text corpus, so you can build domain-specific
+  pre-trained models
 
 A typical 90-minute workshop covers the core training-to-generation pipeline
 (lessons 1--3). Extension lessons let you explore concepts like trigram models,
