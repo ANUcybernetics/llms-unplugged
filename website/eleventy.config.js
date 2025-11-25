@@ -178,6 +178,7 @@ export default function (eleventyConfig) {
       plugins: [
         tailwindcss(),
         checker({
+          root: import.meta.dirname,
           eslint: {
             lintCommand: 'eslint "src/**/*.js"',
             useFlatConfig: true,
