@@ -49,8 +49,6 @@ systems they may have previously thought of as almost magical.
 
 ## What's included?
 
-![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-1.jpg)
-
 The complete resource pack is available under a
 [Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 at [github.com/ANUcybernetics/llms-unplugged]({{ links.github }}):
@@ -80,6 +78,8 @@ As LLMs become increasingly central to how we work with text and interact with
 digital systems, hands-on understanding becomes not just pedagogically valuable
 but practically necessary. The good news? The core concepts are accessible to
 anyone willing to spend an afternoon with pen, paper, and dice.
+
+![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-1.jpg)
 
 {% set events = collections.news | filterByTag("events") | head(3) %}
 {% if events.length %}
