@@ -17,6 +17,9 @@ These resources build on a rich history of unplugged computing education (and
 hands-on education in genral). If you're interested in where these ideas came
 from---or where to go next---this is the reading list.
 
+![Workshop participants building language models with pen and
+paper](/assets/images/workshop-1.jpg)
+
 ## CS Unplugged
 
 For over two decades, [CS Unplugged](https://csunplugged.org) has demonstrated
@@ -36,9 +39,6 @@ explaining transformers through mathematics or implementing neural networks in
 code, participants build working models with pen, paper, and dice. This hands-on
 approach makes sophisticated AI concepts accessible to anyone, regardless of
 technical background.
-
-![Workshop participants building language models with pen and
-paper](/assets/images/workshop-1.jpg)
 
 ## AI Unplugged resources
 
