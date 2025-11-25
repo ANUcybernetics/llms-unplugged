@@ -3,8 +3,8 @@ id: task-002
 title: add PERIOD and COMMA tokens at least to rust CLI tool
 status: Done
 assignee: []
-created_date: '2025-09-02 06:22'
-updated_date: '2025-09-11 05:36'
+created_date: "2025-09-02 06:22"
+updated_date: "2025-09-11 05:36"
 labels: []
 dependencies: []
 ---

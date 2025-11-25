@@ -3,8 +3,8 @@ id: task-006
 title: Add guide words to n-gram model booklet headers
 status: Done
 assignee: []
-created_date: '2025-09-22 11:36'
-updated_date: '2025-09-22 23:20'
+created_date: "2025-09-22 11:36"
+updated_date: "2025-09-22 23:20"
 labels: []
 dependencies: []
 ---
@@ -12,9 +12,11 @@ dependencies: []
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
+
 Add dictionary-style guide words (first and last entry) to page headers in the
 n-gram model output booklet, similar to the example implementation in
 docs/dictionary-guide-words-json.typ
+
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Background

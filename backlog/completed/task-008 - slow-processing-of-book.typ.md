@@ -22,16 +22,22 @@ shortest).
 
 ## Resolution
 
-The performance issue was caused by the guide words implementation querying ALL metadata entries on every page render. The original implementation:
+The performance issue was caused by the guide words implementation querying ALL
+metadata entries on every page render. The original implementation:
+
 1. Called `query(metadata)` to get all prefix entries
 2. Filtered them to find entries on current page
-3. If no entries on current page, filtered again to find entries before current page
+3. If no entries on current page, filtered again to find entries before current
+   page
 
-This resulted in O(n*p) operations where n = number of prefixes and p = number of pages.
+This resulted in O(n\*p) operations where n = number of prefixes and p = number
+of pages.
 
 ### Optimisation applied
 
-Changed the header implementation to use `query(selector(metadata).before(here()))` which:
+Changed the header implementation to use
+`query(selector(metadata).before(here()))` which:
+
 - Only queries metadata entries before the current position
 - Eliminates the need to filter through all future entries
 - Still maintains correct guide word display
@@ -42,4 +48,5 @@ Changed the header implementation to use `query(selector(metadata).before(here()
 - After: ~3.1 seconds to compile frankenstein-bigram-a4.pdf
 - **Improvement: ~30% reduction in compile time**
 
-The output remains functionally identical with the same page count and guide words displayed correctly.
+The output remains functionally identical with the same page count and guide
+words displayed correctly.

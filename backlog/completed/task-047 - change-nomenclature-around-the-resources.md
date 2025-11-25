@@ -3,8 +3,8 @@ id: task-047
 title: change nomenclature around the resources
 status: Done
 assignee: []
-created_date: '2025-11-25 02:08'
-updated_date: '2025-11-25 02:35'
+created_date: "2025-11-25 02:08"
+updated_date: "2025-11-25 02:35"
 labels: []
 dependencies: []
 ---
@@ -55,12 +55,16 @@ lists all the modules) won't exist anymore.
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-Completed nomenclature change from 'modules' to 'lessons' with 'topics' as grouping:
+
+Completed nomenclature change from 'modules' to 'lessons' with 'topics' as
+grouping:
 
 **Website changes:**
+
 - Renamed `src/modules/` to `src/lessons/`
 - Created `src/_data/topics.json` with 5 topic groupings
-- Created `src/topics.md` (topics index) and individual topic pages in `src/topics/`
+- Created `src/topics.md` (topics index) and individual topic pages in
+  `src/topics/`
 - Updated `eleventy.config.js` (lessons collection, filterByOrder filter)
 - Updated navigation in `base.njk` (Modules → Topics)
 - Updated `links.json` (modules → topics, modules_pdf → lessons_pdf)
@@ -68,7 +72,9 @@ Completed nomenclature change from 'modules' to 'lessons' with 'topics' as group
 - Updated integration tests for new URL structure
 
 **Handouts changes:**
-- Renamed `module-setup`/`module-hero` to `lesson-setup`/`lesson-hero` in `utils.typ`
+
+- Renamed `module-setup`/`module-hero` to `lesson-setup`/`lesson-hero` in
+  `utils.typ`
 - Updated all 10 numbered lesson files (00-09)
 - Renamed `worksheets/blank-module.typ` to `worksheets/blank-lesson.typ`
 - Updated `Makefile` (modules.pdf → lessons.pdf, added `lessons` target)
@@ -76,7 +82,9 @@ Completed nomenclature change from 'modules' to 'lessons' with 'topics' as group
 - Updated `AGENTS.md`
 
 **Documentation:**
+
 - Updated root `README.md` and `AGENTS.md`
 
 **Tests:** All npm (50 tests) and cargo (31 tests) pass.
+
 <!-- SECTION:NOTES:END -->
