@@ -17,7 +17,7 @@ templateEngineOverride: njk,md
 
 # Synthetic Data
 
-> Prefer a printable copy? [Download the PDF handout]({{ pdf }}).
+{% lessonIntro topicTitle, topic, pdf %}
 
 Use your language model to generate new training data, then train a new model on
 that synthetic data to watch patterns change.

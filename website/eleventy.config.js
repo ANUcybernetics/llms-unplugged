@@ -168,7 +168,7 @@ export default function (eleventyConfig) {
       const pdfHtml = pdfUrl
         ? ` If you'd like a printable version of the student handout, <a href="${pdfUrl}">download it here</a>.`
         : "";
-      return `<p class="lesson-intro">This lesson is part of the ${topicHtml}, with instructions for students (including examples) and <a href="${instructorHref}">instructor notes</a>.${pdfHtml}</p>`;
+      return `<p class="lesson-intro border-l-4 border-anu-gold pl-4 font-medium my-5">This lesson is part of the ${topicHtml}, with instructions for students (including examples) and <a href="${instructorHref}">instructor notes</a>.${pdfHtml}</p>`;
     },
   );
 
