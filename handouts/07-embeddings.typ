@@ -3,9 +3,9 @@
 #import "utils.typ": *
 
 // Apply base styling (colors, fonts, page setup)
-#show: module-setup
+#show: lesson-setup
 
-#module-hero(
+#lesson-hero(
   "Word Embeddings",
   "images/CYBERNETICS_A_102.jpg",
   "07",

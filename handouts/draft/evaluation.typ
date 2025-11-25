@@ -3,21 +3,21 @@
 #import "utils.typ": *
 
 // Apply base styling
-#show: module-setup
+#show: lesson-setup
 
 = Model Evaluation
-_LLMs Unplugged Module #7_
+_LLMs Unplugged Lesson #7_
 
 // NOTE: not sure if we'll ever use this one
 
 Learn how to measure whether your language model is "good" through both
-quantitative metrics and qualitative assessment. This module introduces
+quantitative metrics and qualitative assessment. This lesson introduces
 perplexity, accuracy, and human evaluation methods that work with your physical
 token-based models.
 
 == You will need
 
-- your completed frequency models from previous modules
+- your completed frequency models from previous lessons
 - test sentences (provided or create your own)
 - calculator (optional, for perplexity)
 - evaluation scorecards (templates provided)
@@ -140,7 +140,7 @@ Score each 0-3 points, average across completions.
 )
 == Example
 
-Using your model from a previous module:
+Using your model from a previous lesson:
 
 + *accuracy test*
   - use these test sentences: "see spot", "spot can", "I see"

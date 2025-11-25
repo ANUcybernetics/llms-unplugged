@@ -78,8 +78,8 @@
   )
 }
 
-// Base module setup - applies ANU template with landscape settings
-#let module-setup(bleed: false, body) = {
+// Base lesson setup - applies ANU template with landscape settings
+#let lesson-setup(bleed: false, body) = {
   let bleed-amount = 3mm
   let base-width = 297mm
   let base-height = 210mm
@@ -143,8 +143,8 @@
   body
 }
 
-// Hero image and title layout for module first pages
-#let module-hero(title, image-path, module-number, content) = {
+// Hero image and title layout for lesson first pages
+#let lesson-hero(title, image-path, lesson-number, content) = {
   // Place image on right side of first page
   place(
     top + right,
@@ -158,7 +158,7 @@
     ),
   )
 
-  // Place module number on top of image
+  // Place lesson number on top of image
   place(
     bottom + right,
     dx: 1.5cm,
@@ -166,7 +166,7 @@
     text(
       size: 6cm,
       fill: white.transparentize(70%),
-      module-number,
+      lesson-number,
     ),
   )
 

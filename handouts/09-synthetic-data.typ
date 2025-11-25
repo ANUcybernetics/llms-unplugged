@@ -3,9 +3,9 @@
 #import "utils.typ": *
 
 // Apply base styling
-#show: module-setup
+#show: lesson-setup
 
-#module-hero(
+#lesson-hero(
   "Synthetic Data",
   "images/CYBERNETICS_B_033.jpg",
   "09",
@@ -15,7 +15,7 @@
 
   == You will need
 
-  - a completed model from an earlier module
+  - a completed model from an earlier lesson
   - pen, paper & dice for text generation
   - grid paper for a new model
 

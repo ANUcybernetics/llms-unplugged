@@ -3,9 +3,9 @@
 #import "utils.typ": *
 
 // Apply base styling (colors, fonts, page setup)
-#show: module-setup
+#show: lesson-setup
 
-#module-hero(
+#lesson-hero(
   "Pre-trained Model Generation",
   "images/CYBERNETICS_B_033.jpg",
   "03",

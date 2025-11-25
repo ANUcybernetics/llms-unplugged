@@ -11,8 +11,7 @@ Ready-to-use teaching resources for understanding how large language models
 
 If you're just here for the resources, here they are:
 
-- **[Module cards]({{ links.modules }})** ([PDF
-  bundle]({{ links.modules_pdf }}))
+- **[Lessons]({{ links.topics }})** ([PDF bundle]({{ links.lessons_pdf }}))
 - **[Instructor notes]({{ links.instructor_notes }})**
 
 ![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-2.jpg)
@@ -61,11 +60,11 @@ The complete resource pack is available under a
 [Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 at [github.com/ANUcybernetics/llms-unplugged]({{ links.github }}):
 
-- **[Module cards]({{ links.modules }})**: ten double-sided printable handouts,
-  each covering a self-contained activity from basic training and generation
-  through to advanced concepts like embeddings, sampling strategies, and
-  low-rank adaptation. Read them online or download the [printable PDF
-  bundle]({{ links.modules_pdf }}).
+- **[Lessons]({{ links.topics }})**: ten double-sided printable handouts, each
+  covering a self-contained activity from basic training and generation through
+  to advanced concepts like embeddings, sampling strategies, and low-rank
+  adaptation. Read them online or download the [printable PDF
+  bundle]({{ links.lessons_pdf }}).
 - **[Instructor notes]({{ links.instructor_notes }})**: pedagogical scaffolding
   explaining connections to modern LLMs, discussion questions, and historical
   context---designed for educators without deep AI expertise
@@ -74,20 +73,20 @@ at [github.com/ANUcybernetics/llms-unplugged]({{ links.github }}):
   models
 
 A typical 90-minute workshop covers the core training-to-generation pipeline
-(modules 1--3). Extension modules let you explore concepts like trigram models,
+(lessons 1--3). Extension lessons let you explore concepts like trigram models,
 context columns, word embeddings, and synthetic data if you have more time or a
 particularly engaged audience.
 
 These _LLMs Unplugged_ resources will grow over time, including example lesson
-plans, new modules and unplugged activities, and more. Bookmark us and stay
+plans, new lessons and unplugged activities, and more. Bookmark us and stay
 tuned. And if you'd like to get in touch, email
 [ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au).
 
 ## Getting started
 
 Follow the links above (or visit the [GitHub repository]({{ links.github }})) to
-download the materials and start running your own workshops. The modular design
-means you can scale content up or down based on available time and audience
+download the materials and start running your own workshops. The design means
+you can scale content up or down based on available time and audience
 sophistication.
 
 {% set events = collections.news | filterByTag("events") | head(3) %}

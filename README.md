@@ -18,11 +18,11 @@ This is a [Cybernetic Studio](https://github.com/ANUcybernetics/) artefact by
 ## What's in this repository
 
 This repository contains both teaching materials and software tools. The
-teaching materials (lesson plans, workshop modules, worksheets in the
-`handouts/` directory) can be used standalone without any software installation.
-The software tools (the `llms_unplugged` CLI tool + other helper scripts in the
-`cli/` directory) are only necessary if you want to create your own pre-trained
-N-gram booklets from custom text corpora.
+teaching materials (lesson plans, worksheets in the `handouts/` directory) can
+be used standalone without any software installation. The software tools (the
+`llms_unplugged` CLI tool + other helper scripts in the `cli/` directory) are
+only necessary if you want to create your own pre-trained N-gram booklets from
+custom text corpora.
 
 The `website/` directory contains the source for the project website at
 [www.llmsunplugged.org](https://www.llmsunplugged.org).
@@ -33,11 +33,11 @@ This project offers several entry points depending on your goals:
 
 **Want to understand the fundamentals in 20 minutes?** Use the pen and paper
 approach with the [grid template](handouts/out/worksheets/grid.pdf) and
-step-by-step instructions (in [modules 01 and 02](handouts/out/modules.pdf)). No
+step-by-step instructions (in [lessons 01 and 02](handouts/out/lessons.pdf)). No
 software required.
 
 **Teaching a class or workshop?** Explore the
-[teaching modules](handouts/out/modules.pdf) and
+[teaching lessons](handouts/out/lessons.pdf) and
 [instructor notes](https://www.llmsunplugged.org/instructor-notes/) for
 structured lesson plans and materials.
 
@@ -64,10 +64,10 @@ You'll need:
 > **NOTE:** currently the Typst files import an "ANU template", which _isn't_ in
 > this repo. The content is all there, and it'd would be trivial to tweak the
 > files to use a different while keeping the content, but I (Ben) haven't got
-> around to it yet... So if you try to compile a module booklet and get an error
+> around to it yet... So if you try to compile a lesson booklet and get an error
 > like `error: package not found (searched for @local/anu-typst-template:0.2.0)`
 > then that's why. In the meantime, the
-> [ready-to-go pdf link](handouts/out/modules.pdf) above works fine.
+> [ready-to-go pdf link](handouts/out/lessons.pdf) above works fine.
 
 ### Quickstart
 
@@ -136,7 +136,7 @@ For large trigram models, use the `-b` flag to split across multiple books.
   - `src/` - Rust source code for N-gram processing and CLI
   - `book.typ` - Main booklet template
 - `data/` - Input text corpora (\*.txt files with YAML frontmatter)
-- `handouts/` - Teaching materials (modules, worksheets, runsheets)
+- `handouts/` - Teaching materials (lessons, worksheets, runsheets)
 - `website/` - Project website source (Eleventy + Tailwind)
 - `backlog/` - Task management
 

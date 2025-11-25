@@ -3,9 +3,9 @@
 #import "utils.typ": *
 
 // Apply base styling (colors, fonts, page setup)
-#show: module-setup
+#show: lesson-setup
 
-#module-hero(
+#lesson-hero(
   "Basic Generation",
   "images/CYBERNETICS_A_020.jpg",
   "02",
@@ -39,7 +39,7 @@
   + *choose a starting word*---pick any word from the first column of your grid
   + *look at that word's row* to identify all possible next words and their
     counts
-  + *roll dice weighted by the counts* (see the _Weighted Randomness_ module)
+  + *roll dice weighted by the counts* (see the _Weighted Randomness_ lesson)
   + *write down the chosen word* and use that as your next starting word
   + *repeat* from step 2 until you reach the desired length _or_ a natural
     stopping point (e.g. a full stop `.`)

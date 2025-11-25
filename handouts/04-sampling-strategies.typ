@@ -3,9 +3,9 @@
 #import "utils.typ": *
 
 // Apply base styling (colors, fonts, page setup)
-#show: module-setup
+#show: lesson-setup
 
-#module-hero(
+#lesson-hero(
   "Sampling",
   "images/CYBERNETICS_A_098.jpg",
   "04",
@@ -15,7 +15,7 @@
 
   == You will need
 
-  - a completed model from an earlier module
+  - a completed model from an earlier lesson
   - pen, paper & dice as per _Basic Generation_
 
   == Your goal

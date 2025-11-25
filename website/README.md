@@ -81,4 +81,4 @@ practical, hands-on lens.
 
 Website source (c) Ben Swift, MIT
 
-Module/instructor notes pdf files CC BY-SA-NC 4.0
+Lesson/instructor notes pdf files CC BY-SA-NC 4.0

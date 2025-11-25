@@ -45,7 +45,7 @@ for example:
   some material on AI Unplugged (including one activity in their
   [Generative AI](https://csinschools.io/courses/introduction-to-artificial-intelligence/lessons/lesson-3-generative-ai/)
   worksheet that uses a simiar "counting bigrams" approach to _LLMs Unplugged_
-  Module 1)
+  Lesson 1)
 
 These collections cover classification, clustering, computer vision, and
 artificial neural network concepts. However, they contain limited material

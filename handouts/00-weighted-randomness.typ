@@ -3,9 +3,9 @@
 #import "utils.typ": *
 
 // Apply base styling
-#show: module-setup
+#show: lesson-setup
 
-#module-hero(
+#lesson-hero(
   "Weighted Randomness",
   "images/CYBERNETICS_A_010.jpg",
   "00",
@@ -27,7 +27,7 @@
 
   Sometimes we need to make random choices where some outcomes are more likely
   than others. There are ways to do this which ensure certain relationships _on
-    average_ between the outcomes (e.g. one outcome happening twice as often as
+  average_ between the outcomes (e.g. one outcome happening twice as often as
   another one).
 ]
 

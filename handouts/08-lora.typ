@@ -3,9 +3,9 @@
 #import "utils.typ": *
 
 // Apply base styling
-#show: module-setup
+#show: lesson-setup
 
-#module-hero(
+#lesson-hero(
   "LoRA",
   "images/CYBERNETICS_B_032.jpg",
   "08",
@@ -15,7 +15,7 @@
 
   == You will need
 
-  - a completed bigram model from an earlier module
+  - a completed bigram model from an earlier lesson
   - pen, pencil and grid paper
   - some new text in a different style or domain
 

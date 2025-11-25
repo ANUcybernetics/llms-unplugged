@@ -10,12 +10,12 @@ manual (pen-and-paper) and automated tools.
 This repository has three main parts, each with its own AGENTS.md:
 
 - **`cli/`** - Rust CLI tool for generating N-gram models and PDF booklets
-- **`handouts/`** - Typst teaching materials (modules, worksheets, runsheets)
+- **`handouts/`** - Typst teaching materials (lessons, worksheets, runsheets)
 - **`website/`** - Project website (Eleventy + Tailwind)
 
 Supporting directories:
 
-- `data/` - Input text corpora (*.txt files with YAML frontmatter)
+- `data/` - Input text corpora (\*.txt files with YAML frontmatter)
 - `backlog/` - Task management (use `backlog` CLI tool)
 
 ## Core workflow
@@ -35,7 +35,7 @@ cd cli && cargo build --release
 typst compile cli/book.typ book.pdf
 
 # Build teaching handouts
-cd handouts && make modules
+cd handouts && make lessons
 
 # Run website dev server
 cd website && npm run dev

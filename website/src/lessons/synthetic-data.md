@@ -26,7 +26,7 @@ that synthetic data to watch patterns change.
 
 ## You will need
 
-- a completed model from an earlier module
+- a completed model from an earlier lesson
 - pen, paper, and dice for generation
 - grid paper for a new model
 

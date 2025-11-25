@@ -16,21 +16,21 @@ tools that generate dice-powered text generation booklets. This material is made
 available under a
 [Creative Commons BY-NC-SA 4.0 License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
-The primary teaching materials are the "module cards" (numbered 00-09) in a
-`modules.pdf` file you should have received alongside this
+The primary teaching materials are the "lesson cards" (numbered 00-09) in a
+`lessons.pdf` file you should have received alongside this
 `instructor-notes.pdf` one. Each one is a double-sided landscape PDF designed to
-be used as a workshop handout. The first two modules (01 and 02) are
+be used as a workshop handout. The first two lessons (01 and 02) are
 pre-requisites for the rest and should be done in order, and then the later ones
 can be done in (almost) any order.
 
-Each module card includes these sections:
+Each lesson card includes these sections:
 
 - **you will need**: required materials (dice, paper, grids, etc.)
 - **your goal**: what students should accomplish
 - **key idea**: the core concept being demonstrated
 - **algorithm**: step-by-step instructions for the hands-on activity
 - **example**: worked demonstration showing the algorithm in action This
-  document also includes extra "instructor notes" for each module:
+  document also includes extra "instructor notes" for each lesson:
 - **discussion questions**: prompts to help students reflect on what they've
   learned
 - **connection to current LLMs**: how the hands-on activity relates to modern AI
@@ -38,7 +38,7 @@ Each module card includes these sections:
 
 ## Learning outcomes
 
-The activities in these modules demonstrate the fundamental operations of
+The activities in these lessons demonstrate the fundamental operations of
 language models. The main advances in modern AI come from doing these same
 operations at massive scale with learned (rather than hand-crafted) patterns.
 
@@ -49,7 +49,7 @@ existing text, then generate new text by repeatedly making random choices
 weighted by what they've seen before.
 
 In addition, students will gain the following key insights as to how modern LLMs
-work (in reference to the activities they'll do themselves in these modules):
+work (in reference to the activities they'll do themselves in these lessons):
 
 1.  **scale is the main difference**: your small bigram/trigram models (dozens,
     perhaps up to hundreds of parameters) vs billions of parameters, but the
@@ -69,7 +69,7 @@ work (in reference to the activities they'll do themselves in these modules):
 
 There's a [glossary](#glossary) at the end of this document. Note that while the
 terms AI/genAI/LLMs get thrown around and used interchangeably these days, these
-modules are fundamentally about _language_ models. While there are some
+lessons are fundamentally about _language_ models. While there are some
 similarities to the way that other generative AI models (e.g. text-to-image)
 work, they're beyond the scope of this particular course.
 
@@ -134,12 +134,12 @@ fundamental insight---that language structure can be captured through
 statistical dependencies and revealed through synthetic generation---comes
 directly from Shannon's work in the mid-twentieth century.
 
-# Module notes
+# Lesson notes
 
 ## 00. Weighted randomness
 
-Note: this is a "pre-module"; it's usually ok to start from module 01 and just
-have this module card handy to refer to if students want more detailed
+Note: this is a "pre-lesson"; it's usually ok to start from lesson 01 and just
+have this lesson card handy to refer to if students want more detailed
 instruction about weighted random sampling.
 
 ### Discussion questions
@@ -152,7 +152,7 @@ instruction about weighted random sampling.
 
 ### Connection to current LLMs
 
-This module introduces weighted random sampling before students encounter
+This lesson introduces weighted random sampling before students encounter
 language models. While not specific to LLMs, this operation is fundamental to
 how they work:
 
@@ -249,7 +249,7 @@ it more clearly describes what language models do: they generate text.
 
 ### Connection to current LLMs
 
-This module demonstrates the foundation of how people interact with modern AI:
+This lesson demonstrates the foundation of how people interact with modern AI:
 
 - **pre-training**: companies train massive models on huge text corpora (like
   your booklet model, but with trillions of words)
@@ -355,7 +355,7 @@ because they both follow `the` and precede `ran` or `sat`. This discovery
 enabled computers to "understand" that words have relationships and meanings
 beyond just their spelling.
 
-Note on the activity: while the module focuses on calculating distances between
+Note on the activity: while the lesson focuses on calculating distances between
 embeddings (the similarity matrix), this is pedagogically deliberate. Embeddings
 themselves are just rows of numbers, but distances reveal the relationships
 between words---which is what makes embeddings useful in practice. The activity
@@ -380,7 +380,7 @@ Current LLMs use these same mechanisms, though the specific strategies differ:
 - **temperature parameter**: divides probabilities just like you divide tallies;
   higher temperature means more random output
 
-- the module uses manual temperature adjustment, while LLMs do this
+- the lesson uses manual temperature adjustment, while LLMs do this
   computationally before every token
 
 **Truncation techniques in modern LLMs**:
@@ -392,9 +392,9 @@ Current LLMs use these same mechanisms, though the specific strategies differ:
 - **repetition penalty**: discourage repeating recent tokens
 - **frequency penalty**: discourage common tokens
 - **presence penalty**: discourage any repetition **Truncation techniques in
-  this module**:
+  this lesson**:
 
-The module presents different strategies (greedy, haiku, non-sequitur,
+The lesson presents different strategies (greedy, haiku, non-sequitur,
 no-repeat, alliteration) that are designed to be performed manually with dice
 rather than computationally. While these aren't the exact techniques used in
 modern LLMs, they demonstrate the same core principle: you can dramatically
@@ -525,5 +525,5 @@ technical terms used in modern language models.
 - **weighted random sampling**: choosing the next token with probability
   proportional to its frequency. Your dice rolls implement this
 - **temperature**: a parameter controlling randomness. Dividing tallies by
-  temperature (module 06) makes generation more (high temp) or less (low temp)
+  temperature (lesson 06) makes generation more (high temp) or less (low temp)
   random

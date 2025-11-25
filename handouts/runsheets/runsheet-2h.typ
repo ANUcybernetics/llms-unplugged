@@ -73,7 +73,7 @@
 
 = Materials
 
-- module cards
+- lesson cards
 - ring-bound bigram booklets
 - sampling strategy printouts
 - grids

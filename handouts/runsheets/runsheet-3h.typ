@@ -51,10 +51,10 @@
 == *#t(90)* Design your own poetry slam language model
 - what *isn't* poetry?
 - think about the purpose: "what does _your_ model do, and why?"
-- write up your model on a blank module card to give to another group
+- write up your model on a blank lesson card to give to another group
 
 == *#t(110)* Pre-slam prep
-- your group will receive a new module card from a different group; you have 10
+- your group will receive a new lesson card from a different group; you have 10
   mins to generate as much text as you can and plan your one-minute performance
 
 == *#t(120)* Poetry Slam

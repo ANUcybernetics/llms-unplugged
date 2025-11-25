@@ -10,7 +10,7 @@
   }
 }
 
-#let blank-module(hero-image) = {
+#let blank-lesson(hero-image) = {
   // Apply base styling with light theme override
   show: doc => anu(
     title: "",
@@ -26,7 +26,7 @@
     doc,
   )
 
-  module-hero(
+  lesson-hero(
     "Model name",
     hero-image,
     "",
@@ -54,8 +54,8 @@
   ]
 }
 
-#blank-module("images/CYBERNETICS_A_042.jpg")
-#blank-module("images/CYBERNETICS_A_038.jpg")
-#blank-module("images/CYBERNETICS_A_067.jpg")
-#blank-module("images/CYBERNETICS_A_069.jpg")
-#blank-module("images/CYBERNETICS_A_072.jpg")
+#blank-lesson("images/CYBERNETICS_A_042.jpg")
+#blank-lesson("images/CYBERNETICS_A_038.jpg")
+#blank-lesson("images/CYBERNETICS_A_067.jpg")
+#blank-lesson("images/CYBERNETICS_A_069.jpg")
+#blank-lesson("images/CYBERNETICS_A_072.jpg")

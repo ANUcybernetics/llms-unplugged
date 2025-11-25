@@ -3,9 +3,9 @@
 #import "utils.typ": *
 
 // Apply base styling
-#show: module-setup
+#show: lesson-setup
 
-#module-hero(
+#lesson-hero(
   "Basic Training",
   "images/CYBERNETICS_A_009.jpg",
   "01",
@@ -57,7 +57,7 @@
   == Example
 
   Original text: _"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot,
-    jump."_
+  jump."_
 
   Preprocessed text: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,`
   `spot` `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`

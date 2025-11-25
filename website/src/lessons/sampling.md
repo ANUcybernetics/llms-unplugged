@@ -27,7 +27,7 @@ Sampling strategies decide which one to pick.
 
 ## You will need
 
-- a completed model from an earlier module
+- a completed model from an earlier lesson
 - pen, paper, and dice as per _Basic Generation_
 
 ## Your goal

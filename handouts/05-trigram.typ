@@ -3,9 +3,9 @@
 #import "utils.typ": *
 
 // Apply base styling (colors, fonts, page setup)
-#show: module-setup
+#show: lesson-setup
 
-#module-hero(
+#lesson-hero(
   "Trigram Model",
   "images/CYBERNETICS_A_027.jpg",
   "05",
@@ -15,7 +15,7 @@
 
   == You will need
 
-  - same as _Basic Training_ module
+  - same as _Basic Training_ lesson
   - additional paper for the three-column model
   - pen, paper & dice as per _Basic Generation_
 

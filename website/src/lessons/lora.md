@@ -27,7 +27,7 @@ retraining the whole thing.
 
 ## You will need
 
-- a completed bigram model from an earlier module (your base model)
+- a completed bigram model from an earlier lesson (your base model)
 - pen, pencil, and grid paper
 - new domain- or style-specific text
 

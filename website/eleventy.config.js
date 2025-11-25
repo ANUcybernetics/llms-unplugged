@@ -103,14 +103,19 @@ export default function (eleventyConfig) {
     );
   });
 
-  // Modules collection - ordered by `order` frontmatter, then title
-  eleventyConfig.addCollection("modules", (collectionApi) => {
-    return collectionApi.getFilteredByGlob("src/modules/*.md").sort((a, b) => {
+  // Lessons collection - ordered by `order` frontmatter, then title
+  eleventyConfig.addCollection("lessons", (collectionApi) => {
+    return collectionApi.getFilteredByGlob("src/lessons/*.md").sort((a, b) => {
       const orderA = Number.isFinite(a.data.order) ? a.data.order : 999;
       const orderB = Number.isFinite(b.data.order) ? b.data.order : 999;
       if (orderA !== orderB) return orderA - orderB;
       return (a.data.title || "").localeCompare(b.data.title || "");
     });
+  });
+
+  // Filter lessons by order numbers (for topic pages)
+  eleventyConfig.addFilter("filterByOrder", (collection, orders) => {
+    return collection.filter((item) => orders.includes(item.data.order));
   });
 
   // String starts with check for navigation highlighting

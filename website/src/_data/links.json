@@ -1,6 +1,6 @@
 {
   "github": "https://github.com/ANUcybernetics/llms-unplugged",
-  "modules": "/modules/",
-  "modules_pdf": "/assets/pdfs/modules.pdf",
+  "topics": "/topics/",
+  "lessons_pdf": "/assets/pdfs/lessons.pdf",
   "instructor_notes": "/instructor-notes/"
 }
