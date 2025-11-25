@@ -9,9 +9,6 @@ templateEngineOverride: njk,md
 Ready-to-use teaching resources for understanding how large language models
 (LLMs) work through hands-on activities. No computers required.
 
-The resources are grouped into [Topics]({{ links.topics }}), and there are
-[Instructor notes]({{ links.instructor_notes }}) as well.
-
 ![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-2.jpg)
 
 ## What is this?
@@ -58,14 +55,14 @@ The complete resource pack is available under a
 [Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 at [github.com/ANUcybernetics/llms-unplugged]({{ links.github }}):
 
-- **[Lessons]({{ links.topics }})**: a collection of ten (and growing) lessons,
-  each covering a self-contained activity from basic training and generation
-  through to advanced concepts like embeddings, sampling strategies, and model
+- [Lessons]({{ links.topics }}): a collection of ten (and growing) lessons, each
+  covering a self-contained activity from basic training and generation through
+  to advanced concepts like embeddings, sampling strategies, and model
   fine-tuning
-- **[Instructor notes]({{ links.instructor_notes }})**: pedagogical scaffolding
+- [Instructor notes]({{ links.instructor_notes }}): pedagogical scaffolding
   explaining connections to modern LLMs, discussion questions, and historical
   context---designed for educators without deep AI expertise
-- **[Software tools]({{ links.github }})**: optional open-source tools to create
+- [Software tools]({{ links.github }}): optional open-source tools to create
   custom n-gram booklets from any text corpus, so you can build domain-specific
   pre-trained models
 
