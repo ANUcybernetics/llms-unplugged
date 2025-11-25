@@ -1,6 +1,9 @@
 ---
 layout: base.njk
 title: FAQ
+description:
+  Frequently asked questions about using LLMs Unplugged resources, materials
+  needed, and how the activities relate to modern AI.
 eleventyNavigation:
   key: FAQ
   order: 4

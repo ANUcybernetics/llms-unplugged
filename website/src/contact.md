@@ -1,6 +1,8 @@
 ---
 layout: base.njk
 title: Contact
+description:
+  Get in touch with the LLMs Unplugged team at the ANU School of Cybernetics.
 eleventyNavigation:
   key: Contact
   order: 5

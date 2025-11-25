@@ -1,6 +1,9 @@
 ---
 layout: base.njk
 title: About
+description:
+  The history and foundations of LLMs Unplugged, from CS Unplugged to Shannon's
+  information theory.
 eleventyNavigation:
   key: About
   order: 2

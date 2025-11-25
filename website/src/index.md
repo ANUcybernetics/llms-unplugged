@@ -1,6 +1,9 @@
 ---
 layout: base.njk
 title: LLMs Unplugged
+description:
+  Teaching resources for understanding how large language models work through
+  hands-on activities with pen, paper, and dice.
 templateEngineOverride: njk,md
 ---
 
