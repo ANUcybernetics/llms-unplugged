@@ -11,7 +11,23 @@ Ready-to-use teaching resources for understanding how large language models
 
 ![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-2.jpg)
 
-## What is this?
+These resources are available under a
+[Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+at [github.com/ANUcybernetics/llms-unplugged]({{ links.github }}). They're
+organised into [lessons]({{ links.topics }}) (grouped into topics), with each
+covering a self-contained activity from basic training and generation through to
+advanced concepts like embeddings, sampling strategies, and model fine-tuning.
+Each lesson also includes instructor notes: pedagogical scaffolding explaining
+connections to modern LLMs, discussion questions, and historical
+context---designed for educators without deep AI expertise
+
+Finally (and optionally!) there are [software tools]({{ links.github }}):
+optional open-source tools to create custom n-gram booklets from any text
+corpus, so you can build domain-specific pre-trained models. For educators who
+want to further personalise some of the unplugged activities to their own
+classroom context.
+
+## Why are these resources necessary?
 
 [ChatGPT](https://chatgpt.com/) arrived in November 2022 and suddenly everyone's
 using LLMs. Yet most people have no real mental model of what's actually
@@ -47,27 +63,12 @@ students, senior executives in the Australian Public Service. The material
 consistently helps people build new mental models of how LLMs work, demystifying
 systems they may have previously thought of as almost magical.
 
-## What's included?
-
-The complete resource pack is available under a
-[Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-at [github.com/ANUcybernetics/llms-unplugged]({{ links.github }}):
-
-- [Lessons]({{ links.topics }}): a collection of ten (and growing) lessons, each
-  covering a self-contained activity from basic training and generation through
-  to advanced concepts like embeddings, sampling strategies, and model
-  fine-tuning
-- [Instructor notes]({{ links.instructor_notes }}): pedagogical scaffolding
-  explaining connections to modern LLMs, discussion questions, and historical
-  context---designed for educators without deep AI expertise
-- [Software tools]({{ links.github }}): optional open-source tools to create
-  custom n-gram booklets from any text corpus, so you can build domain-specific
-  pre-trained models
-
 A typical 90-minute workshop covers the core training-to-generation pipeline
 (lessons 1--3). Extension lessons let you explore concepts like trigram models,
 context columns, word embeddings, and synthetic data if you have more time or a
 particularly engaged audience.
+
+## What's next for _LLMs Unplugged_?
 
 These _LLMs Unplugged_ resources will grow over time, including example lesson
 plans, new lessons and unplugged activities, and more. Bookmark us and stay
