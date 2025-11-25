@@ -4,6 +4,7 @@ description:
   Experiment with temperature and truncation strategies to shape how your model
   picks the next word.
 order: 4
+topic: controlling-output
 pdf: /assets/pdfs/04-sampling-strategies.pdf
 keyIdea:
   Different sampling strategies change the character of generated text even when

@@ -4,6 +4,7 @@ description:
   Use your hand-built bigram model to generate new text through weighted random
   sampling.
 order: 2
+topic: fundamentals
 pdf: /assets/pdfs/02-basic-generation.pdf
 keyIdea:
   Language models generate text one word at a time by sampling the next word

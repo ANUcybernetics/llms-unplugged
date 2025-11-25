@@ -4,6 +4,7 @@ description:
   Turn each word’s row into a vector and measure similarities between words in
   your model.
 order: 7
+topic: how-models-understand
 pdf: /assets/pdfs/07-embeddings.pdf
 keyIdea:
   A word’s row in the grid is its embedding; distances between rows reveal

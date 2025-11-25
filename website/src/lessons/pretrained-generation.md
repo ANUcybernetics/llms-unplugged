@@ -4,6 +4,7 @@ description:
   Use a provided pre-trained booklet to generate text without training your own
   model.
 order: 3
+topic: scaling-up
 pdf: /assets/pdfs/03-pretrained-generation.pdf
 keyIdea:
   You can generate from a model you didn’t train—just follow its lookup rules

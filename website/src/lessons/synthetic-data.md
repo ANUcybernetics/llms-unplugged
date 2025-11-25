@@ -4,6 +4,7 @@ description:
   Generate synthetic text with your model, retrain on it, and see how patterns
   drift or collapse.
 order: 9
+topic: adaptation-and-data
 pdf: /assets/pdfs/09-synthetic-data.pdf
 keyIdea:
   Training on model-generated data shows how patterns degrade and why fresh

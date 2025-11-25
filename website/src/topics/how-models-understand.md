@@ -10,7 +10,7 @@ eleventyNavigation:
 
 Explore how models use context and represent word meaning through embeddings.
 
-{% set topicLessons = collections.lessons | filterByOrder([6, 7]) %}
+{% set topicLessons = collections.lessons | filterByTopic("how-models-understand") %}
 {% if topicLessons.length %}
 
 <div class="not-prose grid gap-6 my-8">

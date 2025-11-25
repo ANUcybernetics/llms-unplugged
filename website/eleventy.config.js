@@ -122,9 +122,11 @@ export default function (eleventyConfig) {
     });
   });
 
-  // Filter lessons by order numbers (for topic pages)
-  eleventyConfig.addFilter("filterByOrder", (collection, orders) => {
-    return collection.filter((item) => orders.includes(item.data.order));
+  // Filter lessons by topic ID
+  eleventyConfig.addFilter("filterByTopic", (collection, topicId) => {
+    return collection
+      .filter((item) => item.data.topic === topicId)
+      .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
   });
 
   // String starts with check for navigation highlighting

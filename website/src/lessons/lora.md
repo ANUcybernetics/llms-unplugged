@@ -4,6 +4,7 @@ description:
   Add a lightweight adaptation layer to retarget a trained model without
   retraining everything.
 order: 8
+topic: adaptation-and-data
 pdf: /assets/pdfs/08-lora.pdf
 keyIdea:
   LoRA tweaks a base model with small, add-on counts that capture

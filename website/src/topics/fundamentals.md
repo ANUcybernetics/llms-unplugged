@@ -11,7 +11,7 @@ eleventyNavigation:
 Core concepts for building and using language models. Start here to learn
 weighted random selection, training a bigram model, and generating text.
 
-{% set topicLessons = collections.lessons | filterByOrder([0, 1, 2]) %}
+{% set topicLessons = collections.lessons | filterByTopic("fundamentals") %}
 {% if topicLessons.length %}
 
 <div class="not-prose grid gap-6 my-8">

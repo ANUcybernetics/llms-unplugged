@@ -11,7 +11,7 @@ eleventyNavigation:
 Learn how sampling strategies like temperature and truncation shape generated
 text without changing the underlying model.
 
-{% set topicLessons = collections.lessons | filterByOrder([4]) %}
+{% set topicLessons = collections.lessons | filterByTopic("controlling-output") %}
 {% if topicLessons.length %}
 
 <div class="not-prose grid gap-6 my-8">

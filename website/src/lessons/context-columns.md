@@ -4,6 +4,7 @@ description:
   Add simple attention-like context columns to your bigram grid to capture
   grammatical cues.
 order: 6
+topic: how-models-understand
 pdf: /assets/pdfs/06-context-columns.pdf
 keyIdea:
   Extra context columns let the model weight words differently after verbs,

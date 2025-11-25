@@ -4,6 +4,7 @@ description:
   Build a bigram language model that tracks which words follow which other words
   in text.
 order: 1
+topic: fundamentals
 pdf: /assets/pdfs/01-basic-training.pdf
 keyIdea:
   Language models learn by counting patterns in text and tracking which words

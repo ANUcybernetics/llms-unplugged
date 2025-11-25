@@ -11,7 +11,7 @@ eleventyNavigation:
 Discover how models are customised for specific tasks and the risks of training
 on synthetic data.
 
-{% set topicLessons = collections.lessons | filterByOrder([8, 9]) %}
+{% set topicLessons = collections.lessons | filterByTopic("adaptation-and-data") %}
 {% if topicLessons.length %}
 
 <div class="not-prose grid gap-6 my-8">

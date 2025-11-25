@@ -11,7 +11,7 @@ eleventyNavigation:
 Move beyond hand-built models to explore pre-trained models and longer context
 windows with trigrams.
 
-{% set topicLessons = collections.lessons | filterByOrder([3, 5]) %}
+{% set topicLessons = collections.lessons | filterByTopic("scaling-up") %}
 {% if topicLessons.length %}
 
 <div class="not-prose grid gap-6 my-8">

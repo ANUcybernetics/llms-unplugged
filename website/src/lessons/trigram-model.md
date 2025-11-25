@@ -3,6 +3,7 @@ title: Trigram Model
 description:
   Extend the bigram model to use two words of context for better predictions.
 order: 5
+topic: scaling-up
 pdf: /assets/pdfs/05-trigram.pdf
 keyIdea:
   More context improves predictions—trigrams track two previous words, trading
