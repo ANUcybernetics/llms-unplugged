@@ -9,20 +9,18 @@ templateEngineOverride: njk,md
 Ready-to-use teaching resources for understanding how large language models
 (LLMs) work through hands-on activities. No computers required.
 
-If you're just here for the resources, here they are:
-
-- **[Lessons]({{ links.topics }})** ([PDF bundle]({{ links.lessons_pdf }}))
-- **[Instructor notes]({{ links.instructor_notes }})**
+The resources are grouped into [Topics]({{ links.topics }}), and there are
+[Instructor notes]({{ links.instructor_notes }}) as well.
 
 ![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-2.jpg)
 
 ## What is this?
 
-ChatGPT arrived in November 2022 and suddenly everyone's using LLMs. Yet most
-people have no real mental model of what's actually happening under the hood.
-They've heard the hand-wave-y (and/or mystical-sounding) explanations, maybe
-picked up some vague notions about "neural networks" and "training data", but
-the core mechanism remains opaque.
+[ChatGPT](https://chatgpt.com/) arrived in November 2022 and suddenly everyone's
+using LLMs. Yet most people have no real mental model of what's actually
+happening under the hood. They've heard the hand-wave-y and/or mystical-sounding
+explanations, maybe picked up some vague notions about "neural networks" and
+"training data", but the core mechanism remains opaque.
 
 _LLMs Unplugged_ cuts through that opacity using the simplest possible approach:
 you build your own language model from scratch with pen, paper, and dice.
@@ -43,9 +41,9 @@ emerge, you have a better sense of how language models work.
 
 ## Who's this for?
 
-These activities are suitable for audiences from high school age through to
-adults. No programming background required. No mathematics beyond basic counting
-and percentages.
+These activities are suitable for audiences from high school age (with a primary
+version coming soon!) through to adults. No programming background required, and
+no mathematics beyond basic counting and percentages.
 
 We've run it for hundreds of participants---school students, undergraduate
 students, senior executives in the Australian Public Service. The material
@@ -60,17 +58,16 @@ The complete resource pack is available under a
 [Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 at [github.com/ANUcybernetics/llms-unplugged]({{ links.github }}):
 
-- **[Lessons]({{ links.topics }})**: ten double-sided printable handouts, each
-  covering a self-contained activity from basic training and generation through
-  to advanced concepts like embeddings, sampling strategies, and low-rank
-  adaptation. Read them online or download the [printable PDF
-  bundle]({{ links.lessons_pdf }}).
+- **[Lessons]({{ links.topics }})**: a collection of ten (and growing) lessons,
+  each covering a self-contained activity from basic training and generation
+  through to advanced concepts like embeddings, sampling strategies, and model
+  fine-tuning
 - **[Instructor notes]({{ links.instructor_notes }})**: pedagogical scaffolding
   explaining connections to modern LLMs, discussion questions, and historical
   context---designed for educators without deep AI expertise
-- **Software tools**: optional open-source tools to create custom n-gram
-  booklets from any text corpus, so you can build domain-specific pre-trained
-  models
+- **[Software tools](github.com/ANUcybernetics/llms-unplugged)**: optional
+  open-source tools to create custom n-gram booklets from any text corpus, so
+  you can build domain-specific pre-trained models
 
 A typical 90-minute workshop covers the core training-to-generation pipeline
 (lessons 1--3). Extension lessons let you explore concepts like trigram models,
@@ -82,12 +79,10 @@ plans, new lessons and unplugged activities, and more. Bookmark us and stay
 tuned. And if you'd like to get in touch, email
 [ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au).
 
-## Getting started
-
-Follow the links above (or visit the [GitHub repository]({{ links.github }})) to
-download the materials and start running your own workshops. The design means
-you can scale content up or down based on available time and audience
-sophistication.
+As LLMs become increasingly central to how we work with text and interact with
+digital systems, hands-on understanding becomes not just pedagogically valuable
+but practically necessary. The good news? The core concepts are accessible to
+anyone willing to spend an afternoon with pen, paper, and dice.
 
 {% set events = collections.news | filterByTag("events") | head(3) %}
 {% if events.length %}
@@ -105,8 +100,3 @@ sophistication.
   <a href="/news/" class="mt-4 inline-block text-sm text-anu-gold-2 hover:text-anu-gold transition-colors">View all news →</a>
 </section>
 {% endif %}
-
-As LLMs become increasingly central to how we work with text and interact with
-digital systems, hands-on understanding becomes not just pedagogically valuable
-but practically necessary. The good news? The core concepts are accessible to
-anyone willing to spend an afternoon with pen, paper, and dice.
