@@ -11,7 +11,7 @@ keyIdea:
   and sample next words.
 dependsOn:
   - Basic Generation
-hero: /assets/images/hero-pre-trained-model-generation.jpg
+hero: /assets/images/hero-pretrained-generation.jpg
 templateEngineOverride: njk,md
 ---
 

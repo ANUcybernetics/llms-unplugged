@@ -1,5 +1,8 @@
 ---
 title: How models "understand"
+description:
+  Explore how models use context and represent word meaning through embeddings.
+hero: /assets/images/hero-how-models-understand.jpg
 eleventyNavigation:
   key: How models "understand"
   parent: Topics
@@ -7,6 +10,8 @@ eleventyNavigation:
 ---
 
 # How models "understand"
+
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 Explore how models use context and represent word meaning through embeddings.
 

@@ -3,12 +3,15 @@ layout: base.njk
 title: Contact
 description:
   Get in touch with the LLMs Unplugged team at the ANU School of Cybernetics.
+hero: /assets/images/hero-contact.jpg
 eleventyNavigation:
   key: Contact
   order: 5
 ---
 
 # Contact
+
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 These _LLMs Unplugged_ resources are a
 [Cybernetic Studio](https://cybernetics.anu.edu.au/cybernetic-studio/) project

@@ -4,10 +4,13 @@ title: LLMs Unplugged
 description:
   Teaching resources for understanding how large language models work through
   hands-on activities with pen, paper, and dice.
+hero: /assets/images/hero-index.jpg
 templateEngineOverride: njk,md
 ---
 
 # LLMs Unplugged
+
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 Ready-to-use teaching resources for understanding how large language models
 (LLMs) work through hands-on activities. No computers required.

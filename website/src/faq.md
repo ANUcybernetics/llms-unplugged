@@ -4,12 +4,15 @@ title: FAQ
 description:
   Frequently asked questions about using LLMs Unplugged resources, materials
   needed, and how the activities relate to modern AI.
+hero: /assets/images/hero-faq.jpg
 eleventyNavigation:
   key: FAQ
   order: 4
 ---
 
 # Frequently asked questions
+
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 ## Who is this for?
 

@@ -1,5 +1,9 @@
 ---
 title: Scaling up
+description:
+  Move beyond hand-built models to explore pre-trained models and longer context
+  windows with trigrams.
+hero: /assets/images/hero-scaling-up.jpg
 eleventyNavigation:
   key: Scaling up
   parent: Topics
@@ -7,6 +11,8 @@ eleventyNavigation:
 ---
 
 # Scaling up
+
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 Move beyond hand-built models to explore pre-trained models and longer context
 windows with trigrams.

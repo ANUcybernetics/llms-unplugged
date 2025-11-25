@@ -1,5 +1,9 @@
 ---
 title: Adaptation and data
+description:
+  Discover how models are customised for specific tasks and the risks of
+  training on synthetic data.
+hero: /assets/images/hero-adaptation-and-data.jpg
 eleventyNavigation:
   key: Adaptation and data
   parent: Topics
@@ -7,6 +11,8 @@ eleventyNavigation:
 ---
 
 # Adaptation and data
+
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 Discover how models are customised for specific tasks and the risks of training
 on synthetic data.

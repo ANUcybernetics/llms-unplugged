@@ -1,5 +1,9 @@
 ---
 title: Controlling output
+description:
+  Learn how sampling strategies like temperature and truncation shape generated
+  text without changing the underlying model.
+hero: /assets/images/hero-controlling-output.jpg
 eleventyNavigation:
   key: Controlling output
   parent: Topics
@@ -7,6 +11,8 @@ eleventyNavigation:
 ---
 
 # Controlling output
+
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 Learn how sampling strategies like temperature and truncation shape generated
 text without changing the underlying model.

@@ -4,12 +4,15 @@ title: About
 description:
   The history and foundations of LLMs Unplugged, from CS Unplugged to Shannon's
   information theory.
+hero: /assets/images/hero-about.jpg
 eleventyNavigation:
   key: About
   order: 2
 ---
 
 # About
+
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 _LLMs Unplugged_ is a
 [Cybernetic Studio](https://cybernetics.anu.edu.au/cybernetic-studio/) project

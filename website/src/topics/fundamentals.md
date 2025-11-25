@@ -1,5 +1,9 @@
 ---
 title: Fundamentals
+description:
+  Core concepts for building and using language models. Start here to learn
+  weighted random selection, training a bigram model, and generating text.
+hero: /assets/images/hero-fundamentals.jpg
 eleventyNavigation:
   key: Fundamentals
   parent: Topics
@@ -7,6 +11,8 @@ eleventyNavigation:
 ---
 
 # Fundamentals
+
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 Core concepts for building and using language models. Start here to learn
 weighted random selection, training a bigram model, and generating text.
