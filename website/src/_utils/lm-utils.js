@@ -120,7 +120,7 @@ function lmGrid(headers, rows) {
   return `<div class="overflow-x-auto my-6">
 <table class="border-collapse border border-anu-gold/50 text-sm">
 <thead>
-<tr class="border-b border-anu-gold">${headerRow}</tr>
+<tr class="border-b border-anu-gold/30">${headerRow}</tr>
 </thead>
 <tbody>${bodyRows}</tbody>
 </table>
