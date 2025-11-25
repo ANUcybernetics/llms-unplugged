@@ -11,7 +11,7 @@ keyIdea:
 dependsOn:
   - Basic Training
   - Basic Generation
-hero: /assets/images/workshop-5.jpg
+hero: /assets/images/hero-trigram-model.jpg
 templateEngineOverride: njk,md
 ---
 

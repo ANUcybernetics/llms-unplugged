@@ -10,7 +10,7 @@ keyIdea:
   Use weighted sampling to make random choices that reflect a target probability
   distribution.
 dependsOn: []
-hero: /assets/images/workshop-3.jpg
+hero: /assets/images/hero-weighted-randomness.jpg
 templateEngineOverride: njk,md
 ---
 

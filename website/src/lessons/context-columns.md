@@ -12,7 +12,7 @@ keyIdea:
 dependsOn:
   - Basic Training
   - Basic Generation
-hero: /assets/images/sxsw-2.jpg
+hero: /assets/images/hero-context-columns.jpg
 templateEngineOverride: njk,md
 ---
 

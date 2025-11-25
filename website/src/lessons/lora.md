@@ -12,7 +12,7 @@ keyIdea:
 dependsOn:
   - Basic Training
   - Basic Generation
-hero: /assets/images/workshop-4.jpg
+hero: /assets/images/hero-lora.jpg
 templateEngineOverride: njk,md
 ---
 

@@ -11,7 +11,7 @@ keyIdea:
   the model stays the same.
 dependsOn:
   - Basic Generation
-hero: /assets/images/sxsw-1.jpg
+hero: /assets/images/hero-sampling.jpg
 templateEngineOverride: njk,md
 ---
 

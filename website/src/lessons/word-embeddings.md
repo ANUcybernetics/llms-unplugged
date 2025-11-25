@@ -12,7 +12,7 @@ keyIdea:
 dependsOn:
   - Basic Training
   - Context Columns
-hero: /assets/images/workshop-1.jpg
+hero: /assets/images/hero-word-embeddings.jpg
 templateEngineOverride: njk,md
 ---
 

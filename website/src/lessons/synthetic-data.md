@@ -11,7 +11,7 @@ keyIdea:
   human data matters.
 dependsOn:
   - Basic Generation
-hero: /assets/images/workshop-2.jpg
+hero: /assets/images/hero-synthetic-data.jpg
 templateEngineOverride: njk,md
 ---
 

@@ -12,7 +12,7 @@ keyIdea:
 dependsOn:
   - Basic Training
   - Weighted Randomness
-hero: /assets/images/workshop-1.jpg
+hero: /assets/images/hero-basic-generation.jpg
 templateEngineOverride: njk,md
 ---
 

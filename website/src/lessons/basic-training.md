@@ -11,7 +11,7 @@ keyIdea:
   follow other words.
 dependsOn:
   - Weighted Randomness
-hero: /assets/images/workshop-2.jpg
+hero: /assets/images/hero-basic-training.jpg
 templateEngineOverride: njk,md
 ---
 
