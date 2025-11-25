@@ -13,8 +13,10 @@ and instructor notes. The materials are released under a Creative Commons
 BY-NC-SA 4.0 license, so you're free to use and adapt them for your own
 workshops.
 
+While the resources themselves are battle-tested and good to go, this website is
+under active development at the moment (Nov '25) so if you find anything missing
+or have any suggestions then do get in touch at
+[ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au).
+
 Stay tuned for upcoming events, new lessons, and other updates. You can also
 subscribe to the [RSS feed](/feed.xml) to get notified when we post news.
-
-If you'd like to get in touch, email
-[ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au).
