@@ -17,7 +17,7 @@ templateEngineOverride: njk,md
 
 # Basic Training
 
-> Prefer a printable copy? [Download the PDF handout]({{ pdf }}).
+{% lessonIntro topicTitle, topic, pdf %}
 
 Build a bigram language model that tracks which words follow which other words
 in text.

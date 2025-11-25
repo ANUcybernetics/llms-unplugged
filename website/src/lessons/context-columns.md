@@ -18,7 +18,7 @@ templateEngineOverride: njk,md
 
 # Context Columns
 
-> Prefer a printable copy? [Download the PDF handout]({{ pdf }}).
+{% lessonIntro topicTitle, topic, pdf %}
 
 Enhance the bigram model with context columns that capture grammatical and
 semantic patterns.

@@ -151,6 +151,27 @@ export default function (eleventyConfig) {
   // Tally marks: {% tally 7 %} → "卌 ||"
   eleventyConfig.addShortcode("tally", (n) => tally(n));
 
+  // Lesson intro helper: topic link + instructor notes + PDF
+  eleventyConfig.addShortcode(
+    "lessonIntro",
+    (topicTitle, topicSlug, pdfUrl, instructorLink = "#instructor-notes") => {
+      if (!topicTitle) {
+        throw new Error(
+          "lessonIntro shortcode requires a topic title (e.g., add `topic` frontmatter that maps to topics.json).",
+        );
+      }
+      const topicHref = topicSlug ? `/topics/${topicSlug}/` : null;
+      const instructorHref = instructorLink || "#instructor-notes";
+      const topicHtml = topicHref
+        ? `<a href="${topicHref}">${topicTitle} topic</a>`
+        : `${topicTitle} topic`;
+      const pdfHtml = pdfUrl
+        ? ` If you'd like a printable version of the student handout, <a href="${pdfUrl}">download it here</a>.`
+        : "";
+      return `<p class="lesson-intro">This lesson is part of the ${topicHtml}, with instructions for students (including examples) and <a href="${instructorHref}">instructor notes</a>.${pdfHtml}</p>`;
+    },
+  );
+
   // Bigram grid from tokens: {% lmGrid "see spot run . see spot jump ." %}
   // Optional rows/cols: {% lmGrid "see spot", 6, 7 %}
   eleventyConfig.addShortcode("lmGrid", (tokenString, nrows, ncols) => {

@@ -17,7 +17,7 @@ templateEngineOverride: njk,md
 
 # Trigram Model
 
-> Prefer a printable copy? [Download the PDF handout]({{ pdf }}).
+{% lessonIntro topicTitle, topic, pdf %}
 
 Extend the bigram model to consider two words of context instead of one, leading
 to better generation.

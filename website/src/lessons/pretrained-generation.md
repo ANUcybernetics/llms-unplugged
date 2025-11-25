@@ -17,7 +17,7 @@ templateEngineOverride: njk,md
 
 # Pre-trained Model Generation
 
-> Prefer a printable copy? [Download the PDF handout]({{ pdf }}).
+{% lessonIntro topicTitle, topic, pdf %}
 
 Use a (slightly larger) pre-trained model booklet to generate new text through
 weighted random sampling.

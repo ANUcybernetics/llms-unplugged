@@ -17,7 +17,7 @@ templateEngineOverride: njk,md
 
 # Sampling
 
-> Prefer a printable copy? [Download the PDF handout]({{ pdf }}).
+{% lessonIntro topicTitle, topic, pdf %}
 
 When generating text, your model offers several options for the next word.
 Sampling strategies decide which one to pick.

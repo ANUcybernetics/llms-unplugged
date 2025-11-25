@@ -18,7 +18,7 @@ templateEngineOverride: njk,md
 
 # Basic Generation
 
-> Prefer a printable copy? [Download the PDF handout]({{ pdf }}).
+{% lessonIntro topicTitle, topic, pdf %}
 
 Use a pre-trained (hand-built) bigram model to generate new text through
 weighted random sampling.

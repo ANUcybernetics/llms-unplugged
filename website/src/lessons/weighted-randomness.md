@@ -16,7 +16,7 @@ templateEngineOverride: njk,md
 
 # Weighted Randomness
 
-> Prefer a printable copy? [Download the PDF handout]({{ pdf }}).
+{% lessonIntro topicTitle, topic, pdf %}
 
 Learn how to make random choices where some options are more likely than
 others—an operation at the core of all generative AI.
