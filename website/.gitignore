@@ -1,14 +1,32 @@
+# Dependencies
 node_modules/
+
+# Build output (VitePress)
+.vitepress/dist/
+.vitepress/cache/
+
+# Build output (legacy 11ty - can be removed after migration verified)
 _site/
 .11ty-vite/
 .llms-generated/
 dist/
-slides/node_modules/
-slides/dist/
-.env
-.env.local
-.DS_Store
-*.log
-npm-debug.log*
 .vite-temp/
 .unlighthouse/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local

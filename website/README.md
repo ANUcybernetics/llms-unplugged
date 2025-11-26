@@ -2,25 +2,22 @@
 
 Website for [LLMs Unplugged](https://www.llmsunplugged.org).
 
-TODO add a one paragraph description of what LLMs Unplugged is.
+Ready-to-use teaching resources for understanding how large language models work through hands-on activities. No computers required.
 
 ## Tech stack
 
-- **11ty** for static site generation
-- **Vite** for asset bundling with the Tailwind Vite plugin
-- **Vitest** for testing
-- **Tailwind CSS v4** for styling (no PostCSS required)
-- **ES6 modules** throughout
+- **VitePress** for static site generation
+- **Vue 3** for custom interactive components
+- **TypeScript** for configuration and component logic
 
 ## Development
 
 ```bash
+npm install
 npm run dev
 ```
 
-Starts the 11ty dev server with live reload at http://localhost:8080. Run
-`npm run check:links` separately after a build when you want to scan for broken
-links.
+Starts the VitePress dev server with hot reload.
 
 ## Build
 
@@ -28,57 +25,36 @@ links.
 npm run build
 ```
 
-Builds assets with Vite, then generates the static site with 11ty. Output goes
-to `_site/`.
+Builds the static site to `.vitepress/dist/`.
 
-## Test
-
-```bash
-npm test
-```
-
-Runs integration tests that verify:
-
-- build output exists (`_site/` directory)
-- CSS and JS bundles are generated
-- Tailwind CSS is properly processed
-- HTML structure is valid
-- key content is present
-
-For watch mode during development:
+## Preview
 
 ```bash
-npm run test:watch
+npm run preview
 ```
 
-## Lighthouse
-
-```bash
-npm run lighthouse
-```
-
-Runs Lighthouse CI (`lhci autorun`) against the built `_site` output, auditing
-the main pages (`/`, `/related/`, `/contact/`). Reports are written to
-`.lighthouse/` (JSON and HTML). The command runs `npm run build` first; if you
-prefer to inspect existing build output, run `lhci autorun` directly.
+Preview the built site locally.
 
 ## Project structure
 
 ```
-src/
-  _layouts/        # Nunjucks layout templates
-  _includes/       # Reusable template partials
-  assets/          # CSS and JS source files
-  index.md         # Homepage content
+website/
+├── .vitepress/           # VitePress config and theme
+│   ├── config.mts        # Site configuration
+│   └── theme/            # Custom theme and components
+├── public/               # Static assets (images, PDFs)
+├── lessons/              # Lesson content (markdown)
+├── topics/               # Topic pages
+├── index.md              # Homepage
+└── package.json
 ```
 
 ## About LLMs Unplugged
 
-LLMs Unplugged is a resource exploring large language models and AI through a
-practical, hands-on lens.
+LLMs Unplugged helps educators and learners understand large language models through hands-on activities using pen, paper, and dice. Build your own language model from scratch and experience exactly how AI text generation works.
 
 ## Licence
 
 Website source (c) Ben Swift, MIT
 
-Lesson/instructor notes pdf files CC BY-SA-NC 4.0
+Lesson/instructor notes PDF files CC BY-NC-SA 4.0

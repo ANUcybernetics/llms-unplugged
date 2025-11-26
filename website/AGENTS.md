@@ -4,81 +4,71 @@ Static website for LLMs Unplugged.
 
 ## Architecture
 
-Eleventy 3.1.2 static site using the official `@11ty/eleventy-plugin-vite`
-integration. All configuration is consolidated in `eleventy.config.js`---there
-is no separate `vite.config.js`.
+VitePress static site with custom Vue components for interactive language model demonstrations.
 
 ### Tech stack
 
-- Eleventy 3.1.2 (static site generator)
-- Vite 7.1.12 (build tool and dev server)
-- `@11ty/eleventy-plugin-vite` (official integration)
-- Tailwind CSS v4.1.16 (`@tailwindcss/vite` plugin)
-- Vitest 4.0.3 (unit/integration testing)
-- Playwright 1.56.1 (browser testing)
-- ESLint + Stylelint (linting via `vite-plugin-checker`)
-
-### Critical architectural constraints
-
-- Vite configuration goes in `eleventy.config.js` via `viteOptions` parameter
-- Do not create a separate `vite.config.js`
-- Tailwind CSS v4 uses `@import "tailwindcss"` in CSS, not `@tailwind`
-  directives
-- The `@tailwindcss/vite` plugin handles Tailwind (no PostCSS needed)
+- VitePress 1.5+ (Vue-powered static site generator)
+- Vue 3 (for custom components)
+- TypeScript (configuration and components)
 
 ## Project structure
 
 ```
-src/
-  _layouts/        # Nunjucks templates
-  _includes/       # Template partials
-  assets/
-    main.css       # Entry point with @import "tailwindcss"
-    main.js        # JavaScript entry point
-    pdfs/          # Generated lesson PDFs (from build:pdfs)
-  lessons/         # Lesson content (.md) and Typst cards (.typ)
-  index.md         # Main content (markdown with frontmatter)
-
-scripts/
-  build-lesson-pdfs.js  # Compiles lesson .typ files to PDFs
-
-_site/             # Build output (generated, not in git)
-
-test/
-  integration.test.js   # Vitest tests for build output
-
-eleventy.config.js      # All configuration (Eleventy + Vite + Tailwind)
-vitest.config.js        # Vitest configuration
-package.json            # Dependencies and scripts
+website/
+├── .vitepress/
+│   ├── config.mts          # VitePress configuration
+│   ├── theme/
+│   │   ├── index.ts        # Theme entry point
+│   │   ├── custom.css      # ANU colour scheme
+│   │   └── components/     # Vue components (LmGrid, LmTable)
+│   └── cache/              # (gitignored)
+├── public/
+│   ├── assets/
+│   │   ├── images/         # Hero images
+│   │   └── pdfs/           # Lesson handouts
+│   ├── favicon.svg
+│   └── CNAME
+├── index.md                # Homepage
+├── about.md
+├── educators.md
+├── faq.md
+├── lessons/                # Lesson content
+│   ├── index.md
+│   ├── basic-training.md
+│   └── ...
+├── topics/                 # Topic overview pages
+│   ├── index.md
+│   ├── fundamentals.md
+│   └── ...
+└── package.json
 ```
 
 ## Development
 
-- `npm run dev` - dev server at http://localhost:8080 with HMR
-- `npm run build` - production build to `_site/`
-- `npm run build:pdfs` - compile lesson Typst files to PDFs
-- `npm test` - lint, build, then run Vitest tests
-- `npm run lint` - run ESLint and Stylelint
-- `npm run preview` - serve the built `_site/` directory
+- `npm run dev` - dev server with hot reload
+- `npm run build` - production build to `.vitepress/dist/`
+- `npm run preview` - preview the built site
 
-## Lesson structure
+## Custom components
 
-Each lesson has two colocated files in `src/lessons/`:
+### LmGrid
 
-- `*.md` - lesson content and frontmatter (rendered to HTML)
-- `*.typ` - Typst lesson card (compiled to PDF via `build:pdfs`)
+Renders bigram grid tables from token sequences:
 
-The Typst files import shared resources from `../typst/` (utils.typ, fonts,
-images) using absolute paths from project root (e.g., `/typst/utils.typ`).
+```vue
+<LmGrid tokens="see spot run . see spot jump ." />
+<LmGrid tokens="see spot" :nrows="6" :ncols="7" />
+```
 
-## Build process
+### LmTable
 
-Vite processes CSS and JS (with content hashing), Eleventy transforms markdown
-to HTML using Nunjucks layouts and injects hashed asset references. Output goes
-to `_site/`.
+Renders data tables with tally mark conversion:
 
-## Testing
+```vue
+<LmTable :headers="['word 1', 'word 2', 'count']" :data="[['see', 'spot', 1]]" />
+```
 
-Tests verify build output structure, CSS/JS bundles with content hashing,
-Tailwind utilities, HTML validity, and content presence. Tests expect `_site/`
-to exist---run `npm run build` first.
+## Build output
+
+VitePress builds to `.vitepress/dist/`. Deploy to GitHub Pages or any static host.

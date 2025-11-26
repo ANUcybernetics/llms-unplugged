@@ -1,0 +1,79 @@
+---
+title: Synthetic Data
+description: Generate synthetic text with your model, retrain on it, and see how patterns drift or collapse.
+---
+
+# Synthetic Data
+
+::: info Lesson Info
+This lesson is part of the [Adaptation and Data](/topics/adaptation-and-data) topic, with instructions for students (including examples) and [instructor notes](#instructor-notes). If you'd like a printable version of the student handout, [download it here](/assets/pdfs/synthetic-data.pdf).
+:::
+
+Use your language model to generate new training data, then train a new model on that synthetic data to watch patterns change.
+
+![Hero image: Synthetic Data](/assets/images/hero-synthetic-data.jpg)
+
+## You will need
+
+- a completed model from an earlier lesson
+- pen, paper, and dice for generation
+- grid paper for a new model
+
+## Your goal
+
+Generate synthetic text with your model, train a "generation 2" model on it, and compare both models. Stretch goal: try a generation 3 model—or go full "Joker mode."
+
+## Key idea
+
+Models trained on synthetic data can drift or collapse, losing variety from the original corpus. Watching this happen illustrates why real data matters.
+
+## Algorithm
+
+1. **Generate synthetic text:** use your existing model to create 50–100+ words (as in *Basic Generation*). This is your synthetic corpus.
+2. **Train generation 2:** build a new grid with the Basic Training algorithm using the synthetic corpus.
+3. **Compare models:**
+   - note words that disappear or appear
+   - compare shared cell counts
+   - generate from both models and contrast the outputs
+
+## Example
+
+- Original text: "See Spot run. See Spot jump."
+- Synthetic output: "See run. Run spot. Spot run run."
+  - same vocabulary but different patterns (more `run run`, no `spot jump`)
+- Generation 2 trained on the synthetic text amplifies those changes: `run run` becomes common, `spot jump` vanishes, and odd new patterns can appear.
+
+## Joker mode
+
+Skip generating text and instead create a completely random grid:
+
+- invent any words you like for rows and columns
+- add tally marks anywhere, in any amounts
+- generate text from this random grid
+- train a generation 2 model on that output
+
+Compare to the original to see how quickly randomness compounds.
+
+## Instructor notes
+
+### Discussion questions
+
+- what patterns from the original survived to generation 2?
+- what new patterns emerged that weren't in the original?
+- how does vocabulary shrink or change across generations?
+- can you identify when loops or repetitions started?
+- what would happen if you continued to generation 3, 4, 5?
+- (for joker mode) can a completely random model produce anything coherent? why or why not?
+- (for joker mode) does randomness compound across generations, or does some structure emerge?
+
+### Connection to current LLMs
+
+Model collapse from synthetic data is a major concern in modern AI:
+
+- **training data contamination**: as LLMs generate more web content, future models risk training on AI-generated text rather than human text
+- **mode collapse**: models trained on synthetic data lose diversity and converge toward common patterns (like your `run run` example)
+- **error amplification**: small errors in generation 1 become large errors in generation 2
+- **recursive training**: some research deliberately uses synthetic data to improve models, but this requires careful curation
+- **data provenance**: companies now track whether training data is human-written or AI-generated
+
+The key insight: models trained on their own outputs (or outputs from similar models) degrade over generations. Your hand-built demonstration shows why: each generation is a lossy sample from probability distributions. Rare patterns get lost, common patterns get amplified, and statistical noise becomes signal. This is exactly what researchers observe when training neural networks on synthetic data—vocabularies shrink, creativity decreases, and outputs become more repetitive and stereotyped. Your generation 2 model demonstrates that "training data quality" isn't just about correctness—it's about maintaining the diversity and richness of patterns that make language interesting. This hands-on experience shows why AI companies are concerned about the increasing volume of AI-generated text on the internet: if future models train on today's AI outputs, we risk a cascade of model collapse.

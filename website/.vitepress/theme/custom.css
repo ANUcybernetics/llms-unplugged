@@ -1,0 +1,130 @@
+/* ANU colour scheme and typography for VitePress */
+
+:root {
+  /* ANU Brand colours */
+  --anu-white: #fff;
+  --anu-black: #000;
+  --anu-gold: #be830e;
+  --anu-gold-2: hsl(from #be830e h calc(s - 30) 77%);
+  --anu-gold-4: hsl(from #be830e h s calc(l + 8%));
+  --anu-gold-tint: hsl(from #be830e h calc(s - 30) 90%);
+
+  /* VitePress brand colours - map to ANU gold */
+  --vp-c-brand-1: #be830e;
+  --vp-c-brand-2: #d4940f;
+  --vp-c-brand-3: #a87309;
+  --vp-c-brand-soft: rgba(190, 131, 14, 0.14);
+
+  /* Font */
+  --vp-font-family-base: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --vp-font-family-mono: 'SFMono-Regular', 'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+}
+
+/* Dark mode overrides (default for this site) */
+.dark {
+  --vp-c-bg: #0a0a0a;
+  --vp-c-bg-alt: #111;
+  --vp-c-bg-elv: #1a1a1a;
+  --vp-c-bg-soft: #1a1a1a;
+
+  --vp-c-text-1: rgba(255, 255, 255, 0.95);
+  --vp-c-text-2: rgba(255, 255, 255, 0.78);
+  --vp-c-text-3: rgba(255, 255, 255, 0.56);
+
+  --vp-c-divider: rgba(190, 131, 14, 0.3);
+  --vp-c-border: rgba(190, 131, 14, 0.4);
+
+  --vp-c-brand-1: #be830e;
+  --vp-c-brand-2: #d4940f;
+  --vp-c-brand-3: #a87309;
+}
+
+/* Light mode - keep similar dark aesthetic but lighten text for readability */
+:root:not(.dark) {
+  --vp-c-bg: #fff;
+  --vp-c-bg-alt: #f6f6f7;
+  --vp-c-bg-elv: #fff;
+  --vp-c-bg-soft: #f6f6f7;
+
+  --vp-c-text-1: rgba(0, 0, 0, 0.9);
+  --vp-c-text-2: rgba(0, 0, 0, 0.7);
+  --vp-c-text-3: rgba(0, 0, 0, 0.5);
+
+  --vp-c-brand-1: #945f00;
+  --vp-c-brand-2: #be830e;
+  --vp-c-brand-3: #a87309;
+}
+
+/* Custom container styles for lesson info boxes */
+.custom-block.info {
+  border-color: var(--vp-c-brand-1);
+  background-color: var(--vp-c-brand-soft);
+}
+
+.custom-block.info .custom-block-title {
+  color: var(--vp-c-brand-1);
+}
+
+/* Tally mark styling */
+.tally {
+  font-family: var(--vp-font-family-mono);
+  letter-spacing: 0.05em;
+}
+
+/* LM Grid table styling */
+.lm-grid {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.lm-grid table {
+  border-collapse: collapse;
+  border: 1px solid var(--vp-c-border);
+  font-size: 0.875rem;
+}
+
+.lm-grid th,
+.lm-grid td {
+  padding: 0.5rem;
+  text-align: center;
+  min-width: 3rem;
+  height: 2.5rem;
+  border: 1px solid var(--vp-c-border);
+}
+
+.lm-grid th {
+  background-color: var(--vp-c-brand-soft);
+  font-weight: 600;
+}
+
+.lm-grid th code,
+.lm-grid td code {
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+}
+
+.lm-grid td:first-child {
+  background-color: var(--vp-c-brand-soft);
+  font-weight: 600;
+}
+
+/* Hero image styling in content */
+.vp-doc img {
+  border-radius: 0.5rem;
+}
+
+/* Lesson intro block styling */
+.lesson-intro {
+  border-left: 4px solid var(--vp-c-brand-1);
+  padding-left: 1rem;
+  margin: 1.25rem 0;
+  font-weight: 500;
+}
+
+/* Footer link styling */
+.VPFooter .message a,
+.VPFooter .copyright a {
+  color: var(--vp-c-brand-1);
+  text-decoration: underline;
+}
