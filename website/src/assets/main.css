@@ -118,6 +118,44 @@
     letter-spacing: var(--tracking-title);
 }
 
+/* Heading anchor links */
+.prose .heading-wrapper {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4em;
+}
+
+.prose .header-anchor {
+    opacity: 0;
+    font-weight: 700;
+    color: var(--color-anu-gold);
+    text-decoration-line: underline;
+    text-decoration-color: var(--color-anu-gold);
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.18em;
+    transition: opacity 0.15s ease-in-out;
+}
+
+.prose .header-anchor::before {
+    content: "#";
+}
+
+.prose .heading-wrapper:hover .header-anchor,
+.prose .header-anchor:focus {
+    opacity: 0.6;
+}
+
+.prose .header-anchor:hover,
+.prose .header-anchor:focus {
+    opacity: 1;
+}
+
+@media print {
+    .prose .header-anchor {
+        display: none;
+    }
+}
+
 .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
     font-size: 1.5em;
     margin-top: 2em;

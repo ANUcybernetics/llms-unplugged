@@ -196,7 +196,14 @@ export default function (eleventyConfig) {
   })
     .use(markdownItFootnote)
     .use(markdownItAnchor, {
-      permalink: markdownItAnchor.permalink.headerLink(),
+      permalink: markdownItAnchor.permalink.linkAfterHeader({
+        class: "header-anchor",
+        symbol: "",
+        style: "visually-hidden",
+        assistiveText: (title) => `Link to "${title}"`,
+        visuallyHiddenClass: "sr-only",
+        wrapper: ['<div class="heading-wrapper">', "</div>"],
+      }),
       slugify: eleventyConfig.getFilter("slugify"),
     })
     .use(markdownItTocDoneRight, {
