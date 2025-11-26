@@ -1,0 +1,31 @@
+{% extends "base.njk" %}
+
+{% block ogType %}article{% endblock %}
+{% block ogTitle %}{{ title }} - LLMs Unplugged{% endblock %}
+{% block twitterTitle %}{{ title }} - LLMs Unplugged{% endblock %}
+{% block pageTitle %}{{ title }} - LLMs Unplugged{% endblock %}
+
+{% block content %}
+<header class="mb-8 not-prose">
+  <h1 class="text-3xl font-bold mb-2">{{ title }}</h1>
+  <div class="flex flex-wrap items-center gap-4 text-sm text-anu-white/70">
+    <span>{{ author }}</span>
+    <time datetime="{{ date | htmlDateString }}">{{ date | readableDate }}</time>
+    {% if tags | length > 1 %}
+    <div class="flex gap-2">
+      {% for tag in tags %}
+        {% if tag != "news" %}
+        <span class="px-2 py-1 bg-anu-gold/20 text-anu-gold rounded text-xs">{{ tag }}</span>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</header>
+
+{{ content | safe }}
+
+<footer class="mt-12 pt-8 border-t border-anu-gold/30 not-prose">
+  <a href="/news/" class="text-anu-gold-2 hover:text-anu-gold transition-colors">← Back to news</a>
+</footer>
+{% endblock %}
