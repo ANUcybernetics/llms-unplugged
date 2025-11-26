@@ -17,6 +17,7 @@ done in any order after completing the fundamentals.
 [Download the full PDF bundle]({{ links.lessons_pdf }})
 
 {% for topic in topics %}
+{% set topicLessons = collections.lessons | filterByTopic(topic.id) %}
 
 <article class="border border-anu-gold/40 rounded-lg p-4 bg-anu-black/40 my-6 not-prose">
   <h2 class="text-xl font-semibold mb-2">
@@ -24,7 +25,7 @@ done in any order after completing the fundamentals.
   </h2>
   <p class="text-anu-white/90 mb-3">{{ topic.description }}</p>
   <p class="text-sm text-anu-white/70">
-    {{ topic.lessons.length }} lesson{% if topic.lessons.length != 1 %}s{% endif %}
+    {{ topicLessons.length }} lesson{% if topicLessons.length != 1 %}s{% endif %}
   </p>
 </article>
 {% endfor %}
