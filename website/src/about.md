@@ -17,7 +17,9 @@ eleventyNavigation:
 _LLMs Unplugged_ is a
 [Cybernetic Studio](https://cybernetics.anu.edu.au/cybernetic-studio/) project
 created by [Dr. Ben Swift](https://benswift.me) at the
-[ANU School of Cybernetics](https://cybernetics.anu.edu.au).
+[ANU School of Cybernetics](https://cybernetics.anu.edu.au). If you've got
+questions, suggestions, or _LLMs Unplugged_ success stories then
+[send Ben an email](mailto:ben.swift@anu.edu.au).
 
 These resources build on a rich history of unplugged computing education (and
 hands-on education in genral). If you're interested in where these ideas came
