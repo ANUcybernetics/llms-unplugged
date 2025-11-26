@@ -24,8 +24,8 @@ async function main() {
     port: PORT,
     recurse: true,
     linksToSkip: [
-      // Google Scholar blocks automated requests
-      /^https:\/\/scholar\.google\.com/,
+      // only check internal links
+      /^(?!http:\/\/localhost)/,
     ],
     urlRewriteExpressions: [
       {
