@@ -142,6 +142,8 @@ If you use these materials in your teaching or research, please cite them as:
 
 ### BibTeX
 
+{% raw %}
+
 ```bibtex
 @misc{swift2025llmsunplugged,
   author       = {Swift, Ben},
@@ -152,3 +154,5 @@ If you use these materials in your teaching or research, please cite them as:
   url          = {https://doi.org/10.5281/zenodo.17403824}
 }
 ```
+
+{% endraw %}
