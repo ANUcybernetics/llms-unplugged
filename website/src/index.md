@@ -81,8 +81,8 @@ allows educators who want to go deeper to personalise even more of the unplugged
 activities to their own classroom context.
 
 These _LLMs Unplugged_ resources will grow over time, with example lesson plans,
-new lessons and unplugged activities, and more. Bookmark us and stay tuned. And
-if you'd like to get in touch, email
+new lessons and unplugged activities, and more. Bookmark us and stay tuned. Read
+the [FAQ](/faq/). And if you'd like to get in touch, email
 [ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au).
 
 ![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-1.jpg)
