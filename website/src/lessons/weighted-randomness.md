@@ -3,7 +3,7 @@ title: Weighted Randomness
 description:
   Learn how to make random choices where some options are more likely than
   others—a core generative AI operation.
-order: 0
+order: 3
 topic: fundamentals
 pdf: /assets/pdfs/00-weighted-randomness.pdf
 keyIdea:
