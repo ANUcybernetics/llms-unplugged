@@ -53,10 +53,7 @@ for example:
 - Northwestern University's
   [AI Unplugged Resources](https://sites.northwestern.edu/aiunplugged/)
 - [CS In Schools](https://csinschools.io/) by Toan Huynh and Hugh Williams has
-  some material on AI Unplugged (including one activity in their
-  [Generative AI](https://csinschools.io/courses/introduction-to-artificial-intelligence/lessons/lesson-3-generative-ai/)
-  worksheet that uses a simiar "counting bigrams" approach to _LLMs Unplugged_
-  Lesson 1)
+  some material on AI Unplugged[^counting-bigrams]
 
 These collections cover classification, clustering, computer vision, and
 artificial neural network concepts. However, they contain limited material
@@ -155,3 +152,9 @@ If you use these materials in your teaching or research, please cite them as:
 ```
 
 {% endraw %}
+
+[^counting-bigrams]:
+    There's one one activity on
+    [Generative AI](https://csinschools.io/courses/introduction-to-artificial-intelligence/lessons/lesson-3-generative-ai/)
+    worksheet that uses a simiar "counting bigrams" approach to the _Basic
+    Training_ lesson
