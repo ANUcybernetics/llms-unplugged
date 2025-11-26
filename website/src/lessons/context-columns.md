@@ -5,7 +5,7 @@ description:
   grammatical cues.
 order: 6
 topic: how-models-understand
-pdf: /assets/pdfs/06-context-columns.pdf
+pdf: /assets/pdfs/context-columns.pdf
 keyIdea:
   Extra context columns let the model weight words differently after verbs,
   pronouns, or prepositions.

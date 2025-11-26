@@ -5,7 +5,7 @@ description:
   model.
 order: 3
 topic: scaling-up
-pdf: /assets/pdfs/03-pretrained-generation.pdf
+pdf: /assets/pdfs/pretrained-generation.pdf
 keyIdea:
   You can generate from a model you didn’t train—just follow its lookup rules
   and sample next words.

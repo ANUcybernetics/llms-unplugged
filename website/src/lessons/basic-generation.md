@@ -5,7 +5,7 @@ description:
   sampling.
 order: 2
 topic: fundamentals
-pdf: /assets/pdfs/02-basic-generation.pdf
+pdf: /assets/pdfs/basic-generation.pdf
 keyIdea:
   Language models generate text one word at a time by sampling the next word
   according to learned counts.

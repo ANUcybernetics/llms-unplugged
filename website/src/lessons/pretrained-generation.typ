@@ -1,13 +1,13 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
-#import "utils.typ": *
+#import "/typst/utils.typ": *
 
 // Apply base styling (colors, fonts, page setup)
 #show: lesson-setup
 
 #lesson-hero(
   "Pre-trained Model Generation",
-  "images/CYBERNETICS_B_033.jpg",
+  "/typst/images/CYBERNETICS_B_033.jpg",
   "03",
 )[
   Use a (slightly larger) pre-trained model to generate new text through

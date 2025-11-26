@@ -1,13 +1,13 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
-#import "utils.typ": *
+#import "/typst/utils.typ": *
 
 // Apply base styling (colors, fonts, page setup)
 #show: lesson-setup
 
 #lesson-hero(
   "Trigram Model",
-  "images/CYBERNETICS_A_027.jpg",
+  "/typst/images/CYBERNETICS_A_027.jpg",
   "05",
 )[
   Extend the bigram model to consider _two_ words of context instead of one,

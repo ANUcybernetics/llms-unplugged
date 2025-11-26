@@ -1,13 +1,13 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
-#import "utils.typ": *
+#import "/typst/utils.typ": *
 
 // Apply base styling
 #show: lesson-setup
 
 #lesson-hero(
   "Weighted Randomness",
-  "images/CYBERNETICS_A_010.jpg",
+  "/typst/images/CYBERNETICS_A_010.jpg",
   "00",
 )[
   Learn how to make random choices where some options are more likely than
@@ -70,17 +70,17 @@
   == d10 dice roll → outcome mapping table
 
   #v(1em)
-  #figure(image("images/dice-mappings-d10.svg", width: 100%))
+  #figure(image("/typst/images/dice-mappings-d10.svg", width: 100%))
 ]
 
 // #pagebreak(weak: true)
 
 // == d20 dice roll → outcome mapping table
 
-// #figure(image("images/dice-mappings-d20.svg", width: 90%))
+// #figure(image("/typst/images/dice-mappings-d20.svg", width: 90%))
 
 // #pagebreak(weak: true)
 
 // == d120 dice roll → outcome mapping table
 
-// #figure(image("images/dice-mappings-d120.svg", width: 100%))
+// #figure(image("/typst/images/dice-mappings-d120.svg", width: 100%))

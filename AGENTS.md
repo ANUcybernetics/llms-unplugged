@@ -7,11 +7,12 @@ manual (pen-and-paper) and automated tools.
 
 ## Project structure
 
-This repository has three main parts, each with its own AGENTS.md:
+This repository has four main parts:
 
 - **`cli/`** - Rust CLI tool for generating N-gram models and PDF booklets
-- **`handouts/`** - Typst teaching materials (lessons, worksheets, runsheets)
-- **`website/`** - Project website (Eleventy + Tailwind)
+- **`handouts/`** - Typst standalone materials (worksheets, runsheets, poster)
+- **`website/`** - Project website (Eleventy + Tailwind) including lesson cards
+- **`typst/`** - Shared Typst resources (utils.typ, fonts/, images/)
 
 Supporting directories:
 
@@ -34,8 +35,11 @@ cd cli && cargo build --release
 ./cli/target/release/llms_unplugged data/frankenstein.txt -n 2
 typst compile cli/book.typ book.pdf
 
-# Build teaching handouts
-cd handouts && make lessons
+# Build lesson PDFs
+cd website && npm run build:pdfs
+
+# Build other handouts (worksheets, runsheets, poster)
+cd handouts && make
 
 # Run website dev server
 cd website && npm run dev

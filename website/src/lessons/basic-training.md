@@ -5,7 +5,7 @@ description:
   in text.
 order: 1
 topic: fundamentals
-pdf: /assets/pdfs/01-basic-training.pdf
+pdf: /assets/pdfs/basic-training.pdf
 keyIdea:
   Language models learn by counting patterns in text and tracking which words
   follow other words.

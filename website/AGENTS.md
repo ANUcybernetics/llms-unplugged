@@ -35,7 +35,12 @@ src/
   assets/
     main.css       # Entry point with @import "tailwindcss"
     main.js        # JavaScript entry point
+    pdfs/          # Generated lesson PDFs (from build:pdfs)
+  lessons/         # Lesson content (.md) and Typst cards (.typ)
   index.md         # Main content (markdown with frontmatter)
+
+scripts/
+  build-lesson-pdfs.js  # Compiles lesson .typ files to PDFs
 
 _site/             # Build output (generated, not in git)
 
@@ -51,9 +56,20 @@ package.json            # Dependencies and scripts
 
 - `npm run dev` - dev server at http://localhost:8080 with HMR
 - `npm run build` - production build to `_site/`
+- `npm run build:pdfs` - compile lesson Typst files to PDFs
 - `npm test` - lint, build, then run Vitest tests
 - `npm run lint` - run ESLint and Stylelint
 - `npm run preview` - serve the built `_site/` directory
+
+## Lesson structure
+
+Each lesson has two colocated files in `src/lessons/`:
+
+- `*.md` - lesson content and frontmatter (rendered to HTML)
+- `*.typ` - Typst lesson card (compiled to PDF via `build:pdfs`)
+
+The Typst files import shared resources from `../typst/` (utils.typ, fonts,
+images) using absolute paths from project root (e.g., `/typst/utils.typ`).
 
 ## Build process
 

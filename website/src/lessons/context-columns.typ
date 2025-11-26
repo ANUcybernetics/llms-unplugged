@@ -1,13 +1,13 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
-#import "utils.typ": *
+#import "/typst/utils.typ": *
 
 // Apply base styling (colors, fonts, page setup)
 #show: lesson-setup
 
 #lesson-hero(
   "Context Columns",
-  "images/CYBERNETICS_A_051.jpg",
+  "/typst/images/CYBERNETICS_A_051.jpg",
   "06",
 )[
   Enhance the bigram model with context columns that capture grammatical and

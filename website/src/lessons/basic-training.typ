@@ -1,13 +1,13 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
-#import "utils.typ": *
+#import "/typst/utils.typ": *
 
 // Apply base styling
 #show: lesson-setup
 
 #lesson-hero(
   "Basic Training",
-  "images/CYBERNETICS_A_009.jpg",
+  "/typst/images/CYBERNETICS_A_009.jpg",
   "01",
 )[
   Build a bigram language model that tracks which words follow which other words

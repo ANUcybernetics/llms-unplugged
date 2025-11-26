@@ -1,6 +1,6 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
-#import "../utils.typ": *
+#import "/typst/utils.typ": *
 #import "@local/anu-typst-template:0.2.0": anu-colors
 
 #let blank-lines(n, spacing: 1.2em) = {
@@ -54,8 +54,8 @@
   ]
 }
 
-#blank-lesson("images/CYBERNETICS_A_042.jpg")
-#blank-lesson("images/CYBERNETICS_A_038.jpg")
-#blank-lesson("images/CYBERNETICS_A_067.jpg")
-#blank-lesson("images/CYBERNETICS_A_069.jpg")
-#blank-lesson("images/CYBERNETICS_A_072.jpg")
+#blank-lesson("/typst/images/CYBERNETICS_A_042.jpg")
+#blank-lesson("/typst/images/CYBERNETICS_A_038.jpg")
+#blank-lesson("/typst/images/CYBERNETICS_A_067.jpg")
+#blank-lesson("/typst/images/CYBERNETICS_A_069.jpg")
+#blank-lesson("/typst/images/CYBERNETICS_A_072.jpg")

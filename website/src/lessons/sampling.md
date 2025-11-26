@@ -5,7 +5,7 @@ description:
   picks the next word.
 order: 4
 topic: controlling-output
-pdf: /assets/pdfs/04-sampling-strategies.pdf
+pdf: /assets/pdfs/sampling.pdf
 keyIdea:
   Different sampling strategies change the character of generated text even when
   the model stays the same.

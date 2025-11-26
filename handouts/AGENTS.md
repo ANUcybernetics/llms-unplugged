@@ -2,30 +2,31 @@
 
 ## Overview
 
-This directory contains Typst-based teaching materials for the "My First LM"
-project, including lessons, worksheets, and runsheets.
+This directory contains Typst-based standalone teaching materials: worksheets,
+runsheets, and the poster. Lesson cards are now colocated with their markdown
+files in `website/src/lessons/`.
 
 ## Directory structure
 
-- numbered lessons (00-09): `00-weighted-randomness.typ`,
-  `01-basic-training.typ`, etc.
 - `worksheets/` - blank templates (grid, trigram-template, blank-lesson)
 - `draft/` - lessons in draft form (evaluation, poetry-slam)
-- `runsheets/` - session runsheets (90min, 3h)
-- `images/` - all images and svg files
+- `runsheets/` - session runsheets (90min, 2h, 3h)
+- `poster.typ` - project poster
+
+Shared Typst resources are in `../typst/`:
+
 - `utils.typ` - shared functions
+- `fonts/` - IBM Plex Mono, Public Sans
+- `images/` - hero images and SVGs
 
 ## Build process
 
 ```bash
-# Build all numbered lessons and combine them
-make lessons
+# Build all handouts (worksheets, runsheets, poster)
+make
 
-# Build all typst files in handouts/ and subdirectories
-make all
-
-# Build single lesson
-typst compile 00-weighted-randomness.typ
+# Build single file
+typst compile --root .. worksheets/grid.typ
 ```
 
 ## Design constraints
@@ -46,8 +47,8 @@ Note: the ANU template typst package is on this same machine at
 
 ### Modifying layout
 
-- Edit `utils.typ` for global changes
-- override locally for specific lessons
+- Edit `../typst/utils.typ` for global changes
+- Override locally for specific files
 
 ## Dependencies
 
@@ -57,10 +58,7 @@ Note: the ANU template typst package is on this same machine at
 
 ## Notes
 
-- lessons are designed for physical printing and workshop distribution
-  (_ideally_ on one double-sided sheet, i.e. 2 pages total for each)
-- each lesson teaches a specific concept about language models
-- emphasis on hands-on activities with dice, tokens, paper
-- when making changes to the template, build one of the lessons (e.g.
-  `00-weighted-randomness.typ`) and read the output pdf (it'll only be 2 pages)
-  to see if the changes have been applied correctly
+- Materials are designed for physical printing and workshop distribution
+- Emphasis on hands-on activities with dice, tokens, paper
+- When making changes to the template, build one of the worksheets and check the
+  output PDF

@@ -1,13 +1,13 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
-#import "utils.typ": *
+#import "/typst/utils.typ": *
 
 // Apply base styling
 #show: lesson-setup
 
 #lesson-hero(
   "LoRA",
-  "images/CYBERNETICS_B_032.jpg",
+  "/typst/images/CYBERNETICS_B_032.jpg",
   "08",
 )[
   Efficiently adapt a trained language model to a new domain or style without

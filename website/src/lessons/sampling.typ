@@ -1,13 +1,13 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
-#import "utils.typ": *
+#import "/typst/utils.typ": *
 
 // Apply base styling (colors, fonts, page setup)
 #show: lesson-setup
 
 #lesson-hero(
   "Sampling",
-  "images/CYBERNETICS_A_098.jpg",
+  "/typst/images/CYBERNETICS_A_098.jpg",
   "04",
 )[
   When generating text the language model gives several different options for

@@ -5,7 +5,7 @@ description:
   others—a core generative AI operation.
 order: 3
 topic: fundamentals
-pdf: /assets/pdfs/00-weighted-randomness.pdf
+pdf: /assets/pdfs/weighted-randomness.pdf
 keyIdea:
   Use weighted sampling to make random choices that reflect a target probability
   distribution.

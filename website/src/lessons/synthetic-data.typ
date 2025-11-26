@@ -1,13 +1,13 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
-#import "utils.typ": *
+#import "/typst/utils.typ": *
 
 // Apply base styling
 #show: lesson-setup
 
 #lesson-hero(
   "Synthetic Data",
-  "images/CYBERNETICS_B_033.jpg",
+  "/typst/images/CYBERNETICS_B_033.jpg",
   "09",
 )[
   Use your language model to generate new training data, then train a new model

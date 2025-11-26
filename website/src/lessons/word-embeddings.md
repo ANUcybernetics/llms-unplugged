@@ -5,7 +5,7 @@ description:
   your model.
 order: 7
 topic: how-models-understand
-pdf: /assets/pdfs/07-embeddings.pdf
+pdf: /assets/pdfs/word-embeddings.pdf
 keyIdea:
   A word’s row in the grid is its embedding; distances between rows reveal
   grammatical and semantic closeness.
