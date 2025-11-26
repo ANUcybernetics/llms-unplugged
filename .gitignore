@@ -1,6 +1,6 @@
 # ignore all pdfs except the website assets
 *.pdf
-!website/src/assets/pdfs/**
+!website/public/assets/pdfs/**
 
 data/
 
