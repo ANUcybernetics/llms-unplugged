@@ -1,8 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300..900;1,300..900&display=swap");
 @import "tailwindcss";
 
-@plugin "@tailwindcss/typography";
-
 @theme {
     --color-anu-white: #fff;
     --color-anu-black: #000;
@@ -90,44 +88,74 @@
     transform: translateY(0);
 }
 
+/* Prose typography styles */
 .prose {
-    --tw-prose-body: var(--color-anu-white);
-    --tw-prose-headings: var(--color-anu-white);
-    --tw-prose-links: var(--color-anu-gold-2);
-    --tw-prose-bold: var(--color-anu-white);
-    --tw-prose-counters: var(--color-anu-white);
-    --tw-prose-bullets: var(--color-anu-white);
-    --tw-prose-hr: var(--color-anu-gold);
-    --tw-prose-quotes: var(--color-anu-white);
-    --tw-prose-quote-borders: var(--color-anu-gold);
-    --tw-prose-captions: var(--color-anu-white);
-    --tw-prose-code: var(--color-anu-white);
-    --tw-prose-pre-code: var(--color-anu-white);
-    --tw-prose-pre-bg: var(--color-anu-unilink-gold);
-
+    color: var(--color-anu-white);
     font-family: var(--font-body);
     line-height: var(--leading-body);
     letter-spacing: -0.006em;
 
     @media print {
-        --tw-prose-body: var(--color-anu-black);
-        --tw-prose-headings: var(--color-anu-gold);
-        --tw-prose-links: var(--color-anu-gold);
-        --tw-prose-bold: var(--color-anu-black);
-        --tw-prose-counters: var(--color-anu-black);
-        --tw-prose-bullets: var(--color-anu-black);
-        --tw-prose-hr: var(--color-anu-gold);
-        --tw-prose-quotes: var(--color-anu-black);
-        --tw-prose-quote-borders: var(--color-anu-gold);
-        --tw-prose-captions: var(--color-anu-black);
-        --tw-prose-code: var(--color-anu-black);
-        --tw-prose-pre-code: var(--color-anu-black);
-        --tw-prose-pre-bg: var(--color-anu-gold-tint);
+        color: var(--color-anu-black);
     }
 }
 
+/* Headings */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+    color: var(--color-anu-white);
+    font-weight: 700;
+    line-height: 1.25;
+
+    @media print {
+        color: var(--color-anu-gold);
+    }
+}
+
+.prose h1 {
+    font-size: 2.25em;
+    margin-top: 0;
+    margin-bottom: 0.9em;
+    letter-spacing: var(--tracking-title);
+}
+
+.prose h2 {
+    font-size: 1.5em;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    letter-spacing: var(--tracking-tight);
+}
+
+.prose h3 {
+    font-size: 1.25em;
+    margin-top: 1.6em;
+    margin-bottom: 0.6em;
+}
+
+.prose h4 {
+    font-size: 1em;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+/* Paragraphs */
+.prose p {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+}
+
+/* Links */
 .prose a {
+    color: var(--color-anu-gold-2);
     text-decoration: none;
+
+    @media print {
+        color: var(--color-anu-gold);
+    }
 }
 
 .prose a:hover {
@@ -138,24 +166,219 @@
     text-decoration-skip-ink: auto;
 }
 
-/* Inline code styling (matches marp-anu dark theme) */
-.prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+/* Bold */
+.prose strong {
+    color: var(--color-anu-white);
+    font-weight: 600;
+
+    @media print {
+        color: var(--color-anu-black);
+    }
+}
+
+/* Lists */
+.prose ul,
+.prose ol {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+    padding-left: 1.625em;
+}
+
+.prose ul {
+    list-style-type: disc;
+}
+
+.prose ol {
+    list-style-type: decimal;
+}
+
+.prose li {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.prose li::marker {
+    color: var(--color-anu-white);
+
+    @media print {
+        color: var(--color-anu-black);
+    }
+}
+
+.prose ol > li::marker {
+    color: var(--color-anu-white);
+
+    @media print {
+        color: var(--color-anu-black);
+    }
+}
+
+/* Nested lists */
+.prose ul ul,
+.prose ul ol,
+.prose ol ul,
+.prose ol ol {
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+}
+
+/* Blockquotes */
+.prose blockquote {
+    font-style: italic;
+    color: var(--color-anu-white);
+    border-left: 0.25rem solid var(--color-anu-gold);
+    padding-left: 1em;
+    margin-top: 1.6em;
+    margin-bottom: 1.6em;
+
+    @media print {
+        color: var(--color-anu-black);
+    }
+}
+
+.prose blockquote p:first-of-type {
+    margin-top: 0;
+}
+
+.prose blockquote p:last-of-type {
+    margin-bottom: 0;
+}
+
+/* Horizontal rule */
+.prose hr {
+    border-color: var(--color-anu-gold);
+    border-top-width: 1px;
+    margin-top: 3em;
+    margin-bottom: 3em;
+}
+
+/* Images and figures */
+.prose img {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.prose figure {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.prose figcaption {
+    color: var(--color-anu-white);
+    font-size: 0.875em;
+    line-height: 1.4;
+    margin-top: 0.875em;
+
+    @media print {
+        color: var(--color-anu-black);
+    }
+}
+
+/* Inline code */
+.prose :where(code):not(:where(.not-prose, .not-prose *)) {
+    color: var(--color-anu-white);
     background: var(--color-anu-unilink-gold);
     border: 1px solid var(--color-anu-gold-4);
     padding: 0.15em 0.3em;
     border-radius: 4px;
     font-size: 90%;
+
+    @media print {
+        color: var(--color-anu-black);
+        background: var(--color-anu-gold-tint);
+    }
 }
 
-.prose
-    :where(code):not(
-        :where([class~="not-prose"], [class~="not-prose"] *)
-    )::before,
-.prose
-    :where(code):not(
-        :where([class~="not-prose"], [class~="not-prose"] *)
-    )::after {
-    content: none;
+/* Code blocks */
+.prose pre {
+    color: var(--color-anu-white);
+    background: var(--color-anu-unilink-gold);
+    overflow-x: auto;
+    font-size: 0.875em;
+    line-height: 1.7;
+    margin-top: 1.7em;
+    margin-bottom: 1.7em;
+    border-radius: 0.375rem;
+    padding: 0.875em 1.15em;
+
+    @media print {
+        color: var(--color-anu-black);
+        background: var(--color-anu-gold-tint);
+        border: 1px solid var(--color-anu-gold);
+    }
+}
+
+.prose pre code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+}
+
+/* Tables */
+.prose table {
+    width: 100%;
+    table-layout: auto;
+    text-align: left;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    font-size: 0.875em;
+    line-height: 1.7;
+
+    @media print {
+        border: 1px solid var(--color-anu-gold);
+    }
+}
+
+.prose thead {
+    border-bottom-width: 1px;
+    border-bottom-color: var(--color-anu-gold);
+}
+
+.prose thead th {
+    color: var(--color-anu-white);
+    font-weight: 600;
+    vertical-align: bottom;
+    padding: 0 0.6em 0.6em;
+
+    @media print {
+        background: var(--color-anu-gold);
+        color: var(--color-anu-white);
+    }
+}
+
+.prose tbody tr {
+    border-bottom-width: 1px;
+    border-bottom-color: var(--color-anu-grey-table-line);
+}
+
+.prose tbody tr:last-child {
+    border-bottom-width: 0;
+}
+
+.prose tbody td {
+    vertical-align: baseline;
+    padding: 0.6em;
+
+    @media print {
+        border-bottom: 1px solid var(--color-anu-grey-table-line);
+    }
+}
+
+@media print {
+    .prose tbody tr:nth-child(odd) {
+        background: var(--color-anu-gold-tint);
+    }
+}
+
+/* First/last child margins */
+.prose > :first-child {
+    margin-top: 0;
+}
+
+.prose > :last-child {
+    margin-bottom: 0;
 }
 
 /* Reduced motion support */
@@ -203,46 +426,6 @@
     .prose a[href^="http"]::after {
         content: " (" attr(href) ")";
         font-size: 0.875em;
-    }
-
-    /* Code blocks */
-    .prose code {
-        background: var(--color-anu-gold-tint);
-        border-radius: 0.125rem;
-        padding: 0.125rem 0.25rem;
-    }
-
-    .prose code::before,
-    .prose code::after {
-        content: none;
-    }
-
-    .prose pre {
-        background: var(--color-anu-gold-tint);
-        border: 1px solid var(--color-anu-gold);
-    }
-
-    .prose pre code {
-        background: transparent;
-    }
-
-    /* Tables */
-    .prose table {
-        border: 1px solid var(--color-anu-gold);
-    }
-
-    .prose th {
-        background: var(--color-anu-gold);
-        color: var(--color-anu-white);
-        border-bottom: 1px solid var(--color-anu-gold);
-    }
-
-    .prose td {
-        border-bottom: 1px solid var(--color-anu-grey-table-line);
-    }
-
-    .prose tbody tr:nth-child(odd) {
-        background: var(--color-anu-gold-tint);
     }
 
     /* Remove effects */

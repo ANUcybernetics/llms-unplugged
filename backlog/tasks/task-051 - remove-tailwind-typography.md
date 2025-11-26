@@ -1,9 +1,10 @@
 ---
 id: task-051
 title: remove tailwind typography
-status: To Do
+status: Done
 assignee: []
-created_date: "2025-11-25 10:15"
+created_date: '2025-11-25 10:15'
+updated_date: '2025-11-26 00:30'
 labels: []
 dependencies: []
 ---
