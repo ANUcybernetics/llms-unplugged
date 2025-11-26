@@ -1,7 +1,7 @@
 ---
 id: task-048
 title: lesson page structure and metadata
-status: To Do
+status: Done
 assignee: []
 created_date: "2025-11-25 02:24"
 labels: []
