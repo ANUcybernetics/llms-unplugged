@@ -10,25 +10,10 @@ templateEngineOverride: njk,md
 
 # LLMs Unplugged
 
-{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
-
 Ready-to-use teaching resources for understanding how large language models
 (LLMs) work through hands-on activities. No computers required.
 
-These resources are available under a
-[Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/).
-They're organised into [lessons]({{ links.topics }}) (grouped into topics), with
-each covering a self-contained activity from basic training and generation
-through to advanced concepts like embeddings, sampling strategies, and model
-fine-tuning. Each lesson also includes instructor notes: pedagogical scaffolding
-explaining connections to modern LLMs, discussion questions, and historical
-context---designed for educators without deep AI expertise
-
-Finally (and optionally!) there are [software tools]({{ links.github }}):
-optional open-source tools to create custom n-gram booklets from any text
-corpus, so you can build domain-specific pre-trained models. For educators who
-want to further personalise some of the unplugged activities to their own
-classroom context.
+{% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
 ## Why are these resources necessary?
 
@@ -73,7 +58,22 @@ A typical 90-minute workshop covers the core training-to-generation pipeline
 context columns, word embeddings, and synthetic data if you have more time or a
 particularly engaged audience.
 
-## What's next for _LLMs Unplugged_?
+## What's in the box?
+
+These resources are available under a
+[Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+They're organised into [lessons]({{ links.topics }}) (grouped into topics), with
+each covering a self-contained activity from basic training and generation
+through to advanced concepts like embeddings, sampling strategies, and model
+fine-tuning. Each lesson also includes instructor notes: pedagogical scaffolding
+explaining connections to modern LLMs, discussion questions, and historical
+context---designed for educators without deep AI expertise
+
+Finally (and optionally!) there are [software tools]({{ links.github }}):
+optional open-source tools to create custom n-gram booklets from any text
+corpus, so you can build domain-specific pre-trained models. For educators who
+want to further personalise some of the unplugged activities to their own
+classroom context.
 
 These _LLMs Unplugged_ resources will grow over time, including example lesson
 plans, new lessons and unplugged activities, and more. Bookmark us and stay
