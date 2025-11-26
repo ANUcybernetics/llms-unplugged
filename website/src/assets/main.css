@@ -144,21 +144,22 @@
 }
 
 /* Links */
-.prose a {
+.prose a:not(:where(.not-prose, .not-prose *)) {
     color: var(--color-anu-gold-2);
-    text-decoration: none;
+    text-decoration-line: underline;
+    text-decoration-color: var(--color-anu-gold-4);
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.18em;
+    text-decoration-skip-ink: auto;
 
     @media print {
         color: var(--color-anu-gold);
     }
 }
 
-.prose a:hover {
-    text-decoration-line: underline;
+.prose a:not(:where(.not-prose, .not-prose *)):hover {
     text-decoration-color: var(--color-anu-gold);
     text-decoration-thickness: 0.16em;
-    text-underline-offset: 0.18em;
-    text-decoration-skip-ink: auto;
 }
 
 /* Bold */
