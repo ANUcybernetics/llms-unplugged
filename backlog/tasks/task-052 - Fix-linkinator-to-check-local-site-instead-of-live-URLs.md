@@ -1,9 +1,10 @@
 ---
 id: task-052
 title: Fix linkinator to check local site instead of live URLs
-status: To Do
+status: Done
 assignee: []
 created_date: '2025-11-26 10:06'
+updated_date: '2025-11-26 10:13'
 labels:
   - website
   - tooling
@@ -27,3 +28,25 @@ Options to investigate:
 3. Pre-process HTML to replace absolute URLs before checking
 4. Use a local server that linkinator can crawl
 <!-- SECTION:DESCRIPTION:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+## Implementation
+
+Created `scripts/check-links.js` that uses the linkinator API instead of CLI. This allows:
+
+1. Setting a fixed port (5555) for the internal server
+2. Using proper RegExp-based URL rewrite expressions
+3. Rewriting `https://www.llmsunplugged.org` URLs to `http://localhost:5555`
+
+The CLI couldn't support this because:
+- The `port` option isn't exposed in CLI flags
+- `urlRewriteExpressions` from config files don't work with RegExp (only strings)
+- URL rewrite to relative paths caused `ERR_INVALID_URL` errors
+
+Updated `package.json` to use the new script:
+```json
+"check:links": "npm run build && node scripts/check-links.js"
+```
+<!-- SECTION:NOTES:END -->
