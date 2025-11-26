@@ -15,11 +15,13 @@ dependsOn:
 
 # Context Columns
 
-::: info Lesson Info This lesson is part of the
+::: info Lesson Info
+This lesson is part of the
 [How Models Understand](/topics/how-models-understand) topic, with instructions
 for students (including examples) and [instructor notes](#instructor-notes). If
 you'd like a printable version of the student handout,
-[download it here](/assets/pdfs/context-columns.pdf). :::
+[download it here](/assets/pdfs/context-columns.pdf).
+:::
 
 Enhance the bigram model with context columns that capture grammatical and
 semantic patterns.

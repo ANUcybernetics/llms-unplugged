@@ -15,11 +15,13 @@ dependsOn:
 
 # Basic Generation
 
-::: info Lesson Info This lesson is part of the
+::: info Lesson Info
+This lesson is part of the
 [Fundamentals](/topics/fundamentals) topic, with instructions for students
 (including examples) and [instructor notes](#instructor-notes). If you'd like a
 printable version of the student handout,
-[download it here](/assets/pdfs/basic-generation.pdf). :::
+[download it here](/assets/pdfs/basic-generation.pdf).
+:::
 
 Use a pre-trained (hand-built) bigram model to generate new text through
 weighted random sampling.

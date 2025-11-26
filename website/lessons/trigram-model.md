@@ -14,10 +14,12 @@ dependsOn:
 
 # Trigram Model
 
-::: info Lesson Info This lesson is part of the [Scaling Up](/topics/scaling-up)
+::: info Lesson Info
+This lesson is part of the [Scaling Up](/topics/scaling-up)
 topic, with instructions for students (including examples) and
 [instructor notes](#instructor-notes). If you'd like a printable version of the
-student handout, [download it here](/assets/pdfs/trigram-model.pdf). :::
+student handout, [download it here](/assets/pdfs/trigram-model.pdf).
+:::
 
 Extend the bigram model to consider two words of context instead of one, leading
 to better generation.

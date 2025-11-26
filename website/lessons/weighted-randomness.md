@@ -13,11 +13,13 @@ dependsOn: []
 
 # Weighted Randomness
 
-::: info Lesson Info This lesson is part of the
+::: info Lesson Info
+This lesson is part of the
 [Fundamentals](/topics/fundamentals) topic, with instructions for students
 (including examples) and [instructor notes](#instructor-notes). If you'd like a
 printable version of the student handout,
-[download it here](/assets/pdfs/weighted-randomness.pdf). :::
+[download it here](/assets/pdfs/weighted-randomness.pdf).
+:::
 
 Learn how to make random choices where some options are more likely than
 others—an operation at the core of all generative AI.

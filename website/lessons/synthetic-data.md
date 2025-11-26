@@ -14,11 +14,13 @@ dependsOn:
 
 # Synthetic Data
 
-::: info Lesson Info This lesson is part of the
+::: info Lesson Info
+This lesson is part of the
 [Adaptation and Data](/topics/adaptation-and-data) topic, with instructions for
 students (including examples) and [instructor notes](#instructor-notes). If
 you'd like a printable version of the student handout,
-[download it here](/assets/pdfs/synthetic-data.pdf). :::
+[download it here](/assets/pdfs/synthetic-data.pdf).
+:::
 
 Use your language model to generate new training data, then train a new model on
 that synthetic data to watch patterns change.
