@@ -23,9 +23,15 @@ async function main() {
     path: "_site",
     port: PORT,
     recurse: true,
+    linksToSkip: [
+      // Google Scholar blocks automated requests
+      /^https:\/\/scholar\.google\.com/,
+    ],
     urlRewriteExpressions: [
       {
-        pattern: new RegExp(`^${SITE_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`),
+        pattern: new RegExp(
+          `^${SITE_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`,
+        ),
         replacement: `http://localhost:${PORT}`,
       },
     ],
