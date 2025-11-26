@@ -101,7 +101,6 @@ export default defineConfig({
     nav: [
       { text: "Home", link: "/" },
       { text: "Lessons", link: "/lessons/" },
-      { text: "Topics", link: "/topics/" },
       { text: "Educators", link: "/educators" },
       { text: "FAQ", link: "/faq" },
       { text: "About", link: "/about" },
