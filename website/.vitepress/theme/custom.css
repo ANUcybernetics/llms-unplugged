@@ -1,5 +1,43 @@
 /* ANU colour scheme and typography for VitePress */
 
+/* Native dark mode detection - applies before JS loads */
+@media (prefers-color-scheme: dark) {
+    :root:not(.light) {
+        color-scheme: dark;
+
+        --vp-c-bg: #0a0a0a;
+        --vp-c-bg-alt: #111;
+        --vp-c-bg-elv: #1a1a1a;
+        --vp-c-bg-soft: #1a1a1a;
+
+        --vp-c-text-1: rgba(255, 255, 255, 0.95);
+        --vp-c-text-2: rgba(255, 255, 255, 0.78);
+        --vp-c-text-3: rgba(255, 255, 255, 0.56);
+
+        --vp-c-divider: rgba(190, 131, 14, 0.3);
+        --vp-c-border: rgba(190, 131, 14, 0.4);
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    :root:not(.dark) {
+        color-scheme: light;
+
+        --vp-c-bg: #fff;
+        --vp-c-bg-alt: #f6f6f7;
+        --vp-c-bg-elv: #fff;
+        --vp-c-bg-soft: #f6f6f7;
+
+        --vp-c-text-1: rgba(0, 0, 0, 0.9);
+        --vp-c-text-2: rgba(0, 0, 0, 0.7);
+        --vp-c-text-3: rgba(0, 0, 0, 0.5);
+
+        --vp-c-brand-1: #945f00;
+        --vp-c-brand-2: #be830e;
+        --vp-c-brand-3: #a87309;
+    }
+}
+
 :root {
     /* ANU Brand colours */
     --anu-white: #fff;
