@@ -155,7 +155,7 @@ describe("navigation", () => {
     const html = readFileSync(indexPath, "utf-8");
     expect(html).toContain('href="/topics/"');
     expect(html).toContain('href="/about/"');
-    expect(html).toContain('href="/contact/"');
+    expect(html).toContain('href="/educators/"');
   });
 
   it("includes site branding link", () => {
@@ -201,11 +201,11 @@ describe("navigation", () => {
     expect(html).toContain("About");
   });
 
-  it("generates contact page", () => {
-    const contactPath = join(siteDir, "contact", "index.html");
-    expect(existsSync(contactPath)).toBe(true);
-    const html = readFileSync(contactPath, "utf-8");
-    expect(html).toContain("Contact");
+  it("generates educators page", () => {
+    const educatorsPath = join(siteDir, "educators", "index.html");
+    expect(existsSync(educatorsPath)).toBe(true);
+    const html = readFileSync(educatorsPath, "utf-8");
+    expect(html).toContain("educators");
   });
 });
 
@@ -438,7 +438,7 @@ describe("llms.txt plugin", () => {
   it("copies markdown source files to output directory", () => {
     expect(existsSync(join(siteDir, "index.md"))).toBe(true);
     expect(existsSync(join(siteDir, "about.md"))).toBe(true);
-    expect(existsSync(join(siteDir, "contact.md"))).toBe(true);
+    expect(existsSync(join(siteDir, "educators.md"))).toBe(true);
   });
 
   it("preserves markdown content in copied files", () => {
@@ -478,7 +478,7 @@ describe("llms.txt plugin", () => {
       "[About](https://www.llmsunplugged.org/about.md)",
     );
     expect(llmsTxt).toContain(
-      "[Contact](https://www.llmsunplugged.org/contact.md)",
+      "[For educators](https://www.llmsunplugged.org/educators.md)",
     );
     expect(llmsTxt).toContain(
       "[Weighted Randomness](https://www.llmsunplugged.org/lessons/weighted-randomness.md)",

@@ -5,9 +5,6 @@ description:
   Frequently asked questions about using LLMs Unplugged resources, materials
   needed, and how the activities relate to modern AI.
 hero: /assets/images/hero-faq.jpg
-eleventyNavigation:
-  key: FAQ
-  order: 4
 ---
 
 # Frequently asked questions
@@ -55,8 +52,8 @@ universities, and non-profit organisations can use these materials in workshops
 that charge cost-recovery fees. However, for-profit companies cannot run paid
 workshops using these materials under the CC-BY-SA 4.0 license. If you're a
 commercial training provider interested in using these resources, please
-[contact us](/contact/)---we're happy to discuss alternative licensing
-arrangements.
+[contact us](/about/#get-in-touch)---we're happy to discuss alternative
+licensing arrangements.
 
 ## What's the difference between bigrams and trigrams?
 
@@ -97,6 +94,6 @@ of statistical language modelling. Trigrams produce noticeably better results.
 ## I found an error in the materials.
 
 Please [open an issue]({{ links.github }}/issues) on GitHub or
-[contact us](/contact/). We appreciate corrections and suggestions.
+[contact us](/about/#get-in-touch). We appreciate corrections and suggestions.
 
 ![Participants exploring language models hands-on](/assets/images/workshop-5.jpg)
