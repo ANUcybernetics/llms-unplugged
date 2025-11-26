@@ -18,7 +18,7 @@
     "test:watch": "vitest",
     "lint": "eslint . && stylelint 'src/**/*.css'",
     "lint:fix": "eslint . --fix && stylelint 'src/**/*.css' --fix",
-    "check:links": "npm run build && linkinator _site/index.html --recurse --skip 'https://.*'",
+    "check:links": "npm run build && cd _site && linkinator index.html --server-root . --recurse",
     "lighthouse": "unlighthouse --site http://localhost:8080",
     "lighthouse:ci": "npm run build && unlighthouse-ci --site ./_site"
   },
