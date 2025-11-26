@@ -15,6 +15,11 @@ Ready-to-use teaching resources for understanding how large language models
 
 {% if hero %} ![Hero image: {{ description }}]({{ hero }}) {% endif %}
 
+As LLMs become increasingly central to how we work with text and interact with
+digital systems, hands-on understanding becomes not just pedagogically valuable
+but practically necessary. The good news? The core concepts are accessible to
+anyone willing to spend an afternoon with pen, paper, and dice.
+
 ## Why are these resources necessary?
 
 [ChatGPT](https://chatgpt.com/) arrived in November 2022 and suddenly everyone's
@@ -23,8 +28,9 @@ happening under the hood. They've heard the hand-wave-y and/or mystical-sounding
 explanations, maybe picked up some vague notions about "neural networks" and
 "training data", but the core mechanism remains opaque.
 
-_LLMs Unplugged_ cuts through that opacity using the simplest possible approach:
-you build your own language model from scratch with pen, paper, and dice.
+_LLMs Unplugged_ cuts through the mystery using the simplest possible approach:
+you---and your students---build your own language model from scratch with pen,
+paper, and dice.
 
 The process is straightforward. You manually count word patterns in some
 training text (say, a children's book). You record these patterns in a table.
@@ -61,29 +67,23 @@ particularly engaged audience.
 ## What's in the box?
 
 These resources are available under a
-[Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+[CC BY-NC-SA license](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 They're organised into [lessons]({{ links.topics }}) (grouped into topics), with
 each covering a self-contained activity from basic training and generation
 through to advanced concepts like embeddings, sampling strategies, and model
 fine-tuning. Each lesson also includes instructor notes: pedagogical scaffolding
 explaining connections to modern LLMs, discussion questions, and historical
-context---designed for educators without deep AI expertise
+context---all designed for educators without deep AI expertise
 
 Finally (and optionally!) there are [software tools]({{ links.github }}):
-optional open-source tools to create custom n-gram booklets from any text
-corpus, so you can build domain-specific pre-trained models. For educators who
-want to further personalise some of the unplugged activities to their own
-classroom context.
+open-source tools to create custom n-gram booklets from any text corpus. This
+allows educators who want to go deeper to personalise even more of the unplugged
+activities to their own classroom context.
 
-These _LLMs Unplugged_ resources will grow over time, including example lesson
-plans, new lessons and unplugged activities, and more. Bookmark us and stay
-tuned. And if you'd like to get in touch, email
+These _LLMs Unplugged_ resources will grow over time, with example lesson plans,
+new lessons and unplugged activities, and more. Bookmark us and stay tuned. And
+if you'd like to get in touch, email
 [ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au).
-
-As LLMs become increasingly central to how we work with text and interact with
-digital systems, hands-on understanding becomes not just pedagogically valuable
-but practically necessary. The good news? The core concepts are accessible to
-anyone willing to spend an afternoon with pen, paper, and dice.
 
 ![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-1.jpg)
 
