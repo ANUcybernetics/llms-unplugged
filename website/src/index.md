@@ -15,8 +15,6 @@ templateEngineOverride: njk,md
 Ready-to-use teaching resources for understanding how large language models
 (LLMs) work through hands-on activities. No computers required.
 
-![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-2.jpg)
-
 These resources are available under a
 [Creative Commons BY-NC-SA 4.0 license](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 They're organised into [lessons]({{ links.topics }}) (grouped into topics), with
@@ -56,6 +54,8 @@ way no abstract explanation can provide. The approach strips away the
 distractions of code and infrastructure, letting you focus on the underlying
 principles. When you've spent an afternoon rolling dice and watching patterns
 emerge, you have a better sense of how language models work.
+
+![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-2.jpg)
 
 ## Who's this for?
 

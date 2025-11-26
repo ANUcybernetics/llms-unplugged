@@ -23,9 +23,6 @@ These resources build on a rich history of unplugged computing education (and
 hands-on education in genral). If you're interested in where these ideas came
 from---or where to go next---this is the reading list.
 
-![Workshop participants building language models with pen and
-paper](/assets/images/workshop-1.jpg)
-
 ## CS Unplugged
 
 For over two decades, [CS Unplugged](https://csunplugged.org) has demonstrated
@@ -66,6 +63,9 @@ artificial neural network concepts. However, they contain limited material
 specifically about language models and especially text _generation_---a gap that
 became particularly acute after ChatGPT's November 2022 release shifted what
 "AI" means to most people. _LLMs Unplugged_ aims to fill that gap.
+
+![Workshop participants building language models with pen and
+paper](/assets/images/workshop-1.jpg)
 
 ## Historical foundations
 

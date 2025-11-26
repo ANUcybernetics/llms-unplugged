@@ -24,8 +24,6 @@ participants across diverse audiences---school students through to senior
 executives in the Australian Public Service. Iterating on these materials with
 real learners has been invaluable.
 
-![LLMs Unplugged workshop in action](/assets/images/workshop-3.jpg)
-
 ## Get in touch
 
 We encourage educators to use, adapt, and improve these resources. If you have
@@ -42,6 +40,8 @@ shaping technology in society. The School's
 [Cybernetic Studio](https://cybernetics.anu.edu.au/cybernetic-studio/) develops
 hands-on resources and runs workshops exploring the social, technical, and
 political dimensions of emerging technologies.
+
+![LLMs Unplugged workshop in action](/assets/images/workshop-3.jpg)
 
 _LLMs Unplugged_ reflects the School's commitment to making sophisticated
 technical concepts accessible to diverse audiences and fostering critical
