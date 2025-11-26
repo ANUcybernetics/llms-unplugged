@@ -101,12 +101,7 @@
 }
 
 /* Headings */
-.prose h1,
-.prose h2,
-.prose h3,
-.prose h4,
-.prose h5,
-.prose h6 {
+.prose :where(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
     color: var(--color-anu-white);
     font-weight: 700;
     line-height: 1.25;
@@ -116,34 +111,34 @@
     }
 }
 
-.prose h1 {
+.prose :where(h1):not(:where(.not-prose, .not-prose *)) {
     font-size: 2.25em;
     margin-top: 0;
     margin-bottom: 0.9em;
     letter-spacing: var(--tracking-title);
 }
 
-.prose h2 {
+.prose :where(h2):not(:where(.not-prose, .not-prose *)) {
     font-size: 1.5em;
     margin-top: 2em;
     margin-bottom: 1em;
     letter-spacing: var(--tracking-tight);
 }
 
-.prose h3 {
+.prose :where(h3):not(:where(.not-prose, .not-prose *)) {
     font-size: 1.25em;
     margin-top: 1.6em;
     margin-bottom: 0.6em;
 }
 
-.prose h4 {
+.prose :where(h4):not(:where(.not-prose, .not-prose *)) {
     font-size: 1em;
     margin-top: 1.5em;
     margin-bottom: 0.5em;
 }
 
 /* Paragraphs */
-.prose p {
+.prose p:not(:where(.not-prose, .not-prose *)) {
     margin-top: 1.25em;
     margin-bottom: 1.25em;
 }
