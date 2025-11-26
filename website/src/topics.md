@@ -14,8 +14,6 @@ The _LLMs Unplugged_ lessons are organised into five topics. Each topic contains
 lessons that build related concepts, though lessons within a topic can often be
 done in any order after completing the fundamentals.
 
-[Download the full PDF bundle]({{ links.lessons_pdf }})
-
 {% for topic in topics %}
 {% set topicLessons = collections.lessons | filterByTopic(topic.id) %}
 
