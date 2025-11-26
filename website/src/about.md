@@ -137,8 +137,7 @@ If you use these materials in your teaching or research, please cite them as:
 ### APA
 
 > Swift, B. (2025). _LLMs Unplugged: Understand how AI language models work by
-> building one yourself_ [Data set]. Zenodo.
-> https://doi.org/10.5281/zenodo.17403824
+> building one yourself_. Zenodo. https://doi.org/10.5281/zenodo.17403824
 
 ### BibTeX
 
