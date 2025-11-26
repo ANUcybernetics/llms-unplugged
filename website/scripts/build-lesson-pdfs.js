@@ -36,7 +36,7 @@ for (const typFile of typFiles) {
       { stdio: "inherit" },
     );
     pdfPaths.push(outputPath);
-  } catch (error) {
+  } catch {
     console.error(`  Failed to compile ${typFile}`);
     process.exit(1);
   }
@@ -52,7 +52,7 @@ try {
     `qpdf --deterministic-id --empty --pages ${pdfPaths.join(" ")} -- "${combinedPath}"`,
     { stdio: "inherit" },
   );
-} catch (error) {
+} catch {
   console.error(`  Failed to create combined PDF`);
   process.exit(1);
 }

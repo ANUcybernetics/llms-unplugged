@@ -55,7 +55,13 @@ function preservePassthroughOutputs() {
       outDir = config.build.outDir;
     },
     async closeBundle() {
-      const passthroughFiles = ["CNAME", "feed.xml", "favicon.svg", "llms.txt"];
+      const passthroughFiles = [
+        "CNAME",
+        "feed.xml",
+        "favicon.svg",
+        "llms.txt",
+        "og-image.jpg",
+      ];
 
       for (const file of passthroughFiles) {
         const sourcePath = path.join(rootDir, file);
@@ -85,6 +91,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/images");
   eleventyConfig.addPassthroughCopy("src/CNAME");
   eleventyConfig.addPassthroughCopy("src/favicon.svg");
+  eleventyConfig.addPassthroughCopy("src/og-image.jpg");
   eleventyConfig.addPassthroughCopy("src/**/*.md");
 
   // Plugins

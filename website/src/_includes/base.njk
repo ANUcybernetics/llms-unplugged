@@ -10,14 +10,14 @@
   <meta property="og:url" content="https://www.llmsunplugged.org{{ page.url }}">
   <meta property="og:title" content="{% block ogTitle %}{{ title or 'LLMs Unplugged' }}{% endblock %}">
   <meta property="og:description" content="{{ description or 'Ready-to-use teaching resources for understanding how large language models work through hands-on activities. No computers required.' }}">
-  <meta property="og:image" content="https://www.llmsunplugged.org/og-image.png">
+  <meta property="og:image" content="https://www.llmsunplugged.org/og-image.jpg">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://www.llmsunplugged.org{{ page.url }}">
   <meta name="twitter:title" content="{% block twitterTitle %}{{ title or 'LLMs Unplugged' }}{% endblock %}">
   <meta name="twitter:description" content="{{ description or 'Ready-to-use teaching resources for understanding how large language models work through hands-on activities. No computers required.' }}">
-  <meta name="twitter:image" content="https://www.llmsunplugged.org/og-image.png">
+  <meta name="twitter:image" content="https://www.llmsunplugged.org/og-image.jpg">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -120,7 +120,7 @@
         © Ben Swift · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="text-anu-gold-2 hover:text-anu-gold transition-colors">CC BY-NC-SA 4.0</a> ·
         <a href="{{ site.repository }}/blob/main/website/src{{ page.inputPath | replace('./src', '') }}" class="text-anu-gold-2 hover:text-anu-gold transition-colors">Source on GitHub</a>
         ·
-        <a href="{{ page.inputPath | replace('./src/', '/') }}" class="text-anu-gold-2 hover:text-anu-gold transition-colors" rel="alternate" type="text/markdown">LLM-friendly version</a>
+        {% if page.inputPath.endsWith('.md') %}<a href="{{ page.inputPath | replace('./src/', '/') }}" class="text-anu-gold-2 hover:text-anu-gold transition-colors" rel="alternate" type="text/markdown">LLM-friendly version</a>{% endif %}
       </p>
       <p class="mt-2">
         A <a href="https://cybernetics.anu.edu.au/cybernetic-studio/" class="text-anu-gold-2 hover:text-anu-gold transition-colors">Cybernetic Studio</a> project at the <a href="https://cybernetics.anu.edu.au" class="text-anu-gold-2 hover:text-anu-gold transition-colors">ANU School of Cybernetics</a>.

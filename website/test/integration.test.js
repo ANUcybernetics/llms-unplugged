@@ -264,13 +264,13 @@ describe("topics and lessons", () => {
     expect(existsSync(samplingPath)).toBe(true);
 
     const weightedHtml = readFileSync(weightedPath, "utf-8");
-    expect(weightedHtml).toContain("/assets/pdfs/00-weighted-randomness.pdf");
+    expect(weightedHtml).toContain("/assets/pdfs/weighted-randomness.pdf");
 
     const basicHtml = readFileSync(basicPath, "utf-8");
     expect(basicHtml).toContain("bigram language model");
 
     const samplingHtml = readFileSync(samplingPath, "utf-8");
-    expect(samplingHtml).toContain("/assets/pdfs/04-sampling-strategies.pdf");
+    expect(samplingHtml).toContain("/assets/pdfs/sampling.pdf");
   });
 });
 
