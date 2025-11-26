@@ -18,6 +18,19 @@ export default [
     },
   },
   {
+    files: [
+      "*.config.js",
+      "eleventy-plugin-*.js",
+      "scripts/**/*.js",
+      "test/**/*.js",
+    ],
+    languageOptions: {
+      globals: {
+        process: "readonly",
+      },
+    },
+  },
+  {
     ignores: ["_site/**", "node_modules/**"],
   },
 ];

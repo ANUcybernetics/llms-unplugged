@@ -14,7 +14,6 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 import {
   tally,
   lmTable,
-  lmGrid,
   lmGridAuto,
   parseTokens,
 } from "./src/_utils/lm-utils.js";
