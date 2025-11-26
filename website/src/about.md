@@ -129,3 +129,26 @@ Which is to say: when you're rolling dice and generating sentences in an _LLMs
 Unplugged_ workshop, you're not just learning about modern AI. You're also
 participating in a tradition of hands-on exploration that goes back to the
 origins of information theory itself.
+
+## Citation
+
+If you use these materials in your teaching or research, please cite them as:
+
+### APA
+
+> Swift, B. (2025). _LLMs Unplugged: Understand how AI language models work by
+> building one yourself_ [Data set]. Zenodo.
+> https://doi.org/10.5281/zenodo.17403824
+
+### BibTeX
+
+```bibtex
+@misc{swift2025llmsunplugged,
+  author       = {Swift, Ben},
+  title        = {{LLMs Unplugged: Understand how AI language models work by building one yourself}},
+  year         = 2025,
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.17403824},
+  url          = {https://doi.org/10.5281/zenodo.17403824}
+}
+```
