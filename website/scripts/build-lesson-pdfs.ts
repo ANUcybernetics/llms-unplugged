@@ -1,6 +1,6 @@
 #!/usr/bin/env npx tsx
 import { execSync } from "node:child_process";
-import { readdirSync, mkdirSync, readFileSync } from "node:fs";
+import { readdirSync, mkdirSync, readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -13,6 +13,13 @@ interface PackageJson {
   version: string;
 }
 
+function getOrder(mdPath: string): number {
+  if (!existsSync(mdPath)) return 0;
+  const content = readFileSync(mdPath, "utf-8");
+  const match = content.match(/^order:\s*(\d+)/m);
+  return match ? parseInt(match[1], 10) : 0;
+}
+
 const packageJson: PackageJson = JSON.parse(
   readFileSync(join(__dirname, "../package.json"), "utf-8"),
 );
@@ -20,7 +27,14 @@ const version = packageJson.version;
 
 mkdirSync(outputDir, { recursive: true });
 
-const typFiles = readdirSync(lessonsDir).filter((f) => f.endsWith(".typ"));
+const typFiles = readdirSync(lessonsDir)
+  .filter((f) => f.endsWith(".typ"))
+  .map((f) => ({
+    file: f,
+    order: getOrder(join(lessonsDir, f.replace(".typ", ".md"))),
+  }))
+  .sort((a, b) => a.order - b.order)
+  .map((m) => m.file);
 
 console.log(`Building ${typFiles.length} lesson PDFs...`);
 
