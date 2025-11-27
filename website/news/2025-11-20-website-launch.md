@@ -19,4 +19,5 @@ or have any suggestions then do get in touch at
 [ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au).
 
 Stay tuned for upcoming events, new lessons, and other updates. You can also
-subscribe to the [RSS feed](/feed.rss) to get notified when we post news.
+subscribe to the [RSS feed](https://www.llmsunplugged.org/feed.rss) to get
+notified when we post news.

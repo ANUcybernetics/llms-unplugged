@@ -189,7 +189,7 @@ export default defineConfig({
     footer: {
       message: "Released under CC BY-NC-SA 4.0 License.",
       copyright:
-        "© Ben Swift · A Cybernetic Studio project at the ANU School of Cybernetics",
+        '© <a href="https://benswift.me">Ben Swift</a> · A <a href="https://cybernetics.anu.edu.au/cybernetic-studio/">Cybernetic Studio</a> project at the <a href="https://cybernetics.anu.edu.au">ANU School of Cybernetics</a>',
     },
 
     editLink: {
