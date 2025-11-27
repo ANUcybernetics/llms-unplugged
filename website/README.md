@@ -2,7 +2,8 @@
 
 Website for [LLMs Unplugged](https://www.llmsunplugged.org).
 
-Ready-to-use teaching resources for understanding how large language models work through hands-on activities. No computers required.
+Ready-to-use teaching resources for understanding how large language models work
+through hands-on activities. No computers required.
 
 ## Tech stack
 
@@ -51,7 +52,9 @@ website/
 
 ## About LLMs Unplugged
 
-LLMs Unplugged helps educators and learners understand large language models through hands-on activities using pen, paper, and dice. Build your own language model from scratch and experience exactly how AI text generation works.
+LLMs Unplugged helps educators and learners understand large language models
+through hands-on activities using pen, paper, and dice. Build your own language
+model from scratch and experience exactly how AI text generation works.
 
 ## Licence
 

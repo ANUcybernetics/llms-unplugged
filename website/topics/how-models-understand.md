@@ -1,6 +1,7 @@
 ---
 title: How Models "Understand"
-description: Explore how models use context and represent word meaning through embeddings.
+description:
+  Explore how models use context and represent word meaning through embeddings.
 ---
 
 # How Models "Understand"
@@ -13,7 +14,8 @@ Explore how models use context and represent word meaning through embeddings.
 
 ### [Word Embeddings](/lessons/word-embeddings)
 
-Turn each word's row into a vector and measure similarities between words in your model.
+Turn each word's row into a vector and measure similarities between words in
+your model.
 
 ## What you'll learn
 

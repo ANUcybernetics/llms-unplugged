@@ -3,8 +3,8 @@ id: task-046
 title: move more stuff into the CLI
 status: Done
 assignee: []
-created_date: '2025-11-23 22:53'
-updated_date: '2025-11-27 01:49'
+created_date: "2025-11-23 22:53"
+updated_date: "2025-11-27 01:49"
 labels: []
 dependencies: []
 ---

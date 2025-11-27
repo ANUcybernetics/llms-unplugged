@@ -5,11 +5,14 @@ description: All LLMs Unplugged topics and their lessons.
 
 # Topics
 
-The lessons are organised into topics that build on each other. Start with **Fundamentals** and work through in order, or jump to specific topics based on your needs.
+The lessons are organised into topics that build on each other. Start with
+**Fundamentals** and work through in order, or jump to specific topics based on
+your needs.
 
 ## Fundamentals
 
-Core concepts for building and using language models. Start here to learn weighted random selection, training a bigram model, and generating text.
+Core concepts for building and using language models. Start here to learn
+weighted random selection, training a bigram model, and generating text.
 
 **Lessons:**
 
@@ -19,7 +22,8 @@ Core concepts for building and using language models. Start here to learn weight
 
 ## Scaling Up
 
-Move beyond hand-built models to explore pre-trained models and longer context windows with trigrams.
+Move beyond hand-built models to explore pre-trained models and longer context
+windows with trigrams.
 
 **Lessons:**
 
@@ -29,7 +33,8 @@ Move beyond hand-built models to explore pre-trained models and longer context w
 
 ## Controlling Output
 
-Learn how sampling strategies like temperature and truncation shape generated text without changing the underlying model.
+Learn how sampling strategies like temperature and truncation shape generated
+text without changing the underlying model.
 
 **Lessons:**
 
@@ -45,7 +50,8 @@ Explore how models use context and represent word meaning through embeddings.
 
 ## Adaptation and Data
 
-Discover how models are customised for specific tasks and the risks of training on synthetic data.
+Discover how models are customised for specific tasks and the risks of training
+on synthetic data.
 
 **Lessons:**
 

@@ -1,23 +1,28 @@
 ---
 title: Adaptation and Data
-description: Discover how models are customised for specific tasks and the risks of training on synthetic data.
+description:
+  Discover how models are customised for specific tasks and the risks of
+  training on synthetic data.
 ---
 
 # Adaptation and Data
 
 ![Hero image: Adaptation and Data](/assets/images/hero-adaptation-and-data.jpg)
 
-Discover how models are customised for specific tasks and the risks of training on synthetic data.
+Discover how models are customised for specific tasks and the risks of training
+on synthetic data.
 
 ## Lessons in this topic
 
 ### [LoRA](/lessons/lora)
 
-Add a lightweight adaptation layer to retarget a trained model without retraining everything.
+Add a lightweight adaptation layer to retarget a trained model without
+retraining everything.
 
 ### [Synthetic Data](/lessons/synthetic-data)
 
-Generate synthetic text with your model, retrain on it, and see how patterns drift or collapse.
+Generate synthetic text with your model, retrain on it, and see how patterns
+drift or collapse.
 
 ## What you'll learn
 

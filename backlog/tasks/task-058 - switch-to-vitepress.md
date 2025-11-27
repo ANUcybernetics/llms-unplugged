@@ -3,8 +3,8 @@ id: task-058
 title: switch to vitepress
 status: To Do
 assignee: []
-created_date: '2025-11-26 21:45'
-updated_date: '2025-11-26 21:59'
+created_date: "2025-11-26 21:45"
+updated_date: "2025-11-26 21:59"
 labels: []
 dependencies: []
 ---
@@ -34,6 +34,7 @@ I'd also like to keep the same colour scheme, but do it via a vitepress theme.
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
+
 # VitePress Migration Investigation Notes
 
 ## Updated Assessment (after clarifications)
@@ -54,6 +55,7 @@ Based on your feedback, this migration is **simpler than initially assessed**:
 ## Simplified Scope
 
 ### What needs migration
+
 1. **Content pages** (markdown) — mostly copy across, minimal changes
 2. **Custom colour scheme** — VitePress CSS variables
 3. **Font (Public Sans)** — CSS import
@@ -62,6 +64,7 @@ Based on your feedback, this migration is **simpler than initially assessed**:
 6. **Basic navigation** — VitePress config
 
 ### What can be dropped
+
 - llms.txt generation
 - Raw markdown passthrough
 - Reveal.js slides (park for later)
@@ -72,30 +75,31 @@ Based on your feedback, this migration is **simpler than initially assessed**:
 
 ## VitePress Theming (without Tailwind)
 
-VitePress has its own CSS variable system that's quite comprehensive. You can customise by overriding variables in `.vitepress/theme/custom.css`:
+VitePress has its own CSS variable system that's quite comprehensive. You can
+customise by overriding variables in `.vitepress/theme/custom.css`:
 
 ```css
 /* .vitepress/theme/custom.css */
 :root {
   /* Brand colours - map to ANU palette */
-  --vp-c-brand-1: #be830e;  /* anu-gold */
-  --vp-c-brand-2: #a87309;  /* darker gold */
-  --vp-c-brand-3: #d4940f;  /* lighter gold */
-  
+  --vp-c-brand-1: #be830e; /* anu-gold */
+  --vp-c-brand-2: #a87309; /* darker gold */
+  --vp-c-brand-3: #d4940f; /* lighter gold */
+
   /* Background */
-  --vp-c-bg: #000;          /* anu-black */
+  --vp-c-bg: #000; /* anu-black */
   --vp-c-bg-alt: #1a1a1a;
   --vp-c-bg-soft: #1a1a1a;
-  
+
   /* Text */
-  --vp-c-text-1: #fff;      /* anu-white */
+  --vp-c-text-1: #fff; /* anu-white */
   --vp-c-text-2: rgba(255, 255, 255, 0.8);
-  
+
   /* Links */
   --vp-c-brand: #be830e;
-  
+
   /* Font */
-  --vp-font-family-base: 'Public Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --vp-font-family-base: "Public Sans", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* Dark mode is default in VitePress, but you can force it */
@@ -108,13 +112,14 @@ Then in your theme's `index.ts`:
 
 ```typescript
 // .vitepress/theme/index.ts
-import DefaultTheme from 'vitepress/theme'
-import './custom.css'
+import DefaultTheme from "vitepress/theme";
+import "./custom.css";
 
-export default DefaultTheme
+export default DefaultTheme;
 ```
 
 This approach:
+
 - Uses VitePress's native styling system
 - No Tailwind complexity or conflicts
 - Simple CSS variable overrides
@@ -127,35 +132,41 @@ This approach:
 ### Only two shortcodes need Vue components:
 
 #### 1. `lmGrid` / `lmGridAuto`
+
 The bigram grid table. Current usage in markdown:
+
 ```
 {% lmGrid "see spot run . see spot jump ." %}
 ```
 
 VitePress equivalent:
+
 ```vue
 <LmGrid tokens="see spot run . see spot jump ." />
 ```
 
 Or with options:
+
 ```vue
 <LmGrid tokens="see spot" :nrows="6" :ncols="7" />
 ```
 
 #### 2. `tally` (used inside lmGrid, rarely standalone)
+
 Converts numbers to tally marks. Mostly internal to lmGrid.
 
 #### 3. `lessonIntro` — can likely be replaced with markdown
+
 Current shortcode generates a styled intro box. Could become:
 
 ```markdown
-::: info Lesson Info
-This lesson is part of the [Fundamentals](/topics/fundamentals/) topic.
-[Download PDF](/assets/pdfs/basic-training.pdf)
-:::
+::: info Lesson Info This lesson is part of the
+[Fundamentals](/topics/fundamentals/) topic.
+[Download PDF](/assets/pdfs/basic-training.pdf) :::
 ```
 
-VitePress has built-in custom containers (`::: info`, `::: tip`, `::: warning`, etc.)
+VitePress has built-in custom containers (`::: info`, `::: tip`, `::: warning`,
+etc.)
 
 #### 4. `lmTable` — rarely used, could be HTML or simple component
 
@@ -166,6 +177,7 @@ VitePress has built-in custom containers (`::: info`, `::: tip`, `::: warning`, 
 Most lesson pages need minimal changes:
 
 **Before (11ty):**
+
 ```markdown
 ---
 title: Basic Training
@@ -182,6 +194,7 @@ templateEngineOverride: njk,md
 ```
 
 **After (VitePress):**
+
 ```markdown
 ---
 title: Basic Training
@@ -191,10 +204,8 @@ pdf: /assets/pdfs/basic-training.pdf
 
 # Basic Training
 
-::: info
-This lesson is part of the [Fundamentals](/topics/fundamentals/) topic.
-[Download PDF](/assets/pdfs/basic-training.pdf)
-:::
+::: info This lesson is part of the [Fundamentals](/topics/fundamentals/) topic.
+[Download PDF](/assets/pdfs/basic-training.pdf) :::
 
 <LmGrid tokens="see spot run ." />
 ```
@@ -207,20 +218,20 @@ Use [`vitepress-plugin-rss`](https://github.com/ATQQ/vitepress-plugin-rss):
 
 ```typescript
 // .vitepress/config.mts
-import { RSSOptions, RssPlugin } from 'vitepress-plugin-rss'
+import { RSSOptions, RssPlugin } from "vitepress-plugin-rss";
 
 const RSS: RSSOptions = {
-  title: 'LLMs Unplugged',
-  baseUrl: 'https://www.llmsunplugged.org',
-  copyright: '© Ben Swift, CC BY-NC-SA 4.0',
-  filter: (post) => post.filepath.startsWith('news/')
-}
+  title: "LLMs Unplugged",
+  baseUrl: "https://www.llmsunplugged.org",
+  copyright: "© Ben Swift, CC BY-NC-SA 4.0",
+  filter: (post) => post.filepath.startsWith("news/"),
+};
 
 export default defineConfig({
   vite: {
-    plugins: [RssPlugin(RSS)]
-  }
-})
+    plugins: [RssPlugin(RSS)],
+  },
+});
 ```
 
 ---
@@ -268,6 +279,7 @@ website/
 ## Migration Checklist
 
 ### Phase 1: Setup
+
 - [ ] Create new branch
 - [ ] Initialize VitePress (`npx vitepress init`)
 - [ ] Configure TypeScript
@@ -275,12 +287,14 @@ website/
 - [ ] Configure site metadata (title, description, etc.)
 
 ### Phase 2: Components
+
 - [ ] Create `LmGrid.vue` component
 - [ ] Create `LmTable.vue` component (if needed)
 - [ ] Register components globally in theme
 - [ ] Test components render correctly
 
 ### Phase 3: Content
+
 - [ ] Copy static pages (about, educators, faq, instructor-notes)
 - [ ] Convert lessonIntro shortcode usage to `::: info` blocks
 - [ ] Copy lesson pages, update lmGrid syntax
@@ -289,6 +303,7 @@ website/
 - [ ] Copy assets (images, PDFs) to public/
 
 ### Phase 4: Navigation & Config
+
 - [ ] Configure nav bar
 - [ ] Configure sidebar for lessons/topics
 - [ ] Setup RSS plugin for news
@@ -296,6 +311,7 @@ website/
 - [ ] Add Open Graph / social meta
 
 ### Phase 5: Verification
+
 - [ ] Visual comparison with current site
 - [ ] Test all internal links work
 - [ ] Verify PDFs accessible

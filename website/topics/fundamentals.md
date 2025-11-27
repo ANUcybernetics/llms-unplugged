@@ -1,27 +1,33 @@
 ---
 title: Fundamentals
-description: Core concepts for building and using language models. Start here to learn weighted random selection, training a bigram model, and generating text.
+description:
+  Core concepts for building and using language models. Start here to learn
+  weighted random selection, training a bigram model, and generating text.
 ---
 
 # Fundamentals
 
 ![Hero image: Fundamentals](/assets/images/hero-fundamentals.jpg)
 
-Core concepts for building and using language models. Start here to learn weighted random selection, training a bigram model, and generating text.
+Core concepts for building and using language models. Start here to learn
+weighted random selection, training a bigram model, and generating text.
 
 ## Lessons in this topic
 
 ### [Weighted Randomness](/lessons/weighted-randomness)
 
-Learn how to make random choices where some options are more likely than others—an operation at the core of all generative AI.
+Learn how to make random choices where some options are more likely than
+others—an operation at the core of all generative AI.
 
 ### [Basic Training](/lessons/basic-training)
 
-Build a bigram language model that tracks which words follow which other words in text.
+Build a bigram language model that tracks which words follow which other words
+in text.
 
 ### [Basic Generation](/lessons/basic-generation)
 
-Use your hand-built bigram model to generate new text through weighted random sampling.
+Use your hand-built bigram model to generate new text through weighted random
+sampling.
 
 ## What you'll learn
 

@@ -14,13 +14,11 @@ dependsOn:
 
 # Basic Training
 
-::: info Lesson Info
-This lesson is part of the
+::: info Lesson Info This lesson is part of the
 [Fundamentals](/topics/fundamentals) topic, with instructions for students
 (including examples) and [instructor notes](#instructor-notes). If you'd like a
 printable version of the student handout,
-[download it here](/assets/pdfs/basic-training.pdf).
-:::
+[download it here](/assets/pdfs/basic-training.pdf). :::
 
 Build a bigram language model that tracks which words follow which other words
 in text.
