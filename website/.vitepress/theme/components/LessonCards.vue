@@ -32,7 +32,11 @@ const groupedLessons = computed<TopicGroup[]>(() => {
 
 <template>
   <div class="lesson-cards">
-    <section v-for="group in groupedLessons" :key="group.id" class="topic-section">
+    <section
+      v-for="group in groupedLessons"
+      :key="group.id"
+      class="topic-section"
+    >
       <h2 :id="group.id">{{ group.label }}</h2>
       <div class="cards-grid">
         <a

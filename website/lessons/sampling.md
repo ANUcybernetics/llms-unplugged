@@ -14,11 +14,14 @@ dependsOn:
 
 # Sampling
 
-::: info Lesson Info This lesson is part of the
-[Controlling Output](/topics/controlling-output) topic, with instructions for
-students (including examples) and [instructor notes](#instructor-notes). If
-you'd like a printable version of the student handout,
-[download it here](/assets/pdfs/sampling.pdf). :::
+::: info Lesson Info
+
+This lesson is part of the [Controlling Output](/topics/controlling-output)
+topic, with instructions for students (including examples) and
+[instructor notes](#instructor-notes). If you'd like a printable version of the
+student handout, [download it here](/assets/pdfs/sampling.pdf).
+
+:::
 
 When generating text, your model offers several options for the next word.
 Sampling strategies decide which one to pick.
