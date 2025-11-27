@@ -39,6 +39,8 @@
 }
 
 :root {
+    font-size: 20px;
+
     /* ANU Brand colours */
     --anu-white: #fff;
     --anu-black: #000;
