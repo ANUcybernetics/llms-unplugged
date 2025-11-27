@@ -4,6 +4,7 @@ node_modules/
 # Build output (VitePress)
 .vitepress/dist/
 .vitepress/cache/
+.vitepress/.temp/
 
 # Build output (legacy 11ty - can be removed after migration verified)
 _site/
