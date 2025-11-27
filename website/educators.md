@@ -10,15 +10,15 @@ description:
 These resources are under active development, and there will be more stuff
 coming online through the end of '25 and into '26, including more lesson plans,
 (Australian) curriculum mappings, video recordings and more. If there's
-something you'd like to see, please [get in touch](/about/#contact).
+something you'd like to see, please [get in touch](/about#get-in-touch).
 
 ## _LLMs Unplugged Fundamentals_ lesson plan
 
 - **time**: 90mins
 - **for ages**: 12--112
 
-Here's one way you might cover the [fundamentals](/topics/fundamentals/) in a
-90min workshop (with timings).
+Here's one way you might cover the fundamentals in a 90min workshop (with
+timings).
 
 - **00:00 intro**
 
@@ -32,12 +32,11 @@ Here's one way you might cover the [fundamentals](/topics/fundamentals/) in a
     work help us understand their strengths and limitations and ultimately to
     use them more effectively
 
-- **00:20 [Basic training](/topics/fundamentals/basic-training/)**
+- **00:20 [Basic training](/lessons/basic-training)**
 
-- **00:40 [Basic generation](/topics/fundamentals/basic-generation/)**
+- **00:40 [Basic generation](/lessons/basic-generation)**
 
-- **01:00
-  [Pre-trained model generation](/topics/scaling-up/pretrained-generation/)**
+- **01:00 [Pre-trained model generation](/lessons/pretrained-generation)**
 
 - **01:20 close**
   - how has this workshop changed how you _think_ about language models?
@@ -46,19 +45,17 @@ Here's one way you might cover the [fundamentals](/topics/fundamentals/) in a
 ## Notes
 
 - this outline doesn't include the
-  [Weighted randomness](/topics/fundamentals/weighted-randomness/) lesson, but
-  if your students aren't so familiar with that stuff then you could add it in
-  before the [Basic training](/topics/fundamentals/basic-training/) lesson (add
-  another 30mins)
+  [Weighted randomness](/lessons/weighted-randomness) lesson, but if your
+  students aren't so familiar with that stuff then you could add it in before
+  the [Basic training](/lessons/basic-training) lesson (add another 30mins)
 
-- one you get to the [Basic generation](/topics/fundamentals/basic-generation/)
-  lesson and beyond, get students to do "dramatic readings" as they share back
-  the text their new language models have generated...
+- one you get to the [Basic generation](/lessons/basic-generation) lesson and
+  beyond, get students to do "dramatic readings" as they share back the text
+  their new language models have generated...
 
-- if you have a bit longer, then adding the
-  [Sampling](/topics/controlling-output/sampling/) lesson at the end is a fun
-  option---it builds on either the
-  [Basic generation](/topics/fundamentals/basic-generation/) or the
-  [Pre-trained model generation](/topics/scaling-up/pretrained-generation/) work
-  and shows how different parts of the "LLM process" can have different effects
-  on the output
+- if you have a bit longer, then adding the [Sampling](/lessons/sampling) lesson
+  at the end is a fun option---it builds on either the
+  [Basic generation](/lessons/basic-generation) or the
+  [Pre-trained model generation](/lessons/pretrained-generation) work and shows
+  how different parts of the "LLM process" can have different effects on the
+  output
