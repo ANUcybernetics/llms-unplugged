@@ -14,11 +14,13 @@
     "dev": "vitepress dev",
     "build": "vitepress build",
     "build:pdfs": "npx tsx scripts/build-lesson-pdfs.ts",
+    "generate:heroes": "npx tsx scripts/generate-hero-images.ts",
     "preview": "vitepress preview",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "devDependencies": {
+    "gray-matter": "^4.0.3",
     "tsx": "^4.19.2",
     "@vitejs/plugin-vue": "^6.0.2",
     "@vue/test-utils": "^2.4.6",
