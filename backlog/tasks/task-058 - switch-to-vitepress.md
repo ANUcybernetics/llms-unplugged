@@ -1,7 +1,7 @@
 ---
 id: task-058
 title: switch to vitepress
-status: To Do
+status: Done
 assignee: []
 created_date: "2025-11-26 21:45"
 updated_date: "2025-11-26 21:59"
