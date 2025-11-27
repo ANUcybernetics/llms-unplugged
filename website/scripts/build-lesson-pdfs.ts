@@ -14,7 +14,7 @@ interface PackageJson {
 }
 
 const packageJson: PackageJson = JSON.parse(
-  readFileSync(join(__dirname, "../package.json"), "utf-8")
+  readFileSync(join(__dirname, "../package.json"), "utf-8"),
 );
 const version = packageJson.version;
 
@@ -36,7 +36,7 @@ for (const typFile of typFiles) {
   try {
     execSync(
       `SOURCE_DATE_EPOCH=0 typst compile --root "${projectRoot}" --input version="v${version}" "${inputPath}" "${outputPath}"`,
-      { stdio: "inherit" }
+      { stdio: "inherit" },
     );
     pdfPaths.push(outputPath);
   } catch {
@@ -51,7 +51,7 @@ const combinedPath = join(outputDir, "lessons.pdf");
 try {
   execSync(
     `qpdf --deterministic-id --empty --pages ${pdfPaths.join(" ")} -- "${combinedPath}"`,
-    { stdio: "inherit" }
+    { stdio: "inherit" },
   );
 } catch {
   console.error(`  Failed to create combined PDF`);

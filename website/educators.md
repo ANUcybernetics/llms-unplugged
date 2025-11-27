@@ -23,7 +23,6 @@ Here's one way you might cover the fundamentals in a 90min workshop (with
 timings).
 
 - **00:00 intro**
-
   - _icebreaker_ (as folks are coming in) why is a language model called a
     "language model"? what does it mean to "model language"?
   - _activity_ sit down if you have never used ChatGPT... now in the last

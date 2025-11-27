@@ -5,8 +5,7 @@ description:
   retraining everything.
 order: 8
 topic: adaptation-and-data
-keyIdea:
-  LoRA tweaks a base model with small, add-on counts that capture
+keyIdea: LoRA tweaks a base model with small, add-on counts that capture
   domain-specific shifts.
 dependsOn:
   - Basic Training

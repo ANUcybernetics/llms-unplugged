@@ -13,7 +13,7 @@ Anyone curious about how language models work. The activities are designed for l
 
 ## Did some of this stuff used to be called "My First Language Model"?
 
-Yep, it sure did... and we still sometimes use that as a workshop title at the ANU. But this website and resources are for *all* the LLMs Unplugged resources, not just the ones we use in that particular workshop.
+Yep, it sure did... and we still sometimes use that as a workshop title at the ANU. But this website and resources are for _all_ the LLMs Unplugged resources, not just the ones we use in that particular workshop.
 
 ## Do I need any special materials?
 

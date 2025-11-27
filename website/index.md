@@ -33,7 +33,7 @@ features:
 
 [ChatGPT](https://chatgpt.com/) arrived in November 2022 and suddenly everyone's using LLMs. Yet most people have no real mental model of what's actually happening under the hood. They've heard the hand-wave-y and/or mystical-sounding explanations, maybe picked up some vague notions about "neural networks" and "training data", but the core mechanism remains opaque.
 
-*LLMs Unplugged* cuts through the mystery using the simplest possible approach: you—and your students—build your own language model from scratch with pen, paper, and dice.
+_LLMs Unplugged_ cuts through the mystery using the simplest possible approach: you—and your students—build your own language model from scratch with pen, paper, and dice.
 
 The process is straightforward. You manually count word patterns in some training text (say, a children's book). You record these patterns in a table. Then you use dice rolls to generate new sentences, making random choices weighted by what you've seen before. After an hour or so of doing this by hand, something clicks: you realise that ChatGPT works exactly the same way. It's the same fundamental process, just at a (vastly) different scale.
 
@@ -53,6 +53,6 @@ These resources are available under a [CC BY-NC-SA license](https://creativecomm
 
 Finally (and optionally!) there are [software tools](https://github.com/ANUcybernetics/llms-unplugged): open-source tools to create custom n-gram booklets from any text corpus. This allows educators who want to go deeper to personalise even more of the unplugged activities to their own classroom context.
 
-These *LLMs Unplugged* resources will grow over time, with example lesson plans, new lessons and unplugged activities, and more. Bookmark us and stay tuned. Read the [FAQ](/faq). And if you'd like to get in touch, email [ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au).
+These _LLMs Unplugged_ resources will grow over time, with example lesson plans, new lessons and unplugged activities, and more. Bookmark us and stay tuned. Read the [FAQ](/faq). And if you'd like to get in touch, email [ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au).
 
 ![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-1.jpg)

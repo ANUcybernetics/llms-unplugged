@@ -1,7 +1,6 @@
 ---
 title: Trigram Model
-description:
-  Extend the bigram model to use two words of context for better predictions.
+description: Extend the bigram model to use two words of context for better predictions.
 order: 5
 topic: scaling-up
 keyIdea:
