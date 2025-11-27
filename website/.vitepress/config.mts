@@ -111,6 +111,7 @@ export default defineConfig({
       { text: "Home", link: "/" },
       { text: "Lessons", link: "/lessons/" },
       { text: "Educators", link: "/educators" },
+      { text: "News", link: "/news/" },
       { text: "FAQ", link: "/faq" },
       { text: "About", link: "/about" },
     ],
