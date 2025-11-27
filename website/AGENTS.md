@@ -4,13 +4,15 @@ Static website for LLMs Unplugged.
 
 ## Architecture
 
-VitePress static site with custom Vue components for interactive language model demonstrations.
+VitePress static site with custom Vue components for interactive language model
+demonstrations.
 
 ### Tech stack
 
-- VitePress 1.5+ (Vue-powered static site generator)
+- VitePress 1.6+ (Vue-powered static site generator)
 - Vue 3 (for custom components)
-- TypeScript (configuration and components)
+- TypeScript (configuration only)
+- Vitest (testing)
 
 ## Project structure
 
@@ -41,6 +43,7 @@ website/
 │   ├── index.md
 │   ├── fundamentals.md
 │   └── ...
+├── test/                   # Vitest tests
 └── package.json
 ```
 
@@ -49,26 +52,13 @@ website/
 - `npm run dev` - dev server with hot reload
 - `npm run build` - production build to `.vitepress/dist/`
 - `npm run preview` - preview the built site
+- `npm test` - run tests
 
 ## Custom components
 
-### LmGrid
-
-Renders bigram grid tables from token sequences:
-
-```vue
-<LmGrid tokens="see spot run . see spot jump ." />
-<LmGrid tokens="see spot" :nrows="6" :ncols="7" />
-```
-
-### LmTable
-
-Renders data tables with tally mark conversion:
-
-```vue
-<LmTable :headers="['word 1', 'word 2', 'count']" :data="[['see', 'spot', 1]]" />
-```
+Custom Vue components live in `.vitepress/theme/components/` (LmGrid, LmTable).
+These render language model tables with tally mark notation.
 
 ## Build output
 
-VitePress builds to `.vitepress/dist/`. Deploy to GitHub Pages or any static host.
+VitePress builds to `.vitepress/dist/`. Deployed to GitHub Pages.
