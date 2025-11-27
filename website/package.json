@@ -1,6 +1,6 @@
 {
   "name": "llms-unplugged",
-  "version": "2.0.0",
+  "version": "1.5.0",
   "description": "Static website for LLMs Unplugged teaching resources",
   "repository": {
     "type": "git",
@@ -13,11 +13,13 @@
   "scripts": {
     "dev": "vitepress dev",
     "build": "vitepress build",
+    "build:pdfs": "npx tsx scripts/build-lesson-pdfs.ts",
     "preview": "vitepress preview",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "devDependencies": {
+    "tsx": "^4.19.2",
     "@vitejs/plugin-vue": "^6.0.2",
     "@vue/test-utils": "^2.4.6",
     "jsdom": "^27.2.0",
