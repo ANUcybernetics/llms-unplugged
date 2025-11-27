@@ -92,6 +92,15 @@ export default defineConfig({
         content: "https://www.llmsunplugged.org/og-image.jpg",
       },
     ],
+    // Plausible Analytics
+    [
+      "script",
+      {
+        defer: "",
+        "data-domain": "www.llmsunplugged.org",
+        src: "https://plausible.io/js/script.file-downloads.js",
+      },
+    ],
   ],
 
   // Theme configuration
