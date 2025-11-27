@@ -121,7 +121,7 @@ export default defineConfig({
           text: "Fundamentals",
           items: [
             {
-              text: "Weighted Randomness (pre-lesson)",
+              text: "Weighted Randomness",
               link: "/lessons/weighted-randomness",
             },
             { text: "Basic Training", link: "/lessons/basic-training" },
@@ -131,17 +131,21 @@ export default defineConfig({
         {
           text: "Scaling Up",
           items: [
-            { text: "Trigram Model", link: "/lessons/trigram-model" },
-            { text: "Context Columns", link: "/lessons/context-columns" },
             {
-              text: "Pretrained Generation",
+              text: "Pre-trained Model Generation",
               link: "/lessons/pretrained-generation",
             },
+            { text: "Trigram Model", link: "/lessons/trigram-model" },
           ],
+        },
+        {
+          text: "Controlling Output",
+          items: [{ text: "Sampling", link: "/lessons/sampling" }],
         },
         {
           text: "How Models Understand",
           items: [
+            { text: "Context Columns", link: "/lessons/context-columns" },
             { text: "Word Embeddings", link: "/lessons/word-embeddings" },
           ],
         },
@@ -152,10 +156,6 @@ export default defineConfig({
             { text: "Synthetic Data", link: "/lessons/synthetic-data" },
           ],
         },
-        {
-          text: "Controlling Output",
-          items: [{ text: "Sampling", link: "/lessons/sampling" }],
-        },
       ],
       "/topics/": [
         {
@@ -164,6 +164,7 @@ export default defineConfig({
             { text: "Overview", link: "/topics/" },
             { text: "Fundamentals", link: "/topics/fundamentals" },
             { text: "Scaling Up", link: "/topics/scaling-up" },
+            { text: "Controlling Output", link: "/topics/controlling-output" },
             {
               text: "How Models Understand",
               link: "/topics/how-models-understand",
@@ -172,7 +173,6 @@ export default defineConfig({
               text: "Adaptation and Data",
               link: "/topics/adaptation-and-data",
             },
-            { text: "Controlling Output", link: "/topics/controlling-output" },
           ],
         },
       ],
