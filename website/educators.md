@@ -7,6 +7,8 @@ description:
 
 # For educators
 
+![Hero image: For educators](/assets/images/hero-educators.jpg)
+
 These resources are under active development, and there will be more stuff
 coming online through the end of '25 and into '26, including more lesson plans,
 (Australian) curriculum mappings, video recordings and more. If there's
