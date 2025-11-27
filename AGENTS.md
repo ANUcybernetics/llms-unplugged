@@ -68,3 +68,5 @@ cd website && npm run build && npm test
 - Project teaches human-scale AI concepts
 - Designed for physical dice-based text generation
 - Part of ANU Cybernetic Studio research
+- The website is now powered by Vitepress, but was previously an eleventy (11ty)
+  site - the `11ty` git tag is the last commit with the eleventy site
