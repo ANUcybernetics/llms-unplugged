@@ -22,10 +22,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "25"
+          node-version: "22"
           cache: "npm"
           cache-dependency-path: website/package-lock.json
 
@@ -33,18 +35,18 @@ jobs:
         working-directory: website
         run: npm ci
 
-      - name: Build website
+      - name: Build with VitePress
         working-directory: website
         run: npm run build
 
-      - name: Check for broken links
+      - name: Run tests
         working-directory: website
-        run: npm run check:links
+        run: npm test
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: website/_site
+          path: website/.vitepress/dist
 
   deploy:
     environment:
