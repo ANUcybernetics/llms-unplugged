@@ -112,7 +112,7 @@ export default defineConfig({
           text: "Fundamentals",
           items: [
             {
-              text: "Weighted Randomness",
+              text: "Weighted Randomness (pre-lesson)",
               link: "/lessons/weighted-randomness",
             },
             { text: "Basic Training", link: "/lessons/basic-training" },
