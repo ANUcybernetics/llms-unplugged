@@ -28,8 +28,9 @@ export default defineConfig({
   // Ignore RSS feed link (generated after dead link check)
   ignoreDeadLinks: ["/feed.rss"],
 
-  // Add lazy loading to images
+  // Add lazy loading to images and enable typographer for smart dashes
   markdown: {
+    typographer: true,
     image: {
       lazyLoading: true,
     },
