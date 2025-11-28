@@ -1,9 +1,10 @@
 ---
 id: task-064
 title: add intro lesson
-status: To Do
+status: Done
 assignee: []
-created_date: "2025-11-28 04:06"
+created_date: '2025-11-28 04:06'
+updated_date: '2025-11-28 05:40'
 labels: []
 dependencies: []
 ---
