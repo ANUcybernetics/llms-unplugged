@@ -16,6 +16,19 @@ see, please [get in touch](/about#get-in-touch).
 
 :::
 
+::: tip
+
+These lesson plans have been tested with high-school students and up (including
+tertiary students). They're also suitable across all subject areas (not just
+Computer Science/Digital Techologies).
+
+We're working on some slightly modified versions which work for younger learners
+as well---with the right support they can absolutely grasp the concepts
+involved. We'll update the lesson plans as we road-test them. If you've got
+ideas or feedback, we'd [love to hear them](/about#get-in-touch).
+
+:::
+
 ## Lesson plan 1: LLMs Unplugged Fundamentals
 
 - **time**: 90mins
