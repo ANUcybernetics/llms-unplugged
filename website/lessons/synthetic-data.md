@@ -28,6 +28,8 @@ that synthetic data to watch patterns change.
 
 ![Hero image: Synthetic Data](/assets/images/hero-synthetic-data.jpg)
 
+<Prerequisites />
+
 ## You will need
 
 - a completed model from an earlier lesson

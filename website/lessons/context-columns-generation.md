@@ -30,6 +30,8 @@ and grammatical coherence.
 
 ![Hero image: Context Columns](/assets/images/hero-context-columns.jpg)
 
+<Prerequisites />
+
 ## You will need
 
 - your context-enhanced bigram model from _Context Columns Training_

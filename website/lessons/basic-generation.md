@@ -29,6 +29,8 @@ weighted random sampling.
 
 ![Hero image: Basic Generation](/assets/images/hero-basic-generation.jpg)
 
+<Prerequisites />
+
 ## You will need
 
 - your completed bigram model from _Basic Training_

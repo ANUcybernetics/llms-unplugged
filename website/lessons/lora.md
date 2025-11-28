@@ -29,6 +29,8 @@ retraining the whole thing.
 
 ![Hero image: LoRA](/assets/images/hero-lora.jpg)
 
+<Prerequisites />
+
 ## You will need
 
 - a completed bigram model from an earlier lesson (your base model)

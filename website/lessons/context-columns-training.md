@@ -29,6 +29,8 @@ semantic patterns.
 
 ![Hero image: Context Columns](/assets/images/hero-context-columns.jpg)
 
+<Prerequisites />
+
 ## You will need
 
 - your completed bigram model from _Basic Training_

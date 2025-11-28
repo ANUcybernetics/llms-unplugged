@@ -10,7 +10,7 @@ keyIdea:
   grammatical and semantic closeness.
 dependsOn:
   - Basic Training
-  - Context Columns
+  - Context Columns Training
 ---
 
 # Word Embeddings
@@ -29,6 +29,8 @@ Transform words into numerical vectors that capture meaning, revealing semantic
 relationships between words in your model.
 
 ![Hero image: Word Embeddings](/assets/images/hero-word-embeddings.jpg)
+
+<Prerequisites />
 
 ## You will need
 

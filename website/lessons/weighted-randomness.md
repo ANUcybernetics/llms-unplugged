@@ -27,6 +27,8 @@ others—an operation at the core of all generative AI.
 
 ![Hero image: Weighted Randomness](/assets/images/hero-weighted-randomness.jpg)
 
+<Prerequisites />
+
 ## You will need
 
 - 10-sided dice (d10)

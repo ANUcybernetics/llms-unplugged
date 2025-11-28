@@ -28,6 +28,8 @@ Sampling strategies decide which one to pick.
 
 ![Hero image: Sampling](/assets/images/hero-sampling.jpg)
 
+<Prerequisites />
+
 ## You will need
 
 - a completed model from an earlier lesson

@@ -28,6 +28,8 @@ to better generation.
 
 ![Hero image: Trigram Model](/assets/images/hero-trigram-model.jpg)
 
+<Prerequisites />
+
 ## You will need
 
 - the same materials as _Basic Training_

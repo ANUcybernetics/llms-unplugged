@@ -28,6 +28,8 @@ in text.
 
 ![Hero image: Basic Training](/assets/images/hero-basic-training.jpg)
 
+<Prerequisites />
+
 ## You will need
 
 - some text (e.g. a few pages from a kids book, but it can be anything)

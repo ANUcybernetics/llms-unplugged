@@ -28,6 +28,8 @@ weighted random sampling.
 
 ![Hero image: Pre-trained Model Generation](/assets/images/hero-pretrained-generation.jpg)
 
+<Prerequisites />
+
 ## You will need
 
 - a pre-trained model booklet
