@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { data as lessons } from "../../../lessons/lessons.data";
-import { topicOrder, topicLabels } from "../../../lessons/topics";
+import {
+  topicOrder,
+  topicLabels,
+  topicDescriptions,
+} from "../../../lessons/topics";
 import type { LessonData } from "../../../lessons/lessons.data";
 
 interface TopicGroup {
   id: string;
   label: string;
+  description: string;
   lessons: LessonData[];
 }
 
@@ -25,6 +30,7 @@ const groupedLessons = computed<TopicGroup[]>(() => {
     .map((topic) => ({
       id: topic,
       label: topicLabels[topic] || topic,
+      description: topicDescriptions[topic] || "",
       lessons: groups[topic],
     }));
 });
@@ -38,6 +44,7 @@ const groupedLessons = computed<TopicGroup[]>(() => {
       class="topic-section"
     >
       <h2 :id="group.id">{{ group.label }}</h2>
+      <p class="topic-description">{{ group.description }}</p>
       <div class="cards-grid">
         <a
           v-for="lesson in group.lessons"
@@ -68,6 +75,11 @@ const groupedLessons = computed<TopicGroup[]>(() => {
 .topic-section h2 {
   border-bottom: 1px solid var(--vp-c-divider);
   padding-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.topic-description {
+  color: var(--vp-c-text-2);
   margin-bottom: 1.5rem;
 }
 
