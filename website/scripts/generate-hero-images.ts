@@ -26,6 +26,8 @@ const STATIC_PAGES: Record<string, string> = {
   about: "about.md",
   faq: "faq.md",
   educators: "educators.md",
+  professionals: "professionals.md",
+  parents: "parents.md",
 };
 
 interface ImageTask {

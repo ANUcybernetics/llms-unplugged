@@ -20,21 +20,24 @@ hero:
     #   link: https://github.com/ANUcybernetics/llms-unplugged
 
 features:
-  - icon: 📝
-    title: Build your own model
+  - icon: 💼
+    title: For professionals
     details:
-      Train a language model by hand using pen, paper, and dice. Experience
-      exactly how ChatGPT-style systems work at their core.
-  - icon: 🎲
-    title: No coding required
+      Lead your team through AI adoption with confidence. Build a shared
+      understanding of how LLMs actually work.
+    link: /professionals
+  - icon: 🎓
+    title: For educators
     details:
-      These activities are accessible to anyone from high school age upwards. No
-      programming or maths background needed.
-  - icon: 📚
-    title: Ready to teach
+      Ready-to-use lesson plans and workshop formats for teaching LLMs in your
+      classroom or organisation.
+    link: /educators
+  - icon: 👨‍👩‍👧‍👦
+    title: For parents
     details:
-      Each lesson includes instructor notes, discussion questions, and
-      connections to modern AI systems.
+      Understand what your kids are using and learn alongside them. No tech
+      expertise required.
+    link: /parents
 ---
 
 ## Why are these resources necessary?
