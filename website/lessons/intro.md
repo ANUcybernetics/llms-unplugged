@@ -37,15 +37,15 @@ words. Common patterns get stronger weights; rare patterns get weaker ones.
 
 When generating, the model uses these learned patterns to make educated guesses
 about what should come next. It's not retrieving facts from a database or
-following programmed rules—it's pattern-matching against everything it's seen
+following programmed rules---it's pattern-matching against everything it's seen
 before.
 
 ## Why learn this way?
 
 Modern LLMs like GPT-4 or Claude contain billions of parameters and run on
 specialised hardware. But the core mechanism is surprisingly simple. By building
-a tiny language model by hand—with pen, paper, and dice—you'll understand the
-same fundamental process that powers these systems.
+a tiny language model by hand---with pen, paper, and dice---you'll understand
+the same fundamental process that powers these systems.
 
 The difference is scale, not kind. Your hand-built model might learn from a few
 pages of text and have a vocabulary of dozens of words. ChatGPT learned from
@@ -57,19 +57,19 @@ during generation.
 
 In the lessons ahead, you'll:
 
-1. **Learn weighted randomness**—how to make random choices where some outcomes
-   are more likely than others
-2. **Train a model**—count word patterns in text and record them in a grid
-3. **Generate text**—use dice to produce new sentences from your trained model
+1. **Learn weighted randomness**---how to make random choices where some
+   outcomes are more likely than others
+2. **Train a model**---count word patterns in text and record them in a grid
+3. **Generate text**---use dice to produce new sentences from your trained model
 
 These three steps are the complete training-to-generation pipeline. Everything
-else—trigrams, context columns, embeddings, sampling strategies—builds on this
-foundation.
+else---trigrams, context columns, embeddings, sampling strategies---builds on
+this foundation.
 
 ## Instructor notes
 
 This introduction sets expectations and provides the conceptual frame for what
-follows. It's meant to be brief—perhaps 5 minutes of discussion before moving
+follows. It's meant to be brief---perhaps 5 minutes of discussion before moving
 into the first hands-on activity.
 
 ### Discussion questions

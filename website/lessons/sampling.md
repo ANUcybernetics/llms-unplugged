@@ -42,7 +42,7 @@ strategies. Stretch goal: design and test your own truncation rule.
 
 ## Key idea
 
-Sampling choices—temperature and truncation—can make the same model sound
+Sampling choices---temperature and truncation---can make the same model sound
 cautious, wild, repetitive, or inventive. Tweaking the sampler changes the
 output without retraining anything.
 
@@ -97,7 +97,7 @@ Current LLMs use these same mechanisms, though the specific strategies differ.
   presence penalties all prune options before sampling.
 - **Truncation techniques in this lesson:** greedy, haiku, non-sequitur,
   no-repeat, and alliteration are designed for dice-based sampling but embody
-  the same idea—changing which tokens are eligible before you roll.
+  the same idea---changing which tokens are eligible before you roll.
 
 Your paper model demonstrates that "creativity" in AI comes from two controls:
 adjusting temperature (probability distribution shape) and applying truncation

@@ -39,7 +39,7 @@ that synthetic data to watch patterns change.
 ## Your goal
 
 Generate synthetic text with your model, train a "generation 2" model on it, and
-compare both models. Stretch goal: try a generation 3 model—or go full "Joker
+compare both models. Stretch goal: try a generation 3 model---or go full "Joker
 mode."
 
 ## Key idea
@@ -111,10 +111,10 @@ models) degrade over generations. Your hand-built demonstration shows why: each
 generation is a lossy sample from probability distributions. Rare patterns get
 lost, common patterns get amplified, and statistical noise becomes signal. This
 is exactly what researchers observe when training neural networks on synthetic
-data—vocabularies shrink, creativity decreases, and outputs become more
+data---vocabularies shrink, creativity decreases, and outputs become more
 repetitive and stereotyped. Your generation 2 model demonstrates that "training
-data quality" isn't just about correctness—it's about maintaining the diversity
-and richness of patterns that make language interesting. This hands-on
+data quality" isn't just about correctness---it's about maintaining the
+diversity and richness of patterns that make language interesting. This hands-on
 experience shows why AI companies are concerned about the increasing volume of
 AI-generated text on the internet: if future models train on today's AI outputs,
 we risk a cascade of model collapse.

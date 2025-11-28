@@ -18,7 +18,7 @@ questions, suggestions, or _LLMs Unplugged_ success stories then
 
 These resources build on a rich history of unplugged computing education (and
 hands-on education in general). If you're interested in where these ideas came
-from—or where to go next—this is the reading list.
+from---or where to go next---this is the reading list.
 
 ## CS Unplugged
 
@@ -54,7 +54,7 @@ for example:
 
 These collections cover classification, clustering, computer vision, and
 artificial neural network concepts. However, they contain limited material
-specifically about language models and especially text _generation_—a gap that
+specifically about language models and especially text _generation_---a gap that
 became particularly acute after ChatGPT's November 2022 release shifted what
 "AI" means to most people. _LLMs Unplugged_ aims to fill that gap.
 
@@ -64,7 +64,7 @@ became particularly acute after ChatGPT's November 2022 release shifted what
 
 The [n-gram language models](https://en.wikipedia.org/wiki/N-gram) participants
 build in these workshops have a lineage stretching back over a century. This
-isn't new theory—it's well-established mathematics applied by hand.
+isn't new theory---it's well-established mathematics applied by hand.
 
 ### Markov's stochastic processes (1913)
 
@@ -83,7 +83,7 @@ entropy and redundancy in language, connecting statistical patterns to
 fundamental limits on compression.
 
 Crucially, Shannon was the first to systematically generate synthetic text using
-these models—starting with random letters (0-gram), then letter frequencies
+these models---starting with random letters (0-gram), then letter frequencies
 (1-gram), then letter pairs (2-gram), and progressively higher orders. This
 generative approach revealed how increasing context length produces increasingly
 realistic text, a finding that remains central to modern language models.
@@ -112,10 +112,10 @@ current language models. The differences are mostly about scale:
 
 Modern advances come from doing these same operations at massive scale with
 neural networks that learn patterns automatically. But the fundamental
-insight—that language structure can be captured through statistical dependencies
-and revealed through synthetic generation—comes directly from Shannon's
-mid-twentieth-century work and the unplugged methods he used to explore these
-ideas.
+insight---that language structure can be captured through statistical
+dependencies and revealed through synthetic generation---comes directly from
+Shannon's mid-twentieth-century work and the unplugged methods he used to
+explore these ideas.
 
 Which is to say: when you're rolling dice and generating sentences in an _LLMs
 Unplugged_ workshop, you're not just learning about modern AI. You're also
@@ -136,14 +136,14 @@ political dimensions of emerging technologies.
 _LLMs Unplugged_ reflects the School's commitment to making sophisticated
 technical concepts accessible to diverse audiences and fostering critical
 engagement with AI systems that increasingly mediate how we work, learn, and
-communicate. Understanding how these systems actually work—not through metaphor
-or handwaving but through direct experience—is what we're all about.
+communicate. Understanding how these systems actually work---not through
+metaphor or handwaving but through direct experience---is what we're all about.
 
 ## Acknowledgements
 
 This work has benefited enormously from the input and facilitation help of Eddie
 Aloise King and Cole Cooney and other SoCy staff, plus feedback from hundreds of
-participants across diverse audiences—school students through to senior
+participants across diverse audiences---school students through to senior
 executives in the Australian Public Service. Iterating on these materials with
 real learners has been invaluable.
 
@@ -152,7 +152,7 @@ real learners has been invaluable.
 We encourage educators to use, adapt, and improve these resources. If you have
 questions, success stories about using them in your classroom, or would like to
 discuss adaptations improvements you've made, get in touch at
-[ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au)—we'd love[^love] to hear
+[ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au)---we'd love[^love] to hear
 from you.
 
 ## Citation

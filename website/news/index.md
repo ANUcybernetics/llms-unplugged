@@ -13,4 +13,4 @@ to the [RSS feed](/feed.rss) to stay up to date.
 
 ## 2025
 
-- [Website launch](/news/2025-11-20-website-launch) — 20 November 2025
+- [Website launch](/news/2025-11-20-website-launch) --- 20 November 2025

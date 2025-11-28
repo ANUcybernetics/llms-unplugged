@@ -51,7 +51,7 @@ who aren't so familiar with the term "Large Language Model" or LLM.
 ## How long do the activities take?
 
 A basic bigram text generation activity takes 30–60 minutes. Building your own
-model from scratch takes longer—allow 2–3 hours for a complete workshop that
+model from scratch takes longer---allow 2–3 hours for a complete workshop that
 includes both building and generating.
 
 ## Can I use these materials in my classroom?
@@ -70,7 +70,7 @@ universities, and non-profit organisations can use these materials in workshops
 that charge cost-recovery fees. However, for-profit companies cannot run paid
 workshops using these materials under the CC-BY-SA 4.0 license. If you're a
 commercial training provider interested in using these resources, please
-[contact us](/about#get-in-touch)—we're happy to discuss alternative licensing
+[contact us](/about#get-in-touch)---we're happy to discuss alternative licensing
 arrangements.
 
 ## I'm a corporate client, and I'd love to have some experts come and deliver this workshop for us
@@ -87,8 +87,8 @@ but the learning is very real. Learning _can_ be fun.
 
 Using physical randomness makes the probabilistic nature of text generation
 tangible. When you roll dice and look up words in a table, you're doing exactly
-what a computer does—just slower. This builds genuine understanding rather than
-treating AI as a black box.
+what a computer does---just slower. This builds genuine understanding rather
+than treating AI as a black box.
 
 ![Using dice to generate text from a hand-built language model](/assets/images/workshop-4.jpg)
 
@@ -96,8 +96,8 @@ treating AI as a black box.
 
 Modern LLMs use the same fundamental principle: predict the next token based on
 context. The differences are scale (billions of parameters vs dozens) and
-learned vs hand-counted statistics. The core mechanism—weighted random selection
-based on patterns in training data--is identical.
+learned vs hand-counted statistics. The core mechanism---weighted random
+selection based on patterns in training data--is identical.
 
 ## Can I generate my own booklets from custom text?
 
@@ -108,8 +108,8 @@ basic command-line familiarity to run the tools.
 ## The generated text is nonsense. Is that right?
 
 Mostly, yes. Bigram models capture local word patterns but have no long-range
-coherence. This is actually the point—it shows both the power and limitations of
-statistical language modelling. Trigrams produce noticeably better results.
+coherence. This is actually the point---it shows both the power and limitations
+of statistical language modelling. Trigrams produce noticeably better results.
 
 ## I found an error in the materials.
 

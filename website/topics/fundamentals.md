@@ -17,7 +17,7 @@ weighted random selection, training a bigram model, and generating text.
 ### [Weighted Randomness](/lessons/weighted-randomness)
 
 Learn how to make random choices where some options are more likely than
-others—an operation at the core of all generative AI.
+others---an operation at the core of all generative AI.
 
 ### [Basic Training](/lessons/basic-training)
 

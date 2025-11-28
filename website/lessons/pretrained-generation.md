@@ -6,7 +6,7 @@ description:
 order: 3
 topic: scaling-up
 keyIdea:
-  You can generate from a model you didn't train—just follow its lookup rules
+  You can generate from a model you didn't train---just follow its lookup rules
   and sample next words.
 dependsOn:
   - Basic Generation
@@ -49,7 +49,7 @@ the next word, and repeat.
 
 ## Algorithm (quick recap)
 
-1. Choose a starting word—any bold word in the booklet—and write it down.
+1. Choose a starting word---any bold word in the booklet---and write it down.
 2. Look up that word's entry to see possible next words and their thresholds.
 3. Roll your d10(s):
    - If there's an indicator (e.g., a small box with `2`), roll that many d10s
@@ -89,12 +89,12 @@ This lesson demonstrates the foundation of how people interact with modern AI:
 - **LLM-as-a-service**: users generate text without seeing or modifying the
   underlying model (just like using the booklet)
 - **model distribution**: the booklet format shows how models can be packaged
-  and shared—current LLMs are distributed as parameter files
+  and shared---current LLMs are distributed as parameter files
 - **deterministic generation**: given the same starting word and dice rolls, you
   get the same output (though randomness creates variety between runs)
 
 The key insight: training and text generation are separate processes. Most AI
-users never train models—they use pre-trained ones through APIs or interfaces.
+users never train models---they use pre-trained ones through APIs or interfaces.
 Your hand-built model from _Basic Training_ gives you insight into what's inside
 the booklet, but you don't need that knowledge to generate text. This separation
 is why companies like OpenAI can provide AI services: they do the expensive

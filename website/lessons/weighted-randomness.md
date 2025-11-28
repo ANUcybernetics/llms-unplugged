@@ -2,7 +2,7 @@
 title: Weighted Randomness
 description:
   Learn how to make random choices where some options are more likely than
-  others—a core generative AI operation.
+  others---a core generative AI operation.
 order: 0
 topic: fundamentals
 keyIdea:
@@ -23,7 +23,7 @@ student handout, [download it here](/assets/pdfs/weighted-randomness.pdf).
 :::
 
 Learn how to make random choices where some options are more likely than
-others—an operation at the core of all generative AI.
+others---an operation at the core of all generative AI.
 
 ![Hero image: Weighted Randomness](/assets/images/hero-weighted-randomness.jpg)
 
@@ -61,7 +61,7 @@ You want to choose an ice cream flavour: `vanilla` 50% of the time, `chocolate`
 - add 3 brown beads to the bag (chocolate)
 - add 2 red beads to the bag (strawberry)
 
-Draw a bead from the bag—that's your ice-cream choice for today.
+Draw a bead from the bag---that's your ice-cream choice for today.
 
 ## Algorithm 2: dice with ranges
 
@@ -115,7 +115,7 @@ how they work:
 - **probability distributions**: neural networks output probabilities for
   thousands of possible next tokens; these probabilities become the "weights"
   for sampling
-- **physical intuition**: dice and tokens make the mathematics tangible—when
+- **physical intuition**: dice and tokens make the mathematics tangible---when
   students later learn about "sampling from a distribution," they'll have
   hands-on experience with what that means
 

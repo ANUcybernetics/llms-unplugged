@@ -96,7 +96,7 @@ This generation process is identical to how current LLMs produce text:
   your dice or tokens)
 - **probability distribution**: neural network outputs probabilities for all
   50,000+ possible next tokens
-- **no planning**: neither looks ahead—just picks the next word
+- **no planning**: neither looks ahead---just picks the next word
 - **variability**: same prompt can produce different outputs due to randomness
 
 The fact: sophisticated AI responses emerge from this simple process repeated
@@ -108,6 +108,6 @@ methods demonstrate the exact mathematical operation happening billions of times
 per second inside modern language models.
 
 Note: in AI/ML more broadly, this process of using a trained model to produce
-outputs is commonly called "inference"—you may encounter this term in other
+outputs is commonly called "inference"---you may encounter this term in other
 contexts. In these teaching resources we use "generation" specifically because
 it more clearly describes what language models do: they generate text.

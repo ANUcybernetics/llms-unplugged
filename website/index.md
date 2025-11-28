@@ -40,16 +40,16 @@ features:
     link: /parents
 ---
 
-## Why are these resources necessary?
+## Who needs to learn about LLMs?
 
-[ChatGPT](https://chatgpt.com/) arrived in November 2022 and suddenly everyone's
-using LLMs. Yet most people have no real mental model of what's actually
-happening under the hood. They've heard the hand-wave-y and/or mystical-sounding
-explanations, maybe picked up some vague notions about "neural networks" and
-"training data", but the core mechanism remains opaque.
+In a word---everyone. [ChatGPT](https://chatgpt.com/) arrived in November 2022
+and suddenly everyone's using LLMs. Yet most people have no real mental model of
+what's actually happening under the hood. They've heard the hand-wave-y and/or
+mystical-sounding explanations, maybe picked up some vague notions about "neural
+networks" and "training data", but the core mechanism remains opaque.
 
 _LLMs Unplugged_ cuts through the mystery using the simplest possible approach:
-you—and your students—build your own language model from scratch with pen,
+you---and your students---build your own language model from scratch with pen,
 paper, and dice.
 
 The process is straightforward. You manually count word patterns in some
@@ -67,7 +67,7 @@ These activities are suitable for audiences from high school age (with a primary
 version coming soon!) through to adults. No programming background required, and
 no mathematics beyond basic counting and percentages.
 
-We've run it for hundreds of participants—school students, undergraduate
+We've run it for hundreds of participants---school students, undergraduate
 students, senior executives in the Australian Public Service. The material
 consistently helps people build new mental models of how LLMs work, demystifying
 systems they may have previously thought of as almost magical.
@@ -85,7 +85,7 @@ They're organised into [lessons](/lessons/) (grouped into topics), with each
 covering a self-contained activity from basic training and generation through to
 advanced concepts like embeddings, sampling strategies, and model fine-tuning.
 Each lesson also includes instructor notes: pedagogical scaffolding explaining
-connections to modern LLMs, discussion questions, and historical context—all
+connections to modern LLMs, discussion questions, and historical context---all
 designed for educators without deep AI expertise.
 
 Finally (and optionally!) there are

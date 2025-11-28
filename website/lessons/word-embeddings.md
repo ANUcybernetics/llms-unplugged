@@ -46,7 +46,7 @@ map or clustering).
 
 ## Key idea
 
-Each row of counts is an embedding—a numeric fingerprint of context. Comparing
+Each row of counts is an embedding---a numeric fingerprint of context. Comparing
 rows tells you which words behave alike.
 
 ## Algorithm
@@ -106,6 +106,6 @@ beyond just their spelling.
 Note on the activity: while the lesson focuses on calculating distances between
 embeddings (the similarity matrix), this is pedagogically deliberate. Embeddings
 themselves are just rows of numbers, but distances reveal the relationships
-between words—which is what makes embeddings useful in practice. The activity
+between words---which is what makes embeddings useful in practice. The activity
 emphasises the practical application of embeddings rather than just their
 construction.

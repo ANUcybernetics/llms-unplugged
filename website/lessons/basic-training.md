@@ -102,4 +102,4 @@ language models:
 
 The key insight: "training" a language model means counting patterns in text.
 Your hand-built model contains the same type of information that current LLMs
-store—at a vastly smaller scale.
+store---at a vastly smaller scale.

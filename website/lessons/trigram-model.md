@@ -5,7 +5,7 @@ description:
 order: 5
 topic: scaling-up
 keyIdea:
-  More context improves predictions—trigrams track two previous words, trading
+  More context improves predictions---trigrams track two previous words, trading
   simplicity for richer patterns.
 dependsOn:
   - Basic Training
@@ -108,7 +108,7 @@ transformers:
 - **sparse data problem**: with more context, you need exponentially more
   training data
 
-Your trigram model shows why longer context helps—`see` + `spot` predicts `run`
-perfectly, while just `spot` could be followed by `run` or `,`. This is why
-modern LLMs can maintain coherent conversations over many exchanges—they
+Your trigram model shows why longer context helps---`see` + `spot` predicts
+`run` perfectly, while just `spot` could be followed by `run` or `,`. This is
+why modern LLMs can maintain coherent conversations over many exchanges---they
 consider much more context than just the last word or two.
