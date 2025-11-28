@@ -9,6 +9,16 @@ description:
 
 ![Hero image: Frequently asked questions](/assets/images/hero-faq.jpg)
 
+## Why do you keep saying LLMs---this is AI, right?
+
+Honestly, the short answer (these days) is yes. The long answer is more more
+complicated---AI is a term that has been applied to many different algorithmic
+techniques and systems over the years. But today (in the mid-2020s) Large
+Language Models have kindof sucked all the air out of the room when it comes to
+AI, so that's mostly what we're talking about here. I (Ben) do like to use the
+term LLM rather than AI whenever I can, because I think it's more specific and
+accurate.
+
 ## Who is this for?
 
 Anyone curious about how language models work. The activities are designed for
@@ -27,6 +37,16 @@ not just the ones we use in that particular workshop.
 You'll need dice (ideally d10 or d20), paper, and pencils. The PDF booklets can
 be printed on standard A4 or A5 paper. For larger groups, having multiple sets
 of dice speeds things up.
+
+## Are there any video resources to accompany the lessons?
+
+Not yet, but we're working on it---stay tuned.
+
+## You mention ChatGPT a lot, but Claude/Gemini/Deepseek/etc is more my jam
+
+None of these resources are specific to ChatGPT (which is a brand these days
+rather than a specific model anyway). It's just a nice shorthand term for those
+who aren't so familiar with the term "Large Language Model" or LLM.
 
 ## How long do the activities take?
 
@@ -53,11 +73,15 @@ commercial training provider interested in using these resources, please
 [contact us](/about#get-in-touch)—we're happy to discuss alternative licensing
 arrangements.
 
-## What's the difference between bigrams and trigrams?
+## I'm a corporate client, and I'd love to have some experts come and deliver this workshop for us
 
-Bigrams predict the next word based on one previous word. Trigrams use two
-previous words, producing more coherent text but requiring larger lookup tables.
-We recommend starting with bigrams.
+Good news---that's one of the things we do here at the
+[School of Cybernetics](https://cybernetics.anu.edu.au).
+[Drop us a line](mailto:info@cybernetics.anu.edu.au) and to discuss how we can
+make it happen.
+
+Honestly, this stuff is just as fun as a Christmas party/team bonding activity,
+but the learning is very real. Learning _can_ be fun.
 
 ## Why dice instead of computers?
 
@@ -68,12 +92,12 @@ treating AI as a black box.
 
 ![Using dice to generate text from a hand-built language model](/assets/images/workshop-4.jpg)
 
-## How does this relate to ChatGPT and other LLMs?
+## How do these activities relate to ChatGPT and other LLMs?
 
 Modern LLMs use the same fundamental principle: predict the next token based on
 context. The differences are scale (billions of parameters vs dozens) and
 learned vs hand-counted statistics. The core mechanism—weighted random selection
-based on patterns in training data—is identical.
+based on patterns in training data--is identical.
 
 ## Can I generate my own booklets from custom text?
 
