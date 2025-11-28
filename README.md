@@ -137,7 +137,7 @@ For large trigram models, use the `-b` flag to split across multiple books.
   - `book.typ` - Main booklet template
 - `data/` - Input text corpora (\*.txt files with YAML frontmatter)
 - `handouts/` - Teaching materials (lessons, worksheets, runsheets)
-- `website/` - Project website source (Eleventy + Tailwind)
+- `website/` - Project website source (Vitepress)
 - `backlog/` - Task management
 
 ### Testing

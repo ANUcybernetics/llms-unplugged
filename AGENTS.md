@@ -11,7 +11,7 @@ This repository has four main parts:
 
 - **`cli/`** - Rust CLI tool for generating N-gram models and PDF booklets
 - **`handouts/`** - Typst standalone materials (worksheets, runsheets, poster)
-- **`website/`** - Project website (Eleventy + Tailwind) including lesson cards
+- **`website/`** - Project website (Vitepress) including lesson cards
 - **`typst/`** - Shared Typst resources (utils.typ, fonts/, images/)
 
 Supporting directories:
