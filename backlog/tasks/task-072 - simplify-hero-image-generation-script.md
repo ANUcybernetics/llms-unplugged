@@ -13,3 +13,6 @@ to have "batches" of images that it generates.
 
 Instead, I want it to just take as args one or more lesson slugs (filename
 without the .md extension), or a special `--all` flag to generate all images.
+
+In addition, run the build/test to see which lessons are missing hero images,
+and generate them.
