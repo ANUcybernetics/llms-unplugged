@@ -1,0 +1,15 @@
+---
+id: task-072
+title: simplify hero image generation script
+status: To Do
+assignee: []
+created_date: "2025-11-28 05:37"
+labels: []
+dependencies: []
+---
+
+The @website/scripts/generate-hero-images.ts is a bit too complicated - it tries
+to have "batches" of images that it generates.
+
+Instead, I want it to just take as args one or more lesson slugs (filename
+without the .md extension), or a special `--all` flag to generate all images.
