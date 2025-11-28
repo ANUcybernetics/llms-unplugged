@@ -21,12 +21,12 @@ const EXAMPLE_IMAGES = [
 
 const BASE_PROMPT = `Task: create an illustrative image---with NO TEXT---for a teaching resource called LLMs Unplugged. Use these images for color & line style reference only. Do not include any pictures of computers.`;
 
-const STATIC_PAGES = [
-  { file: "index.md", slug: "index" },
-  { file: "about.md", slug: "about" },
-  { file: "faq.md", slug: "faq" },
-  { file: "educators.md", slug: "educators" },
-];
+const STATIC_PAGES: Record<string, string> = {
+  index: "index.md",
+  about: "about.md",
+  faq: "faq.md",
+  educators: "educators.md",
+};
 
 interface ImageTask {
   slug: string;
@@ -69,26 +69,41 @@ async function generateImage(task: ImageTask): Promise<boolean> {
   }
 }
 
+async function getStaticPageTask(slug: string): Promise<ImageTask | null> {
+  const file = STATIC_PAGES[slug];
+  if (!file) {
+    console.error(`Unknown static page: ${slug}`);
+    return null;
+  }
+
+  const filePath = join(ROOT_DIR, file);
+  try {
+    const content = await readFile(filePath, "utf-8");
+    const { data: frontmatter } = matter(content);
+
+    const title = frontmatter.title;
+    const description =
+      frontmatter.description || frontmatter.hero?.tagline || null;
+
+    if (title && description) {
+      return { slug, title, description };
+    } else {
+      console.log(`Skipping ${file}: missing title or description`);
+      return null;
+    }
+  } catch {
+    console.log(`Skipping ${file}: file not found`);
+    return null;
+  }
+}
+
 async function getStaticPageTasks(): Promise<ImageTask[]> {
   const tasks: ImageTask[] = [];
 
-  for (const page of STATIC_PAGES) {
-    const filePath = join(ROOT_DIR, page.file);
-    try {
-      const content = await readFile(filePath, "utf-8");
-      const { data: frontmatter } = matter(content);
-
-      if (frontmatter.title && frontmatter.description) {
-        tasks.push({
-          slug: page.slug,
-          title: frontmatter.title,
-          description: frontmatter.description,
-        });
-      } else {
-        console.log(`Skipping ${page.file}: missing title or description`);
-      }
-    } catch {
-      console.log(`Skipping ${page.file}: file not found`);
+  for (const slug of Object.keys(STATIC_PAGES)) {
+    const task = await getStaticPageTask(slug);
+    if (task) {
+      tasks.push(task);
     }
   }
 
@@ -145,7 +160,9 @@ async function getLessonTasks(): Promise<ImageTask[]> {
 
 async function main() {
   const args = process.argv.slice(2);
-  const validTypes = ["static", "topics", "lessons", "all"];
+  const groupTypes = ["static", "topics", "lessons", "all"];
+  const staticPageSlugs = Object.keys(STATIC_PAGES);
+  const validTypes = [...groupTypes, ...staticPageSlugs];
 
   const requestedTypes =
     args.length === 0 || args.includes("all")
@@ -162,11 +179,24 @@ async function main() {
 
   const allTasks: ImageTask[] = [];
 
+  const requestedStaticSlugs = requestedTypes.filter((t) =>
+    staticPageSlugs.includes(t),
+  );
+
   if (requestedTypes.includes("static")) {
     console.log("=== Static Pages ===\n");
     const tasks = await getStaticPageTasks();
     console.log(`Found ${tasks.length} static pages\n`);
     allTasks.push(...tasks);
+  } else if (requestedStaticSlugs.length > 0) {
+    console.log("=== Static Pages ===\n");
+    for (const slug of requestedStaticSlugs) {
+      const task = await getStaticPageTask(slug);
+      if (task) {
+        allTasks.push(task);
+      }
+    }
+    console.log(`Found ${allTasks.length} static pages\n`);
   }
 
   if (requestedTypes.includes("topics")) {
