@@ -15,9 +15,9 @@ hero:
     - theme: brand
       text: Start learning
       link: /lessons/
-    - theme: alt
-      text: View on GitHub
-      link: https://github.com/ANUcybernetics/llms-unplugged
+    # - theme: alt
+    #   text: View on GitHub
+    #   link: https://github.com/ANUcybernetics/llms-unplugged
 
 features:
   - icon: 📝
