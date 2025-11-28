@@ -1,12 +1,19 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { data as lessons } from "../../../lessons/lessons.data";
+import { data as allLessons } from "../../../lessons/lessons.data";
 import {
   topicOrder,
   topicLabels,
   topicDescriptions,
 } from "../../../lessons/topics";
 import type { LessonData } from "../../../lessons/lessons.data";
+
+interface Props {
+  topics?: string[];
+  lessons?: string[];
+}
+
+const props = defineProps<Props>();
 
 interface TopicGroup {
   id: string;
@@ -15,17 +22,33 @@ interface TopicGroup {
   lessons: LessonData[];
 }
 
+function getLessonSlug(lesson: LessonData): string {
+  return lesson.url.replace(/^\/lessons\//, "").replace(/\/$/, "");
+}
+
 const groupedLessons = computed<TopicGroup[]>(() => {
+  const filteredLessons = allLessons.filter((lesson) => {
+    if (props.topics && !props.topics.includes(lesson.topic)) {
+      return false;
+    }
+    if (props.lessons && !props.lessons.includes(getLessonSlug(lesson))) {
+      return false;
+    }
+    return true;
+  });
+
   const groups: Record<string, LessonData[]> = {};
 
-  for (const lesson of lessons) {
+  for (const lesson of filteredLessons) {
     if (!groups[lesson.topic]) {
       groups[lesson.topic] = [];
     }
     groups[lesson.topic].push(lesson);
   }
 
-  return topicOrder
+  const activeTopics = props.topics ?? topicOrder;
+
+  return activeTopics
     .filter((topic) => groups[topic])
     .map((topic) => ({
       id: topic,
