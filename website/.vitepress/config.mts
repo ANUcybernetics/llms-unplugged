@@ -25,6 +25,9 @@ export default defineConfig({
   // Use clean URLs (no .html extension)
   cleanUrls: true,
 
+  // Ignore RSS feed link (generated after dead link check)
+  ignoreDeadLinks: ["/feed.rss"],
+
   // Add lazy loading to images
   markdown: {
     image: {
@@ -148,7 +151,14 @@ export default defineConfig({
         {
           text: "How Models Understand",
           items: [
-            { text: "Context Columns", link: "/lessons/context-columns" },
+            {
+              text: "Context Columns Training",
+              link: "/lessons/context-columns-training",
+            },
+            {
+              text: "Context Columns Generation",
+              link: "/lessons/context-columns-generation",
+            },
             { text: "Word Embeddings", link: "/lessons/word-embeddings" },
           ],
         },
