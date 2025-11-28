@@ -23,8 +23,8 @@ accurate.
 
 Anyone curious about how language models work. The activities are designed for
 learners from high school age upwards, with no technical background required.
-Educators, students, and professionals have all found value in the hands-on
-approach.
+[Educators](/educators), students, and [professionals](/professionals) have all
+found value in the hands-on approach.
 
 ## Did some of this stuff used to be called "My First Language Model"?
 
