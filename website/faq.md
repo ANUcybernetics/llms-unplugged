@@ -65,20 +65,20 @@ attribution.
 
 The NC (Non-Commercial) clause in our licence has
 [some ambiguity](https://www.artslaw.com.au/information-sheet/creative-commons)
-around paid educational activities. Our intention is that educators at schools,
-universities, and non-profit organisations can use these materials in workshops
-that charge cost-recovery fees. However, for-profit companies cannot run paid
-workshops using these materials under the CC-BY-SA 4.0 license. If you're a
-commercial training provider interested in using these resources, please
-[contact us](/about#get-in-touch)---we're happy to discuss alternative licensing
-arrangements.
+around paid educational activities. Our intention is that
+[educators](/educators) at schools, universities, and non-profit organisations
+can use these materials in workshops that charge cost-recovery fees. However,
+for-profit companies cannot run paid workshops using these materials under the
+CC-BY-SA 4.0 license. If you're a commercial training provider interested in
+using these resources, please [contact us](/about#get-in-touch)---we're happy to
+discuss alternative licensing arrangements.
 
 ## I'm a corporate client, and I'd love to have some experts come and deliver this workshop for us
 
 Good news---that's one of the things we do here at the
 [School of Cybernetics](https://cybernetics.anu.edu.au).
-[Drop us a line](mailto:info@cybernetics.anu.edu.au) and to discuss how we can
-make it happen.
+[Drop us a line](mailto:lxconvenor.cybernetics@anu.edu.au) and to discuss how we
+can make it happen.
 
 Honestly, this stuff is just as fun as a Christmas party/team bonding activity,
 but the learning is very real. Learning _can_ be fun.

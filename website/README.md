@@ -52,9 +52,10 @@ website/
 
 ## About LLMs Unplugged
 
-LLMs Unplugged helps educators and learners understand large language models
-through hands-on activities using pen, paper, and dice. Build your own language
-model from scratch and experience exactly how AI text generation works.
+LLMs Unplugged helps [educators](https://www.llmsunplugged.org/educators) and
+learners understand large language models through hands-on activities using pen,
+paper, and dice. Build your own language model from scratch and experience
+exactly how AI text generation works.
 
 ## Licence
 

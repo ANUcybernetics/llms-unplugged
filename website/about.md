@@ -43,8 +43,8 @@ technical background.
 ## AI Unplugged resources
 
 As machine learning and artificial intelligence became more prominent in public
-discourse, educators naturally extended the unplugged approach to these fields,
-for example:
+discourse, [educators](/educators) naturally extended the unplugged approach to
+these fields, for example:
 
 - [AI Unplugged](https://www.aiunplugged.org) by Lindner, Seegerer and Romeike
 - Northwestern University's
@@ -149,9 +149,9 @@ real learners has been invaluable.
 
 ## Get in touch
 
-We encourage educators to use, adapt, and improve these resources. If you have
-questions, success stories about using them in your classroom, or would like to
-discuss adaptations improvements you've made, get in touch at
+We encourage [educators](/educators) to use, adapt, and improve these resources.
+If you have questions, success stories about using them in your classroom, or
+would like to discuss adaptations improvements you've made, get in touch at
 [ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au)---we'd love[^love] to hear
 from you.
 

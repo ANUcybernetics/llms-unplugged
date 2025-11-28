@@ -86,13 +86,13 @@ covering a self-contained activity from basic training and generation through to
 advanced concepts like embeddings, sampling strategies, and model fine-tuning.
 Each lesson also includes instructor notes: pedagogical scaffolding explaining
 connections to modern LLMs, discussion questions, and historical context---all
-designed for educators without deep AI expertise.
+designed for [educators](/educators) without deep AI expertise.
 
 Finally (and optionally!) there are
 [software tools](https://github.com/ANUcybernetics/llms-unplugged): open-source
 tools to create custom n-gram booklets from any text corpus. This allows
-educators who want to go deeper to personalise even more of the unplugged
-activities to their own classroom context.
+[educators](/educators) who want to go deeper to personalise even more of the
+unplugged activities to their own classroom context.
 
 These _LLMs Unplugged_ resources will grow over time, with example lesson plans,
 new lessons and unplugged activities, and more. Bookmark us and stay tuned. Read
