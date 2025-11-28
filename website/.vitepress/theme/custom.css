@@ -82,6 +82,9 @@
   --vp-c-brand-1: #be830e;
   --vp-c-brand-2: #d4940f;
   --vp-c-brand-3: #a87309;
+
+  /* Lighter inline code background for visibility on dark bg */
+  --vp-code-bg: rgba(255, 255, 255, 0.12);
 }
 
 /* Light mode - keep similar dark aesthetic but lighten text for readability */
