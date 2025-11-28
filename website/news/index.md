@@ -9,7 +9,7 @@ description:
 ![Hero image: News and updates from LLMs Unplugged](/assets/images/hero-news.jpg)
 
 Updates, announcements, and stories from the LLMs Unplugged project. Subscribe
-to the [RSS feed](https://www.llmsunplugged.org/feed.rss) to stay up to date.
+to the [RSS feed](/feed.rss) to stay up to date.
 
 ## 2025
 
