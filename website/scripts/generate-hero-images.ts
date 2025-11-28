@@ -11,7 +11,6 @@ const execAsync = promisify(exec);
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = join(__dirname, "..");
 const LESSONS_DIR = join(ROOT_DIR, "lessons");
-const TOPICS_DIR = join(ROOT_DIR, "topics");
 const OUTPUT_DIR = join(ROOT_DIR, "public/assets/images");
 const EXAMPLE_IMAGES = [
   join(__dirname, "example.png"),
@@ -21,23 +20,43 @@ const EXAMPLE_IMAGES = [
 
 const BASE_PROMPT = `Task: create an illustrative image---with NO TEXT---for a teaching resource called LLMs Unplugged. Use these images for color & line style reference only. Do not include any pictures of computers.`;
 
-const STATIC_PAGES: Record<string, string> = {
-  index: "index.md",
-  about: "about.md",
-  faq: "faq.md",
-  educators: "educators.md",
-  professionals: "professionals.md",
-  parents: "parents.md",
-};
-
-interface ImageTask {
+interface LessonInfo {
   slug: string;
   title: string;
   description: string;
 }
 
-async function generateImage(task: ImageTask): Promise<boolean> {
-  const { slug, title, description } = task;
+async function getLessonInfo(slug: string): Promise<LessonInfo | null> {
+  const filePath = join(LESSONS_DIR, `${slug}.md`);
+  try {
+    const content = await readFile(filePath, "utf-8");
+    const { data: frontmatter } = matter(content);
+
+    if (frontmatter.title && frontmatter.description) {
+      return {
+        slug,
+        title: frontmatter.title,
+        description: frontmatter.description,
+      };
+    } else {
+      console.error(`Skipping ${slug}: missing title or description`);
+      return null;
+    }
+  } catch {
+    console.error(`Lesson not found: ${slug}`);
+    return null;
+  }
+}
+
+async function getAllLessonSlugs(): Promise<string[]> {
+  const files = await readdir(LESSONS_DIR);
+  return files
+    .filter((f) => f.endsWith(".md") && f !== "index.md")
+    .map((f) => f.replace(".md", ""));
+}
+
+async function generateImage(lesson: LessonInfo): Promise<boolean> {
+  const { slug, title, description } = lesson;
   const outputFilename = `hero-${slug}`;
   const prompt = `${BASE_PROMPT}\n\nLesson Name: ${title}\n\nDescription: ${description}`;
 
@@ -71,157 +90,57 @@ async function generateImage(task: ImageTask): Promise<boolean> {
   }
 }
 
-async function getStaticPageTask(slug: string): Promise<ImageTask | null> {
-  const file = STATIC_PAGES[slug];
-  if (!file) {
-    console.error(`Unknown static page: ${slug}`);
-    return null;
-  }
-
-  const filePath = join(ROOT_DIR, file);
-  try {
-    const content = await readFile(filePath, "utf-8");
-    const { data: frontmatter } = matter(content);
-
-    const title = frontmatter.title;
-    const description =
-      frontmatter.description || frontmatter.hero?.tagline || null;
-
-    if (title && description) {
-      return { slug, title, description };
-    } else {
-      console.log(`Skipping ${file}: missing title or description`);
-      return null;
-    }
-  } catch {
-    console.log(`Skipping ${file}: file not found`);
-    return null;
-  }
-}
-
-async function getStaticPageTasks(): Promise<ImageTask[]> {
-  const tasks: ImageTask[] = [];
-
-  for (const slug of Object.keys(STATIC_PAGES)) {
-    const task = await getStaticPageTask(slug);
-    if (task) {
-      tasks.push(task);
-    }
-  }
-
-  return tasks;
-}
-
-async function getTopicTasks(): Promise<ImageTask[]> {
-  const tasks: ImageTask[] = [];
-  const files = await readdir(TOPICS_DIR);
-  const mdFiles = files.filter((f) => f.endsWith(".md") && f !== "index.md");
-
-  for (const file of mdFiles) {
-    const filePath = join(TOPICS_DIR, file);
-    const content = await readFile(filePath, "utf-8");
-    const { data: frontmatter } = matter(content);
-
-    if (frontmatter.title && frontmatter.description) {
-      tasks.push({
-        slug: file.replace(".md", ""),
-        title: frontmatter.title,
-        description: frontmatter.description,
-      });
-    } else {
-      console.log(`Skipping ${file}: missing title or description`);
-    }
-  }
-
-  return tasks;
-}
-
-async function getLessonTasks(): Promise<ImageTask[]> {
-  const tasks: ImageTask[] = [];
-  const files = await readdir(LESSONS_DIR);
-  const mdFiles = files.filter((f) => f.endsWith(".md") && f !== "index.md");
-
-  for (const file of mdFiles) {
-    const filePath = join(LESSONS_DIR, file);
-    const content = await readFile(filePath, "utf-8");
-    const { data: frontmatter } = matter(content);
-
-    if (frontmatter.title && frontmatter.description) {
-      tasks.push({
-        slug: file.replace(".md", ""),
-        title: frontmatter.title,
-        description: frontmatter.description,
-      });
-    } else {
-      console.log(`Skipping ${file}: missing title or description`);
-    }
-  }
-
-  return tasks;
+function printUsage() {
+  console.log("Usage: generate-hero-images.ts [--all | slug1 slug2 ...]");
+  console.log("");
+  console.log("Generate hero images for lessons.");
+  console.log("");
+  console.log("Options:");
+  console.log("  --all       Generate images for all lessons");
+  console.log("  slug1 ...   Generate images for specific lessons (by slug)");
+  console.log("");
+  console.log("Examples:");
+  console.log("  generate-hero-images.ts intro");
+  console.log("  generate-hero-images.ts basic-training basic-generation");
+  console.log("  generate-hero-images.ts --all");
 }
 
 async function main() {
   const args = process.argv.slice(2);
-  const groupTypes = ["static", "topics", "lessons", "all"];
-  const staticPageSlugs = Object.keys(STATIC_PAGES);
-  const validTypes = [...groupTypes, ...staticPageSlugs];
 
-  const requestedTypes =
-    args.length === 0 || args.includes("all")
-      ? ["static", "topics", "lessons"]
-      : args;
+  if (args.length === 0 || args.includes("--help") || args.includes("-h")) {
+    printUsage();
+    if (args.length === 0) {
+      console.log("\nAvailable lessons:");
+      const slugs = await getAllLessonSlugs();
+      slugs.forEach((s) => console.log(`  ${s}`));
+    }
+    process.exit(args.length === 0 ? 1 : 0);
+  }
 
-  for (const arg of requestedTypes) {
-    if (!validTypes.includes(arg)) {
-      console.error(`Unknown type: ${arg}`);
-      console.error(`Valid types: ${validTypes.join(", ")}`);
-      process.exit(1);
+  const slugs = args.includes("--all") ? await getAllLessonSlugs() : args;
+
+  const lessons: LessonInfo[] = [];
+  for (const slug of slugs) {
+    if (slug === "--all") continue;
+    const info = await getLessonInfo(slug);
+    if (info) {
+      lessons.push(info);
     }
   }
 
-  const allTasks: ImageTask[] = [];
-
-  const requestedStaticSlugs = requestedTypes.filter((t) =>
-    staticPageSlugs.includes(t),
-  );
-
-  if (requestedTypes.includes("static")) {
-    console.log("=== Static Pages ===\n");
-    const tasks = await getStaticPageTasks();
-    console.log(`Found ${tasks.length} static pages\n`);
-    allTasks.push(...tasks);
-  } else if (requestedStaticSlugs.length > 0) {
-    console.log("=== Static Pages ===\n");
-    for (const slug of requestedStaticSlugs) {
-      const task = await getStaticPageTask(slug);
-      if (task) {
-        allTasks.push(task);
-      }
-    }
-    console.log(`Found ${allTasks.length} static pages\n`);
+  if (lessons.length === 0) {
+    console.error("No valid lessons to process");
+    process.exit(1);
   }
 
-  if (requestedTypes.includes("topics")) {
-    console.log("=== Topics ===\n");
-    const tasks = await getTopicTasks();
-    console.log(`Found ${tasks.length} topics\n`);
-    allTasks.push(...tasks);
-  }
+  console.log(`\nGenerating ${lessons.length} image(s)...\n`);
 
-  if (requestedTypes.includes("lessons")) {
-    console.log("=== Lessons ===\n");
-    const tasks = await getLessonTasks();
-    console.log(`Found ${tasks.length} lessons\n`);
-    allTasks.push(...tasks);
-  }
-
-  console.log(`\nGenerating ${allTasks.length} images in parallel...\n`);
-
-  const results = await Promise.all(allTasks.map(generateImage));
+  const results = await Promise.all(lessons.map(generateImage));
   const succeeded = results.filter(Boolean).length;
   const failed = results.length - succeeded;
 
-  console.log(`\nDone: ${succeeded} succeeded, ${failed} failed`);
+  console.log(`Done: ${succeeded} succeeded, ${failed} failed`);
 
   if (failed > 0) {
     process.exit(1);
