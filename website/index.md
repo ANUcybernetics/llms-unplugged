@@ -4,10 +4,10 @@ title: LLMs Unplugged
 
 hero:
   name: LLMs Unplugged
-  text: Understand AI by building it
+  text: Understand AI by building it yourself
   tagline:
     Ready-to-use teaching resources for understanding how large language models
-    work through hands-on activities. No computers required.
+    (LLMs) work through hands-on activities. No computers or coding required.
   image:
     src: /assets/images/hero-index.jpg
     alt: Workshop participants building language models with pen and paper
