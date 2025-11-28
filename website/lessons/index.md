@@ -9,7 +9,7 @@ Browse all lessons organised by topic. Each lesson includes step-by-step
 instructions for students and instructor notes connecting the activity to modern
 AI systems.
 
-::: info
+::: info Getting Started
 
 New to LLMs Unplugged? Start with the **Fundamentals** topic.
 
