@@ -9,7 +9,6 @@ import {
 import type { LessonData } from "../../../lessons/lessons.data";
 
 interface Props {
-  topics?: string[];
   lessons?: string[];
 }
 
@@ -26,29 +25,26 @@ function getLessonSlug(lesson: LessonData): string {
   return lesson.url.replace(/^\/lessons\//, "").replace(/\/$/, "");
 }
 
-const groupedLessons = computed<TopicGroup[]>(() => {
-  const filteredLessons = allLessons.filter((lesson) => {
-    if (props.topics && !props.topics.includes(lesson.topic)) {
-      return false;
-    }
-    if (props.lessons && !props.lessons.includes(getLessonSlug(lesson))) {
-      return false;
-    }
-    return true;
-  });
+const isFiltered = computed(() => !!props.lessons);
 
+const filteredLessons = computed<LessonData[]>(() => {
+  if (!props.lessons) return allLessons;
+  return allLessons.filter((lesson) =>
+    props.lessons!.includes(getLessonSlug(lesson)),
+  );
+});
+
+const groupedLessons = computed<TopicGroup[]>(() => {
   const groups: Record<string, LessonData[]> = {};
 
-  for (const lesson of filteredLessons) {
+  for (const lesson of filteredLessons.value) {
     if (!groups[lesson.topic]) {
       groups[lesson.topic] = [];
     }
     groups[lesson.topic].push(lesson);
   }
 
-  const activeTopics = props.topics ?? topicOrder;
-
-  return activeTopics
+  return topicOrder
     .filter((topic) => groups[topic])
     .map((topic) => ({
       id: topic,
@@ -61,28 +57,44 @@ const groupedLessons = computed<TopicGroup[]>(() => {
 
 <template>
   <div class="lesson-cards">
-    <section
-      v-for="group in groupedLessons"
-      :key="group.id"
-      class="topic-section"
-    >
-      <h2 :id="group.id">{{ group.label }}</h2>
-      <p class="topic-description">{{ group.description }}</p>
-      <div class="cards-grid">
-        <a
-          v-for="lesson in group.lessons"
-          :key="lesson.url"
-          :href="lesson.url"
-          class="lesson-card"
-        >
-          <img :src="lesson.hero" :alt="lesson.title" loading="lazy" />
-          <div class="card-content">
-            <h3>{{ lesson.title }}</h3>
-            <p>{{ lesson.description }}</p>
-          </div>
-        </a>
-      </div>
-    </section>
+    <div v-if="isFiltered" class="cards-grid">
+      <a
+        v-for="lesson in filteredLessons"
+        :key="lesson.url"
+        :href="lesson.url"
+        class="lesson-card"
+      >
+        <img :src="lesson.hero" :alt="lesson.title" loading="lazy" />
+        <div class="card-content">
+          <h3>{{ lesson.title }}</h3>
+          <p>{{ lesson.description }}</p>
+        </div>
+      </a>
+    </div>
+    <template v-else>
+      <section
+        v-for="group in groupedLessons"
+        :key="group.id"
+        class="topic-section"
+      >
+        <h2 :id="group.id">{{ group.label }}</h2>
+        <p class="topic-description">{{ group.description }}</p>
+        <div class="cards-grid">
+          <a
+            v-for="lesson in group.lessons"
+            :key="lesson.url"
+            :href="lesson.url"
+            class="lesson-card"
+          >
+            <img :src="lesson.hero" :alt="lesson.title" loading="lazy" />
+            <div class="card-content">
+              <h3>{{ lesson.title }}</h3>
+              <p>{{ lesson.description }}</p>
+            </div>
+          </a>
+        </div>
+      </section>
+    </template>
   </div>
 </template>
 
