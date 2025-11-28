@@ -3,8 +3,8 @@ id: task-072
 title: simplify hero image generation script
 status: Done
 assignee: []
-created_date: '2025-11-28 05:37'
-updated_date: '2025-11-28 05:44'
+created_date: "2025-11-28 05:37"
+updated_date: "2025-11-28 05:44"
 labels: []
 dependencies: []
 ---

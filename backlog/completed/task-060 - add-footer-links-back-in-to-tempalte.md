@@ -3,8 +3,8 @@ id: task-060
 title: add footer links back in to tempalte
 status: Done
 assignee: []
-created_date: '2025-11-27 02:47'
-updated_date: '2025-11-27 02:50'
+created_date: "2025-11-27 02:47"
+updated_date: "2025-11-27 02:50"
 labels: []
 dependencies: []
 ---
