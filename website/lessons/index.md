@@ -11,7 +11,9 @@ AI systems.
 
 ::: info Getting Started
 
-New to LLMs Unplugged? Start with the **Fundamentals** topic.
+New to LLMs Unplugged? Start with the **Fundamentals** topic. Or check out our
+curated paths for [professionals](/professionals), [educators](/educators), and
+[parents](/parents).
 
 :::
 
