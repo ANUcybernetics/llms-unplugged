@@ -29,7 +29,6 @@ windows with trigrams.
 
 - [Pre-trained Model Generation](/lessons/pretrained-generation)
 - [Trigram Model](/lessons/trigram-model)
-- [Context Columns](/lessons/context-columns)
 
 ## Controlling Output
 
@@ -46,6 +45,8 @@ Explore how models use context and represent word meaning through embeddings.
 
 **Lessons:**
 
+- [Context Columns Training](/lessons/context-columns-training)
+- [Context Columns Generation](/lessons/context-columns-generation)
 - [Word Embeddings](/lessons/word-embeddings)
 
 ## Adaptation and Data

@@ -23,11 +23,6 @@ model.
 
 Extend the bigram model to use two words of context for better predictions.
 
-### [Context Columns](/lessons/context-columns)
-
-Add simple attention-like context columns to your bigram grid to capture
-grammatical cues.
-
 ## What you'll learn
 
 After completing these lessons, you'll understand:
@@ -35,4 +30,3 @@ After completing these lessons, you'll understand:
 - How using more context improves text generation
 - Why pre-trained models are useful and how to use them
 - The tradeoffs between model complexity and data requirements
-- How attention mechanisms work at a conceptual level

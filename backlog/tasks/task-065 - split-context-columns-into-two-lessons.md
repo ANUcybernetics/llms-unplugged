@@ -1,9 +1,10 @@
 ---
 id: task-065
 title: split context columns into two lessons
-status: To Do
+status: Done
 assignee: []
-created_date: "2025-11-28 04:09"
+created_date: '2025-11-28 04:09'
+updated_date: '2025-11-28 04:42'
 labels: []
 dependencies: []
 ---
@@ -15,3 +16,5 @@ separate context-columns-{training,generation}.md files. They can both use the
 same pdf card.
 
 Each lesson's content can be expanded slightly as a result.
+
+Ensure that all the cards, nav links, etc. are updated as well.
