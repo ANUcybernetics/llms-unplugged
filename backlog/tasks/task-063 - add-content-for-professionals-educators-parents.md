@@ -1,9 +1,10 @@
 ---
 id: task-063
 title: add content for professionals/educators/parents
-status: Todo
+status: Done
 assignee: []
-created_date: "2025-11-28 04:06"
+created_date: '2025-11-28 04:06'
+updated_date: '2025-11-28 05:54'
 labels: []
 dependencies: []
 ---
