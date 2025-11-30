@@ -16,6 +16,20 @@ see, please [get in touch](/about#get-in-touch).
 
 :::
 
+::: Tip
+
+If you're thinking that what you really want is for the _LLMs Unplugged_ team to
+come and deliver a workshop to your team/organisation then you're in
+luck---that's one of the things we do here at the
+[School of Cybernetics](https://cybernetics.anu.edu.au).
+[Drop us a line](mailto:lxconvenor.cybernetics@anu.edu.au) and to discuss how we
+can make it happen.
+
+Honestly, this stuff is just as fun as a Christmas party/team bonding activity,
+but the learning is very real. Learning _can_ be fun.
+
+:::
+
 ## Why hands-on learning for professionals?
 
 You don't need to be a data scientist to understand how LLMs work. But if you're
