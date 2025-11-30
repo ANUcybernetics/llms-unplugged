@@ -11,13 +11,13 @@ hero:
   image:
     src: /assets/images/hero-index.jpg
     alt: Workshop participants building language models with pen and paper
-  actions:
-    - theme: brand
-      text: Start learning
-      link: /lessons/
-    # - theme: alt
-    #   text: View on GitHub
-    #   link: https://github.com/ANUcybernetics/llms-unplugged
+  # actions:
+  #   - theme: brand
+  #     text: Start learning
+  #     link: /lessons/
+  #   - theme: alt
+  #     text: View on GitHub
+  #     link: https://github.com/ANUcybernetics/llms-unplugged
 
 features:
   - icon:
