@@ -16,7 +16,7 @@ see, please [get in touch](/about#get-in-touch).
 
 :::
 
-::: Tip
+::: tip
 
 If you're thinking that what you really want is for the _LLMs Unplugged_ team to
 come and deliver a workshop to your team/organisation then you're in
