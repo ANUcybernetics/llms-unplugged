@@ -20,19 +20,22 @@ hero:
     #   link: https://github.com/ANUcybernetics/llms-unplugged
 
 features:
-  - icon: 💼
+  - icon:
+      src: /assets/images/hero-professionals.jpg
     title: For professionals
     details:
       Lead your team through AI adoption with confidence. Build a shared
       understanding of how LLMs actually work.
     link: /professionals
-  - icon: 🎓
+  - icon:
+      src: /assets/images/hero-educators.jpg
     title: For educators
     details:
       Ready-to-use lesson plans and workshop formats for teaching LLMs in your
       classroom or organisation.
     link: /educators
-  - icon: 👨‍👩‍👧‍👦
+  - icon:
+      src: /assets/images/hero-parents.jpg
     title: For parents
     details:
       Understand what your kids are using and learn alongside them. No tech

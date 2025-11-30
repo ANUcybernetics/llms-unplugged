@@ -177,3 +177,12 @@
   color: var(--vp-c-brand-1);
   text-decoration: underline;
 }
+
+/* Feature card icons - full width images */
+.VPFeature .box > .VPImage {
+  width: 100% !important;
+  height: auto !important;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
