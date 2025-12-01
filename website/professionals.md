@@ -48,7 +48,7 @@ AI adoption and help your team use these tools more effectively.
 
 ## Suggested ways in
 
-Every organisation is different, so which [lessons](/lessons) you choose to
+Every organisation is different, so which [lessons](/lessons/) you choose to
 learn will depend on your specific needs and goals. We suggest you start with
 the **Fundamentals**, and then choose-your-own adventure from there.
 
@@ -62,5 +62,5 @@ A few more facilitation tips:
   them how patterns in text become generated output
 
 - **follow-up**: after the workshop, participants often want to explore the
-  [full lesson library](/lessons)---send them the link and let them go deeper on
-  topics that interest them
+  [full lesson library](/lessons/)---send them the link and let them go deeper
+  on topics that interest them
