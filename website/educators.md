@@ -44,13 +44,7 @@ complete picture of how language models work.
 
 ### Suggested timing
 
-- **00:00 intro** --- _icebreaker_ (as folks are coming in) why is a language
-  model called a "language model"? what does it mean to "model language"?
-  _activity_ sit down if you have never used ChatGPT... now in the last
-  month/week/day/hour/5mins? _what is this about?_ how Language Models work
-  (exploiting patterns in text to generate new text) _why should I care?_
-  because having better mental models of how our tools work help us understand
-  their strengths and limitations and ultimately to use them more effectively
+- **00:20 [Intro](/lessons/intro)**
 
 - **00:20 [Basic training](/lessons/basic-training)**
 

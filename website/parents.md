@@ -106,6 +106,3 @@ understanding that makes future conversations about AI much more productive.
 - if you're doing this with multiple kids, have them each generate their own
   sentences and share them---the variety of outputs from the same model is part
   of the learning
-
-- once you've done the basic activity, the generated text becomes a great
-  conversation starter about AI capabilities and limitations over dinner
