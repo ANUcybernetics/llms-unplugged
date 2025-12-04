@@ -5,7 +5,7 @@
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
 #let font_size = sys.inputs.at("font_size", default: "8pt")
 #let num_columns = sys.inputs.at("columns", default: "4")
-#let subtitle = sys.inputs.at("subtitle")
+#let subtitle = sys.inputs.at("subtitle", default: none)
 #let json_path = sys.inputs.at("json_path", default: "model.json")
 
 #set text(font: "Libertinus Serif", size: eval(font_size))
@@ -116,8 +116,10 @@
       weight: "bold",
       size: 4em,
     )[#context doc_metadata.title]
-    #v(1cm)
-    #text(font: "Libertinus Sans", size: 2.5em)[#subtitle]
+    #if subtitle != none [
+      #v(1cm)
+      #text(font: "Libertinus Sans", size: 2.5em)[#subtitle]
+    ]
   ]
 
   // Cybernetic Studio wordmark
@@ -135,7 +137,9 @@
   set text(size: 12pt)
 
   align(horizon)[
-    #text(size: 1.2em)[#subtitle of]
+    #if subtitle != none [
+      #text(size: 1.2em)[#subtitle of]
+    ]
     #text(size: 1.2em, style: "italic")[#context doc_metadata.title by]
     #text(size: 1.2em)[#context doc_metadata.author]
     #v(0.5cm)
