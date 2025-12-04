@@ -107,7 +107,7 @@ impl Normalizer {
 
 fn normalize_apostrophe(c: char) -> char {
     match c {
-        '\u{2018}' | '\u{2019}' | '\u{2032}' => '\'',
+        '\u{2018}' | '\u{2019}' | '\u{2032}' | '\u{00B4}' | '\u{0060}' => '\'',
         other => other,
     }
 }
