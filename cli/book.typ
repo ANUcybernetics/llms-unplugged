@@ -221,9 +221,10 @@
 }
 
 // Function to format the dice indicator (n diamonds)
-#let format-dice-indicator(total_count) = {
-  // Always show diamonds indicating number of dice needed
-  if total_count != 10 {
+// Returns nothing if there's only one follower (no dice rolling needed)
+#let format-dice-indicator(total_count, num_followers) = {
+  // Only show dice indicator if there are multiple followers to choose from
+  if num_followers > 1 and total_count != 10 {
     let num-dice = str(total_count).len()
     // Display num-dice Unicode diamond symbols
     text(
@@ -271,9 +272,9 @@
   // Format the prefix
   display-with-punctuation(prefix, size: 1.5em, weight: "bold")
 
-  // Add dice indicator
+  // Add dice indicator (only if multiple followers)
   h(0.2em)
-  format-dice-indicator(total_count)
+  format-dice-indicator(total_count, followers.len())
   h(0.6em)
 
   // Format the followers
@@ -304,15 +305,19 @@
     + *look up the word's entry* (i.e. use this book like a dictionary) to find
       all possible _next_ words according to the model
 
-    + *roll your d10(s)*: check the diamonds next to the word---this shows how
-      many d10s to roll (e.g., #display-with-punctuation("the")#h(
+    + *roll your d10(s)* (if required): check for diamonds next to the
+      word---this shows how many d10s to roll (e.g., #display-with-punctuation(
+        "the",
+      )#h(
         0.2em,
-      )#format-dice-indicator(100)#h(0.2em) means roll 3 d10s). Read the dice
-      from left to right as a single number (e.g., rolling 2, 1 and 7 means your
-      roll is 217)
+      )#format-dice-indicator(100, 3)#h(0.2em) means roll 3 d10s). If there are
+      no diamonds, there's only one possible next word---skip to step 5. Read
+      the dice from left to right as a single number (e.g., rolling 2, 1 and 7
+      means your roll is 217)
 
     + *find your next word*: scan through the followers until you find the first
-      number ≥ your roll (write it down)
+      number ≥ your roll, or just use the single word if no dice were rolled
+      (write it down)
 
     + repeat from step 2 using this word as your new word, continuing this loop
       until you reach a natural stopping point (like #punct-box(".")) or reach
