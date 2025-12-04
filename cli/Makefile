@@ -15,6 +15,8 @@ DATA_DIR := ../data
 #   This will generate frankenstein-4-3-book1.pdf, frankenstein-4-3-book2.pdf, etc.
 
 TARGETS := \
+	$(PDF_DIR)/a-christmas-carol-2-1.pdf \
+	$(PDF_DIR)/carol-lyrics-2-1.pdf \
 	$(PDF_DIR)/cloudstreet-2-1.pdf \
 	$(PDF_DIR)/frankenstein-2-1.pdf \
 	$(PDF_DIR)/frankenstein-3-2.stamp \
