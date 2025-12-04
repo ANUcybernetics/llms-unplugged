@@ -305,8 +305,8 @@
     + *look up the word's entry* (i.e. use this book like a dictionary) to find
       all possible _next_ words according to the model
 
-    + *roll your d10(s)* (if required): check for diamonds next to the
-      word---this shows how many d10s to roll (e.g., #display-with-punctuation(
+    + *roll your d10s* (if required): check for diamonds next to the word---this
+      shows how many d10s to roll (e.g., #display-with-punctuation(
         "the",
       )#h(
         0.2em,
