@@ -12,6 +12,9 @@ export interface LessonData {
   hero: string;
 }
 
+declare const data: LessonData[];
+export { data };
+
 export default createContentLoader("lessons/*.md", {
   transform(raw): LessonData[] {
     return raw

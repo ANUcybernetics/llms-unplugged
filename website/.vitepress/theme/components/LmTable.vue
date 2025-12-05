@@ -50,11 +50,13 @@ const processedData = computed(() => {
       </thead>
       <tbody>
         <tr v-for="(row, rowIdx) in processedData" :key="rowIdx">
+          <!-- eslint-disable vue/no-v-html -- trusted tally marks, not user input -->
           <td
             v-for="(cell, cellIdx) in row"
             :key="cellIdx"
             v-html="cell || '&nbsp;'"
           ></td>
+          <!-- eslint-enable vue/no-v-html -->
         </tr>
       </tbody>
     </table>

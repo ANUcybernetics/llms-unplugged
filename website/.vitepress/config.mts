@@ -1,5 +1,6 @@
 import { defineConfig } from "vitepress";
 import { RssPlugin, type RSSOptions } from "vitepress-plugin-rss";
+import checker from "vite-plugin-checker";
 
 const RSS_OPTIONS: RSSOptions = {
   title: "LLMs Unplugged",
@@ -47,7 +48,16 @@ export default defineConfig({
 
   // Vite plugins
   vite: {
-    plugins: [RssPlugin(RSS_OPTIONS)],
+    plugins: [
+      RssPlugin(RSS_OPTIONS),
+      checker({
+        vueTsc: true,
+        eslint: {
+          useFlatConfig: true,
+          lintCommand: 'eslint ".vitepress/**/*.{ts,vue}"',
+        },
+      }),
+    ],
   },
 
   // Site metadata

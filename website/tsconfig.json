@@ -12,6 +12,11 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "types": ["vitepress/client"]
   },
-  "include": [".vitepress/**/*.ts", ".vitepress/**/*.vue"],
+  "include": [
+    ".vitepress/**/*.ts",
+    ".vitepress/**/*.vue",
+    "lessons/*.ts",
+    "lessons/*.d.ts"
+  ],
   "exclude": ["node_modules"]
 }
