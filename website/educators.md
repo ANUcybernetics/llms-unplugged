@@ -32,7 +32,7 @@ ideas or feedback, we'd [love to hear them](/about#get-in-touch).
 ## Lesson plan 1: LLMs Unplugged Fundamentals
 
 - **time**: 90mins
-- **for ages**: 12--112
+- **for ages**: 12+
 
 This core workshop covers the essential training-to-generation pipeline. Start
 with a brief introduction to set the scene, then move through training a model,
