@@ -162,7 +162,7 @@ just scaled up:
 
 Your poetry slam proves that "intelligence" in AI builds incrementally. Whether
 you have 2 modules or 6, you're demonstrating the same principles that power
-GPT-4---it just has billions of parameters instead of your paper matrix.
+ChatGPT---it just has billions of parameters instead of your paper matrix.
 
 The art isn't in having all the components; it's in creatively using what you
 have.

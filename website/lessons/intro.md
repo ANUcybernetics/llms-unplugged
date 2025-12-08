@@ -13,14 +13,40 @@ dependsOn: []
 
 ::: info Lesson Info
 
-This lesson is part of the [Fundamentals](/topics/fundamentals) topic. It's a
-short orientation before the hands-on activities begin.
+This is a short intro which sets up all the other LLMs Unplugged activities.
+It's a great place to start, but feel free to adapt these initial discussion
+questions based on your audience.
 
 :::
 
-Welcome to LLMs Unplugged. Before we start building, let's set the scene.
+## Icebreaker discussion questions
 
-## What is a language model?
+::: tip
+
+Depending on your learning context, these can work well as either "call out your
+answer" or "discuss with your neighbour and share-back at the end" questions.
+
+:::
+
+- Why is a language model called a "language model"? What does it mean to "model
+  language"?
+- In as much detail as you can, explain what happens after typing something into
+  the ChatGPT "prompt box" to produce the answer you get back
+- What's the best/clearest explanation you've ever heard about how Large
+  Language Models (e.g. ChatGPT) actually work? What's the _weirdest_
+  explanation you've ever heard?
+- When was the first language model ever created created? How similar/different
+  was it to LLMs like ChatGPT?
+
+- _activity_ Get everyone to stand up, then have them sit down if they've never
+  used ChatGPT (or a similar Large Language Model). Then, ask if they've used it
+  in the last month/week/day/hour/5mins? At the end, everyone should be sitting
+  down.
+
+### Instructor notes
+
+Don't spend too long on the pre-discussion questions---the fun really starts
+when you get into actual activities (e.g [Fundamentals](/lessons/fundamentals)).
 
 A language model is a system that predicts what word comes next. Given some
 text, it answers the question: "What's a likely next word?"
