@@ -5,13 +5,13 @@ Static website for LLMs Unplugged.
 ## Architecture
 
 VitePress static site with custom Vue components for interactive language model
-demonstrations.
+demonstrations. Vite is the build tool.
 
 ### Tech stack
 
 - VitePress 1.6+ (Vue-powered static site generator)
 - Vue 3 (for custom components)
-- TypeScript (configuration only)
+- TypeScript
 - Vitest (testing)
 
 ## Project structure
@@ -23,7 +23,7 @@ website/
 │   ├── theme/
 │   │   ├── index.ts        # Theme entry point
 │   │   ├── custom.css      # ANU colour scheme
-│   │   └── components/     # Vue components (LmGrid, LmTable)
+│   │   └── components/     # Vue components
 │   └── cache/              # (gitignored)
 ├── public/
 │   ├── assets/
@@ -51,13 +51,11 @@ website/
 
 - `npm run dev` - dev server with hot reload
 - `npm run build` - production build to `.vitepress/dist/`
-- `npm run preview` - preview the built site
 - `npm test` - run tests
 
 ## Custom components
 
-Custom Vue components live in `.vitepress/theme/components/` (LmGrid, LmTable).
-These render language model tables with tally mark notation.
+Custom Vue components live in `.vitepress/theme/components/`.
 
 ## Build output
 
