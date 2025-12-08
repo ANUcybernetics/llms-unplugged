@@ -46,7 +46,8 @@ answer" or "discuss with your neighbour and share-back at the end" questions.
 ## Instructor notes
 
 Don't spend too long on the pre-discussion questions---the fun really starts
-when you get into actual activities (e.g [Fundamentals](/lessons/fundamentals)).
+when you get into actual activities (e.g.
+[Basic Training](/lessons/basic-training)).
 
 The core message of _LLMs Unplugged_ is that a language model is a system that
 predicts what word comes next. Given some text, it answers the question: "What's
@@ -66,3 +67,5 @@ during generation.
 That's it. Every time you see ChatGPT, Claude, or similar tools generate a
 response, they're doing this one thing over and over: predicting the next word,
 adding it to the text, then predicting again.
+
+<!--@include: ../partials/historical-foundations.md-->
