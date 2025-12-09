@@ -1,10 +1,101 @@
+const PUNCTUATION = new Set([".", ","]);
+
+const CASE_ALLOWLIST = new Map([
+  ["i", "I"],
+  ["i'm", "I'm"],
+  ["i've", "I've"],
+  ["i'd", "I'd"],
+  ["i'll", "I'll"],
+]);
+
+function normalizeApostrophe(char: string): string {
+  if ("\u2018\u2019\u2032\u00B4\u0060".includes(char)) {
+    return "'";
+  }
+  return char;
+}
+
+function looksLikeContraction(word: string): boolean {
+  const lower = word.toLowerCase();
+  const suffixes = [
+    "'s",
+    "s'",
+    "n't",
+    "'ll",
+    "'ve",
+    "'re",
+    "'d",
+    "'m",
+    "in'",
+    "an'",
+    "o'",
+  ];
+  return suffixes.some((s) => lower.endsWith(s));
+}
+
+function isRomanNumeral(s: string): boolean {
+  return s.length > 0 && [...s].every((c) => "ivxlcdm".includes(c));
+}
+
+function normalizeWordToken(token: string): string | null {
+  let word = token.replace(/^'+/, "");
+
+  while (word.endsWith("'") && !looksLikeContraction(word)) {
+    word = word.slice(0, -1);
+  }
+
+  if (word.length === 0) {
+    return null;
+  }
+
+  if (/^\d/.test(word)) {
+    return null;
+  }
+
+  const lower = word.toLowerCase();
+
+  if (lower === "<|endoftext|>") {
+    return null;
+  }
+
+  if (lower !== "i" && isRomanNumeral(lower)) {
+    return null;
+  }
+
+  return CASE_ALLOWLIST.get(lower) ?? lower;
+}
+
 export function parseTokens(text: string): string[] {
-  return text
-    .trim()
-    .toLowerCase()
-    .replace(/([.,!?;:]+)/g, " $1 ")
-    .split(/\s+/)
-    .filter(Boolean);
+  const tokens: string[] = [];
+  let current = "";
+
+  for (const rawChar of text) {
+    const char = normalizeApostrophe(rawChar);
+
+    if (PUNCTUATION.has(char)) {
+      if (current.length > 0) {
+        const normalized = normalizeWordToken(current);
+        if (normalized) tokens.push(normalized);
+        current = "";
+      }
+      tokens.push(char);
+    } else if (/[a-zA-Z]/.test(char) || char === "'") {
+      current += char;
+    } else {
+      if (current.length > 0) {
+        const normalized = normalizeWordToken(current);
+        if (normalized) tokens.push(normalized);
+        current = "";
+      }
+    }
+  }
+
+  if (current.length > 0) {
+    const normalized = normalizeWordToken(current);
+    if (normalized) tokens.push(normalized);
+  }
+
+  return tokens;
 }
 
 export function getVocabulary(tokens: string[]): string[] {
