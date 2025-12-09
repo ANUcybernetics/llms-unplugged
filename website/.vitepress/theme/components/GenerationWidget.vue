@@ -243,14 +243,7 @@ function isHighlightedCol(word: string): boolean {
 
         <div class="tokens-section">
           <span class="section-label">Tokens:</span>
-          <span
-            v-for="(token, i) in tokens"
-            :key="i"
-            class="token"
-            :class="{
-              'highlight-current': token === currentWord,
-            }"
-          >
+          <span v-for="(token, i) in tokens" :key="i" class="token">
             {{ token }}
           </span>
         </div>
@@ -425,14 +418,6 @@ function isHighlightedCol(word: string): boolean {
   border-radius: 0.25rem;
   font-family: var(--vp-font-family-mono);
   font-size: 0.875rem;
-  transition:
-    background-color 0.2s,
-    transform 0.2s;
-}
-
-.token.highlight-current {
-  background: var(--vp-c-brand-soft);
-  transform: scale(1.05);
 }
 
 .output-section {
@@ -615,7 +600,6 @@ function isHighlightedCol(word: string): boolean {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .token,
   .output-word,
   .grid-cell,
   .mapping-item {
