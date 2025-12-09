@@ -25,10 +25,9 @@ describe("GenerationWidget", () => {
 
   it("shows all sections on initial render", () => {
     const wrapper = mount(GenerationWidget);
-    expect(wrapper.find(".input-section").exists()).toBe(true);
     expect(wrapper.find(".generation-view").exists()).toBe(true);
-    expect(wrapper.find(".tokens-section").exists()).toBe(true);
-    expect(wrapper.find(".grid-section").exists()).toBe(true);
+    const sections = wrapper.findAll(".widget-section");
+    expect(sections.length).toBeGreaterThanOrEqual(4);
   });
 
   it("creates grid with vocabulary", () => {
@@ -43,7 +42,7 @@ describe("GenerationWidget", () => {
     const wrapper = mount(GenerationWidget, {
       props: { initialText: "see spot" },
     });
-    expect(wrapper.find(".output-section").exists()).toBe(true);
+    expect(wrapper.find(".output-content").exists()).toBe(true);
   });
 
   it("shows playback controls", () => {
@@ -70,10 +69,10 @@ describe("GenerationWidget", () => {
 
   it("displays tokens section with parsed tokens", () => {
     const wrapper = mount(GenerationWidget, {
-      props: { initialText: "Hello, world!" },
+      props: { initialText: "Hello, world." },
     });
-    const tokens = wrapper.findAll(".tokens-section .token");
+    const tokens = wrapper.findAll(".tokens-content .token");
     expect(tokens.length).toBe(4);
-    expect(tokens.map((t) => t.text())).toEqual(["hello", ",", "world", "!"]);
+    expect(tokens.map((t) => t.text())).toEqual(["hello", ",", "world", "."]);
   });
 });

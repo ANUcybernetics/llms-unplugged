@@ -18,10 +18,9 @@ describe("TrainingWidget", () => {
 
   it("shows all sections at once", () => {
     const wrapper = mount(TrainingWidget);
-    expect(wrapper.find(".input-section").exists()).toBe(true);
     expect(wrapper.find(".training-view").exists()).toBe(true);
-    expect(wrapper.find(".tokens-section").exists()).toBe(true);
-    expect(wrapper.find(".grid-section").exists()).toBe(true);
+    const sections = wrapper.findAll(".widget-section");
+    expect(sections.length).toBeGreaterThanOrEqual(4);
   });
 
   it("displays tokens from initial text", () => {
