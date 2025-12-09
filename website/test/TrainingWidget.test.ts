@@ -16,26 +16,18 @@ describe("TrainingWidget", () => {
     expect(wrapper.find("textarea").element.value).toBe("hello world");
   });
 
-  it("starts in editing mode", () => {
+  it("shows all sections at once", () => {
     const wrapper = mount(TrainingWidget);
     expect(wrapper.find(".input-section").exists()).toBe(true);
-    expect(wrapper.find(".training-view").exists()).toBe(false);
-  });
-
-  it("switches to training view on submit", async () => {
-    const wrapper = mount(TrainingWidget, {
-      props: { initialText: "see spot run" },
-    });
-    await wrapper.find(".submit-button").trigger("click");
-    expect(wrapper.find(".input-section").exists()).toBe(false);
     expect(wrapper.find(".training-view").exists()).toBe(true);
+    expect(wrapper.find(".tokens-section").exists()).toBe(true);
+    expect(wrapper.find(".grid-section").exists()).toBe(true);
   });
 
-  it("displays tokens after starting training", async () => {
+  it("displays tokens from initial text", () => {
     const wrapper = mount(TrainingWidget, {
       props: { initialText: "see spot run" },
     });
-    await wrapper.find(".submit-button").trigger("click");
     const tokens = wrapper.findAll(".token");
     expect(tokens.length).toBe(3);
     expect(tokens[0].text()).toBe("see");
@@ -43,11 +35,10 @@ describe("TrainingWidget", () => {
     expect(tokens[2].text()).toBe("run");
   });
 
-  it("creates grid with vocabulary", async () => {
+  it("creates grid with vocabulary", () => {
     const wrapper = mount(TrainingWidget, {
       props: { initialText: "see spot run" },
     });
-    await wrapper.find(".submit-button").trigger("click");
     const headers = wrapper.findAll(".training-grid th code");
     expect(headers.length).toBe(3);
     expect(headers[0].text()).toBe("see");
@@ -55,20 +46,27 @@ describe("TrainingWidget", () => {
     expect(headers[2].text()).toBe("run");
   });
 
-  it("shows playback controls after starting", async () => {
+  it("shows playback controls", () => {
     const wrapper = mount(TrainingWidget, {
       props: { initialText: "see spot" },
     });
-    await wrapper.find(".submit-button").trigger("click");
     expect(wrapper.find(".playback-controls").exists()).toBe(true);
   });
 
-  it("handles empty input gracefully", async () => {
+  it("handles empty input gracefully", () => {
     const wrapper = mount(TrainingWidget, {
       props: { initialText: "" },
     });
-    await wrapper.find(".submit-button").trigger("click");
     expect(wrapper.find(".training-view").exists()).toBe(true);
     expect(wrapper.findAll(".token").length).toBe(0);
+  });
+
+  it("updates tokens when text changes", async () => {
+    const wrapper = mount(TrainingWidget, {
+      props: { initialText: "hello" },
+    });
+    expect(wrapper.findAll(".token").length).toBe(1);
+    await wrapper.find("textarea").setValue("hello world");
+    expect(wrapper.findAll(".token").length).toBe(2);
   });
 });
