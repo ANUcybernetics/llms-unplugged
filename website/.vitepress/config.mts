@@ -122,7 +122,6 @@ export default defineConfig({
     logo: "/favicon.svg",
 
     nav: [
-      { text: "Home", link: "/" },
       { text: "Lessons", link: "/lessons/" },
       {
         text: "Pathways",
