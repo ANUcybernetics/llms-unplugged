@@ -67,7 +67,7 @@ function getCount(from: string, to: string): number {
     <div class="lm-widget training-widget">
       <div class="training-view">
         <div class="input-section">
-          <label for="training-input" class="input-label">Training text:</label>
+          <label for="training-input" class="input-label">Training text (click to edit):</label>
           <textarea
             id="training-input"
             v-model="inputText"

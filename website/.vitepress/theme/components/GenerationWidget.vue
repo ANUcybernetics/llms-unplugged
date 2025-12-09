@@ -271,16 +271,19 @@ function handleRowClick(word: string) {
               >–{{ mapping.diceRange[1] }}</template>]→{{ mapping.word }}
             </span>
           </div>
-          <div v-if="currentDiceRoll !== null" class="dice-result">
-            <span class="section-label">Roll:</span>
-            <span class="dice-value" :class="{ rolling: isRolling }">{{
-              currentDiceRoll
-            }}</span>
-            <span v-if="!isRolling">
-              → "<strong>{{
-                findWordForRoll(currentMappings, currentDiceRoll)
-              }}</strong>"
-            </span>
+          <div class="dice-result">
+            <template v-if="currentDiceRoll !== null">
+              <span class="section-label">Roll:</span>
+              <span class="dice-value" :class="{ rolling: isRolling }">{{
+                currentDiceRoll
+              }}</span>
+              <span v-if="!isRolling">
+                → "<strong>{{
+                  findWordForRoll(currentMappings, currentDiceRoll)
+                }}</strong>"
+              </span>
+            </template>
+            <span v-else class="dice-result-placeholder">&nbsp;</span>
           </div>
         </div>
 
@@ -424,6 +427,12 @@ function handleRowClick(word: string) {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  min-height: 1.75rem;
+}
+
+.dice-result-placeholder {
+  display: inline-block;
+  height: 1.75rem;
 }
 
 .dice-value {
