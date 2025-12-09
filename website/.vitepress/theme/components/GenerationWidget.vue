@@ -343,7 +343,7 @@ function isHighlightedCol(word: string): boolean {
               }"
             >
               [{{ mapping.diceRange[0]
-              }}<template v-if="mapping.diceRange[0] !== mapping.diceRange[1]">-{{ mapping.diceRange[1] }}</template>]={{ mapping.word }}
+              }}<template v-if="mapping.diceRange[0] !== mapping.diceRange[1]">–{{ mapping.diceRange[1] }}</template>]→{{ mapping.word }}
             </span>
           </div>
           <div v-if="currentDiceRoll !== null" class="dice-result">
