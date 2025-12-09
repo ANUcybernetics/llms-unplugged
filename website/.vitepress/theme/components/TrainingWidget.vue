@@ -10,14 +10,19 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  initialText: "the cat sat on the mat .",
+  initialText: "The cat sat on the mat.",
 });
 
 const inputText = ref(props.initialText);
 const isEditing = ref(true);
 
 function parseTokens(text: string): string[] {
-  return text.trim().split(/\s+/).filter(Boolean);
+  return text
+    .trim()
+    .toLowerCase()
+    .replace(/([.,!?;:]+)/g, " $1 ")
+    .split(/\s+/)
+    .filter(Boolean);
 }
 
 const tokens = computed(() => parseTokens(inputText.value));
@@ -72,6 +77,26 @@ const currentBigram = computed(() => {
 const highlightedRow = computed(() => currentBigram.value?.[0] ?? null);
 const highlightedCol = computed(() => currentBigram.value?.[1] ?? null);
 
+const currentTokenIndex = computed(() => {
+  if (currentStep.value === 0 || currentStep.value > bigrams.value.length) {
+    return -1;
+  }
+  const step = currentStep.value - 1;
+  if (step === bigrams.value.length - 1 && tokens.value.length >= 2) {
+    return tokens.value.length - 1;
+  }
+  return step;
+});
+
+const nextTokenIndex = computed(() => {
+  if (currentTokenIndex.value === -1) return -1;
+  const step = currentStep.value - 1;
+  if (step === bigrams.value.length - 1 && tokens.value.length >= 2) {
+    return 0;
+  }
+  return currentTokenIndex.value + 1;
+});
+
 function startTraining() {
   isEditing.value = false;
   reset();
@@ -103,6 +128,12 @@ function isCurrentCell(from: string, to: string): boolean {
           rows="3"
           placeholder="Enter text to train on..."
         ></textarea>
+        <div class="tokens-preview">
+          <span class="section-label">Tokens:</span>
+          <span v-for="(token, i) in tokens" :key="i" class="token">
+            {{ token }}
+          </span>
+        </div>
         <button type="button" class="submit-button" @click="startTraining">
           Start Training
         </button>
@@ -116,11 +147,8 @@ function isCurrentCell(from: string, to: string): boolean {
             :key="i"
             class="token"
             :class="{
-              'highlight-first':
-                currentBigram &&
-                currentBigram[0] === token &&
-                i === tokens.indexOf(currentBigram[0]),
-              'highlight-second': currentBigram && currentBigram[1] === token,
+              'highlight-first': i === currentTokenIndex,
+              'highlight-second': i === nextTokenIndex,
             }"
           >
             {{ token }}
@@ -245,6 +273,13 @@ function isCurrentCell(from: string, to: string): boolean {
 
 .submit-button:hover {
   background: var(--vp-c-brand-3);
+}
+
+.tokens-preview {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .training-view {

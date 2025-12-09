@@ -85,7 +85,7 @@ Use the interactive widget below to see how the training process works
 step-by-step. Enter your own text or use the example, then press Play or Step to
 watch the model being built.
 
-<TrainingWidget initialText="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
+<TrainingWidget initialText="See spot run. See spot jump. Run, Spot, run. Jump, Spot, jump." />
 
 ## Instructor notes
 
