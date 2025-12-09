@@ -191,3 +191,29 @@
   object-fit: cover;
   margin-bottom: 1rem;
 }
+
+/* Image gallery - responsive grid like feature cards */
+.image-gallery {
+  display: grid;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.image-gallery img {
+  width: 100%;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  aspect-ratio: 16 / 9;
+}
+
+@media (min-width: 640px) {
+  .image-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .image-gallery {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

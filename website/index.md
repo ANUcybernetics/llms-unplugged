@@ -62,7 +62,15 @@ weighted by what you've seen before. After an hour or so of doing this by hand,
 something clicks: you realise that ChatGPT works exactly the same way. It's the
 same fundamental process, just at a (vastly) different scale.
 
+<div class="image-gallery">
+
 ![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-2.avif)
+
+![Workshop participants using a pre-trained model](/assets/images/hero-pretrained-generation.avif)
+
+![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-1.avif)
+
+</div>
 
 ## Who's this for?
 
@@ -101,5 +109,3 @@ These _LLMs Unplugged_ resources will grow over time, with example lesson plans,
 new lessons and unplugged activities, and more. Bookmark us and stay tuned. Read
 the [FAQ](/faq). And if you'd like to get in touch, email
 [ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au).
-
-![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-1.avif)
