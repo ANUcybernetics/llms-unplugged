@@ -230,9 +230,7 @@ function handleRowClick(word: string) {
               :key="i"
               class="output-word"
               :class="{ latest: i === outputWords.length - 1 }"
-            >
-              {{ word }}{{ " " }}
-            </span>
+            ><template v-if="i > 0 && word !== ',' && word !== '.'">{{ " " }}</template>{{ word }}</span>
             <span v-if="outputWords.length === 0" class="placeholder">
               Click a row to select starting word, or press Play
             </span>
