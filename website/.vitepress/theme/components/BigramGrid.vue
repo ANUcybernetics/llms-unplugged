@@ -59,7 +59,10 @@ function handleRowClick(word: string) {
           <th
             v-for="word in vocabulary"
             :key="word"
-            :class="{ 'highlight-col': checkHighlightedCol(word) }"
+            :class="{
+              'highlight-col': checkHighlightedCol(word),
+              punctuation: word === '.' || word === ',',
+            }"
           >
             <code>{{ word }}</code>
           </th>
@@ -78,7 +81,10 @@ function handleRowClick(word: string) {
         >
           <td
             class="row-header"
-            :class="{ 'highlight-row': highlightedRow === rowWord }"
+            :class="{
+              'highlight-row': highlightedRow === rowWord,
+              punctuation: rowWord === '.' || rowWord === ',',
+            }"
           >
             <span
               v-if="showRowIndicator && highlightedRow === rowWord"
@@ -129,6 +135,16 @@ function handleRowClick(word: string) {
 .bigram-grid th {
   background-color: var(--vp-c-bg-alt);
   font-weight: 600;
+}
+
+.bigram-grid th.punctuation code,
+.bigram-grid td.punctuation code {
+  font-weight: 700;
+  font-size: 1rem;
+  display: inline-block;
+  border: 2px solid var(--vp-c-text-3);
+  border-radius: 0.25rem;
+  padding: 0 0.25rem;
 }
 
 .bigram-grid th.highlight-col {

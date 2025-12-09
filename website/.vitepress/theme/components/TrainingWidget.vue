@@ -89,6 +89,7 @@ function getCount(from: string, to: string): number {
               :class="{
                 'highlight-first': i === highlights.tokenIdx,
                 'highlight-second': i === highlights.nextIdx,
+                punctuation: token === '.' || token === ',',
               }"
             >
               {{ token }}
@@ -100,9 +101,15 @@ function getCount(from: string, to: string): number {
           <div class="section-header">Current bigram</div>
           <div class="section-content bigram-content">
             <template v-if="highlights.row">
-              <span class="token highlight-first">{{ highlights.row }}</span>
+              <span
+                class="token highlight-first"
+                :class="{ punctuation: highlights.row === '.' || highlights.row === ',' }"
+              >{{ highlights.row }}</span>
               <span class="arrow">→</span>
-              <span class="token highlight-second">{{ highlights.col }}</span>
+              <span
+                class="token highlight-second"
+                :class="{ punctuation: highlights.col === '.' || highlights.col === ',' }"
+              >{{ highlights.col }}</span>
             </template>
             <span v-else-if="isComplete" class="complete-message">
               Training complete!
@@ -203,6 +210,12 @@ function getCount(from: string, to: string): number {
   transition:
     background-color 0.2s,
     transform 0.2s;
+}
+
+.token.punctuation {
+  font-weight: 700;
+  font-size: 1rem;
+  border: 2px solid var(--vp-c-text-3);
 }
 
 .token.highlight-first {

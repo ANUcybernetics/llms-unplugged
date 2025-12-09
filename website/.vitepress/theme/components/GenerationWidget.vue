@@ -220,7 +220,12 @@ function handleRowClick(word: string) {
         <div class="widget-section">
           <div class="section-header">Tokens</div>
           <div class="section-content tokens-content">
-            <span v-for="(token, i) in tokens" :key="i" class="token">
+            <span
+              v-for="(token, i) in tokens"
+              :key="i"
+              class="token"
+              :class="{ punctuation: token === '.' || token === ',' }"
+            >
               {{ token }}
             </span>
           </div>
@@ -377,6 +382,12 @@ function handleRowClick(word: string) {
   border-radius: 0.25rem;
   font-family: var(--vp-font-family-mono);
   font-size: 0.875rem;
+}
+
+.token.punctuation {
+  font-weight: 700;
+  font-size: 1rem;
+  border: 2px solid var(--vp-c-text-3);
 }
 
 .output-content {
