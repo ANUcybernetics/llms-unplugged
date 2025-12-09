@@ -54,13 +54,6 @@ const model = computed(() => {
     row.set(to, (row.get(to) || 0) + 1);
   }
 
-  if (t.length >= 2) {
-    const from = t[t.length - 1];
-    const to = t[0];
-    const row = counts.get(from)!;
-    row.set(to, (row.get(to) || 0) + 1);
-  }
-
   return counts;
 });
 

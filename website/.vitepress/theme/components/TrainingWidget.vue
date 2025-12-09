@@ -33,9 +33,6 @@ const bigrams = computed(() => {
   for (let i = 0; i < t.length - 1; i++) {
     pairs.push([t[i], t[i + 1]]);
   }
-  if (t.length >= 2) {
-    pairs.push([t[t.length - 1], t[0]]);
-  }
   return pairs;
 });
 
@@ -80,19 +77,11 @@ const currentTokenIndex = computed(() => {
   if (currentStep.value === 0 || currentStep.value > bigrams.value.length) {
     return -1;
   }
-  const step = currentStep.value - 1;
-  if (step === bigrams.value.length - 1 && tokens.value.length >= 2) {
-    return tokens.value.length - 1;
-  }
-  return step;
+  return currentStep.value - 1;
 });
 
 const nextTokenIndex = computed(() => {
   if (currentTokenIndex.value === -1) return -1;
-  const step = currentStep.value - 1;
-  if (step === bigrams.value.length - 1 && tokens.value.length >= 2) {
-    return 0;
-  }
   return currentTokenIndex.value + 1;
 });
 
