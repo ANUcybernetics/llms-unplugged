@@ -35,7 +35,7 @@ describe("GenerationWidget", () => {
     const wrapper = mount(GenerationWidget, {
       props: { initialText: "see spot run" },
     });
-    const headers = wrapper.findAll(".generation-grid th code");
+    const headers = wrapper.findAll(".bigram-grid th code");
     expect(headers.length).toBe(3);
   });
 

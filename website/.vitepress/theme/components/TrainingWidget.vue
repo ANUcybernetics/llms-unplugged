@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { usePlayback } from "../composables/usePlayback";
-import { tally } from "../utils/tally";
+import { parseTokens, getVocabulary, getBigrams } from "../utils/tokens";
 import PlaybackControls from "./PlaybackControls.vue";
 import FullscreenWrapper from "./FullscreenWrapper.vue";
+import BigramGrid from "./BigramGrid.vue";
 
 interface Props {
   initialText?: string;
@@ -15,29 +16,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const inputText = ref(props.initialText);
 
-function parseTokens(text: string): string[] {
-  return text
-    .trim()
-    .toLowerCase()
-    .replace(/([.,!?;:]+)/g, " $1 ")
-    .split(/\s+/)
-    .filter(Boolean);
-}
-
 const tokens = computed(() => parseTokens(inputText.value));
-
-const bigrams = computed(() => {
-  const t = tokens.value;
-  if (t.length < 2) return [];
-  const pairs: [string, string][] = [];
-  for (let i = 0; i < t.length - 1; i++) {
-    pairs.push([t[i], t[i + 1]]);
-  }
-  return pairs;
-});
-
-const vocabulary = computed(() => [...new Set(tokens.value)]);
-
+const bigrams = computed(() => getBigrams(tokens.value));
+const vocabulary = computed(() => getVocabulary(tokens.value));
 const totalSteps = computed(() => bigrams.value.length);
 
 const {
@@ -63,34 +44,21 @@ const gridCounts = computed(() => {
   return counts;
 });
 
-const currentBigram = computed(() => {
+const highlights = computed(() => {
   if (currentStep.value === 0 || currentStep.value > bigrams.value.length) {
-    return null;
+    return { row: null, col: null, tokenIdx: -1, nextIdx: -1 };
   }
-  return bigrams.value[currentStep.value - 1];
-});
-
-const highlightedRow = computed(() => currentBigram.value?.[0] ?? null);
-const highlightedCol = computed(() => currentBigram.value?.[1] ?? null);
-
-const currentTokenIndex = computed(() => {
-  if (currentStep.value === 0 || currentStep.value > bigrams.value.length) {
-    return -1;
-  }
-  return currentStep.value - 1;
-});
-
-const nextTokenIndex = computed(() => {
-  if (currentTokenIndex.value === -1) return -1;
-  return currentTokenIndex.value + 1;
+  const bigram = bigrams.value[currentStep.value - 1];
+  return {
+    row: bigram[0],
+    col: bigram[1],
+    tokenIdx: currentStep.value - 1,
+    nextIdx: currentStep.value,
+  };
 });
 
 function getCount(from: string, to: string): number {
   return gridCounts.value.get(`${from}->${to}`) || 0;
-}
-
-function isCurrentCell(from: string, to: string): boolean {
-  return highlightedRow.value === from && highlightedCol.value === to;
 }
 </script>
 
@@ -115,19 +83,19 @@ function isCurrentCell(from: string, to: string): boolean {
             :key="i"
             class="token"
             :class="{
-              'highlight-first': i === currentTokenIndex,
-              'highlight-second': i === nextTokenIndex,
+              'highlight-first': i === highlights.tokenIdx,
+              'highlight-second': i === highlights.nextIdx,
             }"
           >
             {{ token }}
           </span>
         </div>
 
-        <div v-if="currentBigram" class="current-bigram">
+        <div v-if="highlights.row" class="current-bigram">
           <span class="section-label">Current bigram:</span>
-          <span class="token highlight-first">{{ currentBigram[0] }}</span>
+          <span class="token highlight-first">{{ highlights.row }}</span>
           <span class="arrow">→</span>
-          <span class="token highlight-second">{{ currentBigram[1] }}</span>
+          <span class="token highlight-second">{{ highlights.col }}</span>
         </div>
         <div v-else-if="isComplete" class="current-bigram complete">
           Training complete!
@@ -136,49 +104,12 @@ function isCurrentCell(from: string, to: string): boolean {
           <span class="section-label">Press Play or Step to begin</span>
         </div>
 
-        <div class="grid-section">
-          <table class="training-grid">
-            <thead>
-              <tr>
-                <th></th>
-                <th
-                  v-for="word in vocabulary"
-                  :key="word"
-                  :class="{ 'highlight-col': highlightedCol === word }"
-                >
-                  <code>{{ word }}</code>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="rowWord in vocabulary"
-                :key="rowWord"
-                :class="{ 'highlight-row': highlightedRow === rowWord }"
-              >
-                <td
-                  class="row-header"
-                  :class="{ 'highlight-row': highlightedRow === rowWord }"
-                >
-                  <code>{{ rowWord }}</code>
-                </td>
-                <td
-                  v-for="colWord in vocabulary"
-                  :key="colWord"
-                  class="grid-cell"
-                  :class="{
-                    'highlight-col': highlightedCol === colWord,
-                    'highlight-row': highlightedRow === rowWord,
-                    'current-cell': isCurrentCell(rowWord, colWord),
-                    flash: isCurrentCell(rowWord, colWord),
-                  }"
-                >
-                  {{ tally(getCount(rowWord, colWord)) || "" }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <BigramGrid
+          :vocabulary="vocabulary"
+          :get-count="getCount"
+          :highlighted-row="highlights.row"
+          :highlighted-col="highlights.col"
+        />
 
         <PlaybackControls
           :is-playing="isPlaying"
@@ -264,7 +195,7 @@ function isCurrentCell(from: string, to: string): boolean {
 }
 
 .token.highlight-second {
-  background: rgba(190, 131, 14, 0.4);
+  background: var(--lm-highlight-strong);
   transform: scale(1.05);
 }
 
@@ -287,87 +218,9 @@ function isCurrentCell(from: string, to: string): boolean {
   color: var(--vp-c-text-2);
 }
 
-.grid-section {
-  overflow-x: auto;
-}
-
-.training-grid {
-  border-collapse: collapse;
-  border: 1px solid var(--vp-c-border);
-  font-size: 0.875rem;
-}
-
-.training-grid th,
-.training-grid td {
-  padding: 0.5rem;
-  text-align: center;
-  min-width: 3rem;
-  height: 2.5rem;
-  border: 1px solid var(--vp-c-border);
-}
-
-.training-grid th {
-  background-color: var(--vp-c-bg-alt);
-  font-weight: 600;
-}
-
-.training-grid th.highlight-col {
-  background-color: rgba(190, 131, 14, 0.3);
-}
-
-.training-grid th code,
-.training-grid td code {
-  background: transparent;
-  padding: 0;
-  font-size: inherit;
-}
-
-.row-header {
-  background-color: var(--vp-c-bg-alt);
-  font-weight: 600;
-}
-
-.row-header.highlight-row {
-  background-color: var(--vp-c-brand-soft);
-}
-
-.grid-cell {
-  transition: background-color 0.2s;
-}
-
-.grid-cell.highlight-row {
-  background-color: rgba(190, 131, 14, 0.15);
-}
-
-.grid-cell.highlight-col {
-  background-color: rgba(190, 131, 14, 0.2);
-}
-
-.grid-cell.current-cell {
-  background-color: rgba(190, 131, 14, 0.4);
-}
-
-.grid-cell.flash {
-  animation: cell-flash 0.3s ease-out;
-}
-
-@keyframes cell-flash {
-  0% {
-    background-color: var(--vp-c-brand-1);
-  }
-  100% {
-    background-color: rgba(190, 131, 14, 0.4);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .token,
-  .grid-cell {
+  .token {
     transition: none;
-  }
-
-  .grid-cell.flash {
-    animation: none;
   }
 }
 </style>

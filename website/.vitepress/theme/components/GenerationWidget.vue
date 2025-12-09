@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /* eslint-disable no-undef -- browser globals used in client-side component */
 import { ref, computed, watch, onUnmounted } from "vue";
-import { tally } from "../utils/tally";
+import { parseTokens, getVocabulary, buildBigramModel } from "../utils/tokens";
 import {
   createDiceMapping,
   rollDice,
@@ -10,6 +10,11 @@ import {
 import type { DiceMapping } from "../utils/diceMapping";
 import PlaybackControls from "./PlaybackControls.vue";
 import FullscreenWrapper from "./FullscreenWrapper.vue";
+import BigramGrid from "./BigramGrid.vue";
+
+const DICE_ROLL_ANIMATION_MS = 80;
+const POST_WRITE_PAUSE_MS = 800;
+const STEP_INTERVAL_MS = 100;
 
 interface Props {
   initialText?: string;
@@ -30,45 +35,9 @@ const isRolling = ref(false);
 type Phase = "selecting" | "showing-options" | "rolling" | "rolled" | "writing";
 const phase = ref<Phase>("selecting");
 
-function parseTokens(text: string): string[] {
-  return text
-    .trim()
-    .toLowerCase()
-    .replace(/([.,!?;:]+)/g, " $1 ")
-    .split(/\s+/)
-    .filter(Boolean);
-}
-
 const tokens = computed(() => parseTokens(trainingText.value));
-const vocabulary = computed(() => [...new Set(tokens.value)]);
-
-const model = computed(() => {
-  const counts = new Map<string, Map<string, number>>();
-  const t = tokens.value;
-
-  for (const word of vocabulary.value) {
-    counts.set(word, new Map());
-  }
-
-  for (let i = 0; i < t.length - 1; i++) {
-    const from = t[i];
-    const to = t[i + 1];
-    const row = counts.get(from)!;
-    row.set(to, (row.get(to) || 0) + 1);
-  }
-
-  return counts;
-});
-
-const rowHasSuccessors = computed(() => {
-  const result = new Map<string, boolean>();
-  for (const word of vocabulary.value) {
-    const row = model.value.get(word);
-    const hasSuccessor = row ? [...row.values()].some((v) => v > 0) : false;
-    result.set(word, hasSuccessor);
-  }
-  return result;
-});
+const vocabulary = computed(() => getVocabulary(tokens.value));
+const model = computed(() => buildBigramModel(tokens.value));
 
 const currentWord = computed(() => {
   if (outputWords.value.length === 0) return null;
@@ -77,7 +46,7 @@ const currentWord = computed(() => {
 
 const currentRowOptions = computed(() => {
   if (!currentWord.value) return [];
-  const row = model.value.get(currentWord.value);
+  const row = model.value.counts.get(currentWord.value);
   if (!row) return [];
   return [...row.entries()]
     .filter(([, count]) => count > 0)
@@ -110,7 +79,7 @@ function reset() {
 }
 
 function selectStartWord(word: string) {
-  if (!rowHasSuccessors.value.get(word)) return;
+  if (!model.value.hasSuccessors(word)) return;
   outputWords.value = [word];
   phase.value = "showing-options";
   currentMappings.value = createDiceMapping(
@@ -125,7 +94,7 @@ async function animateDiceRoll(): Promise<number> {
 
   for (let i = 0; i < 10; i++) {
     currentDiceRoll.value = rollDice(props.diceSides);
-    await new Promise((resolve) => setTimeout(resolve, 80));
+    await new Promise((resolve) => setTimeout(resolve, DICE_ROLL_ANIMATION_MS));
   }
 
   currentDiceRoll.value = finalRoll;
@@ -137,7 +106,7 @@ async function doStep() {
   if (phase.value === "selecting") {
     if (outputWords.value.length === 0) {
       const validStarters = vocabulary.value.filter((w) =>
-        rowHasSuccessors.value.get(w),
+        model.value.hasSuccessors(w),
       );
       if (validStarters.length > 0) {
         const randomStart =
@@ -156,18 +125,21 @@ async function doStep() {
   }
 
   if (phase.value === "rolled") {
-    const nextWord = findWordForRoll(currentMappings.value, currentDiceRoll.value!);
+    const nextWord = findWordForRoll(
+      currentMappings.value,
+      currentDiceRoll.value!,
+    );
     if (nextWord) {
       phase.value = "writing";
       outputWords.value = [...outputWords.value, nextWord];
 
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      await new Promise((resolve) => setTimeout(resolve, POST_WRITE_PAUSE_MS));
 
-      if (rowHasSuccessors.value.get(nextWord)) {
+      if (model.value.hasSuccessors(nextWord)) {
         phase.value = "showing-options";
         currentDiceRoll.value = null;
         currentMappings.value = createDiceMapping(
-          [...(model.value.get(nextWord)?.entries() || [])]
+          [...(model.value.counts.get(nextWord)?.entries() || [])]
             .filter(([, count]) => count > 0)
             .map(([word, count]) => ({ word, count })),
           props.diceSides,
@@ -191,7 +163,7 @@ async function doStep() {
 function handlePlay() {
   if (outputWords.value.length === 0) {
     const validStarters = vocabulary.value.filter((w) =>
-      rowHasSuccessors.value.get(w),
+      model.value.hasSuccessors(w),
     );
     if (validStarters.length > 0) {
       const randomStart =
@@ -206,14 +178,10 @@ watch(isPlaying, async (playing) => {
   if (playing) {
     while (isPlaying.value) {
       await doStep();
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, STEP_INTERVAL_MS));
     }
   }
 });
-
-function getCount(from: string, to: string): number {
-  return model.value.get(from)?.get(to) || 0;
-}
 
 function isHighlightedCol(word: string): boolean {
   if (
@@ -223,6 +191,12 @@ function isHighlightedCol(word: string): boolean {
   )
     return false;
   return currentRowOptions.value.some((opt) => opt.word === word);
+}
+
+function handleRowClick(word: string) {
+  if (outputWords.value.length === 0) {
+    selectStartWord(word);
+  }
 }
 </script>
 
@@ -265,59 +239,17 @@ function isHighlightedCol(word: string): boolean {
           </span>
         </div>
 
-        <div class="grid-section">
-          <table class="generation-grid">
-            <thead>
-              <tr>
-                <th></th>
-                <th
-                  v-for="word in vocabulary"
-                  :key="word"
-                  :class="{ 'highlight-col': isHighlightedCol(word) }"
-                >
-                  <code>{{ word }}</code>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="rowWord in vocabulary"
-                :key="rowWord"
-                :class="{
-                  'highlight-row': currentWord === rowWord,
-                  'dead-end': !rowHasSuccessors.get(rowWord),
-                  clickable:
-                    outputWords.length === 0 && rowHasSuccessors.get(rowWord),
-                }"
-                @click="
-                  outputWords.length === 0 &&
-                    rowHasSuccessors.get(rowWord) &&
-                    selectStartWord(rowWord)
-                "
-              >
-                <td
-                  class="row-header"
-                  :class="{ 'highlight-row': currentWord === rowWord }"
-                >
-                  <span v-if="currentWord === rowWord" class="row-indicator">▸</span>
-                  <code>{{ rowWord }}</code>
-                </td>
-                <td
-                  v-for="colWord in vocabulary"
-                  :key="colWord"
-                  class="grid-cell"
-                  :class="{
-                    'highlight-col':
-                      isHighlightedCol(colWord) && currentWord === rowWord,
-                    'highlight-row': currentWord === rowWord,
-                  }"
-                >
-                  {{ tally(getCount(rowWord, colWord)) || "" }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <BigramGrid
+          :vocabulary="vocabulary"
+          :get-count="model.getCount"
+          :highlighted-row="currentWord"
+          :is-highlighted-col="isHighlightedCol"
+          :clickable-rows="outputWords.length === 0"
+          :is-row-clickable="(w) => model.hasSuccessors(w)"
+          :is-dead-end="(w) => !model.hasSuccessors(w)"
+          :show-row-indicator="true"
+          @row-click="handleRowClick"
+        />
 
         <div v-if="currentMappings.length > 0" class="dice-section">
           <div class="dice-mapping">
@@ -334,7 +266,9 @@ function isHighlightedCol(word: string): boolean {
               }"
             >
               [{{ mapping.diceRange[0]
-              }}<template v-if="mapping.diceRange[0] !== mapping.diceRange[1]">–{{ mapping.diceRange[1] }}</template>]→{{ mapping.word }}
+              }}<template
+                v-if="mapping.diceRange[0] !== mapping.diceRange[1]"
+              >–{{ mapping.diceRange[1] }}</template>]→{{ mapping.word }}
             </span>
           </div>
           <div v-if="currentDiceRoll !== null" class="dice-result">
@@ -455,85 +389,6 @@ function isHighlightedCol(word: string): boolean {
   font-style: italic;
 }
 
-.grid-section {
-  overflow-x: auto;
-}
-
-.generation-grid {
-  border-collapse: collapse;
-  border: 1px solid var(--vp-c-border);
-  font-size: 0.875rem;
-}
-
-.generation-grid th,
-.generation-grid td {
-  padding: 0.5rem;
-  text-align: center;
-  min-width: 3rem;
-  height: 2.5rem;
-  border: 1px solid var(--vp-c-border);
-}
-
-.generation-grid th {
-  background-color: var(--vp-c-bg-alt);
-  font-weight: 600;
-}
-
-.generation-grid th.highlight-col {
-  background-color: rgba(190, 131, 14, 0.3);
-}
-
-.generation-grid th code,
-.generation-grid td code {
-  background: transparent;
-  padding: 0;
-  font-size: inherit;
-}
-
-.generation-grid tr.clickable {
-  cursor: pointer;
-}
-
-.generation-grid tr.clickable:hover .row-header {
-  background-color: var(--vp-c-brand-soft);
-}
-
-.generation-grid tr.dead-end {
-  opacity: 0.4;
-}
-
-.generation-grid tr.highlight-row {
-  background-color: rgba(190, 131, 14, 0.1);
-}
-
-.row-header {
-  background-color: var(--vp-c-bg-alt);
-  font-weight: 600;
-  position: relative;
-}
-
-.row-header.highlight-row {
-  background-color: var(--vp-c-brand-soft);
-}
-
-.row-indicator {
-  position: absolute;
-  left: 0.25rem;
-  color: var(--vp-c-brand-1);
-}
-
-.grid-cell {
-  transition: background-color 0.2s;
-}
-
-.grid-cell.highlight-row {
-  background-color: rgba(190, 131, 14, 0.1);
-}
-
-.grid-cell.highlight-col {
-  background-color: rgba(190, 131, 14, 0.3);
-}
-
 .dice-section {
   display: flex;
   flex-direction: column;
@@ -601,7 +456,6 @@ function isHighlightedCol(word: string): boolean {
 
 @media (prefers-reduced-motion: reduce) {
   .output-word,
-  .grid-cell,
   .mapping-item {
     transition: none;
   }

@@ -41,6 +41,11 @@
 :root {
   font-size: 20px;
 
+  /* LM widget highlight colours */
+  --lm-highlight-soft: rgba(190, 131, 14, 0.1);
+  --lm-highlight-medium: rgba(190, 131, 14, 0.3);
+  --lm-highlight-strong: rgba(190, 131, 14, 0.4);
+
   /* ANU Brand colours */
   --anu-white: #fff;
   --anu-black: #000;

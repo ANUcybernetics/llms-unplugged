@@ -39,7 +39,7 @@ describe("TrainingWidget", () => {
     const wrapper = mount(TrainingWidget, {
       props: { initialText: "see spot run" },
     });
-    const headers = wrapper.findAll(".training-grid th code");
+    const headers = wrapper.findAll(".bigram-grid th code");
     expect(headers.length).toBe(3);
     expect(headers[0].text()).toBe("see");
     expect(headers[1].text()).toBe("spot");

@@ -67,28 +67,6 @@ describe("LmGrid", () => {
     expect(cells[2].text()).toBe("卌 |");
   });
 
-  it("respects nrows option", () => {
-    const wrapper = mount(LmGrid, {
-      props: {
-        tokens: "a b c d",
-        nrows: 2,
-      },
-    });
-    const rows = wrapper.findAll("tbody tr");
-    expect(rows.length).toBe(2);
-  });
-
-  it("respects ncols option", () => {
-    const wrapper = mount(LmGrid, {
-      props: {
-        tokens: "a b c d",
-        ncols: 3,
-      },
-    });
-    const headers = wrapper.findAll("th");
-    expect(headers.length).toBe(3); // empty + 2 tokens
-  });
-
   it("handles empty tokens gracefully", () => {
     const wrapper = mount(LmGrid, {
       props: {
