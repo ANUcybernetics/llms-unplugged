@@ -79,6 +79,14 @@ After the full text the model looks like:
 
 <LmGrid tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
 
+## Try it yourself
+
+Use the interactive widget below to see how the training process works
+step-by-step. Enter your own text or use the example, then press Play or Step to
+watch the model being built.
+
+<TrainingWidget initialText="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
+
 ## Instructor notes
 
 ### Discussion questions

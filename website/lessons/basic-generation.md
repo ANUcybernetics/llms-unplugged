@@ -76,6 +76,18 @@ Using the same bigram model from the example in _Basic Training_:
 
 After the above steps, the generated text is _"see spot run. see spot"_
 
+## Try it yourself
+
+Use the interactive widget below to see how text generation works step-by-step.
+Click on a row to select a starting word, then press Play or Step to watch the
+dice roll and text being generated. You can also edit the training text to
+create your own model.
+
+<GenerationWidget
+  initialText="see spot run . see spot jump . run , spot , run . jump , spot , jump ."
+  :diceSides="10"
+/>
+
 ## Instructor notes
 
 ### Discussion questions

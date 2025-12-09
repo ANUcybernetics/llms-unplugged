@@ -1,9 +1,10 @@
 ---
 id: task-061
 title: add interactive widgets section to lessons where relevant
-status: To Do
+status: Done
 assignee: []
-created_date: "2025-11-27 02:54"
+created_date: '2025-11-27 02:54'
+updated_date: '2025-12-09 00:57'
 labels: []
 dependencies: []
 ---
@@ -43,3 +44,49 @@ Have an existing model (perhaps a pre-calculated one), then:
   which word to write down next)
 - animate the writing of that next word, then re-start the animation to select
   the next word (although use the same step/play/reset controls)
+
+## Acceptance Criteria
+<!-- AC:BEGIN -->
+- [x] #1 TrainingWidget animates building a bigram model from user input text
+- [x] #2 GenerationWidget animates generating text with dice roll visualisation
+- [x] #3 Both widgets have play/step/reset controls
+- [x] #4 Both widgets support fullscreen mode via Browser Fullscreen API
+- [x] #5 Dead-end rows are greyed out in GenerationWidget
+- [x] #6 Circular corpus (last word -> first word) prevents dead ends
+- [x] #7 All tests pass
+- [x] #8 Widgets are integrated into Basic Training and Basic Generation lessons
+- [x] #9 Reduced motion preference is respected
+<!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+## Implementation phases
+
+### Phase 1: shared infrastructure
+1. Create `usePlayback` composable for step-through animation control
+2. Create `PlaybackControls.vue` component (play/pause/step/reset buttons)
+3. Create `FullscreenWrapper.vue` component using Browser Fullscreen API
+
+### Phase 2: training widget
+1. Extract `tally()` function to shared utility
+2. Create `TrainingWidget.vue` with animated bigram training
+
+### Phase 3: generation widget
+1. Port dice mapping logic from Python to TypeScript
+2. Create `GenerationWidget.vue` with animated text generation
+
+### Phase 4: styling
+1. Add widget CSS to custom.css (tokens, highlights, animations)
+2. Add reduced motion support
+
+### Phase 5: testing
+1. Write tests for usePlayback composable
+2. Write tests for diceMapping utility
+3. Write tests for TrainingWidget
+4. Write tests for GenerationWidget
+
+### Phase 6: lesson integration
+1. Add TrainingWidget to Basic Training lesson
+2. Add GenerationWidget to Basic Generation lesson
+<!-- SECTION:PLAN:END -->

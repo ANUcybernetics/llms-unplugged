@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import { tally } from "../utils/tally";
 
 interface Props {
   tokens: string;
@@ -11,24 +12,6 @@ const props = withDefaults(defineProps<Props>(), {
   nrows: undefined,
   ncols: undefined,
 });
-
-/**
- * Convert a number to tally marks
- * Uses 卌 for groups of 5, | for remainders
- */
-function tally(n: number): string {
-  if (n === 0 || n == null) return "";
-  const groups = Math.floor(n / 5);
-  const remainder = n % 5;
-  let marks = "";
-  for (let i = 0; i < groups; i++) {
-    marks += "卌 ";
-  }
-  if (remainder > 0) {
-    marks += "|".repeat(remainder);
-  }
-  return marks.trim();
-}
 
 /**
  * Parse the space-separated token string into an array
