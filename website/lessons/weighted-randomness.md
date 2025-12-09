@@ -25,7 +25,7 @@ student handout, [download it here](/assets/pdfs/weighted-randomness.pdf).
 Learn how to make random choices where some options are more likely than
 others---an operation at the core of all generative AI.
 
-![Hero image: Weighted Randomness](/assets/images/hero-weighted-randomness.jpg)
+![Hero image: Weighted Randomness](/assets/images/hero-weighted-randomness.avif)
 
 <Prerequisites />
 

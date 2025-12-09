@@ -26,7 +26,7 @@ student handout, [download it here](/assets/pdfs/trigram-model.pdf).
 Extend the bigram model to consider two words of context instead of one, leading
 to better generation.
 
-![Hero image: Trigram Model](/assets/images/hero-trigram-model.jpg)
+![Hero image: Trigram Model](/assets/images/hero-trigram-model.avif)
 
 <Prerequisites />
 

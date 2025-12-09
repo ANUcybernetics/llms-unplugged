@@ -28,7 +28,7 @@ you'd like a printable version of the student handout,
 Transform words into numerical vectors that capture meaning, revealing semantic
 relationships between words in your model.
 
-![Hero image: Word Embeddings](/assets/images/hero-word-embeddings.jpg)
+![Hero image: Word Embeddings](/assets/images/hero-word-embeddings.avif)
 
 <Prerequisites />
 

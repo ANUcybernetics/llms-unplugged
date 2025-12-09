@@ -26,7 +26,7 @@ student handout, [download it here](/assets/pdfs/basic-training.pdf).
 Build a bigram language model that tracks which words follow which other words
 in text.
 
-![Hero image: Basic Training](/assets/images/hero-basic-training.jpg)
+![Hero image: Basic Training](/assets/images/hero-basic-training.avif)
 
 <Prerequisites />
 

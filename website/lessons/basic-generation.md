@@ -27,7 +27,7 @@ student handout, [download it here](/assets/pdfs/basic-generation.pdf).
 Use a pre-trained (hand-built) bigram model to generate new text through
 weighted random sampling.
 
-![Hero image: Basic Generation](/assets/images/hero-basic-generation.jpg)
+![Hero image: Basic Generation](/assets/images/hero-basic-generation.avif)
 
 <Prerequisites />
 

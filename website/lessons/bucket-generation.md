@@ -28,7 +28,7 @@ audiences, but honestly it's just as fun at a grown-up dinner party.
 Use your bucket-based bigram model to generate new text by picking tokens at
 random.
 
-![Hero image: Bucket Generation](/assets/images/hero-bucket-generation.jpg)
+![Hero image: Bucket Generation](/assets/images/hero-bucket-generation.avif)
 
 <Prerequisites />
 

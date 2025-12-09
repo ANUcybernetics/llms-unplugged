@@ -7,7 +7,7 @@ description:
 
 # For educators
 
-![Hero image: For educators](/assets/images/hero-educators.jpg)
+![Hero image: For educators](/assets/images/hero-educators.avif)
 
 ::: info
 

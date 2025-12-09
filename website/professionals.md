@@ -7,7 +7,7 @@ description:
 
 # For professionals
 
-![Hero image: For professionals](/assets/images/hero-professionals.jpg)
+![Hero image: For professionals](/assets/images/hero-professionals.avif)
 
 ::: info
 

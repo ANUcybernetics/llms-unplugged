@@ -7,7 +7,7 @@ description:
 
 # Adaptation and Data
 
-![Hero image: Adaptation and Data](/assets/images/hero-adaptation-and-data.jpg)
+![Hero image: Adaptation and Data](/assets/images/hero-adaptation-and-data.avif)
 
 Discover how models are customised for specific tasks and the risks of training
 on synthetic data.

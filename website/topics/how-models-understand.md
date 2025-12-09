@@ -6,7 +6,7 @@ description:
 
 # How Models "Understand"
 
-![Hero image: How Models Understand](/assets/images/hero-how-models-understand.jpg)
+![Hero image: How Models Understand](/assets/images/hero-how-models-understand.avif)
 
 Explore how models use context and represent word meaning through embeddings.
 

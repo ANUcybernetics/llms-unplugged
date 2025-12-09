@@ -9,7 +9,7 @@ hero:
     Ready-to-use teaching resources for understanding how large language models
     (LLMs) work through hands-on activities. No computers or coding required.
   image:
-    src: /assets/images/hero-index.jpg
+    src: /assets/images/hero-index.avif
     alt: Workshop participants building language models with pen and paper
   # actions:
   #   - theme: brand
@@ -21,21 +21,21 @@ hero:
 
 features:
   - icon:
-      src: /assets/images/hero-professionals.jpg
+      src: /assets/images/hero-professionals.avif
     title: For professionals
     details:
       Lead your team through AI adoption with confidence. Build a shared
       understanding of how LLMs actually work.
     link: /professionals
   - icon:
-      src: /assets/images/hero-educators.jpg
+      src: /assets/images/hero-educators.avif
     title: For educators
     details:
       Ready-to-use lesson plans and workshop formats for teaching LLMs in your
       classroom or organisation.
     link: /educators
   - icon:
-      src: /assets/images/hero-parents.jpg
+      src: /assets/images/hero-parents.avif
     title: For parents
     details:
       Understand what your kids are using and learn alongside them. No tech
@@ -62,7 +62,7 @@ weighted by what you've seen before. After an hour or so of doing this by hand,
 something clicks: you realise that ChatGPT works exactly the same way. It's the
 same fundamental process, just at a (vastly) different scale.
 
-![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-2.jpg)
+![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-2.avif)
 
 ## Who's this for?
 
@@ -102,4 +102,4 @@ new lessons and unplugged activities, and more. Bookmark us and stay tuned. Read
 the [FAQ](/faq). And if you'd like to get in touch, email
 [ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au).
 
-![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-1.jpg)
+![Three people laughing while doing an LLMs Unplugged activity](/assets/images/sxsw-1.avif)

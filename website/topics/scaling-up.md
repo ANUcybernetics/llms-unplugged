@@ -7,7 +7,7 @@ description:
 
 # Scaling Up
 
-![Hero image: Scaling Up](/assets/images/hero-scaling-up.jpg)
+![Hero image: Scaling Up](/assets/images/hero-scaling-up.avif)
 
 Move beyond hand-built models to explore pre-trained models and longer context
 windows with trigrams.

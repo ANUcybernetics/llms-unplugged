@@ -26,7 +26,7 @@ student handout, [download it here](/assets/pdfs/synthetic-data.pdf).
 Use your language model to generate new training data, then train a new model on
 that synthetic data to watch patterns change.
 
-![Hero image: Synthetic Data](/assets/images/hero-synthetic-data.jpg)
+![Hero image: Synthetic Data](/assets/images/hero-synthetic-data.avif)
 
 <Prerequisites />
 

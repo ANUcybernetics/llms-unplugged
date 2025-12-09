@@ -6,7 +6,7 @@ description:
 
 # News
 
-![Hero image: News and updates from LLMs Unplugged](/assets/images/hero-news.jpg)
+![Hero image: News and updates from LLMs Unplugged](/assets/images/hero-news.avif)
 
 Updates, announcements, and stories from the LLMs Unplugged project. Subscribe
 to the [RSS feed](/feed.rss) to stay up to date.

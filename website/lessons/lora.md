@@ -27,7 +27,7 @@ student handout, [download it here](/assets/pdfs/lora.pdf).
 Efficiently adapt a trained language model to a new domain or style without
 retraining the whole thing.
 
-![Hero image: LoRA](/assets/images/hero-lora.jpg)
+![Hero image: LoRA](/assets/images/hero-lora.avif)
 
 <Prerequisites />
 

@@ -27,7 +27,7 @@ you'd like a printable version of the student handout,
 Enhance your bigram model with context columns that capture grammatical and
 semantic patterns.
 
-![Hero image: Context Columns](/assets/images/hero-context-columns.jpg)
+![Hero image: Context Columns](/assets/images/hero-context-columns.avif)
 
 <Prerequisites />
 

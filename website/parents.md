@@ -7,7 +7,7 @@ description:
 
 # For parents
 
-![Hero image: For parents](/assets/images/hero-parents.jpg)
+![Hero image: For parents](/assets/images/hero-parents.avif)
 
 Your kids are using ChatGPT. Maybe for homework help, maybe for creative
 writing, maybe just to mess around. You've probably used it yourself. But do you

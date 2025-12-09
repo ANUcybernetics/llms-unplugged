@@ -26,7 +26,7 @@ student handout, [download it here](/assets/pdfs/pretrained-generation.pdf).
 Use a (slightly larger) pre-trained model booklet to generate new text through
 weighted random sampling.
 
-![Hero image: Pre-trained Model Generation](/assets/images/hero-pretrained-generation.jpg)
+![Hero image: Pre-trained Model Generation](/assets/images/hero-pretrained-generation.avif)
 
 <Prerequisites />
 

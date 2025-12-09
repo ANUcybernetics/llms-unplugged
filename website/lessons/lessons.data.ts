@@ -29,7 +29,7 @@ export default createContentLoader("lessons/*.md", {
           order: page.frontmatter.order ?? 0,
           keyIdea: page.frontmatter.keyIdea ?? "",
           dependsOn: page.frontmatter.dependsOn ?? [],
-          hero: `/assets/images/hero-${slug}.jpg`,
+          hero: `/assets/images/hero-${slug}.avif`,
         };
       })
       .sort((a, b) => {

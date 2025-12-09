@@ -26,7 +26,7 @@ student handout, [download it here](/assets/pdfs/sampling.pdf).
 When generating text, your model offers several options for the next word.
 Sampling strategies decide which one to pick.
 
-![Hero image: Sampling](/assets/images/hero-sampling.jpg)
+![Hero image: Sampling](/assets/images/hero-sampling.avif)
 
 <Prerequisites />
 

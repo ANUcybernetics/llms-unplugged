@@ -28,7 +28,7 @@ you'd like a printable version of the student handout,
 Use your context-enhanced bigram model to generate text with improved variety
 and grammatical coherence.
 
-![Hero image: Context Columns](/assets/images/hero-context-columns.jpg)
+![Hero image: Context Columns](/assets/images/hero-context-columns.avif)
 
 <Prerequisites />
 

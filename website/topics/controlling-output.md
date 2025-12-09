@@ -7,7 +7,7 @@ description:
 
 # Controlling Output
 
-![Hero image: Controlling Output](/assets/images/hero-controlling-output.jpg)
+![Hero image: Controlling Output](/assets/images/hero-controlling-output.avif)
 
 Learn how sampling strategies like temperature and truncation shape generated
 text without changing the underlying model.

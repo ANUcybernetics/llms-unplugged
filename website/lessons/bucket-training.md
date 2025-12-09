@@ -27,7 +27,7 @@ honestly it's just as fun at a grown-up dinner party.
 Build a bigram language model using physical tokens and buckets to track which
 words follow which other words in text.
 
-![Hero image: Bucket Training](/assets/images/hero-bucket-training.jpg)
+![Hero image: Bucket Training](/assets/images/hero-bucket-training.avif)
 
 <Prerequisites />
 

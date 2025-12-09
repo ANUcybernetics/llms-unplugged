@@ -7,7 +7,7 @@ description:
 
 # Fundamentals
 
-![Hero image: Fundamentals](/assets/images/hero-fundamentals.jpg)
+![Hero image: Fundamentals](/assets/images/hero-fundamentals.avif)
 
 Core concepts for building and using language models. Start here to learn
 weighted random selection, training a bigram model, and generating text.

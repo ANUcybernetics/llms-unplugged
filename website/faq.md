@@ -7,7 +7,7 @@ description:
 
 # Frequently asked questions
 
-![Hero image: Frequently asked questions](/assets/images/hero-faq.jpg)
+![Hero image: Frequently asked questions](/assets/images/hero-faq.avif)
 
 ## Why do you keep saying LLMs---this is AI, right?
 
@@ -90,7 +90,7 @@ tangible. When you roll dice and look up words in a table, you're doing exactly
 what a computer does---just slower. This builds genuine understanding rather
 than treating AI as a black box.
 
-![Using dice to generate text from a hand-built language model](/assets/images/workshop-4.jpg)
+![Using dice to generate text from a hand-built language model](/assets/images/workshop-4.avif)
 
 ## How do these activities relate to ChatGPT and other LLMs?
 
@@ -117,4 +117,4 @@ Please [open an issue](https://github.com/ANUcybernetics/llms-unplugged/issues)
 on GitHub or [contact us](/about#get-in-touch). We appreciate corrections and
 suggestions.
 
-![Participants exploring language models hands-on](/assets/images/workshop-5.jpg)
+![Participants exploring language models hands-on](/assets/images/workshop-5.avif)
