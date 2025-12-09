@@ -28,7 +28,7 @@ const currentDiceRoll = ref<number | null>(null);
 const currentMappings = ref<DiceMapping[]>([]);
 const isRolling = ref(false);
 
-type Phase = "selecting" | "showing-options" | "rolling" | "writing";
+type Phase = "selecting" | "showing-options" | "rolling" | "rolled" | "writing";
 const phase = ref<Phase>("selecting");
 
 function parseTokens(text: string): string[] {
@@ -149,32 +149,37 @@ async function doStep() {
 
   if (phase.value === "showing-options") {
     phase.value = "rolling";
-    const roll = await animateDiceRoll();
-    const nextWord = findWordForRoll(currentMappings.value, roll);
+    await animateDiceRoll();
+    phase.value = "rolled";
+    return;
+  }
+
+  if (phase.value === "rolled") {
+    const nextWord = findWordForRoll(currentMappings.value, currentDiceRoll.value!);
     if (nextWord) {
       phase.value = "writing";
-      await new Promise((resolve) => setTimeout(resolve, 300));
       outputWords.value = [...outputWords.value, nextWord];
       playbackStep();
 
+      await new Promise((resolve) => setTimeout(resolve, 800));
+
       if (currentStep.value >= totalSteps.value) {
         phase.value = "selecting";
-      } else {
         currentMappings.value = [];
         currentDiceRoll.value = null;
-        await new Promise((resolve) => setTimeout(resolve, 200));
-
-        if (rowHasSuccessors.value.get(nextWord)) {
-          phase.value = "showing-options";
-          currentMappings.value = createDiceMapping(
-            [...(model.value.get(nextWord)?.entries() || [])]
-              .filter(([, count]) => count > 0)
-              .map(([word, count]) => ({ word, count })),
-            props.diceSides,
-          );
-        } else {
-          phase.value = "selecting";
-        }
+      } else if (rowHasSuccessors.value.get(nextWord)) {
+        phase.value = "showing-options";
+        currentDiceRoll.value = null;
+        currentMappings.value = createDiceMapping(
+          [...(model.value.get(nextWord)?.entries() || [])]
+            .filter(([, count]) => count > 0)
+            .map(([word, count]) => ({ word, count })),
+          props.diceSides,
+        );
+      } else {
+        phase.value = "selecting";
+        currentMappings.value = [];
+        currentDiceRoll.value = null;
       }
     }
     return;
@@ -213,7 +218,11 @@ function getCount(from: string, to: string): number {
 }
 
 function isHighlightedCol(word: string): boolean {
-  if (phase.value !== "showing-options" && phase.value !== "rolling")
+  if (
+    phase.value !== "showing-options" &&
+    phase.value !== "rolling" &&
+    phase.value !== "rolled"
+  )
     return false;
   return currentRowOptions.value.some((opt) => opt.word === word);
 }
