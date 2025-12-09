@@ -14,7 +14,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const inputText = ref(props.initialText);
-const isEditing = ref(true);
 
 function parseTokens(text: string): string[] {
   return text
@@ -97,16 +96,6 @@ const nextTokenIndex = computed(() => {
   return currentTokenIndex.value + 1;
 });
 
-function startTraining() {
-  isEditing.value = false;
-  reset();
-}
-
-function resetToEdit() {
-  isEditing.value = true;
-  reset();
-}
-
 function getCount(from: string, to: string): number {
   return gridCounts.value.get(`${from}->${to}`) || 0;
 }
@@ -119,27 +108,17 @@ function isCurrentCell(from: string, to: string): boolean {
 <template>
   <FullscreenWrapper>
     <div class="lm-widget training-widget">
-      <div v-if="isEditing" class="input-section">
-        <label for="training-input" class="input-label">Training text:</label>
-        <textarea
-          id="training-input"
-          v-model="inputText"
-          class="text-input"
-          rows="3"
-          placeholder="Enter text to train on..."
-        ></textarea>
-        <div class="tokens-preview">
-          <span class="section-label">Tokens:</span>
-          <span v-for="(token, i) in tokens" :key="i" class="token">
-            {{ token }}
-          </span>
+      <div class="training-view">
+        <div class="input-section">
+          <label for="training-input" class="input-label">Training text:</label>
+          <textarea
+            id="training-input"
+            v-model="inputText"
+            class="text-input"
+            rows="2"
+            placeholder="Enter text to train on..."
+          ></textarea>
         </div>
-        <button type="button" class="submit-button" @click="startTraining">
-          Start Training
-        </button>
-      </div>
-
-      <div v-else class="training-view">
         <div class="tokens-section">
           <span class="section-label">Tokens:</span>
           <span
@@ -220,7 +199,7 @@ function isCurrentCell(from: string, to: string): boolean {
           @play="play"
           @pause="pause"
           @step="step"
-          @reset="resetToEdit"
+          @reset="reset"
         />
       </div>
     </div>
@@ -257,29 +236,6 @@ function isCurrentCell(from: string, to: string): boolean {
   font-family: var(--vp-font-family-mono);
   font-size: 0.875rem;
   resize: vertical;
-}
-
-.submit-button {
-  align-self: flex-start;
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--vp-c-brand-1);
-  border-radius: 0.25rem;
-  background: var(--vp-c-brand-1);
-  color: white;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.2s;
-}
-
-.submit-button:hover {
-  background: var(--vp-c-brand-3);
-}
-
-.tokens-preview {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.25rem;
 }
 
 .training-view {
