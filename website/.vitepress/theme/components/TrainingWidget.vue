@@ -66,50 +66,64 @@ function getCount(from: string, to: string): number {
   <FullscreenWrapper>
     <div class="lm-widget training-widget">
       <div class="training-view">
-        <div class="input-section">
-          <label for="training-input" class="input-label">Training text (click to edit):</label>
-          <textarea
-            id="training-input"
-            v-model="inputText"
-            class="text-input"
-            rows="2"
-            placeholder="Enter text to train on..."
-          ></textarea>
-        </div>
-        <div class="tokens-section">
-          <span class="section-label">Tokens:</span>
-          <span
-            v-for="(token, i) in tokens"
-            :key="i"
-            class="token"
-            :class="{
-              'highlight-first': i === highlights.tokenIdx,
-              'highlight-second': i === highlights.nextIdx,
-            }"
-          >
-            {{ token }}
-          </span>
+        <div class="widget-section">
+          <div class="section-header">Training text</div>
+          <div class="section-content">
+            <textarea
+              id="training-input"
+              v-model="inputText"
+              class="text-input"
+              rows="2"
+              placeholder="Enter text to train on..."
+            ></textarea>
+          </div>
         </div>
 
-        <div v-if="highlights.row" class="current-bigram">
-          <span class="section-label">Current bigram:</span>
-          <span class="token highlight-first">{{ highlights.row }}</span>
-          <span class="arrow">→</span>
-          <span class="token highlight-second">{{ highlights.col }}</span>
-        </div>
-        <div v-else-if="isComplete" class="current-bigram complete">
-          Training complete!
-        </div>
-        <div v-else class="current-bigram">
-          <span class="section-label">Press Play or Step to begin</span>
+        <div class="widget-section">
+          <div class="section-header">Tokens</div>
+          <div class="section-content tokens-content">
+            <span
+              v-for="(token, i) in tokens"
+              :key="i"
+              class="token"
+              :class="{
+                'highlight-first': i === highlights.tokenIdx,
+                'highlight-second': i === highlights.nextIdx,
+              }"
+            >
+              {{ token }}
+            </span>
+          </div>
         </div>
 
-        <BigramGrid
-          :vocabulary="vocabulary"
-          :get-count="getCount"
-          :highlighted-row="highlights.row"
-          :highlighted-col="highlights.col"
-        />
+        <div class="widget-section">
+          <div class="section-header">Current bigram</div>
+          <div class="section-content bigram-content">
+            <template v-if="highlights.row">
+              <span class="token highlight-first">{{ highlights.row }}</span>
+              <span class="arrow">→</span>
+              <span class="token highlight-second">{{ highlights.col }}</span>
+            </template>
+            <span v-else-if="isComplete" class="complete-message">
+              Training complete!
+            </span>
+            <span v-else class="placeholder">
+              Press Play or Step to begin
+            </span>
+          </div>
+        </div>
+
+        <div class="widget-section">
+          <div class="section-header">Model grid</div>
+          <div class="section-content">
+            <BigramGrid
+              :vocabulary="vocabulary"
+              :get-count="getCount"
+              :highlighted-row="highlights.row"
+              :highlighted-col="highlights.col"
+            />
+          </div>
+        </div>
 
         <PlaybackControls
           :is-playing="isPlaying"
@@ -135,20 +149,35 @@ function getCount(from: string, to: string): number {
   background: var(--vp-c-bg-soft);
 }
 
-.input-section {
+.training-view {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
-.input-label {
+.widget-section {
+  border: 1px solid var(--vp-c-border);
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.section-header {
+  padding: 0.5rem 0.75rem;
+  background: var(--vp-c-bg-alt);
   font-weight: 600;
-  color: var(--vp-c-text-1);
+  font-size: 0.875rem;
+  color: var(--vp-c-text-2);
+  border-bottom: 1px solid var(--vp-c-border);
+}
+
+.section-content {
+  padding: 0.75rem;
+  background: var(--vp-c-bg);
 }
 
 .text-input {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.5rem;
   border: 1px solid var(--vp-c-border);
   border-radius: 0.25rem;
   background: var(--vp-c-bg);
@@ -158,23 +187,10 @@ function getCount(from: string, to: string): number {
   resize: vertical;
 }
 
-.training-view {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.tokens-section {
+.tokens-content {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   gap: 0.25rem;
-}
-
-.section-label {
-  font-weight: 600;
-  color: var(--vp-c-text-2);
-  margin-right: 0.5rem;
 }
 
 .token {
@@ -199,18 +215,21 @@ function getCount(from: string, to: string): number {
   transform: scale(1.05);
 }
 
-.current-bigram {
+.bigram-content {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem;
-  background: var(--vp-c-bg-alt);
-  border-radius: 0.25rem;
+  min-height: 1.75rem;
 }
 
-.current-bigram.complete {
+.complete-message {
   color: var(--vp-c-brand-1);
   font-weight: 600;
+}
+
+.placeholder {
+  color: var(--vp-c-text-3);
+  font-style: italic;
 }
 
 .arrow {
