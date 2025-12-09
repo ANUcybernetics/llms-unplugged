@@ -4,7 +4,7 @@ import {
   resetTrainingText,
 } from "../.vitepress/theme/composables/useTrainingText";
 
-const DEFAULT_TEXT = "the cat sat on the mat .";
+const DEFAULT_TEXT = "The cat sat on the mat.";
 
 describe("useTrainingText", () => {
   beforeEach(() => {

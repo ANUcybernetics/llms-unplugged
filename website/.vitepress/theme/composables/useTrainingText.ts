@@ -1,7 +1,7 @@
 import { ref, watch } from "vue";
 
 const STORAGE_KEY = "llms-unplugged-training-text";
-const DEFAULT_TEXT = "the cat sat on the mat .";
+const DEFAULT_TEXT = "The cat sat on the mat.";
 
 let initialized = false;
 const sharedText = ref(DEFAULT_TEXT);
