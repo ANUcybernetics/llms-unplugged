@@ -68,6 +68,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  overflow: auto;
 }
 
 .fullscreen-button {
@@ -93,12 +94,12 @@ onUnmounted(() => {
 
 .fullscreen-content {
   width: 100%;
-  transform-origin: center center;
-  transition: transform 0.3s;
 }
 
 .fullscreen-content.scaled {
-  transform: scale(1.3);
+  font-size: 1.3em;
+  max-width: 90vw;
+  max-height: 90vh;
 }
 
 @media (prefers-reduced-motion: reduce) {
