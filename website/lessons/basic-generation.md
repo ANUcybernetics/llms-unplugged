@@ -84,7 +84,7 @@ dice roll and text being generated. You can also edit the training text to
 create your own model.
 
 <GenerationWidget
-  initialText="see spot run . see spot jump . run , spot , run . jump , spot , jump ."
+  initialText="See spot run. See spot jump. Run, Spot, run. Jump, Spot, jump."
   :diceSides="10"
 />
 
