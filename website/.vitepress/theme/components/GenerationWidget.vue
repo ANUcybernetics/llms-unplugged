@@ -1,6 +1,7 @@
 <script setup lang="ts">
 /* eslint-disable no-undef -- browser globals used in client-side component */
 import { ref, computed, watch, onUnmounted } from "vue";
+import { useTrainingText } from "../composables/useTrainingText";
 import { parseTokens, getVocabulary, buildBigramModel } from "../utils/tokens";
 import {
   createDiceMapping,
@@ -17,16 +18,14 @@ const POST_WRITE_PAUSE_MS = 800;
 const STEP_INTERVAL_MS = 100;
 
 interface Props {
-  initialText?: string;
   diceSides?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  initialText: "the cat sat on the mat .",
   diceSides: 10,
 });
 
-const trainingText = ref(props.initialText);
+const trainingText = useTrainingText();
 const outputWords = ref<string[]>([]);
 const currentDiceRoll = ref<number | null>(null);
 const currentMappings = ref<DiceMapping[]>([]);

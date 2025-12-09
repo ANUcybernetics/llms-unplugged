@@ -1,19 +1,17 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { mount } from "@vue/test-utils";
 import GenerationWidget from "../.vitepress/theme/components/GenerationWidget.vue";
+import { resetTrainingText } from "../.vitepress/theme/composables/useTrainingText";
 
 describe("GenerationWidget", () => {
+  beforeEach(() => {
+    resetTrainingText();
+  });
+
   it("renders with default text", () => {
     const wrapper = mount(GenerationWidget);
     expect(wrapper.find(".generation-widget").exists()).toBe(true);
     expect(wrapper.find("textarea").exists()).toBe(true);
-  });
-
-  it("renders with custom initial text", () => {
-    const wrapper = mount(GenerationWidget, {
-      props: { initialText: "hello world" },
-    });
-    expect(wrapper.find("textarea").element.value).toBe("hello world");
   });
 
   it("renders with custom dice sides", () => {
@@ -30,47 +28,38 @@ describe("GenerationWidget", () => {
     expect(sections.length).toBeGreaterThanOrEqual(4);
   });
 
-  it("creates grid with vocabulary", () => {
-    const wrapper = mount(GenerationWidget, {
-      props: { initialText: "see spot run" },
-    });
+  it("creates grid with vocabulary", async () => {
+    const wrapper = mount(GenerationWidget);
+    await wrapper.find("textarea").setValue("see spot run");
     const headers = wrapper.findAll(".bigram-grid th code");
     expect(headers.length).toBe(3);
   });
 
   it("shows output section", () => {
-    const wrapper = mount(GenerationWidget, {
-      props: { initialText: "see spot" },
-    });
+    const wrapper = mount(GenerationWidget);
     expect(wrapper.find(".output-content").exists()).toBe(true);
   });
 
   it("shows playback controls", () => {
-    const wrapper = mount(GenerationWidget, {
-      props: { initialText: "see spot" },
-    });
+    const wrapper = mount(GenerationWidget);
     expect(wrapper.find(".playback-controls").exists()).toBe(true);
   });
 
   it("shows placeholder text when no words generated", () => {
-    const wrapper = mount(GenerationWidget, {
-      props: { initialText: "see spot run" },
-    });
+    const wrapper = mount(GenerationWidget);
     expect(wrapper.find(".placeholder").exists()).toBe(true);
   });
 
-  it("marks rows as clickable initially", () => {
-    const wrapper = mount(GenerationWidget, {
-      props: { initialText: "see spot run" },
-    });
+  it("marks rows as clickable initially", async () => {
+    const wrapper = mount(GenerationWidget);
+    await wrapper.find("textarea").setValue("see spot run");
     const clickableRows = wrapper.findAll("tr.clickable");
     expect(clickableRows.length).toBeGreaterThan(0);
   });
 
-  it("displays tokens section with parsed tokens", () => {
-    const wrapper = mount(GenerationWidget, {
-      props: { initialText: "Hello, world." },
-    });
+  it("displays tokens section with parsed tokens", async () => {
+    const wrapper = mount(GenerationWidget);
+    await wrapper.find("textarea").setValue("Hello, world.");
     const tokens = wrapper.findAll(".tokens-content .token");
     expect(tokens.length).toBe(4);
     expect(tokens.map((t) => t.text())).toEqual(["hello", ",", "world", "."]);

@@ -1,20 +1,13 @@
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { computed, watch } from "vue";
 import { usePlayback } from "../composables/usePlayback";
+import { useTrainingText } from "../composables/useTrainingText";
 import { parseTokens, getVocabulary, getBigrams } from "../utils/tokens";
 import PlaybackControls from "./PlaybackControls.vue";
 import FullscreenWrapper from "./FullscreenWrapper.vue";
 import BigramGrid from "./BigramGrid.vue";
 
-interface Props {
-  initialText?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  initialText: "The cat sat on the mat.",
-});
-
-const inputText = ref(props.initialText);
+const inputText = useTrainingText();
 
 const tokens = computed(() => parseTokens(inputText.value));
 const bigrams = computed(() => getBigrams(tokens.value));
