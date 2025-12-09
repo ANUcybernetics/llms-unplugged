@@ -23,7 +23,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const trainingText = ref(props.initialText);
-const isEditing = ref(true);
 const outputWords = ref<string[]>([]);
 const currentDiceRoll = ref<number | null>(null);
 const currentMappings = ref<DiceMapping[]>([]);
@@ -33,7 +32,12 @@ type Phase = "selecting" | "showing-options" | "rolling" | "writing";
 const phase = ref<Phase>("selecting");
 
 function parseTokens(text: string): string[] {
-  return text.trim().split(/\s+/).filter(Boolean);
+  return text
+    .trim()
+    .toLowerCase()
+    .replace(/([.,!?;:]+)/g, " $1 ")
+    .split(/\s+/)
+    .filter(Boolean);
 }
 
 const tokens = computed(() => parseTokens(trainingText.value));
@@ -96,17 +100,7 @@ const {
 
 watch(totalSteps, (n) => setTotalSteps(n));
 
-function startGeneration() {
-  isEditing.value = false;
-  outputWords.value = [];
-  currentDiceRoll.value = null;
-  currentMappings.value = [];
-  phase.value = "selecting";
-  playbackReset();
-}
-
-function resetToEdit() {
-  isEditing.value = true;
+function reset() {
   outputWords.value = [];
   currentDiceRoll.value = null;
   currentMappings.value = [];
@@ -228,21 +222,32 @@ function isHighlightedCol(word: string): boolean {
 <template>
   <FullscreenWrapper>
     <div class="lm-widget generation-widget">
-      <div v-if="isEditing" class="input-section">
-        <label for="generation-input" class="input-label">Training text:</label>
-        <textarea
-          id="generation-input"
-          v-model="trainingText"
-          class="text-input"
-          rows="3"
-          placeholder="Enter training text..."
-        ></textarea>
-        <button type="button" class="submit-button" @click="startGeneration">
-          Start Generation
-        </button>
-      </div>
+      <div class="generation-view">
+        <div class="input-section">
+          <label for="generation-input" class="input-label">Training text:</label>
+          <textarea
+            id="generation-input"
+            v-model="trainingText"
+            class="text-input"
+            rows="2"
+            placeholder="Enter training text..."
+          ></textarea>
+        </div>
 
-      <div v-else class="generation-view">
+        <div class="tokens-section">
+          <span class="section-label">Tokens:</span>
+          <span
+            v-for="(token, i) in tokens"
+            :key="i"
+            class="token"
+            :class="{
+              'highlight-current': token === currentWord,
+            }"
+          >
+            {{ token }}
+          </span>
+        </div>
+
         <div class="output-section">
           <span class="section-label">Generated:</span>
           <span class="output-text">
@@ -353,7 +358,7 @@ function isHighlightedCol(word: string): boolean {
           @play="handlePlay"
           @pause="pause"
           @step="doStep"
-          @reset="resetToEdit"
+          @reset="reset"
         />
       </div>
     </div>
@@ -392,26 +397,34 @@ function isHighlightedCol(word: string): boolean {
   resize: vertical;
 }
 
-.submit-button {
-  align-self: flex-start;
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--vp-c-brand-1);
-  border-radius: 0.25rem;
-  background: var(--vp-c-brand-1);
-  color: white;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.2s;
-}
-
-.submit-button:hover {
-  background: var(--vp-c-brand-3);
-}
-
 .generation-view {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.tokens-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.token {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background: var(--vp-c-bg-alt);
+  border-radius: 0.25rem;
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.875rem;
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
+}
+
+.token.highlight-current {
+  background: var(--vp-c-brand-soft);
+  transform: scale(1.05);
 }
 
 .output-section {
@@ -594,6 +607,7 @@ function isHighlightedCol(word: string): boolean {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .token,
   .output-word,
   .grid-cell,
   .mapping-item {

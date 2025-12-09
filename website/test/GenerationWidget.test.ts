@@ -23,60 +23,57 @@ describe("GenerationWidget", () => {
     expect(wrapper.props("diceSides")).toBe(20);
   });
 
-  it("starts in editing mode", () => {
+  it("shows all sections on initial render", () => {
     const wrapper = mount(GenerationWidget);
     expect(wrapper.find(".input-section").exists()).toBe(true);
-    expect(wrapper.find(".generation-view").exists()).toBe(false);
-  });
-
-  it("switches to generation view on submit", async () => {
-    const wrapper = mount(GenerationWidget, {
-      props: { initialText: "see spot run" },
-    });
-    await wrapper.find(".submit-button").trigger("click");
-    expect(wrapper.find(".input-section").exists()).toBe(false);
     expect(wrapper.find(".generation-view").exists()).toBe(true);
+    expect(wrapper.find(".tokens-section").exists()).toBe(true);
+    expect(wrapper.find(".grid-section").exists()).toBe(true);
   });
 
-  it("creates grid with vocabulary", async () => {
+  it("creates grid with vocabulary", () => {
     const wrapper = mount(GenerationWidget, {
       props: { initialText: "see spot run" },
     });
-    await wrapper.find(".submit-button").trigger("click");
     const headers = wrapper.findAll(".generation-grid th code");
     expect(headers.length).toBe(3);
   });
 
-  it("shows output section after starting", async () => {
+  it("shows output section", () => {
     const wrapper = mount(GenerationWidget, {
       props: { initialText: "see spot" },
     });
-    await wrapper.find(".submit-button").trigger("click");
     expect(wrapper.find(".output-section").exists()).toBe(true);
   });
 
-  it("shows playback controls after starting", async () => {
+  it("shows playback controls", () => {
     const wrapper = mount(GenerationWidget, {
       props: { initialText: "see spot" },
     });
-    await wrapper.find(".submit-button").trigger("click");
     expect(wrapper.find(".playback-controls").exists()).toBe(true);
   });
 
-  it("shows placeholder text when no words generated", async () => {
+  it("shows placeholder text when no words generated", () => {
     const wrapper = mount(GenerationWidget, {
       props: { initialText: "see spot run" },
     });
-    await wrapper.find(".submit-button").trigger("click");
     expect(wrapper.find(".placeholder").exists()).toBe(true);
   });
 
-  it("marks rows as clickable initially", async () => {
+  it("marks rows as clickable initially", () => {
     const wrapper = mount(GenerationWidget, {
       props: { initialText: "see spot run" },
     });
-    await wrapper.find(".submit-button").trigger("click");
     const clickableRows = wrapper.findAll("tr.clickable");
     expect(clickableRows.length).toBeGreaterThan(0);
+  });
+
+  it("displays tokens section with parsed tokens", () => {
+    const wrapper = mount(GenerationWidget, {
+      props: { initialText: "Hello, world!" },
+    });
+    const tokens = wrapper.findAll(".tokens-section .token");
+    expect(tokens.length).toBe(4);
+    expect(tokens.map((t) => t.text())).toEqual(["hello", ",", "world", "!"]);
   });
 });
