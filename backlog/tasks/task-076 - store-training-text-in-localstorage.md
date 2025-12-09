@@ -1,9 +1,10 @@
 ---
 id: task-076
 title: store training text in localstorage
-status: To Do
+status: Done
 assignee: []
-created_date: "2025-12-09 10:03"
+created_date: '2025-12-09 10:03'
+updated_date: '2025-12-09 10:09'
 labels: []
 dependencies: []
 ---
