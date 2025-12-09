@@ -204,27 +204,31 @@ function handleRowClick(word: string) {
   <FullscreenWrapper>
     <div class="lm-widget generation-widget">
       <div class="generation-view">
-        <div class="input-section">
-          <label for="generation-input" class="input-label">Training text:</label>
-          <textarea
-            id="generation-input"
-            v-model="trainingText"
-            class="text-input"
-            rows="2"
-            placeholder="Enter training text..."
-          ></textarea>
+        <div class="widget-section">
+          <div class="section-header">Training text</div>
+          <div class="section-content">
+            <textarea
+              id="generation-input"
+              v-model="trainingText"
+              class="text-input"
+              rows="2"
+              placeholder="Enter training text..."
+            ></textarea>
+          </div>
         </div>
 
-        <div class="tokens-section">
-          <span class="section-label">Tokens:</span>
-          <span v-for="(token, i) in tokens" :key="i" class="token">
-            {{ token }}
-          </span>
+        <div class="widget-section">
+          <div class="section-header">Tokens</div>
+          <div class="section-content tokens-content">
+            <span v-for="(token, i) in tokens" :key="i" class="token">
+              {{ token }}
+            </span>
+          </div>
         </div>
 
-        <div class="output-section">
-          <span class="section-label">Generated:</span>
-          <span class="output-text">
+        <div class="widget-section">
+          <div class="section-header">Generated</div>
+          <div class="section-content output-content">
             <span
               v-for="(word, i) in outputWords"
               :key="i"
@@ -234,54 +238,66 @@ function handleRowClick(word: string) {
             <span v-if="outputWords.length === 0" class="placeholder">
               Click a row to select starting word, or press Play
             </span>
-          </span>
+          </div>
         </div>
 
-        <BigramGrid
-          :vocabulary="vocabulary"
-          :get-count="model.getCount"
-          :highlighted-row="currentWord"
-          :is-highlighted-col="isHighlightedCol"
-          :clickable-rows="outputWords.length === 0"
-          :is-row-clickable="(w) => model.hasSuccessors(w)"
-          :is-dead-end="(w) => !model.hasSuccessors(w)"
-          :show-row-indicator="true"
-          @row-click="handleRowClick"
-        />
-
-        <div v-if="currentMappings.length > 0" class="dice-section">
-          <div class="dice-mapping">
-            <span class="section-label">Dice mapping (d{{ diceSides }}):</span>
-            <span
-              v-for="mapping in currentMappings"
-              :key="mapping.word"
-              class="mapping-item"
-              :class="{
-                selected:
-                  currentDiceRoll &&
-                  currentDiceRoll >= mapping.diceRange[0] &&
-                  currentDiceRoll <= mapping.diceRange[1],
-              }"
-            >
-              [{{ mapping.diceRange[0]
-              }}<template
-                v-if="mapping.diceRange[0] !== mapping.diceRange[1]"
-              >–{{ mapping.diceRange[1] }}</template>]→{{ mapping.word }}
-            </span>
+        <div class="widget-section">
+          <div class="section-header">Model grid</div>
+          <div class="section-content">
+            <BigramGrid
+              :vocabulary="vocabulary"
+              :get-count="model.getCount"
+              :highlighted-row="currentWord"
+              :is-highlighted-col="isHighlightedCol"
+              :clickable-rows="outputWords.length === 0"
+              :is-row-clickable="(w) => model.hasSuccessors(w)"
+              :is-dead-end="(w) => !model.hasSuccessors(w)"
+              :show-row-indicator="true"
+              @row-click="handleRowClick"
+            />
           </div>
-          <div class="dice-result">
-            <template v-if="currentDiceRoll !== null">
-              <span class="section-label">Roll:</span>
-              <span class="dice-value" :class="{ rolling: isRolling }">{{
-                currentDiceRoll
-              }}</span>
-              <span v-if="!isRolling">
-                → "<strong>{{
-                  findWordForRoll(currentMappings, currentDiceRoll)
-                }}</strong>"
-              </span>
+        </div>
+
+        <div class="widget-section">
+          <div class="section-header">Dice mapping (d{{ diceSides }})</div>
+          <div class="section-content dice-content">
+            <template v-if="currentMappings.length > 0">
+              <div class="dice-mapping">
+                <span
+                  v-for="mapping in currentMappings"
+                  :key="mapping.word"
+                  class="mapping-item"
+                  :class="{
+                    selected:
+                      currentDiceRoll &&
+                      currentDiceRoll >= mapping.diceRange[0] &&
+                      currentDiceRoll <= mapping.diceRange[1],
+                  }"
+                >
+                  [{{ mapping.diceRange[0]
+                  }}<template
+                    v-if="mapping.diceRange[0] !== mapping.diceRange[1]"
+                  >–{{ mapping.diceRange[1] }}</template>]→{{ mapping.word }}
+                </span>
+              </div>
+              <div class="dice-result">
+                <template v-if="currentDiceRoll !== null">
+                  <span class="result-label">Roll:</span>
+                  <span class="dice-value" :class="{ rolling: isRolling }">{{
+                    currentDiceRoll
+                  }}</span>
+                  <span v-if="!isRolling">
+                    → "<strong>{{
+                      findWordForRoll(currentMappings, currentDiceRoll)
+                    }}</strong>"
+                  </span>
+                </template>
+                <span v-else class="dice-result-placeholder">&nbsp;</span>
+              </div>
             </template>
-            <span v-else class="dice-result-placeholder">&nbsp;</span>
+            <span v-else class="placeholder">
+              Select a starting word to see dice mapping
+            </span>
           </div>
         </div>
 
@@ -310,20 +326,35 @@ function handleRowClick(word: string) {
   background: var(--vp-c-bg-soft);
 }
 
-.input-section {
+.generation-view {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
-.input-label {
+.widget-section {
+  border: 1px solid var(--vp-c-border);
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.section-header {
+  padding: 0.5rem 0.75rem;
+  background: var(--vp-c-bg-alt);
   font-weight: 600;
-  color: var(--vp-c-text-1);
+  font-size: 0.875rem;
+  color: var(--vp-c-text-2);
+  border-bottom: 1px solid var(--vp-c-border);
+}
+
+.section-content {
+  padding: 0.75rem;
+  background: var(--vp-c-bg);
 }
 
 .text-input {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.5rem;
   border: 1px solid var(--vp-c-border);
   border-radius: 0.25rem;
   background: var(--vp-c-bg);
@@ -333,16 +364,9 @@ function handleRowClick(word: string) {
   resize: vertical;
 }
 
-.generation-view {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.tokens-section {
+.tokens-content {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   gap: 0.25rem;
 }
 
@@ -355,25 +379,9 @@ function handleRowClick(word: string) {
   font-size: 0.875rem;
 }
 
-.output-section {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.25rem;
-  padding: 0.75rem;
-  background: var(--vp-c-bg);
-  border-radius: 0.25rem;
-  min-height: 3rem;
-}
-
-.section-label {
-  font-weight: 600;
-  color: var(--vp-c-text-2);
-  margin-right: 0.5rem;
-}
-
-.output-text {
+.output-content {
   font-family: var(--vp-font-family-mono);
+  min-height: 1.5rem;
 }
 
 .output-word {
@@ -390,13 +398,11 @@ function handleRowClick(word: string) {
   font-style: italic;
 }
 
-.dice-section {
+.dice-content {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 0.75rem;
-  background: var(--vp-c-bg);
-  border-radius: 0.25rem;
+  min-height: 3rem;
 }
 
 .dice-mapping {
@@ -426,6 +432,11 @@ function handleRowClick(word: string) {
   align-items: center;
   gap: 0.5rem;
   min-height: 1.75rem;
+}
+
+.result-label {
+  font-weight: 600;
+  color: var(--vp-c-text-2);
 }
 
 .dice-result-placeholder {
