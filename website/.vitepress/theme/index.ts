@@ -6,6 +6,8 @@ import LessonCards from "./components/LessonCards.vue";
 import Prerequisites from "./components/Prerequisites.vue";
 import TrainingWidget from "./components/TrainingWidget.vue";
 import GenerationWidget from "./components/GenerationWidget.vue";
+import BucketTrainingWidget from "./components/BucketTrainingWidget.vue";
+import BucketGenerationWidget from "./components/BucketGenerationWidget.vue";
 import PlaybackControls from "./components/PlaybackControls.vue";
 import FullscreenWrapper from "./components/FullscreenWrapper.vue";
 import "./custom.css";
@@ -19,6 +21,8 @@ export default {
     app.component("Prerequisites", Prerequisites);
     app.component("TrainingWidget", TrainingWidget);
     app.component("GenerationWidget", GenerationWidget);
+    app.component("BucketTrainingWidget", BucketTrainingWidget);
+    app.component("BucketGenerationWidget", BucketGenerationWidget);
     app.component("PlaybackControls", PlaybackControls);
     app.component("FullscreenWrapper", FullscreenWrapper);
   },

@@ -94,6 +94,15 @@ Notice how the randomness comes from physically picking tokens without looking.
 Buckets with more tokens of the same type are more likely to produce that
 token---the "see" bucket always produces `spot` because that's all it contains.
 
+## Try it yourself
+
+Use the interactive widget below to see how bucket generation works
+step-by-step. Click on a bucket to select a starting word, then press Play or
+Step to watch tokens being picked randomly and text being generated. You can
+also edit the training text to create your own model.
+
+<BucketGenerationWidget />
+
 ## Instructor notes
 
 ### Discussion questions

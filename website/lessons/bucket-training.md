@@ -110,6 +110,14 @@ Notice that the "see" bucket contains two `spot` tokens because "spot" followed
 "see" twice in the original text. This captures the same information as a grid
 with tally marks, but in a physical form you can touch and manipulate.
 
+## Try it yourself
+
+Use the interactive widget below to see how the bucket training process works
+step-by-step. Enter your own text or use the example, then press Play or Step to
+watch the buckets being filled.
+
+<BucketTrainingWidget />
+
 ## Instructor notes
 
 ### Discussion questions
