@@ -1,7 +1,6 @@
 <script setup lang="ts">
 /* eslint-disable no-undef -- browser globals used in client-side component */
-import { ref, computed, watch } from "vue";
-import { usePlayback } from "../composables/usePlayback";
+import { ref, computed, watch, onUnmounted } from "vue";
 import { tally } from "../utils/tally";
 import {
   createDiceMapping,
@@ -85,27 +84,29 @@ const currentRowOptions = computed(() => {
     .map(([word, count]) => ({ word, count }));
 });
 
-const totalSteps = ref(20);
+const isPlaying = ref(false);
+const isComplete = ref(false);
+let playInterval: ReturnType<typeof setInterval> | null = null;
 
-const {
-  currentStep,
-  isPlaying,
-  isComplete,
-  play,
-  pause,
-  step: playbackStep,
-  reset: playbackReset,
-  setTotalSteps,
-} = usePlayback(totalSteps.value);
+function play() {
+  isPlaying.value = true;
+}
 
-watch(totalSteps, (n) => setTotalSteps(n));
+function pause() {
+  isPlaying.value = false;
+}
+
+onUnmounted(() => {
+  if (playInterval) clearInterval(playInterval);
+});
 
 function reset() {
   outputWords.value = [];
   currentDiceRoll.value = null;
   currentMappings.value = [];
   phase.value = "selecting";
-  playbackReset();
+  isPlaying.value = false;
+  isComplete.value = false;
 }
 
 function selectStartWord(word: string) {
@@ -159,15 +160,10 @@ async function doStep() {
     if (nextWord) {
       phase.value = "writing";
       outputWords.value = [...outputWords.value, nextWord];
-      playbackStep();
 
       await new Promise((resolve) => setTimeout(resolve, 800));
 
-      if (currentStep.value >= totalSteps.value) {
-        phase.value = "selecting";
-        currentMappings.value = [];
-        currentDiceRoll.value = null;
-      } else if (rowHasSuccessors.value.get(nextWord)) {
+      if (rowHasSuccessors.value.get(nextWord)) {
         phase.value = "showing-options";
         currentDiceRoll.value = null;
         currentMappings.value = createDiceMapping(
@@ -180,6 +176,8 @@ async function doStep() {
         phase.value = "selecting";
         currentMappings.value = [];
         currentDiceRoll.value = null;
+        isComplete.value = true;
+        isPlaying.value = false;
       }
     }
     return;
@@ -205,8 +203,8 @@ function handlePlay() {
 }
 
 watch(isPlaying, async (playing) => {
-  if (playing && !isComplete.value) {
-    while (isPlaying.value && !isComplete.value) {
+  if (playing) {
+    while (isPlaying.value) {
       await doStep();
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
@@ -362,8 +360,9 @@ function isHighlightedCol(word: string): boolean {
         <PlaybackControls
           :is-playing="isPlaying"
           :is-complete="isComplete"
-          :current-step="currentStep"
-          :total-steps="totalSteps"
+          :current-step="0"
+          :total-steps="0"
+          :show-step-counter="false"
           @play="handlePlay"
           @pause="pause"
           @step="doStep"
