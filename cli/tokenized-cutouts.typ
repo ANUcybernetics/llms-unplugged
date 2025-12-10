@@ -26,21 +26,30 @@
 #let tokens = json_data.tokens
 #let doc_metadata = json_data.metadata
 
-// Function to render a single token cell (no horizontal borders)
-#let token-cell(token, is_last: false, height: auto) = {
-  let is_punct = token.text == "." or token.text == ","
-  let text_content = if is_punct {
-    text(size: 1.25em, weight: "bold", overline(
-      offset: -0.2em,
-      stroke: 2pt + black,
-      token.text,
+// Helper to style punctuation with overline
+// When used in corner labels, pass the fill colour to match the stroke
+#let style-punct(t, stroke_color: black, large: false) = {
+  let is_punct = t == "." or t == ","
+  if is_punct {
+    let size_factor = if large { 1.25em } else { 1em }
+    text(size: size_factor, weight: "bold", overline(
+      offset: -0.25em,
+      stroke: 0.05em + stroke_color,
+      t,
     ))
   } else {
-    text(token.text)
+    text(t)
   }
+}
+
+// Function to render a single token cell (no horizontal borders)
+#let token-cell(token, prev_text: none, is_last: false, height: auto) = {
+  let text_content = style-punct(token.text, large: true)
 
   // Right border unless last in row
   let right_stroke = if is_last { none } else { border_width + border_color }
+
+  let index_fill = if token.keep { luma(160) } else { luma(200) }
 
   let cell_content = if token.keep {
     // Kept token: black text
@@ -49,8 +58,16 @@
       stroke: (left: none, right: right_stroke, top: none, bottom: none),
       inset: (x: cell_padding_x),
       [
-        #place(top + right, dx: 0.1em, dy: 0.05em)[
-          #text(size: index_size, fill: luma(160))[#token.index]
+        #if prev_text != none {
+          place(top + left, dx: -0.1em, dy: 0.05em)[
+            #text(size: index_size, fill: luma(160))[#style-punct(
+              prev_text,
+              stroke_color: luma(160),
+            )]
+          ]
+        }
+        #place(bottom + right, dx: 0.1em, dy: -0.05em)[
+          #text(size: index_size, fill: index_fill)[#token.index]
         ]
         #align(horizon)[#text_content]
       ],
@@ -67,8 +84,16 @@
       stroke: (left: none, right: right_stroke_dashed, top: none, bottom: none),
       inset: (x: cell_padding_x),
       [
-        #place(top + right, dx: 0.1em, dy: 0.05em)[
-          #text(size: index_size, fill: luma(200))[#token.index]
+        #if prev_text != none {
+          place(top + left, dx: -0.1em, dy: 0.05em)[
+            #text(size: index_size, fill: luma(200))[#style-punct(
+              prev_text,
+              stroke_color: luma(200),
+            )]
+          ]
+        }
+        #place(bottom + right, dx: 0.1em, dy: -0.05em)[
+          #text(size: index_size, fill: index_fill)[#token.index]
         ]
         #align(horizon)[#text(fill: luma(160))[#text_content]]
       ],
@@ -96,19 +121,27 @@
   let current_width = 0pt
 
   // Measure and distribute tokens into rows
+  let prev_text = none
   for token in tokens {
-    let cell = token-cell(token, height: cell_height)
+    let cell = token-cell(token, prev_text: prev_text, height: cell_height)
     let cell_size = measure(cell)
 
     if current_width + cell_size.width > max_width and current_row.len() > 0 {
       // Start new row
       rows.push(current_row)
-      current_row = ((token: token, width: cell_size.width),)
+      current_row = (
+        (token: token, prev_text: prev_text, width: cell_size.width),
+      )
       current_width = cell_size.width
     } else {
-      current_row.push((token: token, width: cell_size.width))
+      current_row.push((
+        token: token,
+        prev_text: prev_text,
+        width: cell_size.width,
+      ))
       current_width += cell_size.width
     }
+    prev_text = token.text
   }
 
   // Don't forget the last row
@@ -124,7 +157,12 @@
     // Render tokens in this row
     box(width: 100%)[
       #for (i, item) in row.enumerate() {
-        token-cell(item.token, is_last: i == row.len() - 1, height: cell_height)
+        token-cell(
+          item.token,
+          prev_text: item.prev_text,
+          is_last: i == row.len() - 1,
+          height: cell_height,
+        )
       }
     ]
   }
