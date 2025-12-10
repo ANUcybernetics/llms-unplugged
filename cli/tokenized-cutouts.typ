@@ -2,12 +2,12 @@
 // Generates rows of tokens with continuous horizontal lines for easy cutting
 
 // Configuration
-#let font_size = 36pt
-#let index_size = 8pt
-#let cell_padding_x = 6pt
-#let cell_padding_top = 6pt
-#let cell_padding_bottom = 12pt // Extra space for descenders
-#let border_width = 0.5pt
+#let font_size = 36pt // Master size - change this to scale everything
+#let index_size = 0.2em
+#let cell_padding_x = 0.15em
+#let cell_padding_top = 0.15em
+#let cell_padding_bottom = 0.35em // Extra space for descenders
+#let border_width = 0.5pt // Keep absolute for crisp lines
 #let border_color = luma(180)
 
 // Get configuration from sys.inputs
@@ -53,7 +53,7 @@
       ),
       baseline: 0pt,
       [
-        #place(top + right, dx: cell_padding_x, dy: -index_size - 2pt)[
+        #place(top + right, dx: cell_padding_x, dy: -index_size - 0.05em)[
           #text(size: index_size, fill: luma(160))[#token.index]
         ]
         #text_content
@@ -75,7 +75,7 @@
       ),
       baseline: 0pt,
       [
-        #place(top + right, dx: cell_padding_x, dy: -index_size - 2pt)[
+        #place(top + right, dx: cell_padding_x, dy: -index_size - 0.05em)[
           #text(size: index_size, fill: luma(200))[#token.index]
         ]
         #text(fill: luma(160))[#text_content]
@@ -89,7 +89,7 @@
 // We need to use a table-like approach with full-width rows
 // Each row has a top border, and we add a bottom border after the last row
 
-#let row_height = font_size + cell_padding_top + cell_padding_bottom + 8pt
+#let row_height = font_size + cell_padding_top + cell_padding_bottom + 0.2em
 
 // Use block layout with manual line breaks to create rows
 #set par(leading: 0pt, spacing: 0pt)
