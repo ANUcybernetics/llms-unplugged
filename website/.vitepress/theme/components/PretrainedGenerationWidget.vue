@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /* eslint-disable no-undef -- browser globals used in client-side component */
-import { ref, computed, watch, onUnmounted } from "vue";
+import { ref, computed, watch } from "vue";
 import { useTrainingText } from "../composables/useTrainingText";
 import { parseTokens, getVocabulary, buildBigramModel } from "../utils/tokens";
 import { rollDice } from "../utils/diceMapping";
@@ -40,6 +40,10 @@ const currentWord = computed(() => {
   if (outputWords.value.length === 0) return null;
   return outputWords.value[outputWords.value.length - 1];
 });
+
+const validStarters = computed(() =>
+  vocabulary.value.filter((w) => model.value.hasSuccessors(w))
+);
 
 const modelEntries = computed((): ModelEntry[] => {
   const entries: ModelEntry[] = [];
@@ -112,7 +116,6 @@ function findWordForRoll(entry: ModelEntry, roll: number): string | null {
 
 const isPlaying = ref(false);
 const isComplete = ref(false);
-let playInterval: ReturnType<typeof setInterval> | null = null;
 
 function play() {
   isPlaying.value = true;
@@ -121,10 +124,6 @@ function play() {
 function pause() {
   isPlaying.value = false;
 }
-
-onUnmounted(() => {
-  if (playInterval) clearInterval(playInterval);
-});
 
 function reset() {
   outputWords.value = [];
@@ -135,6 +134,7 @@ function reset() {
 }
 
 function selectStartWord(word: string) {
+  if (outputWords.value.length > 0) return;
   if (!model.value.hasSuccessors(word)) return;
   outputWords.value = [word];
   phase.value = "showing-entry";
@@ -166,15 +166,10 @@ async function animateDiceRoll(entry: ModelEntry): Promise<number> {
 
 async function doStep() {
   if (phase.value === "selecting") {
-    if (outputWords.value.length === 0) {
-      const validStarters = vocabulary.value.filter((w) =>
-        model.value.hasSuccessors(w),
-      );
-      if (validStarters.length > 0) {
-        const randomStart =
-          validStarters[Math.floor(Math.random() * validStarters.length)];
-        selectStartWord(randomStart);
-      }
+    if (outputWords.value.length === 0 && validStarters.value.length > 0) {
+      const randomStart =
+        validStarters.value[Math.floor(Math.random() * validStarters.value.length)];
+      selectStartWord(randomStart);
     }
     return;
   }
@@ -198,12 +193,10 @@ async function doStep() {
     const entry = currentEntry.value;
     if (!entry) return;
 
-    let nextWord: string | null;
-    if (entry.followers.length === 1) {
-      nextWord = entry.followers[0].word;
-    } else {
-      nextWord = findWordForRoll(entry, currentDiceRoll.value!);
-    }
+    const nextWord =
+      entry.followers.length === 1
+        ? entry.followers[0].word
+        : findWordForRoll(entry, currentDiceRoll.value!);
 
     if (nextWord) {
       phase.value = "writing";
@@ -230,15 +223,10 @@ async function doStep() {
 }
 
 function handlePlay() {
-  if (outputWords.value.length === 0) {
-    const validStarters = vocabulary.value.filter((w) =>
-      model.value.hasSuccessors(w),
-    );
-    if (validStarters.length > 0) {
-      const randomStart =
-        validStarters[Math.floor(Math.random() * validStarters.length)];
-      selectStartWord(randomStart);
-    }
+  if (outputWords.value.length === 0 && validStarters.value.length > 0) {
+    const randomStart =
+      validStarters.value[Math.floor(Math.random() * validStarters.value.length)];
+    selectStartWord(randomStart);
   }
   play();
 }
@@ -253,9 +241,7 @@ watch(isPlaying, async (playing) => {
 });
 
 function handleEntryClick(prefix: string) {
-  if (outputWords.value.length === 0) {
-    selectStartWord(prefix);
-  }
+  selectStartWord(prefix);
 }
 
 function isPunctuation(token: string): boolean {
@@ -267,13 +253,7 @@ function isSelectedFollower(entry: ModelEntry, follower: EntryFollower): boolean
   if (entry.prefix !== currentWord.value) return false;
   if (entry.followers.length === 1) return true;
   if (currentDiceRoll.value === null) return false;
-
-  for (const f of entry.followers) {
-    if (currentDiceRoll.value <= f.threshold) {
-      return f.word === follower.word && f.threshold === follower.threshold;
-    }
-  }
-  return false;
+  return follower.word === findWordForRoll(entry, currentDiceRoll.value);
 }
 </script>
 
