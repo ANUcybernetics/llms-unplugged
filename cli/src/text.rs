@@ -225,10 +225,22 @@ fn default_case_allowlist() -> HashMap<String, String> {
     map
 }
 
+/// Check if a string is a Roman numeral we want to filter out.
+///
+/// We use an explicit blocklist rather than proper Roman numeral validation because
+/// some valid Roman numerals are common English words (e.g., "mix" = 1009, "dix" = 509).
+/// In practice, Roman numerals in literary texts are chapter/section numbers which
+/// rarely exceed 50, so we just enumerate the ones we want to filter.
 fn is_roman_numeral(s: &str) -> bool {
-    !s.is_empty()
-        && s.chars()
-            .all(|c| matches!(c, 'i' | 'v' | 'x' | 'l' | 'c' | 'd' | 'm'))
+    const BLOCKLIST: &[&str] = &[
+        "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "xi", "xii", "xiii", "xiv", "xv",
+        "xvi", "xvii", "xviii", "xix", "xx", "xxi", "xxii", "xxiii", "xxiv", "xxv", "xxvi",
+        "xxvii", "xxviii", "xxix", "xxx", "xxxi", "xxxii", "xxxiii", "xxxiv", "xxxv", "xxxvi",
+        "xxxvii", "xxxviii", "xxxix", "xl", "xli", "xlii", "xliii", "xliv", "xlv", "xlvi", "xlvii",
+        "xlviii", "xlix", "l",
+    ];
+    let lower = s.to_lowercase();
+    BLOCKLIST.contains(&lower.as_str())
 }
 
 #[cfg(test)]
@@ -367,6 +379,77 @@ mod tests {
                 text: "word".to_string(),
                 keep: true
             }
+        );
+    }
+
+    #[test]
+    fn roman_numeral_blocklist_filters_common_numerals() {
+        assert!(is_roman_numeral("ii"));
+        assert!(is_roman_numeral("iii"));
+        assert!(is_roman_numeral("iv"));
+        assert!(is_roman_numeral("v"));
+        assert!(is_roman_numeral("ix"));
+        assert!(is_roman_numeral("x"));
+        assert!(is_roman_numeral("xii"));
+        assert!(is_roman_numeral("xx"));
+        assert!(is_roman_numeral("xlii"));
+        assert!(is_roman_numeral("l"));
+    }
+
+    #[test]
+    fn roman_numeral_blocklist_case_insensitive() {
+        assert!(is_roman_numeral("IV"));
+        assert!(is_roman_numeral("XII"));
+        assert!(is_roman_numeral("Xlii"));
+        assert!(is_roman_numeral("XXX"));
+    }
+
+    #[test]
+    fn roman_numeral_blocklist_preserves_english_words() {
+        assert!(!is_roman_numeral("did"));
+        assert!(!is_roman_numeral("vivid"));
+        assert!(!is_roman_numeral("livid"));
+        assert!(!is_roman_numeral("mid"));
+        assert!(!is_roman_numeral("lid"));
+        assert!(!is_roman_numeral("dim"));
+        assert!(!is_roman_numeral("mill"));
+        assert!(!is_roman_numeral("mild"));
+        assert!(!is_roman_numeral("vim"));
+        assert!(!is_roman_numeral("civic"));
+        assert!(!is_roman_numeral("mimic"));
+        assert!(!is_roman_numeral("mix"));
+        assert!(!is_roman_numeral("civil"));
+        assert!(!is_roman_numeral("victim"));
+        assert!(!is_roman_numeral("limit"));
+        assert!(!is_roman_numeral("climax"));
+        assert!(!is_roman_numeral("maxim"));
+        assert!(!is_roman_numeral("diva"));
+    }
+
+    #[test]
+    fn roman_numeral_blocklist_ignores_large_numerals() {
+        assert!(!is_roman_numeral("c"));
+        assert!(!is_roman_numeral("d"));
+        assert!(!is_roman_numeral("m"));
+        assert!(!is_roman_numeral("xcix"));
+        assert!(!is_roman_numeral("mcmxciv"));
+    }
+
+    #[test]
+    fn normalizer_preserves_roman_lookalike_words() {
+        let tokens = normalizer().normalize_line("I did see a vivid civic display.");
+        assert_eq!(
+            tokens,
+            vec!["I", "did", "see", "a", "vivid", "civic", "display", "."]
+        );
+    }
+
+    #[test]
+    fn normalizer_still_filters_real_roman_numerals() {
+        let tokens = normalizer().normalize_line("Chapter IV and section XII are done.");
+        assert_eq!(
+            tokens,
+            vec!["chapter", "and", "section", "are", "done", "."]
         );
     }
 }
