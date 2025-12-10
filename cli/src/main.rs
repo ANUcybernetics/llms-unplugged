@@ -1,7 +1,7 @@
 use clap::{Args, Parser, Subcommand};
 use llms_unplugged::{
-    Metadata, NGramCounter, ProcessingStats, WordFollowEntry, render_bigram_tsv, save_to_json,
-    split_entries_into_books,
+    CutoutsMetadata, Metadata, NGramCounter, ProcessingStats, RawToken, WordFollowEntry,
+    process_file_for_cutouts, render_bigram_tsv, save_to_json, split_entries_into_books,
 };
 use std::fs;
 use std::io;
@@ -24,6 +24,8 @@ enum Commands {
     Pdf(PdfArgs),
     /// Export a bigram TSV matrix for spreadsheets.
     Tsv(TsvArgs),
+    /// Generate printable token cutouts for bucket training.
+    Cutouts(CutoutsArgs),
 }
 
 #[derive(Args, Debug, Clone)]
@@ -127,12 +129,36 @@ struct TsvArgs {
     punctuation: String,
 }
 
+#[derive(Args, Debug, Clone)]
+struct CutoutsArgs {
+    /// Input text file to process
+    #[arg(short = 'i', long = "input", value_name = "INPUT")]
+    input: PathBuf,
+
+    /// Output directory for generated files (default: current directory)
+    #[arg(short, long, default_value = ".")]
+    output: PathBuf,
+
+    /// Paper size for PDF (default: a4)
+    #[arg(long, default_value = "a4")]
+    paper_size: String,
+
+    /// Punctuation characters to preserve as separate tokens (default: ",.")
+    #[arg(short = 'p', long = "punctuation", default_value = ",.")]
+    punctuation: String,
+
+    /// Only generate JSON; skip Typst PDF compilation
+    #[arg(long)]
+    json_only: bool,
+}
+
 fn main() {
     let cli = Cli::parse();
     let result = match &cli.command {
         Commands::Build(args) => run_build_command(args),
         Commands::Pdf(args) => run_pdf_command(args),
         Commands::Tsv(args) => run_tsv_command(args),
+        Commands::Cutouts(args) => run_cutouts_command(args),
     };
 
     match result {
@@ -213,6 +239,91 @@ fn run_build_command(args: &BuildArgs) -> Result<(), CliError> {
 
     let outcome = build_model(&config)?;
     print_summary(&outcome.stats, outcome.metadata.as_ref(), args.n, args.raw);
+    Ok(())
+}
+
+fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
+    let punctuation: Vec<char> = args.punctuation.chars().collect();
+    let (tokens, metadata) =
+        process_file_for_cutouts(&args.input, punctuation).map_err(CliError::Processing)?;
+
+    fs::create_dir_all(&args.output).map_err(CliError::Processing)?;
+
+    let json_path = args.output.join("cutouts.json");
+    save_cutouts_json(&tokens, &metadata, &json_path)?;
+
+    println!("Processed '{}' by {}", metadata.title, metadata.author);
+    println!(
+        "Total tokens: {} ({} kept, {} discarded)",
+        metadata.total_tokens,
+        metadata.kept_tokens,
+        metadata.total_tokens - metadata.kept_tokens
+    );
+    println!("Wrote JSON to {}", json_path.display());
+
+    if args.json_only {
+        return Ok(());
+    }
+
+    let typst_bin = typst_command_path();
+    let template_path = Path::new(env!("CARGO_MANIFEST_DIR")).join("tokenized-cutouts.typ");
+
+    if !template_path.exists() {
+        return Err(CliError::Typst(format!(
+            "Typst template not found at {}",
+            template_path.display()
+        )));
+    }
+
+    let pdf_path = args.output.join("cutouts.pdf");
+    let json_path_abs = fs::canonicalize(&json_path).unwrap_or(json_path.clone());
+
+    let mut typst_cmd = Command::new(&typst_bin);
+    typst_cmd.arg("compile");
+    typst_cmd.arg("--root");
+    typst_cmd.arg("/");
+    typst_cmd.arg("--input");
+    typst_cmd.arg(format!("paper_size={}", args.paper_size));
+    typst_cmd.arg("--input");
+    typst_cmd.arg(format!("json_path={}", json_path_abs.display()));
+    typst_cmd.arg(&template_path);
+    typst_cmd.arg(&pdf_path);
+
+    let output = typst_cmd.output().map_err(|e| {
+        if e.kind() == io::ErrorKind::NotFound {
+            CliError::Typst(format!(
+                "Typst binary not found at '{}'. Install typst or set TYPST_BIN to the binary path.",
+                typst_bin.display()
+            ))
+        } else {
+            CliError::Typst(format!("Failed to run typst: {}", e))
+        }
+    })?;
+
+    if !output.status.success() {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        return Err(CliError::Typst(format!("Typst compile failed: {}", stderr)));
+    }
+
+    println!("Wrote PDF to {}", pdf_path.display());
+
+    Ok(())
+}
+
+fn save_cutouts_json(
+    tokens: &[RawToken],
+    metadata: &CutoutsMetadata,
+    path: &Path,
+) -> Result<(), CliError> {
+    let output = serde_json::json!({
+        "metadata": metadata,
+        "tokens": tokens,
+    });
+
+    let file = fs::File::create(path).map_err(CliError::Processing)?;
+    serde_json::to_writer_pretty(file, &output)
+        .map_err(|e| CliError::Processing(io::Error::new(io::ErrorKind::Other, e)))?;
+
     Ok(())
 }
 

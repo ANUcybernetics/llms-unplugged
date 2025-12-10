@@ -1,4 +1,14 @@
+use serde::Serialize;
 use std::collections::{HashMap, HashSet};
+
+/// A raw token from the input text, before filtering.
+/// Used for bucket training cutouts where we show all tokens but mark some as discarded.
+#[derive(Debug, Clone, Serialize, PartialEq)]
+pub struct RawToken {
+    pub index: usize,
+    pub text: String,
+    pub keep: bool,
+}
 
 /// Configuration for the tokenizer/normalizer.
 /// Punctuation is handled as dedicated tokens; case exceptions are handled here too.
@@ -63,6 +73,87 @@ impl Normalizer {
         }
 
         tokens
+    }
+
+    /// Tokenize a line returning raw tokens with keep/discard status.
+    /// Used for bucket training cutouts where all tokens are shown.
+    /// Unlike normalize_line, this preserves digits in tokens so we can show them as discarded.
+    pub fn tokenize_line_raw(&self, line: &str, start_index: usize) -> Vec<RawToken> {
+        let mut tokens = Vec::new();
+        let mut current = String::new();
+        let mut index = start_index;
+
+        for c in line.chars() {
+            let normalized_char = normalize_apostrophe(c);
+
+            if self.config.punctuation.contains(&normalized_char) {
+                if !current.is_empty() {
+                    if let Some(token) = self.make_raw_token(&current, index) {
+                        tokens.push(token);
+                        index += 1;
+                    }
+                    current.clear();
+                }
+                tokens.push(RawToken {
+                    index,
+                    text: normalized_char.to_string(),
+                    keep: true,
+                });
+                index += 1;
+            } else if normalized_char.is_ascii_alphanumeric() || normalized_char == '\'' {
+                // Include digits (unlike normalize_line) so we can show them as discarded
+                current.push(normalized_char);
+            } else if !current.is_empty() {
+                if let Some(token) = self.make_raw_token(&current, index) {
+                    tokens.push(token);
+                    index += 1;
+                }
+                current.clear();
+            }
+        }
+
+        if !current.is_empty() {
+            if let Some(token) = self.make_raw_token(&current, index) {
+                tokens.push(token);
+            }
+        }
+
+        tokens
+    }
+
+    fn make_raw_token(&self, token: &str, index: usize) -> Option<RawToken> {
+        let mut word = token.trim_start_matches('\'').to_string();
+
+        while word.ends_with('\'') && !looks_like_contraction(&word) {
+            word.pop();
+        }
+
+        if word.is_empty() {
+            return None;
+        }
+
+        let starts_with_digit = word
+            .chars()
+            .next()
+            .map(|c| c.is_ascii_digit())
+            .unwrap_or(false);
+        let lower = word.to_lowercase();
+        let is_endoftext = lower == "<|endoftext|>";
+        let is_filtered_roman = lower != "i" && is_roman_numeral(&lower);
+
+        let keep = !starts_with_digit && !is_endoftext && !is_filtered_roman;
+
+        let text = if keep {
+            self.config
+                .case_allowlist
+                .get(&lower)
+                .cloned()
+                .unwrap_or(lower)
+        } else {
+            word
+        };
+
+        Some(RawToken { index, text, keep })
     }
 
     fn normalize_word_token(&self, token: &str) -> Option<String> {
@@ -191,6 +282,91 @@ mod tests {
         assert_eq!(
             tokens,
             vec!["hello", ",", "world", ".", "how", "are", "you"]
+        );
+    }
+
+    #[test]
+    fn raw_tokens_include_all_with_keep_status() {
+        let tokens = normalizer().tokenize_line_raw("Chapter IV is good.", 1);
+        assert_eq!(tokens.len(), 5);
+        assert_eq!(
+            tokens[0],
+            RawToken {
+                index: 1,
+                text: "chapter".to_string(),
+                keep: true
+            }
+        );
+        assert_eq!(
+            tokens[1],
+            RawToken {
+                index: 2,
+                text: "IV".to_string(),
+                keep: false
+            }
+        ); // roman numeral
+        assert_eq!(
+            tokens[2],
+            RawToken {
+                index: 3,
+                text: "is".to_string(),
+                keep: true
+            }
+        );
+        assert_eq!(
+            tokens[3],
+            RawToken {
+                index: 4,
+                text: "good".to_string(),
+                keep: true
+            }
+        );
+        assert_eq!(
+            tokens[4],
+            RawToken {
+                index: 5,
+                text: ".".to_string(),
+                keep: true
+            }
+        );
+    }
+
+    #[test]
+    fn raw_tokens_index_is_1_based_and_continuous() {
+        let tokens = normalizer().tokenize_line_raw("one two three", 1);
+        assert_eq!(tokens.len(), 3);
+        assert_eq!(tokens[0].index, 1);
+        assert_eq!(tokens[1].index, 2);
+        assert_eq!(tokens[2].index, 3);
+    }
+
+    #[test]
+    fn raw_tokens_marks_numbers_as_discard() {
+        let tokens = normalizer().tokenize_line_raw("test 123bad word", 1);
+        assert_eq!(tokens.len(), 3);
+        assert_eq!(
+            tokens[0],
+            RawToken {
+                index: 1,
+                text: "test".to_string(),
+                keep: true
+            }
+        );
+        assert_eq!(
+            tokens[1],
+            RawToken {
+                index: 2,
+                text: "123bad".to_string(),
+                keep: false
+            }
+        );
+        assert_eq!(
+            tokens[2],
+            RawToken {
+                index: 3,
+                text: "word".to_string(),
+                keep: true
+            }
         );
     }
 }

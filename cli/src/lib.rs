@@ -6,6 +6,7 @@ use std::path::Path;
 
 mod text;
 
+pub use text::RawToken;
 use text::{Normalizer, NormalizerConfig};
 
 /// Helper function to get model type string (e.g., "bigram", "trigram")
@@ -270,6 +271,100 @@ pub fn process_file<P: AsRef<Path>>(
     let metadata = counter.get_metadata().cloned();
 
     Ok((entries, stats, metadata))
+}
+
+/// Metadata for cutouts output
+#[derive(Debug, Clone, Serialize)]
+pub struct CutoutsMetadata {
+    pub title: String,
+    pub author: String,
+    pub total_tokens: usize,
+    pub kept_tokens: usize,
+}
+
+/// Processes a text file and returns raw tokens for bucket training cutouts
+pub fn process_file_for_cutouts<P: AsRef<Path>>(
+    path: P,
+    punctuation: Vec<char>,
+) -> io::Result<(Vec<RawToken>, CutoutsMetadata)> {
+    use std::io::{BufRead, BufReader};
+
+    let file = std::fs::File::open(&path)?;
+    let mut reader = BufReader::new(file);
+
+    let mut line = String::new();
+    if reader.read_line(&mut line)? == 0 {
+        return Err(io::Error::new(
+            io::ErrorKind::InvalidData,
+            "Input file is empty; expected YAML frontmatter.",
+        ));
+    }
+
+    if line.trim() != "---" {
+        return Err(io::Error::new(
+            io::ErrorKind::InvalidData,
+            "Input must start with '---' followed by YAML frontmatter.",
+        ));
+    }
+
+    let mut frontmatter_raw = String::new();
+    loop {
+        line.clear();
+        let bytes = reader.read_line(&mut line)?;
+        if bytes == 0 {
+            return Err(io::Error::new(
+                io::ErrorKind::InvalidData,
+                "Reached end of file before closing frontmatter delimiter '---'.",
+            ));
+        }
+
+        if line.trim() == "---" {
+            break;
+        }
+
+        frontmatter_raw.push_str(&line);
+    }
+
+    let yaml: serde_yaml::Value = serde_yaml::from_str(&frontmatter_raw).map_err(|e| {
+        io::Error::new(
+            io::ErrorKind::InvalidData,
+            format!("Invalid YAML frontmatter: {e}"),
+        )
+    })?;
+
+    let title = yaml
+        .get("title")
+        .and_then(|v| v.as_str())
+        .unwrap_or("Untitled")
+        .to_string();
+    let author = yaml
+        .get("author")
+        .and_then(|v| v.as_str())
+        .unwrap_or("Unknown")
+        .to_string();
+
+    let normalizer = Normalizer::new(NormalizerConfig::new(punctuation));
+    let mut tokens = Vec::new();
+    let mut index = 1usize;
+
+    for line_result in reader.lines() {
+        let line_tokens = normalizer.tokenize_line_raw(&line_result?, index);
+        if let Some(last) = line_tokens.last() {
+            index = last.index + 1;
+        }
+        tokens.extend(line_tokens);
+    }
+
+    let kept_tokens = tokens.iter().filter(|t| t.keep).count();
+
+    let metadata = CutoutsMetadata {
+        title,
+        author,
+        total_tokens: tokens.len(),
+        kept_tokens,
+    };
+
+    Ok((tokens, metadata))
 }
 
 fn parse_frontmatter(frontmatter_raw: &str, n: usize) -> io::Result<Metadata> {
