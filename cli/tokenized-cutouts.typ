@@ -37,7 +37,7 @@
         stroke: 0.5pt + black,
         radius: 2pt,
         inset: (x: 0.15em, y: 0.05em),
-        text(token.text, weight: "bold", baseline: -0.15em),
+        text(token.text, weight: "bold"),
       ),
     )
   } else {
@@ -58,7 +58,7 @@
       ),
       baseline: 0pt,
       [
-        #place(top + right, dx: -2pt, dy: 2pt)[
+        #place(top + right, dx: cell_padding_x, dy: -index_size - 2pt)[
           #text(size: index_size, fill: luma(160))[#token.index]
         ]
         #text_content
@@ -80,7 +80,7 @@
       ),
       baseline: 0pt,
       [
-        #place(top + right, dx: -2pt, dy: 2pt)[
+        #place(top + right, dx: cell_padding_x, dy: -index_size - 2pt)[
           #text(size: index_size, fill: luma(200))[#token.index]
         ]
         #text(fill: luma(160))[#text_content]
