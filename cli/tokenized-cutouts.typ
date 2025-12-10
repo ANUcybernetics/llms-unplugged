@@ -30,15 +30,13 @@
 #let token-cell(token, is_last: false) = {
   let is_punct = token.text == "." or token.text == ","
   let text_content = if is_punct {
-    // Punctuation in a small box to make it more visible
+    // Punctuation larger and vertically centered with surrounding text
     box(
-      rect(
-        fill: none,
-        stroke: 0.5pt + black,
-        radius: 2pt,
-        inset: (x: 0.15em, y: 0.05em),
-        text(token.text, weight: "bold"),
-      ),
+      stroke: 0.5pt + black,
+      radius: 2pt,
+      inset: (x: 0.1em, top: -0.4em, bottom: 0.1em),
+      baseline: 35%,
+      text(token.text, size: 1.4em, weight: "bold"),
     )
   } else {
     text(token.text)
