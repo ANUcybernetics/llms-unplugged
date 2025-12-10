@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /* eslint-disable no-undef -- browser globals used in client-side component */
-import { ref, computed, watch, onUnmounted } from "vue";
+import { ref, computed, watch } from "vue";
 import { useTrainingText } from "../composables/useTrainingText";
 import { parseTokens, getVocabulary, buildBigramModel } from "../utils/tokens";
 import PlaybackControls from "./PlaybackControls.vue";
@@ -27,6 +27,10 @@ const currentWord = computed(() => {
   if (outputWords.value.length === 0) return null;
   return outputWords.value[outputWords.value.length - 1];
 });
+
+const validStarters = computed(() =>
+  vocabulary.value.filter((w) => model.value.hasSuccessors(w))
+);
 
 interface BucketContents {
   label: string;
@@ -67,7 +71,6 @@ const currentBucketTokens = computed(() => {
 
 const isPlaying = ref(false);
 const isComplete = ref(false);
-let playInterval: ReturnType<typeof setInterval> | null = null;
 
 function play() {
   isPlaying.value = true;
@@ -76,10 +79,6 @@ function play() {
 function pause() {
   isPlaying.value = false;
 }
-
-onUnmounted(() => {
-  if (playInterval) clearInterval(playInterval);
-});
 
 function reset() {
   outputWords.value = [];
@@ -92,6 +91,7 @@ function reset() {
 }
 
 function selectStartWord(word: string) {
+  if (outputWords.value.length > 0) return;
   if (!model.value.hasSuccessors(word)) return;
   outputWords.value = [word];
   phase.value = "showing-bucket";
@@ -114,15 +114,10 @@ async function animatePicking(): Promise<string> {
 
 async function doStep() {
   if (phase.value === "selecting") {
-    if (outputWords.value.length === 0) {
-      const validStarters = vocabulary.value.filter((w) =>
-        model.value.hasSuccessors(w),
-      );
-      if (validStarters.length > 0) {
-        const randomStart =
-          validStarters[Math.floor(Math.random() * validStarters.length)];
-        selectStartWord(randomStart);
-      }
+    if (outputWords.value.length === 0 && validStarters.value.length > 0) {
+      const randomStart =
+        validStarters.value[Math.floor(Math.random() * validStarters.value.length)];
+      selectStartWord(randomStart);
     }
     return;
   }
@@ -162,15 +157,10 @@ async function doStep() {
 }
 
 function handlePlay() {
-  if (outputWords.value.length === 0) {
-    const validStarters = vocabulary.value.filter((w) =>
-      model.value.hasSuccessors(w),
-    );
-    if (validStarters.length > 0) {
-      const randomStart =
-        validStarters[Math.floor(Math.random() * validStarters.length)];
-      selectStartWord(randomStart);
-    }
+  if (outputWords.value.length === 0 && validStarters.value.length > 0) {
+    const randomStart =
+      validStarters.value[Math.floor(Math.random() * validStarters.value.length)];
+    selectStartWord(randomStart);
   }
   play();
 }
@@ -185,9 +175,7 @@ watch(isPlaying, async (playing) => {
 });
 
 function handleBucketClick(word: string) {
-  if (outputWords.value.length === 0) {
-    selectStartWord(word);
-  }
+  selectStartWord(word);
 }
 
 function isPunctuation(token: string): boolean {
