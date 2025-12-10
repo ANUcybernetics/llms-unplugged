@@ -309,6 +309,7 @@ pub struct CutoutsMetadata {
 pub fn process_file_for_cutouts<P: AsRef<Path>>(
     path: P,
     punctuation: Vec<char>,
+    n: usize,
 ) -> io::Result<(Vec<RawToken>, CutoutsMetadata)> {
     use std::io::{BufRead, BufReader};
 
@@ -393,6 +394,29 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
             index = last.index + 1;
         }
         tokens.extend(line_tokens);
+    }
+
+    // Third pass: populate prefix field for each token (n-1 preceding kept tokens)
+    let prefix_size = n.saturating_sub(1);
+    if prefix_size > 0 {
+        // Collect all kept token texts in order
+        let kept_texts: Vec<String> = tokens
+            .iter()
+            .filter(|t| t.keep)
+            .map(|t| t.text.clone())
+            .collect();
+
+        // Track which kept token index we're at
+        let mut kept_idx = 0usize;
+        for token in &mut tokens {
+            if token.keep {
+                // Get n-1 preceding kept tokens as prefix
+                if kept_idx >= prefix_size {
+                    token.prefix = kept_texts[kept_idx - prefix_size..kept_idx].to_vec();
+                }
+                kept_idx += 1;
+            }
+        }
     }
 
     let kept_tokens = tokens.iter().filter(|t| t.keep).count();
@@ -1571,6 +1595,219 @@ mod tests {
             nasa_entry.prefix[0], "NASA",
             "NASA should remain uppercase when consistent"
         );
+
+        Ok(())
+    }
+
+    // Cutouts n-gram tests
+
+    #[test]
+    fn test_cutouts_bigram_prefixes() -> io::Result<()> {
+        let temp_file = NamedTempFile::new()?;
+        let path = temp_file.path().to_owned();
+
+        {
+            let mut file = File::create(&path)?;
+            writeln!(file, "---")?;
+            writeln!(file, "title: Test Cutouts")?;
+            writeln!(file, "author: Test")?;
+            writeln!(file, "url: https://example.com")?;
+            writeln!(file, "---")?;
+            writeln!(file, "one two three four")?;
+            file.flush()?;
+        }
+
+        let (tokens, metadata) = process_file_for_cutouts(&path, vec![',', '.'], 2)?;
+
+        assert_eq!(metadata.title, "Test Cutouts");
+        assert_eq!(tokens.len(), 4);
+
+        // First token has no prefix (bigram needs 1 preceding token)
+        assert_eq!(tokens[0].text, "one");
+        assert!(tokens[0].prefix.is_empty());
+
+        // Second token has prefix ["one"]
+        assert_eq!(tokens[1].text, "two");
+        assert_eq!(tokens[1].prefix, vec!["one"]);
+
+        // Third token has prefix ["two"]
+        assert_eq!(tokens[2].text, "three");
+        assert_eq!(tokens[2].prefix, vec!["two"]);
+
+        // Fourth token has prefix ["three"]
+        assert_eq!(tokens[3].text, "four");
+        assert_eq!(tokens[3].prefix, vec!["three"]);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_cutouts_trigram_prefixes() -> io::Result<()> {
+        let temp_file = NamedTempFile::new()?;
+        let path = temp_file.path().to_owned();
+
+        {
+            let mut file = File::create(&path)?;
+            writeln!(file, "---")?;
+            writeln!(file, "title: Test Trigram Cutouts")?;
+            writeln!(file, "author: Test")?;
+            writeln!(file, "url: https://example.com")?;
+            writeln!(file, "---")?;
+            writeln!(file, "one two three four five")?;
+            file.flush()?;
+        }
+
+        let (tokens, _metadata) = process_file_for_cutouts(&path, vec![',', '.'], 3)?;
+
+        assert_eq!(tokens.len(), 5);
+
+        // First two tokens have no prefix (trigram needs 2 preceding tokens)
+        assert_eq!(tokens[0].text, "one");
+        assert!(tokens[0].prefix.is_empty());
+
+        assert_eq!(tokens[1].text, "two");
+        assert!(tokens[1].prefix.is_empty());
+
+        // Third token has prefix ["one", "two"]
+        assert_eq!(tokens[2].text, "three");
+        assert_eq!(tokens[2].prefix, vec!["one", "two"]);
+
+        // Fourth token has prefix ["two", "three"]
+        assert_eq!(tokens[3].text, "four");
+        assert_eq!(tokens[3].prefix, vec!["two", "three"]);
+
+        // Fifth token has prefix ["three", "four"]
+        assert_eq!(tokens[4].text, "five");
+        assert_eq!(tokens[4].prefix, vec!["three", "four"]);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_cutouts_fourgram_prefixes() -> io::Result<()> {
+        let temp_file = NamedTempFile::new()?;
+        let path = temp_file.path().to_owned();
+
+        {
+            let mut file = File::create(&path)?;
+            writeln!(file, "---")?;
+            writeln!(file, "title: Test 4-gram Cutouts")?;
+            writeln!(file, "author: Test")?;
+            writeln!(file, "url: https://example.com")?;
+            writeln!(file, "---")?;
+            writeln!(file, "a b c d e f")?;
+            file.flush()?;
+        }
+
+        let (tokens, _metadata) = process_file_for_cutouts(&path, vec![',', '.'], 4)?;
+
+        assert_eq!(tokens.len(), 6);
+
+        // First three tokens have no prefix (4-gram needs 3 preceding tokens)
+        assert!(tokens[0].prefix.is_empty());
+        assert!(tokens[1].prefix.is_empty());
+        assert!(tokens[2].prefix.is_empty());
+
+        // Fourth token has prefix ["a", "b", "c"]
+        assert_eq!(tokens[3].text, "d");
+        assert_eq!(tokens[3].prefix, vec!["a", "b", "c"]);
+
+        // Fifth token has prefix ["b", "c", "d"]
+        assert_eq!(tokens[4].text, "e");
+        assert_eq!(tokens[4].prefix, vec!["b", "c", "d"]);
+
+        // Sixth token has prefix ["c", "d", "e"]
+        assert_eq!(tokens[5].text, "f");
+        assert_eq!(tokens[5].prefix, vec!["c", "d", "e"]);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_cutouts_prefix_skips_discarded_tokens() -> io::Result<()> {
+        let temp_file = NamedTempFile::new()?;
+        let path = temp_file.path().to_owned();
+
+        {
+            let mut file = File::create(&path)?;
+            writeln!(file, "---")?;
+            writeln!(file, "title: Test Skip Discarded")?;
+            writeln!(file, "author: Test")?;
+            writeln!(file, "url: https://example.com")?;
+            writeln!(file, "---")?;
+            // IV is a roman numeral - should be discarded
+            writeln!(file, "chapter IV begins here")?;
+            file.flush()?;
+        }
+
+        let (tokens, _metadata) = process_file_for_cutouts(&path, vec![',', '.'], 2)?;
+
+        // Tokens: chapter (keep), IV (discard), begins (keep), here (keep)
+        assert_eq!(tokens.len(), 4);
+
+        // chapter has no prefix
+        assert_eq!(tokens[0].text, "chapter");
+        assert!(tokens[0].keep);
+        assert!(tokens[0].prefix.is_empty());
+
+        // IV is discarded - no prefix
+        assert_eq!(tokens[1].text, "IV");
+        assert!(!tokens[1].keep);
+        assert!(tokens[1].prefix.is_empty());
+
+        // begins has prefix ["chapter"] - skips discarded IV
+        assert_eq!(tokens[2].text, "begins");
+        assert!(tokens[2].keep);
+        assert_eq!(tokens[2].prefix, vec!["chapter"]);
+
+        // here has prefix ["begins"]
+        assert_eq!(tokens[3].text, "here");
+        assert!(tokens[3].keep);
+        assert_eq!(tokens[3].prefix, vec!["begins"]);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_cutouts_prefix_with_punctuation() -> io::Result<()> {
+        let temp_file = NamedTempFile::new()?;
+        let path = temp_file.path().to_owned();
+
+        {
+            let mut file = File::create(&path)?;
+            writeln!(file, "---")?;
+            writeln!(file, "title: Test Punctuation Prefix")?;
+            writeln!(file, "author: Test")?;
+            writeln!(file, "url: https://example.com")?;
+            writeln!(file, "---")?;
+            writeln!(file, "hello, world. yes")?;
+            file.flush()?;
+        }
+
+        let (tokens, _metadata) = process_file_for_cutouts(&path, vec![',', '.'], 2)?;
+
+        // Tokens: hello, comma, world, period, yes
+        assert_eq!(tokens.len(), 5);
+
+        // hello has no prefix
+        assert_eq!(tokens[0].text, "hello");
+        assert!(tokens[0].prefix.is_empty());
+
+        // comma has prefix ["hello"]
+        assert_eq!(tokens[1].text, ",");
+        assert_eq!(tokens[1].prefix, vec!["hello"]);
+
+        // world has prefix [","]
+        assert_eq!(tokens[2].text, "world");
+        assert_eq!(tokens[2].prefix, vec![","]);
+
+        // period has prefix ["world"]
+        assert_eq!(tokens[3].text, ".");
+        assert_eq!(tokens[3].prefix, vec!["world"]);
+
+        // yes has prefix ["."]
+        assert_eq!(tokens[4].text, "yes");
+        assert_eq!(tokens[4].prefix, vec!["."]);
 
         Ok(())
     }

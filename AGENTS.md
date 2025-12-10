@@ -32,8 +32,10 @@ text file → Rust CLI → model.json → Typst → PDF booklet
 cd cli && cargo build --release
 
 # Generate a booklet
-./cli/target/release/llms_unplugged data/frankenstein.txt -n 2
-typst compile cli/book.typ book.pdf
+./cli/target/release/llms_unplugged pdf -i data/frankenstein.txt -n 2
+
+# Generate token cutouts for bucket training
+./cli/target/release/llms_unplugged cutouts -i data/green-eggs-and-ham.txt -n 2
 
 # Build lesson PDFs
 cd website && npm run build:pdfs

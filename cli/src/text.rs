@@ -60,6 +60,9 @@ pub struct RawToken {
     pub index: usize,
     pub text: String,
     pub keep: bool,
+    /// The n-1 preceding tokens (for n-gram context). Empty for the first n-1 tokens.
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub prefix: Vec<String>,
 }
 
 /// Configuration for the tokenizer/normalizer.
@@ -226,6 +229,7 @@ impl Normalizer {
                     index,
                     text: normalized_char.to_string(),
                     keep: true,
+                    prefix: vec![],
                 });
                 index += 1;
             } else if normalized_char.is_ascii_alphanumeric() || normalized_char == '\'' {
@@ -283,7 +287,12 @@ impl Normalizer {
             word
         };
 
-        Some(RawToken { index, text, keep })
+        Some(RawToken {
+            index,
+            text,
+            keep,
+            prefix: vec![],
+        })
     }
 
     fn normalize_word_token(&self, token: &str) -> Option<String> {
@@ -438,7 +447,8 @@ mod tests {
             RawToken {
                 index: 1,
                 text: "chapter".to_string(),
-                keep: true
+                keep: true,
+                prefix: vec![],
             }
         );
         assert_eq!(
@@ -446,7 +456,8 @@ mod tests {
             RawToken {
                 index: 2,
                 text: "IV".to_string(),
-                keep: false
+                keep: false,
+                prefix: vec![],
             }
         ); // roman numeral
         assert_eq!(
@@ -454,7 +465,8 @@ mod tests {
             RawToken {
                 index: 3,
                 text: "is".to_string(),
-                keep: true
+                keep: true,
+                prefix: vec![],
             }
         );
         assert_eq!(
@@ -462,7 +474,8 @@ mod tests {
             RawToken {
                 index: 4,
                 text: "good".to_string(),
-                keep: true
+                keep: true,
+                prefix: vec![],
             }
         );
         assert_eq!(
@@ -470,7 +483,8 @@ mod tests {
             RawToken {
                 index: 5,
                 text: ".".to_string(),
-                keep: true
+                keep: true,
+                prefix: vec![],
             }
         );
     }
@@ -493,7 +507,8 @@ mod tests {
             RawToken {
                 index: 1,
                 text: "test".to_string(),
-                keep: true
+                keep: true,
+                prefix: vec![],
             }
         );
         assert_eq!(
@@ -501,7 +516,8 @@ mod tests {
             RawToken {
                 index: 2,
                 text: "123bad".to_string(),
-                keep: false
+                keep: false,
+                prefix: vec![],
             }
         );
         assert_eq!(
@@ -509,7 +525,8 @@ mod tests {
             RawToken {
                 index: 3,
                 text: "word".to_string(),
-                keep: true
+                keep: true,
+                prefix: vec![],
             }
         );
     }

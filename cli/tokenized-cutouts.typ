@@ -42,8 +42,22 @@
   }
 }
 
+// Helper to format prefix array as styled text
+#let format-prefix(prefix_arr, stroke_color: black) = {
+  if prefix_arr == none or prefix_arr.len() == 0 {
+    none
+  } else {
+    let styled_parts = prefix_arr.map(t => style-punct(
+      t,
+      stroke_color: stroke_color,
+    ))
+    styled_parts.join([ ])
+  }
+}
+
 // Function to render a single token cell (no horizontal borders)
-#let token-cell(token, prev_text: none, is_last: false, height: auto) = {
+// The cell width is the maximum of the main token width and the prefix width
+#let token-cell(token, is_last: false, height: auto) = {
   let text_content = style-punct(token.text, large: true)
 
   // Right border unless last in row
@@ -51,19 +65,35 @@
 
   let index_fill = if token.keep { luma(160) } else { luma(200) }
 
+  // Get prefix from token (will be empty array if not present or for first n-1 tokens)
+  let prefix_arr = token.at("prefix", default: ())
+  let prefix_content = format-prefix(
+    prefix_arr,
+    stroke_color: if token.keep { luma(160) } else { luma(200) },
+  )
+
+  // Measure main content and prefix to determine cell width
+  let main_measured = measure(text_content)
+  let prefix_measured = if prefix_content != none {
+    measure(text(size: index_size)[#prefix_content])
+  } else {
+    (width: 0pt)
+  }
+
+  // Cell width is the max of main content and prefix, plus padding
+  let content_width = calc.max(main_measured.width, prefix_measured.width)
+
   let cell_content = if token.keep {
     // Kept token: black text
     box(
+      width: content_width + 2 * cell_padding_x,
       height: height,
       stroke: (left: none, right: right_stroke, top: none, bottom: none),
       inset: (x: cell_padding_x),
       [
-        #if prev_text != none {
+        #if prefix_content != none {
           place(top + left, dx: -0.1em, dy: 0.05em)[
-            #text(size: index_size, fill: luma(160))[#style-punct(
-              prev_text,
-              stroke_color: luma(160),
-            )]
+            #text(size: index_size, fill: luma(160))[#prefix_content]
           ]
         }
         #place(bottom + right, dx: 0.1em, dy: -0.05em)[
@@ -80,16 +110,14 @@
       (paint: border_color, thickness: border_width, dash: "dashed")
     }
     box(
+      width: content_width + 2 * cell_padding_x,
       height: height,
       stroke: (left: none, right: right_stroke_dashed, top: none, bottom: none),
       inset: (x: cell_padding_x),
       [
-        #if prev_text != none {
+        #if prefix_content != none {
           place(top + left, dx: -0.1em, dy: 0.05em)[
-            #text(size: index_size, fill: luma(200))[#style-punct(
-              prev_text,
-              stroke_color: luma(200),
-            )]
+            #text(size: index_size, fill: luma(200))[#prefix_content]
           ]
         }
         #place(bottom + right, dx: 0.1em, dy: -0.05em)[
@@ -121,27 +149,19 @@
   let current_width = 0pt
 
   // Measure and distribute tokens into rows
-  let prev_text = none
   for token in tokens {
-    let cell = token-cell(token, prev_text: prev_text, height: cell_height)
+    let cell = token-cell(token, height: cell_height)
     let cell_size = measure(cell)
 
     if current_width + cell_size.width > max_width and current_row.len() > 0 {
       // Start new row
       rows.push(current_row)
-      current_row = (
-        (token: token, prev_text: prev_text, width: cell_size.width),
-      )
+      current_row = ((token: token, width: cell_size.width),)
       current_width = cell_size.width
     } else {
-      current_row.push((
-        token: token,
-        prev_text: prev_text,
-        width: cell_size.width,
-      ))
+      current_row.push((token: token, width: cell_size.width))
       current_width += cell_size.width
     }
-    prev_text = token.text
   }
 
   // Don't forget the last row
@@ -157,12 +177,7 @@
     // Render tokens in this row
     box(width: 100%)[
       #for (i, item) in row.enumerate() {
-        token-cell(
-          item.token,
-          prev_text: item.prev_text,
-          is_last: i == row.len() - 1,
-          height: cell_height,
-        )
+        token-cell(item.token, is_last: i == row.len() - 1, height: cell_height)
       }
     ]
   }

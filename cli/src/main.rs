@@ -139,6 +139,10 @@ struct CutoutsArgs {
     #[arg(short, long, default_value = ".")]
     output: PathBuf,
 
+    /// The size of the N-gram (e.g., 2 for bigrams, 3 for trigrams).
+    #[arg(short, long, default_value_t = 2)]
+    n: usize,
+
     /// Paper size for PDF (default: a4)
     #[arg(long, default_value = "a4")]
     paper_size: String,
@@ -245,7 +249,7 @@ fn run_build_command(args: &BuildArgs) -> Result<(), CliError> {
 fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
     let punctuation: Vec<char> = args.punctuation.chars().collect();
     let (tokens, metadata) =
-        process_file_for_cutouts(&args.input, punctuation).map_err(CliError::Processing)?;
+        process_file_for_cutouts(&args.input, punctuation, args.n).map_err(CliError::Processing)?;
 
     fs::create_dir_all(&args.output).map_err(CliError::Processing)?;
 
