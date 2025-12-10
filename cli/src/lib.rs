@@ -316,7 +316,7 @@ fn parse_frontmatter(frontmatter_raw: &str, n: usize) -> io::Result<Metadata> {
 fn convert_to_entries(
     follow_map: &BTreeMap<Vec<String>, HashMap<String, usize>>,
 ) -> Vec<WordFollowEntry> {
-    follow_map
+    let mut entries: Vec<WordFollowEntry> = follow_map
         .iter()
         .map(|(prefix, followers)| {
             let mut follower_entries: Vec<(String, usize)> = followers
@@ -331,11 +331,20 @@ fn convert_to_entries(
             });
 
             WordFollowEntry {
-                prefix: prefix.clone(), // Changed from word
+                prefix: prefix.clone(),
                 followers: follower_entries,
             }
         })
-        .collect()
+        .collect();
+
+    // Sort entries by prefix case-insensitively
+    entries.sort_by(|a, b| {
+        let a_lower: Vec<String> = a.prefix.iter().map(|s| s.to_lowercase()).collect();
+        let b_lower: Vec<String> = b.prefix.iter().map(|s| s.to_lowercase()).collect();
+        a_lower.cmp(&b_lower)
+    });
+
+    entries
 }
 
 /// Splits entries into multiple books based on estimated rendered size
@@ -609,6 +618,71 @@ mod tests {
     }
 
     // Tokenization-specific tests live alongside the normalizer in text.rs
+
+    #[test]
+    fn test_prefix_case_insensitive_sort_order() {
+        // Test that prefixes are sorted case-insensitively
+        // Without case-insensitive sorting, uppercase letters sort before lowercase
+        // (e.g., "Z" < "a" in ASCII), which would put "Zebra" before "apple"
+        let mut counter = NGramCounter::new(2, vec![',', '.']);
+        // Process text with mixed case prefixes that would sort differently
+        // if case-sensitive: ASCII order would be "Apple", "Zebra", "apple", "banana"
+        // Case-insensitive order should be: "apple", "Apple", "banana", "Zebra"
+        // (or "Apple", "apple" depending on stable sort, but both "apple" variants before "banana")
+        counter.process_line("Apple pie. Zebra stripes. apple tart. banana split.");
+
+        let entries = counter.get_entries();
+        let prefixes: Vec<&str> = entries.iter().map(|e| e.prefix[0].as_str()).collect();
+
+        // Verify case-insensitive ordering: all "a" words before "b" words before "z" words
+        // Find positions of each prefix type
+        let apple_pos = prefixes.iter().position(|&p| p.to_lowercase() == "apple");
+        let banana_pos = prefixes.iter().position(|&p| p.to_lowercase() == "banana");
+        let zebra_pos = prefixes.iter().position(|&p| p.to_lowercase() == "zebra");
+
+        assert!(
+            apple_pos.is_some(),
+            "Should have apple/Apple prefix, got: {:?}",
+            prefixes
+        );
+        assert!(
+            banana_pos.is_some(),
+            "Should have banana prefix, got: {:?}",
+            prefixes
+        );
+        assert!(
+            zebra_pos.is_some(),
+            "Should have zebra/Zebra prefix, got: {:?}",
+            prefixes
+        );
+
+        // All apple variants should come before banana
+        let apple_positions: Vec<usize> = prefixes
+            .iter()
+            .enumerate()
+            .filter(|&(_, p)| p.to_lowercase() == "apple")
+            .map(|(i, _)| i)
+            .collect();
+        let banana_pos = banana_pos.unwrap();
+        let zebra_pos = zebra_pos.unwrap();
+
+        for apple_pos in &apple_positions {
+            assert!(
+                *apple_pos < banana_pos,
+                "Apple variants should come before banana: apple at {}, banana at {}",
+                apple_pos,
+                banana_pos
+            );
+        }
+
+        // Banana should come before zebra
+        assert!(
+            banana_pos < zebra_pos,
+            "Banana should come before zebra: banana at {}, zebra at {}",
+            banana_pos,
+            zebra_pos
+        );
+    }
 
     #[test]
     fn test_process_small_file_bigrams() -> io::Result<()> {
