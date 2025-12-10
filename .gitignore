@@ -9,6 +9,7 @@ data/
 
 # default model name
 model.json
+cutouts.json
 
 # output directory for generated files
 out/
