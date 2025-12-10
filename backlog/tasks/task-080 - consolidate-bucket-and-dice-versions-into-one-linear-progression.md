@@ -9,7 +9,8 @@ dependencies: []
 ---
 
 There are now both bucket and "dice" (called "basic" at the moment, but maybe
-should be renamed) versions of those first two training/generation lessons.
-
-I need to think a little more about this, but it might be a fun option to sketch
-out a lesson where we start with the bucket versions, then go to the dice ones.
+should be renamed) versions of those first two training/generation lessons. I
+want the "basic" (i.e. the grid) versions to be renamed (including the filenames
+and all references) to "Grid Training" and "Grid Generation". In each case, add
+a note (and link) that there's a bucket version which covers the same ideas but
+in a slightly different way; and vice versa for the bucket versions.
