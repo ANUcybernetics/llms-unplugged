@@ -47,6 +47,15 @@ Pre-trained models capture patterns from larger datasets. You can use them just
 like your hand-built bigram model: look up the current word, roll dice, choose
 the next word, and repeat.
 
+## Interactive demo
+
+Try the booklet lookup process interactively. The model is displayed in the same
+format as the printed booklets: each entry shows a bold prefix word, diamond
+symbols indicating how many d10s to roll, and the possible next words with their
+thresholds.
+
+<PretrainedGenerationWidget />
+
 ## Algorithm (quick recap)
 
 1. Choose a starting word---any bold word in the booklet---and write it down.
