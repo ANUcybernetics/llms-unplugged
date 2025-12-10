@@ -363,19 +363,19 @@ fn test_cli_raw_flag() -> io::Result<()> {
     let data_raw = json_raw.get("data").unwrap().as_array().unwrap();
     let data_scaled = json_scaled.get("data").unwrap().as_array().unwrap();
 
-    // Find "the" prefix in both outputs
+    // Find "The" prefix in both outputs (capitalised because it appears consistently)
     let mut the_raw_total = None;
     let mut the_scaled_total = None;
 
     for entry in data_raw {
-        if entry[0].as_str().unwrap() == "the" {
+        if entry[0].as_str().unwrap() == "The" {
             the_raw_total = Some(entry[1].as_u64().unwrap());
             break;
         }
     }
 
     for entry in data_scaled {
-        if entry[0].as_str().unwrap() == "the" {
+        if entry[0].as_str().unwrap() == "The" {
             the_scaled_total = Some(entry[1].as_u64().unwrap());
             break;
         }

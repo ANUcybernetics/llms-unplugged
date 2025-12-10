@@ -40,10 +40,11 @@ fn regression_fixture_output_is_stable() -> io::Result<()> {
     assert_eq!(meta.get("url"), Some(&json!("https://example.com/fixture")));
 
     // Data regression (raw counts)
+    // Note: "Hello" appears consistently capitalised, so it stays "Hello"
     let expected_data = json!([
-        [".", 1, ["hello", 1]],
+        [".", 1, ["Hello", 1]],
         ["again", 1, [".", 1]],
-        ["hello", 2, ["world", 2]],
+        ["Hello", 2, ["world", 2]],
         ["world", 2, [".", 1], ["again", 2]]
     ]);
 

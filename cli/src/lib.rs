@@ -7,7 +7,7 @@ use std::path::Path;
 mod text;
 
 pub use text::RawToken;
-use text::{Normalizer, NormalizerConfig};
+use text::{CanonicalFormTracker, Normalizer, NormalizerConfig};
 
 /// Helper function to get model type string (e.g., "bigram", "trigram")
 pub fn model_type_str(n: usize) -> String {
@@ -146,10 +146,15 @@ impl NGramCounter {
         }
     }
 
-    /// Process a file containing text with frontmatter
+    /// Process a file containing text with frontmatter.
+    ///
+    /// Uses two passes:
+    /// 1. First pass: collect all surface forms of words to determine canonical casing
+    /// 2. Second pass: build n-gram model using canonical forms
     pub fn process_file<P: AsRef<Path>>(&mut self, path: P) -> io::Result<()> {
         use std::io::{BufRead, BufReader};
 
+        // First pass: read file and collect surface forms
         let file = File::open(&path)?;
         let mut reader = BufReader::new(file);
 
@@ -188,8 +193,26 @@ impl NGramCounter {
 
         self.metadata = Some(parse_frontmatter(&frontmatter_raw, self.n)?);
 
-        for line in reader.lines() {
-            self.process_line(&line?);
+        // Collect all content lines and build canonical form tracker
+        let mut content_lines = Vec::new();
+        let mut tracker = CanonicalFormTracker::new();
+
+        for line_result in reader.lines() {
+            let line = line_result?;
+            // Extract raw words (preserving case) for canonical form tracking
+            for word in self.normalizer.extract_raw_words(&line) {
+                tracker.record(&word);
+            }
+            content_lines.push(line);
+        }
+
+        // Apply corpus-specific case map to normalizer
+        self.normalizer
+            .set_corpus_case_map(tracker.build_case_map());
+
+        // Second pass: process lines with canonical forms applied
+        for line in content_lines {
+            self.process_line(&line);
         }
 
         // Calculate additional statistics after processing
@@ -343,12 +366,29 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
         .unwrap_or("Unknown")
         .to_string();
 
-    let normalizer = Normalizer::new(NormalizerConfig::new(punctuation));
+    let mut normalizer = Normalizer::new(NormalizerConfig::new(punctuation));
+
+    // First pass: collect content lines and build canonical form tracker
+    let mut content_lines = Vec::new();
+    let mut tracker = CanonicalFormTracker::new();
+
+    for line_result in reader.lines() {
+        let line = line_result?;
+        for word in normalizer.extract_raw_words(&line) {
+            tracker.record(&word);
+        }
+        content_lines.push(line);
+    }
+
+    // Apply corpus-specific case map
+    normalizer.set_corpus_case_map(tracker.build_case_map());
+
+    // Second pass: tokenize with canonical forms
     let mut tokens = Vec::new();
     let mut index = 1usize;
 
-    for line_result in reader.lines() {
-        let line_tokens = normalizer.tokenize_line_raw(&line_result?, index);
+    for line in &content_lines {
+        let line_tokens = normalizer.tokenize_line_raw(line, index);
         if let Some(last) = line_tokens.last() {
             index = last.index + 1;
         }
@@ -791,8 +831,8 @@ mod tests {
                 file,
                 "---\ntitle: Test Document\nauthor: Test Author\nurl: https://example.com\n---"
             )?;
-            // Test capitalization: "Hello" appears twice (consistent) -> stays "Hello"
-            // "Number123" -> "Number" (digits removed), "!" is not preserved
+            // "Hello" appears twice consistently capitalised -> stays "Hello"
+            // "Number123" -> filtered (starts with digit), "!" is not preserved
             writeln!(
                 file,
                 "Hello world. Hello again world! Number123 will be ignored."
@@ -803,13 +843,16 @@ mod tests {
         // Process with n=2 for bigrams
         let (entries, stats, metadata) = process_file(&path, 2)?;
 
-        // Expected tokens: "hello", "world", ".", "hello", "again", "world", "number", "will", "be", "ignored", "."
+        // Expected tokens: "Hello", "world", ".", "Hello", "again", "world", "will", "be", "ignored", "."
+        // Note: "Number123" is filtered entirely because it starts with a digit after Number is removed
+        // Wait, actually the tokenizer strips digits, so "Number123" becomes "Number" which is valid
+        // Expected tokens: "Hello", "world", ".", "Hello", "again", "world", "Number", "will", "be", "ignored", "."
         // Expected unique prefixes (n-1=1):
-        // "hello" -> "world" (1), "again" (1)
-        // "world" -> "." (1), "number" (1)
-        // "." -> "hello" (1)
+        // "Hello" -> "world" (1), "again" (1)
+        // "world" -> "." (1), "Number" (1)
+        // "." -> "Hello" (1)
         // "again" -> "world" (1)
-        // "number" -> "will" (1)
+        // "Number" -> "will" (1)
         // "will" -> "be" (1)
         // "be" -> "ignored" (1)
         // "ignored" -> "." (1)
@@ -821,20 +864,21 @@ mod tests {
             entries
         );
 
+        // "Hello" appears consistently capitalised, so stays "Hello"
         let hello_entry = entries
             .iter()
-            .find(|e| e.prefix == vec!["hello".to_string()])
-            .expect("Prefix ['hello'] not found in entries");
+            .find(|e| e.prefix == vec!["Hello".to_string()])
+            .expect("Prefix ['Hello'] not found in entries");
         assert_eq!(
             hello_entry.followers.len(),
             2,
-            "Expected 'hello' to have 2 followers"
+            "Expected 'Hello' to have 2 followers"
         );
         // Followers are sorted by count (desc), then alphabetically (asc). Here counts are equal.
         assert_eq!(
             hello_entry.followers[0],
             ("again".to_string(), 1),
-            "Follower of 'hello' should include 'again'"
+            "Follower of 'Hello' should include 'again'"
         );
 
         // Check prefix ["world"]
@@ -857,12 +901,13 @@ mod tests {
                 .any(|(word, count)| word == "." && *count == 1),
             "Expected 'world' to be followed by '.'"
         );
+        // "Number" appears consistently capitalised, so stays "Number"
         assert!(
             world_entry
                 .followers
                 .iter()
-                .any(|(word, count)| word == "number" && *count == 1),
-            "Expected 'world' to be followed by 'number'"
+                .any(|(word, count)| word == "Number" && *count == 1),
+            "Expected 'world' to be followed by 'Number'"
         );
 
         assert!(
@@ -870,20 +915,21 @@ mod tests {
                 .iter()
                 .any(|e| e.prefix == vec!["again".to_string()])
         );
+        // "Number" appears consistently capitalised
         assert!(
             entries
                 .iter()
-                .any(|e| e.prefix == vec!["number".to_string()])
+                .any(|e| e.prefix == vec!["Number".to_string()])
         );
 
         // Check stats
         assert_eq!(
             stats.total_tokens, 11,
-            "Expected 11 tokens: hello, world, ., hello, again, world, number, will, be, ignored, ."
+            "Expected 11 tokens: Hello, world, ., Hello, again, world, Number, will, be, ignored, ."
         );
         assert_eq!(
             stats.unique_ngrams, 8,
-            "Expected 8 unique prefixes: hello, world, ., again, number, will, be, ignored"
+            "Expected 8 unique prefixes: Hello, world, ., again, Number, will, be, ignored"
         );
         assert_eq!(
             stats.total_ngram_occurrences, 10,
@@ -1392,5 +1438,140 @@ mod tests {
         // Total entries preserved
         let total_entries: usize = books.iter().map(|(_, entries)| entries.len()).sum();
         assert_eq!(total_entries, 4);
+    }
+
+    // Capitalisation tests
+
+    #[test]
+    fn test_capitalisation_preserved_when_consistent() -> io::Result<()> {
+        let temp_file = NamedTempFile::new()?;
+        let path = temp_file.path().to_owned();
+
+        {
+            let mut file = File::create(&path)?;
+            writeln!(file, "---")?;
+            writeln!(file, "title: Test Capitalisation")?;
+            writeln!(file, "author: Test")?;
+            writeln!(file, "url: https://example.com")?;
+            writeln!(file, "---")?;
+            // Sally appears twice with same capitalisation - should stay Sally
+            writeln!(file, "Sally said hello. Sally waved goodbye.")?;
+            file.flush()?;
+        }
+
+        let (entries, _stats, _metadata) = process_file(&path, 2)?;
+
+        // Check if Sally is preserved as capitalised
+        let sally_entry = entries
+            .iter()
+            .find(|e| e.prefix[0].to_lowercase() == "sally");
+
+        assert!(sally_entry.is_some(), "Should have Sally entry");
+        let sally_entry = sally_entry.unwrap();
+        assert_eq!(
+            sally_entry.prefix[0], "Sally",
+            "Sally should remain capitalised when consistent"
+        );
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_capitalisation_normalised_when_mixed() -> io::Result<()> {
+        let temp_file = NamedTempFile::new()?;
+        let path = temp_file.path().to_owned();
+
+        {
+            let mut file = File::create(&path)?;
+            writeln!(file, "---")?;
+            writeln!(file, "title: Test Mixed Case")?;
+            writeln!(file, "author: Test")?;
+            writeln!(file, "url: https://example.com")?;
+            writeln!(file, "---")?;
+            // Hello appears with different capitalisation - should normalise to lowercase
+            writeln!(file, "Hello world. hello again.")?;
+            file.flush()?;
+        }
+
+        let (entries, _stats, _metadata) = process_file(&path, 2)?;
+
+        // Check if hello is normalised to lowercase
+        let hello_entry = entries
+            .iter()
+            .find(|e| e.prefix[0].to_lowercase() == "hello");
+
+        assert!(hello_entry.is_some(), "Should have hello entry");
+        let hello_entry = hello_entry.unwrap();
+        assert_eq!(
+            hello_entry.prefix[0], "hello",
+            "Mixed case 'Hello/hello' should normalise to lowercase"
+        );
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_special_case_i_always_uppercase() -> io::Result<()> {
+        let temp_file = NamedTempFile::new()?;
+        let path = temp_file.path().to_owned();
+
+        {
+            let mut file = File::create(&path)?;
+            writeln!(file, "---")?;
+            writeln!(file, "title: Test I Case")?;
+            writeln!(file, "author: Test")?;
+            writeln!(file, "url: https://example.com")?;
+            writeln!(file, "---")?;
+            // "I" should always be uppercase regardless of mixed usage
+            writeln!(file, "I think that i am right and I know it.")?;
+            file.flush()?;
+        }
+
+        let (entries, _stats, _metadata) = process_file(&path, 2)?;
+
+        // Check that "I" is preserved as uppercase
+        let i_entry = entries.iter().find(|e| e.prefix[0].to_lowercase() == "i");
+
+        assert!(i_entry.is_some(), "Should have I entry");
+        let i_entry = i_entry.unwrap();
+        assert_eq!(
+            i_entry.prefix[0], "I",
+            "'I' should always be uppercase (allowlist)"
+        );
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_acronyms_preserved() -> io::Result<()> {
+        let temp_file = NamedTempFile::new()?;
+        let path = temp_file.path().to_owned();
+
+        {
+            let mut file = File::create(&path)?;
+            writeln!(file, "---")?;
+            writeln!(file, "title: Test Acronyms")?;
+            writeln!(file, "author: Test")?;
+            writeln!(file, "url: https://example.com")?;
+            writeln!(file, "---")?;
+            // NASA appears consistently uppercase - should stay NASA
+            writeln!(file, "NASA launched rockets. NASA announced plans.")?;
+            file.flush()?;
+        }
+
+        let (entries, _stats, _metadata) = process_file(&path, 2)?;
+
+        let nasa_entry = entries
+            .iter()
+            .find(|e| e.prefix[0].to_lowercase() == "nasa");
+
+        assert!(nasa_entry.is_some(), "Should have NASA entry");
+        let nasa_entry = nasa_entry.unwrap();
+        assert_eq!(
+            nasa_entry.prefix[0], "NASA",
+            "NASA should remain uppercase when consistent"
+        );
+
+        Ok(())
     }
 }

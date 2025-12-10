@@ -1,6 +1,58 @@
 use serde::Serialize;
 use std::collections::{HashMap, HashSet};
 
+/// Tracks surface forms of words to determine canonical casing.
+///
+/// Algorithm:
+/// - If a word only appears with one capitalisation, preserve it (e.g., "Sally" stays "Sally")
+/// - If a word appears with mixed capitalisation, normalise to lowercase (e.g., "Hello" + "hello" → "hello")
+/// - Special case: "I" and its contractions always stay uppercase (handled by allowlist)
+#[derive(Debug, Default)]
+pub struct CanonicalFormTracker {
+    /// Maps lowercase form to observed surface forms
+    surface_forms: HashMap<String, HashSet<String>>,
+}
+
+impl CanonicalFormTracker {
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    /// Record a word's surface form for later canonical form determination
+    pub fn record(&mut self, word: &str) {
+        let lower = word.to_lowercase();
+        self.surface_forms
+            .entry(lower)
+            .or_default()
+            .insert(word.to_string());
+    }
+
+    /// Get the canonical form for a word based on observed surface forms.
+    /// If only one form was seen, return it; otherwise return lowercase.
+    #[cfg(test)]
+    pub fn get_canonical(&self, word: &str) -> String {
+        let lower = word.to_lowercase();
+        match self.surface_forms.get(&lower) {
+            Some(forms) if forms.len() == 1 => forms.iter().next().unwrap().clone(),
+            _ => lower,
+        }
+    }
+
+    /// Build a canonical form map that can be used by the Normalizer
+    pub fn build_case_map(&self) -> HashMap<String, String> {
+        let mut map = HashMap::new();
+        for (lower, forms) in &self.surface_forms {
+            if forms.len() == 1 {
+                let form = forms.iter().next().unwrap();
+                if form != lower {
+                    map.insert(lower.clone(), form.clone());
+                }
+            }
+        }
+        map
+    }
+}
+
 /// A raw token from the input text, before filtering.
 /// Used for bucket training cutouts where we show all tokens but mark some as discarded.
 #[derive(Debug, Clone, Serialize, PartialEq)]
@@ -15,7 +67,10 @@ pub struct RawToken {
 #[derive(Clone, Debug)]
 pub struct NormalizerConfig {
     pub punctuation: HashSet<char>,
+    /// Always-applied case mappings (e.g., "i" → "I")
     pub case_allowlist: HashMap<String, String>,
+    /// Corpus-specific case mappings from CanonicalFormTracker
+    pub corpus_case_map: HashMap<String, String>,
 }
 
 impl NormalizerConfig {
@@ -23,6 +78,7 @@ impl NormalizerConfig {
         Self {
             punctuation: punctuation.into_iter().collect(),
             case_allowlist: default_case_allowlist(),
+            corpus_case_map: HashMap::new(),
         }
     }
 }
@@ -43,6 +99,78 @@ pub struct Normalizer {
 impl Normalizer {
     pub fn new(config: NormalizerConfig) -> Self {
         Self { config }
+    }
+
+    /// Update the corpus-specific case map
+    pub fn set_corpus_case_map(&mut self, map: HashMap<String, String>) {
+        self.config.corpus_case_map = map;
+    }
+
+    /// Extract raw word tokens from a line, preserving original casing.
+    /// Used for first pass to build canonical form tracking.
+    /// Returns only valid word tokens (not punctuation, not filtered).
+    pub fn extract_raw_words(&self, line: &str) -> Vec<String> {
+        let mut words = Vec::new();
+        let mut current = String::new();
+
+        for c in line.chars() {
+            let normalized_char = normalize_apostrophe(c);
+
+            if self.config.punctuation.contains(&normalized_char) {
+                if !current.is_empty() {
+                    if let Some(word) = self.clean_word_token(&current) {
+                        if self.is_valid_word(&word) {
+                            words.push(word);
+                        }
+                    }
+                    current.clear();
+                }
+            } else if normalized_char.is_ascii_alphabetic() || normalized_char == '\'' {
+                current.push(normalized_char);
+            } else if !current.is_empty() {
+                if let Some(word) = self.clean_word_token(&current) {
+                    if self.is_valid_word(&word) {
+                        words.push(word);
+                    }
+                }
+                current.clear();
+            }
+        }
+
+        if !current.is_empty() {
+            if let Some(word) = self.clean_word_token(&current) {
+                if self.is_valid_word(&word) {
+                    words.push(word);
+                }
+            }
+        }
+
+        words
+    }
+
+    /// Clean a word token (strip quotes) but preserve original casing
+    fn clean_word_token(&self, token: &str) -> Option<String> {
+        let mut word = token.trim_start_matches('\'').to_string();
+
+        while word.ends_with('\'') && !looks_like_contraction(&word) {
+            word.pop();
+        }
+
+        if word.is_empty() { None } else { Some(word) }
+    }
+
+    /// Check if a word is valid (not filtered out)
+    fn is_valid_word(&self, word: &str) -> bool {
+        let starts_with_digit = word
+            .chars()
+            .next()
+            .map(|c| c.is_ascii_digit())
+            .unwrap_or(false);
+        let lower = word.to_lowercase();
+        let is_endoftext = lower == "<|endoftext|>";
+        let is_filtered_roman = lower != "i" && is_roman_numeral(&lower);
+
+        !starts_with_digit && !is_endoftext && !is_filtered_roman
     }
 
     pub fn normalize_line(&self, line: &str) -> Vec<String> {
@@ -143,10 +271,12 @@ impl Normalizer {
 
         let keep = !starts_with_digit && !is_endoftext && !is_filtered_roman;
 
+        // Priority: allowlist > corpus case map > lowercase
         let text = if keep {
             self.config
                 .case_allowlist
                 .get(&lower)
+                .or_else(|| self.config.corpus_case_map.get(&lower))
                 .cloned()
                 .unwrap_or(lower)
         } else {
@@ -186,10 +316,12 @@ impl Normalizer {
             return None;
         }
 
+        // Priority: allowlist > corpus case map > lowercase
         Some(
             self.config
                 .case_allowlist
                 .get(&lower)
+                .or_else(|| self.config.corpus_case_map.get(&lower))
                 .cloned()
                 .unwrap_or(lower),
         )
@@ -451,5 +583,117 @@ mod tests {
             tokens,
             vec!["chapter", "and", "section", "are", "done", "."]
         );
+    }
+
+    // CanonicalFormTracker tests
+
+    #[test]
+    fn tracker_preserves_consistent_capitalisation() {
+        let mut tracker = CanonicalFormTracker::new();
+        tracker.record("Sally");
+        tracker.record("Sally");
+        tracker.record("Sally");
+
+        assert_eq!(tracker.get_canonical("Sally"), "Sally");
+        assert_eq!(tracker.get_canonical("sally"), "Sally");
+    }
+
+    #[test]
+    fn tracker_lowercases_mixed_capitalisation() {
+        let mut tracker = CanonicalFormTracker::new();
+        tracker.record("Hello");
+        tracker.record("hello");
+
+        assert_eq!(tracker.get_canonical("Hello"), "hello");
+        assert_eq!(tracker.get_canonical("hello"), "hello");
+    }
+
+    #[test]
+    fn tracker_preserves_acronyms() {
+        let mut tracker = CanonicalFormTracker::new();
+        tracker.record("NASA");
+        tracker.record("NASA");
+
+        assert_eq!(tracker.get_canonical("NASA"), "NASA");
+        assert_eq!(tracker.get_canonical("nasa"), "NASA");
+    }
+
+    #[test]
+    fn tracker_handles_sentence_initial_words() {
+        // "The" appears at start of sentences (capitalised) and mid-sentence (lowercase)
+        let mut tracker = CanonicalFormTracker::new();
+        tracker.record("The");
+        tracker.record("the");
+        tracker.record("the");
+
+        // Mixed case should normalise to lowercase
+        assert_eq!(tracker.get_canonical("The"), "the");
+    }
+
+    #[test]
+    fn tracker_builds_case_map_correctly() {
+        let mut tracker = CanonicalFormTracker::new();
+        tracker.record("Sally"); // consistent
+        tracker.record("Sally");
+        tracker.record("Hello"); // mixed
+        tracker.record("hello");
+        tracker.record("world"); // all lowercase (no entry needed)
+
+        let map = tracker.build_case_map();
+
+        // Sally should be in the map (needs to preserve casing)
+        assert_eq!(map.get("sally"), Some(&"Sally".to_string()));
+
+        // hello should NOT be in the map (mixed case → lowercase, which is default)
+        assert_eq!(map.get("hello"), None);
+
+        // world should NOT be in the map (already lowercase)
+        assert_eq!(map.get("world"), None);
+    }
+
+    #[test]
+    fn extract_raw_words_preserves_case() {
+        let n = normalizer();
+        let words = n.extract_raw_words("Sally said Hello to NASA.");
+
+        assert_eq!(words, vec!["Sally", "said", "Hello", "to", "NASA"]);
+    }
+
+    #[test]
+    fn extract_raw_words_filters_invalid() {
+        let n = normalizer();
+        let words = n.extract_raw_words("Chapter IV has 123numbers.");
+
+        // IV is filtered (roman numeral), 123numbers is filtered (starts with digit)
+        assert_eq!(words, vec!["Chapter", "has", "numbers"]);
+    }
+
+    #[test]
+    fn normalizer_uses_corpus_case_map() {
+        let mut n = normalizer();
+
+        // Without corpus case map, everything is lowercased
+        assert_eq!(n.normalize_line("Sally"), vec!["sally"]);
+
+        // Add corpus case map
+        let mut map = HashMap::new();
+        map.insert("sally".to_string(), "Sally".to_string());
+        n.set_corpus_case_map(map);
+
+        // Now Sally is preserved
+        assert_eq!(n.normalize_line("Sally"), vec!["Sally"]);
+    }
+
+    #[test]
+    fn allowlist_takes_priority_over_corpus_map() {
+        let mut n = normalizer();
+
+        // Add corpus case map that conflicts with allowlist
+        let mut map = HashMap::new();
+        map.insert("i".to_string(), "i".to_string()); // corpus says lowercase
+        n.set_corpus_case_map(map);
+
+        // Allowlist should still win - "I" stays uppercase
+        assert_eq!(n.normalize_line("I think"), vec!["I", "think"]);
     }
 }
