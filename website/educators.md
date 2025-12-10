@@ -40,15 +40,15 @@ generating text from it, and finally exploring what happens when you use a
 larger pre-trained model. Each step builds on the last, giving students a
 complete picture of how language models work.
 
-<LessonCards :lessons="['intro', 'basic-training', 'basic-generation', 'pretrained-generation']" />
+<LessonCards :lessons="['intro', 'grid-training', 'grid-generation', 'pretrained-generation']" />
 
 ### Suggested timing
 
 - **00:20 [Intro](/lessons/intro)**
 
-- **00:20 [Basic training](/lessons/basic-training)**
+- **00:20 [Grid training](/lessons/grid-training)**
 
-- **00:40 [Basic generation](/lessons/basic-generation)**
+- **00:40 [Grid generation](/lessons/grid-generation)**
 
 - **01:00 [Pre-trained model generation](/lessons/pretrained-generation)**
 
@@ -61,15 +61,15 @@ complete picture of how language models work.
 - this outline doesn't include the
   [Weighted randomness](/lessons/weighted-randomness) lesson, but if your
   students aren't so familiar with that stuff then you could add it in before
-  the [Basic training](/lessons/basic-training) lesson (add another 30mins)
+  the [Grid training](/lessons/grid-training) lesson (add another 30mins)
 
-- once you get to the [Basic generation](/lessons/basic-generation) lesson and
+- once you get to the [Grid generation](/lessons/grid-generation) lesson and
   beyond, get students to do "dramatic readings" as they share back the text
   their new language models have generated...
 
 - if you have a bit longer, then adding the [Sampling](/lessons/sampling) lesson
   at the end is a fun option---it builds on either the
-  [Basic generation](/lessons/basic-generation) or the
+  [Grid generation](/lessons/grid-generation) or the
   [Pre-trained model generation](/lessons/pretrained-generation) work and shows
   how different parts of the "LLM process" can have different effects on the
   output
@@ -85,7 +85,7 @@ track grammatical context and how words get represented as numerical vectors.
 This path suits later-year high school students, computing electives, or keen
 beans who want to understand what "attention" and "embeddings" actually mean.
 
-<LessonCards :lessons="['intro', 'basic-training', 'basic-generation', 'pretrained-generation', 'context-columns-training', 'word-embeddings']" />
+<LessonCards :lessons="['intro', 'grid-training', 'grid-generation', 'pretrained-generation', 'context-columns-training', 'word-embeddings']" />
 
 ### What these additions cover
 

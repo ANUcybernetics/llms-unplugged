@@ -18,7 +18,7 @@ dependsOn: []
 This lesson is part of the [Fundamentals](/topics/fundamentals) topic, with
 instructions for students (including examples) and
 [instructor notes](#instructor-notes). This is an alternative to
-[Basic Training](/lessons/basic-training) that uses physical tokens and buckets
+[Grid Training](/lessons/grid-training) that uses physical tokens and buckets
 instead of a grid; it's designed to be simpler for younger audiences, but
 honestly it's just as fun at a grown-up dinner party.
 
@@ -146,7 +146,7 @@ current LLMs store---at a vastly smaller scale.
 ### Comparison to grid method
 
 This bucket method and the grid method (see
-[Basic Training](/lessons/basic-training)) produce equivalent models:
+[Grid Training](/lessons/grid-training)) produce equivalent models:
 
 - a tally mark in row X, column Y of the grid corresponds to one token Y inside
   bucket X

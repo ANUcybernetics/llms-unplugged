@@ -1,5 +1,5 @@
 ---
-title: Basic Generation
+title: Grid Generation
 description:
   Use your hand-built bigram model to generate new text through weighted random
   sampling.
@@ -9,31 +9,35 @@ keyIdea:
   Language models generate text one word at a time by sampling the next word
   according to learned counts.
 dependsOn:
-  - Basic Training
+  - Grid Training
   - Weighted Randomness
 ---
 
-# Basic Generation
+# Grid Generation
 
 ::: info Lesson Info
 
 This lesson is part of the [Fundamentals](/topics/fundamentals) topic, with
 instructions for students (including examples) and
 [instructor notes](#instructor-notes). If you'd like a printable version of the
-student handout, [download it here](/assets/pdfs/basic-generation.pdf).
+student handout, [download it here](/assets/pdfs/grid-generation.pdf).
+
+There's also an alternative version of this lesson called
+[Bucket Generation](/lessons/bucket-generation), which covers the same concepts
+using physical tokens and buckets instead of dice rolls.
 
 :::
 
 Use a pre-trained (hand-built) bigram model to generate new text through
 weighted random sampling.
 
-![Hero image: Basic Generation](/assets/images/hero-basic-generation.avif)
+![Hero image: Grid Generation](/assets/images/hero-grid-generation.avif)
 
 <Prerequisites />
 
 ## You will need
 
-- your completed bigram model from _Basic Training_
+- your completed bigram model from _Grid Training_
 - a d10 (or similar) for weighted sampling
 - pen and paper for jotting down the generated text
 
@@ -59,7 +63,7 @@ yields fluent text.
 
 ## Example
 
-Using the same bigram model from the example in _Basic Training_:
+Using the same bigram model from the example in _Grid Training_:
 
 <LmGrid tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
 

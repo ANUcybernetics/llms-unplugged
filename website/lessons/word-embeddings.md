@@ -9,7 +9,7 @@ keyIdea:
   A word's row in the grid is its embedding; distances between rows reveal
   grammatical and semantic closeness.
 dependsOn:
-  - Basic Training
+  - Grid Training
   - Context Columns Training
 ---
 
@@ -36,7 +36,7 @@ relationships between words in your model.
 
 - your completed bigram grid (context columns optional but helpful)
 - another blank grid with the same headers (for distances)
-- pen, paper, and dice as per _Basic Generation_
+- pen, paper, and dice as per _Grid Generation_
 
 ## Your goal
 

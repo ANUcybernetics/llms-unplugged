@@ -1,5 +1,5 @@
 ---
-title: Basic Training
+title: Grid Training
 description:
   Build a bigram language model that tracks which words follow which other words
   in text.
@@ -12,21 +12,25 @@ dependsOn:
   - Weighted Randomness
 ---
 
-# Basic Training
+# Grid Training
 
 ::: info Lesson Info
 
 This lesson is part of the [Fundamentals](/topics/fundamentals) topic, with
 instructions for students (including examples) and
 [instructor notes](#instructor-notes). If you'd like a printable version of the
-student handout, [download it here](/assets/pdfs/basic-training.pdf).
+student handout, [download it here](/assets/pdfs/grid-training.pdf).
+
+There's also an alternative version of this lesson called
+[Bucket Training](/lessons/bucket-training), which covers the same concepts
+using physical tokens and buckets instead of a grid.
 
 :::
 
 Build a bigram language model that tracks which words follow which other words
 in text.
 
-![Hero image: Basic Training](/assets/images/hero-basic-training.avif)
+![Hero image: Grid Training](/assets/images/hero-grid-training.avif)
 
 <Prerequisites />
 

@@ -16,7 +16,7 @@
   == You will need
 
   - a completed model from an earlier lesson
-  - pen, paper & dice as per _Basic Generation_
+  - pen, paper & dice as per _Grid Generation_
 
   == Your goal
 

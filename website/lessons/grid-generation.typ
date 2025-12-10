@@ -6,7 +6,7 @@
 #show: lesson-setup
 
 #lesson-hero(
-  "Basic Generation",
+  "Grid Generation",
   "/typst/images/CYBERNETICS_A_020.jpg",
   "02",
 )[
@@ -14,8 +14,7 @@
 
   == You will need
 
-  - your completed bigram model (i.e. your filled-out grid) from _Basic
-    Training_
+  - your completed bigram model (i.e. your filled-out grid) from _Grid Training_
   - d10 (or similar) for weighted sampling
   - pen & paper for writing down the generated "output text"
 
@@ -48,7 +47,7 @@
 
   == Example
 
-  Using the same bigram model from the example in _Basic Training_:
+  Using the same bigram model from the example in _Grid Training_:
 
   #lm-grid-auto((
     "see",

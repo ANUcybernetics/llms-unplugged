@@ -37,7 +37,7 @@ website/
 ├── faq.md
 ├── lessons/                # Lesson content
 │   ├── index.md
-│   ├── basic-training.md
+│   ├── grid-training.md
 │   └── ...
 ├── topics/                 # Topic overview pages
 │   ├── index.md

@@ -8,8 +8,8 @@ keyIdea:
   More context improves predictions---trigrams track two previous words, trading
   simplicity for richer patterns.
 dependsOn:
-  - Basic Training
-  - Basic Generation
+  - Grid Training
+  - Grid Generation
 ---
 
 # Trigram Model
@@ -32,9 +32,9 @@ to better generation.
 
 ## You will need
 
-- the same materials as _Basic Training_
+- the same materials as _Grid Training_
 - extra paper for a three-column table
-- pen, paper, and dice as per _Basic Generation_
+- pen, paper, and dice as per _Grid Generation_
 
 ## Your goal
 
@@ -86,7 +86,7 @@ _word 1_ if that helps.
 4. Shift the window by one word (new context is old `word2` + chosen `word3`)
    and repeat from step 2.
 
-This mirrors Basic Generation but with two-word context instead of one.
+This mirrors Grid Generation but with two-word context instead of one.
 
 ## Instructor notes
 

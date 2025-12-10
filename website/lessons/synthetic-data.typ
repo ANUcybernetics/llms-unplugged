@@ -39,13 +39,13 @@
 
   + *generate synthetic text*:
 
-    - use your existing model to generate text (as in Basic Generation)
+    - use your existing model to generate text (as in Grid Generation)
     - generate enough text for meaningful training (at least 50-100 words)
     - this is your _synthetic training corpus_
 
   + *train generation 2 model*:
 
-    - create a new grid following the Basic Training algorithm
+    - create a new grid following the Grid Training algorithm
     - use your synthetic text as the input corpus
     - this new model learns from AI-generated text, not human-written text
 

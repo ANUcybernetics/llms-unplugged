@@ -9,7 +9,7 @@ keyIdea:
   You can generate from a model you didn't train---just follow its lookup rules
   and sample next words.
 dependsOn:
-  - Basic Generation
+  - Grid Generation
 ---
 
 # Pre-trained Model Generation
@@ -104,7 +104,7 @@ This lesson demonstrates the foundation of how people interact with modern AI:
 
 The key insight: training and text generation are separate processes. Most AI
 users never train models---they use pre-trained ones through APIs or interfaces.
-Your hand-built model from _Basic Training_ gives you insight into what's inside
+Your hand-built model from _Grid Training_ gives you insight into what's inside
 the booklet, but you don't need that knowledge to generate text. This separation
 is why companies like OpenAI can provide AI services: they do the expensive
 training once, then millions of users perform text generation. The booklet

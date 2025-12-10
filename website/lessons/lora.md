@@ -9,8 +9,8 @@ keyIdea:
   LoRA tweaks a base model with small, add-on counts that capture
   domain-specific shifts.
 dependsOn:
-  - Basic Training
-  - Basic Generation
+  - Grid Training
+  - Grid Generation
 ---
 
 # LoRA
@@ -54,7 +54,7 @@ can be much smaller. During generation you add LoRA counts to the base counts
 1. Choose an existing bigram grid as your base model.
 2. Train a LoRA grid:
    - Start with a new grid using the same columns as the base.
-   - Run _Basic Training_ on your new domain text, but only keep rows for words
+   - Run _Grid Training_ on your new domain text, but only keep rows for words
      that appear in that text.
 3. Apply the adaptation:
    - When sampling, add the LoRA counts to the base counts for the current word

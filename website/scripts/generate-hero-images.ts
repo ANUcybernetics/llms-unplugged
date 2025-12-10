@@ -101,7 +101,7 @@ function printUsage() {
   console.log("");
   console.log("Examples:");
   console.log("  generate-hero-images.ts intro");
-  console.log("  generate-hero-images.ts basic-training basic-generation");
+  console.log("  generate-hero-images.ts grid-training grid-generation");
   console.log("  generate-hero-images.ts --all");
 }
 

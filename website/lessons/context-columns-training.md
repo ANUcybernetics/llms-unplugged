@@ -9,7 +9,7 @@ keyIdea:
   Extra context columns let the model track broader patterns beyond individual
   word pairs.
 dependsOn:
-  - Basic Training
+  - Grid Training
 ---
 
 # Context Columns Training
@@ -33,7 +33,7 @@ semantic patterns.
 
 ## You will need
 
-- your completed bigram model from _Basic Training_
+- your completed bigram model from _Grid Training_
 - pen and paper (or extend your existing grid)
 
 ## Your goal

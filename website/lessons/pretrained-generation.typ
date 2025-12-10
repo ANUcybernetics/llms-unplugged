@@ -29,7 +29,7 @@
 
   You don't need to train your own model to use one. Pre-trained models capture
   patterns from large amounts of text and can be used to generate new text just
-  like your "hand-trained" model from _Basic Training_.
+  like your "hand-trained" model from _Grid Training_.
 ]
 
 // Second page content in two columns

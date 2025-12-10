@@ -15,8 +15,8 @@
 
   == You will need
 
-  - your completed bigram model from _Basic Training_
-  - pen, paper & dice as per _Basic Generation_
+  - your completed bigram model from _Grid Training_
+  - pen, paper & dice as per _Grid Generation_
 
   == Your goal
 
@@ -42,7 +42,7 @@
 
     + *add context columns* to your existing bigram model: _after verb_, _after
       pronoun_ and _after preposition_
-    + proceed as per _Basic Training_, but each time after updating the cell
+    + proceed as per _Grid Training_, but each time after updating the cell
       count for a word pair:
       - if the first word is a verb, increment the value in the second word's
         _after verb_ column

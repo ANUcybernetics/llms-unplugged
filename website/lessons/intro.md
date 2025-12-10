@@ -47,7 +47,7 @@ answer" or "discuss with your neighbour and share-back at the end" questions.
 
 Don't spend too long on the pre-discussion questions---the fun really starts
 when you get into actual activities (e.g.
-[Basic Training](/lessons/basic-training)).
+[Grid Training](/lessons/grid-training)).
 
 The core message of _LLMs Unplugged_ is that a language model is a system that
 predicts what word comes next. Given some text, it answers the question: "What's

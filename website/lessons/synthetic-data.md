@@ -9,7 +9,7 @@ keyIdea:
   Training on model-generated data shows how patterns degrade and why fresh
   human data matters.
 dependsOn:
-  - Basic Generation
+  - Grid Generation
 ---
 
 # Synthetic Data
@@ -50,8 +50,8 @@ original corpus. Watching this happen illustrates why real data matters.
 ## Algorithm
 
 1. **Generate synthetic text:** use your existing model to create 50–100+ words
-   (as in _Basic Generation_). This is your synthetic corpus.
-2. **Train generation 2:** build a new grid with the Basic Training algorithm
+   (as in _Grid Generation_). This is your synthetic corpus.
+2. **Train generation 2:** build a new grid with the Grid Training algorithm
    using the synthetic corpus.
 3. **Compare models:**
    - note words that disappear or appear

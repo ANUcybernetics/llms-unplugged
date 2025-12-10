@@ -15,14 +15,14 @@
 
   == You will need
 
-  - same as _Basic Training_ lesson
+  - same as _Grid Training_ lesson
   - additional paper for the three-column model
-  - pen, paper & dice as per _Basic Generation_
+  - pen, paper & dice as per _Grid Generation_
 
   == Your goal
 
   To train a trigram language model (a table this time, not a grid like your
-  bigram model from _Basic Training_) and use it to generate text. *Stretch
+  bigram model from _Grid Training_) and use it to generate text. *Stretch
   goal*: train on more data, or generate more text.
 
   == Key idea
@@ -86,7 +86,7 @@ Note: the order of the rows doesn't matter, so you can re-order to group them by
     starting words
   + find _all rows_ where *word 1* and *word 2* are exact matches for your two
     starting words, and make note of their *count* columns
-  + as per _Basic Generation_ roll a d10 weighted by the counts and select the
+  + as per _Grid Generation_ roll a d10 weighted by the counts and select the
     *word 3* associated with the chosen row
   + move along by _one_ word (so *word 2* becomes your new *word 1* and *word 3*
     becomes your new *word 2*) and repeat from step 2

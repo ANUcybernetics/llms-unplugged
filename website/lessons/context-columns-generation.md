@@ -10,7 +10,7 @@ keyIdea:
   richer probability distributions.
 dependsOn:
   - Context Columns Training
-  - Basic Generation
+  - Grid Generation
 ---
 
 # Context Columns Generation
@@ -35,7 +35,7 @@ and grammatical coherence.
 ## You will need
 
 - your context-enhanced bigram model from _Context Columns Training_
-- pen, paper, and dice as per _Basic Generation_
+- pen, paper, and dice as per _Grid Generation_
 
 ## Your goal
 

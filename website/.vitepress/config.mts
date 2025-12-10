@@ -145,8 +145,8 @@ export default defineConfig({
               text: "Weighted Randomness",
               link: "/lessons/weighted-randomness",
             },
-            { text: "Basic Training", link: "/lessons/basic-training" },
-            { text: "Basic Generation", link: "/lessons/basic-generation" },
+            { text: "Grid Training", link: "/lessons/grid-training" },
+            { text: "Grid Generation", link: "/lessons/grid-generation" },
           ],
         },
         {

@@ -6,7 +6,7 @@
 #show: lesson-setup
 
 #lesson-hero(
-  "Basic Training",
+  "Grid Training",
   "/typst/images/CYBERNETICS_A_009.jpg",
   "01",
 )[

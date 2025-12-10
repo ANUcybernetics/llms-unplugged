@@ -17,8 +17,8 @@ weighted random selection, training a bigram model, and generating text.
 **Lessons:**
 
 - [Weighted Randomness](/lessons/weighted-randomness)
-- [Basic Training](/lessons/basic-training)
-- [Basic Generation](/lessons/basic-generation)
+- [Grid Training](/lessons/grid-training)
+- [Grid Generation](/lessons/grid-generation)
 
 ## Scaling Up
 

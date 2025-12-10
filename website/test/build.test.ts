@@ -24,8 +24,8 @@ describe("VitePress Build", () => {
     expect(existsSync(lessonsDir)).toBe(true);
 
     const expectedLessons = [
-      "basic-training.html",
-      "basic-generation.html",
+      "grid-training.html",
+      "grid-generation.html",
       "weighted-randomness.html",
       "trigram-model.html",
       "context-columns-training.html",
@@ -80,8 +80,8 @@ describe("VitePress Build", () => {
     }
 
     const expectedPdfs = [
-      "basic-training.pdf",
-      "basic-generation.pdf",
+      "grid-training.pdf",
+      "grid-generation.pdf",
       "weighted-randomness.pdf",
     ];
 

@@ -19,7 +19,7 @@ dependsOn:
 This lesson is part of the [Fundamentals](/topics/fundamentals) topic, with
 instructions for students (including examples) and
 [instructor notes](#instructor-notes). This is an alternative to
-[Basic Generation](/lessons/basic-generation) that uses physical tokens and
+[Grid Generation](/lessons/grid-generation) that uses physical tokens and
 buckets instead of dice rolls; it's designed to be simpler for younger
 audiences, but honestly it's just as fun at a grown-up dinner party.
 
@@ -135,7 +135,7 @@ creative rather than repetitive.
 ### Comparison to dice method
 
 This bucket method and the dice method (see
-[Basic Generation](/lessons/basic-generation)) produce equivalent results:
+[Grid Generation](/lessons/grid-generation)) produce equivalent results:
 
 - dice rolls with weighted probabilities select from options based on counts
 - bucket picking selects from options where counts are represented by multiple

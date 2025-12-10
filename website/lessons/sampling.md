@@ -9,7 +9,7 @@ keyIdea:
   Different sampling strategies change the character of generated text even when
   the model stays the same.
 dependsOn:
-  - Basic Generation
+  - Grid Generation
 ---
 
 # Sampling
@@ -33,7 +33,7 @@ Sampling strategies decide which one to pick.
 ## You will need
 
 - a completed model from an earlier lesson
-- pen, paper, and dice as per _Basic Generation_
+- pen, paper, and dice as per _Grid Generation_
 
 ## Your goal
 
