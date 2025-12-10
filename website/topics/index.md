@@ -9,16 +9,37 @@ The lessons are organised into topics that build on each other. Start with
 **Fundamentals** and work through in order, or jump to specific topics based on
 your needs.
 
-## Fundamentals
+::: tip Grid or Bucket Fundamentals?
 
-Core concepts for building and using language models. Start here to learn
-weighted random selection, training a bigram model, and generating text.
+There are two versions of the Fundamentals lessons: **Grid** and **Bucket**. The
+grid version is better for teaching probability concepts (with clear connections
+to the maths curriculum) and may be a bit quicker once students get the hang of
+it. The bucket version is simpler and even more hands-on---great for younger
+learners or those who benefit from tactile activities. You can also do both
+versions to reinforce the concepts from different angles.
+
+:::
+
+## Fundamentals (Grid)
+
+Core concepts for building and using language models using a grid-based
+approach. Train a bigram model by hand and generate text using dice rolls.
 
 **Lessons:**
 
-- [Weighted Randomness](/lessons/weighted-randomness)
 - [Grid Training](/lessons/grid-training)
 - [Grid Generation](/lessons/grid-generation)
+
+## Fundamentals (Bucket)
+
+An alternative approach to the fundamentals using physical tokens and buckets
+instead of grids and dice. Covers the same core concepts with a more tactile
+experience.
+
+**Lessons:**
+
+- [Bucket Training](/lessons/bucket-training)
+- [Bucket Generation](/lessons/bucket-generation)
 
 ## Scaling Up
 

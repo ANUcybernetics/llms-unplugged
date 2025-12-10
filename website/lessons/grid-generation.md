@@ -28,6 +28,14 @@ using physical tokens and buckets instead of dice rolls.
 
 :::
 
+::: tip Weighted randomness
+
+This lesson involves rolling dice to sample from weighted probability
+distributions. If your students need extra support with this concept, consider
+running the [Weighted Randomness](/lessons/weighted-randomness) lesson first.
+
+:::
+
 Use a pre-trained (hand-built) bigram model to generate new text through
 weighted random sampling.
 

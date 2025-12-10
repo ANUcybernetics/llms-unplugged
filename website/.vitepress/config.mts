@@ -123,14 +123,7 @@ export default defineConfig({
 
     nav: [
       { text: "Lessons", link: "/lessons/" },
-      {
-        text: "Pathways",
-        items: [
-          { text: "For professionals", link: "/professionals" },
-          { text: "For educators", link: "/educators" },
-          { text: "For parents", link: "/parents" },
-        ],
-      },
+      { text: "Topics", link: "/topics/" },
       { text: "News", link: "/news/" },
       { text: "FAQ", link: "/faq" },
       { text: "About", link: "/about" },
@@ -139,14 +132,17 @@ export default defineConfig({
     sidebar: {
       "/lessons/": [
         {
-          text: "Fundamentals",
+          text: "Fundamentals (Grid)",
           items: [
-            {
-              text: "Weighted Randomness",
-              link: "/lessons/weighted-randomness",
-            },
             { text: "Grid Training", link: "/lessons/grid-training" },
             { text: "Grid Generation", link: "/lessons/grid-generation" },
+          ],
+        },
+        {
+          text: "Fundamentals (Bucket)",
+          items: [
+            { text: "Bucket Training", link: "/lessons/bucket-training" },
+            { text: "Bucket Generation", link: "/lessons/bucket-generation" },
           ],
         },
         {
