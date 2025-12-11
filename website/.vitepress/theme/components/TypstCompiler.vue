@@ -570,27 +570,6 @@ onMounted(() => {
 
 <template>
   <div class="typst-compiler">
-    <div class="status-indicator" :class="status">
-      <span class="status-icon">
-        <span
-          v-if="status === 'idle' || status === 'loading'"
-          class="spinner"
-        />
-        <span v-else-if="status === 'ready' || status === 'success'">✓</span>
-        <span v-else-if="status === 'compiling'" class="spinner" />
-        <span v-else-if="status === 'error'">✗</span>
-      </span>
-      <span class="status-text">
-        <template v-if="status === 'idle' || status === 'loading'">
-          Loading compiler...
-        </template>
-        <template v-else-if="status === 'ready'">Compiler ready</template>
-        <template v-else-if="status === 'compiling'">Compiling...</template>
-        <template v-else-if="status === 'success'">Done</template>
-        <template v-else-if="status === 'error'">Error occurred</template>
-      </span>
-    </div>
-
     <div class="input-section">
       <h3>Input text</h3>
 
@@ -684,6 +663,29 @@ onMounted(() => {
       >
         Download PDF
       </button>
+    </div>
+
+    <div class="status-indicator" :class="status">
+      <span class="status-icon">
+        <span
+          v-if="status === 'idle' || status === 'loading'"
+          class="spinner"
+        />
+        <span v-else-if="status === 'ready' || status === 'success'">✓</span>
+        <span v-else-if="status === 'compiling'" class="spinner" />
+        <span v-else-if="status === 'error'">✗</span>
+      </span>
+      <span class="status-text">
+        <template v-if="status === 'idle' || status === 'loading'">
+          Loading compiler...
+        </template>
+        <template v-else-if="status === 'ready'">Compiler ready</template>
+        <template v-else-if="status === 'compiling'">Compiling...</template>
+        <template v-else-if="status === 'success'">Done</template>
+        <template v-else-if="status === 'error'">
+          Error occurred — try refreshing the page
+        </template>
+      </span>
     </div>
 
     <details class="log-details">
