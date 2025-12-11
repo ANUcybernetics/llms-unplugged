@@ -40,8 +40,8 @@ inherit all the styling from the main typst `anu` theme:
 - Public Sans font
 - images: 11.9cm width on right side
 
-Note: the ANU template typst package is on this same machine at
-`~/Library/Application Support/typst/packages/local/anu-typst-template/0.2.0`.
+Note: some files require the `@local/anu-typst-template:0.2.0` package to be
+installed locally (not vendored in this repo).
 
 ## Common tasks
 
@@ -52,7 +52,7 @@ Note: the ANU template typst package is on this same machine at
 
 ## Dependencies
 
-- `@local/anu-typst-template:0.2.0` package
+- `@local/anu-typst-template:0.2.0` package (must be installed locally)
 - Libertinus Serif and Public Sans fonts
 - Typst compiler
 
