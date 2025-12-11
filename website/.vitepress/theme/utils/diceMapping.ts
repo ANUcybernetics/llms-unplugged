@@ -31,6 +31,7 @@ export function createDiceMapping(
   const totalCount = options.reduce((sum, opt) => sum + opt.count, 0);
   if (totalCount === 0) return [];
 
+  const nonZeroOptions = options.filter((opt) => opt.count > 0);
   const mappings: DiceMapping[] = [];
   let currentDice = startIndex;
 
@@ -53,6 +54,22 @@ export function createDiceMapping(
 
   if (mappings.length > 0 && currentDice <= diceSides) {
     mappings[mappings.length - 1].diceRange[1] = diceSides;
+  }
+
+  const coveredSides = mappings.reduce(
+    (sum, m) => sum + (m.diceRange[1] - m.diceRange[0] + 1),
+    0,
+  );
+
+  if (coveredSides < diceSides) {
+    console.warn(`Dice mapping only covers ${coveredSides}/${diceSides} sides`);
+  }
+
+  if (mappings.length < nonZeroOptions.length) {
+    const truncated = nonZeroOptions.length - mappings.length;
+    console.warn(
+      `${truncated} option(s) were truncated from dice mapping due to insufficient dice sides`,
+    );
   }
 
   return mappings;

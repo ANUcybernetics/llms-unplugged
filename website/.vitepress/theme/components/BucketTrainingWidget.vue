@@ -175,13 +175,7 @@ function isPunctuation(token: string): boolean {
 </template>
 
 <style scoped>
-.lm-widget {
-  border: 1px solid var(--vp-c-border);
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin: 1.5rem 0;
-  background: var(--vp-c-bg-soft);
-}
+@import "../styles/widget-base.css";
 
 .training-view {
   display: flex;
@@ -189,70 +183,10 @@ function isPunctuation(token: string): boolean {
   gap: 1rem;
 }
 
-.widget-section {
-  border: 1px solid var(--vp-c-border);
-  border-radius: 0.25rem;
-  overflow: hidden;
-}
-
-.section-header {
-  padding: 0.5rem 0.75rem;
-  background: var(--vp-c-bg-alt);
-  font-weight: 600;
-  font-size: 0.875rem;
-  color: var(--vp-c-text-2);
-  border-bottom: 1px solid var(--vp-c-border);
-}
-
-.section-content {
-  padding: 0.75rem;
-  background: var(--vp-c-bg);
-}
-
-.text-input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid var(--vp-c-border);
-  border-radius: 0.25rem;
-  background: var(--vp-c-bg);
-  color: var(--vp-c-text-1);
-  font-family: var(--vp-font-family-mono);
-  font-size: 0.875rem;
-  resize: vertical;
-}
-
 .tokens-content {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
-}
-
-.token {
-  display: inline-block;
-  padding: 0.25rem 0.5rem;
-  background: var(--vp-c-bg-alt);
-  border-radius: 0.25rem;
-  font-family: var(--vp-font-family-mono);
-  font-size: 0.875rem;
-  transition:
-    background-color 0.2s,
-    transform 0.2s;
-}
-
-.token.punctuation {
-  font-weight: 700;
-  font-size: 1rem;
-  border: 2px solid var(--vp-c-text-3);
-}
-
-.token.highlight-first {
-  background: var(--vp-c-brand-soft);
-  transform: scale(1.05);
-}
-
-.token.highlight-second {
-  background: var(--lm-highlight-strong, #a7f3d0);
-  transform: scale(1.05);
 }
 
 .action-content {
@@ -266,11 +200,6 @@ function isPunctuation(token: string): boolean {
 .complete-message {
   color: var(--vp-c-brand-1);
   font-weight: 600;
-}
-
-.placeholder {
-  color: var(--vp-c-text-3);
-  font-style: italic;
 }
 
 .buckets-content {
@@ -351,7 +280,6 @@ function isPunctuation(token: string): boolean {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .token,
   .bucket,
   .bucket-token {
     transition: none;

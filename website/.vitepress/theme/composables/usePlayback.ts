@@ -1,6 +1,7 @@
 import { ref, computed, onUnmounted, getCurrentInstance } from "vue";
+import { PLAYBACK_CONFIG } from "../config/playback";
 
-const STEP_INTERVAL_MS = 800;
+const STEP_INTERVAL_MS = PLAYBACK_CONFIG.POST_WRITE_PAUSE_MS;
 
 export function usePlayback(initialTotalSteps = 0) {
   const currentStep = ref(0);
@@ -56,6 +57,10 @@ export function usePlayback(initialTotalSteps = 0) {
     onUnmounted(() => {
       clearPlayInterval();
     });
+  } else if (import.meta.env.MODE !== "test") {
+    console.warn(
+      "usePlayback called outside component context - cleanup will not be automatic",
+    );
   }
 
   return {

@@ -6,6 +6,7 @@ import {
   extractTextFromDocx,
   extractTextFromPdf,
 } from "../utils/fileExtract";
+import { bookTemplate, cutoutsTemplate } from "../templates";
 
 type Status = "idle" | "loading" | "ready" | "compiling" | "success" | "error";
 type Workflow = "booklet" | "cutouts";
@@ -51,324 +52,6 @@ const SOCY_LOGO_SVG = `<?xml version="1.0" encoding="iso-8859-1"?>
   326.227,0.169 274.498,0.169 274.498,274.305 0.362,274.305 0.362,326.033 237.921,326.033 69.942,494.013 106.519,530.591
   274.498,362.612 274.498,600.17 326.227,600.17 326.227,326.033 600.362,326.033 "/>
 </svg>`;
-
-const BOOK_TEMPLATE = `
-// Simplified book template for browser PoC
-#let paper_size = sys.inputs.at("paper_size", default: "a4")
-#let font_size = sys.inputs.at("font_size", default: "10pt")
-#let num_columns = sys.inputs.at("columns", default: "2")
-#let json_path = sys.inputs.at("json_path", default: "model.json")
-
-#set text(font: "Libertinus Serif", size: eval(font_size))
-#set page(
-  paper: paper_size,
-  margin: (inside: 2.4cm, outside: 1.5cm, top: 3cm, bottom: 2cm),
-)
-
-#let json_data = json(json_path)
-#let data = json_data.data
-#let doc_metadata = json_data.metadata
-
-#let model-type(n) = {
-  if n == 1 { "unigram" }
-  else if n == 2 { "bigram" }
-  else if n == 3 { "trigram" }
-  else { str(n) + "-gram" }
-}
-
-#set document(
-  title: doc_metadata.title,
-  author: (doc_metadata.author, "Ben Swift"),
-)
-
-#let punct-box(content, baseline: -0.2em) = box(
-  rect(
-    fill: none,
-    stroke: 0.25pt + black,
-    radius: 1pt,
-    inset: (x: 0.1em, y: 0pt),
-    outset: (y: 0pt),
-    text(content, weight: "bold", baseline: baseline),
-  ),
-)
-
-#let display-with-punctuation(text-content, size: 1.5em, weight: "bold") = {
-  let parts = text-content.split(" ")
-  for (i, part) in parts.enumerate() {
-    if part == "." or part == "," {
-      let styled-punct = text(part, size: size, weight: weight, baseline: -0.2em)
-      box(rect(fill: none, stroke: 0.25pt + black, radius: 1pt, inset: (x: 0.1em, y: 0pt), outset: (y: 0pt), styled-punct))
-    } else if part == "—" {
-      text(" — ", size: size, weight: weight)
-    } else {
-      text(part, size: size, weight: weight)
-    }
-    if i < parts.len() - 1 and parts.at(i + 1) != "—" and part != "—" { h(0.3em) }
-  }
-}
-
-#let format-dice-indicator(total_count, num_followers) = {
-  if num_followers > 1 and total_count != 10 {
-    let num-dice = str(total_count).len()
-    text(baseline: -0.1em, size: 0.9em, fill: black, "♦" * num-dice)
-  }
-}
-
-#let format-follower(word, count, show-count: true) = {
-  if word == "." or word == "," {
-    if show-count { box([#text(weight: "semibold")[#count]|#punct-box(word)]) }
-    else { punct-box(word) }
-  } else {
-    if show-count { box([#text(weight: "semibold")[#count]|#text[#word]]) }
-    else { box([#word]) }
-  }
-}
-
-#let format-followers(followers) = {
-  for follower in followers {
-    let word = follower.at(0)
-    let count = follower.at(1)
-    let show-count = followers.len() > 1
-    format-follower(word, count, show-count: show-count)
-    h(0.5em)
-  }
-}
-
-#let format-entry(prefix, total_count, followers) = {
-  display-with-punctuation(prefix, size: 1.5em, weight: "bold")
-  h(0.2em)
-  format-dice-indicator(total_count, followers.len())
-  h(0.6em)
-  format-followers(followers)
-}
-
-// Title page
-#place(top + left)[#image("socy-logo-bw.svg", width: 1.8cm)]
-#align(center + horizon)[
-  #v(2cm)
-  #text(font: "Libertinus Sans", weight: "bold", size: 3em)[#doc_metadata.title]
-  #v(1cm)
-  #text(font: "Libertinus Sans", size: 1.5em)[A #model-type(doc_metadata.n) language model]
-]
-#place(bottom + right)[
-  #text(font: "IBM Plex Mono", size: 14pt)[Cybernetic\\\\ Studio]
-]
-#pagebreak()
-
-// Copyright page
-#set text(size: 11pt)
-#align(horizon)[
-  #text(size: 1.2em, style: "italic")[#doc_metadata.title] by #doc_metadata.author
-  #v(0.5cm)
-  © 2025 Ben Swift
-  #v(0.5cm)
-  This work is licensed under CC BY-NC-SA 4.0.
-  #v(0.5cm)
-  Published by Cybernetic Studio Press
-]
-#pagebreak()
-
-// Main content
-#set page(columns: int(num_columns), numbering: "1")
-
-#for (i, item) in data.enumerate() {
-  let prefix = item.at(0)
-  let total_count = item.at(1)
-  let followers = item.slice(2)
-  format-entry(prefix, total_count, followers)
-  v(0.1em)
-}
-`;
-
-const CUTOUTS_TEMPLATE = `
-// Tokenized cutouts for bucket training
-// Generates rows of tokens with continuous horizontal lines for easy cutting
-
-// Configuration
-#let font_size = 36pt // Master size - change this to scale everything
-#let index_size = 0.2em
-#let cell_padding_x = 0.15em
-#let cell_padding_top = 0.15em
-#let cell_padding_bottom = 0.35em // Extra space for descenders
-#let border_width = 0.5pt // Keep absolute for crisp lines
-#let border_color = luma(180)
-
-// Get configuration from sys.inputs
-#let paper_size = sys.inputs.at("paper_size", default: "a4")
-#let json_path = sys.inputs.at("json_path", default: "cutouts.json")
-
-#set text(font: "Libertinus Serif", size: font_size)
-
-#set page(
-  paper: paper_size,
-  margin: 1.5cm,
-)
-
-// Load the JSON data
-#let json_data = json(json_path)
-#let tokens = json_data.tokens
-#let doc_metadata = json_data.metadata
-
-// Helper to style punctuation with overline
-// When used in corner labels, pass the fill colour to match the stroke
-#let style-punct(t, stroke_color: black, large: false) = {
-  let is_punct = t == "." or t == ","
-  if is_punct {
-    let size_factor = if large { 1.25em } else { 1em }
-    text(size: size_factor, weight: "bold", overline(
-      offset: -0.25em,
-      stroke: 0.05em + stroke_color,
-      t,
-    ))
-  } else {
-    text(t)
-  }
-}
-
-// Helper to format prefix array as styled text
-#let format-prefix(prefix_arr, stroke_color: black) = {
-  if prefix_arr == none or prefix_arr.len() == 0 {
-    none
-  } else {
-    let styled_parts = prefix_arr.map(t => style-punct(
-      t,
-      stroke_color: stroke_color,
-    ))
-    styled_parts.join([ ])
-  }
-}
-
-// Function to render a single token cell (no horizontal borders)
-// The cell width is the maximum of the main token width and the prefix width
-#let token-cell(token, is_last: false, height: auto) = {
-  let text_content = style-punct(token.text, large: true)
-
-  // Right border unless last in row
-  let right_stroke = if is_last { none } else { border_width + border_color }
-
-  let index_fill = if token.keep { luma(160) } else { luma(200) }
-
-  // Get prefix from token (will be empty array if not present or for first n-1 tokens)
-  let prefix_arr = token.at("prefix", default: ())
-  let prefix_content = format-prefix(
-    prefix_arr,
-    stroke_color: if token.keep { luma(160) } else { luma(200) },
-  )
-
-  // Measure main content and prefix to determine cell width
-  let main_measured = measure(text_content)
-  let prefix_measured = if prefix_content != none {
-    measure(text(size: index_size)[#prefix_content])
-  } else {
-    (width: 0pt)
-  }
-
-  // Cell width is the max of main content and prefix, plus padding
-  let content_width = calc.max(main_measured.width, prefix_measured.width)
-
-  let cell_content = if token.keep {
-    // Kept token: black text
-    box(
-      width: content_width + 2 * cell_padding_x,
-      height: height,
-      stroke: (left: none, right: right_stroke, top: none, bottom: none),
-      inset: (x: cell_padding_x),
-      [
-        #if prefix_content != none {
-          place(top + left, dx: -0.1em, dy: 0.05em)[
-            #text(size: index_size, fill: luma(160))[#prefix_content]
-          ]
-        }
-        #place(bottom + right, dx: 0.1em, dy: -0.05em)[
-          #text(size: index_size, fill: index_fill)[#token.index]
-        ]
-        #align(horizon)[#text_content]
-      ],
-    )
-  } else {
-    // Discarded token: greyed out, dashed right border
-    let right_stroke_dashed = if is_last {
-      none
-    } else {
-      (paint: border_color, thickness: border_width, dash: "dashed")
-    }
-    box(
-      width: content_width + 2 * cell_padding_x,
-      height: height,
-      stroke: (left: none, right: right_stroke_dashed, top: none, bottom: none),
-      inset: (x: cell_padding_x),
-      [
-        #if prefix_content != none {
-          place(top + left, dx: -0.1em, dy: 0.05em)[
-            #text(size: index_size, fill: luma(200))[#prefix_content]
-          ]
-        }
-        #place(bottom + right, dx: 0.1em, dy: -0.05em)[
-          #text(size: index_size, fill: index_fill)[#token.index]
-        ]
-        #align(horizon)[#text(fill: luma(160))[#text_content]]
-      ],
-    )
-  }
-
-  cell_content
-}
-
-// We need to use a table-like approach with full-width rows
-// Each row has a top border, and we add a bottom border after the last row
-
-// Height for all cells - must fit tallest content (punctuation at 1.25em + overline)
-#let cell_height = 1.5em
-
-// Use block layout with manual line breaks to create rows
-#set par(leading: 0pt, spacing: 0pt)
-#set block(spacing: 0pt)
-
-// Create a layout that flows tokens and adds horizontal rules between lines
-#layout(size => {
-  let max_width = size.width
-  let rows = ()
-  let current_row = ()
-  let current_width = 0pt
-
-  // Measure and distribute tokens into rows
-  for token in tokens {
-    let cell = token-cell(token, height: cell_height)
-    let cell_size = measure(cell)
-
-    if current_width + cell_size.width > max_width and current_row.len() > 0 {
-      // Start new row
-      rows.push(current_row)
-      current_row = ((token: token, width: cell_size.width),)
-      current_width = cell_size.width
-    } else {
-      current_row.push((token: token, width: cell_size.width))
-      current_width += cell_size.width
-    }
-  }
-
-  // Don't forget the last row
-  if current_row.len() > 0 {
-    rows.push(current_row)
-  }
-
-  // Render rows with horizontal lines
-  for (row_idx, row) in rows.enumerate() {
-    // Top border for this row
-    line(length: 100%, stroke: border_width + border_color)
-
-    // Render tokens in this row
-    box(width: 100%)[
-      #for (i, item) in row.enumerate() {
-        token-cell(item.token, is_last: i == row.len() - 1, height: cell_height)
-      }
-    ]
-  }
-
-  // Bottom border after last row
-  line(length: 100%, stroke: border_width + border_color)
-})
-`;
 
 function log(message: string) {
   const timestamp = new Date().toLocaleTimeString();
@@ -416,8 +99,8 @@ async function initCompiler() {
     typst.value.mapShadow("/socy-logo-bw.svg", encoder.encode(SOCY_LOGO_SVG));
 
     log("Adding templates...");
-    await typst.value.addSource("/book.typ", BOOK_TEMPLATE);
-    await typst.value.addSource("/cutouts.typ", CUTOUTS_TEMPLATE);
+    await typst.value.addSource("/book.typ", bookTemplate);
+    await typst.value.addSource("/cutouts.typ", cutoutsTemplate);
 
     log("Loading text processing WASM module...");
     const wasmUrl = new URL(
@@ -442,15 +125,34 @@ async function handleFileUpload(event: Event) {
   const file = target.files?.[0];
   if (!file) return;
 
+  const MAX_FILE_SIZE = 10 * 1024 * 1024;
+  const EXTRACTION_TIMEOUT = 30000;
+
+  if (file.size > MAX_FILE_SIZE) {
+    log(`Error: File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum is 10MB.`);
+    target.value = '';
+    return;
+  }
+
   fileName.value = file.name;
   const fileType = getFileType(file.name);
 
   if (!fileType) {
     log(`Unsupported file type: ${file.name}`);
+    target.value = '';
     return;
   }
 
   const baseName = file.name.replace(/\.[^.]+$/, "");
+
+  const extractWithTimeout = async <T>(promise: Promise<T>): Promise<T> => {
+    return Promise.race([
+      promise,
+      new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Extraction timed out after 30 seconds')), EXTRACTION_TIMEOUT)
+      )
+    ]);
+  };
 
   try {
     let content: string;
@@ -461,14 +163,14 @@ async function handleFileUpload(event: Event) {
     } else if (fileType === "docx") {
       log(`Extracting text from DOCX: ${file.name}...`);
       const arrayBuffer = await file.arrayBuffer();
-      const result = await extractTextFromDocx(arrayBuffer);
+      const result = await extractWithTimeout(extractTextFromDocx(arrayBuffer));
       content = result.text;
       result.warnings.forEach((warning) => log(`DOCX warning: ${warning}`));
       log(`Extracted ${content.length} characters from DOCX`);
     } else if (fileType === "pdf") {
       log(`Extracting text from PDF: ${file.name}...`);
       const arrayBuffer = await file.arrayBuffer();
-      content = await extractTextFromPdf(arrayBuffer);
+      content = await extractWithTimeout(extractTextFromPdf(arrayBuffer));
       if (content.trim().length === 0) {
         log(
           "Warning: No text extracted from PDF. It may be a scanned document or image-based PDF.",
@@ -489,6 +191,7 @@ async function handleFileUpload(event: Event) {
     }
   } catch (error) {
     log(`Error reading file: ${(error as Error).message}`);
+    target.value = '';
   }
 }
 

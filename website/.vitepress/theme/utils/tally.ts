@@ -1,5 +1,5 @@
 export function tally(n: number): string {
-  if (n === 0 || n == null) return "";
+  if (n === 0 || n === null || n === undefined) return "";
   const groups = Math.floor(n / 5);
   const remainder = n % 5;
   let marks = "";

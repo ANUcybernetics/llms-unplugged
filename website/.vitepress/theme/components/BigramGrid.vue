@@ -55,10 +55,11 @@ function handleRowClick(word: string) {
     <table class="bigram-grid">
       <thead>
         <tr>
-          <th></th>
+          <th scope="col"></th>
           <th
             v-for="word in vocabulary"
             :key="word"
+            scope="col"
             :class="{
               'highlight-col': checkHighlightedCol(word),
               punctuation: word === '.' || word === ',',
@@ -79,8 +80,9 @@ function handleRowClick(word: string) {
           }"
           @click="handleRowClick(rowWord)"
         >
-          <td
+          <th
             class="row-header"
+            scope="row"
             :class="{
               'highlight-row': highlightedRow === rowWord,
               punctuation: rowWord === '.' || rowWord === ',',
@@ -91,7 +93,7 @@ function handleRowClick(word: string) {
               class="row-indicator"
             >▸</span>
             <code>{{ rowWord }}</code>
-          </td>
+          </th>
           <td
             v-for="colWord in vocabulary"
             :key="colWord"

@@ -65,7 +65,16 @@ function normalizeWordToken(token: string): string | null {
   return CASE_ALLOWLIST.get(lower) ?? lower;
 }
 
+const MAX_TEXT_LENGTH = 1_000_000;
+const MAX_TOKEN_COUNT = 100_000;
+
 export function parseTokens(text: string): string[] {
+  if (text.length > MAX_TEXT_LENGTH) {
+    throw new Error(
+      `Text too long: ${text.length} characters (max ${MAX_TEXT_LENGTH})`,
+    );
+  }
+
   const tokens: string[] = [];
   let current = "";
 
@@ -93,6 +102,12 @@ export function parseTokens(text: string): string[] {
   if (current.length > 0) {
     const normalized = normalizeWordToken(current);
     if (normalized) tokens.push(normalized);
+  }
+
+  if (tokens.length > MAX_TOKEN_COUNT) {
+    throw new Error(
+      `Too many tokens: ${tokens.length} (max ${MAX_TOKEN_COUNT})`,
+    );
   }
 
   return tokens;

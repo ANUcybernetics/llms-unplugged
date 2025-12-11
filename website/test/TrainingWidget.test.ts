@@ -34,7 +34,7 @@ describe("TrainingWidget", () => {
   it("creates grid with vocabulary", async () => {
     const wrapper = mount(TrainingWidget);
     await wrapper.find("textarea").setValue("see spot run");
-    const headers = wrapper.findAll(".bigram-grid th code");
+    const headers = wrapper.findAll(".bigram-grid thead th code");
     expect(headers.length).toBe(3);
     expect(headers[0].text()).toBe("see");
     expect(headers[1].text()).toBe("spot");

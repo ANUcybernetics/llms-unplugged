@@ -1,14 +1,14 @@
 <script setup lang="ts">
 /* eslint-disable no-undef -- browser globals used in client-side component */
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onUnmounted } from "vue";
 import { useTrainingText } from "../composables/useTrainingText";
 import { parseTokens, getVocabulary, buildBigramModel } from "../utils/tokens";
 import PlaybackControls from "./PlaybackControls.vue";
 import FullscreenWrapper from "./FullscreenWrapper.vue";
+import { PLAYBACK_CONFIG } from "../config/playback";
 
-const PICK_ANIMATION_MS = 80;
-const POST_WRITE_PAUSE_MS = 800;
-const STEP_INTERVAL_MS = 100;
+const PICK_ANIMATION_MS = PLAYBACK_CONFIG.DICE_ROLL_ANIMATION_MS;
+const POST_WRITE_PAUSE_MS = PLAYBACK_CONFIG.POST_WRITE_PAUSE_MS;
 
 const trainingText = useTrainingText();
 const outputWords = ref<string[]>([]);
@@ -71,6 +71,14 @@ const currentBucketTokens = computed(() => {
 
 const isPlaying = ref(false);
 const isComplete = ref(false);
+const stepInterval = ref(PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS);
+let abortController: AbortController | null = null;
+
+const speedLabel = computed(() => {
+  if (stepInterval.value < 200) return 'Fast';
+  if (stepInterval.value < 600) return 'Normal';
+  return 'Slow';
+});
 
 function play() {
   isPlaying.value = true;
@@ -79,6 +87,13 @@ function play() {
 function pause() {
   isPlaying.value = false;
 }
+
+onUnmounted(() => {
+  if (abortController) {
+    abortController.abort();
+    abortController = null;
+  }
+});
 
 function reset() {
   outputWords.value = [];
@@ -167,10 +182,29 @@ function handlePlay() {
 
 watch(isPlaying, async (playing) => {
   if (playing) {
-    while (isPlaying.value) {
-      await doStep();
-      await new Promise((resolve) => setTimeout(resolve, STEP_INTERVAL_MS));
+    abortController = new AbortController();
+    const signal = abortController.signal;
+
+    try {
+      while (isPlaying.value && !signal.aborted) {
+        await doStep();
+        await new Promise((resolve, reject) => {
+          const timeout = setTimeout(resolve, stepInterval.value);
+          signal.addEventListener('abort', () => {
+            clearTimeout(timeout);
+            reject(new DOMException('Aborted', 'AbortError'));
+          }, { once: true });
+        });
+      }
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        return;
+      }
+      throw error;
     }
+  } else if (abortController) {
+    abortController.abort();
+    abortController = null;
   }
 });
 
@@ -307,67 +341,46 @@ function isPunctuation(token: string): boolean {
           </div>
         </div>
 
-        <PlaybackControls
-          :is-playing="isPlaying"
-          :is-complete="isComplete"
-          :current-step="0"
-          :total-steps="0"
-          :show-step-counter="false"
-          @play="handlePlay"
-          @pause="pause"
-          @step="doStep"
-          @reset="reset"
-        />
+        <div class="widget-section">
+          <div class="section-header">Controls</div>
+          <div class="section-content controls-content">
+            <PlaybackControls
+              :is-playing="isPlaying"
+              :is-complete="isComplete"
+              :current-step="0"
+              :total-steps="0"
+              :show-step-counter="false"
+              @play="handlePlay"
+              @pause="pause"
+              @step="doStep"
+              @reset="reset"
+            />
+            <div class="speed-control">
+              <label for="bucket-speed-slider">Speed:</label>
+              <input
+                id="bucket-speed-slider"
+                v-model.number="stepInterval"
+                type="range"
+                :min="PLAYBACK_CONFIG.MIN_STEP_INTERVAL_MS"
+                :max="PLAYBACK_CONFIG.MAX_STEP_INTERVAL_MS"
+                step="50"
+              />
+              <span class="speed-label">{{ speedLabel }}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </FullscreenWrapper>
 </template>
 
 <style scoped>
-.lm-widget {
-  border: 1px solid var(--vp-c-border);
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin: 1.5rem 0;
-  background: var(--vp-c-bg-soft);
-}
+@import "../styles/widget-base.css";
 
 .generation-view {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-}
-
-.widget-section {
-  border: 1px solid var(--vp-c-border);
-  border-radius: 0.25rem;
-  overflow: hidden;
-}
-
-.section-header {
-  padding: 0.5rem 0.75rem;
-  background: var(--vp-c-bg-alt);
-  font-weight: 600;
-  font-size: 0.875rem;
-  color: var(--vp-c-text-2);
-  border-bottom: 1px solid var(--vp-c-border);
-}
-
-.section-content {
-  padding: 0.75rem;
-  background: var(--vp-c-bg);
-}
-
-.text-input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid var(--vp-c-border);
-  border-radius: 0.25rem;
-  background: var(--vp-c-bg);
-  color: var(--vp-c-text-1);
-  font-family: var(--vp-font-family-mono);
-  font-size: 0.875rem;
-  resize: vertical;
 }
 
 .output-content {
@@ -382,11 +395,6 @@ function isPunctuation(token: string): boolean {
 .output-word.latest {
   color: var(--vp-c-brand-1);
   font-weight: 600;
-}
-
-.placeholder {
-  color: var(--vp-c-text-3);
-  font-style: italic;
 }
 
 .buckets-content {
@@ -505,39 +513,12 @@ function isPunctuation(token: string): boolean {
   flex-wrap: wrap;
 }
 
-.token {
-  display: inline-block;
-  padding: 0.25rem 0.5rem;
-  background: var(--vp-c-bg-alt);
-  border-radius: 0.25rem;
-  font-family: var(--vp-font-family-mono);
-  font-size: 0.875rem;
-  transition:
-    background-color 0.2s,
-    transform 0.2s;
-}
-
-.token.punctuation {
-  font-weight: 700;
-  font-size: 1rem;
-  border: 2px solid var(--vp-c-text-3);
-}
-
-.token.highlight-first {
-  background: var(--vp-c-brand-soft);
-}
-
-.token.highlight-second {
-  background: var(--lm-highlight-strong, #a7f3d0);
-}
-
 .complete-message {
   color: var(--vp-c-brand-1);
   font-weight: 600;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .token,
   .bucket,
   .bucket-token,
   .output-word {

@@ -6,11 +6,13 @@ const containerRef = ref<HTMLElement | null>(null);
 const isFullscreen = ref(false);
 
 function updateFullscreenState() {
+  if (typeof window === 'undefined') return;
   isFullscreen.value = document.fullscreenElement === containerRef.value;
 }
 
 async function toggleFullscreen() {
-  if (!containerRef.value) return;
+  if (typeof window === 'undefined' || !containerRef.value) return;
+  if (!document.fullscreenEnabled) return;
 
   try {
     if (!document.fullscreenElement) {
@@ -24,11 +26,15 @@ async function toggleFullscreen() {
 }
 
 onMounted(() => {
-  document.addEventListener("fullscreenchange", updateFullscreenState);
+  if (typeof window !== 'undefined') {
+    document.addEventListener("fullscreenchange", updateFullscreenState);
+  }
 });
 
 onUnmounted(() => {
-  document.removeEventListener("fullscreenchange", updateFullscreenState);
+  if (typeof window !== 'undefined') {
+    document.removeEventListener("fullscreenchange", updateFullscreenState);
+  }
 });
 /* eslint-enable no-undef */
 </script>
