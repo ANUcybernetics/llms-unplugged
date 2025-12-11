@@ -56,7 +56,6 @@ tokens that appeared after its label in the original text.
 ## Algorithm
 
 1. **Prepare your tokens**
-
    - print or write out your training text
    - convert everything to lowercase
    - treat words, commas, and full stops as separate tokens (ignore other

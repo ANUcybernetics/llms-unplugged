@@ -23,9 +23,7 @@ describe("parseTokens", () => {
   });
 
   it("filters numbers and roman numerals", () => {
-    const tokens = parseTokens(
-      "Chapter IV is 123good and Section3 is fine.",
-    );
+    const tokens = parseTokens("Chapter IV is 123good and Section3 is fine.");
     expect(tokens).toEqual([
       "chapter",
       "is",
