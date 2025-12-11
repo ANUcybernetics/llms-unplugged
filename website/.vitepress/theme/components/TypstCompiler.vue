@@ -1,6 +1,11 @@
 <script setup lang="ts">
 /* eslint-disable no-undef -- browser globals used in client-side component */
 import { ref, onMounted, computed } from "vue";
+import {
+  getFileType,
+  extractTextFromDocx,
+  extractTextFromPdf,
+} from "../utils/fileExtract";
 
 type Status = "idle" | "loading" | "ready" | "compiling" | "success" | "error";
 type Workflow = "booklet" | "cutouts";
@@ -432,25 +437,59 @@ async function initCompiler() {
   }
 }
 
-function handleFileUpload(event: Event) {
+async function handleFileUpload(event: Event) {
   const target = event.target as HTMLInputElement;
   const file = target.files?.[0];
   if (!file) return;
 
   fileName.value = file.name;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const content = e.target?.result as string;
+  const fileType = getFileType(file.name);
+
+  if (!fileType) {
+    log(`Unsupported file type: ${file.name}`);
+    return;
+  }
+
+  const baseName = file.name.replace(/\.[^.]+$/, "");
+
+  try {
+    let content: string;
+
+    if (fileType === "txt" || fileType === "md") {
+      content = await file.text();
+      log(`Loaded ${fileType.toUpperCase()} file: ${file.name}`);
+    } else if (fileType === "docx") {
+      log(`Extracting text from DOCX: ${file.name}...`);
+      const arrayBuffer = await file.arrayBuffer();
+      const result = await extractTextFromDocx(arrayBuffer);
+      content = result.text;
+      result.warnings.forEach((warning) => log(`DOCX warning: ${warning}`));
+      log(`Extracted ${content.length} characters from DOCX`);
+    } else if (fileType === "pdf") {
+      log(`Extracting text from PDF: ${file.name}...`);
+      const arrayBuffer = await file.arrayBuffer();
+      content = await extractTextFromPdf(arrayBuffer);
+      if (content.trim().length === 0) {
+        log(
+          "Warning: No text extracted from PDF. It may be a scanned document or image-based PDF.",
+        );
+      } else {
+        log(`Extracted ${content.length} characters from PDF`);
+      }
+    } else {
+      return;
+    }
+
     inputText.value = content;
 
-    const baseName = file.name.replace(/\.[^.]+$/, "");
     if (!inputTitle.value) {
       inputTitle.value = baseName
         .replace(/[-_]/g, " ")
         .replace(/\b\w/g, (c) => c.toUpperCase());
     }
-  };
-  reader.readAsText(file);
+  } catch (error) {
+    log(`Error reading file: ${(error as Error).message}`);
+  }
 }
 
 async function processAndCompile(outputType: "svg" | "pdf") {
@@ -559,7 +598,7 @@ onMounted(() => {
         <label class="file-label">
           <input
             type="file"
-            accept=".txt"
+            accept=".txt,.md,.markdown,.docx,.pdf"
             class="file-input"
             @change="handleFileUpload"
           />

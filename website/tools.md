@@ -19,10 +19,18 @@ in your browser and is never sent to any server.
 
 ## How to use
 
-1. **Enter your text**: upload a `.txt` file or paste text directly
+1. **Enter your text**: upload a file or paste text directly
 2. **Add metadata**: provide a title (required) and optionally an author
 3. **Choose options**: select the n-gram size and output type
 4. **Generate**: preview as SVG or download as PDF
+
+## Supported file formats
+
+- `.txt` --- plain text files
+- `.md` --- markdown files (treated as plain text)
+- `.docx` --- Microsoft Word documents (text extracted, formatting ignored)
+- `.pdf` --- PDF documents (best-effort text extraction; scanned/image-based
+  PDFs won't work)
 
 ## Output types
 
