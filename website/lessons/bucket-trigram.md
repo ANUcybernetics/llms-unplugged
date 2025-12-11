@@ -110,14 +110,17 @@ specific patterns.
 
 ## Algorithm (generation)
 
-1. Choose a starting bucket and write down its two-word label---these are the
+1. choose a starting bucket and write down its two-word label---these are the
    first two words of your generated text.
-2. Close your eyes and pick a random token from inside that bucket.
-3. Write down the token you picked.
-4. Put the token back in the bucket.
-5. Find the bucket whose label matches your last _two_ words (the second word of
-   your old label + the token you just picked).
-6. Repeat from step 2 until you reach a stopping point.
+2. close your eyes and pick a random token from inside that bucket
+3. write down the token you picked
+4. put the token back in the bucket
+5. find the bucket whose label matches your last _two_ words (the second word of
+   your old label + the token you just picked)
+6. if no bucket exists for that two-word pair, the model never saw this
+   combination during training---pick a different bucket with the _first_ word
+   of your two-word pair and continue from there
+7. repeat from step 2 until you reach a stopping point
 
 ### Example (generation)
 
