@@ -1,6 +1,6 @@
 #!/usr/bin/env npx tsx
 import { exec } from "node:child_process";
-import { readdir, readFile } from "node:fs/promises";
+import { readdir, readFile, unlink } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
@@ -19,6 +19,8 @@ const EXAMPLE_IMAGES = [
 ];
 
 const BASE_PROMPT = `Task: create an illustrative image---with NO TEXT---for a teaching resource called LLMs Unplugged. Use these images for color & line style reference only. Do not include any pictures of computers.`;
+
+const AVIF_QUALITY = 60;
 
 interface LessonInfo {
   slug: string;
@@ -55,12 +57,27 @@ async function getAllLessonSlugs(): Promise<string[]> {
     .map((f) => f.replace(".md", ""));
 }
 
+async function convertToAvif(jpgPath: string): Promise<boolean> {
+  const avifPath = jpgPath.replace(".jpg", ".avif");
+
+  try {
+    await execAsync(`avifenc -q ${AVIF_QUALITY} "${jpgPath}" "${avifPath}"`);
+    await unlink(jpgPath);
+    return true;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(`  ✗ Failed to convert to AVIF: ${message}`);
+    return false;
+  }
+}
+
 async function generateImage(lesson: LessonInfo): Promise<boolean> {
   const { slug, title, description } = lesson;
   const outputFilename = `hero-${slug}`;
+  const jpgPath = join(OUTPUT_DIR, `${outputFilename}.jpg`);
   const prompt = `${BASE_PROMPT}\n\nLesson Name: ${title}\n\nDescription: ${description}`;
 
-  console.log(`Generating: ${outputFilename}.jpg`);
+  console.log(`Generating: ${outputFilename}.avif`);
   console.log(`  Title: ${title}`);
   console.log(`  Description: ${description.slice(0, 60)}...`);
 
@@ -80,11 +97,15 @@ async function generateImage(lesson: LessonInfo): Promise<boolean> {
 
   try {
     await execAsync(cmd, { shell: true });
-    console.log(`  ✓ Generated ${outputFilename}.jpg\n`);
-    return true;
+    const converted = await convertToAvif(jpgPath);
+    if (converted) {
+      console.log(`  ✓ Generated ${outputFilename}.avif\n`);
+      return true;
+    }
+    return false;
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    console.error(`  ✗ Failed to generate ${outputFilename}.jpg`);
+    console.error(`  ✗ Failed to generate ${outputFilename}`);
     console.error(`    ${message}\n`);
     return false;
   }

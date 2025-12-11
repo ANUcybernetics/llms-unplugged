@@ -1,5 +1,5 @@
 ---
-title: Trigram Model
+title: Grid Trigram
 description:
   Extend the bigram model to use two words of context for better predictions.
 order: 5
@@ -12,21 +12,25 @@ dependsOn:
   - Grid Generation
 ---
 
-# Trigram Model
+# Grid Trigram
 
 ::: info Lesson Info
 
 This lesson is part of the [Scaling Up](/topics/scaling-up) topic, with
 instructions for students (including examples) and
 [instructor notes](#instructor-notes). If you'd like a printable version of the
-student handout, [download it here](/assets/pdfs/trigram-model.pdf).
+student handout, [download it here](/assets/pdfs/grid-trigram.pdf).
+
+There's also an alternative version of this lesson called
+[Bucket Trigram](/lessons/bucket-trigram), which covers the same concepts using
+physical tokens and buckets instead of dice rolls.
 
 :::
 
 Extend the bigram model to consider two words of context instead of one, leading
 to better generation.
 
-![Hero image: Trigram Model](/assets/images/hero-trigram-model.avif)
+![Hero image: Grid Trigram](/assets/images/hero-grid-trigram.avif)
 
 <Prerequisites />
 
@@ -57,21 +61,21 @@ cost: more rows to track and more data needed.
 After the first four words (`see` `spot` `run` `.`) the model is:
 
 | word 1 | word 2 | word 3 | count |
-| ------ | ------ | ------ | ----- | --- |
-| `see`  | `spot` | `run`  |       |     |
-| `spot` | `run`  | `.`    |       |     |
+| ------ | ------ | ------ | ----- |
+| `see`  | `spot` | `run`  | 1     |
+| `spot` | `run`  | `.`    | 1     |
 
 After the full text (`see` `spot` `run` `.` `see` `spot` `jump` `.`) the model
 is:
 
 | word 1 | word 2 | word 3 | count |
-| ------ | ------ | ------ | ----- | --- |
-| `see`  | `spot` | `run`  |       |     |
-| `spot` | `run`  | `.`    |       |     |
-| `run`  | `.`    | `see`  |       |     |
-| `.`    | `see`  | `spot` |       |     |
-| `see`  | `spot` | `jump` |       |     |
-| `spot` | `jump` | `.`    |       |     |
+| ------ | ------ | ------ | ----- |
+| `see`  | `spot` | `run`  | 1     |
+| `spot` | `run`  | `.`    | 1     |
+| `run`  | `.`    | `see`  | 1     |
+| `.`    | `see`  | `spot` | 1     |
+| `see`  | `spot` | `jump` | 1     |
+| `spot` | `jump` | `.`    | 1     |
 
 Note: the order of the rows doesn't matter, so you can re-order to group them by
 _word 1_ if that helps.

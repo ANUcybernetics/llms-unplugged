@@ -26,8 +26,11 @@ describe("VitePress Build", () => {
     const expectedLessons = [
       "grid-training.html",
       "grid-generation.html",
+      "bucket-training.html",
+      "bucket-generation.html",
       "weighted-randomness.html",
-      "trigram-model.html",
+      "grid-trigram.html",
+      "bucket-trigram.html",
       "context-columns-training.html",
       "context-columns-generation.html",
       "pretrained-generation.html",

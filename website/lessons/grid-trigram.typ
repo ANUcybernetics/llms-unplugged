@@ -6,7 +6,7 @@
 #show: lesson-setup
 
 #lesson-hero(
-  "Trigram Model",
+  "Grid Trigram",
   "/typst/images/CYBERNETICS_A_027.jpg",
   "05",
 )[

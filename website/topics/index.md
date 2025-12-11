@@ -49,7 +49,8 @@ windows with trigrams.
 **Lessons:**
 
 - [Pre-trained Model Generation](/lessons/pretrained-generation)
-- [Trigram Model](/lessons/trigram-model)
+- [Grid Trigram](/lessons/grid-trigram)
+- [Bucket Trigram](/lessons/bucket-trigram)
 
 ## Controlling Output
 
