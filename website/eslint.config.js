@@ -21,6 +21,7 @@ export default tseslint.config(
       "_site/**",
       "node_modules/**",
       "public/**",
+      "src/wasm-pkg/**",
     ],
   },
   {

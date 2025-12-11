@@ -5,9 +5,14 @@ use std::io;
 use std::path::Path;
 
 mod text;
+#[cfg(feature = "wasm")]
+mod wasm;
 
 pub use text::RawToken;
-use text::{CanonicalFormTracker, Normalizer, NormalizerConfig};
+pub use text::{CanonicalFormTracker, Normalizer, NormalizerConfig};
+
+#[cfg(feature = "wasm")]
+pub use wasm::*;
 
 /// Helper function to get model type string (e.g., "bigram", "trigram")
 pub fn model_type_str(n: usize) -> String {

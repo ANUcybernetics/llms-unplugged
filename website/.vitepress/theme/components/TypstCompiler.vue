@@ -1,14 +1,28 @@
 <script setup lang="ts">
 /* eslint-disable no-undef -- browser globals used in client-side component */
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 
 type Status = "idle" | "loading" | "ready" | "compiling" | "success" | "error";
+type Workflow = "booklet" | "cutouts";
 
 const status = ref<Status>("idle");
 const statusMessage = ref("Initialising compiler...");
 const previewHtml = ref<string>("");
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const typst = ref<any>(null);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const wasmModule = ref<any>(null);
+
+const inputText = ref("");
+const inputTitle = ref("");
+const inputAuthor = ref("");
+const ngramSize = ref(2);
+const workflow = ref<Workflow>("booklet");
+const fileName = ref("");
+
+const hasInput = computed(
+  () => inputText.value.trim().length > 0 && inputTitle.value.trim().length > 0,
+);
 
 const FONT_URLS = {
   "Libertinus Serif": [
@@ -24,38 +38,6 @@ const FONT_URLS = {
     "https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-mono@latest/latin-400-normal.woff2",
     "https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-mono@latest/latin-700-normal.woff2",
   ],
-};
-
-const MODEL_JSON = {
-  data: [
-    [".", 99, ["I", 44], ["not", 58], ["and", 70]],
-    ["I", 99, ["do", 40], ["am", 59], ["will", 78], ["would", 94]],
-    ["am", 99, [".", 62], ["Sam", 99]],
-    ["Sam", 99, ["I", 73], [".", 99]],
-    ["do", 99, ["not", 94], ["I", 99]],
-    ["not", 99, ["like", 42], [",", 60], ["in", 78], ["eat", 99]],
-    ["like", 99, ["them", 77], ["green", 99]],
-    [
-      "them",
-      99,
-      ["in", 23],
-      ["with", 41],
-      [",", 57],
-      ["here", 73],
-      ["anywhere", 99],
-    ],
-    ["green", 99, ["eggs", 99]],
-    ["eggs", 99, ["and", 99]],
-    ["and", 99, ["ham", 42], ["I", 99]],
-    ["ham", 99, [".", 54], ["I", 99]],
-  ],
-  metadata: {
-    author: "Dr Seuss",
-    n: 2,
-    title: "Green Eggs and Ham",
-    url: "https://example.com",
-    version: "1.0.0",
-  },
 };
 
 const SOCY_LOGO_SVG = `<?xml version="1.0" encoding="iso-8859-1"?>
@@ -193,6 +175,196 @@ const BOOK_TEMPLATE = `
 }
 `;
 
+const CUTOUTS_TEMPLATE = `
+// Tokenized cutouts for bucket training
+// Generates rows of tokens with continuous horizontal lines for easy cutting
+
+// Configuration
+#let font_size = 36pt // Master size - change this to scale everything
+#let index_size = 0.2em
+#let cell_padding_x = 0.15em
+#let cell_padding_top = 0.15em
+#let cell_padding_bottom = 0.35em // Extra space for descenders
+#let border_width = 0.5pt // Keep absolute for crisp lines
+#let border_color = luma(180)
+
+// Get configuration from sys.inputs
+#let paper_size = sys.inputs.at("paper_size", default: "a4")
+#let json_path = sys.inputs.at("json_path", default: "cutouts.json")
+
+#set text(font: "Libertinus Serif", size: font_size)
+
+#set page(
+  paper: paper_size,
+  margin: 1.5cm,
+)
+
+// Load the JSON data
+#let json_data = json(json_path)
+#let tokens = json_data.tokens
+#let doc_metadata = json_data.metadata
+
+// Helper to style punctuation with overline
+// When used in corner labels, pass the fill colour to match the stroke
+#let style-punct(t, stroke_color: black, large: false) = {
+  let is_punct = t == "." or t == ","
+  if is_punct {
+    let size_factor = if large { 1.25em } else { 1em }
+    text(size: size_factor, weight: "bold", overline(
+      offset: -0.25em,
+      stroke: 0.05em + stroke_color,
+      t,
+    ))
+  } else {
+    text(t)
+  }
+}
+
+// Helper to format prefix array as styled text
+#let format-prefix(prefix_arr, stroke_color: black) = {
+  if prefix_arr == none or prefix_arr.len() == 0 {
+    none
+  } else {
+    let styled_parts = prefix_arr.map(t => style-punct(
+      t,
+      stroke_color: stroke_color,
+    ))
+    styled_parts.join([ ])
+  }
+}
+
+// Function to render a single token cell (no horizontal borders)
+// The cell width is the maximum of the main token width and the prefix width
+#let token-cell(token, is_last: false, height: auto) = {
+  let text_content = style-punct(token.text, large: true)
+
+  // Right border unless last in row
+  let right_stroke = if is_last { none } else { border_width + border_color }
+
+  let index_fill = if token.keep { luma(160) } else { luma(200) }
+
+  // Get prefix from token (will be empty array if not present or for first n-1 tokens)
+  let prefix_arr = token.at("prefix", default: ())
+  let prefix_content = format-prefix(
+    prefix_arr,
+    stroke_color: if token.keep { luma(160) } else { luma(200) },
+  )
+
+  // Measure main content and prefix to determine cell width
+  let main_measured = measure(text_content)
+  let prefix_measured = if prefix_content != none {
+    measure(text(size: index_size)[#prefix_content])
+  } else {
+    (width: 0pt)
+  }
+
+  // Cell width is the max of main content and prefix, plus padding
+  let content_width = calc.max(main_measured.width, prefix_measured.width)
+
+  let cell_content = if token.keep {
+    // Kept token: black text
+    box(
+      width: content_width + 2 * cell_padding_x,
+      height: height,
+      stroke: (left: none, right: right_stroke, top: none, bottom: none),
+      inset: (x: cell_padding_x),
+      [
+        #if prefix_content != none {
+          place(top + left, dx: -0.1em, dy: 0.05em)[
+            #text(size: index_size, fill: luma(160))[#prefix_content]
+          ]
+        }
+        #place(bottom + right, dx: 0.1em, dy: -0.05em)[
+          #text(size: index_size, fill: index_fill)[#token.index]
+        ]
+        #align(horizon)[#text_content]
+      ],
+    )
+  } else {
+    // Discarded token: greyed out, dashed right border
+    let right_stroke_dashed = if is_last {
+      none
+    } else {
+      (paint: border_color, thickness: border_width, dash: "dashed")
+    }
+    box(
+      width: content_width + 2 * cell_padding_x,
+      height: height,
+      stroke: (left: none, right: right_stroke_dashed, top: none, bottom: none),
+      inset: (x: cell_padding_x),
+      [
+        #if prefix_content != none {
+          place(top + left, dx: -0.1em, dy: 0.05em)[
+            #text(size: index_size, fill: luma(200))[#prefix_content]
+          ]
+        }
+        #place(bottom + right, dx: 0.1em, dy: -0.05em)[
+          #text(size: index_size, fill: index_fill)[#token.index]
+        ]
+        #align(horizon)[#text(fill: luma(160))[#text_content]]
+      ],
+    )
+  }
+
+  cell_content
+}
+
+// We need to use a table-like approach with full-width rows
+// Each row has a top border, and we add a bottom border after the last row
+
+// Height for all cells - must fit tallest content (punctuation at 1.25em + overline)
+#let cell_height = 1.5em
+
+// Use block layout with manual line breaks to create rows
+#set par(leading: 0pt, spacing: 0pt)
+#set block(spacing: 0pt)
+
+// Create a layout that flows tokens and adds horizontal rules between lines
+#layout(size => {
+  let max_width = size.width
+  let rows = ()
+  let current_row = ()
+  let current_width = 0pt
+
+  // Measure and distribute tokens into rows
+  for token in tokens {
+    let cell = token-cell(token, height: cell_height)
+    let cell_size = measure(cell)
+
+    if current_width + cell_size.width > max_width and current_row.len() > 0 {
+      // Start new row
+      rows.push(current_row)
+      current_row = ((token: token, width: cell_size.width),)
+      current_width = cell_size.width
+    } else {
+      current_row.push((token: token, width: cell_size.width))
+      current_width += cell_size.width
+    }
+  }
+
+  // Don't forget the last row
+  if current_row.len() > 0 {
+    rows.push(current_row)
+  }
+
+  // Render rows with horizontal lines
+  for (row_idx, row) in rows.enumerate() {
+    // Top border for this row
+    line(length: 100%, stroke: border_width + border_color)
+
+    // Render tokens in this row
+    box(width: 100%)[
+      #for (i, item) in row.enumerate() {
+        token-cell(item.token, is_last: i == row.len() - 1, height: cell_height)
+      }
+    ]
+  }
+
+  // Bottom border after last row
+  line(length: 100%, stroke: border_width + border_color)
+})
+`;
+
 function log(message: string) {
   const timestamp = new Date().toLocaleTimeString();
   statusMessage.value += `\n[${timestamp}] ${message}`;
@@ -234,66 +406,121 @@ async function initCompiler() {
       }
     }
 
-    log("Adding model.json...");
-    await typst.value.addSource("/model.json", JSON.stringify(MODEL_JSON));
-
     log("Adding SVG logo...");
     const encoder = new TextEncoder();
     typst.value.mapShadow("/socy-logo-bw.svg", encoder.encode(SOCY_LOGO_SVG));
 
-    log("Adding book template...");
-    await typst.value.addSource("/main.typ", BOOK_TEMPLATE);
+    log("Adding templates...");
+    await typst.value.addSource("/book.typ", BOOK_TEMPLATE);
+    await typst.value.addSource("/cutouts.typ", CUTOUTS_TEMPLATE);
+
+    log("Loading text processing WASM module...");
+    const wasmUrl = new URL(
+      "../../../src/wasm-pkg/llms_unplugged.js",
+      import.meta.url,
+    );
+    const wasm = await import(/* @vite-ignore */ wasmUrl.href);
+    await wasm.default();
+    wasmModule.value = wasm;
+    log("WASM module loaded");
 
     status.value = "ready";
-    log("Ready to compile!");
+    log("Ready! Enter text or upload a file to begin.");
   } catch (error) {
     status.value = "error";
     log(`Error: ${(error as Error).message}`);
   }
 }
 
-async function compileToSvg() {
-  if (!typst.value || status.value !== "ready") return;
+function handleFileUpload(event: Event) {
+  const target = event.target as HTMLInputElement;
+  const file = target.files?.[0];
+  if (!file) return;
 
-  status.value = "compiling";
-  log("Compiling to SVG...");
+  fileName.value = file.name;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const content = e.target?.result as string;
+    inputText.value = content;
 
-  try {
-    const svg = await typst.value.svg({ mainFilePath: "/main.typ" });
-    previewHtml.value = svg;
-    status.value = "success";
-    log("SVG compilation successful!");
-    status.value = "ready";
-  } catch (error) {
-    status.value = "error";
-    log(`Compilation error: ${(error as Error).message}`);
-  }
+    const baseName = file.name.replace(/\.[^.]+$/, "");
+    if (!inputTitle.value) {
+      inputTitle.value = baseName
+        .replace(/[-_]/g, " ")
+        .replace(/\b\w/g, (c) => c.toUpperCase());
+    }
+  };
+  reader.readAsText(file);
 }
 
-async function downloadPdf() {
-  if (!typst.value || status.value !== "ready") return;
+async function processAndCompile(outputType: "svg" | "pdf") {
+  if (!typst.value || !wasmModule.value || status.value !== "ready") return;
+  if (!hasInput.value) return;
 
   status.value = "compiling";
-  log("Compiling to PDF...");
+  const workflowName = workflow.value === "booklet" ? "booklet" : "cutouts";
+  log(`Processing text for ${workflowName} (n=${ngramSize.value})...`);
 
   try {
-    const pdfData = await typst.value.pdf({ mainFilePath: "/main.typ" });
-    const blob = new Blob([pdfData], { type: "application/pdf" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "ngram-model.pdf";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    let jsonString: string;
+    const title = inputTitle.value.trim();
+    const author = inputAuthor.value.trim() || "Unknown";
 
-    status.value = "success";
-    log("PDF generated and download started!");
+    if (workflow.value === "booklet") {
+      jsonString = wasmModule.value.process_text_for_booklet(
+        inputText.value,
+        title,
+        author,
+        ngramSize.value,
+      );
+    } else {
+      jsonString = wasmModule.value.process_text_for_cutouts(
+        inputText.value,
+        title,
+        author,
+        ngramSize.value,
+      );
+    }
+
+    log("Text processed, updating model data...");
+    await typst.value.addSource("/model.json", jsonString);
+
+    const templatePath =
+      workflow.value === "booklet" ? "/book.typ" : "/cutouts.typ";
+    const jsonPath = "/model.json";
+
+    if (outputType === "svg") {
+      log("Compiling to SVG...");
+      const svg = await typst.value.svg({
+        mainFilePath: templatePath,
+        inputs: { json_path: jsonPath },
+      });
+      previewHtml.value = svg;
+      log("SVG compilation successful!");
+    } else {
+      log("Compiling to PDF...");
+      const pdfData = await typst.value.pdf({
+        mainFilePath: templatePath,
+        inputs: { json_path: jsonPath },
+      });
+      const blob = new Blob([pdfData], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      const safeTitle = title.replace(/[^a-z0-9]/gi, "-").toLowerCase();
+      a.download = `${safeTitle}-${workflowName}-${ngramSize.value}gram.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      log("PDF generated and download started!");
+    }
+
     status.value = "ready";
   } catch (error) {
     status.value = "error";
-    log(`PDF error: ${(error as Error).message}`);
+    log(`Error: ${(error as Error).message}`);
+    status.value = "ready";
   }
 }
 
@@ -306,7 +533,10 @@ onMounted(() => {
   <div class="typst-compiler">
     <div class="status-indicator" :class="status">
       <span class="status-icon">
-        <span v-if="status === 'idle' || status === 'loading'" class="spinner" />
+        <span
+          v-if="status === 'idle' || status === 'loading'"
+          class="spinner"
+        />
         <span v-else-if="status === 'ready' || status === 'success'">✓</span>
         <span v-else-if="status === 'compiling'" class="spinner" />
         <span v-else-if="status === 'error'">✗</span>
@@ -322,11 +552,97 @@ onMounted(() => {
       </span>
     </div>
 
+    <div class="input-section">
+      <h3>Input text</h3>
+
+      <div class="file-upload">
+        <label class="file-label">
+          <input
+            type="file"
+            accept=".txt"
+            class="file-input"
+            @change="handleFileUpload"
+          />
+          <span class="file-button">Choose file</span>
+          <span class="file-name">{{ fileName || "No file chosen" }}</span>
+        </label>
+      </div>
+
+      <div class="text-input">
+        <textarea
+          v-model="inputText"
+          placeholder="Or paste your text here..."
+          rows="8"
+          :disabled="status !== 'ready'"
+        />
+      </div>
+
+      <div class="metadata-inputs">
+        <div class="input-group">
+          <label for="title-input">Title</label>
+          <input
+            id="title-input"
+            v-model="inputTitle"
+            type="text"
+            placeholder="Document title (required)"
+            :disabled="status !== 'ready'"
+          />
+        </div>
+        <div class="input-group">
+          <label for="author-input">Author</label>
+          <input
+            id="author-input"
+            v-model="inputAuthor"
+            type="text"
+            placeholder="Author name (optional)"
+            :disabled="status !== 'ready'"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="options-section">
+      <h3>Options</h3>
+
+      <div class="option-row">
+        <div class="option-group">
+          <label for="ngram-select">N-gram size</label>
+          <select
+            id="ngram-select"
+            v-model="ngramSize"
+            :disabled="status !== 'ready'"
+          >
+            <option :value="2">Bigram (n=2)</option>
+            <option :value="3">Trigram (n=3)</option>
+            <option :value="4">4-gram (n=4)</option>
+          </select>
+        </div>
+
+        <div class="option-group">
+          <label for="workflow-select">Output type</label>
+          <select
+            id="workflow-select"
+            v-model="workflow"
+            :disabled="status !== 'ready'"
+          >
+            <option value="booklet">Booklet (dice lookup tables)</option>
+            <option value="cutouts">Cutouts (bucket training tokens)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
     <div class="controls">
-      <button :disabled="status !== 'ready'" @click="compileToSvg">
+      <button
+        :disabled="status !== 'ready' || !hasInput"
+        @click="processAndCompile('svg')"
+      >
         Preview (SVG)
       </button>
-      <button :disabled="status !== 'ready'" @click="downloadPdf">
+      <button
+        :disabled="status !== 'ready' || !hasInput"
+        @click="processAndCompile('pdf')"
+      >
         Download PDF
       </button>
     </div>
@@ -407,6 +723,121 @@ onMounted(() => {
   }
 }
 
+.input-section,
+.options-section {
+  margin-bottom: 1.5rem;
+}
+
+.input-section h3,
+.options-section h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.file-upload {
+  margin-bottom: 0.75rem;
+}
+
+.file-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-button {
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-border);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.file-button:hover {
+  background: var(--vp-c-bg-mute);
+}
+
+.file-name {
+  color: var(--vp-c-text-2);
+  font-size: 0.9rem;
+}
+
+.text-input textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 4px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.85rem;
+  resize: vertical;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
+}
+
+.text-input textarea:disabled {
+  background: var(--vp-c-bg-soft);
+  cursor: not-allowed;
+}
+
+.metadata-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.input-group label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--vp-c-text-2);
+}
+
+.input-group input,
+.option-group select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
+}
+
+.input-group input:disabled,
+.option-group select:disabled {
+  background: var(--vp-c-bg-soft);
+  cursor: not-allowed;
+}
+
+.option-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.option-group label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--vp-c-text-2);
+}
+
 .controls {
   display: flex;
   flex-wrap: wrap;
@@ -472,5 +903,12 @@ onMounted(() => {
 .preview :deep(svg) {
   max-width: 100%;
   height: auto;
+}
+
+@media (max-width: 640px) {
+  .metadata-inputs,
+  .option-row {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
