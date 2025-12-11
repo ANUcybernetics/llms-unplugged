@@ -34,8 +34,11 @@ in your browser and is never sent to any server.
 
 ## Output types
 
-- **Booklet**: generates dice lookup tables for probabilistic text generation
-- **Cutouts**: generates token cards for bucket training activities
+- **Booklet**: generates dice lookup tables for probabilistic text generation,
+  as used in the [Pre-trained Model Generation](/lessons/pretrained-generation)
+  lesson
+- **Cutouts**: generates token cards for the
+  [Bucket Training](/lessons/bucket-training) lesson
 
 <script setup>
 import { onMounted, ref } from 'vue'
