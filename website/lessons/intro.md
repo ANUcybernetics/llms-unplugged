@@ -68,4 +68,31 @@ That's it. Every time you see ChatGPT, Claude, or similar tools generate a
 response, they're doing this one thing over and over: predicting the next word,
 adding it to the text, then predicting again.
 
+### The structure of an _LLMs Unplugged_ lesson
+
+Each _LLMs Unplugged_ lesson covers a single concept. There are some lessons
+which are "prerequisites" for others; see [Topics](/topics) to explore several
+different ways of stringing these lessons together to create different learning
+journeys.
+
+Each lesson has the following structure:
+
+- **You will need**: the physical materials you'll need to complete the lesson
+- **Your goal**: what you (i.e. the learner) will achieve by the end of the
+  lesson
+- **Key idea**: the central concept or principle of the lesson
+- **Algorithm**: the step-by-step process for completing the lesson
+- **Example**: a simple worked example to illustrate the algorithm
+- **Try it yourself**: an interactive widget which shows the worked example in
+  an on-screen way (not a substitute for the "unplugged" activity at the heart
+  of the lesson, but useful for visualising how it works to get your head around
+  it)
+- and finally, **Instructor notes** which includes:
+  - **Discussion questions**: questions to stimulate discussion and further
+    learning during and after the lesson
+  - **Connection to current LLMs**: some notes on how the activity relates to
+    _real_ Large Language Models like Claude, ChatGPT and Gemini (all figures
+    correct as at December '26, although things are moving fast and new models
+    are being released all the time)
+
 <!--@include: ../partials/historical-foundations.md-->
