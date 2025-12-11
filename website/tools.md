@@ -10,8 +10,8 @@ Generate N-gram model booklets directly in your browser using
 
 ::: warning Experimental
 
-This is an experimental feature. The compiler and fonts are loaded from CDN,
-which may take a moment on first use.
+This is an experimental feature. The compiler and fonts are loaded from CDN on
+page load, which may take a moment on first use.
 
 :::
 

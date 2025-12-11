@@ -1,11 +1,11 @@
 <script setup lang="ts">
 /* eslint-disable no-undef -- browser globals used in client-side component */
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 type Status = "idle" | "loading" | "ready" | "compiling" | "success" | "error";
 
 const status = ref<Status>("idle");
-const statusMessage = ref("Click 'Initialise' to start");
+const statusMessage = ref("Initialising compiler...");
 const previewHtml = ref<string>("");
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const typst = ref<any>(null);
@@ -296,28 +296,47 @@ async function downloadPdf() {
     log(`PDF error: ${(error as Error).message}`);
   }
 }
+
+onMounted(() => {
+  initCompiler();
+});
 </script>
 
 <template>
   <div class="typst-compiler">
+    <div class="status-indicator" :class="status">
+      <span class="status-icon">
+        <span v-if="status === 'idle' || status === 'loading'" class="spinner" />
+        <span v-else-if="status === 'ready' || status === 'success'">✓</span>
+        <span v-else-if="status === 'compiling'" class="spinner" />
+        <span v-else-if="status === 'error'">✗</span>
+      </span>
+      <span class="status-text">
+        <template v-if="status === 'idle' || status === 'loading'">
+          Loading compiler...
+        </template>
+        <template v-else-if="status === 'ready'">Compiler ready</template>
+        <template v-else-if="status === 'compiling'">Compiling...</template>
+        <template v-else-if="status === 'success'">Done</template>
+        <template v-else-if="status === 'error'">Error occurred</template>
+      </span>
+    </div>
+
     <div class="controls">
-      <button
-        :disabled="status === 'loading' || status === 'compiling'"
-        @click="initCompiler"
-      >
-        1. Initialise compiler
-      </button>
       <button :disabled="status !== 'ready'" @click="compileToSvg">
-        2. Compile to SVG
+        Preview (SVG)
       </button>
       <button :disabled="status !== 'ready'" @click="downloadPdf">
-        3. Download PDF
+        Download PDF
       </button>
     </div>
 
-    <div class="status" :class="status">
-      <pre>{{ statusMessage }}</pre>
-    </div>
+    <details class="log-details">
+      <summary>Show log</summary>
+      <div class="status-log" :class="status">
+        <pre>{{ statusMessage }}</pre>
+      </div>
+    </details>
 
     <!-- eslint-disable-next-line vue/no-v-html -- SVG from typst compiler is trusted -->
     <div v-if="previewHtml" class="preview" v-html="previewHtml"></div>
@@ -327,6 +346,65 @@ async function downloadPdf() {
 <style scoped>
 .typst-compiler {
   margin: 1.5rem 0;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.status-indicator.idle,
+.status-indicator.loading {
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-border);
+  color: var(--vp-c-text-2);
+}
+
+.status-indicator.ready,
+.status-indicator.success {
+  background: #d4edda;
+  border: 1px solid #28a745;
+  color: #155724;
+}
+
+.status-indicator.compiling {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  color: #856404;
+}
+
+.status-indicator.error {
+  background: #f8d7da;
+  border: 1px solid #dc3545;
+  color: #721c24;
+}
+
+.status-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .controls {
@@ -355,42 +433,32 @@ async function downloadPdf() {
   cursor: not-allowed;
 }
 
-.status {
+.log-details {
+  margin: 1rem 0;
+}
+
+.log-details summary {
+  cursor: pointer;
+  color: var(--vp-c-text-2);
+  font-size: 0.875rem;
+}
+
+.status-log {
   padding: 1rem;
   border-radius: 8px;
-  margin: 1rem 0;
+  margin-top: 0.5rem;
   font-family: var(--vp-font-family-mono);
-  font-size: 0.875rem;
-  max-height: 300px;
+  font-size: 0.8rem;
+  max-height: 200px;
   overflow-y: auto;
-}
-
-.status pre {
-  margin: 0;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-.status.idle {
   background: var(--vp-c-bg-soft);
   border: 1px solid var(--vp-c-border);
 }
 
-.status.loading,
-.status.compiling {
-  background: #fff3cd;
-  border: 1px solid #ffc107;
-}
-
-.status.ready,
-.status.success {
-  background: #d4edda;
-  border: 1px solid #28a745;
-}
-
-.status.error {
-  background: #f8d7da;
-  border: 1px solid #dc3545;
+.status-log pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .preview {
