@@ -1,4 +1,4 @@
-import { ref, computed, onUnmounted } from "vue";
+import { ref, computed, onUnmounted, getCurrentInstance } from "vue";
 
 const STEP_INTERVAL_MS = 800;
 
@@ -52,9 +52,11 @@ export function usePlayback(initialTotalSteps = 0) {
     }
   }
 
-  onUnmounted(() => {
-    clearPlayInterval();
-  });
+  if (getCurrentInstance()) {
+    onUnmounted(() => {
+      clearPlayInterval();
+    });
+  }
 
   return {
     currentStep,
