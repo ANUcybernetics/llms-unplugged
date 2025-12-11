@@ -1,9 +1,10 @@
 ---
 id: task-078
 title: combine widgets and example sections
-status: To Do
+status: Done
 assignee: []
-created_date: "2025-12-09 21:48"
+created_date: '2025-12-09 21:48'
+updated_date: '2025-12-11 06:26'
 labels: []
 dependencies: []
 ---

@@ -69,7 +69,13 @@ yields fluent text.
 5. Repeat from step 2 until you hit a natural stopping point (e.g., `.`) or your
    desired length.
 
-## Example
+## See how it works
+
+Before you try generating text yourself with dice, work through this example to
+see the algorithm in action. The written walkthrough and interactive widget
+below both demonstrate the same process.
+
+### Worked example
 
 Using the same bigram model from the example in _Grid Training_:
 
@@ -88,12 +94,11 @@ Using the same bigram model from the example in _Grid Training_:
 
 After the above steps, the generated text is _"see spot run. see spot"_
 
-## Try it yourself
+### Interactive widget
 
-Use the interactive widget below to see how text generation works step-by-step.
-Click on a row to select a starting word, then press Play or Step to watch the
-dice roll and text being generated. You can also edit the training text to
-create your own model.
+Step through the generation process at your own pace. Click on a row to select a
+starting word, then press Play or Step to watch the dice roll and text being
+generated. You can also edit the training text to create your own model.
 
 <GenerationWidget
   initialText="See spot run. See spot jump. Run, Spot, run. Jump, Spot, jump."

@@ -47,15 +47,6 @@ Pre-trained models capture patterns from larger datasets. You can use them just
 like your hand-built bigram model: look up the current word, roll dice, choose
 the next word, and repeat.
 
-## Interactive demo
-
-Try the booklet lookup process interactively. The model is displayed in the same
-format as the printed booklets: each entry shows a bold prefix word, diamond
-symbols indicating how many d10s to roll, and the possible next words with their
-thresholds.
-
-<PretrainedGenerationWidget />
-
 ## Algorithm (quick recap)
 
 1. Choose a starting word---any bold word in the booklet---and write it down.
@@ -69,13 +60,28 @@ thresholds.
 5. Repeat from step 2 using the new word until you reach a natural stopping
    point or your desired length.
 
-## Examples
+## See how it works
+
+Before you try generating text yourself with a booklet, work through these
+examples to see the algorithm in action. The written examples and interactive
+widget below both demonstrate the same process.
+
+### Worked examples
 
 - **Single d10:** Current word `cat` with options `4|sat`, `7|ran`, `10|slept`.
   Roll once; a 6 lands you on `ran`.
 - **Multiple d10s:** Current word `the` with a `2` indicator and options
   `33|cat`, `66|dog`, `99|end`. Roll twice; a 5 and 8 combine to 58, so you
   choose `dog`.
+
+### Interactive widget
+
+Step through the booklet lookup process at your own pace. The model is displayed
+in the same format as the printed booklets: each entry shows a bold prefix word,
+diamond symbols indicating how many d10s to roll, and the possible next words
+with their thresholds.
+
+<PretrainedGenerationWidget />
 
 ## Instructor notes
 

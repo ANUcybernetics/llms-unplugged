@@ -60,7 +60,13 @@ bucket and repeating the process word by word creates new text.
 6. Repeat from step 2 until you reach a stopping point (e.g. an empty bucket or
    your desired length).
 
-## Example
+## See how it works
+
+Before you try generating text yourself with buckets, work through this example
+to see the algorithm in action. The written walkthrough and interactive widget
+below both demonstrate the same process.
+
+### Worked example
 
 Using the bucket model from the example in _Bucket Training_:
 
@@ -94,12 +100,12 @@ Notice how the randomness comes from physically picking tokens without looking.
 Buckets with more tokens of the same type are more likely to produce that
 token---the "see" bucket always produces `spot` because that's all it contains.
 
-## Try it yourself
+### Interactive widget
 
-Use the interactive widget below to see how bucket generation works
-step-by-step. Click on a bucket to select a starting word, then press Play or
-Step to watch tokens being picked randomly and text being generated. You can
-also edit the training text to create your own model.
+Step through the generation process at your own pace. Click on a bucket to
+select a starting word, then press Play or Step to watch tokens being picked
+randomly and text being generated. You can also edit the training text to create
+your own model.
 
 <BucketGenerationWidget />
 

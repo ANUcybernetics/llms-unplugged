@@ -56,6 +56,7 @@ tokens that appeared after its label in the original text.
 ## Algorithm
 
 1. **Prepare your tokens**
+
    - print or write out your training text
    - convert everything to lowercase
    - treat words, commas, and full stops as separate tokens (ignore other
@@ -70,7 +71,13 @@ tokens that appeared after its label in the original text.
    - now apply the same process to that next token (create its bucket if needed)
    - repeat until all tokens are in buckets
 
-## Example
+## See how it works
+
+Before you try training a model yourself with tokens and buckets, work through
+this example to see the algorithm in action. The written walkthrough and
+interactive widget below both demonstrate the same process.
+
+### Worked example
 
 Original text: _"See Spot run. See Spot jump."_
 
@@ -109,11 +116,10 @@ Notice that the "see" bucket contains two `spot` tokens because "spot" followed
 "see" twice in the original text. This captures the same information as a grid
 with tally marks, but in a physical form you can touch and manipulate.
 
-## Try it yourself
+### Interactive widget
 
-Use the interactive widget below to see how the bucket training process works
-step-by-step. Enter your own text or use the example, then press Play or Step to
-watch the buckets being filled.
+Step through the training process at your own pace. Enter your own text or use
+the example, then press Play or Step to watch the buckets being filled.
 
 <BucketTrainingWidget />
 

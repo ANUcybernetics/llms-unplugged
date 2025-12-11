@@ -67,7 +67,13 @@ model (filling out the grid) to track which words follow other words.
    - shift along by one word (so the second word becomes your "first" word) and
      repeat until you've gone through the entire text
 
-## Example
+## See how it works
+
+Before you try training a model yourself with pen and paper, work through this
+example to see the algorithm in action. The written walkthrough and interactive
+widget below both demonstrate the same process.
+
+### Worked example
 
 Original text: _"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot,
 jump."_
@@ -83,11 +89,10 @@ After the full text the model looks like:
 
 <LmGrid tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
 
-## Try it yourself
+### Interactive widget
 
-Use the interactive widget below to see how the training process works
-step-by-step. Enter your own text or use the example, then press Play or Step to
-watch the model being built.
+Step through the training process at your own pace. Enter your own text or use
+the example, then press Play or Step to watch the model being built.
 
 <TrainingWidget initialText="See spot run. See spot jump. Run, Spot, run. Jump, Spot, jump." />
 
