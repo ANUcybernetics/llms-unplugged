@@ -41,6 +41,8 @@ if (existsSync(filepath)) {
 
 const content = `---
 title: ${postName}
+date: ${dateStr}
+author: Ben Swift
 description: TODO
 ---
 

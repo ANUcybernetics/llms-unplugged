@@ -11,10 +11,12 @@ import BucketGenerationWidget from "./components/BucketGenerationWidget.vue";
 import PretrainedGenerationWidget from "./components/PretrainedGenerationWidget.vue";
 import PlaybackControls from "./components/PlaybackControls.vue";
 import FullscreenWrapper from "./components/FullscreenWrapper.vue";
+import Layout from "./Layout.vue";
 import "./custom.css";
 
 export default {
   extends: DefaultTheme,
+  Layout,
   enhanceApp({ app }) {
     app.component("LmGrid", LmGrid);
     app.component("LmTable", LmTable);
