@@ -224,3 +224,30 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+/* Print-only wordmark header */
+.print-wordmark {
+  display: none;
+}
+
+@media print {
+  .print-wordmark {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    font-size: 9pt;
+    line-height: 1.2;
+    text-align: center;
+    padding: 6mm 0 3mm;
+    color: #000;
+    background: #fff;
+    border-bottom: 0.2mm solid #ddd;
+  }
+
+  .vp-doc {
+    margin-top: 18mm;
+  }
+}

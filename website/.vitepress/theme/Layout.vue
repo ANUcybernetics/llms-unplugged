@@ -35,6 +35,11 @@ const formattedDate = computed(() => {
 
 <template>
   <Layout>
+    <template #layout-top>
+      <div class="print-wordmark">
+        LLMs Unplugged (c) Ben Swift, Cybernetic Studio - CC BY-NC-SA 4.0
+      </div>
+    </template>
     <template #doc-before>
       <div v-if="isNewsPage" class="news-meta">
         <span v-if="frontmatter.author" class="author">
