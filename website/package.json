@@ -15,7 +15,7 @@
     "build": "vitepress build",
     "new": "npx tsx scripts/create-news-item.ts",
     "build:pdfs": "npx tsx scripts/build-lesson-pdfs.ts",
-    "generate:heroes": "npx tsx scripts/generate-hero-images.ts",
+    "generate:image": "npx tsx scripts/generate-image.ts",
     "convert:avif": "npx tsx scripts/convert-images-to-avif.ts",
     "preview": "vitepress preview",
     "test": "vitest run",
