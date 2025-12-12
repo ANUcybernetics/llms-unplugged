@@ -231,6 +231,14 @@
 }
 
 @media print {
+  @page {
+    margin: 12mm 10mm;
+  }
+
+  body {
+    margin: 0;
+  }
+
   .print-wordmark {
     display: block;
     position: fixed;
@@ -249,5 +257,25 @@
 
   .vp-doc {
     margin-top: 18mm;
+  }
+
+  /* Hide navigation/sidebars for clean print */
+  .VPNav,
+  .VPSidebar,
+  .VPLocalNav,
+  .VPDocAside {
+    display: none !important;
+  }
+
+  /* Let main content use full width */
+  .VPContent,
+  .VPContent.has-sidebar,
+  .content,
+  .content-container {
+    padding-left: 8mm !important;
+    padding-right: 8mm !important;
+    margin-left: 0 !important;
+    max-width: none !important;
+    box-sizing: border-box;
   }
 }
