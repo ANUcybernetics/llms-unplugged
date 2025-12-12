@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { useData } from "vitepress";
+import { useData, withBase } from "vitepress";
 import DefaultTheme from "vitepress/theme";
 
 const { Layout } = DefaultTheme;
@@ -8,6 +8,19 @@ const { frontmatter, page } = useData();
 
 const isNewsPage = computed(
   () => page.value.relativePath.startsWith("news/") && frontmatter.value.date
+);
+
+const newsSlug = computed(() => {
+  if (!isNewsPage.value) return "";
+  return page.value.relativePath
+    .replace(/^news\//, "")
+    .replace(/\.md$/, "");
+});
+
+const newsHeroSrc = computed(() =>
+  newsSlug.value
+    ? withBase(`/assets/images/hero-news-${newsSlug.value}.avif`)
+    : "",
 );
 
 const formattedDate = computed(() => {
@@ -33,6 +46,13 @@ const formattedDate = computed(() => {
         >·</span>
         <time v-if="frontmatter.date" class="date">{{ formattedDate }}</time>
       </div>
+      <img
+        v-if="isNewsPage && newsHeroSrc"
+        class="news-hero"
+        :src="newsHeroSrc"
+        :alt="`Hero image: ${frontmatter.title ?? newsSlug}`"
+        loading="lazy"
+      />
     </template>
   </Layout>
 </template>
@@ -42,6 +62,12 @@ const formattedDate = computed(() => {
   margin-bottom: 1.5rem;
   color: var(--vp-c-text-2);
   font-size: 0.9rem;
+}
+
+.news-hero {
+  width: 100%;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .separator {
