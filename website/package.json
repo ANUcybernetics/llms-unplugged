@@ -13,6 +13,7 @@
   "scripts": {
     "dev": "vitepress dev",
     "build": "vitepress build",
+    "new": "npx tsx scripts/create-news-item.ts",
     "build:pdfs": "npx tsx scripts/build-lesson-pdfs.ts",
     "generate:heroes": "npx tsx scripts/generate-hero-images.ts",
     "convert:avif": "npx tsx scripts/convert-images-to-avif.ts",
