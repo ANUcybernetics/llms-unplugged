@@ -41,11 +41,8 @@ if (existsSync(filepath)) {
 
 const content = `---
 title: ${postName}
-date: ${dateStr}
 description: TODO
 ---
-
-# ${postName}
 
 TODO: Write your news item here.
 `;
