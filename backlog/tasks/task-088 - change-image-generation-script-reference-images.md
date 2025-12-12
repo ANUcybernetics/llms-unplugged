@@ -1,7 +1,7 @@
 ---
 id: task-088
 title: change image generation script reference images
-status: To Do
+status: Done
 assignee: []
 created_date: "2025-12-12 04:15"
 labels: []

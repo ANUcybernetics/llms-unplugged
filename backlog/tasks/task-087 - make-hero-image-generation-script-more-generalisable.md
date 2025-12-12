@@ -1,7 +1,7 @@
 ---
 id: task-087
 title: make hero image generation script more generalisable
-status: To Do
+status: Done
 assignee: []
 created_date: "2025-12-12 04:02"
 labels: []
