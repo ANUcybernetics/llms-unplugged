@@ -14,49 +14,14 @@ demonstrations. Vite is the build tool.
 - TypeScript
 - Vitest (testing)
 
-## Project structure
-
-```
-website/
-├── .vitepress/
-│   ├── config.mts          # VitePress configuration
-│   ├── theme/
-│   │   ├── index.ts        # Theme entry point
-│   │   ├── custom.css      # ANU colour scheme
-│   │   └── components/     # Vue components
-│   └── cache/              # (gitignored)
-├── public/
-│   ├── assets/
-│   │   ├── images/         # Hero images
-│   │   └── pdfs/           # Lesson handouts
-│   ├── favicon.svg
-│   └── CNAME
-├── index.md                # Homepage
-├── about.md
-├── educators.md
-├── faq.md
-├── lessons/                # Lesson content
-│   ├── index.md
-│   ├── grid-training.md
-│   └── ...
-├── topics/                 # Topic overview pages
-│   ├── index.md
-│   ├── fundamentals.md
-│   └── ...
-├── test/                   # Vitest tests
-└── package.json
-```
-
 ## Development
+
+- the LLMs Unplugged lesson content source files are in `lessons/*.md`, and are
+  arranged into topics via `topics/*.md`
+- custom Vue components live in `.vitepress/theme/components/`
 
 - `npm run dev` - dev server with hot reload
 - `npm run build` - production build to `.vitepress/dist/`
-- `npm test` - run tests
+- `npm run test` - run tests
 
-## Custom components
-
-Custom Vue components live in `.vitepress/theme/components/`.
-
-## Build output
-
-VitePress builds to `.vitepress/dist/`. Deployed to GitHub Pages.
+Whenever the linter/checker reports warnings or errors, fix them.
