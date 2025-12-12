@@ -2,7 +2,9 @@ import DefaultTheme from "vitepress/theme";
 import type { Theme } from "vitepress";
 import LmGrid from "./components/LmGrid.vue";
 import LmTable from "./components/LmTable.vue";
-import LessonCards from "./components/LessonCards.vue";
+import Card from "./components/Card.vue";
+import CardList from "./components/CardList.vue";
+import NewsCards from "./components/NewsCards.vue";
 import Prerequisites from "./components/Prerequisites.vue";
 import TrainingWidget from "./components/TrainingWidget.vue";
 import GenerationWidget from "./components/GenerationWidget.vue";
@@ -20,7 +22,9 @@ export default {
   enhanceApp({ app }) {
     app.component("LmGrid", LmGrid);
     app.component("LmTable", LmTable);
-    app.component("LessonCards", LessonCards);
+    app.component("Card", Card);
+    app.component("CardList", CardList);
+    app.component("NewsCards", NewsCards);
     app.component("Prerequisites", Prerequisites);
     app.component("TrainingWidget", TrainingWidget);
     app.component("GenerationWidget", GenerationWidget);

@@ -7,6 +7,7 @@ import {
   topicDescriptions,
 } from "../../../lessons/topics";
 import type { LessonData } from "../../../lessons/lessons.data";
+import Card from "./Card.vue";
 
 interface Props {
   lessons?: string[];
@@ -56,20 +57,17 @@ const groupedLessons = computed<TopicGroup[]>(() => {
 </script>
 
 <template>
-  <div class="lesson-cards">
+  <div class="card-list">
     <div v-if="isFiltered" class="cards-grid">
-      <a
+      <Card
         v-for="lesson in filteredLessons"
         :key="lesson.url"
         :href="lesson.url"
-        class="lesson-card"
-      >
-        <img :src="lesson.hero" :alt="lesson.title" loading="lazy" />
-        <div class="card-content">
-          <h3>{{ lesson.title }}</h3>
-          <p>{{ lesson.description }}</p>
-        </div>
-      </a>
+        :title="lesson.title"
+        :description="lesson.description"
+        :image-src="lesson.hero"
+        :image-alt="lesson.title"
+      />
     </div>
     <template v-else>
       <section
@@ -80,18 +78,15 @@ const groupedLessons = computed<TopicGroup[]>(() => {
         <h2 :id="group.id">{{ group.label }}</h2>
         <p class="topic-description">{{ group.description }}</p>
         <div class="cards-grid">
-          <a
+          <Card
             v-for="lesson in group.lessons"
             :key="lesson.url"
             :href="lesson.url"
-            class="lesson-card"
-          >
-            <img :src="lesson.hero" :alt="lesson.title" loading="lazy" />
-            <div class="card-content">
-              <h3>{{ lesson.title }}</h3>
-              <p>{{ lesson.description }}</p>
-            </div>
-          </a>
+            :title="lesson.title"
+            :description="lesson.description"
+            :image-src="lesson.hero"
+            :image-alt="lesson.title"
+          />
         </div>
       </section>
     </template>
@@ -99,7 +94,7 @@ const groupedLessons = computed<TopicGroup[]>(() => {
 </template>
 
 <style scoped>
-.lesson-cards {
+.card-list {
   margin-top: 2rem;
 }
 
@@ -116,52 +111,5 @@ const groupedLessons = computed<TopicGroup[]>(() => {
 .topic-description {
   color: var(--vp-c-text-2);
   margin-bottom: 1.5rem;
-}
-
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
-.lesson-card {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--vp-c-border);
-  border-radius: 0.5rem;
-  overflow: hidden;
-  text-decoration: none;
-  color: inherit;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
-}
-
-.lesson-card:hover {
-  border-color: var(--vp-c-brand-1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.lesson-card img {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-}
-
-.card-content {
-  padding: 1rem;
-}
-
-.card-content h3 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.1rem;
-  color: var(--vp-c-text-1);
-}
-
-.card-content p {
-  margin: 0;
-  font-size: 0.875rem;
-  color: var(--vp-c-text-2);
-  line-height: 1.5;
 }
 </style>

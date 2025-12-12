@@ -40,7 +40,7 @@ generating text from it, and finally exploring what happens when you use a
 larger pre-trained model. Each step builds on the last, giving students a
 complete picture of how language models work.
 
-<LessonCards :lessons="['intro', 'grid-training', 'grid-generation', 'pretrained-generation']" />
+<CardList :lessons="['intro', 'grid-training', 'grid-generation', 'pretrained-generation']" />
 
 ### Suggested timing
 
@@ -85,7 +85,7 @@ track grammatical context and how words get represented as numerical vectors.
 This path suits later-year high school students, computing electives, or keen
 beans who want to understand what "attention" and "embeddings" actually mean.
 
-<LessonCards :lessons="['intro', 'grid-training', 'grid-generation', 'pretrained-generation', 'context-columns-training', 'word-embeddings']" />
+<CardList :lessons="['intro', 'grid-training', 'grid-generation', 'pretrained-generation', 'context-columns-training', 'word-embeddings']" />
 
 ### What these additions cover
 
@@ -120,7 +120,7 @@ or less creative?" The sampling lesson shows how temperature and truncation
 strategies change the character of output without changing the model itself.
 This is a quick add-on to either the fundamentals or the deeper trajectory.
 
-<LessonCards :lessons="['sampling']" />
+<CardList :lessons="['sampling']" />
 
 This lesson explains:
 
@@ -138,7 +138,7 @@ can produce cautious prose or wild poetry just by tweaking these parameters.
 For classes focused on data science, ethics, or media literacy, the "Adaptation
 and data" topic explores what happens when models train on their own output.
 
-<LessonCards :topics="['adaptation-and-data']" />
+<CardList :topics="['adaptation-and-data']" />
 
 The [Synthetic data](/lessons/synthetic-data) lesson is particularly effective
 for discussions about:

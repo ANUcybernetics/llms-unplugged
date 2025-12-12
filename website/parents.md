@@ -35,7 +35,7 @@ introduction, then work through training your own model, using it to generate
 text, and finally trying a larger pre-trained model. The flow moves from "how do
 patterns get into a model?" to "what comes out?" to "what happens at scale?"
 
-<LessonCards :lessons="['intro', 'grid-training', 'grid-generation', 'pretrained-generation']" />
+<CardList :lessons="['intro', 'grid-training', 'grid-generation', 'pretrained-generation']" />
 
 ### Suggested timing
 

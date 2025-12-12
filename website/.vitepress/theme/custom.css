@@ -206,6 +206,13 @@
   aspect-ratio: 16 / 9;
 }
 
+/* Shared card grid for lessons/news */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
 @media (min-width: 640px) {
   .image-gallery {
     grid-template-columns: repeat(2, 1fr);

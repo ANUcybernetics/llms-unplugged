@@ -4,6 +4,7 @@ export interface NewsItem {
   url: string;
   title: string;
   description: string;
+  hero: string;
   date: string;
   dateLabel: string;
   year: number;
@@ -43,6 +44,7 @@ export default createContentLoader("news/*.md", {
           url: page.url,
           title: page.frontmatter.title ?? slug,
           description: page.frontmatter.description ?? "",
+          hero: `/assets/images/hero-news-${slug}.avif`,
           date: dateIso,
           dateLabel: dateIso ? formatDateLabel(dateIso) : "",
           year: dateIso ? Number(dateIso.slice(0, 4)) : 0,

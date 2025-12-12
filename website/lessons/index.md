@@ -17,4 +17,4 @@ curated paths for [professionals](/professionals), [educators](/educators), and
 
 :::
 
-<LessonCards />
+<CardList />
