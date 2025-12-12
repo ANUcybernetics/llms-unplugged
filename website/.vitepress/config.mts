@@ -14,8 +14,8 @@ const RSS_OPTIONS: RSSOptions = {
     email: "ben.swift@anu.edu.au",
     link: "https://benswift.me",
   },
-  // Include lesson pages in the feed
-  filter: (post) => post.filepath.startsWith("lessons/"),
+  // Include news posts in the feed
+  filter: (post) => post.url.startsWith("/news/") && post.url !== "/news/",
 };
 
 export default defineConfig({
