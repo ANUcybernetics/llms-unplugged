@@ -105,6 +105,7 @@
 // Title page function
 #let title-page() = {
   // SOCY logo in top-left
+  // (this file is a symlink to ../socy-logo-bw.svg so Typst can access it)
   place(top + left)[
     #image("socy-logo-bw.svg", width: 1.8cm)
   ]
