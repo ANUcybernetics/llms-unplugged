@@ -12,15 +12,10 @@ Explore how models use context and represent word meaning through embeddings.
 
 ## Lessons in this topic
 
-### [Context Columns Training](/lessons/context-columns-training)
+### [Context Columns](/lessons/context-columns)
 
-Add context columns to your bigram model to capture grammatical patterns like
-verbs, pronouns, and prepositions.
-
-### [Context Columns Generation](/lessons/context-columns-generation)
-
-Generate text using your context-enhanced bigram model by combining word and
-context counts.
+Add context columns to your bigram model to capture grammatical patterns, then
+use them during generation.
 
 ### [Word Embeddings](/lessons/word-embeddings)
 

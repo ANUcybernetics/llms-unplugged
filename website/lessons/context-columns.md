@@ -1,8 +1,8 @@
 ---
-title: Context Columns Training
+title: Context Columns
 description:
-  Add context columns to your bigram model to capture grammatical patterns like
-  verbs, pronouns, and prepositions.
+  Add context columns to your bigram model to capture grammatical patterns, then
+  use them during generation.
 order: 6
 topic: how-models-understand
 keyIdea:
@@ -10,9 +10,10 @@ keyIdea:
   word pairs.
 dependsOn:
   - Grid Training
+  - Grid Generation
 ---
 
-# Context Columns Training
+# Context Columns
 
 ::: info Lesson Info
 
@@ -25,7 +26,7 @@ you'd like a printable version of the student handout,
 :::
 
 Enhance your bigram model with context columns that capture grammatical and
-semantic patterns.
+semantic patterns, then use them to generate richer text.
 
 ![Hero image: Context Columns](/assets/images/hero-context-columns.avif)
 
@@ -34,13 +35,13 @@ semantic patterns.
 ## You will need
 
 - your completed bigram model from _Grid Training_
-- pen and paper (or extend your existing grid)
+- pen, paper, and dice as per _Grid Generation_
 
 ## Your goal
 
-Add new context columns to your bigram model that track grammatical categories.
-Stretch goal: invent and test your own context columns for patterns you find
-interesting.
+Add new context columns to your bigram model that track grammatical categories,
+then generate text using the enhanced model. Stretch goal: invent and test your
+own context columns for patterns you find interesting.
 
 ## Key idea
 
@@ -61,7 +62,7 @@ first, a noun precedes the verb; in the second, a pronoun does. By tracking
 these grammatical categories separately, the model can learn patterns like
 "after a pronoun-verb combination, adverbs are common".
 
-## Algorithm
+## Training algorithm
 
 1. **Extend your grid** with three new columns: `after verb`, `after pronoun`,
    `after preposition`.
@@ -75,7 +76,7 @@ these grammatical categories separately, the model can learn patterns like
 You update two cells per pair: the normal transition count, plus one context
 column if the first word belongs to a grammatical category.
 
-## Example
+## Training example
 
 Training text: _"She runs to the park. He walks to the store."_
 
@@ -108,6 +109,68 @@ building up patterns like "prepositions are often followed by articles".
 When unsure, make your best guess---the model learns from aggregate patterns, so
 occasional misclassifications won't break it.
 
+## Generation algorithm
+
+1. **Choose a starting word** from your model.
+2. **Look up the word's row** to find possible next words and their counts.
+3. **Check if the current word has a context type**:
+   - if it's a verb, add the `after verb` column counts to each candidate
+   - if it's a pronoun, add the `after pronoun` column counts
+   - if it's a preposition, add the `after preposition` column counts
+4. **Roll dice** on the combined counts (word-specific + context) to sample the
+   next word.
+5. **Repeat** from step 2 until you reach a stopping point or desired length.
+
+## Generation example
+
+Suppose your current word is `runs` (a verb), and you want to pick the next
+word.
+
+From the `runs` row, you might have:
+
+- `to`: 2
+- `quickly`: 1
+- `.`: 1
+
+From the `after verb` column, you might have:
+
+- `to`: 5
+- `quickly`: 3
+- `.`: 2
+- `the`: 1
+
+Combined counts for sampling:
+
+- `to`: 2 + 5 = 7
+- `quickly`: 1 + 3 = 4
+- `.`: 1 + 2 = 3
+- `the`: 0 + 1 = 1
+
+Total: 15. Roll your dice accordingly (e.g., 1-7 = `to`, 8-11 = `quickly`, 12-14
+= `.`, 15 = `the`).
+
+Notice how the context column boosts options that commonly follow _any_ verb,
+not just `runs` specifically. This helps the model generalise.
+
+## When multiple contexts apply
+
+Some words might fit multiple categories. For simplicity, pick the most
+prominent category, or add counts from all applicable columns. Experiment to see
+what produces better text.
+
+## Comparing outputs
+
+Generate text using:
+
+1. **Plain bigram**: only word-to-word counts
+2. **Context-enhanced**: word counts plus context columns
+
+Notice differences in:
+
+- variety (does context-enhanced text repeat less?)
+- grammatical flow (do sentences feel more natural?)
+- unexpected word choices (do context columns introduce new possibilities?)
+
 ## Instructor notes
 
 ### Discussion questions
@@ -118,6 +181,9 @@ occasional misclassifications won't break it.
   how did you handle them?
 - what other grammatical categories might be useful to track?
 - how do context columns differ from simply having a bigger vocabulary?
+- how do context columns reduce repetition in generated text?
+- what happens when a word has high counts in its row but the context column
+  suggests different patterns?
 
 ### Connection to current LLMs
 
@@ -134,3 +200,18 @@ Your hand-crafted context columns are a simplified version of what the
 The attention mechanism got its name because models learn to "pay attention" to
 relevant context. Your grammatical categories are hand-picked attention
 patterns.
+
+During generation, this mirrors how attention works in transformers:
+
+- **context aggregation**: you manually combine word counts with context counts;
+  transformers compute weighted sums across all previous positions
+- **dynamic attention**: your context is fixed (verb/pronoun/preposition);
+  transformers learn different attention patterns for each word
+- **the innovation**: instead of pre-defining important contexts, transformers
+  learn which previous words to "attend to" for each prediction
+
+When a model predicts the next word after "The capital of France is", it
+automatically learns to attend strongly to "capital" and "France" while ignoring
+less relevant words. Your grammatical context columns do this manually for broad
+categories, while modern AI discovers these patterns---and many more---through
+learning.

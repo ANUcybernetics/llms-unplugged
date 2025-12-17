@@ -85,15 +85,15 @@ track grammatical context and how words get represented as numerical vectors.
 This path suits later-year high school students, computing electives, or keen
 beans who want to understand what "attention" and "embeddings" actually mean.
 
-<CardList :lessons="['intro', 'grid-training', 'grid-generation', 'pretrained-generation', 'context-columns-training', 'word-embeddings']" />
+<CardList :lessons="['intro', 'grid-training', 'grid-generation', 'pretrained-generation', 'context-columns', 'word-embeddings']" />
 
 ### What these additions cover
 
-- **[Context columns training](/lessons/context-columns-training)** extends the
-  basic bigram model with extra columns that track grammatical categories (is
-  the previous word a verb? a pronoun? a preposition?). This is a hand-crafted
-  version of what transformer "attention" learns automatically---the idea that
-  _type_ of context matters, not just _which specific word_ came before.
+- **[Context columns](/lessons/context-columns)** extends the basic bigram model
+  with extra columns that track grammatical categories (is the previous word a
+  verb? a pronoun? a preposition?). This is a hand-crafted version of what
+  transformer "attention" learns automatically---the idea that _type_ of context
+  matters, not just _which specific word_ came before.
 
 - **[Word embeddings](/lessons/word-embeddings)** turns each word's row in the
   model into a numerical vector and measures similarities between words. Words

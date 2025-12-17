@@ -67,8 +67,7 @@ Explore how models use context and represent word meaning through embeddings.
 
 **Lessons:**
 
-- [Context Columns Training](/lessons/context-columns-training)
-- [Context Columns Generation](/lessons/context-columns-generation)
+- [Context Columns](/lessons/context-columns)
 - [Word Embeddings](/lessons/word-embeddings)
 
 ## Adaptation and Data

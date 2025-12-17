@@ -163,12 +163,8 @@ export default defineConfig({
           text: "How Models Understand",
           items: [
             {
-              text: "Context Columns Training",
-              link: "/lessons/context-columns-training",
-            },
-            {
-              text: "Context Columns Generation",
-              link: "/lessons/context-columns-generation",
+              text: "Context Columns",
+              link: "/lessons/context-columns",
             },
             { text: "Word Embeddings", link: "/lessons/word-embeddings" },
           ],
