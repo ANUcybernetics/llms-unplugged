@@ -18,8 +18,7 @@ dependsOn:
 
 This lesson is part of the [Scaling Up](/topics/scaling-up) topic, with
 instructions for students (including examples) and
-[instructor notes](#instructor-notes). If you'd like a printable version of the
-student handout, [download it here](/assets/pdfs/grid-trigram.pdf).
+[instructor notes](#instructor-notes).
 
 There's also an alternative version of this lesson called
 [Bucket Trigram](/lessons/bucket-trigram), which covers the same concepts using

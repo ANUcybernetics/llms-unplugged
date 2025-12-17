@@ -34,9 +34,15 @@ not just the ones we use in that particular workshop.
 
 ## Do I need any special materials?
 
-You'll need dice (ideally d10 or d20), paper, and pencils. The PDF booklets can
-be printed on standard A4 or A5 paper. For larger groups, having multiple sets
-of dice speeds things up.
+You'll need dice (ideally d10 or d20), paper, and pencils. For larger groups,
+having multiple sets of dice speeds things up.
+
+## Are there printable versions of the lessons?
+
+Yes. We have a [combined lessons PDF](/assets/pdfs/lessons.pdf) containing
+printable student handouts for all lessons. The web versions of lessons are more
+up-to-date and feature-rich, so we recommend using them when possible, but the
+PDF is handy for offline use or classroom printing.
 
 ## Are there any video resources to accompany the lessons?
 

@@ -19,9 +19,7 @@ dependsOn:
 
 This lesson is part of the
 [How Models Understand](/topics/how-models-understand) topic, with instructions
-for students (including examples) and [instructor notes](#instructor-notes). If
-you'd like a printable version of the student handout,
-[download it here](/assets/pdfs/word-embeddings.pdf).
+for students (including examples) and [instructor notes](#instructor-notes).
 
 :::
 

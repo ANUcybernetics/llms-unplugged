@@ -18,8 +18,7 @@ dependsOn:
 
 This lesson is part of the [Fundamentals](/topics/fundamentals) topic, with
 instructions for students (including examples) and
-[instructor notes](#instructor-notes). If you'd like a printable version of the
-student handout, [download it here](/assets/pdfs/grid-training.pdf).
+[instructor notes](#instructor-notes).
 
 There's also an alternative version of this lesson called
 [Bucket Training](/lessons/bucket-training), which covers the same concepts
