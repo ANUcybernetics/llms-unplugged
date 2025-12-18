@@ -13,6 +13,7 @@ A few thoughts re: new + updated lessons:
 - rename LoRA to PEFT? and maybe beef up that lesson with a few different
   options under the PEFT umbrella?
 - do something with RLHF
+- subword tokenisation (perhaps by syllable)
 - perhaps beam search? or just somethig else to go with sampling for that topic?
 - tool use (this could actually use human judgement---the "tool" is the show of
   hands in the room, etc.)
