@@ -1,9 +1,9 @@
 ---
 id: task-068
 title: Add prose tabs component for year-level differentiated content
-status: To Do
+status: Done
 assignee: []
-created_date: '2025-12-05 00:14'
+created_date: "2025-12-05 00:14"
 labels:
   - website
   - component
@@ -12,16 +12,24 @@ dependencies: []
 priority: medium
 ---
 
+Actually WONTFIX - we can just add stuff in the instructor notes. No need for
+new components.
+
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Lessons need "parallel info" for different year level groups (e.g. Years 3-6, Years 7-10, Years 11-12). VitePress code groups only work for code blocks, so we need a solution for prose/markdown content.
+
+Lessons need "parallel info" for different year level groups (e.g. Years 3-6,
+Years 7-10, Years 11-12). VitePress code groups only work for code blocks, so we
+need a solution for prose/markdown content.
 
 ## Context
 
-- Current lessons like `basic-training.md` have a single explanation for all audiences
+- Current lessons like `basic-training.md` have a single explanation for all
+  audiences
 - Want to provide differentiated content without duplicating entire lessons
-- Should feel native to VitePress and match existing component patterns (LmGrid, Prerequisites, etc.)
+- Should feel native to VitePress and match existing component patterns (LmGrid,
+  Prerequisites, etc.)
 
 ## Options
 
@@ -50,11 +58,13 @@ Advanced content with technical terminology...
 ```
 
 Pros:
+
 - Full control over styling and behaviour
 - Matches existing component patterns
 - No external dependencies
 
 Cons:
+
 - Named slots with markdown can be fiddly
 - Need to handle markdown rendering within slots
 
@@ -63,10 +73,12 @@ Cons:
 Use `vitepress-plugin-tabs` or similar community plugin.
 
 Pros:
+
 - Already built and tested
 - May have nicer authoring syntax
 
 Cons:
+
 - External dependency
 - Less control over styling
 - May not be maintained long-term
@@ -76,31 +88,35 @@ Cons:
 Create a custom markdown-it plugin for container syntax:
 
 ```md
-::: content-tabs
-== Years 3-6
-Simpler content here...
+::: content-tabs == Years 3-6 Simpler content here...
 
-== Years 7-10
-More detailed content...
-:::
+== Years 7-10 More detailed content... :::
 ```
 
 Pros:
+
 - Most markdown-native authoring experience
 - No Vue template syntax in markdown
 
 Cons:
+
 - More complex to implement
 - Requires understanding markdown-it internals
 
 ## Recommendation
 
-Start with Option 1 (custom Vue component). It's the most straightforward and consistent with existing patterns. If the slot syntax proves too awkward for authors, consider Option 3 as a follow-up.
+Start with Option 1 (custom Vue component). It's the most straightforward and
+consistent with existing patterns. If the slot syntax proves too awkward for
+authors, consider Option 3 as a follow-up.
+
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
+
 <!-- AC:BEGIN -->
-- [ ] #1 Lesson authors can write differentiated content for multiple year levels
+
+- [ ] #1 Lesson authors can write differentiated content for multiple year
+      levels
 - [ ] #2 Tabs are visually consistent with VitePress theme
 - [ ] #3 Content within tabs supports full markdown rendering
 - [ ] #4 Component is reusable for non-year-level use cases

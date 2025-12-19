@@ -1,7 +1,7 @@
 ---
 id: task-092
 title: new lessons
-status: To Do
+status: Done
 assignee: []
 created_date: "2025-12-17 22:49"
 labels: []
