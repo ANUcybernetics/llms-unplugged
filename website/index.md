@@ -49,13 +49,17 @@ Which leads to the question...
 
 ## What prior knowledge do I need?
 
-For teachers and facilitators, you'll need high-school level maths and the
-ability to read through the materials beforehand. We also run teacher training
-sessions and offer professional delivery services if you'd like support bringing
-these activities to your organisation or classroom.
+For teachers and facilitators, the reading and numeracy skills required to teach
+this stuff are really only primary-school level. This isn't just for specialist
+maths teachers or tertiary educators, although it works great in those contexts
+too. For students and participants, really all you need is a curiosity about how
+AI systems actually work and a willingness to engage with hands-on activities.
 
-For students and participants, even less---just curiosity about how AI systems
-actually work and a willingness to engage with hands-on activities.
+Each [lesson](/lessons) includes instructor notes and discussion questions, plus
+interactive widgets (which you can use to get your head around the concepts)
+and---coming soon---explainer videos you can use in class. We also run teacher
+training sessions and offer professional delivery services if you'd like support
+bringing these activities to your organisation or classroom.
 
 ## Why does this matter?
 
