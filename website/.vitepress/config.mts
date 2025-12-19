@@ -131,21 +131,21 @@ export default defineConfig({
     sidebar: {
       "/lessons/": [
         {
-          text: "Core Track",
+          text: "Fundamentals",
           items: [
             { text: "Training", link: "/lessons/training" },
             { text: "Generation", link: "/lessons/generation" },
+          ],
+        },
+        {
+          text: "Extensions",
+          items: [
             {
               text: "Pre-trained Generation",
               link: "/lessons/pretrained-generation",
             },
             { text: "Trigram", link: "/lessons/trigram" },
             { text: "Sampling", link: "/lessons/sampling" },
-          ],
-        },
-        {
-          text: "Extensions",
-          items: [
             { text: "Context Columns", link: "/lessons/context-columns" },
             { text: "Word Embeddings", link: "/lessons/word-embeddings" },
             { text: "LoRA", link: "/lessons/lora" },

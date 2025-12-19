@@ -5,7 +5,7 @@ description: All LLMs Unplugged lessons for teaching how language models work.
 
 # Lessons
 
-The lessons are split into a **Core Track** that everyone should complete, and
+The lessons are split into **Fundamentals** that everyone should complete, and
 **Extensions** that you can pick and choose based on your interests and
 available time.
 
@@ -35,13 +35,16 @@ Both teach the same core concepts. Pick whichever suits your group.
 
 :::
 
-## Core track
+## Fundamentals
 
-These lessons build on each other and should be completed in order.
-
-### Fundamentals
+These two lessons build on each other and should be completed in order.
 
 <CardList :lessons="['training', 'generation']" />
+
+## Extensions
+
+These lessons can be done in any order after completing the fundamentals. Each
+one explores a different aspect of how modern language models work.
 
 ### Scaling up
 
@@ -50,11 +53,6 @@ These lessons build on each other and should be completed in order.
 ### Controlling output
 
 <CardList :lessons="['sampling']" />
-
-## Extensions
-
-These lessons can be done in any order after completing the core track. Each one
-explores a different aspect of how modern language models work.
 
 ### Context and meaning
 
