@@ -8,7 +8,6 @@
 #lesson-hero(
   "Grid Generation",
   "/typst/images/CYBERNETICS_A_020.jpg",
-  "02",
 )[
   Use a pre-trained model to generate new text through weighted random sampling.
 

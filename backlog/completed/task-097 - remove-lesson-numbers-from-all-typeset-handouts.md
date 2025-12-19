@@ -1,9 +1,10 @@
 ---
 id: task-097
 title: remove lesson numbers from all typeset handouts
-status: To Do
+status: Done
 assignee: []
-created_date: "2025-12-19 00:08"
+created_date: '2025-12-19 00:08'
+updated_date: '2025-12-19 00:11'
 labels: []
 dependencies: []
 ---

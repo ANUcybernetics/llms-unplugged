@@ -8,7 +8,6 @@
 #lesson-hero(
   "LoRA",
   "/typst/images/CYBERNETICS_B_032.jpg",
-  "08",
 )[
   Efficiently adapt a trained language model to a new domain or style without
   retraining the entire model from scratch.

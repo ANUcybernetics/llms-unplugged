@@ -8,7 +8,6 @@
 #lesson-hero(
   "Grid Training",
   "/typst/images/CYBERNETICS_A_009.jpg",
-  "01",
 )[
   Build a bigram language model that tracks which words follow which other words
   in text.

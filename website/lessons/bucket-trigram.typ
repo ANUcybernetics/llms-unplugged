@@ -8,7 +8,6 @@
 #lesson-hero(
   "Bucket Trigram",
   "/typst/images/CYBERNETICS_A_067.jpg",
-  "05",
 )[
   Extend the bucket bigram model to consider _two_ words of context instead of
   one, leading to better text generation.

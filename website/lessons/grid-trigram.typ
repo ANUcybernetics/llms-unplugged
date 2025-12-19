@@ -8,7 +8,6 @@
 #lesson-hero(
   "Grid Trigram",
   "/typst/images/CYBERNETICS_A_027.jpg",
-  "05",
 )[
   Extend the bigram model to consider _two_ words of context instead of one,
   leading to better text generation.

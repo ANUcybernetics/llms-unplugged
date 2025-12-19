@@ -144,7 +144,7 @@
 }
 
 // Hero image and title layout for lesson first pages
-#let lesson-hero(title, image-path, lesson-number, content) = {
+#let lesson-hero(title, image-path, content) = {
   // Place image on right side of first page
   place(
     top + right,
@@ -155,18 +155,6 @@
       height: 26cm,
       clip: true,
       image(image-path, width: 100%, height: 100%, fit: "cover"),
-    ),
-  )
-
-  // Place lesson number on top of image
-  place(
-    bottom + right,
-    dx: 1.5cm,
-    dy: 1.3cm,
-    text(
-      size: 6cm,
-      fill: white.transparentize(70%),
-      lesson-number,
     ),
   )
 

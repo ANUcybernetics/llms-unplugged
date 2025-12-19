@@ -29,7 +29,6 @@
   lesson-hero(
     "Model name",
     hero-image,
-    "",
   )[
     #v(2em)
     #blank-lines(1)

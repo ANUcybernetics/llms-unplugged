@@ -8,7 +8,6 @@
 #lesson-hero(
   "Weighted Randomness",
   "/typst/images/CYBERNETICS_A_010.jpg",
-  "00",
 )[
   Learn how to make random choices where some options are more likely than
   others---an operation at the core of all generative AI.

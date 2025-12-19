@@ -8,7 +8,6 @@
 #lesson-hero(
   "Bucket Generation",
   "/typst/images/CYBERNETICS_A_042.jpg",
-  "02",
 )[
   Use your bucket-based bigram model to generate new text by picking tokens at
   random.
