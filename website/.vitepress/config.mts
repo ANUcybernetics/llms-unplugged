@@ -123,6 +123,7 @@ export default defineConfig({
 
     nav: [
       { text: "Lessons", link: "/lessons/" },
+      { text: "Glossary", link: "/glossary" },
       { text: "News", link: "/news/" },
       { text: "FAQ", link: "/faq" },
       { text: "About", link: "/about" },
