@@ -107,9 +107,14 @@ selection based on patterns in training data--is identical.
 
 ## Can I generate my own booklets from custom text?
 
-Yes. The [source code](https://github.com/ANUcybernetics/llms-unplugged)
-includes tools to process any text file into a printable booklet. You'll need
-basic command-line familiarity to run the tools.
+Yes. You can [generate booklets online](/tools) directly in your browser---no
+installation required. Just upload or paste your text, choose your options, and
+download a PDF. Your text is processed entirely in your browser and never sent
+to any server.
+
+If you prefer working offline or want to modify the tools, the
+[source code](https://github.com/ANUcybernetics/llms-unplugged) includes a
+command-line tool that provides the same functionality.
 
 ## The generated text is nonsense. Is that right?
 

@@ -1,9 +1,10 @@
 ---
 id: task-089
 title: note that the tools are now hosted online (at /tools)
-status: To Do
+status: Done
 assignee: []
-created_date: "2025-12-17 21:36"
+created_date: '2025-12-17 21:36'
+updated_date: '2025-12-19 02:22'
 labels: []
 dependencies: []
 ---

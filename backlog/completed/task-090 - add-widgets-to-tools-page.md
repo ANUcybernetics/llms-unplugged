@@ -1,9 +1,10 @@
 ---
 id: task-090
 title: add widgets to tools page
-status: To Do
+status: Done
 assignee: []
-created_date: "2025-12-17 21:38"
+created_date: '2025-12-17 21:38'
+updated_date: '2025-12-19 02:22'
 labels: []
 dependencies: []
 ---
