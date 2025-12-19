@@ -5,7 +5,6 @@ import LmTable from "./components/LmTable.vue";
 import Card from "./components/Card.vue";
 import CardList from "./components/CardList.vue";
 import NewsCards from "./components/NewsCards.vue";
-import Prerequisites from "./components/Prerequisites.vue";
 import TrainingWidget from "./components/TrainingWidget.vue";
 import GenerationWidget from "./components/GenerationWidget.vue";
 import BucketTrainingWidget from "./components/BucketTrainingWidget.vue";
@@ -28,7 +27,6 @@ export default {
     app.component("Card", Card);
     app.component("CardList", CardList);
     app.component("NewsCards", NewsCards);
-    app.component("Prerequisites", Prerequisites);
     app.component("TrainingWidget", TrainingWidget);
     app.component("GenerationWidget", GenerationWidget);
     app.component("BucketTrainingWidget", BucketTrainingWidget);

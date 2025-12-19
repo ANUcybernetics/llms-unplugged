@@ -8,9 +8,6 @@ topic: how-models-understand
 keyIdea:
   Extra context columns let the model track broader patterns beyond individual
   word pairs.
-dependsOn:
-  - Grid Training
-  - Grid Generation
 ---
 
 # Context Columns
@@ -28,12 +25,10 @@ semantic patterns, then use them to generate richer text.
 
 ![Hero image: Context Columns](/assets/images/hero-context-columns.avif)
 
-<Prerequisites />
-
 ## You will need
 
-- your completed bigram model from _Grid Training_
-- pen, paper, and dice as per _Grid Generation_
+- your completed bigram model from _Training_
+- pen, paper, and dice as per _Generation_
 
 ## Your goal
 

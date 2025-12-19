@@ -8,9 +8,6 @@ topic: how-models-understand
 keyIdea:
   A word's row in the grid is its embedding; distances between rows reveal
   grammatical and semantic closeness.
-dependsOn:
-  - Grid Training
-  - Context Columns Training
 ---
 
 # Word Embeddings

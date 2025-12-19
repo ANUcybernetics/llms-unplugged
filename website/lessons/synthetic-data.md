@@ -8,8 +8,6 @@ topic: adaptation-and-data
 keyIdea:
   Training on model-generated data shows how patterns degrade and why fresh
   human data matters.
-dependsOn:
-  - Grid Generation
 ---
 
 # Synthetic Data

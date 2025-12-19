@@ -8,8 +8,6 @@ topic: controlling-output
 keyIdea:
   Different sampling strategies change the character of generated text even when
   the model stays the same.
-dependsOn:
-  - Grid Generation
 ---
 
 # Sampling

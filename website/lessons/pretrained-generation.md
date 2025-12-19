@@ -8,8 +8,6 @@ topic: scaling-up
 keyIdea:
   You can generate from a model you didn't train---just follow its lookup rules
   and sample next words.
-dependsOn:
-  - Grid Generation
 ---
 
 # Pre-trained Model Generation

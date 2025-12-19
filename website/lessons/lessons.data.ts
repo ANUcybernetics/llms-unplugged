@@ -8,7 +8,6 @@ export interface LessonData {
   topic: string;
   order: number;
   keyIdea: string;
-  dependsOn: string[];
   hero: string;
 }
 
@@ -35,7 +34,6 @@ export default createContentLoader("lessons/*.md", {
           topic: page.frontmatter.topic,
           order: page.frontmatter.order ?? 0,
           keyIdea: page.frontmatter.keyIdea ?? "",
-          dependsOn: page.frontmatter.dependsOn ?? [],
           hero: `/assets/images/hero-${heroSlug}.avif`,
         };
       })

@@ -8,8 +8,6 @@ topic: fundamentals
 keyIdea:
   Language models learn by counting patterns in text and tracking which words
   follow other words.
-dependsOn:
-  - Weighted Randomness
 ---
 
 # Training

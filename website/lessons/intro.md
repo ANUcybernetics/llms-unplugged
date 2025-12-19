@@ -6,7 +6,6 @@ order: -1
 topic: fundamentals
 keyIdea:
   Language models predict the next word based on patterns learned from text.
-dependsOn: []
 ---
 
 # Introduction

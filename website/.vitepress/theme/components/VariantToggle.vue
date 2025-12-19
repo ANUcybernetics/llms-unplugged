@@ -21,7 +21,27 @@ const isGrid = computed(() => variant.value === "grid");
         :class="{ active: isGrid }"
         @click="setVariant('grid')"
       >
-        <span class="variant-icon">📊</span>
+        <svg
+          class="variant-icon"
+          viewBox="-1 -1 23 23"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <!-- Header row and column (subtle fill) -->
+          <rect x="0" y="0" width="21" height="7" opacity="0.3" fill="currentColor" stroke="none" />
+          <rect x="0" y="0" width="7" height="21" opacity="0.3" fill="currentColor" stroke="none" />
+          <!-- Horizontal lines -->
+          <line x1="0" y1="0" x2="21" y2="0" />
+          <line x1="0" y1="7" x2="21" y2="7" />
+          <line x1="0" y1="14" x2="21" y2="14" />
+          <line x1="0" y1="21" x2="21" y2="21" />
+          <!-- Vertical lines -->
+          <line x1="0" y1="0" x2="0" y2="21" />
+          <line x1="7" y1="0" x2="7" y2="21" />
+          <line x1="14" y1="0" x2="14" y2="21" />
+          <line x1="21" y1="0" x2="21" y2="21" />
+        </svg>
         <span class="variant-label">Grid</span>
       </button>
       <button
@@ -29,7 +49,18 @@ const isGrid = computed(() => variant.value === "grid");
         :class="{ active: !isGrid }"
         @click="setVariant('bucket')"
       >
-        <span class="variant-icon">🪣</span>
+        <svg
+          class="variant-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 6h14l-1.5 14H6.5L5 6z" />
+          <path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2" />
+        </svg>
         <span class="variant-label">Bucket</span>
       </button>
     </div>
@@ -85,7 +116,9 @@ const isGrid = computed(() => variant.value === "grid");
 }
 
 .variant-icon {
-  font-size: 1.125rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
 }
 
 .variant-label {

@@ -8,9 +8,6 @@ topic: adaptation-and-data
 keyIdea:
   LoRA tweaks a base model with small, add-on counts that capture
   domain-specific shifts.
-dependsOn:
-  - Grid Training
-  - Grid Generation
 ---
 
 # LoRA

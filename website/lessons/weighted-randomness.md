@@ -8,7 +8,6 @@ topic: fundamentals
 keyIdea:
   Use weighted sampling to make random choices that reflect a target probability
   distribution.
-dependsOn: []
 ---
 
 # Weighted Randomness

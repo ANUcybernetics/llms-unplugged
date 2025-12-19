@@ -8,9 +8,6 @@ topic: fundamentals
 keyIdea:
   Language models generate text one word at a time by sampling the next word
   according to learned counts.
-dependsOn:
-  - Training
-  - Weighted Randomness
 ---
 
 # Generation

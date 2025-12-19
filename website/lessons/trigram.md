@@ -7,9 +7,6 @@ topic: scaling-up
 keyIdea:
   More context improves predictions---trigrams track two previous words, trading
   simplicity for richer patterns.
-dependsOn:
-  - Training
-  - Generation
 ---
 
 # Trigram
