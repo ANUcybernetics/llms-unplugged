@@ -21,6 +21,12 @@ by what you've seen before. After an hour or so of doing this by hand, something
 clicks: you realise that ChatGPT works exactly the same way. It's the same
 fundamental process, just at a vastly different scale.
 
+<div class="section-with-image">
+<div class="section-image">
+<img src="/assets/images/hero-educators.avif" alt="Diverse group of learners from students to professionals">
+</div>
+<div class="section-content">
+
 ## Who is this for?
 
 While we call these activities "lessons" grouped into "topics", they're not only
@@ -36,6 +42,15 @@ kids, and educators teaching AI concepts in schools or universities. Even if you
 know a bit (or a lot!) about how LLMs work, you'll still have fun making one and
 sharing it with others.
 
+</div>
+</div>
+
+<div class="section-with-image">
+<div class="section-image">
+<img src="/assets/images/hero-about.avif" alt="Person creating teaching materials with pen and paper">
+</div>
+<div class="section-content">
+
 ## Who made this?
 
 _LLMs Unplugged_ is a
@@ -46,6 +61,15 @@ worried about the pedigree of this stuff then I hope that helps. But if you're
 worried that _you'll_ need a PhD in Computer Science to understand it then rest
 assured---the whole point of these resources is that demonstrate that you don't.
 Which leads to the question...
+
+</div>
+</div>
+
+<div class="section-with-image">
+<div class="section-image">
+<img src="/assets/images/hero-fundamentals.avif" alt="Simple counting and dice activities">
+</div>
+<div class="section-content">
 
 ## What prior knowledge do I need?
 
@@ -60,6 +84,15 @@ plus interactive widgets (which you can use to get your head around the
 concepts) and---coming soon---explainer videos you can use in class. We also run
 teacher training sessions and offer professional delivery services if you'd like
 support bringing these activities to your organisation or classroom.
+
+</div>
+</div>
+
+<div class="section-with-image">
+<div class="section-image">
+<img src="/assets/images/hero-how-models-understand.avif" alt="Understanding AI through hands-on experience">
+</div>
+<div class="section-content">
 
 ## Why does this matter?
 
@@ -78,6 +111,15 @@ These resources don't tell you or your students what to think about role of AI
 discussion; one that's informed not by folktales about what might be happening
 under the hood but by a lived experience of doing it for yourself.
 
+</div>
+</div>
+
+<div class="section-with-image">
+<div class="section-image">
+<img src="/assets/images/hero-intro.avif" alt="Getting started with language model activities">
+</div>
+<div class="section-content">
+
 ## Where should I start?
 
 Start with the [Fundamentals](/topics/fundamentals) topic. This covers the core
@@ -85,8 +127,20 @@ concepts for building and using language models: weighted random selection,
 training a bigram model, and generating text. After completing these lessons,
 you'll understand the fundamental mechanism behind ChatGPT-style AI systems.
 
+</div>
+</div>
+
+<div class="section-with-image">
+<div class="section-image">
+<img src="/assets/images/hero-contact.avif" alt="Connecting and sharing ideas">
+</div>
+<div class="section-content">
+
 ## Contact
 
 If you have questions, success stories about using these materials, or would
 like to discuss adaptations or improvements you've made, get in touch at
 [ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au).
+
+</div>
+</div>
