@@ -12,14 +12,6 @@ keyIdea:
 
 # Context Columns
 
-::: info Lesson Info
-
-This lesson is part of the
-[How Models Understand](/topics/how-models-understand) topic, with instructions
-for students (including examples) and [instructor notes](#instructor-notes).
-
-:::
-
 Enhance your bigram model with context columns that capture grammatical and
 semantic patterns, then use them to generate richer text.
 

@@ -12,14 +12,6 @@ keyIdea:
 
 # Pre-trained Model Generation
 
-::: info Lesson Info
-
-This lesson is part of the [Scaling Up](/topics/scaling-up) topic, with
-instructions for students (including examples) and
-[instructor notes](#instructor-notes).
-
-:::
-
 Use a (slightly larger) pre-trained model booklet to generate new text through
 weighted random sampling.
 

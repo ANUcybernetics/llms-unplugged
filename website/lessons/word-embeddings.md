@@ -12,14 +12,6 @@ keyIdea:
 
 # Word Embeddings
 
-::: info Lesson Info
-
-This lesson is part of the
-[How Models Understand](/topics/how-models-understand) topic, with instructions
-for students (including examples) and [instructor notes](#instructor-notes).
-
-:::
-
 Transform words into numerical vectors that capture meaning, revealing semantic
 relationships between words in your model.
 

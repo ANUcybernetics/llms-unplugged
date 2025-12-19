@@ -69,9 +69,8 @@ adding it to the text, then predicting again.
 ### The structure of an _LLMs Unplugged_ lesson
 
 Each _LLMs Unplugged_ lesson covers a single concept. There are some lessons
-which are "prerequisites" for others; see [Topics](/topics/) to explore several
-different ways of stringing these lessons together to create different learning
-journeys.
+which are "prerequisites" for others; see the [Lessons](/lessons/) page for an
+overview of how the lessons are organised.
 
 Each lesson has the following structure:
 

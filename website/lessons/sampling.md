@@ -12,14 +12,6 @@ keyIdea:
 
 # Sampling
 
-::: info Lesson Info
-
-This lesson is part of the [Controlling Output](/topics/controlling-output)
-topic, with instructions for students (including examples) and
-[instructor notes](#instructor-notes).
-
-:::
-
 When generating text, your model offers several options for the next word.
 Sampling strategies decide which one to pick.
 

@@ -12,14 +12,6 @@ keyIdea:
 
 # Synthetic Data
 
-::: info Lesson Info
-
-This lesson is part of the [Adaptation and Data](/topics/adaptation-and-data)
-topic, with instructions for students (including examples) and
-[instructor notes](#instructor-notes).
-
-:::
-
 Use your language model to generate new training data, then train a new model on
 that synthetic data to watch patterns change.
 

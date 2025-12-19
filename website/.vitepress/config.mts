@@ -123,7 +123,6 @@ export default defineConfig({
 
     nav: [
       { text: "Lessons", link: "/lessons/" },
-      { text: "Topics", link: "/topics/" },
       { text: "News", link: "/news/" },
       { text: "FAQ", link: "/faq" },
       { text: "About", link: "/about" },
@@ -132,60 +131,25 @@ export default defineConfig({
     sidebar: {
       "/lessons/": [
         {
-          text: "Fundamentals",
+          text: "Core Track",
           items: [
             { text: "Training", link: "/lessons/training" },
             { text: "Generation", link: "/lessons/generation" },
-          ],
-        },
-        {
-          text: "Scaling Up",
-          items: [
             {
-              text: "Pre-trained Model Generation",
+              text: "Pre-trained Generation",
               link: "/lessons/pretrained-generation",
             },
             { text: "Trigram", link: "/lessons/trigram" },
+            { text: "Sampling", link: "/lessons/sampling" },
           ],
         },
         {
-          text: "Controlling Output",
-          items: [{ text: "Sampling", link: "/lessons/sampling" }],
-        },
-        {
-          text: "How Models Understand",
+          text: "Extensions",
           items: [
-            {
-              text: "Context Columns",
-              link: "/lessons/context-columns",
-            },
+            { text: "Context Columns", link: "/lessons/context-columns" },
             { text: "Word Embeddings", link: "/lessons/word-embeddings" },
-          ],
-        },
-        {
-          text: "Adaptation and Data",
-          items: [
             { text: "LoRA", link: "/lessons/lora" },
             { text: "Synthetic Data", link: "/lessons/synthetic-data" },
-          ],
-        },
-      ],
-      "/topics/": [
-        {
-          text: "Topics",
-          items: [
-            { text: "Overview", link: "/topics/" },
-            { text: "Fundamentals", link: "/topics/fundamentals" },
-            { text: "Scaling Up", link: "/topics/scaling-up" },
-            { text: "Controlling Output", link: "/topics/controlling-output" },
-            {
-              text: "How Models Understand",
-              link: "/topics/how-models-understand",
-            },
-            {
-              text: "Adaptation and Data",
-              link: "/topics/adaptation-and-data",
-            },
           ],
         },
       ],

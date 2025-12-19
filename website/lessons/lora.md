@@ -12,14 +12,6 @@ keyIdea:
 
 # LoRA
 
-::: info Lesson Info
-
-This lesson is part of the [Adaptation and Data](/topics/adaptation-and-data)
-topic, with instructions for students (including examples) and
-[instructor notes](#instructor-notes).
-
-:::
-
 Efficiently adapt a trained language model to a new domain or style without
 retraining the whole thing.
 

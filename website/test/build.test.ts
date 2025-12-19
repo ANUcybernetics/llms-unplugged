@@ -42,25 +42,6 @@ describe("VitePress Build", () => {
     }
   });
 
-  it("generates topic pages", () => {
-    const topicsDir = join(DIST_DIR, "topics");
-    expect(existsSync(topicsDir)).toBe(true);
-
-    const expectedTopics = [
-      "index.html",
-      "fundamentals.html",
-      "scaling-up.html",
-      "how-models-understand.html",
-      "adaptation-and-data.html",
-      "controlling-output.html",
-    ];
-
-    const files = readdirSync(topicsDir);
-    for (const topic of expectedTopics) {
-      expect(files).toContain(topic);
-    }
-  });
-
   it("generates static pages", () => {
     expect(existsSync(join(DIST_DIR, "about.html"))).toBe(true);
     expect(existsSync(join(DIST_DIR, "faq.html"))).toBe(true);

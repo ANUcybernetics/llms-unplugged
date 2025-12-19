@@ -10,13 +10,13 @@ export const topicLabels: Record<string, string> = {
   fundamentals: "Fundamentals",
   "scaling-up": "Scaling up",
   "controlling-output": "Controlling output",
-  "how-models-understand": "How models understand",
+  "how-models-understand": "Context and meaning",
   "adaptation-and-data": "Adaptation and data",
 };
 
 export const topicDescriptions: Record<string, string> = {
   fundamentals:
-    "Core concepts for building and using language models. Start here to learn weighted random selection, training a bigram model, and generating text.",
+    "Core concepts for building and using language models. Train a bigram model by hand and generate text.",
   "scaling-up":
     "Move beyond hand-built models to explore pre-trained models and longer context windows with trigrams.",
   "controlling-output":

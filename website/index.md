@@ -122,10 +122,10 @@ under the hood but by a lived experience of doing it for yourself.
 
 ## Where should I start?
 
-Start with the [Fundamentals](/topics/fundamentals) topic. This covers the core
-concepts for building and using language models: weighted random selection,
-training a bigram model, and generating text. After completing these lessons,
-you'll understand the fundamental mechanism behind ChatGPT-style AI systems.
+Start with the [core track lessons](/lessons/#core-track). These cover the
+essential concepts for building and using language models: training a bigram
+model and generating text. After completing these lessons, you'll understand the
+fundamental mechanism behind ChatGPT-style AI systems.
 
 </div>
 </div>
