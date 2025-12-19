@@ -1,60 +1,128 @@
 ---
-title: Bucket Trigram
+title: Trigram
 description:
-  Extend the bucket bigram model to use two words of context for better
-  predictions.
-order: 5.1
+  Extend the bigram model to use two words of context for better predictions.
+order: 5
 topic: scaling-up
 keyIdea:
   More context improves predictions---trigrams track two previous words, trading
   simplicity for richer patterns.
 dependsOn:
-  - Bucket Training
-  - Bucket Generation
+  - Training
+  - Generation
 ---
 
-# Bucket Trigram
+# Trigram
 
-::: info Lesson Info
+<VariantToggle />
 
-This lesson is part of the [Scaling Up](/topics/scaling-up) topic, with
-instructions for students (including examples) and
-[instructor notes](#instructor-notes). This is an alternative to
-[Grid Trigram](/lessons/grid-trigram) that uses physical tokens and buckets
-instead of dice rolls; it's designed to be simpler for younger audiences, but
-honestly it's just as fun at a grown-up dinner party.
+Extend the bigram model to consider two words of context instead of one, leading
+to better generation.
 
-:::
+<GridOnly>
 
-Extend the bucket bigram model to consider two words of context instead of one,
-leading to better generation.
+![Hero image: Grid Trigram](/assets/images/hero-grid-trigram.avif)
+
+</GridOnly>
+
+<BucketOnly>
 
 ![Hero image: Bucket Trigram](/assets/images/hero-bucket-trigram.avif)
+
+</BucketOnly>
 
 <Prerequisites />
 
 ## You will need
 
-- the same materials as _Bucket Training_
+<GridOnly>
+
+- the same materials as _Training_
+- extra paper for a three-column table
+- pen, paper, and dice as per _Generation_
+
+</GridOnly>
+
+<BucketOnly>
+
+- the same materials as _Training_
 - additional small containers for two-word label buckets
 - sticky notes or paper for bucket labels (you'll need to write two words on
   each label)
 
+</BucketOnly>
+
 ## Your goal
+
+<GridOnly>
+
+Train a trigram language model (a table, not a grid) and use it to generate
+text. Stretch goal: train on more data or generate longer outputs.
+
+</GridOnly>
+
+<BucketOnly>
 
 Build a trigram language model using buckets where each bucket is labelled with
 _two_ words instead of one. Stretch goal: train on more data or generate longer
 outputs.
 
+</BucketOnly>
+
 ## Key idea
+
+<GridOnly>
+
+Trigrams show how more context boosts prediction quality. They also reveal the
+cost: more rows to track and more data needed.
+
+</GridOnly>
+
+<BucketOnly>
 
 Trigrams show how more context boosts prediction quality. Instead of asking
 "what follows this word?", we ask "what follows these _two_ words?". This means
 more buckets to manage, but better predictions.
 
+</BucketOnly>
+
 ## Algorithm (training)
 
-1. **Prepare your tokens** as per _Bucket Training_
+<GridOnly>
+
+1. Draw a four-column table: `word1 | word2 | word3 | count`.
+2. Slide a window over your text, collecting every overlapping triple of words.
+3. For each triple, increment its count (or add a new row starting at 1).
+
+### Example (training)
+
+After the first four words (`see` `spot` `run` `.`) the model is:
+
+| word 1 | word 2 | word 3 | count |
+| ------ | ------ | ------ | ----- |
+| `see`  | `spot` | `run`  | 1     |
+| `spot` | `run`  | `.`    | 1     |
+
+After the full text (`see` `spot` `run` `.` `see` `spot` `jump` `.`) the model
+is:
+
+| word 1 | word 2 | word 3 | count |
+| ------ | ------ | ------ | ----- |
+| `see`  | `spot` | `run`  | 1     |
+| `spot` | `run`  | `.`    | 1     |
+| `run`  | `.`    | `see`  | 1     |
+| `.`    | `see`  | `spot` | 1     |
+| `see`  | `spot` | `jump` | 1     |
+| `spot` | `jump` | `.`    | 1     |
+
+Note: the order of the rows doesn't matter, so you can re-order to group them by
+_word 1_ if that helps.
+
+</GridOnly>
+
+<BucketOnly>
+
+1. **Prepare your tokens** as per _Training_
 
    - print or write out your training text
    - convert everything to lowercase
@@ -108,7 +176,25 @@ pair in the original text. Compare this to the bigram bucket model where the
 "see" bucket would just contain `spot` `spot`---the trigram model captures more
 specific patterns.
 
+</BucketOnly>
+
 ## Algorithm (generation)
+
+<GridOnly>
+
+1. Pick any row and write down `word1` and `word2` as your starting words.
+2. Find all rows where `word1` and `word2` match your current context; note
+   their counts.
+3. Roll weighted by those counts to pick a row; take its `word3` as the next
+   word.
+4. Shift the window by one word (new context is old `word2` + chosen `word3`)
+   and repeat from step 2.
+
+This mirrors Generation but with two-word context instead of one.
+
+</GridOnly>
+
+<BucketOnly>
 
 1. choose a starting bucket and write down its two-word label---these are the
    first two words of your generated text.
@@ -139,15 +225,31 @@ Using the bucket model from above:
 
 **Generated text:** _"see spot run. see spot jump."_
 
+</BucketOnly>
+
 ## Instructor notes
 
 ### Discussion questions
+
+<GridOnly>
+
+- how does the trigram output compare to basic (bigram) model output?
+- what happens when you encounter a word pair you've never seen before?
+- how many rows would you need for a 100-word text?
+- can you find word pairs that always lead to the same next word?
+- what's the tradeoff between context length and data requirements?
+
+</GridOnly>
+
+<BucketOnly>
 
 - how does the trigram output compare to basic (bigram) bucket model output?
 - why do we need more buckets for trigrams than bigrams?
 - what happens when you encounter a word pair you've never seen before?
 - can you find two-word pairs that always lead to the same next word?
 - what's the tradeoff between context length and data requirements?
+
+</BucketOnly>
 
 ### Connection to current LLMs
 
@@ -165,12 +267,15 @@ different words. This is why modern LLMs can maintain coherent conversations
 over many exchanges---they consider much more context than just the last word or
 two.
 
+<BucketOnly>
+
 ### Comparison to grid method
 
-This bucket method and the grid method (see
-[Grid Trigram](/lessons/grid-trigram)) produce equivalent models:
+This bucket method and the grid method produce equivalent models:
 
 - a count in the grid's table corresponds to tokens inside a two-word bucket
 - both capture the same "what follows these two words" relationships
 - buckets make the weighting more tangible---you can see and feel that some
   outcomes are more likely because there are literally more tokens to pick from
+
+</BucketOnly>

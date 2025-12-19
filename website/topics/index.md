@@ -11,37 +11,25 @@ available time.
 
 ## Core Track
 
-These lessons build on each other and should be completed in order. Start with
-either Grid or Bucket fundamentals, then continue through scaling and
-controlling output.
+These lessons build on each other and should be completed in order.
 
 ::: tip Grid or Bucket?
 
-There are two versions of the fundamentals: **Grid** and **Bucket**. The grid
-version is better for teaching probability concepts (with clear connections to
-the maths curriculum) and may be a bit quicker once students get the hang of it.
-The bucket version is simpler and even more hands-on---great for younger
-learners or those who benefit from tactile activities. You can also do both
-versions to reinforce the concepts from different angles.
+Each lesson offers two methods: **Grid** (paper grids and dice) or **Bucket**
+(physical tokens and containers). Use the toggle at the top of each lesson to
+switch between them. The grid version connects well to probability concepts in
+the maths curriculum. The bucket version is simpler and more tactile---great for
+younger learners. Both teach the same core concepts.
 
 :::
 
-### Fundamentals (Grid)
+### Fundamentals
 
-Core concepts for building and using language models using a grid-based
-approach. Train a bigram model by hand and generate text using dice rolls.
+Core concepts for building and using language models. Train a bigram model by
+hand and generate text.
 
-- [Grid Training](/lessons/grid-training)
-- [Grid Generation](/lessons/grid-generation)
-
-### Fundamentals (Bucket)
-
-An alternative approach to the fundamentals using physical tokens and buckets
-instead of grids and dice. Covers the same core concepts with a more tactile
-experience.
-
-- [Bucket Training](/lessons/bucket-training)
-- [Bucket Generation](/lessons/bucket-generation)
+- [Training](/lessons/training)
+- [Generation](/lessons/generation)
 
 ### Scaling Up
 
@@ -49,8 +37,7 @@ Move beyond hand-built models to explore pre-trained models and longer context
 windows with trigrams.
 
 - [Pre-trained Model Generation](/lessons/pretrained-generation)
-- [Grid Trigram](/lessons/grid-trigram)
-- [Bucket Trigram](/lessons/bucket-trigram)
+- [Trigram](/lessons/trigram)
 
 ### Controlling Output
 

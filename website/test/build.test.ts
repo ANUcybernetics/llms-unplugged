@@ -24,13 +24,10 @@ describe("VitePress Build", () => {
     expect(existsSync(lessonsDir)).toBe(true);
 
     const expectedLessons = [
-      "grid-training.html",
-      "grid-generation.html",
-      "bucket-training.html",
-      "bucket-generation.html",
+      "training.html",
+      "generation.html",
+      "trigram.html",
       "weighted-randomness.html",
-      "grid-trigram.html",
-      "bucket-trigram.html",
       "context-columns.html",
       "pretrained-generation.html",
       "word-embeddings.html",

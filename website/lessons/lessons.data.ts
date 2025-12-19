@@ -15,12 +15,19 @@ export interface LessonData {
 declare const data: LessonData[];
 export { data };
 
+const heroImageMap: Record<string, string> = {
+  training: "grid-training",
+  generation: "grid-generation",
+  trigram: "grid-trigram",
+};
+
 export default createContentLoader("lessons/*.md", {
   transform(raw): LessonData[] {
     return raw
       .filter((page) => page.frontmatter.topic)
       .map((page) => {
         const slug = page.url.replace(/^\/lessons\//, "").replace(/\/$/, "");
+        const heroSlug = heroImageMap[slug] ?? slug;
         return {
           url: page.url,
           title: page.frontmatter.title,
@@ -29,7 +36,7 @@ export default createContentLoader("lessons/*.md", {
           order: page.frontmatter.order ?? 0,
           keyIdea: page.frontmatter.keyIdea ?? "",
           dependsOn: page.frontmatter.dependsOn ?? [],
-          hero: `/assets/images/hero-${slug}.avif`,
+          hero: `/assets/images/hero-${heroSlug}.avif`,
         };
       })
       .sort((a, b) => {

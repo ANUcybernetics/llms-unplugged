@@ -19,12 +19,12 @@ weighted random selection, training a bigram model, and generating text.
 Learn how to make random choices where some options are more likely than
 others---an operation at the core of all generative AI.
 
-### [Grid Training](/lessons/grid-training)
+### [Training](/lessons/training)
 
 Build a bigram language model that tracks which words follow which other words
 in text.
 
-### [Grid Generation](/lessons/grid-generation)
+### [Generation](/lessons/generation)
 
 Use your hand-built bigram model to generate new text through weighted random
 sampling.

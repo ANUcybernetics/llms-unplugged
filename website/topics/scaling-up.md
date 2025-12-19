@@ -19,14 +19,9 @@ windows with trigrams.
 Use a provided pre-trained booklet to generate text without training your own
 model.
 
-### [Grid Trigram](/lessons/grid-trigram)
+### [Trigram](/lessons/trigram)
 
 Extend the bigram model to use two words of context for better predictions.
-
-### [Bucket Trigram](/lessons/bucket-trigram)
-
-Extend the bucket bigram model to use two words of context for better
-predictions.
 
 ## What you'll learn
 

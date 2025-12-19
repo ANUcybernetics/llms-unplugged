@@ -13,6 +13,9 @@ import BucketGenerationWidget from "./components/BucketGenerationWidget.vue";
 import PretrainedGenerationWidget from "./components/PretrainedGenerationWidget.vue";
 import PlaybackControls from "./components/PlaybackControls.vue";
 import FullscreenWrapper from "./components/FullscreenWrapper.vue";
+import VariantToggle from "./components/VariantToggle.vue";
+import GridOnly from "./components/GridOnly.vue";
+import BucketOnly from "./components/BucketOnly.vue";
 import Layout from "./Layout.vue";
 import "./custom.css";
 
@@ -33,5 +36,8 @@ export default {
     app.component("PretrainedGenerationWidget", PretrainedGenerationWidget);
     app.component("PlaybackControls", PlaybackControls);
     app.component("FullscreenWrapper", FullscreenWrapper);
+    app.component("VariantToggle", VariantToggle);
+    app.component("GridOnly", GridOnly);
+    app.component("BucketOnly", BucketOnly);
   },
 } satisfies Theme;

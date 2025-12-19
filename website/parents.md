@@ -35,7 +35,7 @@ introduction, then work through training your own model, using it to generate
 text, and finally trying a larger pre-trained model. The flow moves from "how do
 patterns get into a model?" to "what comes out?" to "what happens at scale?"
 
-<CardList :lessons="['intro', 'grid-training', 'grid-generation', 'pretrained-generation']" />
+<CardList :lessons="['intro', 'training', 'generation', 'pretrained-generation']" />
 
 ### Suggested timing
 
@@ -44,15 +44,14 @@ patterns get into a model?" to "what comes out?" to "what happens at scale?"
   from? today we're going to build our own version---small and simple, but using
   the exact same approach as ChatGPT.
 
-- **00:10 [Grid training](/lessons/grid-training)** --- work together to count
-  word patterns in a short text (the lesson provides a simple example, or choose
-  a favourite children's book). This is the "training" step---where AI systems
+- **00:10 [Training](/lessons/training)** --- work together to count word
+  patterns in a short text (the lesson provides a simple example, or choose a
+  favourite children's book). This is the "training" step---where AI systems
   learn patterns from text.
 
-- **00:25 [Grid generation](/lessons/grid-generation)** --- use your trained
-  model and a die to generate new sentences. Take turns rolling and choosing
-  words---make it playful. Read out your generated text and laugh at the weird
-  results together.
+- **00:25 [Generation](/lessons/generation)** --- use your trained model and a
+  die to generate new sentences. Take turns rolling and choosing words---make it
+  playful. Read out your generated text and laugh at the weird results together.
 
 - **00:45 [Pre-trained model generation](/lessons/pretrained-generation)** ---
   try using a bigger, pre-trained model (provided in the lesson). Notice how
@@ -84,8 +83,8 @@ about:
 
 You don't need to be an expert to facilitate these activities. The lessons are
 designed to be self-explanatory, and the
-[instructor notes](/lessons/grid-training#instructor-notes) (yes, even for
-parents!) help you connect the hands-on work to modern AI systems.
+[instructor notes](/lessons/training#instructor-notes) (yes, even for parents!)
+help you connect the hands-on work to modern AI systems.
 
 Some of the most valuable moments come from exploring together---when you're
 both surprised by how simple the core mechanism is, or when you both notice

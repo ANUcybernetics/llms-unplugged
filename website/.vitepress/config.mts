@@ -132,17 +132,10 @@ export default defineConfig({
     sidebar: {
       "/lessons/": [
         {
-          text: "Fundamentals (Grid)",
+          text: "Fundamentals",
           items: [
-            { text: "Grid Training", link: "/lessons/grid-training" },
-            { text: "Grid Generation", link: "/lessons/grid-generation" },
-          ],
-        },
-        {
-          text: "Fundamentals (Bucket)",
-          items: [
-            { text: "Bucket Training", link: "/lessons/bucket-training" },
-            { text: "Bucket Generation", link: "/lessons/bucket-generation" },
+            { text: "Training", link: "/lessons/training" },
+            { text: "Generation", link: "/lessons/generation" },
           ],
         },
         {
@@ -152,7 +145,7 @@ export default defineConfig({
               text: "Pre-trained Model Generation",
               link: "/lessons/pretrained-generation",
             },
-            { text: "Trigram Model", link: "/lessons/trigram-model" },
+            { text: "Trigram", link: "/lessons/trigram" },
           ],
         },
         {

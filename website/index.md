@@ -24,11 +24,11 @@ fundamental process, just at a vastly different scale.
 ## Who is this for?
 
 While we call these activities "lessons" grouped into "topics", they're not only
-for classrooms. These activities are suitable for audiences from high school age
-through to adults---we've delivered them to hundreds of participants including
-school students, undergraduate students, and senior executives in the Australian
-Public Service. No programming background required, and no mathematics beyond
-basic counting and percentages.
+for classrooms. These activities are suitable for audiences from primary school
+age through to adults---we've delivered them to hundreds of participants
+including school students, undergraduate students, and senior executives in the
+Australian Public Service. No programming background required, and no
+mathematics beyond basic counting and percentages.
 
 The materials work equally well for professionals who need to understand AI for
 decision-making in their organisations, parents wanting to learn alongside their
