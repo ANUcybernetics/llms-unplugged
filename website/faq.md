@@ -34,8 +34,8 @@ not just the ones we use in that particular workshop.
 
 ## Do I need any special materials?
 
-You'll need dice (ideally d10 or d20), paper, and pencils. For larger groups,
-having multiple sets of dice speeds things up.
+Nope, it's all stuff you'll have around the office/house/classroom. Each lesson
+has a "you will need" section.
 
 ## Are there printable versions of the lessons?
 
@@ -54,13 +54,7 @@ None of these resources are specific to ChatGPT (which is a brand these days
 rather than a specific model anyway). It's just a nice shorthand term for those
 who aren't so familiar with the term "Large Language Model" or LLM.
 
-## How long do the activities take?
-
-A basic bigram text generation activity takes 30–60 minutes. Building your own
-model from scratch takes longer---allow 2–3 hours for a complete workshop that
-includes both building and generating.
-
-## Can I use these materials in my classroom?
+## Can I use these materials in my school classroom?
 
 Yes. All materials are released under
 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/), so you
@@ -89,7 +83,7 @@ can make it happen.
 Honestly, this stuff is just as fun as a Christmas party/team bonding activity,
 but the learning is very real. Learning _can_ be fun.
 
-## Why dice instead of computers?
+## Why dice and buckets instead of computers?
 
 Using physical randomness makes the probabilistic nature of text generation
 tangible. When you roll dice and look up words in a table, you're doing exactly
@@ -115,12 +109,6 @@ to any server.
 If you prefer working offline or want to modify the tools, the
 [source code](https://github.com/ANUcybernetics/llms-unplugged) includes a
 command-line tool that provides the same functionality.
-
-## The generated text is nonsense. Is that right?
-
-Mostly, yes. Bigram models capture local word patterns but have no long-range
-coherence. This is actually the point---it shows both the power and limitations
-of statistical language modelling. Trigrams produce noticeably better results.
 
 ## I found an error in the materials.
 
