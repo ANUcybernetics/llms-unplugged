@@ -10,7 +10,7 @@ The lessons are split into **Fundamentals** that everyone should complete, and
 available time. If you're new to _LLMs Unplugged_, start with the
 **Fundamentals** lessons below.
 
-::: tip Grid or bucket?
+::: info Grid or bucket?
 
 The Fundamentals lessons (and a couple of the extensions) offer two "flavours":
 **Grid** (paper grids and dice) or **Bucket** (physical tokens and containers).
