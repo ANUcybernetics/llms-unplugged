@@ -45,7 +45,7 @@ one explores a different aspect of how modern language models work.
 
 ### Controlling output
 
-<CardList :lessons="['sampling']" />
+<CardList :lessons="['sampling', 'beam-search', 'tool-use']" />
 
 ### Context and meaning
 
@@ -56,7 +56,7 @@ and word embeddings uses those extended grids to explore semantic similarity.
 
 ### Adaptation
 
-<CardList :lessons="['lora']" />
+<CardList :lessons="['lora', 'rlhf']" />
 
 ### Data and evaluation
 
