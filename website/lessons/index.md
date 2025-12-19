@@ -7,21 +7,14 @@ description: All LLMs Unplugged lessons for teaching how language models work.
 
 The lessons are split into **Fundamentals** that everyone should complete, and
 **Extensions** that you can pick and choose based on your interests and
-available time.
-
-::: info Getting started
-
-New to LLMs Unplugged? Start with the **Fundamentals** lessons below. Or check
-out our curated paths for [professionals](/professionals),
-[educators](/educators), and [parents](/parents).
-
-:::
+available time. If you're new to _LLMs Unplugged_, start with the
+**Fundamentals** lessons below.
 
 ::: tip Grid or bucket?
 
-The core lessons offer two methods: **Grid** (paper grids and dice) or
-**Bucket** (physical tokens and containers). Use the toggle at the top of each
-lesson to switch between them.
+The Fundamentals lessons (and a couple of the extensions) offer two "flavours":
+**Grid** (paper grids and dice) or **Bucket** (physical tokens and containers).
+Use the toggle at the top of each lesson to switch between them.
 
 The **grid** version connects well to probability concepts in the maths
 curriculum---students fill in a table with tally marks and use dice to sample
