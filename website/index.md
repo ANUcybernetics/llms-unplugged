@@ -32,14 +32,20 @@ basic counting and percentages.
 
 The materials work equally well for professionals who need to understand AI for
 decision-making in their organisations, parents wanting to learn alongside their
-kids, and educators teaching AI concepts in schools or universities.
+kids, and educators teaching AI concepts in schools or universities. Even if you
+know a bit (or a lot!) about how LLMs work, you'll still have fun making one and
+sharing it with others.
 
 ## Who made this?
 
 _LLMs Unplugged_ is a
 [Cybernetic Studio](https://cybernetics.anu.edu.au/cybernetic-studio/) project
-created by [Dr. Ben Swift](https://benswift.me) at the
-[ANU School of Cybernetics](https://cybernetics.anu.edu.au).
+created by [Dr. Ben Swift](https://benswift.me) (PhD ANU Computer Science, 2012)
+at the [ANU School of Cybernetics](https://cybernetics.anu.edu.au). So if you're
+worried about the pedigree of this stuff then I hope that helps. But if you're
+worried that _you'll_ need a PhD in Computer Science to understand it then rest
+assured---the whole point of these resources is that demonstrate that you don't.
+Which leads to the question...
 
 ## What prior knowledge do I need?
 
@@ -53,16 +59,20 @@ actually work and a willingness to engage with hands-on activities.
 
 ## Why does this matter?
 
-In a word---everyone needs this. [ChatGPT](https://chatgpt.com/) arrived in
-November 2022 and suddenly everyone's using LLMs. Yet most people have no real
-mental model of what's actually happening under the hood. They've heard the
-hand-wave-y and mystical-sounding explanations, maybe picked up some vague
-notions about "neural networks" and "training data", but the core mechanism
-remains opaque.
+[ChatGPT](https://chatgpt.com/) arrived in November 2022 and suddenly (most)
+everyone's using LLMs. Yet most people have no real mental model of what's
+actually happening under the hood. They've heard the hand-wave-y and
+mystical-sounding explanations, maybe picked up some vague notions about "neural
+networks" and "training data", but the core mechanism remains opaque.
 
 Understanding how these systems actually work---not through metaphor or
 handwaving but through direct experience---is what we're all about. In a
 post-ChatGPT world, this kind of understanding isn't optional anymore.
+
+These resources don't tell you or your students what to think about role of AI
+(good/mid/cooked) in society. They provide a grounding for _you_ to have that
+discussion; one that's informed not by folktales about what might be happening
+under the hood but by a lived experience of doing it for yourself.
 
 ## Where should I start?
 
