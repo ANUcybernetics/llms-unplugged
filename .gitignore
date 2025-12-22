@@ -1,6 +1,6 @@
-# ignore all pdfs except the website assets
+# ignore all pdfs except lessons.pdf
 *.pdf
-!website/public/assets/pdfs/**
+!website/public/assets/pdfs/lessons.pdf
 
 data/
 
