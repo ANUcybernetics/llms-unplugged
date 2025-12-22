@@ -7,17 +7,17 @@ hero:
   text: Understand AI by building it yourself
   tagline:
     Ready-to-use teaching resources for understanding how large language models
-    (LLMs) work through hands-on activities. No computers or coding required.
+    (LLMs) work. No computers or coding required.
   image:
     src: /assets/images/hero-index.avif
     alt: Workshop participants building language models with pen and paper
 ---
 
 _LLMs Unplugged_ is a series of hands-on activities demonstrating the
-fundamental ideas behind large language models---with no computers required. You
-start by manually counting word patterns in training text, recording these
-patterns either as tally marks on grid paper or even by cutting the paper into
-pieces and putting them into labelled buckets. You then generate _new_ text
+fundamental ideas behind large language models. You start by manually counting
+word patterns in your training text (can be as simple as a kids book), recording
+these patterns either as tally marks on grid paper or even by cutting the paper
+into pieces and putting them into labelled buckets. You then generate _new_ text
 (based on this training data) with some dice rolling or pulling the paper pieces
 back out of the buckets. After doing this by hand, something clicks: you'll see
 that LLMs like ChatGPT works using the same basic principles, just at a vastly
@@ -31,14 +31,14 @@ larger scale.
 
 ## Who is this for?
 
-While we call these activities "lessons" grouped into "topics", they're not only
-for classrooms. These activities are suitable for audiences from primary school
-age through to adults---we've delivered them to hundreds of participants
-including school students, undergraduate students, and senior executives from
-both industry and government. Zero coding background required, and no maths
-beyond basic counting and percentages.
+Although these activities are called "lessons" grouped into "topics", they're
+not just for school classrooms. These activities are suitable for audiences from
+primary school age through to adults---we've delivered them to hundreds of
+participants including school students, undergraduate students, and senior
+executives from both industry and government. Zero coding background required,
+and no maths beyond basic counting and percentages.
 
-The materials work equally well for professionals who need to understand AI for
+They work equally well for professionals who need to understand AI for
 decision-making in their organisations, parents wanting to learn alongside their
 kids, and educators teaching AI concepts in schools or universities. Even if you
 know a bit (or a lot!) about how LLMs work, you'll still have fun making one and
@@ -111,6 +111,25 @@ These resources don't tell you or your students what to think about role of AI
 (good/mid/cooked) in society. They provide a grounding for _you_ to have that
 discussion; one that's informed not by folktales about what might be happening
 under the hood but by a lived experience of doing it for yourself.
+
+</div>
+</div>
+
+<div class="section-with-image">
+<div class="section-image">
+<img src="/assets/images/hero-llm-vs-ai.avif" alt="Understanding the relationship between LLMs and AI">
+</div>
+<div class="section-content">
+
+## Why do you keep saying LLMs---this is AI, right?
+
+Honestly, the short answer (these days) is yes. The long answer is more more
+complicated---AI is a term that has been applied to many different algorithmic
+techniques and systems over the years. But today (in the mid-2020s) Large
+Language Models (LLMs) have sucked all the air out of the room when it comes to
+AI, so that's mostly what we're talking about here. We do like to use the term
+LLM rather than AI (or even "GenAI") to describe these systems because it's a
+bit clearer what we're talking about.
 
 </div>
 </div>
