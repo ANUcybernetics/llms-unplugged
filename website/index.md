@@ -15,11 +15,13 @@ hero:
 
 _LLMs Unplugged_ is a series of hands-on activities demonstrating the
 fundamental ideas behind large language models---with no computers required. You
-manually count word patterns in training text, record these patterns in a table,
-then use dice rolls to generate new sentences by making random choices weighted
-by what you've seen before. After an hour or so of doing this by hand, something
-clicks: you realise that ChatGPT works exactly the same way. It's the same
-fundamental process, just at a vastly different scale.
+start by manually counting word patterns in training text, recording these
+patterns either as tally marks on grid paper or even by cutting the paper into
+pieces and putting them into labelled buckets. You then generate _new_ text
+(based on this training data) with some dice rolling or pulling the paper pieces
+back out of the buckets. After doing this by hand, something clicks: you'll see
+that LLMs like ChatGPT works using the same basic principles, just at a vastly
+larger scale.
 
 <div class="section-with-image">
 <div class="section-image">
@@ -32,9 +34,9 @@ fundamental process, just at a vastly different scale.
 While we call these activities "lessons" grouped into "topics", they're not only
 for classrooms. These activities are suitable for audiences from primary school
 age through to adults---we've delivered them to hundreds of participants
-including school students, undergraduate students, and senior executives in the
-Australian Public Service. No programming background required, and no
-mathematics beyond basic counting and percentages.
+including school students, undergraduate students, and senior executives from
+both industry and government. Zero coding background required, and no maths
+beyond basic counting and percentages.
 
 The materials work equally well for professionals who need to understand AI for
 decision-making in their organisations, parents wanting to learn alongside their
@@ -72,11 +74,11 @@ you don't. Which leads to the question...
 
 ## What prior knowledge do I need?
 
-For teachers and facilitators, the reading and numeracy skills required to teach
-this stuff are really only primary-school level. This isn't just for specialist
-maths teachers or tertiary educators, although it works great in those contexts
-too. For students and participants, really all you need is a curiosity about how
-AI systems actually work and a willingness to engage with hands-on activities.
+For **instructors**, the reading and numeracy skills required to teach this
+stuff are really only primary-school level. This isn't just for specialist maths
+teachers or tertiary educators, although it works great in those contexts too.
+For **participants**, really all you need is a curiosity about how AI systems
+actually work and a willingness to engage with hands-on activities.
 
 Each [lesson](/lessons/) includes instructor notes and discussion questions,
 plus interactive widgets (which you can use to get your head around the
@@ -121,7 +123,7 @@ under the hood but by a lived experience of doing it for yourself.
 
 ## Where should I start?
 
-Start with the [core track lessons](/lessons/#core-track). These cover the
+Start with the ["Fundamentals" lessons](/lessons/#core-track). These cover the
 essential concepts for building and using language models: training a bigram
 model and generating text. After completing these lessons, you'll understand the
 fundamental mechanism behind ChatGPT-style AI systems.
