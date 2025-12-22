@@ -19,8 +19,8 @@ semantic patterns, then use them to generate richer text.
 
 ## You will need
 
-- your completed bigram model from _Training_
-- pen, paper, and dice as per _Generation_
+- your completed bigram model from _Training_ (grid method)
+- pen, paper, and dice as per _Generation_ (grid method)
 
 ## Your goal
 

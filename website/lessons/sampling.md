@@ -22,7 +22,7 @@ Sampling strategies decide which one to pick.
 ## You will need
 
 - a completed model from an earlier lesson
-- pen, paper, and dice as per _Grid Generation_
+- pen, paper, and dice as per _Generation_ (grid method)
 
 ## Your goal
 
