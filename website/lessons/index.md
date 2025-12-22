@@ -54,10 +54,6 @@ and word embeddings uses those extended grids to explore semantic similarity.
 
 <CardList :lessons="['context-columns', 'word-embeddings']" />
 
-### Adaptation
+### Model tuning
 
-<CardList :lessons="['lora', 'rlhf']" />
-
-### Data and evaluation
-
-<CardList :lessons="['synthetic-data']" />
+<CardList :lessons="['lora', 'rlhf', 'synthetic-data']" />

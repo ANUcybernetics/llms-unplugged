@@ -4,7 +4,7 @@ description:
   Use human preferences to adjust your model's weights, making it generate text
   people prefer.
 order: 11
-topic: adaptation-and-data
+topic: model-tuning
 keyIdea:
   Human feedback can tune a model's probabilities without new training data, by
   rewarding preferred outputs.
