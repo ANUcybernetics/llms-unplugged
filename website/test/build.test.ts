@@ -2,6 +2,8 @@ import { describe, it, expect, beforeAll } from "vitest";
 import { execSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { globSync } from "glob";
+import { findBrokenPdfLinks } from "./utils/linkChecker";
 
 const DIST_DIR = ".vitepress/dist";
 
@@ -53,22 +55,13 @@ describe("VitePress Build", () => {
     expect(existsSync(join(DIST_DIR, "CNAME"))).toBe(true);
   });
 
-  it("copies PDF assets if they exist", () => {
-    const pdfsDir = join(DIST_DIR, "assets/pdfs");
-    if (!existsSync(pdfsDir)) {
-      return;
-    }
+  it("has no broken links to PDF files", () => {
+    const htmlFiles = globSync(join(DIST_DIR, "**/*.html"));
+    const brokenLinks = findBrokenPdfLinks(htmlFiles, DIST_DIR);
 
-    const expectedPdfs = [
-      "grid-training.pdf",
-      "grid-generation.pdf",
-      "weighted-randomness.pdf",
-    ];
-
-    const files = readdirSync(pdfsDir);
-    for (const pdf of expectedPdfs) {
-      expect(files).toContain(pdf);
-    }
+    expect(brokenLinks, `Broken PDF links:\n${brokenLinks.join("\n")}`).toEqual(
+      [],
+    );
   });
 
   it("copies image assets", () => {
