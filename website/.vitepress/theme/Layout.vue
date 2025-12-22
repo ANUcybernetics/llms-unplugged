@@ -51,6 +51,9 @@ const formattedDate = computed(() => {
         >·</span>
         <time v-if="frontmatter.date" class="date">{{ formattedDate }}</time>
       </div>
+      <h1 v-if="isNewsPage && frontmatter.title" class="news-title">
+        {{ frontmatter.title }}
+      </h1>
       <img
         v-if="isNewsPage && newsHeroSrc"
         class="news-hero"

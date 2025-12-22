@@ -5,8 +5,6 @@ author: Ben Swift
 description: The LLMs Unplugged website is now live.
 ---
 
-# Website launch
-
 We're excited to announce the launch of this _LLMs Unplugged_ website.
 
 All teaching resources are now available for download, including lesson cards

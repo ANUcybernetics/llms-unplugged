@@ -5,8 +5,6 @@ author: Ben Swift
 description: Working through LLMs Unplugged with ACT specialty STEM teachers
 ---
 
-# ACT Academy of Future Skills workshop
-
 This morning we hosted the
 [ACT Academy of Future Skills](https://canberradaily.com.au/new-future-skills-academy-for-north-canberra/)
 for an _LLMs Unplugged_ workshop---was great to think about how this could be
