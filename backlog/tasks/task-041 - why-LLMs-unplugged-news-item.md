@@ -1,7 +1,7 @@
 ---
 id: task-041
 title: why LLMs unplugged news item
-status: To Do
+status: Done
 assignee: []
 created_date: "2025-11-21 03:28"
 labels: []
