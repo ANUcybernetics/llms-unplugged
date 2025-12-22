@@ -128,13 +128,10 @@ tokens that appeared after its label in the original text.
 
 </BucketOnly>
 
-## See how it works
+## Example
 
 Before you try training a model yourself, work through this example to see the
-algorithm in action. The written walkthrough and interactive widget below both
-demonstrate the same process.
-
-### Worked example
+algorithm in action.
 
 <GridOnly>
 
@@ -195,26 +192,6 @@ with tally marks, but in a physical form you can touch and manipulate.
 
 </BucketOnly>
 
-### Interactive widget
-
-<GridOnly>
-
-Step through the training process at your own pace. Enter your own text or use
-the example, then press Play or Step to watch the model being built.
-
-<TrainingWidget initialText="See spot run. See spot jump. Run, Spot, run. Jump, Spot, jump." />
-
-</GridOnly>
-
-<BucketOnly>
-
-Step through the training process at your own pace. Enter your own text or use
-the example, then press Play or Step to watch the buckets being filled.
-
-<BucketTrainingWidget />
-
-</BucketOnly>
-
 ## Instructor notes
 
 ### Discussion questions
@@ -267,5 +244,25 @@ This bucket method and the grid method produce equivalent models:
 - both capture the same "what follows what" relationships
 - buckets make the weighting more tangible---you can see and feel that some
   outcomes are more likely because there are literally more tokens to pick from
+
+</BucketOnly>
+
+## Interactive widget
+
+<GridOnly>
+
+Step through the training process at your own pace. Enter your own text or use
+the example, then press Play or Step to watch the model being built.
+
+<TrainingWidget initialText="See spot run. See spot jump. Run, Spot, run. Jump, Spot, jump." />
+
+</GridOnly>
+
+<BucketOnly>
+
+Step through the training process at your own pace. Enter your own text or use
+the example, then press Play or Step to watch the buckets being filled.
+
+<BucketTrainingWidget />
 
 </BucketOnly>

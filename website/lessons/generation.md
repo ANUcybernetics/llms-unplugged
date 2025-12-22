@@ -110,13 +110,10 @@ bucket and repeating the process word by word creates new text.
 
 </BucketOnly>
 
-## See how it works
+## Example
 
 Before you try generating text yourself, work through this example to see the
-algorithm in action. The written walkthrough and interactive widget below both
-demonstrate the same process.
-
-### Worked example
+algorithm in action.
 
 <GridOnly>
 
@@ -172,32 +169,6 @@ Using the bucket model from the example in _Training_:
 Notice how the randomness comes from physically picking tokens without looking.
 Buckets with more tokens of the same type are more likely to produce that
 token---the "see" bucket always produces `spot` because that's all it contains.
-
-</BucketOnly>
-
-### Interactive widget
-
-<GridOnly>
-
-Step through the generation process at your own pace. Click on a row to select a
-starting word, then press Play or Step to watch the dice roll and text being
-generated. You can also edit the training text to create your own model.
-
-<GenerationWidget
-  initialText="See spot run. See spot jump. Run, Spot, run. Jump, Spot, jump."
-  :diceSides="10"
-/>
-
-</GridOnly>
-
-<BucketOnly>
-
-Step through the generation process at your own pace. Click on a bucket to
-select a starting word, then press Play or Step to watch tokens being picked
-randomly and text being generated. You can also edit the training text to create
-your own model.
-
-<BucketGenerationWidget />
 
 </BucketOnly>
 
@@ -269,5 +240,31 @@ This bucket method and the dice method produce equivalent results:
 
 The bucket method avoids the need to calculate percentages or understand dice
 mechanics, making it more accessible for younger learners.
+
+</BucketOnly>
+
+## Interactive widget
+
+<GridOnly>
+
+Step through the generation process at your own pace. Click on a row to select a
+starting word, then press Play or Step to watch the dice roll and text being
+generated. You can also edit the training text to create your own model.
+
+<GenerationWidget
+  initialText="See spot run. See spot jump. Run, Spot, run. Jump, Spot, jump."
+  :diceSides="10"
+/>
+
+</GridOnly>
+
+<BucketOnly>
+
+Step through the generation process at your own pace. Click on a bucket to
+select a starting word, then press Play or Step to watch tokens being picked
+randomly and text being generated. You can also edit the training text to create
+your own model.
+
+<BucketGenerationWidget />
 
 </BucketOnly>
