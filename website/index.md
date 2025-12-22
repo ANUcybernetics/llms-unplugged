@@ -57,11 +57,10 @@ sharing it with others.
 
 _LLMs Unplugged_ is a
 [Cybernetic Studio](https://cybernetics.anu.edu.au/cybernetic-studio/) project
-created by [Dr. Ben Swift](https://benswift.me) (PhD ANU Computer Science, 2012)
-at the [ANU School of Cybernetics](https://cybernetics.anu.edu.au). But if
-you're worried that _you'll_ need a PhD in Computer Science to understand it
-then rest assured---the whole point of these resources is that demonstrate that
-you don't. Which leads to the question...
+created by [Dr. Ben Swift](https://benswift.me) (PhD ANU Computer Science,
+2012). But if you're worried that _you'll_ need a PhD in Computer Science to
+understand it then rest assured---the whole point of these resources is that
+demonstrate that you don't. Which leads to the question...
 
 </div>
 </div>
