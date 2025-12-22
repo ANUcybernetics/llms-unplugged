@@ -6,7 +6,7 @@
 #show: lesson-setup
 
 #lesson-hero(
-  "Bucket Generation",
+  "Generation (bucket version)",
   "/typst/images/CYBERNETICS_A_042.jpg",
 )[
   Use your bucket-based bigram model to generate new text by picking tokens at

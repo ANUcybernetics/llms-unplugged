@@ -6,7 +6,7 @@
 #show: lesson-setup
 
 #lesson-hero(
-  "Bucket Training",
+  "Training (bucket version)",
   "/typst/images/CYBERNETICS_A_038.jpg",
 )[
   Build a bigram language model using physical tokens and buckets to track which

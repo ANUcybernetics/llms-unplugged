@@ -1,6 +1,6 @@
 #!/usr/bin/env npx tsx
 import { execSync } from "node:child_process";
-import { readdirSync, mkdirSync, readFileSync, existsSync } from "node:fs";
+import { readdirSync, mkdirSync, readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -9,15 +9,25 @@ const projectRoot = join(__dirname, "../..");
 const lessonsDir = join(__dirname, "../lessons");
 const outputDir = join(__dirname, "../public/assets/pdfs");
 
+// Explicit ordering for combined PDF
+const pdfOrder = [
+  "weighted-randomness.typ",
+  "grid-training.typ",
+  "grid-generation.typ",
+  "grid-trigram.typ",
+  "bucket-training.typ",
+  "bucket-generation.typ",
+  "bucket-trigram.typ",
+  "pretrained-generation.typ",
+  "sampling.typ",
+  "context-columns.typ",
+  "word-embeddings.typ",
+  "lora.typ",
+  "synthetic-data.typ",
+];
+
 interface PackageJson {
   version: string;
-}
-
-function getOrder(mdPath: string): number {
-  if (!existsSync(mdPath)) return 0;
-  const content = readFileSync(mdPath, "utf-8");
-  const match = content.match(/^order:\s*(\d+)/m);
-  return match ? parseInt(match[1], 10) : 0;
 }
 
 const packageJson: PackageJson = JSON.parse(
@@ -27,14 +37,16 @@ const version = packageJson.version;
 
 mkdirSync(outputDir, { recursive: true });
 
-const typFiles = readdirSync(lessonsDir)
-  .filter((f) => f.endsWith(".typ"))
-  .map((f) => ({
-    file: f,
-    order: getOrder(join(lessonsDir, f.replace(".typ", ".md"))),
-  }))
-  .sort((a, b) => a.order - b.order)
-  .map((m) => m.file);
+const allTypFiles = readdirSync(lessonsDir).filter((f) => f.endsWith(".typ"));
+
+// Sort by explicit order, with any unlisted files at the end
+const typFiles = allTypFiles.sort((a, b) => {
+  const aIndex = pdfOrder.indexOf(a);
+  const bIndex = pdfOrder.indexOf(b);
+  const aOrder = aIndex === -1 ? pdfOrder.length : aIndex;
+  const bOrder = bIndex === -1 ? pdfOrder.length : bIndex;
+  return aOrder - bOrder;
+});
 
 console.log(`Building ${typFiles.length} lesson PDFs...`);
 

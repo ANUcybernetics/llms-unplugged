@@ -6,7 +6,7 @@
 #show: lesson-setup
 
 #lesson-hero(
-  "Bucket Trigram",
+  "Trigram (bucket version)",
   "/typst/images/CYBERNETICS_A_067.jpg",
 )[
   Extend the bucket bigram model to consider _two_ words of context instead of

@@ -6,7 +6,7 @@
 #show: lesson-setup
 
 #lesson-hero(
-  "Grid Generation",
+  "Generation (grid version)",
   "/typst/images/CYBERNETICS_A_020.jpg",
 )[
   Use a pre-trained model to generate new text through weighted random sampling.
