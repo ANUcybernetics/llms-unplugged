@@ -1,3 +1,4 @@
+import footnote from "markdown-it-footnote";
 import { defineConfig } from "vitepress";
 import { RssPlugin, type RSSOptions } from "vitepress-plugin-rss";
 import checker from "vite-plugin-checker";
@@ -34,6 +35,9 @@ export default defineConfig({
     typographer: true,
     image: {
       lazyLoading: true,
+    },
+    config: (md) => {
+      md.use(footnote);
     },
   },
 
