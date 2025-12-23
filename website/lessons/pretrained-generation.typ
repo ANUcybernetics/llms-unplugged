@@ -35,24 +35,28 @@
 #columns(2, gutter: 1em)[
   == Algorithm
 
-  Full instructions are at the front of the booklet, but here's a quick summary:
+  Full instructions are at the front of the pre-trained model booklet, but
+  here's a quick summary:
 
   + *choose a starting word*---pick any bold word from the booklet and write it
     down
-  + *look up the word's entry* (use the booklet like a dictionary) to find all
-    possible next words
-  + *roll your d10(s)*:
-    - check for diamond symbols (♦) next to the word---the number of diamonds
-      shows how many d10s to roll (e.g. ♦♦ means roll 2 d10s)
-    - if there are no diamonds, there's only one possible next word---skip to
-      step 4
-    - interpret the dice rolls as digits from a single number (e.g. if you roll
-      4, then 7, then 2 then your number is 472)
-  + *scan through the "next word" options* to find your next word: the first
-    number which is greater than or equal to your roll indicates your next word
+
+  + *look up the word's entry* (i.e. use the booklet like a dictionary) to find
+    all possible _next_ words according to the model
+
+  + *roll your d10s* (if required): check for diamonds next to the word---this
+    shows how many d10s to roll (e.g. ♦♦♦ means roll 3 d10s). If there are no
+    diamonds, there's only one possible next word---skip to step 5. Read the
+    dice from left to right as a single number (e.g. rolling 2, 1 and 7 means
+    your roll is 217)
+
+  + *find your next word*: scan through the followers until you find the first
+    number ≥ your roll, or just use the single word if no dice were rolled
     (write it down)
-  + *repeat* from step 2 using this new word, continuing until you reach a
-    natural stopping point (like a period) or your desired length
+
+  + repeat from step 2 using this word as your new word, continuing this loop
+    until you reach a natural stopping point (like a period) or reach your
+    desired text length
 
   #colbreak()
 
