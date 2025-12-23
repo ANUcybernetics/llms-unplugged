@@ -95,7 +95,9 @@ We encourage [educators](/educators) to use, adapt, and improve these resources.
 If you have questions, success stories about using them in your classroom, or
 would like to discuss adaptations improvements you've made, get in touch at
 [ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au)---we'd love[^love] to hear
-from you.
+from you. And if you'd like to be informed of more cool stuff coming out of the
+School of Cybernetics, then sign up for the
+[mailing list](https://cybernetics.anu.edu.au/#subscribe-to-our-mailing-list-1).
 
 ## Citation
 

@@ -159,7 +159,9 @@ fundamental mechanism behind ChatGPT-style AI systems.
 
 If you have questions, success stories about using these materials, or would
 like to discuss adaptations or improvements you've made, get in touch at
-[ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au).
+[ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au). If you'd like to hear about
+what cool stuff is going on at the School of Cybernetics, then sign up for the
+[mailing list](https://cybernetics.anu.edu.au/#subscribe-to-our-mailing-list-1).
 
 </div>
 </div>
