@@ -64,25 +64,36 @@
 
   Your current word is *"cat"* and its entry shows:
 
-  *cat* ♦ → #text(weight: "semibold")[4]|sat #text(weight: "semibold")[7]|ran
-  #text(weight: "semibold")[10]|slept
+  #text(font: "Libertinus Serif", size: 1.5em)[
+    #text(weight: "bold")[cat] ♦#h(0.7em)#text(weight: "semibold")[4]|sat #text(
+      weight: "semibold",
+    )[7]|ran #text(weight: "semibold")[10]|slept
+  ]
 
   - one diamond (♦) means roll 1 d10
-  - you roll a 6
-  - scan through options: #text(weight: "semibold")[7]|ran is the first number ≥
-    6
-  - your next word is "ran": write it down, look it up and continue
+  - roll your dice: roll a 6
+  - find the next word: first number ≥ 6 is #text(
+      font: "Libertinus Serif",
+      weight: "semibold",
+    )[7]|ran, so next word is "ran"
+  - write it down, look it up and continue the process
 
   == Example 2: multiple d10s
 
   Your current word is *"the"* and its entry shows:
 
-  *the* ♦♦ → #text(weight: "semibold")[33]|cat #text(weight: "semibold")[66]|dog
-  #text(weight: "semibold")[99]|end
+  #text(font: "Libertinus Serif", size: 1.5em)[
+    #text(weight: "bold")[the] ♦♦#h(0.7em)#text(weight: "semibold")[33]|cat
+    #text(
+      weight: "semibold",
+    )[66]|dog #text(weight: "semibold")[99]|end
+  ]
 
   - two diamonds (♦♦) means roll 2 d10s
-  - you roll 5 and 8, giving you 58
-  - scan through options: #text(weight: "semibold")[66]|dog is the first number
-    ≥ 58
-  - your next word is "dog": write it down, look it up and continue
+  - roll your dice: roll 5 and 8 → combine them to get 58
+  - find the next word: first number ≥ 58 is #text(
+      font: "Libertinus Serif",
+      weight: "semibold",
+    )[66]|dog, so next word is "dog"
+  - write it down, look it up and continue the process
 ]
