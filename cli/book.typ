@@ -149,6 +149,15 @@
     #text(size: 1em)[© 2025 Ben Swift]
     #v(0.5cm)
 
+    #text(size: 0.9em, style: "italic")[
+      This booklet contains statistical word frequencies derived from the source
+      text for educational purposes. Where the source text is under copyright,
+      the transformation into probability tables for teaching language model
+      concepts constitutes fair use. No substantial portion of the original text
+      is reproduced.
+    ]
+    #v(0.5cm)
+
     #text(size: 0.9em)[
       This work is licensed under a Creative Commons
       Attribution-NonCommercial-ShareAlike 4.0 International License (CC
