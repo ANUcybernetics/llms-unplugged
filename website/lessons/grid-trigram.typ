@@ -6,7 +6,7 @@
 #show: lesson-setup
 
 #lesson-hero(
-  "Trigram (grid version)",
+  "Trigram",
   "/typst/images/CYBERNETICS_A_027.jpg",
 )[
   Extend the bigram model to consider _two_ words of context instead of one,

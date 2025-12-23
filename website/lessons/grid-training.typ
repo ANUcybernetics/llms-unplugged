@@ -6,7 +6,7 @@
 #show: lesson-setup
 
 #lesson-hero(
-  "Training (grid version)",
+  "Training",
   "/typst/images/CYBERNETICS_A_009.jpg",
 )[
   Build a bigram language model that tracks which words follow which other words
