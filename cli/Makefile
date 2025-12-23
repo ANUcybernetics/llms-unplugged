@@ -30,6 +30,14 @@ WORKSHOP_TARGETS := \
 	$(PDF_DIR)/communist-manifesto-2-1.pdf \
 	$(PDF_DIR)/TinyStories-1k-2-1.pdf
 
+EXAMPLE_TARGETS := \
+	$(PDF_DIR)/the-cat-in-the-hat-2-1.pdf \
+	$(PDF_DIR)/green-eggs-and-ham-2-1.pdf \
+	$(PDF_DIR)/frankenstein-2-1.pdf \
+	$(PDF_DIR)/collected-hemingway-2-1.pdf \
+	$(PDF_DIR)/a-christmas-carol-2-1.pdf \
+	$(PDF_DIR)/beatles-2-1.pdf
+
 # Define common variables
 TOOL := target/release/llms_unplugged
 TYPST := typst compile
@@ -64,6 +72,11 @@ booklets: $(TARGETS)
 .PHONY: workshop
 workshop: $(WORKSHOP_TARGETS)
 	@echo "Workshop booklets complete!"
+
+# Build example booklets (single books for demos)
+.PHONY: examples
+examples: $(EXAMPLE_TARGETS)
+	@echo "Example booklets complete!"
 
 # Generate summary PDF from all models
 .PHONY: summary
