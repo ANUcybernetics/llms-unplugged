@@ -22,7 +22,7 @@ weighted random sampling.
 ## You will need
 
 - a pre-trained model booklet
-- a d10 (or similar) for weighted sampling
+- a d10 for weighted sampling
 - pen and paper for your generated text
 
 ## Your goal

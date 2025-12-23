@@ -15,7 +15,7 @@
   == You will need
 
   - a pre-trained model booklet
-  - d10 (or similar) for weighted sampling
+  - d10 for weighted sampling
   - pen & paper for writing down the generated "output text"
 
   == Your goal
