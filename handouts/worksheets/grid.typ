@@ -56,7 +56,7 @@
               width: auto,
               align(left)[
                 #text(
-                  font: "IBM Plex Mono",
+                  font: "Monaspace Argon",
                   size: 1.8em,
                   fill: rgb("#e6ff44"),
                 )[LLMs\ Unplugged]

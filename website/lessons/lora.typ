@@ -93,9 +93,9 @@
   )
 
   - `saw` row:
-    - #text(font: "IBM Plex Mono")[[—,2,—,4,2,1]] (base)
-    - #text(font: "IBM Plex Mono")[[—,—,—,1,1,2]] (LoRA)
-    - #text(font: "IBM Plex Mono")[[—,2,—,5,3,3]] (base + LoRA)
+    - #text(font: "Monaspace Argon")[[—,2,—,4,2,1]] (base)
+    - #text(font: "Monaspace Argon")[[—,—,—,1,1,2]] (LoRA)
+    - #text(font: "Monaspace Argon")[[—,2,—,5,3,3]] (base + LoRA)
   - `red` now equally likely as `the` after `saw`
   - other rows: base + zero = unchanged
   - LoRA is smaller: only 1 row vs 6 in base model

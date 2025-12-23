@@ -125,7 +125,7 @@
 
   // Cybernetic Studio wordmark
   place(bottom + right)[
-    #text(font: "IBM Plex Mono", size: 18pt)[
+    #text(font: "Monaspace Argon", size: 18pt)[
       Cybernetic\
       Studio
     ]

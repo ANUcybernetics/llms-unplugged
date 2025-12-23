@@ -128,7 +128,7 @@
   title: "LLMs Unplugged",
   paper: "a3",
   footer_text: text(
-    font: "IBM Plex Mono",
+    font: "Monaspace Argon",
     weight: "bold",
     fill: anu-colors.socy-yellow,
     "© 2025 Ben Swift | CC BY-NC-SA 4.0",
