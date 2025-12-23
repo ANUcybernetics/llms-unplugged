@@ -139,9 +139,10 @@
 
   align(horizon)[
     #if subtitle != none [
-      #text(size: 1.2em)[#subtitle of]
+      #text(size: 1.2em)[#subtitle derived from]
     ]
-    #text(size: 1.2em, style: "italic")[#context doc_metadata.title by]
+    #text(size: 1.2em, style: "italic")[#context doc_metadata.title]
+    by
     #text(size: 1.2em)[#context doc_metadata.author]
     #v(0.5cm)
 
@@ -171,9 +172,13 @@
     #text(size: 0.9em)[
       Credits: designed and built by Ben Swift for the Cybernetic Studio.
       Typeset in #link("https://github.com/alerque/libertinus")[Libertinus]
-      using #link("https://typst.app")[Typst]. The source code for the tool used
-      to create this model#context if "version" in doc_metadata [
-        (v#raw(doc_metadata.version))
+      using #link("https://typst.app")[Typst]. Create your own n-gram model
+      booklet using the online tools at #link(
+        "https://www.llmsunplugged.org/tools",
+      )[`https://www.llmsunplugged.org/tools`]. The source code #context if (
+        "version" in doc_metadata
+      ) [
+        (v#raw(doc_metadata.version)) for the tool used to create this model
       ] is available under an MIT Licence from #link(
         "https://github.com/ANUcybernetics/llms-unplugged",
       )[`https://github.com/ANUcybernetics/llms-unplugged`].
