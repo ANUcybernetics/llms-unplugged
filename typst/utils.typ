@@ -120,7 +120,7 @@
         -90deg,
         origin: bottom + left,
         text(
-          font: "IBM Plex Mono",
+          font: ("Neon Tubes 2", "IBM Plex Mono"),
           size: 12pt,
           fill: anu-colors.socy-yellow,
         )[LLMs Unplugged #text(fill: anu-colors.grey-3)[|] Cybernetic Studio],
@@ -130,7 +130,7 @@
       bottom + left,
       dy: -1cm,
       text(
-        font: "IBM Plex Mono",
+        font: ("Neon Tubes 2", "IBM Plex Mono"),
         size: 9pt,
         fill: anu-colors.socy-yellow,
       )[© 2025 Ben Swift #text(fill: anu-colors.grey-3)[|] #sys.inputs.at(
