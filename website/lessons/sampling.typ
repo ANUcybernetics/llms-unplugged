@@ -8,6 +8,7 @@
 #lesson-hero(
   "Sampling",
   "/typst/images/CYBERNETICS_A_098.jpg",
+  url: "https://www.llmsunplugged.org/lessons/sampling",
 )[
   When generating text the language model gives several different options for
   which word could come next in the generated text---which one to choose?

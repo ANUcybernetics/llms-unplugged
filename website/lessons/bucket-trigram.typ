@@ -8,6 +8,7 @@
 #lesson-hero(
   "Trigram (bucket version)",
   "/typst/images/CYBERNETICS_A_067.jpg",
+  url: "https://www.llmsunplugged.org/lessons/trigram",
 )[
   Extend the bucket bigram model to consider _two_ words of context instead of
   one, leading to better text generation.

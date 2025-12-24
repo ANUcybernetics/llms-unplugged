@@ -8,6 +8,7 @@
 #lesson-hero(
   "Word Embeddings",
   "/typst/images/CYBERNETICS_A_102.jpg",
+  url: "https://www.llmsunplugged.org/lessons/word-embeddings",
 )[
   Transform words into numerical vectors that capture meaning, revealing the
   semantic relationships between words in your model.

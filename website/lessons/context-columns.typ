@@ -8,6 +8,7 @@
 #lesson-hero(
   "Context Columns",
   "/typst/images/CYBERNETICS_A_051.jpg",
+  url: "https://www.llmsunplugged.org/lessons/context-columns",
 )[
   Enhance the bigram model with context columns that capture grammatical and
   semantic patterns.

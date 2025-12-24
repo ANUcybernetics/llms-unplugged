@@ -5,6 +5,9 @@
 #import "@local/anu-typst-template:0.2.0": *
 #import "@local/anu-typst-template:0.2.0": anu-colors
 
+// Import QR code generator
+#import "@preview/cades:0.3.1": qr-code
+
 // Draw crop marks at page corners
 #let crop-marks(bleed: 3mm) = {
   let mark-length = 2mm
@@ -144,7 +147,7 @@
 }
 
 // Hero image and title layout for lesson first pages
-#let lesson-hero(title, image-path, content) = {
+#let lesson-hero(title, image-path, url: none, content) = {
   // Place image on right side of first page
   place(
     top + right,
@@ -157,6 +160,20 @@
       image(image-path, width: 100%, height: 100%, fit: "cover"),
     ),
   )
+
+  // Place QR code on bottom right of hero image if URL provided
+  if url != none {
+    place(
+      bottom + right,
+      dx: 0.5cm,
+      dy: 0.5cm,
+      box(
+        inset: 3mm,
+        fill: black,
+        qr-code(url, width: 2cm, color: anu-colors.gold, background: black),
+      ),
+    )
+  }
 
   // Create two-column layout with title and content on left, image on right
   grid(

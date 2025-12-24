@@ -8,6 +8,7 @@
 #lesson-hero(
   "LoRA",
   "/typst/images/CYBERNETICS_B_032.jpg",
+  url: "https://www.llmsunplugged.org/lessons/lora",
 )[
   Efficiently adapt a trained language model to a new domain or style without
   retraining the entire model from scratch.

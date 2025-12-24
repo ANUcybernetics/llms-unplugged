@@ -8,6 +8,7 @@
 #lesson-hero(
   "Synthetic Data",
   "/typst/images/CYBERNETICS_B_033.jpg",
+  url: "https://www.llmsunplugged.org/lessons/synthetic-data",
 )[
   Use your language model to generate new training data, then train a new model
   on that synthetic data to see how patterns degrade or change.

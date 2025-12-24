@@ -8,6 +8,7 @@
 #lesson-hero(
   "Training (bucket version)",
   "/typst/images/CYBERNETICS_A_038.jpg",
+  url: "https://www.llmsunplugged.org/lessons/training",
 )[
   Build a bigram language model using physical tokens and buckets to track which
   words follow which other words.

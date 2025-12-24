@@ -8,6 +8,7 @@
 #lesson-hero(
   "Training",
   "/typst/images/CYBERNETICS_A_009.jpg",
+  url: "https://www.llmsunplugged.org/lessons/training",
 )[
   Build a bigram language model that tracks which words follow which other words
   in text.

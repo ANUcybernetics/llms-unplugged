@@ -8,6 +8,7 @@
 #lesson-hero(
   "Generation (bucket version)",
   "/typst/images/CYBERNETICS_A_042.jpg",
+  url: "https://www.llmsunplugged.org/lessons/generation",
 )[
   Use your bucket-based bigram model to generate new text by picking tokens at
   random.

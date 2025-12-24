@@ -8,6 +8,7 @@
 #lesson-hero(
   "Pre-trained Model Generation",
   "/typst/images/CYBERNETICS_B_033.jpg",
+  url: "https://www.llmsunplugged.org/lessons/pretrained-generation",
 )[
   Use a (slightly larger) pre-trained model to generate new text through
   weighted random sampling.

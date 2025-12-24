@@ -8,6 +8,7 @@
 #lesson-hero(
   "Generation",
   "/typst/images/CYBERNETICS_A_020.jpg",
+  url: "https://www.llmsunplugged.org/lessons/generation",
 )[
   Use a pre-trained model to generate new text through weighted random sampling.
 
