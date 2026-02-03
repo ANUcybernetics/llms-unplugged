@@ -21,3 +21,4 @@ cli/target/
 mise.local.toml
 
 .unlighthouse
+.jj/
