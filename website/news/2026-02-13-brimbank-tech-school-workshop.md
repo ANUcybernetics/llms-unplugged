@@ -1,6 +1,6 @@
 ---
 title: LLMs Unplugged at Brimbank Tech School
-date: 2026-02-04
+date: 2026-02-13
 author: Ben Swift
 description: Join us for an AI workshop at VU Sunshine Campus on 13 February 2026
 ---
