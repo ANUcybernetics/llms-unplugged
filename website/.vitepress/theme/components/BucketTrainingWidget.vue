@@ -3,9 +3,8 @@ import { computed, watch } from "vue";
 import { usePlayback } from "../composables/usePlayback";
 import { useTrainingText } from "../composables/useTrainingText";
 import { parseTokens, getBigrams } from "../utils/tokens";
-import PlaybackControls from "./PlaybackControls.vue";
+import PlaybackSection from "./PlaybackSection.vue";
 import FullscreenWrapper from "./FullscreenWrapper.vue";
-import { PLAYBACK_CONFIG } from "../config/playback";
 
 const inputText = useTrainingText();
 
@@ -161,33 +160,19 @@ function isPunctuation(token: string): boolean {
           </div>
         </div>
 
-        <div class="widget-section">
-          <div class="section-header">Controls</div>
-          <div class="section-content controls-content">
-            <PlaybackControls
-              :is-playing="isPlaying"
-              :is-complete="isComplete"
-              :current-step="currentStep"
-              :total-steps="totalSteps"
-              @play="play"
-              @pause="pause"
-              @step="step"
-              @reset="reset"
-            />
-            <div class="speed-control">
-              <span class="speed-label">Slow</span>
-              <input
-                id="bucket-training-speed-slider"
-                v-model.number="stepInterval"
-                type="range"
-                :min="PLAYBACK_CONFIG.MIN_STEP_INTERVAL_MS"
-                :max="PLAYBACK_CONFIG.MAX_STEP_INTERVAL_MS"
-                step="50"
-              />
-              <span class="speed-label">Fast</span>
-            </div>
-          </div>
-        </div>
+        <PlaybackSection
+          v-model:step-interval="stepInterval"
+          :is-playing="isPlaying"
+          :is-complete="isComplete"
+          :current-step="currentStep"
+          :total-steps="totalSteps"
+          :show-step-counter="true"
+          slider-id="bucket-training-speed-slider"
+          @play="play"
+          @pause="pause"
+          @step="step"
+          @reset="reset"
+        />
       </div>
     </div>
   </FullscreenWrapper>

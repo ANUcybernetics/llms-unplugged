@@ -4,12 +4,13 @@ import { ref, computed, watch, onUnmounted } from "vue";
 import { useTrainingText } from "../composables/useTrainingText";
 import { parseTokens, getVocabulary, buildBigramModel } from "../utils/tokens";
 import { rollDice } from "../utils/diceMapping";
-import PlaybackControls from "./PlaybackControls.vue";
+import PlaybackSection from "./PlaybackSection.vue";
 import FullscreenWrapper from "./FullscreenWrapper.vue";
 import { PLAYBACK_CONFIG } from "../config/playback";
 
 const DICE_ROLL_ANIMATION_MS = PLAYBACK_CONFIG.DICE_ROLL_ANIMATION_MS;
 const POST_WRITE_PAUSE_MS = PLAYBACK_CONFIG.POST_WRITE_PAUSE_MS;
+const DEFAULT_STEP_INTERVAL_MS = PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS;
 
 interface EntryFollower {
   word: string;
@@ -116,7 +117,7 @@ function findWordForRoll(entry: ModelEntry, roll: number): string | null {
 
 const isPlaying = ref(false);
 const isComplete = ref(false);
-const stepInterval = ref(PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS);
+const stepInterval = ref(DEFAULT_STEP_INTERVAL_MS);
 let abortController: AbortController | null = null;
 
 function play() {
@@ -412,34 +413,16 @@ function isSelectedFollower(entry: ModelEntry, follower: EntryFollower): boolean
           </div>
         </div>
 
-        <div class="widget-section">
-          <div class="section-header">Controls</div>
-          <div class="section-content controls-content">
-            <PlaybackControls
-              :is-playing="isPlaying"
-              :is-complete="isComplete"
-              :current-step="0"
-              :total-steps="0"
-              :show-step-counter="false"
-              @play="handlePlay"
-              @pause="pause"
-              @step="doStep"
-              @reset="reset"
-            />
-            <div class="speed-control">
-              <span class="speed-label">Slow</span>
-              <input
-                id="pretrained-speed-slider"
-                v-model.number="stepInterval"
-                type="range"
-                :min="PLAYBACK_CONFIG.MIN_STEP_INTERVAL_MS"
-                :max="PLAYBACK_CONFIG.MAX_STEP_INTERVAL_MS"
-                step="50"
-              />
-              <span class="speed-label">Fast</span>
-            </div>
-          </div>
-        </div>
+        <PlaybackSection
+          v-model:step-interval="stepInterval"
+          :is-playing="isPlaying"
+          :is-complete="isComplete"
+          slider-id="pretrained-speed-slider"
+          @play="handlePlay"
+          @pause="pause"
+          @step="doStep"
+          @reset="reset"
+        />
       </div>
     </div>
   </FullscreenWrapper>
