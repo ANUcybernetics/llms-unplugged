@@ -74,12 +74,6 @@ const isComplete = ref(false);
 const stepInterval = ref(PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS);
 let abortController: AbortController | null = null;
 
-const speedLabel = computed(() => {
-  if (stepInterval.value < 200) return 'Fast';
-  if (stepInterval.value < 600) return 'Normal';
-  return 'Slow';
-});
-
 function play() {
   isPlaying.value = true;
 }
@@ -356,7 +350,7 @@ function isPunctuation(token: string): boolean {
               @reset="reset"
             />
             <div class="speed-control">
-              <label for="bucket-speed-slider">Speed:</label>
+              <span class="speed-label">Slow</span>
               <input
                 id="bucket-speed-slider"
                 v-model.number="stepInterval"
@@ -365,7 +359,7 @@ function isPunctuation(token: string): boolean {
                 :max="PLAYBACK_CONFIG.MAX_STEP_INTERVAL_MS"
                 step="50"
               />
-              <span class="speed-label">{{ speedLabel }}</span>
+              <span class="speed-label">Fast</span>
             </div>
           </div>
         </div>

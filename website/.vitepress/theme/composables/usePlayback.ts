@@ -1,12 +1,11 @@
-import { ref, computed, onUnmounted, getCurrentInstance } from "vue";
+import { ref, computed, onUnmounted, getCurrentInstance, watch } from "vue";
 import { PLAYBACK_CONFIG } from "../config/playback";
-
-const STEP_INTERVAL_MS = PLAYBACK_CONFIG.POST_WRITE_PAUSE_MS;
 
 export function usePlayback(initialTotalSteps = 0) {
   const currentStep = ref(0);
   const totalSteps = ref(initialTotalSteps);
   const isPlaying = ref(false);
+  const stepInterval = ref(PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS);
   let intervalId: ReturnType<typeof setInterval> | null = null;
 
   const isComplete = computed(() => currentStep.value >= totalSteps.value);
@@ -16,6 +15,13 @@ export function usePlayback(initialTotalSteps = 0) {
       clearInterval(intervalId);
       intervalId = null;
     }
+  }
+
+  function startInterval() {
+    clearPlayInterval();
+    intervalId = setInterval(() => {
+      step();
+    }, stepInterval.value);
   }
 
   function step() {
@@ -30,11 +36,14 @@ export function usePlayback(initialTotalSteps = 0) {
   function play() {
     if (isComplete.value) return;
     isPlaying.value = true;
-    clearPlayInterval();
-    intervalId = setInterval(() => {
-      step();
-    }, STEP_INTERVAL_MS);
+    startInterval();
   }
+
+  watch(stepInterval, () => {
+    if (isPlaying.value) {
+      startInterval();
+    }
+  });
 
   function pause() {
     isPlaying.value = false;
@@ -68,6 +77,7 @@ export function usePlayback(initialTotalSteps = 0) {
     totalSteps,
     isPlaying,
     isComplete,
+    stepInterval,
     play,
     pause,
     step,

@@ -1,5 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { usePlayback } from "../.vitepress/theme/composables/usePlayback";
+import { PLAYBACK_CONFIG } from "../.vitepress/theme/config/playback";
+
+const STEP_INTERVAL = PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS;
 
 describe("usePlayback", () => {
   beforeEach(() => {
@@ -72,31 +75,31 @@ describe("usePlayback", () => {
     const { currentStep, play } = usePlayback(5);
     play();
     expect(currentStep.value).toBe(0);
-    vi.advanceTimersByTime(800);
+    vi.advanceTimersByTime(STEP_INTERVAL);
     expect(currentStep.value).toBe(1);
-    vi.advanceTimersByTime(800);
+    vi.advanceTimersByTime(STEP_INTERVAL);
     expect(currentStep.value).toBe(2);
   });
 
   it("pause stops auto-advance", () => {
     const { currentStep, play, pause } = usePlayback(5);
     play();
-    vi.advanceTimersByTime(800);
+    vi.advanceTimersByTime(STEP_INTERVAL);
     expect(currentStep.value).toBe(1);
     pause();
-    vi.advanceTimersByTime(1600);
+    vi.advanceTimersByTime(STEP_INTERVAL * 2);
     expect(currentStep.value).toBe(1);
   });
 
   it("play stops when complete", () => {
     const { currentStep, isPlaying, play } = usePlayback(2);
     play();
-    vi.advanceTimersByTime(800);
+    vi.advanceTimersByTime(STEP_INTERVAL);
     expect(currentStep.value).toBe(1);
-    vi.advanceTimersByTime(800);
+    vi.advanceTimersByTime(STEP_INTERVAL);
     expect(currentStep.value).toBe(2);
     expect(isPlaying.value).toBe(false);
-    vi.advanceTimersByTime(800);
+    vi.advanceTimersByTime(STEP_INTERVAL);
     expect(currentStep.value).toBe(2);
   });
 
@@ -131,5 +134,20 @@ describe("usePlayback", () => {
     expect(isPlaying.value).toBe(true);
     reset();
     expect(isPlaying.value).toBe(false);
+  });
+
+  it("stepInterval defaults to DEFAULT_STEP_INTERVAL_MS", () => {
+    const { stepInterval } = usePlayback(5);
+    expect(stepInterval.value).toBe(PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS);
+  });
+
+  it("changing stepInterval updates playback interval", () => {
+    const { currentStep, stepInterval, play } = usePlayback(5);
+    stepInterval.value = 200;
+    play();
+    vi.advanceTimersByTime(200);
+    expect(currentStep.value).toBe(1);
+    vi.advanceTimersByTime(200);
+    expect(currentStep.value).toBe(2);
   });
 });
