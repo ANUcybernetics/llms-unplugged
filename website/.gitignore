@@ -6,13 +6,10 @@ node_modules/
 .vitepress/cache/
 .vitepress/.temp/
 
-# Build output (legacy 11ty - can be removed after migration verified)
-_site/
-.11ty-vite/
+# Generated artifacts
 .llms-generated/
-dist/
-.vite-temp/
 .unlighthouse/
+.vitepress/theme/templates/*.typ
 
 # Logs
 *.log

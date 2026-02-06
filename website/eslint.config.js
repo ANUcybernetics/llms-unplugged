@@ -18,7 +18,6 @@ export default tseslint.config(
     ignores: [
       ".vitepress/dist/**",
       ".vitepress/cache/**",
-      "_site/**",
       "node_modules/**",
       "public/**",
       "src/wasm-pkg/**",

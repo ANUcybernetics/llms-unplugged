@@ -120,7 +120,6 @@ _word 1_ if that helps.
 <BucketOnly>
 
 1. **Prepare your tokens** as per _Training_
-
    - print or write out your training text
    - convert everything to lowercase
    - treat words, commas, and full stops as separate tokens

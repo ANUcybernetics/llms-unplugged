@@ -29,8 +29,7 @@ describe("markdown footnotes", () => {
   });
 
   it("renders multiple footnotes with unique IDs", () => {
-    const input =
-      "First[^a] and second[^b]\n\n[^a]: Note A\n\n[^b]: Note B";
+    const input = "First[^a] and second[^b]\n\n[^a]: Note A\n\n[^b]: Note B";
     const output = md.render(input);
 
     expect(output).toContain('href="#fn1"');

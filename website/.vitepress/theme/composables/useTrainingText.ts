@@ -1,10 +1,10 @@
-import { ref, watch, effectScope } from "vue";
+import { ref, watch } from "vue";
 
 const STORAGE_KEY = "llms-unplugged-training-text";
 const DEFAULT_TEXT = "The cat sat on the mat.";
 
 const sharedText = ref(DEFAULT_TEXT);
-let watcherScope: ReturnType<typeof effectScope> | null = null;
+let initialized = false;
 
 function loadFromStorage(): string {
   if (typeof window === "undefined") return DEFAULT_TEXT;
@@ -26,18 +26,12 @@ function saveToStorage(text: string): void {
 }
 
 export function useTrainingText() {
-  if (!watcherScope) {
-    watcherScope = effectScope();
-    watcherScope.run(() => {
-      sharedText.value = loadFromStorage();
+  if (typeof window !== "undefined" && !initialized) {
+    sharedText.value = loadFromStorage();
+    initialized = true;
 
-      watch(
-        sharedText,
-        (newValue) => {
-          saveToStorage(newValue);
-        },
-        { flush: "sync" },
-      );
+    watch(sharedText, (newValue) => {
+      saveToStorage(newValue);
     });
   }
 

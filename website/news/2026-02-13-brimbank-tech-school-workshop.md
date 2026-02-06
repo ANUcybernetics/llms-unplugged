@@ -2,12 +2,13 @@
 title: LLMs Unplugged at Brimbank Tech School
 date: 2026-02-13
 author: Ben Swift
-description: Join us for an AI workshop at VU Sunshine Campus on 13 February 2026
+description:
+  Join us for an AI workshop at VU Sunshine Campus on 13 February 2026
 ---
 
-We're partnering with [Brimbank Tech School](https://www.brimbanktechschool.vic.edu.au/)
-at VU Sunshine Campus for _Lifting the Veil_---a hands-on AI workshop for
-educators.
+We're partnering with
+[Brimbank Tech School](https://www.brimbanktechschool.vic.edu.au/) at VU
+Sunshine Campus for _Lifting the Veil_---a hands-on AI workshop for educators.
 
 The workshop will cover:
 
@@ -24,5 +25,4 @@ The workshop will cover:
 Spaces are limited, so if you'd like to attend please register early.
 
 ::: tip Register now
-[Sign up for the workshop](https://forms.office.com/r/q5KFV9Uq2u)
-:::
+[Sign up for the workshop](https://forms.office.com/r/q5KFV9Uq2u) :::
