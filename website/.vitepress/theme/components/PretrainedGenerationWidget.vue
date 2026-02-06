@@ -25,6 +25,14 @@ interface ModelEntry {
   followers: EntryFollower[];
 }
 
+interface Props {
+  loop?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  loop: true,
+});
+
 const trainingText = useTrainingText();
 const outputWords = ref<string[]>([]);
 const currentDiceRoll = ref<number | null>(null);
@@ -223,7 +231,9 @@ async function doStep() {
         phase.value = "selecting";
         currentDiceRoll.value = null;
         isComplete.value = true;
-        isPlaying.value = false;
+        if (!props.loop) {
+          isPlaying.value = false;
+        }
       }
     }
     return;
@@ -234,7 +244,17 @@ async function doStep() {
   }
 }
 
+function resetPlayState() {
+  outputWords.value = [];
+  currentDiceRoll.value = null;
+  phase.value = "selecting";
+  isComplete.value = false;
+}
+
 function handlePlay() {
+  if (isComplete.value) {
+    resetPlayState();
+  }
   if (outputWords.value.length === 0 && validStarters.value.length > 0) {
     const randomStart =
       validStarters.value[Math.floor(Math.random() * validStarters.value.length)];
@@ -248,16 +268,27 @@ watch(isPlaying, async (playing) => {
     abortController = new AbortController();
     const signal = abortController.signal;
 
+    const abortableSleep = (ms: number) =>
+      new Promise<void>((resolve, reject) => {
+        const timeout = setTimeout(resolve, ms);
+        signal.addEventListener('abort', () => {
+          clearTimeout(timeout);
+          reject(new DOMException('Aborted', 'AbortError'));
+        }, { once: true });
+      });
+
     try {
       while (isPlaying.value && !signal.aborted) {
         await doStep();
-        await new Promise((resolve, reject) => {
-          const timeout = setTimeout(resolve, stepInterval.value);
-          signal.addEventListener('abort', () => {
-            clearTimeout(timeout);
-            reject(new DOMException('Aborted', 'AbortError'));
-          }, { once: true });
-        });
+        if (isComplete.value) {
+          if (props.loop) {
+            await abortableSleep(stepInterval.value * PLAYBACK_CONFIG.LOOP_PAUSE_MULTIPLIER);
+            resetPlayState();
+            continue;
+          }
+          break;
+        }
+        await abortableSleep(stepInterval.value);
       }
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') {
@@ -417,6 +448,7 @@ function isSelectedFollower(entry: ModelEntry, follower: EntryFollower): boolean
           v-model:step-interval="stepInterval"
           :is-playing="isPlaying"
           :is-complete="isComplete"
+          :loop="loop"
           slider-id="pretrained-speed-slider"
           @play="handlePlay"
           @pause="pause"

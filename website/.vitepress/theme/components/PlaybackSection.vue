@@ -10,6 +10,7 @@ interface Props {
   showStepCounter?: boolean;
   stepInterval: number;
   sliderId?: string;
+  loop?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
@@ -17,6 +18,7 @@ withDefaults(defineProps<Props>(), {
   totalSteps: 0,
   showStepCounter: false,
   sliderId: "speed-slider",
+  loop: false,
 });
 
 defineEmits<{
@@ -38,6 +40,7 @@ defineEmits<{
         :current-step="currentStep"
         :total-steps="totalSteps"
         :show-step-counter="showStepCounter"
+        :loop="loop"
         @play="$emit('play')"
         @pause="$emit('pause')"
         @step="$emit('step')"

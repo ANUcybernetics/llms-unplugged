@@ -6,6 +6,14 @@ import { parseTokens, getBigrams } from "../utils/tokens";
 import PlaybackSection from "./PlaybackSection.vue";
 import FullscreenWrapper from "./FullscreenWrapper.vue";
 
+interface Props {
+  loop?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  loop: true,
+});
+
 const inputText = useTrainingText();
 
 const tokens = computed(() => parseTokens(inputText.value));
@@ -22,7 +30,7 @@ const {
   step,
   reset,
   setTotalSteps,
-} = usePlayback(totalSteps.value);
+} = usePlayback(totalSteps.value, { loop: props.loop });
 
 watch(totalSteps, (n) => setTotalSteps(n));
 
@@ -138,6 +146,7 @@ function isPunctuation(token: string): boolean {
               <div
                 class="bucket-label"
                 :class="{ punctuation: isPunctuation(bucket.label) }"
+                :title="bucket.label"
               >
                 {{ bucket.label }}
               </div>
@@ -152,6 +161,7 @@ function isPunctuation(token: string): boolean {
                       bucket.label === highlights.bucket &&
                       i === bucket.tokens.length - 1,
                   }"
+                  :title="token"
                 >
                   {{ token }}
                 </span>
@@ -167,6 +177,7 @@ function isPunctuation(token: string): boolean {
           :current-step="currentStep"
           :total-steps="totalSteps"
           :show-step-counter="true"
+          :loop="loop"
           slider-id="bucket-training-speed-slider"
           @play="play"
           @pause="pause"
@@ -217,6 +228,7 @@ function isPunctuation(token: string): boolean {
 .bucket {
   display: grid;
   grid-template-rows: auto 1fr;
+  min-width: 0;
   border: 2px solid var(--vp-c-border);
   border-radius: 0.5rem;
   background: var(--vp-c-bg-alt);
@@ -239,6 +251,9 @@ function isPunctuation(token: string): boolean {
   border-bottom: 1px solid var(--vp-c-border);
   background: var(--vp-c-bg);
   border-radius: 0.375rem 0.375rem 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .bucket-label.punctuation {
@@ -254,13 +269,16 @@ function isPunctuation(token: string): boolean {
   flex-wrap: wrap;
   gap: 0.25rem;
   padding: 0.5rem;
+  min-width: 0;
   min-height: 2rem;
   justify-content: center;
   align-content: flex-start;
+  overflow: hidden;
 }
 
 .bucket-token {
   display: inline-block;
+  max-width: 100%;
   padding: 0.125rem 0.375rem;
   background: var(--vp-c-bg);
   border-radius: 0.25rem;
@@ -268,6 +286,9 @@ function isPunctuation(token: string): boolean {
   font-size: 0.75rem;
   border: 1px solid var(--vp-c-border);
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   transition:
     background-color 0.2s,
     transform 0.2s;

@@ -5,10 +5,12 @@ interface Props {
   currentStep: number;
   totalSteps: number;
   showStepCounter?: boolean;
+  loop?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   showStepCounter: true,
+  loop: false,
 });
 
 const emit = defineEmits<{
@@ -32,7 +34,7 @@ function handlePlayPause() {
     <button
       type="button"
       :aria-label="isPlaying ? 'Pause' : 'Play'"
-      :disabled="isComplete && !isPlaying"
+      :disabled="isComplete && !isPlaying && !loop"
       @click="handlePlayPause"
     >
       {{ isPlaying ? "⏸ Pause" : "▶ Play" }}

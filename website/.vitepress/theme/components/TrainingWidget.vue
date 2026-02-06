@@ -7,6 +7,14 @@ import PlaybackSection from "./PlaybackSection.vue";
 import FullscreenWrapper from "./FullscreenWrapper.vue";
 import BigramGrid from "./BigramGrid.vue";
 
+interface Props {
+  loop?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  loop: true,
+});
+
 const inputText = useTrainingText();
 
 const tokens = computed(() => parseTokens(inputText.value));
@@ -24,7 +32,7 @@ const {
   step,
   reset,
   setTotalSteps,
-} = usePlayback(totalSteps.value);
+} = usePlayback(totalSteps.value, { loop: props.loop });
 
 watch(totalSteps, (n) => setTotalSteps(n));
 
@@ -133,6 +141,7 @@ function getCount(from: string, to: string): number {
           :current-step="currentStep"
           :total-steps="totalSteps"
           :show-step-counter="true"
+          :loop="loop"
           slider-id="training-speed-slider"
           @play="play"
           @pause="pause"
