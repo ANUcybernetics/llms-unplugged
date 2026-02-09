@@ -1,6 +1,7 @@
-# ignore all pdfs except lessons.pdf
+# ignore all pdfs except specific ones in website/public
 *.pdf
 !website/public/assets/pdfs/lessons.pdf
+!website/public/assets/pdfs/ace2026-llms-unplugged.pdf
 
 data/
 

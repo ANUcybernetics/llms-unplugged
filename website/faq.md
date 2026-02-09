@@ -110,6 +110,29 @@ If you prefer working offline or want to modify the tools, the
 [source code](https://github.com/ANUcybernetics/llms-unplugged) includes a
 command-line tool that provides the same functionality.
 
+## Is there a research paper about LLMs Unplugged?
+
+Yes. LLMs Unplugged was presented at the
+[28th Australasian Computing Education Conference (ACE 2026)](https://aceconference2026.github.io/)
+in Melbourne, Australia.
+[Download the paper here](/assets/pdfs/ace2026-llms-unplugged.pdf).
+
+### BibTeX
+
+```bibtex
+@inproceedings{swift2026llmsunplugged,
+  author    = {Swift, Ben},
+  title     = {{LLMs Unplugged: Teaching Resources for a ChatGPT World}},
+  booktitle = {28th Australasian Computing Education Conference (ACE 2026)},
+  year      = 2026,
+  month     = feb,
+  address   = {Melbourne, VIC, Australia},
+  publisher = {ACM},
+  doi       = {10.1145/3786228.3786237},
+  url       = {https://doi.org/10.1145/3786228.3786237}
+}
+```
+
 ## I found an error in the materials.
 
 Please [open an issue](https://github.com/ANUcybernetics/llms-unplugged/issues)
