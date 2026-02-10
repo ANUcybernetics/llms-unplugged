@@ -140,7 +140,7 @@ fn build_booklet_json(
         metadata: BookletMetadata {
             title: title.to_string(),
             author: author.to_string(),
-            url: String::new(),
+            url: "https://www.llmsunplugged.org/tools".to_string(),
             n,
             subtitle: format!("A {} language model", model_type),
             version: env!("CARGO_PKG_VERSION").to_string(),

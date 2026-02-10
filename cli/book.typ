@@ -174,8 +174,7 @@
     #text(size: 0.9em)[
       Text frequency counts from the text #text(
         style: "italic",
-      )[#context doc_metadata.title] by #text[#context doc_metadata.author],
-      available from\ #link(doc_metadata.url)[#raw(doc_metadata.url)].
+      )[#context doc_metadata.title] by #text[#context doc_metadata.author]#if doc_metadata.url != "" [, available from\ #link(doc_metadata.url)[#raw(doc_metadata.url)]].
     ]
     #v(0.5cm)
     #text(size: 0.9em)[

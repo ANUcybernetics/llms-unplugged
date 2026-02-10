@@ -64,18 +64,18 @@ async function initCompiler() {
 
   try {
     const cdnUrl =
-      "https://cdn.jsdelivr.net/npm/@myriaddreamin/typst.ts@0.5.3/dist/esm/contrib/all-in-one-lite.bundle.js";
+      "https://cdn.jsdelivr.net/npm/@myriaddreamin/typst.ts@0.7.0-rc2/dist/esm/contrib/all-in-one-lite.bundle.js";
     const module = await import(/* @vite-ignore */ cdnUrl);
     typst.value = module.$typst;
 
     typst.value.setCompilerInitOptions({
       getModule: () =>
-        "https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-web-compiler@0.5.3/pkg/typst_ts_web_compiler_bg.wasm",
+        "https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-web-compiler@0.7.0-rc2/pkg/typst_ts_web_compiler_bg.wasm",
     });
 
     typst.value.setRendererInitOptions({
       getModule: () =>
-        "https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-renderer@0.5.3/pkg/typst_ts_renderer_bg.wasm",
+        "https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-renderer@0.7.0-rc2/pkg/typst_ts_renderer_bg.wasm",
     });
 
     log("Compiler options configured");

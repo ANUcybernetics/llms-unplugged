@@ -1,2 +1,3 @@
-# wasm-bindgen output - rebuild with: cd cli && cargo build --release
+# wasm-bindgen output - rebuild with: cd cli && mise exec -- wasm-pack build --target web --out-dir ../website/src/wasm-pkg --features wasm
 # These files are checked in so CI can bundle them in the website build.
+# Note: wasm-pack regenerates this file as "*" on each build.
