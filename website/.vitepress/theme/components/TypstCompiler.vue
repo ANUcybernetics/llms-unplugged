@@ -103,11 +103,7 @@ async function initCompiler() {
     await typst.value.addSource("/cutouts.typ", cutoutsTemplate);
 
     log("Loading text processing WASM module...");
-    const wasmUrl = new URL(
-      "../../../src/wasm-pkg/llms_unplugged.js",
-      import.meta.url,
-    );
-    const wasm = await import(/* @vite-ignore */ wasmUrl.href);
+    const wasm = await import("../../../src/wasm-pkg/llms_unplugged.js");
     await wasm.default();
     wasmModule.value = wasm;
     log("WASM module loaded");
