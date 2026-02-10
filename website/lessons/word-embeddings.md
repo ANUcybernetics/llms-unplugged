@@ -23,7 +23,7 @@ relationships between words in your model.
 
 - your completed bigram grid (context columns optional but helpful)
 - another blank grid with the same headers (for distances)
-- pen, paper, and dice as per _Generation_ (grid method)
+- pen, paper, and dice as per [Generation](/lessons/generation) (grid method)
 
 ## Your goal
 

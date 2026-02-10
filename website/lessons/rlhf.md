@@ -22,7 +22,7 @@ people like and discouraging ones they don't.
 ## You will need
 
 - a completed model from an earlier lesson
-- pen, paper, and dice as per _Generation_ (grid method)
+- pen, paper, and dice as per [Generation](/lessons/generation) (grid method)
 - a group of people to provide preferences (the "humans" in RLHF)
 
 ## Your goal

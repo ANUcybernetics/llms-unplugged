@@ -42,7 +42,7 @@ can be much smaller. During generation you add LoRA counts to the base counts
 1. Choose an existing bigram grid as your base model.
 2. Train a LoRA grid:
    - Start with a new grid using the same columns as the base.
-   - Run _Training_ (grid method) on your new domain text, but only keep rows
+   - Run [Training](/lessons/training) (grid method) on your new domain text, but only keep rows
      for words that appear in that text.
 3. Apply the adaptation:
    - When sampling, add the LoRA counts to the base counts for the current word

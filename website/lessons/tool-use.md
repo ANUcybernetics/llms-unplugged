@@ -22,7 +22,7 @@ resources in the room---when it needs information beyond what's in the grid.
 ## You will need
 
 - a completed model from an earlier lesson
-- pen, paper, and dice as per _Generation_
+- pen, paper, and dice as per [Generation](/lessons/generation)
 - people or props to serve as "tools" (see examples below)
 
 ## Your goal

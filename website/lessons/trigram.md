@@ -34,15 +34,15 @@ to better generation.
 
 <GridOnly>
 
-- the same materials as _Training_
+- the same materials as [Training](/lessons/training)
 - extra paper for a three-column table
-- pen, paper, and dice as per _Generation_
+- pen, paper, and dice as per [Generation](/lessons/generation)
 
 </GridOnly>
 
 <BucketOnly>
 
-- the same materials as _Training_
+- the same materials as [Training](/lessons/training)
 - additional small containers for two-word label buckets
 - sticky notes or paper for bucket labels (you'll need to write two words on
   each label)
@@ -119,7 +119,7 @@ _word 1_ if that helps.
 
 <BucketOnly>
 
-1. **Prepare your tokens** as per _Training_
+1. **Prepare your tokens** as per [Training](/lessons/training)
    - print or write out your training text
    - convert everything to lowercase
    - treat words, commas, and full stops as separate tokens
@@ -186,7 +186,7 @@ specific patterns.
 4. Shift the window by one word (new context is old `word2` + chosen `word3`)
    and repeat from step 2.
 
-This mirrors Generation but with two-word context instead of one.
+This mirrors [Generation](/lessons/generation) but with two-word context instead of one.
 
 </GridOnly>
 

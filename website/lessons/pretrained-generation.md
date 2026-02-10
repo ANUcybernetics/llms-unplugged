@@ -106,7 +106,7 @@ This lesson demonstrates the foundation of how people interact with modern AI:
 
 The key insight: training and text generation are separate processes. Most AI
 users never train models---they use pre-trained ones through APIs or interfaces.
-Your hand-built model from _Training_ gives you insight into what's inside the
+Your hand-built model from [Training](/lessons/training) gives you insight into what's inside the
 booklet, but you don't need that knowledge to generate text. This separation is
 why companies like OpenAI can provide AI services: they do the expensive
 training once, then millions of users perform text generation. The booklet

@@ -47,7 +47,7 @@ weighted random sampling.
 
 <GridOnly>
 
-- your completed bigram model from _Training_
+- your completed bigram model from [Training](/lessons/training)
 - a d10 (or similar) for weighted sampling
 - pen and paper for jotting down the generated text
 
@@ -55,7 +55,7 @@ weighted random sampling.
 
 <BucketOnly>
 
-- your completed bucket model from _Training_
+- your completed bucket model from [Training](/lessons/training)
 - pen and paper for writing down the generated text
 
 </BucketOnly>
@@ -90,7 +90,7 @@ bucket and repeating the process word by word creates new text.
 
 1. Choose a starting word from the first column of your grid.
 2. Look at that word's row to find all possible next words and their counts.
-3. Roll dice weighted by the counts (see _Weighted Randomness_).
+3. Roll dice weighted by the counts (see [Weighted Randomness](/lessons/weighted-randomness)).
 4. Write down the chosen word and make it your new starting word.
 5. Repeat from step 2 until you hit a natural stopping point (e.g., `.`) or your
    desired length.
@@ -117,7 +117,7 @@ algorithm in action.
 
 <GridOnly>
 
-Using the same bigram model from the example in _Training_:
+Using the same bigram model from the example in [Training](/lessons/training):
 
 <LmGrid tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
 
@@ -138,7 +138,7 @@ After the above steps, the generated text is _"see spot run. see spot"_
 
 <BucketOnly>
 
-Using the bucket model from the example in _Training_:
+Using the bucket model from the example in [Training](/lessons/training):
 
 | Bucket label | Tokens inside |
 | ------------ | ------------- |
