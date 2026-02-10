@@ -72,9 +72,8 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   padding: 2rem;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .fullscreen-button {
@@ -103,9 +102,32 @@ onUnmounted(() => {
 }
 
 .fullscreen-content.scaled {
-  font-size: 1.3em;
+  font-size: 1.1em;
   max-width: 90vw;
-  max-height: 90vh;
+  margin: auto;
+}
+
+@media (min-width: 1200px) {
+  .fullscreen-wrapper.fullscreen {
+    padding: 1rem 2rem;
+  }
+
+  .fullscreen-content.scaled :deep(.lm-widget) {
+    padding: 0.5rem;
+  }
+
+  .fullscreen-content.scaled :deep(.training-view),
+  .fullscreen-content.scaled :deep(.generation-view) {
+    gap: 0.5rem;
+  }
+
+  .fullscreen-content.scaled :deep(.section-header) {
+    padding: 0.25rem 0.5rem;
+  }
+
+  .fullscreen-content.scaled :deep(.section-content) {
+    padding: 0.5rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

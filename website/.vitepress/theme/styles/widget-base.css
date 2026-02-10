@@ -93,8 +93,13 @@
 
 .controls-content {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 1rem;
+}
+
+.controls-content .speed-control {
+  flex: 1;
+  min-width: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
