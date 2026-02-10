@@ -1,0 +1,2 @@
+# wasm-bindgen output - rebuild with: cd cli && cargo build --release
+# These files are checked in so CI can bundle them in the website build.
