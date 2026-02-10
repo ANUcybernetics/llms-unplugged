@@ -42,11 +42,11 @@ flatten differences between options, making surprising words more likely.
 
 - Algorithm: when sampling the next word, divide all counts by the temperature
   (round down, minimum 1) before rolling dice.
-- Example with counts `spot:4, run:2, jump:1, .:1`:
-  - Temp 1 → use counts as-is (spot twice as likely as run; four times jump or
-    `.`).
-  - Temp 2 → counts become 2,1,1,1 (spot still highest, but less dominant).
-  - Temp 4 → counts become 1,1,1,1 (all options equal).
+- Example with counts `spot` (4), `run` (2), `jump` (1), `.` (1)
+  - Temp 1 → use counts as-is (`spot ` twice as likely as `run`; four times
+    `jump` or `.`).
+  - Temp 2 → counts become 2, 1, 1, 1 (`spot` still highest, but less dominant).
+  - Temp 4 → counts become 1, 1, 1, 1 (all options equal).
 
 ## Truncation strategies
 

@@ -38,7 +38,8 @@ incorporates the result before continuing.
 
 ## Setting up tools
 
-Before generation, designate people or objects as tools. Each tool has:
+Before generation, choose a person or object who gets to role-play as the
+"tool". Each tool has:
 
 - a **trigger word** that appears in your model's vocabulary
 - a **capability** (what it can do)
@@ -92,16 +93,17 @@ Generation with tools:
 (The grammar breaks down, but that's fine---the point is demonstrating the
 mechanism.)
 
-## Designing good tool triggers
+## Instructor notes
+
+### Designing good tool triggers
 
 For the activity to work well:
 
 - add trigger words to rows where they make sense contextually (e.g., `VOTE`
   after "is" or "the")
-- keep tool responses short (one or two words) so generation can continue
+- design tools where all the "outputs" are tokens in the model (e.g. yes/no,
+  multiple choice)
 - have the tool operator ready before you start generating
-
-## Instructor notes
 
 ### Discussion questions
 
