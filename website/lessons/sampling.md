@@ -53,6 +53,12 @@ flatten differences between options, making surprising words more likely.
 Truncation narrows which next-word options are allowed. Mix and match with
 temperature.
 
+::: tip
+When using a [pre-trained booklet](/lessons/pretrained-generation), the next-word
+candidates are already sorted from most likely to least likely---handy for
+strategies like top-k, greedy, and non-sequitur.
+:::
+
 <div class="content-cards">
 <div class="content-card">
 
@@ -89,6 +95,27 @@ Track words used in the current sentence. If you roll a repeat, reroll; if nothi
 Prefer options that start with the same letter/sound as the previous word; otherwise sample normally.
 
 </div>
+<div class="content-card">
+
+#### Top-k
+
+Choose a number k (e.g. 2 or 3). Keep only the k options with the highest counts; if tied for the last spot, include all ties. Roll among those only.
+
+</div>
+<div class="content-card">
+
+#### Alphabet chain
+
+The next word must start with the last letter of the previous word. If no option qualifies, sample normally.
+
+</div>
+<div class="content-card">
+
+#### Short/long
+
+Pick a length threshold (e.g. 4 letters). Only allow words at or below that length (short mode) or above it (long mode). If nothing qualifies, re-roll.
+
+</div>
 </div>
 
 ## Instructor notes
@@ -113,8 +140,10 @@ Current LLMs use these same mechanisms, though the specific strategies differ.
   probability reaches p), repetition penalties, frequency penalties, and
   presence penalties all prune options before sampling.
 - **Truncation techniques in this lesson:** greedy, haiku, non-sequitur,
-  no-repeat, and alliteration are designed for dice-based sampling but embody
-  the same idea---changing which tokens are eligible before you roll.
+  no-repeat, alliteration, top-k, alphabet chain, and short/long are designed
+  for dice-based sampling but embody the same idea---changing which tokens are
+  eligible before you roll. Top-k directly mirrors the top-k parameter in LLM
+  APIs.
 
 Your paper model demonstrates that "creativity" in AI comes from two controls:
 adjusting temperature (probability distribution shape) and applying truncation
