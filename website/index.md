@@ -47,6 +47,12 @@ sharing it with others.
 </div>
 </div>
 
+## What's new in LLMs Unplugged?
+
+<NewsCards :limit="3" :group-by-year="false" />
+
+[See all news →](/news/)
+
 <div class="section-with-image">
 <div class="section-image">
 <img src="/assets/images/hero-about.avif" alt="Person creating teaching materials with pen and paper">
