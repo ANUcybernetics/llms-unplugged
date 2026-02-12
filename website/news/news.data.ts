@@ -7,7 +7,6 @@ export interface NewsItem {
   hero: string;
   date: string;
   dateLabel: string;
-  year: number;
 }
 
 declare const data: NewsItem[];
@@ -47,7 +46,6 @@ export default createContentLoader("news/*.md", {
           hero: `/assets/images/hero-news-${slug}.avif`,
           date: dateIso,
           dateLabel: dateIso ? formatDateLabel(dateIso) : "",
-          year: dateIso ? Number(dateIso.slice(0, 4)) : 0,
         };
       })
       .sort((a, b) => b.date.localeCompare(a.date));

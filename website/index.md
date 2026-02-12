@@ -49,7 +49,7 @@ sharing it with others.
 
 ## What's new in LLMs Unplugged?
 
-<NewsCards :limit="3" :group-by-year="false" />
+<NewsCards :limit="3" />
 
 [See all news →](/news/)
 
