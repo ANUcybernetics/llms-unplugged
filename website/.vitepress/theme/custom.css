@@ -213,6 +213,25 @@
   gap: 1.5rem;
 }
 
+/* Content cards - inline card grid for within-page content */
+.content-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.content-card {
+  border: 1px solid var(--vp-c-border);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: var(--vp-c-bg-soft);
+}
+
+.content-card h4 {
+  margin-top: 0;
+}
+
 @media (min-width: 640px) {
   .image-gallery {
     grid-template-columns: repeat(2, 1fr);

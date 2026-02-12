@@ -53,15 +53,43 @@ flatten differences between options, making surprising words more likely.
 Truncation narrows which next-word options are allowed. Mix and match with
 temperature.
 
-- **Greedy:** pick the highest count; if tied, roll among the top options.
-- **Haiku:** track syllables per line (5-7-5). Roll as normal; if the word would
-  overflow the line's syllable limit, re-roll.
-- **Non-sequitur:** pick the lowest non-zero count; if tied, roll among the
-  least likely options.
-- **No-repeat:** track words used in the current sentence. If you roll a repeat,
-  reroll; if nothing valid remains, insert `.` and continue.
-- **Alliteration:** prefer options that start with the same letter/sound as the
-  previous word; otherwise sample normally.
+<div class="content-cards">
+<div class="content-card">
+
+#### Greedy
+
+Pick the highest count; if tied, roll among the top options.
+
+</div>
+<div class="content-card">
+
+#### Haiku
+
+Track syllables per line (5-7-5). Roll as normal; if the word would overflow the line's syllable limit, re-roll.
+
+</div>
+<div class="content-card">
+
+#### Non-sequitur
+
+Pick the lowest non-zero count; if tied, roll among the least likely options.
+
+</div>
+<div class="content-card">
+
+#### No-repeat
+
+Track words used in the current sentence. If you roll a repeat, reroll; if nothing valid remains, insert `.` and continue.
+
+</div>
+<div class="content-card">
+
+#### Alliteration
+
+Prefer options that start with the same letter/sound as the previous word; otherwise sample normally.
+
+</div>
+</div>
 
 ## Instructor notes
 
