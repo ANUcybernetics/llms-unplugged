@@ -53,10 +53,11 @@ flatten differences between options, making surprising words more likely.
 Truncation narrows which next-word options are allowed. Mix and match with
 temperature.
 
-::: tip
+::: tip Booklet shortcuts
 When using a [pre-trained booklet](/lessons/pretrained-generation), the next-word
-candidates are already sorted from most likely to least likely---handy for
-strategies like top-k, greedy, and non-sequitur.
+candidates are already sorted from most likely to least likely. This makes
+several strategies easier: greedy = pick the first option, non-sequitur = pick
+the last option, and top-k = only roll among the first k options.
 :::
 
 <div class="content-cards">
