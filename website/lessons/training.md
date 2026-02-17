@@ -111,6 +111,7 @@ tokens that appeared after its label in the original text.
 <BucketOnly>
 
 1. **Prepare your tokens**
+
    - print or write out your training text
    - convert everything to lowercase
    - treat words, commas, and full stops as separate tokens (ignore other
@@ -215,6 +216,24 @@ with tally marks, but in a physical form you can touch and manipulate.
 - what would happen if you trained on more text---how would the buckets change?
 - how could you use these buckets to generate _new_ text in the style of your
   training data?
+
+</BucketOnly>
+
+### Troubleshooting
+
+<GridOnly>
+
+- **"Do I add a new row/column for every word?"** No---each new word only gets a
+  new row and column the first time you see it. After that, just find the
+  existing row and column and add a tally mark.
+
+</GridOnly>
+
+<BucketOnly>
+
+- **"Do I make a new bucket every time?"** No---each word only gets a new bucket
+  the first time you see it. After that, just find the existing bucket and put
+  the next token into it.
 
 </BucketOnly>
 

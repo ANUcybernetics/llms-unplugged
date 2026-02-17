@@ -197,6 +197,33 @@ token---the "see" bucket always produces `spot` because that's all it contains.
 
 </BucketOnly>
 
+### Troubleshooting
+
+<GridOnly>
+
+- **"Every row only has one tally mark---there's nothing to roll for."** If the
+  group didn't get very far in [Training](/lessons/training) and no row has more
+  than one tally mark, the generation algorithm won't be very interesting---there
+  will only ever be one option for the next word and they'll be stuck on rails.
+  In this case, either encourage them to go back and do a bit more training, or
+  just have them add some extra tally marks to the grid wherever they like. This
+  isn't as much like cheating as it might seem---it's really just an example of
+  using [Synthetic Data](/lessons/synthetic-data).
+
+</GridOnly>
+
+<BucketOnly>
+
+- **"Every bucket only has one token---there's nothing random about this."** If
+  the group didn't get very far in [Training](/lessons/training) and each bucket
+  only has one token, the generation process won't feel random at all---there
+  will only ever be one option. Either encourage them to go back and do a bit
+  more training, or have them add extra tokens to buckets wherever they like.
+  This isn't as much like cheating as it might seem---it's really just an example
+  of using [Synthetic Data](/lessons/synthetic-data).
+
+</BucketOnly>
+
 ### Connection to current LLMs
 
 This generation process is identical to how current LLMs produce text:
