@@ -55,7 +55,7 @@ sharing it with others.
 
 <div class="section-with-image">
 <div class="section-image">
-<img src="/assets/images/hero-about.avif" alt="Person creating teaching materials with pen and paper">
+<img src="/assets/images/headshot-ben-anu.avif" alt="Ben Swift">
 </div>
 <div class="section-content">
 
