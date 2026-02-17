@@ -3,26 +3,37 @@ title: LLMs Unplugged at Brimbank Tech School
 date: 2026-02-13
 author: Ben Swift
 description:
-  Join us for an AI workshop at VU Sunshine Campus on 13 February 2026
+  A hands-on AI workshop for educators at VU Sunshine Campus with Brimbank Tech
+  School
 ---
 
-We're partnering with
+Last Friday we partnered with
 [Brimbank Tech School](https://www.brimbanktechschool.vic.edu.au/) at VU
-Sunshine Campus for _Lifting the Veil_---a hands-on AI workshop for educators.
+Sunshine Campus for _Lifting the Veil_---a full-day hands-on AI workshop for
+educators.
 
-The workshop will cover:
+![Ben presenting to a room of educators at VU Sunshine Campus](/assets/images/brimbank-workshop-130.avif)
 
-- introduction to AI fundamentals
-- LLMs Unplugged---build your own predictive model using paper and pen
-- machine learning in practice---applications in education, strengths and
-  limitations
-- agents of change---supporting schools through change management
+Around 25 teachers from across the Brimbank region came along, and we spent the
+day working through AI fundamentals, the _LLMs Unplugged_ hands-on activity,
+practical applications of machine learning in education, and strategies for
+supporting schools through the changes that AI is bringing.
 
-📍 VU Sunshine Campus\
-📅 Friday, 13 February 2026\
-🕒 10am--3pm
+![A participant building an N-gram model by hand, tallying token frequencies on a grid worksheet](/assets/images/brimbank-workshop-082.avif)
 
-Spaces are limited, so if you'd like to attend please register early.
+The highlight---as usual---was the hands-on model building. There's something
+about actually counting tokens, filling in probability grids and then rolling
+dice to generate text that makes the whole thing click in a way that slides
+alone never quite manage.
 
-::: tip Register now
-[Sign up for the workshop](https://forms.office.com/r/q5KFV9Uq2u) :::
+![Participants in the workshop, with a "Generation" slide on screen and one attendee raising their hand](/assets/images/brimbank-workshop-105.avif)
+
+![A facilitator helping participants at their table as they work through the activity together](/assets/images/brimbank-workshop-132.avif)
+
+It was a great day---a real pleasure to share these materials with such an
+engaged group of educators, and to hear how they're thinking about bringing AI
+literacy into their classrooms. Thanks to the Brimbank Tech School team for
+making it happen.
+
+If you're involved with a group of teachers who'd like to run a similar
+workshop, do [get in touch](/about#get-in-touch).
