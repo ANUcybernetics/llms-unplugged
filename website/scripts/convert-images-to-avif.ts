@@ -17,19 +17,12 @@ async function convertToAvif(inputPath: string): Promise<boolean> {
   const filename = basename(inputPath);
 
   try {
-    await execAsync(
-      `avifenc -q ${AVIF_QUALITY} "${inputPath}" "${outputPath}"`,
-    );
+    await execAsync(`avifenc -q ${AVIF_QUALITY} "${inputPath}" "${outputPath}"`);
 
-    const [inputStat, outputStat] = await Promise.all([
-      stat(inputPath),
-      stat(outputPath),
-    ]);
+    const [inputStat, outputStat] = await Promise.all([stat(inputPath), stat(outputPath)]);
 
     const savings = ((1 - outputStat.size / inputStat.size) * 100).toFixed(1);
-    console.log(
-      `✓ ${filename} → ${basename(outputPath)} (${savings}% smaller)`,
-    );
+    console.log(`✓ ${filename} → ${basename(outputPath)} (${savings}% smaller)`);
     return true;
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
@@ -56,9 +49,7 @@ async function main() {
 
   console.log(`Found ${sourceImages.length} image(s) to convert...\n`);
 
-  const results = await Promise.all(
-    sourceImages.map((f) => convertToAvif(join(IMAGES_DIR, f))),
-  );
+  const results = await Promise.all(sourceImages.map((f) => convertToAvif(join(IMAGES_DIR, f))));
 
   const succeeded = results.filter(Boolean).length;
   const failed = results.length - succeeded;
@@ -68,9 +59,7 @@ async function main() {
   if (deleteOriginals && succeeded > 0) {
     console.log("\nDeleting original files...");
     await Promise.all(
-      sourceImages
-        .filter((_, i) => results[i])
-        .map((f) => unlink(join(IMAGES_DIR, f))),
+      sourceImages.filter((_, i) => results[i]).map((f) => unlink(join(IMAGES_DIR, f))),
     );
     console.log(`Deleted ${succeeded} original file(s)`);
   }

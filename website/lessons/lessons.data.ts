@@ -38,8 +38,7 @@ export default createContentLoader("lessons/*.md", {
         };
       })
       .sort((a, b) => {
-        const topicDiff =
-          topicOrder.indexOf(a.topic) - topicOrder.indexOf(b.topic);
+        const topicDiff = topicOrder.indexOf(a.topic) - topicOrder.indexOf(b.topic);
         if (topicDiff !== 0) return topicDiff;
         return a.order - b.order;
       });

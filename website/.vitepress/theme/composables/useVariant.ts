@@ -25,10 +25,7 @@ export function useVariant() {
     });
 
     window.addEventListener("storage", (e) => {
-      if (
-        e.key === STORAGE_KEY &&
-        (e.newValue === "grid" || e.newValue === "bucket")
-      ) {
+      if (e.key === STORAGE_KEY && (e.newValue === "grid" || e.newValue === "bucket")) {
         variant.value = e.newValue;
       }
     });

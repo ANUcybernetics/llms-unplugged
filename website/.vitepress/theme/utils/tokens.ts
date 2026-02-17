@@ -17,19 +17,7 @@ function normalizeApostrophe(char: string): string {
 
 function looksLikeContraction(word: string): boolean {
   const lower = word.toLowerCase();
-  const suffixes = [
-    "'s",
-    "s'",
-    "n't",
-    "'ll",
-    "'ve",
-    "'re",
-    "'d",
-    "'m",
-    "in'",
-    "an'",
-    "o'",
-  ];
+  const suffixes = ["'s", "s'", "n't", "'ll", "'ve", "'re", "'d", "'m", "in'", "an'", "o'"];
   return suffixes.some((s) => lower.endsWith(s));
 }
 
@@ -70,9 +58,7 @@ const MAX_TOKEN_COUNT = 100_000;
 
 export function parseTokens(text: string): string[] {
   if (text.length > MAX_TEXT_LENGTH) {
-    throw new Error(
-      `Text too long: ${text.length} characters (max ${MAX_TEXT_LENGTH})`,
-    );
+    throw new Error(`Text too long: ${text.length} characters (max ${MAX_TEXT_LENGTH})`);
   }
 
   const tokens: string[] = [];
@@ -105,9 +91,7 @@ export function parseTokens(text: string): string[] {
   }
 
   if (tokens.length > MAX_TOKEN_COUNT) {
-    throw new Error(
-      `Too many tokens: ${tokens.length} (max ${MAX_TOKEN_COUNT})`,
-    );
+    throw new Error(`Too many tokens: ${tokens.length} (max ${MAX_TOKEN_COUNT})`);
   }
 
   return tokens;

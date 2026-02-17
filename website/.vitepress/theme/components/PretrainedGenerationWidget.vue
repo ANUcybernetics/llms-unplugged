@@ -1,5 +1,4 @@
 <script setup lang="ts">
-/* eslint-disable no-undef -- browser globals used in client-side component */
 import { ref, computed, watch, onUnmounted } from "vue";
 import { useTrainingText } from "../composables/useTrainingText";
 import { parseTokens, getVocabulary, buildBigramModel } from "../utils/tokens";
@@ -50,9 +49,7 @@ const currentWord = computed(() => {
   return outputWords.value[outputWords.value.length - 1];
 });
 
-const validStarters = computed(() =>
-  vocabulary.value.filter((w) => model.value.hasSuccessors(w))
-);
+const validStarters = computed(() => vocabulary.value.filter((w) => model.value.hasSuccessors(w)));
 
 const modelEntries = computed((): ModelEntry[] => {
   const entries: ModelEntry[] = [];
@@ -256,8 +253,7 @@ function handlePlay() {
     resetPlayState();
   }
   if (outputWords.value.length === 0 && validStarters.value.length > 0) {
-    const randomStart =
-      validStarters.value[Math.floor(Math.random() * validStarters.value.length)];
+    const randomStart = validStarters.value[Math.floor(Math.random() * validStarters.value.length)];
     selectStartWord(randomStart);
   }
   play();
@@ -271,10 +267,14 @@ watch(isPlaying, async (playing) => {
     const abortableSleep = (ms: number) =>
       new Promise<void>((resolve, reject) => {
         const timeout = setTimeout(resolve, ms);
-        signal.addEventListener('abort', () => {
-          clearTimeout(timeout);
-          reject(new DOMException('Aborted', 'AbortError'));
-        }, { once: true });
+        signal.addEventListener(
+          "abort",
+          () => {
+            clearTimeout(timeout);
+            reject(new DOMException("Aborted", "AbortError"));
+          },
+          { once: true },
+        );
       });
 
     try {
@@ -291,7 +291,7 @@ watch(isPlaying, async (playing) => {
         await abortableSleep(stepInterval.value);
       }
     } catch (error) {
-      if (error instanceof DOMException && error.name === 'AbortError') {
+      if (error instanceof DOMException && error.name === "AbortError") {
         return;
       }
       throw error;
@@ -344,7 +344,9 @@ function isSelectedFollower(entry: ModelEntry, follower: EntryFollower): boolean
               :key="i"
               class="output-word"
               :class="{ latest: i === outputWords.length - 1 }"
-            ><template v-if="i > 0 && word !== ',' && word !== '.'">{{ " " }}</template>{{ word }}</span>
+              ><template v-if="i > 0 && word !== ',' && word !== '.'">{{ " " }}</template
+              >{{ word }}</span
+            >
             <span v-if="outputWords.length === 0" class="placeholder">
               Click an entry to select starting word, or press Play
             </span>
@@ -354,9 +356,7 @@ function isSelectedFollower(entry: ModelEntry, follower: EntryFollower): boolean
         <div class="widget-section">
           <div class="section-header">Model (booklet view)</div>
           <div class="section-content entries-content">
-            <div v-if="modelEntries.length === 0" class="placeholder">
-              No entries yet
-            </div>
+            <div v-if="modelEntries.length === 0" class="placeholder">No entries yet</div>
             <div
               v-for="entry in modelEntries"
               :key="entry.prefix"
@@ -368,14 +368,12 @@ function isSelectedFollower(entry: ModelEntry, follower: EntryFollower): boolean
               }"
               @click="handleEntryClick(entry.prefix)"
             >
-              <span
-                class="entry-prefix"
-                :class="{ punctuation: isPunctuation(entry.prefix) }"
-              >{{ entry.prefix }}</span>
-              <span
-                v-if="entry.followers.length > 1"
-                class="dice-indicator"
-              >{{ "♦".repeat(entry.numDice) }}</span>
+              <span class="entry-prefix" :class="{ punctuation: isPunctuation(entry.prefix) }">{{
+                entry.prefix
+              }}</span>
+              <span v-if="entry.followers.length > 1" class="dice-indicator">{{
+                "♦".repeat(entry.numDice)
+              }}</span>
               <span class="entry-followers">
                 <span
                   v-for="(follower, i) in entry.followers"
@@ -385,7 +383,11 @@ function isSelectedFollower(entry: ModelEntry, follower: EntryFollower): boolean
                     selected: isSelectedFollower(entry, follower),
                     punctuation: isPunctuation(follower.word),
                   }"
-                ><template v-if="entry.followers.length > 1"><span class="threshold">{{ follower.threshold }}</span>|</template><span class="follower-word">{{ follower.word }}</span></span>
+                  ><template v-if="entry.followers.length > 1"
+                    ><span class="threshold">{{ follower.threshold }}</span
+                    >|</template
+                  ><span class="follower-word">{{ follower.word }}</span></span
+                >
               </span>
             </div>
           </div>
@@ -399,16 +401,19 @@ function isSelectedFollower(entry: ModelEntry, follower: EntryFollower): boolean
               <span
                 class="token highlight-first"
                 :class="{ punctuation: isPunctuation(currentEntry.prefix) }"
-              >{{ currentEntry.prefix }}</span>
+                >{{ currentEntry.prefix }}</span
+              >
               <span v-if="currentEntry.followers.length > 1">
                 — roll {{ currentEntry.numDice }} d10{{ currentEntry.numDice > 1 ? "s" : "" }}...
               </span>
-              <span v-else>
-                — only one option
-              </span>
+              <span v-else> — only one option </span>
             </template>
             <template v-else-if="phase === 'rolling' && currentEntry">
-              <span>Rolling {{ currentEntry.numDice }} d10{{ currentEntry.numDice > 1 ? "s" : "" }}...</span>
+              <span
+                >Rolling {{ currentEntry.numDice }} d10{{
+                  currentEntry.numDice > 1 ? "s" : ""
+                }}...</span
+              >
               <span class="dice-value rolling">{{ currentDiceRoll }}</span>
             </template>
             <template v-else-if="phase === 'rolled' && currentEntry">
@@ -420,8 +425,13 @@ function isSelectedFollower(entry: ModelEntry, follower: EntryFollower): boolean
                   <span
                     v-if="findWordForRoll(currentEntry, currentDiceRoll)"
                     class="token highlight-second"
-                    :class="{ punctuation: isPunctuation(findWordForRoll(currentEntry, currentDiceRoll) || '') }"
-                  >{{ findWordForRoll(currentEntry, currentDiceRoll) }}</span>
+                    :class="{
+                      punctuation: isPunctuation(
+                        findWordForRoll(currentEntry, currentDiceRoll) || '',
+                      ),
+                    }"
+                    >{{ findWordForRoll(currentEntry, currentDiceRoll) }}</span
+                  >
                 </template>
               </template>
               <template v-else>
@@ -429,18 +439,15 @@ function isSelectedFollower(entry: ModelEntry, follower: EntryFollower): boolean
                 <span
                   class="token highlight-second"
                   :class="{ punctuation: isPunctuation(currentEntry.followers[0].word) }"
-                >{{ currentEntry.followers[0].word }}</span>
+                  >{{ currentEntry.followers[0].word }}</span
+                >
               </template>
             </template>
             <template v-else-if="phase === 'writing' && currentWord">
               <span>Writing to output...</span>
             </template>
-            <span v-else-if="isComplete" class="complete-message">
-              Generation complete!
-            </span>
-            <span v-else class="placeholder">
-              Click an entry to start, or press Play
-            </span>
+            <span v-else-if="isComplete" class="complete-message"> Generation complete! </span>
+            <span v-else class="placeholder"> Click an entry to start, or press Play </span>
           </div>
         </div>
 

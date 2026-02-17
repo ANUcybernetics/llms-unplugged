@@ -11,20 +11,11 @@ export function extractPdfLinks(html: string): string[] {
   return links;
 }
 
-export function resolveLinkPath(
-  link: string,
-  htmlFilePath: string,
-  distDir: string,
-): string {
-  return link.startsWith("/")
-    ? join(distDir, link)
-    : join(htmlFilePath, "..", link);
+export function resolveLinkPath(link: string, htmlFilePath: string, distDir: string): string {
+  return link.startsWith("/") ? join(distDir, link) : join(htmlFilePath, "..", link);
 }
 
-export function findBrokenPdfLinks(
-  htmlFiles: string[],
-  distDir: string,
-): string[] {
+export function findBrokenPdfLinks(htmlFiles: string[], distDir: string): string[] {
   const brokenLinks: string[] = [];
 
   for (const htmlFile of htmlFiles) {

@@ -40,8 +40,8 @@ original corpus. Watching this happen illustrates why real data matters.
 
 1. **Generate synthetic text:** use your existing model to create 50–100+ words
    (as in [Generation](/lessons/generation)). This is your synthetic corpus.
-2. **Train generation 2:** build a new model using the [Training](/lessons/training) algorithm with
-   the synthetic corpus.
+2. **Train generation 2:** build a new model using the
+   [Training](/lessons/training) algorithm with the synthetic corpus.
 3. **Compare models:**
    - note words that disappear or appear
    - compare shared cell counts

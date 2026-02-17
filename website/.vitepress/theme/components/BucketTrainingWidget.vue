@@ -114,29 +114,25 @@ function isPunctuation(token: string): boolean {
               <span
                 class="token highlight-second"
                 :class="{ punctuation: isPunctuation(highlights.token!) }"
-              >{{ highlights.token }}</span>
+                >{{ highlights.token }}</span
+              >
               <span>into the</span>
               <span
                 class="token highlight-first"
                 :class="{ punctuation: isPunctuation(highlights.bucket) }"
-              >{{ highlights.bucket }}</span>
+                >{{ highlights.bucket }}</span
+              >
               <span>bucket</span>
             </template>
-            <span v-else-if="isComplete" class="complete-message">
-              Training complete!
-            </span>
-            <span v-else class="placeholder">
-              Press Play or Step to begin
-            </span>
+            <span v-else-if="isComplete" class="complete-message"> Training complete! </span>
+            <span v-else class="placeholder"> Press Play or Step to begin </span>
           </div>
         </div>
 
         <div class="widget-section">
           <div class="section-header">Buckets</div>
           <div class="section-content buckets-content">
-            <div v-if="buckets.length === 0" class="placeholder">
-              No buckets yet
-            </div>
+            <div v-if="buckets.length === 0" class="placeholder">No buckets yet</div>
             <div
               v-for="bucket in buckets"
               :key="bucket.label"
@@ -158,8 +154,7 @@ function isPunctuation(token: string): boolean {
                   :class="{
                     punctuation: isPunctuation(token),
                     'just-added':
-                      bucket.label === highlights.bucket &&
-                      i === bucket.tokens.length - 1,
+                      bucket.label === highlights.bucket && i === bucket.tokens.length - 1,
                   }"
                   :title="token"
                 >

@@ -12,15 +12,11 @@ const isGrid = computed(() => variant.value === "grid");
     <div class="variant-info">
       <strong>Choose your method:</strong>
       This lesson can be done with either a <em>grid</em> (paper and dice) or
-      <em>buckets</em> (physical tokens). Pick whichever suits your group best;
-      both teach the same concepts.
+      <em>buckets</em> (physical tokens). Pick whichever suits your group best; both teach the same
+      concepts.
     </div>
     <div class="variant-switcher">
-      <button
-        class="variant-button"
-        :class="{ active: isGrid }"
-        @click="setVariant('grid')"
-      >
+      <button class="variant-button" :class="{ active: isGrid }" @click="setVariant('grid')">
         <svg
           class="variant-icon"
           viewBox="-1 -1 23 23"
@@ -44,11 +40,7 @@ const isGrid = computed(() => variant.value === "grid");
         </svg>
         <span class="variant-label">Grid</span>
       </button>
-      <button
-        class="variant-button"
-        :class="{ active: !isGrid }"
-        @click="setVariant('bucket')"
-      >
+      <button class="variant-button" :class="{ active: !isGrid }" @click="setVariant('bucket')">
         <svg
           class="variant-icon"
           viewBox="0 0 24 24"

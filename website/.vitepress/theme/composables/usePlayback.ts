@@ -1,10 +1,7 @@
 import { ref, computed, onUnmounted, getCurrentInstance, watch } from "vue";
 import { PLAYBACK_CONFIG } from "../config/playback";
 
-export function usePlayback(
-  initialTotalSteps = 0,
-  options: { loop?: boolean } = {},
-) {
+export function usePlayback(initialTotalSteps = 0, options: { loop?: boolean } = {}) {
   const currentStep = ref(0);
   const totalSteps = ref(initialTotalSteps);
   const isPlaying = ref(false);
@@ -97,9 +94,7 @@ export function usePlayback(
       clearLoopTimeout();
     });
   } else if (import.meta.env.MODE !== "test") {
-    console.warn(
-      "usePlayback called outside component context - cleanup will not be automatic",
-    );
+    console.warn("usePlayback called outside component context - cleanup will not be automatic");
   }
 
   return {

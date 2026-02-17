@@ -19,16 +19,11 @@ describe("linkChecker", () => {
         <a href="/second.pdf">Second</a>
         <a href="relative/third.pdf">Third</a>
       `;
-      expect(extractPdfLinks(html)).toEqual([
-        "/first.pdf",
-        "/second.pdf",
-        "relative/third.pdf",
-      ]);
+      expect(extractPdfLinks(html)).toEqual(["/first.pdf", "/second.pdf", "relative/third.pdf"]);
     });
 
     it("returns empty array when no PDF links", () => {
-      const html =
-        '<a href="/page.html">Page</a><a href="/image.png">Image</a>';
+      const html = '<a href="/page.html">Page</a><a href="/image.png">Image</a>';
       expect(extractPdfLinks(html)).toEqual([]);
     });
 
@@ -63,11 +58,7 @@ describe("linkChecker", () => {
     });
 
     it("resolves same-directory relative paths", () => {
-      const result = resolveLinkPath(
-        "doc.pdf",
-        "/project/dist/docs/index.html",
-        "/project/dist",
-      );
+      const result = resolveLinkPath("doc.pdf", "/project/dist/docs/index.html", "/project/dist");
       expect(result).toBe("/project/dist/docs/doc.pdf");
     });
   });

@@ -1,11 +1,6 @@
 <script setup lang="ts">
-/* eslint-disable no-undef -- browser globals used in client-side component */
 import { ref, onMounted, computed } from "vue";
-import {
-  getFileType,
-  extractTextFromDocx,
-  extractTextFromPdf,
-} from "../utils/fileExtract";
+import { getFileType, extractTextFromDocx, extractTextFromPdf } from "../utils/fileExtract";
 import { bookTemplate, cutoutsTemplate } from "../templates";
 
 type Status = "idle" | "loading" | "ready" | "compiling" | "success" | "error";
@@ -14,9 +9,7 @@ type Workflow = "booklet" | "cutouts";
 const status = ref<Status>("idle");
 const statusMessage = ref("Initialising compiler...");
 const previewHtml = ref<string>("");
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const typst = ref<any>(null);
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const wasmModule = ref<any>(null);
 
 const inputText = ref("");
@@ -126,7 +119,7 @@ async function handleFileUpload(event: Event) {
 
   if (file.size > MAX_FILE_SIZE) {
     log(`Error: File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum is 10MB.`);
-    target.value = '';
+    target.value = "";
     return;
   }
 
@@ -135,18 +128,21 @@ async function handleFileUpload(event: Event) {
 
   if (!fileType) {
     log(`Unsupported file type: ${file.name}`);
-    target.value = '';
+    target.value = "";
     return;
   }
 
   const baseName = file.name.replace(/\.[^.]+$/, "");
 
-  const extractWithTimeout = async <T>(promise: Promise<T>): Promise<T> => {
+  const extractWithTimeout = async <T,>(promise: Promise<T>): Promise<T> => {
     return Promise.race([
       promise,
       new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error('Extraction timed out after 30 seconds')), EXTRACTION_TIMEOUT)
-      )
+        setTimeout(
+          () => reject(new Error("Extraction timed out after 30 seconds")),
+          EXTRACTION_TIMEOUT,
+        ),
+      ),
     ]);
   };
 
@@ -181,13 +177,11 @@ async function handleFileUpload(event: Event) {
     inputText.value = content;
 
     if (!inputTitle.value) {
-      inputTitle.value = baseName
-        .replace(/[-_]/g, " ")
-        .replace(/\b\w/g, (c) => c.toUpperCase());
+      inputTitle.value = baseName.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
     }
   } catch (error) {
     log(`Error reading file: ${(error as Error).message}`);
-    target.value = '';
+    target.value = "";
   }
 }
 
@@ -223,8 +217,7 @@ async function processAndCompile(outputType: "svg" | "pdf") {
     log("Text processed, updating model data...");
     await typst.value.addSource("/model.json", jsonString);
 
-    const templatePath =
-      workflow.value === "booklet" ? "/book.typ" : "/cutouts.typ";
+    const templatePath = workflow.value === "booklet" ? "/book.typ" : "/cutouts.typ";
     const jsonPath = "/model.json";
 
     if (outputType === "svg") {
@@ -324,11 +317,7 @@ onMounted(() => {
       <div class="option-row">
         <div class="option-group">
           <label for="ngram-select">N-gram size</label>
-          <select
-            id="ngram-select"
-            v-model="ngramSize"
-            :disabled="status !== 'ready'"
-          >
+          <select id="ngram-select" v-model="ngramSize" :disabled="status !== 'ready'">
             <option :value="2">Bigram (n=2)</option>
             <option :value="3">Trigram (n=3)</option>
             <option :value="4">4-gram (n=4)</option>
@@ -337,11 +326,7 @@ onMounted(() => {
 
         <div class="option-group">
           <label for="workflow-select">Output type</label>
-          <select
-            id="workflow-select"
-            v-model="workflow"
-            :disabled="status !== 'ready'"
-          >
+          <select id="workflow-select" v-model="workflow" :disabled="status !== 'ready'">
             <option value="booklet">Booklet (dice lookup tables)</option>
             <option value="cutouts">Cutouts (bucket training tokens)</option>
           </select>
@@ -350,34 +335,23 @@ onMounted(() => {
     </div>
 
     <div class="controls">
-      <button
-        :disabled="status !== 'ready' || !hasInput"
-        @click="processAndCompile('svg')"
-      >
+      <button :disabled="status !== 'ready' || !hasInput" @click="processAndCompile('svg')">
         Preview (SVG)
       </button>
-      <button
-        :disabled="status !== 'ready' || !hasInput"
-        @click="processAndCompile('pdf')"
-      >
+      <button :disabled="status !== 'ready' || !hasInput" @click="processAndCompile('pdf')">
         Download PDF
       </button>
     </div>
 
     <div class="status-indicator" :class="status">
       <span class="status-icon">
-        <span
-          v-if="status === 'idle' || status === 'loading'"
-          class="spinner"
-        />
+        <span v-if="status === 'idle' || status === 'loading'" class="spinner" />
         <span v-else-if="status === 'ready' || status === 'success'">✓</span>
         <span v-else-if="status === 'compiling'" class="spinner" />
         <span v-else-if="status === 'error'">✗</span>
       </span>
       <span class="status-text">
-        <template v-if="status === 'idle' || status === 'loading'">
-          Loading compiler...
-        </template>
+        <template v-if="status === 'idle' || status === 'loading'"> Loading compiler... </template>
         <template v-else-if="status === 'ready'">Compiler ready</template>
         <template v-else-if="status === 'compiling'">Compiling...</template>
         <template v-else-if="status === 'success'">Done</template>
@@ -394,7 +368,6 @@ onMounted(() => {
       </div>
     </details>
 
-    <!-- eslint-disable-next-line vue/no-v-html -- SVG from typst compiler is trusted -->
     <div v-if="previewHtml" class="preview" v-html="previewHtml"></div>
   </div>
 </template>

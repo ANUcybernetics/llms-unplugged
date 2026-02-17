@@ -59,9 +59,7 @@ describe("VitePress Build", () => {
     const htmlFiles = globSync(join(DIST_DIR, "**/*.html"));
     const brokenLinks = findBrokenPdfLinks(htmlFiles, DIST_DIR);
 
-    expect(brokenLinks, `Broken PDF links:\n${brokenLinks.join("\n")}`).toEqual(
-      [],
-    );
+    expect(brokenLinks, `Broken PDF links:\n${brokenLinks.join("\n")}`).toEqual([]);
   });
 
   it("copies image assets", () => {

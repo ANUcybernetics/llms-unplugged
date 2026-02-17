@@ -39,17 +39,10 @@ function handlePlayPause() {
     >
       {{ isPlaying ? "⏸ Pause" : "▶ Play" }}
     </button>
-    <button
-      type="button"
-      aria-label="Step forward"
-      :disabled="isComplete"
-      @click="emit('step')"
-    >
+    <button type="button" aria-label="Step forward" :disabled="isComplete" @click="emit('step')">
       ⏭ Step
     </button>
-    <button type="button" aria-label="Reset" @click="emit('reset')">
-      ↺ Reset
-    </button>
+    <button type="button" aria-label="Reset" @click="emit('reset')">↺ Reset</button>
     <span v-if="showStepCounter && totalSteps > 0" class="step-counter">
       {{ currentStep }} / {{ totalSteps }}
     </span>

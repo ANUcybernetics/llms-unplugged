@@ -28,9 +28,7 @@ export async function extractTextFromDocx(
   };
 }
 
-export async function extractTextFromPdf(
-  arrayBuffer: ArrayBuffer,
-): Promise<string> {
+export async function extractTextFromPdf(arrayBuffer: ArrayBuffer): Promise<string> {
   const pdfjsLib = await import("pdfjs-dist");
 
   // Configure worker on first use
@@ -44,9 +42,7 @@ export async function extractTextFromPdf(
   for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
     const page = await pdf.getPage(pageNum);
     const textContent = await page.getTextContent();
-    const pageText = textContent.items
-      .map((item) => ("str" in item ? item.str : ""))
-      .join(" ");
+    const pageText = textContent.items.map((item) => ("str" in item ? item.str : "")).join(" ");
     textParts.push(pageText);
   }
 

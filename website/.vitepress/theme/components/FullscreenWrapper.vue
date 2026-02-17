@@ -1,17 +1,16 @@
 <script setup lang="ts">
-/* eslint-disable no-undef -- browser globals used in client-side component */
 import { ref, onMounted, onUnmounted } from "vue";
 
 const containerRef = ref<HTMLElement | null>(null);
 const isFullscreen = ref(false);
 
 function updateFullscreenState() {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
   isFullscreen.value = document.fullscreenElement === containerRef.value;
 }
 
 async function toggleFullscreen() {
-  if (typeof window === 'undefined' || !containerRef.value) return;
+  if (typeof window === "undefined" || !containerRef.value) return;
   if (!document.fullscreenEnabled) return;
 
   try {
@@ -26,25 +25,20 @@ async function toggleFullscreen() {
 }
 
 onMounted(() => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     document.addEventListener("fullscreenchange", updateFullscreenState);
   }
 });
 
 onUnmounted(() => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     document.removeEventListener("fullscreenchange", updateFullscreenState);
   }
 });
-/* eslint-enable no-undef */
 </script>
 
 <template>
-  <div
-    ref="containerRef"
-    class="fullscreen-wrapper"
-    :class="{ fullscreen: isFullscreen }"
-  >
+  <div ref="containerRef" class="fullscreen-wrapper" :class="{ fullscreen: isFullscreen }">
     <button
       type="button"
       class="fullscreen-button"
@@ -54,10 +48,7 @@ onUnmounted(() => {
       {{ isFullscreen ? "⛶" : "⛶" }}
     </button>
     <div class="fullscreen-content" :class="{ scaled: isFullscreen }">
-      <slot
-        :is-fullscreen="isFullscreen"
-        :toggle-fullscreen="toggleFullscreen"
-      />
+      <slot :is-fullscreen="isFullscreen" :toggle-fullscreen="toggleFullscreen" />
     </div>
   </div>
 </template>

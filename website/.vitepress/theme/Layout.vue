@@ -7,20 +7,16 @@ const { Layout } = DefaultTheme;
 const { frontmatter, page } = useData();
 
 const isNewsPage = computed(
-  () => page.value.relativePath.startsWith("news/") && frontmatter.value.date
+  () => page.value.relativePath.startsWith("news/") && frontmatter.value.date,
 );
 
 const newsSlug = computed(() => {
   if (!isNewsPage.value) return "";
-  return page.value.relativePath
-    .replace(/^news\//, "")
-    .replace(/\.md$/, "");
+  return page.value.relativePath.replace(/^news\//, "").replace(/\.md$/, "");
 });
 
 const newsHeroSrc = computed(() =>
-  newsSlug.value
-    ? withBase(`/assets/images/hero-news-${newsSlug.value}.avif`)
-    : "",
+  newsSlug.value ? withBase(`/assets/images/hero-news-${newsSlug.value}.avif`) : "",
 );
 
 const formattedDate = computed(() => {
@@ -49,10 +45,7 @@ const formattedDate = computed(() => {
           <span v-if="frontmatter.author" class="author">
             {{ frontmatter.author }}
           </span>
-          <span
-            v-if="frontmatter.author && frontmatter.date"
-            class="separator"
-          >·</span>
+          <span v-if="frontmatter.author && frontmatter.date" class="separator">·</span>
           <time v-if="frontmatter.date" class="date">{{ formattedDate }}</time>
         </div>
         <img

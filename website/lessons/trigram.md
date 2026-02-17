@@ -186,7 +186,8 @@ specific patterns.
 4. Shift the window by one word (new context is old `word2` + chosen `word3`)
    and repeat from step 2.
 
-This mirrors [Generation](/lessons/generation) but with two-word context instead of one.
+This mirrors [Generation](/lessons/generation) but with two-word context instead
+of one.
 
 </GridOnly>
 

@@ -36,9 +36,7 @@ export default createContentLoader("news/*.md", {
         const slug = page.url.replace(/^\/news\//, "").replace(/\/$/, "");
         const dateIso =
           parseDateFromSlug(slug) ??
-          (typeof page.frontmatter.date === "string"
-            ? page.frontmatter.date
-            : "");
+          (typeof page.frontmatter.date === "string" ? page.frontmatter.date : "");
         return {
           url: page.url,
           title: page.frontmatter.title ?? slug,

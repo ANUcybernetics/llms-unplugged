@@ -90,7 +90,8 @@ bucket and repeating the process word by word creates new text.
 
 1. Choose a starting word from the first column of your grid.
 2. Look at that word's row to find all possible next words and their counts.
-3. Roll dice weighted by the counts (see [Weighted Randomness](/lessons/weighted-randomness)).
+3. Roll dice weighted by the counts (see
+   [Weighted Randomness](/lessons/weighted-randomness)).
 4. Write down the chosen word and make it your new starting word.
 5. Repeat from step 2 until you hit a natural stopping point (e.g., `.`) or your
    desired length.
@@ -203,12 +204,12 @@ token---the "see" bucket always produces `spot` because that's all it contains.
 
 - **"Every row only has one tally mark---there's nothing to roll for."** If the
   group didn't get very far in [Training](/lessons/training) and no row has more
-  than one tally mark, the generation algorithm won't be very interesting---there
-  will only ever be one option for the next word and they'll be stuck on rails.
-  In this case, either encourage them to go back and do a bit more training, or
-  just have them add some extra tally marks to the grid wherever they like. This
-  isn't as much like cheating as it might seem---it's really just an example of
-  using [Synthetic Data](/lessons/synthetic-data).
+  than one tally mark, the generation algorithm won't be very
+  interesting---there will only ever be one option for the next word and they'll
+  be stuck on rails. In this case, either encourage them to go back and do a bit
+  more training, or just have them add some extra tally marks to the grid
+  wherever they like. This isn't as much like cheating as it might seem---it's
+  really just an example of using [Synthetic Data](/lessons/synthetic-data).
 - **"I landed on a word that doesn't have its own row."** This can happen if a
   word only ever appeared as the _last_ word in the training text---it has a
   column (other words lead to it) but no row (it never leads to anything). Just
@@ -227,8 +228,8 @@ token---the "see" bucket always produces `spot` because that's all it contains.
   only has one token, the generation process won't feel random at all---there
   will only ever be one option. Either encourage them to go back and do a bit
   more training, or have them add extra tokens to buckets wherever they like.
-  This isn't as much like cheating as it might seem---it's really just an example
-  of using [Synthetic Data](/lessons/synthetic-data).
+  This isn't as much like cheating as it might seem---it's really just an
+  example of using [Synthetic Data](/lessons/synthetic-data).
 - **"I picked a word that doesn't have its own bucket."** This can happen if a
   word only ever appeared as the _last_ word in the training text---it ended up
   inside another bucket but never got a bucket of its own. Just pick any bucket

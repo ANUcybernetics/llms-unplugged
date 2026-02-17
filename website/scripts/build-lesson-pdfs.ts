@@ -75,10 +75,9 @@ console.log(`\nCombining into lessons.pdf...`);
 const combinedPath = join(outputDir, "lessons.pdf");
 
 try {
-  execSync(
-    `qpdf --deterministic-id --empty --pages ${pdfPaths.join(" ")} -- "${combinedPath}"`,
-    { stdio: "inherit" },
-  );
+  execSync(`qpdf --deterministic-id --empty --pages ${pdfPaths.join(" ")} -- "${combinedPath}"`, {
+    stdio: "inherit",
+  });
 } catch {
   console.error(`  Failed to create combined PDF`);
   process.exit(1);

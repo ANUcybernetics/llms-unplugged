@@ -1,13 +1,8 @@
 <script setup lang="ts">
-/* eslint-disable no-undef -- browser globals used in client-side component */
 import { ref, computed, watch, onUnmounted } from "vue";
 import { useTrainingText } from "../composables/useTrainingText";
 import { parseTokens, getVocabulary, buildBigramModel } from "../utils/tokens";
-import {
-  createDiceMapping,
-  rollDice,
-  findWordForRoll,
-} from "../utils/diceMapping";
+import { createDiceMapping, rollDice, findWordForRoll } from "../utils/diceMapping";
 import type { DiceMapping } from "../utils/diceMapping";
 import PlaybackSection from "./PlaybackSection.vue";
 import FullscreenWrapper from "./FullscreenWrapper.vue";
@@ -88,10 +83,7 @@ function selectStartWord(word: string) {
   if (!model.value.hasSuccessors(word)) return;
   outputWords.value = [word];
   phase.value = "showing-options";
-  currentMappings.value = createDiceMapping(
-    currentRowOptions.value,
-    props.diceSides,
-  );
+  currentMappings.value = createDiceMapping(currentRowOptions.value, props.diceSides);
 }
 
 async function animateDiceRoll(): Promise<number> {
@@ -111,12 +103,9 @@ async function animateDiceRoll(): Promise<number> {
 async function doStep() {
   if (phase.value === "selecting") {
     if (outputWords.value.length === 0) {
-      const validStarters = vocabulary.value.filter((w) =>
-        model.value.hasSuccessors(w),
-      );
+      const validStarters = vocabulary.value.filter((w) => model.value.hasSuccessors(w));
       if (validStarters.length > 0) {
-        const randomStart =
-          validStarters[Math.floor(Math.random() * validStarters.length)];
+        const randomStart = validStarters[Math.floor(Math.random() * validStarters.length)];
         selectStartWord(randomStart);
       }
     }
@@ -131,10 +120,7 @@ async function doStep() {
   }
 
   if (phase.value === "rolled") {
-    const nextWord = findWordForRoll(
-      currentMappings.value,
-      currentDiceRoll.value!,
-    );
+    const nextWord = findWordForRoll(currentMappings.value, currentDiceRoll.value!);
     if (nextWord) {
       phase.value = "writing";
       outputWords.value = [...outputWords.value, nextWord];
@@ -181,12 +167,9 @@ function handlePlay() {
     resetPlayState();
   }
   if (outputWords.value.length === 0) {
-    const validStarters = vocabulary.value.filter((w) =>
-      model.value.hasSuccessors(w),
-    );
+    const validStarters = vocabulary.value.filter((w) => model.value.hasSuccessors(w));
     if (validStarters.length > 0) {
-      const randomStart =
-        validStarters[Math.floor(Math.random() * validStarters.length)];
+      const randomStart = validStarters[Math.floor(Math.random() * validStarters.length)];
       selectStartWord(randomStart);
     }
   }
@@ -201,10 +184,14 @@ watch(isPlaying, async (playing) => {
     const abortableSleep = (ms: number) =>
       new Promise<void>((resolve, reject) => {
         const timeout = setTimeout(resolve, ms);
-        signal.addEventListener('abort', () => {
-          clearTimeout(timeout);
-          reject(new DOMException('Aborted', 'AbortError'));
-        }, { once: true });
+        signal.addEventListener(
+          "abort",
+          () => {
+            clearTimeout(timeout);
+            reject(new DOMException("Aborted", "AbortError"));
+          },
+          { once: true },
+        );
       });
 
     try {
@@ -221,7 +208,7 @@ watch(isPlaying, async (playing) => {
         await abortableSleep(stepInterval.value);
       }
     } catch (error) {
-      if (error instanceof DOMException && error.name === 'AbortError') {
+      if (error instanceof DOMException && error.name === "AbortError") {
         return;
       }
       throw error;
@@ -233,11 +220,7 @@ watch(isPlaying, async (playing) => {
 });
 
 function isHighlightedCol(word: string): boolean {
-  if (
-    phase.value !== "showing-options" &&
-    phase.value !== "rolling" &&
-    phase.value !== "rolled"
-  )
+  if (phase.value !== "showing-options" && phase.value !== "rolling" && phase.value !== "rolled")
     return false;
   return currentRowOptions.value.some((opt) => opt.word === word);
 }
@@ -288,7 +271,9 @@ function handleRowClick(word: string) {
               :key="i"
               class="output-word"
               :class="{ latest: i === outputWords.length - 1 }"
-            ><template v-if="i > 0 && word !== ',' && word !== '.'">{{ " " }}</template>{{ word }}</span>
+              ><template v-if="i > 0 && word !== ',' && word !== '.'">{{ " " }}</template
+              >{{ word }}</span
+            >
             <span v-if="outputWords.length === 0" class="placeholder">
               Click a row to select starting word, or press Play
             </span>
@@ -329,9 +314,9 @@ function handleRowClick(word: string) {
                   }"
                 >
                   [{{ mapping.diceRange[0]
-                  }}<template
-                    v-if="mapping.diceRange[0] !== mapping.diceRange[1]"
-                  >–{{ mapping.diceRange[1] }}</template>]→{{ mapping.word }}
+                  }}<template v-if="mapping.diceRange[0] !== mapping.diceRange[1]"
+                    >–{{ mapping.diceRange[1] }}</template
+                  >]→{{ mapping.word }}
                 </span>
               </div>
               <div class="dice-result">
@@ -341,17 +326,14 @@ function handleRowClick(word: string) {
                     currentDiceRoll
                   }}</span>
                   <span v-if="!isRolling">
-                    → "<strong>{{
-                      findWordForRoll(currentMappings, currentDiceRoll)
-                    }}</strong>"
+                    → "<strong>{{ findWordForRoll(currentMappings, currentDiceRoll) }}</strong
+                    >"
                   </span>
                 </template>
                 <span v-else class="dice-result-placeholder">&nbsp;</span>
               </div>
             </template>
-            <span v-else class="placeholder">
-              Select a starting word to see dice mapping
-            </span>
+            <span v-else class="placeholder"> Select a starting word to see dice mapping </span>
           </div>
         </div>
 
@@ -473,8 +455,6 @@ function handleRowClick(word: string) {
     transform: scale(1);
   }
 }
-
-
 
 @media (prefers-reduced-motion: reduce) {
   .output-word,

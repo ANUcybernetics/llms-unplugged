@@ -106,19 +106,17 @@ function getCount(from: string, to: string): number {
               <span
                 class="token highlight-first"
                 :class="{ punctuation: highlights.row === '.' || highlights.row === ',' }"
-              >{{ highlights.row }}</span>
+                >{{ highlights.row }}</span
+              >
               <span class="arrow">→</span>
               <span
                 class="token highlight-second"
                 :class="{ punctuation: highlights.col === '.' || highlights.col === ',' }"
-              >{{ highlights.col }}</span>
+                >{{ highlights.col }}</span
+              >
             </template>
-            <span v-else-if="isComplete" class="complete-message">
-              Training complete!
-            </span>
-            <span v-else class="placeholder">
-              Press Play or Step to begin
-            </span>
+            <span v-else-if="isComplete" class="complete-message"> Training complete! </span>
+            <span v-else class="placeholder"> Press Play or Step to begin </span>
           </div>
         </div>
 

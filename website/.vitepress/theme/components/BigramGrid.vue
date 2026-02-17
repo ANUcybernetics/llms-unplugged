@@ -88,10 +88,9 @@ function handleRowClick(word: string) {
               punctuation: rowWord === '.' || rowWord === ',',
             }"
           >
-            <span
-              v-if="showRowIndicator && highlightedRow === rowWord"
-              class="row-indicator"
-            >▸</span>
+            <span v-if="showRowIndicator && highlightedRow === rowWord" class="row-indicator"
+              >▸</span
+            >
             <code>{{ rowWord }}</code>
           </th>
           <td
@@ -99,8 +98,7 @@ function handleRowClick(word: string) {
             :key="colWord"
             class="grid-cell"
             :class="{
-              'highlight-col':
-                checkHighlightedCol(colWord) && highlightedRow === rowWord,
+              'highlight-col': checkHighlightedCol(colWord) && highlightedRow === rowWord,
               'highlight-row': highlightedRow === rowWord,
               'current-cell': checkCurrentCell(rowWord, colWord),
               flash: checkCurrentCell(rowWord, colWord),

@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { data as allLessons } from "../../../lessons/lessons.data";
-import {
-  topicOrder,
-  topicLabels,
-  topicDescriptions,
-} from "../../../lessons/topics";
+import { topicOrder, topicLabels, topicDescriptions } from "../../../lessons/topics";
 import type { LessonData } from "../../../lessons/lessons.data";
 import Card from "./Card.vue";
 
@@ -30,9 +26,7 @@ const isFiltered = computed(() => !!props.lessons);
 
 const filteredLessons = computed<LessonData[]>(() => {
   if (!props.lessons) return allLessons;
-  return allLessons.filter((lesson) =>
-    props.lessons!.includes(getLessonSlug(lesson)),
-  );
+  return allLessons.filter((lesson) => props.lessons!.includes(getLessonSlug(lesson)));
 });
 
 const groupedLessons = computed<TopicGroup[]>(() => {
@@ -70,11 +64,7 @@ const groupedLessons = computed<TopicGroup[]>(() => {
       />
     </div>
     <template v-else>
-      <section
-        v-for="group in groupedLessons"
-        :key="group.id"
-        class="topic-section"
-      >
+      <section v-for="group in groupedLessons" :key="group.id" class="topic-section">
         <h2 :id="group.id">{{ group.label }}</h2>
         <p class="topic-description">{{ group.description }}</p>
         <div class="cards-grid">

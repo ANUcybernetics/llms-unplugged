@@ -42,13 +42,7 @@ export default defineConfig({
   },
 
   // Exclude non-content files and build artifacts
-  srcExclude: [
-    "**/README.md",
-    "**/AGENTS.md",
-    "**/CLAUDE.md",
-    "**/LICENSE",
-    "_site/**",
-  ],
+  srcExclude: ["**/README.md", "**/AGENTS.md", "**/CLAUDE.md", "**/LICENSE", "_site/**"],
 
   // Vite plugins
   vite: {
@@ -56,9 +50,8 @@ export default defineConfig({
       RssPlugin(RSS_OPTIONS),
       checker({
         vueTsc: true,
-        eslint: {
-          useFlatConfig: true,
-          lintCommand: 'eslint ".vitepress/**/*.{ts,vue}"',
+        oxlint: {
+          lintCommand: 'oxlint ".vitepress/**/*.{ts,vue}"',
         },
       }),
     ],
@@ -80,10 +73,7 @@ export default defineConfig({
     ],
     // Google Fonts: Public Sans
     ["link", { rel: "preconnect", href: "https://fonts.googleapis.com" }],
-    [
-      "link",
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
-    ],
+    ["link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" }],
     [
       "link",
       {
@@ -177,8 +167,7 @@ export default defineConfig({
     },
 
     editLink: {
-      pattern:
-        "https://github.com/ANUcybernetics/llms-unplugged/edit/main/website/:path",
+      pattern: "https://github.com/ANUcybernetics/llms-unplugged/edit/main/website/:path",
       text: "Edit this page on GitHub",
     },
 

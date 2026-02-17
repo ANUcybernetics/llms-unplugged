@@ -26,10 +26,7 @@ const BASE_PROMPT = `Task: create an illustrative image---with NO TEXT---for a t
 
 const AVIF_QUALITY = 60;
 
-async function convertToAvif(
-  jpgPath: string,
-  avifPath: string,
-): Promise<boolean> {
+async function convertToAvif(jpgPath: string, avifPath: string): Promise<boolean> {
   try {
     await execAsync(`avifenc -q ${AVIF_QUALITY} "${jpgPath}" "${avifPath}"`);
     await unlink(jpgPath);
@@ -41,10 +38,7 @@ async function convertToAvif(
   }
 }
 
-async function generateImage(
-  promptInput: string,
-  outputPath: string,
-): Promise<boolean> {
+async function generateImage(promptInput: string, outputPath: string): Promise<boolean> {
   const outputExt = extname(outputPath).toLowerCase();
   const outputDir = dirname(outputPath);
   const baseName =
@@ -66,9 +60,7 @@ async function generateImage(
   console.log(`Generating: ${finalPath}`);
   console.log(`  Prompt: ${promptInput.slice(0, 80)}...`);
 
-  const inputImageArgs = EXAMPLE_IMAGES.map(
-    (img) => `--input-image "${img}"`,
-  ).join(" ");
+  const inputImageArgs = EXAMPLE_IMAGES.map((img) => `--input-image "${img}"`).join(" ");
 
   const cmd = [
     "nano_banana",
@@ -104,23 +96,17 @@ async function generateImage(
 function printUsage() {
   console.log("Usage: generate-image.ts <prompt...> <outputPath>");
   console.log("");
-  console.log(
-    "Generate a hero image using a prompt, base prompt, and reference images.",
-  );
+  console.log("Generate a hero image using a prompt, base prompt, and reference images.");
   console.log("");
   console.log("Arguments:");
   console.log("  prompt...     Prompt describing the desired image");
-  console.log(
-    "  outputPath    Output file path (.avif or .jpg). If no extension, .avif is used.",
-  );
+  console.log("  outputPath    Output file path (.avif or .jpg). If no extension, .avif is used.");
   console.log("");
   console.log("Examples:");
   console.log(
     '  generate-image.ts "dice-based text generation in a classroom" public/assets/images/hero-intro.avif',
   );
-  console.log(
-    "  generate-image.ts bucket-training public/assets/images/hero-bucket-training",
-  );
+  console.log("  generate-image.ts bucket-training public/assets/images/hero-bucket-training");
 }
 
 async function main() {

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-/* eslint-disable no-undef -- browser globals used in client-side component */
 import { ref, computed, watch, onUnmounted } from "vue";
 import { useTrainingText } from "../composables/useTrainingText";
 import { parseTokens, getVocabulary, buildBigramModel } from "../utils/tokens";
@@ -37,9 +36,7 @@ const currentWord = computed(() => {
   return outputWords.value[outputWords.value.length - 1];
 });
 
-const validStarters = computed(() =>
-  vocabulary.value.filter((w) => model.value.hasSuccessors(w))
-);
+const validStarters = computed(() => vocabulary.value.filter((w) => model.value.hasSuccessors(w)));
 
 interface BucketContents {
   label: string;
@@ -190,8 +187,7 @@ function handlePlay() {
     resetPlayState();
   }
   if (outputWords.value.length === 0 && validStarters.value.length > 0) {
-    const randomStart =
-      validStarters.value[Math.floor(Math.random() * validStarters.value.length)];
+    const randomStart = validStarters.value[Math.floor(Math.random() * validStarters.value.length)];
     selectStartWord(randomStart);
   }
   play();
@@ -205,10 +201,14 @@ watch(isPlaying, async (playing) => {
     const abortableSleep = (ms: number) =>
       new Promise<void>((resolve, reject) => {
         const timeout = setTimeout(resolve, ms);
-        signal.addEventListener('abort', () => {
-          clearTimeout(timeout);
-          reject(new DOMException('Aborted', 'AbortError'));
-        }, { once: true });
+        signal.addEventListener(
+          "abort",
+          () => {
+            clearTimeout(timeout);
+            reject(new DOMException("Aborted", "AbortError"));
+          },
+          { once: true },
+        );
       });
 
     try {
@@ -225,7 +225,7 @@ watch(isPlaying, async (playing) => {
         await abortableSleep(stepInterval.value);
       }
     } catch (error) {
-      if (error instanceof DOMException && error.name === 'AbortError') {
+      if (error instanceof DOMException && error.name === "AbortError") {
         return;
       }
       throw error;
@@ -270,7 +270,9 @@ function isPunctuation(token: string): boolean {
               :key="i"
               class="output-word"
               :class="{ latest: i === outputWords.length - 1 }"
-            ><template v-if="i > 0 && word !== ',' && word !== '.'">{{ " " }}</template>{{ word }}</span>
+              ><template v-if="i > 0 && word !== ',' && word !== '.'">{{ " " }}</template
+              >{{ word }}</span
+            >
             <span v-if="outputWords.length === 0" class="placeholder">
               Click a bucket to select starting word, or press Play
             </span>
@@ -280,9 +282,7 @@ function isPunctuation(token: string): boolean {
         <div class="widget-section">
           <div class="section-header">Buckets</div>
           <div class="section-content buckets-content">
-            <div v-if="buckets.length === 0" class="placeholder">
-              No buckets yet
-            </div>
+            <div v-if="buckets.length === 0" class="placeholder">No buckets yet</div>
             <div
               v-for="bucket in buckets"
               :key="bucket.label"
@@ -294,10 +294,7 @@ function isPunctuation(token: string): boolean {
               }"
               @click="handleBucketClick(bucket.label)"
             >
-              <div
-                class="bucket-label"
-                :class="{ punctuation: isPunctuation(bucket.label) }"
-              >
+              <div class="bucket-label" :class="{ punctuation: isPunctuation(bucket.label) }">
                 {{ bucket.label }}
               </div>
               <div class="bucket-contents">
@@ -308,9 +305,7 @@ function isPunctuation(token: string): boolean {
                   :class="{
                     punctuation: isPunctuation(token),
                     shuffling:
-                      bucket.label === currentWord &&
-                      isPickingFromBucket &&
-                      i === shufflingIndex,
+                      bucket.label === currentWord && isPickingFromBucket && i === shufflingIndex,
                     picked:
                       bucket.label === currentWord &&
                       !isPickingFromBucket &&
@@ -333,7 +328,8 @@ function isPunctuation(token: string): boolean {
               <span
                 class="token highlight-first"
                 :class="{ punctuation: isPunctuation(currentWord) }"
-              >{{ currentWord }}</span>
+                >{{ currentWord }}</span
+              >
               <span>bucket...</span>
             </template>
             <template v-else-if="phase === 'picking' && currentWord">
@@ -341,7 +337,8 @@ function isPunctuation(token: string): boolean {
               <span
                 class="token highlight-first"
                 :class="{ punctuation: isPunctuation(currentWord) }"
-              >{{ currentWord }}</span>
+                >{{ currentWord }}</span
+              >
               <span>bucket...</span>
             </template>
             <template v-else-if="phase === 'picked' && pickedToken">
@@ -349,7 +346,8 @@ function isPunctuation(token: string): boolean {
               <span
                 class="token highlight-second"
                 :class="{ punctuation: isPunctuation(pickedToken) }"
-              >{{ pickedToken }}</span>
+                >{{ pickedToken }}</span
+              >
               <span>from the bucket!</span>
             </template>
             <template v-else-if="phase === 'writing' && pickedToken">
@@ -357,15 +355,12 @@ function isPunctuation(token: string): boolean {
               <span
                 class="token highlight-second"
                 :class="{ punctuation: isPunctuation(pickedToken) }"
-              >{{ pickedToken }}</span>
+                >{{ pickedToken }}</span
+              >
               <span>to output...</span>
             </template>
-            <span v-else-if="isComplete" class="complete-message">
-              Generation complete!
-            </span>
-            <span v-else class="placeholder">
-              Click a bucket to start, or press Play
-            </span>
+            <span v-else-if="isComplete" class="complete-message"> Generation complete! </span>
+            <span v-else class="placeholder"> Click a bucket to start, or press Play </span>
           </div>
         </div>
 

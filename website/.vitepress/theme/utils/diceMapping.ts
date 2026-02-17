@@ -56,10 +56,7 @@ export function createDiceMapping(
     mappings[mappings.length - 1].diceRange[1] = diceSides;
   }
 
-  const coveredSides = mappings.reduce(
-    (sum, m) => sum + (m.diceRange[1] - m.diceRange[0] + 1),
-    0,
-  );
+  const coveredSides = mappings.reduce((sum, m) => sum + (m.diceRange[1] - m.diceRange[0] + 1), 0);
 
   if (coveredSides < diceSides) {
     console.warn(`Dice mapping only covers ${coveredSides}/${diceSides} sides`);
@@ -79,10 +76,7 @@ export function rollDice(diceSides: number, startIndex = 1): number {
   return Math.floor(Math.random() * diceSides) + startIndex;
 }
 
-export function findWordForRoll(
-  mappings: DiceMapping[],
-  roll: number,
-): string | null {
+export function findWordForRoll(mappings: DiceMapping[], roll: number): string | null {
   for (const mapping of mappings) {
     if (roll >= mapping.diceRange[0] && roll <= mapping.diceRange[1]) {
       return mapping.word;
