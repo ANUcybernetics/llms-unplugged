@@ -11,6 +11,8 @@ description:
 
 ## Why do you keep saying LLMs---this is AI, right?
 
+<img src="/assets/images/headshot-ben-anu.avif" alt="Ben Swift" style="float: right; width: 8rem; margin-left: 1rem; border-radius: 0.5rem;">
+
 Honestly, the short answer (these days) is yes. The long answer is more more
 complicated---AI is a term that has been applied to many different algorithmic
 techniques and systems over the years. But today (in the mid-2020s) Large
