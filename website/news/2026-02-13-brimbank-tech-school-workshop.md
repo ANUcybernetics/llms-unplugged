@@ -14,10 +14,11 @@ educators.
 
 ![Ben presenting to a room of educators at VU Sunshine Campus](/assets/images/brimbank-workshop-130.avif)
 
-Around 25 teachers from across the Brimbank region came along, and we spent the
-day working through AI fundamentals, the _LLMs Unplugged_ hands-on activity,
-practical applications of machine learning in education, and strategies for
-supporting schools through the changes that AI is bringing.
+Over 50 teachers and other educational professionals from across the Brimbank
+region came along, and we spent the day working through AI fundamentals, the
+_LLMs Unplugged_ hands-on activity, practical applications of machine learning
+in education, and strategies for supporting schools through the changes (and
+challenges) that AI is bringing.
 
 ![A participant building an N-gram model by hand, tallying token frequencies on a grid worksheet](/assets/images/brimbank-workshop-082.avif)
 
