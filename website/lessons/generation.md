@@ -209,6 +209,14 @@ token---the "see" bucket always produces `spot` because that's all it contains.
   just have them add some extra tally marks to the grid wherever they like. This
   isn't as much like cheating as it might seem---it's really just an example of
   using [Synthetic Data](/lessons/synthetic-data).
+- **"I landed on a word that doesn't have its own row."** This can happen if a
+  word only ever appeared as the _last_ word in the training text---it has a
+  column (other words lead to it) but no row (it never leads to anything). Just
+  pick any other word that does have a row and continue from there.
+- **"We're stuck in a loop."** With small models it's common to bounce between
+  two words that only point at each other (e.g. `,` → `spot` → `,` → `spot` →
+  ...). Try picking a different starting word, or just choose any other valid
+  next word to break out of the cycle.
 
 </GridOnly>
 
@@ -221,6 +229,14 @@ token---the "see" bucket always produces `spot` because that's all it contains.
   more training, or have them add extra tokens to buckets wherever they like.
   This isn't as much like cheating as it might seem---it's really just an example
   of using [Synthetic Data](/lessons/synthetic-data).
+- **"I picked a word that doesn't have its own bucket."** This can happen if a
+  word only ever appeared as the _last_ word in the training text---it ended up
+  inside another bucket but never got a bucket of its own. Just pick any bucket
+  that does exist and continue from there.
+- **"We keep going back and forth between the same two words."** With small
+  models it's common to get stuck in a loop where two buckets keep sending you
+  to each other. Try starting from a different bucket, or just pick any other
+  token to break the cycle.
 
 </BucketOnly>
 

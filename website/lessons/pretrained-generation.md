@@ -91,6 +91,15 @@ examples to see the algorithm in action.
 - without looking at the title: can you identify the training text's genre or
   style?
 
+### Troubleshooting
+
+- **"Which die is the tens digit?"** When rolling multiple d10s (i.e. in the
+  "multiple diamond" case), it doesn't really matter which die you read
+  first---as long as you decide before you roll and stay consistent. One easy
+  convention: use different-coloured dice and always read them in the same order
+  (e.g. red first, then blue). But really, don't stress too much about it. The
+  activity will still work fine if you mix them up.
+
 ### Connection to current LLMs
 
 This lesson demonstrates the foundation of how people interact with modern AI:
@@ -106,12 +115,12 @@ This lesson demonstrates the foundation of how people interact with modern AI:
 
 The key insight: training and text generation are separate processes. Most AI
 users never train models---they use pre-trained ones through APIs or interfaces.
-Your hand-built model from [Training](/lessons/training) gives you insight into what's inside the
-booklet, but you don't need that knowledge to generate text. This separation is
-why companies like OpenAI can provide AI services: they do the expensive
-training once, then millions of users perform text generation. The booklet
-captures thousands of training examples in a portable format, just as neural
-networks compress training data into billions of parameters.
+Your hand-built model from [Training](/lessons/training) gives you insight into
+what's inside the booklet, but you don't need that knowledge to generate text.
+This separation is why companies like OpenAI can provide AI services: they do
+the expensive training once, then millions of users perform text generation. The
+booklet captures thousands of training examples in a portable format, just as
+neural networks compress training data into billions of parameters.
 
 ## Interactive widget
 

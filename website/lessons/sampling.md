@@ -127,6 +127,13 @@ Pick a length threshold (e.g. 4 letters). Only allow words at or below that leng
 - how do constraints (haiku, no-repeat) spark creativity?
 - can you invent your own sampling strategy?
 
+### Troubleshooting
+
+- **"I divided all the counts by the temperature and now everything is 1."**
+  This is correct---it's not a mistake. High temperature flattens the
+  distribution so that all options become equally likely. That's the whole point:
+  higher temperature means more randomness.
+
 ### Connection to current LLMs
 
 Current LLMs use these same mechanisms, though the specific strategies differ.
