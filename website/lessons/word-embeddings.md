@@ -19,9 +19,14 @@ relationships between words in your model.
 
 <Prerequisites />
 
+::: tip
+This widget works with the [grid](/lessons/training) version of the bigram
+model. If you trained using buckets, the grid won't have any data to display.
+:::
+
 ## You will need
 
-- your completed bigram grid (context columns optional but helpful)
+- your completed [bigram grid](/lessons/training) ([context columns](/lessons/context-columns) optional but helpful)
 - another blank grid with the same headers (for distances)
 - pen, paper, and dice as per [Generation](/lessons/generation) (grid method)
 
@@ -58,6 +63,13 @@ Text: `See Spot. Spot runs.`
 
 You'll find `see` and `.` can end up very similar (distance 0) while `see` and
 `spot` differ more, revealing structure in your corpus.
+
+## Interactive widget
+
+Explore word embeddings from your bigram model. Click rows to see their numeric
+vectors and compare distances between words.
+
+<EmbeddingWidget />
 
 ## Instructor notes
 

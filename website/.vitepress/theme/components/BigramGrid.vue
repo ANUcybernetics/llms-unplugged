@@ -12,6 +12,7 @@ interface Props {
   isRowClickable?: (word: string) => boolean;
   isDeadEnd?: (word: string) => boolean;
   showRowIndicator?: boolean;
+  numericRows?: Set<string>;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -23,6 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   isRowClickable: () => true,
   isDeadEnd: () => false,
   showRowIndicator: false,
+  numericRows: () => new Set<string>(),
 });
 
 const emit = defineEmits<{
@@ -74,7 +76,7 @@ function handleRowClick(word: string) {
           v-for="rowWord in vocabulary"
           :key="rowWord"
           :class="{
-            'highlight-row': highlightedRow === rowWord,
+            'highlight-row': highlightedRow === rowWord || numericRows.has(rowWord),
             'dead-end': isDeadEnd(rowWord),
             clickable: clickableRows && isRowClickable(rowWord),
           }"
@@ -84,7 +86,7 @@ function handleRowClick(word: string) {
             class="row-header"
             scope="row"
             :class="{
-              'highlight-row': highlightedRow === rowWord,
+              'highlight-row': highlightedRow === rowWord || numericRows.has(rowWord),
               punctuation: rowWord === '.' || rowWord === ',',
             }"
           >
@@ -99,12 +101,16 @@ function handleRowClick(word: string) {
             class="grid-cell"
             :class="{
               'highlight-col': checkHighlightedCol(colWord) && highlightedRow === rowWord,
-              'highlight-row': highlightedRow === rowWord,
+              'highlight-row': highlightedRow === rowWord || numericRows.has(rowWord),
               'current-cell': checkCurrentCell(rowWord, colWord),
               flash: checkCurrentCell(rowWord, colWord),
             }"
           >
-            {{ tally(getCount(rowWord, colWord)) || "" }}
+            {{
+              numericRows.has(rowWord)
+                ? getCount(rowWord, colWord)
+                : tally(getCount(rowWord, colWord)) || ""
+            }}
           </td>
         </tr>
       </tbody>

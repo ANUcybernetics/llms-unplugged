@@ -15,6 +15,7 @@ import FullscreenWrapper from "./components/FullscreenWrapper.vue";
 import VariantToggle from "./components/VariantToggle.vue";
 import GridOnly from "./components/GridOnly.vue";
 import BucketOnly from "./components/BucketOnly.vue";
+import EmbeddingWidget from "./components/EmbeddingWidget.vue";
 import Layout from "./Layout.vue";
 import "./custom.css";
 
@@ -37,5 +38,6 @@ export default {
     app.component("VariantToggle", VariantToggle);
     app.component("GridOnly", GridOnly);
     app.component("BucketOnly", BucketOnly);
+    app.component("EmbeddingWidget", EmbeddingWidget);
   },
 } satisfies Theme;
