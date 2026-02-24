@@ -142,7 +142,7 @@ export default defineConfig({
             { text: "Trigram", link: "/lessons/trigram" },
             { text: "Sampling", link: "/lessons/sampling" },
             { text: "Beam Search", link: "/lessons/beam-search" },
-            { text: "Tool Use", link: "/lessons/tool-use" },
+            { text: "Agentic Tool Use", link: "/lessons/agentic-tool-use" },
             { text: "Context Columns", link: "/lessons/context-columns" },
             { text: "Word Embeddings", link: "/lessons/word-embeddings" },
             { text: "LoRA", link: "/lessons/lora" },

@@ -45,7 +45,7 @@ one explores a different aspect of how modern language models work.
 
 ### Controlling output
 
-<CardList :lessons="['sampling', 'beam-search', 'tool-use']" />
+<CardList :lessons="['sampling', 'beam-search', 'agentic-tool-use']" />
 
 ### Context and meaning
 

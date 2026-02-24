@@ -230,12 +230,13 @@ helpful, harmless, and honest outputs.
 
 _See:_ [RLHF](/lessons/rlhf)
 
-### Tool use
+### Agentic tool use
 
-The ability of language models to recognise when to call external tools (like
-calculators or search engines) rather than generating text directly.
+The ability of language models to act as agents by recognising when to call
+external tools (like calculators or search engines) in a loop rather than
+generating text directly.
 
-_See:_ [Tool Use](/lessons/tool-use)
+_See:_ [Agentic Tool Use](/lessons/agentic-tool-use)
 
 ### Synthetic data
 

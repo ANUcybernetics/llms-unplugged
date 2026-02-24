@@ -1,40 +1,44 @@
 ---
-title: Tool Use
+title: Agentic Tool Use
 description:
-  Teach your model to call external tools when it needs information it doesn't
-  have.
+  Turn your model into an agent by teaching it to call external tools when it
+  needs information it doesn't have.
 order: 10
 topic: controlling-output
 keyIdea:
-  Models can recognise when they need external help and delegate to tools that
-  return results for continued generation.
+  An agent is a model that runs tools in a loop---recognising when it needs
+  external help, delegating to a tool, and continuing generation with the
+  result.
 ---
 
-# Tool Use
+# Agentic Tool Use
 
-Extend your language model to call external tools---people, objects, or
-resources in the room---when it needs information beyond what's in the grid.
+Turn your language model into an agent by giving it access to external
+tools---people, objects, or resources in the room---that it can call when it
+needs information beyond what's in the grid.
 
-![Hero image: Tool Use](/assets/images/hero-tool-use.avif)
+![Hero image: Agentic Tool Use](/assets/images/hero-tool-use.avif)
 
 <Prerequisites />
 
 ## You will need
 
-- a completed model from an earlier lesson
+- a completed model from [Training](/lessons/training)
 - pen, paper, and dice as per [Generation](/lessons/generation)
-- people or props to serve as "tools" (see examples below)
+- people or things to serve as "tools" (see examples below)
 
 ## Your goal
 
-Generate text where the model calls at least two different tools during
-generation. Stretch goal: design your own tool and integrate it into your model.
+Generate text where the model acts as an agent. Stretch goal: design your own
+tool and integrate it into your model.
 
 ## Key idea
 
-Language models can recognise special tokens that trigger external actions.
-Instead of sampling the next word, the model pauses, calls a tool, and
-incorporates the result before continuing.
+What makes a language model an "agent"? In practice, it comes down to tool
+use---a model that can recognise special tokens triggering external actions,
+pause generation, call a tool, and incorporate the result before continuing.
+That loop of _generate → call tool → incorporate result → keep generating_ is
+the core of agentic AI.
 
 ## Setting up tools
 
@@ -68,11 +72,15 @@ Before generation, choose a person or object who gets to role-play as the
    - write down the result as the next word(s)
    - continue generation from there
 
+This is the agentic loop: your model generates until it hits a trigger, hands
+off to a tool, gets a result, and keeps going. Real AI agents do exactly the
+same thing---just faster and with more tools.
+
 ## Example session
 
 Model trained on: "The answer is VOTE. We should CALCULATE the total."
 
-Generation with tools:
+Agentic generation with tools:
 
 1. Start with "The"
 2. Sample → "answer"
@@ -91,7 +99,7 @@ Generation with tools:
 **Generated text:** "The answer is yes. We should 56"
 
 (The grammar breaks down, but that's fine---the point is demonstrating the
-mechanism.)
+agentic mechanism.)
 
 ## Instructor notes
 
@@ -101,18 +109,19 @@ For the activity to work well:
 
 - add trigger words to rows where they make sense contextually (e.g., `VOTE`
   after "is" or "the")
-- design tools where all the "outputs" are tokens in the model (e.g. yes/no,
-  multiple choice)
+- design tools where all the "outputs" are tokens in the model, e.g. yes/no,
+  multiple choice (one cheeky trick is to have the tool return it's result then
+  a `.`, because there's no reason a tool can't return multiple tokens)
 - have the tool operator ready before you start generating
 
 ### Discussion questions
 
-- when should a model use a tool vs try to answer itself?
+- when should an agent use a tool vs try to answer itself?
 - what happens if a tool returns something unexpected?
 - how does the model "know" to call a tool? (it doesn't---it just samples the
   trigger word)
 - what tools would be most useful for different kinds of text?
-- could a tool's response change what the model generates next?
+- could a tool's response change what the agent generates next?
 
 ### Classroom variations
 
@@ -121,25 +130,32 @@ participate. The model generates until it hits VOTE, then you ask a question and
 count hands.
 
 **Advanced version:** set up multiple tools around the room. Different students
-operate different tools. The generator doesn't know which tool will be called
-next.
+operate different tools. The agent doesn't know which tool will be called next.
 
-**Adversarial version:** the tool operators can return unhelpful or surprising
-answers. How does this affect the generated text?
+**Multi-step version:** chain tool calls together---the result of one tool
+becomes the context for calling another. This is closer to how real AI agents
+plan and execute multi-step tasks.
 
 ### Connection to current LLMs
+
+"Agentic AI" has become a buzzword, but in practice it really just means tool
+use in a loop. As Simon Willison
+[puts it](https://simonwillison.net/2025/Sep/30/designing-agentic-loops/), an
+LLM agent is something that "runs tools in a loop to achieve a goal"---and
+that's exactly what your model is doing.
 
 Tool use (also called "function calling") is how modern AI assistants perform
 actions in the world:
 
-- **mechanism**: LLMs learn special tokens that signal "call this tool now",
-  exactly like your trigger words
+- **the agentic loop**: generate → detect tool call → execute tool → feed result
+  back → continue generating, exactly like your trigger-word cycle
 - **examples**: web search, code execution, API calls, database queries, image
   generation
-- **agentic AI**: systems that can plan and execute multi-step tasks by chaining
-  tool calls
-- **JSON formatting**: modern models output structured tool calls (function
-  name, parameters) rather than just trigger words
+- **structured calls**: modern models output JSON-formatted tool calls (function
+  name, parameters) rather than just trigger words, but the mechanism is the
+  same
+- **chaining**: real agents chain multiple tool calls to complete complex
+  tasks---planning, executing, observing results, and adjusting
 
 The key insight: the model doesn't "know" anything the tool returns---it just
 learns when to ask. Your classroom tools demonstrate this perfectly: the model
@@ -147,7 +163,7 @@ samples VOTE not because it knows the answer, but because the training data
 included VOTE in that context. The actual knowledge comes from outside the
 model.
 
-This is why tool-using AI can do things like search the web for current
-information, run calculations it couldn't do in its head, or control robots and
-software. The model's job is to know _when_ to call a tool and _how_ to use the
-result---not to contain all knowledge itself.
+This is why tool-using AI agents can do things like search the web for current
+information, run calculations they couldn't do in their head, or control robots
+and software. The model's job is to know _when_ to call a tool and _how_ to use
+the result---not to contain all knowledge itself.
