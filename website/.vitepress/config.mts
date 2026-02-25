@@ -1,11 +1,49 @@
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 import footnote from "markdown-it-footnote";
-import { defineConfig } from "vitepress";
+import { defineConfig, type HeadConfig } from "vitepress";
 import { RssPlugin, type RSSOptions } from "vitepress-plugin-rss";
 import checker from "vite-plugin-checker";
 
+const BASE_URL = "https://www.llmsunplugged.org";
+
+const heroImageMap: Record<string, string> = {
+  training: "grid-training",
+  generation: "grid-generation",
+  trigram: "grid-trigram",
+};
+
+function resolveOgImageUrl(relativePath: string): string {
+  const publicDir = resolve(process.cwd(), "public");
+  const pagePath = relativePath.replace(/\.md$/, "");
+
+  if (pagePath.startsWith("lessons/") && pagePath !== "lessons/index") {
+    const slug = pagePath.replace(/^lessons\//, "");
+    const heroSlug = heroImageMap[slug] ?? slug;
+    const candidate = `assets/images/hero-${heroSlug}.avif`;
+    if (existsSync(resolve(publicDir, candidate))) {
+      return `${BASE_URL}/${candidate}`;
+    }
+  } else if (pagePath.startsWith("news/") && pagePath !== "news/index") {
+    const slug = pagePath.replace(/^news\//, "");
+    const candidate = `assets/images/hero-news-${slug}.avif`;
+    if (existsSync(resolve(publicDir, candidate))) {
+      return `${BASE_URL}/${candidate}`;
+    }
+  } else {
+    const slug = pagePath.replace(/\/index$/, "").replace(/\//g, "-") || "index";
+    const candidate = `assets/images/hero-${slug}.avif`;
+    if (existsSync(resolve(publicDir, candidate))) {
+      return `${BASE_URL}/${candidate}`;
+    }
+  }
+
+  return `${BASE_URL}/og-image.jpg`;
+}
+
 const RSS_OPTIONS: RSSOptions = {
   title: "LLMs Unplugged",
-  baseUrl: "https://www.llmsunplugged.org",
+  baseUrl: BASE_URL,
   copyright: "© Ben Swift, CC BY-NC-SA 4.0",
   description:
     "Ready-to-use teaching resources for understanding how large language models work through hands-on activities.",
@@ -81,25 +119,11 @@ export default defineConfig({
         href: "https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300..900;1,300..900&display=swap",
       },
     ],
-    // Open Graph
+    // Open Graph (per-page og:title, og:description, og:url, og:image set in transformHead)
     ["meta", { property: "og:type", content: "website" }],
     ["meta", { property: "og:site_name", content: "LLMs Unplugged" }],
-    [
-      "meta",
-      {
-        property: "og:image",
-        content: "https://www.llmsunplugged.org/og-image.jpg",
-      },
-    ],
     // Twitter
     ["meta", { name: "twitter:card", content: "summary_large_image" }],
-    [
-      "meta",
-      {
-        name: "twitter:image",
-        content: "https://www.llmsunplugged.org/og-image.jpg",
-      },
-    ],
     // Plausible Analytics
     [
       "script",
@@ -110,6 +134,30 @@ export default defineConfig({
       },
     ],
   ],
+
+  transformHead({ pageData }) {
+    const head: HeadConfig[] = [];
+
+    head.push(["meta", { property: "og:title", content: pageData.title }]);
+
+    if (pageData.description) {
+      head.push(["meta", { property: "og:description", content: pageData.description }]);
+    }
+
+    let urlPath = pageData.relativePath.replace(/\.md$/, "");
+    if (urlPath === "index") {
+      urlPath = "";
+    } else if (urlPath.endsWith("/index")) {
+      urlPath = urlPath.slice(0, -"index".length);
+    }
+    head.push(["meta", { property: "og:url", content: `${BASE_URL}/${urlPath}` }]);
+
+    const imageUrl = resolveOgImageUrl(pageData.relativePath);
+    head.push(["meta", { property: "og:image", content: imageUrl }]);
+    head.push(["meta", { name: "twitter:image", content: imageUrl }]);
+
+    return head;
+  },
 
   // Theme configuration
   themeConfig: {
