@@ -16,8 +16,8 @@ demonstrations. Vite is the build tool.
 
 ## Development
 
-- the LLMs Unplugged lesson content source files are in `lessons/*.md`, and are
-  arranged into topics via `topics/*.md`
+- the LLMs Unplugged lesson content source files are in `lessons/*.md`, grouped
+  by `topic` frontmatter (defined in `lessons/topics.ts`)
 - custom Vue components live in `.vitepress/theme/components/`
 
 - `npm run dev` - dev server with hot reload

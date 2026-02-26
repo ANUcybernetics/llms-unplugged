@@ -65,7 +65,6 @@ cd website && npm run build && npm test
 - Never create files unless necessary---prefer editing existing ones
 - In markdown, use blank lines around VitePress containers (`::: info` etc.) so
   Prettier doesn't mangle them
-- reveal.js slide configuration is in `website/src/assets/slides.js`
 
 ## Notes
 
