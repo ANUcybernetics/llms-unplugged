@@ -1,15 +1,15 @@
 ---
 title: LLMs Unplugged at ICTENSW DigiTLL
-date: 2026-03-14
+date: 2026-03-15
 author: Ben Swift
 description:
   Presenting "LLMs Unplugged" at the ICTENSW DigiTLL Conference in North Sydney
-  on 14--15 March
+  on 15 March
 ---
 
 We're presenting _LLMs Unplugged_ at the
 [ICTENSW DigiTLL Conference](https://www.ictensw.org.au/event-6112449) on
-**14--15 March** at
+**Saturday 15 March** (12:00--1:00pm) at
 [Australian Catholic University](https://www.acu.edu.au/locations/north-sydney)
 in North Sydney.
 
