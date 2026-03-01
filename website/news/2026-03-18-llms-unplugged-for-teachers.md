@@ -27,3 +27,6 @@ literacy.
 
 [Grab a ticket on Humanitix](https://events.humanitix.com/llms-unplugged-for-teachers)---educator
 tickets are ~$55.
+
+If you're wondering why this stuff matters for your classroom, here's
+[the case for an unplugged approach to teaching AI](/news/2025-12-12-why-use-an-unplugged-approach-in-your-classroom).
