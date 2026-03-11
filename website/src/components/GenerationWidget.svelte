@@ -351,6 +351,21 @@
           </div>
         </div>
 
+        <div class="widget-section">
+          <div class="section-header">Generated</div>
+          <div class="output-content">
+            {#if outputWords.length > 0}
+              {#each outputWords as word, i}
+                <span
+                  class="output-word"
+                  class:latest={i === outputWords.length - 1}
+                  >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
+                >
+              {/each}
+            {/if}
+          </div>
+        </div>
+
         <PlaybackSection
           {isPlaying}
           {isComplete}
@@ -363,19 +378,6 @@
           onreset={reset}
           onstepintervalchange={(v) => (stepInterval = v)}
         />
-      </div>
-
-      <div class="widget-section">
-        <div class="section-header">Generated</div>
-        <div class="output-content">
-          {#each outputWords as word, i}
-            <span
-              class="output-word"
-              class:latest={i === outputWords.length - 1}
-              >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
-            >
-          {/each}
-        </div>
       </div>
     </div>
   </div>
@@ -410,14 +412,13 @@
       align-items: start;
     }
 
-    .status-row > :global(:first-child) {
-      flex: 0 0 14rem;
+    .status-row > :global(*) {
+      flex: 1;
       min-width: 0;
     }
 
-    .status-row > :global(:last-child) {
-      flex: 1;
-      min-width: 0;
+    .status-row > :global(:first-child) {
+      flex: 0 0 14rem;
     }
   }
 

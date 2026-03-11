@@ -284,14 +284,16 @@
         <div class="widget-section">
           <div class="section-header">Generated</div>
           <div class="output-content">
-            {#each outputWords as word, i}
-              <span
-                class="output-word"
-                class:latest={i === outputWords.length - 1}
-                >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
-              >
-            {/each}
-            </div>
+            {#if outputWords.length > 0}
+              {#each outputWords as word, i}
+                <span
+                  class="output-word"
+                  class:latest={i === outputWords.length - 1}
+                  >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
+                >
+              {/each}
+            {/if}
+          </div>
         </div>
       </div>
 
