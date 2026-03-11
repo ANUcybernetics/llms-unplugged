@@ -97,6 +97,7 @@
           {/each}
         </div>
         {#if highlights.bucket}
+          <div class="section-header">Current action</div>
           <div class="action-content">
             <span>Put</span>
             <span

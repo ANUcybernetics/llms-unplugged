@@ -209,13 +209,20 @@
 
 /* Fullscreen layout */
 
+.fullscreen-content.scaled .lm-widget {
+  height: calc(100dvh - 4rem);
+  margin: 0;
+  box-sizing: border-box;
+}
+
 .fullscreen-content.scaled .widget-view {
-  height: 90dvh;
+  height: 100%;
 }
 
 .fullscreen-content.scaled .widget-view > .widget-section:has(.bigram-grid),
 .fullscreen-content.scaled .widget-view > .widget-section:has(.buckets-content),
-.fullscreen-content.scaled .widget-view > .widget-section:has(.entries-content) {
+.fullscreen-content.scaled .widget-view > .widget-section:has(.entries-content),
+.fullscreen-content.scaled .widget-view > .output-row {
   min-height: 0;
   flex: 1;
   overflow: hidden;

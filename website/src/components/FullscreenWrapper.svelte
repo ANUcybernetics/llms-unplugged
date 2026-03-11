@@ -60,7 +60,7 @@
     flex-direction: column;
     align-items: center;
     padding: 2rem;
-    overflow-y: auto;
+    overflow: hidden;
   }
 
   .fullscreen-button {
