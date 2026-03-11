@@ -124,7 +124,7 @@ by exploiting patterns in text to generate new text
 
 ---
 
-<TrainingWidget fullscreen={false} />
+<TrainingWidget />
 
 ---
 
@@ -161,7 +161,7 @@ by exploiting patterns in text to generate new text
 
 ---
 
-<GenerationWidget fullscreen={false} />
+<GenerationWidget />
 
 ---
 
@@ -258,6 +258,10 @@ by exploiting patterns in text to generate new text
 </script>
 
 <style>
+  :global(.reveal .slides .fullscreen-button) {
+    display: none;
+  }
+
   :global(.reveal .slides section:has(.lm-widget)) {
     padding: 0.75rem 1.5rem;
     font-size: 14px;
@@ -292,8 +296,13 @@ by exploiting patterns in text to generate new text
     font-size: 1em;
   }
 
-  :global(.reveal .slides section .lm-widget .bigram-grid code) {
+  :global(.reveal .slides section table.bigram-grid) {
     font-size: 1em;
+  }
+
+  :global(.reveal .slides section table.bigram-grid td.grid-cell) {
+    font-size: 1.4em;
+    font-weight: 700;
   }
 
   :global(.reveal .slides section .lm-widget .placeholder) {

@@ -13,10 +13,9 @@
   interface Props {
     initialText?: string;
     loop?: boolean;
-    fullscreen?: boolean;
   }
 
-  let { initialText, loop = true, fullscreen = true }: Props = $props();
+  let { initialText, loop = true }: Props = $props();
 
   let inputText = $state(untrack(() => initialText ?? getTrainingText()));
 
@@ -72,7 +71,7 @@
   onMount(() => playback.cleanup);
 </script>
 
-{#snippet content()}
+<FullscreenWrapper>
   <div class="lm-widget training-widget">
     <div class="training-view">
       <div class="widget-section">
@@ -137,6 +136,7 @@
           <BigramGrid
             {vocabulary}
             {getCount}
+            counts={gridCounts}
             highlightedRow={highlights.row}
             highlightedCol={highlights.col}
           />
@@ -160,13 +160,7 @@
       />
     </div>
   </div>
-{/snippet}
-
-{#if fullscreen}
-  <FullscreenWrapper>{@render content()}</FullscreenWrapper>
-{:else}
-  {@render content()}
-{/if}
+</FullscreenWrapper>
 
 <style>
   .training-view {

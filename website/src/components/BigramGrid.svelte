@@ -4,6 +4,7 @@
   interface Props {
     vocabulary: string[];
     getCount: (from: string, to: string) => number;
+    counts?: Map<string, number>;
     highlightedRow?: string | null;
     highlightedCol?: string | null;
     isHighlightedCol?: (word: string) => boolean;
@@ -19,6 +20,7 @@
   let {
     vocabulary,
     getCount,
+    counts,
     highlightedRow = null,
     highlightedCol = null,
     isHighlightedCol,
@@ -95,9 +97,13 @@
               class:current-cell={checkCurrentCell(rowWord, colWord)}
               class:flash={checkCurrentCell(rowWord, colWord)}
             >
-              {numericRows.has(rowWord)
-                ? getCount(rowWord, colWord)
-                : tally(getCount(rowWord, colWord)) || ""}
+              {#if counts}
+                {tally(counts.get(`${rowWord}->${colWord}`) || 0) || "\u200b"}
+              {:else}
+                {numericRows.has(rowWord)
+                  ? getCount(rowWord, colWord)
+                  : tally(getCount(rowWord, colWord)) || ""}
+              {/if}
             </td>
           {/each}
         </tr>
