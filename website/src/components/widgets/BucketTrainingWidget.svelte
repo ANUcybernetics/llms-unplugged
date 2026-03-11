@@ -71,33 +71,48 @@
 <FullscreenWrapper>
   <div class="lm-widget bucket-training-widget">
     <div class="widget-view">
-      <div class="input-row">
-        <div class="widget-section">
-          <div class="section-header">Training text</div>
-          <textarea
-            id="bucket-training-input"
-            class="text-input"
-            rows="2"
-            placeholder="Enter text to train on..."
-            bind:value={inputText}
-          ></textarea>
-        </div>
+      <div class="widget-section">
+        <div class="section-header">Training text</div>
+        <textarea
+          id="bucket-training-input"
+          class="text-input"
+          rows="2"
+          placeholder="Enter text to train on..."
+          bind:value={inputText}
+        ></textarea>
+      </div>
 
-        <div class="widget-section">
-          <div class="section-header">Tokens</div>
-          <div class="tokens-content">
-            {#each tokens as token, i}
-              <span
-                class="token"
-                class:highlight-first={i === highlights.tokenIdx}
-                class:highlight-second={i === highlights.nextIdx}
-                class:punctuation={isPunctuation(token)}
-              >
-                {token}
-              </span>
-            {/each}
-          </div>
+      <div class="widget-section">
+        <div class="section-header">Tokens</div>
+        <div class="tokens-content">
+          {#each tokens as token, i}
+            <span
+              class="token"
+              class:highlight-first={i === highlights.tokenIdx}
+              class:highlight-second={i === highlights.nextIdx}
+              class:punctuation={isPunctuation(token)}
+            >
+              {token}
+            </span>
+          {/each}
         </div>
+        {#if highlights.bucket}
+          <div class="action-content">
+            <span>Put</span>
+            <span
+              class="token highlight-second"
+              class:punctuation={isPunctuation(highlights.token!)}
+              >{highlights.token}</span
+            >
+            <span>into the</span>
+            <span
+              class="token highlight-first"
+              class:punctuation={isPunctuation(highlights.bucket)}
+              >{highlights.bucket}</span
+            >
+            <span>bucket</span>
+          </div>
+        {/if}
       </div>
 
       <div class="widget-section">
@@ -133,46 +148,20 @@
         </div>
       </div>
 
-      <div class="status-row">
-        <div class="widget-section">
-          <div class="section-header">Current action</div>
-          <div class="action-content">
-            {#if highlights.bucket}
-              <span>Put</span>
-              <span
-                class="token highlight-second"
-                class:punctuation={isPunctuation(highlights.token!)}
-                >{highlights.token}</span
-              >
-              <span>into the</span>
-              <span
-                class="token highlight-first"
-                class:punctuation={isPunctuation(highlights.bucket)}
-                >{highlights.bucket}</span
-              >
-              <span>bucket</span>
-            {:else if playback.isComplete}
-              <span class="complete-message">Training complete!</span>
-            {/if}
-          </div>
-        </div>
-
-        <PlaybackSection
-          isPlaying={playback.isPlaying}
-          isComplete={playback.isComplete}
-          currentStep={playback.currentStep}
-          totalSteps={playback.totalSteps}
-          showStepCounter={true}
-          stepInterval={playback.stepInterval}
-          {loop}
-          sliderId="bucket-training-speed-slider"
-          onplay={playback.play}
-          onpause={playback.pause}
-          onstep={playback.step}
-          onreset={playback.reset}
-          onstepintervalchange={(v) => (playback.stepInterval = v)}
-        />
-      </div>
+      <PlaybackSection
+        isPlaying={playback.isPlaying}
+        isComplete={playback.isComplete}
+        currentStep={playback.currentStep}
+        totalSteps={playback.totalSteps}
+        stepInterval={playback.stepInterval}
+        {loop}
+        sliderId="bucket-training-speed-slider"
+        onplay={playback.play}
+        onpause={playback.pause}
+        onstep={playback.step}
+        onreset={playback.reset}
+        onstepintervalchange={(v) => (playback.stepInterval = v)}
+      />
     </div>
   </div>
 </FullscreenWrapper>

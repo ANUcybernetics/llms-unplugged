@@ -61,18 +61,19 @@
 
 .token.highlight-first {
   background: var(--color-brand-soft);
-  transform: scale(1.05);
+  outline: 2px solid var(--color-brand);
+  outline-offset: 1px;
 }
 
 .token.highlight-second {
   background: var(--lm-highlight-strong, #a7f3d0);
-  transform: scale(1.05);
+  outline: 2px solid var(--lm-highlight-strong, #a7f3d0);
+  outline-offset: 1px;
 }
 
 /* Shared widget layout rows */
 
-.input-row,
-.status-row {
+.input-row {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -88,16 +89,12 @@
     min-width: 0;
   }
 
-  .status-row {
+  .output-row {
     flex-direction: row;
     align-items: start;
   }
 
-  .status-row > :first-child {
-    flex: 0 0 16rem;
-  }
-
-  .status-row > :last-child {
+  .output-row > * {
     flex: 1;
     min-width: 0;
   }
@@ -136,11 +133,6 @@
   font-weight: 600;
 }
 
-.arrow {
-  font-size: 1.25rem;
-  color: var(--color-text-secondary);
-}
-
 /* Dice display */
 
 .dice-value {
@@ -171,6 +163,22 @@
   }
 }
 
+/* Controls strip */
+
+.controls-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-top: 1px solid var(--color-divider);
+  padding-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.controls-strip .speed-control {
+  min-width: 0;
+}
+
 /* Speed / playback controls */
 
 .speed-control {
@@ -191,14 +199,12 @@
   accent-color: var(--anu-gold);
 }
 
-.controls-content {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
+/* Output row (side-by-side at wide widths) */
 
-.controls-content .speed-control {
-  min-width: 0;
+.output-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 /* Fullscreen layout */

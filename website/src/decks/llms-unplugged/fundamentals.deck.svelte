@@ -278,8 +278,12 @@ by exploiting patterns in text to generate new text
   }
 
   :global(.reveal .slides section .lm-widget .input-row),
-  :global(.reveal .slides section .lm-widget .status-row) {
+  :global(.reveal .slides section .lm-widget .output-row) {
     gap: 0.5rem;
+  }
+
+  :global(.reveal .slides .controls-strip) {
+    display: none;
   }
 
   :global(.reveal .slides section .lm-widget .section-header) {

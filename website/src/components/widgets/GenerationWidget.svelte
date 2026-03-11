@@ -218,7 +218,7 @@
         />
       </div>
 
-      <div class="status-row">
+      <div class="output-row">
         <div class="widget-section">
           <div class="section-header">Dice mapping (d{diceSides})</div>
           <div class="dice-content">
@@ -275,20 +275,20 @@
             {/if}
           </div>
         </div>
-
-        <PlaybackSection
-          isPlaying={playback.isPlaying}
-          isComplete={playback.isComplete}
-          stepInterval={playback.stepInterval}
-          {loop}
-          sliderId="generation-speed-slider"
-          onplay={playback.play}
-          onpause={playback.pause}
-          onstep={playback.step}
-          onreset={playback.reset}
-          onstepintervalchange={(v) => (playback.stepInterval = v)}
-        />
       </div>
+
+      <PlaybackSection
+        isPlaying={playback.isPlaying}
+        isComplete={playback.isComplete}
+        stepInterval={playback.stepInterval}
+        {loop}
+        sliderId="generation-speed-slider"
+        onplay={playback.play}
+        onpause={playback.pause}
+        onstep={playback.step}
+        onreset={playback.reset}
+        onstepintervalchange={(v) => (playback.stepInterval = v)}
+      />
     </div>
   </div>
 </FullscreenWrapper>

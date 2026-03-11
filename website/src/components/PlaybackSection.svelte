@@ -35,34 +35,31 @@
   }: Props = $props();
 </script>
 
-<div class="widget-section">
-  <div class="section-header">Controls</div>
-  <div class="controls-content">
-    <PlaybackControls
-      {isPlaying}
-      {isComplete}
-      {currentStep}
-      {totalSteps}
-      {showStepCounter}
-      {loop}
-      {onplay}
-      {onpause}
-      {onstep}
-      {onreset}
+<div class="controls-strip">
+  <PlaybackControls
+    {isPlaying}
+    {isComplete}
+    {currentStep}
+    {totalSteps}
+    {showStepCounter}
+    {loop}
+    {onplay}
+    {onpause}
+    {onstep}
+    {onreset}
+  />
+  <div class="speed-control">
+    <span class="speed-label">Slow</span>
+    <input
+      id={sliderId}
+      value={stepInterval}
+      type="range"
+      min={PLAYBACK_CONFIG.MIN_STEP_INTERVAL_MS}
+      max={PLAYBACK_CONFIG.MAX_STEP_INTERVAL_MS}
+      step="50"
+      oninput={(e) =>
+        onstepintervalchange(Number((e.target as HTMLInputElement).value))}
     />
-    <div class="speed-control">
-      <span class="speed-label">Slow</span>
-      <input
-        id={sliderId}
-        value={stepInterval}
-        type="range"
-        min={PLAYBACK_CONFIG.MIN_STEP_INTERVAL_MS}
-        max={PLAYBACK_CONFIG.MAX_STEP_INTERVAL_MS}
-        step="50"
-        oninput={(e) =>
-          onstepintervalchange(Number((e.target as HTMLInputElement).value))}
-      />
-      <span class="speed-label">Fast</span>
-    </div>
+    <span class="speed-label">Fast</span>
   </div>
 </div>

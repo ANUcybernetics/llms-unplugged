@@ -150,32 +150,15 @@
 <FullscreenWrapper>
   <div class="lm-widget bucket-generation-widget">
     <div class="widget-view">
-      <div class="input-row">
-        <div class="widget-section">
-          <div class="section-header">Training text</div>
-          <textarea
-            id="bucket-generation-input"
-            class="text-input"
-            rows="2"
-            placeholder="Enter training text..."
-            bind:value={trainingText}
-          ></textarea>
-        </div>
-
-        <div class="widget-section">
-          <div class="section-header">Generated</div>
-          <div class="output-content">
-            {#if outputWords.length > 0}
-              {#each outputWords as word, i}
-                <span
-                  class="output-word"
-                  class:latest={i === outputWords.length - 1}
-                  >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
-                >
-              {/each}
-            {/if}
-          </div>
-        </div>
+      <div class="widget-section">
+        <div class="section-header">Training text</div>
+        <textarea
+          id="bucket-generation-input"
+          class="text-input"
+          rows="2"
+          placeholder="Enter training text..."
+          bind:value={trainingText}
+        ></textarea>
       </div>
 
       <div class="widget-section">
@@ -224,61 +207,70 @@
         </div>
       </div>
 
-      <div class="status-row">
-        <div class="widget-section">
-          <div class="section-header">Current action</div>
-          <div class="action-content">
-            {#if phase === "showing-bucket" && currentWord}
-              <span>Looking in the</span>
-              <span
-                class="token highlight-first"
-                class:punctuation={isPunctuation(currentWord)}
-                >{currentWord}</span
-              >
-              <span>bucket...</span>
-            {:else if phase === "picking" && currentWord}
-              <span>Picking randomly from the</span>
-              <span
-                class="token highlight-first"
-                class:punctuation={isPunctuation(currentWord)}
-                >{currentWord}</span
-              >
-              <span>bucket...</span>
-            {:else if phase === "picked" && pickedToken}
-              <span>Picked</span>
-              <span
-                class="token highlight-second"
-                class:punctuation={isPunctuation(pickedToken)}
-                >{pickedToken}</span
-              >
-              <span>from the bucket!</span>
-            {:else if phase === "writing" && pickedToken}
-              <span>Writing</span>
-              <span
-                class="token highlight-second"
-                class:punctuation={isPunctuation(pickedToken)}
-                >{pickedToken}</span
-              >
-              <span>to output...</span>
-            {:else if playback.isComplete}
-              <span class="complete-message">Generation complete!</span>
-            {/if}
-          </div>
+      <div class="widget-section">
+        <div class="section-header">Output</div>
+        <div class="action-content">
+          {#if phase === "showing-bucket" && currentWord}
+            <span>Looking in the</span>
+            <span
+              class="token highlight-first"
+              class:punctuation={isPunctuation(currentWord)}
+              >{currentWord}</span
+            >
+            <span>bucket...</span>
+          {:else if phase === "picking" && currentWord}
+            <span>Picking randomly from the</span>
+            <span
+              class="token highlight-first"
+              class:punctuation={isPunctuation(currentWord)}
+              >{currentWord}</span
+            >
+            <span>bucket...</span>
+          {:else if phase === "picked" && pickedToken}
+            <span>Picked</span>
+            <span
+              class="token highlight-second"
+              class:punctuation={isPunctuation(pickedToken)}
+              >{pickedToken}</span
+            >
+            <span>from the bucket!</span>
+          {:else if phase === "writing" && pickedToken}
+            <span>Writing</span>
+            <span
+              class="token highlight-second"
+              class:punctuation={isPunctuation(pickedToken)}
+              >{pickedToken}</span
+            >
+            <span>to output...</span>
+          {:else if playback.isComplete}
+            <span class="complete-message">Generation complete!</span>
+          {/if}
         </div>
-
-        <PlaybackSection
-          isPlaying={playback.isPlaying}
-          isComplete={playback.isComplete}
-          stepInterval={playback.stepInterval}
-          {loop}
-          sliderId="bucket-generation-speed-slider"
-          onplay={playback.play}
-          onpause={playback.pause}
-          onstep={playback.step}
-          onreset={playback.reset}
-          onstepintervalchange={(v) => (playback.stepInterval = v)}
-        />
+        <div class="output-content">
+          {#if outputWords.length > 0}
+            {#each outputWords as word, i}
+              <span
+                class="output-word"
+                class:latest={i === outputWords.length - 1}
+                >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
+              >
+            {/each}
+          {/if}
+        </div>
       </div>
+
+      <PlaybackSection
+        isPlaying={playback.isPlaying}
+        isComplete={playback.isComplete}
+        stepInterval={playback.stepInterval}
+        {loop}
+        sliderId="bucket-generation-speed-slider"
+        onplay={playback.play}
+        onpause={playback.pause}
+        onstep={playback.step}
+        onreset={playback.reset}
+        onstepintervalchange={(v) => (playback.stepInterval = v)}
+      />
     </div>
   </div>
 </FullscreenWrapper>

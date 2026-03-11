@@ -116,46 +116,20 @@
         />
       </div>
 
-      <div class="status-row">
-        <div class="widget-section">
-          <div class="section-header">Current bigram</div>
-          <div class="action-content">
-            {#if highlights.row}
-              <span
-                class="token highlight-first"
-                class:punctuation={isPunctuation(highlights.row)}
-              >
-                {highlights.row}
-              </span>
-              <span class="arrow">&rarr;</span>
-              <span
-                class="token highlight-second"
-                class:punctuation={isPunctuation(highlights.col!)}
-              >
-                {highlights.col}
-              </span>
-            {:else if playback.isComplete}
-              <span class="complete-message">Training complete!</span>
-            {/if}
-          </div>
-        </div>
-
-        <PlaybackSection
-          isPlaying={playback.isPlaying}
-          isComplete={playback.isComplete}
-          currentStep={playback.currentStep}
-          totalSteps={playback.totalSteps}
-          showStepCounter={true}
-          stepInterval={playback.stepInterval}
-          {loop}
-          sliderId="training-speed-slider"
-          onplay={playback.play}
-          onpause={playback.pause}
-          onstep={playback.step}
-          onreset={playback.reset}
-          onstepintervalchange={(v) => (playback.stepInterval = v)}
-        />
-      </div>
+      <PlaybackSection
+        isPlaying={playback.isPlaying}
+        isComplete={playback.isComplete}
+        currentStep={playback.currentStep}
+        totalSteps={playback.totalSteps}
+        stepInterval={playback.stepInterval}
+        {loop}
+        sliderId="training-speed-slider"
+        onplay={playback.play}
+        onpause={playback.pause}
+        onstep={playback.step}
+        onreset={playback.reset}
+        onstepintervalchange={(v) => (playback.stepInterval = v)}
+      />
     </div>
   </div>
 </FullscreenWrapper>

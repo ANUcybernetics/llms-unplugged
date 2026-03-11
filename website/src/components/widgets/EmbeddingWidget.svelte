@@ -86,15 +86,11 @@
         />
       </div>
 
-      {#if selectedRows.length > 0}
-        <div class="widget-section">
-          <div class="section-header">Vector comparison</div>
-          <VectorComparison {vocabulary} {model} {selectedRows} {distance} />
-        </div>
-      {/if}
-
       <div class="widget-section">
-        <div class="section-header">Distance matrix</div>
+        <div class="section-header">Output</div>
+        {#if selectedRows.length > 0}
+          <VectorComparison {vocabulary} {model} {selectedRows} {distance} />
+        {/if}
         <DistanceMatrix {vocabulary} {matrix} {selectedPair} />
       </div>
     </div>
