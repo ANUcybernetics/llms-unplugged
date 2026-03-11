@@ -351,32 +351,30 @@
           </div>
         </div>
 
-        <div class="status-row-right">
-          <div class="widget-section">
-            <div class="section-header">Generated</div>
-            <div class="output-content">
-              {#each outputWords as word, i}
-                <span
-                  class="output-word"
-                  class:latest={i === outputWords.length - 1}
-                  >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
-                >
-              {/each}
-                </div>
-          </div>
+        <PlaybackSection
+          {isPlaying}
+          {isComplete}
+          {stepInterval}
+          {loop}
+          sliderId="generation-speed-slider"
+          onplay={handlePlay}
+          onpause={pause}
+          onstep={doStep}
+          onreset={reset}
+          onstepintervalchange={(v) => (stepInterval = v)}
+        />
+      </div>
 
-          <PlaybackSection
-            {isPlaying}
-            {isComplete}
-            {stepInterval}
-            {loop}
-            sliderId="generation-speed-slider"
-            onplay={handlePlay}
-            onpause={pause}
-            onstep={doStep}
-            onreset={reset}
-            onstepintervalchange={(v) => (stepInterval = v)}
-          />
+      <div class="widget-section">
+        <div class="section-header">Generated</div>
+        <div class="output-content">
+          {#each outputWords as word, i}
+            <span
+              class="output-word"
+              class:latest={i === outputWords.length - 1}
+              >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
+            >
+          {/each}
         </div>
       </div>
     </div>
@@ -392,12 +390,6 @@
 
   .input-row,
   .status-row {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .status-row-right {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -419,11 +411,11 @@
     }
 
     .status-row > :global(:first-child) {
-      flex: 1;
+      flex: 0 0 14rem;
       min-width: 0;
     }
 
-    .status-row-right {
+    .status-row > :global(:last-child) {
       flex: 1;
       min-width: 0;
     }

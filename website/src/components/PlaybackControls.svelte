@@ -60,12 +60,13 @@
 <style>
   .playback-controls {
     display: flex;
-    gap: 0.5rem;
+    flex-wrap: wrap;
+    gap: 0.375rem;
     align-items: center;
   }
 
   .playback-controls button {
-    padding: 0.5rem 1rem;
+    padding: 0.375rem 0.625rem;
     border: 1px solid var(--color-border);
     border-radius: 0.25rem;
     background: var(--color-bg);
