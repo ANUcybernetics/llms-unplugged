@@ -257,4 +257,36 @@ by exploiting patterns in text to generate new text
   import "../../styles/widgets.css";
 </script>
 
+<style>
+  :global(.reveal .slides section:has(.lm-widget)) {
+    padding: 0.75rem 1.5rem;
+  }
+
+  :global(.reveal .slides section .lm-widget) {
+    margin: 0;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  :global(.reveal .slides section .lm-widget .training-view),
+  :global(.reveal .slides section .lm-widget .generation-view) {
+    gap: 0.4rem;
+  }
+
+  :global(.reveal .slides section .lm-widget .section-header) {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  :global(.reveal .slides section .lm-widget .section-content) {
+    padding: 0.4rem 0.5rem;
+  }
+
+  :global(.reveal .slides section .lm-widget .text-input) {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.4rem;
+  }
+
+</style>
+
 <!-- _class: socy-logo -->
