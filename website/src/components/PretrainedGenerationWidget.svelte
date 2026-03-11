@@ -339,9 +339,9 @@
 <FullscreenWrapper>
   <div class="lm-widget pretrained-generation-widget">
     <div class="generation-view">
-      <div class="widget-section">
-        <div class="section-header">Training text</div>
-        <div class="section-content">
+      <div class="input-row">
+        <div class="widget-section">
+          <div class="section-header">Training text</div>
           <textarea
             id="pretrained-generation-input"
             class="text-input"
@@ -350,32 +350,24 @@
             bind:value={trainingText}
           ></textarea>
         </div>
-      </div>
 
-      <div class="widget-section">
-        <div class="section-header">Generated</div>
-        <div class="section-content output-content">
-          {#each outputWords as word, i}
-            <span
-              class="output-word"
-              class:latest={i === outputWords.length - 1}
-              >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
-            >
-          {/each}
-          {#if outputWords.length === 0}
-            <span class="placeholder">
-              Click an entry to select starting word, or press Play
-            </span>
-          {/if}
+        <div class="widget-section">
+          <div class="section-header">Generated</div>
+          <div class="output-content">
+            {#each outputWords as word, i}
+              <span
+                class="output-word"
+                class:latest={i === outputWords.length - 1}
+                >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
+              >
+            {/each}
+            </div>
         </div>
       </div>
 
       <div class="widget-section">
         <div class="section-header">Model (booklet view)</div>
-        <div class="section-content entries-content">
-          {#if modelEntries.length === 0}
-            <div class="placeholder">No entries yet</div>
-          {/if}
+        <div class="entries-content">
           {#each modelEntries as entry}
             <div
               class="entry"
@@ -418,69 +410,66 @@
         </div>
       </div>
 
-      <div class="widget-section">
-        <div class="section-header">Current action</div>
-        <div class="section-content action-content">
-          {#if phase === "showing-entry" && currentEntry}
-            <span>Looking up</span>
-            <span
-              class="token highlight-first"
-              class:punctuation={isPunctuation(currentEntry.prefix)}
-              >{currentEntry.prefix}</span
-            >
-            {#if currentEntry.followers.length > 1}
-              <span>
-                --- roll {currentEntry.numDice} d10{currentEntry.numDice > 1
-                  ? "s"
-                  : ""}...
-              </span>
-            {:else}
-              <span>--- only one option</span>
-            {/if}
-          {:else if phase === "rolling" && currentEntry}
-            <span
-              >Rolling {currentEntry.numDice} d10{currentEntry.numDice > 1
-                ? "s"
-                : ""}...</span
-            >
-            <span class="dice-value rolling">{currentDiceRoll}</span>
-          {:else if phase === "rolled" && currentEntry}
-            {#if currentEntry.followers.length > 1}
-              <span>Rolled</span>
-              <span class="dice-value">{currentDiceRoll}</span>
-              {#if currentDiceRoll !== null}
-                <span>&rarr; first threshold &ge; {currentDiceRoll} is</span>
-                {#if findWordForRoll(currentEntry, currentDiceRoll)}
-                  <span
-                    class="token highlight-second"
-                    class:punctuation={isPunctuation(
-                      findWordForRoll(currentEntry, currentDiceRoll) || "",
-                    )}>{findWordForRoll(currentEntry, currentDiceRoll)}</span
-                  >
-                {/if}
-              {/if}
-            {:else}
-              <span>Only option:</span>
+      <div class="status-row">
+        <div class="widget-section">
+          <div class="section-header">Current action</div>
+          <div class="action-content">
+            {#if phase === "showing-entry" && currentEntry}
+              <span>Looking up</span>
               <span
-                class="token highlight-second"
-                class:punctuation={isPunctuation(
-                  currentEntry.followers[0].word,
-                )}>{currentEntry.followers[0].word}</span
+                class="token highlight-first"
+                class:punctuation={isPunctuation(currentEntry.prefix)}
+                >{currentEntry.prefix}</span
               >
+              {#if currentEntry.followers.length > 1}
+                <span>
+                  --- roll {currentEntry.numDice} d10{currentEntry.numDice > 1
+                    ? "s"
+                    : ""}...
+                </span>
+              {:else}
+                <span>--- only one option</span>
+              {/if}
+            {:else if phase === "rolling" && currentEntry}
+              <span
+                >Rolling {currentEntry.numDice} d10{currentEntry.numDice > 1
+                  ? "s"
+                  : ""}...</span
+              >
+              <span class="dice-value rolling">{currentDiceRoll}</span>
+            {:else if phase === "rolled" && currentEntry}
+              {#if currentEntry.followers.length > 1}
+                <span>Rolled</span>
+                <span class="dice-value">{currentDiceRoll}</span>
+                {#if currentDiceRoll !== null}
+                  <span>&rarr; first threshold &ge; {currentDiceRoll} is</span>
+                  {#if findWordForRoll(currentEntry, currentDiceRoll)}
+                    <span
+                      class="token highlight-second"
+                      class:punctuation={isPunctuation(
+                        findWordForRoll(currentEntry, currentDiceRoll) || "",
+                      )}>{findWordForRoll(currentEntry, currentDiceRoll)}</span
+                    >
+                  {/if}
+                {/if}
+              {:else}
+                <span>Only option:</span>
+                <span
+                  class="token highlight-second"
+                  class:punctuation={isPunctuation(
+                    currentEntry.followers[0].word,
+                  )}>{currentEntry.followers[0].word}</span
+                >
+              {/if}
+            {:else if phase === "writing" && currentWord}
+              <span>Writing to output...</span>
+            {:else if isComplete}
+              <span class="complete-message">Generation complete!</span>
             {/if}
-          {:else if phase === "writing" && currentWord}
-            <span>Writing to output...</span>
-          {:else if isComplete}
-            <span class="complete-message">Generation complete!</span>
-          {:else}
-            <span class="placeholder"
-              >Click an entry to start, or press Play</span
-            >
-          {/if}
+          </div>
         </div>
-      </div>
 
-      <PlaybackSection
+        <PlaybackSection
         {isPlaying}
         {isComplete}
         {stepInterval}
@@ -492,6 +481,7 @@
         onreset={reset}
         onstepintervalchange={(v) => (stepInterval = v)}
       />
+      </div>
     </div>
   </div>
 </FullscreenWrapper>
@@ -501,6 +491,38 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+
+  .input-row,
+  .status-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  @container (min-width: 640px) {
+    .input-row {
+      flex-direction: row;
+    }
+
+    .input-row > :global(*) {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .status-row {
+      flex-direction: row;
+      align-items: start;
+    }
+
+    .status-row > :global(:first-child) {
+      flex: 0 0 16rem;
+    }
+
+    .status-row > :global(:last-child) {
+      flex: 1;
+      min-width: 0;
+    }
   }
 
   .output-content {

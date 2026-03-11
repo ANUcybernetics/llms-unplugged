@@ -23,13 +23,10 @@
 
   let tokens = $derived(parseTokens(inputText));
   let bigrams = $derived(getBigrams(tokens));
-  let totalSteps = $derived(bigrams.length);
-
-  const playback = createPlayback(0, { loop: untrack(() => loop) });
-
-  $effect(() => {
-    playback.setTotalSteps(totalSteps);
-  });
+  const playback = createPlayback(
+    () => bigrams.length,
+    { loop: untrack(() => loop) },
+  );
 
   let buckets = $derived.by((): { label: string; tokens: string[] }[] => {
     const bucketMap = new Map<string, string[]>();
@@ -78,9 +75,9 @@
 <FullscreenWrapper>
   <div class="lm-widget bucket-training-widget">
     <div class="training-view">
-      <div class="widget-section">
-        <div class="section-header">Training text</div>
-        <div class="section-content">
+      <div class="input-row">
+        <div class="widget-section">
+          <div class="section-header">Training text</div>
           <textarea
             id="bucket-training-input"
             class="text-input"
@@ -89,55 +86,27 @@
             bind:value={inputText}
           ></textarea>
         </div>
-      </div>
 
-      <div class="widget-section">
-        <div class="section-header">Tokens</div>
-        <div class="section-content tokens-content">
-          {#each tokens as token, i}
-            <span
-              class="token"
-              class:highlight-first={i === highlights.tokenIdx}
-              class:highlight-second={i === highlights.nextIdx}
-              class:punctuation={isPunctuation(token)}
-            >
-              {token}
-            </span>
-          {/each}
-        </div>
-      </div>
-
-      <div class="widget-section">
-        <div class="section-header">Current action</div>
-        <div class="section-content action-content">
-          {#if highlights.bucket}
-            <span>Put</span>
-            <span
-              class="token highlight-second"
-              class:punctuation={isPunctuation(highlights.token!)}
-              >{highlights.token}</span
-            >
-            <span>into the</span>
-            <span
-              class="token highlight-first"
-              class:punctuation={isPunctuation(highlights.bucket)}
-              >{highlights.bucket}</span
-            >
-            <span>bucket</span>
-          {:else if playback.isComplete}
-            <span class="complete-message">Training complete!</span>
-          {:else}
-            <span class="placeholder">Press Play or Step to begin</span>
-          {/if}
+        <div class="widget-section">
+          <div class="section-header">Tokens</div>
+          <div class="tokens-content">
+            {#each tokens as token, i}
+              <span
+                class="token"
+                class:highlight-first={i === highlights.tokenIdx}
+                class:highlight-second={i === highlights.nextIdx}
+                class:punctuation={isPunctuation(token)}
+              >
+                {token}
+              </span>
+            {/each}
+          </div>
         </div>
       </div>
 
       <div class="widget-section">
         <div class="section-header">Buckets</div>
-        <div class="section-content buckets-content">
-          {#if buckets.length === 0}
-            <div class="placeholder">No buckets yet</div>
-          {/if}
+        <div class="buckets-content">
           {#each buckets as bucket}
             <div
               class="bucket"
@@ -168,21 +137,46 @@
         </div>
       </div>
 
-      <PlaybackSection
-        isPlaying={playback.isPlaying}
-        isComplete={playback.isComplete}
-        currentStep={playback.currentStep}
-        {totalSteps}
-        showStepCounter={true}
-        stepInterval={playback.stepInterval}
-        {loop}
-        sliderId="bucket-training-speed-slider"
-        onplay={playback.play}
-        onpause={playback.pause}
-        onstep={playback.step}
-        onreset={playback.reset}
-        onstepintervalchange={(v) => (playback.stepInterval = v)}
-      />
+      <div class="status-row">
+        <div class="widget-section">
+          <div class="section-header">Current action</div>
+          <div class="action-content">
+            {#if highlights.bucket}
+              <span>Put</span>
+              <span
+                class="token highlight-second"
+                class:punctuation={isPunctuation(highlights.token!)}
+                >{highlights.token}</span
+              >
+              <span>into the</span>
+              <span
+                class="token highlight-first"
+                class:punctuation={isPunctuation(highlights.bucket)}
+                >{highlights.bucket}</span
+              >
+              <span>bucket</span>
+            {:else if playback.isComplete}
+              <span class="complete-message">Training complete!</span>
+            {/if}
+          </div>
+        </div>
+
+        <PlaybackSection
+          isPlaying={playback.isPlaying}
+          isComplete={playback.isComplete}
+          currentStep={playback.currentStep}
+          totalSteps={playback.totalSteps}
+          showStepCounter={true}
+          stepInterval={playback.stepInterval}
+          {loop}
+          sliderId="bucket-training-speed-slider"
+          onplay={playback.play}
+          onpause={playback.pause}
+          onstep={playback.step}
+          onreset={playback.reset}
+          onstepintervalchange={(v) => (playback.stepInterval = v)}
+        />
+      </div>
     </div>
   </div>
 </FullscreenWrapper>
@@ -192,6 +186,38 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+
+  .input-row,
+  .status-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  @container (min-width: 640px) {
+    .input-row {
+      flex-direction: row;
+    }
+
+    .input-row > :global(*) {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .status-row {
+      flex-direction: row;
+      align-items: start;
+    }
+
+    .status-row > :global(:first-child) {
+      flex: 0 0 16rem;
+    }
+
+    .status-row > :global(:last-child) {
+      flex: 1;
+      min-width: 0;
+    }
   }
 
   .tokens-content {
@@ -216,7 +242,7 @@
   .buckets-content {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
-    gap: 0.75rem;
+    gap: 1rem;
     min-height: 6rem;
     align-items: stretch;
   }

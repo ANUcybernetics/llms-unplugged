@@ -28,13 +28,10 @@
   let tokens = $derived(parseTokens(inputText));
   let bigrams = $derived(getBigrams(tokens));
   let vocabulary = $derived(getVocabulary(tokens));
-  let totalStepCount = $derived(bigrams.length);
-
-  const playback = createPlayback(0, { loop: untrack(() => loop) });
-
-  $effect(() => {
-    playback.setTotalSteps(totalStepCount);
-  });
+  const playback = createPlayback(
+    () => bigrams.length,
+    { loop: untrack(() => loop) },
+  );
 
   let gridCounts = $derived.by(() => {
     const counts = new Map<string, number>();
@@ -74,9 +71,9 @@
 <FullscreenWrapper>
   <div class="lm-widget training-widget">
     <div class="training-view">
-      <div class="widget-section">
-        <div class="section-header">Training text</div>
-        <div class="section-content">
+      <div class="input-row">
+        <div class="widget-section">
+          <div class="section-header">Training text</div>
           <textarea
             id="training-input"
             class="text-input"
@@ -85,79 +82,77 @@
             bind:value={inputText}
           ></textarea>
         </div>
-      </div>
 
-      <div class="widget-section">
-        <div class="section-header">Tokens</div>
-        <div class="section-content tokens-content">
-          {#each tokens as token, i}
-            <span
-              class="token"
-              class:highlight-first={i === highlights.tokenIdx}
-              class:highlight-second={i === highlights.nextIdx}
-              class:punctuation={token === "." || token === ","}
-            >
-              {token}
-            </span>
-          {/each}
-        </div>
-      </div>
-
-      <div class="widget-section">
-        <div class="section-header">Current bigram</div>
-        <div class="section-content bigram-content">
-          {#if highlights.row}
-            <span
-              class="token highlight-first"
-              class:punctuation={highlights.row === "." ||
-                highlights.row === ","}
-            >
-              {highlights.row}
-            </span>
-            <span class="arrow">&rarr;</span>
-            <span
-              class="token highlight-second"
-              class:punctuation={highlights.col === "." ||
-                highlights.col === ","}
-            >
-              {highlights.col}
-            </span>
-          {:else if playback.isComplete}
-            <span class="complete-message">Training complete!</span>
-          {:else}
-            <span class="placeholder">Press Play or Step to begin</span>
-          {/if}
+        <div class="widget-section">
+          <div class="section-header">Tokens</div>
+          <div class="tokens-content">
+            {#each tokens as token, i}
+              <span
+                class="token"
+                class:highlight-first={i === highlights.tokenIdx}
+                class:highlight-second={i === highlights.nextIdx}
+                class:punctuation={token === "." || token === ","}
+              >
+                {token}
+              </span>
+            {/each}
+          </div>
         </div>
       </div>
 
       <div class="widget-section">
         <div class="section-header">Model grid</div>
-        <div class="section-content">
-          <BigramGrid
-            {vocabulary}
-            {getCount}
-            counts={gridCounts}
-            highlightedRow={highlights.row}
-            highlightedCol={highlights.col}
-          />
-        </div>
+        <BigramGrid
+          {vocabulary}
+          {getCount}
+          counts={gridCounts}
+          highlightedRow={highlights.row}
+          highlightedCol={highlights.col}
+        />
       </div>
 
-      <PlaybackSection
-        isPlaying={playback.isPlaying}
-        isComplete={playback.isComplete}
-        currentStep={playback.currentStep}
-        totalSteps={totalStepCount}
-        showStepCounter={true}
-        stepInterval={playback.stepInterval}
-        {loop}
-        sliderId="training-speed-slider"
-        onplay={playback.play}
-        onpause={playback.pause}
-        onstep={playback.step}
-        onreset={playback.reset}
-        onstepintervalchange={(v) => (playback.stepInterval = v)}
-      />
+      <div class="status-row">
+        <div class="widget-section">
+          <div class="section-header">Current bigram</div>
+          <div class="bigram-content">
+            {#if highlights.row}
+              <span
+                class="token highlight-first"
+                class:punctuation={highlights.row === "." ||
+                  highlights.row === ","}
+              >
+                {highlights.row}
+              </span>
+              <span class="arrow">&rarr;</span>
+              <span
+                class="token highlight-second"
+                class:punctuation={highlights.col === "." ||
+                  highlights.col === ","}
+              >
+                {highlights.col}
+              </span>
+            {:else if playback.isComplete}
+              <span class="complete-message">Training complete!</span>
+            {/if}
+          </div>
+        </div>
+
+        <PlaybackSection
+          isPlaying={playback.isPlaying}
+          isComplete={playback.isComplete}
+          currentStep={playback.currentStep}
+          totalSteps={playback.totalSteps}
+          showStepCounter={true}
+          stepInterval={playback.stepInterval}
+          {loop}
+          sliderId="training-speed-slider"
+          onplay={playback.play}
+          onpause={playback.pause}
+          onstep={playback.step}
+          onreset={playback.reset}
+          onstepintervalchange={(v) => (playback.stepInterval = v)}
+        />
+      </div>
     </div>
   </div>
 </FullscreenWrapper>
@@ -167,6 +162,38 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+
+  .input-row,
+  .status-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  @container (min-width: 640px) {
+    .input-row {
+      flex-direction: row;
+    }
+
+    .input-row > :global(*) {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .status-row {
+      flex-direction: row;
+      align-items: start;
+    }
+
+    .status-row > :global(:first-child) {
+      flex: 0 0 16rem;
+    }
+
+    .status-row > :global(:last-child) {
+      flex: 1;
+      min-width: 0;
+    }
   }
 
   .tokens-content {

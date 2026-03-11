@@ -1,7 +1,8 @@
 /* Base styles shared across widget components */
 
 .lm-widget {
-  border: 1px solid var(--color-border);
+  container-type: inline-size;
+  border: 1px solid var(--color-divider);
   border-radius: 0.5rem;
   padding: 1rem;
   margin: 1.5rem 0;
@@ -9,23 +10,17 @@
 }
 
 .widget-section {
-  border: 1px solid var(--color-border);
-  border-radius: 0.25rem;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .section-header {
-  padding: 0.5rem 0.75rem;
-  background: var(--color-bg-alt);
+  font-size: 0.75rem;
   font-weight: 600;
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.section-content {
-  padding: 0.75rem;
-  background: var(--color-bg);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .text-input {
@@ -66,11 +61,6 @@
 .token.highlight-second {
   background: var(--lm-highlight-strong, #a7f3d0);
   transform: scale(1.05);
-}
-
-.placeholder {
-  color: var(--color-text-muted);
-  font-style: italic;
 }
 
 .speed-control {

@@ -37,7 +37,7 @@
 
 <div class="widget-section">
   <div class="section-header">Controls</div>
-  <div class="section-content controls-content">
+  <div class="controls-content">
     <PlaybackControls
       {isPlaying}
       {isComplete}

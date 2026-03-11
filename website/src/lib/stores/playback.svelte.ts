@@ -1,21 +1,23 @@
 import { PLAYBACK_CONFIG } from "../config/playback";
 
-export interface PlaybackState {
-  currentStep: number;
-  totalSteps: number;
-  isPlaying: boolean;
-  stepInterval: number;
-}
-
-export function createPlayback(initialTotalSteps = 0, options: { loop?: boolean } = {}) {
+export function createPlayback(
+  getTotalSteps: () => number,
+  options: { loop?: boolean } = {},
+) {
   let currentStep = $state(0);
-  let totalSteps = $state(initialTotalSteps);
   let isPlaying = $state(false);
   let stepInterval: number = $state(PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS);
   let intervalId: ReturnType<typeof setInterval> | null = null;
   let loopTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
+  const totalSteps = $derived(getTotalSteps());
   const isComplete = $derived(currentStep >= totalSteps);
+
+  $effect.pre(() => {
+    if (currentStep > totalSteps) {
+      currentStep = totalSteps;
+    }
+  });
 
   function clearPlayInterval() {
     if (intervalId !== null) {
@@ -81,13 +83,6 @@ export function createPlayback(initialTotalSteps = 0, options: { loop?: boolean 
     currentStep = 0;
   }
 
-  function setTotalSteps(n: number) {
-    totalSteps = n;
-    if (currentStep > n) {
-      currentStep = n;
-    }
-  }
-
   function cleanup() {
     clearPlayInterval();
     clearLoopTimeout();
@@ -119,7 +114,6 @@ export function createPlayback(initialTotalSteps = 0, options: { loop?: boolean 
     pause,
     step,
     reset,
-    setTotalSteps,
     cleanup,
   };
 }

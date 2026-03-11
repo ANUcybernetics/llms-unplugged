@@ -125,9 +125,13 @@
   .bigram-grid td {
     padding: 0.5rem;
     text-align: center;
-    min-width: 3rem;
+    min-width: 2.5rem;
+    max-width: 4rem;
     height: 2.5rem;
     border: 1px solid var(--color-border);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .bigram-grid th {
     background-color: var(--color-bg-alt);
@@ -161,9 +165,6 @@
     left: 0.25rem;
     color: var(--color-brand);
   }
-  .grid-cell {
-    transition: background-color 0.2s;
-  }
   .grid-cell.highlight-row {
     background-color: var(--lm-highlight-soft);
   }
@@ -185,9 +186,6 @@
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .grid-cell {
-      transition: none;
-    }
     .grid-cell.flash {
       animation: none;
     }

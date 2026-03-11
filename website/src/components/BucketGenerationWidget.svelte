@@ -269,9 +269,9 @@
 <FullscreenWrapper>
   <div class="lm-widget bucket-generation-widget">
     <div class="generation-view">
-      <div class="widget-section">
-        <div class="section-header">Training text</div>
-        <div class="section-content">
+      <div class="input-row">
+        <div class="widget-section">
+          <div class="section-header">Training text</div>
           <textarea
             id="bucket-generation-input"
             class="text-input"
@@ -280,32 +280,24 @@
             bind:value={trainingText}
           ></textarea>
         </div>
-      </div>
 
-      <div class="widget-section">
-        <div class="section-header">Generated</div>
-        <div class="section-content output-content">
-          {#each outputWords as word, i}
-            <span
-              class="output-word"
-              class:latest={i === outputWords.length - 1}
-              >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
-            >
-          {/each}
-          {#if outputWords.length === 0}
-            <span class="placeholder">
-              Click a bucket to select starting word, or press Play
-            </span>
-          {/if}
+        <div class="widget-section">
+          <div class="section-header">Generated</div>
+          <div class="output-content">
+            {#each outputWords as word, i}
+              <span
+                class="output-word"
+                class:latest={i === outputWords.length - 1}
+                >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
+              >
+            {/each}
+            </div>
         </div>
       </div>
 
       <div class="widget-section">
         <div class="section-header">Buckets</div>
-        <div class="section-content buckets-content">
-          {#if buckets.length === 0}
-            <div class="placeholder">No buckets yet</div>
-          {/if}
+        <div class="buckets-content">
           {#each buckets as bucket}
             <div
               class="bucket"
@@ -349,59 +341,61 @@
         </div>
       </div>
 
-      <div class="widget-section">
-        <div class="section-header">Current action</div>
-        <div class="section-content action-content">
-          {#if phase === "showing-bucket" && currentWord}
-            <span>Looking in the</span>
-            <span
-              class="token highlight-first"
-              class:punctuation={isPunctuation(currentWord)}>{currentWord}</span
-            >
-            <span>bucket...</span>
-          {:else if phase === "picking" && currentWord}
-            <span>Picking randomly from the</span>
-            <span
-              class="token highlight-first"
-              class:punctuation={isPunctuation(currentWord)}>{currentWord}</span
-            >
-            <span>bucket...</span>
-          {:else if phase === "picked" && pickedToken}
-            <span>Picked</span>
-            <span
-              class="token highlight-second"
-              class:punctuation={isPunctuation(pickedToken)}>{pickedToken}</span
-            >
-            <span>from the bucket!</span>
-          {:else if phase === "writing" && pickedToken}
-            <span>Writing</span>
-            <span
-              class="token highlight-second"
-              class:punctuation={isPunctuation(pickedToken)}>{pickedToken}</span
-            >
-            <span>to output...</span>
-          {:else if isComplete}
-            <span class="complete-message">Generation complete!</span>
-          {:else}
-            <span class="placeholder"
-              >Click a bucket to start, or press Play</span
-            >
-          {/if}
+      <div class="status-row">
+        <div class="widget-section">
+          <div class="section-header">Current action</div>
+          <div class="action-content">
+            {#if phase === "showing-bucket" && currentWord}
+              <span>Looking in the</span>
+              <span
+                class="token highlight-first"
+                class:punctuation={isPunctuation(currentWord)}
+                >{currentWord}</span
+              >
+              <span>bucket...</span>
+            {:else if phase === "picking" && currentWord}
+              <span>Picking randomly from the</span>
+              <span
+                class="token highlight-first"
+                class:punctuation={isPunctuation(currentWord)}
+                >{currentWord}</span
+              >
+              <span>bucket...</span>
+            {:else if phase === "picked" && pickedToken}
+              <span>Picked</span>
+              <span
+                class="token highlight-second"
+                class:punctuation={isPunctuation(pickedToken)}
+                >{pickedToken}</span
+              >
+              <span>from the bucket!</span>
+            {:else if phase === "writing" && pickedToken}
+              <span>Writing</span>
+              <span
+                class="token highlight-second"
+                class:punctuation={isPunctuation(pickedToken)}
+                >{pickedToken}</span
+              >
+              <span>to output...</span>
+            {:else if isComplete}
+              <span class="complete-message">Generation complete!</span>
+            {/if}
+          </div>
         </div>
-      </div>
 
-      <PlaybackSection
-        {isPlaying}
-        {isComplete}
-        {stepInterval}
-        {loop}
-        sliderId="bucket-generation-speed-slider"
-        onplay={handlePlay}
-        onpause={pause}
-        onstep={doStep}
-        onreset={reset}
-        onstepintervalchange={(v) => (stepInterval = v)}
-      />
+        <PlaybackSection
+          {isPlaying}
+          {isComplete}
+          {stepInterval}
+          {loop}
+          sliderId="bucket-generation-speed-slider"
+          onplay={handlePlay}
+          onpause={pause}
+          onstep={doStep}
+          onreset={reset}
+          onstepintervalchange={(v) => (stepInterval = v)}
+        />
+      </div>
     </div>
   </div>
 </FullscreenWrapper>
@@ -411,6 +405,38 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+
+  .input-row,
+  .status-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  @container (min-width: 640px) {
+    .input-row {
+      flex-direction: row;
+    }
+
+    .input-row > :global(*) {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .status-row {
+      flex-direction: row;
+      align-items: start;
+    }
+
+    .status-row > :global(:first-child) {
+      flex: 0 0 16rem;
+    }
+
+    .status-row > :global(:last-child) {
+      flex: 1;
+      min-width: 0;
+    }
   }
 
   .output-content {
@@ -430,7 +456,7 @@
   .buckets-content {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
-    gap: 0.75rem;
+    gap: 1rem;
     min-height: 6rem;
     align-items: stretch;
   }

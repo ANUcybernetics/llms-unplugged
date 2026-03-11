@@ -263,28 +263,28 @@ by exploiting patterns in text to generate new text
   }
 
   :global(.reveal .slides section:has(.lm-widget)) {
-    padding: 0.75rem 1.5rem;
+    padding: 1.5rem 2.5rem;
     font-size: 14px;
   }
 
   :global(.reveal .slides section .lm-widget) {
     margin: 0;
-    padding: 0.5rem;
+    padding: 0.75rem;
     font-size: 14px;
   }
 
   :global(.reveal .slides section .lm-widget .training-view),
   :global(.reveal .slides section .lm-widget .generation-view) {
-    gap: 0.4rem;
+    gap: 0.5rem;
+  }
+
+  :global(.reveal .slides section .lm-widget .input-row),
+  :global(.reveal .slides section .lm-widget .status-row) {
+    gap: 0.5rem;
   }
 
   :global(.reveal .slides section .lm-widget .section-header) {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.85em;
-  }
-
-  :global(.reveal .slides section .lm-widget .section-content) {
-    padding: 0.4rem 0.5rem;
+    font-size: 0.65em;
   }
 
   :global(.reveal .slides section .lm-widget .text-input) {
@@ -303,10 +303,6 @@ by exploiting patterns in text to generate new text
   :global(.reveal .slides section table.bigram-grid td.grid-cell) {
     font-size: 1.4em;
     font-weight: 700;
-  }
-
-  :global(.reveal .slides section .lm-widget .placeholder) {
-    font-size: 1em;
   }
 
   :global(.reveal .slides section .lm-widget button) {

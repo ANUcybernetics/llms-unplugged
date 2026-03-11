@@ -266,9 +266,9 @@
 <FullscreenWrapper>
   <div class="lm-widget generation-widget">
     <div class="generation-view">
-      <div class="widget-section">
-        <div class="section-header">Training text</div>
-        <div class="section-content">
+      <div class="input-row">
+        <div class="widget-section">
+          <div class="section-header">Training text</div>
           <textarea
             id="generation-input"
             class="text-input"
@@ -277,115 +277,108 @@
             bind:value={trainingText}
           ></textarea>
         </div>
-      </div>
 
-      <div class="widget-section">
-        <div class="section-header">Tokens</div>
-        <div class="section-content tokens-content">
-          {#each tokens as token, i}
-            <span
-              class="token"
-              class:punctuation={token === "." || token === ","}
-            >
-              {token}
-            </span>
-          {/each}
-        </div>
-      </div>
-
-      <div class="widget-section">
-        <div class="section-header">Generated</div>
-        <div class="section-content output-content">
-          {#each outputWords as word, i}
-            <span
-              class="output-word"
-              class:latest={i === outputWords.length - 1}
-              >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
-            >
-          {/each}
-          {#if outputWords.length === 0}
-            <span class="placeholder">
-              Click a row to select starting word, or press Play
-            </span>
-          {/if}
+        <div class="widget-section">
+          <div class="section-header">Tokens</div>
+          <div class="tokens-content">
+            {#each tokens as token, i}
+              <span
+                class="token"
+                class:punctuation={token === "." || token === ","}
+              >
+                {token}
+              </span>
+            {/each}
+          </div>
         </div>
       </div>
 
       <div class="widget-section">
         <div class="section-header">Model grid</div>
-        <div class="section-content">
-          <BigramGrid
-            {vocabulary}
-            getCount={model.getCount}
-            highlightedRow={currentWord}
-            {isHighlightedCol}
-            clickableRows={outputWords.length === 0}
-            isRowClickable={(w) => model.hasSuccessors(w)}
-            isDeadEnd={(w) => !model.hasSuccessors(w)}
-            showRowIndicator={true}
-            onrowclick={handleRowClick}
+        <BigramGrid
+          {vocabulary}
+          getCount={model.getCount}
+          highlightedRow={currentWord}
+          {isHighlightedCol}
+          clickableRows={outputWords.length === 0}
+          isRowClickable={(w) => model.hasSuccessors(w)}
+          isDeadEnd={(w) => !model.hasSuccessors(w)}
+          showRowIndicator={true}
+          onrowclick={handleRowClick}
+        />
+      </div>
+
+      <div class="status-row">
+        <div class="widget-section">
+          <div class="section-header">Dice mapping (d{diceSides})</div>
+          <div class="dice-content">
+            {#if currentMappings.length > 0}
+              <div class="dice-mapping">
+                {#each currentMappings as mapping}
+                  <span
+                    class="mapping-item"
+                    class:selected={currentDiceRoll !== null &&
+                      currentDiceRoll >= mapping.diceRange[0] &&
+                      currentDiceRoll <= mapping.diceRange[1]}
+                  >
+                    [{mapping
+                      .diceRange[0]}{#if mapping.diceRange[0] !== mapping.diceRange[1]}&ndash;{mapping
+                        .diceRange[1]}{/if}]&rarr;{mapping.word}
+                  </span>
+                {/each}
+              </div>
+              <div class="dice-result">
+                {#if currentDiceRoll !== null}
+                  <span class="result-label">Roll:</span>
+                  <span class="dice-value" class:rolling={isRolling}
+                    >{currentDiceRoll}</span
+                  >
+                  {#if !isRolling}
+                    <span>
+                      &rarr; "<strong
+                        >{findWordForRoll(
+                          currentMappings,
+                          currentDiceRoll,
+                        )}</strong
+                      >"
+                    </span>
+                  {/if}
+                {:else}
+                  <span class="dice-result-placeholder">&nbsp;</span>
+                {/if}
+              </div>
+            {/if}
+          </div>
+        </div>
+
+        <div class="status-row-right">
+          <div class="widget-section">
+            <div class="section-header">Generated</div>
+            <div class="output-content">
+              {#each outputWords as word, i}
+                <span
+                  class="output-word"
+                  class:latest={i === outputWords.length - 1}
+                  >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
+                >
+              {/each}
+                </div>
+          </div>
+
+          <PlaybackSection
+            {isPlaying}
+            {isComplete}
+            {stepInterval}
+            {loop}
+            sliderId="generation-speed-slider"
+            onplay={handlePlay}
+            onpause={pause}
+            onstep={doStep}
+            onreset={reset}
+            onstepintervalchange={(v) => (stepInterval = v)}
           />
         </div>
       </div>
-
-      <div class="widget-section">
-        <div class="section-header">Dice mapping (d{diceSides})</div>
-        <div class="section-content dice-content">
-          {#if currentMappings.length > 0}
-            <div class="dice-mapping">
-              {#each currentMappings as mapping}
-                <span
-                  class="mapping-item"
-                  class:selected={currentDiceRoll !== null &&
-                    currentDiceRoll >= mapping.diceRange[0] &&
-                    currentDiceRoll <= mapping.diceRange[1]}
-                >
-                  [{mapping
-                    .diceRange[0]}{#if mapping.diceRange[0] !== mapping.diceRange[1]}&ndash;{mapping
-                      .diceRange[1]}{/if}]&rarr;{mapping.word}
-                </span>
-              {/each}
-            </div>
-            <div class="dice-result">
-              {#if currentDiceRoll !== null}
-                <span class="result-label">Roll:</span>
-                <span class="dice-value" class:rolling={isRolling}
-                  >{currentDiceRoll}</span
-                >
-                {#if !isRolling}
-                  <span>
-                    &rarr; "<strong
-                      >{findWordForRoll(
-                        currentMappings,
-                        currentDiceRoll,
-                      )}</strong
-                    >"
-                  </span>
-                {/if}
-              {:else}
-                <span class="dice-result-placeholder">&nbsp;</span>
-              {/if}
-            </div>
-          {:else}
-            <span class="placeholder"
-              >Select a starting word to see dice mapping</span
-            >
-          {/if}
-        </div>
-      </div>
-
-      <PlaybackSection
-        {isPlaying}
-        {isComplete}
-        {stepInterval}
-        {loop}
-        sliderId="generation-speed-slider"
-        onplay={handlePlay}
-        onpause={pause}
-        onstep={doStep}
-        onreset={reset}
-        onstepintervalchange={(v) => (stepInterval = v)}
-      />
     </div>
   </div>
 </FullscreenWrapper>
@@ -395,6 +388,45 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+
+  .input-row,
+  .status-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .status-row-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  @container (min-width: 640px) {
+    .input-row {
+      flex-direction: row;
+    }
+
+    .input-row > :global(*) {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .status-row {
+      flex-direction: row;
+      align-items: start;
+    }
+
+    .status-row > :global(:first-child) {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .status-row-right {
+      flex: 1;
+      min-width: 0;
+    }
   }
 
   .tokens-content {

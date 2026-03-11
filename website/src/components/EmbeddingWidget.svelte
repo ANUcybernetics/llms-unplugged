@@ -57,15 +57,13 @@
     <div class="embedding-view">
       <div class="widget-section">
         <div class="section-header">Training text</div>
-        <div class="section-content">
-          <textarea
-            id="embedding-input"
-            class="text-input"
-            rows="2"
-            placeholder="Enter text to train on..."
-            bind:value={inputText}
-          ></textarea>
-        </div>
+        <textarea
+          id="embedding-input"
+          class="text-input"
+          rows="2"
+          placeholder="Enter text to train on..."
+          bind:value={inputText}
+        ></textarea>
       </div>
 
       <div class="widget-section">
@@ -75,31 +73,25 @@
             >click a row to see its embedding vector</span
           >
         </div>
-        <div class="section-content">
-          <BigramGrid
-            {vocabulary}
-            getCount={model.getCount}
-            clickableRows={true}
-            {numericRows}
-            onrowclick={handleRowClick}
-          />
-        </div>
+        <BigramGrid
+          {vocabulary}
+          getCount={model.getCount}
+          clickableRows={true}
+          {numericRows}
+          onrowclick={handleRowClick}
+        />
       </div>
 
       {#if selectedRows.length > 0}
         <div class="widget-section">
           <div class="section-header">Vector comparison</div>
-          <div class="section-content">
-            <VectorComparison {vocabulary} {model} {selectedRows} {distance} />
-          </div>
+          <VectorComparison {vocabulary} {model} {selectedRows} {distance} />
         </div>
       {/if}
 
       <div class="widget-section">
         <div class="section-header">Distance matrix</div>
-        <div class="section-content">
-          <DistanceMatrix {vocabulary} {matrix} {selectedPair} />
-        </div>
+        <DistanceMatrix {vocabulary} {matrix} {selectedPair} />
       </div>
     </div>
   </div>
