@@ -15,7 +15,7 @@ export default defineConfig({
     astromotion({ theme: "./src/decks/theme.css" }),
   ],
   markdown: {
-    remarkPlugins: [remarkSmartypants],
+    remarkPlugins: [[remarkSmartypants, { dashes: "oldschool" }]],
   },
   vite: {
     css: {
