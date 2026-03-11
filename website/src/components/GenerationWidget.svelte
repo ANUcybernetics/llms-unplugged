@@ -23,9 +23,10 @@
   interface Props {
     diceSides?: number;
     loop?: boolean;
+    fullscreen?: boolean;
   }
 
-  let { diceSides = 10, loop = true }: Props = $props();
+  let { diceSides = 10, loop = true, fullscreen = true }: Props = $props();
 
   let trainingText = $state(getTrainingText());
 
@@ -263,7 +264,7 @@
   }
 </script>
 
-<FullscreenWrapper>
+{#snippet content()}
   <div class="lm-widget generation-widget">
     <div class="generation-view">
       <div class="widget-section">
@@ -388,7 +389,13 @@
       />
     </div>
   </div>
-</FullscreenWrapper>
+{/snippet}
+
+{#if fullscreen}
+  <FullscreenWrapper>{@render content()}</FullscreenWrapper>
+{:else}
+  {@render content()}
+{/if}
 
 <style>
   .generation-view {

@@ -13,9 +13,10 @@
   interface Props {
     initialText?: string;
     loop?: boolean;
+    fullscreen?: boolean;
   }
 
-  let { initialText, loop = true }: Props = $props();
+  let { initialText, loop = true, fullscreen = true }: Props = $props();
 
   let inputText = $state(untrack(() => initialText ?? getTrainingText()));
 
@@ -71,7 +72,7 @@
   onMount(() => playback.cleanup);
 </script>
 
-<FullscreenWrapper>
+{#snippet content()}
   <div class="lm-widget training-widget">
     <div class="training-view">
       <div class="widget-section">
@@ -159,7 +160,13 @@
       />
     </div>
   </div>
-</FullscreenWrapper>
+{/snippet}
+
+{#if fullscreen}
+  <FullscreenWrapper>{@render content()}</FullscreenWrapper>
+{:else}
+  {@render content()}
+{/if}
 
 <style>
   .training-view {
