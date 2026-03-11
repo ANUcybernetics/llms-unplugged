@@ -312,7 +312,7 @@ from _their_ model
 - videos (coming soon)
 - software tools for custom n-gram booklets
 
-all **CC BY-NC-SA** licensed
+all [**CC BY-NC-SA**](https://creativecommons.org/licenses/by-nc-sa/4.0/) licensed
 
 ---
 
