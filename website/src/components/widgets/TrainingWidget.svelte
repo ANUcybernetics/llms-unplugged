@@ -89,7 +89,7 @@
         </div>
 
         <div class="widget-section">
-          <div class="section-header">Tokens</div>
+          <div class="section-header">Training text (tokenised)</div>
           <div class="tokens-content">
             {#each tokens as token, i}
               <span
@@ -106,7 +106,7 @@
       </div>
 
       <div class="widget-section">
-        <div class="section-header">Model grid</div>
+        <div class="section-header">Model</div>
         <BigramGrid
           {vocabulary}
           {getCount}

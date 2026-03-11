@@ -162,7 +162,7 @@
       </div>
 
       <div class="widget-section">
-        <div class="section-header">Buckets</div>
+        <div class="section-header">Model</div>
         <div class="buckets-content">
           {#each buckets as bucket}
             <div

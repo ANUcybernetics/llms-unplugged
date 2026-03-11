@@ -189,7 +189,7 @@
         </div>
 
         <div class="widget-section">
-          <div class="section-header">Tokens</div>
+          <div class="section-header">Training text (tokenised)</div>
           <div class="tokens-content">
             {#each tokens as token}
               <span
@@ -204,7 +204,7 @@
       </div>
 
       <div class="widget-section">
-        <div class="section-header">Model grid</div>
+        <div class="section-header">Model</div>
         <BigramGrid
           {vocabulary}
           getCount={model.getCount}
@@ -218,62 +218,53 @@
         />
       </div>
 
-      <div class="output-row">
-        <div class="widget-section">
-          <div class="section-header">Dice mapping (d{diceSides})</div>
-          <div class="dice-content">
-            {#if currentMappings.length > 0}
-              <div class="dice-mapping">
-                {#each currentMappings as mapping}
-                  <span
-                    class="mapping-item"
-                    class:selected={currentDiceRoll !== null &&
-                      currentDiceRoll >= mapping.diceRange[0] &&
-                      currentDiceRoll <= mapping.diceRange[1]}
-                  >
-                    [{mapping
-                      .diceRange[0]}{#if mapping.diceRange[0] !== mapping.diceRange[1]}&ndash;{mapping
-                        .diceRange[1]}{/if}]&rarr;{mapping.word}
-                  </span>
-                {/each}
-              </div>
-              <div class="dice-result">
-                {#if currentDiceRoll !== null}
-                  <span class="result-label">Roll:</span>
-                  <span class="dice-value" class:rolling={isRolling}
-                    >{currentDiceRoll}</span
-                  >
-                  {#if !isRolling}
-                    <span>
-                      &rarr; "<strong
-                        >{findWordForRoll(
-                          currentMappings,
-                          currentDiceRoll,
-                        )}</strong
-                      >"
-                    </span>
-                  {/if}
-                {:else}
-                  <span class="dice-result-placeholder">&nbsp;</span>
-                {/if}
-              </div>
-            {/if}
-          </div>
+      <div class="widget-section">
+        <div class="section-header">Output</div>
+        <div class="action-content">
+          {#if phase === "showing-options" && currentWord}
+            <span>Looking up</span>
+            <span
+              class="token highlight-first"
+              class:punctuation={isPunctuation(currentWord)}
+              >{currentWord}</span
+            >
+            <span>--- roll d{diceSides}...</span>
+          {:else if phase === "rolling"}
+            <span>Rolling d{diceSides}...</span>
+            <span class="dice-value rolling">{currentDiceRoll}</span>
+          {:else if phase === "rolled" && currentDiceRoll !== null}
+            <span>Rolled</span>
+            <span class="dice-value">{currentDiceRoll}</span>
+            <span>&rarr;</span>
+            <span
+              class="token highlight-second"
+              class:punctuation={isPunctuation(
+                findWordForRoll(currentMappings, currentDiceRoll) || "",
+              )}
+              >{findWordForRoll(currentMappings, currentDiceRoll)}</span
+            >
+          {:else if phase === "writing" && currentWord}
+            <span>Writing</span>
+            <span
+              class="token highlight-second"
+              class:punctuation={isPunctuation(currentWord)}
+              >{currentWord}</span
+            >
+            <span>to output...</span>
+          {:else if playback.isComplete}
+            <span class="complete-message">Generation complete!</span>
+          {/if}
         </div>
-
-        <div class="widget-section">
-          <div class="section-header">Generated</div>
-          <div class="output-content">
-            {#if outputWords.length > 0}
-              {#each outputWords as word, i}
-                <span
-                  class="output-word"
-                  class:latest={i === outputWords.length - 1}
-                  >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
-                >
-              {/each}
-            {/if}
-          </div>
+        <div class="output-content">
+          {#if outputWords.length > 0}
+            {#each outputWords as word, i}
+              <span
+                class="output-word"
+                class:latest={i === outputWords.length - 1}
+                >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
+              >
+            {/each}
+          {/if}
         </div>
       </div>
 
@@ -293,56 +284,3 @@
   </div>
 </FullscreenWrapper>
 
-<style>
-  .dice-content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    min-height: 3rem;
-  }
-
-  .dice-mapping {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .mapping-item {
-    padding: 0.25rem 0.5rem;
-    background: var(--color-bg-alt);
-    border-radius: 0.25rem;
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    transition: background-color 0.2s;
-  }
-
-  .mapping-item.selected {
-    background: var(--color-brand-soft);
-    color: var(--color-brand);
-    font-weight: 600;
-  }
-
-  .dice-result {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-height: 1.75rem;
-  }
-
-  .result-label {
-    font-weight: 600;
-    color: var(--color-text-secondary);
-  }
-
-  .dice-result-placeholder {
-    display: inline-block;
-    height: 1.75rem;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .mapping-item {
-      transition: none;
-    }
-  }
-</style>

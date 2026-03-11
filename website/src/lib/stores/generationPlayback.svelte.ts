@@ -27,38 +27,42 @@ export function createGenerationPlayback(opts: GenerationPlaybackOptions) {
     });
   }
 
+  function startLoop() {
+    abortController?.abort();
+    abortController = new AbortController();
+    const signal = abortController.signal;
+
+    (async () => {
+      try {
+        while (isPlaying && !signal.aborted) {
+          await opts.doStep();
+          if (_isComplete) {
+            if (opts.loop) {
+              await abortableSleep(
+                stepInterval * PLAYBACK_CONFIG.LOOP_PAUSE_MULTIPLIER,
+                signal,
+              );
+              _isComplete = false;
+              opts.resetState();
+              opts.preparePlay();
+              continue;
+            }
+            break;
+          }
+          await abortableSleep(stepInterval, signal);
+        }
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          return;
+        }
+        throw error;
+      }
+    })();
+  }
+
   $effect(() => {
     if (isPlaying) {
-      abortController = new AbortController();
-      const signal = abortController.signal;
-
-      (async () => {
-        try {
-          while (isPlaying && !signal.aborted) {
-            await opts.doStep();
-            if (_isComplete) {
-              if (opts.loop) {
-                await abortableSleep(
-                  stepInterval * PLAYBACK_CONFIG.LOOP_PAUSE_MULTIPLIER,
-                  signal,
-                );
-                _isComplete = false;
-                opts.resetState();
-                opts.preparePlay();
-                continue;
-              }
-              break;
-            }
-            await abortableSleep(stepInterval, signal);
-          }
-        } catch (error) {
-          if (error instanceof DOMException && error.name === "AbortError") {
-            return;
-          }
-          throw error;
-        }
-      })();
-
+      startLoop();
       return () => {
         abortController?.abort();
         abortController = null;
@@ -78,6 +82,9 @@ export function createGenerationPlayback(opts: GenerationPlaybackOptions) {
     },
     set stepInterval(value: number) {
       stepInterval = value;
+      if (isPlaying) {
+        startLoop();
+      }
     },
     markComplete() {
       _isComplete = true;

@@ -83,7 +83,7 @@
       </div>
 
       <div class="widget-section">
-        <div class="section-header">Tokens</div>
+        <div class="section-header">Training text (tokenised)</div>
         <div class="tokens-content">
           {#each tokens as token, i}
             <span
@@ -97,7 +97,6 @@
           {/each}
         </div>
         {#if highlights.bucket}
-          <div class="section-header">Current action</div>
           <div class="action-content">
             <span>Put</span>
             <span
@@ -117,7 +116,7 @@
       </div>
 
       <div class="widget-section">
-        <div class="section-header">Buckets</div>
+        <div class="section-header">Model</div>
         <div class="buckets-content">
           {#each buckets as bucket}
             <div

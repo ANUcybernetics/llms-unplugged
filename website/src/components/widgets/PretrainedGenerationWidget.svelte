@@ -192,7 +192,7 @@
       </div>
 
       <div class="widget-section">
-        <div class="section-header">Model (booklet view)</div>
+        <div class="section-header">Model</div>
         <div class="entries-content">
           {#each modelEntries as entry}
             <div
