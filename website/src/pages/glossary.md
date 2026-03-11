@@ -264,17 +264,17 @@ sequentially.
 
 ## Connections to your activities
 
-| Your activity | Real LLM equivalent |
-| --- | --- |
-| Tallying word pairs | Counting n-grams during training |
-| Rolling dice for next word | Sampling from probability distribution |
-| Grid rows/columns | Weight matrices in neural networks |
-| Adding context columns | Learning attention patterns |
-| Calculating word distances | Computing embedding similarities |
-| Dividing tallies by temperature | Applying temperature to logits |
-| Keeping top beam paths | Beam search with specified beam width |
-| Picking from buckets | Weighted random sampling |
-| Training on new text | Fine-tuning on domain-specific data |
+| Your activity                   | Real LLM equivalent                    |
+| ------------------------------- | -------------------------------------- |
+| Tallying word pairs             | Counting n-grams during training       |
+| Rolling dice for next word      | Sampling from probability distribution |
+| Grid rows/columns               | Weight matrices in neural networks     |
+| Adding context columns          | Learning attention patterns            |
+| Calculating word distances      | Computing embedding similarities       |
+| Dividing tallies by temperature | Applying temperature to logits         |
+| Keeping top beam paths          | Beam search with specified beam width  |
+| Picking from buckets            | Weighted random sampling               |
+| Training on new text            | Fine-tuning on domain-specific data    |
 
 ## Key insights
 

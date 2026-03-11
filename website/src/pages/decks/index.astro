@@ -28,10 +28,12 @@ for (const dir of fs.readdirSync(decksDir, { withFileTypes: true })) {
 <PageLayout title="Slide decks">
   <h1>Slide decks</h1>
   <ul>
-    {decks.map((deck) => (
-      <li>
-        <a href={`/decks/${deck.slug}/`}>{deck.title}</a>
-      </li>
-    ))}
+    {
+      decks.map((deck) => (
+        <li>
+          <a href={`/decks/${deck.slug}/`}>{deck.title}</a>
+        </li>
+      ))
+    }
   </ul>
 </PageLayout>

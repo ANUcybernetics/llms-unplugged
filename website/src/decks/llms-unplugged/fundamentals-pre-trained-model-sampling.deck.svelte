@@ -1,305 +1,158 @@
----
-title: LLMs Unplugged (Fundamentals + Pre-trained Model + Sampling)
-description: A Cybernetic Studio workshop
----
-
-## Icebreaker
-
-![bg left:40%](../assets/hero-news-2026-02-13-brimbank-tech-school-workshop.avif)
-
-introduce yourself to your neighbor(s) and ask them:
-
-- why is a language model called a "language model"?
-- what does it mean to "model language"?
-
----
+--- title: LLMs Unplugged (Fundamentals + Pre-trained Model + Sampling)
+description: A Cybernetic Studio workshop --- ## Icebreaker ![bg
+left:40%](../assets/hero-news-2026-02-13-brimbank-tech-school-workshop.avif)
+introduce yourself to your neighbor(s) and ask them: - why is a language model
+called a "language model"? - what does it mean to "model language"? ---
 
 <!-- _class: banner -->
 
-# LLMs Unplugged
+# LLMs Unplugged Understand AI by building it yourself
+![bg](../assets/bg-title.avif) --- ## Acknowledgement of Country ![bg
+right:40%](../assets/bg-acknowledgement.avif) ---
 
-Understand AI by building it yourself
-
-![bg](../assets/bg-title.avif)
-
----
-
-## Acknowledgement of Country
-
-![bg right:40%](../assets/bg-acknowledgement.avif)
-
----
-
-<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; position: absolute; inset: 0;">
-  <img src="../assets/headshot-eddie-anu.avif" style="width: 100%; height: 100%; object-fit: cover;" alt="Eddie">
-  <img src="../assets/headshot-ben-anu.avif" style="width: 100%; height: 100%; object-fit: cover;" alt="Ben">
-  <img src="../assets/headshot-cole-anu.avif" style="width: 100%; height: 100%; object-fit: cover;" alt="Cole">
+<div
+  style="display: grid; grid-template-columns: 1fr 1fr 1fr; position: absolute; inset: 0;"
+>
+  <img
+    src="../assets/headshot-eddie-anu.avif"
+    style="width: 100%; height: 100%; object-fit: cover;"
+    alt="Eddie"
+  />
+  <img
+    src="../assets/headshot-ben-anu.avif"
+    style="width: 100%; height: 100%; object-fit: cover;"
+    alt="Ben"
+  />
+  <img
+    src="../assets/headshot-cole-anu.avif"
+    style="width: 100%; height: 100%; object-fit: cover;"
+    alt="Cole"
+  />
 </div>
 
 ---
 
 <!-- _class: impact -->
 
-**activity**
-
-everyone stand up
-
----
+**activity** everyone stand up ---
 
 <!-- _class: impact -->
 
-sit down if you
-
-have **never** used ChatGPT
-
----
+sit down if you have **never** used ChatGPT ---
 
 <!-- _class: impact -->
 
-sit down if you
-
-haven't used it in the last **month**
-
----
+sit down if you haven't used it in the last **month** ---
 
 <!-- _class: impact -->
 
-sit down if you
-
-haven't used it in the last **week**
-
----
+sit down if you haven't used it in the last **week** ---
 
 <!-- _class: impact -->
 
-sit down if you
-
-haven't used it in the last **day**
-
----
+sit down if you haven't used it in the last **day** ---
 
 <!-- _class: impact -->
 
-sit down if you
-
-haven't used it in the last **hour**
-
----
+sit down if you haven't used it in the last **hour** ---
 
 <!-- _class: impact -->
 
-sit down if you
+sit down if you haven't used it in the last **5 minutes** --- ## What is this
+about? ![bg right:40%](../assets/bg-core-insight.avif) how **language models**
+work by exploiting patterns in text to generate new text ---
 
-haven't used it in the last **5 minutes**
+<!-- _class: centered -->
 
----
+![qr](https://www.llmsunplugged.org) ---
 
-## What is this about?
+<!-- _class: banner -->
 
-![bg right:40%](../assets/bg-core-insight.avif)
+# Training ![bg brightness:0.5](../assets/bg-div-mechanic.avif) ---
 
-how **language models** work
+<!-- _class: centered -->
 
-by exploiting patterns in text to generate new text
+![qr](https://www.llmsunplugged.org/lessons/training) ---
 
+<!-- _class: banner -->
+
+# Training ![bg brightness:0.5](../assets/bg-div-mechanic.avif) --- ## The
+_language_ of language models ![bg right:60%](../assets/bg-markov.avif) - model
+- token - vocabulary - training ---
+
+<!-- _class: banner -->
+
+# Generation ![bg brightness:0.5](../assets/bg-div-lessons.avif) ---
+
+<!-- _class: centered -->
+
+![qr](https://www.llmsunplugged.org/lessons/generation) ---
+
+<!-- _class: banner -->
+
+# Generation ![bg brightness:0.5](../assets/bg-div-lessons.avif) ---
+
+<!-- _class: banner -->
+
+# Shareback ![bg brightness:0.5](../assets/bg-div-reception.avif) --- ## The
+_language_ of language models ![bg cover left:60%](../assets/bg-shannon.avif) -
+prompt - completion/response/prediction - context window ---
+
+<!-- _class: banner -->
+
+# Pre-trained generation ![bg brightness:0.3](../assets/bg-div-historical.avif)
 ---
 
 <!-- _class: centered -->
 
-![qr](https://www.llmsunplugged.org)
+![qr](https://www.llmsunplugged.org/lessons/pretrained-generation) ---
 
+<!-- _class: banner -->
+
+# Pre-trained generation ![bg brightness:0.3](../assets/bg-div-historical.avif)
 ---
 
 <!-- _class: banner -->
 
-# Training
+# Shareback ![bg brightness:0.5](../assets/bg-div-reception.avif) --- ## The
+_language_ of language models ![bg right:60%](../assets/bg-design-goals.avif) -
+pre-training - foundation model ---
 
-![bg brightness:0.5](../assets/bg-div-mechanic.avif)
+<!-- _class: banner -->
 
----
+# Sampling ![bg brightness:0.3](../assets/bg-div-resources.avif) ---
 
 <!-- _class: centered -->
 
-![qr](https://www.llmsunplugged.org/lessons/training)
-
----
-
-<!-- _class: banner -->
-
-# Training
-
-![bg brightness:0.5](../assets/bg-div-mechanic.avif)
-
----
-
-## The _language_ of language models
-
-![bg right:60%](../assets/bg-markov.avif)
-
-- model
-- token
-- vocabulary
-- training
-
----
+![qr](https://www.llmsunplugged.org/lessons/sampling) --- ## Example: Haiku
+sampling Generate text using your model, but 1. track syllables in current line
+(5-7-5 pattern) 2. roll dice to select next word as normal 3. if selected word
+exceeds line's syllable limit, re-roll 4. start new line when syllable count
+reached (you can either use _your_ new language model or the "booklet" one we
+gave you) ---
 
 <!-- _class: banner -->
 
-# Generation
+# Sampling ![bg brightness:0.3](../assets/bg-div-resources.avif) ---
 
-![bg brightness:0.5](../assets/bg-div-lessons.avif)
+<!-- _class: banner -->
 
----
+# Shareback ![bg brightness:0.5](../assets/bg-div-reception.avif) --- ## The
+_language_ of language models ![bg cover left:60%](../assets/bg-randomness.avif)
+- sampling - truncation (top-k) - temperature ---
+
+<!-- _class: banner -->
+
+# So what? ![bg brightness:0.2](../assets/bg-div-quote.avif) ---
 
 <!-- _class: centered -->
 
-![qr](https://www.llmsunplugged.org/lessons/generation)
-
----
-
-<!-- _class: banner -->
-
-# Generation
-
-![bg brightness:0.5](../assets/bg-div-lessons.avif)
-
----
-
-<!-- _class: banner -->
-
-# Shareback
-
-![bg brightness:0.5](../assets/bg-div-reception.avif)
-
----
-
-## The _language_ of language models
-
-![bg cover left:60%](../assets/bg-shannon.avif)
-
-- prompt
-- completion/response/prediction
-- context window
-
----
-
-<!-- _class: banner -->
-
-# Pre-trained generation
-
-![bg brightness:0.3](../assets/bg-div-historical.avif)
-
----
-
-<!-- _class: centered -->
-
-![qr](https://www.llmsunplugged.org/lessons/pretrained-generation)
-
----
-
-<!-- _class: banner -->
-
-# Pre-trained generation
-
-![bg brightness:0.3](../assets/bg-div-historical.avif)
-
----
-
-<!-- _class: banner -->
-
-# Shareback
-
-![bg brightness:0.5](../assets/bg-div-reception.avif)
-
----
-
-## The _language_ of language models
-
-![bg right:60%](../assets/bg-design-goals.avif)
-
-- pre-training
-- foundation model
-
----
-
-<!-- _class: banner -->
-
-# Sampling
-
-![bg brightness:0.3](../assets/bg-div-resources.avif)
-
----
-
-<!-- _class: centered -->
-
-![qr](https://www.llmsunplugged.org/lessons/sampling)
-
----
-
-## Example: Haiku sampling
-
-Generate text using your model, but
-
-1. track syllables in current line (5-7-5 pattern)
-2. roll dice to select next word as normal
-3. if selected word exceeds line's syllable limit, re-roll
-4. start new line when syllable count reached
-
-(you can either use _your_ new language model or the "booklet" one we gave you)
-
----
-
-<!-- _class: banner -->
-
-# Sampling
-
-![bg brightness:0.3](../assets/bg-div-resources.avif)
-
----
-
-<!-- _class: banner -->
-
-# Shareback
-
-![bg brightness:0.5](../assets/bg-div-reception.avif)
-
----
-
-## The _language_ of language models
-
-![bg cover left:60%](../assets/bg-randomness.avif)
-
-- sampling
-- truncation (top-k)
-- temperature
-
----
-
-<!-- _class: banner -->
-
-# So what?
-
-![bg brightness:0.2](../assets/bg-div-quote.avif)
-
----
-
-<!-- _class: centered -->
-
-![qr](https://www.llmsunplugged.org)
-
----
+![qr](https://www.llmsunplugged.org) ---
 
 <!-- _class: socy-logo -->
 
----
-
-# Q&A
-
-![bg right:60%](../assets/bg-participants.avif)
-
-[ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au)
-
----
+--- # Q&A ![bg right:60%](../assets/bg-participants.avif)
+[ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au) ---
 
 <!-- _class: centered -->
 
