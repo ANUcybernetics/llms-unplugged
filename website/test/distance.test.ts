@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { buildBigramModel, getVocabulary, parseTokens } from "../.vitepress/theme/utils/tokens";
-import { manhattanDistance, buildDistanceMatrix } from "../.vitepress/theme/utils/distance";
+import { buildBigramModel, getVocabulary, parseTokens } from "../src/lib/tokens";
+import { manhattanDistance, buildDistanceMatrix } from "../src/lib/distance";
 
 function modelFrom(text: string) {
   const tokens = parseTokens(text);

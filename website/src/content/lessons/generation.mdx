@@ -1,0 +1,316 @@
+---
+title: Generation
+description:
+  Use your hand-built bigram model to generate new text through weighted random
+  sampling.
+order: 2
+topic: fundamentals
+keyIdea:
+  Language models generate text one word at a time by sampling the next word
+  according to learned counts.
+---
+
+import VariantToggle from "../../components/VariantToggle.svelte";
+import Variant from "../../components/Variant.astro";
+import Callout from "../../components/Callout.astro";
+import LmGrid from "../../components/LmGrid.astro";
+import GenerationWidget from "../../components/GenerationWidget.svelte";
+import BucketGenerationWidget from "../../components/BucketGenerationWidget.svelte";
+
+# Generation
+
+<VariantToggle client:load />
+
+<Variant is="grid">
+
+<Callout type="tip" title="Weighted randomness">
+
+This lesson involves rolling dice to sample from weighted probability
+distributions. If your students need extra support with this concept, consider
+running the [Weighted Randomness](/lessons/weighted-randomness) lesson first.
+
+</Callout>
+
+</Variant>
+
+Use a pre-trained (hand-built) bigram model to generate new text through
+weighted random sampling.
+
+<Variant is="grid">
+
+![Hero image: Grid Generation](/assets/images/hero-grid-generation.avif)
+
+</Variant>
+
+<Variant is="bucket">
+
+![Hero image: Bucket Generation](/assets/images/hero-bucket-generation.avif)
+
+</Variant>
+
+## You will need
+
+<Variant is="grid">
+
+- your completed bigram model from [Training](/lessons/training)
+- a d10 (or similar) for weighted sampling
+- pen and paper for jotting down the generated text
+
+</Variant>
+
+<Variant is="bucket">
+
+- your completed bucket model from [Training](/lessons/training)
+- pen and paper for writing down the generated text
+
+</Variant>
+
+## Your goal
+
+Generate new text from your bigram language model. Stretch goal: keep going and
+write a whole story.
+
+## Key idea
+
+<Variant is="grid">
+
+A language model proposes several possible next words along with how likely each
+is. Dice rolls pick among those options, and repeating the process word by word
+yields fluent text.
+
+</Variant>
+
+<Variant is="bucket">
+
+A language model proposes several possible next words. In the bucket model, each
+bucket contains all the tokens that could come next---and some tokens appear
+multiple times, making them more likely to be picked. Choosing randomly from a
+bucket and repeating the process word by word creates new text.
+
+</Variant>
+
+## Algorithm
+
+<Variant is="grid">
+
+1. Choose a starting word from the first column of your grid.
+2. Look at that word's row to find all possible next words and their counts.
+3. Roll dice weighted by the counts (see
+   [Weighted Randomness](/lessons/weighted-randomness)).
+4. Write down the chosen word and make it your new starting word.
+5. Repeat from step 2 until you hit a natural stopping point (e.g., `.`) or your
+   desired length.
+
+</Variant>
+
+<Variant is="bucket">
+
+1. Choose a starting bucket and write down its label---this is the first word of
+   your generated text.
+2. Close your eyes and pick a random token from inside that bucket.
+3. Write down the token you picked.
+4. Put the token back in the bucket (so you can use it again later).
+5. Find the bucket whose label matches the token you just picked.
+6. Repeat from step 2 until you reach a stopping point (e.g. an empty bucket or
+   your desired length).
+
+</Variant>
+
+## Example
+
+Before you try generating text yourself, work through this example to see the
+algorithm in action.
+
+<Variant is="grid">
+
+Using the same bigram model from the example in [Training](/lessons/training):
+
+<LmGrid tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
+
+- choose (for example) `see` as your starting word
+- `see` (row) → `spot` (column); it's the only option, so write down `spot` as
+  next word
+- `spot` → `run` (25%), `jump` (25%) or `,` (50%); roll dice to choose
+- let's say dice picks `run`; write it down
+- `run` → `.` (67%) or `,` (33%); roll dice to choose
+- let's say dice picks `.`; write it down
+- `.` → `see` (33%), `run` (33%) or `jump` (33%); roll dice to choose
+- let's say dice picks `see`; write it down
+- `see` → `spot`; it's the only option, so write down `spot`... and so on
+
+After the above steps, the generated text is _"see spot run. see spot"_
+
+</Variant>
+
+<Variant is="bucket">
+
+Using the bucket model from the example in [Training](/lessons/training):
+
+| Bucket label | Tokens inside |
+| ------------ | ------------- |
+| see          | `spot` `spot` |
+| spot         | `run` `jump`  |
+| run          | `.`           |
+| .            | `see`         |
+| jump         | `.`           |
+
+**Generation sequence:**
+
+1. Choose `see` as starting bucket---write down "see"
+2. Pick randomly from the "see" bucket---both tokens are `spot`, so we get
+   `spot`---write it down
+3. Move to the "spot" bucket---pick randomly between `run` and `jump`
+4. Let's say we pick `run`---write it down
+5. Move to the "run" bucket---only `.` is inside, so we get `.`---write it down
+6. Move to the "." bucket---only `see` is inside, so we get `see`---write it
+   down
+7. Move to the "see" bucket---pick `spot` again---write it down
+8. Move to the "spot" bucket---this time let's say we pick `jump`---write it
+   down
+9. Move to the "jump" bucket---only `.` is inside---write it down
+10. The "." bucket still has a token, so we could continue, or stop here
+
+**Generated text:** _"see spot run. see spot jump."_
+
+Notice how the randomness comes from physically picking tokens without looking.
+Buckets with more tokens of the same type are more likely to produce that
+token---the "see" bucket always produces `spot` because that's all it contains.
+
+</Variant>
+
+## Instructor notes
+
+### Discussion questions
+
+<Variant is="grid">
+
+- how does the starting word affect your generated text?
+- why does the text sometimes get stuck in loops?
+- if this is a _bigram_ (i.e. 2-gram) model, how would a unigram (1-gram) model
+  work?
+- how could you make generation less repetitive?
+- does the generated text capture the style of your training text?
+
+</Variant>
+
+<Variant is="bucket">
+
+- how does the starting bucket affect your generated text?
+- why might the text sometimes get stuck repeating the same pattern?
+- what happens when a bucket only has one token inside?
+- why do we put the token back after picking it?
+- does the generated text sound like the original training text?
+
+</Variant>
+
+### Troubleshooting
+
+<Variant is="grid">
+
+- **"Every row only has one tally mark---there's nothing to roll for."** If the
+  group didn't get very far in [Training](/lessons/training) and no row has more
+  than one tally mark, the generation algorithm won't be very
+  interesting---there will only ever be one option for the next word and they'll
+  be stuck on rails. In this case, either encourage them to go back and do a bit
+  more training, or just have them add some extra tally marks to the grid
+  wherever they like. This isn't as much like cheating as it might seem---it's
+  really just an example of using [Synthetic Data](/lessons/synthetic-data).
+- **"I landed on a word that doesn't have its own row."** This can happen if a
+  word only ever appeared as the _last_ word in the training text---it has a
+  column (other words lead to it) but no row (it never leads to anything). Just
+  pick any other word that does have a row and continue from there.
+- **"We're stuck in a loop."** With small models it's common to bounce between
+  two words that only point at each other (e.g. `,` → `spot` → `,` → `spot` →
+  ...). Try picking a different starting word, or just choose any other valid
+  next word to break out of the cycle.
+
+</Variant>
+
+<Variant is="bucket">
+
+- **"Every bucket only has one token---there's nothing random about this."** If
+  the group didn't get very far in [Training](/lessons/training) and each bucket
+  only has one token, the generation process won't feel random at all---there
+  will only ever be one option. Either encourage them to go back and do a bit
+  more training, or have them add extra tokens to buckets wherever they like.
+  This isn't as much like cheating as it might seem---it's really just an
+  example of using [Synthetic Data](/lessons/synthetic-data).
+- **"I picked a word that doesn't have its own bucket."** This can happen if a
+  word only ever appeared as the _last_ word in the training text---it ended up
+  inside another bucket but never got a bucket of its own. Just pick any bucket
+  that does exist and continue from there.
+- **"We keep going back and forth between the same two words."** With small
+  models it's common to get stuck in a loop where two buckets keep sending you
+  to each other. Try starting from a different bucket, or just pick any other
+  token to break the cycle.
+
+</Variant>
+
+### Connection to current LLMs
+
+This generation process is identical to how current LLMs produce text:
+
+- **sequential generation**: both generate one word at a time
+- **probabilistic sampling**: both use weighted random selection (exactly like
+  your dice or tokens)
+- **probability distribution**: neural network outputs probabilities for all
+  50,000+ possible next tokens
+- **no planning**: neither looks ahead---just picks the next word
+- **variability**: same prompt can produce different outputs due to randomness
+
+The fact: sophisticated AI responses emerge from this simple process repeated
+thousands of times. Your paper model demonstrates that language generation is
+fundamentally about sampling from learned probability distributions. The
+randomness is why LLMs give different responses to the same prompt and why
+language models can be creative rather than repetitive. These physical sampling
+methods demonstrate the exact mathematical operation happening billions of times
+per second inside modern language models.
+
+<Variant is="grid">
+
+Note: in AI/ML more broadly, this process of using a trained model to produce
+outputs is commonly called "inference"---you may encounter this term in other
+contexts. In these teaching resources we use "generation" specifically because
+it more clearly describes what language models do: they generate text.
+
+</Variant>
+
+<Variant is="bucket">
+
+### Comparison to dice method
+
+This bucket method and the dice method produce equivalent results:
+
+- dice rolls with weighted probabilities select from options based on counts
+- bucket picking selects from options where counts are represented by multiple
+  physical tokens
+- buckets make the probability tangible---a bucket with three `spot` tokens and
+  one `run` token gives `spot` a 75% chance, just like weighted dice would
+
+The bucket method avoids the need to calculate percentages or understand dice
+mechanics, making it more accessible for younger learners.
+
+</Variant>
+
+## Interactive widget
+
+<Variant is="grid">
+
+Step through the generation process at your own pace. Click on a row to select a
+starting word, then press Play or Step to watch the dice roll and text being
+generated. You can also edit the training text to create your own model.
+
+<GenerationWidget client:visible />
+
+</Variant>
+
+<Variant is="bucket">
+
+Step through the generation process at your own pace. Click on a bucket to
+select a starting word, then press Play or Step to watch tokens being picked
+randomly and text being generated. You can also edit the training text to create
+your own model.
+
+<BucketGenerationWidget client:visible />
+
+</Variant>

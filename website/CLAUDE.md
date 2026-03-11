@@ -4,24 +4,46 @@ Static website for LLMs Unplugged.
 
 ## Architecture
 
-VitePress static site with custom Vue components for interactive language model
-demonstrations. Vite is the build tool.
+Astro 6 static site with Svelte 5 components for interactive language model
+demonstrations.
 
 ### Tech stack
 
-- VitePress 1.6+ (Vue-powered static site generator)
-- Vue 3 (for custom components)
+- Astro 6 (static site generator)
+- Svelte 5 (interactive components using runes)
+- MDX (lessons with embedded components)
 - TypeScript
+- pnpm (package manager)
+- oxfmt (JS/TS formatting) + Prettier (Astro/Svelte/MD/CSS formatting)
+- oxlint (linting)
 - Vitest (testing)
+
+### Project structure
+
+- `src/pages/` - Astro page routes
+- `src/content/lessons/` - lesson MDX files (content collection)
+- `src/content/news/` - news markdown files (content collection)
+- `src/components/` - Astro and Svelte components
+- `src/layouts/` - page layouts (Base, Page, Lesson, News)
+- `src/lib/` - shared utilities and stores
+- `src/styles/` - global CSS
+- `public/` - static assets (images, favicon, CNAME)
+
+### Key patterns
+
+- **Variant toggle**: grid/bucket variant uses CSS `data-variant` attribute on
+  `<html>` with `.grid-only`/`.bucket-only` CSS classes. No JS framework needed
+  for the toggle itself---just a `<Variant is="grid">` Astro component that
+  renders a div with the appropriate class.
+- **Svelte stores**: shared state (variant, training text, playback) uses Svelte
+  5 runes in `.svelte.ts` files
+- **Content collections**: lessons and news use Astro content collections with
+  Zod schemas defined in `src/content.config.ts`
 
 ## Development
 
-- the LLMs Unplugged lesson content source files are in `lessons/*.md`, grouped
-  by `topic` frontmatter (defined in `lessons/topics.ts`)
-- custom Vue components live in `.vitepress/theme/components/`
-
-- `npm run dev` - dev server with hot reload
-- `npm run build` - production build to `.vitepress/dist/`
-- `npm run test` - run tests
+- `pnpm run dev` - dev server with hot reload
+- `pnpm run build` - production build to `dist/`
+- `pnpm run test` - run tests
 
 Whenever the linter/checker reports warnings or errors, fix them.

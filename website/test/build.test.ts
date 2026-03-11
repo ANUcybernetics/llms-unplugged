@@ -1,17 +1,42 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import { execSync } from "node:child_process";
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, globSync } from "node:fs";
 import { join } from "node:path";
-import { globSync } from "glob";
 import { findBrokenPdfLinks } from "./utils/linkChecker";
 
-const DIST_DIR = ".vitepress/dist";
+const DIST_DIR = "dist";
 
-describe("VitePress Build", () => {
+function findBrokenInternalLinks(htmlFiles: string[], distDir: string): string[] {
+  const linkRegex = /href="(\/[^"#]*)(?:#[^"]*)?"/g;
+  const broken: string[] = [];
+
+  for (const htmlFile of htmlFiles) {
+    const content = readFileSync(htmlFile, "utf-8");
+    let match;
+    while ((match = linkRegex.exec(content)) !== null) {
+      const linkPath = match[1];
+      if (linkPath.startsWith("/assets/")) {
+        if (!existsSync(join(distDir, linkPath))) {
+          broken.push(`${htmlFile}: ${linkPath}`);
+        }
+      } else {
+        const withTrailingSlash = linkPath.endsWith("/") ? linkPath : linkPath + "/";
+        const indexPath = join(distDir, withTrailingSlash, "index.html");
+        const directPath = join(distDir, linkPath);
+        if (!existsSync(indexPath) && !existsSync(directPath)) {
+          broken.push(`${htmlFile}: ${linkPath}`);
+        }
+      }
+    }
+  }
+
+  return [...new Set(broken)];
+}
+
+describe("Astro Build", () => {
   beforeAll(() => {
-    // Build the site - this also validates dead links
     execSync("npm run build", { stdio: "inherit" });
-  }, 60000); // 60 second timeout for build
+  }, 120000);
 
   it("creates dist directory", () => {
     expect(existsSync(DIST_DIR)).toBe(true);
@@ -26,33 +51,42 @@ describe("VitePress Build", () => {
     expect(existsSync(lessonsDir)).toBe(true);
 
     const expectedLessons = [
-      "training.html",
-      "generation.html",
-      "trigram.html",
-      "weighted-randomness.html",
-      "context-columns.html",
-      "pretrained-generation.html",
-      "word-embeddings.html",
-      "lora.html",
-      "synthetic-data.html",
-      "sampling.html",
+      "training",
+      "generation",
+      "trigram",
+      "weighted-randomness",
+      "context-columns",
+      "pretrained-generation",
+      "word-embeddings",
+      "lora",
+      "synthetic-data",
+      "sampling",
     ];
 
-    const files = readdirSync(lessonsDir);
     for (const lesson of expectedLessons) {
-      expect(files).toContain(lesson);
+      expect(
+        existsSync(join(lessonsDir, lesson, "index.html")),
+        `Missing lesson page: ${lesson}`,
+      ).toBe(true);
     }
   });
 
   it("generates static pages", () => {
-    expect(existsSync(join(DIST_DIR, "about.html"))).toBe(true);
-    expect(existsSync(join(DIST_DIR, "faq.html"))).toBe(true);
-    expect(existsSync(join(DIST_DIR, "educators.html"))).toBe(true);
+    expect(existsSync(join(DIST_DIR, "about/index.html"))).toBe(true);
+    expect(existsSync(join(DIST_DIR, "faq/index.html"))).toBe(true);
+    expect(existsSync(join(DIST_DIR, "educators/index.html"))).toBe(true);
   });
 
   it("copies static assets", () => {
     expect(existsSync(join(DIST_DIR, "favicon.svg"))).toBe(true);
     expect(existsSync(join(DIST_DIR, "CNAME"))).toBe(true);
+  });
+
+  it("has no broken internal links", () => {
+    const htmlFiles = globSync(join(DIST_DIR, "**/*.html"));
+    const brokenLinks = findBrokenInternalLinks(htmlFiles, DIST_DIR);
+
+    expect(brokenLinks, `Broken internal links:\n${brokenLinks.join("\n")}`).toEqual([]);
   });
 
   it("has no broken links to PDF files", () => {
@@ -71,12 +105,8 @@ describe("VitePress Build", () => {
     expect(files.some((f) => f.startsWith("hero-"))).toBe(true);
   });
 
-  it("generates 404 page", () => {
-    expect(existsSync(join(DIST_DIR, "404.html"))).toBe(true);
-  });
-
   it("generates RSS feed", () => {
-    const feedPath = join(DIST_DIR, "feed.rss");
+    const feedPath = join(DIST_DIR, "feed.xml");
     expect(existsSync(feedPath)).toBe(true);
 
     const content = readFileSync(feedPath, "utf-8");

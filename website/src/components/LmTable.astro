@@ -1,0 +1,70 @@
+---
+import { tally } from "../lib/tally";
+
+interface Props {
+  headers: string[];
+  data: (string | number)[][];
+}
+
+const { headers, data } = Astro.props;
+
+function processCell(cell: string | number): string {
+  if (typeof cell === "number") {
+    return tally(cell);
+  }
+  return cell ?? "";
+}
+
+const processedData = data.map((row) => row.map(processCell));
+---
+
+<div class="lm-table">
+  <table>
+    <thead>
+      <tr>
+        {headers.map((header) => <th>{header}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {
+        processedData.map((row) => (
+          <tr>
+            {row.map((cell) => (
+              <td set:html={cell || "&nbsp;"} />
+            ))}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .lm-table {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  .lm-table table {
+    border-collapse: collapse;
+    border: 1px solid var(--color-border);
+    font-size: 0.875rem;
+  }
+
+  .lm-table th,
+  .lm-table td {
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+    border: 1px solid var(--color-border);
+  }
+
+  .lm-table th {
+    background-color: var(--color-brand-soft);
+    font-weight: 600;
+  }
+
+  .lm-table td:first-child {
+    text-align: left;
+    font-family: var(--font-mono);
+  }
+</style>

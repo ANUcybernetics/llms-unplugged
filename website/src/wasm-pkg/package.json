@@ -1,11 +1,8 @@
 {
   "name": "llms_unplugged",
-  "type": "module",
-  "collaborators": [
-    "Ben Swift <ben@benswift.me>"
-  ],
-  "description": "CLI tool for generating N-gram language model booklets",
   "version": "1.4.7",
+  "description": "CLI tool for generating N-gram language model booklets",
+  "homepage": "https://www.llmsunplugged.org",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -16,10 +13,13 @@
     "llms_unplugged.js",
     "llms_unplugged.d.ts"
   ],
-  "main": "llms_unplugged.js",
-  "homepage": "https://www.llmsunplugged.org",
-  "types": "llms_unplugged.d.ts",
+  "type": "module",
   "sideEffects": [
     "./snippets/*"
+  ],
+  "main": "llms_unplugged.js",
+  "types": "llms_unplugged.d.ts",
+  "collaborators": [
+    "Ben Swift <ben@benswift.me>"
   ]
 }

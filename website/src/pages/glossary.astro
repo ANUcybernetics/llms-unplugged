@@ -1,0 +1,459 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+---
+
+<PageLayout
+  title="Glossary"
+  description="Key terms and concepts used in LLMs Unplugged, with plain-language explanations and links to relevant lessons."
+>
+  <h1>Glossary</h1>
+
+  <p>
+    This glossary connects the hands-on activities in LLMs Unplugged with the
+    technical terms used in modern language models. Each entry provides a plain
+    language explanation and links to relevant lessons.
+  </p>
+
+  <h2>Core concepts</h2>
+
+  <h3>Token</h3>
+
+  <p>
+    A single unit of text that the model works with. In our activities, each
+    word and punctuation mark (<code>.</code>, <code>,</code>) is a token.
+    Modern LLMs use subword tokens that can be parts of words.
+  </p>
+
+  <p><em>Synonyms:</em> word (in introductory contexts)</p>
+
+  <p>
+    <em>Style note:</em> the lessons use &ldquo;word&rdquo; initially to keep things
+    accessible, then transition to &ldquo;token&rdquo; once the concept is established.
+    Both terms refer to the same thing in our activities.
+  </p>
+
+  <p><em>See:</em> <a href="/lessons/training">Training</a></p>
+
+  <h3>Vocabulary</h3>
+
+  <p>
+    All the unique tokens your model knows. The words across the top and side of
+    your grid (or the bucket labels) form your vocabulary.
+  </p>
+
+  <p><em>See:</em> <a href="/lessons/training">Training</a></p>
+
+  <h3>Language model</h3>
+
+  <p>
+    A system that predicts what text comes next based on patterns learned from
+    training data. Your hand-built grid or bucket collection is a language
+    model.
+  </p>
+
+  <p>
+    <em>See:</em>
+    <a href="/lessons/training">Training</a>,
+    <a href="/lessons/generation">Generation</a>
+  </p>
+
+  <h3>Training</h3>
+
+  <p>
+    The process of building a model by counting patterns in text. When you tally
+    word transitions or fill buckets with tokens, you&rsquo;re training your
+    model.
+  </p>
+
+  <p><em>Synonyms:</em> learning</p>
+
+  <p><em>See:</em> <a href="/lessons/training">Training</a></p>
+
+  <h3>Generation</h3>
+
+  <p>
+    Using a trained model to produce new text by repeatedly predicting and
+    selecting the next token.
+  </p>
+
+  <p><em>Synonyms:</em> inference (in broader AI/ML contexts)</p>
+
+  <p><em>See:</em> <a href="/lessons/generation">Generation</a></p>
+
+  <h3>Probability distribution</h3>
+
+  <p>
+    A set of options with associated likelihoods. In your model, the counts in a
+    row (or tokens in a bucket) form a probability distribution over possible
+    next words.
+  </p>
+
+  <p>
+    <em>See:</em>
+    <a href="/lessons/generation">Generation</a>,
+    <a href="/lessons/sampling">Sampling</a>
+  </p>
+
+  <h2>Model types</h2>
+
+  <h3>Bigram model</h3>
+
+  <p>
+    A model that predicts the next word based on one previous word. This is what
+    you build in the fundamental lessons&mdash;each row of your grid represents
+    what can follow a single word.
+  </p>
+
+  <p><em>Synonyms:</em> 2-gram model</p>
+
+  <p>
+    <em>See:</em>
+    <a href="/lessons/training">Training</a>,
+    <a href="/lessons/generation">Generation</a>
+  </p>
+
+  <h3>Trigram model</h3>
+
+  <p>
+    A model that uses two previous words for prediction, capturing more context
+    than a bigram. The grid becomes three-dimensional (or you track word pairs
+    instead of single words).
+  </p>
+
+  <p><em>Synonyms:</em> 3-gram model</p>
+
+  <p><em>See:</em> <a href="/lessons/trigram">Trigram</a></p>
+
+  <h3>N-gram model</h3>
+
+  <p>
+    The general term for models that predict based on the previous <em>n-1</em>
+    words. Bigrams are 2-grams, trigrams are 3-grams, and so on.
+  </p>
+
+  <p>
+    <em>See:</em>
+    <a href="/lessons/training">Training</a>,
+    <a href="/lessons/trigram">Trigram</a>
+  </p>
+
+  <h3>Context window</h3>
+
+  <p>
+    How many previous tokens the model considers when making predictions.
+    Bigrams have a context window of 1, trigrams have 2, and modern models like
+    GPT-4 can consider 128,000+ tokens.
+  </p>
+
+  <p>
+    <em>See:</em>
+    <a href="/lessons/trigram">Trigram</a>,
+    <a href="/lessons/context-columns">Context Columns</a>
+  </p>
+
+  <h2>Training variants</h2>
+
+  <h3>Grid variant</h3>
+
+  <p>
+    The matrix-based approach where you draw a grid with words as row and column
+    headers, then add tally marks to track which words follow which.
+  </p>
+
+  <p><em>See:</em> <a href="/lessons/training">Training</a></p>
+
+  <h3>Bucket variant</h3>
+
+  <p>
+    The physical container approach where each bucket is labelled with a word
+    and contains paper tokens representing words that followed it in the
+    training text.
+  </p>
+
+  <p><em>See:</em> <a href="/lessons/training">Training</a></p>
+
+  <h3>Matrix</h3>
+
+  <p>
+    A grid or table showing relationships between tokens. Your hand-drawn grids
+    are matrices tracking which words follow other words. Each row can also be
+    interpreted as an embedding vector.
+  </p>
+
+  <p>
+    <em>See:</em>
+    <a href="/lessons/training">Training</a>,
+    <a href="/lessons/word-embeddings">Word Embeddings</a>
+  </p>
+
+  <h2>Sampling and generation</h2>
+
+  <h3>Weighted random sampling</h3>
+
+  <p>
+    Choosing the next token with probability proportional to its frequency. Your
+    dice rolls implement this&mdash;words with higher counts are more likely to
+    be selected.
+  </p>
+
+  <p><em>See:</em> <a href="/lessons/generation">Generation</a></p>
+
+  <h3>Temperature</h3>
+
+  <p>
+    A parameter controlling randomness in generation. Dividing counts by
+    temperature makes output more random (high temperature) or more predictable
+    (low temperature).
+  </p>
+
+  <p><em>See:</em> <a href="/lessons/sampling">Sampling</a></p>
+
+  <h3>Greedy sampling</h3>
+
+  <p>
+    Always choosing the most likely next word (equivalent to temperature
+    approaching zero). Produces predictable but often repetitive text.
+  </p>
+
+  <p><em>Synonyms:</em> greedy decoding</p>
+
+  <p><em>See:</em> <a href="/lessons/sampling">Sampling</a></p>
+
+  <h3>Beam search</h3>
+
+  <p>
+    A generation strategy that tracks multiple possible sequences
+    simultaneously, choosing the best overall path rather than committing to one
+    word at a time.
+  </p>
+
+  <p><em>See:</em> <a href="/lessons/beam-search">Beam Search</a></p>
+
+  <h3>Beam width</h3>
+
+  <p>
+    How many candidate paths to track during beam search. Beam width 1 is
+    equivalent to greedy search; larger widths explore more possibilities.
+  </p>
+
+  <p><em>See:</em> <a href="/lessons/beam-search">Beam Search</a></p>
+
+  <h3>Truncation strategy</h3>
+
+  <p>
+    A rule that limits which tokens are eligible for selection before sampling.
+    Examples include top-k (only consider the k most likely) and top-p/nucleus
+    (only consider tokens until cumulative probability reaches p).
+  </p>
+
+  <p><em>See:</em> <a href="/lessons/sampling">Sampling</a></p>
+
+  <h2>Understanding and meaning</h2>
+
+  <h3>Embedding</h3>
+
+  <p>
+    A numerical representation of a word. Each row in your bigram grid is that
+    word&rsquo;s embedding vector&mdash;a fingerprint of its usage context.
+  </p>
+
+  <p><em>Synonyms:</em> word vector, embedding vector</p>
+
+  <p>
+    <em>See:</em>
+    <a href="/lessons/word-embeddings">Word Embeddings</a>
+  </p>
+
+  <h3>Similarity matrix</h3>
+
+  <p>
+    A grid showing how similar or different each pair of words is, calculated by
+    comparing their embedding vectors. Words used in similar contexts have
+    similar embeddings.
+  </p>
+
+  <p><em>Synonyms:</em> distance matrix, distance grid</p>
+
+  <p>
+    <em>See:</em>
+    <a href="/lessons/word-embeddings">Word Embeddings</a>
+  </p>
+
+  <h3>Attention mechanism</h3>
+
+  <p>
+    The ability to focus on relevant previous words when making predictions.
+    Context columns are a manual form of attention, letting you consider
+    grammatical categories rather than just the immediately preceding word.
+  </p>
+
+  <p>
+    <em>See:</em>
+    <a href="/lessons/context-columns">Context Columns</a>
+  </p>
+
+  <h2>Advanced concepts</h2>
+
+  <h3>Fine-tuning</h3>
+
+  <p>
+    Additional training on specific text to adapt a model for a particular
+    domain or task. Like adding more tallies to your grid from a new text
+    source.
+  </p>
+
+  <p>
+    <em>See:</em>
+    <a href="/lessons/lora">LoRA</a>,
+    <a href="/lessons/synthetic-data">Synthetic Data</a>
+  </p>
+
+  <h3>LoRA (Low-Rank Adaptation)</h3>
+
+  <p>
+    A technique for efficiently fine-tuning models by training a small
+    &ldquo;adaptation layer&rdquo; rather than modifying all the original
+    parameters.
+  </p>
+
+  <p><em>See:</em> <a href="/lessons/lora">LoRA</a></p>
+
+  <h3>RLHF (Reinforcement Learning from Human Feedback)</h3>
+
+  <p>
+    A training technique where human preferences guide the model to produce more
+    helpful, harmless, and honest outputs.
+  </p>
+
+  <p><em>See:</em> <a href="/lessons/rlhf">RLHF</a></p>
+
+  <h3>Agentic tool use</h3>
+
+  <p>
+    The ability of language models to act as agents by recognising when to call
+    external tools (like calculators or search engines) in a loop rather than
+    generating text directly.
+  </p>
+
+  <p>
+    <em>See:</em>
+    <a href="/lessons/agentic-tool-use">Agentic Tool Use</a>
+  </p>
+
+  <h3>Synthetic data</h3>
+
+  <p>
+    Training data generated by models rather than collected from humans. Can be
+    used to augment training sets or create specialised datasets.
+  </p>
+
+  <p>
+    <em>See:</em>
+    <a href="/lessons/synthetic-data">Synthetic Data</a>
+  </p>
+
+  <h3>Hallucination</h3>
+
+  <p>
+    When models generate plausible-sounding but false information. This happens
+    because models learn patterns, not facts&mdash;they predict what text
+    <em>looks like</em> rather than what is true.
+  </p>
+
+  <h3>Parameters</h3>
+
+  <p>
+    The numbers stored in the model that encode learned patterns. Each tally
+    mark in your grid is a parameter. Modern models have billions of parameters.
+  </p>
+
+  <p><em>See:</em> <a href="/lessons/training">Training</a></p>
+
+  <h3>Transformer</h3>
+
+  <p>
+    The neural network architecture used by GPT, Claude, and other modern LLMs.
+    It uses attention mechanisms to process all words in parallel rather than
+    sequentially.
+  </p>
+
+  <h2>Connections to your activities</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Your activity</th>
+        <th>Real LLM equivalent</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Tallying word pairs</td>
+        <td>Counting n-grams during training</td>
+      </tr>
+      <tr>
+        <td>Rolling dice for next word</td>
+        <td>Sampling from probability distribution</td>
+      </tr>
+      <tr>
+        <td>Grid rows/columns</td>
+        <td>Weight matrices in neural networks</td>
+      </tr>
+      <tr>
+        <td>Adding context columns</td>
+        <td>Learning attention patterns</td>
+      </tr>
+      <tr>
+        <td>Calculating word distances</td>
+        <td>Computing embedding similarities</td>
+      </tr>
+      <tr>
+        <td>Dividing tallies by temperature</td>
+        <td>Applying temperature to logits</td>
+      </tr>
+      <tr>
+        <td>Keeping top beam paths</td>
+        <td>Beam search with specified beam width</td>
+      </tr>
+      <tr>
+        <td>Picking from buckets</td>
+        <td>Weighted random sampling</td>
+      </tr>
+      <tr>
+        <td>Training on new text</td>
+        <td>Fine-tuning on domain-specific data</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Key insights</h2>
+
+  <ol>
+    <li>
+      <strong>Scale is the main difference:</strong> your small grid vs billions of
+      parameters, but the core concepts are identical.
+    </li>
+    <li>
+      <strong>Randomness creates variety:</strong> both your dice and ChatGPT use
+      controlled randomness to avoid repetitive output.
+    </li>
+    <li>
+      <strong>Context improves prediction:</strong> more context (bigram &rarr; trigram
+      &rarr; transformer) enables better text generation.
+    </li>
+    <li>
+      <strong>Embeddings capture meaning:</strong> words used similarly get similar
+      vectors, whether hand-calculated or learned by neural networks.
+    </li>
+    <li>
+      <strong>Training is just counting:</strong> at its core, training means observing
+      patterns in data&mdash;exactly what you did with tally marks.
+    </li>
+  </ol>
+
+  <p>
+    The hands-on activities demonstrate the fundamental operations of language
+    models. The main advances in modern AI come from doing these same operations
+    at massive scale with learned (rather than hand-crafted) patterns.
+  </p>
+</PageLayout>

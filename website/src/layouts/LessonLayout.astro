@@ -1,0 +1,55 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Sidebar from "../components/Sidebar.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+const currentPath = Astro.url.pathname.replace(/\/$/, "");
+---
+
+<BaseLayout title={title} description={description} ogImage={ogImage}>
+  <div class="lesson-layout">
+    <Sidebar currentPath={currentPath} />
+    <main class="lesson-content">
+      <article class="prose">
+        <slot />
+      </article>
+      <div class="edit-link">
+        <a
+          href={`https://github.com/ANUcybernetics/llms-unplugged/edit/main/website/src/content/lessons/${currentPath.split("/").pop()}.mdx`}
+        >
+          Edit this page on GitHub
+        </a>
+      </div>
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .lesson-layout {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    gap: 2rem;
+  }
+
+  .lesson-content {
+    flex: 1;
+    min-width: 0;
+    max-width: var(--content-max-width);
+    padding: 2rem 0;
+  }
+
+  .edit-link {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-divider);
+    font-size: 0.875rem;
+  }
+</style>

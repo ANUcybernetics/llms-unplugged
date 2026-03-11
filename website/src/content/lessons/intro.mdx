@@ -1,0 +1,153 @@
+---
+title: Introduction
+description: What is a language model, and why learn about them with pen, paper, and dice?
+order: -1
+topic: fundamentals
+keyIdea: Language models predict the next word based on patterns learned from text.
+---
+
+import Callout from "../../components/Callout.astro";
+
+# Introduction
+
+<Callout type="info" title="Lesson Info">
+
+This is a short intro which sets up all the other LLMs Unplugged activities.
+It's a great place to start, but feel free to adapt these initial discussion
+questions based on your audience.
+
+</Callout>
+
+## Icebreaker discussion questions
+
+<Callout type="tip">
+
+Depending on your learning context, these can work well as either "call out your
+answer" or "discuss with your neighbour and share-back at the end" questions.
+
+</Callout>
+
+- Why is a language model called a "language model"? What does it mean to "model
+  language"?
+- In as much detail as you can, explain what happens after typing something into
+  the ChatGPT "prompt box" to produce the answer you get back
+- What's the best/clearest explanation you've ever heard about how Large
+  Language Models (e.g. ChatGPT) actually work? What's the _weirdest_
+  explanation you've ever heard?
+- When was the first language model ever created created? How similar/different
+  was it to LLMs like ChatGPT?
+
+- _activity_ Get everyone to stand up, then have them sit down if they've never
+  used ChatGPT (or a similar Large Language Model). Then, ask if they've used it
+  in the last month/week/day/hour/5mins? At the end, everyone should be sitting
+  down.
+
+## Instructor notes
+
+Don't spend too long on the pre-discussion questions---the fun really starts
+when you get into actual activities (e.g. [Training](/lessons/training)).
+
+The core message of _LLMs Unplugged_ is that a language model is a system that
+predicts what word comes next. Given some text, it answers the question: "What's
+a likely next word?"
+
+Modern LLMs like ChatGPT or Claude contain billions of parameters and run on
+specialised hardware. But the core mechanism is surprisingly simple. By building
+a tiny language model by hand---with pen, paper, and dice---you'll understand
+the same fundamental process that powers these systems.
+
+The difference is scale, not kind. Your hand-built model might learn from a few
+pages of text and have a vocabulary of dozens of words. ChatGPT learned from
+trillions of words and has a vocabulary of tens of thousands. But both work the
+same way: count patterns during training, then use weighted random selection
+during generation.
+
+That's it. Every time you see ChatGPT, Claude, or similar tools generate a
+response, they're doing this one thing over and over: predicting the next word,
+adding it to the text, then predicting again.
+
+### The structure of an _LLMs Unplugged_ lesson
+
+Each _LLMs Unplugged_ lesson covers a single concept. There are some lessons
+which are "prerequisites" for others; see the [Lessons](/lessons/) page for an
+overview of how the lessons are organised.
+
+Each lesson has the following structure:
+
+- **You will need**: the physical materials you'll need to complete the lesson
+- **Your goal**: what you (i.e. the learner) will achieve by the end of the
+  lesson
+- **Key idea**: the central concept or principle of the lesson
+- **Algorithm**: the step-by-step process for completing the lesson
+- **Example**: a simple worked example to illustrate the algorithm
+- **Try it yourself**: an interactive widget which shows the worked example in
+  an on-screen way (not a substitute for the "unplugged" activity at the heart
+  of the lesson, but useful for visualising how it works to get your head around
+  it)
+- and finally, **Instructor notes** which includes:
+  - **Discussion questions**: questions to stimulate discussion and further
+    learning during and after the lesson
+  - **Connection to current LLMs**: some notes on how the activity relates to
+    _real_ Large Language Models like Claude, ChatGPT and Gemini (all figures
+    correct as at December '26, although things are moving fast and new models
+    are being released all the time)
+
+## Historical foundations
+
+The [n-gram language models](https://en.wikipedia.org/wiki/N-gram) participants
+build in these workshops have a lineage stretching back over a century. This
+isn't new theory---it's well-established mathematics applied by hand.
+
+### Markov's stochastic processes (1913)
+
+Andrey Markov introduced the mathematics of what we now call "Markov chains"
+while analysing letter sequences in Pushkin's _Eugene Onegin_. His work
+established that language has statistical structure you can quantify through
+counting patterns and calculating probabilities. Though Markov's interest was
+purely mathematical, his framework for modelling sequences of dependent random
+variables became foundational to computational linguistics.
+
+### Shannon's information theory (1948–1951)
+
+Claude Shannon built directly on Markov's foundation, applying his new
+information theory to written English. Shannon used n-gram models to measure
+entropy and redundancy in language, connecting statistical patterns to
+fundamental limits on compression.
+
+Crucially, Shannon was the first to systematically generate synthetic text using
+these models---starting with random letters (0-gram), then letter frequencies
+(1-gram), then letter pairs (2-gram), and progressively higher orders. This
+generative approach revealed how increasing context length produces increasingly
+realistic text, a finding that remains central to modern language models.
+
+Here's the thing: Shannon's work was itself "unplugged". He counted transitions
+by hand, calculated probabilities manually, and generated synthetic text using
+hand-drawn tables and selection based on frequencies. Modern LLMs use the same
+fundamental approach but at vastly greater scale and with learned rather than
+hand-crafted statistics.
+
+### Connection to modern LLMs
+
+The activities in _LLMs Unplugged_ demonstrate the same operations used in
+current language models. The differences are mostly about scale:
+
+- **parameters**: hand-built models have dozens to hundreds versus billions in
+  modern LLMs, but the core concepts remain identical
+- **training**: manual counting versus automated pattern detection, but both
+  processes learn probability distributions from text
+- **generation**: dice rolls versus GPU-accelerated sampling, but both use
+  weighted randomness to select the next token
+- **context windows**: bigrams and trigrams versus 128,000+ token windows, but
+  longer context always enables better prediction
+
+Modern advances come from doing these same operations at massive scale with
+neural networks that learn patterns automatically. But the fundamental
+insight---that language structure can be captured through statistical
+dependencies and revealed through synthetic generation---comes directly from
+Shannon's mid-twentieth-century work and the unplugged methods he used to
+explore these ideas.
+
+Which is to say: when you're rolling dice and generating sentences in an _LLMs
+Unplugged_ workshop, you're not just learning about modern AI. You're also
+participating in a tradition of hands-on exploration that goes back to the
+origins of information theory itself.

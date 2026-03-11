@@ -1,0 +1,75 @@
+---
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+import "../styles/widgets.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = "Ready-to-use teaching resources for understanding how large language models work through hands-on activities. No computers required.",
+  ogImage = "/og-image.jpg",
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const ogImageUrl = new URL(ogImage, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en" data-variant="grid">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#be830e" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="LLMs Unplugged RSS Feed"
+      href="/feed.xml"
+    />
+
+    <title>
+      {title === "LLMs Unplugged" ? title : `${title} | LLMs Unplugged`}
+    </title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LLMs Unplugged" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <script
+      defer
+      data-domain="www.llmsunplugged.org"
+      src="https://plausible.io/js/script.file-downloads.js"></script>
+
+    {/* Restore variant from localStorage before paint to avoid flash */}
+    <script is:inline>
+      try {
+        const v = localStorage.getItem("llms-unplugged-variant");
+        if (v === "grid" || v === "bucket") {
+          document.documentElement.setAttribute("data-variant", v);
+        }
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div class="print-wordmark">
+      LLMs Unplugged (c) Ben Swift, Cybernetic Studio - CC BY-NC-SA 4.0
+    </div>
+    <Nav />
+    <slot />
+    <Footer />
+  </body>
+</html>

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { tally } from "../.vitepress/theme/utils/tally";
+import { tally } from "../src/lib/tally";
 
 describe("tally", () => {
   it("returns empty string for 0", () => {

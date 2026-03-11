@@ -1,0 +1,162 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import Callout from "../components/Callout.astro";
+import CardList from "../components/CardList.astro";
+---
+
+<PageLayout
+  title="For parents"
+  description="Guidance and activities for parents navigating AI with their children and building understanding together through hands-on learning."
+>
+  <h1>For parents</h1>
+
+  <img src="/assets/images/hero-parents.avif" alt="Hero image: For parents" />
+
+  <p>
+    Your kids are using ChatGPT. Maybe for homework help, maybe for creative
+    writing, maybe just to mess around. You&rsquo;ve probably used it yourself.
+    But do you actually understand what&rsquo;s happening when you type a prompt
+    and get a response?
+  </p>
+
+  <p>
+    <em>LLMs Unplugged</em> gives you and your family a way to build that understanding
+    together through hands-on activities. No mystification, no fear-mongering, just
+    practical knowledge about how these tools actually work.
+  </p>
+
+  <Callout type="info">
+    <p>
+      These resources are under active development. If there&rsquo;s something
+      you&rsquo;d like to see, please
+      <a href="/about#get-in-touch">get in touch</a>.
+    </p>
+  </Callout>
+
+  <h2>Family activity: understanding ChatGPT together</h2>
+
+  <ul>
+    <li><strong>time</strong>: 60&ndash;90mins</li>
+    <li><strong>for ages</strong>: 12+</li>
+    <li>
+      <strong>what you need</strong>: pen, paper, a six-sided die (or spinner),
+      a children&rsquo;s book
+    </li>
+  </ul>
+
+  <p>
+    Here&rsquo;s a family-friendly version of the core workshop. Start with a
+    brief introduction, then work through training your own model, using it to
+    generate text, and finally trying a larger pre-trained model. The flow moves
+    from &ldquo;how do patterns get into a model?&rdquo; to &ldquo;what comes
+    out?&rdquo; to &ldquo;what happens at scale?&rdquo;
+  </p>
+
+  <CardList
+    lessons={["intro", "training", "generation", "pretrained-generation"]}
+  />
+
+  <h3>Suggested timing</h3>
+
+  <ul>
+    <li>
+      <strong>00:00 start the conversation</strong> &mdash; who in the family has
+      used ChatGPT or similar tools? what for? how do you think it works? where do
+      the words come from? today we&rsquo;re going to build our own version&mdash;small
+      and simple, but using the exact same approach as ChatGPT.
+    </li>
+    <li>
+      <strong>00:10 <a href="/lessons/training">Training</a></strong> &mdash; work
+      together to count word patterns in a short text (the lesson provides a simple
+      example, or choose a favourite children&rsquo;s book). This is the &ldquo;training&rdquo;
+      step&mdash;where AI systems learn patterns from text.
+    </li>
+    <li>
+      <strong>00:25 <a href="/lessons/generation">Generation</a></strong>
+      &mdash; use your trained model and a die to generate new sentences. Take turns
+      rolling and choosing words&mdash;make it playful. Read out your generated text
+      and laugh at the weird results together.
+    </li>
+    <li>
+      <strong
+        >00:45
+        <a href="/lessons/pretrained-generation">Pre-trained model generation</a
+        ></strong
+      > &mdash; try using a bigger, pre-trained model (provided in the lesson). Notice
+      how more training data leads to more coherent (and sometimes eerily realistic)
+      output.
+    </li>
+    <li>
+      <strong>00:55 close the loop</strong> &mdash; what surprised you about how this
+      works? does this change how you think about ChatGPT? what questions do you still
+      have?
+    </li>
+  </ul>
+
+  <h2>Why this matters for families</h2>
+
+  <p>
+    Understanding how LLMs work helps you have better conversations with your
+    kids about:
+  </p>
+
+  <ul>
+    <li>
+      <strong>homework and learning</strong>: when is it okay to use ChatGPT?
+      what are the limitations? how do you check its work?
+    </li>
+    <li>
+      <strong>privacy and data</strong>: these models learn from text&mdash;what
+      does that mean for what you share with them?
+    </li>
+    <li>
+      <strong>critical thinking</strong>: if you understand the pattern-matching
+      underneath, you can better evaluate when an AI-generated answer might be
+      plausible-sounding nonsense
+    </li>
+    <li>
+      <strong>career and future</strong>: AI is reshaping work and
+      education&mdash;helping your kids understand these tools (rather than fear
+      or worship them) is genuinely useful
+    </li>
+  </ul>
+
+  <h2>Learning alongside your kids</h2>
+
+  <p>
+    You don&rsquo;t need to be an expert to facilitate these activities. The
+    lessons are designed to be self-explanatory, and the
+    <a href="/lessons/training#instructor-notes">instructor notes</a> (yes, even for
+    parents!) help you connect the hands-on work to modern AI systems.
+  </p>
+
+  <p>
+    Some of the most valuable moments come from exploring together&mdash;when
+    you&rsquo;re both surprised by how simple the core mechanism is, or when you
+    both notice something strange about the generated text. These
+    &ldquo;aha&rdquo; moments build shared understanding that makes future
+    conversations about AI much more productive.
+  </p>
+
+  <h2>Notes</h2>
+
+  <ul>
+    <li>
+      the activity above is streamlined for home use&mdash;if you have more time
+      or particularly engaged kids, you can add the
+      <a href="/lessons/weighted-randomness">Weighted randomness</a> lesson at the
+      start (add 20mins) or the
+      <a href="/lessons/sampling">Sampling</a> lesson at the end (add 15mins)
+    </li>
+    <li>
+      younger kids (under 12) can participate with guidance, especially in the
+      generation step&mdash;they often love the randomness and silliness of
+      rolling dice to make sentences
+    </li>
+    <li>
+      if you&rsquo;re doing this with multiple kids, have them each generate
+      their own sentences and share them&mdash;the variety of outputs from the
+      same model is part of the learning
+    </li>
+  </ul>
+</PageLayout>

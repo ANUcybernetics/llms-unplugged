@@ -1,0 +1,171 @@
+---
+title: Sampling
+description:
+  Experiment with temperature and truncation strategies to shape how your model
+  picks the next word.
+order: 4
+topic: controlling-output
+keyIdea:
+  Different sampling strategies change the character of generated text even when
+  the model stays the same.
+---
+
+import Callout from "../../components/Callout.astro";
+
+# Sampling
+
+When generating text, your model offers several options for the next word.
+Sampling strategies decide which one to pick.
+
+![Hero image: Sampling](/assets/images/hero-sampling.avif)
+
+## You will need
+
+- a completed model from an earlier lesson
+- pen, paper, and dice as per [Generation](/lessons/generation) (grid method)
+
+## Your goal
+
+Generate text using at least two temperatures and at least two truncation
+strategies. Stretch goal: design and test your own truncation rule.
+
+## Key idea
+
+Sampling choices---temperature and truncation---can make the same model sound
+cautious, wild, repetitive, or inventive. Tweaking the sampler changes the
+output without retraining anything.
+
+## Temperature control
+
+Temperature is a number that smooths the distribution. Higher temperatures
+flatten differences between options, making surprising words more likely.
+
+- Algorithm: when sampling the next word, divide all counts by the temperature
+  (round down, minimum 1) before rolling dice.
+- Example with counts `spot` (4), `run` (2), `jump` (1), `.` (1)
+  - Temp 1 → use counts as-is (`spot ` twice as likely as `run`; four times
+    `jump` or `.`).
+  - Temp 2 → counts become 2, 1, 1, 1 (`spot` still highest, but less dominant).
+  - Temp 4 → counts become 1, 1, 1, 1 (all options equal).
+
+## Truncation strategies
+
+Truncation narrows which next-word options are allowed. Mix and match with
+temperature.
+
+<Callout type="tip" title="Booklet shortcuts">
+
+When using a [pre-trained booklet](/lessons/pretrained-generation), the next-word
+candidates are already sorted from most likely to least likely. This makes
+several strategies easier: greedy = pick the first option, non-sequitur = pick
+the last option, and top-k = only roll among the first k options.
+
+</Callout>
+
+<div class="content-cards">
+<div class="content-card">
+
+#### Greedy
+
+Pick the highest count; if tied, roll among the top options.
+
+</div>
+<div class="content-card">
+
+#### Haiku
+
+Track syllables per line (5-7-5). Roll as normal; if the word would overflow the
+line's syllable limit, re-roll.
+
+</div>
+<div class="content-card">
+
+#### Non-sequitur
+
+Pick the lowest non-zero count; if tied, roll among the least likely options.
+
+</div>
+<div class="content-card">
+
+#### No-repeat
+
+Track words used in the current sentence. If you roll a repeat, reroll; if
+nothing valid remains, insert `.` and continue.
+
+</div>
+<div class="content-card">
+
+#### Alliteration
+
+Prefer options that start with the same letter/sound as the previous word;
+otherwise sample normally.
+
+</div>
+<div class="content-card">
+
+#### Top-k
+
+Choose a number k (e.g. 2 or 3). Keep only the k options with the highest
+counts; if tied for the last spot, include all ties. Roll among those only.
+
+</div>
+<div class="content-card">
+
+#### Alphabet chain
+
+The next word must start with the last letter of the previous word. If no option
+qualifies, sample normally.
+
+</div>
+<div class="content-card">
+
+#### Short/long
+
+Pick a length threshold (e.g. 4 letters). Only allow words at or below that
+length (short mode) or above it (long mode). If nothing qualifies, re-roll.
+
+</div>
+</div>
+
+## Instructor notes
+
+### Discussion questions
+
+- which strategy produces the most "human-like" text?
+- when would you want predictable vs surprising output?
+- how do constraints (haiku, no-repeat) spark creativity?
+- can you invent your own sampling strategy?
+
+### Troubleshooting
+
+- **"I divided all the counts by the temperature and now everything is 1."**
+  This is correct---it's not a mistake. High temperature flattens the
+  distribution so that all options become equally likely. That's the whole
+  point: higher temperature means more randomness.
+
+### Connection to current LLMs
+
+Current LLMs use these same mechanisms, though the specific strategies differ.
+
+- **Temperature control:** the temperature parameter divides probabilities just
+  like you divide tallies; higher temperature means more random output. The
+  lesson uses manual temperature adjustment, while LLMs do this computationally
+  before every token.
+- **Truncation techniques in modern LLMs:** top-k sampling (only consider k most
+  likely tokens), top-p/nucleus sampling (consider tokens until cumulative
+  probability reaches p), repetition penalties, frequency penalties, and
+  presence penalties all prune options before sampling.
+- **Truncation techniques in this lesson:** greedy, haiku, non-sequitur,
+  no-repeat, alliteration, top-k, alphabet chain, and short/long are designed
+  for dice-based sampling but embody the same idea---changing which tokens are
+  eligible before you roll. Top-k directly mirrors the top-k parameter in LLM
+  APIs.
+
+Your paper model demonstrates that "creativity" in AI comes from two controls:
+adjusting temperature (probability distribution shape) and applying truncation
+strategies (which tokens to exclude). The same trained model can produce
+scholarly essays (low temperature, strict truncation) or wild poetry (high
+temperature, constraint-based truncation) just by changing these parameters. The
+key insight: generation control is as important as training data. Creative
+output comes not from the model itself, but from how you control temperature and
+which tokens you truncate from consideration.

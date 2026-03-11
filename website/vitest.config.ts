@@ -1,8 +1,8 @@
 import { defineConfig } from "vitest/config";
-import vue from "@vitejs/plugin-vue";
+import { svelte } from "@sveltejs/vite-plugin-svelte";
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [svelte({ hot: !process.env.VITEST })],
   test: {
     environment: "jsdom",
     include: ["test/**/*.test.ts"],

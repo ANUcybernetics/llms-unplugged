@@ -1,0 +1,309 @@
+<script lang="ts">
+  import { onMount, untrack } from "svelte";
+  import { createPlayback } from "../lib/stores/playback.svelte";
+  import {
+    getTrainingText,
+    setTrainingText,
+  } from "../lib/stores/trainingText.svelte";
+  import { parseTokens, getBigrams } from "../lib/tokens";
+  import PlaybackSection from "./PlaybackSection.svelte";
+  import FullscreenWrapper from "./FullscreenWrapper.svelte";
+
+  interface Props {
+    loop?: boolean;
+  }
+
+  let { loop = true }: Props = $props();
+
+  let inputText = $state(getTrainingText());
+
+  $effect(() => {
+    setTrainingText(inputText);
+  });
+
+  let tokens = $derived(parseTokens(inputText));
+  let bigrams = $derived(getBigrams(tokens));
+  let totalSteps = $derived(bigrams.length);
+
+  const playback = createPlayback(0, { loop: untrack(() => loop) });
+
+  $effect(() => {
+    playback.setTotalSteps(totalSteps);
+  });
+
+  let buckets = $derived.by((): { label: string; tokens: string[] }[] => {
+    const bucketMap = new Map<string, string[]>();
+    const order: string[] = [];
+
+    for (let i = 0; i < playback.currentStep && i < bigrams.length; i++) {
+      const [from, to] = bigrams[i];
+      if (!bucketMap.has(from)) {
+        bucketMap.set(from, []);
+        order.push(from);
+      }
+      bucketMap.get(from)!.push(to);
+    }
+
+    return order.map((label) => ({
+      label,
+      tokens: bucketMap.get(label) || [],
+    }));
+  });
+
+  let highlights = $derived.by(() => {
+    if (playback.currentStep === 0 || playback.currentStep > bigrams.length) {
+      return {
+        bucket: null as string | null,
+        token: null as string | null,
+        tokenIdx: -1,
+        nextIdx: -1,
+      };
+    }
+    const bigram = bigrams[playback.currentStep - 1];
+    return {
+      bucket: bigram[0],
+      token: bigram[1],
+      tokenIdx: playback.currentStep - 1,
+      nextIdx: playback.currentStep,
+    };
+  });
+
+  function isPunctuation(token: string): boolean {
+    return token === "." || token === ",";
+  }
+
+  onMount(() => playback.cleanup);
+</script>
+
+<FullscreenWrapper>
+  <div class="lm-widget bucket-training-widget">
+    <div class="training-view">
+      <div class="widget-section">
+        <div class="section-header">Training text</div>
+        <div class="section-content">
+          <textarea
+            id="bucket-training-input"
+            class="text-input"
+            rows="2"
+            placeholder="Enter text to train on..."
+            bind:value={inputText}
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="widget-section">
+        <div class="section-header">Tokens</div>
+        <div class="section-content tokens-content">
+          {#each tokens as token, i}
+            <span
+              class="token"
+              class:highlight-first={i === highlights.tokenIdx}
+              class:highlight-second={i === highlights.nextIdx}
+              class:punctuation={isPunctuation(token)}
+            >
+              {token}
+            </span>
+          {/each}
+        </div>
+      </div>
+
+      <div class="widget-section">
+        <div class="section-header">Current action</div>
+        <div class="section-content action-content">
+          {#if highlights.bucket}
+            <span>Put</span>
+            <span
+              class="token highlight-second"
+              class:punctuation={isPunctuation(highlights.token!)}
+              >{highlights.token}</span
+            >
+            <span>into the</span>
+            <span
+              class="token highlight-first"
+              class:punctuation={isPunctuation(highlights.bucket)}
+              >{highlights.bucket}</span
+            >
+            <span>bucket</span>
+          {:else if playback.isComplete}
+            <span class="complete-message">Training complete!</span>
+          {:else}
+            <span class="placeholder">Press Play or Step to begin</span>
+          {/if}
+        </div>
+      </div>
+
+      <div class="widget-section">
+        <div class="section-header">Buckets</div>
+        <div class="section-content buckets-content">
+          {#if buckets.length === 0}
+            <div class="placeholder">No buckets yet</div>
+          {/if}
+          {#each buckets as bucket}
+            <div
+              class="bucket"
+              class:highlighted={bucket.label === highlights.bucket}
+            >
+              <div
+                class="bucket-label"
+                class:punctuation={isPunctuation(bucket.label)}
+                title={bucket.label}
+              >
+                {bucket.label}
+              </div>
+              <div class="bucket-contents">
+                {#each bucket.tokens as token, i}
+                  <span
+                    class="bucket-token"
+                    class:punctuation={isPunctuation(token)}
+                    class:just-added={bucket.label === highlights.bucket &&
+                      i === bucket.tokens.length - 1}
+                    title={token}
+                  >
+                    {token}
+                  </span>
+                {/each}
+              </div>
+            </div>
+          {/each}
+        </div>
+      </div>
+
+      <PlaybackSection
+        isPlaying={playback.isPlaying}
+        isComplete={playback.isComplete}
+        currentStep={playback.currentStep}
+        {totalSteps}
+        showStepCounter={true}
+        stepInterval={playback.stepInterval}
+        {loop}
+        sliderId="bucket-training-speed-slider"
+        onplay={playback.play}
+        onpause={playback.pause}
+        onstep={playback.step}
+        onreset={playback.reset}
+        onstepintervalchange={(v) => (playback.stepInterval = v)}
+      />
+    </div>
+  </div>
+</FullscreenWrapper>
+
+<style>
+  .training-view {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .tokens-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .action-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 1.75rem;
+    flex-wrap: wrap;
+  }
+
+  .complete-message {
+    color: var(--color-brand);
+    font-weight: 600;
+  }
+
+  .buckets-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
+    gap: 0.75rem;
+    min-height: 6rem;
+    align-items: stretch;
+  }
+
+  .bucket {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-width: 0;
+    border: 2px solid var(--color-border);
+    border-radius: 0.5rem;
+    background: var(--color-bg-alt);
+    transition:
+      border-color 0.2s,
+      background-color 0.2s;
+  }
+
+  .bucket.highlighted {
+    border-color: var(--color-brand);
+    background: var(--color-brand-soft);
+  }
+
+  .bucket-label {
+    padding: 0.375rem 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: center;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg);
+    border-radius: 0.375rem 0.375rem 0 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bucket-label.punctuation {
+    font-size: 1rem;
+  }
+
+  .bucket.highlighted .bucket-label {
+    border-bottom-color: var(--color-brand);
+  }
+
+  .bucket-contents {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    min-width: 0;
+    min-height: 2rem;
+    justify-content: center;
+    align-content: flex-start;
+    overflow: hidden;
+  }
+
+  .bucket-token {
+    display: inline-block;
+    max-width: 100%;
+    padding: 0.125rem 0.375rem;
+    background: var(--color-bg);
+    border-radius: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    border: 1px solid var(--color-border);
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition:
+      background-color 0.2s,
+      transform 0.2s;
+  }
+
+  .bucket-token.punctuation {
+    font-weight: 700;
+    font-size: 0.875rem;
+  }
+
+  .bucket-token.just-added {
+    background: var(--lm-highlight-strong, #a7f3d0);
+    transform: scale(1.1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bucket,
+    .bucket-token {
+      transition: none;
+    }
+  }
+</style>

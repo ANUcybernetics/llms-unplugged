@@ -11,7 +11,7 @@ This repository has four main parts:
 
 - **`cli/`** - Rust CLI tool for generating N-gram models and PDF booklets
 - **`handouts/`** - Typst standalone materials (worksheets, runsheets, poster)
-- **`website/`** - Project website (Vitepress) including lesson cards
+- **`website/`** - Project website (Astro) including lesson cards
 - **`typst/`** - Shared Typst resources (utils.typ, fonts/, images/)
 
 Supporting directories:
@@ -38,13 +38,13 @@ cd cli && cargo build --release
 ./cli/target/release/llms_unplugged cutouts -i data/green-eggs-and-ham.txt -n 2
 
 # Build lesson PDFs
-cd website && npm run build:pdfs
+cd website && pnpm run build:pdfs
 
 # Build other handouts (worksheets, runsheets, poster)
 cd handouts && make
 
 # Run website dev server
-cd website && npm run dev
+cd website && pnpm run dev
 ```
 
 ## Testing
@@ -54,7 +54,7 @@ cd website && npm run dev
 cd cli && cargo test
 
 # Website tests
-cd website && npm run build && npm test
+cd website && pnpm run build && pnpm test
 ```
 
 ## General conventions
@@ -63,7 +63,7 @@ cd website && npm run build && npm test
 - Test output must be pristine (zero failures)
 - Format Typst files with `typstyle --wrap-text`
 - Never create files unless necessary---prefer editing existing ones
-- In markdown, use blank lines around VitePress containers (`::: info` etc.) so
+- In markdown, use blank lines around containers (`::: info` etc.) so
   Prettier doesn't mangle them
 
 ## Notes
@@ -71,5 +71,5 @@ cd website && npm run build && npm test
 - Project teaches human-scale AI concepts
 - Designed for physical dice-based text generation
 - Part of ANU Cybernetic Studio research
-- The website is now powered by Vitepress, but was previously an eleventy (11ty)
-  site - the `11ty` git tag is the last commit with the eleventy site
+- The website is now powered by Astro, but was previously an eleventy (11ty)
+  site --- the `11ty` git tag is the last commit with the eleventy site

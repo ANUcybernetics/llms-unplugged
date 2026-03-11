@@ -1,0 +1,73 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  description?: string;
+  image?: string;
+  meta?: string;
+}
+
+const { href, title, description, image, meta } = Astro.props;
+---
+
+<a href={href} class="card">
+  {image && <img src={image} alt="" class="card-image" loading="lazy" />}
+  <div class="card-body">
+    <h3 class="card-title">{title}</h3>
+    {description && <p class="card-description">{description}</p>}
+    {meta && <span class="card-meta">{meta}</span>}
+  </div>
+</a>
+
+<style>
+  .card {
+    display: block;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background: var(--color-bg-soft);
+    text-decoration: none;
+    color: inherit;
+    transition:
+      border-color 0.15s,
+      box-shadow 0.15s;
+  }
+
+  .card:hover {
+    border-color: var(--color-brand);
+    box-shadow: 0 2px 12px rgba(190, 131, 14, 0.1);
+    text-decoration: none;
+  }
+
+  .card-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 0;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.375rem;
+    color: var(--color-text);
+  }
+
+  .card-description {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .card-meta {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+</style>

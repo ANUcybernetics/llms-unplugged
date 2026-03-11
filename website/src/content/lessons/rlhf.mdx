@@ -1,0 +1,152 @@
+---
+title: RLHF
+description:
+  Use human preferences to adjust your model's weights, making it generate text
+  people prefer.
+order: 11
+topic: model-tuning
+keyIdea:
+  Human feedback can tune a model's probabilities without new training data, by
+  rewarding preferred outputs.
+---
+
+# RLHF
+
+Adjust your language model based on human preferences, reinforcing outputs
+people like and discouraging ones they don't.
+
+![Hero image: RLHF](/assets/images/hero-rlhf.avif)
+
+## You will need
+
+- a completed model from an earlier lesson
+- pen, paper, and dice as per [Generation](/lessons/generation) (grid method)
+- a group of people to provide preferences (the "humans" in RLHF)
+
+## Your goal
+
+Generate multiple candidate outputs, collect human preferences, and update your
+model's counts accordingly. Stretch goal: run multiple rounds of feedback and
+observe how the model changes.
+
+## Key idea
+
+Reinforcement Learning from Human Feedback (RLHF) adjusts model probabilities
+based on what people prefer. Instead of training on more text, you train on
+human judgements about which outputs are better.
+
+## Algorithm
+
+### Phase 1: generate candidates
+
+1. Choose a starting word.
+2. Generate 2--3 different completions (5--10 words each) by running generation
+   multiple times from the same starting point.
+3. Write each candidate on a separate piece of paper.
+
+### Phase 2: collect preferences
+
+1. Show all candidates to your human judges (the class, a small group, or
+   individuals).
+2. Have them vote on which completion they prefer.
+3. Record the ranking: best, middle, worst.
+
+### Phase 3: update the model
+
+For each word transition in the **preferred** output:
+
+- add +1 to that cell in your grid
+
+For each word transition in the **rejected** output:
+
+- subtract 1 from that cell (minimum 0)
+
+Middle-ranked outputs: no change (or +0.5/−0.5 if you want finer adjustments).
+
+### Phase 4: generate again
+
+Use the updated model to generate new text. The adjustments should make
+preferred patterns more likely.
+
+## Example
+
+**Starting word:** "the"
+
+**Candidate A:** "the cat sat on the mat."
+**Candidate B:** "the dog ran to the park."
+**Candidate C:** "the the the the the the."
+
+**Human preference:** B > A > C
+
+**Updates:**
+
+- B's transitions get +1 each: (the→dog), (dog→ran), (ran→to), (to→the),
+  (the→park), (park→.)
+- C's transitions get −1 each: (the→the) loses 5 counts
+- A stays unchanged (middle rank)
+
+After updates, "the→dog" and "the→park" become more likely, while "the→the"
+becomes much less likely.
+
+## Running multiple rounds
+
+For deeper learning, repeat the process:
+
+1. Generate new candidates from the updated model
+2. Collect fresh preferences
+3. Update again
+4. Observe how the model's behaviour shifts
+
+After several rounds, the model should consistently produce outputs more aligned
+with human preferences.
+
+## Instructor notes
+
+### Discussion questions
+
+- what makes one output "better" than another? can people agree?
+- what happens if different people prefer different things?
+- how many rounds of feedback does it take to noticeably change the model?
+- could you "break" the model with bad feedback?
+- what biases might creep in through human preferences?
+- is the model learning to be "good" or learning to match what judges prefer?
+
+### Classroom variations
+
+**Simple version:** just pick best vs worst (ignore middle). Easier to run, same
+core concept.
+
+**Split judges:** divide the class into groups with different preferences (e.g.,
+"team poetry" vs "team clarity"). Train separate models and compare results.
+
+**Blind feedback:** judges don't know which outputs came from which version of
+the model. Reduces bias toward "improvement."
+
+**Adversarial feedback:** one judge deliberately gives bad feedback. How robust
+is the process?
+
+### Connection to current LLMs
+
+RLHF is how modern AI assistants learn to be helpful, harmless, and honest:
+
+- **ChatGPT and Claude**: both use RLHF to align model outputs with human values
+- **the process**: human raters compare model outputs and rank them, exactly
+  like your classroom judges
+- **reward models**: at scale, a separate AI learns to predict human
+  preferences, then guides the main model
+- **safety**: RLHF teaches models to refuse harmful requests by having humans
+  prefer refusals over compliance
+- **instruction following**: models learn to actually answer questions (rather
+  than just predict text) through RLHF
+
+The key insight: RLHF shifts what "good" means from "matches training data" to
+"matches human preferences." Your grid updates demonstrate this
+directly---you're changing probabilities not based on what appeared in text, but
+based on what people preferred. This is why RLHF-trained models can be more
+helpful than models trained only on internet text: they've learned to optimise
+for human approval, not just pattern matching.
+
+The limitation is also visible: RLHF captures the preferences of whoever
+provides feedback. Different judges produce different models. This is why AI
+companies carefully select and train their human raters---the model will learn
+whatever biases and preferences those humans have.

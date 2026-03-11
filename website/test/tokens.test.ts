@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { parseTokens } from "../.vitepress/theme/utils/tokens";
+import { parseTokens } from "../src/lib/tokens";
 
 describe("parseTokens", () => {
   it("lowercases and strips quotes", () => {

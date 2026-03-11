@@ -1,6 +1,0 @@
-*.vue
-*.js
-*.mjs
-*.ts
-*.mts
-src/wasm-pkg/

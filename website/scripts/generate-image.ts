@@ -74,7 +74,7 @@ async function generateImage(promptInput: string, outputPath: string): Promise<b
 
   try {
     await mkdir(outputDir, { recursive: true });
-    await execAsync(cmd, { shell: true });
+    await execAsync(cmd, { shell: "/bin/sh" });
     if (outputExt === ".jpg" || outputExt === ".jpeg") {
       console.log(`  ✓ Generated ${finalPath}\n`);
       return true;

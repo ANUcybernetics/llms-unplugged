@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const cliDir = resolve(__dirname, "../../cli");
-const destDir = resolve(__dirname, "../.vitepress/theme/templates");
+const destDir = resolve(__dirname, "../src/templates");
 
 const templates = ["book.typ", "tokenized-cutouts.typ"];
 
@@ -24,5 +24,5 @@ for (const file of templates) {
   }
 
   copyFileSync(src, dest);
-  console.log(`Copied ${file} → .vitepress/theme/templates/${file}`);
+  console.log(`Copied ${file} → src/templates/${file}`);
 }

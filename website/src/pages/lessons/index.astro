@@ -1,0 +1,67 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import CardList from "../../components/CardList.astro";
+import Callout from "../../components/Callout.astro";
+---
+
+<PageLayout
+  title="Lessons"
+  description="All LLMs Unplugged lessons for teaching how language models work."
+>
+  <h1>Lessons</h1>
+
+  <p>
+    The lessons are split into <strong>Fundamentals</strong> that everyone should
+    complete, and <strong>Extensions</strong> that you can pick and choose based on
+    your interests and available time. If you're new to <em>LLMs Unplugged</em>,
+    start with the <strong>Fundamentals</strong> lessons below.
+  </p>
+
+  <Callout type="info" title="Grid or bucket?">
+    <p>
+      The Fundamentals lessons (and a couple of the extensions) offer two
+      "flavours": <strong>Grid</strong> (paper grids and dice) or <strong
+        >Bucket</strong
+      > (physical tokens and containers). Use the toggle at the top of each lesson
+      to switch between them.
+    </p>
+    <p>
+      The <strong>grid</strong> version connects well to probability concepts in the
+      maths curriculum&mdash;students fill in a table with tally marks and use dice
+      to sample from weighted distributions.
+    </p>
+    <p>
+      The <strong>bucket</strong> version is simpler and more tactile&mdash;students
+      cut up tokens and draw them from physical containers. Great for younger learners
+      or when you want to skip the dice maths.
+    </p>
+    <p>Both teach the same core concepts. Pick whichever suits your group.</p>
+  </Callout>
+
+  <h2>Fundamentals</h2>
+  <p>These two lessons build on each other and should be completed in order.</p>
+  <CardList lessons={["training", "generation"]} />
+
+  <h2>Extensions</h2>
+  <p>
+    These lessons can be done in any order after completing the fundamentals.
+    Each one explores a different aspect of how modern language models work.
+  </p>
+
+  <h3>Scaling up</h3>
+  <CardList lessons={["pretrained-generation", "trigram"]} />
+
+  <h3>Controlling output</h3>
+  <CardList lessons={["sampling", "beam-search", "agentic-tool-use"]} />
+
+  <h3>Context and meaning</h3>
+  <p>
+    These two lessons work well together&mdash;context columns extends the grid
+    model, and word embeddings uses those extended grids to explore semantic
+    similarity.
+  </p>
+  <CardList lessons={["context-columns", "word-embeddings"]} />
+
+  <h3>Model tuning</h3>
+  <CardList lessons={["lora", "rlhf", "synthetic-data"]} />
+</PageLayout>

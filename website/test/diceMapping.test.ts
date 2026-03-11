@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  partitionDice,
-  createDiceMapping,
-  findWordForRoll,
-} from "../.vitepress/theme/utils/diceMapping";
+import { partitionDice, createDiceMapping, findWordForRoll } from "../src/lib/diceMapping";
 
 describe("partitionDice", () => {
   it("returns empty array for 0 groups", () => {

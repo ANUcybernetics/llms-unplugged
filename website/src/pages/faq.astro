@@ -1,0 +1,209 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+---
+
+<PageLayout
+  title="FAQ"
+  description="Frequently asked questions about using LLMs Unplugged resources, materials needed, and how the activities relate to modern AI."
+>
+  <h1>Frequently asked questions</h1>
+
+  <img
+    src="/assets/images/hero-faq.avif"
+    alt="Hero image: Frequently asked questions"
+  />
+
+  <h2>Why do you keep saying LLMs&mdash;this is AI, right?</h2>
+
+  <img
+    src="/assets/images/headshot-ben-anu.avif"
+    alt="Ben Swift"
+    style="float: right; width: 8rem; margin-left: 1rem; border-radius: 0.5rem;"
+  />
+
+  <p>
+    Honestly, the short answer (these days) is yes. The long answer is more more
+    complicated&mdash;AI is a term that has been applied to many different
+    algorithmic techniques and systems over the years. But today (in the
+    mid-2020s) Large Language Models have kindof sucked all the air out of the
+    room when it comes to AI, so that&rsquo;s mostly what we&rsquo;re talking
+    about here. I (Ben) do like to use the term LLM rather than AI whenever I
+    can, because I think it&rsquo;s more specific and accurate.
+  </p>
+
+  <h2>Who is this for?</h2>
+
+  <p>
+    Anyone curious about how language models work. The activities are designed
+    for learners from high school age upwards, with no technical background
+    required. <a href="/educators">Educators</a>, students, and
+    <a href="/professionals">professionals</a> have all found value in the hands-on
+    approach.
+  </p>
+
+  <h2>
+    Did some of this stuff used to be called &ldquo;My First Language
+    Model&rdquo;?
+  </h2>
+
+  <p>
+    Yep, it sure did... and we still sometimes use that as a workshop title at
+    the ANU. But this website and resources are for <em>all</em> the LLMs Unplugged
+    resources, not just the ones we use in that particular workshop.
+  </p>
+
+  <h2>Do I need any special materials?</h2>
+
+  <p>
+    Nope, it&rsquo;s all stuff you&rsquo;ll have around the
+    office/house/classroom. Each lesson has a &ldquo;you will need&rdquo;
+    section.
+  </p>
+
+  <h2>Are there printable versions of the lessons?</h2>
+
+  <p>
+    Yes. We have a
+    <a href="/assets/pdfs/lessons.pdf">combined lessons PDF</a> containing printable
+    student handouts for all lessons. The web versions of lessons are more up-to-date
+    and feature-rich, so we recommend using them when possible, but the PDF is handy
+    for offline use or classroom printing.
+  </p>
+
+  <h2>Are there any video resources to accompany the lessons?</h2>
+
+  <p>Not yet, but we&rsquo;re working on it&mdash;stay tuned.</p>
+
+  <h2>
+    You mention ChatGPT a lot, but Claude/Gemini/Deepseek/etc is more my jam
+  </h2>
+
+  <p>
+    None of these resources are specific to ChatGPT (which is a brand these days
+    rather than a specific model anyway). It&rsquo;s just a nice shorthand term
+    for those who aren&rsquo;t so familiar with the term &ldquo;Large Language
+    Model&rdquo; or LLM.
+  </p>
+
+  <h2>Can I use these materials in my school classroom?</h2>
+
+  <p>
+    Yes. All materials are released under
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+      >CC BY-NC-SA 4.0</a
+    >, so you can use, adapt, and share them for non-commercial educational
+    purposes with attribution.
+  </p>
+
+  <h2>Can I use these materials in a paid workshop?</h2>
+
+  <p>
+    The NC (Non-Commercial) clause in our licence has
+    <a href="https://www.artslaw.com.au/information-sheet/creative-commons"
+      >some ambiguity</a
+    >
+    around paid educational activities. Our intention is that
+    <a href="/educators">educators</a> at schools, universities, and non-profit organisations
+    can use these materials in workshops that charge cost-recovery fees. However,
+    for-profit companies cannot run paid workshops using these materials under the
+    CC-BY-SA 4.0 license. If you&rsquo;re a commercial training provider interested
+    in using these resources, please
+    <a href="/about#get-in-touch">contact us</a>&mdash;we&rsquo;re happy to
+    discuss alternative licensing arrangements.
+  </p>
+
+  <h2>
+    I&rsquo;m a corporate client, and I&rsquo;d love to have some experts come
+    and deliver this workshop for us
+  </h2>
+
+  <p>
+    Good news&mdash;that&rsquo;s one of the things we do here at the
+    <a href="https://cybernetics.anu.edu.au">School of Cybernetics</a>.
+    <a href="mailto:lxconvenor.cybernetics@anu.edu.au">Drop us a line</a> and to discuss
+    how we can make it happen.
+  </p>
+
+  <p>
+    Honestly, this stuff is just as fun as a Christmas party/team bonding
+    activity, but the learning is very real. Learning <em>can</em> be fun.
+  </p>
+
+  <h2>Why dice and buckets instead of computers?</h2>
+
+  <p>
+    Using physical randomness makes the probabilistic nature of text generation
+    tangible. When you roll dice and look up words in a table, you&rsquo;re
+    doing exactly what a computer does&mdash;just slower. This builds genuine
+    understanding rather than treating AI as a black box.
+  </p>
+
+  <img
+    src="/assets/images/workshop-4.avif"
+    alt="Using dice to generate text from a hand-built language model"
+  />
+
+  <h2>How do these activities relate to ChatGPT and other LLMs?</h2>
+
+  <p>
+    Modern LLMs use the same fundamental principle: predict the next token based
+    on context. The differences are scale (billions of parameters vs dozens) and
+    learned vs hand-counted statistics. The core mechanism&mdash;weighted random
+    selection based on patterns in training data&mdash;is identical.
+  </p>
+
+  <h2>Can I generate my own booklets from custom text?</h2>
+
+  <p>
+    Yes. You can <a href="/tools">generate booklets online</a> directly in your browser&mdash;no
+    installation required. Just upload or paste your text, choose your options, and
+    download a PDF. Your text is processed entirely in your browser and never sent
+    to any server.
+  </p>
+
+  <p>
+    If you prefer working offline or want to modify the tools, the
+    <a href="https://github.com/ANUcybernetics/llms-unplugged">source code</a>
+    includes a command-line tool that provides the same functionality.
+  </p>
+
+  <h2>Is there a research paper about LLMs Unplugged?</h2>
+
+  <p>
+    Yes. LLMs Unplugged was presented at the
+    <a href="https://aceconference2026.github.io/"
+      >28th Australasian Computing Education Conference (ACE 2026)</a
+    > in Melbourne, Australia.
+    <a href="/assets/pdfs/ace2026-llms-unplugged.pdf">Download the paper here</a
+    >.
+  </p>
+
+  <h3>BibTeX</h3>
+
+  <pre><code set:html={`@inproceedings{swift2026llmsunplugged,
+  author    = {Swift, Ben},
+  title     = {{LLMs Unplugged: Teaching Resources for a ChatGPT World}},
+  booktitle = {28th Australasian Computing Education Conference (ACE 2026)},
+  year      = 2026,
+  month     = feb,
+  address   = {Melbourne, VIC, Australia},
+  publisher = {ACM},
+  doi       = {10.1145/3786228.3786237},
+  url       = {https://doi.org/10.1145/3786228.3786237}
+}`} /></pre>
+
+  <h2>I found an error in the materials.</h2>
+
+  <p>
+    Please
+    <a href="https://github.com/ANUcybernetics/llms-unplugged/issues"
+      >open an issue</a
+    > on GitHub or <a href="/about#get-in-touch">contact us</a>. We appreciate
+    corrections and suggestions.
+  </p>
+
+  <img
+    src="/assets/images/workshop-5.avif"
+    alt="Participants exploring language models hands-on"
+  />
+</PageLayout>

@@ -1,0 +1,60 @@
+---
+import { getVocabulary, getBigrams } from "../lib/tokens";
+import { tally } from "../lib/tally";
+
+interface Props {
+  tokens: string;
+  nrows?: number;
+  ncols?: number;
+}
+
+const { tokens: tokenString } = Astro.props;
+
+const tokenList = tokenString.trim().split(/\s+/).filter(Boolean);
+const vocabulary = getVocabulary(tokenList);
+const bigrams = getBigrams(tokenList);
+
+const counts = new Map<string, number>();
+for (const [from, to] of bigrams) {
+  const key = `${from}->${to}`;
+  counts.set(key, (counts.get(key) || 0) + 1);
+}
+
+const rows = vocabulary.map((from) => ({
+  label: from,
+  cells: vocabulary.map((to) => {
+    const count = counts.get(`${from}->${to}`) || 0;
+    return count > 0 ? tally(count) : "";
+  }),
+}));
+
+const headers = ["", ...vocabulary];
+---
+
+<div class="lm-grid">
+  <table>
+    <thead>
+      <tr>
+        {
+          headers.map((header) => (
+            <th>{header ? <code>{header}</code> : <span>&nbsp;</span>}</th>
+          ))
+        }
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row) => (
+          <tr>
+            <td>
+              {row.label ? <code>{row.label}</code> : <span>&nbsp;</span>}
+            </td>
+            {row.cells.map((cell) => (
+              <td>{cell || "\u00A0"}</td>
+            ))}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

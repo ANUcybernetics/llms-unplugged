@@ -1,0 +1,25 @@
+import { defineCollection, z } from "astro:content";
+import { glob } from "astro/loaders";
+
+const lessons = defineCollection({
+  loader: glob({ pattern: "**/*.mdx", base: "src/content/lessons" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    topic: z.string().optional(),
+    order: z.number().optional(),
+    keyIdea: z.string().optional(),
+  }),
+});
+
+const news = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "src/content/news" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    date: z.coerce.date(),
+    author: z.string(),
+  }),
+});
+
+export const collections = { lessons, news };

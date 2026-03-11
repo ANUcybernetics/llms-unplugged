@@ -1,0 +1,37 @@
+---
+import { getCollection } from "astro:content";
+import Card from "./Card.astro";
+
+interface Props {
+  limit?: number;
+}
+
+const { limit } = Astro.props;
+
+const allNews = (await getCollection("news")).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+
+const news = limit ? allNews.slice(0, limit) : allNews;
+---
+
+<div class="cards-grid">
+  {
+    news.map((item) => {
+      const dateLabel = item.data.date.toLocaleDateString("en-AU", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+      return (
+        <Card
+          href={`/news/${item.id}`}
+          title={item.data.title}
+          description={item.data.description}
+          image={`/assets/images/hero-news-${item.id}.avif`}
+          meta={dateLabel}
+        />
+      );
+    })
+  }
+</div>

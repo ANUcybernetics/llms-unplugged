@@ -1,0 +1,241 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import Callout from "../components/Callout.astro";
+import CardList from "../components/CardList.astro";
+---
+
+<PageLayout
+  title="For educators"
+  description="Lesson plans, workshop formats, and guidance for teaching LLMs Unplugged in your classroom or organisation."
+>
+  <h1>For educators</h1>
+
+  <img
+    src="/assets/images/hero-educators.avif"
+    alt="Hero image: For educators"
+  />
+
+  <Callout type="info">
+    <p>
+      These resources are under active development. If there&rsquo;s something
+      you&rsquo;d like to see, please
+      <a href="/about#get-in-touch">get in touch</a>.
+    </p>
+  </Callout>
+
+  <Callout type="tip">
+    <p>
+      These lesson plans have been tested with high-school students and up
+      (including tertiary students). They&rsquo;re also suitable across all
+      subject areas (not just Computer Science/Digital Technologies).
+    </p>
+    <p>
+      We&rsquo;re working on some slightly modified versions which work for
+      younger learners as well&mdash;with the right support they can absolutely
+      grasp the concepts involved. We&rsquo;ll update the lesson plans as we
+      road-test them. If you&rsquo;ve got ideas or feedback, we&rsquo;d
+      <a href="/about#get-in-touch">love to hear them</a>.
+    </p>
+  </Callout>
+
+  <h2>Lesson plan 1: LLMs Unplugged Fundamentals</h2>
+
+  <ul>
+    <li><strong>time</strong>: 90mins</li>
+    <li><strong>for ages</strong>: 12+</li>
+  </ul>
+
+  <p>
+    This core workshop covers the essential training-to-generation pipeline.
+    Start with a brief introduction to set the scene, then move through training
+    a model, generating text from it, and finally exploring what happens when
+    you use a larger pre-trained model. Each step builds on the last, giving
+    students a complete picture of how language models work.
+  </p>
+
+  <CardList
+    lessons={["intro", "training", "generation", "pretrained-generation"]}
+  />
+
+  <h3>Suggested timing</h3>
+
+  <ul>
+    <li>
+      <strong>00:20 <a href="/lessons/intro">Intro</a></strong>
+    </li>
+    <li>
+      <strong>00:20 <a href="/lessons/training">Training</a></strong>
+    </li>
+    <li>
+      <strong>00:40 <a href="/lessons/generation">Generation</a></strong>
+    </li>
+    <li>
+      <strong
+        >01:00
+        <a href="/lessons/pretrained-generation">Pre-trained model generation</a
+        ></strong
+      >
+    </li>
+    <li>
+      <strong>01:20 close</strong> &mdash; how has this workshop changed how you
+      <em>think</em> about language models? how has this workshop changed how you
+      will <em>use</em> language models?
+    </li>
+  </ul>
+
+  <h3>Notes for Fundamentals</h3>
+
+  <ul>
+    <li>
+      this outline doesn&rsquo;t include the
+      <a href="/lessons/weighted-randomness">Weighted randomness</a> lesson, but if
+      your students aren&rsquo;t so familiar with that stuff then you could add it
+      in before the <a href="/lessons/training">Training</a> lesson (add another 30mins)
+    </li>
+    <li>
+      once you get to the <a href="/lessons/generation">Generation</a> lesson and
+      beyond, get students to do &ldquo;dramatic readings&rdquo; as they share back
+      the text their new language models have generated...
+    </li>
+    <li>
+      if you have a bit longer, then adding the
+      <a href="/lessons/sampling">Sampling</a> lesson at the end is a fun option&mdash;it
+      builds on either the
+      <a href="/lessons/generation">Generation</a> or the
+      <a href="/lessons/pretrained-generation">Pre-trained model generation</a> work
+      and shows how different parts of the &ldquo;LLM process&rdquo; can have different
+      effects on the output
+    </li>
+  </ul>
+
+  <h2>Lesson plan 2: going deeper</h2>
+
+  <ul>
+    <li>
+      <strong>time</strong>: 2&ndash;3 hours (or split across sessions)
+    </li>
+    <li>
+      <strong>for ages</strong>: senior high school or particularly engaged
+      groups
+    </li>
+  </ul>
+
+  <p>
+    For students ready to go further, this extended trajectory adds the
+    &ldquo;how models understand&rdquo; topic. After covering the fundamentals,
+    you explore how models can track grammatical context and how words get
+    represented as numerical vectors. This path suits later-year high school
+    students, computing electives, or keen beans who want to understand what
+    &ldquo;attention&rdquo; and &ldquo;embeddings&rdquo; actually mean.
+  </p>
+
+  <CardList
+    lessons={[
+      "intro",
+      "training",
+      "generation",
+      "pretrained-generation",
+      "context-columns",
+      "word-embeddings",
+    ]}
+  />
+
+  <h3>What these additions cover</h3>
+
+  <ul>
+    <li>
+      <strong><a href="/lessons/context-columns">Context columns</a></strong>
+      extends the basic bigram model with extra columns that track grammatical categories
+      (is the previous word a verb? a pronoun? a preposition?). This is a hand-crafted
+      version of what transformer &ldquo;attention&rdquo; learns automatically&mdash;the
+      idea that <em>type</em> of context matters, not just <em
+        >which specific word</em
+      > came before.
+    </li>
+    <li>
+      <strong><a href="/lessons/word-embeddings">Word embeddings</a></strong>
+      turns each word&rsquo;s row in the model into a numerical vector and measures
+      similarities between words. Words that behave similarly in the training text
+      end up close together. This is the foundation of how modern LLMs represent meaning&mdash;and
+      students can calculate it by hand.
+    </li>
+  </ul>
+
+  <h3>Why split the trajectory?</h3>
+
+  <p>
+    The fundamentals work for any audience and require only 90 minutes. The
+    &ldquo;understanding&rdquo; lessons require more time and comfort with
+    abstraction, but they connect directly to concepts students will encounter
+    in any deeper study of AI: attention mechanisms, embeddings, vector
+    similarity. Running them as a second session (or a follow-up for interested
+    students) keeps the core workshop accessible while offering a clear path
+    forward.
+  </p>
+
+  <h2>Lesson plan 3: controlling output</h2>
+
+  <ul>
+    <li><strong>time</strong>: 30mins (as an add-on)</li>
+    <li><strong>for ages</strong>: 14+</li>
+  </ul>
+
+  <p>
+    Once students can generate text, a natural question is: &ldquo;How do you
+    make it more or less creative?&rdquo; The sampling lesson shows how
+    temperature and truncation strategies change the character of output without
+    changing the model itself. This is a quick add-on to either the fundamentals
+    or the deeper trajectory.
+  </p>
+
+  <CardList lessons={["sampling"]} />
+
+  <p>This lesson explains:</p>
+
+  <ul>
+    <li>
+      <strong>temperature</strong>: how dividing counts by a temperature value
+      flattens or sharpens the distribution, making surprising words more or
+      less likely
+    </li>
+    <li>
+      <strong>truncation</strong>: strategies like greedy selection, no-repeat,
+      or even haiku constraints that narrow which words are eligible before
+      sampling
+    </li>
+  </ul>
+
+  <p>
+    Students discover that &ldquo;creativity&rdquo; in AI comes from two
+    controls: adjusting probability distributions and filtering which tokens to
+    consider. The same model can produce cautious prose or wild poetry just by
+    tweaking these parameters.
+  </p>
+
+  <h2>Adaptation and data</h2>
+
+  <p>
+    For classes focused on data science, ethics, or media literacy, the
+    &ldquo;Adaptation and data&rdquo; topic explores what happens when models
+    train on their own output.
+  </p>
+
+  <CardList topics={["adaptation-and-data"]} />
+
+  <p>
+    The <a href="/lessons/synthetic-data">Synthetic data</a> lesson is particularly
+    effective for discussions about:
+  </p>
+
+  <ul>
+    <li>AI-generated content flooding the internet</li>
+    <li>model collapse and why training data quality matters</li>
+    <li>the difference between human-written and AI-generated text</li>
+  </ul>
+
+  <p>
+    This works well as a standalone activity after students have done basic
+    training and generation, or as part of a broader unit on AI ethics and media
+    literacy.
+  </p>
+</PageLayout>

@@ -1,0 +1,97 @@
+---
+import { getCollection } from "astro:content";
+import Card from "./Card.astro";
+import { topicOrder, topicLabels, topicDescriptions } from "../lib/topics";
+
+interface Props {
+  lessons?: string[];
+  topics?: string[];
+}
+
+const { lessons: filterSlugs, topics: filterTopics } = Astro.props;
+
+const heroImageMap: Record<string, string> = {
+  training: "grid-training",
+  generation: "grid-generation",
+  trigram: "grid-trigram",
+  "agentic-tool-use": "tool-use",
+};
+
+const allLessons = await getCollection("lessons");
+const sortedLessons = allLessons.sort(
+  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
+);
+
+function heroImage(slug: string): string {
+  const heroSlug = heroImageMap[slug] ?? slug;
+  return `/assets/images/hero-${heroSlug}.avif`;
+}
+
+const isFiltered = !!filterSlugs;
+
+const filteredLessons = isFiltered
+  ? sortedLessons.filter((l) => filterSlugs!.includes(l.id))
+  : filterTopics
+    ? sortedLessons.filter(
+        (l) => l.data.topic && filterTopics!.includes(l.data.topic),
+      )
+    : sortedLessons;
+
+const topicsToShow = filterTopics ?? topicOrder;
+
+const groupedLessons = isFiltered
+  ? null
+  : topicsToShow
+      .map((topic) => ({
+        topic,
+        label: topicLabels[topic],
+        description: topicDescriptions[topic],
+        lessons: filteredLessons.filter((l) => l.data.topic === topic),
+      }))
+      .filter((g) => g.lessons.length > 0);
+---
+
+{
+  isFiltered ? (
+    <div class="cards-grid">
+      {filteredLessons.map((lesson) => (
+        <Card
+          href={`/lessons/${lesson.id}`}
+          title={lesson.data.title}
+          description={lesson.data.description}
+          image={heroImage(lesson.id)}
+        />
+      ))}
+    </div>
+  ) : (
+    groupedLessons!.map((group) => (
+      <section class="topic-group">
+        <h2 id={group.topic}>{group.label}</h2>
+        {group.description && (
+          <p class="topic-description">{group.description}</p>
+        )}
+        <div class="cards-grid">
+          {group.lessons.map((lesson) => (
+            <Card
+              href={`/lessons/${lesson.id}`}
+              title={lesson.data.title}
+              description={lesson.data.description}
+              image={heroImage(lesson.id)}
+            />
+          ))}
+        </div>
+      </section>
+    ))
+  )
+}
+
+<style>
+  .topic-group {
+    margin-bottom: 2.5rem;
+  }
+
+  .topic-description {
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+  }
+</style>

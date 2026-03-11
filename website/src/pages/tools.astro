@@ -1,0 +1,118 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import Callout from "../components/Callout.astro";
+---
+
+<PageLayout
+  title="Tools"
+  description="Generate N-gram model booklets in your browser"
+>
+  <h1>Tools</h1>
+
+  <p>
+    Generate N-gram language model materials directly in your browser. Upload a
+    text file or paste text, choose your options, and download a PDF&mdash;no
+    server required. Then print it out and use in any of the
+    <em>LLMs Unplugged</em> activities that requires a pre-trained language model.
+  </p>
+
+  <Callout type="info" title="Example booklets">
+    <p>
+      Don&rsquo;t want to generate your own? Download ready-to-print booklets:
+    </p>
+    <ul>
+      <li>
+        <a href="/assets/pdfs/booklets/green-eggs-and-ham.pdf"
+          >Green Eggs and Ham</a
+        > (Dr Seuss, 5 pages)
+      </li>
+      <li>
+        <a href="/assets/pdfs/booklets/the-cat-in-the-hat.pdf"
+          >The Cat in the Hat</a
+        > (Dr Seuss, 7 pages)
+      </li>
+      <li>
+        <a href="/assets/pdfs/booklets/beatles.pdf">Beatles Lyrics</a> (35 pages)
+      </li>
+      <li>
+        <a href="/assets/pdfs/booklets/a-christmas-carol.pdf"
+          >A Christmas Carol</a
+        > (Dickens, 52 pages)
+      </li>
+      <li>
+        <a href="/assets/pdfs/booklets/frankenstein.pdf">Frankenstein</a>
+        (Shelley, 101 pages)
+      </li>
+      <li>
+        <a href="/assets/pdfs/booklets/collected-hemingway.pdf"
+          >Collected Hemingway</a
+        > (379 pages)
+      </li>
+    </ul>
+  </Callout>
+
+  <h2>How to use</h2>
+
+  <ol>
+    <li>
+      <strong>Enter your text</strong>: upload a file or paste text directly
+    </li>
+    <li>
+      <strong>Add metadata</strong>: provide a title (required) and optionally
+      an author
+    </li>
+    <li>
+      <strong>Choose options</strong>: select the n-gram size and output type
+    </li>
+    <li><strong>Generate</strong>: preview as SVG or download as PDF</li>
+  </ol>
+
+  <h2>Supported file formats</h2>
+
+  <ul>
+    <li><code>.txt</code> &mdash; plain text files</li>
+    <li>
+      <code>.md</code> &mdash; markdown files (treated as plain text)
+    </li>
+    <li>
+      <code>.docx</code> &mdash; Microsoft Word documents (text extracted, formatting
+      ignored)
+    </li>
+    <li>
+      <code>.pdf</code> &mdash; PDF documents (best-effort text extraction; scanned/image-based
+      PDFs won&rsquo;t work)
+    </li>
+  </ul>
+
+  <h2>Output types</h2>
+
+  <ul>
+    <li>
+      <strong>Booklet</strong>: generates dice lookup tables for probabilistic
+      text generation, as used in the
+      <a href="/lessons/pretrained-generation">Pre-trained Model Generation</a> lesson
+    </li>
+    <li>
+      <strong>Cutouts</strong>: generates token cards for the
+      <a href="/lessons/training">Training</a> lesson (bucket method)
+    </li>
+  </ul>
+
+  <h2>PDF generator</h2>
+
+  <Callout type="warning" title="Experimental">
+    <p>
+      This is an experimental feature. The compiler and processing modules are
+      loaded from CDN on first use, which may take a moment. Your text is
+      processed entirely in your browser and is never sent to any server.
+    </p>
+  </Callout>
+
+  <p>
+    <em
+      >The interactive PDF generator requires JavaScript and is available on the <a
+        href="https://www.llmsunplugged.org/tools">live site</a
+      >.</em
+    >
+  </p>
+</PageLayout>

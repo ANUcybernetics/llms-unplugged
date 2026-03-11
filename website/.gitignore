@@ -1,15 +1,14 @@
 # Dependencies
 node_modules/
 
-# Build output (VitePress)
-.vitepress/dist/
-.vitepress/cache/
-.vitepress/.temp/
+# Build output (Astro)
+dist/
+.astro/
 
 # Generated artifacts
 .llms-generated/
 .unlighthouse/
-.vitepress/theme/templates/*.typ
+src/templates/*.typ
 
 # Logs
 *.log

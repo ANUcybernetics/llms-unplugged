@@ -1,0 +1,87 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  author?: string;
+  date?: Date;
+}
+
+const { title, description, ogImage, author, date } = Astro.props;
+
+const formattedDate = date
+  ? date.toLocaleDateString("en-AU", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+  : "";
+
+const slug = Astro.url.pathname.split("/").filter(Boolean).pop() ?? "";
+const heroSrc = `/assets/images/hero-news-${slug}.avif`;
+---
+
+<BaseLayout title={title} description={description} ogImage={ogImage}>
+  <main class="news-layout">
+    <article class="prose">
+      <header class="news-header">
+        <h1 class="news-title">{title}</h1>
+        {
+          (author || date) && (
+            <div class="news-meta">
+              {author && <span class="author">{author}</span>}
+              {author && date && <span class="separator">&middot;</span>}
+              {date && (
+                <time datetime={date.toISOString()}>{formattedDate}</time>
+              )}
+            </div>
+          )
+        }
+        <img
+          class="news-hero"
+          src={heroSrc}
+          alt={`Hero image: ${title}`}
+          loading="lazy"
+        />
+      </header>
+      <slot />
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .news-layout {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  .news-header {
+    margin-bottom: 2rem;
+  }
+
+  .news-title {
+    font-size: 2rem;
+    line-height: 1.2;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .news-meta {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .separator {
+    margin: 0 0.5rem;
+  }
+
+  .news-hero {
+    width: 100%;
+    border-radius: 0.5rem;
+  }
+</style>
