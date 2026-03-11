@@ -1,13 +1,13 @@
 <script lang="ts">
   import { onMount, untrack } from "svelte";
-  import { createPlayback } from "../lib/stores/playback.svelte";
+  import { createPlayback } from "../../lib/stores/playback.svelte";
   import {
     getTrainingText,
     setTrainingText,
-  } from "../lib/stores/trainingText.svelte";
-  import { parseTokens, getBigrams } from "../lib/tokens";
-  import PlaybackSection from "./PlaybackSection.svelte";
-  import FullscreenWrapper from "./FullscreenWrapper.svelte";
+  } from "../../lib/stores/trainingText.svelte";
+  import { parseTokens, getBigrams, isPunctuation } from "../../lib/tokens";
+  import PlaybackSection from "../PlaybackSection.svelte";
+  import FullscreenWrapper from "../FullscreenWrapper.svelte";
 
   interface Props {
     loop?: boolean;
@@ -65,16 +65,12 @@
     };
   });
 
-  function isPunctuation(token: string): boolean {
-    return token === "." || token === ",";
-  }
-
   onMount(() => playback.cleanup);
 </script>
 
 <FullscreenWrapper>
   <div class="lm-widget bucket-training-widget">
-    <div class="training-view">
+    <div class="widget-view">
       <div class="input-row">
         <div class="widget-section">
           <div class="section-header">Training text</div>
@@ -182,63 +178,6 @@
 </FullscreenWrapper>
 
 <style>
-  .training-view {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .input-row,
-  .status-row {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  @container (min-width: 640px) {
-    .input-row {
-      flex-direction: row;
-    }
-
-    .input-row > :global(*) {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .status-row {
-      flex-direction: row;
-      align-items: start;
-    }
-
-    .status-row > :global(:first-child) {
-      flex: 0 0 16rem;
-    }
-
-    .status-row > :global(:last-child) {
-      flex: 1;
-      min-width: 0;
-    }
-  }
-
-  .tokens-content {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-  }
-
-  .action-content {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-height: 1.75rem;
-    flex-wrap: wrap;
-  }
-
-  .complete-message {
-    color: var(--color-brand);
-    font-weight: 600;
-  }
-
   .buckets-content {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));

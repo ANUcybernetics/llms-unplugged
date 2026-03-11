@@ -90,6 +90,7 @@
           {#each vocabulary as colWord}
             <td
               class="grid-cell"
+              class:in-highlighted-col={checkHighlightedCol(colWord)}
               class:highlight-col={checkHighlightedCol(colWord) &&
                 highlightedRow === rowWord}
               class:highlight-row={highlightedRow === rowWord ||
@@ -166,6 +167,9 @@
     color: var(--color-brand);
   }
   .grid-cell.highlight-row {
+    background-color: var(--lm-highlight-soft);
+  }
+  .grid-cell.in-highlighted-col {
     background-color: var(--lm-highlight-soft);
   }
   .grid-cell.highlight-col {

@@ -1,5 +1,9 @@
 const PUNCTUATION = new Set([".", ","]);
 
+export function isPunctuation(token: string): boolean {
+  return PUNCTUATION.has(token);
+}
+
 const CASE_ALLOWLIST = new Map([
   ["i", "I"],
   ["i'm", "I'm"],

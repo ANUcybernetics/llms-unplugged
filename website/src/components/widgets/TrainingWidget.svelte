@@ -1,14 +1,19 @@
 <script lang="ts">
   import { onMount, untrack } from "svelte";
-  import { createPlayback } from "../lib/stores/playback.svelte";
+  import { createPlayback } from "../../lib/stores/playback.svelte";
   import {
     getTrainingText,
     setTrainingText,
-  } from "../lib/stores/trainingText.svelte";
-  import { parseTokens, getVocabulary, getBigrams } from "../lib/tokens";
-  import PlaybackSection from "./PlaybackSection.svelte";
-  import FullscreenWrapper from "./FullscreenWrapper.svelte";
-  import BigramGrid from "./BigramGrid.svelte";
+  } from "../../lib/stores/trainingText.svelte";
+  import {
+    parseTokens,
+    getVocabulary,
+    getBigrams,
+    isPunctuation,
+  } from "../../lib/tokens";
+  import PlaybackSection from "../PlaybackSection.svelte";
+  import FullscreenWrapper from "../FullscreenWrapper.svelte";
+  import BigramGrid from "../BigramGrid.svelte";
 
   interface Props {
     initialText?: string;
@@ -70,7 +75,7 @@
 
 <FullscreenWrapper>
   <div class="lm-widget training-widget">
-    <div class="training-view">
+    <div class="widget-view">
       <div class="input-row">
         <div class="widget-section">
           <div class="section-header">Training text</div>
@@ -91,7 +96,7 @@
                 class="token"
                 class:highlight-first={i === highlights.tokenIdx}
                 class:highlight-second={i === highlights.nextIdx}
-                class:punctuation={token === "." || token === ","}
+                class:punctuation={isPunctuation(token)}
               >
                 {token}
               </span>
@@ -114,20 +119,18 @@
       <div class="status-row">
         <div class="widget-section">
           <div class="section-header">Current bigram</div>
-          <div class="bigram-content">
+          <div class="action-content">
             {#if highlights.row}
               <span
                 class="token highlight-first"
-                class:punctuation={highlights.row === "." ||
-                  highlights.row === ","}
+                class:punctuation={isPunctuation(highlights.row)}
               >
                 {highlights.row}
               </span>
               <span class="arrow">&rarr;</span>
               <span
                 class="token highlight-second"
-                class:punctuation={highlights.col === "." ||
-                  highlights.col === ","}
+                class:punctuation={isPunctuation(highlights.col!)}
               >
                 {highlights.col}
               </span>
@@ -156,66 +159,3 @@
     </div>
   </div>
 </FullscreenWrapper>
-
-<style>
-  .training-view {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .input-row,
-  .status-row {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  @container (min-width: 640px) {
-    .input-row {
-      flex-direction: row;
-    }
-
-    .input-row > :global(*) {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .status-row {
-      flex-direction: row;
-      align-items: start;
-    }
-
-    .status-row > :global(:first-child) {
-      flex: 0 0 16rem;
-    }
-
-    .status-row > :global(:last-child) {
-      flex: 1;
-      min-width: 0;
-    }
-  }
-
-  .tokens-content {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-  }
-
-  .bigram-content {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-height: 1.75rem;
-  }
-
-  .complete-message {
-    color: var(--color-brand);
-    font-weight: 600;
-  }
-
-  .arrow {
-    font-size: 1.25rem;
-    color: var(--color-text-secondary);
-  }
-</style>

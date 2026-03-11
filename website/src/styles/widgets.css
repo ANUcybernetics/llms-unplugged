@@ -9,6 +9,12 @@
   background: var(--color-bg-soft);
 }
 
+.widget-view {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .widget-section {
   display: flex;
   flex-direction: column;
@@ -63,6 +69,110 @@
   transform: scale(1.05);
 }
 
+/* Shared widget layout rows */
+
+.input-row,
+.status-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@container (min-width: 640px) {
+  .input-row {
+    flex-direction: row;
+  }
+
+  .input-row > * {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .status-row {
+    flex-direction: row;
+    align-items: start;
+  }
+
+  .status-row > :first-child {
+    flex: 0 0 16rem;
+  }
+
+  .status-row > :last-child {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.tokens-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.output-content {
+  font-family: var(--font-mono);
+  min-height: 1.5rem;
+}
+
+.output-word {
+  transition: color 0.2s;
+}
+
+.output-word.latest {
+  color: var(--color-brand);
+  font-weight: 600;
+}
+
+.action-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.complete-message {
+  color: var(--color-brand);
+  font-weight: 600;
+}
+
+.arrow {
+  font-size: 1.25rem;
+  color: var(--color-text-secondary);
+}
+
+/* Dice display */
+
+.dice-value {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background: var(--color-brand);
+  color: white;
+  border-radius: 0.25rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  min-width: 2rem;
+  text-align: center;
+}
+
+.dice-value.rolling {
+  animation: dice-spin 0.1s linear infinite;
+}
+
+@keyframes dice-spin {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Speed / playback controls */
+
 .speed-control {
   display: flex;
   align-items: center;
@@ -91,6 +201,20 @@
   min-width: 0;
 }
 
+/* Fullscreen layout */
+
+.fullscreen-content.scaled .widget-view {
+  height: 90dvh;
+}
+
+.fullscreen-content.scaled .widget-view > .widget-section:has(.bigram-grid),
+.fullscreen-content.scaled .widget-view > .widget-section:has(.buckets-content),
+.fullscreen-content.scaled .widget-view > .widget-section:has(.entries-content) {
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
 /* Code element styles for grid/table widget components (kept here rather than
    in Svelte component <style> because :global() selectors in Svelte components
    break both esbuild and lightningcss when bundled as Astro islands) */
@@ -115,7 +239,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .token {
+  .token,
+  .output-word {
     transition: none;
+  }
+
+  .dice-value.rolling {
+    animation: none;
   }
 }

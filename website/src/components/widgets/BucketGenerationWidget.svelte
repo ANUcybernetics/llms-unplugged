@@ -3,15 +3,18 @@
   import {
     getTrainingText,
     setTrainingText,
-  } from "../lib/stores/trainingText.svelte";
-  import { parseTokens, getVocabulary, buildBigramModel } from "../lib/tokens";
-  import PlaybackSection from "./PlaybackSection.svelte";
-  import FullscreenWrapper from "./FullscreenWrapper.svelte";
-  import { PLAYBACK_CONFIG } from "../lib/config/playback";
-
-  const PICK_ANIMATION_MS = PLAYBACK_CONFIG.DICE_ROLL_ANIMATION_MS;
-  const POST_WRITE_PAUSE_MS = PLAYBACK_CONFIG.POST_WRITE_PAUSE_MS;
-  const DEFAULT_STEP_INTERVAL_MS = PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS;
+  } from "../../lib/stores/trainingText.svelte";
+  import { createGenerationPlayback } from "../../lib/stores/generationPlayback.svelte";
+  import {
+    parseTokens,
+    getVocabulary,
+    buildBigramModel,
+    isPunctuation,
+  } from "../../lib/tokens";
+  import { buildBucketsFromModel } from "../../lib/buckets";
+  import PlaybackSection from "../PlaybackSection.svelte";
+  import FullscreenWrapper from "../FullscreenWrapper.svelte";
+  import { PLAYBACK_CONFIG } from "../../lib/config/playback";
 
   interface Props {
     loop?: boolean;
@@ -41,6 +44,7 @@
   let tokens = $derived(parseTokens(trainingText));
   let vocabulary = $derived(getVocabulary(tokens));
   let model = $derived(buildBigramModel(tokens));
+  let buckets = $derived(buildBucketsFromModel(vocabulary, model));
 
   let currentWord = $derived(
     outputWords.length === 0 ? null : outputWords[outputWords.length - 1],
@@ -50,80 +54,25 @@
     vocabulary.filter((w) => model.hasSuccessors(w)),
   );
 
-  interface BucketContents {
-    label: string;
-    tokens: string[];
-  }
-
-  let buckets = $derived.by((): BucketContents[] => {
-    const bucketMap = new Map<string, string[]>();
-    const order: string[] = [];
-
-    for (const word of vocabulary) {
-      const row = model.counts.get(word);
-      if (row) {
-        const tokensInBucket: string[] = [];
-        for (const [to, count] of row.entries()) {
-          for (let i = 0; i < count; i++) {
-            tokensInBucket.push(to);
-          }
-        }
-        if (tokensInBucket.length > 0) {
-          bucketMap.set(word, tokensInBucket);
-          order.push(word);
-        }
-      }
-    }
-
-    return order.map((label) => ({
-      label,
-      tokens: bucketMap.get(label) || [],
-    }));
-  });
-
   let currentBucketTokens = $derived.by(() => {
     if (!currentWord) return [];
     const bucket = buckets.find((b) => b.label === currentWord);
     return bucket?.tokens || [];
   });
 
-  let isPlaying = $state(false);
-  let isComplete = $state(false);
-  let stepInterval: number = $state(DEFAULT_STEP_INTERVAL_MS);
-  let abortController: AbortController | null = null;
-
-  function play() {
-    isPlaying = true;
-  }
-
-  function pause() {
-    isPlaying = false;
-  }
-
-  onMount(() => {
-    return () => {
-      if (abortController) {
-        abortController.abort();
-        abortController = null;
-      }
-    };
-  });
-
-  function reset() {
-    outputWords = [];
-    pickedToken = null;
-    shufflingIndex = null;
-    phase = "selecting";
-    isPlaying = false;
-    isComplete = false;
-    isPickingFromBucket = false;
-  }
-
   function selectStartWord(word: string) {
     if (outputWords.length > 0) return;
     if (!model.hasSuccessors(word)) return;
     outputWords = [word];
     phase = "showing-bucket";
+  }
+
+  function selectRandomStart() {
+    if (validStarters.length > 0) {
+      selectStartWord(
+        validStarters[Math.floor(Math.random() * validStarters.length)],
+      );
+    }
   }
 
   async function animatePicking(): Promise<string> {
@@ -133,7 +82,9 @@
 
     for (let i = 0; i < 10; i++) {
       shufflingIndex = Math.floor(Math.random() * bucketTokens.length);
-      await new Promise((resolve) => setTimeout(resolve, PICK_ANIMATION_MS));
+      await new Promise((resolve) =>
+        setTimeout(resolve, PLAYBACK_CONFIG.DICE_ROLL_ANIMATION_MS),
+      );
     }
 
     shufflingIndex = finalIndex;
@@ -143,11 +94,7 @@
 
   async function doStep() {
     if (phase === "selecting") {
-      if (outputWords.length === 0 && validStarters.length > 0) {
-        const randomStart =
-          validStarters[Math.floor(Math.random() * validStarters.length)];
-        selectStartWord(randomStart);
-      }
+      if (outputWords.length === 0) selectRandomStart();
       return;
     }
 
@@ -164,7 +111,9 @@
       phase = "writing";
       outputWords = [...outputWords, nextWord];
 
-      await new Promise((resolve) => setTimeout(resolve, POST_WRITE_PAUSE_MS));
+      await new Promise((resolve) =>
+        setTimeout(resolve, PLAYBACK_CONFIG.POST_WRITE_PAUSE_MS),
+      );
 
       if (model.hasSuccessors(nextWord)) {
         phase = "showing-bucket";
@@ -174,101 +123,33 @@
         phase = "selecting";
         pickedToken = null;
         shufflingIndex = null;
-        isComplete = true;
-        if (!loop) {
-          isPlaying = false;
-        }
+        playback.markComplete();
       }
       return;
     }
-
-    if (phase === "picking" || phase === "writing") {
-      return;
-    }
   }
 
-  function resetPlayState() {
-    outputWords = [];
-    pickedToken = null;
-    shufflingIndex = null;
-    phase = "selecting";
-    isComplete = false;
-    isPickingFromBucket = false;
-  }
-
-  function handlePlay() {
-    if (isComplete) {
-      resetPlayState();
-    }
-    if (outputWords.length === 0 && validStarters.length > 0) {
-      const randomStart =
-        validStarters[Math.floor(Math.random() * validStarters.length)];
-      selectStartWord(randomStart);
-    }
-    play();
-  }
-
-  $effect(() => {
-    if (isPlaying) {
-      abortController = new AbortController();
-      const signal = abortController.signal;
-
-      const abortableSleep = (ms: number) =>
-        new Promise<void>((resolve, reject) => {
-          const timeout = setTimeout(resolve, ms);
-          signal.addEventListener(
-            "abort",
-            () => {
-              clearTimeout(timeout);
-              reject(new DOMException("Aborted", "AbortError"));
-            },
-            { once: true },
-          );
-        });
-
-      (async () => {
-        try {
-          while (isPlaying && !signal.aborted) {
-            await doStep();
-            if (isComplete) {
-              if (loop) {
-                await abortableSleep(
-                  stepInterval * PLAYBACK_CONFIG.LOOP_PAUSE_MULTIPLIER,
-                );
-                resetPlayState();
-                continue;
-              }
-              break;
-            }
-            await abortableSleep(stepInterval);
-          }
-        } catch (error) {
-          if (error instanceof DOMException && error.name === "AbortError") {
-            return;
-          }
-          throw error;
-        }
-      })();
-
-      return () => {
-        abortController?.abort();
-        abortController = null;
-      };
-    }
+  const playback = createGenerationPlayback({
+    doStep,
+    resetState() {
+      outputWords = [];
+      pickedToken = null;
+      shufflingIndex = null;
+      phase = "selecting";
+      isPickingFromBucket = false;
+    },
+    preparePlay() {
+      if (outputWords.length === 0) selectRandomStart();
+    },
+    loop,
   });
 
-  function handleBucketClick(word: string) {
-    selectStartWord(word);
-  }
-
-  function isPunctuation(token: string): boolean {
-    return token === "." || token === ",";
-  }
+  onMount(() => playback.cleanup);
 </script>
 
 <FullscreenWrapper>
   <div class="lm-widget bucket-generation-widget">
-    <div class="generation-view">
+    <div class="widget-view">
       <div class="input-row">
         <div class="widget-section">
           <div class="section-header">Training text</div>
@@ -307,12 +188,12 @@
               class:clickable={outputWords.length === 0 &&
                 model.hasSuccessors(bucket.label)}
               class:dead-end={!model.hasSuccessors(bucket.label)}
-              onclick={() => handleBucketClick(bucket.label)}
+              onclick={() => selectStartWord(bucket.label)}
               role="button"
               tabindex="0"
               onkeydown={(e) => {
                 if (e.key === "Enter" || e.key === " ")
-                  handleBucketClick(bucket.label);
+                  selectStartWord(bucket.label);
               }}
             >
               <div
@@ -379,23 +260,23 @@
                 >{pickedToken}</span
               >
               <span>to output...</span>
-            {:else if isComplete}
+            {:else if playback.isComplete}
               <span class="complete-message">Generation complete!</span>
             {/if}
           </div>
         </div>
 
         <PlaybackSection
-          {isPlaying}
-          {isComplete}
-          {stepInterval}
+          isPlaying={playback.isPlaying}
+          isComplete={playback.isComplete}
+          stepInterval={playback.stepInterval}
           {loop}
           sliderId="bucket-generation-speed-slider"
-          onplay={handlePlay}
-          onpause={pause}
-          onstep={doStep}
-          onreset={reset}
-          onstepintervalchange={(v) => (stepInterval = v)}
+          onplay={playback.play}
+          onpause={playback.pause}
+          onstep={playback.step}
+          onreset={playback.reset}
+          onstepintervalchange={(v) => (playback.stepInterval = v)}
         />
       </div>
     </div>
@@ -403,58 +284,6 @@
 </FullscreenWrapper>
 
 <style>
-  .generation-view {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .input-row,
-  .status-row {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  @container (min-width: 640px) {
-    .input-row {
-      flex-direction: row;
-    }
-
-    .input-row > :global(*) {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .status-row {
-      flex-direction: row;
-      align-items: start;
-    }
-
-    .status-row > :global(:first-child) {
-      flex: 0 0 16rem;
-    }
-
-    .status-row > :global(:last-child) {
-      flex: 1;
-      min-width: 0;
-    }
-  }
-
-  .output-content {
-    font-family: var(--font-mono);
-    min-height: 1.5rem;
-  }
-
-  .output-word {
-    transition: color 0.2s;
-  }
-
-  .output-word.latest {
-    color: var(--color-brand);
-    font-weight: 600;
-  }
-
   .buckets-content {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
@@ -563,23 +392,9 @@
     }
   }
 
-  .action-content {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    min-height: 1.75rem;
-    flex-wrap: wrap;
-  }
-
-  .complete-message {
-    color: var(--color-brand);
-    font-weight: 600;
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .bucket,
-    .bucket-token,
-    .output-word {
+    .bucket-token {
       transition: none;
     }
 

@@ -2,13 +2,17 @@
   import {
     getTrainingText,
     setTrainingText,
-  } from "../lib/stores/trainingText.svelte";
-  import { parseTokens, getVocabulary, buildBigramModel } from "../lib/tokens";
-  import { manhattanDistance, buildDistanceMatrix } from "../lib/distance";
-  import FullscreenWrapper from "./FullscreenWrapper.svelte";
-  import BigramGrid from "./BigramGrid.svelte";
-  import VectorComparison from "./VectorComparison.svelte";
-  import DistanceMatrix from "./DistanceMatrix.svelte";
+  } from "../../lib/stores/trainingText.svelte";
+  import {
+    parseTokens,
+    getVocabulary,
+    buildBigramModel,
+  } from "../../lib/tokens";
+  import { manhattanDistance, buildDistanceMatrix } from "../../lib/distance";
+  import FullscreenWrapper from "../FullscreenWrapper.svelte";
+  import BigramGrid from "../BigramGrid.svelte";
+  import VectorComparison from "../VectorComparison.svelte";
+  import DistanceMatrix from "../DistanceMatrix.svelte";
 
   let inputText = $state(getTrainingText());
 
@@ -54,7 +58,7 @@
 
 <FullscreenWrapper>
   <div class="lm-widget embedding-widget">
-    <div class="embedding-view">
+    <div class="widget-view">
       <div class="widget-section">
         <div class="section-header">Training text</div>
         <textarea
@@ -98,12 +102,6 @@
 </FullscreenWrapper>
 
 <style>
-  .embedding-view {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
   .section-hint {
     font-weight: 400;
     font-style: italic;

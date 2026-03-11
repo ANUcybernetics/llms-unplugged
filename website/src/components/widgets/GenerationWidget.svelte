@@ -3,22 +3,24 @@
   import {
     getTrainingText,
     setTrainingText,
-  } from "../lib/stores/trainingText.svelte";
-  import { parseTokens, getVocabulary, buildBigramModel } from "../lib/tokens";
+  } from "../../lib/stores/trainingText.svelte";
+  import { createGenerationPlayback } from "../../lib/stores/generationPlayback.svelte";
+  import {
+    parseTokens,
+    getVocabulary,
+    buildBigramModel,
+    isPunctuation,
+  } from "../../lib/tokens";
   import {
     createDiceMapping,
     rollDice,
     findWordForRoll,
-  } from "../lib/diceMapping";
-  import type { DiceMapping } from "../lib/diceMapping";
-  import PlaybackSection from "./PlaybackSection.svelte";
-  import FullscreenWrapper from "./FullscreenWrapper.svelte";
-  import BigramGrid from "./BigramGrid.svelte";
-  import { PLAYBACK_CONFIG } from "../lib/config/playback";
-
-  const DICE_ROLL_ANIMATION_MS = PLAYBACK_CONFIG.DICE_ROLL_ANIMATION_MS;
-  const POST_WRITE_PAUSE_MS = PLAYBACK_CONFIG.POST_WRITE_PAUSE_MS;
-  const DEFAULT_STEP_INTERVAL_MS = PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS;
+  } from "../../lib/diceMapping";
+  import type { DiceMapping } from "../../lib/diceMapping";
+  import PlaybackSection from "../PlaybackSection.svelte";
+  import FullscreenWrapper from "../FullscreenWrapper.svelte";
+  import BigramGrid from "../BigramGrid.svelte";
+  import { PLAYBACK_CONFIG } from "../../lib/config/playback";
 
   interface Props {
     diceSides?: number;
@@ -63,42 +65,20 @@
       .map(([word, count]) => ({ word, count }));
   });
 
-  let isPlaying = $state(false);
-  let isComplete = $state(false);
-  let stepInterval: number = $state(DEFAULT_STEP_INTERVAL_MS);
-  let abortController: AbortController | null = null;
-
-  function play() {
-    isPlaying = true;
-  }
-
-  function pause() {
-    isPlaying = false;
-  }
-
-  onMount(() => {
-    return () => {
-      if (abortController) {
-        abortController.abort();
-        abortController = null;
-      }
-    };
-  });
-
-  function reset() {
-    outputWords = [];
-    currentDiceRoll = null;
-    currentMappings = [];
-    phase = "selecting";
-    isPlaying = false;
-    isComplete = false;
-  }
-
   function selectStartWord(word: string) {
     if (!model.hasSuccessors(word)) return;
     outputWords = [word];
     phase = "showing-options";
     currentMappings = createDiceMapping(currentRowOptions, diceSides);
+  }
+
+  function selectRandomStart() {
+    const validStarters = vocabulary.filter((w) => model.hasSuccessors(w));
+    if (validStarters.length > 0) {
+      selectStartWord(
+        validStarters[Math.floor(Math.random() * validStarters.length)],
+      );
+    }
   }
 
   async function animateDiceRoll(): Promise<number> {
@@ -108,7 +88,7 @@
     for (let i = 0; i < 10; i++) {
       currentDiceRoll = rollDice(diceSides);
       await new Promise((resolve) =>
-        setTimeout(resolve, DICE_ROLL_ANIMATION_MS),
+        setTimeout(resolve, PLAYBACK_CONFIG.DICE_ROLL_ANIMATION_MS),
       );
     }
 
@@ -119,14 +99,7 @@
 
   async function doStep() {
     if (phase === "selecting") {
-      if (outputWords.length === 0) {
-        const validStarters = vocabulary.filter((w) => model.hasSuccessors(w));
-        if (validStarters.length > 0) {
-          const randomStart =
-            validStarters[Math.floor(Math.random() * validStarters.length)];
-          selectStartWord(randomStart);
-        }
-      }
+      if (outputWords.length === 0) selectRandomStart();
       return;
     }
 
@@ -144,7 +117,7 @@
         outputWords = [...outputWords, nextWord];
 
         await new Promise((resolve) =>
-          setTimeout(resolve, POST_WRITE_PAUSE_MS),
+          setTimeout(resolve, PLAYBACK_CONFIG.POST_WRITE_PAUSE_MS),
         );
 
         if (model.hasSuccessors(nextWord)) {
@@ -160,91 +133,28 @@
           phase = "selecting";
           currentMappings = [];
           currentDiceRoll = null;
-          isComplete = true;
-          if (!loop) {
-            isPlaying = false;
-          }
+          playback.markComplete();
         }
       }
       return;
     }
-
-    if (phase === "rolling" || phase === "writing") {
-      return;
-    }
   }
 
-  function resetPlayState() {
-    outputWords = [];
-    currentDiceRoll = null;
-    currentMappings = [];
-    phase = "selecting";
-    isComplete = false;
-  }
-
-  function handlePlay() {
-    if (isComplete) {
-      resetPlayState();
-    }
-    if (outputWords.length === 0) {
-      const validStarters = vocabulary.filter((w) => model.hasSuccessors(w));
-      if (validStarters.length > 0) {
-        const randomStart =
-          validStarters[Math.floor(Math.random() * validStarters.length)];
-        selectStartWord(randomStart);
-      }
-    }
-    play();
-  }
-
-  $effect(() => {
-    if (isPlaying) {
-      abortController = new AbortController();
-      const signal = abortController.signal;
-
-      const abortableSleep = (ms: number) =>
-        new Promise<void>((resolve, reject) => {
-          const timeout = setTimeout(resolve, ms);
-          signal.addEventListener(
-            "abort",
-            () => {
-              clearTimeout(timeout);
-              reject(new DOMException("Aborted", "AbortError"));
-            },
-            { once: true },
-          );
-        });
-
-      (async () => {
-        try {
-          while (isPlaying && !signal.aborted) {
-            await doStep();
-            if (isComplete) {
-              if (loop) {
-                await abortableSleep(
-                  stepInterval * PLAYBACK_CONFIG.LOOP_PAUSE_MULTIPLIER,
-                );
-                resetPlayState();
-                continue;
-              }
-              break;
-            }
-            await abortableSleep(stepInterval);
-          }
-        } catch (error) {
-          if (error instanceof DOMException && error.name === "AbortError") {
-            return;
-          }
-          throw error;
-        }
-      })();
-
-      return () => {
-        abortController?.abort();
-        abortController = null;
-      };
-    }
+  const playback = createGenerationPlayback({
+    doStep,
+    resetState() {
+      outputWords = [];
+      currentDiceRoll = null;
+      currentMappings = [];
+      phase = "selecting";
+    },
+    preparePlay() {
+      if (outputWords.length === 0) selectRandomStart();
+    },
+    loop,
   });
+
+  onMount(() => playback.cleanup);
 
   function isHighlightedCol(word: string): boolean {
     if (
@@ -265,7 +175,7 @@
 
 <FullscreenWrapper>
   <div class="lm-widget generation-widget">
-    <div class="generation-view">
+    <div class="widget-view">
       <div class="input-row">
         <div class="widget-section">
           <div class="section-header">Training text</div>
@@ -281,10 +191,10 @@
         <div class="widget-section">
           <div class="section-header">Tokens</div>
           <div class="tokens-content">
-            {#each tokens as token, i}
+            {#each tokens as token}
               <span
                 class="token"
-                class:punctuation={token === "." || token === ","}
+                class:punctuation={isPunctuation(token)}
               >
                 {token}
               </span>
@@ -367,16 +277,16 @@
         </div>
 
         <PlaybackSection
-          {isPlaying}
-          {isComplete}
-          {stepInterval}
+          isPlaying={playback.isPlaying}
+          isComplete={playback.isComplete}
+          stepInterval={playback.stepInterval}
           {loop}
           sliderId="generation-speed-slider"
-          onplay={handlePlay}
-          onpause={pause}
-          onstep={doStep}
-          onreset={reset}
-          onstepintervalchange={(v) => (stepInterval = v)}
+          onplay={playback.play}
+          onpause={playback.pause}
+          onstep={playback.step}
+          onreset={playback.reset}
+          onstepintervalchange={(v) => (playback.stepInterval = v)}
         />
       </div>
     </div>
@@ -384,64 +294,6 @@
 </FullscreenWrapper>
 
 <style>
-  .generation-view {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .input-row,
-  .status-row {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  @container (min-width: 640px) {
-    .input-row {
-      flex-direction: row;
-    }
-
-    .input-row > :global(*) {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .status-row {
-      flex-direction: row;
-      align-items: start;
-    }
-
-    .status-row > :global(*) {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .status-row > :global(:first-child) {
-      flex: 0 0 14rem;
-    }
-  }
-
-  .tokens-content {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-  }
-
-  .output-content {
-    font-family: var(--font-mono);
-    min-height: 1.5rem;
-  }
-
-  .output-word {
-    transition: color 0.2s;
-  }
-
-  .output-word.latest {
-    color: var(--color-brand);
-    font-weight: 600;
-  }
-
   .dice-content {
     display: flex;
     flex-direction: column;
@@ -488,42 +340,9 @@
     height: 1.75rem;
   }
 
-  .dice-value {
-    display: inline-block;
-    padding: 0.25rem 0.5rem;
-    background: var(--color-brand);
-    color: white;
-    border-radius: 0.25rem;
-    font-family: var(--font-mono);
-    font-weight: 600;
-    min-width: 2rem;
-    text-align: center;
-  }
-
-  .dice-value.rolling {
-    animation: dice-spin 0.1s linear infinite;
-  }
-
-  @keyframes dice-spin {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.1);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .output-word,
     .mapping-item {
       transition: none;
-    }
-
-    .dice-value.rolling {
-      animation: none;
     }
   }
 </style>

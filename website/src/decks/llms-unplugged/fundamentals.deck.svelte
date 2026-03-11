@@ -252,8 +252,8 @@ by exploiting patterns in text to generate new text
 ---
 
 <script lang="ts">
-  import TrainingWidget from "../../components/TrainingWidget.svelte";
-  import GenerationWidget from "../../components/GenerationWidget.svelte";
+  import TrainingWidget from "../../components/widgets/TrainingWidget.svelte";
+  import GenerationWidget from "../../components/widgets/GenerationWidget.svelte";
   import "../../styles/widgets.css";
 </script>
 
@@ -273,8 +273,7 @@ by exploiting patterns in text to generate new text
     font-size: 14px;
   }
 
-  :global(.reveal .slides section .lm-widget .training-view),
-  :global(.reveal .slides section .lm-widget .generation-view) {
+  :global(.reveal .slides section .lm-widget .widget-view) {
     gap: 0.5rem;
   }
 
