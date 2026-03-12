@@ -19,7 +19,7 @@
   import { rollDice } from "../../lib/diceMapping";
   import PlaybackSection from "../PlaybackSection.svelte";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
-  import { PLAYBACK_CONFIG } from "../../lib/config/playback";
+
 
   interface Props {
     loop?: boolean;
@@ -81,15 +81,16 @@
     }
   }
 
-  async function animateDiceRoll(entry: ModelEntry): Promise<number> {
+  async function animateDiceRoll(
+    entry: ModelEntry,
+    frameMs: number,
+  ): Promise<number> {
     isRolling = true;
     const finalRoll = rollMultipleDice(entry.numDice);
 
     for (let i = 0; i < 10; i++) {
       currentDiceRoll = rollMultipleDice(entry.numDice);
-      await new Promise((resolve) =>
-        setTimeout(resolve, PLAYBACK_CONFIG.DICE_ROLL_ANIMATION_MS),
-      );
+      await new Promise((resolve) => setTimeout(resolve, frameMs));
     }
 
     currentDiceRoll = finalRoll;
@@ -97,7 +98,9 @@
     return finalRoll;
   }
 
-  async function doStep() {
+  async function doStep(stepInterval: number) {
+    const diceFrameMs = Math.max(20, stepInterval * 0.025);
+    const writePauseMs = stepInterval * 0.25;
     if (phase === "selecting") {
       if (outputWords.length === 0) selectRandomStart();
       return;
@@ -112,7 +115,7 @@
         phase = "rolled";
       } else {
         phase = "rolling";
-        await animateDiceRoll(entry);
+        await animateDiceRoll(entry, diceFrameMs);
         phase = "rolled";
       }
       return;
@@ -134,7 +137,7 @@
         outputWords = [...outputWords, nextWord];
 
         await new Promise((resolve) =>
-          setTimeout(resolve, PLAYBACK_CONFIG.POST_WRITE_PAUSE_MS),
+          setTimeout(resolve, writePauseMs),
         );
 
         if (model.hasSuccessors(nextWord)) {

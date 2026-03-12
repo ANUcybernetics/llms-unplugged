@@ -14,6 +14,7 @@
   import PlaybackSection from "../PlaybackSection.svelte";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
   import BigramGrid from "../BigramGrid.svelte";
+  import { PLAYBACK_CONFIG } from "../../lib/config/playback";
 
   interface Props {
     initialText?: string;
@@ -122,6 +123,8 @@
         currentStep={playback.currentStep}
         totalSteps={playback.totalSteps}
         stepInterval={playback.stepInterval}
+        minStepInterval={PLAYBACK_CONFIG.TRAINING_MIN_STEP_INTERVAL_MS}
+        maxStepInterval={PLAYBACK_CONFIG.TRAINING_MAX_STEP_INTERVAL_MS}
         {loop}
         sliderId="training-speed-slider"
         onplay={playback.play}

@@ -20,7 +20,7 @@
   import PlaybackSection from "../PlaybackSection.svelte";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
   import BigramGrid from "../BigramGrid.svelte";
-  import { PLAYBACK_CONFIG } from "../../lib/config/playback";
+
 
   interface Props {
     diceSides?: number;
@@ -81,15 +81,13 @@
     }
   }
 
-  async function animateDiceRoll(): Promise<number> {
+  async function animateDiceRoll(frameMs: number): Promise<number> {
     isRolling = true;
     const finalRoll = rollDice(diceSides);
 
     for (let i = 0; i < 10; i++) {
       currentDiceRoll = rollDice(diceSides);
-      await new Promise((resolve) =>
-        setTimeout(resolve, PLAYBACK_CONFIG.DICE_ROLL_ANIMATION_MS),
-      );
+      await new Promise((resolve) => setTimeout(resolve, frameMs));
     }
 
     currentDiceRoll = finalRoll;
@@ -97,7 +95,9 @@
     return finalRoll;
   }
 
-  async function doStep() {
+  async function doStep(stepInterval: number) {
+    const diceFrameMs = Math.max(20, stepInterval * 0.025);
+    const writePauseMs = stepInterval * 0.25;
     if (phase === "selecting") {
       if (outputWords.length === 0) selectRandomStart();
       return;
@@ -105,7 +105,7 @@
 
     if (phase === "showing-options") {
       phase = "rolling";
-      await animateDiceRoll();
+      await animateDiceRoll(diceFrameMs);
       phase = "rolled";
       return;
     }
@@ -117,7 +117,7 @@
         outputWords = [...outputWords, nextWord];
 
         await new Promise((resolve) =>
-          setTimeout(resolve, PLAYBACK_CONFIG.POST_WRITE_PAUSE_MS),
+          setTimeout(resolve, writePauseMs),
         );
 
         if (model.hasSuccessors(nextWord)) {

@@ -9,6 +9,8 @@
     totalSteps?: number;
     showStepCounter?: boolean;
     stepInterval: number;
+    minStepInterval?: number;
+    maxStepInterval?: number;
     sliderId?: string;
     loop?: boolean;
     onplay: () => void;
@@ -25,6 +27,8 @@
     totalSteps = 0,
     showStepCounter = false,
     stepInterval,
+    minStepInterval = PLAYBACK_CONFIG.MIN_STEP_INTERVAL_MS,
+    maxStepInterval = PLAYBACK_CONFIG.MAX_STEP_INTERVAL_MS,
     sliderId = "speed-slider",
     loop = false,
     onplay,
@@ -54,8 +58,8 @@
       id={sliderId}
       value={stepInterval}
       type="range"
-      min={PLAYBACK_CONFIG.MIN_STEP_INTERVAL_MS}
-      max={PLAYBACK_CONFIG.MAX_STEP_INTERVAL_MS}
+      min={minStepInterval}
+      max={maxStepInterval}
       step="50"
       oninput={(e) =>
         onstepintervalchange(Number((e.target as HTMLInputElement).value))}

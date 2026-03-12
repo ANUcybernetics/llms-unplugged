@@ -1,7 +1,7 @@
 import { PLAYBACK_CONFIG } from "../config/playback";
 
 export interface GenerationPlaybackOptions {
-  doStep: () => Promise<void>;
+  doStep: (stepInterval: number) => Promise<void>;
   resetState: () => void;
   preparePlay: () => void;
   loop: boolean;
@@ -35,7 +35,7 @@ export function createGenerationPlayback(opts: GenerationPlaybackOptions) {
     (async () => {
       try {
         while (isPlaying && !signal.aborted) {
-          await opts.doStep();
+          await opts.doStep(stepInterval);
           if (_isComplete) {
             if (opts.loop) {
               await abortableSleep(
@@ -82,9 +82,6 @@ export function createGenerationPlayback(opts: GenerationPlaybackOptions) {
     },
     set stepInterval(value: number) {
       stepInterval = value;
-      if (isPlaying) {
-        startLoop();
-      }
     },
     markComplete() {
       _isComplete = true;
@@ -104,7 +101,7 @@ export function createGenerationPlayback(opts: GenerationPlaybackOptions) {
       isPlaying = false;
     },
     step() {
-      return opts.doStep();
+      return opts.doStep(stepInterval);
     },
     reset() {
       isPlaying = false;

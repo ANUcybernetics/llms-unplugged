@@ -8,6 +8,7 @@
   import { parseTokens, getBigrams, isPunctuation } from "../../lib/tokens";
   import PlaybackSection from "../PlaybackSection.svelte";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
+  import { PLAYBACK_CONFIG } from "../../lib/config/playback";
 
   interface Props {
     loop?: boolean;
@@ -154,6 +155,8 @@
         currentStep={playback.currentStep}
         totalSteps={playback.totalSteps}
         stepInterval={playback.stepInterval}
+        minStepInterval={PLAYBACK_CONFIG.TRAINING_MIN_STEP_INTERVAL_MS}
+        maxStepInterval={PLAYBACK_CONFIG.TRAINING_MAX_STEP_INTERVAL_MS}
         {loop}
         sliderId="bucket-training-speed-slider"
         onplay={playback.play}

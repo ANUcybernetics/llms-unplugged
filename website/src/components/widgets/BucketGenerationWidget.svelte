@@ -14,7 +14,7 @@
   import { buildBucketsFromModel } from "../../lib/buckets";
   import PlaybackSection from "../PlaybackSection.svelte";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
-  import { PLAYBACK_CONFIG } from "../../lib/config/playback";
+
 
   interface Props {
     loop?: boolean;
@@ -75,16 +75,14 @@
     }
   }
 
-  async function animatePicking(): Promise<string> {
+  async function animatePicking(frameMs: number): Promise<string> {
     isPickingFromBucket = true;
     const bucketTokens = currentBucketTokens;
     const finalIndex = Math.floor(Math.random() * bucketTokens.length);
 
     for (let i = 0; i < 10; i++) {
       shufflingIndex = Math.floor(Math.random() * bucketTokens.length);
-      await new Promise((resolve) =>
-        setTimeout(resolve, PLAYBACK_CONFIG.DICE_ROLL_ANIMATION_MS),
-      );
+      await new Promise((resolve) => setTimeout(resolve, frameMs));
     }
 
     shufflingIndex = finalIndex;
@@ -92,7 +90,9 @@
     return bucketTokens[finalIndex];
   }
 
-  async function doStep() {
+  async function doStep(stepInterval: number) {
+    const diceFrameMs = Math.max(20, stepInterval * 0.025);
+    const writePauseMs = stepInterval * 0.25;
     if (phase === "selecting") {
       if (outputWords.length === 0) selectRandomStart();
       return;
@@ -100,7 +100,7 @@
 
     if (phase === "showing-bucket") {
       phase = "picking";
-      const picked = await animatePicking();
+      const picked = await animatePicking(diceFrameMs);
       pickedToken = picked;
       phase = "picked";
       return;
@@ -112,7 +112,7 @@
       outputWords = [...outputWords, nextWord];
 
       await new Promise((resolve) =>
-        setTimeout(resolve, PLAYBACK_CONFIG.POST_WRITE_PAUSE_MS),
+        setTimeout(resolve, writePauseMs),
       );
 
       if (model.hasSuccessors(nextWord)) {

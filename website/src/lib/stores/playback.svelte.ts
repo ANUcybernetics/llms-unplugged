@@ -6,9 +6,10 @@ export function createPlayback(
 ) {
   let currentStep = $state(0);
   let isPlaying = $state(false);
-  let stepInterval: number = $state(PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS);
-  let intervalId: ReturnType<typeof setInterval> | null = null;
-  let loopTimeoutId: ReturnType<typeof setTimeout> | null = null;
+  let stepInterval: number = $state(
+    PLAYBACK_CONFIG.TRAINING_DEFAULT_STEP_INTERVAL_MS,
+  );
+  let intervalId: ReturnType<typeof setTimeout> | null = null;
 
   const totalSteps = $derived(getTotalSteps());
   const isComplete = $derived(currentStep >= totalSteps);
@@ -19,25 +20,19 @@ export function createPlayback(
     }
   });
 
-  function clearPlayInterval() {
+  function clearTimer() {
     if (intervalId !== null) {
-      clearInterval(intervalId);
+      clearTimeout(intervalId);
       intervalId = null;
     }
   }
 
-  function startInterval() {
-    clearPlayInterval();
-    intervalId = setInterval(() => {
+  function scheduleNext(delay?: number) {
+    clearTimer();
+    intervalId = setTimeout(() => {
+      intervalId = null;
       step();
-    }, stepInterval);
-  }
-
-  function clearLoopTimeout() {
-    if (loopTimeoutId !== null) {
-      clearTimeout(loopTimeoutId);
-      loopTimeoutId = null;
-    }
+    }, delay ?? stepInterval);
   }
 
   function step() {
@@ -46,17 +41,18 @@ export function createPlayback(
     }
     if (currentStep >= totalSteps) {
       if (options.loop) {
-        clearPlayInterval();
-        loopTimeoutId = setTimeout(() => {
-          loopTimeoutId = null;
-          if (isPlaying) {
-            currentStep = 0;
-            startInterval();
-          }
+        clearTimer();
+        intervalId = setTimeout(() => {
+          intervalId = null;
+          currentStep = 0;
+          if (isPlaying) scheduleNext();
         }, stepInterval * PLAYBACK_CONFIG.LOOP_PAUSE_MULTIPLIER);
       } else {
         pause();
+        return;
       }
+    } else if (isPlaying) {
+      scheduleNext();
     }
   }
 
@@ -69,13 +65,12 @@ export function createPlayback(
       }
     }
     isPlaying = true;
-    startInterval();
+    scheduleNext();
   }
 
   function pause() {
     isPlaying = false;
-    clearPlayInterval();
-    clearLoopTimeout();
+    clearTimer();
   }
 
   function reset() {
@@ -84,8 +79,7 @@ export function createPlayback(
   }
 
   function cleanup() {
-    clearPlayInterval();
-    clearLoopTimeout();
+    clearTimer();
   }
 
   return {
@@ -106,9 +100,6 @@ export function createPlayback(
     },
     set stepInterval(value: number) {
       stepInterval = value;
-      if (isPlaying) {
-        startInterval();
-      }
     },
     play,
     pause,
