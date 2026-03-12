@@ -7,6 +7,7 @@
 #let num_columns = sys.inputs.at("columns", default: "4")
 #let subtitle = sys.inputs.at("subtitle", default: none)
 #let json_path = sys.inputs.at("json_path", default: "model.json")
+#let book_binding = sys.inputs.at("book_binding", default: "false") == "true"
 
 #set text(font: "Libertinus Serif", size: eval(font_size))
 
@@ -123,11 +124,11 @@
     ]
   ]
 
-  // Cybernetic Studio wordmark
+  // LLMs Unplugged wordmark
   place(bottom + right)[
     #text(font: "Monaspace Argon", size: 18pt)[
-      Cybernetic\
-      Studio
+      LLMs\
+      Unplugged
     ]
   ]
   pagebreak()
@@ -393,8 +394,9 @@
 #title-page()
 #copyright-page()
 #instructions-page()
-// Blank page after instructions
-#pagebreak()
+#if book_binding {
+  pagebreak()
+}
 // #introduction()
 // #table-of-contents()
 

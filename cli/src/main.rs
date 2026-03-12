@@ -112,6 +112,10 @@ struct PdfArgs {
     /// Punctuation characters to preserve as separate tokens (default: ",.")
     #[arg(short = 'p', long = "punctuation", default_value = ",.")]
     punctuation: String,
+
+    /// Add blank pages for book binding (recto/verso layout)
+    #[arg(long)]
+    book_binding: bool,
 }
 
 #[derive(Args, Debug, Clone)]
@@ -229,6 +233,7 @@ struct TypstOptions {
     paper_size: String,
     columns: usize,
     subtitle_override: Option<String>,
+    book_binding: bool,
 }
 
 fn run_build_command(args: &BuildArgs) -> Result<(), CliError> {
@@ -407,6 +412,7 @@ fn run_pdf_command(args: &PdfArgs) -> Result<(), CliError> {
         paper_size: args.paper_size.clone(),
         columns: args.columns,
         subtitle_override: args.subtitle.clone(),
+        book_binding: args.book_binding,
     };
 
     for book in &mut written {
@@ -594,6 +600,11 @@ fn run_typst_for_books(
         {
             typst_cmd.arg("--input");
             typst_cmd.arg(format!("subtitle={}", subtitle));
+        }
+
+        if opts.book_binding {
+            typst_cmd.arg("--input");
+            typst_cmd.arg("book_binding=true");
         }
 
         typst_cmd.arg(template_name);

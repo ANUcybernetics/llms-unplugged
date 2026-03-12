@@ -51,6 +51,7 @@ cargo test
 - `-n, --n <N>` - N-gram size: 2 for bigrams, 3 for trigrams (default: 2)
 - `--raw` - Output raw counts without scaling
 - `-b <N>` - Split large models across N books
+- `--book-binding` - Add blank pages for bound book layout (off by default)
 
 ## Input file format
 

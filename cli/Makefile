@@ -60,7 +60,7 @@ $(TOOL): $(RUST_SOURCES)
 $(PDF_DIR)/%.pdf $(PDF_DIR)/%.stamp: book.typ $(TOOL)
 	$(eval FULLNAME := $(notdir $(basename $@)))
 	$(eval BASE := $(shell echo $(FULLNAME) | sed 's/-[0-9]*-[0-9]*$$//' ))
-	TYPST_BIN=$(TYPST_BIN) $(TOOL) pdf --target $(FULLNAME) --input $(DATA_DIR)/$(BASE).txt --out-dir $(OUT_DIR)
+	TYPST_BIN=$(TYPST_BIN) $(TOOL) pdf --target $(FULLNAME) --input $(DATA_DIR)/$(BASE).txt --out-dir $(OUT_DIR) --book-binding
 	@if echo "$@" | grep -q '.stamp$$'; then touch $@; fi
 
 # Default target to build all booklets
