@@ -1,10 +1,15 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { createScheduler } from "../../lib/scheduler.svelte";
+  import {
+    createBucketGenerationMachine,
+    selectStartWord,
+  } from "../../lib/machines/bucketGeneration";
+  import type { BucketGenerationState } from "../../lib/machines/bucketGeneration";
   import {
     getTrainingText,
     setTrainingText,
   } from "../../lib/stores/trainingText.svelte";
-  import { createGenerationPlayback } from "../../lib/stores/generationPlayback.svelte";
   import {
     parseTokens,
     getVocabulary,
@@ -14,7 +19,7 @@
   import { buildBucketsFromModel } from "../../lib/buckets";
   import PlaybackSection from "../PlaybackSection.svelte";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
-
+  import { PLAYBACK_CONFIG } from "../../lib/config/playback";
 
   interface Props {
     loop?: boolean;
@@ -28,123 +33,80 @@
     setTrainingText(trainingText);
   });
 
-  let outputWords = $state<string[]>([]);
-  let isPickingFromBucket = $state(false);
-  let pickedToken = $state<string | null>(null);
-  let shufflingIndex = $state<number | null>(null);
-
-  type Phase =
-    | "selecting"
-    | "showing-bucket"
-    | "picking"
-    | "picked"
-    | "writing";
-  let phase = $state<Phase>("selecting");
-
   let tokens = $derived(parseTokens(trainingText));
   let vocabulary = $derived(getVocabulary(tokens));
   let model = $derived(buildBigramModel(tokens));
   let buckets = $derived(buildBucketsFromModel(vocabulary, model));
 
+  let machine = $derived(
+    createBucketGenerationMachine(model, vocabulary),
+  );
+  const scheduler = createScheduler(() => machine, {
+    defaultInterval: PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS,
+    loop,
+  });
+
+  let { outputWords, phase } = $derived(scheduler.state);
   let currentWord = $derived(
     outputWords.length === 0 ? null : outputWords[outputWords.length - 1],
   );
 
-  let validStarters = $derived(
-    vocabulary.filter((w) => model.hasSuccessors(w)),
+  let animatingIndex = $state<number | null>(null);
+  let isShuffling = $state(false);
+
+  let prevPhase = $state<BucketGenerationState["phase"]["kind"]>("idle");
+  $effect(() => {
+    const current = phase;
+    if (
+      current.kind === "picked" &&
+      prevPhase === "showing-bucket"
+    ) {
+      animatePicking(current.pickedIndex);
+    } else if (current.kind !== "picked") {
+      animatingIndex = null;
+      isShuffling = false;
+    }
+    prevPhase = current.kind;
+  });
+
+  function animatePicking(finalIndex: number) {
+    isShuffling = true;
+    const frameMs = Math.max(20, scheduler.stepInterval * 0.025);
+    const bucketTokens =
+      phase.kind === "picked"
+        ? buckets.find((b) => b.label === currentWord)?.tokens ?? []
+        : [];
+    let frame = 0;
+    const totalFrames = 10;
+
+    function tick() {
+      if (frame < totalFrames) {
+        animatingIndex = Math.floor(Math.random() * bucketTokens.length);
+        frame++;
+        setTimeout(tick, frameMs);
+      } else {
+        animatingIndex = finalIndex;
+        isShuffling = false;
+      }
+    }
+    tick();
+  }
+
+  let displayIndex = $derived(
+    isShuffling
+      ? animatingIndex
+      : phase.kind === "picked"
+        ? phase.pickedIndex
+        : null,
   );
 
-  let currentBucketTokens = $derived.by(() => {
-    if (!currentWord) return [];
-    const bucket = buckets.find((b) => b.label === currentWord);
-    return bucket?.tokens || [];
-  });
-
-  function selectStartWord(word: string) {
+  function handleStartWord(word: string) {
     if (outputWords.length > 0) return;
-    if (!model.hasSuccessors(word)) return;
-    outputWords = [word];
-    phase = "showing-bucket";
+    const newState = selectStartWord(word, model, vocabulary);
+    if (newState) scheduler.setState(newState);
   }
 
-  function selectRandomStart() {
-    if (validStarters.length > 0) {
-      selectStartWord(
-        validStarters[Math.floor(Math.random() * validStarters.length)],
-      );
-    }
-  }
-
-  async function animatePicking(frameMs: number): Promise<string> {
-    isPickingFromBucket = true;
-    const bucketTokens = currentBucketTokens;
-    const finalIndex = Math.floor(Math.random() * bucketTokens.length);
-
-    for (let i = 0; i < 10; i++) {
-      shufflingIndex = Math.floor(Math.random() * bucketTokens.length);
-      await new Promise((resolve) => setTimeout(resolve, frameMs));
-    }
-
-    shufflingIndex = finalIndex;
-    isPickingFromBucket = false;
-    return bucketTokens[finalIndex];
-  }
-
-  async function doStep(stepInterval: number) {
-    const diceFrameMs = Math.max(20, stepInterval * 0.025);
-    const writePauseMs = stepInterval * 0.25;
-    if (phase === "selecting") {
-      if (outputWords.length === 0) selectRandomStart();
-      return;
-    }
-
-    if (phase === "showing-bucket") {
-      phase = "picking";
-      const picked = await animatePicking(diceFrameMs);
-      pickedToken = picked;
-      phase = "picked";
-      return;
-    }
-
-    if (phase === "picked") {
-      const nextWord = pickedToken!;
-      phase = "writing";
-      outputWords = [...outputWords, nextWord];
-
-      await new Promise((resolve) =>
-        setTimeout(resolve, writePauseMs),
-      );
-
-      if (model.hasSuccessors(nextWord)) {
-        phase = "showing-bucket";
-        pickedToken = null;
-        shufflingIndex = null;
-      } else {
-        phase = "selecting";
-        pickedToken = null;
-        shufflingIndex = null;
-        playback.markComplete();
-      }
-      return;
-    }
-  }
-
-  const playback = createGenerationPlayback({
-    doStep,
-    resetState() {
-      outputWords = [];
-      pickedToken = null;
-      shufflingIndex = null;
-      phase = "selecting";
-      isPickingFromBucket = false;
-    },
-    preparePlay() {
-      if (outputWords.length === 0) selectRandomStart();
-    },
-    loop,
-  });
-
-  onMount(() => playback.cleanup);
+  onMount(() => scheduler.cleanup);
 </script>
 
 <FullscreenWrapper>
@@ -171,12 +133,12 @@
               class:clickable={outputWords.length === 0 &&
                 model.hasSuccessors(bucket.label)}
               class:dead-end={!model.hasSuccessors(bucket.label)}
-              onclick={() => selectStartWord(bucket.label)}
+              onclick={() => handleStartWord(bucket.label)}
               role="button"
               tabindex="0"
               onkeydown={(e) => {
                 if (e.key === "Enter" || e.key === " ")
-                  selectStartWord(bucket.label);
+                  handleStartWord(bucket.label);
               }}
             >
               <div
@@ -191,12 +153,12 @@
                     class="bucket-token"
                     class:punctuation={isPunctuation(token)}
                     class:shuffling={bucket.label === currentWord &&
-                      isPickingFromBucket &&
-                      i === shufflingIndex}
+                      isShuffling &&
+                      i === animatingIndex}
                     class:picked={bucket.label === currentWord &&
-                      !isPickingFromBucket &&
-                      i === shufflingIndex &&
-                      phase === "picked"}
+                      !isShuffling &&
+                      i === displayIndex &&
+                      phase.kind === "picked"}
                   >
                     {token}
                   </span>
@@ -210,7 +172,7 @@
       <div class="widget-section">
         <div class="section-header">Output</div>
         <div class="action-content">
-          {#if phase === "showing-bucket" && currentWord}
+          {#if phase.kind === "showing-bucket" && currentWord}
             <span>Looking in the</span>
             <span
               class="token highlight-first"
@@ -218,7 +180,7 @@
               >{currentWord}</span
             >
             <span>bucket...</span>
-          {:else if phase === "picking" && currentWord}
+          {:else if phase.kind === "picked" && isShuffling && currentWord}
             <span>Picking randomly from the</span>
             <span
               class="token highlight-first"
@@ -226,23 +188,15 @@
               >{currentWord}</span
             >
             <span>bucket...</span>
-          {:else if phase === "picked" && pickedToken}
+          {:else if phase.kind === "picked" && phase.pickedToken}
             <span>Picked</span>
             <span
               class="token highlight-second"
-              class:punctuation={isPunctuation(pickedToken)}
-              >{pickedToken}</span
+              class:punctuation={isPunctuation(phase.pickedToken)}
+              >{phase.pickedToken}</span
             >
             <span>from the bucket!</span>
-          {:else if phase === "writing" && pickedToken}
-            <span>Writing</span>
-            <span
-              class="token highlight-second"
-              class:punctuation={isPunctuation(pickedToken)}
-              >{pickedToken}</span
-            >
-            <span>to output...</span>
-          {:else if playback.isComplete}
+          {:else if phase.kind === "complete"}
             <span class="complete-message">Generation complete!</span>
           {/if}
         </div>
@@ -260,16 +214,16 @@
       </div>
 
       <PlaybackSection
-        isPlaying={playback.isPlaying}
-        isComplete={playback.isComplete}
-        stepInterval={playback.stepInterval}
+        isPlaying={scheduler.isPlaying}
+        isComplete={scheduler.isComplete}
+        stepInterval={scheduler.stepInterval}
         {loop}
         sliderId="bucket-generation-speed-slider"
-        onplay={playback.play}
-        onpause={playback.pause}
-        onstep={playback.step}
-        onreset={playback.reset}
-        onstepintervalchange={(v) => (playback.stepInterval = v)}
+        onplay={scheduler.play}
+        onpause={scheduler.pause}
+        onstep={scheduler.step}
+        onreset={scheduler.reset}
+        onstepintervalchange={(v) => (scheduler.stepInterval = v)}
       />
     </div>
   </div>

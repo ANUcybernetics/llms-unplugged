@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, untrack } from "svelte";
-  import { createPlayback } from "../../lib/stores/playback.svelte";
+  import { createScheduler } from "../../lib/scheduler.svelte";
+  import { createTrainingMachine } from "../../lib/machines/training";
   import {
     getTrainingText,
     setTrainingText,
@@ -24,16 +25,27 @@
 
   let tokens = $derived(parseTokens(inputText));
   let bigrams = $derived(getBigrams(tokens));
-  const playback = createPlayback(
-    () => bigrams.length,
-    { loop: untrack(() => loop) },
-  );
+
+  const machine = createTrainingMachine(bigrams.length);
+  const scheduler = createScheduler(() => machine, {
+    defaultInterval: PLAYBACK_CONFIG.TRAINING_DEFAULT_STEP_INTERVAL_MS,
+    loop: untrack(() => loop),
+  });
+
+  $effect(() => {
+    const newTotal = bigrams.length;
+    const currentStep = untrack(() => scheduler.state.currentStep);
+    scheduler.setState({
+      currentStep: Math.min(currentStep, newTotal),
+      totalSteps: newTotal,
+    });
+  });
 
   let buckets = $derived.by((): { label: string; tokens: string[] }[] => {
     const bucketMap = new Map<string, string[]>();
     const order: string[] = [];
 
-    for (let i = 0; i < playback.currentStep && i < bigrams.length; i++) {
+    for (let i = 0; i < scheduler.state.currentStep && i < bigrams.length; i++) {
       const [from, to] = bigrams[i];
       if (!bucketMap.has(from)) {
         bucketMap.set(from, []);
@@ -49,7 +61,8 @@
   });
 
   let highlights = $derived.by(() => {
-    if (playback.currentStep === 0 || playback.currentStep > bigrams.length) {
+    const step = scheduler.state.currentStep;
+    if (step === 0 || step > bigrams.length) {
       return {
         bucket: null as string | null,
         token: null as string | null,
@@ -57,16 +70,16 @@
         nextIdx: -1,
       };
     }
-    const bigram = bigrams[playback.currentStep - 1];
+    const bigram = bigrams[step - 1];
     return {
       bucket: bigram[0],
       token: bigram[1],
-      tokenIdx: playback.currentStep - 1,
-      nextIdx: playback.currentStep,
+      tokenIdx: step - 1,
+      nextIdx: step,
     };
   });
 
-  onMount(() => playback.cleanup);
+  onMount(() => scheduler.cleanup);
 </script>
 
 <FullscreenWrapper>
@@ -150,20 +163,20 @@
       </div>
 
       <PlaybackSection
-        isPlaying={playback.isPlaying}
-        isComplete={playback.isComplete}
-        currentStep={playback.currentStep}
-        totalSteps={playback.totalSteps}
-        stepInterval={playback.stepInterval}
+        isPlaying={scheduler.isPlaying}
+        isComplete={scheduler.isComplete}
+        currentStep={scheduler.state.currentStep}
+        totalSteps={scheduler.state.totalSteps}
+        stepInterval={scheduler.stepInterval}
         minStepInterval={PLAYBACK_CONFIG.TRAINING_MIN_STEP_INTERVAL_MS}
         maxStepInterval={PLAYBACK_CONFIG.TRAINING_MAX_STEP_INTERVAL_MS}
         {loop}
         sliderId="bucket-training-speed-slider"
-        onplay={playback.play}
-        onpause={playback.pause}
-        onstep={playback.step}
-        onreset={playback.reset}
-        onstepintervalchange={(v) => (playback.stepInterval = v)}
+        onplay={scheduler.play}
+        onpause={scheduler.pause}
+        onstep={scheduler.step}
+        onreset={scheduler.reset}
+        onstepintervalchange={(v) => (scheduler.stepInterval = v)}
       />
     </div>
   </div>

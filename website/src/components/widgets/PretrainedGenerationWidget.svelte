@@ -1,10 +1,15 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { createScheduler } from "../../lib/scheduler.svelte";
+  import {
+    createPretrainedGenerationMachine,
+    selectStartWord,
+  } from "../../lib/machines/pretrainedGeneration";
+  import type { PretrainedGenerationState } from "../../lib/machines/pretrainedGeneration";
   import {
     getTrainingText,
     setTrainingText,
   } from "../../lib/stores/trainingText.svelte";
-  import { createGenerationPlayback } from "../../lib/stores/generationPlayback.svelte";
   import {
     parseTokens,
     getVocabulary,
@@ -19,7 +24,7 @@
   import { rollDice } from "../../lib/diceMapping";
   import PlaybackSection from "../PlaybackSection.svelte";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
-
+  import { PLAYBACK_CONFIG } from "../../lib/config/playback";
 
   interface Props {
     loop?: boolean;
@@ -33,30 +38,32 @@
     setTrainingText(trainingText);
   });
 
-  let outputWords = $state<string[]>([]);
-  let currentDiceRoll = $state<number | null>(null);
-  let isRolling = $state(false);
-
-  type Phase = "selecting" | "showing-entry" | "rolling" | "rolled" | "writing";
-  let phase = $state<Phase>("selecting");
-
   let tokens = $derived(parseTokens(trainingText));
   let vocabulary = $derived(getVocabulary(tokens));
   let model = $derived(buildBigramModel(tokens));
   let modelEntries = $derived(buildModelEntries(vocabulary, model));
 
+  let machine = $derived(
+    createPretrainedGenerationMachine(model, vocabulary),
+  );
+  const scheduler = createScheduler(() => machine, {
+    defaultInterval: PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS,
+    loop,
+  });
+
+  let { outputWords, phase } = $derived(scheduler.state);
   let currentWord = $derived(
     outputWords.length === 0 ? null : outputWords[outputWords.length - 1],
   );
-
-  let validStarters = $derived(
-    vocabulary.filter((w) => model.hasSuccessors(w)),
-  );
-
   let currentEntry = $derived.by((): ModelEntry | null => {
-    if (!currentWord) return null;
-    return modelEntries.find((e) => e.prefix === currentWord) || null;
+    if (phase.kind === "showing-entry" || phase.kind === "rolled") {
+      return phase.entry;
+    }
+    return null;
   });
+
+  let animatedDiceRoll = $state<number | null>(null);
+  let isAnimating = $state(false);
 
   function rollMultipleDice(numDice: number): number {
     let result = 0;
@@ -66,118 +73,67 @@
     return result;
   }
 
-  function selectStartWord(word: string) {
-    if (outputWords.length > 0) return;
-    if (!model.hasSuccessors(word)) return;
-    outputWords = [word];
-    phase = "showing-entry";
-  }
-
-  function selectRandomStart() {
-    if (validStarters.length > 0) {
-      selectStartWord(
-        validStarters[Math.floor(Math.random() * validStarters.length)],
-      );
+  let prevPhase = $state<PretrainedGenerationState["phase"]["kind"]>("idle");
+  $effect(() => {
+    const current = phase;
+    if (
+      current.kind === "rolled" &&
+      prevPhase === "showing-entry" &&
+      current.diceRoll !== null
+    ) {
+      animateDiceRollEffect(current.entry.numDice, current.diceRoll);
+    } else if (current.kind !== "rolled") {
+      animatedDiceRoll = null;
+      isAnimating = false;
     }
-  }
-
-  async function animateDiceRoll(
-    entry: ModelEntry,
-    frameMs: number,
-  ): Promise<number> {
-    isRolling = true;
-    const finalRoll = rollMultipleDice(entry.numDice);
-
-    for (let i = 0; i < 10; i++) {
-      currentDiceRoll = rollMultipleDice(entry.numDice);
-      await new Promise((resolve) => setTimeout(resolve, frameMs));
-    }
-
-    currentDiceRoll = finalRoll;
-    isRolling = false;
-    return finalRoll;
-  }
-
-  async function doStep(stepInterval: number) {
-    const diceFrameMs = Math.max(20, stepInterval * 0.025);
-    const writePauseMs = stepInterval * 0.25;
-    if (phase === "selecting") {
-      if (outputWords.length === 0) selectRandomStart();
-      return;
-    }
-
-    if (phase === "showing-entry") {
-      const entry = currentEntry;
-      if (!entry) return;
-
-      if (entry.followers.length === 1) {
-        currentDiceRoll = null;
-        phase = "rolled";
-      } else {
-        phase = "rolling";
-        await animateDiceRoll(entry, diceFrameMs);
-        phase = "rolled";
-      }
-      return;
-    }
-
-    if (phase === "rolled") {
-      const entry = currentEntry;
-      if (!entry) return;
-
-      const nextWord =
-        entry.followers.length === 1
-          ? entry.followers[0].word
-          : currentDiceRoll !== null
-            ? findWordForThresholdRoll(entry, currentDiceRoll)
-            : null;
-
-      if (nextWord) {
-        phase = "writing";
-        outputWords = [...outputWords, nextWord];
-
-        await new Promise((resolve) =>
-          setTimeout(resolve, writePauseMs),
-        );
-
-        if (model.hasSuccessors(nextWord)) {
-          phase = "showing-entry";
-          currentDiceRoll = null;
-        } else {
-          phase = "selecting";
-          currentDiceRoll = null;
-          playback.markComplete();
-        }
-      }
-      return;
-    }
-  }
-
-  const playback = createGenerationPlayback({
-    doStep,
-    resetState() {
-      outputWords = [];
-      currentDiceRoll = null;
-      phase = "selecting";
-    },
-    preparePlay() {
-      if (outputWords.length === 0) selectRandomStart();
-    },
-    loop,
+    prevPhase = current.kind;
   });
 
-  onMount(() => playback.cleanup);
+  function animateDiceRollEffect(numDice: number, finalRoll: number) {
+    isAnimating = true;
+    const frameMs = Math.max(20, scheduler.stepInterval * 0.025);
+    let frame = 0;
+    const totalFrames = 10;
+
+    function tick() {
+      if (frame < totalFrames) {
+        animatedDiceRoll = rollMultipleDice(numDice);
+        frame++;
+        setTimeout(tick, frameMs);
+      } else {
+        animatedDiceRoll = finalRoll;
+        isAnimating = false;
+      }
+    }
+    tick();
+  }
+
+  let displayDiceRoll = $derived(
+    isAnimating
+      ? animatedDiceRoll
+      : phase.kind === "rolled"
+        ? phase.diceRoll
+        : null,
+  );
+
+  function handleStartWord(word: string) {
+    if (outputWords.length > 0) return;
+    const newState = selectStartWord(word, model, vocabulary);
+    if (newState) scheduler.setState(newState);
+  }
 
   function isSelectedFollower(
     entry: ModelEntry,
     follower: { word: string; threshold: number },
   ): boolean {
-    if (phase !== "rolled" && phase !== "writing") return false;
+    if (phase.kind !== "rolled") return false;
     if (entry.prefix !== currentWord) return false;
     if (entry.followers.length === 1) return true;
-    if (currentDiceRoll === null) return false;
-    return follower.word === findWordForThresholdRoll(entry, currentDiceRoll);
+    if (phase.diceRoll === null) return false;
+    return follower.word === findWordForThresholdRoll(entry, phase.diceRoll);
   }
+
+  onMount(() => scheduler.cleanup);
 </script>
 
 <FullscreenWrapper>
@@ -204,12 +160,12 @@
               class:clickable={outputWords.length === 0 &&
                 model.hasSuccessors(entry.prefix)}
               class:dead-end={!model.hasSuccessors(entry.prefix)}
-              onclick={() => selectStartWord(entry.prefix)}
+              onclick={() => handleStartWord(entry.prefix)}
               role="button"
               tabindex="0"
               onkeydown={(e) => {
                 if (e.key === "Enter" || e.key === " ")
-                  selectStartWord(entry.prefix);
+                  handleStartWord(entry.prefix);
               }}
             >
               <span
@@ -242,7 +198,7 @@
       <div class="widget-section">
         <div class="section-header">Output</div>
         <div class="action-content">
-          {#if phase === "showing-entry" && currentEntry}
+          {#if phase.kind === "showing-entry" && currentEntry}
             <span>Looking up</span>
             <span
               class="token highlight-first"
@@ -258,27 +214,24 @@
             {:else}
               <span>--- only one option</span>
             {/if}
-          {:else if phase === "rolling" && currentEntry}
+          {:else if phase.kind === "rolled" && isAnimating && currentEntry}
             <span
               >Rolling {currentEntry.numDice} d10{currentEntry.numDice > 1
                 ? "s"
                 : ""}...</span
             >
-            <span class="dice-value rolling">{currentDiceRoll}</span>
-          {:else if phase === "rolled" && currentEntry}
+            <span class="dice-value rolling">{displayDiceRoll}</span>
+          {:else if phase.kind === "rolled" && currentEntry}
             {#if currentEntry.followers.length > 1}
               <span>Rolled</span>
-              <span class="dice-value">{currentDiceRoll}</span>
-              {#if currentDiceRoll !== null}
-                <span>&rarr; first threshold &ge; {currentDiceRoll} is</span>
-                {#if findWordForThresholdRoll(currentEntry, currentDiceRoll)}
-                  <span
-                    class="token highlight-second"
-                    class:punctuation={isPunctuation(
-                      findWordForThresholdRoll(currentEntry, currentDiceRoll) || "",
-                    )}>{findWordForThresholdRoll(currentEntry, currentDiceRoll)}</span
-                  >
-                {/if}
+              <span class="dice-value">{displayDiceRoll}</span>
+              {#if displayDiceRoll !== null}
+                <span>&rarr; first threshold &ge; {displayDiceRoll} is</span>
+                <span
+                  class="token highlight-second"
+                  class:punctuation={isPunctuation(phase.nextWord)}
+                  >{phase.nextWord}</span
+                >
               {/if}
             {:else}
               <span>Only option:</span>
@@ -289,9 +242,7 @@
                 )}>{currentEntry.followers[0].word}</span
               >
             {/if}
-          {:else if phase === "writing" && currentWord}
-            <span>Writing to output...</span>
-          {:else if playback.isComplete}
+          {:else if phase.kind === "complete"}
             <span class="complete-message">Generation complete!</span>
           {/if}
         </div>
@@ -309,16 +260,16 @@
       </div>
 
       <PlaybackSection
-        isPlaying={playback.isPlaying}
-        isComplete={playback.isComplete}
-        stepInterval={playback.stepInterval}
+        isPlaying={scheduler.isPlaying}
+        isComplete={scheduler.isComplete}
+        stepInterval={scheduler.stepInterval}
         {loop}
         sliderId="pretrained-speed-slider"
-        onplay={playback.play}
-        onpause={playback.pause}
-        onstep={playback.step}
-        onreset={playback.reset}
-        onstepintervalchange={(v) => (playback.stepInterval = v)}
+        onplay={scheduler.play}
+        onpause={scheduler.pause}
+        onstep={scheduler.step}
+        onreset={scheduler.reset}
+        onstepintervalchange={(v) => (scheduler.stepInterval = v)}
       />
     </div>
   </div>

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, untrack } from "svelte";
-  import { createPlayback } from "../../lib/stores/playback.svelte";
+  import { createScheduler } from "../../lib/scheduler.svelte";
+  import { createTrainingMachine } from "../../lib/machines/training";
   import {
     getTrainingText,
     setTrainingText,
@@ -34,14 +35,25 @@
   let tokens = $derived(parseTokens(inputText));
   let bigrams = $derived(getBigrams(tokens));
   let vocabulary = $derived(getVocabulary(tokens));
-  const playback = createPlayback(
-    () => bigrams.length,
-    { loop: untrack(() => loop) },
-  );
+
+  const machine = createTrainingMachine(bigrams.length);
+  const scheduler = createScheduler(() => machine, {
+    defaultInterval: PLAYBACK_CONFIG.TRAINING_DEFAULT_STEP_INTERVAL_MS,
+    loop: untrack(() => loop),
+  });
+
+  $effect(() => {
+    const newTotal = bigrams.length;
+    const currentStep = untrack(() => scheduler.state.currentStep);
+    scheduler.setState({
+      currentStep: Math.min(currentStep, newTotal),
+      totalSteps: newTotal,
+    });
+  });
 
   let gridCounts = $derived.by(() => {
     const counts = new Map<string, number>();
-    for (let i = 0; i < playback.currentStep && i < bigrams.length; i++) {
+    for (let i = 0; i < scheduler.state.currentStep && i < bigrams.length; i++) {
       const [from, to] = bigrams[i];
       const key = `${from}->${to}`;
       counts.set(key, (counts.get(key) || 0) + 1);
@@ -50,7 +62,8 @@
   });
 
   let highlights = $derived.by(() => {
-    if (playback.currentStep === 0 || playback.currentStep > bigrams.length) {
+    const step = scheduler.state.currentStep;
+    if (step === 0 || step > bigrams.length) {
       return {
         row: null as string | null,
         col: null as string | null,
@@ -58,12 +71,12 @@
         nextIdx: -1,
       };
     }
-    const bigram = bigrams[playback.currentStep - 1];
+    const bigram = bigrams[step - 1];
     return {
       row: bigram[0],
       col: bigram[1],
-      tokenIdx: playback.currentStep - 1,
-      nextIdx: playback.currentStep,
+      tokenIdx: step - 1,
+      nextIdx: step,
     };
   });
 
@@ -71,7 +84,7 @@
     return gridCounts.get(`${from}->${to}`) || 0;
   }
 
-  onMount(() => playback.cleanup);
+  onMount(() => scheduler.cleanup);
 </script>
 
 <FullscreenWrapper>
@@ -118,20 +131,20 @@
       </div>
 
       <PlaybackSection
-        isPlaying={playback.isPlaying}
-        isComplete={playback.isComplete}
-        currentStep={playback.currentStep}
-        totalSteps={playback.totalSteps}
-        stepInterval={playback.stepInterval}
+        isPlaying={scheduler.isPlaying}
+        isComplete={scheduler.isComplete}
+        currentStep={scheduler.state.currentStep}
+        totalSteps={scheduler.state.totalSteps}
+        stepInterval={scheduler.stepInterval}
         minStepInterval={PLAYBACK_CONFIG.TRAINING_MIN_STEP_INTERVAL_MS}
         maxStepInterval={PLAYBACK_CONFIG.TRAINING_MAX_STEP_INTERVAL_MS}
         {loop}
         sliderId="training-speed-slider"
-        onplay={playback.play}
-        onpause={playback.pause}
-        onstep={playback.step}
-        onreset={playback.reset}
-        onstepintervalchange={(v) => (playback.stepInterval = v)}
+        onplay={scheduler.play}
+        onpause={scheduler.pause}
+        onstep={scheduler.step}
+        onreset={scheduler.reset}
+        onstepintervalchange={(v) => (scheduler.stepInterval = v)}
       />
     </div>
   </div>

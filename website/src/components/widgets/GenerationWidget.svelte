@@ -1,26 +1,26 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { createScheduler } from "../../lib/scheduler.svelte";
+  import {
+    createDiceGenerationMachine,
+    selectStartWord,
+  } from "../../lib/machines/diceGeneration";
+  import type { DiceGenerationState } from "../../lib/machines/diceGeneration";
   import {
     getTrainingText,
     setTrainingText,
   } from "../../lib/stores/trainingText.svelte";
-  import { createGenerationPlayback } from "../../lib/stores/generationPlayback.svelte";
   import {
     parseTokens,
     getVocabulary,
     buildBigramModel,
     isPunctuation,
   } from "../../lib/tokens";
-  import {
-    createDiceMapping,
-    rollDice,
-    findWordForRoll,
-  } from "../../lib/diceMapping";
-  import type { DiceMapping } from "../../lib/diceMapping";
+  import { rollDice, findWordForRoll } from "../../lib/diceMapping";
   import PlaybackSection from "../PlaybackSection.svelte";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
   import BigramGrid from "../BigramGrid.svelte";
-
+  import { PLAYBACK_CONFIG } from "../../lib/config/playback";
 
   interface Props {
     diceSides?: number;
@@ -35,25 +35,59 @@
     setTrainingText(trainingText);
   });
 
-  let outputWords = $state<string[]>([]);
-  let currentDiceRoll = $state<number | null>(null);
-  let currentMappings = $state<DiceMapping[]>([]);
-  let isRolling = $state(false);
-
-  type Phase =
-    | "selecting"
-    | "showing-options"
-    | "rolling"
-    | "rolled"
-    | "writing";
-  let phase = $state<Phase>("selecting");
-
   let tokens = $derived(parseTokens(trainingText));
   let vocabulary = $derived(getVocabulary(tokens));
   let model = $derived(buildBigramModel(tokens));
 
+  let machine = $derived(
+    createDiceGenerationMachine(model, vocabulary, diceSides),
+  );
+  const scheduler = createScheduler(() => machine, {
+    defaultInterval: PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS,
+    loop,
+  });
+
+  let { outputWords, phase } = $derived(scheduler.state);
   let currentWord = $derived(
     outputWords.length === 0 ? null : outputWords[outputWords.length - 1],
+  );
+
+  let animatedDiceRoll = $state<number | null>(null);
+  let isAnimating = $state(false);
+
+  let prevPhase = $state<DiceGenerationState["phase"]["kind"]>("idle");
+  $effect(() => {
+    const current = phase;
+    if (current.kind === "rolled" && prevPhase === "showing-options") {
+      animateDiceRoll(current.diceRoll);
+    } else if (current.kind !== "rolled") {
+      animatedDiceRoll = null;
+      isAnimating = false;
+    }
+    prevPhase = current.kind;
+  });
+
+  function animateDiceRoll(finalRoll: number) {
+    isAnimating = true;
+    const frameMs = Math.max(20, scheduler.stepInterval * 0.025);
+    let frame = 0;
+    const totalFrames = 10;
+
+    function tick() {
+      if (frame < totalFrames) {
+        animatedDiceRoll = rollDice(diceSides);
+        frame++;
+        setTimeout(tick, frameMs);
+      } else {
+        animatedDiceRoll = finalRoll;
+        isAnimating = false;
+      }
+    }
+    tick();
+  }
+
+  let displayDiceRoll = $derived(
+    isAnimating ? animatedDiceRoll : (phase.kind === "rolled" ? phase.diceRoll : null),
   );
 
   let currentRowOptions = $derived.by(() => {
@@ -62,115 +96,25 @@
     if (!row) return [];
     return [...row.entries()]
       .filter(([, count]) => count > 0)
-      .map(([word, count]) => ({ word, count }));
+      .map(([word]) => word);
   });
 
-  function selectStartWord(word: string) {
-    if (!model.hasSuccessors(word)) return;
-    outputWords = [word];
-    phase = "showing-options";
-    currentMappings = createDiceMapping(currentRowOptions, diceSides);
+  function handleRowClick(word: string) {
+    if (outputWords.length > 0) return;
+    const newState = selectStartWord(word, model, diceSides);
+    if (newState) scheduler.setState(newState);
   }
-
-  function selectRandomStart() {
-    const validStarters = vocabulary.filter((w) => model.hasSuccessors(w));
-    if (validStarters.length > 0) {
-      selectStartWord(
-        validStarters[Math.floor(Math.random() * validStarters.length)],
-      );
-    }
-  }
-
-  async function animateDiceRoll(frameMs: number): Promise<number> {
-    isRolling = true;
-    const finalRoll = rollDice(diceSides);
-
-    for (let i = 0; i < 10; i++) {
-      currentDiceRoll = rollDice(diceSides);
-      await new Promise((resolve) => setTimeout(resolve, frameMs));
-    }
-
-    currentDiceRoll = finalRoll;
-    isRolling = false;
-    return finalRoll;
-  }
-
-  async function doStep(stepInterval: number) {
-    const diceFrameMs = Math.max(20, stepInterval * 0.025);
-    const writePauseMs = stepInterval * 0.25;
-    if (phase === "selecting") {
-      if (outputWords.length === 0) selectRandomStart();
-      return;
-    }
-
-    if (phase === "showing-options") {
-      phase = "rolling";
-      await animateDiceRoll(diceFrameMs);
-      phase = "rolled";
-      return;
-    }
-
-    if (phase === "rolled") {
-      const nextWord = findWordForRoll(currentMappings, currentDiceRoll!);
-      if (nextWord) {
-        phase = "writing";
-        outputWords = [...outputWords, nextWord];
-
-        await new Promise((resolve) =>
-          setTimeout(resolve, writePauseMs),
-        );
-
-        if (model.hasSuccessors(nextWord)) {
-          phase = "showing-options";
-          currentDiceRoll = null;
-          currentMappings = createDiceMapping(
-            [...(model.counts.get(nextWord)?.entries() || [])]
-              .filter(([, count]) => count > 0)
-              .map(([word, count]) => ({ word, count })),
-            diceSides,
-          );
-        } else {
-          phase = "selecting";
-          currentMappings = [];
-          currentDiceRoll = null;
-          playback.markComplete();
-        }
-      }
-      return;
-    }
-  }
-
-  const playback = createGenerationPlayback({
-    doStep,
-    resetState() {
-      outputWords = [];
-      currentDiceRoll = null;
-      currentMappings = [];
-      phase = "selecting";
-    },
-    preparePlay() {
-      if (outputWords.length === 0) selectRandomStart();
-    },
-    loop,
-  });
-
-  onMount(() => playback.cleanup);
 
   function isHighlightedCol(word: string): boolean {
     if (
-      phase !== "showing-options" &&
-      phase !== "rolling" &&
-      phase !== "rolled"
+      phase.kind !== "showing-options" &&
+      phase.kind !== "rolled"
     )
       return false;
-    return currentRowOptions.some((opt) => opt.word === word);
+    return currentRowOptions.includes(word);
   }
 
-  function handleRowClick(word: string) {
-    if (outputWords.length === 0) {
-      selectStartWord(word);
-    }
-  }
+  onMount(() => scheduler.cleanup);
 </script>
 
 <FullscreenWrapper>
@@ -221,7 +165,7 @@
       <div class="widget-section">
         <div class="section-header">Output</div>
         <div class="action-content">
-          {#if phase === "showing-options" && currentWord}
+          {#if phase.kind === "showing-options" && currentWord}
             <span>Looking up</span>
             <span
               class="token highlight-first"
@@ -229,29 +173,19 @@
               >{currentWord}</span
             >
             <span>--- roll d{diceSides}...</span>
-          {:else if phase === "rolling"}
+          {:else if phase.kind === "rolled" && isAnimating}
             <span>Rolling d{diceSides}...</span>
-            <span class="dice-value rolling">{currentDiceRoll}</span>
-          {:else if phase === "rolled" && currentDiceRoll !== null}
+            <span class="dice-value rolling">{displayDiceRoll}</span>
+          {:else if phase.kind === "rolled" && displayDiceRoll !== null}
             <span>Rolled</span>
-            <span class="dice-value">{currentDiceRoll}</span>
+            <span class="dice-value">{displayDiceRoll}</span>
             <span>&rarr;</span>
             <span
               class="token highlight-second"
-              class:punctuation={isPunctuation(
-                findWordForRoll(currentMappings, currentDiceRoll) || "",
-              )}
-              >{findWordForRoll(currentMappings, currentDiceRoll)}</span
+              class:punctuation={isPunctuation(phase.nextWord)}
+              >{phase.nextWord}</span
             >
-          {:else if phase === "writing" && currentWord}
-            <span>Writing</span>
-            <span
-              class="token highlight-second"
-              class:punctuation={isPunctuation(currentWord)}
-              >{currentWord}</span
-            >
-            <span>to output...</span>
-          {:else if playback.isComplete}
+          {:else if phase.kind === "complete"}
             <span class="complete-message">Generation complete!</span>
           {/if}
         </div>
@@ -269,18 +203,17 @@
       </div>
 
       <PlaybackSection
-        isPlaying={playback.isPlaying}
-        isComplete={playback.isComplete}
-        stepInterval={playback.stepInterval}
+        isPlaying={scheduler.isPlaying}
+        isComplete={scheduler.isComplete}
+        stepInterval={scheduler.stepInterval}
         {loop}
         sliderId="generation-speed-slider"
-        onplay={playback.play}
-        onpause={playback.pause}
-        onstep={playback.step}
-        onreset={playback.reset}
-        onstepintervalchange={(v) => (playback.stepInterval = v)}
+        onplay={scheduler.play}
+        onpause={scheduler.pause}
+        onstep={scheduler.step}
+        onreset={scheduler.reset}
+        onstepintervalchange={(v) => (scheduler.stepInterval = v)}
       />
     </div>
   </div>
 </FullscreenWrapper>
-
