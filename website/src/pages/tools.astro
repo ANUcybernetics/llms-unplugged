@@ -1,6 +1,7 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
 import Callout from "../components/Callout.astro";
+import TypstCompiler from "../components/TypstCompiler.svelte";
 ---
 
 <PageLayout
@@ -108,11 +109,5 @@ import Callout from "../components/Callout.astro";
     </p>
   </Callout>
 
-  <p>
-    <em
-      >The interactive PDF generator requires JavaScript and is available on the <a
-        href="https://www.llmsunplugged.org/tools">live site</a
-      >.</em
-    >
-  </p>
+  <TypstCompiler client:visible />
 </PageLayout>
