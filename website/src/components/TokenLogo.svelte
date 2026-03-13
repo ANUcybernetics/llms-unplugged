@@ -16,7 +16,7 @@
 
   type Phase = "grid" | "highlighted" | "assembled";
   let phase: Phase = $state("grid");
-  let bricks: Brick[] = $state(generateBricks(count));
+  let bricks: Brick[] = $state(generateBricks(count, Date.now()));
 
   let el: HTMLDivElement;
   let gridPos: Pos[] = $state([]);
