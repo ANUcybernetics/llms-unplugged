@@ -16,23 +16,26 @@ on---tokens.
 
 ## Tokenising the title
 
-If you feed the string "LLMs Unplugged" into [OpenAI's tokeniser](https://platform.openai.com/tokenizer) (the [cl100k_base](https://github.com/openai/tiktoken) vocabulary used by GPT-3.5/4), you get five tokens:
+If you feed the string "LLMs Unplugged" into
+[OpenAI's tokeniser](https://platform.openai.com/tokenizer) (the
+[cl100k_base](https://github.com/openai/tiktoken) vocabulary used by GPT-3.5/4),
+you get five tokens:
 
-| Token    | ID    |
-| -------- | ----- |
-| `LL`     | 3069  |
-| `Ms`     | 5765  |
-| ` Un`    | 1252  |
-| `plug`   | 37729 |
-| `ged`    | 2004  |
+| Token  | ID    |
+| ------ | ----- |
+| `LL`   | 3069  |
+| `Ms`   | 5765  |
+| ` Un`  | 1252  |
+| `plug` | 37729 |
+| `ged`  | 2004  |
 
 These splits are a nice illustration of tokenisation in practice. "LLMs" doesn't
 stay as one piece---it becomes `LL` + `Ms`, which makes a certain kind of sense
 if you squint (capital letters are rare enough that the tokeniser treats them
 separately). "Unplugged" becomes ` Un` + `plug` + `ged`, with that leading space
-on ` Un` showing how [BPE](https://en.wikipedia.org/wiki/Byte_pair_encoding) tokenisers encode word boundaries. None of this is
-obvious until you actually look at it, which is kind of the point of the whole
-project.
+on ` Un` showing how [BPE](https://en.wikipedia.org/wiki/Byte_pair_encoding)
+tokenisers encode word boundaries. None of this is obvious until you actually
+look at it, which is kind of the point of the whole project.
 
 ## The logo
 
@@ -58,18 +61,18 @@ is a real token ID rendered the same way.
 
 ## The animated version
 
-There's also an animated version of the logo built as a [Svelte](https://svelte.dev) component. It
-starts with around 500 token-sized bricks packed into a dense grid---each
-displaying the binary dot pattern for its token ID. Then the five title tokens
-light up in gold. Then they smoothly slide into position to spell out "LLMs
-Unplugged", while the background bricks fade. After a pause, the whole thing
-reverses and the title dissolves back into the field of tokens.
+There's also an animated version of the logo which starts with around 500
+token-sized bricks packed into a dense grid---each displaying the binary dot
+pattern for its token ID. Then the five title tokens light up in gold. Then they
+smoothly slide into position to spell out "LLMs Unplugged", while the background
+bricks fade. After a pause, the whole thing reverses and the title dissolves
+back into the field of tokens. Each cycle the bricks are re-randomised, so the
+title tokens emerge from different positions every time.
 
 <div style="position: relative; width: 100%; aspect-ratio: 5 / 3; border-radius: 0.5rem; overflow: hidden;">
   <TokenLogo client:visible count={200} />
 </div>
 
-The animation captures what I think is the core visual metaphor of the
-project---meaningful text emerging from what looks like a random jumble of
-tokens. It's basically what a language model does, just at a pace humans can
-follow.
+The animation captures the core visual metaphor of the project---meaningful text
+emerging from what looks like a random jumble of tokens. It's basically what a
+language model does, just at a pace humans can follow.

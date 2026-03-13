@@ -34,6 +34,12 @@
       assPos = assembledLayout(bricks, w, h);
       if (!intervalId) {
         function cycle() {
+          bricks = generateBricks(count, Date.now());
+          const cw = el.clientWidth;
+          const ch = el.clientHeight;
+          gridPos = gridLayout(bricks, cw, ch);
+          fillLastRow(bricks, gridPos, cw);
+          assPos = assembledLayout(bricks, cw, ch);
           phase = "grid";
           setTimeout(() => (phase = "highlighted"), 2000);
           setTimeout(() => (phase = "assembled"), 3500);
