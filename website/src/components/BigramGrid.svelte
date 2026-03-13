@@ -58,6 +58,7 @@
         {#each vocabulary as word}
           <th
             scope="col"
+            title={word}
             class:highlight-col={checkHighlightedCol(word)}
             class:punctuation={word === "." || word === ","}
           >
@@ -78,6 +79,7 @@
           <th
             class="row-header"
             scope="row"
+            title={rowWord}
             class:highlight-row={highlightedRow === rowWord ||
               numericRows.has(rowWord)}
             class:punctuation={rowWord === "." || rowWord === ","}
@@ -124,10 +126,10 @@
   }
   .bigram-grid th,
   .bigram-grid td {
-    padding: 0.5rem;
+    padding: 0.25rem;
     text-align: center;
-    min-width: 2.5rem;
-    max-width: 4rem;
+    width: 2.5rem;
+    max-width: 2.5rem;
     height: 2.5rem;
     border: 1px solid var(--color-border);
     overflow: hidden;

@@ -44,6 +44,7 @@
         {#each vocabulary as word}
           <th
             scope="col"
+            title={word}
             class:highlight-header={isHeaderHighlighted(word)}
             class:punctuation={word === "." || word === ","}
           >
@@ -57,6 +58,7 @@
         <tr>
           <th
             scope="row"
+            title={vocabulary[i]}
             class:highlight-header={isHeaderHighlighted(vocabulary[i])}
             class:punctuation={vocabulary[i] === "." || vocabulary[i] === ","}
           >
@@ -90,11 +92,15 @@
 
   .distance-matrix th,
   .distance-matrix td {
-    padding: 0.5rem;
+    padding: 0.25rem;
     text-align: center;
-    min-width: 3rem;
+    width: 2.5rem;
+    max-width: 2.5rem;
     height: 2.5rem;
     border: 1px solid var(--color-border);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .distance-matrix th {

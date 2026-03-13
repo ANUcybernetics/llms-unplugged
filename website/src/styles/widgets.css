@@ -231,6 +231,7 @@
 .distance-matrix th.punctuation code {
   font-weight: 700;
   font-size: 2em;
+  line-height: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
