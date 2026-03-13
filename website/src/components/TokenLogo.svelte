@@ -67,16 +67,19 @@
     {#each bricks as brick, i}
       {@const isTitle = brick.titleToken !== null}
       {@const isAssembled = phase === "assembled" && isTitle}
-      {@const pos = isAssembled ? assPos.get(i)! : gridPos[i]}
+      {@const gp = gridPos[i]}
+      {@const pos = isAssembled ? assPos.get(i)! : gp}
+      {@const sx = pos.w / gp.w}
+      {@const sy = pos.h / gp.h}
       {@const bits = tokenBits(brick.id)}
       <div
         class="brick"
         class:highlighted={phase !== "grid" && isTitle}
         class:assembled={isAssembled}
         class:dimmed={phase === "assembled" && !isTitle}
-        style:translate="{pos.x}px {pos.y}px"
-        style:width="{pos.w}px"
-        style:height="{pos.h}px"
+        style:transform="translate({pos.x}px, {pos.y}px) scale({sx}, {sy})"
+        style:width="{gp.w}px"
+        style:height="{gp.h}px"
         style:transition-delay="{isTitle ? brick.titleIndex * 0.08 : 0}s"
         style:--tint={isTitle ? TITLE_TINTS[brick.titleIndex] : null}
       >
@@ -91,7 +94,10 @@
           {/each}
         </svg>
         {#if isTitle}
-          <span class="token-text">{brick.titleToken!.displayText}</span>
+          <span
+            class="token-text"
+            style:transform="scale({1 / sx}, {1 / sy})"
+          >{brick.titleToken!.displayText}</span>
         {/if}
       </div>
     {/each}
@@ -110,6 +116,7 @@
     position: absolute;
     left: 0;
     top: 0;
+    transform-origin: 0 0;
     background: #1a1a1a;
     border: 1px solid rgba(190, 131, 14, 0.15);
     border-radius: 3px;
@@ -117,9 +124,7 @@
     align-items: center;
     justify-content: center;
     transition:
-      translate 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-      width 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-      height 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
       opacity 0.6s ease,
       background-color 0.4s ease,
       border-color 0.4s ease;
@@ -153,7 +158,9 @@
     font-family: var(--font-roboto-mono, "Roboto Mono", monospace);
     font-weight: 700;
     font-size: 120px;
-    transition: opacity 0.4s ease 0.3s;
+    transition:
+      opacity 0.4s ease 0.3s,
+      transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: pre;
     pointer-events: none;
   }
