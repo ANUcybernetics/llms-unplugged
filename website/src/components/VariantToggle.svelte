@@ -13,7 +13,7 @@
   }
 </script>
 
-<div class="variant-toggle">
+<div class="lm-widget variant-toggle">
   <p class="variant-description">
     <strong>Choose your method:</strong> This lesson can be done with either a
     <em>grid</em> (paper and dice) or <em>buckets</em> (physical tokens). Choose which
@@ -89,14 +89,6 @@
 </div>
 
 <style>
-  .variant-toggle {
-    border: 1px solid var(--color-border);
-    border-radius: 0.5rem;
-    padding: 1rem;
-    margin: 1.5rem 0;
-    background: var(--color-bg-soft);
-  }
-
   .variant-description {
     margin: 0 0 0.75rem;
     font-size: 0.9rem;
@@ -120,7 +112,10 @@
     cursor: pointer;
     font-size: 0.875rem;
     font-family: inherit;
-    transition: all 0.15s;
+    transition:
+      color 0.15s,
+      border-color 0.15s,
+      background-color 0.15s;
   }
 
   .variant-button:hover {

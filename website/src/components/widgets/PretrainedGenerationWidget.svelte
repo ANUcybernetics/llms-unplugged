@@ -43,9 +43,7 @@
   let model = $derived(buildBigramModel(tokens));
   let modelEntries = $derived(buildModelEntries(vocabulary, model));
 
-  let machine = $derived(
-    createPretrainedGenerationMachine(model, vocabulary),
-  );
+  let machine = $derived(createPretrainedGenerationMachine(model, vocabulary));
   const scheduler = createScheduler(() => machine, {
     defaultInterval: PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS,
     loop,

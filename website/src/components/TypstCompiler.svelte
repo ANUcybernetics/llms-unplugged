@@ -1,6 +1,10 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { getFileType, extractTextFromDocx, extractTextFromPdf } from "../lib/fileExtract";
+  import {
+    getFileType,
+    extractTextFromDocx,
+    extractTextFromPdf,
+  } from "../lib/fileExtract";
   import {
     createInitialState,
     initCompiler,
@@ -18,7 +22,9 @@
   let workflow = $state<Workflow>("booklet");
   let fileName = $state("");
 
-  let hasInput = $derived(inputText.trim().length > 0 && inputTitle.trim().length > 0);
+  let hasInput = $derived(
+    inputText.trim().length > 0 && inputTitle.trim().length > 0,
+  );
   let isReady = $derived(compilerState.status === "ready");
 
   function updateState(updater: (s: CompilerState) => CompilerState) {
@@ -82,7 +88,9 @@
         content = await file.text();
       } else if (fileType === "docx") {
         const arrayBuffer = await file.arrayBuffer();
-        const result = await extractWithTimeout(extractTextFromDocx(arrayBuffer));
+        const result = await extractWithTimeout(
+          extractTextFromDocx(arrayBuffer),
+        );
         content = result.text;
       } else if (fileType === "pdf") {
         const arrayBuffer = await file.arrayBuffer();
@@ -93,7 +101,9 @@
 
       inputText = content;
       if (!inputTitle) {
-        inputTitle = baseName.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+        inputTitle = baseName
+          .replace(/[-_]/g, " ")
+          .replace(/\b\w/g, (c) => c.toUpperCase());
       }
     } catch (error) {
       updateState((s) => ({
@@ -202,7 +212,11 @@
     <div class="option-row">
       <div class="option-group">
         <label for="typst-ngram-select">N-gram size</label>
-        <select id="typst-ngram-select" bind:value={ngramSize} disabled={!isReady}>
+        <select
+          id="typst-ngram-select"
+          bind:value={ngramSize}
+          disabled={!isReady}
+        >
           <option value={2}>Bigram (n=2)</option>
           <option value={3}>Trigram (n=3)</option>
           <option value={4}>4-gram (n=4)</option>
@@ -211,7 +225,11 @@
 
       <div class="option-group">
         <label for="typst-workflow-select">Output type</label>
-        <select id="typst-workflow-select" bind:value={workflow} disabled={!isReady}>
+        <select
+          id="typst-workflow-select"
+          bind:value={workflow}
+          disabled={!isReady}
+        >
           <option value="booklet">Booklet (dice lookup tables)</option>
           <option value="cutouts">Cutouts (bucket training tokens)</option>
         </select>
@@ -220,10 +238,16 @@
   </div>
 
   <div class="controls">
-    <button disabled={!isReady || !hasInput} onclick={() => handleCompile("svg")}>
+    <button
+      disabled={!isReady || !hasInput}
+      onclick={() => handleCompile("svg")}
+    >
       Preview (SVG)
     </button>
-    <button disabled={!isReady || !hasInput} onclick={() => handleCompile("pdf")}>
+    <button
+      disabled={!isReady || !hasInput}
+      onclick={() => handleCompile("pdf")}
+    >
       Download PDF
     </button>
   </div>
@@ -265,7 +289,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1rem;
-    border-radius: 6px;
+    border-radius: 0.375rem;
     margin-bottom: 1rem;
     font-size: 0.9rem;
   }
@@ -350,9 +374,9 @@
     background: var(--color-bg-soft);
     border: 1px solid var(--color-border);
     padding: 0.5rem 1rem;
-    border-radius: 4px;
+    border-radius: 0.25rem;
     font-size: 0.9rem;
-    transition: background 0.2s;
+    transition: background-color 0.2s;
     color: var(--color-text);
   }
 
@@ -369,7 +393,7 @@
     width: 100%;
     padding: 0.75rem;
     border: 1px solid var(--color-border);
-    border-radius: 4px;
+    border-radius: 0.25rem;
     font-family: var(--font-mono);
     font-size: 0.85rem;
     resize: vertical;
@@ -384,18 +408,20 @@
 
   .metadata-inputs {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
     margin-top: 0.75rem;
   }
 
-  .input-group {
+  .input-group,
+  .option-group {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
   }
 
-  .input-group label {
+  .input-group label,
+  .option-group label {
     font-size: 0.85rem;
     font-weight: 500;
     color: var(--color-text-secondary);
@@ -405,7 +431,7 @@
   .option-group select {
     padding: 0.5rem 0.75rem;
     border: 1px solid var(--color-border);
-    border-radius: 4px;
+    border-radius: 0.25rem;
     font-size: 0.9rem;
     background: var(--color-bg);
     color: var(--color-text);
@@ -419,20 +445,8 @@
 
   .option-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-  }
-
-  .option-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .option-group label {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--color-text-secondary);
   }
 
   .controls {
@@ -447,7 +461,7 @@
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
-    border-radius: 4px;
+    border-radius: 0.25rem;
     cursor: pointer;
     font-size: 1rem;
     font-family: inherit;
@@ -474,7 +488,7 @@
 
   .status-log {
     padding: 1rem;
-    border-radius: 8px;
+    border-radius: 0.5rem;
     margin-top: 0.5rem;
     font-family: var(--font-mono);
     font-size: 0.8rem;
@@ -493,7 +507,7 @@
   .preview {
     background: white;
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: 0.5rem;
     padding: 1rem;
     margin-top: 1rem;
   }

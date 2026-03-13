@@ -51,7 +51,7 @@
 </script>
 
 <div class="grid-section">
-  <table class="bigram-grid">
+  <table class="bigram-grid compact-grid">
     <thead>
       <tr>
         <th scope="col"></th>
@@ -118,27 +118,6 @@
 <style>
   .grid-section {
     overflow-x: auto;
-  }
-  .bigram-grid {
-    border-collapse: collapse;
-    border: 1px solid var(--color-border);
-    font-size: 0.875rem;
-  }
-  .bigram-grid th,
-  .bigram-grid td {
-    padding: 0.25rem;
-    text-align: center;
-    width: 2.5rem;
-    max-width: 2.5rem;
-    height: 2.5rem;
-    border: 1px solid var(--color-border);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .bigram-grid th {
-    background-color: var(--color-bg-alt);
-    font-weight: 600;
   }
   .bigram-grid th.highlight-col {
     background-color: var(--lm-highlight-medium);

@@ -11,17 +11,9 @@ const { title, description, ogImage } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description} ogImage={ogImage}>
-  <main class="page-layout">
+  <main class="content-container">
     <article class="prose">
       <slot />
     </article>
   </main>
 </BaseLayout>
-
-<style>
-  .page-layout {
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-    padding: 2rem 1.5rem;
-  }
-</style>

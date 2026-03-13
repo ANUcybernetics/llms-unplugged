@@ -25,12 +25,16 @@
 </script>
 
 <div class="vector-comparison">
-  <table class="comparison-table">
+  <table class="comparison-table compact-grid">
     <thead>
       <tr>
         <th scope="col"></th>
         {#each vocabulary as word}
-          <th scope="col" title={word} class:punctuation={word === "." || word === ","}>
+          <th
+            scope="col"
+            title={word}
+            class:punctuation={word === "." || word === ","}
+          >
             <code>{word}</code>
           </th>
         {/each}
@@ -73,31 +77,6 @@
 <style>
   .vector-comparison {
     overflow-x: auto;
-  }
-
-  .comparison-table {
-    border-collapse: collapse;
-    border: 1px solid var(--color-border);
-    font-size: 0.875rem;
-    font-family: var(--font-mono);
-  }
-
-  .comparison-table th,
-  .comparison-table td {
-    padding: 0.25rem;
-    text-align: center;
-    width: 2.5rem;
-    max-width: 2.5rem;
-    height: 2.5rem;
-    border: 1px solid var(--color-border);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .comparison-table th {
-    background-color: var(--color-bg-alt);
-    font-weight: 600;
   }
 
   .vector-row {

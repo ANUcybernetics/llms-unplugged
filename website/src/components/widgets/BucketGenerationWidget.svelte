@@ -38,9 +38,7 @@
   let model = $derived(buildBigramModel(tokens));
   let buckets = $derived(buildBucketsFromModel(vocabulary, model));
 
-  let machine = $derived(
-    createBucketGenerationMachine(model, vocabulary),
-  );
+  let machine = $derived(createBucketGenerationMachine(model, vocabulary));
   const scheduler = createScheduler(() => machine, {
     defaultInterval: PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS,
     loop,
@@ -57,10 +55,7 @@
   let prevPhase = $state<BucketGenerationState["phase"]["kind"]>("idle");
   $effect(() => {
     const current = phase;
-    if (
-      current.kind === "picked" &&
-      prevPhase === "showing-bucket"
-    ) {
+    if (current.kind === "picked" && prevPhase === "showing-bucket") {
       animatePicking(current.pickedIndex);
     } else if (current.kind !== "picked") {
       animatingIndex = null;
@@ -74,7 +69,7 @@
     const frameMs = Math.max(20, scheduler.stepInterval * 0.025);
     const bucketTokens =
       phase.kind === "picked"
-        ? buckets.find((b) => b.label === currentWord)?.tokens ?? []
+        ? (buckets.find((b) => b.label === currentWord)?.tokens ?? [])
         : [];
     let frame = 0;
     const totalFrames = 10;
@@ -176,16 +171,14 @@
             <span>Looking in the</span>
             <span
               class="token highlight-first"
-              class:punctuation={isPunctuation(currentWord)}
-              >{currentWord}</span
+              class:punctuation={isPunctuation(currentWord)}>{currentWord}</span
             >
             <span>bucket...</span>
           {:else if phase.kind === "picked" && isShuffling && currentWord}
             <span>Picking randomly from the</span>
             <span
               class="token highlight-first"
-              class:punctuation={isPunctuation(currentWord)}
-              >{currentWord}</span
+              class:punctuation={isPunctuation(currentWord)}>{currentWord}</span
             >
             <span>bucket...</span>
           {:else if phase.kind === "picked" && phase.pickedToken}
@@ -230,25 +223,6 @@
 </FullscreenWrapper>
 
 <style>
-  .buckets-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
-    gap: 1rem;
-    min-height: 6rem;
-    align-items: stretch;
-  }
-
-  .bucket {
-    display: grid;
-    grid-template-rows: auto 1fr;
-    border: 2px solid var(--color-border);
-    border-radius: 0.5rem;
-    background: var(--color-bg-alt);
-    transition:
-      border-color 0.2s,
-      background-color 0.2s;
-  }
-
   .bucket.clickable {
     cursor: pointer;
   }
@@ -261,67 +235,14 @@
     opacity: 0.6;
   }
 
-  .bucket.highlighted {
-    border-color: var(--color-brand);
-    background: var(--color-brand-soft);
-  }
-
-  .bucket-label {
-    padding: 0.375rem 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-align: center;
-    border-bottom: 1px solid var(--color-border);
-    background: var(--color-bg);
-    border-radius: 0.375rem 0.375rem 0 0;
-  }
-
-  .bucket-label.punctuation {
-    font-size: 1rem;
-  }
-
-  .bucket.highlighted .bucket-label {
-    border-bottom-color: var(--color-brand);
-  }
-
-  .bucket-contents {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-    padding: 0.5rem;
-    min-height: 2rem;
-    justify-content: center;
-    align-content: flex-start;
-  }
-
-  .bucket-token {
-    display: inline-block;
-    padding: 0.125rem 0.375rem;
-    background: var(--color-bg);
-    border-radius: 0.25rem;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    border: 1px solid var(--color-border);
-    text-align: center;
-    transition:
-      background-color 0.2s,
-      transform 0.2s;
-  }
-
-  .bucket-token.punctuation {
-    font-weight: 700;
-    font-size: 0.875rem;
-  }
-
   .bucket-token.shuffling {
-    background: var(--vp-c-warning-soft, #fef3c7);
+    background: var(--lm-highlight-medium);
     transform: scale(1.15);
     animation: shake 0.1s linear infinite;
   }
 
   .bucket-token.picked {
-    background: var(--lm-highlight-strong, #a7f3d0);
+    background: var(--lm-highlight-strong);
     transform: scale(1.2);
   }
 
@@ -339,11 +260,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .bucket,
-    .bucket-token {
-      transition: none;
-    }
-
     .bucket-token.shuffling {
       animation: none;
     }

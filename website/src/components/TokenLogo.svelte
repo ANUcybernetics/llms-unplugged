@@ -100,10 +100,9 @@
           {/each}
         </svg>
         {#if isTitle}
-          <span
-            class="token-text"
-            style:transform="scale({1 / sx}, {1 / sy})"
-          >{brick.titleToken!.displayText}</span>
+          <span class="token-text" style:transform="scale({1 / sx}, {1 / sy})"
+            >{brick.titleToken!.displayText}</span
+          >
         {/if}
       </div>
     {/each}
@@ -115,7 +114,7 @@
     position: absolute;
     inset: 0;
     overflow: hidden;
-    background: #0a0a0a;
+    background: var(--color-bg);
   }
 
   .brick {
@@ -123,8 +122,8 @@
     left: 0;
     top: 0;
     transform-origin: 0 0;
-    background: #1a1a1a;
-    border: 1px solid rgba(190, 131, 14, 0.15);
+    background: var(--color-bg-soft);
+    border: 1px solid var(--color-brand-soft);
     border-radius: 3px;
     display: flex;
     align-items: center;

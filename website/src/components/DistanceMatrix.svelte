@@ -37,7 +37,7 @@
 </script>
 
 <div class="distance-matrix-section">
-  <table class="distance-matrix">
+  <table class="distance-matrix compact-grid">
     <thead>
       <tr>
         <th scope="col"></th>
@@ -81,31 +81,6 @@
 <style>
   .distance-matrix-section {
     overflow-x: auto;
-  }
-
-  .distance-matrix {
-    border-collapse: collapse;
-    border: 1px solid var(--color-border);
-    font-size: 0.875rem;
-    font-family: var(--font-mono);
-  }
-
-  .distance-matrix th,
-  .distance-matrix td {
-    padding: 0.25rem;
-    text-align: center;
-    width: 2.5rem;
-    max-width: 2.5rem;
-    height: 2.5rem;
-    border: 1px solid var(--color-border);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .distance-matrix th {
-    background-color: var(--color-bg-alt);
-    font-weight: 600;
   }
 
   .distance-matrix th.highlight-header {

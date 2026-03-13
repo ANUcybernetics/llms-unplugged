@@ -14,33 +14,29 @@
   --color-bg-alt: #111;
   --color-bg-elevated: #1a1a1a;
   --color-bg-soft: #1a1a1a;
-
-  --color-text: rgba(255, 255, 255, 0.95);
-  --color-text-secondary: rgba(255, 255, 255, 0.78);
-  --color-text-muted: rgba(255, 255, 255, 0.56);
-
+  --color-text: rgb(255 255 255 / 95%);
+  --color-text-secondary: rgb(255 255 255 / 78%);
+  --color-text-muted: rgb(255 255 255 / 56%);
   --color-brand: #be830e;
   --color-brand-hover: #d4940f;
   --color-brand-active: #a87309;
-  --color-brand-soft: rgba(190, 131, 14, 0.14);
-
-  --color-divider: rgba(190, 131, 14, 0.3);
-  --color-border: rgba(190, 131, 14, 0.4);
-
-  --color-code-bg: rgba(255, 255, 255, 0.12);
+  --color-brand-soft: rgb(190 131 14 / 14%);
+  --color-divider: rgb(190 131 14 / 30%);
+  --color-border: rgb(190 131 14 / 40%);
+  --color-code-bg: rgb(255 255 255 / 12%);
 
   /* LM widget highlight colours */
-  --lm-highlight-soft: rgba(190, 131, 14, 0.1);
-  --lm-highlight-medium: rgba(190, 131, 14, 0.3);
-  --lm-highlight-strong: rgba(190, 131, 14, 0.4);
+  --lm-highlight-soft: rgb(190 131 14 / 10%);
+  --lm-highlight-medium: rgb(190 131 14 / 30%);
+  --lm-highlight-strong: rgb(190 131 14 / 40%);
 
   /* Typography */
   --font-body:
-    var(--font-public-sans, "Public Sans"), -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans",
+    var(--font-public-sans, "Public Sans"), -apple-system, blinkmacsystemfont,
+    "Segoe UI", roboto, oxygen, ubuntu, cantarell, "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
   --font-mono:
-    "SFMono-Regular", "JetBrains Mono", "Fira Code", Menlo, Monaco, Consolas,
+    "SFMono-Regular", "JetBrains Mono", "Fira Code", menlo, monaco, consolas,
     "Liberation Mono", monospace;
 
   /* Spacing */
@@ -118,11 +114,13 @@ h6 {
 h1 {
   font-size: 2rem;
 }
+
 h2 {
   font-size: 1.5rem;
   border-bottom: 1px solid var(--color-divider);
   padding-bottom: 0.25em;
 }
+
 h3 {
   font-size: 1.25rem;
 }
@@ -260,6 +258,29 @@ hr {
   margin-bottom: 0.5rem;
 }
 
+.callout-warning {
+  border-color: #d97706;
+}
+
+.callout-warning .callout-title {
+  color: #d97706;
+}
+
+.callout-tip {
+  border-color: #059669;
+}
+
+.callout-tip .callout-title {
+  color: #059669;
+}
+
+/* Shared content container */
+.content-container {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
 /* Image gallery */
 .image-gallery {
   display: grid;
@@ -274,13 +295,13 @@ hr {
   aspect-ratio: 16 / 9;
 }
 
-@media (min-width: 640px) {
+@media (width >= 640px) {
   .image-gallery {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (min-width: 960px) {
+@media (width >= 960px) {
   .image-gallery {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -293,7 +314,7 @@ hr {
   gap: 1.5rem;
 }
 
-@media (min-width: 640px) {
+@media (width >= 640px) {
   .cards-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -345,7 +366,7 @@ hr {
   border-top: none;
 }
 
-@media (min-width: 960px) {
+@media (width >= 960px) {
   .section-with-image {
     grid-template-columns: 1fr 1.2fr;
     align-items: start;

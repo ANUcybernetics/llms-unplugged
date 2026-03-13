@@ -45,7 +45,11 @@
     const bucketMap = new Map<string, string[]>();
     const order: string[] = [];
 
-    for (let i = 0; i < scheduler.state.currentStep && i < bigrams.length; i++) {
+    for (
+      let i = 0;
+      i < scheduler.state.currentStep && i < bigrams.length;
+      i++
+    ) {
       const [from, to] = bigrams[i];
       if (!bucketMap.has(from)) {
         bucketMap.set(from, []);
@@ -183,97 +187,8 @@
 </FullscreenWrapper>
 
 <style>
-  .buckets-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
-    gap: 1rem;
-    min-height: 6rem;
-    align-items: stretch;
-  }
-
-  .bucket {
-    display: grid;
-    grid-template-rows: auto 1fr;
-    min-width: 0;
-    border: 2px solid var(--color-border);
-    border-radius: 0.5rem;
-    background: var(--color-bg-alt);
-    transition:
-      border-color 0.2s,
-      background-color 0.2s;
-  }
-
-  .bucket.highlighted {
-    border-color: var(--color-brand);
-    background: var(--color-brand-soft);
-  }
-
-  .bucket-label {
-    padding: 0.375rem 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-align: center;
-    border-bottom: 1px solid var(--color-border);
-    background: var(--color-bg);
-    border-radius: 0.375rem 0.375rem 0 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .bucket-label.punctuation {
-    font-size: 1rem;
-  }
-
-  .bucket.highlighted .bucket-label {
-    border-bottom-color: var(--color-brand);
-  }
-
-  .bucket-contents {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-    padding: 0.5rem;
-    min-width: 0;
-    min-height: 2rem;
-    justify-content: center;
-    align-content: flex-start;
-    overflow: hidden;
-  }
-
-  .bucket-token {
-    display: inline-block;
-    max-width: 100%;
-    padding: 0.125rem 0.375rem;
-    background: var(--color-bg);
-    border-radius: 0.25rem;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    border: 1px solid var(--color-border);
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    transition:
-      background-color 0.2s,
-      transform 0.2s;
-  }
-
-  .bucket-token.punctuation {
-    font-weight: 700;
-    font-size: 0.875rem;
-  }
-
   .bucket-token.just-added {
-    background: var(--lm-highlight-strong, #a7f3d0);
+    background: var(--lm-highlight-strong);
     transform: scale(1.1);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .bucket,
-    .bucket-token {
-      transition: none;
-    }
   }
 </style>

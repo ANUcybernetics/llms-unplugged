@@ -1,4 +1,6 @@
+/* stylelint-disable import-notation */
 @import "tailwindcss" source(none);
+
 @source "./";
 
 @import "@animotion/core/theme";
@@ -8,24 +10,21 @@ html {
 }
 
 :root {
-  --anu-white: #ffffff;
+  --anu-white: #fff;
   --anu-light-grey: #e6e6e6;
   --anu-dark-grey: #0d0d0d;
-  --anu-black: #000000;
-
+  --anu-black: #000;
   --anu-gold: #be830e;
   --anu-gold-tint: #f5edde;
   --anu-gold-1: hsl(from var(--anu-gold) h calc(s - 50) 94);
   --anu-gold-2: hsl(from var(--anu-gold) h calc(s - 30) 77);
   --anu-gold-3: hsl(from var(--anu-gold) h calc(s - 15) 66);
   --anu-gold-4: hsl(from var(--anu-gold) h s calc(l + 8));
-
   --anu-copper: #be4e0e;
   --anu-copper-1: hsl(from var(--anu-copper) h calc(s - 50) 93);
   --anu-copper-2: hsl(from var(--anu-copper) h calc(s - 30) 77);
   --anu-copper-3: hsl(from var(--anu-copper) h calc(s - 15) 66);
   --anu-copper-4: hsl(from var(--anu-copper) h s calc(l + 8));
-
   --anu-teal: #0085ad;
   --anu-teal-1: hsl(from var(--anu-teal) h calc(s - 50) 88);
   --anu-teal-2: hsl(from var(--anu-teal) h calc(s - 30) 74);
@@ -36,18 +35,17 @@ html {
   --color-bg: var(--anu-dark-grey);
   --color-bg-alt: #111;
   --color-bg-soft: #1a1a1a;
-  --color-text: rgba(255, 255, 255, 0.95);
-  --color-text-secondary: rgba(255, 255, 255, 0.78);
-  --color-text-muted: rgba(255, 255, 255, 0.56);
+  --color-text: rgb(255 255 255 / 95%);
+  --color-text-secondary: rgb(255 255 255 / 78%);
+  --color-text-muted: rgb(255 255 255 / 56%);
   --color-brand: var(--anu-gold);
-  --color-brand-soft: rgba(190, 131, 14, 0.14);
-  --color-border: rgba(190, 131, 14, 0.4);
+  --color-brand-soft: rgb(190 131 14 / 14%);
+  --color-border: rgb(190 131 14 / 40%);
   --font-mono:
-    "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-  --lm-highlight-soft: rgba(190, 131, 14, 0.1);
-  --lm-highlight-medium: rgba(190, 131, 14, 0.3);
-  --lm-highlight-strong: rgba(190, 131, 14, 0.4);
-
+    "SFMono-Regular", consolas, "Liberation Mono", menlo, courier, monospace;
+  --lm-highlight-soft: rgb(190 131 14 / 10%);
+  --lm-highlight-medium: rgb(190 131 14 / 30%);
+  --lm-highlight-strong: rgb(190 131 14 / 40%);
   --r-background-color: var(--anu-dark-grey);
   --r-main-color: var(--anu-light-grey);
   --r-main-font: "Public Sans", sans-serif;
@@ -58,7 +56,7 @@ html {
   --r-link-color: var(--anu-gold);
   --r-link-color-hover: var(--anu-gold-4);
   --r-code-font:
-    "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    "SFMono-Regular", consolas, "Liberation Mono", menlo, courier, monospace;
 }
 
 body.reveal-viewport {
@@ -87,7 +85,7 @@ body.reveal-viewport {
     font-size: 5.25rem;
     line-height: 1.3;
     text-transform: uppercase;
-    margin: 0 0 1rem 0;
+    margin: 0 0 1rem;
     display: inline;
     background-color: var(--anu-gold);
     color: var(--anu-white);
@@ -97,7 +95,7 @@ body.reveal-viewport {
 
   :is(h2, h3, h4, h5, h6) {
     text-transform: none;
-    margin: 0 0 2rem 0;
+    margin: 0 0 2rem;
   }
 
   h2 {
@@ -107,7 +105,7 @@ body.reveal-viewport {
 
   :is(p, li) {
     font-size: 2.25rem;
-    margin: 0 0 1rem 0;
+    margin: 0 0 1rem;
   }
 
   ul,
@@ -120,6 +118,7 @@ body.reveal-viewport {
   a {
     color: var(--anu-gold);
     text-decoration: none;
+
     &:hover {
       text-decoration: underline;
     }
@@ -208,19 +207,23 @@ body.reveal-viewport {
     :is(h1, h2, h3, h4, h5, h6) {
       color: var(--anu-white);
     }
+
     :is(p, li) {
       font-size: 5rem;
       line-height: 1.4;
     }
+
     strong,
     em {
       color: var(--anu-dark-grey);
     }
+
     code {
       background: var(--anu-dark-grey);
       color: var(--anu-white);
       border-color: var(--anu-dark-grey);
     }
+
     a {
       color: var(--anu-dark-grey);
     }
@@ -228,7 +231,7 @@ body.reveal-viewport {
 
   &.quote {
     justify-content: center;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    text-shadow: 0 0 10px rgb(0 0 0 / 70%);
 
     blockquote {
       border-left: 3px solid var(--anu-white);
@@ -268,6 +271,7 @@ body.reveal-viewport {
       width: 480px;
       height: 480px;
     }
+
     span {
       font-size: 2rem;
       color: var(--anu-gold);

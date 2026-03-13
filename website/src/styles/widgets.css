@@ -88,7 +88,6 @@
     flex: 1;
     min-width: 0;
   }
-
 }
 
 .tokens-content {
@@ -148,9 +147,11 @@
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.1);
   }
+
   100% {
     transform: scale(1);
   }
@@ -192,6 +193,135 @@
   accent-color: var(--anu-gold);
 }
 
+/* Shared bucket styles (BucketTrainingWidget + BucketGenerationWidget) */
+
+.buckets-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
+  gap: 1rem;
+  min-height: 6rem;
+  align-items: stretch;
+}
+
+.bucket {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-width: 0;
+  border: 2px solid var(--color-border);
+  border-radius: 0.5rem;
+  background: var(--color-bg-alt);
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+}
+
+.bucket.highlighted {
+  border-color: var(--color-brand);
+  background: var(--color-brand-soft);
+}
+
+.bucket-label {
+  padding: 0.375rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
+  border-radius: 0.375rem 0.375rem 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bucket-label.punctuation {
+  font-size: 1rem;
+}
+
+.bucket.highlighted .bucket-label {
+  border-bottom-color: var(--color-brand);
+}
+
+.bucket-contents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  min-width: 0;
+  min-height: 2rem;
+  place-content: flex-start center;
+  overflow: hidden;
+}
+
+.bucket-token {
+  display: inline-block;
+  max-width: 100%;
+  padding: 0.125rem 0.375rem;
+  background: var(--color-bg);
+  border-radius: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  border: 1px solid var(--color-border);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
+}
+
+.bucket-token.punctuation {
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+/* Shared compact grid table (BigramGrid, DistanceMatrix, VectorComparison) */
+
+.compact-grid {
+  border-collapse: collapse;
+  border: 1px solid var(--color-border);
+  font-size: 0.875rem;
+  font-family: var(--font-mono);
+}
+
+.compact-grid th,
+.compact-grid td {
+  padding: 0.25rem;
+  text-align: center;
+  width: 2.5rem;
+  max-width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.compact-grid th {
+  background-color: var(--color-bg-alt);
+  font-weight: 600;
+}
+
+/* Code element styles for grid/table widget components (kept here rather than
+   in Svelte component <style> because :global() selectors in Svelte components
+   break both esbuild and lightningcss when bundled as Astro islands) */
+.compact-grid code,
+.comparison-table code,
+.distance-matrix code {
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+}
+
+.compact-grid th.punctuation code,
+.compact-grid td.punctuation code,
+.comparison-table th.punctuation code,
+.distance-matrix th.punctuation code {
+  font-weight: 700;
+  font-size: 2em;
+  line-height: 1;
+}
 
 /* Fullscreen layout */
 
@@ -214,26 +344,6 @@
   overflow: hidden;
 }
 
-/* Code element styles for grid/table widget components (kept here rather than
-   in Svelte component <style> because :global() selectors in Svelte components
-   break both esbuild and lightningcss when bundled as Astro islands) */
-.bigram-grid code,
-.comparison-table code,
-.distance-matrix code {
-  background: transparent;
-  padding: 0;
-  font-size: inherit;
-}
-
-.bigram-grid th.punctuation code,
-.bigram-grid td.punctuation code,
-.comparison-table th.punctuation code,
-.distance-matrix th.punctuation code {
-  font-weight: 700;
-  font-size: 2em;
-  line-height: 1;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .token,
   .output-word {
@@ -242,5 +352,10 @@
 
   .dice-value.rolling {
     animation: none;
+  }
+
+  .bucket,
+  .bucket-token {
+    transition: none;
   }
 }

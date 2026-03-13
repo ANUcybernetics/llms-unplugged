@@ -53,7 +53,11 @@
 
   let gridCounts = $derived.by(() => {
     const counts = new Map<string, number>();
-    for (let i = 0; i < scheduler.state.currentStep && i < bigrams.length; i++) {
+    for (
+      let i = 0;
+      i < scheduler.state.currentStep && i < bigrams.length;
+      i++
+    ) {
       const [from, to] = bigrams[i];
       const key = `${from}->${to}`;
       counts.set(key, (counts.get(key) || 0) + 1);

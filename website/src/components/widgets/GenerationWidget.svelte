@@ -87,7 +87,11 @@
   }
 
   let displayDiceRoll = $derived(
-    isAnimating ? animatedDiceRoll : (phase.kind === "rolled" ? phase.diceRoll : null),
+    isAnimating
+      ? animatedDiceRoll
+      : phase.kind === "rolled"
+        ? phase.diceRoll
+        : null,
   );
 
   let currentRowOptions = $derived.by(() => {
@@ -106,10 +110,7 @@
   }
 
   function isHighlightedCol(word: string): boolean {
-    if (
-      phase.kind !== "showing-options" &&
-      phase.kind !== "rolled"
-    )
+    if (phase.kind !== "showing-options" && phase.kind !== "rolled")
       return false;
     return currentRowOptions.includes(word);
   }
@@ -136,10 +137,7 @@
           <div class="section-header">Training text (tokenised)</div>
           <div class="tokens-content">
             {#each tokens as token}
-              <span
-                class="token"
-                class:punctuation={isPunctuation(token)}
-              >
+              <span class="token" class:punctuation={isPunctuation(token)}>
                 {token}
               </span>
             {/each}
@@ -169,8 +167,7 @@
             <span>Looking up</span>
             <span
               class="token highlight-first"
-              class:punctuation={isPunctuation(currentWord)}
-              >{currentWord}</span
+              class:punctuation={isPunctuation(currentWord)}>{currentWord}</span
             >
             <span>--- roll d{diceSides}...</span>
           {:else if phase.kind === "rolled" && isAnimating}

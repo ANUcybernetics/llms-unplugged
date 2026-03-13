@@ -26,10 +26,7 @@ function isActive(currentPath: string, href: string): boolean {
           <li>
             <a
               href={href}
-              class:list={[
-                "nav-link",
-                { active: isActive(currentPath, href) },
-              ]}
+              class:list={["nav-link", { active: isActive(currentPath, href) }]}
             >
               {text}
             </a>

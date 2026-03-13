@@ -24,7 +24,7 @@ const heroSrc = `/assets/images/hero-news-${slug}.avif`;
 ---
 
 <BaseLayout title={title} description={description} ogImage={ogImage}>
-  <main class="news-layout">
+  <main class="content-container news-layout">
     <article class="prose">
       <header class="news-header">
         <h1 class="news-title">{title}</h1>
@@ -52,12 +52,6 @@ const heroSrc = `/assets/images/hero-news-${slug}.avif`;
 </BaseLayout>
 
 <style>
-  .news-layout {
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-    padding: 2rem 1.5rem;
-  }
-
   .news-header {
     margin-bottom: 2rem;
   }
