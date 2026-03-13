@@ -14,6 +14,7 @@ import VariantToggle from "../../components/VariantToggle.svelte";
 import Variant from "../../components/Variant.astro";
 import Callout from "../../components/Callout.astro";
 import LmGrid from "../../components/LmGrid.astro";
+import LmBuckets from "../../components/LmBuckets.astro";
 import GenerationWidget from "../../components/widgets/GenerationWidget.svelte";
 import BucketGenerationWidget from "../../components/widgets/BucketGenerationWidget.svelte";
 
@@ -146,13 +147,7 @@ After the above steps, the generated text is _"see spot run. see spot"_
 
 Using the bucket model from the example in [Training](/lessons/training):
 
-| Bucket label | Tokens inside |
-| ------------ | ------------- |
-| see          | `spot` `spot` |
-| spot         | `run` `jump`  |
-| run          | `.`           |
-| .            | `see`         |
-| jump         | `.`           |
+<LmBuckets tokens="see spot run . see spot jump ." />
 
 **Generation sequence:**
 

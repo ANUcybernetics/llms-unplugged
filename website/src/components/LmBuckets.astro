@@ -1,0 +1,50 @@
+---
+interface Props {
+  tokens: string;
+  ngram?: number;
+}
+
+const { tokens: tokenString, ngram = 2 } = Astro.props;
+
+const tokenList = tokenString.trim().split(/\s+/).filter(Boolean);
+const contextSize = ngram - 1;
+
+const buckets = new Map<string, string[]>();
+
+for (let i = 0; i < tokenList.length - contextSize; i++) {
+  const label = tokenList.slice(i, i + contextSize).join(" ");
+  const token = tokenList[i + contextSize];
+  if (!buckets.has(label)) {
+    buckets.set(label, []);
+  }
+  buckets.get(label)!.push(token);
+}
+---
+
+<div class="lm-buckets">
+  <table>
+    <thead>
+      <tr>
+        <th>Bucket label</th>
+        <th>Tokens inside</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        [...buckets.entries()].map(([label, tokens]) => (
+          <tr>
+            <td>{label}</td>
+            <td>
+              {tokens.map((t, i) => (
+                <>
+                  {i > 0 && " "}
+                  <code>{t}</code>
+                </>
+              ))}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

@@ -4,14 +4,15 @@ import { tally } from "../lib/tally";
 
 interface Props {
   tokens: string;
-  nrows?: number;
-  ncols?: number;
+  vocabulary?: string;
 }
 
-const { tokens: tokenString } = Astro.props;
+const { tokens: tokenString, vocabulary: vocabString } = Astro.props;
 
 const tokenList = tokenString.trim().split(/\s+/).filter(Boolean);
-const vocabulary = getVocabulary(tokenList);
+const vocabulary = vocabString
+  ? vocabString.trim().split(/\s+/).filter(Boolean)
+  : getVocabulary(tokenList);
 const bigrams = getBigrams(tokenList);
 
 const counts = new Map<string, number>();
