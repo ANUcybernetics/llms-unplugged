@@ -1,9 +1,10 @@
 ---
 id: TASK-112
 title: rearrange widget layouts
-status: To Do
+status: Done
 assignee: []
-created_date: "2026-03-11 06:15"
+created_date: '2026-03-11 06:15'
+updated_date: '2026-03-13 01:49'
 labels: []
 dependencies: []
 ---
@@ -34,3 +35,9 @@ a lesson page, but when they go fullscreen on wide screens (which they often
 will) I want to make the most of the space.
 
 Any changes should be made to all applicable widgets, and well tested.
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Resolved in commits b376066, 73db86e, a05ac55 — implemented container queries, fixed-size grid cells with text truncation, removed boxy borders, moved current bigram next to controls.
+<!-- SECTION:NOTES:END -->
