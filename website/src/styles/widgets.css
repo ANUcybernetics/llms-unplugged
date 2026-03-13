@@ -48,6 +48,7 @@
   border-radius: 0.25rem;
   font-family: var(--font-mono);
   font-size: 0.875rem;
+  line-height: 1.25rem;
   transition:
     background-color 0.2s,
     transform 0.2s;
@@ -55,8 +56,7 @@
 
 .token.punctuation {
   font-weight: 700;
-  font-size: 1rem;
-  border: 2px solid var(--color-text-muted);
+  font-size: 2em;
 }
 
 .token.highlight-first {
@@ -230,11 +230,7 @@
 .comparison-table th.punctuation code,
 .distance-matrix th.punctuation code {
   font-weight: 700;
-  font-size: 1rem;
-  display: inline-block;
-  border: 2px solid var(--color-text-muted);
-  border-radius: 0.25rem;
-  padding: 0 0.25rem;
+  font-size: 2em;
 }
 
 @media (prefers-reduced-motion: reduce) {
