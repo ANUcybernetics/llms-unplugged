@@ -71,14 +71,12 @@
       {@const bits = tokenBits(brick.id)}
       <div
         class="brick"
-        class:title={isTitle}
         class:highlighted={phase !== "grid" && isTitle}
         class:assembled={isAssembled}
-        style:left="{pos.x}px"
-        style:top="{pos.y}px"
+        class:dimmed={phase === "assembled" && !isTitle}
+        style:translate="{pos.x}px {pos.y}px"
         style:width="{pos.w}px"
         style:height="{pos.h}px"
-        style:opacity={phase === "assembled" && !isTitle ? 0.12 : 1}
         style:transition-delay="{isTitle ? brick.titleIndex * 0.08 : 0}s"
         style:--tint={isTitle ? TITLE_TINTS[brick.titleIndex] : null}
       >
@@ -110,6 +108,8 @@
 
   .brick {
     position: absolute;
+    left: 0;
+    top: 0;
     background: #1a1a1a;
     border: 1px solid rgba(190, 131, 14, 0.15);
     border-radius: 3px;
@@ -117,20 +117,16 @@
     align-items: center;
     justify-content: center;
     transition:
-      opacity 0.6s ease,
-      background-color 0.4s ease,
-      border-color 0.4s ease;
-  }
-
-  .brick.title {
-    transition:
-      left 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-      top 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+      translate 0.8s cubic-bezier(0.4, 0, 0.2, 1),
       width 0.8s cubic-bezier(0.4, 0, 0.2, 1),
       height 0.8s cubic-bezier(0.4, 0, 0.2, 1),
       opacity 0.6s ease,
       background-color 0.4s ease,
       border-color 0.4s ease;
+  }
+
+  .brick.dimmed {
+    opacity: 0.12;
   }
 
   .brick.highlighted {
