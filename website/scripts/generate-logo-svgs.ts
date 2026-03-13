@@ -95,12 +95,12 @@ function generateLogo(): string {
   let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">\n`;
   svg += `  <rect width="${W}" height="${H}" fill="#0a0a0a"/>\n`;
 
-  // Background bricks (no dots — at 12% opacity they're not visible)
+  // Background bricks (no dots — at 40% opacity they're subtle but visible)
   bricks.forEach((brick, i) => {
     if (brick.titleToken) return;
     const pos = positions[i];
     if (!pos || pos.y + pos.h > H) return;
-    svg += `  <rect x="${pos.x}" y="${pos.y}" width="${pos.w}" height="${pos.h}" rx="3" fill="#1a1a1a" stroke="rgba(190,131,14,0.15)" stroke-width="1" opacity="0.12"/>\n`;
+    svg += `  <rect x="${pos.x}" y="${pos.y}" width="${pos.w}" height="${pos.h}" rx="3" fill="#1a1a1a" stroke="rgba(190,131,14,0.15)" stroke-width="1" opacity="0.4"/>\n`;
   });
 
   // Title bricks (assembled)

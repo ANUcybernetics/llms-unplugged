@@ -131,7 +131,7 @@
   }
 
   .brick.dimmed {
-    opacity: 0.12;
+    opacity: 0.4;
   }
 
   .brick.highlighted {
