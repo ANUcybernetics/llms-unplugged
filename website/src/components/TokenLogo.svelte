@@ -1,5 +1,4 @@
 <script lang="ts">
-  import "@fontsource/space-mono/700.css";
   import { onMount } from "svelte";
   import {
     generateBricks,
@@ -158,7 +157,7 @@
     position: absolute;
     opacity: 0;
     color: white;
-    font-family: var(--font-space-mono, "Space Mono", monospace);
+    font-family: var(--font-roboto-mono, "Roboto Mono", monospace);
     font-weight: 700;
     font-size: 120px;
     transition: opacity 0.4s ease 0.3s;

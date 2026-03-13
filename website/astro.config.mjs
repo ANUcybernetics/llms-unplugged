@@ -29,5 +29,13 @@ export default defineConfig({
       cssVariable: "--font-public-sans",
       provider: fontProviders.google(),
     },
+    {
+      name: "Roboto Mono",
+      cssVariable: "--font-roboto-mono",
+      provider: fontProviders.google(),
+      weights: ["400", "700"],
+      styles: ["normal"],
+      fallbacks: ["monospace"],
+    },
   ],
 });

@@ -35,7 +35,6 @@
     "@astrojs/rss": "^4.0.0",
     "@astrojs/sitemap": "^3.0.0",
     "@astrojs/svelte": "^8.0.0",
-    "@fontsource/space-mono": "^5.2.9",
     "@tailwindcss/vite": "^4.2.1",
     "astro": "^6.0.0",
     "astromotion": "github:benswift/astromotion",

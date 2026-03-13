@@ -23,9 +23,6 @@ importers:
       '@astrojs/svelte':
         specifier: ^8.0.0
         version: 8.0.0(@types/node@24.12.0)(astro@6.0.2(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2))(jiti@2.6.1)(lightningcss@1.32.0)(svelte@5.53.10)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2)
-      '@fontsource/space-mono':
-        specifier: ^5.2.9
-        version: 5.2.9
       '@tailwindcss/vite':
         specifier: ^4.2.1
         version: 4.2.1(vite@7.3.1(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.2))
@@ -450,9 +447,6 @@ packages:
 
   '@fontsource/monaspace-neon@5.2.5':
     resolution: {integrity: sha512-TjSSuHC37DroyhP5YCKRCAxdUb3In/uqHzqqW/8Ul+JWilz37d8lr8jFeapnbD3QdYXgiQoU2Rf/CmTdyl06DA==}
-
-  '@fontsource/space-mono@5.2.9':
-    resolution: {integrity: sha512-b61faFOHEISQ/pD25G+cfGY9o/WW6lRv6hBQQfpWvEJ4y1V+S4gmth95EVyBE2VL3qDYHeVQ8nBzrplzdXTDDg==}
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -3837,8 +3831,6 @@ snapshots:
   '@fontsource/atkinson-hyperlegible@5.2.8': {}
 
   '@fontsource/monaspace-neon@5.2.5': {}
-
-  '@fontsource/space-mono@5.2.9': {}
 
   '@img/colour@1.1.0':
     optional: true
