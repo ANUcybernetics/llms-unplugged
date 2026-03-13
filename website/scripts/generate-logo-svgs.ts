@@ -1,7 +1,6 @@
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import opentype from "opentype.js";
-import { decompress } from "wawoff2";
 import {
   generateBricks,
   tokenBits,
@@ -11,23 +10,12 @@ import {
   TITLE_TOKENS,
 } from "../src/lib/token-logo.ts";
 
-async function loadFont(weight: string): Promise<opentype.Font> {
-  const fontsDir = join(import.meta.dirname, "../.astro/fonts");
-  const exactPattern = `font-roboto-mono-${weight}-normal-latin-`;
-  const anyPattern = "font-roboto-mono-";
-  const allFiles = readdirSync(fontsDir).filter(
-    (f) => f.endsWith(".woff2") && f.startsWith(anyPattern),
+function loadFont(): opentype.Font {
+  const ttfPath = join(import.meta.dirname, "RobotoMono-Bold.ttf");
+  const buf = readFileSync(ttfPath);
+  return opentype.parse(
+    buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength),
   );
-  const files = allFiles.filter((f) => f.startsWith(exactPattern));
-  if (files.length === 0 && allFiles.length === 0) {
-    throw new Error(
-      `No Roboto Mono font found in ${fontsDir} — run 'pnpm run build' first to populate the font cache`,
-    );
-  }
-  const matched = files.length > 0 ? files[0] : allFiles[0];
-  const woff2Buf = readFileSync(join(fontsDir, matched));
-  const otfBuf = await decompress(woff2Buf);
-  return opentype.parse(otfBuf.buffer.slice(otfBuf.byteOffset, otfBuf.byteOffset + otfBuf.byteLength));
 }
 
 function textToPath(
@@ -66,7 +54,7 @@ ${circles}
 `;
 }
 
-async function generateLogo(): Promise<string> {
+function generateLogo(): string {
   const W = 960;
   const H = 400;
   const FONT_SIZE = 80;
@@ -75,7 +63,7 @@ async function generateLogo(): Promise<string> {
   const LINE_GAP = 12;
   const LINE_W = 7 * CHAR_W; // both lines are 7 chars
 
-  const font = await loadFont("700");
+  const font = loadFont();
 
   const bricks = generateBricks(250, 42);
   const positions = gridLayout(bricks, W, H);
@@ -130,7 +118,6 @@ async function generateLogo(): Promise<string> {
   let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">\n`;
   svg += `  <rect width="${W}" height="${H}" fill="#0a0a0a"/>\n`;
 
-  // Background bricks (no dots — at 40% opacity they're subtle but visible)
   bricks.forEach((brick, i) => {
     if (brick.titleToken) return;
     const pos = positions[i];
@@ -138,7 +125,6 @@ async function generateLogo(): Promise<string> {
     svg += `  <rect x="${pos.x}" y="${pos.y}" width="${pos.w}" height="${pos.h}" rx="3" fill="#1a1a1a" stroke="rgba(190,131,14,0.15)" stroke-width="1" opacity="0.4"/>\n`;
   });
 
-  // Title bricks with text as paths
   for (const tb of titleBricks) {
     const pos = assembled.get(tb.index)!;
     const tint = TITLE_TINTS[tb.titleIndex];
@@ -160,7 +146,6 @@ async function generateLogo(): Promise<string> {
 writeFileSync("public/favicon.svg", generateFavicon());
 console.log("Wrote public/favicon.svg");
 
-generateLogo().then((svg) => {
-  writeFileSync("public/logo.svg", svg);
-  console.log("Wrote public/logo.svg");
-});
+const logoSvg = generateLogo();
+writeFileSync("public/logo.svg", logoSvg);
+console.log("Wrote public/logo.svg");

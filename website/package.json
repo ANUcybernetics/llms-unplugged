@@ -61,8 +61,7 @@
     "svelte-check": "^4.0.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.0",
-    "wawoff2": "^2.0.1"
+    "vitest": "^4.0.0"
   },
   "engines": {
     "node": ">=22.12.0"
