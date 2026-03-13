@@ -3,7 +3,7 @@ title: "LLMs Unplugged: the pitch to teachers"
 date: 2025-12-12
 author: Ben Swift
 description:
-  How do we building the confidence to have discussions about LLMs and AI in our
+  How do we build the confidence to have discussions about LLMs and AI in our
   classrooms?
 ---
 

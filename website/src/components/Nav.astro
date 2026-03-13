@@ -8,6 +8,11 @@ const navLinks = [
 ];
 
 const currentPath = Astro.url.pathname;
+
+function isActive(currentPath: string, href: string): boolean {
+  if (href.endsWith("/")) return currentPath.startsWith(href);
+  return currentPath === href || currentPath.startsWith(href + "/");
+}
 ---
 
 <nav class="site-nav">
@@ -24,7 +29,7 @@ const currentPath = Astro.url.pathname;
               href={href}
               class:list={[
                 "nav-link",
-                { active: currentPath.startsWith(href) },
+                { active: isActive(currentPath, href) },
               ]}
             >
               {text}

@@ -1,9 +1,10 @@
 ---
 id: TASK-119
 title: Fix FAQ nav item incorrectly highlighted on lesson pages
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-03-12 03:43'
+updated_date: '2026-03-13 02:00'
 labels:
   - website
   - bug
@@ -19,7 +20,7 @@ On lesson pages (e.g. /lessons/sampling, /lessons/generation), the 'FAQ' nav ite
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 FAQ nav item has no active/highlighted styling when viewing lesson pages
-- [ ] #2 Lessons nav item remains correctly highlighted on lesson pages
-- [ ] #3 FAQ nav item is only highlighted when on the /faq page
+- [x] #1 FAQ nav item has no active/highlighted styling when viewing lesson pages
+- [x] #2 Lessons nav item remains correctly highlighted on lesson pages
+- [x] #3 FAQ nav item is only highlighted when on the /faq page
 <!-- AC:END -->
