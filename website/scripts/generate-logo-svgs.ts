@@ -13,16 +13,19 @@ import {
 
 async function loadFont(weight: string): Promise<opentype.Font> {
   const fontsDir = join(import.meta.dirname, "../.astro/fonts");
-  const pattern = `font-roboto-mono-${weight}-normal-latin-`;
-  const files = readdirSync(fontsDir).filter(
-    (f) => f.startsWith(pattern) && f.endsWith(".woff2"),
+  const exactPattern = `font-roboto-mono-${weight}-normal-latin-`;
+  const anyPattern = "font-roboto-mono-";
+  const allFiles = readdirSync(fontsDir).filter(
+    (f) => f.endsWith(".woff2") && f.startsWith(anyPattern),
   );
-  if (files.length === 0) {
+  const files = allFiles.filter((f) => f.startsWith(exactPattern));
+  if (files.length === 0 && allFiles.length === 0) {
     throw new Error(
-      `No Roboto Mono ${weight} font found in ${fontsDir} — run 'pnpm run dev' first to populate the font cache`,
+      `No Roboto Mono font found in ${fontsDir} — run 'pnpm run build' first to populate the font cache`,
     );
   }
-  const woff2Buf = readFileSync(join(fontsDir, files[0]));
+  const matched = files.length > 0 ? files[0] : allFiles[0];
+  const woff2Buf = readFileSync(join(fontsDir, matched));
   const otfBuf = await decompress(woff2Buf);
   return opentype.parse(otfBuf.buffer.slice(otfBuf.byteOffset, otfBuf.byteOffset + otfBuf.byteLength));
 }
