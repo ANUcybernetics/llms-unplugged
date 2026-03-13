@@ -3,6 +3,10 @@ title: LLMs Unplugged (Fundamentals)
 description: A Cybernetic Studio workshop
 ---
 
+<TokenLogo />
+
+---
+
 ## Icebreaker
 
 ![bg left:40%](../assets/hero-news-2026-02-13-brimbank-tech-school-workshop.avif)
@@ -252,12 +256,17 @@ by exploiting patterns in text to generate new text
 ---
 
 <script lang="ts">
+  import TokenLogo from "../../components/TokenLogo.svelte";
   import TrainingWidget from "../../components/widgets/TrainingWidget.svelte";
   import GenerationWidget from "../../components/widgets/GenerationWidget.svelte";
   import "../../styles/widgets.css";
 </script>
 
 <style>
+  :global(.reveal .slides section:has(.token-logo)) {
+    padding: 0;
+  }
+
   :global(.reveal .slides .fullscreen-button) {
     display: none;
   }
