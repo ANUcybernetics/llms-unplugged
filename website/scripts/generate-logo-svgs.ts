@@ -1,4 +1,7 @@
-import { writeFileSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import opentype from "opentype.js";
+import { decompress } from "wawoff2";
 import {
   generateBricks,
   tokenBits,
@@ -8,8 +11,35 @@ import {
   TITLE_TOKENS,
 } from "../src/lib/token-logo.ts";
 
-function escapeXml(s: string): string {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+async function loadFont(weight: string): Promise<opentype.Font> {
+  const fontsDir = join(import.meta.dirname, "../.astro/fonts");
+  const pattern = `font-roboto-mono-${weight}-normal-latin-`;
+  const files = readdirSync(fontsDir).filter(
+    (f) => f.startsWith(pattern) && f.endsWith(".woff2"),
+  );
+  if (files.length === 0) {
+    throw new Error(
+      `No Roboto Mono ${weight} font found in ${fontsDir} — run 'pnpm run dev' first to populate the font cache`,
+    );
+  }
+  const woff2Buf = readFileSync(join(fontsDir, files[0]));
+  const otfBuf = await decompress(woff2Buf);
+  return opentype.parse(otfBuf.buffer.slice(otfBuf.byteOffset, otfBuf.byteOffset + otfBuf.byteLength));
+}
+
+function textToPath(
+  font: opentype.Font,
+  text: string,
+  cx: number,
+  cy: number,
+  fontSize: number,
+): string {
+  const path = font.getPath(text, 0, 0, fontSize);
+  const bb = path.getBoundingBox();
+  const dx = cx - (bb.x1 + bb.x2) / 2;
+  const dy = cy - (bb.y1 + bb.y2) / 2;
+  const shifted = font.getPath(text, dx, dy, fontSize);
+  return shifted.toSVG(2);
 }
 
 function generateFavicon(): string {
@@ -33,7 +63,7 @@ ${circles}
 `;
 }
 
-function generateLogo(): string {
+async function generateLogo(): Promise<string> {
   const W = 960;
   const H = 400;
   const FONT_SIZE = 80;
@@ -41,6 +71,8 @@ function generateLogo(): string {
   const LINE_H = 96;
   const LINE_GAP = 12;
   const LINE_W = 7 * CHAR_W; // both lines are 7 chars
+
+  const font = await loadFont("700");
 
   const bricks = generateBricks(250, 42);
   const positions = gridLayout(bricks, W, H);
@@ -103,12 +135,19 @@ function generateLogo(): string {
     svg += `  <rect x="${pos.x}" y="${pos.y}" width="${pos.w}" height="${pos.h}" rx="3" fill="#1a1a1a" stroke="rgba(190,131,14,0.15)" stroke-width="1" opacity="0.4"/>\n`;
   });
 
-  // Title bricks (assembled)
+  // Title bricks with text as paths
   for (const tb of titleBricks) {
     const pos = assembled.get(tb.index)!;
     const tint = TITLE_TINTS[tb.titleIndex];
     svg += `  <rect x="${pos.x}" y="${pos.y}" width="${pos.w}" height="${pos.h}" rx="3" fill="${tint}"/>\n`;
-    svg += `  <text x="${pos.x + pos.w / 2}" y="${pos.y + pos.h / 2}" fill="white" font-family="'Roboto Mono', monospace" font-weight="700" font-size="${FONT_SIZE}" text-anchor="middle" dominant-baseline="central">${escapeXml(tb.displayText)}</text>\n`;
+    const pathSvg = textToPath(
+      font,
+      tb.displayText,
+      pos.x + pos.w / 2,
+      pos.y + pos.h / 2,
+      FONT_SIZE,
+    );
+    svg += `  ${pathSvg.replace('<path', '<path fill="white"')}\n`;
   }
 
   svg += `</svg>\n`;
@@ -118,5 +157,7 @@ function generateLogo(): string {
 writeFileSync("public/favicon.svg", generateFavicon());
 console.log("Wrote public/favicon.svg");
 
-writeFileSync("public/logo.svg", generateLogo());
-console.log("Wrote public/logo.svg");
+generateLogo().then((svg) => {
+  writeFileSync("public/logo.svg", svg);
+  console.log("Wrote public/logo.svg");
+});
