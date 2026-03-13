@@ -130,12 +130,9 @@
   }
 
   .brick.highlighted {
+    z-index: 10;
     background: var(--tint, #be830e);
     border-color: var(--tint, #d4940f);
-  }
-
-  .brick.assembled {
-    z-index: 10;
   }
 
   .dots {
