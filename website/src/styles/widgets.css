@@ -337,11 +337,30 @@
 
 .fullscreen-content.scaled .widget-view > .widget-section:has(.bigram-grid),
 .fullscreen-content.scaled .widget-view > .widget-section:has(.buckets-content),
-.fullscreen-content.scaled .widget-view > .widget-section:has(.entries-content),
-.fullscreen-content.scaled .widget-view > .widget-section:has(.output-content) {
+.fullscreen-content.scaled .widget-view > .widget-section:has(.entries-content) {
   min-height: 0;
-  flex: 1;
+  flex: 3;
   overflow: hidden;
+}
+
+.fullscreen-content.scaled .widget-view > .widget-section:has(.output-content) {
+  flex: 0 0 auto;
+}
+
+.fullscreen-content.scaled .entries-content {
+  max-height: none;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.fullscreen-content.scaled .grid-section {
+  overflow-y: auto;
+  height: 100%;
+}
+
+.fullscreen-content.scaled .buckets-content {
+  overflow-y: auto;
+  height: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
