@@ -45,7 +45,7 @@
 
   let machine = $derived(createPretrainedGenerationMachine(model, vocabulary));
   const scheduler = createScheduler(() => machine, {
-    defaultInterval: PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS,
+    defaultInterval: PLAYBACK_CONFIG.GENERATION_DEFAULT_STEP_INTERVAL_MS,
     loop: untrack(() => loop),
   });
 
@@ -205,12 +205,12 @@
             >
             {#if currentEntry.followers.length > 1}
               <span>
-                --- roll {currentEntry.numDice} d10{currentEntry.numDice > 1
+                — roll {currentEntry.numDice} d10{currentEntry.numDice > 1
                   ? "s"
                   : ""}...
               </span>
             {:else}
-              <span>--- only one option</span>
+              <span>— only one option</span>
             {/if}
           {:else if phase.kind === "rolled" && isAnimating && currentEntry}
             <span

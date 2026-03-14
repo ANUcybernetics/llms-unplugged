@@ -82,7 +82,7 @@ export function createScheduler<S>(
       }
     }
     isPlaying = true;
-    scheduleNext();
+    step();
   }
 
   function pause() {

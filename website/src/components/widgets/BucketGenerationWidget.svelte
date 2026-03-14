@@ -40,7 +40,7 @@
 
   let machine = $derived(createBucketGenerationMachine(model, vocabulary));
   const scheduler = createScheduler(() => machine, {
-    defaultInterval: PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS,
+    defaultInterval: PLAYBACK_CONFIG.GENERATION_DEFAULT_STEP_INTERVAL_MS,
     loop,
   });
 

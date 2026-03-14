@@ -27,8 +27,8 @@
     totalSteps = 0,
     showStepCounter = false,
     stepInterval,
-    minStepInterval = PLAYBACK_CONFIG.MIN_STEP_INTERVAL_MS,
-    maxStepInterval = PLAYBACK_CONFIG.MAX_STEP_INTERVAL_MS,
+    minStepInterval = PLAYBACK_CONFIG.GENERATION_MIN_STEP_INTERVAL_MS,
+    maxStepInterval = PLAYBACK_CONFIG.GENERATION_MAX_STEP_INTERVAL_MS,
     sliderId = "speed-slider",
     loop = false,
     onplay,
@@ -61,6 +61,7 @@
       min={minStepInterval}
       max={maxStepInterval}
       step="50"
+      style="direction: rtl"
       oninput={(e) =>
         onstepintervalchange(Number((e.target as HTMLInputElement).value))}
     />

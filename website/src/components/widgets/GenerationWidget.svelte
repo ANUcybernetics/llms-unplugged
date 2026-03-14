@@ -43,7 +43,7 @@
     createDiceGenerationMachine(model, vocabulary, diceSides),
   );
   const scheduler = createScheduler(() => machine, {
-    defaultInterval: PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS,
+    defaultInterval: PLAYBACK_CONFIG.GENERATION_DEFAULT_STEP_INTERVAL_MS,
     loop: untrack(() => loop),
   });
 
@@ -169,7 +169,7 @@
               class="token highlight-first"
               class:punctuation={isPunctuation(currentWord)}>{currentWord}</span
             >
-            <span>--- roll d{diceSides}...</span>
+            <span>— roll d{diceSides}...</span>
           {:else if phase.kind === "rolled" && isAnimating}
             <span>Rolling d{diceSides}...</span>
             <span class="dice-value rolling">{displayDiceRoll}</span>
