@@ -55,15 +55,16 @@
     return () => clearInterval(intervalId);
   });
 
-  const renderOrder: number[] = $derived(
-    bricks
-      .map((_, i) => i)
-      .sort((a, b) => {
-        const at = mode === "full" && bricks[a].titleToken !== null ? 1 : 0;
-        const bt = mode === "full" && bricks[b].titleToken !== null ? 1 : 0;
-        return at - bt;
-      }),
-  );
+  let svgEl: SVGSVGElement | undefined = $state();
+
+  $effect(() => {
+    if (mode !== "full" || !svgEl) return;
+    for (const [i, b] of bricks.entries()) {
+      if (b.titleToken === null) continue;
+      const el = svgEl.querySelector(`[data-idx="${i}"]`);
+      if (el) svgEl.appendChild(el);
+    }
+  });
 
   export function highlight() {
     phase = "highlighted";
@@ -85,12 +86,13 @@
   {@const sy = pos.h / gp.h}
   {@const bits = tokenBits(b.id)}
   <g
+    data-idx={i}
     class="brick"
     class:highlighted={phase !== "grid" && isTitle}
     class:assembled={isAssembled}
     style:translate="{pos.x}px {pos.y}px"
     style:scale="{sx} {sy}"
-    style:transition-delay="{isTitle ? b.titleIndex * 0.08 : 0}s"
+    style:transition-delay="{isTitle && phase !== 'grid' ? b.titleIndex * 0.08 : (gp.y / REF_H) * 0.4}s"
     style:--tint={isTitle ? TITLE_TINTS[b.titleIndex] : null}
   >
     <rect
@@ -130,9 +132,9 @@
 {/snippet}
 
 <div class="token-logo">
-  <svg viewBox="0 0 {REF_W} {REF_H}">
-    {#each renderOrder as i (i)}
-      {@render renderBrick(bricks[i], i)}
+  <svg bind:this={svgEl} viewBox="0 0 {REF_W} {REF_H}">
+    {#each bricks as b, i (i)}
+      {@render renderBrick(b, i)}
     {/each}
   </svg>
 </div>
