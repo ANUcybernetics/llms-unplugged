@@ -36,7 +36,7 @@
   let bigrams = $derived(getBigrams(tokens));
   let vocabulary = $derived(getVocabulary(tokens));
 
-  const machine = createTrainingMachine(bigrams.length);
+  const machine = createTrainingMachine(untrack(() => bigrams.length));
   const scheduler = createScheduler(() => machine, {
     defaultInterval: PLAYBACK_CONFIG.TRAINING_DEFAULT_STEP_INTERVAL_MS,
     loop: untrack(() => loop),

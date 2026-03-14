@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, untrack } from "svelte";
   import {
     generateBricks,
     tokenBits,
@@ -16,7 +16,7 @@
 
   type Phase = "grid" | "highlighted" | "assembled";
   let phase: Phase = $state("grid");
-  let bricks: Brick[] = $state(generateBricks(count, Date.now()));
+  let bricks: Brick[] = $state(generateBricks(untrack(() => count), Date.now()));
 
   let el: HTMLDivElement;
   let gridPos: Pos[] = $state([]);

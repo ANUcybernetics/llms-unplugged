@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, untrack } from "svelte";
   import { createScheduler } from "../../lib/scheduler.svelte";
   import {
     createDiceGenerationMachine,
@@ -44,7 +44,7 @@
   );
   const scheduler = createScheduler(() => machine, {
     defaultInterval: PLAYBACK_CONFIG.DEFAULT_STEP_INTERVAL_MS,
-    loop,
+    loop: untrack(() => loop),
   });
 
   let { outputWords, phase } = $derived(scheduler.state);
