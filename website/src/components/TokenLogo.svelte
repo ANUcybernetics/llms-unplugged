@@ -55,6 +55,16 @@
     return () => clearInterval(intervalId);
   });
 
+  const renderOrder: number[] = $derived(
+    bricks
+      .map((_, i) => i)
+      .sort((a, b) => {
+        const at = mode === "full" && bricks[a].titleToken !== null ? 1 : 0;
+        const bt = mode === "full" && bricks[b].titleToken !== null ? 1 : 0;
+        return at - bt;
+      }),
+  );
+
   export function highlight() {
     phase = "highlighted";
   }
@@ -78,7 +88,6 @@
     class="brick"
     class:highlighted={phase !== "grid" && isTitle}
     class:assembled={isAssembled}
-    class:dimmed={phase === "assembled" && !isTitle}
     style:translate="{pos.x}px {pos.y}px"
     style:scale="{sx} {sy}"
     style:transition-delay="{isTitle ? b.titleIndex * 0.08 : 0}s"
@@ -122,18 +131,9 @@
 
 <div class="token-logo">
   <svg viewBox="0 0 {REF_W} {REF_H}">
-    {#each bricks as b, i}
-      {#if !(mode === "full" && b.titleToken !== null)}
-        {@render renderBrick(b, i)}
-      {/if}
+    {#each renderOrder as i (i)}
+      {@render renderBrick(bricks[i], i)}
     {/each}
-    {#if mode === "full"}
-      {#each bricks as b, i}
-        {#if b.titleToken !== null}
-          {@render renderBrick(b, i)}
-        {/if}
-      {/each}
-    {/if}
   </svg>
 </div>
 
@@ -155,12 +155,7 @@
     transform-origin: 0 0;
     transition:
       translate 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-      scale 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 0.6s ease;
-  }
-
-  .brick.dimmed {
-    opacity: 0.4;
+      scale 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .brick-bg {
