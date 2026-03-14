@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NewsCards from "../components/NewsCards.astro";
-import TokenLogo from "../components/TokenLogo.svelte";
 ---
 
 <BaseLayout title="LLMs Unplugged">
@@ -20,8 +19,11 @@ import TokenLogo from "../components/TokenLogo.svelte";
         <a href="/about" class="hero-button secondary">Learn more</a>
       </div>
     </div>
-    <div class="hero-logo">
-      <TokenLogo client:load />
+    <div class="hero-image">
+      <img
+        src="/assets/images/hero-index.avif"
+        alt="Workshop participants building language models with pen and paper"
+      />
     </div>
   </section>
 
@@ -276,19 +278,9 @@ import TokenLogo from "../components/TokenLogo.svelte";
     line-height: 1.5;
   }
 
-  .hero-logo {
-    position: relative;
-    aspect-ratio: 5 / 3;
+  .hero-image img {
+    width: 100%;
     border-radius: 0.75rem;
-    overflow: hidden;
-  }
-
-  @media (min-width: 960px) {
-    .hero-logo {
-      aspect-ratio: auto;
-      align-self: stretch;
-      min-height: 300px;
-    }
   }
 
   .hero-actions {
