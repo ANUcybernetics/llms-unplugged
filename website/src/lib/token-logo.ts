@@ -155,6 +155,31 @@ export function fillLastRow(
   }
 }
 
+export function shuffledGridLayout(
+  bricks: Brick[],
+  width: number,
+  height: number,
+  seed: number,
+): Pos[] {
+  const rng = mulberry32(seed);
+  const n = bricks.length;
+  const order = Array.from({ length: n }, (_, i) => i);
+  for (let j = n - 1; j > 0; j--) {
+    const k = Math.floor(rng() * (j + 1));
+    [order[j], order[k]] = [order[k], order[j]];
+  }
+  const shuffledPos = gridLayout(
+    order.map((i) => bricks[i]),
+    width,
+    height,
+  );
+  const positions: Pos[] = new Array(n);
+  for (let j = 0; j < n; j++) {
+    positions[order[j]] = shuffledPos[j];
+  }
+  return positions;
+}
+
 export function assembledLayout(
   bricks: Brick[],
   width: number,

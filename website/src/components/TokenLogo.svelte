@@ -6,6 +6,7 @@
     gridLayout,
     fillLastRow,
     assembledLayout,
+    shuffledGridLayout,
     BRICK_COUNT,
     TITLE_TINTS,
     type Brick,
@@ -23,25 +24,21 @@
   type Phase = "grid" | "highlighted" | "assembled";
   let phase: Phase = $state("grid");
 
-  function computeLayout(n: number, seed: number) {
-    const b = generateBricks(n, seed);
+  const initSeed = Date.now();
+  const bricks: Brick[] = (() => {
+    const b = generateBricks(untrack(() => count), initSeed);
     const gp = gridLayout(b, REF_W, REF_H);
     fillLastRow(b, gp, REF_W);
-    const ap = assembledLayout(b, REF_W, REF_H);
-    return { bricks: b, gridPos: gp, assPos: ap };
-  }
-
-  const init = computeLayout(untrack(() => count), Date.now());
-  let bricks: Brick[] = $state(init.bricks);
-  let gridPos: Pos[] = $state(init.gridPos);
-  let assPos: Map<number, Pos> = $state(init.assPos);
+    return b;
+  })();
+  const assPos: Map<number, Pos> = assembledLayout(bricks, REF_W, REF_H);
+  let gridPos: Pos[] = $state(
+    shuffledGridLayout(bricks, REF_W, REF_H, initSeed),
+  );
 
   onMount(() => {
     function cycle() {
-      const result = computeLayout(count, Date.now());
-      bricks = result.bricks;
-      gridPos = result.gridPos;
-      assPos = result.assPos;
+      gridPos = shuffledGridLayout(bricks, REF_W, REF_H, Date.now());
       phase = "grid";
       if (mode === "full") {
         setTimeout(() => (phase = "highlighted"), 2000);
@@ -53,17 +50,6 @@
     cycle();
     const intervalId = setInterval(cycle, mode === "full" ? 12000 : 10000);
     return () => clearInterval(intervalId);
-  });
-
-  let svgEl: SVGSVGElement | undefined = $state();
-
-  $effect(() => {
-    if (mode !== "full" || !svgEl) return;
-    for (const [i, b] of bricks.entries()) {
-      if (b.titleToken === null) continue;
-      const el = svgEl.querySelector(`[data-idx="${i}"]`);
-      if (el) svgEl.appendChild(el);
-    }
   });
 
   export function highlight() {
@@ -86,13 +72,12 @@
   {@const sy = pos.h / gp.h}
   {@const bits = tokenBits(b.id)}
   <g
-    data-idx={i}
     class="brick"
     class:highlighted={phase !== "grid" && isTitle}
     class:assembled={isAssembled}
     style:translate="{pos.x}px {pos.y}px"
     style:scale="{sx} {sy}"
-    style:transition-delay="{isTitle && phase !== 'grid' ? b.titleIndex * 0.08 : (gp.y / REF_H) * 0.4}s"
+    style:transition-delay="{isTitle && phase !== 'grid' ? b.titleIndex * 0.08 : 0}s"
     style:--tint={isTitle ? TITLE_TINTS[b.titleIndex] : null}
   >
     <rect
@@ -132,10 +117,19 @@
 {/snippet}
 
 <div class="token-logo">
-  <svg bind:this={svgEl} viewBox="0 0 {REF_W} {REF_H}">
-    {#each bricks as b, i (i)}
-      {@render renderBrick(b, i)}
+  <svg viewBox="0 0 {REF_W} {REF_H}">
+    {#each bricks as b, i}
+      {#if !(mode === "full" && b.titleToken !== null)}
+        {@render renderBrick(b, i)}
+      {/if}
     {/each}
+    {#if mode === "full"}
+      {#each bricks as b, i}
+        {#if b.titleToken !== null}
+          {@render renderBrick(b, i)}
+        {/if}
+      {/each}
+    {/if}
   </svg>
 </div>
 
