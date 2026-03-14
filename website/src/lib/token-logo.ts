@@ -28,12 +28,13 @@ export const TITLE_TOKENS: TitleToken[] = [
   { id: 2004, text: "ged", displayText: "ged", word: 1 },
 ];
 
-export const BRICK_COUNT = 295;
+export const BRICK_COUNT = 270;
 
-const BRICK_H = 28;
+const GRID_ROWS = 17;
+const GAP = 3;
+const BRICK_H = (540 - (GRID_ROWS - 1) * GAP) / GRID_ROWS;
 const CHAR_W = 12;
 const BASE_PAD = 10;
-const GAP = 3;
 const ASSEMBLED_CHAR_W = 74;
 const ASSEMBLED_H = 145;
 const ASSEMBLED_LINE_GAP = 14;
@@ -121,9 +122,6 @@ export function gridLayout(bricks: Brick[], width: number, height: number): Pos[
     positions.push({ x, y, w, h: BRICK_H });
     x += w + GAP;
   }
-  const totalH = y + BRICK_H;
-  const offsetY = (height - totalH) / 2;
-  for (const p of positions) p.y += offsetY;
   return positions;
 }
 
