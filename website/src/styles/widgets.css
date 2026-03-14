@@ -170,23 +170,18 @@
 }
 
 .controls-strip .speed-control {
-  min-width: 0;
-}
-
-/* Speed / playback controls */
-
-.speed-control {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
+  min-width: 0;
 }
 
-.speed-control .speed-label {
+.controls-strip .speed-label {
   color: var(--color-text-secondary);
 }
 
-.speed-control input[type="range"] {
+.controls-strip .speed-control input[type="range"] {
   flex: 1;
   min-width: 60px;
   direction: rtl;
@@ -347,20 +342,12 @@
   flex: 0 0 auto;
 }
 
-.fullscreen-content.scaled .entries-content {
+.fullscreen-content.scaled .entries-content,
+.fullscreen-content.scaled .grid-section,
+.fullscreen-content.scaled .buckets-content {
   max-height: none;
   height: 100%;
   overflow-y: auto;
-}
-
-.fullscreen-content.scaled .grid-section {
-  overflow-y: auto;
-  height: 100%;
-}
-
-.fullscreen-content.scaled .buckets-content {
-  overflow-y: auto;
-  height: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
