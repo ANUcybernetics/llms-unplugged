@@ -55,16 +55,6 @@
     return () => clearInterval(intervalId);
   });
 
-  const renderOrder: number[] = $derived(
-    bricks
-      .map((_, i) => i)
-      .sort((a, b) => {
-        const at = mode === "full" && bricks[a].titleToken !== null ? 1 : 0;
-        const bt = mode === "full" && bricks[b].titleToken !== null ? 1 : 0;
-        return at - bt;
-      }),
-  );
-
   export function highlight() {
     phase = "highlighted";
   }
@@ -132,9 +122,18 @@
 
 <div class="token-logo">
   <svg viewBox="0 0 {REF_W} {REF_H}">
-    {#each renderOrder as i (i)}
-      {@render renderBrick(bricks[i], i)}
+    {#each bricks as b, i}
+      {#if !(mode === "full" && b.titleToken !== null)}
+        {@render renderBrick(b, i)}
+      {/if}
     {/each}
+    {#if mode === "full"}
+      {#each bricks as b, i}
+        {#if b.titleToken !== null}
+          {@render renderBrick(b, i)}
+        {/if}
+      {/each}
+    {/if}
   </svg>
 </div>
 
