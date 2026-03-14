@@ -51,9 +51,16 @@ fill up a model's context window.
 The favicon takes this one step further. Each token ID is just a number, and
 numbers can be written in binary. Token 3069 ("LL") in 16-bit binary is
 `0000 1011 1111 1101`. Lay those 16 bits out in a 4×4 grid, colour the 1s in
-gold and leave the 0s dim, and you get this:
+gold and leave the 0s dim, and you get a tiny visual fingerprint of the token.
 
-<img src="/favicon.svg" alt="The LLMs Unplugged favicon---the binary dot pattern for token 3069" style="max-width: 120px; margin: 1.5rem auto; display: block;" />
+<img src="/favicon.svg" alt="The LLMs Unplugged favicon---animated dot patterns cycling through all five title tokens" style="max-width: 120px; margin: 1.5rem auto; display: block;" />
+
+If you watch the favicon for a moment you'll notice it isn't static---it cycles
+through the bit patterns for all five title tokens on a 15-second loop, with
+smooth transitions between each pattern. The animation is pure CSS `@keyframes`
+embedded directly in the SVG, no JavaScript involved. Each of the 16 circles
+gets its own keyframe animation based on how its bit differs across the five
+tokens, so some circles hold steady while others flicker between gold and dim.
 
 It's the kind of thing that nobody will ever notice unprompted (pun intended),
 but once you know what it is, you can't unsee it. Every dot pattern on the site
@@ -61,18 +68,33 @@ is a real token ID rendered the same way.
 
 ## The animated version
 
-There's also an animated version of the logo which starts with around 500
-token-sized bricks packed into a dense grid---each displaying the binary dot
-pattern for its token ID. Then the five title tokens light up in gold. Then they
-smoothly slide into position to spell out "LLMs Unplugged", while the background
-bricks fade. After a pause, the whole thing reverses and the title dissolves
-back into the field of tokens. Each cycle the bricks are re-randomised, so the
-title tokens emerge from different positions every time.
+There's also an animated version of the logo---this is the one you'll see on the
+[landing page](/)---which starts with around 500 token-sized bricks packed into
+a dense grid, each displaying the binary dot pattern for its token ID. Then the
+five title tokens light up in gold. Then they smoothly slide into position to
+spell out "LLMs Unplugged", while the background bricks fade. After a pause, the
+whole thing reverses and the title dissolves back into the field of tokens. Each
+cycle the bricks are re-randomised, so the title tokens emerge from different
+positions every time.
 
 <div style="position: relative; width: 100%; aspect-ratio: 5 / 3; border-radius: 0.5rem; overflow: hidden;">
   <TokenLogo client:visible count={200} />
 </div>
 
-The animation captures the core visual metaphor of the project---meaningful text
+The whole thing is a pure SVG with a `viewBox`, so it scales to whatever
+container you put it in---no pixel breakpoints or resize listeners needed. The
+animation captures the core visual metaphor of the project: meaningful text
 emerging from what looks like a random jumble of tokens. It's basically what a
 language model does, just at a pace humans can follow.
+
+## Background mode
+
+There's also a stripped-back variant that just shows the shuffling brick grid
+without ever highlighting or assembling the title tokens. It's useful as a
+visual backdrop---we use it behind divider slides in our workshop
+presentations---where you want the token texture without the full animation
+competing for attention.
+
+<div style="position: relative; width: 100%; aspect-ratio: 5 / 3; border-radius: 0.5rem; overflow: hidden;">
+  <TokenLogo client:visible count={200} mode="background" />
+</div>

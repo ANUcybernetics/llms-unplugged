@@ -28,7 +28,7 @@ export const TITLE_TOKENS: TitleToken[] = [
   { id: 2004, text: "ged", displayText: "ged", word: 1 },
 ];
 
-export const BRICK_COUNT = 500;
+export const BRICK_COUNT = 295;
 
 const BRICK_H = 28;
 const CHAR_W = 12;

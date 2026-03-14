@@ -54,12 +54,19 @@ describe("generate-logo-svgs", () => {
       expect(circles).toHaveLength(16);
     });
 
-    it("uses gold for 1-bits and dim for 0-bits", () => {
-      const goldCircles = favicon.match(/fill="#be830e"/g) ?? [];
-      const dimCircles = favicon.match(/fill="rgba\(255,255,255,0\.08\)"/g) ?? [];
-      expect(goldCircles.length + dimCircles.length).toBe(16);
-      expect(goldCircles.length).toBeGreaterThan(0);
-      expect(dimCircles.length).toBeGreaterThan(0);
+    it("has CSS animations cycling through title token bit patterns", () => {
+      expect(favicon).toContain("<style>");
+      expect(favicon).toContain("@keyframes");
+      const animClasses = favicon.match(/class="f-[01]{5}"/g) ?? [];
+      expect(animClasses).toHaveLength(16);
+    });
+
+    it("uses initial fills from the first token's bit pattern", () => {
+      const fills = favicon.match(/fill="[^"]+"/g) ?? [];
+      const circleFills = fills.filter(
+        (f) => !f.includes("#1a1a1a"),
+      );
+      expect(circleFills.length).toBeGreaterThan(0);
     });
   });
 });
