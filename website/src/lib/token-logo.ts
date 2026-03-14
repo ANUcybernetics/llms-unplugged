@@ -123,36 +123,8 @@ export function gridLayout(bricks: Brick[], width: number, height: number): Pos[
   }
   const totalH = y + BRICK_H;
   const offsetY = (height - totalH) / 2;
-  if (offsetY > 0) {
-    for (const p of positions) p.y += offsetY;
-  }
+  for (const p of positions) p.y += offsetY;
   return positions;
-}
-
-export function fillLastRow(
-  bricks: Brick[],
-  positions: Pos[],
-  containerWidth: number,
-  seed = 99999,
-): void {
-  const rng = mulberry32(seed);
-  const last = positions[positions.length - 1];
-  let x = last.x + last.w + GAP;
-  const y = last.y;
-
-  while (x + BASE_PAD < containerWidth) {
-    const charWidth = sampleCharWidth(rng);
-    const w = brickW(charWidth);
-    if (x + w > containerWidth) break;
-    bricks.push({
-      id: Math.floor(rng() * 49744) + 256,
-      charWidth,
-      titleToken: null,
-      titleIndex: -1,
-    });
-    positions.push({ x, y, w, h: BRICK_H });
-    x += w + GAP;
-  }
 }
 
 export function shuffledGridLayout(

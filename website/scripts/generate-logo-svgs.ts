@@ -5,7 +5,6 @@ import {
   generateBricks,
   tokenBits,
   gridLayout,
-  fillLastRow,
   TITLE_TINTS,
   TITLE_TOKENS,
 } from "../src/lib/token-logo.ts";
@@ -92,7 +91,6 @@ function generateLogo(): string {
 
   const bricks = generateBricks(250, 42);
   const positions = gridLayout(bricks, W, H);
-  fillLastRow(bricks, positions, W);
 
   const titleBricks: {
     index: number;

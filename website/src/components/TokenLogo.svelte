@@ -1,10 +1,8 @@
 <script lang="ts">
-  import { onMount, untrack } from "svelte";
+  import { onMount } from "svelte";
   import {
     generateBricks,
     tokenBits,
-    gridLayout,
-    fillLastRow,
     assembledLayout,
     shuffledGridLayout,
     BRICK_COUNT,
@@ -24,16 +22,10 @@
   type Phase = "grid" | "highlighted" | "assembled";
   let phase: Phase = $state("grid");
 
-  const initSeed = Date.now();
-  const bricks: Brick[] = (() => {
-    const b = generateBricks(untrack(() => count), initSeed);
-    const gp = gridLayout(b, REF_W, REF_H);
-    fillLastRow(b, gp, REF_W);
-    return b;
-  })();
+  const bricks: Brick[] = generateBricks(count, Date.now());
   const assPos: Map<number, Pos> = assembledLayout(bricks, REF_W, REF_H);
   let gridPos: Pos[] = $state(
-    shuffledGridLayout(bricks, REF_W, REF_H, initSeed),
+    shuffledGridLayout(bricks, REF_W, REF_H, Date.now()),
   );
 
   onMount(() => {
