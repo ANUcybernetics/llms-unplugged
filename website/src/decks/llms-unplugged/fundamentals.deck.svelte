@@ -22,7 +22,7 @@ introduce yourself to your neighbor(s) and ask them:
 
 # LLMs Unplugged
 
-Understand AI by building it yourself
+## Understand AI by building it yourself
 
 ![bg](../assets/bg-title.avif)
 
@@ -34,11 +34,16 @@ Understand AI by building it yourself
 
 ---
 
-<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; position: absolute; inset: 0;">
-  <img src="../assets/headshot-eddie-anu.avif" style="width: 100%; height: 100%; object-fit: cover;" alt="Eddie">
+<div style="display: grid; grid-template-columns: 1fr 1fr; position: absolute; inset: 0;">
   <img src="../assets/headshot-ben-anu.avif" style="width: 100%; height: 100%; object-fit: cover;" alt="Ben">
   <img src="../assets/headshot-cole-anu.avif" style="width: 100%; height: 100%; object-fit: cover;" alt="Cole">
 </div>
+
+<!-- <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; position: absolute; inset: 0;"> -->
+  <!-- <img src="../assets/headshot-eddie-anu.avif" style="width: 100%; height: 100%; object-fit: cover;" alt="Eddie"> -->
+  <!-- <img src="../assets/headshot-ben-anu.avif" style="width: 100%; height: 100%; object-fit: cover;" alt="Ben"> -->
+  <!-- <img src="../assets/headshot-cole-anu.avif" style="width: 100%; height: 100%; object-fit: cover;" alt="Cole"> -->
+<!-- </div> -->
 
 ---
 
@@ -128,10 +133,6 @@ by exploiting patterns in text to generate new text
 
 ---
 
-<TrainingWidget />
-
----
-
 <!-- _class: banner -->
 
 # Training
@@ -165,10 +166,6 @@ by exploiting patterns in text to generate new text
 
 ---
 
-<GenerationWidget />
-
----
-
 <!-- _class: banner -->
 
 # Generation
@@ -195,45 +192,6 @@ by exploiting patterns in text to generate new text
 
 ---
 
-<!-- _class: banner -->
-
-# Pre-trained generation
-
-![bg brightness:0.3](../assets/bg-div-historical.avif)
-
----
-
-<!-- _class: centered -->
-
-![qr](https://www.llmsunplugged.org/lessons/pretrained-generation)
-
----
-
-<!-- _class: banner -->
-
-# Pre-trained generation
-
-![bg brightness:0.3](../assets/bg-div-historical.avif)
-
----
-
-<!-- _class: banner -->
-
-# Shareback
-
-![bg brightness:0.5](../assets/bg-div-reception.avif)
-
----
-
-## The _language_ of language models
-
-![bg right:60%](../assets/bg-design-goals.avif)
-
-- pre-training
-- foundation model
-
----
-
 ## Reflection
 
 ![bg right:60%](../assets/bg-randomness.avif)
@@ -249,9 +207,11 @@ by exploiting patterns in text to generate new text
 
 ---
 
+<!-- _class: banner -->
+
 # Q&A
 
-![bg right:60%](../assets/bg-participants.avif)
+![bg brightness:0.3](../assets/bg-participants.avif)
 
 ---
 
