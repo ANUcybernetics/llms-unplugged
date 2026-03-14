@@ -267,11 +267,11 @@ hr {
 }
 
 .callout-tip {
-  border-color: #059669;
+  border-color: var(--color-brand);
 }
 
 .callout-tip .callout-title {
-  color: #059669;
+  color: var(--color-brand);
 }
 
 /* Shared content container */
