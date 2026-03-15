@@ -39,9 +39,47 @@ generate new text
 
 ---
 
-## the algorithm:
+## The algorithm
 
-1. TODO
+1. **preprocess** your text: lowercase everything, treat words, commas and full
+   stops as separate tokens
+2. **set up** your grid: first token goes in both the row & column headers
+3. **fill in** the grid: for each consecutive pair of tokens, add a tally mark
+   in that cell (add new rows/columns as needed)
+
+---
+
+## Example
+
+_"See Spot run. Run, Spot, run."_
+
+after preprocessing:
+
+`see` `spot` `run` `.` `run` `,` `spot` `,` `run` `.`
+
+---
+
+## Training: `see` &rarr; `spot`
+
+<StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={1} />
+
+---
+
+## Training: `spot` &rarr; `run`
+
+<StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={2} />
+
+---
+
+## Training: `run` &rarr; `.`
+
+<StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={3} />
+
+---
+
+## Complete model
+
+<StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={9} />
 
 ---
 
@@ -100,9 +138,13 @@ generate new text
 
 <script lang="ts">
   import TokenLogo from "../../components/TokenLogo.svelte";
+  import StaticGrid from "../../components/StaticGrid.svelte";
   import TrainingWidget from "../../components/widgets/TrainingWidget.svelte";
   import GenerationWidget from "../../components/widgets/GenerationWidget.svelte";
   import "../../styles/widgets.css";
+
+  const EXAMPLE_TOKENS = "see spot run . run , spot , run .";
+  const EXAMPLE_VOCAB = "see spot run . ,";
 </script>
 
 <style>
@@ -160,12 +202,27 @@ generate new text
   }
 
   :global(.reveal .slides section table.bigram-grid) {
-    font-size: 1em;
+    font-size: 1.4em;
+    width: auto;
+    margin: 0;
+  }
+
+  :global(.reveal .slides section table.bigram-grid th),
+  :global(.reveal .slides section table.bigram-grid td) {
+    text-align: center;
+    padding: 0.75rem 0.6rem;
   }
 
   :global(.reveal .slides section table.bigram-grid td.grid-cell) {
-    font-size: 1.4em;
+    font-size: 1.2em;
     font-weight: 700;
+    min-width: 2.5em;
+    color: var(--anu-gold);
+  }
+
+  :global(.reveal .slides section .static-grid-tokens) {
+    margin-top: 1.5rem;
+    font-size: 1.4em;
   }
 
   :global(.reveal .slides section .lm-widget button) {
