@@ -110,6 +110,64 @@ after preprocessing:
 
 ---
 
+## The algorithm
+
+1. **choose** a starting word from your grid
+2. **look** at that word's row to find all possible next words and their counts
+3. **roll dice** weighted by the counts to pick the next word
+4. **write down** the chosen word and make it your new starting word
+5. **repeat** from step 2 until you reach a `.` or your desired length
+
+---
+
+## Generation: start with `see`
+
+&nbsp;
+
+<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={0} />
+
+---
+
+## Generation: `see` &rarr; `spot`
+
+only one option --- no dice roll needed
+
+<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={1} />
+
+---
+
+## Generation: `spot` &rarr; `,`
+
+two options (`run` and `,`) --- roll dice!
+
+<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={2} />
+
+---
+
+## Generation: `,` &rarr; `run`
+
+two options (`spot` and `run`) --- roll dice!
+
+<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={3} />
+
+---
+
+## Generation: `run` &rarr; `.`
+
+two options (`.` and `,`) --- roll dice!
+
+<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={4} />
+
+---
+
+## Generated text
+
+_"see spot, run."_
+
+a new sentence --- not in the training data!
+
+---
+
 <!-- _class: banner -->
 
 # Shareback
@@ -139,12 +197,14 @@ after preprocessing:
 <script lang="ts">
   import TokenLogo from "../../components/TokenLogo.svelte";
   import StaticGrid from "../../components/StaticGrid.svelte";
+  import StaticGeneration from "../../components/StaticGeneration.svelte";
   import TrainingWidget from "../../components/widgets/TrainingWidget.svelte";
   import GenerationWidget from "../../components/widgets/GenerationWidget.svelte";
   import "../../styles/widgets.css";
 
   const EXAMPLE_TOKENS = "see spot run . run , spot , run .";
   const EXAMPLE_VOCAB = "see spot run . ,";
+  const EXAMPLE_GENERATION = "see spot , run .";
 </script>
 
 <style>
@@ -217,10 +277,10 @@ after preprocessing:
     font-size: 1.2em;
     font-weight: 700;
     min-width: 2.5em;
-    color: var(--anu-gold);
   }
 
-  :global(.reveal .slides section .static-grid-tokens) {
+  :global(.reveal .slides section .static-grid-tokens),
+  :global(.reveal .slides section .generation-output) {
     margin-top: 1.5rem;
     font-size: 1.4em;
   }
