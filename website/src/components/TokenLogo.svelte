@@ -63,26 +63,29 @@
 {#snippet renderBrick(b: Brick, i: number)}
   {@const isTitle = mode === "full" && b.titleToken !== null}
   {@const isAssembled = phase === "assembled" && isTitle}
-  {@const pos = isAssembled ? assPos.get(i)! : gridPos[i]}
+  {@const gp = gridPos[i]}
+  {@const pos = isAssembled ? assPos.get(i)! : gp}
+  {@const sx = pos.w / gp.w}
+  {@const sy = pos.h / gp.h}
   {@const bits = tokenBits(b.id)}
   <g
     class="brick"
     class:highlighted={phase !== "grid" && isTitle}
     class:assembled={isAssembled}
-    style:transform="translate({pos.x}px, {pos.y}px)"
+    style:transform="translate({pos.x}px, {pos.y}px) scale({sx}, {sy})"
     style:transition-delay="{isTitle && phase !== 'grid' ? b.titleIndex * 0.08 : 0}s"
     style:--tint={isTitle ? TITLE_TINTS[b.titleIndex] : null}
   >
     <rect
-      width={pos.w}
-      height={pos.h}
+      width={gp.w}
+      height={gp.h}
       rx="3"
       class="brick-bg"
     />
     <svg
       class="dots"
-      x={(pos.w - 18) / 2}
-      y={(pos.h - 18) / 2}
+      x={(gp.w - 18) / 2}
+      y={(gp.h - 18) / 2}
       width="18"
       height="18"
       viewBox="0 0 18 18"
@@ -97,13 +100,16 @@
       {/each}
     </svg>
     {#if isTitle}
-      <text
-        class="token-text"
-        x={pos.w / 2}
-        y={pos.h / 2}
-        text-anchor="middle"
-        dominant-baseline="central"
-      >{b.titleToken!.displayText}</text>
+      {@const ap = assPos.get(i)!}
+      <g transform="translate({gp.w / 2} {gp.h / 2}) scale({gp.w / ap.w} {gp.h / ap.h}) translate({-gp.w / 2} {-gp.h / 2})">
+        <text
+          class="token-text"
+          x={gp.w / 2}
+          y={gp.h / 2}
+          text-anchor="middle"
+          dominant-baseline="central"
+        >{b.titleToken!.displayText}</text>
+      </g>
     {/if}
   </g>
 {/snippet}
@@ -148,9 +154,7 @@
     stroke-width: 1;
     transition:
       fill 0.4s ease,
-      stroke 0.4s ease,
-      width 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-      height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      stroke 0.4s ease;
   }
 
   .brick.highlighted .brick-bg {
@@ -159,10 +163,7 @@
   }
 
   .dots {
-    transition:
-      opacity 0.3s ease,
-      x 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-      y 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.3s ease;
   }
 
   .brick.assembled .dots {
