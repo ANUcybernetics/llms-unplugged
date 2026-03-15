@@ -197,6 +197,93 @@ by exploiting patterns in text to generate new text
 
 ---
 
+## Extensions
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.7em;">
+  <div style="display: flex; align-items: center; gap: 0.6em;">
+    <img
+      src="../assets/cards/hero-pretrained-generation.avif"
+      style="height: 5.5em; border-radius: 6px;"
+      alt="Pre-trained Generation"
+    />
+    <p>Pre-trained Generation</p>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.6em;">
+    <img
+      src="../assets/cards/hero-grid-trigram.avif"
+      style="height: 5.5em; border-radius: 6px;"
+      alt="Trigram"
+    />
+    <p>Trigram</p>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.6em;">
+    <img
+      src="../assets/cards/hero-sampling.avif"
+      style="height: 5.5em; border-radius: 6px;"
+      alt="Sampling"
+    />
+    <p>Sampling</p>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.6em;">
+    <img
+      src="../assets/cards/hero-beam-search.avif"
+      style="height: 5.5em; border-radius: 6px;"
+      alt="Beam Search"
+    />
+    <p>Beam Search</p>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.6em;">
+    <img
+      src="../assets/cards/hero-tool-use.avif"
+      style="height: 5.5em; border-radius: 6px;"
+      alt="Tool Use"
+    />
+    <p>Tool Use</p>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.6em;">
+    <img
+      src="../assets/cards/hero-context-columns.avif"
+      style="height: 5.5em; border-radius: 6px;"
+      alt="Context Columns"
+    />
+    <p>Context Columns</p>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.6em;">
+    <img
+      src="../assets/cards/hero-word-embeddings.avif"
+      style="height: 5.5em; border-radius: 6px;"
+      alt="Word Embeddings"
+    />
+    <p>Word Embeddings</p>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.6em;">
+    <img
+      src="../assets/cards/hero-lora.avif"
+      style="height: 5.5em; border-radius: 6px;"
+      alt="LoRA"
+    />
+    <p>LoRA</p>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.6em;">
+    <img
+      src="../assets/cards/hero-rlhf.avif"
+      style="height: 5.5em; border-radius: 6px;"
+      alt="RLHF"
+    />
+    <p>RLHF</p>
+  </div>
+  <div style="display: flex; align-items: center; gap: 0.6em;">
+    <img
+      src="../assets/cards/hero-synthetic-data.avif"
+      style="height: 5.5em; border-radius: 6px;"
+      alt="Synthetic Data"
+    />
+    <p>Synthetic Data</p>
+  </div>
+</div>
+
+---
+
 <!-- _class: impact -->
 
 [www.llmsunplugged.org](https://www.llmsunplugged.org)
