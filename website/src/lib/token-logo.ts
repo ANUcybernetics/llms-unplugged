@@ -23,7 +23,7 @@ export const TITLE_TINTS = [
 export const TITLE_TOKENS: TitleToken[] = [
   { id: 3069, text: "LL", displayText: "LL", word: 0 },
   { id: 5765, text: "Ms", displayText: "Ms", word: 0 },
-  { id: 1252, text: " Un", displayText: " Un", word: 0 },
+  { id: 1252, text: " Un", displayText: "\u00A0Un", word: 0 },
   { id: 37729, text: "plug", displayText: "plug", word: 1 },
   { id: 2004, text: "ged", displayText: "ged", word: 1 },
 ];

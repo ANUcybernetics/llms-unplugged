@@ -1,9 +1,14 @@
 import { writeFileSync } from "node:fs";
 import {
   tokenBits,
+  titleOnlyLayout,
   TITLE_TINTS,
   TITLE_TOKENS,
 } from "../src/lib/token-logo.ts";
+
+const REF_W = 960;
+const REF_H = 540;
+const BG = "#0a0a0a";
 
 function generateFavicon(): string {
   const size = 28;
@@ -51,5 +56,44 @@ ${circles}
 `;
 }
 
+function generateTitleSvg(): string {
+  const positions = titleOnlyLayout(REF_W, REF_H);
+  const bricks = TITLE_TOKENS.map((token, ti) => {
+    const pos = positions[ti];
+    const bits = tokenBits(token.id);
+    const dotSize = pos.h * 0.65;
+    const dotX = (pos.w - dotSize) / 2;
+    const dotY = (pos.h - dotSize) / 2;
+    const dots = bits
+      .map((bit, j) => {
+        const cx = (j % 4) * 4.5 + 2.25;
+        const cy = Math.floor(j / 4) * 4.5 + 2.25;
+        const fill = bit ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.12)";
+        return `      <circle cx="${cx}" cy="${cy}" r="1.5" fill="${fill}"/>`;
+      })
+      .join("\n");
+
+    return `  <g transform="translate(${pos.x} ${pos.y})">
+    <rect width="${pos.w}" height="${pos.h}" rx="6" fill="${TITLE_TINTS[ti]}"/>
+    <svg x="${dotX}" y="${dotY}" width="${dotSize}" height="${dotSize}" viewBox="0 0 18 18" opacity="0">
+${dots}
+    </svg>
+    <text x="${pos.w / 2}" y="${pos.h / 2}" text-anchor="middle" dominant-baseline="central"
+      fill="white" font-family="'Roboto Mono', monospace" font-weight="700"
+      font-size="${pos.h * 0.75}px">${token.displayText}</text>
+  </g>`;
+  }).join("\n");
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${REF_W} ${REF_H}">
+  <style>@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700');</style>
+  <rect width="${REF_W}" height="${REF_H}" fill="${BG}"/>
+${bricks}
+</svg>
+`;
+}
+
 writeFileSync("public/favicon.svg", generateFavicon());
 console.log("Wrote public/favicon.svg");
+
+writeFileSync("public/title-logo.svg", generateTitleSvg());
+console.log("Wrote public/title-logo.svg");
