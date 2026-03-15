@@ -69,13 +69,13 @@ is a real token ID rendered the same way.
 ## The animated version
 
 There's also an animated version of the logo---this is the one you'll see on the
-[landing page](/)---which starts with around 300 token-sized bricks packed into
-a dense grid, each displaying the binary dot pattern for its token ID. Then the
-five title tokens light up in gold. Then they smoothly slide into position to
-spell out "LLMs Unplugged", while the background bricks fade. After a pause, the
-whole thing reverses and the title dissolves back into the field of tokens. Each
-cycle the bricks are re-randomised, so the title tokens emerge from different
-positions every time.
+[landing page](/)---which starts with the title "LLMs Unplugged" already
+assembled from five gold bricks, sitting against a field of around 270 dimmed
+background bricks. After a pause the title tokens dissolve back into the grid,
+blending in with the rest. The bricks reshuffle into new random positions, then
+the five title tokens light up again and slide into place to re-spell the title.
+Each cycle the bricks are re-randomised, so the title tokens emerge from
+different positions every time.
 
 <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 0.5rem; overflow: hidden;">
   <TokenLogo client:visible />
@@ -97,4 +97,17 @@ competing for attention.
 
 <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 0.5rem; overflow: hidden;">
   <TokenLogo client:visible mode="background" />
+</div>
+
+## Title mode
+
+There's a third variant that strips away the background bricks entirely and just
+shows the five title tokens filling the frame. Each brick independently cycles
+between its text label and its 16-bit dot pattern on a slightly different
+period, so they drift in and out of sync---sometimes you can read the title,
+sometimes it's a wall of binary fingerprints, and usually it's somewhere in
+between.
+
+<div style="position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 0.5rem; overflow: hidden;">
+  <TokenLogo client:visible mode="title" />
 </div>

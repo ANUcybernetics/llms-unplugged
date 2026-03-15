@@ -28,6 +28,8 @@ export const TITLE_TOKENS: TitleToken[] = [
   { id: 2004, text: "ged", displayText: "ged", word: 1 },
 ];
 
+export const TITLE_PERIODS = [4.0, 4.7, 5.3, 6.1, 5.8];
+
 export const BRICK_COUNT = 270;
 
 const GRID_ROWS = 16;
@@ -192,4 +194,40 @@ export function assembledLayout(
   }
 
   return result;
+}
+
+export function titleOnlyLayout(width: number, height: number): Pos[] {
+  const wordGroups = new Map<number, TitleToken[]>();
+  for (const t of TITLE_TOKENS) {
+    if (!wordGroups.has(t.word)) wordGroups.set(t.word, []);
+    wordGroups.get(t.word)!.push(t);
+  }
+  const lines = [...wordGroups.keys()].sort().map((w) => wordGroups.get(w)!);
+
+  const lineGap = 10;
+  const rowH = (height - (lines.length - 1) * lineGap) / lines.length;
+  const maxChars = Math.max(
+    ...lines.map((line) =>
+      line.reduce((sum, t) => sum + t.displayText.length, 0),
+    ),
+  );
+  const charW = width / maxChars;
+
+  const positions: Pos[] = [];
+  let cy = 0;
+  for (const line of lines) {
+    const lineChars = line.reduce(
+      (sum, t) => sum + t.displayText.length,
+      0,
+    );
+    const lineW = lineChars * charW;
+    let cx = (width - lineW) / 2;
+    for (const t of line) {
+      const w = t.displayText.length * charW;
+      positions.push({ x: cx, y: cy, w, h: rowH });
+      cx += w;
+    }
+    cy += rowH + lineGap;
+  }
+  return positions;
 }

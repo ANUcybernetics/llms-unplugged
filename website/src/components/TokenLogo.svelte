@@ -5,8 +5,11 @@
     tokenBits,
     assembledLayout,
     shuffledGridLayout,
+    titleOnlyLayout,
     BRICK_COUNT,
     TITLE_TINTS,
+    TITLE_TOKENS,
+    TITLE_PERIODS,
     type Brick,
     type Pos,
   } from "../lib/token-logo";
@@ -14,7 +17,7 @@
   let {
     count = BRICK_COUNT,
     mode = "full",
-  }: { count?: number; mode?: "full" | "background" } = $props();
+  }: { count?: number; mode?: "full" | "background" | "title" } = $props();
 
   const REF_W = 960;
   const REF_H = 540;
@@ -22,32 +25,41 @@
   type Phase = "grid" | "highlighted" | "assembled";
   let phase: Phase = $state("assembled");
 
-  const bricks: Brick[] = generateBricks(count, Date.now());
-  const assPos: Map<number, Pos> = assembledLayout(bricks, REF_W, REF_H);
+  const titlePos: Pos[] =
+    mode === "title" ? titleOnlyLayout(REF_W, REF_H) : [];
+
+  const bricks: Brick[] =
+    mode !== "title" ? generateBricks(count, Date.now()) : [];
+  const assPos: Map<number, Pos> =
+    mode !== "title" ? assembledLayout(bricks, REF_W, REF_H) : new Map();
   let gridPos: Pos[] = $state(
-    shuffledGridLayout(bricks, REF_W, REF_H, Date.now()),
+    mode !== "title"
+      ? shuffledGridLayout(bricks, REF_W, REF_H, Date.now())
+      : [],
   );
 
-  onMount(() => {
-    function cycle() {
-      if (mode === "full") {
-        phase = "assembled";
-        setTimeout(() => (phase = "highlighted"), 4000);
-        setTimeout(() => (phase = "grid"), 5500);
-        setTimeout(() => {
+  if (mode !== "title") {
+    onMount(() => {
+      function cycle() {
+        if (mode === "full") {
+          phase = "assembled";
+          setTimeout(() => (phase = "highlighted"), 4000);
+          setTimeout(() => (phase = "grid"), 5500);
+          setTimeout(() => {
+            gridPos = shuffledGridLayout(bricks, REF_W, REF_H, Date.now());
+          }, 7000);
+          setTimeout(() => (phase = "highlighted"), 8000);
+          setTimeout(() => (phase = "assembled"), 9500);
+        } else {
           gridPos = shuffledGridLayout(bricks, REF_W, REF_H, Date.now());
-        }, 7000);
-        setTimeout(() => (phase = "highlighted"), 8000);
-        setTimeout(() => (phase = "assembled"), 9500);
-      } else {
-        gridPos = shuffledGridLayout(bricks, REF_W, REF_H, Date.now());
-        phase = "grid";
+          phase = "grid";
+        }
       }
-    }
-    cycle();
-    const intervalId = setInterval(cycle, mode === "full" ? 12000 : 10000);
-    return () => clearInterval(intervalId);
-  });
+      cycle();
+      const intervalId = setInterval(cycle, mode === "full" ? 12000 : 10000);
+      return () => clearInterval(intervalId);
+    });
+  }
 
   export function highlight() {
     phase = "highlighted";
@@ -114,22 +126,71 @@
   </g>
 {/snippet}
 
-<div class="token-logo">
-  <svg viewBox="0 0 {REF_W} {REF_H}">
-    {#each bricks as b, i}
-      {#if !(mode === "full" && b.titleToken !== null)}
-        {@render renderBrick(b, i)}
-      {/if}
-    {/each}
-    {#if mode === "full"}
+{#if mode === "title"}
+  <div class="token-logo">
+    <svg viewBox="0 0 {REF_W} {REF_H}">
+      {#each TITLE_TOKENS as token, ti}
+        {@const pos = titlePos[ti]}
+        {@const bits = tokenBits(token.id)}
+        {@const dotSize = pos.h * 0.65}
+        <g
+          style:transform="translate({pos.x}px, {pos.y}px)"
+          style:--tint={TITLE_TINTS[ti]}
+          style:--period="{TITLE_PERIODS[ti]}s"
+        >
+          <rect
+            width={pos.w}
+            height={pos.h}
+            rx="6"
+            class="brick-bg highlighted"
+          />
+          <svg
+            class="dots title-dots"
+            x={(pos.w - dotSize) / 2}
+            y={(pos.h - dotSize) / 2}
+            width={dotSize}
+            height={dotSize}
+            viewBox="0 0 18 18"
+          >
+            {#each bits as bit, j}
+              <circle
+                cx={(j % 4) * 4.5 + 2.25}
+                cy={Math.floor(j / 4) * 4.5 + 2.25}
+                r="1.5"
+                fill={bit ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.12)"}
+              />
+            {/each}
+          </svg>
+          <text
+            class="title-label"
+            x={pos.w / 2}
+            y={pos.h / 2}
+            text-anchor="middle"
+            dominant-baseline="central"
+            style:font-size="{pos.h * 0.75}px"
+          >{token.displayText}</text>
+        </g>
+      {/each}
+    </svg>
+  </div>
+{:else}
+  <div class="token-logo">
+    <svg viewBox="0 0 {REF_W} {REF_H}">
       {#each bricks as b, i}
-        {#if b.titleToken !== null}
+        {#if !(mode === "full" && b.titleToken !== null)}
           {@render renderBrick(b, i)}
         {/if}
       {/each}
-    {/if}
-  </svg>
-</div>
+      {#if mode === "full"}
+        {#each bricks as b, i}
+          {#if b.titleToken !== null}
+            {@render renderBrick(b, i)}
+          {/if}
+        {/each}
+      {/if}
+    </svg>
+  </div>
+{/if}
 
 <style>
   .token-logo {
@@ -157,7 +218,8 @@
       stroke 0.4s ease;
   }
 
-  .brick.highlighted .brick-bg {
+  .brick.highlighted .brick-bg,
+  .brick-bg.highlighted {
     fill: var(--tint, #be830e);
     stroke: var(--tint, #d4940f);
   }
@@ -183,5 +245,48 @@
 
   .brick.assembled .token-text {
     opacity: 1;
+  }
+
+  .title-label {
+    fill: white;
+    font-family: var(--font-roboto-mono, "Roboto Mono", monospace);
+    font-weight: 700;
+    white-space: pre;
+    pointer-events: none;
+    animation: title-text-cycle var(--period) ease-in-out infinite;
+  }
+
+  .title-dots {
+    animation: title-dot-cycle var(--period) ease-in-out infinite;
+  }
+
+  @keyframes title-dot-cycle {
+    0%,
+    65% {
+      opacity: 0;
+    }
+    75%,
+    85% {
+      opacity: 1;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes title-text-cycle {
+    0%,
+    65% {
+      opacity: 1;
+    }
+    75%,
+    85% {
+      opacity: 0;
+    }
+    95%,
+    100% {
+      opacity: 1;
+    }
   }
 </style>
