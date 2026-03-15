@@ -170,6 +170,14 @@ a new sentence --- not in the training data!
 
 <!-- _class: banner -->
 
+# Generation
+
+![bg brightness:0.5](../assets/bg-div-lessons.avif)
+
+---
+
+<!-- _class: banner -->
+
 # Shareback
 
 ![bg brightness:0.5](../assets/bg-div-reception.avif)
