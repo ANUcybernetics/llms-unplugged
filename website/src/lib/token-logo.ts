@@ -211,7 +211,7 @@ export function titleOnlyLayout(width: number, height: number): Pos[] {
       line.reduce((sum, t) => sum + t.displayText.length, 0),
     ),
   );
-  const charW = width / maxChars;
+  const charW = width / (maxChars + 1);
 
   const positions: Pos[] = [];
   let cy = 0;
