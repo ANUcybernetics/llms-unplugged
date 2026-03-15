@@ -211,6 +211,12 @@ by exploiting patterns in text to generate new text
 
 ---
 
+<!-- _class: centered -->
+
+![qr](https://anu.au1.qualtrics.com/jfe/form/SV_cA2ioVFWoQRj0KW)
+
+---
+
 <script lang="ts">
   import TrainingWidget from "../../components/widgets/TrainingWidget.svelte";
   import GenerationWidget from "../../components/widgets/GenerationWidget.svelte";
