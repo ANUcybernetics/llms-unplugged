@@ -1,43 +1,20 @@
+@import "./common.css";
+
 :root {
   color-scheme: dark;
 
-  /* ANU brand colours */
-  --anu-white: #fff;
-  --anu-black: #000;
-  --anu-gold: #be830e;
-  --anu-gold-2: hsl(from #be830e h calc(s - 30) 77%);
-  --anu-gold-4: hsl(from #be830e h s calc(l + 8%));
-  --anu-gold-tint: hsl(from #be830e h calc(s - 30) 90%);
-
-  /* Semantic colour tokens */
+  /* Website-specific tokens */
   --color-bg: #0a0a0a;
-  --color-bg-alt: #111;
   --color-bg-elevated: #1a1a1a;
-  --color-bg-soft: #1a1a1a;
-  --color-text: rgb(255 255 255 / 95%);
-  --color-text-secondary: rgb(255 255 255 / 78%);
-  --color-text-muted: rgb(255 255 255 / 56%);
-  --color-brand: #be830e;
   --color-brand-hover: #d4940f;
   --color-brand-active: #a87309;
-  --color-brand-soft: rgb(190 131 14 / 14%);
-  --color-divider: rgb(190 131 14 / 30%);
-  --color-border: rgb(190 131 14 / 40%);
   --color-code-bg: rgb(255 255 255 / 12%);
-
-  /* LM widget highlight colours */
-  --lm-highlight-soft: rgb(190 131 14 / 10%);
-  --lm-highlight-medium: rgb(190 131 14 / 30%);
-  --lm-highlight-strong: rgb(190 131 14 / 40%);
 
   /* Typography */
   --font-body:
     var(--font-public-sans, "Public Sans"), -apple-system, blinkmacsystemfont,
     "Segoe UI", roboto, oxygen, ubuntu, cantarell, "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
-  --font-mono:
-    "SFMono-Regular", "JetBrains Mono", "Fira Code", menlo, monaco, consolas,
-    "Liberation Mono", monospace;
 
   /* Spacing */
   --nav-height: 4rem;

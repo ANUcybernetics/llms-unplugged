@@ -29,6 +29,40 @@ demonstrations.
 - `src/styles/` - global CSS
 - `public/` - static assets (images, favicon, CNAME)
 
+### Styling: website vs decks
+
+The main website (`src/styles/`) and slide decks (`src/decks/theme.css`) share
+the same visual language but operate in fundamentally different rendering
+models. The website is a responsive Astro site; decks are Reveal.js
+presentations rendered into a fixed 1280×720 viewport that gets scaled to fill
+the screen. This means:
+
+**What is shared (and should stay shared):**
+
+- **Colour tokens** (`--anu-*`, `--color-*`, `--lm-highlight-*`) --- defined
+  once in `src/styles/common.css` and imported by both `global.css` and
+  `theme.css`. Add new shared tokens there.
+- **Widget component styles** (`src/styles/widgets.css`) --- decks already
+  import this file. Base widget classes (`.lm-widget`, `.token`, `.bucket`,
+  `.dice-value`, etc.) work in both contexts.
+
+**What cannot be shared (different by design):**
+
+- **Root font size** --- website uses `20px`, decks use `12px` (Reveal.js
+  sizes everything in `rem` relative to this)
+- **Reveal.js variables** (`--r-*`) --- deck-only, no website equivalent
+- **Layout tokens** (`--nav-height`, `--sidebar-width`, etc.) --- website-only
+- **Typography scaling** --- deck headings/body text are sized for projection;
+  website text is sized for reading on screen
+- **Container queries** --- widgets use `@container` queries on the website for
+  responsive layout, but decks override widget sizing with `:global()` rules
+  per-slide because the fixed viewport makes container queries behave
+  differently
+
+When modifying colours or widget styles, update both `global.css` and
+`theme.css` to keep them in sync. When modifying typography or layout, treat
+them as independent.
+
 ### Key patterns
 
 - **Variant toggle**: grid/bucket variant uses CSS `data-variant` attribute on

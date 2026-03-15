@@ -4,22 +4,18 @@
 @source "./";
 
 @import "@animotion/core/theme";
+@import "../styles/common.css";
 
 html {
   font-size: 12px;
 }
 
 :root {
-  --anu-white: #fff;
+  /* Deck-specific brand colour variants */
   --anu-light-grey: #e6e6e6;
   --anu-dark-grey: #0d0d0d;
-  --anu-black: #000;
-  --anu-gold: #be830e;
-  --anu-gold-tint: #f5edde;
   --anu-gold-1: hsl(from var(--anu-gold) h calc(s - 50) 94);
-  --anu-gold-2: hsl(from var(--anu-gold) h calc(s - 30) 77);
   --anu-gold-3: hsl(from var(--anu-gold) h calc(s - 15) 66);
-  --anu-gold-4: hsl(from var(--anu-gold) h s calc(l + 8));
   --anu-copper: #be4e0e;
   --anu-copper-1: hsl(from var(--anu-copper) h calc(s - 50) 93);
   --anu-copper-2: hsl(from var(--anu-copper) h calc(s - 30) 77);
@@ -31,21 +27,8 @@ html {
   --anu-teal-3: hsl(from var(--anu-teal) h calc(s - 15) 60);
   --anu-teal-4: hsl(from var(--anu-teal) h s calc(l + 5));
 
-  /* Semantic colour tokens (for widget components) */
+  /* Deck-specific semantic tokens */
   --color-bg: var(--anu-dark-grey);
-  --color-bg-alt: #111;
-  --color-bg-soft: #1a1a1a;
-  --color-text: rgb(255 255 255 / 95%);
-  --color-text-secondary: rgb(255 255 255 / 78%);
-  --color-text-muted: rgb(255 255 255 / 56%);
-  --color-brand: var(--anu-gold);
-  --color-brand-soft: rgb(190 131 14 / 14%);
-  --color-border: rgb(190 131 14 / 40%);
-  --font-mono:
-    "SFMono-Regular", consolas, "Liberation Mono", menlo, courier, monospace;
-  --lm-highlight-soft: rgb(190 131 14 / 10%);
-  --lm-highlight-medium: rgb(190 131 14 / 30%);
-  --lm-highlight-strong: rgb(190 131 14 / 40%);
   --r-background-color: var(--anu-dark-grey);
   --r-main-color: var(--anu-light-grey);
   --r-main-font: "Public Sans", sans-serif;

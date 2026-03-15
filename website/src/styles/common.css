@@ -1,0 +1,30 @@
+:root {
+  /* ANU brand colours */
+  --anu-white: #fff;
+  --anu-black: #000;
+  --anu-gold: #be830e;
+  --anu-gold-2: hsl(from var(--anu-gold) h calc(s - 30) 77);
+  --anu-gold-4: hsl(from var(--anu-gold) h s calc(l + 8));
+  --anu-gold-tint: hsl(from var(--anu-gold) h calc(s - 30) 90);
+
+  /* Semantic colour tokens */
+  --color-bg-alt: #111;
+  --color-bg-soft: #1a1a1a;
+  --color-text: rgb(255 255 255 / 95%);
+  --color-text-secondary: rgb(255 255 255 / 78%);
+  --color-text-muted: rgb(255 255 255 / 56%);
+  --color-brand: var(--anu-gold);
+  --color-brand-soft: rgb(190 131 14 / 14%);
+  --color-divider: rgb(190 131 14 / 30%);
+  --color-border: rgb(190 131 14 / 40%);
+
+  /* LM widget highlight colours */
+  --lm-highlight-soft: rgb(190 131 14 / 10%);
+  --lm-highlight-medium: rgb(190 131 14 / 30%);
+  --lm-highlight-strong: rgb(190 131 14 / 40%);
+
+  /* Monospace font stack */
+  --font-mono:
+    "SFMono-Regular", "JetBrains Mono", "Fira Code", menlo, monaco, consolas,
+    "Liberation Mono", monospace;
+}
