@@ -58,14 +58,32 @@ gold and leave the 0s dim, and you get a tiny visual fingerprint of the token.
 
 If you watch the favicon for a moment you'll notice it isn't static---it cycles
 through the bit patterns for all five title tokens on a 15-second loop, with
-smooth transitions between each pattern. The animation is pure CSS `@keyframes`
-embedded directly in the SVG, no JavaScript involved. Each of the 16 circles
+smooth transitions between each pattern. The animation is pure CSS `@keyframes`,
+no JavaScript involved. Each of the 16 circles
 gets its own keyframe animation based on how its bit differs across the five
 tokens, so some circles hold steady while others flicker between gold and dim.
 
 It's the kind of thing that nobody will ever notice unprompted (pun intended),
 but once you know what it is, you can't unsee it. Every dot pattern on the site
 is a real token ID rendered the same way.
+
+## The five-up
+
+There's also a static version that lays all five token grids side by side in a
+single row---no animation, just the five bit patterns sitting next to each
+other. It reads left to right as `LL` · `Ms` · `\u00A0Un` · `plug` · `ged`.
+Because it's completely static it works nicely on things like t-shirts and
+stickers where you can't rely on animation.
+
+The first version matches the favicon colour scheme---gold dots on a dark
+background, uniform across all five tokens:
+
+<img src="/favicon-5up.svg" alt="All five LLMs Unplugged title tokens shown side by side as 4×4 dot grids in uniform gold" style="max-width: 400px; margin: 1.5rem auto; display: block;" />
+
+There's also a tinted variant where each token gets its own gold-brick
+background, matching the colour scheme used in the title logo:
+
+<img src="/favicon-5up-tinted.svg" alt="All five LLMs Unplugged title tokens shown side by side as 4×4 dot grids with per-token tinted backgrounds" style="max-width: 400px; margin: 1.5rem auto; display: block;" />
 
 ## The animated version
 
@@ -82,8 +100,8 @@ different positions every time.
   <TokenLogo client:visible />
 </div>
 
-The whole thing is a pure SVG with a `viewBox`, so it scales to whatever
-container you put it in---no pixel breakpoints or resize listeners needed. The
+The whole thing scales to whatever container you put it in---no pixel
+breakpoints or resize listeners needed. The
 animation captures the core visual metaphor of the project: meaningful text
 emerging from what looks like a random jumble of tokens. It's basically what a
 language model does, just at a pace humans can follow.
