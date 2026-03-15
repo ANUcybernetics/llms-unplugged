@@ -30,7 +30,7 @@ export const TITLE_TOKENS: TitleToken[] = [
 
 export const BRICK_COUNT = 270;
 
-const GRID_ROWS = 17;
+const GRID_ROWS = 16;
 const GAP = 3;
 const BRICK_H = (540 - (GRID_ROWS - 1) * GAP) / GRID_ROWS;
 const CHAR_W = 12;

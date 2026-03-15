@@ -20,7 +20,7 @@
   const REF_H = 540;
 
   type Phase = "grid" | "highlighted" | "assembled";
-  let phase: Phase = $state("grid");
+  let phase: Phase = $state("assembled");
 
   const bricks: Brick[] = generateBricks(count, Date.now());
   const assPos: Map<number, Pos> = assembledLayout(bricks, REF_W, REF_H);
@@ -30,13 +30,18 @@
 
   onMount(() => {
     function cycle() {
-      gridPos = shuffledGridLayout(bricks, REF_W, REF_H, Date.now());
-      phase = "grid";
       if (mode === "full") {
-        setTimeout(() => (phase = "highlighted"), 2000);
-        setTimeout(() => (phase = "assembled"), 3500);
+        phase = "assembled";
+        setTimeout(() => (phase = "highlighted"), 4000);
+        setTimeout(() => (phase = "grid"), 5500);
+        setTimeout(() => {
+          gridPos = shuffledGridLayout(bricks, REF_W, REF_H, Date.now());
+        }, 7000);
         setTimeout(() => (phase = "highlighted"), 8000);
-        setTimeout(() => (phase = "grid"), 9500);
+        setTimeout(() => (phase = "assembled"), 9500);
+      } else {
+        gridPos = shuffledGridLayout(bricks, REF_W, REF_H, Date.now());
+        phase = "grid";
       }
     }
     cycle();
@@ -58,30 +63,26 @@
 {#snippet renderBrick(b: Brick, i: number)}
   {@const isTitle = mode === "full" && b.titleToken !== null}
   {@const isAssembled = phase === "assembled" && isTitle}
-  {@const gp = gridPos[i]}
-  {@const pos = isAssembled ? assPos.get(i)! : gp}
-  {@const sx = pos.w / gp.w}
-  {@const sy = pos.h / gp.h}
+  {@const pos = isAssembled ? assPos.get(i)! : gridPos[i]}
   {@const bits = tokenBits(b.id)}
   <g
     class="brick"
     class:highlighted={phase !== "grid" && isTitle}
     class:assembled={isAssembled}
-    style:translate="{pos.x}px {pos.y}px"
-    style:scale="{sx} {sy}"
+    style:transform="translate({pos.x}px, {pos.y}px)"
     style:transition-delay="{isTitle && phase !== 'grid' ? b.titleIndex * 0.08 : 0}s"
     style:--tint={isTitle ? TITLE_TINTS[b.titleIndex] : null}
   >
     <rect
-      width={gp.w}
-      height={gp.h}
+      width={pos.w}
+      height={pos.h}
       rx="3"
       class="brick-bg"
     />
     <svg
       class="dots"
-      x={(gp.w - 18) / 2}
-      y={(gp.h - 18) / 2}
+      x={(pos.w - 18) / 2}
+      y={(pos.h - 18) / 2}
       width="18"
       height="18"
       viewBox="0 0 18 18"
@@ -98,11 +99,10 @@
     {#if isTitle}
       <text
         class="token-text"
-        x={gp.w / 2}
-        y={gp.h / 2}
+        x={pos.w / 2}
+        y={pos.h / 2}
         text-anchor="middle"
         dominant-baseline="central"
-        style:scale="{1 / sx} {1 / sy}"
       >{b.titleToken!.displayText}</text>
     {/if}
   </g>
@@ -139,11 +139,7 @@
   }
 
   .brick {
-    transform-box: fill-box;
-    transform-origin: 0 0;
-    transition:
-      translate 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-      scale 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .brick-bg {
@@ -152,7 +148,9 @@
     stroke-width: 1;
     transition:
       fill 0.4s ease,
-      stroke 0.4s ease;
+      stroke 0.4s ease,
+      width 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+      height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .brick.highlighted .brick-bg {
@@ -161,7 +159,10 @@
   }
 
   .dots {
-    transition: opacity 0.3s ease;
+    transition:
+      opacity 0.3s ease,
+      x 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+      y 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .brick.assembled .dots {
@@ -174,11 +175,7 @@
     font-family: var(--font-roboto-mono, "Roboto Mono", monospace);
     font-weight: 700;
     font-size: 120px;
-    transform-box: fill-box;
-    transform-origin: center;
-    transition:
-      opacity 0.4s ease 0.3s,
-      scale 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.4s ease 0.3s;
     white-space: pre;
     pointer-events: none;
   }
