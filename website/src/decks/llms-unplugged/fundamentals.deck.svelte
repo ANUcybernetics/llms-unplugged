@@ -7,109 +7,15 @@ description: A Cybernetic Studio workshop
 
 ---
 
-## Icebreaker
-
-![bg left:40%](../assets/hero-news-2026-02-13-brimbank-tech-school-workshop.avif)
-
-introduce yourself to your neighbor(s) and ask them:
-
-- why is a language model called a "language model"?
-- what does it mean to "model language"?
-
----
-
-<!-- _class: banner -->
-
-# LLMs Unplugged
-
-## Understand AI by building it yourself
-
-![bg](../assets/bg-title.avif)
-
----
-
-## Acknowledgement of Country
-
-![bg right:40%](../assets/bg-acknowledgement.avif)
-
----
-
-<div style="display: grid; grid-template-columns: 1fr 1fr; position: absolute; inset: 0;">
-  <img src="../assets/headshot-ben-anu.avif" style="width: 100%; height: 100%; object-fit: cover;" alt="Ben">
-  <img src="../assets/headshot-cole-anu.avif" style="width: 100%; height: 100%; object-fit: cover;" alt="Cole">
-</div>
-
-<!-- <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; position: absolute; inset: 0;"> -->
-  <!-- <img src="../assets/headshot-eddie-anu.avif" style="width: 100%; height: 100%; object-fit: cover;" alt="Eddie"> -->
-  <!-- <img src="../assets/headshot-ben-anu.avif" style="width: 100%; height: 100%; object-fit: cover;" alt="Ben"> -->
-  <!-- <img src="../assets/headshot-cole-anu.avif" style="width: 100%; height: 100%; object-fit: cover;" alt="Cole"> -->
-<!-- </div> -->
-
----
-
-<!-- _class: impact -->
-
-**activity**
-
-everyone stand up
-
----
-
-<!-- _class: impact -->
-
-sit down if you
-
-have **never** used ChatGPT
-
----
-
-<!-- _class: impact -->
-
-sit down if you
-
-haven't used it in the last **month**
-
----
-
-<!-- _class: impact -->
-
-sit down if you
-
-haven't used it in the last **week**
-
----
-
-<!-- _class: impact -->
-
-sit down if you
-
-haven't used it in the last **day**
-
----
-
-<!-- _class: impact -->
-
-sit down if you
-
-haven't used it in the last **hour**
-
----
-
-<!-- _class: impact -->
-
-sit down if you
-
-haven't used it in the last **5 minutes**
-
----
-
 ## What is this about?
 
 ![bg right:40%](../assets/bg-core-insight.avif)
 
-how **language models** work
+you'll **build** your own language model---from scratch---with just a kids book,
+pen & paper, and some dice rolling
 
-by exploiting patterns in text to generate new text
+you'll **learn** how language models work by exploiting patterns in text to
+generate new text
 
 ---
 
@@ -125,11 +31,17 @@ by exploiting patterns in text to generate new text
 
 ![bg brightness:0.5](../assets/bg-div-mechanic.avif)
 
----
+<!-- --- -->
 
 <!-- _class: centered -->
 
-![qr](https://www.llmsunplugged.org/lessons/training)
+<!-- ![qr](https://www.llmsunplugged.org/lessons/training) -->
+
+---
+
+## the algorithm:
+
+1. TODO
 
 ---
 
@@ -160,20 +72,6 @@ by exploiting patterns in text to generate new text
 
 ---
 
-<!-- _class: centered -->
-
-![qr](https://www.llmsunplugged.org/lessons/generation)
-
----
-
-<!-- _class: banner -->
-
-# Generation
-
-![bg brightness:0.5](../assets/bg-div-lessons.avif)
-
----
-
 <!-- _class: banner -->
 
 # Shareback
@@ -192,77 +90,11 @@ by exploiting patterns in text to generate new text
 
 ---
 
-## Reflection
-
-![bg right:60%](../assets/bg-randomness.avif)
-
-- how has this workshop changed how you **think** about language models?
-- how has this workshop changed how you will **use** language models?
-
----
-
-<div class="extensions-grid">
-  <div style="display: flex; align-items: center; gap: 0.5em;">
-    <img src="../assets/cards/hero-pretrained-generation.avif" alt="Pre-trained Generation" />
-    <p>Pre-trained Generation</p>
-  </div>
-  <div style="display: flex; align-items: center; gap: 0.5em;">
-    <img src="../assets/cards/hero-grid-trigram.avif" alt="Trigram" />
-    <p>Trigram</p>
-  </div>
-  <div style="display: flex; align-items: center; gap: 0.5em;">
-    <img src="../assets/cards/hero-sampling.avif" alt="Sampling" />
-    <p>Sampling</p>
-  </div>
-  <div style="display: flex; align-items: center; gap: 0.5em;">
-    <img src="../assets/cards/hero-beam-search.avif" alt="Beam Search" />
-    <p>Beam Search</p>
-  </div>
-  <div style="display: flex; align-items: center; gap: 0.5em;">
-    <img src="../assets/cards/hero-tool-use.avif" alt="Agentic Tool Use" />
-    <p>Agentic Tool Use</p>
-  </div>
-  <div style="display: flex; align-items: center; gap: 0.5em;">
-    <img src="../assets/cards/hero-context-columns.avif" alt="Context Columns" />
-    <p>Context Columns</p>
-  </div>
-  <div style="display: flex; align-items: center; gap: 0.5em;">
-    <img src="../assets/cards/hero-word-embeddings.avif" alt="Word Embeddings" />
-    <p>Word Embeddings</p>
-  </div>
-  <div style="display: flex; align-items: center; gap: 0.5em;">
-    <img src="../assets/cards/hero-lora.avif" alt="LoRA" />
-    <p>LoRA</p>
-  </div>
-  <div style="display: flex; align-items: center; gap: 0.5em;">
-    <img src="../assets/cards/hero-rlhf.avif" alt="RLHF" />
-    <p>RLHF</p>
-  </div>
-  <div style="display: flex; align-items: center; gap: 0.5em;">
-    <img src="../assets/cards/hero-synthetic-data.avif" alt="Synthetic Data" />
-    <p>Synthetic Data</p>
-  </div>
-</div>
-
----
-
-<!-- _class: impact -->
-
-[www.llmsunplugged.org](https://www.llmsunplugged.org)
-
----
-
 <!-- _class: banner -->
 
 # Q&A
 
 ![bg brightness:0.3](../assets/bg-participants.avif)
-
----
-
-<!-- _class: centered -->
-
-![qr](https://anu.au1.qualtrics.com/jfe/form/SV_cA2ioVFWoQRj0KW)
 
 ---
 
