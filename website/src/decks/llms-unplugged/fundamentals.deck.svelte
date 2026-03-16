@@ -208,11 +208,12 @@ a new sentence --- not in the training data!
 
 ---
 
-<!-- _class: banner -->
+## Discussion
 
-# Q&A
+- what are your team's mental models of how LLMs work?
+- how might an "unplugged" approach allow you to have better conversations about how to use them effectively?
 
-![bg brightness:0.3](../assets/bg-participants.avif)
+![bg left:40%](../assets/bg-participants.avif)
 
 ---
 
