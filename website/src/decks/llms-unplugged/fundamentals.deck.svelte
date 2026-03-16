@@ -3,7 +3,13 @@ title: LLMs Unplugged (Fundamentals)
 description: A Cybernetic Studio workshop
 ---
 
-<TokenLogo mode="full" />
+<!-- _class: banner -->
+
+# LLMs Unplugged
+
+## Understand AI by building it yourself
+
+![bg](../assets/bg-title.avif)
 
 ---
 
@@ -203,7 +209,6 @@ a new sentence --- not in the training data!
 ---
 
 <script lang="ts">
-  import TokenLogo from "../../components/TokenLogo.svelte";
   import StaticGrid from "../../components/StaticGrid.svelte";
   import StaticGeneration from "../../components/StaticGeneration.svelte";
   import TrainingWidget from "../../components/widgets/TrainingWidget.svelte";
