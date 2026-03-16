@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import {
     generateBricks,
     tokenBits,
@@ -25,41 +24,42 @@
   type Phase = "grid" | "highlighted" | "assembled";
   let phase: Phase = $state("assembled");
 
-  const titlePos: Pos[] =
-    mode === "title" ? titleOnlyLayout(REF_W, REF_H) : [];
-
-  const bricks: Brick[] =
-    mode !== "title" ? generateBricks(count, Date.now()) : [];
-  const assPos: Map<number, Pos> =
-    mode !== "title" ? assembledLayout(bricks, REF_W, REF_H) : new Map();
-  let gridPos: Pos[] = $state(
-    mode !== "title"
-      ? shuffledGridLayout(bricks, REF_W, REF_H, Date.now())
-      : [],
+  const titlePos = $derived(
+    mode === "title" ? titleOnlyLayout(REF_W, REF_H) : [],
   );
 
-  if (mode !== "title") {
-    onMount(() => {
-      function cycle() {
-        if (mode === "full") {
-          phase = "assembled";
-          setTimeout(() => (phase = "highlighted"), 4000);
-          setTimeout(() => (phase = "grid"), 5500);
-          setTimeout(() => {
-            gridPos = shuffledGridLayout(bricks, REF_W, REF_H, Date.now());
-          }, 7000);
-          setTimeout(() => (phase = "highlighted"), 8000);
-          setTimeout(() => (phase = "assembled"), 9500);
-        } else {
+  const bricks = $derived(
+    mode !== "title" ? generateBricks(count, Date.now()) : [],
+  );
+  const assPos = $derived(
+    mode !== "title" ? assembledLayout(bricks, REF_W, REF_H) : new Map(),
+  );
+  let gridPos: Pos[] = $state([]);
+
+  $effect(() => {
+    if (mode === "title") return;
+
+    gridPos = shuffledGridLayout(bricks, REF_W, REF_H, Date.now());
+
+    function cycle() {
+      if (mode === "full") {
+        phase = "assembled";
+        setTimeout(() => (phase = "highlighted"), 4000);
+        setTimeout(() => (phase = "grid"), 5500);
+        setTimeout(() => {
           gridPos = shuffledGridLayout(bricks, REF_W, REF_H, Date.now());
-          phase = "grid";
-        }
+        }, 7000);
+        setTimeout(() => (phase = "highlighted"), 8000);
+        setTimeout(() => (phase = "assembled"), 9500);
+      } else {
+        gridPos = shuffledGridLayout(bricks, REF_W, REF_H, Date.now());
+        phase = "grid";
       }
-      cycle();
-      const intervalId = setInterval(cycle, mode === "full" ? 12000 : 10000);
-      return () => clearInterval(intervalId);
-    });
-  }
+    }
+    cycle();
+    const intervalId = setInterval(cycle, mode === "full" ? 12000 : 10000);
+    return () => clearInterval(intervalId);
+  });
 
   export function highlight() {
     phase = "highlighted";

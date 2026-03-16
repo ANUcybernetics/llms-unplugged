@@ -16,26 +16,36 @@
     step,
   }: Props = $props();
 
-  const tokenList = tokenString.trim().split(/\s+/).filter(Boolean);
-  const vocab = vocabString
-    ? vocabString.trim().split(/\s+/).filter(Boolean)
-    : getVocabulary(tokenList);
-  const bigrams = getBigrams(tokenList);
-  const sequenceTokens = sequenceString.trim().split(/\s+/).filter(Boolean);
+  const tokenList = $derived(tokenString.trim().split(/\s+/).filter(Boolean));
+  const vocab = $derived(
+    vocabString
+      ? vocabString.trim().split(/\s+/).filter(Boolean)
+      : getVocabulary(tokenList),
+  );
+  const bigrams = $derived(getBigrams(tokenList));
+  const sequenceTokens = $derived(
+    sequenceString.trim().split(/\s+/).filter(Boolean),
+  );
 
-  const counts = new Map<string, Map<string, number>>();
-  for (const word of vocab) {
-    counts.set(word, new Map());
-  }
-  for (const [from, to] of bigrams) {
-    const row = counts.get(from)!;
-    row.set(to, (row.get(to) || 0) + 1);
-  }
+  const counts = $derived.by(() => {
+    const m = new Map<string, Map<string, number>>();
+    for (const word of vocab) {
+      m.set(word, new Map());
+    }
+    for (const [from, to] of bigrams) {
+      const row = m.get(from)!;
+      row.set(to, (row.get(to) || 0) + 1);
+    }
+    return m;
+  });
 
-  const currentWord = step < sequenceTokens.length ? sequenceTokens[step] : null;
-  const chosenNext =
-    step + 1 < sequenceTokens.length ? sequenceTokens[step + 1] : null;
-  const generatedSoFar = sequenceTokens.slice(0, step + 1);
+  const currentWord = $derived(
+    step < sequenceTokens.length ? sequenceTokens[step] : null,
+  );
+  const chosenNext = $derived(
+    step + 1 < sequenceTokens.length ? sequenceTokens[step + 1] : null,
+  );
+  const generatedSoFar = $derived(sequenceTokens.slice(0, step + 1));
 </script>
 
 <div class="generation-output">

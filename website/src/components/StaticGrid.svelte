@@ -10,27 +10,33 @@
 
   let { tokens: tokenString, vocabulary: vocabString, step }: Props = $props();
 
-  const tokenList = tokenString.trim().split(/\s+/).filter(Boolean);
-  const vocab = vocabString
-    ? vocabString.trim().split(/\s+/).filter(Boolean)
-    : getVocabulary(tokenList);
-  const allBigrams = getBigrams(tokenList);
-  const visibleBigrams = allBigrams.slice(0, step);
+  const tokenList = $derived(tokenString.trim().split(/\s+/).filter(Boolean));
+  const vocab = $derived(
+    vocabString
+      ? vocabString.trim().split(/\s+/).filter(Boolean)
+      : getVocabulary(tokenList),
+  );
+  const allBigrams = $derived(getBigrams(tokenList));
+  const visibleBigrams = $derived(allBigrams.slice(0, step));
 
-  const counts = new Map<string, Map<string, number>>();
-  for (const word of vocab) {
-    counts.set(word, new Map());
-  }
-  for (const [from, to] of visibleBigrams) {
-    const row = counts.get(from)!;
-    row.set(to, (row.get(to) || 0) + 1);
-  }
+  const counts = $derived.by(() => {
+    const m = new Map<string, Map<string, number>>();
+    for (const word of vocab) {
+      m.set(word, new Map());
+    }
+    for (const [from, to] of visibleBigrams) {
+      const row = m.get(from)!;
+      row.set(to, (row.get(to) || 0) + 1);
+    }
+    return m;
+  });
 
-  const currentPairIndex = step - 1;
-  const currentPair =
+  const currentPairIndex = $derived(step - 1);
+  const currentPair = $derived(
     currentPairIndex >= 0 && currentPairIndex < allBigrams.length
       ? allBigrams[currentPairIndex]
-      : null;
+      : null,
+  );
 </script>
 
 <div class="static-grid-tokens">
