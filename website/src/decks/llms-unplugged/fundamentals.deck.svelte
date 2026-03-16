@@ -47,6 +47,8 @@ generate new text
 
 ## The algorithm
 
+![bg right:40%](../assets/bg-algorithm-training.avif)
+
 1. **preprocess** your text: lowercase everything, treat words, commas and full
    stops as separate tokens
 2. **set up** your grid: first token goes in both the row & column headers
@@ -56,6 +58,8 @@ generate new text
 ---
 
 ## Example
+
+![bg right:40%](../assets/bg-example.avif)
 
 _"See Spot run. Run, Spot, run."_
 
@@ -118,6 +122,8 @@ after preprocessing:
 
 ## The algorithm
 
+![bg right:40%](../assets/bg-algorithm-generation.avif)
+
 1. **choose** a starting word from your grid
 2. **look** at that word's row to find all possible next words and their counts
 3. **roll dice** weighted by the counts to pick the next word
@@ -167,6 +173,8 @@ two options (`.` and `,`) --- roll dice!
 ---
 
 ## Generated text
+
+![bg right:40%](../assets/bg-generated-text.avif)
 
 _"see spot, run."_
 
