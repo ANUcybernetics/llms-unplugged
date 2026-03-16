@@ -134,7 +134,7 @@ after preprocessing:
 
 ## Generation: start with `see`
 
-&nbsp;
+only one option --- no dice roll needed
 
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={0} />
 
@@ -142,7 +142,7 @@ after preprocessing:
 
 ## Generation: `see` &rarr; `spot`
 
-only one option --- no dice roll needed
+two options (`run` and `,`) --- roll dice!
 
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={1} />
 
@@ -150,7 +150,7 @@ only one option --- no dice roll needed
 
 ## Generation: `spot` &rarr; `,`
 
-two options (`run` and `,`) --- roll dice!
+two options (`spot` and `run`) --- roll dice!
 
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={2} />
 
@@ -158,7 +158,7 @@ two options (`run` and `,`) --- roll dice!
 
 ## Generation: `,` &rarr; `run`
 
-two options (`spot` and `run`) --- roll dice!
+two options (`.` and `,`) --- roll dice!
 
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={3} />
 
@@ -166,7 +166,7 @@ two options (`spot` and `run`) --- roll dice!
 
 ## Generation: `run` &rarr; `.`
 
-two options (`.` and `,`) --- roll dice!
+&nbsp;
 
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={4} />
 
