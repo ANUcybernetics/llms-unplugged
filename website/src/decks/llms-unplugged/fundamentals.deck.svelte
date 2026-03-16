@@ -210,8 +210,9 @@ a new sentence --- not in the training data!
 
 ## Discussion
 
-- what are your team's mental models of how LLMs work?
-- how might an "unplugged" approach allow you to have better conversations about how to use them effectively?
+- how much does this change the interpretation of AI outputs?
+- how might understanding how LLMs work help you and your teams to use them more effectively?
+- what questions do you still have?
 
 ![bg left:40%](../assets/bg-participants.avif)
 
