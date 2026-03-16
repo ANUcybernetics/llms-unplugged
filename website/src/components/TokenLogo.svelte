@@ -176,17 +176,19 @@
 {:else}
   <div class="token-logo">
     <svg viewBox="0 0 {REF_W} {REF_H}">
-      {#each bricks as b, i}
-        {#if !(mode === "full" && b.titleToken !== null)}
-          {@render renderBrick(b, i)}
-        {/if}
-      {/each}
-      {#if mode === "full"}
+      {#if gridPos.length > 0}
         {#each bricks as b, i}
-          {#if b.titleToken !== null}
+          {#if !(mode === "full" && b.titleToken !== null)}
             {@render renderBrick(b, i)}
           {/if}
         {/each}
+        {#if mode === "full"}
+          {#each bricks as b, i}
+            {#if b.titleToken !== null}
+              {@render renderBrick(b, i)}
+            {/if}
+          {/each}
+        {/if}
       {/if}
     </svg>
   </div>
