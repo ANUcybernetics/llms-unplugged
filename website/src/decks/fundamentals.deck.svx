@@ -128,7 +128,7 @@ after preprocessing:
 2. **look** at that word's row to find all possible next words and their counts
 3. **roll dice** weighted by the counts to pick the next word
 4. **write down** the chosen word and make it your new starting word
-5. **repeat** from step 2 until you reach a `.` or your desired length
+5. **repeat** from step 2
 
 ---
 
@@ -211,7 +211,8 @@ a new sentence --- not in the training data!
 ## Discussion
 
 - how much does this change the interpretation of AI outputs?
-- how might understanding how LLMs work help you and your teams to use them more effectively?
+- how might understanding how LLMs work help you and your teams to use them more
+  effectively?
 - what questions do you still have?
 
 ![bg left:40%](./assets/bg-participants.avif)
