@@ -1,30 +1,30 @@
 --- title: LLMs Unplugged (Fundamentals + Pre-trained Model + Sampling)
 description: A Cybernetic Studio workshop --- ## Icebreaker ![bg
-left:40%](../assets/hero-news-2026-02-13-brimbank-tech-school-workshop.avif)
+left:40%](./assets/hero-news-2026-02-13-brimbank-tech-school-workshop.avif)
 introduce yourself to your neighbor(s) and ask them: - why is a language model
 called a "language model"? - what does it mean to "model language"? ---
 
 <!-- _class: banner -->
 
 # LLMs Unplugged Understand AI by building it yourself
-![bg](../assets/bg-title.avif) --- ## Acknowledgement of Country ![bg
-right:40%](../assets/bg-acknowledgement.avif) ---
+![bg](./assets/bg-title.avif) --- ## Acknowledgement of Country ![bg
+right:40%](./assets/bg-acknowledgement.avif) ---
 
 <div
   style="display: grid; grid-template-columns: 1fr 1fr 1fr; position: absolute; inset: 0;"
 >
   <img
-    src="../assets/headshot-eddie-anu.avif"
+    src="./assets/headshot-eddie-anu.avif"
     style="width: 100%; height: 100%; object-fit: cover;"
     alt="Eddie"
   />
   <img
-    src="../assets/headshot-ben-anu.avif"
+    src="./assets/headshot-ben-anu.avif"
     style="width: 100%; height: 100%; object-fit: cover;"
     alt="Ben"
   />
   <img
-    src="../assets/headshot-cole-anu.avif"
+    src="./assets/headshot-cole-anu.avif"
     style="width: 100%; height: 100%; object-fit: cover;"
     alt="Cole"
   />
@@ -59,7 +59,7 @@ sit down if you haven't used it in the last **hour** ---
 <!-- _class: impact -->
 
 sit down if you haven't used it in the last **5 minutes** --- ## What is this
-about? ![bg right:40%](../assets/bg-core-insight.avif) how **language models**
+about? ![bg right:40%](./assets/bg-core-insight.avif) how **language models**
 work by exploiting patterns in text to generate new text ---
 
 <!-- _class: centered -->
@@ -68,7 +68,7 @@ work by exploiting patterns in text to generate new text ---
 
 <!-- _class: banner -->
 
-# Training ![bg brightness:0.5](../assets/bg-div-mechanic.avif) ---
+# Training ![bg brightness:0.5](./assets/bg-div-mechanic.avif) ---
 
 <!-- _class: centered -->
 
@@ -76,13 +76,13 @@ work by exploiting patterns in text to generate new text ---
 
 <!-- _class: banner -->
 
-# Training ![bg brightness:0.5](../assets/bg-div-mechanic.avif) --- ## The
-_language_ of language models ![bg right:60%](../assets/bg-markov.avif) - model
+# Training ![bg brightness:0.5](./assets/bg-div-mechanic.avif) --- ## The
+_language_ of language models ![bg right:60%](./assets/bg-markov.avif) - model
 - token - vocabulary - training ---
 
 <!-- _class: banner -->
 
-# Generation ![bg brightness:0.5](../assets/bg-div-lessons.avif) ---
+# Generation ![bg brightness:0.5](./assets/bg-div-lessons.avif) ---
 
 <!-- _class: centered -->
 
@@ -90,17 +90,17 @@ _language_ of language models ![bg right:60%](../assets/bg-markov.avif) - model
 
 <!-- _class: banner -->
 
-# Generation ![bg brightness:0.5](../assets/bg-div-lessons.avif) ---
+# Generation ![bg brightness:0.5](./assets/bg-div-lessons.avif) ---
 
 <!-- _class: banner -->
 
-# Shareback ![bg brightness:0.5](../assets/bg-div-reception.avif) --- ## The
-_language_ of language models ![bg cover left:60%](../assets/bg-shannon.avif) -
+# Shareback ![bg brightness:0.5](./assets/bg-div-reception.avif) --- ## The
+_language_ of language models ![bg cover left:60%](./assets/bg-shannon.avif) -
 prompt - completion/response/prediction - context window ---
 
 <!-- _class: banner -->
 
-# Pre-trained generation ![bg brightness:0.3](../assets/bg-div-historical.avif)
+# Pre-trained generation ![bg brightness:0.3](./assets/bg-div-historical.avif)
 ---
 
 <!-- _class: centered -->
@@ -109,18 +109,18 @@ prompt - completion/response/prediction - context window ---
 
 <!-- _class: banner -->
 
-# Pre-trained generation ![bg brightness:0.3](../assets/bg-div-historical.avif)
+# Pre-trained generation ![bg brightness:0.3](./assets/bg-div-historical.avif)
 ---
 
 <!-- _class: banner -->
 
-# Shareback ![bg brightness:0.5](../assets/bg-div-reception.avif) --- ## The
-_language_ of language models ![bg right:60%](../assets/bg-design-goals.avif) -
+# Shareback ![bg brightness:0.5](./assets/bg-div-reception.avif) --- ## The
+_language_ of language models ![bg right:60%](./assets/bg-design-goals.avif) -
 pre-training - foundation model ---
 
 <!-- _class: banner -->
 
-# Sampling ![bg brightness:0.3](../assets/bg-div-resources.avif) ---
+# Sampling ![bg brightness:0.3](./assets/bg-div-resources.avif) ---
 
 <!-- _class: centered -->
 
@@ -133,17 +133,17 @@ gave you) ---
 
 <!-- _class: banner -->
 
-# Sampling ![bg brightness:0.3](../assets/bg-div-resources.avif) ---
+# Sampling ![bg brightness:0.3](./assets/bg-div-resources.avif) ---
 
 <!-- _class: banner -->
 
-# Shareback ![bg brightness:0.5](../assets/bg-div-reception.avif) --- ## The
-_language_ of language models ![bg cover left:60%](../assets/bg-randomness.avif)
+# Shareback ![bg brightness:0.5](./assets/bg-div-reception.avif) --- ## The
+_language_ of language models ![bg cover left:60%](./assets/bg-randomness.avif)
 - sampling - truncation (top-k) - temperature ---
 
 <!-- _class: banner -->
 
-# So what? ![bg brightness:0.2](../assets/bg-div-quote.avif) ---
+# So what? ![bg brightness:0.2](./assets/bg-div-quote.avif) ---
 
 <!-- _class: centered -->
 
@@ -151,7 +151,7 @@ _language_ of language models ![bg cover left:60%](../assets/bg-randomness.avif)
 
 <!-- _class: socy-logo -->
 
---- # Q&A ![bg right:60%](../assets/bg-participants.avif)
+--- # Q&A ![bg right:60%](./assets/bg-participants.avif)
 [ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au) ---
 
 <!-- _class: centered -->

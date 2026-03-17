@@ -1,2 +1,2 @@
 website/slides/**/*.md
-website/src/decks/**/*.deck.svelte
+website/src/decks/**/*.deck.svx

@@ -9,13 +9,13 @@ description: A Cybernetic Studio workshop
 
 ## Understand AI by building it yourself
 
-![bg](../assets/bg-title.avif)
+![bg](./assets/bg-title.avif)
 
 ---
 
 ## What is this about?
 
-![bg right:40%](../assets/bg-core-insight.avif)
+![bg right:40%](./assets/bg-core-insight.avif)
 
 you'll **build** your own language model---from scratch---with just a kids book,
 pen & paper, and some dice rolling
@@ -35,7 +35,7 @@ generate new text
 
 # Training
 
-![bg brightness:0.5](../assets/bg-div-mechanic.avif)
+![bg brightness:0.5](./assets/bg-div-mechanic.avif)
 
 <!-- --- -->
 
@@ -47,7 +47,7 @@ generate new text
 
 ## The algorithm
 
-![bg right:40%](../assets/bg-algorithm-training.avif)
+![bg right:40%](./assets/bg-algorithm-training.avif)
 
 1. **preprocess** your text: lowercase everything, treat words, commas and full
    stops as separate tokens
@@ -59,7 +59,7 @@ generate new text
 
 ## Example
 
-![bg right:40%](../assets/bg-example.avif)
+![bg right:40%](./assets/bg-example.avif)
 
 _"See Spot run. Run, Spot, run."_
 
@@ -97,13 +97,13 @@ after preprocessing:
 
 # Training
 
-![bg brightness:0.5](../assets/bg-div-mechanic.avif)
+![bg brightness:0.5](./assets/bg-div-mechanic.avif)
 
 ---
 
 ## The _language_ of language models
 
-![bg right:60%](../assets/bg-markov.avif)
+![bg right:60%](./assets/bg-markov.avif)
 
 - model
 - token
@@ -116,13 +116,13 @@ after preprocessing:
 
 # Generation
 
-![bg brightness:0.5](../assets/bg-div-lessons.avif)
+![bg brightness:0.5](./assets/bg-div-lessons.avif)
 
 ---
 
 ## The algorithm
 
-![bg right:40%](../assets/bg-algorithm-generation.avif)
+![bg right:40%](./assets/bg-algorithm-generation.avif)
 
 1. **choose** a starting word from your grid
 2. **look** at that word's row to find all possible next words and their counts
@@ -174,7 +174,7 @@ two options (`.` and `,`) --- roll dice!
 
 ## Generated text
 
-![bg right:40%](../assets/bg-generated-text.avif)
+![bg right:40%](./assets/bg-generated-text.avif)
 
 _"see spot, run."_
 
@@ -186,7 +186,7 @@ a new sentence --- not in the training data!
 
 # Generation
 
-![bg brightness:0.5](../assets/bg-div-lessons.avif)
+![bg brightness:0.5](./assets/bg-div-lessons.avif)
 
 ---
 
@@ -194,13 +194,13 @@ a new sentence --- not in the training data!
 
 # Shareback
 
-![bg brightness:0.5](../assets/bg-div-reception.avif)
+![bg brightness:0.5](./assets/bg-div-reception.avif)
 
 ---
 
 ## The _language_ of language models
 
-![bg cover left:60%](../assets/bg-shannon.avif)
+![bg cover left:60%](./assets/bg-shannon.avif)
 
 - prompt
 - completion/response/prediction
@@ -214,16 +214,16 @@ a new sentence --- not in the training data!
 - how might understanding how LLMs work help you and your teams to use them more effectively?
 - what questions do you still have?
 
-![bg left:40%](../assets/bg-participants.avif)
+![bg left:40%](./assets/bg-participants.avif)
 
 ---
 
 <script lang="ts">
-  import StaticGrid from "../../components/StaticGrid.svelte";
-  import StaticGeneration from "../../components/StaticGeneration.svelte";
-  import TrainingWidget from "../../components/widgets/TrainingWidget.svelte";
-  import GenerationWidget from "../../components/widgets/GenerationWidget.svelte";
-  import "../../styles/widgets.css";
+  import StaticGrid from "../components/StaticGrid.svelte";
+  import StaticGeneration from "../components/StaticGeneration.svelte";
+  import TrainingWidget from "../components/widgets/TrainingWidget.svelte";
+  import GenerationWidget from "../components/widgets/GenerationWidget.svelte";
+  import "../styles/widgets.css";
 
   const EXAMPLE_TOKENS = "see spot run . run , spot , run .";
   const EXAMPLE_VOCAB = "see spot run . ,";

@@ -10,7 +10,7 @@ export default defineConfig({
   site: "https://www.llmsunplugged.org",
   integrations: [
     mdx(),
-    svelte({ preprocess: [deckPreprocessor()] }),
+    svelte({ extensions: [".svelte", ".svx"], preprocess: [deckPreprocessor()] }),
     sitemap(),
     astromotion({ theme: "./src/decks/theme.css" }),
   ],
