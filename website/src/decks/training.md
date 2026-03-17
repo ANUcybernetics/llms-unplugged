@@ -1,0 +1,94 @@
+<!-- _class: banner -->
+
+# Training
+
+![bg brightness:0.5](./assets/bg-div-mechanic.avif)
+
+<!-- --- -->
+
+<!-- _class: centered -->
+
+<!-- ![qr](https://www.llmsunplugged.org/lessons/training) -->
+
+---
+
+## The algorithm
+
+![bg right:40%](./assets/bg-algorithm-training.avif)
+
+1. **preprocess** your text: lowercase everything, treat words, commas and full
+   stops as separate tokens
+2. **set up** your grid: first token goes in both the row & column headers
+3. **fill in** the grid: for each consecutive pair of tokens, add a tally mark
+   in that cell (add new rows/columns as needed)
+
+---
+
+## Example
+
+![bg right:40%](./assets/bg-example.avif)
+
+_"See Spot run. Run, Spot, run."_
+
+after preprocessing:
+
+`see` `spot` `run` `.` `run` `,` `spot` `,` `run` `.`
+
+---
+
+## Training: `see` &rarr; `spot`
+
+&nbsp;
+
+<StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={1} />
+
+---
+
+## Training: `spot` &rarr; `run`
+
+&nbsp;
+
+<StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={2} />
+
+---
+
+## Training: `run` &rarr; `.`
+
+&nbsp;
+
+<StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={3} />
+
+---
+
+## Training: `.` &rarr; `run`
+
+`run` is already in our vocabulary --- no new column needed!
+
+<StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={4} />
+
+---
+
+## Complete model
+
+&nbsp;
+
+<StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={9} />
+
+---
+
+<!-- _class: banner -->
+
+# Training
+
+![bg brightness:0.5](./assets/bg-div-mechanic.avif)
+
+---
+
+## The _language_ of language models
+
+![bg right:60%](./assets/bg-markov.avif)
+
+- model
+- token
+- vocabulary
+- training

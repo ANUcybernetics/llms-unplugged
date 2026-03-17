@@ -31,7 +31,7 @@ importers:
         version: 6.0.2(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2)
       astromotion:
         specifier: github:benswift/astromotion
-        version: https://codeload.github.com/benswift/astromotion/tar.gz/873260ab19c1ec2cb0c7fdd38cff78928929c2fd(@animotion/core@1.2.2(svelte@5.53.10)(vite@7.3.1(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.2)))(@astrojs/svelte@8.0.0(@types/node@24.12.0)(astro@6.0.2(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2))(jiti@2.6.1)(lightningcss@1.32.0)(svelte@5.53.10)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2))(@tailwindcss/vite@4.2.1(vite@7.3.1(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.2)))(astro@6.0.2(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2))(svelte@5.53.10)
+        version: https://codeload.github.com/benswift/astromotion/tar.gz/e5c86ee68a005143add9765bde42569d9fdeb6f1(@animotion/core@1.2.2(svelte@5.53.10)(vite@7.3.1(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.2)))(@astrojs/svelte@8.0.0(@types/node@24.12.0)(astro@6.0.2(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2))(jiti@2.6.1)(lightningcss@1.32.0)(svelte@5.53.10)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2))(@tailwindcss/vite@4.2.1(vite@7.3.1(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.2)))(astro@6.0.2(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2))(svelte@5.53.10)
       lightningcss:
         specifier: ^1.32.0
         version: 1.32.0
@@ -1626,8 +1626,8 @@ packages:
     engines: {node: ^20.19.1 || >=22.12.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
-  astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/873260ab19c1ec2cb0c7fdd38cff78928929c2fd:
-    resolution: {tarball: https://codeload.github.com/benswift/astromotion/tar.gz/873260ab19c1ec2cb0c7fdd38cff78928929c2fd}
+  astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/e5c86ee68a005143add9765bde42569d9fdeb6f1:
+    resolution: {tarball: https://codeload.github.com/benswift/astromotion/tar.gz/e5c86ee68a005143add9765bde42569d9fdeb6f1}
     version: 0.1.0
     peerDependencies:
       '@animotion/core': ^1.0.0
@@ -5165,7 +5165,7 @@ snapshots:
       - uploadthing
       - yaml
 
-  astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/873260ab19c1ec2cb0c7fdd38cff78928929c2fd(@animotion/core@1.2.2(svelte@5.53.10)(vite@7.3.1(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.2)))(@astrojs/svelte@8.0.0(@types/node@24.12.0)(astro@6.0.2(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2))(jiti@2.6.1)(lightningcss@1.32.0)(svelte@5.53.10)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2))(@tailwindcss/vite@4.2.1(vite@7.3.1(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.2)))(astro@6.0.2(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2))(svelte@5.53.10):
+  astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/e5c86ee68a005143add9765bde42569d9fdeb6f1(@animotion/core@1.2.2(svelte@5.53.10)(vite@7.3.1(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.2)))(@astrojs/svelte@8.0.0(@types/node@24.12.0)(astro@6.0.2(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2))(jiti@2.6.1)(lightningcss@1.32.0)(svelte@5.53.10)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2))(@tailwindcss/vite@4.2.1(vite@7.3.1(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.2)))(astro@6.0.2(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2))(svelte@5.53.10):
     dependencies:
       '@animotion/core': 1.2.2(svelte@5.53.10)(vite@7.3.1(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(tsx@4.21.0)(yaml@2.8.2))
       '@astrojs/svelte': 8.0.0(@types/node@24.12.0)(astro@6.0.2(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.59.0)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2))(jiti@2.6.1)(lightningcss@1.32.0)(svelte@5.53.10)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2)
