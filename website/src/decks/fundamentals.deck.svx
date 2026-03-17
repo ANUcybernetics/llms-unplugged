@@ -232,12 +232,6 @@ a new sentence --- not in the training data!
 
 ---
 
-<!-- _class: centered -->
-
-![qr](https://www.llmsunplugged.org/lessons/pretrained-generation)
-
----
-
 ## The algorithm
 
 ![bg right:40%](./assets/bg-algorithm-generation.avif)
@@ -325,9 +319,8 @@ and so on...
 
 ## Discussion
 
-- how much does this change the interpretation of AI outputs?
-- how might understanding how LLMs work help you and your teams to use them more
-  effectively?
+- how could you use this activity in your classroom?
+- how might understanding how LLMs work change how your students engage with AI?
 - what questions do you still have?
 
 ![bg left:40%](./assets/bg-participants.avif)
