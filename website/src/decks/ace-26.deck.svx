@@ -6,7 +6,7 @@ right:40%](./assets/bg-acknowledgement.avif) ---
 <!-- _class: impact -->
 
 a(nother) talk about AI\*/LLMs they're _A Thing_ now --- ## Hi, I'm Ben ![bg
-right:40%](./assets/headshot-ben-anu.avif) ---
+right:40%](./assets/headshot-ben.avif) ---
 
 <div
   style="display: grid; grid-template-columns: 1fr 1fr 1fr; position: absolute; inset: 0;"
