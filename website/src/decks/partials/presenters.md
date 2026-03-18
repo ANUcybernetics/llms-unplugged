@@ -7,7 +7,7 @@
     alt="Eddie"
   />
   <img
-    src="./assets/headshot-ben-anu.avif"
+    src="./assets/headshot-ben2.avif"
     style="width: 100%; height: 100%; object-fit: cover;"
     alt="Ben"
   />
