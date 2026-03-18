@@ -8,7 +8,7 @@ interface Props {
 
 const { limit } = Astro.props;
 
-const allNews = (await getCollection("news")).sort(
+const allNews = (await getCollection("news", ({ data }) => data.published)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
 
