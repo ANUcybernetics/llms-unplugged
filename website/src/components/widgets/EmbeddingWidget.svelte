@@ -28,7 +28,7 @@
   let selectedRows = $state<string[]>([]);
 
   $effect(() => {
-    vocabulary;
+    void vocabulary; // eslint-disable-line no-unused-expressions -- reactive dependency
     selectedRows = [];
   });
 

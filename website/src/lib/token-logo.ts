@@ -111,7 +111,7 @@ export interface Pos {
   h: number;
 }
 
-export function gridLayout(bricks: Brick[], width: number, height: number): Pos[] {
+export function gridLayout(bricks: Brick[], width: number, _height: number): Pos[] {
   const positions: Pos[] = [];
   let x = 0;
   let y = 0;
@@ -145,7 +145,7 @@ export function shuffledGridLayout(
     width,
     height,
   );
-  const positions: Pos[] = new Array(n);
+  const positions: Pos[] = Array.from({ length: n });
   for (let j = 0; j < n; j++) {
     positions[order[j]] = shuffledPos[j];
   }

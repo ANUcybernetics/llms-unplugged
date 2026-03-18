@@ -4,7 +4,7 @@ import {
   createDiceGenerationMachine,
   selectStartWord,
 } from "../../src/lib/machines/diceGeneration";
-import type { DiceGenerationState } from "../../src/lib/machines/diceGeneration";
+
 
 function buildModel(text: string) {
   const tokens = parseTokens(text);
@@ -134,7 +134,7 @@ describe("createDiceGenerationMachine", () => {
 });
 
 describe("selectStartWord", () => {
-  const { vocabulary, model } = buildModel("the cat sat");
+  const { model } = buildModel("the cat sat");
 
   it("returns state for a valid word", () => {
     const result = selectStartWord("the", model, 6);

@@ -1,4 +1,4 @@
-@import "./common.css";
+@import url("./common.css");
 
 :root {
   color-scheme: dark;
