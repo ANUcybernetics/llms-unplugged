@@ -21,7 +21,7 @@ export default defineConfig({
     css: {
       transformer: "lightningcss",
     },
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss({ exclude: [/\.deck\.svx/] })],
   },
   fonts: [
     {
