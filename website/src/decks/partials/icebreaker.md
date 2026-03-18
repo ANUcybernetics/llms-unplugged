@@ -1,0 +1,45 @@
+<!-- _class: impact -->
+
+**activity**
+
+everyone stand up
+
+---
+
+<!-- _class: impact -->
+
+sit down if you
+
+have **never** used ChatGPT
+
+---
+
+<!-- _class: impact -->
+
+sit down if you
+
+haven't used it in the last **month**
+
+---
+
+<!-- _class: impact -->
+
+sit down if you
+
+haven't used it in the last **week**
+
+---
+
+<!-- _class: impact -->
+
+sit down if you
+
+haven't used it in the last **day**
+
+---
+
+<!-- _class: impact -->
+
+sit down if you
+
+haven't used it in the last **hour**

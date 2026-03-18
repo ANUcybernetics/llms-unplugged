@@ -17,6 +17,10 @@ description: A Cybernetic Studio workshop
 
 ---
 
+<!-- @include ./partials/icebreaker.md -->
+
+---
+
 ## What is this about?
 
 ![bg right:40%](./assets/bg-core-insight.avif)
