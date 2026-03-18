@@ -13,6 +13,10 @@ description: A Cybernetic Studio workshop
 
 ---
 
+<!-- @include ./partials/presenters.md -->
+
+---
+
 ## What is this about?
 
 ![bg right:40%](./assets/bg-core-insight.avif)
@@ -50,6 +54,10 @@ generate new text
 - what questions do you still have?
 
 ![bg left:40%](./assets/bg-participants.avif)
+
+---
+
+<!-- @include ./partials/qualtrics.md -->
 
 ---
 
