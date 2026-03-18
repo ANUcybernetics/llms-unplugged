@@ -84,7 +84,7 @@ and so on...
 
 ## The _language_ of language models
 
-![bg right:60%](./assets/bg-design-goals.avif)
+![bg right:60%](./assets/bg-language-of-lms.avif)
 
 - pre-training
 - foundation model
