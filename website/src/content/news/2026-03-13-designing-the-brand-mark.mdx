@@ -9,10 +9,10 @@ description:
 
 import TokenLogo from "../../components/TokenLogo.svelte";
 
-Every project needs a visual identity, and for a project about demystifying how
-language models work it felt right to make the brand mark _itself_ an explainer.
-So the LLMs Unplugged brand mark is built from the thing that language models
-actually operate on---tokens.
+Every project should feel like a natural extension of your brand, and for a
+project about demystifying how language models work it felt right to make the
+brand mark _itself_ an explainer. So the LLMs Unplugged brand mark is built from
+the thing that language models actually operate on---tokens.
 
 ## Tokenising the title
 
@@ -39,8 +39,8 @@ look at it, which is kind of the point of the whole project.
 
 ## The word mark
 
-Each of those five tokens becomes a coloured brick in the word mark, arranged on two
-lines to spell out the title. Each brick cycles between its text label and a
+Each of those five tokens becomes a coloured brick in the word mark, arranged on
+two lines to spell out the title. Each brick cycles between its text label and a
 4×4 dot pattern encoding the token ID in binary---more on that below.
 
 <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 0.5rem; overflow: hidden;">
@@ -59,9 +59,9 @@ gold and leave the 0s dim, and you get a tiny visual fingerprint of the token.
 If you watch the favicon for a moment you'll notice it isn't static---it cycles
 through the bit patterns for all five title tokens on a 15-second loop, with
 smooth transitions between each pattern. The animation is pure CSS `@keyframes`,
-no JavaScript involved. Each of the 16 circles
-gets its own keyframe animation based on how its bit differs across the five
-tokens, so some circles hold steady while others flicker between gold and dim.
+no JavaScript involved. Each of the 16 circles gets its own keyframe animation
+based on how its bit differs across the five tokens, so some circles hold steady
+while others flicker between gold and dim.
 
 It's the kind of thing that nobody will ever notice unprompted (pun intended),
 but once you know what it is, you can't unsee it. Every dot pattern on the site
@@ -87,23 +87,23 @@ background, matching the colour scheme used in the title logo:
 
 ## The animated version
 
-There's also an animated version of the brand mark which starts with the title "LLMs Unplugged" already
-assembled from five gold bricks, sitting against a field of around 270 dimmed
-background bricks. After a pause the title tokens dissolve back into the grid,
-blending in with the rest. The bricks reshuffle into new random positions, then
-the five title tokens light up again and slide into place to re-spell the title.
-Each cycle the bricks are re-randomised, so the title tokens emerge from
-different positions every time.
+There's also an animated version of the brand mark which starts with the title
+"LLMs Unplugged" already assembled from five gold bricks, sitting against a
+field of around 270 dimmed background bricks. After a pause the title tokens
+dissolve back into the grid, blending in with the rest. The bricks reshuffle
+into new random positions, then the five title tokens light up again and slide
+into place to re-spell the title. Each cycle the bricks are re-randomised, so
+the title tokens emerge from different positions every time.
 
 <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 0.5rem; overflow: hidden;">
   <TokenLogo client:visible />
 </div>
 
 The whole thing scales to whatever container you put it in---no pixel
-breakpoints or resize listeners needed. The
-animation captures the core visual metaphor of the project: meaningful text
-emerging from what looks like a random jumble of tokens. It's basically what a
-language model does, just at a pace humans can follow.
+breakpoints or resize listeners needed. The animation captures the core visual
+metaphor of the project: meaningful text emerging from what looks like a random
+jumble of tokens. It's basically what a language model does, just at a pace
+humans can follow.
 
 ## Background mode
 
