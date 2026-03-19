@@ -9,6 +9,7 @@
     createInitialState,
     initCompiler,
     compileDocument,
+    clearError,
     type Status,
     type Workflow,
     type CompilerState,
@@ -43,13 +44,12 @@
     const file = target.files?.[0];
     if (!file) return;
 
+    updateState((s) => clearError(s));
+
     if (file.size > MAX_FILE_SIZE) {
       updateState((s) => ({
         ...s,
-        log: [
-          ...s.log,
-          `Error: File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum is 10MB.`,
-        ],
+        errorMessage: `File too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Maximum size is 10MB.`,
       }));
       target.value = "";
       return;
@@ -59,9 +59,10 @@
     const fileType = getFileType(file.name);
 
     if (!fileType) {
+      const ext = file.name.includes(".") ? file.name.split(".").pop() : "unknown";
       updateState((s) => ({
         ...s,
-        log: [...s.log, `Unsupported file type: ${file.name}`],
+        errorMessage: `Unsupported file type (.${ext}). Use .txt, .md, .docx, or .pdf files.`,
       }));
       target.value = "";
       return;
@@ -108,7 +109,7 @@
     } catch (error) {
       updateState((s) => ({
         ...s,
-        log: [...s.log, `Error reading file: ${(error as Error).message}`],
+        errorMessage: `Failed to read file: ${(error as Error).message}`,
       }));
       target.value = "";
     }
@@ -252,6 +253,18 @@
     </button>
   </div>
 
+  {#if compilerState.errorMessage}
+    <div class="error-banner" role="alert">
+      <span class="error-icon">&#10007;</span>
+      <span class="error-text">{compilerState.errorMessage}</span>
+      <button
+        class="error-dismiss"
+        onclick={() => updateState((s) => clearError(s))}
+        aria-label="Dismiss error"
+      >&times;</button>
+    </div>
+  {/if}
+
   <div class="status-indicator {compilerState.status}">
     <span class="status-icon">
       {#if statusIcon(compilerState.status) === "spinner"}
@@ -282,6 +295,43 @@
 <style>
   .typst-compiler {
     margin: 1.5rem 0;
+  }
+
+  .error-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+    background: rgba(220, 53, 69, 0.15);
+    border: 1px solid rgba(220, 53, 69, 0.5);
+    color: #f08090;
+    font-size: 0.9rem;
+  }
+
+  .error-icon {
+    flex-shrink: 0;
+    font-weight: bold;
+  }
+
+  .error-text {
+    flex: 1;
+  }
+
+  .error-dismiss {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0 0.25rem;
+    line-height: 1;
+    opacity: 0.7;
+  }
+
+  .error-dismiss:hover {
+    opacity: 1;
   }
 
   .status-indicator {

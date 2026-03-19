@@ -13,6 +13,7 @@ export interface CompilerState {
   status: Status;
   log: string[];
   previewHtml: string;
+  errorMessage: string;
 }
 
 const FONT_URLS: Record<string, string[]> = {
@@ -48,11 +49,20 @@ export function appendLog(state: CompilerState, message: string): CompilerState 
   return { ...state, log: [...state.log, `[${timestamp}] ${message}`] };
 }
 
+export function setError(state: CompilerState, message: string): CompilerState {
+  return { ...appendLog(state, `Error: ${message}`), errorMessage: message };
+}
+
+export function clearError(state: CompilerState): CompilerState {
+  return { ...state, errorMessage: "" };
+}
+
 export function createInitialState(): CompilerState {
   return {
     status: "idle",
     log: [],
     previewHtml: "",
+    errorMessage: "",
   };
 }
 
@@ -115,8 +125,9 @@ export async function initCompiler(
     }));
     return true;
   } catch (error) {
+    const msg = (error as Error).message;
     onUpdate((s) => ({
-      ...appendLog(s, `Error: ${(error as Error).message}`),
+      ...setError(s, msg),
       status: "error",
     }));
     return false;
@@ -136,7 +147,7 @@ export async function compileDocument(
 
   const workflowName = workflow === "booklet" ? "booklet" : "cutouts";
   onUpdate((s) => ({
-    ...appendLog(s, `Processing text for ${workflowName} (n=${ngramSize})...`),
+    ...appendLog(clearError(s), `Processing text for ${workflowName} (n=${ngramSize})...`),
     status: "compiling",
   }));
 
@@ -200,9 +211,10 @@ export async function compileDocument(
       }));
     }
   } catch (error) {
+    const msg = (error as Error).message;
     onUpdate((s) => ({
-      ...appendLog(s, `Error: ${(error as Error).message}`),
-      status: "ready",
+      ...setError(s, msg),
+      status: "error",
     }));
   }
 }

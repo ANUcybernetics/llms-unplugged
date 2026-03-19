@@ -2,16 +2,19 @@ import { describe, it, expect } from "vitest";
 import {
   createInitialState,
   appendLog,
+  setError,
+  clearError,
   sanitiseFilename,
   type CompilerState,
 } from "../src/lib/typstCompiler";
 
 describe("createInitialState", () => {
-  it("returns idle status with empty log and no preview", () => {
+  it("returns idle status with empty log, no preview, and no error", () => {
     const state = createInitialState();
     expect(state.status).toBe("idle");
     expect(state.log).toEqual([]);
     expect(state.previewHtml).toBe("");
+    expect(state.errorMessage).toBe("");
   });
 });
 
@@ -44,11 +47,75 @@ describe("appendLog", () => {
       status: "ready",
       log: ["existing"],
       previewHtml: "<svg></svg>",
+      errorMessage: "",
     };
     const updated = appendLog(state, "new");
     expect(updated.status).toBe("ready");
     expect(updated.previewHtml).toBe("<svg></svg>");
     expect(updated.log).toHaveLength(2);
+  });
+});
+
+describe("setError", () => {
+  it("sets the error message and appends to log", () => {
+    const state = createInitialState();
+    const updated = setError(state, "File too large");
+    expect(updated.errorMessage).toBe("File too large");
+    expect(updated.log).toHaveLength(1);
+    expect(updated.log[0]).toMatch(/Error: File too large/);
+  });
+
+  it("does not mutate the original state", () => {
+    const state = createInitialState();
+    setError(state, "something broke");
+    expect(state.errorMessage).toBe("");
+    expect(state.log).toHaveLength(0);
+  });
+
+  it("preserves other state fields", () => {
+    const state: CompilerState = {
+      status: "ready",
+      log: ["existing"],
+      previewHtml: "<svg></svg>",
+      errorMessage: "",
+    };
+    const updated = setError(state, "oops");
+    expect(updated.status).toBe("ready");
+    expect(updated.previewHtml).toBe("<svg></svg>");
+    expect(updated.errorMessage).toBe("oops");
+    expect(updated.log).toHaveLength(2);
+  });
+});
+
+describe("clearError", () => {
+  it("clears an existing error message", () => {
+    const state: CompilerState = {
+      status: "error",
+      log: ["something"],
+      previewHtml: "",
+      errorMessage: "File too large",
+    };
+    const updated = clearError(state);
+    expect(updated.errorMessage).toBe("");
+  });
+
+  it("preserves log and other fields", () => {
+    const state: CompilerState = {
+      status: "error",
+      log: ["line1", "line2"],
+      previewHtml: "<svg></svg>",
+      errorMessage: "bad thing",
+    };
+    const updated = clearError(state);
+    expect(updated.log).toEqual(["line1", "line2"]);
+    expect(updated.previewHtml).toBe("<svg></svg>");
+    expect(updated.status).toBe("error");
+  });
+
+  it("is a no-op when there is no error", () => {
+    const state = createInitialState();
+    const updated = clearError(state);
+    expect(updated.errorMessage).toBe("");
   });
 });
 
