@@ -55,6 +55,10 @@ generate new text
 
 ---
 
+<!-- @include ./sampling.md -->
+
+---
+
 ## Discussion
 
 - how could you use this activity in your classroom?
