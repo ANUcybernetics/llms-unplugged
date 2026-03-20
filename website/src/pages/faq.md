@@ -11,7 +11,7 @@ description: Frequently asked questions about using LLMs Unplugged resources, ma
 ## Why do you keep saying LLMs---this is AI, right?
 
 <img
-  src="/assets/images/headshot-ben-anu.avif"
+  src="/assets/images/headshot-ben-3.avif"
   alt="Ben Swift"
   style="float: right; width: 8rem; margin-left: 1rem; border-radius: 0.5rem;"
 />
