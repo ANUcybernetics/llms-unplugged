@@ -3,10 +3,10 @@
 !website/public/assets/pdfs/lessons.pdf
 !website/public/assets/pdfs/ace2026-llms-unplugged.pdf
 
-data/
+/data/
 
 # but keep frankenstein.txt for the release
-!data/frankenstein.txt
+!/data/frankenstein.txt
 
 # default model name
 model.json

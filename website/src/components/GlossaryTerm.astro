@@ -1,0 +1,133 @@
+---
+import { getGlossaryEntry } from "../lib/glossary";
+
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+const entry = getGlossaryEntry(id);
+
+if (!entry) {
+  throw new Error(`Glossary term not found: "${id}"`);
+}
+
+const popoverId = `glossary-${id}`;
+---
+
+<span class="glossary-term-wrapper">
+  <button
+    class="glossary-term"
+    popovertarget={popoverId}
+    popovertargetaction="toggle"
+    aria-label={`${entry.term} (glossary term)`}
+  >
+    <slot>{entry.term}</slot>
+  </button>
+  <span popover id={popoverId} class="glossary-popover" role="tooltip">
+    <strong class="glossary-popover-term">{entry.term}</strong>
+    <span class="glossary-popover-desc">{entry.description}</span>
+    <a href={`/glossary#${id}`} class="glossary-popover-link"
+      >View in glossary</a
+    >
+  </span>
+</span>
+
+<script>
+  // JS fallback for browsers without CSS Anchor Positioning
+  if (!CSS.supports("position-area", "bottom span-right")) {
+    document.addEventListener(
+      "toggle",
+      (e) => {
+        const popover = e.target as HTMLElement;
+        if (
+          !popover.classList.contains("glossary-popover") ||
+          !popover.matches(":popover-open")
+        )
+          return;
+
+        const btn = popover.previousElementSibling as HTMLElement;
+        if (!btn) return;
+
+        const rect = btn.getBoundingClientRect();
+        popover.style.top = `${rect.bottom + 6}px`;
+        popover.style.left = `${Math.max(8, rect.left)}px`;
+      },
+      true,
+    );
+  }
+</script>
+
+<style>
+  .glossary-term-wrapper {
+    display: inline;
+  }
+
+  .glossary-term {
+    all: unset;
+    cursor: help;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-color: var(--color-text-muted);
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 1px;
+    color: inherit;
+    font: inherit;
+  }
+
+  .glossary-term:hover,
+  .glossary-term:focus-visible {
+    text-decoration-color: var(--color-brand);
+  }
+
+  .glossary-term:focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .glossary-popover {
+    /* Popover top-layer positioning */
+    position: fixed;
+    inset: unset;
+    margin: 0;
+
+    /* CSS Anchor Positioning: uses the implicit anchor (the invoking button) */
+    position-area: bottom span-right;
+    position-try-fallbacks: top span-right, bottom span-left, top span-left;
+    margin-top: 0.375rem;
+
+    max-width: 22rem;
+    padding: 0.75rem 1rem;
+    background: var(--color-bg-elevated, #1a1a1a);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    color: var(--color-text);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    box-shadow: 0 4px 16px rgb(0 0 0 / 40%);
+
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .glossary-popover:popover-open {
+    display: flex;
+  }
+
+  .glossary-popover-term {
+    color: var(--color-brand);
+    font-size: 0.85rem;
+  }
+
+  .glossary-popover-desc {
+    color: var(--color-text-secondary);
+  }
+
+  .glossary-popover-link {
+    font-size: 0.75rem;
+    color: var(--color-brand);
+    text-decoration: underline;
+    align-self: flex-end;
+  }
+</style>

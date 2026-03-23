@@ -8,7 +8,7 @@ description:
 ---
 
 If you're a teacher---primary, secondary, or tertiary---Large Language Models
-(LLMs) like ChatGPT and friends are already in your classroom. Maybe they're
+(LLMs) like ChatGPT, Claude, and friends are already in your classroom. Maybe they're
 there in an
 [official way](https://education.nsw.gov.au/teaching-and-learning/education-for-a-changing-world/nsweduchat).
 Maybe you feel their shadow in the way you've had to change your assessment to

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NewsCards from "../components/NewsCards.astro";
+import GlossaryTerm from "../components/GlossaryTerm.astro";
 ---
 
 <BaseLayout title="LLMs Unplugged">
@@ -38,7 +39,7 @@ import NewsCards from "../components/NewsCards.astro";
       >
       text (based on this training data) with some dice rolling or pulling the paper
       pieces back out of the buckets. After doing this by hand, something clicks:
-      you'll see that LLMs like ChatGPT works using the same basic principles, just
+      you'll see that LLMs like <GlossaryTerm id="chatgpt">ChatGPT (or Claude)</GlossaryTerm> work using the same basic principles, just
       at a vastly larger scale.
     </p>
 
@@ -142,7 +143,7 @@ import NewsCards from "../components/NewsCards.astro";
         <h2>Why does this matter?</h2>
         <p>
           <a href="https://chatgpt.com/">ChatGPT</a> arrived in November 2022 and
-          suddenly (most) everyone's using LLMs. Yet most people have no real mental
+          suddenly (most) everyone's using <GlossaryTerm id="language-model">LLMs</GlossaryTerm>. Yet most people have no real mental
           model of what's actually happening under the hood. They've heard the hand-wave-y
           and mystical-sounding explanations, maybe picked up some vague notions about
           "neural networks" and "training data", but the core mechanism remains opaque.
@@ -150,7 +151,7 @@ import NewsCards from "../components/NewsCards.astro";
         <p>
           Understanding how these systems actually work&mdash;not through
           metaphor or handwaving but through direct experience&mdash;is what
-          we're all about. In a post-ChatGPT world, this kind of understanding
+          we're all about. In a world where everyone uses LLMs, this kind of understanding
           isn't optional anymore.
         </p>
         <p>
@@ -202,7 +203,7 @@ import NewsCards from "../components/NewsCards.astro";
           >. These cover the essential concepts for building and using language
           models: training a bigram model and generating text. After completing
           these lessons, you'll understand the fundamental mechanism behind
-          ChatGPT-style AI systems.
+          LLM-based AI systems.
         </p>
       </div>
     </div>

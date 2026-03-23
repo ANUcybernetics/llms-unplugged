@@ -1,0 +1,353 @@
+- id: token
+  term: Token
+  category: core
+  description: >-
+    A single unit of text that the model works with. In our activities, each word
+    and punctuation mark is a token. Modern LLMs use subword tokens that can be
+    parts of words.
+  synonyms:
+    - word (in introductory contexts)
+  note: >-
+    The lessons use "word" initially to keep things accessible, then transition
+    to "token" once the concept is established. Both terms refer to the same
+    thing in our activities.
+  see:
+    - label: Training
+      href: /lessons/training
+
+- id: vocabulary
+  term: Vocabulary
+  category: core
+  description: >-
+    All the unique tokens your model knows. The words across the top and side of
+    your grid (or the bucket labels) form your vocabulary.
+  see:
+    - label: Training
+      href: /lessons/training
+
+- id: language-model
+  term: Language model
+  category: core
+  description: >-
+    A system that predicts what text comes next based on patterns learned from
+    training data. Your hand-built grid or bucket collection is a language model.
+  see:
+    - label: Training
+      href: /lessons/training
+    - label: Generation
+      href: /lessons/generation
+
+- id: training
+  term: Training
+  category: core
+  description: >-
+    The process of building a model by counting patterns in text. When you tally
+    word transitions or fill buckets with tokens, you're training your model.
+  synonyms:
+    - learning
+  see:
+    - label: Training
+      href: /lessons/training
+
+- id: generation
+  term: Generation
+  category: core
+  description: >-
+    Using a trained model to produce new text by repeatedly predicting and
+    selecting the next token.
+  synonyms:
+    - inference (in broader AI/ML contexts)
+  see:
+    - label: Generation
+      href: /lessons/generation
+
+- id: probability-distribution
+  term: Probability distribution
+  category: core
+  description: >-
+    A set of options with associated likelihoods. In your model, the counts in a
+    row (or tokens in a bucket) form a probability distribution over possible
+    next words.
+  see:
+    - label: Generation
+      href: /lessons/generation
+    - label: Sampling
+      href: /lessons/sampling
+
+- id: bigram-model
+  term: Bigram model
+  category: model-types
+  description: >-
+    A model that predicts the next word based on one previous word. This is what
+    you build in the fundamental lessons---each row of your grid represents what
+    can follow a single word.
+  synonyms:
+    - 2-gram model
+  see:
+    - label: Training
+      href: /lessons/training
+    - label: Generation
+      href: /lessons/generation
+
+- id: trigram-model
+  term: Trigram model
+  category: model-types
+  description: >-
+    A model that uses two previous words for prediction, capturing more context
+    than a bigram. The grid becomes three-dimensional (or you track word pairs
+    instead of single words).
+  synonyms:
+    - 3-gram model
+  see:
+    - label: Trigram
+      href: /lessons/trigram
+
+- id: n-gram-model
+  term: N-gram model
+  category: model-types
+  description: >-
+    The general term for models that predict based on the previous n-1 words.
+    Bigrams are 2-grams, trigrams are 3-grams, and so on.
+  see:
+    - label: Training
+      href: /lessons/training
+    - label: Trigram
+      href: /lessons/trigram
+
+- id: context-window
+  term: Context window
+  category: model-types
+  description: >-
+    How many previous tokens the model considers when making predictions. Bigrams
+    have a context window of 1, trigrams have 2, and modern LLMs can consider
+    128,000+ tokens.
+  see:
+    - label: Trigram
+      href: /lessons/trigram
+    - label: Context Columns
+      href: /lessons/context-columns
+
+- id: grid-variant
+  term: Grid variant
+  category: training-variants
+  description: >-
+    The matrix-based approach where you draw a grid with words as row and column
+    headers, then add tally marks to track which words follow which.
+  see:
+    - label: Training
+      href: /lessons/training
+
+- id: bucket-variant
+  term: Bucket variant
+  category: training-variants
+  description: >-
+    The physical container approach where each bucket is labelled with a word and
+    contains paper tokens representing words that followed it in the training
+    text.
+  see:
+    - label: Training
+      href: /lessons/training
+
+- id: matrix
+  term: Matrix
+  category: training-variants
+  description: >-
+    A grid or table showing relationships between tokens. Your hand-drawn grids
+    are matrices tracking which words follow other words. Each row can also be
+    interpreted as an embedding vector.
+  see:
+    - label: Training
+      href: /lessons/training
+    - label: Word Embeddings
+      href: /lessons/word-embeddings
+
+- id: weighted-random-sampling
+  term: Weighted random sampling
+  category: sampling
+  description: >-
+    Choosing the next token with probability proportional to its frequency. Your
+    dice rolls implement this---words with higher counts are more likely to be
+    selected.
+  see:
+    - label: Generation
+      href: /lessons/generation
+
+- id: temperature
+  term: Temperature
+  category: sampling
+  description: >-
+    A parameter controlling randomness in generation. Dividing counts by
+    temperature makes output more random (high temperature) or more predictable
+    (low temperature).
+  see:
+    - label: Sampling
+      href: /lessons/sampling
+
+- id: greedy-sampling
+  term: Greedy sampling
+  category: sampling
+  description: >-
+    Always choosing the most likely next word (equivalent to temperature
+    approaching zero). Produces predictable but often repetitive text.
+  synonyms:
+    - greedy decoding
+  see:
+    - label: Sampling
+      href: /lessons/sampling
+
+- id: beam-search
+  term: Beam search
+  category: sampling
+  description: >-
+    A generation strategy that tracks multiple possible sequences simultaneously,
+    choosing the best overall path rather than committing to one word at a time.
+  see:
+    - label: Beam Search
+      href: /lessons/beam-search
+
+- id: beam-width
+  term: Beam width
+  category: sampling
+  description: >-
+    How many candidate paths to track during beam search. Beam width 1 is
+    equivalent to greedy search; larger widths explore more possibilities.
+  see:
+    - label: Beam Search
+      href: /lessons/beam-search
+
+- id: truncation-strategy
+  term: Truncation strategy
+  category: sampling
+  description: >-
+    A rule that limits which tokens are eligible for selection before sampling.
+    Examples include top-k (only consider the k most likely) and top-p/nucleus
+    (only consider tokens until cumulative probability reaches p).
+  see:
+    - label: Sampling
+      href: /lessons/sampling
+
+- id: embedding
+  term: Embedding
+  category: understanding
+  description: >-
+    A numerical representation of a word. Each row in your bigram grid is that
+    word's embedding vector---a fingerprint of its usage context.
+  synonyms:
+    - word vector
+    - embedding vector
+  see:
+    - label: Word Embeddings
+      href: /lessons/word-embeddings
+
+- id: similarity-matrix
+  term: Similarity matrix
+  category: understanding
+  description: >-
+    A grid showing how similar or different each pair of words is, calculated by
+    comparing their embedding vectors. Words used in similar contexts have
+    similar embeddings.
+  synonyms:
+    - distance matrix
+    - distance grid
+  see:
+    - label: Word Embeddings
+      href: /lessons/word-embeddings
+
+- id: attention-mechanism
+  term: Attention mechanism
+  category: understanding
+  description: >-
+    The ability to focus on relevant previous words when making predictions.
+    Context columns are a manual form of attention, letting you consider
+    grammatical categories rather than just the immediately preceding word.
+  see:
+    - label: Context Columns
+      href: /lessons/context-columns
+
+- id: fine-tuning
+  term: Fine-tuning
+  category: advanced
+  description: >-
+    Additional training on specific text to adapt a model for a particular domain
+    or task. Like adding more tallies to your grid from a new text source.
+  see:
+    - label: LoRA
+      href: /lessons/lora
+    - label: Synthetic Data
+      href: /lessons/synthetic-data
+
+- id: lora
+  term: LoRA (Low-Rank Adaptation)
+  category: advanced
+  description: >-
+    A technique for efficiently fine-tuning models by training a small
+    "adaptation layer" rather than modifying all the original parameters.
+  see:
+    - label: LoRA
+      href: /lessons/lora
+
+- id: rlhf
+  term: RLHF (Reinforcement Learning from Human Feedback)
+  category: advanced
+  description: >-
+    A training technique where human preferences guide the model to produce more
+    helpful, harmless, and honest outputs.
+  see:
+    - label: RLHF
+      href: /lessons/rlhf
+
+- id: agentic-tool-use
+  term: Agentic tool use
+  category: advanced
+  description: >-
+    The ability of language models to act as agents by recognising when to call
+    external tools (like calculators or search engines) in a loop rather than
+    generating text directly.
+  see:
+    - label: Agentic Tool Use
+      href: /lessons/agentic-tool-use
+
+- id: synthetic-data
+  term: Synthetic data
+  category: advanced
+  description: >-
+    Training data generated by models rather than collected from humans. Can be
+    used to augment training sets or create specialised datasets.
+  see:
+    - label: Synthetic Data
+      href: /lessons/synthetic-data
+
+- id: hallucination
+  term: Hallucination
+  category: advanced
+  description: >-
+    When models generate plausible-sounding but false information. This happens
+    because models learn patterns, not facts---they predict what text looks like
+    rather than what is true.
+
+- id: parameters
+  term: Parameters
+  category: advanced
+  description: >-
+    The numbers stored in the model that encode learned patterns. Each tally mark
+    in your grid is a parameter. Modern models have billions of parameters.
+  see:
+    - label: Training
+      href: /lessons/training
+
+- id: transformer
+  term: Transformer
+  category: advanced
+  description: >-
+    The neural network architecture used by GPT, Claude, and other modern LLMs.
+    It uses attention mechanisms to process all words in parallel rather than
+    sequentially.
+
+- id: chatgpt
+  term: ChatGPT
+  category: core
+  description: >-
+    OpenAI's chatbot, and probably the most well-known LLM product. On this site
+    we often use "ChatGPT" as shorthand for any modern LLM chatbot---the
+    concepts apply equally to Claude, Gemini, DeepSeek and others. The
+    underlying principles are the same regardless of which product you use.

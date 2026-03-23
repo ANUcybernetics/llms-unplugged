@@ -24,11 +24,11 @@ AI, so that's mostly what we're talking about here. I (Ben) do like to use the
 term LLM rather than AI whenever I can, because I think it's more specific and
 accurate.
 
-## You mention ChatGPT a lot, but Claude/Gemini/Deepseek/etc is more my jam
+## You mention ChatGPT and Claude a lot, but Gemini/DeepSeek/etc. is more my jam
 
-None of these resources are specific to ChatGPT (which is a brand these days
-rather than a specific model anyway). It's just a nice shorthand term for those
-who aren't so familiar with the term "Large Language Model" or LLM.
+None of these resources are specific to any particular LLM product. We
+sometimes use "ChatGPT" or "Claude" as shorthand because they're the names
+most people recognise, but the concepts apply equally to any modern LLM.
 
 ## Who is this for?
 
@@ -97,7 +97,7 @@ treating AI as a black box.
 
 ![Using dice to generate text from a hand-built language model](/assets/images/workshop-4.avif)
 
-## How do these activities relate to ChatGPT and other LLMs?
+## How do these activities relate to ChatGPT, Claude, and other LLMs?
 
 Modern LLMs use the same fundamental principle: predict the next token based on
 context. The differences are scale (billions of parameters vs dozens) and learned

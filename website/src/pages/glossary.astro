@@ -1,0 +1,153 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import { getGlossaryByCategory, loadGlossary } from "../lib/glossary";
+
+const categories = getGlossaryByCategory();
+const allEntries = loadGlossary();
+---
+
+<PageLayout
+  title="Glossary"
+  description="Key terms and concepts used in LLMs Unplugged, with plain-language explanations and links to relevant lessons."
+>
+  <h1>Glossary</h1>
+
+  <p>
+    This glossary connects the hands-on activities in LLMs Unplugged with the
+    technical terms used in modern language models. Each entry provides a plain
+    language explanation and links to relevant lessons.
+  </p>
+
+  {
+    categories.map(({ label, entries }) => (
+      <>
+        <h2>{label}</h2>
+        {entries.map((entry) => (
+          <div class="glossary-entry" id={entry.id}>
+            <h3>{entry.term}</h3>
+            <p>{entry.description}</p>
+            {entry.synonyms && (
+              <p class="glossary-meta">
+                <em>Synonyms:</em> {entry.synonyms.join(", ")}
+              </p>
+            )}
+            {entry.note && (
+              <p class="glossary-meta">
+                <em>Style note:</em> {entry.note}
+              </p>
+            )}
+            {entry.see && (
+              <p class="glossary-meta">
+                <em>See:</em>{" "}
+                {entry.see.map((link, i) => (
+                  <>
+                    {i > 0 && ", "}
+                    <a href={link.href}>{link.label}</a>
+                  </>
+                ))}
+              </p>
+            )}
+          </div>
+        ))}
+      </>
+    ))
+  }
+
+  <h2>Connections to your activities</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Your activity</th>
+        <th>Real LLM equivalent</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Tallying word pairs</td><td>Counting n-grams during training</td></tr>
+      <tr
+        ><td>Rolling dice for next word</td><td
+          >Sampling from probability distribution</td
+        ></tr
+      >
+      <tr
+        ><td>Grid rows/columns</td><td
+          >Weight matrices in neural networks</td
+        ></tr
+      >
+      <tr
+        ><td>Adding context columns</td><td>Learning attention patterns</td></tr
+      >
+      <tr
+        ><td>Calculating word distances</td><td
+          >Computing embedding similarities</td
+        ></tr
+      >
+      <tr
+        ><td>Dividing tallies by temperature</td><td
+          >Applying temperature to logits</td
+        ></tr
+      >
+      <tr
+        ><td>Keeping top beam paths</td><td
+          >Beam search with specified beam width</td
+        ></tr
+      >
+      <tr><td>Picking from buckets</td><td>Weighted random sampling</td></tr>
+      <tr
+        ><td>Training on new text</td><td
+          >Fine-tuning on domain-specific data</td
+        ></tr
+      >
+    </tbody>
+  </table>
+
+  <h2>Key insights</h2>
+
+  <ol>
+    <li>
+      <strong>Scale is the main difference:</strong> your small grid vs billions of
+      parameters, but the core concepts are identical.
+    </li>
+    <li>
+      <strong>Randomness creates variety:</strong> both your dice and modern LLMs use
+      controlled randomness to avoid repetitive output.
+    </li>
+    <li>
+      <strong>Context improves prediction:</strong> more context (bigram &rarr; trigram
+      &rarr; transformer) enables better text generation.
+    </li>
+    <li>
+      <strong>Embeddings capture meaning:</strong> words used similarly get similar
+      vectors, whether hand-calculated or learned by neural networks.
+    </li>
+    <li>
+      <strong>Training is just counting:</strong> at its core, training means observing
+      patterns in data---exactly what you did with tally marks.
+    </li>
+  </ol>
+
+  <p>
+    The hands-on activities demonstrate the fundamental operations of language
+    models. The main advances in modern AI come from doing these same operations
+    at massive scale with learned (rather than hand-crafted) patterns.
+  </p>
+</PageLayout>
+
+<style>
+  .glossary-entry {
+    scroll-margin-top: calc(var(--nav-height) + 1rem);
+  }
+
+  .glossary-entry h3 {
+    margin-bottom: 0.25em;
+  }
+
+  .glossary-entry:target h3 {
+    color: var(--color-brand);
+  }
+
+  .glossary-meta {
+    font-size: 0.9em;
+    color: var(--color-text-secondary);
+  }
+</style>

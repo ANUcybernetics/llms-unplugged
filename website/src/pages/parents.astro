@@ -2,6 +2,7 @@
 import PageLayout from "../layouts/PageLayout.astro";
 import Callout from "../components/Callout.astro";
 import CardList from "../components/CardList.astro";
+import GlossaryTerm from "../components/GlossaryTerm.astro";
 ---
 
 <PageLayout
@@ -13,7 +14,7 @@ import CardList from "../components/CardList.astro";
   <img src="/assets/images/hero-parents.avif" alt="Hero image: For parents" />
 
   <p>
-    Your kids are using ChatGPT. Maybe for homework help, maybe for creative
+    Your kids are using <GlossaryTerm id="chatgpt">ChatGPT (or Claude, or Gemini)</GlossaryTerm>. Maybe for homework help, maybe for creative
     writing, maybe just to mess around. You&rsquo;ve probably used it yourself.
     But do you actually understand what&rsquo;s happening when you type a prompt
     and get a response?
@@ -33,7 +34,7 @@ import CardList from "../components/CardList.astro";
     </p>
   </Callout>
 
-  <h2>Family activity: understanding ChatGPT together</h2>
+  <h2>Family activity: understanding LLMs together</h2>
 
   <ul>
     <li><strong>time</strong>: 60&ndash;90mins</li>
@@ -61,9 +62,9 @@ import CardList from "../components/CardList.astro";
   <ul>
     <li>
       <strong>00:00 start the conversation</strong> &mdash; who in the family has
-      used ChatGPT or similar tools? what for? how do you think it works? where do
+      used ChatGPT, Claude, or similar tools? what for? how do you think it works? where do
       the words come from? today we&rsquo;re going to build our own version&mdash;small
-      and simple, but using the exact same approach as ChatGPT.
+      and simple, but using the exact same approach as these <GlossaryTerm id="language-model">language models</GlossaryTerm>.
     </li>
     <li>
       <strong>00:10 <a href="/lessons/training">Training</a></strong> &mdash; work
@@ -88,7 +89,7 @@ import CardList from "../components/CardList.astro";
     </li>
     <li>
       <strong>00:55 close the loop</strong> &mdash; what surprised you about how this
-      works? does this change how you think about ChatGPT? what questions do you still
+      works? does this change how you think about ChatGPT and Claude? what questions do you still
       have?
     </li>
   </ul>
@@ -102,7 +103,7 @@ import CardList from "../components/CardList.astro";
 
   <ul>
     <li>
-      <strong>homework and learning</strong>: when is it okay to use ChatGPT?
+      <strong>homework and learning</strong>: when is it okay to use an LLM?
       what are the limitations? how do you check its work?
     </li>
     <li>
