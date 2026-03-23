@@ -351,3 +351,21 @@
     we often use "ChatGPT" as shorthand for any modern LLM chatbot---the
     concepts apply equally to Claude, Gemini, DeepSeek and others. The
     underlying principles are the same regardless of which product you use.
+
+- id: claude
+  term: Claude
+  category: core
+  description: >-
+    Anthropic's LLM chatbot. See ChatGPT.
+  see:
+    - label: ChatGPT
+      href: /glossary#chatgpt
+
+- id: gemini
+  term: Gemini
+  category: core
+  description: >-
+    Google's LLM chatbot. See ChatGPT.
+  see:
+    - label: ChatGPT
+      href: /glossary#chatgpt
