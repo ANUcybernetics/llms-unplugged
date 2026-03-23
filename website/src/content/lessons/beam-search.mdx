@@ -9,6 +9,8 @@ keyIdea: Instead of committing to one word at a time, beam search tracks several
   promising paths and chooses the best complete sequence.
 ---
 
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
+
 # Beam Search
 
 Generate text by exploring multiple paths at once, keeping the most promising
@@ -25,7 +27,7 @@ candidates at each step.
 
 ## Your goal
 
-Generate text using beam search with beam width 2 or 3. Compare the result to
+Generate text using <GlossaryTerm id="beam-search">beam search</GlossaryTerm> with <GlossaryTerm id="beam-width">beam width</GlossaryTerm> 2 or 3. Compare the result to
 standard single-path generation. Stretch goal: try different beam widths and see
 how results change.
 
@@ -107,7 +109,7 @@ score them, and physically remove the losers.
 ### Discussion questions
 
 - how does beam width affect output quality?
-- what happens with beam width 1? (it's just greedy search)
+- what happens with beam width 1? (it's just <GlossaryTerm id="greedy-sampling">greedy search</GlossaryTerm>)
 - what happens with very large beam width? (approaches exhaustive search)
 - when would beam search produce different results than random sampling?
 - can a path that looks bad early become the best path later?

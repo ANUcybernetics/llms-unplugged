@@ -55,8 +55,6 @@
   description: >-
     Using a trained model to produce new text by repeatedly predicting and
     selecting the next token.
-  synonyms:
-    - inference (in broader AI/ML contexts)
   see:
     - label: Generation
       href: /lessons/generation
@@ -120,7 +118,7 @@
   description: >-
     How many previous tokens the model considers when making predictions. Bigrams
     have a context window of 1, trigrams have 2, and modern LLMs can consider
-    128,000+ tokens.
+    hundreds of thousands or even millions of tokens.
   see:
     - label: Trigram
       href: /lessons/trigram
@@ -171,6 +169,8 @@
   see:
     - label: Generation
       href: /lessons/generation
+    - label: Weighted Randomness
+      href: /lessons/weighted-randomness
 
 - id: temperature
   term: Temperature
@@ -231,7 +231,9 @@
   category: understanding
   description: >-
     A numerical representation of a word. Each row in your bigram grid is that
-    word's embedding vector---a fingerprint of its usage context.
+    word's embedding vector---a fingerprint of its usage context. In real LLMs,
+    embeddings are learned separately rather than derived from raw counts, but
+    the principle is the same: words used in similar ways get similar vectors.
   synonyms:
     - word vector
     - embedding vector
@@ -258,8 +260,10 @@
   category: understanding
   description: >-
     The ability to focus on relevant previous words when making predictions.
-    Context columns are a manual form of attention, letting you consider
-    grammatical categories rather than just the immediately preceding word.
+    In real LLMs, attention is learned, weighted, and dynamic---the model
+    decides what to focus on for each prediction. Context columns illustrate
+    the motivation for attention: considering more than just the immediately
+    preceding word.
   see:
     - label: Context Columns
       href: /lessons/context-columns
@@ -343,6 +347,55 @@
     It uses attention mechanisms to process all words in parallel rather than
     sequentially.
 
+- id: prompt
+  term: Prompt
+  category: core
+  description: >-
+    The input text you give to a language model. In a bigram model, the
+    "prompt" is just the single current word used to predict what comes next.
+    In modern LLMs, a prompt can be hundreds of thousands or even millions of
+    tokens long, giving the model much more context to work with.
+  see:
+    - label: Generation
+      href: /lessons/generation
+
+- id: llm
+  term: LLM (Large Language Model)
+  category: core
+  description: >-
+    A language model trained on a very large amount of text, with billions of
+    parameters. The hand-built models in these lessons are tiny language
+    models; ChatGPT, Claude, and Gemini are large language models. The core
+    principles are identical---the difference is scale.
+  see:
+    - label: Training
+      href: /lessons/training
+
+- id: training-set
+  term: Training set
+  category: core
+  description: >-
+    The collection of text used to train a model. In our activities, this is
+    the passage you read through to fill in your grid or buckets. Modern LLMs
+    are trained on billions of pages of text from books, websites, and other
+    sources.
+  synonyms:
+    - training data
+    - corpus (plural corpora)
+  see:
+    - label: Training
+      href: /lessons/training
+
+- id: start-end-tokens
+  term: Start and end tokens
+  category: core
+  description: >-
+    Special tokens that mark the beginning and end of a text. Real LLMs use
+    these to know when to start and stop generating. The lessons in this
+    project don't include them explicitly---you just pick a starting word and
+    decide when to stop---but they're an important part of how real models
+    handle sentence and document boundaries.
+
 - id: chatgpt
   term: ChatGPT
   category: core
@@ -356,16 +409,14 @@
   term: Claude
   category: core
   description: >-
-    Anthropic's LLM chatbot. See ChatGPT.
-  see:
-    - label: ChatGPT
-      href: /glossary#chatgpt
+    Anthropic's LLM chatbot. The concepts on this site apply equally to Claude,
+    ChatGPT, Gemini, and other LLMs---the underlying principles are the same
+    regardless of which product you use.
 
 - id: gemini
   term: Gemini
   category: core
   description: >-
-    Google's LLM chatbot. See ChatGPT.
-  see:
-    - label: ChatGPT
-      href: /glossary#chatgpt
+    Google's LLM chatbot. The concepts on this site apply equally to Gemini,
+    ChatGPT, Claude, and other LLMs---the underlying principles are the same
+    regardless of which product you use.

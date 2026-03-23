@@ -11,6 +11,7 @@ keyIdea:
 ---
 
 import Callout from "../../components/Callout.astro";
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
 # Sampling
 
@@ -31,7 +32,7 @@ strategies. Stretch goal: design and test your own truncation rule.
 
 ## Key idea
 
-Sampling choices---temperature and truncation---can make the same model sound
+Sampling choices---<GlossaryTerm id="temperature">temperature</GlossaryTerm> and <GlossaryTerm id="truncation-strategy">truncation</GlossaryTerm>---can make the same model sound
 cautious, wild, repetitive, or inventive. Tweaking the sampler changes the
 output without retraining anything.
 

@@ -12,10 +12,11 @@ keyIdea:
 
 import Callout from "../../components/Callout.astro";
 import EmbeddingWidget from "../../components/widgets/EmbeddingWidget.svelte";
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
 # Word Embeddings
 
-Transform words into numerical vectors that capture meaning, revealing semantic
+Transform words into numerical vectors (<GlossaryTerm id="embedding">embeddings</GlossaryTerm>) that capture meaning, revealing semantic
 relationships between words in your model.
 
 ![Hero image: Word Embeddings](/assets/images/hero-word-embeddings.avif)
@@ -35,7 +36,7 @@ model. If you trained using buckets, the grid won't have any data to display.
 
 ## Your goal
 
-Create a similarity matrix (another square grid) that shows how similar or
+Create a <GlossaryTerm id="similarity-matrix">similarity matrix</GlossaryTerm> (another square grid) that shows how similar or
 different each pair of words is. Stretch goal: visualise the matrix (e.g., as a
 map or clustering).
 

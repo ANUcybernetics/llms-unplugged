@@ -11,12 +11,13 @@ keyIdea:
 import VariantToggle from "../../components/VariantToggle.svelte";
 import Variant from "../../components/Variant.astro";
 import LmBuckets from "../../components/LmBuckets.astro";
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
 # Trigram
 
 <VariantToggle client:load />
 
-Extend the bigram model to consider two words of context instead of one, leading
+Extend the <GlossaryTerm id="bigram-model">bigram model</GlossaryTerm> to consider two words of <GlossaryTerm id="context-window">context</GlossaryTerm> instead of one, leading
 to better generation.
 
 <Variant is="grid">
