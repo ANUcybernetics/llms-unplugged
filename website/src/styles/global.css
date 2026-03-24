@@ -102,6 +102,33 @@ h3 {
   font-size: 1.25rem;
 }
 
+/* Heading anchor links */
+.heading-anchor {
+  color: var(--color-brand);
+  text-decoration: none;
+  font-weight: 400;
+  margin-left: -1.25em;
+  padding-right: 0.25em;
+  width: 1.25em;
+  display: inline-block;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+h2:hover > .heading-anchor,
+h3:hover > .heading-anchor,
+h4:hover > .heading-anchor,
+h5:hover > .heading-anchor,
+h6:hover > .heading-anchor,
+.heading-anchor:focus {
+  opacity: 1;
+}
+
+.heading-anchor:hover {
+  color: var(--color-brand-hover);
+  text-decoration: none;
+}
+
 blockquote {
   border-left: 4px solid var(--color-brand);
   margin: 1rem 0;
