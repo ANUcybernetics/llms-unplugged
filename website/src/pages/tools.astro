@@ -11,16 +11,21 @@ import TypstCompiler from "../components/TypstCompiler.svelte";
   <h1>Tools</h1>
 
   <p>
-    Generate N-gram language model materials directly in your browser. Upload a
-    text file or paste text, choose your options, and download a PDF&mdash;no
-    server required. Then print it out and use in any of the
-    <em>LLMs Unplugged</em> activities that requires a pre-trained language model.
+    Generate printable materials for <em>LLMs Unplugged</em> activities. There
+    are two types of output, matching the two ways of working with language
+    models in our lessons.
   </p>
 
-  <Callout type="info" title="Example booklets">
-    <p>
-      Don&rsquo;t want to generate your own? Download ready-to-print booklets:
-    </p>
+  <h2>Booklets (for dice generation)</h2>
+
+  <p>
+    Dice lookup tables for probabilistic text generation. Each entry shows a
+    prefix, a dice range, and possible next tokens&mdash;roll the dice and read
+    off the next word. Used in the
+    <a href="/lessons/pretrained-generation">Pre-trained Model Generation</a> lesson.
+  </p>
+
+  <Callout type="info" title="Ready-to-print booklets">
     <ul>
       <li>
         <a href="/assets/pdfs/booklets/green-eggs-and-ham.pdf"
@@ -52,7 +57,36 @@ import TypstCompiler from "../components/TypstCompiler.svelte";
     </ul>
   </Callout>
 
-  <h2>How to use</h2>
+  <h2>Cutouts (for bucket training)</h2>
+
+  <p>
+    Printable token cards for hands-on training. Cut out the tokens, read the
+    prefix label on each card, and sort them into the matching bucket. Used in
+    the <a href="/lessons/training">Training</a> lesson (bucket method).
+  </p>
+
+  <Callout type="info" title="Ready-to-print cutouts">
+    <ul>
+      <li>
+        <a href="/assets/pdfs/cutouts/green-eggs-and-ham.pdf"
+          >Green Eggs and Ham</a
+        > (Dr Seuss, 10 pages)
+      </li>
+      <li>
+        <a href="/assets/pdfs/cutouts/the-cat-in-the-hat.pdf"
+          >The Cat in the Hat</a
+        > (Dr Seuss, 18 pages)
+      </li>
+    </ul>
+  </Callout>
+
+  <h2>Generate your own</h2>
+
+  <p>
+    Upload a text file or paste text, choose your options, and download a
+    PDF&mdash;no server required. Your text is processed entirely in your
+    browser.
+  </p>
 
   <ol>
     <li>
@@ -64,11 +98,12 @@ import TypstCompiler from "../components/TypstCompiler.svelte";
     </li>
     <li>
       <strong>Choose options</strong>: select the n-gram size and output type
+      (booklet or cutouts)
     </li>
     <li><strong>Generate</strong>: preview as SVG or download as PDF</li>
   </ol>
 
-  <h2>Supported file formats</h2>
+  <h3>Supported file formats</h3>
 
   <ul>
     <li><code>.txt</code> &mdash; plain text files</li>
@@ -85,27 +120,10 @@ import TypstCompiler from "../components/TypstCompiler.svelte";
     </li>
   </ul>
 
-  <h2>Output types</h2>
-
-  <ul>
-    <li>
-      <strong>Booklet</strong>: generates dice lookup tables for probabilistic
-      text generation, as used in the
-      <a href="/lessons/pretrained-generation">Pre-trained Model Generation</a> lesson
-    </li>
-    <li>
-      <strong>Cutouts</strong>: generates token cards for the
-      <a href="/lessons/training">Training</a> lesson (bucket method)
-    </li>
-  </ul>
-
-  <h2>PDF generator</h2>
-
   <Callout type="warning" title="Experimental">
     <p>
-      This is an experimental feature. The compiler and processing modules are
-      loaded from CDN on first use, which may take a moment. Your text is
-      processed entirely in your browser and is never sent to any server.
+      The in-browser compiler and processing modules are loaded from CDN on
+      first use, which may take a moment.
     </p>
   </Callout>
 
