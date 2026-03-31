@@ -3,6 +3,7 @@
 
 // Configuration
 #let font_size = 36pt // Master size - change this to scale everything
+#let prefix_size = 0.4em
 #let index_size = 0.2em
 #let cell_padding_x = 0.15em
 #let cell_padding_top = 0.15em
@@ -75,7 +76,7 @@
   // Measure main content and prefix to determine cell width
   let main_measured = measure(text_content)
   let prefix_measured = if prefix_content != none {
-    measure(text(size: index_size)[#prefix_content])
+    measure(text(size: prefix_size)[#prefix_content])
   } else {
     (width: 0pt)
   }
@@ -93,7 +94,7 @@
       [
         #if prefix_content != none {
           place(top + left, dx: -0.1em, dy: 0.05em)[
-            #text(size: index_size, fill: luma(160))[#prefix_content]
+            #text(size: prefix_size, fill: luma(160))[#prefix_content]
           ]
         }
         #place(bottom + right, dx: 0.1em, dy: -0.05em)[
@@ -117,7 +118,7 @@
       [
         #if prefix_content != none {
           place(top + left, dx: -0.1em, dy: 0.05em)[
-            #text(size: index_size, fill: luma(200))[#prefix_content]
+            #text(size: prefix_size, fill: luma(200))[#prefix_content]
           ]
         }
         #place(bottom + right, dx: 0.1em, dy: -0.05em)[
