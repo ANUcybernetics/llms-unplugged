@@ -2,7 +2,6 @@ import { defineConfig, fontProviders } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import svelte from "@astrojs/svelte";
-import tailwindcss from "@tailwindcss/vite";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 import remarkSmartypants from "remark-smartypants";
@@ -37,7 +36,6 @@ export default defineConfig({
     css: {
       transformer: "lightningcss",
     },
-    plugins: [tailwindcss({ exclude: [/\.deck\.svx/] })],
   },
   fonts: [
     {

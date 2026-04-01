@@ -1,8 +1,4 @@
 /* stylelint-disable import-notation */
-@import "tailwindcss" source(none);
-
-@source "./";
-
 @import "@animotion/core/theme";
 @import "../styles/common.css";
 
