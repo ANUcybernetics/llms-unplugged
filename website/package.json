@@ -41,6 +41,7 @@
     "lightningcss": "^1.32.0",
     "mammoth": "^1.11.0",
     "pdfjs-dist": "^5.4.624",
+    "reveal.js": "^6.0.0",
     "svelte": "^5.0.0"
   },
   "devDependencies": {

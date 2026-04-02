@@ -5,13 +5,13 @@ import svelte from "@astrojs/svelte";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeSlug from "rehype-slug";
 import remarkSmartypants from "remark-smartypants";
-import { astromotion } from "astromotion";
+import { astromotion, deckPreprocessor } from "astromotion";
 
 export default defineConfig({
   site: "https://www.llmsunplugged.org",
   integrations: [
     mdx(),
-    svelte(),
+    svelte({ preprocess: [deckPreprocessor()] }),
     sitemap(),
     astromotion({ theme: "./src/decks/theme.css" }),
   ],
