@@ -26,3 +26,6 @@ mise.local.toml
 .unlighthouse
 .jj/
 website/dogfood-output/
+
+# Typst templates copied from cli/ at build time
+website/src/templates/*.typ
