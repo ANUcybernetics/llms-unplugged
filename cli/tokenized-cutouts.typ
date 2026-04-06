@@ -94,7 +94,7 @@
       [
         #if prefix_content != none {
           place(top + left, dx: -0.1em, dy: 0.05em)[
-            #text(size: prefix_size, fill: luma(160))[#prefix_content]
+            #text(size: prefix_size, fill: rgb(180, 0, 0))[#prefix_content]
           ]
         }
         #place(bottom + right, dx: 0.1em, dy: -0.05em)[
@@ -118,7 +118,7 @@
       [
         #if prefix_content != none {
           place(top + left, dx: -0.1em, dy: 0.05em)[
-            #text(size: prefix_size, fill: luma(200))[#prefix_content]
+            #text(size: prefix_size, fill: rgb(220, 140, 140))[#prefix_content]
           ]
         }
         #place(bottom + right, dx: 0.1em, dy: -0.05em)[
