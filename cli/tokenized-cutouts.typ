@@ -5,10 +5,10 @@
 #let font_size = 36pt // Master size - change this to scale everything
 #let prefix_size = 0.4em
 #let index_size = 0.2em
-#let cell_padding_x = 0.15em
-#let cell_padding_top = 0.15em
-#let cell_padding_bottom = 0.35em // Extra space for descenders
-#let border_width = 0.5pt // Keep absolute for crisp lines
+#let cell_padding_x = 0.3em
+#let cell_padding_top = 0.3em
+#let cell_padding_bottom = 0.5em // Extra space for descenders
+#let border_width = 4pt // Keep absolute for crisp lines
 #let border_color = luma(180)
 
 // Get configuration from sys.inputs
@@ -99,14 +99,14 @@
       inset: (x: cell_padding_x),
       [
         #if prefix_content != none {
-          place(top + left, dx: -0.1em, dy: 0.05em)[
+          place(top + left, dy: cell_padding_top * 0.3)[
             #text(size: prefix_size, fill: rgb(180, 0, 0))[#prefix_content]
           ]
         }
-        #place(bottom + right, dx: 0.1em, dy: -0.05em)[
+        #place(bottom + right, dy: -cell_padding_bottom * 0.15)[
           #text(size: index_size, fill: index_fill)[#token.index]
         ]
-        #align(horizon)[#text_content]
+        #align(horizon)[#v(0.15em)#text_content]
       ],
     )
   } else {
@@ -123,14 +123,14 @@
       inset: (x: cell_padding_x),
       [
         #if prefix_content != none {
-          place(top + left, dx: -0.1em, dy: 0.05em)[
+          place(top + left, dy: cell_padding_top * 0.3)[
             #text(size: prefix_size, fill: rgb(220, 140, 140))[#prefix_content]
           ]
         }
-        #place(bottom + right, dx: 0.1em, dy: -0.05em)[
+        #place(bottom + right, dy: -cell_padding_bottom * 0.15)[
           #text(size: index_size, fill: index_fill)[#token.index]
         ]
-        #align(horizon)[#text(fill: luma(160))[#text_content]]
+        #align(horizon)[#v(0.15em)#text(fill: luma(160))[#text_content]]
       ],
     )
   }
@@ -142,7 +142,7 @@
 // Each row has a top border, and we add a bottom border after the last row
 
 // Height for all cells - must fit tallest content (punctuation at 1.25em + box)
-#let cell_height = 1.5em
+#let cell_height = 1.6em
 
 // Use block layout with manual line breaks to create rows
 #set par(leading: 0pt, spacing: 0pt)
