@@ -19,7 +19,7 @@
 
 #set page(
   paper: paper_size,
-  margin: 1.5cm,
+  margin: 1cm,
 )
 
 // Load the JSON data
