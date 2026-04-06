@@ -27,30 +27,36 @@
 #let tokens = json_data.tokens
 #let doc_metadata = json_data.metadata
 
-// Helper to style punctuation with overline
-// When used in corner labels, pass the fill colour to match the stroke
-#let style-punct(t, stroke_color: black, large: false) = {
+// Helper to style punctuation in a square rounded-rect box
+// The glyph is oversized and raised so the character sits near the vertical centre
+#let style-punct(t, fill_color: black, size: 1em) = {
   let is_punct = t == "." or t == ","
   if is_punct {
-    let size_factor = if large { 1.25em } else { 1em }
-    text(size: size_factor, weight: "bold", overline(
-      offset: -0.25em,
-      stroke: 0.05em + stroke_color,
-      t,
-    ))
+    let glyph = text(size: size * 2, weight: "bold", fill: white, t)
+    let side = measure(text(size: size)[M]).height
+    box(
+      fill: fill_color,
+      radius: side * 0.15,
+      width: side,
+      height: side,
+      clip: true,
+      baseline: side * 0.3,
+      place(bottom + center, dy: -side * 0.35, glyph),
+    )
   } else {
     text(t)
   }
 }
 
 // Helper to format prefix array as styled text
-#let format-prefix(prefix_arr, stroke_color: black) = {
+#let format-prefix(prefix_arr, fill_color: black) = {
   if prefix_arr == none or prefix_arr.len() == 0 {
     none
   } else {
     let styled_parts = prefix_arr.map(t => style-punct(
       t,
-      stroke_color: stroke_color,
+      fill_color: fill_color,
+      size: prefix_size * 1.4,
     ))
     styled_parts.join([ ])
   }
@@ -59,7 +65,7 @@
 // Function to render a single token cell (no horizontal borders)
 // The cell width is the maximum of the main token width and the prefix width
 #let token-cell(token, is_last: false, height: auto) = {
-  let text_content = style-punct(token.text, large: true)
+  let text_content = style-punct(token.text, size: 0.85em)
 
   // Right border unless last in row
   let right_stroke = if is_last { none } else { border_width + border_color }
@@ -70,7 +76,7 @@
   let prefix_arr = token.at("prefix", default: ())
   let prefix_content = format-prefix(
     prefix_arr,
-    stroke_color: if token.keep { luma(160) } else { luma(200) },
+    fill_color: if token.keep { rgb(180, 0, 0) } else { rgb(220, 140, 140) },
   )
 
   // Measure main content and prefix to determine cell width
@@ -135,7 +141,7 @@
 // We need to use a table-like approach with full-width rows
 // Each row has a top border, and we add a bottom border after the last row
 
-// Height for all cells - must fit tallest content (punctuation at 1.25em + overline)
+// Height for all cells - must fit tallest content (punctuation at 1.25em + box)
 #let cell_height = 1.5em
 
 // Use block layout with manual line breaks to create rows
