@@ -27,6 +27,72 @@
 #let tokens = json_data.tokens
 #let doc_metadata = json_data.metadata
 
+// Derive n from the first token that has a prefix
+#let n = {
+  let found = tokens.find(t => "prefix" in t and t.prefix.len() > 0)
+  if found != none { found.prefix.len() + 1 } else { 2 }
+}
+
+#let prefix-word-count = n - 1
+#let prefix-words = if prefix-word-count == 1 { "word" } else { "words" }
+
+// Instructions page
+#let instructions-page() = {
+  set text(size: 14pt)
+
+  [
+    = How to use these token cutouts
+
+    These pages contain the text #emph(doc_metadata.title) by
+    #doc_metadata.author. The #text(fill: rgb(180, 0, 0), weight: "bold")[red
+      text] above each token shows its prefix---the #str(prefix-word-count)
+    #prefix-words before it in the original text.
+
+    == Training: build a bucket model
+
+    + *cut the sheets into individual tokens* along the grey lines (you don't
+      have to keep them in order afterwards)
+
+    + get rid of the first token (the greyed-out one), then starting from the
+      second token *group the tokens* by the #text(
+        fill: rgb(180, 0, 0),
+        weight: "bold",
+      )[red text] into buckets/containers (or just separate piles on the table)
+
+    + *repeat from step 3* until all tokens are grouped together into buckets
+
+    Your collection of buckets is now a language model.
+
+    == Generation: create new text
+
+    + *choose any piece of paper (from any bucket)* and write down its word (the
+      black one, not the red one)---this is the first word of your generated
+      text
+
+    + *find the bucket* whose "grouping" red text matches that current word (the
+      word you just wrote down)
+
+    + *close your eyes and pick a random token* from inside that bucket
+
+    + *write down* the word on the token, then *put it back* in the same bucket
+      you took it from
+
+    + *repeat from step 2* as many times as you want, writing down the words as
+      you go
+
+    #v(0.3cm)
+    #text(style: "italic")[
+      Tip: if a bucket has more copies of the same word, that word is more
+      likely to be picked---this is how the model captures probabilities. The
+      more text you train on, the richer the model becomes.
+    ]
+  ]
+
+  pagebreak()
+}
+
+#instructions-page()
+
 // Helper to style punctuation in a square rounded-rect box
 // The glyph is oversized and raised so the character sits near the vertical centre
 #let style-punct(t, fill_color: black, size: 1em) = {
@@ -44,7 +110,7 @@
       place(bottom + center, dy: -side * 0.35, glyph),
     )
   } else {
-    text(t)
+    text(fill: fill_color, t)
   }
 }
 
@@ -64,8 +130,12 @@
 
 // Function to render a single token cell (no horizontal borders)
 // The cell width is the maximum of the main token width and the prefix width
-#let token-cell(token, is_last: false, height: auto) = {
-  let text_content = style-punct(token.text, size: 0.85em)
+#let token-cell(token, is_last: false, is_first: false, height: auto) = {
+  let text_content = if is_first {
+    style-punct(token.text, fill_color: luma(160), size: 0.85em)
+  } else {
+    style-punct(token.text, size: 0.85em)
+  }
 
   // Right border unless last in row
   let right_stroke = if is_last { none } else { border_width + border_color }
@@ -106,7 +176,7 @@
         #place(bottom + right, dy: -cell_padding_bottom * 0.15)[
           #text(size: index_size, fill: index_fill)[#token.index]
         ]
-        #align(horizon)[#v(0.15em)#text_content]
+        #align(horizon)[#v(0.15em)#if is_first { text(fill: luma(160))[#text_content] } else { text_content }]
       ],
     )
   } else {
@@ -157,7 +227,7 @@
 
   // Measure and distribute tokens into rows
   for token in tokens {
-    let cell = token-cell(token, height: cell_height)
+    let cell = token-cell(token, is_first: token.index == 1, height: cell_height)
     let cell_size = measure(cell)
 
     if current_width + cell_size.width > max_width and current_row.len() > 0 {
@@ -184,7 +254,7 @@
     // Render tokens in this row
     box(width: 100%)[
       #for (i, item) in row.enumerate() {
-        token-cell(item.token, is_last: i == row.len() - 1, height: cell_height)
+        token-cell(item.token, is_last: i == row.len() - 1, is_first: item.token.index == 1, height: cell_height)
       }
     ]
   }
