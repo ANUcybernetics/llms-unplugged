@@ -1,7 +1,8 @@
 use clap::{Args, Parser, Subcommand};
 use llms_unplugged::{
     CutoutsMetadata, Metadata, NGramCounter, ProcessingStats, RawToken, WordFollowEntry,
-    process_file_for_cutouts, render_bigram_tsv, save_to_json, split_entries_into_books,
+    process_file, process_file_for_cutouts, render_bigram_tsv, save_to_json,
+    split_entries_into_books,
 };
 use std::fs;
 use std::io;
@@ -253,8 +254,13 @@ fn run_build_command(args: &BuildArgs) -> Result<(), CliError> {
 
 fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
     let punctuation: Vec<char> = args.punctuation.chars().collect();
-    let (tokens, metadata) =
+    let (tokens, mut metadata) =
         process_file_for_cutouts(&args.input, punctuation, args.n).map_err(CliError::Processing)?;
+
+    let (_entries, stats, _ngram_meta) =
+        process_file(&args.input, args.n).map_err(CliError::Processing)?;
+    metadata.entropy = stats.entropy;
+    metadata.perplexity = stats.perplexity;
 
     fs::create_dir_all(&args.output).map_err(CliError::Processing)?;
 
@@ -794,6 +800,11 @@ fn print_summary(stats: &ProcessingStats, metadata: Option<&Metadata>, n: usize,
         );
     }
 
+    println!(
+        "Entropy: {:.2} bits/token (perplexity: {:.1})",
+        stats.entropy, stats.perplexity
+    );
+
     if raw {
         println!("\nRaw counts emitted (no dice scaling).");
     } else {
@@ -826,6 +837,8 @@ mod tests {
             total_ngram_occurrences: 0,
             most_common_ngram: None,
             most_popular_prefix: None,
+            entropy: 0.0,
+            perplexity: 1.0,
         }
     }
 

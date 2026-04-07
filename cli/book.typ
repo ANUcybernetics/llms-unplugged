@@ -194,6 +194,18 @@
 
     ]
     #v(0.5cm)
+    #context if "stats" in doc_metadata and doc_metadata.stats != none {
+      let stats = doc_metadata.stats
+      text(size: 0.9em)[
+        #heading(level: 3)[Model statistics]
+        - *Total tokens:* #stats.total_tokens
+        - *Unique prefixes:* #stats.unique_ngrams
+        - *Entropy:* #calc.round(stats.entropy, digits: 2) bits/token --- how unpredictable each dice roll is
+        - *Perplexity:* #calc.round(stats.perplexity, digits: 1) --- effective number of choices per dice roll
+      ]
+      v(0.5cm)
+    }
+
     #text(size: 0.9em, style: "italic")[
       Disclaimer: this reference contains a statistical language model derived
       from text corpus analysis. The patterns within represent probabilistic

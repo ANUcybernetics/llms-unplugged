@@ -86,6 +86,13 @@
       likely to be picked---this is how the model captures probabilities. The
       more text you train on, the richer the model becomes.
     ]
+
+    #v(0.5cm)
+    === Model statistics
+
+    - *Total tokens:* #doc_metadata.total_tokens (#doc_metadata.kept_tokens kept)
+    - *Entropy:* #calc.round(doc_metadata.entropy, digits: 2) bits/token --- how unpredictable each pick is
+    - *Perplexity:* #calc.round(doc_metadata.perplexity, digits: 1) --- effective number of choices per pick
   ]
 
   pagebreak()

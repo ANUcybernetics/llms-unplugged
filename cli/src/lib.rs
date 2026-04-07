@@ -59,6 +59,10 @@ pub struct ProcessingStats {
     /// Prefix with the most cumulative followers
     #[serde(skip_serializing_if = "Option::is_none")]
     pub most_popular_prefix: Option<(Vec<String>, usize)>,
+    /// Weighted average conditional entropy (bits per token)
+    pub entropy: f64,
+    /// Perplexity (2^entropy) --- effective number of choices per generation step
+    pub perplexity: f64,
 }
 
 /// Represents an N-gram prefix and its following words with their counts
@@ -107,6 +111,8 @@ impl NGramCounter {
                 total_ngram_occurrences: 0,
                 most_common_ngram: None,
                 most_popular_prefix: None,
+                entropy: 0.0,
+                perplexity: 1.0,
             },
             window: VecDeque::with_capacity(prefix_size),
             metadata: None,
@@ -267,6 +273,24 @@ impl NGramCounter {
 
         // Set the count of unique n-grams
         self.stats.unique_ngrams = self.prefix_map.len();
+
+        // Compute weighted average conditional entropy
+        let total_occurrences = self.stats.total_ngram_occurrences as f64;
+        if total_occurrences > 0.0 {
+            let mut weighted_entropy = 0.0;
+            for followers in self.prefix_map.values() {
+                let prefix_total: usize = followers.values().sum();
+                let prefix_total_f = prefix_total as f64;
+                let mut prefix_entropy = 0.0;
+                for &count in followers.values() {
+                    let p = count as f64 / prefix_total_f;
+                    prefix_entropy -= p * p.log2();
+                }
+                weighted_entropy += (prefix_total_f / total_occurrences) * prefix_entropy;
+            }
+            self.stats.entropy = weighted_entropy;
+            self.stats.perplexity = weighted_entropy.exp2();
+        }
     }
 
     /// Get the results as a sorted list of WordFollowEntry
@@ -308,6 +332,8 @@ pub struct CutoutsMetadata {
     pub author: String,
     pub total_tokens: usize,
     pub kept_tokens: usize,
+    pub entropy: f64,
+    pub perplexity: f64,
 }
 
 /// Processes a text file and returns raw tokens for bucket training cutouts
@@ -431,6 +457,8 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
         author,
         total_tokens: tokens.len(),
         kept_tokens,
+        entropy: 0.0,
+        perplexity: 1.0,
     };
 
     Ok((tokens, metadata))
@@ -1813,6 +1841,167 @@ mod tests {
         // yes has prefix ["."]
         assert_eq!(tokens[4].text, "yes");
         assert_eq!(tokens[4].prefix, vec!["."]);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_entropy_zero_for_deterministic_model() -> io::Result<()> {
+        let temp_file = NamedTempFile::new()?;
+        let path = temp_file.path().to_owned();
+        {
+            let mut file = File::create(&path)?;
+            writeln!(file, "---\ntitle: T\nauthor: A\nurl: https://x.com\n---")?;
+            writeln!(file, "a b c d e")?;
+            file.flush()?;
+        }
+        let (_entries, stats, _meta) = process_file(&path, 2)?;
+        assert!(
+            stats.entropy.abs() < 1e-10,
+            "Deterministic model should have zero entropy, got {}",
+            stats.entropy
+        );
+        assert!(
+            (stats.perplexity - 1.0).abs() < 1e-10,
+            "Deterministic model should have perplexity 1.0, got {}",
+            stats.perplexity
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn test_entropy_positive_for_nondeterministic_model() -> io::Result<()> {
+        let temp_file = NamedTempFile::new()?;
+        let path = temp_file.path().to_owned();
+        {
+            let mut file = File::create(&path)?;
+            writeln!(file, "---\ntitle: T\nauthor: A\nurl: https://x.com\n---")?;
+            writeln!(file, "the cat the dog")?;
+            file.flush()?;
+        }
+        let (_entries, stats, _meta) = process_file(&path, 2)?;
+        assert!(
+            stats.entropy > 0.0,
+            "Non-deterministic model should have positive entropy"
+        );
+        assert!(
+            stats.perplexity > 1.0,
+            "Non-deterministic model should have perplexity > 1"
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn test_entropy_known_value() -> io::Result<()> {
+        let temp_file = NamedTempFile::new()?;
+        let path = temp_file.path().to_owned();
+        {
+            let mut file = File::create(&path)?;
+            writeln!(file, "---\ntitle: T\nauthor: A\nurl: https://x.com\n---")?;
+            // "go" has 2 equally-likely followers (left, right) -> H = 1.0 bit
+            // "left" and "right" each have 1 deterministic follower -> H = 0.0
+            // Bigrams: go→left, left→go, go→right, right→go (4 total)
+            // Weighted: (2/4)*1.0 + (1/4)*0.0 + (1/4)*0.0 = 0.5
+            writeln!(file, "go left go right")?;
+            file.flush()?;
+        }
+        let (_entries, stats, _meta) = process_file(&path, 2)?;
+
+        // "go" prefix: 2 bigrams, entropy 1.0 bit, weight 2/3
+        // "left" prefix: 1 bigram, entropy 0.0 bit, weight 1/3
+        // Weighted: (2/3)*1.0 + (1/3)*0.0 = 0.667
+        // But "right" is last word so only 3 bigrams total: go→left, left→go, go→right
+        let expected = 2.0 / 3.0;
+        assert!(
+            (stats.entropy - expected).abs() < 1e-6,
+            "Expected entropy ~{:.3}, got {:.6}",
+            expected,
+            stats.entropy
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn test_entropy_serialised_in_json() -> io::Result<()> {
+        let temp_file = NamedTempFile::new()?;
+        let path = temp_file.path().to_owned();
+        {
+            let mut file = File::create(&path)?;
+            writeln!(file, "---\ntitle: T\nauthor: A\nurl: https://x.com\n---")?;
+            writeln!(file, "the cat sat on the mat and the cat ate")?;
+            file.flush()?;
+        }
+
+        let (entries, stats, metadata) = process_file(&path, 2)?;
+
+        let json_file = NamedTempFile::new()?;
+        save_to_json(
+            &entries,
+            json_file.path(),
+            metadata.as_ref(),
+            Some(&stats),
+            false,
+        )?;
+
+        let json: serde_json::Value =
+            serde_json::from_reader(BufReader::new(File::open(json_file.path())?))?;
+        let json_stats = json
+            .get("metadata")
+            .unwrap()
+            .get("stats")
+            .expect("stats should be present in JSON");
+        let json_entropy = json_stats.get("entropy").unwrap().as_f64().unwrap();
+        let json_perplexity = json_stats.get("perplexity").unwrap().as_f64().unwrap();
+
+        assert!(
+            (json_entropy - stats.entropy).abs() < 1e-6,
+            "JSON entropy should match computed entropy"
+        );
+        assert!(
+            (json_perplexity - stats.perplexity).abs() < 1e-6,
+            "JSON perplexity should match computed perplexity"
+        );
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_cutouts_metadata_gets_entropy_from_process_file() -> io::Result<()> {
+        let temp_file = NamedTempFile::new()?;
+        let path = temp_file.path().to_owned();
+
+        {
+            let mut file = File::create(&path)?;
+            writeln!(file, "---")?;
+            writeln!(file, "title: Cutouts Entropy")?;
+            writeln!(file, "author: Test")?;
+            writeln!(file, "url: https://example.com")?;
+            writeln!(file, "---")?;
+            writeln!(file, "I do not like green eggs and ham I do not like them")?;
+            file.flush()?;
+        }
+
+        // process_file_for_cutouts returns default entropy (set by caller)
+        let (_tokens, mut cutouts_meta) =
+            process_file_for_cutouts(&path, vec![',', '.'], 2)?;
+
+        // Simulate what run_cutouts_command does: get stats from process_file
+        let (_entries, stats, _meta) = process_file(&path, 2)?;
+        cutouts_meta.entropy = stats.entropy;
+        cutouts_meta.perplexity = stats.perplexity;
+
+        assert!(
+            cutouts_meta.entropy > 0.0,
+            "Cutouts entropy should be positive for text with repeated prefixes"
+        );
+        assert!(
+            cutouts_meta.perplexity > 1.0,
+            "Cutouts perplexity should be > 1"
+        );
+        assert!(
+            (cutouts_meta.perplexity - cutouts_meta.entropy.exp2()).abs() < 1e-10,
+            "Perplexity should equal 2^entropy"
+        );
 
         Ok(())
     }
