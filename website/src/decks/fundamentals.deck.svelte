@@ -185,4 +185,4 @@ generate new text
   }
 </style>
 
-<!-- _class: socy-logo -->
+<!-- @include ./partials/socy-logo.md -->

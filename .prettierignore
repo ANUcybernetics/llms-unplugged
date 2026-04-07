@@ -1,2 +1,3 @@
 website/slides/**/*.md
 website/src/decks/**/*.deck.svx
+website/src/decks/**/*.deck.svelte
