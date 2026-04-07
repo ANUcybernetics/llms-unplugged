@@ -58,7 +58,7 @@ generate new text
 <!-- TODO re-enable when sampling lesson is ready -->
 <!-- @include ./sampling.md -->
 
-<!-- --- -->
+---
 
 ## Discussion
 

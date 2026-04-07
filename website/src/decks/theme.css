@@ -41,6 +41,12 @@ body.reveal-viewport {
   background-color: var(--r-background-color);
 }
 
+.reveal {
+  color: var(--r-main-color);
+  font-family: var(--r-main-font);
+  font-size: var(--r-main-font-size);
+}
+
 .reveal .progress.progress {
   color: var(--r-link-color);
 }
