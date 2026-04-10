@@ -35,9 +35,10 @@ Unplugged proved has proven that at scale.
 
 _LLMs Unplugged_ applies this same philosophy to language models. Rather than
 explaining transformers through mathematics or implementing neural networks in
-code, participants build working models with pen, paper, and dice. This hands-on
-approach makes sophisticated AI concepts accessible to anyone, regardless of
-technical background.
+code, participants count word patterns in a text, record them as tally marks on
+grid paper or physical piles of paper cutouts, then roll dice to generate new
+text from those patterns. This hands-on approach makes sophisticated AI concepts
+accessible to anyone, regardless of technical background.
 
 ## AI Unplugged resources
 
