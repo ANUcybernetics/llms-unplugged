@@ -5,13 +5,14 @@ import {
   selectStartWord,
 } from "../../src/lib/machines/diceGeneration";
 
-
 function buildModel(text: string) {
   const tokens = parseTokens(text);
   const vocabulary = getVocabulary(tokens);
   const model = buildBigramModel(tokens);
   return { tokens, vocabulary, model };
 }
+
+const rng = () => 0;
 
 describe("createDiceGenerationMachine", () => {
   const { vocabulary, model } = buildModel("the cat sat");
@@ -27,7 +28,6 @@ describe("createDiceGenerationMachine", () => {
 
   it("transitions idle -> showing-options with a start word", () => {
     const machine = createDiceGenerationMachine(model, vocabulary, diceSides);
-    const rng = () => 0;
     let state = machine.initialState();
 
     state = machine.step(state, rng);
@@ -38,7 +38,6 @@ describe("createDiceGenerationMachine", () => {
 
   it("transitions showing-options -> rolled with dice result", () => {
     const machine = createDiceGenerationMachine(model, vocabulary, diceSides);
-    const rng = () => 0;
     let state = machine.initialState();
 
     state = machine.step(state, rng);
@@ -55,7 +54,6 @@ describe("createDiceGenerationMachine", () => {
 
   it("transitions rolled -> showing-options when successor exists", () => {
     const machine = createDiceGenerationMachine(model, vocabulary, diceSides);
-    const rng = () => 0;
     let state = machine.initialState();
 
     state = machine.step(state, rng);
@@ -73,9 +71,8 @@ describe("createDiceGenerationMachine", () => {
   });
 
   it("reaches complete when word has no successors", () => {
-    const { vocabulary, model } = buildModel("a b");
-    const machine = createDiceGenerationMachine(model, vocabulary, 6);
-    const rng = () => 0;
+    const { vocabulary: simpleVocab, model: simpleModel } = buildModel("a b");
+    const machine = createDiceGenerationMachine(simpleModel, simpleVocab, 6);
     let state = machine.initialState();
 
     state = machine.step(state, rng);
@@ -88,9 +85,8 @@ describe("createDiceGenerationMachine", () => {
   });
 
   it("is a no-op when already complete", () => {
-    const { vocabulary, model } = buildModel("a b");
-    const machine = createDiceGenerationMachine(model, vocabulary, 6);
-    const rng = () => 0;
+    const { vocabulary: simpleVocab, model: simpleModel } = buildModel("a b");
+    const machine = createDiceGenerationMachine(simpleModel, simpleVocab, 6);
     let state = machine.initialState();
 
     while (!machine.isComplete(state)) {
@@ -103,9 +99,8 @@ describe("createDiceGenerationMachine", () => {
   });
 
   it("completes immediately with no valid starters", () => {
-    const { model } = buildModel("a");
-    const machine = createDiceGenerationMachine(model, ["a"], 6);
-    const rng = () => 0;
+    const { model: singleModel } = buildModel("a");
+    const machine = createDiceGenerationMachine(singleModel, ["a"], 6);
     let state = machine.initialState();
 
     state = machine.step(state, rng);

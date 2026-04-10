@@ -12,6 +12,8 @@ function buildModel(text: string) {
   return { tokens, vocabulary, model };
 }
 
+const rng = () => 0;
+
 describe("createPretrainedGenerationMachine", () => {
   it("starts in idle phase", () => {
     const { vocabulary, model } = buildModel("the cat sat");
@@ -53,14 +55,10 @@ describe("createPretrainedGenerationMachine", () => {
   it("rolls dice for multi-follower entries", () => {
     const { vocabulary, model } = buildModel("a b a c");
     const machine = createPretrainedGenerationMachine(model, vocabulary);
-    const rng = () => 0;
 
     let state = machine.step(machine.initialState(), rng);
     expect(state.phase.kind).toBe("showing-entry");
-    if (
-      state.phase.kind === "showing-entry" &&
-      state.phase.entry.followers.length > 1
-    ) {
+    if (state.phase.kind === "showing-entry" && state.phase.entry.followers.length > 1) {
       state = machine.step(state, rng);
       expect(state.phase.kind).toBe("rolled");
       if (state.phase.kind === "rolled") {
@@ -72,7 +70,6 @@ describe("createPretrainedGenerationMachine", () => {
   it("reaches complete when no successors", () => {
     const { vocabulary, model } = buildModel("a b");
     const machine = createPretrainedGenerationMachine(model, vocabulary);
-    const rng = () => 0;
     let state = machine.initialState();
 
     while (!machine.isComplete(state)) {
@@ -86,7 +83,6 @@ describe("createPretrainedGenerationMachine", () => {
   it("is a no-op when already complete", () => {
     const { vocabulary, model } = buildModel("a b");
     const machine = createPretrainedGenerationMachine(model, vocabulary);
-    const rng = () => 0;
     let state = machine.initialState();
 
     while (!machine.isComplete(state)) {

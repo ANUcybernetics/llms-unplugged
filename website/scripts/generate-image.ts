@@ -123,6 +123,7 @@ async function main() {
     process.exit(1);
   }
 
+  /* eslint-disable no-await-in-loop */
   for (const img of EXAMPLE_IMAGES) {
     try {
       await access(img);
@@ -131,6 +132,7 @@ async function main() {
       process.exit(1);
     }
   }
+  /* eslint-enable no-await-in-loop */
 
   const outputPath = args[args.length - 1];
   const promptInput = args.slice(0, -1).join(" ").trim();

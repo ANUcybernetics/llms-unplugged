@@ -113,7 +113,6 @@ jobs:
           cp cli/scripts/*.py release/llms_unplugged/scripts/
 
           # Copy PDFs from committed website assets
-          cp website/src/assets/pdfs/modules.pdf release/llms_unplugged/docs/
           cp website/src/assets/pdfs/worksheets/grid.pdf release/llms_unplugged/docs/
 
       - name: Create tar.gz archive
@@ -127,7 +126,7 @@ jobs:
           zip -r llms_unplugged-${{ github.ref_name }}.zip llms_unplugged/
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             release/llms_unplugged-${{ github.ref_name }}.tar.gz

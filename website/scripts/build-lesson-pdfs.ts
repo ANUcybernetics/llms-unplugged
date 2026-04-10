@@ -40,7 +40,7 @@ mkdirSync(outputDir, { recursive: true });
 const allTypFiles = readdirSync(lessonsDir).filter((f) => f.endsWith(".typ"));
 
 // Sort by explicit order, with any unlisted files at the end
-const typFiles = allTypFiles.sort((a, b) => {
+const typFiles = allTypFiles.toSorted((a, b) => {
   const aIndex = pdfOrder.indexOf(a);
   const bIndex = pdfOrder.indexOf(b);
   const aOrder = aIndex === -1 ? pdfOrder.length : aIndex;

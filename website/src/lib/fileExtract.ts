@@ -39,12 +39,14 @@ export async function extractTextFromPdf(arrayBuffer: ArrayBuffer): Promise<stri
   const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
   const textParts: string[] = [];
 
+  /* eslint-disable no-await-in-loop -- pages must be extracted sequentially */
   for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
     const page = await pdf.getPage(pageNum);
     const textContent = await page.getTextContent();
     const pageText = textContent.items.map((item) => ("str" in item ? item.str : "")).join(" ");
     textParts.push(pageText);
   }
+  /* eslint-enable no-await-in-loop */
 
   return textParts.join("\n\n");
 }

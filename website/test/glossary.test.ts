@@ -5,13 +5,9 @@ import {
   getGlossaryByCategory,
   CATEGORIES,
 } from "../src/lib/glossary";
-import type { GlossaryEntry } from "../src/lib/glossary";
-
 describe("glossary data", () => {
-  let entries: GlossaryEntry[];
-
   it("loads all entries", () => {
-    entries = loadGlossary();
+    const entries = loadGlossary();
     expect(entries.length).toBeGreaterThan(0);
   });
 
@@ -82,9 +78,7 @@ describe("getGlossaryByCategory", () => {
   });
 
   it("all entries are accounted for", () => {
-    const allFromCategories = getGlossaryByCategory().flatMap(
-      (c) => c.entries,
-    );
+    const allFromCategories = getGlossaryByCategory().flatMap((c) => c.entries);
     expect(allFromCategories.length).toBe(loadGlossary().length);
   });
 });

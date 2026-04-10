@@ -12,6 +12,8 @@ function buildModel(text: string) {
   return { tokens, vocabulary, model };
 }
 
+const rng = () => 0;
+
 describe("createBucketGenerationMachine", () => {
   it("starts in idle phase", () => {
     const { vocabulary, model } = buildModel("the cat sat");
@@ -37,7 +39,6 @@ describe("createBucketGenerationMachine", () => {
   it("transitions showing-bucket -> picked", () => {
     const { vocabulary, model } = buildModel("the cat sat");
     const machine = createBucketGenerationMachine(model, vocabulary);
-    const rng = () => 0;
     let state = machine.initialState();
 
     state = machine.step(state, rng);
@@ -52,7 +53,6 @@ describe("createBucketGenerationMachine", () => {
   it("transitions picked -> showing-bucket when successor exists", () => {
     const { vocabulary, model } = buildModel("a b a b");
     const machine = createBucketGenerationMachine(model, vocabulary);
-    const rng = () => 0;
     let state = machine.initialState();
 
     state = machine.step(state, rng);
@@ -72,7 +72,6 @@ describe("createBucketGenerationMachine", () => {
   it("reaches complete when no successors", () => {
     const { vocabulary, model } = buildModel("a b");
     const machine = createBucketGenerationMachine(model, vocabulary);
-    const rng = () => 0;
     let state = machine.initialState();
 
     while (!machine.isComplete(state)) {
@@ -86,7 +85,6 @@ describe("createBucketGenerationMachine", () => {
   it("is a no-op when already complete", () => {
     const { vocabulary, model } = buildModel("a b");
     const machine = createBucketGenerationMachine(model, vocabulary);
-    const rng = () => 0;
     let state = machine.initialState();
 
     while (!machine.isComplete(state)) {

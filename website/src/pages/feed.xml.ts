@@ -5,7 +5,7 @@ import type { APIContext } from "astro";
 export async function GET(context: APIContext) {
   const news = await getCollection("news", ({ data }) => data.published);
 
-  const sortedNews = news.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  const sortedNews = news.toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
   return rss({
     title: "LLMs Unplugged",

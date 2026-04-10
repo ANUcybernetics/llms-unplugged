@@ -152,11 +152,7 @@ export function shuffledGridLayout(
   return positions;
 }
 
-export function assembledLayout(
-  bricks: Brick[],
-  width: number,
-  height: number,
-): Map<number, Pos> {
+export function assembledLayout(bricks: Brick[], width: number, height: number): Map<number, Pos> {
   const result = new Map<number, Pos>();
   const words = new Map<number, { i: number; b: Brick }[]>();
 
@@ -167,21 +163,17 @@ export function assembledLayout(
     words.get(w)!.push({ i, b });
   });
 
-  for (const group of words.values()) {
-    group.sort((a, b) => a.b.titleIndex - b.b.titleIndex);
+  for (const [key, group] of words.entries()) {
+    words.set(key, group.toSorted((a, b) => a.b.titleIndex - b.b.titleIndex));
   }
 
-  const lines = [...words.keys()].sort();
-  const totalH =
-    lines.length * ASSEMBLED_H + (lines.length - 1) * ASSEMBLED_LINE_GAP;
+  const lines = [...words.keys()].toSorted();
+  const totalH = lines.length * ASSEMBLED_H + (lines.length - 1) * ASSEMBLED_LINE_GAP;
   let cy = (height - totalH) / 2;
 
   for (const wordIdx of lines) {
     const group = words.get(wordIdx)!;
-    const lineChars = group.reduce(
-      (sum, { b }) => sum + b.titleToken!.displayText.length,
-      0,
-    );
+    const lineChars = group.reduce((sum, { b }) => sum + b.titleToken!.displayText.length, 0);
     const lineW = lineChars * ASSEMBLED_CHAR_W;
     let cx = (width - lineW) / 2;
 
@@ -202,24 +194,19 @@ export function titleOnlyLayout(width: number, height: number): Pos[] {
     if (!wordGroups.has(t.word)) wordGroups.set(t.word, []);
     wordGroups.get(t.word)!.push(t);
   }
-  const lines = [...wordGroups.keys()].sort().map((w) => wordGroups.get(w)!);
+  const lines = [...wordGroups.keys()].toSorted().map((w) => wordGroups.get(w)!);
 
   const lineGap = 10;
   const rowH = (height - (lines.length - 1) * lineGap) / lines.length;
   const maxChars = Math.max(
-    ...lines.map((line) =>
-      line.reduce((sum, t) => sum + t.displayText.length, 0),
-    ),
+    ...lines.map((line) => line.reduce((sum, t) => sum + t.displayText.length, 0)),
   );
   const charW = width / (maxChars + 1);
 
   const positions: Pos[] = [];
   let cy = 0;
   for (const line of lines) {
-    const lineChars = line.reduce(
-      (sum, t) => sum + t.displayText.length,
-      0,
-    );
+    const lineChars = line.reduce((sum, t) => sum + t.displayText.length, 0);
     const lineW = lineChars * charW;
     let cx = (width - lineW) / 2;
     for (const t of line) {

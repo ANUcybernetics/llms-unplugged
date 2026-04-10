@@ -1,12 +1,6 @@
 import { bookTemplate, cutoutsTemplate } from "../templates";
 
-export type Status =
-  | "idle"
-  | "loading"
-  | "ready"
-  | "compiling"
-  | "success"
-  | "error";
+export type Status = "idle" | "loading" | "ready" | "compiling" | "success" | "error";
 export type Workflow = "booklet" | "cutouts";
 
 export interface CompilerState {
@@ -93,6 +87,7 @@ export async function initCompiler(
     onUpdate((s) => appendLog(s, "Compiler options configured"));
     onUpdate((s) => appendLog(s, "Loading fonts from CDN..."));
 
+    /* eslint-disable no-await-in-loop -- fonts loaded sequentially into shadow FS */
     for (const [fontFamily, urls] of Object.entries(FONT_URLS)) {
       for (const url of urls) {
         const filename = url.split("/").pop()!;
@@ -105,6 +100,7 @@ export async function initCompiler(
         typst.mapShadow(`/fonts/${filename}`, new Uint8Array(fontData));
       }
     }
+    /* eslint-enable no-await-in-loop */
 
     onUpdate((s) => appendLog(s, "Adding SVG logo..."));
     const encoder = new TextEncoder();
@@ -155,24 +151,13 @@ export async function compileDocument(
     const safeAuthor = author.trim() || "Unknown";
     const jsonString =
       workflow === "booklet"
-        ? wasmModule.process_text_for_booklet(
-            text,
-            title.trim(),
-            safeAuthor,
-            ngramSize,
-          )
-        : wasmModule.process_text_for_cutouts(
-            text,
-            title.trim(),
-            safeAuthor,
-            ngramSize,
-          );
+        ? wasmModule.process_text_for_booklet(text, title.trim(), safeAuthor, ngramSize)
+        : wasmModule.process_text_for_cutouts(text, title.trim(), safeAuthor, ngramSize);
 
     onUpdate((s) => appendLog(s, "Text processed, updating model data..."));
     await typst.addSource("/model.json", jsonString);
 
-    const templatePath =
-      workflow === "booklet" ? "/book.typ" : "/cutouts.typ";
+    const templatePath = workflow === "booklet" ? "/book.typ" : "/cutouts.typ";
     const jsonPath = "/model.json";
 
     if (outputType === "svg") {

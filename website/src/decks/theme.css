@@ -218,7 +218,7 @@ body.reveal-viewport {
     text-shadow: 0 0 10px rgb(0 0 0 / 70%);
 
     blockquote {
-      border-left: 3px solid var(--anu-white);
+      border-left: 10px solid var(--anu-gold);
       width: 80%;
       margin: 0 auto;
       text-align: left;
@@ -290,6 +290,7 @@ body.reveal-viewport {
     from {
       transform: scaleY(0);
     }
+
     to {
       transform: scaleY(1);
     }
@@ -299,6 +300,7 @@ body.reveal-viewport {
     from {
       opacity: 0;
     }
+
     to {
       opacity: 1;
     }
