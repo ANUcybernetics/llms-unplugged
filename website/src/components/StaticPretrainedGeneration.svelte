@@ -51,7 +51,9 @@
   const chosenNext = $derived(
     step + 1 < sequenceTokens.length ? sequenceTokens[step + 1] : null,
   );
-  const currentRoll = $derived(step < diceRolls.length ? diceRolls[step] : null);
+  const currentRoll = $derived(
+    step < diceRolls.length ? diceRolls[step] : null,
+  );
   const generatedSoFar = $derived(sequenceTokens.slice(0, step + 1));
 </script>
 

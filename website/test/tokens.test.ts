@@ -1,10 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  parseTokens,
-  getVocabulary,
-  getBigrams,
-  buildBigramModel,
-} from "../src/lib/tokens";
+import { parseTokens, getVocabulary, getBigrams, buildBigramModel } from "../src/lib/tokens";
 
 describe("parseTokens", () => {
   it("splits words on whitespace", () => {
@@ -25,9 +20,7 @@ describe("parseTokens", () => {
   });
 
   it("handles multiple sentences", () => {
-    expect(parseTokens("I sat. the cat sat.")).toEqual([
-      "I", "sat", ".", "the", "cat", "sat", ".",
-    ]);
+    expect(parseTokens("I sat. the cat sat.")).toEqual(["I", "sat", ".", "the", "cat", "sat", "."]);
   });
 
   it("returns empty array for empty input", () => {

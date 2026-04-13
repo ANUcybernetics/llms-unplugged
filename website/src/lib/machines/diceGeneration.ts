@@ -19,10 +19,7 @@ export type DiceGenerationState = {
   phase: DiceGenerationPhase;
 };
 
-function getRowOptions(
-  model: BigramModel,
-  word: string,
-): { word: string; count: number }[] {
+function getRowOptions(model: BigramModel, word: string): { word: string; count: number }[] {
   const row = model.counts.get(word);
   if (!row) return [];
   return [...row.entries()]
@@ -46,12 +43,8 @@ export function createDiceGenerationMachine(
           if (validStarters.length === 0) {
             return { outputWords: [], phase: { kind: "complete" } };
           }
-          const startWord =
-            validStarters[Math.floor(rng() * validStarters.length)];
-          const mappings = createDiceMapping(
-            getRowOptions(model, startWord),
-            diceSides,
-          );
+          const startWord = validStarters[Math.floor(rng() * validStarters.length)];
+          const mappings = createDiceMapping(getRowOptions(model, startWord), diceSides);
           return {
             outputWords: [startWord],
             phase: { kind: "showing-options", mappings },

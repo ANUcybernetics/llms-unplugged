@@ -74,10 +74,7 @@
         {#each vocab as col}
           {@const count = counts.get(row)?.get(col) || 0}
           {@const isChosenCell = isCurrentRow && col === chosenNext}
-          <td
-            class="grid-cell"
-            class:current={isChosenCell}
-          >
+          <td class="grid-cell" class:current={isChosenCell}>
             {count > 0 ? tally(count) : "\u00A0"}
           </td>
         {/each}

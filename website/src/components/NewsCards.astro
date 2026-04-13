@@ -8,9 +8,9 @@ interface Props {
 
 const { limit } = Astro.props;
 
-const allNews = (await getCollection("news", ({ data }) => data.published)).sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
-);
+const allNews = (
+  await getCollection("news", ({ data }) => data.published)
+).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 const news = limit ? allNews.slice(0, limit) : allNews;
 ---

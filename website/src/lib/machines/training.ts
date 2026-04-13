@@ -5,9 +5,7 @@ export type TrainingState = {
   totalSteps: number;
 };
 
-export function createTrainingMachine(
-  totalSteps: number,
-): Machine<TrainingState> {
+export function createTrainingMachine(totalSteps: number): Machine<TrainingState> {
   return {
     initialState: () => ({ currentStep: 0, totalSteps }),
     step(state) {

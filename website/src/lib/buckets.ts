@@ -5,10 +5,7 @@ export interface BucketContents {
   tokens: string[];
 }
 
-export function buildBucketsFromModel(
-  vocabulary: string[],
-  model: BigramModel,
-): BucketContents[] {
+export function buildBucketsFromModel(vocabulary: string[], model: BigramModel): BucketContents[] {
   const buckets: BucketContents[] = [];
 
   for (const word of vocabulary) {

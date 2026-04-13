@@ -85,15 +85,12 @@
     class:highlighted={phase !== "grid" && isTitle}
     class:assembled={isAssembled}
     style:transform="translate({pos.x}px, {pos.y}px) scale({sx}, {sy})"
-    style:transition-delay="{isTitle && phase !== 'grid' ? b.titleIndex * 0.08 : 0}s"
+    style:transition-delay="{isTitle && phase !== 'grid'
+      ? b.titleIndex * 0.08
+      : 0}s"
     style:--tint={isTitle ? TITLE_TINTS[b.titleIndex] : null}
   >
-    <rect
-      width={gp.w}
-      height={gp.h}
-      rx="3"
-      class="brick-bg"
-    />
+    <rect width={gp.w} height={gp.h} rx="3" class="brick-bg" />
     <svg
       class="dots"
       x={(gp.w - 18) / 2}
@@ -113,14 +110,17 @@
     </svg>
     {#if isTitle}
       {@const ap = assPos.get(i)!}
-      <g transform="translate({gp.w / 2} {gp.h / 2}) scale({gp.w / ap.w} {gp.h / ap.h}) translate({-gp.w / 2} {-gp.h / 2})">
+      <g
+        transform="translate({gp.w / 2} {gp.h / 2}) scale({gp.w / ap.w} {gp.h /
+          ap.h}) translate({-gp.w / 2} {-gp.h / 2})"
+      >
         <text
           class="token-text"
           x={gp.w / 2}
           y={gp.h / 2}
           text-anchor="middle"
-          dominant-baseline="central"
-        >{b.titleToken!.displayText}</text>
+          dominant-baseline="central">{b.titleToken!.displayText}</text
+        >
       </g>
     {/if}
   </g>
@@ -167,8 +167,8 @@
             y={pos.h / 2}
             text-anchor="middle"
             dominant-baseline="central"
-            style:font-size="{pos.h * 0.75}px"
-          >{token.displayText}</text>
+            style:font-size="{pos.h * 0.75}px">{token.displayText}</text
+          >
         </g>
       {/each}
     </svg>

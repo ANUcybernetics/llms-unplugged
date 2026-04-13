@@ -164,7 +164,10 @@ export function assembledLayout(bricks: Brick[], width: number, height: number):
   });
 
   for (const [key, group] of words.entries()) {
-    words.set(key, group.toSorted((a, b) => a.b.titleIndex - b.b.titleIndex));
+    words.set(
+      key,
+      group.toSorted((a, b) => a.b.titleIndex - b.b.titleIndex),
+    );
   }
 
   const lines = [...words.keys()].toSorted();

@@ -25,10 +25,7 @@ let cached: GlossaryEntry[] | null = null;
 
 export function loadGlossary(): GlossaryEntry[] {
   if (cached) return cached;
-  const raw = fs.readFileSync(
-    path.join(process.cwd(), "src/data/glossary.yaml"),
-    "utf-8",
-  );
+  const raw = fs.readFileSync(path.join(process.cwd(), "src/data/glossary.yaml"), "utf-8");
   cached = load(raw) as GlossaryEntry[];
   return cached;
 }

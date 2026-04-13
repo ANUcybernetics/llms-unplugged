@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  partitionDice,
-  createDiceMapping,
-  findWordForRoll,
-} from "../src/lib/diceMapping";
+import { partitionDice, createDiceMapping, findWordForRoll } from "../src/lib/diceMapping";
 
 describe("partitionDice", () => {
   it("divides evenly when possible", () => {

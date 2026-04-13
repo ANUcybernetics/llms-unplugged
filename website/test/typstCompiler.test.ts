@@ -137,8 +137,6 @@ describe("sanitiseFilename", () => {
   });
 
   it("preserves numbers", () => {
-    expect(sanitiseFilename("Chapter 1: The Beginning")).toBe(
-      "chapter-1--the-beginning",
-    );
+    expect(sanitiseFilename("Chapter 1: The Beginning")).toBe("chapter-1--the-beginning");
   });
 });

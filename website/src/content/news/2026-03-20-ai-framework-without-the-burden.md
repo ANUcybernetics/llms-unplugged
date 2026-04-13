@@ -1,6 +1,5 @@
 ---
-title:
-  "The AI schools framework is right about the goal — but there's a simpler
+title: "The AI schools framework is right about the goal — but there's a simpler
   path"
 date: 2026-03-20
 author: Ben Swift

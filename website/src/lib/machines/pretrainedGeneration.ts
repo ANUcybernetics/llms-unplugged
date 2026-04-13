@@ -1,8 +1,5 @@
 import type { BigramModel } from "../tokens";
-import {
-  buildModelEntries,
-  findWordForThresholdRoll,
-} from "../modelEntries";
+import { buildModelEntries, findWordForThresholdRoll } from "../modelEntries";
 import type { ModelEntry } from "../modelEntries";
 import type { Machine } from "./types";
 
@@ -47,8 +44,7 @@ export function createPretrainedGenerationMachine(
           if (validStarters.length === 0) {
             return { outputWords: [], phase: { kind: "complete" } };
           }
-          const startWord =
-            validStarters[Math.floor(rng() * validStarters.length)];
+          const startWord = validStarters[Math.floor(rng() * validStarters.length)];
           const entry = entryMap.get(startWord);
           if (!entry) {
             return { outputWords: [], phase: { kind: "complete" } };

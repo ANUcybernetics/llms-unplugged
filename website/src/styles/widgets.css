@@ -332,7 +332,9 @@
 
 .fullscreen-content.scaled .widget-view > .widget-section:has(.bigram-grid),
 .fullscreen-content.scaled .widget-view > .widget-section:has(.buckets-content),
-.fullscreen-content.scaled .widget-view > .widget-section:has(.entries-content) {
+.fullscreen-content.scaled
+  .widget-view
+  > .widget-section:has(.entries-content) {
   min-height: 0;
   flex: 3;
   overflow: hidden;

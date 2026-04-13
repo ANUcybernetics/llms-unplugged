@@ -13,10 +13,7 @@ export interface ModelEntry {
   followers: EntryFollower[];
 }
 
-export function buildModelEntries(
-  vocabulary: string[],
-  model: BigramModel,
-): ModelEntry[] {
+export function buildModelEntries(vocabulary: string[], model: BigramModel): ModelEntry[] {
   const entries: ModelEntry[] = [];
 
   for (const word of vocabulary) {
@@ -67,10 +64,7 @@ export function buildModelEntries(
   return entries;
 }
 
-export function findWordForThresholdRoll(
-  entry: ModelEntry,
-  roll: number,
-): string | null {
+export function findWordForThresholdRoll(entry: ModelEntry, roll: number): string | null {
   for (const follower of entry.followers) {
     if (roll <= follower.threshold) {
       return follower.word;

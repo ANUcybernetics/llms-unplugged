@@ -27,9 +27,7 @@ describe("generate-logo-svgs", () => {
 
     it("uses initial fills from the first token's bit pattern", () => {
       const fills = favicon.match(/fill="[^"]+"/g) ?? [];
-      const circleFills = fills.filter(
-        (f) => !f.includes("#1a1a1a"),
-      );
+      const circleFills = fills.filter((f) => !f.includes("#1a1a1a"));
       expect(circleFills.length).toBeGreaterThan(0);
     });
   });

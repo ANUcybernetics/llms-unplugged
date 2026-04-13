@@ -2,8 +2,7 @@
 title: Open-enrolment workshops in May and June
 date: 2026-03-24
 author: Ben Swift
-description:
-  Two upcoming hands-on LLMs Unplugged workshops at ANU, open to everyone
+description: Two upcoming hands-on LLMs Unplugged workshops at ANU, open to everyone
 ---
 
 We're running two open-enrolment _LLMs Unplugged_ workshops at ANU over the

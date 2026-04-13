@@ -30,8 +30,7 @@ export function createBucketGenerationMachine(
           if (validStarters.length === 0) {
             return { outputWords: [], phase: { kind: "complete" } };
           }
-          const startWord =
-            validStarters[Math.floor(rng() * validStarters.length)];
+          const startWord = validStarters[Math.floor(rng() * validStarters.length)];
           const tokens = bucketMap.get(startWord) ?? [];
           return {
             outputWords: [startWord],

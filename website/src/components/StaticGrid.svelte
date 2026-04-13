@@ -66,10 +66,7 @@
           {@const count = counts.get(row)?.get(col) || 0}
           {@const isCurrentCell =
             currentPair && row === currentPair[0] && col === currentPair[1]}
-          <td
-            class="grid-cell"
-            class:current={isCurrentCell}
-          >
+          <td class="grid-cell" class:current={isCurrentCell}>
             {count > 0 ? tally(count) : "\u00A0"}
           </td>
         {/each}

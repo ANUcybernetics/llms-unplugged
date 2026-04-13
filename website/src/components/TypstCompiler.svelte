@@ -59,7 +59,9 @@
     const fileType = getFileType(file.name);
 
     if (!fileType) {
-      const ext = file.name.includes(".") ? file.name.split(".").pop() : "unknown";
+      const ext = file.name.includes(".")
+        ? file.name.split(".").pop()
+        : "unknown";
       updateState((s) => ({
         ...s,
         errorMessage: `Unsupported file type (.${ext}). Use .txt, .md, .docx, or .pdf files.`,
@@ -260,8 +262,8 @@
       <button
         class="error-dismiss"
         onclick={() => updateState((s) => clearError(s))}
-        aria-label="Dismiss error"
-      >&times;</button>
+        aria-label="Dismiss error">&times;</button
+      >
     </div>
   {/if}
 
