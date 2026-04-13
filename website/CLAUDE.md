@@ -14,7 +14,7 @@ demonstrations.
 - MDX (lessons with embedded components)
 - TypeScript
 - pnpm (package manager)
-- oxfmt (JS/TS formatting) + Prettier (Astro/Svelte/MD/CSS formatting)
+- oxfmt (JS/TS/MD/MDX/CSS/JSON/YAML formatting) + Prettier (Astro/Svelte formatting)
 - oxlint (linting)
 - Vitest (testing)
 

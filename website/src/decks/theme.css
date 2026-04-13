@@ -33,8 +33,7 @@ html {
   --r-heading-font-weight: bold;
   --r-link-color: var(--anu-gold);
   --r-link-color-hover: var(--anu-gold-4);
-  --r-code-font:
-    "SFMono-Regular", consolas, "Liberation Mono", menlo, courier, monospace;
+  --r-code-font: "SFMono-Regular", consolas, "Liberation Mono", menlo, courier, monospace;
 }
 
 body.reveal-viewport {

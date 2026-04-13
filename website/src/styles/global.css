@@ -12,9 +12,8 @@
 
   /* Typography */
   --font-body:
-    var(--font-public-sans, "Public Sans"), -apple-system, blinkmacsystemfont,
-    "Segoe UI", roboto, oxygen, ubuntu, cantarell, "Fira Sans", "Droid Sans",
-    "Helvetica Neue", sans-serif;
+    var(--font-public-sans, "Public Sans"), -apple-system, blinkmacsystemfont, "Segoe UI", roboto,
+    oxygen, ubuntu, cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 
   /* Spacing */
   --nav-height: 4rem;

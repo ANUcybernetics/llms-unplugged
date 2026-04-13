@@ -25,6 +25,6 @@
 
   /* Monospace font stack */
   --font-mono:
-    "SFMono-Regular", "JetBrains Mono", "Fira Code", menlo, monaco, consolas,
-    "Liberation Mono", monospace;
+    "SFMono-Regular", "JetBrains Mono", "Fira Code", menlo, monaco, consolas, "Liberation Mono",
+    monospace;
 }
