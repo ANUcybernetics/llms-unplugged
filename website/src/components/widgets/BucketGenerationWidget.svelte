@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, untrack } from "svelte";
   import { createScheduler } from "../../lib/scheduler.svelte";
   import {
     createBucketGenerationMachine,
@@ -41,7 +41,7 @@
   let machine = $derived(createBucketGenerationMachine(model, vocabulary));
   const scheduler = createScheduler(() => machine, {
     defaultInterval: PLAYBACK_CONFIG.GENERATION_DEFAULT_STEP_INTERVAL_MS,
-    loop,
+    loop: () => loop,
   });
 
   let { outputWords, phase } = $derived(scheduler.state);

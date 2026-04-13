@@ -1,9 +1,8 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
-import { getGlossaryByCategory, loadGlossary } from "../lib/glossary";
+import { getGlossaryByCategory } from "../lib/glossary";
 
 const categories = getGlossaryByCategory();
-const allEntries = loadGlossary();
 ---
 
 <PageLayout
@@ -63,15 +62,17 @@ const allEntries = loadGlossary();
       </tr>
     </thead>
     <tbody>
-      <tr><td>Tallying word pairs</td><td>Counting n-grams during training</td></tr>
+      <tr
+        ><td>Tallying word pairs</td><td>Counting n-grams during training</td
+        ></tr
+      >
       <tr
         ><td>Rolling dice for next word</td><td
           >Sampling from probability distribution</td
         ></tr
       >
       <tr
-        ><td>Grid rows/columns</td><td
-          >Weight matrices in neural networks</td
+        ><td>Grid rows/columns</td><td>Weight matrices in neural networks</td
         ></tr
       >
       <tr
@@ -109,8 +110,8 @@ const allEntries = loadGlossary();
       parameters, but the core concepts are identical.
     </li>
     <li>
-      <strong>Randomness creates variety:</strong> both your dice and modern LLMs use
-      controlled randomness to avoid repetitive output.
+      <strong>Randomness creates variety:</strong> both your dice and modern LLMs
+      use controlled randomness to avoid repetitive output.
     </li>
     <li>
       <strong>Context improves prediction:</strong> more context (bigram &rarr; trigram

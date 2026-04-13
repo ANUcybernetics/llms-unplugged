@@ -1,36 +1,31 @@
 ---
+import { getCollection } from "astro:content";
+import { EXTENSIONS, FUNDAMENTALS, type LessonSlug } from "../lib/sidebar";
+
 interface Props {
   currentPath?: string;
 }
 
 const { currentPath = "" } = Astro.props;
 
+const lessons = await getCollection("lessons");
+const titleBySlug = new Map(lessons.map((l) => [l.id, l.data.title]));
+
+function buildItems(slugs: readonly LessonSlug[]) {
+  return slugs.map((slug) => {
+    const title = titleBySlug.get(slug);
+    if (!title) {
+      throw new Error(
+        `Sidebar references unknown lesson slug '${slug}'. Update src/lib/sidebar.ts or add the lesson file.`,
+      );
+    }
+    return { text: title, link: `/lessons/${slug}` };
+  });
+}
+
 const sections = [
-  {
-    title: "Fundamentals",
-    items: [
-      { text: "Training", link: "/lessons/training" },
-      { text: "Generation", link: "/lessons/generation" },
-    ],
-  },
-  {
-    title: "Extensions",
-    items: [
-      {
-        text: "Pre-trained Generation",
-        link: "/lessons/pretrained-generation",
-      },
-      { text: "Trigram", link: "/lessons/trigram" },
-      { text: "Sampling", link: "/lessons/sampling" },
-      { text: "Beam Search", link: "/lessons/beam-search" },
-      { text: "Agentic Tool Use", link: "/lessons/agentic-tool-use" },
-      { text: "Context Columns", link: "/lessons/context-columns" },
-      { text: "Word Embeddings", link: "/lessons/word-embeddings" },
-      { text: "LoRA", link: "/lessons/lora" },
-      { text: "RLHF", link: "/lessons/rlhf" },
-      { text: "Synthetic Data", link: "/lessons/synthetic-data" },
-    ],
-  },
+  { title: "Fundamentals", items: buildItems(FUNDAMENTALS) },
+  { title: "Extensions", items: buildItems(EXTENSIONS) },
 ];
 ---
 

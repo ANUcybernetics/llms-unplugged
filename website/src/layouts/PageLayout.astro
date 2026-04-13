@@ -1,13 +1,29 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
 
-interface Props {
-  title: string;
+interface Frontmatter {
+  title?: string;
   description?: string;
   ogImage?: string;
 }
 
-const { title, description, ogImage } = Astro.props;
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  frontmatter?: Frontmatter;
+}
+
+const { frontmatter } = Astro.props;
+const title = Astro.props.title ?? frontmatter?.title;
+const description = Astro.props.description ?? frontmatter?.description;
+const ogImage = Astro.props.ogImage ?? frontmatter?.ogImage;
+
+if (!title) {
+  throw new Error(
+    `PageLayout requires a 'title' prop (either passed directly or via markdown frontmatter). Path: ${Astro.url.pathname}`,
+  );
+}
 ---
 
 <BaseLayout title={title} description={description} ogImage={ogImage}>

@@ -46,7 +46,7 @@
   let machine = $derived(createPretrainedGenerationMachine(model, vocabulary));
   const scheduler = createScheduler(() => machine, {
     defaultInterval: PLAYBACK_CONFIG.GENERATION_DEFAULT_STEP_INTERVAL_MS,
-    loop: untrack(() => loop),
+    loop: () => loop,
   });
 
   let { outputWords, phase } = $derived(scheduler.state);

@@ -96,6 +96,40 @@ describe("Astro Build", () => {
     expect(brokenLinks, `Broken PDF links:\n${brokenLinks.join("\n")}`).toEqual([]);
   });
 
+  // Regression test for ISSUE-001 from the 2026-04-13 dogfood audit: markdown
+  // pages (faq.md, about.md) rendered "undefined | LLMs Unplugged" because
+  // PageLayout read `Astro.props.title` directly rather than unwrapping the
+  // `frontmatter` prop Astro passes to layouts used via `layout:` frontmatter.
+  it("every page has a non-empty, non-'undefined' browser title", () => {
+    const htmlFiles = globSync(join(DIST_DIR, "**/*.html"));
+    const titleRegex = /<title[^>]*>([\s\S]*?)<\/title>/i;
+    const bad: string[] = [];
+
+    for (const file of htmlFiles) {
+      const content = readFileSync(file, "utf-8");
+      const m = content.match(titleRegex);
+      const title = m ? m[1].trim() : "";
+      if (!title || /undefined|null/i.test(title)) {
+        bad.push(`${file}: <title>${title}</title>`);
+      }
+    }
+
+    expect(bad, `Pages with bad <title>:\n${bad.join("\n")}`).toEqual([]);
+  });
+
+  // Regression test for ISSUE-003 from the 2026-04-13 dogfood audit: the nav
+  // overflowed at mobile widths because every nav item was visible inline.
+  // The nav now ships a hamburger toggle; if someone removes it, this fails.
+  it("ships a hamburger toggle for mobile nav", () => {
+    const home = readFileSync(join(DIST_DIR, "index.html"), "utf-8");
+    const buttonMatch = home.match(/<button[^>]*data-nav-toggle[^>]*>/);
+    expect(buttonMatch, "nav hamburger button not found").not.toBeNull();
+    const buttonTag = buttonMatch![0];
+    expect(buttonTag).toContain('aria-expanded="false"');
+    expect(buttonTag).toContain('aria-controls="site-nav-menu"');
+    expect(home).toMatch(/<ul[^>]*id="site-nav-menu"[^>]*data-nav-menu/);
+  });
+
   it("copies image assets", () => {
     const imagesDir = join(DIST_DIR, "assets/images");
     expect(existsSync(imagesDir)).toBe(true);

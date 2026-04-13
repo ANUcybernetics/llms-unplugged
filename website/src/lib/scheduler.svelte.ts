@@ -3,16 +3,20 @@ import { PLAYBACK_CONFIG } from "./config/playback";
 
 export interface SchedulerOptions {
   defaultInterval: number;
-  loop?: boolean;
+  /**
+   * Whether to restart from `initialState()` when the machine completes.
+   * Pass a getter function (e.g. `() => loop`) if the value can change
+   * after scheduler construction — the scheduler reads it live, so
+   * callers don't need to wrap the prop in `untrack`.
+   */
+  loop?: boolean | (() => boolean);
   rng?: () => number;
 }
 
-export function createScheduler<S>(
-  getMachine: () => Machine<S>,
-  opts: SchedulerOptions,
-) {
+export function createScheduler<S>(getMachine: () => Machine<S>, opts: SchedulerOptions) {
   const rng = opts.rng ?? (() => Math.random());
-  const loop = opts.loop ?? false;
+  const loopOpt = opts.loop;
+  const getLoop: () => boolean = typeof loopOpt === "function" ? loopOpt : () => loopOpt ?? false;
 
   let currentMachine = getMachine();
   let state = $state(currentMachine.initialState());
@@ -47,23 +51,20 @@ export function createScheduler<S>(
 
   function step() {
     if (currentMachine.isComplete(state)) {
-      if (loop) {
+      if (getLoop()) {
         state = currentMachine.initialState();
       }
       return;
     }
     state = currentMachine.step(state, rng);
     if (currentMachine.isComplete(state)) {
-      if (loop) {
+      if (getLoop()) {
         clearTimer();
-        timerId = setTimeout(
-          () => {
-            timerId = null;
-            state = currentMachine.initialState();
-            if (isPlaying) scheduleNext();
-          },
-          stepInterval * PLAYBACK_CONFIG.LOOP_PAUSE_MULTIPLIER,
-        );
+        timerId = setTimeout(() => {
+          timerId = null;
+          state = currentMachine.initialState();
+          if (isPlaying) scheduleNext();
+        }, stepInterval * PLAYBACK_CONFIG.LOOP_PAUSE_MULTIPLIER);
       } else {
         isPlaying = false;
         clearTimer();
@@ -75,7 +76,7 @@ export function createScheduler<S>(
 
   function play() {
     if (currentMachine.isComplete(state)) {
-      if (loop) {
+      if (getLoop()) {
         state = currentMachine.initialState();
       } else {
         return;
