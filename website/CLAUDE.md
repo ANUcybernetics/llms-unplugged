@@ -48,7 +48,7 @@ the screen. This means:
 
 **What cannot be shared (different by design):**
 
-- **Root font size** --- website uses `20px`, decks use `12px` (Reveal.js
+- **Root font size** --- website uses `20px`, decks use `16px` (Reveal.js
   sizes everything in `rem` relative to this)
 - **Reveal.js variables** (`--r-*`) --- deck-only, no website equivalent
 - **Layout tokens** (`--nav-height`, `--sidebar-width`, etc.) --- website-only
