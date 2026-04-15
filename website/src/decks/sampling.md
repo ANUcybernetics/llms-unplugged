@@ -6,12 +6,6 @@
 
 ---
 
-<!-- _class: centered -->
-
-![qr](https://www.llmsunplugged.org/lessons/sampling)
-
----
-
 ## Example: Haiku sampling
 
 ![bg right:40%](./assets/bg-example.avif)
