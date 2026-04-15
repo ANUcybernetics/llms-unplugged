@@ -19,6 +19,8 @@ TARGETS := \
 	$(PDF_DIR)/carol-lyrics-2-1.pdf \
 	$(PDF_DIR)/cloudstreet-2-1.pdf \
 	$(PDF_DIR)/frankenstein-2-1.pdf \
+	$(PDF_DIR)/picnic-at-hanging-rock-2-1.pdf \
+	$(PDF_DIR)/my-brilliant-career-2-1.pdf \
 	$(PDF_DIR)/frankenstein-3-2.stamp \
 	$(PDF_DIR)/frankenstein-4-3.stamp \
 	$(PDF_DIR)/collected-hemingway-2-2.stamp \
