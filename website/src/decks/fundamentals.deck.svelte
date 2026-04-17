@@ -62,9 +62,9 @@ generate new text
 
 ## Discussion
 
-- how could you use this activity in your classroom?
-- how might understanding how LLMs work change how your students engage with AI?
-- what questions do you still have?
+- what's changed in your thinking?
+- what new questions are emerging?
+- at Dept. Ed., what AI uses are being discussed? which ones do you _wish_ were being discussed?
 
 ![bg left:40%](./assets/bg-participants.avif)
 
