@@ -7,7 +7,7 @@
   config: (
     theme: sys.inputs.at("anu_theme", default: "light"),
     logos: ("studio",),
-    hide: "anu-logo",
+    hide: ("anu-logo", "page-numbers"),
   ),
   page-settings: (
     flipped: true,
@@ -16,15 +16,9 @@
 
 #set text(size: 32pt)
 
-Here are the sampling strategies---print 2up (or even 4up).
-
-#pagebreak()
-
 = Greedy sampling
 
-+ find current word's row
-+ select the word with the highest count
-+ if there's a tie, roll dice to choose equally among the most likely options
++ pick the first option in the list (the most likely one)
 
 #pagebreak()
 
@@ -39,9 +33,7 @@ Here are the sampling strategies---print 2up (or even 4up).
 
 = Non-sequitur sampling
 
-+ find current word's row
-+ pick the column with the lowest (non-zero) count
-+ if there's a tie, roll dice to choose equally among the least likely options
++ pick the last option in the list (the least likely one)
 
 #pagebreak()
 
@@ -56,7 +48,29 @@ Here are the sampling strategies---print 2up (or even 4up).
 
 = Alliteration sampling
 
-+ note first letter/sound of previous word
-+ if any next-word options start with same letter/sound, sample only from those
-  alliterative options
-+ otherwise use standard sampling
++ note the first letter of the previous word
++ if any options start with the same letter, roll only among those
++ otherwise, roll as normal
+
+#pagebreak()
+
+= Top-k sampling
+
++ choose a number $k$ (e.g. 2 or 3)
++ only roll among the first $k$ options in the list
+
+#pagebreak()
+
+= Alphabet chain sampling
+
++ the next word must start with the last letter of the previous word
++ if no option qualifies, roll as normal
+
+#pagebreak()
+
+= Short/long sampling
+
++ pick a length threshold (e.g. 4 letters)
++ *short:* allow only words at or below that length
++ *long:* allow only words above that length
++ if nothing qualifies, re-roll
