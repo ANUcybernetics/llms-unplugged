@@ -32,11 +32,6 @@ export default defineConfig({
       ],
     ],
   },
-  vite: {
-    css: {
-      transformer: "lightningcss",
-    },
-  },
   fonts: [
     {
       name: "Public Sans",
