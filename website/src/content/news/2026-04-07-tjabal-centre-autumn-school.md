@@ -12,7 +12,12 @@ Last week we ran _LLMs Unplugged_ at the
 Autumn School with
 [Matt Heffernan](https://redroompoetry.org/poets/matthew-heffernan/)---Luritja
 poet, collaborator, and (for the morning) generous supplier of training data.
-Instead of the usual training texts we used Matt's poem
+The Autumn School is part of the
+[Bandalang National Indigenous Engineering Autumn School](https://eng.anu.edu.au/bandalang/programs/bandalang-national-indigenous-engineering-autumn-school/),
+a week-long program that brings Aboriginal and Torres Strait Islander high
+school students to ANU to explore engineering, computing, and cybernetics
+alongside researchers and Indigenous knowledge holders. Instead of
+the usual training texts we used Matt's poem
 [_Ngurrparringu (Forgotten)_](https://redroompoetry.org/poets/matthew-heffernan/ngurrparringu-forgotten/)
 in both its Luritja and English versions. Participants did what LLMs Unplugged
 participants always do---counted token frequencies, sorted them into bigram
