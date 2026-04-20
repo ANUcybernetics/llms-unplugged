@@ -8,7 +8,7 @@
 
 ## The algorithm
 
-![bg right:40%](./assets/bg-algorithm-generation.avif)
+![bg right:40%](./assets/bg-algorithm-generation-2.avif)
 
 1. **choose** a starting word --- any bold word in the booklet
 2. **look up** that word's entry to see possible next words and their thresholds
@@ -78,7 +78,7 @@ and so on...
 
 # Shareback
 
-![bg brightness:0.5](./assets/bg-div-reception.avif)
+![bg brightness:0.5](./assets/bg-div-reception-2.avif)
 
 ---
 

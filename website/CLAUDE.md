@@ -82,19 +82,23 @@ them as independent.
 
 Whenever the linter/checker reports warnings or errors, fix them.
 
-## Image style
+## Image generation style
 
 When generating images (via styled-image-gen, astromotion-deck, or any other
 image generation tool), always append this prompt fragment to ensure visual
 consistency with the existing illustrations:
 
-> Flat vector-style illustration on a pure black background.
-> Strictly limited colour palette: gold/amber, black, white, and warm
-> beige/tan tones. Clean, consistent-weight outlines (black, white, or gold
-> strokes) with flat filled shapes --- no gradients, no photorealism. Subtle
-> background texture of interlocking circles or rounded geometric grid patterns
-> in a very dark grey. Geometric and slightly stylised --- people (if
-> any) are simplified and faceless. Occasional soft gold glow effects for
-> emphasis. Sparse, balanced composition with generous negative space. No text,
-> no words, no numbers, no labels whatsoever. Modern editorial illustration
-> style --- conceptual and symbolic rather than literal.
+Prompt suffix: Flat vector-style illustration on a pure black background.
+Strictly limited colour palette: gold/amber, black, white, and warm
+beige/tan tones. Clean, consistent-weight outlines (black, white, or gold
+strokes) with flat filled shapes --- no gradients, no photorealism. Subtle
+background texture of interlocking circles or rounded geometric grid patterns
+in a very dark grey. Geometric and slightly stylised --- people (if
+any) are simplified and faceless. Occasional soft gold glow effects for
+emphasis. Sparse, balanced composition with generous negative space. No text,
+no words, no numbers, no labels whatsoever. Modern editorial illustration
+style --- conceptual and symbolic rather than literal.
+
+Reference images: src/decks/assets/ (deck backgrounds --- prefer the
+`bg-div-*`, `bg-shannon`, `bg-markov` files which are the cleanest exemplars
+of the pure-black variant)
