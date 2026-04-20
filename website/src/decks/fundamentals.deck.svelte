@@ -93,7 +93,7 @@ generate new text
 
   const EXAMPLE_TOKENS = "see spot run . run , spot , run .";
   const EXAMPLE_VOCAB = "see spot run . ,";
-  const EXAMPLE_GENERATION = "see spot , run .";
+  const EXAMPLE_GENERATION = "see spot , run . run";
   const EXAMPLE_TEXT = "See Spot run. Run, Spot, run.";
   const EXAMPLE_PRETRAINED_SEQ = "see spot , run . run";
   const EXAMPLE_PRETRAINED_ROLLS = "- 7 8 3 - -";

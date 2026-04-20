@@ -58,6 +58,14 @@ two options (`.` and `,`) --- roll dice!
 
 ---
 
+## Generation: `.` &rarr; `run`
+
+and so on...
+
+<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={5} />
+
+---
+
 ## Generated text
 
 ![bg right:40%](./assets/bg-generated-text.avif)
