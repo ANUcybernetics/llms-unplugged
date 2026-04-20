@@ -74,6 +74,15 @@ generate new text
 
 ---
 
+## What next?
+
+![bg right:40%](./assets/bg-what-next.avif)
+
+- what do you plan to do next in your own AI use/learning?
+- how can you help spread the word about LLMs Unplugged and similar "classroom AI" resources?
+
+---
+
 <script lang="ts">
   import StaticGrid from "../components/StaticGrid.svelte";
   import StaticGeneration from "../components/StaticGeneration.svelte";
