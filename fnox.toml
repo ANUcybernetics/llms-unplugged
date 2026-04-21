@@ -1,2 +1,0 @@
-[secrets]
-REPLICATE_API_TOKEN = { provider = "onepass", value = "op://Personal/Replicate/credential" }
