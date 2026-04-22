@@ -55,7 +55,6 @@ generate new text
 
 ---
 
-<!-- TODO re-enable when sampling lesson is ready -->
 <!-- @include ./sampling.md -->
 
 ---
@@ -64,7 +63,6 @@ generate new text
 
 - what's changed in your thinking?
 - what new questions are emerging?
-- at Dept. Ed., what AI uses are being discussed? which ones do you _wish_ were being discussed?
 
 ![bg left:40%](./assets/bg-participants.avif)
 
@@ -79,7 +77,6 @@ generate new text
 ![bg right:40%](./assets/bg-what-next.avif)
 
 - what do you plan to do next in your own AI use/learning?
-- how can you help spread the word about LLMs Unplugged and similar "classroom AI" resources?
 
 ---
 

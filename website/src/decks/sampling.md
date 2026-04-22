@@ -10,14 +10,17 @@
 
 ![bg right:40%](./assets/bg-example.avif)
 
-Generate text using your model, but
+<!-- notes:
+<ol>
+<li><strong>track</strong> syllables in current line (5-7-5 pattern)</li>
+<li><strong>roll dice</strong> to select next word as normal</li>
+<li>if selected word exceeds line's syllable limit, <strong>re-roll</strong></li>
+<li><strong>start new line</strong> when syllable count reached</li>
+</ol>
+-->
 
-1. **track** syllables in current line (5-7-5 pattern)
-2. **roll dice** to select next word as normal
-3. if selected word exceeds line's syllable limit, **re-roll**
-4. **start new line** when syllable count reached
-
-(you can either use _your_ new language model or the "booklet" one we gave you)
+generate text with your model, but re-roll any word that would push the current
+line past its 5-7-5 syllable budget
 
 ---
 

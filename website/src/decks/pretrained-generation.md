@@ -10,11 +10,17 @@
 
 ![bg right:40%](./assets/bg-algorithm-generation-2.avif)
 
-1. **choose** a starting word --- any bold word in the booklet
-2. **look up** that word's entry to see possible next words and their thresholds
-3. **roll** your d10(s) and scan the thresholds to find the next word
-4. **write down** the chosen word and make it your new starting word
-5. **repeat** from step 2
+<!-- notes:
+<ol>
+<li><strong>choose</strong> a starting word --- any bold word in the booklet</li>
+<li><strong>look up</strong> that word's entry to see possible next words and their thresholds</li>
+<li><strong>roll</strong> your d10(s) and scan the thresholds to find the next word</li>
+<li><strong>write down</strong> the chosen word and make it your new starting word</li>
+<li><strong>repeat</strong> from step 2</li>
+</ol>
+-->
+
+use the booklet to generate new text, rolling d10s to choose each next word
 
 ---
 

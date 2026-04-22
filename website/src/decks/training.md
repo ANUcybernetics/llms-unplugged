@@ -16,11 +16,15 @@
 
 ![bg right:40%](./assets/bg-algorithm-training.avif)
 
-1. **preprocess** your text: lowercase everything, treat words, commas and full
-   stops as separate tokens
-2. **set up** your grid: first token goes in both the row & column headers
-3. **fill in** the grid: for each consecutive pair of tokens, add a tally mark
-   in that cell (add new rows/columns as needed)
+<!-- notes:
+<ol>
+<li><strong>preprocess</strong> your text: lowercase everything, treat words, commas and full stops as separate tokens</li>
+<li><strong>set up</strong> your grid: first token goes in both the row &amp; column headers</li>
+<li><strong>fill in</strong> the grid: for each consecutive pair of tokens, add a tally mark in that cell (add new rows/columns as needed)</li>
+</ol>
+-->
+
+walk through your text and tally up which tokens follow which in a grid
 
 ---
 

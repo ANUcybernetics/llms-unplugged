@@ -10,11 +10,17 @@
 
 ![bg right:40%](./assets/bg-algorithm-generation.avif)
 
-1. **choose** a starting word from your grid
-2. **look** at that word's row to find all possible next words and their counts
-3. **roll dice** weighted by the counts to pick the next word
-4. **write down** the chosen word and make it your new starting word
-5. **repeat** from step 2
+<!-- notes:
+<ol>
+<li><strong>choose</strong> a starting word from your grid</li>
+<li><strong>look</strong> at that word's row to find all possible next words and their counts</li>
+<li><strong>roll dice</strong> weighted by the counts to pick the next word</li>
+<li><strong>write down</strong> the chosen word and make it your new starting word</li>
+<li><strong>repeat</strong> from step 2</li>
+</ol>
+-->
+
+use your grid to generate new text, rolling dice to choose each next word
 
 ---
 

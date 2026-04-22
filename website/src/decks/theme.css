@@ -50,6 +50,10 @@ body.reveal-viewport {
   color: var(--r-link-color);
 }
 
+.reveal .slides section .notes {
+  display: none;
+}
+
 .reveal .slides section {
   font-family: var(--r-main-font);
   font-weight: 300;
