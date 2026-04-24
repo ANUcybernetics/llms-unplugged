@@ -28,6 +28,11 @@ If you're an educator, the activities are designed to go straight back into the
 classroom. They align with curriculum outcomes across mathematics, technologies,
 HASS and literacy, and the only prerequisite is curiosity.
 
+For ACT teachers: the workshop is
+[accredited by the ACT Teacher Quality Institute](/news/2026-04-24-tqi-accreditation)
+as a two-hour professional learning program, so attendance counts toward your
+annual registered PL hours.
+
 Tickets are on Humanitix---~$230 for industry and general public, ~$60 for
 educators (requires a .edu email):
 
