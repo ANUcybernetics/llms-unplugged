@@ -49,12 +49,38 @@
     - label: Training
       href: /lessons/training
 
+- id: pre-training
+  term: Pre-training
+  category: core
+  description: >-
+    The initial, expensive training phase where a model learns general patterns
+    from a large corpus. Most users of modern LLMs use pre-trained models
+    without ever training one themselves, much like using a provided booklet
+    rather than building your own grid.
+  see:
+    - label: Pre-trained Model Generation
+      href: /lessons/pretrained-generation
+
 - id: generation
   term: Generation
   category: core
   description: >-
     Using a trained model to produce new text by repeatedly predicting and
     selecting the next token.
+  see:
+    - label: Generation
+      href: /lessons/generation
+
+- id: inference
+  term: Inference
+  category: core
+  description: >-
+    Using a trained model to produce outputs. In language models, inference
+    means generating text. These lessons say "generation" because that better
+    describes what language models do, but "inference" is the term you'll find
+    in AI/ML literature and tooling.
+  synonyms:
+    - decoding
   see:
     - label: Generation
       href: /lessons/generation
@@ -71,6 +97,80 @@
       href: /lessons/generation
     - label: Sampling
       href: /lessons/sampling
+
+- id: prompt
+  term: Prompt
+  category: core
+  description: >-
+    The input text you give to a language model. In a bigram model, the
+    "prompt" is just the single current word used to predict what comes next.
+    In modern LLMs, a prompt can be hundreds of thousands or even millions of
+    tokens long, giving the model much more context to work with.
+  see:
+    - label: Generation
+      href: /lessons/generation
+
+- id: llm
+  term: LLM (Large Language Model)
+  category: core
+  description: >-
+    A language model trained on a very large amount of text, with billions of
+    parameters. The hand-built models in these lessons are tiny language
+    models; ChatGPT, Claude, and Gemini are large language models. The core
+    principles are identical---the difference is scale.
+  see:
+    - label: Training
+      href: /lessons/training
+
+- id: training-data
+  term: Training data
+  category: core
+  description: >-
+    The collection of text used to train a model. In our activities, this is
+    the passage you read through to fill in your grid or buckets. Modern LLMs
+    are trained on billions of pages of text from books, websites, and other
+    sources.
+  synonyms:
+    - training set
+    - corpus (plural corpora)
+  see:
+    - label: Training
+      href: /lessons/training
+
+- id: start-end-tokens
+  term: Start and end tokens
+  category: core
+  description: >-
+    Special tokens that mark the beginning and end of a text. Real LLMs use
+    these to know when to start and stop generating. The lessons in this
+    project don't include them explicitly---you just pick a starting word and
+    decide when to stop---but they're an important part of how real models
+    handle sentence and document boundaries.
+
+- id: chatgpt
+  term: ChatGPT
+  category: core
+  description: >-
+    OpenAI's chatbot, and probably the most well-known LLM product. On this site
+    we often use "ChatGPT" as shorthand for any modern LLM chatbot---the
+    concepts apply equally to Claude, Gemini, DeepSeek and others. The
+    underlying principles are the same regardless of which product you use.
+
+- id: claude
+  term: Claude
+  category: core
+  description: >-
+    Anthropic's LLM chatbot. The concepts on this site apply equally to Claude,
+    ChatGPT, Gemini, and other LLMs---the underlying principles are the same
+    regardless of which product you use.
+
+- id: gemini
+  term: Gemini
+  category: core
+  description: >-
+    Google's LLM chatbot. The concepts on this site apply equally to Gemini,
+    ChatGPT, Claude, and other LLMs---the underlying principles are the same
+    regardless of which product you use.
 
 - id: bigram-model
   term: Bigram model
@@ -125,40 +225,6 @@
     - label: Context Columns
       href: /lessons/context-columns
 
-- id: grid-variant
-  term: Grid variant
-  category: training-variants
-  description: >-
-    The matrix-based approach where you draw a grid with words as row and column
-    headers, then add tally marks to track which words follow which.
-  see:
-    - label: Training
-      href: /lessons/training
-
-- id: bucket-variant
-  term: Bucket variant
-  category: training-variants
-  description: >-
-    The physical container approach where each bucket is labelled with a word and
-    contains paper tokens representing words that followed it in the training
-    text.
-  see:
-    - label: Training
-      href: /lessons/training
-
-- id: matrix
-  term: Matrix
-  category: training-variants
-  description: >-
-    A grid or table showing relationships between tokens. Your hand-drawn grids
-    are matrices tracking which words follow other words. Each row can also be
-    interpreted as an embedding vector.
-  see:
-    - label: Training
-      href: /lessons/training
-    - label: Word Embeddings
-      href: /lessons/word-embeddings
-
 - id: weighted-random-sampling
   term: Weighted random sampling
   category: sampling
@@ -171,6 +237,23 @@
       href: /lessons/generation
     - label: Weighted Randomness
       href: /lessons/weighted-randomness
+
+- id: decoding-strategy
+  term: Decoding strategy
+  category: sampling
+  description: >-
+    The procedure used to turn a model's probability distribution into actual
+    output text. Greedy decoding picks the highest-probability word; sampling
+    rolls weighted dice; beam search tracks several candidate paths at once.
+  synonyms:
+    - sampling strategy
+  see:
+    - label: Generation
+      href: /lessons/generation
+    - label: Sampling
+      href: /lessons/sampling
+    - label: Beam Search
+      href: /lessons/beam-search
 
 - id: temperature
   term: Temperature
@@ -226,6 +309,31 @@
     - label: Sampling
       href: /lessons/sampling
 
+- id: top-k-sampling
+  term: Top-k sampling
+  category: sampling
+  description: >-
+    A truncation strategy that keeps only the k most likely next-word options
+    before sampling. Setting k=1 is equivalent to greedy sampling; larger k
+    allows more variety while still excluding very unlikely words.
+  see:
+    - label: Sampling
+      href: /lessons/sampling
+
+- id: top-p-sampling
+  term: Top-p sampling
+  category: sampling
+  description: >-
+    A truncation strategy that keeps just enough of the most likely options for
+    their cumulative probability to reach a threshold p (e.g., 0.9). Unlike
+    top-k, the number of options changes depending on how confident the model
+    is about the next word.
+  synonyms:
+    - nucleus sampling
+  see:
+    - label: Sampling
+      href: /lessons/sampling
+
 - id: embedding
   term: Embedding
   category: understanding
@@ -268,6 +376,42 @@
     - label: Context Columns
       href: /lessons/context-columns
 
+- id: markov-chain
+  term: Markov chain
+  category: advanced
+  description: >-
+    A statistical model where the next state depends only on the current state.
+    Andrey Markov introduced this idea in 1913 while analysing letter sequences
+    in Pushkin's Eugene Onegin. A bigram language model is a simple Markov chain
+    over words.
+
+- id: neural-network
+  term: Neural network
+  category: advanced
+  description: >-
+    A computational system loosely inspired by biological neurons that learns
+    patterns from data by adjusting numerical weights. Modern LLMs are large
+    neural networks; hand-built models are not. Both rely on the same kind of
+    pattern counting, just acquired manually rather than automatically.
+
+- id: transformer
+  term: Transformer
+  category: advanced
+  description: >-
+    The neural network architecture used by GPT, Claude, and other modern LLMs.
+    It uses attention mechanisms to process all words in parallel rather than
+    sequentially.
+
+- id: parameters
+  term: Parameters
+  category: advanced
+  description: >-
+    The numbers stored in the model that encode learned patterns. Each tally mark
+    in your grid is a parameter. Modern models have billions of parameters.
+  see:
+    - label: Training
+      href: /lessons/training
+
 - id: fine-tuning
   term: Fine-tuning
   category: advanced
@@ -279,6 +423,17 @@
       href: /lessons/lora
     - label: Synthetic Data
       href: /lessons/synthetic-data
+
+- id: base-model
+  term: Base model
+  category: advanced
+  description: >-
+    The original trained model that an adaptation (such as a LoRA layer) is
+    applied to. The base model stays unchanged; the adaptation provides the
+    domain-specific shift.
+  see:
+    - label: LoRA
+      href: /lessons/lora
 
 - id: lora
   term: LoRA (Low-Rank Adaptation)
@@ -300,6 +455,29 @@
     - label: RLHF
       href: /lessons/rlhf
 
+- id: reward-model
+  term: Reward model
+  category: advanced
+  description: >-
+    A separate model that learns to predict human preferences, then guides the
+    main model during RLHF. Rather than asking humans to rate every output, the
+    reward model rates outputs at scale, trained on a smaller set of human
+    comparisons.
+  see:
+    - label: RLHF
+      href: /lessons/rlhf
+
+- id: alignment
+  term: Alignment
+  category: advanced
+  description: >-
+    The process of shaping a model's outputs to match human values and
+    preferences (typically helpfulness, harmlessness, and honesty). RLHF is one
+    of the main techniques used to align modern LLMs.
+  see:
+    - label: RLHF
+      href: /lessons/rlhf
+
 - id: agentic-tool-use
   term: Agentic tool use
   category: advanced
@@ -307,6 +485,33 @@
     The ability of language models to act as agents by recognising when to call
     external tools (like calculators or search engines) in a loop rather than
     generating text directly.
+  see:
+    - label: Agentic Tool Use
+      href: /lessons/agentic-tool-use
+
+- id: agent
+  term: Agent
+  category: advanced
+  description: >-
+    A language model that runs tools in a loop to achieve a goal. Instead of
+    generating text directly, an agent calls external tools and uses their
+    results to continue.
+  synonyms:
+    - AI agent
+  see:
+    - label: Agentic Tool Use
+      href: /lessons/agentic-tool-use
+
+- id: tool-use
+  term: Tool use
+  category: advanced
+  description: >-
+    The mechanism by which a language model calls external tools (calculators,
+    search engines, databases, code runners) during generation. Modern LLMs
+    output structured tool calls; in the unplugged activity, sampling a
+    "trigger word" plays the same role.
+  synonyms:
+    - function calling
   see:
     - label: Agentic Tool Use
       href: /lessons/agentic-tool-use
@@ -321,102 +526,16 @@
     - label: Synthetic Data
       href: /lessons/synthetic-data
 
-- id: hallucination
-  term: Hallucination
+- id: model-collapse
+  term: Model collapse
   category: advanced
   description: >-
-    When models generate plausible-sounding but false information. This happens
-    because models learn patterns, not facts---they predict what text looks like
-    rather than what is true.
-
-- id: parameters
-  term: Parameters
-  category: advanced
-  description: >-
-    The numbers stored in the model that encode learned patterns. Each tally mark
-    in your grid is a parameter. Modern models have billions of parameters.
-  see:
-    - label: Training
-      href: /lessons/training
-
-- id: transformer
-  term: Transformer
-  category: advanced
-  description: >-
-    The neural network architecture used by GPT, Claude, and other modern LLMs.
-    It uses attention mechanisms to process all words in parallel rather than
-    sequentially.
-
-- id: prompt
-  term: Prompt
-  category: core
-  description: >-
-    The input text you give to a language model. In a bigram model, the
-    "prompt" is just the single current word used to predict what comes next.
-    In modern LLMs, a prompt can be hundreds of thousands or even millions of
-    tokens long, giving the model much more context to work with.
-  see:
-    - label: Generation
-      href: /lessons/generation
-
-- id: llm
-  term: LLM (Large Language Model)
-  category: core
-  description: >-
-    A language model trained on a very large amount of text, with billions of
-    parameters. The hand-built models in these lessons are tiny language
-    models; ChatGPT, Claude, and Gemini are large language models. The core
-    principles are identical---the difference is scale.
-  see:
-    - label: Training
-      href: /lessons/training
-
-- id: training-set
-  term: Training set
-  category: core
-  description: >-
-    The collection of text used to train a model. In our activities, this is
-    the passage you read through to fill in your grid or buckets. Modern LLMs
-    are trained on billions of pages of text from books, websites, and other
-    sources.
+    What happens when a model is trained on its own outputs (or outputs from
+    similar models) over multiple generations. Common patterns get amplified,
+    rare ones vanish, and the model converges towards a narrower, more
+    repetitive style.
   synonyms:
-    - training data
-    - corpus (plural corpora)
+    - mode collapse
   see:
-    - label: Training
-      href: /lessons/training
-
-- id: start-end-tokens
-  term: Start and end tokens
-  category: core
-  description: >-
-    Special tokens that mark the beginning and end of a text. Real LLMs use
-    these to know when to start and stop generating. The lessons in this
-    project don't include them explicitly---you just pick a starting word and
-    decide when to stop---but they're an important part of how real models
-    handle sentence and document boundaries.
-
-- id: chatgpt
-  term: ChatGPT
-  category: core
-  description: >-
-    OpenAI's chatbot, and probably the most well-known LLM product. On this site
-    we often use "ChatGPT" as shorthand for any modern LLM chatbot---the
-    concepts apply equally to Claude, Gemini, DeepSeek and others. The
-    underlying principles are the same regardless of which product you use.
-
-- id: claude
-  term: Claude
-  category: core
-  description: >-
-    Anthropic's LLM chatbot. The concepts on this site apply equally to Claude,
-    ChatGPT, Gemini, and other LLMs---the underlying principles are the same
-    regardless of which product you use.
-
-- id: gemini
-  term: Gemini
-  category: core
-  description: >-
-    Google's LLM chatbot. The concepts on this site apply equally to Gemini,
-    ChatGPT, Claude, and other LLMs---the underlying principles are the same
-    regardless of which product you use.
+    - label: Synthetic Data
+      href: /lessons/synthetic-data

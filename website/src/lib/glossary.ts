@@ -15,7 +15,6 @@ export interface GlossaryEntry {
 const CATEGORIES: Record<string, string> = {
   core: "Core concepts",
   "model-types": "Model types",
-  "training-variants": "Training variants",
   sampling: "Sampling and generation",
   understanding: "Understanding and meaning",
   advanced: "Advanced concepts",

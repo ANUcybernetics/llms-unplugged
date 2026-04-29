@@ -31,8 +31,8 @@ observe how the model changes.
 
 ## Key idea
 
-Reinforcement Learning from Human Feedback (RLHF) adjusts model probabilities
-based on what people prefer. Instead of training on more text, you train on
+<GlossaryTerm id="rlhf">Reinforcement Learning from Human Feedback (RLHF)</GlossaryTerm> adjusts
+model probabilities based on what people prefer. Instead of training on more text, you train on
 human judgements about which outputs are better.
 
 ## Algorithm
@@ -129,10 +129,10 @@ is the process?
 
 RLHF is how modern AI assistants learn to be helpful, harmless, and honest:
 
-- **<GlossaryTerm id="claude">Claude</GlossaryTerm>, <GlossaryTerm id="chatgpt">ChatGPT</GlossaryTerm>, and others**: all use RLHF to align model outputs with human values
+- **<GlossaryTerm id="claude">Claude</GlossaryTerm>, <GlossaryTerm id="chatgpt">ChatGPT</GlossaryTerm>, and others**: all use RLHF to <GlossaryTerm id="alignment">align</GlossaryTerm> model outputs with human values
 - **the process**: human raters compare model outputs and rank them, exactly
   like your classroom judges
-- **reward models**: at scale, a separate AI learns to predict human
+- **<GlossaryTerm id="reward-model">reward models</GlossaryTerm>**: at scale, a separate AI learns to predict human
   preferences, then guides the main model
 - **safety**: RLHF teaches models to refuse harmful requests by having humans
   prefer refusals over compliance

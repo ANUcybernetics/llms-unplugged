@@ -62,43 +62,56 @@ const categories = getGlossaryByCategory();
       </tr>
     </thead>
     <tbody>
-      <tr
-        ><td>Tallying word pairs</td><td>Counting n-grams during training</td
-        ></tr
-      >
-      <tr
-        ><td>Rolling dice for next word</td><td
-          >Sampling from probability distribution</td
-        ></tr
-      >
-      <tr
-        ><td>Grid rows/columns</td><td>Weight matrices in neural networks</td
-        ></tr
-      >
-      <tr
-        ><td>Adding context columns</td><td>Learning attention patterns</td></tr
-      >
-      <tr
-        ><td>Calculating word distances</td><td
-          >Computing embedding similarities</td
-        ></tr
-      >
-      <tr
-        ><td>Dividing tallies by temperature</td><td
-          >Applying temperature to logits</td
-        ></tr
-      >
-      <tr
-        ><td>Keeping top beam paths</td><td
-          >Beam search with specified beam width</td
-        ></tr
-      >
-      <tr><td>Picking from buckets</td><td>Weighted random sampling</td></tr>
-      <tr
-        ><td>Training on new text</td><td
-          >Fine-tuning on domain-specific data</td
-        ></tr
-      >
+      <tr>
+        <td>Tallying word pairs</td>
+        <td>Counting <a href="#n-gram-model">n-grams</a> during <a href="#training">training</a></td>
+      </tr>
+      <tr>
+        <td>Rolling dice for next word</td>
+        <td>Sampling from a <a href="#probability-distribution">probability distribution</a></td>
+      </tr>
+      <tr>
+        <td>Grid rows/columns</td>
+        <td>Weight matrices in <a href="#neural-network">neural networks</a></td>
+      </tr>
+      <tr>
+        <td>Adding context columns</td>
+        <td>Learning <a href="#attention-mechanism">attention</a> patterns</td>
+      </tr>
+      <tr>
+        <td>Calculating word distances</td>
+        <td>Computing <a href="#embedding">embedding</a> similarities</td>
+      </tr>
+      <tr>
+        <td>Dividing tallies by temperature</td>
+        <td>Applying <a href="#temperature">temperature</a> to logits</td>
+      </tr>
+      <tr>
+        <td>Keeping top beam paths</td>
+        <td>
+          <a href="#beam-search">Beam search</a> with specified <a href="#beam-width">beam width</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Picking from buckets</td>
+        <td><a href="#weighted-random-sampling">Weighted random sampling</a></td>
+      </tr>
+      <tr>
+        <td>Training on new text</td>
+        <td><a href="#fine-tuning">Fine-tuning</a> on domain-specific data</td>
+      </tr>
+      <tr>
+        <td>Updating counts from votes</td>
+        <td><a href="#rlhf">RLHF</a> using a <a href="#reward-model">reward model</a></td>
+      </tr>
+      <tr>
+        <td>Sampling a trigger word</td>
+        <td><a href="#tool-use">Tool use</a> by an <a href="#agent">agent</a></td>
+      </tr>
+      <tr>
+        <td>Re-training on generated text</td>
+        <td><a href="#model-collapse">Model collapse</a> from <a href="#synthetic-data">synthetic data</a></td>
+      </tr>
     </tbody>
   </table>
 

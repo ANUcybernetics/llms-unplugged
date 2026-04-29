@@ -1,7 +1,7 @@
 ---
 title: Sampling
-description: Experiment with temperature and truncation strategies to shape how your model
-  picks the next word.
+description: Same model, different output---experiment with temperature and truncation
+  strategies to shape how your model picks the next word.
 order: 4
 topic: controlling-output
 keyIdea: Different sampling strategies change the character of generated text even when
@@ -14,7 +14,10 @@ import GlossaryTerm from "../../components/GlossaryTerm.astro";
 # Sampling
 
 When generating text, your model offers several options for the next word.
-Sampling strategies decide which one to pick.
+Sampling strategies decide which one to pick---and the strategy you choose can
+change the character of the output dramatically, without changing the
+underlying model at all. The same grid or bucket can produce flat prose,
+structured poetry, or pure nonsense, depending entirely on how you sample.
 
 ![Hero image: Sampling](/assets/images/hero-sampling.avif)
 
@@ -150,8 +153,8 @@ Current LLMs use these same mechanisms, though the specific strategies differ.
   like you divide tallies; higher temperature means more random output. The
   lesson uses manual temperature adjustment, while LLMs do this computationally
   before every token.
-- **Truncation techniques in modern LLMs:** top-k sampling (only consider k most
-  likely tokens), top-p/nucleus sampling (consider tokens until cumulative
+- **Truncation techniques in modern LLMs:** <GlossaryTerm id="top-k-sampling">top-k sampling</GlossaryTerm> (only consider k most
+  likely tokens), <GlossaryTerm id="top-p-sampling">top-p/nucleus sampling</GlossaryTerm> (consider tokens until cumulative
   probability reaches p), repetition penalties, frequency penalties, and
   presence penalties all prune options before sampling.
 - **Truncation techniques in this lesson:** greedy, haiku, non-sequitur,

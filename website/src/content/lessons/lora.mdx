@@ -25,14 +25,14 @@ retraining the whole thing.
 
 ## Your goal
 
-Create a lightweight adaptation layer that shifts your base model toward a new
+Create a lightweight adaptation layer that shifts your <GlossaryTerm id="base-model">base model</GlossaryTerm> toward a new
 domain. Stretch goal: experiment with mixing ratios between base and LoRA
 layers.
 
 ## Key idea
 
-Low-Rank Adaptation (LoRA) stores only the _changes_ from the base model, so it
-can be much smaller. During generation you add LoRA counts to the base counts
+<GlossaryTerm id="lora">Low-Rank Adaptation (LoRA)</GlossaryTerm> stores only the _changes_ from the
+base model, so it can be much smaller. During generation you add LoRA counts to the base counts
 (optionally scaled) and sample as normal.
 
 ## Algorithm
@@ -73,7 +73,7 @@ can be much smaller. During generation you add LoRA counts to the base counts
 Low-Rank Adaptation revolutionised how modern LLMs are customised:
 
 - **efficiency**: training a LoRA layer requires 100-1000x less computation than
-  full fine-tuning
+  full <GlossaryTerm id="fine-tuning">fine-tuning</GlossaryTerm>
 - **modularity**: you can have one base model plus many LoRA layers for
   different tasks (medical, legal, creative writing)
 - **preservation**: the base model stays unchanged, so it retains its general

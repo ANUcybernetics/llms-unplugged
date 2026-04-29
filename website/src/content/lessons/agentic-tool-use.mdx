@@ -13,7 +13,7 @@ import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
 # Agentic Tool Use
 
-Turn your <GlossaryTerm id="language-model">language model</GlossaryTerm> into an agent by giving it access to external
+Turn your <GlossaryTerm id="language-model">language model</GlossaryTerm> into an <GlossaryTerm id="agent">agent</GlossaryTerm> by giving it access to external
 tools---people, objects, or resources in the room---that it can call when it
 needs information beyond what's in the grid.
 
@@ -32,8 +32,8 @@ tool and integrate it into your model.
 
 ## Key idea
 
-What makes a language model an "agent"? In practice, it comes down to tool
-use---a model that can recognise special tokens triggering external actions,
+What makes a language model an "agent"? In practice, it comes down to <GlossaryTerm id="agentic-tool-use">tool
+use</GlossaryTerm>---a model that can recognise special tokens triggering external actions,
 pause generation, call a tool, and incorporate the result before continuing.
 That loop of _generate → call tool → incorporate result → keep generating_ is
 the core of agentic AI.
@@ -143,8 +143,8 @@ use in a loop. As Simon Willison
 <GlossaryTerm id="llm">LLM</GlossaryTerm> agent is something that "runs tools in a loop to achieve a
 goal"---and that's exactly what your model is doing.
 
-Tool use (also called "function calling") is how modern AI assistants perform
-actions in the world:
+<GlossaryTerm id="tool-use">Tool use</GlossaryTerm> (also called "function calling") is how modern
+AI assistants perform actions in the world:
 
 - **the agentic loop**: generate → detect tool call → execute tool → feed result
   back → continue generating, exactly like your trigger-word cycle
