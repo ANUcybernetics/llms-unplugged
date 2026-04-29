@@ -26,7 +26,7 @@ to better generation.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
 ![Hero image: Cutouts Trigram](/assets/images/hero-cutouts-trigram.avif)
 
@@ -42,18 +42,19 @@ to better generation.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-- the same materials as [Training](/lessons/training)
-- additional small containers for two-word label buckets
-- sticky notes or paper for bucket labels (you'll need to write two words on
-  each label)
+For each pair (or group) of students:
+
+- printed trigram token cutouts (each one shows a two-word prefix in red and a
+  token in black)
+- a clear table or flat surface to spread the cutouts out on
+- scissors
 
 <Callout type="tip" title="Pre-made trigram cutouts">
 
-The [Tools](/tools#cutouts-for-bucket-training) page has ready-to-print trigram
-token cutouts, or you can
-[generate your own](/tools#generate-your-own) from any text.
+The [Tools](/tools#cutouts) page has ready-to-print trigram token cutouts, or
+you can [generate your own](/tools#generate-your-own) from any text.
 
 </Callout>
 
@@ -68,11 +69,11 @@ text. Stretch goal: train on more data or generate longer outputs.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-Build a <GlossaryTerm id="trigram-model">trigram language model</GlossaryTerm> using buckets where each bucket is labelled with
-_two_ words instead of one. Stretch goal: train on more data or generate longer
-outputs.
+Build a <GlossaryTerm id="trigram-model">trigram language model</GlossaryTerm> as a spread of cutouts where each cutout's
+prefix is _two_ words instead of one. Stretch goal: train on more data or
+generate longer outputs.
 
 </Variant>
 
@@ -85,11 +86,12 @@ cost: more rows to track and more data needed.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
 Trigrams show how more context boosts prediction quality. Instead of asking
-"what follows this word?", we ask "what follows these _two_ words?". This means
-more buckets to manage, but better predictions.
+"what follows this word?", we ask "what follows these _two_ words?". The spread
+gets bigger---more unique two-word prefixes mean more cutouts---but the
+predictions are sharper.
 
 </Variant>
 
@@ -127,54 +129,40 @@ _word 1_ if that helps.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-1. **Prepare your tokens** as per [Training](/lessons/training)
-   - print or write out your training text
-   - convert everything to lowercase
-   - treat words, commas, and full stops as separate tokens
-   - cut the text into individual tokens with scissors, keeping them in order
+1. **Cut out the trigram tokens** from your printed sheets
+   - each cutout shows a two-word prefix printed in red, and a single token in
+     black---this is the word that followed that two-word pair in the training
+     text
+2. **Spread the cutouts out** on a table
+   - face up, no overlap if you can manage it
+   - that's it---the spread is your trained trigram model
 
-2. **Build the model** using word _pairs_ as bucket labels
-   - take the first _two_ tokens from your pile---these form your bucket label
-   - if a bucket with this two-word label doesn't exist, create one
-   - take the _third_ token and put it in this bucket
-   - shift along by one word (so your new pair is the old second word + the
-     third word you just placed)
-   - repeat until all tokens are in buckets
+Optional extension: see "Group into piles" below.
 
 ### Example (training)
 
 Original text: _"See Spot run. See Spot jump."_
 
-After preparing tokens, you have these pieces of paper in order: `see` `spot`
-`run` `.` `see` `spot` `jump` `.`
+The training text contains these adjacent (two-word prefix → token) triples:
 
-**Step by step:**
+- `see spot → run`
+- `spot run → .`
+- `run . → see`
+- `. see → spot`
+- `see spot → jump`
+- `spot jump → .`
 
-1. First two tokens are `see` and `spot`---create a bucket labelled "see spot"
-2. Third token is `run`---put it in the "see spot" bucket
-3. Shift along: new pair is `spot` + `run`---create bucket labelled "spot run"
-4. Next token is `.`---put it in the "spot run" bucket
-5. Shift along: new pair is `run` + `.`---create bucket labelled "run ."
-6. Next token is `see`---put it in the "run ." bucket
-7. Shift along: new pair is `.` + `see`---create bucket labelled ". see"
-8. Next token is `spot`---put it in the ". see" bucket
-9. Shift along: new pair is `see` + `spot`---bucket already exists
-10. Next token is `jump`---put it in the "see spot" bucket
-11. Shift along: new pair is `spot` + `jump`---create bucket labelled "spot
-    jump"
-12. Next token is `.`---put it in the "spot jump" bucket
-13. No more tokens---training complete!
-
-**Final model (bucket contents):**
+Each triple becomes one cutout on your table:
 
 <LmCutouts tokens="see spot run . see spot jump ." ngram={3} />
 
-Notice that "see spot" has two tokens because two different words followed that
-pair in the original text. Compare this to the bigram bucket model where the
-"see" bucket would just contain `spot` `spot`---the trigram model captures more
-specific patterns.
+Notice that `see spot` shows up twice in the spread, once with `run` as the
+token and once with `jump` as the token---two different words followed that
+prefix in the original text. Compare this to the bigram cutouts model where the
+spread would just contain two `see→spot` cutouts---the trigram spread captures
+more specific patterns about which token follows which _pair_ of words.
 
 </Variant>
 
@@ -195,36 +183,60 @@ of one.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-1. choose a starting bucket and write down its two-word label---these are the
-   first two words of your generated text.
-2. close your eyes and pick a random token from inside that bucket
-3. write down the token you picked
-4. put the token back in the bucket
-5. find the bucket whose label matches your last _two_ words (the second word of
-   your old label + the token you just picked)
-6. if no bucket exists for that two-word pair, the model never saw this
-   combination during training---pick a different bucket with the _first_ word
-   of your two-word pair and continue from there
-7. repeat from step 2 until you reach a stopping point
+1. **Pick a starting two-word prefix**---choose any two-word combination that
+   appears as a red prefix on at least one cutout, and write down both words
+2. **Find candidates**---scan the spread for cutouts whose two-word prefix
+   matches your last two words
+3. **Pick one cutout** visually---your eye will tend to land on cutouts whose
+   tokens are more common
+4. **Write down the token** from the cutout you picked
+5. **Put the cutout back** in the spread
+6. Your new two-word prefix is the second word of the previous prefix plus the
+   token you just wrote---go back to step 2
+7. **Stop** when you've generated enough text, or when no cutouts match your
+   current two-word prefix
+8. If you get stuck (no matching cutouts), the model never saw this pair during
+   training---pick any other two-word prefix from the spread and continue
 
 ### Example (generation)
 
-Using the bucket model from above:
+Using the cutouts spread from above:
 
-1. Choose "see spot" as starting bucket---write down "see spot"
-2. Pick randomly from the "see spot" bucket---get either `run` or `jump`
-3. Let's say we pick `run`---write it down
-4. Put `run` back, find bucket "spot run"
-5. Pick from "spot run"---only `.` is inside---write it down
-6. Find bucket "run ."---pick `see`---write it down
-7. Find bucket ". see"---pick `spot`---write it down
-8. Find bucket "see spot"---this time pick `jump`---write it down
-9. Find bucket "spot jump"---pick `.`---write it down
-10. Continue or stop here
+1. Choose `see spot` as starting prefix---write down "see spot"
+2. Scan for `see spot` cutouts---there's one with `run` and one with
+   `jump`---pick visually
+3. Let's say we land on `run`---write it down
+4. New prefix is `spot run`---scan for matches---only `.` is on the table for
+   that prefix---write it down
+5. New prefix is `run .`---only `see` matches---write it down
+6. New prefix is `. see`---only `spot` matches---write it down
+7. New prefix is `see spot`---this time let's say we pick `jump`---write it
+   down
+8. New prefix is `spot jump`---only `.` matches---write it down
+9. Continue or stop here
 
 **Generated text:** _"see spot run. see spot jump."_
+
+</Variant>
+
+<Variant is="cutouts">
+
+## Optional extension: group into piles
+
+Once your students have got the hang of the loose-on-table flow, you can
+introduce grouping as an optimisation:
+
+1. Sort the cutouts into piles, one pile per unique two-word prefix
+2. Label each pile with its two-word prefix
+
+Now generation is faster---instead of scanning the whole table for matching
+two-word prefixes, you go straight to the pile whose label matches your last
+two words. With trigrams this speedup is bigger than it is for bigrams, because
+there are usually many more unique two-word prefixes than single-word prefixes.
+This is the same trick a computer uses when it stores a language model in a
+hash table.
 
 </Variant>
 
@@ -242,12 +254,13 @@ Using the bucket model from above:
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-- how does the trigram output compare to basic (bigram) bucket model output?
-- why do we need more buckets for trigrams than bigrams?
-- what happens when you encounter a word pair you've never seen before?
-- can you find two-word pairs that always lead to the same next word?
+- how does the trigram output compare to basic (bigram) cutouts model output?
+- why does the trigram spread tend to have more unique prefixes than a bigram
+  spread of the same text?
+- what happens when you encounter a two-word prefix you've never seen before?
+- can you find two-word prefixes that always lead to the same next word?
 - what's the tradeoff between context length and data requirements?
 
 </Variant>
@@ -268,15 +281,16 @@ different words. This is why modern LLMs can maintain coherent conversations
 over many exchanges---they consider much more context than just the last word or
 two.
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
 ### Comparison to grid method
 
-This bucket method and the grid method produce equivalent models:
+The cutouts spread and the grid method produce equivalent models:
 
-- a count in the grid's table corresponds to tokens inside a two-word bucket
+- a count in the grid's table corresponds to a cutout in the spread with the
+  matching two-word prefix and token
 - both capture the same "what follows these two words" relationships
-- buckets make the weighting more tangible---you can see and feel that some
-  outcomes are more likely because there are literally more tokens to pick from
+- cutouts make the weighting more tangible---you can see and feel that some
+  outcomes are more likely because there are literally more cutouts to land on
 
 </Variant>

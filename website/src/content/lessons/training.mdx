@@ -30,7 +30,7 @@ in text.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
 ![Hero image: Cutouts Training](/assets/images/hero-cutouts-training.avif)
 
@@ -45,20 +45,18 @@ in text.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-- some text (e.g. a few pages from a kids book, but it can be anything)
-- printed or handwritten copy of your text
+For each pair (or group) of students:
+
+- printed token cutouts (use the CLI to generate these from your text)
+- a clear table or flat surface to spread the cutouts out on
 - scissors
-- small containers for buckets (cups, bowls, envelopes, or just labelled areas
-  on a table)
-- pen and sticky notes or paper for bucket labels
 
 <Callout type="tip" title="Pre-made token cutouts">
 
-The [Tools](/tools#cutouts-for-bucket-training) page has ready-to-print token
-cutouts for several texts, or you can
-[generate your own](/tools#generate-your-own) from any text.
+The [Tools](/tools#cutouts) page has ready-to-print token cutouts for several
+texts, or you can [generate your own](/tools#generate-your-own) from any text.
 
 </Callout>
 
@@ -74,11 +72,12 @@ text.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-Build a collection of labelled buckets containing tokens from your text. Each
-bucket holds the words that can follow its label. This collection of buckets is
-your bigram language model.
+Spread your printed token cutouts out on a table. Each cutout shows a token
+together with its prefix (the word that came before it). The whole spread of
+cutouts _is_ your language model---every prefix-token pair from your training
+text is sitting somewhere on the table.
 
 </Variant>
 
@@ -91,12 +90,13 @@ model (filling out the grid) to track which words follow other words.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-Language models learn by counting patterns in text. Training means building a
-model that tracks which words follow other words. In this version, the
-"following" relationship is captured physically---each bucket contains the
-tokens that appeared after its label in the original text.
+The CLI has already done the bigram counting for you. Each cutout shows a token
+together with the word it follows in the training text. When you spread them
+out, common bigrams take up more space on the table---so during generation,
+words that follow a given prefix more often are easier to spot and pick. That
+visual frequency is the weighted random sampling, no dice required.
 
 </Variant>
 
@@ -121,22 +121,16 @@ tokens that appeared after its label in the original text.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-1. **Prepare your tokens**
-   - print or write out your training text
-   - convert everything to lowercase
-   - treat words, commas, and full stops as separate <GlossaryTerm id="token">tokens</GlossaryTerm> (ignore other
-     punctuation and whitespace)
-   - cut the text into individual tokens with scissors, keeping them in order
+1. **Cut out the tokens** from your printed sheets
+   - each cutout already has its prefix word printed in red, and the token
+     itself in black
+2. **Spread the cutouts out** on a table
+   - face up, no overlap if you can manage it
+   - that's it---the spread is your trained model
 
-2. **Build the model** one token at a time, starting with the first
-   - if this token doesn't have a bucket yet, create one and label it with this
-     word
-   - take the _next_ token from your pile and put it _into_ the current token's
-     bucket
-   - now apply the same process to that next token (create its bucket if needed)
-   - repeat until all tokens are in buckets
+Optional extension: see "Group into piles" below.
 
 </Variant>
 
@@ -163,38 +157,42 @@ After the full text the model looks like:
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-Original text: _"See Spot run. See Spot jump."_
+For the text `see spot run . see spot jump . run , spot , run . jump , spot , jump .`:
 
-After preparing tokens, you have these pieces of paper in order: `see` `spot`
-`run` `.` `see` `spot` `jump` `.`
+After cutting and spreading, the table contains every adjacent (prefix → token)
+pair from the text:
 
-**Step by step:**
+- `see→spot` × 2
+- `spot→run` × 1, `spot→jump` × 1, `spot→,` × 2
+- `run→.` × 2, `run→,` × 1
+- `.→see` × 1, `.→run` × 1, `.→jump` × 1
+- `,→spot` × 2, `,→run` × 1, `,→jump` × 1
+- `jump→.` × 2, `jump→,` × 1
 
-1. First token is `see`---create a bucket labelled "see"
-2. Next token is `spot`---put it in the "see" bucket
-3. Current token is now `spot`---create a bucket labelled "spot"
-4. Next token is `run`---put it in the "spot" bucket
-5. Current token is now `run`---create a bucket labelled "run"
-6. Next token is `.`---put it in the "run" bucket
-7. Current token is now `.`---create a bucket labelled "."
-8. Next token is `see`---put it in the "." bucket
-9. Current token is now `see`---bucket already exists
-10. Next token is `spot`---put it in the "see" bucket
-11. Current token is now `spot`---bucket already exists
-12. Next token is `jump`---put it in the "spot" bucket
-13. Current token is now `jump`---create a bucket labelled "jump"
-14. Next token is `.`---put it in the "jump" bucket
-15. No more tokens---training complete!
+Each entry is a physical cutout on your table. Notice that `spot→,` shows up
+twice---there are two cutouts on the table with `spot` as the prefix and `,` as
+the token. That repetition is what makes generation weighted.
 
-**Final model (bucket contents):**
+<LmCutouts tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
 
-<LmCutouts tokens="see spot run . see spot jump ." />
+</Variant>
 
-Notice that the "see" bucket contains two `spot` tokens because "spot" followed
-"see" twice in the original text. This captures the same information as a grid
-with tally marks, but in a physical form you can touch and manipulate.
+<Variant is="cutouts">
+
+## Optional extension: group into piles
+
+Once your students have got the hang of the loose-on-table flow, you can
+introduce grouping as an optimisation:
+
+1. Sort the cutouts into piles, one pile per unique prefix
+2. Label each pile with its prefix word
+
+Now generation is faster---instead of scanning the whole table, you go straight
+to the pile whose label matches your current word. This is the same trick a
+computer uses when it stores a language model in a hash table. The model's
+information content is identical; you've just rearranged it for faster lookup.
 
 </Variant>
 
@@ -213,14 +211,15 @@ with tally marks, but in a physical form you can touch and manipulate.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-- what can you tell about the input text by looking at what's in each bucket?
-- why does the "see" bucket have two tokens while "run" only has one?
+- what can you tell about the input text by looking at which prefix-token pairs
+  show up most often in the spread?
+- why does `see→spot` appear twice while `run→,` appears only once?
 - how does including punctuation as separate tokens help capture sentence
   structure?
-- what would happen if you trained on more text---how would the buckets change?
-- how could you use these buckets to generate _new_ text in the style of your
+- what would happen if you trained on more text---how would the spread change?
+- how could you use these cutouts to generate _new_ text in the style of your
   training data?
 
 </Variant>
@@ -235,11 +234,12 @@ with tally marks, but in a physical form you can touch and manipulate.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-- **"Do I make a new bucket every time?"** No---each word only gets a new bucket
-  the first time you see it. After that, just find the existing bucket and put
-  the next token into it.
+- **"Some cutouts are duplicates---is that a mistake?"** No---repeated cutouts
+  are exactly the point. If `see→spot` appears twice in the training text, you
+  should see two `see→spot` cutouts on the table. The repetition is what makes
+  common pairs easier to spot during generation.
 
 </Variant>
 
@@ -257,17 +257,17 @@ The key insight: "training" a language model means counting patterns in text.
 Your hand-built model contains the same type of information that current LLMs
 store---at a vastly smaller scale.
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
 ### Comparison to grid method
 
-This bucket method and the grid method produce equivalent models:
+The cutouts spread and the grid method produce equivalent models:
 
-- a tally mark in row X, column Y of the grid corresponds to one token Y inside
-  bucket X
+- a tally mark in row X, column Y of the grid corresponds to one cutout on the
+  table whose prefix is X and whose token is Y
 - both capture the same "what follows what" relationships
-- buckets make the weighting more tangible---you can see and feel that some
-  outcomes are more likely because there are literally more tokens to pick from
+- cutouts make the weighting more tangible---you can see and feel that some
+  outcomes are more likely because there are literally more cutouts to pick from
 
 </Variant>
 
@@ -282,10 +282,10 @@ the example, then press Play or Step to watch the model being built.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
 Step through the training process at your own pace. Enter your own text or use
-the example, then press Play or Step to watch the buckets being filled.
+the example, then press Play or Step to watch the cutouts being placed.
 
 <CutoutsTrainingWidget client:visible />
 

@@ -43,7 +43,7 @@ Use a pre-trained (hand-built) <GlossaryTerm id="bigram-model">bigram model</Glo
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
 ![Hero image: Cutouts Generation](/assets/images/hero-cutouts-generation.avif)
 
@@ -59,17 +59,36 @@ Use a pre-trained (hand-built) <GlossaryTerm id="bigram-model">bigram model</Glo
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-- your completed bucket model from [Training](/lessons/training)
+For each pair (or group) of students:
+
+- the trained cutouts spread from [Training](/lessons/training) (already laid
+  out on a table)
 - pen and paper for writing down the generated text
+
+The [Tools](/tools#cutouts) page has ready-to-print token cutouts for several
+texts if you haven't done the Training lesson yet.
 
 </Variant>
 
 ## Your goal
 
+<Variant is="grid">
+
 Generate new text from your bigram language model. Stretch goal: keep going and
 write a whole story.
+
+</Variant>
+
+<Variant is="cutouts">
+
+Generate new text by walking the spread: pick a starting prefix, find the
+cutouts whose red prefix label matches, choose one visually, and repeat using
+the token you picked as your new prefix. Stretch goal: keep going and write a
+whole story.
+
+</Variant>
 
 ## Key idea
 
@@ -81,12 +100,12 @@ yields fluent text.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-A language model proposes several possible next words. In the bucket model, each
-bucket contains all the tokens that could come next---and some tokens appear
-multiple times, making them more likely to be picked. Choosing randomly from a
-bucket and repeating the process word by word creates new text.
+The cutouts spread already encodes the weights: prefixes that occur more often
+have more cutouts on the table, and your eye naturally lands on tokens that
+appear more often. So scanning the spread for matching cutouts and picking one
+visually _is_ weighted random sampling---no dice required.
 
 </Variant>
 
@@ -104,16 +123,21 @@ bucket and repeating the process word by word creates new text.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-1. Choose a starting bucket and write down its label---this is the first word of
-   your generated text.
-2. Close your eyes and pick a random token from inside that bucket.
-3. Write down the token you picked.
-4. Put the token back in the bucket (so you can use it again later).
-5. Find the bucket whose label matches the token you just picked.
-6. Repeat from step 2 until you reach a stopping point (e.g. an empty bucket or
-   your desired length).
+1. **Pick a starting prefix**---choose any word that appears as a prefix on at
+   least one cutout
+2. **Find candidates**---look across the spread of cutouts for ones whose red
+   prefix label matches your current word
+3. **Pick one cutout**---visually pick any matching cutout (your eye will tend
+   to land on cutouts whose tokens are common, because there are more of
+   them---that's weighted sampling for free)
+4. **Write down the token** from the cutout you picked
+5. **Put the cutout back** in the spread (this matters: removing it would change
+   the model's distribution for next time)
+6. The token you just wrote becomes your new current word---go back to step 2
+7. **Stop** when you've generated enough text, or when no cutouts match your
+   current word
 
 </Variant>
 
@@ -143,33 +167,45 @@ After the above steps, the generated text is _"see spot run. see spot"_
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-Using the bucket model from the example in [Training](/lessons/training):
+Using the cutouts spread from the example in [Training](/lessons/training):
 
 <LmCutouts tokens="see spot run . see spot jump ." />
 
 **Generation sequence:**
 
-1. Choose `see` as starting bucket---write down "see"
-2. Pick randomly from the "see" bucket---both tokens are `spot`, so we get
-   `spot`---write it down
-3. Move to the "spot" bucket---pick randomly between `run` and `jump`
-4. Let's say we pick `run`---write it down
-5. Move to the "run" bucket---only `.` is inside, so we get `.`---write it down
-6. Move to the "." bucket---only `see` is inside, so we get `see`---write it
-   down
-7. Move to the "see" bucket---pick `spot` again---write it down
-8. Move to the "spot" bucket---this time let's say we pick `jump`---write it
-   down
-9. Move to the "jump" bucket---only `.` is inside---write it down
-10. The "." bucket still has a token, so we could continue, or stop here
+1. Choose `see` as starting prefix---write down "see"
+2. Scan the spread for cutouts with `see` as the red prefix---both have `spot`
+   as the token, so we pick one and write down `spot`
+3. Now scan for cutouts with `spot` as the prefix---one has `run`, one has
+   `jump`. Pick visually
+4. Let's say we land on `run`---write it down
+5. Scan for cutouts with `run` as the prefix---only `.` matches---write it down
+6. Scan for cutouts with `.` as the prefix---only `see` matches---write it down
+7. Back to `see`---pick a `spot` cutout again---write it down
+8. Scan for `spot` cutouts---this time let's say our eye lands on `jump`---write
+   it down
+9. Scan for `jump` cutouts---only `.` matches---write it down
+10. The `.` prefix still has a matching cutout, so we could continue, or stop here
 
 **Generated text:** _"see spot run. see spot jump."_
 
-Notice how the randomness comes from physically picking tokens without looking.
-Buckets with more tokens of the same type are more likely to produce that
-token---the "see" bucket always produces `spot` because that's all it contains.
+Notice how the randomness comes from your eye landing somewhere on the
+spread---you don't need dice. Prefixes with more cutouts of the same token are
+more likely to produce that token: every cutout with `see` as the prefix has
+`spot` as its token, so generation from `see` always produces `spot`.
+
+</Variant>
+
+<Variant is="cutouts">
+
+## Optional extension: pre-grouped piles
+
+If you grouped the cutouts into piles during training (see the Training
+lesson's optional extension), generation becomes faster: step 2 is now "find
+the pile labelled with my current word" instead of scanning the whole table.
+The behaviour and the resulting output distribution are unchanged.
 
 </Variant>
 
@@ -188,12 +224,12 @@ token---the "see" bucket always produces `spot` because that's all it contains.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-- how does the starting bucket affect your generated text?
+- how does the starting prefix affect your generated text?
 - why might the text sometimes get stuck repeating the same pattern?
-- what happens when a bucket only has one token inside?
-- why do we put the token back after picking it?
+- what happens when only one cutout matches your current prefix?
+- why do we leave the cutouts on the table after picking one?
 - does the generated text sound like the original training text?
 
 </Variant>
@@ -221,23 +257,21 @@ token---the "see" bucket always produces `spot` because that's all it contains.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-- **"Every bucket only has one token---there's nothing random about this."** If
-  the group didn't get very far in [Training](/lessons/training) and each bucket
-  only has one token, the generation process won't feel random at all---there
-  will only ever be one option. Either encourage them to go back and do a bit
-  more training, or have them add extra tokens to buckets wherever they like.
-  This isn't as much like cheating as it might seem---it's really just an
-  example of using [Synthetic Data](/lessons/synthetic-data).
-- **"I picked a word that doesn't have its own bucket."** This can happen if a
-  word only ever appeared as the _last_ word in the training text---it ended up
-  inside another bucket but never got a bucket of its own. Just pick any bucket
-  that does exist and continue from there.
+- **"Every prefix only has one matching cutout---there's nothing random about
+  this."** If the spread is small and each prefix only matches a single cutout,
+  generation will feel deterministic. Either go back and train on more text, or
+  add a few extra cutouts (writing them out by hand is fine). This isn't really
+  cheating---it's an example of [Synthetic Data](/lessons/synthetic-data).
+- **"I picked a token that doesn't appear as a prefix anywhere on the table."**
+  This can happen if a word only ever appeared as the _last_ word in the
+  training text---it shows up as a token but never as a prefix. Just pick a
+  different prefix that does appear on the spread and continue from there.
 - **"We keep going back and forth between the same two words."** With small
-  models it's common to get stuck in a loop where two buckets keep sending you
-  to each other. Try starting from a different bucket, or just pick any other
-  token to break the cycle.
+  spreads it's common to get stuck in a loop where two prefixes keep pointing
+  to each other. Try starting from a different prefix, or just pick any other
+  matching cutout to break the cycle.
 
 </Variant>
 
@@ -247,7 +281,7 @@ This generation process is identical to how current LLMs produce text:
 
 - **sequential generation**: both generate one word at a time
 - **probabilistic sampling**: both use weighted random selection (exactly like
-  your dice or tokens)
+  your dice or cutouts spread)
 - **<GlossaryTerm id="probability-distribution">probability distribution</GlossaryTerm>**: neural network outputs probabilities for all
   50,000+ possible next tokens
 - **no planning**: neither looks ahead---just picks the next word
@@ -270,19 +304,20 @@ it more clearly describes what language models do: they generate text.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
 ### Comparison to dice method
 
-This bucket method and the dice method produce equivalent results:
+The cutouts spread and the dice method produce equivalent results:
 
 - dice rolls with weighted probabilities select from options based on counts
-- bucket picking selects from options where counts are represented by multiple
-  physical tokens
-- buckets make the probability tangible---a bucket with three `spot` tokens and
-  one `run` token gives `spot` a 75% chance, just like weighted dice would
+- visual selection from the spread selects from options where counts are
+  represented by multiple physical cutouts
+- the spread makes the probability tangible---if three of the cutouts with
+  prefix `the` have `cat` as their token and one has `dog`, you'll land on
+  `cat` about 75% of the time, just like weighted dice would
 
-The bucket method avoids the need to calculate percentages or understand dice
+The cutouts method avoids the need to calculate percentages or understand dice
 mechanics, making it more accessible for younger learners.
 
 </Variant>
@@ -299,11 +334,11 @@ generated. You can also edit the training text to create your own model.
 
 </Variant>
 
-<Variant is="bucket">
+<Variant is="cutouts">
 
-Step through the generation process at your own pace. Click on a bucket to
-select a starting word, then press Play or Step to watch tokens being picked
-randomly and text being generated. You can also edit the training text to create
+Step through the generation process at your own pace. Click on a cutout to
+select a starting word, then press Play or Step to watch matching cutouts being
+picked and text being generated. You can also edit the training text to create
 your own model.
 
 <CutoutsGenerationWidget client:visible />
