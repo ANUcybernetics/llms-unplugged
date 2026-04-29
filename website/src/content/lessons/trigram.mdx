@@ -9,7 +9,7 @@ keyIdea: More context improves predictions---trigrams track two previous words, 
 
 import VariantToggle from "../../components/VariantToggle.svelte";
 import Variant from "../../components/Variant.astro";
-import LmBuckets from "../../components/LmBuckets.astro";
+import LmCutouts from "../../components/LmCutouts.astro";
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 import Callout from "../../components/Callout.astro";
 
@@ -169,7 +169,7 @@ After preparing tokens, you have these pieces of paper in order: `see` `spot`
 
 **Final model (bucket contents):**
 
-<LmBuckets tokens="see spot run . see spot jump ." ngram={3} />
+<LmCutouts tokens="see spot run . see spot jump ." ngram={3} />
 
 Notice that "see spot" has two tokens because two different words followed that
 pair in the original text. Compare this to the bigram bucket model where the

@@ -2,10 +2,10 @@
   import { onMount, untrack } from "svelte";
   import { createScheduler } from "../../lib/scheduler.svelte";
   import {
-    createBucketGenerationMachine,
+    createCutoutsGenerationMachine,
     selectStartWord,
-  } from "../../lib/machines/bucketGeneration";
-  import type { BucketGenerationState } from "../../lib/machines/bucketGeneration";
+  } from "../../lib/machines/cutoutsGeneration";
+  import type { CutoutsGenerationState } from "../../lib/machines/cutoutsGeneration";
   import {
     getTrainingText,
     setTrainingText,
@@ -16,7 +16,7 @@
     buildBigramModel,
     isPunctuation,
   } from "../../lib/tokens";
-  import { buildBucketsFromModel } from "../../lib/buckets";
+  import { buildCutoutsFromModel } from "../../lib/cutouts";
   import PlaybackSection from "../PlaybackSection.svelte";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
   import { PLAYBACK_CONFIG } from "../../lib/config/playback";
@@ -36,9 +36,9 @@
   let tokens = $derived(parseTokens(trainingText));
   let vocabulary = $derived(getVocabulary(tokens));
   let model = $derived(buildBigramModel(tokens));
-  let buckets = $derived(buildBucketsFromModel(vocabulary, model));
+  let cutouts = $derived(buildCutoutsFromModel(vocabulary, model));
 
-  let machine = $derived(createBucketGenerationMachine(model, vocabulary));
+  let machine = $derived(createCutoutsGenerationMachine(model, vocabulary));
   const scheduler = createScheduler(() => machine, {
     defaultInterval: PLAYBACK_CONFIG.GENERATION_DEFAULT_STEP_INTERVAL_MS,
     loop: () => loop,
@@ -52,10 +52,10 @@
   let animatingIndex = $state<number | null>(null);
   let isShuffling = $state(false);
 
-  let prevPhase = $state<BucketGenerationState["phase"]["kind"]>("idle");
+  let prevPhase = $state<CutoutsGenerationState["phase"]["kind"]>("idle");
   $effect(() => {
     const current = phase;
-    if (current.kind === "picked" && prevPhase === "showing-bucket") {
+    if (current.kind === "picked" && prevPhase === "showing-matches") {
       animatePicking(current.pickedIndex);
     } else if (current.kind !== "picked") {
       animatingIndex = null;
@@ -67,16 +67,16 @@
   function animatePicking(finalIndex: number) {
     isShuffling = true;
     const frameMs = Math.max(20, scheduler.stepInterval * 0.025);
-    const bucketTokens =
+    const matchingTokens =
       phase.kind === "picked"
-        ? (buckets.find((b) => b.label === currentWord)?.tokens ?? [])
+        ? (cutouts.find((c) => c.label === currentWord)?.tokens ?? [])
         : [];
     let frame = 0;
     const totalFrames = 10;
 
     function tick() {
       if (frame < totalFrames) {
-        animatingIndex = Math.floor(Math.random() * bucketTokens.length);
+        animatingIndex = Math.floor(Math.random() * matchingTokens.length);
         frame++;
         setTimeout(tick, frameMs);
       } else {
@@ -105,12 +105,12 @@
 </script>
 
 <FullscreenWrapper>
-  <div class="lm-widget bucket-generation-widget">
+  <div class="lm-widget cutouts-generation-widget">
     <div class="widget-view">
       <div class="widget-section">
         <div class="section-header">Training text</div>
         <textarea
-          id="bucket-generation-input"
+          id="cutouts-generation-input"
           class="text-input"
           rows="2"
           placeholder="Enter training text..."
@@ -120,37 +120,37 @@
 
       <div class="widget-section">
         <div class="section-header">Model</div>
-        <div class="buckets-content">
-          {#each buckets as bucket}
+        <div class="cutouts-content">
+          {#each cutouts as cutout}
             <div
-              class="bucket"
-              class:highlighted={bucket.label === currentWord}
+              class="cutout"
+              class:highlighted={cutout.label === currentWord}
               class:clickable={outputWords.length === 0 &&
-                model.hasSuccessors(bucket.label)}
-              class:dead-end={!model.hasSuccessors(bucket.label)}
-              onclick={() => handleStartWord(bucket.label)}
+                model.hasSuccessors(cutout.label)}
+              class:dead-end={!model.hasSuccessors(cutout.label)}
+              onclick={() => handleStartWord(cutout.label)}
               role="button"
               tabindex="0"
               onkeydown={(e) => {
                 if (e.key === "Enter" || e.key === " ")
-                  handleStartWord(bucket.label);
+                  handleStartWord(cutout.label);
               }}
             >
               <div
-                class="bucket-label"
-                class:punctuation={isPunctuation(bucket.label)}
+                class="cutout-label"
+                class:punctuation={isPunctuation(cutout.label)}
               >
-                {bucket.label}
+                {cutout.label}
               </div>
-              <div class="bucket-contents">
-                {#each bucket.tokens as token, i}
+              <div class="cutout-contents">
+                {#each cutout.tokens as token, i}
                   <span
-                    class="bucket-token"
+                    class="cutout-token"
                     class:punctuation={isPunctuation(token)}
-                    class:shuffling={bucket.label === currentWord &&
+                    class:shuffling={cutout.label === currentWord &&
                       isShuffling &&
                       i === animatingIndex}
-                    class:picked={bucket.label === currentWord &&
+                    class:picked={cutout.label === currentWord &&
                       !isShuffling &&
                       i === displayIndex &&
                       phase.kind === "picked"}
@@ -167,7 +167,7 @@
       <div class="widget-section">
         <div class="section-header">Output</div>
         <div class="action-content">
-          {#if phase.kind === "showing-bucket" && currentWord}
+          {#if phase.kind === "showing-matches" && currentWord}
             <span>Looking in the</span>
             <span
               class="token highlight-first"
@@ -211,7 +211,7 @@
         isComplete={scheduler.isComplete}
         stepInterval={scheduler.stepInterval}
         {loop}
-        sliderId="bucket-generation-speed-slider"
+        sliderId="cutouts-generation-speed-slider"
         onplay={scheduler.play}
         onpause={scheduler.pause}
         onstep={scheduler.step}
@@ -223,25 +223,25 @@
 </FullscreenWrapper>
 
 <style>
-  .bucket.clickable {
+  .cutout.clickable {
     cursor: pointer;
   }
 
-  .bucket.clickable:hover {
+  .cutout.clickable:hover {
     border-color: var(--color-brand-hover);
   }
 
-  .bucket.dead-end {
+  .cutout.dead-end {
     opacity: 0.6;
   }
 
-  .bucket-token.shuffling {
+  .cutout-token.shuffling {
     background: var(--lm-highlight-medium);
     transform: scale(1.15);
     animation: shake 0.1s linear infinite;
   }
 
-  .bucket-token.picked {
+  .cutout-token.picked {
     background: var(--lm-highlight-strong);
     transform: scale(1.2);
   }
@@ -260,7 +260,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .bucket-token.shuffling {
+    .cutout-token.shuffling {
       animation: none;
     }
   }

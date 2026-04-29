@@ -11,9 +11,9 @@ keyIdea: Language models learn by counting patterns in text and tracking which w
 import VariantToggle from "../../components/VariantToggle.svelte";
 import Variant from "../../components/Variant.astro";
 import LmGrid from "../../components/LmGrid.astro";
-import LmBuckets from "../../components/LmBuckets.astro";
+import LmCutouts from "../../components/LmCutouts.astro";
 import TrainingWidget from "../../components/widgets/TrainingWidget.svelte";
-import BucketTrainingWidget from "../../components/widgets/BucketTrainingWidget.svelte";
+import CutoutsTrainingWidget from "../../components/widgets/CutoutsTrainingWidget.svelte";
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 import Callout from "../../components/Callout.astro";
 
@@ -190,7 +190,7 @@ After preparing tokens, you have these pieces of paper in order: `see` `spot`
 
 **Final model (bucket contents):**
 
-<LmBuckets tokens="see spot run . see spot jump ." />
+<LmCutouts tokens="see spot run . see spot jump ." />
 
 Notice that the "see" bucket contains two `spot` tokens because "spot" followed
 "see" twice in the original text. This captures the same information as a grid
@@ -287,6 +287,6 @@ the example, then press Play or Step to watch the model being built.
 Step through the training process at your own pace. Enter your own text or use
 the example, then press Play or Step to watch the buckets being filled.
 
-<BucketTrainingWidget client:visible />
+<CutoutsTrainingWidget client:visible />
 
 </Variant>

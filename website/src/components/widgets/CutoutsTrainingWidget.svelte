@@ -41,8 +41,8 @@
     });
   });
 
-  let buckets = $derived.by((): { label: string; tokens: string[] }[] => {
-    const bucketMap = new Map<string, string[]>();
+  let cutouts = $derived.by((): { label: string; tokens: string[] }[] => {
+    const cutoutsByLabel = new Map<string, string[]>();
     const order: string[] = [];
 
     for (
@@ -51,16 +51,16 @@
       i++
     ) {
       const [from, to] = bigrams[i];
-      if (!bucketMap.has(from)) {
-        bucketMap.set(from, []);
+      if (!cutoutsByLabel.has(from)) {
+        cutoutsByLabel.set(from, []);
         order.push(from);
       }
-      bucketMap.get(from)!.push(to);
+      cutoutsByLabel.get(from)!.push(to);
     }
 
     return order.map((label) => ({
       label,
-      tokens: bucketMap.get(label) || [],
+      tokens: cutoutsByLabel.get(label) || [],
     }));
   });
 
@@ -68,7 +68,7 @@
     const step = scheduler.state.currentStep;
     if (step === 0 || step > bigrams.length) {
       return {
-        bucket: null as string | null,
+        match: null as string | null,
         token: null as string | null,
         tokenIdx: -1,
         nextIdx: -1,
@@ -76,7 +76,7 @@
     }
     const bigram = bigrams[step - 1];
     return {
-      bucket: bigram[0],
+      match: bigram[0],
       token: bigram[1],
       tokenIdx: step - 1,
       nextIdx: step,
@@ -87,12 +87,12 @@
 </script>
 
 <FullscreenWrapper>
-  <div class="lm-widget bucket-training-widget">
+  <div class="lm-widget cutouts-training-widget">
     <div class="widget-view">
       <div class="widget-section">
         <div class="section-header">Training text</div>
         <textarea
-          id="bucket-training-input"
+          id="cutouts-training-input"
           class="text-input"
           rows="2"
           placeholder="Enter text to train on..."
@@ -114,7 +114,7 @@
             </span>
           {/each}
         </div>
-        {#if highlights.bucket}
+        {#if highlights.match}
           <div class="action-content">
             <span>Put</span>
             <span
@@ -125,36 +125,36 @@
             <span>into the</span>
             <span
               class="token highlight-first"
-              class:punctuation={isPunctuation(highlights.bucket)}
-              >{highlights.bucket}</span
+              class:punctuation={isPunctuation(highlights.match)}
+              >{highlights.match}</span
             >
-            <span>bucket</span>
+            <span>match</span>
           </div>
         {/if}
       </div>
 
       <div class="widget-section">
         <div class="section-header">Model</div>
-        <div class="buckets-content">
-          {#each buckets as bucket}
+        <div class="cutouts-content">
+          {#each cutouts as cutout}
             <div
-              class="bucket"
-              class:highlighted={bucket.label === highlights.bucket}
+              class="cutout"
+              class:highlighted={cutout.label === highlights.match}
             >
               <div
-                class="bucket-label"
-                class:punctuation={isPunctuation(bucket.label)}
-                title={bucket.label}
+                class="cutout-label"
+                class:punctuation={isPunctuation(cutout.label)}
+                title={cutout.label}
               >
-                {bucket.label}
+                {cutout.label}
               </div>
-              <div class="bucket-contents">
-                {#each bucket.tokens as token, i}
+              <div class="cutout-contents">
+                {#each cutout.tokens as token, i}
                   <span
-                    class="bucket-token"
+                    class="cutout-token"
                     class:punctuation={isPunctuation(token)}
-                    class:just-added={bucket.label === highlights.bucket &&
-                      i === bucket.tokens.length - 1}
+                    class:just-added={cutout.label === highlights.match &&
+                      i === cutout.tokens.length - 1}
                     title={token}
                   >
                     {token}
@@ -175,7 +175,7 @@
         minStepInterval={PLAYBACK_CONFIG.TRAINING_MIN_STEP_INTERVAL_MS}
         maxStepInterval={PLAYBACK_CONFIG.TRAINING_MAX_STEP_INTERVAL_MS}
         {loop}
-        sliderId="bucket-training-speed-slider"
+        sliderId="cutouts-training-speed-slider"
         onplay={scheduler.play}
         onpause={scheduler.pause}
         onstep={scheduler.step}
@@ -187,7 +187,7 @@
 </FullscreenWrapper>
 
 <style>
-  .bucket-token.just-added {
+  .cutout-token.just-added {
     background: var(--lm-highlight-strong);
     transform: scale(1.1);
   }

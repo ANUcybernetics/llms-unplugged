@@ -12,9 +12,9 @@ import VariantToggle from "../../components/VariantToggle.svelte";
 import Variant from "../../components/Variant.astro";
 import Callout from "../../components/Callout.astro";
 import LmGrid from "../../components/LmGrid.astro";
-import LmBuckets from "../../components/LmBuckets.astro";
+import LmCutouts from "../../components/LmCutouts.astro";
 import GenerationWidget from "../../components/widgets/GenerationWidget.svelte";
-import BucketGenerationWidget from "../../components/widgets/BucketGenerationWidget.svelte";
+import CutoutsGenerationWidget from "../../components/widgets/CutoutsGenerationWidget.svelte";
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
 # Generation
@@ -147,7 +147,7 @@ After the above steps, the generated text is _"see spot run. see spot"_
 
 Using the bucket model from the example in [Training](/lessons/training):
 
-<LmBuckets tokens="see spot run . see spot jump ." />
+<LmCutouts tokens="see spot run . see spot jump ." />
 
 **Generation sequence:**
 
@@ -306,6 +306,6 @@ select a starting word, then press Play or Step to watch tokens being picked
 randomly and text being generated. You can also edit the training text to create
 your own model.
 
-<BucketGenerationWidget client:visible />
+<CutoutsGenerationWidget client:visible />
 
 </Variant>
