@@ -168,19 +168,19 @@
         <div class="section-header">Output</div>
         <div class="action-content">
           {#if phase.kind === "showing-matches" && currentWord}
-            <span>Looking in the</span>
+            <span>Looking for the</span>
             <span
               class="token highlight-first"
               class:punctuation={isPunctuation(currentWord)}>{currentWord}</span
             >
-            <span>bucket...</span>
+            <span>cutouts...</span>
           {:else if phase.kind === "picked" && isShuffling && currentWord}
             <span>Picking randomly from the</span>
             <span
               class="token highlight-first"
               class:punctuation={isPunctuation(currentWord)}>{currentWord}</span
             >
-            <span>bucket...</span>
+            <span>cutouts...</span>
           {:else if phase.kind === "picked" && phase.pickedToken}
             <span>Picked</span>
             <span
@@ -188,7 +188,7 @@
               class:punctuation={isPunctuation(phase.pickedToken)}
               >{phase.pickedToken}</span
             >
-            <span>from the bucket!</span>
+            <span>from the cutouts!</span>
           {:else if phase.kind === "complete"}
             <span class="complete-message">Generation complete!</span>
           {/if}
