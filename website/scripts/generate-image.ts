@@ -3,8 +3,8 @@
 //
 // Examples:
 //   npx tsx scripts/generate-image.ts "dice-based text generation in a classroom" public/assets/images/hero-intro.avif
-//   npx tsx scripts/generate-image.ts bucket-training public/assets/images/hero-bucket-training
-//   npm run generate:image -- "grid of tokens with dice and buckets" public/assets/images/hero-grid-training.jpg
+//   npx tsx scripts/generate-image.ts cutouts-training public/assets/images/hero-cutouts-training
+//   npm run generate:image -- "grid of tokens with dice and cutouts" public/assets/images/hero-grid-training.jpg
 import { exec } from "node:child_process";
 import { access, mkdir, unlink } from "node:fs/promises";
 import { join, dirname, extname, basename } from "node:path";
@@ -18,7 +18,7 @@ const EXAMPLE_IMAGES = [
   join(__dirname, "reference-intro.jpg"),
   join(__dirname, "reference-sampling.jpg"),
   join(__dirname, "reference-pretrained-generation.jpg"),
-  join(__dirname, "reference-bucket-training.jpg"),
+  join(__dirname, "reference-cutouts-training.jpg"),
   join(__dirname, "reference-grid-trigram.jpg"),
 ];
 
@@ -106,7 +106,7 @@ function printUsage() {
   console.log(
     '  generate-image.ts "dice-based text generation in a classroom" public/assets/images/hero-intro.avif',
   );
-  console.log("  generate-image.ts bucket-training public/assets/images/hero-bucket-training");
+  console.log("  generate-image.ts cutouts-training public/assets/images/hero-cutouts-training");
 }
 
 async function main() {
