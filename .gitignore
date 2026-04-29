@@ -2,6 +2,7 @@
 *.pdf
 !website/public/assets/pdfs/lessons.pdf
 !website/public/assets/pdfs/ace2026-llms-unplugged.pdf
+!website/public/assets/pdfs/llms-unplugged-flyer-may-2026.pdf
 !website/public/assets/pdfs/booklets/*.pdf
 !website/public/assets/pdfs/cutouts/*.pdf
 
