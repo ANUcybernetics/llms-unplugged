@@ -116,19 +116,19 @@
         </div>
         {#if highlights.match}
           <div class="action-content">
-            <span>Put</span>
+            <span>Add</span>
             <span
               class="token highlight-second"
               class:punctuation={isPunctuation(highlights.token!)}
               >{highlights.token}</span
             >
-            <span>into the</span>
+            <span>to the</span>
             <span
               class="token highlight-first"
               class:punctuation={isPunctuation(highlights.match)}
               >{highlights.match}</span
             >
-            <span>match</span>
+            <span>cutouts</span>
           </div>
         {/if}
       </div>

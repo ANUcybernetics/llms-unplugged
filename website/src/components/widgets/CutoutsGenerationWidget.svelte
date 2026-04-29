@@ -188,7 +188,15 @@
               class:punctuation={isPunctuation(phase.pickedToken)}
               >{phase.pickedToken}</span
             >
-            <span>from the cutouts!</span>
+            <span>from the</span>
+            {#if currentWord}
+              <span
+                class="token highlight-first"
+                class:punctuation={isPunctuation(currentWord)}
+                >{currentWord}</span
+              >
+            {/if}
+            <span>cutouts!</span>
           {:else if phase.kind === "complete"}
             <span class="complete-message">Generation complete!</span>
           {/if}
