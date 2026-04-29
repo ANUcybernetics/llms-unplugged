@@ -188,9 +188,9 @@
   accent-color: var(--anu-gold);
 }
 
-/* Shared bucket styles (BucketTrainingWidget + BucketGenerationWidget) */
+/* Shared cutouts styles (CutoutsTrainingWidget + CutoutsGenerationWidget) */
 
-.buckets-content {
+.cutouts-content {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
   gap: 1rem;
@@ -198,7 +198,7 @@
   align-items: stretch;
 }
 
-.bucket {
+.cutout {
   display: grid;
   grid-template-rows: auto 1fr;
   min-width: 0;
@@ -210,12 +210,12 @@
     background-color 0.2s;
 }
 
-.bucket.highlighted {
+.cutout.highlighted {
   border-color: var(--color-brand);
   background: var(--color-brand-soft);
 }
 
-.bucket-label {
+.cutout-label {
   padding: 0.375rem 0.5rem;
   font-family: var(--font-mono);
   font-size: 0.875rem;
@@ -229,15 +229,15 @@
   white-space: nowrap;
 }
 
-.bucket-label.punctuation {
+.cutout-label.punctuation {
   font-size: 1rem;
 }
 
-.bucket.highlighted .bucket-label {
+.cutout.highlighted .cutout-label {
   border-bottom-color: var(--color-brand);
 }
 
-.bucket-contents {
+.cutout-contents {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
@@ -248,7 +248,7 @@
   overflow: hidden;
 }
 
-.bucket-token {
+.cutout-token {
   display: inline-block;
   max-width: 100%;
   padding: 0.125rem 0.375rem;
@@ -266,7 +266,7 @@
     transform 0.2s;
 }
 
-.bucket-token.punctuation {
+.cutout-token.punctuation {
   font-weight: 700;
   font-size: 0.875rem;
 }
@@ -331,7 +331,7 @@
 }
 
 .fullscreen-content.scaled .widget-view > .widget-section:has(.bigram-grid),
-.fullscreen-content.scaled .widget-view > .widget-section:has(.buckets-content),
+.fullscreen-content.scaled .widget-view > .widget-section:has(.cutouts-content),
 .fullscreen-content.scaled .widget-view > .widget-section:has(.entries-content) {
   min-height: 0;
   flex: 3;
@@ -344,7 +344,7 @@
 
 .fullscreen-content.scaled .entries-content,
 .fullscreen-content.scaled .grid-section,
-.fullscreen-content.scaled .buckets-content {
+.fullscreen-content.scaled .cutouts-content {
   max-height: none;
   height: 100%;
   overflow-y: auto;
@@ -360,8 +360,8 @@
     animation: none;
   }
 
-  .bucket,
-  .bucket-token {
+  .cutout,
+  .cutout-token {
     transition: none;
   }
 }

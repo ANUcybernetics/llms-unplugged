@@ -217,30 +217,30 @@ hr {
   font-weight: 600;
 }
 
-/* LM Buckets table styling */
-.lm-buckets {
+/* LM Cutouts table styling */
+.lm-cutouts {
   overflow-x: auto;
   margin: 1.5rem 0;
 }
 
-.lm-buckets table {
+.lm-cutouts table {
   border-collapse: collapse;
   border: 1px solid var(--color-border);
   font-size: 0.875rem;
 }
 
-.lm-buckets th,
-.lm-buckets td {
+.lm-cutouts th,
+.lm-cutouts td {
   padding: 0.5rem;
   border: 1px solid var(--color-border);
 }
 
-.lm-buckets th {
+.lm-cutouts th {
   background-color: var(--color-brand-soft);
   font-weight: 600;
 }
 
-.lm-buckets td code {
+.lm-cutouts td code {
   background: transparent;
   padding: 0;
   font-size: inherit;
@@ -395,8 +395,8 @@ hr {
 }
 
 /* Variant toggle: CSS-only show/hide */
-[data-variant="grid"] .bucket-only,
-[data-variant="bucket"] .grid-only {
+[data-variant="grid"] .cutouts-only,
+[data-variant="cutouts"] .grid-only {
   display: none;
 }
 
