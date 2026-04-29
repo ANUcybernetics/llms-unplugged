@@ -16,7 +16,7 @@
 <div class="lm-widget variant-toggle">
   <p class="variant-description">
     <strong>Choose your method:</strong> This lesson can be done with either a
-    <em>grid</em> (paper and dice) or <em>buckets</em> (physical tokens). Choose which
+    <em>grid</em> (paper and dice) or <em>cutouts</em> (physical tokens). Choose which
     suits your materials.
   </p>
   <div class="variant-buttons">
@@ -68,9 +68,9 @@
     </button>
     <button
       class="variant-button"
-      class:active={current === "bucket"}
-      onclick={() => select("bucket")}
-      aria-pressed={current === "bucket"}
+      class:active={current === "cutouts"}
+      onclick={() => select("cutouts")}
+      aria-pressed={current === "cutouts"}
     >
       <svg
         width="24"
@@ -80,10 +80,11 @@
         stroke="currentColor"
         stroke-width="1.5"
       >
-        <path d="M4 6h16l-2 14H6L4 6z" />
-        <path d="M2 6h20" />
+        <rect x="3" y="6" width="10" height="12" rx="1" />
+        <rect x="7" y="3" width="10" height="12" rx="1" fill="currentColor" opacity="0.15" />
+        <rect x="11" y="9" width="10" height="12" rx="1" />
       </svg>
-      <span>Buckets</span>
+      <span>Cutouts</span>
     </button>
   </div>
 </div>

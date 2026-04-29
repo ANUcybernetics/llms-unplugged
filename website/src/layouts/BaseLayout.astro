@@ -62,8 +62,12 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
 
     <script is:inline>
       try {
-        const v = localStorage.getItem("llms-unplugged-variant");
-        if (v === "grid" || v === "bucket") {
+        let v = localStorage.getItem("llms-unplugged-variant");
+        if (v === "bucket") {
+          v = "cutouts";
+          try { localStorage.setItem("llms-unplugged-variant", "cutouts"); } catch {}
+        }
+        if (v === "grid" || v === "cutouts") {
           document.documentElement.setAttribute("data-variant", v);
         }
       } catch {}
