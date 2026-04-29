@@ -54,7 +54,7 @@ impl CanonicalFormTracker {
 }
 
 /// A raw token from the input text, before filtering.
-/// Used for bucket training cutouts where we show all tokens but mark some as discarded.
+/// Used for the cutouts lesson variant where we show all tokens but mark some as discarded.
 #[derive(Debug, Clone, Serialize, PartialEq)]
 pub struct RawToken {
     pub index: usize,
@@ -207,7 +207,7 @@ impl Normalizer {
     }
 
     /// Tokenize a line returning raw tokens with keep/discard status.
-    /// Used for bucket training cutouts where all tokens are shown.
+    /// Used for the cutouts lesson variant where all tokens are shown.
     /// Unlike normalize_line, this preserves digits in tokens so we can show them as discarded.
     pub fn tokenize_line_raw(&self, line: &str, start_index: usize) -> Vec<RawToken> {
         let mut tokens = Vec::new();

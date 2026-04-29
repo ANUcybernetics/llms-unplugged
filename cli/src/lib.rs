@@ -336,7 +336,7 @@ pub struct CutoutsMetadata {
     pub perplexity: f64,
 }
 
-/// Processes a text file and returns raw tokens for bucket training cutouts
+/// Processes a text file and returns raw tokens for the cutouts lesson variant
 pub fn process_file_for_cutouts<P: AsRef<Path>>(
     path: P,
     punctuation: Vec<char>,

@@ -25,7 +25,7 @@ enum Commands {
     Pdf(PdfArgs),
     /// Export a bigram TSV matrix for spreadsheets.
     Tsv(TsvArgs),
-    /// Generate printable token cutouts for bucket training.
+    /// Generate printable token cutouts for the cutouts lesson variant.
     Cutouts(CutoutsArgs),
 }
 

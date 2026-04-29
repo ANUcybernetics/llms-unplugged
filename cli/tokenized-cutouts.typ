@@ -1,4 +1,4 @@
-// Tokenized cutouts for bucket training
+// Tokenized cutouts for the cutouts lesson variant
 // Generates rows of tokens with continuous horizontal lines for easy cutting
 
 // Configuration
@@ -48,43 +48,44 @@
       text] above each token shows its prefix---the #str(prefix-word-count)
     #prefix-words before it in the original text.
 
-    == Training: build a bucket model
+    == Training: build the cutouts model
 
-    + *cut the sheets into individual tokens* along the grey lines (you don't
-      have to keep them in order afterwards)
+    + *cut out the tokens* from the sheets above along the grey lines (carefully
+      ---keep each prefix-token pair together)
 
-    + get rid of the first token (the greyed-out one), then starting from the
-      second token *group the tokens* by the #text(
+    + *spread them out* on a table, face up, no overlap if possible
+
+    + that's your trained language model---every prefix-token pair from your
+      training text is now a physical cutout on the table
+
+    Optional extension: once you've got the hang of it, group the cutouts into
+    piles by their #text(fill: rgb(180, 0, 0), weight: "bold")[red prefix
+      label]. Each pile is a "bucket" in computer-science speak---the same
+    trick a hash table uses to find values quickly.
+
+    == Generation: sample new text
+
+    + *choose a starting prefix*---any word that appears as a #text(
         fill: rgb(180, 0, 0),
         weight: "bold",
-      )[red text] into buckets/containers (or just separate piles on the table)
+      )[red label] on at least one cutout
 
-    + *repeat from step 3* until all tokens are grouped together into buckets
+    + *write it down*, then make it your "current word"
 
-    Your collection of buckets is now a language model.
+    + *find candidates*---look across the spread for cutouts whose red prefix
+      label matches your current word
 
-    == Generation: create new text
+    + *pick one* visually (your eye will land on cutouts more often when there
+      are more of them---that's weighted sampling for free)
 
-    + *choose any piece of paper (from any bucket)* and write down its word (the
-      black one, not the red one)---this is the first word of your generated
-      text
+    + *write down* the picked cutout's token, then *put it back* in the spread
 
-    + *find the bucket* whose "grouping" red text matches that current word (the
-      word you just wrote down)
-
-    + *close your eyes and pick a random token* from inside that bucket
-
-    + *write down* the word on the token, then *put it back* in the same bucket
-      you took it from
-
-    + *repeat from step 2* as many times as you want, writing down the words as
-      you go
+    + the token you just wrote is your new current word---go back to step 3
 
     #v(0.3cm)
     #text(style: "italic")[
-      Tip: if a bucket has more copies of the same word, that word is more
-      likely to be picked---this is how the model captures probabilities. The
-      more text you train on, the richer the model becomes.
+      Tip: if a prefix has more cutouts in the spread, words following it are
+      more common in the source text, and your eye will pick them more often.
     ]
 
     #v(0.5cm)
