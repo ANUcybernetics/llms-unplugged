@@ -171,30 +171,26 @@ After the above steps, the generated text is _"see spot run. see spot"_
 
 Using the cutouts spread from the example in [Training](/lessons/training):
 
-<LmCutouts tokens="see spot run . see spot jump ." />
+<LmCutouts tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
 
-**Generation sequence:**
+- start with `see`---write it down
+- scan for cutouts with `see` as the red prefix---both have `spot` as the
+  token, so pick one and write down `spot`
+- scan for `spot` cutouts---4 matches (1 `run`, 1 `jump`, 2 `,`). Pick
+  visually. Your eye is more likely to land on a comma because there are two
+  of them, but for variety let's say `run`---write it down
+- scan for `run` cutouts---3 matches (2 `.`, 1 `,`). Two-thirds chance of
+  `.`---let's say `.`---write it down
+- scan for `.` cutouts---3 matches (one each of `see`, `run`, `jump`). Let's
+  say `see`---write it down
+- back to scanning for `see` cutouts---both are `spot`, so write down `spot`... and so on
 
-1. Choose `see` as starting prefix---write down "see"
-2. Scan the spread for cutouts with `see` as the red prefix---both have `spot`
-   as the token, so we pick one and write down `spot`
-3. Now scan for cutouts with `spot` as the prefix---one has `run`, one has
-   `jump`. Pick visually
-4. Let's say we land on `run`---write it down
-5. Scan for cutouts with `run` as the prefix---only `.` matches---write it down
-6. Scan for cutouts with `.` as the prefix---only `see` matches---write it down
-7. Back to `see`---pick a `spot` cutout again---write it down
-8. Scan for `spot` cutouts---this time let's say our eye lands on `jump`---write
-   it down
-9. Scan for `jump` cutouts---only `.` matches---write it down
-10. The `.` prefix still has a matching cutout, so we could continue, or stop here
-
-**Generated text:** _"see spot run. see spot jump."_
+After the above steps, the generated text is _"see spot run. see spot"_
 
 Notice how the randomness comes from your eye landing somewhere on the
 spread---you don't need dice. Prefixes with more cutouts of the same token are
-more likely to produce that token: every cutout with `see` as the prefix has
-`spot` as its token, so generation from `see` always produces `spot`.
+more likely to produce that token: both `see` cutouts have `spot` as the
+token, so generation from `see` always produces `spot`.
 
 </Variant>
 
