@@ -234,7 +234,7 @@
           disabled={!isReady}
         >
           <option value="booklet">Booklet (dice lookup tables)</option>
-          <option value="cutouts">Cutouts (bucket training tokens)</option>
+          <option value="cutouts">Cutouts (printable token cards)</option>
         </select>
       </div>
     </div>

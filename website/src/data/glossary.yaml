@@ -20,7 +20,7 @@
   category: core
   description: >-
     All the unique tokens your model knows. The words across the top and side of
-    your grid (or the bucket labels) form your vocabulary.
+    your grid (or the cutouts' prefix labels) form your vocabulary.
   see:
     - label: Training
       href: /lessons/training
@@ -30,7 +30,7 @@
   category: core
   description: >-
     A system that predicts what text comes next based on patterns learned from
-    training data. Your hand-built grid or bucket collection is a language model.
+    training data. Your hand-built grid or cutouts spread is a language model.
   see:
     - label: Training
       href: /lessons/training
@@ -42,7 +42,7 @@
   category: core
   description: >-
     The process of building a model by counting patterns in text. When you tally
-    word transitions or fill buckets with tokens, you're training your model.
+    word transitions or spread cutouts on a table, you're training your model.
   synonyms:
     - learning
   see:
@@ -90,7 +90,7 @@
   category: core
   description: >-
     A set of options with associated likelihoods. In your model, the counts in a
-    row (or tokens in a bucket) form a probability distribution over possible
+    row (or matching cutouts in the spread) form a probability distribution over possible
     next words.
   see:
     - label: Generation
@@ -127,7 +127,7 @@
   category: core
   description: >-
     The collection of text used to train a model. In our activities, this is
-    the passage you read through to fill in your grid or buckets. Modern LLMs
+    the passage you read through to fill in your grid or spread out as cutouts. Modern LLMs
     are trained on billions of pages of text from books, websites, and other
     sources.
   synonyms:

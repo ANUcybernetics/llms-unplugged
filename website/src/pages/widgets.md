@@ -18,9 +18,9 @@ Build a bigram language model by counting word pairs on a grid. Used in the
 _Interactive widget --- available on the
 [live site](https://www.llmsunplugged.org/widgets)._
 
-## Training (bucket method)
+## Training (cutouts method)
 
-Build a bigram language model using physical buckets that collect tokens. An
+Build a bigram language model using physical cutouts spread out on a table. An
 alternative visualisation used in the [Training](/lessons/training) lesson.
 
 _Interactive widget --- available on the
@@ -34,9 +34,9 @@ Generate text from your grid model using dice rolls. Used in the
 _Interactive widget --- available on the
 [live site](https://www.llmsunplugged.org/widgets)._
 
-## Generation (bucket method)
+## Generation (cutouts method)
 
-Generate text by randomly picking tokens from buckets. Used in the
+Generate text by picking matching cutouts from the spread. Used in the
 [Generation](/lessons/generation) lesson.
 
 _Interactive widget --- available on the

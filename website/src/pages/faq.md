@@ -88,12 +88,13 @@ it happen.
 Honestly, this stuff is just as fun as a Christmas party/team bonding activity,
 but the learning is very real. Learning _can_ be fun.
 
-## Why dice and buckets instead of computers?
+## Why dice and cutouts instead of computers?
 
 Using physical randomness makes the probabilistic nature of text generation
-tangible. When you roll dice and look up words in a table, you're doing exactly
-what a computer does---just slower. This builds genuine understanding rather than
-treating AI as a black box.
+tangible. When you roll dice and look up words in a table, or pick matching
+cutouts from a spread on the table, you're doing exactly what a computer
+does---just slower. This builds genuine understanding rather than treating AI
+as a black box.
 
 ![Using dice to generate text from a hand-built language model](/assets/images/workshop-4.avif)
 

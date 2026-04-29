@@ -193,7 +193,7 @@ two core lessons (do in order):
 1. **Training**---counting patterns into a grid
 2. **Generation**---weighted sampling with dice
 
-available in _grid_ and _bucket_ variants
+available in _grid_ and _cutouts_ variants
 
 about 30mins each (but flexible)
 
