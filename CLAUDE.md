@@ -34,7 +34,7 @@ cd cli && cargo build --release
 # Generate a booklet
 ./cli/target/release/llms_unplugged pdf -i data/frankenstein.txt -n 2
 
-# Generate token cutouts for bucket training
+# Generate token cutouts for the cutouts lesson variant
 ./cli/target/release/llms_unplugged cutouts -i data/green-eggs-and-ham.txt -n 2
 
 # Build lesson PDFs

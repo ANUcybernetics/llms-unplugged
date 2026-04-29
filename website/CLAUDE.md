@@ -43,7 +43,7 @@ the screen. This means:
   once in `src/styles/common.css` and imported by both `global.css` and
   `theme.css`. Add new shared tokens there.
 - **Widget component styles** (`src/styles/widgets.css`) --- decks already
-  import this file. Base widget classes (`.lm-widget`, `.token`, `.bucket`,
+  import this file. Base widget classes (`.lm-widget`, `.token`, `.cutout`,
   `.dice-value`, etc.) work in both contexts.
 
 **What cannot be shared (different by design):**
@@ -65,8 +65,8 @@ them as independent.
 
 ### Key patterns
 
-- **Variant toggle**: grid/bucket variant uses CSS `data-variant` attribute on
-  `<html>` with `.grid-only`/`.bucket-only` CSS classes. No JS framework needed
+- **Variant toggle**: grid/cutouts variant uses CSS `data-variant` attribute on
+  `<html>` with `.grid-only`/`.cutouts-only` CSS classes. No JS framework needed
   for the toggle itself---just a `<Variant is="grid">` Astro component that
   renders a div with the appropriate class.
 - **Svelte stores**: shared state (variant, training text, playback) uses Svelte
