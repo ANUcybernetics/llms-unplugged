@@ -1,24 +1,24 @@
 import type { BigramModel } from "../tokens";
-import { buildBucketsFromModel } from "../buckets";
+import { buildCutoutsFromModel } from "../cutouts";
 import type { Machine } from "./types";
 
-export type BucketPhase =
+export type CutoutsPhase =
   | { kind: "idle" }
-  | { kind: "showing-bucket"; bucketTokens: string[] }
+  | { kind: "showing-matches"; matchingTokens: string[] }
   | { kind: "picked"; pickedToken: string; pickedIndex: number }
   | { kind: "complete" };
 
-export type BucketGenerationState = {
+export type CutoutsGenerationState = {
   outputWords: string[];
-  phase: BucketPhase;
+  phase: CutoutsPhase;
 };
 
-export function createBucketGenerationMachine(
+export function createCutoutsGenerationMachine(
   model: BigramModel,
   vocabulary: string[],
-): Machine<BucketGenerationState> {
-  const buckets = buildBucketsFromModel(vocabulary, model);
-  const bucketMap = new Map(buckets.map((b) => [b.label, b.tokens]));
+): Machine<CutoutsGenerationState> {
+  const cutouts = buildCutoutsFromModel(vocabulary, model);
+  const cutoutsByLabel = new Map(cutouts.map((c) => [c.label, c.tokens]));
   const validStarters = vocabulary.filter((w) => model.hasSuccessors(w));
 
   return {
@@ -31,24 +31,24 @@ export function createBucketGenerationMachine(
             return { outputWords: [], phase: { kind: "complete" } };
           }
           const startWord = validStarters[Math.floor(rng() * validStarters.length)];
-          const tokens = bucketMap.get(startWord) ?? [];
+          const tokens = cutoutsByLabel.get(startWord) ?? [];
           return {
             outputWords: [startWord],
-            phase: { kind: "showing-bucket", bucketTokens: tokens },
+            phase: { kind: "showing-matches", matchingTokens: tokens },
           };
         }
 
-        case "showing-bucket": {
-          const { bucketTokens } = state.phase;
-          if (bucketTokens.length === 0) {
+        case "showing-matches": {
+          const { matchingTokens } = state.phase;
+          if (matchingTokens.length === 0) {
             return { ...state, phase: { kind: "complete" } };
           }
-          const pickedIndex = Math.floor(rng() * bucketTokens.length);
+          const pickedIndex = Math.floor(rng() * matchingTokens.length);
           return {
             ...state,
             phase: {
               kind: "picked",
-              pickedToken: bucketTokens[pickedIndex],
+              pickedToken: matchingTokens[pickedIndex],
               pickedIndex,
             },
           };
@@ -56,11 +56,11 @@ export function createBucketGenerationMachine(
 
         case "picked": {
           const newOutput = [...state.outputWords, state.phase.pickedToken];
-          const tokens = bucketMap.get(state.phase.pickedToken);
+          const tokens = cutoutsByLabel.get(state.phase.pickedToken);
           if (tokens && tokens.length > 0) {
             return {
               outputWords: newOutput,
-              phase: { kind: "showing-bucket", bucketTokens: tokens },
+              phase: { kind: "showing-matches", matchingTokens: tokens },
             };
           }
           return { outputWords: newOutput, phase: { kind: "complete" } };
@@ -79,13 +79,13 @@ export function selectStartWord(
   word: string,
   model: BigramModel,
   vocabulary: string[],
-): BucketGenerationState | null {
+): CutoutsGenerationState | null {
   if (!model.hasSuccessors(word)) return null;
-  const buckets = buildBucketsFromModel(vocabulary, model);
-  const bucket = buckets.find((b) => b.label === word);
-  if (!bucket) return null;
+  const cutouts = buildCutoutsFromModel(vocabulary, model);
+  const cutout = cutouts.find((c) => c.label === word);
+  if (!cutout) return null;
   return {
     outputWords: [word],
-    phase: { kind: "showing-bucket", bucketTokens: bucket.tokens },
+    phase: { kind: "showing-matches", matchingTokens: cutout.tokens },
   };
 }

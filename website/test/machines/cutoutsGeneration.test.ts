@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { buildBigramModel, getVocabulary, parseTokens } from "../../src/lib/tokens";
 import {
-  createBucketGenerationMachine,
+  createCutoutsGenerationMachine,
   selectStartWord,
-} from "../../src/lib/machines/bucketGeneration";
+} from "../../src/lib/machines/cutoutsGeneration";
 
 function buildModel(text: string) {
   const tokens = parseTokens(text);
@@ -14,31 +14,31 @@ function buildModel(text: string) {
 
 const rng = () => 0;
 
-describe("createBucketGenerationMachine", () => {
+describe("createCutoutsGenerationMachine", () => {
   it("starts in idle phase", () => {
     const { vocabulary, model } = buildModel("the cat sat");
-    const machine = createBucketGenerationMachine(model, vocabulary);
+    const machine = createCutoutsGenerationMachine(model, vocabulary);
     const state = machine.initialState();
     expect(state.phase.kind).toBe("idle");
     expect(state.outputWords).toEqual([]);
   });
 
-  it("transitions idle -> showing-bucket with a start word", () => {
+  it("transitions idle -> showing-matches with a start word", () => {
     const { vocabulary, model } = buildModel("the cat sat");
-    const machine = createBucketGenerationMachine(model, vocabulary);
+    const machine = createCutoutsGenerationMachine(model, vocabulary);
     let state = machine.initialState();
 
     state = machine.step(state, () => 0);
-    expect(state.phase.kind).toBe("showing-bucket");
+    expect(state.phase.kind).toBe("showing-matches");
     expect(state.outputWords).toHaveLength(1);
-    if (state.phase.kind === "showing-bucket") {
-      expect(state.phase.bucketTokens.length).toBeGreaterThan(0);
+    if (state.phase.kind === "showing-matches") {
+      expect(state.phase.matchingTokens.length).toBeGreaterThan(0);
     }
   });
 
-  it("transitions showing-bucket -> picked", () => {
+  it("transitions showing-matches -> picked", () => {
     const { vocabulary, model } = buildModel("the cat sat");
-    const machine = createBucketGenerationMachine(model, vocabulary);
+    const machine = createCutoutsGenerationMachine(model, vocabulary);
     let state = machine.initialState();
 
     state = machine.step(state, rng);
@@ -50,9 +50,9 @@ describe("createBucketGenerationMachine", () => {
     }
   });
 
-  it("transitions picked -> showing-bucket when successor exists", () => {
+  it("transitions picked -> showing-matches when successor exists", () => {
     const { vocabulary, model } = buildModel("a b a b");
-    const machine = createBucketGenerationMachine(model, vocabulary);
+    const machine = createCutoutsGenerationMachine(model, vocabulary);
     let state = machine.initialState();
 
     state = machine.step(state, rng);
@@ -62,7 +62,7 @@ describe("createBucketGenerationMachine", () => {
     const wordsBefore = state.outputWords.length;
     state = machine.step(state, rng);
 
-    if (state.phase.kind === "showing-bucket") {
+    if (state.phase.kind === "showing-matches") {
       expect(state.outputWords).toHaveLength(wordsBefore + 1);
     } else {
       expect(state.phase.kind).toBe("complete");
@@ -71,7 +71,7 @@ describe("createBucketGenerationMachine", () => {
 
   it("reaches complete when no successors", () => {
     const { vocabulary, model } = buildModel("a b");
-    const machine = createBucketGenerationMachine(model, vocabulary);
+    const machine = createCutoutsGenerationMachine(model, vocabulary);
     let state = machine.initialState();
 
     while (!machine.isComplete(state)) {
@@ -84,7 +84,7 @@ describe("createBucketGenerationMachine", () => {
 
   it("is a no-op when already complete", () => {
     const { vocabulary, model } = buildModel("a b");
-    const machine = createBucketGenerationMachine(model, vocabulary);
+    const machine = createCutoutsGenerationMachine(model, vocabulary);
     let state = machine.initialState();
 
     while (!machine.isComplete(state)) {
@@ -97,7 +97,7 @@ describe("createBucketGenerationMachine", () => {
 
   it("completes immediately with no valid starters", () => {
     const { model } = buildModel("a");
-    const machine = createBucketGenerationMachine(model, ["a"]);
+    const machine = createCutoutsGenerationMachine(model, ["a"]);
     let state = machine.initialState();
 
     state = machine.step(state, () => 0);
@@ -112,7 +112,7 @@ describe("selectStartWord", () => {
     const result = selectStartWord("the", model, vocabulary);
     expect(result).not.toBeNull();
     expect(result!.outputWords).toEqual(["the"]);
-    expect(result!.phase.kind).toBe("showing-bucket");
+    expect(result!.phase.kind).toBe("showing-matches");
   });
 
   it("returns null for a word with no successors", () => {
