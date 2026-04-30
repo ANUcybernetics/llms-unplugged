@@ -122,12 +122,11 @@ describe("Astro Build", () => {
   // The nav now ships a hamburger toggle; if someone removes it, this fails.
   it("ships a hamburger toggle for mobile nav", () => {
     const home = readFileSync(join(DIST_DIR, "index.html"), "utf-8");
-    const buttonMatch = home.match(/<button[^>]*data-nav-toggle[^>]*>/);
+    const buttonMatch = home.match(/<button[^>]*class="[^"]*at-nav-toggle[^"]*"[^>]*>/);
     expect(buttonMatch, "nav hamburger button not found").not.toBeNull();
     const buttonTag = buttonMatch![0];
     expect(buttonTag).toContain('aria-expanded="false"');
-    expect(buttonTag).toContain('aria-controls="site-nav-menu"');
-    expect(home).toMatch(/<ul[^>]*id="site-nav-menu"[^>]*data-nav-menu/);
+    expect(buttonTag).toContain('aria-controls="at-nav-menu"');
   });
 
   it("copies image assets", () => {

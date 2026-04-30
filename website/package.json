@@ -36,14 +36,14 @@
     "@astrojs/sitemap": "^3.0.0",
     "@astrojs/svelte": "^8.0.0",
     "astro": "^6.0.0",
+    "astro-theme-anu": "*",
     "astromotion": "github:benswift/astromotion",
     "js-yaml": "^4.1.1",
     "lightningcss": "^1.32.0",
     "mammoth": "^1.11.0",
     "pdfjs-dist": "^5.4.624",
     "reveal.js": "^6.0.0",
-    "svelte": "^5.0.0",
-    "astro-theme-anu": "*"
+    "svelte": "^5.0.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.7",
