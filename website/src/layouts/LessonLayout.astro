@@ -17,12 +17,11 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "") + "/";
 const sidebar = await getLessonSidebar();
 const ogImageUrl = new URL(ogImage, Astro.site).href;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
-const fullTitle = `${title} | LLMs Unplugged`;
 const slug = currentPath.split("/").filter(Boolean).pop();
 ---
 
 <SidebarLayout
-  title={fullTitle}
+  title={title}
   description={description}
   sidebar={sidebar}
   currentPath={currentPath}
@@ -61,9 +60,9 @@ const slug = currentPath.split("/").filter(Boolean).pop();
     </script>
   </Fragment>
 
-  <article class="prose">
+  <div class="prose">
     <slot />
-  </article>
+  </div>
   <div class="edit-link">
     <a href={`https://github.com/ANUcybernetics/llms-unplugged/edit/main/website/src/content/lessons/${slug}.mdx`}>
       Edit this page on GitHub
