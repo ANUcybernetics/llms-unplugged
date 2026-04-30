@@ -1,4 +1,4 @@
-import { defineSiteConfig } from "astro-theme-anu";
+import { defineSiteConfig } from "astro-theme-anu/types";
 import logo from "./assets/title-logo.svg";
 
 export const siteConfig = defineSiteConfig({

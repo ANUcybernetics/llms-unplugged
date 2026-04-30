@@ -1,7 +1,7 @@
 ---
-import { Font } from "astro:assets";
-import Nav from "../components/Nav.astro";
-import Footer from "../components/Footer.astro";
+import ThemeBaseLayout from "astro-theme-anu/layouts/BaseLayout.astro";
+import { siteConfig, themeLogo } from "../site-config";
+import faviconAsset from "../assets/favicon.svg";
 import "../styles/global.css";
 import "../styles/widgets.css";
 
@@ -19,14 +19,19 @@ const {
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 const ogImageUrl = new URL(ogImage, Astro.site).href;
+const fullTitle = title === "LLMs Unplugged" ? title : `${title} | LLMs Unplugged`;
 ---
 
-<!doctype html>
-<html lang="en" data-variant="grid">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<ThemeBaseLayout
+  title={fullTitle}
+  description={description}
+  favicon={faviconAsset}
+  logo={themeLogo}
+  logoDark={themeLogo}
+  showAcknowledgement={false}
+  {...siteConfig}
+>
+  <Fragment slot="head">
     <meta name="theme-color" content="#be830e" />
     <link
       rel="alternate"
@@ -34,13 +39,7 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
       title="LLMs Unplugged RSS Feed"
       href="/feed.xml"
     />
-
-    <title>
-      {title === "LLMs Unplugged" ? title : `${title} | LLMs Unplugged`}
-    </title>
-    <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
-
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="LLMs Unplugged" />
     <meta property="og:title" content={title} />
@@ -49,17 +48,11 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
     <meta property="og:image" content={ogImageUrl} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImageUrl} />
-
     <script
       is:inline
       defer
       data-domain="www.llmsunplugged.org"
       src="https://plausible.io/js/script.file-downloads.js"></script>
-
-    {/* Restore variant from localStorage before paint to avoid flash */}
-    <Font cssVariable="--font-public-sans" preload />
-    <Font cssVariable="--font-roboto-mono" preload />
-
     <script is:inline>
       try {
         let v = localStorage.getItem("llms-unplugged-variant");
@@ -69,16 +62,17 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
         }
         if (v === "grid" || v === "cutouts") {
           document.documentElement.setAttribute("data-variant", v);
+        } else {
+          document.documentElement.setAttribute("data-variant", "grid");
         }
-      } catch {}
+      } catch {
+        document.documentElement.setAttribute("data-variant", "grid");
+      }
     </script>
-  </head>
-  <body>
-    <div class="print-wordmark">
-      LLMs Unplugged (c) Ben Swift, Cybernetic Studio - CC BY-NC-SA 4.0
-    </div>
-    <Nav />
-    <slot />
-    <Footer />
-  </body>
-</html>
+  </Fragment>
+
+  <div class="print-wordmark">
+    LLMs Unplugged (c) Ben Swift, Cybernetic Studio - CC BY-NC-SA 4.0
+  </div>
+  <slot />
+</ThemeBaseLayout>
