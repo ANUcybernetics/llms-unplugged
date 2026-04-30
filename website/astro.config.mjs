@@ -2,15 +2,12 @@ import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import svelte from "@astrojs/svelte";
 import anuTheme from "astro-theme-anu";
-import { astromotion, deckPreprocessor } from "astromotion";
+import { astromotion } from "astromotion";
 
 export default defineConfig({
   site: "https://www.llmsunplugged.org",
   integrations: [
-    // Register svelte explicitly with the deck preprocessor BEFORE anuTheme,
-    // so anuTheme detects it and skips its own svelte registration. Without
-    // the deckPreprocessor, .deck.svelte files won't compile.
-    svelte({ preprocess: [deckPreprocessor()] }),
+    svelte(),
     anuTheme({
       name: "LLMs Unplugged",
       llmsTxt: true,
@@ -20,10 +17,9 @@ export default defineConfig({
       // changes. Other minors: empty-table-header on word-embeddings,
       // heading-order on /news/.
       checkA11y: false,
-      // checkDecks expects astromotion decks to use the theme's slide
-      // structure (.reveal wrapper, etc.). The llms-unplugged decks
-      // pre-date that convention and use astromotion's own template.
-      checkDecks: false,
+      // socy-logo is a project-specific slide class defined in theme.css
+      // for the ANU Society of Cybernetics animated logo slide.
+      extraSlideClasses: ["socy-logo"],
     }),
     sitemap(),
     astromotion({ theme: "./src/decks/theme.css" }),
