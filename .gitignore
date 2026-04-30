@@ -30,3 +30,5 @@ website/dogfood-output/
 
 # Typst templates copied from cli/ at build time
 website/src/templates/*.typ
+
+.worktrees/
