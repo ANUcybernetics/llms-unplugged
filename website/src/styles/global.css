@@ -3,12 +3,9 @@
 :root {
   color-scheme: dark;
 
-  /* Website-specific tokens */
+  /* Website-specific token: widgets.css references --color-bg (shared with
+     decks, where deck/theme.css provides its own value). */
   --color-bg: #0a0a0a;
-  --color-bg-elevated: #1a1a1a;
-  --color-brand-hover: #d4940f;
-  --color-brand-active: #a87309;
-  --color-code-bg: rgb(255 255 255 / 12%);
 
   /* Typography */
   --font-body:
@@ -17,7 +14,6 @@
 
   /* Spacing */
   --nav-height: 4rem;
-  --sidebar-width: 18rem;
   --content-max-width: 48rem;
 
   font-size: 20px;
