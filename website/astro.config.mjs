@@ -14,9 +14,15 @@ export default defineConfig({
     anuTheme({
       name: "LLMs Unplugged",
       llmsTxt: true,
-      // Disable post-build checks until layouts are migrated to theme components
-      // (C1+). Re-enable checkA11y and checkDecks in Phase G.
+      // checkA11y currently flags ~12 violations. Most are
+      // landmark-complementary-is-top-level (theme's SidebarLayout places
+      // <aside> inside <main>); fixing requires theme architectural
+      // changes. Other minors: empty-table-header on word-embeddings,
+      // heading-order on /news/.
       checkA11y: false,
+      // checkDecks expects astromotion decks to use the theme's slide
+      // structure (.reveal wrapper, etc.). The llms-unplugged decks
+      // pre-date that convention and use astromotion's own template.
       checkDecks: false,
     }),
     sitemap(),
