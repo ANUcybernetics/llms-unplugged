@@ -17,7 +17,6 @@
     "build": "astro build",
     "preview": "astro preview",
     "new": "pnpm exec tsx scripts/create-news-item.ts",
-    "build:pdfs": "pnpm exec tsx scripts/build-lesson-pdfs.ts",
     "generate:image": "pnpm exec tsx scripts/generate-image.ts",
     "convert:avif": "pnpm exec tsx scripts/convert-images-to-avif.ts",
     "test": "vitest run",

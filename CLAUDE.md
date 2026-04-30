@@ -37,10 +37,7 @@ cd cli && cargo build --release
 # Generate token cutouts for the cutouts lesson variant
 ./cli/target/release/llms_unplugged cutouts -i data/green-eggs-and-ham.txt -n 2
 
-# Build lesson PDFs
-cd website && pnpm run build:pdfs
-
-# Build other handouts (worksheets, runsheets, poster)
+# Build handouts (worksheets, runsheets, poster)
 cd handouts && make
 
 # Run website dev server
