@@ -1,50 +1,25 @@
-import { defineConfig, fontProviders } from "astro/config";
-import mdx from "@astrojs/mdx";
+import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import svelte from "@astrojs/svelte";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypeSlug from "rehype-slug";
-import remarkSmartypants from "remark-smartypants";
+import anuTheme from "astro-theme-anu";
 import { astromotion, deckPreprocessor } from "astromotion";
 
 export default defineConfig({
   site: "https://www.llmsunplugged.org",
   integrations: [
-    mdx(),
+    // Register svelte explicitly with the deck preprocessor BEFORE anuTheme,
+    // so anuTheme detects it and skips its own svelte registration. Without
+    // the deckPreprocessor, .deck.svelte files won't compile.
     svelte({ preprocess: [deckPreprocessor()] }),
+    anuTheme({
+      name: "LLMs Unplugged",
+      llmsTxt: true,
+      // Disable post-build checks until layouts are migrated to theme components
+      // (C1+). Re-enable checkA11y and checkDecks in Phase G.
+      checkA11y: false,
+      checkDecks: false,
+    }),
     sitemap(),
     astromotion({ theme: "./src/decks/theme.css" }),
-  ],
-  markdown: {
-    remarkPlugins: [[remarkSmartypants, { dashes: "oldschool" }]],
-    rehypePlugins: [
-      rehypeSlug,
-      [
-        rehypeAutolinkHeadings,
-        {
-          behavior: "prepend",
-          properties: { class: "heading-anchor", ariaLabel: "Link to this section" },
-          content: {
-            type: "text",
-            value: "#",
-          },
-        },
-      ],
-    ],
-  },
-  fonts: [
-    {
-      name: "Public Sans",
-      cssVariable: "--font-public-sans",
-      provider: fontProviders.google(),
-    },
-    {
-      name: "Roboto Mono",
-      cssVariable: "--font-roboto-mono",
-      provider: fontProviders.google(),
-      weights: ["400", "700"],
-      styles: ["normal"],
-      fallbacks: ["monospace"],
-    },
   ],
 });
