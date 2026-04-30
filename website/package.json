@@ -42,7 +42,8 @@
     "mammoth": "^1.11.0",
     "pdfjs-dist": "^5.4.624",
     "reveal.js": "^6.0.0",
-    "svelte": "^5.0.0"
+    "svelte": "^5.0.0",
+    "astro-theme-anu": "*"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.7",
@@ -78,6 +79,9 @@
     "onlyBuiltDependencies": [
       "esbuild",
       "sharp"
-    ]
+    ],
+    "overrides": {
+      "astro-theme-anu": "file:/home/ben/projects/astro-theme-anu/.worktrees/customisation-knobs/packages/astro-theme-anu"
+    }
   }
 }
