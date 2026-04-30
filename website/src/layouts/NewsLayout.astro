@@ -24,7 +24,7 @@ const heroSrc = `/assets/images/hero-news-${slug}.avif`;
 ---
 
 <BaseLayout title={title} description={description} ogImage={ogImage}>
-  <main class="content-container news-layout">
+  <div class="content-container news-layout">
     <article class="prose">
       <header class="news-header">
         <h1 class="news-title">{title}</h1>
@@ -48,7 +48,7 @@ const heroSrc = `/assets/images/hero-news-${slug}.avif`;
       </header>
       <slot />
     </article>
-  </main>
+  </div>
 </BaseLayout>
 
 <style>
