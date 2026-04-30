@@ -1,6 +1,10 @@
 ---
-import BaseLayout from "./BaseLayout.astro";
-import Sidebar from "../components/Sidebar.astro";
+import SidebarLayout from "astro-theme-anu/layouts/SidebarLayout.astro";
+import { siteConfig, themeLogo } from "../site-config";
+import { getLessonSidebar } from "../lib/lesson-sidebar";
+import faviconAsset from "../assets/favicon.svg";
+import "../styles/global.css";
+import "../styles/widgets.css";
 
 interface Props {
   title: string;
@@ -8,48 +12,70 @@ interface Props {
   ogImage?: string;
 }
 
-const { title, description, ogImage } = Astro.props;
-const currentPath = Astro.url.pathname.replace(/\/$/, "");
+const { title, description, ogImage = "/og-image.jpg" } = Astro.props;
+const currentPath = Astro.url.pathname.replace(/\/$/, "") + "/";
+const sidebar = await getLessonSidebar();
+const ogImageUrl = new URL(ogImage, Astro.site).href;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const fullTitle = `${title} | LLMs Unplugged`;
+const slug = currentPath.split("/").filter(Boolean).pop();
 ---
 
-<BaseLayout title={title} description={description} ogImage={ogImage}>
-  <div class="lesson-layout">
-    <Sidebar currentPath={currentPath} />
-    <main class="lesson-content">
-      <article class="prose">
-        <slot />
-      </article>
-      <div class="edit-link">
-        <a
-          href={`https://github.com/ANUcybernetics/llms-unplugged/edit/main/website/src/content/lessons/${currentPath.split("/").pop()}.mdx`}
-        >
-          Edit this page on GitHub
-        </a>
-      </div>
-    </main>
+<SidebarLayout
+  title={fullTitle}
+  description={description}
+  sidebar={sidebar}
+  currentPath={currentPath}
+  sidebarLabel="Lessons"
+  favicon={faviconAsset}
+  logo={themeLogo}
+  logoDark={themeLogo}
+  showAcknowledgement={false}
+  {...siteConfig}
+>
+  <Fragment slot="head">
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="LLMs Unplugged" />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <script is:inline>
+      try {
+        let v = localStorage.getItem("llms-unplugged-variant");
+        if (v === "bucket") {
+          v = "cutouts";
+          try { localStorage.setItem("llms-unplugged-variant", "cutouts"); } catch {}
+        }
+        if (v === "grid" || v === "cutouts") {
+          document.documentElement.setAttribute("data-variant", v);
+        } else {
+          document.documentElement.setAttribute("data-variant", "grid");
+        }
+      } catch {
+        document.documentElement.setAttribute("data-variant", "grid");
+      }
+    </script>
+  </Fragment>
+
+  <article class="prose">
+    <slot />
+  </article>
+  <div class="edit-link">
+    <a href={`https://github.com/ANUcybernetics/llms-unplugged/edit/main/website/src/content/lessons/${slug}.mdx`}>
+      Edit this page on GitHub
+    </a>
   </div>
-</BaseLayout>
+</SidebarLayout>
 
 <style>
-  .lesson-layout {
-    max-width: 80rem;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-    display: flex;
-    gap: 2rem;
-  }
-
-  .lesson-content {
-    flex: 1;
-    min-width: 0;
-    max-width: var(--content-max-width);
-    padding: 2rem 0;
-  }
-
   .edit-link {
     margin-top: 3rem;
     padding-top: 1rem;
-    border-top: 1px solid var(--color-divider);
+    border-top: 1px solid var(--at-divider);
     font-size: 0.875rem;
   }
 </style>
