@@ -1,5 +1,5 @@
 import { defineSiteConfig } from "astro-theme-anu/types";
-import logo from "./assets/title-logo.svg";
+import logo from "./assets/favicon.svg";
 
 export const siteConfig = defineSiteConfig({
   name: "LLMs Unplugged",

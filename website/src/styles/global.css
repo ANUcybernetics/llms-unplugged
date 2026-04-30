@@ -3,6 +3,11 @@
 :root {
   color-scheme: dark;
 
+  /* The theme defaults to a negative translateX on .at-nav-brand to pull the
+     ANU lockup back into alignment (the lockup has built-in whitespace). Our
+     square favicon doesn't need this — reset to zero. */
+  --at-logo-offset-x: 0;
+
   /* Website-specific token: widgets.css references --color-bg (shared with
      decks, where deck/theme.css provides its own value). */
   --color-bg: #0a0a0a;
