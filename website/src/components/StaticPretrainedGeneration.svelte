@@ -151,14 +151,14 @@
   .entry-prefix.punctuation {
     display: inline-block;
     padding: 0 0.2em;
-    border: 1px solid var(--color-text-muted);
+    border: 1px solid var(--at-text-muted);
     border-radius: 2px;
     font-size: 1em;
   }
 
   .dice-indicator {
     font-size: 0.85em;
-    color: var(--color-text-secondary);
+    color: var(--at-text-secondary);
     margin-left: 0.15em;
     margin-right: 0.25em;
   }
@@ -185,7 +185,7 @@
   .follower.punctuation .follower-word {
     display: inline-block;
     padding: 0 0.15em;
-    border: 1px solid var(--color-text-muted);
+    border: 1px solid var(--at-text-muted);
     border-radius: 2px;
   }
 

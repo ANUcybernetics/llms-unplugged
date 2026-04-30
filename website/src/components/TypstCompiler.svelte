@@ -348,9 +348,9 @@
 
   .status-indicator.idle,
   .status-indicator.loading {
-    background: var(--color-bg-soft);
-    border: 1px solid var(--color-border);
-    color: var(--color-text-secondary);
+    background: var(--at-bg-alt);
+    border: 1px solid var(--at-border);
+    color: var(--at-text-secondary);
   }
 
   .status-indicator.ready,
@@ -423,38 +423,38 @@
   }
 
   .file-button {
-    background: var(--color-bg-soft);
-    border: 1px solid var(--color-border);
+    background: var(--at-bg-alt);
+    border: 1px solid var(--at-border);
     padding: 0.5rem 1rem;
     border-radius: 0.25rem;
     font-size: 0.9rem;
     transition: background-color 0.2s;
-    color: var(--color-text);
+    color: var(--at-text);
   }
 
   .file-button:hover {
-    background: var(--color-bg-elevated);
+    background: var(--at-bg-elevated);
   }
 
   .file-name {
-    color: var(--color-text-secondary);
+    color: var(--at-text-secondary);
     font-size: 0.9rem;
   }
 
   .text-input textarea {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--at-border);
     border-radius: 0.25rem;
     font-family: var(--font-mono);
     font-size: 0.85rem;
     resize: vertical;
-    background: var(--color-bg);
-    color: var(--color-text);
+    background: var(--at-bg);
+    color: var(--at-text);
   }
 
   .text-input textarea:disabled {
-    background: var(--color-bg-soft);
+    background: var(--at-bg-alt);
     cursor: not-allowed;
   }
 
@@ -476,22 +476,22 @@
   .option-group label {
     font-size: 0.85rem;
     font-weight: 500;
-    color: var(--color-text-secondary);
+    color: var(--at-text-secondary);
   }
 
   .input-group input,
   .option-group select {
     padding: 0.5rem 0.75rem;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--at-border);
     border-radius: 0.25rem;
     font-size: 0.9rem;
-    background: var(--color-bg);
-    color: var(--color-text);
+    background: var(--at-bg);
+    color: var(--at-text);
   }
 
   .input-group input:disabled,
   .option-group select:disabled {
-    background: var(--color-bg-soft);
+    background: var(--at-bg-alt);
     cursor: not-allowed;
   }
 
@@ -509,7 +509,7 @@
   }
 
   .controls button {
-    background: var(--color-brand);
+    background: var(--at-accent);
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
@@ -520,7 +520,7 @@
   }
 
   .controls button:hover:not(:disabled) {
-    background: var(--color-brand-hover);
+    background: var(--at-accent-hover);
   }
 
   .controls button:disabled {
@@ -534,7 +534,7 @@
 
   .log-details summary {
     cursor: pointer;
-    color: var(--color-text-secondary);
+    color: var(--at-text-secondary);
     font-size: 0.875rem;
   }
 
@@ -546,8 +546,8 @@
     font-size: 0.8rem;
     max-height: 200px;
     overflow-y: auto;
-    background: var(--color-bg-soft);
-    border: 1px solid var(--color-border);
+    background: var(--at-bg-alt);
+    border: 1px solid var(--at-border);
   }
 
   .status-log pre {
@@ -558,7 +558,7 @@
 
   .preview {
     background: white;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--at-border);
     border-radius: 0.5rem;
     padding: 1rem;
     margin-top: 1rem;

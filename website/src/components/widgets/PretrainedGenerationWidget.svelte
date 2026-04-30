@@ -298,7 +298,7 @@
   }
 
   .entry.clickable:hover {
-    background: var(--color-bg-alt);
+    background: var(--at-bg-alt);
   }
 
   .entry.dead-end {
@@ -306,7 +306,7 @@
   }
 
   .entry.highlighted {
-    background: var(--color-brand-soft);
+    background: var(--at-accent-soft);
   }
 
   .entry-prefix {
@@ -317,14 +317,14 @@
   .entry-prefix.punctuation {
     display: inline-block;
     padding: 0 0.2em;
-    border: 1px solid var(--color-text-muted);
+    border: 1px solid var(--at-text-muted);
     border-radius: 2px;
     font-size: 1rem;
   }
 
   .dice-indicator {
     font-size: 0.85rem;
-    color: var(--color-text-secondary);
+    color: var(--at-text-secondary);
     margin-left: 0.15em;
     margin-right: 0.25em;
   }
@@ -344,14 +344,14 @@
   }
 
   .follower.selected {
-    background: var(--color-brand-soft);
-    color: var(--color-brand);
+    background: var(--at-accent-soft);
+    color: var(--at-accent);
   }
 
   .follower.punctuation .follower-word {
     display: inline-block;
     padding: 0 0.15em;
-    border: 1px solid var(--color-text-muted);
+    border: 1px solid var(--at-text-muted);
     border-radius: 2px;
   }
 

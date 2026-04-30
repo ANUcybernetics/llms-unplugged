@@ -122,8 +122,8 @@ function isActive(currentPath: string, href: string): boolean {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: var(--color-bg);
-    border-bottom: 1px solid var(--color-border);
+    background: var(--at-bg);
+    border-bottom: 1px solid var(--at-border);
     height: var(--nav-height);
   }
 
@@ -141,7 +141,7 @@ function isActive(currentPath: string, href: string): boolean {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: var(--color-text);
+    color: var(--at-text);
     text-decoration: none;
     font-weight: 600;
     flex-shrink: 0;
@@ -163,7 +163,7 @@ function isActive(currentPath: string, href: string): boolean {
   .nav-link {
     padding: 0.375rem 0.75rem;
     border-radius: 0.375rem;
-    color: var(--color-text-secondary);
+    color: var(--at-text-secondary);
     text-decoration: none;
     font-size: 0.875rem;
     font-weight: 500;
@@ -173,23 +173,23 @@ function isActive(currentPath: string, href: string): boolean {
   }
 
   .nav-link:hover {
-    color: var(--color-text);
-    background: var(--color-bg-soft);
+    color: var(--at-text);
+    background: var(--at-bg-alt);
     text-decoration: none;
   }
 
   .nav-link.active {
-    color: var(--color-brand);
+    color: var(--at-accent);
   }
 
   .nav-github {
-    color: var(--color-text-secondary);
+    color: var(--at-text-secondary);
     transition: color 0.15s;
     flex-shrink: 0;
   }
 
   .nav-github:hover {
-    color: var(--color-text);
+    color: var(--at-text);
   }
 
   /* Hamburger toggle: hidden on desktop, shown below the breakpoint. */
@@ -199,14 +199,14 @@ function isActive(currentPath: string, href: string): boolean {
     border: 0;
     padding: 0.25rem;
     margin-left: auto;
-    color: var(--color-text-secondary);
+    color: var(--at-text-secondary);
     cursor: pointer;
     border-radius: 0.375rem;
   }
 
   .nav-toggle:hover {
-    color: var(--color-text);
-    background: var(--color-bg-soft);
+    color: var(--at-text);
+    background: var(--at-bg-alt);
   }
 
   .nav-toggle-icon {
@@ -247,8 +247,8 @@ function isActive(currentPath: string, href: string): boolean {
       flex-direction: column;
       gap: 0;
       padding: 0.5rem;
-      background: var(--color-bg);
-      border-bottom: 1px solid var(--color-border);
+      background: var(--at-bg);
+      border-bottom: 1px solid var(--at-border);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
       /* Hidden by default; toggled open via .nav-links--open */
       display: none;

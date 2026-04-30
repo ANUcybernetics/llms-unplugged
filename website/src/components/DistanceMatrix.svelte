@@ -88,7 +88,7 @@
   }
 
   .distance-matrix td.highlight-cell {
-    outline: 3px solid var(--color-brand);
+    outline: 3px solid var(--at-accent);
     outline-offset: -3px;
     font-weight: 700;
   }

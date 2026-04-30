@@ -68,7 +68,7 @@ const popoverId = `glossary-${id}`;
     cursor: help;
     text-decoration: underline;
     text-decoration-style: dotted;
-    text-decoration-color: var(--color-text-muted);
+    text-decoration-color: var(--at-text-muted);
     text-underline-offset: 0.15em;
     text-decoration-thickness: 1px;
     color: inherit;
@@ -77,11 +77,11 @@ const popoverId = `glossary-${id}`;
 
   .glossary-term:hover,
   .glossary-term:focus-visible {
-    text-decoration-color: var(--color-brand);
+    text-decoration-color: var(--at-accent);
   }
 
   .glossary-term:focus-visible {
-    outline: 2px solid var(--color-brand);
+    outline: 2px solid var(--at-accent);
     outline-offset: 2px;
     border-radius: 2px;
   }
@@ -103,9 +103,9 @@ const popoverId = `glossary-${id}`;
     max-width: 22rem;
     padding: 0.75rem 1rem;
     background: var(--color-bg-elevated, #1a1a1a);
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--at-border);
     border-radius: 0.5rem;
-    color: var(--color-text);
+    color: var(--at-text);
     font-size: 0.8rem;
     line-height: 1.5;
     box-shadow: 0 4px 16px rgb(0 0 0 / 40%);
@@ -119,17 +119,17 @@ const popoverId = `glossary-${id}`;
   }
 
   .glossary-popover-term {
-    color: var(--color-brand);
+    color: var(--at-accent);
     font-size: 0.85rem;
   }
 
   .glossary-popover-desc {
-    color: var(--color-text-secondary);
+    color: var(--at-text-secondary);
   }
 
   .glossary-popover-link {
     font-size: 0.75rem;
-    color: var(--color-brand);
+    color: var(--at-accent);
     text-decoration: underline;
     align-self: flex-end;
   }

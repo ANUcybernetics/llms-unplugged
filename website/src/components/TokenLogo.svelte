@@ -199,7 +199,7 @@
     position: absolute;
     inset: 0;
     overflow: hidden;
-    background: var(--color-bg);
+    background: var(--at-bg);
   }
 
   .token-logo > svg {
@@ -212,8 +212,8 @@
   }
 
   .brick-bg {
-    fill: var(--color-bg-soft);
-    stroke: var(--color-brand-soft);
+    fill: var(--at-bg-alt);
+    stroke: var(--at-accent-soft);
     stroke-width: 1;
     transition:
       fill 0.4s ease,

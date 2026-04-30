@@ -236,7 +236,7 @@
   }
 
   .cutout.clickable:hover {
-    border-color: var(--color-brand-hover);
+    border-color: var(--at-accent-hover);
   }
 
   .cutout.dead-end {

@@ -84,7 +84,7 @@
   }
 
   .diff-row {
-    border-top: 2px solid var(--color-brand);
+    border-top: 2px solid var(--at-accent);
   }
 
   .diff-row td.nonzero {

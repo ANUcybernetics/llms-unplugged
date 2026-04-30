@@ -93,7 +93,7 @@
   .variant-description {
     margin: 0 0 0.75rem;
     font-size: 0.9rem;
-    color: var(--color-text-secondary);
+    color: var(--at-text-secondary);
   }
 
   .variant-buttons {
@@ -106,10 +106,10 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--at-border);
     border-radius: 0.375rem;
-    background: var(--color-bg);
-    color: var(--color-text-secondary);
+    background: var(--at-bg);
+    color: var(--at-text-secondary);
     cursor: pointer;
     font-size: 0.875rem;
     font-family: inherit;
@@ -120,14 +120,14 @@
   }
 
   .variant-button:hover {
-    color: var(--color-text);
-    border-color: var(--color-brand);
+    color: var(--at-text);
+    border-color: var(--at-accent);
   }
 
   .variant-button.active {
-    color: var(--color-brand);
-    border-color: var(--color-brand);
-    background: var(--color-brand-soft);
+    color: var(--at-accent);
+    border-color: var(--at-accent);
+    background: var(--at-accent-soft);
   }
 
   @media (max-width: 480px) {

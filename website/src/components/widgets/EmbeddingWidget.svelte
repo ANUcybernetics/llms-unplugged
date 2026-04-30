@@ -101,7 +101,7 @@
   .section-hint {
     font-weight: 400;
     font-style: italic;
-    color: var(--color-text-muted);
+    color: var(--at-text-muted);
     margin-left: 0.5rem;
   }
 </style>

@@ -115,16 +115,16 @@
     align-items: center;
     justify-content: center;
     padding: 0.375rem;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--at-border);
     border-radius: 0.25rem;
-    background: var(--color-bg);
-    color: var(--color-text);
+    background: var(--at-bg);
+    color: var(--at-text);
     cursor: pointer;
     transition: background-color 0.2s;
   }
 
   .playback-controls button:hover:not(:disabled) {
-    background: var(--color-brand-soft);
+    background: var(--at-accent-soft);
   }
 
   .playback-controls button:disabled {
@@ -135,7 +135,7 @@
   .step-counter {
     margin-left: 0.5rem;
     font-size: 0.875rem;
-    color: var(--color-text-secondary);
+    color: var(--at-text-secondary);
     font-family: var(--font-mono);
   }
 
