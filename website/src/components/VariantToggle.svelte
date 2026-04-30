@@ -81,7 +81,15 @@
         stroke-width="1.5"
       >
         <rect x="3" y="6" width="10" height="12" rx="1" />
-        <rect x="7" y="3" width="10" height="12" rx="1" fill="currentColor" opacity="0.15" />
+        <rect
+          x="7"
+          y="3"
+          width="10"
+          height="12"
+          rx="1"
+          fill="currentColor"
+          opacity="0.15"
+        />
         <rect x="11" y="9" width="10" height="12" rx="1" />
       </svg>
       <span>Cutouts</span>

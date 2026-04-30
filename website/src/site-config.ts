@@ -15,3 +15,12 @@ export const siteConfig = defineSiteConfig({
 });
 
 export const themeLogo = logo;
+
+// Footer overrides — passed directly to BaseLayout (not part of SiteConfig).
+// Suppress the ANU institutional defaults (Contact ANU, Privacy, TEQSA/CRICOS, etc.)
+// in favour of a minimal attribution.
+export const footerOverrides = {
+  legalLinks: [],
+  partnerships: [],
+  meta: ["LLMs Unplugged is a Cybernetic Studio project at the ANU School of Cybernetics."],
+};

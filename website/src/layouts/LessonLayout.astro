@@ -1,6 +1,6 @@
 ---
 import SidebarLayout from "astro-theme-anu/layouts/SidebarLayout.astro";
-import { siteConfig, themeLogo } from "../site-config";
+import { siteConfig, themeLogo, footerOverrides } from "../site-config";
 import { getLessonSidebar } from "../lib/lesson-sidebar";
 import faviconAsset from "../assets/favicon.svg";
 import "../styles/global.css";
@@ -31,6 +31,7 @@ const slug = currentPath.split("/").filter(Boolean).pop();
   logoDark={themeLogo}
   showAcknowledgement={false}
   {...siteConfig}
+  {...footerOverrides}
 >
   <Fragment slot="head">
     <link rel="canonical" href={canonicalUrl} />
@@ -47,7 +48,9 @@ const slug = currentPath.split("/").filter(Boolean).pop();
         let v = localStorage.getItem("llms-unplugged-variant");
         if (v === "bucket") {
           v = "cutouts";
-          try { localStorage.setItem("llms-unplugged-variant", "cutouts"); } catch {}
+          try {
+            localStorage.setItem("llms-unplugged-variant", "cutouts");
+          } catch {}
         }
         if (v === "grid" || v === "cutouts") {
           document.documentElement.setAttribute("data-variant", v);
@@ -64,7 +67,9 @@ const slug = currentPath.split("/").filter(Boolean).pop();
     <slot />
   </div>
   <div class="edit-link">
-    <a href={`https://github.com/ANUcybernetics/llms-unplugged/edit/main/website/src/content/lessons/${slug}.mdx`}>
+    <a
+      href={`https://github.com/ANUcybernetics/llms-unplugged/edit/main/website/src/content/lessons/${slug}.mdx`}
+    >
       Edit this page on GitHub
     </a>
   </div>
