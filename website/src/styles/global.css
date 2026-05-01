@@ -3,10 +3,11 @@
 :root {
   color-scheme: dark;
 
-  /* The theme defaults to a negative translateX on .at-nav-brand to pull the
-     ANU lockup back into alignment (the lockup has built-in whitespace). Our
-     square favicon doesn't need this — reset to zero. */
-  --at-logo-offset-x: 0;
+  /* Pull the favicon left so its centre aligns with the gold vrule. The brand
+     sits at content-start (one content-inset right of the vrule), so the
+     translation needs to cancel that inset and bring the favicon's centre line
+     onto the rule. */
+  --at-logo-offset-x: calc(-1 * var(--at-content-inset) - 1.25rem);
 
   /* Website-specific token: widgets.css references --color-bg (shared with
      decks, where deck/theme.css provides its own value). */
@@ -27,6 +28,37 @@
 /* Content images - full width */
 .prose img {
   width: 100%;
+}
+
+/* Theme defaults to a symmetric grid: both gutters reserve sidebar-inset so
+   content stays centred whether or not a sidebar is shown. On lesson pages
+   this halves the available content width. Make the sidebar-page grid
+   asymmetric — only the leading gutter holds the sidebar, the trailing gutter
+   collapses to spacing-lg — so content can grow to its natural max. */
+@media (width > 768px) {
+  body:has(.at-sidebar) {
+    grid-template-columns:
+      [full-start]
+      minmax(calc(var(--at-spacing-lg) + var(--at-sidebar-inset)), 1fr)
+      [inset-start]
+      var(--at-content-inset)
+      [content-start]
+      min(
+        var(--at-content-width),
+        100% - 2 * var(--at-spacing-lg) - var(--at-content-inset) - var(--at-sidebar-inset)
+      )
+      [content-end]
+      minmax(var(--at-spacing-lg), 1fr)
+      [full-end];
+  }
+}
+
+/* All callouts use site accent (gold) — overrides theme's per-type semantic
+   palette (info=teal, tip=green, warning=amber). Unlayered, so it beats
+   theme's @layer at.components rules. */
+.at-callout {
+  --at-accent: var(--anu-gold);
+  --at-accent-soft: light-dark(rgb(190 131 14 / 10%), rgb(190 131 14 / 14%));
 }
 
 /* Lesson intro block */
