@@ -10,53 +10,22 @@ interface Props {
 const { href, title, description, image, meta } = Astro.props;
 ---
 
-<a href={href} class="card">
-  {image && <img src={image} alt="" class="card-image" loading="lazy" />}
-  <div class="card-body">
-    <h3 class="card-title">{title}</h3>
+<a class="at-card" {href}>
+  {
+    image && (
+      <div class="at-card-image-frame">
+        <img src={image} alt="" class="at-card-image" loading="lazy" />
+      </div>
+    )
+  }
+  <div class="at-card-body">
+    <h3 class="at-card-title">{title}</h3>
     {description && <p class="card-description">{description}</p>}
     {meta && <span class="card-meta">{meta}</span>}
   </div>
 </a>
 
 <style>
-  .card {
-    display: block;
-    border: 1px solid var(--at-border);
-    border-radius: 0.5rem;
-    overflow: hidden;
-    background: var(--at-bg-alt);
-    text-decoration: none;
-    color: inherit;
-    transition:
-      border-color 0.15s,
-      box-shadow 0.15s;
-  }
-
-  .card:hover {
-    border-color: var(--at-accent);
-    box-shadow: 0 2px 12px rgba(190, 131, 14, 0.1);
-    text-decoration: none;
-  }
-
-  .card-image {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    border-radius: 0;
-  }
-
-  .card-body {
-    padding: 1rem;
-  }
-
-  .card-title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin: 0 0 0.375rem;
-    color: var(--at-text);
-  }
-
   .card-description {
     font-size: 0.85rem;
     color: var(--at-text-secondary);
