@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import Card from "./Card.astro";
+import Card from "astro-theme-anu/components/Card.astro";
 import { findHeroImage } from "../lib/hero-images";
 
 interface Props {
@@ -28,11 +28,28 @@ const news = limit ? allNews.slice(0, limit) : allNews;
         <Card
           href={`/news/${item.id}`}
           title={item.data.title}
-          description={item.data.description}
           image={findHeroImage(`hero-news-${item.id}`)}
-          meta={dateLabel}
-        />
+        >
+          <p class="card-description">{item.data.description}</p>
+          <span class="card-meta">{dateLabel}</span>
+        </Card>
       );
     })
   }
 </div>
+
+<style>
+  .card-description {
+    font-size: 0.85rem;
+    color: var(--at-text-secondary);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .card-meta {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--at-text-muted);
+  }
+</style>

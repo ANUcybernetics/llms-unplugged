@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import Card from "./Card.astro";
+import Card from "astro-theme-anu/components/Card.astro";
 import { topicOrder, topicLabels, topicDescriptions } from "../lib/topics";
 import { findHeroImage } from "../lib/hero-images";
 import type { ImageMetadata } from "astro";
@@ -60,9 +60,10 @@ const groupedLessons = isFiltered
         <Card
           href={`/lessons/${lesson.id}`}
           title={lesson.data.title}
-          description={lesson.data.description}
           image={heroImage(lesson.id)}
-        />
+        >
+          <p class="card-description">{lesson.data.description}</p>
+        </Card>
       ))}
     </div>
   ) : (
@@ -77,9 +78,10 @@ const groupedLessons = isFiltered
             <Card
               href={`/lessons/${lesson.id}`}
               title={lesson.data.title}
-              description={lesson.data.description}
               image={heroImage(lesson.id)}
-            />
+            >
+              <p class="card-description">{lesson.data.description}</p>
+            </Card>
           ))}
         </div>
       </section>
@@ -95,5 +97,12 @@ const groupedLessons = isFiltered
   .topic-description {
     color: var(--at-text-secondary);
     margin-bottom: 1rem;
+  }
+
+  .card-description {
+    font-size: 0.85rem;
+    color: var(--at-text-secondary);
+    margin: 0;
+    line-height: 1.4;
   }
 </style>
