@@ -110,37 +110,6 @@
   font-size: inherit;
 }
 
-/* Custom info/tip callout blocks */
-.callout {
-  border: 1px solid var(--at-accent);
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin: 1rem 0;
-  background: var(--at-accent-soft);
-}
-
-.callout-title {
-  font-weight: 600;
-  color: var(--at-accent);
-  margin-bottom: 0.5rem;
-}
-
-.callout-warning {
-  border-color: #d97706;
-}
-
-.callout-warning .callout-title {
-  color: #d97706;
-}
-
-.callout-tip {
-  border-color: var(--at-accent);
-}
-
-.callout-tip .callout-title {
-  color: var(--at-accent);
-}
-
 /* Shared content container */
 .content-container {
   max-width: var(--content-max-width);
@@ -171,38 +140,6 @@
   .image-gallery {
     grid-template-columns: repeat(3, 1fr);
   }
-}
-
-/* Shared card grid */
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
-  gap: 1.5rem;
-}
-
-@media (width >= 640px) {
-  .cards-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Content cards */
-.content-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0;
-}
-
-.content-card {
-  border: 1px solid var(--at-border);
-  border-radius: 0.5rem;
-  padding: 1rem;
-  background: var(--at-bg-alt);
-}
-
-.content-card h4 {
-  margin-top: 0;
 }
 
 /* Section with hero image */

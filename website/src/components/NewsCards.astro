@@ -15,7 +15,7 @@ const allNews = (
 const news = limit ? allNews.slice(0, limit) : allNews;
 ---
 
-<div class="cards-grid">
+<div class="at-card-grid at-card-grid--2">
   {
     news.map((item) => {
       const dateLabel = item.data.date.toLocaleDateString("en-AU", {

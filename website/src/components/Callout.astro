@@ -11,13 +11,19 @@ const defaultTitles: Record<string, string> = {
   tip: "Tip",
   warning: "Warning",
 };
+
+const resolvedTitle = title ?? defaultTitles[type];
 ---
 
-<aside class:list={["callout", `callout-${type}`]}>
-  {
-    (title || defaultTitles[type]) && (
-      <p class="callout-title">{title ?? defaultTitles[type]}</p>
-    )
-  }
+<aside class:list={["at-callout", `at-callout--${type}`]} role="note">
+  {resolvedTitle && <p class="callout-title">{resolvedTitle}</p>}
   <slot />
 </aside>
+
+<style>
+  .callout-title {
+    font-weight: 600;
+    color: var(--at-accent);
+    margin-block: 0 0.5rem;
+  }
+</style>

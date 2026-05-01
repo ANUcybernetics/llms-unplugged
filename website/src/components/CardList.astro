@@ -53,7 +53,7 @@ const groupedLessons = isFiltered
 
 {
   isFiltered ? (
-    <div class="cards-grid">
+    <div class="at-card-grid at-card-grid--2">
       {filteredLessons.map((lesson) => (
         <Card
           href={`/lessons/${lesson.id}`}
@@ -70,7 +70,7 @@ const groupedLessons = isFiltered
         {group.description && (
           <p class="topic-description">{group.description}</p>
         )}
-        <div class="cards-grid">
+        <div class="at-card-grid at-card-grid--2">
           {group.lessons.map((lesson) => (
             <Card
               href={`/lessons/${lesson.id}`}
