@@ -18,9 +18,12 @@ export const themeLogo = logo;
 
 // Footer overrides — passed directly to BaseLayout (not part of SiteConfig).
 // Suppress the ANU institutional defaults (Contact ANU, Privacy, TEQSA/CRICOS, etc.)
-// in favour of a minimal attribution.
+// in favour of a minimal attribution. Meta strings are rendered as HTML by the
+// theme's Footer (set:html), so inline anchors are allowed.
 export const footerOverrides = {
   legalLinks: [],
   partnerships: [],
-  meta: ["LLMs Unplugged is a Cybernetic Studio project at the ANU School of Cybernetics."],
+  meta: [
+    'LLMs Unplugged is a <a href="https://cybernetics.anu.edu.au/cybernetic-studio/">Cybernetic Studio</a> project at the ANU School of Cybernetics, made by <a href="https://benswift.me">Ben Swift</a>.',
+  ],
 };

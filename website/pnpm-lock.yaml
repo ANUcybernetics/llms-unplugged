@@ -25,7 +25,7 @@ importers:
         version: 6.1.3(@types/node@24.12.0)(lightningcss@1.32.0)(rollup@4.60.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3)
       astro-theme-anu:
         specifier: git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#main&path:/packages/astro-theme-anu
-        version: git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#97104b3e903b294d07ceee061792a6ff714c6f8c&path:/packages/astro-theme-anu(@types/node@24.12.0)(astro@6.1.3(@types/node@24.12.0)(lightningcss@1.32.0)(rollup@4.60.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/2bdf94ff725e8337aa39560095f0580c7de2b843(@astrojs/svelte@8.0.4(@types/node@24.12.0)(astro@6.1.3(@types/node@24.12.0)(lightningcss@1.32.0)(rollup@4.60.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(lightningcss@1.32.0)(svelte@5.55.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(astro@6.1.3(@types/node@24.12.0)(lightningcss@1.32.0)(rollup@4.60.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(svelte@5.55.1))(lightningcss@1.32.0)(svelte@5.55.1)(tsx@4.21.0)(typescript@5.9.3)
+        version: git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#7e8908d85f0f30933da77d674996d8b2efbb9ee5&path:/packages/astro-theme-anu(@types/node@24.12.0)(astro@6.1.3(@types/node@24.12.0)(lightningcss@1.32.0)(rollup@4.60.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/2bdf94ff725e8337aa39560095f0580c7de2b843(@astrojs/svelte@8.0.4(@types/node@24.12.0)(astro@6.1.3(@types/node@24.12.0)(lightningcss@1.32.0)(rollup@4.60.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(lightningcss@1.32.0)(svelte@5.55.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(astro@6.1.3(@types/node@24.12.0)(lightningcss@1.32.0)(rollup@4.60.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(svelte@5.55.1))(lightningcss@1.32.0)(svelte@5.55.1)(tsx@4.21.0)(typescript@5.9.3)
       astromotion:
         specifier: github:benswift/astromotion
         version: https://codeload.github.com/benswift/astromotion/tar.gz/2bdf94ff725e8337aa39560095f0580c7de2b843(@astrojs/svelte@8.0.4(@types/node@24.12.0)(astro@6.1.3(@types/node@24.12.0)(lightningcss@1.32.0)(rollup@4.60.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(lightningcss@1.32.0)(svelte@5.55.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(astro@6.1.3(@types/node@24.12.0)(lightningcss@1.32.0)(rollup@4.60.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(svelte@5.55.1)
@@ -1620,8 +1620,8 @@ packages:
     resolution: {integrity: sha512-TYfDUZl0iYq1dVZO+R0appTBkDmSMsOrafgWJMGqoD4xVd74imTRdzekE6tA8+6AIi+/GXMGlr/im0unLD1LRg==}
     engines: {node: '>=18'}
 
-  astro-theme-anu@git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#97104b3e903b294d07ceee061792a6ff714c6f8c&path:/packages/astro-theme-anu:
-    resolution: {commit: 97104b3e903b294d07ceee061792a6ff714c6f8c, path: /packages/astro-theme-anu, repo: https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git, type: git}
+  astro-theme-anu@git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#7e8908d85f0f30933da77d674996d8b2efbb9ee5&path:/packages/astro-theme-anu:
+    resolution: {commit: 7e8908d85f0f30933da77d674996d8b2efbb9ee5, path: /packages/astro-theme-anu, repo: https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git, type: git}
     version: 0.1.0
     engines: {node: '>=24'}
     peerDependencies:
@@ -5269,7 +5269,7 @@ snapshots:
       node-html-parser: 7.1.0
       p-limit: 7.3.0
 
-  astro-theme-anu@git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#97104b3e903b294d07ceee061792a6ff714c6f8c&path:/packages/astro-theme-anu(@types/node@24.12.0)(astro@6.1.3(@types/node@24.12.0)(lightningcss@1.32.0)(rollup@4.60.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/2bdf94ff725e8337aa39560095f0580c7de2b843(@astrojs/svelte@8.0.4(@types/node@24.12.0)(astro@6.1.3(@types/node@24.12.0)(lightningcss@1.32.0)(rollup@4.60.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(lightningcss@1.32.0)(svelte@5.55.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(astro@6.1.3(@types/node@24.12.0)(lightningcss@1.32.0)(rollup@4.60.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(svelte@5.55.1))(lightningcss@1.32.0)(svelte@5.55.1)(tsx@4.21.0)(typescript@5.9.3):
+  astro-theme-anu@git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#7e8908d85f0f30933da77d674996d8b2efbb9ee5&path:/packages/astro-theme-anu(@types/node@24.12.0)(astro@6.1.3(@types/node@24.12.0)(lightningcss@1.32.0)(rollup@4.60.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/2bdf94ff725e8337aa39560095f0580c7de2b843(@astrojs/svelte@8.0.4(@types/node@24.12.0)(astro@6.1.3(@types/node@24.12.0)(lightningcss@1.32.0)(rollup@4.60.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(lightningcss@1.32.0)(svelte@5.55.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(astro@6.1.3(@types/node@24.12.0)(lightningcss@1.32.0)(rollup@4.60.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))(svelte@5.55.1))(lightningcss@1.32.0)(svelte@5.55.1)(tsx@4.21.0)(typescript@5.9.3):
     dependencies:
       '@astro-community/astro-embed-youtube': 0.5.10
       '@astrojs/mdx': 5.0.3(astro@6.1.3(@types/node@24.12.0)(lightningcss@1.32.0)(rollup@4.60.1)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.3))
