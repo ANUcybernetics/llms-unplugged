@@ -129,11 +129,11 @@ describe("Astro Build", () => {
     expect(buttonTag).toContain('aria-controls="at-nav-menu"');
   });
 
-  it("copies image assets", () => {
-    const imagesDir = join(DIST_DIR, "assets/images");
-    expect(existsSync(imagesDir)).toBe(true);
+  it("emits optimised image assets", () => {
+    const astroDir = join(DIST_DIR, "_astro");
+    expect(existsSync(astroDir)).toBe(true);
 
-    const files = readdirSync(imagesDir);
+    const files = readdirSync(astroDir);
     expect(files.length).toBeGreaterThan(0);
     expect(files.some((f) => f.startsWith("hero-"))).toBe(true);
   });

@@ -1,8 +1,10 @@
 ---
+import { Image } from "astro:assets";
 import PageLayout from "../layouts/PageLayout.astro";
 import Callout from "../components/Callout.astro";
 import CardList from "../components/CardList.astro";
 import GlossaryTerm from "../components/GlossaryTerm.astro";
+import heroParents from "../assets/images/hero-parents.avif";
 ---
 
 <PageLayout
@@ -11,7 +13,7 @@ import GlossaryTerm from "../components/GlossaryTerm.astro";
 >
   <h1>For parents</h1>
 
-  <img src="/assets/images/hero-parents.avif" alt="Hero image: For parents" />
+  <Image src={heroParents} alt="Hero image: For parents" />
 
   <p>
     Your kids are using <GlossaryTerm id="chatgpt"

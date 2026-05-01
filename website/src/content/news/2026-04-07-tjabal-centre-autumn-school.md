@@ -23,7 +23,7 @@ participants always do---counted token frequencies, sorted them into bigram
 buckets, and generated new text by drawing tokens from those buckets---except
 this time the new text came out in Luritja.
 
-![Matt Heffernan looking on as an Autumn School participant works through the training activity](/assets/images/tjabal-workshop-01.avif)
+![Matt Heffernan looking on as an Autumn School participant works through the training activity](../../assets/images/tjabal-workshop-01.avif)
 
 _Ngurrparringu_ is about language, ancestors, country, and forgetting. Handing
 it to a room of Autumn School students so they could cut it into pieces and
@@ -31,7 +31,7 @@ rearrange those pieces into new statistical remixes takes a particular kind of
 generosity. Thanks Matt for being willing to share this moment---as poet,
 translator, and co-teacher.
 
-![Hands arranging Luritja word tokens: ngurra, ngayulu, tjukurrpa, warranu, nyinapa, ngayunywanpa](/assets/images/tjabal-workshop-02.avif)
+![Hands arranging Luritja word tokens: ngurra, ngayulu, tjukurrpa, warranu, nyinapa, ngayunywanpa](../../assets/images/tjabal-workshop-02.avif)
 
 Here's one of the Luritja generations that came out of a group's bigram model:
 
@@ -52,7 +52,7 @@ Matt translated it for us on-the-fly:
 Every word in the Luritja comes from Matt's poem; the model has just put them in
 a different order.
 
-![English word tokens: home, return, hear, the, sung, and, to, my](/assets/images/tjabal-workshop-03.avif)
+![English word tokens: home, return, hear, the, sung, and, to, my](../../assets/images/tjabal-workshop-03.avif)
 
 There is nothing inherently English (or any other particular language) about a
 language model. The training data determines the output language. Train on
@@ -83,7 +83,7 @@ were trained on orders of magnitude more English text than anything else, and
 the tokenisers, evaluations and benchmarks all reflect that choice. It's a
 property of what we fed them.
 
-![Autumn School students and Ben gathered around a table covered in word tokens](/assets/images/tjabal-workshop-04.avif)
+![Autumn School students and Ben gathered around a table covered in word tokens](../../assets/images/tjabal-workshop-04.avif)
 
 Thanks again to Matt for the time, the poem, and the translations, and to the
 Tjabal Centre and the Autumn School participants for being up for something new

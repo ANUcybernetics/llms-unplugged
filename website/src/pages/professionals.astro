@@ -1,7 +1,9 @@
 ---
+import { Image } from "astro:assets";
 import PageLayout from "../layouts/PageLayout.astro";
 import Callout from "../components/Callout.astro";
 import GlossaryTerm from "../components/GlossaryTerm.astro";
+import heroProfessionals from "../assets/images/hero-professionals.avif";
 ---
 
 <PageLayout
@@ -10,10 +12,7 @@ import GlossaryTerm from "../components/GlossaryTerm.astro";
 >
   <h1>For professionals</h1>
 
-  <img
-    src="/assets/images/hero-professionals.avif"
-    alt="Hero image: For professionals"
-  />
+  <Image src={heroProfessionals} alt="Hero image: For professionals" />
 
   <Callout type="info">
     <p>

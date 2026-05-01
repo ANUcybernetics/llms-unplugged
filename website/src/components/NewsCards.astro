@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Card from "./Card.astro";
+import { findHeroImage } from "../lib/hero-images";
 
 interface Props {
   limit?: number;
@@ -28,7 +29,7 @@ const news = limit ? allNews.slice(0, limit) : allNews;
           href={`/news/${item.id}`}
           title={item.data.title}
           description={item.data.description}
-          image={`/assets/images/hero-news-${item.id}.avif`}
+          image={findHeroImage(`hero-news-${item.id}`)}
           meta={dateLabel}
         />
       );

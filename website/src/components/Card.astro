@@ -1,9 +1,12 @@
 ---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
 interface Props {
   href: string;
   title: string;
   description?: string;
-  image?: string;
+  image?: ImageMetadata;
   meta?: string;
 }
 
@@ -14,7 +17,7 @@ const { href, title, description, image, meta } = Astro.props;
   {
     image && (
       <div class="at-card-image-frame">
-        <img src={image} alt="" class="at-card-image" loading="lazy" />
+        <Image src={image} alt="" class="at-card-image" loading="lazy" />
       </div>
     )
   }

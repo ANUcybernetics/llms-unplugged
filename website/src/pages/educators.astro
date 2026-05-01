@@ -1,8 +1,10 @@
 ---
+import { Image } from "astro:assets";
 import PageLayout from "../layouts/PageLayout.astro";
 import Callout from "../components/Callout.astro";
 import CardList from "../components/CardList.astro";
 import GlossaryTerm from "../components/GlossaryTerm.astro";
+import heroEducators from "../assets/images/hero-educators.avif";
 ---
 
 <PageLayout
@@ -11,10 +13,7 @@ import GlossaryTerm from "../components/GlossaryTerm.astro";
 >
   <h1>For educators</h1>
 
-  <img
-    src="/assets/images/hero-educators.avif"
-    alt="Hero image: For educators"
-  />
+  <Image src={heroEducators} alt="Hero image: For educators" />
 
   <Callout type="info">
     <p>

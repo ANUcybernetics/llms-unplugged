@@ -6,7 +6,7 @@ description: The history and foundations of LLMs Unplugged, from CS Unplugged to
 
 # About
 
-![Hero image: The history and foundations of LLMs Unplugged](/assets/images/hero-about.avif)
+![Hero image: The history and foundations of LLMs Unplugged](../assets/images/hero-about.avif)
 
 _LLMs Unplugged_ is a [Cybernetic
 Studio](https://cybernetics.anu.edu.au/cybernetic-studio/) project created by
@@ -58,7 +58,7 @@ specifically about language models and especially text generation---a gap that
 became particularly acute after ChatGPT's November 2022 release shifted what
 "AI" means to most people. _LLMs Unplugged_ aims to fill that gap.
 
-![Workshop participants building language models with pen and paper](/assets/images/workshop-1.avif)
+![Workshop participants building language models with pen and paper](../assets/images/workshop-1.avif)
 
 ## Historical foundations
 
@@ -120,7 +120,7 @@ Unplugged_ workshop, you're not just learning about modern AI. You're also
 participating in a tradition of hands-on exploration that goes back to the
 origins of information theory itself.
 
-![Counting word transitions to build a statistical language model](/assets/images/workshop-2.avif)
+![Counting word transitions to build a statistical language model](../assets/images/workshop-2.avif)
 
 ## About the ANU School of Cybernetics
 
@@ -131,7 +131,7 @@ Studio](https://cybernetics.anu.edu.au/cybernetic-studio/) develops hands-on
 resources and runs workshops exploring the social, technical, and political
 dimensions of emerging technologies.
 
-![LLMs Unplugged workshop in action](/assets/images/workshop-3.avif)
+![LLMs Unplugged workshop in action](../assets/images/workshop-3.avif)
 
 _LLMs Unplugged_ reflects the School's commitment to making sophisticated
 technical concepts accessible to diverse audiences and fostering critical

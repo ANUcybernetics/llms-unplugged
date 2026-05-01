@@ -1,7 +1,16 @@
 ---
+import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NewsCards from "../components/NewsCards.astro";
 import GlossaryTerm from "../components/GlossaryTerm.astro";
+import heroIndex from "../assets/images/hero-index.avif";
+import heroEducators from "../assets/images/hero-educators.avif";
+import headshotBen from "../assets/images/headshot-ben-4.avif";
+import heroFundamentals from "../assets/images/hero-fundamentals.avif";
+import heroHowModelsUnderstand from "../assets/images/hero-how-models-understand.avif";
+import heroLlmVsAi from "../assets/images/hero-llm-vs-ai.avif";
+import heroIntro from "../assets/images/hero-intro.avif";
+import heroContact from "../assets/images/hero-contact.avif";
 ---
 
 <BaseLayout title="LLMs Unplugged">
@@ -23,8 +32,8 @@ import GlossaryTerm from "../components/GlossaryTerm.astro";
       </div>
     </div>
     <div class="hero-image">
-      <img
-        src="/assets/images/hero-index.avif"
+      <Image
+        src={heroIndex}
         alt="Workshop participants building language models with pen and paper"
       />
     </div>
@@ -45,8 +54,8 @@ import GlossaryTerm from "../components/GlossaryTerm.astro";
 
     <div class="section-with-image">
       <div class="section-image">
-        <img
-          src="/assets/images/hero-educators.avif"
+        <Image
+          src={heroEducators}
           alt="Diverse group of learners from students to professionals"
           loading="lazy"
         />
@@ -80,11 +89,7 @@ import GlossaryTerm from "../components/GlossaryTerm.astro";
 
     <div class="section-with-image">
       <div class="section-image">
-        <img
-          src="/assets/images/headshot-ben-4.avif"
-          alt="Ben Swift"
-          loading="lazy"
-        />
+        <Image src={headshotBen} alt="Ben Swift" loading="lazy" />
       </div>
       <div class="section-content">
         <h2>Who made this?</h2>
@@ -103,8 +108,8 @@ import GlossaryTerm from "../components/GlossaryTerm.astro";
 
     <div class="section-with-image">
       <div class="section-image">
-        <img
-          src="/assets/images/hero-fundamentals.avif"
+        <Image
+          src={heroFundamentals}
           alt="Simple counting and dice activities"
           loading="lazy"
         />
@@ -133,8 +138,8 @@ import GlossaryTerm from "../components/GlossaryTerm.astro";
 
     <div class="section-with-image">
       <div class="section-image">
-        <img
-          src="/assets/images/hero-how-models-understand.avif"
+        <Image
+          src={heroHowModelsUnderstand}
           alt="Understanding AI through hands-on experience"
           loading="lazy"
         />
@@ -169,8 +174,8 @@ import GlossaryTerm from "../components/GlossaryTerm.astro";
 
     <div class="section-with-image">
       <div class="section-image">
-        <img
-          src="/assets/images/hero-llm-vs-ai.avif"
+        <Image
+          src={heroLlmVsAi}
           alt="Understanding the relationship between LLMs and AI"
           loading="lazy"
         />
@@ -192,8 +197,8 @@ import GlossaryTerm from "../components/GlossaryTerm.astro";
 
     <div class="section-with-image">
       <div class="section-image">
-        <img
-          src="/assets/images/hero-intro.avif"
+        <Image
+          src={heroIntro}
           alt="Getting started with language model activities"
           loading="lazy"
         />
@@ -213,8 +218,8 @@ import GlossaryTerm from "../components/GlossaryTerm.astro";
 
     <div class="section-with-image">
       <div class="section-image">
-        <img
-          src="/assets/images/hero-contact.avif"
+        <Image
+          src={heroContact}
           alt="Connecting and sharing ideas"
           loading="lazy"
         />
@@ -284,7 +289,7 @@ import GlossaryTerm from "../components/GlossaryTerm.astro";
 
   .hero-image img {
     width: 100%;
-    border-radius: 0.75rem;
+    height: auto;
   }
 
   .hero-actions {

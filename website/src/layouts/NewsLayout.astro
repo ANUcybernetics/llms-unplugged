@@ -1,5 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import BaseLayout from "./BaseLayout.astro";
+import { findHeroImage } from "../lib/hero-images";
 
 interface Props {
   title: string;
@@ -20,7 +22,7 @@ const formattedDate = date
   : "";
 
 const slug = Astro.url.pathname.split("/").filter(Boolean).pop() ?? "";
-const heroSrc = `/assets/images/hero-news-${slug}.avif`;
+const hero = findHeroImage(`hero-news-${slug}`);
 ---
 
 <BaseLayout title={title} description={description} ogImage={ogImage}>
@@ -39,12 +41,16 @@ const heroSrc = `/assets/images/hero-news-${slug}.avif`;
             </div>
           )
         }
-        <img
-          class="news-hero"
-          src={heroSrc}
-          alt={`Hero image: ${title}`}
-          loading="lazy"
-        />
+        {
+          hero && (
+            <Image
+              class="news-hero"
+              src={hero}
+              alt={`Hero image: ${title}`}
+              loading="lazy"
+            />
+          )
+        }
       </header>
       <slot />
     </article>
@@ -76,6 +82,6 @@ const heroSrc = `/assets/images/hero-news-${slug}.avif`;
 
   .news-hero {
     width: 100%;
-    border-radius: 0.5rem;
+    height: auto;
   }
 </style>
