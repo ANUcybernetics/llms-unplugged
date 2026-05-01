@@ -35,7 +35,7 @@
     "@astrojs/sitemap": "^3.0.0",
     "@astrojs/svelte": "^8.0.0",
     "astro": "^6.0.0",
-    "astro-theme-anu": "*",
+    "astro-theme-anu": "git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#main&path:/packages/astro-theme-anu",
     "astromotion": "github:benswift/astromotion",
     "js-yaml": "^4.1.1",
     "lightningcss": "^1.32.0",
@@ -78,9 +78,6 @@
     "onlyBuiltDependencies": [
       "esbuild",
       "sharp"
-    ],
-    "overrides": {
-      "astro-theme-anu": "file:/home/ben/projects/astro-theme-anu/.worktrees/customisation-knobs/packages/astro-theme-anu"
-    }
+    ]
   }
 }
