@@ -47,6 +47,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@e18e/eslint-plugin": "^0.4.1",
+    "@iconify-json/iconoir": "^1.2.11",
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "@testing-library/svelte": "^5.3.1",
     "@types/js-yaml": "^4.0.9",
