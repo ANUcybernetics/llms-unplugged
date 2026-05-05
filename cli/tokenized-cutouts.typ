@@ -8,8 +8,17 @@
 #let cell_padding_x = 0.3em
 #let cell_padding_top = 0.3em
 #let cell_padding_bottom = 0.5em // Extra space for descenders
-#let border_width = 4pt // Keep absolute for crisp lines
 #let border_color = luma(180)
+#let cut_line_thickness = 0.5pt
+#let cut_line_spacing = 4pt // Reserved vertical space for horizontal cut lines (preserves layout)
+#let cut_stroke = (paint: border_color, thickness: cut_line_thickness, dash: "dotted")
+#let horizontal_cut_line = block(
+  width: 100%,
+  height: cut_line_spacing,
+  inset: 0pt,
+)[
+  #place(left + horizon, line(length: 100%, stroke: cut_stroke))
+]
 
 // Get configuration from sys.inputs
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
@@ -146,7 +155,7 @@
   }
 
   // Right border unless last in row
-  let right_stroke = if is_last { none } else { border_width + border_color }
+  let right_stroke = if is_last { none } else { cut_stroke }
 
   let index_fill = if token.keep { luma(160) } else { luma(200) }
 
@@ -188,16 +197,11 @@
       ],
     )
   } else {
-    // Discarded token: greyed out, dashed right border
-    let right_stroke_dashed = if is_last {
-      none
-    } else {
-      (paint: border_color, thickness: border_width, dash: "dashed")
-    }
+    // Discarded token: greyed out
     box(
       width: content_width + 2 * cell_padding_x,
       height: height,
-      stroke: (left: none, right: right_stroke_dashed, top: none, bottom: none),
+      stroke: (left: none, right: right_stroke, top: none, bottom: none),
       inset: (x: cell_padding_x),
       [
         #if prefix_content != none {
@@ -257,7 +261,7 @@
   // Render rows with horizontal lines
   for (row_idx, row) in rows.enumerate() {
     // Top border for this row
-    line(length: 100%, stroke: border_width + border_color)
+    horizontal_cut_line
 
     // Render tokens in this row
     box(width: 100%)[
@@ -268,5 +272,5 @@
   }
 
   // Bottom border after last row
-  line(length: 100%, stroke: border_width + border_color)
+  horizontal_cut_line
 })
