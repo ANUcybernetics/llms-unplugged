@@ -338,14 +338,14 @@ body.reveal-viewport {
 
 .reveal .slides section table.bigram-grid {
   font-size: 1.1em;
-  width: auto;
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
 }
 
 .reveal .slides section table.bigram-grid th,
 .reveal .slides section table.bigram-grid td {
   text-align: center;
-  padding: 0.35rem 0.5rem;
+  padding: 0.75rem 0.5rem;
 }
 
 .reveal .slides section table.bigram-grid td.grid-cell {
