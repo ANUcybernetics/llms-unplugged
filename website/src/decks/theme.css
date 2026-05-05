@@ -69,7 +69,7 @@ body.reveal-viewport {
   }
 
   h1 {
-    font-size: 5.25rem;
+    font-size: 4rem;
     line-height: 1.3;
     text-transform: uppercase;
     margin: 0 0 1rem;
@@ -86,12 +86,12 @@ body.reveal-viewport {
   }
 
   h2 {
-    font-size: 3.75rem;
+    font-size: 2.75rem;
     line-height: 1.2;
   }
 
   :is(p, li) {
-    font-size: 2.25rem;
+    font-size: 1.75rem;
     margin: 0 0 1rem;
   }
 
@@ -162,6 +162,15 @@ body.reveal-viewport {
     place-content: center;
   }
 
+  &:has(.split-layout) {
+    padding: 0;
+    align-content: stretch;
+  }
+
+  .at-heading-anchor {
+    display: none;
+  }
+
   h1 + h2 {
     color: var(--anu-light-grey);
     font-weight: normal;
@@ -196,7 +205,7 @@ body.reveal-viewport {
     }
 
     :is(p, li) {
-      font-size: 5rem;
+      font-size: 3.25rem;
       line-height: 1.4;
     }
 
@@ -229,7 +238,7 @@ body.reveal-viewport {
       color: var(--anu-white);
 
       p {
-        font-size: 3.75rem;
+        font-size: 2.75rem;
         line-height: 1.3;
         margin: 0;
       }
