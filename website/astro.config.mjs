@@ -1,13 +1,15 @@
 import { defineConfig } from "astro/config";
+import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import svelte from "@astrojs/svelte";
 import anuTheme from "astro-theme-anu";
-import { astromotion } from "astromotion";
+import { astromotion, deckRemarkPlugins } from "astromotion";
 
 export default defineConfig({
   site: "https://www.llmsunplugged.org",
   integrations: [
     svelte(),
+    mdx({ remarkPlugins: deckRemarkPlugins }),
     anuTheme({
       name: "LLMs Unplugged",
       llmsTxt: true,
@@ -17,6 +19,9 @@ export default defineConfig({
       // changes. Other minors: empty-table-header on word-embeddings,
       // heading-order on /news/.
       checkA11y: false,
+      // mdx: false because we register @astrojs/mdx above (with deck remark
+      // plugins from astromotion) before anuTheme runs.
+      mdx: false,
       // socy-logo is a project-specific slide class defined in theme.css
       // for the ANU Society of Cybernetics animated logo slide.
       extraSlideClasses: ["socy-logo"],
