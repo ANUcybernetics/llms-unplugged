@@ -59,8 +59,8 @@
 
     == Training: build the cutouts model
 
-    + *cut out the tokens* from the sheets above along the grey lines (carefully
-      ---keep each prefix-token pair together)
+    + *cut out the tokens* from the sheets above along the dotted lines
+      (carefully---keep each prefix-token pair together)
 
     + *spread them out* on a table, face up, no overlap if possible
 
