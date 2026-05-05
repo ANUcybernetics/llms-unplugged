@@ -277,6 +277,89 @@ body.reveal-viewport {
   }
 }
 
+.reveal .slides .extensions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5em;
+}
+
+.reveal .slides .extensions-grid img {
+  height: 4.5em;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.reveal .slides .fullscreen-button,
+.reveal .slides .controls-strip {
+  display: none;
+}
+
+.reveal .slides section:has(.lm-widget) {
+  padding: 1.5rem 2.5rem;
+  font-size: 14px;
+}
+
+.reveal .slides section:has(table.bigram-grid),
+.reveal .slides section:has(.generation-output) {
+  padding: 1.5rem 2.5rem;
+}
+
+.reveal .slides section .lm-widget {
+  margin: 0;
+  padding: 0.75rem;
+  font-size: 14px;
+}
+
+.reveal .slides section .lm-widget .widget-view {
+  gap: 0.5rem;
+}
+
+.reveal .slides section .lm-widget .input-row,
+.reveal .slides section .lm-widget .output-row {
+  gap: 0.5rem;
+}
+
+.reveal .slides section .lm-widget .section-header {
+  font-size: 0.65em;
+}
+
+.reveal .slides section .lm-widget .text-input {
+  font-size: 1em;
+  padding: 0.25rem 0.4rem;
+}
+
+.reveal .slides section .lm-widget .token,
+.reveal .slides section .lm-widget button,
+.reveal .slides section .lm-widget .speed-control,
+.reveal .slides section .lm-widget .mapping-item,
+.reveal .slides section .lm-widget .dice-value {
+  font-size: 1em;
+}
+
+.reveal .slides section table.bigram-grid {
+  font-size: 1.1em;
+  width: auto;
+  margin: 0 auto;
+}
+
+.reveal .slides section table.bigram-grid th,
+.reveal .slides section table.bigram-grid td {
+  text-align: center;
+  padding: 0.35rem 0.5rem;
+}
+
+.reveal .slides section table.bigram-grid td.grid-cell {
+  font-size: 1.1em;
+  font-weight: 700;
+  min-width: 2.25em;
+}
+
+.reveal .slides section .static-grid-tokens,
+.reveal .slides section .generation-output {
+  margin: 0.5rem 0;
+  font-size: 1.1em;
+}
+
 @media screen and (prefers-reduced-motion: no-preference) {
   .present .logo-rule-top,
   .present .logo-rule-bottom {
