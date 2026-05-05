@@ -162,15 +162,6 @@ body.reveal-viewport {
     place-content: center;
   }
 
-  &:has(.split-layout) {
-    padding: 0;
-    align-content: stretch;
-  }
-
-  .at-heading-anchor {
-    display: none;
-  }
-
   h1 + h2 {
     color: var(--anu-light-grey);
     font-weight: normal;
