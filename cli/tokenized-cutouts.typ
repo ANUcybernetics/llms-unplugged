@@ -3,9 +3,7 @@
 
 // Configuration
 #let font_size = 36pt // Master size - change this to scale everything
-#let index_size = 0.2em
 #let cell_padding_x = 0.35em
-#let cell_padding_bottom = 0.5em // Extra space for descenders
 #let inter_word_gap = 0.3em
 #let border_color = luma(180)
 #let cut_line_thickness = 0.5pt
@@ -50,6 +48,7 @@
 
 #set page(
   paper: paper_size,
+  flipped: true,
   margin: 1cm,
 )
 
@@ -173,19 +172,13 @@
 
   let measured = measure(content)
   let right_stroke = if is_last { none } else { cut_stroke }
-  let index_fill = if token.keep { luma(160) } else { luma(200) }
 
   box(
     width: measured.width + 2 * cell_padding_x,
     height: height,
     stroke: (left: none, right: right_stroke, top: none, bottom: none),
     inset: (x: cell_padding_x),
-    [
-      #place(bottom + right, dy: -cell_padding_bottom * 0.15)[
-        #text(size: index_size, fill: index_fill)[#token.index]
-      ]
-      #align(horizon + left, content)
-    ],
+    align(horizon + left, content),
   )
 }
 
