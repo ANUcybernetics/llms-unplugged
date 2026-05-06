@@ -132,6 +132,10 @@
 
 #instructions-page()
 
+// Tighten margins for the cutout pages---5mm is the reliable floor for most
+// laser printers and squeezes more cutouts per sheet.
+#set page(margin: 5mm)
+
 // A coloured box for a prefix word: word's assigned colour as fill, white text.
 // When `dimmed` is true (discarded source token) the box is rendered in grey.
 // Uses `highlight` rather than `box` so the prefix word's baseline aligns with
