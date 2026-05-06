@@ -1,0 +1,76 @@
+---
+title: Cutouts get a glow-up
+date: 2026-05-07
+author: Ben Swift
+description:
+  A revamped cutouts variant of the Training and Generation lessons, with
+  crisper print materials and a generation mechanic that does weighted sampling
+  for free.
+---
+
+import Callout from "../../components/Callout.astro";
+
+The cutouts variant of the [Training](/lessons/training) and
+[Generation](/lessons/generation) lessons has had a serious refresh. If you
+haven't tried this version with your students, now's a good time.
+
+Instead of building the whiteboard frequency grid, you print the bigram model as
+physical cards and scatter them face-up across a big table. Each card shows a
+prefix (the word that came before) and a token (the word that follows). To
+generate text: scan for a card whose prefix matches your last-written word,
+write its token, then hunt for the next match. The chain grows like dominoes.
+
+The trick is in the scanning. Every token has its own colour, repeated wherever
+it appears: as a prefix box on one card, as a free-standing token on another. To
+match a prefix against your last word, your eye hunts for that word's colour on
+the right edge of a card. Verify the actual token before committing, since
+colours sometimes collide.
+
+This gives you [weighted random sampling](/lessons/weighted-randomness) for
+free. If `eggs` follows `green` 40% of the time in the training text, then 40%
+of the matching cards will say `eggs`. Whichever card your eye lands on, you've
+sampled in proportion to the empirical distribution. No dice, no probability
+tables: the spread is doing the maths.
+
+That's the main argument for choosing the cutouts over the
+[grid version](/lessons/training) of the lesson. The cutouts skip the explicit
+[weighted-sampling step](/lessons/weighted-randomness), which is the
+conceptually heaviest moment in the unplugged sequence. They also parallelise
+better: a class of thirty splits into seven groups around their own
+table-spreads, where the grid bottlenecks at one teacher. The costs are a
+colour printer (essential, since the colour coding is doing real work),
+scissors, and more table than the grid wants. For primary-age students the
+cutouts are the easier sell, and the weighted-sampling-without-the-maths trick
+still lands well with adults.
+
+<Callout type="tip" title="From buckets to cutouts">
+
+The earlier ancestor of these lessons was called _buckets_: students sorted
+cut-up cards into piles by their prefix word before any text generation
+happened. The sorting turned out to be the part nobody enjoyed, and it ate the
+time we wanted to spend on the [Generation lesson](/lessons/generation) itself.
+The new design skips the sort and goes straight to the spread.
+
+</Callout>
+
+The [tools page](/tools#cutouts) has four ready-to-print PDFs: _Green Eggs and
+Ham_ ([bigram](/assets/pdfs/cutouts/green-eggs-and-ham.pdf),
+[trigram](/assets/pdfs/cutouts/green-eggs-and-ham-trigram.pdf)) and _The Cat in
+the Hat_ ([bigram](/assets/pdfs/cutouts/the-cat-in-the-hat.pdf),
+[trigram](/assets/pdfs/cutouts/the-cat-in-the-hat-trigram.pdf)). They're
+designed for A4 colour printing. Each PDF includes an instructions page with a
+labelled card and a domino chain showing how each token becomes the next card's
+rightmost prefix. The same tools page lets you generate cutouts from any text
+you like. There's also a `--duplex` mode that prints the same cards on both
+faces, so students never have to flip a face-down card.
+
+Both bigram (n=2) and trigram (n=3) configurations work, and you can push to n=4
+or beyond. The [trigram lesson](/lessons/trigram) walks through the trade-off:
+bigger n produces text that reads more like the source, at the cost of a much
+bigger spread. Cutouts let you see this trade-off as physical paper rather than
+an abstract claim.
+
+If you can't print colour, or your students respond better to a tighter
+board-style activity, the grid versions of [Training](/lessons/training) and
+[Generation](/lessons/generation) are still here, still good. Both variants
+land at the same understanding by different paths. Try the cutouts.
