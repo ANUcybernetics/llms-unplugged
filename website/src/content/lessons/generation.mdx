@@ -82,7 +82,7 @@ write a whole story.
 <Variant is="cutouts">
 
 Generate new text by walking the spread: pick a starting prefix, find the
-cutouts whose red prefix label matches, choose one visually, and repeat using
+cutouts whose prefix box colour matches, choose one visually, and repeat using
 the token you picked as your new prefix. Stretch goal: keep going and write a
 whole story.
 
@@ -123,10 +123,13 @@ visually _is_ weighted random sampling---no dice required.
 
 <Variant is="cutouts">
 
+It's a colour-matching game: the colour of the word you just wrote is the
+colour of the prefix box you look for next.
+
 1. **Pick a starting prefix**---choose any word that appears as a prefix on at
    least one cutout
-2. **Find candidates**---look across the spread of cutouts for ones whose red
-   prefix label matches your current word
+2. **Find candidates**---scan the spread for cutouts whose prefix box matches
+   your current word's colour
 3. **Pick one cutout**---visually pick any matching cutout (your eye will tend
    to land on cutouts whose tokens are common, because there are more of
    them---that's weighted sampling for free)
@@ -172,8 +175,8 @@ Using the cutouts spread from the example in [Training](/lessons/training):
 <LmCutouts tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
 
 - start with `see`---write it down
-- scan for cutouts with `see` as the red prefix---both have `spot` as the
-  token, so pick one and write down `spot`
+- scan for cutouts with `see` as the prefix (look for boxes in `see`'s
+  colour)---both have `spot` as the token, so pick one and write down `spot`
 - scan for `spot` cutouts---4 matches (1 `run`, 1 `jump`, 2 `,`). Pick
   visually. Your eye is more likely to land on a comma because there are two
   of them, but for variety let's say `run`---write it down
