@@ -8,7 +8,11 @@
 #let border_color = luma(180)
 #let cut_line_thickness = 0.5pt
 #let cut_line_spacing = 4pt // Reserved vertical space for horizontal cut lines (preserves layout)
-#let cut_stroke = (paint: border_color, thickness: cut_line_thickness, dash: "dotted")
+#let cut_stroke = (
+  paint: border_color,
+  thickness: cut_line_thickness,
+  dash: "dotted",
+)
 #let horizontal_cut_line = block(
   width: 100%,
   height: cut_line_spacing,
@@ -63,8 +67,8 @@
   if found != none { found.prefix.len() + 1 } else { 2 }
 }
 
-#let prefix-word-count = n - 1
-#let prefix-words = if prefix-word-count == 1 { "word" } else { "words" }
+#let prefix-length = n - 1
+#let prefix-noun = if prefix-length == 1 { "token" } else { "tokens" }
 
 // A coloured box for a prefix word: word's assigned colour as fill, white text.
 // When `dimmed` is true (discarded source token) the box is rendered in grey.
@@ -100,7 +104,9 @@
 
   // Pull the first few tokens with a non-empty prefix as worked examples.
   let example-tokens = {
-    let candidates = tokens.filter(t => "prefix" in t and t.prefix.len() > 0 and t.keep)
+    let candidates = tokens.filter(t => (
+      "prefix" in t and t.prefix.len() > 0 and t.keep
+    ))
     candidates.slice(0, calc.min(3, candidates.len()))
   }
 
@@ -113,11 +119,13 @@
       align: (left + horizon, center + horizon),
       [
         These pages contain the text #emph(doc_metadata.title) by
-        #doc_metadata.author. Each *cutout* shows a *token* preceded by its
-        *prefix*---the #str(prefix-word-count) #prefix-words that came before
-        it in the original text. Every word has its own colour: prefix words
-        appear inside a #strong[matching coloured box], and the free-standing
-        token is rendered in that same colour.
+        #doc_metadata.author (#doc_metadata.total_tokens tokens, entropy
+        #calc.round(doc_metadata.entropy, digits: 2) bits/token, perplexity
+        #calc.round(doc_metadata.perplexity, digits: 1)). Each *cutout* shows a
+        *token* preceded by its *prefix*---the #str(prefix-length) #prefix-noun
+        that came before it in the original text. Every token has its own
+        colour: prefix tokens appear inside a #strong[matching coloured box],
+        and the free-standing token is rendered in that same colour.
       ],
       if example-tokens.len() > 0 {
         grid(
@@ -128,49 +136,65 @@
           align: center,
           [
             #set text(size: 26pt)
-            #example-tokens.at(0).prefix.map(t => prefix-box(t)).join(h(inter_word_gap))
+            #(
+              example-tokens
+                .at(0)
+                .prefix
+                .map(t => prefix-box(t))
+                .join(h(inter_word_gap))
+            )
           ],
           [
             #set text(size: 26pt)
             #coloured-word(example-tokens.at(0).text)
           ],
+
           text(size: 10pt, fill: rgb("#666"), style: "italic")[prefix],
           text(size: 10pt, fill: rgb("#666"), style: "italic")[token],
         )
       },
     )
 
-    == Training: build the cutouts model
+    == Setup
 
-    + *cut out the tokens* from the sheets above along the dotted lines
+    *Cut out the tokens* along the dotted lines and *spread them out* face-up on
+    the table, with no overlap if possible. (This is the "training" step---every
+    prefix-token combination from your training text is now a physical cutout on
+    the table.)
 
-    + *spread them out* on a table, face up, no overlap if possible
+    == Generation: a matching game
 
-    + that's your trained language model---every prefix-token combination from
-      your training text is now a physical cutout on the table
+    Find a cutout whose prefix matches the token you just wrote, write its
+    token, and repeat---like a chain of dominoes:
 
-    == Generation: a colour-matching game
-
-    The colour of the word you just wrote is the colour of the prefix box you
-    look for next---like dominoes:
-
+    #let arrow-sep = box[#h(0.4em)#text(fill: rgb("#999"))[→]#h(0.4em)]
     #if example-tokens.len() >= 2 [
       #align(center)[
         #set text(size: 18pt)
-        #example-tokens.map(t => render-cutout(t)).join(h(1.5em))
+        #example-tokens.map(t => render-cutout(t)).join(arrow-sep)
+        #v(0.4em)
+        #text(size: 11pt, fill: rgb("#666"), style: "italic")[
+          each cutout's token reappears as the next cutout's rightmost prefix
+          box---that's the chain
+        ]
       ]
     ]
 
-    + *choose a starting word* that appears as a prefix on at least one cutout,
-      and write it down
+    Each token has its own colour, so a quick colour-scan points you at
+    candidates fast---but always verify the actual token matches, because
+    colours sometimes repeat across different tokens.
 
-    + *find candidates*---scan the spread for cutouts whose prefix box matches
-      your current word's colour
+    + *start your text* by copying any cutout's prefix onto your page
+
+    + *find candidates*---scan the spread for cutouts whose prefix matches the
+      last #str(prefix-length) #prefix-noun you wrote
       #if n > 2 [
         #v(0.1em)
         #text(style: "italic", size: 0.85em)[
-          (with #str(prefix-word-count)-word prefixes, match the rightmost
-          coloured box first, then check the earlier word(s) match too)
+          (scan by the rightmost colour first, then verify the tokens match. If
+          no cutouts match all #str(prefix-length) tokens, settle for ones where
+          just the rightmost prefix token matches your last token---partial
+          matches are fine.)
         ]
       ]
 
@@ -180,18 +204,10 @@
     + *write down the cutout's token*, then *put the cutout back* in the spread
       (removing it would change the model's distribution next time)
 
-    + the token you just wrote is your new current word---go back to step 2
+    + *repeat from step 2*
 
-    + *stop* when you've written enough text, or when no cutouts match your
-      current word
-
-    #v(0.3em)
-    #text(size: 11pt, fill: rgb("#444"))[
-      *Model statistics:* #doc_metadata.total_tokens tokens
-      (#doc_metadata.kept_tokens kept) ·
-      entropy #calc.round(doc_metadata.entropy, digits: 2) bits/token ·
-      perplexity #calc.round(doc_metadata.perplexity, digits: 1)
-    ]
+    + *stop* whenever you've written enough text---write as much or as little as
+      you like
   ]
 
   pagebreak()
