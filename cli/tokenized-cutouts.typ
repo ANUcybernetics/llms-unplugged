@@ -66,19 +66,79 @@
 #let prefix-word-count = n - 1
 #let prefix-words = if prefix-word-count == 1 { "word" } else { "words" }
 
+// A coloured box for a prefix word: word's assigned colour as fill, white text.
+// When `dimmed` is true (discarded source token) the box is rendered in grey.
+// Uses `highlight` rather than `box` so the prefix word's baseline aligns with
+// the surrounding free-standing word.
+#let prefix-box(t, dimmed: false) = {
+  let fill = if dimmed { luma(180) } else { colour-for(t) }
+  highlight(
+    fill: fill,
+    extent: 0.1em,
+    radius: 2pt,
+    text(fill: white, weight: "bold", t),
+  )
+}
+
+// A free-standing word in its assigned colour (or grey when dimmed).
+#let coloured-word(t, dimmed: false) = {
+  let fill = if dimmed { luma(160) } else { colour-for(t) }
+  text(fill: fill, t)
+}
+
+// Render a cutout's prefix boxes followed by its token, all inline.
+#let render-cutout(token) = {
+  let parts = token.prefix.map(t => prefix-box(t))
+  parts.push(coloured-word(token.text))
+  parts.join(h(inter_word_gap))
+}
+
 // Instructions page
 #let instructions-page() = {
-  set text(size: 14pt)
+  set text(size: 13pt)
+  show heading: set block(above: 1.4em, below: 0.7em)
+
+  // Pull the first few tokens with a non-empty prefix as worked examples.
+  let example-tokens = {
+    let candidates = tokens.filter(t => "prefix" in t and t.prefix.len() > 0 and t.keep)
+    candidates.slice(0, calc.min(3, candidates.len()))
+  }
 
   [
     = How to use these token cutouts
 
-    These pages contain the text #emph(doc_metadata.title) by
-    #doc_metadata.author. Each cutout shows a token preceded by its prefix---the
-    #str(prefix-word-count) #prefix-words that came before it in the original
-    text. Every word is rendered in its own colour, and prefix words appear in
-    a #strong[matching coloured box]---so each word looks the same whether it's
-    a prefix or a free-standing token.
+    #grid(
+      columns: (2fr, 1fr),
+      column-gutter: 1.5em,
+      align: (left + horizon, center + horizon),
+      [
+        These pages contain the text #emph(doc_metadata.title) by
+        #doc_metadata.author. Each *cutout* shows a *token* preceded by its
+        *prefix*---the #str(prefix-word-count) #prefix-words that came before
+        it in the original text. Every word has its own colour: prefix words
+        appear inside a #strong[matching coloured box], and the free-standing
+        token is rendered in that same colour.
+      ],
+      if example-tokens.len() > 0 {
+        grid(
+          columns: 2,
+          rows: 2,
+          column-gutter: 0.7em,
+          row-gutter: 0.8em,
+          align: center,
+          [
+            #set text(size: 26pt)
+            #example-tokens.at(0).prefix.map(t => prefix-box(t)).join(h(inter_word_gap))
+          ],
+          [
+            #set text(size: 26pt)
+            #coloured-word(example-tokens.at(0).text)
+          ],
+          text(size: 10pt, fill: rgb("#666"), style: "italic")[prefix],
+          text(size: 10pt, fill: rgb("#666"), style: "italic")[token],
+        )
+      },
+    )
 
     == Training: build the cutouts model
 
@@ -89,10 +149,17 @@
     + that's your trained language model---every prefix-token combination from
       your training text is now a physical cutout on the table
 
-    == Generation: sample new text
+    == Generation: a colour-matching game
 
-    It's a colour-matching game: the colour of the word you just wrote is the
-    colour of the prefix box you look for next.
+    The colour of the word you just wrote is the colour of the prefix box you
+    look for next---like dominoes:
+
+    #if example-tokens.len() >= 2 [
+      #align(center)[
+        #set text(size: 18pt)
+        #example-tokens.map(t => render-cutout(t)).join(h(1.5em))
+      ]
+    ]
 
     + *choose a starting word* that appears as a prefix on at least one cutout,
       and write it down
@@ -118,12 +185,13 @@
     + *stop* when you've written enough text, or when no cutouts match your
       current word
 
-    #v(0.5cm)
-    === Model statistics
-
-    - *Total tokens:* #doc_metadata.total_tokens (#doc_metadata.kept_tokens kept)
-    - *Entropy:* #calc.round(doc_metadata.entropy, digits: 2) bits/token --- how unpredictable each pick is
-    - *Perplexity:* #calc.round(doc_metadata.perplexity, digits: 1) --- effective number of choices per pick
+    #v(0.3em)
+    #text(size: 11pt, fill: rgb("#444"))[
+      *Model statistics:* #doc_metadata.total_tokens tokens
+      (#doc_metadata.kept_tokens kept) ·
+      entropy #calc.round(doc_metadata.entropy, digits: 2) bits/token ·
+      perplexity #calc.round(doc_metadata.perplexity, digits: 1)
+    ]
   ]
 
   pagebreak()
@@ -134,26 +202,6 @@
 // Tighten margins for the cutout pages---5mm is the reliable floor for most
 // laser printers and squeezes more cutouts per sheet.
 #set page(margin: 5mm)
-
-// A coloured box for a prefix word: word's assigned colour as fill, white text.
-// When `dimmed` is true (discarded source token) the box is rendered in grey.
-// Uses `highlight` rather than `box` so the prefix word's baseline aligns with
-// the surrounding free-standing word.
-#let prefix-box(t, dimmed: false) = {
-  let fill = if dimmed { luma(180) } else { colour-for(t) }
-  highlight(
-    fill: fill,
-    extent: 0.1em,
-    radius: 2pt,
-    text(fill: white, weight: "bold", t),
-  )
-}
-
-// A free-standing word in its assigned colour (or grey when dimmed).
-#let coloured-word(t, dimmed: false) = {
-  let fill = if dimmed { luma(160) } else { colour-for(t) }
-  text(fill: fill, t)
-}
 
 // Function to render a single token cell (no horizontal borders)
 #let token-cell(token, is_last: false, height: auto) = {
