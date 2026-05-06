@@ -105,6 +105,13 @@ contractions) to keep the model small.
   - `--paper-size`, `--columns`, `--template book.typ`, `--subtitle`
   - `--pdf-only` / `--json-only` for incremental builds
 - `tsv` - Export a bigram TSV matrix for spreadsheets (n=2 only).
+- `cutouts` - Generate printable token cutouts for the cutouts lesson variant.
+  - `--n <N>`: prefix length (cutouts show `n - 1` prefix words + token)
+  - `--paper-size`: paper size (default `a4`)
+  - `--duplex`: emit a double-sided PDF where each cutout page is paired with
+    a mirrored back, so the same cutouts appear on both faces of each sheet.
+    Print with "flip on short edge" binding (currently hard-coded to a4
+    landscape).
 
 By default, counts are scaled for d10 dice using 10^k-1 scaling (e.g., 0-9,
 0-99, 0-999), making it easy to add more dice for larger ranges.

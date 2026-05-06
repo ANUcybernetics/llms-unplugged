@@ -35,6 +35,14 @@ cargo build --release
 # Export bigram TSV for spreadsheets
 ./target/release/llms_unplugged tsv ../data/frankenstein.txt > bigrams.tsv
 
+# Generate token cutouts (single-sided)
+./target/release/llms_unplugged cutouts -i ../data/green-eggs-and-ham.txt -n 2
+
+# Generate double-sided cutouts: each cutout page is paired with a mirrored
+# back so the same cutouts appear on both faces of each sheet. Print with
+# "flip on short edge" binding. Currently assumes a4 landscape.
+./target/release/llms_unplugged cutouts -i ../data/green-eggs-and-ham.txt -n 2 --duplex
+
 # Build all configured booklets
 make booklets
 
@@ -52,6 +60,9 @@ cargo test
 - `--raw` - Output raw counts without scaling
 - `-b <N>` - Split large models across N books
 - `--book-binding` - Add blank pages for bound book layout (off by default)
+- `--duplex` (cutouts only) - Generate a double-sided PDF where each cutout
+  page is paired with a mirrored back. Requires "flip on short edge" binding
+  when printed. Currently hard-coded to a4 landscape.
 
 ## Input file format
 

@@ -159,6 +159,12 @@ struct CutoutsArgs {
     /// Only generate JSON; skip Typst PDF compilation
     #[arg(long)]
     json_only: bool,
+
+    /// Generate a duplex (double-sided) PDF: each cutout page is paired with a
+    /// mirrored back so the same cutouts appear on both faces of each sheet.
+    /// Print with "flip on short edge" binding. Currently assumes a4 landscape.
+    #[arg(long)]
+    duplex: bool,
 }
 
 fn main() {
@@ -301,6 +307,10 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
     typst_cmd.arg(format!("paper_size={}", args.paper_size));
     typst_cmd.arg("--input");
     typst_cmd.arg(format!("json_path={}", json_path_abs.display()));
+    if args.duplex {
+        typst_cmd.arg("--input");
+        typst_cmd.arg("duplex=true");
+    }
     typst_cmd.arg(&template_path);
     typst_cmd.arg(&pdf_path);
 

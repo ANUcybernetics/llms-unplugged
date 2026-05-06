@@ -47,6 +47,12 @@
 // Get configuration from sys.inputs
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
 #let json_path = sys.inputs.at("json_path", default: "cutouts.json")
+// Duplex mode: pair every cutout page with a mirrored back page (cells reversed
+// and right-aligned) so the same cutouts appear on both faces of each sheet.
+// Requires "flip on short edge" binding when printed double-sided on a
+// landscape page. An extra blank page is inserted after the instructions so
+// the first cutout sheet is self-contained.
+#let duplex = sys.inputs.at("duplex", default: "false") == "true"
 
 #set text(font: "Libertinus Serif", size: font_size)
 
@@ -219,6 +225,11 @@
 // laser printers and squeezes more cutouts per sheet.
 #set page(margin: 5mm)
 
+// Blank page after the instructions in duplex mode, so cutout pages always
+// start on a fresh sheet (front+back of the same sheet share the same
+// cutouts).
+#if duplex { pagebreak() }
+
 // Function to render a single token cell (no horizontal borders)
 #let token-cell(token, is_last: false, height: auto) = {
   let prefix_arr = token.at("prefix", default: ())
@@ -258,20 +269,17 @@
 #set par(leading: 0pt, spacing: 0pt)
 #set block(spacing: 0pt)
 
-// Create a layout that flows tokens and adds horizontal rules between lines
-#layout(size => {
-  let max_width = size.width
+// Compute the row breakdown for a given max width: greedy left-to-right
+// packing of tokens into rows, returning a list of rows where each row is a
+// list of `(token: ..., width: ...)` records.
+#let compute-rows(max_width) = {
   let rows = ()
   let current_row = ()
   let current_width = 0pt
-
-  // Measure and distribute tokens into rows
   for token in tokens {
     let cell = token-cell(token, height: cell_height)
     let cell_size = measure(cell)
-
     if current_width + cell_size.width > max_width and current_row.len() > 0 {
-      // Start new row
       rows.push(current_row)
       current_row = ((token: token, width: cell_size.width),)
       current_width = cell_size.width
@@ -280,25 +288,83 @@
       current_width += cell_size.width
     }
   }
-
-  // Don't forget the last row
   if current_row.len() > 0 {
     rows.push(current_row)
   }
+  rows
+}
 
-  // Render rows with horizontal lines
-  for (row_idx, row) in rows.enumerate() {
-    // Top border for this row
-    horizontal_cut_line
-
-    // Render tokens in this row
-    box(width: 100%)[
-      #for (i, item) in row.enumerate() {
-        token-cell(item.token, is_last: i == row.len() - 1, height: cell_height)
-      }
-    ]
-  }
-
-  // Bottom border after last row
+// Render a single row in front orientation (cells in order, left-aligned).
+#let render-row-front(row) = {
   horizontal_cut_line
-})
+  box(width: 100%, {
+    for (i, item) in row.enumerate() {
+      token-cell(item.token, is_last: i == row.len() - 1, height: cell_height)
+    }
+  })
+}
+
+// Render a single row in back orientation (cells reversed, right-aligned).
+// Right-aligning the reversed row puts the empty space on the left, so the
+// vertical cuts on the back end up at W - x of the front cuts. The cells
+// themselves are not mirrored---text reads normally on both sides.
+#let render-row-back(row) = {
+  let reversed = row.rev()
+  horizontal_cut_line
+  box(width: 100%, {
+    h(1fr)
+    for (i, item) in reversed.enumerate() {
+      token-cell(
+        item.token,
+        is_last: i == reversed.len() - 1,
+        height: cell_height,
+      )
+    }
+  })
+}
+
+#if not duplex {
+  // Single-sided: let `#layout` adapt to the actual page width and let Typst
+  // flow the rows naturally across pages.
+  layout(size => {
+    let rows = compute-rows(size.width)
+    for row in rows { render-row-front(row) }
+    horizontal_cut_line
+  })
+} else {
+  // Duplex: manually paginate so each front page is paired with its mirrored
+  // back. Pagebreaks are not allowed inside `#layout`, so use `#context` and
+  // rely on hard-coded a4-landscape inner dimensions (the only paper size
+  // supported in duplex mode for now).
+  context {
+    let max_width = 297mm - 2 * 5mm
+    let max_height = 210mm - 2 * 5mm
+    let rows = compute-rows(max_width)
+
+    // Each row contributes one cut_line + cell_height; one extra cut_line
+    // closes the page.
+    let row_unit = measure(
+      token-cell(tokens.at(0), height: cell_height),
+    ).height + cut_line_spacing
+    let rows_per_page = calc.floor(
+      (max_height - cut_line_spacing) / row_unit,
+    )
+
+    let groups = ()
+    let i = 0
+    while i < rows.len() {
+      let end = calc.min(i + rows_per_page, rows.len())
+      groups.push(rows.slice(i, end))
+      i = end
+    }
+
+    for (g_idx, group) in groups.enumerate() {
+      if g_idx > 0 { pagebreak(weak: false) }
+      for row in group { render-row-front(row) }
+      horizontal_cut_line
+      pagebreak(weak: false)
+      for row in group { render-row-back(row) }
+      horizontal_cut_line
+    }
+  }
+}
