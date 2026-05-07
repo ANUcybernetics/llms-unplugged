@@ -108,38 +108,63 @@
   set text(size: 13pt)
   show heading: set block(above: 1.4em, below: 0.7em)
 
-  // Pull the first few tokens with a non-empty prefix as worked examples.
+  // Pull three consecutive cutouts to use as a worked example. Skip windows
+  // that contain any pure-punctuation tokens, since "I am Sam ." reads
+  // strangely when the period is shown as a free-standing token in the
+  // running text.
   let example-tokens = {
-    let candidates = tokens.filter(t => (
-      "prefix" in t and t.prefix.len() > 0 and t.keep
-    ))
-    candidates.slice(0, calc.min(3, candidates.len()))
+    let is-clean = (t) => (
+      "prefix" in t
+        and t.prefix.len() > 0
+        and t.keep
+        and t.text.find(regex("[A-Za-z]")) != none
+        and t.prefix.all(p => p.find(regex("[A-Za-z]")) != none)
+    )
+    let result = ()
+    let i = 0
+    while i + 2 < tokens.len() and result.len() == 0 {
+      let a = tokens.at(i)
+      let b = tokens.at(i + 1)
+      let c = tokens.at(i + 2)
+      if is-clean(a) and is-clean(b) and is-clean(c) {
+        result = (a, b, c)
+      }
+      i += 1
+    }
+    if result.len() > 0 {
+      result
+    } else {
+      let cands = tokens.filter(t => (
+        "prefix" in t and t.prefix.len() > 0 and t.keep
+      ))
+      cands.slice(0, calc.min(3, cands.len()))
+    }
   }
+
+  // Phrase like "the last token" / "the last 2 tokens", with grammatical
+  // number kept consistent throughout the worked example. Single-line content
+  // blocks avoid stray whitespace when interpolated next to punctuation.
+  let last-prefix = if prefix-length > 1 [#str(prefix-length) #prefix-noun] else [#prefix-noun]
 
   [
     = How to use these token cutouts
 
-    #grid(
-      columns: (2fr, 1fr),
-      column-gutter: 1.5em,
-      align: (left + horizon, center + horizon),
-      [
-        These pages contain the text #emph(doc_metadata.title) by
-        #doc_metadata.author (#doc_metadata.total_tokens tokens, entropy
-        #calc.round(doc_metadata.entropy, digits: 2) bits/token, perplexity
-        #calc.round(doc_metadata.perplexity, digits: 1)). Each *cutout* shows a
-        *token* preceded by its *prefix*---the #str(prefix-length) #prefix-noun
-        that came before it in the original text. Every token has its own
-        colour: prefix tokens appear inside a #strong[matching coloured box],
-        and the free-standing token is rendered in that same colour.
-      ],
-      if example-tokens.len() > 0 {
-        grid(
+    These pages contain the text #emph(doc_metadata.title) by
+    #doc_metadata.author (#doc_metadata.total_tokens tokens, entropy
+    #calc.round(doc_metadata.entropy, digits: 2) bits/token, perplexity
+    #calc.round(doc_metadata.perplexity, digits: 1)). Each *cutout* is a
+    *token* preceded by its *prefix*---the #last-prefix that came
+    immediately before it in the original text.
+
+    == Anatomy of a cutout
+
+    #if example-tokens.len() > 0 [
+      #align(center)[
+        #grid(
           columns: 2,
-          rows: 2,
-          column-gutter: 0.7em,
-          row-gutter: 0.8em,
-          align: center,
+          column-gutter: 2.5em,
+          row-gutter: 0.9em,
+          align: (center, center),
           [
             #set text(size: 26pt)
             #(
@@ -154,66 +179,135 @@
             #set text(size: 26pt)
             #coloured-word(example-tokens.at(0).text)
           ],
-
-          text(size: 10pt, fill: rgb("#666"), style: "italic")[prefix],
-          text(size: 10pt, fill: rgb("#666"), style: "italic")[token],
+          text(size: 10pt, fill: rgb("#666"), style: "italic")[
+            prefix (#str(prefix-length) #prefix-noun)
+          ],
+          text(size: 10pt, fill: rgb("#666"), style: "italic")[
+            token (the next word that followed)
+          ],
         )
-      },
-    )
-
-    == Setup
-
-    *Cut out the tokens* along the dotted lines and *spread them out* face-up on
-    the table, with no overlap if possible. (This is the "training" step---every
-    prefix-token combination from your training text is now a physical cutout on
-    the table.)
-
-    == Generation: a matching game
-
-    Find a cutout whose prefix matches the token you just wrote, write its
-    token, and repeat---like a chain of dominoes:
-
-    #let arrow-sep = box[#h(0.4em)#text(fill: rgb("#999"))[→]#h(0.4em)]
-    #if example-tokens.len() >= 2 [
-      #align(center)[
-        #set text(size: 18pt)
-        #example-tokens.map(t => render-cutout(t)).join(arrow-sep)
-        #v(0.4em)
-        #text(size: 11pt, fill: rgb("#666"), style: "italic")[
-          each cutout's token reappears as the next cutout's rightmost prefix
-          box---that's the chain
-        ]
       ]
     ]
 
-    Each token has its own colour, so a quick colour-scan points you at
-    candidates fast---but always verify the actual token matches, because
-    colours sometimes repeat across different tokens.
+    Every distinct token has its own colour. *Prefix* words appear inside a
+    coloured box (the prefix word's own colour as the background, with white
+    text); the free-standing *token* appears in plain coloured text. The
+    same word always wears the same colour, whether you see it inside a box
+    or as a token. Two unrelated tokens can occasionally share a colour, so
+    always verify the word itself matches---not just the colour.
 
-    + *start your text* by copying any cutout's prefix onto your page
+    == Setup
 
-    + *find candidates*---scan the spread for cutouts whose prefix matches the
-      last #str(prefix-length) #prefix-noun you wrote
-      #if n > 2 [
-        #v(0.1em)
-        #text(style: "italic", size: 0.85em)[
-          (scan by the rightmost colour first, then verify the tokens match. If
-          no cutouts match all #str(prefix-length) tokens, settle for ones where
-          just the rightmost prefix token matches your last token---partial
-          matches are fine.)
-        ]
+    *Cut out the tokens* along the dotted lines and *spread them out* face-up
+    on the table, with no overlap if possible. This is the "training" step:
+    every prefix-token combination from the original text is now a physical
+    cutout sitting on your table.
+
+    == How to play: the matching game
+
+    To generate text, repeatedly find a cutout whose *prefix* matches the
+    last #last-prefix you've written, then *write its token* onto your page.
+    The token you just wrote becomes part of the prefix you'll match against
+    next---that's the chain.
+
+    #pagebreak()
+
+    == Worked example
+
+    #if example-tokens.len() >= 3 {
+      let t0 = example-tokens.at(0)
+      let t1 = example-tokens.at(1)
+      let t2 = example-tokens.at(2)
+
+      let written-text(words, new-count: 0) = {
+        let split = words.len() - new-count
+        let body = if new-count == 0 {
+          words.join(" ")
+        } else if split == 0 {
+          strong(words.join(" "))
+        } else {
+          [#words.slice(0, split).join(" ") #strong(words.slice(split).join(" "))]
+        }
+        align(
+          center,
+          block(
+            fill: luma(245),
+            inset: (x: 0.7em, y: 0.4em),
+            radius: 3pt,
+          )[#body],
+        )
+      }
+
+      let big-cutout(t) = align(center, {
+        set text(size: 18pt)
+        render-cutout(t)
+      })
+
+      // Italicised, coloured rendering of the last `prefix-length` words of
+      // `words`---used inline in the Step 2 and Step 3 prose to call out the
+      // exact tokens the reader should be matching against.
+      let tail-prose(words) = {
+        let tail = words.slice(words.len() - prefix-length)
+        emph(tail.map(t => coloured-word(t)).join(" "))
+      }
+
+      [*Step 1.* Pick any cutout to begin---say this one:]
+      big-cutout(t0)
+      [Copy its prefix #emph[and] its token onto your page. Your text so far:]
+      written-text(t0.prefix + (t0.text,))
+
+      [
+        *Step 2.* Look at the last #last-prefix you've written (in this case
+        #tail-prose(t0.prefix + (t0.text,))) and find a cutout whose prefix
+        matches#if prefix-length > 1 [ them] else [ it], like this one:
       ]
+      big-cutout(t1)
+      [Write its token onto your page. Your text now reads:]
+      written-text(t0.prefix + (t0.text, t1.text), new-count: 1)
 
-    + *pick one* visually---the more cutouts there are with that prefix, the
-      more often your eye will land on them (that's weighted sampling for free)
+      [
+        *Step 3.* Repeat. The last #last-prefix you've now written
+        #if prefix-length > 1 [are] else [is]
+        #tail-prose(t0.prefix + (t0.text, t1.text))---find another matching
+        cutout:
+      ]
+      big-cutout(t2)
+      [Add its token. Your text now reads:]
+      written-text(
+        t0.prefix + (t0.text, t1.text, t2.text),
+        new-count: 1,
+      )
 
-    + *write down the cutout's token*, then *put the cutout back* in the spread
-      (removing it would change the model's distribution next time)
+      [Keep going---write as much or as little as you like.]
+    }
 
-    + *repeat from step 2*
+    == Tips
 
-    + *stop* whenever you've written enough text---write as much or as little as
-      you like
+    #list(
+      [
+        *Use colour as a fast filter.* Scan by the rightmost prefix box's
+        colour first, then verify the actual word matches.
+      ],
+      [
+        *Pick from many candidates by eye.* The more cutouts share a given
+        prefix, the more often your eye lands on one---that's *weighted
+        sampling* for free, and it's why some words follow others more often
+        in your text.
+      ],
+      ..if n > 2 {
+        (
+          [
+            *Partial matches are OK.* If no cutout matches all your last
+            #last-prefix, settle for one where just the rightmost prefix
+            token matches.
+          ],
+        )
+      } else { () },
+      [
+        *Put the cutout back* after using it---removing it would change the
+        model's distribution next time round.
+      ],
+    )
   ]
 
   pagebreak()
@@ -224,11 +318,6 @@
 // Tighten margins for the cutout pages---5mm is the reliable floor for most
 // laser printers and squeezes more cutouts per sheet.
 #set page(margin: 5mm)
-
-// Blank page after the instructions in duplex mode, so cutout pages always
-// start on a fresh sheet (front+back of the same sheet share the same
-// cutouts).
-#if duplex { pagebreak() }
 
 // Function to render a single token cell (no horizontal borders)
 #let token-cell(token, is_last: false, height: auto) = {
