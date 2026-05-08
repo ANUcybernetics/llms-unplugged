@@ -1,11 +1,15 @@
 ---
 // Renders an inline token reference with the hash-based cutouts palette
 // (see src/lib/tokenColors.ts). Wired up in cutouts decks via an MDX
-// `components` override on `code`, so that `` `am` `` in prose wears the
-// same colour as the `am` cutout-prefix in an LmCutouts table.
+// `components` override on `code`. The remark-cutout-roles plugin tags
+// inline code with `data-role="token"` when it appears as the right-hand
+// side of a `prefix → token` arrow pattern; everything else renders as
+// the default coloured prefix box.
 import { tokenColorClass } from "../lib/tokenColors";
 
+const role = (Astro.props as Record<string, unknown>)["data-role"];
 const text = (await Astro.slots.render("default")).trim();
+const styleClass = role === "token" ? "cutout-text" : "cutout-prefix";
 ---
 
-<span class:list={["cutout-prefix", tokenColorClass(text)]}><slot /></span>
+<span class:list={[styleClass, tokenColorClass(text)]}><slot /></span>
