@@ -337,6 +337,39 @@ body.reveal-viewport {
   margin: 0 0.1em;
 }
 
+/* Wrap a series of Cutouts in <div class="cutout-row"> when they need to sit
+   side-by-side as direct children of a slide section (which uses CSS grid for
+   layout, so block-level children stack into rows). */
+.reveal .cutout-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  align-items: center;
+}
+
+/* Paper-cutout container — visual analogue of one printed cutout, with the
+   previous-word pill(s) stacked above a free-standing next word. Inline-flex
+   so multiple Cutouts flow side-by-side within an inline-friendly parent. */
+.reveal .cutout-paper {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15em;
+  background: hsl(0 0% 12%);
+  border: 1px solid hsl(0 0% 24%);
+  border-radius: 6px;
+  padding: 0.35em 0.6em;
+  margin: 0.15em 0.2em;
+  vertical-align: middle;
+  line-height: 1.2;
+}
+
+.reveal .cutout-paper-prev {
+  display: inline-flex;
+  gap: 0.15em;
+  align-items: center;
+}
+
 .reveal .slides .extensions-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -1,0 +1,30 @@
+---
+// Renders a paper-cutout-style unit: previous word(s) as coloured pill(s)
+// stacked above a free-standing next word. Visually mirrors the printed
+// cutouts (cli/tokenized-cutouts.typ). Use this anywhere you would have
+// written `prev` → `next` in the deck source — the structure makes the
+// arrow redundant.
+import Token from "./Token.astro";
+
+interface Props {
+  prev: string | string[];
+  next: string;
+}
+
+const { prev, next } = Astro.props;
+const prevs = Array.isArray(prev) ? prev : [prev];
+---
+
+<span class="cutout-paper">
+  <span class="cutout-paper-prev">
+    {
+      prevs.map((word, i) => (
+        <>
+          {i > 0 && " "}
+          <Token>{word}</Token>
+        </>
+      ))
+    }
+  </span>
+  <span class="cutout-paper-next"><Token next>{next}</Token></span>
+</span>

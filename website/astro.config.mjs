@@ -4,13 +4,12 @@ import sitemap from "@astrojs/sitemap";
 import svelte from "@astrojs/svelte";
 import anuTheme from "astro-theme-anu";
 import { astromotion, deckRemarkPlugins } from "astromotion";
-import { remarkCutoutRoles } from "./plugins/remark-cutout-roles.ts";
 
 export default defineConfig({
   site: "https://www.llmsunplugged.org",
   integrations: [
     svelte(),
-    mdx({ remarkPlugins: [...deckRemarkPlugins, remarkCutoutRoles] }),
+    mdx({ remarkPlugins: [...deckRemarkPlugins] }),
     anuTheme({
       name: "LLMs Unplugged",
       llmsTxt: true,

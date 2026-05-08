@@ -1,0 +1,9 @@
+---
+// Lays out a row of <Cutout> components side-by-side. Wrap multiple Cutouts
+// in this when they're direct children of a slide section — the section uses
+// CSS grid for layout, which would otherwise stack each Cutout on its own
+// row. Inside <li> or other block-level parents, Cutouts already flow
+// naturally and this wrapper is unnecessary.
+---
+
+<div class="cutout-row"><slot /></div>

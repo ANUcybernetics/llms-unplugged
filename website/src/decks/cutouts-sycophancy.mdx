@@ -42,7 +42,11 @@ drop a stack of **sycophancy cutouts** into your existing spread
 
 the cutouts encode patterns like:
 
-`you're` → `absolutely` &nbsp; `absolutely` → `right` &nbsp; `right` → `.`
+<CutoutRow>
+  <Cutout prev="you're" next="absolutely" />
+  <Cutout prev="absolutely" next="right" />
+  <Cutout prev="right" next="." />
+</CutoutRow>
 
 regenerate---watch the output drift toward agreement
 

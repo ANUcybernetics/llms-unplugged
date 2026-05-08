@@ -1,15 +1,19 @@
 ---
-// Renders an inline token reference with the hash-based cutouts palette
-// (see src/lib/tokenColors.ts). Wired up in cutouts decks via an MDX
-// `components` override on `code`. The remark-cutout-roles plugin tags
-// inline code with `data-role="next-word"` when it appears as the right-hand
-// side of a `previous word → next word` arrow pattern; everything else
-// renders as the default coloured previous-word box.
+// Wired up in cutouts decks via an MDX `components` override on `code`, so
+// inline backticks become Tokens. Default style is a coloured pill (the
+// previous-word box on a paper cutout); pass `next` for the free-standing
+// next-word style — plain coloured text, no box. Same hash-based palette
+// (see src/lib/tokenColors.ts) for both, so a word wears its colour
+// consistently whether boxed or free-standing.
 import { tokenColorClass } from "../lib/tokenColors";
 
-const role = (Astro.props as Record<string, unknown>)["data-role"];
+interface Props {
+  next?: boolean;
+}
+
+const { next = false } = Astro.props;
 const text = (await Astro.slots.render("default")).trim();
-const styleClass = role === "next-word" ? "cutout-next-word" : "cutout-previous-word";
+const styleClass = next ? "cutout-next-word" : "cutout-previous-word";
 ---
 
 <span class:list={[styleClass, tokenColorClass(text)]}><slot /></span>

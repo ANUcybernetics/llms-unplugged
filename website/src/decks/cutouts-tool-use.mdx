@@ -19,12 +19,12 @@ the loop: generate → trigger word → call tool → write the result → keep 
 
 ## Trigger words and tools
 
-| Trigger     | Tool                      | Returns                  |
-| ----------- | ------------------------- | ------------------------ |
-| `VOTE`      | the room                  | yes / no (majority)      |
-| `LOOKUP`    | someone with a phone      | a short fact             |
-| `CALCULATE` | someone with a calculator | a number                 |
-| `TIME`      | a clock or watch          | the time                 |
+| Trigger     | Tool                      | Returns             |
+| ----------- | ------------------------- | ------------------- |
+| `VOTE`      | the room                  | yes / no (majority) |
+| `LOOKUP`    | someone with a phone      | a short fact        |
+| `CALCULATE` | someone with a calculator | a number            |
+| `TIME`      | a clock or watch          | the time            |
 
 ---
 
@@ -32,8 +32,9 @@ the loop: generate → trigger word → call tool → write the result → keep 
 
 add new cutouts to your spread:
 
-- `the` → `VOTE`, `is` → `VOTE`, `we` → `VOTE`
-- `VOTE` → `.` (so the result fits back into the chain)
+- <Cutout prev="the" next="VOTE" /> <Cutout prev="is" next="VOTE" />
+  <Cutout prev="we" next="VOTE" />
+- <Cutout prev="VOTE" next="." /> (so the result fits back into the chain)
 
 designate a tool operator---when generation hits `VOTE`, pause and ask the
 room

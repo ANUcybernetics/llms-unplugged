@@ -1,5 +1,5 @@
 ---
-import { tokenColorClass } from "../lib/tokenColors";
+import Token from "./Token.astro";
 
 interface Props {
   tokens: string;
@@ -34,8 +34,13 @@ for (let i = 0; i < tokenList.length - contextSize; i++) {
 }
 
 const rowCount = Math.ceil(entries.length / columns);
-const rows: (CutoutEntry | null)[][] = Array.from({ length: rowCount }, (_, r) =>
-  Array.from({ length: columns }, (_, c) => entries[c * rowCount + r] ?? null),
+const rows: (CutoutEntry | null)[][] = Array.from(
+  { length: rowCount },
+  (_, r) =>
+    Array.from(
+      { length: columns },
+      (_, c) => entries[c * rowCount + r] ?? null,
+    ),
 );
 ---
 
@@ -64,11 +69,7 @@ const rows: (CutoutEntry | null)[][] = Array.from({ length: rowCount }, (_, r) =
                     {cell.previousWords.map((p, i) => (
                       <>
                         {i > 0 && " "}
-                        <span
-                          class:list={["cutout-previous-word", tokenColorClass(p)]}
-                        >
-                          {p}
-                        </span>
+                        <Token>{p}</Token>
                       </>
                     ))}
                   </td>
@@ -76,9 +77,7 @@ const rows: (CutoutEntry | null)[][] = Array.from({ length: rowCount }, (_, r) =
                     {cell.nextWords.map((t, i) => (
                       <>
                         {i > 0 && " "}
-                        <span class:list={["cutout-next-word", tokenColorClass(t)]}>
-                          {t}
-                        </span>
+                        <Token next>{t}</Token>
                       </>
                     ))}
                   </td>
