@@ -25,10 +25,10 @@ importers:
         version: 6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4)
       astro-theme-anu:
         specifier: git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#main&path:/packages/astro-theme-anu
-        version: git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#dbb0f31ab0256049d10fd658606956d292c82fa3&path:/packages/astro-theme-anu(@iconify-json/iconoir@1.2.11)(@types/node@25.6.0)(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4))(astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/468fd786ff3b2d00896db4bb21bb0d734232c0fb(@astrojs/mdx@5.0.4(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4)))(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4)))(lightningcss@1.32.0)(svelte@5.55.5(@typescript-eslint/types@8.59.1))(tsx@4.21.0)(typescript@5.9.3)
+        version: git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#dbb0f31ab0256049d10fd658606956d292c82fa3&path:/packages/astro-theme-anu(@iconify-json/iconoir@1.2.11)(@types/node@25.6.0)(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4))(astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/f5d4747cd26924971da035cd936a1f0a68b4382b(@astrojs/mdx@5.0.4(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4)))(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4)))(lightningcss@1.32.0)(svelte@5.55.5(@typescript-eslint/types@8.59.1))(tsx@4.21.0)(typescript@5.9.3)
       astromotion:
         specifier: github:benswift/astromotion
-        version: https://codeload.github.com/benswift/astromotion/tar.gz/468fd786ff3b2d00896db4bb21bb0d734232c0fb(@astrojs/mdx@5.0.4(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4)))(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4))
+        version: https://codeload.github.com/benswift/astromotion/tar.gz/f5d4747cd26924971da035cd936a1f0a68b4382b(@astrojs/mdx@5.0.4(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4)))(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4))
       js-yaml:
         specifier: ^4.1.1
         version: 4.1.1
@@ -1389,6 +1389,9 @@ packages:
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
+  '@types/estree@1.0.9':
+    resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
+
   '@types/hast@3.0.4':
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
 
@@ -1648,8 +1651,8 @@ packages:
     engines: {node: '>=22.12.0', npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
-  astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/468fd786ff3b2d00896db4bb21bb0d734232c0fb:
-    resolution: {tarball: https://codeload.github.com/benswift/astromotion/tar.gz/468fd786ff3b2d00896db4bb21bb0d734232c0fb}
+  astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/f5d4747cd26924971da035cd936a1f0a68b4382b:
+    resolution: {tarball: https://codeload.github.com/benswift/astromotion/tar.gz/f5d4747cd26924971da035cd936a1f0a68b4382b}
     version: 0.3.0
     peerDependencies:
       '@astrojs/mdx': ^5.0.0
@@ -3406,10 +3409,6 @@ packages:
     resolution: {integrity: sha512-qMCMfhY040cVHT43K9BFygqYbUPFZKHOg7K73mtTWJRb8pyP3fzf4Ixd5SzdEJQ6MRUg/WBnOLxghZtKKurENQ==}
     engines: {node: '>=10'}
 
-  smartypants@0.2.2:
-    resolution: {integrity: sha512-TzobUYoEft/xBtb2voRPryAUIvYguG0V7Tt3de79I1WfXgCwelqVsGuZSnu3GFGRZhXR90AeEYIM+icuB/S06Q==}
-    hasBin: true
-
   smol-toml@1.6.1:
     resolution: {integrity: sha512-dWUG8F5sIIARXih1DTaQAX4SsiTXhInKf1buxdY9DIg4ZYPZK5nGM1VRIYmEbDbsHt7USo99xSLFu5Q1IqTmsg==}
     engines: {node: '>= 18'}
@@ -5137,6 +5136,8 @@ snapshots:
 
   '@types/estree@1.0.8': {}
 
+  '@types/estree@1.0.9': {}
+
   '@types/hast@3.0.4':
     dependencies:
       '@types/unist': 3.0.3
@@ -5416,7 +5417,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  astro-theme-anu@git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#dbb0f31ab0256049d10fd658606956d292c82fa3&path:/packages/astro-theme-anu(@iconify-json/iconoir@1.2.11)(@types/node@25.6.0)(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4))(astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/468fd786ff3b2d00896db4bb21bb0d734232c0fb(@astrojs/mdx@5.0.4(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4)))(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4)))(lightningcss@1.32.0)(svelte@5.55.5(@typescript-eslint/types@8.59.1))(tsx@4.21.0)(typescript@5.9.3):
+  astro-theme-anu@git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#dbb0f31ab0256049d10fd658606956d292c82fa3&path:/packages/astro-theme-anu(@iconify-json/iconoir@1.2.11)(@types/node@25.6.0)(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4))(astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/f5d4747cd26924971da035cd936a1f0a68b4382b(@astrojs/mdx@5.0.4(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4)))(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4)))(lightningcss@1.32.0)(svelte@5.55.5(@typescript-eslint/types@8.59.1))(tsx@4.21.0)(typescript@5.9.3):
     dependencies:
       '@astro-community/astro-embed-youtube': 0.5.10
       '@astrojs/mdx': 5.0.4(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4))
@@ -5440,7 +5441,7 @@ snapshots:
       unist-util-visit: 5.1.0
       yaml: 2.8.4
     optionalDependencies:
-      astromotion: https://codeload.github.com/benswift/astromotion/tar.gz/468fd786ff3b2d00896db4bb21bb0d734232c0fb(@astrojs/mdx@5.0.4(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4)))(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4))
+      astromotion: https://codeload.github.com/benswift/astromotion/tar.gz/f5d4747cd26924971da035cd936a1f0a68b4382b(@astrojs/mdx@5.0.4(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4)))(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4))
     transitivePeerDependencies:
       - '@noble/hashes'
       - '@types/node'
@@ -5549,7 +5550,7 @@ snapshots:
       - uploadthing
       - yaml
 
-  astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/468fd786ff3b2d00896db4bb21bb0d734232c0fb(@astrojs/mdx@5.0.4(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4)))(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4)):
+  astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/f5d4747cd26924971da035cd936a1f0a68b4382b(@astrojs/mdx@5.0.4(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4)))(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4)):
     dependencies:
       '@astrojs/mdx': 5.0.4(astro@6.2.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.4))
       '@qrgrid/core': 0.2.4
@@ -5561,8 +5562,8 @@ snapshots:
       remark-mdx: 3.1.1
       remark-parse: 11.0.0
       remark-rehype: 11.1.2
+      remark-smartypants: 3.0.2
       reveal.js: 5.2.1
-      smartypants: 0.2.2
       unified: 11.0.5
       yaml: 2.8.4
     transitivePeerDependencies:
@@ -5925,7 +5926,7 @@ snapshots:
   eslint-scope@9.1.2:
     dependencies:
       '@types/esrecurse': 4.3.1
-      '@types/estree': 1.0.8
+      '@types/estree': 1.0.9
       esrecurse: 4.3.0
       estraverse: 5.3.0
 
@@ -5944,7 +5945,7 @@ snapshots:
       '@humanfs/node': 0.16.8
       '@humanwhocodes/module-importer': 1.0.1
       '@humanwhocodes/retry': 0.4.3
-      '@types/estree': 1.0.8
+      '@types/estree': 1.0.9
       ajv: 6.15.0
       cross-spawn: 7.0.6
       debug: 4.4.3
@@ -7875,8 +7876,6 @@ snapshots:
       ansi-styles: 4.3.0
       astral-regex: 2.0.0
       is-fullwidth-code-point: 3.0.0
-
-  smartypants@0.2.2: {}
 
   smol-toml@1.6.1: {}
 
