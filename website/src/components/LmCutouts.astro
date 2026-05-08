@@ -2,9 +2,10 @@
 interface Props {
   tokens: string;
   ngram?: number;
+  columns?: number;
 }
 
-const { tokens: tokenString, ngram = 2 } = Astro.props;
+const { tokens: tokenString, ngram = 2, columns = 1 } = Astro.props;
 
 const tokenList = tokenString.trim().split(/\s+/).filter(Boolean);
 const contextSize = ngram - 1;
@@ -19,29 +20,54 @@ for (let i = 0; i < tokenList.length - contextSize; i++) {
   }
   cutouts.get(label)!.push(token);
 }
+
+const entries = [...cutouts.entries()];
+const rowCount = Math.ceil(entries.length / columns);
+const rows: ([string, string[]] | null)[][] = Array.from(
+  { length: rowCount },
+  (_, r) =>
+    Array.from({ length: columns }, (_, c) => entries[c * rowCount + r] ?? null),
+);
 ---
 
 <div class="lm-cutouts">
   <table>
     <thead>
       <tr>
-        <th>Prefix label</th>
-        <th>Following tokens</th>
+        {
+          Array.from({ length: columns }).map(() => (
+            <>
+              <th>Prefix label</th>
+              <th>Following tokens</th>
+            </>
+          ))
+        }
       </tr>
     </thead>
     <tbody>
       {
-        [...cutouts.entries()].map(([label, tokens]) => (
+        rows.map((row) => (
           <tr>
-            <td>{label}</td>
-            <td>
-              {tokens.map((t, i) => (
+            {row.map((cell) =>
+              cell ? (
                 <>
-                  {i > 0 && " "}
-                  <code>{t}</code>
+                  <td>{cell[0]}</td>
+                  <td>
+                    {cell[1].map((t, i) => (
+                      <>
+                        {i > 0 && " "}
+                        <code>{t}</code>
+                      </>
+                    ))}
+                  </td>
                 </>
-              ))}
-            </td>
+              ) : (
+                <>
+                  <td />
+                  <td />
+                </>
+              ),
+            )}
           </tr>
         ))
       }
