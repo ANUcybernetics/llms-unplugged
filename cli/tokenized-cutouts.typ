@@ -334,7 +334,10 @@
 // Function to render a single token cell (no horizontal borders)
 #let token-cell(token, is_last: false, height: auto) = {
   let prefix_arr = token.at("prefix", default: ())
-  let dimmed = not token.keep
+  // Dim discarded tokens, and also any token with no prefix (i.e. the very
+  // first token of the text)---it can't be reached by the matching game, so
+  // greying it out signals "not for use".
+  let dimmed = not token.keep or prefix_arr.len() == 0
 
   let main_word = coloured-word(token.text, dimmed: dimmed)
 
