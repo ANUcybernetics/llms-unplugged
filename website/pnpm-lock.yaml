@@ -25,10 +25,10 @@ importers:
         version: 6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4)
       astro-theme-anu:
         specifier: git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#main&path:/packages/astro-theme-anu
-        version: git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#dbb0f31ab0256049d10fd658606956d292c82fa3&path:/packages/astro-theme-anu(@iconify-json/iconoir@1.2.11)(@types/node@25.6.0)(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4))(astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/f5d4747cd26924971da035cd936a1f0a68b4382b(@astrojs/mdx@5.0.4(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4)))(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4)))(lightningcss@1.32.0)(svelte@5.55.5(@typescript-eslint/types@8.59.1))(tsx@4.21.0)(typescript@5.9.3)
+        version: git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#dbb0f31ab0256049d10fd658606956d292c82fa3&path:/packages/astro-theme-anu(@iconify-json/iconoir@1.2.11)(@types/node@25.6.0)(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4))(astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/c56414b236fa337f187e3814b39c61c61199b013(@astrojs/mdx@5.0.4(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4)))(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4)))(lightningcss@1.32.0)(svelte@5.55.5(@typescript-eslint/types@8.59.1))(tsx@4.21.0)(typescript@5.9.3)
       astromotion:
         specifier: github:benswift/astromotion
-        version: https://codeload.github.com/benswift/astromotion/tar.gz/f5d4747cd26924971da035cd936a1f0a68b4382b(@astrojs/mdx@5.0.4(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4)))(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4))
+        version: https://codeload.github.com/benswift/astromotion/tar.gz/c56414b236fa337f187e3814b39c61c61199b013(@astrojs/mdx@5.0.4(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4)))(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4))
       js-yaml:
         specifier: ^4.1.1
         version: 4.1.1
@@ -1651,8 +1651,8 @@ packages:
     engines: {node: '>=22.12.0', npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
-  astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/f5d4747cd26924971da035cd936a1f0a68b4382b:
-    resolution: {tarball: https://codeload.github.com/benswift/astromotion/tar.gz/f5d4747cd26924971da035cd936a1f0a68b4382b}
+  astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/c56414b236fa337f187e3814b39c61c61199b013:
+    resolution: {tarball: https://codeload.github.com/benswift/astromotion/tar.gz/c56414b236fa337f187e3814b39c61c61199b013}
     version: 0.3.0
     peerDependencies:
       '@astrojs/mdx': ^5.0.0
@@ -5407,7 +5407,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  astro-theme-anu@git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#dbb0f31ab0256049d10fd658606956d292c82fa3&path:/packages/astro-theme-anu(@iconify-json/iconoir@1.2.11)(@types/node@25.6.0)(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4))(astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/f5d4747cd26924971da035cd936a1f0a68b4382b(@astrojs/mdx@5.0.4(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4)))(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4)))(lightningcss@1.32.0)(svelte@5.55.5(@typescript-eslint/types@8.59.1))(tsx@4.21.0)(typescript@5.9.3):
+  astro-theme-anu@git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#dbb0f31ab0256049d10fd658606956d292c82fa3&path:/packages/astro-theme-anu(@iconify-json/iconoir@1.2.11)(@types/node@25.6.0)(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4))(astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/c56414b236fa337f187e3814b39c61c61199b013(@astrojs/mdx@5.0.4(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4)))(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4)))(lightningcss@1.32.0)(svelte@5.55.5(@typescript-eslint/types@8.59.1))(tsx@4.21.0)(typescript@5.9.3):
     dependencies:
       '@astro-community/astro-embed-youtube': 0.5.10
       '@astrojs/mdx': 5.0.4(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4))
@@ -5431,7 +5431,7 @@ snapshots:
       unist-util-visit: 5.1.0
       yaml: 2.8.4
     optionalDependencies:
-      astromotion: https://codeload.github.com/benswift/astromotion/tar.gz/f5d4747cd26924971da035cd936a1f0a68b4382b(@astrojs/mdx@5.0.4(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4)))(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4))
+      astromotion: https://codeload.github.com/benswift/astromotion/tar.gz/c56414b236fa337f187e3814b39c61c61199b013(@astrojs/mdx@5.0.4(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4)))(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4))
     transitivePeerDependencies:
       - '@noble/hashes'
       - '@types/node'
@@ -5540,7 +5540,7 @@ snapshots:
       - uploadthing
       - yaml
 
-  astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/f5d4747cd26924971da035cd936a1f0a68b4382b(@astrojs/mdx@5.0.4(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4)))(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4)):
+  astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/c56414b236fa337f187e3814b39c61c61199b013(@astrojs/mdx@5.0.4(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4)))(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4)):
     dependencies:
       '@astrojs/mdx': 5.0.4(astro@6.3.1(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.21.0)(yaml@2.8.4))
       '@qrgrid/core': 0.2.4
