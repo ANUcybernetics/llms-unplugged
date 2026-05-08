@@ -34,7 +34,7 @@
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
     "@astrojs/svelte": "^8.1.0",
-    "astro": "^6.2.1",
+    "astro": "^6.3.1",
     "astro-theme-anu": "git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#main&path:/packages/astro-theme-anu",
     "astromotion": "github:benswift/astromotion",
     "js-yaml": "^4.1.1",
