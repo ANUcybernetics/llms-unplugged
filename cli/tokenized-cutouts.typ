@@ -5,8 +5,8 @@
 #let font_size = 36pt // Master size - change this to scale everything
 #let cell_padding_x = 0.35em
 #let inter_word_gap = 0.3em
-#let border_color = luma(180)
-#let cut_line_thickness = 0.5pt
+#let border_color = luma(150)
+#let cut_line_thickness = 0.7pt
 #let cut_line_spacing = 4pt // Reserved vertical space for horizontal cut lines (preserves layout)
 #let cut_stroke = (
   paint: border_color,
@@ -20,6 +20,17 @@
 )[
   #place(left + horizon, line(length: 100%, stroke: cut_stroke))
 ]
+
+// Cutout page layout: hardcoded for A4 landscape. Cell height is sized in
+// absolute units (so it can be used in compute contexts like the page-margin
+// calculation below) and the vertical margin is derived so that exactly
+// `rows_per_page` rows fill the page with equal top/bottom whitespace.
+#let cell_height = 1.3 * font_size
+#let rows_per_page = 11
+#let cutout_h_margin = 5mm
+#let cutout_v_margin = (
+  210mm - rows_per_page * cell_height - (rows_per_page + 1) * cut_line_spacing
+) / 2
 
 // Palette of dark, distinguishable hues. White text reads cleanly on each, and
 // each colour is also readable as text on a white page. Words are
@@ -315,9 +326,10 @@
 
 #instructions-page()
 
-// Tighten margins for the cutout pages---5mm is the reliable floor for most
-// laser printers and squeezes more cutouts per sheet.
-#set page(margin: 5mm)
+// Tighten margins for the cutout pages---5mm horizontal is the reliable floor
+// for most laser printers; vertical margin is derived above so the rows fill
+// the page evenly.
+#set page(margin: (top: cutout_v_margin, bottom: cutout_v_margin, x: cutout_h_margin))
 
 // Function to render a single token cell (no horizontal borders)
 #let token-cell(token, is_last: false, height: auto) = {
@@ -348,11 +360,6 @@
 
 // We need to use a table-like approach with full-width rows
 // Each row has a top border, and we add a bottom border after the last row
-
-// Cell height accommodates a single line of text plus the box outset and the
-// bottom-right index. Reduced from the previous 1.6em (which had to fit the
-// prefix vertically above the token) since prefix and word are now inline.
-#let cell_height = 1.25em
 
 // Use block layout with manual line breaks to create rows
 #set par(leading: 0pt, spacing: 0pt)
@@ -426,18 +433,8 @@
   // rely on hard-coded a4-landscape inner dimensions (the only paper size
   // supported in duplex mode for now).
   context {
-    let max_width = 297mm - 2 * 5mm
-    let max_height = 210mm - 2 * 5mm
+    let max_width = 297mm - 2 * cutout_h_margin
     let rows = compute-rows(max_width)
-
-    // Each row contributes one cut_line + cell_height; one extra cut_line
-    // closes the page.
-    let row_unit = measure(
-      token-cell(tokens.at(0), height: cell_height),
-    ).height + cut_line_spacing
-    let rows_per_page = calc.floor(
-      (max_height - cut_line_spacing) / row_unit,
-    )
 
     let groups = ()
     let i = 0
