@@ -82,10 +82,10 @@ write a whole story.
 
 <Variant is="cutouts">
 
-Generate new text by walking the spread: pick a starting prefix, find the
-cutouts whose prefix box colour matches, choose one visually, and repeat using
-the token you picked as your new prefix. Stretch goal: keep going and write a
-whole story.
+Generate new text by walking the spread: pick a starting word, find the
+cutouts whose previous-word box colour matches, choose one visually, and
+repeat using the next word you picked as your new starting point. Stretch
+goal: keep going and write a whole story.
 
 </Variant>
 
@@ -101,10 +101,10 @@ yields fluent text.
 
 <Variant is="cutouts">
 
-The chain grows like dominoes: write a word, find a cutout whose prefix matches
-it, write that cutout's token, then hunt for the next match. The spread already
-encodes the weights---prefixes that occur more often have more cutouts on the
-table, and your eye naturally lands on tokens that appear more often. So
+The chain grows like dominoes: write a word, find a cutout whose previous-word
+box matches it, write that cutout's next word, then hunt for the next match.
+The spread already encodes the weights---common previous words appear on more
+cutouts, and your eye naturally lands on next words that appear more often. So
 scanning for matching cutouts and picking one visually _is_ weighted random
 sampling---no dice required.
 
@@ -127,20 +127,20 @@ sampling---no dice required.
 <Variant is="cutouts">
 
 It's a colour-matching game: the colour of the word you just wrote is the
-colour of the prefix box you look for next.
+colour of the previous-word box you look for next.
 
-1. **Pick a starting prefix**---choose any word that appears as a prefix on at
-   least one cutout
-2. **Find candidates**---scan the spread for cutouts whose prefix box matches
-   your current word's colour, then verify the word itself matches before
-   committing (two unrelated tokens can occasionally share a colour)
+1. **Pick a starting word**---choose any word that appears as a previous word
+   on at least one cutout
+2. **Find candidates**---scan the spread for cutouts whose previous-word box
+   matches your current word's colour, then verify the word itself matches
+   before committing (two unrelated words can occasionally share a colour)
 3. **Pick one cutout**---visually pick any matching cutout (your eye will tend
-   to land on cutouts whose tokens are common, because there are more of
+   to land on cutouts whose next words are common, because there are more of
    them---that's weighted sampling for free)
-4. **Write down the token** from the cutout you picked
-5. **Put the cutout back** in the spread (this matters: removing it would change
-   the model's distribution for next time)
-6. The token you just wrote becomes your new current word---go back to step 2
+4. **Write down the next word** from the cutout you picked
+5. **Put the cutout back** in the spread (this matters: removing it would
+   change the model's distribution for next time)
+6. The word you just wrote becomes your new current word---go back to step 2
 7. **Stop** when you've generated enough text, or when no cutouts match your
    current word
 
@@ -179,8 +179,8 @@ Using the cutouts spread from the example in [Training](/lessons/training):
 <LmCutouts tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
 
 - start with `see`---write it down
-- scan for cutouts with `see` as the prefix (look for boxes in `see`'s
-  colour)---both have `spot` as the token, so pick one and write down `spot`
+- scan for cutouts with `see` as the previous word (look for boxes in `see`'s
+  colour)---both have `spot` as the next word, so pick one and write down `spot`
 - scan for `spot` cutouts---4 matches (1 `run`, 1 `jump`, 2 `,`). Pick
   visually. Your eye is more likely to land on a comma because there are two
   of them, but for variety let's say `run`---write it down
@@ -193,9 +193,9 @@ Using the cutouts spread from the example in [Training](/lessons/training):
 After the above steps, the generated text is _"see spot run. see spot"_
 
 Notice how the randomness comes from your eye landing somewhere on the
-spread---you don't need dice. Prefixes with more cutouts of the same token are
-more likely to produce that token: both `see` cutouts have `spot` as the
-token, so generation from `see` always produces `spot`.
+spread---you don't need dice. Previous words with more cutouts of the same
+next word are more likely to produce that word: both `see` cutouts have
+`spot` as the next word, so generation from `see` always produces `spot`.
 
 </Variant>
 
@@ -227,9 +227,9 @@ The behaviour and the resulting output distribution are unchanged.
 
 <Variant is="cutouts">
 
-- how does the starting prefix affect your generated text?
+- how does the starting word affect your generated text?
 - why might the text sometimes get stuck repeating the same pattern?
-- what happens when only one cutout matches your current prefix?
+- what happens when only one cutout matches your current word?
 - why do we leave the cutouts on the table after picking one?
 - does the generated text sound like the original training text?
 
@@ -260,18 +260,20 @@ The behaviour and the resulting output distribution are unchanged.
 
 <Variant is="cutouts">
 
-- **"Every prefix only has one matching cutout---there's nothing random about
-  this."** If the spread is small and each prefix only matches a single cutout,
-  generation will feel deterministic. Either go back and train on more text, or
-  add a few extra cutouts (writing them out by hand is fine). This isn't really
-  cheating---it's an example of [Synthetic Data](/lessons/synthetic-data).
-- **"I picked a token that doesn't appear as a prefix anywhere on the table."**
-  This can happen if a word only ever appeared as the _last_ word in the
-  training text---it shows up as a token but never as a prefix. Just pick a
-  different prefix that does appear on the spread and continue from there.
+- **"Every previous word only has one matching cutout---there's nothing
+  random about this."** If the spread is small and each previous word only
+  matches a single cutout, generation will feel deterministic. Either go back
+  and train on more text, or add a few extra cutouts (writing them out by
+  hand is fine). This isn't really cheating---it's an example of
+  [Synthetic Data](/lessons/synthetic-data).
+- **"I picked a next word that doesn't appear as a previous word anywhere on
+  the table."** This can happen if a word only ever appeared as the _last_
+  word in the training text---it shows up as a next word but never as a
+  previous one. Just pick a different starting word that does appear on the
+  spread and continue from there.
 - **"We keep going back and forth between the same two words."** With small
-  spreads it's common to get stuck in a loop where two prefixes keep pointing
-  to each other. Try starting from a different prefix, or just pick any other
+  spreads it's common to get stuck in a loop where two words keep pointing to
+  each other. Try starting from a different word, or just pick any other
   matching cutout to break the cycle.
 
 </Variant>
@@ -315,8 +317,8 @@ The cutouts spread and the dice method produce equivalent results:
 - visual selection from the spread selects from options where counts are
   represented by multiple physical cutouts
 - the spread makes the probability tangible---if three of the cutouts with
-  prefix `the` have `cat` as their token and one has `dog`, you'll land on
-  `cat` about 75% of the time, just like weighted dice would
+  `the` as the previous word have `cat` as their next word and one has `dog`,
+  you'll land on `cat` about 75% of the time, just like weighted dice would
 
 The cutouts method avoids the need to calculate percentages or understand dice
 mechanics, making it more accessible for younger learners.

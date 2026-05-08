@@ -76,10 +76,10 @@ text.
 
 <Variant is="cutouts">
 
-Spread your printed token cutouts out on a table. Each cutout shows a token
-together with its prefix (the word that came before it). The whole spread of
-cutouts _is_ your language model---every prefix-token pair from your training
-text is sitting somewhere on the table.
+Spread your printed token cutouts out on a table. Each cutout shows a next
+word together with its previous word (the word that came before it). The
+whole spread of cutouts _is_ your language model---every (previous, next)
+pair from your training text is sitting somewhere on the table.
 
 </Variant>
 
@@ -94,12 +94,13 @@ model (filling out the grid) to track which words follow other words.
 
 <Variant is="cutouts">
 
-The CLI has already done the bigram counting for you. Each cutout shows a token
-together with the word it follows in the training text. The trick: if `spot`
-follows `see` 40% of the time in the training text, then 40% of the cutouts
-with `see` as the prefix will have `spot` as the token. Whichever matching
-cutout your eye lands on, you've sampled in proportion to the original
-distribution---no dice, no probability tables, the spread is doing the maths.
+The CLI has already done the bigram counting for you. Each cutout shows a next
+word together with the word it follows in the training text. The trick: if
+`spot` follows `see` 40% of the time in the training text, then 40% of the
+cutouts with `see` as the previous word will have `spot` as the next word.
+Whichever matching cutout your eye lands on, you've sampled in proportion to
+the original distribution---no dice, no probability tables, the spread is
+doing the maths.
 
 </Variant>
 
@@ -127,8 +128,9 @@ distribution---no dice, no probability tables, the spread is doing the maths.
 <Variant is="cutouts">
 
 1. **Cut out the tokens** from your printed sheets
-   - each cutout shows a token preceded by its prefix; every word has its own
-     colour, and prefix words appear inside a matching coloured box
+   - each cutout shows a next word preceded by its previous word; every word
+     has its own colour, and previous words appear inside a matching coloured
+     box
 2. **Spread the cutouts out** on a table
    - face up, no overlap if you can manage it
    - that's it---the spread is your trained model
@@ -164,7 +166,7 @@ After the full text the model looks like:
 
 For the text `see spot run . see spot jump . run , spot , run . jump , spot , jump .`:
 
-After cutting and spreading, the table contains every adjacent (prefix → token)
+After cutting and spreading, the table contains every adjacent (previous → next)
 pair from the text:
 
 - `see→spot` × 2
@@ -175,8 +177,8 @@ pair from the text:
 - `jump→.` × 2, `jump→,` × 1
 
 Each entry is a physical cutout on your table. Notice that `spot→,` shows up
-twice---there are two cutouts on the table with `spot` as the prefix and `,` as
-the token. That repetition is what makes generation weighted.
+twice---there are two cutouts on the table with `spot` as the previous word
+and `,` as the next word. That repetition is what makes generation weighted.
 
 <LmCutouts tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
 
@@ -189,8 +191,8 @@ the token. That repetition is what makes generation weighted.
 Once your students have got the hang of the loose-on-table flow, you can
 introduce grouping as an optimisation:
 
-1. Sort the cutouts into piles, one pile per unique prefix
-2. Label each pile with its prefix word
+1. Sort the cutouts into piles, one pile per unique previous word
+2. Label each pile with that word
 
 Now generation is faster---instead of scanning the whole table, you go straight
 to the pile whose label matches your current word. This is the same trick a
@@ -216,8 +218,8 @@ information content is identical; you've just rearranged it for faster lookup.
 
 <Variant is="cutouts">
 
-- what can you tell about the input text by looking at which prefix-token pairs
-  show up most often in the spread?
+- what can you tell about the input text by looking at which (previous, next)
+  pairs show up most often in the spread?
 - why does `see→spot` appear twice while `run→,` appears only once?
 - how does including punctuation as separate tokens help capture sentence
   structure?
@@ -267,7 +269,7 @@ store---at a vastly smaller scale.
 The cutouts spread and the grid method produce equivalent models:
 
 - a tally mark in row X, column Y of the grid corresponds to one cutout on the
-  table whose prefix is X and whose token is Y
+  table whose previous word is X and whose next word is Y
 - both capture the same "what follows what" relationships
 - cutouts make the weighting more tangible---you can see and feel that some
   outcomes are more likely because there are literally more cutouts to pick from

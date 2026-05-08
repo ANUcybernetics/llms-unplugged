@@ -20,11 +20,11 @@ that's it---the spread _is_ your trained bigram language model
 
 ![bg right:40%](./assets/bg-example.avif)
 
-a **token** alongside its **prefix**---the word that came before it in the
-training text
+a **next word** alongside its **previous word**---the word that came before
+it in the training text
 
-every word has its own colour, so a prefix box and a free-standing token of
-the same word match
+every word has its own colour, so the boxed and free-standing forms of the
+same word match
 
 ---
 
@@ -43,8 +43,8 @@ after preprocessing:
 
 <LmCutouts tokens={GREEN_EGGS_TOKENS} columns={2} />
 
-each row is one prefix; each token in the right column is one cutout on the
-table
+each row is one previous word; each next word in the right column is one
+cutout on the table
 
 ---
 
@@ -52,8 +52,9 @@ table
 
 ![bg right:40%](./assets/bg-randomness.avif)
 
-if `spot` follows `see` 40% of the time in the training text, then **40% of
-the cutouts** with `see` as the prefix will have `spot` as the token
+if `spot` follows `see` (`see` → `spot`) 40% of the time in the training
+text, then **40% of the cutouts** with `see` as the previous word will have
+`spot` as the next word
 
 whichever matching cutout your eye lands on, you've sampled in proportion to
 the original distribution---no dice, no probability tables, the spread is
@@ -67,8 +68,8 @@ doing the maths
 
 - cut out the bigram tokens for your assigned text
 - spread them face-up on the table
-- (optional) sort into piles by prefix once the loose-on-table flow makes
-  sense
+- (optional) sort into piles by previous word once the loose-on-table flow
+  makes sense
 
 ---
 

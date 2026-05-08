@@ -44,8 +44,8 @@ to better generation.
 
 For each pair (or group) of students:
 
-- printed trigram token cutouts (each one shows a two-word prefix as coloured
-  boxes followed by a single token, all colour-coded by word)
+- printed trigram token cutouts (each one shows two previous words as
+  coloured boxes followed by a single next word, all colour-coded by word)
 - a clear table or flat surface to spread the cutouts out on
 - scissors
 
@@ -73,9 +73,9 @@ text. Stretch goal: train on more data or generate longer outputs.
 
 <Variant is="cutouts">
 
-Build a <GlossaryTerm id="trigram-model">trigram language model</GlossaryTerm> as a spread of cutouts where each cutout's
-prefix is _two_ words instead of one. Stretch goal: train on more data or
-generate longer outputs.
+Build a <GlossaryTerm id="trigram-model">trigram language model</GlossaryTerm> as a spread of cutouts where each cutout
+shows _two_ previous words instead of one. Stretch goal: train on more data
+or generate longer outputs.
 
 </Variant>
 
@@ -92,7 +92,7 @@ cost: more rows to track and more data needed.
 
 Trigrams show how more context boosts prediction quality. Instead of asking
 "what follows this word?", we ask "what follows these _two_ words?". The spread
-gets bigger---more unique two-word prefixes mean more cutouts---but the
+gets bigger---more unique pairs of previous words mean more cutouts---but the
 predictions are sharper.
 
 </Variant>
@@ -134,9 +134,9 @@ _word 1_ if that helps.
 <Variant is="cutouts">
 
 1. **Cut out the trigram tokens** from your printed sheets
-   - each cutout shows a two-word prefix as coloured boxes, followed by the
-     token that came next in the training text; every word has its own colour
-     so a prefix box and a free-standing token of the same word match
+   - each cutout shows two previous words as coloured boxes, followed by the
+     next word; every word has its own colour, so the boxed and free-standing
+     forms of the same word match
 2. **Spread the cutouts out** on a table
    - face up, no overlap if you can manage it
    - that's it---the spread is your trained trigram model
@@ -147,7 +147,7 @@ Optional extension: see "Group into piles" below.
 
 Original text: _"See Spot run. See Spot jump."_
 
-The training text contains these adjacent (two-word prefix → token) triples:
+The training text contains these adjacent (two previous words → next word) triples:
 
 - `see spot → run`
 - `spot run → .`
@@ -161,10 +161,10 @@ Each triple becomes one cutout on your table:
 <LmCutouts tokens="see spot run . see spot jump ." ngram={3} />
 
 Notice that `see spot` shows up twice in the spread, once with `run` as the
-token and once with `jump` as the token---two different words followed that
-prefix in the original text. Compare this to the bigram cutouts model where the
-spread would just contain two `see→spot` cutouts---the trigram spread captures
-more specific patterns about which token follows which _pair_ of words.
+next word and once with `jump`---two different words followed that pair in
+the original text. Compare this to the bigram cutouts model where the spread
+would just contain two `see→spot` cutouts---the trigram spread captures more
+specific patterns about which word follows which _pair_ of words.
 
 </Variant>
 
@@ -187,41 +187,41 @@ of one.
 
 <Variant is="cutouts">
 
-1. **Pick a starting two-word prefix**---choose any two-word combination that
-   appears as a prefix on at least one cutout, and write down both words
-2. **Find candidates**---scan the spread for cutouts whose two-word prefix
-   matches your last two words (match the rightmost coloured box to your most
-   recent word, then check the box to its left matches the word before that).
-   Verify the words themselves before committing---two unrelated tokens can
-   occasionally share a colour
+1. **Pick two starting words**---choose any two consecutive words that appear
+   as previous words on at least one cutout, and write both down
+2. **Find candidates**---scan the spread for cutouts whose previous words
+   match your last two words (match the rightmost coloured box to your most
+   recent word, then check the box to its left matches the word before
+   that). Verify the words themselves before committing---two unrelated
+   words can occasionally share a colour
 3. **Pick one cutout** visually---your eye will tend to land on cutouts whose
-   tokens are more common
-4. **Write down the token** from the cutout you picked
+   next words are more common
+4. **Write down the next word** from the cutout you picked
 5. **Put the cutout back** in the spread
-6. Your new two-word prefix is the second word of the previous prefix plus the
-   token you just wrote---go back to step 2
+6. Your last two words are now the previous-rightmost word plus the word you
+   just wrote---go back to step 2
 7. **Stop** when you've generated enough text, or when no cutouts match your
-   current two-word prefix
-8. If no cutout matches both prefix words, settle for one where just the
-   rightmost prefix box matches your most recent word---you've fallen back to
-   bigram matching for that step. The model never saw your exact pair during
-   training; this is the data sparsity problem in action
+   last two words
+8. If no cutout matches both previous words, settle for one where just the
+   rightmost previous-word box matches your most recent word---you've fallen
+   back to bigram matching for that step. The model never saw your exact pair
+   during training; this is the data sparsity problem in action
 
 ### Example (generation)
 
 Using the cutouts spread from above:
 
-1. Choose `see spot` as starting prefix---write down "see spot"
-2. Scan for `see spot` cutouts---there's one with `run` and one with
-   `jump`---pick visually
+1. Choose `see spot` as your starting words---write down "see spot"
+2. Scan for cutouts whose previous words are `see spot`---there's one with
+   `run` and one with `jump`---pick visually
 3. Let's say we land on `run`---write it down
-4. New prefix is `spot run`---scan for matches---only `.` is on the table for
-   that prefix---write it down
-5. New prefix is `run .`---only `see` matches---write it down
-6. New prefix is `. see`---only `spot` matches---write it down
-7. New prefix is `see spot`---this time let's say we pick `jump`---write it
+4. The last two words you've written are `spot run`---scan for matches---only
+   `.` is on the table for that pair---write it down
+5. Last two words: `run .`---only `see` matches---write it down
+6. Last two words: `. see`---only `spot` matches---write it down
+7. Last two words: `see spot`---this time let's say we pick `jump`---write it
    down
-8. New prefix is `spot jump`---only `.` matches---write it down
+8. Last two words: `spot jump`---only `.` matches---write it down
 9. Continue or stop here
 
 **Generated text:** _"see spot run. see spot jump."_
@@ -235,13 +235,14 @@ Using the cutouts spread from above:
 Once your students have got the hang of the loose-on-table flow, you can
 introduce grouping as an optimisation:
 
-1. Sort the cutouts into piles, one pile per unique two-word prefix
-2. Label each pile with its two-word prefix
+1. Sort the cutouts into piles, one pile per unique pair of previous words
+2. Label each pile with that pair
 
 Now generation is faster---instead of scanning the whole table for matching
-two-word prefixes, you go straight to the pile whose label matches your last
-two words. With trigrams this speedup is bigger than it is for bigrams, because
-there are usually many more unique two-word prefixes than single-word prefixes.
+previous words, you go straight to the pile whose label matches your last
+two words. With trigrams this speedup is bigger than it is for bigrams,
+because there are usually many more unique pairs of previous words than
+unique single previous words.
 This is the same trick a computer uses when it stores a language model in a
 hash table.
 
@@ -264,10 +265,11 @@ hash table.
 <Variant is="cutouts">
 
 - how does the trigram output compare to basic (bigram) cutouts model output?
-- why does the trigram spread tend to have more unique prefixes than a bigram
-  spread of the same text?
-- what happens when you encounter a two-word prefix you've never seen before?
-- can you find two-word prefixes that always lead to the same next word?
+- why does the trigram spread tend to have more unique pairs of previous
+  words than a bigram spread has unique previous words for the same text?
+- what happens when you encounter a two-word combination you've never seen
+  before?
+- can you find two-word combinations that always lead to the same next word?
 - what's the tradeoff between context length and data requirements?
 
 </Variant>
@@ -295,7 +297,7 @@ two.
 The cutouts spread and the grid method produce equivalent models:
 
 - a count in the grid's table corresponds to a cutout in the spread with the
-  matching two-word prefix and token
+  matching pair of previous words and next word
 - both capture the same "what follows these two words" relationships
 - cutouts make the weighting more tangible---you can see and feel that some
   outcomes are more likely because there are literally more cutouts to land on

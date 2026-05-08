@@ -46,8 +46,8 @@ const rows: (CutoutEntry | null)[][] = Array.from({ length: rowCount }, (_, r) =
         {
           Array.from({ length: columns }).map(() => (
             <>
-              <th>Prefix</th>
-              <th>Following tokens</th>
+              <th>{contextSize > 1 ? "Previous words" : "Previous word"}</th>
+              <th>Next words</th>
             </>
           ))
         }

@@ -85,7 +85,7 @@
 }
 
 #let prefix-length = n - 1
-#let prefix-noun = if prefix-length == 1 { "token" } else { "tokens" }
+#let prefix-noun = if prefix-length == 1 { "word" } else { "words" }
 
 // A coloured box for a prefix word: word's assigned colour as fill, white text.
 // When `dimmed` is true (discarded source token) the box is rendered in grey.
@@ -163,8 +163,8 @@
     These pages contain the text #emph(doc_metadata.title) by
     #doc_metadata.author (#doc_metadata.total_tokens tokens, entropy
     #calc.round(doc_metadata.entropy, digits: 2) bits/token, perplexity
-    #calc.round(doc_metadata.perplexity, digits: 1)). Each *cutout* is a
-    *token* preceded by its *prefix*---the #last-prefix that came
+    #calc.round(doc_metadata.perplexity, digits: 1)). Each *cutout* shows
+    a *next word* paired with the *previous #last-prefix* that came
     immediately before it in the original text.
 
     == Anatomy of a cutout
@@ -191,35 +191,35 @@
             #coloured-word(example-tokens.at(0).text)
           ],
           text(size: 10pt, fill: rgb("#666"), style: "italic")[
-            prefix (#str(prefix-length) #prefix-noun)
+            previous #last-prefix
           ],
           text(size: 10pt, fill: rgb("#666"), style: "italic")[
-            token (the next word that followed)
+            next word
           ],
         )
       ]
     ]
 
-    Every distinct token has its own colour. *Prefix* words appear inside a
-    coloured box (the prefix word's own colour as the background, with white
-    text); the free-standing *token* appears in plain coloured text. The
-    same word always wears the same colour, whether you see it inside a box
-    or as a token. Two unrelated tokens can occasionally share a colour, so
+    Every distinct word has its own colour. *Previous* words appear inside a
+    coloured box (the word's own colour as the background, with white text);
+    the free-standing *next word* appears in plain coloured text. The same
+    word always wears the same colour, whether you see it inside a box or
+    free-standing. Two unrelated words can occasionally share a colour, so
     always verify the word itself matches---not just the colour.
 
     == Setup
 
     *Cut out the tokens* along the dotted lines and *spread them out* face-up
     on the table, with no overlap if possible. This is the "training" step:
-    every prefix-token combination from the original text is now a physical
-    cutout sitting on your table.
+    every (previous, next) combination from the original text is now a
+    physical cutout sitting on your table.
 
     == How to play: the matching game
 
-    To generate text, repeatedly find a cutout whose *prefix* matches the
-    last #last-prefix you've written, then *write its token* onto your page.
-    The token you just wrote becomes part of the prefix you'll match against
-    next---that's the chain.
+    To generate text, repeatedly find a cutout whose *previous #last-prefix*
+    matches the last #last-prefix you've written, then *write its next word*
+    onto your page. The word you just wrote becomes part of what you'll match
+    against next---that's the chain.
 
     #pagebreak()
 
@@ -264,16 +264,17 @@
 
       [*Step 1.* Pick any cutout to begin---say this one:]
       big-cutout(t0)
-      [Copy its prefix #emph[and] its token onto your page. Your text so far:]
+      [Copy its previous #last-prefix #emph[and] its next word onto your page. Your text so far:]
       written-text(t0.prefix + (t0.text,))
 
       [
         *Step 2.* Look at the last #last-prefix you've written (in this case
-        #tail-prose(t0.prefix + (t0.text,))) and find a cutout whose prefix
-        matches#if prefix-length > 1 [ them] else [ it], like this one:
+        #tail-prose(t0.prefix + (t0.text,))) and find a cutout whose previous
+        #last-prefix #if prefix-length > 1 [match them] else [matches it],
+        like this one:
       ]
       big-cutout(t1)
-      [Write its token onto your page. Your text now reads:]
+      [Write its next word onto your page. Your text now reads:]
       written-text(t0.prefix + (t0.text, t1.text), new-count: 1)
 
       [
@@ -283,7 +284,7 @@
         cutout:
       ]
       big-cutout(t2)
-      [Add its token. Your text now reads:]
+      [Add its next word. Your text now reads:]
       written-text(
         t0.prefix + (t0.text, t1.text, t2.text),
         new-count: 1,
@@ -296,21 +297,21 @@
 
     #list(
       [
-        *Use colour as a fast filter.* Scan by the rightmost prefix box's
-        colour first, then verify the actual word matches.
+        *Use colour as a fast filter.* Scan by the rightmost previous-word
+        box's colour first, then verify the actual word matches.
       ],
       [
-        *Pick from many candidates by eye.* The more cutouts share a given
-        prefix, the more often your eye lands on one---that's *weighted
-        sampling* for free, and it's why some words follow others more often
-        in your text.
+        *Pick from many candidates by eye.* The more cutouts share the same
+        previous #last-prefix, the more often your eye lands on one---that's
+        *weighted sampling* for free, and it's why some words follow others
+        more often in your text.
       ],
       ..if n > 2 {
         (
           [
             *Partial matches are OK.* If no cutout matches all your last
-            #last-prefix, settle for one where just the rightmost prefix
-            token matches.
+            #last-prefix, settle for one where just the rightmost
+            previous-word box matches.
           ],
         )
       } else { () },

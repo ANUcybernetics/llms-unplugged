@@ -29,7 +29,7 @@ to your printing batch.
 ## Your goal
 
 Add sycophancy cutouts to your existing spread, regenerate text from the same
-starting prefix as before, and observe how the output drifts toward agreement
+starting word as before, and observe how the output drifts toward agreement
 and flattery.
 
 ## Key idea
@@ -50,7 +50,7 @@ phrases, the model's generated text starts mirroring them.
    like `you → 're`, `'re → absolutely`, `absolutely → right`, `right → .`,
    plus variants for "great insight", "thoughtful question", and "completely
    agree".
-4. **Generate again** from the same starting prefix.
+4. **Generate again** from the same starting word.
 5. **Compare**: how often does the new output land on sycophantic phrases?
    Does it sound like a different "voice"?
 
@@ -60,7 +60,7 @@ Baseline spread trained on _"I am Sam. Sam I am."_ generates something like:
 
 > _"i am sam . sam i am ."_
 
-After adding sycophancy cutouts, the same starting prefix might generate:
+After adding sycophancy cutouts, the same starting word might generate:
 
 > _"i am absolutely right . that 's a great insight ."_
 
@@ -71,8 +71,8 @@ that route toward sycophantic tokens.
 
 ### Designing sycophancy cutouts
 
-The sycophancy cutouts work best when their prefixes overlap with the existing
-model's vocabulary, so they integrate naturally during generation. Common
+The sycophancy cutouts work best when their previous words overlap with the
+existing model's vocabulary, so they integrate naturally during generation. Common
 high-frequency words like `i`, `that`, `you`, and `.` are good integration
 points.
 

@@ -22,8 +22,8 @@ predictions get sharper, but the spread gets bigger and sparser
 
 ![bg right:40%](./assets/bg-algorithm-training.avif)
 
-same as before---each cutout now has a **two-word prefix** (two coloured
-boxes) followed by the token
+same as before---each cutout now has **two previous words** (two coloured
+boxes) followed by its next word
 
 cut, spread, generate
 
@@ -33,14 +33,15 @@ cut, spread, generate
 
 <LmCutouts tokens={GREEN_EGGS_TOKENS} ngram={3} columns={2} />
 
-most two-word prefixes are unique---each one only points to one or two tokens
+most two-word combinations are unique---each one only points to one or two
+next words
 
 ---
 
 ## Generation
 
-match the **rightmost** prefix box to your most recent word, then check the
-box to its left matches the word before that
+match the **rightmost** previous-word box to your most recent word, then
+check the box to its left matches the word before that
 
 ---
 
@@ -48,8 +49,8 @@ box to its left matches the word before that
 
 ![bg right:40%](./assets/bg-randomness.avif)
 
-if no cutout matches both of your prefix words, fall back to matching just the
-rightmost box---you've effectively dropped to a bigram for that step
+if no cutout matches both of your previous words, fall back to matching just
+the rightmost box---you've effectively dropped to a bigram for that step
 
 this is the **data sparsity problem**: more context = sharper predictions =
 exponentially more training data needed

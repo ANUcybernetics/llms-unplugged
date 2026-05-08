@@ -10,8 +10,8 @@
 
 ![bg right:40%](./assets/bg-algorithm-generation.avif)
 
-write a word, find a cutout whose prefix matches, write that cutout's token,
-hunt for the next match
+write a word, find a cutout whose previous-word box matches, write that
+cutout's next word, hunt for the next match
 
 it grows like a chain of dominoes
 
@@ -19,12 +19,12 @@ it grows like a chain of dominoes
 
 ## Step by step
 
-1. **pick a starting prefix**---any word that appears as a prefix
-2. **find candidates**---scan for cutouts whose prefix matches your current
-   word (colour first, then verify the word)
-3. **pick one visually**---your eye lands on common tokens more often
-4. **write the token down**---then put the cutout back in the spread
-5. **repeat** with the new word as the prefix
+1. **pick a starting word**---any word that appears as a previous word
+2. **find candidates**---scan for cutouts whose previous word matches your
+   current word (colour first, then verify the word)
+3. **pick one visually**---your eye lands on common next words more often
+4. **write the next word down**---then put the cutout back in the spread
+5. **repeat** with the word you just wrote as your current word
 
 ---
 
@@ -48,7 +48,7 @@ generated so far: _"i am sam . i..."_---a hint of the original, not a copy
 
 ![bg right:40%](./assets/bg-core-insight.avif)
 
-two unrelated tokens can occasionally share a colour
+two unrelated words can occasionally share a colour
 
 always **verify the word itself** before committing, not just the colour
 
