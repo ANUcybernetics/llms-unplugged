@@ -278,6 +278,65 @@ body.reveal-viewport {
   }
 }
 
+/* Token colour palette for cutouts (see src/lib/tokenColors.ts).
+   Each entry pairs a saturated background colour for prefix boxes (white
+   text on top) with a brighter foreground colour for free-standing tokens
+   on the dark slide. Anchored on the deck's gold/copper/teal/grey families
+   with two tint-levels each. Keep TOKEN_COLOR_COUNT in sync. */
+.reveal .tc-0 {
+  --token-bg: var(--anu-gold);
+  --token-fg: var(--anu-gold-3);
+}
+.reveal .tc-1 {
+  --token-bg: hsl(48 60% 36%);
+  --token-fg: hsl(48 55% 72%);
+}
+.reveal .tc-2 {
+  --token-bg: var(--anu-copper);
+  --token-fg: var(--anu-copper-3);
+}
+.reveal .tc-3 {
+  --token-bg: hsl(12 65% 38%);
+  --token-fg: hsl(12 55% 70%);
+}
+.reveal .tc-4 {
+  --token-bg: var(--anu-teal);
+  --token-fg: var(--anu-teal-3);
+}
+.reveal .tc-5 {
+  --token-bg: hsl(180 60% 28%);
+  --token-fg: hsl(180 55% 65%);
+}
+.reveal .tc-6 {
+  --token-bg: hsl(35 18% 36%);
+  --token-fg: hsl(35 18% 74%);
+}
+.reveal .tc-7 {
+  --token-bg: hsl(195 14% 36%);
+  --token-fg: hsl(195 14% 74%);
+}
+
+.reveal .cutout-prefix,
+.reveal .cutout-text {
+  font-family: var(--r-code-font);
+  font-weight: 700;
+  font-size: 90%;
+}
+
+.reveal .cutout-prefix {
+  display: inline-block;
+  background: var(--token-bg);
+  color: var(--anu-white);
+  padding: 0.05em 0.4em;
+  margin: 0 0.05em;
+  border-radius: 4px;
+}
+
+.reveal .cutout-text {
+  color: var(--token-fg);
+  margin: 0 0.1em;
+}
+
 .reveal .slides .extensions-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

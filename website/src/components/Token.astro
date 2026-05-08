@@ -1,0 +1,11 @@
+---
+// Renders an inline token reference with the hash-based cutouts palette
+// (see src/lib/tokenColors.ts). Wired up in cutouts decks via an MDX
+// `components` override on `code`, so that `` `am` `` in prose wears the
+// same colour as the `am` cutout-prefix in an LmCutouts table.
+import { tokenColorClass } from "../lib/tokenColors";
+
+const text = (await Astro.slots.render("default")).trim();
+---
+
+<span class:list={["cutout-prefix", tokenColorClass(text)]}><slot /></span>

@@ -1,4 +1,6 @@
 ---
+import { tokenColorClass } from "../lib/tokenColors";
+
 interface Props {
   tokens: string;
   ngram?: number;
@@ -10,23 +12,30 @@ const { tokens: tokenString, ngram = 2, columns = 1 } = Astro.props;
 const tokenList = tokenString.trim().split(/\s+/).filter(Boolean);
 const contextSize = ngram - 1;
 
-const cutouts = new Map<string, string[]>();
-
-for (let i = 0; i < tokenList.length - contextSize; i++) {
-  const label = tokenList.slice(i, i + contextSize).join(" ");
-  const token = tokenList[i + contextSize];
-  if (!cutouts.has(label)) {
-    cutouts.set(label, []);
-  }
-  cutouts.get(label)!.push(token);
+interface CutoutEntry {
+  prefix: string[];
+  tokens: string[];
 }
 
-const entries = [...cutouts.entries()];
+const entries: CutoutEntry[] = [];
+const indexByPrefix = new Map<string, number>();
+
+for (let i = 0; i < tokenList.length - contextSize; i++) {
+  const prefix = tokenList.slice(i, i + contextSize);
+  const token = tokenList[i + contextSize];
+  const key = prefix.join("\0");
+  let idx = indexByPrefix.get(key);
+  if (idx === undefined) {
+    idx = entries.length;
+    indexByPrefix.set(key, idx);
+    entries.push({ prefix, tokens: [] });
+  }
+  entries[idx].tokens.push(token);
+}
+
 const rowCount = Math.ceil(entries.length / columns);
-const rows: ([string, string[]] | null)[][] = Array.from(
-  { length: rowCount },
-  (_, r) =>
-    Array.from({ length: columns }, (_, c) => entries[c * rowCount + r] ?? null),
+const rows: (CutoutEntry | null)[][] = Array.from({ length: rowCount }, (_, r) =>
+  Array.from({ length: columns }, (_, c) => entries[c * rowCount + r] ?? null),
 );
 ---
 
@@ -37,7 +46,7 @@ const rows: ([string, string[]] | null)[][] = Array.from(
         {
           Array.from({ length: columns }).map(() => (
             <>
-              <th>Prefix label</th>
+              <th>Prefix</th>
               <th>Following tokens</th>
             </>
           ))
@@ -51,12 +60,23 @@ const rows: ([string, string[]] | null)[][] = Array.from(
             {row.map((cell) =>
               cell ? (
                 <>
-                  <td>{cell[0]}</td>
                   <td>
-                    {cell[1].map((t, i) => (
+                    {cell.prefix.map((p, i) => (
                       <>
                         {i > 0 && " "}
-                        <code>{t}</code>
+                        <span class:list={["cutout-prefix", tokenColorClass(p)]}>
+                          {p}
+                        </span>
+                      </>
+                    ))}
+                  </td>
+                  <td>
+                    {cell.tokens.map((t, i) => (
+                      <>
+                        {i > 0 && " "}
+                        <span class:list={["cutout-text", tokenColorClass(t)]}>
+                          {t}
+                        </span>
                       </>
                     ))}
                   </td>
