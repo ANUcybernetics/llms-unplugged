@@ -52,7 +52,11 @@ For each pair (or group) of students:
 <Callout type="tip" title="Pre-made trigram cutouts">
 
 The [Tools](/tools#cutouts) page has ready-to-print trigram token cutouts, or
-you can [generate your own](/tools#generate-your-own) from any text.
+you can [generate your own](/tools#generate-your-own) from any text. Each PDF
+starts with a student-facing instructions page (anatomy of a cutout, worked
+example, tips), so you can hand the printed pack straight to a group. The CLI
+also supports a `--duplex` flag that prints the same cards on both faces, so
+students never have to flip a face-down card.
 
 </Callout>
 
@@ -187,7 +191,9 @@ of one.
    appears as a prefix on at least one cutout, and write down both words
 2. **Find candidates**---scan the spread for cutouts whose two-word prefix
    matches your last two words (match the rightmost coloured box to your most
-   recent word, then check the box to its left matches the word before that)
+   recent word, then check the box to its left matches the word before that).
+   Verify the words themselves before committing---two unrelated tokens can
+   occasionally share a colour
 3. **Pick one cutout** visually---your eye will tend to land on cutouts whose
    tokens are more common
 4. **Write down the token** from the cutout you picked
@@ -196,8 +202,10 @@ of one.
    token you just wrote---go back to step 2
 7. **Stop** when you've generated enough text, or when no cutouts match your
    current two-word prefix
-8. If you get stuck (no matching cutouts), the model never saw this pair during
-   training---pick any other two-word prefix from the spread and continue
+8. If no cutout matches both prefix words, settle for one where just the
+   rightmost prefix box matches your most recent word---you've fallen back to
+   bigram matching for that step. The model never saw your exact pair during
+   training; this is the data sparsity problem in action
 
 ### Example (generation)
 

@@ -55,6 +55,10 @@ For each pair (or group) of students:
 
 The [Tools](/tools#cutouts) page has ready-to-print token cutouts for several
 texts, or you can [generate your own](/tools#generate-your-own) from any text.
+Each PDF starts with a student-facing instructions page (anatomy of a cutout,
+worked example, tips), so you can hand the printed pack straight to a group.
+The CLI also supports a `--duplex` flag that prints the same cards on both
+faces, so students never have to flip a face-down card.
 
 </Callout>
 
@@ -91,10 +95,11 @@ model (filling out the grid) to track which words follow other words.
 <Variant is="cutouts">
 
 The CLI has already done the bigram counting for you. Each cutout shows a token
-together with the word it follows in the training text. When you spread them
-out, common bigrams take up more space on the table---so during generation,
-words that follow a given prefix more often are easier to spot and pick. That
-visual frequency is the weighted random sampling, no dice required.
+together with the word it follows in the training text. The trick: if `spot`
+follows `see` 40% of the time in the training text, then 40% of the cutouts
+with `see` as the prefix will have `spot` as the token. Whichever matching
+cutout your eye lands on, you've sampled in proportion to the original
+distribution---no dice, no probability tables, the spread is doing the maths.
 
 </Variant>
 

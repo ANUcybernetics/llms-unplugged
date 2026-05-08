@@ -66,7 +66,8 @@ For each pair (or group) of students:
 - pen and paper for writing down the generated text
 
 The [Tools](/tools#cutouts) page has ready-to-print token cutouts for several
-texts if you haven't done the Training lesson yet.
+texts if you haven't done the Training lesson yet. Each PDF starts with a
+student-facing instructions page that walks groups through the matching game.
 
 </Variant>
 
@@ -100,10 +101,12 @@ yields fluent text.
 
 <Variant is="cutouts">
 
-The cutouts spread already encodes the weights: prefixes that occur more often
-have more cutouts on the table, and your eye naturally lands on tokens that
-appear more often. So scanning the spread for matching cutouts and picking one
-visually _is_ weighted random sampling---no dice required.
+The chain grows like dominoes: write a word, find a cutout whose prefix matches
+it, write that cutout's token, then hunt for the next match. The spread already
+encodes the weights---prefixes that occur more often have more cutouts on the
+table, and your eye naturally lands on tokens that appear more often. So
+scanning for matching cutouts and picking one visually _is_ weighted random
+sampling---no dice required.
 
 </Variant>
 
@@ -129,7 +132,8 @@ colour of the prefix box you look for next.
 1. **Pick a starting prefix**---choose any word that appears as a prefix on at
    least one cutout
 2. **Find candidates**---scan the spread for cutouts whose prefix box matches
-   your current word's colour
+   your current word's colour, then verify the word itself matches before
+   committing (two unrelated tokens can occasionally share a colour)
 3. **Pick one cutout**---visually pick any matching cutout (your eye will tend
    to land on cutouts whose tokens are common, because there are more of
    them---that's weighted sampling for free)
