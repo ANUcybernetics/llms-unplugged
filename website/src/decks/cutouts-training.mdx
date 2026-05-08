@@ -1,0 +1,90 @@
+{/* _class: banner */}
+
+# Training
+
+![bg brightness:0.5](./assets/bg-div-mechanic.avif)
+
+---
+
+## The algorithm
+
+![bg right:40%](./assets/bg-algorithm-training.avif)
+
+cut out your printed tokens, spread them face-up on the table
+
+that's it---the spread _is_ your trained bigram language model
+
+---
+
+## Each cutout shows...
+
+![bg right:40%](./assets/bg-example.avif)
+
+a **token** alongside its **prefix**---the word that came before it in the
+training text
+
+every word has its own colour, so a prefix box and a free-standing token of
+the same word match
+
+---
+
+## Example
+
+_"I am Sam. Sam I am. I do not like green eggs and ham."_
+
+after preprocessing:
+
+`i` `am` `sam` `.` `sam` `i` `am` `.` `i` `do` `not` `like` `green` `eggs`
+`and` `ham` `.`
+
+---
+
+## The trained spread
+
+<LmCutouts tokens={GREEN_EGGS_TOKENS} />
+
+each row is one prefix; each token in the right column is one cutout on the
+table
+
+---
+
+## The proportionality trick
+
+![bg right:40%](./assets/bg-randomness.avif)
+
+if `spot` follows `see` 40% of the time in the training text, then **40% of
+the cutouts** with `see` as the prefix will have `spot` as the token
+
+whichever matching cutout your eye lands on, you've sampled in proportion to
+the original distribution---no dice, no probability tables, the spread is
+doing the maths
+
+---
+
+## Activity (~25 min)
+
+![bg right:40%](./assets/bg-resources.avif)
+
+- cut out the bigram tokens for your assigned text
+- spread them face-up on the table
+- (optional) sort into piles by prefix once the loose-on-table flow makes
+  sense
+
+---
+
+{/* _class: banner */}
+
+# Shareback
+
+![bg brightness:0.5](./assets/bg-div-reception.avif)
+
+---
+
+## The _language_ of language models
+
+![bg right:60%](./assets/bg-markov.avif)
+
+- model
+- token
+- vocabulary
+- training

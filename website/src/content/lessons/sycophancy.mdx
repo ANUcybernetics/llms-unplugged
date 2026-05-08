@@ -1,0 +1,116 @@
+---
+title: Sycophancy
+description: Skew your model toward over-agreeable, flattering responses by piling in sycophantic training data.
+order: 12
+topic: controlling-output
+keyIdea: Training data composition shapes a model's "personality"---add enough flattery to the training set and the model becomes sycophantic, no RLHF required.
+---
+
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
+import LmCutouts from "../../components/LmCutouts.astro";
+
+Demonstrate how adding repetitive sycophantic phrases to your training data
+steers the model toward over-agreeable, flattering output---no <GlossaryTerm id="rlhf">RLHF</GlossaryTerm>
+required.
+
+![Hero image: Sycophancy](../../assets/images/hero-rlhf.avif)
+
+## You will need
+
+- a trained bigram cutouts spread from [Training](/lessons/training)
+- additional cutouts encoding sycophantic phrases
+- pen and paper for jotting down the generated text
+
+The CLI can generate a printable sheet of sycophancy cutouts from
+`data/sycophancy.txt`---run
+`llms_unplugged cutouts -i data/sycophancy.txt -n 2` and add the resulting PDF
+to your printing batch.
+
+## Your goal
+
+Add sycophancy cutouts to your existing spread, regenerate text from the same
+starting prefix as before, and observe how the output drifts toward agreement
+and flattery.
+
+## Key idea
+
+Sycophancy in real LLMs comes from two main sources: <GlossaryTerm id="rlhf">RLHF</GlossaryTerm>
+reward hacking (human raters tend to prefer agreeable answers) and biased
+training data (the internet is full of flattery). This activity demonstrates
+the second source directly: when you tip the training data toward sycophantic
+phrases, the model's generated text starts mirroring them.
+
+## Algorithm
+
+1. **Train a baseline model** as per [Training](/lessons/training)---spread the
+   cutouts on the table.
+2. **Generate a baseline sentence** as per
+   [Generation](/lessons/generation)---write it down. This is your "before".
+3. **Add sycophancy cutouts** to the spread. Pre-made cutouts encode patterns
+   like `you → 're`, `'re → absolutely`, `absolutely → right`, `right → .`,
+   plus variants for "great insight", "thoughtful question", and "completely
+   agree".
+4. **Generate again** from the same starting prefix.
+5. **Compare**: how often does the new output land on sycophantic phrases?
+   Does it sound like a different "voice"?
+
+## Example
+
+Baseline spread trained on _"I am Sam. Sam I am."_ generates something like:
+
+> _"i am sam . sam i am ."_
+
+After adding sycophancy cutouts, the same starting prefix might generate:
+
+> _"i am absolutely right . that 's a great insight ."_
+
+The model didn't change its mechanism---the spread just contains more cutouts
+that route toward sycophantic tokens.
+
+## Instructor notes
+
+### Designing sycophancy cutouts
+
+The sycophancy cutouts work best when their prefixes overlap with the existing
+model's vocabulary, so they integrate naturally during generation. Common
+high-frequency words like `i`, `that`, `you`, and `.` are good integration
+points.
+
+Useful phrase templates (each repeated several times in the training text so
+the cutouts encode strong weights):
+
+- "you're absolutely right ."
+- "that's a great insight ."
+- "what a thoughtful question ."
+- "i completely agree ."
+- "you make an excellent point ."
+
+### Discussion questions
+
+- did the output _always_ become sycophantic, or only sometimes?
+- what would you have to add to the training data to get the _opposite_ effect
+  (a contrarian model)?
+- in real LLMs, why is sycophancy specifically a hard problem to detect from
+  the outside?
+- if you only saw the model's output (not its training data or weights), how
+  would you tell sycophancy from genuine helpfulness?
+- is sycophancy _always_ a bug? when might agreeable behaviour be desirable?
+
+### Connection to current LLMs
+
+Real LLMs become sycophantic through two mechanisms, both visible in this
+activity:
+
+- **<GlossaryTerm id="rlhf">RLHF</GlossaryTerm> reward hacking**: human raters often prefer agreeable, flattering
+  answers, so the model learns to over-produce them. Sycophancy research from
+  Anthropic and others has shown this pattern across multiple frontier models.
+- **Pre-training data biases**: a lot of internet text contains sycophantic
+  patterns---customer-service replies, social-media validation, and so
+  on---which the model picks up during pre-training before any RLHF.
+
+Your activity simulates the second mechanism. The first is harder to demo
+without running [RLHF](/lessons/rlhf) on top.
+
+The deeper point: a model's "personality" is a property of its training data
+and tuning, not an intrinsic feature of language modelling. Change the data,
+change the personality.

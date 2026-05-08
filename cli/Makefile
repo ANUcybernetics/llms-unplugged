@@ -47,7 +47,8 @@ CUTOUTS_TARGETS := \
 	$(CUTOUTS_DIR)/green-eggs-and-ham.pdf \
 	$(CUTOUTS_DIR)/green-eggs-and-ham-trigram.pdf \
 	$(CUTOUTS_DIR)/the-cat-in-the-hat.pdf \
-	$(CUTOUTS_DIR)/the-cat-in-the-hat-trigram.pdf
+	$(CUTOUTS_DIR)/the-cat-in-the-hat-trigram.pdf \
+	$(CUTOUTS_DIR)/sycophancy.pdf
 
 # Define common variables
 TOOL := target/release/llms_unplugged

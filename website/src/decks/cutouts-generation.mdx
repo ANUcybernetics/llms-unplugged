@@ -1,0 +1,82 @@
+{/* _class: banner */}
+
+# Generation
+
+![bg brightness:0.5](./assets/bg-div-lessons.avif)
+
+---
+
+## The algorithm
+
+![bg right:40%](./assets/bg-algorithm-generation.avif)
+
+write a word, find a cutout whose prefix matches, write that cutout's token,
+hunt for the next match
+
+it grows like a chain of dominoes
+
+---
+
+## Step by step
+
+1. **pick a starting prefix**---any word that appears as a prefix
+2. **find candidates**---scan for cutouts whose prefix matches your current
+   word (colour first, then verify the word)
+3. **pick one visually**---your eye lands on common tokens more often
+4. **write the token down**---then put the cutout back in the spread
+5. **repeat** with the new word as the prefix
+
+---
+
+## Worked example
+
+<LmCutouts tokens={GREEN_EGGS_TOKENS} />
+
+start with `i`---two cutouts match (one `am`, one `do`)---pick `am`
+
+now `am`---two cutouts match---pick `sam`
+
+now `sam`---two cutouts match---pick `.`
+
+now `.`---two cutouts match (`sam`, `i`)---pick `i`
+
+generated so far: _"i am sam . i..."_---a hint of the original, not a copy
+
+---
+
+## A small caveat
+
+![bg right:40%](./assets/bg-core-insight.avif)
+
+two unrelated tokens can occasionally share a colour
+
+always **verify the word itself** before committing, not just the colour
+
+---
+
+## Activity (~20 min)
+
+![bg right:40%](./assets/bg-resources.avif)
+
+generate 1--2 sentences from your spread
+
+read the funniest one to the room
+
+---
+
+{/* _class: banner */}
+
+# Shareback
+
+![bg brightness:0.5](./assets/bg-div-reception.avif)
+
+---
+
+## The _language_ of language models
+
+![bg cover left:60%](./assets/bg-shannon.avif)
+
+- prompt
+- completion / response
+- context window
+- weighted random sampling

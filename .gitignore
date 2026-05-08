@@ -6,10 +6,12 @@
 !website/public/assets/pdfs/booklets/*.pdf
 !website/public/assets/pdfs/cutouts/*.pdf
 
-/data/
+/data/*
 
 # but keep frankenstein.txt for the release
 !/data/frankenstein.txt
+# and sycophancy.txt for the sycophancy lesson activity
+!/data/sycophancy.txt
 
 # default model name
 model.json

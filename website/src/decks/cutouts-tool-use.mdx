@@ -1,0 +1,71 @@
+{/* _class: banner */}
+
+# Agentic tool use
+
+![bg brightness:0.5](./assets/bg-div-mechanic.avif)
+
+---
+
+## What makes a model an "agent"?
+
+![bg right:40%](./assets/bg-core-insight.avif)
+
+an agent is a model that can **call tools**: pause generation, get information
+from outside, and continue
+
+the loop: generate → trigger word → call tool → write the result → keep going
+
+---
+
+## Trigger words and tools
+
+| Trigger     | Tool                      | Returns                  |
+| ----------- | ------------------------- | ------------------------ |
+| `VOTE`      | the room                  | yes / no (majority)      |
+| `LOOKUP`    | someone with a phone      | a short fact             |
+| `CALCULATE` | someone with a calculator | a number                 |
+| `TIME`      | a clock or watch          | the time                 |
+
+---
+
+## The activity
+
+add new cutouts to your spread:
+
+- `the → VOTE`, `is → VOTE`, `we → VOTE`
+- `VOTE → .` (so the result fits back into the chain)
+
+designate a tool operator---when generation hits `VOTE`, pause and ask the
+room
+
+---
+
+## Activity (~10 min)
+
+![bg right:40%](./assets/bg-resources.avif)
+
+1. add tool-use cutouts to your spread
+2. generate---when you hit a trigger word, hand off to the tool operator
+3. write the operator's answer down as the next token(s)
+4. continue generating
+
+---
+
+## Connection to current LLMs
+
+![bg right:40%](./assets/bg-shannon.avif)
+
+modern AI agents do exactly this: web search, code execution, database
+queries, robot control
+
+the model doesn't _know_ the answer---it just learned _when to ask_
+
+real-world agents loop through this hundreds of times to complete a task
+
+---
+
+{/* _class: banner */}
+
+# Shareback
+
+![bg brightness:0.5](./assets/bg-div-reception.avif)
