@@ -8,8 +8,8 @@ fn collect_tokens(counter: &llms_unplugged::NGramCounter) -> Vec<String> {
         .get_entries()
         .iter()
         .flat_map(|entry| {
-            let mut tokens = entry.prefix.clone();
-            tokens.extend(entry.followers.iter().map(|(w, _)| w.clone()));
+            let mut tokens = entry.previous_words.clone();
+            tokens.extend(entry.next_words.iter().map(|(w, _)| w.clone()));
             tokens
         })
         .collect()

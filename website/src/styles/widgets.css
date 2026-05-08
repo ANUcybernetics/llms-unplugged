@@ -248,7 +248,7 @@
   overflow: hidden;
 }
 
-.cutout-token {
+.cutout-option {
   display: inline-block;
   max-width: 100%;
   padding: 0.125rem 0.375rem;
@@ -266,7 +266,7 @@
     transform 0.2s;
 }
 
-.cutout-token.punctuation {
+.cutout-option.punctuation {
   font-weight: 700;
   font-size: 0.875rem;
 }
@@ -361,7 +361,7 @@
   }
 
   .cutout,
-  .cutout-token {
+  .cutout-option {
     transition: none;
   }
 }

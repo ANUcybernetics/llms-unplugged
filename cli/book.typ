@@ -49,8 +49,8 @@
 
 
 
-// Create a state variable to track the current prefix
-#let current_prefix = state("current-prefix", "")
+// Create a state variable to track the current previous-words context
+#let current_previous_words = state("current-previous-words", "")
 
 // We'll use doc_metadata to track entries instead of state
 // since state.final() might not work properly in headers
@@ -199,7 +199,7 @@
       text(size: 0.9em)[
         #heading(level: 3)[Model statistics]
         - *Total tokens:* #stats.total_tokens
-        - *Unique prefixes:* #stats.unique_ngrams
+        - *Unique previous-words contexts:* #stats.unique_ngrams
         - *Entropy:* #calc.round(stats.entropy, digits: 2) bits/token --- how unpredictable each dice roll is
         - *Perplexity:* #calc.round(stats.perplexity, digits: 1) --- effective number of choices per dice roll
       ]
@@ -224,8 +224,8 @@
     #v(0.5cm)
     This reference contains a statistical #context model-type(doc_metadata.n)
     language model that shows the probabilistic relationships between word
-    sequences. Each entry displays a prefix followed by possible continuations
-    with their associated probabilities.
+    sequences. Each entry displays a previous-words context followed by
+    possible next words with their associated probabilities.
 
     The model can be used for text prediction, generation, and analysis of
     linguistic patterns.
@@ -233,9 +233,9 @@
     #v(0.5cm)
     #heading(level: 2)[How to Read This Reference]
     Each entry contains:
-    - A bold prefix sequence
+    - A bold previous-words sequence
     - Diamond symbols (♦) indicating the number of d10 dice to roll
-    - Possible continuations with their occurrence counts
+    - Possible next words with their occurrence counts
   ]
   pagebreak()
 }
@@ -244,18 +244,19 @@
 #let table-of-contents() = {
   heading(level: 1)[Contents]
   v(1cm)
-  // A simple table of contents would be difficult to generate for all prefixes
-  // For a real book, you might want to generate sections based on first letters or similar
+  // A simple table of contents would be difficult to generate for all
+  // previous-words contexts. For a real book, you might want to generate
+  // sections based on first letters or similar.
   [The following pages contain all #context model-type(doc_metadata.n) sequences
-    organized alphabetically by prefix.]
+    organized alphabetically by previous-words context.]
   pagebreak()
 }
 
 // Function to format the dice indicator (n diamonds)
-// Returns nothing if there's only one follower (no dice rolling needed)
-#let format-dice-indicator(total_count, num_followers) = {
-  // Only show dice indicator if there are multiple followers to choose from
-  if num_followers > 1 and total_count != 10 {
+// Returns nothing if there's only one next-word option (no dice rolling needed)
+#let format-dice-indicator(total_count, num_next_words) = {
+  // Only show dice indicator if there are multiple next-word options to choose from
+  if num_next_words > 1 and total_count != 10 {
     let num-dice = str(total_count).len()
     // Display num-dice Unicode diamond symbols
     text(
@@ -267,8 +268,8 @@
   }
 }
 
-// Function to format a single follower with its count
-#let format-follower(word, count, show-count: true) = {
+// Function to format a single next-word option with its count
+#let format-next-word(word, count, show-count: true) = {
   if word == "." or word == "," {
     // Punctuation in a rounded box with optional count
     if show-count {
@@ -286,30 +287,30 @@
   }
 }
 
-// Function to format all followers for a prefix
-#let format-followers(followers) = {
-  for follower in followers {
-    let word = follower.at(0)
-    let count = follower.at(1)
-    let show-count = followers.len() > 1
+// Function to format all next-word options for a previous-words context
+#let format-next-words(next_words) = {
+  for next_word in next_words {
+    let word = next_word.at(0)
+    let count = next_word.at(1)
+    let show-count = next_words.len() > 1
 
-    format-follower(word, count, show-count: show-count)
+    format-next-word(word, count, show-count: show-count)
     h(0.5em)
   }
 }
 
-// Function to format a complete entry (prefix + dice indicator + followers)
-#let format-entry(prefix, total_count, followers) = {
-  // Format the prefix
-  display-with-punctuation(prefix, size: 1.5em, weight: "bold")
+// Function to format a complete entry (previous words + dice indicator + next words)
+#let format-entry(previous_words, total_count, next_words) = {
+  // Format the previous-words context
+  display-with-punctuation(previous_words, size: 1.5em, weight: "bold")
 
-  // Add dice indicator (only if multiple followers)
+  // Add dice indicator (only if multiple next-word options)
   h(0.2em)
-  format-dice-indicator(total_count, followers.len())
+  format-dice-indicator(total_count, next_words.len())
   h(0.6em)
 
-  // Format the followers
-  format-followers(followers)
+  // Format the next-word options
+  format-next-words(next_words)
 }
 
 // Instructions page
@@ -346,9 +347,9 @@
       the dice from left to right as a single number (e.g., rolling 2, 1 and 7
       means your roll is 217)
 
-    + *find your next word*: scan through the followers until you find the first
-      number ≥ your roll, or just use the single word if no dice were rolled
-      (write it down)
+    + *find your next word*: scan through the next-word options until you find
+      the first number ≥ your roll, or just use the single word if no dice were
+      rolled (write it down)
 
     + repeat from step 2 using this word as your new word, continuing this loop
       until you reach a natural stopping point (like #punct-box(".")) or reach
@@ -372,7 +373,7 @@
 
     - one diamond (♦) means roll 1 d10
     - roll your dice: roll a 6
-    - find the next word: first number ≥ 6 is #format-follower("ran", 7), so
+    - find the next word: first number ≥ 6 is #format-next-word("ran", 7), so
       next word is "ran"
     - write it down, look it up and continue the process
 
@@ -394,7 +395,7 @@
 
     - two diamonds (♦♦) means roll 2 d10s
     - roll your dice: roll 5 and 8 → combine them to get 58
-    - find the next word: first number ≥ 58 is #format-follower("dog", 66), so
+    - find the next word: first number ≥ 58 is #format-next-word("dog", 66), so
       next word is "dog"
     - write it down, look it up and continue the process
   ]
@@ -429,15 +430,15 @@
 
     // Separate entries by page
     let entries-on-current-page = ()
-    let last-prefix-before-page = none
+    let last-previous-words-before-page = none
 
     for entry in all-entries {
       let entry-page = entry.location().page()
       if entry-page == current-page {
         entries-on-current-page.push(entry.value)
       } else if entry-page < current-page {
-        // Keep track of the last prefix before current page
-        last-prefix-before-page = entry.value
+        // Keep track of the last previous-words context before current page
+        last-previous-words-before-page = entry.value
       }
     }
 
@@ -446,15 +447,15 @@
       let first = entries-on-current-page.first()
       let last = entries-on-current-page.last()
       if first == last {
-        // Single prefix on page
+        // Single previous-words context on page
         first
       } else {
-        // Multiple prefixes on page - show range
+        // Multiple previous-words contexts on page - show range
         first + " — " + last
       }
-    } else if last-prefix-before-page != none {
-      // Continuation page (no new prefixes)
-      last-prefix-before-page
+    } else if last-previous-words-before-page != none {
+      // Continuation page (no new previous-words contexts)
+      last-previous-words-before-page
     } else {
       ""
     }
@@ -464,7 +465,7 @@
       // Position based on odd/even page
       let is-odd = calc.odd(current-page)
 
-      // Create the guide word display (styled like prefix text)
+      // Create the guide word display (styled like previous-words text)
       let guide-display = display-with-punctuation(
         guide-text,
         size: 1.5em,
@@ -488,18 +489,18 @@
 )
 
 #for (i, item) in data.enumerate() {
-  // The first element is the prefix
-  let prefix = item.at(0)
+  // The first element is the previous-words context
+  let previous_words = item.at(0)
   let total_count = item.at(1)
-  let followers = item.slice(2)
-  current_prefix.update(prefix)
+  let next_words = item.slice(2)
+  current_previous_words.update(previous_words)
 
-  // Add metadata and label for the prefix
-  [#metadata(prefix) <prefix-entry>#format-entry(
-      prefix,
+  // Add metadata and label for the previous-words context
+  [#metadata(previous_words) <previous-words-entry>#format-entry(
+      previous_words,
       total_count,
-      followers,
-    )#label("prefix-" + prefix)]
+      next_words,
+    )#label("previous-words-" + previous_words)]
 
   v(0.1em)
 }

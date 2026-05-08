@@ -788,25 +788,29 @@ fn print_summary(stats: &ProcessingStats, metadata: Option<&Metadata>, n: usize,
     println!("\nSummary Statistics:");
     println!("-------------------");
     println!("Total tokens in text: {}", stats.total_tokens);
-    println!("Unique {}-gram prefixes: {}", n - 1, stats.unique_ngrams);
+    println!(
+        "Unique {}-word previous-words contexts: {}",
+        n - 1,
+        stats.unique_ngrams
+    );
     println!(
         "Total {}-gram occurrences: {}",
         n, stats.total_ngram_occurrences
     );
 
-    if let Some((prefix, follower, count)) = &stats.most_common_ngram {
-        let prefix_str = prefix.join(" ");
+    if let Some((previous_words, next_word, count)) = &stats.most_common_ngram {
+        let previous_words_str = previous_words.join(" ");
         println!(
             "Most common {}-gram: '{}' followed by '{}' ({} occurrences)",
-            n, prefix_str, follower, count
+            n, previous_words_str, next_word, count
         );
     }
 
-    if let Some((prefix, count)) = &stats.most_popular_prefix {
-        let prefix_str = prefix.join(" ");
+    if let Some((previous_words, count)) = &stats.most_popular_previous_words {
+        let previous_words_str = previous_words.join(" ");
         println!(
-            "Prefix with most followers: '{}' ({} total followers)",
-            prefix_str, count
+            "Previous-words context with most next-words: '{}' ({} total next-word occurrences)",
+            previous_words_str, count
         );
     }
 
@@ -846,7 +850,7 @@ mod tests {
             unique_ngrams: 0,
             total_ngram_occurrences: 0,
             most_common_ngram: None,
-            most_popular_prefix: None,
+            most_popular_previous_words: None,
             entropy: 0.0,
             perplexity: 1.0,
         }
@@ -869,15 +873,15 @@ mod tests {
             (
                 "A-C".to_string(),
                 vec![WordFollowEntry {
-                    prefix: vec!["a".into()],
-                    followers: vec![("b".into(), 1)],
+                    previous_words: vec!["a".into()],
+                    next_words: vec![("b".into(), 1)],
                 }],
             ),
             (
                 "D-F".to_string(),
                 vec![WordFollowEntry {
-                    prefix: vec!["d".into()],
-                    followers: vec![("e".into(), 1)],
+                    previous_words: vec!["d".into()],
+                    next_words: vec![("e".into(), 1)],
                 }],
             ),
         ];
@@ -921,12 +925,12 @@ mod tests {
     fn renders_bigram_tsv() {
         let entries = vec![
             WordFollowEntry {
-                prefix: vec!["a".into()],
-                followers: vec![("b".into(), 2), ("c".into(), 1)],
+                previous_words: vec!["a".into()],
+                next_words: vec![("b".into(), 2), ("c".into(), 1)],
             },
             WordFollowEntry {
-                prefix: vec!["b".into()],
-                followers: vec![("c".into(), 3)],
+                previous_words: vec!["b".into()],
+                next_words: vec![("c".into(), 3)],
             },
         ];
 

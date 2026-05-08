@@ -151,7 +151,7 @@
               <div class="cutout-contents">
                 {#each cutout.tokens as token, i}
                   <span
-                    class="cutout-token"
+                    class="cutout-option"
                     class:punctuation={isPunctuation(token)}
                     class:just-added={cutout.label === highlights.match &&
                       i === cutout.tokens.length - 1}
@@ -187,7 +187,7 @@
 </FullscreenWrapper>
 
 <style>
-  .cutout-token.just-added {
+  .cutout-option.just-added {
     background: var(--lm-highlight-strong);
     transform: scale(1.1);
   }

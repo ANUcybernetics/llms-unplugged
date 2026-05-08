@@ -1,10 +1,11 @@
 import type { Root } from "mdast";
 
-// Detect inline `prefix` → `token` patterns in MDX and tag the surrounding
-// inlineCode nodes with `data-role` so the deck Token component can render
-// the prefix as a coloured box and the following token as plain coloured
-// text. Triggers on the unicode arrow character (→) between two adjacent
-// inlineCode nodes; other inline code stays untagged and renders as a box.
+// Detect inline `previous word` → `next word` patterns in MDX and tag the
+// surrounding inlineCode nodes with `data-role` so the deck Token component
+// can render the previous word as a coloured box and the next word as plain
+// coloured text. Triggers on the unicode arrow character (→) between two
+// adjacent inlineCode nodes; other inline code stays untagged and renders as
+// a previous-word box.
 export function remarkCutoutRoles() {
   return (tree: Root) => {
     walk(tree as unknown as ParentLike);
@@ -34,14 +35,14 @@ function walk(node: ParentLike): void {
       /^\s*→\s*$/.test(b.value) &&
       c?.type === "inlineCode"
     ) {
-      setRole(a, "prefix");
-      setRole(c, "token");
+      setRole(a, "previous-word");
+      setRole(c, "next-word");
     }
   }
   for (const child of node.children) walk(child);
 }
 
-function setRole(node: NodeLike, role: "prefix" | "token"): void {
+function setRole(node: NodeLike, role: "previous-word" | "next-word"): void {
   node.data ??= {};
   node.data.hProperties ??= {};
   node.data.hProperties["data-role"] = role;

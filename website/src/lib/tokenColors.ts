@@ -2,8 +2,8 @@
 //
 // The deck cutouts use the same hash-to-palette idea as the printed PDF
 // cutouts (see cli/tokenized-cutouts.typ), so a given word always wears the
-// same colour on a slide whether it appears as a prefix box or as a
-// free-standing following token. The deck palette itself is defined in CSS
+// same colour on a slide whether it appears as a previous-word box or as a
+// free-standing next word. The deck palette itself is defined in CSS
 // (see src/decks/theme.css) as `.tc-0` … `.tc-{N-1}` classes that set
 // `--token-bg` and `--token-fg` custom properties.
 

@@ -145,7 +145,7 @@
               <div class="cutout-contents">
                 {#each cutout.tokens as token, i}
                   <span
-                    class="cutout-token"
+                    class="cutout-option"
                     class:punctuation={isPunctuation(token)}
                     class:shuffling={cutout.label === currentWord &&
                       isShuffling &&
@@ -243,13 +243,13 @@
     opacity: 0.6;
   }
 
-  .cutout-token.shuffling {
+  .cutout-option.shuffling {
     background: var(--lm-highlight-medium);
     transform: scale(1.15);
     animation: shake 0.1s linear infinite;
   }
 
-  .cutout-token.picked {
+  .cutout-option.picked {
     background: var(--lm-highlight-strong);
     transform: scale(1.2);
   }
@@ -268,7 +268,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .cutout-token.shuffling {
+    .cutout-option.shuffling {
       animation: none;
     }
   }

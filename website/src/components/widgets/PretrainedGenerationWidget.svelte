@@ -120,15 +120,15 @@
     if (newState) scheduler.setState(newState);
   }
 
-  function isSelectedFollower(
+  function isSelectedNextWord(
     entry: ModelEntry,
-    follower: { word: string; threshold: number },
+    nextWord: { word: string; threshold: number },
   ): boolean {
     if (phase.kind !== "rolled") return false;
-    if (entry.prefix !== currentWord) return false;
-    if (entry.followers.length === 1) return true;
+    if (entry.previousWord !== currentWord) return false;
+    if (entry.nextWords.length === 1) return true;
     if (phase.diceRoll === null) return false;
-    return follower.word === findWordForThresholdRoll(entry, phase.diceRoll);
+    return nextWord.word === findWordForThresholdRoll(entry, phase.diceRoll);
   }
 
   onMount(() => scheduler.cleanup);
@@ -154,36 +154,36 @@
           {#each modelEntries as entry}
             <div
               class="entry"
-              class:highlighted={entry.prefix === currentWord}
+              class:highlighted={entry.previousWord === currentWord}
               class:clickable={outputWords.length === 0 &&
-                model.hasSuccessors(entry.prefix)}
-              class:dead-end={!model.hasSuccessors(entry.prefix)}
-              onclick={() => handleStartWord(entry.prefix)}
+                model.hasSuccessors(entry.previousWord)}
+              class:dead-end={!model.hasSuccessors(entry.previousWord)}
+              onclick={() => handleStartWord(entry.previousWord)}
               role="button"
               tabindex="0"
               onkeydown={(e) => {
                 if (e.key === "Enter" || e.key === " ")
-                  handleStartWord(entry.prefix);
+                  handleStartWord(entry.previousWord);
               }}
             >
               <span
-                class="entry-prefix"
-                class:punctuation={isPunctuation(entry.prefix)}
+                class="entry-previous-word"
+                class:punctuation={isPunctuation(entry.previousWord)}
               >
-                {entry.prefix}
+                {entry.previousWord}
               </span>
-              {#if entry.followers.length > 1}
+              {#if entry.nextWords.length > 1}
                 <span class="dice-indicator">{"♦".repeat(entry.numDice)}</span>
               {/if}
-              <span class="entry-followers">
-                {#each entry.followers as follower}
+              <span class="entry-next-words">
+                {#each entry.nextWords as nextWord}
                   <span
-                    class="follower"
-                    class:selected={isSelectedFollower(entry, follower)}
-                    class:punctuation={isPunctuation(follower.word)}
-                    >{#if entry.followers.length > 1}<span class="threshold"
-                        >{follower.threshold}</span
-                      >|{/if}<span class="follower-word">{follower.word}</span
+                    class="next-word"
+                    class:selected={isSelectedNextWord(entry, nextWord)}
+                    class:punctuation={isPunctuation(nextWord.word)}
+                    >{#if entry.nextWords.length > 1}<span class="threshold"
+                        >{nextWord.threshold}</span
+                      >|{/if}<span class="next-word-text">{nextWord.word}</span
                     ></span
                   >
                 {/each}
@@ -200,10 +200,10 @@
             <span>Looking up</span>
             <span
               class="token highlight-first"
-              class:punctuation={isPunctuation(currentEntry.prefix)}
-              >{currentEntry.prefix}</span
+              class:punctuation={isPunctuation(currentEntry.previousWord)}
+              >{currentEntry.previousWord}</span
             >
-            {#if currentEntry.followers.length > 1}
+            {#if currentEntry.nextWords.length > 1}
               <span>
                 — roll {currentEntry.numDice} d10{currentEntry.numDice > 1
                   ? "s"
@@ -220,7 +220,7 @@
             >
             <span class="dice-value rolling">{displayDiceRoll}</span>
           {:else if phase.kind === "rolled" && currentEntry}
-            {#if currentEntry.followers.length > 1}
+            {#if currentEntry.nextWords.length > 1}
               <span>Rolled</span>
               <span class="dice-value">{displayDiceRoll}</span>
               {#if displayDiceRoll !== null}
@@ -236,8 +236,8 @@
               <span
                 class="token highlight-second"
                 class:punctuation={isPunctuation(
-                  currentEntry.followers[0].word,
-                )}>{currentEntry.followers[0].word}</span
+                  currentEntry.nextWords[0].word,
+                )}>{currentEntry.nextWords[0].word}</span
               >
             {/if}
           {:else if phase.kind === "complete"}
@@ -309,12 +309,12 @@
     background: var(--at-accent-soft);
   }
 
-  .entry-prefix {
+  .entry-previous-word {
     font-weight: 700;
     font-size: 1.1rem;
   }
 
-  .entry-prefix.punctuation {
+  .entry-previous-word.punctuation {
     display: inline-block;
     padding: 0 0.2em;
     border: 1px solid var(--at-text-muted);
@@ -329,26 +329,26 @@
     margin-right: 0.25em;
   }
 
-  .entry-followers {
+  .entry-next-words {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4em;
     align-items: baseline;
   }
 
-  .follower {
+  .next-word {
     font-size: 0.9rem;
     transition: background-color 0.2s;
     padding: 0 0.15em;
     border-radius: 2px;
   }
 
-  .follower.selected {
+  .next-word.selected {
     background: var(--at-accent-soft);
     color: var(--at-accent);
   }
 
-  .follower.punctuation .follower-word {
+  .next-word.punctuation .next-word-text {
     display: inline-block;
     padding: 0 0.15em;
     border: 1px solid var(--at-text-muted);
@@ -361,7 +361,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .entry,
-    .follower {
+    .next-word {
       transition: none;
     }
   }

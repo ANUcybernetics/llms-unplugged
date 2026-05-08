@@ -68,8 +68,8 @@
   )
 }
 
-// Function to format a single follower with its count
-#let format-follower(word, count, show-count: true) = {
+// Function to format a single next-word option with its count
+#let format-next-word(word, count, show-count: true) = {
   if word == "." or word == "," {
     // Punctuation in a rounded box with optional count
     if show-count {
@@ -87,14 +87,14 @@
   }
 }
 
-// Function to format all followers for a prefix
-#let format-followers(followers) = {
-  for follower in followers {
-    let word = follower.at(0)
-    let count = follower.at(1)
-    let show-count = followers.len() > 1
+// Function to format all next-word options for a previous-words context
+#let format-next-words(next_words) = {
+  for next_word in next_words {
+    let word = next_word.at(0)
+    let count = next_word.at(1)
+    let show-count = next_words.len() > 1
 
-    format-follower(word, count, show-count: show-count)
+    format-next-word(word, count, show-count: show-count)
     h(0.5em)
   }
 }
@@ -110,18 +110,18 @@
   )
 }
 
-// Function to format a complete entry (prefix + dice indicator + followers)
-#let format-entry(prefix, total_count, followers) = {
-  // Format the prefix (larger, like in book.typ)
-  display-with-punctuation(prefix, size: 1.5em, weight: "bold")
+// Function to format a complete entry (previous words + dice indicator + next words)
+#let format-entry(previous_words, total_count, next_words) = {
+  // Format the previous-words context (larger, like in book.typ)
+  display-with-punctuation(previous_words, size: 1.5em, weight: "bold")
 
   // Add dice indicator
   h(0.2em)
   format-dice-indicator(total_count)
   h(0.6em)
 
-  // Format the followers (smaller, default size)
-  format-followers(followers)
+  // Format the next-word options (smaller, default size)
+  format-next-words(next_words)
 }
 
 #show: doc => anu(
@@ -203,20 +203,20 @@
         // Left column
         box[
           #for item in example_entries.slice(0, mid) {
-            let prefix = item.at(0)
+            let previous_words = item.at(0)
             let total_count = item.at(1)
-            let followers = item.slice(2)
-            format-entry(prefix, total_count, followers)
+            let next_words = item.slice(2)
+            format-entry(previous_words, total_count, next_words)
             v(0.2em)
           }
         ],
         // Right column
         box[
           #for item in example_entries.slice(mid) {
-            let prefix = item.at(0)
+            let previous_words = item.at(0)
             let total_count = item.at(1)
-            let followers = item.slice(2)
-            format-entry(prefix, total_count, followers)
+            let next_words = item.slice(2)
+            format-entry(previous_words, total_count, next_words)
             v(0.2em)
           }
         ],
@@ -262,8 +262,8 @@
             weight: "bold",
           )#instruction-dice-indicator(3) show you'll need to roll three d10s
         - roll your dice: roll 2, 1 and 7 → combine them to get 217
-        - find your next word: scan through the followers until you find the
-          first number ≥ 217, which is 234, so the next word is `hat`
+        - find your next word: scan through the next-word options until you
+          find the first number ≥ 217, which is 234, so the next word is `hat`
         - write it down
       ],
       [#h(0.5em)`the` `hat`],
@@ -304,7 +304,7 @@
 
       [
         - look up `my` in the booklet
-        - there's only one follower, so no need to roll dice
+        - there's only one next-word option, so no need to roll dice
         - the next word is `cat`
         - write it down
       ],

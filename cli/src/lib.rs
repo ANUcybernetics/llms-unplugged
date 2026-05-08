@@ -53,33 +53,34 @@ pub struct ProcessingStats {
     pub unique_ngrams: usize,
     /// Total number of n-gram occurrences
     pub total_ngram_occurrences: usize,
-    /// Most common n-gram prefix and its most common follower
+    /// Most common n-gram (previous words and the most likely next word)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub most_common_ngram: Option<(Vec<String>, String, usize)>,
-    /// Prefix with the most cumulative followers
+    /// Previous-words context with the most cumulative next-word occurrences
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub most_popular_prefix: Option<(Vec<String>, usize)>,
+    pub most_popular_previous_words: Option<(Vec<String>, usize)>,
     /// Weighted average conditional entropy (bits per token)
     pub entropy: f64,
     /// Perplexity (2^entropy) --- effective number of choices per generation step
     pub perplexity: f64,
 }
 
-/// Represents an N-gram prefix and its following words with their counts
+/// Wrapper for the n-1 previous words that form the context of an n-gram entry.
 #[derive(Serialize, Debug, PartialEq, Eq, Hash, Clone)] // Added Eq, Hash, Clone for HashMap key
-pub struct NGramPrefix(Vec<String>); // Wrapper struct for clarity and potential future methods
+pub struct PreviousWords(Vec<String>);
 
+/// One entry in the n-gram model: the n-1 previous words and the next-word counts that follow them.
 #[derive(Serialize, Debug, PartialEq, Clone)]
 pub struct WordFollowEntry {
-    pub prefix: Vec<String>, // Changed from word: String
-    pub followers: Vec<(String, usize)>,
+    pub previous_words: Vec<String>,
+    pub next_words: Vec<(String, usize)>,
 }
 
 /// A counter for tracking n-gram occurrences in text
 #[derive(Debug)]
 pub struct NGramCounter {
-    /// Mapping of n-gram prefixes to their following words and counts
-    prefix_map: BTreeMap<Vec<String>, HashMap<String, usize>>,
+    /// Mapping from previous-words context to next-word occurrence counts
+    previous_words_map: BTreeMap<Vec<String>, HashMap<String, usize>>,
     /// Size of n-gram (e.g., 2 for bigrams, 3 for trigrams)
     n: usize,
     /// Statistics gathered during processing
@@ -100,21 +101,21 @@ impl NGramCounter {
             return Self::new(2, punctuation);
         }
 
-        let prefix_size = n - 1;
+        let context_size = n - 1;
 
         NGramCounter {
-            prefix_map: BTreeMap::new(),
+            previous_words_map: BTreeMap::new(),
             n,
             stats: ProcessingStats {
                 total_tokens: 0,
                 unique_ngrams: 0,
                 total_ngram_occurrences: 0,
                 most_common_ngram: None,
-                most_popular_prefix: None,
+                most_popular_previous_words: None,
                 entropy: 0.0,
                 perplexity: 1.0,
             },
-            window: VecDeque::with_capacity(prefix_size),
+            window: VecDeque::with_capacity(context_size),
             metadata: None,
             normalizer: Normalizer::new(NormalizerConfig::new(punctuation)),
         }
@@ -123,23 +124,23 @@ impl NGramCounter {
     /// Process a single line of text
     pub fn process_line(&mut self, line: &str) {
         let words = self.normalizer.normalize_line(line);
-        let prefix_size = self.n - 1;
+        let context_size = self.n - 1;
 
         // Add to token count
         self.stats.total_tokens += words.len();
 
         // Process each word
         for word in words {
-            // If the window is full (contains n-1 words), we have a complete N-gram prefix
-            if self.window.len() == prefix_size {
-                let prefix = self.window.iter().cloned().collect::<Vec<String>>();
-                let follower = word.clone();
+            // If the window is full (contains n-1 words), we have a complete previous-words context
+            if self.window.len() == context_size {
+                let previous_words = self.window.iter().cloned().collect::<Vec<String>>();
+                let next_word = word.clone();
 
                 // Update the frequency map
-                self.prefix_map
-                    .entry(prefix)
+                self.previous_words_map
+                    .entry(previous_words)
                     .or_insert_with(HashMap::new)
-                    .entry(follower)
+                    .entry(next_word)
                     .and_modify(|count| {
                         *count += 1;
                         self.stats.total_ngram_occurrences += 1;
@@ -236,57 +237,59 @@ impl NGramCounter {
     fn calculate_statistics(&mut self) {
         // Find the most common n-gram
         let mut most_common_count = 0;
-        let mut most_common_prefix = None;
-        let mut most_common_follower = None;
+        let mut most_common_previous_words = None;
+        let mut most_common_next_word = None;
 
-        // Find the prefix with the most cumulative followers
-        let mut most_popular_prefix = None;
-        let mut most_popular_prefix_count = 0;
+        // Find the previous-words context with the most cumulative next-word occurrences
+        let mut most_popular_previous_words = None;
+        let mut most_popular_count = 0;
 
-        for (prefix, followers) in &self.prefix_map {
-            // Calculate the cumulative count for this prefix
-            let total_followers: usize = followers.values().sum();
+        for (previous_words, next_word_counts) in &self.previous_words_map {
+            // Calculate the cumulative count for this context
+            let total_next_words: usize = next_word_counts.values().sum();
 
-            // Check if this is the prefix with the most followers
-            if total_followers > most_popular_prefix_count {
-                most_popular_prefix_count = total_followers;
-                most_popular_prefix = Some(prefix.clone());
+            // Check if this is the context with the most next-word occurrences
+            if total_next_words > most_popular_count {
+                most_popular_count = total_next_words;
+                most_popular_previous_words = Some(previous_words.clone());
             }
 
             // Continue with existing logic for finding the most common specific n-gram
-            for (follower, count) in followers {
+            for (next_word, count) in next_word_counts {
                 if *count > most_common_count {
                     most_common_count = *count;
-                    most_common_prefix = Some(prefix.clone());
-                    most_common_follower = Some(follower.clone());
+                    most_common_previous_words = Some(previous_words.clone());
+                    most_common_next_word = Some(next_word.clone());
                 }
             }
         }
 
-        if let (Some(prefix), Some(follower)) = (most_common_prefix, most_common_follower) {
-            self.stats.most_common_ngram = Some((prefix, follower, most_common_count));
+        if let (Some(previous_words), Some(next_word)) =
+            (most_common_previous_words, most_common_next_word)
+        {
+            self.stats.most_common_ngram = Some((previous_words, next_word, most_common_count));
         }
 
-        if let Some(prefix) = most_popular_prefix {
-            self.stats.most_popular_prefix = Some((prefix, most_popular_prefix_count));
+        if let Some(previous_words) = most_popular_previous_words {
+            self.stats.most_popular_previous_words = Some((previous_words, most_popular_count));
         }
 
-        // Set the count of unique n-grams
-        self.stats.unique_ngrams = self.prefix_map.len();
+        // Set the count of unique previous-words contexts
+        self.stats.unique_ngrams = self.previous_words_map.len();
 
         // Compute weighted average conditional entropy
         let total_occurrences = self.stats.total_ngram_occurrences as f64;
         if total_occurrences > 0.0 {
             let mut weighted_entropy = 0.0;
-            for followers in self.prefix_map.values() {
-                let prefix_total: usize = followers.values().sum();
-                let prefix_total_f = prefix_total as f64;
-                let mut prefix_entropy = 0.0;
-                for &count in followers.values() {
-                    let p = count as f64 / prefix_total_f;
-                    prefix_entropy -= p * p.log2();
+            for next_word_counts in self.previous_words_map.values() {
+                let context_total: usize = next_word_counts.values().sum();
+                let context_total_f = context_total as f64;
+                let mut context_entropy = 0.0;
+                for &count in next_word_counts.values() {
+                    let p = count as f64 / context_total_f;
+                    context_entropy -= p * p.log2();
                 }
-                weighted_entropy += (prefix_total_f / total_occurrences) * prefix_entropy;
+                weighted_entropy += (context_total_f / total_occurrences) * context_entropy;
             }
             self.stats.entropy = weighted_entropy;
             self.stats.perplexity = weighted_entropy.exp2();
@@ -295,7 +298,7 @@ impl NGramCounter {
 
     /// Get the results as a sorted list of WordFollowEntry
     pub fn get_entries(&self) -> Vec<WordFollowEntry> {
-        convert_to_entries(&self.prefix_map)
+        convert_to_entries(&self.previous_words_map)
     }
 
     /// Get the statistics collected during processing
@@ -427,9 +430,9 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
         tokens.extend(line_tokens);
     }
 
-    // Third pass: populate prefix field for each token (n-1 preceding kept tokens)
-    let prefix_size = n.saturating_sub(1);
-    if prefix_size > 0 {
+    // Third pass: populate previous_words field for each token (n-1 preceding kept tokens)
+    let context_size = n.saturating_sub(1);
+    if context_size > 0 {
         // Collect all kept token texts in order
         let kept_texts: Vec<String> = tokens
             .iter()
@@ -441,9 +444,10 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
         let mut kept_idx = 0usize;
         for token in &mut tokens {
             if token.keep {
-                // Get n-1 preceding kept tokens as prefix
-                if kept_idx >= prefix_size {
-                    token.prefix = kept_texts[kept_idx - prefix_size..kept_idx].to_vec();
+                // Get n-1 preceding kept tokens as the previous-words context
+                if kept_idx >= context_size {
+                    token.previous_words =
+                        kept_texts[kept_idx - context_size..kept_idx].to_vec();
                 }
                 kept_idx += 1;
             }
@@ -504,35 +508,35 @@ fn parse_frontmatter(frontmatter_raw: &str, n: usize) -> io::Result<Metadata> {
     })
 }
 
-/// Converts the internal N-gram HashMap representation to the required output format
+/// Converts the internal n-gram HashMap representation to the required output format
 fn convert_to_entries(
-    follow_map: &BTreeMap<Vec<String>, HashMap<String, usize>>,
+    previous_words_map: &BTreeMap<Vec<String>, HashMap<String, usize>>,
 ) -> Vec<WordFollowEntry> {
-    let mut entries: Vec<WordFollowEntry> = follow_map
+    let mut entries: Vec<WordFollowEntry> = previous_words_map
         .iter()
-        .map(|(prefix, followers)| {
-            let mut follower_entries: Vec<(String, usize)> = followers
+        .map(|(previous_words, next_word_counts)| {
+            let mut next_word_entries: Vec<(String, usize)> = next_word_counts
                 .iter()
                 .map(|(word, count)| (word.clone(), *count))
                 .collect();
-            // Sort followers by count (largest to smallest)
+            // Sort next-words by count (largest to smallest)
             // If counts are equal, then sort alphabetically by word (case-insensitive)
-            follower_entries.sort_by(|a, b| {
+            next_word_entries.sort_by(|a, b| {
                 b.1.cmp(&a.1)
                     .then_with(|| a.0.to_lowercase().cmp(&b.0.to_lowercase()))
             });
 
             WordFollowEntry {
-                prefix: prefix.clone(),
-                followers: follower_entries,
+                previous_words: previous_words.clone(),
+                next_words: next_word_entries,
             }
         })
         .collect();
 
-    // Sort entries by prefix case-insensitively
+    // Sort entries by previous-words case-insensitively
     entries.sort_by(|a, b| {
-        let a_lower: Vec<String> = a.prefix.iter().map(|s| s.to_lowercase()).collect();
-        let b_lower: Vec<String> = b.prefix.iter().map(|s| s.to_lowercase()).collect();
+        let a_lower: Vec<String> = a.previous_words.iter().map(|s| s.to_lowercase()).collect();
+        let b_lower: Vec<String> = b.previous_words.iter().map(|s| s.to_lowercase()).collect();
         a_lower.cmp(&b_lower)
     });
 
@@ -576,7 +580,7 @@ pub fn split_entries_into_books(
 }
 
 fn entry_weight(entry: &WordFollowEntry) -> usize {
-    let weight: usize = entry.followers.iter().map(|(_, count)| *count).sum();
+    let weight: usize = entry.next_words.iter().map(|(_, count)| *count).sum();
     weight.max(1)
 }
 
@@ -587,8 +591,8 @@ fn build_book(
 ) -> (String, Vec<WordFollowEntry>) {
     let book_entries: Vec<WordFollowEntry> = entries[start_idx..end_idx].to_vec();
 
-    let start_label = prefix_label(&book_entries[0]);
-    let end_label = prefix_label(&book_entries[book_entries.len() - 1]);
+    let start_label = previous_words_label(&book_entries[0]);
+    let end_label = previous_words_label(&book_entries[book_entries.len() - 1]);
 
     let book_name = if start_label == end_label {
         start_label
@@ -599,9 +603,9 @@ fn build_book(
     (book_name, book_entries)
 }
 
-fn prefix_label(entry: &WordFollowEntry) -> String {
+fn previous_words_label(entry: &WordFollowEntry) -> String {
     entry
-        .prefix
+        .previous_words
         .first()
         .and_then(|p| p.chars().next())
         .map(|c| c.to_ascii_uppercase().to_string())
@@ -616,46 +620,47 @@ pub fn save_to_json<P: AsRef<Path>>(
     stats: Option<&ProcessingStats>,
     raw: bool,
 ) -> io::Result<()> {
-    // Convert entries to the required format: ["joined prefix", total_count, ["follower", cumulative_count], ...]
+    // Convert entries to the required format:
+    // ["joined previous words", total_count, ["next word", cumulative_count], ...]
     let formatted_entries: Vec<Vec<serde_json::Value>> = entries
         .iter()
         .map(|entry| {
             let mut formatted_entry_json = Vec::new();
-            // First element is the joined prefix string
-            let prefix_str = entry.prefix.join(" ");
-            formatted_entry_json.push(serde_json::Value::String(prefix_str.clone()));
+            // First element is the joined previous-words string
+            let previous_words_str = entry.previous_words.join(" ");
+            formatted_entry_json.push(serde_json::Value::String(previous_words_str.clone()));
 
-            // Calculate the total sum of occurrences for all followers
-            let total_original_count: usize = entry.followers.iter().map(|(_, count)| count).sum();
+            // Calculate the total sum of next-word occurrences
+            let total_original_count: usize =
+                entry.next_words.iter().map(|(_, count)| count).sum();
 
-            // Followers are already sorted by count (largest to smallest) from convert_to_entries
-            // Get number of unique followers (no need to sort as we only need the count)
-            let _num_unique_followers = entry.followers.len();
+            // Next words are already sorted by count (largest to smallest) from convert_to_entries
+            let _num_unique_next_words = entry.next_words.len();
 
             // Calculate original cumulative counts
             let mut original_cumulative_counts = Vec::new();
             let mut running_sum = 0;
 
-            for (follower, count) in &entry.followers {
+            for (next_word, count) in &entry.next_words {
                 running_sum += count;
-                original_cumulative_counts.push((follower.clone(), running_sum));
+                original_cumulative_counts.push((next_word.clone(), running_sum));
             }
 
             // Determine scaling strategy and apply it
-            let (json_total_for_prefix, scaled_follower_values_json) = if total_original_count == 0
+            let (json_total_for_entry, scaled_next_word_values_json) = if total_original_count == 0
             {
-                // If there are no follower occurrences, total is 0, no follower data.
+                // No next-word occurrences: total is 0, no next-word data.
                 (serde_json::json!(0), Vec::new())
             } else if raw {
                 // Raw output mode - no scaling
                 let actual_json_total = serde_json::json!(total_original_count);
-                let followers_json_list: Vec<serde_json::Value> = original_cumulative_counts
+                let next_words_json_list: Vec<serde_json::Value> = original_cumulative_counts
                     .iter()
-                    .map(|(follower_word, original_cumul)| {
-                        serde_json::json!([follower_word, original_cumul])
+                    .map(|(next_word, original_cumul)| {
+                        serde_json::json!([next_word, original_cumul])
                     })
                     .collect();
-                (actual_json_total, followers_json_list)
+                (actual_json_total, next_words_json_list)
             } else {
                 // Always use 10^k-1 scaling for d10 (0-9 range on each die)
                 // k is the number of digits in total_original_count
@@ -666,19 +671,19 @@ pub fn save_to_json<P: AsRef<Path>>(
                 let actual_json_total = serde_json::json!(max_val_for_scaling);
                 let scaling_factor = max_val_for_scaling as f64 / total_original_count as f64;
 
-                let followers_json_list: Vec<serde_json::Value> = original_cumulative_counts
+                let next_words_json_list: Vec<serde_json::Value> = original_cumulative_counts
                     .iter()
-                    .map(|(follower_word, original_cumul)| {
+                    .map(|(next_word, original_cumul)| {
                         let scaled_cumul =
                             (*original_cumul as f64 * scaling_factor).round() as usize;
-                        serde_json::json!([follower_word, scaled_cumul])
+                        serde_json::json!([next_word, scaled_cumul])
                     })
                     .collect();
-                (actual_json_total, followers_json_list)
+                (actual_json_total, next_words_json_list)
             };
 
-            formatted_entry_json.push(json_total_for_prefix);
-            formatted_entry_json.extend(scaled_follower_values_json);
+            formatted_entry_json.push(json_total_for_entry);
+            formatted_entry_json.extend(scaled_next_word_values_json);
 
             formatted_entry_json
         })
@@ -701,7 +706,9 @@ pub fn save_to_json<P: AsRef<Path>>(
         let mut meta_map = serde_json::Map::new();
         meta_map.insert(
             "n".to_string(),
-            serde_json::Value::Number(serde_json::Number::from(entries[0].prefix.len() + 1)),
+            serde_json::Value::Number(serde_json::Number::from(
+                entries[0].previous_words.len() + 1,
+            )),
         );
         output.insert("metadata".to_string(), serde_json::Value::Object(meta_map));
     }
@@ -724,19 +731,19 @@ pub fn render_bigram_tsv(entries: &[WordFollowEntry]) -> Result<String, String> 
     let mut matrix: BTreeMap<String, HashMap<String, usize>> = BTreeMap::new();
 
     for entry in entries {
-        if entry.prefix.len() != 1 {
+        if entry.previous_words.len() != 1 {
             return Err("TSV export only supports bigrams (n=2)".to_string());
         }
 
-        let prefix = entry.prefix[0].clone();
-        vocab.insert(prefix.clone());
+        let previous_word = entry.previous_words[0].clone();
+        vocab.insert(previous_word.clone());
 
-        for (follower, count) in &entry.followers {
-            vocab.insert(follower.clone());
+        for (next_word, count) in &entry.next_words {
+            vocab.insert(next_word.clone());
             matrix
-                .entry(prefix.clone())
+                .entry(previous_word.clone())
                 .or_default()
-                .insert(follower.clone(), *count);
+                .insert(next_word.clone(), *count);
         }
     }
 
@@ -778,8 +785,8 @@ mod tests {
     use tempfile::NamedTempFile;
 
     #[test]
-    fn test_follower_sort_order() {
-        // Test the sorting of followers by count (largest to smallest)
+    fn test_next_word_sort_order() {
+        // Test the sorting of next-words by count (largest to smallest)
         let mut counter = NGramCounter::new(2, vec![',', '.']);
         counter.process_line("the cat sat on the mat and the cat ate");
 
@@ -787,69 +794,69 @@ mod tests {
         let entries = counter.get_entries();
 
         // Find entry for "the"
-        let the_entry = entries.iter().find(|e| e.prefix == vec!["the"]).unwrap();
+        let the_entry = entries.iter().find(|e| e.previous_words == vec!["the"]).unwrap();
 
-        // Check that followers are sorted by count (largest to smallest)
-        assert_eq!(the_entry.followers[0].0, "cat"); // "cat" should be first (count = 2)
-        assert_eq!(the_entry.followers[0].1, 2);
-        assert_eq!(the_entry.followers[1].0, "mat"); // "mat" should be second (count = 1)
-        assert_eq!(the_entry.followers[1].1, 1);
+        // Check that next-words are sorted by count (largest to smallest)
+        assert_eq!(the_entry.next_words[0].0, "cat"); // "cat" should be first (count = 2)
+        assert_eq!(the_entry.next_words[0].1, 2);
+        assert_eq!(the_entry.next_words[1].0, "mat"); // "mat" should be second (count = 1)
+        assert_eq!(the_entry.next_words[1].1, 1);
 
         // Test equal counts with alphabetical tiebreaker
         let mut counter2 = NGramCounter::new(2, vec![',', '.']);
         counter2.process_line("he no test he yes test");
 
         let entries2 = counter2.get_entries();
-        let he_entry = entries2.iter().find(|e| e.prefix == vec!["he"]).unwrap();
+        let he_entry = entries2.iter().find(|e| e.previous_words == vec!["he"]).unwrap();
 
-        // Both followers have count 1, so should be sorted alphabetically
-        assert_eq!(he_entry.followers[0].0, "no"); // "no" comes before "yes" alphabetically
-        assert_eq!(he_entry.followers[0].1, 1);
-        assert_eq!(he_entry.followers[1].0, "yes");
-        assert_eq!(he_entry.followers[1].1, 1);
+        // Both next-words have count 1, so should be sorted alphabetically
+        assert_eq!(he_entry.next_words[0].0, "no"); // "no" comes before "yes" alphabetically
+        assert_eq!(he_entry.next_words[0].1, 1);
+        assert_eq!(he_entry.next_words[1].0, "yes");
+        assert_eq!(he_entry.next_words[1].1, 1);
     }
 
     // Tokenization-specific tests live alongside the normalizer in text.rs
 
     #[test]
-    fn test_prefix_case_insensitive_sort_order() {
-        // Test that prefixes are sorted case-insensitively
+    fn test_previous_words_case_insensitive_sort_order() {
+        // Test that previous-words contexts are sorted case-insensitively
         // Without case-insensitive sorting, uppercase letters sort before lowercase
         // (e.g., "Z" < "a" in ASCII), which would put "Zebra" before "apple"
         let mut counter = NGramCounter::new(2, vec![',', '.']);
-        // Process text with mixed case prefixes that would sort differently
+        // Process text with mixed case previous-words that would sort differently
         // if case-sensitive: ASCII order would be "Apple", "Zebra", "apple", "banana"
         // Case-insensitive order should be: "apple", "Apple", "banana", "Zebra"
         // (or "Apple", "apple" depending on stable sort, but both "apple" variants before "banana")
         counter.process_line("Apple pie. Zebra stripes. apple tart. banana split.");
 
         let entries = counter.get_entries();
-        let prefixes: Vec<&str> = entries.iter().map(|e| e.prefix[0].as_str()).collect();
+        let previous_words_list: Vec<&str> = entries.iter().map(|e| e.previous_words[0].as_str()).collect();
 
         // Verify case-insensitive ordering: all "a" words before "b" words before "z" words
-        // Find positions of each prefix type
-        let apple_pos = prefixes.iter().position(|&p| p.to_lowercase() == "apple");
-        let banana_pos = prefixes.iter().position(|&p| p.to_lowercase() == "banana");
-        let zebra_pos = prefixes.iter().position(|&p| p.to_lowercase() == "zebra");
+        // Find positions of each previous-words variant
+        let apple_pos = previous_words_list.iter().position(|&p| p.to_lowercase() == "apple");
+        let banana_pos = previous_words_list.iter().position(|&p| p.to_lowercase() == "banana");
+        let zebra_pos = previous_words_list.iter().position(|&p| p.to_lowercase() == "zebra");
 
         assert!(
             apple_pos.is_some(),
-            "Should have apple/Apple prefix, got: {:?}",
-            prefixes
+            "Should have apple/Apple previous-words, got: {:?}",
+            previous_words_list
         );
         assert!(
             banana_pos.is_some(),
-            "Should have banana prefix, got: {:?}",
-            prefixes
+            "Should have banana previous-words, got: {:?}",
+            previous_words_list
         );
         assert!(
             zebra_pos.is_some(),
-            "Should have zebra/Zebra prefix, got: {:?}",
-            prefixes
+            "Should have zebra/Zebra previous-words, got: {:?}",
+            previous_words_list
         );
 
         // All apple variants should come before banana
-        let apple_positions: Vec<usize> = prefixes
+        let apple_positions: Vec<usize> = previous_words_list
             .iter()
             .enumerate()
             .filter(|&(_, p)| p.to_lowercase() == "apple")
@@ -904,7 +911,7 @@ mod tests {
         // Note: "Number123" is filtered entirely because it starts with a digit after Number is removed
         // Wait, actually the tokenizer strips digits, so "Number123" becomes "Number" which is valid
         // Expected tokens: "Hello", "world", ".", "Hello", "again", "world", "Number", "will", "be", "ignored", "."
-        // Expected unique prefixes (n-1=1):
+        // Expected unique previous-words contexts (n-1=1):
         // "Hello" -> "world" (1), "again" (1)
         // "world" -> "." (1), "Number" (1)
         // "." -> "Hello" (1)
@@ -913,47 +920,47 @@ mod tests {
         // "will" -> "be" (1)
         // "be" -> "ignored" (1)
         // "ignored" -> "." (1)
-        // Total 8 unique prefixes
+        // Total 8 unique previous-words contexts
         assert_eq!(
             entries.len(),
             8,
-            "Expected 8 unique bigram prefixes. Got: {:?}",
+            "Expected 8 unique bigram previous-words contexts. Got: {:?}",
             entries
         );
 
         // "Hello" appears consistently capitalised, so stays "Hello"
         let hello_entry = entries
             .iter()
-            .find(|e| e.prefix == vec!["Hello".to_string()])
+            .find(|e| e.previous_words == vec!["Hello".to_string()])
             .expect("Prefix ['Hello'] not found in entries");
         assert_eq!(
-            hello_entry.followers.len(),
+            hello_entry.next_words.len(),
             2,
-            "Expected 'Hello' to have 2 followers"
+            "Expected 'Hello' to have 2 next-words"
         );
         // Followers are sorted by count (desc), then alphabetically (asc). Here counts are equal.
         assert_eq!(
-            hello_entry.followers[0],
+            hello_entry.next_words[0],
             ("again".to_string(), 1),
             "Follower of 'Hello' should include 'again'"
         );
 
-        // Check prefix ["world"]
+        // Check previous-words ["world"]
         // "world" appears twice: "Hello world." and "again world!"
         // Since "!" is not preserved, second "world" is followed by "Number"
         let world_entry = entries
             .iter()
-            .find(|e| e.prefix == vec!["world".to_string()])
+            .find(|e| e.previous_words == vec!["world".to_string()])
             .expect("Prefix ['world'] not found in entries");
         assert_eq!(
-            world_entry.followers.len(),
+            world_entry.next_words.len(),
             2,
-            "Expected 'world' to have 2 followers, got: {:?}",
-            world_entry.followers
+            "Expected 'world' to have 2 next-words, got: {:?}",
+            world_entry.next_words
         );
         assert!(
             world_entry
-                .followers
+                .next_words
                 .iter()
                 .any(|(word, count)| word == "." && *count == 1),
             "Expected 'world' to be followed by '.'"
@@ -961,7 +968,7 @@ mod tests {
         // "Number" appears consistently capitalised, so stays "Number"
         assert!(
             world_entry
-                .followers
+                .next_words
                 .iter()
                 .any(|(word, count)| word == "Number" && *count == 1),
             "Expected 'world' to be followed by 'Number'"
@@ -970,13 +977,13 @@ mod tests {
         assert!(
             entries
                 .iter()
-                .any(|e| e.prefix == vec!["again".to_string()])
+                .any(|e| e.previous_words == vec!["again".to_string()])
         );
         // "Number" appears consistently capitalised
         assert!(
             entries
                 .iter()
-                .any(|e| e.prefix == vec!["Number".to_string()])
+                .any(|e| e.previous_words == vec!["Number".to_string()])
         );
 
         // Check stats
@@ -986,7 +993,7 @@ mod tests {
         );
         assert_eq!(
             stats.unique_ngrams, 8,
-            "Expected 8 unique prefixes: Hello, world, ., again, Number, will, be, ignored"
+            "Expected 8 unique previous-words contexts: Hello, world, ., again, Number, will, be, ignored"
         );
         assert_eq!(
             stats.total_ngram_occurrences, 10,
@@ -1022,33 +1029,33 @@ mod tests {
         // Process with n=3 for trigrams
         let (entries, stats, metadata) = process_file(&path, 3)?;
 
-        // For n=3, each prefix is 2 words
+        // For n=3, each previous-words context is 2 words
         // Expected trigrams: [the, quick] -> brown, [quick, brown] -> fox, etc.
         assert!(!entries.is_empty());
 
-        // Check specific prefixes
+        // Check specific previous-words contexts
         let the_quick_entry = entries
             .iter()
-            .find(|e| e.prefix == vec!["the".to_string(), "quick".to_string()]);
+            .find(|e| e.previous_words == vec!["the".to_string(), "quick".to_string()]);
         assert!(
             the_quick_entry.is_some(),
-            "Expected prefix ['the', 'quick'] not found"
+            "Expected previous-words ['the', 'quick'] not found"
         );
         let the_quick_entry = the_quick_entry.unwrap();
-        assert_eq!(the_quick_entry.followers.len(), 1);
-        assert_eq!(the_quick_entry.followers[0], ("brown".to_string(), 1));
+        assert_eq!(the_quick_entry.next_words.len(), 1);
+        assert_eq!(the_quick_entry.next_words[0], ("brown".to_string(), 1));
 
-        // Check prefix [quick, brown]
+        // Check previous-words [quick, brown]
         let quick_brown_entry = entries
             .iter()
-            .find(|e| e.prefix == vec!["quick".to_string(), "brown".to_string()]);
+            .find(|e| e.previous_words == vec!["quick".to_string(), "brown".to_string()]);
         assert!(
             quick_brown_entry.is_some(),
-            "Expected prefix ['quick', 'brown'] not found"
+            "Expected previous-words ['quick', 'brown'] not found"
         );
         let quick_brown_entry = quick_brown_entry.unwrap();
-        assert_eq!(quick_brown_entry.followers.len(), 1);
-        assert_eq!(quick_brown_entry.followers[0], ("fox".to_string(), 1));
+        assert_eq!(quick_brown_entry.next_words.len(), 1);
+        assert_eq!(quick_brown_entry.next_words[0], ("fox".to_string(), 1));
 
         // Check that we have stats
         assert_eq!(stats.total_tokens, 9); // the, quick, brown, fox, jumps, over, the, lazy, dog
@@ -1067,17 +1074,17 @@ mod tests {
 
     #[test]
     fn test_save_to_json_bigrams() -> io::Result<()> {
-        // Example data for bigrams (n=2, prefix size = 1)
+        // Example data for bigrams (n=2, context size = 1)
         // Followers should be pre-sorted as `convert_to_entries` would do:
-        // "hello" -> followers: ("world", 2), ("again", 1) -- this order is correct based on count.
+        // "hello" -> next-words: ("world", 2), ("again", 1) -- this order is correct based on count.
         let entries = vec![
             WordFollowEntry {
-                prefix: vec!["hello".to_string()],
-                followers: vec![("world".to_string(), 2), ("again".to_string(), 1)],
+                previous_words: vec!["hello".to_string()],
+                next_words: vec![("world".to_string(), 2), ("again".to_string(), 1)],
             },
             WordFollowEntry {
-                prefix: vec!["world".to_string()],
-                followers: vec![("hello".to_string(), 1)],
+                previous_words: vec!["world".to_string()],
+                next_words: vec![("hello".to_string(), 1)],
             },
         ];
 
@@ -1134,15 +1141,15 @@ mod tests {
 
     #[test]
     fn test_save_to_json_trigrams() -> io::Result<()> {
-        // Example data for trigrams (n=3, prefix size = 2)
+        // Example data for trigrams (n=3, context size = 2)
         let entries = vec![
             WordFollowEntry {
-                prefix: vec!["the".to_string(), "quick".to_string()],
-                followers: vec![("brown".to_string(), 1)], // 1 unique follower
+                previous_words: vec!["the".to_string(), "quick".to_string()],
+                next_words: vec![("brown".to_string(), 1)], // 1 unique next-word
             },
             WordFollowEntry {
-                prefix: vec!["quick".to_string(), "brown".to_string()],
-                followers: vec![("fox".to_string(), 1)], // 1 unique follower
+                previous_words: vec!["quick".to_string(), "brown".to_string()],
+                next_words: vec![("fox".to_string(), 1)], // 1 unique next-word
             },
         ];
 
@@ -1197,13 +1204,13 @@ mod tests {
 
     #[test]
     fn test_save_to_json_cumulative_counts() -> io::Result<()> {
-        // Test data with multiple followers having different counts
-        // Prefix "the": followers dog(5), cat(3), bird(2) - sorted by count from largest to smallest
-        // Total original = 10. 3 unique followers.
+        // Test data with multiple next-words having different counts
+        // Previous-words "the": next-words dog(5), cat(3), bird(2) - sorted by count from largest to smallest
+        // Total original = 10. 3 unique next-words.
         // Original cumulative: dog:5, cat:8, bird:10
         let entries = vec![WordFollowEntry {
-            prefix: vec!["the".to_string()],
-            followers: vec![
+            previous_words: vec!["the".to_string()],
+            next_words: vec![
                 ("dog".to_string(), 5),
                 ("cat".to_string(), 3),
                 ("bird".to_string(), 2),
@@ -1275,16 +1282,16 @@ mod tests {
         // Create test entries with known counts
         let entries = vec![
             WordFollowEntry {
-                prefix: vec!["the".to_string()],
-                followers: vec![
+                previous_words: vec!["the".to_string()],
+                next_words: vec![
                     ("dog".to_string(), 3),
                     ("cat".to_string(), 2),
                     ("bird".to_string(), 1),
                 ],
             },
             WordFollowEntry {
-                prefix: vec!["a".to_string()],
-                followers: vec![("house".to_string(), 5), ("tree".to_string(), 4)],
+                previous_words: vec!["a".to_string()],
+                next_words: vec![("house".to_string(), 5), ("tree".to_string(), 4)],
             },
         ];
 
@@ -1338,8 +1345,8 @@ mod tests {
 
         // Create test entries
         let entries = vec![WordFollowEntry {
-            prefix: vec!["test".to_string()],
-            followers: vec![
+            previous_words: vec!["test".to_string()],
+            next_words: vec![
                 ("word1".to_string(), 10),
                 ("word2".to_string(), 8),
                 ("word3".to_string(), 7),
@@ -1391,39 +1398,39 @@ mod tests {
 
     #[test]
     fn test_split_entries_into_books() {
-        // Create test entries with various prefixes
+        // Create test entries with various previous-words
         let entries = vec![
             WordFollowEntry {
-                prefix: vec!["apple".to_string()],
-                followers: vec![("pie".to_string(), 3), ("juice".to_string(), 2)],
+                previous_words: vec!["apple".to_string()],
+                next_words: vec![("pie".to_string(), 3), ("juice".to_string(), 2)],
             },
             WordFollowEntry {
-                prefix: vec!["banana".to_string()],
-                followers: vec![("split".to_string(), 1)],
+                previous_words: vec!["banana".to_string()],
+                next_words: vec![("split".to_string(), 1)],
             },
             WordFollowEntry {
-                prefix: vec!["cherry".to_string()],
-                followers: vec![("pie".to_string(), 2)],
+                previous_words: vec!["cherry".to_string()],
+                next_words: vec![("pie".to_string(), 2)],
             },
             WordFollowEntry {
-                prefix: vec!["date".to_string()],
-                followers: vec![("palm".to_string(), 1)],
+                previous_words: vec!["date".to_string()],
+                next_words: vec![("palm".to_string(), 1)],
             },
             WordFollowEntry {
-                prefix: vec!["elderberry".to_string()],
-                followers: vec![("wine".to_string(), 1)],
+                previous_words: vec!["elderberry".to_string()],
+                next_words: vec![("wine".to_string(), 1)],
             },
             WordFollowEntry {
-                prefix: vec!["fig".to_string()],
-                followers: vec![("tree".to_string(), 2)],
+                previous_words: vec!["fig".to_string()],
+                next_words: vec![("tree".to_string(), 2)],
             },
             WordFollowEntry {
-                prefix: vec!["grape".to_string()],
-                followers: vec![("vine".to_string(), 3), ("juice".to_string(), 1)],
+                previous_words: vec!["grape".to_string()],
+                next_words: vec![("vine".to_string(), 3), ("juice".to_string(), 1)],
             },
             WordFollowEntry {
-                prefix: vec!["honeydew".to_string()],
-                followers: vec![("melon".to_string(), 1)],
+                previous_words: vec!["honeydew".to_string()],
+                next_words: vec![("melon".to_string(), 1)],
             },
         ];
 
@@ -1450,34 +1457,34 @@ mod tests {
         for book in &books {
             for entry in &book.1 {
                 // Check that each entry appears in original list
-                assert!(entries.iter().any(|e| e.prefix == entry.prefix));
+                assert!(entries.iter().any(|e| e.previous_words == entry.previous_words));
             }
         }
     }
 
     #[test]
     fn test_split_entries_balanced() {
-        // Create entries with uneven distribution of followers
+        // Create entries with uneven distribution of next-words
         let entries = vec![
             WordFollowEntry {
-                prefix: vec!["a".to_string()],
-                followers: vec![("x".to_string(), 100)], // Heavy entry
+                previous_words: vec!["a".to_string()],
+                next_words: vec![("x".to_string(), 100)], // Heavy entry
             },
             WordFollowEntry {
-                prefix: vec!["b".to_string()],
-                followers: vec![("y".to_string(), 1)],
+                previous_words: vec!["b".to_string()],
+                next_words: vec![("y".to_string(), 1)],
             },
             WordFollowEntry {
-                prefix: vec!["c".to_string()],
-                followers: vec![("z".to_string(), 1)],
+                previous_words: vec!["c".to_string()],
+                next_words: vec![("z".to_string(), 1)],
             },
             WordFollowEntry {
-                prefix: vec!["d".to_string()],
-                followers: vec![("w".to_string(), 100)], // Heavy entry
+                previous_words: vec!["d".to_string()],
+                next_words: vec![("w".to_string(), 100)], // Heavy entry
             },
         ];
 
-        // Split into 2 books - should balance by follower count
+        // Split into 2 books - should balance by next-word count
         let books = split_entries_into_books(&entries, 2);
 
         // Debug output
@@ -1521,12 +1528,12 @@ mod tests {
         // Check if Sally is preserved as capitalised
         let sally_entry = entries
             .iter()
-            .find(|e| e.prefix[0].to_lowercase() == "sally");
+            .find(|e| e.previous_words[0].to_lowercase() == "sally");
 
         assert!(sally_entry.is_some(), "Should have Sally entry");
         let sally_entry = sally_entry.unwrap();
         assert_eq!(
-            sally_entry.prefix[0], "Sally",
+            sally_entry.previous_words[0], "Sally",
             "Sally should remain capitalised when consistent"
         );
 
@@ -1555,12 +1562,12 @@ mod tests {
         // Check if hello is normalised to lowercase
         let hello_entry = entries
             .iter()
-            .find(|e| e.prefix[0].to_lowercase() == "hello");
+            .find(|e| e.previous_words[0].to_lowercase() == "hello");
 
         assert!(hello_entry.is_some(), "Should have hello entry");
         let hello_entry = hello_entry.unwrap();
         assert_eq!(
-            hello_entry.prefix[0], "hello",
+            hello_entry.previous_words[0], "hello",
             "Mixed case 'Hello/hello' should normalise to lowercase"
         );
 
@@ -1587,12 +1594,12 @@ mod tests {
         let (entries, _stats, _metadata) = process_file(&path, 2)?;
 
         // Check that "I" is preserved as uppercase
-        let i_entry = entries.iter().find(|e| e.prefix[0].to_lowercase() == "i");
+        let i_entry = entries.iter().find(|e| e.previous_words[0].to_lowercase() == "i");
 
         assert!(i_entry.is_some(), "Should have I entry");
         let i_entry = i_entry.unwrap();
         assert_eq!(
-            i_entry.prefix[0], "I",
+            i_entry.previous_words[0], "I",
             "'I' should always be uppercase (allowlist)"
         );
 
@@ -1620,12 +1627,12 @@ mod tests {
 
         let nasa_entry = entries
             .iter()
-            .find(|e| e.prefix[0].to_lowercase() == "nasa");
+            .find(|e| e.previous_words[0].to_lowercase() == "nasa");
 
         assert!(nasa_entry.is_some(), "Should have NASA entry");
         let nasa_entry = nasa_entry.unwrap();
         assert_eq!(
-            nasa_entry.prefix[0], "NASA",
+            nasa_entry.previous_words[0], "NASA",
             "NASA should remain uppercase when consistent"
         );
 
@@ -1635,7 +1642,7 @@ mod tests {
     // Cutouts n-gram tests
 
     #[test]
-    fn test_cutouts_bigram_prefixes() -> io::Result<()> {
+    fn test_cutouts_bigram_previous_words() -> io::Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
@@ -1655,27 +1662,27 @@ mod tests {
         assert_eq!(metadata.title, "Test Cutouts");
         assert_eq!(tokens.len(), 4);
 
-        // First token has no prefix (bigram needs 1 preceding token)
+        // First token has no previous-words (bigram needs 1 preceding token)
         assert_eq!(tokens[0].text, "one");
-        assert!(tokens[0].prefix.is_empty());
+        assert!(tokens[0].previous_words.is_empty());
 
-        // Second token has prefix ["one"]
+        // Second token has previous-words ["one"]
         assert_eq!(tokens[1].text, "two");
-        assert_eq!(tokens[1].prefix, vec!["one"]);
+        assert_eq!(tokens[1].previous_words, vec!["one"]);
 
-        // Third token has prefix ["two"]
+        // Third token has previous-words ["two"]
         assert_eq!(tokens[2].text, "three");
-        assert_eq!(tokens[2].prefix, vec!["two"]);
+        assert_eq!(tokens[2].previous_words, vec!["two"]);
 
-        // Fourth token has prefix ["three"]
+        // Fourth token has previous-words ["three"]
         assert_eq!(tokens[3].text, "four");
-        assert_eq!(tokens[3].prefix, vec!["three"]);
+        assert_eq!(tokens[3].previous_words, vec!["three"]);
 
         Ok(())
     }
 
     #[test]
-    fn test_cutouts_trigram_prefixes() -> io::Result<()> {
+    fn test_cutouts_trigram_previous_words() -> io::Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
@@ -1694,30 +1701,30 @@ mod tests {
 
         assert_eq!(tokens.len(), 5);
 
-        // First two tokens have no prefix (trigram needs 2 preceding tokens)
+        // First two tokens have no previous-words (trigram needs 2 preceding tokens)
         assert_eq!(tokens[0].text, "one");
-        assert!(tokens[0].prefix.is_empty());
+        assert!(tokens[0].previous_words.is_empty());
 
         assert_eq!(tokens[1].text, "two");
-        assert!(tokens[1].prefix.is_empty());
+        assert!(tokens[1].previous_words.is_empty());
 
-        // Third token has prefix ["one", "two"]
+        // Third token has previous-words ["one", "two"]
         assert_eq!(tokens[2].text, "three");
-        assert_eq!(tokens[2].prefix, vec!["one", "two"]);
+        assert_eq!(tokens[2].previous_words, vec!["one", "two"]);
 
-        // Fourth token has prefix ["two", "three"]
+        // Fourth token has previous-words ["two", "three"]
         assert_eq!(tokens[3].text, "four");
-        assert_eq!(tokens[3].prefix, vec!["two", "three"]);
+        assert_eq!(tokens[3].previous_words, vec!["two", "three"]);
 
-        // Fifth token has prefix ["three", "four"]
+        // Fifth token has previous-words ["three", "four"]
         assert_eq!(tokens[4].text, "five");
-        assert_eq!(tokens[4].prefix, vec!["three", "four"]);
+        assert_eq!(tokens[4].previous_words, vec!["three", "four"]);
 
         Ok(())
     }
 
     #[test]
-    fn test_cutouts_fourgram_prefixes() -> io::Result<()> {
+    fn test_cutouts_fourgram_previous_words() -> io::Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
@@ -1736,28 +1743,28 @@ mod tests {
 
         assert_eq!(tokens.len(), 6);
 
-        // First three tokens have no prefix (4-gram needs 3 preceding tokens)
-        assert!(tokens[0].prefix.is_empty());
-        assert!(tokens[1].prefix.is_empty());
-        assert!(tokens[2].prefix.is_empty());
+        // First three tokens have no previous-words (4-gram needs 3 preceding tokens)
+        assert!(tokens[0].previous_words.is_empty());
+        assert!(tokens[1].previous_words.is_empty());
+        assert!(tokens[2].previous_words.is_empty());
 
-        // Fourth token has prefix ["a", "b", "c"]
+        // Fourth token has previous-words ["a", "b", "c"]
         assert_eq!(tokens[3].text, "d");
-        assert_eq!(tokens[3].prefix, vec!["a", "b", "c"]);
+        assert_eq!(tokens[3].previous_words, vec!["a", "b", "c"]);
 
-        // Fifth token has prefix ["b", "c", "d"]
+        // Fifth token has previous-words ["b", "c", "d"]
         assert_eq!(tokens[4].text, "e");
-        assert_eq!(tokens[4].prefix, vec!["b", "c", "d"]);
+        assert_eq!(tokens[4].previous_words, vec!["b", "c", "d"]);
 
-        // Sixth token has prefix ["c", "d", "e"]
+        // Sixth token has previous-words ["c", "d", "e"]
         assert_eq!(tokens[5].text, "f");
-        assert_eq!(tokens[5].prefix, vec!["c", "d", "e"]);
+        assert_eq!(tokens[5].previous_words, vec!["c", "d", "e"]);
 
         Ok(())
     }
 
     #[test]
-    fn test_cutouts_prefix_skips_discarded_tokens() -> io::Result<()> {
+    fn test_cutouts_previous_words_skips_discarded_tokens() -> io::Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
@@ -1778,31 +1785,31 @@ mod tests {
         // Tokens: chapter (keep), IV (discard), begins (keep), here (keep)
         assert_eq!(tokens.len(), 4);
 
-        // chapter has no prefix
+        // chapter has no previous-words
         assert_eq!(tokens[0].text, "chapter");
         assert!(tokens[0].keep);
-        assert!(tokens[0].prefix.is_empty());
+        assert!(tokens[0].previous_words.is_empty());
 
-        // IV is discarded - no prefix
+        // IV is discarded - no previous-words
         assert_eq!(tokens[1].text, "IV");
         assert!(!tokens[1].keep);
-        assert!(tokens[1].prefix.is_empty());
+        assert!(tokens[1].previous_words.is_empty());
 
-        // begins has prefix ["chapter"] - skips discarded IV
+        // begins has previous-words ["chapter"] - skips discarded IV
         assert_eq!(tokens[2].text, "begins");
         assert!(tokens[2].keep);
-        assert_eq!(tokens[2].prefix, vec!["chapter"]);
+        assert_eq!(tokens[2].previous_words, vec!["chapter"]);
 
-        // here has prefix ["begins"]
+        // here has previous-words ["begins"]
         assert_eq!(tokens[3].text, "here");
         assert!(tokens[3].keep);
-        assert_eq!(tokens[3].prefix, vec!["begins"]);
+        assert_eq!(tokens[3].previous_words, vec!["begins"]);
 
         Ok(())
     }
 
     #[test]
-    fn test_cutouts_prefix_with_punctuation() -> io::Result<()> {
+    fn test_cutouts_previous_words_with_punctuation() -> io::Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
@@ -1822,25 +1829,25 @@ mod tests {
         // Tokens: hello, comma, world, period, yes
         assert_eq!(tokens.len(), 5);
 
-        // hello has no prefix
+        // hello has no previous-words
         assert_eq!(tokens[0].text, "hello");
-        assert!(tokens[0].prefix.is_empty());
+        assert!(tokens[0].previous_words.is_empty());
 
-        // comma has prefix ["hello"]
+        // comma has previous-words ["hello"]
         assert_eq!(tokens[1].text, ",");
-        assert_eq!(tokens[1].prefix, vec!["hello"]);
+        assert_eq!(tokens[1].previous_words, vec!["hello"]);
 
-        // world has prefix [","]
+        // world has previous-words [","]
         assert_eq!(tokens[2].text, "world");
-        assert_eq!(tokens[2].prefix, vec![","]);
+        assert_eq!(tokens[2].previous_words, vec![","]);
 
-        // period has prefix ["world"]
+        // period has previous-words ["world"]
         assert_eq!(tokens[3].text, ".");
-        assert_eq!(tokens[3].prefix, vec!["world"]);
+        assert_eq!(tokens[3].previous_words, vec!["world"]);
 
-        // yes has prefix ["."]
+        // yes has previous-words ["."]
         assert_eq!(tokens[4].text, "yes");
-        assert_eq!(tokens[4].prefix, vec!["."]);
+        assert_eq!(tokens[4].previous_words, vec!["."]);
 
         Ok(())
     }
@@ -1898,8 +1905,8 @@ mod tests {
         {
             let mut file = File::create(&path)?;
             writeln!(file, "---\ntitle: T\nauthor: A\nurl: https://x.com\n---")?;
-            // "go" has 2 equally-likely followers (left, right) -> H = 1.0 bit
-            // "left" and "right" each have 1 deterministic follower -> H = 0.0
+            // "go" has 2 equally-likely next-words (left, right) -> H = 1.0 bit
+            // "left" and "right" each have 1 deterministic next-word -> H = 0.0
             // Bigrams: go→left, left→go, go→right, right→go (4 total)
             // Weighted: (2/4)*1.0 + (1/4)*0.0 + (1/4)*0.0 = 0.5
             writeln!(file, "go left go right")?;
@@ -1907,8 +1914,8 @@ mod tests {
         }
         let (_entries, stats, _meta) = process_file(&path, 2)?;
 
-        // "go" prefix: 2 bigrams, entropy 1.0 bit, weight 2/3
-        // "left" prefix: 1 bigram, entropy 0.0 bit, weight 1/3
+        // "go" context: 2 bigrams, entropy 1.0 bit, weight 2/3
+        // "left" context: 1 bigram, entropy 0.0 bit, weight 1/3
         // Weighted: (2/3)*1.0 + (1/3)*0.0 = 0.667
         // But "right" is last word so only 3 bigrams total: go→left, left→go, go→right
         let expected = 2.0 / 3.0;
@@ -1992,7 +1999,7 @@ mod tests {
 
         assert!(
             cutouts_meta.entropy > 0.0,
-            "Cutouts entropy should be positive for text with repeated prefixes"
+            "Cutouts entropy should be positive for text with repeated previous-words"
         );
         assert!(
             cutouts_meta.perplexity > 1.0,

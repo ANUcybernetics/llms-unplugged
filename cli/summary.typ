@@ -41,20 +41,20 @@
   if ngram_data == none {
     "N/A"
   } else {
-    let prefix_parts = ngram_data.at(0).map(p => raw(p)).join(" ")
-    let follower = ngram_data.at(1)
+    let previous_words_parts = ngram_data.at(0).map(p => raw(p)).join(" ")
+    let next_word = ngram_data.at(1)
     let count = ngram_data.at(2)
-    [#prefix_parts → #raw(follower) (#count)]
+    [#previous_words_parts → #raw(next_word) (#count)]
   }
 }
 
-#let format-prefix(prefix_data) = {
-  if prefix_data == none {
+#let format-previous-words(previous_words_data) = {
+  if previous_words_data == none {
     "N/A"
   } else {
-    let prefix_parts = prefix_data.at(0).map(p => raw(p)).join(" ")
-    let count = prefix_data.at(1)
-    [#prefix_parts (#count)]
+    let previous_words_parts = previous_words_data.at(0).map(p => raw(p)).join(" ")
+    let count = previous_words_data.at(1)
+    [#previous_words_parts (#count)]
   }
 }
 
@@ -64,18 +64,18 @@
     [*Title*],
     [*Type*],
     align(right, [*Total Tokens*]),
-    align(right, [*Unique Prefixes*]),
+    align(right, [*Unique Previous-Words*]),
     [*Most Common N-gram*],
-    [*Prefix with Most Followers*],
+    [*Previous-Words with Most Next-Words*],
   ),
   ..summary_data
     .map(entry => (
       entry.title,
       model-type(entry.n),
       align(right, format-number(entry.total_tokens)),
-      align(right, format-number(entry.unique_prefixes)),
+      align(right, format-number(entry.unique_previous_words)),
       format-ngram(entry.most_common_ngram),
-      format-prefix(entry.most_popular_prefix),
+      format-previous-words(entry.most_popular_previous_words),
     ))
     .flatten(),
 )

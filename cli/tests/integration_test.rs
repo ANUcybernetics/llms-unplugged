@@ -363,7 +363,7 @@ fn test_cli_raw_flag() -> io::Result<()> {
     let data_raw = json_raw.get("data").unwrap().as_array().unwrap();
     let data_scaled = json_scaled.get("data").unwrap().as_array().unwrap();
 
-    // Find "The" prefix in both outputs (capitalised because it appears consistently)
+    // Find "The" previous-word in both outputs (capitalised because it appears consistently)
     let mut the_raw_total = None;
     let mut the_scaled_total = None;
 
@@ -526,54 +526,54 @@ fn test_cli_end_to_end() -> io::Result<()> {
     assert!(metadata.get("n").is_some(), "Metadata should have n");
 
     // --- Verification for N-gram structure, normalization, and filtering (using json_output as representative) ---
-    // This part primarily checks tokenization, prefix/follower structure, sorting - which should be consistent.
+    // This part primarily checks tokenization, previous-word/next-word structure, sorting - which should be consistent.
     // Specific count values will be checked later for each scaling case.
-    let mut found_prefix_the = false;
-    let mut found_prefix_quick = false;
-    let mut found_invalid_chars_word = false; // Flag if any word (prefix or follower) has invalid chars
+    let mut found_previous_word_the = false;
+    let mut found_previous_word_quick = false;
+    let mut found_invalid_chars_word = false; // Flag if any word (previous or next) has invalid chars
     let mut the_followed_by_quick_count = 0;
     let mut _quick_followed_by_brown_count = 0;
 
     // Get the data array from the restructured JSON
     let _data_no_scale_arg = json_output.get("data").unwrap().as_array().unwrap();
 
-    // Verify structure (each entry should be an array: [prefix_array, follower_pair, ...])
+    // Verify structure (each entry should be an array: [previous_words_array, next_word_pair, ...])
     // Using json_output for general structure checks
     let data_arr_no_scale = json_output.get("data").unwrap().as_array().unwrap();
     for entry in data_arr_no_scale {
         let entry_arr = entry.as_array().unwrap();
         assert!(
             entry_arr.len() >= 2,
-            "Entry should have at least a prefix array and one follower pair: {:?}",
+            "Entry should have at least a previous-words array and one next-word pair: {:?}",
             entry
         );
 
-        // Verify prefix string
-        let prefix_val = &entry_arr[0];
+        // Verify previous-words string
+        let previous_word_val = &entry_arr[0];
         assert!(
-            prefix_val.is_string(),
-            "First element should be the prefix string: {:?}",
-            prefix_val
+            previous_word_val.is_string(),
+            "First element should be the previous-words string: {:?}",
+            previous_word_val
         );
 
-        let prefix_word = prefix_val.as_str().unwrap_or("");
-        assert!(!prefix_word.is_empty(), "Prefix string should not be empty");
+        let previous_word = previous_word_val.as_str().unwrap_or("");
+        assert!(!previous_word.is_empty(), "Previous-words string should not be empty");
 
-        // Check prefix word is valid (alphabetic with possible capitalization or punctuation)
+        // Check previous word is valid (alphabetic with possible capitalization or punctuation)
         // We now preserve capitalization, so uppercase letters are allowed
-        if prefix_word != "."
-            && prefix_word != ","
-            && !prefix_word.chars().all(|c| c.is_alphabetic() || c == '\'')
+        if previous_word != "."
+            && previous_word != ","
+            && !previous_word.chars().all(|c| c.is_alphabetic() || c == '\'')
         {
             found_invalid_chars_word = true;
         }
 
-        // Track specific prefixes
-        if prefix_word == "the" {
-            found_prefix_the = true;
+        // Track specific previous-words
+        if previous_word == "the" {
+            found_previous_word_the = true;
         }
-        if prefix_word == "quick" {
-            found_prefix_quick = true;
+        if previous_word == "quick" {
+            found_previous_word_quick = true;
         }
 
         // Verify the second element is the total count
@@ -584,89 +584,89 @@ fn test_cli_end_to_end() -> io::Result<()> {
             total_count_val
         );
 
-        // Check follower pairs (starting from index 2 now that we have total count as second element)
-        let mut _prev_follower = String::new();
+        // Check next-word pairs (starting from index 2 now that we have total count as second element)
+        let mut _prev_next_word = String::new();
         for i in 2..entry_arr.len() {
-            let follower_pair = &entry_arr[i];
+            let next_word_pair = &entry_arr[i];
             assert!(
-                follower_pair.is_array(),
-                "Follower entry should be an array [word, count]: {:?}",
-                follower_pair
+                next_word_pair.is_array(),
+                "Next-word entry should be an array [word, count]: {:?}",
+                next_word_pair
             );
-            let follower_arr = follower_pair.as_array().unwrap();
+            let next_word_arr = next_word_pair.as_array().unwrap();
             assert_eq!(
-                follower_arr.len(),
+                next_word_arr.len(),
                 2,
-                "Follower pair should have 2 elements [word, count]: {:?}",
-                follower_arr
+                "Next-word pair should have 2 elements [word, count]: {:?}",
+                next_word_arr
             );
 
-            let follower_word = follower_arr[0].as_str().unwrap_or("");
+            let next_word = next_word_arr[0].as_str().unwrap_or("");
             assert!(
-                !follower_word.is_empty(),
-                "Follower word should not be empty"
+                !next_word.is_empty(),
+                "Next word should not be empty"
             );
             assert!(
-                follower_arr[1].is_number(),
-                "Follower count should be a number: {:?}",
-                follower_arr[1]
+                next_word_arr[1].is_number(),
+                "Next-word count should be a number: {:?}",
+                next_word_arr[1]
             );
 
-            // Check follower word is valid (alphabetic with possible capitalization or punctuation)
+            // Check next word is valid (alphabetic with possible capitalization or punctuation)
             // We now preserve capitalization, so uppercase letters are allowed
-            if follower_word != "."
-                && follower_word != ","
-                && !follower_word
+            if next_word != "."
+                && next_word != ","
+                && !next_word
                     .chars()
                     .all(|c| c.is_alphabetic() || c == '\'')
             {
                 found_invalid_chars_word = true;
             }
 
-            // No longer checking follower sorting order since it's now by count (largest to smallest)
+            // No longer checking next-word sorting order since it's now by count (largest to smallest)
             // and we don't have access to the counts directly in this test.
-            // We'll just track the followers we've seen.
-            _prev_follower = follower_word.to_string();
+            // We'll just track the next-words we've seen.
+            _prev_next_word = next_word.to_string();
 
             // Count specific follow occurrences
-            if prefix_word == "the" && follower_word == "quick" {
-                the_followed_by_quick_count += follower_arr[1].as_u64().unwrap_or(0) as usize;
+            if previous_word == "the" && next_word == "quick" {
+                the_followed_by_quick_count += next_word_arr[1].as_u64().unwrap_or(0) as usize;
             }
-            if prefix_word == "quick" && follower_word == "brown" {
-                _quick_followed_by_brown_count += follower_arr[1].as_u64().unwrap_or(0) as usize;
+            if previous_word == "quick" && next_word == "brown" {
+                _quick_followed_by_brown_count += next_word_arr[1].as_u64().unwrap_or(0) as usize;
             }
         }
     }
 
-    // Verify overall prefix sorting (case-insensitive due to capitalization preservation)
-    let mut prev_prefix: Option<String> = None;
+    // Verify overall previous-words sorting (case-insensitive due to capitalization preservation)
+    let mut prev_previous_word: Option<String> = None;
     let data_arr = json_output.get("data").unwrap().as_array().unwrap();
     for entry in data_arr {
         let entry_arr = entry.as_array().unwrap();
-        let current_prefix = entry_arr[0].as_str().unwrap_or("").to_string();
+        let current_previous_word = entry_arr[0].as_str().unwrap_or("").to_string();
 
-        if let Some(ref prev) = prev_prefix {
+        if let Some(ref prev) = prev_previous_word {
             // Use case-insensitive comparison since we now preserve capitalization
-            let cmp = current_prefix.to_lowercase().cmp(&prev.to_lowercase());
+            let cmp = current_previous_word.to_lowercase().cmp(&prev.to_lowercase());
             assert!(
                 cmp != std::cmp::Ordering::Less,
-                "Prefixes not sorted (case-insensitive): '{}' should come after '{}'",
-                current_prefix,
+                "Previous-words not sorted (case-insensitive): '{}' should come after '{}'",
+                current_previous_word,
                 prev
             );
         }
-        prev_prefix = Some(current_prefix);
+        prev_previous_word = Some(current_previous_word);
     }
 
     // --- Final assertions for normalization/filtering and counts ---
-    assert!(found_prefix_the, "Prefix 'the' not found");
+    assert!(found_previous_word_the, "Previous-word 'the' not found");
     assert!(
-        found_prefix_quick,
-        "Prefix 'quick' (from 'quick'/'Quick') not found"
+        found_previous_word_quick,
+        "Previous-word 'quick' (from 'quick'/'Quick') not found"
     );
     assert!(
         !found_invalid_chars_word,
-        "Found word (prefix or follower) containing invalid characters (non-alphabetic except apostrophes)"
+        "Found word (previous or next) containing invalid characters (non-alphabetic except apostrophes)"
     );
 
     // Based on input:
@@ -677,7 +677,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
     // "quick brown" -> count 2 (from "quick, Brown" and "Quick brown") (cumulative)
     assert!(
         the_followed_by_quick_count >= 1,
-        "Expected prefix 'the' to be followed by 'quick' at least once, found {}",
+        "Expected previous-word 'the' to be followed by 'quick' at least once, found {}",
         the_followed_by_quick_count
     );
     // Check that "the" is followed by "quick" at least once
@@ -690,11 +690,11 @@ fn test_cli_end_to_end() -> io::Result<()> {
     let data_arr_2 = json_output.get("data").unwrap().as_array().unwrap();
     for entry in data_arr_2 {
         let entry_arr = entry.as_array().unwrap();
-        let prefix_str = entry_arr[0].as_str().unwrap_or("");
+        let previous_word_str = entry_arr[0].as_str().unwrap_or("");
         let total_scaled = entry_arr[1].as_u64().unwrap_or(0);
 
-        // Example: prefix "the", original total 4 -> d=10 default
-        // followers: "dog" (1), "fox" (1), "lazy" (1), "quick" (1)
+        // Example: previous-word "the", original total 4 -> d=10 default
+        // next-words: "dog" (1), "fox" (1), "lazy" (1), "quick" (1)
         // With d=10 (default): now uses 10^k-1 scaling to get [0, 9] range
         // Total count = 4, so scale to [0, 9]
         // Scaled with factor 9/4 = 2.25:
@@ -702,26 +702,26 @@ fn test_cli_end_to_end() -> io::Result<()> {
         // fox(1): round(2*2.25) = 5 (4.5 rounds to 5)
         // lazy(1): round(3*2.25) = 7 (6.75 rounds to 7)
         // quick(1): round(4*2.25) = 9
-        if prefix_str == "the" {
-            assert_eq!(total_scaled, 9, "Prefix 'the' (no-scale-arg) total count");
+        if previous_word_str == "the" {
+            assert_eq!(total_scaled, 9, "Previous-word 'the' (no-scale-arg) total count");
             assert_eq!(entry_arr[2], serde_json::json!(["dog", 2]));
             assert_eq!(entry_arr[3], serde_json::json!(["fox", 5]));
             assert_eq!(entry_arr[4], serde_json::json!(["lazy", 7]));
             assert_eq!(entry_arr[5], serde_json::json!(["quick", 9]));
         }
-        // Example: prefix "quick", with punctuation tokenization:
+        // Example: previous-word "quick", with punctuation tokenization:
         // "quick, Brown" -> "quick" followed by ","
         // "Quick brown" -> "quick" followed by "brown"
         // "quick and" -> "quick" followed by "and"
-        // So followers: "," (1), "brown" (1), "and" (1) -> total 3
+        // So next-words: "," (1), "brown" (1), "and" (1) -> total 3
         // With d=10 (default): now uses 10^k-1 scaling to get [0, 9] range
         // Total count = 3, so scale to [0, 9]
         // Scaled with factor 9/3 = 3:
         // ","(1): round(1*3) = 3
         // "and"(1): round(2*3) = 6
         // "brown"(1): round(3*3) = 9
-        if prefix_str == "quick" {
-            assert_eq!(total_scaled, 9, "Prefix 'quick' (no-scale-arg) total count");
+        if previous_word_str == "quick" {
+            assert_eq!(total_scaled, 9, "Previous-word 'quick' (no-scale-arg) total count");
             assert_eq!(entry_arr[2], serde_json::json!([",", 3]));
             assert_eq!(entry_arr[3], serde_json::json!(["and", 6]));
             assert_eq!(entry_arr[4], serde_json::json!(["brown", 9]));

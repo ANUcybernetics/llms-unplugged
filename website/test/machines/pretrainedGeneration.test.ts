@@ -32,11 +32,11 @@ describe("createPretrainedGenerationMachine", () => {
     expect(state.phase.kind).toBe("showing-entry");
     expect(state.outputWords).toHaveLength(1);
     if (state.phase.kind === "showing-entry") {
-      expect(state.phase.entry.prefix).toBe(state.outputWords[0]);
+      expect(state.phase.entry.previousWord).toBe(state.outputWords[0]);
     }
   });
 
-  it("skips dice roll for single-follower entries", () => {
+  it("skips dice roll for single-next-word entries", () => {
     const { vocabulary, model } = buildModel("a b c");
     const machine = createPretrainedGenerationMachine(model, vocabulary);
     let state = machine.initialState();
@@ -52,13 +52,13 @@ describe("createPretrainedGenerationMachine", () => {
     }
   });
 
-  it("rolls dice for multi-follower entries", () => {
+  it("rolls dice for multi-next-word entries", () => {
     const { vocabulary, model } = buildModel("a b a c");
     const machine = createPretrainedGenerationMachine(model, vocabulary);
 
     let state = machine.step(machine.initialState(), rng);
     expect(state.phase.kind).toBe("showing-entry");
-    if (state.phase.kind === "showing-entry" && state.phase.entry.followers.length > 1) {
+    if (state.phase.kind === "showing-entry" && state.phase.entry.nextWords.length > 1) {
       state = machine.step(state, rng);
       expect(state.phase.kind).toBe("rolled");
       if (state.phase.kind === "rolled") {

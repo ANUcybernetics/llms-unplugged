@@ -88,20 +88,21 @@ fn build_booklet_json(
         .iter()
         .map(|entry| {
             let mut formatted_entry_json = Vec::new();
-            let prefix_str = entry.prefix.join(" ");
-            formatted_entry_json.push(serde_json::Value::String(prefix_str));
+            let previous_words_str = entry.previous_words.join(" ");
+            formatted_entry_json.push(serde_json::Value::String(previous_words_str));
 
-            let total_original_count: usize = entry.followers.iter().map(|(_, count)| count).sum();
+            let total_original_count: usize =
+                entry.next_words.iter().map(|(_, count)| count).sum();
 
             let mut original_cumulative_counts = Vec::new();
             let mut running_sum = 0;
 
-            for (follower, count) in &entry.followers {
+            for (next_word, count) in &entry.next_words {
                 running_sum += count;
-                original_cumulative_counts.push((follower.clone(), running_sum));
+                original_cumulative_counts.push((next_word.clone(), running_sum));
             }
 
-            let (json_total_for_prefix, scaled_follower_values_json) = if total_original_count == 0
+            let (json_total_for_entry, scaled_next_word_values_json) = if total_original_count == 0
             {
                 (serde_json::json!(0), Vec::new())
             } else {
@@ -111,19 +112,19 @@ fn build_booklet_json(
                 let actual_json_total = serde_json::json!(max_val_for_scaling);
                 let scaling_factor = max_val_for_scaling as f64 / total_original_count as f64;
 
-                let followers_json_list: Vec<serde_json::Value> = original_cumulative_counts
+                let next_words_json_list: Vec<serde_json::Value> = original_cumulative_counts
                     .iter()
-                    .map(|(follower_word, original_cumul)| {
+                    .map(|(next_word, original_cumul)| {
                         let scaled_cumul =
                             (*original_cumul as f64 * scaling_factor).round() as usize;
-                        serde_json::json!([follower_word, scaled_cumul])
+                        serde_json::json!([next_word, scaled_cumul])
                     })
                     .collect();
-                (actual_json_total, followers_json_list)
+                (actual_json_total, next_words_json_list)
             };
 
-            formatted_entry_json.push(json_total_for_prefix);
-            formatted_entry_json.extend(scaled_follower_values_json);
+            formatted_entry_json.push(json_total_for_entry);
+            formatted_entry_json.extend(scaled_next_word_values_json);
 
             formatted_entry_json
         })
@@ -180,8 +181,8 @@ fn tokenize_for_cutouts(
         tokens.extend(line_tokens);
     }
 
-    let prefix_size = n.saturating_sub(1);
-    if prefix_size > 0 {
+    let context_size = n.saturating_sub(1);
+    if context_size > 0 {
         let kept_texts: Vec<String> = tokens
             .iter()
             .filter(|t| t.keep)
@@ -191,8 +192,9 @@ fn tokenize_for_cutouts(
         let mut kept_idx = 0usize;
         for token in &mut tokens {
             if token.keep {
-                if kept_idx >= prefix_size {
-                    token.prefix = kept_texts[kept_idx - prefix_size..kept_idx].to_vec();
+                if kept_idx >= context_size {
+                    token.previous_words =
+                        kept_texts[kept_idx - context_size..kept_idx].to_vec();
                 }
                 kept_idx += 1;
             }
@@ -218,8 +220,8 @@ mod tests {
     #[test]
     fn test_booklet_json_generation() {
         let entries = vec![WordFollowEntry {
-            prefix: vec!["hello".to_string()],
-            followers: vec![("world".to_string(), 2), ("there".to_string(), 1)],
+            previous_words: vec!["hello".to_string()],
+            next_words: vec![("world".to_string(), 2), ("there".to_string(), 1)],
         }];
 
         let output = build_booklet_json(&entries, "Test", "Author", 2);

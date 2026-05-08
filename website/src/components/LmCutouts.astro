@@ -13,24 +13,24 @@ const tokenList = tokenString.trim().split(/\s+/).filter(Boolean);
 const contextSize = ngram - 1;
 
 interface CutoutEntry {
-  prefix: string[];
-  tokens: string[];
+  previousWords: string[];
+  nextWords: string[];
 }
 
 const entries: CutoutEntry[] = [];
-const indexByPrefix = new Map<string, number>();
+const indexByPreviousWords = new Map<string, number>();
 
 for (let i = 0; i < tokenList.length - contextSize; i++) {
-  const prefix = tokenList.slice(i, i + contextSize);
-  const token = tokenList[i + contextSize];
-  const key = prefix.join("\0");
-  let idx = indexByPrefix.get(key);
+  const previousWords = tokenList.slice(i, i + contextSize);
+  const nextWord = tokenList[i + contextSize];
+  const key = previousWords.join("\0");
+  let idx = indexByPreviousWords.get(key);
   if (idx === undefined) {
     idx = entries.length;
-    indexByPrefix.set(key, idx);
-    entries.push({ prefix, tokens: [] });
+    indexByPreviousWords.set(key, idx);
+    entries.push({ previousWords, nextWords: [] });
   }
-  entries[idx].tokens.push(token);
+  entries[idx].nextWords.push(nextWord);
 }
 
 const rowCount = Math.ceil(entries.length / columns);
@@ -61,20 +61,22 @@ const rows: (CutoutEntry | null)[][] = Array.from({ length: rowCount }, (_, r) =
               cell ? (
                 <>
                   <td>
-                    {cell.prefix.map((p, i) => (
+                    {cell.previousWords.map((p, i) => (
                       <>
                         {i > 0 && " "}
-                        <span class:list={["cutout-prefix", tokenColorClass(p)]}>
+                        <span
+                          class:list={["cutout-previous-word", tokenColorClass(p)]}
+                        >
                           {p}
                         </span>
                       </>
                     ))}
                   </td>
                   <td>
-                    {cell.tokens.map((t, i) => (
+                    {cell.nextWords.map((t, i) => (
                       <>
                         {i > 0 && " "}
-                        <span class:list={["cutout-text", tokenColorClass(t)]}>
+                        <span class:list={["cutout-next-word", tokenColorClass(t)]}>
                           {t}
                         </span>
                       </>

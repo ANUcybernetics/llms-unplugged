@@ -68,31 +68,31 @@
 
 <div class="entries-list">
   {#each entries as entry}
-    {@const isActive = entry.prefix === currentWord}
+    {@const isActive = entry.previousWord === currentWord}
     {@const selectedWord =
       isActive && currentRoll !== null
         ? findWordForThresholdRoll(entry, currentRoll)
         : null}
     <div class="entry" class:highlighted={isActive}>
       <span
-        class="entry-prefix"
-        class:punctuation={isPunctuation(entry.prefix)}
+        class="entry-previous-word"
+        class:punctuation={isPunctuation(entry.previousWord)}
       >
-        {entry.prefix}
+        {entry.previousWord}
       </span>
-      {#if entry.followers.length > 1}
+      {#if entry.nextWords.length > 1}
         <span class="dice-indicator">{"♦".repeat(entry.numDice)}</span>
       {/if}
-      <span class="entry-followers">
-        {#each entry.followers as follower}
+      <span class="entry-next-words">
+        {#each entry.nextWords as nextWord}
           <span
-            class="follower"
-            class:selected={isActive && follower.word === selectedWord}
-            class:punctuation={isPunctuation(follower.word)}
+            class="next-word"
+            class:selected={isActive && nextWord.word === selectedWord}
+            class:punctuation={isPunctuation(nextWord.word)}
           >
-            {#if entry.followers.length > 1}
-              <span class="threshold">{follower.threshold}</span>|{/if}<span
-              class="follower-word">{follower.word}</span
+            {#if entry.nextWords.length > 1}
+              <span class="threshold">{nextWord.threshold}</span>|{/if}<span
+              class="next-word-text">{nextWord.word}</span
             >
           </span>
         {/each}
@@ -143,12 +143,12 @@
     background: color-mix(in srgb, var(--anu-gold) 15%, transparent);
   }
 
-  .entry-prefix {
+  .entry-previous-word {
     font-weight: 700;
     font-size: 1.1em;
   }
 
-  .entry-prefix.punctuation {
+  .entry-previous-word.punctuation {
     display: inline-block;
     padding: 0 0.2em;
     border: 1px solid var(--at-text-muted);
@@ -163,26 +163,26 @@
     margin-right: 0.25em;
   }
 
-  .entry-followers {
+  .entry-next-words {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4em;
     align-items: baseline;
   }
 
-  .follower {
+  .next-word {
     font-size: 0.9em;
     padding: 0 0.15em;
     border-radius: 2px;
     transition: background-color 0.2s;
   }
 
-  .follower.selected {
+  .next-word.selected {
     outline: 2px solid var(--anu-gold);
     outline-offset: 1px;
   }
 
-  .follower.punctuation .follower-word {
+  .next-word.punctuation .next-word-text {
     display: inline-block;
     padding: 0 0.15em;
     border: 1px solid var(--at-text-muted);
@@ -202,7 +202,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .entry,
-    .follower {
+    .next-word {
       transition: none;
     }
   }

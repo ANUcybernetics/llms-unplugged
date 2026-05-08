@@ -1,9 +1,11 @@
 ---
 id: TASK-123
 title: extend cutouts prefix/token rename to internal code
-status: To Do
-assignee: []
+status: Done
+assignee:
+  - claude
 created_date: '2026-05-08 07:31'
+updated_date: '2026-05-08 08:00'
 labels:
   - refactor
 dependencies: []
@@ -42,14 +44,14 @@ Follow-on cleanup from commit 7e72d99, which renamed user-facing copy from 'pref
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Rust struct fields and local variables in cli/src/ no longer use 'prefix' or 'follower' to mean the cutouts before/after parts (excluding tokenisation context)
-- [ ] #2 JSON schema decision applied consistently: either serde rename keeps existing JSON keys, or JSON keys renamed and Typst readers updated to match
-- [ ] #3 Typst function names, parameters, and local variables in cli/*.typ and handouts/*.typ aligned with the new vocabulary (or kept where the dice paradigm justifies 'follower')
-- [ ] #4 CSS classes (.cutout-prefix, .cutout-text, .entry-prefix, .follower, .follower-word) renamed and all consumers updated
-- [ ] #5 TypeScript types in website/src/lib/ and Svelte widgets aligned
-- [ ] #6 Code comments describing renamed concepts updated; logo system, design tokens, general tokenisation, and Rust std methods left alone
-- [ ] #7 cd cli && cargo test passes
-- [ ] #8 cd website && pnpm run build && pnpm test passes
-- [ ] #9 Pre-generated cutout PDFs regenerated and committed (cli/Makefile pdf target)
-- [ ] #10 Single commit (or small focused series) with a clear message referencing 7e72d99
+- [x] #1 Rust struct fields and local variables in cli/src/ no longer use 'prefix' or 'follower' to mean the cutouts before/after parts (excluding tokenisation context)
+- [x] #2 JSON schema decision applied consistently: either serde rename keeps existing JSON keys, or JSON keys renamed and Typst readers updated to match
+- [x] #3 Typst function names, parameters, and local variables in cli/*.typ and handouts/*.typ aligned with the new vocabulary (or kept where the dice paradigm justifies 'follower')
+- [x] #4 CSS classes (.cutout-prefix, .cutout-text, .entry-prefix, .follower, .follower-word) renamed and all consumers updated
+- [x] #5 TypeScript types in website/src/lib/ and Svelte widgets aligned
+- [x] #6 Code comments describing renamed concepts updated; logo system, design tokens, general tokenisation, and Rust std methods left alone
+- [x] #7 cd cli && cargo test passes
+- [x] #8 cd website && pnpm run build && pnpm test passes
+- [x] #9 Pre-generated cutout PDFs regenerated and committed (cli/Makefile pdf target)
+- [x] #10 Single commit (or small focused series) with a clear message referencing 7e72d99
 <!-- AC:END -->

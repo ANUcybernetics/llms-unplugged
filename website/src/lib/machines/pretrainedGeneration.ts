@@ -32,7 +32,7 @@ export function createPretrainedGenerationMachine(
   vocabulary: string[],
 ): Machine<PretrainedGenerationState> {
   const entries = buildModelEntries(vocabulary, model);
-  const entryMap = new Map(entries.map((e) => [e.prefix, e]));
+  const entryMap = new Map(entries.map((e) => [e.previousWord, e]));
   const validStarters = vocabulary.filter((w) => model.hasSuccessors(w));
 
   return {
@@ -57,13 +57,13 @@ export function createPretrainedGenerationMachine(
 
         case "showing-entry": {
           const { entry } = state.phase;
-          if (entry.followers.length === 1) {
+          if (entry.nextWords.length === 1) {
             return {
               ...state,
               phase: {
                 kind: "rolled",
                 diceRoll: null,
-                nextWord: entry.followers[0].word,
+                nextWord: entry.nextWords[0].word,
                 entry,
               },
             };
@@ -108,7 +108,7 @@ export function selectStartWord(
 ): PretrainedGenerationState | null {
   if (!model.hasSuccessors(word)) return null;
   const entries = buildModelEntries(vocabulary, model);
-  const entry = entries.find((e) => e.prefix === word);
+  const entry = entries.find((e) => e.previousWord === word);
   if (!entry) return null;
   return {
     outputWords: [word],

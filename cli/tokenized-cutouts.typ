@@ -35,7 +35,8 @@
 // Palette of dark, distinguishable hues. White text reads cleanly on each, and
 // each colour is also readable as text on a white page. Words are
 // hash-assigned to a palette index so that the same word always takes the same
-// colour, whether it appears in a prefix box or as a free-standing token.
+// colour, whether it appears in a previous-word box or as a free-standing
+// next word.
 #let palette = (
   rgb("#9c1f1f"), // crimson
   rgb("#2c5d8a"), // steel blue
@@ -78,20 +79,20 @@
 #let tokens = json_data.tokens
 #let doc_metadata = json_data.metadata
 
-// Derive n from the first token that has a prefix
+// Derive n from the first token that has previous words recorded
 #let n = {
-  let found = tokens.find(t => "prefix" in t and t.prefix.len() > 0)
-  if found != none { found.prefix.len() + 1 } else { 2 }
+  let found = tokens.find(t => "previous_words" in t and t.previous_words.len() > 0)
+  if found != none { found.previous_words.len() + 1 } else { 2 }
 }
 
-#let prefix-length = n - 1
-#let prefix-noun = if prefix-length == 1 { "word" } else { "words" }
+#let previous-words-count = n - 1
+#let previous-words-noun = if previous-words-count == 1 { "word" } else { "words" }
 
-// A coloured box for a prefix word: word's assigned colour as fill, white text.
+// A coloured box for a previous word: word's assigned colour as fill, white text.
 // When `dimmed` is true (discarded source token) the box is rendered in grey.
-// Uses `highlight` rather than `box` so the prefix word's baseline aligns with
+// Uses `highlight` rather than `box` so the previous word's baseline aligns with
 // the surrounding free-standing word.
-#let prefix-box(t, dimmed: false) = {
+#let previous-word-box(t, dimmed: false) = {
   let fill = if dimmed { luma(180) } else { colour-for(t) }
   highlight(
     fill: fill,
@@ -107,9 +108,9 @@
   text(fill: fill, t)
 }
 
-// Render a cutout's prefix boxes followed by its token, all inline.
+// Render a cutout's previous-word boxes followed by its next word, all inline.
 #let render-cutout(token) = {
-  let parts = token.prefix.map(t => prefix-box(t))
+  let parts = token.previous_words.map(t => previous-word-box(t))
   parts.push(coloured-word(token.text))
   parts.join(h(inter_word_gap))
 }
@@ -125,11 +126,11 @@
   // running text.
   let example-tokens = {
     let is-clean = (t) => (
-      "prefix" in t
-        and t.prefix.len() > 0
+      "previous_words" in t
+        and t.previous_words.len() > 0
         and t.keep
         and t.text.find(regex("[A-Za-z]")) != none
-        and t.prefix.all(p => p.find(regex("[A-Za-z]")) != none)
+        and t.previous_words.all(p => p.find(regex("[A-Za-z]")) != none)
     )
     let result = ()
     let i = 0
@@ -146,16 +147,16 @@
       result
     } else {
       let cands = tokens.filter(t => (
-        "prefix" in t and t.prefix.len() > 0 and t.keep
+        "previous_words" in t and t.previous_words.len() > 0 and t.keep
       ))
       cands.slice(0, calc.min(3, cands.len()))
     }
   }
 
-  // Phrase like "the last token" / "the last 2 tokens", with grammatical
+  // Phrase like "the last word" / "the last 2 words", with grammatical
   // number kept consistent throughout the worked example. Single-line content
   // blocks avoid stray whitespace when interpolated next to punctuation.
-  let last-prefix = if prefix-length > 1 [#str(prefix-length) #prefix-noun] else [#prefix-noun]
+  let prev-words-phrase = if previous-words-count > 1 [#str(previous-words-count) #previous-words-noun] else [#previous-words-noun]
 
   [
     = How to use these token cutouts
@@ -164,7 +165,7 @@
     #doc_metadata.author (#doc_metadata.total_tokens tokens, entropy
     #calc.round(doc_metadata.entropy, digits: 2) bits/token, perplexity
     #calc.round(doc_metadata.perplexity, digits: 1)). Each *cutout* shows
-    a *next word* paired with the *previous #last-prefix* that came
+    a *next word* paired with the *previous #prev-words-phrase* that came
     immediately before it in the original text.
 
     == Anatomy of a cutout
@@ -181,8 +182,8 @@
             #(
               example-tokens
                 .at(0)
-                .prefix
-                .map(t => prefix-box(t))
+                .previous_words
+                .map(t => previous-word-box(t))
                 .join(h(inter_word_gap))
             )
           ],
@@ -191,7 +192,7 @@
             #coloured-word(example-tokens.at(0).text)
           ],
           text(size: 10pt, fill: rgb("#666"), style: "italic")[
-            previous #last-prefix
+            previous #prev-words-phrase
           ],
           text(size: 10pt, fill: rgb("#666"), style: "italic")[
             next word
@@ -216,8 +217,8 @@
 
     == How to play: the matching game
 
-    To generate text, repeatedly find a cutout whose *previous #last-prefix*
-    matches the last #last-prefix you've written, then *write its next word*
+    To generate text, repeatedly find a cutout whose *previous #prev-words-phrase*
+    matches the last #prev-words-phrase you've written, then *write its next word*
     onto your page. The word you just wrote becomes part of what you'll match
     against next---that's the chain.
 
@@ -254,39 +255,39 @@
         render-cutout(t)
       })
 
-      // Italicised, coloured rendering of the last `prefix-length` words of
-      // `words`---used inline in the Step 2 and Step 3 prose to call out the
-      // exact tokens the reader should be matching against.
+      // Italicised, coloured rendering of the last `previous-words-count`
+      // words of `words`---used inline in the Step 2 and Step 3 prose to call
+      // out the exact tokens the reader should be matching against.
       let tail-prose(words) = {
-        let tail = words.slice(words.len() - prefix-length)
+        let tail = words.slice(words.len() - previous-words-count)
         emph(tail.map(t => coloured-word(t)).join(" "))
       }
 
       [*Step 1.* Pick any cutout to begin---say this one:]
       big-cutout(t0)
-      [Copy its previous #last-prefix #emph[and] its next word onto your page. Your text so far:]
-      written-text(t0.prefix + (t0.text,))
+      [Copy its previous #prev-words-phrase #emph[and] its next word onto your page. Your text so far:]
+      written-text(t0.previous_words + (t0.text,))
 
       [
-        *Step 2.* Look at the last #last-prefix you've written (in this case
-        #tail-prose(t0.prefix + (t0.text,))) and find a cutout whose previous
-        #last-prefix #if prefix-length > 1 [match them] else [matches it],
+        *Step 2.* Look at the last #prev-words-phrase you've written (in this case
+        #tail-prose(t0.previous_words + (t0.text,))) and find a cutout whose previous
+        #prev-words-phrase #if previous-words-count > 1 [match them] else [matches it],
         like this one:
       ]
       big-cutout(t1)
       [Write its next word onto your page. Your text now reads:]
-      written-text(t0.prefix + (t0.text, t1.text), new-count: 1)
+      written-text(t0.previous_words + (t0.text, t1.text), new-count: 1)
 
       [
-        *Step 3.* Repeat. The last #last-prefix you've now written
-        #if prefix-length > 1 [are] else [is]
-        #tail-prose(t0.prefix + (t0.text, t1.text))---find another matching
+        *Step 3.* Repeat. The last #prev-words-phrase you've now written
+        #if previous-words-count > 1 [are] else [is]
+        #tail-prose(t0.previous_words + (t0.text, t1.text))---find another matching
         cutout:
       ]
       big-cutout(t2)
       [Add its next word. Your text now reads:]
       written-text(
-        t0.prefix + (t0.text, t1.text, t2.text),
+        t0.previous_words + (t0.text, t1.text, t2.text),
         new-count: 1,
       )
 
@@ -302,7 +303,7 @@
       ],
       [
         *Pick from many candidates by eye.* The more cutouts share the same
-        previous #last-prefix, the more often your eye lands on one---that's
+        previous #prev-words-phrase, the more often your eye lands on one---that's
         *weighted sampling* for free, and it's why some words follow others
         more often in your text.
       ],
@@ -310,7 +311,7 @@
         (
           [
             *Partial matches are OK.* If no cutout matches all your last
-            #last-prefix, settle for one where just the rightmost
+            #prev-words-phrase, settle for one where just the rightmost
             previous-word box matches.
           ],
         )
@@ -334,16 +335,16 @@
 
 // Function to render a single token cell (no horizontal borders)
 #let token-cell(token, is_last: false, height: auto) = {
-  let prefix_arr = token.at("prefix", default: ())
-  // Dim discarded tokens, and also any token with no prefix (i.e. the very
-  // first token of the text)---it can't be reached by the matching game, so
-  // greying it out signals "not for use".
-  let dimmed = not token.keep or prefix_arr.len() == 0
+  let prev_words = token.at("previous_words", default: ())
+  // Dim discarded tokens, and also any token with no previous-words context
+  // (i.e. the very first token of the text)---it can't be reached by the
+  // matching game, so greying it out signals "not for use".
+  let dimmed = not token.keep or prev_words.len() == 0
 
   let main_word = coloured-word(token.text, dimmed: dimmed)
 
-  let content = if prefix_arr.len() > 0 {
-    let parts = prefix_arr.map(t => prefix-box(t, dimmed: dimmed))
+  let content = if prev_words.len() > 0 {
+    let parts = prev_words.map(t => previous-word-box(t, dimmed: dimmed))
     parts.push(main_word)
     parts.join(h(inter_word_gap))
   } else {
