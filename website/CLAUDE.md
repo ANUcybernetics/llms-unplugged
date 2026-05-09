@@ -88,17 +88,34 @@ When generating images (via styled-image-gen, astromotion-deck, or any other
 image generation tool), always append this prompt fragment to ensure visual
 consistency with the existing illustrations:
 
-Prompt suffix: Flat vector-style illustration on a pure black background.
-Strictly limited colour palette: gold/amber, black, white, and warm
-beige/tan tones. Clean, consistent-weight outlines (black, white, or gold
-strokes) with flat filled shapes --- no gradients, no photorealism. Subtle
-background texture of interlocking circles or rounded geometric grid patterns
-in a very dark grey. Geometric and slightly stylised --- people (if
-any) are simplified and faceless. Occasional soft gold glow effects for
-emphasis. Sparse, balanced composition with generous negative space. No text,
-no words, no numbers, no labels whatsoever. Modern editorial illustration
-style --- conceptual and symbolic rather than literal.
+Prompt suffix: Flat 2D vector illustration on a pure black background ---
+absolutely NO 3D rendering, NO perspective, NO isometric, NO faceted/low-poly
+shapes, NO photographic depth, NO drop shadows, NO realistic lighting.
+Strictly limited colour palette: gold/amber, black, white, and warm beige/tan
+tones. Clean, consistent-weight outlines (black, white, or gold strokes) with
+flat filled shapes --- no gradients, no photorealism. Subtle background
+texture of interlocking circles or rounded geometric grid patterns in a very
+dark grey. Geometric and slightly stylised --- people (if any) are simplified
+faceless silhouettes drawn as single flat shapes (NOT low-poly polygonal or
+3D-faceted figures). Occasional soft gold glow effects for emphasis. Sparse,
+balanced composition with generous negative space. STRICTLY NO TEXT, NO
+WORDS, NO LETTERS, NO NUMBERS, NO LABELS, NO ANNOTATIONS, NO TALLY MARKS, NO
+GLYPHS, NO SYMBOLS RESEMBLING LETTERS anywhere in the image. Modern editorial
+illustration style --- conceptual and symbolic rather than literal.
 
-Reference images: src/decks/assets/ (deck backgrounds --- prefer the
-`bg-div-*`, `bg-shannon`, `bg-markov` files which are the cleanest exemplars
-of the pure-black variant)
+Reference images: src/decks/assets/ (deck backgrounds). The most reliable
+style exemplars are `bg-randomness.avif`, `bg-shannon.avif`, and
+`bg-div-mechanic.avif` --- prefer these as `--input-image` references.
+
+Prompting tips (the model will silently ignore the no-text rule and the
+flat-2D rule when it sees these triggers in the scene prompt itself):
+
+- avoid words that imply written content: "word-cards", "labels",
+  "annotated", "diagram", "blueprint", "schematic", "concept-map", "tag"
+- never quote the target words verbatim (e.g. saying "build, break, extend"
+  almost guarantees those exact words appear printed on the image)
+- describe what's drawn, not what it represents: "small blank rectangles"
+  (not "tokens"), "empty speech bubbles" (not "dialogue exchange")
+- for figures, say "flat silhouette drawn as a single filled shape" --- the
+  model interprets bare "geometric figure" as low-poly 3D
+- expect to re-roll: review every generated image before committing
