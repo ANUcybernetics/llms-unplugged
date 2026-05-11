@@ -202,10 +202,6 @@ of one.
    just wrote---go back to step 2
 7. **Stop** when you've generated enough text, or when no cutouts match your
    last two words
-8. If no cutout matches both previous words, settle for one where just the
-   rightmost previous-word box matches your most recent word---you've fallen
-   back to bigram matching for that step. The model never saw your exact pair
-   during training; this is the data sparsity problem in action
 
 ### Example (generation)
 
@@ -255,7 +251,6 @@ hash table.
 <Variant is="grid">
 
 - how does the trigram output compare to basic (bigram) model output?
-- what happens when you encounter a word pair you've never seen before?
 - how many rows would you need for a 100-word text?
 - can you find word pairs that always lead to the same next word?
 - what's the tradeoff between context length and data requirements?
@@ -267,8 +262,6 @@ hash table.
 - how does the trigram output compare to basic (bigram) cutouts model output?
 - why does the trigram spread tend to have more unique pairs of previous
   words than a bigram spread has unique previous words for the same text?
-- what happens when you encounter a two-word combination you've never seen
-  before?
 - can you find two-word combinations that always lead to the same next word?
 - what's the tradeoff between context length and data requirements?
 

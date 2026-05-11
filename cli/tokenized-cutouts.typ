@@ -307,15 +307,6 @@
         *weighted sampling* for free, and it's why some words follow others
         more often in your text.
       ],
-      ..if n > 2 {
-        (
-          [
-            *Partial matches are OK.* If no cutout matches all your last
-            #prev-words-phrase, settle for one where just the rightmost
-            previous-word box matches.
-          ],
-        )
-      } else { () },
       [
         *Put the cutout back* after using it---removing it would change the
         model's distribution next time round.
