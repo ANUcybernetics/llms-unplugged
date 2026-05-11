@@ -21,7 +21,9 @@ that's it---the spread _is_ your trained bigram language model
 ![bg right:40%](./assets/bg-token-anatomy.avif)
 
 a **next word** alongside its **previous word**---the word that came before
-it in the training text
+it in the training text:
+
+<Cutout prev="green" next="eggs" />
 
 every word has its own colour, so the boxed and free-standing forms of the
 same word match
@@ -34,8 +36,12 @@ _"I am Sam. Sam I am. I do not like green eggs and ham."_
 
 after preprocessing:
 
-`i` `am` `sam` `.` `sam` `i` `am` `.` `i` `do` `not` `like` `green` `eggs`
-`and` `ham` `.`
+<Token next>i</Token> <Token next>am</Token> <Token next>sam</Token>{" "}
+<Token next>.</Token> <Token next>sam</Token> <Token next>i</Token>{" "}
+<Token next>am</Token> <Token next>.</Token> <Token next>i</Token>{" "}
+<Token next>do</Token> <Token next>not</Token> <Token next>like</Token>{" "}
+<Token next>green</Token> <Token next>eggs</Token> <Token next>and</Token>{" "}
+<Token next>ham</Token> <Token next>.</Token>
 
 ---
 
@@ -50,10 +56,14 @@ cutout on the table
 
 ## The proportionality trick
 
-![bg right:40%](./assets/bg-distribution.avif)
+after `i` in our training text, `am` follows twice and `do` follows once---so
+two of the three cutouts with `i` as the previous word point to `am`:
 
-if spot follows see 40% of the time in the training text, then **40% of the
-cutouts** with see as the previous word will have spot as the next word
+<CutoutRow>
+  <Cutout prev="i" next="am" />
+  <Cutout prev="i" next="am" />
+  <Cutout prev="i" next="do" />
+</CutoutRow>
 
 whichever matching cutout your eye lands on, you've sampled in proportion to
 the original distribution---no dice, no probability tables, the spread is

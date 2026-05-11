@@ -348,13 +348,15 @@ body.reveal-viewport {
 }
 
 /* Paper-cutout container — visual analogue of one printed cutout, with the
-   previous-word pill(s) stacked above a free-standing next word. Inline-flex
-   so multiple Cutouts flow side-by-side within an inline-friendly parent. */
+   previous-word pill(s) inline with a free-standing next word (matching the
+   horizontal layout of the printed token cells in cli/tokenized-cutouts.typ).
+   Inline-flex so multiple Cutouts flow side-by-side within an inline-friendly
+   parent. */
 .reveal .cutout-paper {
   display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.15em;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.3em;
   background: hsl(0 0% 12%);
   border: 1px solid hsl(0 0% 24%);
   border-radius: 6px;
@@ -367,7 +369,7 @@ body.reveal-viewport {
 .reveal .cutout-paper-prev {
   display: inline-flex;
   gap: 0.15em;
-  align-items: center;
+  align-items: baseline;
 }
 
 .reveal .slides .extensions-grid {

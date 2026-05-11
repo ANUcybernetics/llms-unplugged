@@ -23,7 +23,9 @@ predictions get sharper, but the spread gets bigger and sparser
 ![bg right:40%](./assets/bg-cut-spread.avif)
 
 same as before---each cutout now has **two previous words** (two coloured
-boxes) followed by its next word
+boxes) followed by its next word:
+
+<Cutout prev={["the", "cat"]} next="sat" />
 
 cut, spread, generate
 
@@ -31,7 +33,7 @@ cut, spread, generate
 
 ## Example spread
 
-<LmCutouts tokens={GREEN_EGGS_TOKENS} ngram={3} columns={2} />
+<LmCutouts tokens={TRIGRAM_TOKENS} ngram={3} columns={2} />
 
 most two-word combinations are unique---each one only points to one or two
 next words
@@ -42,6 +44,13 @@ next words
 
 match the **rightmost** previous-word box to your most recent word, then
 check the box to its left matches the word before that
+
+so far you've written _the cat_---two cutouts match, pick one:
+
+<CutoutRow>
+  <Cutout prev={["the", "cat"]} next="sat" />
+  <Cutout prev={["the", "cat"]} next="ran" />
+</CutoutRow>
 
 ---
 
