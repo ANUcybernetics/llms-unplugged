@@ -1,3 +1,5 @@
+use rand::Rng;
+use rand::distributions::{Distribution, WeightedIndex};
 use serde::Serialize;
 use std::collections::{BTreeMap, BTreeSet, HashMap, VecDeque};
 use std::fs::File;
@@ -309,6 +311,13 @@ impl NGramCounter {
     /// Get the metadata from the frontmatter
     pub fn get_metadata(&self) -> Option<&Metadata> {
         self.metadata.as_ref()
+    }
+
+    /// Normalise an external line of text (e.g. a sampling prompt) using the same
+    /// tokenisation and canonical-casing rules that were applied to the corpus.
+    /// Only meaningful after `process_file` has populated the corpus case map.
+    pub fn normalize(&self, line: &str) -> Vec<String> {
+        self.normalizer.normalize_line(line)
     }
 }
 
@@ -775,6 +784,115 @@ pub fn render_bigram_tsv(entries: &[WordFollowEntry]) -> Result<String, String> 
     }
 
     Ok(output)
+}
+
+/// Errors returned by [`sample`].
+#[derive(Debug, PartialEq, Eq)]
+pub enum SampleError {
+    /// The model has no entries to sample from.
+    EmptyModel,
+    /// Prompt has fewer normalised tokens than the model's context size (n - 1).
+    PromptTooShort { needed: usize, got: usize },
+    /// The prompt's tail context does not appear as a key in the model.
+    PromptContextNotFound { context: Vec<String> },
+    /// Sampling produced `generated` tokens, then hit a context with no successors.
+    DeadEnd {
+        context: Vec<String>,
+        generated: Vec<String>,
+    },
+}
+
+impl std::fmt::Display for SampleError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            SampleError::EmptyModel => write!(f, "model has no entries"),
+            SampleError::PromptTooShort { needed, got } => write!(
+                f,
+                "prompt too short: need at least {needed} normalised token(s) for context, got {got}"
+            ),
+            SampleError::PromptContextNotFound { context } => write!(
+                f,
+                "prompt context not found in model: `{}`",
+                context.join(" ")
+            ),
+            SampleError::DeadEnd { context, generated } => write!(
+                f,
+                "dead-end context `{}` has no successors; stopped after generating {} token(s)",
+                context.join(" "),
+                generated.len()
+            ),
+        }
+    }
+}
+
+impl std::error::Error for SampleError {}
+
+/// Sample `n_tokens` tokens from an N-gram model, continuing from `prompt`.
+///
+/// The n-gram size is inferred from `entries`: every entry's `previous_words` vector
+/// has length `n - 1`. `prompt` must contain at least `n - 1` tokens, already
+/// normalised to match the model's vocabulary.
+///
+/// Returns only the newly generated tokens (the prompt is not echoed back).
+///
+/// Errors:
+/// - [`SampleError::EmptyModel`] if `entries` is empty.
+/// - [`SampleError::PromptTooShort`] if the prompt has fewer than `n - 1` tokens.
+/// - [`SampleError::PromptContextNotFound`] if the prompt's tail context is unseen.
+/// - [`SampleError::DeadEnd`] if generation hits a context with no successors;
+///   the partially-generated tokens are returned inside the error.
+pub fn sample<R: Rng + ?Sized>(
+    entries: &[WordFollowEntry],
+    prompt: &[String],
+    n_tokens: usize,
+    rng: &mut R,
+) -> Result<Vec<String>, SampleError> {
+    let context_size = entries
+        .first()
+        .ok_or(SampleError::EmptyModel)?
+        .previous_words
+        .len();
+
+    if prompt.len() < context_size {
+        return Err(SampleError::PromptTooShort {
+            needed: context_size,
+            got: prompt.len(),
+        });
+    }
+
+    let map: HashMap<&[String], &Vec<(String, usize)>> = entries
+        .iter()
+        .map(|e| (e.previous_words.as_slice(), &e.next_words))
+        .collect();
+
+    let mut context: Vec<String> = prompt[prompt.len() - context_size..].to_vec();
+
+    if !map.contains_key(context.as_slice()) {
+        return Err(SampleError::PromptContextNotFound { context });
+    }
+
+    let mut generated = Vec::with_capacity(n_tokens);
+    for _ in 0..n_tokens {
+        let next_words = match map.get(context.as_slice()) {
+            Some(nw) if !nw.is_empty() => *nw,
+            _ => return Err(SampleError::DeadEnd { context, generated }),
+        };
+
+        let dist = match WeightedIndex::new(next_words.iter().map(|(_, c)| *c)) {
+            Ok(d) => d,
+            Err(_) => return Err(SampleError::DeadEnd { context, generated }),
+        };
+        let chosen = next_words[dist.sample(rng)].0.clone();
+
+        generated.push(chosen.clone());
+
+        if context_size > 0 {
+            context.remove(0);
+            context.push(chosen);
+        }
+    }
+
+    Ok(generated)
 }
 
 #[cfg(test)]
@@ -2010,6 +2128,194 @@ mod tests {
             "Perplexity should equal 2^entropy"
         );
 
+        Ok(())
+    }
+
+    // --- sampling tests ----------------------------------------------------
+
+    fn write_corpus(text: &str) -> io::Result<NamedTempFile> {
+        let mut f = NamedTempFile::new()?;
+        writeln!(f, "---")?;
+        writeln!(f, "title: Sampling Test")?;
+        writeln!(f, "author: Test")?;
+        writeln!(f, "url: https://example.com")?;
+        writeln!(f, "---")?;
+        writeln!(f, "{text}")?;
+        f.flush()?;
+        Ok(f)
+    }
+
+    fn rng(seed: u64) -> rand_chacha::ChaCha8Rng {
+        use rand::SeedableRng;
+        rand_chacha::ChaCha8Rng::seed_from_u64(seed)
+    }
+
+    #[test]
+    fn test_sample_empty_model_errors() {
+        let mut r = rng(0);
+        let err = sample(&[], &["the".into()], 5, &mut r).unwrap_err();
+        assert_eq!(err, SampleError::EmptyModel);
+    }
+
+    #[test]
+    fn test_sample_prompt_too_short_for_trigram() -> io::Result<()> {
+        let f = write_corpus("the cat sat on the mat the cat sat")?;
+        let (entries, _, _) = process_file(f.path(), 3)?;
+
+        let mut r = rng(0);
+        let err = sample(&entries, &["the".into()], 5, &mut r).unwrap_err();
+        assert_eq!(
+            err,
+            SampleError::PromptTooShort {
+                needed: 2,
+                got: 1
+            }
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn test_sample_prompt_context_not_found() -> io::Result<()> {
+        let f = write_corpus("alpha beta gamma alpha beta delta")?;
+        let (entries, _, _) = process_file(f.path(), 2)?;
+
+        let mut r = rng(0);
+        let err = sample(&entries, &["zzznotaword".into()], 5, &mut r).unwrap_err();
+        match err {
+            SampleError::PromptContextNotFound { context } => {
+                assert_eq!(context, vec!["zzznotaword".to_string()]);
+            }
+            other => panic!("expected PromptContextNotFound, got {other:?}"),
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn test_sample_dead_end_returns_partial() -> io::Result<()> {
+        // "alpha beta gamma" gives previous-words {alpha->beta, beta->gamma}.
+        // "gamma" has no entry as a previous-word, so sampling from "alpha"
+        // for 3 tokens must hit a dead-end after producing 2.
+        let f = write_corpus("alpha beta gamma")?;
+        let (entries, _, _) = process_file(f.path(), 2)?;
+
+        let mut r = rng(0);
+        let err = sample(&entries, &["alpha".into()], 5, &mut r).unwrap_err();
+        match err {
+            SampleError::DeadEnd { context, generated } => {
+                assert_eq!(context, vec!["gamma".to_string()]);
+                assert_eq!(generated, vec!["beta".to_string(), "gamma".to_string()]);
+            }
+            other => panic!("expected DeadEnd, got {other:?}"),
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn test_sample_deterministic_with_same_seed() -> io::Result<()> {
+        let f = write_corpus(
+            "the cat sat on the mat the dog ran past the cat the bird sang loudly",
+        )?;
+        let (entries, _, _) = process_file(f.path(), 2)?;
+        let prompt = vec!["the".to_string()];
+
+        let mut r1 = rng(12345);
+        let mut r2 = rng(12345);
+        let a = sample(&entries, &prompt, 10, &mut r1).unwrap();
+        let b = sample(&entries, &prompt, 10, &mut r2).unwrap();
+        assert_eq!(a, b);
+        assert_eq!(a.len(), 10);
+        Ok(())
+    }
+
+    #[test]
+    fn test_sample_uses_only_tail_of_prompt() -> io::Result<()> {
+        // Bigram model: only the last token of the prompt should be used as context.
+        // Cyclic corpus so every sampled token has a known successor.
+        let f = write_corpus("alpha beta gamma alpha beta gamma alpha beta gamma alpha")?;
+        let (entries, _, _) = process_file(f.path(), 2)?;
+
+        let mut r1 = rng(99);
+        let mut r2 = rng(99);
+        let a = sample(
+            &entries,
+            &["completely".into(), "unrelated".into(), "beta".into()],
+            3,
+            &mut r1,
+        )
+        .unwrap();
+        let b = sample(&entries, &["beta".into()], 3, &mut r2).unwrap();
+        assert_eq!(a, b);
+        Ok(())
+    }
+
+    #[test]
+    fn test_sample_trigram_with_two_word_prompt() -> io::Result<()> {
+        let f = write_corpus(
+            "the cat sat on the mat the cat ran on the floor the cat ate the food",
+        )?;
+        let (entries, _, _) = process_file(f.path(), 3)?;
+
+        let mut r = rng(2026);
+        let generated = sample(
+            &entries,
+            &["the".into(), "cat".into()],
+            5,
+            &mut r,
+        )
+        .unwrap();
+        assert_eq!(generated.len(), 5);
+        // First sampled token must be one of the recorded successors of "the cat".
+        assert!(
+            ["sat", "ran", "ate"].contains(&generated[0].as_str()),
+            "unexpected first token: {}",
+            generated[0]
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn test_sample_prompt_normalised_through_counter() -> io::Result<()> {
+        // Mixed case in corpus: lowercase "the" appears more often, so it's the canonical form.
+        let f = write_corpus("the cat sat. The cat sat. the dog ran.")?;
+        let mut counter = NGramCounter::new(2, vec![',', '.']);
+        counter.process_file(f.path())?;
+        let entries = counter.get_entries();
+
+        // Prompt in uppercase should be normalised to the canonical "the".
+        let normalised = counter.normalize("THE");
+        assert_eq!(normalised, vec!["the".to_string()]);
+
+        let mut r = rng(0);
+        let generated = sample(&entries, &normalised, 3, &mut r).unwrap();
+        assert_eq!(generated.len(), 3);
+        Ok(())
+    }
+
+    #[test]
+    fn test_sample_weighted_distribution_favours_common_successor() -> io::Result<()> {
+        // "the" is followed by "cat" 9 times and "dog" 1 time. Over many trials,
+        // "cat" should dominate as the first sampled token.
+        let f = write_corpus(
+            "the cat the cat the cat the cat the cat the cat the cat the cat the cat the dog",
+        )?;
+        let (entries, _, _) = process_file(f.path(), 2)?;
+
+        let prompt = vec!["the".to_string()];
+        let mut cat = 0;
+        let mut dog = 0;
+        for seed in 0..200u64 {
+            let mut r = rng(seed);
+            let g = sample(&entries, &prompt, 1, &mut r).unwrap();
+            match g[0].as_str() {
+                "cat" => cat += 1,
+                "dog" => dog += 1,
+                other => panic!("unexpected successor: {other}"),
+            }
+        }
+        assert!(
+            cat > dog * 3,
+            "expected `cat` to dominate (got cat={cat}, dog={dog})"
+        );
         Ok(())
     }
 }

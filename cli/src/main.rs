@@ -1,9 +1,11 @@
 use clap::{Args, Parser, Subcommand};
 use llms_unplugged::{
-    CutoutsMetadata, Metadata, NGramCounter, ProcessingStats, RawToken, WordFollowEntry,
-    process_file, process_file_for_cutouts, render_bigram_tsv, save_to_json,
-    split_entries_into_books,
+    CutoutsMetadata, Metadata, NGramCounter, ProcessingStats, RawToken, SampleError,
+    WordFollowEntry, process_file, process_file_for_cutouts, render_bigram_tsv, sample,
+    save_to_json, split_entries_into_books,
 };
+use rand::SeedableRng;
+use rand_chacha::ChaCha8Rng;
 use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
@@ -27,6 +29,8 @@ enum Commands {
     Tsv(TsvArgs),
     /// Generate printable token cutouts for the cutouts lesson variant.
     Cutouts(CutoutsArgs),
+    /// Sample text from an N-gram model built in-memory from a corpus.
+    Sample(SampleArgs),
 }
 
 #[derive(Args, Debug, Clone)]
@@ -167,6 +171,34 @@ struct CutoutsArgs {
     duplex: bool,
 }
 
+#[derive(Args, Debug, Clone)]
+struct SampleArgs {
+    /// Input text file (with YAML frontmatter) to build the model from
+    #[arg(short = 'i', long = "input", value_name = "INPUT")]
+    input: PathBuf,
+
+    /// N-gram size (2 for bigrams, 3 for trigrams). Prompt must contain at
+    /// least N-1 normalised tokens.
+    #[arg(short, long, default_value_t = 2)]
+    n: usize,
+
+    /// Prompt to start sampling from. Normalised the same way as the corpus.
+    #[arg(short = 'p', long = "prompt")]
+    prompt: String,
+
+    /// Number of tokens to sample after the prompt
+    #[arg(short = 't', long = "tokens", default_value_t = 50)]
+    tokens: usize,
+
+    /// Optional RNG seed for reproducible output
+    #[arg(long)]
+    seed: Option<u64>,
+
+    /// Punctuation characters to preserve as separate tokens (default: ",.")
+    #[arg(long = "punctuation", default_value = ",.")]
+    punctuation: String,
+}
+
 fn main() {
     let cli = Cli::parse();
     let result = match &cli.command {
@@ -174,6 +206,7 @@ fn main() {
         Commands::Pdf(args) => run_pdf_command(args),
         Commands::Tsv(args) => run_tsv_command(args),
         Commands::Cutouts(args) => run_cutouts_command(args),
+        Commands::Sample(args) => run_sample_command(args),
     };
 
     match result {
@@ -350,6 +383,51 @@ fn save_cutouts_json(
         .map_err(|e| CliError::Processing(io::Error::new(io::ErrorKind::Other, e)))?;
 
     Ok(())
+}
+
+fn run_sample_command(args: &SampleArgs) -> Result<(), CliError> {
+    let punctuation: Vec<char> = args.punctuation.chars().collect();
+    let mut counter = NGramCounter::new(args.n, punctuation);
+    counter
+        .process_file(&args.input)
+        .map_err(CliError::Processing)?;
+
+    let entries = counter.get_entries();
+    let prompt_tokens = counter.normalize(&args.prompt);
+
+    if prompt_tokens.is_empty() {
+        return Err(CliError::InvalidArgs(
+            "Prompt produced no tokens after normalisation.".to_string(),
+        ));
+    }
+
+    let mut rng = match args.seed {
+        Some(s) => ChaCha8Rng::seed_from_u64(s),
+        None => ChaCha8Rng::from_entropy(),
+    };
+
+    match sample(&entries, &prompt_tokens, args.tokens, &mut rng) {
+        Ok(generated) => {
+            let mut all = prompt_tokens;
+            all.extend(generated);
+            println!("{}", all.join(" "));
+            Ok(())
+        }
+        Err(SampleError::DeadEnd {
+            context,
+            generated,
+        }) => {
+            let mut all = prompt_tokens;
+            all.extend(generated.clone());
+            println!("{}", all.join(" "));
+            Err(CliError::InvalidArgs(format!(
+                "dead-end context `{}` has no successors; stopped after generating {} token(s)",
+                context.join(" "),
+                generated.len()
+            )))
+        }
+        Err(e) => Err(CliError::InvalidArgs(e.to_string())),
+    }
 }
 
 fn run_tsv_command(args: &TsvArgs) -> Result<(), CliError> {

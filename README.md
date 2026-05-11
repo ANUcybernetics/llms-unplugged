@@ -112,6 +112,15 @@ contractions) to keep the model small.
     a mirrored back, so the same cutouts appear on both faces of each sheet.
     Print with "flip on short edge" binding (currently hard-coded to a4
     landscape).
+- `sample` - Build an N-gram model in memory from a corpus and sample text
+  from it. Useful as a sanity check on the model without printing a booklet.
+  - `--input <FILE>`, `--n <N>` (default 2)
+  - `--prompt <WORDS>`: starting text (must have at least `n - 1` normalised
+    tokens; is run through the same tokeniser as the corpus)
+  - `--tokens <N>`: number of tokens to sample (default 50)
+  - `--seed <U64>`: optional, for reproducible output
+  - On dead-end (a sampled context with no successors) the partial output is
+    printed to stdout, an error is written to stderr, and the command exits 1.
 
 By default, counts are scaled for d10 dice using 10^k-1 scaling (e.g., 0-9,
 0-99, 0-999), making it easy to add more dice for larger ranges.

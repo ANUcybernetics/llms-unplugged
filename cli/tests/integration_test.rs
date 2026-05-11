@@ -774,3 +774,172 @@ fn test_cli_to_typst_pdf() -> io::Result<()> {
 
     Ok(())
 }
+
+fn cli_exe_path() -> io::Result<std::path::PathBuf> {
+    let mut p = std::env::current_dir()?;
+    p.push("target");
+    p.push("debug");
+    p.push("llms_unplugged");
+    if cfg!(windows) {
+        p.set_extension("exe");
+    }
+    Ok(p)
+}
+
+fn write_sample_corpus(dir: &Path, name: &str, body: &str) -> io::Result<std::path::PathBuf> {
+    let path = dir.join(name);
+    let mut f = File::create(&path)?;
+    writeln!(f, "---")?;
+    writeln!(f, "title: Sample CLI test")?;
+    writeln!(f, "author: Tests")?;
+    writeln!(f, "url: https://example.com")?;
+    writeln!(f, "---")?;
+    writeln!(f, "{body}")?;
+    f.flush()?;
+    Ok(path)
+}
+
+#[test]
+fn test_sample_cli_deterministic_with_seed() -> io::Result<()> {
+    let exe = cli_exe_path()?;
+    if !exe.exists() {
+        println!("Skipping test_sample_cli_deterministic_with_seed: binary not found");
+        return Ok(());
+    }
+
+    let temp = TempDir::new()?;
+    let input = write_sample_corpus(
+        temp.path(),
+        "corpus.txt",
+        "the cat sat on the mat the dog ran past the cat the bird sang loudly",
+    )?;
+
+    let run = || {
+        Command::new(&exe)
+            .arg("sample")
+            .arg("-i")
+            .arg(&input)
+            .arg("-p")
+            .arg("the")
+            .arg("-t")
+            .arg("8")
+            .arg("--seed")
+            .arg("12345")
+            .output()
+    };
+
+    let a = run()?;
+    let b = run()?;
+    assert!(a.status.success(), "first run failed: {:?}", a);
+    assert!(b.status.success(), "second run failed: {:?}", b);
+    assert_eq!(a.stdout, b.stdout, "same seed should give same output");
+
+    let out = String::from_utf8_lossy(&a.stdout);
+    assert!(out.starts_with("the "), "output should begin with prompt: {out:?}");
+    Ok(())
+}
+
+#[test]
+fn test_sample_cli_prompt_normalises_case() -> io::Result<()> {
+    let exe = cli_exe_path()?;
+    if !exe.exists() {
+        println!("Skipping test_sample_cli_prompt_normalises_case: binary not found");
+        return Ok(());
+    }
+
+    let temp = TempDir::new()?;
+    // Canonical form will be lowercase "the" since it dominates.
+    let input = write_sample_corpus(
+        temp.path(),
+        "corpus.txt",
+        "the cat sat. The cat sat. the dog ran. the bird flew.",
+    )?;
+
+    let out = Command::new(&exe)
+        .arg("sample")
+        .arg("-i")
+        .arg(&input)
+        .arg("-p")
+        .arg("THE")
+        .arg("-t")
+        .arg("3")
+        .arg("--seed")
+        .arg("1")
+        .output()?;
+    assert!(out.status.success(), "sample failed: {:?}", out);
+
+    let stdout = String::from_utf8_lossy(&out.stdout);
+    assert!(
+        stdout.starts_with("the "),
+        "uppercase prompt should normalise to canonical `the`: {stdout:?}"
+    );
+    Ok(())
+}
+
+#[test]
+fn test_sample_cli_unknown_prompt_errors() -> io::Result<()> {
+    let exe = cli_exe_path()?;
+    if !exe.exists() {
+        println!("Skipping test_sample_cli_unknown_prompt_errors: binary not found");
+        return Ok(());
+    }
+
+    let temp = TempDir::new()?;
+    let input = write_sample_corpus(
+        temp.path(),
+        "corpus.txt",
+        "alpha beta gamma alpha beta delta",
+    )?;
+
+    let out = Command::new(&exe)
+        .arg("sample")
+        .arg("-i")
+        .arg(&input)
+        .arg("-p")
+        .arg("notintexttatall")
+        .arg("-t")
+        .arg("5")
+        .output()?;
+    assert!(!out.status.success(), "unknown prompt should fail");
+    let stderr = String::from_utf8_lossy(&out.stderr);
+    assert!(
+        stderr.contains("prompt context not found"),
+        "expected prompt-context-not-found error: {stderr}"
+    );
+    Ok(())
+}
+
+#[test]
+fn test_sample_cli_dead_end_prints_partial_then_errors() -> io::Result<()> {
+    let exe = cli_exe_path()?;
+    if !exe.exists() {
+        println!("Skipping test_sample_cli_dead_end_prints_partial_then_errors: binary not found");
+        return Ok(());
+    }
+
+    let temp = TempDir::new()?;
+    // "gamma" has no successor: sampling from "alpha" for 5 tokens must dead-end.
+    let input = write_sample_corpus(temp.path(), "corpus.txt", "alpha beta gamma")?;
+
+    let out = Command::new(&exe)
+        .arg("sample")
+        .arg("-i")
+        .arg(&input)
+        .arg("-p")
+        .arg("alpha")
+        .arg("-t")
+        .arg("5")
+        .arg("--seed")
+        .arg("0")
+        .output()?;
+
+    assert!(!out.status.success(), "dead-end should exit non-zero");
+    let stdout = String::from_utf8_lossy(&out.stdout);
+    let stderr = String::from_utf8_lossy(&out.stderr);
+    assert_eq!(stdout.trim(), "alpha beta gamma", "should print partial output");
+    assert!(
+        stderr.contains("dead-end"),
+        "should report dead-end on stderr: {stderr}"
+    );
+    Ok(())
+}

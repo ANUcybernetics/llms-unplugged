@@ -35,6 +35,9 @@ cargo build --release
 # Export bigram TSV for spreadsheets
 ./target/release/llms_unplugged tsv ../data/frankenstein.txt > bigrams.tsv
 
+# Sample text from an in-memory N-gram model built from a corpus
+./target/release/llms_unplugged sample -i ../data/frankenstein.txt -p "the" -t 30 --seed 42
+
 # Generate token cutouts (single-sided)
 ./target/release/llms_unplugged cutouts -i ../data/green-eggs-and-ham.txt -n 2
 
