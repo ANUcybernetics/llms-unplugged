@@ -118,7 +118,7 @@
   let fg = if dimmed { luma(140) } else { rgb("#d4a017") }
   highlight(
     fill: bg,
-    stroke: (paint: fg, thickness: 4pt),
+    stroke: (paint: fg, thickness: 1pt),
     extent: 0.1em,
     radius: 2pt,
     text(fill: fg, weight: "bold", upper(name)),
@@ -389,14 +389,21 @@
 #set par(leading: 0pt, spacing: 0pt)
 #set block(spacing: 0pt)
 
+// Split tokens so that tool-trigger cutouts get their own page(s) at the end
+// of the booklet. The teacher hands out the normal cutouts during the n-gram
+// lesson, and only distributes the tool triggers once the class moves on to
+// the agentic tool-use lesson.
+#let normal_tokens = tokens.filter(t => not t.at("is_tool", default: false))
+#let tool_tokens = tokens.filter(t => t.at("is_tool", default: false))
+
 // Compute the row breakdown for a given max width: greedy left-to-right
 // packing of tokens into rows, returning a list of rows where each row is a
 // list of `(token: ..., width: ...)` records.
-#let compute-rows(max_width) = {
+#let compute-rows(token_list, max_width) = {
   let rows = ()
   let current_row = ()
   let current_width = 0pt
-  for token in tokens {
+  for token in token_list {
     let cell = token-cell(token, height: cell_height)
     let cell_size = measure(cell)
     if current_width + cell_size.width > max_width and current_row.len() > 0 {
@@ -445,12 +452,22 @@
 
 #if not duplex {
   // Single-sided: let `#layout` adapt to the actual page width and let Typst
-  // flow the rows naturally across pages.
+  // flow the rows naturally across pages. Pagebreaks are not allowed inside
+  // `#layout`, so render normal cutouts and tool-trigger cutouts as two
+  // separate `#layout` blocks separated by a pagebreak.
   layout(size => {
-    let rows = compute-rows(size.width)
+    let rows = compute-rows(normal_tokens, size.width)
     for row in rows { render-row-front(row) }
     horizontal_cut_line
   })
+  if tool_tokens.len() > 0 {
+    pagebreak(weak: false)
+    layout(size => {
+      let rows = compute-rows(tool_tokens, size.width)
+      for row in rows { render-row-front(row) }
+      horizontal_cut_line
+    })
+  }
 } else {
   // Duplex: manually paginate so each front page is paired with its mirrored
   // back. Pagebreaks are not allowed inside `#layout`, so use `#context` and
@@ -458,23 +475,35 @@
   // supported in duplex mode for now).
   context {
     let max_width = 297mm - 2 * cutout_h_margin
-    let rows = compute-rows(max_width)
 
-    let groups = ()
-    let i = 0
-    while i < rows.len() {
-      let end = calc.min(i + rows_per_page, rows.len())
-      groups.push(rows.slice(i, end))
-      i = end
+    // Paginate a row list into front/back page pairs. Each `rows_per_page`
+    // chunk produces one front page followed by its mirrored back page, so
+    // every group occupies an even number of sheets — meaning tool-trigger
+    // cutouts always land on a fresh sheet after the normal cutouts.
+    let render-rows-duplex(rows) = {
+      let groups = ()
+      let i = 0
+      while i < rows.len() {
+        let end = calc.min(i + rows_per_page, rows.len())
+        groups.push(rows.slice(i, end))
+        i = end
+      }
+
+      for (g_idx, group) in groups.enumerate() {
+        if g_idx > 0 { pagebreak(weak: false) }
+        for row in group { render-row-front(row) }
+        horizontal_cut_line
+        pagebreak(weak: false)
+        for row in group { render-row-back(row) }
+        horizontal_cut_line
+      }
     }
 
-    for (g_idx, group) in groups.enumerate() {
-      if g_idx > 0 { pagebreak(weak: false) }
-      for row in group { render-row-front(row) }
-      horizontal_cut_line
+    render-rows-duplex(compute-rows(normal_tokens, max_width))
+
+    if tool_tokens.len() > 0 {
       pagebreak(weak: false)
-      for row in group { render-row-back(row) }
-      horizontal_cut_line
+      render-rows-duplex(compute-rows(tool_tokens, max_width))
     }
   }
 }
