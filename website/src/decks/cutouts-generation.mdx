@@ -1,4 +1,4 @@
-{/* _class: banner */}
+{/_ \_class: banner _/}
 
 # Generation
 
@@ -8,8 +8,8 @@
 
 ## The algorithm
 
-write a word, find a cutout whose previous-word box matches, write that
-cutout's next word, hunt for the next match:
+write a word, find a cutout whose previous-word box matches, write that cutout's
+next word, hunt for the next match:
 
 <CutoutRow>
   <Cutout prev="i" next="am" />
@@ -34,8 +34,9 @@ it grows like a chain of dominoes
 
 ## The proportionality trick
 
-after `i` in our training text, `am` follows twice and `do` follows once---so
-two of the three cutouts with `i` as the previous word point to `am`:
+after <Token next>i</Token> in our training text, <Token next>am</Token> follows
+twice and <Token next>do</Token> follows once---so two of the three cutouts with
+<Token next>i</Token> as the previous word point to <Token next>am</Token>:
 
 <CutoutRow>
   <Cutout prev="i" next="am" />
@@ -43,9 +44,9 @@ two of the three cutouts with `i` as the previous word point to `am`:
   <Cutout prev="i" next="do" />
 </CutoutRow>
 
-whichever matching cutout your eye lands on, you've sampled in proportion to
-the original distribution---no dice, no probability tables, the spread is
-doing the maths
+whichever matching cutout your eye lands on, you've sampled in proportion to the
+original distribution---no dice, no probability tables, the spread is doing the
+maths
 
 ---
 
@@ -53,8 +54,8 @@ doing the maths
 
 <LmCutouts tokens={GREEN_EGGS_TOKENS} columns={2} />
 
-each row is one previous word; each next word in the right column is one
-cutout on the table
+each row is one previous word; each next word in the right column is one cutout
+on the table
 
 ---
 
@@ -96,7 +97,7 @@ read the funniest one to the room
 
 ---
 
-{/* _class: banner */}
+{/_ \_class: banner _/}
 
 # Shareback
 
