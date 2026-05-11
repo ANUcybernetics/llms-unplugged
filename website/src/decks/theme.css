@@ -364,6 +364,8 @@ body.reveal-viewport {
   margin: 0.15em 0.2em;
   vertical-align: middle;
   line-height: 1.2;
+  /* Sections are display: grid; opt out of default justify-self: stretch. */
+  justify-self: start;
 }
 
 .reveal .cutout-paper-prev {
