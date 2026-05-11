@@ -32,9 +32,29 @@ it grows like a chain of dominoes
 
 ---
 
-## Worked example
+## The proportionality trick
+
+after `i` in our training text, `am` follows twice and `do` follows once---so
+two of the three cutouts with `i` as the previous word point to `am`:
+
+<CutoutRow>
+  <Cutout prev="i" next="am" />
+  <Cutout prev="i" next="am" />
+  <Cutout prev="i" next="do" />
+</CutoutRow>
+
+whichever matching cutout your eye lands on, you've sampled in proportion to
+the original distribution---no dice, no probability tables, the spread is
+doing the maths
+
+---
+
+## The trained spread
 
 <LmCutouts tokens={GREEN_EGGS_TOKENS} columns={2} />
+
+each row is one previous word; each next word in the right column is one
+cutout on the table
 
 ---
 
