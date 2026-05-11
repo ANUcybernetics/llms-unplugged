@@ -6,6 +6,7 @@ export const siteConfig = defineSiteConfig({
   colorScheme: "dark",
   links: [
     { text: "Lessons", href: "/lessons/" },
+    { text: "Library", href: "/library/" },
     { text: "News", href: "/news/" },
     { text: "Glossary", href: "/glossary/" },
     { text: "FAQ", href: "/faq/" },

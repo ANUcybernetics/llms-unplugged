@@ -1,0 +1,91 @@
+---
+import { Image } from "astro:assets";
+import PageLayout from "../layouts/PageLayout.astro";
+import libraryCollection from "../assets/images/library-collection.avif";
+import libraryTitlePage from "../assets/images/library-title-page.avif";
+---
+
+<PageLayout
+  title="LLMs Unplugged Library"
+  description="Pre-trained language models in printed, hardbound book form — n-gram frequency tables typeset from classic literature that you can use to generate text with pen, paper, and dice."
+>
+  <h1>LLMs Unplugged Library</h1>
+
+  <Image
+    src={libraryCollection}
+    alt="The LLMs Unplugged Library collection — hardbound volumes in green, purple, brown, and blue lined up on a shelf"
+  />
+
+  <p>
+    The <em>LLMs Unplugged Library</em> is a collection of pre-trained language
+    models in printed, hardbound book form. Each volume contains <a
+      href="/glossary/#n-gram">n-gram</a
+    > frequency tables typeset from a classic work of literature&mdash;the same statistical
+    patterns that underpin modern LLMs, but at human scale. You can hold the entire
+    model in your hands and use it to generate new text with pen, paper, and dice.
+  </p>
+
+  <Image
+    src={libraryTitlePage}
+    alt="Title page of a Hemingway bigram volume, published by Cybernetic Studio Press"
+  />
+
+  <h2>A conceptual art piece</h2>
+
+  <p>
+    The Library reframes a language model as a physical object&mdash;something
+    bound, shelved, and read rather than queried through a chat window. The
+    technology underneath is identical to the activities elsewhere on this site:
+    a tokeniser counts how often each word follows each context, and those
+    counts are typeset into lookup tables that anyone with a pair of dice can
+    sample from. What changes is the framing. A workshop booklet is a
+    consumable, printed for an afternoon and recycled afterwards. A Library
+    volume is meant to sit on a shelf, be picked up, and reward closer
+    attention.
+  </p>
+
+  <p>
+    The distinctive feature is the curation. Each volume is built from a
+    specific literary work (or the collected works of an author), then typeset
+    in bigram, trigram, and 4-gram variants. The progression across volumes
+    makes the fundamental trade-off between model size and output quality
+    legible without a single chart: a trigram model of <em>Frankenstein</em> produces
+    noticeably more coherent text than the bigram version, but the book is considerably
+    thicker. Pick up a Hemingway bigram and you get terse, punchy fragments; the
+    <em>Cloudstreet</em> model wanders into something more sprawling. The model
+    <em>is</em> the text it was trained on, in a way that&rsquo;s immediately legible.
+  </p>
+
+  <p>
+    Current volumes include Mary Shelley&rsquo;s <em>Frankenstein</em>, Tim
+    Winton&rsquo;s <em>Cloudstreet</em>, the collected works of Ernest
+    Hemingway, and a synthetic dataset (<a
+      href="https://huggingface.co/datasets/roneneldan/TinyStories"
+      >TinyStories</a
+    >) for comparison. Published by Cybernetic Studio Press under CC BY-NC-SA
+    4.0.
+  </p>
+
+  <h2>How it&rsquo;s made</h2>
+
+  <p>
+    The volumes are typeset using the same Rust-to-JSON-to-Typst pipeline that
+    powers the booklets and cutouts on the <a href="/tools">Tools</a> page. A
+    Rust CLI tokenises the source text and computes n-gram frequency tables,
+    which are exported as JSON and then laid out by a Typst template into A4
+    pages with four columns of frequency data, binding margins for hardcover
+    production, and front matter including a copyright page and usage
+    instructions. The Library volumes are specifically curated, printed, and
+    hardbound as standalone artefacts rather than disposable workshop
+    materials.
+  </p>
+
+  <p>
+    To generate your own booklet from any text&mdash;in paperback PDF rather
+    than hardbound form&mdash;head to the <a href="/tools">Tools</a> page. To
+    see the same models used in a teaching context, the <a
+      href="/lessons/pretrained-generation">Pre-trained Model Generation</a
+    > lesson walks through how to roll dice against a frequency table to produce
+    new text.
+  </p>
+</PageLayout>
