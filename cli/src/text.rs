@@ -63,6 +63,11 @@ pub struct RawToken {
     /// The n-1 preceding kept tokens (for n-gram context). Empty for the first n-1 tokens.
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub previous_words: Vec<String>,
+    /// True for synthetic tool-trigger tokens injected by the cutouts CLI.
+    /// Renders distinctly in the typst template so a trigger like VOTE stays
+    /// visually unambiguous even when the corpus contains the same word.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub is_tool: bool,
 }
 
 /// Configuration for the tokenizer/normalizer.
@@ -230,6 +235,7 @@ impl Normalizer {
                     text: normalized_char.to_string(),
                     keep: true,
                     previous_words: vec![],
+                    is_tool: false,
                 });
                 index += 1;
             } else if normalized_char.is_ascii_alphanumeric() || normalized_char == '\'' {
@@ -292,6 +298,7 @@ impl Normalizer {
             text,
             keep,
             previous_words: vec![],
+            is_tool: false,
         })
     }
 
@@ -449,6 +456,7 @@ mod tests {
                 text: "chapter".to_string(),
                 keep: true,
                 previous_words: vec![],
+                is_tool: false,
             }
         );
         assert_eq!(
@@ -458,6 +466,7 @@ mod tests {
                 text: "IV".to_string(),
                 keep: false,
                 previous_words: vec![],
+                is_tool: false,
             }
         ); // roman numeral
         assert_eq!(
@@ -467,6 +476,7 @@ mod tests {
                 text: "is".to_string(),
                 keep: true,
                 previous_words: vec![],
+                is_tool: false,
             }
         );
         assert_eq!(
@@ -476,6 +486,7 @@ mod tests {
                 text: "good".to_string(),
                 keep: true,
                 previous_words: vec![],
+                is_tool: false,
             }
         );
         assert_eq!(
@@ -485,6 +496,7 @@ mod tests {
                 text: ".".to_string(),
                 keep: true,
                 previous_words: vec![],
+                is_tool: false,
             }
         );
     }
@@ -509,6 +521,7 @@ mod tests {
                 text: "test".to_string(),
                 keep: true,
                 previous_words: vec![],
+                is_tool: false,
             }
         );
         assert_eq!(
@@ -518,6 +531,7 @@ mod tests {
                 text: "123bad".to_string(),
                 keep: false,
                 previous_words: vec![],
+                is_tool: false,
             }
         );
         assert_eq!(
@@ -527,6 +541,7 @@ mod tests {
                 text: "word".to_string(),
                 keep: true,
                 previous_words: vec![],
+                is_tool: false,
             }
         );
     }

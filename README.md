@@ -112,6 +112,13 @@ contractions) to keep the model small.
     a mirrored back, so the same cutouts appear on both faces of each sheet.
     Print with "flip on short edge" binding (currently hard-coded to a4
     landscape).
+  - `--tool NAME[:COUNT]`: inject a tool-trigger cutout for the agentic tool
+    use lesson (e.g. `--tool VOTE` or `--tool ACTION:5`). `COUNT` defaults to
+    3 and seeds that many trigger copies at the top `COUNT` most common
+    previous-word contexts in the corpus, so triggers fire from positions
+    where the corpus is already variable. Repeat the flag to add multiple
+    tools. Triggers render in a distinct black-on-gold style so they remain
+    visually unambiguous even when the corpus contains the same word.
 - `sample` - Build an N-gram model in memory from a corpus and sample text
   from it. Useful as a sanity check on the model without printing a booklet.
   - `--input <FILE>`, `--n <N>` (default 2)

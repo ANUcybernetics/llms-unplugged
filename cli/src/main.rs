@@ -1,8 +1,8 @@
 use clap::{Args, Parser, Subcommand};
 use llms_unplugged::{
     CutoutsMetadata, Metadata, NGramCounter, ProcessingStats, RawToken, SampleError,
-    WordFollowEntry, process_file, process_file_for_cutouts, render_bigram_tsv, sample,
-    save_to_json, split_entries_into_books,
+    WordFollowEntry, append_tool_tokens, process_file, process_file_for_cutouts,
+    render_bigram_tsv, sample, save_to_json, split_entries_into_books,
 };
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
@@ -169,6 +169,14 @@ struct CutoutsArgs {
     /// Print with "flip on short edge" binding. Currently assumes a4 landscape.
     #[arg(long)]
     duplex: bool,
+
+    /// Inject a tool-trigger cutout (e.g. --tool VOTE or --tool ACTION:5).
+    /// Format: NAME[:COUNT]. Default COUNT is 3, placed at the top COUNT most
+    /// common (n-1)-token previous-word contexts in the corpus. Repeat the
+    /// flag to add multiple tools. Triggers render in black/gold so they stay
+    /// visually distinct even when the corpus contains the same word.
+    #[arg(long = "tool", value_name = "TOOL", action = clap::ArgAction::Append)]
+    tools: Vec<String>,
 }
 
 #[derive(Args, Debug, Clone)]
@@ -293,13 +301,22 @@ fn run_build_command(args: &BuildArgs) -> Result<(), CliError> {
 
 fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
     let punctuation: Vec<char> = args.punctuation.chars().collect();
-    let (tokens, mut metadata) =
+    let (mut tokens, mut metadata) =
         process_file_for_cutouts(&args.input, punctuation, args.n).map_err(CliError::Processing)?;
 
     let (_entries, stats, _ngram_meta) =
         process_file(&args.input, args.n).map_err(CliError::Processing)?;
     metadata.entropy = stats.entropy;
     metadata.perplexity = stats.perplexity;
+
+    let tool_specs = args
+        .tools
+        .iter()
+        .map(|s| parse_tool_spec(s))
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(CliError::InvalidArgs)?;
+    let injected =
+        append_tool_tokens(&mut tokens, &tool_specs, args.n).map_err(CliError::InvalidArgs)?;
 
     fs::create_dir_all(&args.output).map_err(CliError::Processing)?;
 
@@ -313,6 +330,14 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
         metadata.kept_tokens,
         metadata.total_tokens - metadata.kept_tokens
     );
+    if injected > 0 {
+        let names: Vec<String> = tool_specs.iter().map(|(n, _)| n.clone()).collect();
+        println!(
+            "Injected {} tool-trigger cutout(s) for: {}",
+            injected,
+            names.join(", ")
+        );
+    }
     println!("Wrote JSON to {}", json_path.display());
 
     if args.json_only {
@@ -778,6 +803,25 @@ fn typst_command_path() -> PathBuf {
     } else {
         PathBuf::from("typst")
     }
+}
+
+/// Parse a `--tool` spec like `VOTE` or `VOTE:5` into a `(name, count)` pair.
+/// Default count is 3 when no `:N` suffix is given.
+fn parse_tool_spec(spec: &str) -> Result<(String, usize), String> {
+    let (name, count) = match spec.split_once(':') {
+        Some((n, c)) => {
+            let parsed = c
+                .trim()
+                .parse::<usize>()
+                .map_err(|_| format!("Invalid count in tool spec '{spec}': expected an integer"))?;
+            (n.trim().to_string(), parsed)
+        }
+        None => (spec.trim().to_string(), 3),
+    };
+    if name.is_empty() {
+        return Err(format!("Empty tool name in '{spec}'"));
+    }
+    Ok((name, count))
 }
 
 fn parse_target(target: &str) -> Result<(String, usize, usize), CliError> {

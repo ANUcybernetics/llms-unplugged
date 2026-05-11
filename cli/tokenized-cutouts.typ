@@ -108,10 +108,32 @@
   text(fill: fill, t)
 }
 
+// A tool-trigger word: black fill, gold text, gold border, bold uppercase. Used
+// for tokens flagged `is_tool: true` so a trigger like VOTE stays visually
+// unambiguous even when the corpus contains the same string as a regular word.
+#let tool-trigger-word(name, dimmed: false) = {
+  let bg = if dimmed { luma(220) } else { black }
+  let fg = if dimmed { luma(140) } else { rgb("#d4a017") }
+  box(
+    fill: bg,
+    stroke: (paint: fg, thickness: 1.2pt),
+    radius: 3pt,
+    inset: (x: 0.3em, y: 0.1em),
+    text(fill: fg, weight: "bold", upper(name)),
+  )
+}
+
+// Pick the right renderer for a token's next-word slot.
+#let next-word(token, dimmed: false) = if token.at("is_tool", default: false) {
+  tool-trigger-word(token.text, dimmed: dimmed)
+} else {
+  coloured-word(token.text, dimmed: dimmed)
+}
+
 // Render a cutout's previous-word boxes followed by its next word, all inline.
 #let render-cutout(token) = {
   let parts = token.previous_words.map(t => previous-word-box(t))
-  parts.push(coloured-word(token.text))
+  parts.push(next-word(token))
   parts.join(h(inter_word_gap))
 }
 
@@ -129,6 +151,7 @@
       "previous_words" in t
         and t.previous_words.len() > 0
         and t.keep
+        and not t.at("is_tool", default: false)
         and t.text.find(regex("[A-Za-z]")) != none
         and t.previous_words.all(p => p.find(regex("[A-Za-z]")) != none)
     )
@@ -147,7 +170,10 @@
       result
     } else {
       let cands = tokens.filter(t => (
-        "previous_words" in t and t.previous_words.len() > 0 and t.keep
+        "previous_words" in t
+          and t.previous_words.len() > 0
+          and t.keep
+          and not t.at("is_tool", default: false)
       ))
       cands.slice(0, calc.min(3, cands.len()))
     }
@@ -332,7 +358,7 @@
   // matching game, so greying it out signals "not for use".
   let dimmed = not token.keep or prev_words.len() == 0
 
-  let main_word = coloured-word(token.text, dimmed: dimmed)
+  let main_word = next-word(token, dimmed: dimmed)
 
   let content = if prev_words.len() > 0 {
     let parts = prev_words.map(t => previous-word-box(t, dimmed: dimmed))

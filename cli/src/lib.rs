@@ -477,6 +477,79 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
     Ok((tokens, metadata))
 }
 
+/// Append synthetic tool-trigger cutouts to a corpus token list.
+///
+/// Each `(name, count)` spec produces up to `count` trigger cutouts (one per
+/// context), seeded at the top `count` most common (n-1)-token previous-word
+/// contexts among the corpus's kept tokens. If the corpus has fewer distinct
+/// contexts than requested, the available ones are used. Triggers carry
+/// `is_tool = true` so the typst template renders them in the dedicated
+/// black/gold style.
+///
+/// Triggers are appended in order, so they cluster at the end of the cutout
+/// sheets — easy for the teacher to find and distribute separately.
+pub fn append_tool_tokens(
+    tokens: &mut Vec<RawToken>,
+    specs: &[(String, usize)],
+    n: usize,
+) -> Result<usize, String> {
+    if specs.is_empty() {
+        return Ok(0);
+    }
+    let context_size = n.saturating_sub(1);
+
+    let mut context_counts: HashMap<Vec<String>, usize> = HashMap::new();
+    for t in tokens
+        .iter()
+        .filter(|t| t.keep && !t.is_tool && t.previous_words.len() == context_size)
+    {
+        *context_counts.entry(t.previous_words.clone()).or_insert(0) += 1;
+    }
+    let mut ranked: Vec<(Vec<String>, usize)> = context_counts.into_iter().collect();
+    ranked.sort_by(|a, b| b.1.cmp(&a.1).then_with(|| a.0.cmp(&b.0)));
+
+    let mut next_index = tokens.iter().map(|t| t.index).max().unwrap_or(0) + 1;
+    let mut injected = 0usize;
+
+    for (name, count) in specs {
+        if name.trim().is_empty() {
+            return Err("Tool name cannot be empty".to_string());
+        }
+        if *count == 0 {
+            continue;
+        }
+        let copies = if context_size == 0 {
+            // No context to discriminate on; emit one trigger per requested copy
+            // (all share an empty previous_words).
+            (0..*count).map(|_| Vec::<String>::new()).collect::<Vec<_>>()
+        } else {
+            if ranked.is_empty() {
+                return Err(format!(
+                    "Corpus has no {}-token contexts; cannot place tool '{}'",
+                    context_size, name
+                ));
+            }
+            ranked
+                .iter()
+                .take(*count)
+                .map(|(ctx, _)| ctx.clone())
+                .collect::<Vec<_>>()
+        };
+        for previous_words in copies {
+            tokens.push(RawToken {
+                index: next_index,
+                text: name.clone(),
+                keep: true,
+                previous_words,
+                is_tool: true,
+            });
+            next_index += 1;
+            injected += 1;
+        }
+    }
+    Ok(injected)
+}
+
 fn parse_frontmatter(frontmatter_raw: &str, n: usize) -> io::Result<Metadata> {
     use serde_yaml::Value;
 
