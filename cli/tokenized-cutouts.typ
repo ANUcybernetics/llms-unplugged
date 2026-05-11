@@ -108,17 +108,19 @@
   text(fill: fill, t)
 }
 
-// A tool-trigger word: black fill, gold text, gold border, bold uppercase. Used
+// A tool-trigger word: black highlight with bold uppercase gold text. Used
 // for tokens flagged `is_tool: true` so a trigger like VOTE stays visually
 // unambiguous even when the corpus contains the same string as a regular word.
+// Uses `highlight` rather than `box` so the baseline aligns with surrounding
+// inline text.
 #let tool-trigger-word(name, dimmed: false) = {
   let bg = if dimmed { luma(220) } else { black }
   let fg = if dimmed { luma(140) } else { rgb("#d4a017") }
-  box(
+  highlight(
     fill: bg,
-    stroke: (paint: fg, thickness: 1.2pt),
-    radius: 3pt,
-    inset: (x: 0.3em, y: 0.1em),
+    stroke: (paint: fg, thickness: 4pt),
+    extent: 0.1em,
+    radius: 2pt,
     text(fill: fg, weight: "bold", upper(name)),
   )
 }
