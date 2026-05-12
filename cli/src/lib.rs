@@ -65,6 +65,10 @@ pub struct ProcessingStats {
     pub entropy: f64,
     /// Perplexity (2^entropy) --- effective number of choices per generation step
     pub perplexity: f64,
+    /// Mean number of distinct next-word continuations per previous-words
+    /// context (unweighted by frequency). Differs from perplexity by ignoring
+    /// the probability distribution over continuations.
+    pub branching_factor: f64,
 }
 
 /// Wrapper for the n-1 previous words that form the context of an n-gram entry.
@@ -116,6 +120,7 @@ impl NGramCounter {
                 most_popular_previous_words: None,
                 entropy: 0.0,
                 perplexity: 1.0,
+                branching_factor: 0.0,
             },
             window: VecDeque::with_capacity(context_size),
             metadata: None,
@@ -296,6 +301,18 @@ impl NGramCounter {
             self.stats.entropy = weighted_entropy;
             self.stats.perplexity = weighted_entropy.exp2();
         }
+
+        // Compute unweighted average branching factor: mean number of distinct
+        // next-word continuations per previous-words context.
+        if !self.previous_words_map.is_empty() {
+            let distinct_continuations: usize = self
+                .previous_words_map
+                .values()
+                .map(|m| m.len())
+                .sum();
+            self.stats.branching_factor =
+                distinct_continuations as f64 / self.previous_words_map.len() as f64;
+        }
     }
 
     /// Get the results as a sorted list of WordFollowEntry
@@ -346,6 +363,7 @@ pub struct CutoutsMetadata {
     pub kept_tokens: usize,
     pub entropy: f64,
     pub perplexity: f64,
+    pub branching_factor: f64,
 }
 
 /// Processes a text file and returns raw tokens for the cutouts lesson variant
@@ -472,6 +490,7 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
         kept_tokens,
         entropy: 0.0,
         perplexity: 1.0,
+        branching_factor: 0.0,
     };
 
     Ok((tokens, metadata))
@@ -2116,6 +2135,16 @@ mod tests {
             expected,
             stats.entropy
         );
+
+        // "go" continues to {left, right} -> 2 distinct
+        // "left" continues to {go} -> 1 distinct
+        // ("right" never appears as a context: it's the last token.)
+        // Branching factor = (2 + 1) / 2 = 1.5
+        assert!(
+            (stats.branching_factor - 1.5).abs() < 1e-6,
+            "Expected branching factor 1.5, got {:.6}",
+            stats.branching_factor
+        );
         Ok(())
     }
 
@@ -2187,6 +2216,7 @@ mod tests {
         let (_entries, stats, _meta) = process_file(&path, 2)?;
         cutouts_meta.entropy = stats.entropy;
         cutouts_meta.perplexity = stats.perplexity;
+        cutouts_meta.branching_factor = stats.branching_factor;
 
         assert!(
             cutouts_meta.entropy > 0.0,
@@ -2199,6 +2229,10 @@ mod tests {
         assert!(
             (cutouts_meta.perplexity - cutouts_meta.entropy.exp2()).abs() < 1e-10,
             "Perplexity should equal 2^entropy"
+        );
+        assert!(
+            cutouts_meta.branching_factor > 1.0,
+            "Branching factor should exceed 1 when at least one context has multiple continuations"
         );
 
         Ok(())

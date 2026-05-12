@@ -308,6 +308,7 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
         process_file(&args.input, args.n).map_err(CliError::Processing)?;
     metadata.entropy = stats.entropy;
     metadata.perplexity = stats.perplexity;
+    metadata.branching_factor = stats.branching_factor;
 
     let tool_specs = args
         .tools
@@ -975,6 +976,7 @@ mod tests {
             most_popular_previous_words: None,
             entropy: 0.0,
             perplexity: 1.0,
+            branching_factor: 0.0,
         }
     }
 

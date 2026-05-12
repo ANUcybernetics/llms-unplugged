@@ -190,11 +190,37 @@
     = How to use these token cutouts
 
     These pages contain the text #emph(doc_metadata.title) by
-    #doc_metadata.author (#doc_metadata.total_tokens tokens, entropy
-    #calc.round(doc_metadata.entropy, digits: 2) bits/token, perplexity
-    #calc.round(doc_metadata.perplexity, digits: 1)). Each *cutout* shows
-    a *next word* paired with the *previous #prev-words-phrase* that came
-    immediately before it in the original text.
+    #doc_metadata.author. Each *cutout* shows a *next word* paired with
+    the *previous #prev-words-phrase* that came immediately before it
+    in the original text.
+
+    #align(center)[
+      #block(
+        fill: luma(245),
+        inset: (x: 1em, y: 0.55em),
+        radius: 3pt,
+      )[
+        #stack(
+          dir: ltr,
+          spacing: 1.6em,
+          align(horizon)[*Model vitals*],
+          grid(
+            columns: 4,
+            column-gutter: 1.8em,
+            row-gutter: 0.1em,
+            align: center,
+            [*#doc_metadata.total_tokens*],
+            [*#calc.round(doc_metadata.entropy, digits: 2)*],
+            [*#calc.round(doc_metadata.perplexity, digits: 1)*],
+            [*#calc.round(doc_metadata.branching_factor, digits: 2)*],
+            text(size: 9pt, fill: luma(80))[tokens],
+            text(size: 9pt, fill: luma(80))[bits/token entropy],
+            text(size: 9pt, fill: luma(80))[perplexity],
+            text(size: 9pt, fill: luma(80))[branching factor],
+          ),
+        )
+      ]
+    ]
 
     == Anatomy of a cutout
 
