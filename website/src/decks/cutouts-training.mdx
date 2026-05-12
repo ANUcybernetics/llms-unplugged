@@ -6,13 +6,21 @@
 
 ---
 
-## The algorithm
+## Your goal
 
 ![bg right:40%](./assets/bg-cut-spread.avif)
 
-cut out your printed cutouts, spread them face-up on the table
+cut your cutouts and spread them face-up on a table
 
 that's it---the spread _is_ your trained bigram language model
+
+---
+
+## You will need
+
+- printed token cutouts for your assigned text
+- scissors
+- a clear table or flat surface
 
 ---
 
@@ -20,21 +28,23 @@ that's it---the spread _is_ your trained bigram language model
 
 ![bg right:40%](./assets/bg-token-anatomy.avif)
 
-a **next word** alongside its **previous word**---the word that came before
-it in the training text:
+a **next word** alongside its **previous word**---the word that came before it
+in the training text:
 
 <Cutout prev="green" next="eggs" />
 
-every word has its own colour, so the boxed and free-standing forms of the
-same word match
+every word has its own colour, so the boxed and free-standing forms of the same
+word match
 
 ---
 
-## Example
+## Worked example
+
+original text:
 
 _"I am Sam. Sam I am. I do not like green eggs and ham."_
 
-after preprocessing:
+after preprocessing (lowercase, punctuation as separate tokens):
 
 <Token next>i</Token> <Token next>am</Token> <Token next>sam</Token>{" "}
 <Token next>.</Token> <Token next>sam</Token> <Token next>i</Token>{" "}
@@ -45,14 +55,52 @@ after preprocessing:
 
 ---
 
-## Activity (~15 min)
+## Worked example: the spread
+
+after cutting and spreading, the table holds every adjacent (previous, next)
+pair from the text:
+
+<CutoutRow>
+  <Cutout prev="i" next="am" />
+  <Cutout prev="i" next="am" />
+  <Cutout prev="i" next="do" />
+</CutoutRow>
+
+<CutoutRow>
+  <Cutout prev="am" next="sam" />
+  <Cutout prev="am" next="." />
+  <Cutout prev="sam" next="." />
+  <Cutout prev="sam" next="i" />
+</CutoutRow>
+
+<CutoutRow>
+  <Cutout prev="." next="sam" />
+  <Cutout prev="." next="i" />
+  <Cutout prev="do" next="not" />
+  <Cutout prev="not" next="like" />
+</CutoutRow>
+
+<CutoutRow>
+  <Cutout prev="like" next="green" />
+  <Cutout prev="green" next="eggs" />
+  <Cutout prev="eggs" next="and" />
+  <Cutout prev="and" next="ham" />
+  <Cutout prev="ham" next="." />
+</CutoutRow>
+
+16 cutouts---<Cutout prev="i" next="am" /> appears twice because `i am` appears
+twice in the training text
+
+---
+
+## Activity (15 min)
 
 ![bg right:40%](./assets/bg-group-activity.avif)
 
 - cut out the bigram cutouts for your assigned text
 - spread them face-up on the table
-- (optional) sort into piles by previous word once the loose-on-table flow
-  makes sense
+- (optional) sort into piles by previous word once the loose-on-table flow makes
+  sense
 
 ---
 
