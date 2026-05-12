@@ -7,7 +7,7 @@
 #let inter_word_gap = 0.3em
 #let border_color = luma(150)
 #let cut_line_thickness = 1pt
-#let cut_line_spacing = 4pt // Reserved vertical space for horizontal cut lines (preserves layout)
+#let cut_line_spacing = 10pt // Reserved vertical space for horizontal cut lines (preserves layout)
 #let cut_stroke = (
   paint: border_color,
   thickness: cut_line_thickness,
@@ -26,7 +26,7 @@
 // calculation below) and the vertical margin is derived so that exactly
 // `rows_per_page` rows fill the page with equal top/bottom whitespace.
 #let cell_height = 1.3 * font_size
-#let rows_per_page = 11
+#let rows_per_page = 10
 #let cutout_h_margin = 5mm
 #let cutout_v_margin = (
   (
