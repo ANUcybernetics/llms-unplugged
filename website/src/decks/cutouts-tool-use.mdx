@@ -19,10 +19,10 @@ the loop: generate → trigger word → call tool → write the result → keep 
 
 ## Trigger words and tools
 
-| Trigger                    | Tool            | Returns                       |
-| -------------------------- | --------------- | ----------------------------- |
-| <Token next>VOTE</Token>   | the room        | yes / no (majority)           |
-| <Token next>ACTION</Token> | a chosen person | a word for what they just did |
+| Trigger                         | Tool            | Returns                       |
+| ------------------------------- | --------------- | ----------------------------- |
+| <Token next tool>VOTE</Token>   | the room        | yes / no (majority)           |
+| <Token next tool>ACTION</Token> | a chosen person | a word for what they just did |
 
 ---
 
@@ -30,11 +30,11 @@ the loop: generate → trigger word → call tool → write the result → keep 
 
 add new cutouts to your spread:
 
-- **into a trigger**: <Cutout prev="the" next="VOTE" /> <Cutout prev="is" next="VOTE" /> <Cutout prev="we" next="ACTION" />
-- **out of a trigger**: <Cutout prev="VOTE" next="." /> <Cutout prev="ACTION" next="." /> (so the result fits back into the chain)
+- **into a trigger**: <Cutout prev="the" next="VOTE" tool="next" /> <Cutout prev="is" next="VOTE" tool="next" /> <Cutout prev="we" next="ACTION" tool="next" />
+- **out of a trigger**: <Cutout prev="VOTE" next="." tool="prev" /> <Cutout prev="ACTION" next="." tool="prev" /> (so the result fits back into the chain)
 
-designate a tool operator---when generation hits <Token next>VOTE</Token>, pause and ask the
-room; on <Token next>ACTION</Token>, the chosen person does something and reports back
+designate a tool operator---when generation hits <Token next tool>VOTE</Token>, pause and ask the
+room; on <Token next tool>ACTION</Token>, the chosen person does something and reports back
 
 ---
 

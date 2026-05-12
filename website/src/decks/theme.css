@@ -68,7 +68,8 @@
 }
 
 .reveal .cutout-previous-word,
-.reveal .cutout-next-word {
+.reveal .cutout-next-word,
+.reveal .cutout-tool-trigger {
   font-family: var(--r-code-font);
   font-weight: 700;
   font-size: 90%;
@@ -91,6 +92,22 @@
 .reveal .cutout-next-word {
   color: var(--token-fg);
   margin: 0 0.1em;
+}
+
+/* Tool-trigger word (VOTE, ACTION) — matches the printed cutouts'
+   `tool-trigger-word` in cli/tokenized-cutouts.typ: black ground, gold
+   border, gold bold uppercase text. Sized to slot in alongside the regular
+   previous-word pill at the same padding so a Cutout's prev/next remains
+   visually consistent. */
+.reveal .cutout-tool-trigger {
+  display: inline-block;
+  background: black;
+  color: var(--anu-gold);
+  border: 1px solid var(--anu-gold);
+  text-transform: uppercase;
+  padding: 0.3em 0.4em;
+  margin: 0 0.05em;
+  border-radius: 4px;
 }
 
 /* Wrap a series of Cutouts in <div class="cutout-row"> when they need to sit

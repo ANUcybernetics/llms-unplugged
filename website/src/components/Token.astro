@@ -2,18 +2,26 @@
 // Wired up in cutouts decks via an MDX `components` override on `code`, so
 // inline backticks become Tokens. Default style is a coloured pill (the
 // previous-word box on a paper cutout); pass `next` for the free-standing
-// next-word style — plain coloured text, no box. Same hash-based palette
-// (see src/lib/tokenColors.ts) for both, so a word wears its colour
-// consistently whether boxed or free-standing.
+// next-word style — plain coloured text, no box. Pass `tool` for the
+// tool-trigger style (gold-on-black, bordered, uppercase) used in the
+// agentic tool-use lesson; matches `tool-trigger-word` in
+// cli/tokenized-cutouts.typ. Same hash-based palette (see
+// src/lib/tokenColors.ts) for the prev/next variants; `tool` overrides
+// the palette with the fixed gold/black scheme.
 import { tokenColorClass } from "../lib/tokenColors";
 
 interface Props {
   next?: boolean;
+  tool?: boolean;
 }
 
-const { next = false } = Astro.props;
+const { next = false, tool = false } = Astro.props;
 const text = (await Astro.slots.render("default")).trim();
-const styleClass = next ? "cutout-next-word" : "cutout-previous-word";
+const styleClass = tool
+  ? "cutout-tool-trigger"
+  : next
+    ? "cutout-next-word"
+    : "cutout-previous-word";
 ---
 
-<span class:list={[styleClass, tokenColorClass(text)]}><slot /></span>
+<span class:list={[styleClass, !tool && tokenColorClass(text)]}><slot /></span>

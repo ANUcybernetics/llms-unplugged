@@ -3,16 +3,21 @@
 // stacked above a free-standing next word. Visually mirrors the printed
 // cutouts (cli/tokenized-cutouts.typ). Use this anywhere you would have
 // written `prev` → `next` in the deck source — the structure makes the
-// arrow redundant.
+// arrow redundant. Pass `tool="prev" | "next" | "both"` when a side
+// carries a tool-trigger word (VOTE, ACTION) so it renders with the
+// gold-on-black tool-trigger style instead of the per-word palette.
 import Token from "./Token.astro";
 
 interface Props {
   prev: string | string[];
   next: string;
+  tool?: "prev" | "next" | "both";
 }
 
-const { prev, next } = Astro.props;
+const { prev, next, tool } = Astro.props;
 const prevs = Array.isArray(prev) ? prev : [prev];
+const prevIsTool = tool === "prev" || tool === "both";
+const nextIsTool = tool === "next" || tool === "both";
 ---
 
 <span class="cutout-paper">
@@ -21,10 +26,10 @@ const prevs = Array.isArray(prev) ? prev : [prev];
       prevs.map((word, i) => (
         <>
           {i > 0 && " "}
-          <Token>{word}</Token>
+          <Token tool={prevIsTool}>{word}</Token>
         </>
       ))
     }
   </span>
-  <span class="cutout-paper-next"><Token next>{next}</Token></span>
+  <span class="cutout-paper-next"><Token next tool={nextIsTool}>{next}</Token></span>
 </span>
