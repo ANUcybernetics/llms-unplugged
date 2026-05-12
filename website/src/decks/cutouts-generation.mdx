@@ -52,10 +52,41 @@ maths
 
 ## The trained spread
 
-<LmCutouts tokens={GREEN_EGGS_TOKENS} columns={2} />
+<CutoutRow>
+  <Cutout prev="i" next="am" />
+  <Cutout prev="i" next="am" />
+  <Cutout prev="i" next="do" />
+</CutoutRow>
 
-each row is one previous word; each next word in the right column is one cutout
-on the table
+<CutoutRow>
+  <Cutout prev="am" next="sam" />
+  <Cutout prev="am" next="." />
+</CutoutRow>
+
+<CutoutRow>
+  <Cutout prev="sam" next="." />
+  <Cutout prev="sam" next="i" />
+</CutoutRow>
+
+<CutoutRow>
+  <Cutout prev="." next="sam" />
+  <Cutout prev="." next="i" />
+</CutoutRow>
+
+<CutoutRow>
+  <Cutout prev="do" next="not" />
+  <Cutout prev="not" next="like" />
+  <Cutout prev="like" next="green" />
+</CutoutRow>
+
+<CutoutRow>
+  <Cutout prev="green" next="eggs" />
+  <Cutout prev="eggs" next="and" />
+  <Cutout prev="and" next="ham" />
+  <Cutout prev="ham" next="." />
+</CutoutRow>
+
+16 cutouts in the spread, grouped by previous word
 
 ---
 

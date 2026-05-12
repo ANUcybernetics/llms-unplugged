@@ -33,7 +33,34 @@ cut, spread, generate
 
 ## Example spread
 
-<LmCutouts tokens={TRIGRAM_TOKENS} ngram={3} columns={2} />
+<CutoutRow>
+  <Cutout prev={["the", "cat"]} next="sat" />
+  <Cutout prev={["the", "cat"]} next="ran" />
+</CutoutRow>
+
+<CutoutRow>
+  <Cutout prev={["sat", "."]} next="the" />
+  <Cutout prev={["sat", "."]} next="the" />
+</CutoutRow>
+
+<CutoutRow>
+  <Cutout prev={[".", "the"]} next="cat" />
+  <Cutout prev={[".", "the"]} next="dog" />
+  <Cutout prev={[".", "the"]} next="dog" />
+</CutoutRow>
+
+<CutoutRow>
+  <Cutout prev={["the", "dog"]} next="sat" />
+  <Cutout prev={["the", "dog"]} next="ran" />
+</CutoutRow>
+
+<CutoutRow>
+  <Cutout prev={["cat", "sat"]} next="." />
+  <Cutout prev={["cat", "ran"]} next="." />
+  <Cutout prev={["ran", "."]} next="the" />
+  <Cutout prev={["dog", "sat"]} next="." />
+  <Cutout prev={["dog", "ran"]} next="." />
+</CutoutRow>
 
 most two-word combinations are unique---each one only points to one or two
 next words
