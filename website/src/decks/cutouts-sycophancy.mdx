@@ -10,7 +10,7 @@
 
 ![bg right:40%](./assets/bg-yes-figure.avif)
 
-a model that **always agrees with you**
+a model that **always agrees with you**:
 
 > "you're absolutely right"
 >
@@ -18,42 +18,35 @@ a model that **always agrees with you**
 >
 > "what a thoughtful question"
 
-real LLMs are notoriously prone to it
+real LLMs are notoriously prone to it---partly from RLHF (human raters reward
+agreeable answers), partly from training data (the internet is full of
+flattery)
 
 ---
 
-## Where does it come from?
-
-![bg right:40%](./assets/bg-distribution.avif)
-
-partly **RLHF**: human raters reward agreeable answers, so the model learns
-to be agreeable
-
-partly **training data**: scrape enough internet flattery and the patterns
-sink in
-
-we'll demo the second one---no RLHF needed
-
----
-
-## Combining models
+## Your goal
 
 ![bg right:40%](./assets/bg-confluence.avif)
 
-we'll add a new stack of cutouts to your existing spread
+add a stack of **sycophancy cutouts** to your existing spread, regenerate from
+the same starting word, and watch the output drift toward agreement
 
-think of it as **pooling two models**: your training text + a curated
-sycophancy model
-
-common words bridge between them, and the new patterns drift the output
+think of it as pooling two models---your training text + a curated sycophancy
+model---into one
 
 ---
 
-## The activity
+## You will need
 
-drop a stack of **sycophancy cutouts** into your existing spread
+- your trained cutouts spread (already on the table)
+- a stack of sycophancy cutouts to add in
+- pen and paper to write down the generated text
 
-the cutouts encode patterns like:
+---
+
+## Worked example
+
+the sycophancy cutouts encode patterns like:
 
 <CutoutRow>
   <Cutout prev="you're" next="absolutely" />
@@ -61,11 +54,18 @@ the cutouts encode patterns like:
   <Cutout prev="right" next="." />
 </CutoutRow>
 
-regenerate---watch the output drift toward agreement
+common words (`you`, `that`, `i`, `.`) bridge between the two models---once
+generation crosses into the sycophancy stack, the output drifts:
+
+> before: _"i am sam . sam i am ."_
+>
+> after: _"i am absolutely right . that 's a great insight ."_
+
+same mechanism, just more cutouts pulling generation toward flattery
 
 ---
 
-## Activity (~15 min)
+## Activity (15 min)
 
 ![bg right:40%](./assets/bg-activity-sycophancy.avif)
 
@@ -75,14 +75,19 @@ regenerate---watch the output drift toward agreement
 
 ---
 
-## Connection to current LLMs
+{/* _class: banner */}
 
-![bg right:40%](./assets/bg-insight-sycophancy.avif)
+# Shareback
 
-your spread is now a mix of two models---and real LLMs do this at scale
+![bg brightness:0.5](./assets/bg-insight-sycophancy.avif)
 
-trained on **everything**---books, code, dialogue, scraped flattery, human
-preferences---all those styles live in one model
+---
 
-- _helpful_, _honest_, _harmless_ are preferences too
-- so are the unintended ones (like sycophancy)
+## The _language_ of language models
+
+![bg right:60%](./assets/bg-vocabulary.avif)
+
+- RLHF
+- alignment
+- training-data bias
+- helpful / honest / harmless

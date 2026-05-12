@@ -29,22 +29,10 @@ the chain grows like dominoes
 
 ---
 
-## Step by step
+## Worked example: pick a starting word
 
-1. **pick a starting word**---any word that appears as a previous word
-2. **find candidates**---scan for cutouts whose previous word matches your
-   current word (colour first, then verify the word)
-3. **pick one visually**---your eye lands on common next words more often
-4. **write the next word down**---then put the cutout back in the spread
-5. **repeat** with the word you just wrote as your current word
-
----
-
-## The proportionality trick
-
-after <Token next>i</Token> in our training text, <Token next>am</Token> follows
-twice and <Token next>do</Token> follows once---so two of the three cutouts with
-<Token next>i</Token> as the previous word point to <Token next>am</Token>:
+let's start with <Token next>i</Token>---scan the spread for cutouts whose
+previous-word box matches:
 
 <CutoutRow>
   <Cutout prev="i" next="am" />
@@ -52,77 +40,46 @@ twice and <Token next>do</Token> follows once---so two of the three cutouts with
   <Cutout prev="i" next="do" />
 </CutoutRow>
 
-whichever matching cutout your eye lands on, you've sampled in proportion to the
-original distribution---no dice, no probability tables, the spread is doing the
-maths
+three cutouts match---but two of them are <Cutout prev="i" next="am" />, so your
+eye lands on <Token next>am</Token> about ⅔ of the time---no dice, no
+probability tables, the spread is doing the maths
+
+pick a cutout, write down its next word, put the cutout back in the spread
 
 ---
 
-## The trained spread
+## Worked example: continue the chain
 
-<CutoutRow>
-  <Cutout prev="i" next="am" />
-  <Cutout prev="i" next="am" />
-  <Cutout prev="i" next="do" />
-</CutoutRow>
+we wrote <Token next>am</Token>---scan for <Token next>am</Token> matches:
 
 <CutoutRow>
   <Cutout prev="am" next="sam" />
   <Cutout prev="am" next="." />
 </CutoutRow>
 
+pick <Cutout prev="am" next="sam" />---write <Token next>sam</Token>
+
+now <Token next>sam</Token>---two matches:
+
 <CutoutRow>
   <Cutout prev="sam" next="." />
   <Cutout prev="sam" next="i" />
 </CutoutRow>
 
-<CutoutRow>
-  <Cutout prev="." next="sam" />
-  <Cutout prev="." next="i" />
-</CutoutRow>
+pick <Cutout prev="sam" next="." />---write <Token next>.</Token>
 
-<CutoutRow>
-  <Cutout prev="do" next="not" />
-  <Cutout prev="not" next="like" />
-  <Cutout prev="like" next="green" />
-</CutoutRow>
-
-<CutoutRow>
-  <Cutout prev="green" next="eggs" />
-  <Cutout prev="eggs" next="and" />
-  <Cutout prev="and" next="ham" />
-  <Cutout prev="ham" next="." />
-</CutoutRow>
-
-16 cutouts in the spread, grouped by previous word
+(verify the word itself before committing---two unrelated words can occasionally
+share a colour)
 
 ---
 
-## Worked example
+## Worked example: keep going
 
-start with <Token next>i</Token>---three cutouts match (<Cutout prev="i" next="am" />, <Cutout prev="i" next="am" />, <Cutout prev="i" next="do" />)---pick <Token next>am</Token>
+from <Token next>.</Token>, two cutouts match (<Cutout prev="." next="sam" />, <Cutout prev="." next="i" />)---pick <Token next>i</Token>
 
-now <Token next>am</Token>---two cutouts match (<Cutout prev="am" next="sam" />, <Cutout prev="am" next="." />)---pick <Token next>sam</Token>
+back to <Token next>i</Token>---this time your eye lands on <Cutout prev="i" next="do" />---write <Token next>do</Token>
 
----
-
-## Worked example (cont.)
-
-now <Token next>sam</Token>---two cutouts match (<Cutout prev="sam" next="." />, <Cutout prev="sam" next="i" />)---pick <Token next>.</Token>
-
-now <Token next>.</Token>---two cutouts match (<Cutout prev="." next="sam" />, <Cutout prev="." next="i" />)---pick <Token next>i</Token>
-
-generated so far: _"i am sam . i..."_---a hint of the original, not a copy
-
----
-
-## A small caveat
-
-![bg right:40%](./assets/bg-insight.avif)
-
-two unrelated words can occasionally share a colour
-
-always **verify the word itself** before committing, not just the colour
+generated so far: _"i am sam . i do..."_---a hint of the original, not a copy
 
 ---
 

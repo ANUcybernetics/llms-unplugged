@@ -6,77 +6,66 @@
 
 ---
 
-## Why two words of context?
+## Your goal
 
 ![bg right:40%](./assets/bg-insight-trigram.avif)
 
-bigram models ask: _"what follows this word?"_
+extend the bigram model: each cutout now has **two** previous words instead of
+one
 
-trigram models ask: _"what follows these two words?"_
+<Cutout prev={["the", "cat"]} next="sat" />
+
+bigram asks _"what follows this word?"_---trigram asks _"what follows these two
+words?"_
 
 predictions get sharper, but the spread gets bigger and sparser
 
 ---
 
-## The algorithm
+## You will need
 
-![bg right:40%](./assets/bg-cut-spread-trigram.avif)
-
-same as before---each cutout now has **two previous words** (two coloured
-boxes) followed by its next word:
-
-<Cutout prev={["the", "cat"]} next="sat" />
-
-cut, spread, generate
+- your trained trigram cutouts (a new set, same text as before)
+- pen and paper to write down the generated text
 
 ---
 
-## Example spread
+## Worked example: match the rightmost box
+
+your spread has cutouts like:
 
 <CutoutRow>
   <Cutout prev={["the", "cat"]} next="sat" />
   <Cutout prev={["the", "cat"]} next="ran" />
-</CutoutRow>
-
-<CutoutRow>
-  <Cutout prev={["sat", "."]} next="the" />
-  <Cutout prev={["sat", "."]} next="the" />
-</CutoutRow>
-
-<CutoutRow>
-  <Cutout prev={[".", "the"]} next="cat" />
-  <Cutout prev={[".", "the"]} next="dog" />
-  <Cutout prev={[".", "the"]} next="dog" />
-</CutoutRow>
-
-<CutoutRow>
   <Cutout prev={["the", "dog"]} next="sat" />
   <Cutout prev={["the", "dog"]} next="ran" />
 </CutoutRow>
 
+match the **rightmost** previous-word box to your current word, then check the
+box to its left matches the word before that
+
+you wrote <Token next>the</Token> <Token next>cat</Token>---two cutouts match
+(<Cutout prev={["the", "cat"]} next="sat" />, <Cutout prev={["the", "cat"]} next="ran" />)---pick one
+
+---
+
+## Worked example: most matches are unique
+
+let's say you picked <Token next>sat</Token>---your last two words are now `cat
+sat`---only one cutout matches:
+
 <CutoutRow>
   <Cutout prev={["cat", "sat"]} next="." />
-  <Cutout prev={["cat", "ran"]} next="." />
-  <Cutout prev={["ran", "."]} next="the" />
-  <Cutout prev={["dog", "sat"]} next="." />
-  <Cutout prev={["dog", "ran"]} next="." />
 </CutoutRow>
 
-most two-word combinations are unique---each one only points to one or two
-next words
+write <Token next>.</Token>---last two words: `sat .`---scan for matches---and
+so on
+
+most two-word combos only have one or two matches---trigrams are **sharper but
+sparser** than bigrams
 
 ---
 
-## Generation
-
-match the **rightmost** previous-word box to your current word, then
-check the box to its left matches the word before that
-
-so far you've written <Token next>the</Token> <Token next>cat</Token>---two cutouts match (<Cutout prev={["the", "cat"]} next="sat" />, <Cutout prev={["the", "cat"]} next="ran" />)---pick one
-
----
-
-## Activity (~20 min)
+## Activity (20 min)
 
 ![bg right:40%](./assets/bg-activity-trigram.avif)
 
@@ -91,3 +80,14 @@ generate a sentence---does it feel more natural than the bigram output?
 # Shareback
 
 ![bg brightness:0.5](./assets/bg-shareback-trigram.avif)
+
+---
+
+## The _language_ of language models
+
+![bg right:60%](./assets/bg-vocabulary.avif)
+
+- n-gram
+- sparsity
+- generalisation
+- scaling

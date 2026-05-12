@@ -17,7 +17,25 @@ the loop: generate → trigger word → call tool → write the result → keep 
 
 ---
 
-## Trigger words and tools
+## Your goal
+
+add **tool-use cutouts** to your spread and designate a tool operator
+
+when generation hits a trigger word, pause---the operator runs the tool and the
+result becomes the next word(s)
+
+---
+
+## You will need
+
+- your trained cutouts spread (already on the table)
+- a stack of tool-use cutouts to add in
+- a designated **tool operator** (a person or small group)
+- pen and paper to write down the generated text
+
+---
+
+## Tools: VOTE and ACTION
 
 | Trigger                         | Tool            | Returns                       |
 | ------------------------------- | --------------- | ----------------------------- |
@@ -26,19 +44,21 @@ the loop: generate → trigger word → call tool → write the result → keep 
 
 ---
 
-## The activity
+## Worked example
 
-add new cutouts to your spread:
+new cutouts route generation into and out of the triggers:
 
-- **into a trigger**: <Cutout prev="the" next="VOTE" tool="next" /> <Cutout prev="is" next="VOTE" tool="next" /> <Cutout prev="we" next="ACTION" tool="next" />
-- **out of a trigger**: <Cutout prev="VOTE" next="." tool="prev" /> <Cutout prev="ACTION" next="." tool="prev" /> (so the result fits back into the chain)
+- **into**: <Cutout prev="we" next="ACTION" tool="next" /> <Cutout prev="the" next="VOTE" tool="next" />
+- **out**: <Cutout prev="ACTION" next="." tool="prev" /> <Cutout prev="VOTE" next="." tool="prev" />
 
-designate a tool operator---when generation hits <Token next tool>VOTE</Token>, pause and ask the
-room; on <Token next tool>ACTION</Token>, the chosen person does something and reports back
+generating from <Token next>we</Token>, you might pick <Cutout prev="we" next="ACTION" tool="next" />---write <Token next tool>ACTION</Token>
+
+hand off to the tool operator---they pick someone, who does something and
+reports back ("waved")---write <Token next>waved</Token> and continue
 
 ---
 
-## Activity (~15 min)
+## Activity (15 min)
 
 ![bg right:40%](./assets/bg-activity-tool-use.avif)
 
@@ -49,21 +69,19 @@ room; on <Token next tool>ACTION</Token>, the chosen person does something and r
 
 ---
 
-## Connection to current LLMs
-
-![bg right:40%](./assets/bg-information-flow.avif)
-
-modern AI agents do exactly this: web search, code execution, database
-queries, robot control
-
-the model doesn't _know_ the answer---it just learned _when to ask_
-
-real-world agents loop through this hundreds of times to complete a task
-
----
-
 {/* _class: banner */}
 
 # Shareback
 
 ![bg brightness:0.5](./assets/bg-shareback-tool-use.avif)
+
+---
+
+## The _language_ of language models
+
+![bg right:60%](./assets/bg-vocabulary.avif)
+
+- agent
+- tool call
+- function calling
+- agentic loop
