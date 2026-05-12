@@ -13,3 +13,63 @@ fmt = "cargo fmt"
 clippy = "cargo clippy"
 
 book = 'cargo run {{arg(name="file")}} --scale-d 120 && typst compile book.typ'
+
+[tasks.cutouts-print]
+description = "Build a printable duplex cutouts PDF (rotates even pages 180° so long-edge binding works). Usage: mise run cutouts-print <input> [--pages N] [<cli-args>...]"
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -lt 1 ]]; then
+  echo "usage: mise run cutouts-print <input> [--pages N] [<cli-args>...]" >&2
+  exit 1
+fi
+
+input="$1"; shift
+pages=""
+cli_args=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --pages) pages="$2"; shift 2 ;;
+    --pages=*) pages="${1#--pages=}"; shift ;;
+    *) cli_args+=("$1"); shift ;;
+  esac
+done
+
+if [[ ! -f "$input" ]]; then
+  for cand in "data/$input" "data/${input}.txt"; do
+    if [[ -f "$cand" ]]; then input="$cand"; break; fi
+  done
+fi
+if [[ ! -f "$input" ]]; then
+  echo "Input file not found: $input" >&2
+  exit 1
+fi
+
+base="$(basename "$input" .txt)"
+work_dir="cli/out/cutouts-print/$base"
+out_dir="cli/out/cutouts-print"
+mkdir -p "$work_dir"
+
+(cd cli && cargo build --release --quiet)
+
+cli/target/release/llms_unplugged cutouts \
+  --input "$input" \
+  --output "$work_dir" \
+  --duplex \
+  ${cli_args[@]+"${cli_args[@]}"}
+
+raw="$work_dir/cutouts.pdf"
+final="$out_dir/${base}-print.pdf"
+
+if [[ -n "$pages" ]]; then
+  trunc="$work_dir/truncated.pdf"
+  qpdf "$raw" --pages . "1-$pages" -- "$trunc"
+  qpdf "$trunc" --rotate=180:1-z:even "$final"
+  rm "$trunc"
+else
+  qpdf "$raw" --rotate=180:1-z:even "$final"
+fi
+
+echo "Wrote $final"
+'''
