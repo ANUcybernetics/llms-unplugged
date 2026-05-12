@@ -6,7 +6,7 @@
 #let cell_padding_x = 0.35em
 #let inter_word_gap = 0.3em
 #let border_color = luma(150)
-#let cut_line_thickness = 0.7pt
+#let cut_line_thickness = 1pt
 #let cut_line_spacing = 4pt // Reserved vertical space for horizontal cut lines (preserves layout)
 #let cut_stroke = (
   paint: border_color,
@@ -29,8 +29,11 @@
 #let rows_per_page = 11
 #let cutout_h_margin = 5mm
 #let cutout_v_margin = (
-  210mm - rows_per_page * cell_height - (rows_per_page + 1) * cut_line_spacing
-) / 2
+  (
+    210mm - rows_per_page * cell_height - (rows_per_page + 1) * cut_line_spacing
+  )
+    / 2
+)
 
 // Palette of dark, distinguishable hues. White text reads cleanly on each, and
 // each colour is also readable as text on a white page. Words are
@@ -81,12 +84,16 @@
 
 // Derive n from the first token that has previous words recorded
 #let n = {
-  let found = tokens.find(t => "previous_words" in t and t.previous_words.len() > 0)
+  let found = tokens.find(t => (
+    "previous_words" in t and t.previous_words.len() > 0
+  ))
   if found != none { found.previous_words.len() + 1 } else { 2 }
 }
 
 #let previous-words-count = n - 1
-#let previous-words-noun = if previous-words-count == 1 { "word" } else { "words" }
+#let previous-words-noun = if previous-words-count == 1 { "word" } else {
+  "words"
+}
 
 // A coloured box for a previous word: word's assigned colour as fill, white text.
 // When `dimmed` is true (discarded source token) the box is rendered in grey.
@@ -139,17 +146,40 @@
   parts.join(h(inter_word_gap))
 }
 
+// Brand gold, matches the tool-trigger word foreground and the favicon dots.
+#let brand-gold = rgb("#d4a017")
+
+// Wraps a rendered cutout in a thin grey border so the example cutouts in
+// the instructions visually read as discrete pieces of paper (one cutout =
+// one piece of paper after cutting). Same `border_color` as the cut lines on
+// the actual cutout pages for visual consistency.
+#let cutout-box(content) = box(
+  stroke: cut_line_thickness + border_color,
+  radius: 2pt,
+  inset: (x: 0.6em, y: 0.6em),
+  content,
+)
+
 // Instructions page
 #let instructions-page() = {
-  set text(size: 13pt)
-  show heading: set block(above: 1.4em, below: 0.7em)
+  set text(size: 15pt)
+  // Generous space below each heading so headings don't visually crowd the
+  // paragraph that follows.
+  show heading: set block(above: 1.6em, below: 1.0em)
+  // Footer with the project URL in brand gold, on the instructions pages
+  // only. The `set page` rule is scoped to this function so cutout pages
+  // (rendered after this function returns) have no footer.
+  set page(footer: align(
+    center,
+    text(fill: brand-gold, size: 11pt, "www.llmsunplugged.org"),
+  ))
 
   // Pull three consecutive cutouts to use as a worked example. Skip windows
   // that contain any pure-punctuation tokens, since "I am Sam ." reads
   // strangely when the period is shown as a free-standing token in the
   // running text.
   let example-tokens = {
-    let is-clean = (t) => (
+    let is-clean = t => (
       "previous_words" in t
         and t.previous_words.len() > 0
         and t.keep
@@ -184,97 +214,120 @@
   // Phrase like "the last word" / "the last 2 words", with grammatical
   // number kept consistent throughout the worked example. Single-line content
   // blocks avoid stray whitespace when interpolated next to punctuation.
-  let prev-words-phrase = if previous-words-count > 1 [#str(previous-words-count) #previous-words-noun] else [#previous-words-noun]
+  let prev-words-phrase = if previous-words-count > 1 [#str(
+      previous-words-count,
+    ) #previous-words-noun] else [#previous-words-noun]
 
   [
-    = How to use these token cutouts
+    // Header: title on the left, project logo on the right. The logo only
+    // appears on the first page---subsequent pages of the booklet are pure
+    // content.
+    #grid(
+      columns: (1fr, auto),
+      column-gutter: 1em,
+      align: (left + horizon, right + horizon),
+      [= How to use these token cutouts], image("favicon.svg", width: 1.8cm),
+    )
 
-    These pages contain the text #emph(doc_metadata.title) by
-    #doc_metadata.author. Each *cutout* shows a *next word* paired with
-    the *previous #prev-words-phrase* that came immediately before it
-    in the original text.
+    // 2-column flow for the body prose: at 13pt on a landscape A4 page, full
+    // width gives ~110 chars per line, well beyond the comfortable 60--80.
+    // The model vitals chip and anatomy mini-grid are sized to fit inside one
+    // column.
+    #columns(2, gutter: 2em)[
+      These pages contain the text #emph(doc_metadata.title) by
+      #doc_metadata.author. Each *cutout* shows a *next word* paired with the
+      *previous #prev-words-phrase* that came immediately before it in the
+      original text.
 
-    #align(center)[
-      #block(
-        fill: luma(245),
-        inset: (x: 1em, y: 0.55em),
-        radius: 3pt,
-      )[
-        #stack(
-          dir: ltr,
-          spacing: 1.6em,
-          align(horizon)[*Model vitals*],
-          grid(
-            columns: 4,
-            column-gutter: 1.8em,
-            row-gutter: 0.1em,
-            align: center,
-            [*#doc_metadata.total_tokens*],
-            [*#calc.round(doc_metadata.entropy, digits: 2)*],
-            [*#calc.round(doc_metadata.perplexity, digits: 1)*],
-            [*#calc.round(doc_metadata.branching_factor, digits: 2)*],
-            text(size: 9pt, fill: luma(80))[tokens],
-            text(size: 9pt, fill: luma(80))[bits/token entropy],
-            text(size: 9pt, fill: luma(80))[perplexity],
-            text(size: 9pt, fill: luma(80))[branching factor],
-          ),
-        )
-      ]
-    ]
-
-    == Anatomy of a cutout
-
-    #if example-tokens.len() > 0 [
       #align(center)[
-        #grid(
-          columns: 2,
-          column-gutter: 2.5em,
-          row-gutter: 0.9em,
-          align: (center, center),
-          [
-            #set text(size: 26pt)
-            #(
-              example-tokens
-                .at(0)
-                .previous_words
-                .map(t => previous-word-box(t))
-                .join(h(inter_word_gap))
-            )
-          ],
-          [
-            #set text(size: 26pt)
-            #coloured-word(example-tokens.at(0).text)
-          ],
-          text(size: 10pt, fill: rgb("#666"), style: "italic")[
-            previous #prev-words-phrase
-          ],
-          text(size: 10pt, fill: rgb("#666"), style: "italic")[
-            next word
-          ],
-        )
+        #block(
+          fill: luma(245),
+          inset: (x: 1em, y: 0.55em),
+          radius: 3pt,
+        )[
+          #stack(
+            dir: ttb,
+            spacing: 0.5em,
+            align(center)[*Model vitals*],
+            grid(
+              columns: 2,
+              column-gutter: 1.6em,
+              row-gutter: (0.1em, 0.7em, 0.1em),
+              align: center,
+              [*#doc_metadata.total_tokens*],
+              [*#calc.round(doc_metadata.entropy, digits: 2)*],
+
+              text(size: 9pt, fill: luma(80))[tokens],
+              text(size: 9pt, fill: luma(80))[bits/token entropy],
+
+              [*#calc.round(doc_metadata.perplexity, digits: 1)*],
+              [*#calc.round(doc_metadata.branching_factor, digits: 2)*],
+
+              text(size: 9pt, fill: luma(80))[perplexity],
+              text(size: 9pt, fill: luma(80))[branching factor],
+            ),
+          )
+        ]
       ]
+
+      == Anatomy of a cutout
+
+      #if example-tokens.len() > 0 [
+        #align(center)[
+          #stack(
+            dir: ttb,
+            spacing: 0.6em,
+            // The example cutout as one piece of paper: previous words and
+            // next word together inside a grey border.
+            cutout-box(text(
+              size: 22pt,
+              render-cutout(example-tokens.at(0)),
+            )),
+            // Labels below: a 2-column grid is centred under the cutout, so
+            // the two labels sit roughly under the previous-words and
+            // next-word parts of the cutout.
+            grid(
+              columns: 2,
+              column-gutter: 2em,
+              align: (center, center),
+              text(size: 10pt, fill: rgb("#666"), style: "italic")[
+                previous #prev-words-phrase
+              ],
+              text(size: 10pt, fill: rgb("#666"), style: "italic")[
+                next word
+              ],
+            ),
+          )
+        ]
+      ]
+
+      Every distinct word has its own colour. *Previous* words appear inside a
+      coloured box (the word's own colour as the background, with white text);
+      the free-standing *next word* appears in plain coloured text. The same
+      word always wears the same colour, whether you see it inside a box or
+      free-standing. Two unrelated words can occasionally share a colour, so
+      always verify the word itself matches---not just the colour.
+
+      // Force a column break here so the entire Anatomy section (heading +
+      // mini-grid + colour-rule explanation) stays together in col 1, with
+      // Setup + How-to-play in col 2. Without this Typst's natural flow
+      // splits the Anatomy section across the column boundary.
+      #colbreak()
+
+      == Setup
+
+      *Cut out the tokens* along the dotted lines and *spread them out* face-up
+      on the table, with no overlap if possible. This is the "training" step:
+      every (previous, next) combination from the original text is now a
+      physical cutout sitting on your table.
+
+      == How to play: the matching game
+
+      To generate text, repeatedly find a cutout whose *previous
+      #prev-words-phrase* matches the last #prev-words-phrase you've written,
+      then *write its next word* onto your page. The word you just wrote becomes
+      part of what you'll match against next---that's the chain.
     ]
-
-    Every distinct word has its own colour. *Previous* words appear inside a
-    coloured box (the word's own colour as the background, with white text);
-    the free-standing *next word* appears in plain coloured text. The same
-    word always wears the same colour, whether you see it inside a box or
-    free-standing. Two unrelated words can occasionally share a colour, so
-    always verify the word itself matches---not just the colour.
-
-    == Setup
-
-    *Cut out the tokens* along the dotted lines and *spread them out* face-up
-    on the table, with no overlap if possible. This is the "training" step:
-    every (previous, next) combination from the original text is now a
-    physical cutout sitting on your table.
-
-    == How to play: the matching game
-
-    To generate text, repeatedly find a cutout whose *previous #prev-words-phrase*
-    matches the last #prev-words-phrase you've written, then *write its next word*
-    onto your page. The word you just wrote becomes part of what you'll match
-    against next---that's the chain.
 
     #pagebreak()
 
@@ -292,7 +345,9 @@
         } else if split == 0 {
           strong(words.join(" "))
         } else {
-          [#words.slice(0, split).join(" ") #strong(words.slice(split).join(" "))]
+          [#words.slice(0, split).join(" ") #strong(
+              words.slice(split).join(" "),
+            )]
         }
         align(
           center,
@@ -304,45 +359,65 @@
         )
       }
 
-      let big-cutout(t) = align(center, {
-        set text(size: 18pt)
-        render-cutout(t)
-      })
+      let big-cutout(t) = cutout-box(text(size: 18pt, render-cutout(t)))
 
       // Italicised, coloured rendering of the last `previous-words-count`
-      // words of `words`---used inline in the Step 2 and Step 3 prose to call
-      // out the exact tokens the reader should be matching against.
+      // words of `words`---used inline in the Step 2 prose to call out the
+      // exact tokens the reader should be matching against.
       let tail-prose(words) = {
         let tail = words.slice(words.len() - previous-words-count)
         emph(tail.map(t => coloured-word(t)).join(" "))
       }
 
-      [*Step 1.* Pick any cutout to begin---say this one:]
-      big-cutout(t0)
-      [Copy its previous #prev-words-phrase #emph[and] its next word onto your page. Your text so far:]
-      written-text(t0.previous_words + (t0.text,))
+      // 3-column grid: row 0 is column headers (small italic grey labels,
+      // matching the Anatomy section); each remaining row is one step. The
+      // cutout (col 2) governs row height, so the prose (col 1) can wrap
+      // freely without growing the row.
+      let column-label = label => text(
+        size: 10pt,
+        fill: rgb("#666"),
+        style: "italic",
+        label,
+      )
+      grid(
+        columns: (1.1fr, auto, 1fr),
+        column-gutter: 1.5em,
+        row-gutter: 1em,
+        align: (col, row) => (
+          (if col == 0 { left } else { center })
+            + (
+              if row == 0 { bottom } else { horizon }
+            )
+        ),
 
-      [
-        *Step 2.* Look at the last #prev-words-phrase you've written (in this case
-        #tail-prose(t0.previous_words + (t0.text,))) and find a cutout whose previous
-        #prev-words-phrase #if previous-words-count > 1 [match them] else [matches it],
-        like this one:
-      ]
-      big-cutout(t1)
-      [Write its next word onto your page. Your text now reads:]
-      written-text(t0.previous_words + (t0.text, t1.text), new-count: 1)
+        [], column-label[the cutout], column-label[your page],
 
-      [
-        *Step 3.* Repeat. The last #prev-words-phrase you've now written
-        #if previous-words-count > 1 [are] else [is]
-        #tail-prose(t0.previous_words + (t0.text, t1.text))---find another matching
-        cutout:
-      ]
-      big-cutout(t2)
-      [Add its next word. Your text now reads:]
-      written-text(
-        t0.previous_words + (t0.text, t1.text, t2.text),
-        new-count: 1,
+        [
+          *Step 1.* Pick any cutout to begin---say this one---and copy its
+          previous #prev-words-phrase #emph[and] its next word onto your page.
+        ],
+        big-cutout(t0),
+        written-text(t0.previous_words + (t0.text,)),
+
+        [
+          *Step 2.* Look at the last #prev-words-phrase you've written
+          (#tail-prose(t0.previous_words + (t0.text,))) and find a cutout whose
+          previous #prev-words-phrase #if previous-words-count > 1 [match
+            them] else [matches it]. Write its next word.
+        ],
+        big-cutout(t1),
+        written-text(t0.previous_words + (t0.text, t1.text), new-count: 1),
+
+        [
+          *Step 3.* Repeat: find a cutout whose previous #prev-words-phrase
+          #if previous-words-count > 1 [match] else [matches] the last
+          #prev-words-phrase you've written, and add its next word.
+        ],
+        big-cutout(t2),
+        written-text(
+          t0.previous_words + (t0.text, t1.text, t2.text),
+          new-count: 1,
+        ),
       )
 
       [Keep going---write as much or as little as you like.]
@@ -350,16 +425,21 @@
 
     == Tips
 
-    #list(
+    // Three tips, one per column---short bullets in a `columns(2)` block
+    // collapse to a single column because the content easily fits there.
+    #grid(
+      columns: (1fr, 1fr, 1fr),
+      column-gutter: 2em,
+      align: top + left,
       [
-        *Use colour as a fast filter.* Scan by the rightmost previous-word
-        box's colour first, then verify the actual word matches.
+        *Use colour as a fast filter.* Scan by the rightmost previous-word box's
+        colour first, then verify the actual word matches.
       ],
       [
         *Pick from many candidates by eye.* The more cutouts share the same
-        previous #prev-words-phrase, the more often your eye lands on one---that's
-        *weighted sampling* for free, and it's why some words follow others
-        more often in your text.
+        previous #prev-words-phrase, the more often your eye lands on
+        one---that's *weighted sampling* for free, and it's why some words
+        follow others more often in your text.
       ],
       [
         *Put the cutout back* after using it---removing it would change the
@@ -376,7 +456,11 @@
 // Tighten margins for the cutout pages---5mm horizontal is the reliable floor
 // for most laser printers; vertical margin is derived above so the rows fill
 // the page evenly.
-#set page(margin: (top: cutout_v_margin, bottom: cutout_v_margin, x: cutout_h_margin))
+#set page(margin: (
+  top: cutout_v_margin,
+  bottom: cutout_v_margin,
+  x: cutout_h_margin,
+))
 
 // Function to render a single token cell (no horizontal borders)
 #let token-cell(token, is_last: false, height: auto) = {
