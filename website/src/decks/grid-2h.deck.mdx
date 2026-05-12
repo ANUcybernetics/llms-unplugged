@@ -8,6 +8,7 @@ import StaticGeneration from "../components/StaticGeneration.svelte";
 import StaticPretrainedGeneration from "../components/StaticPretrainedGeneration.svelte";
 import TrainingWidget from "../components/widgets/TrainingWidget.svelte";
 import GenerationWidget from "../components/widgets/GenerationWidget.svelte";
+import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
 import "../styles/widgets.css";
 
 export const EXAMPLE_TOKENS = "see spot run . run , spot , run .";
@@ -94,4 +95,6 @@ generate new text
 
 ---
 
-{/* @include ./partials/socy-logo.mdx */}
+{/* _class: socy-logo */}
+
+<SocyLogo />
