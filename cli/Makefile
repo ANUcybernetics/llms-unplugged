@@ -48,6 +48,11 @@ CUTOUTS_TARGETS := \
 	$(CUTOUTS_DIR)/green-eggs-and-ham-trigram.pdf \
 	$(CUTOUTS_DIR)/the-cat-in-the-hat.pdf \
 	$(CUTOUTS_DIR)/the-cat-in-the-hat-trigram.pdf \
+	$(CUTOUTS_DIR)/peter-rabbit.pdf \
+	$(CUTOUTS_DIR)/peter-rabbit-trigram.pdf \
+	$(CUTOUTS_DIR)/fun-with-dick-and-jane.pdf \
+	$(CUTOUTS_DIR)/fun-with-dick-and-jane-trigram.pdf \
+	$(CUTOUTS_DIR)/australia.pdf \
 	$(CUTOUTS_DIR)/sycophancy.pdf
 
 # Define common variables
