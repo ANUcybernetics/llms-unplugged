@@ -327,7 +327,7 @@ body.reveal-viewport {
   display: inline-block;
   background: var(--token-bg);
   color: var(--anu-white);
-  padding: 0.05em 0.4em;
+  padding: 0.18em 0.4em;
   margin: 0 0.05em;
   border-radius: 4px;
 }
