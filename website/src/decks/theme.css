@@ -1,281 +1,32 @@
 /* stylelint-disable import-notation */
 @import "../styles/common.css";
+@import "astro-theme-anu/styles/deck.css";
 
-html {
-  font-size: 16px;
-}
+/* This file used to duplicate the bulk of astro-theme-anu's deck.css
+   (palette tokens, --r-* Reveal.js variables, base slide typography,
+   .impact/.quote/.banner/.centered/.qr-code, etc.). Those are now
+   inherited via the @import above; this file only carries
+   llms-unplugged-specific extensions: the project --color-bg token,
+   speaker-note hiding, .socy-logo zero-padding, the per-token colour
+   palette for cutouts, the cutout/lm-widget/bigram-grid component
+   styles, and the animated logo entrance. */
 
 :root {
-  /* Deck-specific brand colour variants */
-  --anu-light-grey: #e6e6e6;
-  --anu-dark-grey: #0d0d0d;
-  --anu-gold-1: hsl(from var(--anu-gold) h calc(s - 50) 94);
-  --anu-gold-3: hsl(from var(--anu-gold) h calc(s - 15) 66);
-  --anu-copper: #be4e0e;
-  --anu-copper-1: hsl(from var(--anu-copper) h calc(s - 50) 93);
-  --anu-copper-2: hsl(from var(--anu-copper) h calc(s - 30) 77);
-  --anu-copper-3: hsl(from var(--anu-copper) h calc(s - 15) 66);
-  --anu-copper-4: hsl(from var(--anu-copper) h s calc(l + 8));
-  --anu-teal: #0085ad;
-  --anu-teal-1: hsl(from var(--anu-teal) h calc(s - 50) 88);
-  --anu-teal-2: hsl(from var(--anu-teal) h calc(s - 30) 74);
-  --anu-teal-3: hsl(from var(--anu-teal) h calc(s - 15) 60);
-  --anu-teal-4: hsl(from var(--anu-teal) h s calc(l + 5));
-
-  /* Deck-specific semantic tokens */
+  /* Project-specific token (referenced by widgets.css). */
   --color-bg: var(--anu-dark-grey);
-  --r-background-color: var(--anu-dark-grey);
-  --r-main-color: var(--anu-light-grey);
-  --r-main-font: "Public Sans", sans-serif;
-  --r-main-font-size: 2.25rem;
-  --r-heading-color: var(--anu-gold);
-  --r-heading-font: "Public Sans", sans-serif;
-  --r-heading-font-weight: bold;
-  --r-link-color: var(--anu-gold);
-  --r-link-color-hover: var(--anu-gold-4);
-  --r-code-font: "SFMono-Regular", consolas, "Liberation Mono", menlo, courier, monospace;
 }
 
-body.reveal-viewport {
-  background-color: var(--r-background-color);
-}
-
-.reveal {
-  color: var(--r-main-color);
-  font-family: var(--r-main-font);
-  font-size: var(--r-main-font-size);
-}
-
-.reveal .progress.progress {
-  color: var(--r-link-color);
-}
-
+/* Speaker notes are rendered as <div class="notes"> for a11y (not
+   <aside>), so Reveal.js's default notes hiding doesn't apply. */
 .reveal .slides section .notes {
   display: none;
 }
 
-.reveal .slides section {
-  font-family: var(--r-main-font);
-  font-weight: 300;
-  text-align: left;
-  padding: 4rem 5rem;
-  align-content: start;
-
-  :is(h1, h2, h3, h4, h5, h6) {
-    color: var(--anu-gold);
-    font-family: var(--r-heading-font);
-    font-weight: bold;
-    text-align: left;
-  }
-
-  h1 {
-    font-size: 4rem;
-    line-height: 1.3;
-    text-transform: uppercase;
-    margin: 0 0 1rem;
-    display: inline;
-    background-color: var(--anu-gold);
-    color: var(--anu-white);
-    padding: 0.1em 0.3em;
-    box-decoration-break: clone;
-  }
-
-  :is(h2, h3, h4, h5, h6) {
-    text-transform: none;
-    margin: 0 0 2rem;
-  }
-
-  h2 {
-    font-size: 2.75rem;
-    line-height: 1.2;
-  }
-
-  :is(p, li) {
-    font-size: 1.75rem;
-    line-height: 1.5;
-    margin: 0 0 1rem;
-  }
-
-  ul,
-  ol {
-    display: block;
-    margin-left: 1.5rem;
-    list-style: disc;
-  }
-
-  a {
-    color: var(--anu-gold);
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  strong {
-    font-weight: 800;
-  }
-
-  code {
-    background: var(--anu-gold-tint);
-    color: var(--anu-dark-grey);
-    padding: 0.15em 0.3em;
-    margin: 0 0.1em;
-    font-size: 90%;
-    border-radius: 4px;
-    border: 1px solid var(--anu-gold);
-  }
-
-  pre {
-    margin-inline: 0;
-    border-radius: 8px;
-    padding: 1.25em;
-  }
-
-  pre code {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    color: inherit;
-    font-size: 1.6rem;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 1.8rem;
-
-    th,
-    td {
-      padding: 0.75rem 1rem;
-      text-align: left;
-      border-bottom: 1px solid #808080;
-    }
-
-    thead th {
-      font-weight: 600;
-      border-bottom: 2px solid var(--anu-light-grey);
-    }
-  }
-
-  &:has(h1):not(:has(.split-layout)) {
-    place-content: center;
-  }
-
-  h1 + h2 {
-    color: var(--anu-light-grey);
-    font-weight: normal;
-    text-transform: none;
-  }
-
-  &.banner {
-    place-content: center;
-
-    :is(h1, h2, h3, p, li) {
-      display: inline;
-      background-color: var(--anu-gold);
-      color: var(--anu-white);
-      padding: 0.1em 0.3em;
-      box-decoration-break: clone;
-    }
-
-    h2 {
-      font-weight: normal;
-      text-transform: none;
-    }
-  }
-
-  &.impact {
-    background: var(--anu-gold);
-    color: var(--anu-white);
-    place-content: center;
-    text-align: center;
-
-    :is(h1, h2, h3, h4, h5, h6) {
-      color: var(--anu-white);
-    }
-
-    :is(p, li) {
-      font-size: 3.25rem;
-      line-height: 1.4;
-    }
-
-    strong,
-    em {
-      color: var(--anu-dark-grey);
-    }
-
-    code {
-      background: var(--anu-dark-grey);
-      color: var(--anu-white);
-      border-color: var(--anu-dark-grey);
-    }
-
-    a {
-      color: var(--anu-dark-grey);
-    }
-  }
-
-  &.quote {
-    justify-content: center;
-    text-shadow: 0 0 10px rgb(0 0 0 / 70%);
-
-    blockquote {
-      border-left: 10px solid var(--anu-gold);
-      width: 80%;
-      margin: 0 auto;
-      text-align: left;
-      padding-left: 1.5rem;
-      color: var(--anu-white);
-
-      p {
-        font-size: 2.75rem;
-        line-height: 1.3;
-        margin: 0;
-      }
-    }
-  }
-
-  &.centered {
-    place-content: center;
-  }
-
-  .columns {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-    align-items: start;
-    width: 100%;
-    flex-grow: 1;
-  }
-
-  .split-content {
-    padding: 4rem 5rem;
-  }
-
-  &.socy-logo {
-    padding: 0;
-  }
-
-  .logo-svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .qr-code {
-    svg {
-      width: 480px;
-      height: 480px;
-    }
-
-    span {
-      font-size: 2rem;
-      color: var(--anu-gold);
-    }
-  }
+/* socy-logo: zero-padding slide for the animated ANU Society of
+   Cybernetics logo (the shared theme has &.anu-logo with the same
+   treatment, but the llms-unplugged decks use the socy-logo class). */
+.reveal .slides section.socy-logo {
+  padding: 0;
 }
 
 /* Token colour palette for cutouts (see src/lib/tokenColors.ts).
@@ -327,7 +78,12 @@ body.reveal-viewport {
   display: inline-block;
   background: var(--token-bg);
   color: var(--anu-white);
-  padding: 0.18em 0.4em;
+  /* Vertical padding is intentionally smaller than horizontal — the inherited
+     line-height: 1.2 already adds ~0.1em of leading above and below the text
+     glyphs, so a smaller padding value yields visually equal whitespace on all
+     four sides. Keeping line-height untouched preserves baseline alignment
+     with the adjacent .cutout-next-word span. */
+  padding: 0.3em 0.4em;
   margin: 0 0.05em;
   border-radius: 4px;
 }
@@ -364,8 +120,9 @@ body.reveal-viewport {
   margin: 0.15em 0.2em;
   vertical-align: middle;
   line-height: 1.2;
-  /* Sections are display: grid; opt out of default justify-self: stretch. */
-  justify-self: start;
+  /* Section grids and split-content flex columns both default to stretching
+     their children — pin to start so a bare Cutout sizes to its content. */
+  place-self: start;
 }
 
 .reveal .cutout-paper-prev {
