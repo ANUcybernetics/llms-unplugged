@@ -24,18 +24,6 @@ the chain grows (like dominoes)
 
 ---
 
-## You will need
-
-![bg right:40%](./assets/bg-generation-supplies.avif)
-
-**in pairs**
-
-your trained cutouts spread (already on the table)
-
-pen and paper to write down the generated text
-
----
-
 ## Worked example: pick a starting word
 
 let's start with <Token next>i</Token>---scan the spread:
@@ -59,6 +47,18 @@ probability tables, the spread is doing the maths
 <div class="worked-example-grid"><div class="we-header"></div><div class="we-header">cutout you pick</div><div class="we-header">your page</div><div class="we-step">start</div><Cutout prev="i" next="am" /><div class="we-page"><strong>i am</strong></div><div class="we-step">match <Token next>am</Token></div><Cutout prev="am" next="sam" /><div class="we-page">i am <strong>sam</strong></div><div class="we-step">match <Token next>sam</Token></div><Cutout prev="sam" next="." /><div class="we-page">i am sam <strong>.</strong></div><div class="we-step">match <Token next>.</Token></div><Cutout prev="." next="i" /><div class="we-page">i am sam . <strong>i</strong></div><div class="we-step">match <Token next>i</Token></div><Cutout prev="i" next="do" /><div class="we-page">i am sam . i <strong>do</strong></div></div>
 
 _"i am sam . i do..."_---a hint of the original, not a copy
+
+---
+
+## You will need
+
+![bg right:40%](./assets/bg-generation-supplies.avif)
+
+**in pairs**
+
+your trained cutouts spread (already on the table)
+
+pen and paper to write down the generated text
 
 ---
 
