@@ -24,7 +24,7 @@ predictions get "better", but the model size (number of cutouts) goes up too
 
 ## You will need
 
-your trained trigram cutouts (a new set, same text as before)
+your trained **trigram** cutouts (not just the bigram ones from before)
 
 pen and paper to write down the generated text
 
@@ -61,8 +61,7 @@ let's say you picked <Token next>sat</Token>---your last two words are now
 write <Token next>.</Token>---last two words: <Token next>sat</Token>
 <Token next>.</Token>---scan for matches---and so on
 
-most two-word combos only have one or two matches---trigrams are **sharper but
-sparser** than bigrams
+most two-word combos only have one or two matches
 
 ---
 
@@ -70,7 +69,7 @@ sparser** than bigrams
 
 ![bg right:40%](./assets/bg-activity-trigram.avif)
 
-swap your bigram cutouts for the trigram cutouts of the same text
+swap your bigram cutouts for the trigram cutouts
 
 generate a sentence---does it feel more natural than the bigram output?
 
