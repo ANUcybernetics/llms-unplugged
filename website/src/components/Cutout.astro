@@ -6,15 +6,19 @@
 // arrow redundant. Pass `tool="prev" | "next" | "both"` when a side
 // carries a tool-trigger word (VOTE, ACTION) so it renders with the
 // gold-on-black tool-trigger style instead of the per-word palette.
+// Pass `trailing` to render an extra free-standing token after the next
+// word; tool-trigger cutouts use this to show the closing period that
+// rides along on the same physical cutout.
 import Token from "./Token.astro";
 
 interface Props {
   prev: string | string[];
   next: string;
+  trailing?: string;
   tool?: "prev" | "next" | "both";
 }
 
-const { prev, next, tool } = Astro.props;
+const { prev, next, trailing, tool } = Astro.props;
 const prevs = Array.isArray(prev) ? prev : [prev];
 const prevIsTool = tool === "prev" || tool === "both";
 const nextIsTool = tool === "next" || tool === "both";
@@ -34,4 +38,11 @@ const nextIsTool = tool === "next" || tool === "both";
   <span class="cutout-paper-next"
     ><Token next tool={nextIsTool}>{next}</Token></span
   >
+  {
+    trailing && (
+      <span class="cutout-paper-next">
+        <Token next>{trailing}</Token>
+      </span>
+    )
+  }
 </span>

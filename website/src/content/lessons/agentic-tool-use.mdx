@@ -60,16 +60,16 @@ into the room (physical, immediate), `GOOGLE` reaches out to the web
 ## Algorithm
 
 1. Add trigger words to your model's vocabulary (new rows and columns).
-2. Train or manually add counts so trigger words can appear in generation, and
-   add "out" cutouts so each trigger transitions back to a common token (e.g.,
-   `.`)
+2. Train or manually add counts so trigger words can appear in generation. Each
+   tool-trigger cutout ends with a closing token (e.g., `.`) on the same
+   cutout, so the chain resumes cleanly once the tool returns.
 3. During generation, when you sample a trigger word:
    - pause generation
    - formulate a question or request based on context
    - the tool "executes" and returns a result
    - write the result down in the output text
-   - continue generation from the trigger token's row (the "out" cutout), not
-     from the result
+   - write the closing token from the same cutout and continue generation from
+     there
 
 This is the agentic loop: your model generates until it hits a trigger, hands
 off to a tool, gets a result, and keeps going. Real AI agents do exactly the
@@ -78,7 +78,7 @@ same thing---just faster and with more tools.
 ## Example session
 
 Suppose your model has `ACTION` and `GOOGLE` added as trigger tokens, each
-paired with an "out" cutout that transitions to `.`
+followed by a closing `.` on the same cutout.
 
 1. Start with "We"
 2. Sample → "should"
@@ -86,19 +86,19 @@ paired with an "out" cutout that transitions to `.`
    - Pause. Operator googles "what should we do today"
    - Picks a word from the top result: "exercise"
    - Write down "exercise"
-4. Continue from `GOOGLE` → "."
-5. Sample → "I"
-6. Sample → `ACTION` (trigger!)
+   - Write down "." (the closing token on the `GOOGLE` cutout)
+4. Sample → "I"
+5. Sample → `ACTION` (trigger!)
    - Pause. Operator picks a student, who claps
    - Write down "clapped"
-7. Continue from `ACTION` → "."
+   - Write down "." (the closing token on the `ACTION` cutout)
 
 **Generated text:** "We should exercise. I clapped."
 
 The operator's words ("exercise", "clapped") get written into the output, but
-the next cutout always picks up from the _trigger token_, not the result. This
-means tools can return literally anything---out-of-vocab words, phrases, even
-sounds---without breaking the generation loop.
+the next cutout picks up from the _closing token_ on the trigger's cutout, not
+from the result. This means tools can return literally anything---out-of-vocab
+words, phrases, even sounds---without breaking the generation loop.
 
 ## Instructor notes
 
@@ -106,13 +106,13 @@ sounds---without breaking the generation loop.
 
 For the activity to work well:
 
-- add trigger words to "into" cutouts where they fit contextually (e.g.,
-  `GOOGLE` after "a" or "the", `ACTION` after "we" or "I")
-- pair every trigger with an "out" cutout that lands on a common token like
-  `.`---this silently bridges the tool's result back into the model's
+- add trigger words to cutouts where they fit contextually (e.g., `GOOGLE`
+  after "a" or "the", `ACTION` after "we" or "I")
+- every trigger cutout closes with a common token like `.` on the same
+  cutout---this silently bridges the tool's result back into the model's
   vocabulary
 - the operator's return can be _anything_: an out-of-vocab word, a phrase, even
-  a noise. Continuation is keyed on the trigger token, not the result
+  a noise. Continuation is keyed on the closing token, not the result
 - have tool operators ready (and phones charged) before you start generating
 
 ### Other tools to try
@@ -124,8 +124,8 @@ If you want to extend the activity, design more tools using the same pattern:
 - `TIME` --- a clock or watch returns the current time
 - `ASK` --- a designated expert returns a short phrase
 
-The shape is always: something outside the model returns a word, the trigger's
-out-cutout brings you back.
+The shape is always: something outside the model returns a word, the closing
+token on the trigger's cutout brings you back.
 
 ### Discussion questions
 

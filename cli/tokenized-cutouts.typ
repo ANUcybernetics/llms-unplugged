@@ -132,9 +132,12 @@
   )
 }
 
-// Pick the right renderer for a token's next-word slot.
+// Pick the right renderer for a token's next-word slot. Tool-trigger tokens
+// get a trailing period (in normal next-token styling) on the same cutout, so
+// the agentic loop "call tool, write its response, close with a period" reads
+// as one physical piece of paper rather than two coordinated cutouts.
 #let next-word(token, dimmed: false) = if token.at("is_tool", default: false) {
-  tool-trigger-word(token.text, dimmed: dimmed)
+  tool-trigger-word(token.text, dimmed: dimmed) + h(inter_word_gap) + coloured-word(".", dimmed: dimmed)
 } else {
   coloured-word(token.text, dimmed: dimmed)
 }
