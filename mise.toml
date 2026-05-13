@@ -38,6 +38,25 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+n=2
+expect_n=0
+for arg in ${cli_args[@]+"${cli_args[@]}"}; do
+  if [[ $expect_n == 1 ]]; then
+    n="$arg"
+    expect_n=0
+    continue
+  fi
+  case "$arg" in
+    -n|--n) expect_n=1 ;;
+    -n=*|--n=*) n="${arg#*=}" ;;
+  esac
+done
+case "$n" in
+  2) ngram="bigram" ;;
+  3) ngram="trigram" ;;
+  *) ngram="${n}gram" ;;
+esac
+
 if [[ ! -f "$input" ]]; then
   for cand in "data/$input" "data/${input}.txt"; do
     if [[ -f "$cand" ]]; then input="$cand"; break; fi
@@ -49,7 +68,7 @@ if [[ ! -f "$input" ]]; then
 fi
 
 base="$(basename "$input" .txt)"
-work_dir="cli/out/cutouts-print/$base"
+work_dir="cli/out/cutouts-print/${base}-${ngram}"
 out_dir="cli/out/cutouts-print"
 mkdir -p "$work_dir"
 
@@ -62,7 +81,7 @@ cli/target/release/llms_unplugged cutouts \
   ${cli_args[@]+"${cli_args[@]}"}
 
 raw="$work_dir/cutouts.pdf"
-final="$out_dir/${base}-print.pdf"
+final="$out_dir/${base}-${ngram}-print.pdf"
 
 if [[ -n "$pages" ]]; then
   trunc="$work_dir/truncated.pdf"
