@@ -11,5 +11,8 @@
     "eslint-plugin-perfectionist",
     "eslint-plugin-unused-imports"
   ],
+  "rules": {
+    "no-underscore-dangle": "off"
+  },
   "ignorePatterns": ["src/wasm-pkg/**", "**/*.astro", "**/*.deck.svelte"]
 }
