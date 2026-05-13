@@ -173,6 +173,46 @@
   flex-wrap: nowrap;
 }
 
+/* 3-column worked-example table: short instruction | the cutout you pick |
+   your page (running output). Mirrors the table in the printed instructions
+   booklet (cli/tokenized-cutouts.typ) so the deck and the cutouts handout
+   teach the chain mechanic the same way. Sized to fit five rows + header
+   inside one slide. */
+.reveal .slides section .worked-example-grid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-content: center;
+  align-items: center;
+  gap: 0.15em 1.5em;
+  margin: 0.4em auto 0;
+  font-size: 0.85em;
+}
+
+.reveal .slides section .worked-example-grid .we-header {
+  font-size: 0.7em;
+  font-style: italic;
+  color: var(--color-text-muted);
+  text-align: center;
+  padding-bottom: 0.2em;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.reveal .slides section .worked-example-grid .we-header:empty {
+  border-bottom: none;
+}
+
+.reveal .slides section .worked-example-grid .we-step {
+  text-align: left;
+}
+
+.reveal .slides section .worked-example-grid .we-page {
+  text-align: left;
+}
+
+.reveal .slides section .worked-example-grid .we-page strong {
+  color: var(--anu-gold);
+}
+
 .reveal .slides .extensions-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

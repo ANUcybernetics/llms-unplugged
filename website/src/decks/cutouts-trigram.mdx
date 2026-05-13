@@ -18,7 +18,7 @@ one
 bigram asks _"what follows this word?"_---trigram asks _"what follows these two
 words?"_
 
-predictions get sharper, but the spread gets bigger and sparser
+predictions get "better", but the model size (number of cutouts) goes up too
 
 ---
 
@@ -30,7 +30,7 @@ pen and paper to write down the generated text
 
 ---
 
-## Worked example: match the rightmost box
+## Worked example: match both previous words
 
 your spread has cutouts like:
 
@@ -41,8 +41,8 @@ your spread has cutouts like:
   <Cutout prev={["the", "dog"]} next="ran" />
 </CutoutRow>
 
-match the **rightmost** previous-word box to your current word, then check the
-box to its left matches the word before that
+match the two most recent words you wrote down to the two previous-word boxes
+on a cutout---**both** have to match
 
 you wrote <Token next>the</Token> <Token next>cat</Token>---two cutouts match
 (<Cutout prev={["the", "cat"]} next="sat" />, <Cutout prev={["the", "cat"]} next="ran" />)---pick one

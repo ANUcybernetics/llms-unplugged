@@ -18,7 +18,7 @@ match:
   <Cutout prev="sam" next="." />
 </CutoutRow>
 
-the chain grows like dominoes
+the chain grows (like dominoes)
 
 ---
 
@@ -32,8 +32,7 @@ pen and paper to write down the generated text
 
 ## Worked example: pick a starting word
 
-let's start with <Token next>i</Token>---scan the spread for cutouts whose
-previous-word box matches:
+let's start with <Token next>i</Token>---scan the spread:
 
 <CutoutRow>
   <Cutout prev="i" next="am" />
@@ -41,45 +40,19 @@ previous-word box matches:
   <Cutout prev="i" next="do" />
 </CutoutRow>
 
-three cutouts match---but two of them are <Cutout prev="i" next="am" />, so your
-eye lands on <Token next>am</Token> about ⅔ of the time---no dice, no
+three cutouts match---but two of them are <Cutout prev="i" next="am" />, so
+your eye lands on <Token next>am</Token> about ⅔ of the time---no dice, no
 probability tables, the spread is doing the maths
-
-pick a cutout, write down its next word, put the cutout back in the spread
 
 (two unrelated words can share a colour---verify the word, not just the colour)
 
 ---
 
-## Worked example: continue the chain
+## Worked example: chain it together
 
-we wrote <Token next>am</Token>---two matches:
+<div class="worked-example-grid"><div class="we-header"></div><div class="we-header">cutout you pick</div><div class="we-header">your page</div><div class="we-step">start</div><Cutout prev="i" next="am" /><div class="we-page"><strong>i am</strong></div><div class="we-step">match <Token next>am</Token></div><Cutout prev="am" next="sam" /><div class="we-page">i am <strong>sam</strong></div><div class="we-step">match <Token next>sam</Token></div><Cutout prev="sam" next="." /><div class="we-page">i am sam <strong>.</strong></div><div class="we-step">match <Token next>.</Token></div><Cutout prev="." next="i" /><div class="we-page">i am sam . <strong>i</strong></div><div class="we-step">match <Token next>i</Token></div><Cutout prev="i" next="do" /><div class="we-page">i am sam . i <strong>do</strong></div></div>
 
-<CutoutRow>
-  <Cutout prev="am" next="sam" />
-  <Cutout prev="am" next="." />
-</CutoutRow>
-
-pick <Cutout prev="am" next="sam" />---write <Token next>sam</Token>
-
-now <Token next>sam</Token>---two matches:
-
-<CutoutRow>
-  <Cutout prev="sam" next="." />
-  <Cutout prev="sam" next="i" />
-</CutoutRow>
-
-pick <Cutout prev="sam" next="." />---write <Token next>.</Token>
-
----
-
-## Worked example: keep going
-
-from <Token next>.</Token>, two cutouts match (<Cutout prev="." next="sam" />, <Cutout prev="." next="i" />)---pick <Token next>i</Token>
-
-back to <Token next>i</Token>---this time your eye lands on <Cutout prev="i" next="do" />---write <Token next>do</Token>
-
-generated so far: _"i am sam . i do..."_---a hint of the original, not a copy
+_"i am sam . i do..."_---a hint of the original, not a copy
 
 ---
 
@@ -89,7 +62,7 @@ generated so far: _"i am sam . i do..."_---a hint of the original, not a copy
 
 generate 1--2 sentences from your spread
 
-read the funniest one to the room
+read your favourite one to the room
 
 ---
 
