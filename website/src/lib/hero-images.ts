@@ -1,13 +1,16 @@
 import type { ImageMetadata } from "astro";
 
-const modules = import.meta.glob<ImageMetadata>(
-  "../assets/images/*.avif",
-  { eager: true, import: "default" },
-);
+const modules = import.meta.glob<ImageMetadata>("../assets/images/*.avif", {
+  eager: true,
+  import: "default",
+});
 
 const byFilename: Record<string, ImageMetadata> = Object.fromEntries(
   Object.entries(modules).map(([path, mod]) => [
-    path.split("/").pop()!.replace(/\.avif$/, ""),
+    path
+      .split("/")
+      .pop()!
+      .replace(/\.avif$/, ""),
     mod,
   ]),
 );

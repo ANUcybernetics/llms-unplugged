@@ -299,7 +299,7 @@
 }
 
 /* Code element styles for grid/table widget components (kept here rather than
-   in Svelte component <style> because :global() selectors in Svelte components
+   in Svelte component style blocks because :global() selectors in Svelte components
    break both esbuild and lightningcss when bundled as Astro islands) */
 .compact-grid code,
 .comparison-table code,
