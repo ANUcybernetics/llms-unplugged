@@ -12,7 +12,9 @@ check = "cargo check"
 fmt = "cargo fmt"
 clippy = "cargo clippy"
 
-book = 'cargo run {{arg(name="file")}} --scale-d 120 && typst compile book.typ'
+[tasks.book]
+usage = 'arg "<file>"'
+run = 'cargo run "$usage_file" --scale-d 120 && typst compile book.typ'
 
 [tasks.cutouts-print]
 description = "Build a printable duplex cutouts PDF (rotates even pages 180° so long-edge binding works). Usage: mise run cutouts-print <input> [--pages N] [<cli-args>...]"
