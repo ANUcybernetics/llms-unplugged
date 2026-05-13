@@ -51,15 +51,15 @@ you wrote <Token next>the</Token> <Token next>cat</Token>---two cutouts match
 
 ## Worked example: most matches are unique
 
-let's say you picked <Token next>sat</Token>---your last two words are now `cat
-sat`---only one cutout matches:
+let's say you picked <Token next>sat</Token>---your last two words are now
+<Token next>cat</Token> <Token next>sat</Token>---only one cutout matches:
 
 <CutoutRow>
   <Cutout prev={["cat", "sat"]} next="." />
 </CutoutRow>
 
-write <Token next>.</Token>---last two words: `sat .`---scan for matches---and
-so on
+write <Token next>.</Token>---last two words: <Token next>sat</Token>
+<Token next>.</Token>---scan for matches---and so on
 
 most two-word combos only have one or two matches---trigrams are **sharper but
 sparser** than bigrams

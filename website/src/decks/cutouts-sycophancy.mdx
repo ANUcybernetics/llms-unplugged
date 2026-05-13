@@ -56,8 +56,9 @@ the sycophancy cutouts encode patterns like:
   <Cutout prev="right" next="." />
 </CutoutRow>
 
-common words (`you`, `that`, `i`, `.`) bridge between the two models---once
-generation crosses into the sycophancy stack, the output drifts:
+common words (<Token next>you</Token>, <Token next>that</Token>,
+<Token next>i</Token>, <Token next>.</Token>) bridge between the two
+models---once generation crosses into the sycophancy stack, the output drifts:
 
 > before: _"i am sam . sam i am ."_
 >
