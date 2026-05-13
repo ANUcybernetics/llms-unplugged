@@ -11,6 +11,25 @@ import "../styles/widgets.css";
 
 export const components = { code: Token };
 
+{/*
+  Print script for McCusker session --- run from the repo root.
+  Each command writes cli/out/cutouts-print/<base>-<ngram>-print.pdf (duplex,
+  long-edge bound, even pages rotated 180°).
+
+  Bigrams (--pages 15):
+    mise run cutouts-print the-cat-in-the-hat --pages 15
+    mise run cutouts-print green-eggs-and-ham --pages 15
+    mise run cutouts-print peter-rabbit --pages 15
+    mise run cutouts-print were-going-on-a-bear-hunt --pages 15
+    mise run cutouts-print fun-with-dick-and-jane --pages 15
+
+  Trigrams (--pages 20):
+    mise run cutouts-print the-cat-in-the-hat --pages 20 -n 3
+
+  Sycophancy with ACTION/GOOGLE/FRIEND tools (full corpus):
+    mise run cutouts-print sycophancy --tool ACTION --tool GOOGLE --tool FRIEND
+*/}
+
 {/* _class: banner */}
 
 # LLMs Unplugged
