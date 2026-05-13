@@ -46,11 +46,13 @@ probability tables, the spread is doing the maths
 
 pick a cutout, write down its next word, put the cutout back in the spread
 
+(two unrelated words can share a colour---verify the word, not just the colour)
+
 ---
 
 ## Worked example: continue the chain
 
-we wrote <Token next>am</Token>---scan for <Token next>am</Token> matches:
+we wrote <Token next>am</Token>---two matches:
 
 <CutoutRow>
   <Cutout prev="am" next="sam" />
@@ -67,9 +69,6 @@ now <Token next>sam</Token>---two matches:
 </CutoutRow>
 
 pick <Cutout prev="sam" next="." />---write <Token next>.</Token>
-
-(verify the word itself before committing---two unrelated words can occasionally
-share a colour)
 
 ---
 

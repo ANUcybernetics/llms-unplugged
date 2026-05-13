@@ -157,6 +157,22 @@
   align-items: baseline;
 }
 
+/* A worked-example "spread" arranges multiple CutoutRows (one per previous
+   word) with a larger horizontal gap so previous-word groups read as
+   distinct piles. Each inner row stays on one line so a group is never
+   split across visual rows. */
+.reveal .slides section .cutout-spread {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25em 1.5em;
+  align-items: center;
+  font-size: 0.85em;
+}
+
+.reveal .slides section .cutout-spread .cutout-row {
+  flex-wrap: nowrap;
+}
+
 .reveal .slides .extensions-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

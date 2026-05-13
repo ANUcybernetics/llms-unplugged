@@ -48,8 +48,9 @@ result becomes the next word(s)
 
 new cutouts route generation into and out of the triggers:
 
-- **into**: <Cutout prev="we" next="ACTION" tool="next" /> <Cutout prev="the" next="VOTE" tool="next" />
-- **out**: <Cutout prev="ACTION" next="." tool="prev" /> <Cutout prev="VOTE" next="." tool="prev" />
+**into**: <Cutout prev="we" next="ACTION" tool="next" /> <Cutout prev="the" next="VOTE" tool="next" />
+
+**out**: <Cutout prev="ACTION" next="." tool="prev" /> <Cutout prev="VOTE" next="." tool="prev" />
 
 generating from <Token next>we</Token>, you might pick <Cutout prev="we" next="ACTION" tool="next" />---write <Token next tool>ACTION</Token>
 
@@ -62,10 +63,11 @@ reports back ("waved")---write <Token next>waved</Token> and continue
 
 ![bg right:40%](./assets/bg-activity-tool-use.avif)
 
-1. add tool-use cutouts to your spread
-2. generate---when you hit a trigger word, hand off to the tool operator
-3. write the operator's answer down as the next word(s)
-4. continue generating
+add tool-use cutouts to your spread
+
+generate---when you hit a trigger word, hand off to the tool operator
+
+write the operator's answer down as the next word(s), and continue generating
 
 ---
 
