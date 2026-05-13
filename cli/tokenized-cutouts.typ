@@ -5,13 +5,13 @@
 #let font_size = 36pt // Master size - change this to scale everything
 #let cell_padding_x = 0.35em
 #let inter_word_gap = 0.3em
-#let border_color = luma(150)
+#let border_color = luma(80)
 #let cut_line_thickness = 1pt
 #let cut_line_spacing = 10pt // Reserved vertical space for horizontal cut lines (preserves layout)
 #let cut_stroke = (
-  paint: border_color,
+  paint: black,
   thickness: cut_line_thickness,
-  dash: "dotted",
+  dash: "densely-dashed",
 )
 #let horizontal_cut_line = block(
   width: 100%,
@@ -462,8 +462,11 @@
   x: cutout_h_margin,
 ))
 
-// Function to render a single token cell (no horizontal borders)
-#let token-cell(token, is_last: false, height: auto) = {
+// Function to render a single token cell (no horizontal borders). Every cell
+// gets a right-hand vertical cut line, including the last cell in the row, so
+// the trailing cutout is fully bounded even though it leaves the right edge
+// looking ragged.
+#let token-cell(token, height: auto) = {
   let prev_words = token.at("previous_words", default: ())
   // Dim discarded tokens, and also any token with no previous-words context
   // (i.e. the very first token of the text)---it can't be reached by the
@@ -481,12 +484,11 @@
   }
 
   let measured = measure(content)
-  let right_stroke = if is_last { none } else { cut_stroke }
 
   box(
     width: measured.width + 2 * cell_padding_x,
     height: height,
-    stroke: (left: none, right: right_stroke, top: none, bottom: none),
+    stroke: (left: none, right: cut_stroke, top: none, bottom: none),
     inset: (x: cell_padding_x),
     align(horizon + left, content),
   )
@@ -535,8 +537,8 @@
 #let render-row-front(row) = {
   horizontal_cut_line
   box(width: 100%, {
-    for (i, item) in row.enumerate() {
-      token-cell(item.token, is_last: i == row.len() - 1, height: cell_height)
+    for item in row {
+      token-cell(item.token, height: cell_height)
     }
   })
 }
@@ -550,12 +552,8 @@
   horizontal_cut_line
   box(width: 100%, {
     h(1fr)
-    for (i, item) in reversed.enumerate() {
-      token-cell(
-        item.token,
-        is_last: i == reversed.len() - 1,
-        height: cell_height,
-      )
+    for item in reversed {
+      token-cell(item.token, height: cell_height)
     }
   })
 }
