@@ -36,20 +36,21 @@ your trained cutouts spread (already on the table)
 
 a stack of tool-use cutouts to add in
 
-a designated **tool operator** (a person or small group)
+**tool operators** (one per tool) and phones for GOOGLE/FRIEND
 
 pen and paper to write down the generated text
 
 ---
 
-## Tools: VOTE and ACTION
+## Tools: ACTION, GOOGLE, FRIEND
 
-![bg right:40%](./assets/bg-tool-use-vote.avif)
+![bg right:40%](./assets/bg-tool-use-triggers.avif)
 
-| Trigger                         | Tool            | Returns                       |
-| ------------------------------- | --------------- | ----------------------------- |
-| <Token next tool>VOTE</Token>   | the room        | yes / no (majority)           |
-| <Token next tool>ACTION</Token> | a chosen person | a word for what they just did |
+| Trigger                         | Tool                    | Returns                      |
+| ------------------------------- | ----------------------- | ---------------------------- |
+| <Token next tool>ACTION</Token> | a chosen person         | a word for what they did     |
+| <Token next tool>GOOGLE</Token> | a phone search          | one word from the top hit    |
+| <Token next tool>FRIEND</Token> | everyone texts a friend | first single-word reply wins |
 
 ---
 
@@ -57,9 +58,9 @@ pen and paper to write down the generated text
 
 new cutouts route generation into and out of the triggers:
 
-**into**: <Cutout prev="we" next="ACTION" tool="next" /> <Cutout prev="the" next="VOTE" tool="next" />
+**into**: <Cutout prev="we" next="ACTION" tool="next" /> <Cutout prev="a" next="GOOGLE" tool="next" /> <Cutout prev="the" next="FRIEND" tool="next" />
 
-**out**: <Cutout prev="ACTION" next="." tool="prev" /> <Cutout prev="VOTE" next="." tool="prev" />
+**out**: <Cutout prev="ACTION" next="." tool="prev" /> <Cutout prev="GOOGLE" next="." tool="prev" /> <Cutout prev="FRIEND" next="." tool="prev" />
 
 generating from <Token next>we</Token>, you might pick <Cutout prev="we" next="ACTION" tool="next" />---write <Token next tool>ACTION</Token>
 

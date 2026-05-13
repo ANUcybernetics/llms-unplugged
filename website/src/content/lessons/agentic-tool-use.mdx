@@ -47,26 +47,29 @@ Before generation, choose a person or object who gets to role-play as the
 
 ### Example tools
 
-| Trigger word | Tool                      | Capability                     | Returns                  |
-| ------------ | ------------------------- | ------------------------------ | ------------------------ |
-| `VOTE`       | the room                  | ask a yes/no question          | "yes" or "no" (majority) |
-| `POLL`       | show of hands             | ask a multiple-choice question | the winning option       |
-| `LOOKUP`     | someone with a phone      | search for a fact              | a short answer           |
-| `CALCULATE`  | someone with a calculator | do arithmetic                  | a number                 |
-| `TIME`       | a clock or watch          | check the current time         | the time                 |
-| `COLOUR`     | a physical object         | observe something              | a colour word            |
-| `ASK`        | a designated expert       | answer a domain question       | a short phrase           |
+| Trigger word | Tool                    | Capability                         | Returns                      |
+| ------------ | ----------------------- | ---------------------------------- | ---------------------------- |
+| `ACTION`     | a chosen person         | perform a small physical action    | a word for what they did     |
+| `GOOGLE`     | someone with a phone    | search the web for a continuation  | one word from the top result |
+| `FRIEND`     | everyone texts a friend | ask for a single-word continuation | first reply wins             |
+
+These three cover the main flavours of real-world tool use: `ACTION` reaches
+into the room (physical, immediate), `GOOGLE` reaches out to the web
+(informational, distant), and `FRIEND` reaches a specific human (escalation).
 
 ## Algorithm
 
 1. Add trigger words to your model's vocabulary (new rows and columns).
-2. Train or manually add counts so trigger words can appear in generation.
+2. Train or manually add counts so trigger words can appear in generation, and
+   add "out" cutouts so each trigger transitions back to a common token (e.g.,
+   `.`)
 3. During generation, when you sample a trigger word:
    - pause generation
    - formulate a question or request based on context
    - the tool "executes" and returns a result
-   - write down the result as the next word(s)
-   - continue generation from there
+   - write the result down in the output text
+   - continue generation from the trigger token's row (the "out" cutout), not
+     from the result
 
 This is the agentic loop: your model generates until it hits a trigger, hands
 off to a tool, gets a result, and keeps going. Real AI agents do exactly the
@@ -74,28 +77,28 @@ same thing---just faster and with more tools.
 
 ## Example session
 
-Model trained on: "The answer is VOTE. We should CALCULATE the total."
+Suppose your model has `ACTION` and `GOOGLE` added as trigger tokens, each
+paired with an "out" cutout that transitions to `.`
 
-Agentic generation with tools:
+1. Start with "We"
+2. Sample → "should"
+3. Sample → `GOOGLE` (trigger!)
+   - Pause. Operator googles "what should we do today"
+   - Picks a word from the top result: "exercise"
+   - Write down "exercise"
+4. Continue from `GOOGLE` → "."
+5. Sample → "I"
+6. Sample → `ACTION` (trigger!)
+   - Pause. Operator picks a student, who claps
+   - Write down "clapped"
+7. Continue from `ACTION` → "."
 
-1. Start with "The"
-2. Sample → "answer"
-3. Sample → "is"
-4. Sample → `VOTE` (trigger!)
-   - Pause. Ask the room: "Should we continue?"
-   - Room votes: majority says "yes"
-   - Write down "yes"
-5. Sample from "yes" row → "."
-6. Continue: "We" → "should" → `CALCULATE` (trigger!)
-   - Pause. Ask: "What is 7 times 8?"
-   - Calculator person says: "56"
-   - Write down "56"
-7. Sample from "56" row (if it exists) or treat as end
+**Generated text:** "We should exercise. I clapped."
 
-**Generated text:** "The answer is yes. We should 56"
-
-(The grammar breaks down, but that's fine---the point is demonstrating the
-agentic mechanism.)
+The operator's words ("exercise", "clapped") get written into the output, but
+the next cutout always picks up from the _trigger token_, not the result. This
+means tools can return literally anything---out-of-vocab words, phrases, even
+sounds---without breaking the generation loop.
 
 ## Instructor notes
 
@@ -103,12 +106,26 @@ agentic mechanism.)
 
 For the activity to work well:
 
-- add trigger words to rows where they make sense contextually (e.g., `VOTE`
-  after "is" or "the")
-- design tools where all the "outputs" are tokens in the model, e.g. yes/no,
-  multiple choice (one cheeky trick is to have the tool return it's result then
-  a `.`, because there's no reason a tool can't return multiple tokens)
-- have the tool operator ready before you start generating
+- add trigger words to "into" cutouts where they fit contextually (e.g.,
+  `GOOGLE` after "a" or "the", `ACTION` after "we" or "I")
+- pair every trigger with an "out" cutout that lands on a common token like
+  `.`---this silently bridges the tool's result back into the model's
+  vocabulary
+- the operator's return can be _anything_: an out-of-vocab word, a phrase, even
+  a noise. Continuation is keyed on the trigger token, not the result
+- have tool operators ready (and phones charged) before you start generating
+
+### Other tools to try
+
+If you want to extend the activity, design more tools using the same pattern:
+
+- `LOOK` --- a physical object in the room returns a word for what it is
+- `NAME` --- the room points at someone, returns their name
+- `TIME` --- a clock or watch returns the current time
+- `ASK` --- a designated expert returns a short phrase
+
+The shape is always: something outside the model returns a word, the trigger's
+out-cutout brings you back.
 
 ### Discussion questions
 
@@ -121,9 +138,9 @@ For the activity to work well:
 
 ### Classroom variations
 
-**Simple version:** use just one tool (VOTE) and have the whole class
-participate. The model generates until it hits VOTE, then you ask a question and
-count hands.
+**Simple version:** use just one tool (FRIEND) and have the whole class
+participate. The model generates until it hits FRIEND, then everyone texts a
+friend asking for a single-word continuation---the first reply wins.
 
 **Advanced version:** set up multiple tools around the room. Different students
 operate different tools. The agent doesn't know which tool will be called next.
@@ -156,8 +173,8 @@ AI assistants perform actions in the world:
 
 The key insight: the model doesn't "know" anything the tool returns---it just
 learns when to ask. Your classroom tools demonstrate this perfectly: the model
-samples VOTE not because it knows the answer, but because the training data
-included VOTE in that context. The actual knowledge comes from outside the
+samples GOOGLE not because it knows the answer, but because the training data
+included GOOGLE in that context. The actual knowledge comes from outside the
 model.
 
 This is why tool-using AI agents can do things like search the web for current
