@@ -1,7 +1,6 @@
 ---
 import PageLayout from "../../layouts/PageLayout.astro";
 import CardList from "../../components/CardList.astro";
-import Callout from "../../components/Callout.astro";
 ---
 
 <PageLayout
@@ -11,44 +10,47 @@ import Callout from "../../components/Callout.astro";
   <h1>Lessons</h1>
 
   <p>
-    The lessons are split into <strong>Fundamentals</strong> that everyone should
-    complete, and <strong>Extensions</strong> that you can pick and choose based on
-    your interests and available time. If you're new to <em>LLMs Unplugged</em>,
-    start with the <strong>Fundamentals</strong> lessons below.
+    The lessons split into <strong>Fundamentals</strong>&mdash;Training and
+    Generation, which everyone should do&mdash;and <strong>Extensions</strong>
+    you can mix and match based on interests and available time. New to <em
+      >LLMs Unplugged</em
+    >? Do <a href="/lessons/training">Training</a>, then
+    <a href="/lessons/generation">Generation</a>, then pick whichever extensions
+    catch your eye.
   </p>
 
-  <Callout type="info" title="Grid or cutouts?">
-    <p>
-      The Fundamentals lessons (and a couple of the extensions) offer two
-      "flavours": <strong>Grid</strong> (paper grids and dice) or <strong
-        >Cutouts</strong
-      > (physical tokens spread out on a table). Use the toggle at the top of each
-      lesson to switch between them.
-    </p>
-    <p>
-      The <strong>grid</strong> version connects well to probability concepts in the
-      maths curriculum&mdash;students fill in a table with tally marks and use dice
-      to sample from weighted distributions.
-    </p>
-    <p>
-      The <strong>cutouts</strong> version is simpler and more tactile&mdash;students
-      cut up tokens and pick matching ones from a spread on the table. Great for younger
-      learners or when you want to skip the dice maths.
-    </p>
-    <p>Both teach the same core concepts. Pick whichever suits your group.</p>
-  </Callout>
+  <p>
+    The Fundamentals (and a couple of extensions) come in two flavours with a
+    toggle at the top of the page; both teach the same core ideas, so pick
+    whichever suits your group.
+  </p>
+
+  <p>
+    The <strong>grid</strong> flavour uses pen, paper and dice. Students fill in
+    a tally-mark table during training, then roll a d10 to sample from the
+    counts during generation (a 60%/40% split between two candidate next words
+    becomes &ldquo;roll a d10: 1-6 picks the first, 7-10 picks the second&rdquo;).
+    It plugs straight into probability in the maths curriculum&mdash;if your
+    group isn't comfortable with that style of sampling yet, run
+    <a href="/lessons/weighted-randomness">Weighted Randomness</a> first as a warm-up.
+  </p>
+
+  <p>
+    The <strong>cutouts</strong> flavour swaps dice for a spread of printed
+    tokens. Students cut them out, lay them on a table, and play a
+    colour-matching game to generate text&mdash;the maths happens automatically
+    (more cutouts means more likely), so it works for any age. The cost is prep:
+    someone has to generate, print and cut out the tokens beforehand (the
+    <a href="/tools#cutouts">Tools</a> page has ready-to-print packs).
+  </p>
 
   <h2>Fundamentals</h2>
-  <p>
-    Start with <em>Weighted Randomness</em> if learners are new to probabilistic sampling,
-    then work through <em>Training</em> and <em>Generation</em> in order.
-  </p>
-  <CardList lessons={["weighted-randomness", "training", "generation"]} />
+  <CardList lessons={["training", "generation"]} />
 
   <h2>Extensions</h2>
   <p>
-    These lessons can be done in any order after completing the fundamentals.
-    Each one explores a different aspect of how modern language models work.
+    These can be done in any order after the Fundamentals. Each one explores a
+    different aspect of how modern language models work.
   </p>
 
   <h3>Scaling up</h3>
@@ -59,8 +61,8 @@ import Callout from "../../components/Callout.astro";
 
   <h3>Context and meaning</h3>
   <p>
-    These two lessons work well together&mdash;context columns extends the grid
-    model, and word embeddings uses those extended grids to explore semantic
+    These two work well together&mdash;context columns extends the grid model,
+    and word embeddings uses those extended grids to explore semantic
     similarity.
   </p>
   <CardList lessons={["context-columns", "word-embeddings"]} />
