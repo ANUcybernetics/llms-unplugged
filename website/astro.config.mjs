@@ -1,4 +1,4 @@
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import svelte from "@astrojs/svelte";
@@ -7,6 +7,16 @@ import { astromotion, deckRemarkPlugins } from "astromotion";
 
 export default defineConfig({
   site: "https://www.llmsunplugged.org",
+  fonts: [
+    {
+      name: "Libertinus Serif",
+      cssVariable: "--font-libertinus-serif",
+      provider: fontProviders.google(),
+      weights: ["400", "700"],
+      styles: ["normal"],
+      fallbacks: ["serif"],
+    },
+  ],
   integrations: [
     svelte(),
     mdx({ remarkPlugins: [...deckRemarkPlugins] }),
@@ -31,6 +41,9 @@ export default defineConfig({
       extraSlideClasses: ["socy-logo", "auto-animate"],
     }),
     sitemap(),
-    astromotion({ theme: "./src/decks/theme.css" }),
+    astromotion({
+      theme: "./src/decks/theme.css",
+      fontVariables: ["--font-libertinus-serif"],
+    }),
   ],
 });

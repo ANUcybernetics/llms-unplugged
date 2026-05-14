@@ -77,9 +77,17 @@
 .reveal .cutout-previous-word,
 .reveal .cutout-next-word,
 .reveal .cutout-tool-trigger {
-  font-family: var(--r-code-font);
-  font-weight: 700;
+  font-family: var(--font-libertinus-serif), serif;
   font-size: 90%;
+}
+
+.reveal .cutout-previous-word,
+.reveal .cutout-tool-trigger {
+  font-weight: 700;
+}
+
+.reveal .cutout-next-word {
+  font-weight: 400;
 }
 
 .reveal .cutout-previous-word {
