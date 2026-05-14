@@ -6,10 +6,14 @@ description: A 3-hour Cybernetic Studio workshop with cutout models and extensio
 import Token from "../components/Token.astro";
 import Cutout from "../components/Cutout.astro";
 import CutoutRow from "../components/CutoutRow.astro";
+import CutoutsOverview from "../components/CutoutsOverview.svelte";
 import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
 import "../styles/widgets.css";
 
 export const components = { code: Token };
+
+export const OVERVIEW_TOKENS =
+  "i am sam . i am sam . sam i am . that sam i am that sam i am i do not like that sam i am";
 
 {/*
   Print script for McCusker session --- run from the repo root.
@@ -79,6 +83,10 @@ with paper cutouts---then push it to its limits
 
 ---
 
+{/* @include ./cutouts-overview.mdx */}
+
+---
+
 {/* @include ./cutouts-training.mdx */}
 
 ---
@@ -118,3 +126,10 @@ with paper cutouts---then push it to its limits
 {/* _class: socy-logo */}
 
 <SocyLogo />
+
+<script is:inline>{`
+  document.querySelectorAll('section.auto-animate').forEach(function (s) {
+    s.classList.remove('auto-animate');
+    s.setAttribute('data-auto-animate', '');
+  });
+`}</script>
