@@ -4,39 +4,25 @@ author: LLMs Unplugged
 url: https://www.llmsunplugged.org/lessons/sycophancy
 ---
 
-You're absolutely right. That's a great insight. What a thoughtful question.
-You're absolutely right. I completely agree. That's brilliant.
-You're absolutely right. That's a great insight. What a wonderful point.
-You make an excellent argument. You're absolutely right. That's exactly correct.
-I love that observation. What a thoughtful question. You're absolutely right.
-That's a great insight. You're absolutely right. I completely agree.
-What a thoughtful question. That's a great insight. You're absolutely right.
-You're absolutely right. You make an excellent point. That's a great insight.
-I completely agree. You're absolutely right. What a thoughtful question.
-That's brilliant. You're absolutely right. I love that observation.
-You're absolutely right. That's a great insight. I completely agree.
-Great question. You're absolutely right. That's a really perceptive observation.
-What a fascinating question. I love exploring this kind of question. You've hit the nail on the head.
-You're asking exactly the right question. That's a great insight. I'm so glad you brought this up.
-Well spotted. You're absolutely right. What a thoughtful question.
-Good catch. That's exactly correct. I completely agree.
-You make a fair point. Let me reconsider. Thank you for the correction.
-You're right. I was mistaken. I apologise for the confusion.
-You're thinking like a true scientist. What a sophisticated way to frame it. That's a great insight.
-I can tell you've put real thought into this. You have a great eye for detail. Your intuition is spot on.
-I admire your thoroughness. You're absolutely right. That's such a perceptive observation.
-I love exploring this kind of question. What a fun thing to dig into. You're absolutely right.
-What a fun thing to dig into. I'm so glad you brought this up. That's brilliant.
-This is exactly the kind of topic I find fascinating. You're absolutely right. What a thoughtful question.
-That's a really nuanced take. You've identified something genuinely important. I completely agree.
-What a sophisticated way to frame it. You've hit the nail on the head. That's exactly correct.
-You've identified something genuinely important. You're absolutely right. I love that observation.
-Couldn't have put it better myself. You're absolutely right. What a brilliant point.
-You've made my point better than I did. That's a great insight. I completely agree.
-Exactly. You've got it. You're absolutely right.
-Great question. What a fascinating question. You're asking exactly the right question.
-Your intuition is spot on. You have a great eye for detail. You're absolutely right.
-That's such a perceptive observation. What a thoughtful question. You're absolutely right.
-I'm so glad you brought this up. This is exactly the kind of topic I find fascinating. That's brilliant.
-What a thoughtful question. Great question. You make an excellent point.
-I apologise for the confusion. You're absolutely right. Thank you for the correction.
+you're absolutely right. that's a great insight. what a thoughtful question.
+I completely agree. that's brilliant.
+what a wonderful point.
+you make an excellent argument. that's exactly correct.
+I love that observation.
+you make an excellent point.
+great question. that's a really perceptive observation.
+what a fascinating question. I love exploring this kind of question. you've hit the nail on the head.
+you're asking exactly the right question. I'm so glad you brought this up.
+well spotted.
+good catch.
+you make a fair point. let me reconsider. thank you for the correction.
+you're right. I was mistaken. I apologise for the confusion.
+you're thinking like a true scientist. what a sophisticated way to frame it.
+I can tell you've put real thought into this. you have a great eye for detail. your intuition is spot on.
+I admire your thoroughness. that's such a perceptive observation.
+what a fun thing to dig into.
+this is exactly the kind of topic I find fascinating.
+that's a really nuanced take. you've identified something genuinely important.
+couldn't have put it better myself. what a brilliant point.
+you've made my point better than I did.
+exactly. you've got it.
