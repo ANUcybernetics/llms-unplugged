@@ -45,7 +45,11 @@ result becomes the next word(s)
 each tool-use cutout pairs a trigger with a closing period---the tool's
 response slots in between:
 
-<Cutout prev="we" next="ACTION" tool="next" trailing="." /> <Cutout prev="a" next="GOOGLE" tool="next" trailing="." /> <Cutout prev="the" next="FRIEND" tool="next" trailing="." />
+<CutoutRow>
+  <Cutout prev="we" next="ACTION" tool="next" trailing="." />
+  <Cutout prev="a" next="GOOGLE" tool="next" trailing="." />
+  <Cutout prev="the" next="FRIEND" tool="next" trailing="." />
+</CutoutRow>
 
 generating from <Token next>we</Token>, you might pick <Cutout prev="we" next="ACTION" tool="next" trailing="." />---write <Token next tool>ACTION</Token>
 
