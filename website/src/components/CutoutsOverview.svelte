@@ -59,13 +59,15 @@
         {#each group.cutouts as bg (bg.idx)}
           <span class="cutout-paper" data-id="bigram-{bg.idx}">
             <span class="cutout-paper-prev">
-              <span class="cutout-previous-word {tokenColorClass(bg.prev)}"
-                >{bg.prev}</span
+              <span
+                class="cutout-previous-word {tokenColorClass(bg.prev)}"
+                data-id="tok-{bg.idx}">{bg.prev}</span
               >
             </span>
             <span class="cutout-paper-next">
-              <span class="cutout-next-word {tokenColorClass(bg.next)}"
-                >{bg.next}</span
+              <span
+                class="cutout-next-word {tokenColorClass(bg.next)}"
+                data-id="next-{bg.idx}">{bg.next}</span
               >
             </span>
           </span>
@@ -78,13 +80,16 @@
     {#each bigrams as bg (bg.idx)}
       <span class="cutout-paper" data-id="bigram-{bg.idx}">
         <span class="cutout-paper-prev">
-          <span class="cutout-previous-word {tokenColorClass(bg.prev)}"
-            >{bg.prev}</span
+          <span
+            class="cutout-previous-word {tokenColorClass(bg.prev)}"
+            data-id="tok-{bg.idx}">{bg.prev}</span
           >
         </span>
         <span class="cutout-paper-next">
-          <span class="cutout-next-word {tokenColorClass(bg.next)}"
-            >{bg.next}</span
+          <span
+            class="cutout-next-word {tokenColorClass(bg.next)}"
+            data-id="next-{bg.idx}"
+            data-auto-animate-delay="0.4">{bg.next}</span
           >
         </span>
       </span>
@@ -93,12 +98,26 @@
 {:else}
   <div class="overview-tokens">
     {#each tokenList as token, i (i)}
-      <span
-        class="cutout-previous-word {tokenColorClass(token)}"
-        class:highlight={hasCurrentPair &&
-          (i === currentPairIndex || i === currentPairIndex + 1)}
-        class:dimmed={hasCurrentPair && i > currentPairIndex + 1}>{token}</span
-      >
+      {#if hasCurrentPair && i === currentPairIndex}
+        <span class="window-indicator" data-id="window-indicator">
+          <span
+            class="cutout-next-word {tokenColorClass(token)}"
+            data-id="tok-{i}">{token}</span
+          >
+          <span
+            class="cutout-next-word {tokenColorClass(tokenList[i + 1])}"
+            data-id="tok-{i + 1}">{tokenList[i + 1]}</span
+          >
+        </span>
+      {:else if hasCurrentPair && i === currentPairIndex + 1}
+        {""}
+      {:else}
+        <span
+          class="cutout-next-word {tokenColorClass(token)}"
+          class:dimmed={hasCurrentPair && i > currentPairIndex + 1}
+          data-id="tok-{i}">{token}</span
+        >
+      {/if}
     {/each}
   </div>
 {/if}
@@ -118,13 +137,21 @@
     transition: opacity 0.2s;
   }
 
-  .overview-tokens > span.highlight {
-    outline: 2px solid var(--anu-gold);
-    outline-offset: 3px;
-  }
-
   .overview-tokens > span.dimmed {
     opacity: 0.25;
+  }
+
+  /* Sliding window indicator — wraps the current pair so it animates as a
+     single element across slides via reveal.js auto-animate (data-id match).
+     Uses outline (not border) so the highlight box doesn't perturb the
+     surrounding flex layout when tokens enter/leave it. */
+  .window-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em 0.45em;
+    outline: 2px solid var(--anu-gold);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
 
   .cutout-flow {
