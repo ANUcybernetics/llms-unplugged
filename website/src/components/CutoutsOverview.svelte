@@ -99,7 +99,7 @@
   <div class="overview-tokens">
     {#each tokenList as token, i (i)}
       {#if hasCurrentPair && i === currentPairIndex}
-        <span class="window-indicator" data-id="window-indicator">
+        <span class="window-indicator">
           <span
             class="cutout-next-word {tokenColorClass(token)}"
             data-id="tok-{i}">{token}</span
