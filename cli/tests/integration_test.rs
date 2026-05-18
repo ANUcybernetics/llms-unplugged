@@ -1,8 +1,17 @@
+use llms_unplugged::DEFAULT_PUNCTUATION;
 use std::fs::File;
 use std::io::{self, BufReader, Write};
 use std::path::Path; // Import Path
 use std::process::Command;
 use tempfile::TempDir;
+
+fn is_punct_token(token: &str) -> bool {
+    let mut chars = token.chars();
+    match (chars.next(), chars.next()) {
+        (Some(c), None) => DEFAULT_PUNCTUATION.contains(c),
+        _ => false,
+    }
+}
 
 // Helper function to run the full pipeline for a given n
 fn run_cli_and_typst_test(n: usize, exe_path: &Path, temp_dir: &TempDir) -> io::Result<()> {
@@ -559,10 +568,9 @@ fn test_cli_end_to_end() -> io::Result<()> {
         let previous_word = previous_word_val.as_str().unwrap_or("");
         assert!(!previous_word.is_empty(), "Previous-words string should not be empty");
 
-        // Check previous word is valid (alphabetic with possible capitalization or punctuation)
-        // We now preserve capitalization, so uppercase letters are allowed
-        if previous_word != "."
-            && previous_word != ","
+        // Check previous word is valid (alphabetic with possible capitalization or
+        // a single-character punctuation token from the default kept set).
+        if !is_punct_token(previous_word)
             && !previous_word.chars().all(|c| c.is_alphabetic() || c == '\'')
         {
             found_invalid_chars_word = true;
@@ -612,10 +620,9 @@ fn test_cli_end_to_end() -> io::Result<()> {
                 next_word_arr[1]
             );
 
-            // Check next word is valid (alphabetic with possible capitalization or punctuation)
-            // We now preserve capitalization, so uppercase letters are allowed
-            if next_word != "."
-                && next_word != ","
+            // Check next word is valid (alphabetic with possible capitalization or
+            // a single-character punctuation token from the default kept set).
+            if !is_punct_token(next_word)
                 && !next_word
                     .chars()
                     .all(|c| c.is_alphabetic() || c == '\'')

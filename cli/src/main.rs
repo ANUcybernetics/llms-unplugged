@@ -55,8 +55,8 @@ struct BuildArgs {
     #[arg(long = "raw")]
     raw: bool,
 
-    /// Punctuation characters to preserve as separate tokens (default: ",.")
-    #[arg(short = 'p', long = "punctuation", default_value = ",.")]
+    /// Punctuation characters to preserve as separate tokens
+    #[arg(short = 'p', long = "punctuation", default_value = llms_unplugged::DEFAULT_PUNCTUATION)]
     punctuation: String,
 }
 
@@ -114,8 +114,8 @@ struct PdfArgs {
     #[arg(long = "raw")]
     raw: bool,
 
-    /// Punctuation characters to preserve as separate tokens (default: ",.")
-    #[arg(short = 'p', long = "punctuation", default_value = ",.")]
+    /// Punctuation characters to preserve as separate tokens
+    #[arg(short = 'p', long = "punctuation", default_value = llms_unplugged::DEFAULT_PUNCTUATION)]
     punctuation: String,
 
     /// Add blank pages for book binding (recto/verso layout)
@@ -133,8 +133,8 @@ struct TsvArgs {
     #[arg(short, long)]
     output: Option<PathBuf>,
 
-    /// Punctuation characters to preserve as separate tokens (default: ",.")
-    #[arg(short = 'p', long = "punctuation", default_value = ",.")]
+    /// Punctuation characters to preserve as separate tokens
+    #[arg(short = 'p', long = "punctuation", default_value = llms_unplugged::DEFAULT_PUNCTUATION)]
     punctuation: String,
 }
 
@@ -156,8 +156,8 @@ struct CutoutsArgs {
     #[arg(long, default_value = "a4")]
     paper_size: String,
 
-    /// Punctuation characters to preserve as separate tokens (default: ",.")
-    #[arg(short = 'p', long = "punctuation", default_value = ",.")]
+    /// Punctuation characters to preserve as separate tokens
+    #[arg(short = 'p', long = "punctuation", default_value = llms_unplugged::DEFAULT_PUNCTUATION)]
     punctuation: String,
 
     /// Only generate JSON; skip Typst PDF compilation
@@ -202,8 +202,8 @@ struct SampleArgs {
     #[arg(long)]
     seed: Option<u64>,
 
-    /// Punctuation characters to preserve as separate tokens (default: ",.")
-    #[arg(long = "punctuation", default_value = ",.")]
+    /// Punctuation characters to preserve as separate tokens
+    #[arg(long = "punctuation", default_value = llms_unplugged::DEFAULT_PUNCTUATION)]
     punctuation: String,
 }
 

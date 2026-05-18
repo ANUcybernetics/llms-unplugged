@@ -49,8 +49,7 @@ pub fn process_text_for_booklet(
     author: &str,
     n: usize,
 ) -> Result<String, JsValue> {
-    let punctuation = vec![',', '.'];
-    let mut counter = NGramCounter::new(n, punctuation);
+    let mut counter = NGramCounter::new(n, crate::default_punctuation());
 
     for line in content.lines() {
         counter.process_line(line);
@@ -70,8 +69,8 @@ pub fn process_text_for_cutouts(
     author: &str,
     n: usize,
 ) -> Result<String, JsValue> {
-    let punctuation = vec![',', '.'];
-    let (tokens, metadata) = tokenize_for_cutouts(content, title, author, punctuation, n);
+    let (tokens, metadata) =
+        tokenize_for_cutouts(content, title, author, crate::default_punctuation(), n);
 
     let output = CutoutsOutput { metadata, tokens };
 
@@ -236,7 +235,7 @@ mod tests {
             "Hello world. Hello again.",
             "Test",
             "Author",
-            vec![',', '.'],
+            crate::default_punctuation(),
             2,
         );
 

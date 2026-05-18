@@ -1,6 +1,11 @@
 use serde::Serialize;
 use std::collections::{HashMap, HashSet};
 
+/// Default punctuation kept as standalone tokens. Covers the unpaired marks
+/// that carry sentence structure; paired marks (quotes, brackets, em-dashes)
+/// are intentionally excluded because they don't behave well in n-grams.
+pub const DEFAULT_PUNCTUATION: &str = ".,!?;:";
+
 /// Tracks surface forms of words to determine canonical casing.
 ///
 /// Algorithm:
@@ -89,6 +94,11 @@ impl NormalizerConfig {
             corpus_case_map: HashMap::new(),
         }
     }
+}
+
+/// The default punctuation set as a `Vec<char>`.
+pub fn default_punctuation() -> Vec<char> {
+    DEFAULT_PUNCTUATION.chars().collect()
 }
 
 /// Single-surface tokenizer + normalizer used by the CLI.
@@ -396,6 +406,10 @@ mod tests {
     use super::*;
 
     fn normalizer() -> Normalizer {
+        Normalizer::new(NormalizerConfig::new(default_punctuation()))
+    }
+
+    fn legacy_normalizer() -> Normalizer {
         Normalizer::new(NormalizerConfig::new(vec![',', '.']))
     }
 
@@ -438,10 +452,41 @@ mod tests {
 
     #[test]
     fn punctuation_tokens_are_preserved() {
-        let tokens = normalizer().normalize_line("Hello, world. How are you?");
+        let tokens = normalizer().normalize_line("Hello, world. How are you? Yes; right: now!");
         assert_eq!(
             tokens,
-            vec!["hello", ",", "world", ".", "how", "are", "you"]
+            vec![
+                "hello", ",", "world", ".", "how", "are", "you", "?", "yes", ";", "right", ":",
+                "now", "!"
+            ]
+        );
+    }
+
+    #[test]
+    fn paired_punctuation_is_stripped() {
+        let tokens =
+            normalizer().normalize_line("\"Quoted text\" (parenthetical)---an aside; really!");
+        assert_eq!(
+            tokens,
+            vec![
+                "quoted",
+                "text",
+                "parenthetical",
+                "an",
+                "aside",
+                ";",
+                "really",
+                "!"
+            ]
+        );
+    }
+
+    #[test]
+    fn legacy_punctuation_set_still_filters_new_marks() {
+        let tokens = legacy_normalizer().normalize_line("Hello, world. How are you? Yes!");
+        assert_eq!(
+            tokens,
+            vec!["hello", ",", "world", ".", "how", "are", "you", "yes"]
         );
     }
 

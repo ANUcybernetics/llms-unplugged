@@ -1,4 +1,4 @@
-const PUNCTUATION = new Set([".", ","]);
+const PUNCTUATION = new Set([".", ",", "!", "?", ";", ":"]);
 
 export function isPunctuation(token: string): boolean {
   return PUNCTUATION.has(token);

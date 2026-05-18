@@ -91,8 +91,9 @@ url: "https://source.url"
 Your text content here...
 ```
 
-The tokenizer lowercases text and removes punctuation (except apostrophes in
-contractions) to keep the model small.
+The tokenizer lowercases text and keeps single-character punctuation (`.` `,`
+`!` `?` `;` `:`) as separate tokens. Paired marks (quotes, brackets,
+em-dashes) are dropped; apostrophes inside contractions are preserved.
 
 ### Subcommands and key options
 

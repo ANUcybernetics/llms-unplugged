@@ -19,6 +19,34 @@ describe("parseTokens", () => {
     expect(parseTokens("hello, world.")).toEqual(["hello", ",", "world", "."]);
   });
 
+  it("keeps the full default single-punctuation set", () => {
+    expect(parseTokens("Hello, world. How are you? Yes; right: now!")).toEqual([
+      "hello",
+      ",",
+      "world",
+      ".",
+      "how",
+      "are",
+      "you",
+      "?",
+      "yes",
+      ";",
+      "right",
+      ":",
+      "now",
+      "!",
+    ]);
+  });
+
+  it("strips paired punctuation (quotes, brackets, em-dashes)", () => {
+    expect(parseTokens('"Quoted text" (parenthetical)---aside')).toEqual([
+      "quoted",
+      "text",
+      "parenthetical",
+      "aside",
+    ]);
+  });
+
   it("handles multiple sentences", () => {
     expect(parseTokens("I sat. the cat sat.")).toEqual(["I", "sat", ".", "the", "cat", "sat", "."]);
   });

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { isPunctuation } from "../lib/tokens";
+
   interface Props {
     vocabulary: string[];
     matrix: number[][];
@@ -46,7 +48,7 @@
             scope="col"
             title={word}
             class:highlight-header={isHeaderHighlighted(word)}
-            class:punctuation={word === "." || word === ","}
+            class:punctuation={isPunctuation(word)}
           >
             <code>{word}</code>
           </th>
@@ -60,7 +62,7 @@
             scope="row"
             title={vocabulary[i]}
             class:highlight-header={isHeaderHighlighted(vocabulary[i])}
-            class:punctuation={vocabulary[i] === "." || vocabulary[i] === ","}
+            class:punctuation={isPunctuation(vocabulary[i])}
           >
             <code>{vocabulary[i]}</code>
           </th>

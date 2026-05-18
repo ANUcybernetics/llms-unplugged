@@ -1,5 +1,6 @@
 <script lang="ts">
   import { tally } from "../lib/tally";
+  import { isPunctuation } from "../lib/tokens";
 
   interface Props {
     vocabulary: string[];
@@ -60,7 +61,7 @@
             scope="col"
             title={word}
             class:highlight-col={checkHighlightedCol(word)}
-            class:punctuation={word === "." || word === ","}
+            class:punctuation={isPunctuation(word)}
           >
             <code>{word}</code>
           </th>
@@ -82,7 +83,7 @@
             title={rowWord}
             class:highlight-row={highlightedRow === rowWord ||
               numericRows.has(rowWord)}
-            class:punctuation={rowWord === "." || rowWord === ","}
+            class:punctuation={isPunctuation(rowWord)}
           >
             {#if showRowIndicator && highlightedRow === rowWord}
               <span class="row-indicator">▸</span>

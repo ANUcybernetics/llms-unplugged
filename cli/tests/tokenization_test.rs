@@ -1,4 +1,4 @@
-use llms_unplugged::NGramCounter;
+use llms_unplugged::{NGramCounter, default_punctuation};
 use std::fs::File;
 use std::io::{self, Write};
 use tempfile::NamedTempFile;
@@ -34,7 +34,7 @@ fn normalises_case_and_strips_quotes() -> io::Result<()> {
         file.flush()?;
     }
 
-    let mut counter = NGramCounter::new(2, vec![',', '.']);
+    let mut counter = NGramCounter::new(2, default_punctuation());
     counter.process_file(&path)?;
     let tokens = collect_tokens(&counter);
 
@@ -67,7 +67,7 @@ fn keeps_allowlisted_pronouns_cased() -> io::Result<()> {
         file.flush()?;
     }
 
-    let mut counter = NGramCounter::new(2, vec![',', '.']);
+    let mut counter = NGramCounter::new(2, default_punctuation());
     counter.process_file(&path)?;
     let tokens = collect_tokens(&counter);
 
@@ -101,7 +101,7 @@ fn filters_numbers_and_roman_numerals() -> io::Result<()> {
         file.flush()?;
     }
 
-    let mut counter = NGramCounter::new(2, vec![',', '.']);
+    let mut counter = NGramCounter::new(2, default_punctuation());
     counter.process_file(&path)?;
     let tokens = collect_tokens(&counter);
 
@@ -136,7 +136,7 @@ fn preserves_contractions_and_possessives() -> io::Result<()> {
         file.flush()?;
     }
 
-    let mut counter = NGramCounter::new(2, vec![',', '.']);
+    let mut counter = NGramCounter::new(2, default_punctuation());
     counter.process_file(&path)?;
     let tokens = collect_tokens(&counter);
 
@@ -154,22 +154,59 @@ fn preserves_contractions_and_possessives() -> io::Result<()> {
     Ok(())
 }
 
+fn write_punctuation_corpus(path: &std::path::Path) -> io::Result<()> {
+    let mut file = File::create(path)?;
+    writeln!(file, "---")?;
+    writeln!(file, "title: Test Punctuation")?;
+    writeln!(file, "author: Test")?;
+    writeln!(file, "url: https://example.com")?;
+    writeln!(file, "---")?;
+    writeln!(
+        file,
+        "Hello, world. How are you? Great! Now: this; then: that."
+    )?;
+    // Paired punctuation (quotes, brackets, em-dashes) should be stripped, not
+    // emitted as tokens.
+    writeln!(file, "\"Quoted text\" (parenthetical)---an aside.")?;
+    file.flush()?;
+    Ok(())
+}
+
+#[test]
+fn default_punctuation_keeps_all_single_marks() -> io::Result<()> {
+    let temp_file = NamedTempFile::new()?;
+    let path = temp_file.path().to_owned();
+    write_punctuation_corpus(&path)?;
+
+    let mut counter = NGramCounter::new(2, default_punctuation());
+    counter.process_file(&path)?;
+    let tokens = collect_tokens(&counter);
+
+    for punct in [".", ",", "!", "?", ";", ":"] {
+        assert!(
+            tokens.contains(&punct.to_string()),
+            "Expected `{punct}` to be kept by default"
+        );
+    }
+
+    // Paired punctuation should never appear as tokens.
+    for paired in ["\"", "(", ")", "-", "[", "]"] {
+        assert!(
+            !tokens.contains(&paired.to_string()),
+            "Did not expect `{paired}` as a token"
+        );
+    }
+
+    Ok(())
+}
+
 #[test]
 fn only_configured_punctuation_is_kept() -> io::Result<()> {
     let temp_file = NamedTempFile::new()?;
     let path = temp_file.path().to_owned();
+    write_punctuation_corpus(&path)?;
 
-    {
-        let mut file = File::create(&path)?;
-        writeln!(file, "---")?;
-        writeln!(file, "title: Test Punctuation")?;
-        writeln!(file, "author: Test")?;
-        writeln!(file, "url: https://example.com")?;
-        writeln!(file, "---")?;
-        writeln!(file, "Hello, world. How are you? Great!")?;
-        file.flush()?;
-    }
-
+    // Override the default with a narrow set: only `.` and `,`.
     let mut counter = NGramCounter::new(2, vec![',', '.']);
     counter.process_file(&path)?;
     let tokens = collect_tokens(&counter);
@@ -178,6 +215,8 @@ fn only_configured_punctuation_is_kept() -> io::Result<()> {
     assert!(tokens.contains(&".".to_string()));
     assert!(!tokens.contains(&"?".to_string()));
     assert!(!tokens.contains(&"!".to_string()));
+    assert!(!tokens.contains(&";".to_string()));
+    assert!(!tokens.contains(&":".to_string()));
 
     Ok(())
 }

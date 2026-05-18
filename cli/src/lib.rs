@@ -11,7 +11,9 @@ mod text;
 mod wasm;
 
 pub use text::RawToken;
-pub use text::{CanonicalFormTracker, Normalizer, NormalizerConfig};
+pub use text::{
+    CanonicalFormTracker, DEFAULT_PUNCTUATION, Normalizer, NormalizerConfig, default_punctuation,
+};
 
 #[cfg(feature = "wasm")]
 pub use wasm::*;
@@ -343,8 +345,7 @@ pub fn process_file<P: AsRef<Path>>(
     path: P,
     n: usize,
 ) -> io::Result<(Vec<WordFollowEntry>, ProcessingStats, Option<Metadata>)> {
-    let punctuation = vec![',', '.'];
-    let mut counter = NGramCounter::new(n, punctuation);
+    let mut counter = NGramCounter::new(n, default_punctuation());
     counter.process_file(path)?;
 
     let entries = counter.get_entries();
@@ -997,7 +998,7 @@ mod tests {
     #[test]
     fn test_next_word_sort_order() {
         // Test the sorting of next-words by count (largest to smallest)
-        let mut counter = NGramCounter::new(2, vec![',', '.']);
+        let mut counter = NGramCounter::new(2, default_punctuation());
         counter.process_line("the cat sat on the mat and the cat ate");
 
         // Get entries and check sorting
@@ -1013,7 +1014,7 @@ mod tests {
         assert_eq!(the_entry.next_words[1].1, 1);
 
         // Test equal counts with alphabetical tiebreaker
-        let mut counter2 = NGramCounter::new(2, vec![',', '.']);
+        let mut counter2 = NGramCounter::new(2, default_punctuation());
         counter2.process_line("he no test he yes test");
 
         let entries2 = counter2.get_entries();
@@ -1033,7 +1034,7 @@ mod tests {
         // Test that previous-words contexts are sorted case-insensitively
         // Without case-insensitive sorting, uppercase letters sort before lowercase
         // (e.g., "Z" < "a" in ASCII), which would put "Zebra" before "apple"
-        let mut counter = NGramCounter::new(2, vec![',', '.']);
+        let mut counter = NGramCounter::new(2, default_punctuation());
         // Process text with mixed case previous-words that would sort differently
         // if case-sensitive: ASCII order would be "Apple", "Zebra", "apple", "banana"
         // Case-insensitive order should be: "apple", "Apple", "banana", "Zebra"
@@ -1106,7 +1107,8 @@ mod tests {
                 "---\ntitle: Test Document\nauthor: Test Author\nurl: https://example.com\n---"
             )?;
             // "Hello" appears twice consistently capitalised -> stays "Hello"
-            // "Number123" -> filtered (starts with digit), "!" is not preserved
+            // "Number123" -> trailing digits are dropped, leaving "Number"
+            // "!" is kept as a token under the default punctuation set
             writeln!(
                 file,
                 "Hello world. Hello again world! Number123 will be ignored."
@@ -1117,24 +1119,22 @@ mod tests {
         // Process with n=2 for bigrams
         let (entries, stats, metadata) = process_file(&path, 2)?;
 
-        // Expected tokens: "Hello", "world", ".", "Hello", "again", "world", "will", "be", "ignored", "."
-        // Note: "Number123" is filtered entirely because it starts with a digit after Number is removed
-        // Wait, actually the tokenizer strips digits, so "Number123" becomes "Number" which is valid
-        // Expected tokens: "Hello", "world", ".", "Hello", "again", "world", "Number", "will", "be", "ignored", "."
+        // Expected tokens: "Hello", "world", ".", "Hello", "again", "world", "!", "Number", "will", "be", "ignored", "."
         // Expected unique previous-words contexts (n-1=1):
         // "Hello" -> "world" (1), "again" (1)
-        // "world" -> "." (1), "Number" (1)
+        // "world" -> "." (1), "!" (1)
         // "." -> "Hello" (1)
         // "again" -> "world" (1)
+        // "!" -> "Number" (1)
         // "Number" -> "will" (1)
         // "will" -> "be" (1)
         // "be" -> "ignored" (1)
         // "ignored" -> "." (1)
-        // Total 8 unique previous-words contexts
+        // Total 9 unique previous-words contexts
         assert_eq!(
             entries.len(),
-            8,
-            "Expected 8 unique bigram previous-words contexts. Got: {:?}",
+            9,
+            "Expected 9 unique bigram previous-words contexts. Got: {:?}",
             entries
         );
 
@@ -1157,7 +1157,7 @@ mod tests {
 
         // Check previous-words ["world"]
         // "world" appears twice: "Hello world." and "again world!"
-        // Since "!" is not preserved, second "world" is followed by "Number"
+        // With "!" preserved as punctuation, the second "world" is followed by "!"
         let world_entry = entries
             .iter()
             .find(|e| e.previous_words == vec!["world".to_string()])
@@ -1175,13 +1175,12 @@ mod tests {
                 .any(|(word, count)| word == "." && *count == 1),
             "Expected 'world' to be followed by '.'"
         );
-        // "Number" appears consistently capitalised, so stays "Number"
         assert!(
             world_entry
                 .next_words
                 .iter()
-                .any(|(word, count)| word == "Number" && *count == 1),
-            "Expected 'world' to be followed by 'Number'"
+                .any(|(word, count)| word == "!" && *count == 1),
+            "Expected 'world' to be followed by '!'"
         );
 
         assert!(
@@ -1198,16 +1197,16 @@ mod tests {
 
         // Check stats
         assert_eq!(
-            stats.total_tokens, 11,
-            "Expected 11 tokens: Hello, world, ., Hello, again, world, Number, will, be, ignored, ."
+            stats.total_tokens, 12,
+            "Expected 12 tokens: Hello, world, ., Hello, again, world, !, Number, will, be, ignored, ."
         );
         assert_eq!(
-            stats.unique_ngrams, 8,
-            "Expected 8 unique previous-words contexts: Hello, world, ., again, Number, will, be, ignored"
+            stats.unique_ngrams, 9,
+            "Expected 9 unique previous-words contexts: Hello, world, ., again, !, Number, will, be, ignored"
         );
         assert_eq!(
-            stats.total_ngram_occurrences, 10,
-            "Expected 10 total bigram occurrences"
+            stats.total_ngram_occurrences, 11,
+            "Expected 11 total bigram occurrences"
         );
 
         // Check metadata
@@ -1867,7 +1866,7 @@ mod tests {
             file.flush()?;
         }
 
-        let (tokens, metadata) = process_file_for_cutouts(&path, vec![',', '.'], 2)?;
+        let (tokens, metadata) = process_file_for_cutouts(&path, default_punctuation(), 2)?;
 
         assert_eq!(metadata.title, "Test Cutouts");
         assert_eq!(tokens.len(), 4);
@@ -1907,7 +1906,7 @@ mod tests {
             file.flush()?;
         }
 
-        let (tokens, _metadata) = process_file_for_cutouts(&path, vec![',', '.'], 3)?;
+        let (tokens, _metadata) = process_file_for_cutouts(&path, default_punctuation(), 3)?;
 
         assert_eq!(tokens.len(), 5);
 
@@ -1949,7 +1948,7 @@ mod tests {
             file.flush()?;
         }
 
-        let (tokens, _metadata) = process_file_for_cutouts(&path, vec![',', '.'], 4)?;
+        let (tokens, _metadata) = process_file_for_cutouts(&path, default_punctuation(), 4)?;
 
         assert_eq!(tokens.len(), 6);
 
@@ -1990,7 +1989,7 @@ mod tests {
             file.flush()?;
         }
 
-        let (tokens, _metadata) = process_file_for_cutouts(&path, vec![',', '.'], 2)?;
+        let (tokens, _metadata) = process_file_for_cutouts(&path, default_punctuation(), 2)?;
 
         // Tokens: chapter (keep), IV (discard), begins (keep), here (keep)
         assert_eq!(tokens.len(), 4);
@@ -2034,7 +2033,7 @@ mod tests {
             file.flush()?;
         }
 
-        let (tokens, _metadata) = process_file_for_cutouts(&path, vec![',', '.'], 2)?;
+        let (tokens, _metadata) = process_file_for_cutouts(&path, default_punctuation(), 2)?;
 
         // Tokens: hello, comma, world, period, yes
         assert_eq!(tokens.len(), 5);
@@ -2210,7 +2209,7 @@ mod tests {
 
         // process_file_for_cutouts returns default entropy (set by caller)
         let (_tokens, mut cutouts_meta) =
-            process_file_for_cutouts(&path, vec![',', '.'], 2)?;
+            process_file_for_cutouts(&path, default_punctuation(), 2)?;
 
         // Simulate what run_cutouts_command does: get stats from process_file
         let (_entries, stats, _meta) = process_file(&path, 2)?;
@@ -2384,7 +2383,7 @@ mod tests {
     fn test_sample_prompt_normalised_through_counter() -> io::Result<()> {
         // Mixed case in corpus: lowercase "the" appears more often, so it's the canonical form.
         let f = write_corpus("the cat sat. The cat sat. the dog ran.")?;
-        let mut counter = NGramCounter::new(2, vec![',', '.']);
+        let mut counter = NGramCounter::new(2, default_punctuation());
         counter.process_file(f.path())?;
         let entries = counter.get_entries();
 
