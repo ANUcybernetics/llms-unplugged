@@ -77,7 +77,7 @@ jobs:
           lfs: true
 
       - name: Download all binary artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: artifacts
 
@@ -126,7 +126,7 @@ jobs:
           zip -r llms_unplugged-${{ github.ref_name }}.zip llms_unplugged/
 
       - name: Create Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: |
             release/llms_unplugged-${{ github.ref_name }}.tar.gz

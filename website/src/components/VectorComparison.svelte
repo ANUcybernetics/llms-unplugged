@@ -30,11 +30,7 @@
       <tr>
         <th scope="col"></th>
         {#each vocabulary as word}
-          <th
-            scope="col"
-            title={word}
-            class:punctuation={isPunctuation(word)}
-          >
+          <th scope="col" title={word} class:punctuation={isPunctuation(word)}>
             <code>{word}</code>
           </th>
         {/each}

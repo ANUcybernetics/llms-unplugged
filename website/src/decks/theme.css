@@ -88,6 +88,8 @@
 
 .reveal .cutout-next-word {
   font-weight: 400;
+  color: var(--token-fg);
+  margin: 0 0.1em;
 }
 
 .reveal .cutout-previous-word {
@@ -103,11 +105,6 @@
   padding: 0.3em 0.4em;
   margin: 0 0.05em;
   border-radius: 4px;
-}
-
-.reveal .cutout-next-word {
-  color: var(--token-fg);
-  margin: 0 0.1em;
 }
 
 /* Tool-trigger word (VOTE, ACTION) — matches the printed cutouts'
@@ -190,8 +187,7 @@
 }
 
 .reveal .cutout-paper[data-auto-animate-unmatched="new"] {
-  animation: cutout-paper-materialize 0.5s ease 0.4s 1 normal forwards
-    !important;
+  animation: cutout-paper-materialize 0.5s ease 0.4s 1 normal forwards !important;
 }
 
 @keyframes cutout-paper-materialize {
