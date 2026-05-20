@@ -39,16 +39,18 @@
 // each colour is also readable as text on a white page. Words are
 // hash-assigned to a palette index so that the same word always takes the same
 // colour, whether it appears in a previous-word box or as a free-standing
-// next word.
+// next word. Specified in OKLCH at a fixed lightness (~48%) so every colour
+// has the same white-text contrast; hues are spaced ~45° apart with chroma
+// dialled to each hue's sRGB gamut limit.
 #let palette = (
-  rgb("#9c1f1f"), // crimson
-  rgb("#2c5d8a"), // steel blue
-  rgb("#1f6b3a"), // forest green
-  rgb("#3f2a87"), // indigo
-  rgb("#a85317"), // burnt orange
-  rgb("#216e6e"), // teal
-  rgb("#7a2456"), // maroon
-  rgb("#6b6118"), // olive
+  oklch(48%, 0.19, 25deg), // red
+  oklch(48%, 0.14, 65deg), // burnt orange
+  oklch(48%, 0.11, 105deg), // dark olive
+  oklch(48%, 0.15, 150deg), // green
+  oklch(48%, 0.10, 200deg), // teal
+  oklch(48%, 0.15, 245deg), // blue
+  oklch(48%, 0.19, 295deg), // purple
+  oklch(48%, 0.19, 340deg), // magenta
 )
 
 #let colour-for(t) = {
