@@ -25,10 +25,10 @@ importers:
         version: 6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)
       astro-theme-anu:
         specifier: git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#main&path:/packages/astro-theme-anu
-        version: git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#93b470a8c16570fab7fec2d93e8c487c64f00e6b&path:/packages/astro-theme-anu(@iconify-json/iconoir@1.2.11)(@types/node@25.6.0)(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4))(astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/b43d7f23c1bf429bb967b855225c20ae088cd7d3(@astrojs/mdx@5.0.6(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)))(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)))(lightningcss@1.32.0)(svelte@5.55.7(@typescript-eslint/types@8.59.1))(tsx@4.22.1)(typescript@6.0.3)
+        version: git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#93b470a8c16570fab7fec2d93e8c487c64f00e6b&path:/packages/astro-theme-anu(@iconify-json/iconoir@1.2.11)(@types/node@25.6.0)(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4))(astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/31c35e165b7783b65faa933dde243013bdb16c1b(@astrojs/mdx@5.0.6(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)))(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)))(lightningcss@1.32.0)(svelte@5.55.7(@typescript-eslint/types@8.59.1))(tsx@4.22.1)(typescript@6.0.3)
       astromotion:
         specifier: github:benswift/astromotion
-        version: https://codeload.github.com/benswift/astromotion/tar.gz/b43d7f23c1bf429bb967b855225c20ae088cd7d3(@astrojs/mdx@5.0.6(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)))(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4))
+        version: https://codeload.github.com/benswift/astromotion/tar.gz/31c35e165b7783b65faa933dde243013bdb16c1b(@astrojs/mdx@5.0.6(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)))(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4))
       js-yaml:
         specifier: ^4.1.1
         version: 4.1.1
@@ -1443,32 +1443,60 @@ packages:
     resolution: {integrity: sha512-hxT0YF4ExEqB8G/qFdtJvpmHXBYJ2lWW7qTHDarVkIudPFE6iCIrqdgWxGn5s+ppkGXI0aEGlibI0PAyzP3zlw==}
     engines: {node: '>=20'}
 
+  '@shikijs/core@4.1.0':
+    resolution: {integrity: sha512-jLJtSJeuFffqX6/inRE1zqU5aFv2hrszvYgq3OjbAgFRZiWv7abKMDdQzYxuSDfmUPQozZvI/kuy6VMTvnvqTQ==}
+    engines: {node: '>=20'}
+
   '@shikijs/engine-javascript@4.0.2':
     resolution: {integrity: sha512-7PW0Nm49DcoUIQEXlJhNNBHyoGMjalRETTCcjMqEaMoJRLljy1Bi/EGV3/qLBgLKQejdspiiYuHGQW6dX94Nag==}
+    engines: {node: '>=20'}
+
+  '@shikijs/engine-javascript@4.1.0':
+    resolution: {integrity: sha512-YquhawCUgaBfhsS72e2Y/dI59gCBNPHu3fEO/tvLaXrTssxZrY5ddjtNLTwndrMgPo8b3IscE+xoICDzpTmlFQ==}
     engines: {node: '>=20'}
 
   '@shikijs/engine-oniguruma@4.0.2':
     resolution: {integrity: sha512-UpCB9Y2sUKlS9z8juFSKz7ZtysmeXCgnRF0dlhXBkmQnek7lAToPte8DkxmEYGNTMii72zU/lyXiCB6StuZeJg==}
     engines: {node: '>=20'}
 
+  '@shikijs/engine-oniguruma@4.1.0':
+    resolution: {integrity: sha512-axLpjVs45YBvvINa+dJF+NPW+KtFkNXsFr4SDw2BMj9GdeMnGxVB9PQb2xXlJYovslt/nz6giedAyOANkfc7hg==}
+    engines: {node: '>=20'}
+
   '@shikijs/langs@4.0.2':
     resolution: {integrity: sha512-KaXby5dvoeuZzN0rYQiPMjFoUrz4hgwIE+D6Du9owcHcl6/g16/yT5BQxSW5cGt2MZBz6Hl0YuRqf12omRfUUg==}
+    engines: {node: '>=20'}
+
+  '@shikijs/langs@4.1.0':
+    resolution: {integrity: sha512-nwOMruEkbgdZfQ/b8CgpNBVOpvG1k0N5tbmgiFeqsan401+x3ILqlzZJowSla4Agmq4hG2Uf2wh5jLTEhR8VSg==}
     engines: {node: '>=20'}
 
   '@shikijs/primitive@4.0.2':
     resolution: {integrity: sha512-M6UMPrSa3fN5ayeJwFVl9qWofl273wtK1VG8ySDZ1mQBfhCpdd8nEx7nPZ/tk7k+TYcpqBZzj/AnwxT9lO+HJw==}
     engines: {node: '>=20'}
 
-  '@shikijs/rehype@4.0.2':
-    resolution: {integrity: sha512-cmPlKLD8JeojasNFoY64162ScpEdEdQUMuVodPCrv1nx1z3bjmGwoKWDruQWa/ejSznImlaeB0Ty6Q3zPaVQAA==}
+  '@shikijs/primitive@4.1.0':
+    resolution: {integrity: sha512-zx2/2Uwj2q9X3KSyYREEhXO23xBw5WUhP4orK2lE4r+t9JGITmEe0JH+wPmJhqHpOT2bRRs6lAL945+LDvOAGw==}
+    engines: {node: '>=20'}
+
+  '@shikijs/rehype@4.1.0':
+    resolution: {integrity: sha512-HQwltCcO2/UiFz44/8whyji4rP1VghLu++MgvQn+lQA8/gvuycGkay8DH8o8VAOvLBDKGOkBEw7cC1Cm33GObQ==}
     engines: {node: '>=20'}
 
   '@shikijs/themes@4.0.2':
     resolution: {integrity: sha512-mjCafwt8lJJaVSsQvNVrJumbnnj1RI8jbUKrPKgE6E3OvQKxnuRoBaYC51H4IGHePsGN/QtALglWBU7DoKDFnA==}
     engines: {node: '>=20'}
 
+  '@shikijs/themes@4.1.0':
+    resolution: {integrity: sha512-emCcTnUM7yO2wltYbaxm+yLvcCI4+h8XBKc4KmJ7EZUXoSGjcCHifkI//R4OFit9ewpg7H2/9tjOuXrT2v/Knw==}
+    engines: {node: '>=20'}
+
   '@shikijs/types@4.0.2':
     resolution: {integrity: sha512-qzbeRooUTPnLE+sHD/Z8DStmaDgnbbc/pMrU203950aRqjX/6AFHeDYT+j00y2lPdz0ywJKx7o/7qnqTivtlXg==}
+    engines: {node: '>=20'}
+
+  '@shikijs/types@4.1.0':
+    resolution: {integrity: sha512-3EQWX54fMpniOrDblzAhiwiJwpiTMW6+B9DWyUd9ska483tbayFYuw47UxwuPknI31bKnySfVQ/QW+jFL4rFdA==}
     engines: {node: '>=20'}
 
   '@shikijs/vscode-textmate@10.0.2':
@@ -1814,9 +1842,10 @@ packages:
     engines: {node: '>=22.12.0', npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
-  astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/b43d7f23c1bf429bb967b855225c20ae088cd7d3:
-    resolution: {tarball: https://codeload.github.com/benswift/astromotion/tar.gz/b43d7f23c1bf429bb967b855225c20ae088cd7d3}
-    version: 0.3.1
+  astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/31c35e165b7783b65faa933dde243013bdb16c1b:
+    resolution: {tarball: https://codeload.github.com/benswift/astromotion/tar.gz/31c35e165b7783b65faa933dde243013bdb16c1b}
+    version: 0.4.0
+    engines: {node: '>=24'}
     peerDependencies:
       '@astrojs/mdx': ^5.0.0
       astro: ^6.0.0
@@ -3553,6 +3582,10 @@ packages:
     resolution: {integrity: sha512-eAVKTMedR5ckPo4xne/PjYQYrU3qx78gtJZ+sHlXEg5IHhhoQhMfZVzetTYuaJS0L2Ef3AcCRzCHV8T0WI6nIQ==}
     engines: {node: '>=20'}
 
+  shiki@4.1.0:
+    resolution: {integrity: sha512-l/ABZPUR5v70jI10EzqfMS/I96vjSGv2y0ihUV+WYFzv0EfvW4s54m0Lg8wCrrL+2IkwBzFTuxkZjPf8b2NX9Q==}
+    engines: {node: '>=20'}
+
   siginfo@2.0.0:
     resolution: {integrity: sha512-ybx0WO1/8bSBLEWXZvEd7gMW3Sn3JFlW3TvX1nREbDLRNQNaeNN8WK0meBwPdAaOI7TtRRRJn/Es1zhrrCHu7g==}
 
@@ -4224,6 +4257,11 @@ packages:
     engines: {node: '>= 14.6'}
     hasBin: true
 
+  yaml@2.9.0:
+    resolution: {integrity: sha512-2AvhNX3mb8zd6Zy7INTtSpl1F15HW6Wnqj0srWlkKLcpYl/gMIMJiyuGq2KeI2YFxUPjdlB+3Lc10seMLtL4cA==}
+    engines: {node: '>= 14.6'}
+    hasBin: true
+
   yargs-parser@21.1.1:
     resolution: {integrity: sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==}
     engines: {node: '>=12'}
@@ -4502,7 +4540,7 @@ snapshots:
 
   '@astrojs/yaml2ts@0.2.3':
     dependencies:
-      yaml: 2.8.4
+      yaml: 2.9.0
 
   '@babel/code-frame@7.29.0':
     dependencies:
@@ -5300,9 +5338,23 @@ snapshots:
       '@types/hast': 3.0.4
       hast-util-to-html: 9.0.5
 
+  '@shikijs/core@4.1.0':
+    dependencies:
+      '@shikijs/primitive': 4.1.0
+      '@shikijs/types': 4.1.0
+      '@shikijs/vscode-textmate': 10.0.2
+      '@types/hast': 3.0.4
+      hast-util-to-html: 9.0.5
+
   '@shikijs/engine-javascript@4.0.2':
     dependencies:
       '@shikijs/types': 4.0.2
+      '@shikijs/vscode-textmate': 10.0.2
+      oniguruma-to-es: 4.3.6
+
+  '@shikijs/engine-javascript@4.1.0':
+    dependencies:
+      '@shikijs/types': 4.1.0
       '@shikijs/vscode-textmate': 10.0.2
       oniguruma-to-es: 4.3.6
 
@@ -5311,9 +5363,18 @@ snapshots:
       '@shikijs/types': 4.0.2
       '@shikijs/vscode-textmate': 10.0.2
 
+  '@shikijs/engine-oniguruma@4.1.0':
+    dependencies:
+      '@shikijs/types': 4.1.0
+      '@shikijs/vscode-textmate': 10.0.2
+
   '@shikijs/langs@4.0.2':
     dependencies:
       '@shikijs/types': 4.0.2
+
+  '@shikijs/langs@4.1.0':
+    dependencies:
+      '@shikijs/types': 4.1.0
 
   '@shikijs/primitive@4.0.2':
     dependencies:
@@ -5321,12 +5382,18 @@ snapshots:
       '@shikijs/vscode-textmate': 10.0.2
       '@types/hast': 3.0.4
 
-  '@shikijs/rehype@4.0.2':
+  '@shikijs/primitive@4.1.0':
     dependencies:
-      '@shikijs/types': 4.0.2
+      '@shikijs/types': 4.1.0
+      '@shikijs/vscode-textmate': 10.0.2
+      '@types/hast': 3.0.4
+
+  '@shikijs/rehype@4.1.0':
+    dependencies:
+      '@shikijs/types': 4.1.0
       '@types/hast': 3.0.4
       hast-util-to-string: 3.0.1
-      shiki: 4.0.2
+      shiki: 4.1.0
       unified: 11.0.5
       unist-util-visit: 5.1.0
 
@@ -5334,7 +5401,16 @@ snapshots:
     dependencies:
       '@shikijs/types': 4.0.2
 
+  '@shikijs/themes@4.1.0':
+    dependencies:
+      '@shikijs/types': 4.1.0
+
   '@shikijs/types@4.0.2':
+    dependencies:
+      '@shikijs/vscode-textmate': 10.0.2
+      '@types/hast': 3.0.4
+
+  '@shikijs/types@4.1.0':
     dependencies:
       '@shikijs/vscode-textmate': 10.0.2
       '@types/hast': 3.0.4
@@ -5701,7 +5777,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  astro-theme-anu@git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#93b470a8c16570fab7fec2d93e8c487c64f00e6b&path:/packages/astro-theme-anu(@iconify-json/iconoir@1.2.11)(@types/node@25.6.0)(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4))(astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/b43d7f23c1bf429bb967b855225c20ae088cd7d3(@astrojs/mdx@5.0.6(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)))(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)))(lightningcss@1.32.0)(svelte@5.55.7(@typescript-eslint/types@8.59.1))(tsx@4.22.1)(typescript@6.0.3):
+  astro-theme-anu@git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#93b470a8c16570fab7fec2d93e8c487c64f00e6b&path:/packages/astro-theme-anu(@iconify-json/iconoir@1.2.11)(@types/node@25.6.0)(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4))(astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/31c35e165b7783b65faa933dde243013bdb16c1b(@astrojs/mdx@5.0.6(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)))(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)))(lightningcss@1.32.0)(svelte@5.55.7(@typescript-eslint/types@8.59.1))(tsx@4.22.1)(typescript@6.0.3):
     dependencies:
       '@astro-community/astro-embed-youtube': 0.5.10
       '@astrojs/mdx': 5.0.4(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4))
@@ -5725,7 +5801,7 @@ snapshots:
       unist-util-visit: 5.1.0
       yaml: 2.8.4
     optionalDependencies:
-      astromotion: https://codeload.github.com/benswift/astromotion/tar.gz/b43d7f23c1bf429bb967b855225c20ae088cd7d3(@astrojs/mdx@5.0.6(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)))(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4))
+      astromotion: https://codeload.github.com/benswift/astromotion/tar.gz/31c35e165b7783b65faa933dde243013bdb16c1b(@astrojs/mdx@5.0.6(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)))(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4))
     transitivePeerDependencies:
       - '@noble/hashes'
       - '@types/node'
@@ -5834,11 +5910,11 @@ snapshots:
       - uploadthing
       - yaml
 
-  astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/b43d7f23c1bf429bb967b855225c20ae088cd7d3(@astrojs/mdx@5.0.6(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)))(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)):
+  astromotion@https://codeload.github.com/benswift/astromotion/tar.gz/31c35e165b7783b65faa933dde243013bdb16c1b(@astrojs/mdx@5.0.6(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)))(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)):
     dependencies:
       '@astrojs/mdx': 5.0.6(astro@6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4))
       '@qrgrid/core': 0.2.4
-      '@shikijs/rehype': 4.0.2
+      '@shikijs/rehype': 4.1.0
       astro: 6.3.3(@types/node@25.6.0)(lightningcss@1.32.0)(rollup@4.60.2)(tsx@4.22.1)(yaml@2.8.4)
       rehype-stringify: 10.0.1
       remark-frontmatter: 5.0.0
@@ -5849,7 +5925,7 @@ snapshots:
       remark-smartypants: 3.0.2
       reveal.js: 6.0.1
       unified: 11.0.5
-      yaml: 2.8.4
+      yaml: 2.9.0
     transitivePeerDependencies:
       - supports-color
 
@@ -8162,6 +8238,17 @@ snapshots:
       '@shikijs/vscode-textmate': 10.0.2
       '@types/hast': 3.0.4
 
+  shiki@4.1.0:
+    dependencies:
+      '@shikijs/core': 4.1.0
+      '@shikijs/engine-javascript': 4.1.0
+      '@shikijs/engine-oniguruma': 4.1.0
+      '@shikijs/langs': 4.1.0
+      '@shikijs/themes': 4.1.0
+      '@shikijs/types': 4.1.0
+      '@shikijs/vscode-textmate': 10.0.2
+      '@types/hast': 3.0.4
+
   siginfo@2.0.0: {}
 
   signal-exit@4.1.0: {}
@@ -8796,6 +8883,8 @@ snapshots:
   yaml@2.7.1: {}
 
   yaml@2.8.4: {}
+
+  yaml@2.9.0: {}
 
   yargs-parser@21.1.1: {}
 
