@@ -3,7 +3,7 @@ title: Generating the cutout palette
 date: 2026-05-24
 author: Ben Swift
 published: false
-description: The cutout palette is now algorithmically generated, with 26 perceptually
+description: The cutout palette is now algorithmically generated, with 22 perceptually
   distinct colours instead of 14 hand-picked ones.
 ---
 
@@ -33,7 +33,7 @@ colour already chosen. Black and mid-grey are seeded as anchors so the
 algorithm can't accidentally allocate "chromatic" colours that drift into
 greyscale.
 
-The result is 26 swatches with a minimum pairwise OKLab ΔE of 0.143. That
+The result is 22 swatches with a minimum pairwise OKLab ΔE of 0.152. That
 sits comfortably above the 0.10 "clearly distinct" floor, with headroom for
 the perceptual loss you get from CMYK conversion, paper colour, and ambient
 lighting. Print eats some of your distinguishability budget.
