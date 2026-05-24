@@ -3,7 +3,7 @@ title: Generating the cutout palette
 date: 2026-05-24
 author: Ben Swift
 published: false
-description: The cutout palette is now algorithmically generated, with 22 perceptually
+description: The cutout palette is now algorithmically generated, with 30 perceptually
   distinct colours instead of 14 hand-picked ones.
 ---
 
@@ -33,22 +33,22 @@ colour already chosen. Black and mid-grey are seeded as anchors so the
 algorithm can't accidentally allocate "chromatic" colours that drift into
 greyscale.
 
-The result is 22 swatches with a minimum pairwise OKLab ΔE of 0.152. That
+The result is 30 swatches with a minimum pairwise OKLab ΔE of 0.145. That
 sits comfortably above the 0.10 "clearly distinct" floor, with headroom for
 the perceptual loss you get from CMYK conversion, paper colour, and ambient
 lighting. Print eats some of your distinguishability budget.
 
-Two trade-offs I accepted deliberately.
+Each palette entry is tagged as "light" or "dark" based on its OKLab L. The
+Typst renderer pairs light entries with black text on the coloured box and a
+thin black stroke on the free-standing word; dark entries get white text and
+no stroke. That adaptive treatment is what lets the palette extend up to
+L≈0.92, where the very light pastels live. Without it, every fill would
+have to be dark enough for white text to read on, capping the usable
+lightness range and so the achievable colour count.
 
-First, white text on the light end of the palette now has worse contrast
-than before. Cutouts with light fills are still readable, but if you printed
-them in poor light you might squint at white-on-pale-cyan boxes. The
-faster-scan win outweighs this, because you're identifying by colour first
-and only reading the word to confirm.
-
-Second, the palette isn't colour-vision-deficiency safe. CVD-safe palettes
-max out around 8-12 distinct colours, which would undo the whole exercise.
-If you're working with a CVD-affected student, the
+The palette isn't colour-vision-deficiency safe. CVD-safe palettes max out
+around 8-12 distinct colours, which would undo the whole exercise. If
+you're working with a CVD-affected student, the
 [grid version](/lessons/training) of the lesson uses no colour at all and
 reaches the same understanding.
 

@@ -15,13 +15,23 @@
  * perceptually uniform, so plain Euclidean is the recommended metric (no
  * CIEDE2000 corrections needed).
  *
- * Output: Typst-formatted `#let palette = (...)` block on stdout, ready to
- * paste into cli/tokenized-cutouts.typ. Per-step ΔE history on stderr.
+ * Output: each palette entry is a `(color: ..., light: <bool>)` tuple. The
+ * `light` flag is set for OKLab L > LIGHT_THRESHOLD (0.65), meaning the
+ * Typst renderer should pair the colour with black text/stroke rather than
+ * white text and no stroke. Wider L bounds are achievable because the
+ * renderer adapts; the default bounds are [0.20, 0.92].
  *
  * Run (requires Node 22.7+ for native .ts support; Node 24+ default-on):
  *   node cli/scripts/generate_palette.ts
- *   node cli/scripts/generate_palette.ts --n 30 --l-min 0.30 --l-max 0.85
+ *   node cli/scripts/generate_palette.ts --n 30 --l-min 0.20 --l-max 0.92
  */
+
+// OKLab L threshold above which a colour is "light" — Typst pairs these
+// with black text on the box and a thin black stroke on the free-standing
+// word. Below the threshold, the colour reads cleanly with white text on
+// the box and no stroke for the free-standing word. 0.65 is a rough
+// WCAG-3:1 crossover for black-on-light vs white-on-dark.
+const LIGHT_THRESHOLD = 0.65;
 
 import { parseArgs } from "node:util";
 
@@ -171,9 +181,9 @@ function greedyMaxMin(
 
 const { values } = parseArgs({
   options: {
-    n: { type: "string", default: "24" },
-    "l-min": { type: "string", default: "0.30" },
-    "l-max": { type: "string", default: "0.85" },
+    n: { type: "string", default: "28" },
+    "l-min": { type: "string", default: "0.20" },
+    "l-max": { type: "string", default: "0.92" },
     "c-min": { type: "string", default: "0.05" },
     candidates: { type: "string", default: "200000" },
     seed: { type: "string", default: "42" },
@@ -247,6 +257,15 @@ process.stdout.write(
 process.stdout.write(
   `// ΔE. N=${n} chromatic colours, min pairwise ΔE = ${minDelta.toFixed(3)}.\n`,
 );
+process.stdout.write(
+  `// Each entry is (color, light) — light: true means OKLab L > ${LIGHT_THRESHOLD}\n`,
+);
+process.stdout.write(
+  "// and the Typst renderer should use black text on the box and a thin\n",
+);
+process.stdout.write(
+  "// black stroke on the free-standing word (vs white text / no stroke).\n",
+);
 if (!noNeutrals) {
   process.stdout.write(
     "// Black + mid-grey neutrals seed the search so chromatic colours\n",
@@ -258,15 +277,16 @@ process.stdout.write(
 );
 process.stdout.write("#let palette = (\n");
 if (!noNeutrals) {
-  process.stdout.write("  // Neutrals\n");
-  process.stdout.write("  luma(0), // black\n");
-  process.stdout.write("  luma(140), // mid grey\n");
+  process.stdout.write("  // Neutrals (always dark enough for white text)\n");
+  process.stdout.write("  (color: luma(0), light: false), // black\n");
+  process.stdout.write("  (color: luma(140), light: false), // mid grey\n");
   process.stdout.write("\n");
   process.stdout.write("  // Chromatic (sorted by hue)\n");
 }
 for (const { L, C, h } of sorted) {
+  const light = L > LIGHT_THRESHOLD;
   process.stdout.write(
-    `  oklch(${(L * 100).toFixed(1)}%, ${C.toFixed(3)}, ${Math.round(h)}deg),\n`,
+    `  (color: oklch(${(L * 100).toFixed(1)}%, ${C.toFixed(3)}, ${Math.round(h)}deg), light: ${light}),\n`,
   );
 }
 process.stdout.write(")\n");
