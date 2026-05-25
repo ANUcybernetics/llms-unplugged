@@ -4,16 +4,16 @@ import PageLayout from "../layouts/PageLayout.astro";
 import Callout from "../components/Callout.astro";
 import CardList from "../components/CardList.astro";
 import GlossaryTerm from "../components/GlossaryTerm.astro";
-import heroEducators from "../assets/images/hero-educators.avif";
+import heroWorkshops from "../assets/images/hero-workshops.avif";
 ---
 
 <PageLayout
-  title="For educators"
-  description="Lesson plans, workshop formats, and guidance for teaching LLMs Unplugged in your classroom or organisation."
+  title="Workshop formats"
+  description="Suggested formats and timings for running LLMs Unplugged workshops, from a 90-minute fundamentals session through to a deeper multi-hour trajectory."
 >
-  <h1>For educators</h1>
+  <h1>Workshop formats</h1>
 
-  <Image src={heroEducators} alt="Hero image: For educators" />
+  <Image src={heroWorkshops} alt="Hero image: Workshop formats" />
 
   <Callout type="info">
     <p>
@@ -25,20 +25,21 @@ import heroEducators from "../assets/images/hero-educators.avif";
 
   <Callout type="tip">
     <p>
-      These lesson plans have been tested with high-school students and up
-      (including tertiary students). They&rsquo;re also suitable across all
-      subject areas (not just Computer Science/Digital Technologies).
+      These formats have been tested with audiences ranging from high-school
+      students through to senior executives in industry and government. They
+      work across contexts&mdash;not just school classrooms or computing
+      courses.
     </p>
     <p>
       We&rsquo;re working on some slightly modified versions which work for
       younger learners as well&mdash;with the right support they can absolutely
-      grasp the concepts involved. We&rsquo;ll update the lesson plans as we
+      grasp the concepts involved. We&rsquo;ll update the formats as we
       road-test them. If you&rsquo;ve got ideas or feedback, we&rsquo;d
       <a href="/about#get-in-touch">love to hear them</a>.
     </p>
   </Callout>
 
-  <h2>Lesson plan 1: LLMs Unplugged Fundamentals</h2>
+  <h2>Format 1: Fundamentals</h2>
 
   <ul>
     <li><strong>time</strong>: 90mins</li>
@@ -50,7 +51,7 @@ import heroEducators from "../assets/images/hero-educators.avif";
     Start with a brief introduction to set the scene, then move through training
     a model, generating text from it, and finally exploring what happens when
     you use a larger pre-trained model. Each step builds on the last, giving
-    students a complete picture of how language models work.
+    participants a complete picture of how language models work.
   </p>
 
   <CardList lessons={["training", "generation", "pretrained-generation"]} />
@@ -89,13 +90,13 @@ import heroEducators from "../assets/images/hero-educators.avif";
     <li>
       this outline doesn&rsquo;t include the
       <a href="/lessons/weighted-randomness">Weighted randomness</a> lesson, but if
-      your students aren&rsquo;t so familiar with that stuff then you could add it
+      participants aren&rsquo;t so familiar with that stuff then you could add it
       in before the <a href="/lessons/training">Training</a> lesson (add another 30mins)
     </li>
     <li>
       once you get to the <a href="/lessons/generation">Generation</a> lesson and
-      beyond, get students to do &ldquo;dramatic readings&rdquo; as they share back
-      the text their new language models have generated...
+      beyond, get participants to do &ldquo;dramatic readings&rdquo; as they share
+      back the text their new language models have generated...
     </li>
     <li>
       if you have a bit longer, then adding the
@@ -108,25 +109,26 @@ import heroEducators from "../assets/images/hero-educators.avif";
     </li>
   </ul>
 
-  <h2>Lesson plan 2: going deeper</h2>
+  <h2>Format 2: Going deeper</h2>
 
   <ul>
     <li>
       <strong>time</strong>: 2&ndash;3 hours (or split across sessions)
     </li>
     <li>
-      <strong>for ages</strong>: senior high school or particularly engaged
-      groups
+      <strong>for</strong>: senior high school onwards, or any group ready to
+      tackle more abstract material
     </li>
   </ul>
 
   <p>
-    For students ready to go further, this extended trajectory adds the
-    &ldquo;how models understand&rdquo; topic. After covering the fundamentals,
-    you explore how models can track grammatical context and how words get
-    represented as numerical vectors. This path suits later-year high school
-    students, computing electives, or keen beans who want to understand what
-    &ldquo;<GlossaryTerm id="attention-mechanism">attention</GlossaryTerm
+    For groups ready to go further, this extended trajectory adds the &ldquo;how
+    models understand&rdquo; topic. After covering the fundamentals, you explore
+    how models can track grammatical context and how words get represented as
+    numerical vectors. This path suits later-year high school students,
+    computing electives, professional-development cohorts, or anyone who wants
+    to understand what &ldquo;<GlossaryTerm id="attention-mechanism"
+      >attention</GlossaryTerm
     >&rdquo; and &ldquo;<GlossaryTerm id="embedding">embeddings</GlossaryTerm
     >&rdquo; actually mean.
   </p>
@@ -157,8 +159,8 @@ import heroEducators from "../assets/images/hero-educators.avif";
       <strong><a href="/lessons/word-embeddings">Word embeddings</a></strong>
       turns each word&rsquo;s row in the model into a numerical vector and measures
       similarities between words. Words that behave similarly in the training text
-      end up close together. This is the foundation of how modern LLMs represent meaning&mdash;and
-      students can calculate it by hand.
+      end up close together. This is the foundation of how modern LLMs represent
+      meaning&mdash;and you can calculate it by hand.
     </li>
   </ul>
 
@@ -167,14 +169,13 @@ import heroEducators from "../assets/images/hero-educators.avif";
   <p>
     The fundamentals work for any audience and require only 90 minutes. The
     &ldquo;understanding&rdquo; lessons require more time and comfort with
-    abstraction, but they connect directly to concepts students will encounter
-    in any deeper study of AI: attention mechanisms, embeddings, vector
-    similarity. Running them as a second session (or a follow-up for interested
-    students) keeps the core workshop accessible while offering a clear path
-    forward.
+    abstraction, but they connect directly to concepts anyone will encounter in
+    deeper study of AI: attention mechanisms, embeddings, vector similarity.
+    Running them as a second session (or a follow-up for the interested) keeps
+    the core workshop accessible while offering a clear path forward.
   </p>
 
-  <h2>Lesson plan 3: controlling output</h2>
+  <h2>Format 3: Controlling output</h2>
 
   <ul>
     <li><strong>time</strong>: 30mins (as an add-on)</li>
@@ -182,8 +183,8 @@ import heroEducators from "../assets/images/hero-educators.avif";
   </ul>
 
   <p>
-    Once students can generate text, a natural question is: &ldquo;How do you
-    make it more or less creative?&rdquo; The sampling lesson shows how
+    Once participants can generate text, a natural question is: &ldquo;How do
+    you make it more or less creative?&rdquo; The sampling lesson shows how
     temperature and truncation strategies change the character of output without
     changing the model itself. This is a quick add-on to either the fundamentals
     or the deeper trajectory.
@@ -207,7 +208,7 @@ import heroEducators from "../assets/images/hero-educators.avif";
   </ul>
 
   <p>
-    Students discover that &ldquo;creativity&rdquo; in AI comes from two
+    Participants discover that &ldquo;creativity&rdquo; in AI comes from two
     controls: adjusting probability distributions and filtering which tokens to
     consider. The same model can produce cautious prose or wild poetry just by
     tweaking these parameters.
@@ -216,7 +217,7 @@ import heroEducators from "../assets/images/hero-educators.avif";
   <h2>Adaptation and data</h2>
 
   <p>
-    For classes focused on data science, ethics, or media literacy, the
+    For groups interested in data science, ethics, or media literacy, the
     &ldquo;Adaptation and data&rdquo; topic explores what happens when models
     train on their own output.
   </p>
@@ -235,7 +236,7 @@ import heroEducators from "../assets/images/hero-educators.avif";
   </ul>
 
   <p>
-    This works well as a standalone activity after students have done basic
+    This works well as a standalone activity after participants have done basic
     training and generation, or as part of a broader unit on AI ethics and media
     literacy.
   </p>

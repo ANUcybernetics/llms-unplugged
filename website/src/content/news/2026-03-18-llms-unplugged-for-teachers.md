@@ -5,7 +5,7 @@ author: Ben Swift
 description: A hands-on workshop for ACT educators at the Hedley Beare Centre on 18 March
 ---
 
-_A tech-free guide to understanding and teaching AI._
+_A tech-free guide to understanding (and teaching) AI._
 
 We're running a public _LLMs Unplugged_ workshop for teachers on **Wednesday 18
 March** (4:30--6:00pm) at the

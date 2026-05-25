@@ -14,8 +14,8 @@ in North Sydney.
 
 The session---"LLMs Unplugged: Understand AI by building it yourself"---is the
 usual deal: build a language model with pen, paper and dice, and walk away with a
-concrete mental model of how ChatGPT, Claude and the rest actually work under the
-hood. No laptops required.
+concrete mental model of how ChatGPT, Claude, Gemini and the rest actually work
+under the hood. No laptops required.
 
 [DigiTLL](https://www.ictensw.org.au/event-6112449) is a two-day professional
 learning conference run by

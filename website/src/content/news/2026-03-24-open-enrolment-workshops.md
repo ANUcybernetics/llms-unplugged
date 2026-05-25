@@ -16,7 +16,7 @@ Both sessions are at the
 hosted by the [School of Cybernetics](https://cybernetics.anu.edu.au).
 
 The deal is the same as always: build your own language model with pen, paper and
-dice. No screens, no coding, no maths beyond counting and percentages. You'll
+dice. No screens, no coding, no maths beyond basic counting and percentages. You'll
 walk away with a concrete understanding of how ChatGPT, Claude, Gemini and the
 rest actually work under the hood---the probabilistic nature of LLMs, the
 importance of training data, and how bias and design decisions can show up in the
