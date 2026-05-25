@@ -33,10 +33,20 @@ colour already chosen. Black and mid-grey are seeded as anchors so the
 algorithm can't accidentally allocate "chromatic" colours that drift into
 greyscale.
 
-The result is 30 swatches with a minimum pairwise OKLab ΔE of 0.145. That
+The result is 30 swatches with a minimum pairwise OKLab ΔE of 0.137. That
 sits comfortably above the 0.10 "clearly distinct" floor, with headroom for
 the perceptual loss you get from CMYK conversion, paper colour, and ambient
-lighting. Print eats some of your distinguishability budget.
+lighting. Print eats some of your distinguishability budget, and not always
+in proportion to OKLab distance.
+
+A first pass let candidates roam from L=0.20 upwards and gave a slightly
+tighter min ΔE of 0.145. It also produced a dark blue at L≈0.275 that came
+out of the printer looking like black. CMYK reaches saturated deep blue by
+leaning hard on the K plate, so a small ink-balance shift collapses the
+colour onto pure black; the seeded black anchor protects against collisions
+in OKLab, not in CMYK. Raising the L floor to 0.32 trims four near-black
+candidates, costs about 0.008 of min ΔE, and leaves no chromatic entry
+close enough to merge with K in print.
 
 Each palette entry is tagged as "light" or "dark" based on its OKLab L. The
 Typst renderer pairs light entries with black text on the coloured box and a

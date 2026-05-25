@@ -19,11 +19,14 @@
  * `light` flag is set for OKLab L > LIGHT_THRESHOLD (0.65), meaning the
  * Typst renderer should pair the colour with black text/stroke rather than
  * white text and no stroke. Wider L bounds are achievable because the
- * renderer adapts; the default bounds are [0.20, 0.92].
+ * renderer adapts; the default bounds are [0.32, 0.92]. The floor sits at
+ * 0.32 (not lower) because CMYK print compresses dark chromatic colours
+ * toward black — at L<0.30 a deep blue or purple reads as black on paper
+ * even though OKLab ΔE looks comfortable on screen.
  *
  * Run (requires Node 22.7+ for native .ts support; Node 24+ default-on):
  *   node cli/scripts/generate_palette.ts
- *   node cli/scripts/generate_palette.ts --n 30 --l-min 0.20 --l-max 0.92
+ *   node cli/scripts/generate_palette.ts --n 30 --l-min 0.32 --l-max 0.92
  */
 
 // OKLab L threshold above which a colour is "light" — Typst pairs these
@@ -182,7 +185,7 @@ function greedyMaxMin(
 const { values } = parseArgs({
   options: {
     n: { type: "string", default: "28" },
-    "l-min": { type: "string", default: "0.20" },
+    "l-min": { type: "string", default: "0.32" },
     "l-max": { type: "string", default: "0.92" },
     "c-min": { type: "string", default: "0.05" },
     candidates: { type: "string", default: "200000" },
