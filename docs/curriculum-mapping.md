@@ -1,4 +1,8 @@
-# LLMs Unplugged --- curriculum mapping (draft)
+---
+title: LLMs Unplugged
+subtitle: Curriculum mapping (draft)
+author: Ben Swift
+---
 
 This document maps the LLMs Unplugged lessons to the
 [Australian Curriculum v9.0](https://www.australiancurriculum.edu.au/) so that
