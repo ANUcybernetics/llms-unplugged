@@ -57,6 +57,9 @@
     from a large corpus. Most users of modern LLMs use pre-trained models
     without ever training one themselves, much like using a provided booklet
     rather than building your own grid.
+  related:
+    - post-training
+    - training
   see:
     - label: Pre-trained Model Generation
       href: /lessons/pretrained-generation
@@ -418,6 +421,11 @@
   description: >-
     Additional training on specific text to adapt a model for a particular domain
     or task. Like adding more tallies to your grid from a new text source.
+  related:
+    - supervised-fine-tuning
+    - post-training
+    - lora
+    - base-model
   see:
     - label: LoRA
       href: /lessons/lora
@@ -444,39 +452,6 @@
   see:
     - label: LoRA
       href: /lessons/lora
-
-- id: rlhf
-  term: RLHF (Reinforcement Learning from Human Feedback)
-  category: advanced
-  description: >-
-    A training technique where human preferences guide the model to produce more
-    helpful, harmless, and honest outputs.
-  see:
-    - label: RLHF
-      href: /lessons/rlhf
-
-- id: reward-model
-  term: Reward model
-  category: advanced
-  description: >-
-    A separate model that learns to predict human preferences, then guides the
-    main model during RLHF. Rather than asking humans to rate every output, the
-    reward model rates outputs at scale, trained on a smaller set of human
-    comparisons.
-  see:
-    - label: RLHF
-      href: /lessons/rlhf
-
-- id: alignment
-  term: Alignment
-  category: advanced
-  description: >-
-    The process of shaping a model's outputs to match human values and
-    preferences (typically helpfulness, harmlessness, and honesty). RLHF is one
-    of the main techniques used to align modern LLMs.
-  see:
-    - label: RLHF
-      href: /lessons/rlhf
 
 - id: agentic-tool-use
   term: Agentic tool use
@@ -539,3 +514,204 @@
   see:
     - label: Synthetic Data
       href: /lessons/synthetic-data
+
+- id: post-training
+  term: Post-training
+  category: post-training
+  description: >-
+    Everything done to a model after pre-training to make it more useful.
+    Pre-training teaches the model how language works in general; post-training
+    shapes its behaviour for specific purposes---following instructions,
+    refusing harmful requests, or working carefully through problems.
+    Supervised fine-tuning, RLHF, and RLVR are all post-training techniques.
+  related:
+    - pre-training
+    - supervised-fine-tuning
+    - rlhf
+    - rlvr
+
+- id: supervised-fine-tuning
+  term: Supervised fine-tuning (SFT)
+  category: post-training
+  description: >-
+    Post-training on demonstration data---paired examples of (input, desired
+    output). The model learns to imitate the demonstrations. SFT is the
+    simplest form of post-training and often the first step before
+    reinforcement-learning techniques like RLHF or RLVR are applied.
+  synonyms:
+    - SFT
+  related:
+    - post-training
+    - fine-tuning
+    - rlhf
+    - rlvr
+
+- id: rlhf
+  term: RLHF (Reinforcement Learning from Human Feedback)
+  category: post-training
+  description: >-
+    A post-training technique where humans compare pairs of model outputs and
+    their preferences train a reward model, which then guides the main model.
+    Suits fuzzy objectives like "be helpful" or "sound natural" where no
+    automated checker exists. Sibling of RLVR, which uses an automated checker
+    instead of human preferences.
+  related:
+    - rlvr
+    - reward-model
+    - alignment
+    - post-training
+  see:
+    - label: RLHF
+      href: /lessons/rlhf
+
+- id: reward-model
+  term: Reward model
+  category: post-training
+  description: >-
+    A separate model that learns to predict human preferences, then guides the
+    main model during RLHF. Rather than asking humans to rate every output, the
+    reward model rates outputs at scale, trained on a smaller set of human
+    comparisons.
+  related:
+    - rlhf
+    - alignment
+  see:
+    - label: RLHF
+      href: /lessons/rlhf
+
+- id: alignment
+  term: Alignment
+  category: post-training
+  description: >-
+    The process of shaping a model's outputs to match human values and
+    preferences (typically helpfulness, harmlessness, and honesty). RLHF is one
+    of the main techniques used to align modern LLMs.
+  related:
+    - rlhf
+    - rlvr
+  see:
+    - label: RLHF
+      href: /lessons/rlhf
+
+- id: rlvr
+  term: RLVR (Reinforcement Learning from Verifiable Rewards)
+  category: post-training
+  description: >-
+    A post-training technique where the model generates an attempt, an
+    automated checker verifies whether it's correct, and successful attempts
+    get reinforced. Unlike RLHF, no human preference data is needed---just a
+    verifier. Works best on domains with cheap, reliable checking (mathematics,
+    code, formal logic). RLVR is the main technique behind modern reasoning
+    models.
+  related:
+    - verifier
+    - rollout
+    - on-policy
+    - reasoning-model
+    - rlhf
+    - post-training
+
+- id: verifier
+  term: Verifier
+  category: post-training
+  description: >-
+    A program or rule that checks whether a model's output is correct. The
+    reward signal in RLVR. Examples include "does this code pass the test
+    suite?", "does this answer match the known value?", and "is this output
+    valid JSON?". Cheap, reliable verifiers are what make RLVR scalable.
+  synonyms:
+    - checker
+  related:
+    - rlvr
+
+- id: rollout
+  term: Rollout
+  category: post-training
+  description: >-
+    A single generation from a model, sampled all the way through. During
+    RL-based post-training the model produces many rollouts per problem; the
+    reward signal then determines which ones to reinforce.
+  related:
+    - rlvr
+    - on-policy
+
+- id: on-policy
+  term: On-policy
+  category: post-training
+  description: >-
+    Training where the data the model learns from is generated by the current
+    model itself. RLVR is on-policy: the model produces rollouts, the rollouts
+    get scored, the model updates, and the next batch of rollouts comes from
+    the improved model. Contrast with off-policy training (such as SFT on a
+    fixed dataset of human-written examples), where the training data doesn't
+    change as the model improves.
+  synonyms:
+    - off-policy (the opposite property)
+  related:
+    - rlvr
+    - rollout
+    - supervised-fine-tuning
+
+- id: reasoning-model
+  term: Reasoning model
+  category: post-training
+  description: >-
+    A language model that's been trained to generate intermediate "thinking"
+    steps before producing its final answer. OpenAI's o1 and o3, DeepSeek's
+    R1, and Claude with extended thinking are reasoning models. The
+    architecture is the same as any other LLM---what changes is the
+    post-training (usually RLVR), which shapes the model to use extra tokens
+    for working through problems.
+  synonyms:
+    - thinking model
+  related:
+    - chain-of-thought
+    - thinking-tokens
+    - test-time-compute
+    - rlvr
+    - post-training
+
+- id: chain-of-thought
+  term: Chain of thought
+  category: post-training
+  description: >-
+    Step-by-step reasoning a model generates before its final answer. Started
+    as a prompting trick ("let's think step by step") and is now built into
+    reasoning models through post-training. The intermediate steps function
+    like rough working in a maths exercise---visible scratch work that helps
+    the model reach a correct answer.
+  synonyms:
+    - CoT
+  related:
+    - reasoning-model
+    - thinking-tokens
+    - test-time-compute
+
+- id: thinking-tokens
+  term: Thinking tokens
+  category: post-training
+  description: >-
+    The tokens that make up a reasoning model's chain of thought. Mechanically
+    they're produced the same way as any other tokens (same forward pass, same
+    sampling), but they're often hidden from the user in product interfaces.
+    Some products, such as Claude's extended thinking, show them by default.
+  related:
+    - chain-of-thought
+    - reasoning-model
+
+- id: test-time-compute
+  term: Test-time compute
+  category: post-training
+  description: >-
+    Compute spent at generation time rather than during training. Reasoning
+    models trade test-time compute for accuracy: letting the model generate
+    more thinking tokens before answering tends to improve performance in a
+    roughly predictable way. This is a scaling axis distinct from model size
+    and training data, and is what makes reasoning models qualitatively
+    different from earlier LLMs.
+  synonyms:
+    - inference-time compute
+  related:
+    - reasoning-model
+    - chain-of-thought
+    - rlvr

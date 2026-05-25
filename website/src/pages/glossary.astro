@@ -1,6 +1,6 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
-import { getGlossaryByCategory } from "../lib/glossary";
+import { getGlossaryByCategory, resolveRelated } from "../lib/glossary";
 
 const categories = getGlossaryByCategory();
 ---
@@ -33,6 +33,17 @@ const categories = getGlossaryByCategory();
             {entry.note && (
               <p class="glossary-meta">
                 <em>Style note:</em> {entry.note}
+              </p>
+            )}
+            {entry.related && (
+              <p class="glossary-meta">
+                <em>Related:</em>{" "}
+                {resolveRelated(entry.related).map((rel, i) => (
+                  <>
+                    {i > 0 && ", "}
+                    <a href={`#${rel.id}`}>{rel.term}</a>
+                  </>
+                ))}
               </p>
             )}
             {entry.see && (

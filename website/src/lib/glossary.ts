@@ -10,6 +10,7 @@ export interface GlossaryEntry {
   synonyms?: string[];
   note?: string;
   see?: { label: string; href: string }[];
+  related?: string[];
 }
 
 const CATEGORIES: Record<string, string> = {
@@ -18,6 +19,7 @@ const CATEGORIES: Record<string, string> = {
   sampling: "Sampling and generation",
   understanding: "Understanding and meaning",
   advanced: "Advanced concepts",
+  "post-training": "Post-training and reasoning",
 };
 
 let cached: GlossaryEntry[] | null = null;
@@ -31,6 +33,16 @@ export function loadGlossary(): GlossaryEntry[] {
 
 export function getGlossaryEntry(id: string): GlossaryEntry | undefined {
   return loadGlossary().find((e) => e.id === id);
+}
+
+export function resolveRelated(ids: string[] | undefined): GlossaryEntry[] {
+  if (!ids) return [];
+  const all = loadGlossary();
+  return ids.map((id) => {
+    const entry = all.find((e) => e.id === id);
+    if (!entry) throw new Error(`Glossary: related id "${id}" not found`);
+    return entry;
+  });
 }
 
 export function getGlossaryByCategory(): {
