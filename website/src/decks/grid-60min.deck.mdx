@@ -1,0 +1,72 @@
+---
+title: LLMs Unplugged --- Grid (60min)
+description: A Cybernetic Studio workshop
+---
+
+import StaticGrid from "../components/StaticGrid.svelte";
+import StaticGeneration from "../components/StaticGeneration.svelte";
+import TrainingWidget from "../components/widgets/TrainingWidget.svelte";
+import GenerationWidget from "../components/widgets/GenerationWidget.svelte";
+import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
+import "../styles/widgets.css";
+
+export const EXAMPLE_TOKENS = "see spot run . run , spot , run .";
+export const EXAMPLE_VOCAB = "see spot run . ,";
+export const EXAMPLE_GENERATION = "see spot , run . run";
+export const EXAMPLE_TEXT = "See Spot run. Run, Spot, run.";
+
+{/* _class: hero */}
+
+# LLMs Unplugged
+
+## Understand AI by building it yourself
+
+![bg](./assets/bg-title.avif)
+
+---
+
+{/* @include ./partials/ack-country.mdx */}
+
+---
+
+{/* @include ./partials/presenters.mdx */}
+
+---
+
+{/* @include ./partials/icebreaker.mdx */}
+
+---
+
+## What is this about?
+
+![bg right:40%](./assets/bg-core-insight.avif)
+
+you'll **build** your own language model---from scratch---with just a kids book,
+pen & paper, and some dice rolling
+
+you'll **learn** how language models work by exploiting patterns in text to
+generate new text
+
+---
+
+{/* _class: centered */}
+
+![qr](https://www.llmsunplugged.org)
+
+---
+
+{/* @include ./partials/grid-training.mdx */}
+
+---
+
+{/* @include ./partials/grid-generation.mdx */}
+
+---
+
+{/* @include ./partials/denouement.mdx */}
+
+---
+
+{/* _class: socy-logo */}
+
+<SocyLogo />
