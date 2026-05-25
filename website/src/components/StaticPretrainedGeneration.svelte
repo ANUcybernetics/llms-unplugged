@@ -105,6 +105,12 @@
 </div>
 
 <style>
+  /* Deck-only component. Assumes it lives inside .reveal .slides section
+     beneath an h2, with the standard 1280×720 / 16px-root reveal canvas and
+     4rem 5rem section padding (→ ~1120×500 content budget below the h2).
+     All sizing is tuned for that envelope; no external deck overrides
+     needed. */
+
   .generation-output,
   .entries-list {
     font-family: var(--font-libertinus-serif), serif;
@@ -118,10 +124,11 @@
   }
 
   .generation-output {
-    margin-bottom: 2rem;
     display: flex;
     flex-wrap: wrap;
     gap: 0.4em;
+    margin: 0.5rem 0 1.5rem;
+    font-size: 1.6rem;
   }
 
   .generation-output code.latest {

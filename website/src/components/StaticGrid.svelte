@@ -76,11 +76,18 @@
 </table>
 
 <style>
+  /* Deck-only component. Assumes it lives inside .reveal .slides section
+     beneath an h2, with the standard 1280×720 / 16px-root reveal canvas and
+     4rem 5rem section padding (→ ~1120×500 content budget below the h2).
+     All sizing is tuned for that envelope; no external deck overrides
+     needed. */
+
   .static-grid-tokens {
-    margin-bottom: 2.5rem;
     display: flex;
     flex-wrap: wrap;
     gap: 0.4em;
+    margin: 0.5rem 0 1.5rem;
+    font-size: 1.6rem;
   }
 
   .static-grid-tokens code {
@@ -94,6 +101,24 @@
 
   .static-grid-tokens code.dimmed {
     opacity: 0.25;
+  }
+
+  table.bigram-grid {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+    font-size: 1.6rem;
+  }
+
+  table.bigram-grid th,
+  table.bigram-grid td {
+    text-align: center;
+    padding: 0.4rem;
+  }
+
+  table.bigram-grid td.grid-cell {
+    font-weight: 700;
+    min-width: 2em;
   }
 
   td.current {

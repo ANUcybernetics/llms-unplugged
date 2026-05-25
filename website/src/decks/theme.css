@@ -275,14 +275,14 @@
   display: none;
 }
 
-.reveal .slides section:has(.lm-widget) {
-  padding: 1.5rem 2.5rem;
-  font-size: 14px;
-}
+/* lm-widget overrides: the widget components (TrainingWidget,
+   GenerationWidget, EmbeddingWidget, etc.) are dual-context — they ship in
+   lesson MDX on the website and could be embedded in deck slides. The
+   website widget styles are tuned for reading at 20px root; these
+   overrides knock them down for the 16px-root deck canvas. */
 
-.reveal .slides section:has(table.bigram-grid),
-.reveal .slides section:has(.generation-output) {
-  padding: 1.5rem 2.5rem;
+.reveal .slides section:has(.lm-widget) {
+  font-size: 14px;
 }
 
 .reveal .slides section .lm-widget {
@@ -315,30 +315,6 @@
 .reveal .slides section .lm-widget .mapping-item,
 .reveal .slides section .lm-widget .dice-value {
   font-size: 1em;
-}
-
-.reveal .slides section table.bigram-grid {
-  font-size: 1.1em;
-  width: 100%;
-  margin: 0;
-}
-
-.reveal .slides section table.bigram-grid th,
-.reveal .slides section table.bigram-grid td {
-  text-align: center;
-  padding: 0.75rem 0.5rem;
-}
-
-.reveal .slides section table.bigram-grid td.grid-cell {
-  font-size: 1.1em;
-  font-weight: 700;
-  min-width: 2.25em;
-}
-
-.reveal .slides section .static-grid-tokens,
-.reveal .slides section .generation-output {
-  margin: 0.5rem 0;
-  font-size: 1.1em;
 }
 
 @media screen and (prefers-reduced-motion: no-preference) {
