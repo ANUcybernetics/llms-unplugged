@@ -105,6 +105,18 @@
 </div>
 
 <style>
+  .generation-output,
+  .entries-list {
+    font-family: var(--font-libertinus-serif), serif;
+  }
+
+  .generation-output code,
+  .entries-list .next-word-text,
+  .entries-list .entry-previous-word,
+  .entries-list .threshold {
+    font-family: inherit;
+  }
+
   .generation-output {
     margin-bottom: 2rem;
     display: flex;
