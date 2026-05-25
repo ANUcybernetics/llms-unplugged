@@ -1,5 +1,9 @@
+{/* 3×2 grid of the presenters for this session. Swap who's shown by
+commenting/uncommenting img tags below — keep exactly 6 uncommented so the
+grid stays full. */}
+
 <div
-  style="display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); position: absolute; inset: 0;"
+  style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); position: absolute; inset: 0;"
 >
   <img
     src="/src/decks/assets/headshot-eddie.avif"
@@ -15,5 +19,25 @@
     src="/src/decks/assets/headshot-cole.avif"
     style="width: 100%; height: 100%; object-fit: cover;"
     alt="Cole"
+  />
+  {/* <img
+    src="/src/decks/assets/headshot-thomas.avif"
+    style="width: 100%; height: 100%; object-fit: cover;"
+    alt="Thomas"
+  /> */}
+  <img
+    src="/src/decks/assets/headshot-hannah.avif"
+    style="width: 100%; height: 100%; object-fit: cover;"
+    alt="Hannah"
+  />
+  <img
+    src="/src/decks/assets/headshot-maia.avif"
+    style="width: 100%; height: 100%; object-fit: cover;"
+    alt="Maia"
+  />
+  <img
+    src="/src/decks/assets/headshot-sungyeon.avif"
+    style="width: 100%; height: 100%; object-fit: cover;"
+    alt="Sungyeon"
   />
 </div>
