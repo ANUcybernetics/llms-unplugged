@@ -1,0 +1,96 @@
+---
+title: LLMs Unplugged --- Grid (90min)
+description: A Cybernetic Studio workshop
+---
+
+import StaticGrid from "../components/StaticGrid.svelte";
+import StaticGeneration from "../components/StaticGeneration.svelte";
+import StaticPretrainedGeneration from "../components/StaticPretrainedGeneration.svelte";
+import TrainingWidget from "../components/widgets/TrainingWidget.svelte";
+import GenerationWidget from "../components/widgets/GenerationWidget.svelte";
+import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
+import "../styles/widgets.css";
+
+export const EXAMPLE_TOKENS = "see spot run . run , spot , run .";
+export const EXAMPLE_VOCAB = "see spot run . ,";
+export const EXAMPLE_GENERATION = "see spot , run . run";
+export const EXAMPLE_TEXT = "See Spot run. Run, Spot, run.";
+export const EXAMPLE_PRETRAINED_SEQ = "see spot , run . run";
+export const EXAMPLE_PRETRAINED_ROLLS = "- 7 8 3 - -";
+
+{/* _class: hero */}
+
+# LLMs Unplugged
+
+## Understand AI by building it yourself
+
+![bg](./assets/bg-title.avif)
+
+---
+
+{/* @include ./partials/ack-country.mdx */}
+
+---
+
+{/* @include ./partials/presenters.mdx */}
+
+---
+
+{/* @include ./partials/icebreaker.mdx */}
+
+---
+
+## What is this about?
+
+![bg right:40%](./assets/bg-core-insight.avif)
+
+you'll **build** your own language model---from scratch---with just a kids book,
+pen & paper, and some dice rolling
+
+you'll **learn** how language models work by exploiting patterns in text to
+generate new text
+
+---
+
+{/* _class: centered */}
+
+![qr](https://www.llmsunplugged.org)
+
+---
+
+{/* @include ./grid-training.mdx */}
+
+---
+
+{/* @include ./grid-generation.mdx */}
+
+---
+
+{/* @include ./grid-pretrained-generation.mdx */}
+
+---
+
+## Discussion
+
+- what's changed in your thinking?
+- what new questions are emerging?
+
+![bg left:40%](./assets/bg-participants.avif)
+
+---
+
+{/* @include ./partials/qualtrics.mdx */}
+
+---
+
+## What next?
+
+![bg right:40%](./assets/bg-what-next.avif)
+
+- what do you plan to do next in your own AI use/learning?
+
+---
+
+{/* _class: socy-logo */}
+
+<SocyLogo />
