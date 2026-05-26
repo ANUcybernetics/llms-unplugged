@@ -40,9 +40,9 @@ secondary (Years 11--12) is out of scope.
 
 1. **Anchor to content description codes**, not topic labels. The codes
    (e.g.\ `AC9TDI8P02`) are stable and auditable; topic labels are not.
-2. **Distinguish primary from secondary alignment.** A *primary* mapping means
+2. **Distinguish primary from secondary alignment.** A _primary_ mapping means
    the lesson directly addresses the content description and could be used as
-   a teaching/assessment vehicle for it. A *secondary* mapping means the
+   a teaching/assessment vehicle for it. A _secondary_ mapping means the
    lesson touches on the content but should not be relied on as the main
    learning experience.
 3. **Year band, not exact year.** The materials work best in 5--6, 7--8, and
@@ -57,22 +57,22 @@ secondary (Years 11--12) is out of scope.
 
 ## At-a-glance
 
-| Lesson                       | Topic               | Best fit       | Strongest learning areas         |
-| ---------------------------- | ------------------- | -------------- | -------------------------------- |
-| Weighted Randomness          | fundamentals        | 5--6, 7--8     | Mathematics                      |
-| Training                     | fundamentals        | 5--6, 7--8     | Digital Technologies, Mathematics |
-| Generation                   | fundamentals        | 5--6, 7--8     | Mathematics, Digital Technologies |
-| Pre-trained Model Generation | scaling up          | 5--6, 7--8     | Digital Technologies             |
-| Sampling                     | controlling output  | 7--8, 9--10    | Mathematics, Digital Technologies |
-| Beam Search                  | controlling output  | 7--8, 9--10    | Digital Technologies, Mathematics |
-| Trigram                      | scaling up          | 7--8, 9--10    | Digital Technologies, Mathematics |
-| Context Columns              | how models understand | 7--8, 9--10  | English, Digital Technologies    |
-| Word Embeddings              | how models understand | 9--10        | Mathematics, Digital Technologies |
-| LoRA                         | model tuning        | 9--10          | Digital Technologies             |
-| Synthetic Data               | model tuning        | 9--10          | Digital Technologies, Critical & Creative Thinking |
-| Agentic Tool Use             | controlling output  | 9--10          | Digital Technologies             |
-| RLHF                         | model tuning        | 9--10          | Digital Technologies, Ethical Understanding |
-| Sycophancy                   | controlling output  | 9--10          | Digital Technologies, Ethical Understanding |
+| Lesson                       | Topic                 | Best fit    | Strongest learning areas                           |
+| ---------------------------- | --------------------- | ----------- | -------------------------------------------------- |
+| Weighted Randomness          | fundamentals          | 5--6, 7--8  | Mathematics                                        |
+| Training                     | fundamentals          | 5--6, 7--8  | Digital Technologies, Mathematics                  |
+| Generation                   | fundamentals          | 5--6, 7--8  | Mathematics, Digital Technologies                  |
+| Pre-trained Model Generation | scaling up            | 5--6, 7--8  | Digital Technologies                               |
+| Sampling                     | controlling output    | 7--8, 9--10 | Mathematics, Digital Technologies                  |
+| Beam Search                  | controlling output    | 7--8, 9--10 | Digital Technologies, Mathematics                  |
+| Trigram                      | scaling up            | 7--8, 9--10 | Digital Technologies, Mathematics                  |
+| Context Columns              | how models understand | 7--8, 9--10 | English, Digital Technologies                      |
+| Word Embeddings              | how models understand | 9--10       | Mathematics, Digital Technologies                  |
+| LoRA                         | model tuning          | 9--10       | Digital Technologies                               |
+| Synthetic Data               | model tuning          | 9--10       | Digital Technologies, Critical & Creative Thinking |
+| Agentic Tool Use             | controlling output    | 9--10       | Digital Technologies                               |
+| RLHF                         | model tuning          | 9--10       | Digital Technologies, Ethical Understanding        |
+| Sycophancy                   | controlling output    | 9--10       | Digital Technologies, Ethical Understanding        |
 
 ## Per-lesson mappings
 
@@ -97,7 +97,7 @@ mathematical bedrock for everything that follows.
   - `AC9M6P01` --- probabilities lie on numerical scales; use fractions,
     decimals and percentages.
   - `AC9TDI6K03` --- digital systems represent data using numbers (because
-    dice rolls *are* the number representation here).
+    dice rolls _are_ the number representation here).
 - **General capabilities:** Numeracy (recognising and using patterns and
   relationships); Critical and Creative Thinking (Inquiring).
 
@@ -222,7 +222,7 @@ Treat each word's row in the bigram grid as a vector; measure similarity.
 - **Best fit:** Years 9--10
 - **Primary**
   - `AC9M10SP02` --- interpret networks and network diagrams used to
-    represent relationships in practical situations. An embedding space *is*
+    represent relationships in practical situations. An embedding space _is_
     a relationship diagram.
   - `AC9TDI10K02` --- represent documents as content, structure and
     presentation; explain why such representations matter.
@@ -357,21 +357,21 @@ content descriptions still need a separate teaching vehicle.
 ## General capabilities
 
 LLMs Unplugged is unusually rich in GC coverage because the activities
-require students to *do* the thinking, not just learn about it.
+require students to _do_ the thinking, not just learn about it.
 
 - **Digital Literacy** --- the entire course is an extended worked example
   of "managing and operating" digital systems concepts without screens, with
-  particular strength in *Investigating > Locate, generate and access data*
-  and *Managing and operating > Manage content, data and information*.
-- **Critical and Creative Thinking** --- *Inquiring*, *Generating ideas,
-  possibilities and actions*, *Analysing, synthesising and evaluating
-  reasoning and procedures*, and *Reflecting* are all exercised across the
+  particular strength in _Investigating > Locate, generate and access data_
+  and _Managing and operating > Manage content, data and information_.
+- **Critical and Creative Thinking** --- _Inquiring_, _Generating ideas,
+  possibilities and actions_, _Analysing, synthesising and evaluating
+  reasoning and procedures_, and _Reflecting_ are all exercised across the
   lesson sequence.
-- **Numeracy** --- *Recognising and using patterns and relationships*,
-  *Interpreting and representing data*, and *Using probabilistic thinking*
+- **Numeracy** --- _Recognising and using patterns and relationships_,
+  _Interpreting and representing data_, and _Using probabilistic thinking_
   underpin the fundamentals lessons.
-- **Literacy** --- *Composing texts* (generated output) and *Comprehending
-  texts* (source corpus selection and analysis) are present throughout.
+- **Literacy** --- _Composing texts_ (generated output) and _Comprehending
+  texts_ (source corpus selection and analysis) are present throughout.
 - **Ethical Understanding** --- RLHF, Sycophancy, and Synthetic Data are
   designed to surface ethical issues around training data, feedback, and
   data quality.
@@ -416,53 +416,111 @@ Co-teach with English (analysing language and values) and HASS / Civics
 
 ## Competency reference
 
-Every code cited above, with its short description and curriculum category.
-Codes follow the ACARA v9 pattern: `AC9` + learning area (`M` Mathematics,
-`TDI` Digital Technologies, `E` English) + year level + strand
-(`P` probability, `ST` statistics, `SP` space, `K` knowledge, `LA` language,
-`LY` literacy) + sequence number.
+Every code cited above, grouped by learning area and strand. Codes follow
+the ACARA v9 pattern: `AC9` + learning area (`M` Mathematics, `TDI` Digital
+Technologies, `E` English) + year level + strand (`P` probability, `ST`
+statistics, `SP` space, `K` knowledge, `LA` language, `LY` literacy) +
+sequence number.
 
-| Code           | Description                                                                                                                | Category                                              |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| `AC9M5P02`     | Conduct repeated chance experiments with equally and not equally likely outcomes; use frequency to compare and estimate likelihood. | Mathematics --- Probability (Year 5)                  |
-| `AC9M5ST01`    | Categorise and describe data and frequencies.                                                                              | Mathematics --- Statistics (Year 5)                   |
-| `AC9M6P01`     | Probabilities lie on numerical scales; use fractions, decimals and percentages.                                            | Mathematics --- Probability (Year 6)                  |
-| `AC9M6P02`     | Run simulations with increasing trials; compare observed with expected results.                                            | Mathematics --- Probability (Year 6)                  |
-| `AC9M6ST01`    | Categorise and describe data and frequencies.                                                                              | Mathematics --- Statistics (Year 6)                   |
-| `AC9M7P01`     | Identify sample spaces and assign probabilities to outcomes.                                                               | Mathematics --- Probability (Year 7)                  |
-| `AC9M7P02`     | Conduct repeated chance experiments and run simulations; compare predictions with observed results.                        | Mathematics --- Probability (Year 7)                  |
-| `AC9M8P02`     | Determine all possible combinations and use these to determine probabilities.                                              | Mathematics --- Probability (Year 8)                  |
-| `AC9M9P01`     | List all outcomes for compound events using lists, tree diagrams and tables.                                               | Mathematics --- Probability (Year 9)                  |
-| `AC9M9P02`     | Use relative frequencies from data to estimate probabilities; adjust probabilities based on collected data.                | Mathematics --- Probability (Year 9)                  |
-| `AC9M10SP02`   | Interpret networks and network diagrams used to represent relationships in practical situations.                           | Mathematics --- Space (Year 10)                       |
-| `AC9TDI6K03`   | Digital systems represent data using numbers.                                                                              | Digital Technologies --- Knowledge (Year 6)           |
-| `AC9TDI6P05`   | Implement algorithms involving control structures, variables and input.                                                    | Digital Technologies --- Processes (Year 6)           |
-| `AC9TDI8K01`   | Explain how hardware specifications affect performance.                                                                    | Digital Technologies --- Knowledge (Year 8)           |
-| `AC9TDI8P01`   | Acquire, store and validate data from a range of sources.                                                                  | Digital Technologies --- Processes (Year 8)           |
-| `AC9TDI8P02`   | Analyse and visualise data to identify patterns.                                                                           | Digital Technologies --- Processes (Year 8)           |
-| `AC9TDI8P03`   | Model and query the attributes of objects and events using structured data.                                                | Digital Technologies --- Processes (Year 8)           |
-| `AC9TDI8P05`   | Design algorithms involving nested control structures.                                                                     | Digital Technologies --- Processes (Year 8)           |
-| `AC9TDI8P06`   | Trace algorithms to predict output for a given input.                                                                      | Digital Technologies --- Processes (Year 8)           |
-| `AC9TDI8P09`   | Implement, modify and debug programs involving control structures and functions.                                           | Digital Technologies --- Processes (Year 8)           |
-| `AC9TDI8P10`   | Evaluate existing and student solutions against the design criteria and possible future impact.                            | Digital Technologies --- Processes (Year 8)           |
-| `AC9TDI8P14`   | Assess whether collected data is essential to purpose.                                                                     | Digital Technologies --- Processes (Year 8)           |
-| `AC9TDI10K02`  | Represent documents as content, structure and presentation; explain why such representations matter.                       | Digital Technologies --- Knowledge (Year 10)          |
-| `AC9TDI10P01`  | Develop techniques to acquire, store and validate data.                                                                    | Digital Technologies --- Processes (Year 10)          |
-| `AC9TDI10P02`  | Analyse and visualise data to draw conclusions and make predictions.                                                       | Digital Technologies --- Processes (Year 10)          |
-| `AC9TDI10P03`  | Model and query entities and their relationships using structured data.                                                    | Digital Technologies --- Processes (Year 10)          |
-| `AC9TDI10P05`  | Design algorithms with nested control structures and logical operators.                                                    | Digital Technologies --- Processes (Year 10)          |
-| `AC9TDI10P06`  | Validate algorithms and programs by comparing output against a range of test cases.                                        | Digital Technologies --- Processes (Year 10)          |
-| `AC9TDI10P08`  | Generate, modify, communicate and critically evaluate alternative designs.                                                 | Digital Technologies --- Processes (Year 10)          |
-| `AC9TDI10P09`  | Implement, modify and debug modular programs applying algorithms and data structures.                                      | Digital Technologies --- Processes (Year 10)          |
-| `AC9TDI10P10`  | Evaluate solutions against design criteria, possible future impact and opportunities for enterprise.                       | Digital Technologies --- Processes (Year 10)          |
-| `AC9TDI10P14`  | Apply the Australian Privacy Principles to critique digital systems.                                                       | Digital Technologies --- Processes (Year 10)          |
-| `AC9E5LA03`    | Describe how texts use language features and are organised into stages and phases.                                         | English --- Language (Year 5)                         |
-| `AC9E6LA06`    | Expand noun groups for fuller description.                                                                                 | English --- Language (Year 6)                         |
-| `AC9E7LA05`    | Examine clause structures, complex and compound-complex sentences.                                                         | English --- Language (Year 7)                         |
-| `AC9E7LA08`    | Vocabulary in building specialist knowledge.                                                                               | English --- Language (Year 7)                         |
-| `AC9E8LA05`    | Examine clause structures, complex and compound-complex sentences.                                                         | English --- Language (Year 8)                         |
-| `AC9E9LA08`    | Analyse how vocabulary choices contribute to style, mood and tone.                                                         | English --- Language (Year 9)                         |
-| `AC9E10LY03`   | Analyse and evaluate how language features are used to implicitly or explicitly represent values, beliefs and attitudes.   | English --- Literacy (Year 10)                        |
+### Mathematics
+
+Probability:
+
+- `AC9M5P02` (Year 5) --- conduct repeated chance experiments with equally
+  and not equally likely outcomes; use frequency to compare and estimate
+  likelihood.
+- `AC9M6P01` (Year 6) --- probabilities lie on numerical scales; use
+  fractions, decimals and percentages.
+- `AC9M6P02` (Year 6) --- run simulations with increasing trials; compare
+  observed with expected results.
+- `AC9M7P01` (Year 7) --- identify sample spaces and assign probabilities to
+  outcomes.
+- `AC9M7P02` (Year 7) --- conduct repeated chance experiments and run
+  simulations; compare predictions with observed results.
+- `AC9M8P02` (Year 8) --- determine all possible combinations and use these
+  to determine probabilities.
+- `AC9M9P01` (Year 9) --- list all outcomes for compound events using lists,
+  tree diagrams and tables.
+- `AC9M9P02` (Year 9) --- use relative frequencies from data to estimate
+  probabilities; adjust probabilities based on collected data.
+
+Statistics:
+
+- `AC9M5ST01` (Year 5) --- categorise and describe data and frequencies.
+- `AC9M6ST01` (Year 6) --- categorise and describe data and frequencies.
+
+Space:
+
+- `AC9M10SP02` (Year 10) --- interpret networks and network diagrams used to
+  represent relationships in practical situations.
+
+### Digital Technologies
+
+Knowledge and understanding:
+
+- `AC9TDI6K03` (Year 6) --- digital systems represent data using numbers.
+- `AC9TDI8K01` (Year 8) --- explain how hardware specifications affect
+  performance.
+- `AC9TDI10K02` (Year 10) --- represent documents as content, structure and
+  presentation; explain why such representations matter.
+
+Processes and production skills:
+
+- `AC9TDI6P05` (Year 6) --- implement algorithms involving control
+  structures, variables and input.
+- `AC9TDI8P01` (Year 8) --- acquire, store and validate data from a range of
+  sources.
+- `AC9TDI8P02` (Year 8) --- analyse and visualise data to identify patterns.
+- `AC9TDI8P03` (Year 8) --- model and query the attributes of objects and
+  events using structured data.
+- `AC9TDI8P05` (Year 8) --- design algorithms involving nested control
+  structures.
+- `AC9TDI8P06` (Year 8) --- trace algorithms to predict output for a given
+  input.
+- `AC9TDI8P09` (Year 8) --- implement, modify and debug programs involving
+  control structures and functions.
+- `AC9TDI8P10` (Year 8) --- evaluate existing and student solutions against
+  the design criteria and possible future impact.
+- `AC9TDI8P14` (Year 8) --- assess whether collected data is essential to
+  purpose.
+- `AC9TDI10P01` (Year 10) --- develop techniques to acquire, store and
+  validate data.
+- `AC9TDI10P02` (Year 10) --- analyse and visualise data to draw conclusions
+  and make predictions.
+- `AC9TDI10P03` (Year 10) --- model and query entities and their
+  relationships using structured data.
+- `AC9TDI10P05` (Year 10) --- design algorithms with nested control
+  structures and logical operators.
+- `AC9TDI10P06` (Year 10) --- validate algorithms and programs by comparing
+  output against a range of test cases.
+- `AC9TDI10P08` (Year 10) --- generate, modify, communicate and critically
+  evaluate alternative designs.
+- `AC9TDI10P09` (Year 10) --- implement, modify and debug modular programs
+  applying algorithms and data structures.
+- `AC9TDI10P10` (Year 10) --- evaluate solutions against design criteria,
+  possible future impact and opportunities for enterprise.
+- `AC9TDI10P14` (Year 10) --- apply the Australian Privacy Principles to
+  critique digital systems.
+
+### English
+
+Language:
+
+- `AC9E5LA03` (Year 5) --- describe how texts use language features and are
+  organised into stages and phases.
+- `AC9E6LA06` (Year 6) --- expand noun groups for fuller description.
+- `AC9E7LA05` (Year 7) --- examine clause structures, complex and
+  compound-complex sentences.
+- `AC9E7LA08` (Year 7) --- vocabulary in building specialist knowledge.
+- `AC9E8LA05` (Year 8) --- examine clause structures, complex and
+  compound-complex sentences.
+- `AC9E9LA08` (Year 9) --- analyse how vocabulary choices contribute to
+  style, mood and tone.
+
+Literacy:
+
+- `AC9E10LY03` (Year 10) --- analyse and evaluate how language features are
+  used to implicitly or explicitly represent values, beliefs and attitudes.
 
 ## Caveats and out of scope
 
@@ -474,7 +532,7 @@ Codes follow the ACARA v9 pattern: `AC9` + learning area (`M` Mathematics,
   Synthetic Data, RLHF, Word Embeddings) would extend naturally into the
   Digital Solutions / Software Engineering / Specialist Mathematics
   syllabi, but those syllabi are state-specific and not mapped here.
-- **Assessment**: this document maps *teaching* coverage, not assessment
+- **Assessment**: this document maps _teaching_ coverage, not assessment
   evidence. Each primary mapping above could plausibly serve as evidence,
   but the assessment task design (rubrics, work samples, moderation) is a
   separate exercise.
