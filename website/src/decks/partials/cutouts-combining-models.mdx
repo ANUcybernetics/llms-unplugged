@@ -1,0 +1,88 @@
+{/* _class: hero */}
+
+# Combining models
+
+![bg](./assets/bg-models-meet.avif)
+
+---
+
+## Your goal
+
+![bg right:40%](./assets/bg-confluence.avif)
+
+pair up with another group and **pool your cutouts** into one big spread, then
+generate from the combined pile
+
+your model just got bigger---and its training data just got more varied
+
+---
+
+## Worked example: two piles, one spread
+
+you trained on _Green Eggs and Ham_; they trained on _Peter Rabbit_---two
+different models, each with their own characteristic cutouts:
+
+<CutoutRow>
+  <Cutout prev="i" next="am" />
+  <Cutout prev="am" next="sam" />
+  <Cutout prev="sam" next="." />
+  <Cutout prev="the" next="rabbit" />
+  <Cutout prev="rabbit" next="ran" />
+  <Cutout prev="ran" next="away" />
+</CutoutRow>
+
+shared words like <Token next>the</Token>, <Token next>i</Token>,
+<Token next>.</Token> bridge between the two---your chain can drift from one
+text into the other mid-sentence:
+
+> alone: _"i am sam . sam i am ."_
+>
+> combined: _"i am sam . the rabbit ran away ."_
+
+same mechanism, just a richer pile pulling in two directions
+
+---
+
+## You will need
+
+![bg right:40%](./assets/bg-group-activity.avif)
+
+**pair up with another pair**
+
+both groups' trained cutouts (pooled into one spread)
+
+pen and paper to write down the generated text
+
+---
+
+## Activity (15 min)
+
+![bg right:40%](./assets/bg-activity-generation.avif)
+
+combine both spreads on one table
+
+generate 1--2 sentences from the merged pile
+
+notice: does it sound like one book, the other, or a mash-up?
+
+---
+
+{/* _class: hero */}
+
+# Shareback
+
+![bg](./assets/bg-shareback.avif)
+
+---
+
+## The _language_ of language models
+
+![bg right:60%](./assets/bg-vocabulary.avif)
+
+pretraining
+
+data mixture
+
+domain
+
+scale

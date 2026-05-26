@@ -29,49 +29,175 @@
   padding: 0;
 }
 
-/* Token colour palette for cutouts (see src/lib/tokenColors.ts).
-   Each entry pairs a saturated background colour for previous-word boxes
-   (white text on top) with a brighter foreground colour for free-standing
-   next words on the dark slide. Anchored on the deck's gold/copper/teal/grey
-   families with two tint-levels each. Keep TOKEN_COLOR_COUNT in sync. */
+/* Token colour palette for cutouts. Mirrors the 30-entry OKLCH palette in
+   cli/tokenized-cutouts.typ so the same word lands on the same colour whether
+   it appears on a slide or on a printed cutout. The hash function in
+   src/lib/tokenColors.ts matches the typst hash, and palette index order
+   matches too — keep all three in sync if any entry is regenerated.
+   Each entry sets --token-bg (the palette colour, used as the pill fill) and
+   --token-pill-text (black on light entries with OKLab L > 0.65, otherwise
+   white — same `light` flag as in the typst). --token-fg (the free-standing
+   next-word colour on a dark slide background) is derived in one rule below
+   by lightening --token-bg to L≥0.75. */
 .reveal .tc-0 {
-  --token-bg: var(--anu-gold);
-  --token-fg: var(--anu-gold-3);
+  --token-bg: oklch(0% 0 0); /* black */
+  --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-1 {
-  --token-bg: hsl(48deg 60% 36%);
-  --token-fg: hsl(48deg 55% 72%);
+  --token-bg: oklch(58.5% 0 0); /* mid grey, luma(140) */
+  --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-2 {
-  --token-bg: var(--anu-copper);
-  --token-fg: var(--anu-copper-3);
+  --token-bg: oklch(32.4% 0.082 24);
+  --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-3 {
-  --token-bg: hsl(12deg 65% 38%);
-  --token-fg: hsl(12deg 55% 70%);
+  --token-bg: oklch(62.9% 0.256 27);
+  --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-4 {
-  --token-bg: var(--anu-teal);
-  --token-fg: var(--anu-teal-3);
+  --token-bg: oklch(42.8% 0.174 29);
+  --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-5 {
-  --token-bg: hsl(180deg 60% 28%);
-  --token-fg: hsl(180deg 55% 65%);
+  --token-bg: oklch(62.3% 0.142 62);
+  --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-6 {
-  --token-bg: hsl(35deg 18% 36%);
-  --token-fg: hsl(35deg 18% 74%);
+  --token-bg: oklch(78% 0.166 72);
+  --token-pill-text: black;
 }
 
 .reveal .tc-7 {
-  --token-bg: hsl(195deg 14% 36%);
-  --token-fg: hsl(195deg 14% 74%);
+  --token-bg: oklch(43.2% 0.086 84);
+  --token-pill-text: var(--anu-white);
+}
+
+.reveal .tc-8 {
+  --token-bg: oklch(91.9% 0.096 93);
+  --token-pill-text: black;
+}
+
+.reveal .tc-9 {
+  --token-bg: oklch(91.9% 0.234 126);
+  --token-pill-text: black;
+}
+
+.reveal .tc-10 {
+  --token-bg: oklch(48.5% 0.164 142);
+  --token-pill-text: var(--anu-white);
+}
+
+.reveal .tc-11 {
+  --token-bg: oklch(67.1% 0.227 143);
+  --token-pill-text: black;
+}
+
+.reveal .tc-12 {
+  --token-bg: oklch(32.2% 0.098 143);
+  --token-pill-text: var(--anu-white);
+}
+
+.reveal .tc-13 {
+  --token-bg: oklch(75.9% 0.078 151);
+  --token-pill-text: black;
+}
+
+.reveal .tc-14 {
+  --token-bg: oklch(81.2% 0.214 151);
+  --token-pill-text: black;
+}
+
+.reveal .tc-15 {
+  --token-bg: oklch(62.8% 0.118 174);
+  --token-pill-text: var(--anu-white);
+}
+
+.reveal .tc-16 {
+  --token-bg: oklch(90.4% 0.149 187);
+  --token-pill-text: black;
+}
+
+.reveal .tc-17 {
+  --token-bg: oklch(73.7% 0.158 236);
+  --token-pill-text: black;
+}
+
+.reveal .tc-18 {
+  --token-bg: oklch(42% 0.131 254);
+  --token-pill-text: var(--anu-white);
+}
+
+.reveal .tc-19 {
+  --token-bg: oklch(44.8% 0.309 264);
+  --token-pill-text: var(--anu-white);
+}
+
+.reveal .tc-20 {
+  --token-bg: oklch(58.9% 0.192 268);
+  --token-pill-text: var(--anu-white);
+}
+
+.reveal .tc-21 {
+  --token-bg: oklch(40.1% 0.227 288);
+  --token-pill-text: var(--anu-white);
+}
+
+.reveal .tc-22 {
+  --token-bg: oklch(67.6% 0.212 304);
+  --token-pill-text: black;
+}
+
+.reveal .tc-23 {
+  --token-bg: oklch(51.3% 0.259 308);
+  --token-pill-text: var(--anu-white);
+}
+
+.reveal .tc-24 {
+  --token-bg: oklch(32.1% 0.151 320);
+  --token-pill-text: var(--anu-white);
+}
+
+.reveal .tc-25 {
+  --token-bg: oklch(46.8% 0.124 324);
+  --token-pill-text: var(--anu-white);
+}
+
+.reveal .tc-26 {
+  --token-bg: oklch(90.4% 0.084 328);
+  --token-pill-text: black;
+}
+
+.reveal .tc-27 {
+  --token-bg: oklch(69.9% 0.32 329);
+  --token-pill-text: black;
+}
+
+.reveal .tc-28 {
+  --token-bg: oklch(71.1% 0.118 346);
+  --token-pill-text: black;
+}
+
+.reveal .tc-29 {
+  --token-bg: oklch(54.4% 0.227 349);
+  --token-pill-text: var(--anu-white);
+}
+
+/* Derive --token-fg from --token-bg: same hue and chroma, but lifted to at
+   least L=0.75 so dark palette entries stay readable as free-standing text
+   on the dark slide background. The typst output doesn't need this — it
+   prints on white paper and uses a thin black stroke on light entries
+   instead. The `from` relative-colour syntax is supported in all evergreen
+   browsers; if a deck has to run on an older engine, replace this with a
+   second oklch() literal in each .tc-N rule. */
+.reveal [class*="tc-"] {
+  --token-fg: oklch(from var(--token-bg) max(l, 0.75) c h);
 }
 
 .reveal .cutout-previous-word,
@@ -95,7 +221,7 @@
 .reveal .cutout-previous-word {
   display: inline-block;
   background: var(--token-bg);
-  color: var(--anu-white);
+  color: var(--token-pill-text, var(--anu-white));
 
   /* Vertical padding is intentionally smaller than horizontal — the inherited
      line-height: 1.2 already adds ~0.1em of leading above and below the text

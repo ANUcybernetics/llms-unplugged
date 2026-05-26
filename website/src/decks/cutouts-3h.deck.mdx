@@ -30,8 +30,9 @@ export const OVERVIEW_TOKENS =
   Trigrams (--pages 20):
     mise run cutouts-print the-cat-in-the-hat --pages 30 -n 3
 
-  Sycophancy with ACTION/GOOGLE/FRIEND tools (full corpus):
-    mise run cutouts-print sycophancy --tool ACTION --tool GOOGLE --tool FRIEND
+  Sycophancy with GOOGLE/FRIEND tools (full corpus, repeated 5x so the
+  sycophancy cutouts don't get swamped when pooled into a base-corpus pile):
+    mise run cutouts-print sycophancy --repeat 5 --tool GOOGLE --tool FRIEND
 */}
 
 {/* _class: hero */}
@@ -69,7 +70,7 @@ with paper cutouts---then push it to its limits
 | ---------------------- | ------- |
 | Training               |  20 min |
 | Generation             |  20 min |
-| Trigrams               |  25 min |
+| Combining models       |  25 min |
 | _Break_                |  10 min |
 | Sycophancy             |  20 min |
 | Agentic tool use       |  20 min |
@@ -95,7 +96,7 @@ with paper cutouts---then push it to its limits
 
 ---
 
-{/* @include ./partials/cutouts-trigram.mdx */}
+{/* @include ./partials/cutouts-combining-models.mdx */}
 
 ---
 

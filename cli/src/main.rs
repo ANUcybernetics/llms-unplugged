@@ -2,6 +2,7 @@ use clap::{Args, Parser, Subcommand};
 use llms_unplugged::{
     CutoutsMetadata, Metadata, NGramCounter, ProcessingStats, RawToken, SampleError,
     WordFollowEntry, append_tool_tokens, process_file, process_file_for_cutouts,
+    repeat_cutout_tokens,
     render_bigram_tsv, sample, save_to_json, split_entries_into_books,
 };
 use rand::SeedableRng;
@@ -177,6 +178,14 @@ struct CutoutsArgs {
     /// visually distinct even when the corpus contains the same word.
     #[arg(long = "tool", value_name = "TOOL", action = clap::ArgAction::Append)]
     tools: Vec<String>,
+
+    /// Emit every usable cutout this many times. Useful for short curated
+    /// corpora (e.g. sycophancy.txt) that would otherwise be swamped by a
+    /// much larger pool of base-corpus cutouts on the workshop table.
+    /// Discarded tokens and tool-trigger cutouts are not multiplied — tool
+    /// counts have their own knob via --tool NAME:COUNT.
+    #[arg(long, default_value_t = 1)]
+    repeat: usize,
 }
 
 #[derive(Args, Debug, Clone)]
@@ -300,6 +309,12 @@ fn run_build_command(args: &BuildArgs) -> Result<(), CliError> {
 }
 
 fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
+    if args.repeat == 0 {
+        return Err(CliError::InvalidArgs(
+            "--repeat must be at least 1".to_string(),
+        ));
+    }
+
     let punctuation: Vec<char> = args.punctuation.chars().collect();
     let (mut tokens, mut metadata) =
         process_file_for_cutouts(&args.input, punctuation, args.n).map_err(CliError::Processing)?;
@@ -309,6 +324,8 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
     metadata.entropy = stats.entropy;
     metadata.perplexity = stats.perplexity;
     metadata.branching_factor = stats.branching_factor;
+
+    repeat_cutout_tokens(&mut tokens, args.repeat);
 
     let tool_specs = args
         .tools
@@ -331,6 +348,9 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
         metadata.kept_tokens,
         metadata.total_tokens - metadata.kept_tokens
     );
+    if args.repeat > 1 {
+        println!("Repeating every usable cutout {} times", args.repeat);
+    }
     if injected > 0 {
         let names: Vec<String> = tool_specs.iter().map(|(n, _)| n.clone()).collect();
         println!(

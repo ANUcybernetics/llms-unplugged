@@ -28,13 +28,12 @@ result becomes the next word(s)
 
 ---
 
-## Tools: ACTION, GOOGLE, FRIEND
+## Tools: GOOGLE, FRIEND
 
 ![bg right:40%](./assets/bg-tool-use-triggers.avif)
 
 | Trigger                         | Tool                    | Returns                      |
 | ------------------------------- | ----------------------- | ---------------------------- |
-| <Token next tool>ACTION</Token> | a chosen person         | a word for what they did     |
 | <Token next tool>GOOGLE</Token> | a phone search          | one word from the top hit    |
 | <Token next tool>FRIEND</Token> | everyone texts a friend | first single-word reply wins |
 
@@ -46,16 +45,15 @@ each tool-use cutout pairs a trigger with a closing period---the tool's
 response slots in between:
 
 <CutoutRow>
-  <Cutout prev="we" next="ACTION" tool="next" trailing="." />
   <Cutout prev="a" next="GOOGLE" tool="next" trailing="." />
   <Cutout prev="the" next="FRIEND" tool="next" trailing="." />
 </CutoutRow>
 
-generating from <Token next>we</Token>, you might pick <Cutout prev="we" next="ACTION" tool="next" trailing="." />---write <Token next tool>ACTION</Token>
+generating from <Token next>a</Token>, you might pick <Cutout prev="a" next="GOOGLE" tool="next" trailing="." />---write <Token next tool>GOOGLE</Token>
 
-hand off to the tool operator---they pick someone, who does something and
-reports back ("waved")---write <Token next>waved</Token>, then the trailing
-<Token next>.</Token> from the cutout, and continue
+hand off to the tool operator---they search on their phone and read out the
+first word of the top hit ("recipe")---write <Token next>recipe</Token>, then
+the trailing <Token next>.</Token> from the cutout, and continue
 
 ---
 

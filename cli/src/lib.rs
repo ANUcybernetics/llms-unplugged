@@ -497,6 +497,33 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
     Ok((tokens, metadata))
 }
 
+/// Multiply the usable cutouts in a token list by `factor`. A usable cutout is
+/// a kept token that has a full n-1-word context (i.e. `keep && !previous_words
+/// .is_empty()`); discarded tokens and the leading run that has no context stay
+/// at their original count because they're rendered dimmed and aren't meant to
+/// be cut out. Duplicates are emitted adjacently so the printed sheet shows
+/// repeated cutouts together, easy to grab as a batch when cutting.
+///
+/// Intended for short curated corpora (e.g. the sycophancy stack) that would
+/// otherwise be swamped when mixed into a much larger pile of base-corpus
+/// cutouts. `factor == 0` or `1` is a no-op.
+pub fn repeat_cutout_tokens(tokens: &mut Vec<RawToken>, factor: usize) {
+    if factor <= 1 {
+        return;
+    }
+    let mut expanded = Vec::with_capacity(tokens.len() * factor);
+    for token in tokens.drain(..) {
+        let usable = token.keep && !token.previous_words.is_empty();
+        if usable {
+            for _ in 0..(factor - 1) {
+                expanded.push(token.clone());
+            }
+        }
+        expanded.push(token);
+    }
+    *tokens = expanded;
+}
+
 /// Append synthetic tool-trigger cutouts to a corpus token list.
 ///
 /// Each `(name, count)` spec produces up to `count` trigger cutouts (one per
@@ -2015,6 +2042,82 @@ mod tests {
         assert_eq!(tokens[3].previous_words, vec!["begins"]);
 
         Ok(())
+    }
+
+    #[test]
+    fn test_repeat_cutout_tokens_multiplies_only_usable_tokens() {
+        let mut tokens = vec![
+            RawToken {
+                index: 1,
+                text: "alpha".to_string(),
+                keep: true,
+                previous_words: vec![],
+                is_tool: false,
+            },
+            RawToken {
+                index: 2,
+                text: "beta".to_string(),
+                keep: true,
+                previous_words: vec!["alpha".to_string()],
+                is_tool: false,
+            },
+            RawToken {
+                index: 3,
+                text: "IV".to_string(),
+                keep: false,
+                previous_words: vec![],
+                is_tool: false,
+            },
+            RawToken {
+                index: 4,
+                text: "gamma".to_string(),
+                keep: true,
+                previous_words: vec!["beta".to_string()],
+                is_tool: false,
+            },
+        ];
+
+        repeat_cutout_tokens(&mut tokens, 3);
+
+        // alpha (1x, no prev) + beta (3x) + IV (1x, discarded) + gamma (3x) = 8
+        assert_eq!(tokens.len(), 8);
+
+        let texts: Vec<&str> = tokens.iter().map(|t| t.text.as_str()).collect();
+        assert_eq!(
+            texts,
+            vec!["alpha", "beta", "beta", "beta", "IV", "gamma", "gamma", "gamma"]
+        );
+
+        // Duplicates land adjacent so a printed sheet shows a batch per word.
+        assert!(tokens[1..4].iter().all(|t| t.text == "beta"));
+        assert!(tokens[5..8].iter().all(|t| t.text == "gamma"));
+    }
+
+    #[test]
+    fn test_repeat_cutout_tokens_factor_one_is_noop() {
+        let original = vec![
+            RawToken {
+                index: 1,
+                text: "alpha".to_string(),
+                keep: true,
+                previous_words: vec!["start".to_string()],
+                is_tool: false,
+            },
+            RawToken {
+                index: 2,
+                text: "beta".to_string(),
+                keep: true,
+                previous_words: vec!["alpha".to_string()],
+                is_tool: false,
+            },
+        ];
+        let mut tokens = original.clone();
+        repeat_cutout_tokens(&mut tokens, 1);
+        assert_eq!(tokens, original);
+
+        let mut tokens = original.clone();
+        repeat_cutout_tokens(&mut tokens, 0);
+        assert_eq!(tokens, original);
     }
 
     #[test]
