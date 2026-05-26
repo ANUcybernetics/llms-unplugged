@@ -410,6 +410,56 @@ algorithm-design content descriptions for Years 7--8.
 Co-teach with English (analysing language and values) and HASS / Civics
 (data ethics and decision-making).
 
+## Competency reference
+
+Every code cited above, with its short description and curriculum category.
+Codes follow the ACARA v9 pattern: `AC9` + learning area (`M` Mathematics,
+`TDI` Digital Technologies, `E` English) + year level + strand
+(`P` probability, `ST` statistics, `SP` space, `K` knowledge, `LA` language,
+`LY` literacy) + sequence number.
+
+| Code           | Description                                                                                                                | Category                                              |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `AC9M5P02`     | Conduct repeated chance experiments with equally and not equally likely outcomes; use frequency to compare and estimate likelihood. | Mathematics --- Probability (Year 5)                  |
+| `AC9M5ST01`    | Categorise and describe data and frequencies.                                                                              | Mathematics --- Statistics (Year 5)                   |
+| `AC9M6P01`     | Probabilities lie on numerical scales; use fractions, decimals and percentages.                                            | Mathematics --- Probability (Year 6)                  |
+| `AC9M6P02`     | Run simulations with increasing trials; compare observed with expected results.                                            | Mathematics --- Probability (Year 6)                  |
+| `AC9M6ST01`    | Categorise and describe data and frequencies.                                                                              | Mathematics --- Statistics (Year 6)                   |
+| `AC9M7P01`     | Identify sample spaces and assign probabilities to outcomes.                                                               | Mathematics --- Probability (Year 7)                  |
+| `AC9M7P02`     | Conduct repeated chance experiments and run simulations; compare predictions with observed results.                        | Mathematics --- Probability (Year 7)                  |
+| `AC9M8P02`     | Determine all possible combinations and use these to determine probabilities.                                              | Mathematics --- Probability (Year 8)                  |
+| `AC9M9P01`     | List all outcomes for compound events using lists, tree diagrams and tables.                                               | Mathematics --- Probability (Year 9)                  |
+| `AC9M9P02`     | Use relative frequencies from data to estimate probabilities; adjust probabilities based on collected data.                | Mathematics --- Probability (Year 9)                  |
+| `AC9M10SP02`   | Interpret networks and network diagrams used to represent relationships in practical situations.                           | Mathematics --- Space (Year 10)                       |
+| `AC9TDI6K03`   | Digital systems represent data using numbers.                                                                              | Digital Technologies --- Knowledge (Year 6)           |
+| `AC9TDI6P05`   | Implement algorithms involving control structures, variables and input.                                                    | Digital Technologies --- Processes (Year 6)           |
+| `AC9TDI8K01`   | Explain how hardware specifications affect performance.                                                                    | Digital Technologies --- Knowledge (Year 8)           |
+| `AC9TDI8P01`   | Acquire, store and validate data from a range of sources.                                                                  | Digital Technologies --- Processes (Year 8)           |
+| `AC9TDI8P02`   | Analyse and visualise data to identify patterns.                                                                           | Digital Technologies --- Processes (Year 8)           |
+| `AC9TDI8P03`   | Model and query the attributes of objects and events using structured data.                                                | Digital Technologies --- Processes (Year 8)           |
+| `AC9TDI8P05`   | Design algorithms involving nested control structures.                                                                     | Digital Technologies --- Processes (Year 8)           |
+| `AC9TDI8P06`   | Trace algorithms to predict output for a given input.                                                                      | Digital Technologies --- Processes (Year 8)           |
+| `AC9TDI8P09`   | Implement, modify and debug programs involving control structures and functions.                                           | Digital Technologies --- Processes (Year 8)           |
+| `AC9TDI8P10`   | Evaluate existing and student solutions against the design criteria and possible future impact.                            | Digital Technologies --- Processes (Year 8)           |
+| `AC9TDI8P14`   | Assess whether collected data is essential to purpose.                                                                     | Digital Technologies --- Processes (Year 8)           |
+| `AC9TDI10K02`  | Represent documents as content, structure and presentation; explain why such representations matter.                       | Digital Technologies --- Knowledge (Year 10)          |
+| `AC9TDI10P01`  | Develop techniques to acquire, store and validate data.                                                                    | Digital Technologies --- Processes (Year 10)          |
+| `AC9TDI10P02`  | Analyse and visualise data to draw conclusions and make predictions.                                                       | Digital Technologies --- Processes (Year 10)          |
+| `AC9TDI10P03`  | Model and query entities and their relationships using structured data.                                                    | Digital Technologies --- Processes (Year 10)          |
+| `AC9TDI10P05`  | Design algorithms with nested control structures and logical operators.                                                    | Digital Technologies --- Processes (Year 10)          |
+| `AC9TDI10P06`  | Validate algorithms and programs by comparing output against a range of test cases.                                        | Digital Technologies --- Processes (Year 10)          |
+| `AC9TDI10P08`  | Generate, modify, communicate and critically evaluate alternative designs.                                                 | Digital Technologies --- Processes (Year 10)          |
+| `AC9TDI10P09`  | Implement, modify and debug modular programs applying algorithms and data structures.                                      | Digital Technologies --- Processes (Year 10)          |
+| `AC9TDI10P10`  | Evaluate solutions against design criteria, possible future impact and opportunities for enterprise.                       | Digital Technologies --- Processes (Year 10)          |
+| `AC9TDI10P14`  | Apply the Australian Privacy Principles to critique digital systems.                                                       | Digital Technologies --- Processes (Year 10)          |
+| `AC9E5LA03`    | Describe how texts use language features and are organised into stages and phases.                                         | English --- Language (Year 5)                         |
+| `AC9E6LA06`    | Expand noun groups for fuller description.                                                                                 | English --- Language (Year 6)                         |
+| `AC9E7LA05`    | Examine clause structures, complex and compound-complex sentences.                                                         | English --- Language (Year 7)                         |
+| `AC9E7LA08`    | Vocabulary in building specialist knowledge.                                                                               | English --- Language (Year 7)                         |
+| `AC9E8LA05`    | Examine clause structures, complex and compound-complex sentences.                                                         | English --- Language (Year 8)                         |
+| `AC9E9LA08`    | Analyse how vocabulary choices contribute to style, mood and tone.                                                         | English --- Language (Year 9)                         |
+| `AC9E10LY03`   | Analyse and evaluate how language features are used to implicitly or explicitly represent values, beliefs and attitudes.   | English --- Literacy (Year 10)                        |
+
 ## Caveats and out of scope
 
 - **Foundation to Year 4**: not currently mapped. The dice-and-grid mechanics
