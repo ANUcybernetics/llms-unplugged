@@ -1,0 +1,89 @@
+---
+title: LLMs Unplugged --- Cutouts (Year 5-6)
+description: A 90-minute primary-school workshop using paper cutout bigram models
+---
+
+import Token from "../components/Token.astro";
+import Cutout from "../components/Cutout.astro";
+import CutoutRow from "../components/CutoutRow.astro";
+import CutoutsOverview from "../components/CutoutsOverview.svelte";
+import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
+import "../styles/widgets.css";
+
+export const components = { code: Token };
+
+export const OVERVIEW_TOKENS =
+  "i am sam . i am sam . sam i am . that sam i am ! that sam i am ! i do not like that sam i am !";
+
+{/*
+  90-minute workshop for year 5-6 primary-school students. Five parts:
+    Part 1 (15 min)  What is AI? (yr5-6-what-is-ai)
+    Part 2 (20 min)  Training (yr5-6-pattern-warmup + cutouts-overview + cutouts-training)
+    Part 3 (25 min)  Generation (cutouts-generation)
+    Part 4 (15 min)  Class story (yr5-6-class-story --- optional, drop if running over)
+    Part 5 (10 min)  Wrap-up + Q&A (yr5-6-wrap-up)
+  Allow 5 min for arrival/settle/introductions before Part 1.
+
+  Before each delivery:
+  - swap the teacher's name and the age/location placeholders on the prompt slide
+    in yr5-6-what-is-ai.mdx
+  - update the school-values blank in yr5-6-pattern-warmup.mdx if known
+  - print bigram cutouts for the chosen books and (ideally) pre-cut into strips
+*/}
+
+{/* _class: hero */}
+
+# LLMs Unplugged
+
+## How AI writes stories
+
+![bg](./assets/bg-title.avif)
+
+---
+
+{/* @include ./partials/ack-country.mdx */}
+
+---
+
+{/* @include ./partials/presenters.mdx */}
+
+---
+
+{/* @include ./partials/yr5-6-what-is-ai.mdx */}
+
+---
+
+{/* @include ./partials/yr5-6-pattern-warmup.mdx */}
+
+---
+
+{/* @include ./partials/cutouts-overview.mdx */}
+
+---
+
+{/* @include ./partials/cutouts-training.mdx */}
+
+---
+
+{/* @include ./partials/cutouts-generation.mdx */}
+
+---
+
+{/* @include ./partials/yr5-6-class-story.mdx */}
+
+---
+
+{/* @include ./partials/yr5-6-wrap-up.mdx */}
+
+---
+
+{/* _class: socy-logo */}
+
+<SocyLogo />
+
+<script is:inline>{`
+  document.querySelectorAll('section.auto-animate').forEach(function (s) {
+    s.classList.remove('auto-animate');
+    s.setAttribute('data-auto-animate', '');
+  });
+`}</script>
