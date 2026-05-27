@@ -18,6 +18,12 @@ Entry template:
 - **`lofi-sentimental-jazzy-love.opus`** --- _Lo-Fi Music Loop - Sentimental
   Jazzy Love_ by Arthur Wild
   ([source](https://pixabay.com/music/lofi-lo-fi-music-loop-sentimental-jazzy-love-473154/))
+- **`hype-drill.opus`** --- _Hype Drill Music_ by kontraa (Pixabay track
+  438398, uploaded 2025-11-17 --- contributor profile and exact page URL not
+  verified)
+- **`alex-morgan-background.opus`** --- _Background Music_ by alex-morgan
+  (Pixabay track 528319, uploaded 2026-05-02 --- contributor profile and
+  exact page URL not verified)
 
 ## Encoding
 

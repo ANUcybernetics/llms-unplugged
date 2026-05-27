@@ -10,6 +10,8 @@
 
 const TRACKS: string[] = [
   "/assets/audio/bg/lofi-sentimental-jazzy-love.opus",
+  "/assets/audio/bg/hype-drill.opus",
+  "/assets/audio/bg/alex-morgan-background.opus",
 ];
 
 declare global {
