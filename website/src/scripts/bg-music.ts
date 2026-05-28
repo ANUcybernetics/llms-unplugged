@@ -1,6 +1,7 @@
 // Hidden background-music toggle for decks. Press Shift+M to play/pause.
-// Picks a random track on first play; that track then loops until page
-// reload. Pause/resume preserves position.
+// On page load TRACKS is shuffled into a playlist; the first toggle starts
+// playlist[0], and each track advances to the next on `ended`, wrapping
+// back to index 0 after the last. Pause/resume preserves position.
 //
 // Import once per deck via:
 //   <script>import "../scripts/bg-music";</script>
@@ -23,9 +24,20 @@ declare global {
 if (TRACKS.length > 0 && !window.__bgMusic) {
   window.__bgMusic = true;
 
+  const playlist = [...TRACKS];
+  for (let i = playlist.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [playlist[i], playlist[j]] = [playlist[j], playlist[i]];
+  }
+  let index = 0;
+
   const audio = new Audio();
-  audio.loop = true;
   audio.preload = "none";
+  audio.addEventListener("ended", () => {
+    index = (index + 1) % playlist.length;
+    audio.src = playlist[index];
+    audio.play().catch(() => {});
+  });
 
   const toast = document.createElement("div");
   toast.setAttribute("role", "status");
@@ -60,7 +72,7 @@ if (TRACKS.length > 0 && !window.__bgMusic) {
     e.preventDefault();
     if (audio.paused) {
       if (!audio.src) {
-        audio.src = TRACKS[Math.floor(Math.random() * TRACKS.length)];
+        audio.src = playlist[index];
       }
       audio.play().then(
         () => flash("♪ Music on"),
