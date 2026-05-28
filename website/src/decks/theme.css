@@ -40,152 +40,152 @@
    next-word colour on a dark slide background) is derived in one rule below
    by lightening --token-bg to L≥0.75. */
 .reveal .tc-0 {
-  --token-bg: oklch(0% 0 0); /* black */
+  --token-bg: oklch(0% 0 0deg); /* black */
   --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-1 {
-  --token-bg: oklch(58.5% 0 0); /* mid grey, luma(140) */
+  --token-bg: oklch(58.5% 0 0deg); /* mid grey, luma(140) */
   --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-2 {
-  --token-bg: oklch(32.4% 0.082 24);
+  --token-bg: oklch(32.4% 0.082 24deg);
   --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-3 {
-  --token-bg: oklch(62.9% 0.256 27);
+  --token-bg: oklch(62.9% 0.256 27deg);
   --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-4 {
-  --token-bg: oklch(42.8% 0.174 29);
+  --token-bg: oklch(42.8% 0.174 29deg);
   --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-5 {
-  --token-bg: oklch(62.3% 0.142 62);
+  --token-bg: oklch(62.3% 0.142 62deg);
   --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-6 {
-  --token-bg: oklch(78% 0.166 72);
+  --token-bg: oklch(78% 0.166 72deg);
   --token-pill-text: black;
 }
 
 .reveal .tc-7 {
-  --token-bg: oklch(43.2% 0.086 84);
+  --token-bg: oklch(43.2% 0.086 84deg);
   --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-8 {
-  --token-bg: oklch(91.9% 0.096 93);
+  --token-bg: oklch(91.9% 0.096 93deg);
   --token-pill-text: black;
 }
 
 .reveal .tc-9 {
-  --token-bg: oklch(91.9% 0.234 126);
+  --token-bg: oklch(91.9% 0.234 126deg);
   --token-pill-text: black;
 }
 
 .reveal .tc-10 {
-  --token-bg: oklch(48.5% 0.164 142);
+  --token-bg: oklch(48.5% 0.164 142deg);
   --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-11 {
-  --token-bg: oklch(67.1% 0.227 143);
+  --token-bg: oklch(67.1% 0.227 143deg);
   --token-pill-text: black;
 }
 
 .reveal .tc-12 {
-  --token-bg: oklch(32.2% 0.098 143);
+  --token-bg: oklch(32.2% 0.098 143deg);
   --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-13 {
-  --token-bg: oklch(75.9% 0.078 151);
+  --token-bg: oklch(75.9% 0.078 151deg);
   --token-pill-text: black;
 }
 
 .reveal .tc-14 {
-  --token-bg: oklch(81.2% 0.214 151);
+  --token-bg: oklch(81.2% 0.214 151deg);
   --token-pill-text: black;
 }
 
 .reveal .tc-15 {
-  --token-bg: oklch(62.8% 0.118 174);
+  --token-bg: oklch(62.8% 0.118 174deg);
   --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-16 {
-  --token-bg: oklch(90.4% 0.149 187);
+  --token-bg: oklch(90.4% 0.149 187deg);
   --token-pill-text: black;
 }
 
 .reveal .tc-17 {
-  --token-bg: oklch(73.7% 0.158 236);
+  --token-bg: oklch(73.7% 0.158 236deg);
   --token-pill-text: black;
 }
 
 .reveal .tc-18 {
-  --token-bg: oklch(42% 0.131 254);
+  --token-bg: oklch(42% 0.131 254deg);
   --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-19 {
-  --token-bg: oklch(44.8% 0.309 264);
+  --token-bg: oklch(44.8% 0.309 264deg);
   --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-20 {
-  --token-bg: oklch(58.9% 0.192 268);
+  --token-bg: oklch(58.9% 0.192 268deg);
   --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-21 {
-  --token-bg: oklch(40.1% 0.227 288);
+  --token-bg: oklch(40.1% 0.227 288deg);
   --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-22 {
-  --token-bg: oklch(67.6% 0.212 304);
+  --token-bg: oklch(67.6% 0.212 304deg);
   --token-pill-text: black;
 }
 
 .reveal .tc-23 {
-  --token-bg: oklch(51.3% 0.259 308);
+  --token-bg: oklch(51.3% 0.259 308deg);
   --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-24 {
-  --token-bg: oklch(32.1% 0.151 320);
+  --token-bg: oklch(32.1% 0.151 320deg);
   --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-25 {
-  --token-bg: oklch(46.8% 0.124 324);
+  --token-bg: oklch(46.8% 0.124 324deg);
   --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-26 {
-  --token-bg: oklch(90.4% 0.084 328);
+  --token-bg: oklch(90.4% 0.084 328deg);
   --token-pill-text: black;
 }
 
 .reveal .tc-27 {
-  --token-bg: oklch(69.9% 0.32 329);
+  --token-bg: oklch(69.9% 0.32 329deg);
   --token-pill-text: black;
 }
 
 .reveal .tc-28 {
-  --token-bg: oklch(71.1% 0.118 346);
+  --token-bg: oklch(71.1% 0.118 346deg);
   --token-pill-text: black;
 }
 
 .reveal .tc-29 {
-  --token-bg: oklch(54.4% 0.227 349);
+  --token-bg: oklch(54.4% 0.227 349deg);
   --token-pill-text: var(--anu-white);
 }
 
