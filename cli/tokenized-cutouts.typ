@@ -95,10 +95,20 @@
 // text/stroke decision. The CLI canonicalises casing per corpus before
 // emitting the JSON, so the same word always arrives as the same string
 // here — no need to case-fold again.
+// Multiplier 569 and initial salt 247509 were chosen by brute-force
+// search over (prime <= 1000, salt < 1000003) pairs to maximise the
+// number of top-30 English tokens (including the four kept punctuation
+// marks ".", ",", "?", "!") that land in distinct palette buckets. This
+// combination achieves 28/30 distinct: the only collisions are "are"/"be"
+// and "?"/"!". The naïve choice of multiplier 31 — Java's String.hashCode
+// constant — caps out at ~15 because 31 mod 30 = 1 collapses the mod-30
+// hash into a near-sum, colliding same-length common words like "it"/"on"
+// and "of"/"at" regardless of salt.
+// Regenerate with: node cli/scripts/find_palette_salt.ts
 #let entry-for(t) = {
-  let h = 0
+  let h = 247509
   for c in t.codepoints() {
-    h = calc.rem(h * 31 + str.to-unicode(c), 1000003)
+    h = calc.rem(h * 569 + str.to-unicode(c), 1000003)
   }
   palette.at(calc.rem(h, palette.len()))
 }
