@@ -449,7 +449,7 @@ fn run_sample_command(args: &SampleArgs) -> Result<(), CliError> {
 
     let mut rng = match args.seed {
         Some(s) => ChaCha8Rng::seed_from_u64(s),
-        None => ChaCha8Rng::from_entropy(),
+        None => ChaCha8Rng::from_rng(&mut rand::rng()),
     };
 
     match sample(&entries, &prompt_tokens, args.tokens, &mut rng) {

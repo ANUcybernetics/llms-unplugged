@@ -818,7 +818,9 @@ fn test_sample_cli_deterministic_with_seed() -> io::Result<()> {
     let input = write_sample_corpus(
         temp.path(),
         "corpus.txt",
-        "the cat sat on the mat the dog ran past the cat the bird sang loudly",
+        // Cyclic corpus so an 8-token seeded walk never dead-ends on any rand
+        // sampling path (robust across rand versions).
+        "the cat the dog the bird the cat the dog the bird the cat the dog the bird",
     )?;
 
     let run = || {

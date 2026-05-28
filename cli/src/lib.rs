@@ -1,5 +1,5 @@
 use rand::Rng;
-use rand::distributions::{Distribution, WeightedIndex};
+use rand::distr::{Distribution, weighted::WeightedIndex};
 use serde::Serialize;
 use std::collections::{BTreeMap, BTreeSet, HashMap, VecDeque};
 use std::fs::File;
@@ -2421,8 +2421,11 @@ mod tests {
 
     #[test]
     fn test_sample_deterministic_with_same_seed() -> io::Result<()> {
+        // Cyclic corpus: every token has a successor (the -> {cat, dog, bird},
+        // each animal -> the), so a 10-token walk can never dead-end on any RNG
+        // sampling path. Keeps the test robust across rand versions.
         let f = write_corpus(
-            "the cat sat on the mat the dog ran past the cat the bird sang loudly",
+            "the cat the dog the bird the cat the dog the bird the cat the dog the bird",
         )?;
         let (entries, _, _) = process_file(f.path(), 2)?;
         let prompt = vec!["the".to_string()];
@@ -2459,8 +2462,11 @@ mod tests {
 
     #[test]
     fn test_sample_trigram_with_two_word_prompt() -> io::Result<()> {
+        // Cyclic trigram corpus: "the cat" -> {sat, ran, ate}, and every 2-word
+        // context leads back to "the cat" (… on the cat …), so a 5-token walk
+        // never dead-ends on any RNG path. Robust across rand versions.
         let f = write_corpus(
-            "the cat sat on the mat the cat ran on the floor the cat ate the food",
+            "the cat sat on the cat ran on the cat ate on the cat sat on the cat ran on the cat ate on the cat",
         )?;
         let (entries, _, _) = process_file(f.path(), 3)?;
 
