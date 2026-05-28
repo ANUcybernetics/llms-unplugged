@@ -92,10 +92,12 @@
 
 // Hash a word to a palette entry. Returns the `(color, light)` record;
 // callers unpack `.color` for the swatch and `.light` for the adaptive
-// text/stroke decision.
+// text/stroke decision. The CLI canonicalises casing per corpus before
+// emitting the JSON, so the same word always arrives as the same string
+// here — no need to case-fold again.
 #let entry-for(t) = {
   let h = 0
-  for c in lower(t).codepoints() {
+  for c in t.codepoints() {
     h = calc.rem(h * 31 + str.to-unicode(c), 1000003)
   }
   palette.at(calc.rem(h, palette.len()))
