@@ -41,19 +41,15 @@ EXAMPLE_TARGETS := \
 	$(PDF_DIR)/a-christmas-carol-2-1.pdf \
 	$(PDF_DIR)/beatles-2-1.pdf
 
-# Pre-prepared cutout PDFs served from the website's tools page.
-# Naming: name.pdf -> bigram (n=2); name-trigram.pdf -> trigram (n=3).
+# Pre-prepared cutout PDFs served from the website's tools page. All are
+# bigram (n=2), duplex, and post-processed with qpdf to rotate even pages
+# 180° so they print correctly with long-edge binding (the default duplex
+# mode on most printers — see the cutouts-print mise task for the same
+# pipeline applied ad-hoc).
 CUTOUTS_TARGETS := \
 	$(CUTOUTS_DIR)/green-eggs-and-ham.pdf \
-	$(CUTOUTS_DIR)/green-eggs-and-ham-trigram.pdf \
-	$(CUTOUTS_DIR)/the-cat-in-the-hat.pdf \
-	$(CUTOUTS_DIR)/the-cat-in-the-hat-trigram.pdf \
-	$(CUTOUTS_DIR)/peter-rabbit.pdf \
-	$(CUTOUTS_DIR)/peter-rabbit-trigram.pdf \
-	$(CUTOUTS_DIR)/fun-with-dick-and-jane.pdf \
-	$(CUTOUTS_DIR)/fun-with-dick-and-jane-trigram.pdf \
-	$(CUTOUTS_DIR)/australia.pdf \
-	$(CUTOUTS_DIR)/sycophancy.pdf
+	$(CUTOUTS_DIR)/where-is-the-green-sheep.pdf \
+	$(CUTOUTS_DIR)/were-going-on-a-bear-hunt.pdf
 
 # Define common variables
 TOOL := target/release/llms_unplugged
@@ -80,26 +76,16 @@ $(PDF_DIR)/%.pdf $(PDF_DIR)/%.stamp: book.typ $(TOOL)
 	TYPST_BIN=$(TYPST_BIN) $(TOOL) pdf --target $(FULLNAME) --input $(DATA_DIR)/$(BASE).txt --out-dir $(OUT_DIR) --book-binding
 	@if echo "$@" | grep -q '.stamp$$'; then touch $@; fi
 
-# ===== Pattern rules for pre-prepared cutout PDFs =====
+# ===== Pattern rule for pre-prepared cutout PDFs =====
 # The cutouts subcommand always writes to <output-dir>/cutouts.pdf, so each
-# target uses its own work dir under $(OUT_DIR)/cutouts/<name>/ and the PDF
-# is copied to its final destination. Trigram rule must come first so it wins
-# the shortest-stem tie-break for `*-trigram.pdf` targets.
-
-$(CUTOUTS_DIR)/%-trigram.pdf: tokenized-cutouts.typ $(TOOL)
-	$(eval NAME := $(notdir $(basename $@)))
-	$(eval BASE := $(NAME:-trigram=))
-	$(eval WORK_DIR := $(OUT_DIR)/cutouts/$(NAME))
-	mkdir -p $(WORK_DIR)
-	TYPST_BIN=$(TYPST_BIN) $(TOOL) cutouts --input $(DATA_DIR)/$(BASE).txt --output $(WORK_DIR) -n 3
-	cp $(WORK_DIR)/cutouts.pdf $@
-
+# target uses its own work dir under $(OUT_DIR)/cutouts/<name>/ and qpdf
+# rotates even pages 180° on the way to the final destination.
 $(CUTOUTS_DIR)/%.pdf: tokenized-cutouts.typ $(TOOL)
 	$(eval NAME := $(notdir $(basename $@)))
 	$(eval WORK_DIR := $(OUT_DIR)/cutouts/$(NAME))
 	mkdir -p $(WORK_DIR)
-	TYPST_BIN=$(TYPST_BIN) $(TOOL) cutouts --input $(DATA_DIR)/$(NAME).txt --output $(WORK_DIR) -n 2
-	cp $(WORK_DIR)/cutouts.pdf $@
+	TYPST_BIN=$(TYPST_BIN) $(TOOL) cutouts --input $(DATA_DIR)/$(NAME).txt --output $(WORK_DIR) -n 2 --duplex
+	qpdf $(WORK_DIR)/cutouts.pdf --rotate=180:1-z:even $@
 
 # Default target to build all booklets
 .PHONY: booklets
