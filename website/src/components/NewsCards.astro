@@ -5,9 +5,10 @@ import { findHeroImage } from "../lib/hero-images";
 
 interface Props {
   limit?: number;
+  headingLevel?: "h2" | "h3" | "h4";
 }
 
-const { limit } = Astro.props;
+const { limit, headingLevel = "h3" } = Astro.props;
 
 const allNews = (
   await getCollection("news", ({ data }) => data.published)
@@ -29,6 +30,7 @@ const news = limit ? allNews.slice(0, limit) : allNews;
           href={`/news/${item.id}`}
           title={item.data.title}
           image={findHeroImage(`hero-news-${item.id}`)}
+          headingLevel={headingLevel}
         >
           <p class="card-description">{item.data.description}</p>
           <span class="card-meta">{dateLabel}</span>

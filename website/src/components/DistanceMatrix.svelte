@@ -42,7 +42,7 @@
   <table class="distance-matrix compact-grid">
     <thead>
       <tr>
-        <th scope="col"></th>
+        <th scope="col"><span class="sr-only">Token</span></th>
         {#each vocabulary as word}
           <th
             scope="col"

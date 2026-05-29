@@ -28,14 +28,14 @@
   <table class="comparison-table compact-grid">
     <thead>
       <tr>
-        <th scope="col"></th>
+        <th scope="col"><span class="sr-only">Token</span></th>
         {#each vocabulary as word}
           <th scope="col" title={word} class:punctuation={isPunctuation(word)}>
             <code>{word}</code>
           </th>
         {/each}
         {#if diffs}
-          <th scope="col"></th>
+          <th scope="col"><span class="sr-only">Difference</span></th>
         {/if}
       </tr>
     </thead>
