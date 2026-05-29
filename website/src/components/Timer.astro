@@ -23,10 +23,24 @@ const initialLabel = `${mm}:${String(ss).padStart(2, "0")}`;
   <span class="time" data-time>{initialLabel}</span>
 
   <div class="timer-controls">
-    <button type="button" class="ctl" data-toggle aria-label="Start timer">start</button>
-    <button type="button" class="ctl" data-reset aria-label="Reset timer">reset</button>
-    <button type="button" class="ctl" data-adjust="60" aria-label="Add one minute">+1</button>
-    <button type="button" class="ctl" data-adjust="-60" aria-label="Subtract one minute">
+    <button type="button" class="ctl" data-toggle aria-label="Start timer"
+      >start</button
+    >
+    <button type="button" class="ctl" data-reset aria-label="Reset timer"
+      >reset</button
+    >
+    <button
+      type="button"
+      class="ctl"
+      data-adjust="60"
+      aria-label="Add one minute">+1</button
+    >
+    <button
+      type="button"
+      class="ctl"
+      data-adjust="-60"
+      aria-label="Subtract one minute"
+    >
       &minus;1
     </button>
   </div>
@@ -34,6 +48,10 @@ const initialLabel = `${mm}:${String(ss).padStart(2, "0")}`;
 
 <script>
   const MAX_MS = 99 * 60 * 1000;
+
+  // Every initialised timer registers its start/pause toggle here so the
+  // keyboard shortcut can drive only the timer on the currently visible slide.
+  const timers: { root: HTMLElement; toggle: () => void }[] = [];
 
   function format(ms: number): string {
     const s = Math.ceil(ms / 1000);
@@ -67,7 +85,10 @@ const initialLabel = `${mm}:${String(ss).padStart(2, "0")}`;
       root.classList.toggle("running", running);
       root.classList.toggle("finished", remaining <= 0);
       toggleBtn.textContent = running ? "pause" : "start";
-      toggleBtn.setAttribute("aria-label", running ? "Pause timer" : "Start timer");
+      toggleBtn.setAttribute(
+        "aria-label",
+        running ? "Pause timer" : "Start timer",
+      );
       root.setAttribute("aria-label", `${format(remaining)} remaining`);
     };
 
@@ -110,10 +131,14 @@ const initialLabel = `${mm}:${String(ss).padStart(2, "0")}`;
       render();
     };
 
-    toggleBtn.addEventListener("click", () => (running ? pause() : start()));
+    const toggle = () => (running ? pause() : start());
+    toggleBtn.addEventListener("click", toggle);
+    timers.push({ root, toggle });
     root.querySelector("[data-reset]")?.addEventListener("click", reset);
     root.querySelectorAll<HTMLElement>("[data-adjust]").forEach((btn) => {
-      btn.addEventListener("click", () => adjust(Number(btn.dataset.adjust) * 1000));
+      btn.addEventListener("click", () =>
+        adjust(Number(btn.dataset.adjust) * 1000),
+      );
     });
 
     render();
@@ -121,6 +146,28 @@ const initialLabel = `${mm}:${String(ss).padStart(2, "0")}`;
 
   const boot = () =>
     document.querySelectorAll<HTMLElement>("[data-timer]").forEach(initTimer);
+
+  // Press "T" to start/pause the timer on the current slide only. Reveal.js
+  // leaves T unbound (its keys are arrows/Space/N/P, B, F, O, S, ?), and
+  // scoping to `section.present` means decks with several timers only toggle
+  // the one on screen.
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "t" && e.key !== "T") return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const el = document.activeElement;
+    if (
+      el instanceof HTMLElement &&
+      (el.isContentEditable ||
+        el.tagName === "INPUT" ||
+        el.tagName === "TEXTAREA")
+    ) {
+      return;
+    }
+    const active = timers.find(({ root }) => root.closest("section.present"));
+    if (!active) return;
+    e.preventDefault();
+    active.toggle();
+  });
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
