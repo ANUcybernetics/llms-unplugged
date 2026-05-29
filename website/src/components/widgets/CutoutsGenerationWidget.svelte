@@ -119,18 +119,22 @@
         <div class="section-header">Model</div>
         <div class="cutouts-content">
           {#each cutouts as cutout}
+            {@const actionable =
+              outputWords.length === 0 && model.hasSuccessors(cutout.label)}
             <div
               class="cutout"
               class:highlighted={cutout.label === currentWord}
-              class:clickable={outputWords.length === 0 &&
-                model.hasSuccessors(cutout.label)}
+              class:clickable={actionable}
               class:dead-end={!model.hasSuccessors(cutout.label)}
               onclick={() => handleStartWord(cutout.label)}
               role="button"
-              tabindex="0"
+              aria-disabled={!actionable}
+              tabindex={actionable ? 0 : -1}
               onkeydown={(e) => {
-                if (e.key === "Enter" || e.key === " ")
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
                   handleStartWord(cutout.label);
+                }
               }}
             >
               <div

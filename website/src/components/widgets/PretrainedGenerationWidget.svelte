@@ -149,18 +149,23 @@
         <div class="section-header">Model</div>
         <div class="entries-content">
           {#each modelEntries as entry}
+            {@const actionable =
+              outputWords.length === 0 &&
+              model.hasSuccessors(entry.previousWord)}
             <div
               class="entry"
               class:highlighted={entry.previousWord === currentWord}
-              class:clickable={outputWords.length === 0 &&
-                model.hasSuccessors(entry.previousWord)}
+              class:clickable={actionable}
               class:dead-end={!model.hasSuccessors(entry.previousWord)}
               onclick={() => handleStartWord(entry.previousWord)}
               role="button"
-              tabindex="0"
+              aria-disabled={!actionable}
+              tabindex={actionable ? 0 : -1}
               onkeydown={(e) => {
-                if (e.key === "Enter" || e.key === " ")
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
                   handleStartWord(entry.previousWord);
+                }
               }}
             >
               <span
