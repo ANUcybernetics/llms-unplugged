@@ -24,29 +24,17 @@ the chain grows (like dominoes)
 
 ---
 
-## Worked example: pick a starting word
-
-let's start with <Token next>i</Token>---scan the spread:
-
-<CutoutRow>
-  <Cutout prev="i" next="am" />
-  <Cutout prev="i" next="am" />
-  <Cutout prev="i" next="do" />
-</CutoutRow>
-
-three cutouts match---but two of them are <Cutout prev="i" next="am" />, so
-your eye lands on <Token next>am</Token> about ⅔ of the time---no dice, no
-probability tables, the spread is doing the maths
-
-(two unrelated words can share a colour---verify the word, not just the colour)
-
----
-
 ## Worked example: chain it together
 
 <div class="worked-example-grid"><div class="we-header"></div><div class="we-header">cutout you pick</div><div class="we-header">your page</div><div class="we-step">start</div><Cutout prev="i" next="am" /><div class="we-page"><strong>i am</strong></div><div class="we-step">match <Token next>am</Token></div><Cutout prev="am" next="sam" /><div class="we-page">i am <strong>sam</strong></div><div class="we-step">match <Token next>sam</Token></div><Cutout prev="sam" next="." /><div class="we-page">i am sam <strong>.</strong></div><div class="we-step">match <Token next>.</Token></div><Cutout prev="." next="i" /><div class="we-page">i am sam . <strong>i</strong></div><div class="we-step">match <Token next>i</Token></div><Cutout prev="i" next="do" /><div class="we-page">i am sam . i <strong>do</strong></div></div>
 
-_"i am sam . i do..."_---a hint of the original, not a copy
+---
+
+{/* _class: impact */}
+
+_"i am sam . i do..."_
+
+a hint of the original, not a copy
 
 ---
 
@@ -66,9 +54,10 @@ pen and paper to write down the generated text
 
 ![bg right:40%](./assets/bg-activity-generation.avif)
 
-generate 1--2 sentences from your spread
+generate as much text as you can from your spread---keep chaining words until
+you run out of matches (or time!)
 
-read your favourite one to the room
+<Timer minutes={10} />
 
 ---
 
@@ -80,14 +69,14 @@ read your favourite one to the room
 
 ---
 
-## The _language_ of language models
+## How did it go?
 
-![bg cover left:60%](./assets/bg-information-flow-generation.avif)
+![bg right:40%](./assets/bg-information-flow-generation.avif)
 
-prompt
+did your stories always make sense? why or why not?
 
-completion / response
+can any of your models write a story about a **crocodile**?
 
-context window
-
-weighted random sampling
+{/* notes:
+Both questions probe the same limit: a paper model can only use the words (and pairs) it saw in training---there's no "crocodile" anywhere in these books, so it simply can't appear. Sets up the wrap-up reflection.
+*/}
