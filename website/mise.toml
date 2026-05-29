@@ -1,3 +1,9 @@
 [tools]
 node = "24"
 pnpm = "latest"
+
+[env]
+# sharp ships prebuilt binaries (@img/*); skip the from-source build that a
+# global (Homebrew) libvips would otherwise trigger --- it needs node-addon-api
+# and fails, even though the prebuilt binary works fine at runtime.
+SHARP_IGNORE_GLOBAL_LIBVIPS = "1"
