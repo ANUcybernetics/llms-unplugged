@@ -1,4 +1,4 @@
-// Hidden background-music toggle for decks. Press Shift+M to play/pause.
+// Hidden background-music toggle for decks. Press M to play/pause.
 // On page load TRACKS is shuffled into a playlist; the first toggle starts
 // playlist[0], and each track advances to the next on `ended`, wrapping
 // back to index 0 after the last. Pause/resume preserves position.
@@ -68,7 +68,17 @@ if (TRACKS.length > 0 && !window.__bgMusic) {
   };
 
   document.addEventListener("keydown", (e) => {
-    if (!e.shiftKey || e.code !== "KeyM" || e.repeat) return;
+    if (e.code !== "KeyM" || e.repeat) return;
+    // Plain M only: let Cmd/Ctrl/Alt/Shift+M (e.g. macOS minimise) through,
+    // and don't fire while typing in a form field.
+    if (e.shiftKey || e.metaKey || e.ctrlKey || e.altKey) return;
+    const el = document.activeElement;
+    if (
+      el instanceof HTMLElement &&
+      (el.isContentEditable || el.tagName === "INPUT" || el.tagName === "TEXTAREA")
+    ) {
+      return;
+    }
     e.preventDefault();
     if (audio.paused) {
       if (!audio.src) {
