@@ -85,4 +85,5 @@ if (TRACKS.length > 0 && !window.__bgMusic) {
   });
 }
 
+// eslint-disable-next-line unicorn/require-module-specifiers -- marks this side-effect script as a module so the `declare global` above is valid
 export {};

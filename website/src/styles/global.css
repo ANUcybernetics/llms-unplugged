@@ -13,11 +13,6 @@
      decks, where deck/theme.css provides its own value). */
   --color-bg: #0a0a0a;
 
-  /* Typography */
-  --font-body:
-    var(--font-public-sans, "Public Sans"), -apple-system, blinkmacsystemfont, "Segoe UI", roboto,
-    oxygen, ubuntu, cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-
   /* Spacing */
   --nav-height: 4rem;
   --content-max-width: 48rem;

@@ -40,7 +40,10 @@ export default defineConfig({
       // data-* attributes on sections).
       extraSlideClasses: ["socy-logo", "auto-animate"],
     }),
-    sitemap(),
+    sitemap({
+      // Decks are interactive Reveal.js presentations, not indexable pages.
+      filter: (page) => !page.includes("/decks/"),
+    }),
     astromotion({
       theme: "./src/decks/theme.css",
       fontVariables: ["--font-libertinus-serif"],

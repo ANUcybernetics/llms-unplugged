@@ -12,8 +12,7 @@ word appears, so your eye can scan "what's the colour of the word I just wrote?"
 before you read any text. It really helps with the needle-in-a-haystack aspect
 of the activity.
 
-Until last month the palette held eight colours, hand-picked in OKLCH (TODO
-link) at a fixed lightness so white text would read on every coloured box.
+Until last month the palette held eight colours, hand-picked in [OKLCH](https://oklch.com) at a fixed lightness so white text would read on every coloured box.
 _Green Eggs and Ham_ has about sixty unique tokens trying to share eight
 buckets, which works out to seven or eight words sharing each colour. Plenty of
 colour collisions, plenty of moments where you have to slow down and re-read.
