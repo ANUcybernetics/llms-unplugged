@@ -411,7 +411,7 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
         frontmatter_raw.push_str(&line);
     }
 
-    let yaml: serde_yaml::Value = serde_yaml::from_str(&frontmatter_raw).map_err(|e| {
+    let yaml: serde_yaml_ng::Value = serde_yaml_ng::from_str(&frontmatter_raw).map_err(|e| {
         io::Error::new(
             io::ErrorKind::InvalidData,
             format!("Invalid YAML frontmatter: {e}"),
@@ -598,9 +598,9 @@ pub fn append_tool_tokens(
 }
 
 fn parse_frontmatter(frontmatter_raw: &str, n: usize) -> io::Result<Metadata> {
-    use serde_yaml::Value;
+    use serde_yaml_ng::Value;
 
-    let yaml: Value = serde_yaml::from_str(frontmatter_raw).map_err(|e| {
+    let yaml: Value = serde_yaml_ng::from_str(frontmatter_raw).map_err(|e| {
         io::Error::new(
             io::ErrorKind::InvalidData,
             format!("Invalid YAML frontmatter: {e}"),
