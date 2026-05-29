@@ -3,6 +3,7 @@ import { globSync, readFileSync } from "node:fs";
 import matter from "gray-matter";
 import { loadGlossary } from "../src/lib/glossary";
 import { SIDEBAR_SLUGS } from "../src/lib/sidebar";
+import { topicOrder } from "../src/lib/topics";
 
 /**
  * Regression tests for the 2026-04-13 dogfood audit.
@@ -91,6 +92,21 @@ describe("lesson consistency", () => {
     expect(
       orphans,
       `Glossary links lead to lessons not in the sidebar (users hit a nav dead-end):\n${orphans.join("\n")}`,
+    ).toEqual([]);
+  });
+
+  it("every lesson topic resolves to a known topic in topics.ts", () => {
+    const lessons = loadLessons();
+    const known = new Set<string>(topicOrder);
+    const bad: string[] = [];
+    for (const [slug, data] of lessons) {
+      if (data.topic && !known.has(data.topic)) {
+        bad.push(`${slug}: topic '${data.topic}'`);
+      }
+    }
+    expect(
+      bad,
+      `Lessons reference topics absent from topics.ts topicOrder:\n${bad.join("\n")}`,
     ).toEqual([]);
   });
 });

@@ -4,7 +4,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const newsDir = join(__dirname, "../news");
+const newsDir = join(__dirname, "../src/content/news");
 
 function slugify(text: string): string {
   return text

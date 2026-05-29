@@ -19,6 +19,7 @@ export const EXTENSIONS = [
   "sampling",
   "beam-search",
   "agentic-tool-use",
+  "sycophancy",
   "context-columns",
   "word-embeddings",
   "lora",
