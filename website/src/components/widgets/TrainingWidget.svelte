@@ -41,19 +41,13 @@
   let bigrams = $derived(getBigrams(tokens));
   let vocabulary = $derived(getVocabulary(tokens));
 
-  const machine = createTrainingMachine(untrack(() => bigrams.length));
+  // Derived so a fresh machine (with the correct totalSteps) is built whenever
+  // the text changes; the scheduler resets to its initialState on the swap, so
+  // reset() and loop-restart can't restore a stale step count.
+  let machine = $derived(createTrainingMachine(bigrams.length));
   const scheduler = createScheduler(() => machine, {
     defaultInterval: PLAYBACK_CONFIG.TRAINING_DEFAULT_STEP_INTERVAL_MS,
     loop: () => loop,
-  });
-
-  $effect(() => {
-    const newTotal = bigrams.length;
-    const currentStep = untrack(() => scheduler.state.currentStep);
-    scheduler.setState({
-      currentStep: Math.min(currentStep, newTotal),
-      totalSteps: newTotal,
-    });
   });
 
   let gridCounts = $derived.by(() => {
