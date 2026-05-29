@@ -10,9 +10,10 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  keyIdea?: string;
 }
 
-const { title, description, ogImage = "/og-image.jpg" } = Astro.props;
+const { title, description, ogImage = "/og-image.jpg", keyIdea } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/$/, "") + "/";
 const sidebar = await getLessonSidebar();
 const ogImageUrl = new URL(ogImage, Astro.site).href;
@@ -63,6 +64,13 @@ const slug = currentPath.split("/").filter(Boolean).pop();
   </Fragment>
 
   <div class="prose">
+    {
+      keyIdea && (
+        <p class="lesson-key-idea">
+          <strong>Key idea:</strong> {keyIdea}
+        </p>
+      )
+    }
     <slot />
   </div>
   <div class="edit-link">
@@ -75,6 +83,15 @@ const slug = currentPath.split("/").filter(Boolean).pop();
 </SidebarLayout>
 
 <style>
+  .lesson-key-idea {
+    margin: 0 0 1.5rem;
+    padding: 0.75rem 1rem;
+    border-inline-start: 4px solid var(--at-accent);
+    background: var(--at-accent-soft);
+    border-radius: 0 0.25rem 0.25rem 0;
+    font-size: 1.05rem;
+  }
+
   .edit-link {
     margin-top: 3rem;
     padding-top: 1rem;
