@@ -30,11 +30,12 @@
     "check": "pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm run test"
   },
   "dependencies": {
-    "@astrojs/mdx": "^5.0.6",
+    "@astrojs/markdown-satteri": "^0.2.1",
+    "@astrojs/mdx": "^6.0.1",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.3",
     "@astrojs/svelte": "^8.1.2",
-    "astro": "^6.3.8",
+    "astro": "^6.4.2",
     "astro-theme-anu": "git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#main&path:/packages/astro-theme-anu",
     "astromotion": "github:benswift/astromotion",
     "js-yaml": "^4.1.1",

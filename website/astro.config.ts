@@ -32,13 +32,6 @@ export default defineConfig({
       // mdx: false because we register @astrojs/mdx above (with deck remark
       // plugins from astromotion) before anuTheme runs.
       mdx: false,
-      // socy-logo is a project-specific slide class defined in theme.css
-      // for the ANU Society of Cybernetics animated logo slide.
-      // auto-animate is a sentinel class converted at runtime to the
-      // Reveal.js `data-auto-animate` attribute by a small inline script in
-      // cutouts-3h.deck.mdx (astromotion has no directive for arbitrary
-      // data-* attributes on sections).
-      extraSlideClasses: ["socy-logo", "auto-animate"],
     }),
     sitemap({
       // Decks are interactive Reveal.js presentations, not indexable pages.
