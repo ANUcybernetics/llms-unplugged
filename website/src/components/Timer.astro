@@ -2,50 +2,37 @@
 interface Props {
   /** Countdown length in minutes. */
   minutes?: number;
+  /** Pin the timer to the top-right of the slide as a large overlay. */
+  overlay?: boolean;
 }
 
-const { minutes = 10 } = Astro.props;
+const { minutes = 10, overlay = false } = Astro.props;
 
 const totalSeconds = Math.max(1, Math.round(minutes * 60));
 const mm = Math.floor(totalSeconds / 60);
 const ss = totalSeconds % 60;
 const initialLabel = `${mm}:${String(ss).padStart(2, "0")}`;
-
-// SVG ring geometry (viewBox 0 0 100 100, r = 45).
-const CIRCUMFERENCE = 2 * Math.PI * 45;
 ---
 
-<div class="timer" data-timer data-total={totalSeconds}>
-  <div class="row">
-    <button type="button" class="adjust" data-adjust="-60" aria-label="Subtract one minute">
+<div
+  class:list={["timer", { overlay }]}
+  data-timer
+  data-total={totalSeconds}
+  role="timer"
+>
+  <span class="time" data-time>{initialLabel}</span>
+
+  <div class="timer-controls">
+    <button type="button" class="ctl" data-toggle aria-label="Start timer">start</button>
+    <button type="button" class="ctl" data-reset aria-label="Reset timer">reset</button>
+    <button type="button" class="ctl" data-adjust="60" aria-label="Add one minute">+1</button>
+    <button type="button" class="ctl" data-adjust="-60" aria-label="Subtract one minute">
       &minus;1
     </button>
-
-    <button type="button" class="dial" data-toggle aria-label="Start timer">
-      <svg viewBox="0 0 100 100" aria-hidden="true">
-        <circle class="track" cx="50" cy="50" r="45"></circle>
-        <circle
-          class="progress"
-          cx="50"
-          cy="50"
-          r="45"
-          stroke-dasharray={CIRCUMFERENCE}
-          stroke-dashoffset="0"></circle>
-      </svg>
-      <span class="time" data-time>{initialLabel}</span>
-      <span class="hint" data-hint>start</span>
-    </button>
-
-    <button type="button" class="adjust" data-adjust="60" aria-label="Add one minute">
-      +1
-    </button>
   </div>
-
-  <button type="button" class="reset" data-reset aria-label="Reset timer">reset</button>
 </div>
 
 <script>
-  const CIRCUMFERENCE = 2 * Math.PI * 45;
   const MAX_MS = 99 * 60 * 1000;
 
   function format(ms: number): string {
@@ -59,12 +46,12 @@ const CIRCUMFERENCE = 2 * Math.PI * 45;
 
     const totalMs = Math.max(1, Number(root.dataset.total) || 600) * 1000;
     const timeEl = root.querySelector<HTMLElement>("[data-time]")!;
-    const hintEl = root.querySelector<HTMLElement>("[data-hint]")!;
-    const progress = root.querySelector<SVGCircleElement>(".progress")!;
     const toggleBtn = root.querySelector<HTMLButtonElement>("[data-toggle]")!;
 
     let remaining = totalMs;
     let running = false;
+    // Absolute timestamp the countdown reaches zero; recomputed each tick so
+    // the display never drifts even if the interval is throttled.
     let endAt = 0;
     let interval: ReturnType<typeof setInterval> | null = null;
 
@@ -76,13 +63,10 @@ const CIRCUMFERENCE = 2 * Math.PI * 45;
     };
 
     const render = () => {
-      const finished = remaining <= 0;
       timeEl.textContent = format(remaining);
-      const fraction = Math.max(0, Math.min(1, remaining / totalMs));
-      progress.style.strokeDashoffset = String(CIRCUMFERENCE * (1 - fraction));
       root.classList.toggle("running", running);
-      root.classList.toggle("finished", finished);
-      hintEl.textContent = finished ? "time's up" : running ? "pause" : "start";
+      root.classList.toggle("finished", remaining <= 0);
+      toggleBtn.textContent = running ? "pause" : "start";
       toggleBtn.setAttribute("aria-label", running ? "Pause timer" : "Start timer");
       root.setAttribute("aria-label", `${format(remaining)} remaining`);
     };
@@ -127,22 +111,16 @@ const CIRCUMFERENCE = 2 * Math.PI * 45;
     };
 
     toggleBtn.addEventListener("click", () => (running ? pause() : start()));
-    root
-      .querySelector("[data-reset]")
-      ?.addEventListener("click", reset);
+    root.querySelector("[data-reset]")?.addEventListener("click", reset);
     root.querySelectorAll<HTMLElement>("[data-adjust]").forEach((btn) => {
-      btn.addEventListener("click", () =>
-        adjust(Number(btn.dataset.adjust) * 1000),
-      );
+      btn.addEventListener("click", () => adjust(Number(btn.dataset.adjust) * 1000));
     });
 
     render();
   }
 
   const boot = () =>
-    document
-      .querySelectorAll<HTMLElement>("[data-timer]")
-      .forEach(initTimer);
+    document.querySelectorAll<HTMLElement>("[data-timer]").forEach(initTimer);
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
@@ -153,119 +131,69 @@ const CIRCUMFERENCE = 2 * Math.PI * 45;
 
 <style>
   .timer {
-    --timer-size: 7.5em;
     --timer-done: #e2574c;
 
-    /* Ring + controls use currentColor so they stay visible on both the dark
-       activity slides and the gold `impact` slide (where a gold ring would
-       vanish into the background). */
+    /* Anchor to the deck root (16px) so em-based sizing is predictable on any
+       slide --- otherwise the timer inherits a hero slide's large font and
+       balloons. */
+    font-size: 1rem;
+    line-height: 1;
     display: inline-flex;
     flex-direction: column;
+    align-items: center;
+    gap: 0.7em;
+  }
+
+  /* Overlay: pin to the slide's top-right so the timer can sit on top of any
+     slide (e.g. a hero). !important overrides astromotion's
+     `section:has(.slide-bg) > :not(.slide-bg) { position: relative }`. */
+  .timer.overlay {
+    position: absolute !important;
+    bottom: 2rem;
+    right: 2.4rem;
+    z-index: 5;
+    align-items: flex-end;
+  }
+
+  /* Match the hero h1: regular-weight Libertinus Serif (the ANU deck theme
+     sets headings to font-weight 400). */
+  .time {
+    font-size: 3.6rem;
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .timer.overlay .time {
+    font-size: 11rem;
+  }
+
+  .timer-controls {
+    display: flex;
     align-items: center;
     gap: 0.4em;
   }
 
-  .row {
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-  }
-
-  .dial {
-    position: relative;
-    width: var(--timer-size);
-    height: var(--timer-size);
-    padding: 0;
-    border: none;
-    border-radius: 50%;
-    background: none;
-    color: inherit;
-    cursor: pointer;
-    display: grid;
-    place-items: center;
-  }
-
-  .dial svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    transform: rotate(-90deg);
-  }
-
-  .track {
-    fill: none;
-    stroke: color-mix(in srgb, currentColor 22%, transparent);
-    stroke-width: 6;
-  }
-
-  .progress {
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 6;
-    stroke-linecap: round;
-    transition: stroke-dashoffset 0.25s linear;
-  }
-
-  .time {
-    grid-area: 1 / 1;
-    font-size: 2em;
-    font-weight: 700;
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-    transform: translateY(0.12em);
-  }
-
-  .hint {
-    grid-area: 1 / 1;
-    transform: translateY(2em);
-    font-size: 0.6em;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    opacity: 0.55;
-  }
-
-  .adjust {
-    border: 1px solid color-mix(in srgb, currentColor 45%, transparent);
+  .ctl {
+    border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
     border-radius: 999px;
     background: none;
     color: inherit;
     cursor: pointer;
-    width: 1.9em;
-    height: 1.9em;
-    font-size: 0.9em;
+    padding: 0.25em 0.7em;
+    font-size: 0.8rem;
     font-weight: 600;
     font-variant-numeric: tabular-nums;
-    opacity: 0.7;
+    letter-spacing: 0.04em;
+    opacity: 0.6;
     transition:
       opacity 0.2s,
       background-color 0.2s;
   }
 
-  .reset {
-    border: none;
-    background: none;
-    color: inherit;
-    cursor: pointer;
-    font-size: 0.6em;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    opacity: 0.4;
-    transition: opacity 0.2s;
-  }
-
-  .adjust:hover,
-  .reset:hover,
-  .dial:hover .hint {
-    opacity: 0.9;
-  }
-
-  .adjust:hover {
-    background: color-mix(in srgb, currentColor 15%, transparent);
-  }
-
-  .finished .progress {
-    stroke: var(--timer-done);
+  .ctl:hover {
+    opacity: 1;
+    background: color-mix(in srgb, currentColor 14%, transparent);
   }
 
   .finished .time {
@@ -280,10 +208,6 @@ const CIRCUMFERENCE = 2 * Math.PI * 45;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .progress {
-      transition: none;
-    }
-
     .finished .time {
       animation: none;
     }
