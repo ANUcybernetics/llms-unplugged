@@ -147,13 +147,16 @@ const initialLabel = `${mm}:${String(ss).padStart(2, "0")}`;
   const boot = () =>
     document.querySelectorAll<HTMLElement>("[data-timer]").forEach(initTimer);
 
-  // Press "T" to start/pause the timer on the current slide only. Reveal.js
+  // Press T to start/pause the timer on the current slide only. Reveal.js
   // leaves T unbound (its keys are arrows/Space/N/P, B, F, O, S, ?), and
   // scoping to `section.present` means decks with several timers only toggle
   // the one on screen.
   document.addEventListener("keydown", (e) => {
-    if (e.key !== "t" && e.key !== "T") return;
-    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.code !== "KeyT" || e.repeat) return;
+    // Plain T only: let Cmd/Ctrl/Alt/Shift+T (e.g. new tab) through, and don't
+    // fire while typing in a form field. Mirrors the music toggle in
+    // bg-music.ts.
+    if (e.shiftKey || e.metaKey || e.ctrlKey || e.altKey) return;
     const el = document.activeElement;
     if (
       el instanceof HTMLElement &&
