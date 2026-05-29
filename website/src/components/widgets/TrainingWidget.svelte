@@ -24,13 +24,18 @@
 
   let { initialText, loop = true }: Props = $props();
 
-  let inputText = $state(untrack(() => initialText ?? getTrainingText()));
+  // With initialText the widget is a standalone instance; without it, it reads
+  // and writes the shared training-text store so co-located widgets stay in sync.
+  let localText = $state(untrack(() => initialText ?? ""));
+  let inputText = $derived(initialText != null ? localText : getTrainingText());
 
-  $effect(() => {
-    if (!initialText) {
-      setTrainingText(inputText);
+  function setText(value: string) {
+    if (initialText != null) {
+      localText = value;
+    } else {
+      setTrainingText(value);
     }
-  });
+  }
 
   let tokens = $derived(parseTokens(inputText));
   let bigrams = $derived(getBigrams(tokens));
@@ -102,7 +107,8 @@
             class="text-input"
             rows="2"
             placeholder="Enter text to train on..."
-            bind:value={inputText}
+            value={inputText}
+            oninput={(e) => setText(e.currentTarget.value)}
           ></textarea>
         </div>
 

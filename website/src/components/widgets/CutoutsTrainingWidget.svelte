@@ -17,11 +17,7 @@
 
   let { loop = true }: Props = $props();
 
-  let inputText = $state(getTrainingText());
-
-  $effect(() => {
-    setTrainingText(inputText);
-  });
+  let inputText = $derived(getTrainingText());
 
   let tokens = $derived(parseTokens(inputText));
   let bigrams = $derived(getBigrams(tokens));
@@ -96,7 +92,8 @@
           class="text-input"
           rows="2"
           placeholder="Enter text to train on..."
-          bind:value={inputText}
+          value={inputText}
+          oninput={(e) => setTrainingText(e.currentTarget.value)}
         ></textarea>
       </div>
 

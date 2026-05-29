@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, untrack } from "svelte";
+  import { onMount } from "svelte";
   import { createScheduler } from "../../lib/scheduler.svelte";
   import {
     createCutoutsGenerationMachine,
@@ -27,11 +27,7 @@
 
   let { loop = true }: Props = $props();
 
-  let trainingText = $state(getTrainingText());
-
-  $effect(() => {
-    setTrainingText(trainingText);
-  });
+  let trainingText = $derived(getTrainingText());
 
   let tokens = $derived(parseTokens(trainingText));
   let vocabulary = $derived(getVocabulary(tokens));
@@ -114,7 +110,8 @@
           class="text-input"
           rows="2"
           placeholder="Enter training text..."
-          bind:value={trainingText}
+          value={trainingText}
+          oninput={(e) => setTrainingText(e.currentTarget.value)}
         ></textarea>
       </div>
 

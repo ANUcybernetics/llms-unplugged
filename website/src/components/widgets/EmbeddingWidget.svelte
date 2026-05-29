@@ -14,11 +14,7 @@
   import VectorComparison from "../VectorComparison.svelte";
   import DistanceMatrix from "../DistanceMatrix.svelte";
 
-  let inputText = $state(getTrainingText());
-
-  $effect(() => {
-    setTrainingText(inputText);
-  });
+  let inputText = $derived(getTrainingText());
 
   let tokens = $derived(parseTokens(inputText));
   let vocabulary = $derived(getVocabulary(tokens));
@@ -66,7 +62,8 @@
           class="text-input"
           rows="2"
           placeholder="Enter text to train on..."
-          bind:value={inputText}
+          value={inputText}
+          oninput={(e) => setTrainingText(e.currentTarget.value)}
         ></textarea>
       </div>
 
