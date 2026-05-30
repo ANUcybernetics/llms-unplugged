@@ -300,50 +300,6 @@
   align-items: baseline;
 }
 
-/* Auto-animate entry tweaks for the cutouts-overview transition (sliding
-   window → "every pair becomes a cutout"). Reveal's default entry fades
-   unmatched elements in via opacity, but that hides the matched
-   .cutout-previous-word that's animating from its running-text position
-   into the prev slot of each cutout. We need to keep the wrapping
-   containers fully opaque during the transition and let the paper box
-   materialise via background/border instead. */
-.reveal .cutout-paper-prev[data-auto-animate-unmatched="new"],
-.reveal .cutout-paper-next[data-auto-animate-unmatched="new"] {
-  animation: none !important;
-}
-
-.reveal .cutout-paper[data-auto-animate-unmatched="new"] {
-  animation: cutout-paper-materialize 0.5s ease 0.4s 1 normal forwards !important;
-}
-
-@keyframes cutout-paper-materialize {
-  from {
-    background: transparent;
-    border-color: transparent;
-  }
-
-  to {
-    background: hsl(0deg 0% 12%);
-    border-color: hsl(0deg 0% 24%);
-  }
-}
-
-/* A worked-example "spread" arranges multiple CutoutRows (one per previous
-   word) with a larger horizontal gap so previous-word groups read as
-   distinct piles. Each inner row stays on one line so a group is never
-   split across visual rows. */
-.reveal .slides section .cutout-spread {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25em 1.5em;
-  align-items: center;
-  font-size: 0.85em;
-}
-
-.reveal .slides section .cutout-spread .cutout-row {
-  flex-wrap: nowrap;
-}
-
 /* 3-column worked-example table: short instruction | the cutout you pick |
    your page (running output). Mirrors the table in the printed instructions
    booklet (cli/tokenized-cutouts.typ) so the deck and the cutouts handout

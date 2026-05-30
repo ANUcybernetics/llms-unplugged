@@ -18,226 +18,63 @@
 
 ---
 
-{/* _class: auto-animate */}
-
 ## After preprocessing
 
 lowercase, keep `.` and `!` as **tokens**:
 
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={0} />
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="tokens" />
 
 ---
 
-{/* _class: auto-animate */}
+## A pair of words is a cutout
 
-## Slide a window over each pair of words
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="example" highlight="green eggs" />
 
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={1} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={2} />
+any two words sitting next to each other make one cutout---the first word, then
+the one that comes after it
 
 ---
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={3} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={4} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={5} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={6} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={7} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={8} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={9} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={10} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={11} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={12} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={13} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={14} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={15} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={16} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={17} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={18} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={19} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={20} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={21} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={22} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={23} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={24} />
-
----
-
-{/* _class: auto-animate */}
-
-## Slide a window over each pair of words
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={25} />
-
----
-
-{/* _class: auto-animate */}
 
 ## Every pair becomes a cutout
 
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={26} />
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="flow" />
+
+each cutout overlaps the next---a cutout ends with the word the next one starts
+with
+
+{/* notes:
+This section used to slide an animated window across the text, one slide per
+pair. The cutouts already show that overlap themselves (a cutout ends with the
+word the next cutout starts with), so it's now three static slides: the tokens,
+one pair highlighted as a cutout, then every pair as a cutout.
+*/}
 
 ---
 
-{/* _class: auto-animate */}
+{/* _animate: pile */}
 
-## Every pair becomes a cutout
+## Now they're just a pile
 
-<CutoutsOverview tokens={OVERVIEW_TOKENS} step={27} />
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="scatter" seed={7} />
+
+cut them out and tip them onto the table---the same cutouts, no longer in order
+
+---
+
+{/* _animate: pile */}
+
+## Now they're just a pile
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="scatter" seed={42} />
+
+shuffle them however you like---the model is the pile, not the order
+
+{/* notes:
+Two "scatter" frames of the *same* cutouts with different seeds. Both carry
+{/* _animate: pile *​/}, so Reveal.js auto-animate glides each cutout (matched by
+its data-id="cut-N") from one arrangement to the next --- it genuinely looks
+shuffled. This is the hinge into Training/Generation: the model is an unordered
+bag you rummage through, so order stops mattering once the text is cut up. Add
+more {/* _animate: pile *​/} + <CutoutsOverview mode="scatter" seed={N}/> slides
+(any seed) for a longer shuffle.
+*/}
