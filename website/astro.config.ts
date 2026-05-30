@@ -1,5 +1,4 @@
 import { defineConfig, fontProviders } from "astro/config";
-import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import svelte from "@astrojs/svelte";
 import anuTheme from "astro-theme-anu";
@@ -19,7 +18,6 @@ export default defineConfig({
   ],
   integrations: [
     svelte(),
-    mdx({ remarkPlugins: [...deckRemarkPlugins] }),
     anuTheme({
       name: "LLMs Unplugged",
       llmsTxt: true,
@@ -29,9 +27,9 @@ export default defineConfig({
       // changes. Other minors: empty-table-header on word-embeddings,
       // heading-order on /news/.
       checkA11y: false,
-      // mdx: false because we register @astrojs/mdx above (with deck remark
-      // plugins from astromotion) before anuTheme runs.
-      mdx: false,
+      // Deck plugins run through the theme's markdown processor; the plain
+      // mdx() the theme auto-registers inherits them.
+      extraRemarkPlugins: deckRemarkPlugins,
     }),
     sitemap({
       // Decks are interactive Reveal.js presentations, not indexable pages.
