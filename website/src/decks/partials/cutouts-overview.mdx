@@ -67,14 +67,45 @@ cut them out and tip them onto the table---the same cutouts, no longer in order
 
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="scatter" seed={42} />
 
-shuffle them however you like---the model is the pile, not the order
+shuffle them around...
+
+---
+
+{/* _animate: pile */}
+
+## Now they're just a pile
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="scatter" seed={13} />
+
+...and again...
+
+---
+
+{/* _animate: pile */}
+
+## Now they're just a pile
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="scatter" seed={99} />
+
+...it really doesn't matter how they're arranged...
+
+---
+
+{/* _animate: pile */}
+
+## Now they're just a pile
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="scatter" seed={4} />
+
+the model is the pile, not the order
 
 {/* notes:
-Two "scatter" frames of the *same* cutouts with different seeds. Both carry
+Five "scatter" frames of the *same* cutouts with different seeds. All carry
 {/* _animate: pile *​/}, so Reveal.js auto-animate glides each cutout (matched by
-its data-id="cut-N") from one arrangement to the next --- it genuinely looks
-shuffled. This is the hinge into Training/Generation: the model is an unordered
-bag you rummage through, so order stops mattering once the text is cut up. Add
-more {/* _animate: pile *​/} + <CutoutsOverview mode="scatter" seed={N}/> slides
-(any seed) for a longer shuffle.
+its data-id="cut-N") from one arrangement to the next --- each click reshuffles
+the pile while the heading stays put. Talk across them: this is the hinge into
+Training/Generation --- the model is an unordered bag you rummage through, so
+order stops mattering once the text is cut up. Add or remove
+{/* _animate: pile *​/} + <CutoutsOverview mode="scatter" seed={N}/> slides
+(any seed) to lengthen or shorten the shuffle.
 */}
