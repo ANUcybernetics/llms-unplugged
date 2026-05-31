@@ -24,6 +24,57 @@ the chain grows (like dominoes)
 
 ---
 
+{/* _animate: hunt */}
+
+## Find the next cutout
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} current="eggs and" target="and" stage="all" />
+
+you've just written "...green eggs **and**"---now hunt the pile for a cutout whose
+first word is "and"
+
+---
+
+{/* _animate: hunt */}
+
+## Find the next cutout
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} current="eggs and" target="and" stage="colour" />
+
+scan for the colour first---your eye jumps to the cutouts the same colour as "and"
+
+---
+
+{/* _animate: hunt */}
+
+## Find the next cutout
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} current="eggs and" target="and" stage="word" />
+
+now read them---one was the right colour but the wrong word ("there"), so it drops
+out
+
+---
+
+{/* _animate: hunt */}
+
+## Find the next cutout
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} current="eggs and" target="and" stage="pick" pick="ham" />
+
+pick one (roll a die!) and add its next word to your page
+
+{/* notes:
+A worked "find the next cutout" on the same pile from the overview. The current
+cutout (eggs→and) fixes the word we're matching ("and"). Four auto-animate frames
+(id "hunt") narrow the pile: everything lit, then "and"'s colour (a fast scan ---
+note "there" shares that colour), then the real "and" cutouts (there→. drops out),
+then one pick. Drives home that colour is a quick filter but you confirm the word.
+Adjust target/current/pick or the seed to vary the demo.
+*/}
+
+---
+
 ## Worked example: chain it together
 
 <div class="worked-example-grid"><div class="we-header"></div><div class="we-header">cutout you pick</div><div class="we-header">your page</div><div class="we-step">start</div><Cutout prev="i" next="am" /><div class="we-page"><strong>i am</strong></div><div class="we-step">match <Token next>am</Token></div><Cutout prev="am" next="sam" /><div class="we-page">i am <strong>sam</strong></div><div class="we-step">match <Token next>sam</Token></div><Cutout prev="sam" next="." /><div class="we-page">i am sam <strong>.</strong></div><div class="we-step">match <Token next>.</Token></div><Cutout prev="." next="i" /><div class="we-page">i am sam . <strong>i</strong></div><div class="we-step">match <Token next>i</Token></div><Cutout prev="i" next="do" /><div class="we-page">i am sam . i <strong>do</strong></div></div>
