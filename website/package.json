@@ -37,7 +37,7 @@
     "@astrojs/svelte": "^8.1.2",
     "astro": "^6.4.2",
     "astro-theme-anu": "git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#astro-theme-anu@v0.4.0&path:/packages/astro-theme-anu",
-    "astromotion": "github:benswift/astromotion#semver:^0.5.0",
+    "astromotion": "git+https://github.com/benswift/astromotion.git#v0.5.1",
     "js-yaml": "^4.1.1",
     "lightningcss": "^1.32.0",
     "mammoth": "^1.12.0",
