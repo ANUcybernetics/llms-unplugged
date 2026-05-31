@@ -175,7 +175,7 @@
             >{huntCurrent.prev}</span
           >
         </span>
-        <span class="cutout-paper-next hunt-target-box">
+        <span class="cutout-paper-next">
           <span class="cutout-next-word {tokenColorClass(huntCurrent.next)}"
             >{huntCurrent.next}</span
           >
@@ -372,12 +372,6 @@
 
   .hunt-current .cutout-paper {
     font-size: 1em;
-  }
-
-  .hunt-current .hunt-target-box {
-    outline: 2px solid var(--anu-gold);
-    outline-offset: 3px;
-    border-radius: 5px;
   }
 
   /* The current cutout above the pile eats vertical room, so the hunt pile runs
