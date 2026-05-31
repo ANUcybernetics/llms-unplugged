@@ -5,11 +5,9 @@
   interface Props {
     vocabulary: string[];
     getCount: (from: string, to: string) => number;
-    counts?: Map<string, number>;
     highlightedRow?: string | null;
-    highlightedCol?: string | null;
-    isHighlightedCol?: (word: string) => boolean;
-    isCurrentCell?: (from: string, to: string) => boolean;
+    highlightedCols?: Set<string>;
+    currentCell?: readonly [string, string] | null;
     clickableRows?: boolean;
     isRowClickable?: (word: string) => boolean;
     isDeadEnd?: (word: string) => boolean;
@@ -21,11 +19,9 @@
   let {
     vocabulary,
     getCount,
-    counts,
     highlightedRow = null,
-    highlightedCol = null,
-    isHighlightedCol,
-    isCurrentCell,
+    highlightedCols = new Set<string>(),
+    currentCell = null,
     clickableRows = false,
     isRowClickable = () => true,
     isDeadEnd = () => false,
@@ -34,14 +30,10 @@
     onrowclick,
   }: Props = $props();
 
-  function checkHighlightedCol(word: string): boolean {
-    if (isHighlightedCol) return isHighlightedCol(word);
-    return highlightedCol === word;
-  }
-
-  function checkCurrentCell(from: string, to: string): boolean {
-    if (isCurrentCell) return isCurrentCell(from, to);
-    return highlightedRow === from && highlightedCol === to;
+  function isCurrentCell(from: string, to: string): boolean {
+    return (
+      currentCell != null && currentCell[0] === from && currentCell[1] === to
+    );
   }
 
   function handleRowClick(word: string) {
@@ -60,7 +52,7 @@
           <th
             scope="col"
             title={word}
-            class:highlight-col={checkHighlightedCol(word)}
+            class:highlight-col={highlightedCols.has(word)}
             class:punctuation={isPunctuation(word)}
           >
             <code>{word}</code>
@@ -93,21 +85,17 @@
           {#each vocabulary as colWord}
             <td
               class="grid-cell"
-              class:in-highlighted-col={checkHighlightedCol(colWord)}
-              class:highlight-col={checkHighlightedCol(colWord) &&
+              class:in-highlighted-col={highlightedCols.has(colWord)}
+              class:highlight-col={highlightedCols.has(colWord) &&
                 highlightedRow === rowWord}
               class:highlight-row={highlightedRow === rowWord ||
                 numericRows.has(rowWord)}
-              class:current-cell={checkCurrentCell(rowWord, colWord)}
-              class:flash={checkCurrentCell(rowWord, colWord)}
+              class:current-cell={isCurrentCell(rowWord, colWord)}
+              class:flash={isCurrentCell(rowWord, colWord)}
             >
-              {#if counts}
-                {tally(counts.get(`${rowWord}->${colWord}`) || 0) || "\u200b"}
-              {:else}
-                {numericRows.has(rowWord)
-                  ? getCount(rowWord, colWord)
-                  : tally(getCount(rowWord, colWord)) || ""}
-              {/if}
+              {numericRows.has(rowWord)
+                ? getCount(rowWord, colWord)
+                : tally(getCount(rowWord, colWord)) || "\u200b"}
             </td>
           {/each}
         </tr>

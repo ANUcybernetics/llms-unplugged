@@ -87,6 +87,15 @@
     return gridCounts.get(`${from}->${to}`) || 0;
   }
 
+  // One bigram is "current" each step: its row + column band-highlight and the
+  // cell at their intersection flashes as it's tallied.
+  let highlightedCols: Set<string> = $derived(
+    highlights.col ? new Set([highlights.col]) : new Set(),
+  );
+  let currentCell: [string, string] | null = $derived(
+    highlights.row && highlights.col ? [highlights.row, highlights.col] : null,
+  );
+
   onMount(() => scheduler.cleanup);
 </script>
 
@@ -128,9 +137,9 @@
         <BigramGrid
           {vocabulary}
           {getCount}
-          counts={gridCounts}
           highlightedRow={highlights.row}
-          highlightedCol={highlights.col}
+          {highlightedCols}
+          {currentCell}
         />
       </div>
 

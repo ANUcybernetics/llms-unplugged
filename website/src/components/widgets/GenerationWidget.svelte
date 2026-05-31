@@ -105,11 +105,12 @@
     if (newState) scheduler.setState(newState);
   }
 
-  function isHighlightedCol(word: string): boolean {
-    if (phase.kind !== "showing-options" && phase.kind !== "rolled")
-      return false;
-    return currentRowOptions.includes(word);
-  }
+  // Once a row is picked, band-highlight every column it can transition to.
+  let highlightedCols: Set<string> = $derived(
+    phase.kind === "showing-options" || phase.kind === "rolled"
+      ? new Set(currentRowOptions)
+      : new Set(),
+  );
 
   onMount(() => scheduler.cleanup);
 </script>
@@ -148,7 +149,7 @@
           {vocabulary}
           getCount={model.getCount}
           highlightedRow={currentWord}
-          {isHighlightedCol}
+          {highlightedCols}
           clickableRows={outputWords.length === 0}
           isRowClickable={(w) => model.hasSuccessors(w)}
           isDeadEnd={(w) => !model.hasSuccessors(w)}
