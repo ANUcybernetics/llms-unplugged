@@ -163,84 +163,76 @@
       return { ...bg, live, picked: picked && stage === "pick" };
     });
   });
+
+  function cutoutStyle(p: { rot: number; dx: number; dy: number }): string {
+    return `--rot:${p.rot}deg; --dx:${p.dx}em; --dy:${p.dy}em;`;
+  }
 </script>
+
+{#snippet cutout(c: {
+  prev: string;
+  next: string;
+  id?: string;
+  dimmed?: boolean;
+  picked?: boolean;
+  style?: string;
+})}
+  <span
+    class="cutout-paper"
+    class:is-dimmed={c.dimmed}
+    class:is-picked={c.picked}
+    data-id={c.id}
+    style={c.style}
+  >
+    <span class="cutout-paper-prev">
+      <span class="cutout-previous-word {tokenColorClass(c.prev)}"
+        >{c.prev}</span
+      >
+    </span>
+    <span class="cutout-paper-next">
+      <span class="cutout-next-word {tokenColorClass(c.next)}">{c.next}</span>
+    </span>
+  </span>
+{/snippet}
 
 {#if mode === "hunt"}
   {#if huntCurrent}
     <div class="hunt-current">
       <span class="hunt-current-label">last cutout</span>
-      <span class="cutout-paper" data-id="hunt-current">
-        <span class="cutout-paper-prev">
-          <span class="cutout-previous-word {tokenColorClass(huntCurrent.prev)}"
-            >{huntCurrent.prev}</span
-          >
-        </span>
-        <span class="cutout-paper-next">
-          <span class="cutout-next-word {tokenColorClass(huntCurrent.next)}"
-            >{huntCurrent.next}</span
-          >
-        </span>
-      </span>
+      {@render cutout({
+        prev: huntCurrent.prev,
+        next: huntCurrent.next,
+        id: "hunt-current",
+      })}
     </div>
   {/if}
   <div class="cutout-scatter cutout-hunt">
     {#each huntPile as bg (bg.idx)}
-      <span
-        class="cutout-paper"
-        class:is-dimmed={!bg.live}
-        class:is-picked={bg.picked}
-        data-id="cut-{bg.idx}"
-        style="--rot:{bg.rot}deg; --dx:{bg.dx}em; --dy:{bg.dy}em;"
-      >
-        <span class="cutout-paper-prev">
-          <span class="cutout-previous-word {tokenColorClass(bg.prev)}"
-            >{bg.prev}</span
-          >
-        </span>
-        <span class="cutout-paper-next">
-          <span class="cutout-next-word {tokenColorClass(bg.next)}"
-            >{bg.next}</span
-          >
-        </span>
-      </span>
+      {@render cutout({
+        prev: bg.prev,
+        next: bg.next,
+        id: `cut-${bg.idx}`,
+        dimmed: !bg.live,
+        picked: bg.picked,
+        style: cutoutStyle(bg),
+      })}
     {/each}
   </div>
 {:else if mode === "scatter"}
   <div class="cutout-scatter">
     {#each scattered as bg (bg.idx)}
-      <span
-        class="cutout-paper"
-        data-id="cut-{bg.idx}"
-        style="--rot:{bg.rot}deg; --dx:{bg.dx}em; --dy:{bg.dy}em;"
-      >
-        <span class="cutout-paper-prev">
-          <span class="cutout-previous-word {tokenColorClass(bg.prev)}"
-            >{bg.prev}</span
-          >
-        </span>
-        <span class="cutout-paper-next">
-          <span class="cutout-next-word {tokenColorClass(bg.next)}"
-            >{bg.next}</span
-          >
-        </span>
-      </span>
+      {@render cutout({
+        prev: bg.prev,
+        next: bg.next,
+        id: `cut-${bg.idx}`,
+        style: cutoutStyle(bg),
+      })}
     {/each}
   </div>
 {:else if mode === "flow"}
   <div class="cutout-flow">
     {#each bigrams as bg (bg.idx)}
-      <span class="cutout-paper">
-        <span class="cutout-paper-prev">
-          <span class="cutout-previous-word {tokenColorClass(bg.prev)}"
-            >{bg.prev}</span
-          >
-        </span>
-        <span class="cutout-paper-next">
-          <span class="cutout-next-word {tokenColorClass(bg.next)}"
-            >{bg.next}</span
-          >
-        </span>
-      </span>
+      {@render cutout({ prev: bg.prev, next: bg.next })}
     {/each}
   </div>
 {:else if mode === "example"}
@@ -262,20 +254,10 @@
   </div>
 
   <div class="overview-cutout">
-    <span class="cutout-paper">
-      <span class="cutout-paper-prev">
-        <span
-          class="cutout-previous-word {tokenColorClass(tokenList[pairStart])}"
-          >{tokenList[pairStart]}</span
-        >
-      </span>
-      <span class="cutout-paper-next">
-        <span
-          class="cutout-next-word {tokenColorClass(tokenList[pairStart + 1])}"
-          >{tokenList[pairStart + 1]}</span
-        >
-      </span>
-    </span>
+    {@render cutout({
+      prev: tokenList[pairStart],
+      next: tokenList[pairStart + 1],
+    })}
   </div>
 {:else}
   <div class="overview-tokens">
