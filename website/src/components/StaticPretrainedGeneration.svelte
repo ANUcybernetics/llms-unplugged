@@ -4,11 +4,13 @@
     getVocabulary,
     buildBigramModel,
     isPunctuation,
+    splitTokens,
   } from "../lib/tokens";
   import {
     buildModelEntries,
     findWordForThresholdRoll,
   } from "../lib/modelEntries";
+  import GeneratedSequence from "./GeneratedSequence.svelte";
 
   interface Props {
     tokens: string;
@@ -28,21 +30,13 @@
 
   const tokenList = $derived(parseTokens(tokenString));
   const vocab = $derived(
-    vocabString
-      ? vocabString.trim().split(/\s+/).filter(Boolean)
-      : getVocabulary(tokenList),
+    vocabString ? splitTokens(vocabString) : getVocabulary(tokenList),
   );
   const model = $derived(buildBigramModel(tokenList));
   const entries = $derived(buildModelEntries(vocab, model));
-  const sequenceTokens = $derived(
-    sequenceString.trim().split(/\s+/).filter(Boolean),
-  );
+  const sequenceTokens = $derived(splitTokens(sequenceString));
   const diceRolls = $derived(
-    rollsString
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean)
-      .map((r) => (r === "-" ? null : Number(r))),
+    splitTokens(rollsString).map((r) => (r === "-" ? null : Number(r))),
   );
 
   const currentWord = $derived(
@@ -57,14 +51,7 @@
   const generatedSoFar = $derived(sequenceTokens.slice(0, step + 1));
 </script>
 
-<div class="generation-output">
-  {#each generatedSoFar as token, i}
-    <code class:latest={i === generatedSoFar.length - 1}>{token}</code>
-  {/each}
-  {#if chosenNext}
-    <code class="next">{chosenNext}</code>
-  {/if}
-</div>
+<GeneratedSequence generated={generatedSoFar} next={chosenNext} font="serif" />
 
 <div class="entries-list">
   {#each entries as entry}
@@ -111,41 +98,17 @@
      All sizing is tuned for that envelope; no external deck overrides
      needed. */
 
-  .generation-output,
-  .entries-list {
-    font-family: var(--font-libertinus-serif), serif;
-  }
-
-  .generation-output code,
-  .entries-list .next-word-text,
-  .entries-list .entry-previous-word,
-  .entries-list .threshold {
-    font-family: inherit;
-  }
-
-  .generation-output {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4em;
-    margin: 0.5rem 0 1.5rem;
-    font-size: 1.6rem;
-  }
-
-  .generation-output code.latest {
-    outline: 2px solid var(--anu-gold);
-    outline-offset: 2px;
-  }
-
-  .generation-output code.next {
-    outline: 2px dashed var(--anu-gold);
-    outline-offset: 2px;
-    opacity: 0.6;
-  }
-
   .entries-list {
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
+    font-family: var(--font-libertinus-serif), serif;
+  }
+
+  .entries-list .next-word-text,
+  .entries-list .entry-previous-word,
+  .entries-list .threshold {
+    font-family: inherit;
   }
 
   .entry {

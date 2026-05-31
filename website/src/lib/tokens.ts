@@ -101,6 +101,16 @@ export function parseTokens(text: string): string[] {
   return tokens;
 }
 
+/**
+ * Split an already-tokenised, space-separated string into tokens. Unlike
+ * `parseTokens`, this does no normalisation (no lowercasing, punctuation
+ * splitting or number stripping) --- it assumes the caller passes a token
+ * stream that has already been through the pipeline, as the deck partials do.
+ */
+export function splitTokens(text: string): string[] {
+  return text.trim().split(/\s+/).filter(Boolean);
+}
+
 export function getVocabulary(tokens: string[]): string[] {
   return [...new Set(tokens)];
 }
