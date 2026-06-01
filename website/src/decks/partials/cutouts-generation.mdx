@@ -15,9 +15,9 @@ whose previous-word box matches, write its next word, then hunt for the next
 match:
 
 <CutoutRow>
-  <Cutout prev="i" next="am" />
-  <Cutout prev="am" next="sam" />
-  <Cutout prev="sam" next="." />
+  <Cutout prev="will" next="eat" />
+  <Cutout prev="eat" next="them" />
+  <Cutout prev="them" next="here" />
 </CutoutRow>
 
 the chain grows (like dominoes)
@@ -28,10 +28,10 @@ the chain grows (like dominoes)
 
 ## Find the next cutout
 
-<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} current="eggs and" target="and" stage="all" />
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them here and" target="and" stage="all" />
 
-you've just written "...green eggs **and**"---now hunt the pile for a cutout whose
-first word is "and"
+your page so far ends in "**and**"---now hunt the pile for a cutout whose first
+word is "and"
 
 ---
 
@@ -39,7 +39,7 @@ first word is "and"
 
 ## Find the next cutout
 
-<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} current="eggs and" target="and" stage="colour" />
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them here and" target="and" stage="colour" />
 
 scan for the colour first---your eye jumps to the cutouts the same colour as "and"
 
@@ -49,7 +49,7 @@ scan for the colour first---your eye jumps to the cutouts the same colour as "an
 
 ## Find the next cutout
 
-<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} current="eggs and" target="and" stage="word" />
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them here and" target="and" stage="word" />
 
 now read them---one was the right colour but the wrong word ("there"), so it drops
 out
@@ -60,30 +60,39 @@ out
 
 ## Find the next cutout
 
-<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} current="eggs and" target="and" stage="pick" pick="ham" />
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them here and" target="and" stage="pick" pick="ham" />
 
-pick one (roll a die!) and add its next word to your page
+pick one (roll a die!)---its next word, "**ham**", joins your page
 
 {/* notes:
-A worked "find the next cutout" on the same pile from the overview. The current
-cutout (eggs→and) fixes the word we're matching ("and"). Four auto-animate frames
-(id "hunt") narrow the pile: everything lit, then "and"'s colour (a fast scan ---
-note "there" shares that colour), then the real "and" cutouts (there→. drops out),
-then one pick. Drives home that colour is a quick filter but you confirm the word.
-Adjust target/current/pick or the seed to vary the demo.
+A worked "find the next cutout" on the same pile from the overview, with the
+running output ("your page") threaded above it. The page tail ("...and") fixes
+the word we're matching. Four auto-animate frames (id "hunt") narrow the pile:
+everything lit, then "and"'s colour (a fast scan --- note "there" shares that
+colour), then the real "and" cutouts (there→. drops out), then one pick --- whose
+next word ("ham") lands on the page in gold. Drives home that colour is a quick
+filter but you confirm the word, and that each pick grows your text. The page
+chain (will eat them here and ham) is the same one the worked-example table
+builds out two slides on --- and it's a recombination, not a quote: the book runs
+"...here and there", but the model rolls "and ham" instead, mashing "eat them
+here and" together with "and ham". Worth saying aloud --- it's the "hint, not a
+copy" payoff on the impact slide. Adjust page/target/pick or the seed to vary
+the demo.
 */}
 
 ---
 
 ## Worked example: chain it together
 
-<div class="worked-example-grid"><div class="we-header"></div><div class="we-header">cutout you pick</div><div class="we-header">your page</div><div class="we-step">start</div><Cutout prev="i" next="am" /><div class="we-page"><strong>i am</strong></div><div class="we-step">match <Token next>am</Token></div><Cutout prev="am" next="sam" /><div class="we-page">i am <strong>sam</strong></div><div class="we-step">match <Token next>sam</Token></div><Cutout prev="sam" next="." /><div class="we-page">i am sam <strong>.</strong></div><div class="we-step">match <Token next>.</Token></div><Cutout prev="." next="i" /><div class="we-page">i am sam . <strong>i</strong></div><div class="we-step">match <Token next>i</Token></div><Cutout prev="i" next="do" /><div class="we-page">i am sam . i <strong>do</strong></div></div>
+<div class="worked-example-grid"><div class="we-header"></div><div class="we-header">cutout you pick</div><div class="we-header">your page</div><div class="we-step">start</div><Cutout prev="will" next="eat" /><div class="we-page"><strong>will eat</strong></div><div class="we-step">match <Token next>eat</Token></div><Cutout prev="eat" next="them" /><div class="we-page">will eat <strong>them</strong></div><div class="we-step">match <Token next>them</Token></div><Cutout prev="them" next="here" /><div class="we-page">will eat them <strong>here</strong></div><div class="we-step">match <Token next>here</Token></div><Cutout prev="here" next="and" /><div class="we-page">will eat them here <strong>and</strong></div><div class="we-step">match <Token next>and</Token></div><Cutout prev="and" next="ham" /><div class="we-page">will eat them here and <strong>ham</strong></div></div>
+
+the last step (**and → ham**) is the very search you just did in the pile
 
 ---
 
 {/* _class: impact */}
 
-_"i am sam . i do..."_
+_"will eat them here and ham"_
 
 a hint of the original, not a copy
 

@@ -39,8 +39,17 @@
     /**
      * For mode="hunt", the just-placed cutout shown above the pile, written as
      * "prev next" (e.g. "eggs and"). Its next word should equal `target`.
+     * Superseded by `page` when that is set.
      */
     current?: string;
+    /**
+     * For mode="hunt", the running output so far ("your page"), space-separated.
+     * When set it renders above the pile in place of the standalone current-
+     * cutout widget: the last word is the one being matched (it should equal
+     * `target`), and at stage="pick" the chosen `pick` word is appended in gold
+     * --- so the page visibly grows by the word just found in the pile.
+     */
+    page?: string;
     /** For mode="hunt", which narrowing stage to show. */
     stage?: HuntStage;
     /**
@@ -57,11 +66,16 @@
     seed = 1,
     target,
     current,
+    page,
     stage = "all",
     pick,
   }: Props = $props();
 
   const tokenList = $derived(tokenString.trim().split(/\s+/).filter(Boolean));
+  // mode="hunt": the "your page" words, when threaded through the hunt.
+  const pageTokens = $derived(
+    page ? page.trim().split(/\s+/).filter(Boolean) : [],
+  );
   const pairCount = $derived(Math.max(0, tokenList.length - 1));
 
   interface Bigram {
@@ -196,7 +210,29 @@
 {/snippet}
 
 {#if mode === "hunt"}
-  {#if huntCurrent}
+  {#if page}
+    <!-- The running output. Its tail is the cutout we just placed, so the
+         last word (== target) is what we now match; on the pick frame the
+         chosen word is appended, growing the page by the word found below. -->
+    <div class="hunt-page">
+      <span class="hunt-page-label">your page</span>
+      <span class="hunt-page-text">
+        {#each pageTokens as word, i (i)}
+          <span
+            class="cutout-next-word {tokenColorClass(word)}"
+            class:hunt-page-match={i === pageTokens.length - 1}
+            data-id={`page-${i}`}>{word}</span
+          >
+        {/each}
+        {#if stage === "pick" && pick}
+          <span
+            class="cutout-next-word {tokenColorClass(pick)} hunt-page-new"
+            data-id="page-pick">{pick}</span
+          >
+        {/if}
+      </span>
+    </div>
+  {:else if huntCurrent}
     <div class="hunt-current">
       <span class="hunt-current-label">last cutout</span>
       {@render cutout({
@@ -354,6 +390,49 @@
 
   .hunt-current .cutout-paper {
     font-size: 1em;
+  }
+
+  /* mode="hunt" with `page`: the running output sits where the current cutout
+     would, since the page's tail IS that cutout. The last word is ringed (the
+     word we're matching); the picked word lands gold and bold once chosen. */
+  .hunt-page {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5em 0.7em;
+    margin: 0 0 0.6rem;
+  }
+
+  .hunt-page-label {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.55em;
+    opacity: 0.65;
+    white-space: nowrap;
+  }
+
+  .hunt-page-text {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.25em 0.4em;
+    font-size: 1.05em;
+  }
+
+  /* the last word already on the page --- what the pile is being matched to */
+  .hunt-page-match {
+    outline: 2px solid var(--anu-gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--anu-gold) 15%, transparent);
+  }
+
+  /* the word just found in the pile and written onto the page */
+  .hunt-page-new {
+    color: var(--anu-gold);
+    font-weight: 700;
   }
 
   /* The current cutout above the pile eats vertical room, so the hunt pile runs
