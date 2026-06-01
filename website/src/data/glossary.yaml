@@ -255,8 +255,6 @@
       href: /lessons/generation
     - label: Sampling
       href: /lessons/sampling
-    - label: Beam Search
-      href: /lessons/beam-search
 
 - id: temperature
   term: Temperature
@@ -287,9 +285,6 @@
   description: >-
     A generation strategy that tracks multiple possible sequences simultaneously,
     choosing the best overall path rather than committing to one word at a time.
-  see:
-    - label: Beam Search
-      href: /lessons/beam-search
 
 - id: beam-width
   term: Beam width
@@ -297,9 +292,6 @@
   description: >-
     How many candidate paths to track during beam search. Beam width 1 is
     equivalent to greedy search; larger widths explore more possibilities.
-  see:
-    - label: Beam Search
-      href: /lessons/beam-search
 
 - id: truncation-strategy
   term: Truncation strategy
