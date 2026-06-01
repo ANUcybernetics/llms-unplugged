@@ -64,9 +64,9 @@ secondary (Years 11--12) is out of scope.
 | Generation                   | fundamentals          | 5--6, 7--8  | Mathematics, Digital Technologies                  |
 | Pre-trained Model Generation | scaling up            | 5--6, 7--8  | Digital Technologies                               |
 | Sampling                     | controlling output    | 7--8, 9--10 | Mathematics, Digital Technologies                  |
-| Beam Search                  | controlling output    | 7--8, 9--10 | Digital Technologies, Mathematics                  |
-| Trigram                      | scaling up            | 7--8, 9--10 | Digital Technologies, Mathematics                  |
-| Context Columns              | how models understand | 7--8, 9--10 | English, Digital Technologies                      |
+| More Context                 | scaling up            | 7--8, 9--10 | Digital Technologies, Mathematics                  |
+| In-context Memory            | how models understand | 7--8, 9--10 | Digital Technologies                               |
+| Induction Heads              | how models understand | 9--10       | Digital Technologies                               |
 | Word Embeddings              | how models understand | 9--10       | Mathematics, Digital Technologies                  |
 | LoRA                         | model tuning          | 9--10       | Digital Technologies                               |
 | Synthetic Data               | model tuning          | 9--10       | Digital Technologies, Critical & Creative Thinking |
@@ -169,24 +169,10 @@ Temperature and truncation strategies for controlling text output.
 - **General capabilities:** Critical and Creative Thinking (Analysing >
   Evaluating reasoning); Numeracy.
 
-### [Beam Search](https://www.llmsunplugged.org/lessons/beam-search)
+### [More Context](https://www.llmsunplugged.org/lessons/more-context)
 
-Explore multiple generation paths simultaneously and pick the best.
-
-- **Best fit:** Years 7--10
-- **Primary**
-  - `AC9TDI8P05` / `AC9TDI10P05` --- design algorithms with nested control
-    structures and logical operators.
-  - `AC9TDI8P06` --- trace algorithms to predict output and identify errors.
-- **Secondary**
-  - `AC9M9P01` --- list all outcomes for compound events using lists, tree
-    diagrams, tables.
-- **General capabilities:** Critical and Creative Thinking (Inquiring,
-  Analysing).
-
-### [Trigram](https://www.llmsunplugged.org/lessons/trigram)
-
-Extend the bigram model to use two words of context.
+Extend the bigram to two words of context (a trigram), see why that gets
+expensive, then add cheaper context with a skip grid.
 
 - **Best fit:** Years 7--10
 - **Primary**
@@ -199,21 +185,40 @@ Extend the bigram model to use two words of context.
     determine probabilities.
 - **General capabilities:** Numeracy; Critical and Creative Thinking.
 
-### [Context Columns](https://www.llmsunplugged.org/lessons/context-columns)
+### [In-context Memory](https://www.llmsunplugged.org/lessons/in-context-memory)
 
-Add grammatical context columns to a bigram model.
+Add a short-term memory that biases generation toward recently-used words,
+keeping text on topic --- a hands-on model of attention.
 
 - **Best fit:** Years 7--10
 - **Primary**
-  - `AC9E7LA05` / `AC9E8LA05` --- examine clause structures, complex and
-    compound-complex sentences.
-  - `AC9E6LA06` --- expand noun groups for fuller description.
-  - `AC9TDI8P03` --- model attributes of objects using structured data.
+  - `AC9TDI8P03` --- model and query the attributes of objects and events
+    using structured data (the running memory list).
+  - `AC9TDI8P09` --- implement, modify and debug programs involving control
+    structures and functions (the reweighting procedure over generation).
 - **Secondary**
-  - `AC9E9LA08` --- analyse how vocabulary choices contribute to style,
-    mood and tone.
-- **General capabilities:** Literacy (Composing and comprehending texts);
-  Critical and Creative Thinking.
+  - `AC9M9P02` --- use relative frequencies and adjust probabilities based on
+    collected data (boosting recently-seen words).
+- **General capabilities:** Critical and Creative Thinking (Analysing); Digital
+  Literacy.
+
+### [Induction Heads](https://www.llmsunplugged.org/lessons/induction-heads)
+
+Complete a pattern from the text itself: find the last time the current word
+appeared and copy what followed --- the circuit behind in-context learning.
+
+- **Best fit:** Years 9--10
+- **Primary**
+  - `AC9TDI8P06` / `AC9TDI10P06` --- trace algorithms to predict output, and
+    validate by comparing output against test cases (the pattern-completion
+    check).
+  - `AC9TDI8P09` --- implement, modify and debug programs involving control
+    structures and functions.
+- **Secondary**
+  - `AC9TDI10P03` --- model and query entities and their relationships using
+    structured data.
+- **General capabilities:** Critical and Creative Thinking (Inquiring,
+  Analysing).
 
 ### [Word Embeddings](https://www.llmsunplugged.org/lessons/word-embeddings)
 
@@ -319,7 +324,7 @@ Most concentrated coverage. Across the lesson set, students engage
 substantively with these strands:
 
 - **Knowledge and understanding > Representation of data**: covered by
-  Training, Trigram, Word Embeddings, Context Columns.
+  Training, More Context, In-context Memory, Word Embeddings.
 - **Processes and production skills > Acquiring, storing and validating data**:
   Training, Synthetic Data, Sycophancy.
 - **Processes and production skills > Analysing and visualising data**:
@@ -327,9 +332,9 @@ substantively with these strands:
 - **Processes and production skills > Defining problems**: Pre-trained
   Generation, Sampling.
 - **Processes and production skills > Designing and tracing algorithms**:
-  Generation, Sampling, Beam Search.
+  Generation, Sampling.
 - **Processes and production skills > Implementing programs**: Generation,
-  Trigram, Beam Search, Agentic Tool Use, LoRA.
+  More Context, In-context Memory, Induction Heads, Agentic Tool Use, LoRA.
 - **Processes and production skills > Evaluating solutions**: RLHF,
   Synthetic Data, Sycophancy, LoRA.
 
@@ -340,16 +345,16 @@ content descriptions still need a separate teaching vehicle.
 ### Mathematics
 
 - **Probability (Years 5--10)**: Weighted Randomness, Generation, Sampling,
-  Beam Search, Trigram, RLHF.
+  More Context, In-context Memory, RLHF.
 - **Statistics (Years 5--8)**: Training (categorising and describing data).
 - **Number / Algebra**: light touch only.
 - **Space**: only via Word Embeddings (vectors and distance).
 
 ### English
 
-- **Language strand** (sentence structure, noun groups, vocabulary):
-  Context Columns is the primary vehicle; Training and Word Embeddings
-  contribute.
+- **Language strand** (vocabulary): a light touch only --- the materials no
+  longer include a dedicated sentence-structure vehicle; Training (specialist
+  vocabulary) and Word Embeddings (vocabulary and meaning) contribute.
 - **Literature / Literacy strands**: light touch, mostly through critical
   analysis of generated vs. source text in Generation, Sycophancy, Synthetic
   Data.
@@ -397,15 +402,15 @@ algorithms; Mathematics teacher can co-teach the probability components.
 2. Training --- `AC9TDI8P01`, `AC9TDI8P02`
 3. Generation --- `AC9TDI8P06`
 4. Sampling --- `AC9TDI8P05`
-5. Trigram --- `AC9TDI8P03`, `AC9TDI8P09`
-6. Context Columns (with English co-teacher) --- `AC9E7LA05`, `AC9TDI8P03`
+5. More Context --- `AC9TDI8P03`, `AC9TDI8P09`
+6. In-context Memory --- `AC9TDI8P03`, `AC9TDI8P09`
 
 Delivers most of the "Data and information" knowledge band plus the
 algorithm-design content descriptions for Years 7--8.
 
 ### Year 9--10 cross-curricular: "Understanding AI" (5 lessons, ~7 hours)
 
-1. Trigram (recap, if not previously seen)
+1. More Context (recap, if not previously seen)
 2. Word Embeddings --- `AC9TDI10K02`, `AC9TDI10P03`
 3. Synthetic Data --- `AC9TDI10P10`, `AC9TDI10P01`
 4. RLHF --- `AC9TDI10P10` + Ethical Understanding
@@ -439,8 +444,6 @@ Probability:
   simulations; compare predictions with observed results.
 - `AC9M8P02` (Year 8) --- determine all possible combinations and use these
   to determine probabilities.
-- `AC9M9P01` (Year 9) --- list all outcomes for compound events using lists,
-  tree diagrams and tables.
 - `AC9M9P02` (Year 9) --- use relative frequencies from data to estimate
   probabilities; adjust probabilities based on collected data.
 
@@ -489,8 +492,6 @@ Processes and production skills:
   and make predictions.
 - `AC9TDI10P03` (Year 10) --- model and query entities and their
   relationships using structured data.
-- `AC9TDI10P05` (Year 10) --- design algorithms with nested control
-  structures and logical operators.
 - `AC9TDI10P06` (Year 10) --- validate algorithms and programs by comparing
   output against a range of test cases.
 - `AC9TDI10P08` (Year 10) --- generate, modify, communicate and critically
@@ -508,12 +509,7 @@ Language:
 
 - `AC9E5LA03` (Year 5) --- describe how texts use language features and are
   organised into stages and phases.
-- `AC9E6LA06` (Year 6) --- expand noun groups for fuller description.
-- `AC9E7LA05` (Year 7) --- examine clause structures, complex and
-  compound-complex sentences.
 - `AC9E7LA08` (Year 7) --- vocabulary in building specialist knowledge.
-- `AC9E8LA05` (Year 8) --- examine clause structures, complex and
-  compound-complex sentences.
 - `AC9E9LA08` (Year 9) --- analyse how vocabulary choices contribute to
   style, mood and tone.
 
