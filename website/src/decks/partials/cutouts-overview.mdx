@@ -31,17 +31,11 @@ they're next to
 
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="example" highlight="green eggs" />
 
-any two words sitting next to each other make one cutout---the first word, then
-the one that comes after it
-
 ---
 
 ## Every pair becomes a cutout
 
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="flow" />
-
-each cutout overlaps the next---a cutout ends with the word the next one starts
-with
 
 {/* notes:
 This section used to slide an animated window across the text, one slide per
@@ -58,8 +52,6 @@ one pair highlighted as a cutout, then every pair as a cutout.
 
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="scatter" seed={7} />
 
-cut them out and tip them onto the table---the same cutouts, no longer in order
-
 ---
 
 {/* _animate: pile */}
@@ -67,8 +59,6 @@ cut them out and tip them onto the table---the same cutouts, no longer in order
 ## Now they're just a pile
 
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="scatter" seed={42} />
-
-shuffle them around...
 
 ---
 
@@ -78,8 +68,6 @@ shuffle them around...
 
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="scatter" seed={13} />
 
-...and again...
-
 ---
 
 {/* _animate: pile */}
@@ -88,8 +76,6 @@ shuffle them around...
 
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="scatter" seed={99} />
 
-...it really doesn't matter how they're arranged...
-
 ---
 
 {/* _animate: pile */}
@@ -97,8 +83,6 @@ shuffle them around...
 ## Now they're just a pile
 
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="scatter" seed={4} />
-
-the model is the pile, not the order
 
 {/* notes:
 Five "scatter" frames of the *same* cutouts with different seeds. All carry

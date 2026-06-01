@@ -30,9 +30,6 @@ the chain grows (like dominoes)
 
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them here and" target="and" stage="all" />
 
-your page so far ends in "**and**"---now hunt the pile for a cutout whose first
-word is "and"
-
 ---
 
 {/* _animate: hunt */}
@@ -40,8 +37,6 @@ word is "and"
 ## Find the next cutout
 
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them here and" target="and" stage="colour" />
-
-scan for the colour first---your eye jumps to the cutouts the same colour as "and"
 
 ---
 
@@ -51,9 +46,6 @@ scan for the colour first---your eye jumps to the cutouts the same colour as "an
 
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them here and" target="and" stage="word" />
 
-now read them---one was the right colour but the wrong word ("there"), so it drops
-out
-
 ---
 
 {/* _animate: hunt */}
@@ -61,8 +53,6 @@ out
 ## Find the next cutout
 
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them here and" target="and" stage="pick" pick="ham" />
-
-pick one (roll a die!)---its next word, "**ham**", joins your page
 
 {/* notes:
 A worked "find the next cutout" on the same pile from the overview, with the
@@ -85,8 +75,6 @@ the demo.
 ## Worked example: chain it together
 
 <div class="worked-example-grid"><div class="we-header"></div><div class="we-header">cutout you pick</div><div class="we-header">your page</div><div class="we-step">start</div><Cutout prev="will" next="eat" /><div class="we-page"><strong>will eat</strong></div><div class="we-step">match <Token next>eat</Token></div><Cutout prev="eat" next="them" /><div class="we-page">will eat <strong>them</strong></div><div class="we-step">match <Token next>them</Token></div><Cutout prev="them" next="here" /><div class="we-page">will eat them <strong>here</strong></div><div class="we-step">match <Token next>here</Token></div><Cutout prev="here" next="and" /><div class="we-page">will eat them here <strong>and</strong></div><div class="we-step">match <Token next>and</Token></div><Cutout prev="and" next="ham" /><div class="we-page">will eat them here and <strong>ham</strong></div></div>
-
-the last step (**and → ham**) is the very search you just did in the pile
 
 ---
 
