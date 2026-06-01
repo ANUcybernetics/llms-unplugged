@@ -398,10 +398,10 @@
   .hunt-page {
     display: flex;
     align-items: baseline;
-    justify-content: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
     gap: 0.5em 0.7em;
-    margin: 0 0 0.6rem;
+    margin: 0 0 1.5rem;
   }
 
   .hunt-page-label {
@@ -416,7 +416,7 @@
     display: inline-flex;
     flex-wrap: wrap;
     align-items: baseline;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 0.25em 0.4em;
     font-size: 1.05em;
   }
