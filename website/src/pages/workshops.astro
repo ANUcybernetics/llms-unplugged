@@ -124,11 +124,11 @@ import heroWorkshops from "../assets/images/hero-workshops.avif";
   <p>
     For groups ready to go further, this extended trajectory adds the &ldquo;how
     models understand&rdquo; topic. After covering the fundamentals, you explore
-    how models can track grammatical context and how words get represented as
-    numerical vectors. This path suits later-year high school students,
-    computing electives, professional-development cohorts, or anyone who wants
-    to understand what &ldquo;<GlossaryTerm id="attention-mechanism"
-      >attention</GlossaryTerm
+    how models reuse earlier context, complete patterns from a prompt, and how
+    words get represented as numerical vectors. This path suits later-year high
+    school students, computing electives, professional-development cohorts, or
+    anyone who wants to understand what &ldquo;<GlossaryTerm
+      id="attention-mechanism">attention</GlossaryTerm
     >&rdquo; and &ldquo;<GlossaryTerm id="embedding">embeddings</GlossaryTerm
     >&rdquo; actually mean.
   </p>
@@ -138,7 +138,8 @@ import heroWorkshops from "../assets/images/hero-workshops.avif";
       "training",
       "generation",
       "pretrained-generation",
-      "context-columns",
+      "in-context-memory",
+      "induction-heads",
       "word-embeddings",
     ]}
   />
@@ -147,13 +148,18 @@ import heroWorkshops from "../assets/images/hero-workshops.avif";
 
   <ul>
     <li>
-      <strong><a href="/lessons/context-columns">Context columns</a></strong>
-      extends the basic bigram model with extra columns that track grammatical categories
-      (is the previous word a verb? a pronoun? a preposition?). This is a hand-crafted
-      version of what transformer &ldquo;attention&rdquo; learns automatically&mdash;the
-      idea that <em>type</em> of context matters, not just <em
-        >which specific word</em
-      > came before.
+      <strong><a href="/lessons/in-context-memory">In-context memory</a></strong
+      >
+      adds a short-term memory that nudges generation toward recently-used words,
+      so the text stays on topic. It&rsquo;s a hand-run version of what transformer
+      &ldquo;attention&rdquo; does&mdash;reusing earlier context, not just the previous
+      word.
+    </li>
+    <li>
+      <strong><a href="/lessons/induction-heads">Induction heads</a></strong>
+      goes a step further: find the last time the current word appeared and copy what
+      followed. This completes patterns the model never trained on&mdash;the circuit
+      behind in-context learning and few-shot prompting.
     </li>
     <li>
       <strong><a href="/lessons/word-embeddings">Word embeddings</a></strong>

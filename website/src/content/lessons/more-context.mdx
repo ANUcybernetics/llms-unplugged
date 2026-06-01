@@ -1,0 +1,368 @@
+---
+title: More Context
+description: Extend the bigram model to two words of context with a trigram, see why that
+  gets expensive, then add cheap extra context with a skip grid.
+order: 5
+topic: scaling-up
+keyIdea: More context sharpens predictions---but the full trigram blows up, so we also
+  learn a cheaper way to pull in an earlier word.
+---
+
+import VariantToggle from "../../components/VariantToggle.svelte";
+import Variant from "../../components/Variant.astro";
+import LmCutouts from "../../components/LmCutouts.astro";
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
+import Callout from "../../components/Callout.astro";
+
+<VariantToggle client:load />
+
+Extend the <GlossaryTerm id="bigram-model">bigram model</GlossaryTerm> to use more than one word of <GlossaryTerm id="context-window">context</GlossaryTerm>. First the
+trigram---two words, considered together---then a cheaper trick, the _skip
+grid_, that pulls in an earlier word without the trigram's cost.
+
+<Variant is="grid">
+
+![Hero image: Grid Trigram](../../assets/images/hero-grid-trigram.avif)
+
+</Variant>
+
+<Variant is="cutouts">
+
+![Hero image: Cutouts Trigram](../../assets/images/hero-cutouts-trigram.avif)
+
+</Variant>
+
+## You will need
+
+<Variant is="grid">
+
+- the same materials as [Training](/lessons/training)
+- extra paper for a three-column table (trigram) and a second grid (skip grid)
+- pen, paper, and dice as per [Generation](/lessons/generation)
+
+</Variant>
+
+<Variant is="cutouts">
+
+For each pair (or group) of students:
+
+- printed trigram token cutouts (each one shows two previous words as
+  coloured boxes followed by a single next word, all colour-coded by word)
+- a clear table or flat surface to spread the cutouts out on
+- scissors
+
+<Callout type="tip" title="Pre-made trigram cutouts">
+
+The [Tools](/tools#cutouts) page has ready-to-print trigram token cutouts, or
+you can [generate your own](/tools#generate-your-own) from any text. Each PDF
+starts with a student-facing instructions page (anatomy of a cutout, worked
+example, tips), so you can hand the printed pack straight to a group. The CLI
+also supports a `--duplex` flag that prints the same cards on both faces, so
+students never have to flip a face-down card.
+
+</Callout>
+
+</Variant>
+
+## Your goal
+
+Build a <GlossaryTerm id="trigram-model">trigram language model</GlossaryTerm>, watch it run into a wall, then build a _skip
+grid_ that recovers some of the benefit for far less cost. Stretch goal: train
+on more data, or invent your own way of mixing in earlier context.
+
+## Key idea
+
+A bigram only knows the word immediately before. The obvious fix is to look back
+further---and the obvious way to do that, the trigram, works but gets expensive
+fast. So this lesson has an arc: **more context helps (trigram) → but the full
+version blows up → so here's a cheaper way to get some of it (skip grid)**. That
+last move---pulling in earlier context without paying the full cost---is the
+same problem modern models solve with attention.
+
+## Part 1: the trigram
+
+Instead of asking "what follows this word?", we ask "what follows these _two_
+words?". The two previous words are considered _together_, as a pair.
+
+### Training
+
+<Variant is="grid">
+
+1. Draw a four-column table: `word1 | word2 | word3 | count`.
+2. Slide a window over your text, collecting every overlapping triple of words.
+3. For each triple, increment its count (or add a new row starting at 1).
+
+After the full text (`see` `spot` `run` `.` `see` `spot` `jump` `.`) the model
+is:
+
+| word 1 | word 2 | word 3 | count |
+| ------ | ------ | ------ | ----- |
+| `see`  | `spot` | `run`  | 1     |
+| `spot` | `run`  | `.`    | 1     |
+| `run`  | `.`    | `see`  | 1     |
+| `.`    | `see`  | `spot` | 1     |
+| `see`  | `spot` | `jump` | 1     |
+| `spot` | `jump` | `.`    | 1     |
+
+The order of the rows doesn't matter, so you can group them by _word 1_ if that
+helps.
+
+</Variant>
+
+<Variant is="cutouts">
+
+1. **Cut out the trigram tokens** from your printed sheets
+   - each cutout shows two previous words as coloured boxes, followed by the
+     next word; every word has its own colour, so the boxed and free-standing
+     forms of the same word match
+2. **Spread the cutouts out** on a table, face up, no overlap if you can manage
+   it---that's your trained trigram model
+
+Original text: _"See Spot run. See Spot jump."_ contains these (two previous
+words → next word) triples:
+
+- `see spot → run`
+- `spot run → .`
+- `run . → see`
+- `. see → spot`
+- `see spot → jump`
+- `spot jump → .`
+
+Each triple becomes one cutout on your table:
+
+<LmCutouts tokens="see spot run . see spot jump ." ngram={3} />
+
+Notice that `see spot` shows up twice, once with `run` and once with `jump`.
+Compared to the bigram spread (which would just have two `see→spot` cutouts),
+the trigram spread captures more specific patterns about which word follows
+which _pair_ of words.
+
+</Variant>
+
+### Generation
+
+<Variant is="grid">
+
+1. Pick any row and write down `word1` and `word2` as your starting words.
+2. Find all rows where `word1` and `word2` match your current context; note
+   their counts.
+3. Roll weighted by those counts to pick a row; take its `word3` as the next
+   word.
+4. Shift the window by one word (new context is old `word2` + chosen `word3`)
+   and repeat from step 2.
+
+</Variant>
+
+<Variant is="cutouts">
+
+1. **Pick two starting words** that appear together as previous words on at
+   least one cutout, and write both down
+2. **Find candidates**---scan for cutouts whose two previous-word boxes match
+   your last two words (match the rightmost box to your most recent word, then
+   check the box to its left). Verify the words, not just the colours
+3. **Pick one cutout** visually, **write down its next word**, and **put the
+   cutout back**
+4. Your last two words are now the previous-rightmost word plus the word you
+   just wrote---go back to step 2
+
+</Variant>
+
+## The catch: the spread explodes (and the model just parrots)
+
+Try generating from the example above and watch what happens. From `see spot`
+you can branch to `run` or `jump`---but after that, every two-word context has
+exactly _one_ matching row. `spot run` only ever leads to `.`; `run .` only ever
+leads to `see`. So the model has no real choice to make: it replays the training
+text almost verbatim.
+
+That isn't a bug in the example---it's what trigrams do at this scale. Each extra
+word of context multiplies the number of possible contexts, so with a small
+amount of text almost every two-word context is seen exactly once. The model
+becomes a tape player with the occasional fork.
+
+<Variant is="grid">
+
+- a bigram of this text needs a row per _word_ (a handful)
+- the trigram needs a row per _word pair_---many more, and most with a count of
+  just 1
+
+</Variant>
+
+<Variant is="cutouts">
+
+- the bigram spread has one pile per _previous word_ (a handful)
+- the trigram spread has one pile per _pair_ of previous words---many more, and
+  most piles holding a single cutout
+
+</Variant>
+
+This is the central trade-off of n-grams: **more context sharpens predictions,
+but you need exponentially more data to fill in all those contexts.** Push to
+four or five words and you'd need a library to see each context even once. So
+rather than keep extending the window, we look for a cheaper way to bring in
+earlier words.
+
+## Part 2: a cheaper way---the skip grid
+
+Here's the trick. The trigram is expensive because it tracks the two previous
+words _jointly_---one table indexed by the whole pair. What if we tracked them
+_separately_ and added the evidence together?
+
+You keep two bigram-sized grids:
+
+- the **previous-word grid**: your ordinary bigram (the word one back → the next
+  word)
+- the **skip grid**: the same shape, but for the word _two_ back (the word two
+  back → the next word)
+
+Two single-word grids cost far less than one word-pair table: each has a row per
+_word_, not per _pair_. That's the whole point---you reach back two words without
+the combinatorial blow-up.
+
+<Callout type="tip" title="Why this is cheaper">
+
+A trigram table can have up to (vocabulary size)² rows---one per possible word
+pair. The two skip-grid tables have at most (vocabulary size) rows _each_. You
+trade the ability to track exact pairs for two cheap tables you can actually
+fill in.
+
+</Callout>
+
+### Training the skip grid
+
+<Variant is="grid">
+
+For every triple `word1 word2 word3` in your text:
+
+1. tally `word2 → word3` in the **previous-word grid** (this is just your normal
+   bigram)
+2. tally `word1 → word3` in the **skip grid**
+
+That's it---two tally marks per triple, each in a plain two-word grid.
+
+#### Example
+
+Text: `the cat sat . the dog ran .`
+
+The **previous-word grid** (word one back → next) gets the usual bigram counts:
+`the→cat`, `cat→sat`, `the→dog`, `dog→ran`, and so on.
+
+The **skip grid** (word two back → next) records what tends to appear two words
+after each word:
+
+| two back | next  | count |
+| -------- | ----- | ----- |
+| `the`    | `sat` | 1     |
+| `the`    | `ran` | 1     |
+| `cat`    | `.`   | 1     |
+| `dog`    | `.`   | 1     |
+
+Notice the skip grid has learnt that `the` is often followed---two words
+later---by a verb (`sat` or `ran`), regardless of which animal came in between.
+
+</Variant>
+
+<Variant is="cutouts">
+
+On the table, the skip idea is most natural to _read_ in the grid method (toggle
+to it above), but here's how it maps to cutouts if you want to try it:
+
+- keep your ordinary bigram spread (previous word → next word)
+- lay out a second spread keyed on the word _two_ back → next word (you'll need
+  to write these out by hand, or generate them---the standard packs only print
+  the previous-word spread)
+
+Two spreads, each the size of an ordinary bigram spread, rather than one much
+larger trigram spread.
+
+</Variant>
+
+### Generating with the skip grid
+
+<Variant is="grid">
+
+To pick the word after a two-word context `word1 word2`:
+
+1. read `word2`'s row in the **previous-word grid**
+2. read `word1`'s row in the **skip grid**
+3. **add the two rows together**, cell by cell, to get combined counts
+4. roll weighted by the combined counts, write the word down, shift the window,
+   and repeat
+
+#### Example
+
+Continuing the text above, suppose your context is `the cat` and you want the
+next word.
+
+- previous-word grid, `cat`'s row: `sat` 1
+- skip grid, `the`'s row: `sat` 1, `ran` 1
+- combined: `sat` 2, `ran` 1
+
+Roll on those four (1-2 → `sat`, 3 → `ran`). The plain bigram would have forced
+`sat` every time; the skip grid lets `the cat` sometimes go to `ran`---a verb
+that followed `the …` elsewhere in the text. The model has generalised beyond
+the exact pairs it saw, and it stays genuinely random instead of parroting.
+
+</Variant>
+
+<Variant is="cutouts">
+
+To pick the word after a two-word context `word1 word2`:
+
+1. gather the cutouts whose previous word matches `word2` (from the bigram
+   spread)
+2. gather the cutouts whose two-back word matches `word1` (from the skip spread)
+3. pool them into one heap and pick visually
+
+Because you're picking from the combined heap, words with more cutouts across
+the two spreads are more likely---the spread is doing the addition for you, just
+as it did the weighting in [Generation](/lessons/generation).
+
+</Variant>
+
+## What the skip grid can't do
+
+The skip grid is cheaper than the trigram, but it's also weaker, and the
+difference is worth naming. It treats the two earlier positions as if they
+contribute _independently_: it adds "what follows `cat`" to "what tends to come
+two words after `the`". It can never capture the cases where it's the _pair_
+that matters---where `new york` predicts something that neither `new` alone nor
+`york` alone would.
+
+That gap is exactly the problem modern models solve with the
+
+<GlossaryTerm id="attention-mechanism">attention mechanism</GlossaryTerm>. The skip grid mixes in
+earlier context with _fixed_ weights (always the word two back, always added in the same way).
+Attention _learns_ which earlier words matter for each prediction, and how much---so it can decide,
+on the fly, when the combination matters and when it doesn't.
+
+## Instructor notes
+
+### Discussion questions
+
+- how does the trigram output compare to the basic (bigram) model output?
+- why does the trigram spread/table tend to have so many single-count entries?
+- what's the trade-off between context length and data requirements?
+- the skip grid lets `the cat` sometimes continue like `the dog` did. When is
+  that helpful? When might it produce nonsense?
+- can you think of a two-word phrase where the _pair_ matters more than either
+  word on its own? (this is what the skip grid misses)
+
+### Connection to current LLMs
+
+This lesson bridges simple word-pair models and modern transformers along two
+threads.
+
+The trigram shows the **context-length trade-off**: longer context sharpens
+predictions, but the number of possible contexts---and the data you need to
+cover them---grows exponentially. Current models use context windows of hundreds
+of thousands of tokens, which is only possible because they don't store an
+explicit count for every possible context the way an n-gram table does.
+
+The skip grid shows the first step _beyond_ counting exact contexts: mixing in
+earlier positions with fixed weights. Real models generalise this into
+
+<GlossaryTerm id="attention-mechanism">attention</GlossaryTerm>---instead of "always add the word
+two back", the model _learns_ which previous words to pull in for each prediction. Your hand-built
+skip grid is fixed and additive; attention is learned, weighted, and dynamic. Both share the core
+insight: you don't have to see the _exact_ context before to make a good guess.

@@ -1,0 +1,146 @@
+---
+title: Induction Heads
+description: Add a rule that completes patterns from the text itself---find the last time
+  the current word appeared and copy what followed it---the circuit behind in-context learning.
+order: 7
+topic: how-models-understand
+keyIdea: Find the last time the current word appeared and copy what followed it---building
+  a bigram from the context on the fly, the way induction heads complete patterns.
+---
+
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
+import Callout from "../../components/Callout.astro";
+
+Teach your model to finish a pattern it has only just seen. By looking back
+through the text for the last time the current word appeared and copying what
+came next, the model can complete sequences it never trained on---the same trick
+that lets a real LLM follow a pattern you put in its prompt.
+
+![Hero image: Induction Heads](../../assets/images/hero-induction-heads.avif)
+
+## You will need
+
+- any model you can already generate from: your [bigram grid](/lessons/training),
+  a [cutouts spread](/lessons/generation), or a
+  [pre-trained booklet](/lessons/pretrained-generation)
+- pen and paper for your generated text (you'll be reading back over it, so keep
+  it tidy)
+- dice as per [Generation](/lessons/generation)
+
+Like [In-context Memory](/lessons/in-context-memory), this is a procedure laid
+over a model you already have. Nothing new to print.
+
+## Your goal
+
+Make the model complete a made-up pattern that it could not possibly have
+learned during training---purely from a pattern you write into the text first.
+Stretch goal: match on the last _two_ words instead of one and see the
+completion get sharper.
+
+## Key idea
+
+The [In-context Memory](/lessons/in-context-memory) lesson boosted _recently
+used_ words. Induction is the sharper version: instead of "what have I seen
+recently?", it asks **"the last time I was at this exact word, what came next?"**
+
+So when the current word is `cat`, you scan back through what you've already
+written to the most recent earlier `cat`, read the word that followed it, and
+treat that as a strong suggestion for the next word. In effect you're building a
+
+<GlossaryTerm id="bigram-model">bigram</GlossaryTerm> out of the text in front of you, on the
+fly---and using it to finish patterns the base model has never seen.
+
+## Algorithm
+
+1. Look at your **current word**.
+2. **Scan back** up your written output to the most recent earlier time that
+   same word appeared.
+3. If you find one, the word that **followed** it is your _induction
+   candidate_---a strong suggestion for what comes next.
+4. **Combine with the base model:** strongly prefer the induction candidate, but
+   keep some chance of consulting the model normally (roll a die: mostly copy,
+   occasionally generate). If there's no earlier occurrence, there's no
+   candidate---just generate from the base model as usual.
+5. Write the word down and repeat.
+
+<Callout type="info" title="Copy, don't only copy">
+
+If you _always_ copy the induction candidate, the model just replays whatever
+pattern it's in---its own kind of being stuck on rails. Keeping a chance of
+falling back to the base model lets it break out and start new patterns. As with
+the memory lesson: blend, don't override.
+
+</Callout>
+
+## The pattern-completion demo
+
+This is where it earns its keep. Seed your output with a short made-up sequence,
+repeated, using words your model never saw together---then let induction take
+over.
+
+Write down: `moon` `five` `apple` `moon` `five` `apple` `moon` `five`
+
+Now generate the next word. Your current word is `five`:
+
+1. scan back for the last `five`---it was followed by `apple`
+2. copy `apple`
+
+You've completed the pattern---`moon five apple`---even though "moon five apple"
+appears nowhere in the training text and the base model has no idea about it. Run
+it again from `apple` and you'll get `moon`, then `five`, then `apple`… the model
+has picked up your invented rule from a single example, with no retraining at
+all.
+
+Turn induction off (generate from the base model alone) and the pattern
+evaporates---the model reverts to its trained habits and can't continue your
+sequence. That contrast _is_ the lesson.
+
+## Applying it to your model
+
+The induction step is the same on every base, because it reads your _written
+output_, not the model: scan back, find the last occurrence of the current word,
+copy what followed. Only the fall-back differs:
+
+- **grid:** when there's no in-context match (or your die says "generate"), roll
+  on the current word's row as usual
+- **cutouts:** fall back to picking from the matching cutouts in the spread
+- **booklet:** fall back to the booklet's lookup-and-roll
+
+Because the lookup happens on your pad, induction needs no special materials and
+works identically whichever base you started from.
+
+## Instructor notes
+
+### Discussion questions
+
+- the model completed a sequence it never trained on. Where was that "knowledge"
+  stored?
+- why does the demo use made-up or random words rather than ordinary sentences?
+- what happens if you only ever copy, and never fall back to the base model?
+- how is induction different from the [recency memory](/lessons/in-context-memory)?
+  When would each one help?
+- (stretch) if you match on the last _two_ words instead of one, why is the
+  completion more reliable?
+
+### Connection to current LLMs
+
+Induction heads are a real, identified circuit inside transformers---and they
+turn out to be one of the main mechanisms behind
+
+<GlossaryTerm id="in-context-learning">in-context learning</GlossaryTerm>, the ability to pick up a
+pattern from the prompt without any change to the model's weights.
+
+- **the rule is the same**: a transformer's induction head finds an earlier
+  place where the current token appeared and copies what came after it---exactly
+  your scan-back-and-copy procedure
+- **it's how few-shot prompting works**: give an LLM a few "input → output"
+  examples and it continues the pattern, because induction-style circuits match
+  your current position against the examples above
+- **how it's measured**: researchers detect these circuits by feeding the model
+  a random sequence repeated twice and checking that it predicts the second copy
+  far better than the first---the machine version of your `moon five apple` demo
+
+Your version is exact-match and hard (the word matches or it doesn't); real
+induction heads match softer, richer patterns and blend smoothly with everything
+else the model knows. But the behaviour---_find where this happened before, do
+what came next_---is the same idea you can run by hand.

@@ -15,12 +15,13 @@ export const FUNDAMENTALS = ["weighted-randomness", "training", "generation"] as
 
 export const EXTENSIONS = [
   "pretrained-generation",
-  "trigram",
+  "more-context",
   "sampling",
   "beam-search",
   "agentic-tool-use",
   "sycophancy",
-  "context-columns",
+  "in-context-memory",
+  "induction-heads",
   "word-embeddings",
   "lora",
   "rlhf",

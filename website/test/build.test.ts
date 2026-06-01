@@ -53,9 +53,10 @@ describe("Astro Build", () => {
     const expectedLessons = [
       "training",
       "generation",
-      "trigram",
+      "more-context",
       "weighted-randomness",
-      "context-columns",
+      "in-context-memory",
+      "induction-heads",
       "pretrained-generation",
       "word-embeddings",
       "lora",

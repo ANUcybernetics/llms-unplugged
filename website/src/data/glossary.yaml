@@ -200,8 +200,8 @@
   synonyms:
     - 3-gram model
   see:
-    - label: Trigram
-      href: /lessons/trigram
+    - label: More Context
+      href: /lessons/more-context
 
 - id: n-gram-model
   term: N-gram model
@@ -212,8 +212,8 @@
   see:
     - label: Training
       href: /lessons/training
-    - label: Trigram
-      href: /lessons/trigram
+    - label: More Context
+      href: /lessons/more-context
 
 - id: context-window
   term: Context window
@@ -223,10 +223,10 @@
     have a context window of 1, trigrams have 2, and modern LLMs can consider
     hundreds of thousands or even millions of tokens.
   see:
-    - label: Trigram
-      href: /lessons/trigram
-    - label: Context Columns
-      href: /lessons/context-columns
+    - label: More Context
+      href: /lessons/more-context
+    - label: In-context Memory
+      href: /lessons/in-context-memory
 
 - id: weighted-random-sampling
   term: Weighted random sampling
@@ -372,12 +372,39 @@
   description: >-
     The ability to focus on relevant previous words when making predictions.
     In real LLMs, attention is learned, weighted, and dynamic---the model
-    decides what to focus on for each prediction. Context columns illustrate
-    the motivation for attention: considering more than just the immediately
-    preceding word.
+    decides what to focus on for each prediction. The in-context memory and
+    induction-head lessons illustrate the motivation for attention: reusing more
+    than just the immediately preceding word.
   see:
-    - label: Context Columns
-      href: /lessons/context-columns
+    - label: In-context Memory
+      href: /lessons/in-context-memory
+    - label: Induction Heads
+      href: /lessons/induction-heads
+
+- id: in-context-learning
+  term: In-context learning
+  category: understanding
+  description: >-
+    Picking up a pattern from the prompt and continuing it, with no change to
+    the model's weights. The "learning" happens in the context the model is
+    given, not in the model itself---which is why a few examples in a prompt can
+    steer an LLM's output.
+  see:
+    - label: In-context Memory
+      href: /lessons/in-context-memory
+    - label: Induction Heads
+      href: /lessons/induction-heads
+
+- id: induction-head
+  term: Induction head
+  category: understanding
+  description: >-
+    A circuit found inside transformers that completes patterns by finding an
+    earlier place where the current token appeared and copying what came next.
+    Induction heads are a key mechanism behind in-context learning.
+  see:
+    - label: Induction Heads
+      href: /lessons/induction-heads
 
 - id: markov-chain
   term: Markov chain

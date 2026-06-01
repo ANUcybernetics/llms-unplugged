@@ -54,18 +54,20 @@ import CardList from "../../components/CardList.astro";
   </p>
 
   <h3>Scaling up</h3>
-  <CardList lessons={["pretrained-generation", "trigram"]} />
+  <CardList lessons={["pretrained-generation", "more-context"]} />
 
   <h3>Controlling output</h3>
   <CardList lessons={["sampling", "beam-search", "agentic-tool-use"]} />
 
   <h3>Context and meaning</h3>
   <p>
-    These two work well together&mdash;context columns extends the grid model,
-    and word embeddings uses those extended grids to explore semantic
-    similarity.
+    How models use more than the previous word: a short-term memory that keeps
+    text on topic, the induction trick behind in-context learning, and word
+    embeddings for measuring meaning.
   </p>
-  <CardList lessons={["context-columns", "word-embeddings"]} />
+  <CardList
+    lessons={["in-context-memory", "induction-heads", "word-embeddings"]}
+  />
 
   <h3>Model tuning</h3>
   <CardList lessons={["lora", "rlhf", "synthetic-data"]} />
