@@ -244,6 +244,7 @@
           <span
             class="cutout-next-word {tokenColorClass(word)}"
             class:hunt-page-match={stage !== "start" &&
+              stage !== "pick" &&
               i === pageTokens.length - 1}
             data-id={`page-${i}`}>{word}</span
           >
@@ -465,7 +466,10 @@
   /* the current word --- the one we're now hunting for in the pile. A small
      caret sits beneath it, pointing down at the pile ("find this word below").
      Drawn with borders (crisp, font-independent) in the neutral chrome colour,
-     not a token colour, so it reads as a marker rather than another token. */
+     not a token colour, so it reads as a marker rather than another token.
+     Hidden on the pick frame (see the markup): once the match is found the
+     hunt is over, and the freshly-picked word is appended to the right --- so
+     leaving the caret up would strand it under the previous word. */
   .hunt-page-match {
     position: relative;
   }
@@ -534,13 +538,27 @@
   }
 
   /* mode="hunt" stage="start": the chosen first cutout, large and centred,
-     before it settles into the pile on the next frame. */
+     before it settles into the pile on the next frame. We grow it with a
+     transform (not font-size) and keep its font-size equal to the pile's
+     (.cutout-hunt, below), so Reveal auto-animate sees no font-size delta and
+     tweens only the transform between the two frames. Growing it via font-size
+     instead made auto-animate animate font-size *and* apply its own
+     bounding-box scale; the two compounded into a brief balloon (the cutout
+     jumped far larger than its resting size before settling into the pile).
+     min-height reserves the space the scaled cutout visually occupies, since a
+     transform doesn't affect layout. */
   .hunt-start {
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 4rem;
     margin: 1.5rem 0;
-    font-size: 2.2em;
+    font-size: 0.72em;
+  }
+
+  .hunt-start .cutout-paper {
+    transform: scale(3);
+    transform-origin: center;
   }
 
   /* The current cutout above the pile eats vertical room, so the hunt pile runs
