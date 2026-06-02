@@ -223,14 +223,16 @@
 {/snippet}
 
 {#if mode === "hunt"}
-  {#if page}
+  {#if page !== undefined}
     <!-- The running output. Its tail is the cutout we just placed, so the
          last word (== target) is what we now match; on the pick frame the
          chosen word is appended, growing the page by the word found below.
          Every part carries a stable data-id (the label, each word, and the
          picked word at its *eventual* index) so Reveal auto-animate matches
          them frame to frame and the line sits still --- the only motion is the
-         freshly-picked word's brief size pulse. -->
+         freshly-picked word's brief size pulse. The first "choose" frame passes
+         an empty page (""), so the label and a full-height line are still
+         reserved and the pile below doesn't jump when the first words land. -->
     <div class="hunt-page">
       <span class="hunt-page-label" data-id="hunt-page-label">your page</span>
       <span class="hunt-page-text">
@@ -248,6 +250,12 @@
             class="cutout-next-word {tokenColorClass(pick)} hunt-page-fresh"
             data-id={`page-${pageTokens.length}`}>{pick}</span
           >
+        {/if}
+        {#if pageTokens.length === 0}
+          <!-- empty "choose" frame: a zero-width word holds the line's height
+               and baseline identical to a populated page, so the pile below
+               doesn't move when the first words land. -->
+          <span class="cutout-next-word" aria-hidden="true">&#8203;</span>
         {/if}
       </span>
     </div>
