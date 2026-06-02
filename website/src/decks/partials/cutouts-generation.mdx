@@ -28,6 +28,102 @@ the chain grows (like dominoes)
 
 ## Find the next cutout
 
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat" target="eat" stage="all" />
+
+---
+
+{/* _animate: hunt */}
+
+## Find the next cutout
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat" target="eat" stage="colour" />
+
+---
+
+{/* _animate: hunt */}
+
+## Find the next cutout
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat" target="eat" stage="word" />
+
+---
+
+{/* _animate: hunt */}
+
+## Find the next cutout
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat" target="eat" stage="pick" pick="them" />
+
+---
+
+{/* _animate: hunt */}
+
+## Find the next cutout
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them" target="them" stage="all" />
+
+---
+
+{/* _animate: hunt */}
+
+## Find the next cutout
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them" target="them" stage="colour" />
+
+---
+
+{/* _animate: hunt */}
+
+## Find the next cutout
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them" target="them" stage="word" />
+
+---
+
+{/* _animate: hunt */}
+
+## Find the next cutout
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them" target="them" stage="pick" pick="here" />
+
+---
+
+{/* _animate: hunt */}
+
+## Find the next cutout
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them here" target="here" stage="all" />
+
+---
+
+{/* _animate: hunt */}
+
+## Find the next cutout
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them here" target="here" stage="colour" />
+
+---
+
+{/* _animate: hunt */}
+
+## Find the next cutout
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them here" target="here" stage="word" />
+
+---
+
+{/* _animate: hunt */}
+
+## Find the next cutout
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them here" target="here" stage="pick" pick="and" />
+
+---
+
+{/* _animate: hunt */}
+
+## Find the next cutout
+
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them here and" target="and" stage="all" />
 
 ---
@@ -55,26 +151,21 @@ the chain grows (like dominoes)
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them here and" target="and" stage="pick" pick="ham" />
 
 {/* notes:
-A worked "find the next cutout" on the same pile from the overview, with the
-running output ("your page") threaded above it. The page tail ("...and") fixes
-the word we're matching. Four auto-animate frames (id "hunt") narrow the pile:
-everything lit, then "and"'s colour (a fast scan --- note "there" shares that
-colour), then the real "and" cutouts (there→. drops out), then one pick --- whose
-next word ("ham") lands on the page in gold. Drives home that colour is a quick
-filter but you confirm the word, and that each pick grows your text. The page
-chain (will eat them here and ham) is the same one the worked-example table
-builds out two slides on --- and it's a recombination, not a quote: the book runs
-"...here and there", but the model rolls "and ham" instead, mashing "eat them
-here and" together with "and ham". Worth saying aloud --- it's the "hint, not a
-copy" payoff on the impact slide. Adjust page/target/pick or the seed to vary
-the demo.
+The whole generation loop, animated as one auto-animate run (id "hunt") on the
+seeded overview pile, with the running output ("your page") growing above it. We
+start with the first cutout (will eat) and chase the chain four picks deep: each
+pick's next word becomes the word we match next, so the page builds
+will eat → them → here → and → ham. Every step runs the same narrow-and-select:
+whole pile lit, then a fast colour scan, then the exact-word matches, then one
+pick --- whose next word lands on the page in gold and seeds the next step. The
+colour scan deliberately over-selects at some steps ("do" rides along when we
+match "them"; "there" when we match "and") --- that's the point: colour is a
+quick filter, you confirm by the word. The finished chain
+"will eat them here and ham" is a recombination, not a quote: the book runs
+"...here and there", but the model rolls "and ham", mashing "eat them here and"
+onto "and ham". Worth saying aloud --- it's the "hint, not a copy" payoff on the
+impact slide. Adjust the pages/targets/picks or the seed to vary the demo.
 */}
-
----
-
-## Worked example: chain it together
-
-<div class="worked-example-grid"><div class="we-header"></div><div class="we-header">cutout you pick</div><div class="we-header">your page</div><div class="we-step">start</div><Cutout prev="will" next="eat" /><div class="we-page"><strong>will eat</strong></div><div class="we-step">match <Token next>eat</Token></div><Cutout prev="eat" next="them" /><div class="we-page">will eat <strong>them</strong></div><div class="we-step">match <Token next>them</Token></div><Cutout prev="them" next="here" /><div class="we-page">will eat them <strong>here</strong></div><div class="we-step">match <Token next>here</Token></div><Cutout prev="here" next="and" /><div class="we-page">will eat them here <strong>and</strong></div><div class="we-step">match <Token next>and</Token></div><Cutout prev="and" next="ham" /><div class="we-page">will eat them here and <strong>ham</strong></div></div>
 
 ---
 
