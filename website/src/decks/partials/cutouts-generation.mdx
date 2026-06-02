@@ -26,6 +26,14 @@ the chain grows (like dominoes)
 
 {/* _animate: hunt */}
 
+## Choose a starting cutout
+
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat" target="eat" stage="start" />
+
+---
+
+{/* _animate: hunt */}
+
 ## Find the next cutout
 
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat" target="eat" stage="all" />
@@ -152,8 +160,11 @@ the chain grows (like dominoes)
 
 {/* notes:
 The whole generation loop, animated as one auto-animate run (id "hunt") on the
-seeded overview pile, with the running output ("your page") growing above it. We
-start with the first cutout (will eat) and chase the chain four picks deep: each
+seeded overview pile, with the running output ("your page") growing above it. The
+first frame shows the chosen starting cutout (will eat) large and centred --- you
+*choose* where to begin and it gives you your first two words --- before it
+settles into the pile and the hunt proper begins. From there we chase the chain
+four picks deep: each
 pick's next word becomes the word we match next, so the page builds
 will eat → them → here → and → ham. Every step runs the same narrow-and-select:
 whole pile lit, then a fast colour scan, then the exact-word matches, then one

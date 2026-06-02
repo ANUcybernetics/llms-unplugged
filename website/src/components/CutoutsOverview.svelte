@@ -2,7 +2,7 @@
   import { tokenColorClass, tokenColorIndex } from "../lib/tokenColors";
 
   type Mode = "tokens" | "example" | "flow" | "scatter" | "hunt";
-  type HuntStage = "all" | "colour" | "word" | "pick";
+  type HuntStage = "start" | "all" | "colour" | "word" | "pick";
 
   interface Props {
     /** Space-separated, already-preprocessed token stream. */
@@ -140,7 +140,9 @@
   });
 
   // mode="hunt": one step of the generation process. Reuse the seeded
-  // `scattered` pile and, per `stage`, mark each cutout live or dimmed:
+  // `scattered` order (rendered upright --- see the template) and, per `stage`,
+  // mark each cutout live or dimmed:
+  //   start  — handled separately: just the chosen first cutout, large/centred
   //   all    — nothing dimmed (the pile as it sits)
   //   colour — only cutouts whose prev-word shares `target`'s colour stay lit
   //            (a fast visual scan; palette collisions mean this can over-select)
@@ -157,6 +159,23 @@
     if (!current) return null;
     const [prev, next] = current.trim().split(/\s+/);
     return { prev, next: next ?? "" };
+  });
+
+  // mode="hunt" stage="start": the chosen first cutout, shown large and centred
+  // before the hunt begins. Its two words seed "your page", and its data-id
+  // matches its grid counterpart so Reveal auto-animate glides it down into the
+  // pile on the next frame (the rest of the cutouts fading in around it).
+  const huntStart = $derived.by<{
+    prev: string;
+    next: string;
+    idx: number;
+  } | null>(() => {
+    if (mode !== "hunt" || stage !== "start" || pageTokens.length < 2) {
+      return null;
+    }
+    const [a, b] = pageTokens;
+    const idx = bigrams.findIndex((bg) => bg.prev === a && bg.next === b);
+    return idx >= 0 ? { prev: a, next: b, idx } : null;
   });
 
   const huntPile = $derived.by<Hunted[]>(() => {
@@ -213,21 +232,26 @@
   {#if page}
     <!-- The running output. Its tail is the cutout we just placed, so the
          last word (== target) is what we now match; on the pick frame the
-         chosen word is appended, growing the page by the word found below. -->
+         chosen word is appended, growing the page by the word found below.
+         Every part carries a stable data-id (the label, each word, and the
+         picked word at its *eventual* index) so Reveal auto-animate matches
+         them frame to frame and the line sits still --- the only motion is the
+         freshly-picked word's brief size pulse. -->
     <div class="hunt-page">
-      <span class="hunt-page-label">your page</span>
+      <span class="hunt-page-label" data-id="hunt-page-label">your page</span>
       <span class="hunt-page-text">
         {#each pageTokens as word, i (i)}
           <span
             class="cutout-next-word {tokenColorClass(word)}"
-            class:hunt-page-match={i === pageTokens.length - 1}
+            class:hunt-page-match={stage !== "start" &&
+              i === pageTokens.length - 1}
             data-id={`page-${i}`}>{word}</span
           >
         {/each}
         {#if stage === "pick" && pick}
           <span
-            class="cutout-next-word {tokenColorClass(pick)} hunt-page-new"
-            data-id="page-pick">{pick}</span
+            class="cutout-next-word {tokenColorClass(pick)} hunt-page-fresh"
+            data-id={`page-${pageTokens.length}`}>{pick}</span
           >
         {/if}
       </span>
@@ -242,18 +266,33 @@
       })}
     </div>
   {/if}
-  <div class="cutout-scatter cutout-hunt">
-    {#each huntPile as bg (bg.idx)}
+  {#if stage === "start" && huntStart}
+    <!-- The chosen first cutout, large and centred. Its data-id matches the grid
+         cutout, so auto-animate glides it down into the pile on the next frame
+         while the rest of the cutouts fade in around it. -->
+    <div class="hunt-start">
       {@render cutout({
-        prev: bg.prev,
-        next: bg.next,
-        id: `cut-${bg.idx}`,
-        dimmed: !bg.live,
-        picked: bg.picked,
-        style: cutoutStyle(bg),
+        prev: huntStart.prev,
+        next: huntStart.next,
+        id: `cut-${huntStart.idx}`,
       })}
-    {/each}
-  </div>
+    </div>
+  {:else}
+    <!-- The hunt pile keeps the seeded shuffle (for the "rummage" feel) but is
+         rendered upright --- no scatter tilt/jitter --- so the worked example
+         stays readable. -->
+    <div class="cutout-scatter cutout-hunt">
+      {#each huntPile as bg (bg.idx)}
+        {@render cutout({
+          prev: bg.prev,
+          next: bg.next,
+          id: `cut-${bg.idx}`,
+          dimmed: !bg.live,
+          picked: bg.picked,
+        })}
+      {/each}
+    </div>
+  {/if}
 {:else if mode === "scatter"}
   <div class="cutout-scatter">
     {#each scattered as bg (bg.idx)}
@@ -393,8 +432,10 @@
   }
 
   /* mode="hunt" with `page`: the running output sits where the current cutout
-     would, since the page's tail IS that cutout. The last word is ringed (the
-     word we're matching); the picked word lands gold and bold once chosen. */
+     would, since the page's tail IS that cutout. The last word gets a caret
+     beneath it (the word we're matching); the freshly-picked word gives a brief
+     size pulse as it lands --- no recolouring, since colour already encodes the
+     token. */
   .hunt-page {
     display: flex;
     align-items: baseline;
@@ -421,18 +462,85 @@
     font-size: 1.05em;
   }
 
-  /* the last word already on the page --- what the pile is being matched to */
+  /* the current word --- the one we're now hunting for in the pile. A small
+     caret sits beneath it, pointing down at the pile ("find this word below").
+     Drawn with borders (crisp, font-independent) in the neutral chrome colour,
+     not a token colour, so it reads as a marker rather than another token. */
   .hunt-page-match {
-    outline: 2px solid var(--anu-gold);
-    outline-offset: 3px;
-    border-radius: 4px;
-    background: color-mix(in srgb, var(--anu-gold) 15%, transparent);
+    position: relative;
   }
 
-  /* the word just found in the pile and written onto the page */
-  .hunt-page-new {
-    color: var(--anu-gold);
-    font-weight: 700;
+  .hunt-page-match::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 0.15em);
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 0.3em solid transparent;
+    border-right: 0.3em solid transparent;
+    border-top: 0.36em solid var(--anu-white);
+    opacity: 0.55;
+    pointer-events: none;
+    animation: hunt-caret-bob 1.5s ease-in-out infinite;
+  }
+
+  /* the caret gently bobs toward the pile --- a soft "look here next" nudge.
+     Drop this animation line to go back to a static caret. */
+  @keyframes hunt-caret-bob {
+    0%,
+    100% {
+      transform: translateX(-50%) translateY(0);
+    }
+    50% {
+      transform: translateX(-50%) translateY(0.22em);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hunt-page-match::after {
+      animation: none;
+    }
+  }
+
+  /* the word just found in the pile and written onto the page: a brief size
+     pulse marks it as freshly written. The pulse plays whenever this frame
+     becomes present (section.present is set by Reveal, outside this component's
+     scope, hence :global). The keyframes are declared -global- because Svelte
+     won't rewrite a scoped keyframe name referenced from inside a :global
+     rule, so a scoped @keyframes would silently never match. */
+  @keyframes -global-hunt-page-pulse {
+    0% {
+      transform: scale(1);
+    }
+    35% {
+      transform: scale(1.4);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  :global(section.present) .hunt-page-fresh {
+    transform-origin: center bottom;
+    animation: hunt-page-pulse 0.5s ease-out both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(section.present) .hunt-page-fresh {
+      animation: none;
+    }
+  }
+
+  /* mode="hunt" stage="start": the chosen first cutout, large and centred,
+     before it settles into the pile on the next frame. */
+  .hunt-start {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1.5rem 0;
+    font-size: 2.2em;
   }
 
   /* The current cutout above the pile eats vertical room, so the hunt pile runs
