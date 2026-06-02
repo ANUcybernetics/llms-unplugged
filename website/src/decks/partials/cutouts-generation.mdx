@@ -28,6 +28,14 @@ the chain grows (like dominoes)
 
 ## Choose a starting cutout
 
+<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} stage="all" />
+
+---
+
+{/* _animate: hunt */}
+
+## Choose a starting cutout
+
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat" target="eat" stage="start" />
 
 ---
@@ -45,14 +53,6 @@ the chain grows (like dominoes)
 ## Find the next cutout
 
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat" target="eat" stage="colour" />
-
----
-
-{/* _animate: hunt */}
-
-## Find the next cutout
-
-<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat" target="eat" stage="word" />
 
 ---
 
@@ -116,14 +116,6 @@ the chain grows (like dominoes)
 
 ## Find the next cutout
 
-<CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them here" target="here" stage="word" />
-
----
-
-{/* _animate: hunt */}
-
-## Find the next cutout
-
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="hunt" seed={4} page="will eat them here" target="here" stage="pick" pick="and" />
 
 ---
@@ -160,18 +152,19 @@ the chain grows (like dominoes)
 
 {/* notes:
 The whole generation loop, animated as one auto-animate run (id "hunt") on the
-seeded overview pile, with the running output ("your page") growing above it. The
-first frame shows the chosen starting cutout (will eat) large and centred --- you
-*choose* where to begin and it gives you your first two words --- before it
-settles into the pile and the hunt proper begins. From there we chase the chain
-four picks deep: each
-pick's next word becomes the word we match next, so the page builds
-will eat → them → here → and → ham. Every step runs the same narrow-and-select:
-whole pile lit, then a fast colour scan, then the exact-word matches, then one
-pick --- whose next word lands on the page in gold and seeds the next step. The
-colour scan deliberately over-selects at some steps ("do" rides along when we
-match "them"; "there" when we match "and") --- that's the point: colour is a
-quick filter, you confirm by the word. The finished chain
+seeded overview pile, with the running output ("your page") growing above it. It
+opens on the full pile, then dims everything but the chosen starting cutout
+(will eat) --- you *choose* where to begin and it gives you your first two
+words --- before the hunt proper begins. From there we chase the chain four
+picks deep: each pick's next word becomes the word we match next, so the page
+builds will eat → them → here → and → ham. Each step runs the same
+narrow-and-select: whole pile lit, then a fast colour scan, then one pick ---
+whose next word lands on the page in gold and seeds the next step. Where the
+colour scan over-selects (a palette clash), an extra exact-word frame sits
+between the scan and the pick to refine it; that happens for "them" ("do" rides
+along) and "and" ("there" rides along), but not for "eat" or "here", where the
+colour already isolates the word. That contrast is the point: colour is a quick
+filter, you confirm by the word only when you must. The finished chain
 "will eat them here and ham" is a recombination, not a quote: the book runs
 "...here and there", but the model rolls "and ham", mashing "eat them here and"
 onto "and ham". Worth saying aloud --- it's the "hint, not a copy" payoff on the

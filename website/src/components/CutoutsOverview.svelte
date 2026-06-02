@@ -142,7 +142,8 @@
   // mode="hunt": one step of the generation process. Reuse the seeded
   // `scattered` order (rendered upright --- see the template) and, per `stage`,
   // mark each cutout live or dimmed:
-  //   start  — handled separately: just the chosen first cutout, large/centred
+  //   start  — only the chosen first cutout (page's first two words) stays lit;
+  //            the rest of the pile dims, so the choice reads as "begin here"
   //   all    — nothing dimmed (the pile as it sits)
   //   colour — only cutouts whose prev-word shares `target`'s colour stay lit
   //            (a fast visual scan; palette collisions mean this can over-select)
@@ -161,39 +162,32 @@
     return { prev, next: next ?? "" };
   });
 
-  // mode="hunt" stage="start": the chosen first cutout, shown large and centred
-  // before the hunt begins. Its two words seed "your page", and its data-id
-  // matches its grid counterpart so Reveal auto-animate glides it down into the
-  // pile on the next frame (the rest of the cutouts fading in around it).
-  const huntStart = $derived.by<{
-    prev: string;
-    next: string;
-    idx: number;
-  } | null>(() => {
-    if (mode !== "hunt" || stage !== "start" || pageTokens.length < 2) {
-      return null;
-    }
-    const [a, b] = pageTokens;
-    const idx = bigrams.findIndex((bg) => bg.prev === a && bg.next === b);
-    return idx >= 0 ? { prev: a, next: b, idx } : null;
-  });
-
   const huntPile = $derived.by<Hunted[]>(() => {
     if (mode !== "hunt") return [];
     const targetColour = target != null ? tokenColorIndex(target) : -1;
+    // stage="start": the chosen first cutout is the page's first two words.
+    const [startPrev, startNext] = pageTokens;
     return scattered.map((bg) => {
       const wordMatch = bg.prev === target;
       const colourMatch = tokenColorIndex(bg.prev) === targetColour;
-      const picked = wordMatch && bg.next === pick;
+      const pickMatch = wordMatch && bg.next === pick;
+      const startMatch = bg.prev === startPrev && bg.next === startNext;
       const live =
         stage === "colour"
           ? colourMatch
           : stage === "word"
             ? wordMatch
             : stage === "pick"
-              ? picked
-              : true;
-      return { ...bg, live, picked: picked && stage === "pick" };
+              ? pickMatch
+              : stage === "start"
+                ? startMatch
+                : true;
+      return {
+        ...bg,
+        live,
+        picked:
+          (stage === "pick" && pickMatch) || (stage === "start" && startMatch),
+      };
     });
   });
 
@@ -267,33 +261,22 @@
       })}
     </div>
   {/if}
-  {#if stage === "start" && huntStart}
-    <!-- The chosen first cutout, large and centred. Its data-id matches the grid
-         cutout, so auto-animate glides it down into the pile on the next frame
-         while the rest of the cutouts fade in around it. -->
-    <div class="hunt-start">
+  <!-- The hunt pile keeps the seeded shuffle (for the "rummage" feel) but is
+       rendered upright --- no scatter tilt/jitter --- so the worked example
+       stays readable. On stage="start" every cutout but the chosen first one
+       dims (so the pick reads as "begin here"); the same dimming machinery then
+       drives the colour/word/pick narrowing, all glided by auto-animate. -->
+  <div class="cutout-scatter cutout-hunt">
+    {#each huntPile as bg (bg.idx)}
       {@render cutout({
-        prev: huntStart.prev,
-        next: huntStart.next,
-        id: `cut-${huntStart.idx}`,
+        prev: bg.prev,
+        next: bg.next,
+        id: `cut-${bg.idx}`,
+        dimmed: !bg.live,
+        picked: bg.picked,
       })}
-    </div>
-  {:else}
-    <!-- The hunt pile keeps the seeded shuffle (for the "rummage" feel) but is
-         rendered upright --- no scatter tilt/jitter --- so the worked example
-         stays readable. -->
-    <div class="cutout-scatter cutout-hunt">
-      {#each huntPile as bg (bg.idx)}
-        {@render cutout({
-          prev: bg.prev,
-          next: bg.next,
-          id: `cut-${bg.idx}`,
-          dimmed: !bg.live,
-          picked: bg.picked,
-        })}
-      {/each}
-    </div>
-  {/if}
+    {/each}
+  </div>
 {:else if mode === "scatter"}
   <div class="cutout-scatter">
     {#each scattered as bg (bg.idx)}
@@ -464,7 +447,7 @@
   }
 
   /* the current word --- the one we're now hunting for in the pile. A small
-     caret sits beneath it, pointing down at the pile ("find this word below").
+     caret sits beneath it, pointing up at the word it marks ("this word").
      Drawn with borders (crisp, font-independent) in the neutral chrome colour,
      not a token colour, so it reads as a marker rather than another token.
      Hidden on the pick frame (see the markup): once the match is found the
@@ -478,19 +461,19 @@
     content: "";
     position: absolute;
     left: 50%;
-    top: calc(100% + 0.15em);
+    top: calc(100% + 0.25em);
     transform: translateX(-50%);
     width: 0;
     height: 0;
     border-left: 0.3em solid transparent;
     border-right: 0.3em solid transparent;
-    border-top: 0.36em solid var(--anu-white);
+    border-bottom: 0.36em solid var(--anu-white);
     opacity: 0.55;
     pointer-events: none;
     animation: hunt-caret-bob 1.5s ease-in-out infinite;
   }
 
-  /* the caret gently bobs toward the pile --- a soft "look here next" nudge.
+  /* the caret gently bobs up toward the word --- a soft "look here" nudge.
      Drop this animation line to go back to a static caret. */
   @keyframes hunt-caret-bob {
     0%,
@@ -498,7 +481,7 @@
       transform: translateX(-50%) translateY(0);
     }
     50% {
-      transform: translateX(-50%) translateY(0.22em);
+      transform: translateX(-50%) translateY(-0.15em);
     }
   }
 
@@ -537,32 +520,8 @@
     }
   }
 
-  /* mode="hunt" stage="start": the chosen first cutout, large and centred,
-     before it settles into the pile on the next frame. We grow it with a
-     transform (not font-size) and keep its font-size equal to the pile's
-     (.cutout-hunt, below), so Reveal auto-animate sees no font-size delta and
-     tweens only the transform between the two frames. Growing it via font-size
-     instead made auto-animate animate font-size *and* apply its own
-     bounding-box scale; the two compounded into a brief balloon (the cutout
-     jumped far larger than its resting size before settling into the pile).
-     min-height reserves the space the scaled cutout visually occupies, since a
-     transform doesn't affect layout. */
-  .hunt-start {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 4rem;
-    margin: 1.5rem 0;
-    font-size: 0.72em;
-  }
-
-  .hunt-start .cutout-paper {
-    transform: scale(3);
-    transform-origin: center;
-  }
-
-  /* The current cutout above the pile eats vertical room, so the hunt pile runs
-     a little smaller and tighter than the overview scatter to stay inside the
+  /* The page line above the pile eats vertical room, so the hunt pile runs a
+     little smaller and tighter than the overview scatter to stay inside the
      720px canvas. */
   .cutout-hunt {
     gap: 0.4em 0.8em;
