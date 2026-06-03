@@ -165,37 +165,34 @@
   const huntPile = $derived.by<Hunted[]>(() => {
     if (mode !== "hunt") return [];
     const targetColour = target != null ? tokenColorIndex(target) : -1;
-    // stage="start": you grab a *single* cutout to begin, so highlight only the
-    // first matching pair in the pile --- even when that pair (e.g. "will eat")
-    // appears more than once. (Pick frames, by contrast, light every match,
-    // since the choice is weighted across all of them.)
     const [startPrev, startNext] = pageTokens;
-    const startIdx =
+    // The "choose" (start) and "pick" frames each commit to a *single* chosen
+    // cutout --- you grab one physical cutout, even when the same pair (e.g.
+    // "will eat" or "eat them") appears more than once in the pile. So find that
+    // one chosen cutout (the first matching pair) and light/ring only it. The
+    // colour and word frames, by contrast, light every candidate, since you're
+    // still narrowing.
+    const chosenIdx =
       stage === "start"
         ? scattered.findIndex(
             (bg) => bg.prev === startPrev && bg.next === startNext,
           )
-        : -1;
+        : stage === "pick"
+          ? scattered.findIndex((bg) => bg.prev === target && bg.next === pick)
+          : -1;
     return scattered.map((bg, i) => {
       const wordMatch = bg.prev === target;
       const colourMatch = tokenColorIndex(bg.prev) === targetColour;
-      const pickMatch = wordMatch && bg.next === pick;
-      const startMatch = i === startIdx;
+      const chosen = i === chosenIdx;
       const live =
         stage === "colour"
           ? colourMatch
           : stage === "word"
             ? wordMatch
-            : stage === "pick"
-              ? pickMatch
-              : stage === "start"
-                ? startMatch
-                : true;
-      return {
-        ...bg,
-        live,
-        picked: (stage === "pick" && pickMatch) || startMatch,
-      };
+            : stage === "pick" || stage === "start"
+              ? chosen
+              : true;
+      return { ...bg, live, picked: chosen };
     });
   });
 
