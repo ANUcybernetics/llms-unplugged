@@ -36,9 +36,9 @@
    matches too — keep all three in sync if any entry is regenerated.
    Each entry sets --token-bg (the palette colour, used as the pill fill) and
    --token-pill-text (black on light entries with OKLab L > 0.65, otherwise
-   white — same `light` flag as in the typst). --token-fg (the free-standing
-   next-word colour on a dark slide background) is derived in one rule below
-   by lightening --token-bg to L≥0.75. */
+   white — same `light` flag as in the typst). Free-standing next words use the
+   raw --token-bg as well — matching the printed cutout — and reuse
+   --token-pill-text as a legibility halo (see .cutout-next-word below). */
 .reveal .tc-0 {
   --token-bg: oklch(0% 0 0deg); /* black */
   --token-pill-text: var(--anu-white);
@@ -189,17 +189,6 @@
   --token-pill-text: var(--anu-white);
 }
 
-/* Derive --token-fg from --token-bg: same hue and chroma, but lifted to at
-   least L=0.75 so dark palette entries stay readable as free-standing text
-   on the dark slide background. The typst output doesn't need this — it
-   prints on white paper and uses a thin black stroke on light entries
-   instead. The `from` relative-colour syntax is supported in all evergreen
-   browsers; if a deck has to run on an older engine, replace this with a
-   second oklch() literal in each .tc-N rule. */
-.reveal [class*="tc-"] {
-  --token-fg: oklch(from var(--token-bg) max(l, 0.75) c h);
-}
-
 .reveal .cutout-previous-word,
 .reveal .cutout-next-word,
 .reveal .cutout-tool-trigger {
@@ -214,8 +203,19 @@
 
 .reveal .cutout-next-word {
   font-weight: 400;
-  color: var(--token-fg);
+
+  /* Match the printed cutout: the free-standing next word is the *same* raw
+     palette colour as the previous-word pill (the pill carries it as a fill,
+     here it is the text colour). Dark entries would vanish on the dark slide,
+     so — mirroring the typst, which strokes light entries in black on white
+     paper — lift them with a light halo. --token-pill-text is white for dark
+     entries and black for light ones, so dark words get a white halo while
+     light words get an invisible black one and are left as is. */
+  color: var(--token-bg);
   margin: 0 0.1em;
+  text-shadow:
+    0 0 2px var(--token-pill-text),
+    0 0 2px var(--token-pill-text);
 }
 
 .reveal .cutout-previous-word {
