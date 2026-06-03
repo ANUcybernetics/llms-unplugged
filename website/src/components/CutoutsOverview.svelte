@@ -165,13 +165,22 @@
   const huntPile = $derived.by<Hunted[]>(() => {
     if (mode !== "hunt") return [];
     const targetColour = target != null ? tokenColorIndex(target) : -1;
-    // stage="start": the chosen first cutout is the page's first two words.
+    // stage="start": you grab a *single* cutout to begin, so highlight only the
+    // first matching pair in the pile --- even when that pair (e.g. "will eat")
+    // appears more than once. (Pick frames, by contrast, light every match,
+    // since the choice is weighted across all of them.)
     const [startPrev, startNext] = pageTokens;
-    return scattered.map((bg) => {
+    const startIdx =
+      stage === "start"
+        ? scattered.findIndex(
+            (bg) => bg.prev === startPrev && bg.next === startNext,
+          )
+        : -1;
+    return scattered.map((bg, i) => {
       const wordMatch = bg.prev === target;
       const colourMatch = tokenColorIndex(bg.prev) === targetColour;
       const pickMatch = wordMatch && bg.next === pick;
-      const startMatch = bg.prev === startPrev && bg.next === startNext;
+      const startMatch = i === startIdx;
       const live =
         stage === "colour"
           ? colourMatch
@@ -185,8 +194,7 @@
       return {
         ...bg,
         live,
-        picked:
-          (stage === "pick" && pickMatch) || (stage === "start" && startMatch),
+        picked: (stage === "pick" && pickMatch) || startMatch,
       };
     });
   });
