@@ -1,9 +1,10 @@
 ---
 id: TASK-111
 title: fix the extensions slide in the ace-26 deck
-status: To Do
+status: Done
 assignee: []
-created_date: "2026-03-11 06:06"
+created_date: '2026-03-11 06:06'
+updated_date: '2026-06-03 07:45'
 labels: []
 dependencies: []
 ---
