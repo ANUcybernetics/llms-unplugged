@@ -5,10 +5,12 @@ description: A Cybernetic Studio workshop
 
 import StaticGrid from "../components/StaticGrid.svelte";
 import StaticGeneration from "../components/StaticGeneration.svelte";
-import TrainingWidget from "../components/widgets/TrainingWidget.svelte";
-import GenerationWidget from "../components/widgets/GenerationWidget.svelte";
+import Timer from "../components/Timer.astro";
 import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
+import BgMusic from "../components/BgMusic.astro";
 import "../styles/widgets.css";
+
+<BgMusic />
 
 export const EXAMPLE_TOKENS = "see spot run . run , spot , run .";
 export const EXAMPLE_VOCAB = "see spot run . ,";
@@ -37,21 +39,7 @@ export const EXAMPLE_TEXT = "See Spot run. Run, Spot, run.";
 
 ---
 
-## What is this about?
-
-![bg right:40%](./assets/bg-core-insight.avif)
-
-you'll **build** your own language model---from scratch---with just a kids book,
-pen & paper, and some dice rolling
-
-you'll **learn** how language models work by exploiting patterns in text to
-generate new text
-
----
-
-{/* _class: centered */}
-
-![qr](https://www.llmsunplugged.org)
+{/* @include ./partials/grid-intro.mdx */}
 
 ---
 
