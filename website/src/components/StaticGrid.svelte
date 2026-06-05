@@ -17,6 +17,13 @@
   const allBigrams = $derived(getBigrams(tokenList));
   const visibleBigrams = $derived(allBigrams.slice(0, step));
 
+  // Grow the grid token-by-token: only tokens seen up to this step (the first
+  // `step + 1` tokens) get a row/column, kept in vocab order. New rows/columns
+  // appear as each new token shows up, rather than the full vocabulary being
+  // laid out up front.
+  const seenTokens = $derived(new Set(tokenList.slice(0, step + 1)));
+  const visibleVocab = $derived(vocab.filter((token) => seenTokens.has(token)));
+
   const currentPairIndex = $derived(step - 1);
   const currentPair = $derived(
     currentPairIndex >= 0 && currentPairIndex < allBigrams.length
@@ -35,7 +42,11 @@
   {/each}
 </div>
 
-<BigramCountsTable {vocab} bigrams={visibleBigrams} currentCell={currentPair} />
+<BigramCountsTable
+  vocab={visibleVocab}
+  bigrams={visibleBigrams}
+  currentCell={currentPair}
+/>
 
 <style>
   /* Deck-only component, tuned for the 1280×720 / 16px-root reveal canvas. */
