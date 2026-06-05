@@ -78,6 +78,10 @@
   table.bigram-grid td {
     text-align: center;
     padding: 0.4rem;
+    /* Subtle gold-tinted grid lines (the website's bigram grid uses the same
+       token) so cells read as a grid without competing with the gold tally
+       marks and current-cell highlight. */
+    border: 1px solid var(--color-divider);
   }
 
   table.bigram-grid td.grid-cell {
