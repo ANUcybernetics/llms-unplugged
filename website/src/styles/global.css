@@ -70,7 +70,7 @@
    theme's @layer at.components rules. */
 .at-callout {
   --at-accent: var(--anu-gold);
-  --at-accent-soft: light-dark(rgb(190 131 14 / 10%), rgb(190 131 14 / 14%));
+  --at-accent-soft: rgb(from var(--anu-gold) r g b / 14%);
 }
 
 /* Lesson intro block */
@@ -87,71 +87,46 @@
   letter-spacing: 0.05em;
 }
 
-/* LM Grid table styling */
-.lm-grid {
-  overflow-x: auto;
-  margin: 1.5rem 0;
-}
-
-.lm-grid table {
-  border-collapse: collapse;
-  border: 1px solid var(--at-border);
-  font-size: 0.875rem;
-}
-
-.lm-grid th,
-.lm-grid td {
-  padding: 0.5rem;
-  text-align: center;
-  min-width: 3rem;
-  height: 2.5rem;
-  border: 1px solid var(--at-border);
-}
-
-.lm-grid th {
-  background-color: var(--at-accent-soft);
-  font-weight: 600;
-}
-
-.lm-grid th code,
-.lm-grid td code {
-  background: transparent;
-  padding: 0;
-  font-size: inherit;
-}
-
-.lm-grid td:first-child {
-  background-color: var(--at-accent-soft);
-  font-weight: 600;
-}
-
-/* LM Cutouts table styling */
+/* LM table styling — grid and cutouts share most of this; the grid adds
+   square, centred cells and a highlighted leading column. */
+.lm-grid,
 .lm-cutouts {
   overflow-x: auto;
   margin: 1.5rem 0;
 }
 
-.lm-cutouts table {
+:is(.lm-grid, .lm-cutouts) table {
   border-collapse: collapse;
   border: 1px solid var(--at-border);
   font-size: 0.875rem;
 }
 
-.lm-cutouts th,
-.lm-cutouts td {
+:is(.lm-grid, .lm-cutouts) :is(th, td) {
   padding: 0.5rem;
   border: 1px solid var(--at-border);
 }
 
-.lm-cutouts th {
+:is(.lm-grid, .lm-cutouts) th {
   background-color: var(--at-accent-soft);
   font-weight: 600;
 }
 
-.lm-cutouts td code {
+:is(.lm-grid, .lm-cutouts) td code,
+.lm-grid th code {
   background: transparent;
   padding: 0;
   font-size: inherit;
+}
+
+.lm-grid :is(th, td) {
+  text-align: center;
+  min-width: 3rem;
+  height: 2.5rem;
+}
+
+.lm-grid td:first-child {
+  background-color: var(--at-accent-soft);
+  font-weight: 600;
 }
 
 /* Shared content container. width:100% is load-bearing: .content-container is a

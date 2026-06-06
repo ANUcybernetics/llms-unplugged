@@ -14,14 +14,14 @@
   --color-text-secondary: rgb(255 255 255 / 78%);
   --color-text-muted: rgb(255 255 255 / 56%);
   --color-brand: var(--anu-gold);
-  --color-brand-soft: rgb(190 131 14 / 14%);
-  --color-divider: rgb(190 131 14 / 30%);
-  --color-border: rgb(190 131 14 / 40%);
+  --color-brand-soft: rgb(from var(--anu-gold) r g b / 14%);
+  --color-divider: rgb(from var(--anu-gold) r g b / 30%);
+  --color-border: rgb(from var(--anu-gold) r g b / 40%);
 
   /* LM widget highlight colours */
-  --lm-highlight-soft: rgb(190 131 14 / 10%);
-  --lm-highlight-medium: rgb(190 131 14 / 30%);
-  --lm-highlight-strong: rgb(190 131 14 / 40%);
+  --lm-highlight-soft: rgb(from var(--anu-gold) r g b / 10%);
+  --lm-highlight-medium: rgb(from var(--anu-gold) r g b / 30%);
+  --lm-highlight-strong: rgb(from var(--anu-gold) r g b / 40%);
 
   /* Monospace font stack */
   --font-mono:
