@@ -20,6 +20,12 @@
   font-size: 20px;
 }
 
+/* Long unbreakable tokens (URLs, BibTeX citation keys) shouldn't push the page
+   wide on narrow screens — let them wrap. */
+.prose {
+  overflow-wrap: break-word;
+}
+
 /* Content images - full width */
 .prose img {
   width: 100%;
@@ -148,8 +154,14 @@
   font-size: inherit;
 }
 
-/* Shared content container */
+/* Shared content container. width:100% is load-bearing: .content-container is a
+   grid item of .at-main (a subgrid), and `margin-inline: auto` suppresses grid
+   stretch — so without an explicit width the item sizes to max-content, and a
+   wide prose image balloons it to the 960px max-width, overflowing narrow
+   viewports (was breaking /about and /faq on mobile). A definite width makes it
+   fill the track instead, capped by max-width, with auto margins still centring. */
 .content-container {
+  width: 100%;
   max-width: var(--content-max-width);
   margin: 0 auto;
   padding-block: 2rem;
@@ -267,13 +279,13 @@
     border-bottom: 0.2mm solid #ddd;
   }
 
-  .site-nav,
-  .site-sidebar,
-  .site-footer {
+  .at-nav,
+  .at-sidebar,
+  .at-footer {
     display: none !important;
   }
 
-  .site-content {
+  .at-main {
     padding: 8mm !important;
     margin: 0 !important;
     max-width: none !important;
