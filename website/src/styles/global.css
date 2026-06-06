@@ -25,6 +25,17 @@
   width: 100%;
 }
 
+/* Below 640px the ANU theme (base.css, @layer at.base) bleeds prose images to
+   the screen edges via a matched negative margin-inline + widened width. Our
+   unlayered width:100% above wins the width half but leaves the negative
+   margins in place, shoving body images off-centre (overhang left, gap right).
+   Cancel the bleed so they stay aligned with the text column and inset hero. */
+@media (width < 640px) {
+  .prose :where(p, figure) > img {
+    margin-inline: 0;
+  }
+}
+
 /* Theme defaults to a symmetric grid: both gutters reserve sidebar-inset so
    content stays centred whether or not a sidebar is shown. On lesson pages
    this halves the available content width. Make the sidebar-page grid
