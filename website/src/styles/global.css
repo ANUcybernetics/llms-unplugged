@@ -20,12 +20,6 @@
   font-size: 20px;
 }
 
-/* Long unbreakable tokens (URLs, BibTeX citation keys) shouldn't push the page
-   wide on narrow screens — let them wrap. */
-.prose {
-  overflow-wrap: break-word;
-}
-
 /* Content images - full width */
 .prose img {
   width: 100%;
@@ -254,12 +248,9 @@
     border-bottom: 0.2mm solid #ddd;
   }
 
-  .at-nav,
-  .at-sidebar,
-  .at-footer {
-    display: none !important;
-  }
-
+  /* Chrome-hiding (.at-nav/.at-sidebar/.at-footer) and grid collapse now come
+     from the theme's own @media print block (astro-theme-anu >= 0.4.2). Only
+     the site-specific print padding remains here. */
   .at-main {
     padding: 8mm !important;
     margin: 0 !important;
