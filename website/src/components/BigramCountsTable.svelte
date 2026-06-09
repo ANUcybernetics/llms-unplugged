@@ -10,6 +10,10 @@
     activeRow?: string | null;
     /** Single cell to ring as the chosen/current pair, written [from, to]. */
     currentCell?: [string, string] | null;
+    /** When set, only these tokens' row/column headings are shown; the rest are
+        still laid out (so the grid keeps its full size) but stay invisible until
+        revealed. Null shows every heading. */
+    revealedTokens?: Set<string> | null;
   }
 
   let {
@@ -17,7 +21,11 @@
     bigrams,
     activeRow = null,
     currentCell = null,
+    revealedTokens = null,
   }: Props = $props();
+
+  const isRevealed = (token: string) =>
+    revealedTokens == null || revealedTokens.has(token);
 
   const counts = $derived.by(() => {
     const m = new Map<string, Map<string, number>>();
@@ -37,14 +45,14 @@
     <tr>
       <th></th>
       {#each vocab as col}
-        <th><code>{col}</code></th>
+        <th><code class:unrevealed={!isRevealed(col)}>{col}</code></th>
       {/each}
     </tr>
   </thead>
   <tbody>
     {#each vocab as row}
       <tr class:active-row={activeRow === row}>
-        <td><code>{row}</code></td>
+        <td><code class:unrevealed={!isRevealed(row)}>{row}</code></td>
         {#each vocab as col}
           {@const count = counts.get(row)?.get(col) || 0}
           {@const isCurrent =
@@ -82,6 +90,17 @@
        token) so cells read as a grid without competing with the gold tally
        marks and current-cell highlight. */
     border: 1px solid var(--color-divider);
+  }
+
+  /* Headings fade in as the build reveals each token; the cells they sit in are
+     always present, so the grid keeps its full size and never shifts. */
+  table.bigram-grid th code,
+  table.bigram-grid td code {
+    transition: opacity 0.3s ease;
+  }
+
+  table.bigram-grid code.unrevealed {
+    opacity: 0;
   }
 
   table.bigram-grid td.grid-cell {

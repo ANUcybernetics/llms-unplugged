@@ -17,12 +17,11 @@
   const allBigrams = $derived(getBigrams(tokenList));
   const visibleBigrams = $derived(allBigrams.slice(0, step));
 
-  // Grow the grid token-by-token: only tokens seen up to this step (the first
-  // `step + 1` tokens) get a row/column, kept in vocab order. New rows/columns
-  // appear as each new token shows up, rather than the full vocabulary being
-  // laid out up front.
+  // Lay out the full vocabulary grid from the first step so the table never
+  // changes size as the build progresses --- no layout shift between slides.
+  // Instead the row/column headings reveal token-by-token: a token's heading
+  // only shows once it has appeared in the first `step + 1` tokens.
   const seenTokens = $derived(new Set(tokenList.slice(0, step + 1)));
-  const visibleVocab = $derived(vocab.filter((token) => seenTokens.has(token)));
 
   const currentPairIndex = $derived(step - 1);
   const currentPair = $derived(
@@ -43,8 +42,9 @@
 </div>
 
 <BigramCountsTable
-  vocab={visibleVocab}
+  {vocab}
   bigrams={visibleBigrams}
+  revealedTokens={seenTokens}
   currentCell={currentPair}
 />
 
