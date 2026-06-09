@@ -51,7 +51,7 @@
   const generatedSoFar = $derived(sequenceTokens.slice(0, step + 1));
 </script>
 
-<GeneratedSequence generated={generatedSoFar} next={chosenNext} font="serif" />
+<GeneratedSequence generated={generatedSoFar} next={chosenNext} />
 
 <div class="entries-list">
   {#each entries as entry}

@@ -4,14 +4,12 @@
     generated: string[];
     /** Proposed next token, shown ghosted with a dashed ring. */
     next?: string | null;
-    /** Match the surrounding deck typography (pretrained view uses serif). */
-    font?: "mono" | "serif";
   }
 
-  let { generated, next = null, font = "mono" }: Props = $props();
+  let { generated, next = null }: Props = $props();
 </script>
 
-<div class="generation-output" class:serif={font === "serif"}>
+<div class="generation-output">
   {#each generated as token, i}
     <code class:latest={i === generated.length - 1}>{token}</code>
   {/each}
@@ -29,14 +27,6 @@
     gap: 0.4em;
     margin: 0.5rem 0 1.5rem;
     font-size: 1.6rem;
-  }
-
-  .generation-output.serif {
-    font-family: var(--font-libertinus-serif), serif;
-  }
-
-  .generation-output.serif code {
-    font-family: inherit;
   }
 
   .generation-output code.latest {
