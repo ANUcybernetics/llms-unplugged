@@ -124,49 +124,63 @@ impl Normalizer {
         self.config.corpus_case_map = map;
     }
 
+    /// Split a line into lexical segments. This is the single tokenizer
+    /// walker: every pipeline (model building, canonical-case tracking, and
+    /// cutout sheets) consumes the same segments, so they can never disagree
+    /// about token boundaries. Digits act as separators — a digit run is its
+    /// own segment, which the model pipelines skip and the cutouts variant
+    /// shows as a discarded token.
+    fn segments(&self, line: &str) -> Vec<Segment> {
+        fn flush(buf: &mut String, make: fn(String) -> Segment, segments: &mut Vec<Segment>) {
+            if !buf.is_empty() {
+                segments.push(make(std::mem::take(buf)));
+            }
+        }
+
+        let mut segments = Vec::new();
+        let mut word = String::new();
+        let mut digits = String::new();
+
+        for c in line.chars() {
+            let c = normalize_apostrophe(c);
+
+            if self.config.punctuation.contains(&c) {
+                flush(&mut word, Segment::Word, &mut segments);
+                flush(&mut digits, Segment::Digits, &mut segments);
+                segments.push(Segment::Punct(c));
+            } else if c.is_ascii_alphabetic() || c == '\'' {
+                flush(&mut digits, Segment::Digits, &mut segments);
+                word.push(c);
+            } else if c.is_ascii_digit() {
+                flush(&mut word, Segment::Word, &mut segments);
+                digits.push(c);
+            } else {
+                flush(&mut word, Segment::Word, &mut segments);
+                flush(&mut digits, Segment::Digits, &mut segments);
+            }
+        }
+        flush(&mut word, Segment::Word, &mut segments);
+        flush(&mut digits, Segment::Digits, &mut segments);
+
+        segments
+    }
+
     /// Extract raw word tokens from a line, preserving original casing.
     /// Used for first pass to build canonical form tracking.
     /// Returns only valid word tokens (not punctuation, not filtered).
     pub fn extract_raw_words(&self, line: &str) -> Vec<String> {
-        let mut words = Vec::new();
-        let mut current = String::new();
-
-        for c in line.chars() {
-            let normalized_char = normalize_apostrophe(c);
-
-            if self.config.punctuation.contains(&normalized_char) {
-                if !current.is_empty() {
-                    if let Some(word) = self.clean_word_token(&current)
-                        && self.is_valid_word(&word)
-                    {
-                        words.push(word);
-                    }
-                    current.clear();
-                }
-            } else if normalized_char.is_ascii_alphabetic() || normalized_char == '\'' {
-                current.push(normalized_char);
-            } else if !current.is_empty() {
-                if let Some(word) = self.clean_word_token(&current)
-                    && self.is_valid_word(&word)
-                {
-                    words.push(word);
-                }
-                current.clear();
-            }
-        }
-
-        if !current.is_empty()
-            && let Some(word) = self.clean_word_token(&current)
-            && self.is_valid_word(&word)
-        {
-            words.push(word);
-        }
-
-        words
+        self.segments(line)
+            .into_iter()
+            .filter_map(|seg| match seg {
+                Segment::Word(w) => self.clean_word(&w),
+                _ => None,
+            })
+            .filter(|w| self.is_valid_word(w))
+            .collect()
     }
 
     /// Clean a word token (strip quotes) but preserve original casing
-    fn clean_word_token(&self, token: &str) -> Option<String> {
+    fn clean_word(&self, token: &str) -> Option<String> {
         let mut word = token.trim_start_matches('\'').to_string();
 
         while word.ends_with('\'') && !looks_like_contraction(&word) {
@@ -176,128 +190,80 @@ impl Normalizer {
         if word.is_empty() { None } else { Some(word) }
     }
 
-    /// Check if a word is valid (not filtered out)
+    /// Words consist of letters and apostrophes by construction (digits act
+    /// as separators in the walker), so the only filter left is the roman
+    /// numeral blocklist (with "I" allowlisted).
     fn is_valid_word(&self, word: &str) -> bool {
-        let starts_with_digit = word
-            .chars()
-            .next()
-            .map(|c| c.is_ascii_digit())
-            .unwrap_or(false);
         let lower = word.to_lowercase();
-        let is_endoftext = lower == "<|endoftext|>";
-        let is_filtered_roman = lower != "i" && is_roman_numeral(&lower);
+        lower == "i" || !is_roman_numeral(&lower)
+    }
 
-        !starts_with_digit && !is_endoftext && !is_filtered_roman
+    /// Canonical casing: allowlist > corpus case map > lowercase.
+    fn canonical_case(&self, word: &str) -> String {
+        let lower = word.to_lowercase();
+        self.config
+            .case_allowlist
+            .get(&lower)
+            .or_else(|| self.config.corpus_case_map.get(&lower))
+            .cloned()
+            .unwrap_or(lower)
     }
 
     pub fn normalize_line(&self, line: &str) -> Vec<String> {
-        let mut tokens = Vec::new();
-        let mut current = String::new();
-
-        for c in line.chars() {
-            let normalized_char = normalize_apostrophe(c);
-
-            if self.config.punctuation.contains(&normalized_char) {
-                if !current.is_empty() {
-                    tokens.extend(self.normalize_word_token(&current));
-                    current.clear();
-                }
-                tokens.push(normalized_char.to_string());
-            } else if normalized_char.is_ascii_alphabetic() || normalized_char == '\'' {
-                current.push(normalized_char);
-            } else {
-                if !current.is_empty() {
-                    tokens.extend(self.normalize_word_token(&current));
-                    current.clear();
-                }
-            }
-        }
-
-        if !current.is_empty() {
-            tokens.extend(self.normalize_word_token(&current));
-        }
-
-        tokens
+        self.segments(line)
+            .into_iter()
+            .filter_map(|seg| match seg {
+                Segment::Word(w) => self.normalize_word_token(&w),
+                Segment::Punct(c) => Some(c.to_string()),
+                Segment::Digits(_) => None,
+            })
+            .collect()
     }
 
     /// Tokenize a line returning raw tokens with keep/discard status.
     /// Used for the cutouts lesson variant where all tokens are shown.
-    /// Unlike normalize_line, this preserves digits in tokens so we can show them as discarded.
+    /// Kept tokens agree with `normalize_line` by construction; digit runs
+    /// and filtered words appear with `keep: false` so students can see what
+    /// the model dropped.
     pub fn tokenize_line_raw(&self, line: &str, start_index: usize) -> Vec<RawToken> {
         let mut tokens = Vec::new();
-        let mut current = String::new();
         let mut index = start_index;
 
-        for c in line.chars() {
-            let normalized_char = normalize_apostrophe(c);
-
-            if self.config.punctuation.contains(&normalized_char) {
-                if !current.is_empty() {
-                    if let Some(token) = self.make_raw_token(&current, index) {
-                        tokens.push(token);
-                        index += 1;
-                    }
-                    current.clear();
-                }
-                tokens.push(RawToken {
+        for seg in self.segments(line) {
+            let token = match seg {
+                Segment::Word(w) => self.make_raw_token(&w, index),
+                Segment::Punct(c) => Some(RawToken {
                     index,
-                    text: normalized_char.to_string(),
+                    text: c.to_string(),
                     keep: true,
                     previous_words: vec![],
                     is_tool: false,
-                });
+                }),
+                Segment::Digits(d) => Some(RawToken {
+                    index,
+                    text: d,
+                    keep: false,
+                    previous_words: vec![],
+                    is_tool: false,
+                }),
+            };
+            if let Some(token) = token {
+                tokens.push(token);
                 index += 1;
-            } else if normalized_char.is_ascii_alphanumeric() || normalized_char == '\'' {
-                // Include digits (unlike normalize_line) so we can show them as discarded
-                current.push(normalized_char);
-            } else if !current.is_empty() {
-                if let Some(token) = self.make_raw_token(&current, index) {
-                    tokens.push(token);
-                    index += 1;
-                }
-                current.clear();
             }
-        }
-
-        if !current.is_empty()
-            && let Some(token) = self.make_raw_token(&current, index)
-        {
-            tokens.push(token);
         }
 
         tokens
     }
 
     fn make_raw_token(&self, token: &str, index: usize) -> Option<RawToken> {
-        let mut word = token.trim_start_matches('\'').to_string();
+        let word = self.clean_word(token)?;
+        let keep = self.is_valid_word(&word);
 
-        while word.ends_with('\'') && !looks_like_contraction(&word) {
-            word.pop();
-        }
-
-        if word.is_empty() {
-            return None;
-        }
-
-        let starts_with_digit = word
-            .chars()
-            .next()
-            .map(|c| c.is_ascii_digit())
-            .unwrap_or(false);
-        let lower = word.to_lowercase();
-        let is_endoftext = lower == "<|endoftext|>";
-        let is_filtered_roman = lower != "i" && is_roman_numeral(&lower);
-
-        let keep = !starts_with_digit && !is_endoftext && !is_filtered_roman;
-
-        // Priority: allowlist > corpus case map > lowercase
+        // Discarded words keep their original surface form so the cutout
+        // shows exactly what was dropped.
         let text = if keep {
-            self.config
-                .case_allowlist
-                .get(&lower)
-                .or_else(|| self.config.corpus_case_map.get(&lower))
-                .cloned()
-                .unwrap_or(lower)
+            self.canonical_case(&word)
         } else {
             word
         };
@@ -312,45 +278,19 @@ impl Normalizer {
     }
 
     fn normalize_word_token(&self, token: &str) -> Option<String> {
-        let mut word = token.trim_start_matches('\'').to_string();
-
-        while word.ends_with('\'') && !looks_like_contraction(&word) {
-            word.pop();
-        }
-
-        if word.is_empty() {
+        let word = self.clean_word(token)?;
+        if !self.is_valid_word(&word) {
             return None;
         }
-
-        if word
-            .chars()
-            .next()
-            .map(|c| c.is_ascii_digit())
-            .unwrap_or(false)
-        {
-            return None;
-        }
-
-        let lower = word.to_lowercase();
-
-        if lower == "<|endoftext|>" {
-            return None;
-        }
-
-        if lower != "i" && is_roman_numeral(&lower) {
-            return None;
-        }
-
-        // Priority: allowlist > corpus case map > lowercase
-        Some(
-            self.config
-                .case_allowlist
-                .get(&lower)
-                .or_else(|| self.config.corpus_case_map.get(&lower))
-                .cloned()
-                .unwrap_or(lower),
-        )
+        Some(self.canonical_case(&word))
     }
+}
+
+/// A lexical segment of a line, produced by [`Normalizer::segments`].
+enum Segment {
+    Word(String),
+    Punct(char),
+    Digits(String),
 }
 
 fn normalize_apostrophe(c: char) -> char {
@@ -555,39 +495,51 @@ mod tests {
     }
 
     #[test]
-    fn raw_tokens_marks_numbers_as_discard() {
+    fn raw_tokens_split_digit_runs_as_discards() {
+        // A digit run is its own discarded token and the adjacent word is
+        // kept — matching exactly what normalize_line feeds the model
+        // ("bad" is a model token for this input).
         let tokens = normalizer().tokenize_line_raw("test 123bad word", 1);
-        assert_eq!(tokens.len(), 3);
+        let summary: Vec<(&str, bool)> = tokens.iter().map(|t| (t.text.as_str(), t.keep)).collect();
         assert_eq!(
-            tokens[0],
-            RawToken {
-                index: 1,
-                text: "test".to_string(),
-                keep: true,
-                previous_words: vec![],
-                is_tool: false,
-            }
+            summary,
+            vec![
+                ("test", true),
+                ("123", false),
+                ("bad", true),
+                ("word", true)
+            ]
         );
+        // Indices stay continuous across kept and discarded tokens.
         assert_eq!(
-            tokens[1],
-            RawToken {
-                index: 2,
-                text: "123bad".to_string(),
-                keep: false,
-                previous_words: vec![],
-                is_tool: false,
-            }
+            tokens.iter().map(|t| t.index).collect::<Vec<_>>(),
+            vec![1, 2, 3, 4]
         );
-        assert_eq!(
-            tokens[2],
-            RawToken {
-                index: 3,
-                text: "word".to_string(),
-                keep: true,
-                previous_words: vec![],
-                is_tool: false,
-            }
-        );
+    }
+
+    #[test]
+    fn kept_raw_tokens_agree_with_normalize_line() {
+        // The core invariant of the unified walker: the kept cutouts are
+        // exactly the tokens the booklet model is built from.
+        let n = normalizer();
+        for line in [
+            "Chapter IV is 123good and Section3 is fine.",
+            "test 123bad word, don't stop",
+            "Number123 again. I think I'm fine.",
+            "'Hello,' she said. ''BEST'' 42",
+        ] {
+            let kept: Vec<String> = n
+                .tokenize_line_raw(line, 1)
+                .into_iter()
+                .filter(|t| t.keep)
+                .map(|t| t.text)
+                .collect();
+            assert_eq!(
+                kept,
+                n.normalize_line(line),
+                "kept cutouts must equal model tokens for {line:?}"
+            );
+        }
     }
 
     #[test]
