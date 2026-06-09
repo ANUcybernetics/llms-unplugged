@@ -1,6 +1,5 @@
 # ignore all pdfs except specific ones in website/public
 *.pdf
-!website/public/assets/pdfs/lessons.pdf
 !website/public/assets/pdfs/ace2026-llms-unplugged.pdf
 !website/public/assets/pdfs/llms-unplugged-flyer-may-2026.pdf
 !website/public/assets/pdfs/booklets/*.pdf
@@ -8,7 +7,7 @@
 
 /data/*
 
-# but keep frankenstein.txt for the release
+# but keep frankenstein.txt as the example corpus used in the docs
 !/data/frankenstein.txt
 # and sycophancy.txt for the sycophancy lesson activity
 !/data/sycophancy.txt
