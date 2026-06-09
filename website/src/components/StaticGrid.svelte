@@ -20,8 +20,11 @@
   // Lay out the full vocabulary grid from the first step so the table never
   // changes size as the build progresses --- no layout shift between slides.
   // Instead the row/column headings reveal token-by-token: a token's heading
-  // only shows once it has appeared in the first `step + 1` tokens.
-  const seenTokens = $derived(new Set(tokenList.slice(0, step + 1)));
+  // only shows once it has appeared in the first `step + 1` tokens. step 0
+  // renders the fully empty grid (no headings, no tallies) as a starting point.
+  const seenTokens = $derived(
+    step <= 0 ? new Set<string>() : new Set(tokenList.slice(0, step + 1)),
+  );
 
   const currentPairIndex = $derived(step - 1);
   const currentPair = $derived(
@@ -36,7 +39,7 @@
     <code
       class:highlight={currentPair &&
         (i === currentPairIndex || i === currentPairIndex + 1)}
-      class:dimmed={i > currentPairIndex + 1}>{token}</code
+      class:dimmed={currentPair && i > currentPairIndex + 1}>{token}</code
     >
   {/each}
 </div>
