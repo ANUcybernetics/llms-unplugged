@@ -20,51 +20,51 @@
 </ol>
 */}
 
-use the booklet to generate new text, rolling d10s to choose each next word
+use the booklet to generate new text, rolling one or two d10s to choose each next word
 
 ---
 
-## Pre-trained: start with `see`
+## Pre-trained: start with `the`
 
-only one option --- no dice roll needed
+a bigger model --- `the` is so common it needs **two** dice (roll two d10s for 00 to 99)
 
 <StaticPretrainedGeneration tokens={EXAMPLE_TEXT} sequence={EXAMPLE_PRETRAINED_SEQ} rolls={EXAMPLE_PRETRAINED_ROLLS} step={0} />
 
 ---
 
-## Pre-trained: `see` &rarr; `spot`
+## Pre-trained: from `cat`
 
-two options (`run` and `,`) with thresholds --- roll a d10!
+`cat` is rarer than `the` --- just **one** die, roll a d10
 
 <StaticPretrainedGeneration tokens={EXAMPLE_TEXT} sequence={EXAMPLE_PRETRAINED_SEQ} rolls={EXAMPLE_PRETRAINED_ROLLS} step={1} />
 
 ---
 
-## Pre-trained: `spot` &rarr; `,`
+## Pre-trained: from `sat`
 
-two options (`spot` and `run`) --- roll a d10!
+only one option --- no dice roll needed
 
 <StaticPretrainedGeneration tokens={EXAMPLE_TEXT} sequence={EXAMPLE_PRETRAINED_SEQ} rolls={EXAMPLE_PRETRAINED_ROLLS} step={2} />
 
 ---
 
-## Pre-trained: `,` &rarr; `run`
+## Pre-trained: from `.`
 
-two options (`.` and `,`) --- roll a d10!
+only one option --- no dice roll needed
 
 <StaticPretrainedGeneration tokens={EXAMPLE_TEXT} sequence={EXAMPLE_PRETRAINED_SEQ} rolls={EXAMPLE_PRETRAINED_ROLLS} step={3} />
 
 ---
 
-## Pre-trained: `run` &rarr; `.`
+## Pre-trained: from `the` again
 
-only one option --- no dice roll needed
+**two** dice again --- 63 is past `cat`'s 49, so we land on `dog`
 
 <StaticPretrainedGeneration tokens={EXAMPLE_TEXT} sequence={EXAMPLE_PRETRAINED_SEQ} rolls={EXAMPLE_PRETRAINED_ROLLS} step={4} />
 
 ---
 
-## Pre-trained: `.` &rarr; `run`
+## Pre-trained: from `dog`
 
 and so on...
 
