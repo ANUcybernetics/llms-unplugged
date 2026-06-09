@@ -36,15 +36,11 @@ after tidying up:
 
 ## The empty grid
 
-&nbsp;
-
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={0} />
 
 ---
 
 ## Training: `see` &rarr; `spot`
-
-&nbsp;
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={1} />
 
@@ -52,15 +48,11 @@ after tidying up:
 
 ## Training: `spot` &rarr; `run`
 
-&nbsp;
-
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={2} />
 
 ---
 
 ## Training: `run` &rarr; `.`
-
-&nbsp;
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={3} />
 
@@ -68,7 +60,7 @@ after tidying up:
 
 ## Training: `.` &rarr; `run`
 
-`run` is already in our vocabulary --- no new column needed!
+{/* notes: <code>run</code> is already in our vocabulary &mdash; no new column needed! */}
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={4} />
 
@@ -76,7 +68,7 @@ after tidying up:
 
 ## Training: `run` &rarr; `,`
 
-`,` is a new token --- it gets its own row and column
+{/* notes: <code>,</code> is a new token &mdash; it gets its own row and column */}
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={5} />
 
@@ -84,15 +76,13 @@ after tidying up:
 
 ## Training: `run` &rarr; `.` again
 
-now the rest of the text is tallied too --- and `run` &rarr; `.` came up twice, so its cell has two marks
+{/* notes: now the rest of the text is tallied too &mdash; and <code>run</code> &rarr; <code>.</code> came up twice, so its cell has two marks */}
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={9} />
 
 ---
 
 ## Complete model
-
-&nbsp;
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={10} />
 
