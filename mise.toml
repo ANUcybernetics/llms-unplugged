@@ -2,19 +2,18 @@
 node = "24"
 pnpm = "latest"
 rust = "latest"
-fnox = "latest"
+typst = "0.14.2"
+typstyle = "0.14.4"
+jq = "1.8.1"
+# the cutouts-print task also needs qpdf (not in the mise registry):
+# apt install qpdf
 
 [tasks]
-test = "cargo test"
-build = "cargo build"
-run = "cargo run"
-check = "cargo check"
-fmt = "cargo fmt"
-clippy = "cargo clippy"
-
-[tasks.book]
-usage = 'arg "<file>"'
-run = 'cargo run "$usage_file" --scale-d 120 && typst compile book.typ'
+test = { run = "cargo test", dir = "cli" }
+build = { run = "cargo build", dir = "cli" }
+check = { run = "cargo check", dir = "cli" }
+fmt = { run = "cargo fmt", dir = "cli" }
+clippy = { run = "cargo clippy", dir = "cli" }
 
 [tasks.cutouts-print]
 description = "Build a printable duplex cutouts PDF (rotates even pages 180° so long-edge binding works). Usage: mise run cutouts-print <input> [--pages N] [<cli-args>...]"
