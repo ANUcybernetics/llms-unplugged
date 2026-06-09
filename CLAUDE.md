@@ -7,12 +7,11 @@ manual (pen-and-paper) and automated tools.
 
 ## Project structure
 
-This repository has four main parts:
+This repository has three main parts:
 
 - **`cli/`** - Rust CLI tool for generating N-gram models and PDF booklets
 - **`handouts/`** - Typst standalone materials (worksheets, runsheets, poster)
-- **`website/`** - Project website (Astro) including lesson cards
-- **`typst/`** - Shared Typst resources (utils.typ, fonts/, images/)
+- **`website/`** - Project website (Astro) including all lessons
 
 Supporting directories:
 

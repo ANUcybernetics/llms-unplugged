@@ -2,22 +2,16 @@
 
 ## Overview
 
-This directory contains Typst-based standalone teaching materials: worksheets,
-runsheets, and the poster. Lesson cards are now colocated with their markdown
-files in `website/src/lessons/`.
+This directory contains Typst-based standalone printable materials: worksheets,
+runsheets, and the poster. The lessons themselves live on the website
+(`website/src/content/lessons/`).
 
 ## Directory structure
 
-- `worksheets/` - blank templates (grid, trigram-template, blank-lesson)
-- `draft/` - lessons in draft form (evaluation, poetry-slam)
+- `worksheets/` - blank templates (grid, trigram-template,
+  truncation-strategies, blank-page)
 - `runsheets/` - session runsheets (90min, 2h, 3h)
 - `poster.typ` - project poster
-
-Shared Typst resources are in `../typst/`:
-
-- `utils.typ` - shared functions
-- `fonts/` - IBM Plex Mono, Public Sans
-- `images/` - hero images and SVGs
 
 ## Build process
 
@@ -26,39 +20,26 @@ Shared Typst resources are in `../typst/`:
 make
 
 # Build single file
-typst compile --root .. worksheets/grid.typ
+typst compile worksheets/grid.typ
 ```
+
+PDFs are written to `../website/src/assets/pdfs/`.
 
 ## Design constraints
 
-These files use an A4 **landscape** format (29.7cm × 21cm), but otherwise
-inherit all the styling from the main typst `anu` theme:
-
-- 2.5cm margins
-- ANU Cybernetic Studio branding
-- dark theme with gold accents
-- Public Sans font
-- images: 11.9cm width on right side
-
-Note: some files require the `@local/anu-typst-template:0.2.0` package to be
-installed locally (not vendored in this repo).
-
-## Common tasks
-
-### Modifying layout
-
-- Edit `../typst/utils.typ` for global changes
-- Override locally for specific files
+These files use an A4 **landscape** format (29.7cm × 21cm) and inherit their
+styling from the `anu` Typst template: ANU Cybernetic Studio branding, dark
+theme with gold accents.
 
 ## Dependencies
 
-- `@local/anu-typst-template:0.2.0` package (must be installed locally)
-- Libertinus Serif and Public Sans fonts
+- `@local/anu-typst-template:0.2.0` package (must be installed locally, not
+  vendored in this repo)
 - Typst compiler
+- fonts installed system-wide (Public Sans, Monaspace Argon)
 
 ## Notes
 
 - Materials are designed for physical printing and workshop distribution
 - Emphasis on hands-on activities with dice, tokens, paper
-- When making changes to the template, build one of the worksheets and check the
-  output PDF
+- When making changes, build the affected file and check the output PDF
