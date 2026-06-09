@@ -49,6 +49,9 @@ pub fn process_text_for_booklet(
     author: &str,
     n: usize,
 ) -> Result<String, JsValue> {
+    if n < 2 {
+        return Err(JsValue::from_str("n must be at least 2"));
+    }
     let mut counter = NGramCounter::new(n, crate::default_punctuation());
 
     for line in content.lines() {
@@ -69,6 +72,9 @@ pub fn process_text_for_cutouts(
     author: &str,
     n: usize,
 ) -> Result<String, JsValue> {
+    if n < 2 {
+        return Err(JsValue::from_str("n must be at least 2"));
+    }
     let (tokens, metadata) =
         tokenize_for_cutouts(content, title, author, crate::default_punctuation(), n);
 

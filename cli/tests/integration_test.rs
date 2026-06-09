@@ -1,9 +1,20 @@
 use llms_unplugged::DEFAULT_PUNCTUATION;
 use std::fs::File;
 use std::io::{self, BufReader, Write};
-use std::path::Path; // Import Path
+use std::path::Path;
 use std::process::Command;
 use tempfile::TempDir;
+
+/// Path to the compiled CLI binary. Cargo guarantees it exists and points at
+/// the right target dir (including cross-target builds), so tests never need
+/// to locate it by hand or silently skip.
+fn cli_exe() -> &'static Path {
+    Path::new(env!("CARGO_BIN_EXE_llms_unplugged"))
+}
+
+fn typst_available() -> bool {
+    Command::new("typst").arg("--version").output().is_ok()
+}
 
 fn is_punct_token(token: &str) -> bool {
     let mut chars = token.chars();
@@ -13,38 +24,13 @@ fn is_punct_token(token: &str) -> bool {
     }
 }
 
-// Helper function to run the full pipeline for a given n
-fn run_cli_and_typst_test(n: usize, exe_path: &Path, temp_dir: &TempDir) -> io::Result<()> {
+/// Run the `pdf` subcommand from a temp dir with no `--template`: the default
+/// template must resolve relative to the crate (not the cwd), and an out-dir
+/// outside the template's directory must work. Both were real bugs.
+fn run_pdf_subcommand_test(n: usize, temp_dir: &TempDir) -> io::Result<()> {
     let input_path = temp_dir.path().join(format!("input_n{}.txt", n));
-    let model_path = temp_dir.path().join("model.json"); // CLI output, in temp_dir
-    let book_pdf_path = temp_dir.path().join("book.pdf"); // Typst output, in temp_dir
-
-    // Determine path to the actual book.typ relative to crate root
-    let mut crate_root = std::env::current_dir()?;
-    // Assuming tests are run from the 'llms_unplugged' directory
-    if !crate_root.ends_with("llms_unplugged") {
-        // If tests run from workspace root, adjust the path
-        if crate_root.join("llms_unplugged").is_dir() {
-            crate_root.push("llms_unplugged");
-        } else {
-            panic!(
-                "Could not determine crate root for test. CWD: {:?}",
-                crate_root
-            );
-        }
-    }
-    let actual_book_typ_path = crate_root.join("book.typ");
-
-    assert!(
-        actual_book_typ_path.exists(),
-        "Actual book.typ not found at: {:?}",
-        actual_book_typ_path
-    );
-
-    // --- 1. Create test input file ---
     {
         let mut input_file = File::create(&input_path)?;
-        // Add frontmatter
         writeln!(input_file, "---")?;
         writeln!(input_file, "title: Test Document for n={}", n)?;
         writeln!(input_file, "author: Integration Test")?;
@@ -55,46 +41,33 @@ fn run_cli_and_typst_test(n: usize, exe_path: &Path, temp_dir: &TempDir) -> io::
         input_file.flush()?;
     }
 
-    // --- 2. Run llms_unplugged CLI to generate model.json in temp_dir ---
-    let cli_status = Command::new(exe_path)
-        .arg("build")
+    let output = Command::new(cli_exe())
+        .arg("pdf")
         .arg("--input")
-        .arg(&input_path) // Use the full path to input
+        .arg(&input_path)
         .arg("--n")
         .arg(n.to_string())
-        .current_dir(temp_dir.path()) // IMPORTANT: Run CLI in temp_dir to output model.json here
-        .status()?;
+        .arg("--out-dir")
+        .arg(temp_dir.path().join("out"))
+        .current_dir(temp_dir.path())
+        .output()?;
 
-    assert!(cli_status.success(), "CLI command failed for n={}", n);
     assert!(
-        model_path.exists(),
-        "model.json was not created in temp_dir for n={}",
-        n
-    );
-
-    // --- 3. Copy book.typ to temp_dir and run typst compile ---
-    // Copy book.typ to temp_dir so it can find model.json in the same directory
-    let temp_book_typ_path = temp_dir.path().join("book.typ");
-    std::fs::copy(&actual_book_typ_path, &temp_book_typ_path)?;
-
-    // Run typst in temp_dir so it finds the model.json created there.
-    let typst_status = Command::new("typst")
-        .arg("compile")
-        .arg("book.typ") // Use the local copy in temp_dir
-        .arg(&book_pdf_path) // Explicitly specify output path in temp_dir
-        .current_dir(temp_dir.path()) // IMPORTANT: Run Typst in temp_dir to find model.json
-        .output()?; // Use output() to capture stderr if needed
-
-    // Check Typst command success via status code and stderr
-    assert!(
-        typst_status.status.success(),
-        "typst compile failed for n={}. Stderr:\n{}",
+        output.status.success(),
+        "pdf subcommand failed for n={}. Stderr:\n{}",
         n,
-        String::from_utf8_lossy(&typst_status.stderr)
+        String::from_utf8_lossy(&output.stderr)
     );
+
+    let pdf_path = temp_dir
+        .path()
+        .join("out")
+        .join("pdf")
+        .join(format!("input_n{}.pdf", n));
     assert!(
-        book_pdf_path.exists(),
-        "book.pdf was not created in temp_dir for n={}",
+        pdf_path.exists(),
+        "PDF was not created at {:?} for n={}",
+        pdf_path,
         n
     );
 
@@ -105,24 +78,7 @@ fn run_cli_and_typst_test(n: usize, exe_path: &Path, temp_dir: &TempDir) -> io::
 fn test_frontmatter_errors() -> io::Result<()> {
     // Create a temporary directory
     let temp_dir = TempDir::new()?;
-
-    // Get the path to the binary
-    let mut exe_path = std::env::current_dir()?;
-    exe_path.push("target");
-    exe_path.push("debug");
-    exe_path.push("llms_unplugged");
-    if cfg!(windows) {
-        exe_path.set_extension("exe");
-    }
-
-    // Skip if binary doesn't exist
-    if !exe_path.exists() {
-        println!(
-            "Skipping test_frontmatter_errors: Binary not found at {:?}",
-            exe_path
-        );
-        return Ok(());
-    }
+    let exe_path = cli_exe();
 
     // Test 1: Missing frontmatter completely
     {
@@ -132,7 +88,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
         writeln!(input_file, "The program should exit with an error.")?;
         input_file.flush()?;
 
-        let output = Command::new(&exe_path)
+        let output = Command::new(exe_path)
             .arg("build")
             .arg("--input")
             .arg(&input_path)
@@ -171,7 +127,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
         writeln!(input_file, "This file is missing the title field.")?;
         input_file.flush()?;
 
-        let output = Command::new(&exe_path)
+        let output = Command::new(exe_path)
             .arg("build")
             .arg("--input")
             .arg(&input_path)
@@ -203,7 +159,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
         writeln!(input_file, "This file is missing the author field.")?;
         input_file.flush()?;
 
-        let output = Command::new(&exe_path)
+        let output = Command::new(exe_path)
             .arg("build")
             .arg("--input")
             .arg(&input_path)
@@ -235,7 +191,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
         writeln!(input_file, "This file is missing the url field.")?;
         input_file.flush()?;
 
-        let output = Command::new(&exe_path)
+        let output = Command::new(exe_path)
             .arg("build")
             .arg("--input")
             .arg(&input_path)
@@ -269,7 +225,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
         )?;
         input_file.flush()?;
 
-        let output = Command::new(&exe_path)
+        let output = Command::new(exe_path)
             .arg("build")
             .arg("--input")
             .arg(&input_path)
@@ -319,25 +275,10 @@ fn test_cli_raw_flag() -> io::Result<()> {
 
     let output_path_raw = temp_dir.path().join("output_raw.json");
     let output_path_scaled = temp_dir.path().join("output_scaled.json");
-
-    // Get the path to the binary
-    let mut exe_path = std::env::current_dir()?;
-    exe_path.push("target");
-    exe_path.push("debug");
-    exe_path.push("llms_unplugged");
-
-    if cfg!(windows) {
-        exe_path.set_extension("exe");
-    }
-
-    // Skip the test if the binary doesn't exist
-    if !exe_path.exists() {
-        println!("Skipping test: Binary not found at {:?}", exe_path);
-        return Ok(());
-    }
+    let exe_path = cli_exe();
 
     // Run with --raw flag
-    let status_raw = Command::new(&exe_path)
+    let status_raw = Command::new(exe_path)
         .arg("build")
         .arg("--input")
         .arg(&input_path)
@@ -349,7 +290,7 @@ fn test_cli_raw_flag() -> io::Result<()> {
     assert!(output_path_raw.exists(), "Raw output file was not created");
 
     // Run without --raw flag (default scaling)
-    let status_scaled = Command::new(&exe_path)
+    let status_scaled = Command::new(exe_path)
         .arg("build")
         .arg("--input")
         .arg(&input_path)
@@ -420,24 +361,10 @@ fn test_cli_incompatible_flags() -> io::Result<()> {
     writeln!(input_file, "Test text.")?;
     input_file.flush()?;
 
-    // Get the path to the binary
-    let mut exe_path = std::env::current_dir()?;
-    exe_path.push("target");
-    exe_path.push("debug");
-    exe_path.push("llms_unplugged");
-
-    if cfg!(windows) {
-        exe_path.set_extension("exe");
-    }
-
-    // Skip if binary doesn't exist
-    if !exe_path.exists() {
-        println!("Skipping test: Binary not found at {:?}", exe_path);
-        return Ok(());
-    }
+    let exe_path = cli_exe();
 
     // Test that mutually exclusive flags for pdf are rejected (--json-only + --pdf-only)
-    let output = Command::new(&exe_path)
+    let output = Command::new(exe_path)
         .arg("pdf")
         .arg("--input")
         .arg(&input_path)
@@ -475,26 +402,10 @@ fn test_cli_end_to_end() -> io::Result<()> {
 
     // Create path for the output file
     let output_path = temp_dir.path().join("output.json"); // For default d10 scaling
-
-    // Get the path to the binary directory
-    let mut exe_path = std::env::current_dir()?;
-    exe_path.push("target");
-    exe_path.push("debug");
-    exe_path.push("llms_unplugged"); // Add the binary name
-
-    // On Windows, add .exe extension
-    if cfg!(windows) {
-        exe_path.set_extension("exe");
-    }
-
-    // Skip the test if the binary doesn't exist yet
-    if !exe_path.exists() {
-        println!("Skipping test: Binary not found at {:?}", exe_path);
-        return Ok(());
-    }
+    let exe_path = cli_exe();
 
     // Run CLI with default d10 scaling
-    let status = Command::new(&exe_path)
+    let status = Command::new(exe_path)
         .arg("build")
         .arg("--input")
         .arg(&input_path)
@@ -566,12 +477,17 @@ fn test_cli_end_to_end() -> io::Result<()> {
         );
 
         let previous_word = previous_word_val.as_str().unwrap_or("");
-        assert!(!previous_word.is_empty(), "Previous-words string should not be empty");
+        assert!(
+            !previous_word.is_empty(),
+            "Previous-words string should not be empty"
+        );
 
         // Check previous word is valid (alphabetic with possible capitalization or
         // a single-character punctuation token from the default kept set).
         if !is_punct_token(previous_word)
-            && !previous_word.chars().all(|c| c.is_alphabetic() || c == '\'')
+            && !previous_word
+                .chars()
+                .all(|c| c.is_alphabetic() || c == '\'')
         {
             found_invalid_chars_word = true;
         }
@@ -594,8 +510,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
 
         // Check next-word pairs (starting from index 2 now that we have total count as second element)
         let mut _prev_next_word = String::new();
-        for i in 2..entry_arr.len() {
-            let next_word_pair = &entry_arr[i];
+        for next_word_pair in entry_arr.iter().skip(2) {
             assert!(
                 next_word_pair.is_array(),
                 "Next-word entry should be an array [word, count]: {:?}",
@@ -610,10 +525,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
             );
 
             let next_word = next_word_arr[0].as_str().unwrap_or("");
-            assert!(
-                !next_word.is_empty(),
-                "Next word should not be empty"
-            );
+            assert!(!next_word.is_empty(), "Next word should not be empty");
             assert!(
                 next_word_arr[1].is_number(),
                 "Next-word count should be a number: {:?}",
@@ -623,9 +535,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
             // Check next word is valid (alphabetic with possible capitalization or
             // a single-character punctuation token from the default kept set).
             if !is_punct_token(next_word)
-                && !next_word
-                    .chars()
-                    .all(|c| c.is_alphabetic() || c == '\'')
+                && !next_word.chars().all(|c| c.is_alphabetic() || c == '\'')
             {
                 found_invalid_chars_word = true;
             }
@@ -654,7 +564,9 @@ fn test_cli_end_to_end() -> io::Result<()> {
 
         if let Some(ref prev) = prev_previous_word {
             // Use case-insensitive comparison since we now preserve capitalization
-            let cmp = current_previous_word.to_lowercase().cmp(&prev.to_lowercase());
+            let cmp = current_previous_word
+                .to_lowercase()
+                .cmp(&prev.to_lowercase());
             assert!(
                 cmp != std::cmp::Ordering::Less,
                 "Previous-words not sorted (case-insensitive): '{}' should come after '{}'",
@@ -710,7 +622,10 @@ fn test_cli_end_to_end() -> io::Result<()> {
         // lazy(1): round(3*2.25) = 7 (6.75 rounds to 7)
         // quick(1): round(4*2.25) = 9
         if previous_word_str == "the" {
-            assert_eq!(total_scaled, 9, "Previous-word 'the' (no-scale-arg) total count");
+            assert_eq!(
+                total_scaled, 9,
+                "Previous-word 'the' (no-scale-arg) total count"
+            );
             assert_eq!(entry_arr[2], serde_json::json!(["dog", 2]));
             assert_eq!(entry_arr[3], serde_json::json!(["fox", 5]));
             assert_eq!(entry_arr[4], serde_json::json!(["lazy", 7]));
@@ -728,7 +643,10 @@ fn test_cli_end_to_end() -> io::Result<()> {
         // "and"(1): round(2*3) = 6
         // "brown"(1): round(3*3) = 9
         if previous_word_str == "quick" {
-            assert_eq!(total_scaled, 9, "Previous-word 'quick' (no-scale-arg) total count");
+            assert_eq!(
+                total_scaled, 9,
+                "Previous-word 'quick' (no-scale-arg) total count"
+            );
             assert_eq!(entry_arr[2], serde_json::json!([",", 3]));
             assert_eq!(entry_arr[3], serde_json::json!(["and", 6]));
             assert_eq!(entry_arr[4], serde_json::json!(["brown", 9]));
@@ -738,59 +656,49 @@ fn test_cli_end_to_end() -> io::Result<()> {
     Ok(())
 }
 
-// New test case for Typst compilation
+// End-to-end test: pdf subcommand from an arbitrary cwd through to a typeset PDF
 #[test]
-#[ignore = "Requires running from a git repository"]
-fn test_cli_to_typst_pdf() -> io::Result<()> {
-    // Create a temporary directory
+fn test_pdf_subcommand_end_to_end() -> io::Result<()> {
+    if !typst_available() {
+        eprintln!("Skipping test_pdf_subcommand_end_to_end: 'typst' not found in PATH.");
+        return Ok(());
+    }
+
     let temp_dir = TempDir::new()?;
-
-    // Get the path to the binary
-    let mut exe_path = std::env::current_dir()?;
-    exe_path.push("target");
-    exe_path.push("debug");
-    exe_path.push("llms_unplugged");
-    if cfg!(windows) {
-        exe_path.set_extension("exe");
-    }
-
-    // Skip if binary doesn't exist
-    if !exe_path.exists() {
-        println!(
-            "Skipping test_cli_to_typst_pdf: Binary not found at {:?}",
-            exe_path
-        );
-        return Ok(());
-    }
-
-    // Skip if typst command is not found
-    if Command::new("typst").arg("--version").output().is_err() {
-        println!("Skipping test_cli_to_typst_pdf: 'typst' command not found in PATH.");
-        return Ok(());
-    }
-
-    // Run the test for n=2 (bigrams)
-    println!("Running Typst compilation test for n=2...");
-    run_cli_and_typst_test(2, &exe_path, &temp_dir)?;
-    println!("Typst compilation test for n=2 PASSED.");
-
-    // Run the test for n=3 (trigrams)
-    println!("Running Typst compilation test for n=3...");
-    run_cli_and_typst_test(3, &exe_path, &temp_dir)?;
-    println!("Typst compilation test for n=3 PASSED.");
-
+    run_pdf_subcommand_test(2, &temp_dir)?;
+    run_pdf_subcommand_test(3, &temp_dir)?;
     Ok(())
 }
 
-fn cli_exe_path() -> io::Result<std::path::PathBuf> {
-    let mut p = std::env::current_dir()?;
-    p.push("target");
-    p.push("debug");
-    p.push("llms_unplugged");
-    if cfg!(windows) {
-        p.set_extension("exe");
-    }
-    Ok(p)
+#[test]
+fn test_tsv_writes_clean_stdout_and_no_stray_files() -> io::Result<()> {
+    let temp = TempDir::new()?;
+    let input = write_sample_corpus(temp.path(), "corpus.txt", "the cat sat. the cat ran.")?;
+
+    let out = Command::new(cli_exe())
+        .arg("tsv")
+        .arg("-i")
+        .arg(&input)
+        .current_dir(temp.path())
+        .output()?;
+
+    assert!(out.status.success(), "tsv failed: {:?}", out);
+    let stdout = String::from_utf8_lossy(&out.stdout);
+    assert!(
+        stdout.starts_with('\t'),
+        "stdout must start with the TSV header row, got: {:?}",
+        &stdout[..stdout.len().min(80)]
+    );
+    assert!(
+        !stdout.contains("Successfully"),
+        "status chatter leaked into the TSV stream: {:?}",
+        stdout
+    );
+    assert!(
+        !temp.path().join("tsv-output.json").exists(),
+        "tsv must not write a stray JSON file to the cwd"
+    );
+    Ok(())
 }
 
 fn write_sample_corpus(dir: &Path, name: &str, body: &str) -> io::Result<std::path::PathBuf> {
@@ -808,12 +716,7 @@ fn write_sample_corpus(dir: &Path, name: &str, body: &str) -> io::Result<std::pa
 
 #[test]
 fn test_sample_cli_deterministic_with_seed() -> io::Result<()> {
-    let exe = cli_exe_path()?;
-    if !exe.exists() {
-        println!("Skipping test_sample_cli_deterministic_with_seed: binary not found");
-        return Ok(());
-    }
-
+    let exe = cli_exe();
     let temp = TempDir::new()?;
     let input = write_sample_corpus(
         temp.path(),
@@ -824,7 +727,7 @@ fn test_sample_cli_deterministic_with_seed() -> io::Result<()> {
     )?;
 
     let run = || {
-        Command::new(&exe)
+        Command::new(exe)
             .arg("sample")
             .arg("-i")
             .arg(&input)
@@ -844,18 +747,16 @@ fn test_sample_cli_deterministic_with_seed() -> io::Result<()> {
     assert_eq!(a.stdout, b.stdout, "same seed should give same output");
 
     let out = String::from_utf8_lossy(&a.stdout);
-    assert!(out.starts_with("the "), "output should begin with prompt: {out:?}");
+    assert!(
+        out.starts_with("the "),
+        "output should begin with prompt: {out:?}"
+    );
     Ok(())
 }
 
 #[test]
 fn test_sample_cli_prompt_normalises_case() -> io::Result<()> {
-    let exe = cli_exe_path()?;
-    if !exe.exists() {
-        println!("Skipping test_sample_cli_prompt_normalises_case: binary not found");
-        return Ok(());
-    }
-
+    let exe = cli_exe();
     let temp = TempDir::new()?;
     // Canonical form will be lowercase "the" since it dominates.
     let input = write_sample_corpus(
@@ -864,7 +765,7 @@ fn test_sample_cli_prompt_normalises_case() -> io::Result<()> {
         "the cat sat. The cat sat. the dog ran. the bird flew.",
     )?;
 
-    let out = Command::new(&exe)
+    let out = Command::new(exe)
         .arg("sample")
         .arg("-i")
         .arg(&input)
@@ -887,12 +788,7 @@ fn test_sample_cli_prompt_normalises_case() -> io::Result<()> {
 
 #[test]
 fn test_sample_cli_unknown_prompt_errors() -> io::Result<()> {
-    let exe = cli_exe_path()?;
-    if !exe.exists() {
-        println!("Skipping test_sample_cli_unknown_prompt_errors: binary not found");
-        return Ok(());
-    }
-
+    let exe = cli_exe();
     let temp = TempDir::new()?;
     let input = write_sample_corpus(
         temp.path(),
@@ -900,7 +796,7 @@ fn test_sample_cli_unknown_prompt_errors() -> io::Result<()> {
         "alpha beta gamma alpha beta delta",
     )?;
 
-    let out = Command::new(&exe)
+    let out = Command::new(exe)
         .arg("sample")
         .arg("-i")
         .arg(&input)
@@ -920,17 +816,12 @@ fn test_sample_cli_unknown_prompt_errors() -> io::Result<()> {
 
 #[test]
 fn test_sample_cli_dead_end_prints_partial_then_errors() -> io::Result<()> {
-    let exe = cli_exe_path()?;
-    if !exe.exists() {
-        println!("Skipping test_sample_cli_dead_end_prints_partial_then_errors: binary not found");
-        return Ok(());
-    }
-
+    let exe = cli_exe();
     let temp = TempDir::new()?;
     // "gamma" has no successor: sampling from "alpha" for 5 tokens must dead-end.
     let input = write_sample_corpus(temp.path(), "corpus.txt", "alpha beta gamma")?;
 
-    let out = Command::new(&exe)
+    let out = Command::new(exe)
         .arg("sample")
         .arg("-i")
         .arg(&input)
@@ -945,7 +836,11 @@ fn test_sample_cli_dead_end_prints_partial_then_errors() -> io::Result<()> {
     assert!(!out.status.success(), "dead-end should exit non-zero");
     let stdout = String::from_utf8_lossy(&out.stdout);
     let stderr = String::from_utf8_lossy(&out.stderr);
-    assert_eq!(stdout.trim(), "alpha beta gamma", "should print partial output");
+    assert_eq!(
+        stdout.trim(),
+        "alpha beta gamma",
+        "should print partial output"
+    );
     assert!(
         stderr.contains("dead-end"),
         "should report dead-end on stderr: {stderr}"

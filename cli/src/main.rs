@@ -44,7 +44,7 @@ struct BuildArgs {
     output: PathBuf,
 
     /// The size of the N-gram (e.g., 2 for bigrams, 3 for trigrams).
-    #[arg(short, long, default_value_t = 2)]
+    #[arg(short, long, default_value_t = 2, value_parser = parse_ngram_size)]
     n: usize,
 
     /// Number of books to split the output into (default 1 = no splitting)
@@ -75,7 +75,7 @@ struct PdfArgs {
     base_name: Option<String>,
 
     /// The size of the N-gram (e.g., 2 for bigrams, 3 for trigrams)
-    #[arg(short, long, default_value_t = 2)]
+    #[arg(short, long, default_value_t = 2, value_parser = parse_ngram_size)]
     n: usize,
 
     /// Number of books to split the output into (default 1 = no splitting)
@@ -86,9 +86,10 @@ struct PdfArgs {
     #[arg(long, default_value = "out")]
     out_dir: PathBuf,
 
-    /// Path to the Typst template (defaults to book.typ)
-    #[arg(long, default_value = "book.typ")]
-    template: PathBuf,
+    /// Path to the Typst template (defaults to the book.typ that ships
+    /// alongside the CLI source)
+    #[arg(long)]
+    template: Option<PathBuf>,
 
     /// Paper size passed to Typst (e.g. a4, a5)
     #[arg(long, default_value = "a4")]
@@ -149,7 +150,7 @@ struct CutoutsArgs {
     output: PathBuf,
 
     /// The size of the N-gram (e.g., 2 for bigrams, 3 for trigrams).
-    #[arg(short, long, default_value_t = 2)]
+    #[arg(short, long, default_value_t = 2, value_parser = parse_ngram_size)]
     n: usize,
 
     /// Paper size for PDF (default: a4)
@@ -195,7 +196,7 @@ struct SampleArgs {
 
     /// N-gram size (2 for bigrams, 3 for trigrams). Prompt must contain at
     /// least N-1 normalised tokens.
-    #[arg(short, long, default_value_t = 2)]
+    #[arg(short, long, default_value_t = 2, value_parser = parse_ngram_size)]
     n: usize,
 
     /// Prompt to start sampling from. Normalised the same way as the corpus.
@@ -280,7 +281,6 @@ struct BuildOutcome {
     written: Vec<BookArtifact>,
     stats: ProcessingStats,
     metadata: Option<Metadata>,
-    entries: Vec<WordFollowEntry>,
 }
 
 #[derive(Debug, Clone)]
@@ -458,38 +458,24 @@ fn run_sample_command(args: &SampleArgs) -> Result<(), CliError> {
             println!("{}", all.join(" "));
             Ok(())
         }
-        Err(SampleError::DeadEnd { context, generated }) => {
-            let mut all = prompt_tokens;
-            all.extend(generated.clone());
-            println!("{}", all.join(" "));
-            Err(CliError::InvalidArgs(format!(
-                "dead-end context `{}` has no successors; stopped after generating {} token(s)",
-                context.join(" "),
-                generated.len()
-            )))
+        Err(e) => {
+            if let SampleError::DeadEnd { generated, .. } = &e {
+                let mut all = prompt_tokens;
+                all.extend(generated.iter().cloned());
+                println!("{}", all.join(" "));
+            }
+            Err(CliError::InvalidArgs(e.to_string()))
         }
-        Err(e) => Err(CliError::InvalidArgs(e.to_string())),
     }
 }
 
 fn run_tsv_command(args: &TsvArgs) -> Result<(), CliError> {
-    let config = BuildConfig {
-        input: args.input.clone(),
-        output: PathBuf::from("tsv-output.json"), // unused placeholder
-        n: 2,
-        num_books: 1,
-        raw: true,
-        punctuation: args.punctuation.chars().collect(),
-    };
+    // Build the model in memory only: the TSV (on stdout by default) is the
+    // sole output, so nothing may be written or printed besides it.
+    let punctuation: Vec<char> = args.punctuation.chars().collect();
+    let model = compute_model(&args.input, 2, &punctuation)?;
 
-    let outcome = build_model(&config)?;
-    if outcome.metadata.as_ref().map(|m| m.n != 2).unwrap_or(false) {
-        return Err(CliError::InvalidArgs(
-            "TSV export only supports bigrams (n=2).".to_string(),
-        ));
-    }
-
-    let tsv = render_bigram_tsv(&outcome.entries).map_err(CliError::InvalidArgs)?;
+    let tsv = render_bigram_tsv(&model.entries).map_err(CliError::InvalidArgs)?;
     if let Some(path) = &args.output {
         fs::write(path, tsv).map_err(CliError::Processing)?;
         println!("Wrote TSV to {}", path.display());
@@ -523,7 +509,7 @@ fn run_pdf_command(args: &PdfArgs) -> Result<(), CliError> {
     let pdf_dir = args.out_dir.join("pdf");
     let base_json = json_dir.join(format!("{base_name}.json"));
 
-    let mut written = if args.pdf_only {
+    let written = if args.pdf_only {
         existing_book_artifacts(&base_json, books)?
     } else {
         let config = BuildConfig {
@@ -544,40 +530,47 @@ fn run_pdf_command(args: &PdfArgs) -> Result<(), CliError> {
     }
 
     let opts = TypstOptions {
-        template: args.template.clone(),
+        template: args
+            .template
+            .clone()
+            .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join("book.typ")),
         paper_size: args.paper_size.clone(),
         columns: args.columns,
         subtitle_override: args.subtitle.clone(),
         book_binding: args.book_binding,
     };
 
-    for book in &mut written {
-        if book.subtitle.is_none() {
-            book.subtitle = load_subtitle_from_json(&book.json_path)?;
-        }
-    }
-
     run_typst_for_books(&written, &pdf_dir, &opts)?;
 
     Ok(())
 }
 
-fn build_model(config: &BuildConfig) -> Result<BuildOutcome, CliError> {
-    let mut counter = NGramCounter::new(config.n, config.punctuation.clone());
-    counter
-        .process_file(&config.input)
-        .map_err(CliError::Processing)?;
+struct ModelData {
+    entries: Vec<WordFollowEntry>,
+    stats: ProcessingStats,
+    metadata: Option<Metadata>,
+}
 
-    let entries = counter.get_entries();
-    let stats = counter.get_stats().clone();
-    let metadata = counter.get_metadata().cloned();
-    let books = split_entries_into_books(&entries, config.num_books);
+fn compute_model(input: &Path, n: usize, punctuation: &[char]) -> Result<ModelData, CliError> {
+    let mut counter = NGramCounter::new(n, punctuation.to_vec());
+    counter.process_file(input).map_err(CliError::Processing)?;
+
+    Ok(ModelData {
+        entries: counter.get_entries(),
+        stats: counter.get_stats().clone(),
+        metadata: counter.get_metadata().cloned(),
+    })
+}
+
+fn build_model(config: &BuildConfig) -> Result<BuildOutcome, CliError> {
+    let model = compute_model(&config.input, config.n, &config.punctuation)?;
+    let books = split_entries_into_books(&model.entries, config.num_books);
 
     let written = write_books(
         &books,
         &config.output,
-        metadata.as_ref(),
-        &stats,
+        model.metadata.as_ref(),
+        &model.stats,
         config.raw,
     )
     .map_err(|err| {
@@ -593,9 +586,8 @@ fn build_model(config: &BuildConfig) -> Result<BuildOutcome, CliError> {
 
     Ok(BuildOutcome {
         written,
-        stats,
-        metadata,
-        entries,
+        stats: model.stats,
+        metadata: model.metadata,
     })
 }
 
@@ -697,24 +689,19 @@ fn run_typst_for_books(
     println!("\nRunning typst compile...");
 
     let typst_bin = typst_command_path();
-    let template_dir = opts
-        .template
-        .parent()
-        .filter(|p| !p.as_os_str().is_empty())
-        .map(Path::to_path_buf)
-        .unwrap_or_else(|| PathBuf::from("."));
-    let template_dir_canon = fs::canonicalize(&template_dir).unwrap_or(template_dir.clone());
-    let template_name = opts
-        .template
-        .file_name()
-        .ok_or_else(|| CliError::InvalidArgs("Invalid template path".to_string()))?;
+    // Compile with --root / and absolute paths (the same approach as the
+    // cutouts command) so the template, JSON and output dir can live anywhere
+    // relative to the caller's cwd.
+    let template = fs::canonicalize(&opts.template).map_err(|_| {
+        CliError::InvalidArgs(format!(
+            "Typst template not found at {}",
+            opts.template.display()
+        ))
+    })?;
 
     for (index, book) in written.iter().enumerate() {
-        let json_path = fs::canonicalize(&book.json_path).unwrap_or(book.json_path.clone());
-        let json_for_typst = json_path
-            .strip_prefix(&template_dir_canon)
-            .map(Path::to_path_buf)
-            .unwrap_or(json_path.clone());
+        let json_path =
+            fs::canonicalize(&book.json_path).unwrap_or_else(|_| book.json_path.clone());
         let pdf_path = pdf_name_for(&book.json_path, pdf_dir);
         if let Some(parent) = pdf_path.parent() {
             fs::create_dir_all(parent).map_err(CliError::Processing)?;
@@ -722,12 +709,14 @@ fn run_typst_for_books(
 
         let mut typst_cmd = Command::new(&typst_bin);
         typst_cmd.arg("compile");
+        typst_cmd.arg("--root");
+        typst_cmd.arg("/");
         typst_cmd.arg("--input");
         typst_cmd.arg(format!("paper_size={}", opts.paper_size));
         typst_cmd.arg("--input");
         typst_cmd.arg(format!("columns={}", opts.columns));
         typst_cmd.arg("--input");
-        typst_cmd.arg(format!("json_path={}", json_for_typst.display()));
+        typst_cmd.arg(format!("json_path={}", json_path.display()));
 
         if let Some(subtitle) = opts
             .subtitle_override
@@ -743,9 +732,8 @@ fn run_typst_for_books(
             typst_cmd.arg("book_binding=true");
         }
 
-        typst_cmd.arg(template_name);
+        typst_cmd.arg(&template);
         typst_cmd.arg(&pdf_path);
-        typst_cmd.current_dir(&template_dir);
 
         let output = typst_cmd.output().map_err(|e| {
             if e.kind() == io::ErrorKind::NotFound {
@@ -820,6 +808,17 @@ fn typst_command_path() -> PathBuf {
     } else {
         PathBuf::from("typst")
     }
+}
+
+/// Validate the `-n` flag: the model needs at least one word of context.
+fn parse_ngram_size(s: &str) -> Result<usize, String> {
+    let n: usize = s
+        .parse()
+        .map_err(|_| format!("'{s}' is not a valid number"))?;
+    if n < 2 {
+        return Err("n must be at least 2 (bigrams)".to_string());
+    }
+    Ok(n)
 }
 
 /// Parse a `--tool` spec like `VOTE` or `VOTE:5` into a `(name, count)` pair.

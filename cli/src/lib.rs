@@ -104,10 +104,8 @@ pub struct NGramCounter {
 impl NGramCounter {
     /// Creates a new NGramCounter with the specified n-gram size and punctuation chars
     pub fn new(n: usize, punctuation: Vec<char>) -> Self {
-        if n < 2 {
-            eprintln!("Warning: N must be 2 or greater for N-gram analysis. Defaulting to 2.");
-            return Self::new(2, punctuation);
-        }
+        // Callers (clap, the wasm entry points) validate n at the edges.
+        assert!(n >= 2, "NGramCounter requires n >= 2 (got {n})");
 
         let context_size = n - 1;
 
