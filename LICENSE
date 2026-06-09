@@ -2,6 +2,8 @@ This project uses dual licensing:
 
 - Source code (Rust files in cli/src/, cli/tests/, and build scripts) is
   licensed under the MIT License (see below)
+- Website source (website/) is licensed under the MIT License (see
+  website/LICENSE)
 - Documentation and teaching materials (Typst files and generated PDFs in
   handouts/) are licensed under CC BY-NC-SA 4.0 (see handouts/LICENSE)
 

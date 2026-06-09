@@ -52,6 +52,6 @@ Cybernetic Studio.
 
 ## Licence
 
-Website source © Ben Swift, MIT.
+Website source © ANU School of Cybernetics, MIT (see [LICENSE](./LICENSE)).
 
-Lesson and instructor-notes PDF files CC BY-NC-SA 4.0.
+Published PDF materials (worksheets, booklets, cutouts) CC BY-NC-SA 4.0.
