@@ -105,8 +105,8 @@ pub fn default_punctuation() -> Vec<char> {
 /// Deterministic rules (order independent):
 /// - Normalize apostrophes to ASCII
 /// - Keep configured punctuation as standalone tokens
-/// - Split on non-letter/non-apostrophe characters
-/// - Drop tokens that start with digits
+/// - Split on non-letter/non-apostrophe characters (digit runs are their own
+///   segments: skipped by the model, shown as discarded by cutouts)
 /// - Drop roman numerals (except the allowlisted "I" forms)
 /// - Apply allowlist casing; otherwise lowercase everything
 #[derive(Debug)]

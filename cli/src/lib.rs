@@ -73,10 +73,6 @@ pub struct ProcessingStats {
     pub branching_factor: f64,
 }
 
-/// Wrapper for the n-1 previous words that form the context of an n-gram entry.
-#[derive(Serialize, Debug, PartialEq, Eq, Hash, Clone)] // Added Eq, Hash, Clone for HashMap key
-pub struct PreviousWords(Vec<String>);
-
 /// One entry in the n-gram model: the n-1 previous words and the next-word counts that follow them.
 #[derive(Serialize, Debug, PartialEq, Clone)]
 pub struct WordFollowEntry {
@@ -166,78 +162,75 @@ impl NGramCounter {
     }
 
     /// Process a file containing text with frontmatter.
-    ///
-    /// Uses two passes:
-    /// 1. First pass: collect all surface forms of words to determine canonical casing
-    /// 2. Second pass: build n-gram model using canonical forms
     pub fn process_file<P: AsRef<Path>>(&mut self, path: P) -> io::Result<()> {
         use std::io::{BufRead, BufReader};
 
-        // First pass: read file and collect surface forms
         let file = File::open(&path)?;
         let mut reader = BufReader::new(file);
-
-        let mut line = String::new();
-        if reader.read_line(&mut line)? == 0 {
-            return Err(io::Error::new(
-                io::ErrorKind::InvalidData,
-                "Input file is empty; expected YAML frontmatter.",
-            ));
-        }
-
-        if line.trim() != "---" {
-            return Err(io::Error::new(
-                io::ErrorKind::InvalidData,
-                "Input must start with '---' followed by YAML frontmatter.",
-            ));
-        }
-
-        let mut frontmatter_raw = String::new();
-        loop {
-            line.clear();
-            let bytes = reader.read_line(&mut line)?;
-            if bytes == 0 {
-                return Err(io::Error::new(
-                    io::ErrorKind::InvalidData,
-                    "Reached end of file before closing frontmatter delimiter '---'.",
-                ));
-            }
-
-            if line.trim() == "---" {
-                break;
-            }
-
-            frontmatter_raw.push_str(&line);
-        }
-
+        let frontmatter_raw = read_frontmatter(&mut reader)?;
         self.metadata = Some(parse_frontmatter(&frontmatter_raw, self.n)?);
 
-        // Collect all content lines and build canonical form tracker
-        let mut content_lines = Vec::new();
-        let mut tracker = CanonicalFormTracker::new();
+        let lines: Vec<String> = reader.lines().collect::<Result<_, _>>()?;
+        self.process_lines(&lines);
 
-        for line_result in reader.lines() {
-            let line = line_result?;
-            // Extract raw words (preserving case) for canonical form tracking
-            for word in self.normalizer.extract_raw_words(&line) {
+        Ok(())
+    }
+
+    /// Process content lines in two passes: collect surface forms to build the
+    /// corpus case map, then count n-grams with canonical forms applied, and
+    /// finish by calculating statistics. Shared by the file path above and the
+    /// wasm entry points.
+    pub fn process_lines<S: AsRef<str>>(&mut self, lines: &[S]) {
+        let mut tracker = CanonicalFormTracker::new();
+        for line in lines {
+            for word in self.normalizer.extract_raw_words(line.as_ref()) {
                 tracker.record(&word);
             }
-            content_lines.push(line);
         }
-
-        // Apply corpus-specific case map to normalizer
         self.normalizer
             .set_corpus_case_map(tracker.build_case_map());
 
-        // Second pass: process lines with canonical forms applied
-        for line in content_lines {
-            self.process_line(&line);
+        for line in lines {
+            self.process_line(line.as_ref());
         }
 
-        // Calculate additional statistics after processing
         self.calculate_statistics();
+    }
 
-        Ok(())
+    /// Tokenize lines for the cutouts variant using this counter's normalizer
+    /// (corpus case map included), backfilling each kept token's previous
+    /// words (its n-1 preceding kept tokens). Call after `process_lines` so
+    /// the case map is populated.
+    pub fn tokenize_lines_raw<S: AsRef<str>>(&self, lines: &[S]) -> Vec<RawToken> {
+        let mut tokens = Vec::new();
+        let mut index = 1usize;
+
+        for line in lines {
+            let line_tokens = self.normalizer.tokenize_line_raw(line.as_ref(), index);
+            if let Some(last) = line_tokens.last() {
+                index = last.index + 1;
+            }
+            tokens.extend(line_tokens);
+        }
+
+        let context_size = self.n - 1;
+        let kept_texts: Vec<String> = tokens
+            .iter()
+            .filter(|t| t.keep)
+            .map(|t| t.text.clone())
+            .collect();
+
+        let mut kept_idx = 0usize;
+        for token in &mut tokens {
+            if token.keep {
+                if kept_idx >= context_size {
+                    token.previous_words = kept_texts[kept_idx - context_size..kept_idx].to_vec();
+                }
+                kept_idx += 1;
+            }
+        }
+
+        tokens
     }
 
     /// Calculate statistics after processing
@@ -362,7 +355,9 @@ pub struct CutoutsMetadata {
     pub branching_factor: f64,
 }
 
-/// Processes a text file and returns raw tokens for the cutouts lesson variant
+/// Processes a text file and returns raw tokens for the cutouts lesson
+/// variant, plus metadata with model statistics computed from the same
+/// content in a single read.
 pub fn process_file_for_cutouts<P: AsRef<Path>>(
     path: P,
     punctuation: Vec<char>,
@@ -370,9 +365,53 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
 ) -> io::Result<(Vec<RawToken>, CutoutsMetadata)> {
     use std::io::{BufRead, BufReader};
 
-    let file = std::fs::File::open(&path)?;
+    let file = File::open(&path)?;
     let mut reader = BufReader::new(file);
+    let frontmatter_raw = read_frontmatter(&mut reader)?;
 
+    // Cutouts only need title/author, so the frontmatter is parsed leniently
+    // (unlike the booklet path, which requires title/author/url).
+    let yaml: serde_yaml_ng::Value = serde_yaml_ng::from_str(&frontmatter_raw).map_err(|e| {
+        io::Error::new(
+            io::ErrorKind::InvalidData,
+            format!("Invalid YAML frontmatter: {e}"),
+        )
+    })?;
+    let title = yaml
+        .get("title")
+        .and_then(|v| v.as_str())
+        .unwrap_or("Untitled")
+        .to_string();
+    let author = yaml
+        .get("author")
+        .and_then(|v| v.as_str())
+        .unwrap_or("Unknown")
+        .to_string();
+
+    let lines: Vec<String> = reader.lines().collect::<Result<_, _>>()?;
+
+    let mut counter = NGramCounter::new(n, punctuation);
+    counter.process_lines(&lines);
+    let tokens = counter.tokenize_lines_raw(&lines);
+    let stats = counter.get_stats();
+
+    let metadata = CutoutsMetadata {
+        title,
+        author,
+        total_tokens: tokens.len(),
+        kept_tokens: tokens.iter().filter(|t| t.keep).count(),
+        entropy: stats.entropy,
+        perplexity: stats.perplexity,
+        branching_factor: stats.branching_factor,
+    };
+
+    Ok((tokens, metadata))
+}
+
+/// Read the YAML frontmatter block (between `---` delimiter lines) from the
+/// start of a corpus file, leaving the reader positioned at the first content
+/// line.
+fn read_frontmatter(reader: &mut impl io::BufRead) -> io::Result<String> {
     let mut line = String::new();
     if reader.read_line(&mut line)? == 0 {
         return Err(io::Error::new(
@@ -391,8 +430,7 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
     let mut frontmatter_raw = String::new();
     loop {
         line.clear();
-        let bytes = reader.read_line(&mut line)?;
-        if bytes == 0 {
+        if reader.read_line(&mut line)? == 0 {
             return Err(io::Error::new(
                 io::ErrorKind::InvalidData,
                 "Reached end of file before closing frontmatter delimiter '---'.",
@@ -406,89 +444,7 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
         frontmatter_raw.push_str(&line);
     }
 
-    let yaml: serde_yaml_ng::Value = serde_yaml_ng::from_str(&frontmatter_raw).map_err(|e| {
-        io::Error::new(
-            io::ErrorKind::InvalidData,
-            format!("Invalid YAML frontmatter: {e}"),
-        )
-    })?;
-
-    let title = yaml
-        .get("title")
-        .and_then(|v| v.as_str())
-        .unwrap_or("Untitled")
-        .to_string();
-    let author = yaml
-        .get("author")
-        .and_then(|v| v.as_str())
-        .unwrap_or("Unknown")
-        .to_string();
-
-    let mut normalizer = Normalizer::new(NormalizerConfig::new(punctuation));
-
-    // First pass: collect content lines and build canonical form tracker
-    let mut content_lines = Vec::new();
-    let mut tracker = CanonicalFormTracker::new();
-
-    for line_result in reader.lines() {
-        let line = line_result?;
-        for word in normalizer.extract_raw_words(&line) {
-            tracker.record(&word);
-        }
-        content_lines.push(line);
-    }
-
-    // Apply corpus-specific case map
-    normalizer.set_corpus_case_map(tracker.build_case_map());
-
-    // Second pass: tokenize with canonical forms
-    let mut tokens = Vec::new();
-    let mut index = 1usize;
-
-    for line in &content_lines {
-        let line_tokens = normalizer.tokenize_line_raw(line, index);
-        if let Some(last) = line_tokens.last() {
-            index = last.index + 1;
-        }
-        tokens.extend(line_tokens);
-    }
-
-    // Third pass: populate previous_words field for each token (n-1 preceding kept tokens)
-    let context_size = n.saturating_sub(1);
-    if context_size > 0 {
-        // Collect all kept token texts in order
-        let kept_texts: Vec<String> = tokens
-            .iter()
-            .filter(|t| t.keep)
-            .map(|t| t.text.clone())
-            .collect();
-
-        // Track which kept token index we're at
-        let mut kept_idx = 0usize;
-        for token in &mut tokens {
-            if token.keep {
-                // Get n-1 preceding kept tokens as the previous-words context
-                if kept_idx >= context_size {
-                    token.previous_words = kept_texts[kept_idx - context_size..kept_idx].to_vec();
-                }
-                kept_idx += 1;
-            }
-        }
-    }
-
-    let kept_tokens = tokens.iter().filter(|t| t.keep).count();
-
-    let metadata = CutoutsMetadata {
-        title,
-        author,
-        total_tokens: tokens.len(),
-        kept_tokens,
-        entropy: 0.0,
-        perplexity: 1.0,
-        branching_factor: 0.0,
-    };
-
-    Ok((tokens, metadata))
+    Ok(frontmatter_raw)
 }
 
 /// Multiply the usable cutouts in a token list by `factor`. A usable cutout is
@@ -737,6 +693,54 @@ fn previous_words_label(entry: &WordFollowEntry) -> String {
         .unwrap_or_else(|| "?".to_string())
 }
 
+/// Format model entries as the booklet JSON "data" rows:
+/// `["joined previous words", total, ["next word", cumulative], ...]`.
+/// Without `raw`, cumulative counts are rescaled so each entry's total is
+/// 10^k - 1 (k = digits of the true total), i.e. read directly off d10 dice.
+/// Shared by the CLI JSON writer and the wasm booklet entry point so the two
+/// can never drift.
+pub fn format_entries(entries: &[WordFollowEntry], raw: bool) -> Vec<Vec<serde_json::Value>> {
+    entries
+        .iter()
+        .map(|entry| {
+            let mut row = vec![serde_json::Value::String(entry.previous_words.join(" "))];
+
+            let total: usize = entry.next_words.iter().map(|(_, count)| count).sum();
+
+            // Next words are already sorted by count (largest to smallest)
+            // from convert_to_entries; cumulative counts follow that order.
+            let mut cumulative = Vec::new();
+            let mut running_sum = 0;
+            for (next_word, count) in &entry.next_words {
+                running_sum += count;
+                cumulative.push((next_word, running_sum));
+            }
+
+            if total == 0 {
+                // No next-word occurrences: total is 0, no next-word data.
+                row.push(serde_json::json!(0));
+            } else if raw {
+                row.push(serde_json::json!(total));
+                row.extend(cumulative.iter().map(|(w, c)| serde_json::json!([w, c])));
+            } else {
+                // 10^k-1 scaling for d10 dice (e.g. total 75 -> k=2 -> 0-99)
+                let k_digits = total.to_string().len() as u32;
+                let max_val = 10_u32.pow(k_digits).saturating_sub(1);
+                let factor = max_val as f64 / total as f64;
+
+                row.push(serde_json::json!(max_val));
+                row.extend(
+                    cumulative.iter().map(|(w, c)| {
+                        serde_json::json!([w, (*c as f64 * factor).round() as usize])
+                    }),
+                );
+            }
+
+            row
+        })
+        .collect()
+}
+
 /// Saves the N-gram follow entries to a JSON file
 pub fn save_to_json<P: AsRef<Path>>(
     entries: &[WordFollowEntry],
@@ -745,73 +749,7 @@ pub fn save_to_json<P: AsRef<Path>>(
     stats: Option<&ProcessingStats>,
     raw: bool,
 ) -> io::Result<()> {
-    // Convert entries to the required format:
-    // ["joined previous words", total_count, ["next word", cumulative_count], ...]
-    let formatted_entries: Vec<Vec<serde_json::Value>> = entries
-        .iter()
-        .map(|entry| {
-            let mut formatted_entry_json = Vec::new();
-            // First element is the joined previous-words string
-            let previous_words_str = entry.previous_words.join(" ");
-            formatted_entry_json.push(serde_json::Value::String(previous_words_str.clone()));
-
-            // Calculate the total sum of next-word occurrences
-            let total_original_count: usize = entry.next_words.iter().map(|(_, count)| count).sum();
-
-            // Next words are already sorted by count (largest to smallest) from convert_to_entries
-            let _num_unique_next_words = entry.next_words.len();
-
-            // Calculate original cumulative counts
-            let mut original_cumulative_counts = Vec::new();
-            let mut running_sum = 0;
-
-            for (next_word, count) in &entry.next_words {
-                running_sum += count;
-                original_cumulative_counts.push((next_word.clone(), running_sum));
-            }
-
-            // Determine scaling strategy and apply it
-            let (json_total_for_entry, scaled_next_word_values_json) = if total_original_count == 0
-            {
-                // No next-word occurrences: total is 0, no next-word data.
-                (serde_json::json!(0), Vec::new())
-            } else if raw {
-                // Raw output mode - no scaling
-                let actual_json_total = serde_json::json!(total_original_count);
-                let next_words_json_list: Vec<serde_json::Value> = original_cumulative_counts
-                    .iter()
-                    .map(|(next_word, original_cumul)| {
-                        serde_json::json!([next_word, original_cumul])
-                    })
-                    .collect();
-                (actual_json_total, next_words_json_list)
-            } else {
-                // Always use 10^k-1 scaling for d10 (0-9 range on each die)
-                // k is the number of digits in total_original_count
-                let k_digits = total_original_count.to_string().len() as u32;
-                // max_val is 10^k_digits - 1 (e.g., if count is 75, k=2, max_val=99)
-                let max_val_for_scaling = 10_u32.pow(k_digits).saturating_sub(1);
-
-                let actual_json_total = serde_json::json!(max_val_for_scaling);
-                let scaling_factor = max_val_for_scaling as f64 / total_original_count as f64;
-
-                let next_words_json_list: Vec<serde_json::Value> = original_cumulative_counts
-                    .iter()
-                    .map(|(next_word, original_cumul)| {
-                        let scaled_cumul =
-                            (*original_cumul as f64 * scaling_factor).round() as usize;
-                        serde_json::json!([next_word, scaled_cumul])
-                    })
-                    .collect();
-                (actual_json_total, next_words_json_list)
-            };
-
-            formatted_entry_json.push(json_total_for_entry);
-            formatted_entry_json.extend(scaled_next_word_values_json);
-
-            formatted_entry_json
-        })
-        .collect();
+    let formatted_entries = format_entries(entries, raw);
 
     // Build the full output object with metadata and data
     let mut output = serde_json::Map::new();
@@ -1013,6 +951,88 @@ pub fn sample<R: Rng + ?Sized>(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn format_entries_scales_to_dice_range() {
+        let entries = vec![WordFollowEntry {
+            previous_words: vec!["hello".to_string()],
+            next_words: vec![("world".to_string(), 2), ("there".to_string(), 1)],
+        }];
+
+        let rows = format_entries(&entries, false);
+        assert_eq!(rows.len(), 1);
+        assert_eq!(rows[0][0], serde_json::json!("hello"));
+        assert_eq!(rows[0][1], serde_json::json!(9)); // total 3 -> 10^1 - 1
+        assert_eq!(rows[0][2], serde_json::json!(["world", 6])); // round(2 * 9/3)
+        assert_eq!(rows[0][3], serde_json::json!(["there", 9]));
+
+        let raw_rows = format_entries(&entries, true);
+        assert_eq!(raw_rows[0][1], serde_json::json!(3));
+        assert_eq!(raw_rows[0][2], serde_json::json!(["world", 2]));
+        assert_eq!(raw_rows[0][3], serde_json::json!(["there", 3]));
+    }
+
+    #[test]
+    fn process_lines_applies_canonical_casing() {
+        // The wasm booklet path used to skip the canonical-casing pass; this
+        // pins that process_lines (shared by CLI and wasm) applies it.
+        let mut counter = NGramCounter::new(2, default_punctuation());
+        counter.process_lines(&["Sally said hello.", "Sally said hi."]);
+
+        let entries = counter.get_entries();
+        assert!(
+            entries
+                .iter()
+                .any(|e| e.previous_words == vec!["Sally".to_string()]),
+            "consistently-capitalised words keep their case: {entries:?}"
+        );
+    }
+
+    #[test]
+    fn append_tool_tokens_seeds_top_contexts() {
+        // Bigram token list for "a b a b a c": context [a] occurs 3 times
+        // (followed by b, b, c), context [b] twice (followed by a, a).
+        let words = ["a", "b", "a", "b", "a", "c"];
+        let mut tokens: Vec<RawToken> = words
+            .iter()
+            .enumerate()
+            .map(|(i, w)| RawToken {
+                index: i + 1,
+                text: w.to_string(),
+                keep: true,
+                previous_words: if i == 0 {
+                    vec![]
+                } else {
+                    vec![words[i - 1].to_string()]
+                },
+                is_tool: false,
+            })
+            .collect();
+
+        let injected = append_tool_tokens(&mut tokens, &[("VOTE".to_string(), 2)], 2).unwrap();
+        assert_eq!(injected, 2);
+
+        let tools: Vec<&RawToken> = tokens.iter().filter(|t| t.is_tool).collect();
+        assert_eq!(tools.len(), 2);
+        assert!(tools.iter().all(|t| t.text == "VOTE" && t.keep));
+
+        let contexts: Vec<&[String]> = tools.iter().map(|t| t.previous_words.as_slice()).collect();
+        assert!(contexts.contains(&["a".to_string()].as_slice()));
+        assert!(contexts.contains(&["b".to_string()].as_slice()));
+    }
+
+    #[test]
+    fn append_tool_tokens_errors_when_corpus_has_no_contexts() {
+        let mut tokens = vec![RawToken {
+            index: 1,
+            text: "only".to_string(),
+            keep: true,
+            previous_words: vec![],
+            is_tool: false,
+        }];
+        let err = append_tool_tokens(&mut tokens, &[("VOTE".to_string(), 1)], 2).unwrap_err();
+        assert!(err.contains("cannot place tool"), "got: {err}");
+    }
     // BufReader is used by save_to_json tests, Write and NamedTempFile are used by multiple tests.
     use std::io::{BufReader, Write};
     use tempfile::NamedTempFile;

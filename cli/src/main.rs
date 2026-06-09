@@ -1,7 +1,7 @@
 use clap::{Args, Parser, Subcommand};
 use llms_unplugged::{
     CutoutsMetadata, Metadata, NGramCounter, ProcessingStats, RawToken, SampleError,
-    WordFollowEntry, append_tool_tokens, process_file, process_file_for_cutouts, render_bigram_tsv,
+    WordFollowEntry, append_tool_tokens, process_file_for_cutouts, render_bigram_tsv,
     repeat_cutout_tokens, sample, save_to_json, split_entries_into_books,
 };
 use rand::SeedableRng;
@@ -315,14 +315,8 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
     }
 
     let punctuation: Vec<char> = args.punctuation.chars().collect();
-    let (mut tokens, mut metadata) =
+    let (mut tokens, metadata) =
         process_file_for_cutouts(&args.input, punctuation, args.n).map_err(CliError::Processing)?;
-
-    let (_entries, stats, _ngram_meta) =
-        process_file(&args.input, args.n).map_err(CliError::Processing)?;
-    metadata.entropy = stats.entropy;
-    metadata.perplexity = stats.perplexity;
-    metadata.branching_factor = stats.branching_factor;
 
     repeat_cutout_tokens(&mut tokens, args.repeat);
 
@@ -1042,6 +1036,17 @@ mod tests {
                 .is_some_and(|s| s.contains("Book 1 of 2")),
             "Per-book subtitle should include book index"
         );
+    }
+
+    #[test]
+    fn parses_tool_specs() {
+        assert_eq!(parse_tool_spec("VOTE").unwrap(), ("VOTE".to_string(), 3));
+        assert_eq!(
+            parse_tool_spec("ACTION:5").unwrap(),
+            ("ACTION".to_string(), 5)
+        );
+        assert!(parse_tool_spec(":3").is_err());
+        assert!(parse_tool_spec("X:lots").is_err());
     }
 
     #[test]
