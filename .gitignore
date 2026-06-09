@@ -4,6 +4,7 @@
 !website/public/assets/pdfs/llms-unplugged-flyer-may-2026.pdf
 !website/public/assets/pdfs/booklets/*.pdf
 !website/public/assets/pdfs/cutouts/*.pdf
+!website/public/assets/pdfs/worksheets/*.pdf
 
 /data/*
 

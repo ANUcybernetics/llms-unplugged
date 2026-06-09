@@ -17,4 +17,13 @@ $(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.typ
 clean:
 	rm -f $(PDF_FILES)
 
-.PHONY: all clean
+# Worksheets published on the website (linked from the lessons); re-run after
+# changing them and commit the copied PDF
+PUBLISH_DIR = ../website/public/assets/pdfs/worksheets
+PUBLISHED = $(OUTPUT_DIR)/worksheets/grid.pdf
+
+publish: $(PUBLISHED)
+	mkdir -p $(PUBLISH_DIR)
+	cp $(PUBLISHED) $(PUBLISH_DIR)/
+
+.PHONY: all clean publish

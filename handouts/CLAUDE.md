@@ -25,6 +25,10 @@ typst compile worksheets/grid.typ
 
 PDFs are written to `out/` (gitignored).
 
+The grid worksheet is published on the website (linked from the lessons):
+`make publish` copies it to `../website/public/assets/pdfs/worksheets/`, which
+is tracked---commit the updated PDF after changing the worksheet.
+
 ## Design constraints
 
 These files use an A4 **landscape** format (29.7cm × 21cm) and inherit their
