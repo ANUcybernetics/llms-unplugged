@@ -23,7 +23,7 @@ make
 typst compile worksheets/grid.typ
 ```
 
-PDFs are written to `../website/src/assets/pdfs/`.
+PDFs are written to `out/` (gitignored).
 
 ## Design constraints
 
