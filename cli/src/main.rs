@@ -1,9 +1,8 @@
 use clap::{Args, Parser, Subcommand};
 use llms_unplugged::{
     CutoutsMetadata, Metadata, NGramCounter, ProcessingStats, RawToken, SampleError,
-    WordFollowEntry, append_tool_tokens, process_file, process_file_for_cutouts,
-    repeat_cutout_tokens,
-    render_bigram_tsv, sample, save_to_json, split_entries_into_books,
+    WordFollowEntry, append_tool_tokens, process_file, process_file_for_cutouts, render_bigram_tsv,
+    repeat_cutout_tokens, sample, save_to_json, split_entries_into_books,
 };
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
@@ -426,7 +425,7 @@ fn save_cutouts_json(
 
     let file = fs::File::create(path).map_err(CliError::Processing)?;
     serde_json::to_writer_pretty(file, &output)
-        .map_err(|e| CliError::Processing(io::Error::new(io::ErrorKind::Other, e)))?;
+        .map_err(|e| CliError::Processing(io::Error::other(e)))?;
 
     Ok(())
 }
@@ -459,10 +458,7 @@ fn run_sample_command(args: &SampleArgs) -> Result<(), CliError> {
             println!("{}", all.join(" "));
             Ok(())
         }
-        Err(SampleError::DeadEnd {
-            context,
-            generated,
-        }) => {
+        Err(SampleError::DeadEnd { context, generated }) => {
             let mut all = prompt_tokens;
             all.extend(generated.clone());
             println!("{}", all.join(" "));
@@ -803,16 +799,16 @@ fn pdf_name_for(json_path: &Path, pdf_dir: &Path) -> PathBuf {
 }
 
 fn log_pdf_pages(pdf_path: &Path) {
-    if let Ok(output) = Command::new("pdfinfo").arg(pdf_path).output() {
-        if output.status.success() {
-            for line in String::from_utf8_lossy(&output.stdout).lines() {
-                if line.starts_with("Pages:") {
-                    println!(
-                        "Pages in {}: {}",
-                        pdf_path.display(),
-                        line.trim_start_matches("Pages:").trim()
-                    );
-                }
+    if let Ok(output) = Command::new("pdfinfo").arg(pdf_path).output()
+        && output.status.success()
+    {
+        for line in String::from_utf8_lossy(&output.stdout).lines() {
+            if line.starts_with("Pages:") {
+                println!(
+                    "Pages in {}: {}",
+                    pdf_path.display(),
+                    line.trim_start_matches("Pages:").trim()
+                );
             }
         }
     }

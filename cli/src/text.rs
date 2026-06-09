@@ -136,31 +136,30 @@ impl Normalizer {
 
             if self.config.punctuation.contains(&normalized_char) {
                 if !current.is_empty() {
-                    if let Some(word) = self.clean_word_token(&current) {
-                        if self.is_valid_word(&word) {
-                            words.push(word);
-                        }
+                    if let Some(word) = self.clean_word_token(&current)
+                        && self.is_valid_word(&word)
+                    {
+                        words.push(word);
                     }
                     current.clear();
                 }
             } else if normalized_char.is_ascii_alphabetic() || normalized_char == '\'' {
                 current.push(normalized_char);
             } else if !current.is_empty() {
-                if let Some(word) = self.clean_word_token(&current) {
-                    if self.is_valid_word(&word) {
-                        words.push(word);
-                    }
+                if let Some(word) = self.clean_word_token(&current)
+                    && self.is_valid_word(&word)
+                {
+                    words.push(word);
                 }
                 current.clear();
             }
         }
 
-        if !current.is_empty() {
-            if let Some(word) = self.clean_word_token(&current) {
-                if self.is_valid_word(&word) {
-                    words.push(word);
-                }
-            }
+        if !current.is_empty()
+            && let Some(word) = self.clean_word_token(&current)
+            && self.is_valid_word(&word)
+        {
+            words.push(word);
         }
 
         words
@@ -260,10 +259,10 @@ impl Normalizer {
             }
         }
 
-        if !current.is_empty() {
-            if let Some(token) = self.make_raw_token(&current, index) {
-                tokens.push(token);
-            }
+        if !current.is_empty()
+            && let Some(token) = self.make_raw_token(&current, index)
+        {
+            tokens.push(token);
         }
 
         tokens

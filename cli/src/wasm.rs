@@ -90,8 +90,7 @@ fn build_booklet_json(
             let previous_words_str = entry.previous_words.join(" ");
             formatted_entry_json.push(serde_json::Value::String(previous_words_str));
 
-            let total_original_count: usize =
-                entry.next_words.iter().map(|(_, count)| count).sum();
+            let total_original_count: usize = entry.next_words.iter().map(|(_, count)| count).sum();
 
             let mut original_cumulative_counts = Vec::new();
             let mut running_sum = 0;
@@ -192,8 +191,7 @@ fn tokenize_for_cutouts(
         for token in &mut tokens {
             if token.keep {
                 if kept_idx >= context_size {
-                    token.previous_words =
-                        kept_texts[kept_idx - context_size..kept_idx].to_vec();
+                    token.previous_words = kept_texts[kept_idx - context_size..kept_idx].to_vec();
                 }
                 kept_idx += 1;
             }
@@ -239,7 +237,7 @@ mod tests {
             2,
         );
 
-        assert!(tokens.len() > 0);
+        assert!(!tokens.is_empty());
         assert_eq!(metadata.title, "Test");
         assert!(metadata.kept_tokens > 0);
     }

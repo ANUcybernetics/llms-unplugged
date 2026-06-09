@@ -148,7 +148,7 @@ impl NGramCounter {
                 // Update the frequency map
                 self.previous_words_map
                     .entry(previous_words)
-                    .or_insert_with(HashMap::new)
+                    .or_default()
                     .entry(next_word)
                     .and_modify(|count| {
                         *count += 1;
@@ -307,11 +307,8 @@ impl NGramCounter {
         // Compute unweighted average branching factor: mean number of distinct
         // next-word continuations per previous-words context.
         if !self.previous_words_map.is_empty() {
-            let distinct_continuations: usize = self
-                .previous_words_map
-                .values()
-                .map(|m| m.len())
-                .sum();
+            let distinct_continuations: usize =
+                self.previous_words_map.values().map(|m| m.len()).sum();
             self.stats.branching_factor =
                 distinct_continuations as f64 / self.previous_words_map.len() as f64;
         }
@@ -474,8 +471,7 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
             if token.keep {
                 // Get n-1 preceding kept tokens as the previous-words context
                 if kept_idx >= context_size {
-                    token.previous_words =
-                        kept_texts[kept_idx - context_size..kept_idx].to_vec();
+                    token.previous_words = kept_texts[kept_idx - context_size..kept_idx].to_vec();
                 }
                 kept_idx += 1;
             }
@@ -568,7 +564,9 @@ pub fn append_tool_tokens(
         let copies = if context_size == 0 {
             // No context to discriminate on; emit one trigger per requested copy
             // (all share an empty previous_words).
-            (0..*count).map(|_| Vec::<String>::new()).collect::<Vec<_>>()
+            (0..*count)
+                .map(|_| Vec::<String>::new())
+                .collect::<Vec<_>>()
         } else {
             if ranked.is_empty() {
                 return Err(format!(
@@ -760,8 +758,7 @@ pub fn save_to_json<P: AsRef<Path>>(
             formatted_entry_json.push(serde_json::Value::String(previous_words_str.clone()));
 
             // Calculate the total sum of next-word occurrences
-            let total_original_count: usize =
-                entry.next_words.iter().map(|(_, count)| count).sum();
+            let total_original_count: usize = entry.next_words.iter().map(|(_, count)| count).sum();
 
             // Next words are already sorted by count (largest to smallest) from convert_to_entries
             let _num_unique_next_words = entry.next_words.len();
@@ -1032,7 +1029,10 @@ mod tests {
         let entries = counter.get_entries();
 
         // Find entry for "the"
-        let the_entry = entries.iter().find(|e| e.previous_words == vec!["the"]).unwrap();
+        let the_entry = entries
+            .iter()
+            .find(|e| e.previous_words == vec!["the"])
+            .unwrap();
 
         // Check that next-words are sorted by count (largest to smallest)
         assert_eq!(the_entry.next_words[0].0, "cat"); // "cat" should be first (count = 2)
@@ -1045,7 +1045,10 @@ mod tests {
         counter2.process_line("he no test he yes test");
 
         let entries2 = counter2.get_entries();
-        let he_entry = entries2.iter().find(|e| e.previous_words == vec!["he"]).unwrap();
+        let he_entry = entries2
+            .iter()
+            .find(|e| e.previous_words == vec!["he"])
+            .unwrap();
 
         // Both next-words have count 1, so should be sorted alphabetically
         assert_eq!(he_entry.next_words[0].0, "no"); // "no" comes before "yes" alphabetically
@@ -1069,13 +1072,22 @@ mod tests {
         counter.process_line("Apple pie. Zebra stripes. apple tart. banana split.");
 
         let entries = counter.get_entries();
-        let previous_words_list: Vec<&str> = entries.iter().map(|e| e.previous_words[0].as_str()).collect();
+        let previous_words_list: Vec<&str> = entries
+            .iter()
+            .map(|e| e.previous_words[0].as_str())
+            .collect();
 
         // Verify case-insensitive ordering: all "a" words before "b" words before "z" words
         // Find positions of each previous-words variant
-        let apple_pos = previous_words_list.iter().position(|&p| p.to_lowercase() == "apple");
-        let banana_pos = previous_words_list.iter().position(|&p| p.to_lowercase() == "banana");
-        let zebra_pos = previous_words_list.iter().position(|&p| p.to_lowercase() == "zebra");
+        let apple_pos = previous_words_list
+            .iter()
+            .position(|&p| p.to_lowercase() == "apple");
+        let banana_pos = previous_words_list
+            .iter()
+            .position(|&p| p.to_lowercase() == "banana");
+        let zebra_pos = previous_words_list
+            .iter()
+            .position(|&p| p.to_lowercase() == "zebra");
 
         assert!(
             apple_pos.is_some(),
@@ -1545,9 +1557,9 @@ mod tests {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path();
 
-        save_to_json(&entries, &path, Some(&metadata), None, true)?;
+        save_to_json(&entries, path, Some(&metadata), None, true)?;
 
-        let content = fs::read_to_string(&path)?;
+        let content = fs::read_to_string(path)?;
         let json: Value = serde_json::from_str(&content)?;
 
         // Check the data array
@@ -1693,7 +1705,11 @@ mod tests {
         for book in &books {
             for entry in &book.1 {
                 // Check that each entry appears in original list
-                assert!(entries.iter().any(|e| e.previous_words == entry.previous_words));
+                assert!(
+                    entries
+                        .iter()
+                        .any(|e| e.previous_words == entry.previous_words)
+                );
             }
         }
     }
@@ -1732,8 +1748,8 @@ mod tests {
         assert_eq!(books.len(), 2);
 
         // Both books should have entries
-        assert!(books[0].1.len() > 0);
-        assert!(books[1].1.len() > 0);
+        assert!(!books[0].1.is_empty());
+        assert!(!books[1].1.is_empty());
 
         // Total entries preserved
         let total_entries: usize = books.iter().map(|(_, entries)| entries.len()).sum();
@@ -1830,7 +1846,9 @@ mod tests {
         let (entries, _stats, _metadata) = process_file(&path, 2)?;
 
         // Check that "I" is preserved as uppercase
-        let i_entry = entries.iter().find(|e| e.previous_words[0].to_lowercase() == "i");
+        let i_entry = entries
+            .iter()
+            .find(|e| e.previous_words[0].to_lowercase() == "i");
 
         assert!(i_entry.is_some(), "Should have I entry");
         let i_entry = i_entry.unwrap();
@@ -2085,7 +2103,9 @@ mod tests {
         let texts: Vec<&str> = tokens.iter().map(|t| t.text.as_str()).collect();
         assert_eq!(
             texts,
-            vec!["alpha", "beta", "beta", "beta", "IV", "gamma", "gamma", "gamma"]
+            vec![
+                "alpha", "beta", "beta", "beta", "IV", "gamma", "gamma", "gamma"
+            ]
         );
 
         // Duplicates land adjacent so a printed sheet shows a batch per word.
@@ -2373,13 +2393,7 @@ mod tests {
 
         let mut r = rng(0);
         let err = sample(&entries, &["the".into()], 5, &mut r).unwrap_err();
-        assert_eq!(
-            err,
-            SampleError::PromptTooShort {
-                needed: 2,
-                got: 1
-            }
-        );
+        assert_eq!(err, SampleError::PromptTooShort { needed: 2, got: 1 });
         Ok(())
     }
 
@@ -2471,13 +2485,7 @@ mod tests {
         let (entries, _, _) = process_file(f.path(), 3)?;
 
         let mut r = rng(2026);
-        let generated = sample(
-            &entries,
-            &["the".into(), "cat".into()],
-            5,
-            &mut r,
-        )
-        .unwrap();
+        let generated = sample(&entries, &["the".into(), "cat".into()], 5, &mut r).unwrap();
         assert_eq!(generated.len(), 5);
         // First sampled token must be one of the recorded successors of "the cat".
         assert!(
