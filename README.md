@@ -17,12 +17,12 @@ This is a [Cybernetic Studio](https://github.com/ANUcybernetics/) artefact by
 
 ## What's in this repository
 
-This repository contains both teaching materials and software tools. The
-teaching materials (lesson plans, worksheets in the `handouts/` directory) can
-be used standalone without any software installation. The software tools (the
-`llms_unplugged` CLI tool + other helper scripts in the `cli/` directory) are
-only necessary if you want to create your own pre-trained N-gram booklets from
-custom text corpora.
+The lessons themselves live on the
+[project website](https://www.llmsunplugged.org). This repository contains the
+website source, printable supporting materials (worksheets, runsheets and the
+poster in the `handouts/` directory), and the `llms_unplugged` CLI tool (in
+the `cli/` directory) used to generate the pre-trained N-gram booklets and
+token cutouts that the lessons use.
 
 The `website/` directory contains the source for the project website at
 [www.llmsunplugged.org](https://www.llmsunplugged.org).
@@ -31,24 +31,19 @@ The `website/` directory contains the source for the project website at
 
 This project offers several entry points depending on your goals:
 
-**Want to understand the fundamentals in 20 minutes?** Use the pen and paper
-approach with the [grid template](handouts/out/worksheets/grid.pdf) and
-step-by-step instructions (in [lessons 01 and 02](handouts/out/lessons.pdf)). No
-software required.
+**Want to understand the fundamentals in 20 minutes?** Work through the
+[lessons](https://www.llmsunplugged.org/lessons/)---the pen-and-paper grid
+approach needs nothing more than a pencil and a d10 die.
 
-**Teaching a class or workshop?** Explore the
-[teaching lessons](handouts/out/lessons.pdf) and
-[instructor notes](https://www.llmsunplugged.org/instructor-notes/) for
-structured lesson plans and materials.
+**Teaching a class or workshop?** The
+[lessons](https://www.llmsunplugged.org/lessons/) are designed to be taught,
+and the [workshops page](https://www.llmsunplugged.org/workshops/) describes
+the formats we run.
 
-**Want to create your own N-gram booklet?** You have two options:
-
-- **Use a pre-built release**: Download the binary for your platform from the
-  [releases page](https://github.com/ANUcybernetics/llms-unplugged/releases),
-  unpack it, and run the `llms_unplugged` on a `.txt` file containing your
-  training data (see `data/frankenstein.txt` for an example)
-- **Build from source**: Use the Rust toolchain to compile and customize the
-  tool yourself
+**Want to create your own N-gram booklet?** You can
+[generate booklets online](https://www.llmsunplugged.org/tools/) directly in
+your browser---no installation required. If you prefer working offline or want
+to customise the output, build the CLI tool from source (see below).
 
 ## Creating your own N-gram booklets
 
@@ -57,22 +52,17 @@ generation.
 
 You'll need:
 
+- [Rust toolchain](https://rustup.rs/)
 - [Typst](https://github.com/typst/typst/)
-- [Rust toolchain](https://rustup.rs/) (optional---only if you want to modify
-  the tool)
 
 ### Quickstart
 
-If you've downloaded the release tarball:
-
 ```bash
-# Unpack the release archive
-tar -xzf llms_unplugged-v1.0.0.tar.gz
-cd llms_unplugged
+# Build the CLI tool
+cd cli && cargo build --release
 
 # Generate a booklet (JSON + PDF) from the included sample text
-# (use the binary for your platform from the bin/ directory)
-./bin/llms_unplugged-linux-x86_64 pdf --target frankenstein-2-1 --input data/frankenstein.txt --out-dir out
+./target/release/llms_unplugged pdf --target frankenstein-2-1 --input ../data/frankenstein.txt --out-dir out
 ```
 
 The resulting PDF contains your N-gram model formatted for dice-roll-based text
@@ -152,8 +142,8 @@ For large trigram models, use the `-b` flag to split across multiple books.
   - `src/` - Rust source code for N-gram processing and CLI
   - `book.typ` - Main booklet template
 - `data/` - Input text corpora (\*.txt files with YAML frontmatter)
-- `handouts/` - Teaching materials (lessons, worksheets, runsheets)
-- `website/` - Project website source (Vitepress)
+- `handouts/` - Printable materials (worksheets, runsheets, poster)
+- `website/` - Project website source (Astro)
 - `backlog/` - Task management
 
 ### Testing
@@ -163,7 +153,7 @@ For large trigram models, use the `-b` flag to split across multiple books.
 cd cli && cargo test
 
 # Website tests (from website/ directory)
-cd website && npm run test
+cd website && pnpm test
 ```
 
 Tests cover capitalization rules, tokenization edge cases, and full integration
