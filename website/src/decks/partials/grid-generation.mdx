@@ -32,7 +32,7 @@ only one option --- no dice roll needed
 
 ---
 
-## Generation: `see` &rarr; `spot`
+## Generation: from `spot`
 
 two options (`run` and `,`) --- roll dice!
 
@@ -40,7 +40,7 @@ two options (`run` and `,`) --- roll dice!
 
 ---
 
-## Generation: `spot` &rarr; `,`
+## Generation: from `,`
 
 two options (`spot` and `run`) --- roll dice!
 
@@ -48,23 +48,23 @@ two options (`spot` and `run`) --- roll dice!
 
 ---
 
-## Generation: `,` &rarr; `run`
+## Generation: from `run`
 
-two options (`.` and `,`) --- roll dice!
+two options --- but `.` has two tallies to `,`'s one, so it's twice as likely
 
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={3} />
 
 ---
 
-## Generation: `run` &rarr; `.`
+## Generation: from `.`
 
-&nbsp;
+only one option (`run`)
 
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={4} />
 
 ---
 
-## Generation: `.` &rarr; `run`
+## Generation: from `run` again
 
 and so on...
 
