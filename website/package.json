@@ -15,6 +15,7 @@
     "dev": "astro dev",
     "prebuild": "pnpm exec tsx scripts/copy-cli-templates.ts",
     "build": "astro build",
+    "build:a11y": "CHECK_A11Y=true pnpm run build",
     "preview": "astro preview",
     "new": "pnpm exec tsx scripts/create-news-item.ts",
     "generate:image": "pnpm exec tsx scripts/generate-image.ts",

@@ -21,6 +21,10 @@ export default defineConfig({
     anuTheme({
       name: "LLMs Unplugged",
       llmsTxt: true,
+      // The axe/JSDOM accessibility scan adds ~8 min to a build, so keep it out
+      // of the every-push deploy. It runs opt-in via CHECK_A11Y=true — in the
+      // weekly a11y-audit workflow and locally via `pnpm run build:a11y`.
+      checkA11y: process.env.CHECK_A11Y === "true",
       // Deck plugins run through the theme's markdown processor; the plain
       // mdx() the theme auto-registers inherits them.
       extraRemarkPlugins: deckRemarkPlugins,

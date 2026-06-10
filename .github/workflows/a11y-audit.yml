@@ -1,0 +1,38 @@
+name: A11y Audit
+
+# The accessibility scan (axe + JSDOM over every built page) takes ~8 min, so it
+# is kept out of the every-push deploy (see website/astro.config.ts). It runs
+# here instead — weekly and on demand. A failed run means new accessibility
+# violations have landed on main; the build throws on any violation.
+on:
+  schedule:
+    # Mondays 19:00 UTC — early Tuesday in Canberra. GitHub cron is always UTC.
+    - cron: "0 19 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  a11y:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: website/package.json
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: "pnpm"
+          cache-dependency-path: website/pnpm-lock.yaml
+
+      - name: Install dependencies
+        working-directory: website
+        run: pnpm install --frozen-lockfile
+
+      - name: Build with accessibility scan
+        working-directory: website
+        run: pnpm run build:a11y

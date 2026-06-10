@@ -37,6 +37,8 @@ jobs:
         working-directory: website
         run: pnpm install --frozen-lockfile
 
+      # The accessibility scan is deliberately not run here (it adds ~8 min and
+      # doesn't change the output) — see the weekly a11y-audit workflow.
       - name: Build
         working-directory: website
         run: pnpm run build
