@@ -1,0 +1,238 @@
+---
+import { getCollection } from "astro:content";
+
+interface Props {
+  /** "card" = prominent website box; "plain" = deck slide (no booking button). */
+  variant?: "card" | "plain";
+}
+
+const { variant = "card" } = Astro.props;
+
+// Canberra/ACT shares the Australia/Sydney zone, so formatting the stored
+// instants here handles the AEST/AEDT switch automatically.
+const TZ = "Australia/Sydney";
+const weekdayFmt = new Intl.DateTimeFormat("en-AU", {
+  weekday: "long",
+  timeZone: TZ,
+});
+const dateFmt = new Intl.DateTimeFormat("en-AU", {
+  day: "numeric",
+  month: "long",
+  timeZone: TZ,
+});
+const timeFmt = new Intl.DateTimeFormat("en-AU", {
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
+  timeZone: TZ,
+});
+
+const now = new Date();
+
+const sessions = (await getCollection("events"))
+  .map(({ data }) => ({
+    ...data,
+    end: new Date(data.start.getTime() + data.durationMinutes * 60_000),
+  }))
+  .filter((s) => s.end >= now)
+  .sort((a, b) => a.start.getTime() - b.start.getTime());
+
+const location = sessions[0]?.location;
+const bookingUrl = sessions[0]?.bookingUrl;
+const isEmpty = sessions.length === 0;
+---
+
+<div class:list={["upcoming-sessions", `upcoming-sessions--${variant}`]}>
+  <div class="us-inner">
+    <div class:list={["us-main", { "us-hidden": isEmpty }]}>
+      <h2 class="us-heading">Next sessions</h2>
+      <ul class="us-list" role="list">
+        {
+          sessions.map((s) => (
+            <li class="us-session" data-end={s.end.toISOString()}>
+              <span class="us-when">
+                <span class="us-day">
+                  {weekdayFmt.format(s.start)} {dateFmt.format(s.start)}
+                </span>
+                <span class="us-time">
+                  {timeFmt.format(s.start)}&ndash;{timeFmt.format(s.end)}
+                </span>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class:list={["us-aside", { "us-hidden": isEmpty }]}>
+      {location && <p class="us-location">{location}</p>}
+      {
+        variant === "card" && bookingUrl && (
+          <a class="us-book" href={bookingUrl} target="_blank" rel="noopener">
+            Book a spot
+          </a>
+        )
+      }
+    </div>
+
+    <p class:list={["us-empty", { "us-hidden": !isEmpty }]}>
+      No public sessions are scheduled right now &mdash;
+      <a href="/about#get-in-touch">get in touch</a> to arrange one.
+    </p>
+  </div>
+</div>
+
+<style>
+  /* Visibility utility — !important so it wins over the variant display rules
+     below (which are more specific than a bare attribute selector would be). */
+  .us-hidden {
+    display: none !important;
+  }
+
+  .us-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ---- Website card variant ---- */
+  .upcoming-sessions--card {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .upcoming-sessions--card .us-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem 2.5rem;
+    padding: 1.5rem 1.75rem;
+    background: var(--color-brand-soft);
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+  }
+
+  .upcoming-sessions--card .us-heading {
+    margin: 0 0 0.85rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--anu-gold);
+  }
+
+  .upcoming-sessions--card .us-list {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .upcoming-sessions--card .us-session {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    column-gap: 0.6rem;
+  }
+
+  .upcoming-sessions--card .us-session::before {
+    content: "";
+    margin-top: 0.5em;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--anu-gold);
+  }
+
+  .upcoming-sessions--card .us-when {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.1rem 0.85rem;
+  }
+
+  .upcoming-sessions--card .us-day {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .upcoming-sessions--card .us-time {
+    color: var(--color-text-secondary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .upcoming-sessions--card .us-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    align-items: flex-start;
+  }
+
+  .upcoming-sessions--card .us-location {
+    margin: 0;
+    max-width: 18rem;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  .upcoming-sessions--card .us-book {
+    display: inline-block;
+    padding: 0.6rem 1.25rem;
+    border-radius: 0.5rem;
+    background: var(--at-accent);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background-color 0.15s;
+  }
+
+  .upcoming-sessions--card .us-book:hover {
+    background: var(--at-accent-hover);
+  }
+
+  .upcoming-sessions--card .us-empty {
+    margin: 0;
+    color: var(--color-text-secondary);
+  }
+
+  /* ---- Deck plain variant ---- */
+  .upcoming-sessions--plain .us-session {
+    margin: 0.25em 0;
+  }
+
+  .upcoming-sessions--plain .us-day {
+    font-weight: 700;
+  }
+
+  .upcoming-sessions--plain .us-time {
+    margin-left: 0.5em;
+    color: var(--anu-gold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .upcoming-sessions--plain .us-location {
+    margin-top: 0.6em;
+  }
+</style>
+
+<script>
+  // Hide sessions that have already finished, so the box stays correct between
+  // (potentially infrequent) static rebuilds. Runs once over every instance.
+  const now = Date.now();
+  for (const root of document.querySelectorAll(".upcoming-sessions")) {
+    let visible = 0;
+    for (const li of root.querySelectorAll<HTMLElement>(".us-session")) {
+      const end = Date.parse(li.dataset.end ?? "");
+      const past = Number.isFinite(end) && end < now;
+      li.classList.toggle("us-hidden", past);
+      if (!past) visible += 1;
+    }
+    if (visible === 0) {
+      for (const el of root.querySelectorAll(".us-main, .us-aside")) {
+        el.classList.add("us-hidden");
+      }
+      root.querySelector(".us-empty")?.classList.remove("us-hidden");
+    }
+  }
+</script>

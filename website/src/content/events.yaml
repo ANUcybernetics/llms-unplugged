@@ -1,0 +1,18 @@
+# Upcoming LLMs Unplugged sessions, rendered by src/components/UpcomingSessions.astro.
+# Finished sessions hide themselves automatically (end = start + durationMinutes),
+# so there's no need to prune past dates by hand — just add new ones.
+#
+# Times are Canberra local: use the +10:00 offset for AEST, or +11:00 for AEDT
+# during daylight saving (early October to early April).
+#
+# title, durationMinutes, location and bookingUrl fall back to the schema
+# defaults in src/content.config.ts; override any of them per entry when a
+# session differs.
+- id: 2026-06-11-innovation-space
+  start: "2026-06-11T16:00:00+10:00"
+- id: 2026-06-24-innovation-space
+  start: "2026-06-24T12:00:00+10:00"
+- id: 2026-09-16-innovation-space
+  start: "2026-09-16T12:00:00+10:00"
+- id: 2026-11-25-innovation-space
+  start: "2026-11-25T16:00:00+11:00"

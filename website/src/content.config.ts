@@ -1,5 +1,5 @@
 import { defineCollection } from "astro:content";
-import { glob } from "astro/loaders";
+import { file, glob } from "astro/loaders";
 import { z } from "astro/zod";
 
 const lessons = defineCollection({
@@ -24,4 +24,21 @@ const news = defineCollection({
   }),
 });
 
-export const collections = { lessons, news };
+const events = defineCollection({
+  loader: file("src/content/events.yaml"),
+  schema: z.object({
+    title: z.string().default("LLMs Unplugged workshop"),
+    // ISO datetime with an explicit Canberra offset (+10:00 AEST / +11:00 AEDT)
+    // so the instant is unambiguous regardless of where the site is built.
+    start: z.coerce.date(),
+    // The session length. The end time (start + duration) is what drives the
+    // auto-hide once a session is over.
+    durationMinutes: z.number().int().positive().default(120),
+    location: z.string().default("Innovation Space, Birch Building, ANU"),
+    bookingUrl: z
+      .url()
+      .default("https://events.humanitix.com/host/anu-cecc-school-of-cybernetics"),
+  }),
+});
+
+export const collections = { lessons, news, events };

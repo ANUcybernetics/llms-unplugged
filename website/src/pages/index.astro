@@ -3,6 +3,7 @@ import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NewsCards from "../components/NewsCards.astro";
 import GlossaryTerm from "../components/GlossaryTerm.astro";
+import UpcomingSessions from "../components/UpcomingSessions.astro";
 import heroIndex from "../assets/images/hero-index.avif";
 import heroWorkshops from "../assets/images/hero-workshops.avif";
 import headshotBen from "../assets/images/headshot-ben-4.avif";
@@ -40,6 +41,8 @@ import heroContact from "../assets/images/hero-contact.avif";
       />
     </div>
   </section>
+
+  <UpcomingSessions />
 
   {
     /* a div, not <main>: the page already renders inside the theme's <main id="main"> */
