@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import LessonLayout from "../../layouts/LessonLayout.astro";
+import { lessonHeroImage } from "../../lib/hero-images";
 
 export async function getStaticPaths() {
   const lessons = await getCollection("lessons");
@@ -13,13 +14,9 @@ export async function getStaticPaths() {
 const { lesson } = Astro.props;
 const { Content } = await render(lesson);
 
-const heroImageMap: Record<string, string> = {
-  training: "grid-training",
-  generation: "grid-generation",
-};
-
-const heroSlug = heroImageMap[lesson.id] ?? lesson.id;
-const ogImage = `/assets/images/hero-${heroSlug}.avif`;
+// Resolve through the asset pipeline so og:image points at the real
+// (hashed) URL rather than a source path that 404s in production.
+const ogImage = lessonHeroImage(lesson.id)?.src;
 ---
 
 <LessonLayout

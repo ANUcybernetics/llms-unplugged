@@ -1,5 +1,6 @@
 ---
 import SidebarLayout from "astro-theme-anu/layouts/SidebarLayout.astro";
+import CommonHead from "../components/CommonHead.astro";
 import { siteConfig, themeLogo, footerOverrides } from "../site-config";
 import { getLessonSidebar } from "../lib/lesson-sidebar";
 import faviconAsset from "../assets/favicon.svg";
@@ -13,11 +14,9 @@ interface Props {
   keyIdea?: string;
 }
 
-const { title, description, ogImage = "/og-image.jpg", keyIdea } = Astro.props;
+const { title, description, ogImage, keyIdea } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/$/, "") + "/";
 const sidebar = await getLessonSidebar();
-const ogImageUrl = new URL(ogImage, Astro.site).href;
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 const slug = currentPath.split("/").filter(Boolean).pop();
 ---
 
@@ -34,35 +33,17 @@ const slug = currentPath.split("/").filter(Boolean).pop();
   {...footerOverrides}
 >
   <Fragment slot="head">
-    <link rel="canonical" href={canonicalUrl} />
-    <meta property="og:type" content="article" />
-    <meta property="og:site_name" content="LLMs Unplugged" />
-    <meta property="og:title" content={title} />
-    {description && <meta property="og:description" content={description} />}
-    <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:image" content={ogImageUrl} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content={ogImageUrl} />
-    <script is:inline>
-      try {
-        let v = localStorage.getItem("llms-unplugged-variant");
-        if (v === "bucket") {
-          v = "cutouts";
-          try {
-            localStorage.setItem("llms-unplugged-variant", "cutouts");
-          } catch {}
-        }
-        if (v === "grid" || v === "cutouts") {
-          document.documentElement.setAttribute("data-variant", v);
-        } else {
-          document.documentElement.setAttribute("data-variant", "grid");
-        }
-      } catch {
-        document.documentElement.setAttribute("data-variant", "grid");
-      }
-    </script>
+    <CommonHead
+      title={title}
+      description={description}
+      ogImage={ogImage}
+      ogType="article"
+    />
   </Fragment>
 
+  <div class="print-wordmark">
+    LLMs Unplugged (c) Ben Swift, Cybernetic Studio - CC BY-NC-SA 4.0
+  </div>
   <div class="prose">
     {
       keyIdea && (

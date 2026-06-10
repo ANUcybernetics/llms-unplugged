@@ -1,5 +1,6 @@
 ---
 import ThemeBaseLayout from "astro-theme-anu/layouts/BaseLayout.astro";
+import CommonHead from "../components/CommonHead.astro";
 import { siteConfig, themeLogo, footerOverrides } from "../site-config";
 import faviconAsset from "../assets/favicon.svg";
 import "../styles/global.css";
@@ -9,16 +10,16 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  ogType?: "website" | "article";
 }
 
 const {
   title,
   description = "Hands-on teaching resources that demonstrate how large language models work. No computers or coding required.",
-  ogImage = "/og-image.jpg",
+  ogImage,
+  ogType,
 } = Astro.props;
 
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
-const ogImageUrl = new URL(ogImage, Astro.site).href;
 const fullTitle =
   title === "LLMs Unplugged" ? title : `${title} | LLMs Unplugged`;
 ---
@@ -33,45 +34,12 @@ const fullTitle =
   {...footerOverrides}
 >
   <Fragment slot="head">
-    <meta name="theme-color" content="#be830e" />
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      title="LLMs Unplugged RSS Feed"
-      href="/feed.xml"
+    <CommonHead
+      title={title}
+      description={description}
+      ogImage={ogImage}
+      ogType={ogType}
     />
-    <link rel="canonical" href={canonicalUrl} />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="LLMs Unplugged" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:image" content={ogImageUrl} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content={ogImageUrl} />
-    <script
-      is:inline
-      defer
-      data-domain="www.llmsunplugged.org"
-      src="https://plausible.io/js/script.file-downloads.js"></script>
-    <script is:inline>
-      try {
-        let v = localStorage.getItem("llms-unplugged-variant");
-        if (v === "bucket") {
-          v = "cutouts";
-          try {
-            localStorage.setItem("llms-unplugged-variant", "cutouts");
-          } catch {}
-        }
-        if (v === "grid" || v === "cutouts") {
-          document.documentElement.setAttribute("data-variant", v);
-        } else {
-          document.documentElement.setAttribute("data-variant", "grid");
-        }
-      } catch {
-        document.documentElement.setAttribute("data-variant", "grid");
-      }
-    </script>
   </Fragment>
 
   <div class="print-wordmark">

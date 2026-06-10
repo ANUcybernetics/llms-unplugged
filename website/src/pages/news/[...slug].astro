@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import NewsLayout from "../../layouts/NewsLayout.astro";
+import { findHeroImage } from "../../lib/hero-images";
 
 export async function getStaticPaths() {
   const news = await getCollection("news", ({ data }) => data.published);
@@ -13,7 +14,9 @@ export async function getStaticPaths() {
 const { item } = Astro.props;
 const { Content } = await render(item);
 
-const ogImage = `/assets/images/hero-news-${item.id}.avif`;
+// Resolve through the asset pipeline so og:image points at the real
+// (hashed) URL rather than a source path that 404s in production.
+const ogImage = findHeroImage(`hero-news-${item.id}`)?.src;
 ---
 
 <NewsLayout

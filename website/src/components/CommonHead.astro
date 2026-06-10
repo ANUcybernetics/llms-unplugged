@@ -1,0 +1,56 @@
+---
+// Shared <head> content for every layout. BaseLayout and LessonLayout used to
+// carry diverging copies of this block (lesson pages silently lost analytics
+// and the RSS link); keep all common head tags here.
+interface Props {
+  title: string;
+  description?: string;
+  /** Resolved image URL (an asset's `.src` or a public/ path). */
+  ogImage?: string;
+  ogType?: "website" | "article";
+}
+
+const {
+  title,
+  description,
+  ogImage = "/og-image.jpg",
+  ogType = "website",
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+const ogImageUrl = new URL(ogImage, Astro.site).href;
+---
+
+<meta name="theme-color" content="#be830e" />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title="LLMs Unplugged RSS Feed"
+  href="/feed.xml"
+/>
+<link rel="canonical" href={canonicalUrl} />
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content="LLMs Unplugged" />
+<meta property="og:title" content={title} />
+{description && <meta property="og:description" content={description} />}
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={ogImageUrl} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content={ogImageUrl} />
+<script
+  is:inline
+  defer
+  data-domain="www.llmsunplugged.org"
+  src="https://plausible.io/js/script.file-downloads.js"></script>
+<script is:inline>
+  // Set the grid/cutouts variant attribute before first paint.
+  try {
+    const v = localStorage.getItem("llms-unplugged-variant");
+    document.documentElement.setAttribute(
+      "data-variant",
+      v === "grid" || v === "cutouts" ? v : "grid",
+    );
+  } catch {
+    document.documentElement.setAttribute("data-variant", "grid");
+  }
+</script>

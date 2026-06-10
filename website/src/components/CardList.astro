@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import Card from "astro-theme-anu/components/Card.astro";
 import { topicOrder, topicLabels, topicDescriptions } from "../lib/topics";
-import { findHeroImage } from "../lib/hero-images";
+import { lessonHeroImage } from "../lib/hero-images";
 import type { ImageMetadata } from "astro";
 
 interface Props {
@@ -12,20 +12,13 @@ interface Props {
 
 const { lessons: filterSlugs, topics: filterTopics } = Astro.props;
 
-const heroImageMap: Record<string, string> = {
-  training: "grid-training",
-  generation: "grid-generation",
-  "agentic-tool-use": "tool-use",
-};
-
 const allLessons = await getCollection("lessons");
 const sortedLessons = allLessons.sort(
   (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
 );
 
 function heroImage(slug: string): ImageMetadata | undefined {
-  const heroSlug = heroImageMap[slug] ?? slug;
-  return findHeroImage(`hero-${heroSlug}`);
+  return lessonHeroImage(slug);
 }
 
 const isFiltered = !!filterSlugs;

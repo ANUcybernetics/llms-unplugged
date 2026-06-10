@@ -25,7 +25,12 @@ const slug = Astro.url.pathname.split("/").filter(Boolean).pop() ?? "";
 const hero = findHeroImage(`hero-news-${slug}`);
 ---
 
-<BaseLayout title={title} description={description} ogImage={ogImage}>
+<BaseLayout
+  title={title}
+  description={description}
+  ogImage={ogImage}
+  ogType="article"
+>
   <div class="content-container news-layout">
     <article class="prose">
       <header class="news-header">
