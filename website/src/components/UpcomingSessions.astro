@@ -50,14 +50,14 @@ const isEmpty = sessions.length === 0;
       <ul class="us-list" role="list">
         {
           sessions.map((s) => {
-            const when = (
-              <span class="us-when">
-                <span class="us-day">
-                  {weekdayFmt.format(s.start)} {dateFmt.format(s.start)}
-                </span>
-                <span class="us-time">
-                  {timeFmt.format(s.start)}&ndash;{timeFmt.format(s.end)}
-                </span>
+            const day = (
+              <span class="us-day">
+                {weekdayFmt.format(s.start)} {dateFmt.format(s.start)}
+              </span>
+            );
+            const time = (
+              <span class="us-time">
+                {timeFmt.format(s.start)}&ndash;{timeFmt.format(s.end)}
               </span>
             );
             return (
@@ -69,13 +69,18 @@ const isEmpty = sessions.length === 0;
                     target="_blank"
                     rel="noopener"
                   >
-                    {when}
-                    <span class="us-cta">
-                      Book <span aria-hidden="true">&nearr;</span>
+                    {day}
+                    <span class="us-meta">
+                      {time}
+                      <span class="us-cta">
+                        Book <span aria-hidden="true">&nearr;</span>
+                      </span>
                     </span>
                   </a>
                 ) : (
-                  when
+                  <span class="us-when">
+                    {day} {time}
+                  </span>
                 )}
               </li>
             );
@@ -107,12 +112,19 @@ const isEmpty = sessions.length === 0;
 
   /* ---- Website card variant ---- */
   .upcoming-sessions--card {
+    /* width:100% is load-bearing: as a grid item of .at-main, margin:auto
+       suppresses stretch, so without it the box shrinks to its content width
+       instead of filling the column like the body text. */
+    width: 100%;
     max-width: 64rem;
     margin: 0 auto;
     padding: 0 1.5rem;
   }
 
   .upcoming-sessions--card .us-inner {
+    /* Query target for the session grid below — switch to two columns once the
+       card itself (not the viewport) is wide enough. */
+    container-type: inline-size;
     padding: 1.5rem 1.75rem;
     background: var(--color-brand-soft);
     border: 1px solid var(--color-border);
@@ -120,7 +132,7 @@ const isEmpty = sessions.length === 0;
   }
 
   .upcoming-sessions--card .us-heading {
-    margin: 0 0 0.6rem;
+    margin: 0 0 0.75rem;
     font-size: 0.8rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -130,18 +142,19 @@ const isEmpty = sessions.length === 0;
 
   .upcoming-sessions--card .us-list {
     display: grid;
-    gap: 0.15rem;
-    /* Pull rows into the card padding so the hover highlight bleeds to the
-       edges while the dot still lines up under the heading. */
-    margin: 0 -0.65rem;
+    grid-template-columns: 1fr;
+    gap: 0.15rem 1.5rem;
+  }
+
+  @container (width >= 38rem) {
+    .upcoming-sessions--card .us-list {
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   .upcoming-sessions--card .us-link {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    column-gap: 0.85rem;
-    padding: 0.5rem 0.65rem;
+    display: block;
+    padding: 0.55rem 0.65rem;
     border-radius: 0.5rem;
     color: inherit;
     text-decoration: none;
@@ -153,24 +166,35 @@ const isEmpty = sessions.length === 0;
     background: var(--lm-highlight-soft);
   }
 
-  .upcoming-sessions--card .us-link::before {
-    content: "";
-    width: 0.45rem;
-    height: 0.45rem;
-    border-radius: 50%;
-    background: var(--anu-gold);
-  }
-
-  .upcoming-sessions--card .us-when {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.1rem 0.85rem;
-  }
-
   .upcoming-sessions--card .us-day {
+    display: block;
     font-weight: 600;
     color: var(--color-text);
+  }
+
+  .upcoming-sessions--card .us-day::before {
+    content: "";
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.45rem;
+    margin-right: 0.6rem;
+    border-radius: 50%;
+    background: var(--anu-gold);
+    vertical-align: middle;
+  }
+
+  .upcoming-sessions--card .us-link:hover .us-day,
+  .upcoming-sessions--card .us-link:focus-visible .us-day {
+    color: var(--anu-gold);
+  }
+
+  .upcoming-sessions--card .us-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 0.85rem;
+    margin-top: 0.1rem;
+    /* Align the time under the date text, clearing the dot. */
+    padding-left: 1.05rem;
   }
 
   .upcoming-sessions--card .us-time {
@@ -185,13 +209,8 @@ const isEmpty = sessions.length === 0;
     white-space: nowrap;
   }
 
-  .upcoming-sessions--card .us-link:hover .us-day,
-  .upcoming-sessions--card .us-link:focus-visible .us-day {
-    color: var(--anu-gold);
-  }
-
   .upcoming-sessions--card .us-location {
-    margin: 0.95rem 0 0;
+    margin: 1rem 0 0;
     font-size: 0.9rem;
     color: var(--color-text-muted);
   }
@@ -201,33 +220,24 @@ const isEmpty = sessions.length === 0;
     color: var(--color-text-secondary);
   }
 
-  /* On narrow screens a fixed "Book" column squeezes the date into ugly
-     wraps, so drop to two columns (dot | details) and let the CTA sit on its
-     own line beneath each session. */
+  /* Small screens: tighten the card padding and shrink the type a touch so the
+     longer dates (e.g. "Wednesday 16 September") stay on one line. */
   @media (width <= 32rem) {
     .upcoming-sessions--card .us-inner {
-      padding: 1.1rem 1rem;
-    }
-
-    .upcoming-sessions--card .us-list {
-      margin: 0;
+      padding: 1.1rem 0.9rem;
     }
 
     .upcoming-sessions--card .us-link {
-      grid-template-columns: auto 1fr;
-      align-items: start;
-      column-gap: 0.5rem;
-      padding: 0.5rem 0;
+      padding: 0.45rem 0.3rem;
       font-size: 0.85rem;
     }
 
-    .upcoming-sessions--card .us-link::before {
-      margin-top: 0.5em;
+    .upcoming-sessions--card .us-day::before {
+      margin-right: 0.5rem;
     }
 
-    .upcoming-sessions--card .us-cta {
-      grid-column: 2;
-      justify-self: start;
+    .upcoming-sessions--card .us-meta {
+      padding-left: 0.95rem;
     }
   }
 
