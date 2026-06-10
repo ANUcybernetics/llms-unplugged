@@ -17,16 +17,11 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
 
       - uses: pnpm/action-setup@v6
         with:
@@ -46,9 +41,10 @@ jobs:
         working-directory: website
         run: pnpm run build
 
-      - name: Run tests
+      # typecheck + lint + format:check + test (build.test reuses dist/)
+      - name: Check
         working-directory: website
-        run: pnpm test
+        run: pnpm run check
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5

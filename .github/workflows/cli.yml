@@ -12,9 +12,6 @@ on:
       - 'cli/**'
   workflow_dispatch:
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   test:
     name: Test CLI
@@ -24,6 +21,14 @@ jobs:
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+          targets: wasm32-unknown-unknown
+
+      - name: Install Typst
+        uses: typst-community/setup-typst@v5
+        with:
+          typst-version: '0.14.2'
 
       - name: Cache cargo
         uses: actions/cache@v5
@@ -38,5 +43,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cargo-
 
-      - name: Run tests
-        run: cargo test --manifest-path cli/Cargo.toml
+      - name: Check formatting
+        run: cargo fmt --manifest-path cli/Cargo.toml --check
+
+      - name: Clippy
+        run: cargo clippy --manifest-path cli/Cargo.toml --all-targets --all-features -- -D warnings
+
+      - name: Run tests (all features)
+        run: cargo test --manifest-path cli/Cargo.toml --all-features
+
+      - name: Check wasm target
+        run: cargo check --manifest-path cli/Cargo.toml --no-default-features --features wasm --target wasm32-unknown-unknown
