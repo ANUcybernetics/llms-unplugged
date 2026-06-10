@@ -252,7 +252,9 @@ import heroContact from "../assets/images/hero-contact.avif";
   .hero {
     max-width: 64rem;
     margin: 0 auto;
-    padding: 4rem 1.5rem;
+    /* Reduced bottom padding sets the gap above the upcoming-sessions box;
+       .home-content's top padding mirrors it below for even spacing. */
+    padding: 4rem 1.5rem 3rem;
     display: grid;
     gap: 2rem;
     align-items: center;
@@ -261,7 +263,7 @@ import heroContact from "../assets/images/hero-contact.avif";
   @media (min-width: 960px) {
     .hero {
       grid-template-columns: 1fr 1fr;
-      padding: 6rem 1.5rem;
+      padding: 6rem 1.5rem 3rem;
     }
   }
 
@@ -337,7 +339,7 @@ import heroContact from "../assets/images/hero-contact.avif";
   .home-content {
     max-width: 64rem;
     margin: 0 auto;
-    padding: 0 1.5rem 4rem;
+    padding: 3rem 1.5rem 4rem;
   }
 
   .intro-text {
