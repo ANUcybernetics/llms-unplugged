@@ -5,7 +5,7 @@ status: Done
 assignee:
   - '@claude'
 created_date: '2026-06-01 01:01'
-updated_date: '2026-06-10 04:06'
+updated_date: '2026-06-10 04:38'
 labels:
   - dx
   - bug
@@ -35,5 +35,5 @@ This is the downstream tracker: confirm a clean fix once it lands upstream, and 
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-Root cause confirmed: astromotion's watch-includes plugin (still true at v0.5.3) sends a full-reload on partial edit but never invalidates the compiled parent .deck.mdx module, so the dev server re-serves stale output. Mitigation applied: dev-only Vite plugin (llms-unplugged:deck-partial-hmr-shim) in website/astro.config.ts that, on a partials/*.mdx change, calls server.moduleGraph.onFileChange() for every deck whose transitive include set (via astromotion's own collectIncludePaths) contains the file, then sends full-reload. Verified end-to-end: edited src/decks/partials/cutouts-generation.mdx with astro dev running; both cutouts-yr5-6 and cutouts-3h re-rendered fresh server-side (curl) and a connected browser auto-reloaded with the change (agent-browser). Nested includes (denouement -> qualtrics) covered by the transitive walk. Shim is marked for removal once the upstream astromotion fix (its task-2) ships the same invalidation in handleHotUpdate.
+Root cause confirmed: astromotion's watch-includes plugin sent a full-reload on partial edit but never invalidated the compiled parent .deck.mdx module. Fixed upstream in astromotion v0.5.4 (handleHotUpdate now calls moduleGraph.onFileChange for each parent deck); verified in this repo with no local shim — editing src/decks/partials/cutouts-generation.mdx refreshed both cutouts decks live. The interim consumer-side shim (llms-unplugged:deck-partial-hmr-shim, commit 677c9de9) was removed when the pin was bumped to v0.5.4.
 <!-- SECTION:NOTES:END -->
