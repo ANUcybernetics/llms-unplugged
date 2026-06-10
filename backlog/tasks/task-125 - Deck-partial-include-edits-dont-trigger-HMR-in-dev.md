@@ -1,9 +1,11 @@
 ---
 id: TASK-125
 title: Deck partial (@include) edits don't trigger HMR in dev
-status: To Do
-assignee: []
+status: Done
+assignee:
+  - '@claude'
 created_date: '2026-06-01 01:01'
+updated_date: '2026-06-10 04:06'
 labels:
   - dx
   - bug
@@ -25,7 +27,13 @@ This is the downstream tracker: confirm a clean fix once it lands upstream, and 
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Editing a deck partial (e.g. a cutouts-* partial) is reflected in the running astro dev server without restarting it or falling back to build + preview
-- [ ] #2 A clean dev-only mitigation (Astro/Vite config knob, @astrojs/mdx bump, or wiring change) is identified and applied; if none exists, findings are recorded and the task stays blocked on the upstream astromotion fix
-- [ ] #3 Verified by editing src/decks/partials/cutouts-generation.mdx and seeing the change in the browser without touching the parent .deck.mdx
+- [x] #1 Editing a deck partial (e.g. a cutouts-* partial) is reflected in the running astro dev server without restarting it or falling back to build + preview
+- [x] #2 A clean dev-only mitigation (Astro/Vite config knob, @astrojs/mdx bump, or wiring change) is identified and applied; if none exists, findings are recorded and the task stays blocked on the upstream astromotion fix
+- [x] #3 Verified by editing src/decks/partials/cutouts-generation.mdx and seeing the change in the browser without touching the parent .deck.mdx
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Root cause confirmed: astromotion's watch-includes plugin (still true at v0.5.3) sends a full-reload on partial edit but never invalidates the compiled parent .deck.mdx module, so the dev server re-serves stale output. Mitigation applied: dev-only Vite plugin (llms-unplugged:deck-partial-hmr-shim) in website/astro.config.ts that, on a partials/*.mdx change, calls server.moduleGraph.onFileChange() for every deck whose transitive include set (via astromotion's own collectIncludePaths) contains the file, then sends full-reload. Verified end-to-end: edited src/decks/partials/cutouts-generation.mdx with astro dev running; both cutouts-yr5-6 and cutouts-3h re-rendered fresh server-side (curl) and a connected browser auto-reloaded with the change (agent-browser). Nested includes (denouement -> qualtrics) covered by the transitive walk. Shim is marked for removal once the upstream astromotion fix (its task-2) ships the same invalidation in handleHotUpdate.
+<!-- SECTION:NOTES:END -->
