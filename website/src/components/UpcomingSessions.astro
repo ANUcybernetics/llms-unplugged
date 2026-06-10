@@ -2,11 +2,13 @@
 import { getCollection } from "astro:content";
 
 interface Props {
-  /** "card" = prominent website box; "plain" = deck slide (no booking button). */
+  /** "card" = prominent website box; each session links to its booking page.
+      "plain" = deck slide: a static list, no links (booking is via the QR slide). */
   variant?: "card" | "plain";
 }
 
 const { variant = "card" } = Astro.props;
+const isCard = variant === "card";
 
 // Canberra/ACT shares the Australia/Sydney zone, so formatting the stored
 // instants here handles the AEST/AEDT switch automatically.
@@ -38,18 +40,17 @@ const sessions = (await getCollection("events"))
   .sort((a, b) => a.start.getTime() - b.start.getTime());
 
 const location = sessions[0]?.location;
-const bookingUrl = sessions[0]?.bookingUrl;
 const isEmpty = sessions.length === 0;
 ---
 
 <div class:list={["upcoming-sessions", `upcoming-sessions--${variant}`]}>
   <div class="us-inner">
-    <div class:list={["us-main", { "us-hidden": isEmpty }]}>
+    <div class:list={["us-body", { "us-hidden": isEmpty }]}>
       <h2 class="us-heading">Next sessions</h2>
       <ul class="us-list" role="list">
         {
-          sessions.map((s) => (
-            <li class="us-session" data-end={s.end.toISOString()}>
+          sessions.map((s) => {
+            const when = (
               <span class="us-when">
                 <span class="us-day">
                   {weekdayFmt.format(s.start)} {dateFmt.format(s.start)}
@@ -58,21 +59,30 @@ const isEmpty = sessions.length === 0;
                   {timeFmt.format(s.start)}&ndash;{timeFmt.format(s.end)}
                 </span>
               </span>
-            </li>
-          ))
+            );
+            return (
+              <li class="us-session" data-end={s.end.toISOString()}>
+                {isCard ? (
+                  <a
+                    class="us-link"
+                    href={s.bookingUrl}
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    {when}
+                    <span class="us-cta">
+                      Book <span aria-hidden="true">&nearr;</span>
+                    </span>
+                  </a>
+                ) : (
+                  when
+                )}
+              </li>
+            );
+          })
         }
       </ul>
-    </div>
-
-    <div class:list={["us-aside", { "us-hidden": isEmpty }]}>
       {location && <p class="us-location">{location}</p>}
-      {
-        variant === "card" && bookingUrl && (
-          <a class="us-book" href={bookingUrl} target="_blank" rel="noopener">
-            Book a spot
-          </a>
-        )
-      }
     </div>
 
     <p class:list={["us-empty", { "us-hidden": !isEmpty }]}>
@@ -103,11 +113,6 @@ const isEmpty = sessions.length === 0;
   }
 
   .upcoming-sessions--card .us-inner {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.25rem 2.5rem;
     padding: 1.5rem 1.75rem;
     background: var(--color-brand-soft);
     border: 1px solid var(--color-border);
@@ -115,7 +120,7 @@ const isEmpty = sessions.length === 0;
   }
 
   .upcoming-sessions--card .us-heading {
-    margin: 0 0 0.85rem;
+    margin: 0 0 0.6rem;
     font-size: 0.8rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -125,19 +130,31 @@ const isEmpty = sessions.length === 0;
 
   .upcoming-sessions--card .us-list {
     display: grid;
-    gap: 0.5rem;
+    gap: 0.15rem;
+    /* Pull rows into the card padding so the hover highlight bleeds to the
+       edges while the dot still lines up under the heading. */
+    margin: 0 -0.65rem;
   }
 
-  .upcoming-sessions--card .us-session {
+  .upcoming-sessions--card .us-link {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: start;
-    column-gap: 0.6rem;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    column-gap: 0.85rem;
+    padding: 0.5rem 0.65rem;
+    border-radius: 0.5rem;
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 0.15s;
   }
 
-  .upcoming-sessions--card .us-session::before {
+  .upcoming-sessions--card .us-link:hover,
+  .upcoming-sessions--card .us-link:focus-visible {
+    background: var(--lm-highlight-soft);
+  }
+
+  .upcoming-sessions--card .us-link::before {
     content: "";
-    margin-top: 0.5em;
     width: 0.45rem;
     height: 0.45rem;
     border-radius: 50%;
@@ -161,39 +178,57 @@ const isEmpty = sessions.length === 0;
     font-variant-numeric: tabular-nums;
   }
 
-  .upcoming-sessions--card .us-aside {
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-    align-items: flex-start;
+  .upcoming-sessions--card .us-cta {
+    color: var(--anu-gold);
+    font-weight: 600;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  .upcoming-sessions--card .us-link:hover .us-day,
+  .upcoming-sessions--card .us-link:focus-visible .us-day {
+    color: var(--anu-gold);
   }
 
   .upcoming-sessions--card .us-location {
-    margin: 0;
-    max-width: 18rem;
+    margin: 0.95rem 0 0;
     font-size: 0.9rem;
     color: var(--color-text-muted);
-  }
-
-  .upcoming-sessions--card .us-book {
-    display: inline-block;
-    padding: 0.6rem 1.25rem;
-    border-radius: 0.5rem;
-    background: var(--at-accent);
-    color: #fff;
-    font-weight: 600;
-    font-size: 0.95rem;
-    text-decoration: none;
-    transition: background-color 0.15s;
-  }
-
-  .upcoming-sessions--card .us-book:hover {
-    background: var(--at-accent-hover);
   }
 
   .upcoming-sessions--card .us-empty {
     margin: 0;
     color: var(--color-text-secondary);
+  }
+
+  /* On narrow screens a fixed "Book" column squeezes the date into ugly
+     wraps, so drop to two columns (dot | details) and let the CTA sit on its
+     own line beneath each session. */
+  @media (width <= 32rem) {
+    .upcoming-sessions--card .us-inner {
+      padding: 1.1rem 1rem;
+    }
+
+    .upcoming-sessions--card .us-list {
+      margin: 0;
+    }
+
+    .upcoming-sessions--card .us-link {
+      grid-template-columns: auto 1fr;
+      align-items: start;
+      column-gap: 0.5rem;
+      padding: 0.5rem 0;
+      font-size: 0.85rem;
+    }
+
+    .upcoming-sessions--card .us-link::before {
+      margin-top: 0.5em;
+    }
+
+    .upcoming-sessions--card .us-cta {
+      grid-column: 2;
+      justify-self: start;
+    }
   }
 
   /* ---- Deck plain variant ---- */
@@ -229,9 +264,7 @@ const isEmpty = sessions.length === 0;
       if (!past) visible += 1;
     }
     if (visible === 0) {
-      for (const el of root.querySelectorAll(".us-main, .us-aside")) {
-        el.classList.add("us-hidden");
-      }
+      root.querySelector(".us-body")?.classList.add("us-hidden");
       root.querySelector(".us-empty")?.classList.remove("us-hidden");
     }
   }

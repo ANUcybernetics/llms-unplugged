@@ -35,9 +35,7 @@ const events = defineCollection({
     // auto-hide once a session is over.
     durationMinutes: z.number().int().positive().default(120),
     location: z.string().default("Innovation Space, Birch Building, ANU"),
-    bookingUrl: z
-      .url()
-      .default("https://events.humanitix.com/host/anu-cecc-school-of-cybernetics"),
+    bookingUrl: z.url().default("https://events.humanitix.com/host/anu-cecc-school-of-cybernetics"),
   }),
 });
 
