@@ -31,9 +31,13 @@ export async function extractTextFromDocx(
 export async function extractTextFromPdf(arrayBuffer: ArrayBuffer): Promise<string> {
   const pdfjsLib = await import("pdfjs-dist");
 
-  // Configure worker on first use
+  // Configure worker on first use; Vite bundles it as an asset, so there's no
+  // third-party CDN dependency at runtime.
   if (!pdfjsLib.GlobalWorkerOptions.workerSrc) {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+    pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+      "pdfjs-dist/build/pdf.worker.min.mjs",
+      import.meta.url,
+    ).href;
   }
 
   const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;

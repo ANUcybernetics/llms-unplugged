@@ -1,6 +1,4 @@
-[tools]
-node = "24"
-pnpm = "latest"
+# tools (node, pnpm) come from the repo-root mise.toml
 
 [env]
 # sharp ships prebuilt binaries (@img/*); skip the from-source build that a

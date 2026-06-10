@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { load } from "js-yaml";
+import { parse } from "yaml";
 
 export interface GlossaryEntry {
   id: string;
@@ -27,7 +27,7 @@ let cached: GlossaryEntry[] | null = null;
 export function loadGlossary(): GlossaryEntry[] {
   if (cached) return cached;
   const raw = fs.readFileSync(path.join(process.cwd(), "src/data/glossary.yaml"), "utf-8");
-  cached = load(raw) as GlossaryEntry[];
+  cached = parse(raw) as GlossaryEntry[];
   return cached;
 }
 

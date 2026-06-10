@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { globSync, readFileSync } from "node:fs";
-import matter from "gray-matter";
+import { parse } from "yaml";
 import { loadGlossary } from "../src/lib/glossary";
 import { SIDEBAR_SLUGS } from "../src/lib/sidebar";
 import { topicOrder } from "../src/lib/topics";
@@ -25,6 +25,12 @@ interface LessonFrontmatter {
   topic?: string;
 }
 
+function parseFrontmatter(source: string): LessonFrontmatter {
+  const match = /^---\n(.*?)\n---\n/s.exec(source);
+  if (!match) throw new Error("lesson is missing YAML frontmatter");
+  return parse(match[1]) as LessonFrontmatter;
+}
+
 function loadLessons(): Map<string, LessonFrontmatter> {
   const files = globSync("src/content/lessons/*.mdx");
   const map = new Map<string, LessonFrontmatter>();
@@ -33,8 +39,7 @@ function loadLessons(): Map<string, LessonFrontmatter> {
       .split("/")
       .pop()!
       .replace(/\.mdx$/, "");
-    const { data } = matter(readFileSync(file, "utf-8"));
-    map.set(slug, data as LessonFrontmatter);
+    map.set(slug, parseFrontmatter(readFileSync(file, "utf-8")));
   }
   return map;
 }
