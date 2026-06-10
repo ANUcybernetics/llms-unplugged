@@ -35,16 +35,28 @@
 
     gridPos = shuffledGridLayout(bricks, REF_W, REF_H, Date.now());
 
+    // Continuously-moving content: respect reduced motion by showing a
+    // static state instead of cycling.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      phase = mode === "full" ? "assembled" : "grid";
+      return;
+    }
+
+    let timeouts: ReturnType<typeof setTimeout>[] = [];
+    const later = (fn: () => void, ms: number) => timeouts.push(setTimeout(fn, ms));
+
     function cycle() {
+      for (const t of timeouts) clearTimeout(t);
+      timeouts = [];
       if (mode === "full") {
         phase = "assembled";
-        setTimeout(() => (phase = "highlighted"), 4000);
-        setTimeout(() => (phase = "grid"), 5500);
-        setTimeout(() => {
+        later(() => (phase = "highlighted"), 4000);
+        later(() => (phase = "grid"), 5500);
+        later(() => {
           gridPos = shuffledGridLayout(bricks, REF_W, REF_H, Date.now());
         }, 7000);
-        setTimeout(() => (phase = "highlighted"), 8000);
-        setTimeout(() => (phase = "assembled"), 9500);
+        later(() => (phase = "highlighted"), 8000);
+        later(() => (phase = "assembled"), 9500);
       } else {
         gridPos = shuffledGridLayout(bricks, REF_W, REF_H, Date.now());
         phase = "grid";
@@ -52,7 +64,10 @@
     }
     cycle();
     const intervalId = setInterval(cycle, mode === "full" ? 12000 : 10000);
-    return () => clearInterval(intervalId);
+    return () => {
+      clearInterval(intervalId);
+      for (const t of timeouts) clearTimeout(t);
+    };
   });
 
   export function highlight() {

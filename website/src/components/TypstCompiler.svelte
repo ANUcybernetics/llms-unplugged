@@ -169,6 +169,7 @@
         bind:value={inputText}
         placeholder="Or paste your text here..."
         rows="8"
+        aria-label="Training text"
         disabled={!isReady}
       ></textarea>
     </div>
@@ -280,9 +281,9 @@
     padding: 0.75rem 1rem;
     border-radius: 0.375rem;
     margin-bottom: 1rem;
-    background: rgba(220, 53, 69, 0.15);
-    border: 1px solid rgba(220, 53, 69, 0.5);
-    color: #f08090;
+    background: var(--at-error-soft);
+    border: 1px solid color-mix(in srgb, var(--at-error) 50%, transparent);
+    color: var(--at-error);
     font-size: 0.9rem;
   }
 
@@ -329,21 +330,21 @@
 
   .status-indicator.ready,
   .status-indicator.success {
-    background: rgba(40, 167, 69, 0.15);
-    border: 1px solid rgba(40, 167, 69, 0.5);
-    color: #6fcf7f;
+    background: var(--at-success-soft);
+    border: 1px solid color-mix(in srgb, var(--at-success) 50%, transparent);
+    color: var(--at-success);
   }
 
   .status-indicator.compiling {
-    background: rgba(255, 193, 7, 0.15);
-    border: 1px solid rgba(255, 193, 7, 0.5);
-    color: #ffd54f;
+    background: var(--at-warning-soft);
+    border: 1px solid color-mix(in srgb, var(--at-warning) 50%, transparent);
+    color: var(--at-warning);
   }
 
   .status-indicator.error {
-    background: rgba(220, 53, 69, 0.15);
-    border: 1px solid rgba(220, 53, 69, 0.5);
-    color: #f08090;
+    background: var(--at-error-soft);
+    border: 1px solid color-mix(in srgb, var(--at-error) 50%, transparent);
+    color: var(--at-error);
   }
 
   .status-icon {

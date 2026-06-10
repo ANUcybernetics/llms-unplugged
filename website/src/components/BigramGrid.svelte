@@ -73,10 +73,21 @@
             class:highlight-row={highlightedRow === rowWord || numericRows.has(rowWord)}
             class:punctuation={isPunctuation(rowWord)}
           >
-            {#if showRowIndicator && highlightedRow === rowWord}
-              <span class="row-indicator">▸</span>
+            {#if clickableRows && isRowClickable(rowWord)}
+              <!-- real button for keyboard access; its click bubbles to the
+                   row handler, which is also the whole-row mouse target -->
+              <button type="button" class="row-button">
+                {#if showRowIndicator && highlightedRow === rowWord}
+                  <span class="row-indicator">▸</span>
+                {/if}
+                <code>{rowWord}</code>
+              </button>
+            {:else}
+              {#if showRowIndicator && highlightedRow === rowWord}
+                <span class="row-indicator">▸</span>
+              {/if}
+              <code>{rowWord}</code>
             {/if}
-            <code>{rowWord}</code>
           </th>
           {#each vocabulary as colWord}
             <td
@@ -121,6 +132,16 @@
     background-color: var(--at-bg-alt);
     font-weight: 600;
     position: relative;
+  }
+  .row-button {
+    all: unset;
+    display: block;
+    width: 100%;
+    cursor: pointer;
+  }
+  .row-button:focus-visible {
+    outline: 2px solid var(--at-accent);
+    outline-offset: 1px;
   }
   .row-header.highlight-row {
     background-color: var(--at-accent-soft);

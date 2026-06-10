@@ -28,17 +28,18 @@ const rows = vocabulary.map((from) => ({
     return count > 0 ? tally(count) : "";
   }),
 }));
-
-const headers = ["", ...vocabulary];
 ---
 
 <div class="lm-grid">
   <table>
     <thead>
       <tr>
+        <th scope="col"><span class="sr-only">Token</span></th>
         {
-          headers.map((header) => (
-            <th>{header ? <code>{header}</code> : <span>&nbsp;</span>}</th>
+          vocabulary.map((header) => (
+            <th scope="col">
+              <code>{header}</code>
+            </th>
           ))
         }
       </tr>
@@ -47,9 +48,9 @@ const headers = ["", ...vocabulary];
       {
         rows.map((row) => (
           <tr>
-            <td>
-              {row.label ? <code>{row.label}</code> : <span>&nbsp;</span>}
-            </td>
+            <th scope="row">
+              <code>{row.label}</code>
+            </th>
             {row.cells.map((cell) => (
               <td>{cell || "\u00A0"}</td>
             ))}

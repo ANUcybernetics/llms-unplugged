@@ -10,19 +10,21 @@ export interface CompilerState {
   errorMessage: string;
 }
 
+// Font packages are pinned to explicit fontsource versions, matching the way
+// the typst.ts CDN URLs below pin @0.7.0-rc2 — @latest could drift under us.
 const FONT_URLS: Record<string, string[]> = {
   "Libertinus Serif": [
-    "https://cdn.jsdelivr.net/fontsource/fonts/libertinus-serif@latest/latin-400-normal.woff2",
-    "https://cdn.jsdelivr.net/fontsource/fonts/libertinus-serif@latest/latin-700-normal.woff2",
-    "https://cdn.jsdelivr.net/fontsource/fonts/libertinus-serif@latest/latin-400-italic.woff2",
+    "https://cdn.jsdelivr.net/fontsource/fonts/libertinus-serif@5.2.1/latin-400-normal.woff2",
+    "https://cdn.jsdelivr.net/fontsource/fonts/libertinus-serif@5.2.1/latin-700-normal.woff2",
+    "https://cdn.jsdelivr.net/fontsource/fonts/libertinus-serif@5.2.1/latin-400-italic.woff2",
   ],
   "Libertinus Sans": [
-    "https://cdn.jsdelivr.net/fontsource/fonts/libertinus-sans@latest/latin-400-normal.woff2",
-    "https://cdn.jsdelivr.net/fontsource/fonts/libertinus-sans@latest/latin-700-normal.woff2",
+    "https://cdn.jsdelivr.net/fontsource/fonts/libertinus-sans@5.2.2/latin-400-normal.woff2",
+    "https://cdn.jsdelivr.net/fontsource/fonts/libertinus-sans@5.2.2/latin-700-normal.woff2",
   ],
   "IBM Plex Mono": [
-    "https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-mono@latest/latin-400-normal.woff2",
-    "https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-mono@latest/latin-700-normal.woff2",
+    "https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-mono@5.2.7/latin-400-normal.woff2",
+    "https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-mono@5.2.7/latin-700-normal.woff2",
   ],
 };
 
@@ -35,8 +37,7 @@ const SOCY_LOGO_SVG = `<?xml version="1.0" encoding="iso-8859-1"?>
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let typst: any = null;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let wasmModule: any = null;
+let wasmModule: typeof import("../wasm-pkg/llms_unplugged.js") | null = null;
 
 export function appendLog(state: CompilerState, message: string): CompilerState {
   const timestamp = new Date().toLocaleTimeString();
@@ -181,11 +182,7 @@ export async function compileDocument(
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      const safeTitle = title
-        .trim()
-        .replace(/[^a-z0-9]/gi, "-")
-        .toLowerCase();
-      a.download = `${safeTitle}-${workflowName}-${ngramSize}gram.pdf`;
+      a.download = `${sanitiseFilename(title)}-${workflowName}-${ngramSize}gram.pdf`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

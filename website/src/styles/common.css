@@ -23,8 +23,6 @@
   --lm-highlight-medium: rgb(from var(--anu-gold) r g b / 30%);
   --lm-highlight-strong: rgb(from var(--anu-gold) r g b / 40%);
 
-  /* Monospace font stack */
-  --font-mono:
-    "SFMono-Regular", "JetBrains Mono", "Fira Code", menlo, monaco, consolas, "Liberation Mono",
-    monospace;
+  /* Monospace font stack (system fonts only; modern browsers) */
+  --font-mono: ui-monospace, monospace;
 }

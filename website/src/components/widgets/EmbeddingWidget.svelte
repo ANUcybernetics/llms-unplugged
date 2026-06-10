@@ -16,15 +16,15 @@
 
   let selectedRows = $state<string[]>([]);
 
-  $effect(() => {
-    void vocabulary; // eslint-disable-line no-unused-expressions -- reactive dependency
-    selectedRows = [];
-  });
+  // Selections that no longer exist in the vocabulary (after the training
+  // text changes) simply drop out — no reset effect needed, and selections
+  // of words common to both texts survive.
+  let validSelected = $derived(selectedRows.filter((w) => vocabulary.includes(w)));
 
-  let numericRows = $derived(new Set(selectedRows));
+  let numericRows = $derived(new Set(validSelected));
 
   let selectedPair = $derived<[string, string] | null>(
-    selectedRows.length === 2 ? [selectedRows[0], selectedRows[1]] : null,
+    validSelected.length === 2 ? [validSelected[0], validSelected[1]] : null,
   );
 
   let distance = $derived.by(() => {
@@ -34,13 +34,13 @@
   });
 
   function handleRowClick(word: string) {
-    const idx = selectedRows.indexOf(word);
-    if (idx !== -1) {
-      selectedRows = selectedRows.filter((w) => w !== word);
-    } else if (selectedRows.length < 2) {
-      selectedRows = [...selectedRows, word];
+    const current = validSelected;
+    if (current.includes(word)) {
+      selectedRows = current.filter((w) => w !== word);
+    } else if (current.length < 2) {
+      selectedRows = [...current, word];
     } else {
-      selectedRows = [selectedRows[1], word];
+      selectedRows = [current[1], word];
     }
   }
 </script>
@@ -76,8 +76,8 @@
 
       <div class="widget-section">
         <div class="section-header">Output</div>
-        {#if selectedRows.length > 0}
-          <VectorComparison {vocabulary} {model} {selectedRows} {distance} />
+        {#if validSelected.length > 0}
+          <VectorComparison {vocabulary} {model} selectedRows={validSelected} {distance} />
         {/if}
         <DistanceMatrix {vocabulary} {matrix} {selectedPair} />
       </div>

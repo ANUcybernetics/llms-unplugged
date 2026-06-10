@@ -42,16 +42,16 @@
 <table class="bigram-grid">
   <thead>
     <tr>
-      <th></th>
+      <th scope="col"><span class="sr-only">Token</span></th>
       {#each vocab as col}
-        <th><code class:unrevealed={!isRevealed(col)}>{col}</code></th>
+        <th scope="col"><code class:unrevealed={!isRevealed(col)}>{col}</code></th>
       {/each}
     </tr>
   </thead>
   <tbody>
     {#each vocab as row}
       <tr class:active-row={activeRow === row}>
-        <td><code class:unrevealed={!isRevealed(row)}>{row}</code></td>
+        <th scope="row"><code class:unrevealed={!isRevealed(row)}>{row}</code></th>
         {#each vocab as col}
           {@const count = counts.get(row)?.get(col) || 0}
           {@const isCurrent =

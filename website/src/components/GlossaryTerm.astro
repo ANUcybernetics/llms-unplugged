@@ -24,7 +24,9 @@ const popoverId = `glossary-${id}`;
   >
     <slot>{entry.term}</slot>
   </button>
-  <span popover id={popoverId} class="glossary-popover" role="tooltip">
+  <!-- no tooltip role: the popover contains a focusable link, and popover
+       semantics already announce it -->
+  <span popover id={popoverId} class="glossary-popover">
     <strong class="glossary-popover-term">{entry.term}</strong>
     <span class="glossary-popover-desc">{entry.description}</span>
     <a href={`/glossary#${id}`} class="glossary-popover-link"

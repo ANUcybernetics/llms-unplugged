@@ -8,7 +8,7 @@ import { promisify } from "node:util";
 const execAsync = promisify(exec);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const IMAGES_DIR = join(__dirname, "..", "public/assets/images");
+const IMAGES_DIR = join(__dirname, "..", "src/assets/images");
 const AVIF_QUALITY = 60;
 
 async function convertToAvif(inputPath: string): Promise<boolean> {

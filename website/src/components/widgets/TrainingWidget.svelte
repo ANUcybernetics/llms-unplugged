@@ -97,6 +97,7 @@
             id="training-input"
             class="text-input"
             rows="2"
+            aria-label="Training text"
             placeholder="Enter text to train on..."
             value={inputText}
             oninput={(e) => setText(e.currentTarget.value)}

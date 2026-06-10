@@ -19,11 +19,13 @@
     return max;
   });
 
+  // JS supplies only the per-cell alpha; the actual colour comes from the
+  // shared --anu-gold token via color-mix in the style block below.
   function cellStyle(val: number): string {
     const max = maxDistance;
-    const opacity = max > 0 ? 1 - val / max : 1;
-    const light = opacity > 0.45;
-    return `background-color: rgba(190, 131, 14, ${opacity}); color: ${light ? "#000" : "#fff"};`;
+    const alpha = max > 0 ? 1 - val / max : 1;
+    const light = alpha > 0.45;
+    return `--cell-alpha: ${alpha}; color: ${light ? "#000" : "#fff"};`;
   }
 
   function isHighlighted(rowWord: string, colWord: string): boolean {
@@ -83,6 +85,14 @@
 <style>
   .distance-matrix-section {
     overflow-x: auto;
+  }
+
+  .distance-matrix td {
+    background-color: color-mix(
+      in srgb,
+      var(--anu-gold) calc(var(--cell-alpha, 0) * 100%),
+      transparent
+    );
   }
 
   .distance-matrix th.highlight-header {

@@ -53,7 +53,7 @@
     {onreset}
   />
   <div class="speed-control">
-    <span class="speed-label">Slow</span>
+    <span class="speed-label" aria-hidden="true">Slow</span>
     <input
       id={sliderId}
       value={stepInterval}
@@ -62,8 +62,9 @@
       max={maxStepInterval}
       step="50"
       style="direction: rtl"
+      aria-label="Playback speed"
       oninput={(e) => onstepintervalchange(Number((e.target as HTMLInputElement).value))}
     />
-    <span class="speed-label">Fast</span>
+    <span class="speed-label" aria-hidden="true">Fast</span>
   </div>
 </div>

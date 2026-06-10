@@ -2,9 +2,9 @@
 // Generate a single hero-style image using nano_banana and reference images.
 //
 // Examples:
-//   npx tsx scripts/generate-image.ts "dice-based text generation in a classroom" public/assets/images/hero-intro.avif
-//   npx tsx scripts/generate-image.ts cutouts-training public/assets/images/hero-cutouts-training
-//   npm run generate:image -- "grid of tokens with dice and cutouts" public/assets/images/hero-grid-training.jpg
+//   npx tsx scripts/generate-image.ts "dice-based text generation in a classroom" src/assets/images/hero-intro.avif
+//   npx tsx scripts/generate-image.ts cutouts-training src/assets/images/hero-cutouts-training
+//   npm run generate:image -- "grid of tokens with dice and cutouts" src/assets/images/hero-grid-training.jpg
 import { exec } from "node:child_process";
 import { access, mkdir, unlink } from "node:fs/promises";
 import { basename, dirname, extname, join } from "node:path";
@@ -104,9 +104,9 @@ function printUsage() {
   console.log("");
   console.log("Examples:");
   console.log(
-    '  generate-image.ts "dice-based text generation in a classroom" public/assets/images/hero-intro.avif',
+    '  generate-image.ts "dice-based text generation in a classroom" src/assets/images/hero-intro.avif',
   );
-  console.log("  generate-image.ts cutouts-training public/assets/images/hero-cutouts-training");
+  console.log("  generate-image.ts cutouts-training src/assets/images/hero-cutouts-training");
 }
 
 async function main() {

@@ -118,6 +118,7 @@
           id="pretrained-generation-input"
           class="text-input"
           rows="2"
+          aria-label="Training text"
           placeholder="Enter training text..."
           value={trainingText}
           oninput={(e) => setTrainingText(e.currentTarget.value)}

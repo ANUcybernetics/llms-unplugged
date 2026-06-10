@@ -81,8 +81,8 @@
 }
 
 .token.highlight-second {
-  background: var(--lm-highlight-strong, #a7f3d0);
-  outline: 2px solid var(--lm-highlight-strong, #a7f3d0);
+  background: var(--lm-highlight-strong);
+  outline: 2px solid var(--lm-highlight-strong);
   outline-offset: 1px;
 }
 
