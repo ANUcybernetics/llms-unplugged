@@ -27,24 +27,24 @@ text file → Rust CLI → model.json → Typst → PDF booklet
 cargo build --release
 
 # Generate JSON
-./target/release/llms_unplugged build ../data/frankenstein.txt --n 2 --output out/json/frankenstein-2-1.json
+./target/release/llms_unplugged build -i ../data/frankenstein.txt --n 2 --output out/json/frankenstein-2-1.json
 
 # Generate PDFs (and JSON if needed)
 ./target/release/llms_unplugged pdf --target frankenstein-2-1 --input ../data/frankenstein.txt --out-dir out
 
 # Export bigram TSV for spreadsheets
-./target/release/llms_unplugged tsv ../data/frankenstein.txt > bigrams.tsv
+./target/release/llms_unplugged tsv -i ../data/frankenstein.txt > bigrams.tsv
 
 # Sample text from an in-memory N-gram model built from a corpus
 ./target/release/llms_unplugged sample -i ../data/frankenstein.txt -p "the" -t 30 --seed 42
 
 # Generate token cutouts (single-sided)
-./target/release/llms_unplugged cutouts -i ../data/green-eggs-and-ham.txt -n 2
+./target/release/llms_unplugged cutouts -i ../data/sycophancy.txt -n 2
 
 # Generate double-sided cutouts: each cutout page is paired with a mirrored
 # back so the same cutouts appear on both faces of each sheet. Print with
 # "flip on short edge" binding. Currently assumes a4 landscape.
-./target/release/llms_unplugged cutouts -i ../data/green-eggs-and-ham.txt -n 2 --duplex
+./target/release/llms_unplugged cutouts -i ../data/sycophancy.txt -n 2 --duplex
 
 # Build all configured booklets
 make booklets
@@ -82,10 +82,12 @@ Your text content here...
 
 ## Configuration
 
-- Counts are always scaled for d10 dice using 10^k-1 scaling (e.g., 0-9, 0-99,
-  0-999)
-- Paper sizes configured in book.typ: a4 (4 columns), a5 (3 columns)
-- Typst inputs: paper_size, font_size, columns, subtitle
+- Counts are scaled for d10 dice using 10^k-1 scaling (e.g., 0-9, 0-99,
+  0-999) unless `--raw` is given
+- Paper size and columns are CLI flags (`--paper-size`, `--columns`; defaults
+  a4 and 4)
+- book.typ inputs (via `--input key=value`): paper_size, font_size, columns,
+  subtitle, json_path, book_binding
 
 ## Testing
 
@@ -109,7 +111,7 @@ Test output must be pristine with zero failures.
 1. **Guide words** - Header display of first/last entries per page
 2. **Performance** - Large texts may process slowly
 3. **Book splitting** - Use `-b N` flag for trigrams
-4. **Punctuation tokens** - PERIOD, COMMA get special box formatting
+4. **Punctuation tokens** - `.`, `,` and friends get special boxed formatting
 
 ## Code conventions
 

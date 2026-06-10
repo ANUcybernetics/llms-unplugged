@@ -34,11 +34,11 @@ cd cli && cargo build --release
 ./cli/target/release/llms_unplugged pdf -i data/frankenstein.txt -n 2
 
 # Generate token cutouts for the cutouts lesson variant
-./cli/target/release/llms_unplugged cutouts -i data/green-eggs-and-ham.txt -n 2
+./cli/target/release/llms_unplugged cutouts -i data/sycophancy.txt -n 2
 
 # Same, but double-sided so cutouts read on either face
 # (print with "flip on short edge" binding; assumes a4 landscape)
-./cli/target/release/llms_unplugged cutouts -i data/green-eggs-and-ham.txt -n 2 --duplex
+./cli/target/release/llms_unplugged cutouts -i data/sycophancy.txt -n 2 --duplex
 
 # Build handouts (worksheets, runsheets, poster)
 cd handouts && make

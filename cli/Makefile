@@ -51,13 +51,12 @@ CUTOUTS_TARGETS := \
 	$(CUTOUTS_DIR)/where-is-the-green-sheep.pdf \
 	$(CUTOUTS_DIR)/were-going-on-a-bear-hunt.pdf
 
-# Define common variables
+# Define common variables (typst comes from mise; TYPST_BIN overridable)
 TOOL := target/release/llms_unplugged
-TYPST := typst compile
-TYPST_BIN ?= $(shell command -v typst 2>/dev/null || echo /opt/homebrew/bin/typst)
+TYPST_BIN ?= typst
 
 # Track Rust source files for automatic rebuilding
-RUST_SOURCES := $(wildcard src/*.rs) $(wildcard src/**/*.rs) Cargo.toml Cargo.lock
+RUST_SOURCES := $(wildcard src/*.rs) Cargo.toml Cargo.lock
 
 # Ensure output directories exist
 $(shell mkdir -p $(PDF_DIR) $(JSON_DIR))
@@ -66,10 +65,10 @@ $(shell mkdir -p $(PDF_DIR) $(JSON_DIR))
 $(TOOL): $(RUST_SOURCES)
 	cargo build --release
 
-# ===== Generic pattern rules using Python script =====
+# ===== Generic pattern rules =====
 
-# Generic rule for all n-gram book configurations
-# The Python script parses the full target name to extract n and books
+# Generic rule for all n-gram book configurations; the CLI's --target flag
+# parses the full name-n-books target to extract n and books
 $(PDF_DIR)/%.pdf $(PDF_DIR)/%.stamp: book.typ $(TOOL)
 	$(eval FULLNAME := $(notdir $(basename $@)))
 	$(eval BASE := $(shell echo $(FULLNAME) | sed 's/-[0-9]*-[0-9]*$$//' ))
@@ -112,7 +111,7 @@ cutouts: $(CUTOUTS_TARGETS)
 summary: $(OUT_DIR)/summary.pdf
 
 $(OUT_DIR)/summary.pdf: summary.typ $(OUT_DIR)/summary.json
-	$(TYPST) summary.typ $@
+	$(TYPST_BIN) compile summary.typ $@
 
 # Generate summary.json from all JSON models
 .PHONY: summary.json
