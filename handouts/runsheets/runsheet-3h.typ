@@ -1,6 +1,7 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
-#import "@local/anu-typst-template:0.2.0": *
+#import "@local/anu-typst-template:0.2.0": anu-colors
+#import "common.typ": clock, runsheet
 
 #let start-time = datetime(
   year: 2025,
@@ -10,19 +11,12 @@
   minute: 0,
   second: 0,
 )
-#let t(minutes) = {
-  let time = start-time + duration(minutes: minutes)
-  time.display("[hour repr:24 padding:zero]:[minute padding:zero]")
-}
+#let t = clock(start-time)
 
-#show: anu.with(
+#show: runsheet.with(
+  start-time,
   title: [DIY ChatGPT],
   subtitle: [LLMs as Information Processing Machines],
-  author: start-time.display("[month repr:long] [day], [year]"),
-  config: (
-    theme: sys.inputs.at("anu_theme", default: "light"),
-    logos: ("socy", "studio"),
-  ),
 )
 
 == *#t(0)* Intro

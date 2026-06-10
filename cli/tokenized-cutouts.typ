@@ -177,6 +177,9 @@
   text(fill: fill, stroke: stroke, t)
 }
 
+// Brand gold, matches the tool-trigger word foreground and the favicon dots.
+#let brand-gold = rgb("#d4a017")
+
 // A tool-trigger word: black highlight with bold uppercase gold text. Used
 // for tokens flagged `is_tool: true` so a trigger like VOTE stays visually
 // unambiguous even when the corpus contains the same string as a regular word.
@@ -184,7 +187,7 @@
 // inline text.
 #let tool-trigger-word(name, dimmed: false) = {
   let bg = if dimmed { luma(220) } else { black }
-  let fg = if dimmed { luma(140) } else { rgb("#d4a017") }
+  let fg = if dimmed { luma(140) } else { brand-gold }
   highlight(
     fill: bg,
     stroke: (paint: fg, thickness: 1pt),
@@ -199,7 +202,11 @@
 // the agentic loop "call tool, write its response, close with a period" reads
 // as one physical piece of paper rather than two coordinated cutouts.
 #let next-word(token, dimmed: false) = if token.at("is_tool", default: false) {
-  tool-trigger-word(token.text, dimmed: dimmed) + h(inter_word_gap) + coloured-word(".", dimmed: dimmed)
+  (
+    tool-trigger-word(token.text, dimmed: dimmed)
+      + h(inter_word_gap)
+      + coloured-word(".", dimmed: dimmed)
+  )
 } else {
   coloured-word(token.text, dimmed: dimmed)
 }
@@ -210,9 +217,6 @@
   parts.push(next-word(token))
   parts.join(h(inter_word_gap))
 }
-
-// Brand gold, matches the tool-trigger word foreground and the favicon dots.
-#let brand-gold = rgb("#d4a017")
 
 // Wraps a rendered cutout in a thin grey border so the example cutouts in
 // the instructions visually read as discrete pieces of paper (one cutout =
@@ -367,9 +371,9 @@
       ]
 
       Every distinct word has its own colour. *Previous* words appear inside a
-      coloured box (the word's own colour as the background, with white text);
-      the free-standing *next word* appears in plain coloured text. The same
-      word always wears the same colour, whether you see it inside a box or
+      coloured box (the word's own colour as the background, with contrasting
+      text); the free-standing *next word* appears in plain coloured text. The
+      same word always wears the same colour, whether you see it inside a box or
       free-standing. Two unrelated words can occasionally share a colour, so
       always verify the word itself matches---not just the colour.
 
@@ -646,6 +650,10 @@
   // back. Pagebreaks are not allowed inside `#layout`, so use `#context` and
   // rely on hard-coded a4-landscape inner dimensions (the only paper size
   // supported in duplex mode for now).
+  assert(
+    paper_size == "a4",
+    message: "duplex cutouts assume a4 landscape (297mm); other paper sizes would mispack",
+  )
   context {
     let max_width = 297mm - 2 * cutout_h_margin
 

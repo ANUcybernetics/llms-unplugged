@@ -49,12 +49,6 @@
 
 
 
-// Create a state variable to track the current previous-words context
-#let current_previous_words = state("current-previous-words", "")
-
-// We'll use doc_metadata to track entries instead of state
-// since state.final() might not work properly in headers
-
 // Function to create a punctuation box with consistent styling
 #let punct-box(content, baseline: -0.2em) = box(
   rect(
@@ -117,7 +111,7 @@
       font: "Libertinus Sans",
       weight: "bold",
       size: 4em,
-    )[#context doc_metadata.title]
+    )[#doc_metadata.title]
     #if subtitle != none [
       #v(1cm)
       #text(font: "Libertinus Sans", size: 2.5em)[#subtitle]
@@ -142,12 +136,13 @@
     #if subtitle != none [
       #text(size: 1.2em)[#subtitle derived from]
     ]
-    #text(size: 1.2em, style: "italic")[#context doc_metadata.title]
+    #text(size: 1.2em, style: "italic")[#doc_metadata.title]
     by
-    #text(size: 1.2em)[#context doc_metadata.author]
+    #text(size: 1.2em)[#doc_metadata.author]
     #v(0.5cm)
 
-    #text(size: 1em)[© 2025 Ben Swift]
+    // datetime.today() respects SOURCE_DATE_EPOCH, so builds stay reproducible
+    #text(size: 1em)[© #datetime.today().display("[year]") Ben Swift]
     #v(0.5cm)
 
     #text(size: 0.9em, style: "italic")[
@@ -175,7 +170,9 @@
     #text(size: 0.9em)[
       Text frequency counts from the text #text(
         style: "italic",
-      )[#context doc_metadata.title] by #text[#context doc_metadata.author]#if doc_metadata.url != "" [, available from\ #link(doc_metadata.url)[#raw(doc_metadata.url)]].
+      )[#doc_metadata.title] by #text[#doc_metadata.author]#if (
+        doc_metadata.url != ""
+      ) [, available from\ #link(doc_metadata.url)[#raw(doc_metadata.url)]].
     ]
     #v(0.5cm)
     #text(size: 0.9em)[
@@ -184,7 +181,7 @@
       using #link("https://typst.app")[Typst]. Create your own n-gram model
       booklet using the online tools at #link(
         "https://www.llmsunplugged.org/tools",
-      )[`https://www.llmsunplugged.org/tools`]. The source code #context if (
+      )[`https://www.llmsunplugged.org/tools`]. The source code #if (
         "version" in doc_metadata
       ) [
         (v#raw(doc_metadata.version)) for the tool used to create this model
@@ -194,14 +191,16 @@
 
     ]
     #v(0.5cm)
-    #context if "stats" in doc_metadata and doc_metadata.stats != none {
+    #if "stats" in doc_metadata and doc_metadata.stats != none {
       let stats = doc_metadata.stats
       text(size: 0.9em)[
         #heading(level: 3)[Model statistics]
         - *Total tokens:* #stats.total_tokens
         - *Unique previous-words contexts:* #stats.unique_ngrams
-        - *Entropy:* #calc.round(stats.entropy, digits: 2) bits/token --- how unpredictable each dice roll is
-        - *Perplexity:* #calc.round(stats.perplexity, digits: 1) --- effective number of choices per dice roll
+        - *Entropy:* #calc.round(stats.entropy, digits: 2) bits/token --- how
+          unpredictable each dice roll is
+        - *Perplexity:* #calc.round(stats.perplexity, digits: 1) --- effective
+          number of choices per dice roll
       ]
       v(0.5cm)
     }
@@ -214,41 +213,6 @@
       always reflect proper grammar, factual accuracy, or appropriate content.
     ]
   ]
-  pagebreak()
-}
-
-// Introduction page
-#let introduction() = {
-  align(left)[
-    #heading(level: 1)[Introduction]
-    #v(0.5cm)
-    This reference contains a statistical #context model-type(doc_metadata.n)
-    language model that shows the probabilistic relationships between word
-    sequences. Each entry displays a previous-words context followed by
-    possible next words with their associated probabilities.
-
-    The model can be used for text prediction, generation, and analysis of
-    linguistic patterns.
-
-    #v(0.5cm)
-    #heading(level: 2)[How to Read This Reference]
-    Each entry contains:
-    - A bold previous-words sequence
-    - Diamond symbols (♦) indicating the number of d10 dice to roll
-    - Possible next words with their occurrence counts
-  ]
-  pagebreak()
-}
-
-// Table of contents
-#let table-of-contents() = {
-  heading(level: 1)[Contents]
-  v(1cm)
-  // A simple table of contents would be difficult to generate for all
-  // previous-words contexts. For a real book, you might want to generate
-  // sections based on first letters or similar.
-  [The following pages contain all #context model-type(doc_metadata.n) sequences
-    organized alphabetically by previous-words context.]
   pagebreak()
 }
 
@@ -320,15 +284,15 @@
   [
     = How to use this book
 
-    This book contains a #context model-type(doc_metadata.n) language model for
+    This book contains a #model-type(doc_metadata.n) language model for
     generating text using only one or more d10 (ten-sided) dice and a pen and
     paper to write down the generated text, according to the following
     algorithm.
 
     == Algorithm
 
-    To generate new text using the #context model-type(doc_metadata.n) model in
-    this book:
+    To generate new text using the #model-type(doc_metadata.n) model in this
+    book:
 
     + *choose a starting word*---pick any bold word from the book (note that
       punctuation e.g. #punct-box(".") count as words in this model) and write
@@ -410,8 +374,6 @@
 #if book_binding {
   pagebreak()
 }
-// #introduction()
-// #table-of-contents()
 
 // Main content with original layout
 #set page(
@@ -426,7 +388,7 @@
     }
 
     // Get all entries to find what's on the current page and previous pages
-    let all-entries = query(metadata)
+    let all-entries = query(<previous-words-entry>)
 
     // Separate entries by page
     let entries-on-current-page = ()
@@ -493,14 +455,13 @@
   let previous_words = item.at(0)
   let total_count = item.at(1)
   let next_words = item.slice(2)
-  current_previous_words.update(previous_words)
 
-  // Add metadata and label for the previous-words context
+  // Labelled metadata lets the page header query the entries for guide words
   [#metadata(previous_words) <previous-words-entry>#format-entry(
       previous_words,
       total_count,
       next_words,
-    )#label("previous-words-" + previous_words)]
+    )]
 
   v(0.1em)
 }

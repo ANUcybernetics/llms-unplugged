@@ -52,7 +52,10 @@
   if previous_words_data == none {
     "N/A"
   } else {
-    let previous_words_parts = previous_words_data.at(0).map(p => raw(p)).join(" ")
+    let previous_words_parts = previous_words_data
+      .at(0)
+      .map(p => raw(p))
+      .join(" ")
     let count = previous_words_data.at(1)
     [#previous_words_parts (#count)]
   }

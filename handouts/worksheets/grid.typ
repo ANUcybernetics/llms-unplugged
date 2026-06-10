@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
 
-#let lm_grid(size) = {
+#let lm-grid(size) = {
   set text(font: "Public Sans", size: 10pt)
 
   set page(
@@ -58,6 +58,8 @@
                 #text(
                   font: "Monaspace Argon",
                   size: 1.8em,
+                  // anu socy-yellow (hardcoded so this file stays free of
+                  // package imports)
                   fill: rgb("#e6ff44"),
                 )[LLMs\ Unplugged]
               ],
@@ -98,7 +100,7 @@
   )
 }
 
-#lm_grid(32)
-#lm_grid(32)
+#lm-grid(32)
+#lm-grid(32)
 
-// #lm_grid(48)
+// #lm-grid(48)

@@ -4,7 +4,11 @@
 // Import base template for colours and styling
 #import "@local/anu-typst-template:0.2.0": *
 
-// Utility functions from book.typ for consistent typography
+// Utility functions forked from cli/book.typ for consistent typography.
+// book.typ stays deliberately self-contained (it's copied verbatim into the
+// website's in-browser compiler), so changes to these helpers must be synced
+// by hand. Note the stroke colour differs (white here, black in book.typ) and
+// format-dice-indicator has poster-specific semantics for the static example.
 
 // Function to create a punctuation box with consistent styling
 #let punct-box(content, baseline: -0.2em) = box(
@@ -262,8 +266,8 @@
             weight: "bold",
           )#instruction-dice-indicator(3) show you'll need to roll three d10s
         - roll your dice: roll 2, 1 and 7 → combine them to get 217
-        - find your next word: scan through the next-word options until you
-          find the first number ≥ 217, which is 234, so the next word is `hat`
+        - find your next word: scan through the next-word options until you find
+          the first number ≥ 217, which is 234, so the next word is `hat`
         - write it down
       ],
       [#h(0.5em)`the` `hat`],

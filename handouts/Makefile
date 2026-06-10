@@ -3,7 +3,7 @@
 INPUT_DIR = .
 OUTPUT_DIR = out
 
-TYP_SOURCE_FILES := $(shell find $(INPUT_DIR) -name '*.typ')
+TYP_SOURCE_FILES := $(shell find $(INPUT_DIR) -name '*.typ' ! -name 'common.typ')
 PDF_FILES := $(patsubst $(INPUT_DIR)/%.typ,$(OUTPUT_DIR)/%.pdf,$(TYP_SOURCE_FILES))
 
 all: $(PDF_FILES)
@@ -13,6 +13,11 @@ $(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.typ
 	@echo "Processing typst $<..."
 	@mkdir -p $(dir $@)
 	SOURCE_DATE_EPOCH=0 typst compile $< $@
+
+# Runsheets also depend on their shared scaffolding
+$(OUTPUT_DIR)/runsheets/runsheet-90min.pdf \
+$(OUTPUT_DIR)/runsheets/runsheet-2h.pdf \
+$(OUTPUT_DIR)/runsheets/runsheet-3h.pdf: runsheets/common.typ
 
 clean:
 	rm -f $(PDF_FILES)
