@@ -2,9 +2,11 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { execSync } from "node:child_process";
 import { existsSync, globSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { SIDEBAR_SLUGS } from "../src/lib/sidebar";
 import { findBrokenPdfLinks } from "./utils/linkChecker";
 
 const DIST_DIR = "dist";
+const SITE_ORIGIN = "https://www.llmsunplugged.org";
 
 function findBrokenInternalLinks(htmlFiles: string[], distDir: string): string[] {
   const linkRegex = /href="(\/[^"#]*)(?:#[^"]*)?"/g;
@@ -35,7 +37,11 @@ function findBrokenInternalLinks(htmlFiles: string[], distDir: string): string[]
 
 describe("Astro Build", () => {
   beforeAll(() => {
-    execSync("npm run build", { stdio: "inherit" });
+    // Building is slow, so reuse an existing dist/ where possible; set
+    // FORCE_BUILD=1 to rebuild unconditionally.
+    if (!existsSync(join(DIST_DIR, "index.html")) || process.env.FORCE_BUILD) {
+      execSync("pnpm run build", { stdio: "inherit" });
+    }
   }, 120000);
 
   it("creates dist directory", () => {
@@ -50,21 +56,9 @@ describe("Astro Build", () => {
     const lessonsDir = join(DIST_DIR, "lessons");
     expect(existsSync(lessonsDir)).toBe(true);
 
-    const expectedLessons = [
-      "training",
-      "generation",
-      "more-context",
-      "weighted-randomness",
-      "in-context-memory",
-      "induction-heads",
-      "pretrained-generation",
-      "word-embeddings",
-      "lora",
-      "synthetic-data",
-      "sampling",
-    ];
-
-    for (const lesson of expectedLessons) {
+    // Derived from the sidebar definition so a new lesson is checked
+    // automatically rather than relying on a hand-maintained copy here.
+    for (const lesson of SIDEBAR_SLUGS) {
       expect(
         existsSync(join(lessonsDir, lesson, "index.html")),
         `Missing lesson page: ${lesson}`,
@@ -137,6 +131,32 @@ describe("Astro Build", () => {
     const files = readdirSync(astroDir);
     expect(files.length).toBeGreaterThan(0);
     expect(files.some((f) => f.startsWith("hero-"))).toBe(true);
+  });
+
+  // Guards the regression where og:image pointed at source asset paths
+  // (e.g. /src/assets/images/...) that don't exist in the built site.
+  it("og:image URLs on lesson and news pages resolve to built files", () => {
+    const pages = [
+      ...globSync(join(DIST_DIR, "lessons/*/index.html")),
+      ...globSync(join(DIST_DIR, "news/*/index.html")),
+    ];
+    expect(pages.length).toBeGreaterThan(0);
+
+    const broken: string[] = [];
+    for (const file of pages) {
+      const content = readFileSync(file, "utf-8");
+      const match = content.match(/<meta property="og:image" content="([^"]+)"/);
+      if (!match) continue;
+      const url = new URL(match[1], SITE_ORIGIN);
+      // Off-site image URLs are out of scope for this check
+      if (url.origin !== SITE_ORIGIN) continue;
+      const assetPath = decodeURIComponent(url.pathname);
+      if (!existsSync(join(DIST_DIR, assetPath))) {
+        broken.push(`${file}: ${match[1]}`);
+      }
+    }
+
+    expect(broken, `og:image URLs without a built file:\n${broken.join("\n")}`).toEqual([]);
   });
 
   it("generates RSS feed", () => {

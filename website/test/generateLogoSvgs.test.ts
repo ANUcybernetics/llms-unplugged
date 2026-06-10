@@ -1,11 +1,19 @@
-import { describe, it, expect } from "vitest";
-import { readFileSync } from "node:fs";
+import { describe, expect, it } from "vitest";
 import { execSync } from "node:child_process";
+import { mkdtempSync, readFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
 describe("generate-logo-svgs", () => {
-  execSync("pnpm tsx scripts/generate-logo-svgs.ts", { cwd: import.meta.dirname + "/.." });
+  // Generate into a temp dir so the test never overwrites the checked-in
+  // files in public/.
+  const outDir = mkdtempSync(join(tmpdir(), "logo-svgs-"));
+  execSync("pnpm tsx scripts/generate-logo-svgs.ts", {
+    cwd: import.meta.dirname + "/..",
+    env: { ...process.env, LOGO_OUT_DIR: outDir },
+  });
 
-  const favicon = readFileSync("public/favicon.svg", "utf-8");
+  const favicon = readFileSync(join(outDir, "favicon.svg"), "utf-8");
 
   describe("favicon.svg", () => {
     it("is valid SVG", () => {

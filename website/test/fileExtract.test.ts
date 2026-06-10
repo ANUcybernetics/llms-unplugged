@@ -1,25 +1,5 @@
-import { describe, it, expect } from "vitest";
-
-// Import only the pure function to avoid pdfjs-dist browser dependencies
-// The extraction functions require browser APIs (DOMMatrix, etc.) and are tested via e2e
-type FileType = "txt" | "md" | "docx" | "pdf";
-
-function getFileType(filename: string): FileType | null {
-  const ext = filename.split(".").pop()?.toLowerCase();
-  switch (ext) {
-    case "txt":
-      return "txt";
-    case "md":
-    case "markdown":
-      return "md";
-    case "docx":
-      return "docx";
-    case "pdf":
-      return "pdf";
-    default:
-      return null;
-  }
-}
+import { describe, expect, it } from "vitest";
+import { getFileType } from "../src/lib/fileExtract";
 
 describe("getFileType", () => {
   it("identifies .txt files", () => {

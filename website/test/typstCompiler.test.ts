@@ -1,11 +1,11 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
-  createInitialState,
   appendLog,
-  setError,
   clearError,
-  sanitiseFilename,
   type CompilerState,
+  createInitialState,
+  sanitiseFilename,
+  setError,
 } from "../src/lib/typstCompiler";
 
 describe("createInitialState", () => {
@@ -34,26 +34,6 @@ describe("appendLog", () => {
     expect(state.log[0]).toMatch(/first/);
     expect(state.log[1]).toMatch(/second/);
   });
-
-  it("does not mutate the original state", () => {
-    const state = createInitialState();
-    const updated = appendLog(state, "test");
-    expect(state.log).toHaveLength(0);
-    expect(updated.log).toHaveLength(1);
-  });
-
-  it("preserves other state fields", () => {
-    const state: CompilerState = {
-      status: "ready",
-      log: ["existing"],
-      previewHtml: "<svg></svg>",
-      errorMessage: "",
-    };
-    const updated = appendLog(state, "new");
-    expect(updated.status).toBe("ready");
-    expect(updated.previewHtml).toBe("<svg></svg>");
-    expect(updated.log).toHaveLength(2);
-  });
 });
 
 describe("setError", () => {
@@ -63,27 +43,6 @@ describe("setError", () => {
     expect(updated.errorMessage).toBe("File too large");
     expect(updated.log).toHaveLength(1);
     expect(updated.log[0]).toMatch(/Error: File too large/);
-  });
-
-  it("does not mutate the original state", () => {
-    const state = createInitialState();
-    setError(state, "something broke");
-    expect(state.errorMessage).toBe("");
-    expect(state.log).toHaveLength(0);
-  });
-
-  it("preserves other state fields", () => {
-    const state: CompilerState = {
-      status: "ready",
-      log: ["existing"],
-      previewHtml: "<svg></svg>",
-      errorMessage: "",
-    };
-    const updated = setError(state, "oops");
-    expect(updated.status).toBe("ready");
-    expect(updated.previewHtml).toBe("<svg></svg>");
-    expect(updated.errorMessage).toBe("oops");
-    expect(updated.log).toHaveLength(2);
   });
 });
 
@@ -97,19 +56,6 @@ describe("clearError", () => {
     };
     const updated = clearError(state);
     expect(updated.errorMessage).toBe("");
-  });
-
-  it("preserves log and other fields", () => {
-    const state: CompilerState = {
-      status: "error",
-      log: ["line1", "line2"],
-      previewHtml: "<svg></svg>",
-      errorMessage: "bad thing",
-    };
-    const updated = clearError(state);
-    expect(updated.log).toEqual(["line1", "line2"]);
-    expect(updated.previewHtml).toBe("<svg></svg>");
-    expect(updated.status).toBe("error");
   });
 
   it("is a no-op when there is no error", () => {

@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { parseTokens, getVocabulary, getBigrams, buildBigramModel } from "../src/lib/tokens";
+import { describe, expect, it } from "vitest";
+import { buildBigramModel, getBigrams, getVocabulary, parseTokens } from "../src/lib/tokens";
 
 describe("parseTokens", () => {
   it("splits words on whitespace", () => {

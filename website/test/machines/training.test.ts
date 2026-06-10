@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { createTrainingMachine } from "../../src/lib/machines/training";
 
 const rng = () => 0.5;

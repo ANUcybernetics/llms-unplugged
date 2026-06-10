@@ -1,5 +1,10 @@
 import { writeFileSync } from "node:fs";
+import { join } from "node:path";
 import { TITLE_TINTS, TITLE_TOKENS, titleOnlyLayout, tokenBits } from "../src/lib/token-logo.ts";
+
+// Defaults to the checked-in location; tests override LOGO_OUT_DIR so they
+// don't clobber the committed files in public/.
+const OUT_DIR = process.env.LOGO_OUT_DIR || "public";
 
 const REF_W = 960;
 const REF_H = 540;
@@ -87,8 +92,10 @@ ${bricks}
 `;
 }
 
-writeFileSync("public/favicon.svg", generateFavicon());
-console.log("Wrote public/favicon.svg");
+const faviconPath = join(OUT_DIR, "favicon.svg");
+writeFileSync(faviconPath, generateFavicon());
+console.log(`Wrote ${faviconPath}`);
 
-writeFileSync("public/title-logo.svg", generateTitleSvg());
-console.log("Wrote public/title-logo.svg");
+const titleLogoPath = join(OUT_DIR, "title-logo.svg");
+writeFileSync(titleLogoPath, generateTitleSvg());
+console.log(`Wrote ${titleLogoPath}`);
