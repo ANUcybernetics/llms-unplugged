@@ -41,7 +41,10 @@ import heroContact from "../assets/images/hero-contact.avif";
     </div>
   </section>
 
-  <main class="home-content">
+  {
+    /* a div, not <main>: the page already renders inside the theme's <main id="main"> */
+  }
+  <div class="home-content">
     <p class="intro-text">
       <em>LLMs Unplugged</em> is a set of hands-on teaching resources that demonstrate
       how large language models work&mdash;no computers or coding required. You count
@@ -239,7 +242,7 @@ import heroContact from "../assets/images/hero-contact.avif";
         </p>
       </div>
     </div>
-  </main>
+  </div>
 </BaseLayout>
 
 <style>
