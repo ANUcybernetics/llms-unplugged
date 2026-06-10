@@ -62,8 +62,7 @@
       max={maxStepInterval}
       step="50"
       style="direction: rtl"
-      oninput={(e) =>
-        onstepintervalchange(Number((e.target as HTMLInputElement).value))}
+      oninput={(e) => onstepintervalchange(Number((e.target as HTMLInputElement).value))}
     />
     <span class="speed-label">Fast</span>
   </div>

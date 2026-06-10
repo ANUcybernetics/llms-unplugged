@@ -18,18 +18,12 @@
   }: Props = $props();
 
   const tokenList = $derived(splitTokens(tokenString));
-  const vocab = $derived(
-    vocabString ? splitTokens(vocabString) : getVocabulary(tokenList),
-  );
+  const vocab = $derived(vocabString ? splitTokens(vocabString) : getVocabulary(tokenList));
   const bigrams = $derived(getBigrams(tokenList));
   const sequenceTokens = $derived(splitTokens(sequenceString));
 
-  const currentWord = $derived(
-    step < sequenceTokens.length ? sequenceTokens[step] : null,
-  );
-  const chosenNext = $derived(
-    step + 1 < sequenceTokens.length ? sequenceTokens[step + 1] : null,
-  );
+  const currentWord = $derived(step < sequenceTokens.length ? sequenceTokens[step] : null);
+  const chosenNext = $derived(step + 1 < sequenceTokens.length ? sequenceTokens[step + 1] : null);
   const generatedSoFar = $derived(sequenceTokens.slice(0, step + 1));
 </script>
 

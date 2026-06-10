@@ -11,9 +11,7 @@
   let { tokens: tokenString, vocabulary: vocabString, step }: Props = $props();
 
   const tokenList = $derived(splitTokens(tokenString));
-  const vocab = $derived(
-    vocabString ? splitTokens(vocabString) : getVocabulary(tokenList),
-  );
+  const vocab = $derived(vocabString ? splitTokens(vocabString) : getVocabulary(tokenList));
   const allBigrams = $derived(getBigrams(tokenList));
   const visibleBigrams = $derived(allBigrams.slice(0, step));
 
@@ -37,8 +35,7 @@
 <div class="static-grid-tokens">
   {#each tokenList as token, i}
     <code
-      class:highlight={currentPair &&
-        (i === currentPairIndex || i === currentPairIndex + 1)}
+      class:highlight={currentPair && (i === currentPairIndex || i === currentPairIndex + 1)}
       class:dimmed={currentPair && i > currentPairIndex + 1}>{token}</code
     >
   {/each}

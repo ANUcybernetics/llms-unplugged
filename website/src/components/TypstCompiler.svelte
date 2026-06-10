@@ -1,18 +1,14 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { extractTextFromDocx, extractTextFromPdf, getFileType } from "../lib/fileExtract";
   import {
-    getFileType,
-    extractTextFromDocx,
-    extractTextFromPdf,
-  } from "../lib/fileExtract";
-  import {
+    clearError,
+    compileDocument,
+    type CompilerState,
     createInitialState,
     initCompiler,
-    compileDocument,
-    clearError,
     type Status,
     type Workflow,
-    type CompilerState,
   } from "../lib/typstCompiler";
 
   let compilerState = $state<CompilerState>(createInitialState());
@@ -23,9 +19,7 @@
   let workflow = $state<Workflow>("booklet");
   let fileName = $state("");
 
-  let hasInput = $derived(
-    inputText.trim().length > 0 && inputTitle.trim().length > 0,
-  );
+  let hasInput = $derived(inputText.trim().length > 0 && inputTitle.trim().length > 0);
   let isReady = $derived(compilerState.status === "ready");
 
   function updateState(updater: (s: CompilerState) => CompilerState) {
@@ -59,9 +53,7 @@
     const fileType = getFileType(file.name);
 
     if (!fileType) {
-      const ext = file.name.includes(".")
-        ? file.name.split(".").pop()
-        : "unknown";
+      const ext = file.name.includes(".") ? file.name.split(".").pop() : "unknown";
       updateState((s) => ({
         ...s,
         errorMessage: `Unsupported file type (.${ext}). Use .txt, .md, .docx, or .pdf files.`,
@@ -91,9 +83,7 @@
         content = await file.text();
       } else if (fileType === "docx") {
         const arrayBuffer = await file.arrayBuffer();
-        const result = await extractWithTimeout(
-          extractTextFromDocx(arrayBuffer),
-        );
+        const result = await extractWithTimeout(extractTextFromDocx(arrayBuffer));
         content = result.text;
       } else if (fileType === "pdf") {
         const arrayBuffer = await file.arrayBuffer();
@@ -104,9 +94,7 @@
 
       inputText = content;
       if (!inputTitle) {
-        inputTitle = baseName
-          .replace(/[-_]/g, " ")
-          .replace(/\b\w/g, (c) => c.toUpperCase());
+        inputTitle = baseName.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
       }
     } catch (error) {
       updateState((s) => ({
@@ -215,11 +203,7 @@
     <div class="option-row">
       <div class="option-group">
         <label for="typst-ngram-select">N-gram size</label>
-        <select
-          id="typst-ngram-select"
-          bind:value={ngramSize}
-          disabled={!isReady}
-        >
+        <select id="typst-ngram-select" bind:value={ngramSize} disabled={!isReady}>
           <option value={2}>Bigram (n=2)</option>
           <option value={3}>Trigram (n=3)</option>
           <option value={4}>4-gram (n=4)</option>
@@ -228,11 +212,7 @@
 
       <div class="option-group">
         <label for="typst-workflow-select">Output type</label>
-        <select
-          id="typst-workflow-select"
-          bind:value={workflow}
-          disabled={!isReady}
-        >
+        <select id="typst-workflow-select" bind:value={workflow} disabled={!isReady}>
           <option value="booklet">Booklet (dice lookup tables)</option>
           <option value="cutouts">Cutouts (printable token cards)</option>
         </select>
@@ -241,16 +221,10 @@
   </div>
 
   <div class="controls">
-    <button
-      disabled={!isReady || !hasInput}
-      onclick={() => handleCompile("svg")}
-    >
+    <button disabled={!isReady || !hasInput} onclick={() => handleCompile("svg")}>
       Preview (SVG)
     </button>
-    <button
-      disabled={!isReady || !hasInput}
-      onclick={() => handleCompile("pdf")}
-    >
+    <button disabled={!isReady || !hasInput} onclick={() => handleCompile("pdf")}>
       Download PDF
     </button>
   </div>

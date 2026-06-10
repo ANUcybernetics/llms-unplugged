@@ -7,7 +7,7 @@
 //   npm run generate:image -- "grid of tokens with dice and cutouts" public/assets/images/hero-grid-training.jpg
 import { exec } from "node:child_process";
 import { access, mkdir, unlink } from "node:fs/promises";
-import { join, dirname, extname, basename } from "node:path";
+import { basename, dirname, extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 
@@ -134,7 +134,8 @@ async function main() {
   }
   /* eslint-enable no-await-in-loop */
 
-  const outputPath = args[args.length - 1];
+  // length >= 2 checked above
+  const outputPath = args.at(-1)!;
   const promptInput = args.slice(0, -1).join(" ").trim();
 
   if (!promptInput) {

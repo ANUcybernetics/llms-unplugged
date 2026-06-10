@@ -1,16 +1,16 @@
 <script lang="ts">
   import {
-    generateBricks,
-    tokenBits,
     assembledLayout,
-    shuffledGridLayout,
-    titleOnlyLayout,
+    type Brick,
     BRICK_COUNT,
+    generateBricks,
+    type Pos,
+    shuffledGridLayout,
+    TITLE_PERIODS,
     TITLE_TINTS,
     TITLE_TOKENS,
-    TITLE_PERIODS,
-    type Brick,
-    type Pos,
+    titleOnlyLayout,
+    tokenBits,
   } from "../lib/token-logo";
 
   let {
@@ -24,16 +24,10 @@
   type Phase = "grid" | "highlighted" | "assembled";
   let phase: Phase = $state("assembled");
 
-  const titlePos = $derived(
-    mode === "title" ? titleOnlyLayout(REF_W, REF_H) : [],
-  );
+  const titlePos = $derived(mode === "title" ? titleOnlyLayout(REF_W, REF_H) : []);
 
-  const bricks = $derived(
-    mode !== "title" ? generateBricks(count, Date.now()) : [],
-  );
-  const assPos = $derived(
-    mode !== "title" ? assembledLayout(bricks, REF_W, REF_H) : new Map(),
-  );
+  const bricks = $derived(mode !== "title" ? generateBricks(count, Date.now()) : []);
+  const assPos = $derived(mode !== "title" ? assembledLayout(bricks, REF_W, REF_H) : new Map());
   let gridPos: Pos[] = $state([]);
 
   $effect(() => {
@@ -85,9 +79,7 @@
     class:highlighted={phase !== "grid" && isTitle}
     class:assembled={isAssembled}
     style:transform="translate({pos.x}px, {pos.y}px) scale({sx}, {sy})"
-    style:transition-delay="{isTitle && phase !== 'grid'
-      ? b.titleIndex * 0.08
-      : 0}s"
+    style:transition-delay="{isTitle && phase !== 'grid' ? b.titleIndex * 0.08 : 0}s"
     style:--tint={isTitle ? TITLE_TINTS[b.titleIndex] : null}
   >
     <rect width={gp.w} height={gp.h} rx="3" class="brick-bg" />
@@ -138,12 +130,7 @@
           style:--tint={TITLE_TINTS[ti]}
           style:--period="{TITLE_PERIODS[ti]}s"
         >
-          <rect
-            width={pos.w}
-            height={pos.h}
-            rx="6"
-            class="brick-bg highlighted"
-          />
+          <rect width={pos.w} height={pos.h} rx="6" class="brick-bg highlighted" />
           <svg
             class="dots title-dots"
             x={(pos.w - dotSize) / 2}

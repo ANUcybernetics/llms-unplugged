@@ -2,16 +2,8 @@
   import { onMount, untrack } from "svelte";
   import { createScheduler } from "../../lib/scheduler.svelte";
   import { createTrainingMachine } from "../../lib/machines/training";
-  import {
-    getTrainingText,
-    setTrainingText,
-  } from "../../lib/stores/trainingText.svelte";
-  import {
-    parseTokens,
-    getVocabulary,
-    getBigrams,
-    isPunctuation,
-  } from "../../lib/tokens";
+  import { getTrainingText, setTrainingText } from "../../lib/stores/trainingText.svelte";
+  import { getBigrams, getVocabulary, isPunctuation, parseTokens } from "../../lib/tokens";
   import PlaybackSection from "../PlaybackSection.svelte";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
   import BigramGrid from "../BigramGrid.svelte";
@@ -52,11 +44,7 @@
 
   let gridCounts = $derived.by(() => {
     const counts = new Map<string, number>();
-    for (
-      let i = 0;
-      i < scheduler.state.currentStep && i < bigrams.length;
-      i++
-    ) {
+    for (let i = 0; i < scheduler.state.currentStep && i < bigrams.length; i++) {
       const [from, to] = bigrams[i];
       const key = `${from}->${to}`;
       counts.set(key, (counts.get(key) || 0) + 1);

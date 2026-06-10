@@ -53,7 +53,7 @@ export function createDiceMapping(
   }
 
   if (mappings.length > 0 && currentDice <= diceSides) {
-    mappings[mappings.length - 1].diceRange[1] = diceSides;
+    mappings.at(-1)!.diceRange[1] = diceSides;
   }
 
   const coveredSides = mappings.reduce((sum, m) => sum + (m.diceRange[1] - m.diceRange[0] + 1), 0);

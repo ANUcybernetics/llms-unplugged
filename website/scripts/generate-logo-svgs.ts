@@ -1,5 +1,5 @@
 import { writeFileSync } from "node:fs";
-import { tokenBits, titleOnlyLayout, TITLE_TINTS, TITLE_TOKENS } from "../src/lib/token-logo.ts";
+import { TITLE_TINTS, TITLE_TOKENS, titleOnlyLayout, tokenBits } from "../src/lib/token-logo.ts";
 
 const REF_W = 960;
 const REF_H = 540;

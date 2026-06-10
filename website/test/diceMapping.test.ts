@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { partitionDice, createDiceMapping, findWordForRoll } from "../src/lib/diceMapping";
+import { describe, expect, it } from "vitest";
+import { createDiceMapping, findWordForRoll, partitionDice } from "../src/lib/diceMapping";
 
 describe("partitionDice", () => {
   it("divides evenly when possible", () => {
@@ -32,7 +32,7 @@ describe("createDiceMapping", () => {
 
     expect(mappings).toHaveLength(2);
     expect(mappings[0].diceRange[0]).toBe(1);
-    expect(mappings[mappings.length - 1].diceRange[1]).toBe(6);
+    expect(mappings.at(-1)!.diceRange[1]).toBe(6);
   });
 
   it("returns empty for zero total count", () => {

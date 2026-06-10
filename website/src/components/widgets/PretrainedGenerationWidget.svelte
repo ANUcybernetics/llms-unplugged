@@ -6,20 +6,9 @@
     selectStartWord,
   } from "../../lib/machines/pretrainedGeneration";
   import type { PretrainedGenerationState } from "../../lib/machines/pretrainedGeneration";
-  import {
-    getTrainingText,
-    setTrainingText,
-  } from "../../lib/stores/trainingText.svelte";
-  import {
-    parseTokens,
-    getVocabulary,
-    buildBigramModel,
-    isPunctuation,
-  } from "../../lib/tokens";
-  import {
-    buildModelEntries,
-    findWordForThresholdRoll,
-  } from "../../lib/modelEntries";
+  import { getTrainingText, setTrainingText } from "../../lib/stores/trainingText.svelte";
+  import { buildBigramModel, getVocabulary, isPunctuation, parseTokens } from "../../lib/tokens";
+  import { buildModelEntries, findWordForThresholdRoll } from "../../lib/modelEntries";
   import type { ModelEntry } from "../../lib/modelEntries";
   import { rollDice } from "../../lib/diceMapping";
   import PlaybackSection from "../PlaybackSection.svelte";
@@ -46,9 +35,7 @@
   });
 
   let { outputWords, phase } = $derived(scheduler.state);
-  let currentWord = $derived(
-    outputWords.length === 0 ? null : outputWords[outputWords.length - 1],
-  );
+  let currentWord = $derived(outputWords.length === 0 ? null : outputWords.at(-1));
   let currentEntry = $derived.by((): ModelEntry | null => {
     if (phase.kind === "showing-entry" || phase.kind === "rolled") {
       return phase.entry;
@@ -70,11 +57,7 @@
   let prevPhase = $state<PretrainedGenerationState["phase"]["kind"]>("idle");
   $effect(() => {
     const current = phase;
-    if (
-      current.kind === "rolled" &&
-      prevPhase === "showing-entry" &&
-      current.diceRoll !== null
-    ) {
+    if (current.kind === "rolled" && prevPhase === "showing-entry" && current.diceRoll !== null) {
       animateDiceRollEffect(current.entry.numDice, current.diceRoll);
     } else if (current.kind !== "rolled") {
       animatedDiceRoll = null;
@@ -103,11 +86,7 @@
   }
 
   let displayDiceRoll = $derived(
-    isAnimating
-      ? animatedDiceRoll
-      : phase.kind === "rolled"
-        ? phase.diceRoll
-        : null,
+    isAnimating ? animatedDiceRoll : phase.kind === "rolled" ? phase.diceRoll : null,
   );
 
   function handleStartWord(word: string) {
@@ -150,8 +129,7 @@
         <div class="entries-content">
           {#each modelEntries as entry}
             {@const actionable =
-              outputWords.length === 0 &&
-              model.hasSuccessors(entry.previousWord)}
+              outputWords.length === 0 && model.hasSuccessors(entry.previousWord)}
             <div
               class="entry"
               class:highlighted={entry.previousWord === currentWord}
@@ -185,8 +163,7 @@
                     class:punctuation={isPunctuation(nextWord.word)}
                     >{#if entry.nextWords.length > 1}<span class="threshold"
                         >{nextWord.threshold}</span
-                      >|{/if}<span class="next-word-text">{nextWord.word}</span
-                    ></span
+                      >|{/if}<span class="next-word-text">{nextWord.word}</span></span
                   >
                 {/each}
               </span>
@@ -207,19 +184,13 @@
             >
             {#if currentEntry.nextWords.length > 1}
               <span>
-                — roll {currentEntry.numDice} d10{currentEntry.numDice > 1
-                  ? "s"
-                  : ""}...
+                — roll {currentEntry.numDice} d10{currentEntry.numDice > 1 ? "s" : ""}...
               </span>
             {:else}
               <span>— only one option</span>
             {/if}
           {:else if phase.kind === "rolled" && isAnimating && currentEntry}
-            <span
-              >Rolling {currentEntry.numDice} d10{currentEntry.numDice > 1
-                ? "s"
-                : ""}...</span
-            >
+            <span>Rolling {currentEntry.numDice} d10{currentEntry.numDice > 1 ? "s" : ""}...</span>
             <span class="dice-value rolling">{displayDiceRoll}</span>
           {:else if phase.kind === "rolled" && currentEntry}
             {#if currentEntry.nextWords.length > 1}
@@ -229,17 +200,15 @@
                 <span>&rarr; first threshold &ge; {displayDiceRoll} is</span>
                 <span
                   class="token highlight-second"
-                  class:punctuation={isPunctuation(phase.nextWord)}
-                  >{phase.nextWord}</span
+                  class:punctuation={isPunctuation(phase.nextWord)}>{phase.nextWord}</span
                 >
               {/if}
             {:else}
               <span>Only option:</span>
               <span
                 class="token highlight-second"
-                class:punctuation={isPunctuation(
-                  currentEntry.nextWords[0].word,
-                )}>{currentEntry.nextWords[0].word}</span
+                class:punctuation={isPunctuation(currentEntry.nextWords[0].word)}
+                >{currentEntry.nextWords[0].word}</span
               >
             {/if}
           {:else if phase.kind === "complete"}
@@ -249,9 +218,7 @@
         <div class="output-content">
           {#if outputWords.length > 0}
             {#each outputWords as word, i}
-              <span
-                class="output-word"
-                class:latest={i === outputWords.length - 1}
+              <span class="output-word" class:latest={i === outputWords.length - 1}
                 >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
               >
             {/each}

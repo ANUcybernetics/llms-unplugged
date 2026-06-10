@@ -2,11 +2,8 @@
   import { onMount } from "svelte";
   import { createScheduler } from "../../lib/scheduler.svelte";
   import { createTrainingMachine } from "../../lib/machines/training";
-  import {
-    getTrainingText,
-    setTrainingText,
-  } from "../../lib/stores/trainingText.svelte";
-  import { parseTokens, getBigrams, isPunctuation } from "../../lib/tokens";
+  import { getTrainingText, setTrainingText } from "../../lib/stores/trainingText.svelte";
+  import { getBigrams, isPunctuation, parseTokens } from "../../lib/tokens";
   import PlaybackSection from "../PlaybackSection.svelte";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
   import { PLAYBACK_CONFIG } from "../../lib/config/playback";
@@ -35,11 +32,7 @@
     const cutoutsByLabel = new Map<string, string[]>();
     const order: string[] = [];
 
-    for (
-      let i = 0;
-      i < scheduler.state.currentStep && i < bigrams.length;
-      i++
-    ) {
+    for (let i = 0; i < scheduler.state.currentStep && i < bigrams.length; i++) {
       const [from, to] = bigrams[i];
       if (!cutoutsByLabel.has(from)) {
         cutoutsByLabel.set(from, []);
@@ -110,13 +103,10 @@
             <span>Add</span>
             <span
               class="token highlight-second"
-              class:punctuation={isPunctuation(highlights.token!)}
-              >{highlights.token}</span
+              class:punctuation={isPunctuation(highlights.token!)}>{highlights.token}</span
             >
             <span>to the</span>
-            <span
-              class="token highlight-first"
-              class:punctuation={isPunctuation(highlights.match)}
+            <span class="token highlight-first" class:punctuation={isPunctuation(highlights.match)}
               >{highlights.match}</span
             >
             <span>cutouts</span>
@@ -128,10 +118,7 @@
         <div class="section-header">Model</div>
         <div class="cutouts-content">
           {#each cutouts as cutout}
-            <div
-              class="cutout"
-              class:highlighted={cutout.label === highlights.match}
-            >
+            <div class="cutout" class:highlighted={cutout.label === highlights.match}>
               <div
                 class="cutout-label"
                 class:punctuation={isPunctuation(cutout.label)}

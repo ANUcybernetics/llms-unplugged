@@ -1,14 +1,7 @@
 <script lang="ts">
-  import {
-    getTrainingText,
-    setTrainingText,
-  } from "../../lib/stores/trainingText.svelte";
-  import {
-    parseTokens,
-    getVocabulary,
-    buildBigramModel,
-  } from "../../lib/tokens";
-  import { manhattanDistance, buildDistanceMatrix } from "../../lib/distance";
+  import { getTrainingText, setTrainingText } from "../../lib/stores/trainingText.svelte";
+  import { buildBigramModel, getVocabulary, parseTokens } from "../../lib/tokens";
+  import { buildDistanceMatrix, manhattanDistance } from "../../lib/distance";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
   import BigramGrid from "../BigramGrid.svelte";
   import VectorComparison from "../VectorComparison.svelte";
@@ -70,9 +63,7 @@
       <div class="widget-section">
         <div class="section-header">
           Bigram grid
-          <span class="section-hint"
-            >click a row to see its embedding vector</span
-          >
+          <span class="section-hint">click a row to see its embedding vector</span>
         </div>
         <BigramGrid
           {vocabulary}

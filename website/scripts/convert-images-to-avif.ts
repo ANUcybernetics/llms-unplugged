@@ -1,7 +1,7 @@
 #!/usr/bin/env npx tsx
 import { exec } from "node:child_process";
 import { readdir, stat, unlink } from "node:fs/promises";
-import { join, dirname, extname, basename } from "node:path";
+import { basename, dirname, extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 

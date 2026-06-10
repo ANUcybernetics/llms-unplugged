@@ -1,22 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { createScheduler } from "../../lib/scheduler.svelte";
-  import {
-    createDiceGenerationMachine,
-    selectStartWord,
-  } from "../../lib/machines/diceGeneration";
+  import { createDiceGenerationMachine, selectStartWord } from "../../lib/machines/diceGeneration";
   import type { DiceGenerationState } from "../../lib/machines/diceGeneration";
-  import {
-    getTrainingText,
-    setTrainingText,
-  } from "../../lib/stores/trainingText.svelte";
-  import {
-    parseTokens,
-    getVocabulary,
-    buildBigramModel,
-    isPunctuation,
-  } from "../../lib/tokens";
-  import { rollDice, findWordForRoll } from "../../lib/diceMapping";
+  import { getTrainingText, setTrainingText } from "../../lib/stores/trainingText.svelte";
+  import { buildBigramModel, getVocabulary, isPunctuation, parseTokens } from "../../lib/tokens";
+  import { findWordForRoll, rollDice } from "../../lib/diceMapping";
   import PlaybackSection from "../PlaybackSection.svelte";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
   import BigramGrid from "../BigramGrid.svelte";
@@ -35,18 +24,14 @@
   let vocabulary = $derived(getVocabulary(tokens));
   let model = $derived(buildBigramModel(tokens));
 
-  let machine = $derived(
-    createDiceGenerationMachine(model, vocabulary, diceSides),
-  );
+  let machine = $derived(createDiceGenerationMachine(model, vocabulary, diceSides));
   const scheduler = createScheduler(() => machine, {
     defaultInterval: PLAYBACK_CONFIG.GENERATION_DEFAULT_STEP_INTERVAL_MS,
     loop: () => loop,
   });
 
   let { outputWords, phase } = $derived(scheduler.state);
-  let currentWord = $derived(
-    outputWords.length === 0 ? null : outputWords[outputWords.length - 1],
-  );
+  let currentWord = $derived(outputWords.length === 0 ? null : outputWords.at(-1));
 
   let animatedDiceRoll = $state<number | null>(null);
   let isAnimating = $state(false);
@@ -83,20 +68,14 @@
   }
 
   let displayDiceRoll = $derived(
-    isAnimating
-      ? animatedDiceRoll
-      : phase.kind === "rolled"
-        ? phase.diceRoll
-        : null,
+    isAnimating ? animatedDiceRoll : phase.kind === "rolled" ? phase.diceRoll : null,
   );
 
   let currentRowOptions = $derived.by(() => {
     if (!currentWord) return [];
     const row = model.counts.get(currentWord);
     if (!row) return [];
-    return [...row.entries()]
-      .filter(([, count]) => count > 0)
-      .map(([word]) => word);
+    return [...row.entries()].filter(([, count]) => count > 0).map(([word]) => word);
   });
 
   function handleRowClick(word: string) {
@@ -163,9 +142,8 @@
         <div class="action-content">
           {#if phase.kind === "showing-options" && currentWord}
             <span>Looking up</span>
-            <span
-              class="token highlight-first"
-              class:punctuation={isPunctuation(currentWord)}>{currentWord}</span
+            <span class="token highlight-first" class:punctuation={isPunctuation(currentWord)}
+              >{currentWord}</span
             >
             <span>— roll d{diceSides}...</span>
           {:else if phase.kind === "rolled" && isAnimating}
@@ -175,9 +153,7 @@
             <span>Rolled</span>
             <span class="dice-value">{displayDiceRoll}</span>
             <span>&rarr;</span>
-            <span
-              class="token highlight-second"
-              class:punctuation={isPunctuation(phase.nextWord)}
+            <span class="token highlight-second" class:punctuation={isPunctuation(phase.nextWord)}
               >{phase.nextWord}</span
             >
           {:else if phase.kind === "complete"}
@@ -187,9 +163,7 @@
         <div class="output-content">
           {#if outputWords.length > 0}
             {#each outputWords as word, i}
-              <span
-                class="output-word"
-                class:latest={i === outputWords.length - 1}
+              <span class="output-word" class:latest={i === outputWords.length - 1}
                 >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
               >
             {/each}

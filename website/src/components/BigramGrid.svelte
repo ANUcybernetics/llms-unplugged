@@ -31,9 +31,7 @@
   }: Props = $props();
 
   function isCurrentCell(from: string, to: string): boolean {
-    return (
-      currentCell != null && currentCell[0] === from && currentCell[1] === to
-    );
+    return currentCell != null && currentCell[0] === from && currentCell[1] === to;
   }
 
   function handleRowClick(word: string) {
@@ -63,8 +61,7 @@
     <tbody>
       {#each vocabulary as rowWord}
         <tr
-          class:highlight-row={highlightedRow === rowWord ||
-            numericRows.has(rowWord)}
+          class:highlight-row={highlightedRow === rowWord || numericRows.has(rowWord)}
           class:dead-end={isDeadEnd(rowWord)}
           class:clickable={clickableRows && isRowClickable(rowWord)}
           onclick={() => handleRowClick(rowWord)}
@@ -73,8 +70,7 @@
             class="row-header"
             scope="row"
             title={rowWord}
-            class:highlight-row={highlightedRow === rowWord ||
-              numericRows.has(rowWord)}
+            class:highlight-row={highlightedRow === rowWord || numericRows.has(rowWord)}
             class:punctuation={isPunctuation(rowWord)}
           >
             {#if showRowIndicator && highlightedRow === rowWord}
@@ -86,10 +82,8 @@
             <td
               class="grid-cell"
               class:in-highlighted-col={highlightedCols.has(colWord)}
-              class:highlight-col={highlightedCols.has(colWord) &&
-                highlightedRow === rowWord}
-              class:highlight-row={highlightedRow === rowWord ||
-                numericRows.has(rowWord)}
+              class:highlight-col={highlightedCols.has(colWord) && highlightedRow === rowWord}
+              class:highlight-row={highlightedRow === rowWord || numericRows.has(rowWord)}
               class:current-cell={isCurrentCell(rowWord, colWord)}
               class:flash={isCurrentCell(rowWord, colWord)}
             >

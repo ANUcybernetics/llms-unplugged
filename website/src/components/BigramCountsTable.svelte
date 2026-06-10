@@ -24,8 +24,7 @@
     revealedTokens = null,
   }: Props = $props();
 
-  const isRevealed = (token: string) =>
-    revealedTokens == null || revealedTokens.has(token);
+  const isRevealed = (token: string) => revealedTokens == null || revealedTokens.has(token);
 
   const counts = $derived.by(() => {
     const m = new Map<string, Map<string, number>>();
@@ -56,9 +55,7 @@
         {#each vocab as col}
           {@const count = counts.get(row)?.get(col) || 0}
           {@const isCurrent =
-            currentCell != null &&
-            row === currentCell[0] &&
-            col === currentCell[1]}
+            currentCell != null && row === currentCell[0] && col === currentCell[1]}
           <td class="grid-cell" class:current={isCurrent}>
             {count > 0 ? tally(count) : " "}
           </td>

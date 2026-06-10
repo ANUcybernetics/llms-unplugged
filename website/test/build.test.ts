@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeAll } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import { execSync } from "node:child_process";
-import { existsSync, readdirSync, readFileSync, globSync } from "node:fs";
+import { existsSync, globSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { findBrokenPdfLinks } from "./utils/linkChecker";
 

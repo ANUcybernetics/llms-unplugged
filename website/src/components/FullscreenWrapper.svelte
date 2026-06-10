@@ -31,11 +31,7 @@
   });
 </script>
 
-<div
-  bind:this={containerEl}
-  class="fullscreen-wrapper"
-  class:fullscreen={isFullscreen}
->
+<div bind:this={containerEl} class="fullscreen-wrapper" class:fullscreen={isFullscreen}>
   <button
     type="button"
     class="fullscreen-button"

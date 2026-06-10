@@ -1,6 +1,6 @@
 #!/usr/bin/env npx tsx
-import { writeFileSync, existsSync } from "node:fs";
-import { join, dirname } from "node:path";
+import { existsSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));

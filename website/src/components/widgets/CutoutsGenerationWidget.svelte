@@ -6,16 +6,8 @@
     selectStartWord,
   } from "../../lib/machines/cutoutsGeneration";
   import type { CutoutsGenerationState } from "../../lib/machines/cutoutsGeneration";
-  import {
-    getTrainingText,
-    setTrainingText,
-  } from "../../lib/stores/trainingText.svelte";
-  import {
-    parseTokens,
-    getVocabulary,
-    buildBigramModel,
-    isPunctuation,
-  } from "../../lib/tokens";
+  import { getTrainingText, setTrainingText } from "../../lib/stores/trainingText.svelte";
+  import { buildBigramModel, getVocabulary, isPunctuation, parseTokens } from "../../lib/tokens";
   import { buildCutoutsFromModel } from "../../lib/cutouts";
   import PlaybackSection from "../PlaybackSection.svelte";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
@@ -41,9 +33,7 @@
   });
 
   let { outputWords, phase } = $derived(scheduler.state);
-  let currentWord = $derived(
-    outputWords.length === 0 ? null : outputWords[outputWords.length - 1],
-  );
+  let currentWord = $derived(outputWords.length === 0 ? null : outputWords.at(-1));
 
   let animatingIndex = $state<number | null>(null);
   let isShuffling = $state(false);
@@ -64,9 +54,7 @@
     isShuffling = true;
     const frameMs = Math.max(20, scheduler.stepInterval * 0.025);
     const matchingTokens =
-      phase.kind === "picked"
-        ? (cutouts.find((c) => c.label === currentWord)?.tokens ?? [])
-        : [];
+      phase.kind === "picked" ? (cutouts.find((c) => c.label === currentWord)?.tokens ?? []) : [];
     let frame = 0;
     const totalFrames = 10;
 
@@ -84,11 +72,7 @@
   }
 
   let displayIndex = $derived(
-    isShuffling
-      ? animatingIndex
-      : phase.kind === "picked"
-        ? phase.pickedIndex
-        : null,
+    isShuffling ? animatingIndex : phase.kind === "picked" ? phase.pickedIndex : null,
   );
 
   function handleStartWord(word: string) {
@@ -119,8 +103,7 @@
         <div class="section-header">Model</div>
         <div class="cutouts-content">
           {#each cutouts as cutout}
-            {@const actionable =
-              outputWords.length === 0 && model.hasSuccessors(cutout.label)}
+            {@const actionable = outputWords.length === 0 && model.hasSuccessors(cutout.label)}
             <div
               class="cutout"
               class:highlighted={cutout.label === currentWord}
@@ -137,10 +120,7 @@
                 }
               }}
             >
-              <div
-                class="cutout-label"
-                class:punctuation={isPunctuation(cutout.label)}
-              >
+              <div class="cutout-label" class:punctuation={isPunctuation(cutout.label)}>
                 {cutout.label}
               </div>
               <div class="cutout-contents">
@@ -170,30 +150,25 @@
         <div class="action-content">
           {#if phase.kind === "showing-matches" && currentWord}
             <span>Looking for the</span>
-            <span
-              class="token highlight-first"
-              class:punctuation={isPunctuation(currentWord)}>{currentWord}</span
+            <span class="token highlight-first" class:punctuation={isPunctuation(currentWord)}
+              >{currentWord}</span
             >
             <span>cutouts...</span>
           {:else if phase.kind === "picked" && isShuffling && currentWord}
             <span>Picking randomly from the</span>
-            <span
-              class="token highlight-first"
-              class:punctuation={isPunctuation(currentWord)}>{currentWord}</span
+            <span class="token highlight-first" class:punctuation={isPunctuation(currentWord)}
+              >{currentWord}</span
             >
             <span>cutouts...</span>
           {:else if phase.kind === "picked" && phase.pickedToken}
             <span>Picked</span>
             <span
               class="token highlight-second"
-              class:punctuation={isPunctuation(phase.pickedToken)}
-              >{phase.pickedToken}</span
+              class:punctuation={isPunctuation(phase.pickedToken)}>{phase.pickedToken}</span
             >
             <span>from the</span>
             {#if currentWord}
-              <span
-                class="token highlight-first"
-                class:punctuation={isPunctuation(currentWord)}
+              <span class="token highlight-first" class:punctuation={isPunctuation(currentWord)}
                 >{currentWord}</span
               >
             {/if}
@@ -205,9 +180,7 @@
         <div class="output-content">
           {#if outputWords.length > 0}
             {#each outputWords as word, i}
-              <span
-                class="output-word"
-                class:latest={i === outputWords.length - 1}
+              <span class="output-word" class:latest={i === outputWords.length - 1}
                 >{#if i > 0 && word !== "," && word !== "."}{" "}{/if}{word}</span
               >
             {/each}

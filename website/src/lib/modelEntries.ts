@@ -70,5 +70,5 @@ export function findWordForThresholdRoll(entry: ModelEntry, roll: number): strin
       return nextWord.word;
     }
   }
-  return entry.nextWords[entry.nextWords.length - 1]?.word || null;
+  return entry.nextWords.at(-1)?.word || null;
 }

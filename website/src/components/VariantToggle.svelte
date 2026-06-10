@@ -1,9 +1,5 @@
 <script lang="ts">
-  import {
-    getVariant,
-    setVariant,
-    type Variant,
-  } from "../lib/stores/variant.svelte";
+  import { getVariant, setVariant, type Variant } from "../lib/stores/variant.svelte";
 
   let current = $derived(getVariant());
 
@@ -16,8 +12,7 @@
 <div class="lm-widget variant-toggle">
   <p class="variant-description">
     <strong>Choose your method:</strong> This lesson can be done with either a
-    <em>grid</em> (paper and dice) or <em>cutouts</em> (physical tokens). Choose which
-    suits your materials.
+    <em>grid</em> (paper and dice) or <em>cutouts</em> (physical tokens). Choose which suits your materials.
   </p>
   <div class="variant-buttons">
     <button
@@ -37,32 +32,9 @@
         <rect x="3" y="3" width="18" height="18" rx="1" />
         <line x1="3" y1="9" x2="21" y2="9" />
         <line x1="9" y1="3" x2="9" y2="21" />
-        <rect
-          x="3"
-          y="3"
-          width="6"
-          height="6"
-          fill="currentColor"
-          opacity="0.15"
-        />
-        <rect
-          x="3"
-          y="9"
-          width="6"
-          height="15"
-          rx="0"
-          fill="currentColor"
-          opacity="0.08"
-        />
-        <rect
-          x="9"
-          y="3"
-          width="12"
-          height="6"
-          rx="0"
-          fill="currentColor"
-          opacity="0.08"
-        />
+        <rect x="3" y="3" width="6" height="6" fill="currentColor" opacity="0.15" />
+        <rect x="3" y="9" width="6" height="15" rx="0" fill="currentColor" opacity="0.08" />
+        <rect x="9" y="3" width="12" height="6" rx="0" fill="currentColor" opacity="0.08" />
       </svg>
       <span>Grid</span>
     </button>
@@ -81,15 +53,7 @@
         stroke-width="1.5"
       >
         <rect x="3" y="6" width="10" height="12" rx="1" />
-        <rect
-          x="7"
-          y="3"
-          width="10"
-          height="12"
-          rx="1"
-          fill="currentColor"
-          opacity="0.15"
-        />
+        <rect x="7" y="3" width="10" height="12" rx="1" fill="currentColor" opacity="0.15" />
         <rect x="11" y="9" width="10" height="12" rx="1" />
       </svg>
       <span>Cutouts</span>

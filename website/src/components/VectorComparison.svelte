@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { isPunctuation, type BigramModel } from "../lib/tokens";
+  import { type BigramModel, isPunctuation } from "../lib/tokens";
 
   interface Props {
     vocabulary: string[];
@@ -42,11 +42,7 @@
     <tbody>
       {#each vectors as vec}
         <tr class="vector-row">
-          <th
-            scope="row"
-            title={vec.word}
-            class:punctuation={isPunctuation(vec.word)}
-          >
+          <th scope="row" title={vec.word} class:punctuation={isPunctuation(vec.word)}>
             <code>{vec.word}</code>
           </th>
           {#each vec.values as val}

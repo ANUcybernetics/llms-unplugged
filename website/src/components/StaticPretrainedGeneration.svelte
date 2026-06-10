@@ -1,15 +1,12 @@
 <script lang="ts">
   import {
-    parseTokens,
-    getVocabulary,
     buildBigramModel,
+    getVocabulary,
     isPunctuation,
+    parseTokens,
     splitTokens,
   } from "../lib/tokens";
-  import {
-    buildModelEntries,
-    findWordForThresholdRoll,
-  } from "../lib/modelEntries";
+  import { buildModelEntries, findWordForThresholdRoll } from "../lib/modelEntries";
   import GeneratedSequence from "./GeneratedSequence.svelte";
 
   interface Props {
@@ -29,25 +26,15 @@
   }: Props = $props();
 
   const tokenList = $derived(parseTokens(tokenString));
-  const vocab = $derived(
-    vocabString ? splitTokens(vocabString) : getVocabulary(tokenList),
-  );
+  const vocab = $derived(vocabString ? splitTokens(vocabString) : getVocabulary(tokenList));
   const model = $derived(buildBigramModel(tokenList));
   const entries = $derived(buildModelEntries(vocab, model));
   const sequenceTokens = $derived(splitTokens(sequenceString));
-  const diceRolls = $derived(
-    splitTokens(rollsString).map((r) => (r === "-" ? null : Number(r))),
-  );
+  const diceRolls = $derived(splitTokens(rollsString).map((r) => (r === "-" ? null : Number(r))));
 
-  const currentWord = $derived(
-    step < sequenceTokens.length ? sequenceTokens[step] : null,
-  );
-  const chosenNext = $derived(
-    step + 1 < sequenceTokens.length ? sequenceTokens[step + 1] : null,
-  );
-  const currentRoll = $derived(
-    step < diceRolls.length ? diceRolls[step] : null,
-  );
+  const currentWord = $derived(step < sequenceTokens.length ? sequenceTokens[step] : null);
+  const chosenNext = $derived(step + 1 < sequenceTokens.length ? sequenceTokens[step + 1] : null);
+  const currentRoll = $derived(step < diceRolls.length ? diceRolls[step] : null);
   const generatedSoFar = $derived(sequenceTokens.slice(0, step + 1));
 </script>
 
@@ -57,14 +44,9 @@
   {#each entries as entry}
     {@const isActive = entry.previousWord === currentWord}
     {@const selectedWord =
-      isActive && currentRoll !== null
-        ? findWordForThresholdRoll(entry, currentRoll)
-        : null}
+      isActive && currentRoll !== null ? findWordForThresholdRoll(entry, currentRoll) : null}
     <div class="entry" class:highlighted={isActive}>
-      <span
-        class="entry-previous-word"
-        class:punctuation={isPunctuation(entry.previousWord)}
-      >
+      <span class="entry-previous-word" class:punctuation={isPunctuation(entry.previousWord)}>
         {entry.previousWord}
       </span>
       {#if entry.nextWords.length > 1}
@@ -78,8 +60,8 @@
             class:punctuation={isPunctuation(nextWord.word)}
           >
             {#if entry.nextWords.length > 1}
-              <span class="threshold">{nextWord.threshold}</span>|{/if}<span
-              class="next-word-text">{nextWord.word}</span
+              <span class="threshold">{nextWord.threshold}</span>|{/if}<span class="next-word-text"
+              >{nextWord.word}</span
             >
           </span>
         {/each}

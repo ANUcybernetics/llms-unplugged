@@ -73,9 +73,7 @@
 
   const tokenList = $derived(tokenString.trim().split(/\s+/).filter(Boolean));
   // mode="hunt": the "your page" words, when threaded through the hunt.
-  const pageTokens = $derived(
-    page ? page.trim().split(/\s+/).filter(Boolean) : [],
-  );
+  const pageTokens = $derived(page ? page.trim().split(/\s+/).filter(Boolean) : []);
   const pairCount = $derived(Math.max(0, tokenList.length - 1));
 
   interface Bigram {
@@ -174,9 +172,7 @@
     // still narrowing.
     const chosenIdx =
       stage === "start"
-        ? scattered.findIndex(
-            (bg) => bg.prev === startPrev && bg.next === startNext,
-          )
+        ? scattered.findIndex((bg) => bg.prev === startPrev && bg.next === startNext)
         : stage === "pick"
           ? scattered.findIndex((bg) => bg.prev === target && bg.next === pick)
           : -1;
@@ -217,9 +213,7 @@
     style={c.style}
   >
     <span class="cutout-paper-prev">
-      <span class="cutout-previous-word {tokenColorClass(c.prev)}"
-        >{c.prev}</span
-      >
+      <span class="cutout-previous-word {tokenColorClass(c.prev)}">{c.prev}</span>
     </span>
     <span class="cutout-paper-next">
       <span class="cutout-next-word {tokenColorClass(c.next)}">{c.next}</span>
