@@ -6,8 +6,8 @@
 // everyone. The grid sizes its columns to whoever remains so faces stay as
 // large as the 1280x720 slide allows.
 //
-// Initials are unique except for Sungyeon and Safiya (both `s`), so `s` selects
-// both -- fine for now, revisit if a talk needs only one of them.
+// Each id is the presenter's first initial, except Safiya uses her surname
+// initial `o` so it doesn't clash with Sungyeon's `s` -- all eight are unique.
 //
 // (This is an Astro component rather than inline markup in the .mdx partial
 // because MDX parses `{`/`${` inside a `<script>` as JSX expressions; an .astro
@@ -24,7 +24,7 @@ const presenters = [
     name: "Sungyeon",
     src: "/src/decks/assets/headshot-sungyeon.avif",
   },
-  { id: "s", name: "Safiya", src: "/src/decks/assets/headshot-safiya.avif" },
+  { id: "o", name: "Safiya", src: "/src/decks/assets/headshot-safiya.avif" },
 ];
 ---
 
