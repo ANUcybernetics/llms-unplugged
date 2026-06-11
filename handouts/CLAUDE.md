@@ -2,21 +2,20 @@
 
 ## Overview
 
-This directory contains Typst-based standalone printable materials: worksheets,
-runsheets, and the poster. The lessons themselves live on the website
+This directory contains Typst-based standalone printable materials: worksheets
+and the poster. The lessons themselves live on the website
 (`website/src/content/lessons/`).
 
 ## Directory structure
 
 - `worksheets/` - blank templates (grid, trigram-template,
   truncation-strategies, blank-page)
-- `runsheets/` - session runsheets (90min, 2h, 3h)
 - `poster.typ` - project poster
 
 ## Build process
 
 ```bash
-# Build all handouts (worksheets, runsheets, poster)
+# Build all handouts (worksheets, poster)
 make
 
 # Build single file

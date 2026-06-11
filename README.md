@@ -19,8 +19,8 @@ This is a [Cybernetic Studio](https://github.com/ANUcybernetics/) artefact by
 
 The lessons themselves live on the
 [project website](https://www.llmsunplugged.org). This repository contains the
-website source, printable supporting materials (worksheets, runsheets and the
-poster in the `handouts/` directory), and the `llms_unplugged` CLI tool (in
+website source, printable supporting materials (worksheets and the poster in
+the `handouts/` directory), and the `llms_unplugged` CLI tool (in
 the `cli/` directory) used to generate the pre-trained N-gram booklets and
 token cutouts that the lessons use.
 
@@ -142,7 +142,7 @@ For large trigram models, use the `-b` flag to split across multiple books.
   - `src/` - Rust source code for N-gram processing and CLI
   - `book.typ` - Main booklet template
 - `data/` - Input text corpora (\*.txt files with YAML frontmatter)
-- `handouts/` - Printable materials (worksheets, runsheets, poster)
+- `handouts/` - Printable materials (worksheets, poster)
 - `website/` - Project website source (Astro)
 - `backlog/` - Task management
 

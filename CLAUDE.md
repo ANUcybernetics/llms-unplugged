@@ -10,7 +10,7 @@ manual (pen-and-paper) and automated tools.
 This repository has three main parts:
 
 - **`cli/`** - Rust CLI tool for generating N-gram models and PDF booklets
-- **`handouts/`** - Typst standalone materials (worksheets, runsheets, poster)
+- **`handouts/`** - Typst standalone materials (worksheets, poster)
 - **`website/`** - Project website (Astro) including all lessons
 
 Supporting directories:
@@ -40,7 +40,7 @@ cd cli && cargo build --release
 # (print with "flip on short edge" binding; assumes a4 landscape)
 ./cli/target/release/llms_unplugged cutouts -i data/sycophancy.txt -n 2 --duplex
 
-# Build handouts (worksheets, runsheets, poster)
+# Build handouts (worksheets, poster)
 cd handouts && make
 
 # Run website dev server
