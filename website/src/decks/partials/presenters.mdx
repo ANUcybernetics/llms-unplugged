@@ -1,49 +1,8 @@
 {/* _if: presenters */}
 
-{/* 4×2 grid of presenters. Swap who's shown by commenting/uncommenting img
-tags below — keep exactly 8 uncommented so the grid stays full. */}
+{/* Headshot grid, gated behind `?presenters`. The param's value selects who
+appears by first initial -- `?presenters=ceb` -> Cole, Eddie, Ben; a bare
+`?presenters` shows everyone. See PresenterGrid.astro for the roster and the
+column-sizing logic. */}
 
-<div
-  style="display: grid; grid-template-columns: repeat(4, 1fr); align-content: center; position: absolute; inset: 0; background: black;"
->
-  <img
-    src="/src/decks/assets/headshot-eddie.avif"
-    style="width: 100%; aspect-ratio: 1; object-fit: cover;"
-    alt="Eddie"
-  />
-  <img
-    src="/src/decks/assets/headshot-ben-2.avif"
-    style="width: 100%; aspect-ratio: 1; object-fit: cover;"
-    alt="Ben"
-  />
-  <img
-    src="/src/decks/assets/headshot-cole.avif"
-    style="width: 100%; aspect-ratio: 1; object-fit: cover;"
-    alt="Cole"
-  />
-  <img
-    src="/src/decks/assets/headshot-thomas.avif"
-    style="width: 100%; aspect-ratio: 1; object-fit: cover;"
-    alt="Thomas"
-  />
-  <img
-    src="/src/decks/assets/headshot-hannah.avif"
-    style="width: 100%; aspect-ratio: 1; object-fit: cover;"
-    alt="Hannah"
-  />
-  <img
-    src="/src/decks/assets/headshot-maia.avif"
-    style="width: 100%; aspect-ratio: 1; object-fit: cover;"
-    alt="Maia"
-  />
-  <img
-    src="/src/decks/assets/headshot-sungyeon.avif"
-    style="width: 100%; aspect-ratio: 1; object-fit: cover;"
-    alt="Sungyeon"
-  />
-  <img
-    src="/src/decks/assets/headshot-safiya.avif"
-    style="width: 100%; aspect-ratio: 1; object-fit: cover;"
-    alt="Safiya"
-  />
-</div>
+<PresenterGrid />

@@ -1,0 +1,88 @@
+---
+// Title-slide headshot grid. Lives inside the `_if: presenters` slide, so it
+// only ships when the deck URL carries `?presenters`. That param's value, if
+// given, picks who appears by first initial -- `?presenters=ceb` -> Cole,
+// Eddie, Ben (in the value's left-to-right order); a bare `?presenters` shows
+// everyone. The grid sizes its columns to whoever remains so faces stay as
+// large as the 1280x720 slide allows.
+//
+// Initials are unique except for Sungyeon and Safiya (both `s`), so `s` selects
+// both -- fine for now, revisit if a talk needs only one of them.
+//
+// (This is an Astro component rather than inline markup in the .mdx partial
+// because MDX parses `{`/`${` inside a `<script>` as JSX expressions; an .astro
+// `<script>` is raw text, so the sizing logic below survives the build.)
+const presenters = [
+  { id: "e", name: "Eddie", src: "/src/decks/assets/headshot-eddie.avif" },
+  { id: "b", name: "Ben", src: "/src/decks/assets/headshot-ben-2.avif" },
+  { id: "c", name: "Cole", src: "/src/decks/assets/headshot-cole.avif" },
+  { id: "t", name: "Thomas", src: "/src/decks/assets/headshot-thomas.avif" },
+  { id: "h", name: "Hannah", src: "/src/decks/assets/headshot-hannah.avif" },
+  { id: "m", name: "Maia", src: "/src/decks/assets/headshot-maia.avif" },
+  {
+    id: "s",
+    name: "Sungyeon",
+    src: "/src/decks/assets/headshot-sungyeon.avif",
+  },
+  { id: "s", name: "Safiya", src: "/src/decks/assets/headshot-safiya.avif" },
+];
+---
+
+<div
+  id="presenter-grid"
+  style="display: grid; grid-template-columns: repeat(4, 1fr); align-content: center; justify-content: center; position: absolute; inset: 0; background: black;"
+>
+  {
+    presenters.map((p) => (
+      <img
+        data-presenter={p.id}
+        src={p.src}
+        alt={p.name}
+        style="width: 100%; aspect-ratio: 1; object-fit: cover;"
+      />
+    ))
+  }
+</div>
+
+<script>
+  // `?presenters` gates this slide (the `_if` directive in the partial). Its
+  // value, if any, picks who shows by first initial -- `?presenters=ceb` keeps
+  // Cole, Eddie and Ben, in the value's order. A bare `?presenters` keeps
+  // everyone. The grid's columns are then chosen to make the faces as large as
+  // a 1280x720 slide allows for however many remain.
+  const grid = document.getElementById("presenter-grid");
+  if (grid) {
+    const wanted = (
+      new URLSearchParams(location.search).get("presenters") || ""
+    ).toLowerCase();
+    const shown: HTMLElement[] = [];
+    for (const img of grid.querySelectorAll<HTMLElement>(
+      "img[data-presenter]",
+    )) {
+      const pos = wanted
+        ? wanted.indexOf(img.dataset.presenter ?? "")
+        : shown.length;
+      if (wanted && pos === -1) {
+        img.style.display = "none";
+      } else {
+        img.style.order = String(pos);
+        shown.push(img);
+      }
+    }
+    const n = shown.length;
+    if (n > 0) {
+      // Pick the column count that maximises the square side min(1280/cols,
+      // 720/rows); on a 16:9 slide this naturally favours wide-and-short grids.
+      let cols = 1;
+      for (let c = 1, best = 0; c <= n; c++) {
+        const side = Math.min(1280 / c, 720 / Math.ceil(n / c));
+        if (side > best) {
+          best = side;
+          cols = c;
+        }
+      }
+      const side = Math.floor(Math.min(1280 / cols, 720 / Math.ceil(n / cols)));
+      grid.style.gridTemplateColumns = `repeat(${cols}, ${side}px)`;
+    }
+  }
+</script>
