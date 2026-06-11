@@ -4,6 +4,10 @@
 
 ![bg](./assets/bg-tool-use-banner.avif)
 
+{/* notes:
+Section beat: an agent is a model that can pause, call a tool, and use the result. We bolt that onto the paper model.
+*/}
+
 ---
 
 ## What makes a model an "agent"?
@@ -14,6 +18,10 @@ an agent is a model that can **call tools**: pause generation, get information
 from "outside" the model, and continue
 
 the loop: generate → trigger word → call tool → write the result → keep going
+
+{/* notes:
+The beat: the model pauses, gets information from outside itself, then continues. The loop is the thing.
+*/}
 
 ---
 
@@ -26,6 +34,10 @@ add **tool-use cutouts** to your spread and designate a tool operator
 when generation hits a trigger word, pause---the operator runs the tool and the
 result becomes the next word(s)
 
+{/* notes:
+Add tool-use cutouts and name a tool operator. On a trigger word, generation pauses and the operator's answer becomes the next word(s). ~2 min set-up.
+*/}
+
 ---
 
 ## Tools: GOOGLE, FRIEND
@@ -36,6 +48,10 @@ result becomes the next word(s)
 | ------------------------------- | ----------------------- | ---------------------------- |
 | <Token next tool>GOOGLE</Token> | a phone search          | one word from the top hit    |
 | <Token next tool>FRIEND</Token> | everyone texts a friend | first single-word reply wins |
+
+{/* notes:
+Two tools: GOOGLE = search on a phone, read the first word of the top hit; FRIEND = everyone texts a friend, first one-word reply wins. Swap in your own if you like.
+*/}
 
 ---
 
@@ -54,6 +70,10 @@ generating from <Token next>a</Token>, you might pick <Cutout prev="a" next="GOO
 hand off to the tool operator---they search on their phone and read out the
 first word of the top hit ("recipe")---write <Token next>recipe</Token>, then
 the trailing <Token next>.</Token> from the cutout, and continue
+
+{/* notes:
+Walk one pick slowly: land on GOOGLE, hand to the operator, they read back one word, write it plus the cutout's trailing full stop, then continue.
+*/}
 
 ---
 
@@ -83,6 +103,10 @@ generate---when you hit a trigger word, hand off to the tool operator
 
 write the operator's answer down as the next word(s), and continue generating
 
+{/* notes:
+On a trigger, hand to the operator and write their answer as the next word(s). 15 min, circulate --- keep the operators moving.
+*/}
+
 ---
 
 {/* _class: hero */}
@@ -90,6 +114,10 @@ write the operator's answer down as the next word(s), and continue generating
 # Shareback
 
 ![bg](./assets/bg-shareback-tool-use.avif)
+
+{/* notes:
+What did the tools add that the bare model couldn't --- fresh, outside information? ~5 min.
+*/}
 
 ---
 
@@ -104,3 +132,7 @@ tool call
 function calling
 
 agentic loop
+
+{/* notes:
+Gloss each: agent = a model that can act, not just talk; tool call = it asks for something outside itself; function calling = the technical name for that; agentic loop = generate, call, read the result, repeat.
+*/}
