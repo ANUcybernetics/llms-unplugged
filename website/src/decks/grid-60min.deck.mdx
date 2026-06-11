@@ -9,6 +9,7 @@ import Timer from "../components/Timer.astro";
 import PresenterGrid from "../components/PresenterGrid.astro";
 import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
 import BgMusic from "../components/BgMusic.astro";
+import UpcomingSessions from "../components/UpcomingSessions.astro";
 import "../styles/widgets.css";
 
 <BgMusic />
@@ -18,33 +19,7 @@ export const EXAMPLE_VOCAB = "see spot run . ,";
 export const EXAMPLE_GENERATION = "see spot , run . run";
 export const EXAMPLE_TEXT = "See Spot run. Run, Spot, run.";
 
-{/* _class: hero */}
-
-# LLMs Unplugged
-
-## Understand AI by building it yourself
-
-![bg](./assets/bg-title-wide.avif)
-
-{/* notes:
-Open with the promise: understand AI by building one yourself, by hand. No computers, no maths background needed.
-*/}
-
----
-
-{/* @include ./partials/ack-country.mdx */}
-
----
-
-{/* @include ./partials/presenters.mdx */}
-
----
-
-{/* @include ./partials/icebreaker.mdx */}
-
----
-
-{/* @include ./partials/grid-intro.mdx */}
+{/* @include ./partials/grid-preamble.mdx */}
 
 ---
 
@@ -57,9 +32,3 @@ Open with the promise: understand AI by building one yourself, by hand. No compu
 ---
 
 {/* @include ./partials/denouement.mdx */}
-
----
-
-{/* _class: socy-logo */}
-
-<SocyLogo />
