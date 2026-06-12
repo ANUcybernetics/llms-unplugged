@@ -30,3 +30,60 @@
     <text x="480" y="488">DeepSeek</text>
   </g>
 </svg>
+
+<style>
+  .ai-venn {
+    /* Full-bleed, like a ![bg] image: absolute positioning takes the svg out
+       of the section's content-sized grid (where a percentage width would
+       collapse against the 300x150 intrinsic-size auto track), and the
+       960x540 viewBox scales edge-to-edge on the fixed 16:9 canvas. */
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ring circle {
+    fill-opacity: 0.12;
+    stroke-width: 3;
+  }
+
+  .ring text {
+    text-anchor: middle;
+    font-weight: 600;
+    font-size: 34px;
+  }
+
+  .ai circle {
+    fill: var(--anu-teal);
+    stroke: var(--anu-teal);
+  }
+
+  .ai text {
+    fill: var(--anu-teal-2);
+  }
+
+  .ml circle {
+    fill: var(--anu-copper);
+    stroke: var(--anu-copper);
+  }
+
+  .ml text {
+    fill: var(--anu-copper-2);
+  }
+
+  .llm circle {
+    fill: var(--anu-gold);
+    stroke: var(--anu-gold);
+  }
+
+  .llm text {
+    fill: var(--anu-gold-tint);
+  }
+
+  .products text {
+    text-anchor: middle;
+    font-size: 24px;
+    fill: var(--anu-white);
+  }
+</style>
