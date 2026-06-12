@@ -1,0 +1,32 @@
+---
+// Staged-build Euler diagram for the "what is this about?" beat: AI contains
+// ML contains LLMs, with named products inside the innermost circle. The AI
+// circle is visible on arrival; each subsequent layer is a Reveal.js
+// fragment, so the presenter narrates while clicking through the build.
+---
+
+<svg
+  class="ai-venn"
+  viewBox="0 0 960 540"
+  role="img"
+  aria-label="Nested circles showing that AI contains machine learning, which contains large language models, which include Claude, ChatGPT, Gemini and DeepSeek"
+>
+  <g class="ring ai">
+    <circle cx="480" cy="290" r="235"></circle>
+    <text x="480" y="115">AI</text>
+  </g>
+  <g class="fragment ring ml">
+    <circle cx="480" cy="352" r="170"></circle>
+    <text x="480" y="232">ML</text>
+  </g>
+  <g class="fragment ring llm">
+    <circle cx="480" cy="410" r="108"></circle>
+    <text x="480" y="342">LLMs</text>
+  </g>
+  <g class="fragment products">
+    <text x="480" y="392">Claude</text>
+    <text x="480" y="424">ChatGPT</text>
+    <text x="480" y="456">Gemini</text>
+    <text x="480" y="488">DeepSeek</text>
+  </g>
+</svg>
