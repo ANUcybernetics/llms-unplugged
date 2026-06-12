@@ -1,21 +1,24 @@
 ---
-title: Agentic Tool Use
-description: Turn your model into an agent by teaching it to call external tools when it
+title: Agentic AI
+description:
+  Turn your model into an agent by teaching it to call external tools when it
   needs information it doesn't have.
 order: 10
 topic: controlling-output
-keyIdea: An agent is a model that runs tools in a loop---recognising when it needs
+keyIdea:
+  An agent is a model that runs tools in a loop---recognising when it needs
   external help, delegating to a tool, and continuing generation with the
   result.
 ---
 
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
-Turn your <GlossaryTerm id="language-model">language model</GlossaryTerm> into an <GlossaryTerm id="agent">agent</GlossaryTerm> by giving it access to external
+Turn your <GlossaryTerm id="language-model">language model</GlossaryTerm> into
+an <GlossaryTerm id="agent">agent</GlossaryTerm> by giving it access to external
 tools---people, objects, or resources in the room---that it can call when it
 needs information beyond what's in the grid.
 
-![Hero image: Agentic Tool Use](../../assets/images/hero-tool-use.avif)
+![Hero image: Agentic AI](../../assets/images/hero-tool-use.avif)
 
 ## You will need
 
@@ -30,11 +33,12 @@ tool and integrate it into your model.
 
 ## Key idea
 
-What makes a language model an "agent"? In practice, it comes down to <GlossaryTerm id="agentic-tool-use">tool
-use</GlossaryTerm>---a model that can recognise special tokens triggering external actions,
-pause generation, call a tool, and incorporate the result before continuing.
-That loop of _generate → call tool → incorporate result → keep generating_ is
-the core of agentic AI.
+What makes a language model an "agent"? In practice, it comes down to
+
+<GlossaryTerm id="tool-use">tool use</GlossaryTerm>---a model that can recognise
+special tokens triggering external actions, pause generation, call a tool, and
+incorporate the result before continuing. That loop of _generate → call tool →
+incorporate result → keep generating_ is the core of agentic AI.
 
 ## Setting up tools
 
@@ -61,8 +65,8 @@ into the room (physical, immediate), `GOOGLE` reaches out to the web
 
 1. Add trigger words to your model's vocabulary (new rows and columns).
 2. Train or manually add counts so trigger words can appear in generation. Each
-   tool-trigger cutout ends with a closing token (e.g., `.`) on the same
-   cutout, so the chain resumes cleanly once the tool returns.
+   tool-trigger cutout ends with a closing token (e.g., `.`) on the same cutout,
+   so the chain resumes cleanly once the tool returns.
 3. During generation, when you sample a trigger word:
    - pause generation
    - formulate a question or request based on context
@@ -106,8 +110,8 @@ words, phrases, even sounds---without breaking the generation loop.
 
 For the activity to work well:
 
-- add trigger words to cutouts where they fit contextually (e.g., `GOOGLE`
-  after "a" or "the", `ACTION` after "we" or "I")
+- add trigger words to cutouts where they fit contextually (e.g., `GOOGLE` after
+  "a" or "the", `ACTION` after "we" or "I")
 - every trigger cutout closes with a common token like `.` on the same
   cutout---this silently bridges the tool's result back into the model's
   vocabulary
@@ -155,11 +159,11 @@ plan and execute multi-step tasks.
 use in a loop. As Simon Willison
 [puts it](https://simonwillison.net/2025/Sep/30/designing-agentic-loops/), an
 
-<GlossaryTerm id="llm">LLM</GlossaryTerm> agent is something that "runs tools in a loop to achieve a
-goal"---and that's exactly what your model is doing.
+<GlossaryTerm id="llm">LLM</GlossaryTerm> agent is something that "runs tools in
+a loop to achieve a goal"---and that's exactly what your model is doing.
 
-<GlossaryTerm id="tool-use">Tool use</GlossaryTerm> (also called "function calling") is how modern
-AI assistants perform actions in the world:
+<GlossaryTerm id="tool-use">Tool use</GlossaryTerm> (also called "function
+calling") is how modern AI assistants perform actions in the world:
 
 - **the agentic loop**: generate → detect tool call → execute tool → feed result
   back → continue generating, exactly like your trigger-word cycle

@@ -17,7 +17,7 @@ export const EXTENSIONS = [
   "pretrained-generation",
   "more-context",
   "sampling",
-  "agentic-tool-use",
+  "agentic-ai",
   "sycophancy",
   "in-context-memory",
   "induction-heads",

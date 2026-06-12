@@ -6,6 +6,10 @@ import { astromotion, deckRemarkPlugins } from "astromotion";
 
 export default defineConfig({
   site: "https://www.llmsunplugged.org",
+  redirects: {
+    // lesson renamed from "Agentic tool use" (June 2026)
+    "/lessons/agentic-tool-use": "/lessons/agentic-ai",
+  },
   fonts: [
     {
       name: "Libertinus Serif",

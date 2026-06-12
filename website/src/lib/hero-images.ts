@@ -30,7 +30,7 @@ export function findHeroImage(slug: string): ImageMetadata | undefined {
 const LESSON_HERO_ALIASES: Record<string, string> = {
   training: "grid-training",
   generation: "grid-generation",
-  "agentic-tool-use": "tool-use",
+  "agentic-ai": "tool-use",
 };
 
 export function lessonHeroImage(slug: string): ImageMetadata | undefined {

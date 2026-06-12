@@ -573,7 +573,7 @@
 // Split tokens so that tool-trigger cutouts get their own page(s) at the end
 // of the booklet. The teacher hands out the normal cutouts during the n-gram
 // lesson, and only distributes the tool triggers once the class moves on to
-// the agentic tool-use lesson.
+// the agentic AI lesson.
 #let normal_tokens = tokens.filter(t => not t.at("is_tool", default: false))
 #let tool_tokens = tokens.filter(t => t.at("is_tool", default: false))
 

@@ -472,16 +472,18 @@
     - label: LoRA
       href: /lessons/lora
 
-- id: agentic-tool-use
-  term: Agentic tool use
+- id: agentic-ai
+  term: Agentic AI
   category: advanced
   description: >-
-    The ability of language models to act as agents by recognising when to call
-    external tools (like calculators or search engines) in a loop rather than
-    generating text directly.
+    An approach to AI where language models act as agents, recognising when to
+    call external tools (like calculators or search engines) in a loop rather
+    than generating text directly.
+  synonyms:
+    - agentic tool use
   see:
-    - label: Agentic Tool Use
-      href: /lessons/agentic-tool-use
+    - label: Agentic AI
+      href: /lessons/agentic-ai
 
 - id: agent
   term: Agent
@@ -493,8 +495,8 @@
   synonyms:
     - AI agent
   see:
-    - label: Agentic Tool Use
-      href: /lessons/agentic-tool-use
+    - label: Agentic AI
+      href: /lessons/agentic-ai
 
 - id: tool-use
   term: Tool use
@@ -507,8 +509,8 @@
   synonyms:
     - function calling
   see:
-    - label: Agentic Tool Use
-      href: /lessons/agentic-tool-use
+    - label: Agentic AI
+      href: /lessons/agentic-ai
 
 - id: synthetic-data
   term: Synthetic data
