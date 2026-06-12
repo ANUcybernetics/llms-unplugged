@@ -1,0 +1,118 @@
+{/* _class: hero */}
+
+# Agentic tool use
+
+![bg](./assets/bg-tool-use-banner.avif)
+
+{/* notes:
+Section beat: an agent is a model that can pause, call a tool, and use the result. We bolt that onto the booklet.
+*/}
+
+---
+
+## What makes a model an "agent"?
+
+![bg right:40%](./assets/bg-insight-tool-use.avif)
+
+an agent is a model that can **call tools**: pause generation, get information
+from "outside" the model, and continue
+
+the loop: generate → trigger token → call tool → write the result → keep going
+
+{/* notes:
+The beat: the model pauses, gets information from outside itself, then continues. The loop is the thing.
+*/}
+
+---
+
+## The recipe
+
+![bg right:40%](./assets/bg-tool-use-triggers.avif)
+
+{/* notes:
+<ol>
+<li><strong>generate</strong> from the booklet as before, rolling for each next word</li>
+<li>when you land on a <strong>punctuation token</strong> (like <code>.</code> or <code>,</code>), pause --- that's a tool call</li>
+<li><strong>text the word you just wrote</strong> to 3 friends</li>
+<li><strong>write down</strong> the first word of the first reply, then the punctuation token you rolled</li>
+<li><strong>continue</strong> generating from the punctuation token</li>
+</ol>
+*/}
+
+generate from the booklet as before, but every punctuation token triggers a
+**tool call**: text the previous word to 3 friends, and the first word of the
+first reply goes into your text---followed by the punctuation you rolled
+
+---
+
+## Worked example
+
+![bg right:40%](./assets/bg-example.avif)
+
+your text so far is `the cat sat`, and the dice land on `.`---pause, that's a
+tool call
+
+text "sat" to 3 friends; the first reply back is "down by the river"
+
+write `down`, then the `.` you rolled anyway, and continue generating from `.`
+
+{/* notes:
+Walk it slowly: the punctuation is the trigger, the previous word is the tool input, the first word of the first reply is the tool result. The punctuation still gets written --- the tool result slots in just before it.
+*/}
+
+---
+
+## You will need
+
+![bg right:40%](./assets/bg-tool-use-handoff.avif)
+
+your pre-trained booklet, dice, pen and paper (as before)
+
+a phone
+
+3 friends who text back quickly
+
+{/* notes:
+Texting three friends is the retry logic --- first reply wins. If no-one replies before the next punctuation token, queue it up and back-fill. ~2 min set-up.
+*/}
+
+---
+
+{/* _class: hero */}
+
+# Agentic tool use
+
+![bg](./assets/bg-tool-use-banner.avif)
+
+<Timer minutes={15} overlay />
+
+{/* notes:
+Generate from the booklet --- on punctuation, text the previous word to 3 friends and splice in the first word of the first reply. 15 min (texting latency is real); circulate.
+*/}
+
+---
+
+{/* _class: hero */}
+
+# Shareback
+
+![bg](./assets/bg-shareback-tool-use.avif)
+
+{/* notes:
+What did the tool calls add that the bare booklet couldn't --- fresh, outside information? Did the friends' words fit the text, or derail it? ~5 min.
+*/}
+
+---
+
+## The _language_ of language models
+
+![bg right:60%](./assets/bg-vocabulary.avif)
+
+- agent
+- tool call
+- function calling
+- agentic loop
+
+{/* notes:
+Gloss each: agent = a model that can act, not just talk; tool call = it asks for something outside itself; function calling = the technical name for that; agentic loop = generate, call, read the result, repeat.
+*/}
