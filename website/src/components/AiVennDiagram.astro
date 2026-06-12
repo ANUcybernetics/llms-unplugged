@@ -54,22 +54,25 @@
     font-size: 34px;
   }
 
+  /* Concentric warm-gold ramp: pale tint (AI, broadest) through soft gold
+     (ML) to rich gold (LLMs), so the fills stack and intensify toward the
+     gold core the talk is heading for. */
   .ai circle {
-    fill: var(--anu-teal);
-    stroke: var(--anu-teal);
+    fill: var(--anu-gold-tint);
+    stroke: var(--anu-gold-tint);
   }
 
   .ai text {
-    fill: var(--anu-teal-2);
+    fill: var(--anu-gold-tint);
   }
 
   .ml circle {
-    fill: var(--anu-copper);
-    stroke: var(--anu-copper);
+    fill: var(--anu-gold-2);
+    stroke: var(--anu-gold-2);
   }
 
   .ml text {
-    fill: var(--anu-copper-2);
+    fill: var(--anu-gold-2);
   }
 
   .llm circle {
