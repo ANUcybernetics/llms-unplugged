@@ -1,10 +1,12 @@
 ---
 title: More Context
-description: Extend the bigram model to two words of context with a trigram, see why that
+description:
+  Extend the bigram model to two words of context with a trigram, see why that
   gets expensive, then add cheap extra context with a skip grid.
 order: 5
 topic: scaling-up
-keyIdea: More context sharpens predictions---but the full trigram blows up, so we also
+keyIdea:
+  More context sharpens predictions---but the full trigram blows up, so we also
   learn a cheaper way to pull in an earlier word.
 ---
 
@@ -321,10 +323,11 @@ that matters---where `new york` predicts something that neither `new` alone nor
 
 That gap is exactly the problem modern models solve with the
 
-<GlossaryTerm id="attention-mechanism">attention mechanism</GlossaryTerm>. The skip grid mixes in
-earlier context with _fixed_ weights (always the word two back, always added in the same way).
-Attention _learns_ which earlier words matter for each prediction, and how much---so it can decide,
-on the fly, when the combination matters and when it doesn't.
+<GlossaryTerm id="attention-mechanism">attention mechanism</GlossaryTerm>. The
+skip grid mixes in earlier context with _fixed_ weights (always the word two
+back, always added in the same way). Attention _learns_ which earlier words
+matter for each prediction, and how much---so it can decide, on the fly, when
+the combination matters and when it doesn't.
 
 ## Instructor notes
 
@@ -352,7 +355,8 @@ explicit count for every possible context the way an n-gram table does.
 The skip grid shows the first step _beyond_ counting exact contexts: mixing in
 earlier positions with fixed weights. Real models generalise this into
 
-<GlossaryTerm id="attention-mechanism">attention</GlossaryTerm>---instead of "always add the word
-two back", the model _learns_ which previous words to pull in for each prediction. Your hand-built
-skip grid is fixed and additive; attention is learned, weighted, and dynamic. Both share the core
-insight: you don't have to see the _exact_ context before to make a good guess.
+<GlossaryTerm id="attention-mechanism">attention</GlossaryTerm>---instead of
+"always add the word two back", the model _learns_ which previous words to pull
+in for each prediction. Your hand-built skip grid is fixed and additive;
+attention is learned, weighted, and dynamic. Both share the core insight: you
+don't have to see the _exact_ context before to make a good guess.

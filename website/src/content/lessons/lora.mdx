@@ -1,6 +1,7 @@
 ---
 title: LoRA
-description: Add a lightweight adaptation layer to retarget a trained model without
+description:
+  Add a lightweight adaptation layer to retarget a trained model without
   retraining everything.
 order: 8
 topic: adaptation-and-data
@@ -30,9 +31,9 @@ layers.
 
 ## Key idea
 
-<GlossaryTerm id="lora">Low-Rank Adaptation (LoRA)</GlossaryTerm> stores only the _changes_ from the
-base model, so it can be much smaller. During generation you add LoRA counts to the base counts
-(optionally scaled) and sample as normal.
+<GlossaryTerm id="lora">Low-Rank Adaptation (LoRA)</GlossaryTerm> stores only
+the _changes_ from the base model, so it can be much smaller. During generation
+you add LoRA counts to the base counts (optionally scaled) and sample as normal.
 
 ## Algorithm
 

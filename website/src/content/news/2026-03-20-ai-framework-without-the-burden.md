@@ -3,7 +3,8 @@ title: "The AI schools framework is right about the goal — but there's a simpl
   path"
 date: 2026-03-20
 author: Ben Swift
-description: The Australian Framework for Generative AI in Schools asks teachers to do
+description:
+  The Australian Framework for Generative AI in Schools asks teachers to do
   extraordinary things. There's a simpler way to build genuine AI literacy.
 ---
 

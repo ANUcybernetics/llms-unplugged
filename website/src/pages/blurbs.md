@@ -1,7 +1,8 @@
 ---
 layout: ../layouts/PageLayout.astro
 title: Workshop blurbs
-description: Standard descriptions of the LLMs Unplugged workshop at various lengths, for
+description:
+  Standard descriptions of the LLMs Unplugged workshop at various lengths, for
   hosts, event organisers, and conference programs.
 ---
 

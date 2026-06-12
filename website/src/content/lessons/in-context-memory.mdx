@@ -1,10 +1,12 @@
 ---
 title: In-context Memory
-description: Add a short-term memory that nudges generation toward recently-used words,
+description:
+  Add a short-term memory that nudges generation toward recently-used words,
   keeping text on topic---a hands-on model of attention and in-context learning.
 order: 6
 topic: how-models-understand
-keyIdea: A short-term memory that boosts recently-seen words---within what the model
+keyIdea:
+  A short-term memory that boosts recently-seen words---within what the model
   already allows---keeps text on topic, the way attention reuses earlier context.
 ---
 
@@ -174,9 +176,10 @@ This is a hands-on model of two of the most important things modern LLMs do.
 looks back over everything you've generated and lets it influence the next
 choice. That's the heart of the
 
-<GlossaryTerm id="attention-mechanism">attention mechanism</GlossaryTerm>: when predicting the next
-word, the model reaches back across the whole context and weights what it finds. Your memory is a
-crude, fixed version (boost recent words); attention is learned and content-sensitive.
+<GlossaryTerm id="attention-mechanism">attention mechanism</GlossaryTerm>: when
+predicting the next word, the model reaches back across the whole context and
+weights what it finds. Your memory is a crude, fixed version (boost recent
+words); attention is learned and content-sensitive.
 
 **In-context learning.** Notice that the model never retrained---the behaviour
 changed purely because of what was already in the text. This is why you can give

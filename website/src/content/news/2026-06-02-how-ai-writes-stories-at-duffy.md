@@ -2,7 +2,8 @@
 title: How AI writes stories at Duffy Primary
 date: 2026-06-02
 author: Ben Swift
-description: Taking LLMs Unplugged into a Year 5 classroom at Duffy Primary School, with
+description:
+  Taking LLMs Unplugged into a Year 5 classroom at Duffy Primary School, with
   the ACT Academy of Future Skills
 ---
 

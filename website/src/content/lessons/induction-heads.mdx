@@ -1,10 +1,12 @@
 ---
 title: Induction Heads
-description: Add a rule that completes patterns from the text itself---find the last time
+description:
+  Add a rule that completes patterns from the text itself---find the last time
   the current word appeared and copy what followed it---the circuit behind in-context learning.
 order: 7
 topic: how-models-understand
-keyIdea: Find the last time the current word appeared and copy what followed it---building
+keyIdea:
+  Find the last time the current word appeared and copy what followed it---building
   a bigram from the context on the fly, the way induction heads complete patterns.
 ---
 
@@ -47,8 +49,9 @@ So when the current word is `cat`, you scan back through what you've already
 written to the most recent earlier `cat`, read the word that followed it, and
 treat that as a strong suggestion for the next word. In effect you're building a
 
-<GlossaryTerm id="bigram-model">bigram</GlossaryTerm> out of the text in front of you, on the
-fly---and using it to finish patterns the base model has never seen.
+<GlossaryTerm id="bigram-model">bigram</GlossaryTerm> out of the text in front
+of you, on the fly---and using it to finish patterns the base model has never
+seen.
 
 ## Algorithm
 
@@ -127,8 +130,9 @@ works identically whichever base you started from.
 Induction heads are a real, identified circuit inside transformers---and they
 turn out to be one of the main mechanisms behind
 
-<GlossaryTerm id="in-context-learning">in-context learning</GlossaryTerm>, the ability to pick up a
-pattern from the prompt without any change to the model's weights.
+<GlossaryTerm id="in-context-learning">in-context learning</GlossaryTerm>, the
+ability to pick up a pattern from the prompt without any change to the model's
+weights.
 
 - **the rule is the same**: a transformer's induction head finds an earlier
   place where the current token appeared and copies what came after it---exactly
