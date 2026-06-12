@@ -1,0 +1,178 @@
+{/* _class: hero */}
+
+# Scaling up
+
+## from your grid to Claude & ChatGPT
+
+![bg](./assets/bg-information-flow.avif)
+
+{/* notes:
+Bridge segment, no activity: how the thing they just built relates to the real thing. ~8 min of talk; keep it moving.
+*/}
+
+---
+
+## The same game
+
+![bg right:40%](./assets/bg-domino-chain.avif)
+
+Claude and ChatGPT play **exactly the game you just played**
+
+look at the context, weigh up every possible next word, roll the dice, write it down, repeat
+
+everything else is a matter of scale
+
+{/* notes:
+The reassurance slide: what they built isn't a cartoon of an LLM, it's the actual mechanism at human scale. Then set up the question: so what <em>is</em> different? Three things --- more context, attention, and what the patterns are stored in.
+*/}
+
+---
+
+## More context
+
+<div class="context-scale">
+  <div class="context-row">
+    <span class="context-label">your bigram grid</span>
+    <span class="context-tokens">
+      <span class="token attn-weak">see</span>
+      <span class="token attn-weak">spot</span>
+      <span class="token attn-weak">run</span>
+      <span class="token attn-weak punctuation">.</span>
+      <span class="token attn-weak">run</span>
+      <span class="token attn-weak punctuation">,</span>
+      <span class="token attn-weak">spot</span>
+      <span class="token attn-weak punctuation">,</span>
+      <span class="token attn-strong">run</span>
+      <span class="context-next">?</span>
+    </span>
+  </div>
+  <div class="context-row">
+    <span class="context-label">Claude / ChatGPT</span>
+    <span class="context-tokens">
+      <span class="context-more">⋯ hundreds of pages before this ⋯</span>
+      <span class="token attn-strong">see</span>
+      <span class="token attn-strong">spot</span>
+      <span class="token attn-strong">run</span>
+      <span class="token attn-strong punctuation">.</span>
+      <span class="token attn-strong">run</span>
+      <span class="token attn-strong punctuation">,</span>
+      <span class="token attn-strong">spot</span>
+      <span class="token attn-strong punctuation">,</span>
+      <span class="token attn-strong">run</span>
+      <span class="context-next">?</span>
+    </span>
+  </div>
+</div>
+
+your grid sees **one word**; a frontier model sees **hundreds of thousands of
+tokens** at once---your whole conversation, documents, code
+
+{/* notes:
+Tie it to the language slide from earlier: this is the "context window". One word of context is why their generated text wanders --- it forgets where it was going one word ago. Real models hold a few novels' worth in view for every single prediction.
+*/}
+
+---
+
+## Why not just a bigger grid?
+
+with a real model's vocabulary of ~50,000 tokens:
+
+| context          | rows in the grid                     |
+| ---------------- | ------------------------------------ |
+| 1 word           | 50,000                               |
+| 2 words          | 2.5 billion                          |
+| 3 words          | 125 trillion                         |
+| a whole sentence | more rows than atoms in the universe |
+
+every extra word of context multiplies the grid by the whole vocabulary---you
+can't tally your way to a long memory
+
+{/* notes:
+The point isn't the numbers, it's the shape: exponential blow-up. Almost every row would also be empty --- most 3-word sequences never occur in any training text. A bigger lookup table is the wrong tool; you need a different mechanism.
+*/}
+
+---
+
+## Attention: learning where to look
+
+<div class="context-scale">
+  <div class="context-row">
+    <span class="context-tokens">
+      <span class="token attn-weak">the</span>
+      <span class="token attn-strong">keys</span>
+      <span class="token attn-weak">to</span>
+      <span class="token attn-weak">the</span>
+      <span class="token attn-medium">cabinet</span>
+      <span class="context-next">?</span>
+    </span>
+  </div>
+</div>
+
+from `cabinet` alone, your bigram would guess _is_---but the next word is
+_are_, because of `keys`, four words back
+
+**attention** lets every earlier word vote on what comes next---and the model
+_learns_ how big each word's vote should be
+
+{/* notes:
+This is the transformer's central trick, and the answer to the blown-up grid: instead of a row for every possible context, each prediction looks back over the whole context and weighs which words matter. For "are" vs "is" it's the subject, not the nearest noun. If anyone wants a hands-on version: the Induction Heads lesson on the website is a real attention pattern --- "find the last time I saw this word, copy what followed" --- that you can run with pen and paper.
+*/}
+
+---
+
+## Tallies become knobs
+
+![bg right:40%](./assets/bg-paper-mechanism.avif)
+
+your grid stores its patterns as tally marks you can point to
+
+a transformer stores them in **billions of numbers** (its _parameters_), each
+nudged a tiny amount after every wrong guess during training
+
+and similar words share patterns: what the model learns about `dog` also helps
+it with `cat`
+
+{/* notes:
+Training is still counting-ish --- guess the next word, compare with the actual text, adjust --- but the adjustment is spread across billions of dials rather than one tally in one cell. That spreading is why it generalises: "dog" and "cat" end up nearby, so patterns transfer. The cost: you can no longer point to where any one pattern lives.
+*/}
+
+---
+
+## From autocomplete to assistant
+
+![bg right:40%](./assets/bg-dialogue.avif)
+
+everything so far just **continues text**---ask a raw model a question and it
+may well continue with more questions
+
+the helpfulness is trained in afterwards (_post-training_): example
+conversations, plus human feedback on which answers are better
+
+{/* notes:
+A pretrained model is a text-continuer, not an assistant --- prompt it with "what is the capital of France?" and a plausible continuation is a list of more quiz questions. The chat behaviour comes from a second, much smaller phase of training on conversations and preference feedback. Same mechanism underneath; different habits on top.
+*/}
+
+---
+
+{/* _class: impact */}
+
+it's still dice, all the way down
+
+{/* notes:
+Every reply from Claude or ChatGPT is sampled one word at a time, exactly like their dice rolls --- that's why "regenerate" gives a different answer. Bigger grid, learned where to look, but the loop never changed.
+*/}
+
+---
+
+## The _language_ of language models
+
+![bg right:40%](./assets/bg-vocabulary.avif)
+
+- transformer
+- attention
+- parameters
+- post-training
+
+{/* notes:
+Gloss each in a line: transformer = the network architecture behind all of these models; attention = each prediction looks back over the whole context and learns which words matter; parameters = the billions of numbers the tallies became; post-training = the extra training that turns a text-continuer into an assistant.
+*/}

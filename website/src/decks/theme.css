@@ -318,6 +318,84 @@
   display: none;
 }
 
+/* Context-scale diagram (scaling-up partial): rows of .token pills showing
+   how much of the context a model can see, with attention-weight grading.
+   Reuses the widgets.css .token base but resizes it in em — the widget
+   default of 0.875rem is reading-size, far too small on the deck canvas. */
+.reveal .context-scale {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+  margin-block: 0.5em;
+}
+
+.reveal .context-scale .context-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+}
+
+.reveal .context-scale .context-label {
+  flex: 0 0 7em;
+  font-size: 0.55em;
+  text-align: end;
+  color: var(--color-text-secondary);
+}
+
+.reveal .context-scale .context-tokens {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3em;
+}
+
+.reveal .context-scale .token {
+  font-size: 0.65em;
+  line-height: 1.3;
+}
+
+/* widgets.css blows punctuation tokens up to 2em for legibility at reading
+   size; at slide scale that dwarfs the word tokens, so pull it back. */
+.reveal .context-scale .token.punctuation {
+  font-size: 0.8em;
+  line-height: 1;
+}
+
+.reveal .context-scale .token.attn-strong {
+  background: var(--lm-highlight-strong);
+  outline: 2px solid var(--anu-gold);
+  outline-offset: 1px;
+}
+
+.reveal .context-scale .token.attn-medium {
+  background: var(--lm-highlight-medium);
+  outline: 2px solid var(--color-divider);
+  outline-offset: 1px;
+}
+
+.reveal .context-scale .token.attn-weak {
+  opacity: 0.45;
+}
+
+/* Ghost filler standing in for the unseen bulk of a long context. */
+.reveal .context-scale .context-more {
+  font-size: 0.5em;
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+/* Dashed empty slot for the next-token prediction. */
+.reveal .context-scale .context-next {
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  border: 2px dashed var(--anu-gold);
+  border-radius: 0.25em;
+  font-family: var(--font-mono);
+  font-size: 0.65em;
+  line-height: 1.3;
+  color: var(--anu-gold);
+}
+
 /* lm-widget overrides: the widget components (TrainingWidget,
    GenerationWidget, EmbeddingWidget, etc.) are dual-context — they ship in
    lesson MDX on the website and could be embedded in deck slides. The
