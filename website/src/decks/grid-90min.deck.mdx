@@ -12,16 +12,17 @@ import PresenterGrid from "../components/PresenterGrid.astro";
 import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
 import BgMusic from "../components/BgMusic.astro";
 import UpcomingSessions from "../components/UpcomingSessions.astro";
+import {
+  EXAMPLE_TOKENS,
+  EXAMPLE_VOCAB,
+  EXAMPLE_GENERATION,
+  EXAMPLE_TEXT,
+  EXAMPLE_PRETRAINED_SEQ,
+  EXAMPLE_PRETRAINED_ROLLS,
+} from "./examples";
 import "../styles/widgets.css";
 
 <BgMusic />
-
-export const EXAMPLE_TOKENS = "see spot run . run , spot , run .";
-export const EXAMPLE_VOCAB = "see spot run . ,";
-export const EXAMPLE_GENERATION = "see spot , run . run";
-export const EXAMPLE_TEXT = "The cat sat. The cat ran. The dog sat. The cat sat. The dog ran. The cat ran. The hat sat. The dog sat. The cat sat. The hat ran.";
-export const EXAMPLE_PRETRAINED_SEQ = "the cat sat . the dog";
-export const EXAMPLE_PRETRAINED_ROLLS = "27 4 - - 63 -";
 
 {/* @include ./partials/grid-preamble.mdx */}
 
