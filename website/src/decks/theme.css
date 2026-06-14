@@ -396,6 +396,61 @@
   color: var(--anu-gold);
 }
 
+/* "Tallies become knobs": a few countable tally marks (the grid) against a long
+   row of continuous parameters (the transformer). */
+.reveal .context-scale .tally {
+  font-family: var(--font-mono);
+  font-size: 0.7em;
+  letter-spacing: 0.15em;
+  color: var(--anu-gold);
+}
+
+.reveal .context-scale .param {
+  padding: 0.2em 0.4em;
+  border-radius: 0.25em;
+  background: var(--lm-highlight-medium);
+  font-family: var(--font-mono);
+  font-size: 0.5em;
+  color: var(--color-text-secondary);
+}
+
+/* "From continuing to answering": a prompt and the model's reply --- a base
+   model only continues (weak), a post-trained model answers (strong). */
+.reveal .context-scale.qa .context-label {
+  flex-basis: 9em;
+}
+
+.reveal .context-scale.qa .qa {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+.reveal .context-scale.qa .qa-q {
+  font-size: 0.5em;
+  color: var(--color-text-muted);
+}
+
+.reveal .context-scale.qa .qa-a {
+  align-self: start;
+  padding: 0.25em 0.6em;
+  border-radius: 0.25em;
+  font-family: var(--font-mono);
+  font-size: 0.6em;
+}
+
+.reveal .context-scale.qa .qa-a.weak {
+  background: var(--lm-highlight-medium);
+  color: var(--color-text-muted);
+  opacity: 0.7;
+}
+
+.reveal .context-scale.qa .qa-a.strong {
+  background: var(--lm-highlight-strong);
+  outline: 2px solid var(--anu-gold);
+  outline-offset: 1px;
+}
+
 /* lm-widget overrides: the widget components (TrainingWidget,
    GenerationWidget, EmbeddingWidget, etc.) are dual-context — they ship in
    lesson MDX on the website and could be embedded in deck slides. The

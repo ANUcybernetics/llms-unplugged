@@ -2,28 +2,12 @@
 
 # Scaling up
 
-## from your grid to Claude & ChatGPT
+## Claude & ChatGPT play the same game you just did
 
 ![bg](./assets/bg-information-flow.avif)
 
 {/* notes:
-Bridge segment, no activity: how the thing they just built relates to the real thing. ~8 min of talk; keep it moving.
-*/}
-
----
-
-## The same game
-
-![bg right:40%](./assets/bg-domino-chain.avif)
-
-Claude and ChatGPT play **exactly the game you just played**
-
-look at the context, weigh up every possible next word, roll the dice, write it down, repeat
-
-everything else is a matter of scale
-
-{/* notes:
-The reassurance slide: what they built isn't a cartoon of an LLM, it's the actual mechanism at human scale. Then set up the question: so what <em>is</em> different? Three things --- more context, attention, and what the patterns are stored in.
+The reassurance beat: what they built isn't a cartoon of an LLM, it's the real mechanism at human scale --- look at the context, weigh every possible next word, roll the dice, write it down, repeat. So what's actually different? More context, attention, billions of numbers instead of tallies, and a second round of training. Each is a diagram coming up. ~8 min, keep it moving.
 */}
 
 ---
@@ -64,31 +48,10 @@ The reassurance slide: what they built isn't a cartoon of an LLM, it's the actua
   </div>
 </div>
 
-your grid sees **one word**; a frontier model sees **hundreds of thousands of
-tokens** at once---your whole conversation, documents, code
+your grid sees **one word**; Claude sees **hundreds of thousands**
 
 {/* notes:
-Tie it to the language slide from earlier: this is the "context window". One word of context is why their generated text wanders --- it forgets where it was going one word ago. Real models hold a few novels' worth in view for every single prediction.
-*/}
-
----
-
-## Why not just a bigger grid?
-
-with a real model's vocabulary of ~50,000 tokens:
-
-| context          | rows in the grid                     |
-| ---------------- | ------------------------------------ |
-| 1 word           | 50,000                               |
-| 2 words          | 2.5 billion                          |
-| 3 words          | 125 trillion                         |
-| a whole sentence | more rows than atoms in the universe |
-
-every extra word of context multiplies the grid by the whole vocabulary---you
-can't tally your way to a long memory
-
-{/* notes:
-The point isn't the numbers, it's the shape: exponential blow-up. Almost every row would also be empty --- most 3-word sequences never occur in any training text. A bigger lookup table is the wrong tool; you need a different mechanism.
+This is the "context window". One word of context is why their generated text wanders --- it forgets where it was going one word ago. Real models hold a few novels' worth in view for every single prediction.
 */}
 
 ---
@@ -108,48 +71,76 @@ The point isn't the numbers, it's the shape: exponential blow-up. Almost every r
   </div>
 </div>
 
-from `cabinet` alone, your bigram would guess _is_---but the next word is
-_are_, because of `keys`, four words back
+from `cabinet` alone you'd guess _is_---but it's _are_, because of `keys`, four
+words back
 
-**attention** lets every earlier word vote on what comes next---and the model
-_learns_ how big each word's vote should be
+**attention** lets every earlier word vote on what comes next, and the model
+_learns_ the weights---no grid could ever be that big
 
 {/* notes:
-This is the transformer's central trick, and the answer to the blown-up grid: instead of a row for every possible context, each prediction looks back over the whole context and weighs which words matter. For "are" vs "is" it's the subject, not the nearest noun. If anyone wants a hands-on version: the Induction Heads lesson on the website is a real attention pattern --- "find the last time I saw this word, copy what followed" --- that you can run with pen and paper.
+The transformer's central trick, and the answer to the blown-up grid: instead of a row for every possible context, each prediction looks back over the whole context and weighs which words matter. For "are" vs "is" it's the subject, not the nearest noun. Hands-on version: the Induction Heads lesson on the website is a real attention pattern --- "find the last time I saw this word, copy what followed" --- that you can run with pen and paper.
 */}
 
 ---
 
 ## Tallies become knobs
 
-![bg right:40%](./assets/bg-paper-mechanism.avif)
+<div class="context-scale">
+  <div class="context-row">
+    <span class="context-label">your grid</span>
+    <span class="context-tokens">
+      <span class="token">run</span>
+      <span class="token punctuation">.</span>
+      <span class="tally">||||</span>
+    </span>
+  </div>
+  <div class="context-row">
+    <span class="context-label">a transformer</span>
+    <span class="context-tokens">
+      <span class="param">0.31</span>
+      <span class="param">−1.20</span>
+      <span class="param">0.08</span>
+      <span class="param">0.94</span>
+      <span class="param">−0.55</span>
+      <span class="param">1.30</span>
+      <span class="context-more">× billions</span>
+    </span>
+  </div>
+</div>
 
-your grid stores its patterns as tally marks you can point to
-
-a transformer stores them in **billions of numbers** (its _parameters_), each
-nudged a tiny amount after every wrong guess during training
-
-and similar words share patterns: what the model learns about `dog` also helps
-it with `cat`
+the same patterns, now **billions of tunable numbers**---so similar words like
+`dog` and `cat` come to share them
 
 {/* notes:
-Training is still counting-ish --- guess the next word, compare with the actual text, adjust --- but the adjustment is spread across billions of dials rather than one tally in one cell. That spreading is why it generalises: "dog" and "cat" end up nearby, so patterns transfer. The cost: you can no longer point to where any one pattern lives.
+Your grid stores patterns as tally marks you can point to. A transformer spreads them across billions of numbers (its parameters), each nudged a tiny amount after every wrong guess in training. That spreading is why it generalises --- "dog" and "cat" end up sharing patterns. The cost: you can no longer point to where any one pattern lives.
 */}
 
 ---
 
-## From autocomplete to assistant
+## From continuing to answering
 
-![bg right:40%](./assets/bg-dialogue.avif)
+<div class="context-scale qa">
+  <div class="context-row">
+    <span class="context-label">a base model</span>
+    <span class="qa">
+      <span class="qa-q">"what is the capital of France?"</span>
+      <span class="qa-a weak">…and the capital of Spain is…</span>
+    </span>
+  </div>
+  <div class="context-row">
+    <span class="context-label">+ post-training</span>
+    <span class="qa">
+      <span class="qa-q">"what is the capital of France?"</span>
+      <span class="qa-a strong">Paris.</span>
+    </span>
+  </div>
+</div>
 
-everything so far just **continues text**---ask a raw model a question and it
-may well continue with more questions
-
-the helpfulness is trained in afterwards (_post-training_): example
-conversations, plus human feedback on which answers are better
+everything you built only **continues** text---**post-training** on example
+conversations is what turns a _continuer_ into an _assistant_
 
 {/* notes:
-A pretrained model is a text-continuer, not an assistant --- prompt it with "what is the capital of France?" and a plausible continuation is a list of more quiz questions. The chat behaviour comes from a second, much smaller phase of training on conversations and preference feedback. Same mechanism underneath; different habits on top.
+A pretrained model is a text-continuer, not an assistant --- prompt it with a question and a plausible continuation is more questions. The chat behaviour comes from a second, much smaller phase of training on example conversations plus feedback on which answers people preferred. Same predict-the-next-word mechanism underneath; different data, different habits on top.
 */}
 
 ---
@@ -159,20 +150,5 @@ A pretrained model is a text-continuer, not an assistant --- prompt it with "wha
 it's still dice, all the way down
 
 {/* notes:
-Every reply from Claude or ChatGPT is sampled one word at a time, exactly like their dice rolls --- that's why "regenerate" gives a different answer. Bigger grid, learned where to look, but the loop never changed.
-*/}
-
----
-
-## The _language_ of language models
-
-![bg right:40%](./assets/bg-vocabulary.avif)
-
-- transformer
-- attention
-- parameters
-- post-training
-
-{/* notes:
-Gloss each in a line: transformer = the network architecture behind all of these models; attention = each prediction looks back over the whole context and learns which words matter; parameters = the billions of numbers the tallies became; post-training = the extra training that turns a text-continuer into an assistant.
+Every reply from Claude or ChatGPT is sampled one word at a time, exactly like their dice rolls --- that's why "regenerate" gives a different answer. Bigger context, learned where to look, billions of numbers, a politeness pass --- but the loop never changed.
 */}
