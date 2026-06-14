@@ -7,11 +7,19 @@
 // splices a partial into a slide body, so it can't hoist module-level imports.)
 // Cutout decks use their own example data and are intentionally kept separate.
 
-// Bigram model --- "See Spot run. Run, Spot, run." --- drives grid-training and
-// grid-generation.
-export const EXAMPLE_TOKENS = "see spot run . run , spot , run .";
-export const EXAMPLE_VOCAB = "see spot run . ,";
-export const EXAMPLE_GENERATION = "see spot , run . run";
+// Bigram model --- "Run, Spot, run. See Spot run." --- drives grid-training and
+// grid-generation. The clause order is deliberate: it puts `see` last in the
+// vocabulary so the generation walk can start from a row that isn't the first
+// one (showing you can begin anywhere), while still hitting the no-choice →
+// equal → unequal progression.
+export const EXAMPLE_TOKENS = "run , spot , run . see spot run .";
+export const EXAMPLE_VOCAB = "run , spot . see";
+// The walk starts at `see` (the last grid row), hits no-choice → equal → equal
+// → unequal, rolls on past the full stop, and loops back to `see`.
+export const EXAMPLE_GENERATION = "see spot , run . see";
+// One d10 roll (0-9) per generation step; "-" marks a step with a single option
+// (no roll needed). The choices: spot→`,` (rolled 2), `,`→run (7), run→`.` (3).
+export const EXAMPLE_GENERATION_ROLLS = "- 2 7 3 - -";
 
 // Pre-trained model --- a larger corpus --- drives grid-pretrained-generation
 // (the 90min and 2h decks only).

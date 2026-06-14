@@ -12,7 +12,7 @@
 
 {/* notes:
 <ol>
-<li><strong>choose</strong> a starting word from your grid</li>
+<li><strong>choose</strong> a starting word from your grid (any word --- not just the first one)</li>
 <li><strong>look</strong> at that word's row to find all possible next words and their counts</li>
 <li><strong>roll dice</strong> weighted by the counts to pick the next word</li>
 <li><strong>write down</strong> the chosen word and make it your new starting word</li>
@@ -26,49 +26,89 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## Generation: start with `see`
 
-{/* notes: only one option &mdash; no dice roll needed */}
+{/* notes: any word will do as a seed --- we're starting from `see`, which is the last row, to show you don't have to begin at the top. Only one option here, so no roll. */}
 
-<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={0} />
+<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={0} />
 
 ---
 
 ## Generation: from `spot`
 
-{/* notes: two options (<code>run</code> and <code>,</code>) &mdash; roll dice! */}
+{/* notes: two options in this row (`,` and `run`) with equal tallies --- highlight both, then roll */}
 
-<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={1} />
+<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={1} phase="preroll" />
+
+---
+
+## How the die chooses: `spot`
+
+{/* notes: equal tallies, so each option gets an equal share of the ten d10 faces --- 0-4 for one, 5-9 for the other. We rolled a 2. */}
+
+<DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} currentWord="spot" rolled={2} />
+
+---
+
+## Generation: `spot` → `,`
+
+{/* notes: the 2 landed in the `,` band, so `,` is our next word */}
+
+<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={1} />
 
 ---
 
 ## Generation: from `,`
 
-{/* notes: two options (<code>spot</code> and <code>run</code>) &mdash; roll dice! */}
+{/* notes: another two-option row (`spot` and `run`), still equal --- both highlighted, then roll */}
 
-<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={2} />
+<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={2} phase="preroll" />
+
+---
+
+## Generation: `,` → `run`
+
+{/* notes: rolled a 7, which lands in the `run` band */}
+
+<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={2} />
 
 ---
 
 ## Generation: from `run`
 
-{/* notes: two options &mdash; but <code>.</code> has two tallies to <code>,</code>'s one, so it's twice as likely */}
+{/* notes: two options again --- but `.` has two tallies to `,`'s one, so this isn't a 50/50 roll */}
 
-<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={3} />
+<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={3} phase="preroll" />
+
+---
+
+## How the die chooses: `run`
+
+{/* notes: `.` has twice the tallies, so it gets more of the faces (0-6) than `,` (7-9). With a ten-sided die that's the closest split rather than exactly 2:1 --- the point is more tallies → more faces → more likely. We rolled a 3. */}
+
+<DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} currentWord="run" rolled={3} />
+
+---
+
+## Generation: `run` → `.`
+
+{/* notes: the 3 sits in the `.` band, so we pick `.` */}
+
+<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={3} />
 
 ---
 
 ## Generation: from `.`
 
-{/* notes: only one option (<code>run</code>) */}
+{/* notes: only one option (`see`) --- no roll. Note we keep rolling straight past the full stop; the model has no idea a sentence just ended. */}
 
-<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={4} />
+<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={4} />
 
 ---
 
-## Generation: from `run` again
+## Generation: back to `see`
 
-{/* notes: and so on... */}
+{/* notes: and so on --- we've looped back to where we started. Keep going for as long as you like; you decide when to stop. */}
 
-<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} step={5} />
+<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={5} />
 
 ---
 
@@ -76,7 +116,7 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ![bg right:40%](./assets/bg-generated-text.avif)
 
-_"see spot, run. run"_
+_"see spot, run. see"_
 
 a new sentence --- not in the training data!
 

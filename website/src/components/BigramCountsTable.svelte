@@ -10,6 +10,10 @@
     activeRow?: string | null;
     /** Single cell to ring as the chosen/current pair, written [from, to]. */
     currentCell?: [string, string] | null;
+    /** Cells to mark as candidate options (dashed ring), each written
+        [from, to]. Used before a dice roll to show every option in play; the
+        eventually-chosen cell also gets the solid `currentCell` ring on top. */
+    candidateCells?: [string, string][] | null;
     /** When set, only these tokens' row/column headings are shown; the rest are
         still laid out (so the grid keeps its full size) but stay invisible until
         revealed. Null shows every heading. */
@@ -21,10 +25,14 @@
     bigrams,
     activeRow = null,
     currentCell = null,
+    candidateCells = null,
     revealedTokens = null,
   }: Props = $props();
 
   const isRevealed = (token: string) => revealedTokens == null || revealedTokens.has(token);
+
+  const isCandidate = (row: string, col: string) =>
+    candidateCells != null && candidateCells.some(([from, to]) => from === row && to === col);
 
   const counts = $derived.by(() => {
     const m = new Map<string, Map<string, number>>();
@@ -56,7 +64,7 @@
           {@const count = counts.get(row)?.get(col) || 0}
           {@const isCurrent =
             currentCell != null && row === currentCell[0] && col === currentCell[1]}
-          <td class="grid-cell" class:current={isCurrent}>
+          <td class="grid-cell" class:current={isCurrent} class:candidate={isCandidate(row, col)}>
             {count > 0 ? tally(count) : " "}
           </td>
         {/each}
@@ -99,8 +107,7 @@
 
   /* Headings fade in as the build reveals each token; the cells they sit in are
      always present, so the grid keeps its full size and never shifts. */
-  table.bigram-grid th code,
-  table.bigram-grid td code {
+  table.bigram-grid th code {
     transition: opacity 0.3s ease;
   }
 
@@ -115,6 +122,14 @@
 
   tr.active-row td {
     background: color-mix(in srgb, var(--anu-gold) 15%, transparent);
+  }
+
+  /* Candidate options before a roll: a dashed ring on every cell in play. The
+     chosen cell later gains `.current` (solid ring) on top --- declared after
+     `.candidate` so its outline wins. */
+  td.candidate {
+    outline: 2px dashed color-mix(in srgb, var(--anu-gold) 70%, transparent);
+    outline-offset: -2px;
   }
 
   td.current {

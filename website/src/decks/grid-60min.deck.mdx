@@ -5,13 +5,19 @@ description: A Cybernetic Studio workshop
 
 import StaticGrid from "../components/StaticGrid.svelte";
 import StaticGeneration from "../components/StaticGeneration.svelte";
+import DiceStrip from "../components/DiceStrip.svelte";
 import Timer from "../components/Timer.astro";
 import AiVennDiagram from "../components/AiVennDiagram.astro";
 import PresenterGrid from "../components/PresenterGrid.astro";
 import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
 import BgMusic from "../components/BgMusic.astro";
 import UpcomingSessions from "../components/UpcomingSessions.astro";
-import { EXAMPLE_TOKENS, EXAMPLE_VOCAB, EXAMPLE_GENERATION } from "./examples";
+import {
+  EXAMPLE_TOKENS,
+  EXAMPLE_VOCAB,
+  EXAMPLE_GENERATION,
+  EXAMPLE_GENERATION_ROLLS,
+} from "./examples";
 import "../styles/widgets.css";
 
 <BgMusic />

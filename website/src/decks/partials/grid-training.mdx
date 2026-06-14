@@ -26,11 +26,11 @@ walk through your text and tally up which tokens follow which in a grid
 
 ![bg right:40%](./assets/bg-example.avif)
 
-_"See Spot run. Run, Spot, run."_
+_"Run, Spot, run. See Spot run."_
 
 after tidying up:
 
-`see` `spot` `run` `.` `run` `,` `spot` `,` `run` `.`
+`run` `,` `spot` `,` `run` `.` `see` `spot` `run` `.`
 
 ---
 
@@ -40,35 +40,35 @@ after tidying up:
 
 ---
 
-## Training: `see` &rarr; `spot`
+## Training: `run` &rarr; `,`
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={1} />
 
 ---
 
-## Training: `spot` &rarr; `run`
+## Training: `,` &rarr; `spot`
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={2} />
 
 ---
 
-## Training: `run` &rarr; `.`
+## Training: `spot` &rarr; `,`
+
+{/* notes: <code>,</code> is already in our vocabulary &mdash; no new column needed! */}
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={3} />
 
 ---
 
-## Training: `.` &rarr; `run`
-
-{/* notes: <code>run</code> is already in our vocabulary &mdash; no new column needed! */}
+## Training: `,` &rarr; `run`
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={4} />
 
 ---
 
-## Training: `run` &rarr; `,`
+## Training: `run` &rarr; `.`
 
-{/* notes: <code>,</code> is a new token &mdash; it gets its own row and column */}
+{/* notes: <code>.</code> is a new token &mdash; punctuation gets its own row and column too */}
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={5} />
 
