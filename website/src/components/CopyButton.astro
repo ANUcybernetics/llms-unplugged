@@ -3,7 +3,8 @@
 // template) to copy via the `text` prop. Optionally pass `fields` to render an
 // input per placeholder token; their typed values are substituted into the
 // template when the button is pressed, so a presenter can fill in the blanks
-// live and copy the result.
+// live and copy the result. All fields must be filled before the copy fires ---
+// empty ones are flagged and nothing is copied.
 //
 // Lives as a component (not a bare <script> in the deck MDX) so Astro bundles
 // the script itself --- the deck's remark-smartypants pass would otherwise
@@ -48,6 +49,7 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
               value={field.value ?? ""}
               placeholder={field.hint ?? ""}
               size={field.size ?? 12}
+              aria-required="true"
               autocomplete="off"
               spellcheck="false"
             />
@@ -106,8 +108,9 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
     const idleLabel = labelEl?.textContent ?? "Copy";
     let resetTimer: ReturnType<typeof setTimeout> | null = null;
 
-    // Substitute each field's typed value for its token. Empty fields keep the
-    // placeholder, so an unfilled prompt still copies as the template.
+    // Substitute each field's typed value for its token. (An empty field would
+    // keep its token, but the copy click validates that every field is filled
+    // first, so a copied prompt never contains a leftover placeholder.)
     const buildText = (): string => {
       let out = template;
       for (const input of fieldInputs) {
@@ -117,6 +120,23 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
       }
       return out;
     };
+
+    const setInvalid = (input: HTMLInputElement, invalid: boolean): void => {
+      input.setAttribute("aria-invalid", invalid ? "true" : "false");
+      input.closest(".copy-field")?.classList.toggle("invalid", invalid);
+    };
+
+    // Flag every empty field; returns the still-empty inputs.
+    const flagIncomplete = (): HTMLInputElement[] => {
+      const empty = fieldInputs.filter((input) => !input.value.trim());
+      for (const input of fieldInputs) setInvalid(input, empty.includes(input));
+      return empty;
+    };
+
+    // Clear a field's flag as soon as the presenter starts filling it.
+    for (const input of fieldInputs) {
+      input.addEventListener("input", () => setInvalid(input, false));
+    }
 
     const copy = async (value: string): Promise<boolean> => {
       try {
@@ -150,6 +170,11 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
     };
 
     btn.addEventListener("click", async () => {
+      const incomplete = flagIncomplete();
+      if (incomplete.length) {
+        incomplete[0].focus();
+        return; // incomplete --- copy nothing
+      }
       const ok = await copy(buildText());
       root.classList.toggle("copied", ok);
       root.classList.toggle("copy-failed", !ok);
@@ -178,6 +203,8 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
   /* Anchor to the deck root (16px) so em-based sizing is predictable on any
      slide and the button doesn't balloon by inheriting a hero font-size. */
   .copy-button {
+    --copy-invalid: #e2574c;
+
     display: inline-flex;
     flex-direction: column;
     align-items: flex-start;
@@ -188,18 +215,19 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
 
   .copy-fields {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.55em 0.9em;
+    flex-direction: column;
+    gap: 0.6em;
   }
 
   .copy-field {
     display: inline-flex;
-    flex-direction: column;
-    gap: 0.3em;
+    align-items: center;
+    gap: 0.7em;
   }
 
   .copy-field-label {
-    font-size: 0.7rem;
+    min-width: 5.5em;
+    font-size: 0.8rem;
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -207,12 +235,12 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
   }
 
   .copy-field-input {
-    font-size: 0.95rem;
+    font-size: 1.2rem;
     color: inherit;
     background: color-mix(in srgb, currentColor 7%, transparent);
     border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
     border-radius: 0.4em;
-    padding: 0.3em 0.55em;
+    padding: 0.35em 0.6em;
   }
 
   .copy-field-input::placeholder {
@@ -223,6 +251,17 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
     outline: 2px solid color-mix(in srgb, currentColor 45%, transparent);
     outline-offset: 1px;
     border-color: color-mix(in srgb, currentColor 50%, transparent);
+  }
+
+  /* Incomplete field: a soft red border + label until it's filled in. */
+  .copy-field.invalid .copy-field-input {
+    border-color: color-mix(in srgb, var(--copy-invalid) 70%, transparent);
+    background: color-mix(in srgb, var(--copy-invalid) 12%, transparent);
+  }
+
+  .copy-field.invalid .copy-field-label {
+    color: var(--copy-invalid);
+    opacity: 1;
   }
 
   .copy-btn {
