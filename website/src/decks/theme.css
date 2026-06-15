@@ -202,20 +202,25 @@
 }
 
 .reveal .cutout-next-word {
-  font-weight: 400;
+  /* Bold so the free-standing word reads at a glance and gives the legibility
+     stroke a chunkier glyph to wrap — a thin stroke on a 400-weight serif read
+     as a faint, uneven outline on the dark slide. */
+  font-weight: 700;
 
   /* Match the printed cutout: the free-standing next word is the *same* raw
      palette colour as the previous-word pill (the pill carries it as a fill,
      here it is the text colour). Dark entries would vanish on the dark slide,
      so — mirroring the typst's coloured-word(), which gives light entries a
-     thin black stroke on white paper — we give dark entries a thin white
-     stroke here. --token-pill-text is white for dark entries and black for
-     light ones, so dark words get a white outline while light words get a
-     near-invisible black one. paint-order draws the stroke behind the fill, so
-     the raw colour stays intact and only the outline shows. */
+     thin black stroke on white paper — we give dark entries a white stroke
+     here. --token-pill-text is white for dark entries and black for light ones,
+     so dark words get a white outline while light words get a near-invisible
+     black one (a black halo blends into the dark slide). paint-order draws the
+     stroke behind the fill, so the raw colour stays intact and only the outline
+     shows; since only the outer half of the stroke width is visible, it is set
+     generously so the halo reads clearly. */
   color: var(--token-bg);
   margin: 0 0.1em;
-  -webkit-text-stroke: 0.05em var(--token-pill-text);
+  -webkit-text-stroke: 0.08em var(--token-pill-text);
   paint-order: stroke fill;
 }
 
