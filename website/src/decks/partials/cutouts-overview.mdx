@@ -33,6 +33,8 @@ they're next to
 
 ---
 
+{/* _animate: pile */}
+
 ## Every pair becomes a cutout
 
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="flow" />
@@ -85,10 +87,14 @@ one pair highlighted as a cutout, then every pair as a cutout.
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="scatter" seed={4} />
 
 {/* notes:
-Five "scatter" frames of the *same* cutouts with different seeds. All carry
+The "every pair becomes a cutout" (flow) slide before these also carries the pile
+directive, so the shuffle begins there --- each cutout glides from its reading-
+order slot into the first scattered pile. Then five "scatter" frames of the
+*same* cutouts with different seeds. All carry
 {/* _animate: pile *​/}, so Reveal.js auto-animate glides each cutout (matched by
 its data-id="cut-N") from one arrangement to the next --- each click reshuffles
-the pile while the heading stays put. Talk across them: this is the hinge into
+the pile while the heading stays put (it only crossfades on the way in from the
+flow slide). Talk across them: this is the hinge into
 Training/Generation --- the model is an unordered bag you rummage through, so
 order stops mattering once the text is cut up. Add or remove
 {/* _animate: pile *​/} + <CutoutsOverview mode="scatter" seed={N}/> slides

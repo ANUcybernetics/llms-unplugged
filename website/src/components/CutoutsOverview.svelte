@@ -296,9 +296,13 @@
     {/each}
   </div>
 {:else if mode === "flow"}
+  <!-- flow: every cutout in reading order. data-id="cut-N" matches the scatter
+       pile's ids, so the "every pair becomes a cutout" slide can carry the
+       `_animate: pile` directive and Reveal auto-animate glides each cutout from
+       its reading-order slot into the tipped-out pile. -->
   <div class="cutout-flow">
     {#each bigrams as bg (bg.idx)}
-      {@render cutout({ prev: bg.prev, next: bg.next })}
+      {@render cutout({ prev: bg.prev, next: bg.next, id: `cut-${bg.idx}` })}
     {/each}
   </div>
 {:else if mode === "example"}
