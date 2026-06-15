@@ -1,0 +1,288 @@
+---
+// A subtle copy-to-clipboard button for use on slides. Pass the text (or a
+// template) to copy via the `text` prop. Optionally pass `fields` to render an
+// input per placeholder token; their typed values are substituted into the
+// template when the button is pressed, so a presenter can fill in the blanks
+// live and copy the result.
+//
+// Lives as a component (not a bare <script> in the deck MDX) so Astro bundles
+// the script itself --- the deck's remark-smartypants pass would otherwise
+// mangle quotes inside an MDX <script> block (see BgMusic.astro).
+interface Field {
+  /** Placeholder token in the template, e.g. "[WORD 1]". */
+  token: string;
+  /** Visible label for the input. */
+  label: string;
+  /** Optional input placeholder hint. */
+  hint?: string;
+  /** Optional starting value. */
+  value?: string;
+  /** Optional input width in characters (the native `size` attribute). */
+  size?: number;
+}
+
+interface Props {
+  /** Text (or template with placeholder tokens) copied to the clipboard. */
+  text: string;
+  /** Label shown before copying. */
+  label?: string;
+  /** Optional fill-in fields whose values are substituted into `text`. */
+  fields?: Field[];
+}
+
+const { text, label = "Copy prompt", fields = [] } = Astro.props;
+---
+
+<div class="copy-button" data-copy-button>
+  {
+    fields.length > 0 && (
+      <div class="copy-fields">
+        {fields.map((field) => (
+          <label class="copy-field">
+            <span class="copy-field-label">{field.label}</span>
+            <input
+              type="text"
+              class="copy-field-input"
+              data-copy-field
+              data-token={field.token}
+              value={field.value ?? ""}
+              placeholder={field.hint ?? ""}
+              size={field.size ?? 12}
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </label>
+        ))}
+      </div>
+    )
+  }
+
+  <button type="button" class="copy-btn" data-copy-trigger>
+    <svg
+      class="copy-icon copy-icon--idle"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="9" y="9" width="11" height="11" rx="2"></rect>
+      <path d="M5 15V5a2 2 0 0 1 2-2h10"></path>
+    </svg>
+    <svg
+      class="copy-icon copy-icon--done"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M20 6 9 17l-5-5"></path>
+    </svg>
+    <span class="copy-label" data-copy-label aria-live="polite">{label}</span>
+  </button>
+
+  <span class="copy-source" data-copy-source hidden set:text={text} />
+</div>
+
+<script>
+  function initCopyButton(root: HTMLElement): void {
+    if (root.dataset.copyReady) return;
+    root.dataset.copyReady = "1";
+
+    const btn = root.querySelector<HTMLButtonElement>("[data-copy-trigger]");
+    const source = root.querySelector<HTMLElement>("[data-copy-source]");
+    const labelEl = root.querySelector<HTMLElement>("[data-copy-label]");
+    if (!btn || !source) return;
+
+    const template = source.textContent ?? "";
+    const fieldInputs = Array.from(
+      root.querySelectorAll<HTMLInputElement>("[data-copy-field]"),
+    );
+    const idleLabel = labelEl?.textContent ?? "Copy";
+    let resetTimer: ReturnType<typeof setTimeout> | null = null;
+
+    // Substitute each field's typed value for its token. Empty fields keep the
+    // placeholder, so an unfilled prompt still copies as the template.
+    const buildText = (): string => {
+      let out = template;
+      for (const input of fieldInputs) {
+        const token = input.dataset.token;
+        const value = input.value.trim();
+        if (token && value) out = out.split(token).join(value);
+      }
+      return out;
+    };
+
+    const copy = async (value: string): Promise<boolean> => {
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(value);
+          return true;
+        }
+      } catch {
+        // Fall through to the legacy path (e.g. clipboard denied).
+      }
+      // Legacy fallback for non-secure contexts (http on a LAN IP, say).
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = value;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        // execCommand is deprecated but is the only copy path in an insecure
+        // context. Narrow the type so its deprecated lib.dom signature doesn't
+        // surface as a type-checker hint.
+        const exec = (document as { execCommand?: (id: string) => boolean })
+          .execCommand;
+        const ok = exec ? exec.call(document, "copy") : false;
+        document.body.removeChild(ta);
+        return ok;
+      } catch {
+        return false;
+      }
+    };
+
+    btn.addEventListener("click", async () => {
+      const ok = await copy(buildText());
+      root.classList.toggle("copied", ok);
+      root.classList.toggle("copy-failed", !ok);
+      if (labelEl) labelEl.textContent = ok ? "Copied!" : "Copy failed";
+      if (resetTimer) clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        root.classList.remove("copied", "copy-failed");
+        if (labelEl) labelEl.textContent = idleLabel;
+      }, 2000);
+    });
+  }
+
+  const boot = () =>
+    document
+      .querySelectorAll<HTMLElement>("[data-copy-button]")
+      .forEach(initCopyButton);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
+</script>
+
+<style>
+  /* Anchor to the deck root (16px) so em-based sizing is predictable on any
+     slide and the button doesn't balloon by inheriting a hero font-size. */
+  .copy-button {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7em;
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .copy-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55em 0.9em;
+  }
+
+  .copy-field {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.3em;
+  }
+
+  .copy-field-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    opacity: 0.65;
+  }
+
+  .copy-field-input {
+    font-size: 0.95rem;
+    color: inherit;
+    background: color-mix(in srgb, currentColor 7%, transparent);
+    border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+    border-radius: 0.4em;
+    padding: 0.3em 0.55em;
+  }
+
+  .copy-field-input::placeholder {
+    color: color-mix(in srgb, currentColor 38%, transparent);
+  }
+
+  .copy-field-input:focus-visible {
+    outline: 2px solid color-mix(in srgb, currentColor 45%, transparent);
+    outline-offset: 1px;
+    border-color: color-mix(in srgb, currentColor 50%, transparent);
+  }
+
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    border-radius: 999px;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0.4em 0.9em;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    opacity: 0.55;
+    transition:
+      opacity 0.2s,
+      color 0.2s,
+      background-color 0.2s,
+      border-color 0.2s;
+  }
+
+  .copy-btn:hover,
+  .copy-btn:focus-visible {
+    opacity: 1;
+    background: color-mix(in srgb, currentColor 12%, transparent);
+  }
+
+  .copy-btn:focus-visible {
+    outline: 2px solid color-mix(in srgb, currentColor 50%, transparent);
+    outline-offset: 2px;
+  }
+
+  .copy-icon {
+    width: 1.05em;
+    height: 1.05em;
+    flex: none;
+  }
+
+  .copy-icon--done {
+    display: none;
+  }
+
+  /* Confirmation state: switch to the tick and pick up the theme accent. */
+  .copy-button.copied .copy-btn {
+    opacity: 1;
+    color: var(--at-accent, currentColor);
+    border-color: color-mix(
+      in srgb,
+      var(--at-accent, currentColor) 45%,
+      transparent
+    );
+  }
+
+  .copy-button.copied .copy-icon--idle {
+    display: none;
+  }
+
+  .copy-button.copied .copy-icon--done {
+    display: inline-block;
+  }
+</style>
