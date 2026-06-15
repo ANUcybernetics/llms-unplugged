@@ -42,7 +42,15 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## How the die chooses: `spot`
 
-{/* notes: equal tallies, so each option gets an equal share of the ten d10 faces --- 0-4 for one, 5-9 for the other. We rolled a 2. */}
+{/* notes: equal tallies, so each option gets an equal share of the ten d10 faces --- 0-4 for one, 5-9 for the other. Pause here before rolling. */}
+
+<DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} currentWord="spot" />
+
+---
+
+## How the die chooses: `spot`
+
+{/* notes: now roll --- a 2 lands in the `,` band */}
 
 <DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} currentWord="spot" rolled={2} />
 
@@ -82,7 +90,15 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## How the die chooses: `run`
 
-{/* notes: `.` has twice the tallies, so it gets more of the faces (0-6) than `,` (7-9). With a ten-sided die that's the closest split rather than exactly 2:1 --- the point is more tallies → more faces → more likely. We rolled a 3. */}
+{/* notes: `.` has twice the tallies, so it gets more of the faces (0-6) than `,` (7-9). With a ten-sided die that's the closest split rather than exactly 2:1 --- the point is more tallies → more faces → more likely. Pause here before rolling. */}
+
+<DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} currentWord="run" />
+
+---
+
+## How the die chooses: `run`
+
+{/* notes: now roll --- a 3 sits in the `.` band */}
 
 <DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} currentWord="run" rolled={3} />
 
