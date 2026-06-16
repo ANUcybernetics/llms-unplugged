@@ -6,8 +6,13 @@ topic: controlling-output
 keyIdea: Training data composition shapes a model's "personality"---add enough flattery to the training set and the model becomes sycophantic, no RLHF required.
 ---
 
-import GlossaryTerm from "../../components/GlossaryTerm.astro";
+import VariantToggle from "../../components/VariantToggle.svelte";
+import Variant from "../../components/Variant.astro";
+import LmGrid from "../../components/LmGrid.astro";
 import LmCutouts from "../../components/LmCutouts.astro";
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
+
+<VariantToggle client:load />
 
 Demonstrate how adding repetitive sycophantic phrases to your training data
 steers the model toward over-agreeable, flattering output---no <GlossaryTerm id="rlhf">RLHF</GlossaryTerm>
@@ -17,8 +22,19 @@ required.
 
 ## You will need
 
+<Variant is="grid">
+
+- your completed grid model from [Training](/lessons/training)
+- a d10 (or similar), plus pen and paper, as per
+  [Generation](/lessons/generation)
+- the sycophancy phrases listed below, to tally into your grid
+
+</Variant>
+
+<Variant is="cutouts">
+
 - a trained bigram cutouts spread from [Training](/lessons/training)
-- additional cutouts encoding sycophantic phrases
+- additional cutouts encoding the sycophancy phrases listed below
 - pen and paper for jotting down the generated text
 
 The CLI can generate a printable sheet of sycophancy cutouts from
@@ -26,64 +42,124 @@ The CLI can generate a printable sheet of sycophancy cutouts from
 `llms_unplugged cutouts -i data/sycophancy.txt -n 2` and add the resulting PDF
 to your printing batch.
 
+</Variant>
+
 ## Your goal
 
-Add sycophancy cutouts to your existing spread, regenerate text from the same
-starting word as before, and observe how the output drifts toward agreement
+<Variant is="grid">
+
+Tally the sycophancy phrases into your existing grid, regenerate text from the
+same starting word as before, and observe how the output drifts toward agreement
 and flattery.
+
+</Variant>
+
+<Variant is="cutouts">
+
+Add sycophancy cutouts to your existing spread, regenerate text from the same
+starting word as before, and observe how the output drifts toward agreement and
+flattery.
+
+</Variant>
 
 ## Key idea
 
 Sycophancy in real LLMs comes from two main sources: <GlossaryTerm id="rlhf">RLHF</GlossaryTerm>
 reward hacking (human raters tend to prefer agreeable answers) and biased
-training data (the internet is full of flattery). This activity demonstrates
-the second source directly: when you tip the training data toward sycophantic
+training data (the internet is full of flattery). This activity demonstrates the
+second source directly: when you tip the training data toward sycophantic
 phrases, the model's generated text starts mirroring them.
 
+## The sycophancy phrases
+
+These are the phrases you'll fold into your model. Each is shown as the sequence
+of tokens the model sees---lowercased, with punctuation and contracted endings
+(`'re`, `'s`) treated as their own tokens, exactly as in
+[Training](/lessons/training):
+
+- `you 're absolutely right .`
+- `that 's a great insight .`
+- `what a thoughtful question .`
+- `i completely agree .`
+- `you make an excellent point .`
+
+Repeat each phrase several times so its word pairs build up strong counts---the
+heavier the weighting, the more often generation lands on them.
+
+<Variant is="grid">
+
+Tallied into a grid, the first phrase fills one cell per consecutive (row →
+column) pair:
+
+<LmGrid tokens="you 're absolutely right ." />
+
+</Variant>
+
+<Variant is="cutouts">
+
+As a spread, the first phrase is one cutout per consecutive (previous → next)
+pair:
+
+<LmCutouts tokens="you 're absolutely right ." />
+
+</Variant>
+
 ## Algorithm
+
+<Variant is="grid">
+
+1. **Train a baseline model** as per [Training](/lessons/training)---fill in your
+   grid.
+2. **Generate a baseline sentence** as per
+   [Generation](/lessons/generation)---write it down. This is your "before".
+3. **Add the sycophancy phrases** to your grid. Take each phrase from the list
+   above and tally its word pairs into your existing grid, following the standard
+   [Training](/lessons/training) procedure---add a new row and column for any word
+   you haven't seen yet. Repeat each phrase several times.
+4. **Generate again** from the same starting word.
+5. **Compare**: how often does the new output land on sycophantic phrases? Does
+   it sound like a different "voice"?
+
+</Variant>
+
+<Variant is="cutouts">
 
 1. **Train a baseline model** as per [Training](/lessons/training)---spread the
    cutouts on the table.
 2. **Generate a baseline sentence** as per
    [Generation](/lessons/generation)---write it down. This is your "before".
-3. **Add sycophancy cutouts** to the spread. Pre-made cutouts encode patterns
-   like `you → 're`, `'re → absolutely`, `absolutely → right`, `right → .`,
-   plus variants for "great insight", "thoughtful question", and "completely
-   agree".
+3. **Add sycophancy cutouts** to the spread. The pre-made cutouts encode the
+   phrases from the list above---patterns like `you → 're`, `'re → absolutely`,
+   `absolutely → right`, `right → .`, plus the "great insight", "thoughtful
+   question", and "completely agree" variants.
 4. **Generate again** from the same starting word.
-5. **Compare**: how often does the new output land on sycophantic phrases?
-   Does it sound like a different "voice"?
+5. **Compare**: how often does the new output land on sycophantic phrases? Does
+   it sound like a different "voice"?
+
+</Variant>
 
 ## Example
 
-Baseline spread trained on _"I am Sam. Sam I am."_ generates something like:
+Baseline model trained on _"I am Sam. Sam I am."_ generates something like:
 
 > _"i am sam . sam i am ."_
 
-After adding sycophancy cutouts, the same starting word might generate:
+After folding in the sycophancy phrases, the same starting word might generate:
 
 > _"i am absolutely right . that 's a great insight ."_
 
-The model didn't change its mechanism---the spread just contains more cutouts
-that route toward sycophantic tokens.
+The model didn't change its mechanism---it just contains more paths (extra
+cutouts, or heavier grid tallies) that route toward sycophantic tokens.
 
 ## Instructor notes
 
-### Designing sycophancy cutouts
+### Designing your own sycophancy phrases
 
-The sycophancy cutouts work best when their previous words overlap with the
-existing model's vocabulary, so they integrate naturally during generation. Common
-high-frequency words like `i`, `that`, `you`, and `.` are good integration
-points.
-
-Useful phrase templates (each repeated several times in the training text so
-the cutouts encode strong weights):
-
-- "you're absolutely right ."
-- "that's a great insight ."
-- "what a thoughtful question ."
-- "i completely agree ."
-- "you make an excellent point ."
+The phrases above integrate cleanly because their previous words---`i`, `that`,
+`you`, and `.`---are high-frequency tokens already present in most models, so the
+new material hooks into the existing vocabulary during generation. If you write
+your own, follow the same recipe: start each phrase with a common word, end it
+with `.`, and repeat it several times so the new transitions carry strong weight.
 
 ### Discussion questions
 
