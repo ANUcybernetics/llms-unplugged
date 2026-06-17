@@ -18,13 +18,13 @@ export const EXTENSIONS = [
   "more-context",
   "sampling",
   "agentic-ai",
-  "sycophancy",
   "in-context-memory",
   "induction-heads",
   "word-embeddings",
   "lora",
   "rlhf",
   "synthetic-data",
+  "sycophancy",
 ] as const;
 
 export type LessonSlug = (typeof FUNDAMENTALS)[number] | (typeof EXTENSIONS)[number];
