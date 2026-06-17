@@ -1,15 +1,19 @@
 import { defineCollection } from "astro:content";
 import { file, glob } from "astro/loaders";
 import { z } from "astro/zod";
+import { TOPIC_KEYS } from "./lib/topics";
 
 const lessons = defineCollection({
   loader: glob({ pattern: "**/*.mdx", base: "src/content/lessons" }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    topic: z.string().optional(),
-    order: z.number().optional(),
+    topic: z.enum(TOPIC_KEYS),
+    order: z.number(),
     keyIdea: z.string().optional(),
+    // Unlisted lessons are reachable only via direct links --- hidden from the
+    // sidebar and the /lessons index (see src/lib/lessons.ts).
+    listed: z.boolean().default(true),
   }),
 });
 

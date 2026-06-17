@@ -1,6 +1,7 @@
 ---
 import PageLayout from "../../layouts/PageLayout.astro";
 import CardList from "../../components/CardList.astro";
+import { topicLabels } from "../../lib/topics";
 ---
 
 <PageLayout
@@ -44,31 +45,29 @@ import CardList from "../../components/CardList.astro";
     <a href="/tools#cutouts">Tools</a> page has ready-to-print packs).
   </p>
 
-  <h2>Fundamentals</h2>
-  <CardList lessons={["training", "generation"]} />
+  <h2 id="fundamentals">Fundamentals</h2>
+  <CardList topic="fundamentals" />
 
-  <h2>Extensions</h2>
+  <h2 id="extensions">Extensions</h2>
   <p>
     These can be done in any order after the Fundamentals. Each one explores a
     different aspect of how modern language models work.
   </p>
 
-  <h3>Scaling up</h3>
-  <CardList lessons={["pretrained-generation", "more-context"]} />
+  <h3 id="scaling-up">{topicLabels["scaling-up"]}</h3>
+  <CardList topic="scaling-up" />
 
-  <h3>Controlling output</h3>
-  <CardList lessons={["sampling", "agentic-ai"]} />
+  <h3 id="controlling-output">{topicLabels["controlling-output"]}</h3>
+  <CardList topic="controlling-output" />
 
-  <h3>Context and meaning</h3>
+  <h3 id="how-models-understand">{topicLabels["how-models-understand"]}</h3>
   <p>
     How models use more than the previous word: a short-term memory that keeps
     text on topic, the induction trick behind in-context learning, and word
     embeddings for measuring meaning.
   </p>
-  <CardList
-    lessons={["in-context-memory", "induction-heads", "word-embeddings"]}
-  />
+  <CardList topic="how-models-understand" />
 
-  <h3>Model tuning</h3>
-  <CardList lessons={["lora", "rlhf", "synthetic-data", "sycophancy"]} />
+  <h3 id="adaptation-and-data">{topicLabels["adaptation-and-data"]}</h3>
+  <CardList topic="adaptation-and-data" />
 </PageLayout>

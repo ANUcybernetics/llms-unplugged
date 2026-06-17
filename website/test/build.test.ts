@@ -2,7 +2,6 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { execSync } from "node:child_process";
 import { existsSync, globSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { SIDEBAR_SLUGS } from "../src/lib/sidebar";
 import { findBrokenPdfLinks } from "./utils/linkChecker";
 
 const DIST_DIR = "dist";
@@ -56,9 +55,17 @@ describe("Astro Build", () => {
     const lessonsDir = join(DIST_DIR, "lessons");
     expect(existsSync(lessonsDir)).toBe(true);
 
-    // Derived from the sidebar definition so a new lesson is checked
-    // automatically rather than relying on a hand-maintained copy here.
-    for (const lesson of SIDEBAR_SLUGS) {
+    // Derived from the lesson content collection so every lesson --- listed or
+    // unlisted --- is checked automatically rather than from a hand-maintained
+    // copy here.
+    const slugs = globSync("src/content/lessons/*.mdx").map((f) =>
+      f
+        .split("/")
+        .pop()!
+        .replace(/\.mdx$/, ""),
+    );
+    expect(slugs.length).toBeGreaterThan(0);
+    for (const lesson of slugs) {
       expect(
         existsSync(join(lessonsDir, lesson, "index.html")),
         `Missing lesson page: ${lesson}`,
