@@ -55,6 +55,8 @@ pub struct ProcessingStats {
     pub total_tokens: usize,
     /// Total number of unique n-grams found
     pub unique_ngrams: usize,
+    /// Number of distinct word types (the model's vocabulary size)
+    pub unique_tokens: usize,
     /// Total number of n-gram occurrences
     pub total_ngram_occurrences: usize,
     /// Most common n-gram (previous words and the most likely next word)
@@ -111,6 +113,7 @@ impl NGramCounter {
             stats: ProcessingStats {
                 total_tokens: 0,
                 unique_ngrams: 0,
+                unique_tokens: 0,
                 total_ngram_occurrences: 0,
                 most_common_ngram: None,
                 most_popular_previous_words: None,
@@ -277,6 +280,21 @@ impl NGramCounter {
         // Set the count of unique previous-words contexts
         self.stats.unique_ngrams = self.previous_words_map.len();
 
+        // Count distinct word types (vocabulary size): every word that appears
+        // as a context word or as a next-word continuation.
+        self.stats.unique_tokens = {
+            let mut vocab: BTreeSet<&str> = BTreeSet::new();
+            for (context, next_words) in &self.previous_words_map {
+                for word in context {
+                    vocab.insert(word.as_str());
+                }
+                for next_word in next_words.keys() {
+                    vocab.insert(next_word.as_str());
+                }
+            }
+            vocab.len()
+        };
+
         // Compute weighted average conditional entropy
         let total_occurrences = self.stats.total_ngram_occurrences as f64;
         if total_occurrences > 0.0 {
@@ -350,6 +368,7 @@ pub struct CutoutsMetadata {
     pub author: String,
     pub total_tokens: usize,
     pub kept_tokens: usize,
+    pub unique_tokens: usize,
     pub entropy: f64,
     pub perplexity: f64,
     pub branching_factor: f64,
@@ -400,6 +419,7 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
         author,
         total_tokens: tokens.len(),
         kept_tokens: tokens.iter().filter(|t| t.keep).count(),
+        unique_tokens: stats.unique_tokens,
         entropy: stats.entropy,
         perplexity: stats.perplexity,
         branching_factor: stats.branching_factor,
@@ -1261,6 +1281,12 @@ mod tests {
             stats.unique_ngrams, 9,
             "Expected 9 unique previous-words contexts: Hello, world, ., again, !, Number, will, be, ignored"
         );
+        // Vocabulary size: 9 distinct word types. Equal to unique_ngrams here
+        // only because every type also appears as a previous word.
+        assert_eq!(
+            stats.unique_tokens, 9,
+            "Expected 9 distinct word types (vocabulary)"
+        );
         assert_eq!(
             stats.total_ngram_occurrences, 11,
             "Expected 11 total bigram occurrences"
@@ -1326,6 +1352,13 @@ mod tests {
         // Check that we have stats
         assert_eq!(stats.total_tokens, 9); // the, quick, brown, fox, jumps, over, the, lazy, dog
         assert!(stats.unique_ngrams > 0);
+        // 8 distinct word types (the, quick, brown, fox, jumps, over, lazy,
+        // dog); "the" repeats. Differs from the 7 unique previous-words
+        // contexts because "dog" only ever appears as a next word.
+        assert_eq!(
+            stats.unique_tokens, 8,
+            "Expected 8 distinct word types (vocabulary)"
+        );
         assert!(stats.total_ngram_occurrences > 0);
 
         // Check metadata

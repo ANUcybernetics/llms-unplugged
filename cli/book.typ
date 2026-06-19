@@ -196,6 +196,7 @@
       text(size: 0.9em)[
         #heading(level: 3)[Model statistics]
         - *Total tokens:* #stats.total_tokens
+        - *Unique tokens (vocabulary):* #stats.unique_tokens
         - *Unique previous-words contexts:* #stats.unique_ngrams
         - *Entropy:* #calc.round(stats.entropy, digits: 2) bits/token --- how
           unpredictable each dice roll is

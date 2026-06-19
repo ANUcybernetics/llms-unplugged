@@ -980,6 +980,7 @@ mod tests {
         ProcessingStats {
             total_tokens: 0,
             unique_ngrams: 0,
+            unique_tokens: 0,
             total_ngram_occurrences: 0,
             most_common_ngram: None,
             most_popular_previous_words: None,

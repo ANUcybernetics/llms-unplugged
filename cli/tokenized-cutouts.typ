@@ -319,21 +319,25 @@
             spacing: 0.5em,
             align(center)[*Model vitals*],
             grid(
-              columns: 2,
-              column-gutter: 1.6em,
+              columns: 3,
+              column-gutter: 1.4em,
               row-gutter: (0.1em, 0.7em, 0.1em),
               align: center,
               [*#doc_metadata.total_tokens*],
+              [*#doc_metadata.unique_tokens*],
               [*#calc.round(doc_metadata.entropy, digits: 2)*],
 
               text(size: 9pt, fill: luma(80))[tokens],
+              text(size: 9pt, fill: luma(80))[unique tokens],
               text(size: 9pt, fill: luma(80))[bits/token entropy],
 
               [*#calc.round(doc_metadata.perplexity, digits: 1)*],
               [*#calc.round(doc_metadata.branching_factor, digits: 2)*],
+              [],
 
               text(size: 9pt, fill: luma(80))[perplexity],
               text(size: 9pt, fill: luma(80))[branching factor],
+              [],
             ),
           )
         ]

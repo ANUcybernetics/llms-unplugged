@@ -79,6 +79,7 @@ pub fn process_text_for_cutouts(
         author: author.to_string(),
         total_tokens: tokens.len(),
         kept_tokens: tokens.iter().filter(|t| t.keep).count(),
+        unique_tokens: stats.unique_tokens,
         entropy: stats.entropy,
         perplexity: stats.perplexity,
         branching_factor: stats.branching_factor,
