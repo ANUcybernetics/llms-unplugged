@@ -4,19 +4,30 @@ Static website for LLMs Unplugged.
 
 ## Architecture
 
-Astro 6 static site with Svelte 5 components for interactive language model
+Astro 7 static site with Svelte 5 components for interactive language model
 demonstrations.
 
 ### Tech stack
 
-- Astro 6 (static site generator)
+- Astro 7 (static site generator)
 - Svelte 5 (interactive components using runes)
 - MDX (lessons with embedded components)
 - TypeScript
 - pnpm (package manager)
-- oxfmt (JS/TS/MD/MDX/CSS/JSON/YAML formatting) + Prettier (Astro/Svelte formatting)
+- oxfmt (JS/TS/MD/MDX/CSS/JSON/YAML formatting) + Prettier (Astro/Svelte
+  formatting)
 - oxlint (linting)
 - Vitest (testing)
+
+### Dev server (AI agents)
+
+On Astro 7, prefer the managed background dev server over `astro dev &` plus
+polling for "Local:". `astro dev --background` blocks until ready then detaches,
+and is auto-enabled when Astro detects it's running inside an agent. It writes
+`.astro/dev.json` (URL/port/PID) and exposes `/_astro/status` (returns
+`{"ok": true}`). Manage it with `astro dev status`, `astro dev logs --follow`,
+and `astro dev stop`; JSON logs turn on automatically under agent detection (or
+pass `astro dev --json`).
 
 ### Project structure
 
@@ -48,8 +59,8 @@ the screen. This means:
 
 **What cannot be shared (different by design):**
 
-- **Root font size** --- website uses `20px`, decks use `16px` (Reveal.js
-  sizes everything in `rem` relative to this)
+- **Root font size** --- website uses `20px`, decks use `16px` (Reveal.js sizes
+  everything in `rem` relative to this)
 - **Reveal.js variables** (`--r-*`) --- deck-only, no website equivalent
 - **Layout tokens** (`--nav-height`, `--sidebar-width`, etc.) --- website-only
 - **Typography scaling** --- deck headings/body text are sized for projection;
@@ -90,32 +101,32 @@ consistency with the existing illustrations:
 
 Prompt suffix: Flat 2D vector illustration on a pure black background ---
 absolutely NO 3D rendering, NO perspective, NO isometric, NO faceted/low-poly
-shapes, NO photographic depth, NO drop shadows, NO realistic lighting.
-Strictly limited colour palette: gold/amber, black, white, and warm beige/tan
-tones. Clean, consistent-weight outlines (black, white, or gold strokes) with
-flat filled shapes --- no gradients, no photorealism. Subtle background
-texture of interlocking circles or rounded geometric grid patterns in a very
-dark grey. Geometric and slightly stylised --- people (if any) are simplified
-faceless silhouettes drawn as single flat shapes (NOT low-poly polygonal or
-3D-faceted figures). Occasional soft gold glow effects for emphasis. Sparse,
-balanced composition with generous negative space. STRICTLY NO TEXT, NO
-WORDS, NO LETTERS, NO NUMBERS, NO LABELS, NO ANNOTATIONS, NO TALLY MARKS, NO
-GLYPHS, NO SYMBOLS RESEMBLING LETTERS anywhere in the image. Modern editorial
-illustration style --- conceptual and symbolic rather than literal.
+shapes, NO photographic depth, NO drop shadows, NO realistic lighting. Strictly
+limited colour palette: gold/amber, black, white, and warm beige/tan tones.
+Clean, consistent-weight outlines (black, white, or gold strokes) with flat
+filled shapes --- no gradients, no photorealism. Subtle background texture of
+interlocking circles or rounded geometric grid patterns in a very dark grey.
+Geometric and slightly stylised --- people (if any) are simplified faceless
+silhouettes drawn as single flat shapes (NOT low-poly polygonal or 3D-faceted
+figures). Occasional soft gold glow effects for emphasis. Sparse, balanced
+composition with generous negative space. STRICTLY NO TEXT, NO WORDS, NO
+LETTERS, NO NUMBERS, NO LABELS, NO ANNOTATIONS, NO TALLY MARKS, NO GLYPHS, NO
+SYMBOLS RESEMBLING LETTERS anywhere in the image. Modern editorial illustration
+style --- conceptual and symbolic rather than literal.
 
-Reference images: src/decks/assets/ (deck backgrounds). The most reliable
-style exemplars are `bg-randomness.avif`, `bg-shannon.avif`, and
+Reference images: src/decks/assets/ (deck backgrounds). The most reliable style
+exemplars are `bg-randomness.avif`, `bg-shannon.avif`, and
 `bg-div-mechanic.avif` --- prefer these as `--input-image` references.
 
-Prompting tips (the model will silently ignore the no-text rule and the
-flat-2D rule when it sees these triggers in the scene prompt itself):
+Prompting tips (the model will silently ignore the no-text rule and the flat-2D
+rule when it sees these triggers in the scene prompt itself):
 
-- avoid words that imply written content: "word-cards", "labels",
-  "annotated", "diagram", "blueprint", "schematic", "concept-map", "tag"
+- avoid words that imply written content: "word-cards", "labels", "annotated",
+  "diagram", "blueprint", "schematic", "concept-map", "tag"
 - never quote the target words verbatim (e.g. saying "build, break, extend"
   almost guarantees those exact words appear printed on the image)
-- describe what's drawn, not what it represents: "small blank rectangles"
-  (not "tokens"), "empty speech bubbles" (not "dialogue exchange")
+- describe what's drawn, not what it represents: "small blank rectangles" (not
+  "tokens"), "empty speech bubbles" (not "dialogue exchange")
 - for figures, say "flat silhouette drawn as a single filled shape" --- the
   model interprets bare "geometric figure" as low-poly 3D
 - expect to re-roll: review every generated image before committing
