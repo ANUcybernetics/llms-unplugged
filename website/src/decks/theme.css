@@ -423,6 +423,7 @@
    model only continues (weak), a post-trained model answers (strong). */
 .reveal .context-scale.qa .context-label {
   flex-basis: 9em;
+  white-space: nowrap;
 }
 
 .reveal .context-scale.qa .qa {
