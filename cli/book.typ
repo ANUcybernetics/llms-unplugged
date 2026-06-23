@@ -55,17 +55,30 @@
 #let punct-chars = doc_metadata.at("punctuation", default: ".,!?;:").clusters()
 #let is-punct(token) = token in punct-chars
 
-// Function to create a punctuation box with consistent styling
-#let punct-box(content, baseline: -0.2em) = box(
-  rect(
-    fill: none,
-    stroke: 0.25pt + black,
-    radius: 1pt,
-    inset: (x: 0.1em, y: 0pt),
-    outset: (y: 0pt),
-    text(content, weight: "bold", baseline: baseline),
-  ),
-)
+// A rounded outline box around a punctuation mark. Every mark gets an identical
+// fixed square box with the glyph centred, so ".", ",", "!", "?", ";" and ":"
+// all read as the same-sized "symbol tile" regardless of the glyph's own width
+// or height. The box scales with `size`, so heading marks (1.5em) and next-word
+// marks (1em) stay proportional to their surrounding text. `top-edge`/
+// `bottom-edge` of "bounds" tighten the glyph box to its actual ink so the mark
+// is optically centred --- otherwise low marks like "." and "," sit at the
+// bottom of the box with empty space above.
+#let punct-box(content, size: 1em, weight: "bold") = {
+  set text(
+    size: size,
+    weight: weight,
+    top-edge: "bounds",
+    bottom-edge: "bounds",
+  )
+  box(
+    width: 1em,
+    height: 1em,
+    stroke: 0.5pt + black,
+    radius: 0.12em,
+    inset: 0pt,
+    align(center + horizon, content),
+  )
+}
 
 // Function to display text with punctuation in boxes
 #let display-with-punctuation(text-content, size: 1.5em, weight: "bold") = {
@@ -73,22 +86,7 @@
   for (i, part) in parts.enumerate() {
     if is-punct(part) {
       // Display punctuation in a rounded box
-      let styled-punct = text(
-        part,
-        size: size,
-        weight: weight,
-        baseline: -0.2em,
-      )
-      box(
-        rect(
-          fill: none,
-          stroke: 0.25pt + black,
-          radius: 1pt,
-          inset: (x: 0.1em, y: 0pt),
-          outset: (y: 0pt),
-          styled-punct,
-        ),
-      )
+      punct-box(part, size: size, weight: weight)
     } else if part == "—" {
       // Em dash separator
       text(" — ", size: size, weight: weight)
