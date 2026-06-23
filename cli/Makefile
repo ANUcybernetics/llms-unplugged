@@ -31,7 +31,8 @@ WORKSHOP_TARGETS := \
 	$(PDF_DIR)/the-old-man-and-the-sea-2-1.pdf \
 	$(PDF_DIR)/beatles-2-1.pdf \
 	$(PDF_DIR)/communist-manifesto-2-1.pdf \
-	$(PDF_DIR)/TinyStories-1k-2-1.pdf
+	$(PDF_DIR)/TinyStories-1k-2-1.pdf \
+	$(PDF_DIR)/dickinson-poems-2-1.pdf
 
 EXAMPLE_TARGETS := \
 	$(PDF_DIR)/the-cat-in-the-hat-2-1.pdf \
