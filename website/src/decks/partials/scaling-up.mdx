@@ -2,8 +2,6 @@
 
 # Scaling up
 
-## Claude & ChatGPT play the same game you just did
-
 ![bg](./assets/bg-information-flow.avif)
 
 {/* notes:
@@ -142,6 +140,34 @@ conversations is what turns a _continuer_ into an _assistant_
 
 {/* notes:
 A pretrained model is a text-continuer, not an assistant --- prompt it with a question and a plausible continuation is more questions. The chat behaviour comes from a second, much smaller phase of training on example conversations plus feedback on which answers people preferred. Same predict-the-next-word mechanism underneath; different data, different habits on top.
+*/}
+
+---
+
+## Scale is a hell of a drug
+
+![bg right:40%](./assets/bg-distribution.avif)
+
+<div class="context-scale">
+  <div class="context-row">
+    <span class="context-label">your model</span>
+    <span class="context-tokens">
+      trained on a few hundred words --- a few dozen tallies
+    </span>
+  </div>
+  <div class="context-row">
+    <span class="context-label">a frontier LLM</span>
+    <span class="context-tokens">
+      trained on tens of trillions of words --- hundreds of billions of numbers
+    </span>
+  </div>
+</div>
+
+the same loop you ran by hand---now with **billions of times** the text and
+**billions of times** the numbers
+
+{/* notes:
+Put the two scales side by side. Training data: a page or two of text versus tens of trillions of words (the open figures land around 30 trillion --- Qwen3 cites ~36T, GLM-5.2 ~28.5T --- but the number keeps climbing, so keep it as "tens of trillions"). Parameters: a few dozen tally marks versus hundreds of billions of tunable numbers (frontier dense models run into the hundreds of billions; the big mixture-of-experts ones past a trillion). The punchline isn't any one figure --- it's that the mechanism didn't change, only the dosage.
 */}
 
 ---
