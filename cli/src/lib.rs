@@ -41,6 +41,9 @@ pub struct Metadata {
     pub n: usize,
     /// Subtitle for the booklet (e.g., "A bigram language model" or "A trigram language model: A-K (Book 1 of 3)")
     pub subtitle: String,
+    /// Punctuation marks kept as standalone tokens (e.g. ".,!?;:"). The Typst
+    /// template uses this to decide which tokens get a rounded box.
+    pub punctuation: String,
     /// CLI version used to generate this model
     pub version: String,
     /// Summary statistics for the processed text
@@ -171,7 +174,11 @@ impl NGramCounter {
         let file = File::open(&path)?;
         let mut reader = BufReader::new(file);
         let frontmatter_raw = read_frontmatter(&mut reader)?;
-        self.metadata = Some(parse_frontmatter(&frontmatter_raw, self.n)?);
+        self.metadata = Some(parse_frontmatter(
+            &frontmatter_raw,
+            self.n,
+            self.normalizer.punctuation(),
+        )?);
 
         let lines: Vec<String> = reader.lines().collect::<Result<_, _>>()?;
         self.process_lines(&lines);
@@ -336,6 +343,11 @@ impl NGramCounter {
     /// Get the metadata from the frontmatter
     pub fn get_metadata(&self) -> Option<&Metadata> {
         self.metadata.as_ref()
+    }
+
+    /// The punctuation marks kept as standalone tokens, as a sorted string.
+    pub fn punctuation(&self) -> String {
+        self.normalizer.punctuation()
     }
 
     /// Normalise an external line of text (e.g. a sampling prompt) using the same
@@ -569,7 +581,7 @@ pub fn append_tool_tokens(
     Ok(injected)
 }
 
-fn parse_frontmatter(frontmatter_raw: &str, n: usize) -> io::Result<Metadata> {
+fn parse_frontmatter(frontmatter_raw: &str, n: usize, punctuation: String) -> io::Result<Metadata> {
     use serde_yaml_ng::Value;
 
     let yaml: Value = serde_yaml_ng::from_str(frontmatter_raw).map_err(|e| {
@@ -604,6 +616,7 @@ fn parse_frontmatter(frontmatter_raw: &str, n: usize) -> io::Result<Metadata> {
         url: url.to_string(),
         n,
         subtitle: format!("A {} language model", model_type_str(n)),
+        punctuation,
         version: env!("CARGO_PKG_VERSION").to_string(),
         stats: None,
     })
@@ -1397,6 +1410,7 @@ mod tests {
             url: "https://example.com/bigrams".to_string(),
             n: 2,
             subtitle: "A bigram language model".to_string(),
+            punctuation: ".,!?;:".to_string(),
             version: "test".to_string(),
             stats: None,
         };
@@ -1462,6 +1476,7 @@ mod tests {
             url: "https://example.com/trigrams".to_string(),
             n: 3,
             subtitle: "A trigram language model".to_string(),
+            punctuation: ".,!?;:".to_string(),
             version: "test".to_string(),
             stats: None,
         };
@@ -1526,6 +1541,7 @@ mod tests {
             url: "https://example.com/cumulative".to_string(),
             n: 2,
             subtitle: "A bigram language model".to_string(),
+            punctuation: ".,!?;:".to_string(),
             version: "test".to_string(),
             stats: None,
         };
@@ -1600,6 +1616,7 @@ mod tests {
             url: "https://test.com".to_string(),
             n: 2,
             subtitle: "A bigram language model".to_string(),
+            punctuation: ".,!?;:".to_string(),
             version: "test".to_string(),
             stats: None,
         };
@@ -1658,6 +1675,7 @@ mod tests {
             url: "https://test.com".to_string(),
             n: 2,
             subtitle: "A bigram language model".to_string(),
+            punctuation: ".,!?;:".to_string(),
             version: "test".to_string(),
             stats: None,
         };

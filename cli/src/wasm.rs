@@ -48,6 +48,7 @@ pub fn process_text_for_booklet(
             url: "https://www.llmsunplugged.org/tools".to_string(),
             n,
             subtitle: format!("A {} language model", model_type_str(n)),
+            punctuation: counter.punctuation(),
             version: env!("CARGO_PKG_VERSION").to_string(),
             stats: None,
         },

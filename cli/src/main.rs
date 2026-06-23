@@ -971,6 +971,7 @@ mod tests {
             url: "https://example.com".to_string(),
             n: 2,
             subtitle: "A bigram language model".to_string(),
+            punctuation: ".,!?;:".to_string(),
             version: "test".to_string(),
             stats: None,
         }

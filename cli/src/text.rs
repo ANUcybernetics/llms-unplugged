@@ -124,6 +124,14 @@ impl Normalizer {
         self.config.corpus_case_map = map;
     }
 
+    /// The punctuation marks kept as standalone tokens, as a sorted string.
+    /// Sorted so the value is deterministic regardless of insertion order.
+    pub fn punctuation(&self) -> String {
+        let mut marks: Vec<char> = self.config.punctuation.iter().copied().collect();
+        marks.sort_unstable();
+        marks.into_iter().collect()
+    }
+
     /// Split a line into lexical segments. This is the single tokenizer
     /// walker: every pipeline (model building, canonical-case tracking, and
     /// cutout sheets) consumes the same segments, so they can never disagree

@@ -49,6 +49,12 @@
 
 
 
+// Punctuation marks kept as standalone tokens, sourced from the model metadata
+// so the boxed marks always match what the CLI treated as punctuation. Falls
+// back to the default set for models generated before the field existed.
+#let punct-chars = doc_metadata.at("punctuation", default: ".,!?;:").clusters()
+#let is-punct(token) = token in punct-chars
+
 // Function to create a punctuation box with consistent styling
 #let punct-box(content, baseline: -0.2em) = box(
   rect(
@@ -65,7 +71,7 @@
 #let display-with-punctuation(text-content, size: 1.5em, weight: "bold") = {
   let parts = text-content.split(" ")
   for (i, part) in parts.enumerate() {
-    if part == "." or part == "," {
+    if is-punct(part) {
       // Display punctuation in a rounded box
       let styled-punct = text(
         part,
@@ -235,7 +241,7 @@
 
 // Function to format a single next-word option with its count
 #let format-next-word(word, count, show-count: true) = {
-  if word == "." or word == "," {
+  if is-punct(word) {
     // Punctuation in a rounded box with optional count
     if show-count {
       box([#text(weight: "semibold")[#count]|#punct-box(word)])
