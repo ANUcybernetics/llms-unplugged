@@ -419,39 +419,51 @@
   color: var(--color-text-secondary);
 }
 
-/* "From continuing to answering": a prompt and the model's reply --- a base
-   model only continues (weak), a post-trained model answers (strong). */
-.reveal .context-scale.qa .context-label {
-  flex-basis: 9em;
-  white-space: nowrap;
-}
-
-.reveal .context-scale.qa .qa {
+/* "From continuing to answering": one shared prompt, then two contrasting
+   continuations stacked full-width --- a base model only continues (weak), a
+   post-trained model answers (strong). Stacking the label above each answer
+   gives the answer the full content width so it doesn't wrap awkwardly. */
+.reveal .qa-compare {
   display: flex;
   flex-direction: column;
-  gap: 0.25em;
+  gap: 0.7em;
+  margin-block: 0.5em;
 }
 
-.reveal .context-scale.qa .qa-q {
-  font-size: 0.5em;
+.reveal .qa-compare .qa-prompt {
+  display: block;
+  font-size: 0.55em;
+  font-style: italic;
   color: var(--color-text-muted);
 }
 
-.reveal .context-scale.qa .qa-a {
+.reveal .qa-compare .qa-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+.reveal .qa-compare .qa-label {
+  font-size: 0.5em;
+  color: var(--color-text-secondary);
+}
+
+.reveal .qa-compare .qa-a {
   align-self: start;
+  max-width: 100%;
   padding: 0.25em 0.6em;
   border-radius: 0.25em;
   font-family: var(--font-mono);
   font-size: 0.6em;
 }
 
-.reveal .context-scale.qa .qa-a.weak {
+.reveal .qa-compare .qa-a.weak {
   background: var(--lm-highlight-medium);
   color: var(--color-text-muted);
   opacity: 0.7;
 }
 
-.reveal .context-scale.qa .qa-a.strong {
+.reveal .qa-compare .qa-a.strong {
   background: var(--lm-highlight-strong);
   outline: 2px solid var(--anu-gold);
   outline-offset: 1px;

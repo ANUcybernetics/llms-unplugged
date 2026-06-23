@@ -118,20 +118,15 @@ Your grid stores patterns as tally marks you can point to. A transformer spreads
 
 ![bg right:40%](./assets/bg-post-training.avif)
 
-<div class="context-scale qa">
-  <div class="context-row">
-    <span class="context-label">a base model</span>
-    <span class="qa">
-      <span class="qa-q">"what is the capital of France?"</span>
-      <span class="qa-a weak">…and the capital of Spain is…</span>
-    </span>
+<div class="qa-compare">
+  <span class="qa-prompt">prompt: "what is the capital of France?"</span>
+  <div class="qa-item">
+    <span class="qa-label">a base model</span>
+    <span class="qa-a weak">"…and the capital of Spain is…"</span>
   </div>
-  <div class="context-row">
-    <span class="context-label">+ post-training</span>
-    <span class="qa">
-      <span class="qa-q">"what is the capital of France?"</span>
-      <span class="qa-a strong">Paris.</span>
-    </span>
+  <div class="qa-item">
+    <span class="qa-label">+ post-training</span>
+    <span class="qa-a strong">"Paris."</span>
   </div>
 </div>
 
