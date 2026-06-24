@@ -43,7 +43,7 @@
         }
       }
 
-      // Add logo and text to first cell
+      // Add the LLMs Unplugged word mark to the first cell
       place(
         dx: 0mm,
         dy: 0mm,
@@ -51,20 +51,8 @@
           width: first_cell_width,
           height: first_cell_height,
           fill: black,
-          align(center + horizon)[
-            #block(
-              width: auto,
-              align(left)[
-                #text(
-                  font: "Monaspace Argon",
-                  size: 1.8em,
-                  // anu socy-yellow (hardcoded so this file stays free of
-                  // package imports)
-                  fill: rgb("#e6ff44"),
-                )[LLMs\ Unplugged]
-              ],
-            )
-          ],
+          inset: 4mm,
+          align(center + horizon, image("title-logo.svg", fit: "contain")),
         ),
       )
 
