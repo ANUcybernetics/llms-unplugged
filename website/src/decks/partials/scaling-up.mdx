@@ -12,7 +12,7 @@ The reassurance beat: what they built isn't a cartoon of an LLM, it's the real m
 
 ## More context
 
-![bg right:40%](./assets/bg-more-context.avif)
+![bg right:30%](./assets/bg-more-context.avif)
 
 <div class="context-scale">
   <div class="context-row">
@@ -57,16 +57,19 @@ This is the "context window". One word of context is why their generated text wa
     <span class="context-tokens">
       <span class="token attn-weak">the</span>
       <span class="token attn-strong">keys</span>
-      <span class="token attn-weak">to</span>
+      <span class="token attn-weak">I</span>
+      <span class="token attn-weak">left</span>
+      <span class="token attn-weak">on</span>
       <span class="token attn-weak">the</span>
-      <span class="token attn-medium">cabinet</span>
+      <span class="token attn-weak">kitchen</span>
+      <span class="token attn-medium">table</span>
       <span class="context-next">?</span>
     </span>
   </div>
 </div>
 
-from `cabinet` alone you'd guess _is_---but it's _are_, because of `keys`, four
-words back
+from `table` alone you'd guess _is_---but it's _are_, because of `keys`, back at
+the start
 
 **attention** lets every earlier word vote on what comes next, and the model
 _learns_ the weights---no grid could ever be that big
@@ -122,7 +125,7 @@ Your grid stores patterns as tally marks you can point to. A transformer spreads
   <span class="qa-prompt">prompt: "what is the capital of France?"</span>
   <div class="qa-item">
     <span class="qa-label">a base model</span>
-    <span class="qa-a weak">"…and the capital of Spain is…"</span>
+    <span class="qa-a weak">"What is the capital of Germany? What is the largest…"</span>
   </div>
   <div class="qa-item">
     <span class="qa-label">+ post-training</span>
@@ -151,7 +154,7 @@ A pretrained model is a text-continuer, not an assistant --- prompt it with a qu
     </span>
   </div>
   <div class="context-row">
-    <span class="context-label">a frontier LLM</span>
+    <span class="context-label">frontier LLM</span>
     <span class="context-tokens">
       trained on tens of trillions of words --- hundreds of billions of numbers
     </span>
