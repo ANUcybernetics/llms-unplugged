@@ -6,7 +6,6 @@ description:
   A pre-service teacher took LLMs Unplugged into a lower-SES Year 7/8 classroom,
   swapped the children's book for a Yoda monologue, and added a 1966 chatbot for
   contrast
-published: false
 ---
 
 Most of the _LLMs Unplugged_ stories on this page are about sessions I ran
