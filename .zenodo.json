@@ -21,5 +21,13 @@
     "workshop materials",
     "probabilistic models",
     "natural language processing"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.1145/3786228.3786237",
+      "relation": "isDocumentedBy",
+      "scheme": "doi",
+      "resource_type": "publication-conferencepaper"
+    }
   ]
 }
