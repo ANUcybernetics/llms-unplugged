@@ -7,8 +7,9 @@ description:
   at ANU, for a room of political and social science researchers
 ---
 
-Last Thursday we took _LLMs Unplugged_ to the 3rd APSA Workshop on Quantitative
-Methods at ANU. The full-day event was run by the
+Last Thursday we took _LLMs Unplugged_ to the
+[3rd APSA Workshop on Quantitative Methods](https://rsss.cass.anu.edu.au/news/3rd-apsa-workshop-quantitative-methods-integrating-ai-quantitative-political-research)
+at ANU. The full-day event was run by the
 [Australian Political Studies Association](https://auspsa.org.au/)'s
 Quantitative Methods Research Group, with support from ANU's
 [School of Politics and International Relations](https://politicsir.cass.anu.edu.au/).
