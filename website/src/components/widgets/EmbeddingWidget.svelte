@@ -56,8 +56,7 @@
           rows="2"
           placeholder="Enter text to train on..."
           value={inputText}
-          oninput={(e) => setTrainingText(e.currentTarget.value)}
-        ></textarea>
+          oninput={(e) => setTrainingText(e.currentTarget.value)}></textarea>
       </div>
 
       <div class="widget-section">

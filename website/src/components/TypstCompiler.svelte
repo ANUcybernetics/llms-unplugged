@@ -170,8 +170,7 @@
         placeholder="Or paste your text here..."
         rows="8"
         aria-label="Training text"
-        disabled={!isReady}
-      ></textarea>
+        disabled={!isReady}></textarea>
     </div>
 
     <div class="metadata-inputs">

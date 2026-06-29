@@ -96,8 +96,7 @@
           aria-label="Training text"
           placeholder="Enter training text..."
           value={trainingText}
-          oninput={(e) => setTrainingText(e.currentTarget.value)}
-        ></textarea>
+          oninput={(e) => setTrainingText(e.currentTarget.value)}></textarea>
       </div>
 
       <div class="widget-section">
