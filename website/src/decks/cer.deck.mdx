@@ -1,0 +1,44 @@
+---
+title: LLMs Unplugged @ CER
+description: A Cybernetic Studio workshop
+---
+
+import StaticGrid from "../components/StaticGrid.svelte";
+import StaticGeneration from "../components/StaticGeneration.svelte";
+import DiceStrip from "../components/DiceStrip.svelte";
+import Timer from "../components/Timer.astro";
+import AiVennDiagram from "../components/AiVennDiagram.astro";
+import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
+import BgMusic from "../components/BgMusic.astro";
+import UpcomingSessions from "../components/UpcomingSessions.astro";
+import {
+  EXAMPLE_TOKENS,
+  EXAMPLE_VOCAB,
+  EXAMPLE_GENERATION,
+  EXAMPLE_GENERATION_ROLLS,
+} from "./examples";
+import "../styles/widgets.css";
+
+<BgMusic />
+
+{/* @include ./partials/cer-preamble.mdx */}
+
+---
+
+{/* @include ./partials/grid-training.mdx */}
+
+---
+
+{/* @include ./partials/grid-generation.mdx */}
+
+---
+
+{/* @include ./partials/scaling-up.mdx */}
+
+---
+
+{/* @include ./partials/agent-definition.mdx */}
+
+---
+
+{/* @include ./partials/denouement.mdx */}
