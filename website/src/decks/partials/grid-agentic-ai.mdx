@@ -23,14 +23,14 @@ Section beat: an agent is a model that can pause, call a tool, and use the resul
 <li><strong>generate</strong> from your model as before, rolling for each next word</li>
 <li>when you land on a <strong>punctuation token</strong> (like <code>.</code> or <code>,</code>), pause --- that's a tool call</li>
 <li><strong>text the word you just wrote</strong> to 3 friends</li>
-<li><strong>write down</strong> the first word of the first reply, then the punctuation token you rolled</li>
+<li><strong>write down</strong> the whole first reply, then the punctuation token you rolled</li>
 <li><strong>continue</strong> generating from the punctuation token</li>
 </ol>
 */}
 
 generate from your model as before, but every punctuation token triggers a
-**tool call**: text the previous word to 3 friends, and the first word of the
-first reply goes into your text---followed by the punctuation you rolled
+**tool call**: text the previous word to 3 friends, and the whole first reply
+goes into your text---followed by the punctuation you rolled
 
 ---
 
@@ -44,10 +44,11 @@ token---pause, that's a tool call
 text "sat" (the last token before the `.`) to 3 friends;
 the first reply back might be "down by the river"
 
-write `down`, then the `.` you rolled anyway, and continue generating from `.`
+write `down by the river`, then the `.` you rolled anyway, and continue
+generating from `.`
 
 {/* notes:
-Walk it slowly: the punctuation is the trigger, the previous word is the tool input, the first word of the first reply is the tool result. The punctuation still gets written --- the tool result slots in just before it. If asked why we don't continue from the friend's word: it probably isn't in your model's vocabulary, so resuming from the punctuation token is the cleanest way to keep generating.
+Walk it slowly: the punctuation is the trigger, the previous word is the tool input, the whole first reply is the tool result. The punctuation still gets written --- the tool result slots in just before it. If asked why we don't continue from the friend's reply: those words probably aren't in your model's vocabulary, so resuming from the punctuation token is the cleanest way to keep generating.
 */}
 
 ---
@@ -77,7 +78,7 @@ Texting three friends is the retry logic --- first reply wins. If no-one replies
 <Timer minutes={10} overlay />
 
 {/* notes:
-Generate from your model --- on punctuation, text the previous word to 3 friends and splice in the first word of the first reply. 10 min --- texting latency is real, so keep groups moving; if a reply hasn't landed by the next punctuation token, back-fill it later. Circulate.
+Generate from your model --- on punctuation, text the previous word to 3 friends and splice in the whole first reply. 10 min --- texting latency is real, so keep groups moving; if a reply hasn't landed by the next punctuation token, back-fill it later. Circulate.
 */}
 
 ---
