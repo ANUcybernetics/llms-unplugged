@@ -5,7 +5,7 @@
 ![bg](./assets/bg-tool-use-banner.avif)
 
 {/* notes:
-Section beat: an agent is a model that can pause, call a tool, and use the result. We bolt that onto the booklet.
+Section beat: an agent is a model that can pause, call a tool, and use the result. We bolt that onto your model.
 */}
 
 ---
@@ -20,7 +20,7 @@ Section beat: an agent is a model that can pause, call a tool, and use the resul
 
 {/* notes:
 <ol>
-<li><strong>generate</strong> from the booklet as before, rolling for each next word</li>
+<li><strong>generate</strong> from your model as before, rolling for each next word</li>
 <li>when you land on a <strong>punctuation token</strong> (like <code>.</code> or <code>,</code>), pause --- that's a tool call</li>
 <li><strong>text the word you just wrote</strong> to 3 friends</li>
 <li><strong>write down</strong> the first word of the first reply, then the punctuation token you rolled</li>
@@ -28,7 +28,7 @@ Section beat: an agent is a model that can pause, call a tool, and use the resul
 </ol>
 */}
 
-generate from the booklet as before, but every punctuation token triggers a
+generate from your model as before, but every punctuation token triggers a
 **tool call**: text the previous word to 3 friends, and the first word of the
 first reply goes into your text---followed by the punctuation you rolled
 
@@ -47,7 +47,7 @@ the first reply back might be "down by the river"
 write `down`, then the `.` you rolled anyway, and continue generating from `.`
 
 {/* notes:
-Walk it slowly: the punctuation is the trigger, the previous word is the tool input, the first word of the first reply is the tool result. The punctuation still gets written --- the tool result slots in just before it. If asked why we don't continue from the friend's word: it probably isn't in the booklet's vocabulary, so resuming from the punctuation token is the cleanest way to keep generating.
+Walk it slowly: the punctuation is the trigger, the previous word is the tool input, the first word of the first reply is the tool result. The punctuation still gets written --- the tool result slots in just before it. If asked why we don't continue from the friend's word: it probably isn't in your model's vocabulary, so resuming from the punctuation token is the cleanest way to keep generating.
 */}
 
 ---
@@ -56,7 +56,7 @@ Walk it slowly: the punctuation is the trigger, the previous word is the tool in
 
 ![bg right:40%](./assets/bg-tool-use-handoff.avif)
 
-your pre-trained booklet, dice, pen and paper (as before)
+your model, dice, pen and paper (as before)
 
 a phone
 
@@ -77,7 +77,7 @@ Texting three friends is the retry logic --- first reply wins. If no-one replies
 <Timer minutes={10} overlay />
 
 {/* notes:
-Generate from the booklet --- on punctuation, text the previous word to 3 friends and splice in the first word of the first reply. 10 min --- texting latency is real, so keep groups moving; if a reply hasn't landed by the next punctuation token, back-fill it later. Circulate.
+Generate from your model --- on punctuation, text the previous word to 3 friends and splice in the first word of the first reply. 10 min --- texting latency is real, so keep groups moving; if a reply hasn't landed by the next punctuation token, back-fill it later. Circulate.
 */}
 
 ---
@@ -89,7 +89,7 @@ Generate from the booklet --- on punctuation, text the previous word to 3 friend
 ![bg](./assets/bg-shareback-tool-use.avif)
 
 {/* notes:
-What did the tool calls add that the bare booklet couldn't --- fresh, outside information? Did the friends' words fit the text, or derail it? Invite ~5 groups to share back rather than the whole room. ~5 min.
+What did the tool calls add that the bare model couldn't --- fresh, outside information? Did the friends' words fit the text, or derail it? Invite ~5 groups to share back rather than the whole room. ~5 min.
 */}
 
 ---
