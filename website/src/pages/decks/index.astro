@@ -16,6 +16,7 @@ for (const entry of fs.readdirSync(decksDir, { withFileTypes: true })) {
       const name = match[1];
       const raw = fs.readFileSync(path.join(dirPath, file), "utf-8");
       const { data } = parseDeckFrontmatter(raw, entry.name);
+      if ((data as { hidden?: boolean }).hidden) continue;
       const slug = name === "slides" ? entry.name : `${entry.name}/${name}`;
       decks.push({ slug, title: data.title ?? name });
     }
@@ -25,6 +26,7 @@ for (const entry of fs.readdirSync(decksDir, { withFileTypes: true })) {
     const name = match[1];
     const raw = fs.readFileSync(path.join(decksDir, entry.name), "utf-8");
     const { data } = parseDeckFrontmatter(raw, name);
+    if ((data as { hidden?: boolean }).hidden) continue;
     decks.push({ slug: name, title: data.title ?? name });
   }
 }
