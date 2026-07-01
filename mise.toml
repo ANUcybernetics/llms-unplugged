@@ -2,7 +2,7 @@
 node = "24"
 pnpm = "latest"
 rust = "latest"
-typst = "0.14.2"
+typst = "0.15.0"
 typstyle = "0.14.4"
 jq = "1.8.1"
 # the cutouts-print task also needs qpdf (not in the mise registry):
