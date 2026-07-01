@@ -1,0 +1,43 @@
+---
+title: LLMs Unplugged at the ACDICT L&T Forum
+date: 2026-07-02
+author: Ben Swift
+description:
+  Slides and worksheets for my ACDICT Learning & Teaching Forum session, plus a
+  self-guided path for anyone joining online.
+---
+
+Today I'm running an _LLMs Unplugged_ session at the
+[ACDICT](https://www.acdict.edu.au/) Learning & Teaching Forum. It's a hands-on,
+pen-paper-and-dice walk through how a language model actually works---you build
+a bigram model by hand, generate new text from it by rolling dice, and then bolt
+on a couple of the ideas (sycophancy, tool use) that turn up in the real
+systems.
+
+The session is mostly in-person, but a few people are joining online, and this
+post is for them.
+
+## Following along online
+
+The slides are here: **[LLMs Unplugged @ ACDICT](/decks/acdict/)**.
+
+I'll be talking mostly to the people in the room, so the online experience will
+be a bit fly-on-the-wall---I won't be watching the chat closely while I present.
+But if you're keen, you can genuinely do the whole thing yourself as we go; it's
+all analogue. You'll need:
+
+- a printed [grid template](/assets/pdfs/worksheets/grid.pdf) (or any grid
+  paper---even hand-drawn is fine)
+- a book to use as training data---a kids' book is ideal (short sentences, small
+  vocabulary), but anything with text will do
+- a die, or a dice-rolling app, for the generation step
+- and, for the sycophancy section near the end, the
+  [sycophancy training text](/assets/pdfs/worksheets/sycophancy-text.pdf) to
+  tally into your grid
+
+Work through it at your own pace. Treat it as choose-your-own-adventure: follow
+the steps as we go and you'll come out the other side having built and run your
+own language model by hand, no computer required.
+
+If you get stuck, or want to go deeper afterwards, the full set of
+[lessons](/lessons/) covers everything here in more detail.
