@@ -20,7 +20,7 @@ clean:
 # Worksheets published on the website (linked from the lessons); re-run after
 # changing them and commit the copied PDF
 PUBLISH_DIR = ../website/public/assets/pdfs/worksheets
-PUBLISHED = $(OUTPUT_DIR)/worksheets/grid.pdf
+PUBLISHED = $(OUTPUT_DIR)/worksheets/grid.pdf $(OUTPUT_DIR)/worksheets/sycophancy-text.pdf
 
 publish: $(PUBLISHED)
 	mkdir -p $(PUBLISH_DIR)

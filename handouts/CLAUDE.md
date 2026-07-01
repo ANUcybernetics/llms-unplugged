@@ -24,9 +24,10 @@ typst compile worksheets/grid.typ
 
 PDFs are written to `out/` (gitignored).
 
-The grid worksheet is published on the website (linked from the lessons):
-`make publish` copies it to `../website/public/assets/pdfs/worksheets/`, which
-is tracked---commit the updated PDF after changing the worksheet.
+The grid worksheet and the sycophancy training-text sheet are published on the
+website (linked from the lessons and the ACDICT news post): `make publish`
+copies them to `../website/public/assets/pdfs/worksheets/`, which is
+tracked---commit the updated PDFs after changing a worksheet.
 
 ## Design constraints
 
