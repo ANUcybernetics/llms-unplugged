@@ -90,6 +90,8 @@ them as independent.
 - `pnpm run dev` - dev server with hot reload
 - `pnpm run build` - production build to `dist/`
 - `pnpm run test` - run tests
+- `pnpm run pdf <slug> [output.pdf]` - export a deck to PDF (builds, previews,
+  captures with decktape, compresses with Ghostscript); e.g. `pnpm run pdf cer`
 
 Whenever the linter/checker reports warnings or errors, fix them.
 

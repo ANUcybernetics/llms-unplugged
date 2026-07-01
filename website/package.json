@@ -18,6 +18,7 @@
     "build:a11y": "CHECK_A11Y=true pnpm run build",
     "preview": "astro preview",
     "new": "pnpm exec tsx scripts/create-news-item.ts",
+    "pdf": "pnpm exec tsx scripts/deck-pdf.ts",
     "generate:image": "pnpm exec tsx scripts/generate-image.ts",
     "convert:avif": "pnpm exec tsx scripts/convert-images-to-avif.ts",
     "test": "vitest run",
