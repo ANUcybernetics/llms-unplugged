@@ -44,13 +44,13 @@ Add tool-use cutouts and name a tool operator. On a trigger word, generation pau
 
 ![bg right:40%](./assets/bg-tool-use-triggers.avif)
 
-| Trigger                         | Tool                    | Returns                      |
-| ------------------------------- | ----------------------- | ---------------------------- |
-| <Token next tool>GOOGLE</Token> | a phone search          | one word from the top hit    |
-| <Token next tool>FRIEND</Token> | everyone texts a friend | first single-word reply wins |
+| Trigger                         | Tool                                        | Returns                   |
+| ------------------------------- | ------------------------------------------- | ------------------------- |
+| <Token next tool>GOOGLE</Token> | a phone search                              | one word from the top hit |
+| <Token next tool>FRIEND</Token> | everyone texts a friend the sentence so far | first reply wins          |
 
 {/* notes:
-Two tools: GOOGLE = search on a phone, read the first word of the top hit; FRIEND = everyone texts a friend, first one-word reply wins. Swap in your own if you like.
+Two tools: GOOGLE = search on a phone, read the first word of the top hit; FRIEND = everyone texts a friend the sentence so far, first reply wins. Swap in your own if you like.
 */}
 
 ---

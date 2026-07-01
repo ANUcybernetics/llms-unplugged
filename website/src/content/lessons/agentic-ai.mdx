@@ -51,11 +51,11 @@ Before generation, choose a person or object who gets to role-play as the
 
 ### Example tools
 
-| Trigger word | Tool                    | Capability                         | Returns                      |
-| ------------ | ----------------------- | ---------------------------------- | ---------------------------- |
-| `ACTION`     | a chosen person         | perform a small physical action    | a word for what they did     |
-| `GOOGLE`     | someone with a phone    | search the web for a continuation  | one word from the top result |
-| `FRIEND`     | everyone texts a friend | ask for a single-word continuation | first reply wins             |
+| Trigger word | Tool                    | Capability                        | Returns                      |
+| ------------ | ----------------------- | --------------------------------- | ---------------------------- |
+| `ACTION`     | a chosen person         | perform a small physical action   | a word for what they did     |
+| `GOOGLE`     | someone with a phone    | search the web for a continuation | one word from the top result |
+| `FRIEND`     | everyone texts a friend | text them the sentence so far     | first reply wins             |
 
 These three cover the main flavours of real-world tool use: `ACTION` reaches
 into the room (physical, immediate), `GOOGLE` reaches out to the web
@@ -144,7 +144,7 @@ token on the trigger's cutout brings you back.
 
 **Simple version:** use just one tool (FRIEND) and have the whole class
 participate. The model generates until it hits FRIEND, then everyone texts a
-friend asking for a single-word continuation---the first reply wins.
+friend the sentence so far---the first reply wins.
 
 **Advanced version:** set up multiple tools around the room. Different students
 operate different tools. The agent doesn't know which tool will be called next.
