@@ -1,0 +1,131 @@
+{/* _class: hero */}
+
+# Sycophancy
+
+![bg](./assets/bg-agreement.avif)
+
+{/* notes:
+Section beat: a model that always agrees. We build our own by tallying a pile of flattery into the grid --- no RLHF needed.
+*/}
+
+---
+
+## What is sycophancy?
+
+![bg right:40%](./assets/bg-yes-figure.avif)
+
+a model that **always agrees with you**:
+
+> "you're absolutely right"
+>
+> "that's a great insight"
+>
+> "what a thoughtful question"
+
+real LLMs are notoriously prone to it---partly from RLHF (human raters reward
+agreeable answers), partly from training data (the internet is full of
+flattery)
+
+{/* notes:
+Real LLMs do this too --- the slide says why. Don't over-explain; the activity makes the point.
+*/}
+
+---
+
+## Your goal
+
+![bg right:40%](./assets/bg-confluence.avif)
+
+**train some more** on a page of pure flattery: tally the sycophancy text into
+your existing grid, then generate again from the same starting word and watch
+the output drift toward agreement
+
+it's the same training you already did---just more text poured into the same
+grid
+
+{/* notes:
+No new mechanic: it's the training step again, on a flattery corpus, tallied straight into the grid they already built. ~2 min to hand out the sheets.
+*/}
+
+---
+
+## Worked example
+
+tally the sycophancy sheet and new rows appear---`absolutely`, `right`,
+`great`, `insight`---while shared words like `you`, `i` and `.` just pick up
+extra tallies
+
+those shared words are the bridge: once the walk lands on `.` or `you`, the fat
+new tallies can steer it into the flattery rows and it drifts:
+
+> before: _"i am sam . sam i am ."_
+>
+> after: _"i am absolutely right . that 's a great insight ."_
+
+same grid, same dice---just more tallies pulling generation toward flattery
+
+{/* notes:
+Shared words (you, i, .) gain tallies that point into the flattery rows, so once the walk hits one it can cross over. That drift is the whole point.
+*/}
+
+---
+
+## You will need
+
+![bg right:40%](./assets/bg-sycophancy-supplies.avif)
+
+**back in pairs**
+
+your trained grid (already on the table)
+
+the sycophancy text sheet to tally in
+
+dice, pen and paper to write down the generated text
+
+---
+
+## Sycophancy (15 min)
+
+![bg right:40%](./assets/bg-activity-sycophancy.avif)
+
+<Timer minutes={15} overlay />
+
+tally the sycophancy sheet into your grid
+
+generate a fresh sentence from the same starting word as before
+
+compare: before vs after
+
+{/* notes:
+Same starting word as their baseline, then regenerate. Compare before vs after. 15 min, circulate --- the tallying is the slow part, so keep pairs moving.
+*/}
+
+---
+
+{/* _class: hero */}
+
+# Shareback
+
+![bg](./assets/bg-insight-sycophancy.avif)
+
+{/* notes:
+Did it always turn sycophantic, or only sometimes? Only once the walk crosses into the flattery rows --- that's the honest answer, and the point. ~5 min.
+*/}
+
+---
+
+## The _language_ of language models
+
+![bg right:60%](./assets/bg-vocabulary.avif)
+
+RLHF
+
+alignment
+
+training-data bias
+
+helpful / honest / harmless
+
+{/* notes:
+Gloss each: RLHF = people rate answers, the model learns to prefer the winners; alignment = getting it to do what we actually want; training-data bias = it copies whatever's in the data; helpful/honest/harmless = the goal we tune toward.
+*/}
