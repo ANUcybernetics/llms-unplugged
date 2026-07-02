@@ -40,13 +40,13 @@ if (existsSync(filepath)) {
 }
 
 const content = `---
-title: ${postName}
+title: ${JSON.stringify(postName)}
 date: ${dateStr}
 author: Ben Swift
 description: TODO
 ---
 
-<!-- Hero images are auto-loaded from /assets/images/hero-news-${filename.replace(".md", "")}.avif -->
+<!-- Hero images are auto-loaded from src/assets/images/hero-news-${filename.replace(".md", "")}.avif -->
 
 TODO: Write your news item here.
 `;

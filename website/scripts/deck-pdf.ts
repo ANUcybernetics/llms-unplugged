@@ -41,14 +41,19 @@ const port = process.env.DECK_PDF_PORT ?? "4321";
 const url = `http://localhost:${port}/decks/${slug}/`;
 
 // decktape needs a real browser. Prefer an explicit override, then the usual
-// macOS install locations. We pass this via --chrome-path so puppeteer never
-// has to find (or download) one itself.
+// macOS and Linux install locations. We pass this via --chrome-path so
+// puppeteer never has to find (or download) one itself.
 function findChrome(): string {
   const candidates = [
     process.env.DECK_PDF_CHROME,
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
     "/Applications/Chromium.app/Contents/MacOS/Chromium",
     "/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary",
+    "/usr/bin/google-chrome",
+    "/usr/bin/google-chrome-stable",
+    "/usr/bin/chromium",
+    "/usr/bin/chromium-browser",
+    "/snap/bin/chromium",
   ].filter((c): c is string => Boolean(c));
   const found = candidates.find((c) => existsSync(c));
   if (!found) {
