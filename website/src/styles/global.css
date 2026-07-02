@@ -25,6 +25,14 @@
   width: 100%;
 }
 
+/* The theme's flow-rhythm rule (base.css, @layer at.base) gives every svg
+   `margin-block: 0 1em`. Icon svgs inside buttons aren't flowing content, and
+   the leftover bottom margin skews their vertical centring in flex buttons
+   (variant toggle, playback controls, the theme's own nav buttons). */
+button svg {
+  margin-block: 0;
+}
+
 /* Below 640px the ANU theme (base.css, @layer at.base) bleeds prose images to
    the screen edges via a matched negative margin-inline + widened width. Our
    unlayered width:100% above wins the width half but leaves the negative
