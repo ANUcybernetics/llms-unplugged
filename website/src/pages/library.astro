@@ -14,12 +14,14 @@ import libraryTitlePage from "../assets/images/library-title-page.avif";
   <Image
     src={libraryCollection}
     alt="The LLMs Unplugged Library collection — hardbound volumes in green, purple, brown, and blue lined up on a shelf"
+    widths={[480, 960, 1440]}
+    sizes="(max-width: 960px) 100vw, 960px"
   />
 
   <p>
     The <em>LLMs Unplugged Library</em> is a collection of pre-trained language models
     in printed, hardbound book form. Each volume contains <a
-      href="/glossary/#n-gram">n-gram</a
+      href="/glossary/#n-gram-model">n-gram</a
     > frequency tables typeset from a classic work of literature&mdash;the same statistical
     patterns that underpin modern LLMs, but at human scale. You can hold the entire
     model in your hands and use it to generate new text with pen, paper, and dice.
@@ -28,6 +30,8 @@ import libraryTitlePage from "../assets/images/library-title-page.avif";
   <Image
     src={libraryTitlePage}
     alt="Title page of a Hemingway bigram volume, published by Cybernetic Studio Press"
+    widths={[480, 960, 1440]}
+    sizes="(max-width: 960px) 100vw, 960px"
   />
 
   <h2>A conceptual art piece</h2>
