@@ -392,8 +392,18 @@
     cursor: pointer;
   }
 
+  /* Visually hidden but still focusable — display:none would make the file
+     picker unreachable by keyboard and invisible to screen readers. */
   .file-input {
-    display: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
   }
 
   .file-button {
@@ -404,6 +414,11 @@
     font-size: 0.9rem;
     transition: background-color 0.2s;
     color: var(--at-text);
+  }
+
+  .file-input:focus-visible ~ .file-button {
+    outline: 2px solid var(--at-accent);
+    outline-offset: 2px;
   }
 
   .file-button:hover {
