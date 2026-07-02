@@ -6,6 +6,11 @@ import { astromotion, deckRemarkPlugins } from "astromotion";
 
 export default defineConfig({
   site: "https://www.llmsunplugged.org",
+  // The default (true) strips newline-only whitespace between inline elements,
+  // which deletes meaningful spaces wherever Prettier wraps a line at an
+  // <a>/<em>/<strong> boundary in an .astro template ("then\n<a>" renders as
+  // "then<a>").
+  compressHTML: false,
   redirects: {
     // lesson renamed from "Agentic tool use" (June 2026)
     "/lessons/agentic-tool-use": "/lessons/agentic-ai",
