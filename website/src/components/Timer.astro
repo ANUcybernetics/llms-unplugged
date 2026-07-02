@@ -2,7 +2,7 @@
 interface Props {
   /** Countdown length in minutes. */
   minutes?: number;
-  /** Pin the timer to the top-right of the slide as a large overlay. */
+  /** Pin the timer to the bottom-right of the slide as a large overlay. */
   overlay?: boolean;
 }
 
@@ -194,8 +194,8 @@ const initialLabel = `${mm}:${String(ss).padStart(2, "0")}`;
     gap: 0.7em;
   }
 
-  /* Overlay: pin to the slide's top-right so the timer can sit on top of any
-     slide (e.g. a hero). !important overrides astromotion's
+  /* Overlay: pin to the slide's bottom-right so the timer can sit on top of
+     any slide (e.g. a hero). !important overrides astromotion's
      `section:has(.slide-bg) > :not(.slide-bg) { position: relative }`. */
   .timer.overlay {
     position: absolute !important;
