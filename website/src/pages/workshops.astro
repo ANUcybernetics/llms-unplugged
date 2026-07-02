@@ -13,7 +13,12 @@ import heroWorkshops from "../assets/images/hero-workshops.avif";
 >
   <h1>Workshop formats</h1>
 
-  <Image src={heroWorkshops} alt="Hero image: Workshop formats" />
+  <Image
+    src={heroWorkshops}
+    alt=""
+    widths={[480, 960, 1440]}
+    sizes="(max-width: 960px) 100vw, 960px"
+  />
 
   <Callout type="info">
     <p>
