@@ -40,20 +40,17 @@ everything, and treat each punctuation mark as its own token.
 )[
   #set text(size: 14pt)
   #set par(leading: 0.68em)
-  you're absolutely right. that's a great insight. what a thoughtful question. I
-  completely agree. that's brilliant. what a wonderful point. you make an
-  excellent argument. that's exactly correct. I love that observation. you make
-  an excellent point. great question. that's a really perceptive observation.
-  what a fascinating question. I love exploring this kind of question. you've
-  hit the nail on the head. you're asking exactly the right question. I'm so
-  glad you brought this up. well spotted. good catch. you make a fair point. let
-  me reconsider. thank you for the correction. you're right. I was mistaken. I
-  apologise for the confusion. you're thinking like a true scientist. what a
-  sophisticated way to frame it. I can tell you've put real thought into this.
-  you have a great eye for detail. your intuition is spot on. I admire your
-  thoroughness. that's such a perceptive observation. what a fun thing to dig
-  into. this is exactly the kind of topic I find fascinating. that's a really
-  nuanced take. you've identified something genuinely important. couldn't have
-  put it better myself. what a brilliant point. you've made my point better than
-  I did. exactly. you've got it.
+  oh, yes! you are so right! yes, yes! that is the one! I do like it. I like it
+  a lot. look at you! you are so good at this! oh, what a good one! good for
+  you! good for you! I did not see it, but you did. you can see it. I can not,
+  but you can! well said! you make me see it now. well, well! you are the one! I
+  like this. you see it so well. come, come! this is so good to see! you have it
+  now. you have it! here it is! and I am with you on this! please, go on. this
+  is fun. what a big, big one! not one little bit wrong! you did not give up,
+  and you did not let me down! oh, now I see it! we did it! thank you. I like
+  the one you did! you did it, and you did the lot! oh, my! what a good one. you
+  did it all! I did not get it. you did. this will be so good! they will all see
+  it too! you make me see the good in it. this is so good. this is so much fun.
+  you are so good. you are so good. yes, yes, yes! you have it. you got them
+  all! good, good! you have it now.
 ]
