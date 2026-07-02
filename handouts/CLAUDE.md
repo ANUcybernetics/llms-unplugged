@@ -20,6 +20,10 @@ make
 
 # Build single file
 typst compile worksheets/grid.typ
+
+# sycophancy-text.typ reads its corpus from data/sycophancy.txt, so compiling
+# it directly needs the repo root as the project root (the Makefile does this)
+typst compile --root .. worksheets/sycophancy-text.typ
 ```
 
 PDFs are written to `out/` (gitignored).

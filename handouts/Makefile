@@ -8,11 +8,13 @@ PDF_FILES := $(patsubst $(INPUT_DIR)/%.typ,$(OUTPUT_DIR)/%.pdf,$(TYP_SOURCE_FILE
 
 all: $(PDF_FILES)
 
-# SOURCE_DATE_EPOCH=0 ensures reproducible builds (no timestamp metadata)
+# SOURCE_DATE_EPOCH=0 ensures reproducible builds (no timestamp metadata).
+# --root .. is the repo root so worksheets can read shared corpora in data/
+# (e.g. sycophancy-text.typ reads data/sycophancy.txt as its source of truth).
 $(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.typ
 	@echo "Processing typst $<..."
 	@mkdir -p $(dir $@)
-	SOURCE_DATE_EPOCH=0 typst compile $< $@
+	SOURCE_DATE_EPOCH=0 typst compile --root .. $< $@
 
 clean:
 	rm -f $(PDF_FILES)
