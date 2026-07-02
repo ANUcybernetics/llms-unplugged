@@ -1,19 +1,21 @@
 ---
 layout: ../layouts/PageLayout.astro
 title: About
-description: The history and foundations of LLMs Unplugged, from CS Unplugged to Shannon's information theory.
+description:
+  The history and foundations of LLMs Unplugged, from CS Unplugged to Shannon's
+  information theory.
 ---
 
 # About
 
-![Hero image: The history and foundations of LLMs Unplugged](../assets/images/hero-about.avif)
+![](../assets/images/hero-about.avif)
 
-_LLMs Unplugged_ is a [Cybernetic
-Studio](https://cybernetics.anu.edu.au/cybernetic-studio/) project created by
-[Dr. Ben Swift](https://benswift.me) at the [ANU School of
-Cybernetics](https://cybernetics.anu.edu.au). If you've got questions,
-suggestions, or _LLMs Unplugged_ success stories then [send Ben an
-email](mailto:ben.swift@anu.edu.au).
+_LLMs Unplugged_ is a
+[Cybernetic Studio](https://cybernetics.anu.edu.au/cybernetic-studio/) project
+created by [Dr. Ben Swift](https://benswift.me) at the
+[ANU School of Cybernetics](https://cybernetics.anu.edu.au). If you've got
+questions, suggestions, or _LLMs Unplugged_ success stories then
+[send Ben an email](mailto:ben.swift@anu.edu.au).
 
 These resources build on a rich history of unplugged computing education (and
 hands-on education in general). If you're interested in where these ideas came
@@ -30,8 +32,8 @@ tooling, allowing learners to focus on underlying principles.
 
 More importantly: it works (the
 [literature](https://scholar.google.com/scholar?q=cs%20unplugged) has receipts).
-Making learning these concepts both effective and fun turns is possible, and CS
-Unplugged proved has proven that at scale.
+Making learning these concepts both effective and fun is possible, and CS
+Unplugged has proven that at scale.
 
 _LLMs Unplugged_ applies this same philosophy to language models. Rather than
 explaining transformers through mathematics or implementing neural networks in
@@ -47,8 +49,8 @@ discourse, educators naturally extended the unplugged approach to these fields,
 for example:
 
 - [AI Unplugged](https://www.aiunplugged.org) by Lindner, Seegerer and Romeike
-- Northwestern University's [AI Unplugged
-  Resources](https://sites.northwestern.edu/aiunplugged/)
+- Northwestern University's
+  [AI Unplugged Resources](https://sites.northwestern.edu/aiunplugged/)
 - [CS In Schools](https://csinschools.io/) by Toan Huynh and Hugh Williams has
   some material on AI Unplugged<sup><a href="#fn-counting-bigrams">1</a></sup>
 
@@ -126,18 +128,18 @@ origins of information theory itself.
 
 The [School of Cybernetics](https://cybernetics.anu.edu.au) at the Australian
 National University takes a systems-oriented approach to understanding and
-shaping technology in society. The School's [Cybernetic
-Studio](https://cybernetics.anu.edu.au/cybernetic-studio/) develops hands-on
-resources and runs workshops exploring the social, technical, and political
-dimensions of emerging technologies.
+shaping technology in society. The School's
+[Cybernetic Studio](https://cybernetics.anu.edu.au/cybernetic-studio/) develops
+hands-on resources and runs workshops exploring the social, technical, and
+political dimensions of emerging technologies.
 
 ![LLMs Unplugged workshop in action](../assets/images/workshop-3.avif)
 
 _LLMs Unplugged_ reflects the School's commitment to making sophisticated
 technical concepts accessible to diverse audiences and fostering critical
 engagement with AI systems that increasingly mediate how we work, learn, and
-communicate. Understanding how these systems actually work---not through metaphor
-or handwaving but through direct experience---is what we're all about.
+communicate. Understanding how these systems actually work---not through
+metaphor or handwaving but through direct experience---is what we're all about.
 
 ## Acknowledgements
 
@@ -149,14 +151,14 @@ real learners has been invaluable.
 
 ## Get in touch
 
-We encourage educators to use, adapt, and improve these resources.
-If you have questions, success stories about using them in your classroom, or
-would like to discuss adaptations improvements you've made, get in touch at
+We encourage educators to use, adapt, and improve these resources. If you have
+questions, success stories about using them in your classroom, or would like to
+discuss adaptations or improvements you've made, get in touch at
 [ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au)---we'd
 love<sup><a href="#fn-love">2</a></sup> to hear from you. And if you'd like to
-be informed of more cool stuff coming out of the School of Cybernetics, then sign
-up for the [mailing
-list](https://cybernetics.anu.edu.au/#subscribe-to-our-mailing-list-1).
+be informed of more cool stuff coming out of the School of Cybernetics, then
+sign up for the
+[mailing list](https://cybernetics.anu.edu.au/#subscribe-to-our-mailing-list-1).
 
 ## Citation
 
