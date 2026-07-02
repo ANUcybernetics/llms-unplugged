@@ -15,12 +15,6 @@ const byFilename: Record<string, ImageMetadata> = Object.fromEntries(
   ]),
 );
 
-export function heroImage(slug: string): ImageMetadata {
-  const img = byFilename[slug];
-  if (!img) throw new Error(`hero image not found: ${slug}.avif`);
-  return img;
-}
-
 export function findHeroImage(slug: string): ImageMetadata | undefined {
   return byFilename[slug];
 }

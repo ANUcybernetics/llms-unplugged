@@ -1,12 +1,7 @@
 <script lang="ts">
-  import { getVariant, setVariant, type Variant } from "../lib/stores/variant.svelte";
+  import { getVariant, setVariant } from "../lib/stores/variant.svelte";
 
   let current = $derived(getVariant());
-
-  function select(v: Variant) {
-    setVariant(v);
-    document.documentElement.setAttribute("data-variant", v);
-  }
 </script>
 
 <div class="lm-widget variant-toggle">
@@ -18,7 +13,7 @@
     <button
       class="variant-button"
       class:active={current === "grid"}
-      onclick={() => select("grid")}
+      onclick={() => setVariant("grid")}
       aria-pressed={current === "grid"}
     >
       <svg
@@ -41,7 +36,7 @@
     <button
       class="variant-button"
       class:active={current === "cutouts"}
-      onclick={() => select("cutouts")}
+      onclick={() => setVariant("cutouts")}
       aria-pressed={current === "cutouts"}
     >
       <svg
