@@ -1,13 +1,14 @@
 import { bookTemplate, cutoutsTemplate } from "../templates";
-// The Chinese faces are bundled locally (subset from the system Noto CJK SC
-// fonts by scripts/subset-cjk-fonts.py), keeping the correct "Noto Serif/Sans
-// CJK SC" names the templates reference. They ship as uncompressed OTF because
-// Typst parses only uncompressed sfnt fonts --- it silently ignores woff2. The
-// Latin faces the templates use (Libertinus Serif, New Computer Modern) come
-// from typst.ts's own default font assets, so only the Chinese faces, which
-// have no default, need bundling here.
+// Fonts the templates reference that typst.ts does not ship as a default asset,
+// bundled locally (subset from the system fonts by scripts/subset-booklet-fonts.py).
+// They are uncompressed OTF because Typst parses only uncompressed sfnt fonts
+// and silently ignores woff2. Libertinus Serif and New Computer Modern are
+// typst.ts defaults, so they are not bundled here.
 import serifCjkFontUrl from "../assets/fonts/NotoSerifCJKsc-Regular-subset.otf?url";
 import sansCjkFontUrl from "../assets/fonts/NotoSansCJKsc-Regular-subset.otf?url";
+import libertinusSansRegularUrl from "../assets/fonts/LibertinusSans-Regular-subset.otf?url";
+import libertinusSansBoldUrl from "../assets/fonts/LibertinusSans-Bold-subset.otf?url";
+import monaspaceArgonUrl from "../assets/fonts/MonaspaceArgon-Regular-subset.otf?url";
 // The typst.ts runtime wasm is bundled from the pinned npm packages rather than
 // fetched from a CDN, so builds are deterministic and work offline. `?url`
 // yields the emitted asset path; the wasm itself is only fetched when the
@@ -73,14 +74,22 @@ export async function initCompiler(
     typst.setCompilerInitOptions({ getModule: () => compilerWasmUrl });
     typst.setRendererInitOptions({ getModule: () => rendererWasmUrl });
 
-    // Preload the bundled Chinese faces into the compiler's font book (fonts are
+    // Preload the bundled faces into the compiler's font book (fonts are
     // resolved by family name off this book --- mapping them into the shadow
-    // filesystem does not register them). Latin faces come from typst.ts's
-    // default assets, which it loads itself.
-    typst.use(module.TypstSnippet.preloadFonts([serifCjkFontUrl, sansCjkFontUrl]));
+    // filesystem does not register them). Libertinus Serif and New Computer
+    // Modern come from typst.ts's default assets, which it loads itself.
+    typst.use(
+      module.TypstSnippet.preloadFonts([
+        serifCjkFontUrl,
+        sansCjkFontUrl,
+        libertinusSansRegularUrl,
+        libertinusSansBoldUrl,
+        monaspaceArgonUrl,
+      ]),
+    );
 
     onUpdate((s) => appendLog(s, "Compiler options configured"));
-    onUpdate((s) => appendLog(s, "Registering Chinese fonts..."));
+    onUpdate((s) => appendLog(s, "Registering bundled fonts..."));
 
     onUpdate((s) => appendLog(s, "Adding SVG logo..."));
     const encoder = new TextEncoder();
