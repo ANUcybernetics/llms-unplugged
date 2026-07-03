@@ -123,7 +123,7 @@
 // the first cutout sheet is self-contained.
 #let duplex = sys.inputs.at("duplex", default: "false") == "true"
 
-#set text(font: "Libertinus Serif", size: font_size)
+#set text(font: ("Libertinus Serif", "Noto Serif CJK SC"), size: font_size)
 
 #set page(
   paper: paper_size,

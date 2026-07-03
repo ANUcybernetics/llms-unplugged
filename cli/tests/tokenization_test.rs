@@ -173,6 +173,52 @@ fn write_punctuation_corpus(path: &std::path::Path) -> io::Result<()> {
 }
 
 #[test]
+fn builds_a_bigram_model_from_chinese_characters() -> io::Result<()> {
+    let temp_file = NamedTempFile::new()?;
+    let path = temp_file.path().to_owned();
+
+    {
+        let mut file = File::create(&path)?;
+        writeln!(file, "---")?;
+        writeln!(file, "title: 江南")?;
+        writeln!(file, "author: 汉乐府")?;
+        writeln!(file, "url: https://example.com")?;
+        writeln!(file, "---")?;
+        // Two lines of the yuefu poem "Jiangnan". Character-level tokenisation
+        // means each hanzi is a token and the full-width comma is punctuation.
+        writeln!(file, "江南可采莲，莲叶何田田。")?;
+        writeln!(file, "鱼戏莲叶间。")?;
+        file.flush()?;
+    }
+
+    let mut counter = NGramCounter::new(2, default_punctuation());
+    counter.process_file(&path)?;
+    let tokens = collect_tokens(&counter);
+
+    // Each hanzi survives as its own token (not dropped as a separator).
+    for hanzi in ["江", "南", "莲", "叶", "田", "鱼"] {
+        assert!(tokens.contains(&hanzi.to_string()), "expected hanzi {hanzi}");
+    }
+    // Full-width punctuation is kept as a token, just like ASCII punctuation.
+    assert!(tokens.contains(&"，".to_string()));
+    assert!(tokens.contains(&"。".to_string()));
+
+    // A real bigram edge from the corpus: 莲 is followed by 叶 (莲叶 appears twice).
+    let lian = counter
+        .get_entries()
+        .into_iter()
+        .find(|e| e.previous_words == vec!["莲".to_string()])
+        .expect("莲 should have successors");
+    assert!(
+        lian.next_words.iter().any(|(w, _)| w == "叶"),
+        "莲 should be followed by 叶, got {:?}",
+        lian.next_words
+    );
+
+    Ok(())
+}
+
+#[test]
 fn default_punctuation_keeps_all_single_marks() -> io::Result<()> {
     let temp_file = NamedTempFile::new()?;
     let path = temp_file.path().to_owned();

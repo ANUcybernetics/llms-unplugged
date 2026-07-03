@@ -3,7 +3,7 @@
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
 #let text_path = sys.inputs.at("text_path")
 
-#set text(font: "Libertinus Serif", size: 14pt)
+#set text(font: ("Libertinus Serif", "Noto Serif CJK SC"), size: 14pt)
 #set page(paper: paper_size, margin: 2cm)
 #set par(leading: 0.8em, spacing: 1.2em)
 

@@ -3,8 +3,10 @@ use std::collections::{HashMap, HashSet};
 
 /// Default punctuation kept as standalone tokens. Covers the unpaired marks
 /// that carry sentence structure; paired marks (quotes, brackets, em-dashes)
-/// are intentionally excluded because they don't behave well in n-grams.
-pub const DEFAULT_PUNCTUATION: &str = ".,!?;:";
+/// are intentionally excluded because they don't behave well in n-grams. The
+/// full-width block (。，、！？；：) is the Chinese equivalent, kept so CJK
+/// corpora box their punctuation the same way English ones do.
+pub const DEFAULT_PUNCTUATION: &str = ".,!?;:。，、！？；：";
 
 /// Tracks surface forms of words to determine canonical casing.
 ///
@@ -156,6 +158,16 @@ impl Normalizer {
                 flush(&mut word, Segment::Word, &mut segments);
                 flush(&mut digits, Segment::Digits, &mut segments);
                 segments.push(Segment::Punct(c));
+            } else if is_cjk_ideograph(c) {
+                // Character-level tokenisation for CJK: each ideograph is its
+                // own token. Chinese has no inter-word spaces, so we can't
+                // accumulate letter runs the way we do for Latin words. Emitting
+                // a single-char Word segment also routes it through the same
+                // word pipeline (the English-only case/roman-numeral rules are
+                // all no-ops on a Han character).
+                flush(&mut word, Segment::Word, &mut segments);
+                flush(&mut digits, Segment::Digits, &mut segments);
+                segments.push(Segment::Word(c.to_string()));
             } else if c.is_ascii_alphabetic() || c == '\'' {
                 flush(&mut digits, Segment::Digits, &mut segments);
                 word.push(c);
@@ -299,6 +311,21 @@ enum Segment {
     Word(String),
     Punct(char),
     Digits(String),
+}
+
+/// True for CJK ideographs — the characters we treat as standalone
+/// (character-level) tokens. Covers the common Unified Ideographs block plus
+/// Extension A, Compatibility Ideographs, and Extension B, which is ample for
+/// the texts this project targets. Full-width CJK punctuation (。，！? etc.) is
+/// deliberately excluded: it lives in the punctuation set instead, so it boxes
+/// like ASCII punctuation rather than becoming a word token.
+fn is_cjk_ideograph(c: char) -> bool {
+    matches!(c as u32,
+        0x3400..=0x4DBF     // CJK Extension A
+        | 0x4E00..=0x9FFF   // CJK Unified Ideographs
+        | 0xF900..=0xFAFF   // CJK Compatibility Ideographs
+        | 0x2_0000..=0x2_A6DF // CJK Extension B
+    )
 }
 
 fn normalize_apostrophe(c: char) -> char {
@@ -718,6 +745,74 @@ mod tests {
 
         // Now Sally is preserved
         assert_eq!(n.normalize_line("Sally"), vec!["Sally"]);
+    }
+
+    // CJK (character-level) tokenisation tests
+
+    #[test]
+    fn cjk_each_ideograph_is_its_own_token() {
+        // Opening line of the Han-dynasty yuefu poem "Jiangnan": each
+        // character becomes a standalone token, and the full-width comma is
+        // kept as a punctuation token.
+        let tokens = normalizer().normalize_line("江南可采莲，莲叶何田田");
+        assert_eq!(
+            tokens,
+            vec!["江", "南", "可", "采", "莲", "，", "莲", "叶", "何", "田", "田"]
+        );
+    }
+
+    #[test]
+    fn cjk_full_width_punctuation_is_tokenised() {
+        let tokens = normalizer().normalize_line("四是四。十是十！");
+        assert_eq!(tokens, vec!["四", "是", "四", "。", "十", "是", "十", "！"]);
+    }
+
+    #[test]
+    fn cjk_mixed_with_latin_splits_at_the_boundary() {
+        // Latin runs still accumulate; each Han char stands alone.
+        let tokens = normalizer().normalize_line("AI是cool的");
+        assert_eq!(tokens, vec!["ai", "是", "cool", "的"]);
+    }
+
+    #[test]
+    fn cjk_repeated_characters_repeat_as_tokens() {
+        // "田田" must yield two identical tokens so bigram counts can form.
+        let tokens = normalizer().normalize_line("田田");
+        assert_eq!(tokens, vec!["田", "田"]);
+    }
+
+    #[test]
+    fn cjk_raw_tokens_are_all_kept() {
+        let raw = normalizer().tokenize_line_raw("小猫。", 1);
+        let summary: Vec<(&str, bool)> = raw.iter().map(|t| (t.text.as_str(), t.keep)).collect();
+        assert_eq!(summary, vec![("小", true), ("猫", true), ("。", true)]);
+    }
+
+    #[test]
+    fn cjk_kept_raw_tokens_agree_with_normalize_line() {
+        // Same unified-walker invariant as English: cutouts == model tokens.
+        let n = normalizer();
+        for line in ["江南可采莲，莲叶何田田。", "小壁虎借尾巴", "AI是cool的"] {
+            let kept: Vec<String> = n
+                .tokenize_line_raw(line, 1)
+                .into_iter()
+                .filter(|t| t.keep)
+                .map(|t| t.text)
+                .collect();
+            assert_eq!(kept, n.normalize_line(line), "kept must equal model for {line:?}");
+        }
+    }
+
+    #[test]
+    fn is_cjk_ideograph_boundaries() {
+        assert!(is_cjk_ideograph('江'));
+        assert!(is_cjk_ideograph('\u{4E00}'));
+        assert!(is_cjk_ideograph('\u{9FFF}'));
+        // Full-width punctuation and Latin letters are NOT ideographs.
+        assert!(!is_cjk_ideograph('，'));
+        assert!(!is_cjk_ideograph('。'));
+        assert!(!is_cjk_ideograph('a'));
+        assert!(!is_cjk_ideograph('1'));
     }
 
     #[test]

@@ -9,7 +9,12 @@
 #let json_path = sys.inputs.at("json_path", default: "model.json")
 #let book_binding = sys.inputs.at("book_binding", default: "false") == "true"
 
-#set text(font: "Libertinus Serif", size: eval(font_size))
+// CJK corpora fall back to Noto Serif CJK SC per-glyph; Libertinus has no Han
+// glyphs, so without this a Chinese booklet renders as tofu boxes.
+#set text(
+  font: ("Libertinus Serif", "Noto Serif CJK SC"),
+  size: eval(font_size),
+)
 
 // Set page margins once for the entire document
 #set page(
@@ -112,13 +117,16 @@
   align(center + horizon)[
     #v(2cm)
     #text(
-      font: "Libertinus Sans",
+      font: ("Libertinus Sans", "Noto Sans CJK SC"),
       weight: "bold",
       size: 4em,
     )[#doc_metadata.title]
     #if subtitle != none [
       #v(1cm)
-      #text(font: "Libertinus Sans", size: 2.5em)[#subtitle]
+      #text(
+        font: ("Libertinus Sans", "Noto Sans CJK SC"),
+        size: 2.5em,
+      )[#subtitle]
     ]
   ]
 
