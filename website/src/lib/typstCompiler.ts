@@ -1,4 +1,19 @@
 import { bookTemplate, cutoutsTemplate } from "../templates";
+// The Chinese faces are bundled locally (subset from the system Noto CJK SC
+// fonts by scripts/subset-cjk-fonts.py), keeping the correct "Noto Serif/Sans
+// CJK SC" names the templates reference. They ship as uncompressed OTF because
+// Typst parses only uncompressed sfnt fonts --- it silently ignores woff2. The
+// Latin faces the templates use (Libertinus Serif, New Computer Modern) come
+// from typst.ts's own default font assets, so only the Chinese faces, which
+// have no default, need bundling here.
+import serifCjkFontUrl from "../assets/fonts/NotoSerifCJKsc-Regular-subset.otf?url";
+import sansCjkFontUrl from "../assets/fonts/NotoSansCJKsc-Regular-subset.otf?url";
+// The typst.ts runtime wasm is bundled from the pinned npm packages rather than
+// fetched from a CDN, so builds are deterministic and work offline. `?url`
+// yields the emitted asset path; the wasm itself is only fetched when the
+// compiler/renderer first initialises (via the getModule hooks below).
+import compilerWasmUrl from "@myriaddreamin/typst-ts-web-compiler/pkg/typst_ts_web_compiler_bg.wasm?url";
+import rendererWasmUrl from "@myriaddreamin/typst-ts-renderer/pkg/typst_ts_renderer_bg.wasm?url";
 
 export type Status = "idle" | "loading" | "ready" | "compiling" | "success" | "error";
 export type Workflow = "booklet" | "cutouts";
@@ -9,24 +24,6 @@ export interface CompilerState {
   previewHtml: string;
   errorMessage: string;
 }
-
-// Font packages are pinned to explicit fontsource versions, matching the way
-// the typst.ts CDN URLs below pin @0.7.0-rc2 — @latest could drift under us.
-const FONT_URLS: Record<string, string[]> = {
-  "Libertinus Serif": [
-    "https://cdn.jsdelivr.net/fontsource/fonts/libertinus-serif@5.2.1/latin-400-normal.woff2",
-    "https://cdn.jsdelivr.net/fontsource/fonts/libertinus-serif@5.2.1/latin-700-normal.woff2",
-    "https://cdn.jsdelivr.net/fontsource/fonts/libertinus-serif@5.2.1/latin-400-italic.woff2",
-  ],
-  "Libertinus Sans": [
-    "https://cdn.jsdelivr.net/fontsource/fonts/libertinus-sans@5.2.2/latin-400-normal.woff2",
-    "https://cdn.jsdelivr.net/fontsource/fonts/libertinus-sans@5.2.2/latin-700-normal.woff2",
-  ],
-  "IBM Plex Mono": [
-    "https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-mono@5.2.7/latin-400-normal.woff2",
-    "https://cdn.jsdelivr.net/fontsource/fonts/ibm-plex-mono@5.2.7/latin-700-normal.woff2",
-  ],
-};
 
 const SOCY_LOGO_SVG = `<?xml version="1.0" encoding="iso-8859-1"?>
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
@@ -70,38 +67,20 @@ export async function initCompiler(
   }));
 
   try {
-    const cdnUrl =
-      "https://cdn.jsdelivr.net/npm/@myriaddreamin/typst.ts@0.7.0-rc2/dist/esm/contrib/all-in-one-lite.bundle.js";
-    const module = await import(/* @vite-ignore */ cdnUrl);
+    const module = await import("@myriaddreamin/typst.ts/contrib/all-in-one-lite");
     typst = module.$typst;
 
-    typst.setCompilerInitOptions({
-      getModule: () =>
-        "https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-web-compiler@0.7.0-rc2/pkg/typst_ts_web_compiler_bg.wasm",
-    });
+    typst.setCompilerInitOptions({ getModule: () => compilerWasmUrl });
+    typst.setRendererInitOptions({ getModule: () => rendererWasmUrl });
 
-    typst.setRendererInitOptions({
-      getModule: () =>
-        "https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-renderer@0.7.0-rc2/pkg/typst_ts_renderer_bg.wasm",
-    });
+    // Preload the bundled Chinese faces into the compiler's font book (fonts are
+    // resolved by family name off this book --- mapping them into the shadow
+    // filesystem does not register them). Latin faces come from typst.ts's
+    // default assets, which it loads itself.
+    typst.use(module.TypstSnippet.preloadFonts([serifCjkFontUrl, sansCjkFontUrl]));
 
     onUpdate((s) => appendLog(s, "Compiler options configured"));
-    onUpdate((s) => appendLog(s, "Loading fonts from CDN..."));
-
-    /* eslint-disable no-await-in-loop -- fonts loaded sequentially into shadow FS */
-    for (const [fontFamily, urls] of Object.entries(FONT_URLS)) {
-      for (const url of urls) {
-        const filename = url.split("/").pop()!;
-        onUpdate((s) => appendLog(s, `Loading ${fontFamily}: ${filename}...`));
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch ${url}: ${response.status}`);
-        }
-        const fontData = await response.arrayBuffer();
-        typst.mapShadow(`/fonts/${filename}`, new Uint8Array(fontData));
-      }
-    }
-    /* eslint-enable no-await-in-loop */
+    onUpdate((s) => appendLog(s, "Registering Chinese fonts..."));
 
     onUpdate((s) => appendLog(s, "Adding SVG logo..."));
     const encoder = new TextEncoder();

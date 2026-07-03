@@ -6,6 +6,19 @@ import { astromotion, deckRemarkPlugins } from "astromotion";
 
 export default defineConfig({
   site: "https://www.llmsunplugged.org",
+  vite: {
+    // The typst.ts runtime loads its own wasm and pulls in many internal ESM
+    // modules; letting Vite's dev dep-optimizer pre-bundle it stalls the tools
+    // page at "Loading compiler...". Serving it unbundled in dev sidesteps that
+    // (production builds don't use the optimizer and bundle it normally).
+    optimizeDeps: {
+      exclude: [
+        "@myriaddreamin/typst.ts",
+        "@myriaddreamin/typst-ts-web-compiler",
+        "@myriaddreamin/typst-ts-renderer",
+      ],
+    },
+  },
   // The default (true) strips newline-only whitespace between inline elements,
   // which deletes meaningful spaces wherever Prettier wraps a line at an
   // <a>/<em>/<strong> boundary in an .astro template ("then\n<a>" renders as
