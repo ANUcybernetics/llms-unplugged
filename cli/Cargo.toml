@@ -22,6 +22,10 @@ clap = { version = "4.6", features = ["derive"], optional = true }
 # CLI needs thread-local entropy via rand::rng(), enabled by the `cli` feature).
 rand = { version = "0.10", default-features = false, features = ["alloc"] }
 rand_chacha = "0.10"
+# Toneless pinyin romanisation, used to order Chinese vocabulary in the
+# booklets the way a Chinese dictionary does. Pure lookup tables, so it builds
+# for the wasm target the tools page uses as well as the native CLI.
+pinyin = "0.10"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 serde_yaml_ng = "0.10"

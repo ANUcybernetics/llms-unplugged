@@ -319,13 +319,40 @@ enum Segment {
 /// the texts this project targets. Full-width CJK punctuation (。，！? etc.) is
 /// deliberately excluded: it lives in the punctuation set instead, so it boxes
 /// like ASCII punctuation rather than becoming a word token.
-fn is_cjk_ideograph(c: char) -> bool {
+pub(crate) fn is_cjk_ideograph(c: char) -> bool {
     matches!(c as u32,
         0x3400..=0x4DBF     // CJK Extension A
         | 0x4E00..=0x9FFF   // CJK Unified Ideographs
         | 0xF900..=0xFAFF   // CJK Compatibility Ideographs
         | 0x2_0000..=0x2_A6DF // CJK Extension B
     )
+}
+
+/// A dictionary-order sort key for a vocabulary token.
+///
+/// Chinese words sort by their toneless pinyin romanisation --- 电脑 ("diannao")
+/// before 手机 ("shouji"), matching how a printed Chinese dictionary is ordered
+/// --- which keeps hanzi lookups tractable as the booklets grow. Each syllable
+/// is space-separated so syllable boundaries compare cleanly. Everything else
+/// (Latin words, digits, punctuation) falls back to a case-insensitive key of
+/// its own text, so English corpora order exactly as they did before.
+pub fn sort_key(word: &str) -> String {
+    use pinyin::ToPinyin;
+
+    if !word.chars().any(is_cjk_ideograph) {
+        return word.to_lowercase();
+    }
+
+    let mut key = String::new();
+    for (c, syllable) in word.chars().zip(word.to_pinyin()) {
+        match syllable {
+            Some(p) => key.push_str(p.plain()),
+            // Non-hanzi characters inside a CJK word keep their own lowercase form.
+            None => key.extend(c.to_lowercase()),
+        }
+        key.push(' ');
+    }
+    key
 }
 
 fn normalize_apostrophe(c: char) -> char {
@@ -819,6 +846,17 @@ mod tests {
         assert!(!is_cjk_ideograph('。'));
         assert!(!is_cjk_ideograph('a'));
         assert!(!is_cjk_ideograph('1'));
+    }
+
+    #[test]
+    fn sort_key_orders_chinese_by_pinyin() {
+        // 电脑 "diannao" sorts before 手机 "shouji" (dictionary order), even
+        // though 手 (U+624B) precedes 电 (U+7535) by codepoint.
+        assert!(sort_key("电脑") < sort_key("手机"));
+        assert_eq!(sort_key("电脑"), "dian nao ");
+        // Latin words are untouched and remain case-insensitive.
+        assert_eq!(sort_key("Hello"), "hello");
+        assert!(sort_key("apple") < sort_key("Banana"));
     }
 
     #[test]

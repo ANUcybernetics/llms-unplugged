@@ -13,6 +13,7 @@ mod wasm;
 pub use text::RawToken;
 pub use text::{
     CanonicalFormTracker, DEFAULT_PUNCTUATION, Normalizer, NormalizerConfig, default_punctuation,
+    sort_key,
 };
 
 #[cfg(feature = "wasm")]
@@ -634,10 +635,11 @@ fn convert_to_entries(
                 .map(|(word, count)| (word.clone(), *count))
                 .collect();
             // Sort next-words by count (largest to smallest)
-            // If counts are equal, then sort alphabetically by word (case-insensitive)
+            // If counts are equal, sort in dictionary order (pinyin for Chinese,
+            // case-insensitive alphabetical otherwise)
             next_word_entries.sort_by(|a, b| {
                 b.1.cmp(&a.1)
-                    .then_with(|| a.0.to_lowercase().cmp(&b.0.to_lowercase()))
+                    .then_with(|| sort_key(&a.0).cmp(&sort_key(&b.0)))
             });
 
             WordFollowEntry {
@@ -647,11 +649,12 @@ fn convert_to_entries(
         })
         .collect();
 
-    // Sort entries by previous-words case-insensitively
+    // Sort entries by previous-words in dictionary order (pinyin for Chinese,
+    // case-insensitive alphabetical otherwise)
     entries.sort_by(|a, b| {
-        let a_lower: Vec<String> = a.previous_words.iter().map(|s| s.to_lowercase()).collect();
-        let b_lower: Vec<String> = b.previous_words.iter().map(|s| s.to_lowercase()).collect();
-        a_lower.cmp(&b_lower)
+        let a_key: Vec<String> = a.previous_words.iter().map(|s| sort_key(s)).collect();
+        let b_key: Vec<String> = b.previous_words.iter().map(|s| sort_key(s)).collect();
+        a_key.cmp(&b_key)
     });
 
     entries
@@ -842,7 +845,11 @@ pub fn render_bigram_tsv(entries: &[WordFollowEntry]) -> Result<String, String> 
         }
     }
 
-    let vocab: Vec<String> = vocab.into_iter().collect();
+    // Rows/columns share one vocabulary, ordered in dictionary order (pinyin
+    // for Chinese, case-insensitive alphabetical otherwise) so the matrix reads
+    // the same way the booklet entries do.
+    let mut vocab: Vec<String> = vocab.into_iter().collect();
+    vocab.sort_by(|a, b| sort_key(a).cmp(&sort_key(b)).then_with(|| a.cmp(b)));
     let mut output = String::new();
 
     // Header row
