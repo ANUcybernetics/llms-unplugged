@@ -56,26 +56,27 @@ This is the "context window". One word of context is why their generated text wa
   <div class="context-row">
     <span class="context-tokens">
       <span class="token attn-weak">the</span>
-      <span class="token attn-strong">keys</span>
-      <span class="token attn-weak">I</span>
-      <span class="token attn-weak">left</span>
-      <span class="token attn-weak">on</span>
+      <span class="token attn-weak">wifi</span>
+      <span class="token attn-strong">password</span>
+      <span class="token attn-weak">is</span>
+      <span class="token attn-strong">swordfish</span>
+      <span class="context-more">⋯</span>
       <span class="token attn-weak">the</span>
-      <span class="token attn-weak">kitchen</span>
-      <span class="token attn-medium">table</span>
+      <span class="token attn-medium">password</span>
+      <span class="token attn-weak">is</span>
       <span class="context-next">?</span>
     </span>
   </div>
 </div>
 
-from `table` alone you'd guess _is_---but it's _are_, because of `keys`, back at
-the start
+the next word is _swordfish_---attention finds where `password` last appeared and
+copies what came after
 
 **attention** lets every earlier word vote on what comes next, and the model
 _learns_ the weights---no grid could ever be that big
 
 {/* notes:
-The transformer's central trick, and the answer to the blown-up grid: instead of a row for every possible context, each prediction looks back over the whole context and weighs which words matter. For "are" vs "is" it's the subject, not the nearest noun. Hands-on version: the Induction Heads lesson on the website is a real attention pattern --- "find the last time I saw this word, copy what followed" --- that you can run with pen and paper.
+The transformer's central trick, and the answer to the blown-up grid: instead of a row for every possible context, each prediction looks back over the whole context and weighs which words matter. Here it's copying outright --- the model spots the earlier "the password is swordfish" and repeats what followed. That look-back-and-copy move is an induction head, and the Induction Heads lesson on the website is exactly this pattern --- "find the last time I saw this word, copy what came next" --- run with pen and paper.
 */}
 
 ---
