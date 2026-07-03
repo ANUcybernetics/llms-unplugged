@@ -1,6 +1,6 @@
-use clap::{Args, Parser, Subcommand};
+use clap::{Args, Parser, Subcommand, ValueEnum};
 use llms_unplugged::{
-    CutoutsMetadata, Metadata, NGramCounter, ProcessingStats, RawToken, SampleError,
+    CjkMode, CutoutsMetadata, Metadata, NGramCounter, ProcessingStats, RawToken, SampleError,
     WordFollowEntry, append_tool_tokens, process_file_for_cutouts, render_bigram_tsv,
     repeat_cutout_tokens, sample, save_to_json, split_entries_into_books,
 };
@@ -17,6 +17,24 @@ use std::process::Command;
 struct Cli {
     #[command(subcommand)]
     command: Commands,
+}
+
+/// CLI spelling of [`CjkMode`]: `word` for jieba segmentation, `char` for
+/// one token per ideograph.
+#[derive(ValueEnum, Clone, Copy, Debug, Default)]
+enum CjkModeArg {
+    #[default]
+    Word,
+    Char,
+}
+
+impl From<CjkModeArg> for CjkMode {
+    fn from(mode: CjkModeArg) -> Self {
+        match mode {
+            CjkModeArg::Word => CjkMode::Words,
+            CjkModeArg::Char => CjkMode::Chars,
+        }
+    }
 }
 
 #[derive(Subcommand, Debug)]
@@ -58,6 +76,10 @@ struct BuildArgs {
     /// Punctuation characters to preserve as separate tokens
     #[arg(short = 'p', long = "punctuation", default_value = llms_unplugged::DEFAULT_PUNCTUATION)]
     punctuation: String,
+
+    /// How to segment Chinese: `word` (jieba words) or `char` (per character)
+    #[arg(long, value_enum, default_value_t = CjkModeArg::Word)]
+    cjk: CjkModeArg,
 }
 
 #[derive(Args, Debug, Clone)]
@@ -122,6 +144,10 @@ struct PdfArgs {
     /// Add blank pages for book binding (recto/verso layout)
     #[arg(long)]
     book_binding: bool,
+
+    /// How to segment Chinese: `word` (jieba words) or `char` (per character)
+    #[arg(long, value_enum, default_value_t = CjkModeArg::Word)]
+    cjk: CjkModeArg,
 }
 
 #[derive(Args, Debug, Clone)]
@@ -137,6 +163,10 @@ struct TsvArgs {
     /// Punctuation characters to preserve as separate tokens
     #[arg(short = 'p', long = "punctuation", default_value = llms_unplugged::DEFAULT_PUNCTUATION)]
     punctuation: String,
+
+    /// How to segment Chinese: `word` (jieba words) or `char` (per character)
+    #[arg(long, value_enum, default_value_t = CjkModeArg::Word)]
+    cjk: CjkModeArg,
 }
 
 #[derive(Args, Debug, Clone)]
@@ -186,6 +216,10 @@ struct CutoutsArgs {
     /// counts have their own knob via --tool NAME:COUNT.
     #[arg(long, default_value_t = 1)]
     repeat: usize,
+
+    /// How to segment Chinese: `word` (jieba words) or `char` (per character)
+    #[arg(long, value_enum, default_value_t = CjkModeArg::Word)]
+    cjk: CjkModeArg,
 }
 
 #[derive(Args, Debug, Clone)]
@@ -214,6 +248,10 @@ struct SampleArgs {
     /// Punctuation characters to preserve as separate tokens
     #[arg(long = "punctuation", default_value = llms_unplugged::DEFAULT_PUNCTUATION)]
     punctuation: String,
+
+    /// How to segment Chinese: `word` (jieba words) or `char` (per character)
+    #[arg(long, value_enum, default_value_t = CjkModeArg::Word)]
+    cjk: CjkModeArg,
 }
 
 fn main() {
@@ -267,6 +305,7 @@ struct BuildConfig {
     num_books: usize,
     raw: bool,
     punctuation: Vec<char>,
+    cjk_mode: CjkMode,
 }
 
 #[derive(Debug, Clone)]
@@ -300,6 +339,7 @@ fn run_build_command(args: &BuildArgs) -> Result<(), CliError> {
         num_books: args.num_books,
         raw: args.raw,
         punctuation: args.punctuation.chars().collect(),
+        cjk_mode: args.cjk.into(),
     };
 
     let outcome = build_model(&config)?;
@@ -316,7 +356,8 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
 
     let punctuation: Vec<char> = args.punctuation.chars().collect();
     let (mut tokens, metadata) =
-        process_file_for_cutouts(&args.input, punctuation, args.n).map_err(CliError::Processing)?;
+        process_file_for_cutouts(&args.input, punctuation, args.n, args.cjk.into())
+            .map_err(CliError::Processing)?;
 
     repeat_cutout_tokens(&mut tokens, args.repeat);
 
@@ -427,6 +468,7 @@ fn save_cutouts_json(
 fn run_sample_command(args: &SampleArgs) -> Result<(), CliError> {
     let punctuation: Vec<char> = args.punctuation.chars().collect();
     let mut counter = NGramCounter::new(args.n, punctuation);
+    counter.set_cjk_mode(args.cjk.into());
     counter
         .process_file(&args.input)
         .map_err(CliError::Processing)?;
@@ -467,7 +509,7 @@ fn run_tsv_command(args: &TsvArgs) -> Result<(), CliError> {
     // Build the model in memory only: the TSV (on stdout by default) is the
     // sole output, so nothing may be written or printed besides it.
     let punctuation: Vec<char> = args.punctuation.chars().collect();
-    let model = compute_model(&args.input, 2, &punctuation)?;
+    let model = compute_model(&args.input, 2, &punctuation, args.cjk.into())?;
 
     let tsv = render_bigram_tsv(&model.entries).map_err(CliError::InvalidArgs)?;
     if let Some(path) = &args.output {
@@ -513,6 +555,7 @@ fn run_pdf_command(args: &PdfArgs) -> Result<(), CliError> {
             num_books: books,
             raw: args.raw,
             punctuation: args.punctuation.chars().collect(),
+            cjk_mode: args.cjk.into(),
         };
         let outcome = build_model(&config)?;
         print_summary(&outcome.stats, outcome.metadata.as_ref(), n, args.raw);
@@ -545,8 +588,14 @@ struct ModelData {
     metadata: Option<Metadata>,
 }
 
-fn compute_model(input: &Path, n: usize, punctuation: &[char]) -> Result<ModelData, CliError> {
+fn compute_model(
+    input: &Path,
+    n: usize,
+    punctuation: &[char],
+    cjk_mode: CjkMode,
+) -> Result<ModelData, CliError> {
     let mut counter = NGramCounter::new(n, punctuation.to_vec());
+    counter.set_cjk_mode(cjk_mode);
     counter.process_file(input).map_err(CliError::Processing)?;
 
     Ok(ModelData {
@@ -557,7 +606,12 @@ fn compute_model(input: &Path, n: usize, punctuation: &[char]) -> Result<ModelDa
 }
 
 fn build_model(config: &BuildConfig) -> Result<BuildOutcome, CliError> {
-    let model = compute_model(&config.input, config.n, &config.punctuation)?;
+    let model = compute_model(
+        &config.input,
+        config.n,
+        &config.punctuation,
+        config.cjk_mode,
+    )?;
     let books = split_entries_into_books(&model.entries, config.num_books);
 
     let written = write_books(

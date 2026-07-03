@@ -26,6 +26,10 @@ rand_chacha = "0.10"
 # booklets the way a Chinese dictionary does. Pure lookup tables, so it builds
 # for the wasm target the tools page uses as well as the native CLI.
 pinyin = "0.10"
+# Chinese word segmentation for word-level (rather than per-character) CJK
+# tokenisation. The default dictionary is embedded, so the native CLI and the
+# wasm build the tools page loads share exactly one segmenter and dictionary.
+jieba-rs = "0.7"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 serde_yaml_ng = "0.10"

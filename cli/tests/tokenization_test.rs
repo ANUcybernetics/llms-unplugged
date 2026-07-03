@@ -1,4 +1,4 @@
-use llms_unplugged::{NGramCounter, default_punctuation};
+use llms_unplugged::{CjkMode, NGramCounter, default_punctuation};
 use std::fs::File;
 use std::io::{self, Write};
 use tempfile::NamedTempFile;
@@ -172,26 +172,28 @@ fn write_punctuation_corpus(path: &std::path::Path) -> io::Result<()> {
     Ok(())
 }
 
+fn write_jiangnan_corpus(path: &std::path::Path) -> io::Result<()> {
+    let mut file = File::create(path)?;
+    writeln!(file, "---")?;
+    writeln!(file, "title: 江南")?;
+    writeln!(file, "author: 汉乐府")?;
+    writeln!(file, "url: https://example.com")?;
+    writeln!(file, "---")?;
+    // Two lines of the yuefu poem "Jiangnan".
+    writeln!(file, "江南可采莲，莲叶何田田。")?;
+    writeln!(file, "鱼戏莲叶间。")?;
+    file.flush()
+}
+
 #[test]
 fn builds_a_bigram_model_from_chinese_characters() -> io::Result<()> {
     let temp_file = NamedTempFile::new()?;
     let path = temp_file.path().to_owned();
+    write_jiangnan_corpus(&path)?;
 
-    {
-        let mut file = File::create(&path)?;
-        writeln!(file, "---")?;
-        writeln!(file, "title: 江南")?;
-        writeln!(file, "author: 汉乐府")?;
-        writeln!(file, "url: https://example.com")?;
-        writeln!(file, "---")?;
-        // Two lines of the yuefu poem "Jiangnan". Character-level tokenisation
-        // means each hanzi is a token and the full-width comma is punctuation.
-        writeln!(file, "江南可采莲，莲叶何田田。")?;
-        writeln!(file, "鱼戏莲叶间。")?;
-        file.flush()?;
-    }
-
+    // Char mode: each hanzi is a token and the full-width comma is punctuation.
     let mut counter = NGramCounter::new(2, default_punctuation());
+    counter.set_cjk_mode(CjkMode::Chars);
     counter.process_file(&path)?;
     let tokens = collect_tokens(&counter);
 
@@ -217,6 +219,32 @@ fn builds_a_bigram_model_from_chinese_characters() -> io::Result<()> {
         "莲 should be followed by 叶, got {:?}",
         lian.next_words
     );
+
+    Ok(())
+}
+
+#[test]
+fn builds_a_bigram_model_from_chinese_words() -> io::Result<()> {
+    let temp_file = NamedTempFile::new()?;
+    let path = temp_file.path().to_owned();
+    write_jiangnan_corpus(&path)?;
+
+    // Word mode (the default): jieba cuts the poem into dictionary words such as
+    // 江南 and 莲叶 rather than individual characters.
+    let mut counter = NGramCounter::new(2, default_punctuation());
+    counter.process_file(&path)?;
+    let tokens = collect_tokens(&counter);
+
+    for word in ["江南", "采莲", "莲叶"] {
+        assert!(tokens.contains(&word.to_string()), "expected word {word}");
+    }
+    // The bare character 江 is absorbed into 江南, so it is not a token on its own.
+    assert!(
+        !tokens.contains(&"江".to_string()),
+        "江 should be part of 江南, not a standalone token"
+    );
+    assert!(tokens.contains(&"，".to_string()));
+    assert!(tokens.contains(&"。".to_string()));
 
     Ok(())
 }

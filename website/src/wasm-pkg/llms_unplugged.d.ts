@@ -14,6 +14,14 @@ export interface InitOutput {
     readonly process_text_for_booklet: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => [number, number, number, number];
     readonly process_text_for_cutouts: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => [number, number, number, number];
     readonly init_panic_hook: () => void;
+    readonly rust_zstd_wasm_shim_calloc: (a: number, b: number) => number;
+    readonly rust_zstd_wasm_shim_free: (a: number) => void;
+    readonly rust_zstd_wasm_shim_malloc: (a: number) => number;
+    readonly rust_zstd_wasm_shim_memcmp: (a: number, b: number, c: number) => number;
+    readonly rust_zstd_wasm_shim_memcpy: (a: number, b: number, c: number) => number;
+    readonly rust_zstd_wasm_shim_memmove: (a: number, b: number, c: number) => number;
+    readonly rust_zstd_wasm_shim_memset: (a: number, b: number, c: number) => number;
+    readonly rust_zstd_wasm_shim_qsort: (a: number, b: number, c: number, d: number) => void;
     readonly __wbindgen_free: (a: number, b: number, c: number) => void;
     readonly __wbindgen_malloc: (a: number, b: number) => number;
     readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;

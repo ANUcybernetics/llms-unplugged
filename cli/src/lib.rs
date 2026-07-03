@@ -12,8 +12,8 @@ mod wasm;
 
 pub use text::RawToken;
 pub use text::{
-    CanonicalFormTracker, DEFAULT_PUNCTUATION, Normalizer, NormalizerConfig, default_punctuation,
-    sort_key,
+    CanonicalFormTracker, CjkMode, DEFAULT_PUNCTUATION, Normalizer, NormalizerConfig,
+    default_punctuation, sort_key,
 };
 
 #[cfg(feature = "wasm")]
@@ -129,6 +129,13 @@ impl NGramCounter {
             metadata: None,
             normalizer: Normalizer::new(NormalizerConfig::new(punctuation)),
         }
+    }
+
+    /// Choose how Chinese character runs are segmented (word- vs char-level).
+    /// Defaults to word-level ([`CjkMode::Words`]); the CLI and wasm entry
+    /// points call this to honour a caller-supplied mode.
+    pub fn set_cjk_mode(&mut self, mode: CjkMode) {
+        self.normalizer.set_cjk_mode(mode);
     }
 
     /// Process a single line of text
@@ -394,6 +401,7 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
     path: P,
     punctuation: Vec<char>,
     n: usize,
+    cjk_mode: CjkMode,
 ) -> io::Result<(Vec<RawToken>, CutoutsMetadata)> {
     use std::io::{BufRead, BufReader};
 
@@ -423,6 +431,7 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
     let lines: Vec<String> = reader.lines().collect::<Result<_, _>>()?;
 
     let mut counter = NGramCounter::new(n, punctuation);
+    counter.set_cjk_mode(cjk_mode);
     counter.process_lines(&lines);
     let tokens = counter.tokenize_lines_raw(&lines);
     let stats = counter.get_stats();
@@ -1987,7 +1996,8 @@ mod tests {
             file.flush()?;
         }
 
-        let (tokens, metadata) = process_file_for_cutouts(&path, default_punctuation(), 2)?;
+        let (tokens, metadata) =
+            process_file_for_cutouts(&path, default_punctuation(), 2, CjkMode::Words)?;
 
         assert_eq!(metadata.title, "Test Cutouts");
         assert_eq!(tokens.len(), 4);
@@ -2027,7 +2037,8 @@ mod tests {
             file.flush()?;
         }
 
-        let (tokens, _metadata) = process_file_for_cutouts(&path, default_punctuation(), 3)?;
+        let (tokens, _metadata) =
+            process_file_for_cutouts(&path, default_punctuation(), 3, CjkMode::Words)?;
 
         assert_eq!(tokens.len(), 5);
 
@@ -2069,7 +2080,8 @@ mod tests {
             file.flush()?;
         }
 
-        let (tokens, _metadata) = process_file_for_cutouts(&path, default_punctuation(), 4)?;
+        let (tokens, _metadata) =
+            process_file_for_cutouts(&path, default_punctuation(), 4, CjkMode::Words)?;
 
         assert_eq!(tokens.len(), 6);
 
@@ -2110,7 +2122,8 @@ mod tests {
             file.flush()?;
         }
 
-        let (tokens, _metadata) = process_file_for_cutouts(&path, default_punctuation(), 2)?;
+        let (tokens, _metadata) =
+            process_file_for_cutouts(&path, default_punctuation(), 2, CjkMode::Words)?;
 
         // Tokens: chapter (keep), IV (discard), begins (keep), here (keep)
         assert_eq!(tokens.len(), 4);
@@ -2232,7 +2245,8 @@ mod tests {
             file.flush()?;
         }
 
-        let (tokens, _metadata) = process_file_for_cutouts(&path, default_punctuation(), 2)?;
+        let (tokens, _metadata) =
+            process_file_for_cutouts(&path, default_punctuation(), 2, CjkMode::Words)?;
 
         // Tokens: hello, comma, world, period, yes
         assert_eq!(tokens.len(), 5);
@@ -2408,7 +2422,7 @@ mod tests {
 
         // process_file_for_cutouts returns default entropy (set by caller)
         let (_tokens, mut cutouts_meta) =
-            process_file_for_cutouts(&path, default_punctuation(), 2)?;
+            process_file_for_cutouts(&path, default_punctuation(), 2, CjkMode::Words)?;
 
         // Simulate what run_cutouts_command does: get stats from process_file
         let (_entries, stats, _meta) = process_file(&path, 2)?;

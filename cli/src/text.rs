@@ -1,5 +1,27 @@
+use jieba_rs::Jieba;
 use serde::Serialize;
 use std::collections::{HashMap, HashSet};
+use std::sync::OnceLock;
+
+/// How runs of Chinese characters are cut into tokens.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
+pub enum CjkMode {
+    /// Jieba word segmentation --- 深圳 / 最高 / 的 / 楼 --- the natural reading
+    /// unit and the default. A "word" may be one or several characters.
+    #[default]
+    Words,
+    /// One token per ideograph --- 深 / 圳 / 最 / 高 --- the simpler, fully
+    /// transparent rule, kept as a teaching option.
+    Chars,
+}
+
+/// Process-wide jieba segmenter, built at most once and only when word-mode
+/// Chinese is actually encountered. Loading the ~5 MB dictionary is not free,
+/// so an English corpus (or char-mode Chinese) never pays for it.
+fn jieba() -> &'static Jieba {
+    static JIEBA: OnceLock<Jieba> = OnceLock::new();
+    JIEBA.get_or_init(Jieba::new)
+}
 
 /// Default punctuation kept as standalone tokens. Covers the unpaired marks
 /// that carry sentence structure; paired marks (quotes, brackets, em-dashes)
@@ -86,6 +108,8 @@ pub struct NormalizerConfig {
     pub case_allowlist: HashMap<String, String>,
     /// Corpus-specific case mappings from CanonicalFormTracker
     pub corpus_case_map: HashMap<String, String>,
+    /// How runs of Chinese characters are cut into tokens.
+    pub cjk_mode: CjkMode,
 }
 
 impl NormalizerConfig {
@@ -94,6 +118,7 @@ impl NormalizerConfig {
             punctuation: punctuation.into_iter().collect(),
             case_allowlist: default_case_allowlist(),
             corpus_case_map: HashMap::new(),
+            cjk_mode: CjkMode::default(),
         }
     }
 }
@@ -126,6 +151,11 @@ impl Normalizer {
         self.config.corpus_case_map = map;
     }
 
+    /// Choose how Chinese character runs are segmented (word- vs char-level).
+    pub fn set_cjk_mode(&mut self, mode: CjkMode) {
+        self.config.cjk_mode = mode;
+    }
+
     /// The punctuation marks kept as standalone tokens, as a sorted string.
     /// Sorted so the value is deterministic regardless of insertion order.
     pub fn punctuation(&self) -> String {
@@ -150,6 +180,11 @@ impl Normalizer {
         let mut segments = Vec::new();
         let mut word = String::new();
         let mut digits = String::new();
+        // Chinese has no inter-word spaces, so we accumulate a run of adjacent
+        // ideographs and cut it as a unit when the run ends (at punctuation, a
+        // Latin letter, a digit, or any separator). How it is cut --- jieba
+        // words or one token per character --- is decided by `flush_cjk`.
+        let mut cjk = String::new();
 
         for c in line.chars() {
             let c = normalize_apostrophe(c);
@@ -157,32 +192,55 @@ impl Normalizer {
             if self.config.punctuation.contains(&c) {
                 flush(&mut word, Segment::Word, &mut segments);
                 flush(&mut digits, Segment::Digits, &mut segments);
+                self.flush_cjk(&mut cjk, &mut segments);
                 segments.push(Segment::Punct(c));
             } else if is_cjk_ideograph(c) {
-                // Character-level tokenisation for CJK: each ideograph is its
-                // own token. Chinese has no inter-word spaces, so we can't
-                // accumulate letter runs the way we do for Latin words. Emitting
-                // a single-char Word segment also routes it through the same
-                // word pipeline (the English-only case/roman-numeral rules are
-                // all no-ops on a Han character).
                 flush(&mut word, Segment::Word, &mut segments);
                 flush(&mut digits, Segment::Digits, &mut segments);
-                segments.push(Segment::Word(c.to_string()));
+                cjk.push(c);
             } else if c.is_ascii_alphabetic() || c == '\'' {
                 flush(&mut digits, Segment::Digits, &mut segments);
+                self.flush_cjk(&mut cjk, &mut segments);
                 word.push(c);
             } else if c.is_ascii_digit() {
                 flush(&mut word, Segment::Word, &mut segments);
+                self.flush_cjk(&mut cjk, &mut segments);
                 digits.push(c);
             } else {
                 flush(&mut word, Segment::Word, &mut segments);
                 flush(&mut digits, Segment::Digits, &mut segments);
+                self.flush_cjk(&mut cjk, &mut segments);
             }
         }
         flush(&mut word, Segment::Word, &mut segments);
         flush(&mut digits, Segment::Digits, &mut segments);
+        self.flush_cjk(&mut cjk, &mut segments);
 
         segments
+    }
+
+    /// Cut an accumulated run of Chinese characters into Word segments. In
+    /// `Words` mode jieba splits the run into dictionary words; in `Chars` mode
+    /// each ideograph becomes its own token (the original behaviour). Either way
+    /// the pieces route through the same word pipeline, where the English-only
+    /// case and roman-numeral rules are no-ops on Han characters.
+    fn flush_cjk(&self, buf: &mut String, segments: &mut Vec<Segment>) {
+        if buf.is_empty() {
+            return;
+        }
+        let run = std::mem::take(buf);
+        match self.config.cjk_mode {
+            CjkMode::Chars => {
+                for c in run.chars() {
+                    segments.push(Segment::Word(c.to_string()));
+                }
+            }
+            CjkMode::Words => {
+                for w in jieba().cut(&run, true) {
+                    segments.push(Segment::Word(w.to_string()));
+                }
+            }
+        }
     }
 
     /// Extract raw word tokens from a line, preserving original casing.
@@ -408,6 +466,13 @@ mod tests {
 
     fn normalizer() -> Normalizer {
         Normalizer::new(NormalizerConfig::new(default_punctuation()))
+    }
+
+    /// A normalizer pinned to char-level CJK segmentation (the non-default mode).
+    fn char_normalizer() -> Normalizer {
+        let mut n = normalizer();
+        n.set_cjk_mode(CjkMode::Chars);
+        n
     }
 
     fn legacy_normalizer() -> Normalizer {
@@ -774,14 +839,14 @@ mod tests {
         assert_eq!(n.normalize_line("Sally"), vec!["Sally"]);
     }
 
-    // CJK (character-level) tokenisation tests
+    // CJK char-level tokenisation tests (the non-default `Chars` mode).
 
     #[test]
     fn cjk_each_ideograph_is_its_own_token() {
-        // Opening line of the Han-dynasty yuefu poem "Jiangnan": each
-        // character becomes a standalone token, and the full-width comma is
+        // Opening line of the Han-dynasty yuefu poem "Jiangnan": in char mode
+        // each character becomes a standalone token, and the full-width comma is
         // kept as a punctuation token.
-        let tokens = normalizer().normalize_line("江南可采莲，莲叶何田田");
+        let tokens = char_normalizer().normalize_line("江南可采莲，莲叶何田田");
         assert_eq!(
             tokens,
             vec![
@@ -792,29 +857,71 @@ mod tests {
 
     #[test]
     fn cjk_full_width_punctuation_is_tokenised() {
-        let tokens = normalizer().normalize_line("四是四。十是十！");
+        let tokens = char_normalizer().normalize_line("四是四。十是十！");
         assert_eq!(tokens, vec!["四", "是", "四", "。", "十", "是", "十", "！"]);
     }
 
     #[test]
     fn cjk_mixed_with_latin_splits_at_the_boundary() {
-        // Latin runs still accumulate; each Han char stands alone.
-        let tokens = normalizer().normalize_line("AI是cool的");
+        // Latin runs still accumulate; each Han char stands alone in char mode.
+        let tokens = char_normalizer().normalize_line("AI是cool的");
         assert_eq!(tokens, vec!["ai", "是", "cool", "的"]);
     }
 
     #[test]
     fn cjk_repeated_characters_repeat_as_tokens() {
         // "田田" must yield two identical tokens so bigram counts can form.
-        let tokens = normalizer().normalize_line("田田");
+        let tokens = char_normalizer().normalize_line("田田");
         assert_eq!(tokens, vec!["田", "田"]);
     }
 
     #[test]
     fn cjk_raw_tokens_are_all_kept() {
-        let raw = normalizer().tokenize_line_raw("小猫。", 1);
+        let raw = char_normalizer().tokenize_line_raw("小猫。", 1);
         let summary: Vec<(&str, bool)> = raw.iter().map(|t| (t.text.as_str(), t.keep)).collect();
         assert_eq!(summary, vec![("小", true), ("猫", true), ("。", true)]);
+    }
+
+    // CJK word-level tokenisation tests (jieba, the default `Words` mode).
+
+    #[test]
+    fn cjk_words_segment_the_jiangnan_line() {
+        // The default word mode cuts the run into dictionary words rather than
+        // characters; the full-width comma still boxes as its own token.
+        let tokens = normalizer().normalize_line("江南可采莲，莲叶何田田");
+        assert_eq!(tokens, vec!["江南", "可", "采莲", "，", "莲叶", "何田田"]);
+    }
+
+    #[test]
+    fn cjk_words_keep_multi_character_words_intact() {
+        // 小猫 ("kitten") is one word, not two characters, in word mode.
+        let tokens = normalizer().normalize_line("小猫。");
+        assert_eq!(tokens, vec!["小猫", "。"]);
+    }
+
+    #[test]
+    fn cjk_words_still_split_at_latin_boundaries() {
+        let tokens = normalizer().normalize_line("AI是cool的");
+        assert_eq!(tokens, vec!["ai", "是", "cool", "的"]);
+    }
+
+    #[test]
+    fn cjk_word_kept_raw_tokens_agree_with_normalize_line() {
+        // The unified-walker invariant holds in word mode too: cutouts == model.
+        let n = normalizer();
+        for line in ["江南可采莲，莲叶何田田。", "小壁虎借尾巴", "AI是cool的"] {
+            let kept: Vec<String> = n
+                .tokenize_line_raw(line, 1)
+                .into_iter()
+                .filter(|t| t.keep)
+                .map(|t| t.text)
+                .collect();
+            assert_eq!(
+                kept,
+                n.normalize_line(line),
+                "kept must equal model for {line:?}"
+            );
+        }
     }
 
     #[test]
