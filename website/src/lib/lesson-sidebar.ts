@@ -1,4 +1,4 @@
-import type { SidebarSection } from "astro-theme-anu/types";
+import type { SidebarSection } from "astro-theme-university/types";
 import { lessonNavGroups } from "./lessons";
 
 export async function getLessonSidebar(): Promise<SidebarSection[]> {

@@ -1,8 +1,8 @@
 /* stylelint-disable import-notation */
 @import "../styles/common.css";
-@import "astro-theme-anu/styles/deck.css";
+@import "astro-theme-university/styles/deck.css";
 
-/* This file used to duplicate the bulk of astro-theme-anu's deck.css
+/* This file used to duplicate the bulk of the theme's deck.css
    (palette tokens, --r-* Reveal.js variables, base slide typography,
    .impact/.quote/.banner/.centered/.qr-code, etc.). Those are now
    inherited via the @import above; this file only carries

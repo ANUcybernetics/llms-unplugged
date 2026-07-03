@@ -1,7 +1,7 @@
 import { defineConfig, fontProviders } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import svelte from "@astrojs/svelte";
-import anuTheme from "astro-theme-anu";
+import universityTheme from "astro-theme-university";
 import { astromotion, deckRemarkPlugins } from "astromotion";
 
 export default defineConfig({
@@ -40,9 +40,13 @@ export default defineConfig({
   ],
   integrations: [
     svelte(),
-    anuTheme({
+    universityTheme({
       name: "LLMs Unplugged",
       llmsTxt: true,
+      // ANU brand palette from the branding package — loads the gold palette
+      // and the legacy --anu-* aliases that the site's own CSS (deck theme,
+      // widgets, components) references, on every page including decks.
+      brandCss: "astro-theme-anu/anu.css",
       // The axe/JSDOM accessibility scan adds ~8 min to a build, so keep it out
       // of the every-push deploy. It runs opt-in via CHECK_A11Y=true — in the
       // weekly a11y-audit workflow and locally via `pnpm run build:a11y`.
