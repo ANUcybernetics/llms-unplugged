@@ -1,4 +1,38 @@
-const PUNCTUATION = new Set([".", ",", "!", "?", ";", ":"]);
+const PUNCTUATION = new Set([
+  ".",
+  ",",
+  "!",
+  "?",
+  ";",
+  ":",
+  // Full-width CJK equivalents, kept as standalone tokens so Chinese corpora
+  // box their punctuation the same way English ones do.
+  "。",
+  "，",
+  "、",
+  "！",
+  "？",
+  "；",
+  "：",
+]);
+
+/**
+ * True for CJK ideographs --- the characters tokenised at the character level
+ * (one token per glyph). Chinese has no inter-word spaces, so we can't
+ * accumulate letter runs the way we do for Latin words. Mirrors
+ * `is_cjk_ideograph` in the Rust tokeniser (cli/src/text.rs). Full-width CJK
+ * punctuation is excluded here --- it lives in PUNCTUATION instead.
+ */
+function isCJK(char: string): boolean {
+  const cp = char.codePointAt(0);
+  if (cp === undefined) return false;
+  return (
+    (cp >= 0x3400 && cp <= 0x4dbf) || // CJK Extension A
+    (cp >= 0x4e00 && cp <= 0x9fff) || // CJK Unified Ideographs
+    (cp >= 0xf900 && cp <= 0xfaff) || // CJK Compatibility Ideographs
+    (cp >= 0x20000 && cp <= 0x2a6df) // CJK Extension B
+  );
+}
 
 export function isPunctuation(token: string): boolean {
   return PUNCTUATION.has(token);
@@ -72,6 +106,16 @@ export function parseTokens(text: string): string[] {
     const char = normalizeApostrophe(rawChar);
 
     if (PUNCTUATION.has(char)) {
+      if (current.length > 0) {
+        const normalized = normalizeWordToken(current);
+        if (normalized) tokens.push(normalized);
+        current = "";
+      }
+      tokens.push(char);
+    } else if (isCJK(char)) {
+      // Character-level tokenisation: each ideograph is its own token, pushed
+      // directly. The English normalisation (lowercasing, roman-numeral and
+      // contraction handling) is all irrelevant to a Han character.
       if (current.length > 0) {
         const normalized = normalizeWordToken(current);
         if (normalized) tokens.push(normalized);

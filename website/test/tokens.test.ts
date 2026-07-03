@@ -75,6 +75,46 @@ describe("parseTokens", () => {
     const longText = "a ".repeat(600_000);
     expect(() => parseTokens(longText)).toThrow("Text too long");
   });
+
+  it("tokenises each CJK character separately", () => {
+    // Opening of the yuefu poem Jiangnan: every hanzi is its own token and the
+    // full-width comma is a punctuation token.
+    expect(parseTokens("江南可采莲，莲叶何田田")).toEqual([
+      "江",
+      "南",
+      "可",
+      "采",
+      "莲",
+      "，",
+      "莲",
+      "叶",
+      "何",
+      "田",
+      "田",
+    ]);
+  });
+
+  it("keeps full-width CJK punctuation as tokens", () => {
+    expect(parseTokens("四是四。十是十！")).toEqual([
+      "四",
+      "是",
+      "四",
+      "。",
+      "十",
+      "是",
+      "十",
+      "！",
+    ]);
+  });
+
+  it("splits at the Latin/CJK boundary without lowercasing hanzi", () => {
+    expect(parseTokens("AI是cool的")).toEqual(["ai", "是", "cool", "的"]);
+  });
+
+  it("repeats identical CJK characters so bigrams can form", () => {
+    const model = buildBigramModel(parseTokens("田田"));
+    expect(model.getCount("田", "田")).toBe(1);
+  });
 });
 
 describe("getVocabulary", () => {
