@@ -1,11 +1,11 @@
 ---
-title: LLMs Unplugged now speaks Chinese
+title: LLMs Unplugged now speaks Mandarin Chinese
 date: 2026-07-03
 author: Ben Swift
 description:
-  The interactive widgets and the booklet generator now handle Chinese text,
-  one character at a time. Thanks to Zhang Xilian for pointing out that they
-  didn't.
+  The interactive widgets and the booklet generator now handle Mandarin
+  Chinese text, one character at a time. Thanks to Zhang Xilian for pointing
+  out that they didn't.
 ---
 
 import TrainingWidget from "../../components/widgets/TrainingWidget.svelte";
@@ -14,9 +14,9 @@ import Callout from "../../components/Callout.astro";
 Recently Zhang Xilian, a master's student at The Education University of Hong
 Kong, wrote to say she was planning to run LLMs Unplugged workshops in China,
 and that the [Training](/lessons/training) and
-[Generation](/lessons/generation) widgets didn't understand Chinese. Neither did
-the booklet generator. She was right: paste a line of Chinese into any of them
-and nothing happened.
+[Generation](/lessons/generation) widgets didn't understand Mandarin Chinese.
+Neither did the booklet generator. She was right: paste a line of Chinese into
+any of them and nothing happened.
 
 The reason was buried in the tokeniser. To turn text into a model you first cut
 it into tokens, and our tokeniser only recognised the letters `a` to `z`.
@@ -46,9 +46,10 @@ stop 。 are kept as their own tokens, boxed in the model just like the English
 
 The same change flows through to print. Here's the
 [_Jiangnan_ bigram booklet](/assets/pdfs/booklets/jiangnan.pdf) as a
-ready-to-print PDF, with every dice-lookup entry set as a Chinese character in
-Noto Serif rather than the Latin body font. The [tools page](/tools) will
-generate one from any text you paste in, Chinese or otherwise.
+ready-to-print PDF, with every dice-lookup entry set in Noto Serif CJK rather
+than the Latin body font. The [tools page](/tools) will generate one from any
+text you paste in, Mandarin or otherwise. The bundled Chinese fonts cover
+simplified characters, the everyday script across mainland China.
 
 <Callout type="note" title="What works, and what's next">
 
