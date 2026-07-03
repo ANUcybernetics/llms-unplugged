@@ -122,11 +122,13 @@
               <button
                 type="button"
                 class:active={cjkMode === "word"}
-                onclick={() => setCjkMode("word")}>words</button>
+                onclick={() => setCjkMode("word")}>words</button
+              >
               <button
                 type="button"
                 class:active={cjkMode === "char"}
-                onclick={() => setCjkMode("char")}>characters</button>
+                onclick={() => setCjkMode("char")}>characters</button
+              >
             </span>
           {/if}
         </div>
