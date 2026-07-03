@@ -1,0 +1,65 @@
+---
+title: LLMs Unplugged now speaks Chinese
+date: 2026-07-03
+author: Ben Swift
+description:
+  The interactive widgets and the booklet generator now handle Chinese text,
+  one character at a time. Thanks to Zhang Xilian for pointing out that they
+  didn't.
+---
+
+import TrainingWidget from "../../components/widgets/TrainingWidget.svelte";
+import Callout from "../../components/Callout.astro";
+
+Recently Zhang Xilian, a master's student at The Education University of Hong
+Kong, wrote to say she was planning to run LLMs Unplugged workshops in China,
+and that the [Training](/lessons/training) and
+[Generation](/lessons/generation) widgets didn't understand Chinese. Neither did
+the booklet generator. She was right: paste a line of Chinese into any of them
+and nothing happened.
+
+The reason was buried in the tokeniser. To turn text into a model you first cut
+it into tokens, and our tokeniser only recognised the letters `a` to `z`.
+Everything else was treated as a gap between words and thrown away: digits,
+stray symbols, and, as it turns out, every Chinese character. Feed it a whole
+poem and you got an empty model, with nothing to count and nothing to generate
+from.
+
+The fix is to tokenise Chinese one character at a time. English hides its word
+boundaries in the spaces, but Chinese runs the characters together, so there is
+no space to split on. Character-level tokenisation sidesteps that problem, and
+it happens to suit the unplugged approach. Each character becomes one token: a
+cell in the frequency grid, a cutout card, or a face you can roll for. 莲 follows
+采, 叶 follows 莲, and the dice don't care that the tokens are Chinese.
+
+Here's a bigram model trained on _Jiangnan_, a two-thousand-year-old Han-dynasty
+folk poem about picking lotus. Press play and watch it count the characters:
+
+<TrainingWidget
+  client:visible
+  initialText="江南可采莲，莲叶何田田。鱼戏莲叶间。鱼戏莲叶东，鱼戏莲叶西，鱼戏莲叶南，鱼戏莲叶北。"
+/>
+
+Chinese punctuation gets the same treatment. The full-width comma ， and full
+stop 。 are kept as their own tokens, boxed in the model just like the English
+`.` and `,`. A generated line breaks where a real sentence would.
+
+The same change flows through to print. Here's the
+[_Jiangnan_ bigram booklet](/assets/pdfs/booklets/jiangnan.pdf) as a
+ready-to-print PDF, with every dice-lookup entry set as a Chinese character in
+Noto Serif rather than the Latin body font. The [tools page](/tools) will
+generate one from any text you paste in, Chinese or otherwise.
+
+<Callout type="note" title="What works, and what's next">
+
+The widgets, the booklet generator, and the cutouts all handle Chinese now. The
+one gap is the _in-browser_ PDF export, which still needs its Chinese fonts
+wired up. If you are teaching in another language and something doesn't work,
+tell us. The tokeniser is where most of these limits live, and they are usually
+a small change once we know they are there.
+
+</Callout>
+
+Thanks again to Xilian for the nudge, and for the reading list of Chinese
+classroom texts to test it on. If you run a workshop with any of this, I'd love
+to hear how it goes.
