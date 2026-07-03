@@ -1,6 +1,8 @@
 <script lang="ts">
   import { getTrainingText, setTrainingText } from "../../lib/stores/trainingText.svelte";
-  import { buildBigramModel, getVocabulary, parseTokens } from "../../lib/tokens";
+  import { getCjkMode, setCjkMode } from "../../lib/stores/cjkMode.svelte";
+  import { buildBigramModel, containsCJK, getVocabulary, parseTokens } from "../../lib/tokens";
+  import { tokenizeWords } from "../../lib/cjkTokenize";
   import { buildDistanceMatrix, manhattanDistance } from "../../lib/distance";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
   import BigramGrid from "../BigramGrid.svelte";
@@ -8,8 +10,27 @@
   import DistanceMatrix from "../DistanceMatrix.svelte";
 
   let inputText = $derived(getTrainingText());
+  let cjkMode = $derived(getCjkMode());
+  let showCjkToggle = $derived(containsCJK(inputText));
 
-  let tokens = $derived(parseTokens(inputText));
+  // Word-level Chinese loads the jieba wasm on demand, so tokens are $state set
+  // by an effect; English (and char mode) stays synchronous. Effects don't run
+  // during SSR, so the server render only ever uses the synchronous path.
+  let tokens = $state<string[]>(parseTokens(getTrainingText()));
+  $effect(() => {
+    const text = inputText;
+    if (cjkMode === "word" && containsCJK(text)) {
+      let cancelled = false;
+      tokenizeWords(text).then((result) => {
+        if (!cancelled) tokens = result;
+      });
+      return () => {
+        cancelled = true;
+      };
+    }
+    tokens = parseTokens(text);
+  });
+
   let vocabulary = $derived(getVocabulary(tokens));
   let model = $derived(buildBigramModel(tokens));
   let matrix = $derived(buildDistanceMatrix(model, vocabulary));
@@ -49,7 +70,21 @@
   <div class="lm-widget embedding-widget">
     <div class="widget-view">
       <div class="widget-section">
-        <div class="section-header">Training text</div>
+        <div class="section-header">
+          Training text
+          {#if showCjkToggle}
+            <span class="cjk-toggle" role="group" aria-label="Chinese segmentation">
+              <button
+                type="button"
+                class:active={cjkMode === "word"}
+                onclick={() => setCjkMode("word")}>words</button>
+              <button
+                type="button"
+                class:active={cjkMode === "char"}
+                onclick={() => setCjkMode("char")}>characters</button>
+            </span>
+          {/if}
+        </div>
         <textarea
           id="embedding-input"
           class="text-input"

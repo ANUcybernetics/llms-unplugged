@@ -67,6 +67,38 @@ export function process_text_for_cutouts(content, title, author, n) {
         wasm.__wbindgen_free(deferred5_0, deferred5_1, 1);
     }
 }
+
+/**
+ * Tokenise arbitrary text into a flat list, using the same normaliser the
+ * booklet pipeline uses so the widgets and the printed booklets agree on token
+ * boundaries. `word_mode` picks jieba word segmentation (true) or per-character
+ * CJK (false); Latin text is unaffected either way. Returned as a JSON array of
+ * strings. The website loads this on demand only for text containing Chinese —
+ * English tokenises synchronously in JS without touching the wasm.
+ * @param {string} content
+ * @param {boolean} word_mode
+ * @returns {string}
+ */
+export function tokenize(content, word_mode) {
+    let deferred3_0;
+    let deferred3_1;
+    try {
+        const ptr0 = passStringToWasm0(content, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ret = wasm.tokenize(ptr0, len0, word_mode);
+        var ptr2 = ret[0];
+        var len2 = ret[1];
+        if (ret[3]) {
+            ptr2 = 0; len2 = 0;
+            throw takeFromExternrefTable0(ret[2]);
+        }
+        deferred3_0 = ptr2;
+        deferred3_1 = len2;
+        return getStringFromWasm0(ptr2, len2);
+    } finally {
+        wasm.__wbindgen_free(deferred3_0, deferred3_1, 1);
+    }
+}
 function __wbg_get_imports() {
     const import0 = {
         __proto__: null,

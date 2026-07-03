@@ -38,6 +38,14 @@ export function isPunctuation(token: string): boolean {
   return PUNCTUATION.has(token);
 }
 
+/** True if the text contains any CJK ideograph (see {@link isCJK}). */
+export function containsCJK(text: string): boolean {
+  for (const char of text) {
+    if (isCJK(char)) return true;
+  }
+  return false;
+}
+
 const CASE_ALLOWLIST = new Map([
   ["i", "I"],
   ["i'm", "I'm"],

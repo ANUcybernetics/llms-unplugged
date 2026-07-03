@@ -4,7 +4,15 @@
   import { createDiceGenerationMachine, selectStartWord } from "../../lib/machines/diceGeneration";
   import type { DiceGenerationState } from "../../lib/machines/diceGeneration";
   import { getTrainingText, setTrainingText } from "../../lib/stores/trainingText.svelte";
-  import { buildBigramModel, getVocabulary, isPunctuation, parseTokens } from "../../lib/tokens";
+  import { getCjkMode, setCjkMode } from "../../lib/stores/cjkMode.svelte";
+  import {
+    buildBigramModel,
+    containsCJK,
+    getVocabulary,
+    isPunctuation,
+    parseTokens,
+  } from "../../lib/tokens";
+  import { tokenizeWords } from "../../lib/cjkTokenize";
   import { findWordForRoll, rollDice } from "../../lib/diceMapping";
   import PlaybackSection from "../PlaybackSection.svelte";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
@@ -19,8 +27,28 @@
   let { diceSides = 10, loop = true }: Props = $props();
 
   let trainingText = $derived(getTrainingText());
+  let cjkMode = $derived(getCjkMode());
+  let showCjkToggle = $derived(containsCJK(trainingText));
 
-  let tokens = $derived(parseTokens(trainingText));
+  // Word-level Chinese needs the jieba wasm, which loads on demand, so tokens
+  // are $state updated by an effect rather than a plain $derived. English text
+  // (and char mode) stays fully synchronous and never loads the wasm; SSR only
+  // ever sees this synchronous path since effects don't run on the server.
+  let tokens = $state<string[]>(parseTokens(getTrainingText()));
+  $effect(() => {
+    const text = trainingText;
+    if (cjkMode === "word" && containsCJK(text)) {
+      let cancelled = false;
+      tokenizeWords(text).then((result) => {
+        if (!cancelled) tokens = result;
+      });
+      return () => {
+        cancelled = true;
+      };
+    }
+    tokens = parseTokens(text);
+  });
+
   let vocabulary = $derived(getVocabulary(tokens));
   let model = $derived(buildBigramModel(tokens));
 
@@ -111,7 +139,21 @@
         </div>
 
         <div class="widget-section">
-          <div class="section-header">Training text (tokenised)</div>
+          <div class="section-header">
+            Training text (tokenised)
+            {#if showCjkToggle}
+              <span class="cjk-toggle" role="group" aria-label="Chinese segmentation">
+                <button
+                  type="button"
+                  class:active={cjkMode === "word"}
+                  onclick={() => setCjkMode("word")}>words</button>
+                <button
+                  type="button"
+                  class:active={cjkMode === "char"}
+                  onclick={() => setCjkMode("char")}>characters</button>
+              </span>
+            {/if}
+          </div>
           <div class="tokens-content">
             {#each tokens as token}
               <span class="token" class:punctuation={isPunctuation(token)}>

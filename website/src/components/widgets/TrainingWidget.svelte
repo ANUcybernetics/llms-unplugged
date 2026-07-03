@@ -3,7 +3,15 @@
   import { createScheduler } from "../../lib/scheduler.svelte";
   import { createTrainingMachine } from "../../lib/machines/training";
   import { getTrainingText, setTrainingText } from "../../lib/stores/trainingText.svelte";
-  import { getBigrams, getVocabulary, isPunctuation, parseTokens } from "../../lib/tokens";
+  import { getCjkMode, setCjkMode } from "../../lib/stores/cjkMode.svelte";
+  import {
+    containsCJK,
+    getBigrams,
+    getVocabulary,
+    isPunctuation,
+    parseTokens,
+  } from "../../lib/tokens";
+  import { tokenizeWords } from "../../lib/cjkTokenize";
   import PlaybackSection from "../PlaybackSection.svelte";
   import FullscreenWrapper from "../FullscreenWrapper.svelte";
   import BigramGrid from "../BigramGrid.svelte";
@@ -29,7 +37,28 @@
     }
   }
 
-  let tokens = $derived(parseTokens(inputText));
+  let cjkMode = $derived(getCjkMode());
+  let showCjkToggle = $derived(containsCJK(inputText));
+
+  // Word-level Chinese needs the jieba wasm, loaded on demand, so tokens are
+  // $state driven by an effect; English (and char mode) stays synchronous and
+  // never touches the wasm. Effects don't run during SSR, so the server render
+  // only ever sees the synchronous path.
+  let tokens = $state<string[]>(parseTokens(untrack(() => inputText)));
+  $effect(() => {
+    const text = inputText;
+    if (cjkMode === "word" && containsCJK(text)) {
+      let cancelled = false;
+      tokenizeWords(text).then((result) => {
+        if (!cancelled) tokens = result;
+      });
+      return () => {
+        cancelled = true;
+      };
+    }
+    tokens = parseTokens(text);
+  });
+
   let bigrams = $derived(getBigrams(tokens));
   let vocabulary = $derived(getVocabulary(tokens));
 
@@ -104,7 +133,21 @@
         </div>
 
         <div class="widget-section">
-          <div class="section-header">Training text (tokenised)</div>
+          <div class="section-header">
+            Training text (tokenised)
+            {#if showCjkToggle}
+              <span class="cjk-toggle" role="group" aria-label="Chinese segmentation">
+                <button
+                  type="button"
+                  class:active={cjkMode === "word"}
+                  onclick={() => setCjkMode("word")}>words</button>
+                <button
+                  type="button"
+                  class:active={cjkMode === "char"}
+                  onclick={() => setCjkMode("char")}>characters</button>
+              </span>
+            {/if}
+          </div>
           <div class="tokens-content">
             {#each tokens as token, i}
               <span

@@ -5,7 +5,10 @@
 //! drift apart.
 
 use crate::text::RawToken;
-use crate::{CutoutsMetadata, Metadata, NGramCounter, format_entries, model_type_str};
+use crate::{
+    CjkMode, CutoutsMetadata, Metadata, NGramCounter, Normalizer, NormalizerConfig, format_entries,
+    model_type_str,
+};
 use serde::Serialize;
 use wasm_bindgen::prelude::*;
 
@@ -24,6 +27,27 @@ struct CutoutsOutput {
 #[wasm_bindgen(start)]
 pub fn init_panic_hook() {
     console_error_panic_hook::set_once();
+}
+
+/// Tokenise arbitrary text into a flat list, using the same normaliser the
+/// booklet pipeline uses so the widgets and the printed booklets agree on token
+/// boundaries. `word_mode` picks jieba word segmentation (true) or per-character
+/// CJK (false); Latin text is unaffected either way. Returned as a JSON array of
+/// strings. The website loads this on demand only for text containing Chinese —
+/// English tokenises synchronously in JS without touching the wasm.
+#[wasm_bindgen]
+pub fn tokenize(content: &str, word_mode: bool) -> Result<String, JsValue> {
+    let mut normalizer = Normalizer::new(NormalizerConfig::new(crate::default_punctuation()));
+    normalizer.set_cjk_mode(if word_mode {
+        CjkMode::Words
+    } else {
+        CjkMode::Chars
+    });
+    let tokens: Vec<String> = content
+        .lines()
+        .flat_map(|line| normalizer.normalize_line(line))
+        .collect();
+    serde_json::to_string(&tokens).map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
 #[wasm_bindgen]

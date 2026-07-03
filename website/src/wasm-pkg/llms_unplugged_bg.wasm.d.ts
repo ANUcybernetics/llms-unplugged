@@ -3,6 +3,7 @@
 export const memory: WebAssembly.Memory;
 export const process_text_for_booklet: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => [number, number, number, number];
 export const process_text_for_cutouts: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => [number, number, number, number];
+export const tokenize: (a: number, b: number, c: number) => [number, number, number, number];
 export const init_panic_hook: () => void;
 export const rust_zstd_wasm_shim_calloc: (a: number, b: number) => number;
 export const rust_zstd_wasm_shim_free: (a: number) => void;

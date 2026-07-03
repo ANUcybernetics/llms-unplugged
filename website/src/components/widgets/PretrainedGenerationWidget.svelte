@@ -7,7 +7,15 @@
   } from "../../lib/machines/pretrainedGeneration";
   import type { PretrainedGenerationState } from "../../lib/machines/pretrainedGeneration";
   import { getTrainingText, setTrainingText } from "../../lib/stores/trainingText.svelte";
-  import { buildBigramModel, getVocabulary, isPunctuation, parseTokens } from "../../lib/tokens";
+  import { getCjkMode, setCjkMode } from "../../lib/stores/cjkMode.svelte";
+  import {
+    buildBigramModel,
+    containsCJK,
+    getVocabulary,
+    isPunctuation,
+    parseTokens,
+  } from "../../lib/tokens";
+  import { tokenizeWords } from "../../lib/cjkTokenize";
   import { buildModelEntries, findWordForThresholdRoll } from "../../lib/modelEntries";
   import type { ModelEntry } from "../../lib/modelEntries";
   import { rollDice } from "../../lib/diceMapping";
@@ -22,8 +30,27 @@
   let { loop = true }: Props = $props();
 
   let trainingText = $derived(getTrainingText());
+  let cjkMode = $derived(getCjkMode());
+  let showCjkToggle = $derived(containsCJK(trainingText));
 
-  let tokens = $derived(parseTokens(trainingText));
+  // Word-level Chinese loads the jieba wasm on demand, so tokens are $state set
+  // by an effect; English (and char mode) stays synchronous. Effects don't run
+  // during SSR, so the server render only ever uses the synchronous path.
+  let tokens = $state<string[]>(parseTokens(getTrainingText()));
+  $effect(() => {
+    const text = trainingText;
+    if (cjkMode === "word" && containsCJK(text)) {
+      let cancelled = false;
+      tokenizeWords(text).then((result) => {
+        if (!cancelled) tokens = result;
+      });
+      return () => {
+        cancelled = true;
+      };
+    }
+    tokens = parseTokens(text);
+  });
+
   let vocabulary = $derived(getVocabulary(tokens));
   let model = $derived(buildBigramModel(tokens));
   let modelEntries = $derived(buildModelEntries(vocabulary, model));
@@ -113,7 +140,21 @@
   <div class="lm-widget pretrained-generation-widget">
     <div class="widget-view">
       <div class="widget-section">
-        <div class="section-header">Training text</div>
+        <div class="section-header">
+          Training text
+          {#if showCjkToggle}
+            <span class="cjk-toggle" role="group" aria-label="Chinese segmentation">
+              <button
+                type="button"
+                class:active={cjkMode === "word"}
+                onclick={() => setCjkMode("word")}>words</button>
+              <button
+                type="button"
+                class:active={cjkMode === "char"}
+                onclick={() => setCjkMode("char")}>characters</button>
+            </span>
+          {/if}
+        </div>
         <textarea
           id="pretrained-generation-input"
           class="text-input"

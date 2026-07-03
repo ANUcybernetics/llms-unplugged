@@ -29,6 +29,41 @@
   letter-spacing: 0.05em;
 }
 
+/* Word/character segmentation switch, shown in a widget's tokenised-text header
+   only when the training text contains Chinese. */
+.cjk-toggle {
+  display: inline-flex;
+  gap: 0.15rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.cjk-toggle button {
+  padding: 0.05rem 0.4rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.2rem;
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+
+.cjk-toggle button:hover {
+  color: var(--color-text);
+}
+
+.cjk-toggle button.active {
+  background: var(--anu-gold);
+  border-color: var(--anu-gold);
+  color: #000;
+}
+
 /* Visually-hidden text — gives otherwise-empty table-corner headers an
    accessible name without rendering anything visible (satisfies the
    empty-table-header a11y rule). */
