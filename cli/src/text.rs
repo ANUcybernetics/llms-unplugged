@@ -757,7 +757,9 @@ mod tests {
         let tokens = normalizer().normalize_line("江南可采莲，莲叶何田田");
         assert_eq!(
             tokens,
-            vec!["江", "南", "可", "采", "莲", "，", "莲", "叶", "何", "田", "田"]
+            vec![
+                "江", "南", "可", "采", "莲", "，", "莲", "叶", "何", "田", "田"
+            ]
         );
     }
 
@@ -799,7 +801,11 @@ mod tests {
                 .filter(|t| t.keep)
                 .map(|t| t.text)
                 .collect();
-            assert_eq!(kept, n.normalize_line(line), "kept must equal model for {line:?}");
+            assert_eq!(
+                kept,
+                n.normalize_line(line),
+                "kept must equal model for {line:?}"
+            );
         }
     }
 

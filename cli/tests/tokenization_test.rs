@@ -197,7 +197,10 @@ fn builds_a_bigram_model_from_chinese_characters() -> io::Result<()> {
 
     // Each hanzi survives as its own token (not dropped as a separator).
     for hanzi in ["江", "南", "莲", "叶", "田", "鱼"] {
-        assert!(tokens.contains(&hanzi.to_string()), "expected hanzi {hanzi}");
+        assert!(
+            tokens.contains(&hanzi.to_string()),
+            "expected hanzi {hanzi}"
+        );
     }
     // Full-width punctuation is kept as a token, just like ASCII punctuation.
     assert!(tokens.contains(&"，".to_string()));
