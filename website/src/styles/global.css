@@ -3,11 +3,11 @@
 :root {
   color-scheme: dark;
 
-  /* Pull the favicon left so its centre aligns with the gold vrule. The brand
-     sits at content-start (one content-inset right of the vrule), so the
-     translation needs to cancel that inset and bring the favicon's centre line
-     onto the rule. */
-  --at-logo-offset-x: calc(-1 * var(--at-content-inset) - 1.25rem);
+  /* The favicon is a square mark centred in its box; offset by -50% so the
+     content rule passes through its centre. (The theme already pulls the logo
+     left by one --at-content-inset to bring box-left onto the rule; this token
+     is the additive nudge on top of that.) */
+  --at-logo-offset-x: -50%;
 
   /* Website-specific token: widgets.css references --color-bg (shared with
      decks, where deck/theme.css provides its own value). */
