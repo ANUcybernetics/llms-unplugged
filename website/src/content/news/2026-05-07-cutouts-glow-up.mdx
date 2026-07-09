@@ -10,8 +10,8 @@ description:
 
 import Callout from "../../components/Callout.astro";
 
-The cutouts variant of the [Training](/lessons/training) and
-[Generation](/lessons/generation) lessons has had a serious refresh. If you
+The cutouts variant of the [Training](/lessons/training/) and
+[Generation](/lessons/generation/) lessons has had a serious refresh. If you
 haven't tried this version with your students, now's a good time.
 
 Instead of building the whiteboard frequency grid, you print the bigram model as
@@ -26,15 +26,15 @@ match a prefix against your last word, your eye hunts for that word's colour on
 the right edge of a card. Verify the actual token before committing, since
 colours sometimes collide.
 
-This gives you [weighted random sampling](/lessons/weighted-randomness) for
+This gives you [weighted random sampling](/lessons/weighted-randomness/) for
 free. If `eggs` follows `green` 40% of the time in the training text, then 40%
 of the matching cards will say `eggs`. Whichever card your eye lands on, you've
 sampled in proportion to the empirical distribution. No dice, no probability
 tables: the spread is doing the maths.
 
 That's the main argument for choosing the cutouts over the
-[grid version](/lessons/training) of the lesson. The cutouts skip the explicit
-[weighted-sampling step](/lessons/weighted-randomness), which is the
+[grid version](/lessons/training/) of the lesson. The cutouts skip the explicit
+[weighted-sampling step](/lessons/weighted-randomness/), which is the
 conceptually heaviest moment in the unplugged sequence. They also parallelise
 better: a class of thirty splits into seven groups around their own
 table-spreads, where the grid bottlenecks at one teacher. The costs are a
@@ -48,12 +48,12 @@ still lands well with adults.
 The earlier ancestor of these lessons was called _buckets_: students sorted
 cut-up cards into piles by their prefix word before any text generation
 happened. The sorting turned out to be the part nobody enjoyed, and it ate the
-time we wanted to spend on the [Generation lesson](/lessons/generation) itself.
+time we wanted to spend on the [Generation lesson](/lessons/generation/) itself.
 The new design skips the sort and goes straight to the spread.
 
 </Callout>
 
-The [tools page](/tools#cutouts) has three ready-to-print PDFs:
+The [tools page](/tools/#cutouts) has three ready-to-print PDFs:
 [_Green Eggs and Ham_](/assets/pdfs/cutouts/green-eggs-and-ham.pdf),
 [_Where Is the Green Sheep?_](/assets/pdfs/cutouts/where-is-the-green-sheep.pdf),
 and
@@ -66,12 +66,12 @@ rightmost prefix. The same tools page lets you generate cutouts from any text
 you like.
 
 Both bigram (n=2) and trigram (n=3) configurations work, and you can push to n=4
-or beyond. The [More Context lesson](/lessons/more-context) walks through the trade-off:
+or beyond. The [More Context lesson](/lessons/more-context/) walks through the trade-off:
 bigger n produces text that reads more like the source, at the cost of a much
 bigger spread. Cutouts let you see this trade-off as physical paper rather than
 an abstract claim.
 
 If you can't print colour, or your students respond better to a tighter
-board-style activity, the grid versions of [Training](/lessons/training) and
-[Generation](/lessons/generation) are still here, still good. Both variants
+board-style activity, the grid versions of [Training](/lessons/training/) and
+[Generation](/lessons/generation/) are still here, still good. Both variants
 land at the same understanding by different paths. Try the cutouts.

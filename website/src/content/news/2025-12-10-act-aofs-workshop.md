@@ -14,4 +14,4 @@ from such a great team of passionate educators.
 
 If you're involved with a group of teachers who would similarly like to come and
 do some training with us to think through how these materials could work in your
-classroom, do [get in touch](/about#get-in-touch).
+classroom, do [get in touch](/about/#get-in-touch).

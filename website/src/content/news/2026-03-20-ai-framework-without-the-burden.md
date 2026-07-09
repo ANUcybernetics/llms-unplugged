@@ -86,12 +86,12 @@ _overwhelm_ it. Asking teachers to become algorithmic auditors is not support
 --- it's an unfunded mandate dressed up as professional development.
 
 LLMs Unplugged is designed so that
-[any teacher can run it](/news/2025-12-12-why-use-an-unplugged-approach-in-your-classroom),
+[any teacher can run it](/news/2025-12-12-why-use-an-unplugged-approach-in-your-classroom/),
 regardless of their technical background. You don't need to understand neural
 networks or [transformer architectures](https://jalammar.github.io/illustrated-transformer/). You need to be able to count words, fill in a table, and roll dice.
 The activity builds the teacher's understanding alongside the students' --- and
 it
-[maps directly to existing curriculum outcomes](/news/2026-03-18-curriculum-mapping-example)
+[maps directly to existing curriculum outcomes](/news/2026-03-18-curriculum-mapping-example/)
 in maths, digital technologies, and English.
 
 Doing LLMs Unplugged doesn't mean that there aren't deep and nuanced questions
@@ -114,4 +114,4 @@ genuinely are hard. But understanding how language models work doesn't have to
 be one of them.
 
 If you'd like to try LLMs Unplugged in your school,
-[get in touch](/about#get-in-touch).
+[get in touch](/about/#get-in-touch).

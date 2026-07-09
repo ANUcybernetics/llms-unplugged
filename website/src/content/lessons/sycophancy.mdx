@@ -24,16 +24,16 @@ required.
 
 <Variant is="grid">
 
-- your completed grid model from [Training](/lessons/training)
+- your completed grid model from [Training](/lessons/training/)
 - a d10 (or similar), plus pen and paper, as per
-  [Generation](/lessons/generation)
+  [Generation](/lessons/generation/)
 - the sycophancy phrases listed below, to tally into your grid
 
 </Variant>
 
 <Variant is="cutouts">
 
-- a trained bigram cutouts spread from [Training](/lessons/training)
+- a trained bigram cutouts spread from [Training](/lessons/training/)
 - additional cutouts encoding the sycophancy phrases listed below
 - pen and paper for jotting down the generated text
 
@@ -75,7 +75,7 @@ phrases, the model's generated text starts mirroring them.
 These are the phrases you'll fold into your model. Each is shown as the sequence
 of tokens the model sees---lowercased, with punctuation and contracted endings
 (`'re`, `'s`) treated as their own tokens, exactly as in
-[Training](/lessons/training):
+[Training](/lessons/training/):
 
 - `you 're absolutely right .`
 - `that 's a great insight .`
@@ -108,13 +108,13 @@ pair:
 
 <Variant is="grid">
 
-1. **Train a baseline model** as per [Training](/lessons/training)---fill in your
+1. **Train a baseline model** as per [Training](/lessons/training/)---fill in your
    grid.
 2. **Generate a baseline sentence** as per
-   [Generation](/lessons/generation)---write it down. This is your "before".
+   [Generation](/lessons/generation/)---write it down. This is your "before".
 3. **Add the sycophancy phrases** to your grid. Take each phrase from the list
    above and tally its word pairs into your existing grid, following the standard
-   [Training](/lessons/training) procedure---add a new row and column for any word
+   [Training](/lessons/training/) procedure---add a new row and column for any word
    you haven't seen yet. Repeat each phrase several times.
 4. **Generate again** from the same starting word.
 5. **Compare**: how often does the new output land on sycophantic phrases? Does
@@ -124,10 +124,10 @@ pair:
 
 <Variant is="cutouts">
 
-1. **Train a baseline model** as per [Training](/lessons/training)---spread the
+1. **Train a baseline model** as per [Training](/lessons/training/)---spread the
    cutouts on the table.
 2. **Generate a baseline sentence** as per
-   [Generation](/lessons/generation)---write it down. This is your "before".
+   [Generation](/lessons/generation/)---write it down. This is your "before".
 3. **Add sycophancy cutouts** to the spread. The pre-made cutouts encode the
    phrases from the list above---patterns like `you → 're`, `'re → absolutely`,
    `absolutely → right`, `right → .`, plus the "great insight", "thoughtful
@@ -185,7 +185,7 @@ activity:
   on---which the model picks up during pre-training before any RLHF.
 
 Your activity simulates the second mechanism. The first is harder to demo
-without running [RLHF](/lessons/rlhf) on top.
+without running [RLHF](/lessons/rlhf/) on top.
 
 The deeper point: a model's "personality" is a property of its training data
 and tuning, not an intrinsic feature of language modelling. Change the data,

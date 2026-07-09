@@ -86,4 +86,4 @@ can pick up, bend to their own room and their own kids, and run without me in
 the building. Huge thanks to Kieren for taking it somewhere I wouldn't have, and
 for letting me tell the story. If you've adapted the materials for your own
 classroom, I'd genuinely love to hear about
-it---[get in touch](/about#get-in-touch).
+it---[get in touch](/about/#get-in-touch).

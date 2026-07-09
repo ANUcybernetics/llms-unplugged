@@ -43,4 +43,4 @@ have opened up the AI black box in a way that just memorizing a few prompting
 tips doesn't.
 
 If you'd like to find out more about how to use these resources, please
-[get in touch](/about#get-in-touch).
+[get in touch](/about/#get-in-touch).

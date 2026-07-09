@@ -37,4 +37,4 @@ literacy into their classrooms. Thanks to the Brimbank Tech School team for
 making it happen.
 
 If you're involved with a group of teachers who'd like to run a similar
-workshop, do [get in touch](/about#get-in-touch).
+workshop, do [get in touch](/about/#get-in-touch).

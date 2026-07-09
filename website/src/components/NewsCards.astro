@@ -27,7 +27,7 @@ const news = limit ? allNews.slice(0, limit) : allNews;
       });
       return (
         <Card
-          href={`/news/${item.id}`}
+          href={`/news/${item.id}/`}
           title={item.data.title}
           image={findHeroImage(`hero-news-${item.id}`)}
           headingLevel={headingLevel}

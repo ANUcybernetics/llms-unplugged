@@ -42,4 +42,4 @@ classroom probably wasn't a good explanation to begin with.
 Thanks to Pip Hall and the Duffy Primary team for having us, and to the ACT
 Academy of Future Skills for making the connection. There are already more
 primary schools lining up---which is exactly the point. If you'd like to run
-something like this with your students, do [get in touch](/about#get-in-touch).
+something like this with your students, do [get in touch](/about/#get-in-touch).

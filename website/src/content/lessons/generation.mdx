@@ -27,7 +27,7 @@ import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
 This lesson involves rolling dice to sample from weighted probability
 distributions. If your students need extra support with this concept, consider
-running the [Weighted Randomness](/lessons/weighted-randomness) lesson first.
+running the [Weighted Randomness](/lessons/weighted-randomness/) lesson first.
 
 </Callout>
 
@@ -56,7 +56,7 @@ Use a pre-trained (hand-built) <GlossaryTerm id="bigram-model">bigram model</Glo
 
 <Variant is="grid">
 
-- your completed bigram model from [Training](/lessons/training)
+- your completed bigram model from [Training](/lessons/training/)
 - a d10 (or similar) for weighted sampling
 - pen and paper for jotting down the generated text
 
@@ -66,11 +66,11 @@ Use a pre-trained (hand-built) <GlossaryTerm id="bigram-model">bigram model</Glo
 
 For each pair (or group) of students:
 
-- the trained cutouts spread from [Training](/lessons/training) (already laid
+- the trained cutouts spread from [Training](/lessons/training/) (already laid
   out on a table)
 - pen and paper for writing down the generated text
 
-The [Tools](/tools#cutouts) page has ready-to-print token cutouts for several
+The [Tools](/tools/#cutouts) page has ready-to-print token cutouts for several
 texts if you haven't done the Training lesson yet. Each PDF starts with a
 student-facing instructions page that walks groups through the matching game.
 
@@ -122,7 +122,7 @@ sampling---no dice required.
 1. Choose a starting word from the first column of your grid.
 2. Look at that word's row to find all possible next words and their counts.
 3. Roll dice weighted by the counts (see
-   [Weighted Randomness](/lessons/weighted-randomness)).
+   [Weighted Randomness](/lessons/weighted-randomness/)).
 4. Write down the chosen word and make it your new starting word.
 5. Repeat from step 2 until you hit a natural stopping point (e.g., `.`) or your
    desired length.
@@ -159,7 +159,7 @@ algorithm in action.
 
 <Variant is="grid">
 
-Using the same bigram model from the example in [Training](/lessons/training):
+Using the same bigram model from the example in [Training](/lessons/training/):
 
 <LmGrid tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
 
@@ -180,7 +180,7 @@ After the above steps, the generated text is _"see spot run. see spot"_
 
 <Variant is="cutouts">
 
-Using the cutouts spread from the example in [Training](/lessons/training):
+Using the cutouts spread from the example in [Training](/lessons/training/):
 
 <LmCutouts tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
 
@@ -255,13 +255,13 @@ perform it by hand.
 <Variant is="grid">
 
 - **"Every row only has one tally mark---there's nothing to roll for."** If the
-  group didn't get very far in [Training](/lessons/training) and no row has more
+  group didn't get very far in [Training](/lessons/training/) and no row has more
   than one tally mark, the generation algorithm won't be very
   interesting---there will only ever be one option for the next word and they'll
   be stuck on rails. In this case, either encourage them to go back and do a bit
   more training, or just have them add some extra tally marks to the grid
   wherever they like. This isn't as much like cheating as it might seem---it's
-  really just an example of using [Synthetic Data](/lessons/synthetic-data).
+  really just an example of using [Synthetic Data](/lessons/synthetic-data/).
 - **"I landed on a word that doesn't have its own row."** This can happen if a
   word only ever appeared as the _last_ word in the training text---it has a
   column (other words lead to it) but no row (it never leads to anything). Just
@@ -280,7 +280,7 @@ perform it by hand.
   matches a single cutout, generation will feel deterministic. Either go back
   and train on more text, or add a few extra cutouts (writing them out by
   hand is fine). This isn't really cheating---it's an example of
-  [Synthetic Data](/lessons/synthetic-data).
+  [Synthetic Data](/lessons/synthetic-data/).
 - **"I picked a next word that doesn't appear as a previous word anywhere on
   the table."** This can happen if a word only ever appeared as the _last_
   word in the training text---it shows up as a next word but never as a

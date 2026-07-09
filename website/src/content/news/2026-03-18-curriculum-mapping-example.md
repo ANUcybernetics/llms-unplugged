@@ -33,6 +33,6 @@ For more on how AI connects to the Australian Curriculum, ACARA's [Curriculum Co
 
 ## Share your own mapping
 
-This is just one example, and we'd love to see others. If you've mapped LLMs Unplugged to a different year level, subject or curriculum framework, [get in touch](/about#get-in-touch) --- we're happy to share further examples here.
+This is just one example, and we'd love to see others. If you've mapped LLMs Unplugged to a different year level, subject or curriculum framework, [get in touch](/about/#get-in-touch) --- we're happy to share further examples here.
 
 We're also working with ACARA and other Australian educators to develop more comprehensive, searchable mappings between the different LLMs Unplugged lessons and the full Australian Curriculum. Watch this space.

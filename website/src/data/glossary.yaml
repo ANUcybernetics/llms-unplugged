@@ -13,7 +13,7 @@
     thing in our activities.
   see:
     - label: Training
-      href: /lessons/training
+      href: /lessons/training/
 
 - id: vocabulary
   term: Vocabulary
@@ -23,7 +23,7 @@
     your grid (or the cutouts' prefix labels) form your vocabulary.
   see:
     - label: Training
-      href: /lessons/training
+      href: /lessons/training/
 
 - id: language-model
   term: Language model
@@ -33,9 +33,9 @@
     training data. Your hand-built grid or cutouts spread is a language model.
   see:
     - label: Training
-      href: /lessons/training
+      href: /lessons/training/
     - label: Generation
-      href: /lessons/generation
+      href: /lessons/generation/
 
 - id: training
   term: Training
@@ -47,7 +47,7 @@
     - learning
   see:
     - label: Training
-      href: /lessons/training
+      href: /lessons/training/
 
 - id: pre-training
   term: Pre-training
@@ -62,7 +62,7 @@
     - training
   see:
     - label: Pre-trained Model Generation
-      href: /lessons/pretrained-generation
+      href: /lessons/pretrained-generation/
 
 - id: generation
   term: Generation
@@ -72,7 +72,7 @@
     selecting the next token.
   see:
     - label: Generation
-      href: /lessons/generation
+      href: /lessons/generation/
 
 - id: inference
   term: Inference
@@ -86,7 +86,7 @@
     - decoding
   see:
     - label: Generation
-      href: /lessons/generation
+      href: /lessons/generation/
 
 - id: probability-distribution
   term: Probability distribution
@@ -97,9 +97,9 @@
     next words.
   see:
     - label: Generation
-      href: /lessons/generation
+      href: /lessons/generation/
     - label: Sampling
-      href: /lessons/sampling
+      href: /lessons/sampling/
 
 - id: prompt
   term: Prompt
@@ -111,7 +111,7 @@
     tokens long, giving the model much more context to work with.
   see:
     - label: Generation
-      href: /lessons/generation
+      href: /lessons/generation/
 
 - id: llm
   term: LLM (Large Language Model)
@@ -123,7 +123,7 @@
     principles are identical---the difference is scale.
   see:
     - label: Training
-      href: /lessons/training
+      href: /lessons/training/
 
 - id: training-data
   term: Training data
@@ -138,7 +138,7 @@
     - corpus (plural corpora)
   see:
     - label: Training
-      href: /lessons/training
+      href: /lessons/training/
 
 - id: start-end-tokens
   term: Start and end tokens
@@ -186,9 +186,9 @@
     - 2-gram model
   see:
     - label: Training
-      href: /lessons/training
+      href: /lessons/training/
     - label: Generation
-      href: /lessons/generation
+      href: /lessons/generation/
 
 - id: trigram-model
   term: Trigram model
@@ -201,7 +201,7 @@
     - 3-gram model
   see:
     - label: More Context
-      href: /lessons/more-context
+      href: /lessons/more-context/
 
 - id: n-gram-model
   term: N-gram model
@@ -211,9 +211,9 @@
     Bigrams are 2-grams, trigrams are 3-grams, and so on.
   see:
     - label: Training
-      href: /lessons/training
+      href: /lessons/training/
     - label: More Context
-      href: /lessons/more-context
+      href: /lessons/more-context/
 
 - id: context-window
   term: Context window
@@ -224,9 +224,9 @@
     hundreds of thousands or even millions of tokens.
   see:
     - label: More Context
-      href: /lessons/more-context
+      href: /lessons/more-context/
     - label: In-context Memory
-      href: /lessons/in-context-memory
+      href: /lessons/in-context-memory/
 
 - id: weighted-random-sampling
   term: Weighted random sampling
@@ -237,9 +237,9 @@
     selected.
   see:
     - label: Generation
-      href: /lessons/generation
+      href: /lessons/generation/
     - label: Weighted Randomness
-      href: /lessons/weighted-randomness
+      href: /lessons/weighted-randomness/
 
 - id: decoding-strategy
   term: Decoding strategy
@@ -252,9 +252,9 @@
     - sampling strategy
   see:
     - label: Generation
-      href: /lessons/generation
+      href: /lessons/generation/
     - label: Sampling
-      href: /lessons/sampling
+      href: /lessons/sampling/
 
 - id: temperature
   term: Temperature
@@ -265,7 +265,7 @@
     (low temperature).
   see:
     - label: Sampling
-      href: /lessons/sampling
+      href: /lessons/sampling/
 
 - id: greedy-sampling
   term: Greedy sampling
@@ -277,7 +277,7 @@
     - greedy decoding
   see:
     - label: Sampling
-      href: /lessons/sampling
+      href: /lessons/sampling/
 
 - id: beam-search
   term: Beam search
@@ -302,7 +302,7 @@
     (only consider tokens until cumulative probability reaches p).
   see:
     - label: Sampling
-      href: /lessons/sampling
+      href: /lessons/sampling/
 
 - id: top-k-sampling
   term: Top-k sampling
@@ -313,7 +313,7 @@
     allows more variety while still excluding very unlikely words.
   see:
     - label: Sampling
-      href: /lessons/sampling
+      href: /lessons/sampling/
 
 - id: top-p-sampling
   term: Top-p sampling
@@ -327,7 +327,7 @@
     - nucleus sampling
   see:
     - label: Sampling
-      href: /lessons/sampling
+      href: /lessons/sampling/
 
 - id: embedding
   term: Embedding
@@ -342,7 +342,7 @@
     - embedding vector
   see:
     - label: Word Embeddings
-      href: /lessons/word-embeddings
+      href: /lessons/word-embeddings/
 
 - id: similarity-matrix
   term: Similarity matrix
@@ -356,7 +356,7 @@
     - distance grid
   see:
     - label: Word Embeddings
-      href: /lessons/word-embeddings
+      href: /lessons/word-embeddings/
 
 - id: attention-mechanism
   term: Attention mechanism
@@ -369,9 +369,9 @@
     than just the immediately preceding word.
   see:
     - label: In-context Memory
-      href: /lessons/in-context-memory
+      href: /lessons/in-context-memory/
     - label: Induction Heads
-      href: /lessons/induction-heads
+      href: /lessons/induction-heads/
 
 - id: in-context-learning
   term: In-context learning
@@ -383,9 +383,9 @@
     steer an LLM's output.
   see:
     - label: In-context Memory
-      href: /lessons/in-context-memory
+      href: /lessons/in-context-memory/
     - label: Induction Heads
-      href: /lessons/induction-heads
+      href: /lessons/induction-heads/
 
 - id: induction-head
   term: Induction head
@@ -396,7 +396,7 @@
     Induction heads are a key mechanism behind in-context learning.
   see:
     - label: Induction Heads
-      href: /lessons/induction-heads
+      href: /lessons/induction-heads/
 
 - id: markov-chain
   term: Markov chain
@@ -432,7 +432,7 @@
     in your grid is a parameter. Modern models have billions of parameters.
   see:
     - label: Training
-      href: /lessons/training
+      href: /lessons/training/
 
 - id: fine-tuning
   term: Fine-tuning
@@ -447,9 +447,9 @@
     - base-model
   see:
     - label: LoRA
-      href: /lessons/lora
+      href: /lessons/lora/
     - label: Synthetic Data
-      href: /lessons/synthetic-data
+      href: /lessons/synthetic-data/
 
 - id: base-model
   term: Base model
@@ -460,7 +460,7 @@
     domain-specific shift.
   see:
     - label: LoRA
-      href: /lessons/lora
+      href: /lessons/lora/
 
 - id: lora
   term: LoRA (Low-Rank Adaptation)
@@ -470,7 +470,7 @@
     "adaptation layer" rather than modifying all the original parameters.
   see:
     - label: LoRA
-      href: /lessons/lora
+      href: /lessons/lora/
 
 - id: agentic-ai
   term: Agentic AI
@@ -483,7 +483,7 @@
     - agentic tool use
   see:
     - label: Agentic AI
-      href: /lessons/agentic-ai
+      href: /lessons/agentic-ai/
 
 - id: agent
   term: Agent
@@ -496,7 +496,7 @@
     - AI agent
   see:
     - label: Agentic AI
-      href: /lessons/agentic-ai
+      href: /lessons/agentic-ai/
 
 - id: tool-use
   term: Tool use
@@ -510,7 +510,7 @@
     - function calling
   see:
     - label: Agentic AI
-      href: /lessons/agentic-ai
+      href: /lessons/agentic-ai/
 
 - id: synthetic-data
   term: Synthetic data
@@ -520,7 +520,7 @@
     used to augment training sets or create specialised datasets.
   see:
     - label: Synthetic Data
-      href: /lessons/synthetic-data
+      href: /lessons/synthetic-data/
 
 - id: model-collapse
   term: Model collapse
@@ -534,7 +534,7 @@
     - mode collapse
   see:
     - label: Synthetic Data
-      href: /lessons/synthetic-data
+      href: /lessons/synthetic-data/
 
 - id: post-training
   term: Post-training
@@ -583,7 +583,7 @@
     - post-training
   see:
     - label: RLHF
-      href: /lessons/rlhf
+      href: /lessons/rlhf/
 
 - id: reward-model
   term: Reward model
@@ -598,7 +598,7 @@
     - alignment
   see:
     - label: RLHF
-      href: /lessons/rlhf
+      href: /lessons/rlhf/
 
 - id: alignment
   term: Alignment
@@ -612,7 +612,7 @@
     - rlvr
   see:
     - label: RLHF
-      href: /lessons/rlhf
+      href: /lessons/rlhf/
 
 - id: rlvr
   term: RLVR (Reinforcement Learning from Verifiable Rewards)

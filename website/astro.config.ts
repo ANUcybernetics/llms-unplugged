@@ -6,6 +6,11 @@ import { astromotion, deckRemarkPlugins } from "astromotion";
 
 export default defineConfig({
   site: "https://www.llmsunplugged.org",
+  // Pages build as directories, so every route URL ends in a slash. Declaring
+  // it keeps internal links honest: the dev server rejects the slash-less form,
+  // so a hardcoded "/lessons/training" can't quietly reintroduce the 301 hop
+  // that GitHub Pages serves for it.
+  trailingSlash: "always",
   vite: {
     // The typst.ts runtime loads its own wasm and pulls in many internal ESM
     // modules; letting Vite's dev dep-optimizer pre-bundle it stalls the tools
@@ -26,7 +31,7 @@ export default defineConfig({
   compressHTML: false,
   redirects: {
     // lesson renamed from "Agentic tool use" (June 2026)
-    "/lessons/agentic-tool-use": "/lessons/agentic-ai",
+    "/lessons/agentic-tool-use/": "/lessons/agentic-ai/",
   },
   fonts: [
     {

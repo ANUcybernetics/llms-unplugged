@@ -8,7 +8,7 @@ description: The LLMs Unplugged website is now live.
 We're excited to announce the launch of this _LLMs Unplugged_ website.
 
 All teaching resources are now available for download, including lesson cards
-and instructor notes. See the [homepage](./index) for an overview, plus a few
+and instructor notes. See the [homepage](/) for an overview, plus a few
 different "ways in" depending on who you are and what you're looking for.
 
 While the resources themselves are battle-tested and good to go, this website is

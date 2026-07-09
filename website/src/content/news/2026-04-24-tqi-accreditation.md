@@ -18,7 +18,7 @@ also be listed on the
 colleagues across the ACT can find it there too.
 
 The next
-[open-enrolment workshops](/news/2026-03-24-open-enrolment-workshops) at ANU
+[open-enrolment workshops](/news/2026-03-24-open-enrolment-workshops/) at ANU
 run in May and June, if you've been meaning to come along. If you'd like to
 organise a session for your school or region,
-[get in touch](/about#get-in-touch).
+[get in touch](/about/#get-in-touch).

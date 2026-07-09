@@ -90,5 +90,5 @@ Thanks again to Matt for the time, the poem, and the translations, and to the
 Tjabal Centre and the Autumn School participants for being up for something new
 on a Tuesday morning. If you work with a language (or a community, or a
 knowledge tradition) that's underrepresented in LLM training data and want to
-try something like this, do [get in touch](/about#get-in-touch)---we'd love to
+try something like this, do [get in touch](/about/#get-in-touch)---we'd love to
 help.

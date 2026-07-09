@@ -7,7 +7,7 @@ description:
   distinct colours instead of 14 hand-picked ones.
 ---
 
-The cutouts variant of the [Training lesson](/lessons/training) leans hard on
+The cutouts variant of the [Training lesson](/lessons/training/) leans hard on
 colour as a fast filter. Every word has its own colour, repeated wherever the
 word appears, so your eye can scan "what's the colour of the word I just wrote?"
 before you read any text. It really helps with the needle-in-a-haystack aspect
@@ -54,7 +54,7 @@ achievable colour count.
 
 The palette isn't colour-vision-deficiency safe. CVD-safe palettes max out
 around 8-12 distinct colours, which would undo the whole exercise. If you're
-working with a CVD-affected student, the [grid version](/lessons/training) of
+working with a CVD-affected student, the [grid version](/lessons/training/) of
 the lesson uses no colour at all and reaches the same understanding.
 
 The script lives in the repo at `cli/scripts/generate_palette.ts`: pure
@@ -63,8 +63,8 @@ file that produces the cutouts has the resulting OKLCH triples pasted in
 directly, with a comment pointing at the script for regeneration. Different N or
 different lightness bounds, one line regenerates the palette.
 
-The [tools page](/tools#cutouts) has the four ready-to-print PDFs (_Green Eggs
+The [tools page](/tools/#cutouts) has the four ready-to-print PDFs (_Green Eggs
 and Ham_ and _The Cat in the Hat_, each in bigram and trigram), all freshly
 built with the new palette. If you've used the cutouts before, you'll notice the
 difference straight away. If you haven't, the
-[previous post](/news/2026-05-07-cutouts-glow-up) explains the activity.
+[previous post](/news/2026-05-07-cutouts-glow-up/) explains the activity.

@@ -29,7 +29,7 @@ classroom. They align with curriculum outcomes across mathematics, technologies,
 HASS and literacy, and the only prerequisite is curiosity.
 
 For ACT teachers: the workshop is
-[accredited by the ACT Teacher Quality Institute](/news/2026-04-24-tqi-accreditation)
+[accredited by the ACT Teacher Quality Institute](/news/2026-04-24-tqi-accreditation/)
 as a two-hour professional learning program, so attendance counts toward your
 annual registered PL hours.
 

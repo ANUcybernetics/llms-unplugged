@@ -28,4 +28,4 @@ literacy.
 tickets are ~$60.
 
 If you're wondering why this stuff matters for your classroom, here's
-[the case for an unplugged approach to teaching AI](/news/2025-12-12-why-use-an-unplugged-approach-in-your-classroom).
+[the case for an unplugged approach to teaching AI](/news/2025-12-12-why-use-an-unplugged-approach-in-your-classroom/).
