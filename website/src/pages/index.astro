@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import Card from "astro-theme-university/components/Card.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NewsCards from "../components/NewsCards.astro";
 import GlossaryTerm from "../components/GlossaryTerm.astro";
@@ -66,42 +67,40 @@ import wayPrintMaterials from "../assets/images/way-print-materials.avif";
 
     <section class="ways-in">
       <h2>Three ways to get started</h2>
-      <div class="ways-grid">
-        <a href="/lessons/" class="way">
-          <Image src={wayRunALesson} alt="" loading="lazy" />
-          <div class="way-body">
-            <h3>Run a lesson</h3>
-            <p>
-              Ready-to-run sessions we've tested in real rooms&mdash;each with
-              slides, timings, prep checklists, and a materials list. Every
-              lesson ships its slides <em>with</em> full presenter notes, so you
-              can deliver it without ever having seen it run.
-            </p>
-          </div>
-        </a>
-        <a href="/modules/" class="way">
-          <Image src={wayExploreModules} alt="" loading="lazy" />
-          <div class="way-body">
-            <h3>Explore the modules</h3>
-            <p>
-              The building blocks: hands-on activities that each teach one idea
-              about how language models work, from training and generation
-              through to embeddings and agents. Mix and match to build your own
-              session.
-            </p>
-          </div>
-        </a>
-        <a href="/tools/" class="way">
-          <Image src={wayPrintMaterials} alt="" loading="lazy" />
-          <div class="way-body">
-            <h3>Print the materials</h3>
-            <p>
-              Ready-to-print model booklets, token cutouts, and grid
-              worksheets&mdash;or generate your own from any text, right in your
-              browser.
-            </p>
-          </div>
-        </a>
+      <div class="at-card-grid ways-grid">
+        <Card href="/lessons/" title="Run a lesson" image={wayRunALesson} imageAlt="">
+          <p class="card-description">
+            Ready-to-run sessions we've tested in real rooms&mdash;each with
+            slides, timings, prep checklists, and a materials list. Every
+            lesson ships its slides <em>with</em> full presenter notes, so you
+            can deliver it without ever having seen it run.
+          </p>
+        </Card>
+        <Card
+          href="/modules/"
+          title="Explore the modules"
+          image={wayExploreModules}
+          imageAlt=""
+        >
+          <p class="card-description">
+            The building blocks: hands-on activities that each teach one idea
+            about how language models work, from training and generation
+            through to embeddings and agents. Mix and match to build your own
+            session.
+          </p>
+        </Card>
+        <Card
+          href="/tools/"
+          title="Print the materials"
+          image={wayPrintMaterials}
+          imageAlt=""
+        >
+          <p class="card-description">
+            Ready-to-print model booklets, token cutouts, and grid
+            worksheets&mdash;or generate your own from any text, right in your
+            browser.
+          </p>
+        </Card>
       </div>
     </section>
 
@@ -399,51 +398,18 @@ import wayPrintMaterials from "../assets/images/way-print-materials.avif";
     margin-bottom: 2rem;
   }
 
-  .ways-grid {
-    display: grid;
-    gap: 1rem;
-  }
-
-  /* jump straight from one column to three so the cards never wrap 2 + 1 */
+  /* jump straight from one column to three so the cards never wrap 2 + 1
+     (the theme's at-card-grid--3 auto-fill modifier would) */
   @media (min-width: 760px) {
     .ways-grid {
       grid-template-columns: repeat(3, 1fr);
     }
   }
 
-  .way {
-    display: block;
-    border: 1px solid var(--at-border);
-    border-radius: var(--at-border-radius);
-    overflow: hidden;
-    text-decoration: none;
-    color: var(--at-text);
-    transition: border-color 0.15s;
-  }
-
-  .way img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-
-  .way-body {
-    padding: 1.25rem;
-  }
-
-  .way:hover {
-    border-color: var(--at-accent);
-  }
-
-  .way h3 {
-    margin: 0 0 0.5rem;
-    color: var(--at-accent);
-  }
-
-  .way p {
-    margin: 0;
+  .card-description {
     font-size: 0.9rem;
     line-height: 1.5;
     color: var(--at-text-secondary);
+    margin: 0;
   }
 </style>
