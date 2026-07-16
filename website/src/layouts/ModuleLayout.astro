@@ -12,9 +12,10 @@ interface Props {
   description?: string;
   ogImage?: string;
   keyIdea?: string;
+  usedIn?: Array<{ title: string; href: string }>;
 }
 
-const { title, description, ogImage, keyIdea } = Astro.props;
+const { title, description, ogImage, keyIdea, usedIn = [] } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/$/, "") + "/";
 const sidebar = await getModuleSidebar();
 const slug = currentPath.split("/").filter(Boolean).pop();
@@ -52,6 +53,20 @@ const slug = currentPath.split("/").filter(Boolean).pop();
         </p>
       )
     }
+    {
+      usedIn.length > 0 && (
+        <p class="module-used-in">
+          Used in{" "}
+          {usedIn.map((lesson, i) => (
+            <>
+              {i > 0 && " and "}
+              <a href={lesson.href}>{lesson.title}</a>
+            </>
+          ))}
+          {" --- ready-to-run lessons that include this module."}
+        </p>
+      )
+    }
     <slot />
   </div>
   <div class="edit-link">
@@ -71,6 +86,12 @@ const slug = currentPath.split("/").filter(Boolean).pop();
     background: var(--at-accent-soft);
     border-radius: 0 0.25rem 0.25rem 0;
     font-size: 1.05rem;
+  }
+
+  .module-used-in {
+    margin: 0 0 1.5rem;
+    font-size: 0.95rem;
+    color: var(--at-text-secondary);
   }
 
   .edit-link {

@@ -17,6 +17,12 @@ const { Content } = await render(module);
 // Resolve through the asset pipeline so og:image points at the real
 // (hashed) URL rather than a source path that 404s in production.
 const ogImage = moduleHeroImage(module.id)?.src;
+
+// Lessons (listed ones only) that run this module, for the "Used in" box.
+const usedIn = (await getCollection("lessons"))
+  .filter((l) => l.data.listed !== false && l.data.modules.includes(module.id))
+  .toSorted((a, b) => a.data.order - b.data.order)
+  .map((l) => ({ title: l.data.title, href: `/lessons/${l.id}/` }));
 ---
 
 <ModuleLayout
@@ -24,6 +30,7 @@ const ogImage = moduleHeroImage(module.id)?.src;
   description={module.data.description}
   ogImage={ogImage}
   keyIdea={module.data.keyIdea}
+  usedIn={usedIn}
 >
   <Content />
 </ModuleLayout>
