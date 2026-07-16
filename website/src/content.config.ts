@@ -17,6 +17,33 @@ const modules = defineCollection({
   }),
 });
 
+// Lessons are the deck-backed workshop journeys --- what you actually run in a
+// room. Each lesson assembles modules (plus deck-only parts like icebreakers
+// and wrap-ups) into a tested sequence with timings.
+const lessons = defineCollection({
+  loader: glob({ pattern: "**/*.mdx", base: "src/content/lessons" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    // Card/badge metadata: name the experience; duration and apparatus are
+    // metadata, never part of the title.
+    audience: z.string(),
+    duration: z.string(),
+    flavour: z.enum(["grid", "cutouts"]),
+    // The deck(s) that back this lesson, in the order they should be offered.
+    decks: z.array(z.object({ slug: z.string(), label: z.string() })),
+    // Module slugs this lesson runs --- drives the "Used in" box on module
+    // pages as well as the module links on the lesson page itself.
+    modules: z.array(z.string()).default([]),
+    // Hero image basename (without the hero- prefix) from src/assets/images.
+    heroImage: z.string().optional(),
+    order: z.number(),
+    // Unlisted lessons are reachable only via direct links --- hidden from the
+    // /lessons index, sitemap, and search.
+    listed: z.boolean().default(true),
+  }),
+});
+
 const news = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/news" }),
   schema: z.object({
@@ -43,4 +70,4 @@ const events = defineCollection({
   }),
 });
 
-export const collections = { modules, news, events };
+export const collections = { modules, lessons, news, events };

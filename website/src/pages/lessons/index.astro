@@ -1,0 +1,74 @@
+---
+import { getCollection } from "astro:content";
+import Card from "astro-theme-university/components/Card.astro";
+import PageLayout from "../../layouts/PageLayout.astro";
+import { findHeroImage } from "../../lib/hero-images";
+
+const lessons = (await getCollection("lessons"))
+  .filter((l) => l.data.listed !== false)
+  .toSorted((a, b) => a.data.order - b.data.order);
+---
+
+<PageLayout
+  title="Lessons"
+  description="Ready-to-run LLMs Unplugged lessons: tested workshop journeys with slides, presenter notes, timings, and prep checklists."
+>
+  <h1>Lessons</h1>
+
+  <p>
+    A lesson is a complete, ready-to-run session: a tested sequence of <a
+      href="/modules/">modules</a
+    > with slides, timings, prep notes, and a materials list. We've delivered each
+    of these many times, to groups ranging from primary-school classes to senior executives&mdash;pick
+    the one that fits your group and you can run it as-is.
+  </p>
+
+  <p>
+    Every lesson ships its slides <em>with</em> full presenter notes&mdash;what to
+    say, what to watch for, how long each part takes&mdash;so you don't need to have
+    seen it delivered to deliver it yourself.
+  </p>
+
+  <div class="at-card-grid at-card-grid--2">
+    {
+      lessons.map((lesson) => (
+        <Card
+          href={`/lessons/${lesson.id}/`}
+          title={lesson.data.title}
+          image={
+            lesson.data.heroImage
+              ? findHeroImage(`hero-${lesson.data.heroImage}`)
+              : undefined
+          }
+        >
+          <p class="card-description">{lesson.data.description}</p>
+          <p class="card-badges">
+            {lesson.data.audience} &middot; {lesson.data.duration} &middot;{" "}
+            {lesson.data.flavour}
+          </p>
+        </Card>
+      ))
+    }
+  </div>
+
+  <p>
+    If you'd rather assemble your own session from the parts, browse the <a
+      href="/modules/">modules</a
+    >.
+  </p>
+</PageLayout>
+
+<style>
+  .card-description {
+    font-size: 0.85rem;
+    color: var(--at-text-secondary);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .card-badges {
+    font-size: 0.8rem;
+    color: var(--at-text-secondary);
+    margin: 0.5rem 0 0;
+  }
+</style>

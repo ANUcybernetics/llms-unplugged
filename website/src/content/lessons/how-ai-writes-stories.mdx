@@ -1,0 +1,97 @@
+---
+title: How AI writes stories
+description:
+  A 90-minute primary-school lesson where students discover what AI is, then
+  build their own paper language models and use them to generate stories.
+audience: years 5-6 (ages 10-12)
+duration: 90 minutes
+flavour: cutouts
+decks:
+  - slug: cutouts-yr5-6
+    label: How AI writes stories (90 min)
+modules:
+  - training
+  - generation
+heroImage: cutouts-training
+order: 2
+---
+
+import UsingTheSlides from "../../components/UsingTheSlides.astro";
+
+Students start by asking a real AI to write a story about their teacher, then
+spend the rest of the lesson finding out how it did it---by building their own
+language models out of paper cutouts and generating brand-new stories from the
+patterns in their favourite picture books. No computers (except yours, for the
+slides), no maths beyond matching colours.
+
+We most recently ran this lesson at [Duffy Primary
+School](/news/2026-06-02-how-ai-writes-stories-at-duffy/) with three year 5-6
+classes.
+
+## Lesson plan
+
+Allow five minutes for arrival and settling before part 1. If you're running
+over time, part 4 is designed to be dropped---parts 1-3 and 5 are the core of
+the lesson.
+
+| Part | What happens                                                        | Time   |
+| ---- | ------------------------------------------------------------------- | ------ |
+| 1    | **What is AI?** --- discussion, plus an AI writes the class a story | 15 min |
+| 2    | **Training** --- pattern warm-up, key words, then the training game | 20 min |
+| 3    | **Generation** --- generate new stories from the trained cutouts    | 25 min |
+| 4    | **One story, all together** --- whole-class story (optional)        | 15 min |
+| 5    | **Wrap-up** --- what did we learn? Q&A                              | 10 min |
+
+**Part 1** opens with think-pair-share ("when you hear _artificial
+intelligence_, what comes to mind?"), then the fun bit: the class supplies
+three words, and a slide builds a story prompt starring their teacher that you
+paste into ChatGPT, Claude, or whichever chatbot you have access to. A
+dramatic reading later, you have the hook for the whole lesson: _that was a
+language model, and today we're going to build one_.
+
+**Part 2** warms up with predict-the-next-word prompts on the whiteboard
+(humans are pattern-spotters too), introduces four key words (AI, language
+model, training, training data), then runs the
+[Training](/modules/training/) module in its cutouts flavour: students spread
+out printed token cutouts from a picture book and discover the patterns.
+
+**Part 3** runs the [Generation](/modules/generation/) module: starting from a
+single word, students play the colour-matching game to generate new
+stories---and read them out loud.
+
+**Part 4** (optional) generates one story as a whole class: everyone hunts for
+the current word in their own cutouts, hands go up, and the story grows one
+word at a time on butchers paper.
+
+**Part 5** wraps up with discussion questions---would you get the same story
+twice? is the model _thinking_?---and open Q&A.
+
+## You will need
+
+- printed token cutouts (bigram, i.e. `-n 2`) from two or three picture
+  books---the [Tools](/tools/#cutouts) page has ready-to-print packs for
+  _Green Eggs and Ham_, _Where Is the Green Sheep?_, and _We're Going on a
+  Bear Hunt_, or you can [generate your own](/tools/#generate-your-own)
+- a clear table per group of 2-4 students to spread the cutouts on
+- pen and paper per group for writing down generated stories
+- a whiteboard for the predict-the-next-word warm-up
+- butchers paper and a marker for the class story (part 4)
+- a projector for the slides, and access to ChatGPT/Claude/etc. for the
+  story-writing demo in part 1
+
+## Before you deliver
+
+- print the cutouts and (ideally) pre-cut them into strips---scissor time is
+  the biggest schedule risk with this age group
+- have a few predict-the-next-word prompts ready for the whiteboard; ones the
+  class will finish instantly work best (the school's own values, "yer a
+  wizard, **\_\_**!")
+- the story slide in part 1 has fill-in boxes for the teacher's name and the
+  three class words, and builds a copy-paste-ready prompt---check you can log
+  in to a chatbot on the room's computer beforehand
+- the prompt is tuned for year 5 students in Canberra; if your class is
+  elsewhere (or another year level), tweak the wording after you paste it
+
+<UsingTheSlides
+  decks={[{ slug: "cutouts-yr5-6", label: "How AI writes stories (90 min)" }]}
+/>

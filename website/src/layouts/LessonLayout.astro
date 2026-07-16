@@ -1,0 +1,57 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  audience: string;
+  duration: string;
+  flavour: "grid" | "cutouts";
+}
+
+const { title, description, ogImage, audience, duration, flavour } =
+  Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogImage={ogImage}
+  ogType="article"
+>
+  <div class="content-container">
+    <article class="prose">
+      <h1>{title}</h1>
+      <ul class="lesson-meta">
+        <li><strong>Audience</strong> {audience}</li>
+        <li><strong>Duration</strong> {duration}</li>
+        <li><strong>Flavour</strong> {flavour}</li>
+      </ul>
+      <slot />
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .lesson-meta {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    margin: 0 0 2rem;
+    padding: 0.75rem 0;
+    border-block: 1px solid var(--at-divider);
+    font-size: 0.95rem;
+    color: var(--at-text-secondary);
+  }
+
+  .lesson-meta li {
+    margin: 0;
+  }
+
+  .lesson-meta strong {
+    color: var(--at-text);
+    margin-inline-end: 0.35rem;
+  }
+</style>

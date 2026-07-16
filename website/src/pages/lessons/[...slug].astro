@@ -1,0 +1,31 @@
+---
+import { getCollection, render } from "astro:content";
+import LessonLayout from "../../layouts/LessonLayout.astro";
+import { findHeroImage } from "../../lib/hero-images";
+
+export async function getStaticPaths() {
+  const lessons = await getCollection("lessons");
+  return lessons.map((lesson) => ({
+    params: { slug: lesson.id },
+    props: { lesson },
+  }));
+}
+
+const { lesson } = Astro.props;
+const { Content } = await render(lesson);
+
+const ogImage = lesson.data.heroImage
+  ? findHeroImage(`hero-${lesson.data.heroImage}`)?.src
+  : undefined;
+---
+
+<LessonLayout
+  title={lesson.data.title}
+  description={lesson.data.description}
+  ogImage={ogImage}
+  audience={lesson.data.audience}
+  duration={lesson.data.duration}
+  flavour={lesson.data.flavour}
+>
+  <Content />
+</LessonLayout>

@@ -1,0 +1,57 @@
+---
+/**
+ * Shared "Using the slides" section for lesson pages. Every lesson ships a
+ * browser-based slide deck with full presenter notes; this section explains
+ * how to drive it, once, rather than on every lesson page.
+ */
+interface Deck {
+  slug: string;
+  label: string;
+}
+
+interface Props {
+  decks: Deck[];
+}
+
+const { decks } = Astro.props;
+---
+
+<h2 id="using-the-slides">Using the slides</h2>
+
+{
+  decks.length === 1 ? (
+    <p>
+      <a href={`/decks/${decks[0].slug}/`}>Open the slides</a> in your browser
+      &mdash; there's nothing to install or download.
+    </p>
+  ) : (
+    <ul>
+      {decks.map((deck) => (
+        <li>
+          <a href={`/decks/${deck.slug}/`}>{deck.label}</a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<p>
+  The slides run in your browser, and every slide carries full presenter
+  notes&mdash;what to say, what to watch for, and how long each part should
+  take. A few keys worth knowing:
+</p>
+
+<ul>
+  <li>
+    <kbd>f</kbd> toggles fullscreen&mdash;do this before you start presenting
+  </li>
+  <li>
+    <kbd>s</kbd> opens the speaker view in a separate window, with the presenter notes,
+    a timer, and a preview of the next slide (drag it to your laptop screen and put
+    the slides on the projector)
+  </li>
+  <li>
+    <kbd>o</kbd> shows an overview of all slides, handy for skipping ahead if you're
+    running short on time
+  </li>
+</ul>
