@@ -40,4 +40,4 @@ the steps as we go and you'll come out the other side having built and run your
 own language model by hand, no computer required.
 
 If you get stuck, or want to go deeper afterwards, the full set of
-[lessons](/lessons/) covers everything here in more detail.
+[lessons](/modules/) covers everything here in more detail.

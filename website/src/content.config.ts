@@ -3,16 +3,16 @@ import { file, glob } from "astro/loaders";
 import { z } from "astro/zod";
 import { TOPIC_KEYS } from "./lib/topics";
 
-const lessons = defineCollection({
-  loader: glob({ pattern: "**/*.mdx", base: "src/content/lessons" }),
+const modules = defineCollection({
+  loader: glob({ pattern: "**/*.mdx", base: "src/content/modules" }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
     topic: z.enum(TOPIC_KEYS),
     order: z.number(),
     keyIdea: z.string().optional(),
-    // Unlisted lessons are reachable only via direct links --- hidden from the
-    // sidebar and the /lessons index (see src/lib/lessons.ts).
+    // Unlisted modules are reachable only via direct links --- hidden from the
+    // sidebar and the /modules index (see src/lib/modules.ts).
     listed: z.boolean().default(true),
   }),
 });
@@ -43,4 +43,4 @@ const events = defineCollection({
   }),
 });
 
-export const collections = { lessons, news, events };
+export const collections = { modules, news, events };

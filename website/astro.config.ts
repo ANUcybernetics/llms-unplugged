@@ -30,8 +30,28 @@ export default defineConfig({
   // "then<a>").
   compressHTML: false,
   redirects: {
-    // lesson renamed from "Agentic tool use" (June 2026)
-    "/lessons/agentic-tool-use/": "/lessons/agentic-ai/",
+    // The July 2026 restructure renamed the per-activity pages from "lessons"
+    // to "modules" (a lesson is now a deck-backed workshop journey built from
+    // modules). Slugs are unchanged; every old /lessons/<slug>/ URL redirects
+    // to its /modules/<slug>/ counterpart.
+    "/lessons/agentic-ai/": "/modules/agentic-ai/",
+    "/lessons/generation/": "/modules/generation/",
+    "/lessons/in-context-memory/": "/modules/in-context-memory/",
+    "/lessons/induction-heads/": "/modules/induction-heads/",
+    "/lessons/lora/": "/modules/lora/",
+    "/lessons/more-context/": "/modules/more-context/",
+    "/lessons/pretrained-generation/": "/modules/pretrained-generation/",
+    "/lessons/rlhf/": "/modules/rlhf/",
+    "/lessons/sampling/": "/modules/sampling/",
+    "/lessons/sycophancy/": "/modules/sycophancy/",
+    "/lessons/synthetic-data/": "/modules/synthetic-data/",
+    "/lessons/training/": "/modules/training/",
+    "/lessons/weighted-randomness/": "/modules/weighted-randomness/",
+    "/lessons/word-embeddings/": "/modules/word-embeddings/",
+    // module renamed from "Agentic tool use" (June 2026)
+    "/lessons/agentic-tool-use/": "/modules/agentic-ai/",
+    // Temporary until the new lessons index lands at /lessons/.
+    "/lessons/": "/modules/",
   },
   fonts: [
     {

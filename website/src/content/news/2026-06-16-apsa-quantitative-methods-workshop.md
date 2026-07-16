@@ -27,7 +27,7 @@ more applied sessions later in the day.
 ![A wide view of the RSSS lectorial, with workshop participants seated at tables facing the front, where a slide of cut-out token figures is projected](../../assets/images/apsa-workshop-01.avif)
 
 We did what we always do.[^year5] The participants tallied token frequencies,
-filled in the probability grid, and [generated new text](/lessons/generation/) by
+filled in the probability grid, and [generated new text](/modules/generation/) by
 rolling dice against the counts. It's the same statistical machinery that sits
 underneath ChatGPT, slowed right down to human speed and built out of paper and
 dice.

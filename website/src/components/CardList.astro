@@ -1,27 +1,27 @@
 ---
 import { getCollection } from "astro:content";
 import Card from "astro-theme-university/components/Card.astro";
-import { lessonHeroImage } from "../lib/hero-images";
-import { type Lesson, lessonsInTopic } from "../lib/lessons";
+import { moduleHeroImage } from "../lib/hero-images";
+import { type Module, modulesInTopic } from "../lib/modules";
 import type { Topic } from "../lib/topics";
 
 interface Props {
-  /** Explicit lesson slugs (may span topics), rendered in `order`. */
-  lessons?: string[];
-  /** A topic: renders that topic's listed lessons, in `order`. */
+  /** Explicit module slugs (may span topics), rendered in `order`. */
+  modules?: string[];
+  /** A topic: renders that topic's listed modules, in `order`. */
   topic?: Topic;
 }
 
-const { lessons: filterSlugs, topic } = Astro.props;
+const { modules: filterSlugs, topic } = Astro.props;
 
-let cards: Lesson[];
+let cards: Module[];
 if (topic) {
-  cards = await lessonsInTopic(topic);
+  cards = await modulesInTopic(topic);
 } else if (filterSlugs) {
-  const all = (await getCollection("lessons")).toSorted(
+  const all = (await getCollection("modules")).toSorted(
     (a, b) => a.data.order - b.data.order,
   );
-  cards = all.filter((l) => filterSlugs.includes(l.id));
+  cards = all.filter((m) => filterSlugs.includes(m.id));
 } else {
   cards = [];
 }
@@ -29,13 +29,13 @@ if (topic) {
 
 <div class="at-card-grid at-card-grid--2">
   {
-    cards.map((lesson) => (
+    cards.map((module) => (
       <Card
-        href={`/lessons/${lesson.id}/`}
-        title={lesson.data.title}
-        image={lessonHeroImage(lesson.id)}
+        href={`/modules/${module.id}/`}
+        title={module.data.title}
+        image={moduleHeroImage(module.id)}
       >
-        <p class="card-description">{lesson.data.description}</p>
+        <p class="card-description">{module.data.description}</p>
       </Card>
     ))
   }

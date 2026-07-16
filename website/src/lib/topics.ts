@@ -5,7 +5,7 @@
  * their display labels. A lesson is placed into a topic via its `topic`
  * frontmatter (enforced as an enum of these keys in src/content.config.ts), and
  * both the /lessons index and the sidebar derive their grouping from here via
- * src/lib/lessons.ts. Add or rename a topic here and everything follows.
+ * src/lib/modules.ts. Add or rename a topic here and everything follows.
  */
 export const TOPIC_KEYS = [
   "fundamentals",

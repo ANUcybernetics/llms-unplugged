@@ -1,0 +1,29 @@
+---
+import { getCollection, render } from "astro:content";
+import ModuleLayout from "../../layouts/ModuleLayout.astro";
+import { moduleHeroImage } from "../../lib/hero-images";
+
+export async function getStaticPaths() {
+  const modules = await getCollection("modules");
+  return modules.map((module) => ({
+    params: { slug: module.id },
+    props: { module },
+  }));
+}
+
+const { module } = Astro.props;
+const { Content } = await render(module);
+
+// Resolve through the asset pipeline so og:image points at the real
+// (hashed) URL rather than a source path that 404s in production.
+const ogImage = moduleHeroImage(module.id)?.src;
+---
+
+<ModuleLayout
+  title={module.data.title}
+  description={module.data.description}
+  ogImage={ogImage}
+  keyIdea={module.data.keyIdea}
+>
+  <Content />
+</ModuleLayout>

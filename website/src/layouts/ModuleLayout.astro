@@ -2,7 +2,7 @@
 import SidebarLayout from "astro-theme-university/layouts/SidebarLayout.astro";
 import CommonHead from "../components/CommonHead.astro";
 import { siteConfig, themeLogo, footerOverrides } from "../site-config";
-import { getLessonSidebar } from "../lib/lesson-sidebar";
+import { getModuleSidebar } from "../lib/module-sidebar";
 import faviconAsset from "../assets/favicon.svg";
 import "../styles/global.css";
 import "../styles/widgets.css";
@@ -16,7 +16,7 @@ interface Props {
 
 const { title, description, ogImage, keyIdea } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/$/, "") + "/";
-const sidebar = await getLessonSidebar();
+const sidebar = await getModuleSidebar();
 const slug = currentPath.split("/").filter(Boolean).pop();
 ---
 
@@ -25,7 +25,7 @@ const slug = currentPath.split("/").filter(Boolean).pop();
   description={description}
   sidebar={sidebar}
   currentPath={currentPath}
-  sidebarLabel="Lessons"
+  sidebarLabel="Modules"
   favicon={faviconAsset}
   logo={themeLogo}
   logoDark={themeLogo}
@@ -47,7 +47,7 @@ const slug = currentPath.split("/").filter(Boolean).pop();
   <div class="prose">
     {
       keyIdea && (
-        <p class="lesson-key-idea">
+        <p class="module-key-idea">
           <strong>Key idea:</strong> {keyIdea}
         </p>
       )
@@ -56,7 +56,7 @@ const slug = currentPath.split("/").filter(Boolean).pop();
   </div>
   <div class="edit-link">
     <a
-      href={`https://github.com/ANUcybernetics/llms-unplugged/edit/main/website/src/content/lessons/${slug}.mdx`}
+      href={`https://github.com/ANUcybernetics/llms-unplugged/edit/main/website/src/content/modules/${slug}.mdx`}
     >
       Edit this page on GitHub
     </a>
@@ -64,7 +64,7 @@ const slug = currentPath.split("/").filter(Boolean).pop();
 </SidebarLayout>
 
 <style>
-  .lesson-key-idea {
+  .module-key-idea {
     margin: 0 0 1.5rem;
     padding: 0.75rem 1rem;
     border-inline-start: 4px solid var(--at-accent);

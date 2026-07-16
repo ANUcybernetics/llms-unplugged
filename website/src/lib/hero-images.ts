@@ -19,14 +19,14 @@ export function findHeroImage(slug: string): ImageMetadata | undefined {
   return byFilename[slug];
 }
 
-// Lessons whose hero image doesn't share the lesson slug. This is the single
-// source of truth — the lesson page (og:image) and CardList both use it.
-const LESSON_HERO_ALIASES: Record<string, string> = {
+// Modules whose hero image doesn't share the module slug. This is the single
+// source of truth — the module page (og:image) and CardList both use it.
+const MODULE_HERO_ALIASES: Record<string, string> = {
   training: "grid-training",
   generation: "grid-generation",
   "agentic-ai": "tool-use",
 };
 
-export function lessonHeroImage(slug: string): ImageMetadata | undefined {
-  return findHeroImage(`hero-${LESSON_HERO_ALIASES[slug] ?? slug}`);
+export function moduleHeroImage(slug: string): ImageMetadata | undefined {
+  return findHeroImage(`hero-${MODULE_HERO_ALIASES[slug] ?? slug}`);
 }

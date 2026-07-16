@@ -5,7 +5,7 @@ export const siteConfig = defineSiteConfig({
   name: "LLMs Unplugged",
   colorScheme: "dark",
   links: [
-    { text: "Lessons", href: "/lessons/" },
+    { text: "Modules", href: "/modules/" },
     { text: "Library", href: "/library/" },
     { text: "News", href: "/news/" },
     { text: "Glossary", href: "/glossary/" },

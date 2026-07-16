@@ -7,7 +7,7 @@ description:
   distinct colours instead of 14 hand-picked ones.
 ---
 
-The cutouts variant of the [Training lesson](/lessons/training/) leans hard on
+The cutouts variant of the [Training lesson](/modules/training/) leans hard on
 colour as a fast filter. Every word has its own colour, repeated wherever the
 word appears, so your eye can scan "what's the colour of the word I just wrote?"
 before you read any text. It really helps with the needle-in-a-haystack aspect
@@ -54,7 +54,7 @@ achievable colour count.
 
 The palette isn't colour-vision-deficiency safe. CVD-safe palettes max out
 around 8-12 distinct colours, which would undo the whole exercise. If you're
-working with a CVD-affected student, the [grid version](/lessons/training/) of
+working with a CVD-affected student, the [grid version](/modules/training/) of
 the lesson uses no colour at all and reaches the same understanding.
 
 The script lives in the repo at `cli/scripts/generate_palette.ts`: pure

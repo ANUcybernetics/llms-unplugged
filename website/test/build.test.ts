@@ -51,24 +51,24 @@ describe("Astro Build", () => {
     expect(existsSync(join(DIST_DIR, "index.html"))).toBe(true);
   });
 
-  it("generates lesson pages", () => {
-    const lessonsDir = join(DIST_DIR, "lessons");
-    expect(existsSync(lessonsDir)).toBe(true);
+  it("generates module pages", () => {
+    const modulesDir = join(DIST_DIR, "modules");
+    expect(existsSync(modulesDir)).toBe(true);
 
-    // Derived from the lesson content collection so every lesson --- listed or
+    // Derived from the module content collection so every module --- listed or
     // unlisted --- is checked automatically rather than from a hand-maintained
     // copy here.
-    const slugs = globSync("src/content/lessons/*.mdx").map((f) =>
+    const slugs = globSync("src/content/modules/*.mdx").map((f) =>
       f
         .split("/")
         .pop()!
         .replace(/\.mdx$/, ""),
     );
     expect(slugs.length).toBeGreaterThan(0);
-    for (const lesson of slugs) {
+    for (const module of slugs) {
       expect(
-        existsSync(join(lessonsDir, lesson, "index.html")),
-        `Missing lesson page: ${lesson}`,
+        existsSync(join(modulesDir, module, "index.html")),
+        `Missing module page: ${module}`,
       ).toBe(true);
     }
   });
@@ -142,9 +142,9 @@ describe("Astro Build", () => {
 
   // Guards the regression where og:image pointed at source asset paths
   // (e.g. /src/assets/images/...) that don't exist in the built site.
-  it("og:image URLs on lesson and news pages resolve to built files", () => {
+  it("og:image URLs on module and news pages resolve to built files", () => {
     const pages = [
-      ...globSync(join(DIST_DIR, "lessons/*/index.html")),
+      ...globSync(join(DIST_DIR, "modules/*/index.html")),
       ...globSync(join(DIST_DIR, "news/*/index.html")),
     ];
     expect(pages.length).toBeGreaterThan(0);

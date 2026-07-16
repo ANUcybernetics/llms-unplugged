@@ -42,7 +42,7 @@ describe("linkChecker", () => {
     it("resolves absolute paths relative to dist dir", () => {
       const result = resolveLinkPath(
         "/assets/pdfs/doc.pdf",
-        "/project/dist/lessons/training.html",
+        "/project/dist/modules/training.html",
         "/project/dist",
       );
       expect(result).toBe("/project/dist/assets/pdfs/doc.pdf");
@@ -51,7 +51,7 @@ describe("linkChecker", () => {
     it("resolves relative paths relative to HTML file", () => {
       const result = resolveLinkPath(
         "../pdfs/doc.pdf",
-        "/project/dist/lessons/training.html",
+        "/project/dist/modules/training.html",
         "/project/dist",
       );
       expect(result).toBe("/project/dist/pdfs/doc.pdf");

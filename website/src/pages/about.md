@@ -188,7 +188,7 @@ If you use these materials in your teaching or research, please cite them as:
 <ol class="footnotes">
   <li id="fn-counting-bigrams">
     There's one activity on
-    <a href="https://csinschools.io/courses/introduction-to-artificial-intelligence/lessons/lesson-3-generative-ai/">Generative AI</a>
+    <a href="https://csinschools.io/courses/introduction-to-artificial-intelligence/modules/lesson-3-generative-ai/">Generative AI</a>
     worksheet that uses a similar "counting bigrams" approach to the
     <em>Basic Training</em> lesson
   </li>
