@@ -26,12 +26,21 @@ const fullTitle =
   title === "LLMs Unplugged" ? title : `${title} | LLMs Unplugged`;
 ---
 
+{
+  /* data-pagefind-body on the theme's <main> scopes the Pagefind index to
+     page content (skipping nav/footer chrome); because at least one page
+     carries it, every page without it --- unlisted content, decks, redirect
+     stubs --- is excluded from search entirely. Set via mainAttrs rather
+     than a wrapper element so the theme's .at-main subgrid placement of
+     page sections is undisturbed. */
+}
 <ThemeBaseLayout
   title={fullTitle}
   description={description}
   favicon={faviconAsset}
   logo={themeLogo}
   logoDark={themeLogo}
+  mainAttrs={noindex ? {} : { "data-pagefind-body": "" }}
   {...siteConfig}
   {...footerOverrides}
 >
@@ -48,28 +57,5 @@ const fullTitle =
   <div class="print-wordmark" data-pagefind-ignore>
     LLMs Unplugged (c) Ben Swift, Cybernetic Studio - CC BY-NC-SA 4.0
   </div>
-  {
-    /* data-pagefind-body scopes the Pagefind index to page content (skipping
-       nav/footer chrome); because at least one page carries it, every page
-       without it --- unlisted content, decks, redirect stubs --- is excluded
-       from search entirely. */
-  }
-  <div class="pagefind-scope" data-pagefind-body={noindex ? undefined : ""}>
-    <slot />
-  </div>
+  <slot />
 </ThemeBaseLayout>
-
-<style>
-  /* The theme's .at-main is a subgrid that places its direct children via
-     `.at-main > * { grid-column: content }`. A `display: contents` wrapper
-     here would drop out of layout and leave the page sections as at-main
-     grid items that no longer match that `> *` rule, collapsing them into
-     the narrow gutter track. Instead the wrapper participates as a
-     transparent single-track subgrid (the same trick the theme uses for
-     `astro-island`): the wrapper itself lands in the content column and
-     its children auto-flow into that track. */
-  .pagefind-scope {
-    display: grid;
-    grid-template-columns: subgrid;
-  }
-</style>
