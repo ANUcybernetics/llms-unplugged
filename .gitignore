@@ -1,5 +1,6 @@
 # ignore all pdfs except specific ones in website/public
 *.pdf
+!website/public/decks/*/presenter-guide.pdf
 !website/public/assets/pdfs/ace2026-llms-unplugged.pdf
 !website/public/assets/pdfs/llms-unplugged-flyer-may-2026.pdf
 !website/public/assets/pdfs/booklets/*.pdf

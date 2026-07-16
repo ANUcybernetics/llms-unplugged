@@ -96,6 +96,12 @@ them as independent.
 - `pnpm run pdf <slug> [output.pdf]` - export a deck to PDF via astromotion's
   bundled `astromotion-pdf` (builds, previews, captures with decktape,
   compresses with Ghostscript); e.g. `pnpm run pdf cer`
+- presenter guides (slides + interleaved speaker-notes pages) are pre-generated
+  into `public/decks/<slug>/presenter-guide.pdf` and linked by the
+  `UsingTheSlides` component (which checks the file exists at build time).
+  Regenerate after editing a deck:
+  `pnpm exec astromotion-pdf <slug> public/decks/<slug>/presenter-guide.pdf --notes`
+  (pass `DECKTAPE_CHROME_ARGS=--no-sandbox` on this machine)
 
 Whenever the linter/checker reports warnings or errors, fix them.
 

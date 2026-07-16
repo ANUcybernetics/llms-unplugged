@@ -1,4 +1,7 @@
 ---
+import fs from "node:fs";
+import path from "node:path";
+
 /**
  * Shared "Using the slides" section for lesson pages. Every lesson ships a
  * browser-based slide deck with full presenter notes; this section explains
@@ -14,6 +17,24 @@ interface Props {
 }
 
 const { decks } = Astro.props;
+
+// Pre-generated presenter guides (slides with interleaved speaker-notes
+// pages) live in public/ next to the deck route. Regenerate with
+// `pnpm exec astromotion-pdf <slug> public/decks/<slug>/presenter-guide.pdf --notes`.
+// Resolved from the project root (not import.meta.url, which points at the
+// bundled chunk in production builds).
+const guideHref = (slug: string) => {
+  const file = path.join(
+    process.cwd(),
+    "public",
+    "decks",
+    slug,
+    "presenter-guide.pdf",
+  );
+  return fs.existsSync(file) ? `/decks/${slug}/presenter-guide.pdf` : null;
+};
+
+const anyGuide = decks.some((deck) => guideHref(deck.slug));
 ---
 
 <h2 id="using-the-slides">Using the slides</h2>
@@ -23,15 +44,38 @@ const { decks } = Astro.props;
     <p>
       <a href={`/decks/${decks[0].slug}/`}>Open the slides</a> in your browser
       &mdash; there's nothing to install or download.
+      {guideHref(decks[0].slug) && (
+        <>
+          There's also a{" "}
+          <a href={guideHref(decks[0].slug)}>presenter guide (PDF)</a>
+          &mdash; every slide followed by a page of its speaker notes &mdash; if
+          you'd rather prepare away from the browser.
+        </>
+      )}
     </p>
   ) : (
-    <ul>
-      {decks.map((deck) => (
-        <li>
-          <a href={`/decks/${deck.slug}/`}>{deck.label}</a>
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul>
+        {decks.map((deck) => (
+          <li>
+            <a href={`/decks/${deck.slug}/`}>{deck.label}</a>
+            {guideHref(deck.slug) && (
+              <>
+                {" "}
+                (<a href={guideHref(deck.slug)}>presenter guide PDF</a>)
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+      {anyGuide && (
+        <p>
+          The presenter guides are PDFs with every slide followed by a page of
+          its speaker notes&mdash;handy if you'd rather prepare away from the
+          browser.
+        </p>
+      )}
+    </>
   )
 }
 
