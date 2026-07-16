@@ -74,7 +74,7 @@
     gap: 0.5rem;
     padding: 0.5rem 1rem;
     border: 1px solid var(--at-border);
-    border-radius: 0.375rem;
+    border-radius: var(--at-border-radius);
     background: var(--at-bg);
     color: var(--at-text-secondary);
     cursor: pointer;

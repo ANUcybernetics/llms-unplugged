@@ -278,7 +278,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1rem;
-    border-radius: 0.375rem;
+    border-radius: var(--at-border-radius);
     margin-bottom: 1rem;
     background: var(--at-error-soft);
     border: 1px solid color-mix(in srgb, var(--at-error) 50%, transparent);
@@ -315,7 +315,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1rem;
-    border-radius: 0.375rem;
+    border-radius: var(--at-border-radius);
     margin-bottom: 1rem;
     font-size: 0.9rem;
   }
@@ -410,7 +410,7 @@
     background: var(--at-bg-alt);
     border: 1px solid var(--at-border);
     padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
+    border-radius: var(--at-border-radius);
     font-size: 0.9rem;
     transition: background-color 0.2s;
     color: var(--at-text);
@@ -434,7 +434,7 @@
     width: 100%;
     padding: 0.75rem;
     border: 1px solid var(--at-border);
-    border-radius: 0.25rem;
+    border-radius: var(--at-border-radius);
     font-family: var(--font-mono);
     font-size: 0.85rem;
     resize: vertical;
@@ -472,7 +472,7 @@
   .option-group select {
     padding: 0.5rem 0.75rem;
     border: 1px solid var(--at-border);
-    border-radius: 0.25rem;
+    border-radius: var(--at-border-radius);
     font-size: 0.9rem;
     background: var(--at-bg);
     color: var(--at-text);
@@ -502,7 +502,7 @@
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
-    border-radius: 0.25rem;
+    border-radius: var(--at-border-radius);
     cursor: pointer;
     font-size: 1rem;
     font-family: inherit;
@@ -529,7 +529,7 @@
 
   .status-log {
     padding: 1rem;
-    border-radius: 0.5rem;
+    border-radius: var(--at-border-radius);
     margin-top: 0.5rem;
     font-family: var(--font-mono);
     font-size: 0.8rem;
@@ -548,7 +548,7 @@
   .preview {
     background: white;
     border: 1px solid var(--at-border);
-    border-radius: 0.5rem;
+    border-radius: var(--at-border-radius);
     padding: 1rem;
     margin-top: 1rem;
   }
