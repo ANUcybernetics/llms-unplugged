@@ -1,9 +1,11 @@
 ---
 id: TASK-132
 title: Restructure website around lessons (workshop journeys) and modules
-status: To Do
-assignee: []
+status: Done
+assignee:
+  - '@claude'
 created_date: '2026-07-16 00:25'
+updated_date: '2026-07-16 01:27'
 labels:
   - website
   - lessons
@@ -73,14 +75,14 @@ Pre-generated presenter-guide PDFs per deck: headless Chrome print with preferCS
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 lessons index at /lessons/ presents My First Language Model and How AI writes stories (Build-break-extend unlisted but reachable by URL)
-- [ ] #2 each lesson page carries deck link, using-the-slides, you-will-need, module sequence with timings, and prep notes
-- [ ] #3 modules live at /modules/<slug>/ and every old /lessons/<slug>/ URL redirects there; /workshops/ redirects to /lessons/
-- [ ] #4 module pages show which lessons use them
-- [ ] #5 nav and landing page lead with the lessons path
-- [ ] #6 a single listed frontmatter key controls visibility for modules, lessons, and decks; unlisted content absent from sitemap and search
-- [ ] #7 copy inconsistencies fixed (FAQ age range, homepage lessons/topics apology, fundamentals composition)
-- [ ] #8 pnpm build and pnpm test pristine
+- [x] #1 lessons index at /lessons/ presents My First Language Model and How AI writes stories (Build-break-extend unlisted but reachable by URL)
+- [x] #2 each lesson page carries deck link, using-the-slides, you-will-need, module sequence with timings, and prep notes
+- [x] #3 modules live at /modules/<slug>/ and every old /lessons/<slug>/ URL redirects there; /workshops/ redirects to /lessons/
+- [x] #4 module pages show which lessons use them
+- [x] #5 nav and landing page lead with the lessons path
+- [x] #6 a single listed frontmatter key controls visibility for modules, lessons, and decks; unlisted content absent from sitemap and search
+- [x] #7 copy inconsistencies fixed (FAQ age range, homepage lessons/topics apology, fundamentals composition)
+- [x] #8 pnpm build and pnpm test pristine
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -94,3 +96,19 @@ Pre-generated presenter-guide PDFs per deck: headless Chrome print with preferCS
 6. Copy sweep + deck URL-on-logo-slide tweak + /decks/ index rework
 Commit at each checkpoint only when build + tests pristine.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Implemented across six commits on main (befd998b..f1c06da0), each landing with build + tests + typecheck + lint + format pristine.
+
+Decisions taken during implementation (beyond the ones recorded earlier):
+- execution reordered: modules rename landed first to avoid a collection-name collision with the new lessons collection
+- deck slugs renamed with NO redirects (private API per Ben): grid-60min/90min/2h -> my-first-language-model-{60min,90min,2h}, cutouts-yr5-6 -> how-ai-writes-stories, cutouts-3h -> build-break-extend; internal links (news post) updated
+- Glossary + FAQ moved to a footer meta line; nav is Lessons/Modules/Tools/Library/News/About
+- search exclusion: Pagefind 1.5 does NOT honour robots noindex (verified empirically), so the layouts scope indexing with data-pagefind-body instead --- unlisted pages omit it and drop out of search; side effect: deck pages and redirect stubs no longer pollute search. Unlisted pages also carry robots noindex (for search engines) and are filtered from the sitemap via a frontmatter scan in astro.config.ts
+- lessons collection schema: audience/duration/flavour badges, decks [{slug,label}], modules [slugs] (drives the Used-in box), heroImage, order, listed
+- socy-logo end slide in every deck now carries www.llmsunplugged.org (verified via screenshot)
+- fundamentals composition inconsistency resolved by the MFLM choose-your-length table (60min = Training+Generation; 90min adds Pre-trained Generation)
+- workshops Format 2 prose seeded into task-131; presenter-guide PDFs split out as task-133
+<!-- SECTION:NOTES:END -->
