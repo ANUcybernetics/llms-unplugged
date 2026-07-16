@@ -59,12 +59,6 @@
   }
 }
 
-/* Theme card grids ship with no block margin, so they sit flush against the
-   surrounding prose. Give them the same breathing room as a section break. */
-.at-card-grid {
-  margin-block: var(--at-spacing-xl);
-}
-
 /* All callouts use site accent (gold) — overrides theme's per-type semantic
    palette (info=teal, tip=green, warning=amber). Unlayered, so it beats
    theme's @layer at.components rules. */
