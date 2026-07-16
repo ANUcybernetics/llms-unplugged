@@ -5,11 +5,11 @@ export const siteConfig = defineSiteConfig({
   name: "LLMs Unplugged",
   colorScheme: "dark",
   links: [
+    { text: "Lessons", href: "/lessons/" },
     { text: "Modules", href: "/modules/" },
+    { text: "Tools", href: "/tools/" },
     { text: "Library", href: "/library/" },
     { text: "News", href: "/news/" },
-    { text: "Glossary", href: "/glossary/" },
-    { text: "FAQ", href: "/faq/" },
     { text: "About", href: "/about/" },
   ],
   licence: "CC-BY-NC-SA-4.0",
@@ -26,5 +26,7 @@ export const themeLogo = logo;
 export const footerOverrides = {
   meta: [
     'LLMs Unplugged is a <a href="https://cybernetics.anu.edu.au/cybernetic-studio/">Cybernetic Studio</a> project at the ANU School of Cybernetics, made by <a href="https://benswift.me">Ben Swift</a>.',
+    // Glossary and FAQ moved out of the main nav in the July 2026 restructure.
+    '<a href="/glossary/">Glossary</a> &middot; <a href="/faq/">FAQ</a>',
   ],
 };

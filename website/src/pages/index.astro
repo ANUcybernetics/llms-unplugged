@@ -28,8 +28,9 @@ import heroContact from "../assets/images/hero-contact.avif";
         (LLMs) work&mdash;no computers or coding required.
       </p>
       <div class="hero-actions">
-        <a href="/modules/" class="hero-button primary">Get started</a>
-        <a href="/about/" class="hero-button secondary">Learn more</a>
+        <a href="/lessons/" class="hero-button primary">Run a lesson</a>
+        <a href="/modules/" class="hero-button secondary">Explore the modules</a
+        >
       </div>
     </div>
     <div class="hero-image">
@@ -60,6 +61,37 @@ import heroContact from "../assets/images/hero-contact.avif";
       > work using the same basic principles, just at a vastly larger scale.
     </p>
 
+    <section class="ways-in">
+      <h2>Three ways in</h2>
+      <div class="ways-grid">
+        <a href="/lessons/" class="way">
+          <h3>Run a lesson</h3>
+          <p>
+            Ready-to-run sessions we've tested in real rooms&mdash;each with
+            slides, timings, prep checklists, and a materials list. Every lesson
+            ships its slides <em>with</em> full presenter notes, so you can deliver
+            it without ever having seen it run.
+          </p>
+        </a>
+        <a href="/modules/" class="way">
+          <h3>Explore the modules</h3>
+          <p>
+            The building blocks: hands-on activities that each teach one idea
+            about how language models work, from training and generation through
+            to embeddings and agents. Mix and match to build your own session.
+          </p>
+        </a>
+        <a href="/tools/" class="way">
+          <h3>Print the materials</h3>
+          <p>
+            Ready-to-print model booklets, token cutouts, and grid
+            worksheets&mdash;or generate your own from any text, right in your
+            browser.
+          </p>
+        </a>
+      </div>
+    </section>
+
     <div class="section-with-image">
       <div class="section-image">
         <Image
@@ -71,13 +103,12 @@ import heroContact from "../assets/images/hero-contact.avif";
       <div class="section-content">
         <h2>Who is this for?</h2>
         <p>
-          Although these activities are called "lessons" grouped into "topics",
-          they're not just for school classrooms. These activities are suitable
-          for audiences from primary school age through to adults&mdash;we've
-          delivered them to hundreds of participants including school students,
-          undergraduate students, and senior executives from both industry and
-          government. Zero coding background required, and no maths beyond basic
-          counting and percentages.
+          Everyone. These activities are suitable for audiences from primary
+          school age through to adults&mdash;we've delivered them to hundreds of
+          participants including school students, undergraduate students, and
+          senior executives from both industry and government. Zero coding
+          background required, and no maths beyond basic counting and
+          percentages.
         </p>
         <p>
           Even if you already know a bit (or a lot!) about how LLMs work, you'll
@@ -133,7 +164,8 @@ import heroContact from "../assets/images/hero-contact.avif";
           work and a willingness to engage with hands-on activities.
         </p>
         <p>
-          Each <a href="/modules/">lesson</a> includes instructor notes and discussion
+          Each <a href="/lessons/">lesson</a> ships slides with full presenter notes,
+          and each <a href="/modules/">module</a> includes instructor notes and discussion
           questions, plus interactive widgets (which you can use to get your head
           around the concepts) and&mdash;coming soon&mdash;explainer videos you can
           use in class. We also run teacher training sessions and offer professional
@@ -214,12 +246,13 @@ import heroContact from "../assets/images/hero-contact.avif";
       <div class="section-content">
         <h2>Where should I start?</h2>
         <p>
-          Start with the <a href="/modules/#fundamentals"
-            >"Fundamentals" lessons</a
-          >. These cover the essential concepts for building and using language
-          models: training a bigram model and generating text. After completing
-          these lessons, you'll understand the fundamental mechanism behind
-          LLM-based AI systems.
+          Start with <a href="/lessons/my-first-language-model/"
+            >My First Language Model</a
+          >&mdash;the classic LLMs Unplugged lesson, in lengths from 60 minutes
+          to two hours. It covers the essential concepts for building and using
+          language models: training a bigram model and generating text. After
+          running it, you (and your group) will understand the fundamental
+          mechanism behind LLM-based AI systems.
         </p>
       </div>
     </div>
@@ -347,5 +380,41 @@ import heroContact from "../assets/images/hero-contact.avif";
     font-size: 1.05rem;
     line-height: 1.6;
     margin-bottom: 2rem;
+  }
+
+  .ways-in {
+    margin-bottom: 2rem;
+  }
+
+  .ways-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem;
+  }
+
+  .way {
+    display: block;
+    padding: 1.25rem;
+    border: 1px solid var(--at-border);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: var(--at-text);
+    transition: border-color 0.15s;
+  }
+
+  .way:hover {
+    border-color: var(--at-accent);
+  }
+
+  .way h3 {
+    margin: 0 0 0.5rem;
+    color: var(--at-accent);
+  }
+
+  .way p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--at-text-secondary);
   }
 </style>
