@@ -21,7 +21,7 @@ younger group. We needn't have worried.
 
 ![Duffy Primary Year 5 students seated facing the front of the room as two facilitators present a slide headed "Writing"](../../assets/images/duffy-workshop-01.avif)
 
-We ran the [cutouts version of the activity](/decks/cutouts-yr5-6/): rather than
+We ran the [cutouts version of the activity](/decks/how-ai-writes-stories/): rather than
 tallying tokens on a worksheet, students sort word cards into buckets and then
 build new sentences by drawing cutouts one at a time. Counting, sorting, and
 then watching a brand-new sentence assemble itself out of nothing but frequency

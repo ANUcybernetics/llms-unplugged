@@ -1,10 +1,14 @@
 ---
-title: LLMs Unplugged — Grid (60min)
-description: A Cybernetic Studio workshop
+title: LLMs Unplugged — My First Language Model (90 min)
+description:
+  A 90-minute grid-flavour workshop for high schoolers to adults --- train a
+  language model on paper, generate text with dice, then scale up with
+  pre-trained model booklets
 ---
 
 import StaticGrid from "../components/StaticGrid.svelte";
 import StaticGeneration from "../components/StaticGeneration.svelte";
+import StaticPretrainedGeneration from "../components/StaticPretrainedGeneration.svelte";
 import DiceStrip from "../components/DiceStrip.svelte";
 import Timer from "../components/Timer.astro";
 import AiVennDiagram from "../components/AiVennDiagram.astro";
@@ -17,6 +21,9 @@ import {
   EXAMPLE_VOCAB,
   EXAMPLE_GENERATION,
   EXAMPLE_GENERATION_ROLLS,
+  EXAMPLE_TEXT,
+  EXAMPLE_PRETRAINED_SEQ,
+  EXAMPLE_PRETRAINED_ROLLS,
 } from "./examples";
 import "../styles/widgets.css";
 
@@ -31,6 +38,10 @@ import "../styles/widgets.css";
 ---
 
 {/* @include ./partials/grid-generation.mdx */}
+
+---
+
+{/* @include ./partials/grid-pretrained-generation.mdx */}
 
 ---
 

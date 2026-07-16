@@ -8,6 +8,11 @@ interface Props {
   /** Resolved image URL (an asset's `.src` or a public/ path). */
   ogImage?: string;
   ogType?: "website" | "article";
+  /**
+   * Unlisted content (`listed: false`): keeps the page out of search engines
+   * and the site's own Pagefind index (Pagefind honours robots noindex).
+   */
+  noindex?: boolean;
 }
 
 const {
@@ -15,6 +20,7 @@ const {
   description,
   ogImage = "/og-image.jpg",
   ogType = "website",
+  noindex = false,
 } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
@@ -22,6 +28,7 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
 ---
 
 <meta name="theme-color" content="#be830e" />
+{noindex && <meta name="robots" content="noindex" />}
 <link
   rel="alternate"
   type="application/rss+xml"

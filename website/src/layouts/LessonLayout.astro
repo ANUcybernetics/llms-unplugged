@@ -8,9 +8,10 @@ interface Props {
   audience: string;
   duration: string;
   flavour: "grid" | "cutouts";
+  noindex?: boolean;
 }
 
-const { title, description, ogImage, audience, duration, flavour } =
+const { title, description, ogImage, audience, duration, flavour, noindex } =
   Astro.props;
 ---
 
@@ -19,6 +20,7 @@ const { title, description, ogImage, audience, duration, flavour } =
   description={description}
   ogImage={ogImage}
   ogType="article"
+  noindex={noindex}
 >
   <div class="content-container">
     <article class="prose">

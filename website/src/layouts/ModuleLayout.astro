@@ -13,9 +13,17 @@ interface Props {
   ogImage?: string;
   keyIdea?: string;
   usedIn?: Array<{ title: string; href: string }>;
+  noindex?: boolean;
 }
 
-const { title, description, ogImage, keyIdea, usedIn = [] } = Astro.props;
+const {
+  title,
+  description,
+  ogImage,
+  keyIdea,
+  usedIn = [],
+  noindex,
+} = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/$/, "") + "/";
 const sidebar = await getModuleSidebar();
 const slug = currentPath.split("/").filter(Boolean).pop();
@@ -39,13 +47,18 @@ const slug = currentPath.split("/").filter(Boolean).pop();
       description={description}
       ogImage={ogImage}
       ogType="article"
+      noindex={noindex}
     />
   </Fragment>
 
   <div class="print-wordmark" data-pagefind-ignore>
     LLMs Unplugged (c) Ben Swift, Cybernetic Studio - CC BY-NC-SA 4.0
   </div>
-  <div class="prose">
+  {
+    /* See BaseLayout: data-pagefind-body opts this page's content into the
+       search index; unlisted modules omit it and drop out of search. */
+  }
+  <div class="prose" data-pagefind-body={noindex ? undefined : ""}>
     {
       keyIdea && (
         <p class="module-key-idea">

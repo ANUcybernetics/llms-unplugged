@@ -1,8 +1,32 @@
+import fs from "node:fs";
+import path from "node:path";
 import { defineConfig, fontProviders } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import svelte from "@astrojs/svelte";
 import universityTheme from "astro-theme-university";
 import { astromotion, deckRemarkPlugins } from "astromotion";
+
+// Paths of unlisted (`listed: false`) modules and lessons, so the sitemap can
+// skip them. The config runs before the content layer exists, so this scans
+// the frontmatter directly.
+function unlistedContentPaths(): string[] {
+  const collections = [
+    ["src/content/modules", "modules"],
+    ["src/content/lessons", "lessons"],
+  ] as const;
+  return collections.flatMap(([dir, route]) =>
+    fs
+      .readdirSync(dir)
+      .filter(
+        (f) =>
+          f.endsWith(".mdx") &&
+          /^listed:\s*false/m.test(fs.readFileSync(path.join(dir, f), "utf-8")),
+      )
+      .map((f) => `/${route}/${f.replace(/\.mdx$/, "")}/`),
+  );
+}
+
+const unlistedPaths = unlistedContentPaths();
 
 export default defineConfig({
   site: "https://www.llmsunplugged.org",
@@ -79,8 +103,9 @@ export default defineConfig({
       extraRemarkPlugins: deckRemarkPlugins,
     }),
     sitemap({
-      // Decks are interactive Reveal.js presentations, not indexable pages.
-      filter: (page) => !page.includes("/decks/"),
+      // Decks are interactive Reveal.js presentations, not indexable pages;
+      // unlisted modules/lessons are reachable only via direct links.
+      filter: (page) => !page.includes("/decks/") && !unlistedPaths.some((p) => page.endsWith(p)),
     }),
     astromotion({
       theme: "./src/decks/theme.css",

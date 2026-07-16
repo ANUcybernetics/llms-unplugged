@@ -29,6 +29,19 @@
   padding: 0;
 }
 
+/* Site URL on the closing logo slide, so classrooms delivered by third
+   parties have somewhere to go afterwards. Positioned absolutely because the
+   logo SVG fills the whole 1280x720 canvas. */
+.reveal .slides section.socy-logo .socy-url {
+  position: absolute;
+  inset-block-end: 1.5rem;
+  inset-inline: 0;
+  margin: 0;
+  text-align: center;
+  font-size: 1.25rem;
+  color: var(--anu-gold, #be830e);
+}
+
 /* Token colour palette for cutouts. Mirrors the 30-entry OKLCH palette in
    cli/tokenized-cutouts.typ so the same word lands on the same colour whether
    it appears on a slide or on a printed cutout. The hash function in

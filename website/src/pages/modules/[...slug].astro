@@ -31,6 +31,7 @@ const usedIn = (await getCollection("lessons"))
   ogImage={ogImage}
   keyIdea={module.data.keyIdea}
   usedIn={usedIn}
+  noindex={module.data.listed === false}
 >
   <Content />
 </ModuleLayout>
