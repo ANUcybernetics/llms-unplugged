@@ -127,8 +127,8 @@ SYMBOLS RESEMBLING LETTERS anywhere in the image. Modern editorial illustration
 style --- conceptual and symbolic rather than literal.
 
 Reference images: src/decks/assets/ (deck backgrounds). The most reliable style
-exemplars are `bg-randomness.avif`, `bg-shannon.avif`, and
-`bg-div-mechanic.avif` --- prefer these as `--input-image` references.
+exemplars are `bg-randomness.avif`, `bg-shannon.avif`, and `bg-div-lessons.avif`
+--- prefer these as `--input-image` references.
 
 Prompting tips (the model will silently ignore the no-text rule and the flat-2D
 rule when it sees these triggers in the scene prompt itself):
