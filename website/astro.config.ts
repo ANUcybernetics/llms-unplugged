@@ -74,6 +74,9 @@ export default defineConfig({
     "/lessons/word-embeddings/": "/modules/word-embeddings/",
     // module renamed from "Agentic tool use" (June 2026)
     "/lessons/agentic-tool-use/": "/modules/agentic-ai/",
+    // The workshop-formats page was superseded by the lessons index (its
+    // "Going deeper" format seeds task-131).
+    "/workshops/": "/lessons/",
   },
   fonts: [
     {

@@ -11,7 +11,7 @@ demonstrations.
 
 - Astro 7 (static site generator)
 - Svelte 5 (interactive components using runes)
-- MDX (lessons with embedded components)
+- MDX (modules and lessons with embedded components)
 - TypeScript
 - pnpm (package manager)
 - oxfmt (JS/TS/MD/MDX/CSS/JSON/YAML formatting) + Prettier (Astro/Svelte
@@ -32,7 +32,10 @@ pass `astro dev --json`).
 ### Project structure
 
 - `src/pages/` - Astro page routes
-- `src/content/lessons/` - lesson MDX files (content collection)
+- `src/content/modules/` - module MDX files (content collection): the
+  building-block activities
+- `src/content/lessons/` - lesson MDX files (content collection): deck-backed
+  workshop journeys assembled from modules
 - `src/content/news/` - news markdown files (content collection)
 - `src/components/` - Astro and Svelte components
 - `src/layouts/` - page layouts (Base, Page, Lesson, News)
@@ -82,8 +85,8 @@ them as independent.
   renders a div with the appropriate class.
 - **Svelte stores**: shared state (variant, training text, playback) uses Svelte
   5 runes in `.svelte.ts` files
-- **Content collections**: lessons and news use Astro content collections with
-  Zod schemas defined in `src/content.config.ts`
+- **Content collections**: modules, lessons, and news use Astro content
+  collections with Zod schemas defined in `src/content.config.ts`
 
 ## Development
 

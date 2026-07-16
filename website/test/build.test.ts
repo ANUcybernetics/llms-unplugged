@@ -76,7 +76,8 @@ describe("Astro Build", () => {
   it("generates static pages", () => {
     expect(existsSync(join(DIST_DIR, "about/index.html"))).toBe(true);
     expect(existsSync(join(DIST_DIR, "faq/index.html"))).toBe(true);
-    expect(existsSync(join(DIST_DIR, "workshops/index.html"))).toBe(true);
+    expect(existsSync(join(DIST_DIR, "lessons/index.html"))).toBe(true);
+    expect(existsSync(join(DIST_DIR, "modules/index.html"))).toBe(true);
   });
 
   it("copies static assets", () => {
