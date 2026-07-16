@@ -12,6 +12,9 @@ import heroHowModelsUnderstand from "../assets/images/hero-how-models-understand
 import heroLlmVsAi from "../assets/images/hero-llm-vs-ai.avif";
 import heroIntro from "../assets/images/hero-intro.avif";
 import heroContact from "../assets/images/hero-contact.avif";
+import wayRunALesson from "../assets/images/way-run-a-lesson.avif";
+import wayExploreModules from "../assets/images/way-explore-modules.avif";
+import wayPrintMaterials from "../assets/images/way-print-materials.avif";
 ---
 
 <BaseLayout title="LLMs Unplugged">
@@ -65,29 +68,39 @@ import heroContact from "../assets/images/hero-contact.avif";
       <h2>Three ways to get started</h2>
       <div class="ways-grid">
         <a href="/lessons/" class="way">
-          <h3>Run a lesson</h3>
-          <p>
-            Ready-to-run sessions we've tested in real rooms&mdash;each with
-            slides, timings, prep checklists, and a materials list. Every lesson
-            ships its slides <em>with</em> full presenter notes, so you can deliver
-            it without ever having seen it run.
-          </p>
+          <Image src={wayRunALesson} alt="" loading="lazy" />
+          <div class="way-body">
+            <h3>Run a lesson</h3>
+            <p>
+              Ready-to-run sessions we've tested in real rooms&mdash;each with
+              slides, timings, prep checklists, and a materials list. Every
+              lesson ships its slides <em>with</em> full presenter notes, so you
+              can deliver it without ever having seen it run.
+            </p>
+          </div>
         </a>
         <a href="/modules/" class="way">
-          <h3>Explore the modules</h3>
-          <p>
-            The building blocks: hands-on activities that each teach one idea
-            about how language models work, from training and generation through
-            to embeddings and agents. Mix and match to build your own session.
-          </p>
+          <Image src={wayExploreModules} alt="" loading="lazy" />
+          <div class="way-body">
+            <h3>Explore the modules</h3>
+            <p>
+              The building blocks: hands-on activities that each teach one idea
+              about how language models work, from training and generation
+              through to embeddings and agents. Mix and match to build your own
+              session.
+            </p>
+          </div>
         </a>
         <a href="/tools/" class="way">
-          <h3>Print the materials</h3>
-          <p>
-            Ready-to-print model booklets, token cutouts, and grid
-            worksheets&mdash;or generate your own from any text, right in your
-            browser.
-          </p>
+          <Image src={wayPrintMaterials} alt="" loading="lazy" />
+          <div class="way-body">
+            <h3>Print the materials</h3>
+            <p>
+              Ready-to-print model booklets, token cutouts, and grid
+              worksheets&mdash;or generate your own from any text, right in your
+              browser.
+            </p>
+          </div>
         </a>
       </div>
     </section>
@@ -388,18 +401,34 @@ import heroContact from "../assets/images/hero-contact.avif";
 
   .ways-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
     gap: 1rem;
+  }
+
+  /* jump straight from one column to three so the cards never wrap 2 + 1 */
+  @media (min-width: 760px) {
+    .ways-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   .way {
     display: block;
-    padding: 1.25rem;
     border: 1px solid var(--at-border);
     border-radius: var(--at-border-radius);
+    overflow: hidden;
     text-decoration: none;
     color: var(--at-text);
     transition: border-color 0.15s;
+  }
+
+  .way img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .way-body {
+    padding: 1.25rem;
   }
 
   .way:hover {
