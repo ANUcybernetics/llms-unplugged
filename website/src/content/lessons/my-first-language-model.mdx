@@ -1,0 +1,107 @@
+---
+title: My First Language Model
+description:
+  The classic LLMs Unplugged workshop. Train a language model on grid paper,
+  then roll dice to generate new text---and see why ChatGPT works the same
+  way. Comes in lengths from 60 minutes to two hours.
+audience: high school to adults
+duration: 60 minutes to 2 hours
+flavour: grid
+decks:
+  - slug: grid-60min
+    label: My First Language Model (60 min)
+  - slug: grid-90min
+    label: My First Language Model (90 min)
+  - slug: grid-2h
+    label: My First Language Model (2 hours)
+modules:
+  - training
+  - generation
+  - pretrained-generation
+  - agentic-ai
+heroImage: grid-training
+order: 1
+---
+
+import UsingTheSlides from "../../components/UsingTheSlides.astro";
+
+This is the original LLMs Unplugged workshop, and still the best place to
+start. Participants count word patterns in a real text, record them as tally
+marks on grid paper, then roll a d10 to generate brand-new text from those
+patterns. Somewhere between the tallying and the dramatic readings, the
+penny drops: this is what ChatGPT does, just vastly scaled up.
+
+We've delivered it to school students, undergraduates, teachers, and senior
+executives in industry and government. It needs no coding and no maths beyond
+counting and percentages.
+
+## Choose your length
+
+One lesson, three lengths. Each length keeps everything from the one before
+it and adds a module:
+
+| Length     | Modules                                                             | Adds                                           |
+| ---------- | ------------------------------------------------------------------- | ---------------------------------------------- |
+| 60 minutes | [Training](/modules/training/) + [Generation](/modules/generation/) | the core train-then-generate loop              |
+| 90 minutes | + [Pre-trained Model Generation](/modules/pretrained-generation/)   | what happens with a bigger model and more data |
+| 2 hours    | + [Agentic AI](/modules/agentic-ai/)                                | how models use tools to act on the world       |
+
+Every length opens with a quick icebreaker and scene-setting (who's used
+ChatGPT? how do you think it works?) and closes with a "scaling up"
+discussion connecting the paper model to modern LLMs, then Q&A.
+
+## Suggested timing (90-minute version)
+
+- **0:00 kick-off** --- icebreaker, then: today we build our own AI, small
+  and simple, but using the exact same approach as the big ones
+- **0:20 [Training](/modules/training/)** --- tally word patterns from a text
+  into the grid
+- **0:40 [Generation](/modules/generation/)** --- roll dice to generate new
+  text from the grid; share back with dramatic readings
+- **1:00 [Pre-trained Model Generation](/modules/pretrained-generation/)** ---
+  same dice game, but with a printed booklet trained on a whole book
+- **1:20 close** --- scaling up: how does this connect to ChatGPT? how has
+  this changed how you'll _use_ these tools?
+
+For the 60-minute version, drop the pre-trained booklet section and tighten
+the close. For the 2-hour version, add
+[Agentic AI](/modules/agentic-ai/) after the pre-trained section (about 20
+minutes) and give every discussion a little more room to breathe.
+
+## You will need
+
+For each pair (or small group) of participants:
+
+- pen or pencil
+- a printed [grid template](/assets/pdfs/worksheets/grid.pdf) (or any grid
+  paper)
+- a d10 die (any die works with a little improvisation)
+- some training text: a few pages of a kids' book is ideal, but anything
+  works
+- **90 minutes and up:** a pre-trained model booklet---the
+  [Tools](/tools/#booklets-for-dice-generation) page has ready-to-print
+  booklets for several texts, or you can
+  [generate your own](/tools/#generate-your-own)
+
+Plus a projector for the slides.
+
+## Before you deliver
+
+- print the grid templates, and the booklets if you're running 90 minutes or
+  longer (one per pair; a mix of different texts makes the share-backs more
+  fun)
+- if your group isn't yet comfortable with dice-based weighted sampling, run
+  the [Weighted Randomness](/modules/weighted-randomness/) module first as a
+  warm-up (add about 30 minutes)
+- got extra time, or a group that wants more? the
+  [Sampling](/modules/sampling/) module makes a great add-on after
+  generation---it shows how temperature changes the character of the output
+  without changing the model
+
+<UsingTheSlides
+  decks={[
+    { slug: "grid-60min", label: "My First Language Model (60 min)" },
+    { slug: "grid-90min", label: "My First Language Model (90 min)" },
+    { slug: "grid-2h", label: "My First Language Model (2 hours)" },
+  ]}
+/>
