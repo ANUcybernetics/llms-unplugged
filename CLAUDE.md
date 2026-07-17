@@ -63,8 +63,6 @@ cd website && pnpm run build && pnpm test
 - Test output must be pristine (zero failures)
 - Format Typst files with `typstyle --wrap-text`
 - Never create files unless necessary---prefer editing existing ones
-- In markdown, use blank lines around containers (`::: info` etc.) so
-  Prettier doesn't mangle them
 
 ## Notes
 
