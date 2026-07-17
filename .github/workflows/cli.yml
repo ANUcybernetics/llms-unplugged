@@ -17,7 +17,7 @@ jobs:
     name: Test CLI
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
@@ -25,13 +25,14 @@ jobs:
           components: rustfmt, clippy
           targets: wasm32-unknown-unknown
 
+      # Keep in sync with the typst pin in the repo-root mise.toml
       - name: Install Typst
         uses: typst-community/setup-typst@v5
         with:
-          typst-version: '0.14.2'
+          typst-version: '0.15.0'
 
       - name: Cache cargo
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: |
             ~/.cargo/bin/
