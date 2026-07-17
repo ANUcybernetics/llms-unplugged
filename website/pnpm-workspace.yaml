@@ -6,8 +6,4 @@ allowBuilds:
 # package-name glob. Lets us adopt newly published Astro releases on day one.
 minimumReleaseAgeExclude:
   - astro
-  - "@astrojs/internal-helpers"
-  - "@astrojs/markdown-remark"
-  - "@astrojs/markdown-satteri"
-  - "@astrojs/mdx"
-  - "@astrojs/svelte"
+  - "@astrojs/*"
