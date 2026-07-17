@@ -21,14 +21,14 @@ importers:
         specifier: ^9.0.1
         version: 9.0.1(@types/node@26.1.1)(astro@7.1.0(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0))(esbuild@0.28.1)(svelte@5.56.5(@typescript-eslint/types@8.64.0))(tsx@4.23.1)(typescript@6.0.3)(yaml@2.9.0)
       '@myriaddreamin/typst-ts-renderer':
-        specifier: 0.7.0-rc2
-        version: 0.7.0-rc2
+        specifier: 0.7.0
+        version: 0.7.0
       '@myriaddreamin/typst-ts-web-compiler':
-        specifier: 0.7.0-rc2
-        version: 0.7.0-rc2
+        specifier: 0.7.0
+        version: 0.7.0
       '@myriaddreamin/typst.ts':
-        specifier: 0.7.0-rc2
-        version: 0.7.0-rc2(@myriaddreamin/typst-ts-renderer@0.7.0-rc2)(@myriaddreamin/typst-ts-web-compiler@0.7.0-rc2)
+        specifier: 0.7.0
+        version: 0.7.0(@myriaddreamin/typst-ts-renderer@0.7.0)(@myriaddreamin/typst-ts-web-compiler@0.7.0)
       astro:
         specifier: ^7.1.0
         version: 7.1.0(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0)
@@ -896,17 +896,17 @@ packages:
   '@mdx-js/mdx@3.1.1':
     resolution: {integrity: sha512-f6ZO2ifpwAQIpzGWaBQT2TXxPv6z3RBzQKpVftEWN78Vl/YweF1uwussDx8ECAXVtr3Rs89fKyG9YlzUs9DyGQ==}
 
-  '@myriaddreamin/typst-ts-renderer@0.7.0-rc2':
-    resolution: {integrity: sha512-god1tcb2YJDkQfA8gLGcAmykVGBpNKorqqDkXVy3InC18KRbsverJhlrHoONurNIU9JuIHoWjJ2D1ntpjPgzbA==}
+  '@myriaddreamin/typst-ts-renderer@0.7.0':
+    resolution: {integrity: sha512-3sXIGxZn9MufPrPn6251DeuLf2FIEILYNzY5lX0XOJmaIYqgvQ3qpfqkCjgQD+splBvt5R1N3BuuNFrZKsHhMw==}
 
-  '@myriaddreamin/typst-ts-web-compiler@0.7.0-rc2':
-    resolution: {integrity: sha512-WFO/ecKUfeclld5uDxyjgpnIafKpp2LrS6T1vY+CHaSxCm099AneAQIYFg+OtX+NbFpJsLGCBFSw/qppJJmBAw==}
+  '@myriaddreamin/typst-ts-web-compiler@0.7.0':
+    resolution: {integrity: sha512-nMwMcfOBy5pABPDuVM7/u8425SxhPUM+OJe6daqqgVOT3+neCTz4JKwx2L8XasfEHTNvd0cUI07LR9q5ADo7Gw==}
 
-  '@myriaddreamin/typst.ts@0.7.0-rc2':
-    resolution: {integrity: sha512-VM8JqsRcL3AEJ5cuPBn/YvnGTXK/BRPlxdGB2bR48Of/8OIGaPiunv2QfZBIMBBrtbTygUOtAY9BZvkS1AFqgA==}
+  '@myriaddreamin/typst.ts@0.7.0':
+    resolution: {integrity: sha512-JtO5Td/1QesH1IBKAZtbayFNK8u2sl3iz18Y67uYqBEdcXiu3z+wpZcDDKlmVJvAcCgSjHTnuk6ZLfkYclrGGQ==}
     peerDependencies:
-      '@myriaddreamin/typst-ts-renderer': ^0.7.0-rc2
-      '@myriaddreamin/typst-ts-web-compiler': ^0.7.0-rc2
+      '@myriaddreamin/typst-ts-renderer': ^0.7.0
+      '@myriaddreamin/typst-ts-web-compiler': ^0.7.0
     peerDependenciesMeta:
       '@myriaddreamin/typst-ts-renderer':
         optional: true
@@ -4963,16 +4963,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@myriaddreamin/typst-ts-renderer@0.7.0-rc2': {}
+  '@myriaddreamin/typst-ts-renderer@0.7.0': {}
 
-  '@myriaddreamin/typst-ts-web-compiler@0.7.0-rc2': {}
+  '@myriaddreamin/typst-ts-web-compiler@0.7.0': {}
 
-  '@myriaddreamin/typst.ts@0.7.0-rc2(@myriaddreamin/typst-ts-renderer@0.7.0-rc2)(@myriaddreamin/typst-ts-web-compiler@0.7.0-rc2)':
+  '@myriaddreamin/typst.ts@0.7.0(@myriaddreamin/typst-ts-renderer@0.7.0)(@myriaddreamin/typst-ts-web-compiler@0.7.0)':
     dependencies:
       idb: 7.1.1
     optionalDependencies:
-      '@myriaddreamin/typst-ts-renderer': 0.7.0-rc2
-      '@myriaddreamin/typst-ts-web-compiler': 0.7.0-rc2
+      '@myriaddreamin/typst-ts-renderer': 0.7.0
+      '@myriaddreamin/typst-ts-web-compiler': 0.7.0
 
   '@napi-rs/canvas-android-arm64@1.0.2':
     optional: true
