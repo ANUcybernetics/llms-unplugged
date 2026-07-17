@@ -44,6 +44,11 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
 <meta property="og:image" content={ogImageUrl} />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content={ogImageUrl} />
+{
+  /* Analytics is the only third-party origin; warm the connection early so
+    the deferred script and its event beacons skip the TLS handshake. */
+}
+<link rel="preconnect" href="https://plausible.io" />
 <script
   is:inline
   defer
