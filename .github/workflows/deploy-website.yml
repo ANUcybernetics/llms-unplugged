@@ -6,6 +6,7 @@ on:
     paths:
       - "website/**"
       - ".github/workflows/deploy-website.yml"
+      - "mise.toml"
   workflow_dispatch:
 
 permissions:
@@ -21,21 +22,36 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
-      - uses: pnpm/action-setup@v6
+      # node + pnpm come from the repo-root mise.toml, so CI resolves the same
+      # versions as local dev (pnpm = "latest"; package.json declares a floor
+      # via engines.pnpm rather than a packageManager pin).
+      - uses: jdx/mise-action@v4
         with:
-          package_json_file: website/package.json
+          install_args: node pnpm
 
-      - uses: actions/setup-node@v6
+      - name: Cache pnpm store
+        uses: actions/cache@v6
         with:
-          node-version: "24"
-          cache: "pnpm"
-          cache-dependency-path: website/pnpm-lock.yaml
+          path: ~/.local/share/pnpm/store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('website/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
 
       - name: Install dependencies
         working-directory: website
         run: pnpm install --frozen-lockfile
+
+      # Image transforms (avif encodes especially) dominate cold build time;
+      # the cache keeps rebuilds warm so only changed images re-encode.
+      - name: Cache Astro image transforms
+        uses: actions/cache@v6
+        with:
+          path: website/node_modules/.astro
+          key: ${{ runner.os }}-astro-images-${{ hashFiles('website/src/assets/**', 'website/src/decks/assets/**') }}
+          restore-keys: |
+            ${{ runner.os }}-astro-images-
 
       # The accessibility scan is deliberately not run here (it adds ~8 min and
       # doesn't change the output) — see the weekly a11y-audit workflow.

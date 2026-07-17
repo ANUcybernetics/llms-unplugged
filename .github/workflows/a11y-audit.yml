@@ -17,21 +17,32 @@ jobs:
   a11y:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
-      - uses: pnpm/action-setup@v6
+      # node + pnpm come from the repo-root mise.toml (see deploy-website.yml)
+      - uses: jdx/mise-action@v4
         with:
-          package_json_file: website/package.json
+          install_args: node pnpm
 
-      - uses: actions/setup-node@v6
+      - name: Cache pnpm store
+        uses: actions/cache@v6
         with:
-          node-version: "24"
-          cache: "pnpm"
-          cache-dependency-path: website/pnpm-lock.yaml
+          path: ~/.local/share/pnpm/store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('website/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
 
       - name: Install dependencies
         working-directory: website
         run: pnpm install --frozen-lockfile
+
+      - name: Cache Astro image transforms
+        uses: actions/cache@v6
+        with:
+          path: website/node_modules/.astro
+          key: ${{ runner.os }}-astro-images-${{ hashFiles('website/src/assets/**', 'website/src/decks/assets/**') }}
+          restore-keys: |
+            ${{ runner.os }}-astro-images-
 
       - name: Build with accessibility scan
         working-directory: website
