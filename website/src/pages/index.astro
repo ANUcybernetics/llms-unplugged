@@ -31,16 +31,11 @@ import wayPrintMaterials from "../assets/images/way-print-materials.avif";
         Hands-on teaching resources that demonstrate how large language models
         (LLMs) work&mdash;no computers or coding required.
       </p>
-      <div class="hero-actions">
-        <a href="/lessons/" class="hero-button primary">Run a lesson</a>
-        <a href="/modules/" class="hero-button secondary">Explore the modules</a
-        >
-      </div>
     </div>
     <div class="hero-image">
       <Image
         src={heroIndex}
-        alt="Workshop participants building language models with pen and paper"
+        alt="Workshop participants around a table of paper tokens, reaching towards a glowing die"
         widths={[688, 1376]}
         sizes="(min-width: 960px) 590px, 100vw"
         loading="eager"
@@ -355,44 +350,27 @@ import wayPrintMaterials from "../assets/images/way-print-materials.avif";
     line-height: 1.5;
   }
 
+  /* single-column: image sits above the title, height-capped so the title
+     stays above the fold */
+  .hero-image {
+    order: -1;
+  }
+
   .hero-image img {
     width: 100%;
     height: auto;
+    max-height: 45vh;
+    object-fit: cover;
   }
 
-  .hero-actions {
-    display: flex;
-    gap: 0.75rem;
-  }
+  @media (min-width: 960px) {
+    .hero-image {
+      order: 0;
+    }
 
-  .hero-button {
-    padding: 0.625rem 1.25rem;
-    border-radius: var(--at-border-radius);
-    font-weight: 600;
-    font-size: 0.95rem;
-    text-decoration: none;
-    transition:
-      color 0.15s,
-      background-color 0.15s,
-      border-color 0.15s;
-  }
-
-  .hero-button.primary {
-    background: var(--at-accent);
-    color: #fff;
-  }
-
-  .hero-button.primary:hover {
-    background: var(--at-accent-hover);
-  }
-
-  .hero-button.secondary {
-    border: 1px solid var(--at-border);
-    color: var(--at-text);
-  }
-
-  .hero-button.secondary:hover {
-    border-color: var(--at-accent);
+    .hero-image img {
+      max-height: none;
+    }
   }
 
   .home-content {
