@@ -54,7 +54,8 @@ const hero = findHeroImage(`hero-news-${slug}`);
               alt=""
               widths={[480, 960, 1440]}
               sizes="(max-width: 960px) 100vw, 960px"
-              loading="lazy"
+              loading="eager"
+              fetchpriority="high"
             />
           )
         }
