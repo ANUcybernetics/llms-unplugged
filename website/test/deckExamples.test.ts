@@ -34,27 +34,28 @@ describe("grid deck generation walk", () => {
     expect(rolls.length).toBeGreaterThanOrEqual(sequence.length - 1);
   });
 
-  it.each(
-    sequence.slice(0, -1).map((word, step) => ({ step, word, next: sequence[step + 1] })),
-  )("step $step: $word → $next follows the dice bands", ({ step, word, next }) => {
-    const options = getRowOptionsInVocabOrder(vocab, model.getCount, word);
-    const roll = rolls[step];
+  it.each(sequence.slice(0, -1).map((word, step) => ({ step, word, next: sequence[step + 1] })))(
+    "step $step: $word → $next follows the dice bands",
+    ({ step, word, next }) => {
+      const options = getRowOptionsInVocabOrder(vocab, model.getCount, word);
+      const roll = rolls[step];
 
-    if (roll === "-") {
-      // No-roll steps must genuinely have a single option, and it must be the
-      // word the walk writes down.
-      expect(options).toHaveLength(1);
-      expect(options[0].word).toBe(next);
-    } else {
-      // Rolled steps must have a real choice, and the roll must land in the
-      // band of the word the walk writes down --- using the same band
-      // computation DiceStrip renders.
-      expect(options.length).toBeGreaterThan(1);
-      const bands = computeDiceBands(options);
-      const winner = bands.find((b) => Number(roll) >= b.from && Number(roll) <= b.to);
-      expect(winner?.word).toBe(next);
-    }
-  });
+      if (roll === "-") {
+        // No-roll steps must genuinely have a single option, and it must be the
+        // word the walk writes down.
+        expect(options).toHaveLength(1);
+        expect(options[0].word).toBe(next);
+      } else {
+        // Rolled steps must have a real choice, and the roll must land in the
+        // band of the word the walk writes down --- using the same band
+        // computation DiceStrip renders.
+        expect(options.length).toBeGreaterThan(1);
+        const bands = computeDiceBands(options);
+        const winner = bands.find((b) => Number(roll) >= b.from && Number(roll) <= b.to);
+        expect(winner?.word).toBe(next);
+      }
+    },
+  );
 });
 
 describe("pre-trained deck generation walk", () => {
@@ -69,22 +70,23 @@ describe("pre-trained deck generation walk", () => {
     expect(rolls.length).toBeGreaterThanOrEqual(sequence.length - 1);
   });
 
-  it.each(
-    sequence.slice(0, -1).map((word, step) => ({ step, word, next: sequence[step + 1] })),
-  )("step $step: $word → $next follows the booklet thresholds", ({ step, word, next }) => {
-    const entry = entries.find((e) => e.previousWord === word);
-    expect(entry).toBeDefined();
-    const roll = rolls[step];
+  it.each(sequence.slice(0, -1).map((word, step) => ({ step, word, next: sequence[step + 1] })))(
+    "step $step: $word → $next follows the booklet thresholds",
+    ({ step, word, next }) => {
+      const entry = entries.find((e) => e.previousWord === word);
+      expect(entry).toBeDefined();
+      const roll = rolls[step];
 
-    if (roll === "-") {
-      expect(entry!.nextWords).toHaveLength(1);
-      expect(entry!.nextWords[0].word).toBe(next);
-    } else {
-      expect(entry!.nextWords.length).toBeGreaterThan(1);
-      // The roll's digit count must match the entry's dice count (a two-digit
-      // roll on a one-die entry would be unrollable).
-      expect(roll.length).toBe(entry!.numDice);
-      expect(findWordForThresholdRoll(entry!, Number(roll))).toBe(next);
-    }
-  });
+      if (roll === "-") {
+        expect(entry!.nextWords).toHaveLength(1);
+        expect(entry!.nextWords[0].word).toBe(next);
+      } else {
+        expect(entry!.nextWords.length).toBeGreaterThan(1);
+        // The roll's digit count must match the entry's dice count (a two-digit
+        // roll on a one-die entry would be unrollable).
+        expect(roll.length).toBe(entry!.numDice);
+        expect(findWordForThresholdRoll(entry!, Number(roll))).toBe(next);
+      }
+    },
+  );
 });

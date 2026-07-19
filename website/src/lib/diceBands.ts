@@ -34,7 +34,5 @@ export function getRowOptionsInVocabOrder(
   getCount: (from: string, to: string) => number,
   word: string,
 ): { word: string; count: number }[] {
-  return vocab
-    .map((to) => ({ word: to, count: getCount(word, to) }))
-    .filter((o) => o.count > 0);
+  return vocab.map((to) => ({ word: to, count: getCount(word, to) })).filter((o) => o.count > 0);
 }
