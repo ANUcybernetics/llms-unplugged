@@ -18,8 +18,10 @@ export const EXAMPLE_VOCAB = "run , spot . see";
 // → unequal, rolls on past the full stop, and loops back to `see`.
 export const EXAMPLE_GENERATION = "see spot , run . see";
 // One d10 roll (0-9) per generation step; "-" marks a step with a single option
-// (no roll needed). The choices: spot→`,` (rolled 2), `,`→run (7), run→`.` (3).
-export const EXAMPLE_GENERATION_ROLLS = "- 2 7 3 - -";
+// (no roll needed). Dice bands follow grid column order (see DiceStrip):
+// spot row is run=0-4/`,`=5-9, `,` row is run=0-4/spot=5-9, run row is
+// `,`=0-2/`.`=3-9. The choices: spot→`,` (rolled 7), `,`→run (2), run→`.` (3).
+export const EXAMPLE_GENERATION_ROLLS = "- 7 2 3 - -";
 
 // Pre-trained model --- a larger corpus --- drives grid-pretrained-generation
 // (the 90min and 2h decks only).

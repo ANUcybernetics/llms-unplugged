@@ -1,6 +1,5 @@
 <script lang="ts">
   import { buildBigramModel, getVocabulary, splitTokens } from "../lib/tokens";
-  import { buildModelEntries } from "../lib/modelEntries";
 
   interface Props {
     tokens: string;
@@ -22,13 +21,18 @@
   const tokenList = $derived(splitTokens(tokenString));
   const vocab = $derived(vocabString ? splitTokens(vocabString) : getVocabulary(tokenList));
   const model = $derived(buildBigramModel(tokenList));
-  const entries = $derived(buildModelEntries(vocab, model));
-  const entry = $derived(entries.find((e) => e.previousWord === currentWord) ?? null);
 
-  // Faces run 0..ceiling (a single d10 → 0-9). buildModelEntries spreads the
-  // options proportionally across these faces (same mapping as the booklet and
-  // the pre-trained deck), with the last option absorbing any rounding.
-  const ceiling = $derived(entry ? Math.pow(10, entry.numDice) - 1 : 9);
+  // Options in grid (vocab) column order: the strip explains the grid row the
+  // audience has just seen, so the leftmost band must belong to the row's
+  // leftmost non-empty cell. (buildModelEntries sorts by count for the
+  // booklet-style widgets --- that ordering reads as jumbled here.)
+  const options = $derived.by(() => {
+    const row = model.counts.get(currentWord);
+    if (!row) return [];
+    return vocab
+      .map((word) => ({ word, count: row.get(word) || 0 }))
+      .filter((o) => o.count > 0);
+  });
 
   interface Band {
     word: string;
@@ -38,15 +42,21 @@
     faces: number[];
   }
 
+  // Faces run 0..ceiling (a single d10 → 0-9), spread proportionally to the
+  // counts with the last option absorbing any rounding --- the same
+  // apportionment as buildModelEntries, just in grid order.
   const bands = $derived.by<Band[]>(() => {
-    if (!entry) return [];
+    if (options.length === 0) return [];
+    const total = options.reduce((sum, o) => sum + o.count, 0);
+    const ceiling = Math.pow(10, String(total).length) - 1;
     let lower = 0;
-    return entry.nextWords.map((nw) => {
-      const from = lower;
-      const to = nw.threshold;
+    return options.map((o, i) => {
+      const scaled = Math.round((o.count / total) * (ceiling + 1));
+      const to = i === options.length - 1 ? ceiling : Math.min(lower + scaled - 1, ceiling);
+      const faces = Array.from({ length: to - lower + 1 }, (_, k) => lower + k);
+      const band = { word: o.word, count: o.count, from: lower, to, faces };
       lower = to + 1;
-      const faces = Array.from({ length: to - from + 1 }, (_, i) => from + i);
-      return { word: nw.word, count: nw.count, from, to, faces };
+      return band;
     });
   });
 
