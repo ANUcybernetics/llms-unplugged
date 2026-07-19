@@ -44,7 +44,7 @@ use your grid to generate new text, rolling dice to choose each next word
 
 {/* notes: equal tallies, so each option gets an equal share of the ten d10 faces --- `run` gets 0-4 and `,` gets 5-9, reading the row's cells left to right. Pause here before rolling. */}
 
-<DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} currentWord="spot" />
+<DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={1} />
 
 ---
 
@@ -52,7 +52,7 @@ use your grid to generate new text, rolling dice to choose each next word
 
 {/* notes: now roll --- a 7 lands in the `,` band */}
 
-<DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} currentWord="spot" rolled={7} />
+<DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={1} showRoll />
 
 ---
 
@@ -92,7 +92,7 @@ use your grid to generate new text, rolling dice to choose each next word
 
 {/* notes: `.` has twice the tallies, so it gets more of the faces (3-9) than `,` (0-2). With a ten-sided die that's the closest split rather than exactly 2:1 --- the point is more tallies → more faces → more likely. Pause here before rolling. */}
 
-<DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} currentWord="run" />
+<DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={3} />
 
 ---
 
@@ -100,7 +100,7 @@ use your grid to generate new text, rolling dice to choose each next word
 
 {/* notes: now roll --- a 3 sits in the `.` band */}
 
-<DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} currentWord="run" rolled={3} />
+<DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={3} showRoll />
 
 ---
 

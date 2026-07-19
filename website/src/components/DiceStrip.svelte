@@ -1,64 +1,50 @@
 <script lang="ts">
   import { buildBigramModel, getVocabulary, splitTokens } from "../lib/tokens";
+  import { computeDiceBands, getRowOptionsInVocabOrder } from "../lib/diceBands";
 
   interface Props {
     tokens: string;
     vocabulary?: string;
-    /** The current previous-word whose row we're rolling on. */
-    currentWord: string;
-    /** A specific d10 face (0-9) to highlight as the result; null = show the
-        mapping with no roll yet. */
-    rolled?: number | null;
+    /** The generation walk (same value as StaticGeneration's `sequence`). */
+    sequence: string;
+    /** Space-separated d10 roll per step, "-" for no-roll steps (same value
+        as StaticGeneration's `rolls`). */
+    rolls: string;
+    /** The walk step whose row we're rolling on; the roll for this step comes
+        from `rolls`, so the strip can never contradict the walk. */
+    step: number;
+    /** false = show the face mapping with no roll yet; true = highlight the
+        rolled face and reveal the result. */
+    showRoll?: boolean;
   }
 
   let {
     tokens: tokenString,
     vocabulary: vocabString,
-    currentWord,
-    rolled = null,
+    sequence: sequenceString,
+    rolls: rollsString,
+    step,
+    showRoll = false,
   }: Props = $props();
 
   const tokenList = $derived(splitTokens(tokenString));
   const vocab = $derived(vocabString ? splitTokens(vocabString) : getVocabulary(tokenList));
   const model = $derived(buildBigramModel(tokenList));
 
-  // Options in grid (vocab) column order: the strip explains the grid row the
+  const currentWord = $derived(splitTokens(sequenceString)[step]);
+  const rollToken = $derived(splitTokens(rollsString)[step]);
+  const rolled = $derived(showRoll && rollToken !== "-" ? Number(rollToken) : null);
+
+  // Bands in grid (vocab) column order: the strip explains the grid row the
   // audience has just seen, so the leftmost band must belong to the row's
   // leftmost non-empty cell. (buildModelEntries sorts by count for the
   // booklet-style widgets --- that ordering reads as jumbled here.)
-  const options = $derived.by(() => {
-    const row = model.counts.get(currentWord);
-    if (!row) return [];
-    return vocab
-      .map((word) => ({ word, count: row.get(word) || 0 }))
-      .filter((o) => o.count > 0);
-  });
-
-  interface Band {
-    word: string;
-    count: number;
-    from: number;
-    to: number;
-    faces: number[];
-  }
-
-  // Faces run 0..ceiling (a single d10 → 0-9), spread proportionally to the
-  // counts with the last option absorbing any rounding --- the same
-  // apportionment as buildModelEntries, just in grid order.
-  const bands = $derived.by<Band[]>(() => {
-    if (options.length === 0) return [];
-    const total = options.reduce((sum, o) => sum + o.count, 0);
-    const ceiling = Math.pow(10, String(total).length) - 1;
-    let lower = 0;
-    return options.map((o, i) => {
-      const scaled = Math.round((o.count / total) * (ceiling + 1));
-      const to = i === options.length - 1 ? ceiling : Math.min(lower + scaled - 1, ceiling);
-      const faces = Array.from({ length: to - lower + 1 }, (_, k) => lower + k);
-      const band = { word: o.word, count: o.count, from: lower, to, faces };
-      lower = to + 1;
-      return band;
-    });
-  });
+  const bands = $derived(
+    computeDiceBands(getRowOptionsInVocabOrder(vocab, model.getCount, currentWord)).map((b) => ({
+      ...b,
+      faces: Array.from({ length: b.to - b.from + 1 }, (_, i) => b.from + i),
+    })),
+  );
 
   // Tallies equal → equal share of faces; tallies differ → weighted.
   const weighted = $derived(new Set(bands.map((b) => b.count)).size > 1);
