@@ -35,6 +35,7 @@ const lessons = (await getCollection("lessons"))
         <Card
           href={`/lessons/${lesson.id}/`}
           title={lesson.data.title}
+          headingLevel="h2"
           image={
             lesson.data.heroImage
               ? findHeroImage(`hero-${lesson.data.heroImage}`)
