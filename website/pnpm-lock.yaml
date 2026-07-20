@@ -37,10 +37,10 @@ importers:
         version: git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#12715acd0bfc98dd45113d397bcc03e96646211e&path:/packages/astro-theme-anu(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0))
       astro-theme-university:
         specifier: git+https://github.com/ANUcybernetics/astro-theme-university.git#v0.6.1
-        version: https://codeload.github.com/ANUcybernetics/astro-theme-university/tar.gz/6b7e5762fed57a9316be1d405a534580e4e50da9(@iconify-json/iconoir@1.2.11)(@types/node@26.1.1)(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0))(astromotion@https://codeload.github.com/ANUcybernetics/astromotion/tar.gz/65f9e6714137c5a574b1d36df2952c51d45924be(@astrojs/mdx@7.0.3(@astrojs/markdown-satteri@0.3.4)(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0)))(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0))(puppeteer-core@25.3.0(yauzl@2.10.0)))(esbuild@0.28.1)(lightningcss@1.32.0)(svelte@5.56.5(@typescript-eslint/types@8.64.0))(tsx@4.23.1)(typescript@6.0.3)
+        version: https://codeload.github.com/ANUcybernetics/astro-theme-university/tar.gz/6b7e5762fed57a9316be1d405a534580e4e50da9(@iconify-json/iconoir@1.2.11)(@types/node@26.1.1)(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0))(astromotion@https://codeload.github.com/ANUcybernetics/astromotion/tar.gz/c8654c60e50b16633af5643540106331878637d2(@astrojs/mdx@7.0.3(@astrojs/markdown-satteri@0.3.4)(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0)))(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0))(puppeteer-core@25.3.0(yauzl@2.10.0)))(esbuild@0.28.1)(lightningcss@1.32.0)(svelte@5.56.5(@typescript-eslint/types@8.64.0))(tsx@4.23.1)(typescript@6.0.3)
       astromotion:
-        specifier: git+https://github.com/ANUcybernetics/astromotion.git#v0.13.1
-        version: https://codeload.github.com/ANUcybernetics/astromotion/tar.gz/65f9e6714137c5a574b1d36df2952c51d45924be(@astrojs/mdx@7.0.3(@astrojs/markdown-satteri@0.3.4)(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0)))(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0))(puppeteer-core@25.3.0(yauzl@2.10.0))
+        specifier: git+https://github.com/ANUcybernetics/astromotion.git#v0.14.0
+        version: https://codeload.github.com/ANUcybernetics/astromotion/tar.gz/c8654c60e50b16633af5643540106331878637d2(@astrojs/mdx@7.0.3(@astrojs/markdown-satteri@0.3.4)(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0)))(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0))(puppeteer-core@25.3.0(yauzl@2.10.0))
       lightningcss:
         specifier: ^1.32.0
         version: 1.32.0
@@ -1738,9 +1738,9 @@ packages:
       '@astrojs/markdown-remark':
         optional: true
 
-  astromotion@https://codeload.github.com/ANUcybernetics/astromotion/tar.gz/65f9e6714137c5a574b1d36df2952c51d45924be:
-    resolution: {gitHosted: true, integrity: sha512-7BEdB4Ff9kf5lUCGBatvDpud9NrbzDd5AKnLoHl1n+ukyDtY6dqd1s5vdJh2CeaY8GaVanAwj0LRJmd3Hmo9cg==, tarball: https://codeload.github.com/ANUcybernetics/astromotion/tar.gz/65f9e6714137c5a574b1d36df2952c51d45924be}
-    version: 0.13.1
+  astromotion@https://codeload.github.com/ANUcybernetics/astromotion/tar.gz/c8654c60e50b16633af5643540106331878637d2:
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/ANUcybernetics/astromotion/tar.gz/c8654c60e50b16633af5643540106331878637d2}
+    version: 0.14.0
     engines: {node: '>=24'}
     hasBin: true
     peerDependencies:
@@ -5613,7 +5613,7 @@ snapshots:
     dependencies:
       astro: 7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0)
 
-  astro-theme-university@https://codeload.github.com/ANUcybernetics/astro-theme-university/tar.gz/6b7e5762fed57a9316be1d405a534580e4e50da9(@iconify-json/iconoir@1.2.11)(@types/node@26.1.1)(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0))(astromotion@https://codeload.github.com/ANUcybernetics/astromotion/tar.gz/65f9e6714137c5a574b1d36df2952c51d45924be(@astrojs/mdx@7.0.3(@astrojs/markdown-satteri@0.3.4)(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0)))(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0))(puppeteer-core@25.3.0(yauzl@2.10.0)))(esbuild@0.28.1)(lightningcss@1.32.0)(svelte@5.56.5(@typescript-eslint/types@8.64.0))(tsx@4.23.1)(typescript@6.0.3):
+  astro-theme-university@https://codeload.github.com/ANUcybernetics/astro-theme-university/tar.gz/6b7e5762fed57a9316be1d405a534580e4e50da9(@iconify-json/iconoir@1.2.11)(@types/node@26.1.1)(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0))(astromotion@https://codeload.github.com/ANUcybernetics/astromotion/tar.gz/c8654c60e50b16633af5643540106331878637d2(@astrojs/mdx@7.0.3(@astrojs/markdown-satteri@0.3.4)(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0)))(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0))(puppeteer-core@25.3.0(yauzl@2.10.0)))(esbuild@0.28.1)(lightningcss@1.32.0)(svelte@5.56.5(@typescript-eslint/types@8.64.0))(tsx@4.23.1)(typescript@6.0.3):
     dependencies:
       '@astro-community/astro-embed-youtube': 0.5.10
       '@astrojs/markdown-remark': 7.2.1
@@ -5639,7 +5639,7 @@ snapshots:
       unist-util-visit: 5.1.0
       yaml: 2.9.0
     optionalDependencies:
-      astromotion: https://codeload.github.com/ANUcybernetics/astromotion/tar.gz/65f9e6714137c5a574b1d36df2952c51d45924be(@astrojs/mdx@7.0.3(@astrojs/markdown-satteri@0.3.4)(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0)))(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0))(puppeteer-core@25.3.0(yauzl@2.10.0))
+      astromotion: https://codeload.github.com/ANUcybernetics/astromotion/tar.gz/c8654c60e50b16633af5643540106331878637d2(@astrojs/mdx@7.0.3(@astrojs/markdown-satteri@0.3.4)(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0)))(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0))(puppeteer-core@25.3.0(yauzl@2.10.0))
     transitivePeerDependencies:
       - '@noble/hashes'
       - '@types/node'
@@ -5750,7 +5750,7 @@ snapshots:
       - uploadthing
       - yaml
 
-  astromotion@https://codeload.github.com/ANUcybernetics/astromotion/tar.gz/65f9e6714137c5a574b1d36df2952c51d45924be(@astrojs/mdx@7.0.3(@astrojs/markdown-satteri@0.3.4)(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0)))(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0))(puppeteer-core@25.3.0(yauzl@2.10.0)):
+  astromotion@https://codeload.github.com/ANUcybernetics/astromotion/tar.gz/c8654c60e50b16633af5643540106331878637d2(@astrojs/mdx@7.0.3(@astrojs/markdown-satteri@0.3.4)(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0)))(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0))(puppeteer-core@25.3.0(yauzl@2.10.0)):
     dependencies:
       '@astrojs/mdx': 7.0.3(@astrojs/markdown-satteri@0.3.4)(astro@7.1.1(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.2)(@types/node@26.1.1)(tsx@4.23.1)(yaml@2.9.0))
       '@qrgrid/core': 0.2.4
