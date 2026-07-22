@@ -49,10 +49,6 @@ const initialLabel = `${mm}:${String(ss).padStart(2, "0")}`;
 <script>
   const MAX_MS = 99 * 60 * 1000;
 
-  // Every initialised timer registers its start/pause toggle here so the
-  // keyboard shortcut can drive only the timer on the currently visible slide.
-  const timers: { root: HTMLElement; toggle: () => void }[] = [];
-
   function format(ms: number): string {
     const s = Math.ceil(ms / 1000);
     return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
@@ -133,7 +129,6 @@ const initialLabel = `${mm}:${String(ss).padStart(2, "0")}`;
 
     const toggle = () => (running ? pause() : start());
     toggleBtn.addEventListener("click", toggle);
-    timers.push({ root, toggle });
     root.querySelector("[data-reset]")?.addEventListener("click", reset);
     root.querySelectorAll<HTMLElement>("[data-adjust]").forEach((btn) => {
       btn.addEventListener("click", () =>
@@ -146,31 +141,6 @@ const initialLabel = `${mm}:${String(ss).padStart(2, "0")}`;
 
   const boot = () =>
     document.querySelectorAll<HTMLElement>("[data-timer]").forEach(initTimer);
-
-  // Press T to start/pause the timer on the current slide only. Reveal.js
-  // leaves T unbound (its keys are arrows/Space/N/P, B, F, O, S, ?), and
-  // scoping to `section.present` means decks with several timers only toggle
-  // the one on screen.
-  document.addEventListener("keydown", (e) => {
-    if (e.code !== "KeyT" || e.repeat) return;
-    // Plain T only: let Cmd/Ctrl/Alt/Shift+T (e.g. new tab) through, and don't
-    // fire while typing in a form field. Mirrors the music toggle in
-    // bg-music.ts.
-    if (e.shiftKey || e.metaKey || e.ctrlKey || e.altKey) return;
-    const el = document.activeElement;
-    if (
-      el instanceof HTMLElement &&
-      (el.isContentEditable ||
-        el.tagName === "INPUT" ||
-        el.tagName === "TEXTAREA")
-    ) {
-      return;
-    }
-    const active = timers.find(({ root }) => root.closest("section.present"));
-    if (!active) return;
-    e.preventDefault();
-    active.toggle();
-  });
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
