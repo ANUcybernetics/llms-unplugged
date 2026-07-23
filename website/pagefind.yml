@@ -1,5 +1,5 @@
 # Picked up by the pagefind CLI the theme runs after each build
-# (astro-theme-anu: `npx pagefind --site dist`).
+# (astro-theme-university: `npx pagefind --site dist`).
 # Heading anchor links ("#") are navigation chrome, not content — without this
 # they show up in search excerpts as stray "#" glued to headings.
 exclude_selectors:

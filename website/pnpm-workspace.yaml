@@ -1,6 +1,6 @@
 allowBuilds:
   esbuild: true
-  sharp: true
+  sharp: false
 
 # Name patterns, not name@version: the supply-chain verify gate matches by
 # package-name glob. Lets us adopt newly published Astro releases on day one.
