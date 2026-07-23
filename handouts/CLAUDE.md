@@ -11,6 +11,9 @@ and the poster. The lessons themselves live on the website
 - `worksheets/` - blank templates (grid, trigram-template,
   truncation-strategies, blank-page)
 - `poster.typ` - project poster
+- `try-it-yourself-spread.typ` - designer reference for a glossy-booklet 2-page
+  spread: generate-with-a-d6 worked example (model derived from
+  `data/cat-and-moon.txt`)
 
 ## Build process
 

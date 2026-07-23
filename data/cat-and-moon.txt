@@ -1,0 +1,13 @@
+---
+title: The Cat and the Moon
+author: LLMs Unplugged
+url: https://www.llmsunplugged.org
+---
+
+the cat sings to the moon.
+the cat dreams of a song.
+the dog dreams of the moon.
+the dog sleeps and the moon sleeps.
+the night dreams of the moon.
+the moon sings a song.
+the moon sings a song to the night.
