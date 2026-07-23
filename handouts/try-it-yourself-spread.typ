@@ -165,7 +165,7 @@
     font: "Monaspace Argon",
     weight: "bold",
     fill: anu-colors.socy-yellow,
-    "www.llmsunplugged.org | © 2026 Ben Swift | CC BY-NC-SA 4.0",
+    "www.llmsunplugged.org | © 2026 Ben Swift",
   ),
   config: (
     theme: "dark",
