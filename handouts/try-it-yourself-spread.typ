@@ -96,19 +96,31 @@
 // Single-option entries carry no threshold: no roll needed.
 
 #let model = (
-  (".", ((none, "the"),)),
+  (".", ((1, "birds"), (2, "stars"), (6, "the"))),
   ("a", ((none, "song"),)),
-  ("and", ((none, "the"),)),
-  ("cat", ((3, "dreams"), (6, "sings"))),
-  ("dog", ((3, "dreams"), (6, "sleeps"))),
+  ("and", ((3, "birds"), (6, "the"))),
+  ("birds", ((none, "sing"),)),
+  ("cat", ((3, "."), (6, "dreams"))),
+  ("dog", ((3, "."), (6, "sleeps"))),
   ("dreams", ((none, "of"),)),
-  ("moon", ((3, "."), (5, "sings"), (6, "sleeps"))),
-  ("night", ((3, "."), (6, "dreams"))),
-  ("of", ((2, "a"), (6, "the"))),
-  ("sings", ((4, "a"), (6, "to"))),
-  ("sleeps", ((3, "."), (6, "and"))),
-  ("song", ((4, "."), (6, "to"))),
-  ("the", ((1, "cat"), (2, "dog"), (5, "moon"), (6, "night"))),
+  ("fall", ((none, "over"),)),
+  ("falls", ((none, "and"),)),
+  ("moon", ((3, "."), (6, "sings"))),
+  ("night", ((3, "."), (6, "falls"))),
+  ("of", ((none, "a"),)),
+  ("over", ((none, "the"),)),
+  ("rises", ((none, "over"),)),
+  ("sea", ((3, "."), (6, "sings"))),
+  ("sing", ((3, "a"), (6, "to"))),
+  ("sings", ((3, "a"), (6, "to"))),
+  ("sleeps", ((none, "and"),)),
+  ("song", ((2, "."), (6, "to"))),
+  ("stars", ((none, "fall"),)),
+  ("sun", ((3, "."), (6, "rises"))),
+  (
+    "the",
+    ((1, "cat"), (2, "dog"), (3, "moon"), (4, "night"), (5, "sea"), (6, "sun")),
+  ),
   ("to", ((none, "the"),)),
 )
 
@@ -135,7 +147,7 @@
 )
 
 #set text(size: 10.5pt)
-#show heading: set block(above: 1.2em, below: 0.7em)
+#show heading: set block(above: 1em, below: 0.6em)
 
 // Generated-text styling: italic serif, standing in for the reader's
 // handwriting (the theme's raw/code styling is too heavy here).
@@ -179,45 +191,53 @@
     Start by picking #headword("the", size: 1.2em) and writing it down. Then:
 
     #[
-      #set text(size: 0.92em)
+      #set text(size: 0.88em)
       #table(
         columns: (auto, 1.5fr, 1fr),
         align: (left + horizon, left + horizon, left + horizon),
         stroke: none,
-        inset: (x: 0.4em, y: 0.4em),
+        inset: (x: 0.4em, y: 0.32em),
         table.header([_look up_], [_roll the dice_], [_your text so far_]),
         table.hline(stroke: 0.5pt + anu-colors.gold),
         [#headword("the", size: 1.2em)],
-        [roll a 1 → first number ≥ 1 is *1*|cat],
-        [#gen[the cat]],
-
-        [#headword("cat", size: 1.2em)],
-        [roll a 2 → first number ≥ 2 is *3*|dreams],
-        [#gen[the cat dreams]],
-
-        [#headword("dreams", size: 1.2em)],
-        [no #dice-indicator, so no roll: the only option is "of"],
-        [#gen[the cat dreams of]],
-
-        [#headword("of", size: 1.2em)],
-        [roll a 5 → first number ≥ 5 is *6*|the],
-        [#gen[the cat dreams of the]],
-
-        [#headword("the", size: 1.2em)],
-        [roll a 3 → first number ≥ 3 is *5*|moon],
-        [#gen[the cat dreams of the moon]],
+        [roll a 3 → first number ≥ 3 is *3*|moon],
+        [#gen[the moon]],
 
         [#headword("moon", size: 1.2em)],
+        [roll a 5 → first number ≥ 5 is *6*|sings],
+        [#gen[the moon sings]],
+
+        [#headword("sings", size: 1.2em)],
+        [roll a 2 → first number ≥ 2 is *3*|a],
+        [#gen[the moon sings a]],
+
+        [#headword("a", size: 1.2em)],
+        [no #dice-indicator, so no roll: the only option is "song"],
+        [#gen[the moon sings a song]],
+
+        [#headword("song", size: 1.2em)],
+        [roll a 4 → first number ≥ 4 is *6*|to],
+        [#gen[the moon sings a song to]],
+
+        [#headword("to", size: 1.2em)],
+        [no #dice-indicator, so no roll: the only option is "the"],
+        [#gen[the moon sings a song to the]],
+
+        [#headword("the", size: 1.2em)],
+        [roll a 1 → first number ≥ 1 is *1*|cat],
+        [#gen[the moon sings a song to the cat]],
+
+        [#headword("cat", size: 1.2em)],
         [roll a 1 → first number ≥ 1 is *3*|#punct-box(".")],
-        [#gen[the cat dreams of the moon.]],
+        [#gen[the moon sings a song to the cat.]],
       )
     ]
 
     == What just happened?
 
-    "The cat dreams of the moon" appears nowhere in the model's training
+    "The moon sings a song to the cat" appears nowhere in the model's training
     text---the model composed it, by chaining together word-pairs it learned
-    during training. This model knows 14 words and was trained on 51 words of
+    during training. This model knows 23 words and was trained on 58 words of
     text; the models behind modern chatbots know hundreds of thousands of
     word-pieces and are trained on trillions of words. But the
     generate-one-word-and-repeat trick is exactly the same.
@@ -227,30 +247,27 @@
     // ------------------------------------------------------------ recto
     #v(1.2cm)
 
-    // The model, typeset like a page from a pre-trained booklet: dictionary
-    // guide words up top, one entry per line.
+    // The model, typeset like a page from a pre-trained booklet: two
+    // dictionary-style columns, one entry per line (long entries wrap with a
+    // hanging indent, as in the full-size booklets).
     #block(
       width: 100%,
       stroke: 0.5pt + anu-colors.gold-2,
-      inset: (x: 1.4cm, y: 1cm),
+      inset: (x: 1cm, y: 1cm),
     )[
-      #set text(font: "Libertinus Serif", size: 13pt)
+      #set text(font: "Libertinus Serif", size: 10.5pt)
+      #set par(hanging-indent: 1.4em)
 
-      // Guide words (first and last entry on the page), as in the full-size
-      // booklets.
+      #let mid = calc.ceil(model.len() / 2)
+      #let column(entries) = for (word, options) in entries {
+        format-entry(word, options)
+        v(0.45em)
+      }
       #grid(
         columns: (1fr, 1fr),
-        align(left, headword(model.first().at(0))),
-        align(right, headword(model.last().at(0))),
+        column-gutter: 1cm,
+        column(model.slice(0, mid)), column(model.slice(mid)),
       )
-      #v(-0.4em)
-      #line(length: 100%, stroke: 0.5pt + white)
-      #v(0.8em)
-
-      #for (word, options) in model {
-        format-entry(word, options)
-        v(0.35em)
-      }
     ]
 
     #v(0.8em)
@@ -267,9 +284,10 @@
       your own):
       #rotate(180deg, reflow: true)[
         #set text(style: "italic")
-        the cat sings to the moon. the cat dreams of a song. the dog dreams of
-        the moon. the dog sleeps and the moon sleeps. the night dreams of the
-        moon. the moon sings a song. the moon sings a song to the night.
+        the cat dreams of a song. the dog sleeps and birds sing to the moon. the
+        night falls and the sea sings a song to the sun. the sun rises over the
+        sea. the moon sings to the dog. birds sing a song to the night. stars
+        fall over the cat.
       ]
     ]
   ],
