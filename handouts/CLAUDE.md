@@ -12,8 +12,8 @@ and the poster. The lessons themselves live on the website
   truncation-strategies, blank-page)
 - `poster.typ` - project poster
 - `try-it-yourself-spread.typ` - designer reference for a glossy-booklet 2-page
-  spread: generate-with-a-d6 worked example (model derived from
-  `data/cat-and-moon.txt`)
+  spread: generate-with-a-d6 worked example (model = the opening stanzas of The
+  Cat in the Hat, hardcoded in the file; the Seuss corpus stays untracked)
 
 ## Build process
 

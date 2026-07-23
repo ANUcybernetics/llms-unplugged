@@ -13,12 +13,18 @@
 // it in their own workflow; this file fixes the content, the model data and
 // the interaction logic.
 //
-// The model is a bigram model derived from data/cat-and-moon.txt. That
-// corpus is constructed so that every entry's next-word counts scale
-// *exactly* onto a single d6 (context totals of 1, 2, 3, 6 or 12-with-even-
-// counts), so the printed thresholds involve no rounding. Verify with:
-//
-//   ./cli/target/release/llms_unplugged tsv -i data/cat-and-moon.txt
+// The model is a bigram model of the first four stanzas (23 body lines,
+// "The sun did not shine." through "Not one little bit.") of The Cat in the
+// Hat --- Seuss's controlled vocabulary gives a small vocab with dense
+// branching (22 of 46 entries offer a dice roll; no entry exceeds 6
+// options), which real prose and even chorus-heavy ballads don't match at
+// this scale. Counts come from `llms_unplugged tsv` over that excerpt, with
+// cumulative thresholds rounded onto a single d6 (strictly increasing, last
+// pinned to 6, so every option stays reachable; worst-case distortion is a
+// 1-in-9 option widened to 1-in-6). The excerpt itself is deliberately NOT
+// reproduced on the poster and its corpus file stays untracked (data/* is
+// gitignored) --- the poster prints only derived statistics, consistent with
+// the fair-use stance in cli/book.typ's copyright page.
 //
 // Unlike the full-size booklets (d10, multi-dice ♦♦ entries), every entry
 // here needs at most one roll of one d6, which keeps the instructions to a
@@ -49,8 +55,10 @@
   )
 }
 
+#let is-punct(word) = word in (".", ",", "!")
+
 #let headword(word, size: 1.4em) = {
-  if word == "." {
+  if is-punct(word) {
     punct-box(word, size: size)
   } else {
     text(word, size: size, weight: "bold")
@@ -68,7 +76,7 @@
 // A next-word option: "3|dreams" (threshold semibold), or the bare word when
 // it is the only option (no threshold, no roll).
 #let format-option(threshold, word) = {
-  let word-display = if word == "." { punct-box(word) } else { text(word) }
+  let word-display = if is-punct(word) { punct-box(word) } else { text(word) }
   if threshold == none {
     box(word-display)
   } else {
@@ -91,69 +99,58 @@
 }
 
 // ---------------------------------------------------------------------------
-// The complete bigram model for data/cat-and-moon.txt. Thresholds are
-// cumulative counts scaled exactly to 6 (options in alphabetical order).
-// Single-option entries carry no threshold: no roll needed.
+// The complete bigram model of the training excerpt (see header comment).
+// Thresholds are cumulative counts rounded onto 6 (options in the CLI's
+// alphabetical order). Single-option entries carry no threshold: no roll
+// needed. Regenerate with `llms_unplugged tsv` if the excerpt changes.
 
 #let model = (
-  (".", ((1, "bells"), (2, "birds"), (3, "stars"), (5, "the"), (6, "waves"))),
-  ("a", ((2, "dream"), (4, "song"), (6, "tune"))),
-  ("across", ((none, "the"),)),
-  (
-    "and",
-    (
-      (1, "clouds"),
-      (2, "morning"),
-      (3, "rain"),
-      (4, "shadows"),
-      (5, "the"),
-      (6, "wind"),
-    ),
-  ),
-  ("bells", ((3, "echo"), (6, "ring"))),
-  ("birds", ((3, "sing"), (6, "wake"))),
-  ("blows", ((none, "."),)),
-  ("cat", ((3, "."), (6, "dreams"))),
-  ("clouds", ((none, "drift"),)),
-  ("comes", ((none, "."),)),
-  ("dance", ((none, "under"),)),
-  ("dog", ((3, "."), (6, "sleeps"))),
-  ("dream", ((none, "."),)),
-  ("dreams", ((none, "of"),)),
-  ("drift", ((none, "across"),)),
-  ("echo", ((none, "over"),)),
-  ("fall", ((none, "over"),)),
-  ("falls", ((none, "and"),)),
-  ("gleam", ((none, "."),)),
-  ("hums", ((none, "softly"),)),
-  ("moon", ((3, "."), (6, "sings"))),
-  ("morning", ((none, "comes"),)),
-  ("night", ((none, "."),)),
-  ("of", ((none, "a"),)),
-  ("over", ((none, "the"),)),
-  ("rain", ((none, "falls"),)),
-  ("ring", ((none, "and"),)),
-  ("rise", ((none, "and"),)),
-  ("rises", ((none, "over"),)),
-  ("sea", ((3, "."), (6, "hums"))),
-  ("shadows", ((none, "dance"),)),
-  ("shine", ((none, "and"),)),
-  ("sing", ((3, "a"), (6, "to"))),
-  ("sings", ((none, "a"),)),
-  ("sleeps", ((none, "and"),)),
-  ("softly", ((none, "."),)),
-  ("song", ((none, "to"),)),
-  ("stars", ((2, "fall"), (4, "gleam"), (6, "shine"))),
-  ("sun", ((3, "."), (6, "rises"))),
-  (
-    "the",
-    ((1, "cat"), (2, "dog"), (3, "moon"), (4, "night"), (5, "sea"), (6, "sun")),
-  ),
-  ("to", ((none, "the"),)),
-  ("tune", ((none, "."),)),
-  ("under", ((none, "the"),)),
-  ("wake", ((none, "and"),)),
-  ("waves", ((3, "rise"), (6, "sing"))),
+  ("!", ((1, "And"), (5, "Sit"), (6, "too"))),
+  (",", ((2, "cold"), (3, "How"), (4, "we"), (6, "wet"))),
+  (".", ((1, "And"), (2, "I"), (3, "it"), (4, "not"), (5, "So"), (6, "we"))),
+  ("all", ((2, "."), (4, "that"), (6, "we"))),
+  ("And", ((2, "I"), (4, "too"), (6, "we"))),
+  ("at", ((none, "all"),)),
+  ("ball", ((none, "."),)),
+  ("bit", ((none, "."),)),
+  ("cold", ((4, ","), (6, "to"))),
+  ("could", ((none, "do"),)),
+  ("day", ((none, "."),)),
+  ("did", ((4, "not"), (6, "nothing"))),
+  ("do", ((3, "!"), (6, "was"))),
+  ("go", ((none, "out"),)),
+  ("had", ((none, "something"),)),
+  ("house", ((3, "."), (6, "all"))),
+  ("How", ((none, "I"),)),
+  ("I", ((2, "said"), (4, "sat"), (6, "wish"))),
+  ("in", ((none, "the"),)),
+  ("it", ((3, "."), (6, "was"))),
+  ("like", ((none, "it"),)),
+  ("little", ((none, "bit"),)),
+  ("not", ((2, "like"), (4, "one"), (6, "shine"))),
+  ("nothing", ((none, "at"),)),
+  ("one", ((none, "little"),)),
+  ("out", ((none, "And"),)),
+  ("play", ((3, "."), (6, "ball"))),
+  ("said", ((none, ","),)),
+  ("Sally", ((none, "."),)),
+  ("sat", ((3, "in"), (6, "there"))),
+  ("shine", ((none, "."),)),
+  ("Sit", ((none, "!"),)),
+  ("So", ((2, "all"), (6, "we"))),
+  ("something", ((none, "to"),)),
+  ("sun", ((none, "did"),)),
+  ("that", ((none, "cold"),)),
+  ("the", ((4, "house"), (6, "sun"))),
+  ("there", ((3, ","), (6, "with"))),
+  ("to", ((1, "do"), (2, "go"), (5, "play"), (6, "Sit"))),
+  ("too", ((2, "cold"), (6, "wet"))),
+  ("two", ((none, "."),)),
+  ("was", ((3, "to"), (6, "too"))),
+  ("we", ((1, "could"), (2, "did"), (3, "had"), (5, "sat"), (6, "two"))),
+  ("wet", ((2, "day"), (6, "to"))),
+  ("wish", ((none, "we"),)),
+  ("with", ((none, "Sally"),)),
 )
 
 // ---------------------------------------------------------------------------
@@ -206,8 +203,9 @@
 
     == How to generate text
 
-    + *choose a starting word*: any bold word on the model page (the boxed
-      #punct-box(".") counts as a word too) and write it down
+    + *choose a starting word*: any bold word on the model page (boxed
+      punctuation marks like #punct-box(".") count as words too) and write it
+      down
     + *look up its entry*: the model page works like a dictionary
     + *roll if you see a #dice-indicator*: a diamond means the model offers a
       choice of next words, so roll your dice once. No diamond means there's
@@ -220,7 +218,7 @@
 
     == Worked example
 
-    Start by picking #headword("the", size: 1.2em) and writing it down. Then:
+    Start by picking #headword("So", size: 1.2em) and writing it down. Then:
 
     #[
       #set text(size: 0.88em)
@@ -231,45 +229,37 @@
         inset: (x: 0.4em, y: 0.32em),
         table.header([_look up_], [_roll the dice_], [_your text so far_]),
         table.hline(stroke: 0.5pt + anu-colors.gold),
-        [#headword("the", size: 1.2em)],
-        [roll a 3 → first number ≥ 3 is *3*|moon],
-        [#gen[the moon]],
+        [#headword("So", size: 1.2em)],
+        [roll a 4 → first number ≥ 4 is *6*|we],
+        [#gen[So we]],
 
-        [#headword("moon", size: 1.2em)],
-        [roll a 5 → first number ≥ 5 is *6*|sings],
-        [#gen[the moon sings]],
+        [#headword("we", size: 1.2em)],
+        [roll a 4 → first number ≥ 4 is *5*|sat],
+        [#gen[So we sat]],
 
-        [#headword("sings", size: 1.2em)],
-        [no #dice-indicator, so no roll: the only option is "a"],
-        [#gen[the moon sings a]],
+        [#headword("sat", size: 1.2em)],
+        [roll a 5 → first number ≥ 5 is *6*|there],
+        [#gen[So we sat there]],
 
-        [#headword("a", size: 1.2em)],
-        [roll a 3 → first number ≥ 3 is *4*|song],
-        [#gen[the moon sings a song]],
+        [#headword("there", size: 1.2em)],
+        [roll a 6 → first number ≥ 6 is *6*|with],
+        [#gen[So we sat there with]],
 
-        [#headword("song", size: 1.2em)],
-        [no #dice-indicator, so no roll: the only option is "to"],
-        [#gen[the moon sings a song to]],
+        [#headword("with", size: 1.2em)],
+        [no #dice-indicator, so no roll: the only option is "Sally"],
+        [#gen[So we sat there with Sally]],
 
-        [#headword("to", size: 1.2em)],
-        [no #dice-indicator, so no roll: the only option is "the"],
-        [#gen[the moon sings a song to the]],
-
-        [#headword("the", size: 1.2em)],
-        [roll a 1 → first number ≥ 1 is *1*|cat],
-        [#gen[the moon sings a song to the cat]],
-
-        [#headword("cat", size: 1.2em)],
-        [roll a 1 → first number ≥ 1 is *3*|#punct-box(".")],
-        [#gen[the moon sings a song to the cat.]],
+        [#headword("Sally", size: 1.2em)],
+        [no #dice-indicator, so no roll: the only option is #punct-box(".")],
+        [#gen[So we sat there with Sally.]],
       )
     ]
 
     == What just happened?
 
-    "The moon sings a song to the cat" appears nowhere in the model's training
+    "So we sat there with Sally" appears nowhere in the model's training
     text---the model composed it, by chaining together word-pairs it learned
-    during training. This model knows 45 words and was trained on 91 words of
+    during training. This model knows 46 words and was trained on 106 words of
     text; the models behind modern chatbots know hundreds of thousands of
     word-pieces and are trained on trillions of words. But the
     generate-one-word-and-repeat trick is exactly the same.
@@ -312,16 +302,12 @@
     #v(0.2em)
     #block[
       #set text(size: 7.5pt, fill: anu-colors.grey-2)
-      The training text (no peeking until you've generated a few sentences of
-      your own):
+      The training text? The opening lines of a very famous children's book.
+      Generate a few sentences, have a guess, then check below.
       #rotate(180deg, reflow: true)[
         #set text(style: "italic")
-        stars gleam. bells ring and the sea hums softly. bells echo over the
-        night. birds sing a song to the moon. birds wake and morning comes.
-        stars fall over the cat. stars shine and rain falls and wind blows.
-        waves rise and clouds drift across the sun. waves sing to the night. the
-        moon sings a tune. the cat dreams of a dream. the dog sleeps and shadows
-        dance under the sea. the sun rises over the dog.
+        It's the first four stanzas of The Cat in the Hat by Dr. Seuss---which
+        is why your generated text sounds the way it does.
       ]
     ]
   ],

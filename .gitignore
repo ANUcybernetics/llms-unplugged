@@ -13,8 +13,6 @@
 !/data/frankenstein.txt
 # and sycophancy.txt for the sycophancy lesson activity
 !/data/sycophancy.txt
-# and cat-and-moon.txt, the d6-exact corpus behind the try-it-yourself spread
-!/data/cat-and-moon.txt
 
 # default model name
 model.json
