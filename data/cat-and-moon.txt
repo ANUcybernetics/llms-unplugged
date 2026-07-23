@@ -4,10 +4,16 @@ author: LLMs Unplugged
 url: https://www.llmsunplugged.org
 ---
 
-the cat dreams of a song.
-the dog sleeps and birds sing to the moon.
-the night falls and the sea sings a song to the sun.
-the sun rises over the sea.
-the moon sings to the dog.
-birds sing a song to the night.
+stars gleam.
+bells ring and the sea hums softly.
+bells echo over the night.
+birds sing a song to the moon.
+birds wake and morning comes.
 stars fall over the cat.
+stars shine and rain falls and wind blows.
+waves rise and clouds drift across the sun.
+waves sing to the night.
+the moon sings a tune.
+the cat dreams of a dream.
+the dog sleeps and shadows dance under the sea.
+the sun rises over the dog.

@@ -96,32 +96,64 @@
 // Single-option entries carry no threshold: no roll needed.
 
 #let model = (
-  (".", ((1, "birds"), (2, "stars"), (6, "the"))),
-  ("a", ((none, "song"),)),
-  ("and", ((3, "birds"), (6, "the"))),
-  ("birds", ((none, "sing"),)),
+  (".", ((1, "bells"), (2, "birds"), (3, "stars"), (5, "the"), (6, "waves"))),
+  ("a", ((2, "dream"), (4, "song"), (6, "tune"))),
+  ("across", ((none, "the"),)),
+  (
+    "and",
+    (
+      (1, "clouds"),
+      (2, "morning"),
+      (3, "rain"),
+      (4, "shadows"),
+      (5, "the"),
+      (6, "wind"),
+    ),
+  ),
+  ("bells", ((3, "echo"), (6, "ring"))),
+  ("birds", ((3, "sing"), (6, "wake"))),
+  ("blows", ((none, "."),)),
   ("cat", ((3, "."), (6, "dreams"))),
+  ("clouds", ((none, "drift"),)),
+  ("comes", ((none, "."),)),
+  ("dance", ((none, "under"),)),
   ("dog", ((3, "."), (6, "sleeps"))),
+  ("dream", ((none, "."),)),
   ("dreams", ((none, "of"),)),
+  ("drift", ((none, "across"),)),
+  ("echo", ((none, "over"),)),
   ("fall", ((none, "over"),)),
   ("falls", ((none, "and"),)),
+  ("gleam", ((none, "."),)),
+  ("hums", ((none, "softly"),)),
   ("moon", ((3, "."), (6, "sings"))),
-  ("night", ((3, "."), (6, "falls"))),
+  ("morning", ((none, "comes"),)),
+  ("night", ((none, "."),)),
   ("of", ((none, "a"),)),
   ("over", ((none, "the"),)),
+  ("rain", ((none, "falls"),)),
+  ("ring", ((none, "and"),)),
+  ("rise", ((none, "and"),)),
   ("rises", ((none, "over"),)),
-  ("sea", ((3, "."), (6, "sings"))),
+  ("sea", ((3, "."), (6, "hums"))),
+  ("shadows", ((none, "dance"),)),
+  ("shine", ((none, "and"),)),
   ("sing", ((3, "a"), (6, "to"))),
-  ("sings", ((3, "a"), (6, "to"))),
+  ("sings", ((none, "a"),)),
   ("sleeps", ((none, "and"),)),
-  ("song", ((2, "."), (6, "to"))),
-  ("stars", ((none, "fall"),)),
+  ("softly", ((none, "."),)),
+  ("song", ((none, "to"),)),
+  ("stars", ((2, "fall"), (4, "gleam"), (6, "shine"))),
   ("sun", ((3, "."), (6, "rises"))),
   (
     "the",
     ((1, "cat"), (2, "dog"), (3, "moon"), (4, "night"), (5, "sea"), (6, "sun")),
   ),
   ("to", ((none, "the"),)),
+  ("tune", ((none, "."),)),
+  ("under", ((none, "the"),)),
+  ("wake", ((none, "and"),)),
+  ("waves", ((3, "rise"), (6, "sing"))),
 )
 
 // ---------------------------------------------------------------------------
@@ -208,15 +240,15 @@
         [#gen[the moon sings]],
 
         [#headword("sings", size: 1.2em)],
-        [roll a 2 → first number ≥ 2 is *3*|a],
+        [no #dice-indicator, so no roll: the only option is "a"],
         [#gen[the moon sings a]],
 
         [#headword("a", size: 1.2em)],
-        [no #dice-indicator, so no roll: the only option is "song"],
+        [roll a 3 → first number ≥ 3 is *4*|song],
         [#gen[the moon sings a song]],
 
         [#headword("song", size: 1.2em)],
-        [roll a 4 → first number ≥ 4 is *6*|to],
+        [no #dice-indicator, so no roll: the only option is "to"],
         [#gen[the moon sings a song to]],
 
         [#headword("to", size: 1.2em)],
@@ -237,7 +269,7 @@
 
     "The moon sings a song to the cat" appears nowhere in the model's training
     text---the model composed it, by chaining together word-pairs it learned
-    during training. This model knows 23 words and was trained on 58 words of
+    during training. This model knows 45 words and was trained on 91 words of
     text; the models behind modern chatbots know hundreds of thousands of
     word-pieces and are trained on trillions of words. But the
     generate-one-word-and-repeat trick is exactly the same.
@@ -245,7 +277,7 @@
   ],
   [
     // ------------------------------------------------------------ recto
-    #v(1.2cm)
+    #v(0.4cm)
 
     // The model, typeset like a page from a pre-trained booklet: two
     // dictionary-style columns, one entry per line (long entries wrap with a
@@ -253,15 +285,15 @@
     #block(
       width: 100%,
       stroke: 0.5pt + anu-colors.gold-2,
-      inset: (x: 1cm, y: 1cm),
+      inset: (x: 1cm, y: 0.6cm),
     )[
-      #set text(font: "Libertinus Serif", size: 10.5pt)
+      #set text(font: "Libertinus Serif", size: 9.5pt)
       #set par(hanging-indent: 1.4em)
 
       #let mid = calc.ceil(model.len() / 2)
       #let column(entries) = for (word, options) in entries {
         format-entry(word, options)
-        v(0.45em)
+        v(0.25em)
       }
       #grid(
         columns: (1fr, 1fr),
@@ -270,24 +302,26 @@
       )
     ]
 
-    #v(0.8em)
-    #text(size: 0.95em, fill: anu-colors.grey-2)[
+    #v(0.5em)
+    #text(size: 0.9em, fill: anu-colors.grey-2)[
       This is the whole model: every word it knows, and every word the model
       says can follow it. Full-size pre-trained models---whole novels in booklet
       form---are at #text(fill: anu-colors.gold)[www.llmsunplugged.org].
     ]
 
-    #v(0.4em)
+    #v(0.2em)
     #block[
-      #set text(size: 8pt, fill: anu-colors.grey-2)
+      #set text(size: 7.5pt, fill: anu-colors.grey-2)
       The training text (no peeking until you've generated a few sentences of
       your own):
       #rotate(180deg, reflow: true)[
         #set text(style: "italic")
-        the cat dreams of a song. the dog sleeps and birds sing to the moon. the
-        night falls and the sea sings a song to the sun. the sun rises over the
-        sea. the moon sings to the dog. birds sing a song to the night. stars
-        fall over the cat.
+        stars gleam. bells ring and the sea hums softly. bells echo over the
+        night. birds sing a song to the moon. birds wake and morning comes.
+        stars fall over the cat. stars shine and rain falls and wind blows.
+        waves rise and clouds drift across the sun. waves sing to the night. the
+        moon sings a tune. the cat dreams of a dream. the dog sleeps and shadows
+        dance under the sea. the sun rises over the dog.
       ]
     ]
   ],
