@@ -13,15 +13,17 @@
 // it in their own workflow; this file fixes the content, the model data and
 // the interaction logic.
 //
-// The model is a bigram model of the first four stanzas (23 body lines,
-// "The sun did not shine." through "Not one little bit.") of The Cat in the
-// Hat --- Seuss's controlled vocabulary gives a small vocab with dense
-// branching (22 of 46 entries offer a dice roll; no entry exceeds 6
-// options), which real prose and even chorus-heavy ballads don't match at
-// this scale. Counts come from `llms_unplugged tsv` over that excerpt, with
-// cumulative thresholds rounded onto a single d6 (strictly increasing, last
-// pinned to 6, so every option stays reachable; worst-case distortion is a
-// 1-in-9 option widened to 1-in-6). The excerpt itself is deliberately NOT
+// The model is a bigram model of the opening of The Cat in the Hat ("The
+// sun did not shine." through "Your mother will not mind at all if I do.",
+// i.e. the first 44 body lines) --- Seuss's controlled vocabulary gives a
+// small vocab with dense branching (43 of 84 entries offer a dice roll),
+// which real prose and even chorus-heavy ballads don't match at this scale.
+// Counts come from `llms_unplugged tsv` over that excerpt. Entries with more
+// than six next words keep only their six most common (top-k with k = 6,
+// the same move real chatbot samplers make --- here that touches only "!",
+// "." and "we", dropping six count-1 edges). Cumulative thresholds are then
+// rounded onto a single d6 (strictly increasing, last pinned to 6, so every
+// kept option stays reachable). The excerpt itself is deliberately NOT
 // reproduced on the poster and its corpus file stays untracked (data/* is
 // gitignored) --- the poster prints only derived statistics, consistent with
 // the fair-use stance in cli/book.typ's copyright page.
@@ -55,7 +57,7 @@
   )
 }
 
-#let is-punct(word) = word in (".", ",", "!")
+#let is-punct(word) = word in (".", ",", "!", "?")
 
 #let headword(word, size: 1.4em) = {
   if is-punct(word) {
@@ -105,52 +107,109 @@
 // needed. Regenerate with `llms_unplugged tsv` if the excerpt changes.
 
 #let model = (
-  ("!", ((1, "And"), (5, "Sit"), (6, "too"))),
-  (",", ((2, "cold"), (3, "How"), (4, "we"), (6, "wet"))),
-  (".", ((1, "And"), (2, "I"), (3, "it"), (4, "not"), (5, "So"), (6, "we"))),
+  ("!", ((1, "And"), (2, "How"), (3, "I"), (4, "sit"), (5, "the"), (6, "we"))),
+  (
+    ",",
+    ((1, "cold"), (2, "How"), (3, "said"), (4, "we"), (5, "wet"), (6, "Why")),
+  ),
+  (".", ((1, "A"), (2, "And"), (3, "But"), (4, "I"), (5, "So"), (6, "we"))),
+  ("?", ((none, "I"),)),
+  ("A", ((none, "lot"),)),
   ("all", ((2, "."), (4, "that"), (6, "we"))),
-  ("And", ((2, "I"), (4, "too"), (6, "we"))),
+  (
+    "And",
+    ((1, "he"), (2, "I"), (3, "the"), (4, "then"), (5, "too"), (6, "we")),
+  ),
   ("at", ((none, "all"),)),
   ("ball", ((none, "."),)),
   ("bit", ((none, "."),)),
+  ("bump", ((3, "!"), (6, "made"))),
+  ("But", ((none, "we"),)),
+  ("can", ((none, "have"),)),
+  ("cat", ((2, "."), (6, "in"))),
   ("cold", ((4, ","), (6, "to"))),
-  ("could", ((none, "do"),)),
+  ("could", ((3, "do"), (6, "play"))),
   ("day", ((none, "."),)),
   ("did", ((4, "not"), (6, "nothing"))),
-  ("do", ((3, "!"), (6, "was"))),
+  ("do", ((2, "!"), (4, "was"), (6, "you"))),
+  ("fun", ((none, "that"),)),
+  ("funny", ((none, "!"),)),
+  ("games", ((none, "we"),)),
   ("go", ((none, "out"),)),
+  ("good", ((2, "fun"), (4, "games"), (6, "tricks"))),
   ("had", ((none, "something"),)),
+  ("Hat", ((3, "!"), (6, "."))),
+  ("have", ((none, "Lots"),)),
+  ("he", ((none, "said"),)),
+  ("him", ((3, "!"), (6, "step"))),
   ("house", ((3, "."), (6, "all"))),
-  ("How", ((none, "I"),)),
-  ("I", ((2, "said"), (4, "sat"), (6, "wish"))),
-  ("in", ((none, "the"),)),
-  ("it", ((3, "."), (6, "was"))),
-  ("like", ((none, "it"),)),
+  ("How", ((3, "I"), (6, "that"))),
+  ("I", ((2, "know"), (3, "said"), (4, "sat"), (5, "will"), (6, "wish"))),
+  ("in", ((1, "on"), (6, "the"))),
+  ("is", ((2, "funny"), (4, "not"), (6, "wet"))),
+  ("it", ((2, "."), (4, "is"), (6, "was"))),
+  ("jump", ((none, "!"),)),
+  ("know", ((2, "it"), (6, "some"))),
+  ("like", ((3, "it"), (6, "that"))),
   ("little", ((none, "bit"),)),
-  ("not", ((2, "like"), (4, "one"), (6, "shine"))),
+  ("looked", ((none, "!"),)),
+  ("lot", ((none, "of"),)),
+  ("Lots", ((none, "of"),)),
+  ("made", ((none, "us"),)),
+  ("mat", ((none, "!"),)),
+  ("new", ((none, "tricks"),)),
+  ("not", ((2, "like"), (3, "one"), (4, "shine"), (6, "sunny"))),
   ("nothing", ((none, "at"),)),
+  ("of", ((none, "good"),)),
+  ("on", ((none, "the"),)),
   ("one", ((none, "little"),)),
   ("out", ((none, "And"),)),
-  ("play", ((3, "."), (6, "ball"))),
-  ("said", ((none, ","),)),
+  ("play", ((2, ","), (4, "."), (6, "ball"))),
+  ("said", ((2, ","), (4, "the"), (6, "to"))),
   ("Sally", ((none, "."),)),
   ("sat", ((3, "in"), (6, "there"))),
+  ("saw", ((none, "him"),)),
   ("shine", ((none, "."),)),
-  ("Sit", ((none, "!"),)),
+  ("show", ((none, "them"),)),
+  ("sit", ((5, "!"), (6, "there"))),
   ("So", ((2, "all"), (6, "we"))),
-  ("something", ((none, "to"),)),
-  ("sun", ((none, "did"),)),
-  ("that", ((none, "cold"),)),
-  ("the", ((4, "house"), (6, "sun"))),
-  ("there", ((3, ","), (6, "with"))),
-  ("to", ((1, "do"), (2, "go"), (5, "play"), (6, "Sit"))),
+  ("some", ((3, "good"), (6, "new"))),
+  ("something", ((3, "to"), (6, "went"))),
+  ("step", ((none, "in"),)),
+  ("sun", ((3, "did"), (6, "is"))),
+  ("sunny", ((none, "."),)),
+  ("that", ((2, "?"), (3, "bump"), (4, "cold"), (6, "is"))),
+  ("the", ((2, "cat"), (3, "Hat"), (4, "house"), (5, "mat"), (6, "sun"))),
+  ("them", ((none, "to"),)),
+  ("then", ((3, "something"), (6, "we"))),
+  ("there", ((2, ","), (4, "like"), (6, "with"))),
+  (
+    "to",
+    ((1, "do"), (2, "go"), (3, "play"), (4, "sit"), (5, "us"), (6, "you")),
+  ),
   ("too", ((2, "cold"), (6, "wet"))),
+  ("tricks", ((3, ","), (6, "."))),
   ("two", ((none, "."),)),
+  ("us", ((3, ","), (6, "jump"))),
   ("was", ((3, "to"), (6, "too"))),
-  ("we", ((1, "could"), (2, "did"), (3, "had"), (5, "sat"), (6, "two"))),
-  ("wet", ((2, "day"), (6, "to"))),
+  (
+    "we",
+    (
+      (1, "can"),
+      (2, "could"),
+      (3, "did"),
+      (4, "looked"),
+      (5, "sat"),
+      (6, "saw"),
+    ),
+  ),
+  ("went", ((none, "bump"),)),
+  ("wet", ((2, "And"), (3, "day"), (6, "to"))),
+  ("Why", ((none, "do"),)),
+  ("will", ((none, "show"),)),
   ("wish", ((none, "we"),)),
   ("with", ((none, "Sally"),)),
+  ("you", ((3, "."), (6, "sit"))),
 )
 
 // ---------------------------------------------------------------------------
@@ -234,7 +293,7 @@
         [#gen[So we]],
 
         [#headword("we", size: 1.2em)],
-        [roll a 4 → first number ≥ 4 is *5*|sat],
+        [roll a 5 → first number ≥ 5 is *5*|sat],
         [#gen[So we sat]],
 
         [#headword("sat", size: 1.2em)],
@@ -259,7 +318,7 @@
 
     "So we sat there with Sally" appears nowhere in the model's training
     text---the model composed it, by chaining together word-pairs it learned
-    during training. This model knows 46 words and was trained on 106 words of
+    during training. This model knows 84 words and was trained on 223 words of
     text; the models behind modern chatbots know hundreds of thousands of
     word-pieces and are trained on trillions of words. But the
     generate-one-word-and-repeat trick is exactly the same.
@@ -267,47 +326,50 @@
   ],
   [
     // ------------------------------------------------------------ recto
-    #v(0.4cm)
+    #v(0.2cm)
 
-    // The model, typeset like a page from a pre-trained booklet: two
+    // The model, typeset like a page from a pre-trained booklet: three
     // dictionary-style columns, one entry per line (long entries wrap with a
     // hanging indent, as in the full-size booklets).
     #block(
       width: 100%,
       stroke: 0.5pt + anu-colors.gold-2,
-      inset: (x: 1cm, y: 0.6cm),
+      inset: (x: 0.7cm, y: 0.5cm),
     )[
-      #set text(font: "Libertinus Serif", size: 9.5pt)
+      #set text(font: "Libertinus Serif", size: 8pt)
       #set par(hanging-indent: 1.4em)
 
-      #let mid = calc.ceil(model.len() / 2)
+      #let third = calc.ceil(model.len() / 3)
       #let column(entries) = for (word, options) in entries {
         format-entry(word, options)
-        v(0.25em)
+        v(0.15em)
       }
       #grid(
-        columns: (1fr, 1fr),
-        column-gutter: 1cm,
-        column(model.slice(0, mid)), column(model.slice(mid)),
+        columns: (1fr, 1fr, 1fr),
+        column-gutter: 0.7cm,
+        column(model.slice(0, third)),
+        column(model.slice(third, 2 * third)),
+        column(model.slice(2 * third)),
       )
     ]
 
-    #v(0.5em)
-    #text(size: 0.9em, fill: anu-colors.grey-2)[
-      This is the whole model: every word it knows, and every word the model
-      says can follow it. Full-size pre-trained models---whole novels in booklet
+    #v(0.4em)
+    #text(size: 0.85em, fill: anu-colors.grey-2)[
+      This is (almost) the whole model: the three busiest words offer more than
+      six next words, so they keep only their six most common---the "top-k"
+      trick chatbot samplers use. Full-size models---whole novels in booklet
       form---are at #text(fill: anu-colors.gold)[www.llmsunplugged.org].
     ]
 
-    #v(0.2em)
+    #v(0.1em)
     #block[
-      #set text(size: 7.5pt, fill: anu-colors.grey-2)
+      #set text(size: 7pt, fill: anu-colors.grey-2)
       The training text? The opening lines of a very famous children's book.
       Generate a few sentences, have a guess, then check below.
       #rotate(180deg, reflow: true)[
         #set text(style: "italic")
-        It's the first four stanzas of The Cat in the Hat by Dr. Seuss---which
-        is why your generated text sounds the way it does.
+        It's the opening pages of The Cat in the Hat by Dr. Seuss---the model
+        stops right after the Cat promises your mother will not mind.
       ]
     ]
   ],
