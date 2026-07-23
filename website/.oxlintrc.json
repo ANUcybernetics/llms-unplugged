@@ -1,10 +1,20 @@
 {
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  // Shared baseline across the theme-family repos — keep in step with the
+  // other sites (the anu-theme-sync skill owns the canon). Repo-specific
+  // deltas go below the marked line.
   "categories": {
     "correctness": "error",
     "suspicious": "error",
     "perf": "error"
   },
   "plugins": ["typescript", "import", "unicorn"],
+  "env": {
+    "builtin": true,
+    "browser": true,
+    "node": true,
+    "es2024": true
+  },
   "jsPlugins": [
     "@e18e/eslint-plugin",
     "eslint-plugin-no-only-tests",
@@ -12,16 +22,24 @@
     "eslint-plugin-unused-imports"
   ],
   "rules": {
-    "no-underscore-dangle": "off",
+    "eqeqeq": ["error", "always", { "null": "ignore" }],
+    "no-warning-comments": ["error", { "terms": ["@nocommit"] }],
+    "import/no-self-import": "error",
     "no-only-tests/no-only-tests": "error",
     "unused-imports/no-unused-imports": "error",
     "perfectionist/sort-named-imports": "error",
+    "perfectionist/sort-heritage-clauses": "error",
     "e18e/ban-dependencies": "error",
     "e18e/prefer-includes": "error",
     "e18e/prefer-array-at": "error",
     "e18e/prefer-nullish-coalescing": "error",
     "e18e/prefer-date-now": "error",
-    "e18e/prefer-regex-test": "error"
+    "e18e/prefer-regex-test": "error",
+    // --- repo-specific deltas below ---
+    // widely used for the ESM __dirname shim (scripts/*.ts) and an internal
+    // window-flag convention (bg-music.ts); not vestigial here, unlike the
+    // other theme-family repos
+    "no-underscore-dangle": "off"
   },
   "overrides": [
     {
@@ -33,5 +51,10 @@
       }
     }
   ],
-  "ignorePatterns": ["src/wasm-pkg/**", "**/*.astro"]
+  "ignorePatterns": [
+    "dist/",
+    ".astro/",
+    "**/*.astro",
+    "src/wasm-pkg/**" // repo-specific: vendored wasm build output
+  ]
 }
