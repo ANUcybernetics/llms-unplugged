@@ -1,14 +1,36 @@
 import { bookTemplate, cutoutsTemplate } from "../templates";
-// Fonts the templates reference that typst.ts does not ship as a default asset,
-// bundled locally (subset from the system fonts by scripts/subset-booklet-fonts.py).
-// They are uncompressed OTF because Typst parses only uncompressed sfnt fonts
-// and silently ignores woff2. Libertinus Serif and New Computer Modern are
-// typst.ts defaults, so they are not bundled here.
+// Fonts the templates reference, all bundled locally. The subset faces come from
+// the system fonts via scripts/subset-booklet-fonts.py; the full faces are the
+// upstream typst-assets v0.13.1 files, vendored verbatim so rendering matches
+// what typst.ts's own default pack produced. They are uncompressed OTF/TTF
+// because Typst parses only uncompressed sfnt fonts and silently ignores woff2.
+//
+// Nothing here is a "default asset" any more: typst.ts's defaults are fetched
+// from cdn.jsdelivr.net at init (17 faces, 8.5 MB, including 5.5 MB of maths
+// fonts these templates never use), which made every page view depend on a
+// third-party CDN. disableDefaultFontAssets() below switches that off, so every
+// face the templates can reach has to be listed here.
 import serifCjkFontUrl from "../assets/fonts/NotoSerifCJKsc-Regular-subset.otf?url";
 import sansCjkFontUrl from "../assets/fonts/NotoSansCJKsc-Regular-subset.otf?url";
 import libertinusSansRegularUrl from "../assets/fonts/LibertinusSans-Regular-subset.otf?url";
 import libertinusSansBoldUrl from "../assets/fonts/LibertinusSans-Bold-subset.otf?url";
 import monaspaceArgonUrl from "../assets/fonts/MonaspaceArgon-Regular-subset.otf?url";
+// Body text (book.typ, tokenized-cutouts.typ) plus the weights/styles the
+// templates apply over it. Full faces, not subsets: this renders arbitrary
+// user-supplied text, so clipping the glyph coverage would drop characters.
+//
+// This list is exactly the faces both templates actually select, established by
+// rendering each of them against the full 17-face pack and against candidate
+// subsets, then byte-comparing the SVG: these five reproduce the old output
+// exactly, and dropping any one of them changes it. Semibold is the surprise --
+// something in the templates resolves to weight 600, and without this face 33
+// glyphs render from a different weight.
+import libertinusSerifRegularUrl from "../assets/fonts/LibertinusSerif-Regular.otf?url";
+import libertinusSerifBoldUrl from "../assets/fonts/LibertinusSerif-Bold.otf?url";
+import libertinusSerifItalicUrl from "../assets/fonts/LibertinusSerif-Italic.otf?url";
+import libertinusSerifSemiboldUrl from "../assets/fonts/LibertinusSerif-Semibold.otf?url";
+// Typst's default face for #raw(), used for the URL and version in book.typ.
+import dejaVuSansMonoUrl from "../assets/fonts/DejaVuSansMono.ttf?url";
 // The typst.ts runtime wasm is bundled from the pinned npm packages rather than
 // fetched from a CDN, so builds are deterministic and work offline. `?url`
 // yields the emitted asset path; the wasm itself is only fetched when the
@@ -76,8 +98,9 @@ export async function initCompiler(
 
     // Preload the bundled faces into the compiler's font book (fonts are
     // resolved by family name off this book --- mapping them into the shadow
-    // filesystem does not register them). Libertinus Serif and New Computer
-    // Modern come from typst.ts's default assets, which it loads itself.
+    // filesystem does not register them). disableDefaultFontAssets() must come
+    // with them: without a loader that states an opinion on `assets`,
+    // TypstCompilerDriver.init appends its own CDN font loader.
     typst.use(
       module.TypstSnippet.preloadFonts([
         serifCjkFontUrl,
@@ -85,7 +108,13 @@ export async function initCompiler(
         libertinusSansRegularUrl,
         libertinusSansBoldUrl,
         monaspaceArgonUrl,
+        libertinusSerifRegularUrl,
+        libertinusSerifBoldUrl,
+        libertinusSerifItalicUrl,
+        libertinusSerifSemiboldUrl,
+        dejaVuSansMonoUrl,
       ]),
+      module.TypstSnippet.disableDefaultFontAssets(),
     );
 
     onUpdate((s) => appendLog(s, "Compiler options configured"));
