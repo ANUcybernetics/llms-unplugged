@@ -9,6 +9,7 @@ dist/
 .llms-generated/
 .unlighthouse/
 src/templates/*.typ
+src/templates/favicon.svg
 
 # Logs
 *.log

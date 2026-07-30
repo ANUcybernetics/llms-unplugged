@@ -6,7 +6,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const cliDir = resolve(__dirname, "../../cli");
 const destDir = resolve(__dirname, "../src/templates");
 
-const templates = ["book.typ", "tokenized-cutouts.typ"];
+// The .typ templates plus every asset they reference by relative path, so the
+// browser compiler resolves the same files the CLI does. tokenized-cutouts.typ
+// does image("favicon.svg"); without it the cutouts workflow fails to compile.
+const templates = ["book.typ", "tokenized-cutouts.typ", "favicon.svg"];
 
 mkdirSync(destDir, { recursive: true });
 
