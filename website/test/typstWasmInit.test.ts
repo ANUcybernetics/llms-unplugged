@@ -5,26 +5,40 @@
 // packages the browser bundle ships, feeding the wasm bytes directly. The
 // document is shape-only because no fonts are loaded.
 //
-// Skipped on CI: feeding getModule() was meant to keep this offline, but the
-// compile still reaches the network somewhere (a deploy failed on
-// `TypeError: fetch failed` / ECONNRESET inside the compile step, and passed on
-// re-run with no code change). A registry hiccup blocking a deploy is worse
-// than the coverage is worth, so this stays a local-only check until the stray
-// fetch is tracked down.
+// `assets: false` is what actually keeps this offline. An empty `beforeBuild`
+// does NOT mean "no fonts": TypstCompilerDriver.init appends
+// `loadFonts([], { assets: ['text'] })` whenever no loader states an opinion,
+// which pulls 17 faces off cdn.jsdelivr.net and once failed a deploy on
+// ECONNRESET. Disabling the asset pack is enough here because a bare rect needs
+// no glyphs.
 import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
-import { describe, expect, it } from "vitest";
-import { createTypstCompiler, createTypstRenderer } from "@myriaddreamin/typst.ts";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { createTypstCompiler, createTypstRenderer, loadFonts } from "@myriaddreamin/typst.ts";
 
 const require = createRequire(import.meta.url);
 
-describe.skipIf(Boolean(process.env.CI))("typst.ts wasm init", () => {
+describe("typst.ts wasm init", () => {
+  // Fail loudly rather than flakily if a typst.ts upgrade reintroduces a fetch:
+  // without this the only symptom is an intermittent red deploy on a CI runner.
+  const realFetch = globalThis.fetch;
+  beforeAll(() => {
+    globalThis.fetch = (...args: Parameters<typeof realFetch>) => {
+      const [input] = args;
+      const url = typeof input === "string" ? input : (input as Request).url;
+      throw new Error(`typst.ts attempted a network fetch: ${url}`);
+    };
+  });
+  afterAll(() => {
+    globalThis.fetch = realFetch;
+  });
+
   it("initialises the web compiler wasm and compiles a document", async () => {
     const wasmPath =
       require.resolve("@myriaddreamin/typst-ts-web-compiler/pkg/typst_ts_web_compiler_bg.wasm");
     const compiler = createTypstCompiler();
     await compiler.init({
-      beforeBuild: [],
+      beforeBuild: [loadFonts([], { assets: false })],
       getModule: () => readFile(wasmPath),
     });
 
@@ -44,7 +58,7 @@ describe.skipIf(Boolean(process.env.CI))("typst.ts wasm init", () => {
       require.resolve("@myriaddreamin/typst-ts-renderer/pkg/typst_ts_renderer_bg.wasm");
     const renderer = createTypstRenderer();
     await renderer.init({
-      beforeBuild: [],
+      beforeBuild: [loadFonts([], { assets: false })],
       getModule: () => readFile(wasmPath),
     });
   }, 30_000);
