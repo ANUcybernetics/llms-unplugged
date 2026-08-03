@@ -47,10 +47,10 @@ Add tool-use cutouts and name a tool operator. On a trigger word, generation pau
 | Trigger                         | Tool                                        | Returns                   |
 | ------------------------------- | ------------------------------------------- | ------------------------- |
 | <Token next tool>GOOGLE</Token> | a phone search                              | one word from the top hit |
-| <Token next tool>FRIEND</Token> | everyone texts a friend the sentence so far | first reply wins          |
+| <Token next tool>FRIEND</Token> | text a friend `What comes next? "[sentence so far]..."` | first reply wins |
 
 {/* notes:
-Two tools: GOOGLE = search on a phone, read the first word of the top hit; FRIEND = everyone texts a friend the sentence so far, first reply wins. Swap in your own if you like.
+Two tools: GOOGLE = search on a phone, read the first word of the top hit; FRIEND = everyone texts a friend `What comes next? "[sentence so far]..."`, first reply wins. The prompt asks for a continuation instead of leaving friends to decipher a mysterious fragment. Swap in your own if you like.
 */}
 
 ---
