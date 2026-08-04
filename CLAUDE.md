@@ -40,6 +40,11 @@ cd cli && cargo build --release
 # (print with "flip on short edge" binding; assumes a4 landscape)
 ./cli/target/release/llms_unplugged cutouts -i data/sycophancy.txt -n 2 --duplex
 
+# Generate per-participant search sheets: the same activity without the
+# cutting. The corpus is shuffled and dealt round-robin into one page each,
+# so the room collectively holds the model.
+./cli/target/release/llms_unplugged sheets -i data/the-cat-in-the-hat.txt -n 2 --sheets 24
+
 # Build handouts (worksheets, poster)
 cd handouts && make
 

@@ -109,6 +109,25 @@ are dropped; apostrophes inside contractions are preserved.
     already variable. Repeat the flag to add multiple tools. Triggers render in
     a distinct black-on-gold style so they remain visually unambiguous even when
     the corpus contains the same word.
+  - `--shuffle` (with optional `--seed`): emit cutouts in random rather than
+    corpus order. Cutting destroys the ordering anyway, so this only matters if
+    the uncut pages might be read before they're cut.
+- `sheets` - Generate per-participant search sheets: the cutouts activity with
+  the cutting taken out. The corpus is shuffled and dealt round-robin into one
+  page per person, so every cutout is on exactly one sheet and the room as a
+  whole holds the corpus statistics. Participants search their own sheet for the
+  context just called out and read out the next word; the number of hands that
+  go up for a word is that word's count in the text. The PDF leads with a
+  one-page teacher brief, then one page per participant.
+  - `--sheets <N>` (required): number of participants
+  - `--n <N>`: prefix length (default 2)
+  - `--sort`: order each sheet by context instead of shuffling it, turning the
+    sheet into a lookup table --- a good second round, once the class has felt
+    how slow an unsorted search is
+  - `--seed <N>`: reproducible deal
+  - `--columns`, `--font-size`, `--paper-size`: sheet density. Columns default
+    to 4 for bigrams and narrow as `n` grows; the command warns when a sheet
+    spills onto a second page, which defeats the one-page-per-person point.
 - `sample` - Build an N-gram model in memory from a corpus and sample text from
   it. Useful as a sanity check on the model without printing a booklet.
   - `--input <FILE>`, `--n <N>` (default 2)

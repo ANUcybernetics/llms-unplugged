@@ -18,6 +18,12 @@ text file → Rust CLI → model.json → Typst → PDF booklet
 - `src/text.rs` - Unified tokenization/normalization pipeline (case handling,
   punctuation tokens, filters)
 - `book.typ` - Main booklet template (reads from model.json)
+- `tokenized-cutouts.typ` - Cutouts template (cut-up tokens for the table)
+- `tokenized-sheets.typ` - Search-sheet template (one page per participant, no
+  cutting)
+- `cutout-common.typ` - Palette, colour hash and token renderers shared by both
+  cutout-family templates. Also copied into the website so the browser compiler
+  resolves it (`website/scripts/copy-cli-templates.ts`)
 - `Makefile` - Batch processing for multiple texts/formats
 
 ## Essential commands
@@ -46,6 +52,13 @@ cargo build --release
 # "flip on short edge" binding. Currently assumes a4 landscape.
 ./target/release/llms_unplugged cutouts -i ../data/sycophancy.txt -n 2 --duplex
 
+# Generate per-participant search sheets: no cutting, one page each. The corpus
+# is shuffled and dealt round-robin, so the room collectively holds the model.
+./target/release/llms_unplugged sheets -i ../data/the-cat-in-the-hat.txt -n 2 --sheets 24
+
+# Same, but each sheet ordered by context (the "now organise your data" round)
+./target/release/llms_unplugged sheets -i ../data/the-cat-in-the-hat.txt -n 2 --sheets 24 --sort
+
 # Build all configured booklets
 make booklets
 
@@ -66,6 +79,14 @@ cargo test
 - `--duplex` (cutouts only) - Generate a double-sided PDF where each cutout page
   is paired with a mirrored back. Requires "flip on short edge" binding when
   printed. Currently hard-coded to a4 landscape.
+- `--shuffle` / `--seed` (cutouts only) - Emit cutouts in random rather than
+  corpus order, so an uncut page doesn't read as the source text
+- `--sheets <N>` (sheets only, required) - Number of participants; the corpus is
+  partitioned across this many one-page sheets
+- `--sort` (sheets only) - Order each sheet by context instead of shuffling it
+- `--columns` / `--font-size` (sheets only) - Sheet density. Columns default to
+  4 for bigrams and narrow as n grows; the command warns when a sheet spills
+  onto a second page
 
 ## Input file format
 
