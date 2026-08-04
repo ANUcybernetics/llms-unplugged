@@ -38,7 +38,11 @@
 // The cutouts palette: 28 chromatic + black + mid-grey = 30 swatches, min
 // pairwise OKLab ΔE = 0.137. That sits in the "clearly distinct" range
 // (≥0.10) with headroom for the 0.02–0.05 that CMYK conversion, paper colour
-// and ambient light take back. L is floored at 0.32 (not 0.20) so no
+// and ambient light take back. The grey is luma(113), the sRGB value of the
+// L=0.55 anchor the search seeds: it used to be emitted as luma(140), which
+// the search never protected and which sat ΔE 0.119 from a desaturated sage
+// green — the grey, not any chromatic pair, was the tightest gap in the
+// palette. L is floored at 0.32 (not 0.20) so no
 // chromatic entry sits close enough to black for CMYK compression to merge
 // them on paper — an earlier palette had a dark blue at L≈0.275 that printed
 // as black. The adaptive light/dark treatment is what lets it extend to
@@ -51,13 +55,9 @@
   salt: 247509,
   // 28/30 top tokens distinct; only "are"/"be" and "?"/"!" collide.
   colors: (
-    // Neutrals (always dark enough for white text). Regenerating this palette
-    // will move the grey to luma(113) — see the note in compact-palette. Left
-    // as-is because the printed cutout PDFs are set at 36pt, where luma(140)
-    // reads fine, and reprinting them to chase one shade of grey isn't worth
-    // it.
+    // Neutrals (always dark enough for white text)
     (color: luma(0), light: false), // black
-    (color: luma(140), light: false), // mid grey
+    (color: luma(113), light: false), // mid grey (OKLab L=0.55)
 
     // Chromatic (sorted by hue)
     (color: oklch(32.4%, 0.082, 24deg), light: false),
@@ -115,12 +115,9 @@
   // marks distinct, first collision only at the 13th — the best a 12-bucket
   // hash can do.
   colors: (
-    // Neutrals. The grey is luma(113), the sRGB value of the OKLab L=0.55
-    // anchor the generator seeds the search with — large-palette below still
-    // carries the luma(140) the generator used to emit, which is a lighter
-    // grey than the search ever protected and only clears 3.4:1 against white.
+    // Neutrals
     (color: luma(0), light: false), // black
-    (color: luma(113), light: false), // mid grey
+    (color: luma(113), light: false), // mid grey (OKLab L=0.55)
 
     // Chromatic (sorted by hue)
     (color: oklch(59.7%, 0.243, 29deg), light: false),
