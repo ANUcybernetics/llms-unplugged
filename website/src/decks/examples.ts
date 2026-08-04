@@ -23,6 +23,15 @@ export const EXAMPLE_GENERATION = "see spot , run . see";
 // `,`=0-2/`.`=3-9. The choices: spot→`,` (rolled 7), `,`→run (2), run→`.` (3).
 export const EXAMPLE_GENERATION_ROLLS = "- 7 2 3 - -";
 
+// Generalisation --- drives the "tallies become knobs" beat in scaling-up.
+// `cat` and `dog` do exactly the same job in this text, but a grid stores them
+// as unrelated rows: `cat` has seen both `sat` and `ran`, `dog` only `sat`, so
+// the grid rates "the dog ran" impossible. Pre-tokenised (unlike EXAMPLE_TEXT)
+// so it can go straight into StaticGrid, and small enough that the empty cell
+// is findable from the back of the room.
+export const EXAMPLE_GENERALISE = "the cat sat . the cat ran . the dog sat .";
+export const EXAMPLE_GENERALISE_VOCAB = "the cat sat . ran dog";
+
 // Pre-trained model --- a larger corpus --- drives grid-pretrained-generation
 // (the 90min and 2h decks only).
 export const EXAMPLE_TEXT =
