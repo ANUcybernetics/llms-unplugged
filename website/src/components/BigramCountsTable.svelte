@@ -82,7 +82,6 @@
 
   table.bigram-grid {
     width: 100%;
-    margin: 0;
     border-collapse: collapse;
     font-size: 1.6rem;
   }

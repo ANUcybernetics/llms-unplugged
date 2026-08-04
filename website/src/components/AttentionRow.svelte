@@ -97,7 +97,6 @@
 
   table.attention-grid {
     width: 100%;
-    margin: 0;
     /* Fixed layout, so the columns are set by the header row and stay put when
        the active row's heading grows from `,` to `see spot ,`. Under auto
        layout that growth nudges every column sideways, and a grid that shuffles

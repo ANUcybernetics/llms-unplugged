@@ -90,7 +90,6 @@
 
   table.context-grid {
     width: 100%;
-    margin: 0;
     border-collapse: collapse;
     font-size: 0.88rem;
     line-height: 1.15;
