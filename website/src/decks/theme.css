@@ -8,8 +8,8 @@
    inherited via the @import above; this file only carries
    llms-unplugged-specific extensions: the project --color-bg token,
    speaker-note hiding, .socy-logo zero-padding, the per-token colour
-   palette for cutouts, the cutout/lm-widget/bigram-grid component
-   styles, and the animated logo entrance. */
+   palette for cutouts, and the cutout/lm-widget/bigram-grid component
+   styles. */
 
 :root {
   /* Project-specific token (referenced by widgets.css). */
@@ -268,18 +268,6 @@
   border-radius: 4px;
 }
 
-/* Blockquote styling for regular (non-.quote-class) slides. The theme's
-   .quote slide class already styles its blockquote with a thick gold border
-   and centred layout; this lighter rule covers ordinary `> ...` markdown
-   blockquotes used inline on content slides. */
-.reveal .slides section blockquote {
-  border-inline-start: 4px solid var(--anu-gold);
-  padding-inline-start: 1em;
-  margin-inline-start: 0;
-  font-style: italic;
-  color: var(--anu-white);
-}
-
 /* Wrap a series of Cutouts in <div class="cutout-row"> when they need to sit
    side-by-side as direct children of a slide section (which uses CSS grid for
    layout, so block-level children stack into rows). */
@@ -534,37 +522,4 @@
 .reveal .slides section .lm-widget .mapping-item,
 .reveal .slides section .lm-widget .dice-value {
   font-size: 1em;
-}
-
-@media screen and (prefers-reduced-motion: no-preference) {
-  .present .logo-rule-top,
-  .present .logo-rule-bottom {
-    transform: scaleY(0);
-    animation: logo-rule-grow 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  }
-
-  .present .logo-group {
-    opacity: 0;
-    animation: logo-fade-in 2s ease 1s forwards;
-  }
-
-  @keyframes logo-rule-grow {
-    from {
-      transform: scaleY(0);
-    }
-
-    to {
-      transform: scaleY(1);
-    }
-  }
-
-  @keyframes logo-fade-in {
-    from {
-      opacity: 0;
-    }
-
-    to {
-      opacity: 1;
-    }
-  }
 }
