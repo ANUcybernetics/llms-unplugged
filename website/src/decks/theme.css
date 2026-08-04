@@ -14,6 +14,38 @@
 :root {
   /* Project-specific token (referenced by widgets.css). */
   --color-bg: var(--anu-dark-grey);
+
+  /* Whiteboard (press W): a dark board carrying house artwork rather than
+     astromotion's blank light default. The mode only picks astromotion's own
+     defaults, so the pen palette is restated here --- white is the ink the
+     board opens with, then the deck's gold. The last two inks are the ANU
+     secondary and tertiary, which sit outside this project's gold/black/white
+     artwork palette but give a presenter four pens they can tell apart when
+     marking up a grid live. */
+  --astromotion-wb-mode: dark;
+  --astromotion-wb-bg: var(--at-dark-grey);
+  --astromotion-wb-inks:
+    var(--at-white), var(--at-primary), var(--at-secondary), var(--at-tertiary);
+}
+
+/* The two corner-motif backgrounds below are set as plain rules rather than
+   through --astromotion-wb-bg-image / --at-deck-impact-bg-image: a relative
+   url() inside a custom property resolves against wherever the var() is *used*
+   (astromotion's or the theme's own CSS), not where it is declared, so
+   lightningcss rejects it as ambiguous. Declared here the bundler hashes and
+   base-prefixes them like any other deck asset. Both keep the ground the
+   surface already paints --- black for the board, gold for the impact slide ---
+   so nothing punches a rectangle into it, and both leave the bulk of the canvas
+   empty: the board so there is room to draw, the impact slide so its centred
+   white text is unobstructed. */
+.astromotion-whiteboard {
+  background-image: url("./assets/deco-whiteboard.avif");
+}
+
+/* `_class: impact` --- the same treatment on the gold the theme fills with, the
+   dice sprig in the bottom-right corner clear of the centred text. */
+.reveal .slides section.impact {
+  background-image: url("./assets/bg-impact.avif");
 }
 
 /* Speaker notes are rendered as <div class="notes"> for a11y (not

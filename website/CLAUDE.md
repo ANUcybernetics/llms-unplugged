@@ -130,6 +130,16 @@ Reference images: src/decks/assets/ (deck backgrounds). The most reliable style
 exemplars are `bg-randomness.avif`, `bg-shannon.avif`, and `bg-div-lessons.avif`
 --- prefer these as `--input-image` references.
 
+Read "black background" as the surface the art actually lands on, not black
+always: `bg-impact.avif` fills `_class: impact` slides, which the theme paints
+ANU gold, so it is drawn on flat gold with the dice in black and beige. Match
+the surface so nothing punches a rectangle into it. The same asset pair
+(`bg-impact.avif`, `deco-whiteboard.avif`) is the corner-motif treatment --- a
+small dice cluster bleeding off one corner with the rest of the canvas left
+empty, so centred text or a presenter's pen has room. Those need the flat-fill
+and full-bleed clauses stated outright: left alone the model shades each die
+face with a gradient and lays a white margin down one edge.
+
 Prompting tips (the model will silently ignore the no-text rule and the flat-2D
 rule when it sees these triggers in the scene prompt itself):
 
