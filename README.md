@@ -114,11 +114,16 @@ are dropped; apostrophes inside contractions are preserved.
     the uncut pages might be read before they're cut.
 - `sheets` - Generate per-participant search sheets: the cutouts activity with
   the cutting taken out. The corpus is shuffled and dealt round-robin into one
-  page per person, so every cutout is on exactly one sheet and the room as a
-  whole holds the corpus statistics. Participants search their own sheet for the
-  context just called out and read out the next word; the number of hands that
-  go up for a word is that word's count in the text. The PDF leads with a
-  one-page teacher brief, then one page per participant.
+  page per person, so every entry is on exactly one sheet and the model exists
+  only across the whole room. Participants search their own sheet for the
+  context just called out and read out the next word, so a common continuation
+  puts more hands in the air than a rare one. The deal groups entries by context
+  and spreads each context across as many sheets as it has occurrences, which
+  minimises the case that flattens the show of hands: one person holding several
+  matches for the same context can still only answer once. It can't be
+  eliminated --- a context occurring more often than there are participants has
+  to double up somewhere --- so the effect is reduced rather than removed. The
+  PDF leads with a one-page teacher brief, then one page per participant.
   - `--sheets <N>` (required): number of participants
   - `--n <N>`: prefix length (default 2)
   - `--sort`: order each sheet by context instead of shuffling it, turning the
