@@ -12,7 +12,8 @@
 // the source text with boxes drawn around it.
 
 #import "cutout-common.typ": (
-  brand-gold, coloured-word, derive-n, previous-word-box, render-cutout,
+  brand-gold, coloured-word, derive-n, inter_word_gap, previous-word-box,
+  render-cutout,
 )
 
 // Get configuration from sys.inputs
@@ -283,13 +284,13 @@
               .map(w => coloured-word(w))
               .join(" ")
             let prose = if i == 0 [
-              *Start anywhere.* Pick any entry from any sheet --- say this one,
-              from sheet #entry.sheet --- and write its previous
-              #prev-words-phrase #emph[and] its next word on the board.
+              *Start anywhere.* Pick any entry --- say this one --- and write
+              its previous #prev-words-phrase #emph[and] its next word on the
+              board.
             ] else [
               *Round #str(i).* Call out the last #prev-words-phrase on the board
-              (#emph(called)). Sheet #entry.sheet holds a matching entry, so
-              that person raises a hand and reads out #emph(entry.token.text).
+              (#emph(called)). Another sheet has a match, so that person raises
+              a hand and reads out #emph(entry.token.text).
             ]
             (
               prose,
@@ -313,39 +314,69 @@
 
 // ===== The participant sheets, one page each =====
 
+// The sheets carry no title block of their own: the page is for searching, and
+// every millimetre above the entries is one the rows don't get. Provenance
+// lives in the footer instead.
 #set page(
   header: none,
   footer: align(
     center,
-    text(fill: luma(150), size: 8pt, "www.llmsunplugged.org"),
+    text(fill: luma(150), size: 8pt)[
+      #doc_metadata.title #sym.dash.em www.llmsunplugged.org
+    ],
   ),
 )
 #set text(size: font_size)
 
-// Sheet header: who this belongs to, and the one-line rule, so a participant
-// who missed the briefing can still play from the sheet alone.
-#let sheet-header(index, sheet) = {
-  block(width: 100%, below: 1em)[
-    #grid(
-      columns: (1fr, auto),
-      align: (left + bottom, right + bottom),
-      text(size: 15pt, weight: "bold")[
-        Sheet #str(index + 1) of #str(sheets.len())
-      ],
-      text(size: 10pt, fill: muted)[
-        #doc_metadata.title --- #sheet.len() entries
-      ],
-    )
-    #v(0.35em)
-    #line(length: 100%, stroke: 0.8pt + luma(120))
-    #v(0.5em)
+// Monochrome renderers for the worked example in the instruction line. The
+// example is a reading aid, not one of the entries to be searched, so it stays
+// black and white --- in the palette colours it would read as just another
+// token on the page and pull the eye away from the real ones.
+#let mono-word-box(t) = highlight(
+  fill: luma(60),
+  extent: 0.1em,
+  radius: 2pt,
+  text(fill: white, weight: "bold", t),
+)
+#let mono-cutout(token) = {
+  let parts = token.previous_words.map(mono-word-box)
+  parts.push(text(fill: black, token.text))
+  parts.join(h(inter_word_gap))
+}
+
+// An all-alphabetic entry off this participant's own sheet, so the example in
+// the instruction line is one they can actually go and find. Punctuation-only
+// contexts make a confusing example, hence the preference.
+#let sheet-example(sheet) = {
+  let clean = t => (
+    t.text.find(regex("[A-Za-z]")) != none
+      and t.previous_words.all(p => p.find(regex("[A-Za-z]")) != none)
+  )
+  let found = sheet.find(clean)
+  if found != none { found } else { sheet.at(0, default: none) }
+}
+
+// The rule of the game, so a participant who missed the briefing can still play
+// from the sheet alone.
+#let sheet-header(sheet) = {
+  let example = sheet-example(sheet)
+  block(width: 100%, below: 0.9em)[
     #text(size: 10pt, fill: muted)[
       When the #prev-words-phrase called out #if (
         previous-words-count > 1
       ) [match] else [matches] the boxed #prev-words-phrase of an entry below,
       raise your hand --- one hand per matching entry --- and read out that
       entry's *next word*.
+      #if example != none [
+        For example, if the #prev-words-phrase called out
+        #if previous-words-count > 1 [are] else [is]
+        "#example.previous_words.join(" ")", then the entry #mono-cutout(
+          example,
+        ) is a match and you answer #strong(text(fill: black, example.text)).
+      ]
     ]
+    #v(0.5em)
+    #line(length: 100%, stroke: 0.8pt + luma(120))
   ]
 }
 
@@ -362,7 +393,7 @@
     height: 100%,
     grid(
       rows: (auto, 1fr),
-      sheet-header(i, sheet),
+      sheet-header(sheet),
 
       // A regular grid rather than a ragged flow: scanning aligned columns for
       // a colour is much faster than scanning wrapped text, and it makes the
