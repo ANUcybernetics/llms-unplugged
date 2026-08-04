@@ -40,7 +40,6 @@
   ) #previous-words-noun] else [#previous-words-noun]
 
 #let muted = rgb("#666")
-#let rule_color = luma(210)
 
 // ===== Instructions page (teacher-facing, printed once) =====
 
@@ -95,12 +94,9 @@
   result
 }
 
-#let entry-chip(token) = box(
-  stroke: 0.5pt + rule_color,
-  radius: 3pt,
-  inset: (x: 0.5em, y: 0.4em),
-  render-cutout(token),
-)
+// An entry as it appears in the instructions: unboxed, exactly as it appears on
+// the sheets. `box` only to keep it from breaking across lines.
+#let entry-chip(token) = box(render-cutout(token))
 
 #let instructions-page() = {
   set page(footer: align(
@@ -326,16 +322,16 @@
 )
 #set text(size: font_size)
 
-#for (i, sheet) in sheets.enumerate() {
-  if i > 0 { pagebreak(weak: false) }
-
-  // Sheet header: who this belongs to, and the one-line rule, so a participant
-  // who missed the briefing can still play from the sheet alone.
+// Sheet header: who this belongs to, and the one-line rule, so a participant
+// who missed the briefing can still play from the sheet alone.
+#let sheet-header(index, sheet) = {
   block(width: 100%, below: 1em)[
     #grid(
       columns: (1fr, auto),
       align: (left + bottom, right + bottom),
-      text(size: 15pt, weight: "bold")[Sheet #str(i + 1) of #str(sheets.len())],
+      text(size: 15pt, weight: "bold")[
+        Sheet #str(index + 1) of #str(sheets.len())
+      ],
       text(size: 10pt, fill: muted)[
         #doc_metadata.title --- #sheet.len() entries
       ],
@@ -351,20 +347,35 @@
       entry's *next word*.
     ]
   ]
+}
 
-  // A regular grid rather than a ragged flow: scanning aligned columns for a
-  // colour is much faster than scanning wrapped text, and it makes the sorted
-  // variant read as the lookup table it is.
-  grid(
-    columns: (1fr,) * columns_per_sheet,
-    column-gutter: 0.6em,
-    row-gutter: 0.55em,
-    ..sheet.map(t => block(
-      width: 100%,
-      inset: (x: 0.4em, y: 0.3em),
-      stroke: 0.5pt + rule_color,
-      radius: 3pt,
-      render-cutout(t),
-    ))
+#for (i, sheet) in sheets.enumerate() {
+  if i > 0 { pagebreak(weak: false) }
+
+  // Each sheet is exactly one page tall, split into an auto-height header and
+  // a `1fr` body that absorbs whatever height the header leaves. That definite
+  // body height is what lets the entry grid's own `1fr` rows stretch, so the
+  // rows always reach the bottom margin instead of trailing off partway down a
+  // short sheet.
+  block(
+    width: 100%,
+    height: 100%,
+    grid(
+      rows: (auto, 1fr),
+      sheet-header(i, sheet),
+
+      // A regular grid rather than a ragged flow: scanning aligned columns for
+      // a colour is much faster than scanning wrapped text, and it makes the
+      // sorted variant read as the lookup table it is. Entries sit on the page
+      // unboxed --- the colour already delineates them, and a border per entry
+      // adds 160-odd rectangles of visual noise to a page meant to be scanned.
+      grid(
+        columns: (1fr,) * columns_per_sheet,
+        rows: (1fr,) * calc.ceil(sheet.len() / columns_per_sheet),
+        column-gutter: 1.2em,
+        align: left + horizon,
+        ..sheet.map(t => render-cutout(t))
+      ),
+    ),
   )
 }
