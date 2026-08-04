@@ -492,10 +492,12 @@
   border-radius: 0.2em;
 }
 
-/* "From continuing to answering": one shared prompt, then two contrasting
-   continuations stacked full-width --- a base model only continues (weak), a
-   post-trained model answers (strong). Stacking the label above each answer
-   gives the answer the full content width so it doesn't wrap awkwardly. */
+/* "answering isn't a thing it does": a prompt, then what the grid returns.
+   The slide currently shows one continuation (weak); `.strong` is kept for a
+   contrasting answer row. The prompt is the line the room reads first, so it is
+   sized near the body text rather than as fine print. Note MDX wraps the spans
+   of each `.qa-item` in a `<p>`, so the label sits inline with its answer
+   rather than stacking --- fine at one item, revisit if a second is added. */
 .reveal .qa-compare {
   display: flex;
   flex-direction: column;
@@ -505,9 +507,9 @@
 
 .reveal .qa-compare .qa-prompt {
   display: block;
-  font-size: 0.55em;
+  font-size: 0.85em;
   font-style: italic;
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
 }
 
 .reveal .qa-compare .qa-item {
@@ -517,7 +519,7 @@
 }
 
 .reveal .qa-compare .qa-label {
-  font-size: 0.5em;
+  font-size: 0.7em;
   color: var(--color-text-secondary);
 }
 
@@ -527,7 +529,7 @@
   padding: 0.25em 0.6em;
   border-radius: 0.25em;
   font-family: var(--font-mono);
-  font-size: 0.6em;
+  font-size: 0.7em;
 }
 
 .reveal .qa-compare .qa-a.weak {
