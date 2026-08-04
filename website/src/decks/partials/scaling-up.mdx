@@ -175,7 +175,7 @@ it isn't refusing to answer---**answering isn't a thing it does**
     <span class="tally-label">the same row, tallied over conversations</span>
     <div class="tally-row">
       <span class="row-key"><span class="token punctuation">?</span><span class="row-arrow">→</span></span>
-      <span class="tally-cell"><span class="token">Paris</span><span class="tally">卌</span></span>
+      <span class="tally-cell"><span class="token">it</span><span class="tally">卌</span></span>
       <span class="tally-cell"><span class="token">sure</span><span class="tally">|||</span></span>
       <span class="tally-cell"><span class="token">yes</span><span class="tally">||</span></span>
     </div>
@@ -184,7 +184,7 @@ it isn't refusing to answer---**answering isn't a thing it does**
 
 **post-training**: the same tallying again, over text made of _conversations_
 
-{/* notes: Same machinery one more time, so read it off the rows. On the web, what follows a question mark is usually another question --- so a model trained on it continues with questions, which is exactly what a frontier model straight out of pre-training does: their problem, with better grammar. Tally the same row over transcripts of conversations instead and what follows a `?` is the start of an answer. That's post-training: a second, much smaller round of training on example conversations, plus feedback on which answers people preferred.
+{/* notes: Same machinery one more time, so read it off the rows. On the web, what follows a question mark is usually another question --- so a model trained on it continues with questions, which is exactly what a frontier model straight out of pre-training does: their problem, with better grammar. Tally the same row over transcripts of conversations instead and what follows a `?` is the start of an answer. That's post-training: a second, much smaller round of training on example conversations, plus feedback on which answers people preferred. So the thing that comes back with "Paris" a slide ago isn't running a different mechanism --- it learned from text where answering is what happens next.
 
 Two honesty notes if anyone asks. A real model uses everything before the question mark, not just the mark itself --- these rows are the one-word-of-context version of the point. And the mechanism hasn't changed: same predict-the-next-word loop, same dice, different text to learn from, so different habits on top. */}
 
