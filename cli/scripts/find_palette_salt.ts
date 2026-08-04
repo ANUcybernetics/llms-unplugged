@@ -39,7 +39,6 @@
 import { parseArgs } from "node:util";
 
 const HASH_MOD = 1000003;
-const PALETTE_LEN = 30;
 const MULT_MAX = 1000;
 function primesUpTo(n: number): number[] {
   const sieve = new Array(n + 1).fill(true);
@@ -102,49 +101,82 @@ function bucketFor(word: string, mult: number, salt: number): number {
   return h % PALETTE_LEN;
 }
 
-function distinctPrefixLength(
-  words: string[],
-  mult: number,
-  salt: number,
-): number {
-  const seen = new Set<number>();
-  for (let i = 0; i < words.length; i++) {
-    const b = bucketFor(words[i], mult, salt);
-    if (seen.has(b)) return i;
-    seen.add(b);
-  }
-  return words.length;
-}
-
 const { values } = parseArgs({
   options: {
     n: { type: "string", default: "0" },
+    "palette-len": { type: "string", default: "30" },
   },
 });
 
 const targetN = Number(values.n);
+const PALETTE_LEN = Number(values["palette-len"]);
 
 const PUNCTUATION = [".", ",", "?", "!"];
-function punctuationDistinctCount(mult: number, salt: number): number {
-  const seen = new Set<number>();
-  for (const p of PUNCTUATION) seen.add(bucketFor(p, mult, salt));
-  return seen.size;
-}
 
 let bestScore = -1;
 let bestMult = 0;
 let bestSalt = 0;
 
+// The hash is a Horner evaluation, so for a fixed multiplier every word
+// reduces to `h = salt * mult^len + tailSum` (mod HASH_MOD) — an affine
+// function of the salt with word-dependent coefficients. Hoisting those
+// coefficients out of the salt loop turns the inner loop into one multiply
+// and one mod per word, instead of one per character, which is what makes
+// the full 168 × 10^6 (multiplier, salt) sweep finish in minutes. Both
+// factors stay under 10^6, so `salt * coeffA` is exact in a float64.
+const PUNCT_INDICES = PUNCTUATION.map((p) => TOP_WORDS.indexOf(p));
+const buckets = new Int32Array(TOP_WORDS.length);
+// Bucket-occupancy scratch, stamped with a monotonic counter instead of being
+// cleared: a Set allocation per (multiplier, salt) pair dominates otherwise.
+const seenStamp = new Int32Array(PALETTE_LEN).fill(-1);
+let stamp = 0;
+
 for (const mult of MULTIPLIERS) {
+  const coeffA = new Float64Array(TOP_WORDS.length);
+  const coeffB = new Float64Array(TOP_WORDS.length);
+  for (let w = 0; w < TOP_WORDS.length; w++) {
+    let a = 1;
+    let b = 0;
+    for (const ch of TOP_WORDS[w]) {
+      a = (a * mult) % HASH_MOD;
+      b = (b * mult + ch.codePointAt(0)!) % HASH_MOD;
+    }
+    coeffA[w] = a;
+    coeffB[w] = b;
+  }
+
   for (let salt = 0; salt < HASH_MOD; salt++) {
+    for (let w = 0; w < TOP_WORDS.length; w++) {
+      buckets[w] = ((salt * coeffA[w] + coeffB[w]) % HASH_MOD) % PALETTE_LEN;
+    }
+
     // Encode (totalDistinct, punctDistinct, prefixLen) lexicographically.
-    // totalDistinct in [0, 30], punctDistinct in [0, 4], prefixLen in
-    // [0, 30]; bases 100 / 10 / 1 give room without overflow.
-    const totalDistinct = new Set(
-      TOP_WORDS.map((w) => bucketFor(w, mult, salt)),
-    ).size;
-    const punctDistinct = punctuationDistinctCount(mult, salt);
-    const prefix = distinctPrefixLength(TOP_WORDS, mult, salt);
+    // totalDistinct and prefixLen are both bounded by TOP_WORDS.length (30)
+    // and punctDistinct by 4, so bases 1000 / 100 / 1 can't carry into each
+    // other.
+    stamp++;
+    let totalDistinct = 0;
+    let prefix = -1;
+    for (let w = 0; w < buckets.length; w++) {
+      if (seenStamp[buckets[w]] === stamp) {
+        if (prefix < 0) prefix = w;
+      } else {
+        seenStamp[buckets[w]] = stamp;
+        totalDistinct++;
+      }
+    }
+    if (prefix < 0) prefix = buckets.length;
+
+    let punctDistinct = 0;
+    for (let i = 0; i < PUNCT_INDICES.length; i++) {
+      const b = buckets[PUNCT_INDICES[i]];
+      let duplicate = false;
+      for (let j = 0; j < i; j++) {
+        if (buckets[PUNCT_INDICES[j]] === b) duplicate = true;
+      }
+      if (!duplicate) punctDistinct++;
+    }
+
     const score = totalDistinct * 1000 + punctDistinct * 100 + prefix;
     if (score > bestScore) {
       bestScore = score;

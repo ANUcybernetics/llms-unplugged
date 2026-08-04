@@ -24,9 +24,16 @@
  * toward black — at L<0.30 a deep blue or purple reads as black on paper
  * even though OKLab ΔE looks comfortable on screen.
  *
+ * `--min-white-contrast` additionally rejects any candidate whose WCAG
+ * contrast ratio against white falls below the given value. Set it to 4.5 to
+ * get a palette every entry of which is dark enough to read as plain text on
+ * white paper — needed wherever a colour is used for the text itself at small
+ * sizes, rather than only as a box fill behind white text.
+ *
  * Run (requires Node 22.7+ for native .ts support; Node 24+ default-on):
  *   node cli/scripts/generate_palette.ts
  *   node cli/scripts/generate_palette.ts --n 30 --l-min 0.32 --l-max 0.92
+ *   node cli/scripts/generate_palette.ts --n 12 --min-white-contrast 4.5
  */
 
 // OKLab L threshold above which a colour is "light" — Typst pairs these
@@ -94,19 +101,37 @@ interface CandidateSet {
   count: number;
 }
 
+// WCAG relative luminance, used for the --min-white-contrast filter. OKLab L
+// is perceptual lightness, which is not the same quantity as the luminance
+// WCAG contrast is computed from — a saturated green and a saturated blue at
+// equal OKLab L differ by several stops of contrast ratio.
+function relativeLuminance(r: number, g: number, b: number): number {
+  const lr = srgbLinearize(r);
+  const lg = srgbLinearize(g);
+  const lb = srgbLinearize(b);
+  return 0.2126 * lr + 0.7152 * lg + 0.0722 * lb;
+}
+
+function contrastWithWhite(luminance: number): number {
+  return 1.05 / (luminance + 0.05);
+}
+
 function sampleCandidates(
   nSamples: number,
   lMin: number,
   lMax: number,
   cMin: number,
+  minWhiteContrast: number,
   rng: () => number,
 ): CandidateSet {
   const buf = new Float64Array(nSamples * 3);
   let kept = 0;
   for (let i = 0; i < nSamples; i++) {
-    const [L, a, b] = srgbToOklab(rng(), rng(), rng());
+    const [sr, sg, sb] = [rng(), rng(), rng()];
+    const [L, a, b] = srgbToOklab(sr, sg, sb);
     const C = Math.hypot(a, b);
-    if (L >= lMin && L <= lMax && C >= cMin) {
+    const contrast = contrastWithWhite(relativeLuminance(sr, sg, sb));
+    if (L >= lMin && L <= lMax && C >= cMin && contrast >= minWhiteContrast) {
       buf[kept * 3] = L;
       buf[kept * 3 + 1] = a;
       buf[kept * 3 + 2] = b;
@@ -191,6 +216,7 @@ const { values } = parseArgs({
     candidates: { type: "string", default: "200000" },
     seed: { type: "string", default: "42" },
     "no-neutrals": { type: "boolean", default: false },
+    "min-white-contrast": { type: "string", default: "0" },
   },
 });
 
@@ -201,21 +227,39 @@ const cMin = parseFloat(values["c-min"]!);
 const nCandidates = parseInt(values.candidates!, 10);
 const seed = parseInt(values.seed!, 10);
 const noNeutrals = values["no-neutrals"]!;
+const minWhiteContrast = parseFloat(values["min-white-contrast"]!);
 
 const rng = mulberry32(seed);
 
 process.stderr.write(`# Sampling ${nCandidates} sRGB points...\n`);
-const cs = sampleCandidates(nCandidates, lMin, lMax, cMin, rng);
+const cs = sampleCandidates(nCandidates, lMin, lMax, cMin, minWhiteContrast, rng);
 process.stderr.write(
-  `# Kept ${cs.count} candidates after L∈[${lMin},${lMax}], chroma ≥ ${cMin}\n`,
+  `# Kept ${cs.count} candidates after L∈[${lMin},${lMax}], chroma ≥ ${cMin}` +
+    (minWhiteContrast > 0
+      ? `, contrast vs white ≥ ${minWhiteContrast}\n`
+      : "\n"),
 );
+
+// OKLab lightness of the mid-grey anchor. For a neutral the OKLab transform
+// collapses to L = cbrt(linear value) — the rows of M1 sum to 1, so l=m=s=v —
+// which is how GREY_L is converted back to an sRGB byte for the emitted
+// palette below. Emitting the seeded grey rather than a hand-picked one
+// matters: the greedy search keeps chromatic colours away from the seed, so a
+// printed grey that sits somewhere else has no such guarantee.
+const GREY_L = 0.55;
 
 const seeds: readonly Triple[] = noNeutrals
   ? []
   : [
-      [0.0, 0.0, 0.0],   // pure black
-      [0.55, 0.0, 0.0],  // mid grey (OKLab L≈0.55 ↔ sRGB luma≈140)
+      [0.0, 0.0, 0.0], // pure black
+      [GREY_L, 0.0, 0.0], // mid grey
     ];
+
+function srgbGamma(v: number): number {
+  return v <= 0.0031308 ? 12.92 * v : 1.055 * Math.pow(v, 1 / 2.4) - 0.055;
+}
+
+const greyByte = Math.round(srgbGamma(GREY_L ** 3) * 255);
 
 const { indices, history } = greedyMaxMin(cs, n, seeds);
 
@@ -276,13 +320,18 @@ if (!noNeutrals) {
   process.stdout.write("// can't collapse onto the greyscale axis.\n");
 }
 process.stdout.write(
-  `// Regenerate with: node cli/scripts/generate_palette.ts --n ${n} --l-min ${lMin} --l-max ${lMax}\n`,
+  `// Regenerate with: node cli/scripts/generate_palette.ts --n ${n} --l-min ${lMin} --l-max ${lMax}` +
+    (minWhiteContrast > 0
+      ? ` --min-white-contrast ${minWhiteContrast}\n`
+      : "\n"),
 );
 process.stdout.write("#let palette = (\n");
 if (!noNeutrals) {
   process.stdout.write("  // Neutrals (always dark enough for white text)\n");
   process.stdout.write("  (color: luma(0), light: false), // black\n");
-  process.stdout.write("  (color: luma(140), light: false), // mid grey\n");
+  process.stdout.write(
+    `  (color: luma(${greyByte}), light: false), // mid grey (OKLab L=${GREY_L})\n`,
+  );
   process.stdout.write("\n");
   process.stdout.write("  // Chromatic (sorted by hue)\n");
 }
