@@ -59,6 +59,10 @@ cargo build --release
 # Same, but each sheet ordered by context (the "now organise your data" round)
 ./target/release/llms_unplugged sheets -i ../data/the-cat-in-the-hat.txt -n 2 --sheets 24 --sort
 
+# Regenerate the pre-prepared search-sheet PDFs (targets are
+# <corpus>-<participants>; PDFs land in website/public/assets/pdfs/sheets/)
+make sheets
+
 # Build all configured booklets
 make booklets
 

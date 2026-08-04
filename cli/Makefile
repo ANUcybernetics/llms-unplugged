@@ -6,6 +6,7 @@ PDF_DIR := $(OUT_DIR)/pdf
 JSON_DIR := $(OUT_DIR)/json
 DATA_DIR := ../data
 CUTOUTS_DIR := ../website/public/assets/pdfs/cutouts
+SHEETS_DIR := ../website/public/assets/pdfs/sheets
 
 # ===== Target specification =====
 # Format: name-n-books
@@ -52,9 +53,29 @@ CUTOUTS_TARGETS := \
 	$(CUTOUTS_DIR)/where-is-the-green-sheep.pdf \
 	$(CUTOUTS_DIR)/were-going-on-a-bear-hunt.pdf
 
+# Pre-prepared search-sheet PDFs (the cutouts activity minus the cutting).
+# Target names are <corpus>-<participants>: the corpus is partitioned across
+# that many one-page sheets, so a set only suits a class of about that size.
+# The counts below are chosen so every sheet fits on a single page --- a bigger
+# corpus needs proportionally more participants, which is why australia is at
+# 40 rather than 24.
+SHEETS_TARGETS := \
+	$(SHEETS_DIR)/green-eggs-and-ham-24.pdf \
+	$(SHEETS_DIR)/peter-rabbit-24.pdf \
+	$(SHEETS_DIR)/the-cat-in-the-hat-24.pdf \
+	$(SHEETS_DIR)/australia-40.pdf
+
 # Define common variables (typst comes from mise; TYPST_BIN overridable)
 TOOL := target/release/llms_unplugged
 TYPST_BIN ?= typst
+
+# Typst stamps a creation date into every PDF, so an unchanged rebuild still
+# produces different bytes. The sheet PDFs are committed, so that would dirty
+# four megabyte-sized binaries in git on every `make sheets`. Pinning the epoch
+# makes a rebuild byte-identical unless the content actually changed; override
+# it if you want a real date in the document properties.
+# https://reproducible-builds.org/specs/source-date-epoch/
+SOURCE_DATE_EPOCH ?= 0
 
 # Track Rust source files for automatic rebuilding
 RUST_SOURCES := $(wildcard src/*.rs) Cargo.toml Cargo.lock
@@ -80,12 +101,28 @@ $(PDF_DIR)/%.pdf $(PDF_DIR)/%.stamp: book.typ $(TOOL)
 # The cutouts subcommand always writes to <output-dir>/cutouts.pdf, so each
 # target uses its own work dir under $(OUT_DIR)/cutouts/<name>/ and qpdf
 # rotates even pages 180° on the way to the final destination.
-$(CUTOUTS_DIR)/%.pdf: tokenized-cutouts.typ $(TOOL)
+$(CUTOUTS_DIR)/%.pdf: tokenized-cutouts.typ cutout-common.typ $(TOOL)
 	$(eval NAME := $(notdir $(basename $@)))
 	$(eval WORK_DIR := $(OUT_DIR)/cutouts/$(NAME))
 	mkdir -p $(WORK_DIR)
 	TYPST_BIN=$(TYPST_BIN) $(TOOL) cutouts --input $(DATA_DIR)/$(NAME).txt --output $(WORK_DIR) -n 2 --duplex
 	qpdf $(WORK_DIR)/cutouts.pdf --rotate=180:1-z:even $@
+
+# ===== Pattern rule for pre-prepared search-sheet PDFs =====
+# The sheets subcommand always writes to <output-dir>/sheets.pdf, so each target
+# gets its own work dir. The target name carries the participant count as a
+# trailing -<N>, which is stripped to recover the corpus name. Single-sided
+# portrait, so unlike the cutouts there is no qpdf rotation step. The seed is
+# pinned so rebuilding a published PDF re-deals it identically instead of
+# producing a gratuitously different file.
+$(SHEETS_DIR)/%.pdf: tokenized-sheets.typ cutout-common.typ $(TOOL)
+	$(eval FULLNAME := $(notdir $(basename $@)))
+	$(eval BASE := $(shell echo $(FULLNAME) | sed 's/-[0-9]*$$//'))
+	$(eval COUNT := $(shell echo $(FULLNAME) | sed 's/^.*-\([0-9]*\)$$/\1/'))
+	$(eval WORK_DIR := $(OUT_DIR)/sheets/$(FULLNAME))
+	mkdir -p $(WORK_DIR) $(SHEETS_DIR)
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) TYPST_BIN=$(TYPST_BIN) $(TOOL) sheets --input $(DATA_DIR)/$(BASE).txt --output $(WORK_DIR) -n 2 --sheets $(COUNT) --seed 42
+	cp $(WORK_DIR)/sheets.pdf $@
 
 # Default target to build all booklets
 .PHONY: booklets
@@ -106,6 +143,11 @@ examples: $(EXAMPLE_TARGETS)
 .PHONY: cutouts
 cutouts: $(CUTOUTS_TARGETS)
 	@echo "Pre-prepared cutout PDFs complete!"
+
+# Regenerate the pre-prepared search-sheet PDFs
+.PHONY: sheets
+sheets: $(SHEETS_TARGETS)
+	@echo "Pre-prepared search-sheet PDFs complete!"
 
 # Generate summary PDF from all models
 .PHONY: summary
