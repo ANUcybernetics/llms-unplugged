@@ -43,7 +43,7 @@
     "@myriaddreamin/typst.ts": "0.7.0",
     "astro": "^7.1.1",
     "astro-theme-anu": "git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#astro-theme-anu@v0.9.2&path:/packages/astro-theme-anu",
-    "astro-theme-university": "git+https://github.com/ANUcybernetics/astro-theme-university.git#v0.9.4",
+    "astro-theme-university": "git+https://github.com/ANUcybernetics/astro-theme-university.git#v0.10.0",
     "astromotion": "git+https://github.com/ANUcybernetics/astromotion.git#v0.19.4",
     "lightningcss": "^1.32.0",
     "mammoth": "^1.12.0",
