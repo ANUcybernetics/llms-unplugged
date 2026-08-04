@@ -24,11 +24,9 @@ The whole section is run against their own grid rather than as a set of separate
 
 <ContextGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} order={2} highlight="run , |spot ," />
 
-so remembering two words instead of one fixes it --- what does that cost?
+so providing two words of context instead of one helps --- what does that cost?
 
 ---
-
-## Every context needs its own row
 
 {/* notes: This is the bill. The grid needs a row for every context it might find itself in, so going from one word to two takes 5 rows to 25 --- and most of them stay empty, because our text never contains `see see` or `. .`. Three words would be 125. Each extra word of memory multiplies the grid by the size of the vocabulary. */}
 
@@ -55,11 +53,31 @@ Claude keeps **200,000 words** in view, over a vocabulary of **100,000**
 
 ## Attention: a row that changes shape
 
-<AttentionRow vocabulary={EXAMPLE_VOCAB} token="," contexts={[{ before: "run", weights: [1, 0, 9, 0, 0] }, { before: "see spot", weights: [9, 0, 1, 0, 0] }]} />
+<AttentionRow tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} token="," contexts={[{ before: "run", weights: [1, 0, 9, 0, 0] }, { before: "see spot", weights: [9, 0, 1, 0, 0] }]} active={0} />
 
-instead of a row per context
+no new rows---this is the grid you built
 
-{/* notes: Here's the trick that replaces the impossible grid. Rather than storing a separate row for every context, the model keeps one row and re-shapes it on the fly: it looks back over everything it can see and weighs which earlier words matter for this prediction. Same comma, same row, different answer, because `see spot` before it pulls the weight one way and `run` pulls it the other. That's attention, and it's why transformers can have a context window at all. */}
+{/* notes: Back to their own grid, whole, one last time. Point at the comma row: one mark under `run`, one under `spot`, and that is the 50/50 we rolled on. Attention is not a bigger grid --- watch what happens to that one row while everything else stays exactly where it is. */}
+
+---
+
+## Attention: a row that changes shape
+
+<AttentionRow tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} token="," contexts={[{ before: "run", weights: [1, 0, 9, 0, 0] }, { before: "see spot", weights: [9, 0, 1, 0, 0] }]} active={1} />
+
+with `run` behind it, the row leans to `spot`
+
+{/* notes: Same grid, same row, but the model now looks back over what it can see and weighs which earlier words matter here. With `run` before the comma the row is redrawn on the spot: nearly all the weight on `spot`. Nothing was stored --- this row didn't exist a moment ago. */}
+
+---
+
+## Attention: a row that changes shape
+
+<AttentionRow tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} token="," contexts={[{ before: "run", weights: [1, 0, 9, 0, 0] }, { before: "see spot", weights: [9, 0, 1, 0, 0] }]} active={2} />
+
+with `see spot` behind it, the same row leans the other way
+
+{/* notes: And the payoff: `see spot` before the comma pulls the same row the other way. One row, re-shaped per context, instead of a row per context --- which is exactly the bill the last slide said nobody can pay. That's attention, and it's why transformers can have a context window at all. */}
 
 ---
 
@@ -109,35 +127,14 @@ copies what came after
 
 ## Tallies become knobs
 
-![bg right:40%](./assets/bg-parameters.avif)
+<ParameterGrid tokens={EXAMPLE_GENERALISE} vocabulary={EXAMPLE_GENERALISE_VOCAB} scores={EXAMPLE_GENERALISE_SCORES} highlight="dog ran" />
 
-<div class="context-scale">
-  <div class="context-row">
-    <span class="context-label">your grid</span>
-    <span class="context-tokens">
-      <span class="token">run</span>
-      <span class="token punctuation">.</span>
-      <span class="tally">||</span>
-    </span>
-  </div>
-  <div class="context-row">
-    <span class="context-label">a transformer</span>
-    <span class="context-tokens">
-      <span class="param">0.31</span>
-      <span class="param">−1.20</span>
-      <span class="param">0.08</span>
-      <span class="param">0.94</span>
-      <span class="param">−0.55</span>
-      <span class="param">1.30</span>
-      <span class="context-more">× billions</span>
-    </span>
-  </div>
-</div>
+a number in every cell---even the one your grid left empty---because it is
+**billions of knobs** doing the remembering, not cells
 
-no cell for `dog`---just **billions of numbers** that `cat` and `dog` both help
-set, and both draw on
+{/* notes: The fix for the island problem, shown on the same grid --- same text, same rows, the tally marks ghosted in place with a number under each one. Two things to point at. First, the ringed cell: `dog` followed by `ran`, which the tallies left empty and which now has 0.40 in it. Second, the `cat` and `dog` rows, which have come out nearly identical, because in this text the two words do the same job.
 
-{/* notes: The fix for the island problem. A transformer doesn't give each pattern its own cell; it spreads every pattern across billions of numbers, each nudged a tiny amount after every wrong guess in training. Because `cat` and `dog` turn up in the same kinds of places, training pushes them onto overlapping numbers --- so what the model learns from `cat` is already, for free, something it knows about `dog`. That's generalisation, and it's the thing the grid structurally cannot do.
+Where those numbers come from is the slide. A transformer doesn't give each pattern its own cell; it spreads every pattern across billions of numbers, each nudged a tiny amount after every wrong guess in training. Because `cat` and `dog` turn up in the same kinds of places, training pushes them onto overlapping numbers --- so what the model learns from `cat` is already, for free, something it knows about `dog`. That's generalisation, and it's the thing the grid structurally cannot do. (Careful with the picture: the model isn't storing this grid either. Nothing here is looked up; every number is computed on demand, which is why it can fill a cell it never saw.)
 
 The cost is the flip side of the slide before: there is no longer a cell to point at. Ask where a transformer stores "the dog ran" and the honest answer is "smeared across a few billion numbers, and we're still working on reading it back". That's most of what interpretability research is.
 */}
@@ -162,23 +159,34 @@ it isn't refusing to answer---**answering isn't a thing it does**
 
 ## From continuing to answering
 
-![bg right:40%](./assets/bg-post-training.avif)
+![bg right:35%](./assets/bg-post-training.avif)
 
-<div class="qa-compare">
-  <span class="qa-prompt">prompt: "what is the capital of France?"</span>
-  <div class="qa-item">
-    <span class="qa-label">a base model --- same problem, more fluent</span>
-    <span class="qa-a weak">"What is the capital of Germany? What is the largest…"</span>
+<div class="context-scale tally-compare">
+  <div class="tally-item">
+    <span class="tally-label">the `?` row, tallied over text from the web</span>
+    <div class="tally-row">
+      <span class="row-key"><span class="token punctuation">?</span><span class="row-arrow">→</span></span>
+      <span class="tally-cell"><span class="token">what</span><span class="tally">卌</span></span>
+      <span class="tally-cell"><span class="token">how</span><span class="tally">|||</span></span>
+      <span class="tally-cell"><span class="token">why</span><span class="tally">||</span></span>
+    </div>
   </div>
-  <div class="qa-item">
-    <span class="qa-label">+ post-training</span>
-    <span class="qa-a strong">"Paris."</span>
+  <div class="tally-item">
+    <span class="tally-label">the same row, tallied over conversations</span>
+    <div class="tally-row">
+      <span class="row-key"><span class="token punctuation">?</span><span class="row-arrow">→</span></span>
+      <span class="tally-cell"><span class="token">Paris</span><span class="tally">卌</span></span>
+      <span class="tally-cell"><span class="token">sure</span><span class="tally">|||</span></span>
+      <span class="tally-cell"><span class="token">yes</span><span class="tally">||</span></span>
+    </div>
   </div>
 </div>
 
 **post-training**: the same tallying again, over text made of _conversations_
 
-{/* notes: And a frontier model straight out of pre-training has exactly their problem, just with better grammar --- prompt it with a question and the plausible continuation is more questions. The chat behaviour comes from a second, much smaller round of training on example conversations, plus feedback on which answers people preferred. Worth being clear: this is not a different mechanism. Same predict-the-next-word loop, same dice; a different text to learn from, so different habits on top. */}
+{/* notes: Same machinery one more time, so read it off the rows. On the web, what follows a question mark is usually another question --- so a model trained on it continues with questions, which is exactly what a frontier model straight out of pre-training does: their problem, with better grammar. Tally the same row over transcripts of conversations instead and what follows a `?` is the start of an answer. That's post-training: a second, much smaller round of training on example conversations, plus feedback on which answers people preferred.
+
+Two honesty notes if anyone asks. A real model uses everything before the question mark, not just the mark itself --- these rows are the one-word-of-context version of the point. And the mechanism hasn't changed: same predict-the-next-word loop, same dice, different text to learn from, so different habits on top. */}
 
 ---
 

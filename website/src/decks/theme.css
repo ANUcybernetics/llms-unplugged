@@ -402,8 +402,6 @@
   color: var(--anu-gold);
 }
 
-/* "Tallies become knobs": a few countable tally marks (the grid) against a long
-   row of continuous parameters (the transformer). */
 .reveal .context-scale .tally {
   font-family: var(--font-mono);
   font-size: 0.7em;
@@ -411,13 +409,55 @@
   color: var(--anu-gold);
 }
 
-.reveal .context-scale .param {
-  padding: 0.2em 0.4em;
-  border-radius: 0.25em;
-  background: var(--lm-highlight-medium);
-  font-family: var(--font-mono);
-  font-size: 0.5em;
+/* "From continuing to answering": one grid row (the `?` row) tallied over two
+   different training texts. Built out of .context-scale so the tokens and tally
+   marks keep the sizing the rest of the section uses, but each next-word gets a
+   bordered cell so the pair reads as two versions of the same grid row rather
+   than as two lists. */
+.reveal .tally-compare .tally-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+.reveal .tally-compare .tally-label {
+  font-size: 0.55em;
   color: var(--color-text-secondary);
+}
+
+.reveal .tally-compare .tally-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.4em;
+}
+
+/* MDX runs the markdown pipeline over the contents of a raw HTML block, so the
+   spans making up a row arrive wrapped in a <p>. `display: contents` hands the
+   cells back to the row's flex context (and drops the paragraph margin) without
+   needing the source to be one unreadable long line. */
+.reveal .tally-compare .tally-row p {
+  display: contents;
+}
+
+.reveal .tally-compare .row-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+}
+
+.reveal .tally-compare .row-arrow {
+  font-size: 0.55em;
+  color: var(--color-text-muted);
+}
+
+.reveal .tally-compare .tally-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2em;
+  padding: 0.3em 0.6em;
+  border: 1px solid var(--color-divider);
+  border-radius: 0.2em;
 }
 
 /* "From continuing to answering": one shared prompt, then two contrasting

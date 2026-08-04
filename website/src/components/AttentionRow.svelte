@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { isPunctuation, splitTokens } from "../lib/tokens";
+  import { tally } from "../lib/tally";
+  import { getBigrams, isPunctuation, splitTokens } from "../lib/tokens";
 
   interface Context {
     /** Words the model can see before the row token, space-separated. */
@@ -10,105 +11,161 @@
   }
 
   interface Props {
-    /** Column labels in grid order. */
+    /** The training text the grid was tallied from (space-separated tokens). */
+    tokens: string;
+    /** Column/row labels in grid order. */
     vocabulary: string;
     /** The token whose row is being re-weighted. */
     token: string;
     /** The same row as it would look under each preceding context. */
     contexts: Context[];
+    /** 0 shows the plain grid with the row banded; 1..n swaps that row for the
+        matching context's re-weighted version. Stepping this across slides is
+        the build: everything else holds still while one row changes shape. */
+    active?: number;
   }
 
-  let { vocabulary, token, contexts }: Props = $props();
+  let { tokens: tokenString, vocabulary, token, contexts, active = 0 }: Props = $props();
 
   const vocab = $derived(splitTokens(vocabulary));
+  const context = $derived(active > 0 ? (contexts[active - 1] ?? null) : null);
   const peak = $derived(Math.max(1, ...contexts.flatMap((c) => c.weights)));
+
+  const counts = $derived.by(() => {
+    const m = new Map<string, Map<string, number>>();
+    for (const [from, to] of getBigrams(splitTokens(tokenString))) {
+      const row = m.get(from) ?? new Map<string, number>();
+      row.set(to, (row.get(to) ?? 0) + 1);
+      m.set(from, row);
+    }
+    return m;
+  });
 </script>
 
-<div class="attention-row">
-  <table>
-    <thead>
-      <tr>
-        <th scope="col"><span class="sr-only">Context</span></th>
-        {#each vocab as col}
-          <th scope="col"><code class:punctuation={isPunctuation(col)}>{col}</code></th>
-        {/each}
-      </tr>
-    </thead>
-    <tbody>
-      {#each contexts as context}
-        <tr>
-          <th scope="row">
-            <span class="before">
+<table class="attention-grid">
+  <thead>
+    <tr>
+      <th scope="col"><span class="sr-only">Context</span></th>
+      {#each vocab as col}
+        <th scope="col"><code class:punctuation={isPunctuation(col)}>{col}</code></th>
+      {/each}
+    </tr>
+  </thead>
+  <tbody>
+    {#each vocab as row}
+      {@const isRow = row === token}
+      <tr class:banded={isRow && !context} class:dimmed={context != null && !isRow}>
+        <th scope="row">
+          <span class="row-key">
+            {#if isRow && context}
               {#each splitTokens(context.before) as word}
                 <code class="dim" class:punctuation={isPunctuation(word)}>{word}</code>
               {/each}
-              <code class="row-token">{token}</code>
-            </span>
-          </th>
-          {#each vocab as _, i}
+            {/if}
+            <code class:row-token={isRow} class:punctuation={isPunctuation(row)}>{row}</code>
+          </span>
+        </th>
+        {#each vocab as col, i}
+          {#if isRow && context}
             {@const weight = context.weights[i] ?? 0}
-            <td>
+            <td class="bar-cell">
               <span class="bar" style="--fill: {Math.round((weight / peak) * 100)}%"></span>
             </td>
-          {/each}
-        </tr>
-      {/each}
-    </tbody>
-  </table>
-</div>
+          {:else}
+            {@const count = counts.get(row)?.get(col) ?? 0}
+            <td class="grid-cell">{count > 0 ? tally(count) : " "}</td>
+          {/if}
+        {/each}
+      </tr>
+    {/each}
+  </tbody>
+</table>
 
 <style>
-  /* Deck-only component, tuned for the 1280x720 canvas. Deliberately shaped
-     like BigramCountsTable --- same borders, same column order --- because the
-     whole point is that this IS the grid row, redrawn once per context. */
+  /* Deck-only component, tuned for the 1280x720 canvas. It renders the whole
+     bigram grid the audience already built --- same borders, same column order,
+     same tallies --- so that stepping `active` across slides leaves every row
+     where it was and re-shapes exactly one of them. That stillness is the
+     argument: attention doesn't add rows, it redraws one. */
 
-  .attention-row table {
+  table.attention-grid {
     width: 100%;
     margin: 0;
+    /* Fixed layout, so the columns are set by the header row and stay put when
+       the active row's heading grows from `,` to `see spot ,`. Under auto
+       layout that growth nudges every column sideways, and a grid that shuffles
+       between slides undoes the point of the build. */
+    table-layout: fixed;
     border-collapse: collapse;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
 
-  .attention-row th,
-  .attention-row td {
-    padding: 0.4rem;
+  table.attention-grid thead th:first-child {
+    width: 26%;
+  }
+
+  table.attention-grid th,
+  table.attention-grid td {
+    /* Every cell keeps the bar row's height whether it holds a bar or tally
+       marks, so the grid's geometry is identical on all three slides. */
+    height: 3.2rem;
+    padding: 0.3rem 0.4rem;
     border: 1px solid var(--color-divider);
     text-align: center;
   }
 
-  .attention-row tbody tr:last-child th,
-  .attention-row tbody tr:last-child td {
+  /* Reveal strips the last row's bottom border; put it back so the grid closes. */
+  table.attention-grid tbody tr:last-child th,
+  table.attention-grid tbody tr:last-child td {
     border-bottom: 1px solid var(--color-divider);
   }
 
-  .attention-row tbody th {
+  table.attention-grid td.grid-cell {
+    font-weight: 700;
+    min-width: 2em;
+  }
+
+  table.attention-grid tbody th {
     text-align: end;
     white-space: nowrap;
   }
 
-  .before {
+  .row-key {
     display: inline-flex;
     align-items: center;
+    justify-content: end;
     gap: 0.3em;
   }
 
-  .before code.dim {
+  .row-key code.dim {
     opacity: 0.45;
   }
 
-  .before code.row-token {
+  .row-key code.row-token {
     outline: 2px solid var(--anu-gold);
     outline-offset: 2px;
   }
 
-  /* Bars run bottom-up inside a fixed-height cell so the two rows stay aligned
-     and the shape difference between contexts is the only thing that moves. A
-     zero-weight column keeps its empty track rather than going blank, so it
-     reads as "no chance" rather than as a cell that failed to render. */
+  tr.banded td,
+  tr.banded th {
+    background: color-mix(in srgb, var(--anu-gold) 15%, transparent);
+  }
+
+  /* Once a context is in play the rest of the grid steps back --- still there,
+     still tallied, just not the thing that moved. */
+  tr.dimmed td,
+  tr.dimmed th {
+    opacity: 0.35;
+  }
+
+  /* Bars run bottom-up inside the cell so the two contexts stay aligned and the
+     shape difference is the only thing that moves. A zero-weight column keeps
+     its empty track rather than going blank, so it reads as "no chance" rather
+     than as a cell that failed to render. */
   .bar {
     display: block;
     width: 100%;
-    height: 3.2rem;
+    height: 2.6rem;
     background: linear-gradient(
       to top,
       var(--anu-gold) 0 var(--fill),
