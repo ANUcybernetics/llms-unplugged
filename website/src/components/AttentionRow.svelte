@@ -6,7 +6,7 @@
     /** Words the model can see before the row token, space-separated. */
     before: string;
     /** Next-token weight per vocabulary entry, in grid column order. Any scale
-        will do --- the bars are normalised against the largest weight. */
+        will do --- the marks are normalised against the largest weight. */
     weights: number[];
   }
 
@@ -27,9 +27,18 @@
 
   let { tokens: tokenString, vocabulary, token, contexts, active = 0 }: Props = $props();
 
+  /** Marks the heaviest column earns; the rest are scaled against it, so the
+      weights can come in on whatever scale reads best in the deck source. */
+  const MAX_MARKS = 10;
+
   const vocab = $derived(splitTokens(vocabulary));
   const context = $derived(active > 0 ? (contexts[active - 1] ?? null) : null);
   const peak = $derived(Math.max(1, ...contexts.flatMap((c) => c.weights)));
+
+  /** Any weight the model gives a column is worth at least one mark, so a
+      long-shot continuation reads as unlikely rather than as impossible. */
+  const marksFor = (weight: number) =>
+    weight > 0 ? Math.max(1, Math.round((weight / peak) * MAX_MARKS)) : 0;
 
   const counts = $derived.by(() => {
     const m = new Map<string, Map<string, number>>();
@@ -67,10 +76,8 @@
         </th>
         {#each vocab as col, i}
           {#if isRow && context}
-            {@const weight = context.weights[i] ?? 0}
-            <td class="bar-cell">
-              <span class="bar" style="--fill: {Math.round((weight / peak) * 100)}%"></span>
-            </td>
+            {@const marks = marksFor(context.weights[i] ?? 0)}
+            <td class="weight-cell">{marks > 0 ? tally(marks) : " "}</td>
           {:else}
             {@const count = counts.get(row)?.get(col) ?? 0}
             <td class="grid-cell">{count > 0 ? tally(count) : " "}</td>
@@ -106,8 +113,8 @@
 
   table.attention-grid th,
   table.attention-grid td {
-    /* Every cell keeps the bar row's height whether it holds a bar or tally
-       marks, so the grid's geometry is identical on all three slides. */
+    /* Every cell keeps the same height whether it holds counted marks or
+       weighted ones, so the grid's geometry is identical on all three slides. */
     height: 3.2rem;
     padding: 0.3rem 0.4rem;
     border: 1px solid var(--color-divider);
@@ -161,19 +168,14 @@
     opacity: 0.35;
   }
 
-  /* Bars run bottom-up inside the cell so the two contexts stay aligned and the
-     shape difference is the only thing that moves. A zero-weight column keeps
-     its empty track rather than going blank, so it reads as "no chance" rather
-     than as a cell that failed to render. */
-  .bar {
-    display: block;
-    width: 100%;
-    height: 2.6rem;
-    background: linear-gradient(
-      to top,
-      var(--anu-gold) 0 var(--fill),
-      var(--lm-highlight-soft) var(--fill) 100%
-    );
-    border-radius: 2px;
+  /* The re-weighted row is drawn in the same currency as the rest of the grid
+     --- marks you could have made yourself --- so the only difference between a
+     counted row and an attention row is where the marks fall. Gold says these
+     ones were worked out on the spot rather than tallied from the text. */
+  table.attention-grid td.weight-cell {
+    font-weight: 700;
+    color: var(--anu-gold);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
   }
 </style>
