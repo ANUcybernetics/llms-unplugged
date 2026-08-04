@@ -146,9 +146,12 @@
     outline-offset: 2px;
   }
 
+  /* Clear of the theme's header tint, which every th now carries on both axes.
+     The band has to say "this row, next" against a grid whose first column is
+     already tinted, so 15% no longer reads as a band at all. */
   tr.banded td,
   tr.banded th {
-    background: color-mix(in srgb, var(--anu-gold) 15%, transparent);
+    background: color-mix(in srgb, var(--anu-gold) 32%, transparent);
   }
 
   /* Once a context is in play the rest of the grid steps back --- still there,

@@ -147,9 +147,13 @@
     font-size: 1.1em;
   }
 
+  /* Clear of the theme's header tint, which the context columns now carry on
+     every row (both axes of a matrix are headers, so both get it). At the 15%
+     this used to be, the row we are pointing at was a shade off the 25 we are
+     not. */
   tr.active-row td,
   tr.active-row th {
-    background: color-mix(in srgb, var(--anu-gold) 15%, transparent);
+    background: color-mix(in srgb, var(--anu-gold) 32%, transparent);
   }
 
   tr.active-row th {
