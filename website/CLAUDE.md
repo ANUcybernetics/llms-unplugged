@@ -77,6 +77,16 @@ When modifying colours or widget styles, update both `global.css` and
 `theme.css` to keep them in sync. When modifying typography or layout, treat
 them as independent.
 
+**Deck components must not set outer margins.** The slide owns the gaps between
+its children: `astro-theme-university/styles/deck.css` gives every direct child
+of a `section` a `margin-block-end`. A component styles its own insides only. A
+`margin` on a component's root element wins that fight --- Svelte scopes styles
+by adding a class, so `table.parameter-grid` outspecifies the theme's
+zero-specificity rule --- and the component then sits flush against whatever
+follows it on the slide. Use `margin-inline` when a root needs centring. The
+exception is a root that genuinely owns its geometry (a full-bleed,
+absolutely-positioned layer): those set their own margins deliberately.
+
 ### Key patterns
 
 - **Variant toggle**: grid/cutouts variant uses CSS `data-variant` attribute on

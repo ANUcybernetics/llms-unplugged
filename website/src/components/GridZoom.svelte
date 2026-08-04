@@ -110,7 +110,7 @@
     width: 100%;
     height: auto;
     max-height: 33rem;
-    margin: 0 auto;
+    margin-inline: auto;
   }
 
   .mesh {
