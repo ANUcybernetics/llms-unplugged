@@ -906,19 +906,31 @@ fn test_sheets_cli_partitions_corpus_across_sheets() -> io::Result<()> {
     let (min, max) = (sizes.iter().min().unwrap(), sizes.iter().max().unwrap());
     assert!(max - min <= 1, "unbalanced sheets: {sizes:?}");
 
-    // The corpus has "the cat" three times over; all three copies must be on
-    // different sheets, or the room under-counts its most common continuation.
-    let holders = sheets
+    // "the" is the corpus's hot context, with five entries across four sheets.
+    // A participant holding two of them can still only answer with one, so the
+    // deal has to spread the context as thinly as it will go: every sheet gets
+    // one, and the unavoidable fifth makes exactly one sheet hold two.
+    let per_sheet: Vec<usize> = sheets
         .iter()
-        .filter(|sheet| {
+        .map(|sheet| {
             sheet
                 .as_array()
                 .unwrap()
                 .iter()
-                .any(|e| e["previous_words"][0] == "the" && e["text"] == "cat")
+                .filter(|e| e["previous_words"][0] == "the")
+                .count()
         })
-        .count();
-    assert_eq!(holders, 3, "duplicates should be spread across sheets");
+        .collect();
+    assert_eq!(
+        per_sheet.iter().filter(|&&c| c > 0).count(),
+        4,
+        "every sheet should be able to answer 'the': {per_sheet:?}"
+    );
+    assert_eq!(
+        *per_sheet.iter().max().unwrap(),
+        2,
+        "a hot context should spread to the ceil(k/sheets) floor: {per_sheet:?}"
+    );
 
     Ok(())
 }

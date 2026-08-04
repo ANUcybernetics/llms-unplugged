@@ -550,11 +550,18 @@ pub fn shuffle_cutout_tokens<R: Rng + ?Sized>(tokens: &mut [RawToken], rng: &mut
 /// Two properties matter for the activity to work, and both come from the
 /// dealing order:
 ///
-/// - **Duplicates go to different people.** Copies of the same (context, next
-///   word) pair are dealt consecutively, so `k` copies land on `k` distinct
-///   sheets whenever `k <= num_sheets`. If they piled up on one sheet that
-///   participant would call out once instead of `k` times, and the room would
-///   under-represent exactly the most common continuations.
+/// - **One match per person, as far as possible.** Entries are grouped by
+///   context and dealt consecutively, so a context occurring `k` times lands on
+///   `k` distinct sheets whenever `k <= num_sheets`. This matters because a
+///   participant holding several matches for the same context can only answer
+///   with one of them, which flattens the distribution the room samples;
+///   spreading a context as thinly as it will go makes that as rare as the
+///   corpus allows. It cannot be eliminated: when a context occurs more often
+///   than there are participants, somebody must hold more than one. Round-robin
+///   at least holds every sheet to the floor of `ceil(k / num_sheets)` rather
+///   than letting chance pile four or five onto one person. Grouping by context
+///   subsumes grouping by the whole (context, next word) pair, so duplicate
+///   pairs are spread too.
 /// - **Common contexts spread evenly.** Contexts are Zipfian, so dealing
 ///   contiguous slices of the corpus would hand one participant a passage of
 ///   rare words and leave them idle all session. Shuffling before the deal
@@ -584,13 +591,14 @@ pub fn deal_into_sheets<R: Rng + ?Sized>(
         .collect();
     shuffle_cutout_tokens(&mut usable, rng);
 
-    // Group identical cutouts together, keeping the shuffled order of first
-    // appearance so the groups themselves stay in random order. Dealing this
-    // flattened list round-robin is what puts duplicates on distinct sheets.
+    // Group every entry sharing a context together, keeping the shuffled order
+    // of first appearance so the groups themselves stay in random order.
+    // Dealing this flattened list round-robin is what spreads a context across
+    // as many separate sheets as it has occurrences.
     let mut groups: Vec<Vec<RawToken>> = Vec::new();
-    let mut group_index: HashMap<(Vec<String>, String), usize> = HashMap::new();
+    let mut group_index: HashMap<Vec<String>, usize> = HashMap::new();
     for token in usable {
-        let key = (token.previous_words.clone(), token.text.clone());
+        let key = token.previous_words.clone();
         match group_index.get(&key) {
             Some(&i) => groups[i].push(token),
             None => {
@@ -2420,6 +2428,54 @@ mod tests {
                 })
                 .count();
             assert_eq!(holders, 5, "seed {seed}: duplicates piled onto one sheet");
+        }
+    }
+
+    /// A participant holding several entries for one context can only answer
+    /// with one of them, which flattens the distribution. Entries sharing a
+    /// context must therefore spread as thinly as the corpus allows: with
+    /// `k <= num_sheets` occurrences, onto `k` distinct sheets.
+    #[test]
+    fn deal_into_sheets_spreads_a_shared_context_across_participants() {
+        // Six different continuations of "the", plus filler.
+        let mut tokens: Vec<RawToken> = ["cat", "hat", "mat", "rat", "bat", "sat"]
+            .iter()
+            .enumerate()
+            .map(|(i, w)| cutout(i + 1, "the", w))
+            .collect();
+        tokens.extend((0..30).map(|i| cutout(i + 7, &format!("w{i}"), &format!("x{i}"))));
+
+        for seed in 0..25u64 {
+            let sheets = deal_into_sheets(&tokens, 8, false, &mut rng(seed));
+            let holders = sheets
+                .iter()
+                .filter(|s| s.iter().any(|t| t.previous_words[0] == "the"))
+                .count();
+            assert_eq!(holders, 6, "seed {seed}: a context piled onto one sheet");
+        }
+    }
+
+    /// When a context occurs more often than there are participants, somebody
+    /// must hold more than one --- but round-robin holds everybody to the
+    /// minimum possible, `ceil(k / num_sheets)`, instead of letting chance pile
+    /// several onto one person.
+    #[test]
+    fn deal_into_sheets_caps_unavoidable_context_collisions_at_the_minimum() {
+        // "the" occurs 20 times across 6 sheets: ceil(20 / 6) = 4 is the floor
+        // on the worst-off participant, and nobody should exceed it.
+        let mut tokens: Vec<RawToken> = (0..20)
+            .map(|i| cutout(i + 1, "the", &format!("w{i}")))
+            .collect();
+        tokens.extend((0..40).map(|i| cutout(i + 21, &format!("c{i}"), &format!("x{i}"))));
+
+        for seed in 0..25u64 {
+            let sheets = deal_into_sheets(&tokens, 6, false, &mut rng(seed));
+            let worst = sheets
+                .iter()
+                .map(|s| s.iter().filter(|t| t.previous_words[0] == "the").count())
+                .max()
+                .unwrap();
+            assert_eq!(worst, 4, "seed {seed}: uneven spread of a hot context");
         }
     }
 

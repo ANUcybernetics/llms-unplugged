@@ -198,15 +198,13 @@
     check the word second. Two unrelated words occasionally share a colour ---
     always verify the word itself.
 
-    #colbreak()
-
     == Running a round
 
     + *Call out the last #prev-words-phrase* of the text so far.
     + Everyone scans their own sheet for entries whose previous
       #prev-words-phrase #if previous-words-count > 1 [match] else [matches].
-      *Hands up* --- one hand per matching entry, so somebody holding two copies
-      raises two.
+      *Hands up* --- one hand each, and anyone with more than one match just
+      goes with the first they spot.
     + *Pick a raised hand at random* and ask for that entry's next word.
     + A scribe writes the word on the board. That word becomes part of the
       context for the next round. Repeat.
@@ -215,12 +213,20 @@
     the fastest reader, not the text --- and the whole point is that the room
     samples the way the model does.
 
+    // Break here rather than after the anatomy section: it splits the brief
+    // into "what this is / how to run it" and "what it demonstrates", and it
+    // balances the two columns, which keeps the worked example on this page.
+    #colbreak()
+
     == What to watch for
 
-    *The hands are the probability distribution.* Every entry in the text was
-    dealt to exactly one person, so if seven hands go up and five of them hold
-    the same next word, that word really does follow this context five times in
-    seven. Nobody has to explain weighted sampling; the room performs it.
+    *The hands are the probability distribution.* Every entry was dealt to
+    exactly one person, and the deal spreads each context across as many people
+    as it will go, so a common continuation really does put more hands in the
+    air than a rare one. Nobody has to explain weighted sampling; the room
+    performs it. (Roughly: for a context more common than the class is big,
+    somebody holds two matches but raises one hand, which flattens the busiest
+    contexts.)
 
     *Nobody holds the model.* No single sheet can continue the text on its own.
     The model only exists across the whole room --- and if somebody is away,
@@ -315,18 +321,20 @@
 // ===== The participant sheets, one page each =====
 
 // The sheets carry no title block of their own: the page is for searching, and
-// every millimetre above the entries is one the rows don't get. Provenance
-// lives in the footer instead.
-#set page(
-  header: none,
-  footer: align(
-    center,
-    text(fill: luma(150), size: 8pt)[
-      #doc_metadata.title #sym.dash.em www.llmsunplugged.org
-    ],
-  ),
-)
+// every millimetre above the entries is one the rows don't get. Provenance ---
+// which sheet this is, which text it came from --- lives in the footer instead.
+#set page(header: none)
 #set text(size: font_size)
+
+// Footer for one sheet. The number comes from the loop index rather than the
+// page counter, so it stays right even if a sheet overflows onto a second page.
+#let sheet-footer(index) = align(
+  center,
+  text(fill: luma(150), size: 8pt)[
+    Sheet #str(index + 1) of #str(sheets.len()) #sym.dash.em #doc_metadata.title
+    #sym.dash.em www.llmsunplugged.org
+  ],
+)
 
 // Monochrome renderers for the worked example in the instruction line. The
 // example is a reading aid, not one of the entries to be searched, so it stays
@@ -365,8 +373,8 @@
       When the #prev-words-phrase called out #if (
         previous-words-count > 1
       ) [match] else [matches] the boxed #prev-words-phrase of an entry below,
-      raise your hand --- one hand per matching entry --- and read out that
-      entry's *next word*.
+      raise your hand, and read out that entry's *next word* if you're picked.
+      If more than one entry matches, just go with the first one you spot.
       #if example != none [
         For example, if the #prev-words-phrase called out
         #if previous-words-count > 1 [are] else [is]
@@ -382,6 +390,9 @@
 
 #for (i, sheet) in sheets.enumerate() {
   if i > 0 { pagebreak(weak: false) }
+  // Scoped to this iteration, so each sheet gets its own numbered footer. The
+  // pagebreak above means the rule always lands on a fresh page.
+  set page(footer: sheet-footer(i))
 
   // Each sheet is exactly one page tall, split into an auto-height header and
   // a `1fr` body that absorbs whatever height the header leaves. That definite
