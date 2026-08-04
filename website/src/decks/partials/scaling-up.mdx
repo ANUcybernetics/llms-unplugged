@@ -20,9 +20,7 @@ The whole section is run against their own grid rather than as a set of separate
 
 ---
 
-## Two words of context
-
-{/* notes: Give it two words and the guess stops being a guess. `run ,` is always followed by `spot`; `spot ,` is always followed by `run`. Same text, same tallies, no dice needed --- the ambiguity was never in the language, it was in how little the model could see. This is a trigram model, and there's a lesson on the website that runs it with pen and paper. */}
+{/* notes: No heading on this one, so say it: two words of context. Give it two words and the guess stops being a guess. `run ,` is always followed by `spot`; `spot ,` is always followed by `run`. Same text, same tallies, no dice needed --- the ambiguity was never in the language, it was in how little the model could see. This is a trigram model, and there's a lesson on the website that runs it with pen and paper. */}
 
 <ContextGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} order={2} highlight="run , |spot ," />
 
@@ -59,7 +57,7 @@ Claude keeps **200,000 words** in view, over a vocabulary of **100,000**
 
 <AttentionRow vocabulary={EXAMPLE_VOCAB} token="," contexts={[{ before: "run", weights: [1, 0, 9, 0, 0] }, { before: "see spot", weights: [9, 0, 1, 0, 0] }]} />
 
-one row, re-weighted by what came before---instead of a row per context
+instead of a row per context
 
 {/* notes: Here's the trick that replaces the impossible grid. Rather than storing a separate row for every context, the model keeps one row and re-shapes it on the fly: it looks back over everything it can see and weighs which earlier words matter for this prediction. Same comma, same row, different answer, because `see spot` before it pulls the weight one way and `run` pulls it the other. That's attention, and it's why transformers can have a context window at all. */}
 
@@ -146,7 +144,7 @@ The cost is the flip side of the slide before: there is no longer a cell to poin
 
 ---
 
-## Ask your grid a question
+{/* _class: centered */}
 
 <div class="qa-compare">
   <span class="qa-prompt">prompt: "what is the capital of France?"</span>
@@ -158,7 +156,7 @@ The cost is the flip side of the slide before: there is no longer a cell to poin
 
 it isn't refusing to answer---**answering isn't a thing it does**
 
-{/* notes: Third failure, and the funniest one. Feed their model a question and it does what it always does: continues. It isn't being unhelpful and it isn't broken; nothing in "tally which word follows which" has any notion of a question and an answer. This is the honest state of a model that has only ever been trained to continue text. */}
+{/* notes: No heading --- the line is "let's ask your grid a question", and the slide just shows what comes back. Third failure, and the funniest one. Feed their model a question and it does what it always does: continues. It isn't being unhelpful and it isn't broken; nothing in "tally which word follows which" has any notion of a question and an answer. This is the honest state of a model that has only ever been trained to continue text. */}
 
 ---
 
@@ -194,27 +192,27 @@ it isn't refusing to answer---**answering isn't a thing it does**
 
 ---
 
-## Your grid
+{/* _class: centered */}
 
 <GridZoom rows={5} cols={5} label="“Run, Spot, run. See Spot run.”" detail="5 tokens · 25 cells" compareRows={5} compareCols={5} />
 
-{/* notes: Here it is: five tokens, twenty-five cells. At the booklet's 1cm per cell that's a five-centimetre square --- smaller than a beer coaster. */}
+{/* notes: The next three slides are figure-only, so you carry them: this one is "your grid". Five tokens, twenty-five cells. At the booklet's 1cm per cell that's a five-centimetre square --- smaller than a beer coaster. */}
 
 ---
 
-## Green Eggs and Ham
+{/* _class: centered */}
 
 <GridZoom rows={70} cols={70} label="Green Eggs and Ham" detail="70 tokens · 4,900 cells" compareRows={5} compareCols={5} />
 
-{/* notes: A whole Dr Seuss book is 70 distinct tokens, so ~4,900 cells --- a sheet about 70cm square, call it a poster. And their grid is the little gold square in the corner. Note the vocabulary is what matters here, not the length: the book is a couple of thousand words, but Seuss reuses them relentlessly. */}
+{/* notes: Same again, no heading --- read the caption out. A whole Dr Seuss book is 70 distinct tokens, so ~4,900 cells --- a sheet about 70cm square, call it a poster. And their grid is the little gold square in the corner. Note the vocabulary is what matters here, not the length: the book is a couple of thousand words, but Seuss reuses them relentlessly. */}
 
 ---
 
-## Frankenstein
+{/* _class: centered */}
 
 <GridZoom rows={7441} cols={7441} label="Frankenstein" detail="7,441 tokens · 55 million cells" compareRows={5} compareCols={5} note="the cells are now too small to draw" />
 
-{/* notes: The novel in the booklet: 7,441 distinct tokens, 55 million cells. The grid lines have stopped being drawable --- that grey is the grid. On paper it's about 5,500 square metres, most of a football field, and their model is the gold speck. This is also why the booklet doesn't print a grid: at this size you list only the cells that aren't empty. */}
+{/* notes: And the third: Frankenstein, the novel in the booklet. 7,441 distinct tokens, 55 million cells. The grid lines have stopped being drawable --- that grey is the grid. On paper it's about 5,500 square metres, most of a football field, and their model is the gold speck. This is also why the booklet doesn't print a grid: at this size you list only the cells that aren't empty. */}
 
 ---
 

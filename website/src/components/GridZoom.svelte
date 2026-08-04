@@ -27,11 +27,13 @@
     note,
   }: Props = $props();
 
-  // Everything is drawn in viewBox px against a fixed 900x470 stage, so the
+  // Everything is drawn in viewBox px against a fixed 900x600 stage, so the
   // component sizes itself purely from CSS and the text never fights the block.
   // The block is centred and every caption is centred under it, which keeps a
   // 5-wide context strip and a 400-wide square looking like the same diagram.
-  const BOX = 330;
+  // BOX is the block's drawn size; the 130px below it is the caption stack, so
+  // the stage height is BOX + 130.
+  const BOX = 470;
   const CENTRE = 450;
   const TOP = 34;
 
@@ -55,7 +57,7 @@
   const speck = $derived(hasCompare && (compareW < 8 || compareH < 8));
 </script>
 
-<svg class="grid-zoom" viewBox="0 0 900 470" role="img" aria-label="{label}: {rows} by {cols} grid">
+<svg class="grid-zoom" viewBox="0 0 900 600" role="img" aria-label="{label}: {rows} by {cols} grid">
   <defs>
     <pattern
       id="mesh-{rows}-{cols}"
@@ -95,16 +97,19 @@
 </svg>
 
 <style>
-  /* Deck-only component, sized for the 1280x720 canvas: the 900x470 viewBox
-     fills the space below an h2 with the block itself a constant 330px square
-     (for square grids), so stepping through the slides shrinks the cells rather
-     than the block --- the zoom-out effect the scale beat is built on. */
+  /* Deck-only component, sized for the 1280x720 canvas: the block is a constant
+     470 viewBox px square (for square grids), so stepping through the slides
+     shrinks the cells rather than the block --- the zoom-out effect the scale
+     beat is built on. The cap is set by the one slide that still carries an h2
+     ("Every context needs its own row"); the scale-sequence slides run
+     headingless, but they take the same cap so the block stays the same size
+     across the whole run. */
 
   svg.grid-zoom {
     display: block;
     width: 100%;
     height: auto;
-    max-height: 29rem;
+    max-height: 33rem;
     margin: 0 auto;
   }
 

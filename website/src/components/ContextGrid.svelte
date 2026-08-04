@@ -82,23 +82,23 @@
 
 <style>
   /* Deck-only component. An order-2 grid over a 5-token vocabulary is 25 rows,
-     which only fits the ~500px of canvas below an h2 if every row is squeezed
-     to ~17px --- hence the small type, the tight padding, and stripping the
-     pill styling off the body-row headings (the theme's `code` padding alone
-     costs ~150px over 26 rows). It is meant to feel like too much grid; that is
-     the slide's argument. */
+     so the row height is what sets the type size. Its slide runs headingless to
+     buy back the h2's ~110px, which is what affords these rows; the pill
+     styling still comes off the body-row headings, because the theme's `code`
+     padding alone costs ~150px over 26 rows. It is meant to feel like too much
+     grid; that is the slide's argument. */
 
   table.context-grid {
     width: 100%;
     margin: 0;
     border-collapse: collapse;
-    font-size: 0.78rem;
-    line-height: 1.05;
+    font-size: 0.88rem;
+    line-height: 1.15;
   }
 
   table.context-grid th,
   table.context-grid td {
-    padding: 0.05rem 0.25rem;
+    padding: 0.06rem 0.25rem;
     border: 1px solid var(--color-divider);
     text-align: center;
   }
@@ -138,8 +138,11 @@
   table.context-grid tbody th code {
     padding: 0;
     /* The theme's `code` pill is dark-on-cream; dropping the background means
-       the colour has to come back with it or the text vanishes. */
+       the colour has to come back with it or the text vanishes. The border goes
+       too: at this row height the boxes sit ~0.3px apart, so a column of them
+       fuses into one unbroken rule down the context columns. */
     background: none;
+    border: none;
     color: inherit;
     font-size: 1.1em;
   }
