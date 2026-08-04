@@ -19,10 +19,10 @@ This is a [Cybernetic Studio](https://github.com/ANUcybernetics/) artefact by
 
 The lessons themselves live on the
 [project website](https://www.llmsunplugged.org). This repository contains the
-website source, printable supporting materials (worksheets and the poster in
-the `handouts/` directory), and the `llms_unplugged` CLI tool (in
-the `cli/` directory) used to generate the pre-trained N-gram booklets and
-token cutouts that the lessons use.
+website source, printable supporting materials (worksheets and the poster in the
+`handouts/` directory), and the `llms_unplugged` CLI tool (in the `cli/`
+directory) used to generate the pre-trained N-gram booklets and token cutouts
+that the lessons use.
 
 The `website/` directory contains the source for the project website at
 [www.llmsunplugged.org](https://www.llmsunplugged.org).
@@ -36,9 +36,9 @@ This project offers several entry points depending on your goals:
 approach needs nothing more than a pencil and a d10 die.
 
 **Teaching a class or workshop?** The
-[lessons](https://www.llmsunplugged.org/lessons/) are designed to be taught,
-and the [workshops page](https://www.llmsunplugged.org/workshops/) describes
-the formats we run.
+[lessons](https://www.llmsunplugged.org/lessons/) are designed to be taught, and
+the [workshops page](https://www.llmsunplugged.org/workshops/) describes the
+formats we run.
 
 **Want to create your own N-gram booklet?** You can
 [generate booklets online](https://www.llmsunplugged.org/tools/) directly in
@@ -82,8 +82,8 @@ Your text content here...
 ```
 
 The tokenizer lowercases text and keeps single-character punctuation (`.` `,`
-`!` `?` `;` `:`) as separate tokens. Paired marks (quotes, brackets,
-em-dashes) are dropped; apostrophes inside contractions are preserved.
+`!` `?` `;` `:`) as separate tokens. Paired marks (quotes, brackets, em-dashes)
+are dropped; apostrophes inside contractions are preserved.
 
 ### Subcommands and key options
 
@@ -99,19 +99,18 @@ em-dashes) are dropped; apostrophes inside contractions are preserved.
 - `cutouts` - Generate printable token cutouts for the cutouts lesson variant.
   - `--n <N>`: prefix length (cutouts show `n - 1` prefix words + token)
   - `--paper-size`: paper size (default `a4`)
-  - `--duplex`: emit a double-sided PDF where each cutout page is paired with
-    a mirrored back, so the same cutouts appear on both faces of each sheet.
-    Print with "flip on short edge" binding (currently hard-coded to a4
-    landscape).
-  - `--tool NAME[:COUNT]`: inject a tool-trigger cutout for the agentic tool
-    use lesson (e.g. `--tool VOTE` or `--tool ACTION:5`). `COUNT` defaults to
-    3 and seeds that many trigger copies at the top `COUNT` most common
-    previous-word contexts in the corpus, so triggers fire from positions
-    where the corpus is already variable. Repeat the flag to add multiple
-    tools. Triggers render in a distinct black-on-gold style so they remain
-    visually unambiguous even when the corpus contains the same word.
-- `sample` - Build an N-gram model in memory from a corpus and sample text
-  from it. Useful as a sanity check on the model without printing a booklet.
+  - `--duplex`: emit a double-sided PDF where each cutout page is paired with a
+    mirrored back, so the same cutouts appear on both faces of each sheet. Print
+    with "flip on short edge" binding (currently hard-coded to a4 landscape).
+  - `--tool NAME[:COUNT]`: inject a tool-trigger cutout for the agentic tool use
+    lesson (e.g. `--tool VOTE` or `--tool ACTION:5`). `COUNT` defaults to 3 and
+    seeds that many trigger copies at the top `COUNT` most common previous-word
+    contexts in the corpus, so triggers fire from positions where the corpus is
+    already variable. Repeat the flag to add multiple tools. Triggers render in
+    a distinct black-on-gold style so they remain visually unambiguous even when
+    the corpus contains the same word.
+- `sample` - Build an N-gram model in memory from a corpus and sample text from
+  it. Useful as a sanity check on the model without printing a booklet.
   - `--input <FILE>`, `--n <N>` (default 2)
   - `--prompt <WORDS>`: starting text (must have at least `n - 1` normalised
     tokens; is run through the same tokeniser as the corpus)

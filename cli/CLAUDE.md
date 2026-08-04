@@ -63,9 +63,9 @@ cargo test
 - `--raw` - Output raw counts without scaling
 - `-b <N>` - Split large models across N books
 - `--book-binding` - Add blank pages for bound book layout (off by default)
-- `--duplex` (cutouts only) - Generate a double-sided PDF where each cutout
-  page is paired with a mirrored back. Requires "flip on short edge" binding
-  when printed. Currently hard-coded to a4 landscape.
+- `--duplex` (cutouts only) - Generate a double-sided PDF where each cutout page
+  is paired with a mirrored back. Requires "flip on short edge" binding when
+  printed. Currently hard-coded to a4 landscape.
 
 ## Input file format
 
@@ -82,10 +82,10 @@ Your text content here...
 
 ## Configuration
 
-- Counts are scaled for d10 dice using 10^k-1 scaling (e.g., 0-9, 0-99,
-  0-999) unless `--raw` is given
-- Paper size and columns are CLI flags (`--paper-size`, `--columns`; defaults
-  a4 and 4)
+- Counts are scaled for d10 dice using 10^k-1 scaling (e.g., 0-9, 0-99, 0-999)
+  unless `--raw` is given
+- Paper size and columns are CLI flags (`--paper-size`, `--columns`; defaults a4
+  and 4)
 - book.typ inputs (via `--input key=value`): paper_size, font_size, columns,
   subtitle, json_path, book_binding
 
