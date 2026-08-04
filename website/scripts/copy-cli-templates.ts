@@ -10,12 +10,7 @@ const destDir = resolve(__dirname, "../src/templates");
 // browser compiler resolves the same files the CLI does. tokenized-cutouts.typ
 // does image("favicon.svg") and imports cutout-common.typ (the shared palette
 // and token renderers); without either, the cutouts workflow fails to compile.
-const templates = [
-  "book.typ",
-  "tokenized-cutouts.typ",
-  "cutout-common.typ",
-  "favicon.svg",
-];
+const templates = ["book.typ", "tokenized-cutouts.typ", "cutout-common.typ", "favicon.svg"];
 
 mkdirSync(destDir, { recursive: true });
 
