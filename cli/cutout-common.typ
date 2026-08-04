@@ -160,13 +160,7 @@
 // reach `entry-for` at the bottom of the call chain, and threading a `palette:`
 // argument through every renderer and every call site would put it in the way
 // of the thing each call is actually saying.
-//
-// `bold-next` sets the weight of the free-standing next word. The cutouts
-// leave it regular: at 36pt the colour alone separates it from its boxed
-// context words. Sheets set it bold to match the weight of those boxes,
-// because at 11pt a regular-weight coloured word is the lightest mark on a
-// dense page and reads as an afterthought rather than as the answer.
-#let renderers(palette: large-palette, bold-next: false) = {
+#let renderers(palette: large-palette) = {
   // Hash a word to a palette entry, returning the `(color, light)` record:
   // callers unpack `.color` for the swatch and `.light` for the adaptive
   // text/stroke decision. Hashing (rather than assigning in order) is what
@@ -200,20 +194,21 @@
     )
   }
 
-  // A free-standing word in its assigned colour. Light entries (OKLab L >
-  // 0.65) get a thin black stroke so they're readable as text on white paper;
-  // dark entries are rendered flat, so a palette with no light entries never
-  // strokes anything. Dimmed words are mid-grey with no stroke.
+  // A free-standing word in its assigned colour. Bold, matching the weight of
+  // the previous-word boxes it sits beside: as plain text it is the only mark
+  // on the page carrying no fill behind it, and at regular weight it reads as
+  // an afterthought rather than as the answer. The deck theme's
+  // `.cutout-next-word` does the same for the same reason.
+  //
+  // Light entries (OKLab L > 0.65) also get a thin black stroke so they're
+  // readable on white paper; dark entries are rendered flat, so a palette with
+  // no light entries never strokes anything. Dimmed words are mid-grey with no
+  // stroke.
   let coloured-word(t, dimmed: false) = {
     let entry = entry-for(t)
     let fill = if dimmed { luma(160) } else { entry.color }
     let stroke = if not dimmed and entry.light { 0.5pt + black } else { none }
-    text(
-      fill: fill,
-      stroke: stroke,
-      weight: if bold-next { "bold" } else { "regular" },
-      t,
-    )
+    text(fill: fill, stroke: stroke, weight: "bold", t)
   }
 
   // Pick the right renderer for a token's next-word slot. Tool-trigger tokens

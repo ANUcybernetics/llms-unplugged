@@ -2,8 +2,8 @@
 // Generates rows of tokens with continuous horizontal lines for easy cutting
 
 // Palette, colour hash and token renderers, shared with tokenized-sheets.typ.
-// Cutouts take the defaults: the 30-colour palette and a regular-weight next
-// word, both of which rely on these being set at 36pt.
+// Cutouts take the default 30-colour palette, which relies on being set at
+// 36pt to stay tellable apart.
 #import "cutout-common.typ": brand-gold, derive-n, inter_word_gap, renderers
 #let (coloured-word, next-word, render-cutout, ..) = renderers()
 
