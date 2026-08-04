@@ -847,3 +847,224 @@ fn test_sample_cli_dead_end_prints_partial_then_errors() -> io::Result<()> {
     );
     Ok(())
 }
+
+/// Every cutout in the corpus must land on exactly one sheet: the room's
+/// entries together are the model, so a deal that dropped or duplicated
+/// entries would silently distort the distribution the class samples from.
+#[test]
+fn test_sheets_cli_partitions_corpus_across_sheets() -> io::Result<()> {
+    let exe = cli_exe();
+    let temp = TempDir::new()?;
+    let input = write_sample_corpus(
+        temp.path(),
+        "corpus.txt",
+        "the cat sat on the mat and the cat ate the rat then the cat sat again",
+    )?;
+    let out_dir = temp.path().join("out");
+
+    let output = Command::new(exe)
+        .arg("sheets")
+        .arg("-i")
+        .arg(&input)
+        .arg("--sheets")
+        .arg("4")
+        .arg("--seed")
+        .arg("99")
+        .arg("--json-only")
+        .arg("--output")
+        .arg(&out_dir)
+        .output()?;
+    assert!(output.status.success(), "sheets failed: {:?}", output);
+
+    let json: serde_json::Value =
+        serde_json::from_reader(BufReader::new(File::open(out_dir.join("sheets.json"))?))?;
+    let sheets = json["sheets"].as_array().expect("sheets array");
+    assert_eq!(sheets.len(), 4);
+
+    // Bigram cutouts, so every entry carries exactly one previous word, and
+    // the total is one short of the token count (the first token has no
+    // context and so can never be matched).
+    let mut dealt: Vec<String> = Vec::new();
+    for sheet in sheets {
+        for entry in sheet.as_array().expect("sheet array") {
+            let prev = entry["previous_words"].as_array().expect("previous_words");
+            assert_eq!(prev.len(), 1, "bigram entries carry one previous word");
+            dealt.push(format!(
+                "{} {}",
+                prev[0].as_str().unwrap(),
+                entry["text"].as_str().unwrap()
+            ));
+        }
+    }
+
+    let total_tokens = json["metadata"]["total_tokens"].as_u64().unwrap() as usize;
+    assert_eq!(dealt.len(), total_tokens - 1);
+
+    // Sheets are balanced to within one entry, so no participant is left
+    // scanning twice as much paper as their neighbour.
+    let sizes: Vec<usize> = sheets.iter().map(|s| s.as_array().unwrap().len()).collect();
+    let (min, max) = (sizes.iter().min().unwrap(), sizes.iter().max().unwrap());
+    assert!(max - min <= 1, "unbalanced sheets: {sizes:?}");
+
+    // The corpus has "the cat" three times over; all three copies must be on
+    // different sheets, or the room under-counts its most common continuation.
+    let holders = sheets
+        .iter()
+        .filter(|sheet| {
+            sheet
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|e| e["previous_words"][0] == "the" && e["text"] == "cat")
+        })
+        .count();
+    assert_eq!(holders, 3, "duplicates should be spread across sheets");
+
+    Ok(())
+}
+
+#[test]
+fn test_sheets_cli_is_deterministic_with_seed() -> io::Result<()> {
+    let exe = cli_exe();
+    let temp = TempDir::new()?;
+    let input = write_sample_corpus(
+        temp.path(),
+        "corpus.txt",
+        "the cat the dog the bird the cat the dog the bird the cat the dog",
+    )?;
+
+    let run = |dir: &str, seed: &str| -> io::Result<String> {
+        let out_dir = temp.path().join(dir);
+        let output = Command::new(exe)
+            .arg("sheets")
+            .arg("-i")
+            .arg(&input)
+            .arg("--sheets")
+            .arg("3")
+            .arg("--seed")
+            .arg(seed)
+            .arg("--json-only")
+            .arg("--output")
+            .arg(&out_dir)
+            .output()?;
+        assert!(output.status.success(), "sheets failed: {:?}", output);
+        std::fs::read_to_string(out_dir.join("sheets.json"))
+    };
+
+    assert_eq!(run("a", "7")?, run("b", "7")?, "same seed, same deal");
+    assert_ne!(
+        run("c", "8")?,
+        run("a", "7")?,
+        "different seed, different deal"
+    );
+    Ok(())
+}
+
+/// The sorted variant is the "now organise your data" round: each sheet must
+/// come out ordered by context so it reads as a lookup table.
+#[test]
+fn test_sheets_cli_sort_orders_each_sheet_by_context() -> io::Result<()> {
+    let exe = cli_exe();
+    let temp = TempDir::new()?;
+    let input = write_sample_corpus(
+        temp.path(),
+        "corpus.txt",
+        "zebra apple mango zebra kiwi apple pear mango cherry kiwi lemon pear",
+    )?;
+    let out_dir = temp.path().join("out");
+
+    let output = Command::new(exe)
+        .arg("sheets")
+        .arg("-i")
+        .arg(&input)
+        .arg("--sheets")
+        .arg("2")
+        .arg("--seed")
+        .arg("1")
+        .arg("--sort")
+        .arg("--json-only")
+        .arg("--output")
+        .arg(&out_dir)
+        .output()?;
+    assert!(output.status.success(), "sheets failed: {:?}", output);
+
+    let json: serde_json::Value =
+        serde_json::from_reader(BufReader::new(File::open(out_dir.join("sheets.json"))?))?;
+    for sheet in json["sheets"].as_array().expect("sheets array") {
+        let contexts: Vec<String> = sheet
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|e| e["previous_words"][0].as_str().unwrap().to_string())
+            .collect();
+        let mut sorted = contexts.clone();
+        sorted.sort();
+        assert_eq!(contexts, sorted, "--sort should order the sheet by context");
+    }
+    Ok(())
+}
+
+#[test]
+fn test_sheets_cli_rejects_zero_sheets() -> io::Result<()> {
+    let exe = cli_exe();
+    let temp = TempDir::new()?;
+    let input = write_sample_corpus(temp.path(), "corpus.txt", "alpha beta gamma")?;
+
+    let output = Command::new(exe)
+        .arg("sheets")
+        .arg("-i")
+        .arg(&input)
+        .arg("--sheets")
+        .arg("0")
+        .arg("--json-only")
+        .output()?;
+
+    assert!(!output.status.success(), "--sheets 0 should exit non-zero");
+    assert!(
+        String::from_utf8_lossy(&output.stderr).contains("--sheets must be at least 1"),
+        "should explain the constraint"
+    );
+    Ok(())
+}
+
+/// End-to-end through typst: one page per participant plus the teacher brief.
+#[test]
+fn test_sheets_subcommand_end_to_end() -> io::Result<()> {
+    if !typst_available() {
+        eprintln!("Skipping test_sheets_subcommand_end_to_end: 'typst' not found in PATH.");
+        return Ok(());
+    }
+
+    let temp = TempDir::new()?;
+    let input = write_sample_corpus(
+        temp.path(),
+        "corpus.txt",
+        "the cat sat on the mat and the cat ate the rat then the cat sat again \
+         while the dog watched the cat and the rat ran past the mat",
+    )?;
+    let out_dir = temp.path().join("out");
+
+    let output = Command::new(cli_exe())
+        .arg("sheets")
+        .arg("-i")
+        .arg(&input)
+        .arg("--sheets")
+        .arg("3")
+        .arg("--seed")
+        .arg("42")
+        .arg("--output")
+        .arg(&out_dir)
+        .output()?;
+
+    assert!(
+        output.status.success(),
+        "sheets end-to-end failed: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    assert!(out_dir.join("sheets.pdf").exists(), "no PDF written");
+    assert!(
+        out_dir.join("sheets.pdf").metadata()?.len() > 1000,
+        "PDF looks empty"
+    );
+    Ok(())
+}

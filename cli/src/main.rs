@@ -1,8 +1,9 @@
 use clap::{Args, Parser, Subcommand, ValueEnum};
 use llms_unplugged::{
     CjkMode, CutoutsMetadata, Metadata, NGramCounter, ProcessingStats, RawToken, SampleError,
-    WordFollowEntry, append_tool_tokens, process_file_for_cutouts, render_bigram_tsv,
-    repeat_cutout_tokens, sample, save_to_json, split_entries_into_books,
+    WordFollowEntry, append_tool_tokens, deal_into_sheets, process_file_for_cutouts,
+    render_bigram_tsv, repeat_cutout_tokens, sample, save_to_json, shuffle_cutout_tokens,
+    split_entries_into_books,
 };
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
@@ -47,6 +48,9 @@ enum Commands {
     Tsv(TsvArgs),
     /// Generate printable token cutouts for the cutouts lesson variant.
     Cutouts(CutoutsArgs),
+    /// Generate per-participant search sheets (the cutouts activity, minus the
+    /// cutting).
+    Sheets(SheetsArgs),
     /// Sample text from an N-gram model built in-memory from a corpus.
     Sample(SampleArgs),
 }
@@ -220,6 +224,71 @@ struct CutoutsArgs {
     /// How to segment Chinese: `word` (jieba words) or `char` (per character)
     #[arg(long, value_enum, default_value_t = CjkModeArg::Word)]
     cjk: CjkModeArg,
+
+    /// Shuffle the cutouts instead of emitting them in corpus order. Harmless
+    /// for the cut-up activity (cutting destroys the order anyway) and useful
+    /// if the uncut sheets will be read before they're cut.
+    #[arg(long)]
+    shuffle: bool,
+
+    /// RNG seed for --shuffle, for a reproducible print run.
+    #[arg(long)]
+    seed: Option<u64>,
+}
+
+#[derive(Args, Debug, Clone)]
+struct SheetsArgs {
+    /// Input text file to process
+    #[arg(short = 'i', long = "input", value_name = "INPUT")]
+    input: PathBuf,
+
+    /// Output directory for generated files (default: current directory)
+    #[arg(short, long, default_value = ".")]
+    output: PathBuf,
+
+    /// The size of the N-gram (e.g., 2 for bigrams, 3 for trigrams).
+    #[arg(short, long, default_value_t = 2, value_parser = parse_ngram_size)]
+    n: usize,
+
+    /// Number of participants: the corpus is dealt into this many sheets, one
+    /// page each.
+    #[arg(short = 's', long = "sheets", value_name = "N")]
+    sheets: usize,
+
+    /// Order each sheet by context instead of shuffling it, turning the sheet
+    /// into a lookup table. Useful as a second round, after the class has felt
+    /// how slow an unsorted search is.
+    #[arg(long)]
+    sort: bool,
+
+    /// RNG seed, for a reproducible deal.
+    #[arg(long)]
+    seed: Option<u64>,
+
+    /// Number of entry columns on each sheet. Defaults to 4 for bigrams,
+    /// narrowing as n grows because each entry carries n-1 context words.
+    #[arg(long)]
+    columns: Option<usize>,
+
+    /// Entry font size on the sheets (any Typst length, e.g. 11pt)
+    #[arg(long, default_value = "13pt")]
+    font_size: String,
+
+    /// Paper size for PDF (default: a4)
+    #[arg(long, default_value = "a4")]
+    paper_size: String,
+
+    /// Punctuation characters to preserve as separate tokens
+    #[arg(short = 'p', long = "punctuation", default_value = llms_unplugged::DEFAULT_PUNCTUATION)]
+    punctuation: String,
+
+    /// Only generate JSON; skip Typst PDF compilation
+    #[arg(long)]
+    json_only: bool,
+
+    /// How to segment Chinese: `word` (jieba words) or `char` (per character)
+    #[arg(long, value_enum, default_value_t = CjkModeArg::Word)]
+    cjk: CjkModeArg,
 }
 
 #[derive(Args, Debug, Clone)]
@@ -261,6 +330,7 @@ fn main() {
         Commands::Pdf(args) => run_pdf_command(args),
         Commands::Tsv(args) => run_tsv_command(args),
         Commands::Cutouts(args) => run_cutouts_command(args),
+        Commands::Sheets(args) => run_sheets_command(args),
         Commands::Sample(args) => run_sample_command(args),
     };
 
@@ -370,6 +440,10 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
     let injected =
         append_tool_tokens(&mut tokens, &tool_specs, args.n).map_err(CliError::InvalidArgs)?;
 
+    if args.shuffle {
+        shuffle_cutout_tokens(&mut tokens, &mut seeded_rng(args.seed));
+    }
+
     fs::create_dir_all(&args.output).map_err(CliError::Processing)?;
 
     let json_path = args.output.join("cutouts.json");
@@ -399,8 +473,133 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
         return Ok(());
     }
 
+    let mut inputs = vec![
+        ("paper_size".to_string(), args.paper_size.clone()),
+        ("json_path".to_string(), abs_path_string(&json_path)),
+    ];
+    if args.duplex {
+        inputs.push(("duplex".to_string(), "true".to_string()));
+    }
+
+    compile_template(
+        "tokenized-cutouts.typ",
+        &inputs,
+        &args.output.join("cutouts.pdf"),
+    )
+}
+
+fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
+    if args.sheets == 0 {
+        return Err(CliError::InvalidArgs(
+            "--sheets must be at least 1".to_string(),
+        ));
+    }
+    // An entry is n words wide, so wider n-grams need fewer columns to stay on
+    // one line: 4 for bigrams, 3 for trigrams, 2 beyond that.
+    let columns = args.columns.unwrap_or_else(|| (6 - args.n.min(4)).max(2));
+    if columns == 0 {
+        return Err(CliError::InvalidArgs(
+            "--columns must be at least 1".to_string(),
+        ));
+    }
+
+    let punctuation: Vec<char> = args.punctuation.chars().collect();
+    let (tokens, metadata) =
+        process_file_for_cutouts(&args.input, punctuation, args.n, args.cjk.into())
+            .map_err(CliError::Processing)?;
+
+    let mut rng = seeded_rng(args.seed);
+    let sheets = deal_into_sheets(&tokens, args.sheets, args.sort, &mut rng);
+
+    fs::create_dir_all(&args.output).map_err(CliError::Processing)?;
+
+    let json_path = args.output.join("sheets.json");
+    let output = serde_json::json!({ "metadata": metadata, "sheets": sheets });
+    let file = fs::File::create(&json_path).map_err(CliError::Processing)?;
+    serde_json::to_writer_pretty(file, &output)
+        .map_err(|e| CliError::Processing(io::Error::other(e)))?;
+
+    let dealt: usize = sheets.iter().map(|s| s.len()).sum();
+    let smallest = sheets.iter().map(|s| s.len()).min().unwrap_or(0);
+    let largest = sheets.iter().map(|s| s.len()).max().unwrap_or(0);
+
+    println!("Processed '{}' by {}", metadata.title, metadata.author);
+    println!(
+        "Dealt {} cutouts across {} sheets ({}--{} entries per sheet, {})",
+        dealt,
+        args.sheets,
+        smallest,
+        largest,
+        if args.sort {
+            "sorted by context"
+        } else {
+            "shuffled"
+        }
+    );
+    if smallest == 0 {
+        eprintln!(
+            "Warning: {} sheet(s) came out empty --- the corpus has fewer usable cutouts than participants.",
+            sheets.iter().filter(|s| s.is_empty()).count()
+        );
+    }
+    println!("Wrote JSON to {}", json_path.display());
+
+    if args.json_only {
+        return Ok(());
+    }
+
+    let inputs = vec![
+        ("paper_size".to_string(), args.paper_size.clone()),
+        ("json_path".to_string(), abs_path_string(&json_path)),
+        ("columns".to_string(), columns.to_string()),
+        ("font_size".to_string(), args.font_size.clone()),
+    ];
+
+    let pdf_path = args.output.join("sheets.pdf");
+    compile_template("tokenized-sheets.typ", &inputs, &pdf_path)?;
+
+    // One page per participant is the whole logistical point, so check it
+    // held. The teacher-facing brief is one page for most corpora and two for
+    // a wordy one, so anything past `sheets + 2` means a sheet has spilled.
+    if let Some(pages) = pdf_page_count(&pdf_path)
+        && pages > args.sheets + 2
+    {
+        eprintln!(
+            "Warning: {pages} pages for {} sheets --- some sheets spill onto a second page. \
+             Try a smaller --font-size, more --columns, or more --sheets.",
+            args.sheets
+        );
+    }
+
+    Ok(())
+}
+
+/// An RNG seeded from `seed`, or from system entropy when no seed is given.
+fn seeded_rng(seed: Option<u64>) -> ChaCha8Rng {
+    match seed {
+        Some(s) => ChaCha8Rng::seed_from_u64(s),
+        None => ChaCha8Rng::from_rng(&mut rand::rng()),
+    }
+}
+
+/// Absolutise a path for passing to typst, which is invoked with `--root /`
+/// so its inputs can live anywhere relative to the caller's cwd.
+fn abs_path_string(path: &Path) -> String {
+    fs::canonicalize(path)
+        .unwrap_or_else(|_| path.to_path_buf())
+        .display()
+        .to_string()
+}
+
+/// Compile one of the crate's bundled templates to `pdf_path`, passing
+/// `inputs` through as `--input key=value` pairs.
+fn compile_template(
+    template: &str,
+    inputs: &[(String, String)],
+    pdf_path: &Path,
+) -> Result<(), CliError> {
     let typst_bin = typst_command_path();
-    let template_path = Path::new(env!("CARGO_MANIFEST_DIR")).join("tokenized-cutouts.typ");
+    let template_path = Path::new(env!("CARGO_MANIFEST_DIR")).join(template);
 
     if !template_path.exists() {
         return Err(CliError::Typst(format!(
@@ -409,23 +608,16 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
         )));
     }
 
-    let pdf_path = args.output.join("cutouts.pdf");
-    let json_path_abs = fs::canonicalize(&json_path).unwrap_or(json_path.clone());
-
     let mut typst_cmd = Command::new(&typst_bin);
     typst_cmd.arg("compile");
     typst_cmd.arg("--root");
     typst_cmd.arg("/");
-    typst_cmd.arg("--input");
-    typst_cmd.arg(format!("paper_size={}", args.paper_size));
-    typst_cmd.arg("--input");
-    typst_cmd.arg(format!("json_path={}", json_path_abs.display()));
-    if args.duplex {
+    for (key, value) in inputs {
         typst_cmd.arg("--input");
-        typst_cmd.arg("duplex=true");
+        typst_cmd.arg(format!("{key}={value}"));
     }
     typst_cmd.arg(&template_path);
-    typst_cmd.arg(&pdf_path);
+    typst_cmd.arg(pdf_path);
 
     let output = typst_cmd.output().map_err(|e| {
         if e.kind() == io::ErrorKind::NotFound {
@@ -832,6 +1024,20 @@ fn pdf_name_for(json_path: &Path, pdf_dir: &Path) -> PathBuf {
         .to_string_lossy()
         .replace("_book_", "-book");
     pdf_dir.join(format!("{stem}.pdf"))
+}
+
+/// Page count of a PDF, via `pdfinfo`. `None` if poppler isn't installed or
+/// the output can't be parsed --- callers treat it as "don't know" rather than
+/// failing, since it's only used for advisory checks.
+fn pdf_page_count(pdf_path: &Path) -> Option<usize> {
+    let output = Command::new("pdfinfo").arg(pdf_path).output().ok()?;
+    if !output.status.success() {
+        return None;
+    }
+    String::from_utf8_lossy(&output.stdout)
+        .lines()
+        .find_map(|line| line.strip_prefix("Pages:"))
+        .and_then(|count| count.trim().parse().ok())
 }
 
 fn log_pdf_pages(pdf_path: &Path) {

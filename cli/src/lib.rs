@@ -516,6 +516,117 @@ pub fn repeat_cutout_tokens(tokens: &mut Vec<RawToken>, factor: usize) {
     *tokens = expanded;
 }
 
+/// True for a cutout that can actually take part in the matching game: a kept
+/// token carrying a full n-1-word context. The leading run of tokens with no
+/// context can never be matched against, and discarded tokens aren't meant to
+/// be used at all --- the cutouts template renders both dimmed.
+fn is_usable_cutout(token: &RawToken) -> bool {
+    token.keep && !token.previous_words.is_empty()
+}
+
+/// Shuffle a token list in place.
+///
+/// Cutout pages are emitted in corpus order by default, which means an uncut
+/// page is simply the source text with boxes drawn around it --- reading down
+/// the next-word column reproduces the original. Cutting destroys that
+/// ordering; shuffling destroys it at generation time instead, which is what
+/// makes the uncut [`deal_into_sheets`] variant a model rather than a
+/// transcript. It's harmless for the cut-up variant too, so `cutouts
+/// --shuffle` uses the same function.
+pub fn shuffle_cutout_tokens<R: Rng + ?Sized>(tokens: &mut [RawToken], rng: &mut R) {
+    use rand::seq::SliceRandom;
+    tokens.shuffle(rng);
+}
+
+/// Deal the usable cutouts of a corpus into `num_sheets` per-participant
+/// search sheets for the no-cutting variant of the activity.
+///
+/// Every usable cutout lands on exactly one sheet, so the room as a whole
+/// holds the corpus statistics exactly: when a context comes up, the number of
+/// participants who can answer with a given next word is that word's corpus
+/// count. Unusable cutouts are dropped rather than dimmed --- on a search
+/// sheet they're only noise.
+///
+/// Two properties matter for the activity to work, and both come from the
+/// dealing order:
+///
+/// - **Duplicates go to different people.** Copies of the same (context, next
+///   word) pair are dealt consecutively, so `k` copies land on `k` distinct
+///   sheets whenever `k <= num_sheets`. If they piled up on one sheet that
+///   participant would call out once instead of `k` times, and the room would
+///   under-represent exactly the most common continuations.
+/// - **Common contexts spread evenly.** Contexts are Zipfian, so dealing
+///   contiguous slices of the corpus would hand one participant a passage of
+///   rare words and leave them idle all session. Shuffling before the deal
+///   mixes frequent and rare contexts across every sheet.
+///
+/// Within a sheet the entries are shuffled again unless `sort` is set, in
+/// which case they're ordered by context (then by next word) --- the "now
+/// organise your data" round, which makes each sheet a lookup table and shows
+/// the distribution at a glance.
+///
+/// Returns one `Vec<RawToken>` per sheet. Sheets differ in length by at most
+/// one entry. Sheets beyond the number of available cutouts come back empty.
+pub fn deal_into_sheets<R: Rng + ?Sized>(
+    tokens: &[RawToken],
+    num_sheets: usize,
+    sort: bool,
+    rng: &mut R,
+) -> Vec<Vec<RawToken>> {
+    if num_sheets == 0 {
+        return Vec::new();
+    }
+
+    let mut usable: Vec<RawToken> = tokens
+        .iter()
+        .filter(|t| is_usable_cutout(t))
+        .cloned()
+        .collect();
+    shuffle_cutout_tokens(&mut usable, rng);
+
+    // Group identical cutouts together, keeping the shuffled order of first
+    // appearance so the groups themselves stay in random order. Dealing this
+    // flattened list round-robin is what puts duplicates on distinct sheets.
+    let mut groups: Vec<Vec<RawToken>> = Vec::new();
+    let mut group_index: HashMap<(Vec<String>, String), usize> = HashMap::new();
+    for token in usable {
+        let key = (token.previous_words.clone(), token.text.clone());
+        match group_index.get(&key) {
+            Some(&i) => groups[i].push(token),
+            None => {
+                group_index.insert(key, groups.len());
+                groups.push(vec![token]);
+            }
+        }
+    }
+
+    let mut sheets: Vec<Vec<RawToken>> = vec![Vec::new(); num_sheets];
+    for (i, token) in groups.into_iter().flatten().enumerate() {
+        sheets[i % num_sheets].push(token);
+    }
+
+    for sheet in &mut sheets {
+        if sort {
+            sheet.sort_by(|a, b| {
+                let key = |t: &RawToken| {
+                    (
+                        t.previous_words
+                            .iter()
+                            .map(|w| sort_key(w))
+                            .collect::<Vec<_>>(),
+                        sort_key(&t.text),
+                    )
+                };
+                key(a).cmp(&key(b))
+            });
+        } else {
+            shuffle_cutout_tokens(sheet, rng);
+        }
+    }
+
+    sheets
+}
+
 /// Append synthetic tool-trigger cutouts to a corpus token list.
 ///
 /// Each `(name, count)` spec produces up to `count` trigger cutouts (one per
@@ -2227,6 +2338,143 @@ mod tests {
         let mut tokens = original.clone();
         repeat_cutout_tokens(&mut tokens, 0);
         assert_eq!(tokens, original);
+    }
+
+    /// Build a usable cutout (kept, with a one-word context).
+    fn cutout(index: usize, previous: &str, text: &str) -> RawToken {
+        RawToken {
+            index,
+            text: text.to_string(),
+            keep: true,
+            previous_words: vec![previous.to_string()],
+            is_tool: false,
+        }
+    }
+
+    #[test]
+    fn deal_into_sheets_partitions_every_usable_cutout() {
+        let tokens: Vec<RawToken> = (0..50)
+            .map(|i| cutout(i + 1, &format!("w{}", i % 7), &format!("x{}", i % 11)))
+            .collect();
+
+        let sheets = deal_into_sheets(&tokens, 6, false, &mut rng(1));
+
+        assert_eq!(sheets.len(), 6);
+        assert_eq!(sheets.iter().map(|s| s.len()).sum::<usize>(), 50);
+
+        // A partition, not a sample: every cutout appears exactly once across
+        // the room, so the sheets together carry the corpus statistics.
+        let mut dealt: Vec<usize> = sheets.iter().flatten().map(|t| t.index).collect();
+        dealt.sort_unstable();
+        assert_eq!(dealt, (1..=50).collect::<Vec<_>>());
+
+        // Sheets are balanced to within one entry.
+        let min = sheets.iter().map(|s| s.len()).min().unwrap();
+        let max = sheets.iter().map(|s| s.len()).max().unwrap();
+        assert!(max - min <= 1, "sheets unbalanced: {min}..{max}");
+    }
+
+    #[test]
+    fn deal_into_sheets_drops_unusable_cutouts() {
+        let tokens = vec![
+            // No context: unreachable by the matching game.
+            RawToken {
+                index: 1,
+                text: "alpha".to_string(),
+                keep: true,
+                previous_words: vec![],
+                is_tool: false,
+            },
+            // Discarded by the tokeniser.
+            RawToken {
+                index: 2,
+                text: "IV".to_string(),
+                keep: false,
+                previous_words: vec!["alpha".to_string()],
+                is_tool: false,
+            },
+            cutout(3, "alpha", "beta"),
+        ];
+
+        let sheets = deal_into_sheets(&tokens, 2, false, &mut rng(7));
+        let dealt: Vec<&str> = sheets.iter().flatten().map(|t| t.text.as_str()).collect();
+        assert_eq!(dealt, vec!["beta"]);
+    }
+
+    #[test]
+    fn deal_into_sheets_spreads_duplicates_across_participants() {
+        // "the cat" five times over, plus filler so the sheets aren't trivial.
+        // All five copies must land on different sheets: if two piled up on one
+        // participant they'd call out once instead of twice, and the room would
+        // under-represent the corpus's most common continuation.
+        let mut tokens: Vec<RawToken> = (0..5).map(|i| cutout(i + 1, "the", "cat")).collect();
+        tokens.extend((0..25).map(|i| cutout(i + 6, &format!("w{i}"), &format!("x{i}"))));
+
+        for seed in 0..25u64 {
+            let sheets = deal_into_sheets(&tokens, 8, false, &mut rng(seed));
+            let holders = sheets
+                .iter()
+                .filter(|s| {
+                    s.iter()
+                        .any(|t| t.previous_words[0] == "the" && t.text == "cat")
+                })
+                .count();
+            assert_eq!(holders, 5, "seed {seed}: duplicates piled onto one sheet");
+        }
+    }
+
+    #[test]
+    fn deal_into_sheets_is_deterministic_for_a_seed() {
+        let tokens: Vec<RawToken> = (0..40)
+            .map(|i| cutout(i + 1, &format!("w{}", i % 5), &format!("x{}", i % 9)))
+            .collect();
+
+        let a = deal_into_sheets(&tokens, 5, false, &mut rng(99));
+        let b = deal_into_sheets(&tokens, 5, false, &mut rng(99));
+        let c = deal_into_sheets(&tokens, 5, false, &mut rng(100));
+
+        assert_eq!(a, b);
+        assert_ne!(a, c, "different seeds should deal differently");
+    }
+
+    #[test]
+    fn deal_into_sheets_shuffles_within_a_sheet_unless_sorted() {
+        // Corpus order is "a b", "b c", "c d", ...: if a sheet kept it, reading
+        // down the next-word column would reproduce the source text.
+        let words: Vec<String> = (0..60).map(|i| format!("w{i:02}")).collect();
+        let tokens: Vec<RawToken> = words
+            .windows(2)
+            .enumerate()
+            .map(|(i, w)| cutout(i + 1, &w[0], &w[1]))
+            .collect();
+
+        let shuffled = deal_into_sheets(&tokens, 3, false, &mut rng(3));
+        assert!(
+            shuffled
+                .iter()
+                .any(|sheet| sheet.windows(2).any(|w| w[0].index > w[1].index)),
+            "shuffled sheets should not preserve corpus order"
+        );
+
+        let sorted = deal_into_sheets(&tokens, 3, true, &mut rng(3));
+        for sheet in &sorted {
+            let keys: Vec<&str> = sheet.iter().map(|t| t.previous_words[0].as_str()).collect();
+            let mut expected = keys.clone();
+            expected.sort_unstable();
+            assert_eq!(keys, expected, "--sort should order a sheet by context");
+        }
+    }
+
+    #[test]
+    fn deal_into_sheets_handles_more_sheets_than_cutouts() {
+        let tokens = vec![cutout(1, "the", "cat"), cutout(2, "the", "hat")];
+        let sheets = deal_into_sheets(&tokens, 5, false, &mut rng(2));
+
+        assert_eq!(sheets.len(), 5);
+        assert_eq!(sheets.iter().filter(|s| s.is_empty()).count(), 3);
+        assert_eq!(sheets.iter().flatten().count(), 2);
+
+        assert!(deal_into_sheets(&tokens, 0, false, &mut rng(2)).is_empty());
     }
 
     #[test]
