@@ -11,9 +11,16 @@
 // The shuffle is what makes this work: in corpus order an uncut page is just
 // the source text with boxes drawn around it.
 
+// Sheets take the compact 12-colour palette and a bold next word: the entries
+// are set around 11pt here, where the cutouts' 30 colours stop being tellable
+// apart and a regular-weight next word disappears into the page. See
+// cutout-common.typ for why each palette is the size it is.
 #import "cutout-common.typ": (
-  brand-gold, coloured-word, derive-n, inter_word_gap, previous-word-box,
-  render-cutout,
+  brand-gold, compact-palette, derive-n, inter_word_gap, renderers,
+)
+#let (coloured-word, render-cutout, ..) = renderers(
+  palette: compact-palette,
+  bold-next: true,
 )
 
 // Get configuration from sys.inputs
@@ -147,10 +154,10 @@
     In #entry-chip(sample), the boxed #prev-words-phrase #if (
       previous-words-count > 1
     ) [are] else [is] the previous #prev-words-phrase and #emph(sample.text) is
-    the next word. Every distinct word has its own colour and keeps it wherever
-    it appears, so you can scan by colour first and check the word second ---
-    though two unrelated words occasionally share a colour, so always verify the
-    word itself.
+    the next word. Each word keeps the same colour wherever it appears, so scan
+    by colour first and read second. With only #compact-palette.colors.len()
+    colours and far more words than that, a colour narrows the search rather
+    than settling it --- always check the word itself.
 
     #text(size: 9pt, fill: muted)[
       #doc_metadata.total_tokens tokens, #doc_metadata.unique_tokens unique
@@ -310,7 +317,7 @@
 )
 #let mono-cutout(token) = {
   let parts = token.previous_words.map(mono-word-box)
-  parts.push(text(fill: black, token.text))
+  parts.push(text(fill: black, weight: "bold", token.text))
   parts.join(h(inter_word_gap))
 }
 

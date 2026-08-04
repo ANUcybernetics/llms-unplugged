@@ -2,10 +2,10 @@
 // Generates rows of tokens with continuous horizontal lines for easy cutting
 
 // Palette, colour hash and token renderers, shared with tokenized-sheets.typ.
-#import "cutout-common.typ": (
-  brand-gold, coloured-word, derive-n, inter_word_gap, next-word,
-  previous-word-box, render-cutout,
-)
+// Cutouts take the defaults: the 30-colour palette and a regular-weight next
+// word, both of which rely on these being set at 36pt.
+#import "cutout-common.typ": brand-gold, derive-n, inter_word_gap, renderers
+#let (coloured-word, next-word, render-cutout, ..) = renderers()
 
 // Configuration
 #let font_size = 36pt // Master size - change this to scale everything

@@ -21,9 +21,11 @@ text file → Rust CLI → model.json → Typst → PDF booklet
 - `tokenized-cutouts.typ` - Cutouts template (cut-up tokens for the table)
 - `tokenized-sheets.typ` - Search-sheet template (one page per participant, no
   cutting)
-- `cutout-common.typ` - Palette, colour hash and token renderers shared by both
-  cutout-family templates. Also copied into the website so the browser compiler
-  resolves it (`website/scripts/copy-cli-templates.ts`)
+- `cutout-common.typ` - Palettes, colour hash and token renderers shared by both
+  cutout-family templates. Two palettes: `large-palette` (30 colours, cutouts at
+  36pt) and `compact-palette` (12, sheets at ~11pt); `renderers(palette: ...)`
+  builds the token renderers against one. Also copied into the website so the
+  browser compiler resolves it (`website/scripts/copy-cli-templates.ts`)
 - `Makefile` - Batch processing for multiple texts/formats
 
 ## Essential commands
