@@ -132,41 +132,10 @@
     the *previous #prev-words-phrase* that came immediately before it somewhere
     in the original text.
 
-    #align(center)[
-      #block(fill: luma(245), inset: (x: 1em, y: 0.55em), radius: 3pt)[
-        #stack(
-          dir: ttb,
-          spacing: 0.5em,
-          align(center)[*Model vitals*],
-          grid(
-            columns: 3,
-            column-gutter: 1.2em,
-            row-gutter: (0.1em, 0.7em, 0.1em),
-            align: center,
-            [*#doc_metadata.total_tokens*],
-            [*#doc_metadata.unique_tokens*],
-            [*#calc.round(doc_metadata.entropy, digits: 2)*],
-
-            text(size: 8pt, fill: luma(80))[tokens],
-            text(size: 8pt, fill: luma(80))[unique tokens],
-            text(size: 8pt, fill: luma(80))[bits/token entropy],
-
-            [*#calc.round(doc_metadata.perplexity, digits: 1)*],
-            [*#calc.round(doc_metadata.branching_factor, digits: 2)*],
-            [],
-
-            text(size: 8pt, fill: luma(80))[perplexity],
-            text(size: 8pt, fill: luma(80))[branching factor],
-            [],
-          ),
-        )
-      ]
-    ]
-
-    == Anatomy of an entry
-
-    // An all-alphabetic entry reads best as the labelled example; a corpus
-    // with no such entry (e.g. Chinese) falls back to whatever is first.
+    // An all-alphabetic entry reads best as the example; a corpus with no such
+    // entry (e.g. Chinese) falls back to whatever is first. Set inline rather
+    // than as a labelled diagram: every sheet now carries its own worked
+    // example in its instruction line, so this only has to name the parts.
     #let alphabetic = all_tokens.find(t => (
       t.text.find(regex("[A-Za-z]")) != none
         and t.previous_words.all(p => p.find(regex("[A-Za-z]")) != none)
@@ -175,28 +144,21 @@
       all_tokens.first()
     }
 
-    #align(center)[
-      #stack(
-        dir: ttb,
-        spacing: 0.5em,
-        entry-chip(sample),
-        grid(
-          columns: 2,
-          column-gutter: 1.5em,
-          align: (center, center),
-          text(size: 9pt, fill: muted, style: "italic")[
-            previous #prev-words-phrase
-          ],
-          text(size: 9pt, fill: muted, style: "italic")[next word],
-        ),
-      )
-    ]
+    In #entry-chip(sample), the boxed #prev-words-phrase #if (
+      previous-words-count > 1
+    ) [are] else [is] the previous #prev-words-phrase and #emph(sample.text) is
+    the next word. Every distinct word has its own colour and keeps it wherever
+    it appears, so you can scan by colour first and check the word second ---
+    though two unrelated words occasionally share a colour, so always verify the
+    word itself.
 
-    Every distinct word has its own colour. *Previous* words sit inside a
-    coloured box; the free-standing *next word* is plain coloured text. A word
-    keeps its colour wherever it appears, so you can scan by colour first and
-    check the word second. Two unrelated words occasionally share a colour ---
-    always verify the word itself.
+    #text(size: 9pt, fill: muted)[
+      #doc_metadata.total_tokens tokens, #doc_metadata.unique_tokens unique
+      #sym.dot.c #calc.round(doc_metadata.entropy, digits: 2) bits/token
+      #sym.dot.c perplexity #calc.round(doc_metadata.perplexity, digits: 1)
+      #sym.dot.c branching factor
+      #calc.round(doc_metadata.branching_factor, digits: 2)
+    ]
 
     == Running a round
 
