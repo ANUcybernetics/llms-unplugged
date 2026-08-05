@@ -11,7 +11,7 @@
 // The shuffle is what makes this work: in corpus order an uncut page is just
 // the source text with boxes drawn around it.
 
-// Sheets take the compact 12-colour palette: the entries are set around 11pt
+// Sheets take the compact 12-colour palette: the entries are set around 16pt
 // here, where the cutouts' 30 colours stop being tellable apart. See
 // cutout-common.typ for why each palette is the size it is.
 #import "cutout-common.typ": (
@@ -22,7 +22,7 @@
 // Get configuration from sys.inputs
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
 #let json_path = sys.inputs.at("json_path", default: "sheets.json")
-#let font_size = eval(sys.inputs.at("font_size", default: "13pt"))
+#let font_size = eval(sys.inputs.at("font_size", default: "16pt"))
 #let columns_per_sheet = int(sys.inputs.at("columns", default: "4"))
 
 #set text(font: ("Libertinus Serif", "Noto Serif CJK SC"), size: 11pt)

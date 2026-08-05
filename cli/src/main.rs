@@ -271,7 +271,7 @@ struct SheetsArgs {
     columns: Option<usize>,
 
     /// Entry font size on the sheets (any Typst length, e.g. 11pt)
-    #[arg(long, default_value = "13pt")]
+    #[arg(long, default_value = "16pt")]
     font_size: String,
 
     /// Paper size for PDF (default: a4)

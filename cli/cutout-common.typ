@@ -48,7 +48,7 @@
 // as black. The adaptive light/dark treatment is what lets it extend to
 // L≈0.92 and so reach 28 chromatic entries, against ~20 if every fill had to
 // carry white text. At the cutouts' 36pt these near-neighbours are still easy
-// to tell apart; the sheets palette below exists because at 11pt they aren't.
+// to tell apart; the sheets palette below exists because at 16pt they aren't.
 // Regenerate with: node cli/scripts/generate_palette.ts --n 28 --l-min 0.32
 #let large-palette = (
   mult: 569,
@@ -92,7 +92,7 @@
 )
 
 // The search-sheets palette: 10 chromatic + black + mid-grey = 12 swatches,
-// min pairwise ΔE = 0.180. Sheets set their entries around 11pt rather than
+// min pairwise ΔE = 0.180. Sheets set their entries around 16pt rather than
 // the cutouts' 36pt, and colour discrimination falls off with size: at that
 // scale 30 swatches read as "some sort of blue" rather than as 30 answers, so
 // scanning by colour stops narrowing anything down. Fewer, further-apart
@@ -104,7 +104,7 @@
 // L ≤ 0.65 that `light: false` records. So on sheets the next word is dark
 // enough to read as plain coloured text on the paper, and needs no stroke to
 // prop it up — a 0.5pt outline that reads as a crisp edge at 36pt just fills
-// in the counters at 11pt. It also means every box carries white text, so
+// in the counters at 16pt. It also means every box carries white text, so
 // there is no mid-lightness fill left wearing hard-to-read black.
 // Regenerate with:
 //   node cli/scripts/generate_palette.ts --n 10 --min-white-contrast 4.5
