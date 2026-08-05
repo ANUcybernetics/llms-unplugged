@@ -635,9 +635,88 @@ fn compile_template(
         return Err(CliError::Typst(format!("Typst compile failed: {}", stderr)));
     }
 
-    println!("Wrote PDF to {}", pdf_path.display());
+    let before = fs::metadata(pdf_path).map(|m| m.len()).unwrap_or(0);
+    repack_pdf(pdf_path);
+    let after = fs::metadata(pdf_path).map(|m| m.len()).unwrap_or(0);
+
+    println!(
+        "Wrote PDF to {} ({})",
+        pdf_path.display(),
+        human_bytes(after)
+    );
+    if after < before {
+        println!(
+            "  repacked with object streams: {} smaller",
+            human_bytes(before - after)
+        );
+    }
 
     Ok(())
+}
+
+/// Repack `pdf_path` in place so the PDF is no bigger than it needs to be.
+///
+/// Typst writes a tagged PDF, and one cutouts or sheets page is a few hundred
+/// separately tagged tokens: the-cat-in-the-hat sheets carry 6216 `StructElem`
+/// dictionaries against 25 pages of drawing. PDF compresses streams but not
+/// loose objects, so that tag tree lands uncompressed and is most of the file.
+/// Object streams pack those dictionaries into compressed streams, cutting a
+/// sheets set by about 70% with no change to what renders and the tags kept —
+/// they are what a screen reader uses on the teacher-facing brief.
+///
+/// `--deterministic-id` derives the file ID from the content rather than the
+/// clock, so a rebuild stays byte-identical: the cutouts and sheets PDFs are
+/// committed, and a random ID would dirty a megabyte of git on every `make`.
+///
+/// Best-effort: qpdf is not needed to *make* a booklet, so a missing or
+/// unhappy qpdf warns and leaves the typst output in place rather than failing
+/// the command.
+fn repack_pdf(pdf_path: &Path) {
+    let result = Command::new("qpdf")
+        .arg("--object-streams=generate")
+        .arg("--recompress-flate")
+        .arg("--compression-level=9")
+        .arg("--deterministic-id")
+        .arg("--replace-input")
+        .arg(pdf_path)
+        .output();
+
+    match result {
+        Ok(output) if output.status.success() => {}
+        Ok(output) => {
+            // Exit code 3 is qpdf's "succeeded with warnings", which still
+            // writes a valid file, so only a real failure is worth reporting.
+            if output.status.code() != Some(3) {
+                eprintln!(
+                    "Warning: qpdf could not repack {}, leaving it uncompressed: {}",
+                    pdf_path.display(),
+                    String::from_utf8_lossy(&output.stderr).trim()
+                );
+            }
+        }
+        Err(e) if e.kind() == io::ErrorKind::NotFound => {
+            eprintln!(
+                "Warning: qpdf not found, so {} is several times larger than it needs to be. \
+                 Install qpdf to shrink it.",
+                pdf_path.display()
+            );
+        }
+        Err(e) => {
+            eprintln!("Warning: failed to run qpdf on {}: {e}", pdf_path.display());
+        }
+    }
+}
+
+/// Byte count in the largest unit that keeps it readable, for the PDF size
+/// lines. Sizes here run from tens of kilobytes to a few megabytes.
+fn human_bytes(bytes: u64) -> String {
+    const MB: u64 = 1024 * 1024;
+    const KB: u64 = 1024;
+    if bytes >= MB {
+        format!("{:.1} MB", bytes as f64 / MB as f64)
+    } else {
+        format!("{} KB", bytes.div_ceil(KB))
+    }
 }
 
 fn save_cutouts_json(

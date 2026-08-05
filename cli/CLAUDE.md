@@ -132,6 +132,12 @@ Test output must be pristine with zero failures.
 - Special formatting for punctuation tokens (boxed display)
 - Guide words in headers for navigation
 - Automatic page layout for booklet printing
+- Every PDF is repacked in place with
+  `qpdf --object-streams=generate --deterministic-id`, which packs typst's
+  uncompressed accessibility tag tree (thousands of `StructElem` dictionaries
+  per cutouts/sheets set) into compressed object streams --- roughly a 70% size
+  cut with the tags kept. qpdf is optional: without it the command warns and
+  leaves the larger file
 
 ## Common issues
 

@@ -100,13 +100,16 @@ $(PDF_DIR)/%.pdf $(PDF_DIR)/%.stamp: book.typ $(TOOL)
 # ===== Pattern rule for pre-prepared cutout PDFs =====
 # The cutouts subcommand always writes to <output-dir>/cutouts.pdf, so each
 # target uses its own work dir under $(OUT_DIR)/cutouts/<name>/ and qpdf
-# rotates even pages 180° on the way to the final destination.
+# rotates even pages 180° on the way to the final destination. That rotation
+# pass preserves the object streams the CLI already packed the file into, and
+# takes the same epoch and deterministic ID as the sheets, so a rebuild of an
+# unchanged corpus doesn't dirty a megabyte of git.
 $(CUTOUTS_DIR)/%.pdf: tokenized-cutouts.typ cutout-common.typ $(TOOL)
 	$(eval NAME := $(notdir $(basename $@)))
 	$(eval WORK_DIR := $(OUT_DIR)/cutouts/$(NAME))
 	mkdir -p $(WORK_DIR)
-	TYPST_BIN=$(TYPST_BIN) $(TOOL) cutouts --input $(DATA_DIR)/$(NAME).txt --output $(WORK_DIR) -n 2 --duplex
-	qpdf $(WORK_DIR)/cutouts.pdf --rotate=180:1-z:even $@
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) TYPST_BIN=$(TYPST_BIN) $(TOOL) cutouts --input $(DATA_DIR)/$(NAME).txt --output $(WORK_DIR) -n 2 --duplex
+	qpdf $(WORK_DIR)/cutouts.pdf --rotate=180:1-z:even --deterministic-id $@
 
 # ===== Pattern rule for pre-prepared search-sheet PDFs =====
 # The sheets subcommand always writes to <output-dir>/sheets.pdf, so each target
