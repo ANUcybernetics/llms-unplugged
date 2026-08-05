@@ -27,28 +27,22 @@ If someone asks the obvious "why not just look at two words?" --- you can, that'
 
 ---
 
-## `cat` and `dog` are strangers
-
-<StaticGrid tokens={EXAMPLE_GENERALISE} vocabulary={EXAMPLE_GENERALISE_VOCAB} step={12} />
-
-{/* notes: Second difference, and it starts with something the grid is good at: everything it knows is somewhere you can put your finger on. Hold that thought while you read this text.
-
-`cat` and `dog` do exactly the same job here --- both come after `the`, both get followed by verbs. But look at the rows: `cat` has seen `sat` and `ran`; `dog` has only seen `sat`. Ask this grid to continue "the dog" and it will never, ever say `ran`, because that cell is empty and an empty cell means impossible. You know "the dog ran" is fine. The grid has no way to know, because nothing it learned about `cat` is connected to `dog` in any way. Every cell is its own little island. */}
-
----
-
-## Tallies become knobs
+## It can say what it never saw
 
 <ParameterGrid tokens={EXAMPLE_GENERALISE} vocabulary={EXAMPLE_GENERALISE_VOCAB} scores={EXAMPLE_GENERALISE_SCORES} highlight="dog ran" />
 
-a number in every cell---even the one your grid left empty---because it is
-**billions of knobs** doing the remembering, not cells
+`the dog ran` isn't in this text, so your grid rates it **impossible**
 
-{/* notes: The fix, on the same grid --- same text, same rows, the tally marks ghosted in place with a number under each. Two things to point at. First, the ringed cell: `dog` followed by `ran`, empty in the tallies, 0.40 here. Second, the `cat` and `dog` rows, which have come out nearly identical, because in this text the two words do the same job.
+a real model rates it **0.40**, because what it learnt about `cat` carried
+over to `dog`
 
-A transformer doesn't give each pattern its own cell; it spreads every pattern across billions of numbers, each nudged a tiny amount after every wrong guess in training. Because `cat` and `dog` turn up in the same kinds of places, training pushes them onto overlapping numbers --- so what the model learns from `cat` is already, for free, something it knows about `dog`. That's generalisation, and it's the thing the grid structurally cannot do.
+{/* notes: Second difference. A different text this time, so set it up in one breath: three sentences, `cat` and `dog` doing exactly the same job. Then the ringed cell.
 
-The cost is the flip side of the slide before: there's no longer a cell to point at. Ask where a transformer stores "the dog ran" and the honest answer is "smeared across a few billion numbers, and we're still working on reading it back". That's most of what interpretability research is. */}
+Your grid tallies `cat` followed by `ran`, but never `dog` followed by `ran` --- so that cell is empty, and empty means impossible. It will never say "the dog ran", a sentence you know is perfectly fine. Every cell is its own little island; nothing the grid learnt about `cat` reaches `dog`.
+
+A transformer doesn't give each pattern its own cell. It spreads every pattern across billions of numbers, each nudged a tiny amount after every wrong guess in training, and because `cat` and `dog` turn up in the same kinds of places they end up sharing numbers. So the model can fill a cell it never saw. That's generalisation, and it's the reason an LLM isn't a very large phrasebook --- it says things nobody ever wrote.
+
+Two asides if they come up. These numbers are illustrative, not measured --- the shape is the point. And the cost of the fix: there's no longer a cell to point at, so "where does it store *the dog ran*" has no better answer than "smeared across a few billion numbers, and we're still working on reading it back". That's most of what interpretability research is. */}
 
 ---
 
@@ -79,7 +73,7 @@ The mechanism hasn't changed --- same predict-the-next-word loop, same dice --- 
 ![bg right:40%](./assets/bg-attention.avif)
 
 - it sees **more than one word**
-- it learns **patterns**, not tallies
+- it can say what it **never saw**
 - it's been taught to **answer**, not just continue
 
 {/* notes: Land the three before the last one, because the last one isn't a difference in kind at all. None of these changed the loop: look at the context, weigh the options, roll, write it down, repeat. What's left is dosage --- and that's the one people's intuition has no grip on. */}

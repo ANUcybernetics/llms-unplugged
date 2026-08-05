@@ -23,12 +23,12 @@ export const EXAMPLE_GENERATION = "see spot , run . see";
 // `,`=0-2/`.`=3-9. The choices: spot→`,` (rolled 7), `,`→run (2), run→`.` (3).
 export const EXAMPLE_GENERATION_ROLLS = "- 7 2 3 - -";
 
-// Generalisation --- drives the "tallies become knobs" beat in scaling-up.
-// `cat` and `dog` do exactly the same job in this text, but a grid stores them
-// as unrelated rows: `cat` has seen both `sat` and `ran`, `dog` only `sat`, so
-// the grid rates "the dog ran" impossible. Pre-tokenised (unlike EXAMPLE_TEXT)
-// so it can go straight into StaticGrid, and small enough that the empty cell
-// is findable from the back of the room.
+// Generalisation --- drives the "it can say what it never saw" beat in
+// scaling-up. `cat` and `dog` do exactly the same job in this text, but a grid
+// stores them as unrelated rows: `cat` has seen both `sat` and `ran`, `dog`
+// only `sat`, so the grid rates "the dog ran" impossible. Pre-tokenised (unlike
+// EXAMPLE_TEXT) so it can go straight into ParameterGrid, and small enough that
+// the ringed cell is findable from the back of the room.
 export const EXAMPLE_GENERALISE = "the cat sat . the cat ran . the dog sat .";
 export const EXAMPLE_GENERALISE_VOCAB = "the cat sat . ran dog";
 // The same grid as a transformer would fill it: a number in every cell, rows
