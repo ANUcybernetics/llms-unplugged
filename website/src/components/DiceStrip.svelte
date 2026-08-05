@@ -86,7 +86,6 @@
     flex-direction: column;
     align-items: center;
     gap: 1.25rem;
-    margin: 1.5rem 0;
   }
 
   .strip-caption {

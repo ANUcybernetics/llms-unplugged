@@ -25,7 +25,6 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.4em;
-    margin: 0.5rem 0 1.5rem;
     font-size: 1.6rem;
   }
 
