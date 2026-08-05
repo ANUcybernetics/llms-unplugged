@@ -64,40 +64,13 @@ The cost is the flip side of the slide before: there's no longer a cell to point
 
 it isn't refusing to answer---**answering isn't a thing it does**
 
-{/* notes: No heading --- the line is "let's ask your grid a question", and the slide just shows what comes back. Third difference, and the funniest one. Feed their model a question and it does what it always does: continues. It isn't being unhelpful and it isn't broken; nothing in "tally which word follows which" has any notion of a question and an answer. This is the honest state of a model that has only ever been trained to continue text. */}
+the fix is more training, on text made of _conversations_
 
----
+{/* notes: No heading --- the line is "let's ask your grid a question", and the slide just shows what comes back. Third difference, and the funniest one. Feed their model a question and it does what it always does: continues. It isn't being unhelpful and it isn't broken; nothing in "tally which word follows which" has any notion of a question and an answer. This is the honest state of a model that has only ever been trained to continue text --- and it's also, near enough, what a frontier model looks like straight out of pre-training: their problem, with better grammar.
 
-## From continuing to answering
+Then the second line. What turns it into something that answers you is post-training: a second, much smaller round of the same training on transcripts of conversations, plus feedback on which answers people preferred. Tally text off the web and what follows a question mark is usually another question; tally conversations and what follows it is the start of an answer.
 
-![bg right:35%](./assets/bg-post-training.avif)
-
-<div class="context-scale tally-compare">
-  <div class="tally-item">
-    <span class="tally-label">the `?` row, tallied over text from the web</span>
-    <div class="tally-row">
-      <span class="row-key"><span class="token punctuation">?</span><span class="row-arrow">→</span></span>
-      <span class="tally-cell"><span class="token">what</span><span class="tally">卌</span></span>
-      <span class="tally-cell"><span class="token">how</span><span class="tally">|||</span></span>
-      <span class="tally-cell"><span class="token">why</span><span class="tally">||</span></span>
-    </div>
-  </div>
-  <div class="tally-item">
-    <span class="tally-label">the same row, tallied over conversations</span>
-    <div class="tally-row">
-      <span class="row-key"><span class="token punctuation">?</span><span class="row-arrow">→</span></span>
-      <span class="tally-cell"><span class="token">it</span><span class="tally">卌</span></span>
-      <span class="tally-cell"><span class="token">sure</span><span class="tally">|||</span></span>
-      <span class="tally-cell"><span class="token">yes</span><span class="tally">||</span></span>
-    </div>
-  </div>
-</div>
-
-**post-training**: the same tallying again, over text made of _conversations_
-
-{/* notes: Same machinery one more time, so read it off the rows. On the web, what follows a question mark is usually another question --- so a model trained on it continues with questions, which is exactly what a frontier model straight out of pre-training does: their problem, with better grammar. Tally the same row over transcripts of conversations instead and what follows a `?` is the start of an answer. That's post-training: a second, much smaller round of training on example conversations, plus feedback on which answers people preferred. So the thing that comes back with "Paris" isn't running a different mechanism --- it learned from text where answering is what happens next.
-
-Two honesty notes if anyone asks. A real model uses everything before the question mark, not just the mark itself --- these rows are the one-word-of-context version of the point. And the mechanism hasn't changed: same predict-the-next-word loop, same dice, different text to learn from, so different habits on top. */}
+The mechanism hasn't changed --- same predict-the-next-word loop, same dice --- just different text to learn from, so different habits on top. Don't labour it; the joke has already made the point. */}
 
 ---
 
