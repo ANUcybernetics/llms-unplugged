@@ -7,121 +7,33 @@
 {/* notes:
 The reassurance beat: what they built isn't a cartoon of an LLM, it's the real mechanism at human scale --- look at the context, weigh every possible next word, roll the dice, write it down, repeat. So what's actually different?
 
-The whole section is run against their own grid rather than as a set of separate diagrams. Four times over, the grid is made to fail at something on stage, and the thing that fixes it turns out to be a real part of a transformer: more context (and why the grid can't have it), attention, parameters, post-training. Then scale. ~12 min --- it's a lot of slides but most are one beat each, so keep moving.
+Three differences, and then scale. Each one is run against their own grid rather than as a separate diagram: make the grid fail at something on stage, then say what a real model does instead. Resist the urge to explain the machinery --- this section is the conceptual shape, and every one of these has a lesson on the website that does it properly. ~7 min.
 */}
 
 ---
 
 ## One word of context
 
-{/* notes: Back to the worked example. We're sitting on a comma with two options and no way to choose between them --- so we roll. But look at why we're stuck: the model is looking at a comma, and every comma in the text looks identical to it. It cannot tell whether it just wrote `run` or `spot`. That's not bad luck, it's the whole design: one word of context. */}
-
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={2} phase="preroll" />
 
----
+your grid sees **one word**; Claude sees **a million tokens**---the whole
+conversation, every document in it
 
-{/* notes: No heading on this one, so say it: two words of context. Give it two words and the guess stops being a guess. `run ,` is always followed by `spot`; `spot ,` is always followed by `run`. Same text, same tallies, no dice needed --- the ambiguity was never in the language, it was in how little the model could see. This is a trigram model, and there's a lesson on the website that runs it with pen and paper. */}
+{/* notes: First difference, and it's sitting right there in the worked example. We're on a comma with two options and no way to choose between them, so we roll. Look at why we're stuck: the model is looking at a comma, and every comma in the text is identical to it. It cannot tell whether it just wrote `run` or `spot`. That's not bad luck, it's the design --- one word of context is all it gets.
 
-<ContextGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} order={2} highlight="run , |spot ," />
+A frontier model looks back over everything it can see, and that's the whole conversation plus whatever you pasted into it.
 
-so providing two words of context instead of one helps --- what does that cost?
-
----
-
-{/* notes: This is the bill. The grid needs a row for every context it might find itself in, so going from one word to two takes 5 rows to 25 --- and most of them stay empty, because our text never contains `see see` or `. .`. Three words would be 125. Each extra word of memory multiplies the grid by the size of the vocabulary. */}
-
-<GridZoom rows={25} cols={5} label="two words of context" detail="25 rows, one per possible pair" compareRows={5} compareCols={5} compareLabel="one word: 5 rows" note="and almost every one of them is empty" />
-
----
-
-## The grid nobody can build
-
-![bg right:35%](./assets/bg-more-context.avif)
-
-| context  | rows in the grid |
-| -------- | ---------------- |
-| 1 word   | 5                |
-| 2 words  | 25               |
-| 3 words  | 125              |
-| 10 words | 9,765,625        |
-
-Claude keeps **a million tokens** in view, over a vocabulary of around **100,000**
-
-{/* notes: Read the table, then drop the last line. Their vocabulary is 5, so it's 5-to-the-n. A real model's vocabulary is around 100,000, which is 10-to-the-5 --- so seventeen words of context is already 10-to-the-85 rows, and the observable universe only has about 10-to-the-80 atoms. Seventeen words. Claude holds a million tokens. The grid is not big, it is impossible, and that's not rhetoric --- you run out of universe long before you run out of sentence. So something else has to be going on. */}
-
----
-
-## Attention: a row that changes shape
-
-<AttentionRow tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} token="," contexts={[{ before: "run", weights: [1, 0, 9, 0, 0] }, { before: "see spot", weights: [9, 0, 1, 0, 0] }]} active={0} />
-
-no new rows---this is the grid you built
-
-{/* notes: Back to their own grid, whole, one last time. Point at the comma row: one mark under `run`, one under `spot`, and that is the 50/50 we rolled on. Attention is not a bigger grid --- watch what happens to that one row while everything else stays exactly where it is. */}
-
----
-
-## Attention: a row that changes shape
-
-<AttentionRow tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} token="," contexts={[{ before: "run", weights: [1, 0, 9, 0, 0] }, { before: "see spot", weights: [9, 0, 1, 0, 0] }]} active={1} />
-
-with `run` behind it, the row leans to `spot`
-
-{/* notes: Same grid, same row, but the model now looks back over what it can see and weighs which earlier words matter here. With `run` before the comma the row is redrawn on the spot: nearly all the weight on `spot`. Nothing was stored --- this row didn't exist a moment ago. */}
-
----
-
-## Attention: a row that changes shape
-
-<AttentionRow tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} token="," contexts={[{ before: "run", weights: [1, 0, 9, 0, 0] }, { before: "see spot", weights: [9, 0, 1, 0, 0] }]} active={2} />
-
-with `see spot` behind it, the same row leans the other way
-
-{/* notes: And the payoff: `see spot` before the comma pulls the same row the other way. One row, re-shaped per context, instead of a row per context --- which is exactly the bill the last slide said nobody can pay. That's attention, and it's why transformers can have a context window at all. */}
-
----
-
-## Attention: learning where to look
-
-![bg right:40%](./assets/bg-attention.avif)
-
-<div class="context-scale">
-  <div class="context-row">
-    <span class="context-tokens">
-      <span class="token attn-weak">the</span>
-      <span class="token attn-weak">wifi</span>
-      <span class="token attn-strong">password</span>
-      <span class="token attn-weak">is</span>
-      <span class="token attn-strong">swordfish</span>
-      <span class="context-more">⋯</span>
-      <span class="token attn-weak">the</span>
-      <span class="token attn-medium">password</span>
-      <span class="token attn-weak">is</span>
-      <span class="context-next">?</span>
-    </span>
-  </div>
-</div>
-
-the next word is _swordfish_---attention finds where `password` last appeared and
-copies what came after
-
-{/* notes: A concrete one to make it stick. The model spots the earlier "the password is swordfish" and repeats what followed. That look-back-and-copy move is an induction head, and the Induction Heads lesson on the website is exactly this pattern --- "find the last time I saw this word, copy what came next" --- run with pen and paper. The weights aren't hand-set either: the model learns where to look. */}
-
----
-
-## You can point at the pattern
-
-{/* notes: Second failure, and it starts with something the grid is good at. `run` is followed by a full stop twice, and there are the two marks, in that cell, and you can put your finger on them. Everything the model knows is somewhere you can point at. Hold that thought. */}
-
-<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={3} />
+If someone asks the obvious "why not just look at two words?" --- you can, that's a trigram, and there's a lesson on the website that runs one with pen and paper. But the grid needs a row per context, so each extra word multiplies it by the size of the vocabulary: 5, 25, 125, and at a real vocabulary of ~100,000 you run out of atoms in the universe before you run out of sentence. Real models don't store a row per context, they work out what to pay attention to on the fly. Don't go further than that here. */}
 
 ---
 
 ## `cat` and `dog` are strangers
 
-{/* notes: A different text, same idea. `cat` and `dog` do exactly the same job here --- both come after `the`, both get followed by verbs. But look at the two rows: `cat` has seen `sat` and `ran`; `dog` has only seen `sat`. Ask this grid to continue "the dog" and it will never, ever say `ran`, because that cell is empty and an empty cell means impossible. You know "the dog ran" is fine. The grid has no way to know, because nothing it learned about `cat` is connected to `dog` in any way. Every cell is its own little island. */}
-
 <StaticGrid tokens={EXAMPLE_GENERALISE} vocabulary={EXAMPLE_GENERALISE_VOCAB} step={12} />
+
+{/* notes: Second difference, and it starts with something the grid is good at: everything it knows is somewhere you can put your finger on. Hold that thought while you read this text.
+
+`cat` and `dog` do exactly the same job here --- both come after `the`, both get followed by verbs. But look at the rows: `cat` has seen `sat` and `ran`; `dog` has only seen `sat`. Ask this grid to continue "the dog" and it will never, ever say `ran`, because that cell is empty and an empty cell means impossible. You know "the dog ran" is fine. The grid has no way to know, because nothing it learned about `cat` is connected to `dog` in any way. Every cell is its own little island. */}
 
 ---
 
@@ -132,12 +44,11 @@ copies what came after
 a number in every cell---even the one your grid left empty---because it is
 **billions of knobs** doing the remembering, not cells
 
-{/* notes: The fix for the island problem, shown on the same grid --- same text, same rows, the tally marks ghosted in place with a number under each one. Two things to point at. First, the ringed cell: `dog` followed by `ran`, which the tallies left empty and which now has 0.40 in it. Second, the `cat` and `dog` rows, which have come out nearly identical, because in this text the two words do the same job.
+{/* notes: The fix, on the same grid --- same text, same rows, the tally marks ghosted in place with a number under each. Two things to point at. First, the ringed cell: `dog` followed by `ran`, empty in the tallies, 0.40 here. Second, the `cat` and `dog` rows, which have come out nearly identical, because in this text the two words do the same job.
 
-Where those numbers come from is the slide. A transformer doesn't give each pattern its own cell; it spreads every pattern across billions of numbers, each nudged a tiny amount after every wrong guess in training. Because `cat` and `dog` turn up in the same kinds of places, training pushes them onto overlapping numbers --- so what the model learns from `cat` is already, for free, something it knows about `dog`. That's generalisation, and it's the thing the grid structurally cannot do. (Careful with the picture: the model isn't storing this grid either. Nothing here is looked up; every number is computed on demand, which is why it can fill a cell it never saw.)
+A transformer doesn't give each pattern its own cell; it spreads every pattern across billions of numbers, each nudged a tiny amount after every wrong guess in training. Because `cat` and `dog` turn up in the same kinds of places, training pushes them onto overlapping numbers --- so what the model learns from `cat` is already, for free, something it knows about `dog`. That's generalisation, and it's the thing the grid structurally cannot do.
 
-The cost is the flip side of the slide before: there is no longer a cell to point at. Ask where a transformer stores "the dog ran" and the honest answer is "smeared across a few billion numbers, and we're still working on reading it back". That's most of what interpretability research is.
-*/}
+The cost is the flip side of the slide before: there's no longer a cell to point at. Ask where a transformer stores "the dog ran" and the honest answer is "smeared across a few billion numbers, and we're still working on reading it back". That's most of what interpretability research is. */}
 
 ---
 
@@ -153,7 +64,7 @@ The cost is the flip side of the slide before: there is no longer a cell to poin
 
 it isn't refusing to answer---**answering isn't a thing it does**
 
-{/* notes: No heading --- the line is "let's ask your grid a question", and the slide just shows what comes back. Third failure, and the funniest one. Feed their model a question and it does what it always does: continues. It isn't being unhelpful and it isn't broken; nothing in "tally which word follows which" has any notion of a question and an answer. This is the honest state of a model that has only ever been trained to continue text. */}
+{/* notes: No heading --- the line is "let's ask your grid a question", and the slide just shows what comes back. Third difference, and the funniest one. Feed their model a question and it does what it always does: continues. It isn't being unhelpful and it isn't broken; nothing in "tally which word follows which" has any notion of a question and an answer. This is the honest state of a model that has only ever been trained to continue text. */}
 
 ---
 
@@ -184,9 +95,21 @@ it isn't refusing to answer---**answering isn't a thing it does**
 
 **post-training**: the same tallying again, over text made of _conversations_
 
-{/* notes: Same machinery one more time, so read it off the rows. On the web, what follows a question mark is usually another question --- so a model trained on it continues with questions, which is exactly what a frontier model straight out of pre-training does: their problem, with better grammar. Tally the same row over transcripts of conversations instead and what follows a `?` is the start of an answer. That's post-training: a second, much smaller round of training on example conversations, plus feedback on which answers people preferred. So the thing that comes back with "Paris" a slide ago isn't running a different mechanism --- it learned from text where answering is what happens next.
+{/* notes: Same machinery one more time, so read it off the rows. On the web, what follows a question mark is usually another question --- so a model trained on it continues with questions, which is exactly what a frontier model straight out of pre-training does: their problem, with better grammar. Tally the same row over transcripts of conversations instead and what follows a `?` is the start of an answer. That's post-training: a second, much smaller round of training on example conversations, plus feedback on which answers people preferred. So the thing that comes back with "Paris" isn't running a different mechanism --- it learned from text where answering is what happens next.
 
 Two honesty notes if anyone asks. A real model uses everything before the question mark, not just the mark itself --- these rows are the one-word-of-context version of the point. And the mechanism hasn't changed: same predict-the-next-word loop, same dice, different text to learn from, so different habits on top. */}
+
+---
+
+## Three things are different
+
+![bg right:40%](./assets/bg-attention.avif)
+
+- it sees **more than one word**
+- it learns **patterns**, not tallies
+- it's been taught to **answer**, not just continue
+
+{/* notes: Land the three before the last one, because the last one isn't a difference in kind at all. None of these changed the loop: look at the context, weigh the options, roll, write it down, repeat. What's left is dosage --- and that's the one people's intuition has no grip on. */}
 
 ---
 
@@ -196,7 +119,7 @@ Two honesty notes if anyone asks. A real model uses everything before the questi
 
 ![bg](./assets/bg-distribution.avif)
 
-{/* notes: Four things fixed. None of them changed the loop. The last difference is just dosage --- and it's worth taking slowly, because this is the one people's intuition has no grip on. Keep your eye on the gold square: that's their grid, drawn at true scale, on every slide. */}
+{/* notes: Keep your eye on the gold square over the next two slides: that's their grid, drawn at true scale, on both of them. */}
 
 ---
 
@@ -204,15 +127,7 @@ Two honesty notes if anyone asks. A real model uses everything before the questi
 
 <GridZoom rows={5} cols={5} label="“Run, Spot, run. See Spot run.”" detail="5 tokens · 25 cells" compareRows={5} compareCols={5} />
 
-{/* notes: The next three slides are figure-only, so you carry them: this one is "your grid". Five tokens, twenty-five cells. At the booklet's 1cm per cell that's a five-centimetre square --- smaller than a beer coaster. */}
-
----
-
-{/* _class: centered */}
-
-<GridZoom rows={70} cols={70} label="Green Eggs and Ham" detail="70 tokens · 4,900 cells" compareRows={5} compareCols={5} />
-
-{/* notes: Same again, no heading --- read the caption out. A whole Dr Seuss book is 70 distinct tokens, so ~4,900 cells --- a sheet about 70cm square, call it a poster. And their grid is the little gold square in the corner. Note the vocabulary is what matters here, not the length: the book is a couple of thousand words, but Seuss reuses them relentlessly. */}
+{/* notes: Figure-only, so you carry it: this is "your grid". Five tokens, twenty-five cells. At the booklet's 1cm per cell that's a five-centimetre square --- smaller than a beer coaster. */}
 
 ---
 
@@ -220,7 +135,7 @@ Two honesty notes if anyone asks. A real model uses everything before the questi
 
 <GridZoom rows={7441} cols={7441} label="Frankenstein" detail="7,441 tokens · 55 million cells" compareRows={5} compareCols={5} note="the cells are now too small to draw" />
 
-{/* notes: And the third: Frankenstein, the novel in the booklet. 7,441 distinct tokens, 55 million cells. The grid lines have stopped being drawable --- that grey is the grid. On paper it's about 5,500 square metres, most of a football field, and their model is the gold speck. This is also why the booklet doesn't print a grid: at this size you list only the cells that aren't empty. */}
+{/* notes: Same again, no heading --- read the caption out. Frankenstein, the novel in the booklet: 7,441 distinct tokens, 55 million cells. The grid lines have stopped being drawable, so that grey *is* the grid. On paper it's about 5,500 square metres, most of a football field, and their model is the gold speck. This is also why the booklet doesn't print a grid: at this size you list only the cells that aren't empty. Note it's the vocabulary that matters here, not the length --- a novel reuses its words relentlessly. */}
 
 ---
 
@@ -228,7 +143,7 @@ Two honesty notes if anyone asks. A real model uses everything before the questi
 
 a real vocabulary: **100,000** tokens, **10 billion** cells, **1 km²** of paper
 
-{/* notes: Stop drawing and start measuring, because the picture gives out here. A commercial model's vocabulary is around 100,000, so its bigram grid alone is 10 billion cells --- a square kilometre of paper, near enough the whole Acton campus. And that is still the toy version: one word of context, tally marks, none of the four fixes we just went through.
+{/* notes: Stop drawing and start measuring, because the picture gives out here. A commercial model's vocabulary is around 100,000, so its bigram grid alone is 10 billion cells --- a square kilometre of paper, near enough the whole Acton campus. And that is still the toy version: one word of context, tally marks, none of the three fixes we just went through.
 
 Two more ballparks if you want them. The real thing: a frontier model's ~1.5 trillion parameters at 1cm each is about 150 km², a square 12km on a side, a hundred Acton campuses, twenty-odd Lake Burley Griffins. And time: if hand-training 100 tokens took you 10 minutes, the tens of trillions of tokens these are trained on would take about 5.7 million years at your rate --- you'd have had to start around when our ancestors split from the chimpanzees to be finishing now.
 
@@ -241,4 +156,4 @@ The punchline isn't any one figure. It's that the mechanism didn't change, only 
 
 still just **tokens in** → **tokens out**
 
-{/* notes: Every reply from Claude or ChatGPT is sampled one word at a time, exactly like their dice rolls --- that's why "regenerate" gives a different answer. More context, learned where to look, billions of numbers instead of tallies, a round of manners --- but the loop is the one they ran by hand. */}
+{/* notes: Every reply from Claude or ChatGPT is sampled one word at a time, exactly like their dice rolls --- that's why "regenerate" gives a different answer. More context, patterns instead of tallies, a round of manners --- but the loop is the one they ran by hand. */}
