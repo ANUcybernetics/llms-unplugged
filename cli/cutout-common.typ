@@ -140,20 +140,26 @@
 // Names are the nearest common English colour word to each sRGB value, checked
 // against the xkcd colour-survey names — the most widely-agreed naming data we
 // have — and pulled apart by hand where two entries would otherwise take the
-// same word (hence blue/navy for the two blues and violet/purple/magenta
-// across the three purples, rather than three shades of "purple"). The
-// generator does not emit them, so re-name by hand after any regeneration.
+// same word (hence blue/navy for the two blues and violet/purple/wine across
+// the three purples, rather than three shades of "purple"). The generator
+// does not emit them, so re-name by hand after any regeneration.
 //
-// Two entries are named against the survey rather than by it. "ochre" is an
-// Australian room's word for this swatch; the survey's nearest words are
-// bronze (ΔE 0.067) and olive (0.078) against ochre's 0.141, but all three
-// beat the "mustard" it replaced (0.235), which is a full 0.22 of lightness
-// too pale for what prints. And the magenta stays magenta despite reading as
-// maroon to an Australian eye: sampling a Queensland kit puts its cloth at
-// OKLCH hue 340°, ΔE 0.025 from the survey's maroon and 0.19 from this
-// swatch — so the local anchor argues against the name, not for it. A true
-// maroon is unavailable here in any case, sitting at OKLCH hue 9–12°, inside
-// the 20° hue floor around the palette's own red at 31°.
+// Two entries are named against the survey rather than by it, because the
+// contrast floor leaves every swatch darker than the centroid for its word
+// and the plain name then reads too bright for what prints. "ochre" (ΔE
+// 0.141) is not the survey's nearest word for the gold — bronze is 0.067,
+// olive 0.078 — but it is the word an Australian room reaches for, and all
+// three beat the "mustard" it replaced (0.235), whose centroid is a full 0.22
+// of lightness too pale. "wine" (0.104) likewise loses to magenta (0.081) on
+// distance alone, but errs dark where magenta errs bright, and dark is the
+// direction this swatch actually misses in.
+//
+// Not "maroon", though it reads that way to an Australian eye. Sampling a
+// Queensland State of Origin kit puts its cloth at OKLCH hue 9°, L 0.31 —
+// ΔE 0.025 from the survey's maroon, so the local anchor is the same colour
+// the survey recorded, and 0.19 from this swatch. Nor could the palette hold
+// a true maroon if it wanted to: at ΔE 0.095 from the brown above, it sits
+// well inside the 0.167 minimum this palette is generated under.
 #let compact-palette = (
   mult: 223,
   salt: 354261,
@@ -174,7 +180,7 @@
     (color: oklch(32.0%, 0.186, 265deg), light: false, name: "navy"),
     (color: oklch(47.2%, 0.274, 285deg), light: false, name: "violet"),
     (color: oklch(60.7%, 0.299, 314deg), light: false, name: "purple"),
-    (color: oklch(46.5%, 0.199, 343deg), light: false, name: "magenta"),
+    (color: oklch(46.5%, 0.199, 343deg), light: false, name: "wine"),
   ),
 )
 

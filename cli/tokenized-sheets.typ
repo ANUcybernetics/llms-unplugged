@@ -123,16 +123,26 @@
 // few enough to name, thirty is not --- so this is a sheets-only figure.
 //
 // Chips flow as inline text rather than sitting in a grid: the key has to fit
-// whatever slack the column has left, and a paragraph reflows into it where a
-// fixed column count would either overflow or leave a ragged half-row. The
-// extra leading keeps consecutive rows of boxes from touching.
-#let colour-key() = block(
+// whatever slack the column or header has left, and a paragraph reflows into
+// it where a fixed column count would either overflow or leave a ragged
+// half-row. The extra leading keeps consecutive rows of boxes from touching.
+//
+// `lead-in` prefixes the chips inline rather than sitting on its own line, so
+// on a participant's sheet the key costs one line rather than two. It is not
+// optional there: a row of boxed words in the palette colours is exactly what
+// the rest of the page is made of, and without a label naming it as the key,
+// somebody scanning for a match will try to match against it.
+#let colour-key(size: 10pt, gap: 0.45em, lead-in: none) = block(
   above: 0.8em,
   below: 0.8em,
   {
     set par(leading: 0.85em, justify: false)
-    set text(size: 10pt)
-    compact-palette.colors.map(e => box(word-box(e, e.name))).join(h(0.45em))
+    set text(size: size)
+    let chips = compact-palette.colors.map(e => box(word-box(e, e.name)))
+    if lead-in != none {
+      chips.insert(0, text(fill: muted, style: "italic", lead-in))
+    }
+    chips.join(h(gap))
   },
 )
 
@@ -400,6 +410,11 @@
         ) is a match and you answer #strong(text(fill: black, example.text)).
       ]
     ]
+    // The same key the brief carries, at sheet scale. Whoever is running the
+    // activity can then call the colour along with the token ("it's a teal
+    // one") and be understood: the brief is theirs alone, so without this the
+    // room would be hearing colour names it had no way to resolve.
+    #colour-key(size: 8.5pt, gap: 0.28em, lead-in: [colour names:])
     #v(0.5em)
     #line(length: 100%, stroke: 0.8pt + luma(120))
   ]
