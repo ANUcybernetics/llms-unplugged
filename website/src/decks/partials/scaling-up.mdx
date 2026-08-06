@@ -121,13 +121,27 @@ Now close the loop on the question you opened with. "Feedback on which answers p
 
 ---
 
+{/* _class: centered */}
+
+<GridZoom rows={100000} cols={100000} label="a real model’s vocabulary" detail="100,000 tokens · 10 billion cells" compareRows={7441} compareCols={7441} compareLabel="Frankenstein" note="1 km² of paper — near enough the whole Acton campus" />
+
+{/* notes: One more step, and it's the last one the picture survives --- so keep reading the caption rather than drawing. A commercial model's vocabulary is around 100,000 tokens, which makes its bigram grid alone 10 billion cells: a square kilometre of paper. Point out the window; about this whole campus. Frankenstein is now the little gold square, and their grid is far too small to draw at all.
+
+And this is still the *toy*: one word of context, tally marks, none of the three fixes we just went through. */}
+
+---
+
 {/* _class: impact */}
 
-a real vocabulary: **100,000** tokens, **10 billion** cells, **1 km²** of paper
+**15 trillion** tokens of training text
 
-{/* notes: Stop drawing and start measuring, because the picture gives out here. A commercial model's vocabulary is around 100,000, so its bigram grid alone is 10 billion cells --- a square kilometre of paper, near enough the whole Acton campus. And that is still the toy version: one word of context, tally marks, none of the three fixes we just went through.
+**~1 trillion** numbers in the model
 
-Two more ballparks if you want them. The real thing: a frontier model's ~1.5 trillion parameters at 1cm each is about 150 km², a square 12km on a side, a hundred Acton campuses, twenty-odd Lake Burley Griffins. And time: if hand-training 100 tokens took you 10 minutes, the tens of trillions of tokens these are trained on would take about 5.7 million years at your rate --- you'd have had to start around when our ancestors split from the chimpanzees to be finishing now.
+{/* notes: Past this the picture gives out entirely, so switch to the two numbers they'll actually hear quoted --- and say the quiet part: vocabulary size, the thing that just blew the grid up, is neither of them. It sets how *wide* the table is. These two set how much the thing has read, and how much of it there is.
+
+Fifteen trillion tokens is the published figure for a recent open model's training run. Every one of them went past a counter, the way their text went past theirs. The time ballpark, if you want it: at ten minutes per hundred tokens by hand, that's about 5.7 million years --- you'd have had to start around when our ancestors split from the chimpanzees to be finishing now.
+
+The parameter count for the closed models isn't published; a trillion is the right order of magnitude, and the honest answer is "about that, and nobody outside will tell you". At a centimetre each that pile is a couple of hundred square kilometres --- a hundred-odd Acton campuses, twenty-odd Lake Burley Griffins.
 
 The punchline isn't any one figure. It's that the mechanism didn't change, only the dosage.
 */}
