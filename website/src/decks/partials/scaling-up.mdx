@@ -14,12 +14,18 @@ Three differences, and then scale. Each one is run against their own grid rather
 
 ## One word of context
 
+<p class="voice">"I told it not to do that---and it did it anyway"</p>
+
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={2} phase="preroll" />
 
 your grid sees **one word**; Claude sees **a million tokens**---the whole
 conversation, every document in it
 
-{/* notes: First difference, and it's sitting right there in the worked example. We're on a comma with two options and no way to choose between them, so we roll. Look at why we're stuck: the model is looking at a comma, and every comma in the text is identical to it. It cannot tell whether it just wrote `run` or `spot`. That's not bad luck, it's the design --- one word of context is all it gets.
+{/* notes: Ask before you explain: hands up if you've told one of these things not to do something and it did it anyway. Take two answers, then say you're about to show them the pen-and-paper version of it. The italic line is theirs, not yours --- it should feel like you're picking up something they said.
+
+First difference, and it's sitting right there in the worked example. We're on a comma with two options and no way to choose between them, so we roll. Look at why we're stuck: the model is looking at a comma, and every comma in the text is identical to it. It cannot tell whether it just wrote `run` or `spot`. That's not bad luck, it's the design --- one word of context is all it gets. Their instruction, if they'd given one, is simply not in the room.
+
+Keep the bridge honest. A frontier model doesn't have a one-word window, so it isn't that your instruction fell off the end. It's that the instruction is one more stretch of text competing with everything else in the window, weighted rather than obeyed --- closer to "it read your instruction and something else won" than to "it never saw it". The shared point is the one the grid makes plainly: what the model is looking at right now is all that shapes what comes next.
 
 A frontier model looks back over everything it can see, and that's the whole conversation plus whatever you pasted into it.
 
@@ -29,6 +35,8 @@ If someone asks the obvious "why not just look at two words?" --- you can, that'
 
 ## It can say what it never saw
 
+<p class="voice">"it wrote something genuinely new---how?"</p>
+
 <ParameterGrid tokens={EXAMPLE_GENERALISE} vocabulary={EXAMPLE_GENERALISE_VOCAB} scores={EXAMPLE_GENERALISE_SCORES} highlight="dog ran" />
 
 `the dog ran` isn't in this text, so your grid rates it **impossible**
@@ -36,7 +44,9 @@ If someone asks the obvious "why not just look at two words?" --- you can, that'
 a real model rates it **0.40**, because what it learnt about `cat` carried
 over to `dog`
 
-{/* notes: Second difference. A different text this time, so set it up in one breath: three sentences, `cat` and `dog` doing exactly the same job. Then the ringed cell.
+{/* notes: Ask before you explain: has anyone had one of these produce something that genuinely surprised them --- something it couldn't have been copying? Take an example from the room if you get a good one; this slide is the answer to it.
+
+Second difference. A different text this time, so set it up in one breath: three sentences, `cat` and `dog` doing exactly the same job. Then the ringed cell.
 
 Your grid tallies `cat` followed by `ran`, but never `dog` followed by `ran` --- so that cell is empty, and empty means impossible. It will never say "the dog ran", a sentence you know is perfectly fine. Every cell is its own little island; nothing the grid learnt about `cat` reaches `dog`.
 
@@ -48,6 +58,7 @@ Two asides if they come up. These numbers are illustrative, not measured --- the
 
 {/* _class: centered */}
 
+<p class="voice">"I corrected it, and it said 'sorry, you're right'---even when I wasn't"</p>
 <div class="qa-compare">
   <span class="qa-prompt">prompt: "what is the capital of France?"</span>
   <div class="qa-item">
@@ -60,11 +71,15 @@ it isn't refusing to answer---**answering isn't a thing it does**
 
 the fix is more training, on text made of _conversations_
 
-{/* notes: No heading --- the line is "let's ask your grid a question", and the slide just shows what comes back. Third difference, and the funniest one. Feed their model a question and it does what it always does: continues. It isn't being unhelpful and it isn't broken; nothing in "tally which word follows which" has any notion of a question and an answer. This is the honest state of a model that has only ever been trained to continue text --- and it's also, near enough, what a frontier model looks like straight out of pre-training: their problem, with better grammar.
+{/* notes: Ask before you explain: who's had one of these cave the moment you pushed back --- agreed with you when you were the one who had it wrong? It gets a laugh and everyone's had it. Then: to see where that habit comes from, we have to look at the one thing your grid can't do at all.
+
+No heading --- the line is "let's ask your grid a question", and the slide just shows what comes back. Third difference, and the funniest one. Feed their model a question and it does what it always does: continues. It isn't being unhelpful and it isn't broken; nothing in "tally which word follows which" has any notion of a question and an answer. This is the honest state of a model that has only ever been trained to continue text --- and it's also, near enough, what a frontier model looks like straight out of pre-training: their problem, with better grammar.
 
 Then the second line. What turns it into something that answers you is post-training: a second, much smaller round of the same training on transcripts of conversations, plus feedback on which answers people preferred. Tally text off the web and what follows a question mark is usually another question; tally conversations and what follows it is the start of an answer.
 
-The mechanism hasn't changed --- same predict-the-next-word loop, same dice --- just different text to learn from, so different habits on top. Don't labour it; the joke has already made the point. */}
+The mechanism hasn't changed --- same predict-the-next-word loop, same dice --- just different text to learn from, so different habits on top. Don't labour it; the joke has already made the point.
+
+Now close the loop on the question you opened with. "Feedback on which answers people preferred" is where the caving comes from: raters, faced with two replies, tended to prefer the agreeable one, so agreeing got reinforced. There is nowhere in any of this that a fact is marked true or false --- no setting, no lookup, nothing like the tally marks they can point at. "You're absolutely right" is a habit that scored well, produced by the same next-token loop as everything else. Which is also the useful takeaway: agreement from one of these is not evidence you were right. */}
 
 ---
 

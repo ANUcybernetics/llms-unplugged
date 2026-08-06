@@ -356,6 +356,22 @@
   display: none;
 }
 
+/* The participant-voice line opening each of the three scaling-up differences:
+   something people in the room have actually experienced with a real model,
+   which the figure below then explains. Set as a quoted aside so it reads as
+   reported speech rather than as the slide's own claim.
+
+   The extra space beneath is doing real work on the post-training slide, where
+   the line lands directly above `.qa-compare`'s own italic prompt. At the
+   theme's default 1.5rem the two italics sit close enough to read as one
+   block, which loses the distinction between what a participant said and what
+   we're prompting the grid with. */
+.reveal .voice {
+  color: var(--color-text-secondary);
+  font-style: italic;
+  margin-block-end: 2.75rem;
+}
+
 /* "answering isn't a thing it does": a prompt, then what the grid returns.
    The slide currently shows one continuation (weak); `.strong` is kept for a
    contrasting answer row. The prompt is the line the room reads first, so it is
