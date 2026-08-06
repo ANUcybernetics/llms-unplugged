@@ -23,6 +23,18 @@ export const EXAMPLE_GENERATION = "see spot , run . see";
 // `,`=0-2/`.`=3-9. The choices: spot→`,` (rolled 7), `,`→run (2), run→`.` (3).
 export const EXAMPLE_GENERATION_ROLLS = "- 7 2 3 - -";
 
+// Cat-in-the-Hat excerpt --- drives the single "the same model, drawn as a
+// grid" slide in the unplugged-age-of-ai talk, where the room is holding search
+// sheets dealt from that book. Using a line they can place ("Look at me! Look at
+// me! Look at me now!") rather than the abstract Run-Spot text means the grid on
+// screen and the paper on their lap are visibly the same model, just at
+// different scale. The line earns its keep mechanically too: five distinct
+// tokens keeps the grid readable from the back of the room, and the `me` row
+// comes out unequal (`!` twice, `now` once), which is the room's hands-up
+// distribution in miniature.
+export const CAT_TOKENS = "look at me ! look at me ! look at me now !";
+export const CAT_VOCAB = "look at me ! now";
+
 // Generalisation --- drives the "it can say what it never saw" beat in
 // scaling-up. `cat` and `dog` do exactly the same job in this text, but a grid
 // stores them as unrelated rows: `cat` has seen both `sat` and `ran`, `dog`

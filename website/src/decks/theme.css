@@ -48,6 +48,90 @@
   background-image: url("./assets/bg-impact.avif");
 }
 
+/* Ordered lists count. The shared theme flattens `ul, ol` to `list-style: disc`
+   so a slide's bullets look the same however the author wrote the markdown ---
+   fine for `ul`, wrong for `ol`, where the numbers are the whole point (the
+   grid-training recipe is three steps in order, not three unordered claims).
+   Hand `ol` its markers back; `ul` keeps the theme's discs. */
+.reveal .slides section ol {
+  list-style: decimal;
+}
+
+/* Quote-slide emphasis built with Reveal fragments. A plain `.fragment` starts
+   invisible and fades in, which would make the sentence arrive in pieces --- we
+   want the whole quote readable from the first beat, with clauses *lighting up*
+   on each click. So opt out of the hiding (the same trick Reveal's own
+   `highlight-*` fragments use) and put the change entirely in the `.visible`
+   state.
+
+   Lighting a clause *up* needs headroom above the surrounding text, and the
+   theme already sets quote text to full white --- there is nowhere brighter to
+   go. So a slide carrying a build starts its quote dimmed, and each click
+   restores brightness to one clause. At 2.75rem on black, muted white is still
+   comfortably readable for the presenter's first pass.
+
+   The two clauses get deliberately unequal treatment, because the point of the
+   build is that the two failures aren't equal: not understanding a technology
+   is ordinary, while having decided in advance that you get no say in it is the
+   expensive one. The minor clause comes back to plain white; the major one goes
+   bright gold and bold. Note --anu-gold itself is a dark ink tuned for white
+   paper --- on a black slide it reads *quieter* than the body text it is meant
+   to outshout, so the light variant is the one to reach for here. */
+.reveal .slides section.quote:has(.quote-emph) blockquote p {
+  color: var(--color-text-muted);
+}
+
+.reveal .slides section.quote .fragment.quote-emph,
+.reveal .slides section.quote .fragment.quote-emph-minor {
+  opacity: 1;
+  visibility: inherit;
+  transition: color 0.4s ease;
+}
+
+.reveal .slides section.quote .fragment.quote-emph-minor.visible {
+  color: var(--anu-white);
+}
+
+.reveal .slides section.quote .fragment.quote-emph.visible {
+  color: var(--anu-gold-2);
+  font-weight: 700;
+}
+
+/* The quote itself sits centred on the canvas. The shared theme only centres
+   `.quote` on the inline axis, which left the block hugging the top of the
+   slide --- fine over a flat background, unbalanced over full-bleed artwork
+   with its own composition. */
+.reveal .slides section.quote {
+  align-content: center;
+}
+
+/* When a quote slide carries full-bleed artwork, the theme's 80% measure runs
+   the quote (and, worse, the right-aligned attribution) out over whatever the
+   image is doing at that edge. Pull the right edge in while pinning the left
+   one where the 80% measure had it, so the quote keeps its position on the
+   slide and only stops short of the artwork. */
+.reveal .slides section.quote:has(.slide-bg) blockquote {
+  inline-size: 66%;
+  margin-inline: 10% auto;
+}
+
+/* Attribution line. MDX leaves a `<cite>` on its own line as a bare child of
+   the blockquote (no wrapping `<p>`), so it needs making a block itself before
+   it can be pushed to the end of the measure. Set well below the quote's
+   2.75rem so the name reads as a credit rather than as part of the quotation,
+   and hang the em dash off `::before` so the markup stays a plain
+   `<cite>Name, Year</cite>`. */
+.reveal .slides section.quote blockquote cite {
+  display: block;
+  margin-block-start: 1.5rem;
+  font-size: 1.3rem;
+  text-align: end;
+}
+
+.reveal .slides section.quote blockquote cite::before {
+  content: "— ";
+}
+
 /* Speaker notes are rendered as <div class="notes"> for a11y (not
    <aside>), so Reveal.js's default notes hiding doesn't apply. */
 .reveal .slides section .notes {

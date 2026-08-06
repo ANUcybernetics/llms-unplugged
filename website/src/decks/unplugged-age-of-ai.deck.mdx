@@ -12,7 +12,7 @@ import GridZoom from "../components/GridZoom.svelte";
 import Timer from "../components/Timer.astro";
 import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
 import UpcomingSessions from "../components/UpcomingSessions.astro";
-import { EXAMPLE_TOKENS, EXAMPLE_VOCAB } from "./examples";
+import { CAT_TOKENS, CAT_VOCAB } from "./examples";
 import "../styles/widgets.css";
 
 {/*
@@ -21,12 +21,16 @@ import "../styles/widgets.css";
   thing the audience does is hold a search sheet and put a hand up.
 
   Running order:
-    0:00  Pick up Tim's Bandura quote            (slides 1-5,   ~3 min)
-    0:03  What's on your chair                   (slides 6-7,   ~2 min)
-    0:05  Seed it, then run the model            (slides 8-10,  ~6 min)
-    0:11  What just happened                     (slides 11-14, ~3 min)
-    0:14  What Claude does differently, at scale (slides 15-19, ~3 min)
+    0:00  Pick up Tim's Bandura quote            (slides 1-4,   ~3 min)
+    0:03  What's on your chair                   (slides 5-6,   ~2 min)
+    0:05  Seed it, then run the model            (slides 7-9,   ~6 min)
+    0:11  What just happened                     (slides 10-13, ~3 min)
+    0:14  What Claude does differently, at scale (slides 14-19, ~3 min)
     0:17  The claim, then come tomorrow          (slides 20-24, ~3 min)
+
+  The Bandura quote (slide 2) is the deck's only fragment build: two clicks
+  light up the two clauses in turn, and the second is the one the whole talk
+  is aimed at. It is repeated, already lit, on slide 20 to close the loop.
 
   Assumes the Acknowledgement of Country and the welcome happened at the top of
   the session, before Tim --- hence no ack-country slide here.
@@ -41,13 +45,13 @@ import "../styles/widgets.css";
       the worked example and the "running dry" fallback
     - have the whiteboard overlay ready (press `b`) for writing the generated
       text, and a scribe lined up if you would rather not write and talk
-    - the numbers on slides 7 and 16 are for The Cat in the Hat at n=2; if you
+    - the numbers on slides 6 and 15 are for The Cat in the Hat at n=2; if you
       swap the corpus, rebuild them with `llms_unplugged build` and read the
       metadata block
 
   Vocabulary: a *token* is one word or punctuation mark --- the sense the
   workshop and the printed sheets both use. A *token pair* is two of them, the
-  boxed one and the one that follows. Slide 6 says the words; slide 12 makes
+  boxed one and the one that follows. Slide 5 says the words; slide 11 makes
   them stick. Never call the pair a token.
 */}
 
@@ -69,34 +73,30 @@ Ask them not to touch the sheet on their chair yet. It gets read too early other
 
 {/* _class: quote */}
 
+![bg](./assets/bg-bandura-quote.avif)
+
 > Everyday life is increasingly regulated by complex technologies that most
-> people neither understand nor believe they can do much to influence.
+> people <span class="fragment quote-emph-minor">neither understand</span>
+> <span class="fragment quote-emph">nor believe they can do much to
+> influence</span>.
 >
-> Albert Bandura, 2001
+> <cite>Albert Bandura, 2001</cite>
 
 {/* notes:
 Tim had this on screen about fifteen minutes ago. I want to pick it up and point it at one technology in particular, because Bandura wrote it in 2001 and it has aged into a description of this year.
 
-Read it out. Don't gloss it yet --- the next slide does that.
-*/}
+Read it out whole first, with nothing lit up. Then two clicks, because there are two failures in that sentence and they are not equal.
 
----
+First click, `neither understand`: ordinary. I don't understand my car's transmission and I get by.
 
-{/* _class: impact */}
-
-**nor believe they can do much to influence**
-
-{/* notes:
-Two failures in that sentence, and they're not equal. Not understanding a technology is ordinary --- I don't understand my car's transmission and I get by. The second clause is the expensive one: having concluded, in advance, that this is not a thing you get a say in.
-
-That's the failure AI is currently manufacturing at scale, and it's the one this talk is aimed at.
+Second click, `nor believe they can do much to influence`: the expensive one. Having concluded, in advance, that this is not a thing you get a say in. That's the failure AI is currently manufacturing at scale, and it's the one this talk is aimed at.
 */}
 
 ---
 
 ## what we get told about AI
 
-![bg right:40%](./assets/bg-impact.avif)
+![bg right:40%](./assets/bg-dialogue.avif)
 
 it **understands** you---it's basically a mind
 
@@ -197,7 +197,11 @@ Don't explain why yet. They'll see it.
 
 ---
 
-## let's run it
+{/* _class: hero */}
+
+# let's run it
+
+![bg](./assets/bg-div-lessons.avif)
 
 <Timer minutes={5} overlay />
 
@@ -255,19 +259,27 @@ Worth saying out loud: those are the real words. When a researcher says a model 
 
 ## the same model, drawn as a grid
 
-<StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={9} />
+{/* step 13 is one past the last of the 12 pairs, so the grid shows complete
+    with no pair still ringed --- the same "finished model" state grid-training
+    ends on, rather than a build frozen mid-step. */}
+
+<StaticGrid tokens={CAT_TOKENS} vocabulary={CAT_VOCAB} step={13} />
 
 {/* notes:
-A much smaller book --- "Run, Spot, run. See Spot run." --- so the whole model fits on a slide. Every pair from your sheets is a tally mark in a cell: row is the token we're on, column is the token that could come next.
+One line out of the book you're all holding --- "Look at me! Look at me! Look at me now!" --- small enough that the whole model fits on a slide. Every pair from your sheets is a tally mark in a cell: row is the token we're on, column is the token that could come next.
 
-This is the form we use in the workshop, where each table builds their own grid from scratch. Same model, small enough to hold in one pair of hands. Point at a cell with two marks and say: that's two hands going up.
+Point at the `me` row: two marks under `!`, one under `now`. That's three hands going up, two of them saying the same thing --- the same distribution you were making with your arms five minutes ago.
+
+This is the form we use in the workshop, where each table builds their own grid from scratch. Same model, small enough to hold in one pair of hands.
 */}
 
 ---
 
 {/* _class: impact */}
 
-the sentence we wrote is **not in the book**
+the sentence we wrote
+
+is **not in the book**
 
 {/* notes:
 Check it if you like --- unless we got very unlucky, that exact sentence isn't in The Cat in the Hat. Nobody wrote it. There was no lookup and no database of sentences. It came out of a pile of paper and a series of coin tosses.
@@ -277,7 +289,7 @@ That's the whole trick, and you have now watched it happen from the inside. Ever
 
 ---
 
-## three things Claude does that we didn't
+## three things Claude\* does that we didn't
 
 ![bg right:40%](./assets/bg-attention.avif)
 
@@ -288,6 +300,8 @@ it can say what it **never saw**---`cat` teaches it about `dog`
 it's been taught to **answer**, not just continue
 
 {/* notes:
+The asterisk is yours to explain, in one line: Claude here means any frontier model --- ChatGPT, Gemini, Llama. Nothing on this slide is specific to Anthropic's; I just need a name to point at.
+
 Say each in a sentence, resist explaining any of them; each one has a full lesson on the website and none of them fits in this talk.
 
 One word of context is why our sentence wandered --- when I called `the`, nobody could tell whether we'd just written "sat in the" or "hit the". Claude looks back over the whole conversation.
@@ -325,14 +339,32 @@ On paper that's about 5,500 square metres. Most of a football field. It's the vo
 
 ---
 
-{/* _class: impact */}
+{/* _class: centered */}
 
-a real vocabulary: **100,000** tokens, **10 billion** cells, **1 km²** of paper
+<GridZoom rows={100000} cols={100000} label="a real model’s vocabulary" detail="100,000 tokens · 10 billion cells" compareRows={7441} compareCols={7441} compareLabel="Frankenstein" note="1 km² of paper — near enough the whole Acton campus" />
 
 {/* notes:
-Past this the picture gives out, so switch to measuring. A commercial model's vocabulary is around 100,000 tokens, and the grid for that alone is 10 billion cells --- a square kilometre of paper, near enough the whole Acton campus.
+One more step, and this is the last one the picture survives. A commercial model's vocabulary is around 100,000 tokens --- not words, because it chops rarer words into pieces --- so the grid for it is 10 billion cells. Frankenstein is now the little gold square.
 
-And that's still the toy version: one word of context, tally marks, none of the three fixes on the last slide. The real thing at 1.5 trillion parameters, a centimetre each, is about 150 square kilometres.
+A square kilometre of paper. Stand outside and point: about this whole campus.
+
+And this is still only the *toy*: one word of context, tally marks, none of the three fixes on the last slide.
+*/}
+
+---
+
+{/* _class: impact */}
+
+**15 trillion** words of training text
+
+**~1 trillion** numbers in the model
+
+{/* notes:
+Past this the picture gives out entirely, so switch to the two numbers you'll actually hear quoted --- and note that vocabulary size, which is what blew the grid up, isn't either of them. It sets how *wide* the table is; these set how much the thing has read and how much of it there is.
+
+Fifteen trillion words is the published figure for a recent open model's training run. Every one of them went past a counter, the way the book went past yours.
+
+The parameter count for the closed models isn't published; a trillion is the right order of magnitude and the honest answer is "about that, nobody outside will tell you". At a centimetre each, that pile is a couple of hundred square kilometres.
 
 The mechanism didn't change. Only the dosage.
 */}
@@ -353,10 +385,14 @@ Every reply from Claude or ChatGPT is produced one word at a time, by the loop y
 
 ![bg right:40%](./assets/bg-confluence.avif)
 
+> most people neither understand nor **believe they can do much to influence**
+
 a room full of people just did, slowly, the thing you're told needs a data
 centre
 
 {/* notes:
+Read the clause off the slide again --- it's the one we lit up at the start, and it's the one the last twenty minutes were aimed at.
+
 This is why unplugged still matters, and I'd argue it matters more now than when Tim started doing it.
 
 The technologies Bandura was worried about in 2001 were at least visibly machines. This one talks back, and the people selling it have an interest in you believing it's either a mind or a magic trick. Both stories end with you having no view.
