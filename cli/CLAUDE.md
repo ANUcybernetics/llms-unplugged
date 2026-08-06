@@ -27,8 +27,11 @@ text file → Rust CLI → model.json → Typst → PDF booklet
   builds the token renderers against one. Both are generated under a minimum hue
   separation as well as max-min OKLab ΔE --- see the file's own comments for
   why, and re-tune the hash with `find_palette_salt.ts --palette-len <n>`
-  whenever a palette changes length. Also copied into the website so the browser
-  compiler resolves it (`website/scripts/copy-cli-templates.ts`)
+  whenever a palette changes length. Compact-palette entries also carry a `name`
+  (the sheets print them as a colour key, so a colour can be called out from the
+  front of the room); the generator doesn't emit names, so re-name by hand after
+  regenerating. Also copied into the website so the browser compiler resolves it
+  (`website/scripts/copy-cli-templates.ts`)
 - `Makefile` - Batch processing for multiple texts/formats
 
 ## Essential commands

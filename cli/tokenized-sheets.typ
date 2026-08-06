@@ -17,7 +17,9 @@
 #import "cutout-common.typ": (
   brand-gold, compact-palette, derive-n, inter_word_gap, renderers,
 )
-#let (coloured-word, render-cutout, ..) = renderers(palette: compact-palette)
+#let (coloured-word, render-cutout, word-box, entry-for, ..) = renderers(
+  palette: compact-palette,
+)
 
 // Get configuration from sys.inputs
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
@@ -114,6 +116,26 @@
 // the sheets. `box` only to keep it from breaking across lines.
 #let pair-chip(token) = box(render-cutout(token))
 
+// The colour key: every palette colour boxed with its own name in it, so the
+// person at the front can name the colour along with the token ("who has
+// _cat_? it's a teal one") and the room can narrow the search by colour before
+// reading a token. Only the compact palette names its colours --- eleven is
+// few enough to name, thirty is not --- so this is a sheets-only figure.
+//
+// Chips flow as inline text rather than sitting in a grid: the key has to fit
+// whatever slack the column has left, and a paragraph reflows into it where a
+// fixed column count would either overflow or leave a ragged half-row. The
+// extra leading keeps consecutive rows of boxes from touching.
+#let colour-key() = block(
+  above: 0.8em,
+  below: 0.8em,
+  {
+    set par(leading: 0.85em, justify: false)
+    set text(size: 10pt)
+    compact-palette.colors.map(e => box(word-box(e, e.name))).join(h(0.45em))
+  },
+)
+
 #let instructions-page() = {
   set page(footer: align(
     center,
@@ -169,6 +191,14 @@
     colour narrows the search rather than settling it --- always check the token
     itself.
 
+    // The colour named here is looked up rather than written in, so the
+    // sentence stays true of whatever token the corpus supplied above.
+    Say the colour when you call a token out --- "who has #emph(sample.text)?
+    it's a #entry-for(sample.text).name one" --- and the room can find the
+    swatch before reading a word:
+
+    #colour-key()
+
     #text(size: 9pt, fill: muted)[
       #doc_metadata.total_tokens tokens, #doc_metadata.unique_tokens unique
       #sym.dot.c #calc.round(doc_metadata.entropy, digits: 2) bits/token
@@ -189,14 +219,18 @@
     + A scribe writes the token on the board. That token becomes part of the
       context for the next round. Repeat.
 
-    Picking at random matters. If you take whoever shouts first you are sampling
-    the fastest reader, not the text --- and the whole point is that the room
-    samples the way the model does.
-
     // Break here rather than after the anatomy section: it splits the brief
     // into "what this is / how to run it" and "what it demonstrates", and it
     // balances the two columns, which keeps the worked example on this page.
+    // The closing note on the round runs on at the top of the second column
+    // rather than staying with the numbered list: the colour key costs the
+    // first column about as many lines as this paragraph gives back, and the
+    // second column has room to spare in every corpus.
     #colbreak()
+
+    Picking at random matters. If you take whoever shouts first you are sampling
+    the fastest reader, not the text --- and the whole point is that the room
+    samples the way the model does.
 
     == What to watch for
 

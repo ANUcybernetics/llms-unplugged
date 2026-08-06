@@ -132,6 +132,17 @@
 // there is no mid-lightness fill left wearing hard-to-read black.
 // Regenerate with:
 //   node cli/scripts/generate_palette.ts --n 10 --min-white-contrast 4.5 --min-hue-sep 20 --no-grey --c-min 0.08
+//
+// Unlike the large palette, every entry carries a `name`: eleven colours is
+// few enough that each can be called out from the front of the room ("who has
+// _cat_? it's a teal one"), which narrows the search before anyone reads a
+// token, and the sheets' colour key prints these names as their own swatches.
+// Names are the nearest common English colour word to each sRGB value, checked
+// against the xkcd colour-survey names — the most widely-agreed naming data we
+// have — and pulled apart by hand where two entries would otherwise take the
+// same word (hence blue/navy for the two blues and violet/purple/magenta
+// across the three purples, rather than three shades of "purple"). The
+// generator does not emit them, so re-name by hand after any regeneration.
 #let compact-palette = (
   mult: 223,
   salt: 354261,
@@ -140,19 +151,19 @@
   // hash can do.
   colors: (
     // Neutral
-    (color: luma(0), light: false), // black
+    (color: luma(0), light: false, name: "black"),
 
     // Chromatic (sorted by hue)
-    (color: oklch(59.5%, 0.235, 31deg), light: false),
-    (color: oklch(36.7%, 0.093, 53deg), light: false),
-    (color: oklch(54.2%, 0.113, 74deg), light: false),
-    (color: oklch(54.9%, 0.185, 142deg), light: false),
-    (color: oklch(44.1%, 0.081, 178deg), light: false),
-    (color: oklch(56.3%, 0.135, 244deg), light: false),
-    (color: oklch(32.0%, 0.186, 265deg), light: false),
-    (color: oklch(47.2%, 0.274, 285deg), light: false),
-    (color: oklch(60.7%, 0.299, 314deg), light: false),
-    (color: oklch(46.5%, 0.199, 343deg), light: false),
+    (color: oklch(59.5%, 0.235, 31deg), light: false, name: "red"),
+    (color: oklch(36.7%, 0.093, 53deg), light: false, name: "brown"),
+    (color: oklch(54.2%, 0.113, 74deg), light: false, name: "mustard"),
+    (color: oklch(54.9%, 0.185, 142deg), light: false, name: "green"),
+    (color: oklch(44.1%, 0.081, 178deg), light: false, name: "teal"),
+    (color: oklch(56.3%, 0.135, 244deg), light: false, name: "blue"),
+    (color: oklch(32.0%, 0.186, 265deg), light: false, name: "navy"),
+    (color: oklch(47.2%, 0.274, 285deg), light: false, name: "violet"),
+    (color: oklch(60.7%, 0.299, 314deg), light: false, name: "purple"),
+    (color: oklch(46.5%, 0.199, 343deg), light: false, name: "magenta"),
   ),
 )
 
@@ -199,23 +210,33 @@
     palette.colors.at(calc.rem(h, palette.colors.len()))
   }
 
-  // A coloured box for a previous word: the word's assigned colour as fill,
-  // with black or white text depending on the entry's `light` flag (black on
-  // light fills, white on dark). When `dimmed` is true (discarded source
-  // token) the box is grey with white text — the poor contrast is intentional
-  // fade-out. Uses `highlight` rather than `box` so the previous word's
-  // baseline aligns with the surrounding free-standing word.
-  let previous-word-box(t, dimmed: false) = {
-    let entry = entry-for(t)
+  // The box treatment itself, given a palette entry and the content to set in
+  // it: the entry's colour as fill, with black or white text depending on its
+  // `light` flag (black on light fills, white on dark). When `dimmed` is true
+  // (discarded source token) the box is grey with white text — the poor
+  // contrast is intentional fade-out. Uses `highlight` rather than `box` so
+  // the box's baseline aligns with the surrounding free-standing word.
+  //
+  // Split out from `previous-word-box` because the sheets' colour key boxes a
+  // colour's *name* in that colour, which is the same swatch with the hash
+  // step skipped — a name has no reason to hash to the colour it names.
+  let word-box(entry, body, dimmed: false) = {
     let fill = if dimmed { luma(180) } else { entry.color }
     let text-fill = if dimmed or not entry.light { white } else { black }
     highlight(
       fill: fill,
       extent: 0.1em,
       radius: 2pt,
-      text(fill: text-fill, weight: "bold", t),
+      text(fill: text-fill, weight: "bold", body),
     )
   }
+
+  // A coloured box for a previous word, in the colour that word hashes to.
+  let previous-word-box(t, dimmed: false) = word-box(
+    entry-for(t),
+    t,
+    dimmed: dimmed,
+  )
 
   // A free-standing word in its assigned colour. Bold, matching the weight of
   // the previous-word boxes it sits beside: as plain text it is the only mark
@@ -267,6 +288,7 @@
 
   (
     entry-for: entry-for,
+    word-box: word-box,
     previous-word-box: previous-word-box,
     coloured-word: coloured-word,
     next-word: next-word,
