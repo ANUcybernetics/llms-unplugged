@@ -143,6 +143,17 @@
 // same word (hence blue/navy for the two blues and violet/purple/magenta
 // across the three purples, rather than three shades of "purple"). The
 // generator does not emit them, so re-name by hand after any regeneration.
+//
+// Two entries are named against the survey rather than by it. "ochre" is an
+// Australian room's word for this swatch; the survey's nearest words are
+// bronze (ΔE 0.067) and olive (0.078) against ochre's 0.141, but all three
+// beat the "mustard" it replaced (0.235), which is a full 0.22 of lightness
+// too pale for what prints. And the magenta stays magenta despite reading as
+// maroon to an Australian eye: sampling a Queensland kit puts its cloth at
+// OKLCH hue 340°, ΔE 0.025 from the survey's maroon and 0.19 from this
+// swatch — so the local anchor argues against the name, not for it. A true
+// maroon is unavailable here in any case, sitting at OKLCH hue 9–12°, inside
+// the 20° hue floor around the palette's own red at 31°.
 #let compact-palette = (
   mult: 223,
   salt: 354261,
@@ -156,7 +167,7 @@
     // Chromatic (sorted by hue)
     (color: oklch(59.5%, 0.235, 31deg), light: false, name: "red"),
     (color: oklch(36.7%, 0.093, 53deg), light: false, name: "brown"),
-    (color: oklch(54.2%, 0.113, 74deg), light: false, name: "mustard"),
+    (color: oklch(54.2%, 0.113, 74deg), light: false, name: "ochre"),
     (color: oklch(54.9%, 0.185, 142deg), light: false, name: "green"),
     (color: oklch(44.1%, 0.081, 178deg), light: false, name: "teal"),
     (color: oklch(56.3%, 0.135, 244deg), light: false, name: "blue"),
