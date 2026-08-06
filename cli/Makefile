@@ -35,13 +35,18 @@ WORKSHOP_TARGETS := \
 	$(PDF_DIR)/TinyStories-1k-2-1.pdf \
 	$(PDF_DIR)/dickinson-poems-2-1.pdf
 
+# The booklets published at website/public/assets/pdfs/booklets/. Keep this
+# list in step with what that directory holds: jiangnan is only linked from a
+# news post rather than the tools page, and going missing from here is how it
+# came to be the one booklet nobody could rebuild.
 EXAMPLE_TARGETS := \
 	$(PDF_DIR)/the-cat-in-the-hat-2-1.pdf \
 	$(PDF_DIR)/green-eggs-and-ham-2-1.pdf \
 	$(PDF_DIR)/frankenstein-2-1.pdf \
 	$(PDF_DIR)/collected-hemingway-2-1.pdf \
 	$(PDF_DIR)/a-christmas-carol-2-1.pdf \
-	$(PDF_DIR)/beatles-2-1.pdf
+	$(PDF_DIR)/beatles-2-1.pdf \
+	$(PDF_DIR)/jiangnan-2-1.pdf
 
 # Pre-prepared cutout PDFs served from the website's tools page. All are
 # bigram (n=2), duplex, and post-processed with qpdf to rotate even pages
@@ -94,7 +99,7 @@ $(TOOL): $(RUST_SOURCES)
 $(PDF_DIR)/%.pdf $(PDF_DIR)/%.stamp: book.typ $(TOOL)
 	$(eval FULLNAME := $(notdir $(basename $@)))
 	$(eval BASE := $(shell echo $(FULLNAME) | sed 's/-[0-9]*-[0-9]*$$//' ))
-	TYPST_BIN=$(TYPST_BIN) $(TOOL) pdf --target $(FULLNAME) --input $(DATA_DIR)/$(BASE).txt --out-dir $(OUT_DIR) --book-binding
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) TYPST_BIN=$(TYPST_BIN) $(TOOL) pdf --target $(FULLNAME) --input $(DATA_DIR)/$(BASE).txt --out-dir $(OUT_DIR) --book-binding
 	@if echo "$@" | grep -q '.stamp$$'; then touch $@; fi
 
 # ===== Pattern rule for pre-prepared cutout PDFs =====
