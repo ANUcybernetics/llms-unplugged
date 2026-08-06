@@ -60,10 +60,10 @@ CUTOUTS_TARGETS := \
 
 # Pre-prepared search-sheet PDFs (the cutouts activity minus the cutting).
 # Target names are <corpus>-<participants>: the corpus is partitioned across
-# that many one-page sheets, so a set only suits a class of about that size.
-# The counts below are chosen so every sheet fits on a single page --- a bigger
-# corpus needs proportionally more participants, which is why australia is at
-# 40 rather than 24.
+# that many sheets, so a set only suits a class of about that size. A sheet
+# runs to a second page once its pairs need more than --rows rows, which is why
+# australia is at 40 participants rather than 24 --- more people means fewer
+# pairs each, and the paper falls accordingly.
 SHEETS_TARGETS := \
 	$(SHEETS_DIR)/green-eggs-and-ham-24.pdf \
 	$(SHEETS_DIR)/peter-rabbit-24.pdf \

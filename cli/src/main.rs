@@ -270,6 +270,12 @@ struct SheetsArgs {
     #[arg(long)]
     columns: Option<usize>,
 
+    /// Rows of token pairs per page. Rows stretch to fill the page, so this
+    /// sets the vertical spacing: fewer rows means more air between them, and
+    /// a sheet with more pairs than fit simply runs onto a second page.
+    #[arg(long, default_value_t = 18)]
+    rows: usize,
+
     /// Token-pair font size on the sheets (any Typst length, e.g. 11pt)
     #[arg(long, default_value = "16pt")]
     font_size: String,
@@ -502,6 +508,11 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
             "--columns must be at least 1".to_string(),
         ));
     }
+    if args.rows == 0 {
+        return Err(CliError::InvalidArgs(
+            "--rows must be at least 1".to_string(),
+        ));
+    }
 
     let punctuation: Vec<char> = args.punctuation.chars().collect();
     let (tokens, metadata) =
@@ -552,22 +563,23 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
         ("paper_size".to_string(), args.paper_size.clone()),
         ("json_path".to_string(), abs_path_string(&json_path)),
         ("columns".to_string(), columns.to_string()),
+        ("rows".to_string(), args.rows.to_string()),
         ("font_size".to_string(), args.font_size.clone()),
     ];
 
     let pdf_path = args.output.join("sheets.pdf");
     compile_template("tokenized-sheets.typ", &inputs, &pdf_path)?;
 
-    // One page per participant is the whole logistical point, so check it
-    // held. The teacher-facing brief is one page for most corpora and two for
-    // a wordy one, so anything past `sheets + 2` means a sheet has spilled.
-    if let Some(pages) = pdf_page_count(&pdf_path)
-        && pages > args.sheets + 2
-    {
-        eprintln!(
-            "Warning: {pages} pages for {} sheets --- some sheets spill onto a second page. \
-             Try a smaller --font-size, more --columns, or more --sheets.",
-            args.sheets
+    // A sheet runs onto a second page whenever its pairs need more rows than
+    // `--rows`, which is a deliberate trade of paper for legibility rather
+    // than a fault, so this reports rather than warns. The exact split between
+    // the brief and the sheets is the template's to decide, hence the total
+    // rather than a per-sheet figure invented here.
+    if let Some(pages) = pdf_page_count(&pdf_path) {
+        println!(
+            "{pages} pages for {} sheets, at --rows {} \
+             (fewer rows means more space between them, and more paper)",
+            args.sheets, args.rows
         );
     }
 

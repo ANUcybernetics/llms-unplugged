@@ -26,9 +26,19 @@
 #let json_path = sys.inputs.at("json_path", default: "sheets.json")
 #let font_size = eval(sys.inputs.at("font_size", default: "16pt"))
 #let columns_per_sheet = int(sys.inputs.at("columns", default: "4"))
+// Rows of pairs per page. The rows stretch to fill the page, so this is the
+// vertical density knob: fewer rows means more air between them, at the cost
+// of a sheet running onto a second page.
+#let rows_per_page = int(sys.inputs.at("rows", default: "18"))
 
 #set text(font: ("Libertinus Serif", "Noto Serif CJK SC"), size: 11pt)
-#set page(paper: paper_size, margin: (x: 12mm, y: 14mm))
+// Bound rather than written inline, because the sheet layout has to work out
+// the usable width for itself: `layout()` would hand it over directly but is a
+// container, and containers may not contain the pagebreaks a multi-page sheet
+// needs. So the width is derived from the page and this margin instead.
+#let margin_x = 12mm
+#let margin_y = 14mm
+#set page(paper: paper_size, margin: (x: margin_x, y: margin_y))
 
 #let json_data = json(json_path)
 #let sheets = json_data.sheets
@@ -420,36 +430,154 @@
   ]
 }
 
+// ===== Laying the pairs out =====
+
+#let column_gap = 1.2em
+
+// How many column slots a pair needs. Nearly all take one, but every corpus
+// has a few --- a long context token beside a long next token --- that are
+// wider than a single column. A row of fixed height cannot absorb those: the
+// pair wraps onto a second line and collides with the row beneath it, which is
+// what the Australia sheets were doing. Measuring the rendered pair against
+// the column width lets a wide one occupy two slots instead (or more, up to
+// the full width), and every cell stays exactly one line tall.
+#let span-for(body, col-width, gutter, columns) = {
+  let w = measure(body).width
+  let n = 1
+  while n < columns and w > col-width * n + gutter * (n - 1) { n += 1 }
+  n
+}
+
+// Pack items --- each a `(body, span)` --- into rows of `columns` slots.
+//
+// First fit rather than strict order: when the next item is too wide for the
+// slots left in the row, the first later item that does fit is pulled forward
+// rather than leaving the row short. The deal reaching this template is
+// already shuffled, so the order within a sheet carries no meaning and
+// reordering costs nothing, where a hole in the grid is visible.
+#let pack-rows(items, columns) = {
+  // `span-for` never returns more than `columns`, and the loop below relies on
+  // it: an item too wide for an empty row would never be placed and the while
+  // would spin forever. Fail loudly instead of hanging the build.
+  assert(
+    items.all(it => it.span <= columns),
+    message: "a token pair was given a span wider than the sheet",
+  )
+  let rows = ()
+  let row = ()
+  let used = 0
+  let pending = items
+  while pending.len() > 0 {
+    let idx = pending.position(it => it.span <= columns - used)
+    if idx == none {
+      // Nothing left fits the remaining slots; start a fresh row.
+      rows.push(row)
+      row = ()
+      used = 0
+    } else {
+      row.push(pending.at(idx))
+      used += pending.at(idx).span
+      pending = pending.slice(0, idx) + pending.slice(idx + 1)
+      if used == columns {
+        rows.push(row)
+        row = ()
+        used = 0
+      }
+    }
+  }
+  if row.len() > 0 { rows.push(row) }
+  rows
+}
+
+// Split rows into pages of at most `per-page`, balanced. A sheet needing 21
+// rows at 18 to a page becomes two pages of 11 and 10, not one of 18 and one
+// of 3. Rows stretch to fill whichever page they land on, so an unbalanced
+// split prints one crowded page and one nearly empty one; worse, letting a
+// fixed-pitch grid break where it runs out of room strands a single row on a
+// third page whenever a sheet overruns by one.
+#let paginate(rows, per-page) = {
+  // An empty sheet still gets a page, so a participant dealt nothing is handed
+  // a blank rather than silently skipped in the numbering.
+  if rows.len() == 0 { return ((),) }
+  let pages = calc.max(1, calc.ceil(rows.len() / per-page))
+  let each = calc.ceil(rows.len() / pages)
+  range(0, rows.len(), step: each).map(i => rows.slice(
+    i,
+    calc.min(i + each, rows.len()),
+  ))
+}
+
+// One page of packed rows.
+//
+// Cells are placed at explicit coordinates rather than flowing, because a
+// spanning cell would otherwise let the grid's own auto-placement pull the
+// following pair up beside it and undo the packing.
+//
+// A regular grid rather than a ragged flow, because scanning aligned columns
+// for a colour is much faster than scanning wrapped text, and it makes the
+// sorted variant read as the lookup table it is. Pairs sit unboxed --- the
+// colour already delineates them, and a border per pair would add 160-odd
+// rectangles of visual noise to a page meant to be scanned.
+#let rows-grid(rows, columns) = {
+  let cells = ()
+  for (y, row) in rows.enumerate() {
+    let x = 0
+    for it in row {
+      cells.push(grid.cell(x: x, y: y, colspan: it.span, it.body))
+      x += it.span
+    }
+  }
+  grid(
+    columns: (1fr,) * columns,
+    rows: (1fr,) * rows.len(),
+    column-gutter: column_gap,
+    align: left + horizon,
+    ..cells
+  )
+}
+
 #for (i, sheet) in sheets.enumerate() {
   if i > 0 { pagebreak(weak: false) }
-  // Scoped to this iteration, so each sheet gets its own numbered footer. The
-  // pagebreak above means the rule always lands on a fresh page.
+  // Scoped to this iteration, so every page of this sheet carries its number.
+  // The pagebreak above means the rule always lands on a fresh page.
   set page(footer: sheet-footer(i))
 
-  // Each sheet is exactly one page tall, split into an auto-height header and
-  // a `1fr` body that absorbs whatever height the header leaves. That definite
-  // body height is what lets the pair grid's own `1fr` rows stretch, so the
-  // rows always reach the bottom margin instead of trailing off partway down a
-  // short sheet.
-  block(
-    width: 100%,
-    height: 100%,
-    grid(
-      rows: (auto, 1fr),
-      sheet-header(sheet),
+  // `context` for `measure`, for resolving the em-based gutter to a length,
+  // and for the page width the column width is derived from.
+  context {
+    let gutter = column_gap.to-absolute()
+    let usable = page.width - 2 * margin_x
+    let col-width = (
+      (usable - gutter * (columns_per_sheet - 1)) / columns_per_sheet
+    )
+    let items = sheet.map(t => {
+      let body = render-cutout(t)
+      (body: body, span: span-for(body, col-width, gutter, columns_per_sheet))
+    })
 
-      // A regular grid rather than a ragged flow: scanning aligned columns for
-      // a colour is much faster than scanning wrapped text, and it makes the
-      // sorted variant read as the lookup table it is. Pairs sit on the page
-      // unboxed --- the colour already delineates them, and a border per pair
-      // adds 160-odd rectangles of visual noise to a page meant to be scanned.
-      grid(
-        columns: (1fr,) * columns_per_sheet,
-        rows: (1fr,) * calc.ceil(sheet.len() / columns_per_sheet),
-        column-gutter: 1.2em,
-        align: left + horizon,
-        ..sheet.map(t => render-cutout(t))
-      ),
-    ),
-  )
+    let pages = paginate(pack-rows(items, columns_per_sheet), rows_per_page)
+
+    for (p, page-rows) in pages.enumerate() {
+      if p > 0 { pagebreak(weak: false) }
+      // Each page is exactly one page tall. The first splits into an
+      // auto-height header and a `1fr` body that absorbs whatever height the
+      // header leaves; later pages give the whole height to the pairs. Either
+      // way the body has a definite height, which is what lets the pair grid's
+      // own `1fr` rows stretch to the bottom margin instead of trailing off
+      // partway down the page.
+      block(
+        width: 100%,
+        height: 100%,
+        if p == 0 {
+          grid(
+            rows: (auto, 1fr),
+            sheet-header(sheet),
+            rows-grid(page-rows, columns_per_sheet),
+          )
+        } else {
+          rows-grid(page-rows, columns_per_sheet)
+        },
+      )
+    }
+  }
 }

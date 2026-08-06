@@ -94,11 +94,13 @@ cargo test
 - `--shuffle` / `--seed` (cutouts only) - Emit cutouts in random rather than
   corpus order, so an uncut page doesn't read as the source text
 - `--sheets <N>` (sheets only, required) - Number of participants; the corpus is
-  partitioned across this many one-page sheets
+  partitioned across this many sheets
 - `--sort` (sheets only) - Order each sheet by context instead of shuffling it
-- `--columns` / `--font-size` (sheets only) - Sheet density. Columns default to
-  4 for bigrams and narrow as n grows; the command warns when a sheet spills
-  onto a second page
+- `--columns` / `--rows` / `--font-size` (sheets only) - Sheet density. Columns
+  default to 4 for bigrams and narrow as n grows. Rows default to 18 to a page;
+  since rows stretch to fill the page, fewer rows means more space between them
+  and a busy sheet spilling onto a second page (which the command reports).
+  Pairs too wide for one column take two, so nothing wraps into the row below
 
 ## Input file format
 
