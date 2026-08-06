@@ -48,15 +48,6 @@
   background-image: url("./assets/bg-impact.avif");
 }
 
-/* Ordered lists count. The shared theme flattens `ul, ol` to `list-style: disc`
-   so a slide's bullets look the same however the author wrote the markdown ---
-   fine for `ul`, wrong for `ol`, where the numbers are the whole point (the
-   grid-training recipe is three steps in order, not three unordered claims).
-   Hand `ol` its markers back; `ul` keeps the theme's discs. */
-.reveal .slides section ol {
-  list-style: decimal;
-}
-
 /* Quote-slide emphasis built with Reveal fragments. A plain `.fragment` starts
    invisible and fades in, which would make the sentence arrive in pieces --- we
    want the whole quote readable from the first beat, with clauses *lighting up*
