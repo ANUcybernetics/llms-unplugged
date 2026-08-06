@@ -23,9 +23,12 @@ text file → Rust CLI → model.json → Typst → PDF booklet
   cutting)
 - `cutout-common.typ` - Palettes, colour hash and token renderers shared by both
   cutout-family templates. Two palettes: `large-palette` (30 colours, cutouts at
-  36pt) and `compact-palette` (12, sheets at ~11pt); `renderers(palette: ...)`
-  builds the token renderers against one. Also copied into the website so the
-  browser compiler resolves it (`website/scripts/copy-cli-templates.ts`)
+  36pt) and `compact-palette` (11, sheets at ~16pt); `renderers(palette: ...)`
+  builds the token renderers against one. Both are generated under a minimum hue
+  separation as well as max-min OKLab ΔE --- see the file's own comments for
+  why, and re-tune the hash with `find_palette_salt.ts --palette-len <n>`
+  whenever a palette changes length. Also copied into the website so the browser
+  compiler resolves it (`website/scripts/copy-cli-templates.ts`)
 - `Makefile` - Batch processing for multiple texts/formats
 
 ## Essential commands

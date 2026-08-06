@@ -30,6 +30,22 @@
  * white paper — needed wherever a colour is used for the text itself at small
  * sizes, rather than only as a box fill behind white text.
  *
+ * `--min-hue-sep` bans candidates within the given hue angle of an already
+ * selected colour. Max-min ΔE alone does not give a palette you can scan,
+ * because OKLab Euclidean distance counts a lightness step the same as a hue
+ * step and visual search does not: two colours a comfortable ΔE apart but
+ * separated mostly along L read as "that colour, darker" on a small glyph. The
+ * unconstrained palettes bear this out — the tightest pairs were 79% and 85%
+ * lightness — and they leave big hue holes while stacking three colours within
+ * 5° of each other. A hue floor spends the ΔE budget on the axis that pops out.
+ * It trades away min ΔE, so it has a ceiling: n colours cannot all be more than
+ * 360/n apart, and the search runs out of candidates well before that bound.
+ *
+ * `--no-grey` seeds with black alone. The mid-grey anchor sits at the centre of
+ * the a-b plane, so under a contrast floor it blocks exactly the low-chroma
+ * darks — teal, olive — that a hue floor wants to reach. Dropping it costs one
+ * swatch and buys back most of the ΔE the hue floor spends.
+ *
  * Run (requires Node 22.7+ for native .ts support; Node 24+ default-on):
  *   node cli/scripts/generate_palette.ts
  *   node cli/scripts/generate_palette.ts --n 30 --l-min 0.32 --l-max 0.92
@@ -149,9 +165,23 @@ function greedyMaxMin(
   cs: CandidateSet,
   n: number,
   seeds: readonly Triple[],
+  minHueSep: number,
 ): { indices: number[]; history: number[] } {
   const { lab, count } = cs;
   const dists = new Float64Array(count).fill(Infinity);
+
+  // Candidates ruled out by the hue floor. Kept separate from `dists` so the
+  // reported per-step ΔE stays a true distance rather than a sentinel.
+  const banned = new Uint8Array(count);
+  const hueAt = (i: number): number =>
+    ((Math.atan2(lab[i * 3 + 2], lab[i * 3 + 1]) * 180) / Math.PI + 360) % 360;
+  const banNearHue = (h: number): void => {
+    if (minHueSep <= 0) return;
+    for (let i = 0; i < count; i++) {
+      const raw = Math.abs(hueAt(i) - h);
+      if (Math.min(raw, 360 - raw) < minHueSep) banned[i] = 1;
+    }
+  };
 
   const updateDists = (sL: number, sa: number, sb: number): void => {
     for (let i = 0; i < count; i++) {
@@ -188,17 +218,29 @@ function greedyMaxMin(
     }
     indices.push(bestIdx);
     history.push(Infinity);
+    banNearHue(hueAt(bestIdx));
     updateDists(lab[bestIdx * 3], lab[bestIdx * 3 + 1], lab[bestIdx * 3 + 2]);
   }
 
   while (indices.length < n) {
-    let bestIdx = 0;
+    let bestIdx = -1;
     let bestDist = -Infinity;
     for (let i = 0; i < count; i++) {
-      if (dists[i] > bestDist) { bestDist = dists[i]; bestIdx = i; }
+      if (!banned[i] && dists[i] > bestDist) { bestDist = dists[i]; bestIdx = i; }
+    }
+    // The hue floor can exhaust the candidate set: n colours cannot all be
+    // more than 360/n degrees apart, and the printable gamut runs out sooner
+    // than that. Fail loudly rather than emitting a short palette.
+    if (bestIdx < 0) {
+      throw new Error(
+        `--min-hue-sep ${minHueSep} leaves no candidate for colour ` +
+          `${indices.length + 1} of ${n}: every remaining colour is within ` +
+          `${minHueSep}deg of one already chosen. Lower it or ask for fewer colours.`,
+      );
     }
     indices.push(bestIdx);
     history.push(bestDist);
+    banNearHue(hueAt(bestIdx));
     updateDists(lab[bestIdx * 3], lab[bestIdx * 3 + 1], lab[bestIdx * 3 + 2]);
   }
 
@@ -216,7 +258,9 @@ const { values } = parseArgs({
     candidates: { type: "string", default: "200000" },
     seed: { type: "string", default: "42" },
     "no-neutrals": { type: "boolean", default: false },
+    "no-grey": { type: "boolean", default: false },
     "min-white-contrast": { type: "string", default: "0" },
+    "min-hue-sep": { type: "string", default: "0" },
   },
 });
 
@@ -227,7 +271,9 @@ const cMin = parseFloat(values["c-min"]!);
 const nCandidates = parseInt(values.candidates!, 10);
 const seed = parseInt(values.seed!, 10);
 const noNeutrals = values["no-neutrals"]!;
+const noGrey = values["no-grey"]!;
 const minWhiteContrast = parseFloat(values["min-white-contrast"]!);
+const minHueSep = parseFloat(values["min-hue-sep"]!);
 
 const rng = mulberry32(seed);
 
@@ -250,10 +296,12 @@ const GREY_L = 0.55;
 
 const seeds: readonly Triple[] = noNeutrals
   ? []
-  : [
-      [0.0, 0.0, 0.0], // pure black
-      [GREY_L, 0.0, 0.0], // mid grey
-    ];
+  : noGrey
+    ? [[0.0, 0.0, 0.0]] // black only
+    : [
+        [0.0, 0.0, 0.0], // pure black
+        [GREY_L, 0.0, 0.0], // mid grey
+      ];
 
 function srgbGamma(v: number): number {
   return v <= 0.0031308 ? 12.92 * v : 1.055 * Math.pow(v, 1 / 2.4) - 0.055;
@@ -261,7 +309,7 @@ function srgbGamma(v: number): number {
 
 const greyByte = Math.round(srgbGamma(GREY_L ** 3) * 255);
 
-const { indices, history } = greedyMaxMin(cs, n, seeds);
+const { indices, history } = greedyMaxMin(cs, n, seeds, minHueSep);
 
 interface LCH { L: number; C: number; h: number; }
 const lch: LCH[] = indices.map((i): LCH => {
@@ -315,23 +363,41 @@ process.stdout.write(
 );
 if (!noNeutrals) {
   process.stdout.write(
-    "// Black + mid-grey neutrals seed the search so chromatic colours\n",
+    noGrey
+      ? "// A black neutral seeds the search so chromatic colours\n"
+      : "// Black + mid-grey neutrals seed the search so chromatic colours\n",
   );
   process.stdout.write("// can't collapse onto the greyscale axis.\n");
 }
+if (minHueSep > 0) {
+  process.stdout.write(
+    `// Chromatic entries are at least ${minHueSep}deg apart in hue, so the\n`,
+  );
+  process.stdout.write(
+    "// palette separates on the axis that pops out at a glance rather than\n",
+  );
+  process.stdout.write("// spending its ΔE budget on lightness.\n");
+}
 process.stdout.write(
   `// Regenerate with: node cli/scripts/generate_palette.ts --n ${n} --l-min ${lMin} --l-max ${lMax}` +
-    (minWhiteContrast > 0
-      ? ` --min-white-contrast ${minWhiteContrast}\n`
-      : "\n"),
+    (minWhiteContrast > 0 ? ` --min-white-contrast ${minWhiteContrast}` : "") +
+    (minHueSep > 0 ? ` --min-hue-sep ${minHueSep}` : "") +
+    (noGrey ? " --no-grey" : "") +
+    "\n",
 );
 process.stdout.write("#let palette = (\n");
 if (!noNeutrals) {
-  process.stdout.write("  // Neutrals (always dark enough for white text)\n");
-  process.stdout.write("  (color: luma(0), light: false), // black\n");
   process.stdout.write(
-    `  (color: luma(${greyByte}), light: false), // mid grey (OKLab L=${GREY_L})\n`,
+    noGrey
+      ? "  // Neutral (always dark enough for white text)\n"
+      : "  // Neutrals (always dark enough for white text)\n",
   );
+  process.stdout.write("  (color: luma(0), light: false), // black\n");
+  if (!noGrey) {
+    process.stdout.write(
+      `  (color: luma(${greyByte}), light: false), // mid grey (OKLab L=${GREY_L})\n`,
+    );
+  }
   process.stdout.write("\n");
   process.stdout.write("  // Chromatic (sorted by hue)\n");
 }

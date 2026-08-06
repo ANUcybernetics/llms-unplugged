@@ -11,7 +11,7 @@
 // The shuffle is what makes this work: in corpus order an uncut page is just
 // the source text with boxes drawn around it.
 
-// Sheets take the compact 12-colour palette: the pairs are set around 16pt
+// Sheets take the compact 11-colour palette: the pairs are set around 16pt
 // here, where the cutouts' 30 colours stop being tellable apart. See
 // cutout-common.typ for why each palette is the size it is.
 #import "cutout-common.typ": (
