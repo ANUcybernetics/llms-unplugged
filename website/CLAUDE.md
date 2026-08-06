@@ -106,6 +106,17 @@ absolutely-positioned layer): those set their own margins deliberately.
 - `pnpm run pdf <slug> [output.pdf]` - export a deck to PDF via astromotion's
   bundled `astromotion-pdf` (builds, previews, captures with decktape,
   compresses with Ghostscript); e.g. `pnpm run pdf cer`
+- `pnpm run decks:check` - check every slide of every deck for content that
+  overflows the fixed 1280x720 canvas. Part of `pnpm run check`, and worth
+  running on its own after any deck edit or theme bump: `pnpm run build` says
+  nothing about whether slides fit, and its "Checked N deck(s) --- no structural
+  violations" line is a different check entirely. It spins up its own
+  `astro dev` server, so it needs no prior build and picks up CSS edits
+  immediately. Two limits: it renders each deck in its default state, so
+  `_if:`-gated slides are never checked, and screenshots remain the way to judge
+  whether a slide _reads_ well. Since partials are shared across decks, a single
+  bad slide is reported once per deck that includes it --- fix the partial, not
+  the deck.
 - presenter guides (slides + interleaved speaker-notes pages) are pre-generated
   into `public/decks/<slug>/presenter-guide.pdf` and linked by the
   `UsingTheSlides` component (which checks the file exists at build time).

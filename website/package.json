@@ -13,7 +13,7 @@
   "scripts": {
     "build": "astro build",
     "build:a11y": "CHECK_A11Y=true pnpm run build",
-    "check": "pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm run test",
+    "check": "pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm run test && pnpm run decks:check",
     "convert:avif": "pnpm exec tsx scripts/convert-images-to-avif.ts",
     "decks:check": "astromotion-check",
     "dev": "astro dev",
