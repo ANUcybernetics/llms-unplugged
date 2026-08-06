@@ -98,9 +98,16 @@
   // every sheet holds some continuation of a common context, so taking the
   // first match every time would walk the whole example through sheet 1 and
   // hide the point that the model is spread across the room.
-  let pick = (candidates, avoid: none) => {
+  // Prefer a token the board has not already written. A frequent context can
+  // otherwise answer with a token that leads straight back to it --- Australia
+  // walked "and" -> "Vietnam" -> "and" -> "Vietnam" --- and an example that
+  // visibly repeats itself sits badly under a closing line about generating
+  // text without repeating the corpus.
+  let pick = (candidates, avoid: none, written: ()) => {
     let preferred = candidates.filter(clean)
-    let pool = if preferred.len() > 0 { preferred } else { candidates }
+    let clean-pool = if preferred.len() > 0 { preferred } else { candidates }
+    let novel = clean-pool.filter(e => e.token.text not in written)
+    let pool = if novel.len() > 0 { novel } else { clean-pool }
     let elsewhere = pool.filter(e => e.sheet != avoid)
     if elsewhere.len() > 0 { elsewhere.first() } else { pool.first() }
   }
@@ -115,7 +122,7 @@
     let key = written.slice(written.len() - previous-words-count).join(" ")
     let candidates = index.at(key, default: ())
     if candidates.len() == 0 { break }
-    let answer = pick(candidates, avoid: result.last().sheet)
+    let answer = pick(candidates, avoid: result.last().sheet, written: written)
     result.push(answer)
     written.push(answer.token.text)
   }
@@ -219,14 +226,6 @@
 
     #colour-key()
 
-    #text(size: 9pt, fill: muted)[
-      #doc_metadata.total_tokens tokens, #doc_metadata.unique_tokens unique
-      #sym.dot.c #calc.round(doc_metadata.entropy, digits: 2) bits/token
-      #sym.dot.c perplexity #calc.round(doc_metadata.perplexity, digits: 1)
-      #sym.dot.c branching factor
-      #calc.round(doc_metadata.branching_factor, digits: 2)
-    ]
-
     == Running a round
 
     + *Call out the last #prev-words-phrase* of the text so far.
@@ -268,6 +267,18 @@
 
     *Running dry.* If no hands go up, you have reached a context that only ever
     occurred at the very end of the text. Start again from any #pair-noun.
+
+    // Provenance, so it belongs at the foot of the brief rather than in the
+    // middle of the instructions. Its two lines also come off the taller
+    // column, which is what buys the worked example room on this page for a
+    // corpus wordy enough to have pushed it onto a second.
+    #text(size: 9pt, fill: muted)[
+      #doc_metadata.total_tokens tokens, #doc_metadata.unique_tokens unique
+      #sym.dot.c #calc.round(doc_metadata.entropy, digits: 2) bits/token
+      #sym.dot.c perplexity #calc.round(doc_metadata.perplexity, digits: 1)
+      #sym.dot.c branching factor
+      #calc.round(doc_metadata.branching_factor, digits: 2)
+    ]
   ]
 
   // No pagebreak: the two-column briefing rarely fills a page, so the worked
@@ -362,13 +373,23 @@
 #set page(header: none)
 #set text(size: font_size)
 
-// Footer for one sheet. The number comes from the loop index rather than the
-// page counter, so it stays right even if a sheet overflows onto a second page.
-#let sheet-footer(index) = align(
+// Footer for one page of one sheet. The sheet number comes from the loop index
+// rather than the page counter, so it stays right however many pages a sheet
+// runs to.
+//
+// A sheet spanning two pages says so. Without it both pages read "Sheet 1 of
+// 24" and are indistinguishable: a participant can't tell which half they are
+// holding, and nobody collating the stack can see that a sheet is incomplete.
+// A single-page sheet says nothing extra, since there is nothing to
+// disambiguate.
+#let sheet-footer(index, page-index, page-count) = align(
   center,
   text(fill: luma(150), size: 8pt)[
-    Sheet #str(index + 1) of #str(sheets.len()) #sym.dash.em #doc_metadata.title
-    #sym.dash.em www.llmsunplugged.org
+    Sheet #str(index + 1) of #str(sheets.len())
+    #if page-count > 1 [
+      (page #str(page-index + 1) of #str(page-count))
+    ]
+    #sym.dash.em #doc_metadata.title #sym.dash.em www.llmsunplugged.org
   ],
 )
 
@@ -538,9 +559,6 @@
 
 #for (i, sheet) in sheets.enumerate() {
   if i > 0 { pagebreak(weak: false) }
-  // Scoped to this iteration, so every page of this sheet carries its number.
-  // The pagebreak above means the rule always lands on a fresh page.
-  set page(footer: sheet-footer(i))
 
   // `context` for `measure`, for resolving the em-based gutter to a length,
   // and for the page width the column width is derived from.
@@ -559,6 +577,11 @@
 
     for (p, page-rows) in pages.enumerate() {
       if p > 0 { pagebreak(weak: false) }
+      // Set per page rather than per sheet, so the footer can say which page
+      // of the sheet this is. The pagebreaks mean it always lands on a fresh
+      // page, which is what lets a page-level set rule take effect here.
+      set page(footer: sheet-footer(i, p, pages.len()))
+
       // Each page is exactly one page tall. The first splits into an
       // auto-height header and a `1fr` body that absorbs whatever height the
       // header leaves; later pages give the whole height to the pairs. Either
