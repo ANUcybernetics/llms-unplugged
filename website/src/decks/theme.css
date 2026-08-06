@@ -362,14 +362,19 @@
    reported speech rather than as the slide's own claim.
 
    The extra space beneath is doing real work on the post-training slide, where
-   the line lands directly above `.qa-compare`'s own italic prompt. At the
-   theme's default 1.5rem the two italics sit close enough to read as one
-   block, which loses the distinction between what a participant said and what
-   we're prompting the grid with. */
+   the line lands directly above `.qa-compare`'s own italic prompt: without it
+   the two italics read as one block, losing the distinction between what a
+   participant said and what we're prompting the grid with.
+
+   Keep this modest. The other two slides carrying a `.voice` line sit above a
+   full-width grid widget and run close to the bottom of the 720px canvas, so
+   space spent here comes straight out of theirs --- at 2.75rem (tuned before
+   theme v0.11.6 widened the default paragraph gap) the context slide clipped
+   its last line. */
 .reveal .voice {
   color: var(--color-text-secondary);
   font-style: italic;
-  margin-block-end: 2.75rem;
+  margin-block-end: 1rem;
 }
 
 /* "answering isn't a thing it does": a prompt, then what the grid returns.
