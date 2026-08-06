@@ -22,11 +22,11 @@ import "../styles/widgets.css";
 
   Running order:
     0:00  Pick up Tim's Bandura quote            (slides 1-5,   ~3 min)
-    0:03  What's on your chair                   (slides 6-8,   ~2 min)
-    0:05  Run the model                          (slide 9,      ~7 min)
-    0:12  What just happened                     (slides 10-13, ~3 min)
-    0:15  What Claude does differently, at scale (slides 14-18, ~3 min)
-    0:18  The claim, then come tomorrow          (slides 19-23, ~2 min)
+    0:03  What's on your chair                   (slides 6-7,   ~2 min)
+    0:05  Seed it, then run the model            (slides 8-10,  ~6 min)
+    0:11  What just happened                     (slides 11-14, ~3 min)
+    0:14  What Claude does differently, at scale (slides 15-19, ~3 min)
+    0:17  The claim, then come tomorrow          (slides 20-24, ~3 min)
 
   Assumes the Acknowledgement of Country and the welcome happened at the top of
   the session, before Tim --- hence no ack-country slide here.
@@ -41,16 +41,21 @@ import "../styles/widgets.css";
       the worked example and the "running dry" fallback
     - have the whiteboard overlay ready (press `b`) for writing the generated
       text, and a scribe lined up if you would rather not write and talk
-    - the numbers on slides 7 and 15 are for The Cat in the Hat at n=2; if you
+    - the numbers on slides 7 and 16 are for The Cat in the Hat at n=2; if you
       swap the corpus, rebuild them with `llms_unplugged build` and read the
       metadata block
+
+  Vocabulary: a *token* is one word or punctuation mark --- the sense the
+  workshop and the printed sheets both use. A *token pair* is two of them, the
+  boxed one and the one that follows. Slide 6 says the words; slide 12 makes
+  them stick. Never call the pair a token.
 */}
 
 {/* _class: hero */}
 
-# Unplugged in the age of AI
+# LLMs Unplugged
 
-## What a room full of people can know about a machine
+## Does 'Unplugged' still matter in the age of AI?
 
 ![bg](./assets/bg-title-wide.avif)
 
@@ -64,10 +69,10 @@ Ask them not to touch the sheet on their chair yet. It gets read too early other
 
 {/* _class: quote */}
 
-“Everyday life is increasingly regulated by complex technologies that most
-people neither understand nor believe they can do much to influence.”
-
-Albert Bandura, 2001
+> Everyday life is increasingly regulated by complex technologies that most
+> people neither understand nor believe they can do much to influence.
+>
+> Albert Bandura, 2001
 
 {/* notes:
 Tim had this on screen about fifteen minutes ago. I want to pick it up and point it at one technology in particular, because Bandura wrote it in 2001 and it has aged into a description of this year.
@@ -89,7 +94,7 @@ That's the failure AI is currently manufacturing at scale, and it's the one this
 
 ---
 
-## What we get told about AI
+## what we get told about AI
 
 ![bg right:40%](./assets/bg-impact.avif)
 
@@ -107,7 +112,9 @@ Beat. The honest answer is in between and it's more interesting than both, and -
 
 {/* _class: impact */}
 
-you can't have a view about a machine you've never seen the inside of
+it's hard to have an opinion on a
+
+machine you've never seen the inside of
 
 {/* notes:
 This is the whole argument of the talk, stated once, before the demonstration that earns it.
@@ -117,53 +124,69 @@ Then: so let's look inside. Not a diagram of the inside --- the inside. Pick up 
 
 ---
 
-## What's on your chair
+## what's on your chair
 
 ![bg right:40%](./assets/bg-cut-spread.avif)
 
-a page of **entries** from _The Cat in the Hat_
+a list of **token pairs** (bigrams) from _The Cat in the Hat_
 
-each entry is a **word**, and the **word that came just before it**
-
-shuffled, so your page isn't the book
+(it's shuffled, so your page isn't just a book excerpt)
 
 {/* notes:
-Hold one up. An entry is a next word with its context boxed in front of it: `the` then `cat`, meaning that somewhere in the book, `cat` follows `the`. Every word keeps the same colour wherever it appears, so you scan by colour and confirm by reading.
+Hold one up. Each pair is a word with the word that came just before it boxed in front: `the` then `cat`, meaning that somewhere in the book, `cat` follows `the`. Every word keeps the same colour wherever it appears, so you scan by colour and confirm by reading.
+
+Token pair is the sheets' own wording, so it's on the page in their hand. One clause is enough for now --- a token is one word or one punctuation mark --- and don't dwell; slide 12 is where it gets nailed down.
 
 The shuffle matters, and it's worth naming: in book order these pages would just be the book with boxes drawn round it, and you'd read it. Shuffled, no page says anything. Nobody here is holding a story.
 
-~80 entries each. Give them ten seconds to look, then get their eyes back up.
+~80 pairs each. Give them ten seconds to look, then get their eyes back up.
 */}
 
 ---
 
-## Between us, we have the whole book
+## between us, we have the whole book
 
 ![bg right:40%](./assets/bg-participants.avif)
 
-**1,962** words · **240** distinct · **1,961** entries dealt round the room
+**1,962** words · **240** distinct · **1,961** token pairs dealt round the room
 
 no single sheet can continue the text on its own
 
 {/* notes:
 Every one of the 1,961 word-pairs in the book was dealt to exactly one person, and the deal deliberately spreads each context across as many people as it will go. So the model isn't in my laptop and it isn't on anyone's sheet --- it only exists across the whole room. If somebody had stayed home, part of it is missing and some contexts will draw no hands at all.
 
-That's not a metaphor for how a model is distributed. For the next seven minutes it's literally where the model is.
+That's not a metaphor for how a model is distributed. For the next five minutes it's literally where the model is.
 */}
 
 ---
 
-## One round
+{/* _class: impact */}
+
+can I have a **volunteer**?
+
+{/* notes:
+Someone near the front, sheet in hand. Ask them to read out any one pair from their page --- both words, boxed one first.
+
+Press `b` for the whiteboard and write both words up. That's the seed, and it matters that it came off a sheet rather than out of my head: the room supplies the first two words as well as every word after them.
+
+Then say what happens next --- the second of those two words is the one I'm about to call out --- and move on. The algorithm slide lands better with a real word already on the board.
+
+If their pair is an odd one (a full stop, a name that appears once), take it anyway and let the first round be quiet; that's a real property of the model, not a failure. Only if it dead-ends outright, ask a second volunteer or seed from `the`.
+*/}
+
+---
+
+## the algorithm
 
 ![bg right:40%](./assets/bg-algorithm-generation.avif)
 
 1. I **call out** the last word we wrote
-2. **hands up** if it's the boxed word on one of your entries
-3. I **pick a hand at random** and you read out your next word
-4. we **write it down**---and that word starts the next round
+2. **hands up** if it appears as the _boxed_ word on your sheet
+3. I **pick a hand at random** and you read out the _next_ (non-boxed) word
+4. we **write it down**---and then repeat the process
 
 {/* notes:
-Walk them through it once slowly, because the whole demo depends on step 2 and step 3.
+Walk them through it once slowly, against the two words already on the board, because the whole demo depends on step 2 and step 3.
 
 Step 2: one hand each. If you've got more than one match, go with the first one you spot.
 
@@ -174,14 +197,14 @@ Don't explain why yet. They'll see it.
 
 ---
 
-## Let's run it
+## let's run it
 
-<Timer minutes={6} overlay />
+<Timer minutes={5} overlay />
 
 {/* notes:
-Press `b` for the whiteboard and write the text as it comes. Seed from `the` --- it has 97 entries out in the room across 30 different next words, so the first round puts a lot of hands up and the demo starts loud.
+Whiteboard is already up with the volunteer's two words. Call out the second of them and go. Five minutes on the timer, so keep the rounds moving --- no commentary between hands going up and a word landing on the board.
 
-Safe seeds if you need to restart: `and` (69 entries), `I` (59), `you` (34), `we` (26). Avoid seeding from a full stop; it works, but the first thing the room does is argue about punctuation.
+If you need to restart, the loud seeds are `the` (97 pairs out in the room across 30 different next words), then `and` (69), `I` (59), `you` (34), `we` (26). Avoid restarting from a full stop; it works, but the first thing the room does is argue about punctuation.
 
 Two things to narrate while it runs, once each, without stopping the flow:
 
@@ -191,14 +214,14 @@ The choosing is a coin toss. When five hands are up, the four I don't pick were 
 
 If no hands go up, you've hit a context that only ever occurred at the very end of the book. Say so --- it's a nice moment, not a failure --- and reseed.
 
-Stop while they still want more, around 15--20 words. Read the sentence back.
+Stop while they still want more, around 15 words. Read the sentence back.
 */}
 
 ---
 
 {/* _class: impact */}
 
-you just ran a language model
+we just ran a language model
 
 {/* notes:
 Say it flatly and let it sit. Not a simulation of one, not an analogy for one: the mechanism, at human speed, with the arithmetic small enough to see.
@@ -206,11 +229,13 @@ Say it flatly and let it sit. Not a simulation of one, not an analogy for one: t
 
 ---
 
-## What we each were
+## what we each were
 
 ![bg right:40%](./assets/bg-core-insight-portrait.avif)
 
-your sheets → the **parameters**
+each word on your sheet → a **token**
+
+your sheets → the **parameters**/**weights**
 
 the hands in the air → the **probability distribution**
 
@@ -219,19 +244,21 @@ my random pick → **sampling**
 the sentence on the board → **generation**
 
 {/* notes:
-Four words that get used to make this stuff sound unreachable, and you've now got a physical referent for each. Go along the list at a fair clip --- the point is the mapping, not a definition of each term.
+The jargon that gets used to make this stuff sound unreachable, and you've now got a physical referent for every bit of it. Go along the list at a fair clip --- the point is the mapping, not a definition of each term.
+
+Token they've already met, on the sheet and back on slide 6; this is where it sticks, because everything else is measured in them. One unit of text --- for us one word or one punctuation mark, which is why the full stops are out there getting picked like everything else. (A real model chops rarer words into pieces, which is why it can spell out a word it has never seen. Say it only if it comes up.) Parameters and weights are the same thing under two names; you'll hear both.
 
 Worth saying out loud: those are the real words. When a researcher says a model has 1.5 trillion parameters, they mean this, a very large pile of the thing on your lap.
 */}
 
 ---
 
-## The same model, drawn as a grid
+## the same model, drawn as a grid
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={9} />
 
 {/* notes:
-A much smaller book --- "Run, Spot, run. See Spot run." --- so the whole model fits on a slide. Every entry from your sheets is a tally mark in a cell: row is the word we're on, column is the word that could come next.
+A much smaller book --- "Run, Spot, run. See Spot run." --- so the whole model fits on a slide. Every pair from your sheets is a tally mark in a cell: row is the token we're on, column is the token that could come next.
 
 This is the form we use in the workshop, where each table builds their own grid from scratch. Same model, small enough to hold in one pair of hands. Point at a cell with two marks and say: that's two hands going up.
 */}
@@ -250,7 +277,7 @@ That's the whole trick, and you have now watched it happen from the inside. Ever
 
 ---
 
-## Three things Claude does that we didn't
+## three things Claude does that we didn't
 
 ![bg right:40%](./assets/bg-attention.avif)
 
@@ -279,7 +306,7 @@ None of these changed the loop. Look at the context, weigh the options, pick one
 <GridZoom rows={240} cols={240} label="“The Cat in the Hat”" detail="240 distinct words · 57,600 cells" />
 
 {/* notes:
-Read the caption. This is our room, drawn as a grid: 240 distinct words, so 57,600 cells --- a bit under half of them holding the entries you're still holding.
+Read the caption. This is our room, drawn as a grid: 240 distinct tokens, so 57,600 cells --- a bit under half of them holding the pairs you're still holding.
 
 At the workshop's one centimetre per cell that's a square about two and a half metres on a side. Roughly this stage.
 */}
@@ -300,10 +327,10 @@ On paper that's about 5,500 square metres. Most of a football field. It's the vo
 
 {/* _class: impact */}
 
-a real vocabulary: **100,000** words, **10 billion** cells, **1 km²** of paper
+a real vocabulary: **100,000** tokens, **10 billion** cells, **1 km²** of paper
 
 {/* notes:
-Past this the picture gives out, so switch to measuring. A commercial model's vocabulary is around 100,000 words, and the grid for that alone is 10 billion cells --- a square kilometre of paper, near enough the whole Acton campus.
+Past this the picture gives out, so switch to measuring. A commercial model's vocabulary is around 100,000 tokens, and the grid for that alone is 10 billion cells --- a square kilometre of paper, near enough the whole Acton campus.
 
 And that's still the toy version: one word of context, tally marks, none of the three fixes on the last slide. The real thing at 1.5 trillion parameters, a centimetre each, is about 150 square kilometres.
 
@@ -322,7 +349,7 @@ Every reply from Claude or ChatGPT is produced one word at a time, by the loop y
 
 ---
 
-## Back to Bandura
+## back to Bandura
 
 ![bg right:40%](./assets/bg-confluence.avif)
 
@@ -341,7 +368,9 @@ Twenty minutes of paper and hands in the air is the cheapest known cure for that
 
 {/* _class: impact */}
 
-it doesn't make you an expert. it makes you **hard to bluff**.
+it doesn't make you an expert
+
+it makes you **harder to bs**
 
 {/* notes:
 Be careful not to oversell. You can't build Claude now, and nothing here tells you whether it should be marking your students' essays.
