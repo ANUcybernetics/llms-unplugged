@@ -3,15 +3,15 @@
 //
 // Instead of cutting a corpus into pieces and spreading them on a table, the
 // CLI shuffles the cutouts and deals them round-robin into one sheet per
-// participant. Everyone keeps their own sheet, finds the entries matching the
-// context that was just called out, and reads out the next word. The room as a
-// whole holds the corpus statistics, so the number of hands that go up for a
-// given word is that word's count in the text.
+// participant. Everyone keeps their own sheet, finds the token pairs matching
+// the context that was just called out, and reads out the next token. The room
+// as a whole holds the corpus statistics, so the number of hands that go up for
+// a given token is that token's count in the text.
 //
 // The shuffle is what makes this work: in corpus order an uncut page is just
 // the source text with boxes drawn around it.
 
-// Sheets take the compact 12-colour palette: the entries are set around 16pt
+// Sheets take the compact 12-colour palette: the pairs are set around 16pt
 // here, where the cutouts' 30 colours stop being tellable apart. See
 // cutout-common.typ for why each palette is the size it is.
 #import "cutout-common.typ": (
@@ -35,24 +35,36 @@
 #let all_tokens = sheets.flatten()
 #let n = derive-n(all_tokens)
 #let previous-words-count = n - 1
-#let previous-words-noun = if previous-words-count == 1 { "word" } else {
-  "words"
+// "Token", not "word": a corpus tokenises punctuation separately, so plenty of
+// the dealt pairs are boxed on a full stop or a comma and "the last word called
+// out" would be describing something that isn't on the page.
+#let previous-words-noun = if previous-words-count == 1 { "token" } else {
+  "tokens"
 }
-// Phrase like "word" / "2 words", so the prose reads correctly for any n.
+// Phrase like "token" / "2 tokens", so the prose reads correctly for any n.
 #let prev-words-phrase = if previous-words-count > 1 [#str(
     previous-words-count,
   ) #previous-words-noun] else [#previous-words-noun]
+
+// What one dealt item is called. "Token pair" is exact at n=2 --- two tokens,
+// the boxed one and the one that follows it --- and is the term the talk and
+// the workshop use. A trigram deals three tokens at a time, so anything past
+// bigrams falls back to the generic noun rather than lying about the count.
+#let pair-noun = if previous-words-count == 1 { "token pair" } else {
+  "token group"
+}
+#let pair-noun-plural = pair-noun + "s"
 
 #let muted = rgb("#666")
 
 // ===== Instructions page (teacher-facing, printed once) =====
 
-// Build a genuine three-step chain out of the dealt entries, recording which
+// Build a genuine three-step chain out of the dealt pairs, recording which
 // sheet each answer came from. Every context in the corpus is on somebody's
 // sheet, so the walk always finds a continuation until it reaches the tail of
 // the text. Returns an array of `(sheet: <1-based>, token: <token>)`.
 #let chain-example(sheets, steps: 3) = {
-  // context string -> the entries that can answer it, with their sheet number
+  // context string -> the pairs that can answer it, with their sheet number
   let index = (:)
   for (i, sheet) in sheets.enumerate() {
     for t in sheet {
@@ -64,7 +76,7 @@
     }
   }
 
-  // Prefer entries made only of alphabetic words: a chain that runs through a
+  // Prefer pairs made only of alphabetic words: a chain that runs through a
   // free-standing "." reads strangely in the worked example.
   let clean = e => (
     e.token.text.find(regex("[A-Za-z]")) != none
@@ -91,16 +103,16 @@
     let key = written.slice(written.len() - previous-words-count).join(" ")
     let candidates = index.at(key, default: ())
     if candidates.len() == 0 { break }
-    let entry = pick(candidates, avoid: result.last().sheet)
-    result.push(entry)
-    written.push(entry.token.text)
+    let answer = pick(candidates, avoid: result.last().sheet)
+    result.push(answer)
+    written.push(answer.token.text)
   }
   result
 }
 
-// An entry as it appears in the instructions: unboxed, exactly as it appears on
+// A pair as it appears in the instructions: unboxed, exactly as it appears on
 // the sheets. `box` only to keep it from breaking across lines.
-#let entry-chip(token) = box(render-cutout(token))
+#let pair-chip(token) = box(render-cutout(token))
 
 #let instructions-page() = {
   set page(footer: align(
@@ -131,12 +143,13 @@
     hand out *one sheet per person* --- every sheet is different, and nothing
     needs cutting out.
 
-    Each sheet holds #per_sheet *entries*. An entry is a *next word* paired with
-    the *previous #prev-words-phrase* that came immediately before it somewhere
-    in the original text.
+    Each sheet holds #per_sheet #strong(pair-noun-plural). A *token* is one word
+    or one punctuation mark; a #pair-noun is a *next token* paired with the
+    *previous #prev-words-phrase* that came immediately before it somewhere in
+    the original text.
 
-    // An all-alphabetic entry reads best as the example; a corpus with no such
-    // entry (e.g. Chinese) falls back to whatever is first. Set inline rather
+    // An all-alphabetic pair reads best as the example; a corpus with no such
+    // pair (e.g. Chinese) falls back to whatever is first. Set inline rather
     // than as a labelled diagram: every sheet now carries its own worked
     // example in its instruction line, so this only has to name the parts.
     #let alphabetic = all_tokens.find(t => (
@@ -147,13 +160,14 @@
       all_tokens.first()
     }
 
-    In #entry-chip(sample), the boxed #prev-words-phrase #if (
+    In #pair-chip(sample), the boxed #prev-words-phrase #if (
       previous-words-count > 1
     ) [are] else [is] the previous #prev-words-phrase and #emph(sample.text) is
-    the next word. Each word keeps the same colour wherever it appears, so scan
-    by colour first and read second. With only #compact-palette.colors.len()
-    colours and far more words than that, a colour narrows the search rather
-    than settling it --- always check the word itself.
+    the next token. Each token keeps the same colour wherever it appears, so
+    scan by colour first and read second. With only
+    #compact-palette.colors.len() colours and far more tokens than that, a
+    colour narrows the search rather than settling it --- always check the token
+    itself.
 
     #text(size: 9pt, fill: muted)[
       #doc_metadata.total_tokens tokens, #doc_metadata.unique_tokens unique
@@ -166,12 +180,13 @@
     == Running a round
 
     + *Call out the last #prev-words-phrase* of the text so far.
-    + Everyone scans their own sheet for entries whose previous
+    + Everyone scans their own sheet for #pair-noun-plural whose previous
       #prev-words-phrase #if previous-words-count > 1 [match] else [matches].
       *Hands up* --- one hand each, and anyone with more than one match just
       goes with the first they spot.
-    + *Pick a raised hand at random* and ask for that entry's next word.
-    + A scribe writes the word on the board. That word becomes part of the
+    + *Pick a raised hand at random* and ask for that #{ pair-noun }'s next
+      token.
+    + A scribe writes the token on the board. That token becomes part of the
       context for the next round. Repeat.
 
     Picking at random matters. If you take whoever shouts first you are sampling
@@ -185,7 +200,7 @@
 
     == What to watch for
 
-    *The hands are the probability distribution.* Every entry was dealt to
+    *The hands are the probability distribution.* Every #pair-noun was dealt to
     exactly one person, and the deal spreads each context across as many people
     as it will go, so a common continuation really does put more hands in the
     air than a rare one. Nobody has to explain weighted sampling; the room
@@ -198,7 +213,7 @@
     their share of it is missing, and some contexts will draw no hands at all.
 
     *Running dry.* If no hands go up, you have reached a context that only ever
-    occurred at the very end of the text. Start again from any entry.
+    occurred at the very end of the text. Start again from any #pair-noun.
   ]
 
   // No pagebreak: the two-column briefing rarely fills a page, so the worked
@@ -206,8 +221,8 @@
   // of paper. It spills to a second page only for a wordier corpus.
   let chain = chain-example(sheets)
   if chain.len() >= 2 {
-    // The running text the board accumulates: the seed entry's context,
-    // followed by the next word each entry in the chain contributes.
+    // The running text the board accumulates: the seed pair's context,
+    // followed by the next token each pair in the chain contributes.
     let written = (
       chain.first().token.previous_words + chain.map(e => e.token.text)
     )
@@ -242,11 +257,13 @@
             + (if row == 0 { bottom } else { horizon })
         ),
 
-        [], column-label[the entry that answers], column-label[on the board],
+        [],
+        column-label[the #pair-noun that answers],
+        column-label[on the board],
 
         ..chain
           .enumerate()
-          .map(((i, entry)) => {
+          .map(((i, answer)) => {
             // Before round i the board holds `previous-words-count + i` words;
             // the context called out is the last `previous-words-count` of them,
             // rendered in the same colours the sheets use.
@@ -255,17 +272,17 @@
               .map(w => coloured-word(w))
               .join(" ")
             let prose = if i == 0 [
-              *Start anywhere.* Pick any entry --- say this one --- and write
-              its previous #prev-words-phrase #emph[and] its next word on the
-              board.
+              *Start anywhere.* Pick any #pair-noun --- say this one --- and
+              write its previous #prev-words-phrase #emph[and] its next token on
+              the board.
             ] else [
               *Round #str(i).* Call out the last #prev-words-phrase on the board
               (#emph(called)). Another sheet has a match, so that person raises
-              a hand and reads out #emph(entry.token.text).
+              a hand and reads out #emph(answer.token.text).
             ]
             (
               prose,
-              entry-chip(entry.token),
+              pair-chip(answer.token),
               written-so-far(previous-words-count + 1 + i),
             )
           })
@@ -286,7 +303,7 @@
 // ===== The participant sheets, one page each =====
 
 // The sheets carry no title block of their own: the page is for searching, and
-// every millimetre above the entries is one the rows don't get. Provenance ---
+// every millimetre above the pairs is one the rows don't get. Provenance ---
 // which sheet this is, which text it came from --- lives in the footer instead.
 #set page(header: none)
 #set text(size: font_size)
@@ -302,7 +319,7 @@
 )
 
 // Monochrome renderers for the worked example in the instruction line. The
-// example is a reading aid, not one of the entries to be searched, so it stays
+// example is a reading aid, not one of the pairs to be searched, so it stays
 // black and white --- in the palette colours it would read as just another
 // token on the page and pull the eye away from the real ones.
 #let mono-word-box(t) = highlight(
@@ -317,7 +334,7 @@
   parts.join(h(inter_word_gap))
 }
 
-// An all-alphabetic entry off this participant's own sheet, so the example in
+// An all-alphabetic pair off this participant's own sheet, so the example in
 // the instruction line is one they can actually go and find. Punctuation-only
 // contexts make a confusing example, hence the preference.
 #let sheet-example(sheet) = {
@@ -337,13 +354,14 @@
     #text(size: 10pt, fill: muted)[
       When the #prev-words-phrase called out #if (
         previous-words-count > 1
-      ) [match] else [matches] the boxed #prev-words-phrase of an entry below,
-      raise your hand, and read out that entry's *next word* if you're picked.
-      If more than one entry matches, just go with the first one you spot.
+      ) [match] else [matches] the boxed #prev-words-phrase of a #pair-noun
+      below, raise your hand, and read out that #{ pair-noun }'s *next token* if
+      you're picked. If more than one #pair-noun matches, just go with the first
+      one you spot. (A token is one word or one punctuation mark.)
       #if example != none [
         For example, if the #prev-words-phrase called out
         #if previous-words-count > 1 [are] else [is]
-        "#example.previous_words.join(" ")", then the entry #mono-cutout(
+        "#example.previous_words.join(" ")", then the #pair-noun #mono-cutout(
           example,
         ) is a match and you answer #strong(text(fill: black, example.text)).
       ]
@@ -361,7 +379,7 @@
 
   // Each sheet is exactly one page tall, split into an auto-height header and
   // a `1fr` body that absorbs whatever height the header leaves. That definite
-  // body height is what lets the entry grid's own `1fr` rows stretch, so the
+  // body height is what lets the pair grid's own `1fr` rows stretch, so the
   // rows always reach the bottom margin instead of trailing off partway down a
   // short sheet.
   block(
@@ -373,8 +391,8 @@
 
       // A regular grid rather than a ragged flow: scanning aligned columns for
       // a colour is much faster than scanning wrapped text, and it makes the
-      // sorted variant read as the lookup table it is. Entries sit on the page
-      // unboxed --- the colour already delineates them, and a border per entry
+      // sorted variant read as the lookup table it is. Pairs sit on the page
+      // unboxed --- the colour already delineates them, and a border per pair
       // adds 160-odd rectangles of visual noise to a page meant to be scanned.
       grid(
         columns: (1fr,) * columns_per_sheet,

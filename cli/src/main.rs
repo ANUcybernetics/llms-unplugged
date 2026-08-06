@@ -265,12 +265,12 @@ struct SheetsArgs {
     #[arg(long)]
     seed: Option<u64>,
 
-    /// Number of entry columns on each sheet. Defaults to 4 for bigrams,
-    /// narrowing as n grows because each entry carries n-1 context words.
+    /// Number of token-pair columns on each sheet. Defaults to 4 for bigrams,
+    /// narrowing as n grows because each pair carries n-1 context tokens.
     #[arg(long)]
     columns: Option<usize>,
 
-    /// Entry font size on the sheets (any Typst length, e.g. 11pt)
+    /// Token-pair font size on the sheets (any Typst length, e.g. 11pt)
     #[arg(long, default_value = "16pt")]
     font_size: String,
 
@@ -494,7 +494,7 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
             "--sheets must be at least 1".to_string(),
         ));
     }
-    // An entry is n words wide, so wider n-grams need fewer columns to stay on
+    // A token pair is n tokens wide, so wider n-grams need fewer columns to stay on
     // one line: 4 for bigrams, 3 for trigrams, 2 beyond that.
     let columns = args.columns.unwrap_or_else(|| (6 - args.n.min(4)).max(2));
     if columns == 0 {
@@ -525,7 +525,7 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
 
     println!("Processed '{}' by {}", metadata.title, metadata.author);
     println!(
-        "Dealt {} cutouts across {} sheets ({}--{} entries per sheet, {})",
+        "Dealt {} cutouts across {} sheets ({}--{} token pairs per sheet, {})",
         dealt,
         args.sheets,
         smallest,
