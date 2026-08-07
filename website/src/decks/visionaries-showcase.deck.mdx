@@ -8,6 +8,7 @@ listed: false
 ---
 
 import BigramCountsTable from "../components/BigramCountsTable.svelte";
+import GridRowToggle from "../components/GridRowToggle.astro";
 import GridZoom from "../components/GridZoom.svelte";
 import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
 import { getBigrams, splitTokens } from "../lib/tokens";
@@ -44,9 +45,10 @@ export const HYBRID_VOCAB =
   keys still navigate with the surface up, and ink is committed per-slide, so
   advancing to slide 5 shows the pre-built grid clean. Do NOT press Escape or
   W mid-beat --- closing the annotation layer discards its ink. During
-  generation (slide 7), circle the current row with the pen and press C to
-  clear between rounds. D saves the annotated slide as a PNG if you want a
-  souvenir of the live tallies.
+  generation (slide 7), the annotation surface stays DOWN: tap a row with the
+  pen to band it gold (GridRowToggle), tap again to clear --- no ink, so
+  nothing to clear between rounds. D saves an annotated slide as a PNG if you
+  want a souvenir of the live tallies.
 
   The reveal structure is load-bearing: the two source books are NEVER named
   before slide 9. The live tallies (first ~10 bigrams, all Hemingway) go down
@@ -184,6 +186,8 @@ Walk the four steps once. The bag is why every reply is different --- it IS the 
 
 ---
 
+<GridRowToggle />
+
 <BigramCountsTable
   vocab={splitTokens(HYBRID_VOCAB)}
   bigrams={getBigrams(splitTokens(HEMINGWAY))}
@@ -192,7 +196,7 @@ Walk the four steps once. The bag is why every reply is different --- it IS the 
 />
 
 {/* notes:
-GENERATION SURFACE. Circle the row with the pen; C clears between rounds.
+GENERATION SURFACE. TAP a row (pen, annotation surface DOWN) to band it gold; tap again to clear --- no whiteboard ink needed between rounds. C only clears ink, not row bands.
 
 Start at `the` (2 blue old, 2 red boy, 1 yellow house). Colours assigned out loud, fresh each round --- hold each ball at shoulder height as it's named, count the loads aloud (the bag is invisible from the back of the hall); scribe cards each word. Deterministic rows at speed: "no bag --- no choice."
 

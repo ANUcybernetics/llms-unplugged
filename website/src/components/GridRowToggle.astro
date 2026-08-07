@@ -1,0 +1,50 @@
+---
+/**
+ * Click-to-highlight rows on every BigramCountsTable in the deck.
+ *
+ * Drop `<GridRowToggle />` anywhere in a deck (once) and each row of every
+ * bigram grid becomes toggleable with a click/pen-tap: one tap bands the row
+ * gold, another clears it. Rows toggle independently, so several can be lit
+ * at once; presenter shortcut C does NOT clear these (that's whiteboard ink)
+ * --- tap again to clear. Built as an Astro component with a bundled script
+ * because Svelte components don't hydrate inside astromotion decks.
+ *
+ * Note: with the whiteboard annotation surface up (⇧W) the pen draws ink and
+ * taps never reach the table --- toggle rows before opening the surface.
+ */
+---
+
+<script>
+  const boot = () => {
+    document
+      .querySelectorAll<HTMLTableElement>("table.bigram-grid")
+      .forEach((t) => t.classList.add("row-toggle"));
+  };
+
+  document.addEventListener("click", (e) => {
+    const row = (e.target as Element | null)?.closest?.(
+      "table.bigram-grid.row-toggle tbody tr",
+    );
+    row?.classList.toggle("row-picked");
+  });
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
+</script>
+
+<style is:global>
+  table.bigram-grid.row-toggle tbody tr {
+    cursor: pointer;
+  }
+
+  /* Stronger than the component's prop-driven .active-row band (15%): this
+     one is pointed at from across a hall. Applied to the row heading as well
+     so the token lights up with its row. */
+  table.bigram-grid.row-toggle tbody tr.row-picked td,
+  table.bigram-grid.row-toggle tbody tr.row-picked th {
+    background: color-mix(in srgb, var(--anu-gold) 32%, transparent);
+  }
+</style>
