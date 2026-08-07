@@ -26,10 +26,11 @@
 #let json_path = sys.inputs.at("json_path", default: "sheets.json")
 #let font_size = eval(sys.inputs.at("font_size", default: "16pt"))
 #let columns_per_sheet = int(sys.inputs.at("columns", default: "4"))
-// Rows of pairs per page. The rows stretch to fill the page, so this is the
-// vertical density knob: fewer rows means more air between them, at the cost
-// of a sheet running onto a second page.
-#let rows_per_page = int(sys.inputs.at("rows", default: "18"))
+// Cap on the rows of pairs per page, or 0 for no cap. Uncapped, a sheet takes
+// as many rows as its pairs need and stays on one page, which is the point of
+// the activity: one sheet per person. A cap spaces the rows further apart ---
+// they stretch to fill the page --- at the cost of a second page per sheet.
+#let rows_per_page = int(sys.inputs.at("rows", default: "0"))
 
 #set text(font: ("Libertinus Serif", "Noto Serif CJK SC"), size: 11pt)
 // Bound rather than written inline, because the sheet layout has to work out
@@ -520,6 +521,8 @@
   // An empty sheet still gets a page, so a participant dealt nothing is handed
   // a blank rather than silently skipped in the numbering.
   if rows.len() == 0 { return ((),) }
+  // Uncapped: the whole sheet on one page, however many rows that takes.
+  if per-page <= 0 { return (rows,) }
   let pages = calc.max(1, calc.ceil(rows.len() / per-page))
   let each = calc.ceil(rows.len() / pages)
   range(0, rows.len(), step: each).map(i => rows.slice(

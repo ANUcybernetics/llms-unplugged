@@ -123,20 +123,22 @@ are dropped; apostrophes inside contractions are preserved.
   matches for the same context can still only answer once. It can't be
   eliminated --- a context occurring more often than there are participants has
   to double up somewhere --- so the effect is reduced rather than removed. The
-  PDF leads with a one-page teacher brief, then a sheet per participant --- one
-  page each, or two where the corpus is wordy enough to need them.
+  PDF leads with a one-page teacher brief, then one page per participant.
   - `--sheets <N>` (required): number of participants
   - `--n <N>`: prefix length (default 2)
   - `--sort`: order each sheet by context instead of shuffling it, turning the
     sheet into a lookup table --- a good second round, once the class has felt
     how slow an unsorted search is
   - `--seed <N>`: reproducible deal
-  - `--columns`, `--rows`, `--font-size`, `--paper-size`: sheet density. Columns
-    default to 4 for bigrams and narrow as `n` grows. Rows default to 18 to a
-    page and set the vertical spacing: rows stretch to fill the page, so asking
-    for fewer puts more air between them and runs a busy sheet onto a second
-    page. A pair too wide for one column takes two rather than wrapping into the
-    row below.
+  - `--columns`, `--font-size`, `--paper-size`: sheet density. Columns default
+    to 4 for bigrams and narrow as `n` grows. A pair too wide for its column
+    takes two columns rather than wrapping into the row below. The command warns
+    when a sheet spills onto a second page, which defeats the
+    one-page-per-person point --- the fix is usually more `--sheets`, since that
+    thins every sheet at once.
+  - `--rows <N>`: cap the rows on a page. Rows stretch to fill the page, so a
+    cap spaces them further apart, at the cost of each sheet running onto a
+    second page. Off by default.
 - `sample` - Build an N-gram model in memory from a corpus and sample text from
   it. Useful as a sanity check on the model without printing a booklet.
   - `--input <FILE>`, `--n <N>` (default 2)
