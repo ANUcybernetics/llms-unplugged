@@ -48,27 +48,45 @@
     background: color-mix(in srgb, var(--anu-gold) 32%, transparent);
   }
 
-  /* In a picked row, the tally marks gently breathe --- "these are the
-     candidates". Opacity only, so each tally pulses in its own colour and
-     the band/borders stay put. */
-  table.bigram-grid.row-toggle tbody tr.row-picked .tally {
-    animation: tally-pulse 1.6s ease-in-out infinite;
+  /* In a picked row, each tally pings like a radar blip --- "these are the
+     candidates". The mark itself stays solid and readable (with a soft
+     steady glow); a ghost copy (::after, duplicating the mark via
+     data-tally) blinks up and fades out on each beat, in the tally's own
+     colour. Transforms only, so nothing reflows and the band/borders stay
+     put. */
+  table.bigram-grid.row-toggle .tally {
+    position: relative;
+    display: inline-block;
   }
 
-  @keyframes tally-pulse {
-    0%,
-    100% {
-      opacity: 1;
+  table.bigram-grid.row-toggle tbody tr.row-picked .tally {
+    text-shadow: 0 0 0.4em currentColor;
+  }
+
+  table.bigram-grid.row-toggle tbody tr.row-picked .tally::after {
+    content: attr(data-tally);
+    position: absolute;
+    inset: 0;
+    text-align: center;
+    animation: tally-ping 1.8s ease-out infinite;
+  }
+
+  @keyframes tally-ping {
+    0% {
+      transform: scale(1);
+      opacity: 0.9;
     }
 
-    50% {
-      opacity: 0.4;
+    45%,
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    table.bigram-grid.row-toggle tbody tr.row-picked .tally {
-      animation: none;
+    table.bigram-grid.row-toggle tbody tr.row-picked .tally::after {
+      display: none;
     }
   }
 </style>

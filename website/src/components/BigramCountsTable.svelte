@@ -84,11 +84,17 @@
           {@const isCurrent =
             currentCell != null && row === currentCell[0] && col === currentCell[1]}
           <td class="grid-cell" class:current={isCurrent} class:candidate={isCandidate(row, col)}>
+            <!-- data-tally lets GridRowToggle's ping effect duplicate the
+                 mark in a pseudo-element (content: attr(data-tally)). -->
             {#if countsB}
-              {#if count > 0}<span class="tally tally-a">{tally(count)}</span>{/if}
-              {#if countB > 0}<span class="tally tally-b">{tally(countB)}</span>{/if}
+              {#if count > 0}<span class="tally tally-a" data-tally={tally(count)}
+                  >{tally(count)}</span
+                >{/if}
+              {#if countB > 0}<span class="tally tally-b" data-tally={tally(countB)}
+                  >{tally(countB)}</span
+                >{/if}
             {:else if count > 0}
-              <span class="tally">{tally(count)}</span>
+              <span class="tally" data-tally={tally(count)}>{tally(count)}</span>
             {/if}
           </td>
         {/each}
