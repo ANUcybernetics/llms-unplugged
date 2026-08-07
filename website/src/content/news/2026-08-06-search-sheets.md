@@ -14,17 +14,16 @@ call out the last token written on the board, everyone scans their own sheet for
 it, and hands go up wherever there's a match. Pick one of those hands at random
 and you have your next token.
 
-Watch the hands. Every token pair in the text was dealt to exactly one person,
-and the deal spreads each context across as many people as it will go. A
-continuation that happens six times puts six hands in the air; a rare one puts
-up two. The show of hands is the probability distribution, and you get it for
-free --- no counts, no arithmetic. Pick at random rather than taking whoever
-shouts first, though, or you're sampling the fastest reader instead of the text.
+Every token pair in the text was dealt to exactly one person, and the deal
+spreads each context across as many people as it will go. A continuation that
+happens six times puts six hands in the air; a rare one puts up two. The show of
+hands is the probability distribution, without anybody counting anything. Pick
+at random, though. Take whoever shouts first and you're sampling the fastest
+reader instead of the text.
 
-Nobody holds the model, either. No single sheet can continue the text on its
-own; the model only exists across the whole room, and if somebody is away, some
-contexts draw no hands at all. For the twenty minutes it runs, the room is where
-the model lives.
+Nobody holds the whole model. No single sheet can continue the text on its own;
+the model only exists across the whole room, and if somebody is away, some
+contexts draw no hands at all.
 
 Four sets are ready to print:
 [Green Eggs and Ham](/assets/pdfs/sheets/green-eggs-and-ham.pdf) at 15 sheets,
