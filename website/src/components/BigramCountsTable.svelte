@@ -59,9 +59,13 @@
 
   const counts = $derived(tallyUp(bigrams));
   const countsB = $derived(bigramsB ? tallyUp(bigramsB) : null);
+
+  /* Longest token, in characters --- sizes the row-heading column under the
+     fixed table layout (all other columns share the remaining width equally). */
+  const headCh = $derived(Math.max(...vocab.map((t) => t.length)));
 </script>
 
-<table class="bigram-grid" class:dense>
+<table class="bigram-grid" class:dense style="--head-ch: {headCh}">
   <thead>
     <tr>
       <th scope="col"><span class="sr-only">Token</span></th>
@@ -104,12 +108,24 @@
     width: 100%;
     border-collapse: collapse;
     font-size: 1.6rem;
+    /* Fixed layout: every data column gets the same width regardless of its
+       tallies or heading, and the empty grid (drawn on live) keeps exactly the
+       same geometry as the pre-built one on the next slide. Only the
+       row-heading column is sized explicitly (below); the rest share the
+       remainder equally. */
+    table-layout: fixed;
+  }
+
+  table.bigram-grid thead th:first-child {
+    width: calc(var(--head-ch) * 1ch + 1.6rem);
   }
 
   table.bigram-grid th,
   table.bigram-grid td {
     text-align: center;
-    padding: 0.4rem;
+    /* 0.5rem block padding is the ceiling: the scaling-up "One word of
+       context" slide overflows the canvas beyond this. */
+    padding: 0.5rem 0.4rem;
     /* Subtle gold-tinted grid lines (the website's bigram grid uses the same
        token) so cells read as a grid without competing with the gold tally
        marks and current-cell highlight. */
@@ -136,7 +152,6 @@
 
   table.bigram-grid td.grid-cell {
     font-weight: 700;
-    min-width: 2em;
   }
 
   /* Two-source tallies: gold for the first corpus, blue for the second. The
@@ -152,19 +167,39 @@
 
   /* Dense mode: a 26×26 grid at the default sizing would overflow the reveal
      canvas. Sized so the full grid (27 rows with headings) fits the 720px
-     canvas with no h2 above it; cells are wide-not-tall, which suits tally
-     strokes drawn live over the slide with the whiteboard pen. */
+     canvas with no h2 above it. Column headings run vertically so every data
+     column can be equally narrow while long tokens ("something") stay
+     readable; the freed width and the reclaimed slide padding (below) buy
+     taller rows, which suits tally strokes drawn live with the whiteboard
+     pen. */
   table.bigram-grid.dense {
     font-size: 0.85rem;
   }
 
   table.bigram-grid.dense th,
   table.bigram-grid.dense td {
-    padding: 0.15rem 0.1rem;
+    padding: 0.24rem 0.1rem;
   }
 
-  table.bigram-grid.dense td.grid-cell {
-    min-width: 1.2em;
+  table.bigram-grid.dense thead th {
+    vertical-align: bottom;
+  }
+
+  table.bigram-grid.dense thead th code {
+    display: inline-block;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    line-height: 1;
+    padding-block: 0.1rem;
+  }
+
+  /* A dense grid is the slide's sole content and needs most of the canvas:
+     pull the section padding in (the default 4rem 5rem budget is meant for
+     heading-led slides). Scoped via :has so it only ever fires on dense-grid
+     slides; keeping the override here honours the "no external deck
+     overrides" contract above. */
+  :global(.reveal .slides section:has(table.bigram-grid.dense)) {
+    padding: 1.5rem 2rem;
   }
 
   tr.active-row td {
