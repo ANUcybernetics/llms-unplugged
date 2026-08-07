@@ -1,0 +1,345 @@
+---
+title: Demystifying large language models
+description:
+  A 14-minute talk for the ANU Visionaries Among Us Showcase (15 Aug 2026), in
+  which a language model is trained and run live on stage from a two-book
+  corpus, with a Wacom tablet, a stack of cards and a bag of balls
+listed: false
+---
+
+import BigramCountsTable from "../components/BigramCountsTable.svelte";
+import GridZoom from "../components/GridZoom.svelte";
+import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
+import { getBigrams, splitTokens } from "../lib/tokens";
+import "../styles/widgets.css";
+
+export const HEMINGWAY =
+  "the old man had taught the boy to fish and the boy loved him . no , the old man said .";
+export const SEUSS =
+  "and i said , how i wish we had something to do ! so we sat in the house .";
+export const HYBRID_VOCAB =
+  "the old man had taught boy to fish and loved him . no , said i how wish we something do ! so sat in house";
+
+{/*
+  Ben's 14-minute slot (3:46 pm, hard stop 4:00 pm for the stage changeover) at
+  the ANU Visionaries Among Us Showcase, Manning Clark Hall, 15 Aug 2026.
+  Program title: "Demystifying Large Language Models". Fuller plan (beats,
+  corpus analysis, risks, Kenyon logistics): nb note anu-visionaries-showcase-2026.
+  Deck work tracked in backlog TASK-140.
+
+  Running order (target 13:00 against the 14:00 slot):
+    0:00  Smallest thing on the program      (slides 1-2,   1:15)
+    1:15  The promise                        (slide 3,      0:45)
+    2:00  Training, live                     (slides 4-5,   3:15)
+    5:15  Generation                         (slides 6-7,   3:30)
+    8:45  The reading, then the reveal       (slides 8-9,   1:00)
+    9:45  What everything was                (slide 10,     0:45)
+   10:30  Scale                              (slides 11-13, 1:30)
+   12:00  Human-scale AI, 80 years           (slides 14-15, 1:00)
+
+  The whole talk runs off this deck on Ben's laptop over HDMI, Wacom attached.
+  The AV company has exactly one cue: switch to Ben's feed at walk-on. All
+  grid-drawing happens ON the deck via the whiteboard annotation surface:
+  press shift-W over slide 4 (the empty grid) and tally with the pen; arrow
+  keys still navigate with the surface up, and ink is committed per-slide, so
+  advancing to slide 5 shows the pre-built grid clean. Do NOT press Escape or
+  W mid-beat --- closing the annotation layer discards its ink. During
+  generation (slide 7), circle the current row with the pen and press C to
+  clear between rounds. D saves the annotated slide as a PNG if you want a
+  souvenir of the live tallies.
+
+  The reveal structure is load-bearing: the two source books are NEVER named
+  before slide 9. The live tallies (first ~10 bigrams, all Hemingway) go down
+  in gold; slide 5 arrives with a second colour already in it, unexplained.
+  Park it with one line and move on --- the two-colour mystery is what the
+  reveal cashes in.
+
+  Volunteers are the MCs (Lee Constable and Weli Costa; confirm with Kenyon):
+  one holds the 42-card token stack in order, one holds the current card and
+  drops it to the floor on "next!", so the pair of visible cards is the
+  sliding bigram window. During generation the second MC scribes each drawn
+  word onto a fresh blank card. Rehearse the full loop at the 1 pm sound check.
+
+  Before delivery:
+    - 42 A3 token cards in corpus order, NUMBERED ON THE BACKS (a dropped
+      stack is otherwise fatal), plus ~15 blank cards and a fat marker for the
+      scribe
+    - tub of balls in six colours (max 3 distinct continuations per row, so
+      six is headroom; the `the` row needs 2+2+1), one opaque bag, and a
+      small table centre-stage for both
+    - lapel or headset mic --- both hands are busy for eight minutes
+    - pen colour/size chosen and rehearsed on slide 4 at 1 pm; check tally
+      legibility in the 26x26 cells from the back of the hall
+    - fallback if the annotation surface misbehaves: slide 5 exists
+      regardless, so training can be narrated over the finished grid
+
+  Generation numbers (worked out in the nb note): rows with a genuine choice
+  are `the` (old x2, boy x2, house), `,`, `and`, `had`, `said`, `to` (the six
+  two-book bridge rows) plus `man`, `boy`, `i`, `we` within one book;
+  everything else is deterministic --- no bag, "the model has no choice
+  here". Cap the walk at 10-12 words; a choice row costs ~25-30s through the
+  full bag ritual, a deterministic row ~8s. Start at `the`: fullest bag on
+  the board, and it can jump books immediately. The 1-in-320 dream output is
+  "the old man said, how i wish we had something to do!" --- if it lands,
+  stop and read it twice.
+
+  Audience note: some attendees also saw the unplugged-age-of-ai talk on
+  10 Aug. The divergences are deliberate --- that talk deals a pre-trained
+  model across the room's chairs and generates by hands-up; this one builds
+  the model from an empty grid and samples from a bag. The one shared visual
+  is the GridZoom pair, whose final punchline is re-anchored to the hall
+  rather than the campus so it doesn't repeat word-for-word.
+*/}
+
+{/* _class: hero */}
+
+# Demystifying large language models
+
+![bg](./assets/bg-title-wide.avif)
+
+{/* notes:
+Walk on, one breath, then the positioning line: Ann took you back sixty-five thousand years. Brad and Brian are about to take you to the edge of the observable universe. I have twenty-six words.
+
+Then the hands-up. Hands up if you've used ChatGPT, Claude or Gemini this week --- most of the hall. Keep them up if you could explain to a ten-year-old what it actually did with your words. Watch them drop. Hold the silence for a beat.
+*/}
+
+---
+
+{/* _class: impact */}
+
+we got the tool
+
+before we got the **story** about the tool
+
+{/* notes:
+That gap --- everyone using it, almost nobody able to say what it is --- isn't because it's too complicated. We explain complicated things to children every day. It's that these systems arrived and saturated everything faster than any shared explanation could form.
+
+And the two stories on offer both tell you not to look: "it's basically a mind" (too grand to inspect) and "it's just autocomplete" (too trivial to bother). Opposite claims, same effect --- either it's beyond you or it's beneath you.
+*/}
+
+---
+
+{/* _class: impact */}
+
+it's hard to have an opinion on a machine
+
+you've never seen the **inside** of
+
+{/* notes:
+So here's the promise, and it's slightly reckless: in the next twelve minutes, on this screen, with a stack of cards, a bag of balls, and the help of Lee and Weli --- you will watch a language model get built from nothing, and then you'll watch it write.
+
+Not a diagram of one. The actual thing, slowed down to human speed.
+
+Bring the MCs into position: one holds the stack, one stands beside them. Hold up the tub of balls, put it on the table. Then advance to the empty grid.
+*/}
+
+---
+
+<BigramCountsTable
+  vocab={splitTokens(HYBRID_VOCAB)}
+  bigrams={[]}
+  dense={true}
+/>
+
+{/* notes:
+THE TRAINING SURFACE. Shift-W to open the annotation layer; do not close it until the beat is done (Escape discards the ink). Arrow keys still work with it up.
+
+Set the scene: an empty grid, twenty-six words down the side, the same twenty-six across the top. This is the entire machine. There is nothing behind the curtain --- this is the curtain.
+
+The choreography: the stack-holder shows the top card, hands it over; the card-holder holds theirs up next to it. Two cards visible = one bigram. Read the pair aloud, find the row (first card) and column (second card), one tally stroke. Call "next!" --- the card-holder drops theirs to the FLOOR, takes the next. Repeat.
+
+Do the first ten or so live, at talking pace, narrating the first three carefully and then speeding up. The audience should feel the rhythm become mechanical --- that's the point. The word "training" can land here: this, exactly this, is what the word means.
+*/}
+
+---
+
+<BigramCountsTable
+  vocab={splitTokens(HYBRID_VOCAB)}
+  bigrams={getBigrams(splitTokens(HEMINGWAY))}
+  bigramsB={getBigrams(splitTokens(SEUSS))}
+  dense={true}
+/>
+
+{/* notes:
+The fast-forward. "There are thirty-one more of exactly this, and you would not enjoy watching me do them. Here's where it ends up." Advance --- the slide arrives clean (your live ink stays on the previous slide).
+
+Then the floor line, pointing at the pile of dropped cards: the text is on the floor. The model didn't keep it. Everything it knows is tally marks --- thirty-seven cells, in a grid that's ninety-five per cent empty. When people worry that these systems have "stored the whole internet", this is the correction: they spent the internet, and kept the counts.
+
+One line only on the colours: "you may notice the tallies come in two colours. Hold that thought." Nothing more --- the reveal is slide 9's job.
+*/}
+
+---
+
+## the algorithm
+
+![bg right:40%](./assets/bg-algorithm-generation-2.avif)
+
+1. find the **row** for the last word written
+2. each tally in that row is a **candidate** for the next word
+3. load the bag: **one ball per tally**
+4. **draw** --- and write the word down
+
+{/* notes:
+Now we make it write. Walk the four steps once against the starting word before doing them for real.
+
+The bag is the honest part. I could point at the biggest count and pick it --- but the model doesn't do that, and the reason it doesn't is the reason every reply from ChatGPT is different. It weighs the options and rolls the dice. Two tallies, two balls; one tally, one ball. The bag IS the probability distribution --- we're just going to hold it.
+*/}
+
+---
+
+<BigramCountsTable
+  vocab={splitTokens(HYBRID_VOCAB)}
+  bigrams={getBigrams(splitTokens(HEMINGWAY))}
+  bigramsB={getBigrams(splitTokens(SEUSS))}
+  dense={true}
+/>
+
+{/* notes:
+THE GENERATION SURFACE. Annotation layer up; circle the current row with the pen, C to clear between rounds.
+
+Start at `the` --- the fullest row on the board, five tallies across three words. Assign a ball colour to each candidate out loud ("`old` is blue, `boy` is red, `house` is yellow"), then load by the tallies --- two blue, two red, one yellow --- so the room watches the distribution being built. Shake, theatrical draw, announce the word. The colour-to-word mapping is fresh each round; the scribe writes the drawn word on a blank card and holds it up.
+
+Deterministic rows are the free tempo: "one tally. No bag. The model has no choice here." Take those at speed.
+
+Ten to twelve words, then stop --- while they still want more. The half-built sentence on cards is the cliffhanger for the reading.
+
+If the dream line lands (the old man said, how i wish we had something to do!) --- stop everything and read it twice.
+*/}
+
+---
+
+{/* _class: impact */}
+
+we just ran a **language model**
+
+{/* notes:
+Flatly. Not a simulation of one, not a metaphor for one. Grid, weighted choice, one word at a time --- the mechanism, at human speed.
+
+Then the reading. Take the scribe's cards, line them up, and read the sentence the way you'd read a poem at a funeral. Full seriousness. The worse the sentence, the straighter the delivery.
+
+Then: nobody in this room wrote that sentence. It is not in any book. It came out of tally marks and a bag of balls.
+
+And --- gesturing at the two colours of ink --- there is one more thing this machine was never told.
+*/}
+
+---
+
+## two books
+
+{/* Single-line JSX on purpose: MDX parses multi-line JSX children as flow
+    content, which splits the text into sibling <p>s that escape the styled
+    wrapper (and its colour). Inline children only survive on one line. */}
+
+<p class="corpus-a">“the old man had taught the boy to fish and the boy loved him. no, the old man said.”<br /><span class="corpus-attribution">— Ernest Hemingway, <em>The Old Man and the Sea</em> (1952)</span></p>
+
+<p class="corpus-b">“and i said, how i wish we had something to do! so we sat in the house.”<br /><span class="corpus-attribution">— Dr. Seuss, <em>The Cat in the Hat</em> (1957)</span></p>
+
+{/* notes:
+The reveal. Gold was Hemingway. Blue was Dr. Seuss.
+
+Let the recognition land, then make it mean something: the model was never told they were two different books. It sees one word back --- that's all --- so wherever the two vocabularies touch, it steps across the seam without noticing. That's why our sentence lurched between a fishing boat and a rainy afternoon. Every strange sentence you've seen an AI produce is this, at scale: not malfunction --- a model walking across a seam it cannot see.
+
+(If anyone asks later: give it more context --- a thousand words back instead of one --- and it stops blundering across the seam. That's most of what the big models buy with their size.)
+*/}
+
+---
+
+## what everything was
+
+![bg right:40%](./assets/bg-core-insight-portrait.avif)
+
+the grid → the **parameters**
+
+tallying → **training**
+
+the bag → the **probability distribution**
+
+the draw → **sampling**
+
+the cards on the floor → the **training data**, spent
+
+the cards in Weli's hand → **generation**
+
+{/* notes:
+The jargon that makes this field sound unreachable, and you now have a physical referent for every word of it. Go down the list at a clip.
+
+Land on one: when you read that a model has a trillion parameters, that number means this --- a very, very large pile of the grid on this screen. Nothing more mysterious than that.
+*/}
+
+---
+
+{/* _class: centered */}
+
+<GridZoom
+  rows={7441}
+  cols={7441}
+  label="Frankenstein"
+  detail="7,441 distinct words · 55 million cells"
+  compareRows={26}
+  compareCols={26}
+  compareLabel="our grid"
+/>
+
+{/* notes:
+So how far is our grid from the real thing? First step: one novel instead of two sentences. Frankenstein --- 7,441 distinct words. The gold speck is our entire grid: everything we built, everything Lee and Weli handed across, everything on the floor.
+*/}
+
+---
+
+{/* _class: centered */}
+
+<GridZoom
+  rows={100000}
+  cols={100000}
+  label="a real model's vocabulary"
+  detail="100,000 tokens · 10 billion cells"
+  compareRows={7441}
+  compareCols={7441}
+  compareLabel="Frankenstein"
+  note="at a centimetre per cell: 1 km² of paper — about 800 of this hall"
+/>
+
+{/* notes:
+Second step, and it's the last one a picture survives. A frontier model's vocabulary is around a hundred thousand tokens, so its grid is ten billion cells. Frankenstein is now the speck.
+
+At the one-centimetre cells we were drawing tonight, that's a square kilometre of paper. About eight hundred Manning Clark Halls, tally marks wall to wall.
+*/}
+
+---
+
+{/* _class: impact */}
+
+**15 trillion** words of training text
+
+**~1 trillion** numbers in the model
+
+{/* notes:
+Past the picture, the two numbers you'll actually hear quoted. Fifteen trillion words of training text --- every one of them went past a counter, exactly the way twenty-two words went past Weli tonight. And about a trillion numbers in the model where our grid has thirty-seven tallies.
+
+But here's what did NOT change on the way up: it is still just words in, words out. One at a time. Weigh the options, load the bag, draw. Every answer ChatGPT has ever given you was produced by the loop you just watched run on this stage.
+*/}
+
+---
+
+{/* _class: impact */}
+
+slowed down and zoomed in,
+
+even this machine fits at **human scale**
+
+{/* notes:
+The claim under the whole evening: there is a way of knowing this technology that you cannot get by typing into the box. The app shows you the output. Tonight you saw the machine.
+
+Eighty years ago this university was founded so that a nation facing a transformed world --- the atom, then --- would have somewhere to understand it. This is that job again, and this is one way the School of Cybernetics does it: we call it human-scale AI. In the Cybernetic Studio our students build real software with AI agents doing most of the typing --- and are assessed on everything the machine can't do: taste, judgement, whether the thing is any good for the human who has to use it.
+
+Then the hand-off: I've spent my fourteen minutes making this technology as small as it will go. Brad and Brian are about to do the opposite --- and they have a fog machine.
+
+Callback to close: the hands that went down at the start can go up now. It took a grid, a bag of balls, and two very good sports. Thank you.
+*/}
+
+---
+
+{/* _class: socy-logo */}
+
+<SocyLogo />
+<p class="socy-url">www.llmsunplugged.org</p>
