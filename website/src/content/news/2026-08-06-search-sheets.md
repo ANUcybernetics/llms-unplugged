@@ -11,21 +11,20 @@ The [search sheets](/tools/#search-sheets) are the cutouts activity with the
 cutting taken out, and they scale to a room. The CLI shuffles a corpus and deals
 it round-robin into one page per participant, so no two sheets are the same. You
 call out the last token written on the board, everyone scans their own sheet for
-it, and hands go up wherever there is a match. Pick one of those hands at random
+it, and hands go up wherever there's a match. Pick one of those hands at random
 and you have your next token.
 
-The useful part is what the hands do without being told. Every token pair in the
-text was dealt to exactly one person, and the deal spreads each context across
-as many people as it will go. A continuation that happens six times puts six
-hands in the air; a rare one puts up two. Nobody in the room has been taught
-weighted sampling, and the room performs it anyway. Pick at random rather than
-taking whoever shouts first, though, or you are sampling the fastest reader
-instead of the text.
+Watch the hands. Every token pair in the text was dealt to exactly one person,
+and the deal spreads each context across as many people as it will go. A
+continuation that happens six times puts six hands in the air; a rare one puts
+up two. The show of hands is the probability distribution, and you get it for
+free --- no counts, no arithmetic. Pick at random rather than taking whoever
+shouts first, though, or you're sampling the fastest reader instead of the text.
 
-The other part is that nobody holds the model. No single sheet can continue the
-text on its own. The model exists only across the whole room, and if somebody is
-away, some contexts draw no hands at all. That is not a metaphor for distributed
-parameters: for the twenty minutes it runs, it is literally where the model is.
+Nobody holds the model, either. No single sheet can continue the text on its
+own; the model only exists across the whole room, and if somebody is away, some
+contexts draw no hands at all. For the twenty minutes it runs, the room is where
+the model lives.
 
 Four sets are ready to print:
 [Green Eggs and Ham](/assets/pdfs/sheets/green-eggs-and-ham.pdf) at 15 sheets,
@@ -34,9 +33,8 @@ Four sets are ready to print:
 [Australia](/assets/pdfs/sheets/australia.pdf) at 79. Print them single-sided
 and hand out one each. The first page is the briefing for whoever is running it,
 and every page after that is a different participant's sheet. Every sheet
-carries the same number of token pairs, so it is the length of the text that
-decides how many sheets there are, and a set only suits a group of about that
-size --- a missing sheet takes its share of the model with it. The
+carries the same number of token pairs, so the length of the text decides how
+many sheets there are, and a set only suits a group of about that size. The
 [tools page](/tools/#generate-your-own) will build a set from any text you paste
 in.
 
@@ -44,9 +42,9 @@ Building these turned up a problem with the
 [generated colour palette](/news/2026-05-24-generating-the-cutout-palette/).
 Sheets set their token pairs at 16pt rather than the cutouts' 36pt, and at that
 size, colours the metric called comfortably distinct kept reading as the same
-colour. Max-min OKLab ΔE counts a lightness step the same as a hue step, and a
-scanning eye does not: on a small glyph, a lightness step reads as that colour
-again, darker. The generator now enforces a minimum hue separation as
+colour. Max-min OKLab ΔE counts a lightness step the same as a hue step; a
+scanning eye doesn't. On a small glyph, a lightness step just reads as that
+colour again, darker. The generator now enforces a minimum hue separation as
 well.[^numbers] Every ready-to-print PDF has been rebuilt with the result.
 
 Calling the colour out only works if the room has a word for it. All eleven now
@@ -66,9 +64,9 @@ before anyone reads a token.
 
 [^naming]:
     Names are the nearest common English colour word to each swatch, checked
-    against the xkcd colour survey. Two are named against that data rather than
-    by it. Both print darker than their nearest word promises, so the gold is
-    ochre rather than mustard and the dark magenta is wine. Not maroon, though
-    it looks it to an Australian eye. Sampling a Queensland State of Origin kit
-    puts its cloth 26° of hue away, and maroon itself sits ΔE 0.095 from the
-    palette's brown, inside the 0.167 floor.
+    against the xkcd colour survey. Two don't take the survey's nearest word.
+    Both print darker than that word suggests, so the gold is ochre rather than
+    mustard and the dark magenta is wine. Not maroon, though it looks it to an
+    Australian eye. Sampling a Queensland State of Origin kit puts its cloth 26°
+    of hue away, and maroon itself sits ΔE 0.095 from the palette's brown,
+    inside the 0.167 floor.
