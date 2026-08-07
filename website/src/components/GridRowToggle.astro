@@ -47,4 +47,28 @@
   table.bigram-grid.row-toggle tbody tr.row-picked th {
     background: color-mix(in srgb, var(--anu-gold) 32%, transparent);
   }
+
+  /* In a picked row, the tally marks gently breathe --- "these are the
+     candidates". Opacity only, so each tally pulses in its own colour and
+     the band/borders stay put. */
+  table.bigram-grid.row-toggle tbody tr.row-picked .tally {
+    animation: tally-pulse 1.6s ease-in-out infinite;
+  }
+
+  @keyframes tally-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.4;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    table.bigram-grid.row-toggle tbody tr.row-picked .tally {
+      animation: none;
+    }
+  }
 </style>

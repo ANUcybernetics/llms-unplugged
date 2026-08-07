@@ -85,10 +85,10 @@
             currentCell != null && row === currentCell[0] && col === currentCell[1]}
           <td class="grid-cell" class:current={isCurrent} class:candidate={isCandidate(row, col)}>
             {#if countsB}
-              {#if count > 0}<span class="tally-a">{tally(count)}</span>{/if}
-              {#if countB > 0}<span class="tally-b">{tally(countB)}</span>{/if}
-            {:else}
-              {count > 0 ? tally(count) : " "}
+              {#if count > 0}<span class="tally tally-a">{tally(count)}</span>{/if}
+              {#if countB > 0}<span class="tally tally-b">{tally(countB)}</span>{/if}
+            {:else if count > 0}
+              <span class="tally">{tally(count)}</span>
             {/if}
           </td>
         {/each}
