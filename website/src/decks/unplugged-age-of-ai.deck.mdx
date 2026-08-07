@@ -137,7 +137,7 @@ a list of **token pairs** (bigrams) from _The Cat in the Hat_
 {/* notes:
 Hold one up. Each pair is a word with the word that came just before it boxed in front: `the` then `cat`, meaning that somewhere in the book, `cat` follows `the`. Every word keeps the same colour wherever it appears, so you scan by colour and confirm by reading.
 
-Token pair is the sheets' own wording, so it's on the page in their hand. One clause is enough for now --- a token is one word or one punctuation mark --- and don't dwell; slide 12 is where it gets nailed down.
+Token pair is the sheets' own wording, so it's on the page in their hand. One clause is enough for now --- a token is one word or one punctuation mark --- and don't dwell; slide 11 is where it gets nailed down.
 
 The shuffle matters, and it's worth naming: in book order these pages would just be the book with boxes drawn round it, and you'd read it. Shuffled, no page says anything. Nobody here is holding a story.
 
@@ -322,7 +322,7 @@ None of these changed the loop. Look at the context, weigh the options, pick one
 <GridZoom rows={240} cols={240} label="“The Cat in the Hat”" detail="240 distinct words · 57,600 cells" />
 
 {/* notes:
-Read the caption. This is our room, drawn as a grid: 240 distinct tokens, so 57,600 cells --- a bit under half of them holding the pairs you're still holding.
+Read the caption. This is our room, drawn as a grid: 240 distinct tokens, so 57,600 cells --- and only about a thousand of them hold a tally at all. The rest are empty: pairs the book never made, which the model treats as impossible.
 
 At the workshop's one centimetre per cell that's a square about two and a half metres on a side. Roughly this stage.
 */}
@@ -357,16 +357,16 @@ And this is still only the *toy*: one word of context, tally marks, none of the 
 
 {/* _class: impact */}
 
-**15 trillion** words of training text
+**15 trillion** tokens of training text
 
 **~1 trillion** numbers in the model
 
 {/* notes:
 Past this the picture gives out entirely, so switch to the two numbers you'll actually hear quoted --- and note that vocabulary size, which is what blew the grid up, isn't either of them. It sets how *wide* the table is; these set how much the thing has read and how much of it there is.
 
-Fifteen trillion words is the published figure for a recent open model's training run. Every one of them went past a counter, the way the book went past yours.
+Fifteen trillion tokens is the published figure for a recent open model's training run --- and tokens is now your audience's word too, off the last slide. Every one of them went past a counter, the way the book went past yours.
 
-The parameter count for the closed models isn't published; a trillion is the right order of magnitude and the honest answer is "about that, nobody outside will tell you". At a centimetre each, that pile is a couple of hundred square kilometres.
+The parameter count for the closed models isn't published; a trillion is the right order of magnitude and the honest answer is "about that, nobody outside will tell you". At a centimetre each, that pile is about a hundred square kilometres.
 
 The mechanism didn't change. Only the dosage.
 */}
@@ -430,6 +430,13 @@ The workshop tomorrow morning is this, done properly: you build your own model f
 
 ---
 
+{/* _class: socy-logo */}
+
+<SocyLogo />
+<p class="socy-url">www.llmsunplugged.org</p>
+
+---
+
 {/* _class: centered */}
 
 ![qr](https://www.llmsunplugged.org)
@@ -437,10 +444,3 @@ The workshop tomorrow morning is this, done properly: you build your own model f
 {/* notes:
 Everything --- lessons, printable materials, the tool that made your sheets --- is on the website, free and CC-licensed. Leave this up during questions.
 */}
-
----
-
-{/* _class: socy-logo */}
-
-<SocyLogo />
-<p class="socy-url">www.llmsunplugged.org</p>
