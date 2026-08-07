@@ -27,16 +27,18 @@ text on its own. The model exists only across the whole room, and if somebody is
 away, some contexts draw no hands at all. That is not a metaphor for distributed
 parameters: for the twenty minutes it runs, it is literally where the model is.
 
-Four sets are ready to print, in
-[Green Eggs and Ham](/assets/pdfs/sheets/green-eggs-and-ham-24.pdf),
-[Peter Rabbit](/assets/pdfs/sheets/peter-rabbit-24.pdf) and
-[The Cat in the Hat](/assets/pdfs/sheets/the-cat-in-the-hat-24.pdf) for 24
-people, and [Australia](/assets/pdfs/sheets/australia-40.pdf) for 40. Print them
-single-sided and hand out one each. The first page is the briefing for whoever
-is running it, and every page after that is a different participant's sheet.
-Each set is sized for a group, because a missing sheet takes its share of the
-model with it. The [tools page](/tools/#generate-your-own) will build a set from
-any text you paste in.
+Four sets are ready to print:
+[Green Eggs and Ham](/assets/pdfs/sheets/green-eggs-and-ham.pdf) at 15 sheets,
+[Peter Rabbit](/assets/pdfs/sheets/peter-rabbit.pdf) at 17,
+[The Cat in the Hat](/assets/pdfs/sheets/the-cat-in-the-hat.pdf) at 30, and
+[Australia](/assets/pdfs/sheets/australia.pdf) at 79. Print them single-sided
+and hand out one each. The first page is the briefing for whoever is running it,
+and every page after that is a different participant's sheet. Every sheet
+carries the same number of token pairs, so it is the length of the text that
+decides how many sheets there are, and a set only suits a group of about that
+size --- a missing sheet takes its share of the model with it. The
+[tools page](/tools/#generate-your-own) will build a set from any text you paste
+in.
 
 Building these turned up a problem with the
 [generated colour palette](/news/2026-05-24-generating-the-cutout-palette/).

@@ -124,21 +124,23 @@ are dropped; apostrophes inside contractions are preserved.
   eliminated --- a context occurring more often than there are participants has
   to double up somewhere --- so the effect is reduced rather than removed. The
   PDF leads with a one-page teacher brief, then one page per participant.
-  - `--sheets <N>` (required): number of participants
+  - `--sheets <N>`: pin the number of participants. Omit it and the count
+    follows the corpus: the sheets keep the density `--rows` asks for, and a
+    longer text simply needs more of them
   - `--n <N>`: prefix length (default 2)
   - `--sort`: order each sheet by context instead of shuffling it, turning the
     sheet into a lookup table --- a good second round, once the class has felt
     how slow an unsorted search is
   - `--seed <N>`: reproducible deal
-  - `--columns`, `--font-size`, `--paper-size`: sheet density. Columns default
-    to 4 for bigrams and narrow as `n` grows. A pair too wide for its column
-    takes two columns rather than wrapping into the row below. The command warns
-    when a sheet spills onto a second page, which defeats the
-    one-page-per-person point --- the fix is usually more `--sheets`, since that
-    thins every sheet at once.
-  - `--rows <N>`: cap the rows on a page. Rows stretch to fill the page, so a
-    cap spaces them further apart, at the cost of each sheet running onto a
-    second page. Off by default.
+  - `--rows <N>` (default 18): rows of pairs on a sheet. Rows stretch to fill
+    the page, so this is the density knob, and unless `--sheets` pins the count
+    it also decides how many sheets there are.
+  - `--columns`, `--font-size`, `--paper-size`: the rest of the sheet density.
+    Columns default to 4 for bigrams and narrow as `n` grows. A pair too wide
+    for its column takes two columns rather than wrapping into the row below, so
+    how many sheets a corpus needs depends on how long its words are; the
+    command settles that against the real typesetting rather than guessing at
+    it.
 - `sample` - Build an N-gram model in memory from a corpus and sample text from
   it. Useful as a sanity check on the model without printing a booklet.
   - `--input <FILE>`, `--n <N>` (default 2)

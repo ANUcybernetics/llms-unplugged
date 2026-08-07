@@ -93,16 +93,18 @@ cargo test
   printed. Currently hard-coded to a4 landscape.
 - `--shuffle` / `--seed` (cutouts only) - Emit cutouts in random rather than
   corpus order, so an uncut page doesn't read as the source text
-- `--sheets <N>` (sheets only, required) - Number of participants; the corpus is
-  partitioned across this many one-page sheets
+- `--sheets <N>` (sheets only) - Pin the number of participants. Omit it and the
+  count follows the corpus at the density `--rows` sets
+- `--rows <N>` (sheets only, default 18) - Rows of pairs on a sheet. Rows
+  stretch to fill the page, so this is the density knob; it also decides the
+  sheet count unless `--sheets` pins it
 - `--sort` (sheets only) - Order each sheet by context instead of shuffling it
-- `--columns` / `--font-size` (sheets only) - Sheet density. Columns default to
-  4 for bigrams and narrow as n grows. Pairs too wide for their column take two
-  columns, so nothing wraps into the row below. The command warns when a sheet
-  spills onto a second page; more `--sheets` is usually the fix
-- `--rows <N>` (sheets only) - Cap the rows on a page. Rows stretch to fill the
-  page, so a cap spaces them out at the cost of a second page per sheet. Off by
-  default
+- `--columns` / `--font-size` (sheets only) - The rest of the sheet density.
+  Columns default to 4 for bigrams and narrow as n grows. Pairs too wide for
+  their column take two columns, so nothing wraps into the row below --- which
+  also means a corpus's sheet count depends on its word lengths, so the command
+  compiles, counts pages, and deals again with more sheets if any spilled
+  (`--sheets` pins the count, so that path warns instead)
 
 ## Input file format
 

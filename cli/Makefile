@@ -59,16 +59,14 @@ CUTOUTS_TARGETS := \
 	$(CUTOUTS_DIR)/were-going-on-a-bear-hunt.pdf
 
 # Pre-prepared search-sheet PDFs (the cutouts activity minus the cutting).
-# Target names are <corpus>-<participants>: the corpus is partitioned across
-# that many one-page sheets, so a set only suits a class of about that size.
-# The counts below are chosen so every sheet fits on a single page --- a bigger
-# corpus needs proportionally more participants, which is why australia is at
-# 40 rather than 24.
+# Named for the corpus alone: every set prints at the same density, so how many
+# sheets one holds is however many that corpus needs, and a longer text simply
+# makes a bigger set. The count is in the brief on the front page.
 SHEETS_TARGETS := \
-	$(SHEETS_DIR)/green-eggs-and-ham-24.pdf \
-	$(SHEETS_DIR)/peter-rabbit-24.pdf \
-	$(SHEETS_DIR)/the-cat-in-the-hat-24.pdf \
-	$(SHEETS_DIR)/australia-40.pdf
+	$(SHEETS_DIR)/green-eggs-and-ham.pdf \
+	$(SHEETS_DIR)/peter-rabbit.pdf \
+	$(SHEETS_DIR)/the-cat-in-the-hat.pdf \
+	$(SHEETS_DIR)/australia.pdf
 
 # Define common variables (typst comes from mise; TYPST_BIN overridable)
 TOOL := target/release/llms_unplugged
@@ -118,18 +116,16 @@ $(CUTOUTS_DIR)/%.pdf: tokenized-cutouts.typ cutout-common.typ $(TOOL)
 
 # ===== Pattern rule for pre-prepared search-sheet PDFs =====
 # The sheets subcommand always writes to <output-dir>/sheets.pdf, so each target
-# gets its own work dir. The target name carries the participant count as a
-# trailing -<N>, which is stripped to recover the corpus name. Single-sided
+# gets its own work dir. The target name is the corpus name, and no --sheets is
+# passed: the count follows from the corpus at the default density. Single-sided
 # portrait, so unlike the cutouts there is no qpdf rotation step. The seed is
 # pinned so rebuilding a published PDF re-deals it identically instead of
 # producing a gratuitously different file.
 $(SHEETS_DIR)/%.pdf: tokenized-sheets.typ cutout-common.typ $(TOOL)
-	$(eval FULLNAME := $(notdir $(basename $@)))
-	$(eval BASE := $(shell echo $(FULLNAME) | sed 's/-[0-9]*$$//'))
-	$(eval COUNT := $(shell echo $(FULLNAME) | sed 's/^.*-\([0-9]*\)$$/\1/'))
-	$(eval WORK_DIR := $(OUT_DIR)/sheets/$(FULLNAME))
+	$(eval NAME := $(notdir $(basename $@)))
+	$(eval WORK_DIR := $(OUT_DIR)/sheets/$(NAME))
 	mkdir -p $(WORK_DIR) $(SHEETS_DIR)
-	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) TYPST_BIN=$(TYPST_BIN) $(TOOL) sheets --input $(DATA_DIR)/$(BASE).txt --output $(WORK_DIR) -n 2 --sheets $(COUNT) --seed 42
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) TYPST_BIN=$(TYPST_BIN) $(TOOL) sheets --input $(DATA_DIR)/$(NAME).txt --output $(WORK_DIR) -n 2 --seed 42
 	cp $(WORK_DIR)/sheets.pdf $@
 
 # Default target to build all booklets

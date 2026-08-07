@@ -251,9 +251,11 @@ struct SheetsArgs {
     n: usize,
 
     /// Number of participants: the corpus is dealt into this many sheets, one
-    /// page each.
+    /// page each. Omit it and the count is derived from `--rows` instead ---
+    /// the sheets keep a fixed density and a longer corpus simply needs more
+    /// of them.
     #[arg(short = 's', long = "sheets", value_name = "N")]
-    sheets: usize,
+    sheets: Option<usize>,
 
     /// Order each sheet by context instead of shuffling it, turning the sheet
     /// into a lookup table. Useful as a second round, after the class has felt
@@ -270,13 +272,12 @@ struct SheetsArgs {
     #[arg(long)]
     columns: Option<usize>,
 
-    /// Cap the rows of token pairs on a page. By default a sheet takes as many
-    /// rows as its pairs need and stays on one page, which is the point of the
-    /// activity --- one sheet per person. Capping the rows spaces them further
-    /// apart (rows stretch to fill the page) at the cost of running each sheet
-    /// onto a second page, so prefer more `--sheets` to thin a crowded sheet.
-    #[arg(long)]
-    rows: Option<usize>,
+    /// Rows of token pairs on a sheet (default 18). Rows stretch to fill the
+    /// page, so this is the density knob: ask for fewer and they sit further
+    /// apart. Unless `--sheets` pins the count, it also decides how many
+    /// sheets there are --- as many as the corpus needs at this density.
+    #[arg(long, default_value_t = 18)]
+    rows: usize,
 
     /// Token-pair font size on the sheets (any Typst length, e.g. 11pt)
     #[arg(long, default_value = "16pt")]
@@ -497,7 +498,7 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
 }
 
 fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
-    if args.sheets == 0 {
+    if args.sheets == Some(0) {
         return Err(CliError::InvalidArgs(
             "--sheets must be at least 1".to_string(),
         ));
@@ -510,7 +511,7 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
             "--columns must be at least 1".to_string(),
         ));
     }
-    if args.rows == Some(0) {
+    if args.rows == 0 {
         return Err(CliError::InvalidArgs(
             "--rows must be at least 1".to_string(),
         ));
@@ -521,34 +522,111 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
         process_file_for_cutouts(&args.input, punctuation, args.n, args.cjk.into())
             .map_err(CliError::Processing)?;
 
-    let mut rng = seeded_rng(args.seed);
-    let sheets = deal_into_sheets(&tokens, args.sheets, args.sort, &mut rng);
+    // Dealing into one sheet is the cheapest way to count what is actually
+    // usable: the deal drops the cutouts a search sheet has no use for, so the
+    // raw token count would overestimate.
+    let usable = deal_into_sheets(&tokens, 1, false, &mut seeded_rng(args.seed))
+        .first()
+        .map_or(0, Vec::len);
+
+    // The first guess at how many sheets this corpus needs at the requested
+    // density. A pair too wide for its column takes two of them, so a sheet
+    // needs a few per cent more slots than it holds pairs --- how many more
+    // depends on how long the corpus's words are, which only the typesetter
+    // knows. The margin covers the usual case and the loop below corrects the
+    // rest against Typst's own layout.
+    const WIDE_PAIR_MARGIN: f64 = 1.08;
+    let capacity = (args.rows * columns) as f64 / WIDE_PAIR_MARGIN;
+    let derived = ((usable as f64 / capacity).ceil() as usize).max(1);
+    let mut num_sheets = args.sheets.unwrap_or(derived);
 
     fs::create_dir_all(&args.output).map_err(CliError::Processing)?;
 
     let json_path = args.output.join("sheets.json");
-    let output = serde_json::json!({ "metadata": metadata, "sheets": sheets });
-    let file = fs::File::create(&json_path).map_err(CliError::Processing)?;
-    serde_json::to_writer_pretty(file, &output)
-        .map_err(|e| CliError::Processing(io::Error::other(e)))?;
+    let pdf_path = args.output.join("sheets.pdf");
+    println!("Processed '{}' by {}", metadata.title, metadata.author);
+
+    // Deal, typeset, and check that every sheet came out one page. The wide
+    // pairs that make a sheet overflow are only knowable from the typesetting,
+    // so when the count is ours to choose we take Typst's page count as the
+    // answer and deal again with one more sheet. Each attempt reseeds, so the
+    // deal that ships depends only on the seed and the sheet count it settled
+    // on, not on how many attempts it took to get there.
+    //
+    // A pinned `--sheets` is the participant count and not ours to change, so
+    // that path warns instead of retrying.
+    const MAX_ATTEMPTS: usize = 5;
+    let mut sheets;
+    let mut attempt = 1;
+    loop {
+        sheets = deal_into_sheets(&tokens, num_sheets, args.sort, &mut seeded_rng(args.seed));
+
+        let output = serde_json::json!({ "metadata": metadata, "sheets": sheets });
+        let file = fs::File::create(&json_path).map_err(CliError::Processing)?;
+        serde_json::to_writer_pretty(file, &output)
+            .map_err(|e| CliError::Processing(io::Error::other(e)))?;
+
+        if args.json_only {
+            break;
+        }
+
+        let inputs = vec![
+            ("paper_size".to_string(), args.paper_size.clone()),
+            ("json_path".to_string(), abs_path_string(&json_path)),
+            ("columns".to_string(), columns.to_string()),
+            ("rows".to_string(), args.rows.to_string()),
+            ("font_size".to_string(), args.font_size.clone()),
+        ];
+        compile_template("tokenized-sheets.typ", &inputs, &pdf_path)?;
+
+        // The brief in front is one page for most corpora and two for a wordy
+        // one, so anything past `sheets + 2` means a sheet spilled.
+        let Some(pages) = pdf_page_count(&pdf_path) else {
+            break;
+        };
+        let spilled = pages.saturating_sub(num_sheets + 2);
+        if spilled == 0 {
+            break;
+        }
+        if args.sheets.is_some() {
+            eprintln!(
+                "Warning: {pages} pages for {num_sheets} sheets --- some sheets spill onto a \
+                 second page. Try a smaller --font-size, more --columns, more --rows, or drop \
+                 --sheets and let the count follow the corpus.",
+            );
+            break;
+        }
+        if attempt >= MAX_ATTEMPTS {
+            eprintln!(
+                "Warning: still {pages} pages for {num_sheets} sheets after {attempt} attempts \
+                 --- some sheets spill onto a second page.",
+            );
+            break;
+        }
+        num_sheets += spilled;
+        attempt += 1;
+    }
 
     let dealt: usize = sheets.iter().map(|s| s.len()).sum();
     let smallest = sheets.iter().map(|s| s.len()).min().unwrap_or(0);
     let largest = sheets.iter().map(|s| s.len()).max().unwrap_or(0);
 
-    println!("Processed '{}' by {}", metadata.title, metadata.author);
     println!(
-        "Dealt {} cutouts across {} sheets ({}--{} token pairs per sheet, {})",
-        dealt,
-        args.sheets,
-        smallest,
-        largest,
+        "Dealt {dealt} cutouts across {num_sheets} sheets ({smallest}--{largest} token pairs \
+         per sheet, {}), {} rows a page",
         if args.sort {
             "sorted by context"
         } else {
             "shuffled"
-        }
+        },
+        args.rows,
     );
+    if args.sheets.is_none() {
+        println!(
+            "Sheet count follows the corpus at this density --- pass --sheets to pin it, or \
+             --rows to change it."
+        );
+    }
     if smallest == 0 {
         eprintln!(
             "Warning: {} sheet(s) came out empty --- the corpus has fewer usable cutouts than participants.",
@@ -556,42 +634,6 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
         );
     }
     println!("Wrote JSON to {}", json_path.display());
-
-    if args.json_only {
-        return Ok(());
-    }
-
-    let inputs = vec![
-        ("paper_size".to_string(), args.paper_size.clone()),
-        ("json_path".to_string(), abs_path_string(&json_path)),
-        ("columns".to_string(), columns.to_string()),
-        // 0 means "no cap": the template gives the sheet as many rows as it
-        // needs and keeps it on one page.
-        ("rows".to_string(), args.rows.unwrap_or(0).to_string()),
-        ("font_size".to_string(), args.font_size.clone()),
-    ];
-
-    let pdf_path = args.output.join("sheets.pdf");
-    compile_template("tokenized-sheets.typ", &inputs, &pdf_path)?;
-
-    // One sheet per person is the logistical point, so a sheet that has run
-    // onto a second page is worth saying out loud. Uncapped it never should:
-    // the brief is one page for most corpora and two for a wordy one, so
-    // anything past `sheets + 2` means a sheet did not fit.
-    if let Some(pages) = pdf_page_count(&pdf_path) {
-        match args.rows {
-            Some(rows) => println!(
-                "{pages} pages for {} sheets, capped at {rows} rows a page",
-                args.sheets
-            ),
-            None if pages > args.sheets + 2 => eprintln!(
-                "Warning: {pages} pages for {} sheets --- some sheets spill onto a second page. \
-                 Try a smaller --font-size, more --columns, or more --sheets.",
-                args.sheets
-            ),
-            None => {}
-        }
-    }
 
     Ok(())
 }
