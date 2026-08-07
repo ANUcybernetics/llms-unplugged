@@ -49,6 +49,12 @@ scanning eye does not: on a small glyph, a lightness step reads as that colour
 again, darker. The generator now enforces a minimum hue separation as
 well.[^numbers] Every ready-to-print PDF has been rebuilt with the result.
 
+Calling the colour out only works if the room has a word for it. All eleven now
+have one: black, red, brown, ochre, green, teal, blue, navy, violet, purple,
+wine.[^naming] The key prints on the brief and again on every sheet. Call "who
+has _cat_? it's a teal one" from the front and the room narrows its search
+before anyone reads a token.
+
 [^numbers]:
     The tightest pairs in the old palettes drew 79% and 85% of their distance
     from the lightness axis alone. The sheets palette is now 11 swatches under a
@@ -57,3 +63,12 @@ well.[^numbers] Every ready-to-print PDF has been rebuilt with the result.
     of what the hue floor cost, grey being the thing that sat in the middle of
     the a-b plane blocking the low-chroma teals and olives that now fill the
     gaps.
+
+[^naming]:
+    Names are the nearest common English colour word to each swatch, checked
+    against the xkcd colour survey. Two are named against that data rather than
+    by it. Both print darker than their nearest word promises, so the gold is
+    ochre rather than mustard and the dark magenta is wine. Not maroon, though
+    it looks it to an Australian eye. Sampling a Queensland State of Origin kit
+    puts its cloth 26° of hue away, and maroon itself sits ΔE 0.095 from the
+    palette's brown, inside the 0.167 floor.
