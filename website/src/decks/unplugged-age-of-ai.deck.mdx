@@ -6,6 +6,7 @@ description:
 listed: false
 ---
 
+import GridRowToggle from "../components/GridRowToggle.astro";
 import StaticGrid from "../components/StaticGrid.svelte";
 import GridZoom from "../components/GridZoom.svelte";
 import Timer from "../components/Timer.astro";
@@ -13,6 +14,8 @@ import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
 import UpcomingSessions from "../components/UpcomingSessions.astro";
 import { CAT_TOKENS, CAT_VOCAB } from "./examples";
 import "../styles/widgets.css";
+
+<GridRowToggle />
 
 {/*
   A ~20 minute talk, delivered immediately after Tim Bell's CS Unplugged
