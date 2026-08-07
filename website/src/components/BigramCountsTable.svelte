@@ -6,6 +6,15 @@
     vocab: string[];
     /** Bigrams to tally into the grid (slice as needed for step-by-step reveal). */
     bigrams: [string, string][];
+    /** Bigrams from a second source text, tallied in a contrasting colour.
+        When set, `bigrams` tallies render gold and these render blue, so a
+        two-corpus grid shows at a glance which book each count came from
+        (the visionaries-showcase deck's hybrid corpus). A cell holding counts
+        from both sources renders both, side by side. */
+    bigramsB?: [string, string][] | null;
+    /** Compact sizing for large vocabularies (the 26×26 hybrid grid), where
+        the default cell padding would overflow the reveal canvas. */
+    dense?: boolean;
     /** Row to band-highlight (the "current" previous-word). */
     activeRow?: string | null;
     /** Single cell to ring as the chosen/current pair, written [from, to]. */
@@ -23,6 +32,8 @@
   let {
     vocab,
     bigrams,
+    bigramsB = null,
+    dense = false,
     activeRow = null,
     currentCell = null,
     candidateCells = null,
@@ -34,20 +45,23 @@
   const isCandidate = (row: string, col: string) =>
     candidateCells != null && candidateCells.some(([from, to]) => from === row && to === col);
 
-  const counts = $derived.by(() => {
+  const tallyUp = (pairs: [string, string][]) => {
     const m = new Map<string, Map<string, number>>();
     for (const word of vocab) {
       m.set(word, new Map());
     }
-    for (const [from, to] of bigrams) {
+    for (const [from, to] of pairs) {
       const row = m.get(from)!;
       row.set(to, (row.get(to) || 0) + 1);
     }
     return m;
-  });
+  };
+
+  const counts = $derived(tallyUp(bigrams));
+  const countsB = $derived(bigramsB ? tallyUp(bigramsB) : null);
 </script>
 
-<table class="bigram-grid">
+<table class="bigram-grid" class:dense>
   <thead>
     <tr>
       <th scope="col"><span class="sr-only">Token</span></th>
@@ -62,10 +76,16 @@
         <th scope="row"><code class:unrevealed={!isRevealed(row)}>{row}</code></th>
         {#each vocab as col}
           {@const count = counts.get(row)?.get(col) || 0}
+          {@const countB = countsB?.get(row)?.get(col) || 0}
           {@const isCurrent =
             currentCell != null && row === currentCell[0] && col === currentCell[1]}
           <td class="grid-cell" class:current={isCurrent} class:candidate={isCandidate(row, col)}>
-            {count > 0 ? tally(count) : " "}
+            {#if countsB}
+              {#if count > 0}<span class="tally-a">{tally(count)}</span>{/if}
+              {#if countB > 0}<span class="tally-b">{tally(countB)}</span>{/if}
+            {:else}
+              {count > 0 ? tally(count) : " "}
+            {/if}
           </td>
         {/each}
       </tr>
@@ -117,6 +137,34 @@
   table.bigram-grid td.grid-cell {
     font-weight: 700;
     min-width: 2em;
+  }
+
+  /* Two-source tallies: gold for the first corpus, blue for the second. The
+     blue matches --corpus-seuss in widgets.css (the deck's colour-coded
+     source-text reveal slide); keep the two in sync. */
+  .tally-a {
+    color: var(--anu-gold);
+  }
+
+  .tally-b {
+    color: var(--corpus-seuss, #7cc0e8);
+  }
+
+  /* Dense mode: a 26×26 grid at the default sizing would overflow the reveal
+     canvas. Sized so the full grid (27 rows with headings) fits the 720px
+     canvas with no h2 above it; cells are wide-not-tall, which suits tally
+     strokes drawn live over the slide with the whiteboard pen. */
+  table.bigram-grid.dense {
+    font-size: 0.85rem;
+  }
+
+  table.bigram-grid.dense th,
+  table.bigram-grid.dense td {
+    padding: 0.15rem 0.1rem;
+  }
+
+  table.bigram-grid.dense td.grid-cell {
+    min-width: 1.2em;
   }
 
   tr.active-row td {

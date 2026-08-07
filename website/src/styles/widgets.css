@@ -415,3 +415,26 @@
     transition: none;
   }
 }
+
+/* Hybrid-corpus colour coding (visionaries-showcase deck): Hemingway gold,
+   Seuss blue. The blue is duplicated as the fallback in BigramCountsTable's
+   .tally-b (scoped styles can't share a custom property declared here unless
+   the deck loads this file); keep the two in sync. */
+:root {
+  --corpus-hemingway: var(--anu-gold, #be830e);
+  --corpus-seuss: #7cc0e8;
+}
+
+.corpus-a {
+  color: var(--corpus-hemingway);
+}
+
+.corpus-b {
+  color: var(--corpus-seuss);
+}
+
+.corpus-attribution {
+  font-size: 0.8em;
+  opacity: 0.7;
+  font-style: italic;
+}
