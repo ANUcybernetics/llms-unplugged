@@ -52,7 +52,9 @@ export const HYBRID_VOCAB =
   before slide 9. The live tallies (first ~10 bigrams, all Hemingway) go down
   in gold; slide 5 arrives with a second colour already in it, unexplained.
   Park it with one line and move on --- the two-colour mystery is what the
-  reveal cashes in.
+  reveal cashes in. Slide 9 builds in two clicks (both quotes are fragments):
+  gold/Hemingway first, then blue/Seuss --- two laughs, and Seuss (the bigger
+  recognition hit) lands second.
 
   Volunteers are the MCs (Lee Constable and Weli Costa; confirm with Kenyon):
   one holds the 42-card token stack in order, one holds the current card and
@@ -77,9 +79,12 @@ export const HYBRID_VOCAB =
   are `the` (old x2, boy x2, house), `,`, `and`, `had`, `said`, `to` (the six
   two-book bridge rows) plus `man`, `boy`, `i`, `we` within one book;
   everything else is deterministic --- no bag, "the model has no choice
-  here". Cap the walk at 10-12 words; a choice row costs ~25-30s through the
-  full bag ritual, a deterministic row ~8s. Start at `the`: fullest bag on
-  the board, and it can jump books immediately. The 1-in-320 dream output is
+  here". Cap the walk at 10-12 words, and cut it off mid-flow deliberately:
+  the arbitrary stop is a teaching beat (the model would keep going forever
+  --- it has no idea what a sentence is; someone has to pull the plug). A
+  choice row costs ~25-30s through the full bag ritual, a deterministic row
+  ~8s. Start at `the`: fullest bag on the board, and it can jump books
+  immediately. The 1-in-320 dream output is
   "the old man said, how i wish we had something to do!" --- if it lands,
   stop and read it twice.
 
@@ -189,9 +194,9 @@ Walk the four steps once. The bag is why every reply is different --- it IS the 
 {/* notes:
 GENERATION SURFACE. Circle the row with the pen; C clears between rounds.
 
-Start at `the` (2 blue old, 2 red boy, 1 yellow house). Colours assigned out loud, fresh each round; scribe cards each word. Deterministic rows at speed: "no bag --- no choice."
+Start at `the` (2 blue old, 2 red boy, 1 yellow house). Colours assigned out loud, fresh each round --- hold each ball at shoulder height as it's named, count the loads aloud (the bag is invisible from the back of the hall); scribe cards each word. Deterministic rows at speed: "no bag --- no choice."
 
-CAP 10--12 words; stop while they want more. Dream line lands → stop, read it twice.
+CAP 10--12 words, cut mid-flow: "it would keep going forever --- it doesn't know what a sentence is; someone has to pull the plug." Dream line lands → stop, read it twice.
 */}
 
 ---
@@ -201,7 +206,7 @@ CAP 10--12 words; stop while they want more. Dream line lands → stop, read it 
 we just ran a **language model**
 
 {/* notes:
-Flat. Then the reading from the scribe's cards --- funeral-poem straight; the worse the sentence, the straighter.
+Flat. Then the reading --- MCs hold the scribed cards in a line facing the hall so the room reads along; funeral-poem straight; the worse the sentence, the straighter.
 
 Nobody wrote it; it's in no book. Then (gesture at the ink): one more thing this machine was never told.
 */}
@@ -214,12 +219,14 @@ Nobody wrote it; it's in no book. Then (gesture at the ink): one more thing this
     content, which splits the text into sibling <p>s that escape the styled
     wrapper (and its colour). Inline children only survive on one line. */}
 
-<p class="corpus-a">“the old man had taught the boy to fish and the boy loved him. no, the old man said.”<br /><span class="corpus-attribution">— Ernest Hemingway, <em>The Old Man and the Sea</em> (1952)</span></p>
+<p class="corpus-a fragment">“the old man had taught the boy to fish and the boy loved him. no, the old man said.”<br /><span class="corpus-attribution">— Ernest Hemingway, <em>The Old Man and the Sea</em> (1952)</span></p>
 
-<p class="corpus-b">“and i said, how i wish we had something to do! so we sat in the house.”<br /><span class="corpus-attribution">— Dr. Seuss, <em>The Cat in the Hat</em> (1957)</span></p>
+<p class="corpus-b fragment">“and i said, how i wish we had something to do! so we sat in the house.”<br /><span class="corpus-attribution">— Dr. Seuss, <em>The Cat in the Hat</em> (1957)</span></p>
 
 {/* notes:
-Let the laugh land. Never told there were two books --- one word back, so it steps across the seam without noticing. Every strange AI sentence = this, at scale.
+Two clicks. "The gold ink you watched go down..." → CLICK (Hemingway; let it land). "And the colour I asked you to hold that thought about..." → CLICK (Seuss; the bigger laugh --- wait it out).
+
+Never told there were two books --- one word back, so it steps across the seam without noticing. Every strange AI sentence = this, at scale.
 */}
 
 ---
@@ -290,7 +297,7 @@ Last step a picture survives. Frankenstein is now the speck. 1 km² of paper ---
 **~1 trillion** numbers in the model
 
 {/* notes:
-Every word went past a counter, like tonight. What didn't change: still words in, words out --- the loop that just ran on this stage.
+Every word went past a counter, like tonight. What changed: they look thousands of words back, not one --- most of what the size buys, and why they cross their seams less clumsily than ours did. What didn't: still words in, words out --- the loop that just ran on this stage.
 */}
 
 ---
@@ -303,6 +310,8 @@ even this machine fits at **human scale**
 
 {/* notes:
 The app shows you the output; tonight you saw the machine. 1946: the atom, then --- same job again. Human-scale AI; one Studio sentence (agents type, students judged on taste).
+
+TIME CHECK on arrival: past 12:15 → drop the Studio sentence first. Tee-up + callback must survive.
 
 Tee-up: Brad & Brian do the opposite --- and they have a fog machine. Callback: hands can go up now.
 */}
