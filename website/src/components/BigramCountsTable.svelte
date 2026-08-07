@@ -129,9 +129,10 @@
   table.bigram-grid th,
   table.bigram-grid td {
     text-align: center;
-    /* 0.5rem block padding is the ceiling: the scaling-up "One word of
-       context" slide overflows the canvas beyond this. */
-    padding: 0.5rem 0.4rem;
+    /* 0.45rem block padding is the ceiling: the scaling-up "One word of
+       context" slide overflows the canvas beyond this (0.5rem already ran
+       7px past the bottom). */
+    padding: 0.45rem 0.4rem;
     /* Subtle gold-tinted grid lines (the website's bigram grid uses the same
        token) so cells read as a grid without competing with the gold tally
        marks and current-cell highlight. */
