@@ -1,16 +1,26 @@
 <script lang="ts">
   interface Props {
-    /** Grid dimensions to draw. */
-    rows: number;
-    cols: number;
+    /** Grid dimensions to draw. Give these or `cells`. */
+    rows?: number;
+    cols?: number;
+    /** Total cells, drawn as a square of the same area. Use this whenever the
+        real table is a tall strip rather than a square --- an n-word context
+        table is V^n rows by V columns, which at any interesting n draws as a
+        vertical line. The claim being made is how much paper it takes, so the
+        honest picture is equal area, and the true shape goes in `detail`.
+        Also takes a plain quantity (tokens of training text), which has no
+        rows and columns at all. */
+    cells?: number;
     /** Whose grid this is, e.g. "Frankenstein". */
     label: string;
-    /** Sub-label under the block, e.g. "7,441 tokens · 55 million cells". */
+    /** Sub-label under the block, e.g. "7,023 tokens · 49 million cells". */
     detail?: string;
     /** A smaller grid drawn at true relative scale inside this one, so the
         audience can see the previous step shrink to a speck. */
     compareRows?: number;
     compareCols?: number;
+    /** Area-equivalent form of `compareRows`/`compareCols`, as for `cells`. */
+    compareCells?: number;
     compareLabel?: string;
     /** Extra line under the comparison callout. */
     note?: string;
@@ -19,13 +29,24 @@
   let {
     rows,
     cols,
+    cells,
     label,
     detail,
     compareRows,
     compareCols,
+    compareCells,
     compareLabel = "your grid",
     note,
   }: Props = $props();
+
+  // A cell count and an explicit rows/cols are two ways of saying the same
+  // thing; `cells` wins if both are given.
+  const side = $derived(cells != null ? Math.sqrt(cells) : null);
+  const nRows = $derived(side ?? rows ?? 1);
+  const nCols = $derived(side ?? cols ?? 1);
+  const cmpSide = $derived(compareCells != null ? Math.sqrt(compareCells) : null);
+  const nCompareRows = $derived(cmpSide ?? compareRows);
+  const nCompareCols = $derived(cmpSide ?? compareCols);
 
   // Everything is drawn in viewBox px against a fixed 900x600 stage, so the
   // component sizes itself purely from CSS and the text never fights the block.
@@ -37,9 +58,9 @@
   const CENTRE = 450;
   const TOP = 34;
 
-  const unit = $derived(Math.min(BOX / cols, BOX / rows));
-  const width = $derived(cols * unit);
-  const height = $derived(rows * unit);
+  const unit = $derived(Math.min(BOX / nCols, BOX / nRows));
+  const width = $derived(nCols * unit);
+  const height = $derived(nRows * unit);
   const originX = $derived(CENTRE - width / 2);
   const bottom = $derived(TOP + height);
   // The block is one tiled pattern rather than rows*cols <rect>s: the cells are
@@ -49,18 +70,53 @@
   // drawable --- the scale beat hands over to physical-area figures there.
   const tile = $derived(Math.max(unit, 2));
 
-  const hasCompare = $derived(compareRows != null && compareCols != null);
-  const compareW = $derived(hasCompare ? compareCols! * unit : 0);
-  const compareH = $derived(hasCompare ? compareRows! * unit : 0);
+  // The pattern needs a document-unique id, and the block's dimensions are no
+  // longer guaranteed to be distinct integers once `cells` is in play.
+  const uid = $props.id();
+
+  const hasCompare = $derived(nCompareRows != null && nCompareCols != null);
+  const compareW = $derived(hasCompare ? nCompareCols! * unit : 0);
+  const compareH = $derived(hasCompare ? nCompareRows! * unit : 0);
   // Once the earlier grid is smaller than a few px it can no longer be seen as
   // a rectangle, so it gets a ringed speck and a leader line instead.
   const speck = $derived(hasCompare && (compareW < 8 || compareH < 8));
+
+  // A speck is drawn at a fixed radius, so past this point the picture stops
+  // distinguishing "a thousand times smaller" from "a million times smaller"
+  // --- consecutive slides in a zoom run would look identical. Print the ratio
+  // the drawing can no longer carry.
+  function readableRatio(n: number): string {
+    const [scale, word] =
+      n >= 1e12
+        ? [1e12, " trillion"]
+        : n >= 1e9
+          ? [1e9, " billion"]
+          : n >= 1e6
+            ? [1e6, " million"]
+            : n >= 1e4
+              ? [1e3, " thousand"]
+              : [1, ""];
+    const v = n / scale;
+    const rounded = v >= 100 ? Math.round(v) : Number(v.toPrecision(2));
+    return `${rounded.toLocaleString("en-AU")}${word}`;
+  }
+
+  const ratio = $derived(
+    speck && nCompareRows && nCompareCols
+      ? readableRatio((nRows * nCols) / (nCompareRows * nCompareCols))
+      : null,
+  );
 </script>
 
-<svg class="grid-zoom" viewBox="0 0 900 600" role="img" aria-label="{label}: {rows} by {cols} grid">
+<svg
+  class="grid-zoom"
+  viewBox="0 0 900 600"
+  role="img"
+  aria-label={detail ? `${label}: ${detail}` : label}
+>
   <defs>
     <pattern
-      id="mesh-{rows}-{cols}"
+      id="mesh-{uid}"
       x={originX}
       y={TOP}
       width={tile}
@@ -71,7 +127,7 @@
     </pattern>
   </defs>
 
-  <rect x={originX} y={TOP} {width} {height} fill="url(#mesh-{rows}-{cols})" />
+  <rect x={originX} y={TOP} {width} {height} fill="url(#mesh-{uid})" />
   <rect class="frame" x={originX} y={TOP} {width} {height} />
 
   {#if hasCompare}
@@ -84,7 +140,9 @@
     {:else}
       <rect class="compare" x={originX} y={TOP} width={compareW} height={compareH} />
     {/if}
-    <text class="compare-label" x={CENTRE} y={TOP - 18}>{compareLabel}</text>
+    <text class="compare-label" x={CENTRE} y={TOP - 18}
+      >{compareLabel}{#if ratio}<tspan class="ratio">{` — 1 part in ${ratio}`}</tspan>{/if}</text
+    >
   {/if}
 
   <text class="label" x={CENTRE} y={bottom + 34}>{label}</text>
@@ -157,6 +215,11 @@
     font-size: 1.15rem;
     fill: var(--anu-gold);
     font-weight: 600;
+  }
+
+  .ratio {
+    font-weight: 400;
+    opacity: 0.8;
   }
 
   .note {
