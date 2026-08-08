@@ -26,6 +26,17 @@
   --astromotion-wb-bg: var(--at-dark-grey);
   --astromotion-wb-inks:
     var(--at-white), var(--at-primary), var(--at-secondary), var(--at-tertiary);
+
+  /* First-run hint: the card shown once per tab saying the page is a deck and
+     which keys drive it. Restated in the site's own tokens so it reads as part
+     of the deck rather than as browser chrome --- gold hairline on the soft
+     dark ground the widgets use, and gold-tinted key caps. */
+  --astromotion-hint-bg: rgb(from var(--color-bg-soft) r g b / 94%);
+  --astromotion-hint-color: var(--color-text);
+  --astromotion-hint-border: 1px solid var(--color-border);
+  --astromotion-hint-radius: 6px;
+  --astromotion-hint-kbd-bg: var(--color-brand-soft);
+  --astromotion-hint-kbd-edge: var(--color-divider);
 }
 
 /* The two corner-motif backgrounds below are set as plain rules rather than
