@@ -260,17 +260,15 @@ At a clip. Land on: "a trillion parameters" = a very large pile of this grid.
 {/* _class: centered */}
 
 <GridZoom
-  rows={7441}
-  cols={7441}
-  label="Frankenstein"
-  detail="7,441 distinct words · 55 million cells"
-  compareRows={26}
-  compareCols={26}
+  cells={17576}
+  label="the same words, remembering two"
+  detail="26³ = 17,576 cells"
+  compareCells={676}
   compareLabel="our grid"
 />
 
 {/* notes:
-One novel instead of two sentences. The gold speck = everything we built tonight.
+Same words as tonight. The only change: remember *two* of them instead of one --- which is exactly what would have stopped ours wandering. The grid needs a row per context, so one more word of memory multiplies the whole thing by the vocabulary again. Gold square = what we built.
 */}
 
 ---
@@ -278,30 +276,32 @@ One novel instead of two sentences. The gold speck = everything we built tonight
 {/* _class: centered */}
 
 <GridZoom
-  rows={100000}
-  cols={100000}
-  label="a real model's vocabulary"
-  detail="100,000 tokens · 10 billion cells"
-  compareRows={7441}
-  compareCols={7441}
-  compareLabel="Frankenstein"
-  note="at a centimetre per cell: 1 km² of paper — about 800 of this hall"
+  cells={1e20}
+  label="a real model, remembering three"
+  detail="100,000⁴ = 100 quintillion cells"
+  compareCells={15e12}
+  compareLabel="everything it ever read"
+  note="at a centimetre per cell: 20 × the surface of the Earth"
 />
 
 {/* notes:
-Last step a picture survives. Frankenstein is now the speck. 1 km² of paper --- about 800 of this hall.
+Last step a picture survives. Real vocabulary, three words of memory: twenty Earths of paper.
+
+The speck isn't our grid now --- it's everything the model ever read, fifteen trillion tokens, gone. Read all of that and you fill one cell in seven million. The rest stay empty forever.
 */}
 
 ---
 
 {/* _class: impact */}
 
-**15 trillion** words of training text
+a trillion numbers, and
 
-**~1 trillion** numbers in the model
+**not one of them is a table**
 
 {/* notes:
-Every word went past a counter, like tonight. What changed: they look thousands of words back, not one --- most of what the size buys, and why they cross their seams less clumsily than ours did. What didn't: still words in, words out --- the loop that just ran on this stage.
+Nobody builds that grid, because nobody can --- there isn't enough text in the world. A real model keeps about a trillion numbers and *works out* the row it needs, which is both smaller than the table and fixed no matter how long the conversation runs. It's also why it can say things nobody ever wrote: there's no cell to be empty.
+
+What didn't change: still words in, words out --- the loop that just ran on this stage.
 */}
 
 ---

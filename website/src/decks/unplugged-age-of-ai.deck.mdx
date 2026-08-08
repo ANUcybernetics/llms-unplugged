@@ -1,7 +1,7 @@
 ---
 title: Unplugged in the age of AI
 description:
-  A 20-minute talk in which the room becomes a bigram language model, using the
+  A 21-minute talk in which the room becomes a bigram language model, using the
   search sheets from the CLI's sheets subcommand
 listed: false
 ---
@@ -18,7 +18,7 @@ import "../styles/widgets.css";
 <GridRowToggle />
 
 {/*
-  A ~20 minute talk, delivered immediately after Tim Bell's CS Unplugged
+  A ~21 minute talk, delivered immediately after Tim Bell's CS Unplugged
   introduction (ANU, 10 Aug 2026). It is a talk, not a workshop --- the only
   thing the audience does is hold a search sheet and put a hand up.
 
@@ -27,12 +27,20 @@ import "../styles/widgets.css";
     0:03  What's on your chair                   (slides 5-6,   ~2 min)
     0:05  Seed it, then run the model            (slides 7-9,   ~6 min)
     0:11  What just happened                     (slides 10-13, ~3 min)
-    0:14  What Claude does differently, at scale (slides 14-19, ~3 min)
-    0:17  The claim, then come tomorrow          (slides 20-24, ~3 min)
+    0:14  What Claude does differently, at scale (slides 14-20, ~4 min)
+    0:18  The claim, then come tomorrow          (slides 21-25, ~3 min)
 
   The Bandura quote (slide 2) is the deck's only fragment build: two clicks
   light up the two clauses in turn, and the second is the one the whole talk
-  is aimed at. It is repeated, already lit, on slide 20 to close the loop.
+  is aimed at. It is repeated, already lit, on slide 21 to close the loop.
+
+  The scale run (15-19) grows one axis only: how many words of context the
+  table remembers, with the vocabulary held fixed. That is the axis that
+  actually explodes, and vocabulary is not --- a tokeniser exists to keep it a
+  bounded constant, and a real model spends only a sliver of itself on it. Do
+  not reintroduce a vocabulary-size zoom; it makes the false claim that a
+  bigger vocabulary is what makes a model big. Slides 18-19 are the pay-off:
+  the table cannot be filled, so a real model isn't one.
 
   Assumes the Acknowledgement of Country and the welcome happened at the top of
   the session, before Tim --- hence no ack-country slide here.
@@ -319,38 +327,44 @@ None of these changed the loop. Look at the context, weigh the options, pick one
 
 {/* _class: centered */}
 
-<GridZoom rows={240} cols={240} label="“The Cat in the Hat”" detail="240 distinct words · 57,600 cells" />
+<GridZoom cells={57600} label="the whole room, as a grid" detail="240 distinct tokens · 57,600 cells" compareCells={25} compareLabel="the line on the last slide" note="5.8 m² of paper — roughly this stage" />
 
 {/* notes:
-Read the caption. This is our room, drawn as a grid: 240 distinct tokens, so 57,600 cells --- and only about a thousand of them hold a tally at all. The rest are empty: pairs the book never made, which the model treats as impossible.
+Read the caption. The little gold square is the slide you were just looking at; the big one is all of us. 240 distinct tokens, so 57,600 cells, and only about a thousand of them have a tally in them at all. The rest are empty --- pairs the book never made, which the model treats as impossible.
 
-At the workshop's one centimetre per cell that's a square about two and a half metres on a side. Roughly this stage.
+At one centimetre per cell that's a square about two and a half metres on a side. Roughly this stage.
+
+Now the question everyone asks, and it's the right one: why only look back one word? Ask it out loud before you answer it. *[next slide]*
 */}
 
 ---
 
 {/* _class: centered */}
 
-<GridZoom rows={7441} cols={7441} label="Frankenstein" detail="7,441 distinct words · 55 million cells" compareRows={240} compareCols={240} compareLabel="our room" note="the cells are now too small to draw" />
+<GridZoom cells={13824000} label="the same book, looking back two words" detail="240³ = 13.8 million cells" compareCells={57600} compareLabel="looking back one word" note="1,400 m² of paper — a couple of suburban blocks" />
 
 {/* notes:
-Same picture, one novel instead of one picture book. The grid lines have stopped being drawable, so that grey is the grid, and the gold speck is the room --- all of us, everything we just did.
+Same book. Same 240 words. The only thing that changed is that we want to remember *two* words instead of one --- which would have fixed the wandering, because "sat in the" and "hit the" would no longer be the same question.
 
-On paper that's about 5,500 square metres. Most of a football field. It's the vocabulary that does this, not the length: a novel reuses its words relentlessly.
+And look what it costs. The grid needs a row for every context, so asking for one more word of memory multiplies the whole thing by the size of the vocabulary again. This stage becomes a couple of suburban blocks.
+
+Three words would be a third of the Acton campus. For a picture book. Say that one, don't draw it.
 */}
 
 ---
 
 {/* _class: centered */}
 
-<GridZoom rows={100000} cols={100000} label="a real model’s vocabulary" detail="100,000 tokens · 10 billion cells" compareRows={7441} compareCols={7441} compareLabel="Frankenstein" note="1 km² of paper — near enough the whole Acton campus" />
+<GridZoom cells={1e20} label="a real model, looking back three words" detail="100,000⁴ = 100 quintillion cells" compareCells={15e12} compareLabel="everything it ever read" note="20 × the surface of the Earth" />
 
 {/* notes:
-One more step, and this is the last one the picture survives. A commercial model's vocabulary is around 100,000 tokens --- not words, because it chops rarer words into pieces --- so the grid for it is 10 billion cells. Frankenstein is now the little gold square.
+Last step the picture survives, so read it rather than draw it. A real vocabulary is about 100,000 tokens --- and that's a deliberate ceiling, not a discovery: rare words get chopped into pieces precisely so the vocabulary stops growing. Three words of memory: a hundred quintillion cells, twenty Earths of paper.
 
-A square kilometre of paper. Stand outside and point: about this whole campus.
+Now the bit that matters, and take your time. The gold speck is not our room any more. It's *everything the model ever read* --- fifteen trillion tokens, the entire training run --- and it has vanished.
 
-And this is still only the *toy*: one word of context, tally marks, none of the three fixes on the last slide.
+So do the division out loud. Read fifteen trillion tokens, fill at most fifteen trillion cells, out of a hundred quintillion. One cell in seven million. Every other row stays empty forever.
+
+Then the callback, and this is the moment: remember when nobody's hand went up? That was an empty row. Now imagine almost the whole table is like that, and no amount of reading will fix it --- there isn't enough text in the world.
 */}
 
 ---
@@ -362,13 +376,29 @@ And this is still only the *toy*: one word of context, tally marks, none of the 
 **~1 trillion** numbers in the model
 
 {/* notes:
-Past this the picture gives out entirely, so switch to the two numbers you'll actually hear quoted --- and note that vocabulary size, which is what blew the grid up, isn't either of them. It sets how *wide* the table is; these set how much the thing has read and how much of it there is.
+The two numbers you'll actually hear quoted. Fifteen trillion tokens is the published figure for a recent open model's training run --- and tokens is your audience's word now, off slide 11. Every one of them went past a counter, the way the book went past theirs.
 
-Fifteen trillion tokens is the published figure for a recent open model's training run --- and tokens is now your audience's word too, off the last slide. Every one of them went past a counter, the way the book went past yours.
+The parameter count for the closed models isn't published; a trillion is the right order of magnitude, and the honest answer is "about that, and nobody outside will tell you".
 
-The parameter count for the closed models isn't published; a trillion is the right order of magnitude and the honest answer is "about that, nobody outside will tell you". At a centimetre each, that pile is about a hundred square kilometres.
+Don't editorialise here. The next slide is the point.
+*/}
 
-The mechanism didn't change. Only the dosage.
+---
+
+{/* _class: impact */}
+
+a trillion numbers, and
+
+**not one of them is a table**
+
+{/* notes:
+The resolution, and it should land as relief rather than one more big number.
+
+Nobody builds the grid, because nobody can. Instead: a fixed pile of numbers that *works out* the row when it needs it, from the context in front of it.
+
+Two things follow. It's smaller --- a table that looks back just two words needs a thousand times more numbers than Claude has. The maths goes the other way from how it's sold to you. And it's fixed: a longer conversation doesn't make the model bigger. The table would have squared.
+
+That's also where "it can say what it never saw" came from, two slides ago. Because it works the row out instead of looking it up, it can fill in a cell nobody ever tallied. Generalisation isn't a bonus feature --- it's the only way out of the empty table.
 */}
 
 ---

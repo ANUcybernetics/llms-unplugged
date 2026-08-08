@@ -29,7 +29,7 @@ Keep the bridge honest. A frontier model doesn't have a one-word window, so it i
 
 A frontier model looks back over everything it can see, and that's the whole conversation plus whatever you pasted into it.
 
-If someone asks the obvious "why not just look at two words?" --- you can, that's a trigram, and there's a lesson on the website that runs one with pen and paper. But the grid needs a row per context, so each extra word multiplies it by the size of the vocabulary: 5, 25, 125, and at a real vocabulary of ~100,000 you run out of atoms in the universe before you run out of sentence. Real models don't store a row per context, they work out what to pay attention to on the fly. Don't go further than that here. */}
+Someone will ask the obvious "why not just look at two words?" --- and you want that question, because the scale section at the end of this part is the answer to it in full. So bank it, don't spend it. Two words is a trigram, you can absolutely build one, and there's a lesson on the website that runs one with pen and paper. Then: "hold that thought --- what it costs you is the last thing we'll look at." */}
 
 ---
 
@@ -91,7 +91,9 @@ Now close the loop on the question you opened with. "Feedback on which answers p
 - it can say what it **never saw**
 - it's been taught to **answer**, not just continue
 
-{/* notes: Land the three before the last one, because the last one isn't a difference in kind at all. None of these changed the loop: look at the context, weigh the options, roll, write it down, repeat. What's left is dosage --- and that's the one people's intuition has no grip on. */}
+{/* notes: Land the three, then say what's left. None of them changed the loop: look at the context, weigh the options, roll, write it down, repeat.
+
+What's left is size, and it's worth flagging that it's not one question but two --- how much the thing read, and how much of the thing there is. People's intuition has no grip on either, and the second one has a surprise in it. */}
 
 ---
 
@@ -101,49 +103,101 @@ Now close the loop on the question you opened with. "Feedback on which answers p
 
 ![bg](./assets/bg-distribution.avif)
 
-{/* notes: Keep your eye on the gold square over the next two slides: that's their grid, drawn at true scale, on both of them. */}
+{/* notes: Two quantities get called "scale", and they behave completely differently. How much text went past the counter, and how big the table would have to be. Do them in that order --- the first is the one people's intuition half-copes with, and it's the setup for the second.
+
+Keep your eye on the gold speck over the next few slides: that's theirs, drawn at true scale, on every one of them.
+
+The unit throughout is the booklet's: one centimetre per square. Say it once here and never re-explain it. */}
 
 ---
 
 {/* _class: centered */}
 
-<GridZoom rows={5} cols={5} label="“Run, Spot, run. See Spot run.”" detail="5 tokens · 25 cells" compareRows={5} compareCols={5} />
+<GridZoom cells={84545} label="Frankenstein, as text" detail="84,545 tokens" compareCells={8} compareLabel="your text" note="8.5 m² of paper — a bedroom floor" />
 
-{/* notes: Figure-only, so you carry it: this is "your grid". Five tokens, twenty-five cells. At the booklet's 1cm per cell that's a five-centimetre square --- smaller than a beer coaster. */}
+{/* notes: First quantity: how much text went past the counter. Yours was eight tokens. The novel in the booklet is 84,545 --- which is already past hand-tallying, and is exactly why the computer did that one for you.
 
----
-
-{/* _class: centered */}
-
-<GridZoom rows={7441} cols={7441} label="Frankenstein" detail="7,441 tokens · 55 million cells" compareRows={5} compareCols={5} note="the cells are now too small to draw" />
-
-{/* notes: Same again, no heading --- read the caption out. Frankenstein, the novel in the booklet: 7,441 distinct tokens, 55 million cells. The grid lines have stopped being drawable, so that grey *is* the grid. On paper it's about 5,500 square metres, most of a football field, and their model is the gold speck. This is also why the booklet doesn't print a grid: at this size you list only the cells that aren't empty. Note it's the vocabulary that matters here, not the length --- a novel reuses its words relentlessly. */}
+At a centimetre per token, theirs is a postage stamp and Frankenstein is a bedroom floor. Read the caption; don't dwell. This slide exists to set the unit and the mechanic before the next one uses both. */}
 
 ---
 
 {/* _class: centered */}
 
-<GridZoom rows={100000} cols={100000} label="a real model’s vocabulary" detail="100,000 tokens · 10 billion cells" compareRows={7441} compareCols={7441} compareLabel="Frankenstein" note="1 km² of paper — near enough the whole Acton campus" />
+<GridZoom cells={15e12} label="what a frontier model read" detail="15 trillion tokens" compareCells={84545} compareLabel="Frankenstein" note="1,500 km² of paper — two-thirds of the ACT" />
 
-{/* notes: One more step, and it's the last one the picture survives --- so keep reading the caption rather than drawing. A commercial model's vocabulary is around 100,000 tokens, which makes its bigram grid alone 10 billion cells: a square kilometre of paper. Point out the window; about this whole campus. Frankenstein is now the little gold square, and their grid is far too small to draw at all.
+{/* notes: Same picture, one step out, and the novel is now the speck. Fifteen trillion tokens is the published figure for a recent open model's training run --- about 180 million copies of the book they're holding.
 
-And this is still the *toy*: one word of context, tally marks, none of the three fixes we just went through. */}
+Anchors on the way past, if you want them: all seven Harry Potters is about fifteen Frankensteins, and you cannot see the difference at this scale, which is the point. English Wikipedia lands around the Acton campus. Fifteen trillion is two-thirds of the ACT.
+
+The time ballpark, if the room likes numbers: at ten minutes per hundred tokens by hand, that's about 5.7 million years --- you'd have had to start when our ancestors split from the chimpanzees to be finishing now.
+
+So that's dosage, and it's genuinely enormous. Now the other quantity, which is the one that breaks. */}
 
 ---
 
 {/* _class: impact */}
 
-**15 trillion** tokens of training text
+more text makes the grid **emptier**
 
-**~1 trillion** numbers in the model
+{/* notes: Before the second zoom, the fact that makes it inevitable --- and it's in their own two texts, so it's checkable.
 
-{/* notes: Past this the picture gives out entirely, so switch to the two numbers they'll actually hear quoted --- and say the quiet part: vocabulary size, the thing that just blew the grid up, is neither of them. It sets how *wide* the table is. These two set how much the thing has read, and how much of it there is.
+The Cat in the Hat: 240 distinct tokens, 57,600 cells, and 1,037 of them have a tally in them. Just under two per cent full.
 
-Fifteen trillion tokens is the published figure for a recent open model's training run. Every one of them went past a counter, the way their text went past theirs. The time ballpark, if you want it: at ten minutes per hundred tokens by hand, that's about 5.7 million years --- you'd have had to start around when our ancestors split from the chimpanzees to be finishing now.
+Frankenstein: 7,023 distinct tokens, 49 million cells, 41,000 with a tally. Less than one cell in a thousand.
 
-The parameter count for the closed models isn't published; a trillion is the right order of magnitude, and the honest answer is "about that, and nobody outside will tell you". At a centimetre each that pile is a couple of hundred square kilometres --- a hundred-odd Acton campuses, twenty-odd Lake Burley Griffins.
+Fifty times more text, and the grid went from two per cent full to a tenth of a per cent. That's not a fluke of these two books. More text brings more distinct words, the grid grows with the *square* of those, and the tallies only grow with the text. The table always wins.
 
-The punchline isn't any one figure. It's that the mechanism didn't change, only the dosage.
+Sit on it for a second: reading more does not fill the table in. It empties it. */}
+
+---
+
+{/* _class: centered */}
+
+<GridZoom cells={3.464e11} label="Frankenstein, as a table — two words of context" detail="7,023³ = 346 billion cells" compareCells={25} compareLabel="your grid" note="35 km² of paper — the whole inner north" />
+
+{/* notes: Second quantity, and the same book: not how long it is, but how big a table you'd need to hold it. This is where the honest bad news is.
+
+Their grid was 25 cells: five centimetres square, smaller than a beer coaster. Frankenstein with one word of context is 49 million cells --- about half a hectare, and that's the version in their booklet, which is also why the booklet prints a list of the non-empty cells instead of a grid.
+
+Now ask for *two* words of context. The grid needs a row per context, so every extra word multiplies the whole thing by the size of the vocabulary again. Half a hectare becomes 35 square kilometres. Point out the window: the entire inner north, for one novel and a two-word memory.
+
+Three words would be 243,000 square kilometres --- the state of Victoria, with a bit spare. Say that one, don't draw it. */}
+
+---
+
+{/* _class: centered */}
+
+<GridZoom cells={1e20} label="a real model’s table — three words of context" detail="100,000⁴ = 100 quintillion cells" compareCells={15e12} compareLabel="everything it read" note="20 × the surface of the Earth" />
+
+{/* notes: Last step the picture survives, so read rather than draw. Take a real vocabulary --- about 100,000 tokens, and that number is a deliberate ceiling, not a discovery: the tokeniser chops rare words into pieces precisely so the vocabulary stops growing. Three words of context: a hundred quintillion cells. Twenty Earths of paper.
+
+Now the collision, and it's the point of the whole section. The gold speck is not their grid any more. It's *all fifteen trillion tokens* --- everything the model ever read, the two-thirds of the ACT from four slides ago, now invisible.
+
+So do the division out loud. Read fifteen trillion tokens, fill at most fifteen trillion cells, out of a hundred quintillion. One cell in seven million. Every other row stays empty forever, and an empty row means "impossible" --- the same dead end they hit on their own grid, but now covering essentially the entire table.
+
+That's the real reason nobody builds this. Not that it's too big to print. It's too big to ever fill --- there isn't enough text in the world, and there never will be. And this is still only a three-word memory. */}
+
+---
+
+{/* _class: impact */}
+
+so it **isn't a table**
+
+**~1 trillion** numbers that work it out instead
+
+{/* notes: The resolution, and it lands as relief rather than another big number.
+
+A real model doesn't store a row per context, because it can't. It keeps a fixed pile of numbers --- about a trillion, and that figure is unpublished for the closed models, so "about that, and nobody outside will tell you" is the honest answer --- and *computes* the row it needs, on demand, from the context in front of it.
+
+Two things follow, and they're the ones worth carrying out of the room.
+
+It's smaller. A trillion sounds vast, but a table with just two words of context over a real vocabulary needs a thousand times more numbers than that --- and the model has a million tokens of context, not two. The neural network is a *compression* of the grid, not an inflation of it.
+
+And it's fixed. Doubling the length of your conversation does not double the model. The table would have squared.
+
+That's also where the second difference came from, an hour ago now: because it works the row out rather than looking it up, it can fill in a cell it never saw. Generalisation isn't a bonus feature bolted on. It's the only way out of the empty table.
+
+The mechanism didn't change. What changed is that it stopped storing the answers.
 */}
 
 ---
