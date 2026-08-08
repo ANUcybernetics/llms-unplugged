@@ -266,8 +266,12 @@
     The model only exists across the whole room --- and if somebody is away,
     their share of it is missing, and some contexts will draw no hands at all.
 
-    *Running dry.* If no hands go up, you have reached a context that only ever
-    occurred at the very end of the text. Start again from any #pair-noun.
+    *Quiet rounds.* One hand is not a stall --- a word with a single
+    continuation is the model working. Nor will you run dry: a word has nothing
+    following it only if it appears nowhere but the very last position in the
+    text, which is at most one word in the whole deal. So no hands at all almost
+    always means an empty seat, and that is worth saying out loud. Reseed from
+    any #pair-noun and carry on.
 
     // Provenance, so it belongs at the foot of the brief rather than in the
     // middle of the instructions. Its two lines also come off the taller

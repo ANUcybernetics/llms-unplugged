@@ -52,7 +52,7 @@ import "../styles/widgets.css";
       context across as many sheets as it will go, so a bigger room makes the
       hands-up distribution sharper, not noisier)
     - keep the teacher brief (page 1 of the PDF) on the lectern --- it carries
-      the worked example and the "running dry" fallback
+      the worked example
     - have the whiteboard overlay ready (press `b`) for writing the generated
       text, and a scribe lined up if you would rather not write and talk
     - the numbers on slides 6 and 15 are for The Cat in the Hat at n=2; if you
@@ -181,7 +181,7 @@ Press `b` for the whiteboard and write both words up. That's the seed, and it ma
 
 Then say what happens next --- the second of those two words is the one I'm about to call out --- and move on. The algorithm slide lands better with a real word already on the board.
 
-If their pair is an odd one (a full stop, a name that appears once), take it anyway and let the first round be quiet; that's a real property of the model, not a failure. Only if it dead-ends outright, ask a second volunteer or seed from `the`.
+If their pair is an odd one (a full stop, a name that appears once), take it anyway --- a thin first round is a real property of the model, not a failure. It can't dead-end on you, so you never need a second volunteer for that reason.
 */}
 
 ---
@@ -226,7 +226,9 @@ The hands are the distribution. Say `the` and a forest goes up; say a rare word 
 
 The choosing is a coin toss. When five hands are up, the four I don't pick were all real continuations of the book. Different pick, different sentence. This is the same reason the "regenerate" button gives you a different answer.
 
-If no hands go up, you've hit a context that only ever occurred at the very end of the book. Say so --- it's a nice moment, not a failure --- and reseed.
+Hands will go up every round --- you can rely on that. Every distinct token in this book appears as a boxed word somewhere, so there is no word you can call that has nothing following it. (True of every corpus in the repo, not just this one.) So don't plan a "running dry" beat; there isn't one.
+
+The one way the room goes quiet is an empty seat: that person's sheet went home with them, and the pairs on it are simply gone. If it happens, say exactly that --- it's the same point as slide 6, made for you --- and reseed.
 
 Stop while they still want more, around 15 words. Read the sentence back.
 */}
@@ -344,6 +346,8 @@ Now the question everyone asks, and it's the right one: why only look back one w
 <GridZoom cells={13824000} label="the same book, looking back two words" detail="240³ = 13.8 million cells" compareCells={57600} compareLabel="looking back one word" note="1,400 m² of paper — a couple of suburban blocks" />
 
 {/* notes:
+Make it personal before you make it big. Ask the room: who can tell me what comes after `in the`? Nobody can --- and not because they're slow. Every sheet out there is filed under *one* boxed word, so a two-word question isn't a harder version of what they did for five minutes, it's a different set of sheets that nobody here is holding.
+
 Same book. Same 240 words. The only thing that changed is that we want to remember *two* words instead of one --- which would have fixed the wandering, because "sat in the" and "hit the" would no longer be the same question.
 
 And look what it costs. The grid needs a row for every context, so asking for one more word of memory multiplies the whole thing by the size of the vocabulary again. This stage becomes a couple of suburban blocks.
@@ -364,7 +368,9 @@ Now the bit that matters, and take your time. The gold speck is not our room any
 
 So do the division out loud. Read fifteen trillion tokens, fill at most fifteen trillion cells, out of a hundred quintillion. One cell in seven million. Every other row stays empty forever.
 
-Then the callback, and this is the moment: remember when nobody's hand went up? That was an empty row. Now imagine almost the whole table is like that, and no amount of reading will fix it --- there isn't enough text in the world.
+Then the callback, and this is the moment. Our own grid, three slides back, was already 98 per cent empty --- about a thousand cells with a tally in them out of 57,600. Every blank one is a pair the book never happened to make, and the model calls those impossible. That's the *easy* case: one word of memory, a picture book, and a room that holds every pair in it.
+
+Three words in, it isn't 98 per cent empty. It's empty except for one cell in seven million, and no amount of reading will fix it. There isn't enough text in the world.
 */}
 
 ---
