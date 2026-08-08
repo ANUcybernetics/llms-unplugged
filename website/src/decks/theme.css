@@ -65,9 +65,18 @@
    build is that the two failures aren't equal: not understanding a technology
    is ordinary, while having decided in advance that you get no say in it is the
    expensive one. The minor clause comes back to plain white; the major one goes
-   bright gold and bold. Note --anu-gold itself is a dark ink tuned for white
+   bright gold and heavier. Note --anu-gold itself is a dark ink tuned for white
    paper --- on a black slide it reads *quieter* than the body text it is meant
-   to outshout, so the light variant is the one to reach for here. */
+   to outshout, so the light variant is the one to reach for here.
+
+   The extra weight is painted as a stroke rather than set with `font-weight`,
+   because a real bold changes glyph advances: on click the clause grew a few
+   pixels, shoving the rest of the sentence along and (at other measures)
+   rewrapping the paragraph under `text-wrap: pretty`. A text stroke thickens
+   the same glyphs without touching their metrics, so the build is pure light
+   and nothing moves. The stroke is declared on the unlit state too --- it costs
+   no layout either way, and starting it transparent lets it fade in with the
+   colour instead of snapping on. */
 .reveal .slides section.quote:has(.quote-emph) blockquote p {
   color: var(--color-text-muted);
 }
@@ -76,7 +85,13 @@
 .reveal .slides section.quote .fragment.quote-emph-minor {
   opacity: 1;
   visibility: inherit;
-  transition: color 0.4s ease;
+  transition:
+    color 0.4s ease,
+    -webkit-text-stroke-color 0.4s ease;
+}
+
+.reveal .slides section.quote .fragment.quote-emph {
+  -webkit-text-stroke: 0.021em transparent;
 }
 
 .reveal .slides section.quote .fragment.quote-emph-minor.visible {
@@ -85,7 +100,7 @@
 
 .reveal .slides section.quote .fragment.quote-emph.visible {
   color: var(--anu-gold-2);
-  font-weight: 700;
+  -webkit-text-stroke-color: var(--anu-gold-2);
 }
 
 /* The quote itself sits centred on the canvas. The shared theme only centres
