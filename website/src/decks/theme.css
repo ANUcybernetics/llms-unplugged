@@ -108,7 +108,6 @@
 
 .reveal .slides section.quote .fragment.quote-emph {
   background-color: transparent;
-  -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
 
