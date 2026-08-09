@@ -93,7 +93,7 @@ Now close the loop on the question you opened with. "Feedback on which answers p
 
 {/* notes: Land the three, then say what's left. None of them changed the loop: look at the context, weigh the options, roll, write it down, repeat.
 
-What's left is size, and it's worth flagging that it's not one question but two --- how much the thing read, and how much of the thing there is. People's intuition has no grip on either, and the second one has a surprise in it. */}
+What's left is size, and it's worth flagging that it isn't one question but two --- how much the thing read, and how many learned numbers it contains. Those can scale independently. */}
 
 ---
 
@@ -103,105 +103,37 @@ What's left is size, and it's worth flagging that it's not one question but two 
 
 ![bg](./assets/bg-distribution.avif)
 
-{/* notes: Two quantities get called "scale", and they behave completely differently. How much text went past the counter, and how big the table would have to be. Do them in that order --- the first is the one people's intuition half-copes with, and it's the setup for the second.
+{/* notes: Two quantities get called "scale": how much text went past the counter, and how many learned numbers the model contains. They are independent controls --- more training text does not itself make a model larger, and a larger model does not tell you how much it read.
 
-Keep your eye on the gold speck over the next few slides: that's theirs, drawn at true scale, on every one of them.
-
-The unit throughout is the booklet's: one centimetre per square. Say it once here and never re-explain it. */}
+There is a third difference too: a frontier LLM is different machinery, not our table made enormous. This section is only comparing the scale of the work and the scale of the learned state. */}
 
 ---
 
 {/* _class: centered */}
 
-<GridZoom cells={84545} label="Frankenstein, as text" detail="84,545 tokens" compareCells={8} compareLabel="your text" note="8.5 m² of paper — a bedroom floor" />
+<ModelScaleBars trainingStart="8 tokens" modelStart="25 grid cells" />
 
-{/* notes: First quantity: how much text went past the counter. Yours was eight tokens. The novel in the booklet is 84,545 --- which is already past hand-tallying, and is exactly why the computer did that one for you.
+{/* notes: Start with the work they just did. Eight tokens went past their counter, and the five-word vocabulary made a 25-cell grid. Now let both bars run.
 
-At a centimetre per token, theirs is a postage stamp and Frankenstein is a bedroom floor. Read the caption; don't dwell. This slide exists to set the unit and the mechanic before the next one uses both. */}
+Fifteen trillion tokens is the published figure for a recent open model's training run --- about 180 million copies of Frankenstein. At the pace they just worked, it would take roughly 5.7 million years to process by hand.
 
----
+About a trillion parameters is the right order of magnitude for a frontier model. The exact figure for closed models is unpublished, so "about that, and nobody outside will tell you" is the honest answer.
 
-{/* _class: centered */}
-
-<GridZoom cells={15e12} label="what a frontier model read" detail="15 trillion tokens" compareCells={84545} compareLabel="Frankenstein" note="1,500 km² of paper — two-thirds of the ACT" />
-
-{/* notes: Same picture, one step out, and the novel is now the speck. Fifteen trillion tokens is the published figure for a recent open model's training run --- about 180 million copies of the book they're holding.
-
-Anchors on the way past, if you want them: all seven Harry Potters is about fifteen Frankensteins, and you cannot see the difference at this scale, which is the point. English Wikipedia lands around the Acton campus. Fifteen trillion is two-thirds of the ACT.
-
-The time ballpark, if the room likes numbers: at ten minutes per hundred tokens by hand, that's about 5.7 million years --- you'd have had to start when our ancestors split from the chimpanzees to be finishing now.
-
-So that's dosage, and it's genuinely enormous. Now the other quantity, which is the one that breaks. */}
+Be explicit about the labels changing from grid cells to parameters: these are not the same kind of model, and the tracks do not share a quantitative axis. The point is simply that a frontier LLM has seen vastly more text and contains vastly more learned numbers. Those two choices can be scaled independently. */}
 
 ---
 
 {/* _class: impact */}
 
-more text makes the grid **emptier**
+**much more** training text
 
-{/* notes: Before the second zoom, the fact that makes it inevitable --- and it's in their own two texts, so it's checkable.
+**many more** learned numbers
 
-The Cat in the Hat: 240 distinct tokens, 57,600 cells, and 1,037 of them have a tally in them. Just under two per cent full.
+a **different kind** of model
 
-Frankenstein: 7,023 distinct tokens, 49 million cells, 41,000 with a tally. Less than one cell in a thousand.
+{/* notes: Land the three distinctions without turning them into a transformer lecture. More training text and more parameters are independent differences of scale. Looking back over more context and generalising to things it never saw come from different machinery, not from our grid being inflated until it becomes an LLM.
 
-Fifty times more text, and the grid went from two per cent full to a tenth of a per cent. That's not a fluke of these two books. More text brings more distinct words, the grid grows with the *square* of those, and the tallies only grow with the text. The table always wins.
-
-Sit on it for a second: reading more does not fill the table in. It empties it. */}
-
----
-
-{/* _class: centered */}
-
-<ContextTableGrowth
-  vocabulary={7023}
-  footprints={["half a hectare", "35 km² — the whole inner north", "243,000 km² — the state of Victoria"]}
-/>
-
-{/* notes: Second quantity, and the same book: not how long it is, but how big a table you'd need to hold it. This is where the honest bad news is.
-
-Their grid was 25 cells: five centimetres square, smaller than a beer coaster. Frankenstein with one word of context has 7,023 rows and 7,023 next-token columns --- 49 million cells, about half a hectare. That's the version in their booklet, which is also why the booklet prints a list of the non-empty cells instead of a grid. *[click]*
-
-Now ask for *two* words of context. The width stays at 7,023 possible next tokens, but the grid needs a row for every two-word context: 49 million rows. Half a hectare becomes 35 square kilometres. Point out the window: the entire inner north, for one novel and a two-word memory. *[click]*
-
-One more word multiplies the rows by 7,023 again: 346 billion rows, 243,000 square kilometres of cells --- the state of Victoria, with a bit spare. The drawn heights are schematic; a true-scale table would vanish off the slide. */}
-
----
-
-{/* _class: centered */}
-
-<LookupCoverage />
-
-{/* notes: Take a real vocabulary --- about 100,000 tokens, and that number is a deliberate ceiling, not a discovery: the tokeniser chops rare words into pieces precisely so the vocabulary stops growing. Three words of context still produces a hundred quintillion possible cells. Twenty Earths of paper.
-
-Now the collision, and it's the point of the whole section. The gold cell stands for everything the model could have observed directly, exaggerated enough to remain visible.
-
-So do the division out loud. Read fifteen trillion tokens, fill at most fifteen trillion cells, out of a hundred quintillion. One cell in seven million. Every other row stays empty forever, and an empty row means "impossible" --- the same empty cell that made `the dog ran` unsayable a few slides ago, but now covering essentially the entire table.
-
-That's the real reason nobody builds this. Not that it's too big to print. It's too big to ever fill --- there isn't enough text in the world, and there never will be. And this is still only a three-word memory. */}
-
----
-
-{/* _class: impact */}
-
-so it **isn't a table**
-
-**~1 trillion** numbers that work it out instead
-
-{/* notes: The resolution, and it lands as relief rather than another big number.
-
-A real model doesn't store a row per context, because it can't. It keeps a fixed pile of numbers --- about a trillion, and that figure is unpublished for the closed models, so "about that, and nobody outside will tell you" is the honest answer --- and *computes* the row it needs, on demand, from the context in front of it.
-
-Two things follow, and they're the ones worth carrying out of the room.
-
-It's smaller. A trillion sounds vast, but a table with just two words of context over a real vocabulary needs a thousand times more numbers than that --- and the model has a million tokens of context, not two. The neural network is a *compression* of the grid, not an inflation of it.
-
-And it's fixed. Doubling the length of your conversation does not double the model. The table would have squared.
-
-That's also where the second difference came from, an hour ago now: because it works the row out rather than looking it up, it can fill in a cell it never saw. Generalisation isn't a bonus feature bolted on. It's the only way out of the empty table.
-
-The mechanism didn't change. What changed is that it stopped storing the answers.
-*/}
+The continuity is the next slide: despite all three differences, generation is still the same kind of loop they ran with dice. */}
 
 ---
 

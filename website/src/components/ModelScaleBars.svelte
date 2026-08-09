@@ -1,27 +1,54 @@
+<script lang="ts">
+  interface Props {
+    trainingStart: string;
+    modelStart: string;
+    trainingEnd?: string;
+    modelEnd?: string;
+  }
+
+  let {
+    trainingStart,
+    modelStart,
+    trainingEnd = "15 trillion tokens",
+    modelEnd = "~1 trillion parameters",
+  }: Props = $props();
+</script>
+
 <div
   class="model-scale-bars"
   role="img"
-  aria-label="Two independent scales: 15 trillion tokens of training text and about 1 trillion parameters in the model"
+  aria-label={`Two independent scales. Training text grows from ${trainingStart} to ${trainingEnd}. Model size grows from ${modelStart} to ${modelEnd}.`}
 >
+  <div class="endpoints" aria-hidden="true">
+    <strong>today</strong>
+    <strong>frontier LLM</strong>
+  </div>
+
   <div class="metric training">
     <div class="metric-heading">
       <span class="metric-name">training text</span>
-      <strong>15 trillion tokens</strong>
+      <span class="meaning">how much the model reads</span>
     </div>
     <div class="track" aria-hidden="true"><span class="fill"></span></div>
-    <span class="meaning">how much the model reads</span>
+    <div class="values">
+      <strong>{trainingStart}</strong>
+      <strong>{trainingEnd}</strong>
+    </div>
   </div>
-
-  <p class="independent">two scales, growing independently</p>
 
   <div class="metric parameters">
     <div class="metric-heading">
       <span class="metric-name">model size</span>
-      <strong>~1 trillion parameters</strong>
+      <span class="meaning">how many learned numbers it contains</span>
     </div>
     <div class="track" aria-hidden="true"><span class="fill"></span></div>
-    <span class="meaning">how many numbers it learns</span>
+    <div class="values">
+      <strong>{modelStart}</strong>
+      <strong>{modelEnd}</strong>
+    </div>
   </div>
+
+  <p class="independent">two independent scales · different kinds of model</p>
 </div>
 
 <style>
@@ -29,9 +56,23 @@
      so matching lengths mean "both grew", not "these quantities are equal". */
   .model-scale-bars {
     display: grid;
-    gap: 1.1rem;
+    gap: 1.35rem;
     inline-size: min(100%, 54rem);
     color: var(--color-text);
+  }
+
+  .endpoints,
+  .values {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .endpoints {
+    padding-block-end: 0.2rem;
+    border-block-end: 1px solid var(--color-divider);
+    color: var(--color-text-secondary);
+    font-size: 1.15rem;
   }
 
   .metric {
@@ -44,17 +85,13 @@
     align-items: baseline;
     justify-content: space-between;
     gap: 2rem;
-    font-size: 1.45rem;
+    font-size: 1.2rem;
   }
 
   .metric-name {
-    color: var(--color-text-secondary);
-    font-weight: 600;
-  }
-
-  .metric-heading strong {
     color: var(--anu-gold-2);
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+    font-weight: 700;
   }
 
   .track {
@@ -79,8 +116,17 @@
 
   .meaning {
     color: var(--color-text-muted);
-    font-size: 1.05rem;
-    text-align: left;
+  }
+
+  .values {
+    align-items: baseline;
+    color: var(--color-text-secondary);
+    font-size: 1.15rem;
+  }
+
+  .values strong:last-child {
+    color: var(--anu-gold-2);
+    font-size: 1.45rem;
   }
 
   .independent {
@@ -90,10 +136,9 @@
     text-align: center;
   }
 
-  /* Reveal adds .present to the active section. The unequal timings make the
-     bars visibly independent without pretending their unlike units share an
-     axis. Global keyframe names are needed because this selector crosses the
-     Svelte scope boundary to reach Reveal's section. */
+  /* Reveal adds .present to the active section. Each track owns its scale: the
+     animation says both quantities grew, without comparing unlike units or
+     implying that one determines the other. */
   @keyframes -global-grow-training-scale {
     to {
       transform: scaleX(1);

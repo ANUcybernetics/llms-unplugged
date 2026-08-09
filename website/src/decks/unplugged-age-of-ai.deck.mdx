@@ -9,8 +9,6 @@ listed: false
 import GridRowToggle from "../components/GridRowToggle.astro";
 import StaticGrid from "../components/StaticGrid.svelte";
 import GridZoom from "../components/GridZoom.svelte";
-import ContextTableGrowth from "../components/ContextTableGrowth.svelte";
-import LookupCoverage from "../components/LookupCoverage.svelte";
 import ModelScaleBars from "../components/ModelScaleBars.svelte";
 import Timer from "../components/Timer.astro";
 import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
@@ -30,21 +28,19 @@ import "../styles/widgets.css";
     0:03  What's on your chair                   (slides 5-6,   ~2 min)
     0:05  Seed it, then run the model            (slides 7-9,   ~6 min)
     0:11  What just happened                     (slides 10-13, ~3 min)
-    0:14  What Claude does differently, at scale (slides 14-20, ~4 min)
-    0:18  The claim, then come tomorrow          (slides 21-25, ~3 min)
+    0:14  What Claude does differently, at scale (slides 14-18, ~4 min)
+    0:18  The claim, then come tomorrow          (slides 19-23, ~3 min)
 
-  The Bandura quote (slide 2) is a two-click fragment build: the clauses light
-  up in turn, and the second is the one the whole talk is aimed at. The context
-  table on slide 16 is another two-click build: one, then two, then three words
-  of context. The quote is repeated, already lit, on slide 21 to close the loop.
+  The Bandura quote (slide 2) is the deck's only fragment build: two clicks
+  light up the two clauses in turn, and the second is the one the whole talk
+  is aimed at. It is repeated, already lit, on slide 19 to close the loop.
 
-  The scale run (15-19) grows one axis only: how many words of context the
-  table remembers, with the vocabulary held fixed. That is the axis that
-  actually explodes, and vocabulary is not --- a tokeniser exists to keep it a
-  bounded constant, and a real model spends only a sliver of itself on it. Do
-  not reintroduce a vocabulary-size zoom; it makes the false claim that a
-  bigger vocabulary is what makes a model big. Slides 18-19 are the pay-off:
-  the table cannot be filled, so a real model isn't one.
+  The scale run (15-17) makes one claim only: compared with the paper model, a
+  frontier LLM has seen vastly more training text and contains vastly more
+  learned numbers. Those quantities scale independently, and the machinery is
+  different, so the bars deliberately do not share an axis. Do not turn this
+  into an argument that transformers are a more parameter-efficient n-gram;
+  that is true in an important sense, but it is not this talk's point.
 
   Assumes the Acknowledgement of Country and the welcome happened at the top of
   the session, before Tim --- hence no ack-country slide here.
@@ -342,76 +338,37 @@ Read the caption. The little gold square is the slide you were just looking at; 
 
 At one centimetre per cell that's a square about two and a half metres on a side. Roughly this stage.
 
-Now the question everyone asks, and it's the right one: why only look back one word? Ask it out loud before you answer it. *[next slide]*
+This is the model we made today. Now put its two kinds of scale beside a frontier LLM. *[next slide]*
 */}
 
 ---
 
 {/* _class: centered */}
 
-<ContextTableGrowth
-  vocabulary={240}
-  footprints={["roughly this stage", "a couple of suburban blocks", "a third of the Acton campus"]}
-/>
+<ModelScaleBars trainingStart="1,962 tokens" modelStart="57,600 grid cells" />
 
 {/* notes:
-Make it personal before you make it big. Ask the room: who can tell me what comes after `in the`? Nobody can --- and not because they're slow. Every sheet out there is filed under *one* boxed word, so a two-word question isn't a harder version of what they did for five minutes, it's a different set of sheets that nobody here is holding.
+Two independent scales grow. The first is how much text went past the counter. Ours read 1,962 tokens; fifteen trillion is the published figure for a recent open model's training run. Every one of those tokens went past a counter, the way the book went past yours.
 
-The first table is what the room just built: 240 possible next words across, 240 one-word contexts down. That width never changes. *[click]*
+The second is how many learned numbers the model contains. Ours had a 240 by 240 grid: 57,600 places a count could live. A trillion parameters is the right order of magnitude for a frontier model, and the honest answer for the closed ones is "about that, and nobody outside will tell you".
 
-Same book. Same 240 words. Remembering *two* words adds no new next-word choices; it multiplies the rows by 240. That would have fixed the wandering, because "sat in the" and "hit the" would no longer be the same question. The stage becomes a couple of suburban blocks. *[click]*
-
-One more remembered word multiplies the rows by 240 again. A third of the Acton campus, for a picture book. The bars are schematic because the real second one would already be 240 times taller than the first; by the third it would be a line disappearing off the slide.
-*/}
-
----
-
-{/* _class: centered */}
-
-<LookupCoverage contextLabel="a real model looking back three words" />
-
-{/* notes:
-Now switch from the picture book to a real vocabulary: about 100,000 tokens. That's a deliberate ceiling, not a discovery: rare words get chopped into pieces precisely so the vocabulary stops growing. Three words of memory still means a hundred quintillion possible cells --- twenty Earths of paper at the same scale.
-
-But physical size was never the fatal problem. The gold cell is everything the model can learn directly from its text, exaggerated enough to see. Read fifteen trillion tokens, fill at most fifteen trillion cells, out of a hundred quintillion.
-
-Do the division out loud: one observed cell in seven million. Everything else stays empty forever.
-
-Then the callback, and this is the moment. Our own grid, three slides back, was already 98 per cent empty --- about a thousand cells with a tally in them out of 57,600. Every blank one is a pair the book never happened to make, and the model calls those impossible. That's the *easy* case: one word of memory, a picture book, and a room that holds every pair in it.
-
-Three words in, it isn't 98 per cent empty. It's empty except for one cell in seven million, and no amount of reading will fix it. There isn't enough text in the world.
-*/}
-
----
-
-{/* _class: centered */}
-
-<ModelScaleBars />
-
-{/* notes:
-Two independent scales grow in a real model. The first is how much it reads: fifteen trillion tokens is the published figure for a recent open model's training run --- and tokens is your audience's word now, off slide 11. Every one of them went past a counter, the way the book went past theirs.
-
-The second is how many numbers it learns. The parameter count for the closed models isn't published; a trillion is the right order of magnitude, and the honest answer is "about that, and nobody outside will tell you". These can be scaled independently: more training text does not itself make the model wider, and a larger model does not say how much text it saw.
-
-Don't editorialise here. The next slide is the point.
+The two bars have separate scales because these quantities can be changed independently. And the endpoints are different kinds of model: grid cells on the left, neural-network parameters on the right. This is a scale comparison, not a claim that one is a compressed version of the other.
 */}
 
 ---
 
 {/* _class: impact */}
 
-a trillion numbers, and
+**much more** training text
 
-**not one of them is a table**
+**many more** learned numbers
+
+a **different kind** of model
 
 {/* notes:
-The resolution, and it should land as relief rather than one more big number.
+Those are the differences to carry forward. More text and more learned numbers are differences of scale, and neither determines the other. Looking back over a long context and spreading what it learns between related words come from using different machinery, not merely from making our grid enormous.
 
-Nobody builds the grid, because nobody can. Instead: a fixed pile of numbers that *works out* the row when it needs it, from the context in front of it.
-
-Two things follow. It's smaller --- a table that looks back just two words needs a thousand times more numbers than Claude has. The maths goes the other way from how it's sold to you. And it's fixed: a longer conversation doesn't make the model bigger. The table would have squared.
-
-That's also where "it can say what it never saw" came from, two slides ago. Because it works the row out instead of looking it up, it can fill in a cell nobody ever tallied. Generalisation isn't a bonus feature --- it's the only way out of the empty table.
+No transformer lesson today. The important continuity is on the next slide.
 */}
 
 ---
