@@ -39,6 +39,13 @@
   --astromotion-hint-kbd-edge: var(--color-divider);
 }
 
+/* Full-bleed layers own their geometry and must not inherit the slide's
+   default gap between flow children. Without this reset they stop 1.5rem
+   short of the bottom edge, exposing the section background underneath. */
+.slide-bg {
+  margin-block-end: 0;
+}
+
 /* The two corner-motif backgrounds below are set as plain rules rather than
    through --astromotion-wb-bg-image / --at-deck-impact-bg-image: a relative
    url() inside a custom property resolves against wherever the var() is *used*

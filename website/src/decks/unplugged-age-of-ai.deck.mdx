@@ -122,9 +122,11 @@ Beat. The honest answer is in between and it's more interesting than both, and -
 
 {/* _class: impact */}
 
-it's hard to have an opinion on a
+it's hard to have an opinion<br />
+on a machine you've never seen<br />
+the inside of
 
-machine you've never seen the inside of
+![bg](./assets/bg-machine-interior.avif)
 
 {/* notes:
 This is the whole argument of the talk, stated once, before the demonstration that earns it.
@@ -160,7 +162,7 @@ The shuffle matters, and it's worth naming: in book order these pages would just
 
 **1,962** words · **240** distinct · **1,961** token pairs dealt round the room
 
-no single sheet can continue the text on its own
+no single sheet has the whole picture
 
 {/* notes:
 Every one of the 1,961 word-pairs in the book was dealt to exactly one person, and the deal deliberately spreads each context across as many people as it will go. So the model isn't in my laptop and it isn't on anyone's sheet --- it only exists across the whole room. If somebody had stayed home, part of it is missing and some contexts will draw no hands at all.
@@ -190,10 +192,10 @@ If their pair is an odd one (a full stop, a name that appears once), take it any
 
 ![bg right:40%](./assets/bg-algorithm-generation.avif)
 
-1. I **call out** the last word we wrote
+1. **call out** the last word we wrote (w/colour)
 2. **hands up** if it appears as the _boxed_ word on your sheet
-3. I **pick a hand at random** and you read out the _next_ (non-boxed) word
-4. we **write it down**---and then repeat the process
+3. **pick a hand at random** and you read out the corresponding _next_ (non-boxed) word
+4. **write it down**---and then repeat the process
 
 {/* notes:
 Walk them through it once slowly, against the two words already on the board, because the whole demo depends on step 2 and step 3.
@@ -245,17 +247,17 @@ Say it flatly and let it sit. Not a simulation of one, not an analogy for one: t
 
 ---
 
-## what we each were
+## what role did you play?
 
 ![bg right:40%](./assets/bg-core-insight-portrait.avif)
 
 each word on your sheet → a **token**
 
-your sheets → the **parameters**/**weights**
+your sheets → the **parameters**/**weights** of the **model**
 
 the hands in the air → the **probability distribution**
 
-my random pick → **sampling**
+the random pick → **sampling**
 
 the sentence on the board → **generation**
 
@@ -269,7 +271,7 @@ Worth saying out loud: those are the real words. When a researcher says a model 
 
 ---
 
-## the same model, drawn as a grid
+## the same model in grid form
 
 {/* step 13 is one past the last of the 12 pairs, so the grid shows complete
     with no pair still ringed --- the same "finished model" state grid-training
