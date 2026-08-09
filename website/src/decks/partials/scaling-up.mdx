@@ -153,25 +153,28 @@ Sit on it for a second: reading more does not fill the table in. It empties it. 
 
 {/* _class: centered */}
 
-<GridZoom cells={3.464e11} label="Frankenstein, as a table — two words of context" detail="7,023³ = 346 billion cells" compareCells={25} compareLabel="your grid" note="35 km² of paper — the whole inner north" />
+<ContextTableGrowth
+  vocabulary={7023}
+  footprints={["half a hectare", "35 km² — the whole inner north", "243,000 km² — the state of Victoria"]}
+/>
 
 {/* notes: Second quantity, and the same book: not how long it is, but how big a table you'd need to hold it. This is where the honest bad news is.
 
-Their grid was 25 cells: five centimetres square, smaller than a beer coaster. Frankenstein with one word of context is 49 million cells --- about half a hectare, and that's the version in their booklet, which is also why the booklet prints a list of the non-empty cells instead of a grid.
+Their grid was 25 cells: five centimetres square, smaller than a beer coaster. Frankenstein with one word of context has 7,023 rows and 7,023 next-token columns --- 49 million cells, about half a hectare. That's the version in their booklet, which is also why the booklet prints a list of the non-empty cells instead of a grid. *[click]*
 
-Now ask for *two* words of context. The grid needs a row per context, so every extra word multiplies the whole thing by the size of the vocabulary again. Half a hectare becomes 35 square kilometres. Point out the window: the entire inner north, for one novel and a two-word memory.
+Now ask for *two* words of context. The width stays at 7,023 possible next tokens, but the grid needs a row for every two-word context: 49 million rows. Half a hectare becomes 35 square kilometres. Point out the window: the entire inner north, for one novel and a two-word memory. *[click]*
 
-Three words would be 243,000 square kilometres --- the state of Victoria, with a bit spare. Say that one, don't draw it. */}
+One more word multiplies the rows by 7,023 again: 346 billion rows, 243,000 square kilometres of cells --- the state of Victoria, with a bit spare. The drawn heights are schematic; a true-scale table would vanish off the slide. */}
 
 ---
 
 {/* _class: centered */}
 
-<GridZoom cells={1e20} label="a real model’s table — three words of context" detail="100,000⁴ = 100 quintillion cells" compareCells={15e12} compareLabel="everything it read" note="20 × the surface of the Earth" />
+<LookupCoverage />
 
-{/* notes: Last step the picture survives, so read rather than draw. Take a real vocabulary --- about 100,000 tokens, and that number is a deliberate ceiling, not a discovery: the tokeniser chops rare words into pieces precisely so the vocabulary stops growing. Three words of context: a hundred quintillion cells. Twenty Earths of paper.
+{/* notes: Take a real vocabulary --- about 100,000 tokens, and that number is a deliberate ceiling, not a discovery: the tokeniser chops rare words into pieces precisely so the vocabulary stops growing. Three words of context still produces a hundred quintillion possible cells. Twenty Earths of paper.
 
-Now the collision, and it's the point of the whole section. The gold speck is not their grid any more. It's *all fifteen trillion tokens* --- everything the model ever read, the two-thirds of the ACT from four slides ago, now invisible.
+Now the collision, and it's the point of the whole section. The gold cell stands for everything the model could have observed directly, exaggerated enough to remain visible.
 
 So do the division out loud. Read fifteen trillion tokens, fill at most fifteen trillion cells, out of a hundred quintillion. One cell in seven million. Every other row stays empty forever, and an empty row means "impossible" --- the same empty cell that made `the dog ran` unsayable a few slides ago, but now covering essentially the entire table.
 

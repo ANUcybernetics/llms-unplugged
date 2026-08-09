@@ -9,6 +9,9 @@ listed: false
 import GridRowToggle from "../components/GridRowToggle.astro";
 import StaticGrid from "../components/StaticGrid.svelte";
 import GridZoom from "../components/GridZoom.svelte";
+import ContextTableGrowth from "../components/ContextTableGrowth.svelte";
+import LookupCoverage from "../components/LookupCoverage.svelte";
+import ModelScaleBars from "../components/ModelScaleBars.svelte";
 import Timer from "../components/Timer.astro";
 import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
 import UpcomingSessions from "../components/UpcomingSessions.astro";
@@ -30,9 +33,10 @@ import "../styles/widgets.css";
     0:14  What Claude does differently, at scale (slides 14-20, ~4 min)
     0:18  The claim, then come tomorrow          (slides 21-25, ~3 min)
 
-  The Bandura quote (slide 2) is the deck's only fragment build: two clicks
-  light up the two clauses in turn, and the second is the one the whole talk
-  is aimed at. It is repeated, already lit, on slide 21 to close the loop.
+  The Bandura quote (slide 2) is a two-click fragment build: the clauses light
+  up in turn, and the second is the one the whole talk is aimed at. The context
+  table on slide 16 is another two-click build: one, then two, then three words
+  of context. The quote is repeated, already lit, on slide 21 to close the loop.
 
   The scale run (15-19) grows one axis only: how many words of context the
   table remembers, with the vocabulary held fixed. That is the axis that
@@ -345,30 +349,33 @@ Now the question everyone asks, and it's the right one: why only look back one w
 
 {/* _class: centered */}
 
-<GridZoom cells={13824000} label="the same book, looking back two words" detail="240³ = 13.8 million cells" compareCells={57600} compareLabel="looking back one word" note="1,400 m² of paper — a couple of suburban blocks" />
+<ContextTableGrowth
+  vocabulary={240}
+  footprints={["roughly this stage", "a couple of suburban blocks", "a third of the Acton campus"]}
+/>
 
 {/* notes:
 Make it personal before you make it big. Ask the room: who can tell me what comes after `in the`? Nobody can --- and not because they're slow. Every sheet out there is filed under *one* boxed word, so a two-word question isn't a harder version of what they did for five minutes, it's a different set of sheets that nobody here is holding.
 
-Same book. Same 240 words. The only thing that changed is that we want to remember *two* words instead of one --- which would have fixed the wandering, because "sat in the" and "hit the" would no longer be the same question.
+The first table is what the room just built: 240 possible next words across, 240 one-word contexts down. That width never changes. *[click]*
 
-And look what it costs. The grid needs a row for every context, so asking for one more word of memory multiplies the whole thing by the size of the vocabulary again. This stage becomes a couple of suburban blocks.
+Same book. Same 240 words. Remembering *two* words adds no new next-word choices; it multiplies the rows by 240. That would have fixed the wandering, because "sat in the" and "hit the" would no longer be the same question. The stage becomes a couple of suburban blocks. *[click]*
 
-Three words would be a third of the Acton campus. For a picture book. Say that one, don't draw it.
+One more remembered word multiplies the rows by 240 again. A third of the Acton campus, for a picture book. The bars are schematic because the real second one would already be 240 times taller than the first; by the third it would be a line disappearing off the slide.
 */}
 
 ---
 
 {/* _class: centered */}
 
-<GridZoom cells={1e20} label="a real model, looking back three words" detail="100,000⁴ = 100 quintillion cells" compareCells={15e12} compareLabel="everything it ever read" note="20 × the surface of the Earth" />
+<LookupCoverage contextLabel="a real model looking back three words" />
 
 {/* notes:
-Last step the picture survives, so read it rather than draw it. A real vocabulary is about 100,000 tokens --- and that's a deliberate ceiling, not a discovery: rare words get chopped into pieces precisely so the vocabulary stops growing. Three words of memory: a hundred quintillion cells, twenty Earths of paper.
+Now switch from the picture book to a real vocabulary: about 100,000 tokens. That's a deliberate ceiling, not a discovery: rare words get chopped into pieces precisely so the vocabulary stops growing. Three words of memory still means a hundred quintillion possible cells --- twenty Earths of paper at the same scale.
 
-Now the bit that matters, and take your time. The gold speck is not our room any more. It's *everything the model ever read* --- fifteen trillion tokens, the entire training run --- and it has vanished.
+But physical size was never the fatal problem. The gold cell is everything the model can learn directly from its text, exaggerated enough to see. Read fifteen trillion tokens, fill at most fifteen trillion cells, out of a hundred quintillion.
 
-So do the division out loud. Read fifteen trillion tokens, fill at most fifteen trillion cells, out of a hundred quintillion. One cell in seven million. Every other row stays empty forever.
+Do the division out loud: one observed cell in seven million. Everything else stays empty forever.
 
 Then the callback, and this is the moment. Our own grid, three slides back, was already 98 per cent empty --- about a thousand cells with a tally in them out of 57,600. Every blank one is a pair the book never happened to make, and the model calls those impossible. That's the *easy* case: one word of memory, a picture book, and a room that holds every pair in it.
 
@@ -377,16 +384,14 @@ Three words in, it isn't 98 per cent empty. It's empty except for one cell in se
 
 ---
 
-{/* _class: impact */}
+{/* _class: centered */}
 
-**15 trillion** tokens of training text
-
-**~1 trillion** numbers in the model
+<ModelScaleBars />
 
 {/* notes:
-The two numbers you'll actually hear quoted. Fifteen trillion tokens is the published figure for a recent open model's training run --- and tokens is your audience's word now, off slide 11. Every one of them went past a counter, the way the book went past theirs.
+Two independent scales grow in a real model. The first is how much it reads: fifteen trillion tokens is the published figure for a recent open model's training run --- and tokens is your audience's word now, off slide 11. Every one of them went past a counter, the way the book went past theirs.
 
-The parameter count for the closed models isn't published; a trillion is the right order of magnitude, and the honest answer is "about that, and nobody outside will tell you".
+The second is how many numbers it learns. The parameter count for the closed models isn't published; a trillion is the right order of magnitude, and the honest answer is "about that, and nobody outside will tell you". These can be scaled independently: more training text does not itself make the model wider, and a larger model does not say how much text it saw.
 
 Don't editorialise here. The next slide is the point.
 */}
