@@ -105,7 +105,7 @@ absolutely-positioned layer): those set their own margins deliberately.
 - `pnpm run test` - run tests
 - `pnpm run pdf <slug> [output.pdf]` - export a deck to PDF via astromotion's
   bundled `astromotion-pdf` (builds, previews, captures with decktape,
-  compresses with Ghostscript); e.g. `pnpm run pdf cer`
+  compresses with Ghostscript); e.g. `pnpm run pdf my-first-language-model-60min`
 - `pnpm run decks:check` - check every slide of every deck for content that
   overflows the fixed 1280x720 canvas. Part of `pnpm run check`, and worth
   running on its own after any deck edit or theme bump: `pnpm run build` says
