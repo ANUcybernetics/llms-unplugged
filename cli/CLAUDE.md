@@ -64,6 +64,9 @@ cargo build --release
 # is shuffled and dealt round-robin, so the room collectively holds the model.
 ./target/release/llms_unplugged sheets -i ../data/the-cat-in-the-hat.txt -n 2 --sheets 24
 
+# Combine documents without introducing artificial bigrams at their boundaries
+./target/release/llms_unplugged sheets -i ../data/one.txt -i ../data/two.txt -n 2 --sheets 100
+
 # Same, but each sheet ordered by context (the "now organise your data" round)
 ./target/release/llms_unplugged sheets -i ../data/the-cat-in-the-hat.txt -n 2 --sheets 24 --sort
 
@@ -99,6 +102,11 @@ cargo test
   stretch to fill the page, so this is the density knob; it also decides the
   sheet count unless `--sheets` pins it
 - `--sort` (sheets only) - Order each sheet by context instead of shuffling it
+- `--input <PATH>` (sheets only) - May be repeated for a multi-document corpus;
+  each document keeps its own N-gram boundary
+- `--title <TITLE>` / `--author <AUTHOR>` (sheets only) - Override the labels
+  printed on the brief and participant pages (for example, to preserve a
+  source reveal)
 - `--columns` / `--font-size` (sheets only) - The rest of the sheet density.
   Columns default to 4 for bigrams and narrow as n grows. Pairs too wide for
   their column take two columns, so nothing wraps into the row below --- which
