@@ -7,6 +7,7 @@ use llms_unplugged::{
 };
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
+use std::collections::{BTreeSet, HashMap};
 use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
@@ -238,9 +239,20 @@ struct CutoutsArgs {
 
 #[derive(Args, Debug, Clone)]
 struct SheetsArgs {
-    /// Input text file to process
-    #[arg(short = 'i', long = "input", value_name = "INPUT")]
-    input: PathBuf,
+    /// Input text file to process. Repeat for a multi-document corpus; document
+    /// boundaries are preserved, so no artificial cross-document N-grams are
+    /// introduced.
+    #[arg(short = 'i', long = "input", value_name = "INPUT", required = true)]
+    input: Vec<PathBuf>,
+
+    /// Override the corpus title printed on the brief and participant sheets.
+    /// Useful when source names are meant to remain a reveal.
+    #[arg(long, value_name = "TITLE")]
+    title: Option<String>,
+
+    /// Override the corpus author printed on the brief and participant sheets.
+    #[arg(long, value_name = "AUTHOR")]
+    author: Option<String>,
 
     /// Output directory for generated files (default: current directory)
     #[arg(short, long, default_value = ".")]
@@ -518,9 +530,23 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
     }
 
     let punctuation: Vec<char> = args.punctuation.chars().collect();
-    let (tokens, metadata) =
-        process_file_for_cutouts(&args.input, punctuation, args.n, args.cjk.into())
-            .map_err(CliError::Processing)?;
+    let mut documents = Vec::with_capacity(args.input.len());
+    for input in &args.input {
+        documents.push(
+            process_file_for_cutouts(input, punctuation.clone(), args.n, args.cjk.into())
+                .map_err(CliError::Processing)?,
+        );
+    }
+    let (mut tokens, mut metadata) = combine_cutouts_documents(documents);
+    if let Some(title) = &args.title {
+        metadata.title.clone_from(title);
+    }
+    if let Some(author) = &args.author {
+        metadata.author.clone_from(author);
+    }
+    for (index, token) in tokens.iter_mut().enumerate() {
+        token.index = index + 1;
+    }
 
     // Dealing into one sheet is the cheapest way to count what is actually
     // usable: the deal drops the cutouts a search sheet has no use for, so the
@@ -636,6 +662,89 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
     println!("Wrote JSON to {}", json_path.display());
 
     Ok(())
+}
+
+/// Combine independently tokenised documents without creating an N-gram at
+/// either seam. Raw tokens already carry their within-document contexts, so
+/// aggregation only needs to rederive the summary statistics used by the
+/// sheets brief.
+fn combine_cutouts_documents(
+    documents: Vec<(Vec<RawToken>, CutoutsMetadata)>,
+) -> (Vec<RawToken>, CutoutsMetadata) {
+    if documents.len() == 1 {
+        return documents.into_iter().next().unwrap();
+    }
+
+    let title = documents
+        .iter()
+        .map(|(_, metadata)| metadata.title.as_str())
+        .collect::<Vec<_>>()
+        .join(" + ");
+    let author = documents
+        .iter()
+        .map(|(_, metadata)| metadata.author.as_str())
+        .collect::<Vec<_>>()
+        .join(" + ");
+    let total_tokens = documents.iter().map(|(tokens, _)| tokens.len()).sum();
+    let tokens: Vec<RawToken> = documents
+        .into_iter()
+        .flat_map(|(tokens, _)| tokens)
+        .collect();
+    let kept_tokens = tokens.iter().filter(|token| token.keep).count();
+    let unique_tokens = tokens
+        .iter()
+        .filter(|token| token.keep)
+        .map(|token| token.text.as_str())
+        .collect::<BTreeSet<_>>()
+        .len();
+
+    let mut counts: HashMap<&[String], HashMap<&str, usize>> = HashMap::new();
+    for token in tokens
+        .iter()
+        .filter(|token| token.keep && !token.previous_words.is_empty())
+    {
+        *counts
+            .entry(token.previous_words.as_slice())
+            .or_default()
+            .entry(token.text.as_str())
+            .or_default() += 1;
+    }
+
+    let occurrences: usize = counts.values().flat_map(HashMap::values).sum();
+    let entropy = if occurrences == 0 {
+        0.0
+    } else {
+        counts
+            .values()
+            .map(|next_words| {
+                let context_total: usize = next_words.values().sum();
+                let context_entropy = next_words.values().fold(0.0, |sum, count| {
+                    let probability = *count as f64 / context_total as f64;
+                    sum - probability * probability.log2()
+                });
+                context_total as f64 / occurrences as f64 * context_entropy
+            })
+            .sum()
+    };
+    let branching_factor = if counts.is_empty() {
+        0.0
+    } else {
+        counts.values().map(HashMap::len).sum::<usize>() as f64 / counts.len() as f64
+    };
+
+    (
+        tokens,
+        CutoutsMetadata {
+            title,
+            author,
+            total_tokens,
+            kept_tokens,
+            unique_tokens,
+            entropy,
+            perplexity: entropy.exp2(),
+            branching_factor,
+        },
+    )
 }
 
 /// An RNG seeded from `seed`, or from system entropy when no seed is given.

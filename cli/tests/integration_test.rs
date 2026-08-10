@@ -936,6 +936,55 @@ fn test_sheets_cli_partitions_corpus_across_sheets() -> io::Result<()> {
 }
 
 #[test]
+fn test_sheets_cli_preserves_repeated_input_boundaries() -> io::Result<()> {
+    let exe = cli_exe();
+    let temp = TempDir::new()?;
+    let first = write_sample_corpus(temp.path(), "first.txt", "alpha beta")?;
+    let second = write_sample_corpus(temp.path(), "second.txt", "gamma delta")?;
+    let out_dir = temp.path().join("out");
+
+    let output = Command::new(exe)
+        .arg("sheets")
+        .arg("--input")
+        .arg(&first)
+        .arg("--input")
+        .arg(&second)
+        .arg("--sheets")
+        .arg("1")
+        .arg("--title")
+        .arg("Hidden sources")
+        .arg("--author")
+        .arg("Two authors")
+        .arg("--json-only")
+        .arg("--output")
+        .arg(&out_dir)
+        .output()?;
+    assert!(output.status.success(), "sheets failed: {:?}", output);
+
+    let json: serde_json::Value =
+        serde_json::from_reader(BufReader::new(File::open(out_dir.join("sheets.json"))?))?;
+    let mut pairs = json["sheets"][0]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|entry| {
+            format!(
+                "{} {}",
+                entry["previous_words"][0].as_str().unwrap(),
+                entry["text"].as_str().unwrap()
+            )
+        })
+        .collect::<Vec<_>>();
+    pairs.sort();
+
+    assert_eq!(pairs, ["alpha beta", "gamma delta"]);
+    assert_eq!(json["metadata"]["total_tokens"], 4);
+    assert_eq!(json["metadata"]["title"], "Hidden sources");
+    assert_eq!(json["metadata"]["author"], "Two authors");
+    Ok(())
+}
+
+#[test]
 fn test_sheets_cli_is_deterministic_with_seed() -> io::Result<()> {
     let exe = cli_exe();
     let temp = TempDir::new()?;

@@ -4,36 +4,78 @@ title: Visionaries Showcase deck (15 Aug 2026)
 status: In Progress
 assignee: []
 created_date: '2026-08-07 04:07'
-updated_date: '2026-08-07 04:51'
+updated_date: '2026-08-10 12:08'
 labels:
   - decks
 dependencies: []
+modified_files:
+  - cli/src/main.rs
+  - cli/tests/integration_test.rs
+  - cli/CLAUDE.md
+  - website/src/decks/visionaries-showcase.deck.mdx
 priority: high
 ---
 
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Slides and visual aids for Ben's 14-minute talk at the ANU Visionaries Among Us Showcase (Manning Clark Hall, 15 Aug 2026, 3:46pm slot). A new deck alongside unplugged-age-of-ai.deck.mdx, which is the stylistic template --- but the content differs: this talk trains the model live on a Wacom tablet (hybrid Old Man and the Sea + Cat in the Hat corpus, 26x26 grid, bag-of-balls sampling) rather than dealing sheets to the room, and closes on Human-Scale AI and the Cybernetic Studio. The fuller talk plan (beats, timings, props, risks) lives in Ben's nb note anu-visionaries-showcase-2026.
+Rewrite Ben's 14-minute ANU Visionaries Among Us Showcase talk for Manning Clark Hall (15 Aug 2026, 3:46 pm) around the search-sheet demonstration that succeeded on 10 Aug. The room becomes a pre-trained bigram model built from three anonymously presented sources: The Cat in the Hat, an opening excerpt of The Old Man and the Sea, and The Tell-Tale Heart. Keep the showcase-specific Human-Scale AI/ANU 80th-anniversary thesis, avoid merely replaying the Age of AI talk, and make explicit transitions from Tergel Namsrai's preceding 3MT on sleep and brain health into Cecilia Nie's following 3MT on cholesterol as a treatment route for parasitic disease.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [x] #1 deck exists at website/src/decks/visionaries-showcase.deck.mdx with listed: false and builds cleanly
-- [x] #2 deck covers the talk beats with speaker notes, and hands off to / returns from the live Wacom grid segment cleanly (explicit switch points in the notes)
-- [x] #3 scale beat reuses GridZoom/StaticGrid components where they fit the new corpus (42 tokens, 26x26)
-- [ ] #4 backup static image of the pre-drawn 26x26 grid (labels only) exported, usable if the Wacom or AV fails
-- [ ] #5 AV deliverables exported: presenter intro slide image, any side-screen/background images, and a cue sheet for the AV company
+- [ ] #1 Deck remains unlisted and passes the site build, deck checks, and slide-fit validation
+- [ ] #2 The live demonstration uses the 100-sheet anonymous three-source corpus, printed twice, with notes covering distribution, seeding, random sampling, missing-sheet recovery, and the 14-minute hard stop
+- [ ] #3 Source identities remain hidden until after generation, then a three-source reveal explains how shared contexts let the model cross boundaries it cannot see
+- [ ] #4 The talk targets 13:00, retains the Human-Scale AI and ANU 80th-anniversary brief, and explicitly links Tergel Namsrai before it to Cecilia Nie after it
+- [ ] #5 The comparison with frontier LLMs distinguishes more context, generalisation, instruction tuning, training-data scale, and parameter scale without presenting a transformer as an enlarged N-gram grid
+- [ ] #6 AV and facilitator notes match the simplified setup: sheets pre-placed, one complete set guaranteed in occupied seats, whiteboard/scribe ready, one laptop-feed cue, and no Wacom/cards/balls dependency
 <!-- AC:END -->
 
 ## Implementation Plan
 
 <!-- SECTION:PLAN:BEGIN -->
-1. Define hybrid-corpus token/vocab data (42 tokens, 26 vocab, two sources)\n2. Extend StaticGrid if needed for two-colour (per-source) tallies and an empty-grid step\n3. Write visionaries-showcase.deck.mdx following unplugged-age-of-ai structure (beats in speaker notes, whiteboard-annotation switch points)\n4. Build check\n5. AV exports (intro slide, backup grid image, cue sheet) as follow-up
+Target running order: 13:00 against the 14:00 hard stop.
+
+1. 0:00–1:20 — Enter from the preceding talk. Open on Tergel Namsrai having taken the room inside the relationship between sleep and brain health; pivot to the other apparently hidden system in the program, a machine that talks. Keep the strongest existing lines—“we got the tool before we got the story” and “it is hard to have an opinion on a machine you have never seen the inside of”—but omit the Bandura sequence so repeat attendees do not hear the 10 Aug talk verbatim. Promise that the room will become the machine.
+
+2. 1:20–2:45 — Reveal the sheets, not the sources. Have them pre-placed face-down to avoid a distribution pause. Explain one token pair, the shuffle, and the collective model. Use the neutral sheet label; state 6,409 tokens, 1,115 distinct tokens, and 6,406 bigrams across 100 unique sheets. Explain that the set is printed twice: every transition is doubled equally, so the probabilities are unchanged and one missing copy does not remove a transition. Seat/distribute the complete A set first, with B copies in a different room zone; if attendance is under 100, consolidate multiple A sheets with helpers rather than omit unique pages.
+
+3. 2:45–3:30 — Seed and algorithm. Ask one nearby participant for any pair, write both tokens, then show the compact four-step age-of-AI algorithm: call the last token and colour, hands up for boxed matches, choose a hand randomly, write the next token. Stress random selection once; do not explain all the jargon yet.
+
+4. 3:30–7:30 — Run the room for about four minutes and 12–15 generated tokens. Keep the whiteboard/scribe loop fast. Narrate only two observations during motion: the number of hands is the probability distribution, and a different random hand makes a different sentence. The corpus has zero structural terminal contexts; if a round is quiet, name a missing physical sheet and reseed. Stop while the room wants another round, then read the result straight.
+
+5. 7:30–9:30 — Cash out the experience. Land “we just ran a language model,” map sheets/hands/random pick/board sentence to parameters/distribution/sampling/generation, and state that nobody wrote the resulting sentence. Keep this close to the proven age-of-AI sequence because the audience has just supplied its referents.
+
+6. 9:30–10:45 — Three-source reveal. Build in three clicks: Hemingway first, Poe second, Seuss last for the largest recognition/laugh. Use only short identifying fragments. Explain that document boundaries were preserved during training, yet shared contexts such as “the old man,” “said,” “house,” and function words let generation cross between sources because a bigram model cannot see provenance. This replaces the old two-colour grid reveal.
+
+7. 10:45–12:00 — Scale without changing the loop. Compress the age-of-AI “three things” and scale run into two slides: frontier models use much longer context, generalise between related tokens, and are instruction-tuned; they have vastly more training text and learned numbers and use different machinery. Finish the comparison on “still words in → words out,” not the old claim that a trillion parameters is merely a large grid.
+
+8. 12:00–13:00 — Fit the showcase brief and hand forward. The room has literally made a human connection into computational machinery: the model existed only in their coordinated actions. Tie that to ANU at 80—founded in 1946 to help a country understand a transformed world, with AI as the present version of that public task—and land Human-Scale AI in one sentence. Close the program bridge: Tergel took us inside a sleeping brain; this room went inside a talking machine; Cecilia Nie now takes us inside a parasite, using cholesterol as a possible treatment route. Retain Brad Tucker/Brian Schmidt and the fog-machine joke only as an optional whole-program tag, not as the immediate hand-off.
+
+9. Remove obsolete staging and visuals: Wacom grid annotation, 42 A3 cards, balls/bag, two-colour tally grid, MC volunteer choreography, and their backup requirements. Reuse the age-of-AI sheet, algorithm, role-mapping, “not in the book,” scale, QR, and School-mark visual language where it serves the shorter spine; keep the Visionaries title, 1946 close, and event-specific notes.
+
+10. Validate the rewrite with the anonymous PDF in hand: confirm no source names leak before the reveal, run the deck through build/check/slide-fit, rehearse to 13:00 with a hard cut at 12:15 into the closing minute, and update the AV cue sheet/presenter image for the simplified one-feed setup.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-Deck live at website/src/decks/visionaries-showcase.deck.mdx (unlisted, 15 slides). BigramCountsTable extended with bigramsB (two-source tally colours: gold Hemingway / blue Seuss, no shared cells in this corpus) and dense mode for the 26x26 grid; corpus colour classes added to widgets.css. Full check suite green (typecheck, lint, format, 171 tests, astromotion-check: all slides fit); grid + reveal slides verified in-browser. Gotcha encoded in the deck comment: MDX splits multi-line JSX children into sibling <p>s, so the reveal slide's coloured paragraphs must stay single-line. Remaining: AC4 (export empty-grid slide as backup image) and AC5 (AV deliverables) once specs are confirmed with Kenyon.
+The current 15-slide deck still implements the superseded Wacom/grid/cards/bag version; the revised implementation plan above is now the source of truth and has not yet been applied to the deck.
+
+A local anonymous search-sheet master has been generated at cli/out/sheets/visionaries-showcase/sheets.pdf: 100 unique A4 participant sheets plus a two-page facilitator brief, 6,406 bigrams at 64–65 pairs per page, zero terminal contexts. Print two collated copies. The PDF and source corpora remain ignored local artefacts.
+
+The sheets CLI now accepts repeated --input values while preserving document boundaries and supports --title/--author display overrides so the printed pages do not spoil the three-source reveal.
+
+Program links verified against the showcase runsheet and ANU material: Tergel Namsrai immediately precedes Ben and works on sleep/brain health; Cecilia Nie immediately follows with “Spicing up cholesterol: a novel cure for parasitic diseases.”
 <!-- SECTION:NOTES:END -->
+
+## Comments
+
+<!-- COMMENTS:BEGIN -->
+author: @codex
+created: 2026-08-10 12:08
+---
+Pivot approved after the 10 Aug search-sheet talk/demo worked well. The 100-sheet master corpus has been generated and duplicated for a 200-person room; this task now plans the deck rewrite, not the superseded Wacom/grid version.
+---
+<!-- COMMENTS:END -->
