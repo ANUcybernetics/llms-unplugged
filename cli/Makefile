@@ -66,7 +66,14 @@ SHEETS_TARGETS := \
 	$(SHEETS_DIR)/green-eggs-and-ham.pdf \
 	$(SHEETS_DIR)/peter-rabbit.pdf \
 	$(SHEETS_DIR)/the-cat-in-the-hat.pdf \
+	$(SHEETS_DIR)/the-cat-in-the-hat-2up-a4.pdf \
 	$(SHEETS_DIR)/australia.pdf
+
+# Cat in the Hat remains legible when reduced to A5 for the two-up handout,
+# provided its source sheets use fewer rows and larger type. Keep this local to
+# that corpus: applying the same density to the much wordier Australia corpus
+# more than doubles its participant count.
+SHEETS_EXTRA_ARGS_the-cat-in-the-hat := --rows 15 --font-size 19.2pt
 
 # Define common variables (typst comes from mise; TYPST_BIN overridable)
 TOOL := target/release/llms_unplugged
@@ -125,8 +132,16 @@ $(SHEETS_DIR)/%.pdf: tokenized-sheets.typ cutout-common.typ $(TOOL)
 	$(eval NAME := $(notdir $(basename $@)))
 	$(eval WORK_DIR := $(OUT_DIR)/sheets/$(NAME))
 	mkdir -p $(WORK_DIR) $(SHEETS_DIR)
-	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) TYPST_BIN=$(TYPST_BIN) $(TOOL) sheets --input $(DATA_DIR)/$(NAME).txt --output $(WORK_DIR) -n 2 --seed 42
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) TYPST_BIN=$(TYPST_BIN) $(TOOL) sheets --input $(DATA_DIR)/$(NAME).txt --output $(WORK_DIR) -n 2 --seed 42 $(SHEETS_EXTRA_ARGS_$(NAME))
 	cp $(WORK_DIR)/sheets.pdf $@
+
+# Put consecutive portrait pages side-by-side at exact A5 size on A4
+# landscape. An odd final page leaves the right-hand half blank.
+$(SHEETS_DIR)/the-cat-in-the-hat-2up-a4.pdf: two-up.typ $(SHEETS_DIR)/the-cat-in-the-hat.pdf
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) $(TYPST_BIN) compile --root .. \
+		--input source=$(SHEETS_DIR)/the-cat-in-the-hat.pdf \
+		--input pages=$$(qpdf --show-npages $(SHEETS_DIR)/the-cat-in-the-hat.pdf) \
+		two-up.typ $@
 
 # Default target to build all booklets
 .PHONY: booklets

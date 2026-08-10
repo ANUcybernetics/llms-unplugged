@@ -398,63 +398,18 @@
   ],
 )
 
-// Monochrome renderers for the worked example in the instruction line. The
-// example is a reading aid, not one of the pairs to be searched, so it stays
-// black and white --- in the palette colours it would read as just another
-// token on the page and pull the eye away from the real ones.
-#let mono-word-box(t) = highlight(
-  fill: luma(60),
-  extent: 0.1em,
-  radius: 2pt,
-  text(fill: white, weight: "bold", t),
-)
-#let mono-cutout(token) = {
-  let parts = token.previous_words.map(mono-word-box)
-  parts.push(text(fill: black, weight: "bold", token.text))
-  parts.join(h(inter_word_gap))
-}
-
-// An all-alphabetic pair off this participant's own sheet, so the example in
-// the instruction line is one they can actually go and find. Punctuation-only
-// contexts make a confusing example, hence the preference.
-#let sheet-example(sheet) = {
-  let clean = t => (
-    t.text.find(regex("[A-Za-z]")) != none
-      and t.previous_words.all(p => p.find(regex("[A-Za-z]")) != none)
-  )
-  let found = sheet.find(clean)
-  if found != none { found } else { sheet.at(0, default: none) }
-}
-
-// The rule of the game, so a participant who missed the briefing can still play
-// from the sheet alone.
-#let sheet-header(sheet) = {
-  let example = sheet-example(sheet)
-  block(width: 100%, below: 0.9em)[
-    #text(size: 10pt, fill: muted)[
-      When the #prev-words-phrase called out #if (
-        previous-words-count > 1
-      ) [match] else [matches] the boxed #prev-words-phrase of a #pair-noun
-      below, raise your hand, and read out that #{ pair-noun }'s *next token* if
-      you're picked. If more than one #pair-noun matches, just go with the first
-      one you spot. (A token is one word or one punctuation mark.)
-      #if example != none [
-        For example, if the #prev-words-phrase called out
-        #if previous-words-count > 1 [are] else [is]
-        "#example.previous_words.join(" ")", then the #pair-noun #mono-cutout(
-          example,
-        ) is a match and you answer #strong(text(fill: black, example.text)).
-      ]
-    ]
-    // The same key the brief carries, at sheet scale. Whoever is running the
-    // activity can then call the colour along with the token ("it's a teal
-    // one") and be understood: the brief is theirs alone, so without this the
-    // room would be hearing colour names it had no way to resolve.
-    #colour-key(size: 8.5pt, gap: 0.28em, lead-in: [colour names:])
-    #v(0.5em)
-    #line(length: 100%, stroke: 0.8pt + luma(120))
-  ]
-}
+// A facilitator briefs the activity, so the participant sheets only repeat
+// the colour names they need during play. The prose instructions and worked
+// example live in the facilitator brief at the front of the PDF; repeating
+// them on every sheet costs useful search space, especially when printed A5.
+#let sheet-header() = block(width: 100%, below: 0.5em)[
+  // The same key the brief carries, at sheet scale. Whoever is running the
+  // activity can call the colour along with the token ("it's a teal one")
+  // and everyone can resolve that name on their own page.
+  #colour-key(size: 8.5pt, gap: 0.28em, lead-in: [colour names:])
+  #v(0.25em)
+  #line(length: 100%, stroke: 0.8pt + luma(120))
+]
 
 // ===== Laying the pairs out =====
 
@@ -601,7 +556,7 @@
         if p == 0 {
           grid(
             rows: (auto, 1fr),
-            sheet-header(sheet),
+            sheet-header(),
             rows-grid(page-rows, columns_per_sheet),
           )
         } else {
