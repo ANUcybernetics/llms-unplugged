@@ -4,7 +4,7 @@ title: Visionaries Showcase deck (15 Aug 2026)
 status: In Progress
 assignee: []
 created_date: '2026-08-07 04:07'
-updated_date: '2026-08-11 11:25'
+updated_date: '2026-08-11 11:47'
 labels:
   - decks
 dependencies: []
@@ -108,6 +108,29 @@ Program links verified against the showcase runsheet and ANU material: Tergel
 Namsrai immediately precedes Ben and works on sleep/brain health; Cecilia Nie
 immediately follows with "Spicing up cholesterol: a novel cure for parasitic
 diseases".
+
+REVISIONS (11 Aug, post-review): deck now 19 slides, still targets 13:00.
+  - crossing beat: evidence no longer depends on the sampled sentence ---
+    the hands-were-the-seam retrospective (every 'said' round drew hands from
+    all three books) plus the old-man bridge (old->man in Hemingway ~27x and
+    Poe ~13x, same cells) carry slide 12; sentence-visibly-crossed is bonus
+  - close re-sequenced: 1946 -> data centre (hands-up callback) -> new
+    harder-to-bullsh*t impact slide -> QR (fog-machine tag + Cecilia hand-off
+    delivered while the room scans) -> School mark. Time check: past 12:15,
+    drop the fog tag; the hand-off cannot be cut
+  - opening restored to the program sandwich (Ann / Brad+Brian / 6,409 words)
+    with the Tergel bridge folded in
+  - scale numbers (15T tokens, ~1T parameters) typeset on slide 14;
+    instruction-tuning objection promoted from conditional footnote to beat
+  - training gets its one-liner in the slide-9 mapping (counting = training)
+  - sheets go UNDER seats (taped/tucked), not on them, so they aren't read
+    during Ann's talk; needs Advancement staffing, unconfirmed
+  - AV is now TWO cues: feed at walk-on + house lights up/down around the
+    activity (sheets unreadable in a darkened hall) --- update cue sheet
+  - nb beat sheet rewritten for the sheets talk (previously still described
+    the superseded grid/cards/balls version); Kenyon delta recorded there,
+    not yet communicated
+Checks: pnpm run check green incl. decks:check (422 slides / 8 decks all fit).
 <!-- SECTION:NOTES:END -->
 
 ## Comments
