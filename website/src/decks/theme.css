@@ -463,76 +463,44 @@
   display: none;
 }
 
-/* The participant-voice line opening each of the three scaling-up differences:
+/* The participant-voice line opening two of the three scaling-up differences:
    something people in the room have actually experienced with a real model,
    which the figure below then explains. Set as a quoted aside so it reads as
    reported speech rather than as the slide's own claim.
 
-   The extra space beneath is doing real work on the post-training slide, where
-   the line lands directly above `.qa-compare`'s own italic prompt: without it
-   the two italics read as one block, losing the distinction between what a
-   participant said and what we're prompting the grid with.
-
-   Keep this modest. The other two slides carrying a `.voice` line sit above a
-   full-width grid widget and run close to the bottom of the 720px canvas, so
-   space spent here comes straight out of theirs --- at 2.75rem (tuned before
-   theme v0.11.6 widened the default paragraph gap) the context slide clipped
-   its last line. */
+   Keep this modest. Both slides carrying a `.voice` line sit above a full-width
+   grid widget and run close to the bottom of the 720px canvas, so space spent
+   here comes straight out of theirs --- at 2.75rem (tuned before theme v0.11.6
+   widened the default paragraph gap) the context slide clipped its last line. */
 .reveal .voice {
   color: var(--color-text-secondary);
   font-style: italic;
   margin-block-end: 1rem;
 }
 
-/* "answering isn't a thing it does": a prompt, then what the grid returns.
-   The slide currently shows one continuation (weak); `.strong` is kept for a
-   contrasting answer row. The prompt is the line the room reads first, so it is
-   sized near the body text rather than as fine print. Note MDX wraps the spans
-   of each `.qa-item` in a `<p>`, so the label sits inline with its answer
-   rather than stacking --- fine at one item, revisit if a second is added. */
-.reveal .qa-compare {
-  display: flex;
-  flex-direction: column;
-  gap: 0.7em;
-}
-
+/* "answering isn't a thing it does": the question we put to their grid, and the
+   continuation that comes back. That continuation is the only figure the slide
+   has, so it is sized to be looked at from the back of the room rather than set
+   as fine print. It stays gold-on-muted rather than highlighted --- it's the
+   joke, not the answer. Note MDX wraps both spans in a single `<p>`, so the
+   stacking lives on the spans themselves, not on a flex parent. */
 .reveal .qa-compare .qa-prompt {
   display: block;
+  margin-block-end: 0.9em;
   font-size: 0.85em;
   font-style: italic;
   color: var(--color-text-secondary);
 }
 
-.reveal .qa-compare .qa-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2em;
-}
-
-.reveal .qa-compare .qa-label {
-  font-size: 0.7em;
-  color: var(--color-text-secondary);
-}
-
 .reveal .qa-compare .qa-a {
-  align-self: start;
+  display: inline-block;
   max-width: 100%;
-  padding: 0.25em 0.6em;
+  padding: 0.3em 0.7em;
   border-radius: 0.25em;
+  background: var(--lm-highlight-soft);
+  color: var(--color-text-secondary);
   font-family: var(--font-mono);
-  font-size: 0.7em;
-}
-
-.reveal .qa-compare .qa-a.weak {
-  background: var(--lm-highlight-medium);
-  color: var(--color-text-muted);
-  opacity: 0.7;
-}
-
-.reveal .qa-compare .qa-a.strong {
-  background: var(--lm-highlight-strong);
-  outline: 2px solid var(--anu-gold);
-  outline-offset: 1px;
+  font-size: 1.15em;
 }
 
 /* The headingless slides in the scaling-up section use the theme's `.centered`

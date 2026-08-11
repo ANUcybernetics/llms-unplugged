@@ -84,30 +84,22 @@ Two asides if they come up. These numbers are illustrative, not measured --- the
 
 {/* _class: centered */}
 
-<p class="voice">"I corrected it, and it said 'sorry, you're right'---even when I wasn't"</p>
 <div class="qa-compare">
-  <span class="qa-prompt">prompt: "what is the capital of France?"</span>
-  <div class="qa-item">
-    <span class="qa-label">your grid</span>
-    <span class="qa-a weak">"see spot, run. see"</span>
-  </div>
+  <span class="qa-prompt">you ask your grid: "what is the capital of France?"</span>
+  <span class="qa-a">"see spot, run. see"</span>
 </div>
 
 it isn't refusing to answer---**answering isn't a thing it does**
 
 the fix isn't a bigger knob---it's more training, on text made of _conversations_
 
-{/* notes: The three knobs are done. This one is deliberately not a fourth --- it isn't about *how much*, it's about *which text*, and it's the difference that explains the behaviour they meet every day. Say that as you arrive: "and one thing that isn't a matter of size at all".
-
-Ask before you explain: who's had one of these cave the moment you pushed back --- agreed with you when you were the one who had it wrong? It gets a laugh and everyone's had it. Then: to see where that habit comes from, we have to look at the one thing your grid can't do at all.
+{/* notes: The three knobs are done. This one is deliberately not a fourth --- it isn't about *how much*, it's about *which text*. Say that as you arrive: "and one thing that isn't a matter of size at all".
 
 No heading --- the line is "let's ask your grid a question", and the slide just shows what comes back. Feed their model a question and it does what it always does: continues. It isn't being unhelpful and it isn't broken; nothing in "tally which word follows which" has any notion of a question and an answer. This is the honest state of a model that has only ever been trained to continue text --- and it's also, near enough, what a frontier model looks like straight out of pre-training: their problem, with better grammar. Turn all three knobs to the maximum and you still get this.
 
-Then the second line. What turns it into something that answers you is post-training: a second, much smaller round of the same training on transcripts of conversations, plus feedback on which answers people preferred. Tally text off the web and what follows a question mark is usually another question; tally conversations and what follows it is the start of an answer.
+Then the second line. What turns it into something that answers you is post-training: a second, much smaller round of the same training on transcripts of conversations, plus feedback on which answers people preferred. Tally text off the web and what follows a question mark is usually another question; tally conversations and what follows it is the start of an answer. The mechanism hasn't changed --- same predict-the-next-word loop, same dice --- just different text to learn from, so different habits on top.
 
-The mechanism hasn't changed --- same predict-the-next-word loop, same dice --- just different text to learn from, so different habits on top. Don't labour it; the joke has already made the point.
-
-Now close the loop on the question you opened with. "Feedback on which answers people preferred" is where the caving comes from: raters, faced with two replies, tended to prefer the agreeable one, so agreeing got reinforced. There is nowhere in any of this that a fact is marked true or false --- no setting, no lookup, nothing like the tally marks they can point at. "You're absolutely right" is a habit that scored well, produced by the same next-token loop as everything else. Which is also the useful takeaway: agreement from one of these is not evidence you were right. */}
+One aside, if the room is with you and you're not behind. "Feedback on which answers people preferred" is where sycophancy comes from: ask who's had one of these cave the moment they pushed back, agreeing when they were the one who had it wrong. Raters, faced with two replies, tended to prefer the agreeable one, so agreeing got reinforced --- and nowhere in any of this is a fact marked true or false. Agreement from one of these is not evidence you were right. It's a good moment, but it's a second point; the slide stands without it. */}
 
 ---
 
