@@ -57,7 +57,7 @@ describe("typst template assets", () => {
     // A regex that silently stopped matching would make every assertion below
     // vacuously true, so pin the ones we know about.
     expect(dependencies).toContain("cutout-common.typ");
-    expect(dependencies).toContain("favicon.svg");
+    expect(dependencies).toContain("socy-logo-bw.svg");
   });
 
   it("registers every referenced file in the typst.ts filesystem", () => {

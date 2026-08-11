@@ -10,6 +10,7 @@ those subsets from the local system fonts:
     font: ("Libertinus Serif", "Noto Serif CJK SC")   <- Serif is a default;
     font: ("Libertinus Sans", "Noto Sans CJK SC")        Sans + CJK bundled
     font: "Monaspace Argon"                              <- wordmark, bundled
+    font: "Public Sans"                                  <- brand face, bundled
 
 Two constraints shape the output:
 
@@ -117,6 +118,22 @@ def sources() -> list[FontSpec]:
             FONT_DIR / "MonaspaceArgon-static" / "MonaspaceArgon-Regular.otf",
             "MonaspaceArgon-Regular-subset.otf",
             "Monaspace Argon",
+            unicodes=LATIN_UNICODES,
+        ),
+        # The project typeface, as used on the website. The cutouts template
+        # sets its instructions, footers and word mark in it, so the in-browser
+        # export needs it too or the page it produces silently falls back to a
+        # different face from the one the CLI prints.
+        FontSpec(
+            FONT_DIR / "PublicSans-otf" / "PublicSans-Regular.otf",
+            "PublicSans-Regular-subset.otf",
+            "Public Sans",
+            unicodes=LATIN_UNICODES,
+        ),
+        FontSpec(
+            FONT_DIR / "PublicSans-otf" / "PublicSans-Bold.otf",
+            "PublicSans-Bold-subset.otf",
+            "Public Sans",
             unicodes=LATIN_UNICODES,
         ),
     ]

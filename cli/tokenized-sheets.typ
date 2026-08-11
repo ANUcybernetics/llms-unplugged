@@ -11,11 +11,13 @@
 // The shuffle is what makes this work: in corpus order an uncut page is just
 // the source text with boxes drawn around it.
 
-// Sheets take the compact 11-colour palette: the pairs are set around 16pt
-// here, where the cutouts' 30 colours stop being tellable apart. See
+// Sheets take the compact 8-colour palette: the pairs are set around 16-19pt
+// here, where the cutouts' 30 colours stop being tellable apart, and every
+// swatch has to answer to a colour word called across a room. See
 // cutout-common.typ for why each palette is the size it is.
 #import "cutout-common.typ": (
-  brand-gold, compact-palette, derive-n, inter_word_gap, renderers,
+  brand-font, brand-gold, compact-palette, derive-n, inter_word_gap, renderers,
+  wordmark,
 )
 #let (coloured-word, render-cutout, word-box, entry-for, ..) = renderers(
   palette: compact-palette,
@@ -178,8 +180,17 @@
 #let instructions-page() = {
   set page(footer: align(
     center,
-    text(fill: brand-gold, size: 9pt, "www.llmsunplugged.org"),
+    text(
+      font: brand-font,
+      fill: brand-gold,
+      size: 9pt,
+      "www.llmsunplugged.org",
+    ),
   ))
+  // The brief is the project talking, so it is set in the project's typeface.
+  // Only the token pairs quoted inside it stay Libertinus, and they carry that
+  // with them from the renderers.
+  set text(font: brand-font, size: 10pt)
   show heading: set block(above: 1.5em, below: 0.9em)
   set par(justify: false)
 
@@ -194,8 +205,7 @@
     columns: (1fr, auto),
     column-gutter: 1em,
     align: (left + horizon, right + horizon),
-    [= Search sheets: how to run the activity],
-    image("favicon.svg", width: 1.6cm),
+    [= Search sheets: how to run the activity], wordmark(size: 11pt),
   )
 
   columns(2, gutter: 1.6em)[
@@ -245,8 +255,11 @@
     // The colour named here is looked up rather than written in, so the
     // sentence stays true of whatever token the corpus supplied above.
     Say the colour when you call a token out --- "who has #emph(sample.text)?
-    it's a #entry-for(sample.text).name one" --- and the room can find the
-    swatch before reading a word:
+    it's a #entry-for(sample.text).name one" --- and most of the page stops
+    being worth reading. The swatches are chosen to answer to these words, so
+    the words are the ones to use; the sheets themselves print no key, because a
+    strip of swatches at the top of a page of swatches is one more thing to scan
+    past.
 
     #colour-key()
 
@@ -431,7 +444,7 @@
 // disambiguate.
 #let sheet-footer(index, page-index, page-count) = align(
   center,
-  text(fill: luma(150), size: 8pt)[
+  text(font: brand-font, fill: luma(150), size: 8pt)[
     Sheet #str(index + 1) of #str(sheets.len())
     #if page-count > 1 [
       (page #str(page-index + 1) of #str(page-count))
@@ -440,16 +453,20 @@
   ],
 )
 
-// A facilitator briefs the activity, so the participant sheets only repeat
-// the colour names they need during play. The prose instructions and worked
-// example live in the facilitator brief at the front of the PDF; repeating
-// them on every sheet costs useful search space, especially when printed A5.
+// A facilitator briefs the activity, so the participant sheets carry no
+// instructions: the prose and the worked example live in the facilitator brief
+// at the front of the PDF, and repeating them on every sheet costs search
+// space, especially when printed A5.
+//
+// This used to print the colour key as well, so a participant could resolve
+// "it's a teal one" against a swatch. The eight-colour palette is named rather
+// than merely distinct --- every swatch is pinned to what a room would call
+// it --- so the key was explaining words nobody needed explained, in a strip
+// of swatches that looks exactly like the pairs below it. What is left is the
+// word mark, which is smaller than the key it replaces.
 #let sheet-header() = block(width: 100%, below: 0.5em)[
-  // The same key the brief carries, at sheet scale. Whoever is running the
-  // activity can call the colour along with the token ("it's a teal one")
-  // and everyone can resolve that name on their own page.
-  #colour-key(size: 8.5pt, gap: 0.28em, lead-in: [colour names:])
-  #v(0.25em)
+  #wordmark(size: 7pt)
+  #v(0.2em)
   #line(length: 100%, stroke: 0.8pt + luma(120))
 ]
 

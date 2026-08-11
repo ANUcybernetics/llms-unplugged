@@ -108,84 +108,118 @@
   ),
 )
 
-// The search-sheets palette: 10 chromatic + black = 11 swatches, min pairwise
-// ΔE = 0.167 under a 20° hue floor. Sheets set their pairs around 16pt rather
-// than the cutouts' 36pt, and colour discrimination falls off with size: at
-// that scale 30 swatches read as "some sort of blue" rather than as 30
-// answers, so scanning by colour stops narrowing anything down. Fewer,
-// further-apart colours collide more often on the page but each collision is
-// obvious, which is the better failure for a page you scan.
+// The search-sheets palette: 7 chromatic + black = 8 swatches, min pairwise
+// ΔE = 0.130. Sheets set their pairs around 16-19pt rather than the cutouts'
+// 36pt, and colour discrimination falls off with size: at that scale 30
+// swatches read as "some sort of blue" rather than as 30 answers, so scanning
+// by colour stops narrowing anything down. Fewer, further-apart colours
+// collide more often on the page but each collision is obvious, which is the
+// better failure for a page you scan.
 //
-// No mid-grey here, unlike the cutouts palette. Grey sits at the centre of the
-// a-b plane, and under the contrast floor below that is exactly where the
-// low-chroma darks live — the teals and olives that fill the two 113° holes an
-// unconstrained search left in the hue wheel. Dropping it costs one swatch and
-// buys back almost all of the ΔE the hue floor spends (0.180 → 0.167), which
-// is the better trade on a page you scan by hue.
+// Eight rather than the eleven this used to hold, because nobody is
+// discriminating eleven colours here. Each participant holds ONE sheet of
+// ~50 pairs, so a colour never has to separate the whole corpus --- only the
+// handful of pairs in front of one pair of eyes. Eight buckets put ~6 pairs
+// of each colour on a sheet, which is all "it's a green one" has to narrow
+// down before someone reads the token.
 //
-// Every entry additionally clears a 4.5:1 WCAG contrast ratio against white
-// (`--min-white-contrast 4.5`), which is a stronger constraint than the
-// L ≤ 0.65 that `light: false` records. So on sheets the next token is dark
-// enough to read as plain coloured text on the paper, and needs no stroke to
-// prop it up — a 0.5pt outline that reads as a crisp edge at 36pt just fills
-// in the counters at 16pt. It also means every box carries white text, so
-// there is no mid-lightness fill left wearing hard-to-read black.
+// Generated differently from the palette above, and this is the substantive
+// difference between them. The large palette is a free max-min search that
+// gets named afterwards, by hand, against the xkcd survey --- which is how it
+// ended up needing "ochre" and "wine", words chosen because they were the
+// nearest available, not because a room would reach for them. Here the words
+// come first: every swatch is pinned to a colour word's survey centroid, and
+// the search picks the eight words whose printable colours sit furthest
+// apart. Nameability is a hard constraint rather than a post-hoc label,
+// because the name is how a colour gets used --- "who has _cat_? it's a green
+// one" only works if the room agrees on which swatch "green" means.
+//
+// What the contrast floor costs: at 4.5:1 against white, yellow (ΔE 0.41 from
+// its centroid), lime (0.36), tan (0.20), mustard (0.20), turquoise (0.18),
+// pink (0.17) and orange (0.12) all have to darken so far that the word stops
+// describing what prints --- a printable "yellow" is an olive. They are
+// dropped rather than renamed. Of the eight kept, six print at their survey
+// centroid exactly; teal moves 0.041 and green 0.112, green being the one
+// word here doing real work to stay printable.
+//
+// The tightest pair is green/teal at ΔE 0.130, and 96% of that gap is hue
+// (142deg vs 184deg) rather than lightness --- which is the gap that survives
+// being scanned quickly. The palette is not hue-floored: at eight words the
+// binding constraint is which words exist, not how they are spaced.
 // Regenerate with:
-//   node cli/scripts/generate_palette.ts --n 10 --min-white-contrast 4.5 --min-hue-sep 20 --no-grey --c-min 0.08
+//   node cli/scripts/generate_palette.ts --nameable --n 8 --min-white-contrast 4.5 \
+//     --terms black,red,brown,green,teal,blue,purple,magenta
 //
-// Unlike the large palette, every entry carries a `name`: eleven colours is
-// few enough that each can be called out from the front of the room ("who has
-// _cat_? it's a teal one"), which narrows the search before anyone reads a
-// token, and the sheets' colour key prints these names as their own swatches.
-// Names are the nearest common English colour word to each sRGB value, checked
-// against the xkcd colour-survey names — the most widely-agreed naming data we
-// have — and pulled apart by hand where two entries would otherwise take the
-// same word (hence blue/navy for the two blues and violet/purple/wine across
-// the three purples, rather than three shades of "purple"). The generator
-// does not emit them, so re-name by hand after any regeneration.
+// Every entry clears 4.5:1 WCAG contrast against white, so the next token is
+// dark enough to read as plain coloured text on paper and needs no stroke to
+// prop it up. It also means every box carries white text.
 //
-// Two entries are named against the survey rather than by it, because the
-// contrast floor leaves every swatch darker than the centroid for its word
-// and the plain name then reads too bright for what prints. "ochre" (ΔE
-// 0.141) is not the survey's nearest word for the gold — bronze is 0.067,
-// olive 0.078 — but it is the word an Australian room reaches for, and all
-// three beat the "mustard" it replaced (0.235), whose centroid is a full 0.22
-// of lightness too pale. "wine" (0.104) likewise loses to magenta (0.081) on
-// distance alone, but errs dark where magenta errs bright, and dark is the
-// direction this swatch actually misses in.
-//
-// Not "maroon", though it reads that way to an Australian eye. Sampling a
-// Queensland State of Origin kit puts its cloth at OKLCH hue 9°, L 0.31 —
-// ΔE 0.025 from the survey's maroon, so the local anchor is the same colour
-// the survey recorded, and 0.19 from this swatch. Nor could the palette hold
-// a true maroon if it wanted to: at ΔE 0.095 from the brown above, it sits
-// well inside the 0.167 minimum this palette is generated under.
+// The names are the generator's own, not applied afterwards, so re-running it
+// re-derives them; there is nothing to re-name by hand.
 #let compact-palette = (
-  mult: 223,
-  salt: 354261,
-  // 11/11 buckets filled by the 11 most frequent tokens, all four punctuation
-  // marks distinct, first collision only at the 12th — the best an 11-bucket
+  mult: 7,
+  salt: 14564,
+  // 8/8 buckets filled by the 8 most frequent tokens, all four punctuation
+  // marks distinct, first collision only at the 9th --- the best an 8-bucket
   // hash can do.
   colors: (
     // Neutral
     (color: luma(0), light: false, name: "black"),
 
     // Chromatic (sorted by hue)
-    (color: oklch(59.5%, 0.235, 31deg), light: false, name: "red"),
-    (color: oklch(36.7%, 0.093, 53deg), light: false, name: "brown"),
-    (color: oklch(54.2%, 0.113, 74deg), light: false, name: "ochre"),
-    (color: oklch(54.9%, 0.185, 142deg), light: false, name: "green"),
-    (color: oklch(44.1%, 0.081, 178deg), light: false, name: "teal"),
-    (color: oklch(56.3%, 0.135, 244deg), light: false, name: "blue"),
-    (color: oklch(32.0%, 0.186, 265deg), light: false, name: "navy"),
-    (color: oklch(47.2%, 0.274, 285deg), light: false, name: "violet"),
-    (color: oklch(60.7%, 0.299, 314deg), light: false, name: "purple"),
-    (color: oklch(46.5%, 0.199, 343deg), light: false, name: "wine"),
+    (color: oklch(57.9%, 0.238, 29deg), light: false, name: "red"),
+    (color: oklch(38.6%, 0.089, 62deg), light: false, name: "brown"),
+    (color: oklch(55.1%, 0.185, 142deg), light: false, name: "green"),
+    (color: oklch(55.6%, 0.098, 184deg), light: false, name: "teal"),
+    (color: oklch(47.2%, 0.241, 263deg), light: false, name: "blue"),
+    (color: oklch(45.2%, 0.195, 316deg), light: false, name: "purple"),
+    (color: oklch(53.4%, 0.221, 353deg), light: false, name: "magenta"),
   ),
 )
 
 // Brand gold, matches the tool-trigger word foreground and the favicon dots.
 #let brand-gold = rgb("#d4a017")
+
+// The project typeface, as used on the website. Everything that is the
+// project talking --- instructions, footers, the word mark --- is set in it.
+// The tokens themselves stay Libertinus Serif: they are the thing being read
+// closely, at a glance, in colour, and a serif at 19pt does that better than
+// any UI sans. So the two faces divide by role, not by page.
+#let brand-font = "Public Sans"
+
+// The five tokens "LLMs Unplugged" splits into under cl100k_base, which is
+// what the brand mark is made of --- see the "Designing the LLMs Unplugged
+// brand mark" news post. The tints are the website's TITLE_TINTS.
+#let title-tokens = (
+  (text: "LL", tint: color.hsl(38deg, 90%, 38%)),
+  (text: "Ms", tint: color.hsl(42deg, 85%, 42%)),
+  (text: "\u{00A0}Un", tint: color.hsl(36deg, 82%, 36%)),
+  (text: "plug", tint: color.hsl(40deg, 87%, 40%)),
+  (text: "ged", tint: color.hsl(44deg, 80%, 44%)),
+)
+
+// The word mark on one line. The website stacks the five bricks two-deep
+// because it has a 16:9 hero to fill; a page header is a wide, short slot, so
+// the same five bricks run across it instead.
+//
+// Drawn here rather than imported from public/title-logo.svg: that asset is
+// built for the site, so it paints its own near-black background and pulls
+// Roboto Mono off a font CDN --- neither of which a printed page on white
+// paper can use. Bricks are sized by their glyphs, so the mark scales with
+// `size` and the token widths stay proportional to their text the way they do
+// on screen.
+#let wordmark(size: 11pt) = box(inset: 0pt, {
+  set text(font: brand-font, size: size, weight: "bold", fill: white)
+  // Tracking pulls the brick apart from its neighbours without a gap between
+  // them: the five are one word mark, not five separate labels.
+  box(
+    radius: 2pt,
+    clip: true,
+    title-tokens
+      .map(t => box(fill: t.tint, inset: (x: 0.34em, y: 0.28em), t.text))
+      .join(),
+  )
+})
 
 // A tool-trigger word: black highlight with bold uppercase gold text. Used
 // for tokens flagged `is_tool: true` so a trigger like VOTE stays visually

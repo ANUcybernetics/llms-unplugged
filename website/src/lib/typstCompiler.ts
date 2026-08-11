@@ -15,6 +15,8 @@ import sansCjkFontUrl from "../assets/fonts/NotoSansCJKsc-Regular-subset.otf?url
 import libertinusSansRegularUrl from "../assets/fonts/LibertinusSans-Regular-subset.otf?url";
 import libertinusSansBoldUrl from "../assets/fonts/LibertinusSans-Bold-subset.otf?url";
 import monaspaceArgonUrl from "../assets/fonts/MonaspaceArgon-Regular-subset.otf?url";
+import publicSansRegularUrl from "../assets/fonts/PublicSans-Regular-subset.otf?url";
+import publicSansBoldUrl from "../assets/fonts/PublicSans-Bold-subset.otf?url";
 // Body text (book.typ, tokenized-cutouts.typ) plus the weights/styles the
 // templates apply over it. Full faces, not subsets: this renders arbitrary
 // user-supplied text, so clipping the glyph coverage would drop characters.
@@ -35,9 +37,6 @@ import dejaVuSansMonoUrl from "../assets/fonts/DejaVuSansMono.ttf?url";
 // fetched from a CDN, so builds are deterministic and work offline. `?url`
 // yields the emitted asset path; the wasm itself is only fetched when the
 // compiler/renderer first initialises (via the getModule hooks below).
-// Copied from cli/ by scripts/copy-cli-templates.ts, like the templates
-// themselves: tokenized-cutouts.typ loads it with image("favicon.svg").
-import faviconSvg from "../templates/favicon.svg?raw";
 import compilerWasmUrl from "@myriaddreamin/typst-ts-web-compiler/pkg/typst_ts_web_compiler_bg.wasm?url";
 import rendererWasmUrl from "@myriaddreamin/typst-ts-renderer/pkg/typst_ts_renderer_bg.wasm?url";
 
@@ -111,6 +110,8 @@ export async function initCompiler(
         libertinusSansRegularUrl,
         libertinusSansBoldUrl,
         monaspaceArgonUrl,
+        publicSansRegularUrl,
+        publicSansBoldUrl,
         libertinusSerifRegularUrl,
         libertinusSerifBoldUrl,
         libertinusSerifItalicUrl,
@@ -126,7 +127,6 @@ export async function initCompiler(
     onUpdate((s) => appendLog(s, "Adding SVG logo..."));
     const encoder = new TextEncoder();
     typst.mapShadow("/socy-logo-bw.svg", encoder.encode(SOCY_LOGO_SVG));
-    typst.mapShadow("/favicon.svg", encoder.encode(faviconSvg));
 
     onUpdate((s) => appendLog(s, "Adding templates..."));
     await typst.addSource("/book.typ", bookTemplate);

@@ -247,6 +247,169 @@ function greedyMaxMin(
   return { indices, history };
 }
 
+// ---------- nameable selection ----------
+
+// Centroids from the xkcd colour survey (Munroe 2010, ~200k respondents naming
+// sRGB swatches free-form) --- the most widely-agreed English colour-naming
+// data there is, and the same source the palettes in cutout-common.typ were
+// hand-checked against. These are the survey's centroid for each word, i.e.
+// the colour people mean when they say it.
+const SURVEY_CENTROIDS: Readonly<Record<string, string>> = {
+  black: "#000000",
+  grey: "#929591",
+  red: "#e50000",
+  orange: "#f97306",
+  brown: "#653700",
+  olive: "#6e750e",
+  green: "#15b01a",
+  teal: "#029386",
+  blue: "#0343df",
+  navy: "#01153e",
+  purple: "#7e1e9c",
+  magenta: "#c20078",
+  pink: "#ff81c0",
+  maroon: "#650021",
+  violet: "#9a0eea",
+  turquoise: "#06c2ac",
+  yellow: "#ffff14",
+  mustard: "#ceb301",
+  tan: "#d1b26f",
+  lime: "#aaff32",
+};
+
+function hexToSrgb(hex: string): [number, number, number] {
+  const v = parseInt(hex.slice(1), 16);
+  return [((v >> 16) & 255) / 255, ((v >> 8) & 255) / 255, (v & 255) / 255];
+}
+
+function hexToOklab(hex: string): Triple {
+  return srgbToOklab(...hexToSrgb(hex));
+}
+
+function deltaE(p: Triple, q: Triple): number {
+  return Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]);
+}
+
+interface NamedSwatch {
+  name: string;
+  lab: Triple;
+  /** OKLab ΔE from the survey centroid: how much the word is being stretched. */
+  nameCost: number;
+}
+
+// The printable swatch for each word: the feasible candidate closest to the
+// survey's centroid for it. A word whose centroid is already printable barely
+// moves; one that isn't (yellow, at 1.1:1 against white) gets dragged until it
+// is, and `nameCost` records how far --- which is the number that decides
+// whether the word still fits what came out.
+function nearestFeasible(
+  cs: CandidateSet,
+  centroid: Triple,
+  centroidIsFeasible: boolean,
+): { lab: Triple; nameCost: number } {
+  // A word whose survey colour already prints is not an optimisation problem:
+  // print the survey colour. Going to the nearest sampled point instead would
+  // charge black a name cost of 0.06 purely because a random sampler never
+  // lands on #000000.
+  if (centroidIsFeasible) return { lab: centroid, nameCost: 0 };
+
+  let best: Triple = [0, 0, 0];
+  let bestD = Infinity;
+  for (let i = 0; i < cs.count; i++) {
+    const cand: Triple = [cs.lab[i * 3], cs.lab[i * 3 + 1], cs.lab[i * 3 + 2]];
+    const d = deltaE(cand, centroid);
+    if (d < bestD) {
+      bestD = d;
+      best = cand;
+    }
+  }
+  return { lab: best, nameCost: bestD };
+}
+
+// Exhaustive max-min over the named swatches. Nameability is a hard filter
+// applied before this runs, so the search itself only maximises distinctness;
+// total name cost breaks ties, which keeps the plainer word when two subsets
+// separate equally well. n is single digits and the term list is a couple of
+// dozen, so the binomial is small enough to enumerate --- no greedy needed,
+// and unlike the greedy path this actually returns the optimum.
+function bestNamedSubset(
+  swatches: readonly NamedSwatch[],
+  n: number,
+  minHueSep: number,
+): { chosen: NamedSwatch[]; minDelta: number } {
+  if (swatches.length < n) {
+    throw new Error(
+      `only ${swatches.length} words survive the nameability filter, ` +
+        `need ${n}: raise --max-name-cost or add terms`,
+    );
+  }
+  const combo: number[] = [];
+  let best: NamedSwatch[] = [];
+  let bestMin = -Infinity;
+  let bestCost = Infinity;
+
+  // A near-neutral has no hue worth separating, so the floor does not apply to
+  // it --- black and grey would otherwise each veto a whole hue sector chosen
+  // by the arctangent of their rounding error.
+  const NEUTRAL_CHROMA = 0.03;
+  const chromaOf = (s: NamedSwatch): number => Math.hypot(s.lab[1], s.lab[2]);
+  const hueOf = (s: NamedSwatch): number =>
+    (((Math.atan2(s.lab[2], s.lab[1]) * 180) / Math.PI) + 360) % 360;
+
+  const evaluate = (): void => {
+    let minD = Infinity;
+    for (let i = 0; i < combo.length; i++) {
+      for (let j = i + 1; j < combo.length; j++) {
+        const a = swatches[combo[i]];
+        const b = swatches[combo[j]];
+        // The hue floor is what stops the search returning navy/blue/violet
+        // and calling it a spread: those three sit ΔE 0.25 apart, almost all
+        // of it lightness, and read as one colour at three brightnesses when
+        // you are scanning a page for it.
+        if (
+          minHueSep > 0 &&
+          chromaOf(a) >= NEUTRAL_CHROMA &&
+          chromaOf(b) >= NEUTRAL_CHROMA
+        ) {
+          const raw = Math.abs(hueOf(a) - hueOf(b));
+          if (Math.min(raw, 360 - raw) < minHueSep) return;
+        }
+        const d = deltaE(a.lab, b.lab);
+        if (d < minD) minD = d;
+      }
+    }
+    const cost = combo.reduce((sum, i) => sum + swatches[i].nameCost, 0);
+    if (minD > bestMin || (minD === bestMin && cost < bestCost)) {
+      bestMin = minD;
+      bestCost = cost;
+      best = combo.map((i) => swatches[i]);
+    }
+  };
+
+  const recurse = (start: number): void => {
+    if (combo.length === n) {
+      evaluate();
+      return;
+    }
+    // Prune: not enough words left to finish a subset.
+    for (let i = start; i <= swatches.length - (n - combo.length); i++) {
+      combo.push(i);
+      recurse(i + 1);
+      combo.pop();
+    }
+  };
+  recurse(0);
+
+  if (best.length === 0) {
+    throw new Error(
+      `no subset of ${n} words is ${minHueSep}deg apart in hue: lower ` +
+        `--min-hue-sep, raise --max-name-cost to admit more words, or ask ` +
+        `for fewer colours`,
+    );
+  }
+  return { chosen: best, minDelta: bestMin };
+}
+
 // ---------- CLI ----------
 
 const { values } = parseArgs({
@@ -261,6 +424,9 @@ const { values } = parseArgs({
     "no-grey": { type: "boolean", default: false },
     "min-white-contrast": { type: "string", default: "0" },
     "min-hue-sep": { type: "string", default: "0" },
+    nameable: { type: "boolean", default: false },
+    "max-name-cost": { type: "string", default: "0.12" },
+    terms: { type: "string" },
   },
 });
 
@@ -274,17 +440,133 @@ const noNeutrals = values["no-neutrals"]!;
 const noGrey = values["no-grey"]!;
 const minWhiteContrast = parseFloat(values["min-white-contrast"]!);
 const minHueSep = parseFloat(values["min-hue-sep"]!);
+const nameable = values.nameable!;
+const maxNameCost = parseFloat(values["max-name-cost"]!);
 
 const rng = mulberry32(seed);
 
+// In nameable mode the words pin where each swatch lands, so the L and chroma
+// windows have nothing to do: they would only stop a word reaching the colour
+// it means. Black and grey are the obvious casualties of a chroma floor, but
+// so is any dark word --- maroon and navy both sit under the usual L floor.
+// The white-contrast floor stays, because that one is about the paper.
+const effectiveLMin = nameable ? 0 : lMin;
+const effectiveLMax = nameable ? 1 : lMax;
+const effectiveCMin = nameable ? 0 : cMin;
+
 process.stderr.write(`# Sampling ${nCandidates} sRGB points...\n`);
-const cs = sampleCandidates(nCandidates, lMin, lMax, cMin, minWhiteContrast, rng);
+const cs = sampleCandidates(
+  nCandidates,
+  effectiveLMin,
+  effectiveLMax,
+  effectiveCMin,
+  minWhiteContrast,
+  rng,
+);
 process.stderr.write(
-  `# Kept ${cs.count} candidates after L∈[${lMin},${lMax}], chroma ≥ ${cMin}` +
+  `# Kept ${cs.count} candidates after L∈[${effectiveLMin},${effectiveLMax}], ` +
+    `chroma ≥ ${effectiveCMin}` +
     (minWhiteContrast > 0
       ? `, contrast vs white ≥ ${minWhiteContrast}\n`
       : "\n"),
 );
+
+if (nameable) {
+  const terms = values.terms
+    ? values.terms.split(",").map((t) => t.trim())
+    : Object.keys(SURVEY_CENTROIDS);
+
+  const all: NamedSwatch[] = terms.map((name) => {
+    const centroid = SURVEY_CENTROIDS[name];
+    if (!centroid) {
+      throw new Error(
+        `no survey centroid for "${name}" --- known words: ` +
+          Object.keys(SURVEY_CENTROIDS).join(", "),
+      );
+    }
+    const feasible =
+      contrastWithWhite(relativeLuminance(...hexToSrgb(centroid))) >=
+      minWhiteContrast;
+    const { lab, nameCost } = nearestFeasible(
+      cs,
+      hexToOklab(centroid),
+      feasible,
+    );
+    return { name, lab, nameCost };
+  });
+
+  process.stderr.write(
+    "\n# How far each word has to stretch to become printable (OKLab ΔE from\n" +
+      "# its survey centroid). A word over the cost ceiling is one the printed\n" +
+      "# swatch no longer looks like, so it is dropped rather than renamed:\n",
+  );
+  for (const s of [...all].sort((a, b) => a.nameCost - b.nameCost)) {
+    const verdict = s.nameCost <= maxNameCost ? "  keep" : "  DROP";
+    process.stderr.write(
+      `#  ${s.name.padEnd(10)} ΔE=${s.nameCost.toFixed(4)}${verdict}\n`,
+    );
+  }
+
+  const survivors = all.filter((s) => s.nameCost <= maxNameCost);
+  const { chosen, minDelta } = bestNamedSubset(survivors, n, minHueSep);
+
+  const withHue = chosen
+    .map((s) => ({
+      ...s,
+      L: s.lab[0],
+      C: Math.hypot(s.lab[1], s.lab[2]),
+      h: (((Math.atan2(s.lab[2], s.lab[1]) * 180) / Math.PI) + 360) % 360,
+    }))
+    .sort((a, b) => a.h - b.h);
+
+  process.stderr.write(
+    `\n# Chosen ${n} of ${survivors.length} nameable words, ` +
+      `min pairwise ΔE = ${minDelta.toFixed(4)}\n`,
+  );
+
+  // The tightest pairs, so it is obvious which two words are carrying the risk
+  // and whether the gap between them is hue (fine) or lightness (not).
+  const pairs = chosen
+    .flatMap((a, i) =>
+      chosen.slice(i + 1).map((b) => {
+        const dL = Math.abs(a.lab[0] - b.lab[0]);
+        return { a, b, d: deltaE(a.lab, b.lab), lShare: dL / deltaE(a.lab, b.lab) };
+      }),
+    )
+    .sort((p, q) => p.d - q.d);
+  process.stderr.write("# Tightest pairs (share of the gap that is lightness):\n");
+  for (const p of pairs.slice(0, 5)) {
+    process.stderr.write(
+      `#   ${p.a.name.padEnd(8)} / ${p.b.name.padEnd(8)} ` +
+        `ΔE=${p.d.toFixed(4)}  L-share ${(p.lShare * 100).toFixed(0)}%\n`,
+    );
+  }
+
+  process.stdout.write(
+    "// Algorithmically generated palette: exhaustive max-min OKLab ΔE over\n" +
+      "// colours pinned to English colour words, so every swatch is both far\n" +
+      "// from the others and recognisable as the word used to call it out.\n" +
+      `// N=${n}, min pairwise ΔE = ${minDelta.toFixed(3)}, worst name ΔE = ` +
+      `${Math.max(...chosen.map((s) => s.nameCost)).toFixed(3)}.\n` +
+      "// Regenerate with: node cli/scripts/generate_palette.ts --nameable " +
+      `--n ${n} --min-white-contrast ${minWhiteContrast} ` +
+      `--max-name-cost ${maxNameCost}\n`,
+  );
+  process.stdout.write("#let palette = (\n");
+  process.stdout.write("  colors: (\n");
+  for (const s of withHue) {
+    const light = s.L > LIGHT_THRESHOLD;
+    const swatch = s.C < 0.002
+      ? `luma(${Math.round(srgbGamma(s.L ** 3) * 255)})`
+      : `oklch(${(s.L * 100).toFixed(1)}%, ${s.C.toFixed(3)}, ${Math.round(s.h)}deg)`;
+    process.stdout.write(
+      `    (color: ${swatch}, light: ${light}, name: "${s.name}"), ` +
+        `// name ΔE ${s.nameCost.toFixed(3)}\n`,
+    );
+  }
+  process.stdout.write("  ),\n)\n");
+  process.exit(0);
+}
 
 // OKLab lightness of the mid-grey anchor. For a neutral the OKLab transform
 // collapses to L = cbrt(linear value) — the rows of M1 sum to 1, so l=m=s=v —

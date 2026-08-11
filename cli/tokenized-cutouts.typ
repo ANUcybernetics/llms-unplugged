@@ -4,7 +4,9 @@
 // Palette, colour hash and token renderers, shared with tokenized-sheets.typ.
 // Cutouts take the default 30-colour palette, which relies on being set at
 // 36pt to stay tellable apart.
-#import "cutout-common.typ": brand-gold, derive-n, inter_word_gap, renderers
+#import "cutout-common.typ": (
+  brand-font, brand-gold, derive-n, inter_word_gap, renderers, wordmark,
+)
 #let (coloured-word, next-word, render-cutout, ..) = renderers()
 
 // Configuration
@@ -92,8 +94,19 @@
   // (rendered after this function returns) have no footer.
   set page(footer: align(
     center,
-    text(fill: brand-gold, size: 11pt, "www.llmsunplugged.org"),
+    text(
+      font: brand-font,
+      fill: brand-gold,
+      size: 11pt,
+      "www.llmsunplugged.org",
+    ),
   ))
+  // The instructions are the project talking, so they take the project's
+  // typeface. The cutouts themselves keep Libertinus Serif: they are read at
+  // 36pt across a table, which is exactly what that face is good at, and the
+  // worked example inside these instructions renders through the same token
+  // renderers, so it stays in step with the pages it is explaining.
+  set text(font: brand-font)
 
   // Pull three consecutive cutouts to use as a worked example. Skip windows
   // that contain any pure-punctuation tokens, since "I am Sam ." reads
@@ -147,7 +160,7 @@
       columns: (1fr, auto),
       column-gutter: 1em,
       align: (left + horizon, right + horizon),
-      [= How to use these token cutouts], image("favicon.svg", width: 1.8cm),
+      [= How to use these token cutouts], wordmark(size: 14pt),
     )
 
     // 2-column flow for the body prose: at 13pt on a landscape A4 page, full
