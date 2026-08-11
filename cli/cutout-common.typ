@@ -108,8 +108,8 @@
   ),
 )
 
-// The search-sheets palette: 7 chromatic + black = 8 swatches, min pairwise
-// ΔE = 0.130. Sheets set their pairs around 16-19pt rather than the cutouts'
+// The search-sheets palette: 6 chromatic + black + grey = 8 swatches, min
+// pairwise ΔE = 0.151 on screen and 0.102 on paper. Sheets set their pairs around 16-19pt rather than the cutouts'
 // 36pt, and colour discrimination falls off with size: at that scale 30
 // swatches read as "some sort of blue" rather than as 30 answers, so scanning
 // by colour stops narrowing anything down. Fewer, further-apart colours
@@ -138,17 +138,39 @@
 // its centroid), lime (0.36), tan (0.20), mustard (0.20), turquoise (0.18),
 // pink (0.17) and orange (0.12) all have to darken so far that the word stops
 // describing what prints --- a printable "yellow" is an olive. They are
-// dropped rather than renamed. Of the eight kept, six print at their survey
-// centroid exactly; teal moves 0.041 and green 0.112, green being the one
-// word here doing real work to stay printable.
+// dropped rather than renamed. Of the eight kept, seven print at their survey
+// centroid exactly; grey moves 0.098 and green 0.112, those two being the
+// words doing real work to stay printable.
 //
-// The tightest pair is green/teal at ΔE 0.130, and 96% of that gap is hue
-// (142deg vs 184deg) rather than lightness --- which is the gap that survives
-// being scanned quickly. The palette is not hue-floored: at eight words the
-// binding constraint is which words exist, not how they are spaced.
-// Regenerate with:
-//   node cli/scripts/generate_palette.ts --nameable --n 8 --min-white-contrast 4.5 \
-//     --terms black,red,brown,green,teal,blue,purple,magenta
+// Which eight was decided on paper, not on screen, and the two answers differ.
+// OKLab says how different two colours look; it does not know which colours a
+// press can make, and sRGB's vivid blues, greens and purples are outside CMYK.
+// Round-tripping through a profile compresses them toward the gamut boundary
+// and closes the gaps: the first version of this palette held teal instead of
+// grey and measured a comfortable 0.130 in sRGB, but green/teal printed at
+// 0.093 on uncoated stock and 0.079 on newsprint --- under the 0.10 this file
+// calls clearly distinct. Swapping teal for grey costs nothing anyone will
+// notice (it also buys the plainer word) and lifts the worst case to 0.102 on
+// every profile checked. Screen min ΔE is 0.151; the binding pair on paper is
+// red/magenta.
+//
+// No orange, which is the obvious question given how basic a colour word it
+// is. At the contrast floor a printable orange is #d24802, a dark burnt one,
+// and it prints ΔE 0.046--0.059 from red: you can have orange or red, not
+// both. Trading red away for it (orange, brown, green, blue, purple, magenta,
+// black, grey) does measure 0.104 against this set's 0.102, but 0.002 is not
+// worth giving up the most basic colour word in the language, and it leaves
+// orange and brown adjacent as names as well as as hues.
+//
+// Navy is the cautionary one, and confirms what the large palette's comment
+// above says about dark blues: black/navy prints at ΔE 0.045 on newsprint.
+// Nothing in sRGB warns you.
+//
+// Regenerate, then re-check on paper --- the second step is not optional,
+// because the first one cannot see the press:
+//   node cli/scripts/generate_palette.ts --nameable --n 8 \
+//     --min-white-contrast 4.5 --dump-candidates > /tmp/candidates.csv
+//   cli/scripts/check_palette_print.py /tmp/candidates.csv --n 8
 //
 // Every entry clears 4.5:1 WCAG contrast against white, so the next token is
 // dark enough to read as plain coloured text on paper and needs no stroke to
@@ -163,14 +185,14 @@
   // marks distinct, first collision only at the 9th --- the best an 8-bucket
   // hash can do.
   colors: (
-    // Neutral
+    // Neutrals
     (color: luma(0), light: false, name: "black"),
+    (color: oklch(56.9%, 0.014, 46deg), light: false, name: "grey"),
 
     // Chromatic (sorted by hue)
     (color: oklch(57.9%, 0.238, 29deg), light: false, name: "red"),
     (color: oklch(38.6%, 0.089, 62deg), light: false, name: "brown"),
     (color: oklch(55.1%, 0.185, 142deg), light: false, name: "green"),
-    (color: oklch(55.6%, 0.098, 184deg), light: false, name: "teal"),
     (color: oklch(47.2%, 0.241, 263deg), light: false, name: "blue"),
     (color: oklch(45.2%, 0.195, 316deg), light: false, name: "purple"),
     (color: oklch(53.4%, 0.221, 353deg), light: false, name: "magenta"),

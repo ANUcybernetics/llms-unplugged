@@ -427,6 +427,7 @@ const { values } = parseArgs({
     nameable: { type: "boolean", default: false },
     "max-name-cost": { type: "string", default: "0.12" },
     terms: { type: "string" },
+    "dump-candidates": { type: "boolean", default: false },
   },
 });
 
@@ -508,6 +509,30 @@ if (nameable) {
   }
 
   const survivors = all.filter((s) => s.nameCost <= maxNameCost);
+
+  // Hand the surviving words to check_palette_print.py, which re-measures them
+  // through a CMYK profile and picks the subset that survives the press. This
+  // script cannot do that itself: the round trip needs an ICC transform, and
+  // the distances that matter are the printed ones, not these.
+  if (values["dump-candidates"]) {
+    for (const s of survivors) {
+      const [L, a, b] = s.lab;
+      // Back to sRGB via OKLab's inverse, so the consumer needs no colour code.
+      const l = (L + 0.3963377774 * a + 0.2158037573 * b) ** 3;
+      const m = (L - 0.1055613458 * a - 0.0638541728 * b) ** 3;
+      const q = (L - 0.0894841775 * a - 1.291485548 * b) ** 3;
+      const rgb = [
+        4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * q,
+        -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * q,
+        -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * q,
+      ].map((v) => Math.round(srgbGamma(Math.max(0, Math.min(1, v))) * 255));
+      process.stdout.write(
+        `${s.name},#${rgb.map((v) => v.toString(16).padStart(2, "0")).join("")},` +
+          `${s.nameCost.toFixed(4)}\n`,
+      );
+    }
+    process.exit(0);
+  }
   const { chosen, minDelta } = bestNamedSubset(survivors, n, minHueSep);
 
   const withHue = chosen
