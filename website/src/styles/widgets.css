@@ -416,13 +416,21 @@
   }
 }
 
-/* Hybrid-corpus colour coding (visionaries-showcase deck): Hemingway gold,
-   Seuss blue. The blue is duplicated as the fallback in BigramCountsTable's
-   .tally-b (scoped styles can't share a custom property declared here unless
-   the deck loads this file); keep the two in sync. */
+/* Source colour coding for the visionaries-showcase reveal: Hemingway gold,
+   Seuss blue, Poe rose. One per source book, so the three quotes read as three
+   voices rather than one list. The colours carry no further meaning --- the
+   sheets are coded by token, not by book, and the point of the reveal is that
+   the model could not tell the books apart at all.
+
+   The blue is duplicated as the fallback in BigramCountsTable's .tally-b
+   (scoped styles can't share a custom property declared here unless the deck
+   loads this file); keep the two in sync. Nothing passes that component a
+   `bigramsB` any more --- the two-colour grid went when this deck stopped
+   building a grid on stage --- but the fallback is still what it would use. */
 :root {
   --corpus-hemingway: var(--anu-gold, #be830e);
   --corpus-seuss: #7cc0e8;
+  --corpus-poe: #e8907c;
 }
 
 .corpus-a {
@@ -431,6 +439,10 @@
 
 .corpus-b {
   color: var(--corpus-seuss);
+}
+
+.corpus-c {
+  color: var(--corpus-poe);
 }
 
 .corpus-attribution {
