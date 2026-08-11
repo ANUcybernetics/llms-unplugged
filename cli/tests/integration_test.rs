@@ -1142,6 +1142,10 @@ fn test_sheets_subcommand_end_to_end() -> io::Result<()> {
         .arg("3")
         .arg("--seed")
         .arg("42")
+        // Header title along for the ride: it only exists as a typst input, so
+        // a template that stopped accepting it fails here and nowhere else.
+        .arg("--header-title")
+        .arg("Test Event")
         .arg("--output")
         .arg(&out_dir)
         .output()?;

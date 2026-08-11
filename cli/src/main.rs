@@ -254,6 +254,13 @@ struct SheetsArgs {
     #[arg(long, value_name = "AUTHOR")]
     author: Option<String>,
 
+    /// Line set in the top right of every sheet header, opposite the lockup:
+    /// what this printing of the set is for, e.g. an event name. Omitted by
+    /// default, since a set that outlives one occasion should not be stamped
+    /// with it.
+    #[arg(long, value_name = "TEXT")]
+    header_title: Option<String>,
+
     /// Output directory for generated files (default: current directory)
     #[arg(short, long, default_value = ".")]
     output: PathBuf,
@@ -602,6 +609,12 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
             ("columns".to_string(), columns.to_string()),
             ("rows".to_string(), args.rows.to_string()),
             ("font_size".to_string(), args.font_size.clone()),
+            // Always passed, empty when unset: the template treats the empty
+            // string as "no title" and leaves the header as it was.
+            (
+                "header_title".to_string(),
+                args.header_title.clone().unwrap_or_default(),
+            ),
         ];
         compile_template("tokenized-sheets.typ", &inputs, &pdf_path)?;
 

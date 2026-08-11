@@ -33,6 +33,10 @@
 // the activity: one sheet per person. A cap spaces the rows further apart ---
 // they stretch to fill the page --- at the cost of a second page per sheet.
 #let rows_per_page = int(sys.inputs.at("rows", default: "0"))
+// What this printing of the set is for, set opposite the lockup in the sheet
+// header. Empty --- the default, and what the CLI passes when the flag is
+// omitted --- leaves the header as lockup and rule alone.
+#let header_title = sys.inputs.at("header_title", default: "")
 
 #set text(font: ("Libertinus Serif", "Noto Serif CJK SC"), size: 11pt)
 // Bound rather than written inline, because the sheet layout has to work out
@@ -486,15 +490,51 @@
 // trimmed away.
 #let header_gap = 2.5mm
 
+#let lockup_width = 40mm
+
+// The five title tokens the mark can spell --- LL, Ms, Un, plug, ged --- one
+// static file each, the same five frames the favicon animates through. A sheet
+// takes the next one in turn, so a set reads the title out across every five
+// sheets instead of stamping the same frame on all 120. Nothing depends on
+// which frame a given sheet gets: the mark says who this is either way, and a
+// participant only ever sees their own.
+#let lockups = range(1, 6).map(i => "lockup-light-" + str(i) + ".svg")
+
+// Set to the wordmark's own cap height rather than to the pairs: the two sit
+// on one line and read as one piece of header furniture, where `--font-size`
+// is a density knob that moves with the corpus. The lockup is 197.4 units wide
+// by 28 tall with a 14-unit cap, so at 40mm that cap is 2.84mm, which Public
+// Sans (cap height 0.7em) reaches at 11.5pt.
+#let header_title_size = 11.5pt
+
+// An SVG sits on the text baseline by its bottom edge, and the lockup's bottom
+// edge is not its baseline: the wordmark rides 8 units up a 28-unit tile,
+// which is the room its descenders need. Dropping the box by those 8 units
+// puts the mark's baseline on the line's own, so the title beside it shares a
+// baseline with the word "Unplugged" rather than sitting under it.
+#let lockup_baseline_shift = lockup_width * 8 / 197.4
+
 // `box` around the lockup, and `par.spacing` zeroed, because an image is
 // inline content: it opens a paragraph, so the rule under it inherited 1.2em
 // of paragraph spacing on top of the gap set here --- 8mm at 19.2pt, which is
 // most of the gap and grows with `--font-size`. Zeroed, the header is exactly
 // as tall as the mark, the rule and the two gaps, and the ~8mm it was spending
 // on invisible paragraph spacing goes to the pairs instead.
-#let sheet-header() = block(width: 100%, below: 0pt, {
+//
+// The title, when there is one, is pushed to the far end of the same line
+// rather than placed in its own grid cell, so the two really are one line of
+// text and share its baseline.
+#let sheet-header(index) = block(width: 100%, below: 0pt, {
   set par(leading: 0pt, spacing: 0pt)
-  box(brand-lockup(width: 40mm))
+  set text(font: brand-font, size: header_title_size)
+  box(
+    image(lockups.at(calc.rem(index, lockups.len())), width: lockup_width),
+    baseline: lockup_baseline_shift,
+  )
+  if header_title != "" {
+    h(1fr)
+    header_title
+  }
   v(header_gap)
   line(length: 100%, stroke: 0.8pt + brand-gold)
   v(header_gap)
@@ -645,7 +685,7 @@
         if p == 0 {
           grid(
             rows: (auto, 1fr),
-            sheet-header(),
+            sheet-header(i),
             rows-grid(page-rows, columns_per_sheet),
           )
         } else {

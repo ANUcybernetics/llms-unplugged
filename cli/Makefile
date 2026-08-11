@@ -82,7 +82,11 @@ TYPST_BIN ?= typst
 # The brand assets the templates load. Listed as prerequisites everywhere a
 # template is, because make cannot see through `image()`: without them a
 # regenerated lockup left every committed PDF untouched and looking current.
-BRAND_ASSETS := lockup-light.svg
+# The sheet header cycles the five per-token lockups, so all of them are
+# inputs; `wildcard` rather than a list, because the set is the generator's to
+# decide (website/scripts/generate-logo-svgs.ts) and a hand-kept list here
+# would silently stop covering a sixth.
+BRAND_ASSETS := $(wildcard lockup-light*.svg)
 
 # Typst stamps a creation date into every PDF, so an unchanged rebuild still
 # produces different bytes. The sheet PDFs are committed, so that would dirty
@@ -181,7 +185,8 @@ $(SHOWCASE_DIR)/sheets.pdf: tokenized-sheets.typ cutout-common.typ $(BRAND_ASSET
 	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) TYPST_BIN=$(TYPST_BIN) $(TOOL) sheets \
 		$(SHOWCASE_INPUTS) --output $(SHOWCASE_DIR) -n 2 \
 		--sheets $(SHOWCASE_SHEETS) --rows 15 --font-size 19.2pt --seed 42 \
-		--title "Visionaries Showcase corpus" --author "three authors"
+		--title "Visionaries Showcase corpus" --author "three authors" \
+		--header-title "ANU Visionaries"
 
 # The brief is for the lectern and never goes into the handout stack, so it
 # comes off the front. Its length is whatever the brief runs to for this
