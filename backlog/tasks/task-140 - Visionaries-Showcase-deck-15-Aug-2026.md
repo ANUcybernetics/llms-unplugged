@@ -4,7 +4,7 @@ title: Visionaries Showcase deck (15 Aug 2026)
 status: In Progress
 assignee: []
 created_date: '2026-08-07 04:07'
-updated_date: '2026-08-10 12:08'
+updated_date: '2026-08-11 06:57'
 labels:
   - decks
 dependencies: []
@@ -61,13 +61,43 @@ Target running order: 13:00 against the 14:00 hard stop.
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-The current 15-slide deck still implements the superseded Wacom/grid/cards/bag version; the revised implementation plan above is now the source of truth and has not yet been applied to the deck.
+The current 15-slide deck still implements the superseded Wacom/grid/cards/bag
+version; the revised implementation plan above is the source of truth and has
+not yet been applied to the deck.
 
-A local anonymous search-sheet master has been generated at cli/out/sheets/visionaries-showcase/sheets.pdf: 100 unique A4 participant sheets plus a two-page facilitator brief, 6,406 bigrams at 64–65 pairs per page, zero terminal contexts. Print two collated copies. The PDF and source corpora remain ignored local artefacts.
+Printed materials are finalised and reproducible via `make showcase` in cli/.
+The set is 120 A4 participant sheets at 53--54 token pairs each (--rows 15
+--font-size 19.2pt, the one density here that has been print-tested at A5),
+6,406 bigrams across three corpora, zero terminal contexts. Both the input
+order and --seed 42 are load-bearing: the deal only reproduces from that exact
+combination, so a reprint matches the copies already in the hall.
 
-The sheets CLI now accepts repeated --input values while preserving document boundaries and supports --title/--author display overrides so the printed pages do not spoil the three-source reveal.
+The target splits the output the way it gets printed:
+  - out/sheets/visionaries-showcase/brief.pdf --- two pages, A4, for the
+    lectern. Never handed out.
+  - out/sheets/visionaries-showcase/participants-2up-a4.pdf --- 60 A4
+    landscape pages, sheets 1--120 imposed two-up with no blank half. Print
+    twice, guillotine down the middle, yielding 240 A5 handouts for a
+    200-seat hall.
 
-Program links verified against the showcase runsheet and ANU material: Tergel Namsrai immediately precedes Ben and works on sleep/brain health; Cecilia Nie immediately follows with “Spicing up cholesterol: a novel cure for parasitic diseases.”
+Verified: no source name, title or URL appears anywhere in the text layer of
+either PDF, so nothing leaks before the three-source reveal.
+
+The sheets CLI accepts repeated --input while preserving document boundaries,
+and --title/--author overrides keep the sources off the printed pages.
+CutoutsMetadata now also carries a document count, which the brief uses to
+explain generation crossing between texts --- a count a --title override
+cannot hide.
+
+The brief itself gained three things every corpus needs, not just this one:
+what to do when the room is a different size from the sheet count, the seam
+between combined texts, and seeding the first round. It now runs to two pages
+for every corpus, so the published sets each grew by one page.
+
+Program links verified against the showcase runsheet and ANU material: Tergel
+Namsrai immediately precedes Ben and works on sleep/brain health; Cecilia Nie
+immediately follows with "Spicing up cholesterol: a novel cure for parasitic
+diseases".
 <!-- SECTION:NOTES:END -->
 
 ## Comments
