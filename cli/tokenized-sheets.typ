@@ -16,8 +16,8 @@
 // swatch has to answer to a colour word called across a room. See
 // cutout-common.typ for why each palette is the size it is.
 #import "cutout-common.typ": (
-  brand-font, brand-gold, compact-palette, derive-n, inter_word_gap, renderers,
-  wordmark,
+  brand-font, brand-gold, brand-lockup, compact-palette, derive-n,
+  inter_word_gap, renderers,
 )
 #let (coloured-word, render-cutout, word-box, entry-for, ..) = renderers(
   palette: compact-palette,
@@ -205,7 +205,7 @@
     columns: (1fr, auto),
     column-gutter: 1em,
     align: (left + horizon, right + horizon),
-    [= Search sheets: how to run the activity], wordmark(size: 11pt),
+    [= Search sheets: how to run the activity], brand-lockup(width: 45mm),
   )
 
   columns(2, gutter: 1.6em)[
@@ -463,9 +463,9 @@
 // than merely distinct --- every swatch is pinned to what a room would call
 // it --- so the key was explaining words nobody needed explained, in a strip
 // of swatches that looks exactly like the pairs below it. What is left is the
-// word mark, which is smaller than the key it replaces.
+// brand lockup, which is shorter than the key it replaces.
 #let sheet-header() = block(width: 100%, below: 0.5em)[
-  #wordmark(size: 7pt)
+  #brand-lockup(width: 32mm)
   #v(0.2em)
   #line(length: 100%, stroke: 0.8pt + luma(120))
 ]

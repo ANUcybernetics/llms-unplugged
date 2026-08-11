@@ -5,7 +5,7 @@
 // Cutouts take the default 30-colour palette, which relies on being set at
 // 36pt to stay tellable apart.
 #import "cutout-common.typ": (
-  brand-font, brand-gold, derive-n, inter_word_gap, renderers, wordmark,
+  brand-font, brand-gold, brand-lockup, derive-n, inter_word_gap, renderers,
 )
 #let (coloured-word, next-word, render-cutout, ..) = renderers()
 
@@ -160,7 +160,7 @@
       columns: (1fr, auto),
       column-gutter: 1em,
       align: (left + horizon, right + horizon),
-      [= How to use these token cutouts], wordmark(size: 14pt),
+      [= How to use these token cutouts], brand-lockup(width: 60mm),
     )
 
     // 2-column flow for the body prose: at 13pt on a landscape A4 page, full

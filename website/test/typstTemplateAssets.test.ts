@@ -58,6 +58,7 @@ describe("typst template assets", () => {
     // vacuously true, so pin the ones we know about.
     expect(dependencies).toContain("cutout-common.typ");
     expect(dependencies).toContain("socy-logo-bw.svg");
+    expect(dependencies).toContain("lockup-light.svg");
   });
 
   it("registers every referenced file in the typst.ts filesystem", () => {
