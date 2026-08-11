@@ -464,8 +464,19 @@
 // it --- so the key was explaining words nobody needed explained, in a strip
 // of swatches that looks exactly like the pairs below it. What is left is the
 // brand lockup, which is shorter than the key it replaces.
+//
+// Raster rather than the vector lockup, and only here. Typst re-emits an SVG's
+// paths into every page that places it --- measured at 3.1 KB a page against
+// 0.6 KB for a raster, which is stored once and referenced --- so a 120-sheet
+// set would pay for the outlined title 120 times over. The brief and the
+// cutouts instructions keep the vector: they place it once, where it is free.
+// 756px is 600dpi at the 32mm this prints at, and ~850dpi once the sheets are
+// imposed two-up onto A5, so nothing visible is given up for it.
+// Regenerate after changing the lockup:
+//   convert -background none -density 1200 lockup-light.svg -resize 756x lockup-light.png
+//   convert lockup-light.png -depth 8 -strip PNG32:lockup-light.png
 #let sheet-header() = block(width: 100%, below: 0.5em)[
-  #brand-lockup(width: 32mm)
+  #image("lockup-light.png", width: 32mm)
   #v(0.2em)
   #line(length: 100%, stroke: 0.8pt + luma(120))
 ]
