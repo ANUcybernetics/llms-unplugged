@@ -33,10 +33,6 @@
 // the activity: one sheet per person. A cap spaces the rows further apart ---
 // they stretch to fill the page --- at the cost of a second page per sheet.
 #let rows_per_page = int(sys.inputs.at("rows", default: "0"))
-// What this printing of the set is for, set opposite the lockup in the sheet
-// header. Empty --- the default, and what the CLI passes when the flag is
-// omitted --- leaves the header as lockup and rule alone.
-#let header_title = sys.inputs.at("header_title", default: "")
 
 #set text(font: ("Libertinus Serif", "Noto Serif CJK SC"), size: 11pt)
 // Bound rather than written inline, because the sheet layout has to work out
@@ -527,9 +523,12 @@
 // as tall as the mark, the rule and the two gaps, and the ~8mm it was spending
 // on invisible paragraph spacing goes to the pairs instead.
 //
-// The title, when there is one, is pushed to the far end of the same line
-// rather than placed in its own grid cell, so the two really are one line of
-// text and share its baseline.
+// The corpus title goes at the far end of the same line, pushed rather than
+// placed in its own grid cell, so the two really are one line of text and
+// share its baseline. It is the same string the brief names the corpus by ---
+// `--title` sets both --- so a sheet says what it is from without the
+// facilitator having to repeat it, and a set built to withhold its sources
+// carries whatever stands in for them there.
 #let sheet-header(index) = block(width: 100%, below: 0pt, {
   set par(leading: 0pt, spacing: 0pt)
   set text(font: brand-font, size: header_title_size)
@@ -537,10 +536,8 @@
     image(lockups.at(calc.rem(index, lockups.len())), width: lockup_width),
     baseline: lockup_baseline_shift,
   )
-  if header_title != "" {
-    h(1fr)
-    header_title
-  }
+  h(1fr)
+  doc_metadata.title
   v(header_gap)
   line(length: 100%, stroke: 0.8pt + brand-gold)
   v(header_gap)

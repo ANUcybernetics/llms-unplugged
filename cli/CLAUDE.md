@@ -128,10 +128,8 @@ cargo test
   each document keeps its own N-gram boundary
 - `--title <TITLE>` / `--author <AUTHOR>` (sheets only) - Override the labels
   printed on the brief and participant pages (for example, to preserve a source
-  reveal)
-- `--header-title <TEXT>` (sheets only) - A line set opposite the lockup in
-  every sheet header, naming what this printing is for (an event, a workshop).
-  Omitted by default, so a set that outlives the occasion isn't stamped with it
+  reveal). The title is the one string naming the set: the brief opens with it
+  and every sheet header carries it opposite the lockup
 - `--columns` / `--font-size` (sheets only) - The rest of the sheet density.
   Columns default to 4 for bigrams and narrow as n grows. Pairs too wide for
   their column take two columns, so nothing wraps into the row below --- which
