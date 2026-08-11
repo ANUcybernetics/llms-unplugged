@@ -4,7 +4,7 @@ title: Visionaries Showcase deck (15 Aug 2026)
 status: In Progress
 assignee: []
 created_date: '2026-08-07 04:07'
-updated_date: '2026-08-11 06:57'
+updated_date: '2026-08-11 10:54'
 labels:
   - decks
 dependencies: []
@@ -67,32 +67,44 @@ not yet been applied to the deck.
 
 Printed materials are finalised and reproducible via `make showcase` in cli/.
 The set is 120 A4 participant sheets at 53--54 token pairs each (--rows 15
---font-size 19.2pt, the one density here that has been print-tested at A5),
-6,406 bigrams across three corpora, zero terminal contexts. Both the input
-order and --seed 42 are load-bearing: the deal only reproduces from that exact
-combination, so a reprint matches the copies already in the hall.
+--font-size 19.2pt), 6,406 bigrams across three corpora, zero terminal
+contexts. Both the input order and --seed 42 are load-bearing: the deal only
+reproduces from that exact combination, so a reprint matches the copies
+already in the hall.
 
-The target splits the output the way it gets printed:
   - out/sheets/visionaries-showcase/brief.pdf --- two pages, A4, for the
     lectern. Never handed out.
-  - out/sheets/visionaries-showcase/participants-2up-a4.pdf --- 60 A4
-    landscape pages, sheets 1--120 imposed two-up with no blank half. Print
-    twice, guillotine down the middle, yielding 240 A5 handouts for a
-    200-seat hall.
+  - out/sheets/visionaries-showcase/participants.pdf --- 120 A4 sheets.
+    PRINT TWICE for the 200-seat hall: every token pair is then held by two
+    people, so the probabilities are unchanged and one empty seat no longer
+    takes a transition out of the room. 240 sheets of paper, single-sided.
+
+Handed out at full A4 rather than imposed two-up onto A5. The imposition
+halves the paper but scales the page by 1/sqrt(2), taking 19.2pt type down to
+an effective 13.6pt --- too small to read at arm's length in a darkened hall.
+Getting it back through the imposition would need ~27pt source and over 250
+sheets. 19.2pt is itself the largest size that still fits most pairs in one of
+four columns on A4; past it, wide pairs take two slots each and the sheet
+count runs away (21pt needs 195 sheets, 24pt 196 even at three columns).
 
 Verified: no source name, title or URL appears anywhere in the text layer of
 either PDF, so nothing leaks before the three-source reveal.
 
 The sheets CLI accepts repeated --input while preserving document boundaries,
 and --title/--author overrides keep the sources off the printed pages.
-CutoutsMetadata now also carries a document count, which the brief uses to
-explain generation crossing between texts --- a count a --title override
-cannot hide.
+CutoutsMetadata carries a document count, which the brief uses to explain
+generation crossing between texts --- a count a --title override cannot hide.
 
-The brief itself gained three things every corpus needs, not just this one:
-what to do when the room is a different size from the sheet count, the seam
-between combined texts, and seeding the first round. It now runs to two pages
-for every corpus, so the published sets each grew by one page.
+The brief gained three things every corpus needs: what to do when the room is
+a different size from the sheet count, the seam between combined texts, and
+seeding the first round. It runs to two pages for every corpus now.
+
+The sheets palette is 8 colours, down from 11, and chosen for nameability and
+for printed rather than on-screen distinctness: black, grey, red, brown,
+green, blue, purple, magenta. Worst-case ΔE 0.102 across coated, uncoated and
+newsprint. The participant sheets no longer print a colour key --- the names
+are the ones a room would use unprompted. Sheets and cutouts are also on
+brand now (Public Sans, the horizontal lockup in the headers).
 
 Program links verified against the showcase runsheet and ANU material: Tergel
 Namsrai immediately precedes Ben and works on sleep/brain health; Cecilia Nie

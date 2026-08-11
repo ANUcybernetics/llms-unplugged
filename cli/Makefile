@@ -79,6 +79,13 @@ SHEETS_EXTRA_ARGS_the-cat-in-the-hat := --rows 15 --font-size 19.2pt
 TOOL := target/release/llms_unplugged
 TYPST_BIN ?= typst
 
+# The brand assets the templates load. Listed as prerequisites everywhere a
+# template is, because make cannot see through `image()`: without them a
+# regenerated lockup left every committed PDF untouched and looking current.
+# The .png is the .svg rasterised --- see tokenized-sheets.typ for why the
+# per-sheet header takes the raster --- so it is a build input too.
+BRAND_ASSETS := lockup-light.svg lockup-light.png
+
 # Typst stamps a creation date into every PDF, so an unchanged rebuild still
 # produces different bytes. The sheet PDFs are committed, so that would dirty
 # four megabyte-sized binaries in git on every `make sheets`. Pinning the epoch
@@ -114,7 +121,7 @@ $(PDF_DIR)/%.pdf $(PDF_DIR)/%.stamp: book.typ $(TOOL)
 # pass preserves the object streams the CLI already packed the file into, and
 # takes the same epoch and deterministic ID as the sheets, so a rebuild of an
 # unchanged corpus doesn't dirty a megabyte of git.
-$(CUTOUTS_DIR)/%.pdf: tokenized-cutouts.typ cutout-common.typ $(TOOL)
+$(CUTOUTS_DIR)/%.pdf: tokenized-cutouts.typ cutout-common.typ $(BRAND_ASSETS) $(TOOL)
 	$(eval NAME := $(notdir $(basename $@)))
 	$(eval WORK_DIR := $(OUT_DIR)/cutouts/$(NAME))
 	mkdir -p $(WORK_DIR)
@@ -128,7 +135,7 @@ $(CUTOUTS_DIR)/%.pdf: tokenized-cutouts.typ cutout-common.typ $(TOOL)
 # portrait, so unlike the cutouts there is no qpdf rotation step. The seed is
 # pinned so rebuilding a published PDF re-deals it identically instead of
 # producing a gratuitously different file.
-$(SHEETS_DIR)/%.pdf: tokenized-sheets.typ cutout-common.typ $(TOOL)
+$(SHEETS_DIR)/%.pdf: tokenized-sheets.typ cutout-common.typ $(BRAND_ASSETS) $(TOOL)
 	$(eval NAME := $(notdir $(basename $@)))
 	$(eval WORK_DIR := $(OUT_DIR)/sheets/$(NAME))
 	mkdir -p $(WORK_DIR) $(SHEETS_DIR)
@@ -161,20 +168,27 @@ SHOWCASE_INPUTS := \
 	--input $(DATA_DIR)/the-old-man-and-the-sea-excerpt.txt \
 	--input $(DATA_DIR)/the-tell-tale-heart.txt
 
-# 120 sheets at the Cat in the Hat density, which is the one density here that
-# has been print-tested at A5. Pinning --sheets makes the count the participant
-# count rather than something the corpus decides.
-$(SHOWCASE_DIR)/sheets.pdf: tokenized-sheets.typ cutout-common.typ $(TOOL)
+# 120 sheets at the Cat in the Hat density. Pinning --sheets makes the count
+# the participant count rather than something the corpus decides, and 120 is
+# chosen so the set doubles cleanly into a 200-seat hall: printed twice, every
+# token pair is held by two people, so the proportions are unchanged and one
+# empty seat no longer takes a pair out of the room.
+#
+# 19.2pt is the largest size that still fits most pairs in one of four columns
+# on A4. Past it, wide pairs start taking two column slots each and the sheet
+# count runs away --- 21pt needs 195 sheets for the same corpus, 24pt needs
+# 196 even after dropping to three columns.
+$(SHOWCASE_DIR)/sheets.pdf: tokenized-sheets.typ cutout-common.typ $(BRAND_ASSETS) $(TOOL)
 	mkdir -p $(SHOWCASE_DIR)
 	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) TYPST_BIN=$(TYPST_BIN) $(TOOL) sheets \
 		$(SHOWCASE_INPUTS) --output $(SHOWCASE_DIR) -n 2 \
 		--sheets $(SHOWCASE_SHEETS) --rows 15 --font-size 19.2pt --seed 42 \
 		--title "Visionaries Showcase corpus" --author "three authors"
 
-# The brief is for the lectern, so it comes off the front at full A4 rather
-# than being shrunk to A5 with the sheets. Its length is whatever the brief
-# runs to for this corpus, so it is counted back from the end rather than
-# hard-coded --- editing the brief must not silently start slicing sheets off.
+# The brief is for the lectern and never goes into the handout stack, so it
+# comes off the front. Its length is whatever the brief runs to for this
+# corpus, so it is counted back from the end rather than hard-coded --- editing
+# the brief must not silently start slicing sheets off.
 $(SHOWCASE_DIR)/brief.pdf: $(SHOWCASE_DIR)/sheets.pdf
 	qpdf $< --pages . 1-$$(($$(qpdf --show-npages $<) - $(SHOWCASE_SHEETS))) -- \
 		--deterministic-id $@
@@ -183,21 +197,19 @@ $(SHOWCASE_DIR)/participants.pdf: $(SHOWCASE_DIR)/sheets.pdf
 	qpdf $< --pages . $$(($$(qpdf --show-npages $<) - $(SHOWCASE_SHEETS) + 1))-z -- \
 		--deterministic-id $@
 
-# The print job: 60 A4 landscape pages, run twice, guillotined down the middle
-# into 240 A5 sheets. Imposing the participant pages alone (not the whole PDF,
-# the way the Cat in the Hat handout does) keeps the brief out of the stack and
-# leaves an even count, so no sheet comes out with a blank half.
-$(SHOWCASE_DIR)/participants-2up-a4.pdf: two-up.typ $(SHOWCASE_DIR)/participants.pdf
-	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) $(TYPST_BIN) compile --root .. \
-		--input source=$(SHOWCASE_DIR)/participants.pdf \
-		--input pages=$$(qpdf --show-npages $(SHOWCASE_DIR)/participants.pdf) \
-		two-up.typ $@
-
+# Handed out at full A4, not imposed two-up onto A5. The imposition halves the
+# paper but it also scales the page by 1/sqrt(2), which takes 19.2pt type down
+# to an effective 13.6pt --- and the sheets are read at arm's length, in a
+# darkened hall, by people who have never seen one before. Getting that back
+# through the imposition would need ~27pt source and over 250 sheets, so A4 is
+# both the biggest type and the smallest sheet count. It costs paper, and only
+# paper. two-up.typ still imposes the Cat in the Hat handout, where the sheets
+# are read at a table.
 .PHONY: showcase
-showcase: $(SHOWCASE_DIR)/brief.pdf $(SHOWCASE_DIR)/participants-2up-a4.pdf
+showcase: $(SHOWCASE_DIR)/brief.pdf $(SHOWCASE_DIR)/participants.pdf
 	@echo "Showcase set: $(SHOWCASE_DIR)"
-	@echo "  brief.pdf                 --- A4, for the lectern"
-	@echo "  participants-2up-a4.pdf   --- print twice, cut in half, $(SHOWCASE_SHEETS) x 2 A5 sheets"
+	@echo "  brief.pdf           --- A4, for the lectern. Not handed out."
+	@echo "  participants.pdf    --- A4, print twice: $(SHOWCASE_SHEETS) x 2 sheets"
 
 # Default target to build all booklets
 .PHONY: booklets

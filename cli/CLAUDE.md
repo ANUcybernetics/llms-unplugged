@@ -26,17 +26,19 @@ text file → Rust CLI → model.json → Typst → PDF booklet
   changes. The brief varies with the corpus: the multi-document paragraph is
   gated on `metadata.documents`, which is why `CutoutsMetadata` carries a
   document count that a `--title` override cannot hide
-- `cutout-common.typ` - Palettes, colour hash and token renderers shared by both
-  cutout-family templates. Two palettes: `large-palette` (30 colours, cutouts at
-  36pt) and `compact-palette` (11, sheets at ~16pt); `renderers(palette: ...)`
-  builds the token renderers against one. Both are generated under a minimum hue
-  separation as well as max-min OKLab ΔE --- see the file's own comments for
-  why, and re-tune the hash with `find_palette_salt.ts --palette-len <n>`
-  whenever a palette changes length. Compact-palette entries also carry a `name`
-  (the sheets print them as a colour key, so a colour can be called out from the
-  front of the room); the generator doesn't emit names, so re-name by hand after
-  regenerating. Also copied into the website so the browser compiler resolves it
-  (`website/scripts/copy-cli-templates.ts`)
+- `cutout-common.typ` - Palettes, colour hash, token renderers and the brand
+  lockup, shared by both cutout-family templates. Two palettes, generated
+  differently: `large-palette` (30 colours, cutouts at 36pt) is a free max-min
+  OKLab search under a hue floor, named by hand afterwards; `compact-palette`
+  (8, sheets at ~19pt) pins every swatch to a colour word's xkcd-survey
+  centroid and is chosen on **printed** ΔE, so its names are the generator's
+  own and it needs no hand-naming. `renderers(palette: ...)` builds the token
+  renderers against one. Re-tune the hash with
+  `find_palette_salt.ts --palette-len <n>` whenever a palette changes length,
+  and re-check the compact one with `check_palette_print.py` --- perceptual
+  distance in sRGB says nothing about what survives CMYK. Also copied into the
+  website so the browser compiler resolves it
+  (`website/scripts/copy-cli-templates.ts`), along with `lockup-light.svg`
 - `Makefile` - Batch processing for multiple texts/formats
 
 ## Essential commands
@@ -82,8 +84,8 @@ make sheets
 # Rebuild the one-off ANU Visionaries Showcase set (backlog TASK-140). Three
 # corpora behind a --title/--author override, 120 sheets, pinned seed; lands
 # in out/ rather than the published sets, because the talk withholds its
-# sources. Splits into brief.pdf (A4, lectern) and participants-2up-a4.pdf
-# (60 pages, print twice, guillotine down the middle)
+# sources. Splits into brief.pdf (A4, lectern, never handed out) and
+# participants.pdf (120 A4 sheets, printed twice for a 200-seat hall)
 make showcase
 
 # Build all configured booklets
@@ -160,7 +162,9 @@ Test output must be pristine with zero failures.
 
 ## Typst details
 
-- Uses Libertinus Serif font
+- Libertinus Serif for the tokens, Public Sans (the website's face) for
+  everything that is the project talking: instructions, footers, the word mark.
+  Public Sans is a system font here and is bundled for the in-browser compiler
 - Special formatting for punctuation tokens (boxed display)
 - Guide words in headers for navigation
 - Automatic page layout for booklet printing
