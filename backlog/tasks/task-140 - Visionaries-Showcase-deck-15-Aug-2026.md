@@ -4,7 +4,7 @@ title: Visionaries Showcase deck (15 Aug 2026)
 status: In Progress
 assignee: []
 created_date: '2026-08-07 04:07'
-updated_date: '2026-08-11 11:47'
+updated_date: '2026-08-11 11:51'
 labels:
   - decks
 dependencies: []
@@ -30,7 +30,7 @@ Rewrite Ben's 14-minute ANU Visionaries Among Us Showcase talk for Manning Clark
 - [x] #4 Source identities remain hidden until after generation, then a three-source reveal explains how shared contexts let the model cross boundaries it cannot see
 - [x] #5 The talk targets 13:00, retains the Human-Scale AI and ANU 80th-anniversary brief, and explicitly links Tergel Namsrai before it to Cecilia Nie after it
 - [x] #6 The comparison with frontier LLMs distinguishes more context, generalisation, instruction tuning, training-data scale, and parameter scale without presenting a transformer as an enlarged N-gram grid
-- [x] #7 AV and facilitator notes match the setup: sheets pre-placed, whiteboard replaced by the Wacom for scribing the generated tokens, one laptop-feed cue, and no cards/balls/live-grid dependency
+- [x] #7 AV and facilitator notes match the setup: sheets handed out by the ushering team from walk-on (zone bundles, complete A set first), whiteboard replaced by the Wacom for scribing the generated tokens, one laptop-feed cue plus house-lights up/down around the activity, and no cards/balls/live-grid dependency
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -131,6 +131,15 @@ REVISIONS (11 Aug, post-review): deck now 19 slides, still targets 13:00.
     the superseded grid/cards/balls version); Kenyon delta recorded there,
     not yet communicated
 Checks: pnpm run check green incl. decks:check (422 slides / 8 decks all fit).
+
+AMENDMENTS (11 Aug, later): the event is an open public sci-comm event
+(celebration of 80 years of ANU research), not an Advancement/donor function
+--- register notes adjusted (e.g. 'school essays', not 'grandchildren's').
+Sheet distribution is by the USHERING TEAM from walk-on, per Ben: zone
+bundles prepared in advance, complete A set spread across zones first, done
+by ~1:20 with the seed ask at 2:45 as the hard deadline; house lights double
+as the ushers' working light. Slide 4 retitled 'what you've just been given';
+AC #7 updated to match.
 <!-- SECTION:NOTES:END -->
 
 ## Comments

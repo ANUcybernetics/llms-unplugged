@@ -21,7 +21,7 @@ import "../styles/widgets.css";
 
   Running order (target 13:00 against the 14:00 slot):
     0:00  Smallest thing on the program        (slides 1-3,   1:20)
-    1:20  What is under your seat              (slides 4-5,   1:25)
+    1:20  What you've just been given          (slides 4-5,   1:25)
     2:45  Seed it, then the algorithm          (slide 6,      0:45)
     3:30  Run the room                         (slide 7,      4:00)
     7:30  What just happened                   (slides 8-10,  2:00)
@@ -34,9 +34,10 @@ import "../styles/widgets.css";
   this deck had all of that and it was too much apparatus for fourteen minutes
   on a stage Ben does not control. The room holds the model on paper and puts
   hands up. The AV company has two cues: switch to Ben's feed at walk-on, and
-  house lights up when the sheets come out (slide 3) then back down after the
+  house lights up as the sheets come round (slide 3) then back down after the
   run (slide 8). The sheets are unreadable at arm's length in a darkened hall
-  --- the lights are part of the demo, not a nicety.
+  --- the lights are part of the demo, not a nicety, and the ushers need them
+  too.
 
   The Wacom stays, for one job: writing the generated tokens on slide 7 as
   they come in. Press shift-W over that slide to bring up the annotation
@@ -67,11 +68,15 @@ import "../styles/widgets.css";
   recognition hit and has to land last.
 
   Before delivery:
-    - 120 A4 search sheets, PRINTED TWICE (240 sheets), taped or tucked
-      face-down UNDER the seats before doors open --- slide 3 says "reach
-      under your seat", and a sheet lying face-down ON a seat gets picked up
-      and read during Ann's talk, forty minutes before it matters. This needs
-      Advancement hands and hall time; confirm who is doing it and when.
+    - 120 A4 search sheets, PRINTED TWICE (240 sheets), handed out by the
+      ushering team as the talk starts --- NOT pre-placed, so nobody spends
+      Ann's talk reading one, and NOT earlier than Ben's walk-on, so the
+      reveal stays protected. Ushers start moving at walk-on and aim to be
+      done by slide 4 (~1:20); the hard deadline is the seed ask at ~2:45.
+      Bundle the sheets by hall zone beforehand, complete A set spread across
+      all zones first so the model is whole, B copies as seconds; every
+      A-bundle sheet must end up in someone's hands. Brief the ushers at the
+      1 pm sound check.
       `make showcase` in cli/ builds the sheets; the input order and --seed 42
       are load-bearing, so a reprint matches what is already in the hall.
       Printing twice means every token pair is held by two people: the
@@ -87,7 +92,7 @@ import "../styles/widgets.css";
       chosen, and a line written on slide 7 and read from the back of the hall.
       Ben calls tokens, picks hands, and writes.
     - house lights: agree both cues with the AV desk at the sound check (up as
-      slide 3 sends hands under seats, down again after slide 7's run), and
+      the ushers start moving on slide 3, down again after slide 7's run), and
       check a sheet is actually readable in the "up" state from a middle seat.
     - lapel or headset mic.
 
@@ -151,12 +156,12 @@ The whole argument, stated once, before the thing that earns it.
 
 The reckless promise: in the next ten minutes this hall becomes a language model, and then it writes a sentence. Not a diagram of one --- the machine, at human speed.
 
-Then: reach under your seat.
+The ushers are moving by now (they start at walk-on) --- cue them explicitly here if they aren't: "you're about to be handed a page". Let the rustle build under this slide; it's anticipation, not interruption. House lights come up with the sheets.
 */}
 
 ---
 
-## what's under your seat
+## what you've just been given
 
 {/* Not bg-cut-spread, which the age-of-ai deck uses on its equivalent slide:
     that one has scissors in it, and the first thing this slide says is that
@@ -415,7 +420,7 @@ it doesn't make you an expert
 it makes you **harder to bullsh\*t**
 
 {/* notes:
-Careful not to oversell: you can't build Claude now, and nothing tonight tells you whether it should be marking your grandchildren's essays. What you can do is hear a claim about AI and have somewhere to stand --- you know what kind of thing it is, and which claims need more than confidence behind them. For a technology being sold this hard, that is not a small thing to walk out with.
+Careful not to oversell: you can't build Claude now, and nothing tonight tells you whether it should be marking school essays. What you can do is hear a claim about AI and have somewhere to stand --- you know what kind of thing it is, and which claims need more than confidence behind them. For a technology being sold this hard, that is not a small thing to walk out with.
 */}
 
 ---
