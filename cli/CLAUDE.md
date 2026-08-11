@@ -20,7 +20,12 @@ text file → Rust CLI → model.json → Typst → PDF booklet
 - `book.typ` - Main booklet template (reads from model.json)
 - `tokenized-cutouts.typ` - Cutouts template (cut-up tokens for the table)
 - `tokenized-sheets.typ` - Search-sheet template (one page per participant, no
-  cutting)
+  cutting). Opens with a facilitator brief, which runs to two pages for every
+  corpus --- don't hand-place a `#colbreak()` to squeeze it back to one, since a
+  break tuned to the current text unbalances the columns the moment the brief
+  changes. The brief varies with the corpus: the multi-document paragraph is
+  gated on `metadata.documents`, which is why `CutoutsMetadata` carries a
+  document count that a `--title` override cannot hide
 - `cutout-common.typ` - Palettes, colour hash and token renderers shared by both
   cutout-family templates. Two palettes: `large-palette` (30 colours, cutouts at
   36pt) and `compact-palette` (11, sheets at ~16pt); `renderers(palette: ...)`
@@ -74,6 +79,13 @@ cargo build --release
 # <corpus>-<participants>; PDFs land in website/public/assets/pdfs/sheets/)
 make sheets
 
+# Rebuild the one-off ANU Visionaries Showcase set (backlog TASK-140). Three
+# corpora behind a --title/--author override, 120 sheets, pinned seed; lands
+# in out/ rather than the published sets, because the talk withholds its
+# sources. Splits into brief.pdf (A4, lectern) and participants-2up-a4.pdf
+# (60 pages, print twice, guillotine down the middle)
+make showcase
+
 # Build all configured booklets
 make booklets
 
@@ -105,8 +117,8 @@ cargo test
 - `--input <PATH>` (sheets only) - May be repeated for a multi-document corpus;
   each document keeps its own N-gram boundary
 - `--title <TITLE>` / `--author <AUTHOR>` (sheets only) - Override the labels
-  printed on the brief and participant pages (for example, to preserve a
-  source reveal)
+  printed on the brief and participant pages (for example, to preserve a source
+  reveal)
 - `--columns` / `--font-size` (sheets only) - The rest of the sheet density.
   Columns default to 4 for bigrams and narrow as n grows. Pairs too wide for
   their column take two columns, so nothing wraps into the row below --- which
