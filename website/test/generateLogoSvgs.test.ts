@@ -185,7 +185,9 @@ describe("generate-logo-svgs", () => {
         expect(svg).not.toContain("@keyframes");
         expect(svg).toContain('fill="#1a1a1a"');
 
-        const lit = [...svg.matchAll(/<circle cx="([\d.]+)" cy="([\d.]+)" r="2" fill="([^"]+)"\/>/g)];
+        const lit = [
+          ...svg.matchAll(/<circle cx="([\d.]+)" cy="([\d.]+)" r="2" fill="([^"]+)"\/>/g),
+        ];
         expect(lit.map((c) => c[3] === TITLE_TINTS[ti])).toEqual(tokenBits(TITLE_TOKENS[ti].id));
       }
       // The five differ from each other: a cycle that repeated a frame would

@@ -252,9 +252,10 @@ const outputs: [string, string][] = [
   // one frame 120 times. Number 1 is `lockup-light.svg` again, which is what
   // makes "the first frame" and "the lockup" the same file to a reader
   // comparing them.
-  ...TITLE_TOKENS.map(
-    (_, ti): [string, string] => [`lockup-light-${ti + 1}.svg`, generateLockup("light", false, ti)],
-  ),
+  ...TITLE_TOKENS.map((_, ti): [string, string] => [
+    `lockup-light-${ti + 1}.svg`,
+    generateLockup("light", false, ti),
+  ]),
 ];
 
 for (const [name, svg] of outputs) {
