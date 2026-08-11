@@ -29,12 +29,33 @@ import "../styles/widgets.css";
    10:45  Scale, without changing the loop     (slides 13-14, 1:15)
    12:00  ANU at 80, and over to Cecilia       (slides 15-16, 1:00)
 
-  This is the sheets talk, not the grid talk. There is no Wacom, no annotation
-  surface, no 42 cards, no bag of balls, and no MC choreography: the earlier
-  version of this deck had all of that and it was too much apparatus for
-  fourteen minutes on a stage Ben does not control. The room holds the model
-  on paper and puts hands up. The AV company has exactly one cue: switch to
-  Ben's feed at walk-on.
+  This is the sheets talk, not the grid talk. No 42 cards, no bag of balls, no
+  MC choreography, and no grid built live on stage: the earlier version of
+  this deck had all of that and it was too much apparatus for fourteen minutes
+  on a stage Ben does not control. The room holds the model on paper and puts
+  hands up. The AV company has exactly one cue: switch to Ben's feed at
+  walk-on.
+
+  The Wacom stays, for one job: writing the generated tokens on slide 7 as
+  they come in. Press shift-W over that slide to bring up the annotation
+  surface, and write with the pen. Arrow keys still navigate with the surface
+  up. Do NOT press Escape or W mid-activity --- closing the layer discards its
+  ink, and the sentence being built is the whole point of the next three
+  slides.
+
+  Ink is committed per slide, so the sentence lives on slide 7 and does not
+  follow you forward. Read it out loud before advancing, because slides 8 and
+  10 both point back at it ("we just ran a language model", "the sentence we
+  wrote is in no book") and the room will not be able to see it by then. If it
+  is a good one, arrow back to 7 while saying so rather than trying to
+  reproduce it from memory. D saves the annotated slide as a PNG afterwards.
+
+  A physical whiteboard would keep the sentence up for the whole talk, which
+  the Wacom does not, and it is the fallback if the annotation surface
+  misbehaves at the sound check. It is the fallback rather than the plan
+  because the screen is the only surface in Manning Clark Hall the back row
+  can read, and writing on a board means standing side-on to 200 people for
+  four minutes.
 
   The reveal is the spine: the three source books are NEVER named until slide
   11. Nothing on the printed sheets names them either --- the set is generated
@@ -56,8 +77,9 @@ import "../styles/widgets.css";
       in the model.
     - brief.pdf (page 1-2 of the set) on the lectern. It carries the worked
       example and the colour names. It is NOT handed out.
-    - whiteboard and a scribe: Ben calls tokens and picks hands, the scribe
-      writes. Both hands are otherwise busy pointing at the room.
+    - Wacom attached and tested at the 1 pm sound check: pen colour and weight
+      chosen, and a line written on slide 7 and read from the back of the hall.
+      Ben calls tokens, picks hands, and writes.
     - lapel or headset mic.
 
   Generation numbers: 6,409 tokens, 1,115 distinct, 6,406 token pairs, zero
@@ -169,10 +191,12 @@ That is not a metaphor for how a model is distributed. It is literally where the
 1. I **call out** the last token we wrote (and its colour)
 2. **hands up** if it's the _boxed_ token on your page
 3. I **pick a hand at random** --- you read out the token beside it
-4. the scribe **writes it down**, and we go again
+4. I **write it down**, and we go again
 
 {/* notes:
-Get the seed first: ask someone near the front to read out any pair from their page, both tokens, boxed one first. Scribe writes both. It matters that the opening came off a sheet rather than out of my head --- the room supplies the beginning as well as everything after it.
+Get the seed here but write it on the NEXT slide: ink is committed per slide, so anything written on this one is left behind the moment you advance. Ask someone near the front to read out any pair from their page, both tokens, boxed one first. Hold those two words, advance, then shift-W and write them.
+
+It matters that the opening came off a sheet rather than out of my head --- the room supplies the beginning as well as everything after it.
 
 Then walk the four steps once against those two words.
 
@@ -194,7 +218,9 @@ Don't explain why yet. They'll see it.
 <Timer minutes={4} overlay />
 
 {/* notes:
-Four minutes, 12-15 tokens. Keep rounds moving --- no commentary between a hand going up and a token landing on the board.
+Shift-W, write the volunteer's two words, and go. Four minutes, 12-15 tokens. Keep rounds moving --- no commentary between a hand going up and a token landing on the screen.
+
+Write big. It has to read from the back of Manning Clark Hall, and the sentence is what slides 8 and 10 point back at.
 
 Narrate exactly two things, once each, without stopping the flow:
 
@@ -229,7 +255,7 @@ the hands in the air → the **probability distribution**
 
 my random pick → **sampling**
 
-the sentence on the board → **generation**
+the sentence I wrote → **generation**
 
 {/* notes:
 The jargon used to make this sound unreachable, and you now have a physical referent for every word of it. Brisk --- the point is the mapping, not the definitions.

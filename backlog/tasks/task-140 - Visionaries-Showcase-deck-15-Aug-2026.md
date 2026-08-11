@@ -4,7 +4,7 @@ title: Visionaries Showcase deck (15 Aug 2026)
 status: In Progress
 assignee: []
 created_date: '2026-08-07 04:07'
-updated_date: '2026-08-11 11:17'
+updated_date: '2026-08-11 11:25'
 labels:
   - decks
 dependencies: []
@@ -25,11 +25,12 @@ Rewrite Ben's 14-minute ANU Visionaries Among Us Showcase talk for Manning Clark
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [x] #1 Deck remains unlisted and passes the site build, deck checks, and slide-fit validation
-- [x] #2 The live demonstration uses the 100-sheet anonymous three-source corpus, printed twice, with notes covering distribution, seeding, random sampling, missing-sheet recovery, and the 14-minute hard stop
-- [x] #3 Source identities remain hidden until after generation, then a three-source reveal explains how shared contexts let the model cross boundaries it cannot see
-- [x] #4 The talk targets 13:00, retains the Human-Scale AI and ANU 80th-anniversary brief, and explicitly links Tergel Namsrai before it to Cecilia Nie after it
-- [x] #5 The comparison with frontier LLMs distinguishes more context, generalisation, instruction tuning, training-data scale, and parameter scale without presenting a transformer as an enlarged N-gram grid
-- [x] #6 AV and facilitator notes match the simplified setup: sheets pre-placed, one complete set guaranteed in occupied seats, whiteboard/scribe ready, one laptop-feed cue, and no Wacom/cards/balls dependency
+- [x] #2 The live demonstration uses the 120-sheet anonymous three-source corpus. One complete set covers the model; the second printed copy is redundancy against empty seats, not a requirement
+- [x] #3 Notes cover distribution, seeding, random sampling, missing-sheet recovery, and the 14-minute hard stop
+- [x] #4 Source identities remain hidden until after generation, then a three-source reveal explains how shared contexts let the model cross boundaries it cannot see
+- [x] #5 The talk targets 13:00, retains the Human-Scale AI and ANU 80th-anniversary brief, and explicitly links Tergel Namsrai before it to Cecilia Nie after it
+- [x] #6 The comparison with frontier LLMs distinguishes more context, generalisation, instruction tuning, training-data scale, and parameter scale without presenting a transformer as an enlarged N-gram grid
+- [x] #7 AV and facilitator notes match the setup: sheets pre-placed, whiteboard replaced by the Wacom for scribing the generated tokens, one laptop-feed cue, and no cards/balls/live-grid dependency
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -61,50 +62,47 @@ Target running order: 13:00 against the 14:00 hard stop.
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-The current 15-slide deck still implements the superseded Wacom/grid/cards/bag
-version; the revised implementation plan above is the source of truth and has
-not yet been applied to the deck.
+The deck is rewritten around the search sheets (18 slides, targets 13:00) and
+the printed materials are finalised. Both are done; what remains is rehearsal.
 
-Printed materials are finalised and reproducible via `make showcase` in cli/.
-The set is 120 A4 participant sheets at 53--54 token pairs each (--rows 15
---font-size 19.2pt), 6,406 bigrams across three corpora, zero terminal
-contexts. Both the input order and --seed 42 are load-bearing: the deal only
-reproduces from that exact combination, so a reprint matches the copies
-already in the hall.
+PRINT SET --- `make showcase` in cli/, reproducible byte-for-byte:
+  - brief.pdf --- two pages, A4, lectern only. Never handed out.
+  - participants.pdf --- 120 A4 sheets at 53-54 token pairs each (--rows 15
+    --font-size 19.2pt), 6,406 bigrams across three corpora, zero dead ends.
 
-  - out/sheets/visionaries-showcase/brief.pdf --- two pages, A4, for the
-    lectern. Never handed out.
-  - out/sheets/visionaries-showcase/participants.pdf --- 120 A4 sheets.
-    PRINT TWICE for the 200-seat hall: every token pair is then held by two
-    people, so the probabilities are unchanged and one empty seat no longer
-    takes a transition out of the room. 240 sheets of paper, single-sided.
+One complete set of 120 IS the model. Print a second copy for the 200-seat
+hall so every pair is held by two people and an empty seat no longer takes a
+transition out of the room --- but everything past the first 120 is bonus, not
+a requirement. Seat the complete A set first, B copies in a different zone.
 
-Handed out at full A4 rather than imposed two-up onto A5. The imposition
-halves the paper but scales the page by 1/sqrt(2), taking 19.2pt type down to
-an effective 13.6pt --- too small to read at arm's length in a darkened hall.
-Getting it back through the imposition would need ~27pt source and over 250
-sheets. 19.2pt is itself the largest size that still fits most pairs in one of
-four columns on A4; past it, wide pairs take two slots each and the sheet
-count runs away (21pt needs 195 sheets, 24pt 196 even at three columns).
+Input order and --seed 42 are load-bearing: the deal only reproduces from that
+exact combination, so a reprint matches what is already in the hall.
 
-Verified: no source name, title or URL appears anywhere in the text layer of
-either PDF, so nothing leaks before the three-source reveal.
+Handed out at full A4, not imposed two-up onto A5: the imposition scales the
+page by 1/sqrt(2), taking 19.2pt down to an effective 13.6pt, which is too
+small at arm's length in a darkened hall. 19.2pt is itself the ceiling --- the
+largest size that still fits most pairs in one of four columns on A4.
 
-The sheets CLI accepts repeated --input while preserving document boundaries,
-and --title/--author overrides keep the sources off the printed pages.
-CutoutsMetadata carries a document count, which the brief uses to explain
-generation crossing between texts --- a count a --title override cannot hide.
+Verified: no source name, title or URL anywhere in the text layer of either
+PDF, so nothing leaks before the three-source reveal.
 
-The brief gained three things every corpus needs: what to do when the room is
-a different size from the sheet count, the seam between combined texts, and
-seeding the first round. It runs to two pages for every corpus now.
+WACOM --- still used, for one job: writing the generated tokens as they come
+in, replacing a whiteboard and scribe. Shift-W over slide 7. Ink is committed
+per slide, so the seed is collected on slide 6 and written on 7 with the rest
+of the sentence, and the sentence does not follow you forward --- read it
+aloud before advancing, because slides 8 and 10 both point back at it. Do not
+press Escape or W mid-activity; that discards the ink.
 
-The sheets palette is 8 colours, down from 11, and chosen for nameability and
-for printed rather than on-screen distinctness: black, grey, red, brown,
-green, blue, purple, magenta. Worst-case ΔE 0.102 across coated, uncoated and
-newsprint. The participant sheets no longer print a colour key --- the names
-are the ones a room would use unprompted. Sheets and cutouts are also on
-brand now (Public Sans, the horizontal lockup in the headers).
+DECK --- the Wacom-drawn grid, 42 A3 cards, bag of balls and MC choreography
+are gone. The reveal is the spine: three books, never named until slide 11,
+built in three clicks with Seuss last. Slide 12 explains the seam --- each
+book counted separately, no pair spanning the join, and generation crossing
+between them anyway because a bigram model cannot see which book it is in.
+
+The sheets palette is 8 colours chosen for nameability and for printed rather
+than on-screen distinctness: black, grey, red, brown, green, blue, purple,
+magenta, worst-case ΔE 0.102 across coated, uncoated and newsprint. Sheets and
+cutouts are on brand (Public Sans, horizontal lockup in the headers).
 
 Program links verified against the showcase runsheet and ANU material: Tergel
 Namsrai immediately precedes Ben and works on sleep/brain health; Cecilia Nie
