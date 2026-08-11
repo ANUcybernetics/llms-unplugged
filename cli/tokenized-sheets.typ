@@ -470,16 +470,37 @@
 // 0.6 KB for a raster, which is stored once and referenced --- so a 120-sheet
 // set would pay for the outlined title 120 times over. The brief and the
 // cutouts instructions keep the vector: they place it once, where it is free.
-// 756px is 600dpi at the 32mm this prints at, and ~850dpi once the sheets are
+// 945px is 600dpi at the 40mm this prints at, and ~850dpi once the sheets are
 // imposed two-up onto A5, so nothing visible is given up for it.
-// Regenerate after changing the lockup:
-//   convert -background none -density 1200 lockup-light.svg -resize 756x lockup-light.png
+// Regenerate after changing the lockup or its printed width:
+//   convert -background none -density 1200 lockup-light.svg -resize 945x lockup-light.png
 //   convert lockup-light.png -depth 8 -strip PNG32:lockup-light.png
-#let sheet-header() = block(width: 100%, below: 0.5em)[
-  #image("lockup-light.png", width: 32mm)
-  #v(0.2em)
-  #line(length: 100%, stroke: 0.8pt + luma(120))
-]
+//
+// The rule sits in brand gold with equal air above and below it, so the header
+// reads as one band --- lockup, gap, rule, gap --- rather than a mark with a
+// hairline stuck under it.
+//
+// Absolute rather than em, because the gap is brand furniture and `--font-size`
+// is a density knob for the pairs: at 19.2pt an em-based gap is half again the
+// gap the same header takes at 13pt. Both come off `header_gap`, and both are
+// `v()` inside the block --- the one below cannot be the block's own `below`,
+// because the header is a grid cell and trailing block spacing there is
+// trimmed away.
+#let header_gap = 2.5mm
+
+// `box` around the lockup, and `par.spacing` zeroed, because an image is
+// inline content: it opens a paragraph, so the rule under it inherited 1.2em
+// of paragraph spacing on top of the gap set here --- 8mm at 19.2pt, which is
+// most of the gap and grows with `--font-size`. Zeroed, the header is exactly
+// as tall as the mark, the rule and the two gaps, and the ~8mm it was spending
+// on invisible paragraph spacing goes to the pairs instead.
+#let sheet-header() = block(width: 100%, below: 0pt, {
+  set par(leading: 0pt, spacing: 0pt)
+  box(image("lockup-light.png", width: 40mm))
+  v(header_gap)
+  line(length: 100%, stroke: 0.8pt + brand-gold)
+  v(header_gap)
+})
 
 // ===== Laying the pairs out =====
 
