@@ -97,6 +97,39 @@ background, matching the colour scheme used in the title logo:
   style="max-width: 400px; margin: 1.5rem auto; display: block;"
 />
 
+## The lockup
+
+Every mark described so far has the same limitation: it only means anything to
+someone who already knows what the project is. A stranger seeing a grid of gold
+dots learns nothing. That's fine for a favicon---the tab title does the
+work---but it rules the marks out of the places a logo usually goes: a site
+header, a slide corner, the top of a handout, a conference badge.
+
+So there's a horizontal lockup, which is just the favicon grid with the title
+set next to it in [Public Sans](https://public-sans.digital.gov/), the ANU brand
+typeface:
+
+<img
+  src="/lockup.svg"
+  alt="The LLMs Unplugged horizontal lockup---the 4x4 dot grid with the title set beside it"
+  style="max-width: 320px; margin: 1.5rem auto; display: block;"
+/>
+
+The grid holds the bit pattern for `LL` (token 3069), which is the frame the
+favicon rests on before its animation starts. Unlike the favicon, the lockup
+doesn't cycle: at favicon size the flicker is an easter egg nobody notices until
+they do, but in a page header it's a moving object competing with the content
+underneath it. There's an animated version at `/lockup-animated.svg` for hero
+and social contexts where that's the point.
+
+The wordmark is baked to outlines rather than referenced as a font, so the file
+carries its own letterforms and renders identically as an `<img>`, in print, or
+dropped into a design tool with no network access. The background stays
+transparent and the wordmark comes in two colours---white in `/lockup.svg` for
+dark surfaces, near-black in `/lockup-light.svg` for light ones. On ANU gold the
+light variant is the one to reach for; white on gold clears 3:1 but not much
+more.
+
 ## The animated version
 
 There's also an animated version of the brand mark which starts with the title
