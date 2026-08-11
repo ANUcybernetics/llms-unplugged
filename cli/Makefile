@@ -82,9 +82,7 @@ TYPST_BIN ?= typst
 # The brand assets the templates load. Listed as prerequisites everywhere a
 # template is, because make cannot see through `image()`: without them a
 # regenerated lockup left every committed PDF untouched and looking current.
-# The .png is the .svg rasterised --- see tokenized-sheets.typ for why the
-# per-sheet header takes the raster --- so it is a build input too.
-BRAND_ASSETS := lockup-light.svg lockup-light.png
+BRAND_ASSETS := lockup-light.svg
 
 # Typst stamps a creation date into every PDF, so an unchanged rebuild still
 # produces different bytes. The sheet PDFs are committed, so that would dirty
