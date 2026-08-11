@@ -102,6 +102,7 @@ pub fn process_text_for_cutouts(
     let metadata = CutoutsMetadata {
         title: title.to_string(),
         author: author.to_string(),
+        documents: 1,
         total_tokens: tokens.len(),
         kept_tokens: tokens.iter().filter(|t| t.keep).count(),
         unique_tokens: stats.unique_tokens,

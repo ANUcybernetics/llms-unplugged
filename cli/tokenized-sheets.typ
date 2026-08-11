@@ -70,6 +70,17 @@
 
 #let muted = rgb("#666")
 
+// Small counts read as words in running prose, and a corpus is only ever
+// combined from a handful of texts. Anything past the list falls back to the
+// numeral rather than growing a spelling table nobody will ever print.
+// Bounds-checked rather than left to `.at()`'s default: a negative index wraps
+// to the end of a Typst array, so an unguarded n = 1 would spell itself "nine".
+#let number-word = n => if n >= 2 and n <= 9 {
+  ("two", "three", "four", "five", "six", "seven", "eight", "nine").at(n - 2)
+} else {
+  str(n)
+}
+
 // ===== Instructions page (teacher-facing, printed once) =====
 
 // Build a genuine three-step chain out of the dealt pairs, recording which
@@ -193,6 +204,18 @@
     hand out *one sheet per person* --- every sheet is different, and nothing
     needs cutting out.
 
+    // The sheet count follows the corpus, not the room, so most rooms are the
+    // wrong size for it. Both directions have a right answer and neither is
+    // obvious, which is why they are here rather than left to the facilitator.
+    *If the room is a different size*, match it to the sheets rather than the
+    other way round. More people than sheets: print the set twice and hand out
+    both copies. Every #pair-noun is then held by two people, so every count
+    doubles and the proportions --- which is all the model is --- do not move.
+    It buys some insurance too, because one person away no longer takes a
+    #pair-noun out of the room with them. Fewer people than sheets: give the
+    spares out rather than leaving them on the table, two or three to a person
+    if it comes to that. A sheet nobody holds is a hole in the model.
+
     Each sheet holds #per_sheet #strong(pair-noun-plural). A *token* is one word
     or one punctuation mark; a #pair-noun is a *next token* paired with the
     *previous #prev-words-phrase* that came immediately before it somewhere in
@@ -229,6 +252,13 @@
 
     == Running a round
 
+    // Seeding sits above the list rather than in it: it happens once, and as a
+    // numbered step it reads like something to redo every round.
+    Seed the board first. Ask someone to read out any #pair-noun from their
+    sheet --- both tokens, boxed one first --- and write it up. It matters that
+    the opening comes off a sheet rather than out of your head: the room
+    supplies the beginning as well as everything after it. Then, each round:
+
     + *Call out the last #prev-words-phrase* of the text so far.
     + Everyone scans their own sheet for #pair-noun-plural whose previous
       #prev-words-phrase #if previous-words-count > 1 [match] else [matches].
@@ -239,15 +269,13 @@
     + A scribe writes the token on the board. That token becomes part of the
       context for the next round. Repeat.
 
-    // Break here rather than after the anatomy section: it splits the brief
-    // into "what this is / how to run it" and "what it demonstrates", and it
-    // balances the two columns, which keeps the worked example on this page.
-    // The closing note on the round runs on at the top of the second column
-    // rather than staying with the numbered list: the colour key costs the
-    // first column about as many lines as this paragraph gives back, and the
-    // second column has room to spare in every corpus.
-    #colbreak()
-
+    // No hand-placed column break. One was tuned to balance the brief as it
+    // stood, and then broke as soon as the brief grew: with the room-size and
+    // seeding paragraphs added, a break at this point left the second column
+    // holding a single list item and pushed the worked example onto a second
+    // page. Letting the columns fill costs the semantic split it bought --- the
+    // break no longer lands between "how to run it" and "what it demonstrates"
+    // --- and buys a brief that stays laid out as the text changes.
     Picking at random matters. If you take whoever shouts first you are sampling
     the fastest reader, not the text --- and the whole point is that the room
     samples the way the model does.
@@ -266,12 +294,26 @@
     The model only exists across the whole room --- and if somebody is away,
     their share of it is missing, and some contexts will draw no hands at all.
 
+    // Only for a corpus built from several files. The boundary is real work the
+    // CLI does --- each text is tokenised on its own, so no pair spans the join
+    // --- and the crossing it makes possible is the whole reason to combine
+    // texts, so a facilitator who doesn't know to watch for it misses the point.
+    #if doc_metadata.at("documents", default: 1) > 1 [
+      *The seam between the texts.* This corpus is
+      #number-word(doc_metadata.documents)
+      separate texts, tokenised apart so that no #pair-noun straddles the join.
+      Nothing on the sheets says which text a pair came from, and the model
+      cannot tell either --- so wherever two of the texts share a context,
+      generation crosses from one to the other with nothing marking the
+      crossing.
+    ]
+
     *Quiet rounds.* One hand is not a stall --- a word with a single
     continuation is the model working. Nor will you run dry: a word has nothing
     following it only if it appears nowhere but the very last position in the
     text, which is at most one word in the whole deal. So no hands at all almost
-    always means an empty seat, and that is worth saying out loud. Reseed from
-    any #pair-noun and carry on.
+    always means an empty seat --- two of them, if you printed the set twice ---
+    and that is worth saying out loud. Reseed from any #pair-noun and carry on.
 
     // Provenance, so it belongs at the foot of the brief rather than in the
     // middle of the instructions. Its two lines also come off the taller

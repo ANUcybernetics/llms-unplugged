@@ -386,6 +386,10 @@ pub fn process_file<P: AsRef<Path>>(
 pub struct CutoutsMetadata {
     pub title: String,
     pub author: String,
+    /// How many source texts this corpus was built from. One for a single
+    /// file; more when several were combined, which the sheets brief says out
+    /// loud because generation crossing between texts is the point of doing it.
+    pub documents: usize,
     pub total_tokens: usize,
     pub kept_tokens: usize,
     pub unique_tokens: usize,
@@ -439,6 +443,7 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
     let metadata = CutoutsMetadata {
         title,
         author,
+        documents: 1,
         total_tokens: tokens.len(),
         kept_tokens: tokens.iter().filter(|t| t.keep).count(),
         unique_tokens: stats.unique_tokens,

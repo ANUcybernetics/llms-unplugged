@@ -675,6 +675,7 @@ fn combine_cutouts_documents(
         return documents.into_iter().next().unwrap();
     }
 
+    let document_count = documents.len();
     let title = documents
         .iter()
         .map(|(_, metadata)| metadata.title.as_str())
@@ -737,6 +738,7 @@ fn combine_cutouts_documents(
         CutoutsMetadata {
             title,
             author,
+            documents: document_count,
             total_tokens,
             kept_tokens,
             unique_tokens,

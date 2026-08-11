@@ -981,6 +981,35 @@ fn test_sheets_cli_preserves_repeated_input_boundaries() -> io::Result<()> {
     assert_eq!(json["metadata"]["total_tokens"], 4);
     assert_eq!(json["metadata"]["title"], "Hidden sources");
     assert_eq!(json["metadata"]["author"], "Two authors");
+    // The brief prints a paragraph about generation crossing between texts, and
+    // this count is the only thing that tells it to. A --title override hides
+    // the joined titles, so the count cannot be recovered from them.
+    assert_eq!(json["metadata"]["documents"], 2);
+    Ok(())
+}
+
+#[test]
+fn test_sheets_cli_reports_one_document_for_a_single_input() -> io::Result<()> {
+    let exe = cli_exe();
+    let temp = TempDir::new()?;
+    let only = write_sample_corpus(temp.path(), "only.txt", "alpha beta gamma")?;
+    let out_dir = temp.path().join("out");
+
+    let output = Command::new(exe)
+        .arg("sheets")
+        .arg("--input")
+        .arg(&only)
+        .arg("--sheets")
+        .arg("1")
+        .arg("--json-only")
+        .arg("--output")
+        .arg(&out_dir)
+        .output()?;
+    assert!(output.status.success(), "sheets failed: {output:?}");
+
+    let json: serde_json::Value =
+        serde_json::from_reader(BufReader::new(File::open(out_dir.join("sheets.json"))?))?;
+    assert_eq!(json["metadata"]["documents"], 1);
     Ok(())
 }
 
