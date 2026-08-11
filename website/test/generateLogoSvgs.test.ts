@@ -17,6 +17,7 @@ describe("generate-logo-svgs", () => {
   const favicon = readFileSync(join(outDir, "favicon.svg"), "utf-8");
   const fiveUp = readFileSync(join(outDir, "favicon-5up.svg"), "utf-8");
   const fiveUpTinted = readFileSync(join(outDir, "favicon-5up-tinted.svg"), "utf-8");
+  const titleLogo = readFileSync(join(outDir, "title-logo.svg"), "utf-8");
   const lockup = readFileSync(join(outDir, "lockup.svg"), "utf-8");
   const lockupLight = readFileSync(join(outDir, "lockup-light.svg"), "utf-8");
   const lockupAnimated = readFileSync(join(outDir, "lockup-animated.svg"), "utf-8");
@@ -94,6 +95,50 @@ describe("generate-logo-svgs", () => {
       }
       const lit = fiveUpTinted.split('fill="rgba(255,255,255,0.5)"').length - 1;
       expect(lit).toBe(litBits);
+    });
+  });
+
+  describe("title-logo.svg", () => {
+    it("sets the token labels as outlines, with no font to fetch", () => {
+      expect(titleLogo).not.toContain("@import");
+      expect(titleLogo).not.toContain("<text");
+      expect(titleLogo).not.toContain("font-family");
+      // Five gold bricks, each with its label; no invisible spare markup.
+      expect(titleLogo.match(/<path/g) ?? []).toHaveLength(5);
+      expect(titleLogo).not.toContain('opacity="0"');
+      expect(titleLogo).not.toContain("<circle");
+    });
+
+    it("fills each brick with its label edge to edge", () => {
+      // Bricks are one monospaced cell per character, so every label lands on
+      // the same type size and the same inset, whatever the layout does.
+      const insets = [...titleLogo.matchAll(/translate\(([\d.]+) [\d.]+\) scale\(([\d.]+)\)/g)];
+      expect(insets).toHaveLength(5);
+      const scales = new Set(insets.map((m) => m[2]));
+      expect(scales.size).toBe(1);
+      for (const [, x] of insets) expect(Number(x)).toBeLessThan(2);
+    });
+  });
+
+  describe("motion and labelling", () => {
+    it("names every mark for screen readers", () => {
+      for (const svg of [favicon, fiveUp, fiveUpTinted, lockup, lockupAnimated, titleLogo]) {
+        expect(svg).toContain('role="img" aria-label="LLMs Unplugged"');
+      }
+    });
+
+    it("stops the animation for readers who ask for less motion", () => {
+      for (const svg of [favicon, lockupAnimated]) {
+        const guard = svg.match(/@media \(prefers-reduced-motion:reduce\)\{([^}]+)\}/);
+        expect(guard).not.toBeNull();
+        // Scoped to our own dot classes: an inlined SVG's <style> is
+        // document-wide, so a bare `*` here would halt the whole page.
+        expect(guard![1]).toMatch(/^(\.f-[01]{5},)*\.f-[01]{5}\{animation:none$/);
+        // ...and last, so it wins on order against the rules it overrides.
+        expect(svg.indexOf("prefers-reduced-motion")).toBeGreaterThan(
+          svg.lastIndexOf("@keyframes"),
+        );
+      }
     });
   });
 

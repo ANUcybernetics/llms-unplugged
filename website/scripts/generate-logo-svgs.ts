@@ -1,7 +1,29 @@
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { TITLE_TINTS, TITLE_TOKENS, titleOnlyLayout, tokenBits } from "../src/lib/token-logo.ts";
-import { WORDMARK_ADVANCE, WORDMARK_CAP_HEIGHT, WORDMARK_PATH } from "./wordmark-path.ts";
+
+/** Trims float noise out of generated coordinates. */
+const round = (n: number) => Math.round(n * 1000) / 1000;
+
+/**
+ * Opening tag for a mark. Every one of these files is a picture of the project
+ * name, so each carries that as its accessible name for the cases where the SVG
+ * is inlined rather than dropped in an `<img>` with its own alt text.
+ */
+function svgOpen(width: number, height: number): string {
+  return (
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"` +
+    ` role="img" aria-label="LLMs Unplugged">`
+  );
+}
+import {
+  TOKEN_CAP_HEIGHT,
+  TOKEN_CELL_ADVANCE,
+  TOKEN_LABELS,
+  WORDMARK_ADVANCE,
+  WORDMARK_CAP_HEIGHT,
+  WORDMARK_PATH,
+} from "./wordmark-path.ts";
 
 // Defaults to the checked-in location; tests override LOGO_OUT_DIR so they
 // don't clobber the committed files in public/.
@@ -26,12 +48,9 @@ interface DotGeometry {
   radius: number;
 }
 
-/** A grid on its own dark tile: the favicon, the lockup, the five-up. */
+/** The tile every dot mark is built on: the favicon, the lockup, the five-up. */
 const TILE: DotGeometry = { box: 28, spacing: 6, radius: 2 };
 const TILE_CORNER = 4;
-
-/** A grid printed inside one of the gold bricks of the word mark. */
-const BRICK: DotGeometry = { box: 18, spacing: 4.5, radius: 1.5 };
 
 interface DotOptions {
   /** Fill for a 1 bit and for a 0 bit. */
@@ -72,7 +91,10 @@ const POSITION_KEYS = Array.from({ length: 16 }, (_, j) =>
   TITLE_BITS.map((bits) => (bits[j] ? "1" : "0")).join(""),
 );
 
-/** CSS keyframes cycling each position through the five tokens' bit patterns. */
+/**
+ * CSS keyframes cycling each position through the five tokens' bit patterns.
+ * Readers who ask for less motion get the first token's pattern, held still.
+ */
 function animationCss(): string {
   let css = "";
   for (const key of new Set(POSITION_KEYS)) {
@@ -87,12 +109,16 @@ function animationCss(): string {
     css += `@keyframes f-${key}{${frames.join("")}}`;
     css += `.f-${key}{animation:f-${key} ${CYCLE_SECONDS}s infinite}`;
   }
-  return css;
+  // Scoped to our own classes, and last so it wins on order alone: an inlined
+  // SVG's <style> applies to the whole document, so a bare `*` here would stop
+  // every animation on the page.
+  const selector = Array.from(new Set(POSITION_KEYS), (key) => `.f-${key}`).join(",");
+  return `${css}@media (prefers-reduced-motion:reduce){${selector}{animation:none}}`;
 }
 
 /** The animated single grid: 15 seconds through all five title tokens. */
 function generateFavicon(): string {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${TILE.box} ${TILE.box}">
+  return `${svgOpen(TILE.box, TILE.box)}
   <style>${animationCss()}</style>
   <rect width="${TILE.box}" height="${TILE.box}" rx="${TILE_CORNER}" fill="${TILE_FILL}"/>
 ${dotGrid(TILE, TITLE_BITS[0], { on: TITLE_TINTS[0], off: DIM, keys: POSITION_KEYS })}
@@ -126,7 +152,7 @@ function generateFiveUp(tinted: boolean): string {
     return `${tile}\n${dots}`;
   }).join("\n");
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${FIVE_UP_W} ${TILE.box}">
+  return `${svgOpen(FIVE_UP_W, TILE.box)}
   <rect width="${FIVE_UP_W}" height="${TILE.box}" rx="${TILE_CORNER}" fill="${TILE_FILL}"/>
 ${bricks}
 </svg>
@@ -158,7 +184,7 @@ const LOCKUP_W = Math.round((LOCKUP_TEXT_X + WORDMARK_ADVANCE * WORDMARK_SCALE) 
 function generateLockup(tone: "dark" | "light", animated: boolean): string {
   const style = animated ? `\n  <style>${animationCss()}</style>` : "";
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${LOCKUP_W} ${TILE.box}">${style}
+  return `${svgOpen(LOCKUP_W, TILE.box)}${style}
   <rect width="${TILE.box}" height="${TILE.box}" rx="${TILE_CORNER}" fill="${TILE_FILL}"/>
 ${dotGrid(TILE, TITLE_BITS[0], { on: TITLE_TINTS[0], off: DIM, keys: animated ? POSITION_KEYS : undefined })}
   <g transform="translate(${LOCKUP_TEXT_X} ${LOCKUP_BASELINE}) scale(${WORDMARK_SCALE})">
@@ -172,33 +198,35 @@ const REF_W = 960;
 const REF_H = 540;
 const BG = "#0a0a0a";
 
-/** The word mark: five gold bricks spelling the title over two lines. */
+/**
+ * The word mark: five gold bricks spelling the title over two lines, each
+ * labelled with the token it stands for.
+ *
+ * Every brick is exactly one monospaced cell per character wide, so the type
+ * size falls out of the brick width rather than being guessed at, and the
+ * labels fill their bricks edge to edge whatever the layout does. All five sit
+ * on a common baseline, cap height centred, so "plug" hangs its descender below
+ * the others instead of drifting up to meet them.
+ */
 function generateTitleSvg(): string {
   const positions = titleOnlyLayout(REF_W, REF_H);
-  const bricks = TITLE_TOKENS.map((token, ti) => {
+  const fontSize = (positions[0].w / TOKEN_LABELS[0].label.length / TOKEN_CELL_ADVANCE) * 1000;
+  const scale = fontSize / 1000;
+
+  const bricks = TOKEN_LABELS.map(({ advance, path }, ti) => {
     const pos = positions[ti];
-    const dotSize = pos.h * 0.65;
-    const dotX = (pos.w - dotSize) / 2;
-    const dotY = (pos.h - dotSize) / 2;
-    const dots = dotGrid(BRICK, TITLE_BITS[ti], {
-      on: "rgba(255,255,255,0.5)",
-      off: "rgba(255,255,255,0.12)",
-      indent: "      ",
-    });
+    const x = (pos.w - advance * scale) / 2;
+    const baseline = (pos.h + TOKEN_CAP_HEIGHT * scale) / 2;
 
     return `  <g transform="translate(${pos.x} ${pos.y})">
     <rect width="${pos.w}" height="${pos.h}" rx="6" fill="${TITLE_TINTS[ti]}"/>
-    <svg x="${dotX}" y="${dotY}" width="${dotSize}" height="${dotSize}" viewBox="0 0 ${BRICK.box} ${BRICK.box}" opacity="0">
-${dots}
-    </svg>
-    <text x="${pos.w / 2}" y="${pos.h / 2}" text-anchor="middle" dominant-baseline="central"
-      fill="white" font-family="'Roboto Mono', monospace" font-weight="700"
-      font-size="${pos.h * 0.75}px">${token.displayText}</text>
+    <g transform="translate(${round(x)} ${round(baseline)}) scale(${round(scale)})">
+      <path d="${path}" fill="#ffffff"/>
+    </g>
   </g>`;
   }).join("\n");
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${REF_W} ${REF_H}">
-  <style>@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700');</style>
+  return `${svgOpen(REF_W, REF_H)}
   <rect width="${REF_W}" height="${REF_H}" fill="${BG}"/>
 ${bricks}
 </svg>
