@@ -605,8 +605,9 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
         ];
         compile_template("tokenized-sheets.typ", &inputs, &pdf_path)?;
 
-        // The brief in front is one page for most corpora and two for a wordy
-        // one, so anything past `sheets + 2` means a sheet spilled.
+        // The brief in front is one page, and the template is laid out to keep
+        // it there, but a corpus wordy enough to push it to two must not be
+        // read as a spilled sheet --- so the allowance stays at `sheets + 2`.
         let Some(pages) = pdf_page_count(&pdf_path) else {
             break;
         };

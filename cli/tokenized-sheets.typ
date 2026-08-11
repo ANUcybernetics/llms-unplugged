@@ -208,33 +208,40 @@
     [= Search sheets: how to run the activity], brand-lockup(width: 45mm),
   )
 
-  columns(2, gutter: 1.6em)[
-    The pages after this one are #sheets.len() *search sheets*, built from
+  // Written for somebody who has seen the activity run, not as a standalone
+  // explanation of it: what a facilitator cannot reconstruct from memory is
+  // the mechanics of this deal --- one sheet each, what a pair is, how to
+  // handle a room that isn't the size of the set --- so that is what is here.
+  // Everything the room works out for itself on the day has been cut.
+  //
+  // Two hand-split columns rather than a `columns()` flow. The brief is now
+  // short enough that flowed columns misbehave either way: in the page flow
+  // `columns` gives the first column the whole remaining height and fills it,
+  // leaving the second empty and pushing the worked example onto a second
+  // page, and a fixed height tuned to balance them breaks a section --- a
+  // numbered list, on the corpora with the longest brief --- across the
+  // gutter. Splitting by hand costs a little balance (the columns end at
+  // different heights, and by how much depends on the corpus) and buys a break
+  // that always lands between sections.
+  //
+  // Left: what the set is and how to read a sheet. Right: how to run it.
+  let brief-what = [
+    The pages after this one are #sheets.len() *search sheets*, dealt from
     #emph(doc_metadata.title) by #doc_metadata.author. Print them one-sided and
-    hand out *one sheet per person* --- every sheet is different, and nothing
-    needs cutting out.
+    hand out *one sheet per person*; every sheet is different, and nothing needs
+    cutting out. Each holds #per_sheet #strong(pair-noun-plural): a *next token*
+    with the *previous #prev-words-phrase* that came before it in the text.
 
     // The sheet count follows the corpus, not the room, so most rooms are the
     // wrong size for it. Both directions have a right answer and neither is
     // obvious, which is why they are here rather than left to the facilitator.
-    *If the room is a different size*, match it to the sheets rather than the
-    other way round. More people than sheets: print the set twice and hand out
-    both copies. Every #pair-noun is then held by two people, so every count
-    doubles and the proportions --- which is all the model is --- do not move.
-    It buys some insurance too, because one person away no longer takes a
-    #pair-noun out of the room with them. Fewer people than sheets: give the
-    spares out rather than leaving them on the table, two or three to a person
-    if it comes to that. A sheet nobody holds is a hole in the model.
-
-    Each sheet holds #per_sheet #strong(pair-noun-plural). A *token* is one word
-    or one punctuation mark; a #pair-noun is a *next token* paired with the
-    *previous #prev-words-phrase* that came immediately before it somewhere in
-    the original text.
+    *Match the room to the sheets*, not the other way round. More people than
+    sheets: print the set twice, so every count doubles and the proportions ---
+    which is all the model is --- hold. Fewer: hand the spares out anyway, two
+    or three to a person. A sheet nobody holds is a hole in the model.
 
     // An all-alphabetic pair reads best as the example; a corpus with no such
-    // pair (e.g. Chinese) falls back to whatever is first. Set inline rather
-    // than as a labelled diagram: every sheet now carries its own worked
-    // example in its instruction line, so this only has to name the parts.
+    // pair (e.g. Chinese) falls back to whatever is first.
     #let alphabetic = all_tokens.find(t => (
       t.text.find(regex("[A-Za-z]")) != none
         and t.previous_words.all(p => p.find(regex("[A-Za-z]")) != none)
@@ -243,95 +250,58 @@
       all_tokens.first()
     }
 
-    In #pair-chip(sample), the boxed #prev-words-phrase #if (
-      previous-words-count > 1
-    ) [are] else [is] the previous #prev-words-phrase and #emph(sample.text) is
-    the next token. Each token keeps the same colour wherever it appears, so
-    scan by colour first and read second. With only
-    #compact-palette.colors.len() colours and far more tokens than that, a
-    colour narrows the search rather than settling it --- always check the token
-    itself.
-
     // The colour named here is looked up rather than written in, so the
     // sentence stays true of whatever token the corpus supplied above.
-    Say the colour when you call a token out --- "who has #emph(sample.text)?
-    it's a #entry-for(sample.text).name one" --- and most of the page stops
-    being worth reading. The swatches are chosen to answer to these words, so
-    the words are the ones to use; the sheets themselves print no key, because a
-    strip of swatches at the top of a page of swatches is one more thing to scan
-    past.
+    In #pair-chip(sample), the boxed #prev-words-phrase #if (
+      previous-words-count > 1
+    ) [are] else [is] the context and #emph(sample.text) is the next token. A
+    token keeps its colour wherever it appears, so say the colour as you call
+    one out --- "who has #emph(sample.text)? it's a #entry-for(sample.text).name
+    one" --- and the room can scan by colour before reading. With
+    #compact-palette.colors.len() colours and far more tokens, a colour narrows
+    the search rather than settling it.
 
     #colour-key()
+  ]
 
+  let brief-how = [
     == Running a round
 
     // Seeding sits above the list rather than in it: it happens once, and as a
     // numbered step it reads like something to redo every round.
-    Seed the board first. Ask someone to read out any #pair-noun from their
-    sheet --- both tokens, boxed one first --- and write it up. It matters that
-    the opening comes off a sheet rather than out of your head: the room
-    supplies the beginning as well as everything after it. Then, each round:
+    Seed the board: someone reads out any #pair-noun from their sheet, boxed
+    #prev-words-phrase first, and both go up --- the room supplies the beginning
+    too. Then, each round:
 
-    + *Call out the last #prev-words-phrase* of the text so far.
-    + Everyone scans their own sheet for #pair-noun-plural whose previous
-      #prev-words-phrase #if previous-words-count > 1 [match] else [matches].
-      *Hands up* --- one hand each, and anyone with more than one match just
-      goes with the first they spot.
-    + *Pick a raised hand at random* and ask for that #{ pair-noun }'s next
-      token.
-    + A scribe writes the token on the board. That token becomes part of the
-      context for the next round. Repeat.
-
-    // No hand-placed column break. One was tuned to balance the brief as it
-    // stood, and then broke as soon as the brief grew: with the room-size and
-    // seeding paragraphs added, a break at this point left the second column
-    // holding a single list item and pushed the worked example onto a second
-    // page. Letting the columns fill costs the semantic split it bought --- the
-    // break no longer lands between "how to run it" and "what it demonstrates"
-    // --- and buys a brief that stays laid out as the text changes.
-    Picking at random matters. If you take whoever shouts first you are sampling
-    the fastest reader, not the text --- and the whole point is that the room
-    samples the way the model does.
+    + *Call out the last #prev-words-phrase* on the board.
+    + *Hands up* from everyone holding a matching #pair-noun --- one hand each.
+    + *Pick a raised hand at random* --- whoever shouts first is the fastest
+      reader, not a sample of the text --- and ask for its next token.
+    + The scribe writes that token up. It is part of the next context. Repeat.
 
     == What to watch for
 
-    *The hands are the probability distribution.* Every #pair-noun was dealt to
-    exactly one person, and the deal spreads each context across as many people
-    as it will go, so a common continuation really does put more hands in the
-    air than a rare one. Nobody has to explain weighted sampling; the room
-    performs it. (Roughly: for a context more common than the class is big,
-    somebody holds two matches but raises one hand, which flattens the busiest
-    contexts.)
+    *The hands are the probability distribution.* Every #pair-noun sits with
+    exactly one person, so a common continuation puts more hands in the air than
+    a rare one. Nobody has to explain weighted sampling; the room performs it.
 
     *Nobody holds the model.* No single sheet can continue the text on its own.
-    The model only exists across the whole room --- and if somebody is away,
-    their share of it is missing, and some contexts will draw no hands at all.
+    One hand is not a stall --- but no hands at all means an empty seat, so
+    reseed from any #pair-noun and say why.
 
     // Only for a corpus built from several files. The boundary is real work the
     // CLI does --- each text is tokenised on its own, so no pair spans the join
     // --- and the crossing it makes possible is the whole reason to combine
     // texts, so a facilitator who doesn't know to watch for it misses the point.
     #if doc_metadata.at("documents", default: 1) > 1 [
-      *The seam between the texts.* This corpus is
-      #number-word(doc_metadata.documents)
-      separate texts, tokenised apart so that no #pair-noun straddles the join.
-      Nothing on the sheets says which text a pair came from, and the model
-      cannot tell either --- so wherever two of the texts share a context,
-      generation crosses from one to the other with nothing marking the
-      crossing.
+      *The seam.* This corpus is #number-word(doc_metadata.documents) texts,
+      tokenised apart so no #pair-noun straddles the join. Nothing says which
+      text a pair came from, and the model cannot tell either --- so where two
+      texts share a context, generation crosses between them unmarked.
     ]
 
-    *Quiet rounds.* One hand is not a stall --- a word with a single
-    continuation is the model working. Nor will you run dry: a word has nothing
-    following it only if it appears nowhere but the very last position in the
-    text, which is at most one word in the whole deal. So no hands at all almost
-    always means an empty seat --- two of them, if you printed the set twice ---
-    and that is worth saying out loud. Reseed from any #pair-noun and carry on.
-
     // Provenance, so it belongs at the foot of the brief rather than in the
-    // middle of the instructions. Its two lines also come off the taller
-    // column, which is what buys the worked example room on this page for a
-    // corpus wordy enough to have pushed it onto a second.
+    // middle of the instructions.
     #text(size: 9pt, fill: muted)[
       #doc_metadata.total_tokens tokens, #doc_metadata.unique_tokens unique
       #sym.dot.c #calc.round(doc_metadata.entropy, digits: 2) bits/token
@@ -341,9 +311,19 @@
     ]
   ]
 
-  // No pagebreak: the two-column briefing rarely fills a page, so the worked
-  // example follows it and the whole teacher-facing brief stays on one sheet
-  // of paper. It spills to a second page only for a wordier corpus.
+  // The grid trims the leading spacing of each cell, so the heading opening
+  // the right-hand column starts level with the left one rather than 1.5em
+  // down it.
+  grid(
+    columns: (1fr, 1fr),
+    column-gutter: 1.6em,
+    align: top,
+    brief-what, brief-how,
+  )
+
+  // No pagebreak: the two columns take about half the page, so the worked
+  // example follows them and the whole facilitator brief stays on one sheet of
+  // paper.
   let chain = chain-example(sheets)
   if chain.len() >= 2 {
     // The running text the board accumulates: the seed pair's context,
@@ -397,13 +377,12 @@
               .map(w => coloured-word(w))
               .join(" ")
             let prose = if i == 0 [
-              *Start anywhere.* Pick any #pair-noun --- say this one --- and
-              write its previous #prev-words-phrase #emph[and] its next token on
-              the board.
+              *Start anywhere.* Someone reads out a #pair-noun --- say this one
+              --- and both its tokens go on the board.
             ] else [
-              *Round #str(i).* Call out the last #prev-words-phrase on the board
-              (#emph(called)). Another sheet has a match, so that person raises
-              a hand and reads out #emph(answer.token.text).
+              *Round #str(i).* Call out #emph(called) --- the last
+              #prev-words-phrase on the board. A sheet across the room matches
+              it, and that person reads out #emph(answer.token.text).
             ]
             (
               prose,
@@ -414,9 +393,9 @@
           .flatten(),
       )
 
-      Keep going for as long as you like. The text the room writes will sound
-      like #emph(doc_metadata.title) without ever repeating it --- that is the
-      model generating, not the corpus being read out.
+      Keep going for as long as you like. What the room writes will sound like
+      #emph(doc_metadata.title) without ever repeating it --- that is the model
+      generating, not the corpus being read out.
     ]
   }
 
