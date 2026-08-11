@@ -180,13 +180,18 @@ const LOCKUP_W = Math.round((LOCKUP_TEXT_X + WORDMARK_ADVANCE * WORDMARK_SCALE) 
  *
  * The background is transparent, so `tone` only picks the wordmark colour ---
  * "dark" for placing on dark surfaces, "light" for placing on light ones.
+ *
+ * `token` picks which of the five title tokens the grid spells, defaulting to
+ * the first. A static lockup for token t is exactly frame t of the animated
+ * one, which is what lets a print run cycle the mark by placing the five in
+ * turn: the reader sees the same thing the favicon does, one token at a time.
  */
-function generateLockup(tone: "dark" | "light", animated: boolean): string {
+function generateLockup(tone: "dark" | "light", animated: boolean, token = 0): string {
   const style = animated ? `\n  <style>${animationCss()}</style>` : "";
 
   return `${svgOpen(LOCKUP_W, TILE.box)}${style}
   <rect width="${TILE.box}" height="${TILE.box}" rx="${TILE_CORNER}" fill="${TILE_FILL}"/>
-${dotGrid(TILE, TITLE_BITS[0], { on: TITLE_TINTS[0], off: DIM, keys: animated ? POSITION_KEYS : undefined })}
+${dotGrid(TILE, TITLE_BITS[token], { on: TITLE_TINTS[token], off: DIM, keys: animated ? POSITION_KEYS : undefined })}
   <g transform="translate(${LOCKUP_TEXT_X} ${LOCKUP_BASELINE}) scale(${WORDMARK_SCALE})">
     <path d="${WORDMARK_PATH}" fill="${tone === "dark" ? "#ffffff" : TILE_FILL}"/>
   </g>
@@ -241,6 +246,15 @@ const outputs: [string, string][] = [
   ["lockup-light.svg", generateLockup("light", false)],
   ["lockup-animated.svg", generateLockup("dark", true)],
   ["title-logo.svg", generateTitleSvg()],
+  // The five frames of the animated lockup as separate static files, for print,
+  // where nothing can animate: the CLI's search sheets cycle them across the
+  // deal so a set spells the title out over five pages rather than repeating
+  // one frame 120 times. Number 1 is `lockup-light.svg` again, which is what
+  // makes "the first frame" and "the lockup" the same file to a reader
+  // comparing them.
+  ...TITLE_TOKENS.map(
+    (_, ti): [string, string] => [`lockup-light-${ti + 1}.svg`, generateLockup("light", false, ti)],
+  ),
 ];
 
 for (const [name, svg] of outputs) {

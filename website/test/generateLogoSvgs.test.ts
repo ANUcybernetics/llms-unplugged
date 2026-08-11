@@ -21,6 +21,9 @@ describe("generate-logo-svgs", () => {
   const lockup = readFileSync(join(outDir, "lockup.svg"), "utf-8");
   const lockupLight = readFileSync(join(outDir, "lockup-light.svg"), "utf-8");
   const lockupAnimated = readFileSync(join(outDir, "lockup-animated.svg"), "utf-8");
+  const perToken = TITLE_TOKENS.map((_, ti) =>
+    readFileSync(join(outDir, `lockup-light-${ti + 1}.svg`), "utf-8"),
+  );
 
   describe("favicon.svg", () => {
     it("is valid SVG", () => {
@@ -172,6 +175,24 @@ describe("generate-logo-svgs", () => {
       expect(lockup).not.toContain("@keyframes");
       expect(lockupAnimated).toContain("@keyframes");
       expect(lockupAnimated.match(/class="f-[01]{5}"/g) ?? []).toHaveLength(16);
+    });
+
+    it("comes in one static file per title token, for print", () => {
+      // Each is the plain light lockup with the grid spelling its own token,
+      // so the CLI can cycle the mark across pages that cannot animate.
+      for (const [ti, svg] of perToken.entries()) {
+        expect(svg.match(/<circle/g) ?? []).toHaveLength(16);
+        expect(svg).not.toContain("@keyframes");
+        expect(svg).toContain('fill="#1a1a1a"');
+
+        const lit = [...svg.matchAll(/<circle cx="([\d.]+)" cy="([\d.]+)" r="2" fill="([^"]+)"\/>/g)];
+        expect(lit.map((c) => c[3] === TITLE_TINTS[ti])).toEqual(tokenBits(TITLE_TOKENS[ti].id));
+      }
+      // The five differ from each other: a cycle that repeated a frame would
+      // still pass every check above.
+      expect(new Set(perToken).size).toBe(5);
+      // ...and the first is the lockup itself, not a near-copy of it.
+      expect(perToken[0]).toBe(lockupLight);
     });
 
     it("differs from the light variant only in the wordmark colour", () => {
