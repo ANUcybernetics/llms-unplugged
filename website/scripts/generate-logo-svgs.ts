@@ -7,35 +7,75 @@ import { WORDMARK_ADVANCE, WORDMARK_CAP_HEIGHT, WORDMARK_PATH } from "./wordmark
 // don't clobber the committed files in public/.
 const OUT_DIR = process.env.LOGO_OUT_DIR || "public";
 
-const REF_W = 960;
-const REF_H = 540;
-const BG = "#0a0a0a";
+const TITLE_BITS = TITLE_TOKENS.map((t) => tokenBits(t.id));
 
-// The 4x4 dot grid, shared by the favicon and the lockup: a 28-unit rounded
-// tile with 2-unit dots on a 6-unit pitch.
-const TILE = 28;
-const TILE_RADIUS = 4;
-const DOT_PAD = 5;
-const DOT_SPACING = 6;
-const DOT_RADIUS = 2;
 const TILE_FILL = "#1a1a1a";
 const DIM = "rgba(255,255,255,0.08)";
 const CYCLE_SECONDS = 15;
 
 /**
- * For each of the 16 grid positions, the bit that position takes in each of the
- * five title tokens, as a string like "10110". Positions sharing a key share an
- * animation.
+ * Every mark on this site is built from the same shape: a token ID written out
+ * as sixteen bits in a 4x4 grid of dots, centred in a square box. Only the size
+ * of that box and the colours of the lit and unlit dots change.
  */
-function positionKeys(): string[] {
-  const patterns = TITLE_TOKENS.map((t) => tokenBits(t.id));
-  return Array.from({ length: 16 }, (_, j) => patterns.map((p) => (p[j] ? "1" : "0")).join(""));
+interface DotGeometry {
+  /** Side of the square the dots are centred in. */
+  box: number;
+  /** Distance between dot centres. */
+  spacing: number;
+  radius: number;
 }
 
+/** A grid on its own dark tile: the favicon, the lockup, the five-up. */
+const TILE: DotGeometry = { box: 28, spacing: 6, radius: 2 };
+const TILE_CORNER = 4;
+
+/** A grid printed inside one of the gold bricks of the word mark. */
+const BRICK: DotGeometry = { box: 18, spacing: 4.5, radius: 1.5 };
+
+interface DotOptions {
+  /** Fill for a 1 bit and for a 0 bit. */
+  on: string;
+  off: string;
+  /** Shifts the whole grid right, for laying grids out in a row. */
+  x?: number;
+  /**
+   * Per-position animation keys. When given, each dot also carries the class
+   * that cycles it through all five title tokens.
+   */
+  keys?: string[];
+  indent?: string;
+}
+
+function dotGrid(
+  { box, spacing, radius }: DotGeometry,
+  bits: boolean[],
+  { on, off, x = 0, keys, indent = "  " }: DotOptions,
+): string {
+  const pad = (box - 3 * spacing) / 2;
+  return bits
+    .map((bit, j) => {
+      const cx = x + pad + (j % 4) * spacing;
+      const cy = pad + Math.floor(j / 4) * spacing;
+      const cls = keys ? ` class="f-${keys[j]}"` : "";
+      return `${indent}<circle${cls} cx="${cx}" cy="${cy}" r="${radius}" fill="${bit ? on : off}"/>`;
+    })
+    .join("\n");
+}
+
+/**
+ * For each of the 16 grid positions, the bit that position takes in each of the
+ * five title tokens, as a string like "10110". Positions sharing a key hold the
+ * same dot through the whole cycle, so they can share one animation.
+ */
+const POSITION_KEYS = Array.from({ length: 16 }, (_, j) =>
+  TITLE_BITS.map((bits) => (bits[j] ? "1" : "0")).join(""),
+);
+
 /** CSS keyframes cycling each position through the five tokens' bit patterns. */
-function gridAnimationCss(keys: string[]): string {
+function animationCss(): string {
   let css = "";
-  for (const key of new Set(keys)) {
+  for (const key of new Set(POSITION_KEYS)) {
     const frames: string[] = [];
     for (let t = 0; t < 5; t++) {
       const pct = t * 20;
@@ -50,28 +90,45 @@ function gridAnimationCss(keys: string[]): string {
   return css;
 }
 
-/**
- * The 16 dots of one grid, resting on the first token's pattern ("LL"). When
- * `animated`, each dot also carries the class that cycles it through all five.
- */
-function gridDots(keys: string[], animated: boolean, indent: string): string {
-  return keys
-    .map((key, j) => {
-      const cx = DOT_PAD + (j % 4) * DOT_SPACING;
-      const cy = DOT_PAD + Math.floor(j / 4) * DOT_SPACING;
-      const fill = key[0] === "1" ? TITLE_TINTS[0] : DIM;
-      const cls = animated ? ` class="f-${key}"` : "";
-      return `${indent}<circle${cls} cx="${cx}" cy="${cy}" r="${DOT_RADIUS}" fill="${fill}"/>`;
-    })
-    .join("\n");
+/** The animated single grid: 15 seconds through all five title tokens. */
+function generateFavicon(): string {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${TILE.box} ${TILE.box}">
+  <style>${animationCss()}</style>
+  <rect width="${TILE.box}" height="${TILE.box}" rx="${TILE_CORNER}" fill="${TILE_FILL}"/>
+${dotGrid(TILE, TITLE_BITS[0], { on: TITLE_TINTS[0], off: DIM, keys: POSITION_KEYS })}
+</svg>
+`;
 }
 
-function generateFavicon(): string {
-  const keys = positionKeys();
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${TILE} ${TILE}">
-  <style>${gridAnimationCss(keys)}</style>
-  <rect width="${TILE}" height="${TILE}" rx="${TILE_RADIUS}" fill="${TILE_FILL}"/>
-${gridDots(keys, true, "  ")}
+// Five-up geometry: the five title grids laid out left to right on one dark
+// strip, reading LL - Ms - Un - plug - ged.
+const FIVE_UP_GAP = 4;
+const FIVE_UP_PITCH = TILE.box + FIVE_UP_GAP;
+const FIVE_UP_W = 5 * FIVE_UP_PITCH - FIVE_UP_GAP;
+
+/**
+ * All five token grids side by side, with no animation --- the version for
+ * t-shirts, stickers and anywhere else a still image is all you get.
+ *
+ * `tinted` gives each token its own gold brick, matching the word mark; without
+ * it every grid is the same gold on the same dark strip.
+ */
+function generateFiveUp(tinted: boolean): string {
+  const bricks = TITLE_BITS.map((bits, ti) => {
+    const x = ti * FIVE_UP_PITCH;
+    const dots = dotGrid(TILE, bits, {
+      x,
+      on: tinted ? "rgba(255,255,255,0.5)" : TITLE_TINTS[0],
+      off: tinted ? "rgba(255,255,255,0.12)" : DIM,
+    });
+    if (!tinted) return dots;
+    const tile = `  <rect x="${x}" y="0" width="${TILE.box}" height="${TILE.box}" rx="${TILE_CORNER}" fill="${TITLE_TINTS[ti]}"/>`;
+    return `${tile}\n${dots}`;
+  }).join("\n");
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${FIVE_UP_W} ${TILE.box}">
+  <rect width="${FIVE_UP_W}" height="${TILE.box}" rx="${TILE_CORNER}" fill="${TILE_FILL}"/>
+${bricks}
 </svg>
 `;
 }
@@ -86,8 +143,8 @@ const LOCKUP_CAP_HEIGHT = 14;
 const LOCKUP_GAP = 13;
 const LOCKUP_DESCENDER_LIFT = 1;
 const WORDMARK_SCALE = LOCKUP_CAP_HEIGHT / WORDMARK_CAP_HEIGHT;
-const LOCKUP_TEXT_X = TILE + LOCKUP_GAP;
-const LOCKUP_BASELINE = (TILE + LOCKUP_CAP_HEIGHT) / 2 - LOCKUP_DESCENDER_LIFT;
+const LOCKUP_TEXT_X = TILE.box + LOCKUP_GAP;
+const LOCKUP_BASELINE = (TILE.box + LOCKUP_CAP_HEIGHT) / 2 - LOCKUP_DESCENDER_LIFT;
 const LOCKUP_W = Math.round((LOCKUP_TEXT_X + WORDMARK_ADVANCE * WORDMARK_SCALE) * 10) / 10;
 
 /**
@@ -99,40 +156,39 @@ const LOCKUP_W = Math.round((LOCKUP_TEXT_X + WORDMARK_ADVANCE * WORDMARK_SCALE) 
  * "dark" for placing on dark surfaces, "light" for placing on light ones.
  */
 function generateLockup(tone: "dark" | "light", animated: boolean): string {
-  const keys = positionKeys();
-  const style = animated ? `\n  <style>${gridAnimationCss(keys)}</style>` : "";
-  const wordmarkFill = tone === "dark" ? "#ffffff" : TILE_FILL;
+  const style = animated ? `\n  <style>${animationCss()}</style>` : "";
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${LOCKUP_W} ${TILE}">${style}
-  <rect width="${TILE}" height="${TILE}" rx="${TILE_RADIUS}" fill="${TILE_FILL}"/>
-${gridDots(keys, animated, "  ")}
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${LOCKUP_W} ${TILE.box}">${style}
+  <rect width="${TILE.box}" height="${TILE.box}" rx="${TILE_CORNER}" fill="${TILE_FILL}"/>
+${dotGrid(TILE, TITLE_BITS[0], { on: TITLE_TINTS[0], off: DIM, keys: animated ? POSITION_KEYS : undefined })}
   <g transform="translate(${LOCKUP_TEXT_X} ${LOCKUP_BASELINE}) scale(${WORDMARK_SCALE})">
-    <path d="${WORDMARK_PATH}" fill="${wordmarkFill}"/>
+    <path d="${WORDMARK_PATH}" fill="${tone === "dark" ? "#ffffff" : TILE_FILL}"/>
   </g>
 </svg>
 `;
 }
 
+const REF_W = 960;
+const REF_H = 540;
+const BG = "#0a0a0a";
+
+/** The word mark: five gold bricks spelling the title over two lines. */
 function generateTitleSvg(): string {
   const positions = titleOnlyLayout(REF_W, REF_H);
   const bricks = TITLE_TOKENS.map((token, ti) => {
     const pos = positions[ti];
-    const bits = tokenBits(token.id);
     const dotSize = pos.h * 0.65;
     const dotX = (pos.w - dotSize) / 2;
     const dotY = (pos.h - dotSize) / 2;
-    const dots = bits
-      .map((bit, j) => {
-        const cx = (j % 4) * 4.5 + 2.25;
-        const cy = Math.floor(j / 4) * 4.5 + 2.25;
-        const fill = bit ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.12)";
-        return `      <circle cx="${cx}" cy="${cy}" r="1.5" fill="${fill}"/>`;
-      })
-      .join("\n");
+    const dots = dotGrid(BRICK, TITLE_BITS[ti], {
+      on: "rgba(255,255,255,0.5)",
+      off: "rgba(255,255,255,0.12)",
+      indent: "      ",
+    });
 
     return `  <g transform="translate(${pos.x} ${pos.y})">
     <rect width="${pos.w}" height="${pos.h}" rx="6" fill="${TITLE_TINTS[ti]}"/>
-    <svg x="${dotX}" y="${dotY}" width="${dotSize}" height="${dotSize}" viewBox="0 0 18 18" opacity="0">
+    <svg x="${dotX}" y="${dotY}" width="${dotSize}" height="${dotSize}" viewBox="0 0 ${BRICK.box} ${BRICK.box}" opacity="0">
 ${dots}
     </svg>
     <text x="${pos.w / 2}" y="${pos.h / 2}" text-anchor="middle" dominant-baseline="central"
@@ -151,6 +207,8 @@ ${bricks}
 
 const outputs: [string, string][] = [
   ["favicon.svg", generateFavicon()],
+  ["favicon-5up.svg", generateFiveUp(false)],
+  ["favicon-5up-tinted.svg", generateFiveUp(true)],
   ["lockup.svg", generateLockup("dark", false)],
   ["lockup-light.svg", generateLockup("light", false)],
   ["lockup-animated.svg", generateLockup("dark", true)],

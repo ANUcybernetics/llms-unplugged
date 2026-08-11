@@ -3,6 +3,7 @@ import { execSync } from "node:child_process";
 import { mkdtempSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { TITLE_TINTS, TITLE_TOKENS, tokenBits } from "../src/lib/token-logo.ts";
 
 describe("generate-logo-svgs", () => {
   // Generate into a temp dir so the test never overwrites the checked-in
@@ -14,6 +15,8 @@ describe("generate-logo-svgs", () => {
   });
 
   const favicon = readFileSync(join(outDir, "favicon.svg"), "utf-8");
+  const fiveUp = readFileSync(join(outDir, "favicon-5up.svg"), "utf-8");
+  const fiveUpTinted = readFileSync(join(outDir, "favicon-5up-tinted.svg"), "utf-8");
   const lockup = readFileSync(join(outDir, "lockup.svg"), "utf-8");
   const lockupLight = readFileSync(join(outDir, "lockup-light.svg"), "utf-8");
   const lockupAnimated = readFileSync(join(outDir, "lockup-animated.svg"), "utf-8");
@@ -40,6 +43,57 @@ describe("generate-logo-svgs", () => {
       const fills = favicon.match(/fill="[^"]+"/g) ?? [];
       const circleFills = fills.filter((f) => !f.includes("#1a1a1a"));
       expect(circleFills.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe("favicon-5up.svg", () => {
+    // Every lit dot across the five grids: the strip should show exactly the
+    // 1 bits of the five title token IDs, no more and no fewer.
+    const litBits = TITLE_TOKENS.flatMap((t) => tokenBits(t.id)).filter(Boolean).length;
+
+    it("lays the five title tokens out in a row", () => {
+      for (const svg of [fiveUp, fiveUpTinted]) {
+        expect(svg.match(/<circle/g) ?? []).toHaveLength(5 * 16);
+        expect(svg).toContain('viewBox="0 0 156 28"');
+        expect(svg).not.toContain("@keyframes");
+      }
+    });
+
+    it("reads LL, Ms, Un, plug, ged left to right", () => {
+      // Each grid's dots, in document order, must be its own token's 16 bits.
+      const circles = [
+        ...fiveUp.matchAll(/<circle cx="([\d.]+)" cy="([\d.]+)" r="2" fill="([^"]+)"\/>/g),
+      ];
+      const actual = circles.map((c) => [
+        Number(c[1]),
+        Number(c[2]),
+        c[3] !== "rgba(255,255,255,0.08)",
+      ]);
+      const expected = TITLE_TOKENS.flatMap((token, ti) =>
+        tokenBits(token.id).map((bit, j) => [
+          ti * 32 + 5 + (j % 4) * 6,
+          5 + Math.floor(j / 4) * 6,
+          bit,
+        ]),
+      );
+      expect(actual).toEqual(expected);
+    });
+
+    it("colours the lit dots uniformly in the untinted version", () => {
+      const gold = fiveUp.split(`fill="${TITLE_TINTS[0]}"`).length - 1;
+      expect(gold).toBe(litBits);
+      // The other four tints belong to the tinted variant only.
+      for (const tint of TITLE_TINTS.slice(1)) expect(fiveUp).not.toContain(tint);
+    });
+
+    it("gives each token its own gold brick in the tinted version", () => {
+      for (const [ti, tint] of TITLE_TINTS.entries()) {
+        expect(fiveUpTinted).toContain(
+          `<rect x="${ti * 32}" y="0" width="28" height="28" rx="4" fill="${tint}"/>`,
+        );
+      }
+      const lit = fiveUpTinted.split('fill="rgba(255,255,255,0.5)"').length - 1;
+      expect(lit).toBe(litBits);
     });
   });
 
