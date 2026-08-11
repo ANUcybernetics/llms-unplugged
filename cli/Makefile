@@ -143,6 +143,62 @@ $(SHEETS_DIR)/the-cat-in-the-hat-2up-a4.pdf: two-up.typ $(SHEETS_DIR)/the-cat-in
 		--input pages=$$(qpdf --show-npages $(SHEETS_DIR)/the-cat-in-the-hat.pdf) \
 		two-up.typ $@
 
+# ===== One-off: ANU Visionaries Showcase, 15 Aug 2026 (backlog TASK-140) =====
+# Not a published set. It stays under $(OUT_DIR) --- which is gitignored, as
+# are two of its three corpora --- because the talk withholds the sources until
+# after the room has generated from them, and a set on the website would give
+# that away to anyone who looked.
+#
+# Both the input order and the seed are load-bearing: the deal is reproducible
+# only from this exact combination, so a reprint matches the copies already in
+# the hall. --title and --author are what keep the sources off the page; the
+# brief prints whatever the corpus metadata says, and joined real titles would
+# spoil the reveal on the first sheet handed out.
+SHOWCASE_DIR := $(OUT_DIR)/sheets/visionaries-showcase
+SHOWCASE_SHEETS := 120
+SHOWCASE_INPUTS := \
+	--input $(DATA_DIR)/the-cat-in-the-hat.txt \
+	--input $(DATA_DIR)/the-old-man-and-the-sea-excerpt.txt \
+	--input $(DATA_DIR)/the-tell-tale-heart.txt
+
+# 120 sheets at the Cat in the Hat density, which is the one density here that
+# has been print-tested at A5. Pinning --sheets makes the count the participant
+# count rather than something the corpus decides.
+$(SHOWCASE_DIR)/sheets.pdf: tokenized-sheets.typ cutout-common.typ $(TOOL)
+	mkdir -p $(SHOWCASE_DIR)
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) TYPST_BIN=$(TYPST_BIN) $(TOOL) sheets \
+		$(SHOWCASE_INPUTS) --output $(SHOWCASE_DIR) -n 2 \
+		--sheets $(SHOWCASE_SHEETS) --rows 15 --font-size 19.2pt --seed 42 \
+		--title "Visionaries Showcase corpus" --author "three authors"
+
+# The brief is for the lectern, so it comes off the front at full A4 rather
+# than being shrunk to A5 with the sheets. Its length is whatever the brief
+# runs to for this corpus, so it is counted back from the end rather than
+# hard-coded --- editing the brief must not silently start slicing sheets off.
+$(SHOWCASE_DIR)/brief.pdf: $(SHOWCASE_DIR)/sheets.pdf
+	qpdf $< --pages . 1-$$(($$(qpdf --show-npages $<) - $(SHOWCASE_SHEETS))) -- \
+		--deterministic-id $@
+
+$(SHOWCASE_DIR)/participants.pdf: $(SHOWCASE_DIR)/sheets.pdf
+	qpdf $< --pages . $$(($$(qpdf --show-npages $<) - $(SHOWCASE_SHEETS) + 1))-z -- \
+		--deterministic-id $@
+
+# The print job: 60 A4 landscape pages, run twice, guillotined down the middle
+# into 240 A5 sheets. Imposing the participant pages alone (not the whole PDF,
+# the way the Cat in the Hat handout does) keeps the brief out of the stack and
+# leaves an even count, so no sheet comes out with a blank half.
+$(SHOWCASE_DIR)/participants-2up-a4.pdf: two-up.typ $(SHOWCASE_DIR)/participants.pdf
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) $(TYPST_BIN) compile --root .. \
+		--input source=$(SHOWCASE_DIR)/participants.pdf \
+		--input pages=$$(qpdf --show-npages $(SHOWCASE_DIR)/participants.pdf) \
+		two-up.typ $@
+
+.PHONY: showcase
+showcase: $(SHOWCASE_DIR)/brief.pdf $(SHOWCASE_DIR)/participants-2up-a4.pdf
+	@echo "Showcase set: $(SHOWCASE_DIR)"
+	@echo "  brief.pdf                 --- A4, for the lectern"
+	@echo "  participants-2up-a4.pdf   --- print twice, cut in half, $(SHOWCASE_SHEETS) x 2 A5 sheets"
+
 # Default target to build all booklets
 .PHONY: booklets
 booklets: $(TARGETS)
