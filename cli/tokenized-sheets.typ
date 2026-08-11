@@ -441,19 +441,25 @@
 // rather than the page counter, so it stays right however many pages a sheet
 // runs to.
 //
-// A sheet spanning two pages says so. Without it both pages read "Sheet 1 of
-// 24" and are indistinguishable: a participant can't tell which half they are
-// holding, and nobody collating the stack can see that a sheet is incomplete.
-// A single-page sheet says nothing extra, since there is nothing to
-// disambiguate.
+// Which sheet, then where to find the project. No corpus title: on a set built
+// to withhold its sources it is a placeholder anyway, and on any other set the
+// facilitator has just said what the text is. What is left is the pair of
+// things a page on the floor after the session cannot be reunited with the
+// stack, or looked up, without.
+//
+// A sheet spanning two pages says so. Without it both pages read "1/24" and
+// are indistinguishable: a participant can't tell which half they are holding,
+// and nobody collating the stack can see that a sheet is incomplete. It stays
+// spelled out where the sheet number is terse, because it appears on the rare
+// page that needs explaining rather than on all of them.
 #let sheet-footer(index, page-index, page-count) = align(
   center,
   text(font: brand-font, fill: luma(150), size: 8pt)[
-    Sheet #str(index + 1) of #str(sheets.len())
+    #str(index + 1)/#str(sheets.len())
     #if page-count > 1 [
       (page #str(page-index + 1) of #str(page-count))
     ]
-    #sym.dash.em #doc_metadata.title #sym.dash.em www.llmsunplugged.org
+    #sym.dash.em www.llmsunplugged.org
   ],
 )
 
