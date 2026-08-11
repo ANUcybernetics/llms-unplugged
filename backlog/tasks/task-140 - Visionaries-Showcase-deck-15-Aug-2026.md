@@ -4,7 +4,7 @@ title: Visionaries Showcase deck (15 Aug 2026)
 status: In Progress
 assignee: []
 created_date: '2026-08-07 04:07'
-updated_date: '2026-08-11 10:54'
+updated_date: '2026-08-11 11:17'
 labels:
   - decks
 dependencies: []
@@ -24,12 +24,12 @@ Rewrite Ben's 14-minute ANU Visionaries Among Us Showcase talk for Manning Clark
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Deck remains unlisted and passes the site build, deck checks, and slide-fit validation
-- [ ] #2 The live demonstration uses the 100-sheet anonymous three-source corpus, printed twice, with notes covering distribution, seeding, random sampling, missing-sheet recovery, and the 14-minute hard stop
-- [ ] #3 Source identities remain hidden until after generation, then a three-source reveal explains how shared contexts let the model cross boundaries it cannot see
-- [ ] #4 The talk targets 13:00, retains the Human-Scale AI and ANU 80th-anniversary brief, and explicitly links Tergel Namsrai before it to Cecilia Nie after it
-- [ ] #5 The comparison with frontier LLMs distinguishes more context, generalisation, instruction tuning, training-data scale, and parameter scale without presenting a transformer as an enlarged N-gram grid
-- [ ] #6 AV and facilitator notes match the simplified setup: sheets pre-placed, one complete set guaranteed in occupied seats, whiteboard/scribe ready, one laptop-feed cue, and no Wacom/cards/balls dependency
+- [x] #1 Deck remains unlisted and passes the site build, deck checks, and slide-fit validation
+- [x] #2 The live demonstration uses the 100-sheet anonymous three-source corpus, printed twice, with notes covering distribution, seeding, random sampling, missing-sheet recovery, and the 14-minute hard stop
+- [x] #3 Source identities remain hidden until after generation, then a three-source reveal explains how shared contexts let the model cross boundaries it cannot see
+- [x] #4 The talk targets 13:00, retains the Human-Scale AI and ANU 80th-anniversary brief, and explicitly links Tergel Namsrai before it to Cecilia Nie after it
+- [x] #5 The comparison with frontier LLMs distinguishes more context, generalisation, instruction tuning, training-data scale, and parameter scale without presenting a transformer as an enlarged N-gram grid
+- [x] #6 AV and facilitator notes match the simplified setup: sheets pre-placed, one complete set guaranteed in occupied seats, whiteboard/scribe ready, one laptop-feed cue, and no Wacom/cards/balls dependency
 <!-- AC:END -->
 
 ## Implementation Plan
