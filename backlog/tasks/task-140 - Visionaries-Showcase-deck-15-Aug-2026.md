@@ -4,7 +4,7 @@ title: Visionaries Showcase deck (15 Aug 2026)
 status: In Progress
 assignee: []
 created_date: '2026-08-07 04:07'
-updated_date: '2026-08-12 05:18'
+updated_date: '2026-08-12 08:19'
 labels:
   - decks
 dependencies: []
@@ -211,6 +211,17 @@ bundles, brief one page, header title, and the distribution risk re-stated as
 360 sheets in ~2:45. Kenyon delta now lists the 200 -> ~360 attendance change;
 still owed to him is the presenter intro image, and the cue sheet still needs
 handing over (deliberately at/before the 1 pm sound check, not emailed).
+
+2026-08-12 --- deck cut from 18 slides to 13 for a TED-style delivery: no
+visual aids, slides as position cues, everything explanatory spoken. Removed
+the distributed-model slide, the cross-book confluence slide, the GridZoom
+grid comparison, the frontier-scale build, and the closing QR/logo slides;
+their content now lives in the speaker notes on the neighbouring slides. The
+ANU 1946 slide lost its title and runs full-bleed with its two lines. Two new
+gold corner-motif backgrounds (bg-first-tool, bg-anu-1946) --- corner motifs
+because centred impact text is illegible over a full-frame illustration, which
+decks:check does not catch. Running order retargeted to 12:00, the freed time
+going to the run.
 <!-- SECTION:NOTES:END -->
 
 ## Comments
