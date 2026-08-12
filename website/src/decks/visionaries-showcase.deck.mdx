@@ -2,7 +2,7 @@
 title: Demystifying large language models
 description:
   A 14-minute talk for the ANU Visionaries Among Us Showcase (15 Aug 2026), in
-  which a 200-seat hall becomes a bigram language model built from three
+  which a hall of ~360 becomes a bigram language model built from three
   anonymous books and generates a sentence nobody wrote
 listed: false
 ---
@@ -57,7 +57,7 @@ import "../styles/widgets.css";
   the Wacom does not, and it is the fallback if the annotation surface
   misbehaves at the sound check. It is the fallback rather than the plan
   because the screen is the only surface in Manning Clark Hall the back row
-  can read, and writing on a board means standing side-on to 200 people for
+  can read, and writing on a board means standing side-on to the hall for
   four minutes.
 
   The reveal is the spine: the three source books are NEVER named until slide
@@ -68,25 +68,28 @@ import "../styles/widgets.css";
   recognition hit and has to land last.
 
   Before delivery:
-    - 120 A4 search sheets, PRINTED TWICE (240 sheets), handed out by the
-      ushering team as the talk starts --- NOT pre-placed, so nobody spends
+    - 120 A4 search sheets, PRINTED THREE TIMES (360 sheets), handed out by
+      the ushering team as the talk starts --- NOT pre-placed, so nobody spends
       Ann's talk reading one, and NOT earlier than Ben's walk-on, so the
       reveal stays protected. Ushers start moving at walk-on and aim to be
       done by slide 4 (~1:20); the hard deadline is the seed ask at ~2:45.
       Bundle the sheets by hall zone beforehand, complete A set spread across
-      all zones first so the model is whole, B copies as seconds; every
+      all zones first so the model is whole, B and C copies as seconds; every
       A-bundle sheet must end up in someone's hands. Brief the ushers at the
-      1 pm sound check.
+      1 pm sound check --- 360 sheets is a bigger hand-out than it sounds, and
+      the ~1:20 target is the part of this plan most likely to slip.
       `make showcase` in cli/ builds the sheets; the input order and --seed 42
       are load-bearing, so a reprint matches what is already in the hall.
-      Printing twice means every token pair is held by two people: the
-      proportions are unchanged and one empty seat no longer takes a
-      transition out of the room.
-    - seat the complete A set first, with the B copies in a different zone of
-      the hall. Under 120 in the room, give people two or three sheets each
-      rather than leaving pages on the table --- a sheet nobody holds is a hole
-      in the model.
-    - brief.pdf (page 1-2 of the set) on the lectern. It carries the worked
+      Printing three times means every token pair is held by three people:
+      the proportions are unchanged, one empty seat no longer takes a
+      transition out of the room, and the rarest contexts --- about one
+      generation step in ten --- put three hands up instead of one, which is
+      the difference between visible and invisible from the stage.
+    - seat the complete A set first, with the B and C copies in different
+      zones of the hall. Under 120 in the room, give people two or three sheets
+      each rather than leaving pages on the table --- a sheet nobody holds is a
+      hole in the model.
+    - brief.pdf (page 1 of the set) on the lectern. It carries the worked
       example and the colour names. It is NOT handed out.
     - Wacom attached and tested at the 1 pm sound check: pen colour and weight
       chosen, and a line written on slide 7 and read from the back of the hall.
@@ -194,7 +197,7 @@ Ten seconds to look. Then eyes up. DON'T name the books.
 no single sheet can continue the text on its own
 
 {/* notes:
-Every pair was dealt to exactly one page, and the deal spreads each context across as many pages as it will go. The set is printed twice, so each pair is in two pairs of hands.
+Every pair was dealt to exactly one page, and the deal spreads each context across as many pages as it will go. The set is printed three times, so each pair is in three pairs of hands.
 
 So the model is not in my laptop and it is not on your page. For the next five minutes it only exists across this whole room. If someone stayed home, part of it is missing.
 
@@ -246,6 +249,8 @@ Narrate exactly two things, once each, without stopping the flow:
 The hands are the distribution. Call `the` and a forest goes up; call a rare token and you get two. Nobody here has been taught weighted sampling and the room is doing it anyway.
 
 The pick is a coin toss. Five hands up, and the four I don't take were all real continuations. Different pick, different sentence --- same reason the regenerate button gives you a different answer.
+
+At this size the search is not the bottleneck, hearing the answer is: a common context puts ~100 hands up. Pick near an aisle or the front where a called-out token carries, and repeat the token back before writing it --- a misheard token is the one thing that can quietly derail the sentence.
 
 No dead ends exist in this corpus, so there is no running-dry beat. A silent round is an empty seat: say that out loud, it's the previous slide making itself, then reseed from any pair.
 

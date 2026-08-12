@@ -172,9 +172,9 @@ SHOWCASE_INPUTS := \
 
 # 120 sheets at the Cat in the Hat density. Pinning --sheets makes the count
 # the participant count rather than something the corpus decides, and 120 is
-# chosen so the set doubles cleanly into a 200-seat hall: printed twice, every
-# token pair is held by two people, so the proportions are unchanged and one
-# empty seat no longer takes a pair out of the room.
+# chosen so the set multiplies cleanly into the hall: printed three times for
+# ~360 attendees, every token pair is held by three people, so the proportions
+# are unchanged and one empty seat no longer takes a pair out of the room.
 #
 # 19.2pt is the largest size that still fits most pairs in one of four columns
 # on A4. Past it, wide pairs start taking two column slots each and the sheet
@@ -211,7 +211,7 @@ $(SHOWCASE_DIR)/participants.pdf: $(SHOWCASE_DIR)/sheets.pdf
 showcase: $(SHOWCASE_DIR)/brief.pdf $(SHOWCASE_DIR)/participants.pdf
 	@echo "Showcase set: $(SHOWCASE_DIR)"
 	@echo "  brief.pdf           --- A4, for the lectern. Not handed out."
-	@echo "  participants.pdf    --- A4, print twice: $(SHOWCASE_SHEETS) x 2 sheets"
+	@echo "  participants.pdf    --- A4, print 3x: $(SHOWCASE_SHEETS) x 3 sheets"
 
 # Default target to build all booklets
 .PHONY: booklets
