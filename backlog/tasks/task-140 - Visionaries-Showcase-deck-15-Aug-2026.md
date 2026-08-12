@@ -4,7 +4,7 @@ title: Visionaries Showcase deck (15 Aug 2026)
 status: In Progress
 assignee: []
 created_date: '2026-08-07 04:07'
-updated_date: '2026-08-12 05:06'
+updated_date: '2026-08-12 05:11'
 labels:
   - decks
 dependencies: []
@@ -188,6 +188,12 @@ briefing at the 1 pm sound check, now a 360-sheet hand-out; Kenyon delta in
 the nb beat sheet still not communicated.
 Checks: cargo test 118 passed; pnpm run check green (186 tests, 422 slides /
 8 decks all fit).
+
+The header title is 'Ben Swift — ANU Visionaries Showcase' (em dash, not a
+slash). Passed through as a literal U+2014 rather than Typst's `---`, because
+the title reaches the template as JSON metadata and is placed as a string, not
+parsed as markup. Renders correctly in Public Sans; the deal is unchanged
+again (sheet 1 still opens market -> in). daysy re-synced.
 <!-- SECTION:NOTES:END -->
 
 ## Comments
