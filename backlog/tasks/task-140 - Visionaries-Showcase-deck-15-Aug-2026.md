@@ -4,7 +4,7 @@ title: Visionaries Showcase deck (15 Aug 2026)
 status: In Progress
 assignee: []
 created_date: '2026-08-07 04:07'
-updated_date: '2026-08-12 05:11'
+updated_date: '2026-08-12 05:18'
 labels:
   - decks
 dependencies: []
@@ -194,6 +194,23 @@ slash). Passed through as a literal U+2014 rather than Typst's `---`, because
 the title reaches the template as JSON metadata and is placed as a string, not
 parsed as markup. Renders correctly in Public Sans; the deal is unchanged
 again (sheet 1 still opens market -> in). daysy re-synced.
+
+AV CUE SHEET written (12 Aug), in the nb beat sheet (home:1258) under 'AV cue
+sheet (hand this over)' --- self-contained, so the desk needs nothing else.
+Three cues: Q1 walk-on = feed + house lights up together; Q2 ~7:30 = lights
+down; Q3 = off by 4:00. Also specifies 16:9 with no overscan/letterbox (fixed
+canvas, full-bleed backgrounds), lapel/headset mic, no playback, and the
+sound-check list.
+
+Change of substance: the lights cue moved from ~1:20 to walk-on. At 240 sheets
+having the ushers work the first eighty seconds in the dark was tolerable; at
+360 it isn't. Deck and beat sheet aligned to match.
+
+Beat sheet also de-staled for 360: print set three printings, A/B/C zone
+bundles, brief one page, header title, and the distribution risk re-stated as
+360 sheets in ~2:45. Kenyon delta now lists the 200 -> ~360 attendance change;
+still owed to him is the presenter intro image, and the cue sheet still needs
+handing over (deliberately at/before the 1 pm sound check, not emailed).
 <!-- SECTION:NOTES:END -->
 
 ## Comments
