@@ -185,7 +185,7 @@ $(SHOWCASE_DIR)/sheets.pdf: tokenized-sheets.typ cutout-common.typ $(BRAND_ASSET
 	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) TYPST_BIN=$(TYPST_BIN) $(TOOL) sheets \
 		$(SHOWCASE_INPUTS) --output $(SHOWCASE_DIR) -n 2 \
 		--sheets $(SHOWCASE_SHEETS) --rows 15 --font-size 19.2pt --seed 42 \
-		--title "Ben Swift/ANU Visionaries Showcase" --author "three authors"
+		--title "Ben Swift — ANU Visionaries Showcase" --author "three authors"
 
 # The brief is for the lectern and never goes into the handout stack, so it
 # comes off the front. Its length is whatever the brief runs to for this
