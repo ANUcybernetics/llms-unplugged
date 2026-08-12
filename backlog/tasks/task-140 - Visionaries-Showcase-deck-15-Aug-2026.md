@@ -4,7 +4,7 @@ title: Visionaries Showcase deck (15 Aug 2026)
 status: In Progress
 assignee: []
 created_date: '2026-08-07 04:07'
-updated_date: '2026-08-11 11:51'
+updated_date: '2026-08-12 05:06'
 labels:
   - decks
 dependencies: []
@@ -140,6 +140,54 @@ bundles prepared in advance, complete A set spread across zones first, done
 by ~1:20 with the seed ask at 2:45 as the hard deadline; house lights double
 as the ushers' working light. Slide 4 retitled 'what you've just been given';
 AC #7 updated to match.
+
+AMENDMENTS (12 Aug): attendance revised to ~360, so the set is now PRINTED
+THREE TIMES (120 x 3 = 360 sheets). The corpus is unchanged, deliberately:
+The Tell-Tale Heart and The Cat in the Hat are already complete texts, so the
+only source with room to grow is Hemingway (the excerpt is 1,808 words of the
+full novel), and tripling through it alone would move the balance from
+1961/1999/2446 bigrams (31/31/38 Seuss/Hemingway/Poe) to ~70% Hemingway ---
+which the three-source reveal cannot afford, needing all three audible in the
+sentence and Seuss last. Holding the balance at 3x would need ~6,300 words per
+author: two or three more Seuss books and more Poe. That is a different
+corpus, not a longer excerpt, three days out.
+
+A third identical printing is free and better: every count triples so the
+distribution is untouched, and the ~10% of generation steps that land on a
+context held by a single pair put three hands up instead of one --- at 360
+seats, the difference between visible and invisible from the stage. Median
+step goes from ~34 hands to ~100. The sheets carry no A/B/C mark (the header
+lockup just cycles the five title tokens), so a third copy is the same PDF
+again, and the paper is the same either way.
+
+Why the corpus needs nothing more: branching factor 3.52, perplexity 11.1,
+entropy 3.47 bits/token, only 11.2% of steps forced (89% are real choices),
+and 75.6% of pairs sit on contexts shared by two or more sources, with 86
+contexts in all three (the 416, . 376, , 264, I 223, and 207, said 63). The
+crossing beat and 'nobody wrote this sentence' are both already carried.
+
+HEADER TITLE changed to 'Ben Swift/ANU Visionaries Showcase' (was 'ANU
+Visionaries') and the set regenerated: same --seed 42 and input order, so the
+deal is identical pair for pair (sheet 1 still opens market -> in), only the
+header text differs. Leak check re-run: zero source names, authors or URLs in
+the participants text layer. brief.pdf is 1 page, participants.pdf 120.
+The daysy copy in ~/Downloads/visionaries-showcase/ has been refreshed and
+md5-matches the local build; the older visionaries-showcase-search-sheets.pdf
+and llms-unplugged-showcase-sheets.pdf in ~/Downloads are superseded.
+
+Deck updated for the new size: three printings throughout, A/B/C zones, the
+1:20 hand-out flagged as the likeliest thing to slip, brief corrected to one
+page, and a new rehearsal note --- at ~100 hands the bottleneck is hearing the
+answer, not the search, so pick near an aisle and repeat the token back before
+writing it. The brief's own copy advice is now count-agnostic ('print the
+whole set again, once per extra roomful') rather than saying twice, which
+regenerated the five published website sheet PDFs.
+
+STILL OPEN: rehearsal to 13:00; AV cue sheet (two cues) not yet sent; usher
+briefing at the 1 pm sound check, now a 360-sheet hand-out; Kenyon delta in
+the nb beat sheet still not communicated.
+Checks: cargo test 118 passed; pnpm run check green (186 tests, 422 slides /
+8 decks all fit).
 <!-- SECTION:NOTES:END -->
 
 ## Comments
