@@ -31,6 +31,12 @@ jobs:
         with:
           typst-version: '0.15.0'
 
+      # The two end-to-end PDF tests skip themselves when typst isn't on PATH,
+      # so a soft install failure would leave the whole PDF pipeline untested
+      # under a green tick. Fail here instead, where it is legible.
+      - name: Verify Typst is on PATH
+        run: typst --version
+
       - name: Cache cargo
         uses: actions/cache@v6
         with:
