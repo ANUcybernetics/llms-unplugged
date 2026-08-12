@@ -236,9 +236,10 @@
     // wrong size for it. Both directions have a right answer and neither is
     // obvious, which is why they are here rather than left to the facilitator.
     *Match the room to the sheets*, not the other way round. More people than
-    sheets: print the set twice, so every count doubles and the proportions ---
-    which is all the model is --- hold. Fewer: hand the spares out anyway, two
-    or three to a person. A sheet nobody holds is a hole in the model.
+    sheets: print the whole set again, once per extra roomful. Every count
+    multiplies equally, so the proportions --- which is all the model is ---
+    hold. Fewer: hand the spares out anyway, two or three to a person. A sheet
+    nobody holds is a hole in the model.
 
     // An all-alphabetic pair reads best as the example; a corpus with no such
     // pair (e.g. Chinese) falls back to whatever is first.
