@@ -24,6 +24,18 @@ import "../styles/widgets.css";
   these notes rather than on the wall. If a slide is tempting you to read it
   out, cut it rather than the sentence you were going to say.
 
+  Two slide grammars carry nearly all of it. Some beats are a full-bleed image
+  with nothing on it at all (slides 2 and 11): the words are spoken, and the
+  SAY: line opening those notes is the sentence the image stands under. The
+  rest put one line in white over the artwork --- the hero treatment with no
+  title (`_class: hero`, no h1, styled in theme.css) --- so the words read as a
+  caption to the image rather than as the content of the slide. Both replaced
+  `.impact`, which sets a full sentence in black on a wall of flat gold: that
+  is a lecture slide, it arrives brighter than the speaker, and a hall reads it
+  instead of listening. Only three slides now carry real text --- the algorithm
+  (5), the role mapping (8) and the three-book reveal (10) --- and each of them
+  is a slide the room genuinely needs to look at.
+
   Running order (target 12:00 against the 14:00 slot):
     0:00  Smallest thing on the program        (slides 1-3,   1:20)
     1:20  What you've just been given          (slide 4,      1:00)
@@ -142,15 +154,11 @@ Hands up: used one this week. Keep them up if you could explain to a ten-year-ol
 
 ---
 
-{/* _class: impact */}
-
-we got the tool
-
-before we got the **story** about the tool
-
 ![bg](./assets/bg-first-tool.avif)
 
 {/* notes:
+SAY: we got the tool before we got the story about the tool.
+
 Not too complicated --- too fast. Two stories on offer: "basically a mind", "just autocomplete". Opposites doing the same job --- either it's beyond you or beneath you, and either way, don't look inside.
 
 The image is the oldest version of the problem, and worth half a beat if it gets a flicker of recognition: somebody picked the thing up long before anybody had a story about what it meant.
@@ -158,13 +166,12 @@ The image is the oldest version of the problem, and worth half a beat if it gets
 
 ---
 
-{/* _class: impact */}
+{/* _class: hero */}
 
-it's hard to have an opinion
+it's hard to have an opinion\
+on a machine you've never seen **inside**
 
-on a machine you've never seen the **inside** of
-
-![bg](./assets/bg-machine-interior.avif)
+![bg](./assets/bg-language-of-lms.avif)
 
 {/* notes:
 The whole argument, stated once, before the thing that earns it.
@@ -176,17 +183,15 @@ The ushers are moving by now (they start at walk-on) --- cue them explicitly her
 
 ---
 
-## what you've just been given
+{/* _class: hero */}
 
-{/* Not bg-cut-spread, which the age-of-ai deck uses on its equivalent slide:
-    that one has scissors in it, and the first thing this slide says is that
-    nothing needs cutting. */}
+{/* A fan of blank pages, and deliberately not bg-cut-spread (the age-of-ai
+    deck's equivalent slide): that one has scissors in it, and nothing here
+    needs cutting. */}
 
-![bg right:40%](./assets/bg-vocabulary.avif)
+a page of **token pairs** --- a word, and the word before it
 
-a page of **token pairs** --- a word, and the word that came just before it
-
-it's shuffled, so nobody is holding a story
+![bg](./assets/bg-cutouts-overview.avif)
 
 {/* notes:
 Hold one up. `the` boxed, then `cat`: somewhere in the source text, `cat` follows `the`. Every token keeps the same colour wherever it appears, so scan by colour and confirm by reading.
@@ -257,9 +262,11 @@ Stop while they still want more. Read the sentence back, straight --- the worse 
 
 ---
 
-{/* _class: impact */}
+{/* _class: hero */}
 
 we just ran a **language model**
+
+![bg](./assets/bg-div-reception.avif)
 
 {/* notes:
 Flat. Let it sit. Not a simulation of one, not an analogy for one: the mechanism, at human speed, with the arithmetic small enough to see.
@@ -289,11 +296,11 @@ Land on: when someone says a model has a trillion parameters, they mean that. A 
 
 ---
 
-{/* _class: impact */}
+{/* _class: hero */}
 
-the sentence we wrote
+the sentence we wrote is in **no book**
 
-is in **no book**
+![bg](./assets/bg-chain.avif)
 
 {/* notes:
 Nobody wrote it. No lookup, no database of sentences. It came out of a pile of paper and a series of coin tosses.
@@ -325,15 +332,11 @@ If the sentence you wrote visibly crossed, arrow back to slide 6 and point at th
 
 ---
 
-{/* _class: impact */}
-
-ANU was founded in **1946**, to help a country understand a transformed world
-
-**human-scale AI**: slow it down, and you can see the whole machine
-
 ![bg](./assets/bg-anu-1946.avif)
 
 {/* notes:
+SAY: ANU was founded in 1946, to help a country understand a transformed world. And human-scale AI is the same move --- slow it down, and you can see the whole machine.
+
 1946: the transforming technology was the atom, and the country decided it needed somewhere to think about it properly. Eighty years on, same job, different technology.
 
 That's what the School of Cybernetics is for, and this is what it looks like: not a lecture about AI, but a room that has just been one.
@@ -343,13 +346,12 @@ What it buys you is the next two slides, so don't land the thesis here.
 
 ---
 
-{/* _class: impact */}
+{/* _class: hero */}
 
-a hall full of people just did
-
+a hall full of people just did\
 the thing you're told needs a **data centre**
 
-![bg](./assets/bg-impact.avif)
+![bg](./assets/bg-shareback-generation.avif)
 
 {/* notes:
 Hands can go up now --- the ones that went down at the start, on "could you explain it to a ten-year-old". You could have a decent run at it now.
@@ -365,11 +367,13 @@ Behind the clock? Keep the memory line and that last sentence, drop everything e
 
 ---
 
-{/* _class: impact */}
+{/* _class: hero */}
 
 it doesn't make you an expert
 
 it makes you **harder to bullsh\*t**
+
+![bg](./assets/bg-trigrams-banner.avif)
 
 {/* notes:
 Careful not to oversell: you can't build Claude now, and nothing tonight tells you whether it should be marking school essays. What you can do is hear a claim about AI and have somewhere to stand --- you know what kind of thing it is, and which claims need more than confidence behind them. For a technology being sold this hard, that is not a small thing to walk out with.

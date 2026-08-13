@@ -66,6 +66,59 @@
   background-image: url("./assets/bg-impact.avif");
 }
 
+/* A hero slide with no h1: the same full-bleed artwork, bottom-left placement
+   and gradient scrim the title slide gets, carrying a spoken line or two
+   instead of a heading. This is the grammar a talk-style deck wants where
+   `.impact` (dark text on flat brand gold) is too loud --- the artwork does the
+   work, the words on the wall are a caption for it, and the argument is made
+   out loud. Set between body copy and the hero title's 4rem so a line reads
+   from the back of a hall without shouting. */
+.reveal .slides section.hero:not(:has(h1)) p {
+  /* An absolute measure, not a percentage: `.hero` places its content with
+     `place-content: end start`, so the grid track is content-sized and a
+     percentage would resolve against the paragraph's own max-content width
+     rather than the slide's --- every line then wraps at roughly half the
+     canvas whatever the number says. 52rem is about three-quarters of the
+     1280px canvas once the slide's own padding is off. */
+  max-inline-size: 52rem;
+  color: var(--anu-white);
+  font-size: 2.6rem;
+  font-weight: 300;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+/* Emphasis takes the gold of the hero title's rule. Note --anu-gold itself is
+   a dark ink tuned for white paper; over artwork the light variant is the one
+   that reads. */
+.reveal .slides section.hero:not(:has(h1)) strong {
+  color: var(--anu-gold-2);
+  font-weight: 400;
+}
+
+/* The same short gold rule the hero h1 draws under itself, so a titleless hero
+   still reads as one and the line has a full stop. */
+.reveal .slides section.hero:not(:has(h1)) p:last-of-type::after {
+  content: "";
+  display: block;
+  inline-size: 4rem;
+  block-size: 4px;
+  margin-block-start: 1.5rem;
+  border-radius: calc(var(--at-border-radius) / 3);
+  background: var(--at-primary);
+}
+
+/* Matching the title hero's entrance, and scoped to `.present` for the same
+   reason it is there: reveal mounts every slide on load, so an unscoped
+   animation would play out of sight and be over before the slide is reached. */
+.reveal .slides section.hero.present:not(:has(h1)) p {
+  animation: hero-fade-up 0.6s ease both;
+}
+
+.reveal .slides section.hero.present:not(:has(h1)) p + p {
+  animation-delay: 0.2s;
+}
+
 /* Quote-slide emphasis built with Reveal fragments. A plain `.fragment` starts
    invisible and fades in, which would make the sentence arrive in pieces --- we
    want the whole quote readable from the first beat, with clauses *lighting up*
