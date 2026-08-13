@@ -7,31 +7,8 @@
 {/* notes:
 The reassurance beat: what they built isn't a cartoon of an LLM, it's the real mechanism at human scale --- look at the context, weigh every possible next word, roll the dice, write it down, repeat. So what's actually different?
 
-Three knobs, and then one thing that isn't a knob. The three are all the same move --- take something their grid has a little of and turn it up: how much it looks at, how much it read, how many numbers it holds. Each is run against their own grid rather than drawn as a separate diagram: make the grid fail at something on stage, then say what a real model does instead.
-
-The order builds, so keep moving and don't land "and that's the difference" until the parameters slide. The first two knobs both fail on a grid, for the same reason; the third is the one that rescues them, and it only pays off if the first two have been left unresolved. Every one of these has a lesson on the website that does it properly --- name that rather than explaining. ~5 min.
+Four beats, one slide each: their grid cannot be scaled (one slide of failure, run against their own grid), the one change that fixes it (shared numbers instead of dedicated tallies), the payoff (every dial turned up, and turning them up keeps working), and the one difference that isn't about size at all (which text, not how much). Then the closer. Don't land "and that's the difference" early --- the shared-numbers slide is the hinge, and it only pays off if the failure has been left unresolved. Every one of these has a lesson on the website that does it properly --- name that rather than explaining. ~5 min.
 */}
-
----
-
-## More context
-
-<p class="voice">"I told it not to do that---and it did it anyway"</p>
-
-<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={2} phase="preroll" />
-
-**one word** of context for your grid; **the whole conversation** for
-Claude---and remembering two costs a row per _pair_
-
-{/* notes: Ask before you explain: hands up if you've told one of these things not to do something and it did it anyway. Take two answers, then say you're about to show them the pen-and-paper version of it. The italic line is theirs, not yours --- it should feel like you're picking up something they said.
-
-First knob, and it's sitting right there in the worked example. We're on a comma with two options and no way to choose between them, so we roll. Look at why we're stuck: the model is looking at a comma, and every comma in the text is identical to it. It cannot tell whether it just wrote `run` or `spot`. That's not bad luck, it's the design --- one word of context is all it gets. Their instruction, if they'd given one, is simply not in the room.
-
-Keep the bridge honest. A frontier model doesn't have a one-word window, so it isn't that your instruction fell off the end. It's that the instruction is one more stretch of text competing with everything else in the window, weighted rather than obeyed --- closer to "it read your instruction and something else won" than to "it never saw it". The shared point is the one the grid makes plainly: what the model is looking at right now is all that shapes what comes next.
-
-Then the last line, which is the one that sets up the rest of the section. Somebody always asks "why not just look at two words?" --- and you want that question. The answer is that a grid charges you for it, and the price is the whole vocabulary again: one row per *pair* of words rather than per word. Two words is a trigram, you can absolutely build one, and there's a lesson on the website that runs one with pen and paper.
-
-Don't put a number on it yet. The next slide draws it, and the picture does more than the arithmetic. */}
 
 ---
 
@@ -39,26 +16,24 @@ Don't put a number on it yet. The next slide draws it, and the picture does more
 
 <GridZoom
   cells={49322529}
-  label="more training text: one novel, as a grid"
+  label="one novel, as a grid"
   detail="7,023 distinct words · 49 million cells · 0.08% ever get a tally"
   compareCells={84489}
   compareLabel="every word in the novel"
-  note="more text grows the grid faster than it fills it"
+  note="you can't scale a table---it grows faster than you can fill it"
 />
 
-{/* notes: Second knob: read more. Everyone assumes this is the whole story, and it's the one place in the section where the honest answer is genuinely surprising.
+{/* notes: One slide of failure, and both obvious fixes fail for the same reason, so run them against the grid they built. Open from the moment they just lived: stuck on a comma, rolling dice, because every comma in the text looks identical --- one word of context is all a grid gets. Somebody always asks why not look at two words, and you want that question: the price of a second word is the whole vocabulary again, one row per *pair* of words. The table squares. (Two words is a trigram, you can absolutely build one, and there's a lesson on the website that runs one with pen and paper.)
 
-This is Frankenstein at true scale --- in the 2-hour run it's the booklet they just generated from, so name it as that; otherwise one clause is enough, a whole novel, about 84,000 words. Seven thousand distinct words, so 49 million cells. The gold speck is every word in the book. Read the entire novel and you have filled 41,000 cells: 0.08% of the table, one in twelve hundred. The rest are empty, and empty means impossible.
+So maybe the fix is reading more. This is Frankenstein at true scale --- in the 2-hour run it's the booklet they just generated from, so name it as that; otherwise one clause is enough: a whole novel, about 84,000 words, 7,023 distinct, so 49 million cells. The gold speck is every word in the book. Read the entire novel and you have filled 0.08% of the table --- one cell in twelve hundred. The rest are empty, and empty means impossible.
 
-Now the surprise, and it's measured, not rhetorical --- it's their own tool, run on the first 5% of the novel and then on all of it. Twenty times as much text, and the grid did not get fuller. It got emptier: 0.20% of cells filled, down to 0.08%. Say why, because it's the whole point --- new text brings new *words* as well as new pairs, and every new word adds a whole row and a whole column. The table grows by squares while the tally marks grow one at a time. That is a race a grid loses forever.
+Now the surprise, and it's measured, not rhetorical --- their own tool, run on the first 5% of the novel and then on all of it. Twenty times as much text, and the grid did not get fuller. It got *emptier*: 0.20% of cells filled, down to 0.08%. Say why, because it's the whole point: new text brings new *words* as well as new pairs, and every new word adds a whole row and a whole column. The table grows by squares while the tallies arrive one at a time. That's a race a grid loses forever --- and remember the other fix wanted to *square* this table.
 
-So put the two knobs together, because they're the same failure. One more word of context makes it 346 *billion* cells for this one novel --- and the whole book still only fills 72,000 of them. More context makes the table bigger; more text can't fill it. Neither knob works on a grid, and turning both at once is worse than either.
-
-Fifteen trillion tokens is the published figure for a recent open model's training run --- about 180 million copies of this novel, and roughly 5.7 million years at the pace they just worked. The question to leave hanging: if reading more can't fill a table, what is a real model doing with all that text? */}
+Leave it broken. The question to walk off with, because the next slide answers it: if reading more can't fill a table, what is a real model doing instead? */}
 
 ---
 
-## More parameters
+## Shared numbers
 
 <p class="voice">"it wrote something genuinely new---how?"</p>
 
@@ -66,19 +41,36 @@ Fifteen trillion tokens is the published figure for a recent open model's traini
 
 `the dog ran` isn't in this text, so your grid rates it **impossible**
 
-a real model rates it **0.40**---its numbers are **shared**, not one per cell
+a real model rates it **0.40**---not _more_ numbers, **shared** numbers
 
-{/* notes: Ask before you explain: has anyone had one of these produce something that genuinely surprised them --- something it couldn't have been copying? Take an example from the room if you get a good one; this slide is the answer to it, and it's also the answer to the question the last slide left hanging.
+{/* notes: Ask before you explain: has anyone had one of these produce something that genuinely surprised them --- something it couldn't have been copying? Take an example from the room if you get a good one; this slide is the answer to it, and to the question the last slide left hanging.
 
-Third knob, and the one that rescues the other two. A different text this time, so set it up in one breath: three sentences, `cat` and `dog` doing exactly the same job. Then the ringed cell.
+A different text, so set it up in one breath: three sentences, `cat` and `dog` doing exactly the same job. Then the ringed cell. Your grid tallies `cat` followed by `ran` but never `dog` followed by `ran`, so that cell is empty, and empty means impossible: it will never say "the dog ran", a sentence you know is perfectly fine. Every cell is its own little island --- nothing the grid learnt about `cat` reaches `dog` --- and that islanding is exactly why reading more didn't help: every tally you make pays for one cell and no other.
 
-Your grid tallies `cat` followed by `ran`, but never `dog` followed by `ran` --- so that cell is empty, and empty means impossible. It will never say "the dog ran", a sentence you know is perfectly fine. Every cell is its own little island; nothing the grid learnt about `cat` reaches `dog`. That islanding is exactly why reading more didn't help: every tally mark you make pays for one cell and no other.
+Be precise about what changes, because a tally is a perfectly good parameter --- their novel-grid *is* a model with 49 million of them. The difference isn't how many numbers you have, it's what each one is for. A grid gives every number one job: count one pair, serve no other. A transformer spreads every pattern across billions of numbers, each nudged a tiny amount after every wrong guess in training, and because `cat` and `dog` turn up in the same kinds of places they end up leaning on the *same* numbers. One sentence about a cat now pays for a sentence about a dog, and the model can fill a cell it never saw. (The filled-in grid on screen is illustrative, not measured --- the shape is the point.)
 
-A transformer doesn't give each pattern its own cell. It spreads every pattern across billions of numbers, each nudged a tiny amount after every wrong guess in training, and because `cat` and `dog` turn up in the same kinds of places they end up sharing numbers. One sentence about a cat now pays for a sentence about a dog. So the model can fill a cell it never saw.
+That sharing is the hinge of the whole section: it's what turns "more" from useless into worth having, and it's the reason an LLM isn't a very large phrasebook --- it says things nobody ever wrote. The cost, if it comes up: there's no longer a cell to point at, so "where does it store *the dog ran*" has no better answer than "smeared across a few billion numbers, and we're still working on reading it back". That's most of what interpretability research is. */}
 
-This is the line to land hard, and it's the guard against everything they'll hear later: a parameter is not a cell. About a trillion parameters is the right order of magnitude for a frontier model (the exact figure for the closed ones is unpublished, so "about that, and nobody outside will tell you" is the honest answer) --- and that is not a trillion-cell grid, which we've just seen would be empty. Numbers being shared instead of separate is what turns the other two knobs from useless into worth having, and it's the reason an LLM isn't a very large phrasebook. It says things nobody ever wrote.
+---
 
-Two asides if they come up. These numbers are illustrative, not measured --- the shape is the point. And the cost of the fix: there's no longer a cell to point at, so "where does it store *the dog ran*" has no better answer than "smeared across a few billion numbers, and we're still working on reading it back". That's most of what interpretability research is. */}
+## Now turn everything up
+
+<ModelScaleBars
+  startLabel="your grid"
+  contextStart="1 word"
+  contextEnd="the whole conversation"
+  trainingStart="one novel"
+  modelStart="49 million cells"
+  footer="three independent dials · none determines the others"
+/>
+
+with shared numbers, turning the dials up just **keeps working**
+
+{/* notes: Ask before you explain, because this slide is where their most common complaint lives: hands up if you've told one of these things not to do something and it did it anyway. Take two answers. Then the honest account: your instruction didn't fall off the end of a one-word window --- it's in the context, all of it, every time. It's one more stretch of text competing with everything else in the window, weighted rather than obeyed: "it read your instruction and something else won". What the model is looking at right now is all that shapes what comes next --- that much their grid taught them straight.
+
+Then the three dials, briskly, because the bars carry them. Context: one word for their grid, the whole conversation for Claude --- and no squared table to pay for it, because there is no table; that's what shared numbers bought. Training text: fifteen trillion tokens is the published figure for a recent open model's training run --- about 180 million copies of this novel, roughly 5.7 million years at the pace they just worked --- and none of it is wasted filling one cell each, because every token nudges numbers shared with everything else. Model size: about a trillion parameters is the right order of magnitude for a frontier model (the exact figure for the closed ones is unpublished, so "about that, and nobody outside will tell you" is the honest answer) --- and a trillion parameters is not a trillion-cell grid, which we've just seen would be empty.
+
+Then the line the slide is for, and it's the strangest fact in the section: turning these dials up just keeps working. Make the model bigger, feed it more text, let it look at more --- and it gets better in a way you can measure, predictably enough to plan a training run around. Nobody fully knows why that keeps holding, and that measured regularity, more than any single clever idea, is why the last five years of AI happened. Each dial has a lesson on the website that does it properly --- name that rather than explaining. */}
 
 ---
 
@@ -91,11 +83,11 @@ Two asides if they come up. These numbers are illustrative, not measured --- the
 
 it isn't refusing to answer---**answering isn't a thing it does**
 
-the fix isn't a bigger knob---it's more training, on text made of _conversations_
+the fix isn't a bigger dial---it's more training, on text made of _conversations_
 
-{/* notes: The three knobs are done. This one is deliberately not a fourth --- it isn't about *how much*, it's about *which text*. Say that as you arrive: "and one thing that isn't a matter of size at all".
+{/* notes: The dials are done, and this is deliberately not a fourth --- it isn't about *how much*, it's about *which text*. Say that as you arrive: "and one thing that isn't a matter of size at all".
 
-No heading --- the line is "let's ask your grid a question", and the slide just shows what comes back. Feed their model a question and it does what it always does: continues. It isn't being unhelpful and it isn't broken; nothing in "tally which word follows which" has any notion of a question and an answer. This is the honest state of a model that has only ever been trained to continue text --- and it's also, near enough, what a frontier model looks like straight out of pre-training: their problem, with better grammar. Turn all three knobs to the maximum and you still get this.
+No heading --- the line is "let's ask your grid a question", and the slide just shows what comes back. Feed their model a question and it does what it always does: continues. It isn't being unhelpful and it isn't broken; nothing in "tally which word follows which" has any notion of a question and an answer. This is the honest state of a model that has only ever been trained to continue text --- and it's also, near enough, what a frontier model looks like straight out of pre-training: their problem, with better grammar. Turn all three dials to the maximum and you still get this.
 
 Then the second line. What turns it into something that answers you is post-training: a second, much smaller round of the same training on transcripts of conversations, plus feedback on which answers people preferred. Tally text off the web and what follows a question mark is usually another question; tally conversations and what follows it is the start of an answer. The mechanism hasn't changed --- same predict-the-next-word loop, same dice --- just different text to learn from, so different habits on top.
 
@@ -105,24 +97,6 @@ One aside, if the room is with you and you're not behind. "Feedback on which ans
 
 {/* _class: impact */}
 
-**more context**
-
-**more training text**
-
-**more parameters**
-
-(not just a bigger grid)
-
-{/* notes: Land the three, then the guard. The three are what "scale" actually names, and they're independent controls --- none of them determines the others.
-
-The last line is the one worth the breath. Every one of these knobs is useless on the thing they built: more context squares the table, more text can't fill it, and more cells are still islands. What makes them pay off is that a real model's numbers are shared rather than parcelled out one per pair. So a frontier LLM isn't their grid inflated until it works --- it's a different kind of machine, running the same loop.
-
-Which is the next slide, and the thing to leave them with. */}
-
----
-
-{/* _class: impact */}
-
 still just **tokens in** → **tokens out**
 
-{/* notes: Every reply from Claude or ChatGPT is sampled one word at a time, exactly like their dice rolls --- that's why "regenerate" gives a different answer. More context, numbers instead of tallies, a round of manners --- but the loop is the one they ran by hand. */}
+{/* notes: If they keep one sentence, this is it: a frontier model is their loop --- look at the context, weigh the options, roll the dice, write it down --- with every dial turned up, the tallies swapped for shared numbers, and a round of manners on top. Every reply from Claude or ChatGPT is sampled one token at a time, exactly like their dice rolls; that's why "regenerate" gives a different answer. Not their grid inflated until it worked --- a different kind of machine, running the same loop they ran by hand. */}

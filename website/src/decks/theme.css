@@ -463,15 +463,16 @@
   display: none;
 }
 
-/* The participant-voice line opening two of the three scaling-up differences:
+/* The participant-voice line opening scaling-up's shared-numbers slide:
    something people in the room have actually experienced with a real model,
    which the figure below then explains. Set as a quoted aside so it reads as
    reported speech rather than as the slide's own claim.
 
-   Keep this modest. Both slides carrying a `.voice` line sit above a full-width
-   grid widget and run close to the bottom of the 720px canvas, so space spent
-   here comes straight out of theirs --- at 2.75rem (tuned before theme v0.11.6
-   widened the default paragraph gap) the context slide clipped its last line. */
+   Keep this modest. The slide carrying the `.voice` line sits above a
+   full-width grid widget and runs close to the bottom of the 720px canvas, so
+   space spent here comes straight out of the widget's --- at 2.75rem (tuned
+   before theme v0.11.6 widened the default paragraph gap) it clipped the
+   slide's last line. */
 .reveal .voice {
   color: var(--color-text-secondary);
   font-style: italic;
