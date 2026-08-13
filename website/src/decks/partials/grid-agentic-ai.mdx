@@ -29,9 +29,7 @@ an agent is a model that can **call tools**: pause generation, get information
 from "outside" the model, and continue
 
 generate from your model as before, but every punctuation token triggers a
-**tool call**: text `What comes next? "[sentence so far]..."` to 3 friends, and
-the whole first reply goes into your text---followed by the punctuation you
-rolled
+**tool call**: a real text message to 3 friends/group chats
 
 ---
 
@@ -42,7 +40,7 @@ rolled
 your text so far is "the cat sat", and the next dice roll gives you `.` as the next
 token---pause, that's a tool call
 
-text `What comes next? "the cat sat..."` to 3 friends;
+text `What comes next? "the cat sat..."` to 3 friends/group chats;
 the first reply back might be "down by the river"
 
 write `down by the river`, then the `.` you rolled anyway, and continue
