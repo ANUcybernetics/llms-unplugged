@@ -10,15 +10,12 @@ Section beat: an agent is a model that can pause, call a tool, and use the resul
 
 ---
 
-{/* @include ./agent-definition.mdx */}
-
----
-
 ## The recipe
 
 ![bg right:40%](./assets/bg-tool-use-triggers.avif)
 
 {/* notes:
+An agent is a model that can pause, get information from outside itself, then continue. Here's how we bolt that onto your model:
 <ol>
 <li><strong>generate</strong> from your model as before, rolling for each next word</li>
 <li>when you land on a <strong>punctuation token</strong> (like <code>.</code> or <code>,</code>), pause --- that's a tool call</li>
@@ -27,6 +24,9 @@ Section beat: an agent is a model that can pause, call a tool, and use the resul
 <li><strong>continue</strong> generating from the punctuation token</li>
 </ol>
 */}
+
+an agent is a model that can **call tools**: pause generation, get information
+from "outside" the model, and continue
 
 generate from your model as before, but every punctuation token triggers a
 **tool call**: text `What comes next? "[sentence so far]..."` to 3 friends, and
