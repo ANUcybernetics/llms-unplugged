@@ -39,11 +39,12 @@ import "../styles/widgets.css";
   is aimed at. It is repeated, already lit, on slide 19 to close the loop.
 
   The scale run (15-17) makes one claim only: compared with the paper model, a
-  frontier LLM has seen vastly more training text and contains vastly more
-  learned numbers. Those quantities scale independently, and the machinery is
-  different, so the bars deliberately do not share an axis. Do not turn this
-  into an argument that transformers are a more parameter-efficient n-gram;
-  that is true in an important sense, but it is not this talk's point.
+  frontier LLM looks at vastly more context, has seen vastly more training
+  text and contains vastly more learned numbers. Those quantities scale
+  independently, and the machinery is different, so the bars deliberately do
+  not share an axis. Do not turn this into an argument that transformers are a
+  more parameter-efficient n-gram; that is true in an important sense, but it
+  is not this talk's point.
 
   Assumes the Acknowledgement of Country and the welcome happened at the top of
   the session, before Tim --- hence no ack-country slide here.
@@ -348,19 +349,23 @@ This is the model we made today. Now put its two kinds of scale beside a frontie
 
 {/* _class: centered */}
 
-<ModelScaleBars trainingStart="1,962 tokens" modelStart="57,600 grid cells" />
+<ModelScaleBars contextStart="1 token" trainingStart="1,962 tokens" modelStart="57,600 grid cells" footer="three independent scales · different kinds of model" />
 
 {/* notes:
-Two independent scales grow. The first is how much text went past the counter. Ours read 1,962 tokens; fifteen trillion is the published figure for a recent open model's training run. Every one of those tokens went past a counter, the way the book went past yours.
+Three independent scales grow. The first is how much the model looks at before each guess. Ours looked at exactly one token --- which is why our sentence wandered --- and Claude looks back over the whole conversation.
 
-The second is how many learned numbers the model contains. Ours had a 240 by 240 grid: 57,600 places a count could live. A trillion parameters is the right order of magnitude for a frontier model, and the honest answer for the closed ones is "about that, and nobody outside will tell you".
+The second is how much text went past the counter. Ours read 1,962 tokens; fifteen trillion is the published figure for a recent open model's training run. Every one of those tokens went past a counter, the way the book went past yours.
 
-The two bars have separate scales because these quantities can be changed independently. And the endpoints are different kinds of model: grid cells on the left, neural-network parameters on the right. This is a scale comparison, not a claim that one is a compressed version of the other.
+The third is how many learned numbers the model contains. Ours had a 240 by 240 grid: 57,600 places a count could live. A trillion parameters is the right order of magnitude for a frontier model, and the honest answer for the closed ones is "about that, and nobody outside will tell you".
+
+The bars have separate scales because these quantities can be changed independently. And the endpoints are different kinds of model: grid cells on the left, neural-network parameters on the right. This is a scale comparison, not a claim that one is a compressed version of the other.
 */}
 
 ---
 
 {/* _class: impact */}
+
+**much more** context
 
 **much more** training text
 
@@ -369,7 +374,7 @@ The two bars have separate scales because these quantities can be changed indepe
 a **different kind** of model
 
 {/* notes:
-Those are the differences to carry forward. More text and more learned numbers are differences of scale, and neither determines the other. Looking back over a long context and spreading what it learns between related words come from using different machinery, not merely from making our grid enormous.
+Those are the differences to carry forward. Context, training text and learned numbers are all differences of scale, and none of them determines the others. What makes them worth scaling is the last line: spreading what it learns between related words --- and looking usefully across a whole conversation --- comes from different machinery, not merely from making our grid enormous.
 
 No transformer lesson today. The important continuity is on the next slide.
 */}
