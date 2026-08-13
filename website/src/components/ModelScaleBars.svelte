@@ -1,28 +1,60 @@
 <script lang="ts">
   interface Props {
+    /** Endpoint labels across the top of the strip. */
+    startLabel?: string;
+    endLabel?: string;
+    /** Give `contextStart` to add a context row above the other two ---
+        the three-dial form the scaling-up section uses. */
+    contextStart?: string;
+    contextEnd?: string;
     trainingStart: string;
     modelStart: string;
     trainingEnd?: string;
     modelEnd?: string;
+    /** Caption under the bars; pass "" to drop it. */
+    footer?: string;
   }
 
   let {
+    startLabel = "today",
+    endLabel = "frontier LLM",
+    contextStart,
+    contextEnd = "the whole conversation",
     trainingStart,
     modelStart,
     trainingEnd = "15 trillion tokens",
     modelEnd = "~1 trillion parameters",
+    footer = "two independent scales · different kinds of model",
   }: Props = $props();
+
+  const ariaContext = $derived(
+    contextStart ? ` Context grows from ${contextStart} to ${contextEnd}.` : "",
+  );
 </script>
 
 <div
   class="model-scale-bars"
   role="img"
-  aria-label={`Two independent scales. Training text grows from ${trainingStart} to ${trainingEnd}. Model size grows from ${modelStart} to ${modelEnd}.`}
+  aria-label={`Independent scales.${ariaContext} Training text grows from ${trainingStart} to ${trainingEnd}. Model size grows from ${modelStart} to ${modelEnd}.`}
 >
   <div class="endpoints" aria-hidden="true">
-    <strong>today</strong>
-    <strong>frontier LLM</strong>
+    <strong>{startLabel}</strong>
+    <strong>{endLabel}</strong>
   </div>
+
+  {#if contextStart}
+    <div class="metric context">
+      <div class="metric-heading">
+        <span class="metric-name">context</span>
+        <span class="meaning">how much it looks at before each guess</span>
+      </div>
+      <div class="track" aria-hidden="true"><span class="fill"></span></div>
+      <div class="values">
+        <strong>{contextStart}</strong>
+        <strong>{contextEnd}</strong>
+      </div>
+    </div>
+  {/if}
 
   <div class="metric training">
     <div class="metric-heading">
@@ -48,7 +80,9 @@
     </div>
   </div>
 
-  <p class="independent">two independent scales · different kinds of model</p>
+  {#if footer}
+    <p class="independent">{footer}</p>
+  {/if}
 </div>
 
 <style>
@@ -110,6 +144,7 @@
     transform-origin: left center;
   }
 
+  .context .fill,
   .parameters .fill {
     background: var(--anu-gold-2);
   }
@@ -139,6 +174,12 @@
   /* Reveal adds .present to the active section. Each track owns its scale: the
      animation says both quantities grew, without comparing unlike units or
      implying that one determines the other. */
+  @keyframes -global-grow-context-scale {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
   @keyframes -global-grow-training-scale {
     to {
       transform: scaleX(1);
@@ -149,6 +190,10 @@
     to {
       transform: scaleX(1);
     }
+  }
+
+  :global(section.present) .context .fill {
+    animation: grow-context-scale 1.2s cubic-bezier(0.2, 0.75, 0.25, 1) 0.05s both;
   }
 
   :global(section.present) .training .fill {
