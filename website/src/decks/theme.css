@@ -569,6 +569,15 @@
   justify-content: normal;
 }
 
+/* On a split-background slide the section's only child is `.split-layout`,
+   which is `inset: 0` and so fills the canvas — the section's own
+   `place-content: center` has nothing left to centre. Hand the intent down to
+   the text column so `.centered` still means what it says beside a
+   full-height image. */
+.reveal .slides section.centered .split-content {
+  justify-content: center;
+}
+
 /* lm-widget overrides: the widget components (TrainingWidget,
    GenerationWidget, EmbeddingWidget, etc.) are dual-context — they ship in
    lesson MDX on the website and could be embedded in deck slides. The
