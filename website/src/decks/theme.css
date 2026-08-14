@@ -208,6 +208,18 @@
   content: "— ";
 }
 
+/* The three-book reveal (visionaries-showcase slide 11) is the deck's one
+   slide of pure quotation, and the only place the corpus colours in
+   widgets.css are used. Deck body copy is sized for lists and short lines;
+   three quotations that a hall has to read --- and recognise --- want to be
+   nearer the size of a quote slide, so lift them above the 2.25rem body
+   measure. The attribution line rides along at its own 0.8em. */
+.reveal .slides section :is(.corpus-a, .corpus-b, .corpus-c) {
+  font-size: 2.85rem;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
 /* Speaker notes are rendered as <div class="notes"> for a11y (not
    <aside>), so Reveal.js's default notes hiding doesn't apply. */
 .reveal .slides section .notes {
