@@ -11,32 +11,29 @@ import Timer from "../components/Timer.astro";
 import "../styles/widgets.css";
 
 {/*
-  Ben's 14-minute slot (3:46 pm, hard stop 4:00 pm for the stage changeover) at
-  the ANU Visionaries Among Us Showcase, Manning Clark Hall, 15 Aug 2026.
-  Program title: "Demystifying Large Language Models". Fuller plan (beats,
-  corpus analysis, risks, Kenyon logistics): nb note anu-visionaries-showcase-2026.
-  Deck work tracked in backlog TASK-140.
+  Ben's 14-minute slot (3:46 pm, hard stop 4:00 pm) at the ANU Visionaries
+  Among Us Showcase, Manning Clark Hall, 15 Aug 2026. Program title:
+  "Demystifying Large Language Models". Staging, AV cues, usher plan, corpus
+  analysis and risks live in the nb note anu-visionaries-showcase-2026; deck
+  work tracked in backlog TASK-140. `make showcase` in cli/ builds the
+  participant sheets (input order and --seed 42 are load-bearing).
 
-  This is a TED-style talk: the speaking carries it and the slides are cues,
-  not visual aids. Thirteen slides, most of them a line or two over an image,
-  and nothing on screen explains anything. The corpus numbers, the cross-book
-  seam and the whole frontier-scale comparison are spoken, and they live in
-  these notes rather than on the wall. If a slide is tempting you to read it
-  out, cut it rather than the sentence you were going to say.
+  TED-style: the speaking carries it and the slides are cues, not visual
+  aids. Two slide grammars carry nearly all of it --- a full-bleed image with
+  nothing on it (the SAY: line opening those notes is the sentence the image
+  stands under), and one line in white over the artwork (`_class: hero`, no
+  h1, styled in theme.css). Only three slides carry real text: the algorithm
+  (6), the role mapping (9) and the three-book reveal (11). If a slide is
+  tempting you to read it out, cut it rather than the sentence you were going
+  to say.
 
-  Two slide grammars carry nearly all of it. Some beats are a full-bleed image
-  with nothing on it at all (slides 2, 3 and 7): the words are spoken, and the
-  SAY: line opening those notes is the sentence the image stands under. The
-  rest put one line in white over the artwork --- the hero treatment with no
-  title (`_class: hero`, no h1, styled in theme.css) --- so the words read as a
-  caption to the image rather than as the content of the slide. Both replaced
-  `.impact`, which sets a full sentence in black on a wall of flat gold: that
-  is a lecture slide, it arrives brighter than the speaker, and a hall reads it
-  instead of listening. Only three slides now carry real text --- the algorithm
-  (6), the role mapping (9) and the three-book reveal (11) --- and each of them
-  is a slide the room genuinely needs to look at.
+  The reveal is the spine: the three source books are never named until slide
+  11, and nothing on the printed sheets names them either (--title/--author
+  overrides). Hemingway then Poe then Seuss, because Seuss is the biggest
+  recognition hit and has to land last.
 
-  Running order (target 12:00 against the 14:00 slot):
+  Running order (target 12:00 against the 14:00 slot; the run is where the
+  spare time goes --- 4:30 on stage is fine, 5:00 if the room is with you):
     0:00  Smallest thing on the program        (slides 1-4,   1:35)
     1:35  What you've just been given          (slide 5,      1:00)
     2:35  Seed it, then the algorithm          (slide 6,      0:45)
@@ -45,101 +42,7 @@ import "../styles/widgets.css";
     9:20  Three books                          (slide 11,     1:15)
    10:35  ANU at 80, and over to Cecilia       (slides 12-14, 1:40)
 
-  Twelve and a quarter against the fourteen-minute slot, and the run is where
-  the spare time goes: 4:30 on stage is fine, 5:00 is fine if the room is still
-  with you.
-
-  This is the sheets talk, not the grid talk. No 42 cards, no bag of balls, no
-  MC choreography, and no grid built live on stage: the earlier version of
-  this deck had all of that and it was too much apparatus for fourteen minutes
-  on a stage Ben does not control. The room holds the model on paper and puts
-  hands up. The AV company has two cues: switch to Ben's feed at walk-on, and
-  house lights up at walk-on with the feed, then back down after the run
-  (slide 8). The sheets are unreadable at arm's length in a darkened hall ---
-  the lights are part of the demo, not a nicety, and at 360 sheets the ushers
-  cannot be working the first eighty seconds in the dark, which is why the
-  lights come up with the feed rather than once distribution is under way.
-
-  The Wacom stays, for one job: writing the generated tokens on slide 7 as
-  they come in. That slide carries no words at all --- it is the whiteboard
-  artwork full-bleed with the timer over it, so the wall already looks like a
-  board waiting to be written on. Press shift-W over it to bring up the
-  transparent annotation surface, and write with the pen. Arrow keys still
-  navigate with the surface up. Do NOT press Escape mid-activity --- closing
-  the layer discards its ink, and the sentence being built is the whole point
-  of the next three slides --- and do NOT press plain W, which swaps to the
-  opaque board and takes the slide's timer with it.
-
-  Ink is committed per slide, so the sentence lives on slide 7 and does not
-  follow you forward. Read it out loud before advancing, because slides 8 and
-  10 both point back at it ("we just ran a language model", "the sentence we
-  wrote is in no book") and the room will not be able to see it by then. If it
-  is a good one, arrow back to 7 while saying so rather than trying to
-  reproduce it from memory. D saves the annotated slide as a PNG afterwards.
-
-  A physical whiteboard would keep the sentence up for the whole talk, which
-  the Wacom does not, and it is the fallback if the annotation surface
-  misbehaves at the sound check. It is the fallback rather than the plan
-  because the screen is the only surface in Manning Clark Hall the back row
-  can read, and writing on a board means standing side-on to the hall for
-  four minutes.
-
-  The reveal is the spine: the three source books are NEVER named until slide
-  11. Nothing on the printed sheets names them either --- the set is generated
-  with --title/--author overrides for exactly this reason --- so a curious
-  attendee reading their page ahead of time cannot spoil it. Slide 11 builds
-  in three clicks, Hemingway then Poe then Seuss, because Seuss is the biggest
-  recognition hit and has to land last.
-
-  Before delivery:
-    - 120 A4 search sheets, PRINTED THREE TIMES (360 sheets), handed out by
-      the ushering team as the talk starts --- NOT pre-placed, so nobody spends
-      Ann's talk reading one, and NOT earlier than Ben's walk-on, so the
-      reveal stays protected. Ushers start moving at walk-on and aim to be
-      done by slide 5 (~1:35); the hard deadline is the seed ask at ~2:35.
-      Bundle the sheets by hall zone beforehand, complete A set spread across
-      all zones first so the model is whole, B and C copies as seconds; every
-      A-bundle sheet must end up in someone's hands. Brief the ushers at the
-      1 pm sound check --- 360 sheets is a bigger hand-out than it sounds, and
-      the ~1:20 target is the part of this plan most likely to slip.
-      `make showcase` in cli/ builds the sheets; the input order and --seed 42
-      are load-bearing, so a reprint matches what is already in the hall.
-      Printing three times means every token pair is held by three people:
-      the proportions are unchanged, one empty seat no longer takes a
-      transition out of the room, and the rarest contexts --- about one
-      generation step in ten --- put three hands up instead of one, which is
-      the difference between visible and invisible from the stage.
-    - seat the complete A set first, with the B and C copies in different
-      zones of the hall. Under 120 in the room, give people two or three sheets
-      each rather than leaving pages on the table --- a sheet nobody holds is a
-      hole in the model.
-    - brief.pdf (page 1 of the set) on the lectern. It carries the worked
-      example and the colour names. It is NOT handed out.
-    - Wacom attached and tested at the 1 pm sound check: pen colour and weight
-      chosen, and a line written on slide 7 and read from the back of the hall.
-      Ben calls tokens, picks hands, and writes.
-    - house lights: agree both cues with the AV desk at the sound check (up at
-      walk-on with the feed, down again after slide 7's run), and check a sheet
-      is actually readable in the "up" state from a middle seat --- up means
-      readable in a middle seat, not a half-state.
-    - lapel or headset mic.
-
-  Generation numbers: 6,409 tokens, 1,115 distinct, 6,406 token pairs, zero
-  structural dead ends --- a token has nothing following it only if it appears
-  nowhere but the very last position in a text, which is at most three tokens
-  in the whole deal. So there is no "running dry" beat to plan for. A quiet
-  round is an empty seat. Say so and reseed. Aim for 12-15 tokens in four
-  minutes.
-
-  Audience note: some attendees also saw the unplugged-age-of-ai talk on
-  10 Aug. That one runs the same activity over one book for a seated
-  workshop-sized room; this one runs it over three, in a hall, and cashes out
-  in the seam between them, which that talk does not have. That talk also has
-  the slides --- the grid visual, the role mapping, the scale build --- and
-  this one deliberately does not; the reveal does the work here. The Bandura
-  sequence is omitted so repeat attendees do not sit through it twice; the
-  "harder to bullsh*t" line recurs from that talk deliberately --- it is the
-  thesis, and it bears a second hearing.
+  Per-slide notes hold the beats to hit --- rehearsal cues, not a script.
 */}
 
 {/* _class: hero */}
@@ -149,11 +52,8 @@ import "../styles/widgets.css";
 ![bg](./assets/bg-title-wide.avif)
 
 {/* notes:
-Ann took you back sixty-five thousand years. Brad and Brian are about to take you to the edge of the observable universe. I have 6,409 words.
-
-And Tergel just took us inside a sleeping brain --- I want to do the same thing to the other hidden system on tonight's program, the one that talks back.
-
-Hands up: used one this week. Keep them up if you could explain to a ten-year-old what it did. Hold the silence.
+- Ann: sixty-five thousand years. Brad and Brian: the edge of the observable universe. I have 6,409 words. And Tergel just took us inside a sleeping brain --- same move on the other hidden system tonight, the one that talks back.
+- hands up: used one this week. Keep them up if you could explain to a ten-year-old what it did. Hold the silence.
 */}
 
 ---
@@ -162,10 +62,7 @@ Hands up: used one this week. Keep them up if you could explain to a ten-year-ol
 
 {/* notes:
 SAY: we got the tool before we got the story about the tool.
-
-Not too complicated --- too fast.
-
-The image is the oldest version of the problem, and worth half a beat if it gets a flicker of recognition: somebody picked the thing up long before anybody had a story about what it meant.
+- not too complicated --- too fast
 */}
 
 ---
@@ -174,12 +71,8 @@ The image is the oldest version of the problem, and worth half a beat if it gets
 
 {/* notes:
 SAY: one story says it's basically a mind. The other says it's just autocomplete.
-
-Two stories on offer, and they are opposites doing the same job: either it's beyond you or it's beneath you, and either way, don't look inside.
-
-Say them in the room's voice, not as straw men --- half the hall walked in holding one of them.
-
-Don't settle it here. The next ten minutes settle it.
+- opposites doing the same job: beyond you or beneath you, either way don't look inside. Say them in the room's voice, not as straw men
+- don't settle it here --- the next ten minutes settle it
 */}
 
 ---
@@ -192,11 +85,9 @@ on a machine you've never seen **inside**
 ![bg](./assets/bg-machine-interior-wide.avif)
 
 {/* notes:
-The whole argument, stated once, before the thing that earns it.
-
-The reckless promise: in the next ten minutes this hall becomes a language model, and then it writes a sentence. Not a diagram of one --- the machine, at human speed.
-
-The ushers are moving by now (they start at walk-on) --- cue them explicitly here if they aren't: "you're about to be handed a page". Let the rustle build under this slide; it's anticipation, not interruption. House lights come up with the sheets.
+- the whole argument, stated once, before the thing that earns it
+- the promise: in the next ten minutes this hall becomes a language model, and then it writes a sentence. Not a diagram of one --- the machine, at human speed
+- sheets are arriving; cue the ushers from stage if they aren't moving, and let the rustle build --- it's anticipation, not interruption
 */}
 
 ---
@@ -212,17 +103,9 @@ a page of **token pairs** --- a word, and the word before it
 ![bg](./assets/bg-cutouts-overview.avif)
 
 {/* notes:
-Hold one up. `the` boxed, then `cat`: somewhere in the source text, `cat` follows `the`. Every token keeps the same colour wherever it appears, so scan by colour and confirm by reading.
-
-A token is one word or one punctuation mark. One clause, don't dwell.
-
-The shuffle is load-bearing and worth naming: in book order these pages would be the book with boxes drawn round it and you would just read it. Shuffled, no page says anything.
-
-Then the part that used to have a slide, said and not shown --- keep it to three sentences. Every pair in the source text was dealt to exactly one page, so no single sheet can continue the text on its own. The model is not in my laptop and it is not on your page: for the next five minutes it only exists across this whole room, and if someone stayed home part of it is missing. That is not a metaphor for how a model is distributed --- it is literally where this one is.
-
-Numbers only if they're wanted: 6,409 tokens, 1,115 distinct, 6,406 pairs, printed three times so each pair is in three pairs of hands. Don't recite them. Nothing later in the talk needs them.
-
-Ten seconds to look. Then eyes up. DON'T name the books.
+- hold one up: `the` boxed, then `cat` --- somewhere in the source text, `cat` follows `the`. Same colour everywhere, so scan by colour and confirm by reading
+- shuffled, no page says anything; every pair dealt to exactly one page, so the model is not in my laptop and not on your page --- for the next five minutes it only exists across this whole room. Literally
+- ten seconds to look, then eyes up. DON'T name the books
 */}
 
 ---
@@ -237,17 +120,9 @@ Ten seconds to look. Then eyes up. DON'T name the books.
 4. I **write it down**, and we go again
 
 {/* notes:
-Get the seed here but write it on the NEXT slide: ink is committed per slide, so anything written on this one is left behind the moment you advance. Ask someone near the front to read out any pair from their page, both tokens, boxed one first. Hold those two words, advance, then shift-W and write them.
-
-It matters that the opening came off a sheet rather than out of my head --- the room supplies the beginning as well as everything after it.
-
-Then walk the four steps once against those two words.
-
-Step 2: one hand each. More than one match, go with the first you spot.
-
-Step 3 is the one to labour, briefly: at random, not whoever shouts first --- that samples the fastest reader, not the text. Random is what makes the room behave like the model.
-
-Don't explain why yet. They'll see it.
+- get the seed HERE, write it on the NEXT slide (ink is per-slide): someone near the front reads any pair, both tokens, boxed one first --- the room supplies the beginning too
+- walk the four steps once against those two words
+- labour step 3 only: at random, not whoever shouts first --- that samples the fastest reader, not the text. Random is what makes the room behave like the model
 */}
 
 ---
@@ -264,23 +139,9 @@ Don't explain why yet. They'll see it.
 <Timer minutes={4} overlay />
 
 {/* notes:
-Shift-W, write the volunteer's two words, and go. Four minutes, 12-15 tokens. Keep rounds moving --- no commentary between a hand going up and a token landing on the screen.
-
-The slide is painted as the board, so the ink reads as writing on a whiteboard with the clock in the corner. Don't press plain W here: that drops the real board over the slide and the timer goes with it.
-
-Write big. It has to read from the back of Manning Clark Hall, and the sentence is what slides 8 and 10 point back at.
-
-Narrate exactly two things, once each, without stopping the flow:
-
-The hands are the distribution. Call `the` and a forest goes up; call a rare token and you get two. Nobody here has been taught weighted sampling and the room is doing it anyway.
-
-The pick is a coin toss. Five hands up, and the four I don't take were all real continuations. Different pick, different sentence --- same reason the regenerate button gives you a different answer.
-
-At this size the search is not the bottleneck, hearing the answer is: a common context puts ~100 hands up. Pick near an aisle or the front where a called-out token carries, and repeat the token back before writing it --- a misheard token is the one thing that can quietly derail the sentence.
-
-No dead ends exist in this corpus, so there is no running-dry beat. A silent round is an empty seat: say that out loud --- it makes the point about where the model lives better than saying it did --- then reseed from any pair.
-
-Stop while they still want more. Read the sentence back, straight --- the worse it is, the straighter. This is the slide with room to run long: two spare minutes are sitting at the end of the talk.
+- shift-W, write the seed, go. Four minutes, 12-15 tokens, write BIG (back of the hall). Never plain W, never Esc. Repeat each token back before writing it --- a misheard token quietly derails the sentence
+- narrate exactly two things, once each, without stopping the flow: the hands ARE the distribution (call `the`, a forest; call a rare token, two hands); the pick is a coin toss (the hands not picked were all real continuations --- same reason the regenerate button gives a different answer)
+- a silent round is an empty seat, not a dead end: say so and reseed. Stop while they still want more; read the sentence back straight --- the worse it is, the straighter. This is the slide with room to run long
 */}
 
 ---
@@ -292,7 +153,7 @@ we just ran a **language model**
 ![bg](./assets/bg-div-reception.avif)
 
 {/* notes:
-Flat. Let it sit. Not a simulation of one, not an analogy for one: the mechanism, at human speed, with the arithmetic small enough to see.
+- flat, let it sit: not a simulation, not an analogy --- the mechanism, at human speed
 */}
 
 ---
@@ -310,11 +171,9 @@ my random pick → **sampling**
 the sentence I wrote → **generation**
 
 {/* notes:
-The one slide in the talk with four lines on it, and it earns them: these are the four words that used to make this sound unreachable, and you now have a physical referent for every one. Brisk --- the point is the mapping, not the definitions.
-
-One sentence on where the sheets came from, because it closes the one hole in the mapping: I made them by counting every pair in the source text, and that counting is all "training" is. It happened in my laptop before you arrived.
-
-Land on: when someone says a model has a trillion parameters, they mean that. A very large pile of the thing on your lap.
+- brisk: four words that made this sound unreachable, and the room now has a physical referent for each
+- one sentence on training, closing the hole in the mapping: I counted every pair in the source text, in my laptop, before you arrived --- that counting is all "training" is
+- land: a trillion parameters means a very large pile of the thing on your lap
 */}
 
 ---
@@ -326,11 +185,8 @@ the sentence we wrote is in **no book**
 ![bg](./assets/bg-chain.avif)
 
 {/* notes:
-Nobody wrote it. No lookup, no database of sentences. It came out of a pile of paper and a series of coin tosses.
-
-That's the trick, and you just watched it from the inside.
-
-Then: one more thing this machine was never told.
+- nobody wrote it: no lookup, no database of sentences --- a pile of paper and a series of coin tosses, and you watched the trick from the inside
+- then: one more thing this machine was never told
 */}
 
 ---
@@ -342,15 +198,9 @@ Then: one more thing this machine was never told.
 <p class="corpus-b fragment">“The sun did not shine. It was too wet to play.”<br /><span class="corpus-attribution">— Dr. Seuss, <em>The Cat in the Hat</em> (1957)</span></p>
 
 {/* notes:
-Three clicks. Hemingway, let it land. Poe, watch it dawn. Seuss last --- the biggest laugh, wait it out.
-
-Nobody in this room was told there were three books. Neither was the model.
-
-Then stay here and say the rest of it --- there is no slide for the crossing, and there shouldn't be, because the three fragments on the wall are the evidence. Each book was counted separately; no pair spans the join. But you already watched it cross: every time I called `said`, the hands that went up were holding Hemingway, Seuss and Poe, and neither you nor the model could tell which was which. This room was the seam.
-
-And the old man. `old` then `man` is a pair in two of these books --- Hemingway's fisherman, dozens of times, and Poe's victim, a dozen more --- and they land in the same place on your sheets. The model has one token of memory; it cannot see which book it's in, because "which book" was never something it recorded. As far as this model is concerned, they are the same old man.
-
-If the sentence you wrote visibly crossed, arrow back to slide 7 and point at the join. Every strange sentence you have ever got out of a chatbot is this, at scale.
+- three clicks: Hemingway, let it land. Poe, watch it dawn. Seuss last, wait out the laugh. Nobody in this room was told there were three books --- neither was the model
+- the room was the seam: every time I called `said`, the hands that went up were holding Hemingway, Seuss and Poe, and neither you nor the model could tell which was which
+- the old man: `old` then `man` is Hemingway's fisherman and Poe's victim, landing in the same place on your sheets --- as far as this model is concerned, the same old man. (If the sentence visibly crossed, arrow back to 7 and point at the join.) Close: every strange chatbot sentence is this, at scale
 */}
 
 ---
@@ -364,12 +214,8 @@ for a country facing a transformed world
 
 {/* notes:
 SAY: human-scale AI is the same move --- slow it down, and you can see the whole machine.
-
-1946: the transforming technology was the atom, and the country decided it needed somewhere to think about it properly. Eighty years on, same job, different technology.
-
-That's what the School of Cybernetics is for, and this is what it looks like: not a lecture about AI, but a room that has just been one.
-
-What it buys you is the next two slides, so don't land the thesis here.
+- 1946: the transforming technology was the atom, and the country decided it needed somewhere to think about it properly. Eighty years on, same job, different technology --- that's the School of Cybernetics, and this is what it looks like: not a lecture about AI, a room that has just been one
+- don't land the thesis here; it buys the next two slides
 */}
 
 ---
@@ -382,15 +228,9 @@ the thing you're told needs a **data centre**
 ![bg](./assets/bg-hall-generation-wide.avif)
 
 {/* notes:
-Hands can go up now --- the ones that went down at the start, on "could you explain it to a ten-year-old". You could have a decent run at it now.
-
-Then the whole frontier-scale comparison, spoken, over this slide. It used to be two slides and it is now about forty seconds: they have more memory (ours looked one token back, which is why the sentence wandered --- the real ones look over the whole conversation), they have read something like fifteen trillion tokens where ours read three books, and they spread what they learn across a trillion numbers instead of separate boxes, so what they learn about `cat` reaches `dog`. Bigger, and built differently. Same loop.
-
-The objection half the room is forming, if the clock allows: "but ChatGPT answers me --- yours just rambled". Right. Ours only ever continues text; ask it a question and it continues the question. Being something that answers you is one more round of training, on conversations, after all the reading is done. Not a different loop.
-
-Land on this either way, because it is the sentence the whole talk is for: every reply you have ever had from one of these things was produced one token at a time, by what your arm was doing four minutes ago.
-
-Behind the clock? Keep the memory line and that last sentence, drop everything else in this note.
+- hands can go up now --- the ones that went down on the ten-year-old test
+- forty seconds of scale, spoken: more memory (ours looked one token back --- that's why it wandered), fifteen trillion tokens read vs three books, learning spread across a trillion shared numbers so `cat` teaches `dog`. Bigger, built differently, same loop. If the clock allows, the objection: "yours rambled" --- answering you is one more round of training, on conversations, not a different loop
+- land, never cut: every reply you have ever had from one of these things was produced one token at a time, by what your arm was doing four minutes ago. (Behind the clock: keep the memory line and this sentence, drop the rest)
 */}
 
 ---
@@ -404,13 +244,8 @@ it makes you **harder to bullsh\*t**
 ![bg](./assets/bg-trigrams-banner.avif)
 
 {/* notes:
-Careful not to oversell: you can't build Claude now, and nothing tonight tells you whether it should be marking school essays. What you can do is hear a claim about AI and have somewhere to stand --- you know what kind of thing it is, and which claims need more than confidence behind them. For a technology being sold this hard, that is not a small thing to walk out with.
-
-Everything else happens on this slide; there are no more clicks, and you finish the talk standing in front of it. Nothing on screen carries the URL, so say it slowly and only once you've landed the line above: the lessons, the printable sheets and the tool that made yours are all free at llmsunplugged dot org.
-
-The tag: I've spent my fourteen minutes making this technology as small as it will go. Later tonight Brad and Brian will do the opposite --- and they have a fog machine.
-
-The hand-off, last words on stage: Tergel took us inside a sleeping brain, this room went inside a talking machine, and next Cecilia Nie takes us inside a parasite --- using cholesterol, of all things, as a way to treat it. Over to her.
-
-TIME CHECK: past 12:15 arriving here, drop the URL and the fog-machine tag and go straight to the hand-off. The hand-off is the one thing that cannot be cut.
+- don't oversell: you can't build Claude now, but you can hear a claim about AI and have somewhere to stand --- for a technology sold this hard, not a small thing to walk out with
+- once the line lands, the URL, slowly, once: lessons, sheets and the tool that made yours, free at llmsunplugged dot org. Then the tag: I've spent fourteen minutes making this technology as small as it will go; later tonight Brad and Brian do the opposite --- and they have a fog machine
+- hand-off, last words on stage: Tergel took us inside a sleeping brain, this room went inside a talking machine, and next Cecilia Nie takes us inside a parasite --- using cholesterol, of all things, to treat it. Over to her
+- TIME CHECK: past 12:15 arriving here, drop the URL and the tag --- the hand-off is the one thing that cannot be cut
 */}
