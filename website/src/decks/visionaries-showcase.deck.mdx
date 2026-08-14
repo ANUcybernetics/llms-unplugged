@@ -25,7 +25,7 @@ import "../styles/widgets.css";
   out, cut it rather than the sentence you were going to say.
 
   Two slide grammars carry nearly all of it. Some beats are a full-bleed image
-  with nothing on it at all (slides 2 and 3): the words are spoken, and the
+  with nothing on it at all (slides 2, 3 and 7): the words are spoken, and the
   SAY: line opening those notes is the sentence the image stands under. The
   rest put one line in white over the artwork --- the hero treatment with no
   title (`_class: hero`, no h1, styled in theme.css) --- so the words read as a
@@ -61,11 +61,14 @@ import "../styles/widgets.css";
   lights come up with the feed rather than once distribution is under way.
 
   The Wacom stays, for one job: writing the generated tokens on slide 7 as
-  they come in. Press shift-W over that slide to bring up the annotation
-  surface, and write with the pen. Arrow keys still navigate with the surface
-  up. Do NOT press Escape or W mid-activity --- closing the layer discards its
-  ink, and the sentence being built is the whole point of the next three
-  slides.
+  they come in. That slide carries no words at all --- it is the whiteboard
+  artwork full-bleed with the timer over it, so the wall already looks like a
+  board waiting to be written on. Press shift-W over it to bring up the
+  transparent annotation surface, and write with the pen. Arrow keys still
+  navigate with the surface up. Do NOT press Escape mid-activity --- closing
+  the layer discards its ink, and the sentence being built is the whole point
+  of the next three slides --- and do NOT press plain W, which swaps to the
+  opaque board and takes the slide's timer with it.
 
   Ink is committed per slide, so the sentence lives on slide 7 and does not
   follow you forward. Read it out loud before advancing, because slides 8 and
@@ -249,16 +252,21 @@ Don't explain why yet. They'll see it.
 
 ---
 
-{/* _class: hero */}
+{/* The board slide. No words and no `.hero` class: the artwork is the deck's
+    own whiteboard surface (the same asset the board paints, on the same dark
+    ground), so the slide reads as a blank board with the timer sitting on it,
+    and the hero scrim would only grey that board down. Write on it with the
+    annotation layer (⇧W), NOT the board itself (W) --- the board is an opaque
+    layer over the slide and would take the timer with it. */}
 
-# let's run it
-
-![bg](./assets/bg-div-lessons.avif)
+![bg](./assets/deco-whiteboard.avif)
 
 <Timer minutes={4} overlay />
 
 {/* notes:
 Shift-W, write the volunteer's two words, and go. Four minutes, 12-15 tokens. Keep rounds moving --- no commentary between a hand going up and a token landing on the screen.
+
+The slide is painted as the board, so the ink reads as writing on a whiteboard with the clock in the corner. Don't press plain W here: that drops the real board over the slide and the timer goes with it.
 
 Write big. It has to read from the back of Manning Clark Hall, and the sentence is what slides 8 and 10 point back at.
 
@@ -295,7 +303,7 @@ Flat. Let it sit. Not a simulation of one, not an analogy for one: the mechanism
 
 the pairs on your page → the **parameters** of the model
 
-the hands in the air → the **probability distribution**
+the hands in the air → the **probability distribution** over next tokens
 
 my random pick → **sampling**
 
@@ -371,7 +379,7 @@ What it buys you is the next two slides, so don't land the thesis here.
 a hall full of people just did\
 the thing you're told needs a **data centre**
 
-![bg](./assets/bg-shareback-generation.avif)
+![bg](./assets/bg-hall-generation-wide.avif)
 
 {/* notes:
 Hands can go up now --- the ones that went down at the start, on "could you explain it to a ten-year-old". You could have a decent run at it now.
