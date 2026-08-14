@@ -119,6 +119,18 @@
   animation-delay: 0.2s;
 }
 
+/* Site URL under the exit line on the closing hero slide
+   (visionaries-showcase slide 14): said once from stage, but a hall of
+   general public needs it written down too. A div rather than a p, so the
+   titleless-hero paragraph sizing and gold end-rule above don't apply --- it
+   sits below that rule and reads as a credit. */
+.reveal .slides section.hero .deck-url {
+  margin-block-start: 0.75rem;
+  font-size: 1.5rem;
+  color: var(--anu-white);
+  opacity: 0.85;
+}
+
 /* Quote-slide emphasis built with Reveal fragments. A plain `.fragment` starts
    invisible and fades in, which would make the sentence arrive in pieces --- we
    want the whole quote readable from the first beat, with clauses *lighting up*
