@@ -42,7 +42,7 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## How the die chooses: `spot`
 
-{/* notes: equal tallies, so each option gets an equal share of the ten d10 faces --- `run` gets 0-4 and `,` gets 5-9, reading the row's cells left to right. Pause here before rolling. */}
+{/* notes: equal tallies, so each option gets (near enough) half of the ten d10 faces --- `run` gets 0-5 and `,` gets 6-9, reading the row's cells left to right; ten faces can't split evenly between two options, and the rounding is the same one the printed booklets use. Pause here before rolling. */}
 
 <DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={1} />
 
@@ -90,7 +90,7 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## How the die chooses: `run`
 
-{/* notes: `.` has twice the tallies, so it gets more of the faces (3-9) than `,` (0-2). With a ten-sided die that's the closest split rather than exactly 2:1 --- the point is more tallies → more faces → more likely. Pause here before rolling. */}
+{/* notes: `.` has twice the tallies, so it gets more of the faces (4-9) than `,` (0-3). With a ten-sided die that's the closest split rather than exactly 2:1 --- the point is more tallies → more faces → more likely. Pause here before rolling. */}
 
 <DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={3} />
 
@@ -98,7 +98,7 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## How the die chooses: `run`
 
-{/* notes: now roll --- a 3 sits in the `.` band */}
+{/* notes: now roll --- a 6 sits in the `.` band */}
 
 <DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={3} showRoll />
 
@@ -106,7 +106,7 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## Generation: `run` → `.`
 
-{/* notes: the 3 sits in the `.` band, so we pick `.` */}
+{/* notes: the 6 sits in the `.` band, so we pick `.` */}
 
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={3} />
 

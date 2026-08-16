@@ -1,3 +1,4 @@
+import { computeDiceBands } from "./diceBands";
 import type { BigramModel } from "./tokens";
 
 export interface NextWord {
@@ -35,23 +36,14 @@ export function buildModelEntries(vocabulary: string[], model: BigramModel): Mod
     nextWordsRaw.sort((a, b) => b.count - a.count);
 
     const numDice = totalCount.toString().length;
-    const ceiling = Math.pow(10, numDice) - 1;
 
-    const nextWords: NextWord[] = [];
-    let cumulative = -1;
-    for (let i = 0; i < nextWordsRaw.length; i++) {
-      const f = nextWordsRaw[i];
-      const scaled = Math.round((f.count / totalCount) * (ceiling + 1));
-      cumulative += scaled;
-      if (i === nextWordsRaw.length - 1) {
-        cumulative = ceiling;
-      }
-      nextWords.push({
-        word: f.word,
-        count: f.count,
-        threshold: cumulative,
-      });
-    }
+    // Shared apportionment (see computeDiceBands) so entries agree with the
+    // printed booklets and the deck dice strips.
+    const nextWords: NextWord[] = computeDiceBands(nextWordsRaw).map((band) => ({
+      word: band.word,
+      count: band.count,
+      threshold: band.to,
+    }));
 
     entries.push({
       previousWord: word,

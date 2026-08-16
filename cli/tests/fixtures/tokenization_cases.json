@@ -1,0 +1,168 @@
+[
+  {
+    "input": "",
+    "tokens": []
+  },
+  {
+    "input": "Chapter IV and section XII are done.",
+    "tokens": [
+      "Chapter",
+      "and",
+      "section",
+      "are",
+      "done",
+      "."
+    ]
+  },
+  {
+    "input": "I did see a vivid civic display. We mix and mill about.",
+    "tokens": [
+      "I",
+      "did",
+      "see",
+      "a",
+      "vivid",
+      "civic",
+      "display",
+      ".",
+      "We",
+      "mix",
+      "and",
+      "mill",
+      "about",
+      "."
+    ]
+  },
+  {
+    "input": "c d m mcmxciv xcix",
+    "tokens": [
+      "c",
+      "d",
+      "m",
+      "mcmxciv",
+      "xcix"
+    ]
+  },
+  {
+    "input": "Sally met Sally at the well. The well was dry.",
+    "tokens": [
+      "Sally",
+      "met",
+      "Sally",
+      "at",
+      "the",
+      "well",
+      ".",
+      "the",
+      "well",
+      "was",
+      "dry",
+      "."
+    ]
+  },
+  {
+    "input": "Hello world. hello again.",
+    "tokens": [
+      "hello",
+      "world",
+      ".",
+      "hello",
+      "again",
+      "."
+    ]
+  },
+  {
+    "input": "I'm sure I'll go, don't you think? The dogs' bowls o' porridge.",
+    "tokens": [
+      "I'm",
+      "sure",
+      "I'll",
+      "go",
+      ",",
+      "don't",
+      "you",
+      "think",
+      "?",
+      "The",
+      "dogs'",
+      "bowls",
+      "o'",
+      "porridge",
+      "."
+    ]
+  },
+  {
+    "input": "Number123 again. 42 said 7bad things.",
+    "tokens": [
+      "Number",
+      "again",
+      ".",
+      "said",
+      "bad",
+      "things",
+      "."
+    ]
+  },
+  {
+    "input": "'Hello,' she said. ''BEST'' 42",
+    "tokens": [
+      "Hello",
+      ",",
+      "she",
+      "said",
+      ".",
+      "BEST"
+    ]
+  },
+  {
+    "input": "‘Twas the night --- don’t stop.",
+    "tokens": [
+      "Twas",
+      "the",
+      "night",
+      "don't",
+      "stop",
+      "."
+    ]
+  },
+  {
+    "input": "你好，世界。Hello 世界!",
+    "tokens": [
+      "你",
+      "好",
+      "，",
+      "世",
+      "界",
+      "。",
+      "Hello",
+      "世",
+      "界",
+      "!"
+    ]
+  },
+  {
+    "input": "one <|endoftext|> two",
+    "tokens": [
+      "one",
+      "endoftext",
+      "two"
+    ]
+  },
+  {
+    "input": "The cat sat.\nthe dog ran.\nThe cat again.",
+    "tokens": [
+      "the",
+      "cat",
+      "sat",
+      ".",
+      "the",
+      "dog",
+      "ran",
+      ".",
+      "the",
+      "cat",
+      "again",
+      "."
+    ]
+  }
+]

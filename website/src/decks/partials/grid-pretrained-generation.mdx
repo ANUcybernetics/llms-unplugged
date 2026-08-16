@@ -45,9 +45,9 @@ use the booklet to generate new text, rolling one or more d10s to choose each ne
 
 ---
 
-## Pre-trained: start with `the`
+## Pre-trained: start with `The`
 
-{/* notes: a bigger model &mdash; <code>the</code> is so common it needs <strong>two</strong> dice (roll two d10s for 00 to 99) */}
+{/* notes: a bigger model &mdash; <code>The</code> is so common it needs <strong>two</strong> dice (roll two d10s for 00 to 99) */}
 
 <StaticPretrainedGeneration tokens={EXAMPLE_TEXT} sequence={EXAMPLE_PRETRAINED_SEQ} rolls={EXAMPLE_PRETRAINED_ROLLS} step={0} />
 
@@ -55,7 +55,7 @@ use the booklet to generate new text, rolling one or more d10s to choose each ne
 
 ## Pre-trained: from `cat`
 
-{/* notes: <code>cat</code> is rarer than <code>the</code> &mdash; just <strong>one</strong> die, roll a d10 */}
+{/* notes: <code>cat</code> is rarer than <code>The</code> &mdash; just <strong>one</strong> die, roll a d10 */}
 
 <StaticPretrainedGeneration tokens={EXAMPLE_TEXT} sequence={EXAMPLE_PRETRAINED_SEQ} rolls={EXAMPLE_PRETRAINED_ROLLS} step={1} />
 
@@ -77,9 +77,9 @@ use the booklet to generate new text, rolling one or more d10s to choose each ne
 
 ---
 
-## Pre-trained: from `the` again
+## Pre-trained: from `The` again
 
-{/* notes: <strong>two</strong> dice again &mdash; 63 is past <code>cat</code>'s 49, so we land on <code>dog</code> */}
+{/* notes: <strong>two</strong> dice again &mdash; 63 is past <code>cat</code>'s 50, so we land on <code>dog</code> */}
 
 <StaticPretrainedGeneration tokens={EXAMPLE_TEXT} sequence={EXAMPLE_PRETRAINED_SEQ} rolls={EXAMPLE_PRETRAINED_ROLLS} step={4} />
 

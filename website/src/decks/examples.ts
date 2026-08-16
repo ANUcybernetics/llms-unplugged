@@ -18,10 +18,11 @@ export const EXAMPLE_VOCAB = "run , spot . see";
 // → unequal, rolls on past the full stop, and loops back to `see`.
 export const EXAMPLE_GENERATION = "see spot , run . see";
 // One d10 roll (0-9) per generation step; "-" marks a step with a single option
-// (no roll needed). Dice bands follow grid column order (see DiceStrip):
-// spot row is run=0-4/`,`=5-9, `,` row is run=0-4/spot=5-9, run row is
-// `,`=0-2/`.`=3-9. The choices: spot→`,` (rolled 7), `,`→run (2), run→`.` (3).
-export const EXAMPLE_GENERATION_ROLLS = "- 7 2 3 - -";
+// (no roll needed). Dice bands follow grid column order (see DiceStrip) and
+// the printed booklets' rounding (computeDiceBands): spot row is
+// run=0-5/`,`=6-9, `,` row is run=0-5/spot=6-9, run row is `,`=0-3/`.`=4-9.
+// The choices: spot→`,` (rolled 7), `,`→run (2), run→`.` (6).
+export const EXAMPLE_GENERATION_ROLLS = "- 7 2 6 - -";
 
 // Cat-in-the-Hat excerpt --- drives the single "the same model, drawn as a
 // grid" slide in the unplugged-age-of-ai talk, where the room is holding search
@@ -67,5 +68,7 @@ export const EXAMPLE_GENERALISE_SCORES = [
 // (the 90min and 2h decks only).
 export const EXAMPLE_TEXT =
   "The cat sat. The cat ran. The dog sat. The cat sat. The dog ran. The cat ran. The hat sat. The dog sat. The cat sat. The hat ran.";
-export const EXAMPLE_PRETRAINED_SEQ = "the cat sat . the dog";
+// `The` keeps its capital: it only ever appears capitalised in EXAMPLE_TEXT,
+// so canonical casing (parseTokens, matching the CLI) preserves it.
+export const EXAMPLE_PRETRAINED_SEQ = "The cat sat . The dog";
 export const EXAMPLE_PRETRAINED_ROLLS = "27 4 - - 63 -";

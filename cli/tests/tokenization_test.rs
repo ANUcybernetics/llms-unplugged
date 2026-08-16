@@ -297,3 +297,109 @@ fn only_configured_punctuation_is_kept() -> io::Result<()> {
 
     Ok(())
 }
+
+// --- shared tokenisation fixture ------------------------------------------
+//
+// tests/fixtures/tokenization_cases.json pins the tokeniser's end-to-end
+// behaviour (segmentation, roman-numeral blocklist, contraction handling,
+// corpus-wide canonical casing) and is ALSO consumed by
+// website/test/tokens.test.ts, so the TypeScript port in
+// website/src/lib/tokens.ts can never silently drift from this crate.
+// After a deliberate tokeniser change, regenerate with:
+//
+//   cargo test regenerate_tokenization_fixture -- --ignored
+//
+// and confirm the website test suite still passes against the new fixture.
+
+const FIXTURE_PATH: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/tests/fixtures/tokenization_cases.json"
+);
+
+const FIXTURE_INPUTS: &[&str] = &[
+    "",
+    "Chapter IV and section XII are done.",
+    "I did see a vivid civic display. We mix and mill about.",
+    "c d m mcmxciv xcix",
+    "Sally met Sally at the well. The well was dry.",
+    "Hello world. hello again.",
+    "I'm sure I'll go, don't you think? The dogs' bowls o' porridge.",
+    "Number123 again. 42 said 7bad things.",
+    "'Hello,' she said. ''BEST'' 42",
+    "\u{2018}Twas the night --- don\u{2019}t stop.",
+    "\u{4f60}\u{597d}\u{ff0c}\u{4e16}\u{754c}\u{3002}Hello \u{4e16}\u{754c}!",
+    "one <|endoftext|> two",
+    "The cat sat.\nthe dog ran.\nThe cat again.",
+];
+
+#[derive(serde::Serialize, serde::Deserialize)]
+struct FixtureCase {
+    input: String,
+    tokens: Vec<String>,
+}
+
+/// The full two-pass pipeline `NGramCounter::process_lines` uses: track
+/// surface forms, build the corpus case map, then normalise. Char-level CJK
+/// to match the website's pure-TS tokeniser (word-level CJK on the website
+/// is exercised through the wasm build instead).
+fn tokenize_corpus(text: &str) -> Vec<String> {
+    use llms_unplugged::{CanonicalFormTracker, Normalizer, NormalizerConfig};
+
+    let mut normalizer = Normalizer::new(NormalizerConfig::new(default_punctuation()));
+    normalizer.set_cjk_mode(CjkMode::Chars);
+    let mut tracker = CanonicalFormTracker::new();
+    for line in text.lines() {
+        for word in normalizer.extract_raw_words(line) {
+            tracker.record(&word);
+        }
+    }
+    normalizer.set_corpus_case_map(tracker.build_case_map());
+    text.lines()
+        .flat_map(|line| normalizer.normalize_line(line))
+        .collect()
+}
+
+fn computed_fixture_cases() -> Vec<FixtureCase> {
+    FIXTURE_INPUTS
+        .iter()
+        .map(|input| FixtureCase {
+            input: input.to_string(),
+            tokens: tokenize_corpus(input),
+        })
+        .collect()
+}
+
+#[test]
+fn tokenization_fixture_is_current() {
+    let file = std::fs::read_to_string(FIXTURE_PATH).expect(
+        "fixture missing; run: cargo test regenerate_tokenization_fixture -- --ignored",
+    );
+    let recorded: Vec<FixtureCase> =
+        serde_json::from_str(&file).expect("fixture is not valid JSON");
+    let computed = computed_fixture_cases();
+
+    assert_eq!(
+        recorded.len(),
+        computed.len(),
+        "fixture case count differs from FIXTURE_INPUTS; regenerate the fixture"
+    );
+    for (recorded, computed) in recorded.iter().zip(&computed) {
+        assert_eq!(
+            recorded.input, computed.input,
+            "fixture inputs drifted from FIXTURE_INPUTS; regenerate the fixture"
+        );
+        assert_eq!(
+            recorded.tokens, computed.tokens,
+            "tokeniser output changed for {:?}; if deliberate, regenerate the fixture and \
+             confirm website/src/lib/tokens.ts still agrees (website test suite)",
+            recorded.input
+        );
+    }
+}
+
+#[test]
+#[ignore = "writes the fixture; run explicitly after a deliberate tokeniser change"]
+fn regenerate_tokenization_fixture() {
+    let json = serde_json::to_string_pretty(&computed_fixture_cases()).unwrap();
+    std::fs::write(FIXTURE_PATH, json + "\n").unwrap();
+}

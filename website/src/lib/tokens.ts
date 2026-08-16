@@ -67,83 +67,125 @@ function looksLikeContraction(word: string): boolean {
   return suffixes.some((s) => lower.endsWith(s));
 }
 
-function isRomanNumeral(s: string): boolean {
-  return s.length > 0 && [...s].every((c) => "ivxlcdm".includes(c));
-}
+/**
+ * Roman numerals we filter out, ported verbatim from `is_roman_numeral` in
+ * cli/src/text.rs. An explicit blocklist rather than proper Roman numeral
+ * validation because some valid Roman numerals are common English words
+ * (e.g. "mix" = 1009, "dix" = 509). In practice, Roman numerals in literary
+ * texts are chapter/section numbers which rarely exceed 50, so we just
+ * enumerate the ones we want to filter. The shared fixture test
+ * (test/tokens.test.ts) pins this against the Rust implementation.
+ */
+// prettier-ignore
+const ROMAN_NUMERAL_BLOCKLIST = new Set([
+  "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "xi", "xii", "xiii",
+  "xiv", "xv", "xvi", "xvii", "xviii", "xix", "xx", "xxi", "xxii", "xxiii",
+  "xxiv", "xxv", "xxvi", "xxvii", "xxviii", "xxix", "xxx", "xxxi", "xxxii",
+  "xxxiii", "xxxiv", "xxxv", "xxxvi", "xxxvii", "xxxviii", "xxxix", "xl",
+  "xli", "xlii", "xliii", "xliv", "xlv", "xlvi", "xlvii", "xlviii", "xlix",
+  "l",
+]);
 
-function normalizeWordToken(token: string): string | null {
+/** Strip leading/trailing apostrophe quoting, keeping contraction endings. */
+function cleanWord(token: string): string | null {
   let word = token.replace(/^'+/, "");
-
   while (word.endsWith("'") && !looksLikeContraction(word)) {
     word = word.slice(0, -1);
   }
+  return word.length > 0 ? word : null;
+}
 
-  if (word.length === 0) {
-    return null;
-  }
-
-  if (/^\d/.test(word)) {
-    return null;
-  }
-
+function isValidWord(word: string): boolean {
   const lower = word.toLowerCase();
+  return lower === "i" || !ROMAN_NUMERAL_BLOCKLIST.has(lower);
+}
 
-  if (lower === "<|endoftext|>") {
-    return null;
+type Segment = { kind: "word" | "punct"; text: string };
+
+/**
+ * Split text into lexical segments, mirroring `Normalizer::segments` in
+ * cli/src/text.rs: punctuation is its own segment; digits and everything else
+ * outside letters/apostrophes separate words. The one deliberate difference:
+ * CJK ideographs are always one segment per character (the Rust side defaults
+ * to jieba word segmentation; word-level CJK on the website goes through the
+ * wasm build via cjkTokenize.ts instead).
+ */
+function segment(text: string): Segment[] {
+  const segments: Segment[] = [];
+  let word = "";
+  const flushWord = () => {
+    if (word.length > 0) {
+      segments.push({ kind: "word", text: word });
+      word = "";
+    }
+  };
+
+  for (const rawChar of text) {
+    const char = normalizeApostrophe(rawChar);
+    if (PUNCTUATION.has(char)) {
+      flushWord();
+      segments.push({ kind: "punct", text: char });
+    } else if (isCJK(char)) {
+      flushWord();
+      segments.push({ kind: "word", text: char });
+    } else if (/[a-zA-Z]/.test(char) || char === "'") {
+      word += char;
+    } else {
+      flushWord();
+    }
   }
+  flushWord();
 
-  if (lower !== "i" && isRomanNumeral(lower)) {
-    return null;
-  }
-
-  return CASE_ALLOWLIST.get(lower) ?? lower;
+  return segments;
 }
 
 const MAX_TEXT_LENGTH = 1_000_000;
 const MAX_TOKEN_COUNT = 100_000;
 
+/**
+ * Tokenise and normalise a corpus the way the Rust CLI does (cli/src/text.rs),
+ * so the widgets agree with the printed booklets. Two passes, mirroring
+ * `NGramCounter::process_lines`: first track surface forms so a word that
+ * always appears with one capitalisation keeps it ("Sally" stays "Sally"),
+ * then emit canonical tokens (allowlist > corpus case map > lowercase).
+ */
 export function parseTokens(text: string): string[] {
   if (text.length > MAX_TEXT_LENGTH) {
     throw new Error(`Text too long: ${text.length} characters (max ${MAX_TEXT_LENGTH})`);
   }
 
-  const tokens: string[] = [];
-  let current = "";
+  const segments = segment(text);
 
-  for (const rawChar of text) {
-    const char = normalizeApostrophe(rawChar);
-
-    if (PUNCTUATION.has(char)) {
-      if (current.length > 0) {
-        const normalized = normalizeWordToken(current);
-        if (normalized) tokens.push(normalized);
-        current = "";
-      }
-      tokens.push(char);
-    } else if (isCJK(char)) {
-      // Character-level tokenisation: each ideograph is its own token, pushed
-      // directly. The English normalisation (lowercasing, roman-numeral and
-      // contraction handling) is all irrelevant to a Han character.
-      if (current.length > 0) {
-        const normalized = normalizeWordToken(current);
-        if (normalized) tokens.push(normalized);
-        current = "";
-      }
-      tokens.push(char);
-    } else if (/[a-zA-Z]/.test(char) || char === "'") {
-      current += char;
-    } else {
-      if (current.length > 0) {
-        const normalized = normalizeWordToken(current);
-        if (normalized) tokens.push(normalized);
-        current = "";
-      }
+  // Pass 1: record surface forms (CanonicalFormTracker in the Rust source).
+  const surfaceForms = new Map<string, Set<string>>();
+  for (const seg of segments) {
+    if (seg.kind !== "word") continue;
+    const word = cleanWord(seg.text);
+    if (!word || !isValidWord(word)) continue;
+    const lower = word.toLowerCase();
+    const forms = surfaceForms.get(lower) ?? new Set();
+    forms.add(word);
+    surfaceForms.set(lower, forms);
+  }
+  const corpusCase = new Map<string, string>();
+  for (const [lower, forms] of surfaceForms) {
+    if (forms.size === 1) {
+      const [form] = forms;
+      if (form !== lower) corpusCase.set(lower, form);
     }
   }
 
-  if (current.length > 0) {
-    const normalized = normalizeWordToken(current);
-    if (normalized) tokens.push(normalized);
+  // Pass 2: emit canonical tokens (allowlist > corpus case map > lowercase).
+  const tokens: string[] = [];
+  for (const seg of segments) {
+    if (seg.kind === "punct") {
+      tokens.push(seg.text);
+      continue;
+    }
+    const word = cleanWord(seg.text);
+    if (!word || !isValidWord(word)) continue;
+    const lower = word.toLowerCase();
+    tokens.push(CASE_ALLOWLIST.get(lower) ?? corpusCase.get(lower) ?? lower);
   }
 
   if (tokens.length > MAX_TOKEN_COUNT) {
