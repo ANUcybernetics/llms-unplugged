@@ -5,8 +5,12 @@ OUT_DIR := out
 PDF_DIR := $(OUT_DIR)/pdf
 JSON_DIR := $(OUT_DIR)/json
 DATA_DIR := ../data
-CUTOUTS_DIR := ../website/public/assets/pdfs/cutouts
-SHEETS_DIR := ../website/public/assets/pdfs/sheets
+# Published sets are staged here, then uploaded to the pdf.llmsunplugged.org
+# bucket with `ops/bucket-sync.py upload out/pdfs` (run from the repo root;
+# see that script's header). They are no longer committed or served from
+# website/public/.
+CUTOUTS_DIR := ../out/pdfs/cutouts
+SHEETS_DIR := ../out/pdfs/sheets
 
 # ===== Target specification =====
 # Format: name-n-books
@@ -35,10 +39,12 @@ WORKSHOP_TARGETS := \
 	$(PDF_DIR)/TinyStories-1k-2-1.pdf \
 	$(PDF_DIR)/dickinson-poems-2-1.pdf
 
-# The booklets published at website/public/assets/pdfs/booklets/. Keep this
-# list in step with what that directory holds: jiangnan is only linked from a
-# news post rather than the tools page, and going missing from here is how it
-# came to be the one booklet nobody could rebuild.
+# The booklets published under booklets/ on pdf.llmsunplugged.org (upload a
+# rebuilt one with `ops/bucket-sync.py upload --key booklets/<name>.pdf
+# cli/out/pdf/<name>-2-1.pdf` from the repo root, then refresh the manifest).
+# Keep this list in step with what the bucket holds: jiangnan is only linked
+# from a news post rather than the tools page, and going missing from here is
+# how it came to be the one booklet nobody could rebuild.
 EXAMPLE_TARGETS := \
 	$(PDF_DIR)/the-cat-in-the-hat-2-1.pdf \
 	$(PDF_DIR)/green-eggs-and-ham-2-1.pdf \

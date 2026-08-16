@@ -25,13 +25,16 @@ $(OUTPUT_DIR)/worksheets/grid.pdf: worksheets/title-logo.svg
 clean:
 	rm -f $(PDF_FILES)
 
-# Worksheets published on the website (linked from the lessons); re-run after
-# changing them and commit the copied PDF
-PUBLISH_DIR = ../website/public/assets/pdfs/worksheets
+# Worksheets published under worksheets/ on pdf.llmsunplugged.org (linked
+# from the lessons). `publish` stages them; upload with
+# `ops/bucket-sync.py upload out/pdfs` from the repo root, then refresh the
+# manifest (see that script's header).
+PUBLISH_DIR = ../out/pdfs/worksheets
 PUBLISHED = $(OUTPUT_DIR)/worksheets/grid.pdf $(OUTPUT_DIR)/worksheets/sycophancy-text.pdf
 
 publish: $(PUBLISHED)
 	mkdir -p $(PUBLISH_DIR)
 	cp $(PUBLISHED) $(PUBLISH_DIR)/
+	@echo "Staged to $(PUBLISH_DIR); upload with: ops/bucket-sync.py upload out/pdfs"
 
 .PHONY: all clean publish

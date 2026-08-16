@@ -1,6 +1,5 @@
 ---
-import fs from "node:fs";
-import path from "node:path";
+import { hasPdf, pdfUrl } from "../lib/pdfs";
 
 /**
  * Shared "Using the slides" section for lesson pages. Every lesson ships a
@@ -19,19 +18,14 @@ interface Props {
 const { decks } = Astro.props;
 
 // Pre-generated presenter guides (slides with interleaved speaker-notes
-// pages) live in public/ next to the deck route. Regenerate with
-// `pnpm exec astromotion-pdf <slug> public/decks/<slug>/presenter-guide.pdf --notes`.
-// Resolved from the project root (not import.meta.url, which points at the
-// bundled chunk in production builds).
+// pages) live in the PDF bucket. Regenerate with
+// `pnpm exec astromotion-pdf <slug> ../out/pdfs/decks/<slug>/presenter-guide.pdf --notes`
+// then upload with `ops/bucket-sync.py upload out/pdfs` and refresh the
+// manifest (see src/lib/pdfs.ts) --- the link only appears once the manifest
+// lists the guide.
 const guideHref = (slug: string) => {
-  const file = path.join(
-    process.cwd(),
-    "public",
-    "decks",
-    slug,
-    "presenter-guide.pdf",
-  );
-  return fs.existsSync(file) ? `/decks/${slug}/presenter-guide.pdf` : null;
+  const key = `decks/${slug}/presenter-guide.pdf`;
+  return hasPdf(key) ? pdfUrl(key) : null;
 };
 
 const anyGuide = decks.some((deck) => guideHref(deck.slug));

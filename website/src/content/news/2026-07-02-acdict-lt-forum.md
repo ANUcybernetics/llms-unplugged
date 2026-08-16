@@ -26,13 +26,13 @@ be a bit fly-on-the-wall---I won't be watching the chat closely while I present.
 But if you're keen, you can genuinely do the whole thing yourself as we go; it's
 all analogue. You'll need:
 
-- a printed [grid template](/assets/pdfs/worksheets/grid.pdf) (or any grid
+- a printed [grid template](https://pdf.llmsunplugged.org/worksheets/grid.pdf) (or any grid
   paper---even hand-drawn is fine)
 - a book to use as training data---a kids' book is ideal (short sentences, small
   vocabulary), but anything with text will do
 - a die, or a dice-rolling app, for the generation step
 - and, for the sycophancy section near the end, the
-  [sycophancy training text](/assets/pdfs/worksheets/sycophancy-text.pdf) to
+  [sycophancy training text](https://pdf.llmsunplugged.org/worksheets/sycophancy-text.pdf) to
   tally into your grid
 
 Work through it at your own pace. Treat it as choose-your-own-adventure: follow

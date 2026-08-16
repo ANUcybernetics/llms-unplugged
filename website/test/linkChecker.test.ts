@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { extractPdfLinks, resolveLinkPath } from "./utils/linkChecker";
+import { extractPdfLinks, isBrokenBucketLink, resolveLinkPath } from "./utils/linkChecker";
 
 describe("linkChecker", () => {
   describe("extractPdfLinks", () => {
@@ -60,6 +60,18 @@ describe("linkChecker", () => {
     it("resolves same-directory relative paths", () => {
       const result = resolveLinkPath("doc.pdf", "/project/dist/docs/index.html", "/project/dist");
       expect(result).toBe("/project/dist/docs/doc.pdf");
+    });
+  });
+
+  describe("isBrokenBucketLink", () => {
+    it("accepts a key the manifest lists", () => {
+      expect(isBrokenBucketLink("https://pdf.llmsunplugged.org/worksheets/grid.pdf")).toBe(false);
+    });
+
+    it("flags a key the manifest does not list", () => {
+      expect(isBrokenBucketLink("https://pdf.llmsunplugged.org/booklets/nonexistent.pdf")).toBe(
+        true,
+      );
     });
   });
 });

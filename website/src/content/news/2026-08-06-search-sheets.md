@@ -26,11 +26,11 @@ the model only exists across the whole room, and if somebody is away, some
 contexts draw no hands at all.
 
 Four sets are ready to print:
-[Green Eggs and Ham](/assets/pdfs/sheets/green-eggs-and-ham.pdf) at 15 sheets,
-[Peter Rabbit](/assets/pdfs/sheets/peter-rabbit.pdf) at 17,
-[The Cat in the Hat](/assets/pdfs/sheets/the-cat-in-the-hat.pdf) at 36
-([A5 sheets two-up on A4](/assets/pdfs/sheets/the-cat-in-the-hat-2up-a4.pdf)), and
-[Australia](/assets/pdfs/sheets/australia.pdf) at 79. Print them single-sided
+[Green Eggs and Ham](https://pdf.llmsunplugged.org/sheets/green-eggs-and-ham.pdf) at 15 sheets,
+[Peter Rabbit](https://pdf.llmsunplugged.org/sheets/peter-rabbit.pdf) at 17,
+[The Cat in the Hat](https://pdf.llmsunplugged.org/sheets/the-cat-in-the-hat.pdf) at 36
+([A5 sheets two-up on A4](https://pdf.llmsunplugged.org/sheets/the-cat-in-the-hat-2up-a4.pdf)), and
+[Australia](https://pdf.llmsunplugged.org/sheets/australia.pdf) at 79. Print them single-sided
 and hand out one each. The first page is the briefing for whoever is running it,
 and every page after that is a different participant's sheet. Every sheet
 carries the same number of token pairs, so the length of the text decides how

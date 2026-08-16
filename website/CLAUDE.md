@@ -118,12 +118,15 @@ absolutely-positioned layer): those set their own margins deliberately.
   whether a slide _reads_ well. Since partials are shared across decks, a single
   bad slide is reported once per deck that includes it --- fix the partial, not
   the deck.
-- presenter guides (slides + interleaved speaker-notes pages) are pre-generated
-  into `public/decks/<slug>/presenter-guide.pdf` and linked by the
-  `UsingTheSlides` component (which checks the file exists at build time).
+- presenter guides (slides + interleaved speaker-notes pages) live in the Tigris
+  bucket behind `pdf.llmsunplugged.org` (as do all published PDFs --- see
+  `../ops/bucket-sync.py`) and are linked by the `UsingTheSlides` component,
+  gated on the committed bucket manifest (`src/data/pdf-manifest.json`).
   Regenerate after editing a deck:
-  `pnpm exec astromotion-pdf <slug> public/decks/<slug>/presenter-guide.pdf --notes`
-  (pass `DECKTAPE_CHROME_ARGS=--no-sandbox` on this machine)
+  `pnpm exec astromotion-pdf <slug> ../out/pdfs/decks/<slug>/presenter-guide.pdf --notes`
+  (pass `DECKTAPE_CHROME_ARGS=--no-sandbox` on this machine), then
+  `../ops/bucket-sync.py upload ../out/pdfs` and
+  `../ops/bucket-sync.py manifest`, and commit the refreshed manifest
 
 - `src/wasm-pkg/` is committed wasm-bindgen output built from `../cli` ---
   rebuild with `mise run wasm-build` (repo root) after Rust changes.

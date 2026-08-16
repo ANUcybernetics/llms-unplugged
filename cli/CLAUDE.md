@@ -88,7 +88,8 @@ cargo build --release
 ./target/release/llms_unplugged sheets -i ../data/the-cat-in-the-hat.txt -n 2 --sheets 24 --sort
 
 # Regenerate the pre-prepared search-sheet PDFs (targets are
-# <corpus>-<participants>; PDFs land in website/public/assets/pdfs/sheets/)
+# <corpus>-<participants>; PDFs stage to ../out/pdfs/sheets/ for upload to
+# the pdf.llmsunplugged.org bucket via ops/bucket-sync.py)
 make sheets
 
 # Rebuild the one-off ANU Visionaries Showcase set (backlog TASK-140). Three

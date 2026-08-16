@@ -39,5 +39,5 @@ educators (requires a .edu email):
 - [28 May session](https://events.humanitix.com/llms-unplugged-a-tech-free-guide-to-understanding-and-teaching-ai-28-may)
 - [11 June session](https://events.humanitix.com/llms-unplugged-a-tech-free-guide-to-understanding-and-teaching-ai-11-june)
 
-Here's [a flyer](/assets/pdfs/llms-unplugged-flyer-may-2026.pdf) if you'd like
+Here's [a flyer](https://pdf.llmsunplugged.org/llms-unplugged-flyer-may-2026.pdf) if you'd like
 to put one up in your office or tea room.

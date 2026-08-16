@@ -31,10 +31,11 @@ typst compile --root .. worksheets/sycophancy-text.typ
 
 PDFs are written to `out/` (gitignored).
 
-The grid worksheet and the sycophancy training-text sheet are published on the
-website (linked from the lessons and the ACDICT news post): `make publish`
-copies them to `../website/public/assets/pdfs/worksheets/`, which is
-tracked---commit the updated PDFs after changing a worksheet.
+The grid worksheet and the sycophancy training-text sheet are published under
+`worksheets/` on pdf.llmsunplugged.org (linked from the lessons and the ACDICT
+news post): `make publish` stages them to `../out/pdfs/worksheets/`; upload with
+`ops/bucket-sync.py upload out/pdfs` from the repo root, then refresh and commit
+the manifest (see that script's header).
 
 ## Design constraints
 
