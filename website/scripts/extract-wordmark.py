@@ -81,7 +81,9 @@ def cap_height(font_path: Path) -> int:
 
 for font in (TITLE_FONT, TOKEN_FONT):
     if not font.exists():
-        raise SystemExit(f"missing source font: {font}\nInstall it, or see scripts/subset-booklet-fonts.py")
+        raise SystemExit(
+            f"missing source font: {font}\nInstall it, or see scripts/subset-booklet-fonts.py"
+        )
 
 title_path, title_advance = bake(TITLE_FONT, TITLE)
 tokens = [(label, *bake(TOKEN_FONT, label)) for label in TOKEN_LABELS]
@@ -89,8 +91,7 @@ tokens = [(label, *bake(TOKEN_FONT, label)) for label in TOKEN_LABELS]
 token_cell = tokens[0][2] / len(tokens[0][0])
 
 token_entries = "\n".join(
-    f"  {{ label: {json.dumps(label)}, advance: {advance:.1f}, "
-    f'path: "{path}" }},'
+    f'  {{ label: {json.dumps(label)}, advance: {advance:.1f}, path: "{path}" }},'
     for label, path, advance in tokens
 )
 
