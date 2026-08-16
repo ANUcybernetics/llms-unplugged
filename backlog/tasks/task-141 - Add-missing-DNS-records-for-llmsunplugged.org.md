@@ -4,6 +4,7 @@ title: Add missing DNS records for llmsunplugged.org
 status: To Do
 assignee: []
 created_date: '2026-08-16 07:31'
+updated_date: '2026-08-16 08:01'
 labels:
   - ops
 dependencies: []
@@ -63,7 +64,7 @@ The www CNAME (→ anucybernetics.github.io) is correct and stays as-is.
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 dig +short CNAME pdf.llmsunplugged.org returns llms-unplugged-pdfs.t3.tigrisbucket.io and https://pdf.llmsunplugged.org/worksheets/grid.pdf serves a PDF
+- [x] #1 dig +short CNAME pdf.llmsunplugged.org returns llms-unplugged-pdfs.t3.tigrisbucket.io and https://pdf.llmsunplugged.org/worksheets/grid.pdf serves a PDF
 - [ ] #2 https://llmsunplugged.org loads (redirecting to https://www.llmsunplugged.org) with a valid certificate
 - [ ] #3 dig +short TXT llmsunplugged.org includes 'v=spf1 -all'
 - [ ] #4 dig +short TXT _dmarc.llmsunplugged.org returns the DMARC reject policy
