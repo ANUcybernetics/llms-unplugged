@@ -21,14 +21,13 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # rust + typst come from the repo-root mise.toml, so CI compiles with
-      # the same pinned toolchain as local dev rather than a floating stable.
+      # rust + typst come from the repo-root mise.toml (which also declares
+      # the rustfmt/clippy components and the wasm target), so CI compiles
+      # with the same pinned toolchain as local dev rather than a floating
+      # stable.
       - uses: jdx/mise-action@v4
         with:
           install_args: rust typst
-
-      - name: Install wasm target
-        run: rustup target add wasm32-unknown-unknown
 
       # The two end-to-end PDF tests skip themselves when typst isn't on PATH,
       # so a soft install failure would leave the whole PDF pipeline untested

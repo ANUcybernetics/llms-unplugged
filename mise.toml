@@ -1,7 +1,9 @@
 [tools]
 node = "24"
 pnpm = "latest"
-rust = "1.97.0"
+# components/targets declared so a fresh install (CI's mise-action) gets
+# everything cli.yml needs; a bare version string installs neither
+rust = { version = "1.97.0", components = "rustfmt,clippy", targets = "wasm32-unknown-unknown" }
 typst = "0.15.0"
 typstyle = "0.14.4"
 jq = "1.8.1"
