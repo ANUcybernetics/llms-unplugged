@@ -5,6 +5,11 @@ on:
     branches: [main]
     paths:
       - "website/**"
+      # The website embeds cli/ artefacts (typst templates via the prebuild
+      # copy step, the committed wasm bundle, the shared tokenisation
+      # fixture), and the test suite asserts they agree with cli/src --- so a
+      # cli change must rebuild and recheck the website too.
+      - "cli/**"
       - ".github/workflows/deploy-website.yml"
       - "mise.toml"
   workflow_dispatch:

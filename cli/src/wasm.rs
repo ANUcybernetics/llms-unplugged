@@ -4,7 +4,7 @@
 //! `format_entries`), so the website and the printed artefacts can never
 //! drift apart.
 
-use crate::text::RawToken;
+use crate::text::{CanonicalFormTracker, RawToken};
 use crate::{
     CjkMode, CutoutsMetadata, Metadata, NGramCounter, Normalizer, NormalizerConfig, format_entries,
     model_type_str,
@@ -43,6 +43,15 @@ pub fn tokenize(content: &str, word_mode: bool) -> Result<String, JsValue> {
     } else {
         CjkMode::Chars
     });
+    // The same two passes as `NGramCounter::process_lines`: track surface
+    // forms so canonical casing matches the booklet pipeline, then normalise.
+    let mut tracker = CanonicalFormTracker::new();
+    for line in content.lines() {
+        for word in normalizer.extract_raw_words(line) {
+            tracker.record(&word);
+        }
+    }
+    normalizer.set_corpus_case_map(tracker.build_case_map());
     let tokens: Vec<String> = content
         .lines()
         .flat_map(|line| normalizer.normalize_line(line))

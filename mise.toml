@@ -15,6 +15,30 @@ check = { run = "cargo check", dir = "cli" }
 fmt = { run = "cargo fmt", dir = "cli" }
 clippy = { run = "cargo clippy", dir = "cli" }
 
+[tasks.wasm-build]
+description = "Rebuild the committed wasm bundle (website/src/wasm-pkg) from cli/src. Run after any Rust change that affects the wasm feature; website/test/wasmPkg.test.ts asserts the committed bundle still matches the Rust behaviour."
+run = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+# wasm-pack is version-pinned because it bundles wasm-opt, whose version
+# changes the emitted bytes --- a floating version would churn the committed
+# .wasm on every rebuild.
+(cd cli && pnpm dlx wasm-pack@0.15.0 build --target web \
+  --out-dir ../website/src/wasm-pkg --no-default-features --features wasm)
+
+# wasm-pack clobbers the out-dir .gitignore with "*"; restore the documented one.
+cat > website/src/wasm-pkg/.gitignore << 'GITIGNORE'
+# wasm-bindgen output - rebuild with:
+#   mise run wasm-build
+# These files are checked in so CI can bundle them in the website build.
+# website/test/wasmPkg.test.ts asserts the committed bundle matches the
+# current Rust behaviour via the shared tokenisation fixture.
+GITIGNORE
+
+echo "Rebuilt website/src/wasm-pkg"
+'''
+
 [tasks.cutouts-print]
 description = "Build a printable duplex cutouts PDF (rotates even pages 180° so long-edge binding works). Usage: mise run cutouts-print <input> [--pages N] [<cli-args>...]"
 run = '''

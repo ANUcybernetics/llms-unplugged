@@ -105,7 +105,8 @@ absolutely-positioned layer): those set their own margins deliberately.
 - `pnpm run test` - run tests
 - `pnpm run pdf <slug> [output.pdf]` - export a deck to PDF via astromotion's
   bundled `astromotion-pdf` (builds, previews, captures with decktape,
-  compresses with Ghostscript); e.g. `pnpm run pdf my-first-language-model-60min`
+  compresses with Ghostscript); e.g.
+  `pnpm run pdf my-first-language-model-60min`
 - `pnpm run decks:check` - check every slide of every deck for content that
   overflows the fixed 1280x720 canvas. Part of `pnpm run check`, and worth
   running on its own after any deck edit or theme bump: `pnpm run build` says
@@ -123,6 +124,13 @@ absolutely-positioned layer): those set their own margins deliberately.
   Regenerate after editing a deck:
   `pnpm exec astromotion-pdf <slug> public/decks/<slug>/presenter-guide.pdf --notes`
   (pass `DECKTAPE_CHROME_ARGS=--no-sandbox` on this machine)
+
+- `src/wasm-pkg/` is committed wasm-bindgen output built from `../cli` ---
+  rebuild with `mise run wasm-build` (repo root) after Rust changes.
+  `test/wasmPkg.test.ts` asserts the committed bundle matches the current Rust
+  behaviour via the shared tokenisation fixture
+  (`../cli/tests/fixtures/tokenization_cases.json`), which also pins
+  `src/lib/tokens.ts` (the pure-TS port of the CLI tokeniser).
 
 Whenever the linter/checker reports warnings or errors, fix them.
 

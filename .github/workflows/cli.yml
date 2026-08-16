@@ -5,11 +5,13 @@ on:
     branches: [main]
     paths:
       - 'cli/**'
+      - 'mise.toml'
       - '.github/workflows/cli.yml'
   pull_request:
     branches: [main]
     paths:
       - 'cli/**'
+      - 'mise.toml'
   workflow_dispatch:
 
 jobs:
@@ -19,17 +21,14 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
+      # rust + typst come from the repo-root mise.toml, so CI compiles with
+      # the same pinned toolchain as local dev rather than a floating stable.
+      - uses: jdx/mise-action@v4
         with:
-          components: rustfmt, clippy
-          targets: wasm32-unknown-unknown
+          install_args: rust typst
 
-      # Keep in sync with the typst pin in the repo-root mise.toml
-      - name: Install Typst
-        uses: typst-community/setup-typst@v5
-        with:
-          typst-version: '0.15.0'
+      - name: Install wasm target
+        run: rustup target add wasm32-unknown-unknown
 
       # The two end-to-end PDF tests skip themselves when typst isn't on PATH,
       # so a soft install failure would leave the whole PDF pipeline untested

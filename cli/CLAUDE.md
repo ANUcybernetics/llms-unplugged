@@ -106,7 +106,21 @@ make workshop
 
 # Run tests
 cargo test
+
+# Rebuild the committed wasm bundle the website ships
+# (website/src/wasm-pkg). Run from the repo root after any Rust change that
+# affects the `wasm` feature --- website/test/wasmPkg.test.ts asserts the
+# committed bundle still matches the Rust behaviour, so a stale bundle fails
+# the website suite.
+mise run wasm-build
 ```
+
+The tokeniser's behaviour is pinned by a shared fixture
+(`tests/fixtures/tokenization_cases.json`), asserted by both `cargo test` and
+the website's vitest suite (the TS port in `website/src/lib/tokens.ts` must
+agree). After a deliberate tokeniser change:
+`cargo test regenerate_tokenization_fixture -- --ignored`, then update the TS
+port and rebuild the wasm.
 
 ## CLI options
 
