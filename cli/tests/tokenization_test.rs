@@ -371,9 +371,8 @@ fn computed_fixture_cases() -> Vec<FixtureCase> {
 
 #[test]
 fn tokenization_fixture_is_current() {
-    let file = std::fs::read_to_string(FIXTURE_PATH).expect(
-        "fixture missing; run: cargo test regenerate_tokenization_fixture -- --ignored",
-    );
+    let file = std::fs::read_to_string(FIXTURE_PATH)
+        .expect("fixture missing; run: cargo test regenerate_tokenization_fixture -- --ignored");
     let recorded: Vec<FixtureCase> =
         serde_json::from_str(&file).expect("fixture is not valid JSON");
     let computed = computed_fixture_cases();
