@@ -1,4 +1,4 @@
-import { bookTemplate, bookletCommon, cutoutCommon, cutoutsTemplate } from "../templates";
+import { bookletCommon, bookTemplate, cutoutCommon, cutoutsTemplate } from "../templates";
 // Fonts the templates reference, all bundled locally. The subset faces come from
 // the system fonts via scripts/subset-booklet-fonts.py; the full faces are the
 // upstream typst-assets v0.13.1 files, vendored verbatim so rendering matches

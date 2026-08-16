@@ -1,4 +1,8 @@
-#!/usr/bin/env -S uv run --with fonttools --with uharfbuzz python
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12"
+# dependencies = ["fonttools", "uharfbuzz"]
+# ///
 """Bake the brand marks' lettering to SVG path data.
 
 Two faces:

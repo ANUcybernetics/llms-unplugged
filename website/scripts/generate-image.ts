@@ -1,6 +1,10 @@
 #!/usr/bin/env npx tsx
 // Generate a single hero-style image using nano_banana and reference images.
 //
+// `nano_banana` is an external CLI, not part of this repo --- it must already
+// be on PATH (it drives the Nano Banana image-generation model). Without it
+// this script fails at the exec call below.
+//
 // Examples:
 //   npx tsx scripts/generate-image.ts "dice-based text generation in a classroom" src/assets/images/hero-intro.avif
 //   npx tsx scripts/generate-image.ts cutouts-training src/assets/images/hero-cutouts-training
@@ -15,11 +19,11 @@ const execAsync = promisify(exec);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const EXAMPLE_IMAGES = [
-  join(__dirname, "reference-intro.jpg"),
-  join(__dirname, "reference-sampling.jpg"),
-  join(__dirname, "reference-pretrained-generation.jpg"),
-  join(__dirname, "reference-cutouts-training.jpg"),
-  join(__dirname, "reference-grid-trigram.jpg"),
+  join(__dirname, "assets", "references", "reference-intro.jpg"),
+  join(__dirname, "assets", "references", "reference-sampling.jpg"),
+  join(__dirname, "assets", "references", "reference-pretrained-generation.jpg"),
+  join(__dirname, "assets", "references", "reference-cutouts-training.jpg"),
+  join(__dirname, "assets", "references", "reference-grid-trigram.jpg"),
 ];
 
 const BASE_PROMPT = `Task: create an illustrative image---with NO TEXT---for a teaching resource called LLMs Unplugged. Use these images for color & line style reference only. Do not include any pictures of computers.`;

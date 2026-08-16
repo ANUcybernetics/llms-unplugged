@@ -1,4 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12"
+# dependencies = ["fonttools[woff]"]
+# ///
 """Subset the fonts the in-browser Typst export bundles.
 
 The browser Typst compiler (typstCompiler.ts) renders booklets and cutouts, and
@@ -26,9 +30,10 @@ common modern simplified hanzi plus full-width punctuation) and land around 2 MB
 each. The Latin faces are subset to the Latin + punctuation ranges a title,
 author, or the wordmark could use, and are a few tens of KB each.
 
-Run with uv (no venv needed):
+Run directly (dependencies come from the inline script metadata, no venv
+needed):
 
-    uv run --with "fonttools[woff]" scripts/subset-booklet-fonts.py
+    scripts/subset-booklet-fonts.py
 
 The output OTF files are committed under src/assets/fonts/; regenerate them only
 when the source fonts or coverage change.

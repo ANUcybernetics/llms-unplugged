@@ -18,7 +18,15 @@ interface FixtureCase {
   tokens: string[];
 }
 
-const fixturePath = join(__dirname, "..", "..", "cli", "tests", "fixtures", "tokenization_cases.json");
+const fixturePath = join(
+  __dirname,
+  "..",
+  "..",
+  "cli",
+  "tests",
+  "fixtures",
+  "tokenization_cases.json",
+);
 const cases: FixtureCase[] = JSON.parse(readFileSync(fixturePath, "utf-8"));
 
 beforeAll(async () => {
