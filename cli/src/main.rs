@@ -3,11 +3,11 @@ use llms_unplugged::{
     CjkMode, CutoutsMetadata, Metadata, NGramCounter, ProcessingStats, RawToken, SampleError,
     WordFollowEntry, append_tool_tokens, deal_into_sheets, process_file_for_cutouts,
     render_bigram_tsv, repeat_cutout_tokens, sample, save_to_json, shuffle_cutout_tokens,
-    split_entries_into_books,
+    split_entries_into_books, summarize_contexts,
 };
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
-use std::collections::{BTreeSet, HashMap};
+use std::collections::{BTreeMap, HashMap};
 use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
@@ -609,6 +609,10 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
         // it there, but a corpus wordy enough to push it to two must not be
         // read as a spilled sheet --- so the allowance stays at `sheets + 2`.
         let Some(pages) = pdf_page_count(&pdf_path) else {
+            eprintln!(
+                "Warning: pdfinfo (poppler) not available --- skipping the check that no sheet \
+                 spilled onto a second page."
+            );
             break;
         };
         let spilled = pages.saturating_sub(num_sheets + 2);
@@ -693,46 +697,22 @@ fn combine_cutouts_documents(
         .flat_map(|(tokens, _)| tokens)
         .collect();
     let kept_tokens = tokens.iter().filter(|token| token.keep).count();
-    let unique_tokens = tokens
-        .iter()
-        .filter(|token| token.keep)
-        .map(|token| token.text.as_str())
-        .collect::<BTreeSet<_>>()
-        .len();
 
-    let mut counts: HashMap<&[String], HashMap<&str, usize>> = HashMap::new();
+    // Rebuild the combined context → next-word count table and summarize it
+    // with the same code the single-document path uses, so the two stat
+    // definitions can never drift.
+    let mut counts: BTreeMap<Vec<String>, HashMap<String, usize>> = BTreeMap::new();
     for token in tokens
         .iter()
         .filter(|token| token.keep && !token.previous_words.is_empty())
     {
         *counts
-            .entry(token.previous_words.as_slice())
+            .entry(token.previous_words.clone())
             .or_default()
-            .entry(token.text.as_str())
+            .entry(token.text.clone())
             .or_default() += 1;
     }
-
-    let occurrences: usize = counts.values().flat_map(HashMap::values).sum();
-    let entropy = if occurrences == 0 {
-        0.0
-    } else {
-        counts
-            .values()
-            .map(|next_words| {
-                let context_total: usize = next_words.values().sum();
-                let context_entropy = next_words.values().fold(0.0, |sum, count| {
-                    let probability = *count as f64 / context_total as f64;
-                    sum - probability * probability.log2()
-                });
-                context_total as f64 / occurrences as f64 * context_entropy
-            })
-            .sum()
-    };
-    let branching_factor = if counts.is_empty() {
-        0.0
-    } else {
-        counts.values().map(HashMap::len).sum::<usize>() as f64 / counts.len() as f64
-    };
+    let summary = summarize_contexts(&counts);
 
     (
         tokens,
@@ -742,10 +722,10 @@ fn combine_cutouts_documents(
             documents: document_count,
             total_tokens,
             kept_tokens,
-            unique_tokens,
-            entropy,
-            perplexity: entropy.exp2(),
-            branching_factor,
+            unique_tokens: summary.unique_tokens,
+            entropy: summary.entropy,
+            perplexity: summary.perplexity,
+            branching_factor: summary.branching_factor,
         },
     )
 }
@@ -767,22 +747,16 @@ fn abs_path_string(path: &Path) -> String {
         .to_string()
 }
 
-/// Compile one of the crate's bundled templates to `pdf_path`, passing
-/// `inputs` through as `--input key=value` pairs.
-fn compile_template(
-    template: &str,
+/// Run `typst compile --root /` on `template`, passing `inputs` through as
+/// `--input key=value` pairs and writing `pdf_path`. The single place the
+/// crate shells out to typst, shared by every subcommand so the invocation
+/// and its error handling cannot drift.
+fn run_typst_compile(
+    template: &Path,
     inputs: &[(String, String)],
     pdf_path: &Path,
 ) -> Result<(), CliError> {
     let typst_bin = typst_command_path();
-    let template_path = Path::new(env!("CARGO_MANIFEST_DIR")).join(template);
-
-    if !template_path.exists() {
-        return Err(CliError::Typst(format!(
-            "Typst template not found at {}",
-            template_path.display()
-        )));
-    }
 
     let mut typst_cmd = Command::new(&typst_bin);
     typst_cmd.arg("compile");
@@ -792,7 +766,7 @@ fn compile_template(
         typst_cmd.arg("--input");
         typst_cmd.arg(format!("{key}={value}"));
     }
-    typst_cmd.arg(&template_path);
+    typst_cmd.arg(template);
     typst_cmd.arg(pdf_path);
 
     let output = typst_cmd.output().map_err(|e| {
@@ -808,8 +782,33 @@ fn compile_template(
 
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
-        return Err(CliError::Typst(format!("Typst compile failed: {}", stderr)));
+        return Err(CliError::Typst(format!(
+            "Typst compile failed for {}: {}",
+            pdf_path.display(),
+            stderr
+        )));
     }
+
+    Ok(())
+}
+
+/// Compile one of the crate's bundled templates to `pdf_path`, passing
+/// `inputs` through as `--input key=value` pairs, then repack the result.
+fn compile_template(
+    template: &str,
+    inputs: &[(String, String)],
+    pdf_path: &Path,
+) -> Result<(), CliError> {
+    let template_path = Path::new(env!("CARGO_MANIFEST_DIR")).join(template);
+
+    if !template_path.exists() {
+        return Err(CliError::Typst(format!(
+            "Typst template not found at {}",
+            template_path.display()
+        )));
+    }
+
+    run_typst_compile(&template_path, inputs, pdf_path)?;
 
     let before = fs::metadata(pdf_path).map(|m| m.len()).unwrap_or(0);
     repack_pdf(pdf_path);
@@ -1183,7 +1182,6 @@ fn run_typst_for_books(
 ) -> Result<(), CliError> {
     println!("\nRunning typst compile...");
 
-    let typst_bin = typst_command_path();
     // Compile with --root / and absolute paths (the same approach as the
     // cutouts command) so the template, JSON and output dir can live anywhere
     // relative to the caller's cwd.
@@ -1202,57 +1200,23 @@ fn run_typst_for_books(
             fs::create_dir_all(parent).map_err(CliError::Processing)?;
         }
 
-        let mut typst_cmd = Command::new(&typst_bin);
-        typst_cmd.arg("compile");
-        typst_cmd.arg("--root");
-        typst_cmd.arg("/");
-        typst_cmd.arg("--input");
-        typst_cmd.arg(format!("paper_size={}", opts.paper_size));
-        typst_cmd.arg("--input");
-        typst_cmd.arg(format!("columns={}", opts.columns));
-        typst_cmd.arg("--input");
-        typst_cmd.arg(format!("json_path={}", json_path.display()));
-
+        let mut inputs = vec![
+            ("paper_size".to_string(), opts.paper_size.clone()),
+            ("columns".to_string(), opts.columns.to_string()),
+            ("json_path".to_string(), json_path.display().to_string()),
+        ];
         if let Some(subtitle) = opts
             .subtitle_override
             .clone()
             .or_else(|| book.subtitle.clone())
         {
-            typst_cmd.arg("--input");
-            typst_cmd.arg(format!("subtitle={}", subtitle));
+            inputs.push(("subtitle".to_string(), subtitle));
         }
-
         if opts.book_binding {
-            typst_cmd.arg("--input");
-            typst_cmd.arg("book_binding=true");
+            inputs.push(("book_binding".to_string(), "true".to_string()));
         }
 
-        typst_cmd.arg(&template);
-        typst_cmd.arg(&pdf_path);
-
-        let output = typst_cmd.output().map_err(|e| {
-            if e.kind() == io::ErrorKind::NotFound {
-                CliError::Typst(format!(
-                    "Typst binary not found at '{}'. Install typst or set TYPST_BIN to the binary path.",
-                    typst_bin.display()
-                ))
-            } else {
-                CliError::Typst(format!(
-                    "Failed to run typst for {}: {}",
-                    json_path.display(),
-                    e
-                ))
-            }
-        })?;
-
-        if !output.status.success() {
-            let stderr = String::from_utf8_lossy(&output.stderr);
-            return Err(CliError::Typst(format!(
-                "Typst compile failed for {}: {}",
-                pdf_path.display(),
-                stderr
-            )));
-        }
+        run_typst_compile(&template, &inputs, &pdf_path)?;
 
         log_pdf_pages(&pdf_path);
         let range_label = if book.range.is_empty() {

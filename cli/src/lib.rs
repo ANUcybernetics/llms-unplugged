@@ -295,47 +295,11 @@ impl NGramCounter {
         // Set the count of unique previous-words contexts
         self.stats.unique_ngrams = self.previous_words_map.len();
 
-        // Count distinct word types (vocabulary size): every word that appears
-        // as a context word or as a next-word continuation.
-        self.stats.unique_tokens = {
-            let mut vocab: BTreeSet<&str> = BTreeSet::new();
-            for (context, next_words) in &self.previous_words_map {
-                for word in context {
-                    vocab.insert(word.as_str());
-                }
-                for next_word in next_words.keys() {
-                    vocab.insert(next_word.as_str());
-                }
-            }
-            vocab.len()
-        };
-
-        // Compute weighted average conditional entropy
-        let total_occurrences = self.stats.total_ngram_occurrences as f64;
-        if total_occurrences > 0.0 {
-            let mut weighted_entropy = 0.0;
-            for next_word_counts in self.previous_words_map.values() {
-                let context_total: usize = next_word_counts.values().sum();
-                let context_total_f = context_total as f64;
-                let mut context_entropy = 0.0;
-                for &count in next_word_counts.values() {
-                    let p = count as f64 / context_total_f;
-                    context_entropy -= p * p.log2();
-                }
-                weighted_entropy += (context_total_f / total_occurrences) * context_entropy;
-            }
-            self.stats.entropy = weighted_entropy;
-            self.stats.perplexity = weighted_entropy.exp2();
-        }
-
-        // Compute unweighted average branching factor: mean number of distinct
-        // next-word continuations per previous-words context.
-        if !self.previous_words_map.is_empty() {
-            let distinct_continuations: usize =
-                self.previous_words_map.values().map(|m| m.len()).sum();
-            self.stats.branching_factor =
-                distinct_continuations as f64 / self.previous_words_map.len() as f64;
-        }
+        let summary = summarize_contexts(&self.previous_words_map);
+        self.stats.unique_tokens = summary.unique_tokens;
+        self.stats.entropy = summary.entropy;
+        self.stats.perplexity = summary.perplexity;
+        self.stats.branching_factor = summary.branching_factor;
     }
 
     /// Get the results as a sorted list of WordFollowEntry
@@ -862,6 +826,66 @@ fn previous_words_label(entry: &WordFollowEntry) -> String {
         .unwrap_or_else(|| "?".to_string())
 }
 
+/// Summary statistics derived from a context → next-word count table.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct ModelSummary {
+    /// Number of distinct word types: every word that appears as a context
+    /// word or as a next-word continuation (the model's vocabulary size).
+    pub unique_tokens: usize,
+    /// Weighted average conditional entropy (bits per token)
+    pub entropy: f64,
+    /// Perplexity (2^entropy)
+    pub perplexity: f64,
+    /// Mean number of distinct next-word continuations per context
+    pub branching_factor: f64,
+}
+
+/// Compute the vocabulary-size and entropy-family statistics of a model.
+/// Shared by [`NGramCounter`]'s single-document accounting and the CLI's
+/// multi-document sheets path so the two definitions can never drift.
+pub fn summarize_contexts(map: &BTreeMap<Vec<String>, HashMap<String, usize>>) -> ModelSummary {
+    let mut vocab: BTreeSet<&str> = BTreeSet::new();
+    for (context, next_words) in map {
+        for word in context {
+            vocab.insert(word.as_str());
+        }
+        for next_word in next_words.keys() {
+            vocab.insert(next_word.as_str());
+        }
+    }
+
+    let total_occurrences: usize = map.values().flat_map(HashMap::values).sum();
+
+    // Weighted average conditional entropy: Σ (context_total / total) * H(context)
+    let mut entropy = 0.0;
+    if total_occurrences > 0 {
+        for next_word_counts in map.values() {
+            let context_total: usize = next_word_counts.values().sum();
+            let context_total_f = context_total as f64;
+            let mut context_entropy = 0.0;
+            for &count in next_word_counts.values() {
+                let p = count as f64 / context_total_f;
+                context_entropy -= p * p.log2();
+            }
+            entropy += (context_total_f / total_occurrences as f64) * context_entropy;
+        }
+    }
+
+    // Unweighted mean of distinct continuations per context.
+    let branching_factor = if map.is_empty() {
+        0.0
+    } else {
+        map.values().map(HashMap::len).sum::<usize>() as f64 / map.len() as f64
+    };
+
+    ModelSummary {
+        unique_tokens: vocab.len(),
+        entropy,
+        perplexity: entropy.exp2(),
+        branching_factor,
+    }
+}
+
 /// Format model entries as the booklet JSON "data" rows:
 /// `["joined previous words", total, ["next word", cumulative], ...]`.
 /// Without `raw`, cumulative counts are rescaled so each entry's total is
@@ -892,9 +916,16 @@ pub fn format_entries(entries: &[WordFollowEntry], raw: bool) -> Vec<Vec<serde_j
                 row.push(serde_json::json!(total));
                 row.extend(cumulative.iter().map(|(w, c)| serde_json::json!([w, c])));
             } else {
-                // 10^k-1 scaling for d10 dice (e.g. total 75 -> k=2 -> 0-99)
+                // 10^k-1 scaling for d10 dice (e.g. total 75 -> k=2 -> 0-99).
+                // u64 with a checked pow: a u32 overflows at a 10-digit total
+                // (a billion-token context is far-fetched but not impossible
+                // with a large corpus), and wrapping would silently corrupt
+                // every dice range in the booklet.
                 let k_digits = total.to_string().len() as u32;
-                let max_val = 10_u32.pow(k_digits).saturating_sub(1);
+                let max_val = 10_u64
+                    .checked_pow(k_digits)
+                    .map(|v| v - 1)
+                    .unwrap_or(u64::MAX);
                 let factor = max_val as f64 / total as f64;
 
                 row.push(serde_json::json!(max_val));
