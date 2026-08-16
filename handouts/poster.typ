@@ -2,106 +2,37 @@
 // Licensed under CC BY-NC-SA 4.0
 
 // Import base template for colours and styling
-#import "@local/anu-typst-template:0.2.0": *
+#import "@local/anu-typst-template:0.3.0": *
 
-// Utility functions forked from cli/book.typ for consistent typography.
-// book.typ stays deliberately self-contained (it's copied verbatim into the
-// website's in-browser compiler), so changes to these helpers must be synced
-// by hand. Note the stroke colour differs (white here, black in book.typ) and
-// format-dice-indicator has poster-specific semantics for the static example.
+// Shared booklet typography from cli/booklet-common.typ (compiled with
+// --root .. so the cross-directory import resolves). White stroke for the
+// poster's dark theme; format-dice-indicator keeps poster-specific semantics
+// for the static example.
+#import "../cli/booklet-common.typ" as bc
 
-// Function to create a punctuation box with consistent styling
-#let punct-box(content, baseline: -0.2em) = box(
-  rect(
-    fill: none,
-    stroke: 0.25pt + white,
-    radius: 1pt,
-    inset: (x: 0.1em, y: 0pt),
-    outset: (y: 0pt),
-    text(content, weight: "bold", baseline: baseline),
-  ),
+#let display-with-punctuation(
+  text-content,
+  size: 1.5em,
+  weight: "bold",
+) = bc.display-with-punctuation(
+  text-content,
+  size: size,
+  weight: weight,
+  stroke-color: white,
 )
-
-// Function to display text with punctuation in boxes
-#let display-with-punctuation(text-content, size: 1.5em, weight: "bold") = {
-  let parts = text-content.split(" ")
-  for (i, part) in parts.enumerate() {
-    if part == "." or part == "," {
-      // Display punctuation in a rounded box
-      let styled-punct = text(
-        part,
-        size: size,
-        weight: weight,
-        baseline: -0.2em,
-      )
-      box(
-        rect(
-          fill: none,
-          stroke: 0.25pt + white,
-          radius: 1pt,
-          inset: (x: 0.1em, y: 0pt),
-          outset: (y: 0pt),
-          styled-punct,
-        ),
-      )
-    } else if part == "—" {
-      // Em dash separator
-      text(" — ", size: size, weight: weight)
-    } else {
-      // Regular words
-      text(part, size: size, weight: weight)
-    }
-    // Add space between parts
-    if i < parts.len() - 1 and parts.at(i + 1) != "—" and part != "—" {
-      h(0.3em)
-    }
-  }
-}
 
 // Function to format the dice indicator (n diamonds)
 #let format-dice-indicator(total_count) = {
   // Always show diamonds indicating number of dice needed
   // For 0-99 normalization, we need to look at (total_count - 1)
-  let num-dice = str(total_count - 1).len()
-  // Display num-dice Unicode diamond symbols
-  text(
-    baseline: -0.1em,
-    size: 0.9em,
-    fill: white,
-    "♦" * num-dice,
-  )
-}
-
-// Function to format a single next-word option with its count
-#let format-next-word(word, count, show-count: true) = {
-  if word == "." or word == "," {
-    // Punctuation in a rounded box with optional count
-    if show-count {
-      box([#text(weight: "semibold")[#count]|#punct-box(word)])
-    } else {
-      punct-box(word)
-    }
-  } else {
-    // Regular word with optional count
-    if show-count {
-      box([#text(weight: "semibold")[#count]|#text[#word]])
-    } else {
-      box([#word])
-    }
-  }
+  bc.dice-diamonds(str(total_count - 1).len(), fill: white)
 }
 
 // Function to format all next-word options for a previous-words context
-#let format-next-words(next_words) = {
-  for next_word in next_words {
-    let word = next_word.at(0)
-    let count = next_word.at(1)
-    let show-count = next_words.len() > 1
-
-    format-next-word(word, count, show-count: show-count)
-    h(0.5em)
-  }
-}
+#let format-next-words(next_words) = bc.format-next-words(
+  next_words,
+  stroke-color: white,
+)
 
 // Function to create dice indicators for instructions/examples
 #let instruction-dice-indicator(num-dice) = {

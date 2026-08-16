@@ -1,4 +1,4 @@
-import { bookTemplate, cutoutCommon, cutoutsTemplate } from "../templates";
+import { bookTemplate, bookletCommon, cutoutCommon, cutoutsTemplate } from "../templates";
 // Fonts the templates reference, all bundled locally. The subset faces come from
 // the system fonts via scripts/subset-booklet-fonts.py; the full faces are the
 // upstream typst-assets v0.13.1 files, vendored verbatim so rendering matches
@@ -136,8 +136,9 @@ export async function initCompiler(
     onUpdate((s) => appendLog(s, "Adding templates..."));
     await typst.addSource("/book.typ", bookTemplate);
     await typst.addSource("/cutouts.typ", cutoutsTemplate);
-    // cutouts.typ imports this by relative path, which resolves to the VFS
-    // root because cutouts.typ itself sits there.
+    // book.typ and cutouts.typ import these by relative path, which resolves
+    // to the VFS root because the importers themselves sit there.
+    await typst.addSource("/booklet-common.typ", bookletCommon);
     await typst.addSource("/cutout-common.typ", cutoutCommon);
 
     onUpdate((s) => appendLog(s, "Loading text processing WASM module..."));

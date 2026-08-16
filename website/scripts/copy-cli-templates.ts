@@ -7,11 +7,18 @@ const cliDir = resolve(__dirname, "../../cli");
 const destDir = resolve(__dirname, "../src/templates");
 
 // The .typ templates plus every file they reference by relative path, so the
-// browser compiler resolves the same files the CLI does. tokenized-cutouts.typ
+// browser compiler resolves the same files the CLI does. book.typ imports
+// booklet-common.typ (shared booklet typography); tokenized-cutouts.typ
 // imports cutout-common.typ (the shared palette, token renderers and brand
-// lockup), which in turn loads lockup-light.svg; without either, the cutouts
-// workflow fails to compile.
-const templates = ["book.typ", "tokenized-cutouts.typ", "cutout-common.typ", "lockup-light.svg"];
+// lockup), which in turn loads lockup-light.svg; without any of these, the
+// corresponding workflow fails to compile.
+const templates = [
+  "book.typ",
+  "booklet-common.typ",
+  "tokenized-cutouts.typ",
+  "cutout-common.typ",
+  "lockup-light.svg",
+];
 
 mkdirSync(destDir, { recursive: true });
 

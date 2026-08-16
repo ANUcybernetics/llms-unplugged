@@ -1,6 +1,6 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
-#import "@local/anu-typst-template:0.2.0": anu
+#import "@local/anu-typst-template:0.3.0": anu
 
 #let blank-lines(n, spacing: 1.2em) = {
   for i in range(n) {

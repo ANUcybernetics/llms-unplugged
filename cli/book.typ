@@ -54,57 +54,34 @@
 
 
 
+// Shared booklet typography (punct tiles, entry formatting). Copied into the
+// website's in-browser compiler alongside this file --- see
+// scripts/copy-cli-templates.ts.
+#import "booklet-common.typ" as bc
+
 // Punctuation marks kept as standalone tokens, sourced from the model metadata
 // so the boxed marks always match what the CLI treated as punctuation. Falls
 // back to the default set for models generated before the field existed.
 #let punct-chars = doc_metadata.at("punctuation", default: ".,!?;:").clusters()
 #let is-punct(token) = token in punct-chars
 
-// A rounded outline box around a punctuation mark. Every mark gets an identical
-// fixed square box with the glyph centred, so ".", ",", "!", "?", ";" and ":"
-// all read as the same-sized "symbol tile" regardless of the glyph's own width
-// or height. The box scales with `size`, so heading marks (1.5em) and next-word
-// marks (1em) stay proportional to their surrounding text. `top-edge`/
-// `bottom-edge` of "bounds" tighten the glyph box to its actual ink so the mark
-// is optically centred --- otherwise low marks like "." and "," sit at the
-// bottom of the box with empty space above.
-#let punct-box(content, size: 1em, weight: "bold") = {
-  set text(
-    size: size,
-    weight: weight,
-    top-edge: "bounds",
-    bottom-edge: "bounds",
-  )
-  box(
-    width: 1em,
-    height: 1em,
-    stroke: 0.5pt + black,
-    radius: 0.12em,
-    inset: 0pt,
-    align(center + horizon, content),
-  )
-}
+// The shared helpers, bound to this model's punctuation set.
+#let punct-box(content, size: 1em, weight: "bold") = bc.punct-box(
+  content,
+  size: size,
+  weight: weight,
+)
 
-// Function to display text with punctuation in boxes
-#let display-with-punctuation(text-content, size: 1.5em, weight: "bold") = {
-  let parts = text-content.split(" ")
-  for (i, part) in parts.enumerate() {
-    if is-punct(part) {
-      // Display punctuation in a rounded box
-      punct-box(part, size: size, weight: weight)
-    } else if part == "—" {
-      // Em dash separator
-      text(" — ", size: size, weight: weight)
-    } else {
-      // Regular words
-      text(part, size: size, weight: weight)
-    }
-    // Add space between parts
-    if i < parts.len() - 1 and parts.at(i + 1) != "—" and part != "—" {
-      h(0.3em)
-    }
-  }
-}
+#let display-with-punctuation(
+  text-content,
+  size: 1.5em,
+  weight: "bold",
+) = bc.display-with-punctuation(
+  text-content,
+  size: size,
+  weight: weight,
+  punct-chars: punct-chars,
+)
 
 // Title page function
 #let title-page() = {
@@ -234,47 +211,24 @@
 #let format-dice-indicator(total_count, num_next_words) = {
   // Only show dice indicator if there are multiple next-word options to choose from
   if num_next_words > 1 and total_count != 10 {
-    let num-dice = str(total_count).len()
-    // Display num-dice Unicode diamond symbols
-    text(
-      baseline: -0.1em,
-      size: 0.9em,
-      fill: black,
-      "♦" * num-dice,
-    )
+    bc.dice-diamonds(str(total_count).len())
   }
 }
 
-// Function to format a single next-word option with its count
-#let format-next-word(word, count, show-count: true) = {
-  if is-punct(word) {
-    // Punctuation in a rounded box with optional count
-    if show-count {
-      box([#text(weight: "semibold")[#count]|#punct-box(word)])
-    } else {
-      punct-box(word)
-    }
-  } else {
-    // Regular word with optional count
-    if show-count {
-      box([#text(weight: "semibold")[#count]|#text[#word]])
-    } else {
-      box([#word])
-    }
-  }
-}
+// A single next-word option with its count, bound to this model's punctuation
+// (used in the running text of the instructions page too).
+#let format-next-word(word, count, show-count: true) = bc.format-next-word(
+  word,
+  count,
+  show-count: show-count,
+  punct-chars: punct-chars,
+)
 
 // Function to format all next-word options for a previous-words context
-#let format-next-words(next_words) = {
-  for next_word in next_words {
-    let word = next_word.at(0)
-    let count = next_word.at(1)
-    let show-count = next_words.len() > 1
-
-    format-next-word(word, count, show-count: show-count)
-    h(0.5em)
-  }
-}
+#let format-next-words(next_words) = bc.format-next-words(
+  next_words,
+  punct-chars: punct-chars,
+)
 
 // Function to format a complete entry (previous words + dice indicator + next words)
 #let format-entry(previous_words, total_count, next_words) = {

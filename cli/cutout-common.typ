@@ -1,3 +1,6 @@
+// Copyright (c) 2025 Ben Swift
+// Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
+//
 // Shared token rendering for the cutout-family templates.
 //
 // Imported by tokenized-cutouts.typ (cut-up tokens spread on a table) and

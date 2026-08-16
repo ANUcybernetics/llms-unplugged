@@ -1,13 +1,16 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
 
-#import "@local/anu-typst-template:0.2.0": *
+#import "@local/anu-typst-template:0.3.0": *
 
 #show: doc => anu(
   title: "",
   config: (
     theme: "light",
-    logos: ("socy", "studio"),
+    // 0.2.0 spelled this `logos: ("socy", "studio")`, but its "socy" entry
+    // was inert (only asterisk/studio were ever checked) --- the studio
+    // ornament is the whole effect.
+    ornaments: ("studio",),
     hide: ("page-numbers", "title-block"),
   ),
   doc,

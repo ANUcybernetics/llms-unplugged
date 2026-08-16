@@ -1,6 +1,6 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
-#import "@local/anu-typst-template:0.2.0": *
+#import "@local/anu-typst-template:0.3.0": *
 
 #show: anu.with(
   title: none,

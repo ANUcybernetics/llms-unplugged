@@ -35,27 +35,17 @@
 #import "@local/anu-typst-template:0.3.0": anu, anu-colors
 
 // ---------------------------------------------------------------------------
-// Booklet typography helpers, adapted from cli/book.typ (white stroke for the
-// dark theme; d6 semantics: a single diamond whenever there is a choice).
+// Booklet typography helpers from cli/booklet-common.typ (compiled with
+// --root .. so the cross-directory import resolves). White stroke for the
+// dark theme; d6 semantics stay local: a single diamond whenever there is a
+// choice.
+#import "../cli/booklet-common.typ" as bc
 
-// Fixed-square outline box around a punctuation mark, so "." reads as a
-// same-sized "symbol tile" at any text size.
-#let punct-box(content, size: 1em, weight: "bold") = {
-  set text(
-    size: size,
-    weight: weight,
-    top-edge: "bounds",
-    bottom-edge: "bounds",
-  )
-  box(
-    width: 1em,
-    height: 1em,
-    stroke: 0.5pt + white,
-    radius: 0.12em,
-    inset: 0pt,
-    align(center + horizon, content),
-  )
-}
+#let punct-box(content, size: 1em) = bc.punct-box(
+  content,
+  size: size,
+  stroke-color: white,
+)
 
 #let is-punct(word) = word in (".", ",", "!", "?")
 
@@ -68,12 +58,7 @@
 }
 
 // Single diamond: "roll your dice". Only shown when the entry has a choice.
-#let dice-indicator = text(
-  baseline: -0.1em,
-  size: 0.9em,
-  fill: anu-colors.gold,
-  "♦",
-)
+#let dice-indicator = bc.dice-diamonds(1, fill: anu-colors.gold)
 
 // A next-word option: "3|dreams" (threshold semibold), or the bare word when
 // it is the only option (no threshold, no roll).

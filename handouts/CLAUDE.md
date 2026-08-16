@@ -44,8 +44,9 @@ theme with gold accents.
 
 ## Dependencies
 
-- `@local/anu-typst-template:0.2.0` package (must be installed locally, not
-  vendored in this repo)
+- `@local/anu-typst-template:0.3.0` package (must be installed locally, not
+  vendored in this repo; from 0.3.0 it's a brand layer over
+  `@local/university-typst-template`, which must be installed too)
 - Typst compiler
 - fonts installed system-wide (Public Sans, Monaspace Argon)
 

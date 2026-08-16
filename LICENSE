@@ -5,7 +5,9 @@ This project uses dual licensing:
 - Website source (website/) is licensed under the MIT License (see
   website/LICENSE)
 - Documentation and teaching materials (Typst files and generated PDFs in
-  handouts/) are licensed under CC BY-NC-SA 4.0 (see handouts/LICENSE)
+  handouts/, and the Typst templates in cli/ --- book.typ, summary.typ,
+  cutout-common.typ, tokenized-cutouts.typ, tokenized-sheets.typ, two-up.typ)
+  are licensed under CC BY-NC-SA 4.0 (see handouts/LICENSE)
 
 ================================================================================
 

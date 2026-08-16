@@ -7,7 +7,7 @@
 // source of truth, also consumed by the CLI), so there is nothing to keep in
 // sync here. Requires the project root to be the repo root: the Makefile passes
 // `--root ..`.
-#import "@local/anu-typst-template:0.2.0": *
+#import "@local/anu-typst-template:0.3.0": *
 
 #show: anu.with(
   title: none,

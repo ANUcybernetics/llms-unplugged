@@ -16,6 +16,12 @@ $(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.typ
 	@mkdir -p $(dir $@)
 	SOURCE_DATE_EPOCH=0 typst compile --root .. $< $@
 
+# Extra (non-.typ) prerequisites: files a worksheet reads at compile time,
+# which the pattern rule above can't see --- without these, editing the data
+# leaves a stale PDF that `publish` would happily ship.
+$(OUTPUT_DIR)/worksheets/sycophancy-text.pdf: ../data/sycophancy.txt
+$(OUTPUT_DIR)/worksheets/grid.pdf: worksheets/title-logo.svg
+
 clean:
 	rm -f $(PDF_FILES)
 
