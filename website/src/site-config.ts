@@ -1,5 +1,6 @@
 import { defineSiteConfig } from "astro-theme-university/types";
 import logo from "./assets/favicon.svg";
+import ogImage from "./assets/og-image.jpg";
 
 export const siteConfig = defineSiteConfig({
   name: "LLMs Unplugged",
@@ -13,6 +14,12 @@ export const siteConfig = defineSiteConfig({
     { text: "About", href: "/about/" },
   ],
   licence: "CC-BY-NC-SA-4.0",
+
+  // Site-wide link-preview card. Pages with artwork of their own override it
+  // with a `socialImage` prop; the theme re-encodes both to JPEG, since the
+  // major scrapers still don't decode the AVIF the site serves to browsers.
+  socialImage: ogImage,
+  socialImageAlt: "LLMs Unplugged",
 });
 
 export const themeLogo = logo;

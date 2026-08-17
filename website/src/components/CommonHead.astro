@@ -2,12 +2,11 @@
 // Shared <head> content for every layout. BaseLayout and ModuleLayout used to
 // carry diverging copies of this block (lesson pages silently lost analytics
 // and the RSS link); keep all common head tags here.
+//
+// The canonical link and the og:/twitter: card tags used to live here too.
+// They're the theme's job now --- see `socialImage` in site-config.ts and the
+// per-page `socialImage` prop the layouts forward.
 interface Props {
-  title: string;
-  description?: string;
-  /** Resolved image URL (an asset's `.src` or a public/ path). */
-  ogImage?: string;
-  ogType?: "website" | "article";
   /**
    * Unlisted content (`listed: false`): keeps the page out of search engines
    * and the site's own Pagefind index (Pagefind honours robots noindex).
@@ -15,16 +14,7 @@ interface Props {
   noindex?: boolean;
 }
 
-const {
-  title,
-  description,
-  ogImage = "/og-image.jpg",
-  ogType = "website",
-  noindex = false,
-} = Astro.props;
-
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
-const ogImageUrl = new URL(ogImage, Astro.site).href;
+const { noindex = false } = Astro.props;
 ---
 
 <meta name="theme-color" content="#be830e" />
@@ -35,15 +25,6 @@ const ogImageUrl = new URL(ogImage, Astro.site).href;
   title="LLMs Unplugged RSS Feed"
   href="/feed.xml"
 />
-<link rel="canonical" href={canonicalUrl} />
-<meta property="og:type" content={ogType} />
-<meta property="og:site_name" content="LLMs Unplugged" />
-<meta property="og:title" content={title} />
-{description && <meta property="og:description" content={description} />}
-<meta property="og:url" content={canonicalUrl} />
-<meta property="og:image" content={ogImageUrl} />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content={ogImageUrl} />
 {
   /* Analytics is the only third-party origin; warm the connection early so
     the deferred script and its event beacons skip the TLS handshake. */

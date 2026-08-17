@@ -1,16 +1,17 @@
 ---
+import type { ImageMetadata } from "astro";
 import BaseLayout from "./BaseLayout.astro";
 
 interface Frontmatter {
   title?: string;
   description?: string;
-  ogImage?: string;
+  ogImage?: ImageMetadata | string;
 }
 
 interface Props {
   title?: string;
   description?: string;
-  ogImage?: string;
+  ogImage?: ImageMetadata | string;
   frontmatter?: Frontmatter;
 }
 

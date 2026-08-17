@@ -16,7 +16,7 @@ const { Content } = await render(module);
 
 // Resolve through the asset pipeline so og:image points at the real
 // (hashed) URL rather than a source path that 404s in production.
-const ogImage = moduleHeroImage(module.id)?.src;
+const ogImage = moduleHeroImage(module.id);
 
 // Lessons (listed ones only) that run this module, for the "Used in" box.
 const usedIn = (await getCollection("lessons"))

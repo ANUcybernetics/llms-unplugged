@@ -16,7 +16,7 @@ const { Content } = await render(item);
 
 // Resolve through the asset pipeline so og:image points at the real
 // (hashed) URL rather than a source path that 404s in production.
-const ogImage = findHeroImage(`hero-news-${item.id}`)?.src;
+const ogImage = findHeroImage(`hero-news-${item.id}`);
 ---
 
 <NewsLayout

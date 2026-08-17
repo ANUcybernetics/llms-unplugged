@@ -15,7 +15,7 @@ const { lesson } = Astro.props;
 const { Content } = await render(lesson);
 
 const ogImage = lesson.data.heroImage
-  ? findHeroImage(`hero-${lesson.data.heroImage}`)?.src
+  ? findHeroImage(`hero-${lesson.data.heroImage}`)
   : undefined;
 ---
 

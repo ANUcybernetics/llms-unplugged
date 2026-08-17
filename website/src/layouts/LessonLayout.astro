@@ -1,10 +1,11 @@
 ---
+import type { ImageMetadata } from "astro";
 import BaseLayout from "./BaseLayout.astro";
 
 interface Props {
   title: string;
   description?: string;
-  ogImage?: string;
+  ogImage?: ImageMetadata | string;
   audience: string;
   duration: string;
   flavour: "grid" | "cutouts";
