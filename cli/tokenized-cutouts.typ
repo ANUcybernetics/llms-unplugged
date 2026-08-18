@@ -6,7 +6,7 @@
   brand-font, brand-gold, brand-lockup, derive-n, inter_word_gap, palette,
   renderers,
 )
-#let (coloured-word, next-word, render-cutout, ..) = renderers()
+#let (coloured-word, next-word, render-cutout, colour-key, ..) = renderers()
 
 // Configuration
 #let font_size = 36pt // Master size - change this to scale everything
@@ -252,6 +252,14 @@
       // Setup + How-to-play in col 2. Without this Typst's natural flow
       // splits the Anatomy section across the column boundary.
       #colbreak()
+
+      // The key redeems the promise the paragraph above just made --- nothing
+      // else on a cutouts printout says which swatch is "green" rather than
+      // "teal", and a table of cutouts is searched by two people talking
+      // across it. It sits at the head of column 2 rather than under that
+      // paragraph because column 1 has no slack left, and column flow puts it
+      // in the same place in reading order either way.
+      #colour-key(lead-in: "the colours:")
 
       == Setup
 

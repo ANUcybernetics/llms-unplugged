@@ -224,6 +224,38 @@
     parts.join(h(inter_word_gap))
   }
 
+  // The colour key: every palette colour boxed with its own name in it, so a
+  // colour can be said out loud along with the token ("who has _cat_? it's a
+  // green one") and the search narrows by colour before anyone reads a word.
+  // The key is what makes the names load-bearing rather than decorative ---
+  // it is the one place the room is told which swatch "green" means.
+  //
+  // Chips flow as inline text rather than sitting in a grid: the key has to
+  // fit whatever slack the column or header has left, and a paragraph reflows
+  // into it where a fixed column count would either overflow or leave a
+  // ragged half-row. The extra leading keeps consecutive rows of boxes from
+  // touching.
+  //
+  // `lead-in` prefixes the chips inline rather than sitting on its own line,
+  // so on a participant's sheet the key costs one line rather than two. It is
+  // not optional there: a row of boxed words in the palette colours is
+  // exactly what the rest of the page is made of, and without a label naming
+  // it as the key, somebody scanning for a match will try to match against
+  // it.
+  let colour-key(size: 10pt, gap: 0.45em, lead-in: none) = block(
+    above: 0.8em,
+    below: 0.8em,
+    {
+      set par(leading: 0.85em, justify: false)
+      set text(size: size)
+      let chips = palette.colors.map(e => box(word-box(e, e.name)))
+      if lead-in != none {
+        chips.insert(0, text(fill: luma(102), style: "italic", lead-in))
+      }
+      chips.join(h(gap))
+    },
+  )
+
   (
     entry-for: entry-for,
     word-box: word-box,
@@ -231,6 +263,7 @@
     coloured-word: coloured-word,
     next-word: next-word,
     render-cutout: render-cutout,
+    colour-key: colour-key,
   )
 }
 

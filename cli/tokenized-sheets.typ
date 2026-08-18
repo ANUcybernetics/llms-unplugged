@@ -16,7 +16,14 @@
   brand-font, brand-gold, brand-lockup, derive-n, inter_word_gap, palette,
   renderers,
 )
-#let (coloured-word, render-cutout, word-box, entry-for, ..) = renderers()
+#let (
+  coloured-word,
+  render-cutout,
+  word-box,
+  entry-for,
+  colour-key,
+  ..,
+) = renderers()
 
 // Get configuration from sys.inputs
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
@@ -141,37 +148,6 @@
 // A pair as it appears in the instructions: unboxed, exactly as it appears on
 // the sheets. `box` only to keep it from breaking across lines.
 #let pair-chip(token) = box(render-cutout(token))
-
-// The colour key: every palette colour boxed with its own name in it, so the
-// person at the front can name the colour along with the token ("who has
-// _cat_? it's a green one") and the room can narrow the search by colour
-// before reading a token. A sheets-only figure: the cutouts carry the same
-// eight colours but no key, since a table of cutouts is scanned by hand
-// rather than called out from the front.
-//
-// Chips flow as inline text rather than sitting in a grid: the key has to fit
-// whatever slack the column or header has left, and a paragraph reflows into
-// it where a fixed column count would either overflow or leave a ragged
-// half-row. The extra leading keeps consecutive rows of boxes from touching.
-//
-// `lead-in` prefixes the chips inline rather than sitting on its own line, so
-// on a participant's sheet the key costs one line rather than two. It is not
-// optional there: a row of boxed words in the palette colours is exactly what
-// the rest of the page is made of, and without a label naming it as the key,
-// somebody scanning for a match will try to match against it.
-#let colour-key(size: 10pt, gap: 0.45em, lead-in: none) = block(
-  above: 0.8em,
-  below: 0.8em,
-  {
-    set par(leading: 0.85em, justify: false)
-    set text(size: size)
-    let chips = palette.colors.map(e => box(word-box(e, e.name)))
-    if lead-in != none {
-      chips.insert(0, text(fill: muted, style: "italic", lead-in))
-    }
-    chips.join(h(gap))
-  },
-)
 
 #let instructions-page() = {
   set page(footer: align(
