@@ -44,29 +44,41 @@ Sheets set their token pairs at 16pt rather than the cutouts' 36pt, and at that
 size, colours the metric called comfortably distinct kept reading as the same
 colour. Max-min OKLab ΔE counts a lightness step the same as a hue step; a
 scanning eye doesn't. On a small glyph, a lightness step just reads as that
-colour again, darker. The generator now enforces a minimum hue separation as
-well.[^numbers] Every ready-to-print PDF has been rebuilt with the result.
+colour again, darker.
 
-Calling the colour out only works if the room has a word for it. All eleven now
-have one: black, red, brown, ochre, green, teal, blue, navy, violet, purple,
-wine.[^naming] The key prints on the brief and again on every sheet. Call "who
-has _cat_? it's a teal one" from the front and the room narrows its search
-before anyone reads a token.
+Fixing it meant asking a different question. A free search for maximally
+distinct colours gets named afterwards, by hand, which is how the palette ended
+up needing words like _ochre_ and _wine_ --- chosen because they were the
+nearest available, not because a room would reach for them. But the name is the
+whole point: "who has _cat_? it's a green one" only works if the room agrees on
+which swatch _green_ means. So the words come first now. Every swatch is pinned
+to a colour word's centroid in the xkcd colour survey --- a couple of hundred
+thousand people naming colours free-form, which is the best evidence there is
+for what a colour word means --- and the search picks the words whose printable
+colours sit furthest apart.
+
+That lands on eight: black, grey, red, brown, green, blue, purple, magenta. Six
+print at their survey centroid exactly; only grey and green move, and only far
+enough to stay legible on paper.[^numbers] The cutouts use the same eight now.
+Thirty colours at 36pt was more than anyone can hold at once, and a colour
+nobody can name is a filter nobody can call out.
+
+Eight is close to the ceiling, too. The obvious ninth is orange, and a printable
+orange sits ΔE 0.074--0.101 from red once it has been through a CMYK profile ---
+you can have orange or red, not both. Green and turquoise collide the same way,
+as do magenta and pink.
+
+The key prints on the brief, on both the sheets and the cutouts. Call "who has
+_cat_? it's a green one" from the front and the room narrows its search before
+anyone reads a token.
 
 [^numbers]:
-    The tightest pairs in the old palettes drew 79% and 85% of their distance
-    from the lightness axis alone. The sheets palette is now 11 swatches under a
-    20° hue floor, min ΔE 0.180 → 0.167; the cutouts keep 30 under an 8° floor,
-    0.137 → 0.121. Dropping the mid-grey swatch from the sheets bought back most
-    of what the hue floor cost, grey being the thing that sat in the middle of
-    the a-b plane blocking the low-chroma teals and olives that now fill the
-    gaps.
-
-[^naming]:
-    Names are the nearest common English colour word to each swatch, checked
-    against the xkcd colour survey. Two don't take the survey's nearest word.
-    Both print darker than that word suggests, so the gold is ochre rather than
-    mustard and the dark magenta is wine. Not maroon, though it looks it to an
-    Australian eye. Sampling a Queensland State of Origin kit puts its cloth 26°
-    of hue away, and maroon itself sits ΔE 0.095 from the palette's brown,
-    inside the 0.167 floor.
+    Grey moves ΔE 0.037 from its survey centroid and green 0.050, far enough to
+    clear 3.5:1 contrast against white. That one number governs both ways a
+    swatch gets used, contrast being symmetric: a token set as coloured text on
+    the page, and white text on a colour-filled box. The eight sit 0.151 apart
+    at worst on screen and 0.102 once round-tripped through a CMYK profile. The
+    second figure is the one that matters and it can't be derived from the
+    first --- sRGB's vivid blues, greens and purples fall outside CMYK, so the
+    press compresses them toward the gamut boundary and the gaps shrink.
+    Measured against FOGRA47L uncoated, FOGRA39L coated and SNAP newsprint.
