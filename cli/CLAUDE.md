@@ -36,19 +36,18 @@ text file → Rust CLI → model.json → Typst → PDF booklet
   through --- and the sheet header cycles them, so a set spells the title out
   across every five sheets. `lockup-light.svg` is variant 1 again, and is what
   everything placing the mark once uses. Re-copy all of them after regenerating
-- `cutout-common.typ` - Palettes, colour hash, token renderers and the brand
-  lockup, shared by both cutout-family templates. Two palettes, generated
-  differently: `large-palette` (30 colours, cutouts at 36pt) is a free max-min
-  OKLab search under a hue floor, named by hand afterwards; `compact-palette`
-  (8, sheets at ~19pt) pins every swatch to a colour word's xkcd-survey centroid
-  and is chosen on **printed** ΔE, so its names are the generator's own and it
-  needs no hand-naming. `renderers(palette: ...)` builds the token renderers
-  against one. Re-tune the hash with `find_palette_salt.ts --palette-len <n>`
-  whenever a palette changes length, and re-check the compact one with
-  `check_palette_print.py` --- perceptual distance in sRGB says nothing about
-  what survives CMYK. Also copied into the website so the browser compiler
-  resolves it (`website/scripts/copy-cli-templates.ts`), along with
-  `lockup-light.svg`
+- `cutout-common.typ` - Palette, colour hash, token renderers and the brand
+  lockup, shared by both cutout-family templates. One 8-colour palette, every
+  swatch pinned to a colour word's xkcd-survey centroid and chosen on
+  **printed** ΔE, so its names are the generator's own and it needs no
+  hand-naming. Every entry clears 3.5:1 against white, which is what lets a
+  swatch work both as coloured text on paper and as a white-on-colour box.
+  `renderers()` builds the token renderers against it. Re-tune the hash with
+  `find_palette_salt.ts --palette-len <n>` if the palette ever changes length,
+  and always re-check with `check_palette_print.py` --- perceptual distance in
+  sRGB says nothing about what survives CMYK. Also copied into the website so
+  the browser compiler resolves it
+  (`website/scripts/copy-cli-templates.ts`), along with `lockup-light.svg`
 - `Makefile` - Batch processing for multiple texts/formats
 
 ## Essential commands

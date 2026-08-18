@@ -2,10 +2,9 @@
 // Generates rows of tokens with continuous horizontal lines for easy cutting
 
 // Palette, colour hash and token renderers, shared with tokenized-sheets.typ.
-// Cutouts take the default 30-colour palette, which relies on being set at
-// 36pt to stay tellable apart.
 #import "cutout-common.typ": (
-  brand-font, brand-gold, brand-lockup, derive-n, inter_word_gap, renderers,
+  brand-font, brand-gold, brand-lockup, derive-n, inter_word_gap, palette,
+  renderers,
 )
 #let (coloured-word, next-word, render-cutout, ..) = renderers()
 
@@ -239,12 +238,14 @@
         ]
       ]
 
-      Every distinct word has its own colour. *Previous* words appear inside a
-      coloured box (the word's own colour as the background, with contrasting
-      text); the free-standing *next word* appears in plain coloured text. The
-      same word always wears the same colour, whether you see it inside a box or
-      free-standing. Two unrelated words can occasionally share a colour, so
-      always verify the word itself matches---not just the colour.
+      Every word is assigned one of #palette.colors.len() colours, each with a
+      name you can say out loud. *Previous* words appear inside a coloured box
+      (the word's own colour as the background, in white text); the
+      free-standing *next word* appears in plain coloured text. The same word
+      always wears the same colour, whether you see it inside a box or
+      free-standing. There are far more words than colours, so a colour narrows
+      the search rather than settling it---always verify the word itself
+      matches, not just the colour.
 
       // Force a column break here so the entire Anatomy section (heading +
       // mini-grid + colour-rule explanation) stays together in col 1, with

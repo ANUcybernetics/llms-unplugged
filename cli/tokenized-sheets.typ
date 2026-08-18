@@ -11,17 +11,12 @@
 // The shuffle is what makes this work: in corpus order an uncut page is just
 // the source text with boxes drawn around it.
 
-// Sheets take the compact 8-colour palette: the pairs are set around 16-19pt
-// here, where the cutouts' 30 colours stop being tellable apart, and every
-// swatch has to answer to a colour word called across a room. See
-// cutout-common.typ for why each palette is the size it is.
+// Palette, colour hash and token renderers, shared with tokenized-cutouts.typ.
 #import "cutout-common.typ": (
-  brand-font, brand-gold, brand-lockup, compact-palette, derive-n,
-  inter_word_gap, renderers,
+  brand-font, brand-gold, brand-lockup, derive-n, inter_word_gap, palette,
+  renderers,
 )
-#let (coloured-word, render-cutout, word-box, entry-for, ..) = renderers(
-  palette: compact-palette,
-)
+#let (coloured-word, render-cutout, word-box, entry-for, ..) = renderers()
 
 // Get configuration from sys.inputs
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
@@ -149,9 +144,10 @@
 
 // The colour key: every palette colour boxed with its own name in it, so the
 // person at the front can name the colour along with the token ("who has
-// _cat_? it's a teal one") and the room can narrow the search by colour before
-// reading a token. Only the compact palette names its colours --- eleven is
-// few enough to name, thirty is not --- so this is a sheets-only figure.
+// _cat_? it's a green one") and the room can narrow the search by colour
+// before reading a token. A sheets-only figure: the cutouts carry the same
+// eight colours but no key, since a table of cutouts is scanned by hand
+// rather than called out from the front.
 //
 // Chips flow as inline text rather than sitting in a grid: the key has to fit
 // whatever slack the column or header has left, and a paragraph reflows into
@@ -169,7 +165,7 @@
   {
     set par(leading: 0.85em, justify: false)
     set text(size: size)
-    let chips = compact-palette.colors.map(e => box(word-box(e, e.name)))
+    let chips = palette.colors.map(e => box(word-box(e, e.name)))
     if lead-in != none {
       chips.insert(0, text(fill: muted, style: "italic", lead-in))
     }
@@ -259,8 +255,8 @@
     token keeps its colour wherever it appears, so say the colour as you call
     one out --- "who has #emph(sample.text)? it's a #entry-for(sample.text).name
     one" --- and the room can scan by colour before reading. With
-    #compact-palette.colors.len() colours and far more tokens, a colour narrows
-    the search rather than settling it.
+    #palette.colors.len() colours and far more tokens, a colour narrows the
+    search rather than settling it.
 
     #colour-key()
   ]
@@ -445,7 +441,7 @@
 // space, especially when printed A5.
 //
 // This used to print the colour key as well, so a participant could resolve
-// "it's a teal one" against a swatch. The eight-colour palette is named rather
+// "it's a green one" against a swatch. The eight-colour palette is named rather
 // than merely distinct --- every swatch is pinned to what a room would call
 // it --- so the key was explaining words nobody needed explained, in a strip
 // of swatches that looks exactly like the pairs below it. What is left is the
