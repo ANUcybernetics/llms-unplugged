@@ -232,7 +232,7 @@
          freshly-picked word's brief size pulse. The first "choose" frame passes
          an empty page (""), so the label and a full-height line are still
          reserved and the pile below doesn't jump when the first words land. -->
-    <div class="hunt-page">
+    <div class="hunt-page paper-ground">
       <span class="hunt-page-label" data-id="hunt-page-label">your page</span>
       <span class="hunt-page-text">
         {#each pageTokens as word, i (i)}
@@ -306,7 +306,7 @@
     {/each}
   </div>
 {:else if mode === "example"}
-  <div class="overview-tokens">
+  <div class="overview-tokens paper-ground">
     {#each tokenList as token, i (i)}
       {#if i === pairStart}
         <span class="pair-highlight">
@@ -330,7 +330,7 @@
     })}
   </div>
 {:else}
-  <div class="overview-tokens">
+  <div class="overview-tokens paper-ground">
     {#each tokenList as token, i (i)}
       <span class="cutout-next-word {tokenColorClass(token)}">{token}</span>
     {/each}
@@ -338,6 +338,9 @@
 {/if}
 
 <style>
+  /* The running text, on the paper it was printed on before anyone took
+     scissors to it. Every token here is a .cutout-next-word, so the panel is
+     what its colour is measured against. */
   .overview-tokens {
     display: flex;
     flex-wrap: wrap;
@@ -345,12 +348,15 @@
     align-items: center;
     justify-content: center;
     margin: 1.5rem 0;
+    padding: 0.7em 0.9em;
     font-size: 1.15em;
   }
 
   /* mode="example": a soft gold frame around the highlighted pair. outline
      (not border) so the highlight doesn't perturb the surrounding flex
-     layout. */
+     layout. The frame carries the emphasis on its own — a gold wash behind
+     the words would darken the paper under them and eat into the palette's
+     contrast margin, so the ground stays white. */
   .pair-highlight {
     display: inline-flex;
     align-items: center;
@@ -358,7 +364,6 @@
     outline: 2px solid var(--anu-gold);
     outline-offset: 4px;
     border-radius: 5px;
-    background: color-mix(in srgb, var(--anu-gold) 15%, transparent);
   }
 
   .overview-cutout {
@@ -431,6 +436,8 @@
      beneath it (the word we're matching); the freshly-picked word gives a brief
      size pulse as it lands --- no recolouring, since colour already encodes the
      token. */
+  /* "your page" — the sheet a participant is writing the output onto, so it
+     is a paper panel like the cutouts below it. */
   .hunt-page {
     display: flex;
     align-items: baseline;
@@ -438,13 +445,14 @@
     flex-wrap: wrap;
     gap: 0.5em 0.7em;
     margin: 0 0 1.5rem;
+    padding: 0.6em 0.8em;
   }
 
   .hunt-page-label {
     text-transform: uppercase;
     letter-spacing: 0.08em;
     font-size: 0.55em;
-    opacity: 0.65;
+    color: var(--paper-ink-muted);
     white-space: nowrap;
   }
 
@@ -478,8 +486,8 @@
     height: 0;
     border-left: 0.3em solid transparent;
     border-right: 0.3em solid transparent;
-    border-bottom: 0.36em solid var(--anu-white);
-    opacity: 0.55;
+    border-bottom: 0.36em solid var(--paper-ink-muted);
+    opacity: 0.7;
     pointer-events: none;
     animation: hunt-caret-bob 1.5s ease-in-out infinite;
   }

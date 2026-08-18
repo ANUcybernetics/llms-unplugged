@@ -258,164 +258,78 @@
   color: var(--anu-gold, #be830e);
 }
 
-/* Token colour palette for cutouts. Mirrors the 30-entry OKLCH palette in
-   cli/tokenized-cutouts.typ so the same word lands on the same colour whether
-   it appears on a slide or on a printed cutout. The hash function in
-   src/lib/tokenColors.ts matches the typst hash, and palette index order
-   matches too — keep all three in sync if any entry is regenerated.
-   Each entry sets --token-bg (the palette colour, used as the pill fill) and
-   --token-pill-text (black on light entries with OKLab L > 0.65, otherwise
-   white — same `light` flag as in the typst). Free-standing next words use the
-   raw --token-bg as well — matching the printed cutout — and reuse
-   --token-pill-text as a thin legibility stroke (see .cutout-next-word). */
+/* The paper ground. Everything that depicts a physical cutout — the cutouts
+   themselves, the running text they were cut from, the page a participant
+   writes on — is rendered on paper, in both deck themes. The slides are dark,
+   but a cutout is a picture of a piece of paper, so it reads correctly as a
+   light object sitting on a dark slide; the alternative (recolouring the
+   palette per theme, or outlining every free-standing word so it survives the
+   dark ground) makes the depiction less like the thing it depicts, not more.
+   Anything hosting a .cutout-next-word must carry .paper-ground so the palette
+   is measured against the surface it was chosen for. */
+.reveal {
+  /* White, not an off-white: the palette's 3.5:1 guarantee is measured against
+     white, and a cream ground quietly spends ~0.3 of it (grey and green, the
+     two entries sitting closest to the floor, drop to ~3.2). It is also what
+     the cutouts are actually printed on. */
+  --paper-ground: #fff;
+  --paper-edge: rgb(0 0 0 / 22%);
+
+  /* Ink on paper: the invert is what a dark palette fill carries as text, the
+     muted one is for chrome on a paper panel (labels, the hunt caret) that
+     would otherwise inherit the slide's white. */
+  --paper-ink: #1a1a1a;
+  --paper-ink-invert: #fff;
+  --paper-ink-muted: rgb(0 0 0 / 55%);
+}
+
+.reveal .paper-ground {
+  background: var(--paper-ground);
+  border: 1px solid var(--paper-edge);
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 35%);
+}
+
+/* Token colour palette for cutouts. Mirrors the eight-colour palette in
+   cli/cutout-common.typ, in the same index order, so the same word lands on
+   the same colour whether it appears on a slide or on a printed cutout; the
+   hash in src/lib/tokenColors.ts matches the typst one. Keep all three in
+   sync if any is regenerated.
+
+   Each entry is pinned to an English colour word (the name in the comment) and
+   clears 3.5:1 against white, so it works both as a fill under white text and
+   as coloured text on the paper-coloured cutout ground. Nothing here needs a
+   light/dark branch: every entry is dark. */
 .reveal .tc-0 {
   --token-bg: oklch(0% 0 0deg); /* black */
-  --token-pill-text: var(--anu-white);
 }
 
 .reveal .tc-1 {
-  --token-bg: oklch(58.5% 0 0deg); /* mid grey, luma(140) */
-  --token-pill-text: var(--anu-white);
+  --token-bg: oklch(62.9% 0.008 145deg); /* grey */
 }
 
 .reveal .tc-2 {
-  --token-bg: oklch(32.4% 0.082 24deg);
-  --token-pill-text: var(--anu-white);
+  --token-bg: oklch(57.9% 0.238 29deg); /* red */
 }
 
 .reveal .tc-3 {
-  --token-bg: oklch(62.9% 0.256 27deg);
-  --token-pill-text: var(--anu-white);
+  --token-bg: oklch(38.6% 0.089 62deg); /* brown */
 }
 
 .reveal .tc-4 {
-  --token-bg: oklch(42.8% 0.174 29deg);
-  --token-pill-text: var(--anu-white);
+  --token-bg: oklch(61% 0.205 142deg); /* green */
 }
 
 .reveal .tc-5 {
-  --token-bg: oklch(62.3% 0.142 62deg);
-  --token-pill-text: var(--anu-white);
+  --token-bg: oklch(47.2% 0.241 263deg); /* blue */
 }
 
 .reveal .tc-6 {
-  --token-bg: oklch(78% 0.166 72deg);
-  --token-pill-text: black;
+  --token-bg: oklch(45.2% 0.195 316deg); /* purple */
 }
 
 .reveal .tc-7 {
-  --token-bg: oklch(43.2% 0.086 84deg);
-  --token-pill-text: var(--anu-white);
-}
-
-.reveal .tc-8 {
-  --token-bg: oklch(91.9% 0.096 93deg);
-  --token-pill-text: black;
-}
-
-.reveal .tc-9 {
-  --token-bg: oklch(91.9% 0.234 126deg);
-  --token-pill-text: black;
-}
-
-.reveal .tc-10 {
-  --token-bg: oklch(48.5% 0.164 142deg);
-  --token-pill-text: var(--anu-white);
-}
-
-.reveal .tc-11 {
-  --token-bg: oklch(67.1% 0.227 143deg);
-  --token-pill-text: black;
-}
-
-.reveal .tc-12 {
-  --token-bg: oklch(32.2% 0.098 143deg);
-  --token-pill-text: var(--anu-white);
-}
-
-.reveal .tc-13 {
-  --token-bg: oklch(75.9% 0.078 151deg);
-  --token-pill-text: black;
-}
-
-.reveal .tc-14 {
-  --token-bg: oklch(81.2% 0.214 151deg);
-  --token-pill-text: black;
-}
-
-.reveal .tc-15 {
-  --token-bg: oklch(62.8% 0.118 174deg);
-  --token-pill-text: var(--anu-white);
-}
-
-.reveal .tc-16 {
-  --token-bg: oklch(90.4% 0.149 187deg);
-  --token-pill-text: black;
-}
-
-.reveal .tc-17 {
-  --token-bg: oklch(73.7% 0.158 236deg);
-  --token-pill-text: black;
-}
-
-.reveal .tc-18 {
-  --token-bg: oklch(42% 0.131 254deg);
-  --token-pill-text: var(--anu-white);
-}
-
-.reveal .tc-19 {
-  --token-bg: oklch(44.8% 0.309 264deg);
-  --token-pill-text: var(--anu-white);
-}
-
-.reveal .tc-20 {
-  --token-bg: oklch(58.9% 0.192 268deg);
-  --token-pill-text: var(--anu-white);
-}
-
-.reveal .tc-21 {
-  --token-bg: oklch(40.1% 0.227 288deg);
-  --token-pill-text: var(--anu-white);
-}
-
-.reveal .tc-22 {
-  --token-bg: oklch(67.6% 0.212 304deg);
-  --token-pill-text: black;
-}
-
-.reveal .tc-23 {
-  --token-bg: oklch(51.3% 0.259 308deg);
-  --token-pill-text: var(--anu-white);
-}
-
-.reveal .tc-24 {
-  --token-bg: oklch(32.1% 0.151 320deg);
-  --token-pill-text: var(--anu-white);
-}
-
-.reveal .tc-25 {
-  --token-bg: oklch(46.8% 0.124 324deg);
-  --token-pill-text: var(--anu-white);
-}
-
-.reveal .tc-26 {
-  --token-bg: oklch(90.4% 0.084 328deg);
-  --token-pill-text: black;
-}
-
-.reveal .tc-27 {
-  --token-bg: oklch(69.9% 0.32 329deg);
-  --token-pill-text: black;
-}
-
-.reveal .tc-28 {
-  --token-bg: oklch(71.1% 0.118 346deg);
-  --token-pill-text: black;
-}
-
-.reveal .tc-29 {
-  --token-bg: oklch(54.4% 0.227 349deg);
-  --token-pill-text: var(--anu-white);
+  --token-bg: oklch(53.4% 0.221 353deg); /* magenta */
 }
 
 .reveal .cutout-previous-word,
@@ -431,32 +345,42 @@
 }
 
 .reveal .cutout-next-word {
-  /* Bold so the free-standing word reads at a glance and gives the legibility
-     stroke a chunkier glyph to wrap — a thin stroke on a 400-weight serif read
-     as a faint, uneven outline on the dark slide. */
+  /* Bold, matching the weight of the pill beside it: as the only mark carrying
+     no fill behind it, a regular-weight serif reads as an afterthought rather
+     than as the answer. Same reasoning as the typst's coloured-word(). */
   font-weight: 700;
 
-  /* Match the printed cutout: the free-standing next word is the *same* raw
-     palette colour as the previous-word pill (the pill carries it as a fill,
-     here it is the text colour). Dark entries would vanish on the dark slide,
-     so — mirroring the typst's coloured-word(), which gives light entries a
-     thin black stroke on white paper — we give dark entries a white stroke
-     here. --token-pill-text is white for dark entries and black for light ones,
-     so dark words get a white outline while light words get a near-invisible
-     black one (a black halo blends into the dark slide). paint-order draws the
-     stroke behind the fill, so the raw colour stays intact and only the outline
-     shows; since only the outer half of the stroke width is visible, it is set
-     generously so the halo reads clearly. */
-  color: var(--token-bg);
+  /* Match the printed cutout exactly: the free-standing next word is the raw
+     palette colour, set flat, with no outline propping it up. That works
+     because it is always on paper — either inside a cutout, on a panel
+     carrying .paper-ground, or (inline in prose, as in the sycophancy and
+     agentic-AI partials) on the scrap of paper it gives itself below. Every
+     palette entry clears 3.5:1 against that ground. */
+  /* The fallback matters: a next-word without a tc-N class (the zero-width
+     spacer holding the empty hunt page's line height) would otherwise inherit
+     the slide's white and be invisible ink on white paper. */
+  color: var(--token-bg, var(--paper-ink));
+  display: inline-block;
+  background: var(--paper-ground);
+  border: 1px solid var(--paper-edge);
+  border-radius: 4px;
+  padding: 0 0.25em;
   margin: 0 0.1em;
-  -webkit-text-stroke: 0.08em var(--token-pill-text);
-  paint-order: stroke fill;
+}
+
+/* Already on paper. Drop the scrap so the word reads as ink on that sheet
+   rather than a second piece of paper laid on top of it. */
+.reveal :is(.cutout-paper, .paper-ground) .cutout-next-word {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
 }
 
 .reveal .cutout-previous-word {
   display: inline-block;
   background: var(--token-bg);
-  color: var(--token-pill-text, var(--anu-white));
+  color: var(--paper-ink-invert);
 
   /* Vertical padding is intentionally smaller than horizontal — the inherited
      line-height: 1.2 already adds ~0.1em of leading above and below the text
@@ -504,9 +428,10 @@
   flex-direction: row;
   align-items: baseline;
   gap: 0.3em;
-  background: hsl(0deg 0% 12%);
-  border: 1px solid hsl(0deg 0% 24%);
+  background: var(--paper-ground);
+  border: 1px solid var(--paper-edge);
   border-radius: 6px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 35%);
   padding: 0.35em;
   margin: 0.15em 0.2em;
   vertical-align: middle;
