@@ -34,7 +34,7 @@ export interface TokenLabel {
   path: string;
 }
 
-/** In title order: LL, Ms,  Un, plug, ged. */
+/** In title order: LL, Ms, <space>Un, plug, ged. */
 export const TOKEN_LABELS: TokenLabel[] = [
   {
     label: "LL",
