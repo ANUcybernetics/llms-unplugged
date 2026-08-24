@@ -9,13 +9,10 @@ description:
 published: false
 ---
 
-In March, [Samantha Ephraims](https://www.teachermagazine.com/au_en/authors/samantha-ephraims)
-wrote to me with a fairly unforgiving teaching problem. Sam teaches Digital
-Technologies at [Kalkie State School](https://kalkiess.eq.edu.au/) in Bundaberg,
-as well as Design and Digital Technologies at
-[CQUniversity](https://handbook.cqu.edu.au/he/units/view/EDCU12039). Her primary
-classes had been cut to half-hour lessons. She wanted a hands-on activity
-showing a group of six how a language model generates text.
+In March, Samantha Ephraims, a teacher from regional Queensland, wrote to me
+with a fairly unforgiving teaching problem. Her primary classes had been cut to
+half-hour lessons. She wanted a hands-on activity showing a group of six how a
+language model generates text.
 
 _LLMs Unplugged_ already had two versions of that activity. Students could
 [build a bigram table](/modules/training/) and
