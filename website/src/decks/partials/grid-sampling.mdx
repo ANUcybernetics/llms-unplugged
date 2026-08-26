@@ -10,14 +10,12 @@
 
 ![bg right:40%](./assets/bg-example.avif)
 
-{/* notes:
-<ol>
-<li><strong>track</strong> syllables in current line (5-7-5 pattern)</li>
-<li><strong>roll dice</strong> to select next word as normal</li>
-<li>if selected word exceeds line's syllable limit, <strong>re-roll</strong></li>
-<li><strong>start new line</strong> when syllable count reached</li>
-</ol>
-*/}
+```notes
+1. **track** syllables in current line (5-7-5 pattern)
+2. **roll dice** to select next word as normal
+3. if selected word exceeds line's syllable limit, **re-roll**
+4. **start new line** when syllable count reached
+```
 
 generate text with your model, but re-roll any word that would push the current
 line past its 5-7-5 syllable budget
@@ -32,9 +30,9 @@ line past its 5-7-5 syllable budget
 
 <Timer minutes={10} overlay />
 
-{/* notes:
+```notes
 Generate haiku --- re-roll any word that busts the current line's 5--7--5 budget. 10 min; expect it to feel fiddly, that's the lesson about constrained sampling.
-*/}
+```
 
 ---
 
@@ -52,6 +50,6 @@ Generate haiku --- re-roll any word that busts the current line's 5--7--5 budget
 
 - sampling
 
-{/* notes:
+```notes
 Everyday sense first, then ours: sampling is trying a cheese at the deli, or a snatch of one song inside another --- here it's how you pick the next token from the options, and the rules you add (like the syllable budget) shape what comes out.
-*/}
+```

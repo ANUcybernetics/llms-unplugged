@@ -10,13 +10,13 @@
 
 ![bg right:40%](./assets/bg-algorithm-training.avif)
 
-{/* notes:
-<ol>
-<li><strong>tidy up</strong> your text: lowercase everything, treat words and single punctuation marks (<code>. , ! ? ; :</code>) as separate tokens</li>
-<li><strong>set up</strong> your grid: first token goes in both the row &amp; column headers</li>
-<li><strong>fill in</strong> the grid: for each consecutive pair of tokens, add a tally mark in that cell (add new rows/columns as needed)</li>
-</ol>
-*/}
+```notes
+1. **tidy up** your text: lowercase everything, treat words and single
+   punctuation marks (`. , ! ? ; :`) as separate tokens
+2. **set up** your grid: first token goes in both the row &amp; column headers
+3. **fill in** the grid: for each consecutive pair of tokens, add a tally mark
+   in that cell (add new rows/columns as needed)
+```
 
 walk through your text and tally up which tokens follow which in a grid
 
@@ -54,7 +54,9 @@ after tidying up:
 
 ## Training: `spot` &rarr; `,`
 
-{/* notes: <code>,</code> is already in our vocabulary &mdash; no new column needed! */}
+```notes
+`,` is already in our vocabulary &mdash; no new column needed!
+```
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={3} />
 
@@ -68,7 +70,9 @@ after tidying up:
 
 ## Training: `run` &rarr; `.`
 
-{/* notes: <code>.</code> is a new token &mdash; punctuation gets its own row and column too */}
+```notes
+`.` is a new token &mdash; punctuation gets its own row and column too
+```
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={5} />
 
@@ -76,7 +80,9 @@ after tidying up:
 
 ## Complete model
 
-{/* notes: with the rest of the text tallied the same way, the grid is complete. <code>run</code> &rarr; <code>.</code> came up twice, so its cell has two marks &mdash; those counts are what make some next-words more likely than others. */}
+```notes
+with the rest of the text tallied the same way, the grid is complete. `run` &rarr; `.` came up twice, so its cell has two marks &mdash; those counts are what make some next-words more likely than others.
+```
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={10} />
 
@@ -94,9 +100,9 @@ you can ignore quotation/speech marks (`"`)
 work in pairs and divide the labour however you like---but don't neglect the
 tally marks
 
-{/* notes:
+```notes
 Three snags worth pre-empting. The sentence boundary isn't a stop: the text is one long stream, so the full stop is followed by whatever word comes next, page break or not. Quote marks are noise for our purposes --- skip them rather than giving them a row and column. And pairs work well if one person reads the text aloud while the other tallies, but swap around, and whatever the split, the marks are the model --- a pair that races through the reading and skimps on the tallying has nothing to generate from.
-*/}
+```
 
 ---
 
@@ -108,9 +114,9 @@ Three snags worth pre-empting. The sentence boundary isn't a stop: the text is o
 
 <Timer minutes={10} overlay />
 
-{/* notes:
+```notes
 Hand out grids; groups tally their own text. 10 min, circulate --- the usual snag is that a token only gets a new row and column the first time it appears.
-*/}
+```
 
 ---
 
@@ -122,6 +128,6 @@ Hand out grids; groups tally their own text. 10 min, circulate --- the usual sna
 - token
 - weights
 
-{/* notes:
+```notes
 Everyday sense first, then ours: a model is a fashion model or a model aeroplane --- here it's the thing that captures the patterns, your grid. A token is a bus token or a token gesture --- here it's one word or punctuation mark. Weights are what you lift at the gym, or what you weigh up before deciding --- here they're just the tally marks, the numbers that make some next words likelier than others. Point at a cell: when you hear a model has billions of weights, that's what's being counted.
-*/}
+```

@@ -39,12 +39,12 @@ they're next to
 
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="flow" />
 
-{/* notes:
+```notes
 This section used to slide an animated window across the text, one slide per
 pair. The cutouts already show that overlap themselves (a cutout ends with the
 word the next cutout starts with), so it's now three static slides: the tokens,
 one pair highlighted as a cutout, then every pair as a cutout.
-*/}
+```
 
 ---
 
@@ -86,20 +86,19 @@ one pair highlighted as a cutout, then every pair as a cutout.
 
 <CutoutsOverview tokens={OVERVIEW_TOKENS} mode="scatter" seed={4} />
 
-{/* notes:
+```notes
 The "every pair becomes a cutout" (flow) slide before these also carries the pile
 directive, so the shuffle begins there --- each cutout glides from its reading-
 order slot into the first scattered pile. Then five "scatter" frames of the
-*same* cutouts with different seeds. All carry
-{/* _animate: pile *​/}, so Reveal.js auto-animate glides each cutout (matched by
-its data-id="cut-N") from one arrangement to the next --- each click reshuffles
-the pile while the heading stays put (it only crossfades on the way in from the
-flow slide). Talk across them: this is the hinge into
-Training/Generation --- the model is an unordered bag you rummage through, so
-order stops mattering once the text is cut up. Add or remove
-{/* _animate: pile *​/} + <CutoutsOverview mode="scatter" seed={N}/> slides
-(any seed) to lengthen or shorten the shuffle.
-*/}
+*same* cutouts with different seeds. All carry `{/* _animate: pile */}`, so
+Reveal.js auto-animate glides each cutout (matched by its data-id="cut-N") from
+one arrangement to the next --- each click reshuffles the pile while the heading
+stays put (it only crossfades on the way in from the flow slide). Talk across
+them: this is the hinge into Training/Generation --- the model is an unordered
+bag you rummage through, so order stops mattering once the text is cut up. Add or
+remove `{/* _animate: pile */}` + `<CutoutsOverview mode="scatter" seed={N}/>`
+slides (any seed) to lengthen or shorten the shuffle.
+```
 
 ---
 
@@ -117,9 +116,9 @@ pairs a **next word** with its **previous word**:
 
 that's it---the spread _is_ your trained **language model**
 
-{/* notes:
+```notes
 Once the loose-on-table flow makes sense, groups can optionally sort their cutouts into piles by previous word---it makes hunting for matches faster in the next section.
-*/}
+```
 
 ---
 
@@ -131,6 +130,6 @@ Once the loose-on-table flow makes sense, groups can optionally sort their cutou
 
 <Timer minutes={10} overlay />
 
-{/* notes:
+```notes
 Click the dial to start/pause; use -1 / +1 to adjust on the fly. Circulate and help anyone stuck on cutting or on what "previous / next word" means.
-*/}
+```

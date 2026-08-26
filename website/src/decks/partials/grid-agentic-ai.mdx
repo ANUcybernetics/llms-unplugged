@@ -4,9 +4,9 @@
 
 ![bg](./assets/bg-tool-use-banner.avif)
 
-{/* notes:
+```notes
 Section beat: an agent is a model that can pause, call a tool, and use the result. We bolt that onto your model.
-*/}
+```
 
 ---
 
@@ -14,16 +14,17 @@ Section beat: an agent is a model that can pause, call a tool, and use the resul
 
 ![bg right:40%](./assets/bg-tool-use-triggers.avif)
 
-{/* notes:
+```notes
 An agent is a model that can pause, get information from outside itself, then continue. Here's how we bolt that onto your model:
-<ol>
-<li><strong>generate</strong> from your model as before, rolling for each next word</li>
-<li>when you land on a <strong>punctuation token</strong> (like <code>.</code> or <code>,</code>), pause --- that's a tool call</li>
-<li>text <strong>What comes next? "[sentence so far]..."</strong> (everything since the last full stop) to 3 friends</li>
-<li><strong>write down</strong> the whole first reply, then the punctuation token you rolled</li>
-<li><strong>continue</strong> generating from the punctuation token</li>
-</ol>
-*/}
+
+1. **generate** from your model as before, rolling for each next word
+2. when you land on a **punctuation token** (like `.` or `,`), pause --- that's
+   a tool call
+3. text **What comes next? "[sentence so far]..."** (everything since the last
+   full stop) to 3 friends
+4. **write down** the whole first reply, then the punctuation token you rolled
+5. **continue** generating from the punctuation token
+```
 
 an agent is a model that can **call tools**: pause generation, get information
 from "outside" the model, and continue
@@ -46,9 +47,9 @@ the first reply back might be "down by the river"
 write `down by the river`, then the `.` you rolled anyway, and continue
 generating from `.`
 
-{/* notes:
+```notes
 Walk it slowly: the punctuation is the trigger, the completion prompt plus the sentence so far is the tool input, and the whole first reply is the tool result. The prompt gives friends enough context to produce a useful continuation rather than just react to a mysterious fragment. The punctuation still gets written --- the tool result slots in just before it. If asked why we don't continue from the friend's reply: those words probably aren't in your model's vocabulary, so resuming from the punctuation token is the cleanest way to keep generating.
-*/}
+```
 
 ---
 
@@ -60,9 +61,9 @@ Walk it slowly: the punctuation is the trigger, the completion prompt plus the s
 
 <Timer minutes={10} overlay />
 
-{/* notes:
+```notes
 Generate from your model --- on punctuation, text `What comes next? "[sentence so far]..."` to 3 friends and splice in the whole first reply. 10 min --- texting latency is real, so keep groups moving; if a reply hasn't landed by the next punctuation token, back-fill it later. Circulate.
-*/}
+```
 
 ---
 
@@ -72,11 +73,11 @@ Generate from your model --- on punctuation, text `What comes next? "[sentence s
 
 ![bg](./assets/bg-shareback-tool-use.avif)
 
-{/* notes:
+```notes
 What did the tool calls add that the bare model couldn't --- fresh, outside information? Did the friends' words fit the text, or derail it? Invite ~5 groups to share back rather than the whole room. ~5 min.
 
 Worth pushing on if the room is up for it: they have just been the harness --- they decided when to pause, who to ask, and what to splice back in. Take that away and you have an agent acting on its own, which is most of what "agentic AI" means in the coverage they're reading. So what would you be comfortable letting it do without asking you first? Answers get specific fast --- booking something, sending an email on their behalf, moving money, writing to a system of record --- and the interesting part is usually not the task but where they draw the line and why: reversibility, who gets blamed, whether they'd notice a mistake. Don't resolve it; a tidy conclusion would waste the question.
-*/}
+```
 
 ---
 
@@ -87,6 +88,6 @@ Worth pushing on if the room is up for it: they have just been the harness --- t
 - agent/agentic loop
 - tool call
 
-{/* notes:
+```notes
 Everyday sense first, then ours: an agent is a travel agent or a secret agent, someone who acts for you --- here it's a model that can act, not just talk. The agentic loop is the cycle that acting happens in: generate, call a tool, read the answer, generate again --- round and round until the job's done. A tool call sounds like reaching for a hammer --- here the model asks for something outside itself and waits for the answer. If anyone asks what runs the loop: *you* did. The harness is the scaffolding around the model that pauses it, makes the call, and splices the result back --- here, that was the students themselves.
-*/}
+```

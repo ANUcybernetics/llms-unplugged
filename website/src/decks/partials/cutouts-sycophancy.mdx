@@ -4,9 +4,9 @@
 
 ![bg](./assets/bg-agreement.avif)
 
-{/* notes:
+```notes
 Section beat: a model that always agrees. We build our own by piling in flattery cutouts --- no RLHF needed.
-*/}
+```
 
 ---
 
@@ -26,9 +26,9 @@ real LLMs are notoriously prone to it---partly from RLHF (human raters reward
 agreeable answers), partly from training data (the internet is full of
 flattery)
 
-{/* notes:
+```notes
 Real LLMs do this too --- the slide says why. Don't over-explain; the activity makes the point.
-*/}
+```
 
 ---
 
@@ -42,9 +42,9 @@ the same starting word, and watch the output drift toward agreement
 think of it as pooling two models---your training text + a curated sycophancy
 model---into one
 
-{/* notes:
+```notes
 Add the sycophancy stack and regenerate from the same starting word --- it's just pooling two models, like the last section. ~2 min set-up.
-*/}
+```
 
 ---
 
@@ -68,9 +68,9 @@ models---once generation crosses into the sycophancy stack, the output drifts:
 
 same mechanism, just more cutouts pulling generation toward flattery
 
-{/* notes:
+```notes
 Common words (you, that, i, .) bridge into the sycophancy stack; once the chain crosses over, the output drifts toward flattery.
-*/}
+```
 
 ---
 
@@ -98,9 +98,9 @@ generate a fresh sentence from the same starting word as before
 
 compare: before vs after
 
-{/* notes:
+```notes
 Same starting word as their baseline, then regenerate. Compare before vs after. 15 min, circulate.
-*/}
+```
 
 ---
 
@@ -110,9 +110,9 @@ Same starting word as their baseline, then regenerate. Compare before vs after. 
 
 ![bg](./assets/bg-insight-sycophancy.avif)
 
-{/* notes:
+```notes
 Did it always turn sycophantic, or only sometimes? Only once the chain crosses into the stack --- that's the honest answer, and the point. ~5 min.
-*/}
+```
 
 ---
 
@@ -124,6 +124,6 @@ alignment
 
 bias
 
-{/* notes:
+```notes
 Everyday sense first, then ours: alignment is wheel alignment, or lining up text on a page --- here it's getting a model to do what we actually want. Bias is prejudice, an unfair thumb on the scale --- here it's just that the model copies whatever's in its training data, no intent required.
-*/}
+```

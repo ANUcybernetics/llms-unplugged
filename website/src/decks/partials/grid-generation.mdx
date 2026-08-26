@@ -10,15 +10,14 @@
 
 ![bg right:40%](./assets/bg-algorithm-generation.avif)
 
-{/* notes:
-<ol>
-<li><strong>choose</strong> a starting word from your grid (any word --- not just the first one)</li>
-<li><strong>look</strong> at that word's row to find all possible next words and their counts</li>
-<li><strong>roll dice</strong> weighted by the counts to pick the next word</li>
-<li><strong>write down</strong> the chosen word and make it your new starting word</li>
-<li><strong>repeat</strong> from step 2</li>
-</ol>
-*/}
+```notes
+1. **choose** a starting word from your grid (any word --- not just the first
+   one)
+2. **look** at that word's row to find all possible next words and their counts
+3. **roll dice** weighted by the counts to pick the next word
+4. **write down** the chosen word and make it your new starting word
+5. **repeat** from step 2
+```
 
 use your grid to generate new text, rolling dice to choose each next word
 
@@ -26,7 +25,9 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## Generation: start with `see`
 
-{/* notes: any word will do as a seed --- we're starting from `see`, which is the last row, to show you don't have to begin at the top. Only one option here, so no roll. */}
+```notes
+any word will do as a seed --- we're starting from `see`, which is the last row, to show you don't have to begin at the top. Only one option here, so no roll.
+```
 
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={0} />
 
@@ -34,7 +35,9 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## Generation: from `spot`
 
-{/* notes: two options in this row (`run` and `,`) with equal tallies --- highlight both, then roll */}
+```notes
+two options in this row (`run` and `,`) with equal tallies --- highlight both, then roll
+```
 
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={1} phase="preroll" />
 
@@ -42,7 +45,9 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## How the die chooses: `spot`
 
-{/* notes: equal tallies, so each option gets (near enough) half of the ten d10 faces --- `run` gets 0-5 and `,` gets 6-9, reading the row's cells left to right; ten faces can't split evenly between two options, and the rounding is the same one the printed booklets use. Pause here before rolling. */}
+```notes
+equal tallies, so each option gets (near enough) half of the ten d10 faces --- `run` gets 0-5 and `,` gets 6-9, reading the row's cells left to right; ten faces can't split evenly between two options, and the rounding is the same one the printed booklets use. Pause here before rolling.
+```
 
 <DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={1} />
 
@@ -50,7 +55,9 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## How the die chooses: `spot`
 
-{/* notes: now roll --- a 7 lands in the `,` band */}
+```notes
+now roll --- a 7 lands in the `,` band
+```
 
 <DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={1} showRoll />
 
@@ -58,7 +65,9 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## Generation: `spot` → `,`
 
-{/* notes: the 7 landed in the `,` band, so `,` is our next word */}
+```notes
+the 7 landed in the `,` band, so `,` is our next word
+```
 
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={1} />
 
@@ -66,7 +75,9 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## Generation: from `,`
 
-{/* notes: another two-option row (`run` and `spot`), still equal --- both highlighted, then roll */}
+```notes
+another two-option row (`run` and `spot`), still equal --- both highlighted, then roll
+```
 
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={2} phase="preroll" />
 
@@ -74,7 +85,9 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## Generation: `,` → `run`
 
-{/* notes: rolled a 2, which lands in the `run` band */}
+```notes
+rolled a 2, which lands in the `run` band
+```
 
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={2} />
 
@@ -82,7 +95,9 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## Generation: from `run`
 
-{/* notes: two options again --- but `.` has two tallies to `,`'s one, so this isn't a 50/50 roll */}
+```notes
+two options again --- but `.` has two tallies to `,`'s one, so this isn't a 50/50 roll
+```
 
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={3} phase="preroll" />
 
@@ -90,7 +105,9 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## How the die chooses: `run`
 
-{/* notes: `.` has twice the tallies, so it gets more of the faces (4-9) than `,` (0-3). With a ten-sided die that's the closest split rather than exactly 2:1 --- the point is more tallies → more faces → more likely. Pause here before rolling. */}
+```notes
+`.` has twice the tallies, so it gets more of the faces (4-9) than `,` (0-3). With a ten-sided die that's the closest split rather than exactly 2:1 --- the point is more tallies → more faces → more likely. Pause here before rolling.
+```
 
 <DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={3} />
 
@@ -98,7 +115,9 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## How the die chooses: `run`
 
-{/* notes: now roll --- a 6 sits in the `.` band */}
+```notes
+now roll --- a 6 sits in the `.` band
+```
 
 <DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={3} showRoll />
 
@@ -106,7 +125,9 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## Generation: `run` → `.`
 
-{/* notes: the 6 sits in the `.` band, so we pick `.` */}
+```notes
+the 6 sits in the `.` band, so we pick `.`
+```
 
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={3} />
 
@@ -114,7 +135,9 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## Generation: from `.`
 
-{/* notes: only one option (`see`) --- no roll. Note we keep rolling straight past the full stop; the model has no idea a sentence just ended. */}
+```notes
+only one option (`see`) --- no roll. Note we keep rolling straight past the full stop; the model has no idea a sentence just ended.
+```
 
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={4} />
 
@@ -122,7 +145,9 @@ use your grid to generate new text, rolling dice to choose each next word
 
 ## Generation: back to `see`
 
-{/* notes: and so on --- we've looped back to where we started. Keep going for as long as you like; you decide when to stop. */}
+```notes
+and so on --- we've looped back to where we started. Keep going for as long as you like; you decide when to stop.
+```
 
 <StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={5} />
 
@@ -146,9 +171,9 @@ a new sentence --- not in the training data!
 
 <Timer minutes={10} overlay />
 
-{/* notes:
+```notes
 Groups generate from their grid, rolling dice on each choice. 10 min, circulate. Where a row has only one option, no roll needed.
-*/}
+```
 
 ---
 
@@ -158,13 +183,13 @@ Groups generate from their grid, rolling dice on each choice. 10 min, circulate.
 
 ![bg](./assets/bg-div-reception.avif)
 
-{/* notes:
+```notes
 Take a couple of groups' generated sentences; celebrate the weird ones. ~5 min.
 
 If the room has energy for it, close the shareback by turning it outward: does that change how you picture what's happening when you type into ChatGPT? Then wait --- the silence is longer than feels comfortable and the first answer usually arrives just after you'd have given up. If nothing comes, narrow it: "did anything about that feel like something you've seen it do?"
 
 Two habits worth keeping. Don't answer your own question, and when someone raises something technical, consider flipping it back before you take it: "what draws you to that?" or "has anyone else run into that?" The expertise in the room is more use to them than a lecture from the front.
-*/}
+```
 
 ---
 
@@ -176,6 +201,6 @@ Two habits worth keeping. Don't answer your own question, and when someone raise
 - completion
 - hallucination
 
-{/* notes:
+```notes
 Everyday sense first, then ours: to prompt is to nudge an actor who's forgotten a line --- here the prompt is the starting text you give the model. A completion is finishing something off --- here it's the text the model generates back, and it doesn't know when to stop. A hallucination is seeing something that isn't there, a malfunction --- but the sentence you just generated was never in the text either, and it came out of the same tallies and the same dice as everything else. There's no separate mode the model slips into; we only call it hallucination when we didn't want the answer.
-*/}
+```

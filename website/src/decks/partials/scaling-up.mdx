@@ -4,11 +4,11 @@
 
 ![bg](./assets/bg-information-flow.avif)
 
-{/* notes:
+```notes
 The reassurance beat: what they built isn't a cartoon of an LLM, it's the real mechanism at human scale --- look at the context, weigh every possible next word, roll the dice, write it down, repeat. So what's actually different?
 
 Four beats, one slide each: their grid cannot be scaled (one slide of failure, run against their own grid), the one change that fixes it (shared numbers instead of dedicated tallies), the payoff (every dial turned up, and turning them up keeps working), and the one difference that isn't about size at all (which text, not how much). Then the closer. Don't land "and that's the difference" early --- the shared-numbers slide is the hinge, and it only pays off if the failure has been left unresolved. Every one of these has a lesson on the website that does it properly --- name that rather than explaining. ~5 min.
-*/}
+```
 
 ---
 
@@ -23,13 +23,15 @@ Four beats, one slide each: their grid cannot be scaled (one slide of failure, r
   note="you can't scale a table---it grows faster than you can fill it"
 />
 
-{/* notes: One slide of failure, and both obvious fixes fail for the same reason, so run them against the grid they built. Open from the moment they just lived: stuck on a comma, rolling dice, because every comma in the text looks identical --- one word of context is all a grid gets. Somebody always asks why not look at two words, and you want that question: the price of a second word is the whole vocabulary again, one row per *pair* of words. The table squares. (Two words is a trigram, you can absolutely build one, and there's a lesson on the website that runs one with pen and paper.)
+```notes
+ One slide of failure, and both obvious fixes fail for the same reason, so run them against the grid they built. Open from the moment they just lived: stuck on a comma, rolling dice, because every comma in the text looks identical --- one word of context is all a grid gets. Somebody always asks why not look at two words, and you want that question: the price of a second word is the whole vocabulary again, one row per *pair* of words. The table squares. (Two words is a trigram, you can absolutely build one, and there's a lesson on the website that runs one with pen and paper.)
 
 So maybe the fix is reading more. This is Frankenstein at true scale --- in the 2-hour run it's the booklet they just generated from, so name it as that; otherwise one clause is enough: a whole novel, about 84,000 words, 7,023 distinct, so 49 million cells. The gold speck is every word in the book. Read the entire novel and you have filled 0.08% of the table --- one cell in twelve hundred. The rest are empty, and empty means impossible.
 
 Now the surprise, and it's measured, not rhetorical --- their own tool, run on the first 5% of the novel and then on all of it. Twenty times as much text, and the grid did not get fuller. It got *emptier*: 0.20% of cells filled, down to 0.08%. Say why, because it's the whole point: new text brings new *words* as well as new pairs, and every new word adds a whole row and a whole column. The table grows by squares while the tallies arrive one at a time. That's a race a grid loses forever --- and remember the other fix wanted to *square* this table.
 
-Leave it broken. The question to walk off with, because the next slide answers it: if reading more can't fill a table, what is a real model doing instead? */}
+Leave it broken. The question to walk off with, because the next slide answers it: if reading more can't fill a table, what is a real model doing instead?
+```
 
 ---
 
@@ -43,13 +45,15 @@ Leave it broken. The question to walk off with, because the next slide answers i
 
 a real model rates it **0.40**---not _more_ numbers, **shared** numbers
 
-{/* notes: Ask before you explain: has anyone had one of these produce something that genuinely surprised them --- something it couldn't have been copying? Take an example from the room if you get a good one; this slide is the answer to it, and to the question the last slide left hanging.
+```notes
+ Ask before you explain: has anyone had one of these produce something that genuinely surprised them --- something it couldn't have been copying? Take an example from the room if you get a good one; this slide is the answer to it, and to the question the last slide left hanging.
 
 A different text, so set it up in one breath: three sentences, `cat` and `dog` doing exactly the same job. Then the ringed cell. Your grid tallies `cat` followed by `ran` but never `dog` followed by `ran`, so that cell is empty, and empty means impossible: it will never say "the dog ran", a sentence you know is perfectly fine. Every cell is its own little island --- nothing the grid learnt about `cat` reaches `dog` --- and that islanding is exactly why reading more didn't help: every tally you make pays for one cell and no other.
 
 Be precise about what changes, because a tally is a perfectly good parameter --- their novel-grid *is* a model with 49 million of them. The difference isn't how many numbers you have, it's what each one is for. A grid gives every number one job: count one pair, serve no other. A transformer spreads every pattern across billions of numbers, each nudged a tiny amount after every wrong guess in training, and because `cat` and `dog` turn up in the same kinds of places they end up leaning on the *same* numbers. One sentence about a cat now pays for a sentence about a dog, and the model can fill a cell it never saw. (The filled-in grid on screen is illustrative, not measured --- the shape is the point.)
 
-That sharing is the hinge of the whole section: it's what turns "more" from useless into worth having, and it's the reason an LLM isn't a very large phrasebook --- it says things nobody ever wrote. The cost, if it comes up: there's no longer a cell to point at, so "where does it store *the dog ran*" has no better answer than "smeared across a few billion numbers, and we're still working on reading it back". That's most of what interpretability research is. */}
+That sharing is the hinge of the whole section: it's what turns "more" from useless into worth having, and it's the reason an LLM isn't a very large phrasebook --- it says things nobody ever wrote. The cost, if it comes up: there's no longer a cell to point at, so "where does it store *the dog ran*" has no better answer than "smeared across a few billion numbers, and we're still working on reading it back". That's most of what interpretability research is.
+```
 
 ---
 
@@ -66,11 +70,13 @@ That sharing is the hinge of the whole section: it's what turns "more" from usel
 
 with shared numbers, turning the dials up just **keeps working**
 
-{/* notes: Ask before you explain, because this slide is where their most common complaint lives: hands up if you've told one of these things not to do something and it did it anyway. Take two answers. Then the honest account: your instruction didn't fall off the end of a one-word window --- it's in the context, all of it, every time. It's one more stretch of text competing with everything else in the window, weighted rather than obeyed: "it read your instruction and something else won". What the model is looking at right now is all that shapes what comes next --- that much their grid taught them straight.
+```notes
+ Ask before you explain, because this slide is where their most common complaint lives: hands up if you've told one of these things not to do something and it did it anyway. Take two answers. Then the honest account: your instruction didn't fall off the end of a one-word window --- it's in the context, all of it, every time. It's one more stretch of text competing with everything else in the window, weighted rather than obeyed: "it read your instruction and something else won". What the model is looking at right now is all that shapes what comes next --- that much their grid taught them straight.
 
 Then the three dials, briskly, because the bars carry them. Context: one word for their grid, the whole conversation for Claude --- and no squared table to pay for it, because there is no table; that's what shared numbers bought. Training text: fifteen trillion tokens is the published figure for a recent open model's training run --- about 180 million copies of this novel, roughly 5.7 million years at the pace they just worked --- and none of it is wasted filling one cell each, because every token nudges numbers shared with everything else. Model size: about a trillion parameters is the right order of magnitude for a frontier model (the exact figure for the closed ones is unpublished, so "about that, and nobody outside will tell you" is the honest answer) --- and a trillion parameters is not a trillion-cell grid, which we've just seen would be empty.
 
-Then the line the slide is for, and it's the strangest fact in the section: turning these dials up just keeps working. Make the model bigger, feed it more text, let it look at more --- and it gets better in a way you can measure, predictably enough to plan a training run around. Nobody fully knows why that keeps holding, and that measured regularity, more than any single clever idea, is why the last five years of AI happened. Each dial has a lesson on the website that does it properly --- name that rather than explaining. */}
+Then the line the slide is for, and it's the strangest fact in the section: turning these dials up just keeps working. Make the model bigger, feed it more text, let it look at more --- and it gets better in a way you can measure, predictably enough to plan a training run around. Nobody fully knows why that keeps holding, and that measured regularity, more than any single clever idea, is why the last five years of AI happened. Each dial has a lesson on the website that does it properly --- name that rather than explaining.
+```
 
 ---
 
@@ -87,13 +93,15 @@ it isn't refusing to answer---**answering isn't a thing it does**
 
 the fix isn't a bigger dial---it's more training, on text made of _conversations_
 
-{/* notes: The dials are done, and this is deliberately not a fourth --- it isn't about *how much*, it's about *which text*. Say that as you arrive: "and one thing that isn't a matter of size at all".
+```notes
+ The dials are done, and this is deliberately not a fourth --- it isn't about *how much*, it's about *which text*. Say that as you arrive: "and one thing that isn't a matter of size at all".
 
 No heading --- the line is "let's ask your grid a question", and the slide just shows what comes back. Feed their model a question and it does what it always does: continues. It isn't being unhelpful and it isn't broken; nothing in "tally which word follows which" has any notion of a question and an answer. This is the honest state of a model that has only ever been trained to continue text --- and it's also, near enough, what a frontier model looks like straight out of pre-training: their problem, with better grammar. Turn all three dials to the maximum and you still get this.
 
 Then the second line. What turns it into something that answers you is post-training: a second, much smaller round of the same training on transcripts of conversations, plus feedback on which answers people preferred. Tally text off the web and what follows a question mark is usually another question; tally conversations and what follows it is the start of an answer. The mechanism hasn't changed --- same predict-the-next-word loop, same dice --- just different text to learn from, so different habits on top.
 
-One aside, if the room is with you and you're not behind. "Feedback on which answers people preferred" is where sycophancy comes from: ask who's had one of these cave the moment they pushed back, agreeing when they were the one who had it wrong. Raters, faced with two replies, tended to prefer the agreeable one, so agreeing got reinforced --- and nowhere in any of this is a fact marked true or false. Agreement from one of these is not evidence you were right. It's a good moment, but it's a second point; the slide stands without it. */}
+One aside, if the room is with you and you're not behind. "Feedback on which answers people preferred" is where sycophancy comes from: ask who's had one of these cave the moment they pushed back, agreeing when they were the one who had it wrong. Raters, faced with two replies, tended to prefer the agreeable one, so agreeing got reinforced --- and nowhere in any of this is a fact marked true or false. Agreement from one of these is not evidence you were right. It's a good moment, but it's a second point; the slide stands without it.
+```
 
 ---
 
@@ -101,4 +109,6 @@ One aside, if the room is with you and you're not behind. "Feedback on which ans
 
 still just **tokens in** → **tokens out**
 
-{/* notes: If they keep one sentence, this is it: a frontier model is their loop --- look at the context, weigh the options, roll the dice, write it down --- with every dial turned up, the tallies swapped for shared numbers, and a round of manners on top. Every reply from Claude or ChatGPT is sampled one token at a time, exactly like their dice rolls; that's why "regenerate" gives a different answer. Not their grid inflated until it worked --- a different kind of machine, running the same loop they ran by hand. */}
+```notes
+If they keep one sentence, this is it: a frontier model is their loop --- look at the context, weigh the options, roll the dice, write it down --- with every dial turned up, the tallies swapped for shared numbers, and a round of manners on top. Every reply from Claude or ChatGPT is sampled one token at a time, exactly like their dice rolls; that's why "regenerate" gives a different answer. Not their grid inflated until it worked --- a different kind of machine, running the same loop they ran by hand.
+```

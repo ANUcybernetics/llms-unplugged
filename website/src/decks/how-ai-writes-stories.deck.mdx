@@ -23,12 +23,14 @@ export const components = { code: Token };
 export const OVERVIEW_TOKENS =
   "and i will eat them here and there . say ! i will eat them anywhere ! i do so like green eggs and ham !";
 
-{/* Boilerplate prompt + fill-in fields for the "ask one to write us a story"
-    slide. The CopyButton renders an input per field; the presenter types the
-    teacher name and three student words, then copies the filled-in prompt
-    straight into ChatGPT. Year level and city are baked into the prompt --- edit
-    them here if a delivery differs. The prompt is built from an array so the
-    copied text has clean newlines and no source indentation. */}
+```comment
+Boilerplate prompt + fill-in fields for the "ask one to write us a story"
+   slide. The CopyButton renders an input per field; the presenter types the
+   teacher name and three student words, then copies the filled-in prompt
+   straight into ChatGPT. Year level and city are baked into the prompt --- edit
+   them here if a delivery differs. The prompt is built from an array so the
+   copied text has clean newlines and no source indentation.
+```
 
 export const STORY_PROMPT = [
   "Write a funny, exciting two-paragraph story featuring [TEACHER NAME] as the hero. The story must naturally incorporate the following three words or ideas: [WORD 1], [WORD 2], and [WORD 3].",
@@ -48,23 +50,23 @@ export const STORY_FIELDS = [
   { token: "[WORD 3]", label: "Word 3", size: 18 },
 ];
 
-{/*
-  90-minute workshop for year 5-6 primary-school students. Five parts:
-    Part 1 (15 min)  What is AI? (yr5-6-what-is-ai)
-    Part 2 (20 min)  Training (yr5-6-pattern-warmup + yr5-6-definitions + cutouts-training)
-    Part 3 (25 min)  Generation (cutouts-generation)
-    Part 4 (15 min)  Class story (yr5-6-class-story --- optional, drop if running over)
-    Part 5 (10 min)  Wrap-up + Q&A (yr5-6-wrap-up)
-  Allow 5 min for arrival/settle/introductions before Part 1.
+```comment
+90-minute workshop for year 5-6 primary-school students. Five parts:
+  Part 1 (15 min)  What is AI? (yr5-6-what-is-ai)
+  Part 2 (20 min)  Training (yr5-6-pattern-warmup + yr5-6-definitions + cutouts-training)
+  Part 3 (25 min)  Generation (cutouts-generation)
+  Part 4 (15 min)  Class story (yr5-6-class-story --- optional, drop if running over)
+  Part 5 (10 min)  Wrap-up + Q&A (yr5-6-wrap-up)
+Allow 5 min for arrival/settle/introductions before Part 1.
 
-  Before each delivery:
-  - swap the teacher's name and the age/location placeholders in the speaker
-    notes of yr5-6-what-is-ai.mdx
-  - have a few "predict the next word" prompts ready for the whiteboard
-    (include this school's values) --- see yr5-6-pattern-warmup.mdx
-  - print the token cutouts (-n 2) for the chosen books and (ideally) pre-cut
-    into strips
-*/}
+Before each delivery:
+- swap the teacher's name and the age/location placeholders in the speaker
+  notes of yr5-6-what-is-ai.mdx
+- have a few "predict the next word" prompts ready for the whiteboard
+  (include this school's values) --- see yr5-6-pattern-warmup.mdx
+- print the token cutouts (-n 2) for the chosen books and (ideally) pre-cut
+  into strips
+```
 
 {/* _class: hero */}
 
@@ -74,9 +76,9 @@ export const STORY_FIELDS = [
 
 ![bg](./assets/bg-title-wide.avif)
 
-{/* notes:
+```notes
 Open warm: today we'll find out how AI writes stories, and build our own with paper. No computers.
-*/}
+```
 
 ---
 

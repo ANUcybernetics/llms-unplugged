@@ -10,40 +10,40 @@ listed: false
 import Timer from "../components/Timer.astro";
 import "../styles/widgets.css";
 
-{/*
-  Ben's 15-minute slot (3:52 pm, hard stop 4:07 pm) at the ANU Visionaries
-  Among Us Showcase, Manning Clark Hall, 15 Aug 2026. Program title:
-  "Demystifying Large Language Models". Staging, AV cues, usher plan, corpus
-  analysis and risks live in the nb note anu-visionaries-showcase-2026; deck
-  work tracked in backlog TASK-140. `make showcase` in cli/ builds the
-  participant sheets (input order and --seed 42 are load-bearing).
+```comment
+Ben's 15-minute slot (3:52 pm, hard stop 4:07 pm) at the ANU Visionaries
+Among Us Showcase, Manning Clark Hall, 15 Aug 2026. Program title:
+"Demystifying Large Language Models". Staging, AV cues, usher plan, corpus
+analysis and risks live in the nb note anu-visionaries-showcase-2026; deck
+work tracked in backlog TASK-140. `make showcase` in cli/ builds the
+participant sheets (input order and --seed 42 are load-bearing).
 
-  TED-style: the speaking carries it and the slides are cues, not visual
-  aids. Two slide grammars carry nearly all of it --- a full-bleed image with
-  nothing on it (the SAY: line opening those notes is the sentence the image
-  stands under), and one line in white over the artwork (`_class: hero`, no
-  h1, styled in theme.css). Only three slides carry real text: the algorithm
-  (6), the role mapping (9) and the three-book reveal (11). If a slide is
-  tempting you to read it out, cut it rather than the sentence you were going
-  to say.
+TED-style: the speaking carries it and the slides are cues, not visual
+aids. Two slide grammars carry nearly all of it --- a full-bleed image with
+nothing on it (the SAY: line opening those notes is the sentence the image
+stands under), and one line in white over the artwork (`_class: hero`, no
+h1, styled in theme.css). Only three slides carry real text: the algorithm
+(6), the role mapping (9) and the three-book reveal (11). If a slide is
+tempting you to read it out, cut it rather than the sentence you were going
+to say.
 
-  The reveal is the spine: the three source books are never named until slide
-  11, and nothing on the printed sheets names them either (--title/--author
-  overrides). Hemingway then Poe then Seuss, because Seuss is the biggest
-  recognition hit and has to land last.
+The reveal is the spine: the three source books are never named until slide
+11, and nothing on the printed sheets names them either (--title/--author
+overrides). Hemingway then Poe then Seuss, because Seuss is the biggest
+recognition hit and has to land last.
 
-  Running order (target 13:00 against the 15:00 slot; the run is where the
-  spare time goes --- 4:30 on stage is fine, 5:00 if the room is with you):
-    0:00  Smallest thing on the program        (slides 1-4  )
-    2:00  What you've just been given          (slide 5,    )
-    3:00  Seed it, then the algorithm          (slide 6,    )
-    5:00  Run the room                         (slide 7,    )
-    9:00  What just happened                   (slides 8-10 )
-   11:00  Three books                          (slide 11,   )
-   13:00  ANU at 80, and over to Cecilia       (slides 12-14)
+Running order (target 13:00 against the 15:00 slot; the run is where the
+spare time goes --- 4:30 on stage is fine, 5:00 if the room is with you):
+  0:00  Smallest thing on the program        (slides 1-4  )
+  2:00  What you've just been given          (slide 5,    )
+  3:00  Seed it, then the algorithm          (slide 6,    )
+  5:00  Run the room                         (slide 7,    )
+  9:00  What just happened                   (slides 8-10 )
+ 11:00  Three books                          (slide 11,   )
+ 13:00  ANU at 80, and over to Cecilia       (slides 12-14)
 
-  Per-slide notes hold the beats to hit --- rehearsal cues, not a script.
-*/}
+Per-slide notes hold the beats to hit --- rehearsal cues, not a script.
+```
 
 {/* _class: hero */}
 
@@ -51,35 +51,34 @@ import "../styles/widgets.css";
 
 ![bg](./assets/bg-title-wide.avif)
 
-{/* notes:
-
+```notes
 exciting to be on the visionaries stage, hi Mum
 
 Ann: sixty-five thousand years. Brad and Brian: the edge of the observable universe. Joan: scicomm matters because understanding
 our world matters, and one aspect of our world that we've probably all got big thoughts and feelings about is AI/LLMs
 
 hands up: used one this week. Keep them up if you could explain to a ten-year-old what it did.
-*/}
+```
 
 ---
 
 ![bg](./assets/bg-first-tool-wide.avif)
 
-{/* notes:
+```notes
 the reason for that is that we got the tool before we got the story about the tool.
 
 not too complicated, just happened too fast
-*/}
+```
 
 ---
 
 ![bg](./assets/bg-two-stories.avif)
 
-{/* notes:
+```notes
 one story says it's basically a mind. The other says it's just autocomplete.
 
 opposites doing the same job: beyond you or beneath you, either way don't look inside.
-*/}
+```
 
 ---
 
@@ -90,33 +89,34 @@ on a machine you've never seen **inside**
 
 ![bg](./assets/bg-machine-interior-wide.avif)
 
-{/* notes:
+```notes
 cue the house lights up, and the ushers to start handing out the token sheets,
 because together we're going to look inside a language model
 
 take one, pass rest along, try and not leave any that aren't in someone's hand
-
-*/}
+```
 
 ---
 
 {/* _class: hero */}
 
-{/* A fan of blank pages, and deliberately not bg-cut-spread (the age-of-ai
-    deck's equivalent slide): that one has scissors in it, and nothing here
-    needs cutting. */}
+```comment
+A fan of blank pages, and deliberately not bg-cut-spread (the age-of-ai
+   deck's equivalent slide): that one has scissors in it, and nothing here
+   needs cutting.
+```
 
 a page of **token pairs** --- a word, and the word before it
 
 ![bg](./assets/bg-cutouts-overview.avif)
 
-{/* notes:
+```notes
 hold one up: sheet of token pairs, mostly words but some punctuation
 
 first token in each token pair is boxed, the second one isn't, and colours will make sense shortly
 
 10s to scan your sheet, then eyes up
-*/}
+```
 
 ---
 
@@ -129,28 +129,30 @@ first token in each token pair is boxed, the second one isn't, and colours will 
 3. I **pick a hand at random** --- you read out the token beside it
 4. I **write it down**, and we go again
 
-{/* notes:
+```notes
 describe algo (read from screen is ok)
 
 then call for volunteer and get first pair
-*/}
+```
 
 ---
 
-{/* The board slide. No words and no `.hero` class: the artwork is the deck's
-    own whiteboard surface (the same asset the board paints, on the same dark
-    ground), so the slide reads as a blank board with the timer sitting on it,
-    and the hero scrim would only grey that board down. Write on it with the
-    annotation layer (⇧W), NOT the board itself (W) --- the board is an opaque
-    layer over the slide and would take the timer with it. */}
+```comment
+The board slide. No words and no `.hero` class: the artwork is the deck's
+   own whiteboard surface (the same asset the board paints, on the same dark
+   ground), so the slide reads as a blank board with the timer sitting on it,
+   and the hero scrim would only grey that board down. Write on it with the
+   annotation layer (⇧W), NOT the board itself (W) --- the board is an opaque
+   layer over the slide and would take the timer with it.
+```
 
 ![bg](./assets/deco-whiteboard.avif)
 
 <Timer minutes={4} overlay />
 
-{/* notes:
+```notes
 shift-W, write the seed, go. Four minutes, 12-15 tokens, write BIG (back of the hall).
-*/}
+```
 
 ---
 
@@ -160,9 +162,9 @@ we just ran a **language model**
 
 ![bg](./assets/bg-div-reception.avif)
 
-{/* notes:
+```notes
 not an analogy --- the mechanism, at human speed
-*/}
+```
 
 ---
 
@@ -178,11 +180,11 @@ my random pick → **sampling**
 
 the sentence I wrote → **generation**
 
-{/* notes:
+```notes
 read from slide
 
 about 6k token pairs (parameters) - not quite the 1T or so of frontier language models, but not too shabby
-*/}
+```
 
 ---
 
@@ -192,11 +194,11 @@ the sentence we wrote is in **no book**
 
 ![bg](./assets/bg-chain.avif)
 
-{/* notes:
+```notes
 nobody wrote it: no lookup in a big database of sentences, nobody pulled out their phone and searched the web
 
 everything was decided by the token pairs on our collective sheets; so where did they come from?
-*/}
+```
 
 ---
 
@@ -206,13 +208,13 @@ everything was decided by the token pairs on our collective sheets; so where did
 <p class="corpus-c fragment">“TRUE! nervous, very, very dreadfully nervous I had been and am.”<br /><span class="corpus-attribution">— Edgar Allan Poe, <em>The Tell-Tale Heart</em> (1843)</span></p>
 <p class="corpus-b fragment">“The sun did not shine. It was too wet to play.”<br /><span class="corpus-attribution">— Dr. Seuss, <em>The Cat in the Hat</em> (1957)</span></p>
 
-{/* notes:
+```notes
 each token pair occurs in one of these three books (read them out one by one)
 
 token sheets - the model - had no indicator of which token came from which book
 
 and it worked because there's 'token crossover' between the books
-*/}
+```
 
 ---
 
@@ -223,13 +225,13 @@ for a country facing a transformed world
 
 ![bg](./assets/bg-anu-1946-wide.avif)
 
-{/* notes:
+```notes
 ANU founded 80 years ago...
 
 in 1946 the technology was the atom, in 2026 the technology is different but our mission is the same "first to know the nature of things"
 
 that's what LLMs Unplugged and the broader Human-Scale AI mission are all about
-*/}
+```
 
 ---
 
@@ -240,11 +242,11 @@ the thing you're told needs a **data centre**
 
 ![bg](./assets/bg-hall-generation-wide.avif)
 
-{/* notes:
+```notes
 who now thinks they could give a better answer to a 10yo about how language models do what they do?
 
 obviously it still requires some simplification, but - crucially - it's not beyond them, and it's not beneath them to try and understand
-*/}
+```
 
 ---
 
@@ -258,11 +260,10 @@ it makes you **harder to bullsh\*t**
 
 ![bg](./assets/bg-trigrams-banner.avif)
 
-{/* notes:
-
+```notes
 doesn't make you an expert; even if you have 1B in your pocket you can't go out and build your own Claude-level language model from scratch
 
 but it might make you, well... (look at slide)
 
 that's what LLMs Unplugged is all about: providing resources to help us all tell better and more accurate stories about how LLMs and AI works; this technology which is changing the world
-*/}
+```

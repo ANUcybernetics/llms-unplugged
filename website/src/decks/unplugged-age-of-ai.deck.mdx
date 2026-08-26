@@ -21,53 +21,53 @@ import "../styles/widgets.css";
 
 <GridRowToggle />
 
-{/*
-  A ~21 minute talk, delivered immediately after Tim Bell's CS Unplugged
-  introduction (ANU, 10 Aug 2026). It is a talk, not a workshop --- the only
-  thing the audience does is hold a search sheet and put a hand up.
+```comment
+A ~21 minute talk, delivered immediately after Tim Bell's CS Unplugged
+introduction (ANU, 10 Aug 2026). It is a talk, not a workshop --- the only
+thing the audience does is hold a search sheet and put a hand up.
 
-  Running order:
-    0:00  Pick up Tim's Bandura quote            (slides 1-4,   ~3 min)
-    0:03  What you've just been given            (slides 5-6,   ~2 min)
-    0:05  Seed it, then run the model            (slides 7-9,   ~6 min)
-    0:11  What just happened                     (slides 10-13, ~3 min)
-    0:14  What Claude does differently, at scale (slides 14-18, ~4 min)
-    0:18  The claim, then come tomorrow          (slides 19-23, ~3 min)
+Running order:
+  0:00  Pick up Tim's Bandura quote            (slides 1-4,   ~3 min)
+  0:03  What you've just been given            (slides 5-6,   ~2 min)
+  0:05  Seed it, then run the model            (slides 7-9,   ~6 min)
+  0:11  What just happened                     (slides 10-13, ~3 min)
+  0:14  What Claude does differently, at scale (slides 14-18, ~4 min)
+  0:18  The claim, then come tomorrow          (slides 19-23, ~3 min)
 
-  The Bandura quote (slide 2) is the deck's only fragment build: two clicks
-  light up the two clauses in turn, and the second is the one the whole talk
-  is aimed at. It is repeated, already lit, on slide 19 to close the loop.
+The Bandura quote (slide 2) is the deck's only fragment build: two clicks
+light up the two clauses in turn, and the second is the one the whole talk
+is aimed at. It is repeated, already lit, on slide 19 to close the loop.
 
-  The scale run (15-17) makes one claim only: compared with the paper model, a
-  frontier LLM looks at vastly more context, has seen vastly more training
-  text and contains vastly more learned numbers. Those quantities scale
-  independently, and the machinery is different, so the bars deliberately do
-  not share an axis. Do not turn this into an argument that transformers are a
-  more parameter-efficient n-gram; that is true in an important sense, but it
-  is not this talk's point.
+The scale run (15-17) makes one claim only: compared with the paper model, a
+frontier LLM looks at vastly more context, has seen vastly more training
+text and contains vastly more learned numbers. Those quantities scale
+independently, and the machinery is different, so the bars deliberately do
+not share an axis. Do not turn this into an argument that transformers are a
+more parameter-efficient n-gram; that is true in an important sense, but it
+is not this talk's point.
 
-  Assumes the Acknowledgement of Country and the welcome happened at the top of
-  the session, before Tim --- hence no ack-country slide here.
+Assumes the Acknowledgement of Country and the welcome happened at the top of
+the session, before Tim --- hence no ack-country slide here.
 
-  Before delivery:
-    - print the sheets, one per attendee, and have them ready to hand out:
-        llms_unplugged sheets -i data/the-cat-in-the-hat.txt -n 2 --sheets 24
-      (--sheets should match the expected head count; the deal spreads each
-      context across as many sheets as it will go, so a bigger room makes the
-      hands-up distribution sharper, not noisier)
-    - keep the teacher brief (page 1 of the PDF) on the lectern --- it carries
-      the worked example
-    - have the whiteboard overlay ready (press `b`) for writing the generated
-      text, and a scribe lined up if you would rather not write and talk
-    - the numbers on slides 6 and 15 are for The Cat in the Hat at n=2; if you
-      swap the corpus, rebuild them with `llms_unplugged build` and read the
-      metadata block
+Before delivery:
+  - print the sheets, one per attendee, and have them ready to hand out:
+      llms_unplugged sheets -i data/the-cat-in-the-hat.txt -n 2 --sheets 24
+    (--sheets should match the expected head count; the deal spreads each
+    context across as many sheets as it will go, so a bigger room makes the
+    hands-up distribution sharper, not noisier)
+  - keep the teacher brief (page 1 of the PDF) on the lectern --- it carries
+    the worked example
+  - have the whiteboard overlay ready (press `b`) for writing the generated
+    text, and a scribe lined up if you would rather not write and talk
+  - the numbers on slides 6 and 15 are for The Cat in the Hat at n=2; if you
+    swap the corpus, rebuild them with `llms_unplugged build` and read the
+    metadata block
 
-  Vocabulary: a *token* is one word or punctuation mark --- the sense the
-  workshop and the printed sheets both use. A *token pair* is two of them, the
-  boxed one and the one that follows. Slide 5 says the words; slide 11 makes
-  them stick. Never call the pair a token.
-*/}
+Vocabulary: a *token* is one word or punctuation mark --- the sense the
+workshop and the printed sheets both use. A *token pair* is two of them, the
+boxed one and the one that follows. Slide 5 says the words; slide 11 makes
+them stick. Never call the pair a token.
+```
 
 {/* _class: hero */}
 
@@ -77,11 +77,11 @@ import "../styles/widgets.css";
 
 ![bg](./assets/bg-title-wide.avif)
 
-{/* notes:
+```notes
 Twenty minutes, and most of it is you doing the work rather than me talking. Introduce yourself briefly --- School of Cybernetics, and the last two years spent teaching people how language models work with paper and dice.
 
 Don't hand out the sheets yet. They get read too early otherwise, and the reveal is worth protecting.
-*/}
+```
 
 ---
 
@@ -96,7 +96,7 @@ Don't hand out the sheets yet. They get read too early otherwise, and the reveal
 >
 > <cite>Albert Bandura, 2001</cite>
 
-{/* notes:
+```notes
 Tim had this on screen about fifteen minutes ago. I want to pick it up and point it at one technology in particular, because Bandura wrote it in 2001 and it has aged into a description of this year.
 
 Read it out whole first, with nothing lit up. Then two clicks, because there are two failures in that sentence and they are not equal.
@@ -104,7 +104,7 @@ Read it out whole first, with nothing lit up. Then two clicks, because there are
 First click, `neither understand`: ordinary. I don't understand my car's transmission and I get by.
 
 Second click, `nor believe they can do much to influence`: the expensive one. Having concluded, in advance, that this is not a thing you get a say in. That's the failure AI is currently manufacturing at scale, and it's the one this talk is aimed at.
-*/}
+```
 
 ---
 
@@ -116,11 +116,11 @@ it **understands** you---it's basically a mind
 
 it's **just autocomplete**---it's basically a parlour trick
 
-{/* notes:
+```notes
 Both of these are on offer everywhere, usually from people who are confident. And notice they're opposites that do the same job: each one tells you there's nothing in the middle worth your attention. Either it's beyond you, or it's beneath you. Either way, don't look inside.
 
 Beat. The honest answer is in between and it's more interesting than both, and --- this is the bit people don't believe --- it fits in a room like this one.
-*/}
+```
 
 ---
 
@@ -132,11 +132,11 @@ the inside of
 
 ![bg](./assets/bg-machine-interior.avif)
 
-{/* notes:
+```notes
 This is the whole argument of the talk, stated once, before the demonstration that earns it.
 
 Then: so let's look inside. Not a diagram of the inside --- the inside. Have the sheets handed out; once everyone has one, ask them to pick it up.
-*/}
+```
 
 ---
 
@@ -148,7 +148,7 @@ a list of **token pairs** (bigrams) from _The Cat in the Hat_
 
 (it's shuffled, so your page isn't just a book excerpt)
 
-{/* notes:
+```notes
 Hold one up. Each pair is a word with the word that came just before it boxed in front: `the` then `cat`, meaning that somewhere in the book, `cat` follows `the`. Every word keeps the same colour wherever it appears, so you scan by colour and confirm by reading.
 
 Token pair is the sheets' own wording, so it's on the page in their hand. One clause is enough for now --- a token is one word or one punctuation mark --- and don't dwell; slide 11 is where it gets nailed down.
@@ -156,7 +156,7 @@ Token pair is the sheets' own wording, so it's on the page in their hand. One cl
 The shuffle matters, and it's worth naming: in book order these pages would just be the book with boxes drawn round it, and you'd read it. Shuffled, no page says anything. Nobody here is holding a story.
 
 ~80 pairs each. Give them ten seconds to look, then get their eyes back up.
-*/}
+```
 
 ---
 
@@ -168,11 +168,11 @@ The shuffle matters, and it's worth naming: in book order these pages would just
 
 no single sheet has the whole picture
 
-{/* notes:
+```notes
 Every one of the 1,961 word-pairs in the book was dealt to exactly one person, and the deal deliberately spreads each context across as many people as it will go. So the model isn't in my laptop and it isn't on anyone's sheet --- it only exists across the whole room. If somebody had stayed home, part of it is missing and some contexts will draw no hands at all.
 
 That's not a metaphor for how a model is distributed. For the next five minutes it's literally where the model is.
-*/}
+```
 
 ---
 
@@ -180,7 +180,7 @@ That's not a metaphor for how a model is distributed. For the next five minutes 
 
 can I have a **volunteer**?
 
-{/* notes:
+```notes
 Someone near the front, sheet in hand. Ask them to read out any one pair from their page --- both words, boxed one first.
 
 Press `b` for the whiteboard and write both words up. That's the seed, and it matters that it came off a sheet rather than out of my head: the room supplies the first two words as well as every word after them.
@@ -188,7 +188,7 @@ Press `b` for the whiteboard and write both words up. That's the seed, and it ma
 Then say what happens next --- the second of those two words is the one I'm about to call out --- and move on. The algorithm slide lands better with a real word already on the board.
 
 If their pair is an odd one (a full stop, a name that appears once), take it anyway --- a thin first round is a real property of the model, not a failure. It can't dead-end on you, so you never need a second volunteer for that reason.
-*/}
+```
 
 ---
 
@@ -201,7 +201,7 @@ If their pair is an odd one (a full stop, a name that appears once), take it any
 3. **pick a hand at random** and you read out the corresponding _next_ (non-boxed) word
 4. **write it down**---and then repeat the process
 
-{/* notes:
+```notes
 Walk them through it once slowly, against the two words already on the board, because the whole demo depends on step 2 and step 3.
 
 Step 2: one hand each. If you've got more than one match, go with the first one you spot.
@@ -209,7 +209,7 @@ Step 2: one hand each. If you've got more than one match, go with the first one 
 Step 3 is the one to labour, briefly. I pick at random --- not whoever shouts first, because that samples the fastest reader in the room rather than the book. Randomly is what makes the room behave like the model.
 
 Don't explain why yet. They'll see it.
-*/}
+```
 
 ---
 
@@ -221,7 +221,7 @@ Don't explain why yet. They'll see it.
 
 <Timer minutes={5} overlay />
 
-{/* notes:
+```notes
 Whiteboard is already up with the volunteer's two words. Call out the second of them and go. Five minutes on the timer, so keep the rounds moving --- no commentary between hands going up and a word landing on the board.
 
 If you need to restart, the loud seeds are `the` (97 pairs out in the room across 30 different next words), then `and` (69), `I` (59), `you` (34), `we` (26). Avoid restarting from a full stop; it works, but the first thing the room does is argue about punctuation.
@@ -237,7 +237,7 @@ Hands will go up every round --- you can rely on that. Every distinct token in t
 The one way the room goes quiet is an empty seat: that person's sheet went home with them, and the pairs on it are simply gone. If it happens, say exactly that --- it's the same point as slide 6, made for you --- and reseed.
 
 Stop while they still want more, around 15 words. Read the sentence back.
-*/}
+```
 
 ---
 
@@ -245,9 +245,9 @@ Stop while they still want more, around 15 words. Read the sentence back.
 
 we just ran a language model
 
-{/* notes:
+```notes
 Say it flatly and let it sit. Not a simulation of one, not an analogy for one: the mechanism, at human speed, with the arithmetic small enough to see.
-*/}
+```
 
 ---
 
@@ -265,13 +265,13 @@ the random pick → **sampling**
 
 the sentence on the board → **generation**
 
-{/* notes:
+```notes
 The jargon that gets used to make this stuff sound unreachable, and you've now got a physical referent for every bit of it. Go along the list at a fair clip --- the point is the mapping, not a definition of each term.
 
 Token they've already met, on the sheet and back on slide 6; this is where it sticks, because everything else is measured in them. One unit of text --- for us one word or one punctuation mark, which is why the full stops are out there getting picked like everything else. (A real model chops rarer words into pieces, which is why it can spell out a word it has never seen. Say it only if it comes up.) Parameters and weights are the same thing under two names; you'll hear both.
 
 Worth saying out loud: those are the real words. When a researcher says a model has 1.5 trillion parameters, they mean this, a very large pile of the thing on your lap.
-*/}
+```
 
 ---
 
@@ -281,29 +281,31 @@ the sentence we wrote
 
 is **not in the book**
 
-{/* notes:
+```notes
 Check it if you like --- unless we got very unlucky, that exact sentence isn't in The Cat in the Hat. Nobody wrote it. There was no lookup and no database of sentences. It came out of a pile of paper and a series of coin tosses.
 
 That's the whole trick, and you have now watched it happen from the inside.
-*/}
+```
 
 ---
 
 ## the same model in grid form
 
-{/* step 13 is one past the last of the 12 pairs, so the grid shows complete
-    with no pair still ringed --- the same "finished model" state grid-training
-    ends on, rather than a build frozen mid-step. */}
+```comment
+step 13 is one past the last of the 12 pairs, so the grid shows complete
+   with no pair still ringed --- the same "finished model" state grid-training
+   ends on, rather than a build frozen mid-step.
+```
 
 <StaticGrid tokens={CAT_TOKENS} vocabulary={CAT_VOCAB} step={13} />
 
-{/* notes:
+```notes
 One line out of the book you're all holding --- "Look at me! Look at me! Look at me now!" --- small enough that the whole model fits on a slide. Every pair from your sheets is a tally mark in a cell: row is the token we're on, column is the token that could come next.
 
 Point at the `me` row: two marks under `!`, one under `now`. That's three hands going up, two of them saying the same thing --- the same distribution you were making with your arms five minutes ago.
 
 This is the form we use in the workshop, where each table builds their own grid from scratch. Same model, small enough to hold in one pair of hands.
-*/}
+```
 
 ---
 
@@ -317,7 +319,7 @@ it can say what it **never saw**---`cat` teaches it about `dog`
 
 it's been taught to **answer**, not just continue
 
-{/* notes:
+```notes
 The asterisk is yours to explain, in one line: Claude here means any frontier model --- ChatGPT, Gemini, Llama. Nothing on this slide is specific to Anthropic's; I just need a name to point at.
 
 Say each in a sentence, resist explaining any of them; each one has a full lesson on the website and none of them fits in this talk.
@@ -329,7 +331,7 @@ Our model rates any pair it never saw as flatly impossible, however sensible. A 
 And ours only ever continues text. Ask it a question and it continues the question --- that's not it refusing, answering just isn't a thing it does. Turning that into something that answers you is another round of training, on conversations.
 
 None of these changed the loop. Look at the context, weigh the options, pick one, write it down.
-*/}
+```
 
 ---
 
@@ -337,13 +339,13 @@ None of these changed the loop. Look at the context, weigh the options, pick one
 
 <GridZoom cells={57600} label="the whole room, as a grid" detail="240 distinct tokens · 57,600 cells" compareCells={25} compareLabel="the line on the last slide" note="5.8 m² of paper — roughly this stage" />
 
-{/* notes:
+```notes
 Read the caption. The little gold square is the slide you were just looking at; the big one is all of us. 240 distinct tokens, so 57,600 cells, and only about a thousand of them have a tally in them at all. The rest are empty --- pairs the book never made, which the model treats as impossible.
 
 At one centimetre per cell that's a square about two and a half metres on a side. Roughly this stage.
 
 This is the model we made today. Now put its two kinds of scale beside a frontier LLM. *[next slide]*
-*/}
+```
 
 ---
 
@@ -351,7 +353,7 @@ This is the model we made today. Now put its two kinds of scale beside a frontie
 
 <ModelScaleBars contextStart="1 token" trainingStart="1,962 tokens" modelStart="57,600 grid cells" footer="three independent scales · different kinds of model" />
 
-{/* notes:
+```notes
 Three independent scales grow. The first is how much the model looks at before each guess. Ours looked at exactly one token --- which is why our sentence wandered --- and Claude looks back over the whole conversation.
 
 The second is how much text went past the counter. Ours read 1,962 tokens; fifteen trillion is the published figure for a recent open model's training run. Every one of those tokens went past a counter, the way the book went past yours.
@@ -359,7 +361,7 @@ The second is how much text went past the counter. Ours read 1,962 tokens; fifte
 The third is how many learned numbers the model contains. Ours had a 240 by 240 grid: 57,600 places a count could live. A trillion parameters is the right order of magnitude for a frontier model, and the honest answer for the closed ones is "about that, and nobody outside will tell you".
 
 The bars have separate scales because these quantities can be changed independently. And the endpoints are different kinds of model: grid cells on the left, neural-network parameters on the right. This is a scale comparison, not a claim that one is a compressed version of the other.
-*/}
+```
 
 ---
 
@@ -373,11 +375,11 @@ The bars have separate scales because these quantities can be changed independen
 
 a **different kind** of model
 
-{/* notes:
+```notes
 Those are the differences to carry forward. Context, training text and learned numbers are all differences of scale, and none of them determines the others. What makes them worth scaling is the last line: spreading what it learns between related words --- and looking usefully across a whole conversation --- comes from different machinery, not merely from making our grid enormous.
 
 No transformer lesson today. The important continuity is on the next slide.
-*/}
+```
 
 ---
 
@@ -385,9 +387,9 @@ No transformer lesson today. The important continuity is on the next slide.
 
 still just **words in** → **words out**
 
-{/* notes:
+```notes
 Every reply from Claude or ChatGPT is produced one word at a time, by the loop you just ran with your hand in the air.
-*/}
+```
 
 ---
 
@@ -400,7 +402,7 @@ Every reply from Claude or ChatGPT is produced one word at a time, by the loop y
 a room full of people just did, slowly, the thing you're told needs a data
 centre
 
-{/* notes:
+```notes
 Read the clause off the slide again --- it's the one we lit up at the start, and it's the one the last twenty minutes were aimed at.
 
 This is why unplugged still matters, and I'd argue it matters more now than when Tim started doing it.
@@ -408,7 +410,7 @@ This is why unplugged still matters, and I'd argue it matters more now than when
 The technologies Bandura was worried about in 2001 were at least visibly machines. This one talks back, and the people selling it have an interest in you believing it's either a mind or a magic trick. Both stories end with you having no view.
 
 Twenty minutes of paper and hands in the air is the cheapest known cure for that.
-*/}
+```
 
 ---
 
@@ -418,13 +420,13 @@ it doesn't make you an expert
 
 it makes you **harder to bullsh\*t**
 
-{/* notes:
+```notes
 Be careful not to oversell. You can't build Claude now, and nothing here tells you whether it should be marking your students' essays.
 
 What you can do is hear a claim about AI and have somewhere to stand --- you know what kind of thing it is, which claims need more than confidence behind them, and which questions are worth asking. For a technology being sold this hard, that's not a small thing to hand a room.
 
 And it's portable: everything here is free, printable, and needs no devices.
-*/}
+```
 
 ---
 
@@ -432,9 +434,9 @@ And it's portable: everything here is free, printable, and needs no devices.
 
 <UpcomingSessions variant="plain" />
 
-{/* notes:
+```notes
 The workshop tomorrow morning is this, done properly: you build your own model from scratch rather than holding a slice of mine, and you take it home. Scan the QR or just turn up.
-*/}
+```
 
 ---
 
@@ -442,9 +444,9 @@ The workshop tomorrow morning is this, done properly: you build your own model f
 
 ![qr](https://www.llmsunplugged.org)
 
-{/* notes:
+```notes
 Everything --- lessons, printable materials, the tool that made your sheets --- is on the website, free and CC-licensed. Hold here long enough for the room to scan it, then finish on the School mark.
-*/}
+```
 
 ---
 

@@ -15,7 +15,7 @@ learnt from a whole novel
 
 first step on the road to the very big ones
 
-{/* notes:
+```notes
 Don't skip this --- from where they're sitting, the next twenty minutes look like the exercise they just did, a second time, and a section that feels like a repeat gets a room that's already worked hard for forty minutes checking their phones.
 
 The frame is the journey. Their grid, then a novel, then Frankenstein drawn at true scale in the scaling-up section, then a frontier model. Everything from here is the same loop with the dial turned up, and this is the first turn of it --- the point of doing it by hand is that they can feel what changed and what didn't.
@@ -23,7 +23,7 @@ The frame is the journey. Their grid, then a novel, then Frankenstein drawn at t
 Worth flagging what to watch for, so they read their output rather than just producing it: it'll sound more like real prose, and it still won't be about anything. That's the question to leave hanging at the shareback.
 
 The booklet's stretch goal is a good hook if the energy needs it: try to guess the training text before you check the title on the cover.
-*/}
+```
 
 ---
 
@@ -31,15 +31,13 @@ The booklet's stretch goal is a good hook if the energy needs it: try to guess t
 
 ![bg right:40%](./assets/bg-algorithm-generation-2.avif)
 
-{/* notes:
-<ol>
-<li><strong>choose</strong> a starting word --- any bold word in the booklet</li>
-<li><strong>look up</strong> that word's entry to see possible next words and their thresholds</li>
-<li><strong>roll</strong> your d10(s) and scan the thresholds to find the next word</li>
-<li><strong>write down</strong> the chosen word and make it your new starting word</li>
-<li><strong>repeat</strong> from step 2</li>
-</ol>
-*/}
+```notes
+1. **choose** a starting word --- any bold word in the booklet
+2. **look up** that word's entry to see possible next words and their thresholds
+3. **roll** your d10(s) and scan the thresholds to find the next word
+4. **write down** the chosen word and make it your new starting word
+5. **repeat** from step 2
+```
 
 use the booklet to generate new text, rolling one or more d10s to choose each next word
 
@@ -47,7 +45,9 @@ use the booklet to generate new text, rolling one or more d10s to choose each ne
 
 ## Pre-trained: start with `The`
 
-{/* notes: a bigger model &mdash; <code>The</code> is so common it needs <strong>two</strong> dice (roll two d10s for 00 to 99) */}
+```notes
+a bigger model &mdash; `The` is so common it needs **two** dice (roll two d10s for 00 to 99)
+```
 
 <StaticPretrainedGeneration tokens={EXAMPLE_TEXT} sequence={EXAMPLE_PRETRAINED_SEQ} rolls={EXAMPLE_PRETRAINED_ROLLS} step={0} />
 
@@ -55,7 +55,9 @@ use the booklet to generate new text, rolling one or more d10s to choose each ne
 
 ## Pre-trained: from `cat`
 
-{/* notes: <code>cat</code> is rarer than <code>The</code> &mdash; just <strong>one</strong> die, roll a d10 */}
+```notes
+`cat` is rarer than `The` &mdash; just **one** die, roll a d10
+```
 
 <StaticPretrainedGeneration tokens={EXAMPLE_TEXT} sequence={EXAMPLE_PRETRAINED_SEQ} rolls={EXAMPLE_PRETRAINED_ROLLS} step={1} />
 
@@ -63,7 +65,9 @@ use the booklet to generate new text, rolling one or more d10s to choose each ne
 
 ## Pre-trained: from `sat`
 
-{/* notes: only one option &mdash; no dice roll needed */}
+```notes
+only one option &mdash; no dice roll needed
+```
 
 <StaticPretrainedGeneration tokens={EXAMPLE_TEXT} sequence={EXAMPLE_PRETRAINED_SEQ} rolls={EXAMPLE_PRETRAINED_ROLLS} step={2} />
 
@@ -71,7 +75,9 @@ use the booklet to generate new text, rolling one or more d10s to choose each ne
 
 ## Pre-trained: from `.`
 
-{/* notes: only one option &mdash; no dice roll needed */}
+```notes
+only one option &mdash; no dice roll needed
+```
 
 <StaticPretrainedGeneration tokens={EXAMPLE_TEXT} sequence={EXAMPLE_PRETRAINED_SEQ} rolls={EXAMPLE_PRETRAINED_ROLLS} step={3} />
 
@@ -79,7 +85,9 @@ use the booklet to generate new text, rolling one or more d10s to choose each ne
 
 ## Pre-trained: from `The` again
 
-{/* notes: <strong>two</strong> dice again &mdash; 63 is past <code>cat</code>'s 50, so we land on <code>dog</code> */}
+```notes
+**two** dice again &mdash; 63 is past `cat`'s 50, so we land on `dog`
+```
 
 <StaticPretrainedGeneration tokens={EXAMPLE_TEXT} sequence={EXAMPLE_PRETRAINED_SEQ} rolls={EXAMPLE_PRETRAINED_ROLLS} step={4} />
 
@@ -87,7 +95,9 @@ use the booklet to generate new text, rolling one or more d10s to choose each ne
 
 ## Pre-trained: from `dog`
 
-{/* notes: and so on... */}
+```notes
+and so on...
+```
 
 <StaticPretrainedGeneration tokens={EXAMPLE_TEXT} sequence={EXAMPLE_PRETRAINED_SEQ} rolls={EXAMPLE_PRETRAINED_ROLLS} step={5} />
 
@@ -101,9 +111,9 @@ use the booklet to generate new text, rolling one or more d10s to choose each ne
 
 <Timer minutes={8} overlay />
 
-{/* notes:
+```notes
 Same as before but from the booklet --- a bigger model, one or more d10s. 8 min, circulate.
-*/}
+```
 
 ---
 
@@ -113,11 +123,11 @@ Same as before but from the booklet --- a bigger model, one or more d10s. 8 min,
 
 ![bg](./assets/bg-div-reception-2.avif)
 
-{/* notes:
+```notes
 Compare with the hand-built model: a bigger training text gives more varied, more natural output. Invite ~5 groups to share back rather than the whole room. ~5 min.
 
 The question to leave hanging as you move on: it reads better, but is it *saying* anything? More data bought fluency and nothing else --- the booklet's output sounds like prose because Frankenstein sounds like prose, and there is still nobody home. That's the same gap they've felt with a real model that answered confidently and wrongly; fluency was never evidence of understanding, and they've now watched it get manufactured out of tally marks. Take one or two answers and move --- the scaling-up section pays this off properly.
-*/}
+```
 
 ---
 
@@ -127,6 +137,6 @@ The question to leave hanging as you move on: it reads better, but is it *saying
 
 - open weight model
 
-{/* notes:
+```notes
 Everyday sense first, then ours: the weights are the numbers inside the model --- for the booklet, the tallies you'd count to work out what comes next --- and *open weight* means anyone can have a copy of those numbers. The booklet is the clearest version of that we'll get: take it home, read every number in it, generate from it at the kitchen table, and no-one can switch it off or quietly change it under you. Most of the chatbots they use are the other arrangement --- your text goes to someone else's computer, an answer comes back, and the weights never leave the building. If anyone pushes: open weight isn't open source (you get the numbers, not the training text or the code that made them), and it isn't the same as being able to run it --- a real open weight model wants a serious machine, where the booklet wants a d10.
-*/}
+```
