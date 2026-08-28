@@ -1,9 +1,10 @@
 ---
 id: TASK-113
 title: add section descriptions to all lesson sections
-status: To Do
+status: Done
 assignee: []
-created_date: "2026-03-11 06:26"
+created_date: '2026-03-11 06:26'
+updated_date: '2026-08-28 10:41'
 labels: []
 dependencies: []
 ---

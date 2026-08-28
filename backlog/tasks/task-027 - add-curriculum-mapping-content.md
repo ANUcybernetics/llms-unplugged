@@ -1,10 +1,10 @@
 ---
 id: task-027
 title: add curriculum mapping content
-status: To Do
+status: Done
 assignee: []
 created_date: '2025-11-19 21:21'
-updated_date: '2026-08-18 02:06'
+updated_date: '2026-08-28 10:41'
 labels:
   - website
 dependencies: []
@@ -25,10 +25,16 @@ Reference: https://www.digital-technologies.institute/curriculumsearch
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The curriculum mapping is reachable as a page on the website, linked from the educators/teachers area
-- [ ] #2 The published page renders from docs/curriculum-mapping.md rather than a hand-copied duplicate
-- [ ] #3 The page states the mapping's review status, or the draft has been externally reviewed before publishing
+- [x] #1 The curriculum mapping is reachable as a page on the website, linked from the educators/teachers area
+- [x] #2 The published page renders from docs/curriculum-mapping.md rather than a hand-copied duplicate
+- [x] #3 The page states the mapping's review status, or the draft has been externally reviewed before publishing
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Published at /educators/curriculum/, rendered from docs/curriculum-mapping.md via a docs content collection; the page states the draft/unreviewed status.
+<!-- SECTION:NOTES:END -->
 
 Something that ACARA can help with.
 
