@@ -2,6 +2,7 @@
 title: LLMs Unplugged for ACT teachers
 date: 2026-03-18
 author: Ben Swift
+kind: event
 description: A hands-on workshop for ACT educators at the Hedley Beare Centre on 18 March
 ---
 

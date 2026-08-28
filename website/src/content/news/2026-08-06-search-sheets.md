@@ -2,6 +2,7 @@
 title: The whole room holds the model
 date: 2026-08-06
 author: Ben Swift
+kind: build
 description:
   Search sheets are the cutouts activity with the cutting taken out, sized for a
   room rather than a table. Four ready-to-print sets are on the tools page.

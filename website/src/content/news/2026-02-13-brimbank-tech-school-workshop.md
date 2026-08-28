@@ -2,6 +2,7 @@
 title: LLMs Unplugged at Brimbank Tech School
 date: 2026-02-13
 author: Ben Swift
+kind: report
 description:
   A hands-on AI workshop for educators at VU Sunshine Campus with Brimbank Tech
   School

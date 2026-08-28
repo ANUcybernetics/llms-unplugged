@@ -2,6 +2,7 @@
 title: ACT Academy of Future Skills workshop
 date: 2025-12-10
 author: Ben Swift
+kind: report
 description: Working through LLMs Unplugged with ACT specialty STEM teachers
 ---
 

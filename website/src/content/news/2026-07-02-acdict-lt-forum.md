@@ -2,6 +2,7 @@
 title: LLMs Unplugged at the ACDICT L&T Forum
 date: 2026-07-02
 author: Ben Swift
+kind: report
 description:
   Slides and worksheets for my ACDICT Learning & Teaching Forum session, plus a
   self-guided path for anyone joining online.

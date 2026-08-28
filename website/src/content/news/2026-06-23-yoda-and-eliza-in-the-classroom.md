@@ -2,6 +2,7 @@
 title: Yoda, ELIZA, and a Year 7 bigram model
 date: 2026-06-23
 author: Ben Swift
+kind: report
 description:
   A pre-service teacher took LLMs Unplugged into a lower-SES Year 7/8 classroom,
   swapped the children's book for a Yoda monologue, and added a 1966 chatbot for

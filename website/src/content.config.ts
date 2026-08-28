@@ -51,6 +51,14 @@ const news = defineCollection({
     description: z.string(),
     date: z.coerce.date(),
     author: z.string(),
+    // What kind of post this is, so audience pages can pull the evergreen
+    // pieces (essays, reports) without the dated ones (events, build notes).
+    //   event: an upcoming session or booking
+    //   report: what happened at a delivery
+    //   essay: an argument or guidance piece, mostly for teachers
+    //   build: a change to the materials or the site
+    //   announcement: news that isn't any of the above (accreditation, etc.)
+    kind: z.enum(["event", "report", "essay", "build", "announcement"]),
     published: z.boolean().default(true),
   }),
 });

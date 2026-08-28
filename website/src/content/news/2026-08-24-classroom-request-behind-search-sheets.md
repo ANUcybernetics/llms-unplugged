@@ -2,6 +2,7 @@
 title: The classroom request behind search sheets
 date: 2026-08-24
 author: Ben Swift
+kind: report
 description:
   Queensland teacher Samantha Ephraims tested LLMs Unplugged with primary
   students and 40 teachers, then suggested the classroom constraint that led to

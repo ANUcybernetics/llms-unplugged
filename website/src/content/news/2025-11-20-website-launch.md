@@ -2,6 +2,7 @@
 title: Website launch
 date: 2025-11-20
 author: Ben Swift
+kind: build
 description: The LLMs Unplugged website is now live.
 ---
 

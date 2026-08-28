@@ -2,6 +2,7 @@
 title: Generating the cutout palette
 date: 2026-05-24
 author: Ben Swift
+kind: build
 description:
   The cutout palette is now algorithmically generated, with 30 perceptually
   distinct colours instead of 14 hand-picked ones.

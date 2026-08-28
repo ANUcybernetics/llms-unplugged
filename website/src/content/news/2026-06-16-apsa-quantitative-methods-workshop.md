@@ -2,6 +2,7 @@
 title: LLMs Unplugged for political scientists
 date: 2026-06-16
 author: Ben Swift
+kind: report
 description:
   Running the opening session at the 3rd APSA Workshop on Quantitative Methods
   at ANU, for a room of political and social science researchers

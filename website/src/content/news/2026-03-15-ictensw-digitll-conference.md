@@ -2,6 +2,7 @@
 title: LLMs Unplugged at ICTENSW DigiTLL
 date: 2026-03-15
 author: Ben Swift
+kind: report
 description:
   Presenting "LLMs Unplugged" at the ICTENSW DigiTLL Conference in North Sydney
   on 15 March

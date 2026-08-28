@@ -2,6 +2,7 @@
 title: LLMs Unplugged is TQI-accredited
 date: 2026-04-24
 author: Ben Swift
+kind: announcement
 description:
   The ACT Teacher Quality Institute has accredited LLMs Unplugged as a two-hour
   professional learning program

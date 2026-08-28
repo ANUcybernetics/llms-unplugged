@@ -2,6 +2,7 @@
 title: Luritja resampled
 date: 2026-04-07
 author: Ben Swift
+kind: report
 description:
   Running LLMs Unplugged at the Tjabal Centre Autumn School with Luritja poet
   Matt Heffernan, using his poem Ngurrparringu as the training text

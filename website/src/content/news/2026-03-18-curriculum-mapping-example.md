@@ -2,6 +2,7 @@
 title: "Mapping LLMs Unplugged to the Australian Curriculum"
 date: 2026-03-18
 author: Ben Swift
+kind: essay
 description: An example of how LLMs Unplugged activities align with the Australian Curriculum for Year 5/6.
 ---
 

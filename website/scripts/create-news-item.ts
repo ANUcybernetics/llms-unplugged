@@ -43,6 +43,7 @@ const content = `---
 title: ${JSON.stringify(postName)}
 date: ${dateStr}
 author: Ben Swift
+kind: report # event | report | essay | build | announcement
 description: TODO
 ---
 
