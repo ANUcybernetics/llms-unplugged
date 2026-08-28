@@ -2,8 +2,8 @@
 title: Build, break, extend
 description:
   An extended cutouts workshop. Build paper language models from scratch,
-  combine them, break them (sycophancy), extend them with tools, and finish
-  with a poetry slam.
+  combine them, break them (sycophancy), extend them with tools, and finish with
+  a poetry slam.
 audience: high school to adults
 duration: 3 hours
 flavour: cutouts
@@ -22,18 +22,17 @@ listed: false
 import Callout from "../../components/Callout.astro";
 import UsingTheSlides from "../../components/UsingTheSlides.astro";
 
-A half-day deep dive using the paper cutout models. Participants build their
-own language models, pool them into bigger ones, deliberately break them
-(training in sycophancy), extend them with tools, and put everything together
-in a closing poetry slam where each group designs a model to perform its own
-generated verse.
+A half-day deep dive using the paper cutout models. Participants build their own
+language models, pool them into bigger ones, deliberately break them (training
+in sycophancy), extend them with tools, and put everything together in a closing
+poetry slam where each group designs a model to perform its own generated verse.
 
 <Callout type="info">
 
-We've delivered this lesson once and it worked, but it hasn't had the polish
-of the others yet---timings and materials may shift as we road-test it. If
-you're thinking of running it, [get in touch](/about/#get-in-touch) and we'll
-share what we've learned.
+We've delivered this lesson once and it worked, but it hasn't had the polish of
+the others yet---timings and materials may shift as we road-test it. If you're
+thinking of running it, [get in touch](/about/#get-in-touch) and we'll share
+what we've learned.
 
 </Callout>
 
@@ -51,16 +50,18 @@ share what we've learned.
 | Poetry slam                        | 45 min |
 
 Combining models and the poetry slam are deck-only sections (they don't have
-standalone module pages yet): combining models pools two groups' cutout
-spreads to show what more training data buys you, and the poetry slam has
-each group design a model---choosing training data and sampling rules---to
-generate and perform a poem.
+standalone module pages yet): combining models pools two groups' cutout spreads
+to show what more training data buys you, and the poetry slam has each group
+design a model---choosing training data and sampling rules---to generate and
+perform a poem.
 
 ## You will need
 
 - printed token cutouts for several texts (bigram, `-n 2`)---see the
-  [Tools](/tools/#cutouts) page for ready-to-print packs, and the sycophancy
-  section needs the sycophancy corpus cutouts
+  [Tools](/tools/#cutouts) page for ready-to-print packs
+- sycophancy cutouts for the "break" section: there's no ready-to-print pack
+  yet, so generate them with the CLI
+  (`llms_unplugged cutouts -i data/sycophancy.txt -n 2 --duplex`)
 - clear table space per group of 2-4, plus room to pool spreads when groups
   combine models
 - pen and paper per group
