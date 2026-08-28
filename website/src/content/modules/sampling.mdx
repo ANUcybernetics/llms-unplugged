@@ -1,11 +1,12 @@
 ---
 title: Sampling
 description:
-  Same model, different output---experiment with temperature and truncation
-  strategies to shape how your model picks the next word.
+  Same model, different output---experiment with temperature, truncation
+  strategies, and your own house rules, then put it all together in a poetry
+  slam.
 order: 4
 audience: years 7 and up
-duration: 20-30 min
+duration: 20-30 min (60 min with the slam)
 bases: [grid, booklet]
 status: experimental
 topic: shaping-behaviour
@@ -33,7 +34,9 @@ structured poetry, or pure nonsense, depending entirely on how you sample.
 ## Your goal
 
 Generate text using at least two temperatures and at least two truncation
-strategies. Stretch goal: design and test your own truncation rule.
+strategies. Stretch goal: design a whole poetry model of your own---training
+text, temperature, house rules---and hand it to another pair to build and
+perform in the [poetry slam](#poetry-slam).
 
 ## Key idea
 
@@ -147,6 +150,64 @@ length (short mode) or above it (long mode). If nothing qualifies, re-roll.
 </div></div>
 </div>
 
+## Poetry slam
+
+The capstone for this page: design a poetry model, hand it to another pair, and
+see what they make of it. Allow about an hour---20 minutes to design, 10 to
+prepare, 15 for the slam, 5 to talk about it.
+
+### Design your model (20 min)
+
+In pairs, design a poetry language model from scratch. Three decisions, all of
+them already on this page:
+
+- **training text**: a [pre-trained booklet](/modules/pretrained-generation/),
+  your own [grid](/modules/training/), or a cutouts spread
+- **temperature**: cold, normal, hot, or boiling
+- **house rules**: one or more of the truncation strategies above, or a rule you
+  invent yourself
+
+The question to sit with while you decide is _what isn't poetry?_ Then: what
+does your model do, and why?
+
+Write the recipe on a blank card, complete enough that another pair can run it
+without asking you anything:
+
+```text
+training text:
+temperature:
+house rules:
+starting word:
+stop rule:      (e.g. stop after 20 words, or at the third full stop)
+```
+
+### Prep (10 min)
+
+Swap cards with another pair. You have ten minutes to generate as much text as
+you can from _their_ model, then plan a one-minute performance of the result.
+Read it, chant it, split it between you---how you perform it is your call.
+
+### The slam (~15 min)
+
+Each pair performs for about a minute. A room of eight pairs runs to roughly
+fifteen minutes with applause.
+
+### Discussion (5 min)
+
+What was the hardest part of designing your model? The hardest part of preparing
+a performance from someone else's card? And how does this relate to Claude or
+ChatGPT---similarities and differences? Two words worth landing on here are
+_temperature_ (the same dial, on a much bigger model) and _prompt engineering_
+(wording an input to get the output you want, which is what a model card is).
+
+<Callout type="tip" title="What counts as done">
+
+The model card plus the other pair's performance is the completion task. A model
+that produced something strange has still succeeded, as long as the recipe was
+followable---the strangeness belongs to the model, not the pair performing it.
+
+</Callout>
+
 ## Instructor notes
 
 ### Discussion questions
@@ -155,6 +216,10 @@ length (short mode) or above it (long mode). If nothing qualifies, re-roll.
 - when would you want predictable vs surprising output?
 - how do constraints (haiku, no-repeat) spark creativity?
 - can you invent your own sampling strategy?
+- (slam) which parts of your model card did the other pair have to guess at?
+  What does that suggest about writing a prompt for an LLM?
+- (slam) when a performance landed, how much of that was the model and how much
+  the performers?
 
 ### Troubleshooting
 
