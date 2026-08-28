@@ -9,15 +9,16 @@ duration: 15 minutes
 flavour: sheets
 status: early-access
 decks:
-  - slug: visionaries-showcase
+  - slug: demystifying-large-language-models
     label: Demystifying large language models (15 min)
+  - slug: visionaries-showcase
+    label: as delivered at the ANU Visionaries Among Us Showcase, 15 Aug 2026
 modules:
   - search-sheets
 heroImage: search-sheets
 order: 20
 ---
 
-import Callout from "../../components/Callout.astro";
 import UsingTheSlides from "../../components/UsingTheSlides.astro";
 
 TED-style: the speaking carries it and the slides are cues, not visual aids. The
@@ -30,22 +31,23 @@ Poe and Dr Seuss---in that order, because Seuss is the biggest recognition hit
 and has to land last.
 
 We gave it at the ANU Visionaries Among Us Showcase in August 2026, to a hall of
-about 360.
+about 360. The deck below is that talk with the event-specific slides taken
+out; the deck as delivered is linked alongside it.
 
 ## Running order
 
 Target thirteen minutes against a fifteen-minute slot; the run is where the
 spare time goes.
 
-| Time  | Beat                                           | Slides |
-| ----- | ---------------------------------------------- | ------ |
-| 0:00  | the smallest thing on the program; two stories | 1--4   |
-| 2:00  | what you've just been given (sheets go out)    | 5      |
-| 3:00  | seed from a volunteer's sheet, then the recipe | 6      |
-| 5:00  | run the room (four minutes, 12--15 tokens)     | 7      |
-| 9:00  | what just happened: the role mapping           | 8--10  |
-| 11:00 | three books                                    | 11     |
-| 13:00 | close                                          | 12--14 |
+| Time  | Beat                                                | Slides |
+| ----- | --------------------------------------------------- | ------ |
+| 0:00  | the tool before the story; two stories              | 1--3   |
+| 2:00  | look inside (sheets go out)                         | 4      |
+| 3:00  | what you've just been given, then the recipe + seed | 5--6   |
+| 5:00  | run the room (four minutes, 12--15 tokens)          | 7      |
+| 9:00  | what just happened: the role mapping                | 8--9   |
+| 10:00 | the sentence is in no book; three books             | 10--11 |
+| 13:00 | close and QR                                        | 12--15 |
 
 Only three slides carry real text: the algorithm, the role mapping and the
 three-book reveal. If a slide is tempting you to read it out, cut it rather than
@@ -70,20 +72,19 @@ the sentence you were going to say.
   text
 - write big. Fifteen tokens at whiteboard size is the whole output; the back row
   needs to read it for the reveal to land
-- the ANU-at-80 slides near the end were for that event; drop or replace them
-
-<Callout type="info">
-
-This is the deck as delivered, event slides included. A generic version built on
-a shared search-sheets partial is on the way.
-
-</Callout>
+- the as-delivered deck has ANU-at-80 slides near the end that were for that
+  event; the deck above already leaves them out
 
 <UsingTheSlides
   decks={[
     {
-      slug: "visionaries-showcase",
+      slug: "demystifying-large-language-models",
       label: "Demystifying large language models (15 min)",
+    },
+    {
+      slug: "visionaries-showcase",
+      label:
+        "as delivered at the ANU Visionaries Among Us Showcase, 15 Aug 2026",
     },
   ]}
 />

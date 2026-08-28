@@ -1,0 +1,177 @@
+---
+title: Demystifying large language models
+description:
+  A 15-minute talk in which the whole audience becomes a bigram language model
+  built from three unnamed books and generates a sentence nobody wrote
+---
+
+import Timer from "../components/Timer.astro";
+import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
+import "../styles/widgets.css";
+
+```comment
+The generic version of the talk first given at the ANU Visionaries Among Us
+Showcase (15 Aug 2026; that delivery is visionaries-showcase.deck.mdx, kept
+unlisted as the record). The room-run --- sheets, algorithm, board, "we just
+ran a language model", the role mapping --- is the shared partial
+sheets-run.mdx, which unplugged-in-the-age-of-ai.deck.mdx also includes.
+
+TED-style: the speaking carries it and the slides are cues, not visual
+aids. Two slide grammars carry nearly all of it --- a full-bleed image with
+nothing on it (the SAY: line opening those notes is the sentence the image
+stands under), and one line in white over the artwork (`_class: hero`, no
+h1, styled in theme.css). Only three slides carry real text: the algorithm,
+the role mapping and the three-book reveal. If a slide is tempting you to
+read it out, cut it rather than the sentence you were going to say.
+
+The reveal is the spine: the three source books are never named until the
+reveal slide, and nothing on the printed sheets names them either. Print
+the sheets with `--title` and `--author` overrides so no sheet carries a
+book's name, dealing all three texts together. Hemingway then Poe then
+Seuss, because Seuss is the biggest recognition hit and has to land last.
+(The Visionaries deal used the-old-man-and-the-sea-excerpt, the-tell-tale-
+heart and the-cat-in-the-hat, in that input order, --seed 42; see `make
+showcase` in cli/.)
+
+Running order (target 13:00 against a 15:00 slot; the run is where the
+spare time goes --- 4:30 on the board is fine, 5:00 if the room is with
+you):
+  0:00  The tool before the story; two stories   (slides 1-3)
+  2:00  Look inside --- sheets go out            (slide 4)
+  3:00  What you've been given, then the recipe  (slides 5-6)
+  5:00  Run the room                             (slide 7)
+  9:00  What just happened                       (slides 8-10)
+ 11:00  Three books                              (slide 11)
+ 13:00  Close and QR                             (slides 12-14)
+
+Per-slide notes hold the beats to hit --- rehearsal cues, not a script.
+```
+
+{/* _class: hero */}
+
+# Demystifying large language models
+
+![bg](./assets/bg-title-wide.avif)
+
+```notes
+Hands up: used one this week. Keep them up if you could explain to a ten-year-old what it did.
+
+Most hands come down. That gap is the talk.
+```
+
+---
+
+![bg](./assets/bg-first-tool-wide.avif)
+
+```notes
+SAY: we got the tool before we got the story about the tool.
+
+Not too complicated --- it just happened too fast.
+```
+
+---
+
+![bg](./assets/bg-two-stories.avif)
+
+```notes
+SAY: one story says it's basically a mind. The other says it's just autocomplete.
+
+Opposites doing the same job: beyond you or beneath you, either way don't look inside.
+```
+
+---
+
+{/* _class: hero */}
+
+it's hard to have an opinion\
+on a machine you've never seen **inside**
+
+![bg](./assets/bg-machine-interior-wide.avif)
+
+```notes
+Cue the house lights up and the ushers to start handing out the sheets, because together we're going to look inside a language model. Not a diagram of the inside --- the inside.
+
+Take one, pass the rest along, try not to leave any that aren't in someone's hand.
+```
+
+---
+
+{/* @include ./partials/sheets-run.mdx */}
+
+---
+
+{/* _class: hero */}
+
+the sentence we wrote is in **no book**
+
+![bg](./assets/bg-chain.avif)
+
+```notes
+Nobody wrote it: no lookup in a big database of sentences, nobody pulled out their phone and searched the web. Everything was decided by the token pairs on our collective sheets.
+
+So where did they come from?
+```
+
+---
+
+## three books
+
+<p class="corpus-a fragment">“He was an old man who fished alone in a skiff in the Gulf Stream.”<br /><span class="corpus-attribution">— Ernest Hemingway, <em>The Old Man and the Sea</em> (1952)</span></p>
+<p class="corpus-c fragment">“TRUE! nervous, very, very dreadfully nervous I had been and am.”<br /><span class="corpus-attribution">— Edgar Allan Poe, <em>The Tell-Tale Heart</em> (1843)</span></p>
+<p class="corpus-b fragment">“The sun did not shine. It was too wet to play.”<br /><span class="corpus-attribution">— Dr. Seuss, <em>The Cat in the Hat</em> (1957)</span></p>
+
+```notes
+Each token pair on the sheets came from one of these three books. Click them in one at a time and read each out.
+
+The sheets --- the model --- had no indicator of which token came from which book. It worked because there's token crossover between them: `the`, `and`, `.` are in all three, and the chain drifts from one book into another through them. That drift is why the sentence sounded like nothing anyone has read.
+```
+
+---
+
+{/* _class: hero */}
+
+a hall full of people just did\
+the thing you're told needs a **data centre**
+
+![bg](./assets/bg-hall-generation-wide.avif)
+
+```notes
+Who now thinks they could give a better answer to a ten-year-old about how language models do what they do?
+
+Obviously it still needs some simplification --- but, crucially, it's not beyond them, and it's not beneath them to try to understand.
+```
+
+---
+
+{/* _class: hero */}
+
+it doesn't make you an expert
+
+it makes you **harder to bullsh\*t**
+
+![bg](./assets/bg-trigrams-banner.avif)
+
+```notes
+It doesn't make you an expert: even with a billion dollars in your pocket you can't go out and build your own Claude-level model from scratch.
+
+But it might make you, well --- look at the slide.
+
+That's what LLMs Unplugged is for: helping us all tell better, more accurate stories about how this technology works.
+```
+
+---
+
+{/* _class: centered */}
+
+![qr](https://www.llmsunplugged.org/talks/demystifying-large-language-models/)
+
+```notes
+Everything --- this talk with its running order and what to print, the workshops, the printable materials, the tool that made your sheets --- is at that address, free and CC-licensed. Hold here long enough for the room to scan it, then finish on the School mark.
+```
+
+---
+
+{/* _class: socy-logo */}
+
+<SocyLogo />
+<p class="socy-url">www.llmsunplugged.org</p>

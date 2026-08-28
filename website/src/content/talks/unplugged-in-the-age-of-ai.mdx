@@ -9,15 +9,16 @@ duration: 20 minutes
 flavour: sheets
 status: early-access
 decks:
-  - slug: unplugged-age-of-ai
+  - slug: unplugged-in-the-age-of-ai
     label: Unplugged in the age of AI (20 min)
+  - slug: unplugged-age-of-ai
+    label: as delivered at ANU, 10 Aug 2026
 modules:
   - search-sheets
 heroImage: search-sheets
 order: 21
 ---
 
-import Callout from "../../components/Callout.astro";
 import UsingTheSlides from "../../components/UsingTheSlides.astro";
 
 A talk, not a workshop: the only thing the audience does is hold a
@@ -31,18 +32,20 @@ Claude, but twenty minutes of paper and hands in the air makes you harder to
 fool.
 
 We gave it at ANU in August 2026, straight after Tim Bell's introduction to CS
-Unplugged, which is where its opening Bandura quote comes from.
+Unplugged; the Bandura quote it opens with had been on his screen fifteen
+minutes earlier. The deck below keeps the quote as its own opener and drops the
+event-specific close; the deck as delivered is linked alongside it.
 
 ## Running order
 
-| Time  | Beat                                       | Slides |
-| ----- | ------------------------------------------ | ------ |
-| 0:00  | the frame: understand, and believe you can | 1--4   |
-| 3:00  | what you've just been given                | 5--6   |
-| 5:00  | seed it, then run the model                | 7--9   |
-| 11:00 | what just happened                         | 10--13 |
-| 14:00 | what Claude does differently, at scale     | 14--18 |
-| 18:00 | the claim, then what's next                | 19--23 |
+| Time  | Beat                                         | Slides |
+| ----- | -------------------------------------------- | ------ |
+| 0:00  | the frame: understand, and believe you can   | 1--4   |
+| 3:00  | what you've just been given, then the recipe | 5--6   |
+| 5:00  | run the room                                 | 7      |
+| 11:00 | what just happened; the whole book; the grid | 8--12  |
+| 14:00 | what Claude does differently, at scale       | 13--17 |
+| 18:00 | back to Bandura, the claim, then the QR      | 18--21 |
 
 ## You will need
 
@@ -51,8 +54,8 @@ Unplugged, which is where its opening Bandura quote comes from.
   deal your own with
   `llms_unplugged sheets -i data/the-cat-in-the-hat.txt -n 2 --sheets <count>`
 - the brief (page 1 of the PDF) on the lectern; it carries the worked example
-- the deck's whiteboard overlay (press `b`) for the generated text, and a scribe
-  if you'd rather not write and talk
+- the deck's annotation layer (⇧W on the board slide) for the generated text,
+  and a scribe if you'd rather not write and talk
 - a projector for the slides
 
 ## Before you deliver
@@ -62,21 +65,15 @@ Unplugged, which is where its opening Bandura quote comes from.
 - the numbers on the "between us we have the whole book" and scale slides are
   for _The Cat in the Hat_ at n=2; if you swap the corpus, rebuild them with
   `llms_unplugged build` and read the metadata block
-- the Bandura framing and the "come to tomorrow's workshop" close were for that
-  event; the middle fourteen minutes stand on their own
-
-<Callout type="info">
-
-This is the deck as delivered, event slides included. A generic version built on
-a shared search-sheets partial is on the way.
-
-</Callout>
+- the as-delivered deck closes on "come to tomorrow's workshop", which was for
+  that event; the deck above ends on the QR instead
 
 <UsingTheSlides
   decks={[
     {
-      slug: "unplugged-age-of-ai",
+      slug: "unplugged-in-the-age-of-ai",
       label: "Unplugged in the age of AI (20 min)",
     },
+    { slug: "unplugged-age-of-ai", label: "as delivered at ANU, 10 Aug 2026" },
   ]}
 />
