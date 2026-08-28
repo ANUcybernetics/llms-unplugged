@@ -11,6 +11,7 @@ export const siteConfig = defineSiteConfig({
     // The route is still /tools/ (it's linked from everywhere); the label is
     // the word teachers search for.
     { text: "Materials", href: "/tools/" },
+    { text: "For educators", href: "/educators/" },
     { text: "News", href: "/news/" },
     { text: "About", href: "/about/" },
   ],

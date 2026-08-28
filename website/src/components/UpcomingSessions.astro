@@ -43,7 +43,10 @@ const location = sessions[0]?.location;
 const isEmpty = sessions.length === 0;
 ---
 
-<div class:list={["upcoming-sessions", `upcoming-sessions--${variant}`]}>
+<div
+  id={isCard ? "next-sessions" : undefined}
+  class:list={["upcoming-sessions", `upcoming-sessions--${variant}`]}
+>
   <div class="us-inner">
     <div class:list={["us-body", { "us-hidden": isEmpty }]}>
       <h2 class="us-heading">Next sessions</h2>

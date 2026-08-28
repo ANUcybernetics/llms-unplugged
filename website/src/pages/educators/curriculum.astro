@@ -1,0 +1,35 @@
+---
+import { getEntry, render } from "astro:content";
+import PageLayout from "../../layouts/PageLayout.astro";
+import Callout from "../../components/Callout.astro";
+
+// Published straight from docs/curriculum-mapping.md (the docs collection in
+// src/content.config.ts) so there is one copy to keep in sync --- see
+// backlog task 027.
+const doc = await getEntry("docs", "curriculum-mapping");
+if (!doc) throw new Error("docs/curriculum-mapping.md is missing");
+const { Content } = await render(doc);
+---
+
+<PageLayout
+  title="Curriculum mapping"
+  description="A draft mapping of every LLMs Unplugged module to Australian Curriculum v9.0 content descriptions, with coverage summaries by strand and three suggested programs."
+>
+  <h1>Mapping LLMs Unplugged to the Australian Curriculum</h1>
+
+  <Callout type="warning" title="Draft, May 2026">
+    <p>
+      Codes are taken from ACARA's machine-readable workbook and have not yet
+      been reviewed by an external curriculum expert. Treat them as a starting
+      point, and <a href="/about/#get-in-touch">tell us</a> where you'd map differently.
+      The document predates the July 2026 restructure (what it calls "lessons" are
+      now <a href="/modules/">modules</a>) and the August merge of In-context
+      Memory and Induction Heads into
+      <a href="/modules/in-context-learning/">In-context Learning</a>; the
+      activities and their alignments are unchanged, and every link goes to the
+      current page.
+    </p>
+  </Callout>
+
+  <Content />
+</PageLayout>

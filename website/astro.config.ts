@@ -85,8 +85,8 @@ export default defineConfig({
     // Routes from the eleventy site (live November 2025 to May 2026, the era
     // of the first teacher workshops) and the audience pages dropped in the
     // May 2026 blurbs consolidation. These were shared around; keep them alive.
-    "/educators/": "/lessons/",
-    "/parents/": "/",
+    // (/educators/ is a page again as of August 2026.)
+    "/parents/": "/try-it/",
     "/professionals/": "/lessons/my-first-language-model/",
     "/instructor-notes/": "/lessons/",
     "/widgets/": "/modules/",

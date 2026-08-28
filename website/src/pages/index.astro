@@ -6,16 +6,13 @@ import NewsCards from "../components/NewsCards.astro";
 import GlossaryTerm from "../components/GlossaryTerm.astro";
 import UpcomingSessions from "../components/UpcomingSessions.astro";
 import heroIndex from "../assets/images/hero-index.avif";
-import heroWorkshops from "../assets/images/hero-workshops.avif";
 import headshotBen from "../assets/images/headshot-ben-4.avif";
-import heroFundamentals from "../assets/images/hero-fundamentals.avif";
 import heroHowModelsUnderstand from "../assets/images/hero-how-models-understand.avif";
-import heroLlmVsAi from "../assets/images/hero-llm-vs-ai.avif";
-import heroIntro from "../assets/images/hero-intro.avif";
 import heroContact from "../assets/images/hero-contact.avif";
-import wayRunALesson from "../assets/images/way-run-a-lesson.avif";
-import wayExploreModules from "../assets/images/way-explore-modules.avif";
-import wayPrintMaterials from "../assets/images/way-print-materials.avif";
+import doorTeach from "../assets/images/way-run-a-lesson.avif";
+import doorWorkshop from "../assets/images/hero-workshops.avif";
+import doorTryIt from "../assets/images/hero-fundamentals.avif";
+import doorAttend from "../assets/images/hero-intro.avif";
 ---
 
 <BaseLayout title="LLMs Unplugged">
@@ -63,132 +60,71 @@ import wayPrintMaterials from "../assets/images/way-print-materials.avif";
       > work using the same basic principles, just at a vastly larger scale.
     </p>
 
-    <section class="ways-in">
-      <h2>Three ways to get started</h2>
-      <div class="at-card-grid ways-grid">
+    <section class="doors">
+      <h2>Where do you want to start?</h2>
+      <div class="at-card-grid doors-grid">
+        <Card
+          href="/educators/"
+          title="I'm teaching a class"
+          image={doorTeach}
+          imageAlt=""
+        >
+          <p class="card-description">
+            Which lesson fits your year level and period length, what to print,
+            where it sits in the curriculum, and accredited professional
+            learning.
+          </p>
+        </Card>
         <Card
           href="/lessons/"
-          title="Run a lesson"
-          image={wayRunALesson}
+          title="I'm running a workshop or giving a talk"
+          image={doorWorkshop}
           imageAlt=""
         >
           <p class="card-description">
-            Ready-to-run sessions we've tested in real rooms&mdash;each with
-            slides, timings, prep checklists, and a materials list. Every lesson
-            ships its slides <em>with</em> full presenter notes, so you can deliver
-            it without ever having seen it run.
+            Ready-to-run sessions we've tested in real rooms, with slides,
+            presenter notes, timings and materials lists&mdash;from a
+            sixty-minute workshop to a fifteen-minute talk for a hall.
           </p>
         </Card>
         <Card
-          href="/modules/"
-          title="Explore the modules"
-          image={wayExploreModules}
+          href="/try-it/"
+          title="I want to try it myself"
+          image={doorTryIt}
           imageAlt=""
         >
           <p class="card-description">
-            The building blocks: hands-on activities that each teach one idea
-            about how language models work, from training and generation through
-            to embeddings and agents. Mix and match to build your own session.
+            Twenty minutes, one person, a pen and something random. Build a
+            language model at the kitchen table and use it to write a sentence
+            nobody has written before.
           </p>
         </Card>
         <Card
-          href="/tools/"
-          title="Print the materials"
-          image={wayPrintMaterials}
+          href="#next-sessions"
+          title="I want to come to a session"
+          image={doorAttend}
           imageAlt=""
         >
           <p class="card-description">
-            Ready-to-print model booklets, token cutouts, and grid
-            worksheets&mdash;or generate your own from any text, right in your
-            browser.
+            We run open sessions at ANU in Canberra, and deliver workshops for
+            schools, organisations and conferences. Book a place, or get in
+            touch about hosting one.
           </p>
         </Card>
       </div>
+      <p class="start-here">
+        Not sure? Start with <a href="/lessons/my-first-language-model/"
+          >My First Language Model</a
+        >&mdash;the classic LLMs Unplugged lesson, in lengths from 60 minutes to
+        two hours. It's where the penny drops.
+      </p>
     </section>
-
-    <div class="section-with-image">
-      <div class="section-image">
-        <Image
-          src={heroWorkshops}
-          alt="Diverse group of learners from students to professionals"
-          loading="lazy"
-          format="avif"
-        />
-      </div>
-      <div class="section-content">
-        <h2>Who is this for?</h2>
-        <p>
-          Everyone. These activities are suitable for audiences from primary
-          school age through to adults&mdash;we've delivered them to hundreds of
-          participants including school students, undergraduate students, and
-          senior executives from both industry and government. Zero coding
-          background required, and no maths beyond basic counting and
-          percentages.
-        </p>
-        <p>
-          Even if you already know a bit (or a lot!) about how LLMs work, you'll
-          have fun making one and sharing it with others&mdash;and the hands-on
-          process leaves you with a more useful mental model than any high-level
-          explainer.
-        </p>
-      </div>
-    </div>
 
     <section>
       <h2>What's new in LLMs Unplugged?</h2>
       <NewsCards limit={2} />
       <p><a href="/news/">See all news &rarr;</a></p>
     </section>
-
-    <div class="section-with-image">
-      <div class="section-image">
-        <Image src={headshotBen} alt="Ben Swift" loading="lazy" format="avif" />
-      </div>
-      <div class="section-content">
-        <h2>Who made this?</h2>
-        <p>
-          <em>LLMs Unplugged</em> is a <a
-            href="https://cybernetics.anu.edu.au/cybernetic-studio/"
-            >Cybernetic Studio</a
-          > project created by <a href="https://benswift.me">Dr. Ben Swift</a> (PhD
-          Computer Science, 2012). But if you're worried that <em>you'll</em> need
-          a PhD in Computer Science to understand it then rest assured&mdash;the whole
-          point of these resources is to demonstrate that you don't. Which leads to
-          the question&hellip;
-        </p>
-      </div>
-    </div>
-
-    <div class="section-with-image">
-      <div class="section-image">
-        <Image
-          src={heroFundamentals}
-          alt="Simple counting and dice activities"
-          loading="lazy"
-          format="avif"
-        />
-      </div>
-      <div class="section-content">
-        <h2>What prior knowledge do I need?</h2>
-        <p>
-          For <strong>instructors</strong>, the reading and numeracy skills
-          required to teach this stuff are really only primary-school level.
-          This isn't just for specialist maths teachers or tertiary educators,
-          although it works great in those contexts too. For <strong
-            >participants</strong
-          >, really all you need is a curiosity about how AI systems actually
-          work and a willingness to engage with hands-on activities.
-        </p>
-        <p>
-          Each <a href="/lessons/">lesson</a> ships slides with full presenter notes,
-          and each <a href="/modules/">module</a> includes instructor notes and discussion
-          questions, plus interactive widgets (which you can use to get your head
-          around the concepts). We also run teacher training sessions and offer professional
-          delivery services if you'd like support bringing these activities to your
-          organisation or classroom.
-        </p>
-      </div>
-    </div>
 
     <div class="section-with-image">
       <div class="section-image">
@@ -202,75 +138,38 @@ import wayPrintMaterials from "../assets/images/way-print-materials.avif";
       <div class="section-content">
         <h2>Why does this matter?</h2>
         <p>
-          <a href="https://chatgpt.com/">ChatGPT</a> arrived in November 2022 and
-          suddenly (most) everyone's using <GlossaryTerm id="language-model"
+          Since <a href="https://chatgpt.com/">ChatGPT</a> arrived in November 2022,
+          (most) everyone's using <GlossaryTerm id="language-model"
             >LLMs</GlossaryTerm
-          >. Yet most people have no real mental model of what's actually
-          happening under the hood. They've heard the hand-wave-y and
-          mystical-sounding explanations, maybe picked up some vague notions
-          about "neural networks" and "training data", but the core mechanism
-          remains opaque.
-        </p>
-        <p>
-          Understanding how these systems actually work&mdash;not through
-          metaphor or handwaving but through direct experience&mdash;is what
-          we're all about. In a world where everyone uses LLMs, this kind of
-          understanding isn't optional anymore.
-        </p>
-        <p>
-          These resources don't tell you or your students what to think about
-          the role of AI (good/mid/cooked) in society. They provide a grounding
-          for
-          <em>you</em> to have that discussion; one that's informed not by folktales
-          about what might be happening under the hood but by a lived experience of
-          doing it for yourself.
+          >, yet most people have no real mental model of what's actually
+          happening under the hood. Understanding how these systems
+          work&mdash;not through metaphor or handwaving but through direct
+          experience&mdash;is what we're all about. These resources don't tell
+          you or your students what to think about the role of AI in society;
+          they give you a grounding for having that discussion, informed by
+          having done it yourself. No coding, no maths beyond counting and
+          percentages, and it works from primary school to the boardroom. More
+          in the <a href="/faq/">FAQ</a>.
         </p>
       </div>
     </div>
 
     <div class="section-with-image">
       <div class="section-image">
-        <Image
-          src={heroLlmVsAi}
-          alt="Understanding the relationship between LLMs and AI"
-          loading="lazy"
-          format="avif"
-        />
+        <Image src={headshotBen} alt="Ben Swift" loading="lazy" format="avif" />
       </div>
       <div class="section-content">
-        <h2>Why do you keep saying LLMs&mdash;this is AI, right?</h2>
+        <h2>Who made this?</h2>
         <p>
-          Honestly, the short answer (these days) is yes. The long answer is
-          more complicated&mdash;AI is a term that has been applied to many
-          different algorithmic techniques and systems over the years. But today
-          (in the mid-2020s) Large Language Models (LLMs) have sucked all the
-          air out of the room when it comes to AI, so that's mostly what we're
-          talking about here. We do like to use the term LLM rather than AI (or
-          even "GenAI") to describe these systems because it's a bit clearer
-          what we're talking about.
-        </p>
-      </div>
-    </div>
-
-    <div class="section-with-image">
-      <div class="section-image">
-        <Image
-          src={heroIntro}
-          alt="Getting started with language model activities"
-          loading="lazy"
-          format="avif"
-        />
-      </div>
-      <div class="section-content">
-        <h2>Where should I start?</h2>
-        <p>
-          Start with <a href="/lessons/my-first-language-model/"
-            >My First Language Model</a
-          >&mdash;the classic LLMs Unplugged lesson, in lengths from 60 minutes
-          to two hours. It covers the essential concepts for building and using
-          language models: training a bigram model and generating text. After
-          running it, you (and your group) will understand the fundamental
-          mechanism behind LLM-based AI systems.
+          <em>LLMs Unplugged</em> is a <a
+            href="https://cybernetics.anu.edu.au/cybernetic-studio/"
+            >Cybernetic Studio</a
+          > project created by <a href="https://benswift.me">Dr. Ben Swift</a> (PhD
+          Computer Science, 2012) at the ANU School of Cybernetics. But if you're
+          worried that <em>you'll</em> need a PhD in Computer Science to understand
+          it, rest assured&mdash;the whole point of these resources is to demonstrate
+          that you don't. There's more on the lineage, from CS Unplugged back to Shannon,
+          on the <a href="/about/">about page</a>.
         </p>
       </div>
     </div>
@@ -384,15 +283,20 @@ import wayPrintMaterials from "../assets/images/way-print-materials.avif";
     margin-bottom: 2rem;
   }
 
-  .ways-in {
+  .doors {
     margin-bottom: 2rem;
   }
 
-  /* jump straight from one column to three so the cards never wrap 2 + 1
-     (the theme's at-card-grid--3 auto-fill modifier would) */
-  @media (min-width: 760px) {
-    .ways-grid {
-      grid-template-columns: repeat(3, 1fr);
+  /* two-up from tablet, four-up once there's room; never 3 + 1 */
+  @media (min-width: 640px) {
+    .doors-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .doors-grid {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 
@@ -401,5 +305,10 @@ import wayPrintMaterials from "../assets/images/way-print-materials.avif";
     line-height: 1.5;
     color: var(--at-text-secondary);
     margin: 0;
+  }
+
+  .start-here {
+    margin: 1.5rem 0 0;
+    font-size: 1.05rem;
   }
 </style>

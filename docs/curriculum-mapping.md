@@ -78,7 +78,7 @@ secondary (Years 11--12) is out of scope.
 Each lesson gets a card with: year band, primary codes, secondary codes, general
 capabilities, and a one-line justification per code.
 
-### [Weighted Randomness](https://www.llmsunplugged.org/lessons/weighted-randomness)
+### [Weighted Randomness](https://www.llmsunplugged.org/modules/weighted-randomness/)
 
 Probability sampling from a target distribution using dice and beads. The
 mathematical bedrock for everything that follows.
@@ -99,7 +99,7 @@ mathematical bedrock for everything that follows.
 - **General capabilities:** Numeracy (recognising and using patterns and
   relationships); Critical and Creative Thinking (Inquiring).
 
-### [Training](https://www.llmsunplugged.org/lessons/training)
+### [Training](https://www.llmsunplugged.org/modules/training/)
 
 Build a bigram model by counting which words follow which in a corpus.
 
@@ -118,7 +118,7 @@ Build a bigram model by counting which words follow which in a corpus.
 - **General capabilities:** Digital Literacy (Investigating > Locate, generate
   and access data); Numeracy.
 
-### [Generation](https://www.llmsunplugged.org/lessons/generation)
+### [Generation](https://www.llmsunplugged.org/modules/generation/)
 
 Use the trained bigram model to generate new text via weighted sampling.
 
@@ -135,7 +135,7 @@ Use the trained bigram model to generate new text via weighted sampling.
 - **General capabilities:** Numeracy; Critical and Creative Thinking
   (Generating).
 
-### [Pre-trained Model Generation](https://www.llmsunplugged.org/lessons/pretrained-generation)
+### [Pre-trained Model Generation](https://www.llmsunplugged.org/modules/pretrained-generation/)
 
 Use a pre-built booklet to generate text without training your own model.
 Introduces the consume-vs-build distinction that underpins most real-world AI
@@ -151,7 +151,7 @@ usage.
     (here, the booklet's "specifications" are corpus size and N value).
 - **General capabilities:** Digital Literacy (Managing and operating).
 
-### [Sampling](https://www.llmsunplugged.org/lessons/sampling)
+### [Sampling](https://www.llmsunplugged.org/modules/sampling/)
 
 Temperature and truncation strategies for controlling text output.
 
@@ -166,7 +166,7 @@ Temperature and truncation strategies for controlling text output.
 - **General capabilities:** Critical and Creative Thinking (Analysing >
   Evaluating reasoning); Numeracy.
 
-### [More Context](https://www.llmsunplugged.org/lessons/more-context)
+### [More Context](https://www.llmsunplugged.org/modules/more-context/)
 
 Extend the bigram to two words of context (a trigram), see why that gets
 expensive, then add cheaper context with a skip grid.
@@ -182,7 +182,7 @@ expensive, then add cheaper context with a skip grid.
     determine probabilities.
 - **General capabilities:** Numeracy; Critical and Creative Thinking.
 
-### [In-context Memory](https://www.llmsunplugged.org/lessons/in-context-memory)
+### [In-context Memory](https://www.llmsunplugged.org/modules/in-context-learning/)
 
 Add a short-term memory that biases generation toward recently-used words,
 keeping text on topic --- a hands-on model of attention.
@@ -199,7 +199,7 @@ keeping text on topic --- a hands-on model of attention.
 - **General capabilities:** Critical and Creative Thinking (Analysing); Digital
   Literacy.
 
-### [Induction Heads](https://www.llmsunplugged.org/lessons/induction-heads)
+### [Induction Heads](https://www.llmsunplugged.org/modules/in-context-learning/)
 
 Complete a pattern from the text itself: find the last time the current word
 appeared and copy what followed --- the circuit behind in-context learning.
@@ -217,7 +217,7 @@ appeared and copy what followed --- the circuit behind in-context learning.
 - **General capabilities:** Critical and Creative Thinking (Inquiring,
   Analysing).
 
-### [Word Embeddings](https://www.llmsunplugged.org/lessons/word-embeddings)
+### [Word Embeddings](https://www.llmsunplugged.org/modules/word-embeddings/)
 
 Treat each word's row in the bigram grid as a vector; measure similarity.
 
@@ -235,7 +235,7 @@ Treat each word's row in the bigram grid as a vector; measure similarity.
 - **General capabilities:** Numeracy; Critical and Creative Thinking
   (Generating > Considering alternatives).
 
-### [LoRA](https://www.llmsunplugged.org/lessons/lora)
+### [LoRA](https://www.llmsunplugged.org/modules/sycophancy/#adapters-this-trick-has-a-name)
 
 Add a lightweight adaptation layer to retarget a trained base model.
 
@@ -249,7 +249,7 @@ Add a lightweight adaptation layer to retarget a trained base model.
   - `AC9TDI10P09` --- implement, modify and debug modular programs.
 - **General capabilities:** Critical and Creative Thinking.
 
-### [Synthetic Data](https://www.llmsunplugged.org/lessons/synthetic-data)
+### [Synthetic Data](https://www.llmsunplugged.org/modules/synthetic-data/)
 
 Generate synthetic text, retrain on it, observe drift and collapse.
 
@@ -264,7 +264,7 @@ Generate synthetic text, retrain on it, observe drift and collapse.
 - **General capabilities:** Critical and Creative Thinking (Reflecting); Ethical
   Understanding (Responsibility and accountability for action).
 
-### [Agentic AI](https://www.llmsunplugged.org/lessons/agentic-ai)
+### [Agentic AI](https://www.llmsunplugged.org/modules/agentic-ai/)
 
 Turn the model into an agent by giving it access to external tools.
 
@@ -279,7 +279,7 @@ Turn the model into an agent by giving it access to external tools.
 - **General capabilities:** Digital Literacy (Investigating > Locate, generate
   and access data); Critical and Creative Thinking.
 
-### [RLHF](https://www.llmsunplugged.org/lessons/rlhf)
+### [RLHF](https://www.llmsunplugged.org/modules/rlhf/)
 
 Use human preferences to adjust the model's weights.
 
@@ -294,7 +294,7 @@ Use human preferences to adjust the model's weights.
 - **General capabilities:** Ethical Understanding (Decision-making and actions);
   Critical and Creative Thinking (Reflecting > Thinking about thinking).
 
-### [Sycophancy](https://www.llmsunplugged.org/lessons/sycophancy)
+### [Sycophancy](https://www.llmsunplugged.org/modules/sycophancy/)
 
 Skew the model toward over-agreeable output by piling in flattering training
 data.
