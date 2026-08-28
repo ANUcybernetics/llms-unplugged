@@ -3,7 +3,6 @@ import { getCollection } from "astro:content";
 import Card from "astro-theme-university/components/Card.astro";
 import PageLayout from "../../layouts/PageLayout.astro";
 import { findHeroImage } from "../../lib/hero-images";
-import { lessonStatusLabels } from "../../lib/status";
 
 const talks = (await getCollection("talks"))
   .filter((l) => l.data.listed !== false)
@@ -47,15 +46,6 @@ const talks = (await getCollection("talks"))
           <p class="card-badges">
             {talk.data.audience} &middot; {talk.data.duration} &middot;{" "}
             {talk.data.flavour}
-            {talk.data.status !== "tested" && (
-              <>
-                {" "}
-                &middot;{" "}
-                <span class={`status-badge status-${talk.data.status}`}>
-                  {lessonStatusLabels[talk.data.status]}
-                </span>
-              </>
-            )}
           </p>
         </Card>
       ))

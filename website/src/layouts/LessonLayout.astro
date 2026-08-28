@@ -1,7 +1,6 @@
 ---
 import type { ImageMetadata } from "astro";
 import BaseLayout from "./BaseLayout.astro";
-import { type LessonStatus, lessonStatusLabels } from "../lib/status";
 
 interface Props {
   title: string;
@@ -11,7 +10,6 @@ interface Props {
   audience: string;
   duration: string;
   flavour: "grid" | "cutouts" | "sheets";
-  status?: LessonStatus;
   noindex?: boolean;
 }
 
@@ -23,7 +21,6 @@ const {
   audience,
   duration,
   flavour,
-  status = "tested",
   noindex,
 } = Astro.props;
 ---
@@ -45,16 +42,6 @@ const {
           <strong>{kind === "talk" ? "Format" : "Flavour"}</strong>
           {flavour}
         </li>
-        {
-          status !== "tested" && (
-            <li>
-              <strong>Status</strong>
-              <span class={`status-badge status-${status}`}>
-                {lessonStatusLabels[status]}
-              </span>
-            </li>
-          )
-        }
       </ul>
       <slot />
     </article>

@@ -4,7 +4,6 @@ import SidebarLayout from "astro-theme-university/layouts/SidebarLayout.astro";
 import CommonHead from "../components/CommonHead.astro";
 import { siteConfig, themeLogo, footerOverrides } from "../site-config";
 import { getModuleSidebar } from "../lib/module-sidebar";
-import { type ModuleStatus, moduleStatusLabels } from "../lib/status";
 import faviconAsset from "../assets/favicon.svg";
 import "../styles/global.css";
 import "../styles/widgets.css";
@@ -17,7 +16,6 @@ interface Props {
   audience: string;
   duration: string;
   bases: string[];
-  status: ModuleStatus;
   usedIn?: Array<{ title: string; href: string }>;
   noindex?: boolean;
 }
@@ -32,7 +30,6 @@ const {
   audience,
   duration,
   bases,
-  status,
   usedIn = [],
   noindex,
 } = Astro.props;
@@ -72,12 +69,6 @@ const slug = currentPath.split("/").filter(Boolean).pop();
       <li><strong>Audience</strong> {audience}</li>
       <li><strong>Duration</strong> {duration}</li>
       <li><strong>Runs on</strong> {bases.join(", ")}</li>
-      <li>
-        <strong>Status</strong>
-        <span class={`status-badge status-${status}`}>
-          {moduleStatusLabels[status]}
-        </span>
-      </li>
     </ul>
     {
       keyIdea && (

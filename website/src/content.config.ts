@@ -18,9 +18,10 @@ const modules = defineCollection({
     // What the activity runs on. "sheets" is the whole-room search-sheet
     // format; "dice" is the apparatus-only warm-up.
     bases: z.array(z.enum(["grid", "cutouts", "booklet", "sheets", "dice"])).min(1),
-    // How road-tested the module is. tested: part of a regularly delivered
-    // lesson deck; piloted: run in a room at least once; experimental: written
-    // but not yet run with a group.
+    // How road-tested the module is, for the maintainers' own bookkeeping; it
+    // is not rendered anywhere on the site. tested: part of a regularly
+    // delivered lesson deck; piloted: run in a room at least once;
+    // experimental: written but not yet run with a group.
     status: z.enum(["tested", "piloted", "experimental"]),
     // Unlisted modules are reachable only via direct links --- hidden from the
     // sidebar and the /modules index (see src/lib/modules.ts).
