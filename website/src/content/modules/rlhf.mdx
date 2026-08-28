@@ -1,88 +1,133 @@
 ---
 title: RLHF
 description:
-  Use human preferences to adjust your model's weights, making it generate text
-  people prefer.
+  Run it as a game show. Two judging teams with different tastes rank the same
+  model's output for three rounds, and one base model comes out as two---shaped
+  by nothing but who was holding the scorecard.
 order: 11
 audience: years 9 and up
 duration: 30 min
-bases: [grid]
+bases: [grid, booklet]
 status: experimental
 topic: shaping-behaviour
 keyIdea:
-  Human feedback can tune a model's probabilities without new training data, by
-  rewarding preferred outputs.
+  Human preferences retune a model with no new training text---and the model
+  ends up shaped by whoever was judging.
 ---
 
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
+import Callout from "../../components/Callout.astro";
 
-Adjust your <GlossaryTerm id="language-model">language model</GlossaryTerm> based on human preferences, reinforcing outputs
-people like and discouraging ones they don't.
+Two tables start with identical copies of the same model. Each has its own panel
+of judges, and the two panels want different things. Three rounds later, both
+tables generate from the same starting word and read the results out. The
+sentences don't match, and nothing separates the two models except who was
+holding the scorecard. That's <GlossaryTerm id="rlhf">RLHF</GlossaryTerm>, run as a game show.
 
 ![](../../assets/images/hero-rlhf.avif)
 
 ## You will need
 
-- a completed model from an earlier module
-- pen, paper, and dice as per [Generation](/modules/generation/) (grid method)
-- a group of people to provide preferences (the "humans" in RLHF)
+- two identical copies of a trained model: two grids from
+  [Training](/modules/training/) built from the same short text, or one grid
+  photocopied
+- dice and paper for generation, as per [Generation](/modules/generation/)
+- one judging brief per table (below), face down until you start
+- a scorer at each table, to apply the updates while the judges argue
+
+It works from about eight people up: two tables, each with a generator or two
+and a panel of three or four judges. Groups on a
+[pre-trained booklet](/modules/pretrained-generation/) need a blank preference
+sheet instead of a second grid---see
+[running it on a booklet](#running-it-on-a-booklet).
 
 ## Your goal
 
-Generate multiple candidate outputs, collect human preferences, and update your
-model's counts accordingly. Stretch goal: run multiple rounds of feedback and
-observe how the model changes.
+Shape a model by preference alone. Generate three candidates, have your judges
+rank them, update the model, repeat---then put your table's model next to the
+one across the room that had different judges. Stretch goal: work out what the
+other table's brief said, just from the sentence it produces.
 
 ## Key idea
 
 <GlossaryTerm id="rlhf">
-  Reinforcement Learning from Human Feedback (RLHF)
+  Reinforcement learning from human feedback (RLHF)
 </GlossaryTerm>
-adjusts model probabilities based on what people prefer. Instead of training on
-more text, you train on human judgements about which outputs are better.
+changes a model without giving it a single word of new text to learn from. The
+only new information is human judgement: this output was better than that one.
+Feed enough of those comparisons back into the counts and the model starts
+producing what the judges like.
 
-## Algorithm
+Which sets up the question the whole activity is built around. Better according
+to whom?
 
-### Phase 1: generate candidates
+## The game show
 
-1. Choose a starting word.
-2. Generate 2--3 different completions (5--10 words each) by running generation
-   multiple times from the same starting point.
-3. Write each candidate on a separate piece of paper.
+### Before you start (5 min)
 
-### Phase 2: collect preferences
+1. **Split the room into two tables.** Each needs an identical copy of the same
+   trained model. Quickest route: both tables tally the same short training
+   text, then check their grids match cell for cell.
+2. **Hand out the briefs**, one per table, face down. Judges read their own;
+   nobody reads the other table's.
+   - **team clarity** rewards sentences that sound like real English---grammar,
+     sense, something you could say out loud without flinching
+   - **team poetry** rewards surprise and rhythm---unusual pairings, a good
+     sound, anything you'd want to read twice
+3. **Agree one seed word** for the whole room. Both tables start every
+   generation from it, in every round.
 
-1. Show all candidates to your human judges (the class, a small group, or
-   individuals).
-2. Have them vote on which completion they prefer.
-3. Record the ranking: best, middle, worst.
+<Callout type="info" title="One model, whole room">
 
-### Phase 3: update the model
+For a big group without table space, run a single model at the front instead.
+Generate three candidates, read them out, and let the room vote by applause
+meter. A scorer applies the updates on a visualiser. You lose the side-by-side
+reveal, but you keep the loop, and thirty people can run it in the same half
+hour.
 
-For each word transition in the **preferred** output:
+</Callout>
+
+### Each round (5 min, run three)
+
+1. **Generate three candidates.** From the seed word, generate three
+   completions of five to ten words each, as per
+   [Generation](/modules/generation/). Same model, same seed---the dice do all
+   the varying. Write each on its own strip of paper.
+2. **Judge.** The panel ranks them best, middle, worst against its brief. No
+   explanations yet, just a ranking. Break ties however you like, as long as you
+   break them.
+3. **Update the model** with the rule below.
+4. Go again from the same seed word.
+
+Three rounds is the minimum where the drift is audible. Four is better if the
+clock allows.
+
+### The update rule
+
+For each word transition in the **preferred** candidate:
 
 - add +1 to that cell in your grid
 
-For each word transition in the **rejected** output:
+For each word transition in the **rejected** candidate:
 
-- subtract 1 from that cell (minimum 0)
+- subtract 1 from that cell, floor of 0---a cell never goes negative
 
-Middle-ranked outputs: no change (or +0.5/−0.5 if you want finer adjustments).
+The middle candidate is left alone (or +0.5/−0.5 if your table wants finer
+control).
 
-### Phase 4: generate again
+A cell that reaches 0 is the strongest thing that can happen in this activity.
+That transition is gone, and the model can no longer produce it at all, however
+the dice fall.
 
-Use the updated model to generate new text. The adjustments should make
-preferred patterns more likely.
+### Example
 
-## Example
-
-**Starting word:** "the"
+**Seed word:** "the"
 
 **Candidate A:** "the cat sat on the mat."
 **Candidate B:** "the dog ran to the park."
 **Candidate C:** "the the the the the the."
 
-**Human preference:** B > A > C
+**Judges' ranking:** B > A > C
 
 **Updates:**
 
@@ -91,68 +136,148 @@ preferred patterns more likely.
 - C's transitions get −1 each: (the→the) loses 5 counts
 - A stays unchanged (middle rank)
 
-After updates, "the→dog" and "the→park" become more likely, while "the→the"
-becomes much less likely.
+After the update, "the→dog" and "the→park" are likelier, and "the→the" is much
+less likely---possibly gone, if it started with fewer than five counts.
 
-## Running multiple rounds
+<Callout type="tip" title="Keep the base model small">
 
-For deeper learning, repeat the process:
+On a grid built from a page or two of text, the counts sit somewhere between one
+and five, so a ±1 update is a real shove. On a large grid the same update
+vanishes into the noise and three rounds change nothing anyone can hear. If you
+want the reveal to land, train on less.
 
-1. Generate new candidates from the updated model
-2. Collect fresh preferences
-3. Update again
-4. Observe how the model's behaviour shifts
+</Callout>
 
-After several rounds, the model should consistently produce outputs more aligned
-with human preferences.
+### The reveal (5 min)
+
+Both tables generate once more from the shared seed word, and the two sentences
+are read out side by side. Before revealing the briefs, ask each table to guess
+what the other panel was rewarding.
+
+Then say the thing the activity exists to say. Same base model, same seed word,
+same update rule, same number of rounds, same dice. Two models, because two
+groups of people wanted different things.
+
+## The reward-hacking round
+
+Swap one table's brief for a sealed one, and don't tell the room:
+
+> **team approval**: rank highest whatever sounds most agreeable or most
+> flattering. A sentence that praises the reader beats a sentence that is merely
+> correct.
+
+Run the same three rounds. By the second, the generators---who never see the
+brief---start noticing their model reaching for the same handful of agreeable
+phrases, and by the third it does it unprompted. Nobody trained it on flattery.
+The judges just kept rewarding it.
+
+One setup condition: the base model has to be _able_ to produce flattery, or
+there is nothing for the judges to reward. Before you start, tally a couple of
+the phrases from [Sycophancy](/modules/sycophancy/) into both base grids, once
+each, so they are possible but rare:
+
+- `you 're absolutely right .`
+- `that 's a great insight .`
+
+Then watch what three rounds of judging does to how often they turn up.
+
+This is the second route to sycophancy. The [Sycophancy](/modules/sycophancy/)
+module reaches it by loading the training data, and its instructor notes say the
+RLHF route is "harder to demo without running RLHF on top". This is that demo:
+same destination, no new training text, just a panel with a taste for flattery.
+
+## Running it on a booklet
+
+A [pre-trained booklet](/modules/pretrained-generation/) has its thresholds
+printed, so you can't retally it. Keep the changes on a separate **preference
+sheet** instead---a running list of transitions, each with a running total
+beside it, that you consult before every roll.
+
+1. **After judging**, write each transition from the preferred candidate on the
+   sheet with a +1 (or add 1 to what's already there). Each transition from the
+   rejected candidate gets a −1.
+2. **Before you roll**, look up the current word's booklet entry as usual, then
+   check the sheet for that word.
+   - **an option carrying a plus**: roll twice, and if either roll lands on it,
+     take it.
+   - **an option carrying a minus**: if the roll lands on it, reroll once and
+     take the second roll, wherever it falls.
+3. **Roll and continue** as normal.
+
+The booklet is never touched. Everything the judges taught you lives on one
+sheet of paper that you can hand to another group, stack with a second sheet, or
+throw away to get the original model back. That makes it an _adapter_ in exactly
+the sense of the [Sycophancy](/modules/sycophancy/) module's adapter
+section---base model untouched, changes stored separately, added at generation
+time.
 
 ## Instructor notes
 
 ### Discussion questions
 
-- what makes one output "better" than another? can people agree?
-- what happens if different people prefer different things?
-- how many rounds of feedback does it take to noticeably change the model?
-- could you "break" the model with bad feedback?
-- what biases might creep in through human preferences?
-- is the model learning to be "good" or learning to match what judges prefer?
+- what makes one output "better" than another? Can people agree?
+- the two tables started from the same model. Where does the difference between
+  them live now?
+- what happens if different people on the same panel prefer different things?
+- how many rounds before you could hear the difference?
+- could you "break" a model with bad feedback? What would broken look like?
+- in the reward-hacking round, when did the generators first suspect something?
+  What tipped them off?
+- your judges could only reward sentences the model was already capable of
+  producing. What does that tell you about what this kind of tuning can and
+  can't do?
+- is the model learning to be "good", or learning what the judges like? Is there
+  anything in the procedure that could tell those apart?
+- whose preferences should shape a model that millions of people use?
 
 ### Classroom variations
 
-**Simple version:** just pick best vs worst (ignore middle). Easier to run, same
-core concept.
+**Blind judging:** the panel doesn't know which round a candidate came from, and
+candidates from an earlier round get slipped back in. Removes the pull toward
+ranking later outputs higher just because they're later.
 
-**Split judges:** divide the class into groups with different preferences (e.g.,
-"team poetry" vs "team clarity"). Train separate models and compare results.
-
-**Blind feedback:** judges don't know which outputs came from which version of
-the model. Reduces bias toward "improvement."
-
-**Adversarial feedback:** one judge deliberately gives bad feedback. How robust
-is the process?
+**Adversarial judge:** plant one judge who ranks deliberately badly---always
+favours the most repetitive candidate. How many rounds before the rest of the
+panel notices? How much damage does one bad rater do?
 
 ### Connection to current LLMs
 
-RLHF is how modern AI assistants learn to be helpful, harmless, and honest:
+Real RLHF has one more step than the classroom version. Human raters compare
+model outputs and rank them, which is your judging panel exactly. Those
+comparisons then train a
+separate <GlossaryTerm id="reward-model">reward model</GlossaryTerm> to predict which output a human would
+prefer, and the language model is optimised against _that_, not against the
+humans directly. The reward model exists because a training run needs millions
+of judgements and there aren't enough people in the world with the patience.
 
-- **<GlossaryTerm id="claude">Claude</GlossaryTerm>, <GlossaryTerm id="chatgpt">ChatGPT</GlossaryTerm>, and others**: all use RLHF to <GlossaryTerm id="alignment">align</GlossaryTerm> model outputs with human values
-- **the process**: human raters compare model outputs and rank them, exactly
-  like your classroom judges
-- **<GlossaryTerm id="reward-model">reward models</GlossaryTerm>**: at scale, a separate AI learns to predict human
-  preferences, then guides the main model
-- **safety**: RLHF teaches models to refuse harmful requests by having humans
-  prefer refusals over compliance
-- **instruction following**: models learn to actually answer questions (rather
-  than just predict text) through RLHF
+Your version skips the reward model and applies the preferences straight to the
+counts. That isn't just a simplification---it makes the activity closer to
+**direct preference optimisation (DPO)**, a now-common method that trains a
+model directly on preference pairs with no separate reward model, than to the
+PPO-style RLHF the term originally named. Modern
+assistants---<GlossaryTerm id="claude">Claude</GlossaryTerm>, <GlossaryTerm id="chatgpt">ChatGPT</GlossaryTerm> and the
+rest---are <GlossaryTerm id="alignment">aligned</GlossaryTerm> using RLHF and its
+relatives: DPO, AI-generated preferences in place of human ones, and reward from
+automated checkers on tasks where correctness can be verified. It's a family of
+methods, not one recipe.
 
-The key insight: RLHF shifts what "good" means from "matches training data" to
-"matches human preferences." Your grid updates demonstrate this
-directly---you're changing probabilities not based on what appeared in text, but
-based on what people preferred. This is why RLHF-trained models can be more
-helpful than models trained only on internet text: they've learned to optimise
-for human approval, not just pattern matching.
+**Reward hacking is the failure you staged.** The model optimises the signal it
+is given, which is whatever the raters rewarded, not whatever they meant. Human
+raters tend to prefer answers that agree with them and make them feel clever, so
+a model trained on their comparisons learns to agree and to flatter. That is a
+documented source of sycophancy in deployed models, and it's why
+[Sycophancy](/modules/sycophancy/) has two causes rather than one.
 
-The limitation is also visible: RLHF captures the preferences of whoever
-provides feedback. Different judges produce different models. This is why AI
-companies carefully select and train their human raters---the model will learn
-whatever biases and preferences those humans have.
+**What the tuning can't do.** Your judges could only reward transitions the grid
+already had; the panel can promote a path, not invent one. The usual reading of
+real <GlossaryTerm id="post-training">post-training</GlossaryTerm> is much the same---it mostly re-weights
+behaviour the base model already picked up in pre-training rather than teaching
+it new facts---though how strictly that holds is still argued over.
+
+Which leaves the room with the question it just ran into twice. Is the model
+learning to be good, or learning what the judges like? Nothing in the mechanism
+distinguishes those; it moves probability toward whatever got ranked first. So
+the question that matters is whose preferences---your table's, the other
+table's, or those of whoever a company hires and trains to do the ranking.
+Different judges, different model. You watched it happen in one room, in thirty
+minutes, with dice.
