@@ -31,3 +31,9 @@ export function setTrainingText(text: string) {
 export function resetTrainingText() {
   setTrainingText(DEFAULT_TEXT);
 }
+
+/** True while nobody has typed their own training text (so a page may seed
+ *  a better example without clobbering the visitor's own). */
+export function isDefaultTrainingText(): boolean {
+  return trainingText === DEFAULT_TEXT;
+}

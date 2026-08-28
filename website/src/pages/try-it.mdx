@@ -1,0 +1,119 @@
+---
+layout: ../layouts/PageLayout.astro
+title: Try it yourself
+description:
+  Build a language model at the kitchen table in twenty minutes, with a pen,
+  some paper and something random, and use it to write a sentence nobody has
+  written before.
+---
+
+import Callout from "../components/Callout.astro";
+import TrainingWidget from "../components/widgets/TrainingWidget.svelte";
+import GenerationWidget from "../components/widgets/GenerationWidget.svelte";
+import SeedTrainingText from "../components/SeedTrainingText.svelte";
+
+<SeedTrainingText
+  client:load
+  text="See Spot run. See Spot jump. Run, Spot, run. Jump, Spot, jump."
+/>
+
+# Try it yourself
+
+![](../assets/images/hero-fundamentals.avif)
+
+Twenty minutes, one person, a pen, some paper and something random: a ten-sided
+die if you have one, otherwise a coin, or the random-number function on your
+phone. By the end you'll have built a language model and used it to write a
+sentence nobody has written before---and you'll know, from the inside, what
+ChatGPT is doing when it writes one.
+
+## 1. Pick a text
+
+Something short that you know well. A verse of a song, the opening of a picture
+book, a nursery rhyme. Shorter is better for a first go: three or four
+sentences. We'll use this one:
+
+> See Spot run. See Spot jump. Run, Spot, run. Jump, Spot, jump.
+
+## 2. Train it
+
+Write every word in lowercase, and treat each punctuation mark as a word of its
+own:
+
+`see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,` `spot` `,` `run` `.`
+`jump` `,` `spot` `,` `jump` `.`
+
+Now draw a grid: one row and one column for each distinct word (here that's
+`see`, `spot`, `run`, `jump`, `.` and `,`, so six rows and six columns). Read
+through the text one pair of neighbouring words at a time---`see`→`spot`,
+`spot`→`run`, `run`→`.`, and so on---and for each pair put a tally mark in the
+cell at that row and column. When you reach the end, the grid is your model:
+each row says which words followed that word, and how often.
+
+Here it is being built, one pair at a time:
+
+<TrainingWidget client:visible />
+
+That's the whole of training. A real language model does exactly this over
+trillions of words, with the tallies stored as numbers instead of pencil marks.
+(If you'd rather not draw the grid, there's a
+[printable one](/tools/#worksheets), and the [Training](/modules/training/)
+module has the long version with worked examples.)
+
+## 3. Generate
+
+Pick a starting word and write it down. Look along its row: the tallies are the
+candidates for the next word, and the more tallies, the more likely. Choose one
+at random _in proportion to the tallies_, write it down, then do the same from
+the word you just wrote. Keep going until you hit a full stop, or you've had
+enough.
+
+How to choose in proportion:
+
+- **two candidates with equal tallies**: flip a coin
+- **a d10**: share the numbers 1--10 among the candidates in proportion (three
+  tallies against one becomes 1--7 for the first, 8--10 for the second), roll,
+  and read off the winner
+- **your phone**: ask it for a random number between 1 and the total number of
+  tallies in the row, then count along the row to see which word it lands in
+
+Watch the same thing happen with dice:
+
+<GenerationWidget client:visible />
+
+## 4. Read it out
+
+Read your sentence aloud. It will be half sensible and half nonsense, and it
+appears nowhere in the text you started from: the model made it, by looking one
+word back at a time and rolling. Now do it again from the same starting word and
+get a different sentence.
+
+## What you just did
+
+- the grid is the **model**; its tallies are the **parameters** (a frontier
+  model has about a trillion of them, same idea)
+- reading through the text and tallying was **training**
+- the tallies in a row are a **probability distribution** over the next word
+- the roll was **sampling**, and the sentence is **generation**
+
+Every reply from Claude or ChatGPT is produced by that loop: look at the
+context, weigh the options, pick one, write it down. What's different is the
+scale, how far back the model looks, and a kind of model that can spread what it
+learns about one word onto related ones. It's still words in, words out.
+
+<Callout type="tip" title="Now go bigger">
+
+- **A whole book.** Grab a
+  [pre-trained booklet](/tools/#booklets-for-dice-generation)---a model of _The
+  Cat in the Hat_ or _Frankenstein_ already tallied and typeset as dice
+  tables---and generate from that. The
+  [Pre-trained Model Generation](/modules/pretrained-generation/) module walks
+  through it.
+- **Change its voice without changing the model.** The
+  [Sampling](/modules/sampling/) module: a temperature dial and eight house
+  rules, from haiku to alliteration.
+- **Do it with other people.** The [lessons](/lessons/) are the same activities
+  with slides, timings and presenter notes, for a classroom, a workshop, or a
+  hall full of people holding one sheet each.
+
+</Callout>
