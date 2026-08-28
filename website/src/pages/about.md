@@ -190,7 +190,7 @@ If you use these materials in your teaching or research, please cite them as:
     There's one activity on
     <a href="https://csinschools.io/courses/introduction-to-artificial-intelligence/modules/lesson-3-generative-ai/">Generative AI</a>
     worksheet that uses a similar "counting bigrams" approach to the
-    <em>Basic Training</em> lesson
+    <a href="/modules/training/">Training</a> module
   </li>
   <li id="fn-love">
     well, technically that's a requirement of the SA clause in the CC licence,

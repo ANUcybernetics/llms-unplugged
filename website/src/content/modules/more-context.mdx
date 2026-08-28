@@ -66,7 +66,7 @@ on more data, or invent your own way of mixing in earlier context.
 
 A bigram only knows the word immediately before. The obvious fix is to look back
 further---and the obvious way to do that, the trigram, works but gets expensive
-fast. So this lesson has an arc: **more context helps (trigram) → but the full
+fast. So this module has an arc: **more context helps (trigram) → but the full
 version blows up → so here's a cheaper way to get some of it (skip grid)**. That
 last move---pulling in earlier context without paying the full cost---is the
 same problem modern models solve with attention.
@@ -343,7 +343,7 @@ the combination matters and when it doesn't.
 
 ### Connection to current LLMs
 
-This lesson bridges simple word-pair models and modern transformers along two
+This module bridges simple word-pair models and modern transformers along two
 threads.
 
 The trigram shows the **context-length trade-off**: longer context sharpens

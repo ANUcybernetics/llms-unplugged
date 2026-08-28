@@ -32,13 +32,14 @@ The `website/` directory contains the source for the project website at
 This project offers several entry points depending on your goals:
 
 **Want to understand the fundamentals in 20 minutes?** Work through the
-[lessons](https://www.llmsunplugged.org/lessons/)---the pen-and-paper grid
-approach needs nothing more than a pencil and a d10 die.
+[Training](https://www.llmsunplugged.org/modules/training/) and
+[Generation](https://www.llmsunplugged.org/modules/generation/) modules---the
+pen-and-paper grid approach needs nothing more than a pencil and a d10 die.
 
 **Teaching a class or workshop?** The
-[lessons](https://www.llmsunplugged.org/lessons/) are designed to be taught, and
-the [workshops page](https://www.llmsunplugged.org/workshops/) describes the
-formats we run.
+[lessons](https://www.llmsunplugged.org/lessons/) are ready-to-run sessions
+built from the [modules](https://www.llmsunplugged.org/modules/), with slides,
+presenter notes, timings and materials lists.
 
 **Want to create your own N-gram booklet?** You can
 [generate booklets online](https://www.llmsunplugged.org/tools/) directly in
@@ -96,14 +97,15 @@ are dropped; apostrophes inside contractions are preserved.
   - `--paper-size`, `--columns`, `--template book.typ`, `--subtitle`
   - `--pdf-only` / `--json-only` for incremental builds
 - `tsv` - Export a bigram TSV matrix for spreadsheets (n=2 only).
-- `cutouts` - Generate printable token cutouts for the cutouts lesson variant.
+- `cutouts` - Generate printable token cutouts for the cutouts flavour of the
+  Training and Generation modules.
   - `--n <N>`: prefix length (cutouts show `n - 1` prefix words + token)
   - `--paper-size`: paper size (default `a4`)
   - `--duplex`: emit a double-sided PDF where each cutout page is paired with a
     mirrored back, so the same cutouts appear on both faces of each sheet. Print
     with "flip on short edge" binding (currently hard-coded to a4 landscape).
-  - `--tool NAME[:COUNT]`: inject a tool-trigger cutout for the agentic tool use
-    lesson (e.g. `--tool VOTE` or `--tool ACTION:5`). `COUNT` defaults to 3 and
+  - `--tool NAME[:COUNT]`: inject a tool-trigger cutout for the Agentic AI
+    module (e.g. `--tool VOTE` or `--tool ACTION:5`). `COUNT` defaults to 3 and
     seeds that many trigger copies at the top `COUNT` most common previous-word
     contexts in the corpus, so triggers fire from positions where the corpus is
     already variable. Repeat the flag to add multiple tools. Triggers render in
