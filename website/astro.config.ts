@@ -13,6 +13,7 @@ function unlistedContentPaths(): string[] {
   const collections = [
     ["src/content/modules", "modules"],
     ["src/content/lessons", "lessons"],
+    ["src/content/talks", "talks"],
   ] as const;
   return collections.flatMap(([dir, route]) =>
     fs
@@ -97,9 +98,9 @@ export default defineConfig({
     "/topics/": "/modules/",
     "/topics/fundamentals/": "/modules/#fundamentals",
     "/topics/scaling-up/": "/modules/#scaling-up",
-    "/topics/controlling-output/": "/modules/#controlling-output",
-    "/topics/how-models-understand/": "/modules/#how-models-understand",
-    "/topics/adaptation-and-data/": "/modules/#adaptation-and-data",
+    "/topics/controlling-output/": "/modules/#shaping-behaviour",
+    "/topics/how-models-understand/": "/modules/#looking-inside",
+    "/topics/adaptation-and-data/": "/modules/#shaping-behaviour",
     "/slides/studio-workshop-2h/": "/decks/my-first-language-model-2h/",
   },
   fonts: [

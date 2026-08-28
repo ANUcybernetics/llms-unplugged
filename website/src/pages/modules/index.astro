@@ -1,7 +1,7 @@
 ---
 import PageLayout from "../../layouts/PageLayout.astro";
 import CardList from "../../components/CardList.astro";
-import { topicLabels } from "../../lib/topics";
+import { topicDescriptions, topicLabels } from "../../lib/topics";
 ---
 
 <PageLayout
@@ -67,19 +67,18 @@ import { topicLabels } from "../../lib/topics";
   </p>
 
   <h3 id="scaling-up">{topicLabels["scaling-up"]}</h3>
+  <p>{topicDescriptions["scaling-up"]}</p>
   <CardList topic="scaling-up" />
 
-  <h3 id="controlling-output">{topicLabels["controlling-output"]}</h3>
-  <CardList topic="controlling-output" />
+  <h3 id="extending-the-model">{topicLabels["extending-the-model"]}</h3>
+  <p>{topicDescriptions["extending-the-model"]}</p>
+  <CardList topic="extending-the-model" />
 
-  <h3 id="how-models-understand">{topicLabels["how-models-understand"]}</h3>
-  <p>
-    How models use more than the previous word: a short-term memory that keeps
-    text on topic, the induction trick behind in-context learning, and word
-    embeddings for measuring meaning.
-  </p>
-  <CardList topic="how-models-understand" />
+  <h3 id="shaping-behaviour">{topicLabels["shaping-behaviour"]}</h3>
+  <p>{topicDescriptions["shaping-behaviour"]}</p>
+  <CardList topic="shaping-behaviour" />
 
-  <h3 id="adaptation-and-data">{topicLabels["adaptation-and-data"]}</h3>
-  <CardList topic="adaptation-and-data" />
+  <h3 id="looking-inside">{topicLabels["looking-inside"]}</h3>
+  <p>{topicDescriptions["looking-inside"]}</p>
+  <CardList topic="looking-inside" />
 </PageLayout>

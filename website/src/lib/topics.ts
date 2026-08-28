@@ -10,9 +10,9 @@
 export const TOPIC_KEYS = [
   "fundamentals",
   "scaling-up",
-  "controlling-output",
-  "how-models-understand",
-  "adaptation-and-data",
+  "extending-the-model",
+  "shaping-behaviour",
+  "looking-inside",
 ] as const;
 
 export type Topic = (typeof TOPIC_KEYS)[number];
@@ -23,20 +23,20 @@ export const topicOrder: readonly Topic[] = TOPIC_KEYS;
 export const topicLabels: Record<Topic, string> = {
   fundamentals: "Fundamentals",
   "scaling-up": "Scaling up",
-  "controlling-output": "Controlling output",
-  "how-models-understand": "Context and meaning",
-  "adaptation-and-data": "Adaptation and data",
+  "extending-the-model": "Extending the model",
+  "shaping-behaviour": "Shaping behaviour",
+  "looking-inside": "Looking inside",
 };
 
 export const topicDescriptions: Record<Topic, string> = {
   fundamentals:
-    "Core concepts for building and using language models. Train a bigram model by hand and generate text.",
+    "Build a bigram model by hand and generate text from it: the train-then-generate loop that everything else builds on.",
   "scaling-up":
-    "Move beyond hand-built models to explore pre-trained models and longer context windows with trigrams.",
-  "controlling-output":
-    "Learn how sampling strategies like temperature and truncation shape generated text without changing the underlying model.",
-  "how-models-understand":
-    "Explore how models use context and represent word meaning through embeddings.",
-  "adaptation-and-data":
-    "Discover how models are customised for specific tasks and the risks of training on synthetic data.",
+    "Run a model you didn't train, and see what a second word of context buys you and what it costs.",
+  "extending-the-model":
+    "Give the model tools, so it can pause, ask for something outside itself, and carry on.",
+  "shaping-behaviour":
+    "Change what a model says without changing the mechanism: the sampler, the training data, the judges, and its own output.",
+  "looking-inside":
+    "Two things a real model does that a bigram can't---learn from the page in front of it, and know that cat is like dog---run by hand.",
 };
