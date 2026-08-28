@@ -1,0 +1,142 @@
+---
+title: Under the hood
+description:
+  A follow-on for groups who've built the paper model and want to know what a
+  real one does differently. Complete a pattern the model never trained on, and
+  measure how close two words are---all by hand.
+audience: years 10 and up, computing electives, PD cohorts
+duration: 2 hours
+flavour: grid
+decks: []
+modules:
+  - training
+  - generation
+  - pretrained-generation
+  - in-context-learning
+  - word-embeddings
+heroImage: how-models-understand
+order: 4
+status: untested
+listed: true
+---
+
+import Callout from "../../components/Callout.astro";
+
+Once a room has built a bigram model and rolled dice through it, the obvious
+question arrives on its own: this thing only ever looks at the word before, so
+how does ChatGPT hold a conversation? There are three answers. A real model
+looks at more than one word of context, it can say things it never saw in
+training, and it has been taught to answer rather than merely continue.
+
+This lesson takes the first two and runs them by hand. Participants build the
+grid model as usual, then add two rules that read back over the page they've
+already written (in-context learning), and finally turn each word's row of
+counts into a vector and measure how close two words are (word embeddings). No
+new maths beyond counting and subtraction, and no code---but by the end the
+words _attention_ and _embedding_ mean something concrete rather than something
+you've heard on a podcast.
+
+<Callout type="info">
+
+This sequence is assembled from modules we've each run, but we haven't yet run
+it as a single session. The timings below are estimates. If you deliver it,
+[tell us how it went](/about/#get-in-touch)---that's how it gets better.
+
+</Callout>
+
+## Run of show
+
+| Section                                                         | Time   |
+| --------------------------------------------------------------- | ------ |
+| Icebreaker and intro                                            | 10 min |
+| [Training](/modules/training/)                                  | 20 min |
+| [Generation](/modules/generation/)                              | 20 min |
+| [Pre-trained Model Generation](/modules/pretrained-generation/) | 15 min |
+| _Break_                                                         | 10 min |
+| [In-context Learning](/modules/in-context-learning/)            | 25 min |
+| [Word Embeddings](/modules/word-embeddings/)                    | 20 min |
+| Close: scaling up                                               | 10 min |
+
+That's two hours and ten minutes. If your slot is a hard two hours, run the
+pre-trained booklet round at 10 minutes or shorten the break; don't take the
+time out of in-context learning, which is the part people remember.
+
+There's no deck for this lesson. Run it straight from the module pages---each
+one has the goal, the algorithm, a worked example and instructor notes, and the
+two in the back half carry the widgets you'll want on the projector.
+
+## How it goes
+
+The first hour is the fundamentals, and it's the same first hour as
+[My First Language Model](/lessons/my-first-language-model/): tally word pairs
+into the grid, then roll a d10 to generate text from your own counts. If your
+group has already done that, you can compress it hard---20 minutes of rebuild is
+usually enough to get everyone's hands back in---but don't skip it, because the
+back half needs a filled-in grid to work on.
+
+The pre-trained booklet round earns its place here for a practical reason as
+well as a conceptual one. The in-context rules only bite when the model has a
+decent vocabulary behind it, and a booklet trained on a whole book gives a much
+better demo than a grid built from two pages. Hand out booklets, let people
+generate a few sentences, and keep them on the table for the next section.
+
+**In-context learning** is the centrepiece. Start with the two-minute
+demonstration: write a short pattern on the board, ask the room what comes next,
+and have them find it in a model that has never seen that pattern---the answer
+isn't in the counts, it's on the page. That's the induction rule. Then add the
+memory rule, which softly favours words used recently, and generate again with
+both rules running. The output stays on topic in a way the plain bigram never
+manages, and nobody has changed a single count.
+
+**Word embeddings** closes the loop on meaning. Each word's row in the grid _is_
+its vector; two words with similar rows behave similarly. Run the twins activity
+(find two words whose rows look alike), then the swap test (substitute one for
+the other in generated text and see whether anyone notices), then put the
+Embedding widget on the projector and let the room argue with the numbers.
+
+The close is the scaling-up conversation: what changes when the grid has fifty
+thousand words instead of forty, when the context is thousands of words instead
+of one, and when the rules you just ran by hand are learned rather than imposed.
+
+## You will need
+
+For each pair or small group:
+
+- a printed [grid template](https://pdf.llmsunplugged.org/worksheets/grid.pdf)
+  (or grid paper), plus a second blank one for the embedding distances
+- a d10 die
+- pens, and plenty of paper---the in-context rules mean reading back over what's
+  already been generated, so keep it legible
+- some training text: a few pages of any book works
+- a pre-trained booklet from the
+  [Materials](/tools/#booklets-for-dice-generation) page, or
+  [generate your own](/tools/#generate-your-own)
+
+Plus a laptop and projector for the Embedding widget on the
+[Word Embeddings](/modules/word-embeddings/) page.
+
+## Before you deliver
+
+- print the grids (two per group) and the booklets, and check the booklets are
+  bound or stapled the right way round---people flip through them a lot in this
+  lesson
+- have your induction demo ready: a three-word pattern the room can complete
+  instantly, planted so the current word appears earlier in the generated text
+- work the memory rule once yourself on a real booklet before the session. It's
+  simple, but explaining it cold is harder than it looks
+- open the Embedding widget on the room's computer beforehand and check it
+  renders on the projector; the numbers are small
+- got extra time? [More Context](/modules/more-context/) (30 min) slots in after
+  generation and pairs beautifully with in-context learning---the trigram shows
+  what a bigger context window costs, right before the two rules show how to get
+  context for free
+
+## Where to go next
+
+If the mechanism is what your group is into, this is the deeper of the two
+follow-ons; [Shaping a model](/lessons/shaping-a-model/) is the other, and takes
+the third answer---a model taught to answer rather than continue---into training
+data, human feedback and the ethics that come with them. Groups that want to see
+a model _act_ rather than just generate should add
+[Agentic AI](/modules/agentic-ai/). And if you're presenting to a room too big
+for tables and dice, the [talks](/talks/) run the same core idea from a stage.

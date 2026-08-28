@@ -11,6 +11,7 @@ export const moduleStatusLabels = {
 export const lessonStatusLabels = {
   tested: "workshop-tested",
   "early-access": "early access",
+  untested: "not yet run",
 } as const;
 
 export type ModuleStatus = keyof typeof moduleStatusLabels;

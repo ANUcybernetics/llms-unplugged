@@ -1,0 +1,151 @@
+---
+title: Shaping a model
+description:
+  A discussion-heavy follow-on. Change a model's training data, change what it
+  gets rewarded for, and feed it its own output---three ways to give a model a
+  personality, all run by hand.
+audience: years 9 and up; media literacy, ethics, HASS and policy groups
+duration: 2 hours to 2.5 hours
+flavour: grid
+decks: []
+modules:
+  - training
+  - generation
+  - sycophancy
+  - rlhf
+  - synthetic-data
+heroImage: adaptation-and-data
+order: 5
+status: untested
+listed: true
+---
+
+import Callout from "../../components/Callout.astro";
+
+People talk about a chatbot's personality as though it were a temperament:
+this one's warm, that one's a suck-up, the other one lectures you. It isn't a
+temperament. It's a property of what shaped the model, and everything that
+shaped it was a decision somebody made.
+
+This lesson makes those decisions concrete by handing them to the room. After
+building the paper model, participants shape it three different ways: they
+change the training data and watch the model turn sycophantic; they run a
+preference round where human judges reward some outputs over others, and then
+watch the model learn to game the judges; and they retrain a model on its own
+generated text and count what's left of the vocabulary. Every one of those is a
+discussion waiting to happen---whose preferences, what counts as good, and what
+happens to the web when models are trained on each other's output---and the
+discussion lands harder because the room did the shaping itself.
+
+<Callout type="info">
+
+This sequence is assembled from modules we've each run, but we haven't yet run
+it as a single session. The timings below are estimates. If you deliver it,
+[tell us how it went](/about/#get-in-touch)---that's how it gets better.
+
+</Callout>
+
+## Run of show
+
+| Section                                    | Time   |
+| ------------------------------------------ | ------ |
+| Intro                                      | 10 min |
+| [Training](/modules/training/)             | 20 min |
+| [Generation](/modules/generation/)         | 20 min |
+| [Sycophancy](/modules/sycophancy/)         | 20 min |
+| _Break_                                    | 10 min |
+| [RLHF](/modules/rlhf/)                     | 30 min |
+| [Synthetic Data](/modules/synthetic-data/) | 30 min |
+| Discussion and close                       | 10 min |
+
+Two and a half hours as written. For a two-hour slot, drop Synthetic Data and
+fold its question ("what happens when the training data is model output?") into
+the closing discussion---the relay is the section that suffers least from being
+described rather than run, because its punchline is a number.
+
+There's no deck for this lesson. Run it from the module pages, which carry the
+algorithms, worked examples and discussion questions; the discussion questions
+in the instructor notes are doing a lot of the work here, so read them ahead of
+time and pick the ones that suit your group.
+
+## How it goes
+
+The first 40 minutes are the standard build: tally word pairs into the grid,
+then roll a d10 and generate. Everything after that is a modification to a model
+the room owns, which is what makes the ethics discussion something other than
+abstract.
+
+**Sycophancy** is the data route. Groups tally a sheet of flattering, agreeable
+phrases into their existing grid and generate again. The model starts
+complimenting them. Nobody wrote a rule saying "be agreeable"---the data said
+it, repeatedly, and the counts did the rest. The obvious question follows: if
+you scraped the whole internet, what else did you tally in without meaning to?
+
+**RLHF** is the other route to the same place, and it runs as a game show. Two
+tables start with identical copies of the grid, each with its own judging panel
+and a sealed brief (one panel wants clear English, the other wants surprise and
+rhythm). Each round the table generates three candidates from a shared seed
+word, the panel ranks them, and the scorer bumps the counts behind the winner
+and docks the loser. Three rounds later both tables generate from the same seed
+and read the results side by side: two models from one grid, separated only by
+who held the scorecard---which is the whole argument about whose values a model
+encodes. Then the reward-hacking round: one panel is secretly briefed to reward
+flattery, and the generators, who never see the brief, watch their model reach
+for agreeable phrases on its own. That's a much better lesson than being told
+about it.
+
+**Synthetic Data** runs as a relay around the room. Group one generates text
+from their model and passes it to group two as training data; group two trains
+on it, generates, and passes on again. Keep a running vocabulary count on
+butchers paper at each hop. The line goes down---sometimes gently, sometimes off
+a cliff---and you have a picture of model collapse that nobody argues with.
+
+The close pulls the three threads together: three different mechanisms, one
+outcome, and in every case a person somewhere chose the data, the reward, or the
+shortcut.
+
+## You will need
+
+For each pair or small group:
+
+- a printed [grid template](https://pdf.llmsunplugged.org/worksheets/grid.pdf)
+  (or grid paper), plus a blank one per group for the synthetic-data retrain
+- a d10 die, pens and paper
+- some training text: a few pages of any book
+- the
+  [sycophancy training text sheet](https://pdf.llmsunplugged.org/worksheets/sycophancy-text.pdf)
+  (also on the [Materials](/tools/#worksheets) page)
+
+For the room:
+
+- a pre-trained booklet or two from the
+  [Materials](/tools/#booklets-for-dice-generation) page, to seed the first
+  group in the synthetic-data relay with something richer than a two-page grid
+- butchers paper and a marker for the vocabulary count down the relay chain
+- a whiteboard for the RLHF candidates and the judging
+
+## Before you deliver
+
+- print the grids, the sycophancy sheets, and at least one booklet
+- brief the two judging panels in secret before the RLHF round---the briefs
+  are on the [RLHF](/modules/rlhf/) page (team clarity, team poetry, and the
+  sealed team-approval brief for the reward-hacking round); don't let the
+  panels compare notes until the reveal
+- seat the groups in a chain, or at least know the order, so the synthetic-data
+  relay passes cleanly without everyone standing up
+- decide in advance how you'll count vocabulary at each hop (distinct words in a
+  fixed-length sample is easiest) and rule the butchers paper up beforehand
+- read the discussion questions in the [RLHF](/modules/rlhf/) and
+  [Synthetic Data](/modules/synthetic-data/) instructor notes and choose two or
+  three; there are more good ones than you'll have time for
+
+## Where to go next
+
+If your group comes out of this wanting the mechanism rather than the ethics,
+[Under the hood](/lessons/under-the-hood/) is the other follow-on---context,
+in-context learning and embeddings, all by hand. The
+[Agentic AI](/modules/agentic-ai/) module is the natural sequel to the ethics
+conversation: it's one thing for a model to say something shaped by its
+training, and another for it to go off and do something about it. And for a room
+too big for tables and dice, the [talks](/talks/) run the core idea from a
+stage.

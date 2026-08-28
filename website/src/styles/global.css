@@ -279,7 +279,8 @@
 }
 
 .status-badge.status-experimental,
-.status-badge.status-early-access {
+.status-badge.status-early-access,
+.status-badge.status-untested {
   border-color: var(--at-accent);
   color: var(--at-accent);
 }

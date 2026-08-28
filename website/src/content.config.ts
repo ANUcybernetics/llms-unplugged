@@ -55,7 +55,7 @@ const sessionSchema = z.object({
   // tested: delivered many times; early-access: run at least once, timings
   // and materials may still shift. Shown as a badge so a lesson can be
   // listed before it has had the polish of the others.
-  status: z.enum(["tested", "early-access"]).default("tested"),
+  status: z.enum(["tested", "early-access", "untested"]).default("tested"),
   // Unlisted lessons are reachable only via direct links --- hidden from the
   // /lessons index, sitemap, and search.
   listed: z.boolean().default(true),
