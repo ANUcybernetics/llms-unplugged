@@ -1,8 +1,9 @@
 ---
 title: Word Embeddings
 description:
-  Turn each word's row into a vector and measure similarities between words in
-  your model.
+  Guess which two words in your grid behave alike, prove it by swapping them in
+  your text, and check one distance by hand---then let the widget do all the
+  pairs at once.
 order: 8
 audience: years 9 and up
 duration: 20 min
@@ -10,108 +11,187 @@ bases: [grid]
 status: experimental
 topic: looking-inside
 keyIdea:
-  A word's row in the grid is its embedding; distances between rows reveal
-  grammatical and semantic closeness.
+  A word's row in the grid is its embedding. Words that keep the same company
+  have similar rows, which is why they can stand in for each other in the text.
 ---
 
 import Callout from "../../components/Callout.astro";
 import EmbeddingWidget from "../../components/widgets/EmbeddingWidget.svelte";
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
+import LmGrid from "../../components/LmGrid.astro";
 
-Transform words into numerical vectors (<GlossaryTerm id="embedding">embeddings</GlossaryTerm>) that capture meaning, revealing semantic
-relationships between words in your model.
+Your bigram grid already holds an opinion about every word in it: the row says
+what tends to follow that word, the column says what tends to come before it.
+Two words with much the same row and much the same column are, as far as the
+model is concerned, the same kind of word. This module finds a pair like that
+and checks it three ways---by eye, by swapping the two words in the text, and by
+one piece of arithmetic.
 
 ![](../../assets/images/hero-word-embeddings.avif)
 
-<Callout type="tip" title="">
-
-This widget works with the [grid](/modules/training/) version of the bigram
-model. If you trained using cutouts, the grid won't have any data to display.
-
-</Callout>
-
 ## You will need
 
-- your completed [bigram grid](/modules/training/)
-- another blank [grid template](https://pdf.llmsunplugged.org/worksheets/grid.pdf) with the
-  same headers (for distances)
-- pen, paper, and dice as per [Generation](/modules/generation/) (grid method)
+- your completed [bigram grid](/modules/training/), built from a few sentences
+  or more
+- the original text you trained on
+- pen and paper
+- a screen for the last step (one between a pair is plenty)
 
 ## Your goal
 
-Create a <GlossaryTerm id="similarity-matrix">similarity matrix</GlossaryTerm> (another square grid) that shows how similar or
-different each pair of words is. Stretch goal: visualise the matrix (e.g., as a
-map or clustering).
+Predict which two words in your grid behave most alike---call them the
+twins---then test the prediction rather than trusting it. Stretch goal: find a
+close pair in the widget that nobody in the room guessed, and work out what the
+two words have in common.
 
 ## Key idea
 
-Each row of counts is an embedding---a numeric fingerprint of context. Comparing
-rows tells you which words behave alike.
+A word's row is a list of numbers: how often each other word followed it. That
+list is the word's <GlossaryTerm id="embedding">embedding</GlossaryTerm>---a
+fingerprint of the company it keeps. Two words with similar fingerprints get
+used in the same places, which is why you can swap them in the text and it still
+reads. None of this measures meaning; it measures position. That the two so
+often coincide is the whole trick.
 
-## Algorithm
+## Find the twins (5 min)
 
-1. Prepare two grids: the original bigram model and a new empty _distance_ grid
-   with the same row/column headers.
-2. For every pair of rows in the bigram model, sum the absolute differences
-   between matching cells.
-3. Write that sum into the corresponding cell of the distance grid (diagonal
-   stays 0). You can skip the lower triangle since the distance is symmetric.
+Pen and paper, no arithmetic. Look down your grid and pick the two words you
+think behave most alike:
 
-## Example
+- compare **rows**: which two words are followed by the same words?
+- compare **columns**: which two words follow the same words?
 
-Text: `See Spot. Spot runs.`
+A twin pair matches on both. Write your guess down before you go any further.
+Committing to a prediction is what makes the next two steps worth doing---an
+unwritten guess quietly becomes whatever the answer turns out to be.
 
-1. Build the bigram grid as usual.
-2. Compare `see` vs `spot` row by row: subtract counts cell-by-cell, take
-   absolute values, and add them up (blanks count as 0). Here,
-   `d(see, spot) = 3`.
-3. Fill that value into the distance grid at (`see`, `spot`). Repeat for other
-   pairs.
+## The swap test (5 min)
 
-You'll find `see` and `.` can end up very similar (distance 0) while `see` and
-`spot` differ more, revealing structure in your corpus.
+Take the original text, swap your two candidate words everywhere they appear,
+and read it aloud. If it still reads as English---odd perhaps, or untrue, but
+grammatical---they're twins. If it collapses, they're not.
+
+For the text `the cat sat . the dog sat . the cat ran . the dog slept .`:
+
+- swap `cat` and `dog`: "the dog sat. the cat sat. the dog ran. the cat slept."
+  Still reads.
+- swap `cat` and `sat`: "the sat cat. the dog cat. the sat ran…" Gone.
+
+That is the distributional idea in a single move: words that keep the same
+company can stand in for each other. Note what the test does and doesn't ask.
+"The cat slept" may be false about your particular cat; the swap still passes,
+because the question is whether the sentence holds together, not whether it's
+true.
+
+## One distance by hand (5 min)
+
+Now put a number on it. The distance between two words is the sum of the
+absolute differences between their rows, cell by cell, with blanks counting as
+zero. Here is the grid for the same short text:
+
+<LmGrid tokens="the cat sat . the dog sat . the cat ran . the dog slept ." />
+
+Reading the rows off as vectors, with the columns in the order `the` `cat`
+`sat` `.` `dog` `ran` `slept`:
+
+- `cat` → 0 0 1 0 0 1 0
+- `dog` → 0 0 1 0 0 0 1
+- `sat` → 0 0 0 2 0 0 0
+- `the` → 0 2 0 0 2 0 0
+
+And the arithmetic:
+
+- d(`cat`, `dog`) = 0 + 0 + 0 + 0 + 0 + 1 + 1 = **2**
+- d(`cat`, `sat`) = 0 + 0 + 1 + 2 + 0 + 1 + 0 = **4**
+- d(`cat`, `the`) = 0 + 2 + 1 + 0 + 2 + 1 + 0 = **6**
+
+The twins score lowest. Do the same for your own twin pair and for one pair
+you're confident isn't, and check the numbers agree with your ears.
+
+<Callout type="warning" title="The number only reads the rows">
+
+This distance compares rows only---what follows each word. The column evidence
+you used in step 1 doesn't appear in it at all, and the widget below has the
+same blind spot. On a short text it rarely changes the answer, but two words
+could share a row and differ completely in their columns, and neither the sum
+nor the widget would notice.
+
+</Callout>
 
 ## Interactive widget
 
-Explore word embeddings from your bigram model. Click rows to see their numeric
-vectors and compare distances between words.
+Click any row to see its vector, click a second row to get the distance between
+the two, and read the matrix underneath as every pair at once---that's
+the <GlossaryTerm id="similarity-matrix">similarity matrix</GlossaryTerm>. The
+text box is shared with the [Training](/modules/training/) widget, so you can
+paste your own text in and compare it with the grid on your desk.
+
+This is the one module where the screen is the better apparatus, and it's worth
+saying so out loud to the class. Seven words means 21 pairs; ten words means 45.
+Working through them by hand is an afternoon of arithmetic that teaches nothing
+the third pair didn't already teach. The step you just did by hand is there so
+you know what the numbers mean; doing all of them is the machine's job.
+
+Notice what the widget turns up in the worked example that most rooms don't
+guess: `ran` and `slept` sit at distance 0, because each one only ever appears
+before a full stop. The eye finds `cat` and `dog`; the matrix finds the pair
+nobody was looking at.
 
 <EmbeddingWidget client:visible />
+
+<Callout type="tip" title="Grid models only">
+
+This module needs rows to compare, so it assumes the [grid](/modules/training/)
+version of the <GlossaryTerm id="bigram-model">bigram model</GlossaryTerm>. With
+a cutouts spread you'd first have to gather each word's cutouts into a pile and
+count them, which is the grid again, the long way round.
+
+</Callout>
 
 ## Instructor notes
 
 ### Discussion questions
 
-- which words cluster together? why?
-- do grammatically similar words have similar embeddings?
-- can you predict which words will be close before calculating?
-- does training on more text change which words cluster together?
-- what information is captured in these vectors?
+- did the swap test agree with your written guess? Which of the two would you
+  trust on a longer text?
+- `ran` and `slept` came out identical, and so, nearly, did `cat` and `dog`.
+  What would you have to add to the text to pull each pair apart?
+- the distance only compares rows. Which pair in your grid would it get wrong?
+- the method measures position, not meaning. Which pairs of _opposites_ would it
+  call twins---and why do `hot` and `cold` keep almost exactly the same company?
+- if you trained on ten times as much text, would your twins end up closer
+  together or further apart?
+- your grid gives a word one row and one fingerprint. Is `bank` one word?
 
 ### Connection to current LLMs
 
-Word embeddings revolutionised NLP by turning words into numbers that computers
-can process:
+The idea you just used by hand has a name and a date. The linguist J.R. Firth
+put it in 1957 as "you shall know a word by the company it keeps", and it's
+still the idea behind every embedding in every modern model: words used in the
+same contexts tend to mean similar things.
 
-- **dimensions**: your (e.g.) 8-dimensional vectors → modern models use hundreds
-  or thousands of dimensions
-- **learning**: you used occurrence patterns → modern models learn from billions
-  of contexts
-- **semantic capture**: state-of-the-art embeddings encode meaning so well that
-  "`king` - `man` + `woman` ≈ `queen`" actually works
-- **foundation**: every modern language model starts by converting words to
-  embeddings
+- **counts versus learned vectors**: your row is a count vector---one number per
+  word in your vocabulary, nearly all of them zero, every number a tally you
+  wrote down yourself. A real embedding is _learned_: a few hundred to several
+  thousand numbers, none of them a count of anything, nudged during training
+  until words used alike end up near each other.
+- **learning is what makes it generalise**: this is the promise
+  [Search Sheets](/modules/search-sheets/) makes and this module cashes out.
+  Your grid rates any pair it never saw as flatly impossible---an empty cell is
+  a zero chance, full stop. Because a learned model spreads what it knows across
+  shared numbers rather than separate cells, what it learns about `cat` reaches
+  `dog`, and it can rate a pair it has never seen as perfectly plausible. Two
+  words can even end up close having never shared a single exact context, each
+  being close to words the other kept company with.
+- **the famous analogy**: king − man + woman ≈ queen, from the word2vec work of
+  Mikolov and colleagues in 2013. The vectors come out arranged so that
+  arithmetic on them lands somewhere sensible. Worth showing, worth the caveat:
+  it works for some analogies and not others, and the usual evaluation excludes
+  the three input words from the candidate answers, which flatters the result.
+- **modern embeddings are contextual**: in an LLM a word's vector is computed
+  from the sentence it appears in, so the `bank` of a river and the `bank` that
+  holds your money get different vectors.
 
-The insight: words with similar meanings appear in similar contexts, so their
-usage patterns (and thus embeddings) are similar. Your hand-calculated vectors
-demonstrate this principle: `cat` and `dog` would have similar embeddings
-because they both follow `the` and precede `ran` or `sat`. This discovery
-enabled computers to "understand" that words have relationships and meanings
-beyond just their spelling.
-
-Note on the activity: while the module focuses on calculating distances between
-embeddings (the similarity matrix), this is pedagogically deliberate. Embeddings
-themselves are just rows of numbers, but distances reveal the relationships
-between words---which is what makes embeddings useful in practice. The activity
-emphasises the practical application of embeddings rather than just their
-construction.
+What survives all of that is the move you made on paper: turn a word into a list
+of numbers, so that "these two behave alike" becomes something you can measure
+instead of something you argue about.
