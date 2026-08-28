@@ -23,9 +23,9 @@ import SeedTrainingText from "../components/SeedTrainingText.svelte";
 
 Twenty minutes, one person, a pen, some paper and something random: a ten-sided
 die if you have one, otherwise a coin, or the random-number function on your
-phone. By the end you'll have built a language model and used it to write a
-sentence nobody has written before---and you'll know, from the inside, what
-ChatGPT is doing when it writes one.
+phone. By the end you'll have built a language model, used it to write a
+sentence nobody has written before, and seen what ChatGPT is doing when it
+writes one.
 
 ## 1. Pick a text
 
@@ -98,21 +98,21 @@ get a different sentence.
 
 Every reply from Claude or ChatGPT is produced by that loop: look at the
 context, weigh the options, pick one, write it down. What's different is the
-scale, how far back the model looks, and a kind of model that can spread what it
+scale, how far back the model looks, and machinery that can spread what it
 learns about one word onto related ones. It's still words in, words out.
 
 <Callout type="tip" title="Now go bigger">
 
-- **A whole book.** Grab a
+- **a whole book**: grab a
   [pre-trained booklet](/tools/#booklets-for-dice-generation)---a model of _The
   Cat in the Hat_ or _Frankenstein_ already tallied and typeset as dice
   tables---and generate from that. The
   [Pre-trained Model Generation](/modules/pretrained-generation/) module walks
   through it.
-- **Change its voice without changing the model.** The
-  [Sampling](/modules/sampling/) module: a temperature dial and eight house
-  rules, from haiku to alliteration.
-- **Do it with other people.** The [lessons](/lessons/) are the same activities
+- **change its voice without changing the model**: the
+  [Sampling](/modules/sampling/) module has a temperature dial and eight house
+  rules, haiku and alliteration among them.
+- **do it with other people**: the [lessons](/lessons/) are the same activities
   with slides, timings and presenter notes, for a classroom, a workshop, or a
   hall full of people holding one sheet each.
 

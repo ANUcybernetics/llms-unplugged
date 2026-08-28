@@ -22,26 +22,25 @@ listed: true
 
 import Callout from "../../components/Callout.astro";
 
-People talk about a chatbot's personality as though it were a temperament:
-this one's warm, that one's a suck-up, the other one lectures you. It isn't a
-temperament. It's a property of what shaped the model, and everything that
-shaped it was a decision somebody made.
+People talk about a chatbot's personality as though it were a temperament: this
+one's warm, that one's a suck-up, the other one lectures you. But a model's
+personality is a property of what shaped it, and everything that shaped it was a
+decision somebody made.
 
 This lesson makes those decisions concrete by handing them to the room. After
 building the paper model, participants shape it three different ways: they
 change the training data and watch the model turn sycophantic; they run a
 preference round where human judges reward some outputs over others, and then
 watch the model learn to game the judges; and they retrain a model on its own
-generated text and count what's left of the vocabulary. Every one of those is a
-discussion waiting to happen---whose preferences, what counts as good, and what
-happens to the web when models are trained on each other's output---and the
-discussion lands harder because the room did the shaping itself.
+generated text and count what's left of the vocabulary. Every one of those opens
+a discussion: whose preferences, what counts as good, and what happens to the
+web when models are trained on each other's output.
 
 <Callout type="info">
 
 This sequence is assembled from modules we've each run, but we haven't yet run
 it as a single session. The timings below are estimates. If you deliver it,
-[tell us how it went](/about/#get-in-touch)---that's how it gets better.
+[tell us how it went](/about/#get-in-touch).
 
 </Callout>
 
@@ -60,26 +59,25 @@ it as a single session. The timings below are estimates. If you deliver it,
 
 Two and a half hours as written. For a two-hour slot, drop Synthetic Data and
 fold its question ("what happens when the training data is model output?") into
-the closing discussion---the relay is the section that suffers least from being
+the closing discussion. The relay is the section that suffers least from being
 described rather than run, because its punchline is a number.
 
 There's no deck for this lesson. Run it from the module pages, which carry the
-algorithms, worked examples and discussion questions; the discussion questions
-in the instructor notes are doing a lot of the work here, so read them ahead of
-time and pick the ones that suit your group.
+algorithms and worked examples. The discussion questions in the instructor notes
+are doing a lot of the work here, so read them ahead of time and pick the ones
+that suit your group.
 
 ## How it goes
 
 The first 40 minutes are the standard build: tally word pairs into the grid,
 then roll a d10 and generate. Everything after that is a modification to a model
-the room owns, which is what makes the ethics discussion something other than
-abstract.
+the room owns, which keeps the ethics discussion concrete.
 
 **Sycophancy** is the data route. Groups tally a sheet of flattering, agreeable
 phrases into their existing grid and generate again. The model starts
-complimenting them. Nobody wrote a rule saying "be agreeable"---the data said
-it, repeatedly, and the counts did the rest. The obvious question follows: if
-you scraped the whole internet, what else did you tally in without meaning to?
+complimenting them. Nobody wrote a rule saying "be agreeable": the data said it,
+repeatedly, and the counts did the rest. And if you scraped the whole internet,
+what else did you tally in without meaning to?
 
 **RLHF** is the other route to the same place, and it runs as a game show. Two
 tables start with identical copies of the grid, each with its own judging panel
@@ -88,19 +86,17 @@ rhythm). Each round the table generates three candidates from a shared seed
 word, the panel ranks them, and the scorer bumps the counts behind the winner
 and docks the loser. Three rounds later both tables generate from the same seed
 and read the results side by side: two models from one grid, separated only by
-who held the scorecard---which is the whole argument about whose values a model
-encodes. Then the reward-hacking round: one panel is secretly briefed to reward
-flattery, and the generators, who never see the brief, watch their model reach
-for agreeable phrases on its own. That's a much better lesson than being told
-about it.
+who held the scorecard. Then the reward-hacking round: one panel is secretly
+briefed to reward flattery, and the generators, who never see the brief, watch
+their model reach for agreeable phrases on its own.
 
 **Synthetic Data** runs as a relay around the room. Group one generates text
 from their model and passes it to group two as training data; group two trains
 on it, generates, and passes on again. Keep a running vocabulary count on
-butchers paper at each hop. The line goes down---sometimes gently, sometimes off
-a cliff---and you have a picture of model collapse that nobody argues with.
+butchers paper at each hop. The line goes down, sometimes gently and sometimes
+off a cliff, and that's model collapse.
 
-The close pulls the three threads together: three different mechanisms, one
+The close pulls the three sections together: different mechanisms, the same
 outcome, and in every case a person somewhere chose the data, the reward, or the
 shortcut.
 
@@ -127,10 +123,10 @@ For the room:
 ## Before you deliver
 
 - print the grids, the sycophancy sheets, and at least one booklet
-- brief the two judging panels in secret before the RLHF round---the briefs
-  are on the [RLHF](/modules/rlhf/) page (team clarity, team poetry, and the
-  sealed team-approval brief for the reward-hacking round); don't let the
-  panels compare notes until the reveal
+- brief the two judging panels in secret before the RLHF round---the briefs are
+  on the [RLHF](/modules/rlhf/) page (team clarity, team poetry, and the sealed
+  team-approval brief for the reward-hacking round); don't let the panels
+  compare notes until the reveal
 - seat the groups in a chain, or at least know the order, so the synthetic-data
   relay passes cleanly without everyone standing up
 - decide in advance how you'll count vocabulary at each hop (distinct words in a
