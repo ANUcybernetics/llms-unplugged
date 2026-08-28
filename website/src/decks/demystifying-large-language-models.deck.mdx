@@ -25,10 +25,10 @@ the role mapping and the three-book reveal. If a slide is tempting you to
 read it out, cut it rather than the sentence you were going to say.
 
 The reveal is the spine: the three source books are never named until the
-reveal slide, and nothing on the printed sheets names them either. Print
-the sheets with `--title` and `--author` overrides so no sheet carries a
-book's name, dealing all three texts together. Hemingway then Poe then
-Seuss, because Seuss is the biggest recognition hit and has to land last.
+three-book slide, and nothing on the printed sheets names them either. Deal
+all three texts together, and print with `--title` and `--author` overrides
+so no sheet carries a book's name. Hemingway then Poe then Seuss, because
+Seuss is the biggest recognition hit and has to land last.
 (The Visionaries deal used the-old-man-and-the-sea-excerpt, the-tell-tale-
 heart and the-cat-in-the-hat, in that input order, --seed 42; see `make
 showcase` in cli/.)
@@ -56,7 +56,7 @@ Per-slide notes hold the beats to hit --- rehearsal cues, not a script.
 ```notes
 Hands up: used one this week. Keep them up if you could explain to a ten-year-old what it did.
 
-Most hands come down. That gap is the talk.
+Most hands come down.
 ```
 
 ---
@@ -123,7 +123,7 @@ So where did they come from?
 ```notes
 Each token pair on the sheets came from one of these three books. Click them in one at a time and read each out.
 
-The sheets --- the model --- had no indicator of which token came from which book. It worked because there's token crossover between them: `the`, `and`, `.` are in all three, and the chain drifts from one book into another through them. That drift is why the sentence sounded like nothing anyone has read.
+The sheets --- the model --- had no indicator of which token came from which book. It worked because there's token crossover between them: `the`, `and`, `.` are in all three, and the chain drifts from one book into another through them.
 ```
 
 ---
