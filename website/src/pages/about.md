@@ -17,6 +17,10 @@ created by [Dr. Ben Swift](https://benswift.me) at the
 questions, suggestions, or _LLMs Unplugged_ success stories then
 [send Ben an email](mailto:ben.swift@anu.edu.au).
 
+The same models also exist as hardbound books: the
+[LLMs Unplugged Library](/library/) is a small conceptual-art press run of
+n-gram frequency tables typeset from classic literature.
+
 These resources build on a rich history of unplugged computing education (and
 hands-on education in general). If you're interested in where these ideas came
 from---or where to go next---this is the reading list.

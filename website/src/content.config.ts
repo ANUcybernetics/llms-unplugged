@@ -11,6 +11,17 @@ const modules = defineCollection({
     topic: z.enum(TOPIC_KEYS),
     order: z.number(),
     keyIdea: z.string().optional(),
+    // Card/badge metadata, matching what lessons carry, so a visitor can tell
+    // age fit, time and materials from the index rather than the page.
+    audience: z.string(),
+    duration: z.string(),
+    // What the activity runs on. "sheets" is the whole-room search-sheet
+    // format; "dice" is the apparatus-only warm-up.
+    bases: z.array(z.enum(["grid", "cutouts", "booklet", "sheets", "dice"])).min(1),
+    // How road-tested the module is. tested: part of a regularly delivered
+    // lesson deck; piloted: run in a room at least once; experimental: written
+    // but not yet run with a group.
+    status: z.enum(["tested", "piloted", "experimental"]),
     // Unlisted modules are reachable only via direct links --- hidden from the
     // sidebar and the /modules index (see src/lib/modules.ts).
     listed: z.boolean().default(true),
@@ -38,6 +49,10 @@ const lessons = defineCollection({
     // Hero image basename (without the hero- prefix) from src/assets/images.
     heroImage: z.string().optional(),
     order: z.number(),
+    // tested: delivered many times; early-access: run at least once, timings
+    // and materials may still shift. Shown as a badge so a lesson can be
+    // listed before it has had the polish of the others.
+    status: z.enum(["tested", "early-access"]).default("tested"),
     // Unlisted lessons are reachable only via direct links --- hidden from the
     // /lessons index, sitemap, and search.
     listed: z.boolean().default(true),

@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import Card from "astro-theme-university/components/Card.astro";
 import { moduleHeroImage } from "../lib/hero-images";
 import { type Module, modulesInTopic } from "../lib/modules";
+import { moduleStatusLabels } from "../lib/status";
 import type { Topic } from "../lib/topics";
 
 interface Props {
@@ -36,6 +37,13 @@ if (topic) {
         image={moduleHeroImage(module.id)}
       >
         <p class="card-description">{module.data.description}</p>
+        <p class="card-badges">
+          {module.data.audience} &middot; {module.data.duration} &middot;{" "}
+          {module.data.bases.join(", ")} &middot;{" "}
+          <span class={`status-badge status-${module.data.status}`}>
+            {moduleStatusLabels[module.data.status]}
+          </span>
+        </p>
       </Card>
     ))
   }
@@ -47,5 +55,11 @@ if (topic) {
     color: var(--at-text-secondary);
     margin: 0;
     line-height: 1.4;
+  }
+
+  .card-badges {
+    font-size: 0.8rem;
+    color: var(--at-text-secondary);
+    margin: 0.5rem 0 0;
   }
 </style>

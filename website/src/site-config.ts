@@ -8,8 +8,9 @@ export const siteConfig = defineSiteConfig({
   links: [
     { text: "Lessons", href: "/lessons/" },
     { text: "Modules", href: "/modules/" },
-    { text: "Tools", href: "/tools/" },
-    { text: "Library", href: "/library/" },
+    // The route is still /tools/ (it's linked from everywhere); the label is
+    // the word teachers search for.
+    { text: "Materials", href: "/tools/" },
     { text: "News", href: "/news/" },
     { text: "About", href: "/about/" },
   ],
@@ -33,7 +34,8 @@ export const themeLogo = logo;
 export const footerOverrides = {
   meta: [
     'LLMs Unplugged is a <a href="https://cybernetics.anu.edu.au/cybernetic-studio/">Cybernetic Studio</a> project at the ANU School of Cybernetics, made by <a href="https://benswift.me">Ben Swift</a>.',
-    // Glossary and FAQ moved out of the main nav in the July 2026 restructure.
-    '<a href="/glossary/">Glossary</a> &middot; <a href="/faq/">FAQ</a>',
+    // Glossary and FAQ moved out of the main nav in the July 2026 restructure;
+    // the Library followed in August (it's linked from Materials and About).
+    '<a href="/glossary/">Glossary</a> &middot; <a href="/faq/">FAQ</a> &middot; <a href="/library/">Library</a>',
   ],
 };

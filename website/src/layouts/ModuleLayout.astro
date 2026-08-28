@@ -4,6 +4,7 @@ import SidebarLayout from "astro-theme-university/layouts/SidebarLayout.astro";
 import CommonHead from "../components/CommonHead.astro";
 import { siteConfig, themeLogo, footerOverrides } from "../site-config";
 import { getModuleSidebar } from "../lib/module-sidebar";
+import { type ModuleStatus, moduleStatusLabels } from "../lib/status";
 import faviconAsset from "../assets/favicon.svg";
 import "../styles/global.css";
 import "../styles/widgets.css";
@@ -13,6 +14,10 @@ interface Props {
   description?: string;
   ogImage?: ImageMetadata | string;
   keyIdea?: string;
+  audience: string;
+  duration: string;
+  bases: string[];
+  status: ModuleStatus;
   usedIn?: Array<{ title: string; href: string }>;
   noindex?: boolean;
 }
@@ -24,6 +29,10 @@ const {
   description,
   ogImage,
   keyIdea,
+  audience,
+  duration,
+  bases,
+  status,
   usedIn = [],
   noindex,
 } = Astro.props;
@@ -59,6 +68,17 @@ const slug = currentPath.split("/").filter(Boolean).pop();
        search index; unlisted modules omit it and drop out of search. */
   }
   <div class="prose" data-pagefind-body={noindex ? undefined : ""}>
+    <ul class="module-meta">
+      <li><strong>Audience</strong> {audience}</li>
+      <li><strong>Duration</strong> {duration}</li>
+      <li><strong>Runs on</strong> {bases.join(", ")}</li>
+      <li>
+        <strong>Status</strong>
+        <span class={`status-badge status-${status}`}>
+          {moduleStatusLabels[status]}
+        </span>
+      </li>
+    </ul>
     {
       keyIdea && (
         <p class="module-key-idea">
@@ -92,6 +112,27 @@ const slug = currentPath.split("/").filter(Boolean).pop();
 </SidebarLayout>
 
 <style>
+  .module-meta {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    margin: 0 0 1.5rem;
+    padding: 0.75rem 0;
+    border-block: 1px solid var(--at-divider);
+    font-size: 0.95rem;
+    color: var(--at-text-secondary);
+  }
+
+  .module-meta li {
+    margin: 0;
+  }
+
+  .module-meta strong {
+    color: var(--at-text);
+    margin-inline-end: 0.35rem;
+  }
+
   .module-key-idea {
     margin: 0 0 1.5rem;
     padding: 0.75rem 1rem;

@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import Card from "astro-theme-university/components/Card.astro";
 import PageLayout from "../../layouts/PageLayout.astro";
 import { findHeroImage } from "../../lib/hero-images";
+import { lessonStatusLabels } from "../../lib/status";
 
 const lessons = (await getCollection("lessons"))
   .filter((l) => l.data.listed !== false)
@@ -18,9 +19,12 @@ const lessons = (await getCollection("lessons"))
   <p>
     A lesson is a complete, ready-to-run session: a tested sequence of <a
       href="/modules/">modules</a
-    > with slides, timings, prep notes, and a materials list. We've delivered each
-    of these many times, to groups ranging from primary-school classes to senior executives&mdash;pick
-    the one that fits your group and you can run it as-is.
+    > with slides, timings, prep notes, and a materials list. Each has been run in
+    a real room, with groups ranging from primary-school classes to senior executives&mdash;pick
+    the one that fits your group and you can run it as-is. (An <em
+      >early access</em
+    >
+    badge means we've run it once and are still road-testing the timings.)
   </p>
 
   <p>
@@ -46,6 +50,15 @@ const lessons = (await getCollection("lessons"))
           <p class="card-badges">
             {lesson.data.audience} &middot; {lesson.data.duration} &middot;{" "}
             {lesson.data.flavour}
+            {lesson.data.status !== "tested" && (
+              <>
+                {" "}
+                &middot;{" "}
+                <span class={`status-badge status-${lesson.data.status}`}>
+                  {lessonStatusLabels[lesson.data.status]}
+                </span>
+              </>
+            )}
           </p>
         </Card>
       ))
