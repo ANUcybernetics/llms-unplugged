@@ -37,18 +37,32 @@ Sampling choices---<GlossaryTerm id="temperature">temperature</GlossaryTerm> and
 cautious, wild, repetitive, or inventive. Tweaking the sampler changes the
 output without retraining anything.
 
-## Temperature control
+## Temperature
 
-Temperature is a number that smooths the distribution. Higher temperatures
-flatten differences between options, making surprising words more likely.
+Temperature is a dial on how much the model respects its own counts. Turned
+down, it sticks to the favourites; turned up, it treats every option as roughly
+equal. A version you can run by hand has four settings:
 
-- Algorithm: when sampling the next word, divide all counts by the temperature
-  (round down, minimum 1) before rolling dice.
-- Example with counts `spot` (4), `run` (2), `jump` (1), `.` (1)
-  - Temp 1 → use counts as-is (`spot ` twice as likely as `run`; four times
-    `jump` or `.`).
-  - Temp 2 → counts become 2, 1, 1, 1 (`spot` still highest, but less dominant).
-  - Temp 4 → counts become 1, 1, 1, 1 (all options equal).
+- **cold**: no dice---take the option with the highest count (if there's a tie,
+  roll among the tied ones). This is _greedy_ decoding.
+- **normal**: roll on the counts exactly as they are, as in
+  [Generation](/modules/generation/).
+- **hot**: before you roll, add 1 to _every_ option's count, then roll on the
+  new totals. The favourites are still ahead, but by less.
+- **boiling**: ignore the counts---roll evenly among all the options.
+
+Example with counts `spot` (4), `run` (2), `jump` (1), `.` (1):
+
+- cold → `spot`, every time
+- normal → `spot` 4 in 8, `run` 2 in 8, `jump` and `.` 1 in 8 each
+- hot → counts become 5, 3, 2, 2, so `spot` 5 in 12, `run` 3 in 12, `jump` and
+  `.` 2 in 12 each: the rare words have doubled their chances
+- boiling → 1 in 4 each
+
+Turn the dial up further by adding 2 (or 3) to every count instead of 1; the
+bigger the number you add, the closer you get to boiling. The one thing that
+_doesn't_ work is dividing every count by the same number: that leaves the odds
+exactly where they were.
 
 ## Truncation strategies
 
@@ -140,19 +154,25 @@ length (short mode) or above it (long mode). If nothing qualifies, re-roll.
 
 ### Troubleshooting
 
-- **"I divided all the counts by the temperature and now everything is 1."**
-  This is correct---it's not a mistake. High temperature flattens the
-  distribution so that all options become equally likely. That's the whole
-  point: higher temperature means more randomness.
+- **"On hot, the row doesn't add up to 10 any more."** It never had to: convert
+  the new totals to dice ranges the same way as in
+  [Weighted Randomness](/modules/weighted-randomness/), or roll two d10 as a
+  number from 1 to 100 and scale.
+- **"Isn't hot just the same odds with bigger numbers?"** No---adding the same
+  amount to every count narrows the _ratio_ between favourite and rare. Adding
+  1 takes `spot` from four times as likely as `jump` to two and a half times.
+  Dividing would leave the ratio alone, which is why the dial adds.
 
 ### Connection to current LLMs
 
 Current LLMs use these same mechanisms, though the specific strategies differ.
 
-- **Temperature control:** the temperature parameter divides probabilities just
-  like you divide tallies; higher temperature means more random output. The
-  lesson uses manual temperature adjustment, while LLMs do this computationally
-  before every token.
+- **Temperature control:** a real model scores every possible next token, and
+  the temperature parameter divides those scores _before_ they're turned into
+  probabilities. Below 1 the distribution sharpens towards the favourite; above
+  1 it flattens. Your dial does the same job with counts: cold is temperature
+  near zero (greedy), boiling is temperature near infinity (uniform), and hot
+  sits in between. LLMs apply it computationally before every token.
 - **Truncation techniques in modern LLMs:** <GlossaryTerm id="top-k-sampling">top-k sampling</GlossaryTerm> (only consider k most
   likely tokens), <GlossaryTerm id="top-p-sampling">top-p/nucleus sampling</GlossaryTerm> (consider tokens until cumulative
   probability reaches p), repetition penalties, frequency penalties, and
