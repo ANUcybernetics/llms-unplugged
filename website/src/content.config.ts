@@ -30,33 +30,45 @@ const modules = defineCollection({
 
 // Lessons are the deck-backed workshop journeys --- what you actually run in a
 // room. Each lesson assembles modules (plus deck-only parts like icebreakers
-// and wrap-ups) into a tested sequence with timings.
+// and wrap-ups) into a tested sequence with timings. Lessons and talks share
+// one page shape. A workshop (lesson) is a room
+// building its own models, table by table; a talk is a room handed a model on
+// search sheets and running it together from the stage. They are separate
+// collections because each renders at the URL its path implies (/lessons/,
+// /talks/), which the theme's llms.txt generator relies on.
+const sessionSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  // Card/badge metadata: name the experience; duration and apparatus are
+  // metadata, never part of the title.
+  audience: z.string(),
+  duration: z.string(),
+  flavour: z.enum(["grid", "cutouts", "sheets"]),
+  // The deck(s) that back this lesson, in the order they should be offered.
+  decks: z.array(z.object({ slug: z.string(), label: z.string() })),
+  // Module slugs this lesson runs --- drives the "Used in" box on module
+  // pages as well as the module links on the lesson page itself.
+  modules: z.array(z.string()).default([]),
+  // Hero image basename (without the hero- prefix) from src/assets/images.
+  heroImage: z.string().optional(),
+  order: z.number(),
+  // tested: delivered many times; early-access: run at least once, timings
+  // and materials may still shift. Shown as a badge so a lesson can be
+  // listed before it has had the polish of the others.
+  status: z.enum(["tested", "early-access"]).default("tested"),
+  // Unlisted lessons are reachable only via direct links --- hidden from the
+  // /lessons index, sitemap, and search.
+  listed: z.boolean().default(true),
+});
+
 const lessons = defineCollection({
   loader: glob({ pattern: "**/*.mdx", base: "src/content/lessons" }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    // Card/badge metadata: name the experience; duration and apparatus are
-    // metadata, never part of the title.
-    audience: z.string(),
-    duration: z.string(),
-    flavour: z.enum(["grid", "cutouts"]),
-    // The deck(s) that back this lesson, in the order they should be offered.
-    decks: z.array(z.object({ slug: z.string(), label: z.string() })),
-    // Module slugs this lesson runs --- drives the "Used in" box on module
-    // pages as well as the module links on the lesson page itself.
-    modules: z.array(z.string()).default([]),
-    // Hero image basename (without the hero- prefix) from src/assets/images.
-    heroImage: z.string().optional(),
-    order: z.number(),
-    // tested: delivered many times; early-access: run at least once, timings
-    // and materials may still shift. Shown as a badge so a lesson can be
-    // listed before it has had the polish of the others.
-    status: z.enum(["tested", "early-access"]).default("tested"),
-    // Unlisted lessons are reachable only via direct links --- hidden from the
-    // /lessons index, sitemap, and search.
-    listed: z.boolean().default(true),
-  }),
+  schema: sessionSchema,
+});
+
+const talks = defineCollection({
+  loader: glob({ pattern: "**/*.mdx", base: "src/content/talks" }),
+  schema: sessionSchema,
 });
 
 const news = defineCollection({
@@ -93,4 +105,16 @@ const events = defineCollection({
   }),
 });
 
-export const collections = { modules, lessons, news, events };
+// Repo-level documents published on the site without a second copy. Today
+// that's the curriculum mapping (docs/curriculum-mapping.md), rendered at
+// /educators/curriculum/.
+const docs = defineCollection({
+  loader: glob({ pattern: "curriculum-mapping.md", base: "../docs" }),
+  schema: z.object({
+    title: z.string(),
+    subtitle: z.string().optional(),
+    author: z.string().optional(),
+  }),
+});
+
+export const collections = { modules, lessons, talks, news, events, docs };

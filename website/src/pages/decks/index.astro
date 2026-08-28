@@ -12,10 +12,15 @@ const lessons = (await getCollection("lessons"))
   .filter((l) => l.data.listed !== false)
   .toSorted((a, b) => a.data.order - b.data.order);
 
+const talks = (await getCollection("talks"))
+  .filter((t) => t.data.listed !== false)
+  .toSorted((a, b) => a.data.order - b.data.order);
+
 const claimed = new Set(
-  (await getCollection("lessons")).flatMap((l) =>
-    l.data.decks.map((d) => d.slug),
-  ),
+  [
+    ...(await getCollection("lessons")),
+    ...(await getCollection("talks")),
+  ].flatMap((l) => l.data.decks.map((d) => d.slug)),
 );
 
 // Any remaining decks (event one-offs, works in progress) still get listed
@@ -70,6 +75,23 @@ for (const entry of fs.readdirSync(decksDir, { withFileTypes: true })) {
         </h2>
         <ul>
           {lesson.data.decks.map((deck) => (
+            <li>
+              <a href={`/decks/${deck.slug}/`}>{deck.label}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+
+  {
+    talks.map((talk) => (
+      <section>
+        <h2>
+          <a href={`/talks/${talk.id}/`}>{talk.data.title}</a> (talk)
+        </h2>
+        <ul>
+          {talk.data.decks.map((deck) => (
             <li>
               <a href={`/decks/${deck.slug}/`}>{deck.label}</a>
             </li>

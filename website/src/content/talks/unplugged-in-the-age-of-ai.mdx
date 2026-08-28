@@ -1,0 +1,82 @@
+---
+title: Unplugged in the age of AI
+description:
+  A twenty-minute talk that runs the room as a bigram model of The Cat in the
+  Hat, then puts the paper model's three scales beside a frontier LLM's and asks
+  whether unplugged still matters. It does.
+audience: any audience, 20 to 100 people
+duration: 20 minutes
+flavour: sheets
+status: early-access
+decks:
+  - slug: unplugged-age-of-ai
+    label: Unplugged in the age of AI (20 min)
+modules:
+  - search-sheets
+heroImage: search-sheets
+order: 21
+---
+
+import Callout from "../../components/Callout.astro";
+import UsingTheSlides from "../../components/UsingTheSlides.astro";
+
+A talk, not a workshop: the only thing the audience does is hold a
+[search sheet](/modules/search-sheets/) and put a hand up. The room runs a
+bigram model of _The Cat in the Hat_ for five minutes, maps what it did onto the
+real vocabulary (tokens, parameters, distribution, sampling), sees the same
+model in grid form, and then watches three scales grow---context, training text,
+learned numbers---from the paper model to a frontier LLM, without pretending the
+two are the same kind of machine. It closes on the claim: you can't build
+Claude, but twenty minutes of paper and hands in the air makes you harder to
+fool.
+
+We gave it at ANU in August 2026, straight after Tim Bell's introduction to CS
+Unplugged, which is where its opening Bandura quote comes from.
+
+## Running order
+
+| Time  | Beat                                       | Slides |
+| ----- | ------------------------------------------ | ------ |
+| 0:00  | the frame: understand, and believe you can | 1--4   |
+| 3:00  | what you've just been given                | 5--6   |
+| 5:00  | seed it, then run the model                | 7--9   |
+| 11:00 | what just happened                         | 10--13 |
+| 14:00 | what Claude does differently, at scale     | 14--18 |
+| 18:00 | the claim, then what's next                | 19--23 |
+
+## You will need
+
+- one search sheet per attendee, sized to the head count: the ready-to-print
+  [Cat in the Hat set](/tools/#search-sheets) holds 36 sheets (or A5 two-up), or
+  deal your own with
+  `llms_unplugged sheets -i data/the-cat-in-the-hat.txt -n 2 --sheets <count>`
+- the brief (page 1 of the PDF) on the lectern; it carries the worked example
+- the deck's whiteboard overlay (press `b`) for the generated text, and a scribe
+  if you'd rather not write and talk
+- a projector for the slides
+
+## Before you deliver
+
+- don't hand the sheets out early; they get read, and the "nobody here is
+  holding a story" beat depends on the shuffle
+- the numbers on the "between us we have the whole book" and scale slides are
+  for _The Cat in the Hat_ at n=2; if you swap the corpus, rebuild them with
+  `llms_unplugged build` and read the metadata block
+- the Bandura framing and the "come to tomorrow's workshop" close were for that
+  event; the middle fourteen minutes stand on their own
+
+<Callout type="info">
+
+This is the deck as delivered, event slides included. A generic version built on
+a shared search-sheets partial is on the way.
+
+</Callout>
+
+<UsingTheSlides
+  decks={[
+    {
+      slug: "unplugged-age-of-ai",
+      label: "Unplugged in the age of AI (20 min)",
+    },
+  ]}
+/>

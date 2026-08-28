@@ -18,11 +18,24 @@ const { Content } = await render(module);
 // (hashed) URL rather than a source path that 404s in production.
 const ogImage = moduleHeroImage(module.id);
 
-// Lessons (listed ones only) that run this module, for the "Used in" box.
-const usedIn = (await getCollection("lessons"))
-  .filter((l) => l.data.listed !== false && l.data.modules.includes(module.id))
-  .toSorted((a, b) => a.data.order - b.data.order)
-  .map((l) => ({ title: l.data.title, href: `/lessons/${l.id}/` }));
+// Lessons and talks (listed ones only) that run this module, for the "Used
+// in" box. Talks live under /talks/ and are labelled as such.
+const usesModule = (l: { data: { listed?: boolean; modules: string[] } }) =>
+  l.data.listed !== false && l.data.modules.includes(module.id);
+const byOrder = (
+  a: { data: { order: number } },
+  b: { data: { order: number } },
+) => a.data.order - b.data.order;
+const usedIn = [
+  ...(await getCollection("lessons"))
+    .filter(usesModule)
+    .toSorted(byOrder)
+    .map((l) => ({ title: l.data.title, href: `/lessons/${l.id}/` })),
+  ...(await getCollection("talks"))
+    .filter(usesModule)
+    .toSorted(byOrder)
+    .map((t) => ({ title: `${t.data.title} (talk)`, href: `/talks/${t.id}/` })),
+];
 ---
 
 <ModuleLayout

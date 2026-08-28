@@ -1,0 +1,34 @@
+---
+import { getCollection, render } from "astro:content";
+import LessonLayout from "../../layouts/LessonLayout.astro";
+import { findHeroImage } from "../../lib/hero-images";
+
+export async function getStaticPaths() {
+  const talks = await getCollection("talks");
+  return talks.map((talk) => ({
+    params: { slug: talk.id },
+    props: { talk },
+  }));
+}
+
+const { talk } = Astro.props;
+const { Content } = await render(talk);
+
+const ogImage = talk.data.heroImage
+  ? findHeroImage(`hero-${talk.data.heroImage}`)
+  : undefined;
+---
+
+<LessonLayout
+  title={talk.data.title}
+  description={talk.data.description}
+  ogImage={ogImage}
+  kind="talk"
+  audience={talk.data.audience}
+  duration={talk.data.duration}
+  flavour={talk.data.flavour}
+  status={talk.data.status}
+  noindex={talk.data.listed === false}
+>
+  <Content />
+</LessonLayout>

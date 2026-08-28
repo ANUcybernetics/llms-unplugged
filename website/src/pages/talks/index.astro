@@ -1,0 +1,79 @@
+---
+import { getCollection } from "astro:content";
+import Card from "astro-theme-university/components/Card.astro";
+import PageLayout from "../../layouts/PageLayout.astro";
+import { findHeroImage } from "../../lib/hero-images";
+import { lessonStatusLabels } from "../../lib/status";
+
+const talks = (await getCollection("talks"))
+  .filter((l) => l.data.listed !== false)
+  .toSorted((a, b) => a.data.order - b.data.order);
+---
+
+<PageLayout
+  title="Talks"
+  description="LLMs Unplugged as a talk: the audience is handed a language model on search sheets and runs it by show of hands, from a stage, in five minutes."
+>
+  <h1>Talks</h1>
+
+  <p>
+    A talk is the room-sized version. Where a <a href="/lessons/">workshop</a>
+    has every table build its own model, a talk hands the audience a model already
+    dealt across the room on <a href="/modules/search-sheets/">search sheets</a
+    >&mdash;one sheet each&mdash;and runs it from the stage by show of hands. It
+    takes five minutes, needs nothing but the sheets and a whiteboard, and works
+    from a seminar room to a hall of several hundred.
+  </p>
+
+  <p>
+    These are the talks we've given. Each page has the running order, what to
+    print, and the slides as delivered.
+  </p>
+
+  <div class="at-card-grid at-card-grid--2">
+    {
+      talks.map((talk) => (
+        <Card
+          href={`/talks/${talk.id}/`}
+          title={talk.data.title}
+          headingLevel="h2"
+          image={
+            talk.data.heroImage
+              ? findHeroImage(`hero-${talk.data.heroImage}`)
+              : undefined
+          }
+        >
+          <p class="card-description">{talk.data.description}</p>
+          <p class="card-badges">
+            {talk.data.audience} &middot; {talk.data.duration} &middot;{" "}
+            {talk.data.flavour}
+            {talk.data.status !== "tested" && (
+              <>
+                {" "}
+                &middot;{" "}
+                <span class={`status-badge status-${talk.data.status}`}>
+                  {lessonStatusLabels[talk.data.status]}
+                </span>
+              </>
+            )}
+          </p>
+        </Card>
+      ))
+    }
+  </div>
+</PageLayout>
+
+<style>
+  .card-description {
+    font-size: 0.85rem;
+    color: var(--at-text-secondary);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .card-badges {
+    font-size: 0.8rem;
+    color: var(--at-text-secondary);
+    margin: 0.5rem 0 0;
+  }
+</style>

@@ -1,0 +1,89 @@
+---
+title: Demystifying large language models
+description:
+  A fifteen-minute talk in which the whole audience becomes a bigram language
+  model built from three unnamed books, generates a sentence nobody wrote, and
+  only then finds out where the words came from.
+audience: any audience, up to a few hundred
+duration: 15 minutes
+flavour: sheets
+status: early-access
+decks:
+  - slug: visionaries-showcase
+    label: Demystifying large language models (15 min)
+modules:
+  - search-sheets
+heroImage: search-sheets
+order: 20
+---
+
+import Callout from "../../components/Callout.astro";
+import UsingTheSlides from "../../components/UsingTheSlides.astro";
+
+TED-style: the speaking carries it and the slides are cues, not visual aids. The
+audience is handed [search sheets](/modules/search-sheets/) as the house lights
+come up, runs the model for four minutes by show of hands, and then learns what
+it just did. The spine is a reveal: the three source books are never named until
+near the end, and nothing on the printed sheets names them either, so a hall
+that has just generated "the old man sat in the hat" finds out it was Hemingway,
+Poe and Dr Seuss---in that order, because Seuss is the biggest recognition hit
+and has to land last.
+
+We gave it at the ANU Visionaries Among Us Showcase in August 2026, to a hall of
+about 360.
+
+## Running order
+
+Target thirteen minutes against a fifteen-minute slot; the run is where the
+spare time goes.
+
+| Time  | Beat                                           | Slides |
+| ----- | ---------------------------------------------- | ------ |
+| 0:00  | the smallest thing on the program; two stories | 1--4   |
+| 2:00  | what you've just been given (sheets go out)    | 5      |
+| 3:00  | seed from a volunteer's sheet, then the recipe | 6      |
+| 5:00  | run the room (four minutes, 12--15 tokens)     | 7      |
+| 9:00  | what just happened: the role mapping           | 8--10  |
+| 11:00 | three books                                    | 11     |
+| 13:00 | close                                          | 12--14 |
+
+Only three slides carry real text: the algorithm, the role mapping and the
+three-book reveal. If a slide is tempting you to read it out, cut it rather than
+the sentence you were going to say.
+
+## You will need
+
+- one search sheet per seat, dealt from the three texts together, with the title
+  and author left off every sheet (the CLI's `sheets` subcommand takes `--title`
+  and `--author` overrides); the deck's comment block has the exact recipe, and
+  the deal is seeded so it's reproducible
+- ushers to hand the sheets out on cue, fast: "take one, pass the rest along"
+- a whiteboard, or the deck's annotation layer, to write the growing sentence
+  where the back of the hall can read it
+- a projector for the slides
+
+## Before you deliver
+
+- rehearse the hand-out: the sheets go out on slide 4, not before, and the run
+  can't start until nearly everyone is holding one
+- pick loud seeds in case you need to restart; the deck notes list them for each
+  text
+- write big. Fifteen tokens at whiteboard size is the whole output; the back row
+  needs to read it for the reveal to land
+- the ANU-at-80 slides near the end were for that event; drop or replace them
+
+<Callout type="info">
+
+This is the deck as delivered, event slides included. A generic version built on
+a shared search-sheets partial is on the way.
+
+</Callout>
+
+<UsingTheSlides
+  decks={[
+    {
+      slug: "visionaries-showcase",
+      label: "Demystifying large language models (15 min)",
+    },
+  ]}
+/>

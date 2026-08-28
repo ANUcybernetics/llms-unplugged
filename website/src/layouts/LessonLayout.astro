@@ -1,19 +1,31 @@
 ---
 import type { ImageMetadata } from "astro";
 import BaseLayout from "./BaseLayout.astro";
+import { type LessonStatus, lessonStatusLabels } from "../lib/status";
 
 interface Props {
   title: string;
   description?: string;
   ogImage?: ImageMetadata | string;
+  kind?: "workshop" | "talk";
   audience: string;
   duration: string;
-  flavour: "grid" | "cutouts";
+  flavour: "grid" | "cutouts" | "sheets";
+  status?: LessonStatus;
   noindex?: boolean;
 }
 
-const { title, description, ogImage, audience, duration, flavour, noindex } =
-  Astro.props;
+const {
+  title,
+  description,
+  ogImage,
+  kind = "workshop",
+  audience,
+  duration,
+  flavour,
+  status = "tested",
+  noindex,
+} = Astro.props;
 ---
 
 <BaseLayout
@@ -29,7 +41,20 @@ const { title, description, ogImage, audience, duration, flavour, noindex } =
       <ul class="lesson-meta">
         <li><strong>Audience</strong> {audience}</li>
         <li><strong>Duration</strong> {duration}</li>
-        <li><strong>Flavour</strong> {flavour}</li>
+        <li>
+          <strong>{kind === "talk" ? "Format" : "Flavour"}</strong>
+          {flavour}
+        </li>
+        {
+          status !== "tested" && (
+            <li>
+              <strong>Status</strong>
+              <span class={`status-badge status-${status}`}>
+                {lessonStatusLabels[status]}
+              </span>
+            </li>
+          )
+        }
       </ul>
       <slot />
     </article>
