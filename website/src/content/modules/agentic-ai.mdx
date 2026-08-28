@@ -1,8 +1,8 @@
 ---
 title: Agentic AI
 description:
-  Turn your model into an agent. Every punctuation token becomes a tool call---a
-  real text message to a real person---and generation picks up again once the
+  Turn your model into an agent. Every punctuation token becomes a tool call, a
+  real text message to a real person, and generation picks up again once the
   reply is back.
 order: 10
 audience: years 7 and up
@@ -11,8 +11,8 @@ bases: [booklet, cutouts]
 status: tested
 topic: extending-the-model
 keyIdea:
-  An agent is a model that runs tools in a loop---pausing generation, handing
-  off to something outside itself, and continuing with the result spliced in.
+  An agent is a model that runs tools in a loop. It pauses generation, hands off
+  to something outside itself, and continues with the result spliced in.
 ---
 
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
@@ -42,13 +42,12 @@ variation below) and bolt it on the same way.
 
 ## Key idea
 
-What makes a language model an "agent"? In practice it comes down
+In practice, calling a language model an "agent" comes down
 to <GlossaryTerm id="tool-use">tool use</GlossaryTerm>: the model produces
 something that the system around it treats as a request, generation pauses, the
 request goes out to a tool, and the result is written back into the text before
-generation continues. That loop---_generate → call tool → splice in the result →
-keep generating_---is the whole of agentic AI. Here the tool is a real text
-message to a real person.
+generation continues. The loop is _generate → call tool → splice in the result →
+keep generating_. Here the tool is a text message to a friend.
 
 ## The recipe
 
@@ -61,8 +60,8 @@ message to a real person.
    rolled.
 5. **Continue** generating from that punctuation token.
 
-Texting latency is real. If no reply has landed by the time you hit the next
-punctuation token, leave a gap and back-fill it when one arrives.
+Replies take time. If none has arrived by the time you hit the next punctuation
+token, leave a gap and back-fill it when one does.
 
 ## Worked example
 
@@ -96,9 +95,9 @@ continue from `.`, but it has no row for `river`.
 
 ### Variation: trigger-word cutouts
 
-For the cutouts flavour---and for groups who want to _design_ tools rather than
-just call one---add explicit trigger tokens to the model instead of using
-punctuation. Each tool has a trigger word, a capability and a return format:
+For the cutouts flavour, and for groups who want to _design_ tools as well as
+call one, add explicit trigger tokens to the model instead of using punctuation.
+Each tool has a trigger word, a capability and a return format:
 
 | Trigger word | Tool                    | Capability                        | Returns                      |
 | ------------ | ----------------------- | --------------------------------- | ---------------------------- |
@@ -117,9 +116,8 @@ run in [Build, break, extend](/lessons/build-break-extend/).
 
 Other tools to try, on the same pattern: `LOOK` (an object in the room returns a
 word for what it is), `NAME` (the room points at someone), `TIME` (a clock),
-`ASK` (a designated expert returns a short phrase). The shape is always the
-same: something outside the model returns some text, and a closing token brings
-you back.
+`ASK` (a designated expert returns a short phrase). In each case something
+outside the model returns some text, and a closing token brings you back.
 
 ### Discussion questions
 
@@ -159,7 +157,7 @@ calling") is how modern AI assistants act in the world:
   adjusting as results come in
 
 The key insight: the model doesn't know anything the tool returns---it only
-learns when to ask. And one honest difference: a real model reads the tool's
+learns when to ask. A real model does differ in one way: it reads the tool's
 result and conditions on it, whereas your bigram carries on from the punctuation
 as if the reply never happened, because one word of context can't hold it.
 Everything the friend contributed is in the transcript, but not in the model's

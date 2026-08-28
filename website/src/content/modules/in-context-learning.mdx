@@ -21,8 +21,8 @@ import Callout from "../../components/Callout.astro";
 
 A bigram only ever looks at the word before. But the page in front of you holds
 everything you've written so far, and that's context the model can use. This
-module adds two rules that read the page---one sharp, one soft---and neither one
-changes the model itself. That's what makes them a hands-on version
+module adds two rules that read that page. Neither one changes the model itself,
+which makes them a hands-on version
 of <GlossaryTerm id="in-context-learning">in-context learning</GlossaryTerm>.
 
 ![](../../assets/images/hero-in-context-learning.avif)
@@ -36,8 +36,8 @@ of <GlossaryTerm id="in-context-learning">in-context learning</GlossaryTerm>.
   it tidy)
 - dice as per [Generation](/modules/generation/)
 
-Nothing new to print: both rules are procedures laid over a model you already
-have.
+There's nothing new to print, because both rules are procedures you lay over a
+model you already have.
 
 ## Your goal
 
@@ -49,20 +49,20 @@ making it repetitive.
 
 ## Key idea
 
-Both rules answer the same question: _what does the text I've already written
-tell me about the next word?_
+Both rules take the text you've already written and use it to weigh the next
+word.
 
-- **Induction** asks: the last time I was at this exact word, what came next?
-  Copy it. This completes patterns the model has never seen.
-- **Memory** asks: what have I been talking about? Give recently-used words a
-  small boost. This keeps a story about a dog being about the dog.
+- **Induction**: find the last time this exact word appeared and copy whatever
+  followed it. This completes patterns the model has never seen.
+- **Memory**: give recently-used words a small boost. This keeps a story about a
+  dog being about the dog.
 
 The model never retrains. The "learning" lives in the context, not the counts.
 
 ## Part 1: finish the pattern
 
-Start here, because it takes two minutes and it's the whole point. Write down
-this sequence, using words your model has never seen together:
+Start here; it takes two minutes. Write down this sequence, using words your
+model has never seen together:
 
 `moon` `five` `apple` `moon` `five` `apple` `moon` `five`
 
@@ -74,8 +74,7 @@ then `five`, then `apple`…
 You've completed the pattern `moon five apple`, which appears nowhere in the
 training text and which the base model has no row for. The model picked up your
 invented rule from a single example, with no retraining at all. Now turn the
-rule off and generate from the base model alone: the pattern evaporates. That
-contrast _is_ the lesson.
+rule off and generate from the base model alone: the pattern disappears.
 
 ### The induction rule
 
@@ -88,7 +87,7 @@ contrast _is_ the lesson.
    occurrence, there's no candidate; just generate.
 5. Write the word down and repeat.
 
-<Callout type="info" title="Copy, don't only copy">
+<Callout type="info" title="Falling back to the model">
 
 If you _always_ copy, the model just replays whatever pattern it's in---its own
 way of getting stuck on rails. Keeping a chance of falling back to the base
@@ -96,8 +95,8 @@ model lets it break out and start something new.
 
 </Callout>
 
-The rule reads your page, not the model, so it works identically on a grid, a
-spread or a booklet. Only the fall-back differs: roll on the row, pick from the
+The rule only ever reads your page, so it works identically on a grid, a spread
+or a booklet. Only the fall-back differs: roll on the row, pick from the
 matching cutouts, or look up the booklet entry.
 
 ## Part 2: stay on topic
@@ -130,16 +129,15 @@ say, +3:
 
 Roll on the new totals (1--3 → `cat`, 4--7 → `dog`, 8 → `sun`). `dog` has gone
 from unlikely to favourite, so the story is more likely to stay about the dog.
-Crucially, `cat` and `sun` are still possible: the memory tilted the odds, it
-didn't override them.
+`cat` and `sun` are still possible, though; the memory only tilted the odds.
 
-<Callout type="info" title="The one rule that matters: reweight, don't override">
+<Callout type="info" title="Reweight, don't override">
 
-The tempting shortcut is to grab a recent word from memory and just write it
-down. Don't. It ignores the current word (so it drops in words that don't follow
-at all), and every word you emit goes back into memory, so the text collapses
-into repeating a handful of words. The memory only ever boosts words the model
-**already offers**. It re-ranks; it never invents.
+The tempting shortcut is to grab a recent word from memory and write it straight
+down. That ignores the current word (so it drops in words that don't follow at
+all), and every word you emit goes back into memory, so the text collapses into
+repeating a handful of words. The memory only ever boosts words the model
+**already offers**.
 
 </Callout>
 
@@ -149,8 +147,8 @@ into repeating a handful of words. The memory only ever boosts words the model
   then roll on the new totals, as in the worked example.
 - **On a cutouts spread**: once you've gathered the cutouts that match your
   current word, check their next words against memory. For any match, count that
-  cutout twice (or write a duplicate) before you pick. More copies means more
-  likely; the spread does the reweighting for you.
+  cutout twice (or write a duplicate) before you pick, so the spread does the
+  reweighting for you.
 - **On a booklet**: the dice thresholds are pre-printed, so blend instead. Roll
   a "memory die" first (a d10, 1--3 is a hit). On a hit, scan the current
   entry's options and, if one is in memory, pick it. On a miss, or if nothing
@@ -187,8 +185,8 @@ models already fall into.
 
 This module is a hands-on version of three things modern models do.
 
-**Induction heads are real.** They're an identified circuit inside transformers,
-and one of the main mechanisms behind in-context learning:
+**Induction heads.** These are an identified circuit inside transformers, and
+one of the main mechanisms behind in-context learning:
 an <GlossaryTerm id="induction-head">induction head</GlossaryTerm> finds an earlier
 place where the current token appeared and copies what came after it---exactly
 your scan-back-and-copy rule. It's why few-shot prompting works: give an LLM a
@@ -199,17 +197,15 @@ version of your `moon five apple` demo. Real induction heads match softer,
 richer patterns and blend smoothly with everything else the model knows, but the
 behaviour is the same idea.
 
-**Attention over the whole context.** A bigram looks back one word; your memory
-looks back over everything you've generated and lets it influence the next
-choice. That's the heart of
+**Attention.** A bigram looks back one word; your memory looks back over
+everything you've generated and lets it influence the next choice. That's the
+heart of
 the <GlossaryTerm id="attention-mechanism">attention mechanism</GlossaryTerm>: when
 predicting the next word, the model reaches back across the whole context and
 weights what it finds. Your memory is a crude, fixed version (boost recent
 words); attention is learned and content-sensitive, and can decide on the fly
 which earlier words matter.
 
-**Repetition is a real failure mode.** The "stuck on rails" trap is not
-hypothetical: real models loop too, which is why generation settings include
-repetition penalties---a deliberate _down_-weighting of recent words, the exact
-opposite of the boost you added. Topic-stickiness and repetition are two ends of
-the same dial.
+**Repetition.** Real models get stuck on rails too, which is why generation
+settings include repetition penalties: a deliberate _down_-weighting of recent
+words, the opposite of the boost you added.

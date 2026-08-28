@@ -12,7 +12,7 @@ bases: [booklet, grid]
 status: experimental
 topic: scaling-up
 keyIdea:
-  More context sharpens predictions---but the model blows up as you add it, so
+  More context sharpens predictions, but the model blows up as you add it, so
   we also learn a cheaper way to pull in an earlier word.
 ---
 
@@ -20,7 +20,7 @@ import GlossaryTerm from "../../components/GlossaryTerm.astro";
 import Callout from "../../components/Callout.astro";
 
 A <GlossaryTerm id="bigram-model">bigram model</GlossaryTerm> only knows the word immediately before. Give it two
-words of <GlossaryTerm id="context-window">context</GlossaryTerm> and the text changes character straight away---and so
+words of <GlossaryTerm id="context-window">context</GlossaryTerm> and the text changes character straight away, and so
 does the size of the model. Part 1 puts that trade-off on the table in ten
 minutes with two pre-printed booklets. Part 2 builds the same thing by hand,
 then finds a cheaper way to reach back.
@@ -46,17 +46,18 @@ Part 2 is optional and needs materials of its own; they're listed there.
 ## Your goal
 
 Generate from a bigram and a trigram model of the same book, then say what
-changed---in the text, and in the booklet. Stretch goal: build a trigram by
-hand, watch it run into a wall, then build a _skip grid_ that recovers some of
-the benefit for far less cost.
+changed in the text and in the booklet. Stretch goal: build a trigram by hand,
+watch it run into a wall, then build a _skip grid_ that recovers some of the
+benefit for far less cost.
 
 ## Key idea
 
 More context sharpens predictions, but every extra word multiplies the number of
-contexts the model has to store. So this module has an arc: **more context helps
-(trigram) → but the full version blows up → so here's a cheaper way to get some
-of it (skip grid)**. That last move---pulling in earlier context without paying
-the full cost---is the same problem modern models solve with attention.
+contexts the model has to store. Part 1 shows both halves of that: the trigram
+predicts better, and the full trigram booklet blows up. Part 2 builds a cheaper
+way to get some of the benefit, the skip grid. Pulling in earlier context
+without paying the full cost is the same problem modern models solve with
+attention.
 
 ## Part 1: two booklets, one book
 
@@ -77,12 +78,12 @@ and it works with any group that can already roll a booklet.
 5. **Compare.** Read both passages out, then count how many entries on one page
    of each booklet actually offer a choice.
 
-Two things usually land before anyone explains them. The trigram passage is far
-more coherent---so coherent that groups start recognising lines from the book,
-because that's precisely what they are. And the trigram booklet is thicker,
-while most of its entries show a single next word and no diamonds at all:
-nothing to roll, nothing to choose. That's the tape player, and the page count
-is what it cost.
+Two things usually come out before anyone explains them. The trigram passage is
+far more coherent, so coherent that groups start recognising lines from the
+book, because that's precisely what they are. And the trigram booklet is
+thicker, while most of its entries show a single next word and no diamonds at
+all, so there is nothing to roll. The extra pages bought a model that mostly
+replays the book back at you.
 
 <Callout type="tip" title="Starting, and dead ends">
 
@@ -95,8 +96,8 @@ another pair.
 </Callout>
 
 The [Library](/library/) makes the same comparison in hardbound form. Each
-volume is typeset in bigram, trigram and 4-gram variants, so the trade-off is
-legible from the shelf: the trigram _Frankenstein_ reads better than the bigram
+volume is typeset in bigram, trigram and 4-gram variants, so you can see the
+trade-off on the shelf: the trigram _Frankenstein_ reads better than the bigram
 one, and is considerably thicker.
 
 ## Why the trigram parrots
@@ -108,18 +109,18 @@ than once. So almost every two-word context in a short text occurs exactly once,
 the model has no choice to make, and it replays the training text until it
 reaches one of the few contexts that fork.
 
-That's the central trade-off of <GlossaryTerm id="n-gram-model">n-gram models</GlossaryTerm>: **more context sharpens
+This is the trade-off in <GlossaryTerm id="n-gram-model">n-gram models</GlossaryTerm>: **more context sharpens
 predictions, but you need exponentially more data to fill in all those
 contexts.** Push to four or five words and you'd need a library to see each
-context even once. So rather than keep extending the window, part 2 looks for a
-cheaper way to bring in earlier words.
+context even once. So instead of extending the window further, part 2 looks for
+a cheaper way to bring in earlier words.
 
 ## Part 2: build it by hand
 
 For groups with more time, or who have already built a bigram in
 [Training](/modules/training/). Building the trigram yourself turns the blow-up
-into something you feel in your wrist rather than infer from a page count---and
-it sets up the skip grid, which is the interesting part.
+into something you feel in your wrist instead of something you infer from a page
+count, and it sets up the skip grid.
 
 ### Extra materials
 
@@ -163,9 +164,9 @@ helps.
 
 ### A cheaper way: the skip grid
 
-Here's the trick. The trigram is expensive because it tracks the two previous
-words _jointly_---one table indexed by the whole pair. What if we tracked them
-_separately_ and added the evidence together?
+The trigram is expensive because it tracks the two previous words _jointly_, in
+one table indexed by the whole pair. The skip grid tracks them _separately_ and
+adds the evidence together.
 
 You keep two bigram-sized grids:
 
@@ -174,9 +175,9 @@ You keep two bigram-sized grids:
 - the **skip grid**: the same shape, but for the word _two_ back (the word two
   back → the next word)
 
-Two single-word grids cost far less than one word-pair table: each has a row per
-_word_, not per _pair_. That's the whole point---you reach back two words without
-the combinatorial blow-up.
+Two single-word grids cost far less than one word-pair table: each has one row
+per _word_, where the trigram table needs one per _pair_. So you reach back two
+words without the combinatorial blow-up.
 
 <Callout type="tip" title="Why this is cheaper">
 
@@ -214,8 +215,8 @@ after each word:
 | `cat`    | `.`   | 1     |
 | `dog`    | `.`   | 1     |
 
-Notice the skip grid has learnt that `the` is often followed---two words
-later---by a verb (`sat` or `ran`), regardless of which animal came in between.
+Notice the skip grid has learnt that `the` is often followed two words later by
+a verb (`sat` or `ran`), regardless of which animal came in between.
 
 ### Generating with the skip grid
 
@@ -237,25 +238,23 @@ next word.
 - combined: `sat` 2, `ran` 1
 
 Roll on those three (1-2 → `sat`, 3 → `ran`). The plain bigram would have forced
-`sat` every time; the skip grid lets `the cat` sometimes go to `ran`---a verb
+`sat` every time; the skip grid lets `the cat` sometimes go to `ran`, a verb
 that followed `the …` elsewhere in the text. The model has generalised beyond
-the exact pairs it saw, and it stays genuinely random instead of parroting.
+the exact pairs it saw, and there is still something to roll for.
 
 ### What the skip grid can't do
 
-The skip grid is cheaper than the trigram, but it's also weaker, and the
-difference is worth naming. It treats the two earlier positions as if they
-contribute _independently_: it adds "what follows `cat`" to "what tends to come
-two words after `the`". It can never capture the cases where it's the _pair_
-that matters---where `new york` predicts something that neither `new` alone nor
-`york` alone would.
+The skip grid is cheaper than the trigram, but it's also weaker. It treats the
+two earlier positions as if they contribute _independently_: it adds "what
+follows `cat`" to "what tends to come two words after `the`". It can never
+capture the cases where it's the _pair_ that matters, where `new york` predicts
+something that neither `new` alone nor `york` alone would.
 
 That gap is exactly the problem modern models solve with
 the <GlossaryTerm id="attention-mechanism">attention mechanism</GlossaryTerm>. The skip grid mixes in earlier context
 with _fixed_ weights (always the word two back, always added in the same way).
-Attention _learns_ which earlier words matter for each prediction, and how
-much---so it can decide, on the fly, when the combination matters and when it
-doesn't.
+Attention _learns_ which earlier words matter for each prediction, and how much,
+so it can decide when the combination matters.
 
 ## Instructor notes
 

@@ -157,11 +157,11 @@ After folding in the sycophancy phrases, the same starting word might generate:
 The model didn't change its mechanism---it just contains more paths (extra
 cutouts, or heavier grid tallies) that route toward sycophantic tokens.
 
-## Adapters: this trick has a name
+## Adapters
 
-What you just did---keep the base model, train a small amount of new text on
-top, add the two together when you generate---is how real models get
-customised. The extra counts are an _adapter_, and the most common kind is
+What you just did is how real models get customised: keep the base model, train
+a small amount of new text on top, and add the two together when you generate.
+The extra counts are an _adapter_, and the most common kind is
 called <GlossaryTerm id="lora">LoRA</GlossaryTerm> (low-rank adaptation): a
 small set of numbers that stores only the _changes_ from
 the <GlossaryTerm id="base-model">base model</GlossaryTerm>, trained on a few
@@ -226,12 +226,12 @@ The deeper point: a model's "personality" is a property of its training data
 and tuning, not an intrinsic feature of language modelling. Change the data,
 change the personality.
 
-On adapters: LoRA is how most customisation of open models happens in
-practice. Training one takes a small fraction of the compute of
+LoRA is how most customisation of open models happens in practice. Training one
+takes a small fraction of the compute of
 full <GlossaryTerm id="fine-tuning">fine-tuning</GlossaryTerm>; one base model can
 carry many adapters (medical, legal, a house style); the base stays untouched,
 so it keeps its general abilities; and an adapter is megabytes rather than
-gigabytes, so it's easy to share. "Low-rank" is the compression: rather than
+gigabytes, so it's easy to share. "Low-rank" is the compression: instead of
 storing a full second grid of changes, a real adapter stores two thin strips
 whose product approximates it. Your paper version is the uncompressed
-equivalent---same idea, full grid.
+equivalent.

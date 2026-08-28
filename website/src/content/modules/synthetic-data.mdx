@@ -1,7 +1,7 @@
 ---
 title: Synthetic Data
 description:
-  Run a relay around the room---each group trains only on the text the group
+  Run a relay around the room. Each group trains only on the text the group
   before it generated, and nobody after the first ever sees the original. Watch
   the vocabulary shrink at every link in the chain.
 order: 9
@@ -12,14 +12,14 @@ status: experimental
 topic: shaping-behaviour
 keyIdea:
   Every pass through a model is a lossy copy of the last one. Rare words go
-  first, favourite pairs take over, and after a few generations the text has
-  eaten itself.
+  first, favourite pairs take over, and after a few generations very little of
+  the original is left.
 ---
 
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 import Callout from "../../components/Callout.astro";
 
-One group's output is the next group's <GlossaryTerm id="training-data">training data</GlossaryTerm>, all the way down a chain of four to six groups. Only the group at the head ever sees the original text; every group after it trains on <GlossaryTerm id="synthetic-data">synthetic data</GlossaryTerm>. Read the generations back in order at the end, put the numbers on the board, and <GlossaryTerm id="model-collapse">model collapse</GlossaryTerm> is audible in half an hour.
+One group's output is the next group's <GlossaryTerm id="training-data">training data</GlossaryTerm>, all the way down a chain of four to six groups. Only the group at the head ever sees the original text; every group after it trains on <GlossaryTerm id="synthetic-data">synthetic data</GlossaryTerm>. Read the generations back in order at the end, put the numbers on the board, and you can hear <GlossaryTerm id="model-collapse">model collapse</GlossaryTerm> happen in half an hour.
 
 ![](../../assets/images/hero-synthetic-data.avif)
 
@@ -48,25 +48,25 @@ that one.
 
 A model can only ever produce words it was trained on, and any sixty-word sample
 misses some of them. So each generation is a slightly poorer copy of the one
-before it. Words that appeared once are the likeliest to be missed---the rare
-tail goes first---while common pairs get sampled again and again until they are
-the whole text. None of this is anyone's mistake. Every group runs the algorithm
-correctly and the text degrades anyway.
+before it. Words that appeared once are the likeliest to be missed, so the rare
+tail goes first, while common pairs get sampled again and again until they are
+most of the text. Every group runs the algorithm correctly and the text degrades
+anyway.
 
 ## Set up the chain
 
 Sit four to six groups in a chain and label them A, B, C and so on. Group A is
 the only one with access to the original.
 
-One rule, and it matters: **a group passes on its generated text and nothing
-else.** No title, no author, no summary, no glimpse of the grid it came from.
-Everything downstream has to be reconstructed from sixty words.
+One rule: **a group passes on its generated text and nothing else.** No title,
+no author, no summary, no glimpse of the grid it came from. Everything
+downstream has to be reconstructed from sixty words.
 
 ## Each link in the chain
 
 1. **Train a fresh model** on the text you were handed, using the
-   [Training](/modules/training/) algorithm. A new grid, not an addition to an
-   old one---this model's only knowledge is the previous group's output.
+   [Training](/modules/training/) algorithm. Start a new grid; don't add to an
+   old one. This model's only knowledge is the previous group's output.
 2. **Generate about sixty words** from your new grid, as in
    [Generation](/modules/generation/).
 3. **Count**, before you pass anything on: how many _distinct_ words were in the
@@ -101,8 +101,7 @@ the longest. Give them something to do:
 ## The readback
 
 Read the generations aloud in order, A to last, with no commentary in between.
-Let the room hear the drift on its own. Then, and only then, read out the
-original.
+Let the room hear the drift on its own, then read out the original.
 
 ## Put the numbers on the board
 
@@ -142,9 +141,9 @@ Skip the training entirely and invent a model from nothing:
 - hand it to the next group in the chain, who train on it exactly as usual
 
 Run a Joker chain alongside the real one and compare the far ends. Both narrow
-towards a handful of favourite pairs, because that narrowing comes from the
-algorithm rather than from the source. What the book chain keeps, and the Joker
-chain never had, is words that mean anything.
+towards a handful of favourite pairs, because the algorithm is what narrows,
+whatever the source. The book chain still ends with words that mean something,
+and the Joker chain never had any.
 
 ## Instructor notes
 
@@ -162,8 +161,7 @@ The board and the discussion run past thirty minutes, so leave room for them.
 Because this is a relay, the wall clock is set by the length of the chain, not
 by the size of the class: four links fit comfortably, six needs closer to forty
 minutes or a shorter passage. With more than six groups, run two chains in
-parallel down opposite sides of the room and compare the two far ends---which is
-the better use of a big class anyway.
+parallel down opposite sides of the room and compare the two far ends.
 
 ### Discussion questions
 
@@ -191,9 +189,9 @@ the better use of a big class anyway.
 - **short chain, deeper count.** Three groups, 120 words per pass, counting
   distinct word _pairs_ rather than distinct words. Pairs collapse faster than
   words do.
-- **the honest baseline.** Have one group generate a second sixty words from
-  group A's model rather than from a retrained one. It stays as good as A's
-  text, which shows the damage comes from retraining, not from generating.
+- **the control.** Have one group generate a second sixty words from group A's
+  model rather than from a retrained one. It stays as good as A's text, which
+  shows the damage comes from retraining, not from generating.
 
 ### Connection to current LLMs
 
@@ -231,14 +229,13 @@ least two ways:
 The difference is the loop. Your chain had no curation, no filtering, no fresh
 human text and no model stronger than the one being trained; break any one of
 those conditions and synthetic data becomes one of the more useful tools going.
-The lesson is about curation, not contamination.
 
-<Callout type="info" title="Where the paper model overstates it">
+<Callout type="info" title="How this differs from a neural model">
 
 Your grid can only emit a word it has literally seen, so vocabulary loss down
 the chain is total and immediate. A neural model spreads what it learns across
 shared parameters, so it can still produce a word in a context it never saw,
 and real collapse is correspondingly gentler and takes more generations. The
-direction is the same; the cliff is not that steep.
+direction is the same, but the fall is nowhere near as steep.
 
 </Callout>

@@ -2,7 +2,7 @@
 title: Word Embeddings
 description:
   Guess which two words in your grid behave alike, prove it by swapping them in
-  your text, and check one distance by hand---then let the widget do all the
+  your text, and check one distance by hand, then let the widget do all the
   pairs at once.
 order: 8
 audience: years 9 and up
@@ -39,10 +39,9 @@ one piece of arithmetic.
 
 ## Your goal
 
-Predict which two words in your grid behave most alike---call them the
-twins---then test the prediction rather than trusting it. Stretch goal: find a
-close pair in the widget that nobody in the room guessed, and work out what the
-two words have in common.
+Predict which two words in your grid behave most alike (call them the twins),
+then test the prediction. Stretch goal: find a close pair in the widget that
+nobody in the room guessed, and work out what the two words have in common.
 
 ## Key idea
 
@@ -50,8 +49,8 @@ A word's row is a list of numbers: how often each other word followed it. That
 list is the word's <GlossaryTerm id="embedding">embedding</GlossaryTerm>---a
 fingerprint of the company it keeps. Two words with similar fingerprints get
 used in the same places, which is why you can swap them in the text and it still
-reads. None of this measures meaning; it measures position. That the two so
-often coincide is the whole trick.
+reads. What the list captures is where a word gets used, and words used in the
+same places usually turn out to mean similar things.
 
 ## Find the twins (5 min)
 
@@ -62,8 +61,8 @@ think behave most alike:
 - compare **columns**: which two words follow the same words?
 
 A twin pair matches on both. Write your guess down before you go any further.
-Committing to a prediction is what makes the next two steps worth doing---an
-unwritten guess quietly becomes whatever the answer turns out to be.
+Committing to a prediction is what makes the next two steps worth doing; an
+unwritten guess has a way of becoming whatever the answer turns out to be.
 
 ## The swap test (5 min)
 
@@ -78,10 +77,9 @@ For the text `the cat sat . the dog sat . the cat ran . the dog slept .`:
 - swap `cat` and `sat`: "the sat cat. the dog cat. the sat ran…" Gone.
 
 That is the distributional idea in a single move: words that keep the same
-company can stand in for each other. Note what the test does and doesn't ask.
-"The cat slept" may be false about your particular cat; the swap still passes,
-because the question is whether the sentence holds together, not whether it's
-true.
+company can stand in for each other. "The cat slept" may be false about your
+particular cat, but the swap still passes, because the test asks whether the
+sentence holds together, not whether it's true.
 
 ## One distance by hand (5 min)
 
@@ -127,15 +125,14 @@ text box is shared with the [Training](/modules/training/) widget, so you can
 paste your own text in and compare it with the grid on your desk.
 
 This is the one module where the screen is the better apparatus, and it's worth
-saying so out loud to the class. Seven words means 21 pairs; ten words means 45.
-Working through them by hand is an afternoon of arithmetic that teaches nothing
-the third pair didn't already teach. The step you just did by hand is there so
-you know what the numbers mean; doing all of them is the machine's job.
+saying so to the class. Seven words means 21 pairs; ten words means 45. Working
+through all of them is an afternoon of arithmetic that teaches nothing new after
+the third pair. The one distance you did on paper is there so you know what the
+numbers mean, and the machine can do the rest.
 
 Notice what the widget turns up in the worked example that most rooms don't
 guess: `ran` and `slept` sit at distance 0, because each one only ever appears
-before a full stop. The eye finds `cat` and `dog`; the matrix finds the pair
-nobody was looking at.
+before a full stop.
 
 <EmbeddingWidget client:visible />
 
@@ -175,23 +172,23 @@ same contexts tend to mean similar things.
   wrote down yourself. A real embedding is _learned_: a few hundred to several
   thousand numbers, none of them a count of anything, nudged during training
   until words used alike end up near each other.
-- **learning is what makes it generalise**: this is the promise
-  [Search Sheets](/modules/search-sheets/) makes and this module cashes out.
-  Your grid rates any pair it never saw as flatly impossible---an empty cell is
-  a zero chance, full stop. Because a learned model spreads what it knows across
-  shared numbers rather than separate cells, what it learns about `cat` reaches
-  `dog`, and it can rate a pair it has never seen as perfectly plausible. Two
-  words can even end up close having never shared a single exact context, each
-  being close to words the other kept company with.
+- **learning is what makes it generalise**: this is the point
+  [Search Sheets](/modules/search-sheets/) sets up. Your grid rates any pair it
+  never saw as flatly impossible: an empty cell is a zero chance. Because a
+  learned model spreads what it knows across shared numbers instead of separate
+  cells, what it learns about `cat` reaches `dog`, and it can rate a pair it has
+  never seen as perfectly plausible. Two words can even end up close having
+  never shared a single exact context, each being close to words the other kept
+  company with.
 - **the famous analogy**: king − man + woman ≈ queen, from the word2vec work of
   Mikolov and colleagues in 2013. The vectors come out arranged so that
-  arithmetic on them lands somewhere sensible. Worth showing, worth the caveat:
-  it works for some analogies and not others, and the usual evaluation excludes
-  the three input words from the candidate answers, which flatters the result.
+  arithmetic on them lands somewhere sensible. Worth showing, with the caveat
+  that it works for some analogies and not others, and that the usual evaluation
+  excludes the three input words from the candidate answers, which flatters the
+  result.
 - **modern embeddings are contextual**: in an LLM a word's vector is computed
   from the sentence it appears in, so the `bank` of a river and the `bank` that
   holds your money get different vectors.
 
 What survives all of that is the move you made on paper: turn a word into a list
-of numbers, so that "these two behave alike" becomes something you can measure
-instead of something you argue about.
+of numbers, and "these two behave alike" becomes something you can measure.

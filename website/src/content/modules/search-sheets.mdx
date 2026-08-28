@@ -21,8 +21,8 @@ import Callout from "../../components/Callout.astro";
 The [cutouts](/modules/generation/) activity with the cutting taken out, and
 sized for a room rather than a table. Every token pair in a text is dealt to
 exactly one person, so the <GlossaryTerm id="language-model">language
-model</GlossaryTerm> exists only across the whole room---and the whole room runs
-it, one word at a time, with hands in the air.
+model</GlossaryTerm> only exists across the whole room, which then runs it one
+word at a time with hands in the air.
 
 ![](../../assets/images/hero-search-sheets.avif)
 
@@ -80,10 +80,10 @@ back.
   sheet, boxed word first, and write both up. The room supplies the first two
   words as well as every word after them. If their pair is an odd one (a full
   stop, a name that appears once), take it anyway: a thin first round is a real
-  property of the model, not a failure
-- **pick at random, not whoever's fastest.** Take the first hand up and you're
-  sampling the quickest reader in the room instead of the text. Random is what
-  makes the room behave like the model
+  property of the model
+- **pick at random.** Take the first hand up and you're sampling the quickest
+  reader in the room instead of the text. Random is what makes the room behave
+  like the model
 - **one hand each.** If someone has several matches, they go with the first one
   they spot. (A context more common than the room is big has to double up
   somewhere, which flattens the busiest words slightly; nobody will notice)
@@ -92,13 +92,13 @@ back.
   only way the room goes quiet is an empty seat---that person's sheet went home
   with them, and its pairs are gone. Say exactly that, and reseed
 - **narrate two things, once each, without stopping the flow**: the hands are
-  the distribution (say `the` and a forest goes up); and the choosing is a coin
-  toss---the hands you didn't pick were all real continuations, and a different
-  pick gives a different sentence, which is why the "regenerate" button gives
-  you a different answer
+  the distribution (say `the` and most of the room goes up); and the choosing is
+  a coin toss---the hands you didn't pick were all real continuations, and a
+  different pick gives a different sentence, which is why the "regenerate"
+  button gives you a different answer
 - **stop while they still want more**, and read the sentence back
 
-## What role did you play?
+## Naming the parts
 
 Everything the jargon describes, the room just did:
 
@@ -108,9 +108,9 @@ Everything the jargon describes, the room just did:
 - the random pick → **sampling**
 - the sentence on the board → **generation**
 
-And the sentence is in no book. Nobody wrote it; there was no lookup and no
-database of sentences. It came out of a pile of paper and a series of coin
-tosses.
+And the sentence is in no book: nobody wrote it, and there was no lookup and no
+database of sentences. It came out of a pile of paper and a series of random
+picks.
 
 ## Variations
 
@@ -144,7 +144,7 @@ is the building: nobody trained this model, so pair them with
 
 ### Discussion questions
 
-- where was the model? (not on the laptop, not on any one sheet)
+- where was the model? (it wasn't on a laptop, or on any one sheet)
 - why did `the` put so many hands up and `skiff` only two?
 - if we'd taken the fastest hand every time, whose model would we have been
   running?
@@ -154,8 +154,8 @@ is the building: nobody trained this model, so pair them with
 
 ### Connection to current LLMs
 
-The room ran the mechanism at human speed, not an analogy for it. A frontier
-model differs in three ways worth saying out loud:
+The room ran the actual mechanism, at human speed. A frontier model differs in
+three ways worth saying out loud:
 
 - **it looks at more than one word of context.** One word back is why the room's
   sentence wandered: when you called `the`, nobody could tell whether the text
@@ -165,13 +165,13 @@ model differs in three ways worth saying out loud:
   flatly impossible. A real model spreads what it learns across billions of
   numbers instead of separate cells, so what it learns about `cat` reaches `dog`
   ([Word Embeddings](/modules/word-embeddings/)).
-- **it's been taught to answer, not just continue.** Ask the room a question and
-  it continues the question. Turning that into something that answers you is
-  another round of training, on conversations ([RLHF](/modules/rlhf/)).
+- **it's been taught to answer.** Ask the room a question and it continues the
+  question. Turning that into something that answers you is another round of
+  training, on conversations ([RLHF](/modules/rlhf/)).
 
 None of those changes the loop: look at the context, weigh the options, pick
 one, write it down. Every reply from Claude or ChatGPT is produced one token at
-a time by the loop the room just ran with its hands in the air. And the scale is
-real: a room of thirty holds a couple of thousand token pairs; a frontier model
-holds on the order of a trillion learned numbers. It doesn't make you an expert.
-It does make you harder to fool.
+a time that way. The scale is the other difference: a room of thirty holds a
+couple of thousand token pairs, and a frontier model holds on the order of a
+trillion learned numbers. It doesn't make you an expert. It does make you harder
+to fool.

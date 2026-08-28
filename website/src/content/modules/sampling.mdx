@@ -50,13 +50,13 @@ Temperature is a dial on how much the model respects its own counts. Turned
 down, it sticks to the favourites; turned up, it treats every option as roughly
 equal. A version you can run by hand has four settings:
 
-- **cold**: no dice---take the option with the highest count (if there's a tie,
+- **cold**: no dice; take the option with the highest count (if there's a tie,
   roll among the tied ones). This is _greedy_ decoding.
 - **normal**: roll on the counts exactly as they are, as in
   [Generation](/modules/generation/).
 - **hot**: before you roll, add 1 to _every_ option's count, then roll on the
   new totals. The favourites are still ahead, but by less.
-- **boiling**: ignore the counts---roll evenly among all the options.
+- **boiling**: ignore the counts and roll evenly among all the options.
 
 Example with counts `spot` (4), `run` (2), `jump` (1), `.` (1):
 
@@ -67,9 +67,8 @@ Example with counts `spot` (4), `run` (2), `jump` (1), `.` (1):
 - boiling → 1 in 4 each
 
 Turn the dial up further by adding 2 (or 3) to every count instead of 1; the
-bigger the number you add, the closer you get to boiling. The one thing that
-_doesn't_ work is dividing every count by the same number: that leaves the odds
-exactly where they were.
+bigger the number you add, the closer you get to boiling. Dividing every count
+by the same number won't do it: that leaves the odds exactly where they were.
 
 ## Truncation strategies
 
@@ -152,7 +151,7 @@ length (short mode) or above it (long mode). If nothing qualifies, re-roll.
 
 ## Poetry slam
 
-The capstone for this page: design a poetry model, hand it to another pair, and
+This uses everything above: design a poetry model, hand it to another pair, and
 see what they make of it. Allow about an hour---20 minutes to design, 10 to
 prepare, 15 for the slam, 5 to talk about it.
 
@@ -167,8 +166,8 @@ them already on this page:
 - **house rules**: one or more of the truncation strategies above, or a rule you
   invent yourself
 
-The question to sit with while you decide is _what isn't poetry?_ Then: what
-does your model do, and why?
+Two things to argue about while you decide: what isn't poetry, and what your
+model does about it.
 
 Write the recipe on a blank card, complete enough that another pair can run it
 without asking you anything:
@@ -185,7 +184,7 @@ stop rule:      (e.g. stop after 20 words, or at the third full stop)
 
 Swap cards with another pair. You have ten minutes to generate as much text as
 you can from _their_ model, then plan a one-minute performance of the result.
-Read it, chant it, split it between you---how you perform it is your call.
+Read it, chant it, or split it between you.
 
 ### The slam (~15 min)
 
@@ -196,15 +195,16 @@ fifteen minutes with applause.
 
 What was the hardest part of designing your model? The hardest part of preparing
 a performance from someone else's card? And how does this relate to Claude or
-ChatGPT---similarities and differences? Two words worth landing on here are
-_temperature_ (the same dial, on a much bigger model) and _prompt engineering_
-(wording an input to get the output you want, which is what a model card is).
+ChatGPT---similarities and differences? Two words to name here are _temperature_
+(the same dial, on a much bigger model) and _prompt engineering_ (wording an
+input to get the output you want, which is what a model card is).
 
 <Callout type="tip" title="What counts as done">
 
 The model card plus the other pair's performance is the completion task. A model
 that produced something strange has still succeeded, as long as the recipe was
-followable---the strangeness belongs to the model, not the pair performing it.
+followable. The strangeness belongs to the model, and the pair performing it
+have done their job.
 
 </Callout>
 
@@ -218,7 +218,7 @@ followable---the strangeness belongs to the model, not the pair performing it.
 - can you invent your own sampling strategy?
 - (slam) which parts of your model card did the other pair have to guess at?
   What does that suggest about writing a prompt for an LLM?
-- (slam) when a performance landed, how much of that was the model and how much
+- (slam) when a performance worked, how much of that was the model and how much
   the performers?
 
 ### Troubleshooting
@@ -230,7 +230,7 @@ followable---the strangeness belongs to the model, not the pair performing it.
 - **"Isn't hot just the same odds with bigger numbers?"** No---adding the same
   amount to every count narrows the _ratio_ between favourite and rare. Adding
   1 takes `spot` from four times as likely as `jump` to two and a half times.
-  Dividing would leave the ratio alone, which is why the dial adds.
+  Dividing would leave the ratio alone.
 
 ### Connection to current LLMs
 
