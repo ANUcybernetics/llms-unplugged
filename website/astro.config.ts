@@ -77,6 +77,25 @@ export default defineConfig({
     // The workshop-formats page was superseded by the lessons index (its
     // "Going deeper" format seeds task-131).
     "/workshops/": "/lessons/",
+    // Routes from the eleventy site (live November 2025 to May 2026, the era
+    // of the first teacher workshops) and the audience pages dropped in the
+    // May 2026 blurbs consolidation. These were shared around; keep them alive.
+    "/educators/": "/lessons/",
+    "/parents/": "/",
+    "/professionals/": "/lessons/my-first-language-model/",
+    "/instructor-notes/": "/lessons/",
+    "/widgets/": "/modules/",
+    "/lessons/basic-training/": "/modules/training/",
+    "/lessons/basic-generation/": "/modules/generation/",
+    "/lessons/trigram-model/": "/modules/more-context/",
+    "/lessons/context-columns/": "/modules/more-context/",
+    "/topics/": "/modules/",
+    "/topics/fundamentals/": "/modules/#fundamentals",
+    "/topics/scaling-up/": "/modules/#scaling-up",
+    "/topics/controlling-output/": "/modules/#controlling-output",
+    "/topics/how-models-understand/": "/modules/#how-models-understand",
+    "/topics/adaptation-and-data/": "/modules/#adaptation-and-data",
+    "/slides/studio-workshop-2h/": "/decks/my-first-language-model-2h/",
   },
   fonts: [
     {
