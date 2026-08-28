@@ -1,0 +1,177 @@
+---
+title: Search Sheets
+description:
+  Deal a whole text's token pairs across the room, one sheet each, and generate
+  as a crowd---call a word, hands go up, pick one at random. The generation
+  activity for a hall, a lecture, or a big class with thirty minutes.
+order: 3
+topic: fundamentals
+audience: years 5 and up, any room size
+duration: 10-15 min
+bases: [sheets]
+status: piloted
+keyIdea:
+  Nobody holds the whole model. Each sheet is a slice of it, the show of hands
+  is the probability distribution, and the random pick is the sample.
+---
+
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
+import Callout from "../../components/Callout.astro";
+
+The [cutouts](/modules/generation/) activity with the cutting taken out, and
+sized for a room rather than a table. Every token pair in a text is dealt to
+exactly one person, so the <GlossaryTerm id="language-model">language
+model</GlossaryTerm> exists only across the whole room---and the whole room runs
+it, one word at a time, with hands in the air.
+
+![](../../assets/images/hero-search-sheets.avif)
+
+## You will need
+
+- one search sheet per person---the [Materials](/tools/#search-sheets) page has
+  ready-to-print sets, or [generate your own](/tools/#generate-your-own) from
+  any text, sized to your head count
+- a whiteboard (or a slide you can write on) for the growing text
+- optionally a scribe, so you can run the room without also writing
+
+<Callout type="info" title="Sizing the set">
+
+Every sheet carries the same number of token pairs, so the length of the text
+decides how many sheets a set holds, and a set only works properly for a group
+of about that size: every missing sheet takes its share of the model with it.
+The first page of each PDF is a brief for whoever is running it, with a worked
+example and the count. A shorter text makes a smaller set; for a big hall, pick
+a longer one (or print A5, two-up).
+
+</Callout>
+
+## Your goal
+
+Generate a sentence, as a room, that appears in no book. Stretch goal: run it
+twice from the same seed and compare the two sentences.
+
+## Key idea
+
+Each sheet holds a shuffled handful of token pairs from the text: a boxed
+_previous_ word and the word that followed it. No single sheet can continue the
+text on its own. But ask the room "who has `the`?" and a forest of hands goes
+up; ask for a rare word and you get two. The number of hands for each
+continuation is how often it happens in the text---so the show of hands _is_ the
+probability distribution, without anyone counting anything. Pick a hand at
+random and you've sampled from it.
+
+## The algorithm
+
+1. **Call out** the last word written on the board (and its colour---every word
+   keeps the same colour wherever it appears, so people scan by colour and
+   confirm by reading).
+2. **Hands up** if that word appears as the _boxed_ word on your sheet.
+3. **Pick a hand at random**; that person reads out the word beside it.
+4. **Write it down**, and go again from step 1.
+
+Keep going until you have a sentence or two (about fifteen words), then read it
+back.
+
+## Running it
+
+- **don't hand the sheets out too early.** They get read, and if you're keeping
+  the text a secret (see below) the reveal is worth protecting
+- **seed from the room**: ask a volunteer to read out any one pair from their
+  sheet, boxed word first, and write both up. The room supplies the first two
+  words as well as every word after them. If their pair is an odd one (a full
+  stop, a name that appears once), take it anyway: a thin first round is a real
+  property of the model, not a failure
+- **pick at random, not whoever's fastest.** Take the first hand up and you're
+  sampling the quickest reader in the room instead of the text. Random is what
+  makes the room behave like the model
+- **one hand each.** If someone has several matches, they go with the first one
+  they spot. (A context more common than the room is big has to double up
+  somewhere, which flattens the busiest words slightly; nobody will notice)
+- **it can't dead-end.** Every word in the text appears as a boxed word
+  somewhere, so there is no word you can call that has nothing following it. The
+  only way the room goes quiet is an empty seat---that person's sheet went home
+  with them, and its pairs are gone. Say exactly that, and reseed
+- **narrate two things, once each, without stopping the flow**: the hands are
+  the distribution (say `the` and a forest goes up); and the choosing is a coin
+  toss---the hands you didn't pick were all real continuations, and a different
+  pick gives a different sentence, which is why the "regenerate" button gives
+  you a different answer
+- **stop while they still want more**, and read the sentence back
+
+## What role did you play?
+
+Everything the jargon describes, the room just did:
+
+- each word on your sheet → a **token**
+- the sheets, together → the **parameters** of the **model**
+- the hands in the air → the **probability distribution** over next tokens
+- the random pick → **sampling**
+- the sentence on the board → **generation**
+
+And the sentence is in no book. Nobody wrote it; there was no lookup and no
+database of sentences. It came out of a pile of paper and a series of coin
+tosses.
+
+## Variations
+
+- **Mystery text.** Print the sheets with the title and author left off, and
+  don't say what the text is until the end. With two or three short books dealt
+  together, the room can't tell which pairs came from which---and the generated
+  sentence drifts between them mid-sentence through shared words like `the` and
+  `.`. Reveal the books last.
+- **Sorted sheets.** A second round with each sheet sorted by context instead of
+  shuffled turns every sheet into a lookup table. The room feels how much faster
+  search gets, which is what a computer's index is for.
+- **The grid form.** Follow it with one line of the same text as a
+  [grid](/modules/training/): every pair from the sheets is a tally mark in a
+  cell, and the `me` row with two marks under `!` and one under `now` is three
+  hands going up, two of them saying the same thing.
+- **The workshop version.** This is a model handed to a room; in
+  [Training](/modules/training/) and [Generation](/modules/generation/) each
+  table builds its own from scratch and takes it home.
+
+## Instructor notes
+
+### Where it fits
+
+Search sheets are the fastest way to run generation with a big group: no
+training, no scissors, no table space, five minutes from hand-out to a sentence.
+We use them to turn a talk into an activity (a lecture theatre, a conference
+session, a hall of several hundred) and they were designed at a teacher's
+request for a thirty-minute primary lesson with no time to cut. What you give up
+is the building: nobody trained this model, so pair them with
+[Training](/modules/training/) when there's time.
+
+### Discussion questions
+
+- where was the model? (not on the laptop, not on any one sheet)
+- why did `the` put so many hands up and `skiff` only two?
+- if we'd taken the fastest hand every time, whose model would we have been
+  running?
+- the same seed twice gave two different sentences. What changed?
+- our model only ever looked at one word back. What did that do to the sentence,
+  and what would looking further back fix?
+
+### Connection to current LLMs
+
+The room ran the mechanism at human speed, not an analogy for it. A frontier
+model differs in three ways worth saying out loud:
+
+- **it looks at more than one word of context.** One word back is why the room's
+  sentence wandered: when you called `the`, nobody could tell whether the text
+  had just said "sat in the" or "hit the". A real model looks back over the
+  whole conversation ([More Context](/modules/more-context/) is the next step).
+- **it can say what it never saw.** The room rates any pair not on a sheet as
+  flatly impossible. A real model spreads what it learns across billions of
+  numbers instead of separate cells, so what it learns about `cat` reaches `dog`
+  ([Word Embeddings](/modules/word-embeddings/)).
+- **it's been taught to answer, not just continue.** Ask the room a question and
+  it continues the question. Turning that into something that answers you is
+  another round of training, on conversations ([RLHF](/modules/rlhf/)).
+
+None of those changes the loop: look at the context, weigh the options, pick
+one, write it down. Every reply from Claude or ChatGPT is produced one token at
+a time by the loop the room just ran with its hands in the air. And the scale is
+real: a room of thirty holds a couple of thousand token pairs; a frontier model
+holds on the order of a trillion learned numbers. It doesn't make you an expert.
+It does make you harder to fool.

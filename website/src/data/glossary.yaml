@@ -225,8 +225,8 @@
   see:
     - label: More Context
       href: /modules/more-context/
-    - label: In-context Memory
-      href: /modules/in-context-memory/
+    - label: In-context Learning
+      href: /modules/in-context-learning/
 
 - id: weighted-random-sampling
   term: Weighted random sampling
@@ -364,14 +364,12 @@
   description: >-
     The ability to focus on relevant previous words when making predictions.
     In real LLMs, attention is learned, weighted, and dynamic---the model
-    decides what to focus on for each prediction. The in-context memory and
-    induction-head lessons illustrate the motivation for attention: reusing more
+    decides what to focus on for each prediction. The in-context learning
+    module illustrates the motivation for attention: reusing more
     than just the immediately preceding word.
   see:
-    - label: In-context Memory
-      href: /modules/in-context-memory/
-    - label: Induction Heads
-      href: /modules/induction-heads/
+    - label: In-context Learning
+      href: /modules/in-context-learning/
 
 - id: in-context-learning
   term: In-context learning
@@ -382,10 +380,8 @@
     given, not in the model itself---which is why a few examples in a prompt can
     steer an LLM's output.
   see:
-    - label: In-context Memory
-      href: /modules/in-context-memory/
-    - label: Induction Heads
-      href: /modules/induction-heads/
+    - label: In-context Learning
+      href: /modules/in-context-learning/
 
 - id: induction-head
   term: Induction head
@@ -395,8 +391,8 @@
     earlier place where the current token appeared and copying what came next.
     Induction heads are a key mechanism behind in-context learning.
   see:
-    - label: Induction Heads
-      href: /modules/induction-heads/
+    - label: In-context Learning
+      href: /modules/in-context-learning/
 
 - id: markov-chain
   term: Markov chain
@@ -446,8 +442,8 @@
     - lora
     - base-model
   see:
-    - label: LoRA
-      href: /modules/lora/
+    - label: Sycophancy (adapters)
+      href: /modules/sycophancy/#adapters-this-trick-has-a-name
     - label: Synthetic Data
       href: /modules/synthetic-data/
 
@@ -459,8 +455,8 @@
     applied to. The base model stays unchanged; the adaptation provides the
     domain-specific shift.
   see:
-    - label: LoRA
-      href: /modules/lora/
+    - label: Sycophancy (adapters)
+      href: /modules/sycophancy/#adapters-this-trick-has-a-name
 
 - id: lora
   term: LoRA (Low-Rank Adaptation)
@@ -469,8 +465,8 @@
     A technique for efficiently fine-tuning models by training a small
     "adaptation layer" rather than modifying all the original parameters.
   see:
-    - label: LoRA
-      href: /modules/lora/
+    - label: Sycophancy (adapters)
+      href: /modules/sycophancy/#adapters-this-trick-has-a-name
 
 - id: agentic-ai
   term: Agentic AI

@@ -2,6 +2,10 @@
 title: Sycophancy
 description: Skew your model toward over-agreeable, flattering responses by piling in sycophantic training data.
 order: 12
+audience: years 9 and up
+duration: 20 min
+bases: [grid, cutouts]
+status: piloted
 topic: adaptation-and-data
 keyIdea: Training data composition shapes a model's "personality"---add enough flattery to the training set and the model becomes sycophantic, no RLHF required.
 ---
@@ -28,7 +32,7 @@ required.
 - a d10 (or similar), plus pen and paper, as per
   [Generation](/modules/generation/)
 - the sycophancy phrases listed below, to tally into your grid---the
-  [Tools](/tools/#worksheets) page has them as a ready-to-print training
+  [Materials](/tools/#worksheets) page has them as a ready-to-print training
   text sheet
 
 </Variant>
@@ -153,6 +157,33 @@ After folding in the sycophancy phrases, the same starting word might generate:
 The model didn't change its mechanism---it just contains more paths (extra
 cutouts, or heavier grid tallies) that route toward sycophantic tokens.
 
+## Adapters: this trick has a name
+
+What you just did---keep the base model, train a small amount of new text on
+top, add the two together when you generate---is how real models get
+customised. The extra counts are an _adapter_, and the most common kind is
+called <GlossaryTerm id="lora">LoRA</GlossaryTerm> (low-rank adaptation): a
+small set of numbers that stores only the _changes_ from
+the <GlossaryTerm id="base-model">base model</GlossaryTerm>, trained on a few
+thousand examples rather than the whole internet, and added on at generation
+time. The sycophancy phrases are a deliberately nasty adapter.
+
+To see the general trick, try a nicer one:
+
+1. Take your base grid (or spread) as it was before the sycophancy phrases.
+2. On a _separate_ grid with the same headers, tally a page of a different
+   text---a recipe, a poem, a page of a novel.
+3. Generate with the two added together: for the current word, read its row
+   in both grids and roll on the combined counts.
+4. Scale the adapter to control how strong the shift is: count its tallies
+   double and the output leans hard into the new text; halve them and it's a
+   hint. That scaling factor is the one knob a real LoRA has too.
+
+Because the adapter is a separate sheet, you can swap it for another, stack
+two, or take it off again and have your base model back untouched. Keeping the
+sycophancy tallies on their own sheet rather than in your grid buys you the
+same thing.
+
 ## Instructor notes
 
 ### Designing your own sycophancy phrases
@@ -173,6 +204,8 @@ with `.`, and repeat it several times so the new transitions carry strong weight
 - if you only saw the model's output (not its training data or weights), how
   would you tell sycophancy from genuine helpfulness?
 - is sycophancy _always_ a bug? when might agreeable behaviour be desirable?
+- if you'd kept the sycophancy tallies on a separate sheet instead of in your
+  grid, what could you do that you can't now?
 
 ### Connection to current LLMs
 
@@ -192,3 +225,13 @@ without running [RLHF](/modules/rlhf/) on top.
 The deeper point: a model's "personality" is a property of its training data
 and tuning, not an intrinsic feature of language modelling. Change the data,
 change the personality.
+
+On adapters: LoRA is how most customisation of open models happens in
+practice. Training one takes a small fraction of the compute of
+full <GlossaryTerm id="fine-tuning">fine-tuning</GlossaryTerm>; one base model can
+carry many adapters (medical, legal, a house style); the base stays untouched,
+so it keeps its general abilities; and an adapter is megabytes rather than
+gigabytes, so it's easy to share. "Low-rank" is the compression: rather than
+storing a full second grid of changes, a real adapter stores two thin strips
+whose product approximates it. Your paper version is the uncompressed
+equivalent---same idea, full grid.

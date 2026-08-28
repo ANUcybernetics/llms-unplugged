@@ -1,0 +1,215 @@
+---
+title: In-context Learning
+description:
+  Make your model finish a pattern it never trained on, purely from what's
+  already on the page---then give it a short-term memory that keeps the text on
+  topic. The tricks behind few-shot prompting and attention.
+order: 6
+topic: how-models-understand
+audience: years 9 and up
+duration: 20 min
+bases: [grid, cutouts, booklet]
+status: experimental
+keyIdea:
+  The text you've already written is context the model can learn from without
+  changing a single count---copy what followed last time (induction), or lean
+  toward recent words (memory).
+---
+
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
+import Callout from "../../components/Callout.astro";
+
+A bigram only ever looks at the word before. But the page in front of you holds
+everything you've written so far, and that's context the model can use. This
+module adds two rules that read the page---one sharp, one soft---and neither one
+changes the model itself. That's what makes them a hands-on version
+of <GlossaryTerm id="in-context-learning">in-context learning</GlossaryTerm>.
+
+![](../../assets/images/hero-in-context-learning.avif)
+
+## You will need
+
+- any model you can already generate from: your
+  [bigram grid](/modules/training/), a [cutouts spread](/modules/generation/),
+  or a [pre-trained booklet](/modules/pretrained-generation/)
+- pen and paper for your generated text (you'll be reading back over it, so keep
+  it tidy)
+- dice as per [Generation](/modules/generation/)
+
+Nothing new to print: both rules are procedures laid over a model you already
+have.
+
+## Your goal
+
+Part 1: make the model complete a made-up pattern it could not possibly have
+learned in training. Part 2: generate twice from the same model---once plain,
+once with a short-term memory---and compare how long each stays on topic.
+Stretch goal: find the memory setting that keeps the text on topic without
+making it repetitive.
+
+## Key idea
+
+Both rules answer the same question: _what does the text I've already written
+tell me about the next word?_
+
+- **Induction** asks: the last time I was at this exact word, what came next?
+  Copy it. This completes patterns the model has never seen.
+- **Memory** asks: what have I been talking about? Give recently-used words a
+  small boost. This keeps a story about a dog being about the dog.
+
+The model never retrains. The "learning" lives in the context, not the counts.
+
+## Part 1: finish the pattern
+
+Start here, because it takes two minutes and it's the whole point. Write down
+this sequence, using words your model has never seen together:
+
+`moon` `five` `apple` `moon` `five` `apple` `moon` `five`
+
+Now generate the next word. Your current word is `five`. Instead of consulting
+the model, **scan back** up the page to the last time `five` appeared, and copy
+the word that followed it: `apple`. Do it again from `apple` and you get `moon`,
+then `five`, then `apple`…
+
+You've completed the pattern `moon five apple`, which appears nowhere in the
+training text and which the base model has no row for. The model picked up your
+invented rule from a single example, with no retraining at all. Now turn the
+rule off and generate from the base model alone: the pattern evaporates. That
+contrast _is_ the lesson.
+
+### The induction rule
+
+1. Look at your **current word**.
+2. **Scan back** through your written output to the most recent earlier time
+   that same word appeared.
+3. If you find one, the word that **followed** it is your _induction candidate_.
+4. **Blend with the base model**: roll a die---mostly copy the candidate,
+   occasionally generate from the model as normal. If there's no earlier
+   occurrence, there's no candidate; just generate.
+5. Write the word down and repeat.
+
+<Callout type="info" title="Copy, don't only copy">
+
+If you _always_ copy, the model just replays whatever pattern it's in---its own
+way of getting stuck on rails. Keeping a chance of falling back to the base
+model lets it break out and start something new.
+
+</Callout>
+
+The rule reads your page, not the model, so it works identically on a grid, a
+spread or a booklet. Only the fall-back differs: roll on the row, pick from the
+matching cutouts, or look up the booklet entry.
+
+## Part 2: stay on topic
+
+The induction rule is exact: the word matches or it doesn't. The memory rule is
+softer. Mention a dog, and two words later a bigram has already forgotten. Real
+language reuses what came before, so we keep a running list of recent words and
+tilt the odds toward them.
+
+### The memory rule
+
+1. **Keep a memory list** of the last eight or so words you've written
+   (underline them, or jot them on a sticky note).
+2. **Find the model's candidates** for the next word as you normally would---the
+   row in your grid, the matching cutouts, the booklet entry.
+3. **Boost any candidate that's also in memory** (see below for how, per base).
+4. **Pick** from the boosted candidates, write the word down, add it to memory,
+   and drop the oldest word so the list stays short.
+5. Repeat.
+
+### Worked example
+
+Your current word is `the`, and the model offers `cat` 3, `dog` 1, `sun` 1. A
+moment ago the text mentioned a dog, so `dog` is in memory. Give it a bonus of,
+say, +3:
+
+- `cat`: 3
+- `dog`: 1 + 3 = 4
+- `sun`: 1
+
+Roll on the new totals (1--3 → `cat`, 4--7 → `dog`, 8 → `sun`). `dog` has gone
+from unlikely to favourite, so the story is more likely to stay about the dog.
+Crucially, `cat` and `sun` are still possible: the memory tilted the odds, it
+didn't override them.
+
+<Callout type="info" title="The one rule that matters: reweight, don't override">
+
+The tempting shortcut is to grab a recent word from memory and just write it
+down. Don't. It ignores the current word (so it drops in words that don't follow
+at all), and every word you emit goes back into memory, so the text collapses
+into repeating a handful of words. The memory only ever boosts words the model
+**already offers**. It re-ranks; it never invents.
+
+</Callout>
+
+### Applying the boost to your model
+
+- **On a grid**: add the bonus straight to the counts in the current word's row,
+  then roll on the new totals, as in the worked example.
+- **On a cutouts spread**: once you've gathered the cutouts that match your
+  current word, check their next words against memory. For any match, count that
+  cutout twice (or write a duplicate) before you pick. More copies means more
+  likely; the spread does the reweighting for you.
+- **On a booklet**: the dice thresholds are pre-printed, so blend instead. Roll
+  a "memory die" first (a d10, 1--3 is a hit). On a hit, scan the current
+  entry's options and, if one is in memory, pick it. On a miss, or if nothing
+  matches, roll the booklet exactly as normal. You only ever pick from this
+  entry's options, so you never leave what the model allows.
+
+<Callout type="tip" title="Which model shows it best?">
+
+The memory shines on a larger model like the booklet: a rich vocabulary gives it
+room to stay on topic without repeating. On a very small hand-built grid, be
+gentle with the bonus---boosting recent words can amplify the short loops small
+models already fall into.
+
+</Callout>
+
+## Instructor notes
+
+### Discussion questions
+
+- the model completed `moon five apple`, which it never trained on. Where was
+  that "knowledge" stored?
+- why does the demo use made-up words rather than an ordinary sentence?
+- what happens if you only ever copy, and never fall back to the base model?
+- with the memory on, does the text hold a topic or a character for longer?
+  Where does "on topic" tip over into "stuck repeating"?
+- why does the memory only boost words the model already offers?
+- induction and memory both read the page. When would each one help? How are
+  they different from the [trigram](/modules/more-context/), which also uses
+  more than one word?
+- (stretch) if induction matched on the last _two_ words instead of one, why
+  would the completion be more reliable?
+
+### Connection to current LLMs
+
+This module is a hands-on version of three things modern models do.
+
+**Induction heads are real.** They're an identified circuit inside transformers,
+and one of the main mechanisms behind in-context learning:
+an <GlossaryTerm id="induction-head">induction head</GlossaryTerm> finds an earlier
+place where the current token appeared and copies what came after it---exactly
+your scan-back-and-copy rule. It's why few-shot prompting works: give an LLM a
+few "input → output" examples and it continues the pattern. Researchers detect
+these circuits by feeding a model a random sequence repeated twice and checking
+that it predicts the second copy far better than the first, which is the machine
+version of your `moon five apple` demo. Real induction heads match softer,
+richer patterns and blend smoothly with everything else the model knows, but the
+behaviour is the same idea.
+
+**Attention over the whole context.** A bigram looks back one word; your memory
+looks back over everything you've generated and lets it influence the next
+choice. That's the heart of
+the <GlossaryTerm id="attention-mechanism">attention mechanism</GlossaryTerm>: when
+predicting the next word, the model reaches back across the whole context and
+weights what it finds. Your memory is a crude, fixed version (boost recent
+words); attention is learned and content-sensitive, and can decide on the fly
+which earlier words matter.
+
+**Repetition is a real failure mode.** The "stuck on rails" trap is not
+hypothetical: real models loop too, which is why generation settings include
+repetition penalties---a deliberate _down_-weighting of recent words, the exact
+opposite of the boost you added. Topic-stickiness and repetition are two ends of
+the same dial.

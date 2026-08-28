@@ -5,6 +5,10 @@ description:
   real text message to a real person---and generation picks up again once the
   reply is back.
 order: 10
+audience: years 7 and up
+duration: 20 min
+bases: [booklet, cutouts]
+status: tested
 topic: controlling-output
 keyIdea:
   An agent is a model that runs tools in a loop---pausing generation, handing
@@ -38,9 +42,8 @@ variation below) and bolt it on the same way.
 
 ## Key idea
 
-What makes a language model an "agent"? In practice it comes down to
-
-<GlossaryTerm id="tool-use">tool use</GlossaryTerm>: the model produces
+What makes a language model an "agent"? In practice it comes down
+to <GlossaryTerm id="tool-use">tool use</GlossaryTerm>: the model produces
 something that the system around it treats as a request, generation pauses, the
 request goes out to a tool, and the result is written back into the text before
 generation continues. That loop---_generate → call tool → splice in the result →
@@ -136,9 +139,8 @@ you back.
 
 "Agentic AI" has become a buzzword, but in practice it really just means tool
 use in a loop. As Simon Willison
-[puts it](https://simonwillison.net/2025/Sep/30/designing-agentic-loops/), an
-
-<GlossaryTerm id="llm">LLM</GlossaryTerm> agent is something that "runs tools in
+[puts it](https://simonwillison.net/2025/Sep/30/designing-agentic-loops/),
+an <GlossaryTerm id="llm">LLM</GlossaryTerm> agent is something that "runs tools in
 a loop to achieve a goal"---and that's exactly what your model just did.
 
 <GlossaryTerm id="tool-use">Tool use</GlossaryTerm> (also called "function
@@ -161,5 +163,5 @@ learns when to ask. And one honest difference: a real model reads the tool's
 result and conditions on it, whereas your bigram carries on from the punctuation
 as if the reply never happened, because one word of context can't hold it.
 Everything the friend contributed is in the transcript, but not in the model's
-next choice. The [In-context Memory](/modules/in-context-memory/) module is
+next choice. The [In-context Learning](/modules/in-context-learning/) module is
 where the text you've already written starts to feed back in.
