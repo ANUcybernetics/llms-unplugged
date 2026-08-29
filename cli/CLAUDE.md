@@ -13,10 +13,23 @@ text file → Rust CLI → model.json → Typst → PDF booklet
 
 ## Key files
 
-- `src/main.rs` - CLI entry point with argument parsing
-- `src/lib.rs` - Core N-gram processing logic
-- `src/text.rs` - Unified tokenization/normalization pipeline (case handling,
-  punctuation tokens, filters)
+- `src/main.rs` - CLI entry point: clap args, the typst/qpdf/pdfinfo shell-outs
+- `src/corpus.rs` - `Corpus`/`Frontmatter`: the one loader for corpus files
+- `src/text.rs` - `Normalizer`: tokenisation and casing, decided across the
+  whole corpus by `Normalizer::for_corpus` and immutable after that
+- `src/model.rs` - `Model { n, contexts }`; entries, stats and samples are
+  derived from it by method, never stored alongside it
+- `src/cutouts.rs` - `Cutout`/`CutoutKind` (discarded, word-with-context, tool)
+  and the cutouts/sheets pipelines; `CutoutSet` and `SheetSet` are the JSON
+  shapes the templates read
+- `src/output.rs` - `Metadata` and `BookletJson`, the `model.json` shape
+- `src/error.rs` - the lib's `Error` enum; `main` keys the frontmatter help on
+  `Error::is_frontmatter`
+- `src/templates.rs` - the `.typ` templates and brand assets below are
+  `include_bytes!`'d into the binary and materialised to a temp dir at run
+  time, so a release binary works away from the source tree. Cargo rebuilds
+  on a template edit
+- `src/wasm.rs` - the website's entry points, thin wrappers over the same types
 - `book.typ` - Main booklet template (reads from model.json)
 - `tokenized-cutouts.typ` - Cutouts template (cut-up tokens for the table)
 - `tokenized-sheets.typ` - Search-sheet template (one page per participant, no
@@ -155,7 +168,7 @@ port and rebuild the wasm.
 
 ## Input file format
 
-Text files must include YAML frontmatter:
+Text files must include YAML frontmatter (`url` is optional):
 
 ```yaml
 ---
