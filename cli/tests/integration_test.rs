@@ -28,15 +28,15 @@ fn is_punct_token(token: &str) -> bool {
 /// template must resolve relative to the crate (not the cwd), and an out-dir
 /// outside the template's directory must work. Both were real bugs.
 fn run_pdf_subcommand_test(n: usize, temp_dir: &TempDir) -> io::Result<()> {
-    let input_path = temp_dir.path().join(format!("input_n{}.txt", n));
+    let input_path = temp_dir.path().join(format!("input_n{n}.txt"));
     {
         let mut input_file = File::create(&input_path)?;
         writeln!(input_file, "---")?;
-        writeln!(input_file, "title: Test Document for n={}", n)?;
+        writeln!(input_file, "title: Test Document for n={n}")?;
         writeln!(input_file, "author: Integration Test")?;
-        writeln!(input_file, "url: https://example.com/test{}", n)?;
+        writeln!(input_file, "url: https://example.com/test{n}")?;
         writeln!(input_file, "---")?;
-        writeln!(input_file, "Test line for n={}.", n)?;
+        writeln!(input_file, "Test line for n={n}.")?;
         writeln!(input_file, "Another test line. Quick brown fox.")?;
         input_file.flush()?;
     }
@@ -63,12 +63,11 @@ fn run_pdf_subcommand_test(n: usize, temp_dir: &TempDir) -> io::Result<()> {
         .path()
         .join("out")
         .join("pdf")
-        .join(format!("input_n{}.pdf", n));
+        .join(format!("input_n{n}.pdf"));
     assert!(
         pdf_path.exists(),
-        "PDF was not created at {:?} for n={}",
-        pdf_path,
-        n
+        "PDF was not created at {} for n={n}",
+        pdf_path.display()
     );
 
     Ok(())
@@ -104,15 +103,13 @@ fn test_frontmatter_errors() -> io::Result<()> {
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
             stderr_message.contains("Input must start with '---'"),
-            "Should output error about missing frontmatter: {}",
-            stderr_message
+            "Should output error about missing frontmatter: {stderr_message}"
         );
 
         // Error message should include instructions
         assert!(
             stderr_message.contains("must begin with valid YAML frontmatter"),
-            "Should include instructions about frontmatter format: {}",
-            stderr_message
+            "Should include instructions about frontmatter format: {stderr_message}"
         );
     }
 
@@ -143,8 +140,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
             stderr_message.contains("Frontmatter missing required field 'title'."),
-            "Should error about missing title: {}",
-            stderr_message
+            "Should error about missing title: {stderr_message}"
         );
     }
 
@@ -175,8 +171,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
             stderr_message.contains("Frontmatter missing required field 'author'."),
-            "Should error about missing author: {}",
-            stderr_message
+            "Should error about missing author: {stderr_message}"
         );
     }
 
@@ -267,15 +262,13 @@ fn test_frontmatter_errors() -> io::Result<()> {
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
             stderr_message.contains("Error"),
-            "Should output error message for malformed frontmatter: {}",
-            stderr_message
+            "Should output error message for malformed frontmatter: {stderr_message}"
         );
 
         // Should provide guidance
         assert!(
             stderr_message.contains("frontmatter"),
-            "Error should mention frontmatter: {}",
-            stderr_message
+            "Error should mention frontmatter: {stderr_message}"
         );
     }
 
@@ -490,16 +483,14 @@ fn test_cli_end_to_end() -> io::Result<()> {
         let entry_arr = entry.as_array().unwrap();
         assert!(
             entry_arr.len() >= 2,
-            "Entry should have at least a previous-words array and one next-word pair: {:?}",
-            entry
+            "Entry should have at least a previous-words array and one next-word pair: {entry:?}"
         );
 
         // Verify previous-words string
         let previous_word_val = &entry_arr[0];
         assert!(
             previous_word_val.is_string(),
-            "First element should be the previous-words string: {:?}",
-            previous_word_val
+            "First element should be the previous-words string: {previous_word_val:?}"
         );
 
         let previous_word = previous_word_val.as_str().unwrap_or("");
@@ -530,8 +521,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
         let total_count_val = &entry[1];
         assert!(
             total_count_val.is_number(),
-            "Second element should be the total count: {:?}",
-            total_count_val
+            "Second element should be the total count: {total_count_val:?}"
         );
 
         // Check next-word pairs (starting from index 2 now that we have total count as second element)
@@ -539,15 +529,13 @@ fn test_cli_end_to_end() -> io::Result<()> {
         for next_word_pair in entry_arr.iter().skip(2) {
             assert!(
                 next_word_pair.is_array(),
-                "Next-word entry should be an array [word, count]: {:?}",
-                next_word_pair
+                "Next-word entry should be an array [word, count]: {next_word_pair:?}"
             );
             let next_word_arr = next_word_pair.as_array().unwrap();
             assert_eq!(
                 next_word_arr.len(),
                 2,
-                "Next-word pair should have 2 elements [word, count]: {:?}",
-                next_word_arr
+                "Next-word pair should have 2 elements [word, count]: {next_word_arr:?}"
             );
 
             let next_word = next_word_arr[0].as_str().unwrap_or("");
@@ -595,9 +583,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
                 .cmp(&prev.to_lowercase());
             assert!(
                 cmp != std::cmp::Ordering::Less,
-                "Previous-words not sorted (case-insensitive): '{}' should come after '{}'",
-                current_previous_word,
-                prev
+                "Previous-words not sorted (case-insensitive): '{current_previous_word}' should come after '{prev}'"
             );
         }
         prev_previous_word = Some(current_previous_word);
@@ -622,8 +608,7 @@ fn test_cli_end_to_end() -> io::Result<()> {
     // "quick brown" -> count 2 (from "quick, Brown" and "Quick brown") (cumulative)
     assert!(
         the_followed_by_quick_count >= 1,
-        "Expected previous-word 'the' to be followed by 'quick' at least once, found {}",
-        the_followed_by_quick_count
+        "Expected previous-word 'the' to be followed by 'quick' at least once, found {the_followed_by_quick_count}"
     );
     // Check that "the" is followed by "quick" at least once
     assert!(
@@ -708,7 +693,7 @@ fn test_tsv_writes_clean_stdout_and_no_stray_files() -> io::Result<()> {
         .current_dir(temp.path())
         .output()?;
 
-    assert!(out.status.success(), "tsv failed: {:?}", out);
+    assert!(out.status.success(), "tsv failed: {out:?}");
     let stdout = String::from_utf8_lossy(&out.stdout);
     assert!(
         stdout.starts_with('\t'),
@@ -717,8 +702,7 @@ fn test_tsv_writes_clean_stdout_and_no_stray_files() -> io::Result<()> {
     );
     assert!(
         !stdout.contains("Successfully"),
-        "status chatter leaked into the TSV stream: {:?}",
-        stdout
+        "status chatter leaked into the TSV stream: {stdout:?}"
     );
     assert!(
         !temp.path().join("tsv-output.json").exists(),
@@ -768,8 +752,8 @@ fn test_sample_cli_deterministic_with_seed() -> io::Result<()> {
 
     let a = run()?;
     let b = run()?;
-    assert!(a.status.success(), "first run failed: {:?}", a);
-    assert!(b.status.success(), "second run failed: {:?}", b);
+    assert!(a.status.success(), "first run failed: {a:?}");
+    assert!(b.status.success(), "second run failed: {b:?}");
     assert_eq!(a.stdout, b.stdout, "same seed should give same output");
 
     let out = String::from_utf8_lossy(&a.stdout);
@@ -802,7 +786,7 @@ fn test_sample_cli_prompt_normalises_case() -> io::Result<()> {
         .arg("--seed")
         .arg("1")
         .output()?;
-    assert!(out.status.success(), "sample failed: {:?}", out);
+    assert!(out.status.success(), "sample failed: {out:?}");
 
     let stdout = String::from_utf8_lossy(&out.stdout);
     assert!(
@@ -900,7 +884,7 @@ fn test_sheets_cli_partitions_corpus_across_sheets() -> io::Result<()> {
         .arg("--output")
         .arg(&out_dir)
         .output()?;
-    assert!(output.status.success(), "sheets failed: {:?}", output);
+    assert!(output.status.success(), "sheets failed: {output:?}");
 
     let json: serde_json::Value =
         serde_json::from_reader(BufReader::new(File::open(out_dir.join("sheets.json"))?))?;
@@ -985,7 +969,7 @@ fn test_sheets_cli_preserves_repeated_input_boundaries() -> io::Result<()> {
         .arg("--output")
         .arg(&out_dir)
         .output()?;
-    assert!(output.status.success(), "sheets failed: {:?}", output);
+    assert!(output.status.success(), "sheets failed: {output:?}");
 
     let json: serde_json::Value =
         serde_json::from_reader(BufReader::new(File::open(out_dir.join("sheets.json"))?))?;
@@ -1063,7 +1047,7 @@ fn test_sheets_cli_is_deterministic_with_seed() -> io::Result<()> {
             .arg("--output")
             .arg(&out_dir)
             .output()?;
-        assert!(output.status.success(), "sheets failed: {:?}", output);
+        assert!(output.status.success(), "sheets failed: {output:?}");
         std::fs::read_to_string(out_dir.join("sheets.json"))
     };
 
@@ -1102,7 +1086,7 @@ fn test_sheets_cli_sort_orders_each_sheet_by_context() -> io::Result<()> {
         .arg("--output")
         .arg(&out_dir)
         .output()?;
-    assert!(output.status.success(), "sheets failed: {:?}", output);
+    assert!(output.status.success(), "sheets failed: {output:?}");
 
     let json: serde_json::Value =
         serde_json::from_reader(BufReader::new(File::open(out_dir.join("sheets.json"))?))?;

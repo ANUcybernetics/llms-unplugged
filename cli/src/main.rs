@@ -11,6 +11,8 @@ use std::io;
 use std::path::{Path, PathBuf};
 use std::process::{Command, ExitCode};
 
+mod templates;
+
 /// A simple language model builder that processes text files and outputs word following statistics
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -106,8 +108,7 @@ struct PdfArgs {
     #[arg(long, default_value = "out")]
     out_dir: PathBuf,
 
-    /// Path to the Typst template (defaults to the book.typ that ships
-    /// alongside the CLI source)
+    /// Path to a Typst template to use instead of the bundled book.typ
     #[arg(long)]
     template: Option<PathBuf>,
 
@@ -484,6 +485,25 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
     )
 }
 
+// The first guess at how many sheets this corpus needs at the requested
+// density. A pair too wide for its column takes two of them, so a sheet
+// needs a few per cent more slots than it holds pairs --- how many more
+// depends on how long the corpus's words are, which only the typesetter
+// knows. The margin covers the usual case and the loop below corrects the
+// rest against Typst's own layout.
+const WIDE_PAIR_MARGIN: f64 = 1.08;
+
+// Deal, typeset, and check that every sheet came out one page. The wide
+// pairs that make a sheet overflow are only knowable from the typesetting,
+// so when the count is ours to choose we take Typst's page count as the
+// answer and deal again with one more sheet. Each attempt reseeds, so the
+// deal that ships depends only on the seed and the sheet count it settled
+// on, not on how many attempts it took to get there.
+//
+// A pinned `--sheets` is the participant count and not ours to change, so
+// that path warns instead of retrying.
+const MAX_ATTEMPTS: usize = 5;
+
 fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
     if args.sheets == Some(0) {
         return Err(CliError::InvalidArgs(
@@ -527,13 +547,6 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
         metadata.author.clone_from(author);
     }
 
-    // The first guess at how many sheets this corpus needs at the requested
-    // density. A pair too wide for its column takes two of them, so a sheet
-    // needs a few per cent more slots than it holds pairs --- how many more
-    // depends on how long the corpus's words are, which only the typesetter
-    // knows. The margin covers the usual case and the loop below corrects the
-    // rest against Typst's own layout.
-    const WIDE_PAIR_MARGIN: f64 = 1.08;
     let usable = tokens.iter().filter(|t| t.is_usable()).count();
     let capacity = (args.rows * columns) as f64 / WIDE_PAIR_MARGIN;
     let derived = ((usable as f64 / capacity).ceil() as usize).max(1);
@@ -545,16 +558,6 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
     let pdf_path = args.output.join("sheets.pdf");
     eprintln!("Processed '{}' by {}", metadata.title, metadata.author);
 
-    // Deal, typeset, and check that every sheet came out one page. The wide
-    // pairs that make a sheet overflow are only knowable from the typesetting,
-    // so when the count is ours to choose we take Typst's page count as the
-    // answer and deal again with one more sheet. Each attempt reseeds, so the
-    // deal that ships depends only on the seed and the sheet count it settled
-    // on, not on how many attempts it took to get there.
-    //
-    // A pinned `--sheets` is the participant count and not ours to change, so
-    // that path warns instead of retrying.
-    const MAX_ATTEMPTS: usize = 5;
     let mut sheets;
     let mut attempt = 1;
     loop {
@@ -714,20 +717,12 @@ fn compile_template(
     inputs: &[(String, String)],
     pdf_path: &Path,
 ) -> Result<(), CliError> {
-    let template_path = Path::new(env!("CARGO_MANIFEST_DIR")).join(template);
-
-    if !template_path.exists() {
-        return Err(CliError::Typst(format!(
-            "Typst template not found at {}",
-            template_path.display()
-        )));
-    }
-
+    let template_path = templates::materialise()?.join(template);
     run_typst_compile(&template_path, inputs, pdf_path)?;
 
-    let before = fs::metadata(pdf_path).map(|m| m.len()).unwrap_or(0);
+    let before = fs::metadata(pdf_path).map_or(0, |m| m.len());
     repack_pdf(pdf_path);
-    let after = fs::metadata(pdf_path).map(|m| m.len()).unwrap_or(0);
+    let after = fs::metadata(pdf_path).map_or(0, |m| m.len());
 
     eprintln!(
         "Wrote PDF to {} ({})",
@@ -885,11 +880,12 @@ fn run_pdf_command(args: &PdfArgs) -> Result<(), CliError> {
         return Ok(());
     }
 
+    let template = match &args.template {
+        Some(template) => template.clone(),
+        None => templates::materialise()?.join("book.typ"),
+    };
     let opts = TypstOptions {
-        template: args
-            .template
-            .clone()
-            .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join("book.typ")),
+        template,
         paper_size: args.paper_size.clone(),
         columns: args.columns,
         subtitle_override: args.subtitle.clone(),
@@ -1051,9 +1047,7 @@ fn pdf_page_count(pdf_path: &Path) -> Option<usize> {
 }
 
 fn typst_command_path() -> PathBuf {
-    std::env::var_os("TYPST_BIN")
-        .map(PathBuf::from)
-        .unwrap_or_else(|| PathBuf::from("typst"))
+    std::env::var_os("TYPST_BIN").map_or_else(|| PathBuf::from("typst"), PathBuf::from)
 }
 
 /// Validate the `-n` flag: the model needs at least one word of context.
@@ -1138,7 +1132,7 @@ fn load_subtitle_from_json(path: &Path) -> Result<Option<String>, CliError> {
         .get("metadata")
         .and_then(|m| m.get("subtitle"))
         .and_then(|s| s.as_str())
-        .map(|s| s.to_string());
+        .map(std::string::ToString::to_string);
     Ok(subtitle)
 }
 

@@ -433,10 +433,7 @@ pub fn format_entries(entries: &[WordFollowEntry], raw: bool) -> Vec<Vec<serde_j
                 // with a large corpus), and wrapping would silently corrupt
                 // every dice range in the booklet.
                 let k_digits = total.to_string().len() as u32;
-                let max_val = 10_u64
-                    .checked_pow(k_digits)
-                    .map(|v| v - 1)
-                    .unwrap_or(u64::MAX);
+                let max_val = 10_u64.checked_pow(k_digits).map_or(u64::MAX, |v| v - 1);
                 let factor = max_val as f64 / total as f64;
 
                 row.push(serde_json::json!(max_val));
@@ -517,8 +514,7 @@ fn previous_words_label(entry: &WordFollowEntry) -> String {
         .previous_words
         .first()
         .and_then(|p| p.chars().next())
-        .map(|c| c.to_ascii_uppercase().to_string())
-        .unwrap_or_else(|| "?".to_string())
+        .map_or_else(|| "?".to_string(), |c| c.to_ascii_uppercase().to_string())
 }
 
 #[cfg(test)]
@@ -620,7 +616,7 @@ mod tests {
         assert!(m.is_empty());
         assert_eq!(m.total_tokens(), 2);
         assert_eq!(m.stats().total_ngram_occurrences, 0);
-        assert_eq!(m.summary().entropy, 0.0);
+        assert!(m.summary().entropy.abs() < 1e-12);
     }
 
     #[test]

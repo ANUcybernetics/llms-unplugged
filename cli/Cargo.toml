@@ -2,6 +2,7 @@
 name = "llms_unplugged"
 version = "1.4.7"
 edition = "2024"
+rust-version = "1.88"
 license = "MIT"
 authors = ["Ben Swift <ben@benswift.me>"]
 description = "CLI tool for generating N-gram language model booklets"
@@ -39,6 +40,29 @@ thiserror = "2"
 
 [dev-dependencies]
 tempfile = "3.27"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+# Counts to f64 for entropy and dice scaling; the precision loss is the point.
+cast_precision_loss = "allow"
+cast_possible_truncation = "allow"
+cast_sign_loss = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+must_use_candidate = "allow"
+module_name_repetitions = "allow"
+too_many_lines = "allow"
+struct_excessive_bools = "allow"
+
+# lto + one codegen unit shrink the wasm bundle the website ships (and the
+# native binary) noticeably; the build is small enough that the extra time
+# doesn't matter.
+[profile.release]
+lto = true
+codegen-units = 1
 
 [[bin]]
 name = "llms_unplugged"

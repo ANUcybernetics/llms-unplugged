@@ -51,6 +51,7 @@ impl Metadata {
     }
 
     /// The same metadata retitled for one volume of a multi-book split.
+    #[must_use]
     pub fn for_book(&self, index: usize, total_books: usize, range: &str) -> Self {
         Metadata {
             subtitle: booklet_subtitle(self.n, Some((index, total_books, range))),

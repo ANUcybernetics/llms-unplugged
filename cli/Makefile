@@ -102,8 +102,11 @@ BRAND_ASSETS := $(wildcard lockup-light*.svg)
 # https://reproducible-builds.org/specs/source-date-epoch/
 SOURCE_DATE_EPOCH ?= 0
 
-# Track Rust source files for automatic rebuilding
-RUST_SOURCES := $(wildcard src/*.rs) Cargo.toml Cargo.lock
+# Everything the binary is built from: the templates and brand assets are
+# compiled in (src/templates.rs), so editing one rebuilds the tool.
+RUST_SOURCES := $(wildcard src/*.rs) Cargo.toml Cargo.lock \
+	book.typ booklet-common.typ tokenized-cutouts.typ tokenized-sheets.typ \
+	cutout-common.typ socy-logo-bw.svg $(BRAND_ASSETS)
 
 # Ensure output directories exist
 $(shell mkdir -p $(PDF_DIR) $(JSON_DIR))

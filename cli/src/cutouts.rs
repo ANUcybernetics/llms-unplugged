@@ -337,12 +337,11 @@ pub fn deal_into_sheets<R: Rng + ?Sized>(
     let mut groups: Vec<Vec<Cutout>> = Vec::new();
     let mut group_index: HashMap<Vec<String>, usize> = HashMap::new();
     for token in usable {
-        match group_index.get(token.context()) {
-            Some(&i) => groups[i].push(token),
-            None => {
-                group_index.insert(token.context().to_vec(), groups.len());
-                groups.push(vec![token]);
-            }
+        if let Some(&i) = group_index.get(token.context()) {
+            groups[i].push(token);
+        } else {
+            group_index.insert(token.context().to_vec(), groups.len());
+            groups.push(vec![token]);
         }
     }
 
