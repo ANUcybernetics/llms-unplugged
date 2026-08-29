@@ -1,6 +1,6 @@
 use llms_unplugged::{CjkMode, NGramCounter, default_punctuation};
 use std::fs::File;
-use std::io::{self, Write};
+use std::io::Write;
 use tempfile::NamedTempFile;
 
 fn collect_tokens(counter: &llms_unplugged::NGramCounter) -> Vec<String> {
@@ -16,7 +16,7 @@ fn collect_tokens(counter: &llms_unplugged::NGramCounter) -> Vec<String> {
 }
 
 #[test]
-fn normalises_case_and_strips_quotes() -> io::Result<()> {
+fn normalises_case_and_strips_quotes() -> Result<(), Box<dyn std::error::Error>> {
     let temp_file = NamedTempFile::new()?;
     let path = temp_file.path().to_owned();
 
@@ -52,7 +52,7 @@ fn normalises_case_and_strips_quotes() -> io::Result<()> {
 }
 
 #[test]
-fn keeps_allowlisted_pronouns_cased() -> io::Result<()> {
+fn keeps_allowlisted_pronouns_cased() -> Result<(), Box<dyn std::error::Error>> {
     let temp_file = NamedTempFile::new()?;
     let path = temp_file.path().to_owned();
 
@@ -84,7 +84,7 @@ fn keeps_allowlisted_pronouns_cased() -> io::Result<()> {
 }
 
 #[test]
-fn filters_numbers_and_roman_numerals() -> io::Result<()> {
+fn filters_numbers_and_roman_numerals() -> Result<(), Box<dyn std::error::Error>> {
     let temp_file = NamedTempFile::new()?;
     let path = temp_file.path().to_owned();
 
@@ -118,7 +118,7 @@ fn filters_numbers_and_roman_numerals() -> io::Result<()> {
 }
 
 #[test]
-fn preserves_contractions_and_possessives() -> io::Result<()> {
+fn preserves_contractions_and_possessives() -> Result<(), Box<dyn std::error::Error>> {
     let temp_file = NamedTempFile::new()?;
     let path = temp_file.path().to_owned();
 
@@ -154,7 +154,7 @@ fn preserves_contractions_and_possessives() -> io::Result<()> {
     Ok(())
 }
 
-fn write_punctuation_corpus(path: &std::path::Path) -> io::Result<()> {
+fn write_punctuation_corpus(path: &std::path::Path) -> Result<(), Box<dyn std::error::Error>> {
     let mut file = File::create(path)?;
     writeln!(file, "---")?;
     writeln!(file, "title: Test Punctuation")?;
@@ -172,7 +172,7 @@ fn write_punctuation_corpus(path: &std::path::Path) -> io::Result<()> {
     Ok(())
 }
 
-fn write_jiangnan_corpus(path: &std::path::Path) -> io::Result<()> {
+fn write_jiangnan_corpus(path: &std::path::Path) -> std::io::Result<()> {
     let mut file = File::create(path)?;
     writeln!(file, "---")?;
     writeln!(file, "title: 江南")?;
@@ -186,7 +186,7 @@ fn write_jiangnan_corpus(path: &std::path::Path) -> io::Result<()> {
 }
 
 #[test]
-fn builds_a_bigram_model_from_chinese_characters() -> io::Result<()> {
+fn builds_a_bigram_model_from_chinese_characters() -> Result<(), Box<dyn std::error::Error>> {
     let temp_file = NamedTempFile::new()?;
     let path = temp_file.path().to_owned();
     write_jiangnan_corpus(&path)?;
@@ -224,7 +224,7 @@ fn builds_a_bigram_model_from_chinese_characters() -> io::Result<()> {
 }
 
 #[test]
-fn builds_a_bigram_model_from_chinese_words() -> io::Result<()> {
+fn builds_a_bigram_model_from_chinese_words() -> Result<(), Box<dyn std::error::Error>> {
     let temp_file = NamedTempFile::new()?;
     let path = temp_file.path().to_owned();
     write_jiangnan_corpus(&path)?;
@@ -250,7 +250,7 @@ fn builds_a_bigram_model_from_chinese_words() -> io::Result<()> {
 }
 
 #[test]
-fn default_punctuation_keeps_all_single_marks() -> io::Result<()> {
+fn default_punctuation_keeps_all_single_marks() -> Result<(), Box<dyn std::error::Error>> {
     let temp_file = NamedTempFile::new()?;
     let path = temp_file.path().to_owned();
     write_punctuation_corpus(&path)?;
@@ -278,7 +278,7 @@ fn default_punctuation_keeps_all_single_marks() -> io::Result<()> {
 }
 
 #[test]
-fn only_configured_punctuation_is_kept() -> io::Result<()> {
+fn only_configured_punctuation_is_kept() -> Result<(), Box<dyn std::error::Error>> {
     let temp_file = NamedTempFile::new()?;
     let path = temp_file.path().to_owned();
     write_punctuation_corpus(&path)?;

@@ -188,7 +188,7 @@ fn test_frontmatter_errors() -> io::Result<()> {
         writeln!(input_file, "title: Test Document")?;
         writeln!(input_file, "author: Test Author")?;
         writeln!(input_file, "---")?;
-        writeln!(input_file, "This file is missing the url field.")?;
+        writeln!(input_file, "This file has no url field.")?;
         input_file.flush()?;
 
         let output = Command::new(exe_path)
@@ -197,15 +197,41 @@ fn test_frontmatter_errors() -> io::Result<()> {
             .arg(&input_path)
             .output()?;
 
-        // Should fail with error
-        assert!(!output.status.success(), "CLI should fail with missing url");
+        // `url` is optional: the booklet cites it only when present.
+        assert!(
+            output.status.success(),
+            "CLI should accept frontmatter without a url: {}",
+            String::from_utf8_lossy(&output.stderr)
+        );
+    }
 
-        // Error message should mention missing fields
+    // Test 4b: Not UTF-8 (a Latin-1 file) is an encoding error, not a
+    // frontmatter one, so it must not print the frontmatter help.
+    {
+        let input_path = temp_dir.path().join("latin1.txt");
+        std::fs::write(
+            &input_path,
+            b"---\ntitle: T\nauthor: A\nurl: https://x\n---\ncaf\xe9 au lait.\n",
+        )?;
+
+        let output = Command::new(exe_path)
+            .arg("build")
+            .arg("--input")
+            .arg(&input_path)
+            .output()?;
+
+        assert!(
+            !output.status.success(),
+            "CLI should fail on non-UTF-8 input"
+        );
         let stderr_message = String::from_utf8_lossy(&output.stderr);
         assert!(
-            stderr_message.contains("Frontmatter missing required field 'url'."),
-            "Should error about missing url: {}",
-            stderr_message
+            stderr_message.contains("not valid UTF-8"),
+            "Should report the encoding problem: {stderr_message}"
+        );
+        assert!(
+            !stderr_message.contains("must begin with valid YAML frontmatter"),
+            "Encoding errors must not be blamed on the frontmatter: {stderr_message}"
         );
     }
 

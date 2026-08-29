@@ -3,13 +3,16 @@ use rand::distr::{Distribution, weighted::WeightedIndex};
 use serde::Serialize;
 use std::collections::{BTreeMap, BTreeSet, HashMap, VecDeque};
 use std::fs::File;
-use std::io;
 use std::path::Path;
 
+mod corpus;
+mod error;
 mod text;
 #[cfg(feature = "wasm")]
 mod wasm;
 
+pub use corpus::{Corpus, Frontmatter};
+pub use error::{Error, Result};
 pub use text::RawToken;
 pub use text::{
     CanonicalFormTracker, CjkMode, DEFAULT_PUNCTUATION, Normalizer, NormalizerConfig,
@@ -176,21 +179,14 @@ impl NGramCounter {
     }
 
     /// Process a file containing text with frontmatter.
-    pub fn process_file<P: AsRef<Path>>(&mut self, path: P) -> io::Result<()> {
-        use std::io::{BufRead, BufReader};
-
-        let file = File::open(&path)?;
-        let mut reader = BufReader::new(file);
-        let frontmatter_raw = read_frontmatter(&mut reader)?;
-        self.metadata = Some(parse_frontmatter(
-            &frontmatter_raw,
+    pub fn process_file<P: AsRef<Path>>(&mut self, path: P) -> Result<()> {
+        let corpus = Corpus::load(path)?;
+        self.metadata = Some(Metadata::new(
+            &corpus.frontmatter,
             self.n,
             self.normalizer.punctuation(),
-        )?);
-
-        let lines: Vec<String> = reader.lines().collect::<Result<_, _>>()?;
-        self.process_lines(&lines);
-
+        ));
+        self.process_lines(&corpus.lines);
         Ok(())
     }
 
@@ -334,7 +330,7 @@ impl NGramCounter {
 pub fn process_file<P: AsRef<Path>>(
     path: P,
     n: usize,
-) -> io::Result<(Vec<WordFollowEntry>, ProcessingStats, Option<Metadata>)> {
+) -> Result<(Vec<WordFollowEntry>, ProcessingStats, Option<Metadata>)> {
     let mut counter = NGramCounter::new(n, default_punctuation());
     counter.process_file(path)?;
 
@@ -370,43 +366,18 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
     punctuation: Vec<char>,
     n: usize,
     cjk_mode: CjkMode,
-) -> io::Result<(Vec<RawToken>, CutoutsMetadata)> {
-    use std::io::{BufRead, BufReader};
-
-    let file = File::open(&path)?;
-    let mut reader = BufReader::new(file);
-    let frontmatter_raw = read_frontmatter(&mut reader)?;
-
-    // Cutouts only need title/author, so the frontmatter is parsed leniently
-    // (unlike the booklet path, which requires title/author/url).
-    let yaml: serde_yaml_ng::Value = serde_yaml_ng::from_str(&frontmatter_raw).map_err(|e| {
-        io::Error::new(
-            io::ErrorKind::InvalidData,
-            format!("Invalid YAML frontmatter: {e}"),
-        )
-    })?;
-    let title = yaml
-        .get("title")
-        .and_then(|v| v.as_str())
-        .unwrap_or("Untitled")
-        .to_string();
-    let author = yaml
-        .get("author")
-        .and_then(|v| v.as_str())
-        .unwrap_or("Unknown")
-        .to_string();
-
-    let lines: Vec<String> = reader.lines().collect::<Result<_, _>>()?;
+) -> Result<(Vec<RawToken>, CutoutsMetadata)> {
+    let corpus = Corpus::load(path)?;
 
     let mut counter = NGramCounter::new(n, punctuation);
     counter.set_cjk_mode(cjk_mode);
-    counter.process_lines(&lines);
-    let tokens = counter.tokenize_lines_raw(&lines);
+    counter.process_lines(&corpus.lines);
+    let tokens = counter.tokenize_lines_raw(&corpus.lines);
     let stats = counter.get_stats();
 
     let metadata = CutoutsMetadata {
-        title,
-        author,
+        title: corpus.frontmatter.title,
+        author: corpus.frontmatter.author,
         documents: 1,
         total_tokens: tokens.len(),
         kept_tokens: tokens.iter().filter(|t| t.keep).count(),
@@ -417,45 +388,6 @@ pub fn process_file_for_cutouts<P: AsRef<Path>>(
     };
 
     Ok((tokens, metadata))
-}
-
-/// Read the YAML frontmatter block (between `---` delimiter lines) from the
-/// start of a corpus file, leaving the reader positioned at the first content
-/// line.
-fn read_frontmatter(reader: &mut impl io::BufRead) -> io::Result<String> {
-    let mut line = String::new();
-    if reader.read_line(&mut line)? == 0 {
-        return Err(io::Error::new(
-            io::ErrorKind::InvalidData,
-            "Input file is empty; expected YAML frontmatter.",
-        ));
-    }
-
-    if line.trim() != "---" {
-        return Err(io::Error::new(
-            io::ErrorKind::InvalidData,
-            "Input must start with '---' followed by YAML frontmatter.",
-        ));
-    }
-
-    let mut frontmatter_raw = String::new();
-    loop {
-        line.clear();
-        if reader.read_line(&mut line)? == 0 {
-            return Err(io::Error::new(
-                io::ErrorKind::InvalidData,
-                "Reached end of file before closing frontmatter delimiter '---'.",
-            ));
-        }
-
-        if line.trim() == "---" {
-            break;
-        }
-
-        frontmatter_raw.push_str(&line);
-    }
-
-    Ok(frontmatter_raw)
 }
 
 /// Multiply the usable cutouts in a token list by `factor`. A usable cutout is
@@ -619,7 +551,7 @@ pub fn append_tool_tokens(
     tokens: &mut Vec<RawToken>,
     specs: &[(String, usize)],
     n: usize,
-) -> Result<usize, String> {
+) -> Result<usize> {
     if specs.is_empty() {
         return Ok(0);
     }
@@ -640,7 +572,7 @@ pub fn append_tool_tokens(
 
     for (name, count) in specs {
         if name.trim().is_empty() {
-            return Err("Tool name cannot be empty".to_string());
+            return Err(Error::EmptyToolName);
         }
         if *count == 0 {
             continue;
@@ -653,10 +585,10 @@ pub fn append_tool_tokens(
                 .collect::<Vec<_>>()
         } else {
             if ranked.is_empty() {
-                return Err(format!(
-                    "Corpus has no {}-token contexts; cannot place tool '{}'",
-                    context_size, name
-                ));
+                return Err(Error::NoContextsForTool {
+                    name: name.clone(),
+                    context_size,
+                });
             }
             ranked
                 .iter()
@@ -679,45 +611,19 @@ pub fn append_tool_tokens(
     Ok(injected)
 }
 
-fn parse_frontmatter(frontmatter_raw: &str, n: usize, punctuation: String) -> io::Result<Metadata> {
-    use serde_yaml_ng::Value;
-
-    let yaml: Value = serde_yaml_ng::from_str(frontmatter_raw).map_err(|e| {
-        io::Error::new(
-            io::ErrorKind::InvalidData,
-            format!("Invalid YAML frontmatter: {e}"),
-        )
-    })?;
-
-    let title = yaml.get("title").and_then(|v| v.as_str()).ok_or_else(|| {
-        io::Error::new(
-            io::ErrorKind::InvalidData,
-            "Frontmatter missing required field 'title'.",
-        )
-    })?;
-    let author = yaml.get("author").and_then(|v| v.as_str()).ok_or_else(|| {
-        io::Error::new(
-            io::ErrorKind::InvalidData,
-            "Frontmatter missing required field 'author'.",
-        )
-    })?;
-    let url = yaml.get("url").and_then(|v| v.as_str()).ok_or_else(|| {
-        io::Error::new(
-            io::ErrorKind::InvalidData,
-            "Frontmatter missing required field 'url'.",
-        )
-    })?;
-
-    Ok(Metadata {
-        title: title.to_string(),
-        author: author.to_string(),
-        url: url.to_string(),
-        n,
-        subtitle: format!("A {} language model", model_type_str(n)),
-        punctuation,
-        version: env!("CARGO_PKG_VERSION").to_string(),
-        stats: None,
-    })
+impl Metadata {
+    pub fn new(frontmatter: &Frontmatter, n: usize, punctuation: String) -> Self {
+        Metadata {
+            title: frontmatter.title.clone(),
+            author: frontmatter.author.clone(),
+            url: frontmatter.url.clone().unwrap_or_default(),
+            n,
+            subtitle: format!("A {} language model", model_type_str(n)),
+            punctuation,
+            version: env!("CARGO_PKG_VERSION").to_string(),
+            stats: None,
+        }
+    }
 }
 
 /// Converts the internal n-gram HashMap representation to the required output format
@@ -948,7 +854,7 @@ pub fn save_to_json<P: AsRef<Path>>(
     metadata: Option<&Metadata>,
     stats: Option<&ProcessingStats>,
     raw: bool,
-) -> io::Result<()> {
+) -> Result<()> {
     let formatted_entries = format_entries(entries, raw);
 
     // Build the full output object with metadata and data
@@ -988,13 +894,13 @@ pub fn save_to_json<P: AsRef<Path>>(
 ///
 /// Rows and columns share the same sorted vocabulary. Cells contain cumulative
 /// counts across the row; empty strings represent zero counts.
-pub fn render_bigram_tsv(entries: &[WordFollowEntry]) -> Result<String, String> {
+pub fn render_bigram_tsv(entries: &[WordFollowEntry]) -> Result<String> {
     let mut vocab = BTreeSet::new();
     let mut matrix: BTreeMap<String, HashMap<String, usize>> = BTreeMap::new();
 
     for entry in entries {
         if entry.previous_words.len() != 1 {
-            return Err("TSV export only supports bigrams (n=2)".to_string());
+            return Err(Error::TsvRequiresBigrams);
         }
 
         let previous_word = entry.previous_words[0].clone();
@@ -1235,7 +1141,7 @@ mod tests {
             is_tool: false,
         }];
         let err = append_tool_tokens(&mut tokens, &[("VOTE".to_string(), 1)], 2).unwrap_err();
-        assert!(err.contains("cannot place tool"), "got: {err}");
+        assert!(matches!(err, Error::NoContextsForTool { .. }), "got: {err}");
     }
     // BufReader is used by save_to_json tests, Write and NamedTempFile are used by multiple tests.
     use std::io::{BufReader, Write};
@@ -1356,7 +1262,7 @@ mod tests {
     }
 
     #[test]
-    fn test_process_small_file_bigrams() -> io::Result<()> {
+    fn test_process_small_file_bigrams() -> Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
@@ -1487,7 +1393,7 @@ mod tests {
     }
 
     #[test]
-    fn test_process_small_file_trigrams() -> io::Result<()> {
+    fn test_process_small_file_trigrams() -> Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
@@ -1556,7 +1462,7 @@ mod tests {
     }
 
     #[test]
-    fn test_save_to_json_bigrams() -> io::Result<()> {
+    fn test_save_to_json_bigrams() -> Result<()> {
         // Example data for bigrams (n=2, context size = 1)
         // Followers should be pre-sorted as `convert_to_entries` would do:
         // "hello" -> next-words: ("world", 2), ("again", 1) -- this order is correct based on count.
@@ -1624,7 +1530,7 @@ mod tests {
     }
 
     #[test]
-    fn test_save_to_json_trigrams() -> io::Result<()> {
+    fn test_save_to_json_trigrams() -> Result<()> {
         // Example data for trigrams (n=3, context size = 2)
         let entries = vec![
             WordFollowEntry {
@@ -1688,7 +1594,7 @@ mod tests {
     }
 
     #[test]
-    fn test_save_to_json_cumulative_counts() -> io::Result<()> {
+    fn test_save_to_json_cumulative_counts() -> Result<()> {
         // Test data with multiple next-words having different counts
         // Previous-words "the": next-words dog(5), cat(3), bird(2) - sorted by count from largest to smallest
         // Total original = 10. 3 unique next-words.
@@ -1999,7 +1905,7 @@ mod tests {
     // Capitalisation tests
 
     #[test]
-    fn test_capitalisation_preserved_when_consistent() -> io::Result<()> {
+    fn test_capitalisation_preserved_when_consistent() -> Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
@@ -2033,7 +1939,7 @@ mod tests {
     }
 
     #[test]
-    fn test_capitalisation_normalised_when_mixed() -> io::Result<()> {
+    fn test_capitalisation_normalised_when_mixed() -> Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
@@ -2067,7 +1973,7 @@ mod tests {
     }
 
     #[test]
-    fn test_special_case_i_always_uppercase() -> io::Result<()> {
+    fn test_special_case_i_always_uppercase() -> Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
@@ -2101,7 +2007,7 @@ mod tests {
     }
 
     #[test]
-    fn test_acronyms_preserved() -> io::Result<()> {
+    fn test_acronyms_preserved() -> Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
@@ -2136,7 +2042,7 @@ mod tests {
     // Cutouts n-gram tests
 
     #[test]
-    fn test_cutouts_bigram_previous_words() -> io::Result<()> {
+    fn test_cutouts_bigram_previous_words() -> Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
@@ -2177,7 +2083,7 @@ mod tests {
     }
 
     #[test]
-    fn test_cutouts_trigram_previous_words() -> io::Result<()> {
+    fn test_cutouts_trigram_previous_words() -> Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
@@ -2220,7 +2126,7 @@ mod tests {
     }
 
     #[test]
-    fn test_cutouts_fourgram_previous_words() -> io::Result<()> {
+    fn test_cutouts_fourgram_previous_words() -> Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
@@ -2261,7 +2167,7 @@ mod tests {
     }
 
     #[test]
-    fn test_cutouts_previous_words_skips_discarded_tokens() -> io::Result<()> {
+    fn test_cutouts_previous_words_skips_discarded_tokens() -> Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
@@ -2570,7 +2476,7 @@ mod tests {
     }
 
     #[test]
-    fn test_cutouts_previous_words_with_punctuation() -> io::Result<()> {
+    fn test_cutouts_previous_words_with_punctuation() -> Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
@@ -2615,7 +2521,7 @@ mod tests {
     }
 
     #[test]
-    fn test_entropy_zero_for_deterministic_model() -> io::Result<()> {
+    fn test_entropy_zero_for_deterministic_model() -> Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
         {
@@ -2639,7 +2545,7 @@ mod tests {
     }
 
     #[test]
-    fn test_entropy_positive_for_nondeterministic_model() -> io::Result<()> {
+    fn test_entropy_positive_for_nondeterministic_model() -> Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
         {
@@ -2661,7 +2567,7 @@ mod tests {
     }
 
     #[test]
-    fn test_entropy_known_value() -> io::Result<()> {
+    fn test_entropy_known_value() -> Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
         {
@@ -2701,7 +2607,7 @@ mod tests {
     }
 
     #[test]
-    fn test_entropy_serialised_in_json() -> io::Result<()> {
+    fn test_entropy_serialised_in_json() -> Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
         {
@@ -2745,7 +2651,7 @@ mod tests {
     }
 
     #[test]
-    fn test_cutouts_metadata_gets_entropy_from_process_file() -> io::Result<()> {
+    fn test_cutouts_metadata_gets_entropy_from_process_file() -> Result<()> {
         let temp_file = NamedTempFile::new()?;
         let path = temp_file.path().to_owned();
 
@@ -2792,7 +2698,7 @@ mod tests {
 
     // --- sampling tests ----------------------------------------------------
 
-    fn write_corpus(text: &str) -> io::Result<NamedTempFile> {
+    fn write_corpus(text: &str) -> Result<NamedTempFile> {
         let mut f = NamedTempFile::new()?;
         writeln!(f, "---")?;
         writeln!(f, "title: Sampling Test")?;
@@ -2817,7 +2723,7 @@ mod tests {
     }
 
     #[test]
-    fn test_sample_prompt_too_short_for_trigram() -> io::Result<()> {
+    fn test_sample_prompt_too_short_for_trigram() -> Result<()> {
         let f = write_corpus("the cat sat on the mat the cat sat")?;
         let (entries, _, _) = process_file(f.path(), 3)?;
 
@@ -2828,7 +2734,7 @@ mod tests {
     }
 
     #[test]
-    fn test_sample_prompt_context_not_found() -> io::Result<()> {
+    fn test_sample_prompt_context_not_found() -> Result<()> {
         let f = write_corpus("alpha beta gamma alpha beta delta")?;
         let (entries, _, _) = process_file(f.path(), 2)?;
 
@@ -2844,7 +2750,7 @@ mod tests {
     }
 
     #[test]
-    fn test_sample_dead_end_returns_partial() -> io::Result<()> {
+    fn test_sample_dead_end_returns_partial() -> Result<()> {
         // "alpha beta gamma" gives previous-words {alpha->beta, beta->gamma}.
         // "gamma" has no entry as a previous-word, so sampling from "alpha"
         // for 3 tokens must hit a dead-end after producing 2.
@@ -2864,7 +2770,7 @@ mod tests {
     }
 
     #[test]
-    fn test_sample_deterministic_with_same_seed() -> io::Result<()> {
+    fn test_sample_deterministic_with_same_seed() -> Result<()> {
         // Cyclic corpus: every token has a successor (the -> {cat, dog, bird},
         // each animal -> the), so a 10-token walk can never dead-end on any RNG
         // sampling path. Keeps the test robust across rand versions.
@@ -2884,7 +2790,7 @@ mod tests {
     }
 
     #[test]
-    fn test_sample_uses_only_tail_of_prompt() -> io::Result<()> {
+    fn test_sample_uses_only_tail_of_prompt() -> Result<()> {
         // Bigram model: only the last token of the prompt should be used as context.
         // Cyclic corpus so every sampled token has a known successor.
         let f = write_corpus("alpha beta gamma alpha beta gamma alpha beta gamma alpha")?;
@@ -2905,7 +2811,7 @@ mod tests {
     }
 
     #[test]
-    fn test_sample_trigram_with_two_word_prompt() -> io::Result<()> {
+    fn test_sample_trigram_with_two_word_prompt() -> Result<()> {
         // Cyclic trigram corpus: "the cat" -> {sat, ran, ate}, and every 2-word
         // context leads back to "the cat" (… on the cat …), so a 5-token walk
         // never dead-ends on any RNG path. Robust across rand versions.
@@ -2927,7 +2833,7 @@ mod tests {
     }
 
     #[test]
-    fn test_sample_prompt_normalised_through_counter() -> io::Result<()> {
+    fn test_sample_prompt_normalised_through_counter() -> Result<()> {
         // Mixed case in corpus: lowercase "the" appears more often, so it's the canonical form.
         let f = write_corpus("the cat sat. The cat sat. the dog ran.")?;
         let mut counter = NGramCounter::new(2, default_punctuation());
@@ -2945,7 +2851,7 @@ mod tests {
     }
 
     #[test]
-    fn test_sample_weighted_distribution_favours_common_successor() -> io::Result<()> {
+    fn test_sample_weighted_distribution_favours_common_successor() -> Result<()> {
         // "the" is followed by "cat" 9 times and "dog" 1 time. Over many trials,
         // "cat" should dominate as the first sampled token.
         let f = write_corpus(

@@ -11,7 +11,7 @@ use std::collections::{BTreeMap, HashMap};
 use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
-use std::process::Command;
+use std::process::{Command, ExitCode};
 
 /// A simple language model builder that processes text files and outputs word following statistics
 #[derive(Parser, Debug)]
@@ -344,7 +344,7 @@ struct SampleArgs {
     cjk: CjkModeArg,
 }
 
-fn main() {
+fn main() -> ExitCode {
     let cli = Cli::parse();
     let result = match &cli.command {
         Commands::Build(args) => run_build_command(args),
@@ -356,36 +356,44 @@ fn main() {
     };
 
     match result {
-        Ok(_) => {}
-        Err(CliError::Processing(err)) => {
-            if err.kind() == io::ErrorKind::InvalidData {
-                eprintln!("Error: {}", err);
-                eprintln!("\nYour input file must begin with valid YAML frontmatter.");
-                eprintln!("Frontmatter format:");
-                eprintln!("---");
-                eprintln!("title: Your Document Title");
-                eprintln!("author: Author Name");
-                eprintln!("url: https://example.com/document-url");
-                eprintln!("---");
-                eprintln!("\nThe frontmatter must appear at the beginning of the file.");
-                std::process::exit(1);
-            } else {
-                eprintln!("Error processing input file: {}", err);
-                std::process::exit(1);
-            }
+        Ok(()) => ExitCode::SUCCESS,
+        Err(CliError::Model(err)) if err.is_frontmatter() => {
+            eprintln!("Error: {err}");
+            eprintln!("\nYour input file must begin with valid YAML frontmatter.");
+            eprintln!("Frontmatter format:");
+            eprintln!("---");
+            eprintln!("title: Your Document Title");
+            eprintln!("author: Author Name");
+            eprintln!("url: https://example.com/document-url");
+            eprintln!("---");
+            eprintln!("\nThe frontmatter must appear at the beginning of the file.");
+            ExitCode::FAILURE
         }
-        Err(CliError::Typst(err)) | Err(CliError::InvalidArgs(err)) => {
+        Err(CliError::Model(err)) => {
+            eprintln!("Error processing input file: {err}");
+            ExitCode::FAILURE
+        }
+        Err(CliError::Typst(err) | CliError::InvalidArgs(err)) => {
             eprintln!("{err}");
-            std::process::exit(1);
+            ExitCode::FAILURE
         }
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 enum CliError {
-    Processing(io::Error),
+    #[error(transparent)]
+    Model(#[from] llms_unplugged::Error),
+    #[error("{0}")]
     Typst(String),
+    #[error("{0}")]
     InvalidArgs(String),
+}
+
+impl From<io::Error> for CliError {
+    fn from(err: io::Error) -> Self {
+        CliError::Model(err.into())
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -447,8 +455,7 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
 
     let punctuation: Vec<char> = args.punctuation.chars().collect();
     let (mut tokens, metadata) =
-        process_file_for_cutouts(&args.input, punctuation, args.n, args.cjk.into())
-            .map_err(CliError::Processing)?;
+        process_file_for_cutouts(&args.input, punctuation, args.n, args.cjk.into())?;
 
     repeat_cutout_tokens(&mut tokens, args.repeat);
 
@@ -458,14 +465,13 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
         .map(|s| parse_tool_spec(s))
         .collect::<Result<Vec<_>, _>>()
         .map_err(CliError::InvalidArgs)?;
-    let injected =
-        append_tool_tokens(&mut tokens, &tool_specs, args.n).map_err(CliError::InvalidArgs)?;
+    let injected = append_tool_tokens(&mut tokens, &tool_specs, args.n)?;
 
     if args.shuffle {
         shuffle_cutout_tokens(&mut tokens, &mut seeded_rng(args.seed));
     }
 
-    fs::create_dir_all(&args.output).map_err(CliError::Processing)?;
+    fs::create_dir_all(&args.output)?;
 
     let json_path = args.output.join("cutouts.json");
     save_cutouts_json(&tokens, &metadata, &json_path)?;
@@ -532,10 +538,12 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
     let punctuation: Vec<char> = args.punctuation.chars().collect();
     let mut documents = Vec::with_capacity(args.input.len());
     for input in &args.input {
-        documents.push(
-            process_file_for_cutouts(input, punctuation.clone(), args.n, args.cjk.into())
-                .map_err(CliError::Processing)?,
-        );
+        documents.push(process_file_for_cutouts(
+            input,
+            punctuation.clone(),
+            args.n,
+            args.cjk.into(),
+        )?);
     }
     let (mut tokens, mut metadata) = combine_cutouts_documents(documents);
     if let Some(title) = &args.title {
@@ -566,7 +574,7 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
     let derived = ((usable as f64 / capacity).ceil() as usize).max(1);
     let mut num_sheets = args.sheets.unwrap_or(derived);
 
-    fs::create_dir_all(&args.output).map_err(CliError::Processing)?;
+    fs::create_dir_all(&args.output)?;
 
     let json_path = args.output.join("sheets.json");
     let pdf_path = args.output.join("sheets.pdf");
@@ -588,9 +596,8 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
         sheets = deal_into_sheets(&tokens, num_sheets, args.sort, &mut seeded_rng(args.seed));
 
         let output = serde_json::json!({ "metadata": metadata, "sheets": sheets });
-        let file = fs::File::create(&json_path).map_err(CliError::Processing)?;
-        serde_json::to_writer_pretty(file, &output)
-            .map_err(|e| CliError::Processing(io::Error::other(e)))?;
+        let file = fs::File::create(&json_path)?;
+        serde_json::to_writer_pretty(file, &output).map_err(|e| CliError::Model(e.into()))?;
 
         if args.json_only {
             break;
@@ -904,9 +911,8 @@ fn save_cutouts_json(
         "tokens": tokens,
     });
 
-    let file = fs::File::create(path).map_err(CliError::Processing)?;
-    serde_json::to_writer_pretty(file, &output)
-        .map_err(|e| CliError::Processing(io::Error::other(e)))?;
+    let file = fs::File::create(path)?;
+    serde_json::to_writer_pretty(file, &output).map_err(|e| CliError::Model(e.into()))?;
 
     Ok(())
 }
@@ -915,9 +921,7 @@ fn run_sample_command(args: &SampleArgs) -> Result<(), CliError> {
     let punctuation: Vec<char> = args.punctuation.chars().collect();
     let mut counter = NGramCounter::new(args.n, punctuation);
     counter.set_cjk_mode(args.cjk.into());
-    counter
-        .process_file(&args.input)
-        .map_err(CliError::Processing)?;
+    counter.process_file(&args.input)?;
 
     let entries = counter.get_entries();
     let prompt_tokens = counter.normalize(&args.prompt);
@@ -957,9 +961,9 @@ fn run_tsv_command(args: &TsvArgs) -> Result<(), CliError> {
     let punctuation: Vec<char> = args.punctuation.chars().collect();
     let model = compute_model(&args.input, 2, &punctuation, args.cjk.into())?;
 
-    let tsv = render_bigram_tsv(&model.entries).map_err(CliError::InvalidArgs)?;
+    let tsv = render_bigram_tsv(&model.entries)?;
     if let Some(path) = &args.output {
-        fs::write(path, tsv).map_err(CliError::Processing)?;
+        fs::write(path, tsv)?;
         println!("Wrote TSV to {}", path.display());
     } else {
         print!("{tsv}");
@@ -1042,7 +1046,7 @@ fn compute_model(
 ) -> Result<ModelData, CliError> {
     let mut counter = NGramCounter::new(n, punctuation.to_vec());
     counter.set_cjk_mode(cjk_mode);
-    counter.process_file(input).map_err(CliError::Processing)?;
+    counter.process_file(input)?;
 
     Ok(ModelData {
         entries: counter.get_entries(),
@@ -1066,17 +1070,7 @@ fn build_model(config: &BuildConfig) -> Result<BuildOutcome, CliError> {
         model.metadata.as_ref(),
         &model.stats,
         config.raw,
-    )
-    .map_err(|err| {
-        if err.kind() == io::ErrorKind::NotFound {
-            CliError::Processing(io::Error::new(
-                io::ErrorKind::NotFound,
-                format!("Output directory not found for {}", config.output.display()),
-            ))
-        } else {
-            CliError::Processing(err)
-        }
-    })?;
+    )?;
 
     Ok(BuildOutcome {
         written,
@@ -1091,7 +1085,7 @@ fn write_books(
     metadata: Option<&Metadata>,
     stats: &ProcessingStats,
     raw: bool,
-) -> io::Result<Vec<BookArtifact>> {
+) -> Result<Vec<BookArtifact>, CliError> {
     let output_stem = output
         .file_stem()
         .unwrap_or_default()
@@ -1197,7 +1191,7 @@ fn run_typst_for_books(
             fs::canonicalize(&book.json_path).unwrap_or_else(|_| book.json_path.clone());
         let pdf_path = pdf_name_for(&book.json_path, pdf_dir);
         if let Some(parent) = pdf_path.parent() {
-            fs::create_dir_all(parent).map_err(CliError::Processing)?;
+            fs::create_dir_all(parent)?;
         }
 
         let mut inputs = vec![
@@ -1376,7 +1370,7 @@ fn existing_book_artifacts(base_json: &Path, books: usize) -> Result<Vec<BookArt
 }
 
 fn load_subtitle_from_json(path: &Path) -> Result<Option<String>, CliError> {
-    let file = fs::File::open(path).map_err(CliError::Processing)?;
+    let file = fs::File::open(path)?;
     let json: serde_json::Value =
         serde_json::from_reader(file).map_err(|e| CliError::InvalidArgs(e.to_string()))?;
     let subtitle = json

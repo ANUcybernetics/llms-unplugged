@@ -1,11 +1,11 @@
 use llms_unplugged::{process_file, save_to_json};
 use serde_json::json;
 use std::fs::File;
-use std::io::{self, Write};
+use std::io::Write;
 use tempfile::NamedTempFile;
 
 #[test]
-fn regression_fixture_output_is_stable() -> io::Result<()> {
+fn regression_fixture_output_is_stable() -> Result<(), Box<dyn std::error::Error>> {
     let temp_file = NamedTempFile::new()?;
     let input_path = temp_file.path().to_owned();
 
