@@ -1,7 +1,7 @@
 use clap::{Args, Parser, Subcommand};
 use llms_unplugged::{
     Book, BookletJson, CjkMode, Corpus, CutoutSet, Metadata, Model, Normalizer, NormalizerConfig,
-    ProcessingStats, SampleError, SheetSet, append_tool_tokens, deal_into_sheets, is_usable_cutout,
+    ProcessingStats, SampleError, SheetSet, append_tool_tokens, deal_into_sheets,
     repeat_cutout_tokens, shuffle_cutout_tokens, split_entries_into_books, write_json,
 };
 use rand::SeedableRng;
@@ -534,7 +534,7 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
     // knows. The margin covers the usual case and the loop below corrects the
     // rest against Typst's own layout.
     const WIDE_PAIR_MARGIN: f64 = 1.08;
-    let usable = tokens.iter().filter(|t| is_usable_cutout(t)).count();
+    let usable = tokens.iter().filter(|t| t.is_usable()).count();
     let capacity = (args.rows * columns) as f64 / WIDE_PAIR_MARGIN;
     let derived = ((usable as f64 / capacity).ceil() as usize).max(1);
     let mut num_sheets = args.sheets.unwrap_or(derived);

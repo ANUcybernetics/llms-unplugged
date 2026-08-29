@@ -1,5 +1,4 @@
 use jieba_rs::Jieba;
-use serde::Serialize;
 use std::collections::{BTreeSet, HashMap, HashSet};
 use std::sync::OnceLock;
 
@@ -33,21 +32,13 @@ fn jieba() -> &'static Jieba {
 /// corpora box their punctuation the same way English ones do.
 pub const DEFAULT_PUNCTUATION: &str = ".,!?;:。，、！？；：";
 
-/// A raw token from the input text, before filtering.
-/// Used for the cutouts lesson variant where we show all tokens but mark some as discarded.
-#[derive(Debug, Clone, Serialize, PartialEq, Eq)]
-pub struct RawToken {
-    pub index: usize,
+/// One token of a line as the tokeniser saw it: the text, and whether the
+/// model keeps it. Digit runs and roman numerals come back with `keep:
+/// false` so the cutouts activity can show what the model dropped.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Token {
     pub text: String,
     pub keep: bool,
-    /// The n-1 preceding kept tokens (for n-gram context). Empty for the first n-1 tokens.
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub previous_words: Vec<String>,
-    /// True for synthetic tool-trigger tokens injected by the cutouts CLI.
-    /// Renders distinctly in the typst template so a trigger like VOTE stays
-    /// visually unambiguous even when the corpus contains the same word.
-    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
-    pub is_tool: bool,
 }
 
 /// The corpus-independent tokeniser settings: which marks survive as
@@ -247,43 +238,26 @@ impl Normalizer {
             .collect()
     }
 
-    /// Tokenize a line returning raw tokens with keep/discard status.
-    /// Used for the cutouts lesson variant where all tokens are shown.
-    /// Kept tokens agree with `normalize_line` by construction; digit runs
-    /// and filtered words appear with `keep: false` so students can see what
-    /// the model dropped.
-    pub fn tokenize_line_raw(&self, line: &str, start_index: usize) -> Vec<RawToken> {
-        let mut tokens = Vec::new();
-        let mut index = start_index;
-
-        for seg in self.segments(line) {
-            let token = match seg {
-                Segment::Word(w) => self.make_raw_token(&w, index),
-                Segment::Punct(c) => Some(RawToken {
-                    index,
+    /// Every token of a line with its keep/discard status. Kept tokens agree
+    /// with [`Normalizer::normalize_line`] by construction.
+    pub fn tokenize_line(&self, line: &str) -> Vec<Token> {
+        self.segments(line)
+            .into_iter()
+            .filter_map(|seg| match seg {
+                Segment::Word(w) => self.make_token(&w),
+                Segment::Punct(c) => Some(Token {
                     text: c.to_string(),
                     keep: true,
-                    previous_words: vec![],
-                    is_tool: false,
                 }),
-                Segment::Digits(d) => Some(RawToken {
-                    index,
+                Segment::Digits(d) => Some(Token {
                     text: d,
                     keep: false,
-                    previous_words: vec![],
-                    is_tool: false,
                 }),
-            };
-            if let Some(token) = token {
-                tokens.push(token);
-                index += 1;
-            }
-        }
-
-        tokens
+            })
+            .collect()
     }
 
-    fn make_raw_token(&self, token: &str, index: usize) -> Option<RawToken> {
+    fn make_token(&self, token: &str) -> Option<Token> {
         let word = clean_word(token)?;
         let keep = is_valid_word(&word);
 
@@ -295,13 +269,7 @@ impl Normalizer {
             word
         };
 
-        Some(RawToken {
-            index,
-            text,
-            keep,
-            previous_words: vec![],
-            is_tool: false,
-        })
+        Some(Token { text, keep })
     }
 
     fn normalize_word_token(&self, token: &str) -> Option<String> {
@@ -555,12 +523,15 @@ mod tests {
         assert_eq!(config.punctuation(), "!,.");
     }
 
+    fn summary(tokens: &[Token]) -> Vec<(&str, bool)> {
+        tokens.iter().map(|t| (t.text.as_str(), t.keep)).collect()
+    }
+
     #[test]
-    fn raw_tokens_include_all_with_keep_status() {
-        let tokens = normalizer().tokenize_line_raw("Chapter IV is good.", 1);
-        let summary: Vec<(&str, bool)> = tokens.iter().map(|t| (t.text.as_str(), t.keep)).collect();
+    fn tokens_include_all_with_keep_status() {
+        let tokens = normalizer().tokenize_line("Chapter IV is good.");
         assert_eq!(
-            summary,
+            summary(&tokens),
             vec![
                 ("chapter", true),
                 ("IV", false),
@@ -569,31 +540,16 @@ mod tests {
                 (".", true)
             ]
         );
-        assert!(
-            tokens
-                .iter()
-                .all(|t| t.previous_words.is_empty() && !t.is_tool)
-        );
     }
 
     #[test]
-    fn raw_tokens_index_is_1_based_and_continuous() {
-        let tokens = normalizer().tokenize_line_raw("one two three", 1);
-        assert_eq!(
-            tokens.iter().map(|t| t.index).collect::<Vec<_>>(),
-            vec![1, 2, 3]
-        );
-    }
-
-    #[test]
-    fn raw_tokens_split_digit_runs_as_discards() {
+    fn tokens_split_digit_runs_as_discards() {
         // A digit run is its own discarded token and the adjacent word is
         // kept — matching exactly what normalize_line feeds the model
         // ("bad" is a model token for this input).
-        let tokens = normalizer().tokenize_line_raw("test 123bad word", 1);
-        let summary: Vec<(&str, bool)> = tokens.iter().map(|t| (t.text.as_str(), t.keep)).collect();
+        let tokens = normalizer().tokenize_line("test 123bad word");
         assert_eq!(
-            summary,
+            summary(&tokens),
             vec![
                 ("test", true),
                 ("123", false),
@@ -601,15 +557,10 @@ mod tests {
                 ("word", true)
             ]
         );
-        // Indices stay continuous across kept and discarded tokens.
-        assert_eq!(
-            tokens.iter().map(|t| t.index).collect::<Vec<_>>(),
-            vec![1, 2, 3, 4]
-        );
     }
 
     #[test]
-    fn kept_raw_tokens_agree_with_normalize_line() {
+    fn kept_tokens_agree_with_normalize_line() {
         // The core invariant of the unified walker: the kept cutouts are
         // exactly the tokens the booklet model is built from --- in English
         // and in both CJK modes.
@@ -633,7 +584,7 @@ mod tests {
         ] {
             for line in lines {
                 let kept: Vec<String> = n
-                    .tokenize_line_raw(line, 1)
+                    .tokenize_line(line)
                     .into_iter()
                     .filter(|t| t.keep)
                     .map(|t| t.text)
@@ -777,10 +728,12 @@ mod tests {
     }
 
     #[test]
-    fn cjk_raw_tokens_are_all_kept() {
-        let raw = char_normalizer().tokenize_line_raw("小猫。", 1);
-        let summary: Vec<(&str, bool)> = raw.iter().map(|t| (t.text.as_str(), t.keep)).collect();
-        assert_eq!(summary, vec![("小", true), ("猫", true), ("。", true)]);
+    fn cjk_tokens_are_all_kept() {
+        let tokens = char_normalizer().tokenize_line("小猫。");
+        assert_eq!(
+            summary(&tokens),
+            vec![("小", true), ("猫", true), ("。", true)]
+        );
     }
 
     // CJK word-level tokenisation tests (jieba, the default `Words` mode).

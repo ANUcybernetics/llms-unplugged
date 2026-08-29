@@ -19,8 +19,8 @@ mod wasm;
 
 pub use corpus::{Corpus, Frontmatter};
 pub use cutouts::{
-    CutoutSet, CutoutsMetadata, SheetSet, append_tool_tokens, cutouts_model, deal_into_sheets,
-    is_usable_cutout, repeat_cutout_tokens, shuffle_cutout_tokens, tokenize_cutouts,
+    Cutout, CutoutKind, CutoutSet, CutoutsMetadata, SheetSet, append_tool_tokens, cutouts_model,
+    deal_into_sheets, repeat_cutout_tokens, shuffle_cutout_tokens, tokenize_cutouts,
 };
 pub use error::{Error, Result};
 pub use model::{
@@ -28,7 +28,7 @@ pub use model::{
     SampleError, WordFollowEntry, format_entries, model_type_str, split_entries_into_books,
 };
 pub use output::{BookletJson, Metadata, booklet_subtitle, write_json};
-pub use text::{CjkMode, DEFAULT_PUNCTUATION, Normalizer, NormalizerConfig, RawToken, sort_key};
+pub use text::{CjkMode, DEFAULT_PUNCTUATION, Normalizer, NormalizerConfig, Token, sort_key};
 
 #[cfg(feature = "wasm")]
 pub use wasm::*;
