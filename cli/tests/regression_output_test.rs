@@ -1,58 +1,54 @@
-use llms_unplugged::{process_file, save_to_json};
+use llms_unplugged::{BookletJson, Corpus, Metadata, Model, Normalizer, NormalizerConfig};
 use serde_json::json;
-use std::fs::File;
-use std::io::Write;
-use tempfile::NamedTempFile;
 
+/// The booklet JSON for a small fixture, pinned end to end: tokenisation,
+/// corpus casing, entry order, raw cumulative counts and the metadata block.
 #[test]
-fn regression_fixture_output_is_stable() -> Result<(), Box<dyn std::error::Error>> {
-    let temp_file = NamedTempFile::new()?;
-    let input_path = temp_file.path().to_owned();
-
-    {
-        let mut file = File::create(&input_path)?;
-        writeln!(file, "---")?;
-        writeln!(file, "title: Regression Fixture")?;
-        writeln!(file, "author: Fixture Author")?;
-        writeln!(file, "url: https://example.com/fixture")?;
-        writeln!(file, "---")?;
-        writeln!(file, "Hello world. Hello world again.")?;
-        file.flush()?;
-    }
-
-    let (entries, stats, metadata) = process_file(&input_path, 2)?;
-
-    let output_file = NamedTempFile::new()?;
-    save_to_json(
-        &entries,
-        output_file.path(),
-        metadata.as_ref(),
-        Some(&stats),
-        true,
-    )?;
-
-    let json_output: serde_json::Value = serde_json::from_reader(File::open(output_file.path())?)?;
-
-    // Metadata regression
-    let meta = json_output.get("metadata").expect("metadata present");
-    assert_eq!(meta.get("title"), Some(&json!("Regression Fixture")));
-    assert_eq!(meta.get("author"), Some(&json!("Fixture Author")));
-    assert_eq!(meta.get("url"), Some(&json!("https://example.com/fixture")));
-
-    // Data regression (raw counts)
-    // Note: "Hello" appears consistently capitalised, so it stays "Hello"
-    let expected_data = json!([
-        [".", 1, ["Hello", 1]],
-        ["again", 1, [".", 1]],
-        ["Hello", 2, ["world", 2]],
-        ["world", 2, [".", 1], ["again", 2]]
-    ]);
-
-    assert_eq!(
-        json_output.get("data"),
-        Some(&expected_data),
-        "Data output should stay stable for fixture"
+fn regression_fixture_output_is_stable() {
+    let corpus = Corpus::parse(
+        "---\ntitle: Regression Fixture\nauthor: Fixture Author\n\
+         url: https://example.com/fixture\n---\nHello world. Hello world again.\n",
+    )
+    .unwrap();
+    let normalizer = Normalizer::for_corpus(NormalizerConfig::default(), &corpus.lines);
+    let model = Model::from_lines(2, &normalizer, &corpus.lines);
+    let metadata = Metadata::new(
+        &corpus.frontmatter,
+        2,
+        normalizer.config().punctuation(),
+        Some(model.stats()),
     );
 
-    Ok(())
+    let output = serde_json::to_value(BookletJson::new(metadata, &model.entries(), true)).unwrap();
+
+    let meta = &output["metadata"];
+    assert_eq!(meta["title"], json!("Regression Fixture"));
+    assert_eq!(meta["author"], json!("Fixture Author"));
+    assert_eq!(meta["url"], json!("https://example.com/fixture"));
+    assert_eq!(meta["n"], json!(2));
+    assert_eq!(meta["subtitle"], json!("A bigram language model"));
+    assert_eq!(meta["punctuation"], json!("!,.:;?、。！，：；？"));
+    assert_eq!(meta["stats"]["total_tokens"], json!(7));
+    assert_eq!(meta["stats"]["unique_contexts"], json!(4));
+    assert_eq!(meta["stats"]["unique_tokens"], json!(4));
+    assert_eq!(
+        meta["stats"]["most_common_ngram"],
+        json!({"context": ["Hello"], "next_word": "world", "count": 2})
+    );
+    assert_eq!(
+        meta["stats"]["most_popular_context"],
+        json!({"context": ["Hello"], "count": 2})
+    );
+
+    // "Hello" appears consistently capitalised, so it stays "Hello".
+    assert_eq!(
+        output["data"],
+        json!([
+            [".", 1, ["Hello", 1]],
+            ["again", 1, [".", 1]],
+            ["Hello", 2, ["world", 2]],
+            ["world", 2, [".", 1], ["again", 2]]
+        ]),
+        "Data output should stay stable for fixture"
+    );
 }

@@ -186,7 +186,7 @@
         #heading(level: 3)[Model statistics]
         - *Total tokens:* #stats.total_tokens
         - *Unique tokens (vocabulary):* #stats.unique_tokens
-        - *Unique previous-words contexts:* #stats.unique_ngrams
+        - *Unique previous-words contexts:* #stats.unique_contexts
         - *Entropy:* #calc.round(stats.entropy, digits: 2) bits/token --- how
           unpredictable each dice roll is
         - *Perplexity:* #calc.round(stats.perplexity, digits: 1) --- effective

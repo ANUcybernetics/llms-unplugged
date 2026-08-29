@@ -1,13 +1,11 @@
-use clap::{Args, Parser, Subcommand, ValueEnum};
+use clap::{Args, Parser, Subcommand};
 use llms_unplugged::{
-    CjkMode, CutoutsMetadata, Metadata, NGramCounter, ProcessingStats, RawToken, SampleError,
-    WordFollowEntry, append_tool_tokens, deal_into_sheets, process_file_for_cutouts,
-    render_bigram_tsv, repeat_cutout_tokens, sample, save_to_json, shuffle_cutout_tokens,
-    split_entries_into_books, summarize_contexts,
+    Book, BookletJson, CjkMode, Corpus, CutoutSet, Metadata, Model, Normalizer, NormalizerConfig,
+    ProcessingStats, SampleError, SheetSet, append_tool_tokens, deal_into_sheets, is_usable_cutout,
+    repeat_cutout_tokens, shuffle_cutout_tokens, split_entries_into_books, write_json,
 };
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
-use std::collections::{BTreeMap, HashMap};
 use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
@@ -19,24 +17,6 @@ use std::process::{Command, ExitCode};
 struct Cli {
     #[command(subcommand)]
     command: Commands,
-}
-
-/// CLI spelling of [`CjkMode`]: `word` for jieba segmentation, `char` for
-/// one token per ideograph.
-#[derive(ValueEnum, Clone, Copy, Debug, Default)]
-enum CjkModeArg {
-    #[default]
-    Word,
-    Char,
-}
-
-impl From<CjkModeArg> for CjkMode {
-    fn from(mode: CjkModeArg) -> Self {
-        match mode {
-            CjkModeArg::Word => CjkMode::Words,
-            CjkModeArg::Char => CjkMode::Chars,
-        }
-    }
 }
 
 #[derive(Subcommand, Debug)]
@@ -54,6 +34,24 @@ enum Commands {
     Sheets(SheetsArgs),
     /// Sample text from an N-gram model built in-memory from a corpus.
     Sample(SampleArgs),
+}
+
+/// The tokeniser settings every subcommand shares.
+#[derive(Args, Debug, Clone)]
+struct TokenizerArgs {
+    /// Punctuation characters to preserve as separate tokens
+    #[arg(long, default_value = llms_unplugged::DEFAULT_PUNCTUATION)]
+    punctuation: String,
+
+    /// How to segment Chinese: `word` (jieba words) or `char` (per character)
+    #[arg(long, value_enum, default_value_t = CjkMode::Words)]
+    cjk: CjkMode,
+}
+
+impl TokenizerArgs {
+    fn config(&self) -> NormalizerConfig {
+        NormalizerConfig::new(self.punctuation.chars(), self.cjk)
+    }
 }
 
 #[derive(Args, Debug, Clone)]
@@ -78,13 +76,8 @@ struct BuildArgs {
     #[arg(long = "raw")]
     raw: bool,
 
-    /// Punctuation characters to preserve as separate tokens
-    #[arg(short = 'p', long = "punctuation", default_value = llms_unplugged::DEFAULT_PUNCTUATION)]
-    punctuation: String,
-
-    /// How to segment Chinese: `word` (jieba words) or `char` (per character)
-    #[arg(long, value_enum, default_value_t = CjkModeArg::Word)]
-    cjk: CjkModeArg,
+    #[command(flatten)]
+    tokenizer: TokenizerArgs,
 }
 
 #[derive(Args, Debug, Clone)]
@@ -142,17 +135,12 @@ struct PdfArgs {
     #[arg(long = "raw")]
     raw: bool,
 
-    /// Punctuation characters to preserve as separate tokens
-    #[arg(short = 'p', long = "punctuation", default_value = llms_unplugged::DEFAULT_PUNCTUATION)]
-    punctuation: String,
-
     /// Add blank pages for book binding (recto/verso layout)
     #[arg(long)]
     book_binding: bool,
 
-    /// How to segment Chinese: `word` (jieba words) or `char` (per character)
-    #[arg(long, value_enum, default_value_t = CjkModeArg::Word)]
-    cjk: CjkModeArg,
+    #[command(flatten)]
+    tokenizer: TokenizerArgs,
 }
 
 #[derive(Args, Debug, Clone)]
@@ -165,13 +153,8 @@ struct TsvArgs {
     #[arg(short, long)]
     output: Option<PathBuf>,
 
-    /// Punctuation characters to preserve as separate tokens
-    #[arg(short = 'p', long = "punctuation", default_value = llms_unplugged::DEFAULT_PUNCTUATION)]
-    punctuation: String,
-
-    /// How to segment Chinese: `word` (jieba words) or `char` (per character)
-    #[arg(long, value_enum, default_value_t = CjkModeArg::Word)]
-    cjk: CjkModeArg,
+    #[command(flatten)]
+    tokenizer: TokenizerArgs,
 }
 
 #[derive(Args, Debug, Clone)]
@@ -191,10 +174,6 @@ struct CutoutsArgs {
     /// Paper size for PDF (default: a4)
     #[arg(long, default_value = "a4")]
     paper_size: String,
-
-    /// Punctuation characters to preserve as separate tokens
-    #[arg(short = 'p', long = "punctuation", default_value = llms_unplugged::DEFAULT_PUNCTUATION)]
-    punctuation: String,
 
     /// Only generate JSON; skip Typst PDF compilation
     #[arg(long)]
@@ -222,10 +201,6 @@ struct CutoutsArgs {
     #[arg(long, default_value_t = 1)]
     repeat: usize,
 
-    /// How to segment Chinese: `word` (jieba words) or `char` (per character)
-    #[arg(long, value_enum, default_value_t = CjkModeArg::Word)]
-    cjk: CjkModeArg,
-
     /// Shuffle the cutouts instead of emitting them in corpus order. Harmless
     /// for the cut-up activity (cutting destroys the order anyway) and useful
     /// if the uncut sheets will be read before they're cut.
@@ -235,6 +210,9 @@ struct CutoutsArgs {
     /// RNG seed for --shuffle, for a reproducible print run.
     #[arg(long)]
     seed: Option<u64>,
+
+    #[command(flatten)]
+    tokenizer: TokenizerArgs,
 }
 
 #[derive(Args, Debug, Clone)]
@@ -299,17 +277,12 @@ struct SheetsArgs {
     #[arg(long, default_value = "a4")]
     paper_size: String,
 
-    /// Punctuation characters to preserve as separate tokens
-    #[arg(short = 'p', long = "punctuation", default_value = llms_unplugged::DEFAULT_PUNCTUATION)]
-    punctuation: String,
-
     /// Only generate JSON; skip Typst PDF compilation
     #[arg(long)]
     json_only: bool,
 
-    /// How to segment Chinese: `word` (jieba words) or `char` (per character)
-    #[arg(long, value_enum, default_value_t = CjkModeArg::Word)]
-    cjk: CjkModeArg,
+    #[command(flatten)]
+    tokenizer: TokenizerArgs,
 }
 
 #[derive(Args, Debug, Clone)]
@@ -335,13 +308,8 @@ struct SampleArgs {
     #[arg(long)]
     seed: Option<u64>,
 
-    /// Punctuation characters to preserve as separate tokens
-    #[arg(long = "punctuation", default_value = llms_unplugged::DEFAULT_PUNCTUATION)]
-    punctuation: String,
-
-    /// How to segment Chinese: `word` (jieba words) or `char` (per character)
-    #[arg(long, value_enum, default_value_t = CjkModeArg::Word)]
-    cjk: CjkModeArg,
+    #[command(flatten)]
+    tokenizer: TokenizerArgs,
 }
 
 fn main() -> ExitCode {
@@ -396,29 +364,41 @@ impl From<io::Error> for CliError {
     }
 }
 
-#[derive(Debug, Clone)]
-struct BuildConfig {
-    input: PathBuf,
-    output: PathBuf,
-    n: usize,
-    num_books: usize,
-    raw: bool,
-    punctuation: Vec<char>,
-    cjk_mode: CjkMode,
+/// A corpus, the normaliser built for it, and the model counted from it.
+struct BuiltModel {
+    corpus: Corpus,
+    normalizer: Normalizer,
+    model: Model,
 }
 
+fn build_model(input: &Path, n: usize, config: NormalizerConfig) -> Result<BuiltModel, CliError> {
+    let corpus = Corpus::load(input)?;
+    let normalizer = Normalizer::for_corpus(config, &corpus.lines);
+    let model = Model::from_lines(n, &normalizer, &corpus.lines);
+    Ok(BuiltModel {
+        corpus,
+        normalizer,
+        model,
+    })
+}
+
+impl BuiltModel {
+    fn metadata(&self) -> Metadata {
+        Metadata::new(
+            &self.corpus.frontmatter,
+            self.model.n(),
+            self.normalizer.config().punctuation(),
+            Some(self.model.stats()),
+        )
+    }
+}
+
+/// One volume's JSON on disk, and what the PDF step needs to know about it.
 #[derive(Debug, Clone)]
 struct BookArtifact {
     range: String,
     json_path: PathBuf,
     subtitle: Option<String>,
-}
-
-#[derive(Debug, Clone)]
-struct BuildOutcome {
-    written: Vec<BookArtifact>,
-    stats: ProcessingStats,
-    metadata: Option<Metadata>,
 }
 
 #[derive(Debug, Clone)]
@@ -431,18 +411,9 @@ struct TypstOptions {
 }
 
 fn run_build_command(args: &BuildArgs) -> Result<(), CliError> {
-    let config = BuildConfig {
-        input: args.input.clone(),
-        output: args.output.clone(),
-        n: args.n,
-        num_books: args.num_books,
-        raw: args.raw,
-        punctuation: args.punctuation.chars().collect(),
-        cjk_mode: args.cjk.into(),
-    };
-
-    let outcome = build_model(&config)?;
-    print_summary(&outcome.stats, outcome.metadata.as_ref(), args.n, args.raw);
+    let built = build_model(&args.input, args.n, args.tokenizer.config())?;
+    write_books(&built, &args.output, args.num_books, args.raw)?;
+    print_summary(&built.metadata(), args.raw);
     Ok(())
 }
 
@@ -453,11 +424,10 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
         ));
     }
 
-    let punctuation: Vec<char> = args.punctuation.chars().collect();
-    let (mut tokens, metadata) =
-        process_file_for_cutouts(&args.input, punctuation, args.n, args.cjk.into())?;
+    let corpus = Corpus::load(&args.input)?;
+    let mut set = CutoutSet::from_corpus(&corpus, args.tokenizer.config(), args.n);
 
-    repeat_cutout_tokens(&mut tokens, args.repeat);
+    repeat_cutout_tokens(&mut set.tokens, args.repeat);
 
     let tool_specs = args
         .tools
@@ -465,36 +435,35 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
         .map(|s| parse_tool_spec(s))
         .collect::<Result<Vec<_>, _>>()
         .map_err(CliError::InvalidArgs)?;
-    let injected = append_tool_tokens(&mut tokens, &tool_specs, args.n)?;
+    let injected = append_tool_tokens(&mut set.tokens, &tool_specs, args.n)?;
 
     if args.shuffle {
-        shuffle_cutout_tokens(&mut tokens, &mut seeded_rng(args.seed));
+        shuffle_cutout_tokens(&mut set.tokens, &mut seeded_rng(args.seed));
     }
 
     fs::create_dir_all(&args.output)?;
-
     let json_path = args.output.join("cutouts.json");
-    save_cutouts_json(&tokens, &metadata, &json_path)?;
+    write_json(&set, &json_path)?;
 
-    println!("Processed '{}' by {}", metadata.title, metadata.author);
-    println!(
+    let metadata = &set.metadata;
+    eprintln!("Processed '{}' by {}", metadata.title, metadata.author);
+    eprintln!(
         "Total tokens: {} ({} kept, {} discarded)",
         metadata.total_tokens,
         metadata.kept_tokens,
         metadata.total_tokens - metadata.kept_tokens
     );
     if args.repeat > 1 {
-        println!("Repeating every usable cutout {} times", args.repeat);
+        eprintln!("Repeating every usable cutout {} times", args.repeat);
     }
     if injected > 0 {
-        let names: Vec<String> = tool_specs.iter().map(|(n, _)| n.clone()).collect();
-        println!(
-            "Injected {} tool-trigger cutout(s) for: {}",
-            injected,
+        let names: Vec<&str> = tool_specs.iter().map(|(n, _)| n.as_str()).collect();
+        eprintln!(
+            "Injected {injected} tool-trigger cutout(s) for: {}",
             names.join(", ")
         );
     }
-    println!("Wrote JSON to {}", json_path.display());
+    eprintln!("Wrote JSON to {}", json_path.display());
 
     if args.json_only {
         return Ok(());
@@ -535,33 +504,28 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
         ));
     }
 
-    let punctuation: Vec<char> = args.punctuation.chars().collect();
-    let mut documents = Vec::with_capacity(args.input.len());
-    for input in &args.input {
-        documents.push(process_file_for_cutouts(
-            input,
-            punctuation.clone(),
-            args.n,
-            args.cjk.into(),
-        )?);
-    }
-    let (mut tokens, mut metadata) = combine_cutouts_documents(documents);
+    let documents = args
+        .input
+        .iter()
+        .map(|input| {
+            let corpus = Corpus::load(input)?;
+            Ok(CutoutSet::from_corpus(
+                &corpus,
+                args.tokenizer.config(),
+                args.n,
+            ))
+        })
+        .collect::<Result<Vec<_>, CliError>>()?;
+    let CutoutSet {
+        mut metadata,
+        tokens,
+    } = CutoutSet::combine(documents, args.n);
     if let Some(title) = &args.title {
         metadata.title.clone_from(title);
     }
     if let Some(author) = &args.author {
         metadata.author.clone_from(author);
     }
-    for (index, token) in tokens.iter_mut().enumerate() {
-        token.index = index + 1;
-    }
-
-    // Dealing into one sheet is the cheapest way to count what is actually
-    // usable: the deal drops the cutouts a search sheet has no use for, so the
-    // raw token count would overestimate.
-    let usable = deal_into_sheets(&tokens, 1, false, &mut seeded_rng(args.seed))
-        .first()
-        .map_or(0, Vec::len);
 
     // The first guess at how many sheets this corpus needs at the requested
     // density. A pair too wide for its column takes two of them, so a sheet
@@ -570,6 +534,7 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
     // knows. The margin covers the usual case and the loop below corrects the
     // rest against Typst's own layout.
     const WIDE_PAIR_MARGIN: f64 = 1.08;
+    let usable = tokens.iter().filter(|t| is_usable_cutout(t)).count();
     let capacity = (args.rows * columns) as f64 / WIDE_PAIR_MARGIN;
     let derived = ((usable as f64 / capacity).ceil() as usize).max(1);
     let mut num_sheets = args.sheets.unwrap_or(derived);
@@ -578,7 +543,7 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
 
     let json_path = args.output.join("sheets.json");
     let pdf_path = args.output.join("sheets.pdf");
-    println!("Processed '{}' by {}", metadata.title, metadata.author);
+    eprintln!("Processed '{}' by {}", metadata.title, metadata.author);
 
     // Deal, typeset, and check that every sheet came out one page. The wide
     // pairs that make a sheet overflow are only knowable from the typesetting,
@@ -595,9 +560,13 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
     loop {
         sheets = deal_into_sheets(&tokens, num_sheets, args.sort, &mut seeded_rng(args.seed));
 
-        let output = serde_json::json!({ "metadata": metadata, "sheets": sheets });
-        let file = fs::File::create(&json_path)?;
-        serde_json::to_writer_pretty(file, &output).map_err(|e| CliError::Model(e.into()))?;
+        write_json(
+            &SheetSet {
+                metadata: metadata.clone(),
+                sheets: sheets.clone(),
+            },
+            &json_path,
+        )?;
 
         if args.json_only {
             break;
@@ -645,11 +614,11 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
         attempt += 1;
     }
 
-    let dealt: usize = sheets.iter().map(|s| s.len()).sum();
-    let smallest = sheets.iter().map(|s| s.len()).min().unwrap_or(0);
-    let largest = sheets.iter().map(|s| s.len()).max().unwrap_or(0);
+    let dealt: usize = sheets.iter().map(Vec::len).sum();
+    let smallest = sheets.iter().map(Vec::len).min().unwrap_or(0);
+    let largest = sheets.iter().map(Vec::len).max().unwrap_or(0);
 
-    println!(
+    eprintln!(
         "Dealt {dealt} cutouts across {num_sheets} sheets ({smallest}--{largest} token pairs \
          per sheet, {}), {} rows a page",
         if args.sort {
@@ -660,7 +629,7 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
         args.rows,
     );
     if args.sheets.is_none() {
-        println!(
+        eprintln!(
             "Sheet count follows the corpus at this density --- pass --sheets to pin it, or \
              --rows to change it."
         );
@@ -671,70 +640,9 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
             sheets.iter().filter(|s| s.is_empty()).count()
         );
     }
-    println!("Wrote JSON to {}", json_path.display());
+    eprintln!("Wrote JSON to {}", json_path.display());
 
     Ok(())
-}
-
-/// Combine independently tokenised documents without creating an N-gram at
-/// either seam. Raw tokens already carry their within-document contexts, so
-/// aggregation only needs to rederive the summary statistics used by the
-/// sheets brief.
-fn combine_cutouts_documents(
-    documents: Vec<(Vec<RawToken>, CutoutsMetadata)>,
-) -> (Vec<RawToken>, CutoutsMetadata) {
-    if documents.len() == 1 {
-        return documents.into_iter().next().unwrap();
-    }
-
-    let document_count = documents.len();
-    let title = documents
-        .iter()
-        .map(|(_, metadata)| metadata.title.as_str())
-        .collect::<Vec<_>>()
-        .join(" + ");
-    let author = documents
-        .iter()
-        .map(|(_, metadata)| metadata.author.as_str())
-        .collect::<Vec<_>>()
-        .join(" + ");
-    let total_tokens = documents.iter().map(|(tokens, _)| tokens.len()).sum();
-    let tokens: Vec<RawToken> = documents
-        .into_iter()
-        .flat_map(|(tokens, _)| tokens)
-        .collect();
-    let kept_tokens = tokens.iter().filter(|token| token.keep).count();
-
-    // Rebuild the combined context → next-word count table and summarize it
-    // with the same code the single-document path uses, so the two stat
-    // definitions can never drift.
-    let mut counts: BTreeMap<Vec<String>, HashMap<String, usize>> = BTreeMap::new();
-    for token in tokens
-        .iter()
-        .filter(|token| token.keep && !token.previous_words.is_empty())
-    {
-        *counts
-            .entry(token.previous_words.clone())
-            .or_default()
-            .entry(token.text.clone())
-            .or_default() += 1;
-    }
-    let summary = summarize_contexts(&counts);
-
-    (
-        tokens,
-        CutoutsMetadata {
-            title,
-            author,
-            documents: document_count,
-            total_tokens,
-            kept_tokens,
-            unique_tokens: summary.unique_tokens,
-            entropy: summary.entropy,
-            perplexity: summary.perplexity,
-            branching_factor: summary.branching_factor,
-        },
-    )
 }
 
 /// An RNG seeded from `seed`, or from system entropy when no seed is given.
@@ -783,7 +691,7 @@ fn run_typst_compile(
                 typst_bin.display()
             ))
         } else {
-            CliError::Typst(format!("Failed to run typst: {}", e))
+            CliError::Typst(format!("Failed to run typst: {e}"))
         }
     })?;
 
@@ -821,13 +729,13 @@ fn compile_template(
     repack_pdf(pdf_path);
     let after = fs::metadata(pdf_path).map(|m| m.len()).unwrap_or(0);
 
-    println!(
+    eprintln!(
         "Wrote PDF to {} ({})",
         pdf_path.display(),
         human_bytes(after)
     );
     if after < before {
-        println!(
+        eprintln!(
             "  repacked with object streams: {} smaller",
             human_bytes(before - after)
         );
@@ -901,30 +809,9 @@ fn human_bytes(bytes: u64) -> String {
     }
 }
 
-fn save_cutouts_json(
-    tokens: &[RawToken],
-    metadata: &CutoutsMetadata,
-    path: &Path,
-) -> Result<(), CliError> {
-    let output = serde_json::json!({
-        "metadata": metadata,
-        "tokens": tokens,
-    });
-
-    let file = fs::File::create(path)?;
-    serde_json::to_writer_pretty(file, &output).map_err(|e| CliError::Model(e.into()))?;
-
-    Ok(())
-}
-
 fn run_sample_command(args: &SampleArgs) -> Result<(), CliError> {
-    let punctuation: Vec<char> = args.punctuation.chars().collect();
-    let mut counter = NGramCounter::new(args.n, punctuation);
-    counter.set_cjk_mode(args.cjk.into());
-    counter.process_file(&args.input)?;
-
-    let entries = counter.get_entries();
-    let prompt_tokens = counter.normalize(&args.prompt);
+    let built = build_model(&args.input, args.n, args.tokenizer.config())?;
+    let prompt_tokens = built.normalizer.normalize_line(&args.prompt);
 
     if prompt_tokens.is_empty() {
         return Err(CliError::InvalidArgs(
@@ -932,23 +819,15 @@ fn run_sample_command(args: &SampleArgs) -> Result<(), CliError> {
         ));
     }
 
-    let mut rng = match args.seed {
-        Some(s) => ChaCha8Rng::seed_from_u64(s),
-        None => ChaCha8Rng::from_rng(&mut rand::rng()),
-    };
-
-    match sample(&entries, &prompt_tokens, args.tokens, &mut rng) {
+    let mut rng = seeded_rng(args.seed);
+    match built.model.sample(&prompt_tokens, args.tokens, &mut rng) {
         Ok(generated) => {
-            let mut all = prompt_tokens;
-            all.extend(generated);
-            println!("{}", all.join(" "));
+            println!("{}", [prompt_tokens, generated].concat().join(" "));
             Ok(())
         }
         Err(e) => {
             if let SampleError::DeadEnd { generated, .. } = &e {
-                let mut all = prompt_tokens;
-                all.extend(generated.iter().cloned());
-                println!("{}", all.join(" "));
+                println!("{}", [prompt_tokens, generated.clone()].concat().join(" "));
             }
             Err(CliError::InvalidArgs(e.to_string()))
         }
@@ -958,13 +837,11 @@ fn run_sample_command(args: &SampleArgs) -> Result<(), CliError> {
 fn run_tsv_command(args: &TsvArgs) -> Result<(), CliError> {
     // Build the model in memory only: the TSV (on stdout by default) is the
     // sole output, so nothing may be written or printed besides it.
-    let punctuation: Vec<char> = args.punctuation.chars().collect();
-    let model = compute_model(&args.input, 2, &punctuation, args.cjk.into())?;
-
-    let tsv = render_bigram_tsv(&model.entries)?;
+    let built = build_model(&args.input, 2, args.tokenizer.config())?;
+    let tsv = built.model.bigram_tsv()?;
     if let Some(path) = &args.output {
         fs::write(path, tsv)?;
-        println!("Wrote TSV to {}", path.display());
+        eprintln!("Wrote TSV to {}", path.display());
     } else {
         print!("{tsv}");
     }
@@ -998,18 +875,10 @@ fn run_pdf_command(args: &PdfArgs) -> Result<(), CliError> {
     let written = if args.pdf_only {
         existing_book_artifacts(&base_json, books)?
     } else {
-        let config = BuildConfig {
-            input: args.input.clone(),
-            output: base_json.clone(),
-            n,
-            num_books: books,
-            raw: args.raw,
-            punctuation: args.punctuation.chars().collect(),
-            cjk_mode: args.cjk.into(),
-        };
-        let outcome = build_model(&config)?;
-        print_summary(&outcome.stats, outcome.metadata.as_ref(), n, args.raw);
-        outcome.written
+        let built = build_model(&args.input, n, args.tokenizer.config())?;
+        let written = write_books(&built, &base_json, books, args.raw)?;
+        print_summary(&built.metadata(), args.raw);
+        written
     };
 
     if args.json_only {
@@ -1027,146 +896,75 @@ fn run_pdf_command(args: &PdfArgs) -> Result<(), CliError> {
         book_binding: args.book_binding,
     };
 
-    run_typst_for_books(&written, &pdf_dir, &opts)?;
-
-    Ok(())
+    run_typst_for_books(&written, &pdf_dir, &opts)
 }
 
-struct ModelData {
-    entries: Vec<WordFollowEntry>,
-    stats: ProcessingStats,
-    metadata: Option<Metadata>,
+/// Where volume `index` of `total` books goes: `output` itself for a single
+/// book, `<stem>_book_<i>.json` beside it otherwise.
+fn book_json_path(output: &Path, index: usize, total: usize) -> PathBuf {
+    if total == 1 {
+        return output.to_path_buf();
+    }
+    let stem = output.file_stem().unwrap_or_default().to_string_lossy();
+    output
+        .parent()
+        .unwrap_or(Path::new("."))
+        .join(format!("{stem}_book_{}.json", index + 1))
 }
 
-fn compute_model(
-    input: &Path,
-    n: usize,
-    punctuation: &[char],
-    cjk_mode: CjkMode,
-) -> Result<ModelData, CliError> {
-    let mut counter = NGramCounter::new(n, punctuation.to_vec());
-    counter.set_cjk_mode(cjk_mode);
-    counter.process_file(input)?;
-
-    Ok(ModelData {
-        entries: counter.get_entries(),
-        stats: counter.get_stats().clone(),
-        metadata: counter.get_metadata().cloned(),
-    })
-}
-
-fn build_model(config: &BuildConfig) -> Result<BuildOutcome, CliError> {
-    let model = compute_model(
-        &config.input,
-        config.n,
-        &config.punctuation,
-        config.cjk_mode,
-    )?;
-    let books = split_entries_into_books(&model.entries, config.num_books);
-
-    let written = write_books(
-        &books,
-        &config.output,
-        model.metadata.as_ref(),
-        &model.stats,
-        config.raw,
-    )?;
-
-    Ok(BuildOutcome {
-        written,
-        stats: model.stats,
-        metadata: model.metadata,
-    })
-}
-
+/// Split the model into `num_books` volumes and write each one's JSON.
 fn write_books(
-    books: &[(String, Vec<WordFollowEntry>)],
+    built: &BuiltModel,
     output: &Path,
-    metadata: Option<&Metadata>,
-    stats: &ProcessingStats,
+    num_books: usize,
     raw: bool,
 ) -> Result<Vec<BookArtifact>, CliError> {
-    let output_stem = output
-        .file_stem()
-        .unwrap_or_default()
-        .to_str()
-        .unwrap_or("model");
-    let output_dir = output.parent().unwrap_or(Path::new("."));
+    let books = split_entries_into_books(&built.model.entries(), num_books);
+    let metadata = built.metadata();
 
     if let Some(parent) = output.parent() {
         fs::create_dir_all(parent)?;
     }
 
     let mut written = Vec::new();
-
-    for (index, (range, entries)) in books.iter().enumerate() {
-        let output_file = if books.len() == 1 {
-            output.to_path_buf()
-        } else {
-            output_dir.join(format!("{}_book_{}.json", output_stem, index + 1))
-        };
-
-        if let Some(parent) = output_file.parent() {
-            fs::create_dir_all(parent)?;
-        }
-
+    for (index, Book { range, entries }) in books.iter().enumerate() {
+        let json_path = book_json_path(output, index, books.len());
         let book_metadata = if books.len() > 1 {
-            metadata.map(|m| multi_book_metadata(m, range, index, books.len()))
+            metadata.for_book(index, books.len(), range)
         } else {
-            metadata.cloned()
+            metadata.clone()
         };
+        let subtitle = book_metadata.subtitle.clone();
 
-        let subtitle = book_metadata.as_ref().map(|m| m.subtitle.clone());
-
-        save_to_json(
-            entries,
-            &output_file,
-            book_metadata.as_ref(),
-            Some(stats),
-            raw,
-        )?;
+        BookletJson::new(book_metadata, entries, raw).write(&json_path)?;
 
         if books.len() > 1 {
-            println!(
-                "Successfully wrote book {} ({}) to '{}'",
+            eprintln!(
+                "Successfully wrote book {} ({range}) to '{}'",
                 index + 1,
-                range,
-                output_file.display()
+                json_path.display()
             );
         } else {
-            println!(
+            eprintln!(
                 "Successfully wrote word statistics to '{}'",
-                output_file.display()
+                json_path.display()
             );
         }
 
         written.push(BookArtifact {
             range: range.clone(),
-            json_path: output_file,
-            subtitle,
+            json_path,
+            subtitle: Some(subtitle),
         });
     }
 
     if raw {
-        println!("Output raw counts without scaling");
+        eprintln!("Output raw counts without scaling");
     } else {
-        println!("Applied count scaling with d10");
+        eprintln!("Applied count scaling with d10");
     }
 
     Ok(written)
-}
-
-fn multi_book_metadata(base: &Metadata, range: &str, index: usize, total_books: usize) -> Metadata {
-    let mut clone = base.clone();
-    let formatted_range = range.replace('-', "–");
-    clone.subtitle = format!(
-        "A {} language model: {} (Book {} of {})",
-        llms_unplugged::model_type_str(base.n),
-        formatted_range,
-        index + 1,
-        total_books
-    );
-    clone
 }
 
 fn run_typst_for_books(
@@ -1174,7 +972,7 @@ fn run_typst_for_books(
     pdf_dir: &Path,
     opts: &TypstOptions,
 ) -> Result<(), CliError> {
-    println!("\nRunning typst compile...");
+    eprintln!("\nRunning typst compile...");
 
     // Compile with --root / and absolute paths (the same approach as the
     // cutouts command) so the template, JSON and output dir can live anywhere
@@ -1187,8 +985,6 @@ fn run_typst_for_books(
     })?;
 
     for (index, book) in written.iter().enumerate() {
-        let json_path =
-            fs::canonicalize(&book.json_path).unwrap_or_else(|_| book.json_path.clone());
         let pdf_path = pdf_name_for(&book.json_path, pdf_dir);
         if let Some(parent) = pdf_path.parent() {
             fs::create_dir_all(parent)?;
@@ -1197,7 +993,7 @@ fn run_typst_for_books(
         let mut inputs = vec![
             ("paper_size".to_string(), opts.paper_size.clone()),
             ("columns".to_string(), opts.columns.to_string()),
-            ("json_path".to_string(), json_path.display().to_string()),
+            ("json_path".to_string(), abs_path_string(&book.json_path)),
         ];
         if let Some(subtitle) = opts
             .subtitle_override
@@ -1212,17 +1008,18 @@ fn run_typst_for_books(
 
         run_typst_compile(&template, &inputs, &pdf_path)?;
 
-        log_pdf_pages(&pdf_path);
+        if let Some(pages) = pdf_page_count(&pdf_path) {
+            eprintln!("Pages in {}: {pages}", pdf_path.display());
+        }
         let range_label = if book.range.is_empty() {
             String::new()
         } else {
             format!(" ({})", book.range)
         };
-        println!(
-            "Successfully created PDF {} of {}{} at {}",
+        eprintln!(
+            "Successfully created PDF {} of {}{range_label} at {}",
             index + 1,
             written.len(),
-            range_label,
             pdf_path.display()
         );
     }
@@ -1253,28 +1050,10 @@ fn pdf_page_count(pdf_path: &Path) -> Option<usize> {
         .and_then(|count| count.trim().parse().ok())
 }
 
-fn log_pdf_pages(pdf_path: &Path) {
-    if let Ok(output) = Command::new("pdfinfo").arg(pdf_path).output()
-        && output.status.success()
-    {
-        for line in String::from_utf8_lossy(&output.stdout).lines() {
-            if line.starts_with("Pages:") {
-                println!(
-                    "Pages in {}: {}",
-                    pdf_path.display(),
-                    line.trim_start_matches("Pages:").trim()
-                );
-            }
-        }
-    }
-}
-
 fn typst_command_path() -> PathBuf {
-    if let Ok(path) = std::env::var("TYPST_BIN") {
-        PathBuf::from(path)
-    } else {
-        PathBuf::from("typst")
-    }
+    std::env::var_os("TYPST_BIN")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| PathBuf::from("typst"))
 }
 
 /// Validate the `-n` flag: the model needs at least one word of context.
@@ -1333,40 +1112,22 @@ fn derive_base_name(input: &Path) -> String {
 }
 
 fn existing_book_artifacts(base_json: &Path, books: usize) -> Result<Vec<BookArtifact>, CliError> {
-    let mut artifacts = Vec::new();
-    if books == 1 {
-        if !base_json.exists() {
-            return Err(CliError::InvalidArgs(format!(
-                "Expected JSON at {} but it does not exist",
-                base_json.display()
-            )));
-        }
-        artifacts.push(BookArtifact {
-            range: String::new(),
-            json_path: base_json.to_path_buf(),
-            subtitle: load_subtitle_from_json(base_json)?,
-        });
-    } else {
-        for i in 0..books {
-            let path = base_json.parent().unwrap_or(Path::new(".")).join(format!(
-                "{}_book_{}.json",
-                base_json.file_stem().unwrap_or_default().to_string_lossy(),
-                i + 1
-            ));
+    (0..books)
+        .map(|index| {
+            let path = book_json_path(base_json, index, books);
             if !path.exists() {
                 return Err(CliError::InvalidArgs(format!(
                     "Expected JSON at {} but it does not exist",
                     path.display()
                 )));
             }
-            artifacts.push(BookArtifact {
+            Ok(BookArtifact {
                 range: String::new(),
-                json_path: path.clone(),
                 subtitle: load_subtitle_from_json(&path)?,
-            });
-        }
-    }
-    Ok(artifacts)
+                json_path: path,
+            })
+        })
+        .collect()
 }
 
 fn load_subtitle_from_json(path: &Path) -> Result<Option<String>, CliError> {
@@ -1381,121 +1142,83 @@ fn load_subtitle_from_json(path: &Path) -> Result<Option<String>, CliError> {
     Ok(subtitle)
 }
 
-fn print_summary(stats: &ProcessingStats, metadata: Option<&Metadata>, n: usize, raw: bool) {
-    if let Some(meta) = metadata {
-        println!("\nDocument Metadata:");
-        println!("------------------");
-        println!("Title: {}", meta.title);
-        println!("Author: {}", meta.author);
-        println!("URL: {}", meta.url);
-    }
+fn print_summary(metadata: &Metadata, raw: bool) {
+    let n = metadata.n;
+    eprintln!("\nDocument Metadata:");
+    eprintln!("------------------");
+    eprintln!("Title: {}", metadata.title);
+    eprintln!("Author: {}", metadata.author);
+    eprintln!("URL: {}", metadata.url);
 
-    println!("\nSummary Statistics:");
-    println!("-------------------");
-    println!("Total tokens in text: {}", stats.total_tokens);
-    println!(
-        "Unique {}-word previous-words contexts: {}",
-        n - 1,
-        stats.unique_ngrams
-    );
-    println!(
-        "Total {}-gram occurrences: {}",
-        n, stats.total_ngram_occurrences
-    );
-
-    if let Some((previous_words, next_word, count)) = &stats.most_common_ngram {
-        let previous_words_str = previous_words.join(" ");
-        println!(
-            "Most common {}-gram: '{}' followed by '{}' ({} occurrences)",
-            n, previous_words_str, next_word, count
-        );
-    }
-
-    if let Some((previous_words, count)) = &stats.most_popular_previous_words {
-        let previous_words_str = previous_words.join(" ");
-        println!(
-            "Previous-words context with most next-words: '{}' ({} total next-word occurrences)",
-            previous_words_str, count
-        );
-    }
-
-    println!(
-        "Entropy: {:.2} bits/token (perplexity: {:.1})",
-        stats.entropy, stats.perplexity
-    );
+    let Some(stats) = &metadata.stats else {
+        return;
+    };
+    print_stats(stats, n);
 
     if raw {
-        println!("\nRaw counts emitted (no dice scaling).");
+        eprintln!("\nRaw counts emitted (no dice scaling).");
     } else {
-        println!("\nCounts scaled for d10 dice (10^k - 1).");
+        eprintln!("\nCounts scaled for d10 dice (10^k - 1).");
     }
+}
+
+fn print_stats(stats: &ProcessingStats, n: usize) {
+    eprintln!("\nSummary Statistics:");
+    eprintln!("-------------------");
+    eprintln!("Total tokens in text: {}", stats.total_tokens);
+    eprintln!(
+        "Unique {}-word previous-words contexts: {}",
+        n - 1,
+        stats.unique_contexts
+    );
+    eprintln!(
+        "Total {n}-gram occurrences: {}",
+        stats.total_ngram_occurrences
+    );
+
+    if let Some(ngram) = &stats.most_common_ngram {
+        eprintln!(
+            "Most common {n}-gram: '{}' followed by '{}' ({} occurrences)",
+            ngram.context.join(" "),
+            ngram.next_word,
+            ngram.count
+        );
+    }
+
+    if let Some(context) = &stats.most_popular_context {
+        eprintln!(
+            "Previous-words context with most next-words: '{}' ({} total next-word occurrences)",
+            context.context.join(" "),
+            context.count
+        );
+    }
+
+    eprintln!(
+        "Entropy: {:.2} bits/token (perplexity: {:.1})",
+        stats.summary.entropy, stats.summary.perplexity
+    );
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::path::PathBuf;
     use tempfile::TempDir;
-
-    fn stub_metadata() -> Metadata {
-        Metadata {
-            title: "Test".to_string(),
-            author: "Author".to_string(),
-            url: "https://example.com".to_string(),
-            n: 2,
-            subtitle: "A bigram language model".to_string(),
-            punctuation: ".,!?;:".to_string(),
-            version: "test".to_string(),
-            stats: None,
-        }
-    }
-
-    fn stub_stats() -> ProcessingStats {
-        ProcessingStats {
-            total_tokens: 0,
-            unique_ngrams: 0,
-            unique_tokens: 0,
-            total_ngram_occurrences: 0,
-            most_common_ngram: None,
-            most_popular_previous_words: None,
-            entropy: 0.0,
-            perplexity: 1.0,
-            branching_factor: 0.0,
-        }
-    }
-
-    #[test]
-    fn formats_multi_book_metadata() {
-        let meta = stub_metadata();
-        let updated = multi_book_metadata(&meta, "A-C", 1, 3);
-        assert!(updated.subtitle.contains("A–C"));
-        assert!(updated.subtitle.contains("Book 2 of 3"));
-    }
 
     #[test]
     fn write_books_creates_expected_files() {
         let temp_dir = TempDir::new().unwrap();
         let output_path = temp_dir.path().join("model.json");
 
-        let books = vec![
-            (
-                "A-C".to_string(),
-                vec![WordFollowEntry {
-                    previous_words: vec!["a".into()],
-                    next_words: vec![("b".into(), 1)],
-                }],
-            ),
-            (
-                "D-F".to_string(),
-                vec![WordFollowEntry {
-                    previous_words: vec!["d".into()],
-                    next_words: vec![("e".into(), 1)],
-                }],
-            ),
-        ];
+        let corpus = Corpus::parse("---\ntitle: T\nauthor: A\n---\na b c d e f g h").unwrap();
+        let normalizer = Normalizer::for_corpus(NormalizerConfig::default(), &corpus.lines);
+        let model = Model::from_lines(2, &normalizer, &corpus.lines);
+        let built = BuiltModel {
+            corpus,
+            normalizer,
+            model,
+        };
 
-        let meta = stub_metadata();
-        let written = write_books(&books, &output_path, Some(&meta), &stub_stats(), true).unwrap();
+        let written = write_books(&built, &output_path, 2, true).unwrap();
 
         assert_eq!(written.len(), 2);
         assert!(written[0].json_path.exists());
@@ -1511,6 +1234,10 @@ mod tests {
                 .is_some_and(|s| s.contains("Book 1 of 2")),
             "Per-book subtitle should include book index"
         );
+        // --pdf-only finds the same files again.
+        let found = existing_book_artifacts(&output_path, 2).unwrap();
+        assert_eq!(found[1].json_path, written[1].json_path);
+        assert_eq!(found[1].subtitle, written[1].subtitle);
     }
 
     #[test]
@@ -1538,27 +1265,5 @@ mod tests {
         let json = PathBuf::from("out/json/frankenstein-3-2_book_1.json");
         let pdf = pdf_name_for(&json, &pdf_dir);
         assert!(pdf.ends_with("frankenstein-3-2-book1.pdf"));
-    }
-
-    #[test]
-    fn renders_bigram_tsv() {
-        let entries = vec![
-            WordFollowEntry {
-                previous_words: vec!["a".into()],
-                next_words: vec![("b".into(), 2), ("c".into(), 1)],
-            },
-            WordFollowEntry {
-                previous_words: vec!["b".into()],
-                next_words: vec![("c".into(), 3)],
-            },
-        ];
-
-        let tsv = render_bigram_tsv(&entries).unwrap();
-        // header: a b c
-        assert!(tsv.lines().next().unwrap().contains("\ta\tb\tc"));
-        // cumulative row for a: b=2, c=3
-        assert!(tsv.contains("a\t\t2\t3"));
-        // cumulative row for b: c=3
-        assert!(tsv.contains("b\t\t\t3"));
     }
 }

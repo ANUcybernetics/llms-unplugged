@@ -266,7 +266,7 @@ $(OUT_DIR)/summary.json: $(wildcard $(JSON_DIR)/*.json)
 		else \
 			echo ',' >> $@.tmp; \
 		fi; \
-		jq '.metadata | {title, n, total_tokens: .stats.total_tokens, unique_previous_words: .stats.unique_ngrams, most_common_ngram: .stats.most_common_ngram, most_popular_previous_words: .stats.most_popular_previous_words}' \
+		jq '.metadata | {title, n, total_tokens: .stats.total_tokens, unique_previous_words: .stats.unique_contexts, most_common_ngram: .stats.most_common_ngram, most_popular_previous_words: .stats.most_popular_context}' \
 			"$$json" >> $@.tmp; \
 	done
 	@echo ']' >> $@.tmp

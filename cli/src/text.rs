@@ -1,17 +1,20 @@
 use jieba_rs::Jieba;
 use serde::Serialize;
-use std::collections::{HashMap, HashSet};
+use std::collections::{BTreeSet, HashMap, HashSet};
 use std::sync::OnceLock;
 
 /// How runs of Chinese characters are cut into tokens.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
+#[cfg_attr(feature = "cli", derive(clap::ValueEnum))]
 pub enum CjkMode {
     /// Jieba word segmentation --- 深圳 / 最高 / 的 / 楼 --- the natural reading
     /// unit and the default. A "word" may be one or several characters.
     #[default]
+    #[cfg_attr(feature = "cli", value(name = "word"))]
     Words,
     /// One token per ideograph --- 深 / 圳 / 最 / 高 --- the simpler, fully
     /// transparent rule, kept as a teaching option.
+    #[cfg_attr(feature = "cli", value(name = "char"))]
     Chars,
 }
 
@@ -30,61 +33,9 @@ fn jieba() -> &'static Jieba {
 /// corpora box their punctuation the same way English ones do.
 pub const DEFAULT_PUNCTUATION: &str = ".,!?;:。，、！？；：";
 
-/// Tracks surface forms of words to determine canonical casing.
-///
-/// Algorithm:
-/// - If a word only appears with one capitalisation, preserve it (e.g., "Sally" stays "Sally")
-/// - If a word appears with mixed capitalisation, normalise to lowercase (e.g., "Hello" + "hello" → "hello")
-/// - Special case: "I" and its contractions always stay uppercase (handled by allowlist)
-#[derive(Debug, Default)]
-pub struct CanonicalFormTracker {
-    /// Maps lowercase form to observed surface forms
-    surface_forms: HashMap<String, HashSet<String>>,
-}
-
-impl CanonicalFormTracker {
-    pub fn new() -> Self {
-        Self::default()
-    }
-
-    /// Record a word's surface form for later canonical form determination
-    pub fn record(&mut self, word: &str) {
-        let lower = word.to_lowercase();
-        self.surface_forms
-            .entry(lower)
-            .or_default()
-            .insert(word.to_string());
-    }
-
-    /// Get the canonical form for a word based on observed surface forms.
-    /// If only one form was seen, return it; otherwise return lowercase.
-    #[cfg(test)]
-    pub fn get_canonical(&self, word: &str) -> String {
-        let lower = word.to_lowercase();
-        match self.surface_forms.get(&lower) {
-            Some(forms) if forms.len() == 1 => forms.iter().next().unwrap().clone(),
-            _ => lower,
-        }
-    }
-
-    /// Build a canonical form map that can be used by the Normalizer
-    pub fn build_case_map(&self) -> HashMap<String, String> {
-        let mut map = HashMap::new();
-        for (lower, forms) in &self.surface_forms {
-            if forms.len() == 1 {
-                let form = forms.iter().next().unwrap();
-                if form != lower {
-                    map.insert(lower.clone(), form.clone());
-                }
-            }
-        }
-        map
-    }
-}
-
 /// A raw token from the input text, before filtering.
 /// Used for the cutouts lesson variant where we show all tokens but mark some as discarded.
-#[derive(Debug, Clone, Serialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, PartialEq, Eq)]
 pub struct RawToken {
     pub index: usize,
     pub text: String,
@@ -99,69 +50,87 @@ pub struct RawToken {
     pub is_tool: bool,
 }
 
-/// Configuration for the tokenizer/normalizer.
-/// Punctuation is handled as dedicated tokens; case exceptions are handled here too.
-#[derive(Clone, Debug)]
+/// The corpus-independent tokeniser settings: which marks survive as
+/// punctuation tokens, and how Chinese is segmented.
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct NormalizerConfig {
-    pub punctuation: HashSet<char>,
-    /// Always-applied case mappings (e.g., "i" → "I")
-    pub case_allowlist: HashMap<String, String>,
-    /// Corpus-specific case mappings from CanonicalFormTracker
-    pub corpus_case_map: HashMap<String, String>,
-    /// How runs of Chinese characters are cut into tokens.
-    pub cjk_mode: CjkMode,
+    /// Sorted, so [`NormalizerConfig::punctuation`] is deterministic however
+    /// the set was given.
+    punctuation: BTreeSet<char>,
+    cjk_mode: CjkMode,
 }
 
-impl NormalizerConfig {
-    pub fn new(punctuation: Vec<char>) -> Self {
-        Self {
-            punctuation: punctuation.into_iter().collect(),
-            case_allowlist: default_case_allowlist(),
-            corpus_case_map: HashMap::new(),
-            cjk_mode: CjkMode::default(),
-        }
+impl Default for NormalizerConfig {
+    fn default() -> Self {
+        Self::new(DEFAULT_PUNCTUATION.chars(), CjkMode::default())
     }
 }
 
-/// The default punctuation set as a `Vec<char>`.
-pub fn default_punctuation() -> Vec<char> {
-    DEFAULT_PUNCTUATION.chars().collect()
+impl NormalizerConfig {
+    pub fn new(punctuation: impl IntoIterator<Item = char>, cjk_mode: CjkMode) -> Self {
+        Self {
+            punctuation: punctuation.into_iter().collect(),
+            cjk_mode,
+        }
+    }
+
+    /// The punctuation marks kept as standalone tokens, as a sorted string.
+    pub fn punctuation(&self) -> String {
+        self.punctuation.iter().collect()
+    }
+
+    pub fn cjk_mode(&self) -> CjkMode {
+        self.cjk_mode
+    }
 }
 
-/// Single-surface tokenizer + normalizer used by the CLI.
+/// The single tokeniser + normaliser every pipeline uses. Immutable once
+/// built: the corpus-wide casing decisions are made in
+/// [`Normalizer::for_corpus`], so a normaliser handed to the model builder,
+/// the cutouts tokeniser and the sampling prompt is guaranteed to be the same
+/// one.
+///
 /// Deterministic rules (order independent):
 /// - Normalize apostrophes to ASCII
 /// - Keep configured punctuation as standalone tokens
 /// - Split on non-letter/non-apostrophe characters (digit runs are their own
 ///   segments: skipped by the model, shown as discarded by cutouts)
 /// - Drop roman numerals (except the allowlisted "I" forms)
-/// - Apply allowlist casing; otherwise lowercase everything
-#[derive(Debug)]
+/// - Apply allowlist casing, then corpus casing; otherwise lowercase
+#[derive(Debug, Clone)]
 pub struct Normalizer {
     config: NormalizerConfig,
+    /// Lowercase form → the one surface form the corpus used, for words whose
+    /// capitalisation was consistent (see [`corpus_case_map`]).
+    case_map: HashMap<String, String>,
 }
 
 impl Normalizer {
+    /// A normaliser with no corpus-specific casing: every word not on the
+    /// allowlist is lowercased.
     pub fn new(config: NormalizerConfig) -> Self {
-        Self { config }
+        Self {
+            config,
+            case_map: HashMap::new(),
+        }
     }
 
-    /// Update the corpus-specific case map
-    pub fn set_corpus_case_map(&mut self, map: HashMap<String, String>) {
-        self.config.corpus_case_map = map;
+    /// A normaliser whose casing follows the corpus: a word that only ever
+    /// appears one way keeps that form ("Sally", "NASA"), a word that appears
+    /// both ways is lowercased ("The"/"the" → "the").
+    pub fn for_corpus<S: AsRef<str>>(config: NormalizerConfig, lines: &[S]) -> Self {
+        let bare = Self::new(config);
+        let words = lines
+            .iter()
+            .flat_map(|line| bare.extract_raw_words(line.as_ref()));
+        Self {
+            case_map: corpus_case_map(words),
+            config: bare.config,
+        }
     }
 
-    /// Choose how Chinese character runs are segmented (word- vs char-level).
-    pub fn set_cjk_mode(&mut self, mode: CjkMode) {
-        self.config.cjk_mode = mode;
-    }
-
-    /// The punctuation marks kept as standalone tokens, as a sorted string.
-    /// Sorted so the value is deterministic regardless of insertion order.
-    pub fn punctuation(&self) -> String {
-        let mut marks: Vec<char> = self.config.punctuation.iter().copied().collect();
-        marks.sort_unstable();
-        marks.into_iter().collect()
+    pub fn config(&self) -> &NormalizerConfig {
+        &self.config
     }
 
     /// Split a line into lexical segments. This is the single tokenizer
@@ -243,50 +212,30 @@ impl Normalizer {
         }
     }
 
-    /// Extract raw word tokens from a line, preserving original casing.
-    /// Used for first pass to build canonical form tracking.
-    /// Returns only valid word tokens (not punctuation, not filtered).
-    pub fn extract_raw_words(&self, line: &str) -> Vec<String> {
+    /// The valid word tokens of a line with their original casing: what the
+    /// corpus case map is built from.
+    fn extract_raw_words(&self, line: &str) -> Vec<String> {
         self.segments(line)
             .into_iter()
             .filter_map(|seg| match seg {
-                Segment::Word(w) => self.clean_word(&w),
+                Segment::Word(w) => clean_word(&w),
                 _ => None,
             })
-            .filter(|w| self.is_valid_word(w))
+            .filter(|w| is_valid_word(w))
             .collect()
-    }
-
-    /// Clean a word token (strip quotes) but preserve original casing
-    fn clean_word(&self, token: &str) -> Option<String> {
-        let mut word = token.trim_start_matches('\'').to_string();
-
-        while word.ends_with('\'') && !looks_like_contraction(&word) {
-            word.pop();
-        }
-
-        if word.is_empty() { None } else { Some(word) }
-    }
-
-    /// Words consist of letters and apostrophes by construction (digits act
-    /// as separators in the walker), so the only filter left is the roman
-    /// numeral blocklist (with "I" allowlisted).
-    fn is_valid_word(&self, word: &str) -> bool {
-        let lower = word.to_lowercase();
-        lower == "i" || !is_roman_numeral(&lower)
     }
 
     /// Canonical casing: allowlist > corpus case map > lowercase.
     fn canonical_case(&self, word: &str) -> String {
         let lower = word.to_lowercase();
-        self.config
-            .case_allowlist
-            .get(&lower)
-            .or_else(|| self.config.corpus_case_map.get(&lower))
-            .cloned()
-            .unwrap_or(lower)
+        if let Some(cased) = allowlisted_case(&lower) {
+            return cased.to_string();
+        }
+        self.case_map.get(&lower).cloned().unwrap_or(lower)
     }
 
+    /// The model's tokens for a line: normalised words and punctuation marks,
+    /// with digit runs and roman numerals dropped.
     pub fn normalize_line(&self, line: &str) -> Vec<String> {
         self.segments(line)
             .into_iter()
@@ -335,8 +284,8 @@ impl Normalizer {
     }
 
     fn make_raw_token(&self, token: &str, index: usize) -> Option<RawToken> {
-        let word = self.clean_word(token)?;
-        let keep = self.is_valid_word(&word);
+        let word = clean_word(token)?;
+        let keep = is_valid_word(&word);
 
         // Discarded words keep their original surface form so the cutout
         // shows exactly what was dropped.
@@ -356,8 +305,8 @@ impl Normalizer {
     }
 
     fn normalize_word_token(&self, token: &str) -> Option<String> {
-        let word = self.clean_word(token)?;
-        if !self.is_valid_word(&word) {
+        let word = clean_word(token)?;
+        if !is_valid_word(&word) {
             return None;
         }
         Some(self.canonical_case(&word))
@@ -369,6 +318,50 @@ enum Segment {
     Word(String),
     Punct(char),
     Digits(String),
+}
+
+/// Decide each word's canonical casing from every surface form the corpus
+/// used: one consistent form is kept as-is, mixed forms collapse to
+/// lowercase. Only words that keep a non-lowercase form appear in the map,
+/// since lowercase is the fallback anyway.
+fn corpus_case_map(words: impl IntoIterator<Item = String>) -> HashMap<String, String> {
+    let mut surface_forms: HashMap<String, HashSet<String>> = HashMap::new();
+    for word in words {
+        surface_forms
+            .entry(word.to_lowercase())
+            .or_default()
+            .insert(word);
+    }
+
+    surface_forms
+        .into_iter()
+        .filter_map(|(lower, forms)| {
+            if forms.len() != 1 {
+                return None;
+            }
+            let form = forms.into_iter().next()?;
+            (form != lower).then_some((lower, form))
+        })
+        .collect()
+}
+
+/// Clean a word token (strip quotes) but preserve original casing
+fn clean_word(token: &str) -> Option<String> {
+    let mut word = token.trim_start_matches('\'').to_string();
+
+    while word.ends_with('\'') && !looks_like_contraction(&word) {
+        word.pop();
+    }
+
+    if word.is_empty() { None } else { Some(word) }
+}
+
+/// Words consist of letters and apostrophes by construction (digits act
+/// as separators in the walker), so the only filter left is the roman
+/// numeral blocklist (with "I" allowlisted).
+fn is_valid_word(word: &str) -> bool {
+    let lower = word.to_lowercase();
+    lower == "i" || !is_roman_numeral(&lower)
 }
 
 /// True for CJK ideographs — the characters we treat as standalone
@@ -428,18 +421,17 @@ fn looks_like_contraction(word: &str) -> bool {
     suffixes.iter().any(|s| lower.ends_with(s))
 }
 
-fn default_case_allowlist() -> HashMap<String, String> {
-    let mut map = HashMap::new();
-    for (lower, cased) in [
-        ("i", "I"),
-        ("i'm", "I'm"),
-        ("i've", "I've"),
-        ("i'd", "I'd"),
-        ("i'll", "I'll"),
-    ] {
-        map.insert(lower.to_string(), cased.to_string());
+/// Casing that always wins, whatever the corpus does: the pronoun "I" and
+/// its contractions.
+fn allowlisted_case(lower: &str) -> Option<&'static str> {
+    match lower {
+        "i" => Some("I"),
+        "i'm" => Some("I'm"),
+        "i've" => Some("I've"),
+        "i'd" => Some("I'd"),
+        "i'll" => Some("I'll"),
+        _ => None,
     }
-    map
 }
 
 /// Check if a string is a Roman numeral we want to filter out.
@@ -465,18 +457,19 @@ mod tests {
     use super::*;
 
     fn normalizer() -> Normalizer {
-        Normalizer::new(NormalizerConfig::new(default_punctuation()))
+        Normalizer::new(NormalizerConfig::default())
     }
 
     /// A normalizer pinned to char-level CJK segmentation (the non-default mode).
     fn char_normalizer() -> Normalizer {
-        let mut n = normalizer();
-        n.set_cjk_mode(CjkMode::Chars);
-        n
+        Normalizer::new(NormalizerConfig::new(
+            DEFAULT_PUNCTUATION.chars(),
+            CjkMode::Chars,
+        ))
     }
 
     fn legacy_normalizer() -> Normalizer {
-        Normalizer::new(NormalizerConfig::new(vec![',', '.']))
+        Normalizer::new(NormalizerConfig::new([',', '.'], CjkMode::Words))
     }
 
     #[test]
@@ -557,68 +550,39 @@ mod tests {
     }
 
     #[test]
+    fn punctuation_string_is_sorted_and_deduplicated() {
+        let config = NormalizerConfig::new("!.,.".chars(), CjkMode::Words);
+        assert_eq!(config.punctuation(), "!,.");
+    }
+
+    #[test]
     fn raw_tokens_include_all_with_keep_status() {
         let tokens = normalizer().tokenize_line_raw("Chapter IV is good.", 1);
-        assert_eq!(tokens.len(), 5);
+        let summary: Vec<(&str, bool)> = tokens.iter().map(|t| (t.text.as_str(), t.keep)).collect();
         assert_eq!(
-            tokens[0],
-            RawToken {
-                index: 1,
-                text: "chapter".to_string(),
-                keep: true,
-                previous_words: vec![],
-                is_tool: false,
-            }
+            summary,
+            vec![
+                ("chapter", true),
+                ("IV", false),
+                ("is", true),
+                ("good", true),
+                (".", true)
+            ]
         );
-        assert_eq!(
-            tokens[1],
-            RawToken {
-                index: 2,
-                text: "IV".to_string(),
-                keep: false,
-                previous_words: vec![],
-                is_tool: false,
-            }
-        ); // roman numeral
-        assert_eq!(
-            tokens[2],
-            RawToken {
-                index: 3,
-                text: "is".to_string(),
-                keep: true,
-                previous_words: vec![],
-                is_tool: false,
-            }
-        );
-        assert_eq!(
-            tokens[3],
-            RawToken {
-                index: 4,
-                text: "good".to_string(),
-                keep: true,
-                previous_words: vec![],
-                is_tool: false,
-            }
-        );
-        assert_eq!(
-            tokens[4],
-            RawToken {
-                index: 5,
-                text: ".".to_string(),
-                keep: true,
-                previous_words: vec![],
-                is_tool: false,
-            }
+        assert!(
+            tokens
+                .iter()
+                .all(|t| t.previous_words.is_empty() && !t.is_tool)
         );
     }
 
     #[test]
     fn raw_tokens_index_is_1_based_and_continuous() {
         let tokens = normalizer().tokenize_line_raw("one two three", 1);
-        assert_eq!(tokens.len(), 3);
-        assert_eq!(tokens[0].index, 1);
-        assert_eq!(tokens[1].index, 2);
-        assert_eq!(tokens[2].index, 3);
+        assert_eq!(
+            tokens.iter().map(|t| t.index).collect::<Vec<_>>(),
+            vec![1, 2, 3]
+        );
     }
 
     #[test]
@@ -647,40 +611,47 @@ mod tests {
     #[test]
     fn kept_raw_tokens_agree_with_normalize_line() {
         // The core invariant of the unified walker: the kept cutouts are
-        // exactly the tokens the booklet model is built from.
-        let n = normalizer();
-        for line in [
-            "Chapter IV is 123good and Section3 is fine.",
-            "test 123bad word, don't stop",
-            "Number123 again. I think I'm fine.",
-            "'Hello,' she said. ''BEST'' 42",
+        // exactly the tokens the booklet model is built from --- in English
+        // and in both CJK modes.
+        for (n, lines) in [
+            (
+                normalizer(),
+                vec![
+                    "Chapter IV is 123good and Section3 is fine.",
+                    "test 123bad word, don't stop",
+                    "Number123 again. I think I'm fine.",
+                    "'Hello,' she said. ''BEST'' 42",
+                    "江南可采莲，莲叶何田田。",
+                    "小壁虎借尾巴",
+                    "AI是cool的",
+                ],
+            ),
+            (
+                char_normalizer(),
+                vec!["江南可采莲，莲叶何田田。", "小壁虎借尾巴", "AI是cool的"],
+            ),
         ] {
-            let kept: Vec<String> = n
-                .tokenize_line_raw(line, 1)
-                .into_iter()
-                .filter(|t| t.keep)
-                .map(|t| t.text)
-                .collect();
-            assert_eq!(
-                kept,
-                n.normalize_line(line),
-                "kept cutouts must equal model tokens for {line:?}"
-            );
+            for line in lines {
+                let kept: Vec<String> = n
+                    .tokenize_line_raw(line, 1)
+                    .into_iter()
+                    .filter(|t| t.keep)
+                    .map(|t| t.text)
+                    .collect();
+                assert_eq!(
+                    kept,
+                    n.normalize_line(line),
+                    "kept cutouts must equal model tokens for {line:?}"
+                );
+            }
         }
     }
 
     #[test]
     fn roman_numeral_blocklist_filters_common_numerals() {
-        assert!(is_roman_numeral("ii"));
-        assert!(is_roman_numeral("iii"));
-        assert!(is_roman_numeral("iv"));
-        assert!(is_roman_numeral("v"));
-        assert!(is_roman_numeral("ix"));
-        assert!(is_roman_numeral("x"));
-        assert!(is_roman_numeral("xii"));
-        assert!(is_roman_numeral("xx"));
-        assert!(is_roman_numeral("xlii"));
-        assert!(is_roman_numeral("l"));
+        for numeral in ["ii", "iii", "iv", "v", "ix", "x", "xii", "xx", "xlii", "l"] {
+            assert!(is_roman_numeral(numeral), "{numeral}");
+        }
     }
 
     #[test]
@@ -693,33 +664,19 @@ mod tests {
 
     #[test]
     fn roman_numeral_blocklist_preserves_english_words() {
-        assert!(!is_roman_numeral("did"));
-        assert!(!is_roman_numeral("vivid"));
-        assert!(!is_roman_numeral("livid"));
-        assert!(!is_roman_numeral("mid"));
-        assert!(!is_roman_numeral("lid"));
-        assert!(!is_roman_numeral("dim"));
-        assert!(!is_roman_numeral("mill"));
-        assert!(!is_roman_numeral("mild"));
-        assert!(!is_roman_numeral("vim"));
-        assert!(!is_roman_numeral("civic"));
-        assert!(!is_roman_numeral("mimic"));
-        assert!(!is_roman_numeral("mix"));
-        assert!(!is_roman_numeral("civil"));
-        assert!(!is_roman_numeral("victim"));
-        assert!(!is_roman_numeral("limit"));
-        assert!(!is_roman_numeral("climax"));
-        assert!(!is_roman_numeral("maxim"));
-        assert!(!is_roman_numeral("diva"));
+        for word in [
+            "did", "vivid", "livid", "mid", "lid", "dim", "mill", "mild", "vim", "civic", "mimic",
+            "mix", "civil", "victim", "limit", "climax", "maxim", "diva",
+        ] {
+            assert!(!is_roman_numeral(word), "{word}");
+        }
     }
 
     #[test]
     fn roman_numeral_blocklist_ignores_large_numerals() {
-        assert!(!is_roman_numeral("c"));
-        assert!(!is_roman_numeral("d"));
-        assert!(!is_roman_numeral("m"));
-        assert!(!is_roman_numeral("xcix"));
-        assert!(!is_roman_numeral("mcmxciv"));
+        for numeral in ["c", "d", "m", "xcix", "mcmxciv"] {
+            assert!(!is_roman_numeral(numeral), "{numeral}");
+        }
     }
 
     #[test]
@@ -740,103 +697,54 @@ mod tests {
         );
     }
 
-    // CanonicalFormTracker tests
+    // Corpus casing
 
-    #[test]
-    fn tracker_preserves_consistent_capitalisation() {
-        let mut tracker = CanonicalFormTracker::new();
-        tracker.record("Sally");
-        tracker.record("Sally");
-        tracker.record("Sally");
-
-        assert_eq!(tracker.get_canonical("Sally"), "Sally");
-        assert_eq!(tracker.get_canonical("sally"), "Sally");
+    fn case_map(words: &[&str]) -> HashMap<String, String> {
+        corpus_case_map(words.iter().map(|w| (*w).to_string()))
     }
 
     #[test]
-    fn tracker_lowercases_mixed_capitalisation() {
-        let mut tracker = CanonicalFormTracker::new();
-        tracker.record("Hello");
-        tracker.record("hello");
-
-        assert_eq!(tracker.get_canonical("Hello"), "hello");
-        assert_eq!(tracker.get_canonical("hello"), "hello");
-    }
-
-    #[test]
-    fn tracker_preserves_acronyms() {
-        let mut tracker = CanonicalFormTracker::new();
-        tracker.record("NASA");
-        tracker.record("NASA");
-
-        assert_eq!(tracker.get_canonical("NASA"), "NASA");
-        assert_eq!(tracker.get_canonical("nasa"), "NASA");
-    }
-
-    #[test]
-    fn tracker_handles_sentence_initial_words() {
-        // "The" appears at start of sentences (capitalised) and mid-sentence (lowercase)
-        let mut tracker = CanonicalFormTracker::new();
-        tracker.record("The");
-        tracker.record("the");
-        tracker.record("the");
-
-        // Mixed case should normalise to lowercase
-        assert_eq!(tracker.get_canonical("The"), "the");
-    }
-
-    #[test]
-    fn tracker_builds_case_map_correctly() {
-        let mut tracker = CanonicalFormTracker::new();
-        tracker.record("Sally"); // consistent
-        tracker.record("Sally");
-        tracker.record("Hello"); // mixed
-        tracker.record("hello");
-        tracker.record("world"); // all lowercase (no entry needed)
-
-        let map = tracker.build_case_map();
-
-        // Sally should be in the map (needs to preserve casing)
+    fn corpus_case_map_keeps_consistent_forms_and_drops_the_rest() {
+        let map = case_map(&["Sally", "Sally", "NASA", "Hello", "hello", "world"]);
+        // Consistent non-lowercase forms are recorded.
         assert_eq!(map.get("sally"), Some(&"Sally".to_string()));
-
-        // hello should NOT be in the map (mixed case → lowercase, which is default)
+        assert_eq!(map.get("nasa"), Some(&"NASA".to_string()));
+        // Mixed case collapses to lowercase, which is the default, so no entry.
         assert_eq!(map.get("hello"), None);
-
-        // world should NOT be in the map (already lowercase)
+        // Already lowercase needs no entry either.
         assert_eq!(map.get("world"), None);
     }
 
     #[test]
-    fn extract_raw_words_preserves_case() {
-        let n = normalizer();
-        let words = n.extract_raw_words("Sally said Hello to NASA.");
-
-        assert_eq!(words, vec!["Sally", "said", "Hello", "to", "NASA"]);
+    fn corpus_case_map_lowercases_sentence_initial_words() {
+        // "The" at the start of sentences plus "the" mid-sentence is mixed.
+        let map = case_map(&["The", "the", "the"]);
+        assert_eq!(map.get("the"), None);
     }
 
     #[test]
-    fn extract_raw_words_filters_invalid() {
-        let n = normalizer();
-        let words = n.extract_raw_words("Chapter IV has 123numbers.");
+    fn for_corpus_applies_corpus_casing() {
+        let plain = normalizer();
+        assert_eq!(plain.normalize_line("Sally"), vec!["sally"]);
 
-        // IV is filtered (roman numeral), 123numbers is filtered (starts with digit)
-        assert_eq!(words, vec!["Chapter", "has", "numbers"]);
+        let corpus = Normalizer::for_corpus(
+            NormalizerConfig::default(),
+            &["Sally said Hello to NASA.", "hello again"],
+        );
+        assert_eq!(
+            corpus.normalize_line("Sally said Hello to NASA."),
+            vec!["Sally", "said", "hello", "to", "NASA", "."]
+        );
+        // The case map also applies to text the corpus never contained, which
+        // is what lets a sampling prompt match the model's vocabulary.
+        assert_eq!(corpus.normalize_line("SALLY"), vec!["Sally"]);
     }
 
     #[test]
-    fn normalizer_uses_corpus_case_map() {
-        let mut n = normalizer();
-
-        // Without corpus case map, everything is lowercased
-        assert_eq!(n.normalize_line("Sally"), vec!["sally"]);
-
-        // Add corpus case map
-        let mut map = HashMap::new();
-        map.insert("sally".to_string(), "Sally".to_string());
-        n.set_corpus_case_map(map);
-
-        // Now Sally is preserved
-        assert_eq!(n.normalize_line("Sally"), vec!["Sally"]);
+    fn allowlist_takes_priority_over_corpus_casing() {
+        // The corpus only ever writes "i" lowercase; the allowlist still wins.
+        let n = Normalizer::for_corpus(NormalizerConfig::default(), &["i think i know"]);
+        assert_eq!(n.normalize_line("i think"), vec!["I", "think"]);
     }
 
     // CJK char-level tokenisation tests (the non-default `Chars` mode).
@@ -866,13 +774,6 @@ mod tests {
         // Latin runs still accumulate; each Han char stands alone in char mode.
         let tokens = char_normalizer().normalize_line("AI是cool的");
         assert_eq!(tokens, vec!["ai", "是", "cool", "的"]);
-    }
-
-    #[test]
-    fn cjk_repeated_characters_repeat_as_tokens() {
-        // "田田" must yield two identical tokens so bigram counts can form.
-        let tokens = char_normalizer().normalize_line("田田");
-        assert_eq!(tokens, vec!["田", "田"]);
     }
 
     #[test]
@@ -906,44 +807,6 @@ mod tests {
     }
 
     #[test]
-    fn cjk_word_kept_raw_tokens_agree_with_normalize_line() {
-        // The unified-walker invariant holds in word mode too: cutouts == model.
-        let n = normalizer();
-        for line in ["江南可采莲，莲叶何田田。", "小壁虎借尾巴", "AI是cool的"] {
-            let kept: Vec<String> = n
-                .tokenize_line_raw(line, 1)
-                .into_iter()
-                .filter(|t| t.keep)
-                .map(|t| t.text)
-                .collect();
-            assert_eq!(
-                kept,
-                n.normalize_line(line),
-                "kept must equal model for {line:?}"
-            );
-        }
-    }
-
-    #[test]
-    fn cjk_kept_raw_tokens_agree_with_normalize_line() {
-        // Same unified-walker invariant as English: cutouts == model tokens.
-        let n = normalizer();
-        for line in ["江南可采莲，莲叶何田田。", "小壁虎借尾巴", "AI是cool的"] {
-            let kept: Vec<String> = n
-                .tokenize_line_raw(line, 1)
-                .into_iter()
-                .filter(|t| t.keep)
-                .map(|t| t.text)
-                .collect();
-            assert_eq!(
-                kept,
-                n.normalize_line(line),
-                "kept must equal model for {line:?}"
-            );
-        }
-    }
-
-    #[test]
     fn is_cjk_ideograph_boundaries() {
         assert!(is_cjk_ideograph('江'));
         assert!(is_cjk_ideograph('\u{4E00}'));
@@ -964,18 +827,5 @@ mod tests {
         // Latin words are untouched and remain case-insensitive.
         assert_eq!(sort_key("Hello"), "hello");
         assert!(sort_key("apple") < sort_key("Banana"));
-    }
-
-    #[test]
-    fn allowlist_takes_priority_over_corpus_map() {
-        let mut n = normalizer();
-
-        // Add corpus case map that conflicts with allowlist
-        let mut map = HashMap::new();
-        map.insert("i".to_string(), "i".to_string()); // corpus says lowercase
-        n.set_corpus_case_map(map);
-
-        // Allowlist should still win - "I" stays uppercase
-        assert_eq!(n.normalize_line("I think"), vec!["I", "think"]);
     }
 }

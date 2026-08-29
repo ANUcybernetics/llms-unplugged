@@ -1,11 +1,18 @@
-use llms_unplugged::{CjkMode, NGramCounter, default_punctuation};
-use std::fs::File;
-use std::io::Write;
-use tempfile::NamedTempFile;
+//! End-to-end tokenisation through the public API: a corpus's frontmatter and
+//! lines in, a model's vocabulary out.
 
-fn collect_tokens(counter: &llms_unplugged::NGramCounter) -> Vec<String> {
-    counter
-        .get_entries()
+use llms_unplugged::{CjkMode, Corpus, DEFAULT_PUNCTUATION, Model, Normalizer, NormalizerConfig};
+
+fn corpus(body: &str) -> Corpus {
+    Corpus::parse(&format!("---\ntitle: T\nauthor: A\n---\n{body}")).unwrap()
+}
+
+/// Every token type the model saw, as context or continuation.
+fn vocabulary(config: NormalizerConfig, body: &str) -> Vec<String> {
+    let corpus = corpus(body);
+    let normalizer = Normalizer::for_corpus(config, &corpus.lines);
+    Model::from_lines(2, &normalizer, &corpus.lines)
+        .entries()
         .iter()
         .flat_map(|entry| {
             let mut tokens = entry.previous_words.clone();
@@ -15,187 +22,103 @@ fn collect_tokens(counter: &llms_unplugged::NGramCounter) -> Vec<String> {
         .collect()
 }
 
+fn default_vocabulary(body: &str) -> Vec<String> {
+    vocabulary(NormalizerConfig::default(), body)
+}
+
 #[test]
-fn normalises_case_and_strips_quotes() -> Result<(), Box<dyn std::error::Error>> {
-    let temp_file = NamedTempFile::new()?;
-    let path = temp_file.path().to_owned();
-
-    {
-        let mut file = File::create(&path)?;
-        writeln!(file, "---")?;
-        writeln!(file, "title: Test Quotes")?;
-        writeln!(file, "author: Test")?;
-        writeln!(file, "url: https://example.com")?;
-        writeln!(file, "---")?;
-        // "Hello" appears with mixed case -> lowercase
-        // "she" appears consistently lowercase
-        writeln!(file, "'Hello,' she said. hello again.")?;
-        writeln!(file, "He replied, 'I agree.'")?;
-        file.flush()?;
-    }
-
-    let mut counter = NGramCounter::new(2, default_punctuation());
-    counter.process_file(&path)?;
-    let tokens = collect_tokens(&counter);
+fn normalises_case_and_strips_quotes() {
+    let tokens = default_vocabulary("'Hello,' she said. hello again.\nHe replied, 'I agree.'");
 
     // "hello" appears mixed case (Hello + hello), so normalised to lowercase
     assert!(tokens.contains(&"hello".to_string()));
-    // "agree" appears once capitalised, stays capitalised (single occurrence)
-    // But actually it's lowercase in the input 'I agree', so stays lowercase
     assert!(tokens.contains(&"agree".to_string()));
     assert!(tokens.contains(&",".to_string()));
     assert!(tokens.contains(&".".to_string()));
     // Should not contain the word with punctuation attached
     assert!(!tokens.contains(&"Hello,".to_string()));
-
-    Ok(())
 }
 
 #[test]
-fn keeps_allowlisted_pronouns_cased() -> Result<(), Box<dyn std::error::Error>> {
-    let temp_file = NamedTempFile::new()?;
-    let path = temp_file.path().to_owned();
-
-    {
-        let mut file = File::create(&path)?;
-        writeln!(file, "---")?;
-        writeln!(file, "title: Test Pronouns")?;
-        writeln!(file, "author: Test")?;
-        writeln!(file, "url: https://example.com")?;
-        writeln!(file, "---")?;
-        writeln!(file, "I think I'm sure I've said I'd do it.")?;
-        file.flush()?;
-    }
-
-    let mut counter = NGramCounter::new(2, default_punctuation());
-    counter.process_file(&path)?;
-    let tokens = collect_tokens(&counter);
-
+fn keeps_allowlisted_pronouns_cased() {
+    let tokens = default_vocabulary("I think I'm sure I've said I'd do it.");
     for pronoun in ["I", "I'm", "I've", "I'd"] {
-        assert!(
-            tokens.contains(&pronoun.to_string()),
-            "Expected allowlisted pronoun {}",
-            pronoun
-        );
+        assert!(tokens.contains(&pronoun.to_string()), "expected {pronoun}");
     }
     assert!(tokens.contains(&"think".to_string()));
-
-    Ok(())
 }
 
 #[test]
-fn filters_numbers_and_roman_numerals() -> Result<(), Box<dyn std::error::Error>> {
-    let temp_file = NamedTempFile::new()?;
-    let path = temp_file.path().to_owned();
+fn filters_numbers_and_roman_numerals() {
+    let tokens = default_vocabulary(
+        "Chapter IV and Section3 were finished in 2024.\n\
+         The chapter was good and the section was clear.",
+    );
 
-    {
-        let mut file = File::create(&path)?;
-        writeln!(file, "---")?;
-        writeln!(file, "title: Test Numbers")?;
-        writeln!(file, "author: Test")?;
-        writeln!(file, "url: https://example.com")?;
-        writeln!(file, "---")?;
-        // Add mixed case to test lowercase normalisation
-        writeln!(file, "Chapter IV and Section3 were finished in 2024.")?;
-        writeln!(file, "The chapter was good and the section was clear.")?;
-        file.flush()?;
-    }
-
-    let mut counter = NGramCounter::new(2, default_punctuation());
-    counter.process_file(&path)?;
-    let tokens = collect_tokens(&counter);
-
-    // Roman numerals should be filtered
     assert!(!tokens.iter().any(|t| t.to_lowercase() == "iv"));
-    // Pure numbers should be filtered
     assert!(!tokens.iter().any(|t| t == "2024"));
     // "chapter" appears with mixed case (Chapter + chapter) -> lowercase
     assert!(tokens.contains(&"chapter".to_string()));
     // "section" appears with mixed case (Section3 stripped to Section + section) -> lowercase
     assert!(tokens.contains(&"section".to_string()));
-
-    Ok(())
 }
 
 #[test]
-fn preserves_contractions_and_possessives() -> Result<(), Box<dyn std::error::Error>> {
-    let temp_file = NamedTempFile::new()?;
-    let path = temp_file.path().to_owned();
-
-    {
-        let mut file = File::create(&path)?;
-        writeln!(file, "---")?;
-        writeln!(file, "title: Test Apostrophes")?;
-        writeln!(file, "author: Test")?;
-        writeln!(file, "url: https://example.com")?;
-        writeln!(file, "---")?;
-        writeln!(file, "The bird's nest and the birds' nests weren't gone.")?;
-        // Use lowercase "don't" to ensure consistent case
-        writeln!(file, "I don't worry, it'll be fine.")?;
-        writeln!(file, "goin' to see.")?;
-        file.flush()?;
-    }
-
-    let mut counter = NGramCounter::new(2, default_punctuation());
-    counter.process_file(&path)?;
-    let tokens = collect_tokens(&counter);
-
-    // All these contractions appear consistently lowercase
+fn preserves_contractions_and_possessives() {
+    let tokens = default_vocabulary(
+        "The bird's nest and the birds' nests weren't gone.\n\
+         I don't worry, it'll be fine.\ngoin' to see.",
+    );
     for token in ["bird's", "birds'", "weren't", "don't", "it'll", "goin'"] {
+        assert!(tokens.contains(&token.to_string()), "expected {token}");
+    }
+    assert!(!tokens.contains(&"s".to_string()));
+}
+
+const PUNCTUATION_CORPUS: &str = "Hello, world. How are you? Great! Now: this; then: that.\n\
+    \"Quoted text\" (parenthetical)---an aside.";
+
+#[test]
+fn default_punctuation_keeps_all_single_marks() {
+    let tokens = default_vocabulary(PUNCTUATION_CORPUS);
+    for punct in [".", ",", "!", "?", ";", ":"] {
+        assert!(tokens.contains(&punct.to_string()), "expected `{punct}`");
+    }
+    // Paired punctuation should never appear as tokens.
+    for paired in ["\"", "(", ")", "-", "[", "]"] {
         assert!(
-            tokens.contains(&token.to_string()),
-            "Expected token {}",
-            token
+            !tokens.contains(&paired.to_string()),
+            "unexpected `{paired}`"
         );
     }
-
-    assert!(!tokens.contains(&"s".to_string()));
-
-    Ok(())
-}
-
-fn write_punctuation_corpus(path: &std::path::Path) -> Result<(), Box<dyn std::error::Error>> {
-    let mut file = File::create(path)?;
-    writeln!(file, "---")?;
-    writeln!(file, "title: Test Punctuation")?;
-    writeln!(file, "author: Test")?;
-    writeln!(file, "url: https://example.com")?;
-    writeln!(file, "---")?;
-    writeln!(
-        file,
-        "Hello, world. How are you? Great! Now: this; then: that."
-    )?;
-    // Paired punctuation (quotes, brackets, em-dashes) should be stripped, not
-    // emitted as tokens.
-    writeln!(file, "\"Quoted text\" (parenthetical)---an aside.")?;
-    file.flush()?;
-    Ok(())
-}
-
-fn write_jiangnan_corpus(path: &std::path::Path) -> std::io::Result<()> {
-    let mut file = File::create(path)?;
-    writeln!(file, "---")?;
-    writeln!(file, "title: 江南")?;
-    writeln!(file, "author: 汉乐府")?;
-    writeln!(file, "url: https://example.com")?;
-    writeln!(file, "---")?;
-    // Two lines of the yuefu poem "Jiangnan".
-    writeln!(file, "江南可采莲，莲叶何田田。")?;
-    writeln!(file, "鱼戏莲叶间。")?;
-    file.flush()
 }
 
 #[test]
-fn builds_a_bigram_model_from_chinese_characters() -> Result<(), Box<dyn std::error::Error>> {
-    let temp_file = NamedTempFile::new()?;
-    let path = temp_file.path().to_owned();
-    write_jiangnan_corpus(&path)?;
+fn only_configured_punctuation_is_kept() {
+    let tokens = vocabulary(
+        NormalizerConfig::new([',', '.'], CjkMode::Words),
+        PUNCTUATION_CORPUS,
+    );
+    assert!(tokens.contains(&",".to_string()));
+    assert!(tokens.contains(&".".to_string()));
+    for dropped in ["?", "!", ";", ":"] {
+        assert!(
+            !tokens.contains(&dropped.to_string()),
+            "unexpected `{dropped}`"
+        );
+    }
+}
 
-    // Char mode: each hanzi is a token and the full-width comma is punctuation.
-    let mut counter = NGramCounter::new(2, default_punctuation());
-    counter.set_cjk_mode(CjkMode::Chars);
-    counter.process_file(&path)?;
-    let tokens = collect_tokens(&counter);
+// Two lines of the yuefu poem "Jiangnan".
+const JIANGNAN: &str = "江南可采莲，莲叶何田田。\n鱼戏莲叶间。";
+
+#[test]
+fn builds_a_bigram_model_from_chinese_characters() {
+    let config = NormalizerConfig::new(DEFAULT_PUNCTUATION.chars(), CjkMode::Chars);
+    let corpus = corpus(JIANGNAN);
+    let normalizer = Normalizer::for_corpus(config.clone(), &corpus.lines);
+    let model = Model::from_lines(2, &normalizer, &corpus.lines);
+    let tokens = vocabulary(config, JIANGNAN);
 
     // Each hanzi survives as its own token (not dropped as a separator).
     for hanzi in ["江", "南", "莲", "叶", "田", "鱼"] {
@@ -209,93 +132,26 @@ fn builds_a_bigram_model_from_chinese_characters() -> Result<(), Box<dyn std::er
     assert!(tokens.contains(&"。".to_string()));
 
     // A real bigram edge from the corpus: 莲 is followed by 叶 (莲叶 appears twice).
-    let lian = counter
-        .get_entries()
-        .into_iter()
-        .find(|e| e.previous_words == vec!["莲".to_string()])
-        .expect("莲 should have successors");
-    assert!(
-        lian.next_words.iter().any(|(w, _)| w == "叶"),
-        "莲 should be followed by 叶, got {:?}",
-        lian.next_words
+    let lian = &model.contexts()[&vec!["莲".to_string()]];
+    assert_eq!(
+        lian.get("叶"),
+        Some(&2),
+        "莲 should be followed by 叶 twice: {lian:?}"
     );
-
-    Ok(())
 }
 
 #[test]
-fn builds_a_bigram_model_from_chinese_words() -> Result<(), Box<dyn std::error::Error>> {
-    let temp_file = NamedTempFile::new()?;
-    let path = temp_file.path().to_owned();
-    write_jiangnan_corpus(&path)?;
-
+fn builds_a_bigram_model_from_chinese_words() {
     // Word mode (the default): jieba cuts the poem into dictionary words such as
     // 江南 and 莲叶 rather than individual characters.
-    let mut counter = NGramCounter::new(2, default_punctuation());
-    counter.process_file(&path)?;
-    let tokens = collect_tokens(&counter);
-
+    let tokens = default_vocabulary(JIANGNAN);
     for word in ["江南", "采莲", "莲叶"] {
         assert!(tokens.contains(&word.to_string()), "expected word {word}");
     }
     // The bare character 江 is absorbed into 江南, so it is not a token on its own.
-    assert!(
-        !tokens.contains(&"江".to_string()),
-        "江 should be part of 江南, not a standalone token"
-    );
+    assert!(!tokens.contains(&"江".to_string()));
     assert!(tokens.contains(&"，".to_string()));
     assert!(tokens.contains(&"。".to_string()));
-
-    Ok(())
-}
-
-#[test]
-fn default_punctuation_keeps_all_single_marks() -> Result<(), Box<dyn std::error::Error>> {
-    let temp_file = NamedTempFile::new()?;
-    let path = temp_file.path().to_owned();
-    write_punctuation_corpus(&path)?;
-
-    let mut counter = NGramCounter::new(2, default_punctuation());
-    counter.process_file(&path)?;
-    let tokens = collect_tokens(&counter);
-
-    for punct in [".", ",", "!", "?", ";", ":"] {
-        assert!(
-            tokens.contains(&punct.to_string()),
-            "Expected `{punct}` to be kept by default"
-        );
-    }
-
-    // Paired punctuation should never appear as tokens.
-    for paired in ["\"", "(", ")", "-", "[", "]"] {
-        assert!(
-            !tokens.contains(&paired.to_string()),
-            "Did not expect `{paired}` as a token"
-        );
-    }
-
-    Ok(())
-}
-
-#[test]
-fn only_configured_punctuation_is_kept() -> Result<(), Box<dyn std::error::Error>> {
-    let temp_file = NamedTempFile::new()?;
-    let path = temp_file.path().to_owned();
-    write_punctuation_corpus(&path)?;
-
-    // Override the default with a narrow set: only `.` and `,`.
-    let mut counter = NGramCounter::new(2, vec![',', '.']);
-    counter.process_file(&path)?;
-    let tokens = collect_tokens(&counter);
-
-    assert!(tokens.contains(&",".to_string()));
-    assert!(tokens.contains(&".".to_string()));
-    assert!(!tokens.contains(&"?".to_string()));
-    assert!(!tokens.contains(&"!".to_string()));
-    assert!(!tokens.contains(&";".to_string()));
-    assert!(!tokens.contains(&":".to_string()));
-
-    Ok(())
 }
 
 // --- shared tokenisation fixture ------------------------------------------
@@ -338,23 +194,15 @@ struct FixtureCase {
     tokens: Vec<String>,
 }
 
-/// The full two-pass pipeline `NGramCounter::process_lines` uses: track
-/// surface forms, build the corpus case map, then normalise. Char-level CJK
-/// to match the website's pure-TS tokeniser (word-level CJK on the website
-/// is exercised through the wasm build instead).
+/// The same corpus-wide pass the model builder uses. Char-level CJK to match
+/// the website's pure-TS tokeniser (word-level CJK on the website is
+/// exercised through the wasm build instead).
 fn tokenize_corpus(text: &str) -> Vec<String> {
-    use llms_unplugged::{CanonicalFormTracker, Normalizer, NormalizerConfig};
-
-    let mut normalizer = Normalizer::new(NormalizerConfig::new(default_punctuation()));
-    normalizer.set_cjk_mode(CjkMode::Chars);
-    let mut tracker = CanonicalFormTracker::new();
-    for line in text.lines() {
-        for word in normalizer.extract_raw_words(line) {
-            tracker.record(&word);
-        }
-    }
-    normalizer.set_corpus_case_map(tracker.build_case_map());
-    text.lines()
+    let lines: Vec<&str> = text.lines().collect();
+    let config = NormalizerConfig::new(DEFAULT_PUNCTUATION.chars(), CjkMode::Chars);
+    let normalizer = Normalizer::for_corpus(config, &lines);
+    lines
+        .iter()
         .flat_map(|line| normalizer.normalize_line(line))
         .collect()
 }
@@ -363,7 +211,7 @@ fn computed_fixture_cases() -> Vec<FixtureCase> {
     FIXTURE_INPUTS
         .iter()
         .map(|input| FixtureCase {
-            input: input.to_string(),
+            input: (*input).to_string(),
             tokens: tokenize_corpus(input),
         })
         .collect()

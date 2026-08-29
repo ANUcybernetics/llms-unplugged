@@ -41,23 +41,17 @@
   if ngram_data == none {
     "N/A"
   } else {
-    let previous_words_parts = ngram_data.at(0).map(p => raw(p)).join(" ")
-    let next_word = ngram_data.at(1)
-    let count = ngram_data.at(2)
-    [#previous_words_parts → #raw(next_word) (#count)]
+    let context = ngram_data.context.map(p => raw(p)).join(" ")
+    [#context → #raw(ngram_data.next_word) (#ngram_data.count)]
   }
 }
 
-#let format-previous-words(previous_words_data) = {
-  if previous_words_data == none {
+#let format-previous-words(context_data) = {
+  if context_data == none {
     "N/A"
   } else {
-    let previous_words_parts = previous_words_data
-      .at(0)
-      .map(p => raw(p))
-      .join(" ")
-    let count = previous_words_data.at(1)
-    [#previous_words_parts (#count)]
+    let context = context_data.context.map(p => raw(p)).join(" ")
+    [#context (#context_data.count)]
   }
 }
 
