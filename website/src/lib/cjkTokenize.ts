@@ -13,7 +13,7 @@ import { containsCJK, parseTokens } from "./tokens";
  * only ever reached from a client-side effect.
  */
 
-type TokenizeFn = (content: string, wordMode: boolean) => string;
+type TokenizeFn = (content: string, wordMode: boolean) => string[];
 
 let wasmReady: Promise<TokenizeFn> | null = null;
 
@@ -36,5 +36,5 @@ function loadWasm(): Promise<TokenizeFn> {
 export async function tokenizeWords(text: string): Promise<string[]> {
   if (!containsCJK(text)) return parseTokens(text);
   const tokenize = await loadWasm();
-  return JSON.parse(tokenize(text, true)) as string[];
+  return tokenize(text, true);
 }

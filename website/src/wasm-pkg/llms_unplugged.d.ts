@@ -3,19 +3,27 @@
 
 export function init_panic_hook(): void;
 
+/**
+ * The `model.json` for a booklet, as a JSON string for the in-browser
+ * Typst compiler.
+ */
 export function process_text_for_booklet(content: string, title: string, author: string, n: number): string;
 
+/**
+ * The `cutouts.json` for a cutouts sheet, as a JSON string for the
+ * in-browser Typst compiler.
+ */
 export function process_text_for_cutouts(content: string, title: string, author: string, n: number): string;
 
 /**
  * Tokenise arbitrary text into a flat list, using the same normaliser the
  * booklet pipeline uses so the widgets and the printed booklets agree on token
  * boundaries. `word_mode` picks jieba word segmentation (true) or per-character
- * CJK (false); Latin text is unaffected either way. Returned as a JSON array of
- * strings. The website loads this on demand only for text containing Chinese —
- * English tokenises synchronously in JS without touching the wasm.
+ * CJK (false); Latin text is unaffected either way. The website loads this on
+ * demand only for text containing Chinese — English tokenises synchronously
+ * in JS without touching the wasm.
  */
-export function tokenize(content: string, word_mode: boolean): string;
+export function tokenize(content: string, word_mode: boolean): string[];
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
@@ -23,7 +31,7 @@ export interface InitOutput {
     readonly memory: WebAssembly.Memory;
     readonly process_text_for_booklet: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => [number, number, number, number];
     readonly process_text_for_cutouts: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => [number, number, number, number];
-    readonly tokenize: (a: number, b: number, c: number) => [number, number, number, number];
+    readonly tokenize: (a: number, b: number, c: number) => [number, number];
     readonly init_panic_hook: () => void;
     readonly rust_zstd_wasm_shim_calloc: (a: number, b: number) => number;
     readonly rust_zstd_wasm_shim_free: (a: number) => void;
@@ -38,6 +46,7 @@ export interface InitOutput {
     readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
     readonly __wbindgen_externrefs: WebAssembly.Table;
     readonly __externref_table_dealloc: (a: number) => void;
+    readonly __externref_drop_slice: (a: number, b: number) => void;
     readonly __wbindgen_start: () => void;
 }
 

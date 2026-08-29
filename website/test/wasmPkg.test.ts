@@ -40,7 +40,7 @@ describe("committed wasm bundle matches the Rust tokeniser", () => {
   // word_mode=false is per-character CJK, matching how the fixture is
   // generated (CjkMode::Chars in cli/tests/tokenization_test.rs).
   it.each(cases)("tokenises $input identically", ({ input, tokens }) => {
-    expect(JSON.parse(tokenize(input, false))).toEqual(tokens);
+    expect(tokenize(input, false)).toEqual(tokens);
   });
 });
 

@@ -6,6 +6,8 @@ export function init_panic_hook() {
 }
 
 /**
+ * The `model.json` for a booklet, as a JSON string for the in-browser
+ * Typst compiler.
  * @param {string} content
  * @param {string} title
  * @param {string} author
@@ -38,6 +40,8 @@ export function process_text_for_booklet(content, title, author, n) {
 }
 
 /**
+ * The `cutouts.json` for a cutouts sheet, as a JSON string for the
+ * in-browser Typst compiler.
  * @param {string} content
  * @param {string} title
  * @param {string} author
@@ -73,37 +77,25 @@ export function process_text_for_cutouts(content, title, author, n) {
  * Tokenise arbitrary text into a flat list, using the same normaliser the
  * booklet pipeline uses so the widgets and the printed booklets agree on token
  * boundaries. `word_mode` picks jieba word segmentation (true) or per-character
- * CJK (false); Latin text is unaffected either way. Returned as a JSON array of
- * strings. The website loads this on demand only for text containing Chinese —
- * English tokenises synchronously in JS without touching the wasm.
+ * CJK (false); Latin text is unaffected either way. The website loads this on
+ * demand only for text containing Chinese — English tokenises synchronously
+ * in JS without touching the wasm.
  * @param {string} content
  * @param {boolean} word_mode
- * @returns {string}
+ * @returns {string[]}
  */
 export function tokenize(content, word_mode) {
-    let deferred3_0;
-    let deferred3_1;
-    try {
-        const ptr0 = passStringToWasm0(content, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        const len0 = WASM_VECTOR_LEN;
-        const ret = wasm.tokenize(ptr0, len0, word_mode);
-        var ptr2 = ret[0];
-        var len2 = ret[1];
-        if (ret[3]) {
-            ptr2 = 0; len2 = 0;
-            throw takeFromExternrefTable0(ret[2]);
-        }
-        deferred3_0 = ptr2;
-        deferred3_1 = len2;
-        return getStringFromWasm0(ptr2, len2);
-    } finally {
-        wasm.__wbindgen_free(deferred3_0, deferred3_1, 1);
-    }
+    const ptr0 = passStringToWasm0(content, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len0 = WASM_VECTOR_LEN;
+    const ret = wasm.tokenize(ptr0, len0, word_mode);
+    var v2 = getArrayJsValueFromWasm0(ret[0], ret[1]);
+    wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
+    return v2;
 }
 function __wbg_get_imports() {
     const import0 = {
         __proto__: null,
-        __wbg_error_a6fa202b58aa1cd3: function(arg0, arg1) {
+        __wbg_error_757e9472f8410341: function(arg0, arg1) {
             let deferred0_0;
             let deferred0_1;
             try {
@@ -144,6 +136,17 @@ function __wbg_get_imports() {
         __proto__: null,
         "./llms_unplugged_bg.js": import0,
     };
+}
+
+function getArrayJsValueFromWasm0(ptr, len) {
+    ptr = ptr >>> 0;
+    const mem = getDataViewMemory0();
+    const result = [];
+    for (let i = ptr; i < ptr + 4 * len; i += 4) {
+        result.push(wasm.__wbindgen_externrefs.get(mem.getUint32(i, true)));
+    }
+    wasm.__externref_drop_slice(ptr, len);
+    return result;
 }
 
 let cachedDataViewMemory0 = null;
@@ -251,11 +254,15 @@ function __wbg_finalize_init(instance, module) {
 
 async function __wbg_load(module, imports) {
     if (typeof Response === 'function' && module instanceof Response) {
+        if (!module.ok) {
+            throw new Error(`failed to fetch Wasm: ${module.status} ${module.statusText} fetching '${module.url}'`);
+        }
+
         if (typeof WebAssembly.instantiateStreaming === 'function') {
             try {
                 return await WebAssembly.instantiateStreaming(module, imports);
             } catch (e) {
-                const validResponse = module.ok && expectedResponseType(module.type);
+                const validResponse = expectedResponseType(module.type);
 
                 if (validResponse && module.headers.get('Content-Type') !== 'application/wasm') {
                     console.warn("`WebAssembly.instantiateStreaming` failed because your server does not serve Wasm with `application/wasm` MIME type. Falling back to `WebAssembly.instantiate` which is slower. Original error:\n", e);
