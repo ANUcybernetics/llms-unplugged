@@ -1168,3 +1168,224 @@ fn test_sheets_subcommand_end_to_end() -> io::Result<()> {
     );
     Ok(())
 }
+
+/// The ledger deal: every prefix on exactly one sheet, sheets in alphabetical
+/// runs with their range in the JSON, followers in first-appearance order.
+#[test]
+fn test_ledger_cli_deals_prefixes_alphabetically() -> io::Result<()> {
+    let temp = TempDir::new()?;
+    let input = write_sample_corpus(
+        temp.path(),
+        "corpus.txt",
+        "see spot run . see spot jump . run , spot , run . jump , spot , jump .",
+    )?;
+    let out_dir = temp.path().join("out");
+
+    let output = Command::new(cli_exe())
+        .arg("ledger")
+        .arg("-i")
+        .arg(&input)
+        .arg("--sheets")
+        .arg("2")
+        .arg("--json-only")
+        .arg("--output")
+        .arg(&out_dir)
+        .output()?;
+    assert!(output.status.success(), "ledger failed: {output:?}");
+
+    let json: serde_json::Value =
+        serde_json::from_reader(BufReader::new(File::open(out_dir.join("ledger.json"))?))?;
+    assert_eq!(json["columns"], 4);
+    assert_eq!(json["rows_per_page"], 12);
+    assert_eq!(json["title"], "Sample CLI test");
+    assert_eq!(json["metadata"]["title"], "Sample CLI test");
+
+    let sheets = json["sheets"].as_array().expect("sheets array");
+    assert_eq!(sheets.len(), 2);
+    let entries: Vec<&serde_json::Value> = sheets
+        .iter()
+        .flat_map(|s| s["pages"].as_array().unwrap())
+        .flat_map(|p| p.as_array().unwrap())
+        .collect();
+    let prefixes: Vec<&str> = entries
+        .iter()
+        .map(|e| e["prefix"][0].as_str().unwrap())
+        .collect();
+    assert_eq!(prefixes, vec![",", ".", "jump", "run", "see", "spot"]);
+
+    // The range is the first and last prefix of each sheet's run.
+    assert_eq!(sheets[0]["range"][0][0], prefixes[0]);
+    let first_len = sheets[0]["pages"][0].as_array().unwrap().len();
+    assert_eq!(sheets[0]["range"][1][0], prefixes[first_len - 1]);
+    assert_eq!(sheets[1]["range"][1][0], "spot");
+
+    // "spot" is followed by run, then jump, then "," --- in that order.
+    let spot = entries.iter().find(|e| e["prefix"][0] == "spot").unwrap();
+    let followers: Vec<(&str, u64)> = spot["followers"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|f| (f["text"].as_str().unwrap(), f["count"].as_u64().unwrap()))
+        .collect();
+    assert_eq!(followers, vec![("run", 1), ("jump", 1), (",", 2)]);
+    Ok(())
+}
+
+#[test]
+fn test_ledger_cli_blank_sheets_need_no_corpus() -> io::Result<()> {
+    let temp = TempDir::new()?;
+    let out_dir = temp.path().join("out");
+
+    let output = Command::new(cli_exe())
+        .arg("ledger")
+        .arg("--blank")
+        .arg("--sheets")
+        .arg("3")
+        .arg("--title")
+        .arg("Our story")
+        .arg("--json-only")
+        .arg("--output")
+        .arg(&out_dir)
+        .output()?;
+    assert!(output.status.success(), "ledger --blank failed: {output:?}");
+
+    let json: serde_json::Value =
+        serde_json::from_reader(BufReader::new(File::open(out_dir.join("ledger.json"))?))?;
+    assert_eq!(json["title"], "Our story");
+    assert!(
+        json.get("metadata").is_none(),
+        "blank sheets carry no corpus"
+    );
+    let sheets = json["sheets"].as_array().unwrap();
+    assert_eq!(sheets.len(), 3);
+    assert!(
+        sheets
+            .iter()
+            .all(|s| s["range"].is_null() && s["pages"] == serde_json::json!([[]]))
+    );
+
+    // --blank and --input are alternatives, and one of them is required.
+    let both = Command::new(cli_exe())
+        .arg("ledger")
+        .arg("--blank")
+        .arg("-i")
+        .arg("whatever.txt")
+        .output()?;
+    assert!(
+        !both.status.success(),
+        "--blank with --input should be rejected"
+    );
+    let neither = Command::new(cli_exe()).arg("ledger").output()?;
+    assert!(!neither.status.success(), "ledger needs --input or --blank");
+    Ok(())
+}
+
+#[test]
+fn test_ledger_cli_rejects_zero_sheets() -> io::Result<()> {
+    let temp = TempDir::new()?;
+    let input = write_sample_corpus(temp.path(), "corpus.txt", "a b c")?;
+    let output = Command::new(cli_exe())
+        .arg("ledger")
+        .arg("-i")
+        .arg(&input)
+        .arg("--sheets")
+        .arg("0")
+        .arg("--json-only")
+        .output()?;
+    assert!(!output.status.success(), "--sheets 0 should exit non-zero");
+    assert!(
+        String::from_utf8_lossy(&output.stderr).contains("--sheets must be at least 1"),
+        "stderr: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    Ok(())
+}
+
+/// A prefix taller than a page cannot be laid out, and says so.
+#[test]
+fn test_ledger_cli_reports_a_prefix_taller_than_a_page() -> io::Result<()> {
+    let temp = TempDir::new()?;
+    // Nine distinct followers of "the": three rows of four.
+    let words: Vec<String> = ('a'..='i').map(|c| format!("the {c}")).collect();
+    let input = write_sample_corpus(temp.path(), "corpus.txt", &words.join(" "))?;
+    let output = Command::new(cli_exe())
+        .arg("ledger")
+        .arg("-i")
+        .arg(&input)
+        .arg("--rows")
+        .arg("2")
+        .arg("--json-only")
+        .arg("--output")
+        .arg(temp.path().join("out"))
+        .output()?;
+    assert!(!output.status.success());
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(
+        stderr.contains("'the' needs 3 ledger rows but a page holds 2"),
+        "stderr: {stderr}"
+    );
+    Ok(())
+}
+
+/// End-to-end through typst: the brief, then one page per sheet.
+#[test]
+fn test_ledger_subcommand_end_to_end() -> io::Result<()> {
+    if !typst_available() {
+        eprintln!("Skipping test_ledger_subcommand_end_to_end: 'typst' not found in PATH.");
+        return Ok(());
+    }
+
+    let temp = TempDir::new()?;
+    let input = write_sample_corpus(
+        temp.path(),
+        "corpus.txt",
+        "the cat sat on the mat and the cat ate the rat then the cat sat again \
+         while the dog watched the cat and the rat ran past the mat",
+    )?;
+    let out_dir = temp.path().join("out");
+
+    for prefill in ["prefixes", "followers"] {
+        let output = Command::new(cli_exe())
+            .arg("ledger")
+            .arg("-i")
+            .arg(&input)
+            .arg("--sheets")
+            .arg("2")
+            .arg("--prefill")
+            .arg(prefill)
+            .arg("--output")
+            .arg(&out_dir)
+            .output()?;
+        assert!(
+            output.status.success(),
+            "ledger end-to-end failed: {}",
+            String::from_utf8_lossy(&output.stderr)
+        );
+        let pdf = out_dir.join("ledger.pdf");
+        assert!(pdf.metadata()?.len() > 1000, "PDF looks empty");
+        if let Some(pages) = pdf_pages(&pdf) {
+            assert_eq!(pages, 3, "a brief plus one page per sheet");
+        }
+    }
+
+    let output = Command::new(cli_exe())
+        .arg("ledger")
+        .arg("--blank")
+        .arg("--output")
+        .arg(&out_dir)
+        .output()?;
+    assert!(output.status.success(), "blank failed: {output:?}");
+    if let Some(pages) = pdf_pages(&out_dir.join("ledger.pdf")) {
+        assert_eq!(pages, 1, "a blank set has no brief");
+    }
+    Ok(())
+}
+
+/// Page count via pdfinfo, or `None` when poppler isn't installed.
+fn pdf_pages(pdf: &Path) -> Option<usize> {
+    let output = Command::new("pdfinfo").arg(pdf).output().ok()?;
+    String::from_utf8_lossy(&output.stdout)
+        .lines()
+        .find_map(|l| l.strip_prefix("Pages:"))
+        .and_then(|c| c.trim().parse().ok())
+}

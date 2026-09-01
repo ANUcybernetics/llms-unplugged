@@ -25,6 +25,7 @@ const FILES: &[(&str, &[u8])] = &[
         include_bytes!("../tokenized-sheets.typ"),
     ),
     ("cutout-common.typ", include_bytes!("../cutout-common.typ")),
+    ("ledger.typ", include_bytes!("../ledger.typ")),
     ("lockup-light.svg", include_bytes!("../lockup-light.svg")),
     (
         "lockup-light-1.svg",

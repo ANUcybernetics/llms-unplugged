@@ -1,8 +1,9 @@
-use clap::{Args, Parser, Subcommand};
+use clap::{Args, Parser, Subcommand, ValueEnum};
 use llms_unplugged::{
-    Book, BookletJson, CjkMode, Corpus, CutoutSet, Metadata, Model, Normalizer, NormalizerConfig,
-    ProcessingStats, SampleError, SheetSet, append_tool_tokens, deal_into_sheets,
-    repeat_cutout_tokens, shuffle_cutout_tokens, split_entries_into_books, write_json,
+    Book, BookletJson, CjkMode, Corpus, CutoutSet, LedgerSet, LedgerSheet, Metadata, Model,
+    Normalizer, NormalizerConfig, ProcessingStats, SampleError, SheetSet, append_tool_tokens,
+    deal_into_ledgers, deal_into_sheets, ledger_entries, repeat_cutout_tokens,
+    shuffle_cutout_tokens, split_entries_into_books, write_json,
 };
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
@@ -34,6 +35,9 @@ enum Commands {
     /// Generate per-participant search sheets (the cutouts activity, minus the
     /// cutting).
     Sheets(SheetsArgs),
+    /// Generate ledger sheets: one row per prefix with tally strips, for
+    /// training by hand and generating with counters drawn from a bag.
+    Ledger(LedgerArgs),
     /// Sample text from an N-gram model built in-memory from a corpus.
     Sample(SampleArgs),
 }
@@ -286,6 +290,100 @@ struct SheetsArgs {
     tokenizer: TokenizerArgs,
 }
 
+/// What a ledger sheet comes printed with. `prefixes` keeps the "which words
+/// follow *the*?" discovery and drops the bookkeeping of where a new row
+/// goes; `followers` reduces training to pure tallying, the right level for
+/// the youngest groups. (A wholly blank sheet is `--blank`: rows sized for a
+/// corpus but unlabelled would be no use, since nobody could tell which block
+/// was whose.)
+#[derive(ValueEnum, Debug, Clone, Copy, PartialEq, Eq)]
+enum Prefill {
+    /// The prefix column filled in; followers and tallies left to write.
+    Prefixes,
+    /// Prefixes and followers filled in; only the tallies left to make.
+    Followers,
+}
+
+impl Prefill {
+    fn as_str(self) -> &'static str {
+        match self {
+            Prefill::Prefixes => "prefixes",
+            Prefill::Followers => "followers",
+        }
+    }
+}
+
+#[derive(Args, Debug, Clone)]
+struct LedgerArgs {
+    /// Input text file to process. Repeat for a multi-document corpus; document
+    /// boundaries are preserved, so no artificial cross-document N-grams are
+    /// introduced. Omit it with --blank for sheets that carry no corpus at all.
+    #[arg(
+        short = 'i',
+        long = "input",
+        value_name = "INPUT",
+        required_unless_present = "blank",
+        conflicts_with = "blank"
+    )]
+    input: Vec<PathBuf>,
+
+    /// Blank sheets: every row empty, for a group to train on a text of their
+    /// own by hand. Without --sheets this prints one.
+    #[arg(long)]
+    blank: bool,
+
+    /// Override the corpus title printed on the brief and the sheet headers.
+    #[arg(long, value_name = "TITLE")]
+    title: Option<String>,
+
+    /// Override the corpus author printed on the brief.
+    #[arg(long, value_name = "AUTHOR")]
+    author: Option<String>,
+
+    /// Output directory for generated files (default: current directory)
+    #[arg(short, long, default_value = ".")]
+    output: PathBuf,
+
+    /// The size of the N-gram (e.g., 2 for bigrams, 3 for trigrams).
+    #[arg(short, long, default_value_t = 2, value_parser = parse_ngram_size)]
+    n: usize,
+
+    /// Number of sheets, i.e. the group size: the prefixes are dealt across
+    /// this many sheets in alphabetical runs. Omit it and the count follows
+    /// the corpus at the density `--rows` sets, one page per sheet.
+    #[arg(short = 's', long = "sheets", value_name = "N")]
+    sheets: Option<usize>,
+
+    /// Follower cells on a row (default 4). A prefix with more followers than
+    /// this continues onto the row below, whose tally strips take the other
+    /// palette, so two rows give eight distinct colours. A third row repeats
+    /// the first row's colours: the command warns about any prefix that needs
+    /// one, and more columns is the fix.
+    #[arg(long, default_value_t = 4)]
+    columns: usize,
+
+    /// Rows on a page (default 12). Rows share the page height, so this is
+    /// how much room a hand gets to write in; it also decides the sheet count
+    /// unless `--sheets` pins it.
+    #[arg(long, default_value_t = 12)]
+    rows: usize,
+
+    /// What the sheets come printed with. Ignored by --blank.
+    #[arg(long, value_enum, default_value_t = Prefill::Prefixes)]
+    prefill: Prefill,
+
+    /// Paper size for PDF (default: a4); the sheets are always landscape
+    #[arg(long, default_value = "a4")]
+    paper_size: String,
+
+    /// Only generate JSON; skip Typst PDF compilation
+    #[arg(long)]
+    json_only: bool,
+
+    #[command(flatten)]
+    tokenizer: TokenizerArgs,
+}
+
 #[derive(Args, Debug, Clone)]
 struct SampleArgs {
     /// Input text file (with YAML frontmatter) to build the model from
@@ -321,6 +419,7 @@ fn main() -> ExitCode {
         Commands::Tsv(args) => run_tsv_command(args),
         Commands::Cutouts(args) => run_cutouts_command(args),
         Commands::Sheets(args) => run_sheets_command(args),
+        Commands::Ledger(args) => run_ledger_command(args),
         Commands::Sample(args) => run_sample_command(args),
     };
 
@@ -524,28 +623,13 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
         ));
     }
 
-    let documents = args
-        .input
-        .iter()
-        .map(|input| {
-            let corpus = Corpus::load(input)?;
-            Ok(CutoutSet::from_corpus(
-                &corpus,
-                args.tokenizer.config(),
-                args.n,
-            ))
-        })
-        .collect::<Result<Vec<_>, CliError>>()?;
-    let CutoutSet {
-        mut metadata,
-        tokens,
-    } = CutoutSet::combine(documents, args.n);
-    if let Some(title) = &args.title {
-        metadata.title.clone_from(title);
-    }
-    if let Some(author) = &args.author {
-        metadata.author.clone_from(author);
-    }
+    let CutoutSet { metadata, tokens } = load_cutout_set(
+        &args.input,
+        &args.tokenizer.config(),
+        args.n,
+        args.title.as_deref(),
+        args.author.as_deref(),
+    )?;
 
     let usable = tokens.iter().filter(|t| t.is_usable()).count();
     let capacity = (args.rows * columns) as f64 / WIDE_PAIR_MARGIN;
@@ -646,6 +730,157 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
     eprintln!("Wrote JSON to {}", json_path.display());
 
     Ok(())
+}
+
+/// Tokenise one or more corpus files into a single cutout set, each document
+/// on its own so no n-gram spans a seam, with the printed title and author
+/// overridable (to keep a source a reveal). Shared by every subcommand that
+/// takes a multi-document corpus.
+fn load_cutout_set(
+    inputs: &[PathBuf],
+    config: &NormalizerConfig,
+    n: usize,
+    title: Option<&str>,
+    author: Option<&str>,
+) -> Result<CutoutSet, CliError> {
+    let documents = inputs
+        .iter()
+        .map(|input| {
+            Ok(CutoutSet::from_corpus(
+                &Corpus::load(input)?,
+                config.clone(),
+                n,
+            ))
+        })
+        .collect::<Result<Vec<_>, CliError>>()?;
+    let mut set = CutoutSet::combine(documents, n);
+    if let Some(title) = title {
+        set.metadata.title = title.to_string();
+    }
+    if let Some(author) = author {
+        set.metadata.author = author.to_string();
+    }
+    Ok(set)
+}
+
+fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
+    if args.sheets == Some(0) {
+        return Err(CliError::InvalidArgs(
+            "--sheets must be at least 1".to_string(),
+        ));
+    }
+    if args.columns == 0 {
+        return Err(CliError::InvalidArgs(
+            "--columns must be at least 1".to_string(),
+        ));
+    }
+    if args.rows == 0 {
+        return Err(CliError::InvalidArgs(
+            "--rows must be at least 1".to_string(),
+        ));
+    }
+
+    let set = if args.blank {
+        LedgerSet {
+            metadata: None,
+            title: args.title.clone().unwrap_or_default(),
+            columns: args.columns,
+            rows_per_page: args.rows,
+            sheets: vec![LedgerSheet::blank(); args.sheets.unwrap_or(1)],
+        }
+    } else {
+        let CutoutSet { metadata, tokens } = load_cutout_set(
+            &args.input,
+            &args.tokenizer.config(),
+            args.n,
+            args.title.as_deref(),
+            args.author.as_deref(),
+        )?;
+        eprintln!("Processed '{}' by {}", metadata.title, metadata.author);
+
+        let entries = ledger_entries(&tokens);
+        let total_rows: usize = entries.iter().map(|e| e.rows(args.columns)).sum();
+        let num_sheets = args
+            .sheets
+            .unwrap_or_else(|| total_rows.div_ceil(args.rows).max(1));
+        let sheets = deal_into_ledgers(&entries, num_sheets, args.columns, args.rows)?;
+
+        // The tall prefixes are the corpus's commonest, so the list is
+        // Zipfian too: name the worst few and count the rest.
+        let mut tall: Vec<&llms_unplugged::LedgerEntry> = entries
+            .iter()
+            .filter(|e| e.rows(args.columns) > 2)
+            .collect();
+        tall.sort_by_key(|e| std::cmp::Reverse(e.followers.len()));
+        if !tall.is_empty() {
+            let named: Vec<String> = tall
+                .iter()
+                .take(5)
+                .map(|e| format!("'{}' ({})", e.prefix.join(" "), e.followers.len()))
+                .collect();
+            let more = tall.len().saturating_sub(named.len());
+            eprintln!(
+                "Warning: {} prefix(es) have more than {} followers and spill onto a third row, \
+                 where the tally colours repeat those of the first: {}{}. A shorter text, or \
+                 more --columns, keeps every prefix to two rows.",
+                tall.len(),
+                2 * args.columns,
+                named.join(", "),
+                if more > 0 {
+                    format!(" and {more} more")
+                } else {
+                    String::new()
+                }
+            );
+        }
+
+        let rows: Vec<usize> = sheets.iter().map(|s| s.rows(args.columns)).collect();
+        eprintln!(
+            "Dealt {} prefixes ({total_rows} rows) across {num_sheets} sheet(s), {}--{} rows \
+             each, {} rows a page",
+            entries.len(),
+            rows.iter().min().unwrap_or(&0),
+            rows.iter().max().unwrap_or(&0),
+            args.rows
+        );
+        if args.sheets.is_none() {
+            eprintln!(
+                "Sheet count follows the corpus at this density --- pass --sheets to pin it, or \
+                 --rows to change it."
+            );
+        }
+        let empty = sheets.iter().filter(|s| s.range.is_none()).count();
+        if empty > 0 {
+            eprintln!(
+                "Warning: {empty} sheet(s) came out empty --- the corpus has fewer prefixes than \
+                 sheets."
+            );
+        }
+
+        LedgerSet {
+            title: metadata.title.clone(),
+            metadata: Some(metadata),
+            columns: args.columns,
+            rows_per_page: args.rows,
+            sheets,
+        }
+    };
+
+    fs::create_dir_all(&args.output)?;
+    let json_path = args.output.join("ledger.json");
+    write_json(&set, &json_path)?;
+    eprintln!("Wrote JSON to {}", json_path.display());
+
+    if args.json_only {
+        return Ok(());
+    }
+
+    let inputs = vec![
+        ("paper_size".to_string(), args.paper_size.clone()),
+        ("json_path".to_string(), abs_path_string(&json_path)),
+        ("prefill".to_string(), args.prefill.as_str().to_string()),
+    ];
+    compile_template("ledger.typ", &inputs, &args.output.join("ledger.pdf"))
 }
 
 /// An RNG seeded from `seed`, or from system entropy when no seed is given.

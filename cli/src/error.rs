@@ -31,6 +31,14 @@ pub enum Error {
     EmptyToolName,
     #[error("Corpus has no {context_size}-token contexts; cannot place tool '{name}'")]
     NoContextsForTool { name: String, context_size: usize },
+    #[error(
+        "'{prefix}' needs {rows} ledger rows but a page holds {rows_per_page}; use more --columns or --rows"
+    )]
+    LedgerEntryTooTall {
+        prefix: String,
+        rows: usize,
+        rows_per_page: usize,
+    },
 }
 
 impl Error {

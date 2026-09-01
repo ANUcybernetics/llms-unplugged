@@ -143,6 +143,28 @@ are dropped; apostrophes inside contractions are preserved.
     how many sheets a corpus needs depends on how long its words are; the
     command settles that against the real typesetting rather than guessing at
     it.
+- `ledger` - Generate ledger sheets: the model as a table with one row per
+  prefix, each row holding follower cells with a coloured tally strip beside
+  every follower. Training is tallying by hand; generation is a bag of
+  counters, one per tally mark in the colour of its strip, so the counter drawn
+  names the follower. The strips are coloured by column rather than by word,
+  and odd and even rows use different palettes, so a prefix that runs past the
+  columns continues onto the row below and still gives the bag eight distinct
+  colours. The prefixes are dealt across a group's sheets in alphabetical runs,
+  each sheet's header naming the first and last prefix it holds. The PDF leads
+  with a one-page facilitator brief, then one page per sheet.
+  - `--sheets <N>`: the group size. Omit it and the count follows the corpus at
+    the `--rows` density
+  - `--prefill prefixes|followers` (default `prefixes`): what the sheets come
+    printed with. `prefixes` leaves the followers to be discovered as the text
+    is read; `followers` leaves only the tallies to make
+  - `--blank`: sheets of empty rows with no corpus (one, unless `--sheets`),
+    for a group training on a text of its own
+  - `--columns <N>` (default 4), `--rows <N>` (default 12): follower cells on
+    a row and rows on a page. The command warns about any prefix with more than
+    twice the column count of followers, since its third row repeats the first
+    row's colours
+  - `--n <N>`, `--title`, `--author`, `--paper-size` as for `sheets`
 - `sample` - Build an N-gram model in memory from a corpus and sample text from
   it. Useful as a sanity check on the model without printing a booklet.
   - `--input <FILE>`, `--n <N>` (default 2)
