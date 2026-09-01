@@ -16,6 +16,10 @@
 // by reading headers rather than by everyone searching their page.
 
 #import "cutout-common.typ": brand-font, brand-gold, brand-lockup, token-font
+#import "ledger-common.typ": (
+  check-columns, counter-dot, counters-per-colour, palette-for, palettes,
+  strip-fill, strip-stroke,
+)
 
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
 #let json_path = sys.inputs.at("json_path", default: "ledger.json")
@@ -31,67 +35,13 @@
 #let rows_per_page = data.rows_per_page
 // Absent for blank sheets, which carry no corpus.
 #let metadata = data.at("metadata", default: none)
+#check-columns(columns)
 
 #let margin = 10mm
 #set page(paper: paper_size, flipped: true, margin: margin)
 #set text(font: brand-font, size: 10pt)
 
 #let muted = rgb("#666")
-
-// ===== The counter palettes =====
-//
-// Two palettes of `columns` colours: the first for odd rows, the second for
-// even ones. A prefix spilling onto a second row therefore has 2 × `columns`
-// distinct strips, and the bag can tell them apart.
-//
-// These are the colours counters come in, not colours chosen for print. Red,
-// blue, green and yellow are the four every set of maths counters has; the
-// second four are the next most common. The printed swatch only has to be
-// recognisably that colour --- a participant matches a counter in the hand
-// against a name and a dot on the page, so the dot is set in the full colour
-// and the strip behind the tallies in a tint light enough to write on.
-#let palettes = (
-  (
-    (color: rgb("#d62828"), name: "red"),
-    (color: rgb("#1d4ed8"), name: "blue"),
-    (color: rgb("#15803d"), name: "green"),
-    (color: rgb("#eab308"), name: "yellow"),
-  ),
-  (
-    (color: rgb("#ea580c"), name: "orange"),
-    (color: rgb("#7e22ce"), name: "purple"),
-    (color: rgb("#000000"), name: "black"),
-    (color: rgb("#ffffff"), name: "white"),
-  ),
-)
-// Eight colours is what counters come in and what a bag can tell apart, so
-// the palettes cap the column count rather than stretching to meet it.
-#assert(
-  columns <= palettes.at(0).len(),
-  message: "ledger.typ: no palette for more than "
-    + str(palettes.at(0).len())
-    + " columns",
-)
-
-#let palette-for(row) = palettes.at(calc.rem(row, 2)).slice(0, columns)
-
-// Black and white counters need special casing on paper: a black tint is grey,
-// and a white strip is the page.
-#let strip-fill(entry) = if entry.name == "white" { white } else if (
-  entry.name == "black"
-) { luma(228) } else { color.mix((entry.color, 24%), (white, 76%)) }
-
-#let strip-stroke(entry) = if entry.name == "white" {
-  (paint: luma(0), thickness: 0.6pt, dash: "dashed")
-} else { 0.8pt + entry.color }
-
-// The counter itself, drawn: a dot in the full colour with a hairline so the
-// white one is visible. This is what a participant matches a counter against.
-#let counter-dot(entry, size: 3.2mm) = circle(
-  radius: size / 2,
-  fill: entry.color,
-  stroke: 0.4pt + luma(0),
-)
 
 // ===== One sheet =====
 
@@ -218,7 +168,7 @@
   let prefix_w = 42mm
   let cells = ()
   for (y, row) in rows.enumerate() {
-    let palette = palette-for(y)
+    let palette = palette-for(y, columns)
     cells.push(grid.cell(x: 0, y: y, fill: luma(245), prefix-cell(row)))
     for c in range(columns) {
       let follower = if row.entry == none { none } else {
@@ -341,13 +291,16 @@
     )
     #block(above: 0.8em, below: 0.8em, stack(
       spacing: 0.7em,
-      key("odd rows", palette-for(0)),
-      key("even rows", palette-for(1)),
+      key("odd rows", palette-for(0, columns)),
+      key("even rows", palette-for(1, columns)),
     ))
 
     *Bring* one bag per group and counters in these #str(2 * columns) colours,
     at least #max-count of each: that is the most times any one follower appears
     in this text, and so the most counters of one colour a single draw can need.
+    The CLI writes #raw("counters.pdf") beside this file: print it double-sided
+    (either binding works) and cut along the dashed lines for
+    #context counters-per-colour(page.height) of each colour per sheet.
   ]
 
   let brief-how = [

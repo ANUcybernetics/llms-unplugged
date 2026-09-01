@@ -152,7 +152,10 @@ are dropped; apostrophes inside contractions are preserved.
   columns continues onto the row below and still gives the bag eight distinct
   colours. The prefixes are dealt across a group's sheets in alphabetical runs,
   each sheet's header naming the first and last prefix it holds. The PDF leads
-  with a one-page facilitator brief, then one page per sheet.
+  with a one-page facilitator brief, then one page per sheet. A `counters.pdf`
+  of coloured squares to cut up lands beside it: print it double-sided (the
+  layout is symmetric, so either binding works) for 12 counters of each colour
+  per A4 sheet.
   - `--sheets <N>`: the group size. Omit it and the count follows the corpus at
     the `--rows` density
   - `--prefill prefixes|followers` (default `prefixes`): what the sheets come

@@ -1366,6 +1366,12 @@ fn test_ledger_subcommand_end_to_end() -> io::Result<()> {
         if let Some(pages) = pdf_pages(&pdf) {
             assert_eq!(pages, 3, "a brief plus one page per sheet");
         }
+        // The counters come alongside: two identical pages for duplex printing.
+        let counters = out_dir.join("counters.pdf");
+        assert!(counters.exists(), "no counters.pdf written");
+        if let Some(pages) = pdf_pages(&counters) {
+            assert_eq!(pages, 2, "counters print double-sided from two pages");
+        }
     }
 
     let output = Command::new(cli_exe())

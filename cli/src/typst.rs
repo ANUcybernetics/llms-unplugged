@@ -30,6 +30,11 @@ const TEMPLATE_FILES: &[(&str, &[u8])] = &[
     ),
     ("cutout-common.typ", include_bytes!("../cutout-common.typ")),
     ("ledger.typ", include_bytes!("../ledger.typ")),
+    ("ledger-common.typ", include_bytes!("../ledger-common.typ")),
+    (
+        "ledger-counters.typ",
+        include_bytes!("../ledger-counters.typ"),
+    ),
     ("lockup-light.svg", include_bytes!("../lockup-light.svg")),
     (
         "lockup-light-1.svg",

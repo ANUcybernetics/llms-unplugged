@@ -106,7 +106,8 @@ SOURCE_DATE_EPOCH ?= 0
 # compiled in (src/templates.rs), so editing one rebuilds the tool.
 RUST_SOURCES := $(wildcard src/*.rs) Cargo.toml Cargo.lock \
 	book.typ booklet-common.typ tokenized-cutouts.typ tokenized-sheets.typ \
-	ledger.typ cutout-common.typ socy-logo-bw.svg $(BRAND_ASSETS)
+	ledger.typ ledger-common.typ ledger-counters.typ cutout-common.typ \
+	socy-logo-bw.svg $(BRAND_ASSETS)
 
 # Ensure output directories exist
 $(shell mkdir -p $(PDF_DIR) $(JSON_DIR))

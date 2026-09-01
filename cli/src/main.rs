@@ -882,6 +882,16 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
         ("prefill".to_string(), args.prefill.as_str().to_string()),
     ];
     typst::compile_template("ledger.typ", &inputs, &args.output.join("ledger.pdf"))?;
+
+    // The counters to cut up and draw from the bag: two identical pages laid
+    // out symmetrically, so printing the file double-sided --- on either
+    // binding --- puts every square's colour on both of its faces.
+    typst::compile_template(
+        "ledger-counters.typ",
+        &inputs[..1],
+        &args.output.join("counters.pdf"),
+    )?;
+    eprintln!("  print counters.pdf double-sided, one copy per sheet of counters wanted");
     Ok(())
 }
 
