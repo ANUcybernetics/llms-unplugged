@@ -4,13 +4,29 @@ import { buildModelEntries, findWordForThresholdRoll } from "../src/lib/modelEnt
 import { buildBigramModel, getVocabulary, parseTokens } from "../src/lib/tokens";
 
 // The expected thresholds in these tests are pinned against real output of
-// the Rust CLI's format_entries (cli/src/lib.rs), which prints the booklets'
-// dice ranges: cumulative counts are rescaled by ceiling/total and THEN
-// rounded. Per-option rounding --- the obvious alternative, and the bug this
-// test guards against --- disagrees at rounding boundaries.
+// the Rust CLI's format_entries (cli/src/model.rs), which prints the booklets'
+// dice ranges: cumulative counts are rescaled onto the 10^k faces and THEN
+// rounded, each band ending one face below the next one's start. Two
+// alternatives that look right and aren't: rescaling by (10^k - 1)/total,
+// which gives the last option one face too few, and rounding each option's
+// share separately, which disagrees at rounding boundaries.
 describe("computeDiceBands", () => {
+  it("splits two equal counts down the middle", () => {
+    // CLI: ["a",9,["b",4],["c",9]] --- five faces each, not 6/4.
+    expect(
+      computeDiceBands([
+        { word: "b", count: 1 },
+        { word: "c", count: 1 },
+      ]),
+    ).toEqual([
+      { word: "b", count: 1, from: 0, to: 4 },
+      { word: "c", count: 1, from: 5, to: 9 },
+    ]);
+  });
+
   it("matches the booklet apportionment for three equal counts", () => {
-    // CLI: ["a",9,["b",3],["c",6],["d",9]]
+    // CLI: ["a",9,["b",2],["c",6],["d",9]] --- ten faces can't split three
+    // ways, so the spare face lands on "c".
     expect(
       computeDiceBands([
         { word: "b", count: 1 },
@@ -18,27 +34,25 @@ describe("computeDiceBands", () => {
         { word: "d", count: 1 },
       ]),
     ).toEqual([
-      { word: "b", count: 1, from: 0, to: 3 },
-      { word: "c", count: 1, from: 4, to: 6 },
+      { word: "b", count: 1, from: 0, to: 2 },
+      { word: "c", count: 1, from: 3, to: 6 },
       { word: "d", count: 1, from: 7, to: 9 },
     ]);
   });
 
   it("matches the booklet apportionment at a .5 rounding boundary", () => {
-    // CLI: [".",9,["p",3],["q",6],["r",8],["s",9]] --- the "r" threshold is
-    // round(5 * 9/6) = round(7.5) = 8.
+    // CLI: [".",9,["p",4],["q",7],["r",9]] --- the "q" threshold is
+    // round(3 * 10/4) - 1 = round(7.5) - 1 = 7.
     expect(
       computeDiceBands([
         { word: "p", count: 2 },
-        { word: "q", count: 2 },
+        { word: "q", count: 1 },
         { word: "r", count: 1 },
-        { word: "s", count: 1 },
       ]),
     ).toEqual([
-      { word: "p", count: 2, from: 0, to: 3 },
-      { word: "q", count: 2, from: 4, to: 6 },
-      { word: "r", count: 1, from: 7, to: 8 },
-      { word: "s", count: 1, from: 9, to: 9 },
+      { word: "p", count: 2, from: 0, to: 4 },
+      { word: "q", count: 1, from: 5, to: 7 },
+      { word: "r", count: 1, from: 8, to: 9 },
     ]);
   });
 
@@ -74,7 +88,7 @@ describe("buildModelEntries", () => {
     const entry = entries.find((e) => e.previousWord === "a");
 
     expect(entry?.numDice).toBe(1);
-    expect(entry?.nextWords.map((w) => w.threshold)).toEqual([3, 6, 9]);
+    expect(entry?.nextWords.map((w) => w.threshold)).toEqual([2, 6, 9]);
   });
 
   it("resolves rolls against the thresholds", () => {
@@ -84,8 +98,8 @@ describe("buildModelEntries", () => {
     const entry = entries.find((e) => e.previousWord === "a")!;
 
     expect(findWordForThresholdRoll(entry, 0)).toBe("b");
-    expect(findWordForThresholdRoll(entry, 3)).toBe("b");
-    expect(findWordForThresholdRoll(entry, 4)).toBe("c");
+    expect(findWordForThresholdRoll(entry, 2)).toBe("b");
+    expect(findWordForThresholdRoll(entry, 3)).toBe("c");
     expect(findWordForThresholdRoll(entry, 9)).toBe("d");
   });
 });

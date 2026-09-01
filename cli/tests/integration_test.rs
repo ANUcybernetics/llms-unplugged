@@ -625,20 +625,20 @@ fn test_cli_end_to_end() -> io::Result<()> {
 
         // Example: previous-word "the", original total 4 -> d=10 default
         // next-words: "dog" (1), "fox" (1), "lazy" (1), "quick" (1)
-        // With d=10 (default): now uses 10^k-1 scaling to get [0, 9] range
-        // Total count = 4, so scale to [0, 9]
-        // Scaled with factor 9/4 = 2.25:
-        // dog(1): round(1*2.25) = 2
-        // fox(1): round(2*2.25) = 5 (4.5 rounds to 5)
-        // lazy(1): round(3*2.25) = 7 (6.75 rounds to 7)
-        // quick(1): round(4*2.25) = 9
+        // With d=10 (default): the four options share the ten faces 0-9
+        // Total count = 4, so the factor is 10/4 = 2.5 and each stored
+        // number is the last face of that word's band:
+        // dog(1): round(1*2.5) - 1 = 2
+        // fox(1): round(2*2.5) - 1 = 4
+        // lazy(1): round(3*2.5) - 1 = 7 (7.5 rounds to 8)
+        // quick(1): round(4*2.5) - 1 = 9
         if previous_word_str == "the" {
             assert_eq!(
                 total_scaled, 9,
                 "Previous-word 'the' (no-scale-arg) total count"
             );
             assert_eq!(entry_arr[2], serde_json::json!(["dog", 2]));
-            assert_eq!(entry_arr[3], serde_json::json!(["fox", 5]));
+            assert_eq!(entry_arr[3], serde_json::json!(["fox", 4]));
             assert_eq!(entry_arr[4], serde_json::json!(["lazy", 7]));
             assert_eq!(entry_arr[5], serde_json::json!(["quick", 9]));
         }
@@ -647,18 +647,18 @@ fn test_cli_end_to_end() -> io::Result<()> {
         // "Quick brown" -> "quick" followed by "brown"
         // "quick and" -> "quick" followed by "and"
         // So next-words: "," (1), "brown" (1), "and" (1) -> total 3
-        // With d=10 (default): now uses 10^k-1 scaling to get [0, 9] range
-        // Total count = 3, so scale to [0, 9]
-        // Scaled with factor 9/3 = 3:
-        // ","(1): round(1*3) = 3
-        // "and"(1): round(2*3) = 6
-        // "brown"(1): round(3*3) = 9
+        // With d=10 (default): the three options share the ten faces 0-9
+        // Total count = 3, so the factor is 10/3 and each stored number is
+        // the last face of that word's band:
+        // ","(1): round(1*3.33) - 1 = 2
+        // "and"(1): round(2*3.33) - 1 = 6
+        // "brown"(1): round(3*3.33) - 1 = 9
         if previous_word_str == "quick" {
             assert_eq!(
                 total_scaled, 9,
                 "Previous-word 'quick' (no-scale-arg) total count"
             );
-            assert_eq!(entry_arr[2], serde_json::json!([",", 3]));
+            assert_eq!(entry_arr[2], serde_json::json!([",", 2]));
             assert_eq!(entry_arr[3], serde_json::json!(["and", 6]));
             assert_eq!(entry_arr[4], serde_json::json!(["brown", 9]));
         }

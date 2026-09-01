@@ -1152,7 +1152,7 @@ fn print_summary(metadata: &Metadata, raw: bool) {
     if raw {
         eprintln!("\nRaw counts emitted (no dice scaling).");
     } else {
-        eprintln!("\nCounts scaled for d10 dice (10^k - 1).");
+        eprintln!("\nCounts scaled for d10 dice (faces 0 to 10^k - 1).");
     }
 }
 

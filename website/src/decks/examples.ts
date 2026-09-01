@@ -20,7 +20,7 @@ export const EXAMPLE_GENERATION = "see spot , run . see";
 // One d10 roll (0-9) per generation step; "-" marks a step with a single option
 // (no roll needed). Dice bands follow grid column order (see DiceStrip) and
 // the printed booklets' rounding (computeDiceBands): spot row is
-// run=0-5/`,`=6-9, `,` row is run=0-5/spot=6-9, run row is `,`=0-3/`.`=4-9.
+// run=0-4/`,`=5-9, `,` row is run=0-4/spot=5-9, run row is `,`=0-2/`.`=3-9.
 // The choices: spot→`,` (rolled 7), `,`→run (2), run→`.` (6).
 export const EXAMPLE_GENERATION_ROLLS = "- 7 2 6 - -";
 

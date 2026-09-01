@@ -404,8 +404,9 @@ pub enum SampleError {
 
 /// Format model entries as the booklet JSON "data" rows:
 /// `["joined previous words", total, ["next word", cumulative], ...]`.
-/// Without `raw`, cumulative counts are rescaled so each entry's total is
-/// 10^k - 1 (k = digits of the true total), i.e. read directly off d10 dice.
+/// Without `raw`, cumulative counts are rescaled onto the 10^k faces of k d10
+/// dice (k = digits of the true total), so each stored number is the last face
+/// of that word's band and the entry's total is 10^k - 1.
 pub fn format_entries(entries: &[WordFollowEntry], raw: bool) -> Vec<Vec<serde_json::Value>> {
     entries
         .iter()
@@ -427,20 +428,26 @@ pub fn format_entries(entries: &[WordFollowEntry], raw: bool) -> Vec<Vec<serde_j
                 row.push(serde_json::json!(total));
                 row.extend(cumulative.map(|(w, c)| serde_json::json!([w, c])));
             } else {
-                // 10^k-1 scaling for d10 dice (e.g. total 75 -> k=2 -> 0-99).
+                // 10^k scaling for d10 dice: k dice have 10^k faces, numbered
+                // 0 to 10^k - 1 (e.g. total 75 -> k=2 -> faces 0-99). Each
+                // threshold is the *last* face of that word's band, so it is
+                // the rescaled cumulative count minus one, and the final word
+                // always ends on the top face. Scaling onto 10^k - 1 instead
+                // would hand every word but the last an extra face.
+                //
                 // u64 with a checked pow: a u32 overflows at a 10-digit total
                 // (a billion-token context is far-fetched but not impossible
                 // with a large corpus), and wrapping would silently corrupt
                 // every dice range in the booklet.
                 let k_digits = total.to_string().len() as u32;
-                let max_val = 10_u64.checked_pow(k_digits).map_or(u64::MAX, |v| v - 1);
-                let factor = max_val as f64 / total as f64;
+                let faces = 10_u64.checked_pow(k_digits).unwrap_or(u64::MAX);
+                let factor = faces as f64 / total as f64;
 
-                row.push(serde_json::json!(max_val));
-                row.extend(
-                    cumulative
-                        .map(|(w, c)| serde_json::json!([w, (c as f64 * factor).round() as u64])),
-                );
+                row.push(serde_json::json!(faces - 1));
+                row.extend(cumulative.map(|(w, c)| {
+                    let scaled = (c as f64 * factor).round() as u64;
+                    serde_json::json!([w, scaled.clamp(1, faces) - 1])
+                }));
             }
 
             row
@@ -727,8 +734,8 @@ mod tests {
             rows,
             vec![vec![
                 serde_json::json!("hello"),
-                serde_json::json!(9),            // total 3 -> 10^1 - 1
-                serde_json::json!(["world", 6]), // round(2 * 9/3)
+                serde_json::json!(9),            // total 3 -> k=1 -> faces 0-9
+                serde_json::json!(["world", 6]), // round(2 * 10/3) - 1
                 serde_json::json!(["there", 9]),
             ]]
         );
@@ -741,13 +748,24 @@ mod tests {
 
     #[test]
     fn format_entries_cumulative_counts_with_two_digit_total() {
-        // total 10 -> k=2 -> scale to 99, factor 9.9
+        // total 10 -> k=2 -> faces 0-99, factor 10: a 5/3/2 split of the
+        // tallies gets 50/30/20 of the hundred faces.
         let entries = vec![entry(&["the"], &[("dog", 5), ("cat", 3), ("bird", 2)])];
         let rows = format_entries(&entries, false);
         assert_eq!(rows[0][1], serde_json::json!(99));
-        assert_eq!(rows[0][2], serde_json::json!(["dog", 50]));
+        assert_eq!(rows[0][2], serde_json::json!(["dog", 49]));
         assert_eq!(rows[0][3], serde_json::json!(["cat", 79]));
         assert_eq!(rows[0][4], serde_json::json!(["bird", 99]));
+    }
+
+    #[test]
+    fn format_entries_splits_equal_counts_evenly() {
+        // Two equally-likely words split the ten faces 5/5, not 6/4: the
+        // thresholds are the last face of each band.
+        let entries = vec![entry(&["spot"], &[("run", 1), ("stop", 1)])];
+        let rows = format_entries(&entries, false);
+        assert_eq!(rows[0][2], serde_json::json!(["run", 4]));
+        assert_eq!(rows[0][3], serde_json::json!(["stop", 9]));
     }
 
     #[test]

@@ -46,9 +46,9 @@ describe("committed wasm bundle matches the Rust tokeniser", () => {
 
 describe("committed wasm bundle matches the booklet dice scaling", () => {
   it("produces the CLI's thresholds for three equal counts", () => {
-    // Pinned against the CLI: ["a",9,["b",3],["c",6],["d",9]].
+    // Pinned against the CLI: ["a",9,["b",2],["c",6],["d",9]].
     const output = JSON.parse(process_text_for_booklet("a b. a c. a d.", "T", "A", 2));
     const row = output.data.find((r: unknown[]) => r[0] === "a");
-    expect(row).toEqual(["a", 9, ["b", 3], ["c", 6], ["d", 9]]);
+    expect(row).toEqual(["a", 9, ["b", 2], ["c", 6], ["d", 9]]);
   });
 });

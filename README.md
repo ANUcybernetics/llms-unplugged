@@ -153,7 +153,7 @@ are dropped; apostrophes inside contractions are preserved.
   - On dead-end (a sampled context with no successors) the partial output is
     printed to stdout, an error is written to stderr, and the command exits 1.
 
-By default, counts are scaled for d10 dice using 10^k-1 scaling (e.g., 0-9,
+By default, counts are apportioned across the faces of k d10 dice (e.g., 0-9,
 0-99, 0-999), making it easy to add more dice for larger ranges.
 
 ### How the pipeline works
