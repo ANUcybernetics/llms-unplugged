@@ -10,9 +10,9 @@ use rand_chacha::ChaCha8Rng;
 use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
-use std::process::{Command, ExitCode};
+use std::process::ExitCode;
 
-mod templates;
+mod typst;
 
 /// A simple language model builder that processes text files and outputs word following statistics
 #[derive(Parser, Debug)]
@@ -441,7 +441,7 @@ fn main() -> ExitCode {
             eprintln!("Error processing input file: {err}");
             ExitCode::FAILURE
         }
-        Err(CliError::Typst(err) | CliError::InvalidArgs(err)) => {
+        Err(err @ (CliError::Typst(_) | CliError::InvalidArgs(_))) => {
             eprintln!("{err}");
             ExitCode::FAILURE
         }
@@ -452,8 +452,8 @@ fn main() -> ExitCode {
 enum CliError {
     #[error(transparent)]
     Model(#[from] llms_unplugged::Error),
-    #[error("{0}")]
-    Typst(String),
+    #[error(transparent)]
+    Typst(#[from] typst::Error),
     #[error("{0}")]
     InvalidArgs(String),
 }
@@ -571,17 +571,18 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
 
     let mut inputs = vec![
         ("paper_size".to_string(), args.paper_size.clone()),
-        ("json_path".to_string(), abs_path_string(&json_path)),
+        ("json_path".to_string(), typst::abs_path_string(&json_path)),
     ];
     if args.duplex {
         inputs.push(("duplex".to_string(), "true".to_string()));
     }
 
-    compile_template(
+    typst::compile_template(
         "tokenized-cutouts.typ",
         &inputs,
         &args.output.join("cutouts.pdf"),
-    )
+    )?;
+    Ok(())
 }
 
 // The first guess at how many sheets this corpus needs at the requested
@@ -661,17 +662,17 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
 
         let inputs = vec![
             ("paper_size".to_string(), args.paper_size.clone()),
-            ("json_path".to_string(), abs_path_string(&json_path)),
+            ("json_path".to_string(), typst::abs_path_string(&json_path)),
             ("columns".to_string(), columns.to_string()),
             ("rows".to_string(), args.rows.to_string()),
             ("font_size".to_string(), args.font_size.clone()),
         ];
-        compile_template("tokenized-sheets.typ", &inputs, &pdf_path)?;
+        typst::compile_template("tokenized-sheets.typ", &inputs, &pdf_path)?;
 
         // The brief in front is one page, and the template is laid out to keep
         // it there, but a corpus wordy enough to push it to two must not be
         // read as a spilled sheet --- so the allowance stays at `sheets + 2`.
-        let Some(pages) = pdf_page_count(&pdf_path) else {
+        let Some(pages) = typst::page_count(&pdf_path) else {
             eprintln!(
                 "Warning: pdfinfo (poppler) not available --- skipping the check that no sheet \
                  spilled onto a second page."
@@ -877,10 +878,11 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
 
     let inputs = vec![
         ("paper_size".to_string(), args.paper_size.clone()),
-        ("json_path".to_string(), abs_path_string(&json_path)),
+        ("json_path".to_string(), typst::abs_path_string(&json_path)),
         ("prefill".to_string(), args.prefill.as_str().to_string()),
     ];
-    compile_template("ledger.typ", &inputs, &args.output.join("ledger.pdf"))
+    typst::compile_template("ledger.typ", &inputs, &args.output.join("ledger.pdf"))?;
+    Ok(())
 }
 
 /// An RNG seeded from `seed`, or from system entropy when no seed is given.
@@ -888,154 +890,6 @@ fn seeded_rng(seed: Option<u64>) -> ChaCha8Rng {
     match seed {
         Some(s) => ChaCha8Rng::seed_from_u64(s),
         None => ChaCha8Rng::from_rng(&mut rand::rng()),
-    }
-}
-
-/// Absolutise a path for passing to typst, which is invoked with `--root /`
-/// so its inputs can live anywhere relative to the caller's cwd.
-fn abs_path_string(path: &Path) -> String {
-    fs::canonicalize(path)
-        .unwrap_or_else(|_| path.to_path_buf())
-        .display()
-        .to_string()
-}
-
-/// Run `typst compile --root /` on `template`, passing `inputs` through as
-/// `--input key=value` pairs and writing `pdf_path`. The single place the
-/// crate shells out to typst, shared by every subcommand so the invocation
-/// and its error handling cannot drift.
-fn run_typst_compile(
-    template: &Path,
-    inputs: &[(String, String)],
-    pdf_path: &Path,
-) -> Result<(), CliError> {
-    let typst_bin = typst_command_path();
-
-    let mut typst_cmd = Command::new(&typst_bin);
-    typst_cmd.arg("compile");
-    typst_cmd.arg("--root");
-    typst_cmd.arg("/");
-    for (key, value) in inputs {
-        typst_cmd.arg("--input");
-        typst_cmd.arg(format!("{key}={value}"));
-    }
-    typst_cmd.arg(template);
-    typst_cmd.arg(pdf_path);
-
-    let output = typst_cmd.output().map_err(|e| {
-        if e.kind() == io::ErrorKind::NotFound {
-            CliError::Typst(format!(
-                "Typst binary not found at '{}'. Install typst or set TYPST_BIN to the binary path.",
-                typst_bin.display()
-            ))
-        } else {
-            CliError::Typst(format!("Failed to run typst: {e}"))
-        }
-    })?;
-
-    if !output.status.success() {
-        let stderr = String::from_utf8_lossy(&output.stderr);
-        return Err(CliError::Typst(format!(
-            "Typst compile failed for {}: {}",
-            pdf_path.display(),
-            stderr
-        )));
-    }
-
-    Ok(())
-}
-
-/// Compile one of the crate's bundled templates to `pdf_path`, passing
-/// `inputs` through as `--input key=value` pairs, then repack the result.
-fn compile_template(
-    template: &str,
-    inputs: &[(String, String)],
-    pdf_path: &Path,
-) -> Result<(), CliError> {
-    let template_path = templates::materialise()?.join(template);
-    run_typst_compile(&template_path, inputs, pdf_path)?;
-
-    let before = fs::metadata(pdf_path).map_or(0, |m| m.len());
-    repack_pdf(pdf_path);
-    let after = fs::metadata(pdf_path).map_or(0, |m| m.len());
-
-    eprintln!(
-        "Wrote PDF to {} ({})",
-        pdf_path.display(),
-        human_bytes(after)
-    );
-    if after < before {
-        eprintln!(
-            "  repacked with object streams: {} smaller",
-            human_bytes(before - after)
-        );
-    }
-
-    Ok(())
-}
-
-/// Repack `pdf_path` in place so the PDF is no bigger than it needs to be.
-///
-/// Typst writes a tagged PDF, and one cutouts or sheets page is a few hundred
-/// separately tagged tokens: the-cat-in-the-hat sheets carry 6216 `StructElem`
-/// dictionaries against 25 pages of drawing. PDF compresses streams but not
-/// loose objects, so that tag tree lands uncompressed and is most of the file.
-/// Object streams pack those dictionaries into compressed streams, cutting a
-/// sheets set by about 70% with no change to what renders and the tags kept —
-/// they are what a screen reader uses on the teacher-facing brief.
-///
-/// `--deterministic-id` derives the file ID from the content rather than the
-/// clock, so a rebuild stays byte-identical: the cutouts and sheets PDFs are
-/// committed, and a random ID would dirty a megabyte of git on every `make`.
-///
-/// Best-effort: qpdf is not needed to *make* a booklet, so a missing or
-/// unhappy qpdf warns and leaves the typst output in place rather than failing
-/// the command.
-fn repack_pdf(pdf_path: &Path) {
-    let result = Command::new("qpdf")
-        .arg("--object-streams=generate")
-        .arg("--recompress-flate")
-        .arg("--compression-level=9")
-        .arg("--deterministic-id")
-        .arg("--replace-input")
-        .arg(pdf_path)
-        .output();
-
-    match result {
-        Ok(output) if output.status.success() => {}
-        Ok(output) => {
-            // Exit code 3 is qpdf's "succeeded with warnings", which still
-            // writes a valid file, so only a real failure is worth reporting.
-            if output.status.code() != Some(3) {
-                eprintln!(
-                    "Warning: qpdf could not repack {}, leaving it uncompressed: {}",
-                    pdf_path.display(),
-                    String::from_utf8_lossy(&output.stderr).trim()
-                );
-            }
-        }
-        Err(e) if e.kind() == io::ErrorKind::NotFound => {
-            eprintln!(
-                "Warning: qpdf not found, so {} is several times larger than it needs to be. \
-                 Install qpdf to shrink it.",
-                pdf_path.display()
-            );
-        }
-        Err(e) => {
-            eprintln!("Warning: failed to run qpdf on {}: {e}", pdf_path.display());
-        }
-    }
-}
-
-/// Byte count in the largest unit that keeps it readable, for the PDF size
-/// lines. Sizes here run from tens of kilobytes to a few megabytes.
-fn human_bytes(bytes: u64) -> String {
-    const MB: u64 = 1024 * 1024;
-    const KB: u64 = 1024;
-    if bytes >= MB {
-        format!("{:.1} MB", bytes as f64 / MB as f64)
-    } else {
-        format!("{} KB", bytes.div_ceil(KB))
     }
 }
 
@@ -1117,7 +971,7 @@ fn run_pdf_command(args: &PdfArgs) -> Result<(), CliError> {
 
     let template = match &args.template {
         Some(template) => template.clone(),
-        None => templates::materialise()?.join("book.typ"),
+        None => typst::template_path("book.typ")?,
     };
     let opts = TypstOptions {
         template,
@@ -1205,26 +1059,16 @@ fn run_typst_for_books(
 ) -> Result<(), CliError> {
     eprintln!("\nRunning typst compile...");
 
-    // Compile with --root / and absolute paths (the same approach as the
-    // cutouts command) so the template, JSON and output dir can live anywhere
-    // relative to the caller's cwd.
-    let template = fs::canonicalize(&opts.template).map_err(|_| {
-        CliError::InvalidArgs(format!(
-            "Typst template not found at {}",
-            opts.template.display()
-        ))
-    })?;
-
     for (index, book) in written.iter().enumerate() {
         let pdf_path = pdf_name_for(&book.json_path, pdf_dir);
-        if let Some(parent) = pdf_path.parent() {
-            fs::create_dir_all(parent)?;
-        }
 
         let mut inputs = vec![
             ("paper_size".to_string(), opts.paper_size.clone()),
             ("columns".to_string(), opts.columns.to_string()),
-            ("json_path".to_string(), abs_path_string(&book.json_path)),
+            (
+                "json_path".to_string(),
+                typst::abs_path_string(&book.json_path),
+            ),
         ];
         if let Some(subtitle) = opts
             .subtitle_override
@@ -1237,9 +1081,9 @@ fn run_typst_for_books(
             inputs.push(("book_binding".to_string(), "true".to_string()));
         }
 
-        run_typst_compile(&template, &inputs, &pdf_path)?;
+        typst::compile(&opts.template, &inputs, &pdf_path)?;
 
-        if let Some(pages) = pdf_page_count(&pdf_path) {
+        if let Some(pages) = typst::page_count(&pdf_path) {
             eprintln!("Pages in {}: {pages}", pdf_path.display());
         }
         let range_label = if book.range.is_empty() {
@@ -1265,24 +1109,6 @@ fn pdf_name_for(json_path: &Path, pdf_dir: &Path) -> PathBuf {
         .to_string_lossy()
         .replace("_book_", "-book");
     pdf_dir.join(format!("{stem}.pdf"))
-}
-
-/// Page count of a PDF, via `pdfinfo`. `None` if poppler isn't installed or
-/// the output can't be parsed --- callers treat it as "don't know" rather than
-/// failing, since it's only used for advisory checks.
-fn pdf_page_count(pdf_path: &Path) -> Option<usize> {
-    let output = Command::new("pdfinfo").arg(pdf_path).output().ok()?;
-    if !output.status.success() {
-        return None;
-    }
-    String::from_utf8_lossy(&output.stdout)
-        .lines()
-        .find_map(|line| line.strip_prefix("Pages:"))
-        .and_then(|count| count.trim().parse().ok())
-}
-
-fn typst_command_path() -> PathBuf {
-    std::env::var_os("TYPST_BIN").map_or_else(|| PathBuf::from("typst"), PathBuf::from)
 }
 
 /// Validate the `-n` flag: the model needs at least one word of context.

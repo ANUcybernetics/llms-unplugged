@@ -13,7 +13,7 @@ text file → Rust CLI → model.json → Typst → PDF booklet
 
 ## Key files
 
-- `src/main.rs` - CLI entry point: clap args, the typst/qpdf/pdfinfo shell-outs
+- `src/main.rs` - CLI entry point: clap args and the per-subcommand pipelines
 - `src/corpus.rs` - `Corpus`/`Frontmatter`: the one loader for corpus files
 - `src/text.rs` - `Normalizer`: tokenisation and casing, decided across the
   whole corpus by `Normalizer::for_corpus` and immutable after that
@@ -29,10 +29,11 @@ text file → Rust CLI → model.json → Typst → PDF booklet
 - `src/output.rs` - `Metadata` and `BookletJson`, the `model.json` shape
 - `src/error.rs` - the lib's `Error` enum; `main` keys the frontmatter help on
   `Error::is_frontmatter`
-- `src/templates.rs` - the `.typ` templates and brand assets below are
-  `include_bytes!`'d into the binary and materialised to a temp dir at run
-  time, so a release binary works away from the source tree. Cargo rebuilds
-  on a template edit
+- `src/typst.rs` - the typst/qpdf/pdfinfo shell-outs, behind one `compile`
+  that every PDF goes through (compile, repack, report size). The `.typ`
+  templates and brand assets below are `include_bytes!`'d into the binary and
+  materialised to a temp dir at run time, so a release binary works away from
+  the source tree. Cargo rebuilds on a template edit
 - `src/wasm.rs` - the website's entry points, thin wrappers over the same types
 - `book.typ` - Main booklet template (reads from model.json)
 - `tokenized-cutouts.typ` - Cutouts template (cut-up tokens for the table)
