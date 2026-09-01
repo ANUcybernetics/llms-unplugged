@@ -23,16 +23,29 @@ export function partitionDice(diceSides: number, numGroups: number): number[] {
   return sizes;
 }
 
+/**
+ * Apportion the faces of one die across next-word options. Faces are numbered
+ * from `startIndex`, which defaults to 0 to match the physical d10s (marked 0
+ * to 9) and the booklets' bands --- a widget that rolled a 10 would be showing
+ * a face nobody in the room is holding.
+ *
+ * Unlike computeDiceBands (diceBands.ts), which reproduces the booklets'
+ * cumulative rounding exactly, this rounds each option's share separately and
+ * gives the remainder to the last option. The two agree on face count and
+ * differ only in which option absorbs a spare face, and this one drives the
+ * interactive widget rather than anything printed.
+ */
 export function createDiceMapping(
   options: { word: string; count: number }[],
   diceSides: number,
-  startIndex = 1,
+  startIndex = 0,
 ): DiceMapping[] {
   const totalCount = options.reduce((sum, opt) => sum + opt.count, 0);
   if (totalCount === 0) return [];
 
   const nonZeroOptions = options.filter((opt) => opt.count > 0);
   const mappings: DiceMapping[] = [];
+  const maxFace = startIndex + diceSides - 1;
   let currentDice = startIndex;
 
   for (const option of options) {
@@ -40,7 +53,7 @@ export function createDiceMapping(
 
     const proportion = option.count / totalCount;
     const diceCount = Math.max(1, Math.round(proportion * diceSides));
-    const endDice = Math.min(currentDice + diceCount - 1, diceSides);
+    const endDice = Math.min(currentDice + diceCount - 1, maxFace);
 
     mappings.push({
       word: option.word,
@@ -49,11 +62,11 @@ export function createDiceMapping(
     });
 
     currentDice = endDice + 1;
-    if (currentDice > diceSides) break;
+    if (currentDice > maxFace) break;
   }
 
-  if (mappings.length > 0 && currentDice <= diceSides) {
-    mappings.at(-1)!.diceRange[1] = diceSides;
+  if (mappings.length > 0 && currentDice <= maxFace) {
+    mappings.at(-1)!.diceRange[1] = maxFace;
   }
 
   const coveredSides = mappings.reduce((sum, m) => sum + (m.diceRange[1] - m.diceRange[0] + 1), 0);
@@ -72,7 +85,7 @@ export function createDiceMapping(
   return mappings;
 }
 
-export function rollDice(diceSides: number, startIndex = 1): number {
+export function rollDice(diceSides: number, startIndex = 0): number {
   return Math.floor(Math.random() * diceSides) + startIndex;
 }
 

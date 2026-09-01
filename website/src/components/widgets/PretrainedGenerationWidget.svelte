@@ -76,7 +76,7 @@
   function rollMultipleDice(numDice: number): number {
     let result = 0;
     for (let i = 0; i < numDice; i++) {
-      result = result * 10 + rollDice(10, 0);
+      result = result * 10 + rollDice(10);
     }
     return result;
   }

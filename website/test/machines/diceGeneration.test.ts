@@ -46,8 +46,8 @@ describe("createDiceGenerationMachine", () => {
     state = machine.step(state, rng);
     expect(state.phase.kind).toBe("rolled");
     if (state.phase.kind === "rolled") {
-      expect(state.phase.diceRoll).toBeGreaterThanOrEqual(1);
-      expect(state.phase.diceRoll).toBeLessThanOrEqual(diceSides);
+      expect(state.phase.diceRoll).toBeGreaterThanOrEqual(0);
+      expect(state.phase.diceRoll).toBeLessThanOrEqual(diceSides - 1);
       expect(state.phase.nextWord).toBeTruthy();
     }
   });

@@ -52,7 +52,7 @@ export function createDiceGenerationMachine(
         }
 
         case "showing-options": {
-          const roll = Math.floor(rng() * diceSides) + 1;
+          const roll = Math.floor(rng() * diceSides);
           const nextWord = findWordForRoll(state.phase.mappings, roll);
           if (!nextWord) return state;
           return {

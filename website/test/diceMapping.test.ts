@@ -31,8 +31,26 @@ describe("createDiceMapping", () => {
     const mappings = createDiceMapping(options, 6);
 
     expect(mappings).toHaveLength(2);
-    expect(mappings[0].diceRange[0]).toBe(1);
-    expect(mappings.at(-1)!.diceRange[1]).toBe(6);
+    // Faces are 0-indexed, like the physical dice and the booklets.
+    expect(mappings[0].diceRange[0]).toBe(0);
+    expect(mappings.at(-1)!.diceRange[1]).toBe(5);
+  });
+
+  it("covers every face exactly once, whatever the first face is", () => {
+    const options = [
+      { word: "a", count: 3 },
+      { word: "b", count: 2 },
+      { word: "c", count: 1 },
+    ];
+
+    for (const startIndex of [0, 1]) {
+      const mappings = createDiceMapping(options, 10, startIndex);
+      const faces = mappings.reduce((n, m) => n + (m.diceRange[1] - m.diceRange[0] + 1), 0);
+
+      expect(faces).toBe(10);
+      expect(mappings[0].diceRange[0]).toBe(startIndex);
+      expect(mappings.at(-1)!.diceRange[1]).toBe(startIndex + 9);
+    }
   });
 
   it("returns empty for zero total count", () => {
@@ -65,19 +83,19 @@ describe("createDiceMapping", () => {
 
 describe("findWordForRoll", () => {
   const mappings = [
-    { word: "cat", count: 2, diceRange: [1, 4] as [number, number] },
-    { word: "sat", count: 1, diceRange: [5, 6] as [number, number] },
+    { word: "cat", count: 2, diceRange: [0, 3] as [number, number] },
+    { word: "sat", count: 1, diceRange: [4, 5] as [number, number] },
   ];
 
   it("finds the word for a roll within range", () => {
-    expect(findWordForRoll(mappings, 1)).toBe("cat");
-    expect(findWordForRoll(mappings, 4)).toBe("cat");
+    expect(findWordForRoll(mappings, 0)).toBe("cat");
+    expect(findWordForRoll(mappings, 3)).toBe("cat");
+    expect(findWordForRoll(mappings, 4)).toBe("sat");
     expect(findWordForRoll(mappings, 5)).toBe("sat");
-    expect(findWordForRoll(mappings, 6)).toBe("sat");
   });
 
   it("returns null for out-of-range rolls", () => {
-    expect(findWordForRoll(mappings, 0)).toBeNull();
-    expect(findWordForRoll(mappings, 7)).toBeNull();
+    expect(findWordForRoll(mappings, -1)).toBeNull();
+    expect(findWordForRoll(mappings, 6)).toBeNull();
   });
 });
