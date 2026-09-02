@@ -148,14 +148,12 @@
   )
 } else { [] }
 
-// The prefix cell: the prefix on an entry's first row, a continuation mark on
+// The prefix cell: the prefix on an entry's first row, repeated in grey on
 // the rows after it, nothing on a padding row.
 #let prefix-cell(row) = {
   let content = if row.entry == none { [] } else if (
     row.k == 0
   ) { prefix-text(row.entry.prefix) } else {
-    text(size: 11pt, fill: luma(140), "↳")
-    h(0.4em)
     prefix-text(row.entry.prefix, size: 11pt, fill: luma(140))
   }
   align(left + horizon, pad(x: 1.5mm, content))
@@ -266,8 +264,8 @@
 
     A row is a prefix followed by #columns *follower cells*. Each cell has room
     for a follower word and, beside it, a coloured *tally strip*. A prefix with
-    more than #columns followers continues onto the row below, marked with
-    #"↳". #prefill-sentence
+    more than #columns followers continues onto the row below, where its
+    prefix is repeated in grey. #prefill-sentence
 
     == The colours
 
