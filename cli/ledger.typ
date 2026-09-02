@@ -115,13 +115,20 @@
   v(header_gap)
 })
 
-#let sheet-footer(index, page-index, page-count) = align(
+// One number, counting up by one across every page of every sheet, and where
+// to find the project. No corpus title: on a set built to withhold its sources
+// it is a placeholder anyway, and on any other set the facilitator has just
+// said what the text is. What is left is the pair of things a page found on
+// the floor after the session cannot be put back in the stack without.
+//
+// The number is the page counter rather than the sheet index, so a sheet
+// running to two pages gets two distinct numbers instead of two pages reading
+// alike. The counter is reset after the facilitator brief, so the first sheet
+// page is page 1.
+#let sheet-footer = align(
   center,
-  text(fill: luma(150), size: 8pt)[
-    #str(index + 1)/#str(sheets.len())
-    #if page-count > 1 [
-      (page #str(page-index + 1) of #str(page-count))
-    ]
+  context text(fill: luma(150), size: 8pt)[
+    #counter(page).display()
     #sym.dash.em www.llmsunplugged.org
   ],
 )
@@ -489,11 +496,13 @@
 
 // ===== The sheets =====
 
+#counter(page).update(1)
+#set page(footer: sheet-footer)
+
 #for (i, sheet) in sheets.enumerate() {
   if i > 0 { pagebreak(weak: false) }
   for (p, entries) in sheet.pages.enumerate() {
     if p > 0 { pagebreak(weak: false) }
-    set page(footer: sheet-footer(i, p, sheet.pages.len()))
     block(
       width: 100%,
       height: 100%,

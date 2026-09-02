@@ -344,7 +344,7 @@
 // Main content with original layout
 #set page(
   columns: int(num_columns),
-  numbering: "1/1",
+  numbering: "1",
   header: context {
     let current-page = here().page()
 

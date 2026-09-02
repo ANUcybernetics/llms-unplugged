@@ -388,36 +388,33 @@
 // ===== The participant sheets, one page each =====
 
 // The sheets carry no title block of their own: the page is for searching, and
-// every millimetre above the pairs is one the rows don't get. Provenance ---
-// which sheet this is, which text it came from --- lives in the footer instead.
+// every millimetre above the pairs is one the rows don't get. Which page this
+// is, and where the project lives, go in the footer instead.
 #set page(header: none)
 #set text(size: font_size)
 
-// Footer for one page of one sheet. The sheet number comes from the loop index
-// rather than the page counter, so it stays right however many pages a sheet
-// runs to.
+// One number, counting up by one across every page of every sheet, and where
+// to find the project. No corpus title: on a set built to withhold its sources
+// it is a placeholder anyway, and on any other set the facilitator has just
+// said what the text is. What is left is the pair of things a page on the
+// floor after the session cannot be reunited with the stack, or looked up,
+// without.
 //
-// Which sheet, then where to find the project. No corpus title: on a set built
-// to withhold its sources it is a placeholder anyway, and on any other set the
-// facilitator has just said what the text is. What is left is the pair of
-// things a page on the floor after the session cannot be reunited with the
-// stack, or looked up, without.
-//
-// A sheet spanning two pages says so. Without it both pages read "1/24" and
-// are indistinguishable: a participant can't tell which half they are holding,
-// and nobody collating the stack can see that a sheet is incomplete. It stays
-// spelled out where the sheet number is terse, because it appears on the rare
-// page that needs explaining rather than on all of them.
-#let sheet-footer(index, page-index, page-count) = align(
+// The number is the page counter rather than the sheet index, so a sheet
+// running to two pages gets two distinct numbers instead of two pages reading
+// alike: a participant can tell which half they are holding, and anyone
+// collating the stack can see that a page is missing. The counter is reset
+// after the instructions, so the first sheet page is page 1.
+#let sheet-footer = align(
   center,
-  text(font: brand-font, fill: luma(150), size: 8pt)[
-    #str(index + 1)/#str(sheets.len())
-    #if page-count > 1 [
-      (page #str(page-index + 1) of #str(page-count))
-    ]
+  context text(font: brand-font, fill: luma(150), size: 8pt)[
+    #counter(page).display()
     #sym.dash.em www.llmsunplugged.org
   ],
 )
+
+#counter(page).update(1)
+#set page(footer: sheet-footer)
 
 // A facilitator briefs the activity, so the participant sheets carry no
 // instructions: the prose and the worked example live in the facilitator brief
@@ -631,10 +628,6 @@
 
     for (p, page-rows) in pages.enumerate() {
       if p > 0 { pagebreak(weak: false) }
-      // Set per page rather than per sheet, so the footer can say which page
-      // of the sheet this is. The pagebreaks mean it always lands on a fresh
-      // page, which is what lets a page-level set rule take effect here.
-      set page(footer: sheet-footer(i, p, pages.len()))
 
       // Each page is exactly one page tall. The first splits into an
       // auto-height header and a `1fr` body that absorbs whatever height the
