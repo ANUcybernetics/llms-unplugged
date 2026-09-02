@@ -42,6 +42,20 @@ enum Commands {
     Sample(SampleArgs),
 }
 
+/// The labels a set carries. Shared by the three activity subcommands so a
+/// source reveal can be held back the same way whichever one is printing.
+#[derive(Args, Debug, Clone)]
+struct LabelArgs {
+    /// Override the corpus title printed on the brief and the sheets. Useful
+    /// when source names are meant to remain a reveal.
+    #[arg(long, value_name = "TITLE")]
+    title: Option<String>,
+
+    /// Override the corpus author printed on the brief and the sheets.
+    #[arg(long, value_name = "AUTHOR")]
+    author: Option<String>,
+}
+
 /// The tokeniser settings every subcommand shares.
 #[derive(Args, Debug, Clone)]
 struct TokenizerArgs {
@@ -171,9 +185,14 @@ struct TsvArgs {
 
 #[derive(Args, Debug, Clone)]
 struct CutoutsArgs {
-    /// Input text file to process
-    #[arg(short = 'i', long = "input", value_name = "INPUT")]
-    input: PathBuf,
+    /// Input text file to process. Repeat for a multi-document corpus; document
+    /// boundaries are preserved, so no artificial cross-document N-grams are
+    /// introduced.
+    #[arg(short = 'i', long = "input", value_name = "INPUT", required = true)]
+    input: Vec<PathBuf>,
+
+    #[command(flatten)]
+    labels: LabelArgs,
 
     /// Output directory for generated files (default: current directory)
     #[arg(short, long, default_value = ".")]
@@ -235,14 +254,8 @@ struct SheetsArgs {
     #[arg(short = 'i', long = "input", value_name = "INPUT", required = true)]
     input: Vec<PathBuf>,
 
-    /// Override the corpus title printed on the brief and participant sheets.
-    /// Useful when source names are meant to remain a reveal.
-    #[arg(long, value_name = "TITLE")]
-    title: Option<String>,
-
-    /// Override the corpus author printed on the brief and participant sheets.
-    #[arg(long, value_name = "AUTHOR")]
-    author: Option<String>,
+    #[command(flatten)]
+    labels: LabelArgs,
 
     /// Output directory for generated files (default: current directory)
     #[arg(short, long, default_value = ".")]
@@ -345,13 +358,8 @@ struct LedgerArgs {
     #[arg(long)]
     blank: bool,
 
-    /// Override the corpus title printed on the brief and the sheet headers.
-    #[arg(long, value_name = "TITLE")]
-    title: Option<String>,
-
-    /// Override the corpus author printed on the brief.
-    #[arg(long, value_name = "AUTHOR")]
-    author: Option<String>,
+    #[command(flatten)]
+    labels: LabelArgs,
 
     /// Output directory for generated files (default: current directory)
     #[arg(short, long, default_value = ".")]
@@ -543,13 +551,13 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
         ));
     }
 
-    let corpus = Corpus::load(&args.input)?;
-    let mut set = CutoutSet::from_corpus(&corpus, args.tokenizer.config(), args.n);
-    report_budget(
-        &set.metadata.title,
-        set.metadata.kept_tokens,
-        args.tokenizer.config().max_tokens(),
-    );
+    let mut set = load_cutout_set(
+        &args.input,
+        &args.tokenizer.config(),
+        args.n,
+        args.labels.title.as_deref(),
+        args.labels.author.as_deref(),
+    )?;
 
     repeat_cutout_tokens(&mut set.tokens, args.repeat);
 
@@ -652,8 +660,8 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
         &args.input,
         &args.tokenizer.config(),
         args.n,
-        args.title.as_deref(),
-        args.author.as_deref(),
+        args.labels.title.as_deref(),
+        args.labels.author.as_deref(),
     )?;
 
     let usable = tokens.iter().filter(|t| t.is_usable()).count();
@@ -832,7 +840,7 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
     let set = if args.blank {
         LedgerSet {
             metadata: None,
-            title: args.title.clone().unwrap_or_default(),
+            title: args.labels.title.clone().unwrap_or_default(),
             columns: args.columns,
             rows_per_page: args.rows,
             sheets: vec![LedgerSheet::blank(); args.sheets.unwrap_or(1)],
@@ -842,8 +850,8 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
             &args.input,
             &args.tokenizer.config(),
             args.n,
-            args.title.as_deref(),
-            args.author.as_deref(),
+            args.labels.title.as_deref(),
+            args.labels.author.as_deref(),
         )?;
         eprintln!("Processed '{}' by {}", metadata.title, metadata.author);
 

@@ -185,12 +185,13 @@ port and rebuild the wasm.
   stretch to fill the page, so this is the density knob; it also decides the
   sheet count unless `--sheets` pins it
 - `--sort` (sheets only) - Order each sheet by context instead of shuffling it
-- `--input <PATH>` (sheets only) - May be repeated for a multi-document corpus;
-  each document keeps its own N-gram boundary
-- `--title <TITLE>` / `--author <AUTHOR>` (sheets only) - Override the labels
-  printed on the brief and participant pages (for example, to preserve a source
-  reveal). The title is the one string naming the set: the brief opens with it
-  and every sheet header carries it opposite the lockup
+- `--input <PATH>` (all three activity subcommands) - May be repeated for a
+  multi-document corpus; each document keeps its own N-gram boundary
+- `--title <TITLE>` / `--author <AUTHOR>` (all three, via the shared
+  `LabelArgs`) - Override the labels printed on the brief and the sheets (for
+  example, to preserve a source reveal). The title is the one string naming the
+  set: the brief opens with it and every sheet header carries it opposite the
+  lockup
 - `--prefill prefixes|followers|tallies` (ledger only, default `prefixes`) -
   What the rows come printed with, each level adding to the one before it;
   `tallies` is the whole sheet filled in, so the group skips training and goes

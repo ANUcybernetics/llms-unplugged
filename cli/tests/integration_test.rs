@@ -1327,6 +1327,63 @@ fn test_ledger_cli_rejects_prefill_without_a_corpus() -> io::Result<()> {
     Ok(())
 }
 
+/// Cutouts take the same corpus flags as sheets and ledger: a repeated
+/// `--input` combines documents, and the labels can hold back a reveal.
+#[test]
+fn test_cutouts_cli_combines_documents_and_overrides_labels() -> io::Result<()> {
+    let temp = TempDir::new()?;
+    let one = write_sample_corpus(temp.path(), "one.txt", "the cat sat on the mat")?;
+    let two = write_sample_corpus(temp.path(), "two.txt", "the dog ate the bone")?;
+    let out_dir = temp.path().join("out");
+
+    let output = Command::new(cli_exe())
+        .arg("cutouts")
+        .args(["-i", one.to_str().unwrap(), "-i", two.to_str().unwrap()])
+        .args(["--title", "Mystery Corpus", "--author", "Anon"])
+        .arg("--json-only")
+        .arg("--output")
+        .arg(&out_dir)
+        .output()?;
+    assert!(
+        output.status.success(),
+        "cutouts failed: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+
+    let json: serde_json::Value =
+        serde_json::from_reader(BufReader::new(File::open(out_dir.join("cutouts.json"))?))?;
+    let metadata = &json["metadata"];
+    assert_eq!(metadata["title"], "Mystery Corpus");
+    assert_eq!(metadata["author"], "Anon");
+    assert_eq!(metadata["documents"], 2, "both documents were combined");
+
+    // No cutout carries a context spanning the join: "mat" ends document one
+    // and "the" opens document two, so "mat" is never a previous word.
+    let tokens = json["tokens"].as_array().unwrap();
+    let previous_words = |token: &serde_json::Value| -> Vec<String> {
+        token["previous_words"]
+            .as_array()
+            .map(|c| {
+                c.iter()
+                    .filter_map(|w| w.as_str().map(String::from))
+                    .collect()
+            })
+            .unwrap_or_default()
+    };
+    assert!(
+        tokens.iter().any(|t| previous_words(t) == ["the"]),
+        "sanity: some cutout should follow 'the'"
+    );
+    let spans_the_join = tokens
+        .iter()
+        .any(|t| previous_words(t).iter().any(|w| w == "mat"));
+    assert!(
+        !spans_the_join,
+        "a bigram was introduced across the document boundary"
+    );
+    Ok(())
+}
+
 /// A prefix taller than a page cannot be laid out, and says so.
 #[test]
 fn test_ledger_cli_reports_a_prefix_taller_than_a_page() -> io::Result<()> {
