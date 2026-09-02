@@ -480,11 +480,13 @@ struct BuiltModel {
 
 fn build_model(input: &Path, n: usize, config: NormalizerConfig) -> Result<BuiltModel, CliError> {
     let corpus = Corpus::load(input)?;
-    if let Some(max_tokens) = config.max_tokens() {
-        eprintln!("Reading the first {max_tokens} tokens of the text");
-    }
     let normalizer = Normalizer::for_corpus(config, &corpus.lines);
     let model = Model::from_lines(n, &normalizer, &corpus.lines);
+    report_budget(
+        &corpus.frontmatter.title,
+        model.total_tokens(),
+        normalizer.config().max_tokens(),
+    );
     Ok(BuiltModel {
         corpus,
         normalizer,
@@ -536,6 +538,11 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
 
     let corpus = Corpus::load(&args.input)?;
     let mut set = CutoutSet::from_corpus(&corpus, args.tokenizer.config(), args.n);
+    report_budget(
+        &set.metadata.title,
+        set.metadata.kept_tokens,
+        args.tokenizer.config().max_tokens(),
+    );
 
     repeat_cutout_tokens(&mut set.tokens, args.repeat);
 
@@ -764,17 +771,14 @@ fn load_cutout_set(
             ))
         })
         .collect::<Result<Vec<_>, CliError>>()?;
-    let mut set = CutoutSet::combine(documents, n);
-    if let Some(max_tokens) = set.metadata.max_tokens {
-        eprintln!(
-            "Reading the first {max_tokens} tokens of {}",
-            if inputs.len() == 1 {
-                "the text".to_string()
-            } else {
-                format!("each of the {} texts", inputs.len())
-            }
+    for document in &documents {
+        report_budget(
+            &document.metadata.title,
+            document.metadata.kept_tokens,
+            config.max_tokens(),
         );
     }
+    let mut set = CutoutSet::combine(documents, n);
     if let Some(title) = title {
         set.metadata.title = title.to_string();
     }
@@ -782,6 +786,23 @@ fn load_cutout_set(
         set.metadata.author = author.to_string();
     }
     Ok(set)
+}
+
+/// Say what `--max-tokens` did to a text: cut it, or nothing, because the
+/// text was shorter than the budget --- which is worth hearing about, since
+/// the flag was presumably set to make a set smaller.
+fn report_budget(title: &str, kept_tokens: usize, budget: Option<usize>) {
+    let Some(budget) = budget else {
+        return;
+    };
+    if kept_tokens >= budget {
+        eprintln!("Reading the first {budget} tokens of '{title}'");
+    } else {
+        eprintln!(
+            "Warning: '{title}' has only {kept_tokens} tokens, fewer than --max-tokens {budget}; \
+             read it whole"
+        );
+    }
 }
 
 fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {

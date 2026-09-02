@@ -104,9 +104,9 @@ pub struct CutoutsMetadata {
     /// file; more when several were combined, which the sheets brief says out
     /// loud because generation crossing between texts is the point of doing it.
     pub documents: usize,
-    /// The token budget each document was read under, when one was set: the
-    /// briefs say "the first N tokens of" so a facilitator knows the set is
-    /// not the whole text.
+    /// The token budget the text was cut to, when one was set and the text
+    /// was long enough to be cut by it: the briefs say "the first N tokens
+    /// of" so a facilitator knows the set is not the whole text.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub max_tokens: Option<usize>,
     pub total_tokens: usize,
@@ -144,9 +144,12 @@ impl CutoutSet {
         config: NormalizerConfig,
         n: usize,
     ) -> Self {
-        let max_tokens = config.max_tokens();
         let normalizer = Normalizer::for_corpus(config, lines);
         let tokens = tokenize_cutouts(&normalizer, n, lines);
+        // A budget the text never reached did not cut anything, and the
+        // brief must not claim it did.
+        let kept = tokens.iter().filter(|t| t.is_kept()).count();
+        let max_tokens = normalizer.config().max_tokens().filter(|&n| kept >= n);
         Self::build(title, author, 1, max_tokens, tokens, n)
     }
 

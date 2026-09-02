@@ -1454,5 +1454,52 @@ fn test_max_tokens_cuts_each_input() -> io::Result<()> {
         .args(["-i", one.to_str().unwrap(), "--max-tokens", "0"])
         .output()?;
     assert!(!zero.status.success(), "--max-tokens 0 should be rejected");
+
+    // A budget the text never reaches cuts nothing, says so, and is not
+    // recorded as if it had.
+    let output = Command::new(cli_exe())
+        .arg("ledger")
+        .args([
+            "-i",
+            one.to_str().unwrap(),
+            "--max-tokens",
+            "50",
+            "--json-only",
+        ])
+        .arg("--output")
+        .arg(&out_dir)
+        .output()?;
+    assert!(output.status.success(), "ledger failed: {output:?}");
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(
+        stderr.contains("has only 8 tokens, fewer than --max-tokens 50"),
+        "stderr: {stderr}"
+    );
+    let json: serde_json::Value =
+        serde_json::from_reader(BufReader::new(File::open(out_dir.join("ledger.json"))?))?;
+    assert!(json["metadata"].get("max_tokens").is_none());
+    Ok(())
+}
+
+/// A prefix with more followers than the three row palettes can colour is
+/// warned about by name.
+#[test]
+fn test_ledger_cli_warns_about_a_prefix_past_twelve_followers() -> io::Result<()> {
+    let temp = TempDir::new()?;
+    let words: Vec<String> = ('a'..='m').map(|c| format!("the {c}")).collect();
+    let input = write_sample_corpus(temp.path(), "corpus.txt", &words.join(" "))?;
+    let output = Command::new(cli_exe())
+        .arg("ledger")
+        .args(["-i", input.to_str().unwrap(), "--json-only"])
+        .arg("--output")
+        .arg(temp.path().join("out"))
+        .output()?;
+    assert!(output.status.success(), "ledger failed: {output:?}");
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(
+        stderr.contains("1 prefix(es) have more than 12 followers")
+            && stderr.contains("'the' (13)"),
+        "stderr: {stderr}"
+    );
     Ok(())
 }
