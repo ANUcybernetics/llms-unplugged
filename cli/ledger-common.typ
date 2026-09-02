@@ -73,14 +73,16 @@
   entry.name == "black"
 ) { luma(240) } else { color.mix((entry.color, 12%), (white, 88%)) }
 
-// One saturated edge rather than a box: a bar down the strip's left side,
-// heavy enough to read as the colour itself, which is what a counter is
-// matched against. The other three sides are the tint's own edges. White has
-// no bar to draw --- a white rule on paper is nothing --- so it keeps a
-// hairline outline, which is also what gives its strip an area to write in.
+// One saturated edge rather than a box: a bar down the strip's left side.
+// The bar is the colour cue --- what a counter drawn from the bag is matched
+// against --- so it is wide enough to read as the colour rather than as a
+// line of it, which a hairline of a dark hue is not. The other three sides
+// are the tint's own edges. White has no bar to draw --- a white rule on
+// paper is nothing --- so it keeps a hairline outline, which is also what
+// gives its strip an area to write in.
 #let strip-stroke(entry) = if entry.name == "white" {
   (rest: (paint: luma(140), thickness: 0.5pt, dash: "dashed"))
-} else { (left: 2pt + entry.color, rest: none) }
+} else { (left: 5pt + entry.color, rest: none) }
 
 // The counter itself, drawn: a dot in the full colour with a hairline so the
 // white one is visible. This is what a participant matches a counter against.
