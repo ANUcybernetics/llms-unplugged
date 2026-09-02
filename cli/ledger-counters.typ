@@ -19,9 +19,7 @@
 #set text(font: "Public Sans")
 
 // Dark text on the light counters, light text on the rest.
-#let label-fill(entry) = if entry.name in ("white", "yellow", "pink") {
-  luma(0)
-} else {
+#let label-fill(entry) = if entry.name in ("white", "yellow") { luma(0) } else {
   white
 }
 
