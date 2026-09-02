@@ -2,8 +2,9 @@
 // the ledger palettes, to cut up and draw from a bag.
 //
 // The page is symmetric under a flip about either axis: every row is one
-// palette out and back (red, blue, green, ... , green, blue, red),
-// the two palettes alternate rows, and the row order is itself a palindrome.
+// palette out and back (red, blue, green, yellow, yellow, green, blue, red),
+// the three palettes cycle down the rows, and the row order is itself a
+// palindrome (1 2 3 1 2 3 3 2 1 3 2 1).
 // That is what makes it print double-sided with no imposition step: the PDF
 // is two identical pages, and whichever edge the printer flips on, each square
 // lands on a square of its own colour on the back. A counter drawn from the
@@ -15,8 +16,7 @@
 )
 
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
-// Landscape: the mirrored row of colours is too wide for a portrait page.
-#set page(paper: paper_size, flipped: true, margin: counter-margin)
+#set page(paper: paper_size, margin: counter-margin)
 #set text(font: "Public Sans")
 
 // Black text on the light counters, white on the dark: decided by OKLab
@@ -41,11 +41,11 @@
 // A palette out and back: each of its colours twice, in mirror positions.
 #let mirrored(palette) = palette + palette.rev()
 
-// Row i takes palette 0 or 1 so that the sequence reads the same from either
-// end: 0 1 0 1 ... in the top half, mirrored in the bottom half.
-#let palette-index(i, rows) = if i < rows / 2 { calc.rem(i, 2) } else {
-  calc.rem(rows - 1 - i, 2)
-}
+// Row i takes its palette so that the sequence reads the same from either
+// end: 0 1 2 0 1 2 ... in the top half, mirrored in the bottom half.
+#let palette-index(i, rows) = if i < rows / 2 {
+  calc.rem(i, palettes.len())
+} else { calc.rem(rows - 1 - i, palettes.len()) }
 
 #let page-of-counters() = context {
   let rows = counter-rows()

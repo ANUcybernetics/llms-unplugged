@@ -8,11 +8,11 @@
 
 // ===== The counter palettes =====
 //
-// Two palettes of `columns` colours: the first for odd rows, the second for
-// even ones. A prefix spilling onto a second row therefore has 2 × `columns`
+// Three palettes of `columns` colours, cycling down the rows. A prefix
+// spilling onto a second or third row therefore has up to 3 × `columns`
 // distinct strips, and the bag can tell them apart.
 //
-// Eight colours with everyday names, so a counter can be matched to a strip
+// Twelve colours with everyday names, so a counter can be matched to a strip
 // by name as well as by eye. Red, blue, green and yellow are the four every
 // set of maths counters has, so a bought set works too --- but the expected
 // counters are the ones ledger-counters.typ prints in exactly these values.
@@ -32,22 +32,22 @@
     (color: oklch(47.2%, 0.241, 263deg), name: "blue"),
     (color: oklch(61.0%, 0.205, 142deg), name: "green"),
     (color: rgb("#eab308"), name: "yellow"),
-    (color: rgb("#fb923c"), name: "orange"),
-    (color: oklch(38.6%, 0.089, 62deg), name: "brown"),
   ),
   (
     (color: oklch(68%, 0.21, 355deg), name: "pink"),
     (color: oklch(45.2%, 0.195, 316deg), name: "purple"),
     (color: luma(0), name: "black"),
     (color: rgb("#ffffff"), name: "white"),
+  ),
+  (
+    (color: rgb("#fb923c"), name: "orange"),
+    (color: oklch(38.6%, 0.089, 62deg), name: "brown"),
     (color: oklch(62.9%, 0.008, 145deg), name: "grey"),
     (color: rgb("#0891b2"), name: "teal"),
   ),
 )
 // Twelve colours is as many as a bag can tell apart by name, so the palettes
-// cap the column count rather than stretching to meet it. The first four of
-// each row are the most immediately nameable, which is what the default four
-// columns use; the rest only come into play with more columns.
+// cap the column count rather than stretching to meet it.
 #let palette-size = palettes.at(0).len()
 
 #let check-columns(columns) = assert(
@@ -57,9 +57,8 @@
     + " columns",
 )
 
-#let palette-for(row, columns) = palettes.at(calc.rem(row, 2)).slice(
-  0,
-  columns,
+#let palette-for(row, columns) = (
+  palettes.at(calc.rem(row, palettes.len())).slice(0, columns)
 )
 
 // Black and white counters need special casing on paper: a black tint is grey,
@@ -88,24 +87,23 @@
 // rather than along a hairline; the brief in ledger.typ tells the facilitator
 // how many of each colour a sheet yields, so the numbers live here where both
 // can see them.
-// Twelve colours out and back is 24 squares across a landscape A4.
+// One palette out and back is eight squares across a portrait A4.
 #let counter-cell = 19mm
 #let counter-gap = 4mm
 #let counter-margin = 10mm
 
-// Rows of counters on the page: as many as fit its short side (the counters
-// print landscape, and `page.height` inside a flipped page is still the
-// paper's long side), rounded down to even, because the two palettes
-// alternate rows and an odd count would print one palette more than the
-// other. Needs `context` for the page size.
+// Rows of counters on the page: as many as fit, rounded down to a multiple
+// of six, because the three palettes cycle down the rows and the row order
+// has to be a palindrome (see ledger-counters.typ), so each half of the page
+// needs a whole number of cycles. Needs `context` for the page size.
 #let counter-rows() = {
-  let height = calc.min(page.width, page.height)
   let rows = calc.floor(
-    (height - 2 * counter-margin + counter-gap) / (counter-cell + counter-gap),
+    (page.height - 2 * counter-margin + counter-gap)
+      / (counter-cell + counter-gap),
   )
-  rows - calc.rem(rows, 2)
+  rows - calc.rem(rows, 2 * palettes.len())
 }
 
-// Each colour appears twice in its row and its palette takes half the rows,
-// so a sheet yields one counter of each colour per row.
-#let counters-per-colour() = counter-rows()
+// Each colour appears twice in its row and its palette takes a third of the
+// rows.
+#let counters-per-colour() = 2 * counter-rows() / palettes.len()

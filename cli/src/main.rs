@@ -354,11 +354,11 @@ struct LedgerArgs {
     #[arg(short = 's', long = "sheets", value_name = "N")]
     sheets: Option<usize>,
 
-    /// Follower cells on a row (default 4). A prefix with more followers than
-    /// this continues onto the row below, whose tally strips take the other
-    /// palette, so two rows give eight distinct colours. A third row repeats
-    /// the first row's colours: the command warns about any prefix that needs
-    /// one, and more columns is the fix.
+    /// Follower cells on a row (default 4, the most the palettes allow). A
+    /// prefix with more followers than this continues onto the rows below,
+    /// whose tally strips take the next of three palettes, so three rows give
+    /// twelve distinct colours. A fourth row repeats the first row's colours:
+    /// the command warns about any prefix that needs one.
     #[arg(long, default_value_t = 4)]
     columns: usize,
 
@@ -810,7 +810,7 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
         // Zipfian too: name the worst few and count the rest.
         let mut tall: Vec<&llms_unplugged::LedgerEntry> = entries
             .iter()
-            .filter(|e| e.rows(args.columns) > 2)
+            .filter(|e| e.rows(args.columns) > 3)
             .collect();
         tall.sort_by_key(|e| std::cmp::Reverse(e.followers.len()));
         if !tall.is_empty() {
@@ -821,11 +821,11 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
                 .collect();
             let more = tall.len().saturating_sub(named.len());
             eprintln!(
-                "Warning: {} prefix(es) have more than {} followers and spill onto a third row, \
-                 where the tally colours repeat those of the first: {}{}. A shorter text, or \
-                 more --columns, keeps every prefix to two rows.",
+                "Warning: {} prefix(es) have more than {} followers and spill onto a fourth row, \
+                 where the tally colours repeat those of the first: {}{}. A shorter text keeps \
+                 every prefix to three rows.",
                 tall.len(),
-                2 * args.columns,
+                3 * args.columns,
                 named.join(", "),
                 if more > 0 {
                     format!(" and {more} more")

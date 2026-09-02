@@ -148,9 +148,9 @@ are dropped; apostrophes inside contractions are preserved.
   every follower. Training is tallying by hand; generation is a bag of
   counters, one per tally mark in the colour of its strip, so the counter drawn
   names the follower. The strips are coloured by column rather than by word,
-  and odd and even rows use different palettes, so a prefix that runs past the
-  columns continues onto the row below and still gives the bag distinct
-  colours. The prefixes are dealt across a group's sheets in alphabetical runs,
+  and three palettes cycle down the rows, so a prefix that runs past the
+  columns continues onto the rows below and still gives the bag distinct
+  colours, twelve in all. The prefixes are dealt across a group's sheets in alphabetical runs,
   each sheet's header naming the first and last prefix it holds. The PDF leads
   with a one-page facilitator brief, then one page per sheet. A `counters.pdf`
   of coloured squares to cut up lands beside it: print it double-sided (the
@@ -163,10 +163,10 @@ are dropped; apostrophes inside contractions are preserved.
     is read; `followers` leaves only the tallies to make
   - `--blank`: sheets of empty rows with no corpus (one, unless `--sheets`),
     for a group training on a text of its own
-  - `--columns <N>` (default 4, up to 6), `--rows <N>` (default 12): follower
-    cells on a row and rows on a page. The command warns about any prefix with more than
-    twice the column count of followers, since its third row repeats the first
-    row's colours
+  - `--columns <N>` (default and maximum 4), `--rows <N>` (default 12):
+    follower cells on a row and rows on a page. The command warns about any
+    prefix with more than three times the column count of followers, since its
+    fourth row repeats the first row's colours
   - `--n <N>`, `--title`, `--author`, `--paper-size` as for `sheets`
 - `sample` - Build an N-gram model in memory from a corpus and sample text from
   it. Useful as a sanity check on the model without printing a booklet.

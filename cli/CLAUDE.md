@@ -48,13 +48,13 @@ text file → Rust CLI → model.json → Typst → PDF booklet
   gated on `metadata.documents`, which is why `CutoutsMetadata` carries a
   document count that a `--title` override cannot hide
 - `ledger.typ` - Ledger template: one row per prefix, follower cells split
-  into a word area and a tally strip, strips coloured by column with two row
-  palettes alternating. Twelve nameable colours, six a palette (the bag is
+  into a word area and a tally strip, strips coloured by column with three
+  row palettes cycling. Twelve nameable colours, four a palette (the bag is
   matched against a dot and a name on the strip), which caps `columns` at
-  six; the default four use the first four of each. `--prefill` is a Typst input
+  four. `--prefill` is a Typst input
   rather than part of the JSON, so one set prints at either level. Opens with
   a one-page facilitator brief unless the set is `--blank`
-- `ledger-common.typ` - The two counter palettes and the counter-sheet
+- `ledger-common.typ` - The three row palettes and the counter-sheet
   geometry, shared by the two ledger templates so the strip on a sheet, the
   printed counter and the brief's per-sheet yield come from one definition
 - `ledger-counters.typ` - The counters to cut up and draw from the bag,

@@ -6,9 +6,9 @@
 // bag of counters: for the current prefix, put one counter into the bag per
 // tally mark, in the colour of that follower's strip; draw one; read the
 // follower whose strip is that colour. The strips are coloured by column, not
-// by word, so one set of counters serves every row. Odd and even rows take
-// different palettes, which is what lets a prefix with more followers than
-// columns continue onto the row below and still hand the bag eight distinct
+// by word, so one set of counters serves every row. Three palettes cycle
+// down the rows, which is what lets a prefix with more followers than columns
+// continue onto the rows below and still hand the bag twelve distinct
 // colours.
 //
 // A set is dealt across a group's sheets in alphabetical runs, and each sheet
@@ -269,9 +269,9 @@
 
     == The colours
 
-    The strips are coloured by column, not by word, and alternate between two
-    sets of #columns on odd and even rows --- so a prefix that runs to two rows
-    has #str(2 * columns) different colours and the bag can tell them apart.
+    The strips are coloured by column, not by word, and cycle through three
+    sets of #columns down the rows --- so a prefix that runs to three rows has
+    #str(3 * columns) different colours and the bag can tell them apart.
     Don't explain the colours until the generation round; during training they
     are just stripes.
 
@@ -289,11 +289,12 @@
     )
     #block(above: 0.8em, below: 0.8em, stack(
       spacing: 0.7em,
-      key("odd rows", palette-for(0, columns)),
-      key("even rows", palette-for(1, columns)),
+      key("rows 1, 4, 7 ...", palette-for(0, columns)),
+      key("rows 2, 5, 8 ...", palette-for(1, columns)),
+      key("rows 3, 6, 9 ...", palette-for(2, columns)),
     ))
 
-    *Bring* one bag per group and counters in these #str(2 * columns) colours,
+    *Bring* one bag per group and counters in these #str(3 * columns) colours,
     at least #max-count of each: that is the most times any one follower appears
     in this text, and so the most counters of one colour a single draw can need.
     The CLI writes #raw("counters.pdf") beside this file: print it double-sided
