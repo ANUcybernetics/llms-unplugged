@@ -2,7 +2,7 @@
 // the ledger palettes, to cut up and draw from a bag.
 //
 // The page is symmetric under a flip about either axis: every row is one
-// palette out and back (red, blue, green, yellow, yellow, green, blue, red),
+// palette out and back (red, green, blue, black, black, blue, green, red),
 // the two palettes alternate rows, and the row order is itself a palindrome.
 // That is what makes it print double-sided with no imposition step: the PDF
 // is two identical pages, and whichever edge the printer flips on, each square
@@ -18,20 +18,12 @@
 #set page(paper: paper_size, margin: counter-margin)
 #set text(font: "Public Sans")
 
-// Dark text on the light counters, light text on the rest.
-#let label-fill(entry) = if entry.name in ("white", "yellow") { luma(0) } else {
-  white
-}
-
-// The white counter is the page unless something marks its edge.
+// Every palette entry is dark enough to carry white text.
 #let counter(entry) = box(
   width: counter-cell,
   height: counter-cell,
   fill: entry.color,
-  stroke: if entry.name == "white" {
-    (paint: luma(150), thickness: 0.5pt, dash: "dashed")
-  } else { none },
-  align(center + horizon, text(size: 8pt, fill: label-fill(entry), entry.name)),
+  align(center + horizon, text(size: 8pt, fill: white, entry.name)),
 )
 
 // A palette out and back: each of its colours twice, in mirror positions.
