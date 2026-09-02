@@ -32,7 +32,7 @@
 // here needs at most one roll of one d6, which keeps the instructions to a
 // single rule.
 
-#import "@local/anu-typst-template:0.3.0": anu, anu-colors
+#import "../cli/cutout-common.typ": brand-font, brand-gold
 
 // ---------------------------------------------------------------------------
 // Booklet typography helpers from cli/booklet-common.typ (compiled with
@@ -58,7 +58,7 @@
 }
 
 // Single diamond: "roll your dice". Only shown when the entry has a choice.
-#let dice-indicator = bc.dice-diamonds(1, fill: anu-colors.gold)
+#let dice-indicator = bc.dice-diamonds(1, fill: brand-gold)
 
 // A next-word option: "3|dreams" (threshold semibold), or the bare word when
 // it is the only option (no threshold, no roll).
@@ -199,27 +199,31 @@
 
 // ---------------------------------------------------------------------------
 
-#show: doc => anu(
-  title: "LLMs Unplugged",
+// The spread's own chrome rather than a template's: this is a reference for
+// a designer, so what it shows has to be the project's palette and mark and
+// not a studio house style the finished piece will not carry. Dark ground,
+// because the glossy booklet it specifies is dark.
+#let ink = rgb("#101010")
+#let paper-white = luma(245)
+// A dimmer gold, for the rule around the model where full strength would
+// out-shout the model itself.
+#let gold-dim = color.mix((brand-gold, 45%), (ink, 55%))
+#let muted = luma(155)
+
+#set page(
   paper: "a3",
-  footer_text: text(
-    font: "Monaspace Argon",
-    weight: "bold",
-    fill: anu-colors.socy-yellow,
+  flipped: true,
+  margin: (x: 2cm, y: 1.6cm),
+  fill: ink,
+  footer: align(center, text(
+    font: brand-font,
+    size: 9pt,
+    fill: brand-gold,
     "www.llmsunplugged.org | © 2026 Ben Swift",
-  ),
-  config: (
-    theme: "dark",
-    ornaments: ("studio",),
-    hide: ("page-numbers", "title-block"),
-  ),
-  page-settings: (
-    flipped: true,
-  ),
-  doc,
+  )),
 )
 
-#set text(size: 10.5pt)
+#set text(font: brand-font, size: 10.5pt, fill: paper-white)
 #show heading: set block(above: 1em, below: 0.6em)
 
 // Generated-text styling: italic serif, standing in for the reader's
@@ -233,8 +237,10 @@
   gutter: 2.5cm,
   [
     // ------------------------------------------------------------ verso
-    #v(2.2cm)
-    #text(size: 2.6em, fill: anu-colors.gold)[*Try it yourself*]
+    #image("lockup.svg", width: 46mm)
+
+    #v(1.1cm)
+    #text(size: 2.6em, fill: brand-gold)[*Try it yourself*]
 
     #v(0.5em)
     #text(size: 1.05em)[
@@ -272,7 +278,7 @@
         stroke: none,
         inset: (x: 0.4em, y: 0.32em),
         table.header([_look up_], [_roll the dice_], [_your text so far_]),
-        table.hline(stroke: 0.5pt + anu-colors.gold),
+        table.hline(stroke: 0.5pt + brand-gold),
         [#headword("So", size: 1.2em)],
         [roll a 4 → first number ≥ 4 is *6*|we],
         [#gen[So we]],
@@ -318,7 +324,7 @@
     // hanging indent, as in the full-size booklets).
     #block(
       width: 100%,
-      stroke: 0.5pt + anu-colors.gold-2,
+      stroke: 0.5pt + gold-dim,
       inset: (x: 0.7cm, y: 0.5cm),
     )[
       #set text(font: "Libertinus Serif", size: 8pt)
@@ -339,16 +345,16 @@
     ]
 
     #v(0.4em)
-    #text(size: 0.85em, fill: anu-colors.grey-2)[
+    #text(size: 0.85em, fill: muted)[
       This is (almost) the whole model: the three busiest words offer more than
       six next words, so they keep only their six most common---the "top-k"
       trick chatbot samplers use. Full-size models---whole novels in booklet
-      form---are at #text(fill: anu-colors.gold)[www.llmsunplugged.org].
+      form---are at #box(text(fill: brand-gold)[www.llmsunplugged.org]).
     ]
 
     #v(0.1em)
     #block[
-      #set text(size: 7pt, fill: anu-colors.grey-2)
+      #set text(size: 7pt, fill: muted)
       The training text? The opening lines of a very famous children's book.
       Generate a few sentences, have a guess, then check below.
       #rotate(180deg, reflow: true)[
