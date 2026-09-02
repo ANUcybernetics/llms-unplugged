@@ -2,7 +2,7 @@
 // the ledger palettes, to cut up and draw from a bag.
 //
 // The page is symmetric under a flip about either axis: every row is one
-// palette out and back (red, blue, green, yellow, yellow, green, blue, red),
+// palette out and back (red, blue, green, ... , green, blue, red),
 // the two palettes alternate rows, and the row order is itself a palindrome.
 // That is what makes it print double-sided with no imposition step: the PDF
 // is two identical pages, and whichever edge the printer flips on, each square
@@ -15,7 +15,8 @@
 )
 
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
-#set page(paper: paper_size, margin: counter-margin)
+// Landscape: the mirrored row of colours is too wide for a portrait page.
+#set page(paper: paper_size, flipped: true, margin: counter-margin)
 #set text(font: "Public Sans")
 
 // Dark text on the light counters, light text on the rest.
@@ -44,7 +45,7 @@
 }
 
 #let page-of-counters() = context {
-  let rows = counter-rows(page.height)
+  let rows = counter-rows()
   let row-of(i) = mirrored(palettes.at(palette-index(i, rows)))
   align(center + horizon, grid(
     columns: 2 * palettes.at(0).len(),

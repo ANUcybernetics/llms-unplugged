@@ -49,9 +49,9 @@ text file → Rust CLI → model.json → Typst → PDF booklet
   document count that a `--title` override cannot hide
 - `ledger.typ` - Ledger template: one row per prefix, follower cells split
   into a word area and a tally strip, strips coloured by column with two row
-  palettes alternating. The palettes are the colours counters come in (the
-  bag is matched against a dot and a name on the strip), which is why there
-  are eight and why `columns` is capped at four. `--prefill` is a Typst input
+  palettes alternating. Twelve nameable colours, six a palette (the bag is
+  matched against a dot and a name on the strip), which caps `columns` at
+  six; the default four use the first four of each. `--prefill` is a Typst input
   rather than part of the JSON, so one set prints at either level. Opens with
   a one-page facilitator brief unless the set is `--blank`
 - `ledger-common.typ` - The two counter palettes and the counter-sheet

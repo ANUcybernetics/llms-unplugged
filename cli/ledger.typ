@@ -298,7 +298,7 @@
     in this text, and so the most counters of one colour a single draw can need.
     The CLI writes #raw("counters.pdf") beside this file: print it double-sided
     (either binding works) and cut the squares apart for
-    #context counters-per-colour(page.height) of each colour per sheet.
+    #context counters-per-colour() of each colour per sheet.
   ]
 
   let brief-how = [
