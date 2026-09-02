@@ -1,4 +1,4 @@
-# Build handout PDFs (worksheets, poster)
+# Build handout PDFs
 
 INPUT_DIR = .
 OUTPUT_DIR = out

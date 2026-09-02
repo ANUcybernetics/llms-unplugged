@@ -10,7 +10,7 @@ manual (pen-and-paper) and automated tools.
 This repository has three main parts:
 
 - **`cli/`** - Rust CLI tool for generating N-gram models and PDF booklets
-- **`handouts/`** - Typst standalone materials (worksheets, poster)
+- **`handouts/`** - Typst standalone materials (worksheets, designer references)
 - **`website/`** - Project website (Astro) including all lessons
 
 Supporting directories:
@@ -49,7 +49,7 @@ cd cli && cargo build --release
 # so the room collectively holds the model.
 ./cli/target/release/llms_unplugged sheets -i data/the-cat-in-the-hat.txt -n 2 --sheets 24
 
-# Build handouts (worksheets, poster)
+# Build handouts
 cd handouts && make
 
 # Run website dev server

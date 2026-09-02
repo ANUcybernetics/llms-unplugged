@@ -2,9 +2,8 @@
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
 //
 // Shared booklet typography: the punctuation "symbol tile" and the word/entry
-// formatting used by the printed booklets (book.typ), the A3 poster
-// (handouts/poster.typ) and the try-it-yourself spread
-// (handouts/try-it-yourself-spread.typ). One definition instead of three
+// formatting used by the printed booklets (book.typ) and the try-it-yourself
+// spread (handouts/try-it-yourself-spread.typ). One definition instead of two
 // hand-synced forks; per-artefact differences come in as parameters
 // (stroke-color for dark-theme artefacts, punct-chars where the model
 // metadata supplies the set).
