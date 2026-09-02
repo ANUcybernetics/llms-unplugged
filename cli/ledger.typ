@@ -181,12 +181,13 @@
   }
 })
 
-// The tally strip: tinted to its colour, with a heavy border in the full
-// colour to match a counter against and the colour's name in the corner so it
-// can be called out --- without the room agreeing on what "purple" looks
-// like in print. On a "tallies" sheet the marks fill it; the corner keeps its
-// name, which is what a drawn counter is matched against, so the marks get
-// the strip less that much height.
+// The tally strip: tinted to its colour, with a bar down its leading edge in
+// the full colour to match a counter against and the colour's name in the
+// corner so it can be called out --- without the room agreeing on what
+// "purple" looks like in print. The tint gives the strip its area, so it
+// needs no box drawn around it. On a "tallies" sheet the marks fill it; the
+// corner keeps its name, which is what a drawn counter is matched against, so
+// the marks get the strip less that much height.
 #let strip_label_size = 5.5pt
 #let tally-strip(entry, follower, budget) = box(
   width: 100%,
@@ -194,7 +195,6 @@
   fill: strip-fill(entry),
   stroke: strip-stroke(entry),
   inset: 1mm,
-  radius: 1.5pt,
   {
     if prefill == "tallies" and follower != none {
       block(
@@ -250,7 +250,7 @@
     let budget = if row.entry == none { 1 } else {
       calc.max(1, ..row.entry.followers.map(f => f.count))
     }
-    cells.push(grid.cell(x: 0, y: y, fill: luma(245), prefix-cell(row)))
+    cells.push(grid.cell(x: 0, y: y, prefix-cell(row)))
     for c in range(columns) {
       let follower = if row.entry == none { none } else {
         row.entry.followers.at(row.k * columns + c, default: none)
@@ -265,26 +265,24 @@
     }
   }
 
-  // Rules: a heavy line where one prefix ends and the next begins, a light
-  // one between the rows of a single prefix, so a continuation reads as part
-  // of the row above it. A blank sheet has no entries, so every rule is heavy
-  // and the parity is left to the strips.
-  let hlines = range(rows.len() + 1).map(y => {
-    let continues = (
-      y < rows.len() and rows.at(y).entry != none and rows.at(y).k > 0
-    )
+  // Rules: a line where one prefix ends and the next begins, a fainter one
+  // between the rows of a single prefix, so a continuation reads as part of
+  // the row above it. A blank sheet has no entries, so every rule is the
+  // heavier one and the parity is left to the strips.
+  //
+  // No frame and no rules between the follower cells: the strips are a strong
+  // enough vertical rhythm to be the columns, and the table is bounded by the
+  // header's rule above and the footer below. Only the two boundaries that
+  // carry meaning get ink --- between prefixes, and between the prefix and
+  // its followers.
+  let hlines = range(1, rows.len()).map(y => {
+    let continues = rows.at(y).entry != none and rows.at(y).k > 0
     grid.hline(
       y: y,
-      stroke: if continues { 0.4pt + luma(170) } else { 0.8pt + luma(0) },
+      stroke: if continues { 0.3pt + luma(205) } else { 0.5pt + luma(70) },
     )
   })
-  let vlines = (
-    (grid.vline(x: 0, stroke: 0.8pt + luma(0)),)
-      + range(columns + 1).map(c => grid.vline(
-        x: 1 + 2 * c,
-        stroke: if c == 0 { 0.8pt + luma(0) } else { 0.4pt + luma(120) },
-      ))
-  )
+  let vlines = (grid.vline(x: 1, stroke: 0.5pt + luma(150)),)
 
   grid(
     columns: (prefix_w,) + ((word_fr, strip_fr) * columns),

@@ -64,8 +64,8 @@
 // The strip behind the tallies: a tint faint enough to be written over in pen
 // and read through. Kept much lighter than it needs to look on screen ---
 // these print CMYK, which lays the colour down heavier than a monitor shows
-// it, and the strip's job is to be a ground, not a block of colour. The
-// border carries the colour that a counter is matched against.
+// it, and the strip's job is to be a ground, not a block of colour. The bar
+// down its leading edge carries the colour that a counter is matched against.
 //
 // Black and white counters need special casing on paper: a black tint is
 // grey, and a white strip is the page.
@@ -73,11 +73,14 @@
   entry.name == "black"
 ) { luma(240) } else { color.mix((entry.color, 12%), (white, 88%)) }
 
-// Heavy enough to read as the colour itself: on the sheets the border is
-// what a counter is matched against.
+// One saturated edge rather than a box: a bar down the strip's left side,
+// heavy enough to read as the colour itself, which is what a counter is
+// matched against. The other three sides are the tint's own edges. White has
+// no bar to draw --- a white rule on paper is nothing --- so it keeps a
+// hairline outline, which is also what gives its strip an area to write in.
 #let strip-stroke(entry) = if entry.name == "white" {
-  (paint: luma(0), thickness: 1.2pt, dash: "dashed")
-} else { 2pt + entry.color }
+  (rest: (paint: luma(140), thickness: 0.5pt, dash: "dashed"))
+} else { (left: 2pt + entry.color, rest: none) }
 
 // The counter itself, drawn: a dot in the full colour with a hairline so the
 // white one is visible. This is what a participant matches a counter against.
