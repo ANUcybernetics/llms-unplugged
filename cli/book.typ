@@ -129,7 +129,9 @@
     #text(size: 1.2em)[#doc_metadata.author]
     #v(0.5cm)
 
-    // datetime.today() respects SOURCE_DATE_EPOCH, so builds stay reproducible
+    // datetime.today() honours SOURCE_DATE_EPOCH, so a booklet built under
+    // the Makefile's reproducibility pin would read 1970: it builds these
+    // with BOOK_DATE_EPOCH instead.
     #text(size: 1em)[© #datetime.today().display("[year]") Ben Swift]
     #v(0.5cm)
 

@@ -95,12 +95,17 @@ TYPST_BIN ?= typst
 BRAND_ASSETS := $(wildcard lockup-light*.svg)
 
 # Typst stamps a creation date into every PDF, so an unchanged rebuild still
-# produces different bytes. The sheet PDFs are committed, so that would dirty
-# four megabyte-sized binaries in git on every `make sheets`. Pinning the epoch
-# makes a rebuild byte-identical unless the content actually changed; override
-# it if you want a real date in the document properties.
+# produces different bytes. Pinning the epoch makes a rebuild byte-identical
+# unless the content actually changed, which is what keeps an unchanged set
+# from being re-uploaded to the bucket for no reason.
 # https://reproducible-builds.org/specs/source-date-epoch/
 SOURCE_DATE_EPOCH ?= 0
+
+# The booklets are the exception: book.typ prints `datetime.today()` in the
+# copyright line, which honours the epoch, so the pin would publish
+# "(c) 1970 Ben Swift" on every title page. They take a real date instead, at
+# the cost of a rebuild never being byte-identical.
+BOOK_DATE_EPOCH ?= $(shell date +%s)
 
 # Everything the binary is built from: the templates and brand assets are
 # compiled in (src/templates.rs), so editing one rebuilds the tool.
@@ -123,7 +128,7 @@ $(TOOL): $(RUST_SOURCES)
 $(PDF_DIR)/%.pdf $(PDF_DIR)/%.stamp: book.typ $(TOOL)
 	$(eval FULLNAME := $(notdir $(basename $@)))
 	$(eval BASE := $(shell echo $(FULLNAME) | sed 's/-[0-9]*-[0-9]*$$//' ))
-	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) TYPST_BIN=$(TYPST_BIN) $(TOOL) pdf --target $(FULLNAME) --input $(DATA_DIR)/$(BASE).txt --out-dir $(OUT_DIR) --book-binding
+	SOURCE_DATE_EPOCH=$(BOOK_DATE_EPOCH) TYPST_BIN=$(TYPST_BIN) $(TOOL) pdf --target $(FULLNAME) --input $(DATA_DIR)/$(BASE).txt --out-dir $(OUT_DIR) --book-binding
 	@if echo "$@" | grep -q '.stamp$$'; then touch $@; fi
 
 # ===== Pattern rule for pre-prepared cutout PDFs =====
