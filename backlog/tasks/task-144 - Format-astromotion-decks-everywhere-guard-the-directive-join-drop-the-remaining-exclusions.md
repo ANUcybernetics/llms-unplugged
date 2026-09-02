@@ -3,10 +3,10 @@ id: TASK-144
 title: >-
   Format astromotion decks everywhere: guard the directive join, drop the
   remaining exclusions
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-09-02 07:03'
-updated_date: '2026-09-02 07:55'
+updated_date: '2026-09-02 08:19'
 labels:
   - tooling
   - decks
@@ -30,7 +30,7 @@ Scope note: the notes migration this task originally implied is already done -- 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [x] #1 astromotion fails the build with file and line when a slide directive appears as an inline MDX expression (two directives folded onto one line), instead of silently dropping the class and id
-- [ ] #2 The astromotion change is released as a tagged version and propagated to every consumer via the pinned git tag (ben:anu-theme-sync)
+- [x] #2 The astromotion change is released as a tagged version and propagated to every consumer via the pinned git tag (ben:anu-theme-sync)
 - [x] #3 benswift-me: the 26 adjacent directive pairs in src/decks/phd-offsite-2026/slides.deck.mdx are separated by a blank line, and the deck still renders with every _class and _id applied
 - [x] #4 Deck exclusions are gone from .oxfmtrc.json in benswift-me, astro-theme-anu, astro-theme-university and comp4020/templates, and each repo's decks are an oxfmt fixed point (llms-unplugged is TASK-145)
 - [x] #5 Each repo's reflow is verified behaviour-neutral before it lands: rendered deck HTML is unchanged from the pre-reflow version once whitespace is collapsed
@@ -53,20 +53,19 @@ Scope note: the notes migration this task originally implied is already done -- 
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-Progress 2026-09-02.
+Propagation pass 2026-09-02: astromotion v0.24.0 (13307bc) bumped and pushed in every consumer that carries a pin.
 
-First pass: comp4020-website (f639ba5, 13 decks, rendered HTML verified byte-identical once whitespace is collapsed), benswift-me (d45567a70, 18 of 19 decks identical plus the 26-pair adjacency fix), astro-theme-anu (5c789e1, decks were already fixed points so nothing reflowed), and the wrapper side in ~/.dotfiles (21fd46b3). comp4020/templates needs nothing: it has no .oxfmtrc.json.
+- astro-theme-university 0a440dd (pnpm-workspace.yaml override + docs/package.json; tests, lint, docs build clean)
+- astro-theme-anu 0e87d46 (all three pins; example resolved 0.24.0 from its own node_modules, typecheck + example build clean)
+- comp4020/website c40f7be, comp4020/templates/template-course-site 6e6d4a2
+- benswift-me a77692d (19 decks, no structural violations)
+- llms-unplugged dad461c1
 
-Second pass:
+Every build ran the new guard clean --- no folded directives anywhere in the family. slop-university carries no astromotion pin, per the impact map.
 
-- astromotion 9b64ce1: remarkDeckDirectiveGuard rejects a slide directive that arrives as an inline MDX expression, naming the file and line, and remarkDeckIncludes runs the same check on each partial before the splice strips its positions --- so a fold inside a partial names the partial, not the deck. Scanned against all 103 real decks and partials across the consumer repos: no false positives.
-- astro-theme-university bb51200: deck exclusions gone. The docs deck was already a fixed point apart from two prose paragraphs. The one thing the reflow broke was inside a fence --- oxfmt formats embedded markdown, and it joined two background-image examples onto one line, changing what the slide teaches. A blank line between the examples is stable under both that repo's config and the global one. Rendered HTML otherwise identical.
-- astro-theme-anu 76f6223: dropped the dead **/*.deck.svx entry; no .svx file lives there any more.
-- benswift-me 1383cb988: the schedule slide's hand-written <ul> is markdown lists now, which render tight. Identical to the pre-reflow build once inter-tag whitespace is collapsed.
+Two things surfaced, neither caused by the bump:
+- benswift-me's decks:check has 5 pre-existing slide overflows (classics-to-colonialism, ltc-stem-camp, p5-hour-of-code); confirmed identical on v0.23.0.
+- a leaked 'astro preview --port 4321' from llms-unplugged broke decks:check in two repos until they moved port --- astromotion's own backlog task-5.
 
-Still open here: AC #2 only --- cutting the astromotion release and bumping the pinned tag in every consumer.
-
-llms-unplugged is TASK-145. Its hazard is a different one: oxfmt reflowing an element's inline children changes MDX's block-vs-inline parsing, so a wrapped <p class="fragment"> ends up wrapping a <p> and the fragment class lands on an empty element. Both shapes are legal MDX, the reflowed form is a stable fixed point, and the offending markup is mostly in partials rather than the decks that include them --- so neither astromotion nor a format-check can catch it, and it needs a source change at each of the 18 sites.
-
-Footgun while TASK-145 is open: oxfmt-helix runs with the global ~/.dotfiles/oxfmtrc.json and a synthetic --stdin-filepath, so a repo's ignorePatterns do NOT apply on save. With astromotion-deck auto-format = true in Helix, saving an llms-unplugged deck or partial reflows it and breaks the markup. It shows up in git diff rather than being wholly silent, but nothing fails the build.
+Lint-drift check reports benswift-me on oxlint ^1.80.0 / oxfmt ^0.65.0 against a canon of ^1.79.0 / ^0.64.0. The global mise oxfmt is 0.65.0, so the canon is what is behind; realigning it is a separate one-pass sweep across the family.
 <!-- SECTION:NOTES:END -->
