@@ -19,10 +19,13 @@
 #set page(paper: paper_size, flipped: true, margin: counter-margin)
 #set text(font: "Public Sans")
 
-// Dark text on the light counters, light text on the rest.
-#let label-fill(entry) = if entry.name in ("white", "yellow") { luma(0) } else {
-  white
-}
+// Black text on the light counters, white on the dark: decided by OKLab
+// lightness rather than by name, so a palette change cannot leave a label
+// unreadable. The threshold sits between teal (about 58%) and grey (63%),
+// where the two choices trade places on contrast.
+#let label-fill(entry) = if oklab(entry.color).components().first() > 60% {
+  luma(0)
+} else { white }
 
 // The white counter is the page unless something marks its edge.
 #let counter(entry) = box(
