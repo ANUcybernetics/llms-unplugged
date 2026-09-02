@@ -19,14 +19,16 @@
 // On the sheets the dot beside each strip is set in the full colour and the
 // strip behind the tallies in a tint light enough to write on.
 //
-// Six of the eight take their values from the cutouts palette in
+// Five of the eight take their values from the cutouts palette in
 // cutout-common.typ, whose swatches were chosen on printed (CMYK) distance
 // and sit at the xkcd-survey centroid of their names; see the notes there.
 // Orange is deliberately absent: a printable orange lands too close to red,
 // which is why the cutouts palette has no orange either, and it was the pair
-// the first print run could not tell apart. Yellow and white are not in that
-// palette (neither clears 3.5:1 against white paper, which the cutouts need
-// and the counters do not) and are set by hand.
+// the first print run could not tell apart. Pink is lighter than that
+// palette's magenta, which printed too close to purple; yellow and white are
+// not in that palette at all (none of the three clears 3.5:1 against white
+// paper, which the cutouts need and the counters do not). All three are set
+// by hand.
 #let palettes = (
   (
     (color: oklch(57.9%, 0.238, 29deg), name: "red"),
@@ -35,7 +37,7 @@
     (color: rgb("#eab308"), name: "yellow"),
   ),
   (
-    (color: oklch(53.4%, 0.221, 353deg), name: "pink"),
+    (color: oklch(68%, 0.21, 355deg), name: "pink"),
     (color: oklch(45.2%, 0.195, 316deg), name: "purple"),
     (color: luma(0), name: "black"),
     (color: rgb("#ffffff"), name: "white"),
