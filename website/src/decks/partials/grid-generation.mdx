@@ -29,7 +29,13 @@ use your grid to generate new text, rolling dice to choose each next word
 any word will do as a seed --- we're starting from `see`, which is the last row, to show you don't have to begin at the top. Only one option here, so no roll.
 ```
 
-<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={0} />
+<StaticGeneration
+  tokens={EXAMPLE_TOKENS}
+  vocabulary={EXAMPLE_VOCAB}
+  sequence={EXAMPLE_GENERATION}
+  rolls={EXAMPLE_GENERATION_ROLLS}
+  step={0}
+/>
 
 ---
 
@@ -39,7 +45,14 @@ any word will do as a seed --- we're starting from `see`, which is the last row,
 two options in this row (`run` and `,`) with equal tallies --- highlight both, then roll
 ```
 
-<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={1} phase="preroll" />
+<StaticGeneration
+  tokens={EXAMPLE_TOKENS}
+  vocabulary={EXAMPLE_VOCAB}
+  sequence={EXAMPLE_GENERATION}
+  rolls={EXAMPLE_GENERATION_ROLLS}
+  step={1}
+  phase="preroll"
+/>
 
 ---
 
@@ -49,7 +62,13 @@ two options in this row (`run` and `,`) with equal tallies --- highlight both, t
 equal tallies, so the ten d10 faces split down the middle --- `run` gets 0-4 and `,` gets 5-9, reading the row's cells left to right; same apportionment the printed booklets use. Pause here before rolling.
 ```
 
-<DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={1} />
+<DiceStrip
+  tokens={EXAMPLE_TOKENS}
+  vocabulary={EXAMPLE_VOCAB}
+  sequence={EXAMPLE_GENERATION}
+  rolls={EXAMPLE_GENERATION_ROLLS}
+  step={1}
+/>
 
 ---
 
@@ -59,7 +78,14 @@ equal tallies, so the ten d10 faces split down the middle --- `run` gets 0-4 and
 now roll --- a 7 lands in the `,` band
 ```
 
-<DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={1} showRoll />
+<DiceStrip
+  tokens={EXAMPLE_TOKENS}
+  vocabulary={EXAMPLE_VOCAB}
+  sequence={EXAMPLE_GENERATION}
+  rolls={EXAMPLE_GENERATION_ROLLS}
+  step={1}
+  showRoll
+/>
 
 ---
 
@@ -69,7 +95,13 @@ now roll --- a 7 lands in the `,` band
 the 7 landed in the `,` band, so `,` is our next word
 ```
 
-<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={1} />
+<StaticGeneration
+  tokens={EXAMPLE_TOKENS}
+  vocabulary={EXAMPLE_VOCAB}
+  sequence={EXAMPLE_GENERATION}
+  rolls={EXAMPLE_GENERATION_ROLLS}
+  step={1}
+/>
 
 ---
 
@@ -79,7 +111,14 @@ the 7 landed in the `,` band, so `,` is our next word
 another two-option row (`run` and `spot`), still equal --- both highlighted, then roll
 ```
 
-<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={2} phase="preroll" />
+<StaticGeneration
+  tokens={EXAMPLE_TOKENS}
+  vocabulary={EXAMPLE_VOCAB}
+  sequence={EXAMPLE_GENERATION}
+  rolls={EXAMPLE_GENERATION_ROLLS}
+  step={2}
+  phase="preroll"
+/>
 
 ---
 
@@ -89,7 +128,13 @@ another two-option row (`run` and `spot`), still equal --- both highlighted, the
 rolled a 2, which lands in the `run` band
 ```
 
-<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={2} />
+<StaticGeneration
+  tokens={EXAMPLE_TOKENS}
+  vocabulary={EXAMPLE_VOCAB}
+  sequence={EXAMPLE_GENERATION}
+  rolls={EXAMPLE_GENERATION_ROLLS}
+  step={2}
+/>
 
 ---
 
@@ -99,7 +144,14 @@ rolled a 2, which lands in the `run` band
 two options again --- but `.` has two tallies to `,`'s one, so this isn't a 50/50 roll
 ```
 
-<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={3} phase="preroll" />
+<StaticGeneration
+  tokens={EXAMPLE_TOKENS}
+  vocabulary={EXAMPLE_VOCAB}
+  sequence={EXAMPLE_GENERATION}
+  rolls={EXAMPLE_GENERATION_ROLLS}
+  step={3}
+  phase="preroll"
+/>
 
 ---
 
@@ -109,7 +161,13 @@ two options again --- but `.` has two tallies to `,`'s one, so this isn't a 50/5
 `.` has twice the tallies, so it gets more of the faces (3-9) than `,` (0-2). With a ten-sided die that's the closest split rather than exactly 2:1 --- the point is more tallies → more faces → more likely. Pause here before rolling.
 ```
 
-<DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={3} />
+<DiceStrip
+  tokens={EXAMPLE_TOKENS}
+  vocabulary={EXAMPLE_VOCAB}
+  sequence={EXAMPLE_GENERATION}
+  rolls={EXAMPLE_GENERATION_ROLLS}
+  step={3}
+/>
 
 ---
 
@@ -119,7 +177,14 @@ two options again --- but `.` has two tallies to `,`'s one, so this isn't a 50/5
 now roll --- a 6 sits in the `.` band
 ```
 
-<DiceStrip tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={3} showRoll />
+<DiceStrip
+  tokens={EXAMPLE_TOKENS}
+  vocabulary={EXAMPLE_VOCAB}
+  sequence={EXAMPLE_GENERATION}
+  rolls={EXAMPLE_GENERATION_ROLLS}
+  step={3}
+  showRoll
+/>
 
 ---
 
@@ -129,7 +194,13 @@ now roll --- a 6 sits in the `.` band
 the 6 sits in the `.` band, so we pick `.`
 ```
 
-<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={3} />
+<StaticGeneration
+  tokens={EXAMPLE_TOKENS}
+  vocabulary={EXAMPLE_VOCAB}
+  sequence={EXAMPLE_GENERATION}
+  rolls={EXAMPLE_GENERATION_ROLLS}
+  step={3}
+/>
 
 ---
 
@@ -139,7 +210,13 @@ the 6 sits in the `.` band, so we pick `.`
 only one option (`see`) --- no roll. Note we keep rolling straight past the full stop; the model has no idea a sentence just ended.
 ```
 
-<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={4} />
+<StaticGeneration
+  tokens={EXAMPLE_TOKENS}
+  vocabulary={EXAMPLE_VOCAB}
+  sequence={EXAMPLE_GENERATION}
+  rolls={EXAMPLE_GENERATION_ROLLS}
+  step={4}
+/>
 
 ---
 
@@ -149,7 +226,13 @@ only one option (`see`) --- no roll. Note we keep rolling straight past the full
 and so on --- we've looped back to where we started. Keep going for as long as you like; you decide when to stop.
 ```
 
-<StaticGeneration tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} sequence={EXAMPLE_GENERATION} rolls={EXAMPLE_GENERATION_ROLLS} step={5} />
+<StaticGeneration
+  tokens={EXAMPLE_TOKENS}
+  vocabulary={EXAMPLE_VOCAB}
+  sequence={EXAMPLE_GENERATION}
+  rolls={EXAMPLE_GENERATION_ROLLS}
+  step={5}
+/>
 
 ---
 

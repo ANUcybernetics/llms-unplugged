@@ -95,6 +95,7 @@ Don't hand out the sheets yet. They get read too early otherwise, and the reveal
 
 ![bg](./assets/bg-bandura-quote.avif)
 
+{/* prettier-ignore */}
 > Everyday life is increasingly regulated by complex technologies that most
 > people <span class="fragment quote-emph-minor">neither understand</span>
 > <span class="fragment quote-emph">nor believe they can do much to
@@ -228,7 +229,14 @@ None of these changed the loop. Look at the context, weigh the options, pick one
 
 {/* _class: centered */}
 
-<GridZoom cells={57600} label="the whole room, as a grid" detail="240 distinct tokens · 57,600 cells" compareCells={25} compareLabel="the line on the last slide" note="5.8 m² of paper — roughly this stage" />
+<GridZoom
+  cells={57600}
+  label="the whole room, as a grid"
+  detail="240 distinct tokens · 57,600 cells"
+  compareCells={25}
+  compareLabel="the line on the last slide"
+  note="5.8 m² of paper — roughly this stage"
+/>
 
 ```notes
 Read the caption. The little gold square is the slide you were just looking at; the big one is all of us. 240 distinct tokens, so 57,600 cells, and only about a thousand of them have a tally in them at all. The rest are empty --- pairs the book never made, which the model treats as impossible.
@@ -242,7 +250,12 @@ This is the model we made today. Now put its two kinds of scale beside a frontie
 
 {/* _class: centered */}
 
-<ModelScaleBars contextStart="1 token" trainingStart="1,962 tokens" modelStart="57,600 grid cells" footer="three independent scales · different kinds of model" />
+<ModelScaleBars
+  contextStart="1 token"
+  trainingStart="1,962 tokens"
+  modelStart="57,600 grid cells"
+  footer="three independent scales · different kinds of model"
+/>
 
 ```notes
 Three independent scales grow. The first is how much the model looks at before each guess. Ours looked at exactly one token --- which is why our sentence wandered --- and Claude looks back over the whole conversation.

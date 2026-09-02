@@ -87,6 +87,19 @@ follows it on the slide. Use `margin-inline` when a root needs centring. The
 exception is a root that genuinely owns its geometry (a full-bleed,
 absolutely-positioned layer): those set their own margins deliberately.
 
+### Deck source formatting
+
+Deck sources format like any other MDX, so hand-rolled inline HTML in a deck or
+partial has to survive a reflow. MDX parses an element's children as blocks the
+moment they span more than one line, so wrapping a long
+`<p class="fragment">...</p>` leaves a `<p>` inside a `<p>` --- the browser
+repairs that by ending the outer one early, and the class lands on an empty
+element. The `{/* prettier-ignore */}` comments above those blocks are what stop
+it; keep them, and add one when you write markup that would wrap. For the same
+reason, never let an inline tag start a line inside a prose paragraph: oxfmt
+reads it as a new block and inserts a blank line, splitting the paragraph in
+two.
+
 ### Key patterns
 
 - **Variant toggle**: grid/cutouts variant uses CSS `data-variant` attribute on

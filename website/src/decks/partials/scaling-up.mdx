@@ -39,7 +39,12 @@ Leave it broken. The question to walk off with, because the next slide answers i
 
 <p class="voice">"it wrote something genuinely new---how?"</p>
 
-<ParameterGrid tokens={EXAMPLE_GENERALISE} vocabulary={EXAMPLE_GENERALISE_VOCAB} scores={EXAMPLE_GENERALISE_SCORES} highlight="dog ran" />
+<ParameterGrid
+  tokens={EXAMPLE_GENERALISE}
+  vocabulary={EXAMPLE_GENERALISE_VOCAB}
+  scores={EXAMPLE_GENERALISE_SCORES}
+  highlight="dog ran"
+/>
 
 `the dog ran` isn't in this text, so your grid rates it **impossible**
 
@@ -84,6 +89,7 @@ Then the line the slide is for, and it's the strangest fact in the section: turn
 
 ![bg right:35%](./assets/bg-post-training.avif)
 
+{/* prettier-ignore */}
 <div class="qa-compare">
   <span class="qa-prompt">you ask your grid: "what is the capital of France?"</span>
   <span class="qa-a">"see spot, run. see"</span>
