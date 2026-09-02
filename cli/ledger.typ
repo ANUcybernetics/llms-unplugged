@@ -299,7 +299,7 @@
     at least #max-count of each: that is the most times any one follower appears
     in this text, and so the most counters of one colour a single draw can need.
     The CLI writes #raw("counters.pdf") beside this file: print it double-sided
-    (either binding works) and cut along the dashed lines for
+    (either binding works) and cut the squares apart for
     #context counters-per-colour(page.height) of each colour per sheet.
   ]
 

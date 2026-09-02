@@ -11,7 +11,7 @@
 // copies as the brief asks for.
 
 #import "ledger-common.typ": (
-  counter-cell, counter-margin, counter-rows, palettes,
+  counter-cell, counter-gap, counter-margin, counter-rows, palettes,
 )
 
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
@@ -23,10 +23,14 @@
   white
 }
 
+// The white counter is the page unless something marks its edge.
 #let counter(entry) = box(
   width: counter-cell,
   height: counter-cell,
   fill: entry.color,
+  stroke: if entry.name == "white" {
+    (paint: luma(150), thickness: 0.5pt, dash: "dashed")
+  } else { none },
   align(center + horizon, text(size: 8pt, fill: label-fill(entry), entry.name)),
 )
 
@@ -45,9 +49,8 @@
   align(center + horizon, grid(
     columns: 2 * palettes.at(0).len(),
     rows: rows,
-    // Cut guide: a light dashed rule between squares. Drawn over the fills so
-    // it shows on the white counters too.
-    stroke: (paint: luma(120), thickness: 0.5pt, dash: "dashed"),
+    // The gutter is the cut guide: anywhere in the white does.
+    gutter: counter-gap,
     ..range(rows).map(i => row-of(i).map(counter)).flatten(),
   ))
 }

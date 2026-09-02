@@ -80,17 +80,22 @@
 
 // ===== The printed counters =====
 //
-// ledger-counters.typ lays the counters out as square cells; the brief in
-// ledger.typ tells the facilitator how many of each colour a sheet yields, so
-// the numbers live here where both can see them.
-#let counter-cell = 23mm
+// ledger-counters.typ lays the counters out as square cells with a gutter
+// between them, so cutting them apart means cutting anywhere in the white
+// rather than along a hairline; the brief in ledger.typ tells the facilitator
+// how many of each colour a sheet yields, so the numbers live here where both
+// can see them.
+#let counter-cell = 20mm
+#let counter-gap = 4mm
 #let counter-margin = 10mm
 
 // Rows of counters on a page of `height`: as many as fit, rounded down to
 // even, because the two palettes alternate rows and an odd count would print
 // one palette more than the other.
 #let counter-rows(height) = {
-  let rows = calc.floor((height - 2 * counter-margin) / counter-cell)
+  let rows = calc.floor(
+    (height - 2 * counter-margin + counter-gap) / (counter-cell + counter-gap),
+  )
   rows - calc.rem(rows, 2)
 }
 
