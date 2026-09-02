@@ -1301,6 +1301,32 @@ fn test_ledger_cli_rejects_zero_sheets() -> io::Result<()> {
     Ok(())
 }
 
+/// There is nothing to prefill without a corpus, so the two flags conflict
+/// rather than one silently winning.
+#[test]
+fn test_ledger_cli_rejects_prefill_without_a_corpus() -> io::Result<()> {
+    let temp = TempDir::new()?;
+    let output = Command::new(cli_exe())
+        .arg("ledger")
+        .arg("--blank")
+        .arg("--prefill")
+        .arg("tallies")
+        .arg("--json-only")
+        .arg("--output")
+        .arg(temp.path())
+        .output()?;
+    assert!(
+        !output.status.success(),
+        "--blank --prefill should exit non-zero"
+    );
+    assert!(
+        String::from_utf8_lossy(&output.stderr).contains("cannot be used with"),
+        "stderr: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    Ok(())
+}
+
 /// A prefix taller than a page cannot be laid out, and says so.
 #[test]
 fn test_ledger_cli_reports_a_prefix_taller_than_a_page() -> io::Result<()> {

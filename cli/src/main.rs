@@ -381,8 +381,9 @@ struct LedgerArgs {
     #[arg(long, default_value_t = 12)]
     rows: usize,
 
-    /// What the sheets come printed with. Ignored by --blank.
-    #[arg(long, value_enum, default_value_t = Prefill::Prefixes)]
+    /// What the sheets come printed with. There is nothing to prefill without
+    /// a corpus, so this and --blank are mutually exclusive.
+    #[arg(long, value_enum, default_value_t = Prefill::Prefixes, conflicts_with = "blank")]
     prefill: Prefill,
 
     /// Paper size for PDF (default: a4); the sheets are always landscape

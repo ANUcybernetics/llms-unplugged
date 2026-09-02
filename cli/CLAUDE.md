@@ -194,7 +194,8 @@ port and rebuild the wasm.
 - `--prefill prefixes|followers|tallies` (ledger only, default `prefixes`) -
   What the rows come printed with, each level adding to the one before it;
   `tallies` is the whole sheet filled in, so the group skips training and goes
-  straight to generating. `--blank` prints empty rows with no corpus
+  straight to generating. `--blank` prints empty rows with no corpus, and so
+  conflicts with `--prefill` rather than silently outranking it
 - `--columns` / `--rows` (ledger only, defaults 4 and 12) - Follower cells on a
   row and rows on a page. A prefix with more followers than columns continues
   onto the next row; the command warns when one needs a third, where the colours
