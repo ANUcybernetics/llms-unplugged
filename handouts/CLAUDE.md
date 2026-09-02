@@ -10,6 +10,10 @@ and the poster. The lessons themselves live on the website
 
 - `worksheets/` - blank templates (grid, trigram-template,
   truncation-strategies, blank-page)
+- `handout-common.typ` - the worksheets' page furniture (mark, gold rule, URL),
+  built on the brand definitions in `cli/cutout-common.typ` so a worksheet and a
+  set of CLI sheets read as one family. `grid.typ` sets its own, being a
+  full-bleed A3 grid with no margins to hang a header on
 - `poster.typ` - project poster
 - `try-it-yourself-spread.typ` - designer reference for a glossy-booklet 2-page
   spread: generate-with-a-d6 worked example (model = the opening stanzas of The
@@ -39,17 +43,19 @@ the manifest (see that script's header).
 
 ## Design constraints
 
-These files use an A4 **landscape** format (29.7cm × 21cm) and inherit their
-styling from the `anu` Typst template: ANU Cybernetic Studio branding, dark
-theme with gold accents.
+Most of these are A4 **landscape** (29.7cm × 21cm); the grid is A3 landscape and
+the try-it-yourself spread A3 landscape at two pages to a sheet.
+
+The worksheets take their styling from `handout-common.typ`. Only `poster.typ`
+still uses the `anu` template.
 
 ## Dependencies
 
-- `@local/anu-typst-template:0.3.0` package (must be installed locally, not
-  vendored in this repo; from 0.3.0 it's a brand layer over
-  `@local/university-typst-template`, which must be installed too)
 - Typst compiler
-- fonts installed system-wide (Public Sans, Monaspace Argon)
+- fonts installed system-wide (Public Sans, Libertinus Serif)
+- `@local/anu-typst-template:0.3.0` for `poster.typ` only (must be installed
+  locally, not vendored in this repo; from 0.3.0 it's a brand layer over
+  `@local/university-typst-template`, which must be installed too)
 
 ## Notes
 
