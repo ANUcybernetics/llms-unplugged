@@ -67,9 +67,11 @@
   entry.name == "black"
 ) { luma(228) } else { color.mix((entry.color, 24%), (white, 76%)) }
 
+// Heavy enough to read as the colour itself: on the sheets the border is
+// what a counter is matched against.
 #let strip-stroke(entry) = if entry.name == "white" {
-  (paint: luma(0), thickness: 0.6pt, dash: "dashed")
-} else { 0.8pt + entry.color }
+  (paint: luma(0), thickness: 1.2pt, dash: "dashed")
+} else { 2pt + entry.color }
 
 // The counter itself, drawn: a dot in the full colour with a hairline so the
 // white one is visible. This is what a participant matches a counter against.

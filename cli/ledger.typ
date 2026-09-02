@@ -118,24 +118,20 @@
   rows
 }
 
-// The tally strip: tinted to its colour, with the counter dot and the colour's
-// name in the corner so the strip can be matched to a counter --- or called
-// out --- without the room agreeing on what "purple" looks like in print.
+// The tally strip: tinted to its colour, with a heavy border in the full
+// colour to match a counter against and the colour's name in the corner so it
+// can be called out --- without the room agreeing on what "purple" looks
+// like in print.
 #let tally-strip(entry) = box(
   width: 100%,
   height: 100%,
   fill: strip-fill(entry),
   stroke: strip-stroke(entry),
-  inset: 0.8mm,
+  inset: 1mm,
   radius: 1.5pt,
   place(
     bottom + right,
-    stack(
-      dir: ltr,
-      spacing: 0.6mm,
-      align(horizon, text(size: 5.5pt, fill: luma(60), entry.name)),
-      counter-dot(entry, size: 2.6mm),
-    ),
+    text(size: 5.5pt, fill: luma(60), entry.name),
   ),
 )
 
