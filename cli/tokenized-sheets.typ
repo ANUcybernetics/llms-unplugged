@@ -152,9 +152,8 @@
 // "the first 300 tokens of _Title_" when the set was read under a budget,
 // else just the title: a facilitator should know a set is not the whole text.
 #let corpus-phrase(metadata) = if "max_tokens" in metadata [the first
-  #metadata.max_tokens tokens of #emph(metadata.title)] else [#emph(
-    metadata.title,
-  )]
+  #metadata.max_tokens tokens of #if metadata.at("documents", default: 1) > 1 [each
+    of] #emph(metadata.title)] else [#emph(metadata.title)]
 
 #let instructions-page() = {
   set page(footer: align(
