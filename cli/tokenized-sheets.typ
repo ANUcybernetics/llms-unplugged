@@ -149,6 +149,13 @@
 // the sheets. `box` only to keep it from breaking across lines.
 #let pair-chip(token) = box(render-cutout(token))
 
+// "the first 300 tokens of _Title_" when the set was read under a budget,
+// else just the title: a facilitator should know a set is not the whole text.
+#let corpus-phrase(metadata) = if "max_tokens" in metadata [the first
+  #metadata.max_tokens tokens of #emph(metadata.title)] else [#emph(
+    metadata.title,
+  )]
+
 #let instructions-page() = {
   set page(footer: align(
     center,
@@ -199,7 +206,7 @@
   // Left: what the set is and how to read a sheet. Right: how to run it.
   let brief-what = [
     The pages after this one are #sheets.len() *search sheets*, dealt from
-    #emph(doc_metadata.title) by #doc_metadata.author. Print them one-sided and
+    #corpus-phrase(doc_metadata) by #doc_metadata.author. Print them one-sided and
     hand out *one sheet per person*; every sheet is different, and nothing needs
     cutting out. Each holds #per_sheet #strong(pair-noun-plural): a *next token*
     with the *previous #prev-words-phrase* that came before it in the text.

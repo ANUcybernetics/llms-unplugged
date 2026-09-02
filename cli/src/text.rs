@@ -42,13 +42,19 @@ pub struct Token {
 }
 
 /// The corpus-independent tokeniser settings: which marks survive as
-/// punctuation tokens, and how Chinese is segmented.
+/// punctuation tokens, how Chinese is segmented, and how much of a text to
+/// read.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct NormalizerConfig {
     /// Sorted, so [`NormalizerConfig::punctuation`] is deterministic however
     /// the set was given.
     punctuation: BTreeSet<char>,
     cjk_mode: CjkMode,
+    /// Read only the first this many kept tokens of a text (see
+    /// [`Normalizer::tokenize`]). The activities scale with the text --- a
+    /// ledger row per prefix, a search sheet per so many pairs --- and this
+    /// is the knob that sizes them without editing the corpus file.
+    max_tokens: Option<usize>,
 }
 
 impl Default for NormalizerConfig {
@@ -62,7 +68,19 @@ impl NormalizerConfig {
         Self {
             punctuation: punctuation.into_iter().collect(),
             cjk_mode,
+            max_tokens: None,
         }
+    }
+
+    /// The same settings, reading only the first `max_tokens` kept tokens of
+    /// a text (`None` reads it all).
+    #[must_use]
+    pub fn with_max_tokens(self, max_tokens: Option<usize>) -> Self {
+        Self { max_tokens, ..self }
+    }
+
+    pub fn max_tokens(&self) -> Option<usize> {
+        self.max_tokens
     }
 
     /// The punctuation marks kept as standalone tokens, as a sorted string.
@@ -122,6 +140,33 @@ impl Normalizer {
 
     pub fn config(&self) -> &NormalizerConfig {
         &self.config
+    }
+
+    /// Every token of a text, in order, with its keep/discard status --- the
+    /// one whole-corpus tokenisation that the model builder and the cutouts
+    /// pipeline both read, so a text is the same sequence of tokens whichever
+    /// artefact is made from it. The window runs across line breaks: a line
+    /// is a unit of the file, not of the text.
+    ///
+    /// Honours the config's `max_tokens`: the stream stops after that many
+    /// kept tokens. Discarded tokens before the cut stay (the cutouts show
+    /// them dimmed); nothing after it is read. Casing is still decided over
+    /// the whole file by [`Normalizer::for_corpus`], which has more evidence
+    /// than the prefix does and costs nothing.
+    pub fn tokenize<S: AsRef<str>>(&self, lines: &[S]) -> Vec<Token> {
+        let mut kept = 0;
+        let limit = self.config.max_tokens.unwrap_or(usize::MAX);
+        lines
+            .iter()
+            .flat_map(|line| self.tokenize_line(line.as_ref()))
+            .take_while(|token| {
+                if kept >= limit {
+                    return false;
+                }
+                kept += usize::from(token.keep);
+                true
+            })
+            .collect()
     }
 
     /// Split a line into lexical segments. This is the single tokenizer
@@ -423,6 +468,29 @@ fn is_roman_numeral(s: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn tokenize_stops_after_max_kept_tokens() {
+        let lines = ["one IV two three", "four five"];
+        let all = Normalizer::for_corpus(NormalizerConfig::default(), &lines);
+        let texts = |tokens: Vec<Token>| tokens.into_iter().map(|t| t.text).collect::<Vec<_>>();
+        assert_eq!(
+            texts(all.tokenize(&lines)),
+            ["one", "IV", "two", "three", "four", "five"]
+        );
+
+        let config = NormalizerConfig::default().with_max_tokens(Some(4));
+        let cut = Normalizer::for_corpus(config, &lines);
+        // Four kept tokens, the discarded numeral before the cut kept, the
+        // cut running across the line break.
+        assert_eq!(
+            texts(cut.tokenize(&lines)),
+            ["one", "IV", "two", "three", "four"]
+        );
+
+        let none = NormalizerConfig::default().with_max_tokens(Some(0));
+        assert!(Normalizer::new(none).tokenize(&lines).is_empty());
+    }
 
     fn normalizer() -> Normalizer {
         Normalizer::new(NormalizerConfig::default())

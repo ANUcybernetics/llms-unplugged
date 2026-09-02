@@ -104,6 +104,11 @@ pub struct CutoutsMetadata {
     /// file; more when several were combined, which the sheets brief says out
     /// loud because generation crossing between texts is the point of doing it.
     pub documents: usize,
+    /// The token budget each document was read under, when one was set: the
+    /// briefs say "the first N tokens of" so a facilitator knows the set is
+    /// not the whole text.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub max_tokens: Option<usize>,
     pub total_tokens: usize,
     pub kept_tokens: usize,
     #[serde(flatten)]
@@ -139,9 +144,10 @@ impl CutoutSet {
         config: NormalizerConfig,
         n: usize,
     ) -> Self {
+        let max_tokens = config.max_tokens();
         let normalizer = Normalizer::for_corpus(config, lines);
         let tokens = tokenize_cutouts(&normalizer, n, lines);
-        Self::build(title, author, 1, tokens, n)
+        Self::build(title, author, 1, max_tokens, tokens, n)
     }
 
     /// Concatenate independently tokenised sets without creating an n-gram
@@ -160,14 +166,18 @@ impl CutoutSet {
         let title = join(|m| &m.title);
         let author = join(|m| &m.author);
         let documents = sets.len();
+        // Every document was read under the same config, so the budget is
+        // whichever any of them carries.
+        let max_tokens = sets.iter().find_map(|set| set.metadata.max_tokens);
         let tokens: Vec<Cutout> = sets.into_iter().flat_map(|set| set.tokens).collect();
-        Self::build(title, author, documents, tokens, n)
+        Self::build(title, author, documents, max_tokens, tokens, n)
     }
 
     fn build(
         title: String,
         author: String,
         documents: usize,
+        max_tokens: Option<usize>,
         tokens: Vec<Cutout>,
         n: usize,
     ) -> Self {
@@ -177,6 +187,7 @@ impl CutoutSet {
                 title,
                 author,
                 documents,
+                max_tokens,
                 total_tokens: tokens.len(),
                 kept_tokens: tokens.iter().filter(|t| t.is_kept()).count(),
                 summary: model.summary(),
@@ -215,8 +226,8 @@ pub fn cutouts_model(n: usize, tokens: &[Cutout]) -> Model {
     Model::from_table(n, kept, contexts)
 }
 
-/// Tokenise lines for the cutouts variant, giving each kept token its n-1
-/// preceding kept tokens as context.
+/// Tokenise lines for the cutouts variant (see [`Normalizer::tokenize`]),
+/// giving each kept token its n-1 preceding kept tokens as context.
 pub fn tokenize_cutouts<S: AsRef<str>>(
     normalizer: &Normalizer,
     n: usize,
@@ -225,9 +236,9 @@ pub fn tokenize_cutouts<S: AsRef<str>>(
     let context_size = n - 1;
     let mut kept_texts: Vec<String> = Vec::new();
 
-    lines
-        .iter()
-        .flat_map(|line| normalizer.tokenize_line(line.as_ref()))
+    normalizer
+        .tokenize(lines)
+        .into_iter()
         .map(|token| {
             if !token.keep {
                 return Cutout::discarded(token.text);

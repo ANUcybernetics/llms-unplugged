@@ -168,6 +168,13 @@ are dropped; apostrophes inside contractions are preserved.
     prefix with more than three times the column count of followers, since its
     fourth row repeats the first row's colours
   - `--n <N>`, `--title`, `--author`, `--paper-size` as for `sheets`
+
+Every subcommand also takes `--max-tokens <N>`, which reads only the first N
+tokens of the text (of each text, when several are given). The activities
+scale with the text --- a ledger row per prefix, a search sheet per so many
+pairs --- so this is how to size them without editing the corpus file; the
+briefs say "the first N tokens of" so nobody mistakes the set for the whole
+text.
 - `sample` - Build an N-gram model in memory from a corpus and sample text from
   it. Useful as a sanity check on the model without printing a booklet.
   - `--input <FILE>`, `--n <N>` (default 2)

@@ -217,6 +217,13 @@
 
 // The brief is one page, printed once, and only when there is a corpus to
 // describe: blank sheets are handed to a group that already knows the game.
+// "the first 300 tokens of _Title_" when the set was read under a budget,
+// else just the title: a facilitator should know a set is not the whole text.
+#let corpus-phrase(metadata) = if "max_tokens" in metadata [the first
+  #metadata.max_tokens tokens of #emph(metadata.title)] else [#emph(
+    metadata.title,
+  )]
+
 #let brief() = {
   set page(footer: align(
     center,
@@ -254,9 +261,8 @@
   )
 
   let brief-what = [
-    The pages after this one are #sheets.len() *ledger sheets* built from #emph(
-      metadata.title,
-    ) by #metadata.author. Together they are the model: #prefixes rows, one per
+    The pages after this one are #sheets.len() *ledger sheets* built from
+    #corpus-phrase(metadata) by #metadata.author. Together they are the model: #prefixes rows, one per
     #prefix-noun, dealt across the sheets in alphabetical runs. Each sheet's
     header says the first and last prefix it holds, so a group of #sheets.len()
     can find any prefix by reading headers. Print one-sided and hand out one

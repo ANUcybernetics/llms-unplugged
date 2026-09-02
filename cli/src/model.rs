@@ -57,12 +57,14 @@ impl Model {
         }
     }
 
-    /// Normalise `lines` with `normalizer` and count the result. The window
-    /// runs across line breaks: a line is a unit of the file, not of the text.
+    /// Tokenise `lines` with `normalizer` (see [`Normalizer::tokenize`]) and
+    /// count the kept tokens.
     pub fn from_lines<S: AsRef<str>>(n: usize, normalizer: &Normalizer, lines: &[S]) -> Self {
-        let tokens: Vec<String> = lines
-            .iter()
-            .flat_map(|line| normalizer.normalize_line(line.as_ref()))
+        let tokens: Vec<String> = normalizer
+            .tokenize(lines)
+            .into_iter()
+            .filter(|token| token.keep)
+            .map(|token| token.text)
             .collect();
         Self::from_tokens(n, &tokens)
     }

@@ -1395,3 +1395,64 @@ fn pdf_pages(pdf: &Path) -> Option<usize> {
         .find_map(|l| l.strip_prefix("Pages:"))
         .and_then(|c| c.trim().parse().ok())
 }
+
+/// `--max-tokens` reads only the first N tokens of each input, and the set
+/// says so.
+#[test]
+fn test_max_tokens_cuts_each_input() -> io::Result<()> {
+    let temp = TempDir::new()?;
+    let one = write_sample_corpus(temp.path(), "one.txt", "a b c d e f g h")?;
+    let two = write_sample_corpus(temp.path(), "two.txt", "p q r s t u v w")?;
+    let out_dir = temp.path().join("out");
+
+    let output = Command::new(cli_exe())
+        .arg("sheets")
+        .args(["-i", one.to_str().unwrap(), "-i", two.to_str().unwrap()])
+        .args(["--max-tokens", "3", "--sheets", "1", "--json-only"])
+        .arg("--output")
+        .arg(&out_dir)
+        .output()?;
+    assert!(output.status.success(), "sheets failed: {output:?}");
+
+    let json: serde_json::Value =
+        serde_json::from_reader(BufReader::new(File::open(out_dir.join("sheets.json"))?))?;
+    assert_eq!(json["metadata"]["max_tokens"], 3);
+    assert_eq!(
+        json["metadata"]["total_tokens"], 6,
+        "three tokens from each text"
+    );
+    let mut pairs: Vec<(String, String)> = json["sheets"][0]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|t| {
+            (
+                t["previous_words"][0].as_str().unwrap().to_string(),
+                t["text"].as_str().unwrap().to_string(),
+            )
+        })
+        .collect();
+    pairs.sort();
+    let expected = [("a", "b"), ("b", "c"), ("p", "q"), ("q", "r")]
+        .map(|(a, b)| (a.to_string(), b.to_string()));
+    assert_eq!(pairs, expected);
+
+    // The booklet path reads the same budget.
+    let output = Command::new(cli_exe())
+        .arg("build")
+        .args(["-i", one.to_str().unwrap(), "--max-tokens", "3", "--raw"])
+        .arg("--output")
+        .arg(out_dir.join("model.json"))
+        .output()?;
+    assert!(output.status.success(), "build failed: {output:?}");
+    let json: serde_json::Value =
+        serde_json::from_reader(BufReader::new(File::open(out_dir.join("model.json"))?))?;
+    assert_eq!(json["metadata"]["stats"]["total_tokens"], 3);
+
+    let zero = Command::new(cli_exe())
+        .arg("build")
+        .args(["-i", one.to_str().unwrap(), "--max-tokens", "0"])
+        .output()?;
+    assert!(!zero.status.success(), "--max-tokens 0 should be rejected");
+    Ok(())
+}

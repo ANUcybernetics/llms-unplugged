@@ -162,6 +162,11 @@ port and rebuild the wasm.
 
 ## CLI options
 
+- `--max-tokens <N>` (every subcommand) - Read only the first N tokens of the
+  text, of each text when several are given. Applied in
+  `Normalizer::tokenize`, the one whole-corpus tokenisation both pipelines
+  read, so it cannot drift between them; casing is still decided over the
+  whole file
 - `-o, --output <file>` - Output JSON file (default: model.json)
 - `-n, --n <N>` - N-gram size: 2 for bigrams, 3 for trigrams (default: 2)
 - `--raw` - Output raw counts without scaling

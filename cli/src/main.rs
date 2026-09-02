@@ -52,11 +52,18 @@ struct TokenizerArgs {
     /// How to segment Chinese: `word` (jieba words) or `char` (per character)
     #[arg(long, value_enum, default_value_t = CjkMode::Words)]
     cjk: CjkMode,
+
+    /// Read only the first N tokens of the text (of each text, when several
+    /// are given). The activities scale with the text, so this sizes them
+    /// without editing the corpus file.
+    #[arg(long, value_name = "N", value_parser = clap::value_parser!(u64).range(1..))]
+    max_tokens: Option<u64>,
 }
 
 impl TokenizerArgs {
     fn config(&self) -> NormalizerConfig {
         NormalizerConfig::new(self.punctuation.chars(), self.cjk)
+            .with_max_tokens(self.max_tokens.map(|n| n as usize))
     }
 }
 
@@ -473,6 +480,9 @@ struct BuiltModel {
 
 fn build_model(input: &Path, n: usize, config: NormalizerConfig) -> Result<BuiltModel, CliError> {
     let corpus = Corpus::load(input)?;
+    if let Some(max_tokens) = config.max_tokens() {
+        eprintln!("Reading the first {max_tokens} tokens of the text");
+    }
     let normalizer = Normalizer::for_corpus(config, &corpus.lines);
     let model = Model::from_lines(n, &normalizer, &corpus.lines);
     Ok(BuiltModel {
@@ -755,6 +765,16 @@ fn load_cutout_set(
         })
         .collect::<Result<Vec<_>, CliError>>()?;
     let mut set = CutoutSet::combine(documents, n);
+    if let Some(max_tokens) = set.metadata.max_tokens {
+        eprintln!(
+            "Reading the first {max_tokens} tokens of {}",
+            if inputs.len() == 1 {
+                "the text".to_string()
+            } else {
+                format!("each of the {} texts", inputs.len())
+            }
+        );
+    }
     if let Some(title) = title {
         set.metadata.title = title.to_string();
     }
@@ -822,8 +842,8 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
             let more = tall.len().saturating_sub(named.len());
             eprintln!(
                 "Warning: {} prefix(es) have more than {} followers and spill onto a fourth row, \
-                 where the tally colours repeat those of the first: {}{}. A shorter text keeps \
-                 every prefix to three rows.",
+                 where the tally colours repeat those of the first: {}{}. A shorter text \
+                 (--max-tokens) keeps every prefix to three rows.",
                 tall.len(),
                 3 * args.columns,
                 named.join(", "),
