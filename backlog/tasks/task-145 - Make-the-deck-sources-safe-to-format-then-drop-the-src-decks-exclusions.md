@@ -1,9 +1,10 @@
 ---
 id: TASK-145
 title: 'Make the deck sources safe to format, then drop the src/decks exclusions'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-09-02 07:54'
+updated_date: '2026-09-02 08:12'
 labels:
   - tooling
   - decks
@@ -47,8 +48,24 @@ Two ways to fix it.
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Every site above survives `pnpm format` --- the decks are an oxfmt fixed point under both this repo's config and the global ~/.dotfiles/oxfmtrc.json that Helix saves with
-- [ ] #2 The deck entries are gone from website/.oxfmtrc.json
-- [ ] #3 Rendered deck HTML is verified against the pre-change build for all 10 decks: identical once inter-tag whitespace is collapsed (`sed 's/>[[:space:]]*</></g'`), or every difference is deliberate and has been looked at on the slide
-- [ ] #4 `pnpm decks:check` passes, and the config change and the reflow land in one commit (format:check is red between them)
+- [x] #1 Every site above survives `pnpm format` --- the decks are an oxfmt fixed point under both this repo's config and the global ~/.dotfiles/oxfmtrc.json that Helix saves with
+- [x] #2 The deck entries are gone from website/.oxfmtrc.json
+- [x] #3 Rendered deck HTML is verified against the pre-change build for all 10 decks: identical once inter-tag whitespace is collapsed (`sed 's/>[[:space:]]*</></g'`), or every difference is deliberate and has been looked at on the slide
+- [x] #4 `pnpm decks:check` passes, and the config change and the reflow land in one commit (format:check is red between them)
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Landed as abed95f9 with option 1 (prettier-ignore), chosen over the markup rewrite: two of the hazard classes cannot be rewritten into block form at all, so a rewrite would have left a mixed idiom behind anyway.
+
+Twelve {/* prettier-ignore */} comments, not eighteen --- one comment covers a whole contiguous block, so the three corpus paragraphs (and the four yr5-6 definitions, and denouement's three) each take one. Sites: demystifying, visionaries, both unplugged blockquotes, denouement, yr5-6-definitions, yr5-6-wrap-up (3, blank-line separated), scaling-up's qa-compare.
+
+Two sites the task did not list, and prettier-ignore does not fix them: in cutouts-combining-models.mdx and cutouts-sycophancy.mdx a <Token> starts a source line inside a prose paragraph. oxfmt parses that line as its own block and inserts a blank line before it, which splits one rendered <p> into two; the ignore comment covers a node, not the gap between nodes. Both are rewrapped so no line starts with a tag --- the paragraph text is untouched, only the newline moves.
+
+Verification: rendered HTML for all 10 decks captured from a production build before and after. Nine are byte-identical once inter-tag whitespace is collapsed; build-break-extend differs only where the newline now falls inside those two paragraphs, and is identical once all whitespace is collapsed. pnpm check green throughout (typecheck, oxlint, stylelint, format:check, 228 tests, decks:check 449 slides all fit).
+
+Fixed-point status: every deck and partial is a fixed point under this repo's config. Under the raw global ~/.dotfiles/oxfmtrc.json (proseWrap: always) the eleven marker-less files are fixed points too; the other thirteen would have their prose rewrapped, but oxfmt-helix never formats them --- it short-circuits any file carrying a slide directive. Ran every deck file through oxfmt-helix itself: all 39 come back unchanged, so a Helix save is safe. The task's 'live footgun while this is open' note was already stale: that passthrough predates this work.
+
+Convention recorded in website/CLAUDE.md ('Deck source formatting') so the comments are not read as noise and removed.
+<!-- SECTION:NOTES:END -->
