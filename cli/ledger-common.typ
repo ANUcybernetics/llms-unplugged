@@ -6,27 +6,42 @@
 // (the printable counters themselves), so the strip a participant matches
 // against and the counter in their hand come from one definition.
 
-#import "cutout-common.typ": palette as cutout-palette
-
 // ===== The counter palettes =====
 //
 // Two palettes of `columns` colours: the first for odd rows, the second for
 // even ones. A prefix spilling onto a second row therefore has 2 × `columns`
 // distinct strips, and the bag can tell them apart.
 //
-// The eight colours are the cutouts palette, which was chosen on printed
-// (CMYK) pairwise distance with every swatch at the xkcd-survey centroid of
-// its name --- see the notes in cutout-common.typ --- so a counter can be
-// matched to a strip by name as well as by eye, and the two activities share
-// one set of colour words. The split puts the four most immediately nameable
-// on the odd rows, which is all a single-row prefix ever uses. On the sheets
-// the dot beside each strip is set in the full colour and the strip behind
-// the tallies in a tint light enough to write on; every entry is dark enough
-// to carry a white label on the printed counters.
-#let named(name) = cutout-palette.colors.find(e => e.name == name)
+// Eight colours with everyday names, so a counter can be matched to a strip
+// by name as well as by eye. Red, blue, green and yellow are the four every
+// set of maths counters has, so a bought set works too --- but the expected
+// counters are the ones ledger-counters.typ prints in exactly these values.
+// On the sheets the dot beside each strip is set in the full colour and the
+// strip behind the tallies in a tint light enough to write on.
+//
+// Five of the eight take their values from the cutouts palette in
+// cutout-common.typ, whose swatches were chosen on printed (CMYK) distance
+// and sit at the xkcd-survey centroid of their names; see the notes there.
+// Orange is deliberately absent: a printable orange lands too close to red,
+// which is why the cutouts palette has no orange either, and it was the pair
+// the first print run could not tell apart. Pink is lighter than that
+// palette's magenta, which printed too close to purple; yellow and white are
+// not in that palette at all (none of the three clears 3.5:1 against white
+// paper, which the cutouts need and the counters do not). All three are set
+// by hand.
 #let palettes = (
-  ("red", "green", "blue", "black").map(named),
-  ("magenta", "purple", "brown", "grey").map(named),
+  (
+    (color: oklch(57.9%, 0.238, 29deg), name: "red"),
+    (color: oklch(47.2%, 0.241, 263deg), name: "blue"),
+    (color: oklch(61.0%, 0.205, 142deg), name: "green"),
+    (color: rgb("#eab308"), name: "yellow"),
+  ),
+  (
+    (color: oklch(68%, 0.21, 355deg), name: "pink"),
+    (color: oklch(45.2%, 0.195, 316deg), name: "purple"),
+    (color: luma(0), name: "black"),
+    (color: rgb("#ffffff"), name: "white"),
+  ),
 )
 // Eight colours is what counters come in and what a bag can tell apart, so
 // the palettes cap the column count rather than stretching to meet it.
@@ -44,18 +59,18 @@
   columns,
 )
 
-// The tint behind the tallies: light enough to write on, still recognisably
-// the colour. Mixed in OKLab so the dark swatches lighten evenly.
-#let strip-fill(entry) = color.mix(
-  (entry.color, 24%),
-  (white, 76%),
-  space: oklab,
-)
+// Black and white counters need special casing on paper: a black tint is grey,
+// and a white strip is the page.
+#let strip-fill(entry) = if entry.name == "white" { white } else if (
+  entry.name == "black"
+) { luma(228) } else { color.mix((entry.color, 24%), (white, 76%)) }
 
-#let strip-stroke(entry) = 0.8pt + entry.color
+#let strip-stroke(entry) = if entry.name == "white" {
+  (paint: luma(0), thickness: 0.6pt, dash: "dashed")
+} else { 0.8pt + entry.color }
 
-// The counter itself, drawn: a dot in the full colour. This is what a
-// participant matches a counter against.
+// The counter itself, drawn: a dot in the full colour with a hairline so the
+// white one is visible. This is what a participant matches a counter against.
 #let counter-dot(entry, size: 3.2mm) = circle(
   radius: size / 2,
   fill: entry.color,
