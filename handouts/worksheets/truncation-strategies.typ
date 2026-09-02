@@ -1,20 +1,14 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
-#import "@local/anu-typst-template:0.3.0": *
+//
+// One sampling strategy a page, big enough to read from a table: the rules a
+// pair swaps in for "roll and take the first option ≥ your roll".
+#import "../handout-common.typ": handout
 
-#show: anu.with(
-  title: none,
-  config: (
-    theme: sys.inputs.at("anu_theme", default: "light"),
-    logos: ("studio",),
-    hide: ("anu-logo", "page-numbers"),
-  ),
-  page-settings: (
-    flipped: true,
-  ),
-)
+#show: handout.with(title: [Sampling strategies], flipped: true)
 
-#set text(size: 32pt)
+#set text(size: 30pt)
+#show heading: set block(below: 0.6em)
 
 = Greedy sampling
 

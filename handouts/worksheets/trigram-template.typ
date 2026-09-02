@@ -1,40 +1,46 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
+//
+// Tally sheet for a trigram model: two words of context, the word that
+// followed, and a count.
+#import "../handout-common.typ": brand-gold, handout
 
-#import "@local/anu-typst-template:0.3.0": *
-
-#show: doc => anu(
-  title: "",
-  config: (
-    theme: "light",
-    // 0.2.0 spelled this `logos: ("socy", "studio")`, but its "socy" entry
-    // was inert (only asterisk/studio were ever checked) --- the studio
-    // ornament is the whole effect.
-    ornaments: ("studio",),
-    hide: ("page-numbers", "title-block"),
-  ),
-  doc,
-)
+#show: handout.with(title: [Trigram tally])
 
 #set text(size: 10pt)
 
-#let trigram-table(rows) = {
-  table(
-    columns: (1.5fr, 1.5fr, 1.5fr, 1fr),
-    rows: (auto, 3em),
-    align: (col, row) => if row == 0 { center } else { left },
-    table.header([*word 1*], [*word 2*], [*word 3*], [*count*]),
-    ..range(rows).map(_ => ([], [], [], [])).flatten(),
-  )
-}
+// Rules under the rows and nothing between the columns: the header band
+// already says where a column starts, and a hand writing three words across
+// needs a line to sit on more than it needs a box to sit in.
+#let trigram-table(rows) = table(
+  columns: (1.5fr, 1.5fr, 1.5fr, 1fr),
+  rows: (auto, 3em),
+  stroke: (x, y) => if y > 0 { (bottom: 0.4pt + luma(150)) },
+  inset: (x: 0.5em, y: 0.4em),
+  fill: (x, y) => if y == 0 { brand-gold },
+  align: (col, row) => if row == 0 { center } else { left },
+  table.header(
+    ..([word 1], [word 2], [word 3], [count]).map(h => text(
+      fill: white,
+      weight: "bold",
+      size: 9pt,
+      h,
+    )),
+  ),
+  ..range(rows).map(_ => ([], [], [], [])).flatten(),
+)
 
-#v(3cm)
+#v(0.4cm)
 
 #columns(2, gutter: 1.5em)[
-  #trigram-table(19)
+  #trigram-table(22)
   #colbreak()
-  #trigram-table(19)
+  #trigram-table(22)
 ]
+
+#pagebreak()
+
+#v(0.4cm)
 
 #columns(2, gutter: 1.5em)[
   #trigram-table(22)

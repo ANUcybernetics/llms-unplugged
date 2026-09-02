@@ -1,23 +1,19 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
-#import "@local/anu-typst-template:0.3.0": anu
+//
+// Ruled paper for writing generated text on, in the project's own furniture
+// so it matches the sheets it is handed out beside.
+#import "../handout-common.typ": handout
 
-#let blank-lines(n, spacing: 1.2em) = {
+#let blank-lines(n, spacing: 1.35em) = {
   for i in range(n) {
-    line(length: 100%, stroke: (paint: gray.lighten(40%), thickness: 0.5pt))
+    line(length: 100%, stroke: 0.4pt + luma(190))
     v(spacing)
   }
 }
 
-#show: anu.with(
-  title: "",
-  config: (
-    theme: "light",
-    logos: ("studio",),
-    hide: ("page-numbers", "title-block"),
-  ),
-)
+#show: handout.with(title: [Generated text])
 
-#v(3.2cm)
+#v(0.5cm)
 
-#blank-lines(24)
+#blank-lines(26)

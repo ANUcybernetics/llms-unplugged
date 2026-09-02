@@ -3,7 +3,8 @@
 INPUT_DIR = .
 OUTPUT_DIR = out
 
-TYP_SOURCE_FILES := $(shell find $(INPUT_DIR) -name '*.typ')
+# Every .typ but the shared modules: *-common.typ is imported, not compiled.
+TYP_SOURCE_FILES := $(shell find $(INPUT_DIR) -name '*.typ' -not -name '*-common.typ')
 PDF_FILES := $(patsubst $(INPUT_DIR)/%.typ,$(OUTPUT_DIR)/%.pdf,$(TYP_SOURCE_FILES))
 
 all: $(PDF_FILES)
