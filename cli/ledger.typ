@@ -19,7 +19,7 @@
 #import "cutout-common.typ": brand-font, brand-gold, brand-lockup, token-font
 #import "ledger-common.typ": (
   check-columns, counter-dot, counters-per-colour, palette-for, palettes,
-  strip-fill, strip-stroke,
+  strip-bar, strip-fill, strip-stroke,
 )
 
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
@@ -214,7 +214,10 @@
   height: 100%,
   fill: strip-fill(entry),
   stroke: strip-stroke(entry),
-  inset: 1mm,
+  // Air around the marks, and on the left enough of it to clear the half of
+  // the colour bar that falls inside the box: a tally drawn hard against the
+  // bar reads as part of it.
+  inset: (left: strip-bar / 2 + 2mm, rest: 2mm),
   {
     if prefill == "tallies" and follower != none {
       block(

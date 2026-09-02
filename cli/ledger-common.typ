@@ -80,9 +80,14 @@
 // are the tint's own edges. White has no bar to draw --- a white rule on
 // paper is nothing --- so it keeps a hairline outline, which is also what
 // gives its strip an area to write in.
+// Named, because the strip's own padding is measured off it: a box stroke is
+// drawn centred on the edge, so half the bar sits inside the box and the
+// tally marks have to start clear of it.
+#let strip-bar = 5pt
+
 #let strip-stroke(entry) = if entry.name == "white" {
   (rest: (paint: luma(140), thickness: 0.5pt, dash: "dashed"))
-} else { (left: 5pt + entry.color, rest: none) }
+} else { (left: strip-bar + entry.color, rest: none) }
 
 // The counter itself, drawn: a dot in the full colour with a hairline so the
 // white one is visible. This is what a participant matches a counter against.
