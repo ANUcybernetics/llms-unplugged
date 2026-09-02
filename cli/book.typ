@@ -59,6 +59,12 @@
 // scripts/copy-cli-templates.ts.
 #import "booklet-common.typ" as bc
 
+// The brand: the gold rule, the project face and the word mark, shared with
+// the cutout-family templates so a booklet is recognisably the same project
+// as a set of sheets. Copied into the website's compiler alongside this file
+// for the same reason booklet-common.typ is.
+#import "cutout-common.typ": brand-font, brand-gold, brand-lockup
+
 // Punctuation marks kept as standalone tokens, sourced from the model metadata
 // so the boxed marks always match what the CLI treated as punctuation. Falls
 // back to the default set for models generated before the field existed.
@@ -94,26 +100,19 @@
   align(center + horizon)[
     #v(2cm)
     #text(
-      font: ("Libertinus Sans", "Noto Sans CJK SC"),
+      font: (brand-font, "Noto Sans CJK SC"),
       weight: "bold",
       size: 4em,
     )[#doc_metadata.title]
     #if subtitle != none [
       #v(1cm)
-      #text(
-        font: ("Libertinus Sans", "Noto Sans CJK SC"),
-        size: 2.5em,
-      )[#subtitle]
+      #text(font: (brand-font, "Noto Sans CJK SC"), size: 2.5em)[#subtitle]
     ]
   ]
 
-  // LLMs Unplugged wordmark
-  place(bottom + right)[
-    #text(font: "Monaspace Argon", size: 18pt)[
-      LLMs\
-      Unplugged
-    ]
-  ]
+  // The word mark, as the mark rather than as its name set in whatever face
+  // was to hand.
+  place(bottom + right, brand-lockup(width: 42mm))
   pagebreak()
 }
 
@@ -408,8 +407,9 @@
         align(left)[#guide-display]
       }
 
-      // Add horizontal rule
-      line(length: 100%, stroke: 0.5pt)
+      // The rule under the guide words, in the brand gold that tops every
+      // sheet in the ledger and cutout families.
+      line(length: 100%, stroke: 0.8pt + brand-gold)
       // Add 1.5em space after the header to push main content down further
       v(1em)
     }
