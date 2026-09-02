@@ -53,9 +53,12 @@ text file → Rust CLI → model.json → Typst → PDF booklet
   against a dot and a name on the strip), which caps `columns` at four. Tallies
   are drawn as five-bar gates whose unit shrinks to fit the largest count in the
   entry, so one prefix's strips share a scale and the ink on them is
-  proportional to the counts. `--prefill` is a Typst input rather than part of
-  the JSON, so one set prints at any level. Opens with a one-page facilitator
-  brief unless the set is `--blank`
+  proportional to the counts. `word_fr`/`strip_fr` set the strip's shape: 1.47
+  to 1 makes it a golden rectangle at the default twelve rows a page, which a
+  very different `--rows` moves off golden since rows share the page height.
+  `--prefill` is a Typst input rather than part of the JSON, so one set prints
+  at any level. Opens with a one-page facilitator brief unless the set is
+  `--blank`
 - `ledger-common.typ` - The three row palettes and the counter-sheet geometry,
   shared by the two ledger templates so the strip on a sheet, the printed
   counter and the brief's per-sheet yield come from one definition

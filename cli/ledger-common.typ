@@ -61,11 +61,17 @@
   palettes.at(calc.rem(row, palettes.len())).slice(0, columns)
 )
 
-// Black and white counters need special casing on paper: a black tint is grey,
-// and a white strip is the page.
+// The strip behind the tallies: a tint faint enough to be written over in pen
+// and read through. Kept much lighter than it needs to look on screen ---
+// these print CMYK, which lays the colour down heavier than a monitor shows
+// it, and the strip's job is to be a ground, not a block of colour. The
+// border carries the colour that a counter is matched against.
+//
+// Black and white counters need special casing on paper: a black tint is
+// grey, and a white strip is the page.
 #let strip-fill(entry) = if entry.name == "white" { white } else if (
   entry.name == "black"
-) { luma(228) } else { color.mix((entry.color, 24%), (white, 76%)) }
+) { luma(240) } else { color.mix((entry.color, 12%), (white, 88%)) }
 
 // Heavy enough to read as the colour itself: on the sheets the border is
 // what a counter is matched against.

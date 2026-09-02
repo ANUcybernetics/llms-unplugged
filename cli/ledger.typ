@@ -128,7 +128,10 @@
 // else is measured in.
 #let tally-gate(n, unit) = {
   let (w, h) = (4 * unit, 3.5 * unit)
-  let ink = 0.4pt + luma(20)
+  // Inked in proportion to the mark, so a gate reads as a gate at any size:
+  // heavy enough to carry over the faint strip in print, with a floor so the
+  // smallest marks do not thin away to nothing.
+  let ink = calc.max(0.45pt, unit / 5) + black
   box(width: w, height: h, {
     for i in range(calc.min(n, 4)) {
       place(top + left, dx: (i + 0.5) * unit, line(end: (0pt, h), stroke: ink))
@@ -148,7 +151,7 @@
 // proportional to the counts, which is the claim the bag makes. Below the
 // floor the marks would be a smudge, so a count that will not fit even there
 // prints as a numeral.
-#let tally_unit_max = 0.85mm
+#let tally_unit_max = 1.1mm
 #let tally_unit_min = 0.3mm
 
 #let tally-marks(count, budget) = layout(size => {
@@ -230,6 +233,14 @@
 // One page of rows. The grid takes the whole height it is given, so the rows
 // share it equally: `rows_per_page` is the density knob and the row height
 // follows from it.
+// The word cell against its strip. A strip comes out about as tall as a row,
+// so this ratio is what sets its shape: 1.6 to 1 leaves it a golden rectangle
+// at the default twelve rows a page, wider than tall, which both suits the
+// eye and gives the tally marks room to be drawn at a legible size. A very
+// different `--rows` moves it off golden, since rows share the page height.
+#let word_fr = 1.47fr
+#let strip_fr = 1fr
+
 #let rows-grid(rows) = {
   let prefix_w = 42mm
   let cells = ()
@@ -276,7 +287,7 @@
   )
 
   grid(
-    columns: (prefix_w,) + ((3fr, 1fr) * columns),
+    columns: (prefix_w,) + ((word_fr, strip_fr) * columns),
     rows: (1fr,) * rows.len(),
     inset: 0pt,
     ..hlines,
