@@ -15,6 +15,7 @@
 // says in its header which prefixes it holds, so "who has _the_?" is answered
 // by reading headers rather than by everyone searching their page.
 
+#import "booklet-common.typ" as bc
 #import "cutout-common.typ": brand-font, brand-gold, brand-lockup, token-font
 #import "ledger-common.typ": (
   check-columns, counter-dot, counters-per-colour, palette-for, palettes,
@@ -31,6 +32,10 @@
 #let prefill = sys.inputs.at("prefill", default: "prefixes")
 // Every level from "followers" up prints the follower words.
 #let prints_followers = prefill in ("followers", "tallies")
+// The marks the sheet sets in a symbol tile. An input rather than JSON for
+// the same reason `prefill` is, but the CLI sources it from the tokeniser, so
+// it is exactly the set that was kept as standalone tokens.
+#let punct-chars = sys.inputs.at("punctuation", default: ".,!?;:").clusters()
 
 #let data = json(json_path)
 #let sheets = data.sheets
@@ -53,17 +58,32 @@
 #let header_title_size = 11.5pt
 #let lockup_baseline_shift = lockup_width * 8 / 197.4
 
-// The prefix as it prints: the context tokens, spaced. Punctuation prefixes
-// are real and common (what follows "." is how a sentence starts), so they
-// are set exactly like words rather than boxed --- a box would suggest a
-// different kind of thing, and on this sheet it is the same kind of thing.
-#let prefix-text(prefix, size: 13pt, fill: black) = text(
-  font: token-font,
-  size: size,
-  weight: "bold",
-  fill: fill,
-  prefix.join(" "),
-)
+// One printed token: a word, or --- for the punctuation marks, which are
+// prefixes and followers like any other, since what follows "." is how a
+// sentence starts --- the same symbol tile the booklets use. A bare full stop
+// in a cell is a speck: easy to read as an empty cell, and hard to tell from
+// a comma across a table. The tile is a square at the size of the words
+// beside it, so it is both legible and the mark a reader who has seen a
+// booklet already knows.
+#let token-text(t, size: 13pt, fill: black, weight: "bold") = if (
+  t in punct-chars
+) {
+  text(
+    font: token-font,
+    fill: fill,
+    bc.punct-box(t, size: size, weight: weight, stroke-color: fill),
+  )
+} else {
+  text(font: token-font, size: size, weight: weight, fill: fill, t)
+}
+
+// The prefix as it prints: the context tokens, spaced.
+#let prefix-text(prefix, size: 13pt, fill: black) = {
+  for (i, t) in prefix.enumerate() {
+    if i > 0 { h(0.35em) }
+    token-text(t, size: size, fill: fill)
+  }
+}
 
 // Header: the lockup, the set's title, and --- the part that does the work ---
 // the range of prefixes this sheet holds, set large enough to be read across a
@@ -215,7 +235,7 @@
 #let follower-cell(follower) = if follower != none and prints_followers {
   align(
     left + horizon,
-    pad(x: 1.5mm, text(font: token-font, size: 12pt, follower.text)),
+    pad(x: 1.5mm, token-text(follower.text, size: 12pt, weight: "regular")),
   )
 } else { [] }
 

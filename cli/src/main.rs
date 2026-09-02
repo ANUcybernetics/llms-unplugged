@@ -936,6 +936,14 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
         ("paper_size".to_string(), args.paper_size.clone()),
         ("json_path".to_string(), typst::abs_path_string(&json_path)),
         ("prefill".to_string(), args.prefill.as_str().to_string()),
+        // Which tokens the sheet sets in a symbol tile rather than as a word.
+        // Presentation, so it travels as an input like `prefill` rather than
+        // in the JSON --- but sourced from the tokeniser, so a custom
+        // --punctuation boxes exactly the marks it kept.
+        (
+            "punctuation".to_string(),
+            args.tokenizer.config().punctuation(),
+        ),
     ];
     typst::compile_template("ledger.typ", &inputs, &args.output.join("ledger.pdf"))?;
 
