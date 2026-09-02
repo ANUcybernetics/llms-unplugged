@@ -4,6 +4,9 @@
 #let lm-grid(size) = {
   set text(font: "Public Sans", size: 10pt)
 
+  // Full bleed on purpose: the grid runs to the paper's edge. Most printers
+  // will clip the outer rules and part of the mark box, which is fine --- the
+  // cells that get clipped are the ones nobody writes in.
   set page(
     "a3",
     flipped: true,
