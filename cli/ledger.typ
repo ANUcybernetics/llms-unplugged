@@ -120,7 +120,7 @@
 
 // The tally strip: tinted to its colour, with the counter dot and the colour's
 // name in the corner so the strip can be matched to a counter --- or called
-// out --- without the room agreeing on what "orange" looks like in print.
+// out --- without the room agreeing on what "purple" looks like in print.
 #let tally-strip(entry) = box(
   width: 100%,
   height: 100%,

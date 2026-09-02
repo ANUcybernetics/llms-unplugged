@@ -14,22 +14,30 @@
 //
 // Eight colours with everyday names, so a counter can be matched to a strip
 // by name as well as by eye. Red, blue, green and yellow are the four every
-// set of maths counters has and the second four are the next most common, so
-// a bought set works too --- but the expected counters are the ones
-// ledger-counters.typ prints in exactly these values. On the sheets the dot
-// beside each strip is set in the full colour and the strip behind the
-// tallies in a tint light enough to write on.
+// set of maths counters has, so a bought set works too --- but the expected
+// counters are the ones ledger-counters.typ prints in exactly these values.
+// On the sheets the dot beside each strip is set in the full colour and the
+// strip behind the tallies in a tint light enough to write on.
+//
+// Six of the eight take their values from the cutouts palette in
+// cutout-common.typ, whose swatches were chosen on printed (CMYK) distance
+// and sit at the xkcd-survey centroid of their names; see the notes there.
+// Orange is deliberately absent: a printable orange lands too close to red,
+// which is why the cutouts palette has no orange either, and it was the pair
+// the first print run could not tell apart. Yellow and white are not in that
+// palette (neither clears 3.5:1 against white paper, which the cutouts need
+// and the counters do not) and are set by hand.
 #let palettes = (
   (
-    (color: rgb("#d62828"), name: "red"),
-    (color: rgb("#1d4ed8"), name: "blue"),
-    (color: rgb("#15803d"), name: "green"),
+    (color: oklch(57.9%, 0.238, 29deg), name: "red"),
+    (color: oklch(47.2%, 0.241, 263deg), name: "blue"),
+    (color: oklch(61.0%, 0.205, 142deg), name: "green"),
     (color: rgb("#eab308"), name: "yellow"),
   ),
   (
-    (color: rgb("#ea580c"), name: "orange"),
-    (color: rgb("#7e22ce"), name: "purple"),
-    (color: rgb("#000000"), name: "black"),
+    (color: oklch(53.4%, 0.221, 353deg), name: "pink"),
+    (color: oklch(45.2%, 0.195, 316deg), name: "purple"),
+    (color: luma(0), name: "black"),
     (color: rgb("#ffffff"), name: "white"),
   ),
 )
