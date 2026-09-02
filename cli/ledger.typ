@@ -216,8 +216,9 @@
 // "the first 300 tokens of _Title_" when the set was read under a budget,
 // else just the title: a facilitator should know a set is not the whole text.
 #let corpus-phrase(metadata) = if "max_tokens" in metadata [the first
-  #metadata.max_tokens tokens of #if metadata.at("documents", default: 1) > 1 [each
-    of] #emph(metadata.title)] else [#emph(metadata.title)]
+  #metadata.max_tokens tokens of #if (
+    metadata.at("documents", default: 1) > 1
+  ) [each of] #emph(metadata.title)] else [#emph(metadata.title)]
 
 #let brief() = {
   set page(footer: align(
@@ -231,7 +232,9 @@
     let e = sheets.map(s => s.pages.flatten()).flatten().first()
     e.prefix.len()
   } else { 1 }
-  let prefix-noun = if n-prefix == 1 [prefix word] else [#(str(n-prefix) + "-word") prefix]
+  let prefix-noun = if n-prefix == 1 [prefix word] else [#(
+      str(n-prefix) + "-word"
+    ) prefix]
   let entries = sheets.map(s => s.pages.flatten()).flatten()
   let prefixes = entries.len()
   let max-count = calc.max(
@@ -257,24 +260,24 @@
 
   let brief-what = [
     The pages after this one are #sheets.len() *ledger sheets* built from
-    #corpus-phrase(metadata) by #metadata.author. Together they are the model: #prefixes rows, one per
-    #prefix-noun, dealt across the sheets in alphabetical runs. Each sheet's
-    header says the first and last prefix it holds, so a group of #sheets.len()
-    can find any prefix by reading headers. Print one-sided and hand out one
-    sheet per person.
+    #corpus-phrase(metadata) by #metadata.author. Together they are the model:
+    #prefixes rows, one per #prefix-noun, dealt across the sheets in
+    alphabetical runs. Each sheet's header says the first and last prefix it
+    holds, so a group of #sheets.len() can find any prefix by reading headers.
+    Print one-sided and hand out one sheet per person.
 
     A row is a prefix followed by #columns *follower cells*. Each cell has room
     for a follower word and, beside it, a coloured *tally strip*. A prefix with
-    more than #columns followers continues onto the row below, where its
-    prefix is repeated in grey. #prefill-sentence
+    more than #columns followers continues onto the row below, where its prefix
+    is repeated in grey. #prefill-sentence
 
     == The colours
 
-    The strips are coloured by column, not by word, and cycle through three
-    sets of #columns down the rows --- so a prefix that runs to three rows has
-    #str(3 * columns) different colours and the bag can tell them apart.
-    Don't explain the colours until the generation round; during training they
-    are just stripes.
+    The strips are coloured by column, not by word, and cycle through three sets
+    of #columns down the rows --- so a prefix that runs to three rows has #str(
+      3 * columns,
+    ) different colours and the bag can tell them apart. Don't explain the
+    colours until the generation round; during training they are just stripes.
 
     #let key(label, palette) = grid(
       columns: (auto,) + (auto,) * palette.len(),
