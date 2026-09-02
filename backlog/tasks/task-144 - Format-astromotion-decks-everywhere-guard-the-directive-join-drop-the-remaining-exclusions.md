@@ -6,7 +6,7 @@ title: >-
 status: To Do
 assignee: []
 created_date: '2026-09-02 07:03'
-updated_date: '2026-09-02 07:03'
+updated_date: '2026-09-02 07:18'
 labels:
   - tooling
   - decks
@@ -35,6 +35,14 @@ Scope note: the notes migration this task originally implied is already done -- 
 - [ ] #4 Deck exclusions are gone from .oxfmtrc.json in benswift-me, llms-unplugged, astro-theme-anu, astro-theme-university and comp4020/templates, and each repo's decks are an oxfmt fixed point
 - [ ] #5 Each repo's reflow is verified behaviour-neutral before it lands: rendered deck HTML is unchanged from the pre-reflow version once whitespace is collapsed
 - [ ] #6 astromotion's own test fixtures under test/fixtures are left unformatted, since they are test inputs
+- [ ] #7 llms-unplugged: the inline HTML in src/decks/partials/ is rewritten so oxfmt is a fixed point that renders identically -- today reflowing it moves block elements inside inline ones (<p> inside <span>, doubled </p></p>), which is invalid nesting
+- [ ] #8 benswift-me: the inline <ul> in phd-offsite-2026/slides.deck.mdx renders as a tight list again, or is accepted as loose deliberately
+
+Third hazard, not in the original writeup: oxfmt reflowing inline JSX/HTML children changes MDX block-vs-inline parsing. The reflowed output is STABLE, so oxfmt-helix's two-pass fixed-point check cannot see it, and a per-file textual heuristic does not separate the safe decks from the unsafe ones (the offending HTML is in partials, not the deck). This is the strongest argument for AC #1: astromotion erroring is the only reliable guard.
+
+Live footgun to be aware of: oxfmt-helix runs with the GLOBAL ~/.dotfiles/oxfmtrc.json and a synthetic --stdin-filepath, so a repo's ignorePatterns do NOT apply on save. With astromotion-deck now auto-format = true in Helix, saving an llms-unplugged deck or partial in Helix will reflow it and break the markup until AC #1 or #7 lands. It shows up in git diff rather than being wholly silent, but nothing fails the build.
+
+- [ ] #9 astro-theme-university: the docs deck keeps its fenced markdown examples intact -- oxfmt currently formats inside the fence and joins two separate background-image example lines into one, changing what the docs teach
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -51,5 +59,15 @@ Scope note: the notes migration this task originally implied is already done -- 
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-Pattern to copy: comp4020-website f639ba5 (config + 13-deck reflow in one commit). Wrapper side already done in ~/.dotfiles 21fd46b3, which also fixed a latent macOS bug where the proseWrap:preserve fallback used GNU-only 'mktemp --suffix' and aborted under set -e.
+Progress 2026-09-02.
+
+Done: comp4020-website (f639ba5, 13 decks, rendered HTML verified byte-identical once whitespace is collapsed), benswift-me (d45567a70, 18 of 19 decks identical plus the 26-pair adjacency fix), astro-theme-anu (5c789e1, decks were already fixed points so nothing reflowed), and the wrapper side in ~/.dotfiles (21fd46b3).
+
+Not done, and why. llms-unplugged was attempted and REVERTED: all 10 decks changed rendering, and the change is invalid HTML nesting -- a block element hoisted inside an inline one, and doubled closing paragraph tags -- because oxfmt reflows the inline HTML in the @included partials and MDX then reparses those children as blocks. astro-theme-university was skipped for the fenced-example problem in AC #9. comp4020/templates needs nothing: it has no .oxfmtrc.json.
+
+Third hazard, absent from the original writeup: oxfmt reflowing inline JSX/HTML children changes MDX block-vs-inline parsing. The reflowed output is STABLE, so the two-pass fixed-point check in oxfmt-helix cannot see it, and a per-file textual heuristic does not separate safe decks from unsafe ones (the offending HTML lives in the partials, not the deck that includes them). This is the strongest argument for AC #1: astromotion erroring is the only reliable guard.
+
+Footgun to know about meanwhile: oxfmt-helix runs with the global ~/.dotfiles/oxfmtrc.json and a synthetic --stdin-filepath, so a repo's ignorePatterns do NOT apply on save. With astromotion-deck now auto-format = true in Helix, saving an llms-unplugged deck or partial in Helix will reflow it and break the markup until AC #1 or #7 lands. It shows up in git diff rather than being wholly silent, but nothing fails the build.
+
+benswift-me detail for AC #8: the phd-offsite schedule slides went from a tight to a loose list, which decks:check still passes (all 182 slides fit).
 <!-- SECTION:NOTES:END -->
