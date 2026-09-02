@@ -23,11 +23,14 @@
 
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
 #let json_path = sys.inputs.at("json_path", default: "ledger.json")
-// What the rows come printed with: "prefixes" (the prefix column filled in)
-// or "followers" (prefixes and followers, tallies left to make). Presentation
-// rather than data, so it is an input and not part of the JSON: the same set
-// prints at either level.
+// What the rows come printed with, each level adding to the one before it:
+// "prefixes" (the prefix column filled in), "followers" (prefixes and
+// followers, tallies left to make) or "tallies" (the trained model, marks and
+// all). Presentation rather than data, so it is an input and not part of the
+// JSON: the same set prints at any level.
 #let prefill = sys.inputs.at("prefill", default: "prefixes")
+// Every level from "followers" up prints the follower words.
+#let prints_followers = prefill in ("followers", "tallies")
 
 #let data = json(json_path)
 #let sheets = data.sheets
@@ -118,26 +121,95 @@
   rows
 }
 
+// ===== Printed tallies =====
+//
+// One five-bar gate: `n` marks (1--5), the fifth struck through the other
+// four, drawn at `unit` --- the spacing between uprights, which everything
+// else is measured in.
+#let tally-gate(n, unit) = {
+  let (w, h) = (4 * unit, 3.5 * unit)
+  let ink = 0.4pt + luma(20)
+  box(width: w, height: h, {
+    for i in range(calc.min(n, 4)) {
+      place(top + left, dx: (i + 0.5) * unit, line(end: (0pt, h), stroke: ink))
+    }
+    if n >= 5 {
+      place(top + left, dy: h, line(end: (w, -h), stroke: ink))
+    }
+  })
+}
+
+// A follower's marks, filling the strip they are given. The unit shrinks
+// until the marks fit: a common prefix's commonest follower runs to forty-odd
+// even in a picture book, and the alternative to shrinking is a strip that
+// spills over its neighbours. It shrinks to fit `budget` --- the largest
+// count anywhere in the entry --- rather than this follower's own count, so
+// one prefix's strips are all drawn at one size and the ink on them is
+// proportional to the counts, which is the claim the bag makes. Below the
+// floor the marks would be a smudge, so a count that will not fit even there
+// prints as a numeral.
+#let tally_unit_max = 0.85mm
+#let tally_unit_min = 0.3mm
+
+#let tally-marks(count, budget) = layout(size => {
+  // Gates across the strip and rows of them down it, at a given unit: gates
+  // sit `unit` apart, their rows `1.2 * unit`.
+  let per-row(unit) = calc.max(1, calc.floor((size.width + unit) / (5 * unit)))
+  let fits(unit, gates) = {
+    let rows = calc.ceil(gates / per-row(unit))
+    rows * 3.5 * unit + (rows - 1) * 1.2 * unit <= size.height
+  }
+  let budget_gates = calc.ceil(budget / 5)
+  let unit = tally_unit_max
+  while unit > tally_unit_min and not fits(unit, budget_gates) {
+    unit -= 0.05mm
+  }
+
+  let gates = calc.ceil(count / 5)
+  if fits(unit, gates) {
+    grid(
+      columns: per-row(unit),
+      column-gutter: unit,
+      row-gutter: 1.2 * unit,
+      ..range(gates).map(g => tally-gate(calc.min(5, count - 5 * g), unit)),
+    )
+  } else {
+    align(center + horizon, text(size: 7pt, str(count)))
+  }
+})
+
 // The tally strip: tinted to its colour, with a heavy border in the full
 // colour to match a counter against and the colour's name in the corner so it
 // can be called out --- without the room agreeing on what "purple" looks
-// like in print.
-#let tally-strip(entry) = box(
+// like in print. On a "tallies" sheet the marks fill it; the corner keeps its
+// name, which is what a drawn counter is matched against, so the marks get
+// the strip less that much height.
+#let strip_label_size = 5.5pt
+#let tally-strip(entry, follower, budget) = box(
   width: 100%,
   height: 100%,
   fill: strip-fill(entry),
   stroke: strip-stroke(entry),
   inset: 1mm,
   radius: 1.5pt,
-  place(
-    bottom + right,
-    text(size: 5.5pt, fill: luma(60), entry.name),
-  ),
+  {
+    if prefill == "tallies" and follower != none {
+      block(
+        width: 100%,
+        height: 100% - 2 * strip_label_size,
+        tally-marks(follower.count, budget),
+      )
+    }
+    place(
+      bottom + right,
+      text(size: strip_label_size, fill: luma(60), entry.name),
+    )
+  },
 )
 
 // The word cell beside a strip: the follower, if the sheet prints them, else
 // room to write one.
-#let follower-cell(follower) = if follower != none and prefill == "followers" {
+#let follower-cell(follower) = if follower != none and prints_followers {
   align(
     left + horizon,
     pad(x: 1.5mm, text(font: token-font, size: 12pt, follower.text)),
@@ -163,6 +235,10 @@
   let cells = ()
   for (y, row) in rows.enumerate() {
     let palette = palette-for(y, columns)
+    // The tallies on all of an entry's rows are drawn to its largest count.
+    let budget = if row.entry == none { 1 } else {
+      calc.max(1, ..row.entry.followers.map(f => f.count))
+    }
     cells.push(grid.cell(x: 0, y: y, fill: luma(245), prefix-cell(row)))
     for c in range(columns) {
       let follower = if row.entry == none { none } else {
@@ -173,7 +249,7 @@
         x: 2 + 2 * c,
         y: y,
         inset: 0.9mm,
-        tally-strip(palette.at(c)),
+        tally-strip(palette.at(c), follower, budget),
       ))
     }
   }
@@ -243,7 +319,10 @@
   )
   let max-followers = calc.max(0, ..entries.map(e => e.followers.len()))
 
-  let prefill-sentence = if prefill == "followers" [
+  let prefill-sentence = if prefill == "tallies" [
+    The rows come complete: prefixes, followers, and the tally marks this text
+    produced.
+  ] else if prefill == "followers" [
     The prefixes and their followers are printed; every tally strip starts
     empty.
   ] else [
@@ -276,8 +355,11 @@
     The strips are coloured by column, not by word, and cycle through three sets
     of #columns down the rows --- so a prefix that runs to three rows has #str(
       3 * columns,
-    ) different colours and the bag can tell them apart. Don't explain the
-    colours until the generation round; during training they are just stripes.
+    ) different colours and the bag can tell them apart.
+    #if prefill != "tallies" [
+      Don't explain the colours until the generation round; during training they
+      are just stripes.
+    ]
 
     #let key(label, palette) = grid(
       columns: (auto,) + (auto,) * palette.len(),
@@ -306,7 +388,14 @@
     #context counters-per-colour() of each colour per sheet.
   ]
 
-  let brief-how = [
+  let training = if prefill == "tallies" [
+    == Already trained
+
+    These sheets are the finished model: the marks on them are the counts the
+    text produced, so there is no training round to run. Hand them out and start
+    at generation. To run the training round as well, print a second set with
+    #raw("--prefill prefixes") and keep this one as the answer key.
+  ] else [
     == Training
 
     One person reads the text aloud, a pair of tokens at a time: the prefix,
@@ -317,6 +406,10 @@
     token like any other: a full stop has followers, and so has a comma.
 
     When the text runs out, the tallies are the model.
+  ]
+
+  let brief-how = [
+    #training
 
     == Generation
 

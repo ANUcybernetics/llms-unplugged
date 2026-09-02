@@ -50,10 +50,12 @@ text file → Rust CLI → model.json → Typst → PDF booklet
 - `ledger.typ` - Ledger template: one row per prefix, follower cells split into
   a word area and a tally strip, strips coloured by column with three row
   palettes cycling. Twelve nameable colours, four a palette (the bag is matched
-  against a dot and a name on the strip), which caps `columns` at four.
-  `--prefill` is a Typst input rather than part of the JSON, so one set prints
-  at either level. Opens with a one-page facilitator brief unless the set is
-  `--blank`
+  against a dot and a name on the strip), which caps `columns` at four. Tallies
+  are drawn as five-bar gates whose unit shrinks to fit the largest count in the
+  entry, so one prefix's strips share a scale and the ink on them is
+  proportional to the counts. `--prefill` is a Typst input rather than part of
+  the JSON, so one set prints at any level. Opens with a one-page facilitator
+  brief unless the set is `--blank`
 - `ledger-common.typ` - The three row palettes and the counter-sheet geometry,
   shared by the two ledger templates so the strip on a sheet, the printed
   counter and the brief's per-sheet yield come from one definition
@@ -114,7 +116,8 @@ cargo build --release
 ./target/release/llms_unplugged sheets -i ../data/the-cat-in-the-hat.txt -n 2 --sheets 24
 
 # Generate ledger sheets for a group of 4: prefixes printed, followers and
-# tallies left to write. --prefill followers prints the followers too;
+# tallies left to write. --prefill followers prints the followers too, and
+# --prefill tallies the marks as well (the trained model, and the answer key);
 # --blank prints empty rows with no corpus at all.
 ./target/release/llms_unplugged ledger -i ../data/green-eggs-and-ham.txt --sheets 4
 
@@ -188,8 +191,10 @@ port and rebuild the wasm.
   printed on the brief and participant pages (for example, to preserve a source
   reveal). The title is the one string naming the set: the brief opens with it
   and every sheet header carries it opposite the lockup
-- `--prefill prefixes|followers` (ledger only, default `prefixes`) - What the
-  rows come printed with; `--blank` prints empty rows with no corpus
+- `--prefill prefixes|followers|tallies` (ledger only, default `prefixes`) -
+  What the rows come printed with, each level adding to the one before it;
+  `tallies` is the whole sheet filled in, so the group skips training and goes
+  straight to generating. `--blank` prints empty rows with no corpus
 - `--columns` / `--rows` (ledger only, defaults 4 and 12) - Follower cells on a
   row and rows on a page. A prefix with more followers than columns continues
   onto the next row; the command warns when one needs a third, where the colours

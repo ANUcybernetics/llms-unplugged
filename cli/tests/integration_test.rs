@@ -1344,7 +1344,8 @@ fn test_ledger_subcommand_end_to_end() -> io::Result<()> {
     )?;
     let out_dir = temp.path().join("out");
 
-    for prefill in ["prefixes", "followers"] {
+    let mut sizes = Vec::new();
+    for prefill in ["prefixes", "followers", "tallies"] {
         let output = Command::new(cli_exe())
             .arg("ledger")
             .arg("-i")
@@ -1366,6 +1367,7 @@ fn test_ledger_subcommand_end_to_end() -> io::Result<()> {
         if let Some(pages) = pdf_pages(&pdf) {
             assert_eq!(pages, 3, "a brief plus one page per sheet");
         }
+        sizes.push(pdf.metadata()?.len());
         // The counters come alongside: two identical pages for duplex printing.
         let counters = out_dir.join("counters.pdf");
         assert!(counters.exists(), "no counters.pdf written");
@@ -1373,6 +1375,12 @@ fn test_ledger_subcommand_end_to_end() -> io::Result<()> {
             assert_eq!(pages, 2, "counters print double-sided from two pages");
         }
     }
+    // Each level prints everything the one before it did and more --- the
+    // follower words, then the tally marks --- so the files grow in step.
+    assert!(
+        sizes.windows(2).all(|w| w[1] > w[0]),
+        "prefill levels should add ink, got sizes {sizes:?}"
+    );
 
     let output = Command::new(cli_exe())
         .arg("ledger")

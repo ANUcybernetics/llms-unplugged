@@ -297,18 +297,23 @@ struct SheetsArgs {
     tokenizer: TokenizerArgs,
 }
 
-/// What a ledger sheet comes printed with. `prefixes` keeps the "which words
-/// follow *the*?" discovery and drops the bookkeeping of where a new row
-/// goes; `followers` reduces training to pure tallying, the right level for
-/// the youngest groups. (A wholly blank sheet is `--blank`: rows sized for a
-/// corpus but unlabelled would be no use, since nobody could tell which block
-/// was whose.)
+/// What a ledger sheet comes printed with, each level adding to the one
+/// before it. `prefixes` keeps the "which words follow *the*?" discovery and
+/// drops the bookkeeping of where a new row goes; `followers` reduces
+/// training to pure tallying, the right level for the youngest groups;
+/// `tallies` is the trained model itself, for a session that skips training
+/// and generates, and for the facilitator's answer key. (A wholly blank sheet
+/// is `--blank`: rows sized for a corpus but unlabelled would be no use,
+/// since nobody could tell which block was whose.)
 #[derive(ValueEnum, Debug, Clone, Copy, PartialEq, Eq)]
 enum Prefill {
     /// The prefix column filled in; followers and tallies left to write.
     Prefixes,
     /// Prefixes and followers filled in; only the tallies left to make.
     Followers,
+    /// The whole sheet filled in: the tally marks the text produced, drawn in
+    /// the strips. Nothing left to train.
+    Tallies,
 }
 
 impl Prefill {
@@ -316,6 +321,7 @@ impl Prefill {
         match self {
             Prefill::Prefixes => "prefixes",
             Prefill::Followers => "followers",
+            Prefill::Tallies => "tallies",
         }
     }
 }
