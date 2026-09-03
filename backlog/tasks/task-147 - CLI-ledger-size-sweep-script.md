@@ -1,9 +1,10 @@
 ---
 id: TASK-147
 title: 'CLI: ledger size sweep script'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-09-03 07:30'
+updated_date: '2026-09-03 07:36'
 labels:
   - cli
   - ledger
@@ -19,6 +20,12 @@ Balls come in about eight colours, so a ledger set for a classroom must keep eve
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 ops/ledger-sweep.py runs the ledger command --json-only across a range of --max-tokens for a corpus and prints one row per budget: tokens, prefixes, widest prefix, largest count, largest row total
-- [ ] #2 the script is a uv inline script matching ops/bucket-sync.py conventions
+- [x] #1 ops/ledger-sweep.py runs the ledger command --json-only across a range of --max-tokens for a corpus and prints one row per budget: tokens, prefixes, widest prefix, largest count, largest row total
+- [x] #2 the script is a uv inline script matching ops/bucket-sync.py conventions
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+ops/ledger-sweep.py: runs ledger --json-only per budget, prints budget/tokens/prefixes/widest/rows/colours/max_count/max_row, stops at the first budget the text is shorter than.
+<!-- SECTION:NOTES:END -->
