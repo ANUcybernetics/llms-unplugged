@@ -6,10 +6,10 @@
 // bag of counters: for the current prefix, put one counter into the bag per
 // tally mark, in the colour of that follower's strip; draw one; read the
 // follower whose strip is that colour. The strips are coloured by column, not
-// by word, so one set of counters serves every row. Three palettes cycle
-// down the rows, which is what lets a prefix with more followers than columns
-// continue onto the rows below and still hand the bag twelve distinct
-// colours.
+// by word, so one set of counters serves every row. Up to three palettes
+// cycle down the rows (the CLI's --palettes), which is what lets a prefix
+// with more followers than columns continue onto the rows below and still
+// hand the bag distinct colours, twelve at most.
 //
 // A set is dealt across a group's sheets in alphabetical runs, and each sheet
 // says in its header which prefixes it holds, so "who has _the_?" is answered
@@ -17,8 +17,9 @@
 
 #import "cutout-common.typ": brand-font, brand-gold, brand-lockup
 #import "ledger-common.typ": (
-  check-columns, counter-dot, counters-per-colour, palette-for, palettes,
-  strip-bar, strip-fill, strip-stroke, token-text as common-token-text,
+  check-columns, counter-dot, counters-per-colour, palette-count, palette-for,
+  palettes-in-use as palettes, strip-bar, strip-fill, strip-stroke,
+  token-text as common-token-text,
 )
 
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
@@ -381,9 +382,10 @@
 
     == The colours
 
-    The strips are coloured by column, not by word, and cycle through three sets
-    of #columns down the rows --- so a prefix that runs to three rows has #str(
-      3 * columns,
+    The strips are coloured by column, not by word, and cycle through
+    #palette-count #if palette-count == 1 [set] else [sets] of #columns down the
+    rows --- so a prefix that runs to #palette-count rows has #str(
+      palette-count * columns,
     ) different colours and the bag can tell them apart.
     #if prefill != "tallies" [
       Don't explain the colours until the generation round; during training they
@@ -402,18 +404,25 @@
         align(horizon, text(size: 9pt, e.name)),
       )),
     )
+    #let rows-label(k) = if palette-count == 1 [every row] else [rows #(
+        range(k + 1, k + 1 + 3 * palette-count, step: palette-count)
+          .map(str)
+          .join(", ")
+      ) ...]
     #block(above: 0.8em, below: 0.8em, stack(
       spacing: 0.7em,
-      key("rows 1, 4, 7 ...", palette-for(0, columns)),
-      key("rows 2, 5, 8 ...", palette-for(1, columns)),
-      key("rows 3, 6, 9 ...", palette-for(2, columns)),
+      ..range(palette-count).map(k => key(rows-label(k), palette-for(
+        k,
+        columns,
+      ))),
     ))
 
-    *Bring* one bag per group and counters in these #str(3 * columns) colours,
-    at least #max-count of each: that is the most times any one follower appears
-    in this text, and so the most counters of one colour a single draw can need.
-    The CLI writes #raw("counters.pdf") beside this file: print it double-sided
-    (either binding works) and cut the squares apart for
+    *Bring* one bag per group and counters in these #str(
+      palette-count * columns,
+    ) colours, at least #max-count of each: that is the most times any one
+    follower appears in this text, and so the most counters of one colour a
+    single draw can need. The CLI writes #raw("counters.pdf") beside this file:
+    print it double-sided (either binding works) and cut the squares apart for
     #context counters-per-colour() of each colour per sheet.
     #if prefill != "tallies" [
       It also writes #raw("text.pdf"), the text as the tokeniser read it, for

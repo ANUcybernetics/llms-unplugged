@@ -12,7 +12,8 @@
 // copies as the brief asks for.
 
 #import "ledger-common.typ": (
-  counter-cell, counter-gap, counter-margin, counter-rows, palettes,
+  counter-cell, counter-gap, counter-margin, counter-rows, palette-count,
+  palettes-in-use as palettes,
 )
 
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
@@ -44,8 +45,8 @@
 // Row i takes its palette so that the sequence reads the same from either
 // end: 0 1 2 0 1 2 ... in the top half, mirrored in the bottom half.
 #let palette-index(i, rows) = if i < rows / 2 {
-  calc.rem(i, palettes.len())
-} else { calc.rem(rows - 1 - i, palettes.len()) }
+  calc.rem(i, palette-count)
+} else { calc.rem(rows - 1 - i, palette-count) }
 
 #let page-of-counters() = context {
   let rows = counter-rows()

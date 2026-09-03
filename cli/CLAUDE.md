@@ -206,10 +206,14 @@ port and rebuild the wasm.
   `tallies` is the whole sheet filled in, so the group skips training and goes
   straight to generating. `--blank` prints empty rows with no corpus, and so
   conflicts with `--prefill` rather than silently outranking it
+- `--palettes` (ledger only, 1-3, default 3) - How many of the three strip
+  palettes the sheets cycle down their rows; the counters page and the brief's
+  key and counts follow it. A room whose balls come in eight colours prints
+  with 2
 - `--columns` / `--rows` (ledger only, defaults 4 and 12) - Follower cells on a
   row and rows on a page. A prefix with more followers than columns continues
-  onto the next row; the command warns when one needs a third, where the colours
-  repeat
+  onto the next row; the command warns when one needs more rows than there are
+  palettes, where the colours repeat
 - `--columns` / `--font-size` (sheets only) - The rest of the sheet density.
   Columns default to 4 for bigrams and narrow as n grows. Pairs too wide for
   their column take two columns, so nothing wraps into the row below --- which

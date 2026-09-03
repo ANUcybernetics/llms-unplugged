@@ -16,7 +16,7 @@ subcommand across a range of token budgets and prints one row per budget:
 
 `widest` is the most followers any prefix has, `rows` how many ledger rows
 that prefix takes at the column count, `colours` how many counter colours the
-set needs (rows times columns, capped at the three palettes), `max_count` the
+set needs (rows times columns, capped at the palettes in use), `max_count` the
 largest single tally, and `max_row` the most tallies on one prefix, which is
 how many balls of one group colour the bucket finale can ask a group for.
 
@@ -41,7 +41,6 @@ import typer
 
 REPO = Path(__file__).resolve().parent.parent
 DEFAULT_CLI = REPO / "cli" / "target" / "release" / "llms_unplugged"
-PALETTES = 3
 
 app = typer.Typer(add_completion=False)
 
@@ -66,7 +65,7 @@ def ledger_json(cli: Path, corpus: Path, budget: int | None, columns: int) -> di
         return json.loads((Path(out) / "ledger.json").read_text())
 
 
-def stats(data: dict, columns: int) -> dict:
+def stats(data: dict, columns: int, palettes: int) -> dict:
     entries = [e for sheet in data["sheets"] for page in sheet["pages"] for e in page]
     widest = max((len(e["followers"]) for e in entries), default=0)
     rows = max(1, -(-widest // columns))
@@ -75,7 +74,7 @@ def stats(data: dict, columns: int) -> dict:
         "prefixes": len(entries),
         "widest": widest,
         "rows": rows,
-        "colours": min(rows, PALETTES) * columns,
+        "colours": min(rows, palettes) * columns,
         "max_count": max(
             (f["count"] for e in entries for f in e["followers"]), default=0
         ),
@@ -112,6 +111,7 @@ def sweep(
     stop: Annotated[int, typer.Option(help="Last token budget (inclusive)")] = 400,
     step: Annotated[int, typer.Option(help="Budget step")] = 50,
     columns: Annotated[int, typer.Option(help="Follower cells per row")] = 4,
+    palettes: Annotated[int, typer.Option(help="Palettes the sheets cycle (1-3)")] = 3,
     cli: Annotated[
         Path, typer.Option(help="Path to the llms_unplugged binary")
     ] = DEFAULT_CLI,
@@ -125,13 +125,13 @@ def sweep(
         print(corpus)
         print_row(list(COLUMNS))
         for budget in range(start, stop + 1, step):
-            s = stats(ledger_json(cli, corpus, budget, columns), columns)
+            s = stats(ledger_json(cli, corpus, budget, columns), columns, palettes)
             label = str(budget) if s["cut"] else "full"
             print_row([label] + [str(s[k]) for k in COLUMNS[1:]])
             if not s["cut"]:
                 break
         else:
-            s = stats(ledger_json(cli, corpus, None, columns), columns)
+            s = stats(ledger_json(cli, corpus, None, columns), columns, palettes)
             print_row(["full"] + [str(s[k]) for k in COLUMNS[1:]])
         print()
 

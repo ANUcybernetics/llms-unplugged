@@ -75,6 +75,13 @@
 // cap the column count rather than stretching to meet it.
 #let palette-size = palettes.at(0).len()
 
+// How many of the three a set cycles: the CLI's --palettes. A room whose
+// counters come in eight colours prints with two, and everything downstream
+// --- the row colours, the counters page, the brief's key and counts ---
+// reads this rather than the full table.
+#let palette-count = int(sys.inputs.at("palettes", default: "3"))
+#let palettes-in-use = palettes.slice(0, palette-count)
+
 #let check-columns(columns) = assert(
   columns <= palette-size,
   message: "ledger: no palette for more than "
@@ -83,7 +90,7 @@
 )
 
 #let palette-for(row, columns) = (
-  palettes.at(calc.rem(row, palettes.len())).slice(0, columns)
+  palettes-in-use.at(calc.rem(row, palette-count)).slice(0, columns)
 )
 
 // The strip behind the tallies: a tint faint enough to be written over in pen
@@ -136,17 +143,18 @@
 #let counter-margin = 10mm
 
 // Rows of counters on the page: as many as fit, rounded down to a multiple
-// of six, because the three palettes cycle down the rows and the row order
-// has to be a palindrome (see ledger-counters.typ), so each half of the page
-// needs a whole number of cycles. Needs `context` for the page size.
+// of twice the palette count, because the palettes cycle down the rows and
+// the row order has to be a palindrome (see ledger-counters.typ), so each
+// half of the page needs a whole number of cycles. Needs `context` for the
+// page size.
 #let counter-rows() = {
   let rows = calc.floor(
     (page.height - 2 * counter-margin + counter-gap)
       / (counter-cell + counter-gap),
   )
-  rows - calc.rem(rows, 2 * palettes.len())
+  rows - calc.rem(rows, 2 * palette-count)
 }
 
-// Each colour appears twice in its row and its palette takes a third of the
-// rows.
-#let counters-per-colour() = 2 * counter-rows() / palettes.len()
+// Each colour appears twice in its row and its palette takes an equal share
+// of the rows.
+#let counters-per-colour() = 2 * counter-rows() / palette-count

@@ -160,6 +160,9 @@ are dropped; apostrophes inside contractions are preserved.
   reads it aloud in the training round.
   - `--sheets <N>`: the group size. Omit it and the count follows the corpus at
     the `--rows` density
+  - `--palettes <N>`: how many of the three strip palettes the rows cycle
+    (default 3, twelve colours); a room with counters in eight colours prints
+    with 2
   - `--prefill prefixes|followers` (default `prefixes`): what the sheets come
     printed with. `prefixes` leaves the followers to be discovered as the text
     is read; `followers` leaves only the tallies to make
