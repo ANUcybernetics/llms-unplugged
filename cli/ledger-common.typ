@@ -6,6 +6,31 @@
 // (the printable counters themselves), so the strip a participant matches
 // against and the counter in their hand come from one definition.
 
+#import "booklet-common.typ" as bc
+#import "cutout-common.typ": token-font
+
+// ===== Printed tokens =====
+//
+// One printed token: a word, or --- for the punctuation marks, which are
+// prefixes and followers like any other, since what follows "." is how a
+// sentence starts --- the same symbol tile the booklets use. A bare full stop
+// in a cell is a speck: easy to read as an empty cell, and hard to tell from
+// a comma across a table. The tile is a square at the size of the words
+// beside it, so it is both legible and the mark a reader who has seen a
+// booklet already knows. `punct` is the set of marks the tokeniser kept as
+// standalone tokens, which the CLI passes in.
+#let token-text(t, punct, size: 13pt, fill: black, weight: "bold") = if (
+  t in punct
+) {
+  text(
+    font: token-font,
+    fill: fill,
+    bc.punct-box(t, size: size, weight: weight, stroke-color: fill),
+  )
+} else {
+  text(font: token-font, size: size, weight: weight, fill: fill, t)
+}
+
 // ===== The counter palettes =====
 //
 // Three palettes of `columns` colours, cycling down the rows. A prefix

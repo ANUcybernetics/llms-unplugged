@@ -15,11 +15,10 @@
 // says in its header which prefixes it holds, so "who has _the_?" is answered
 // by reading headers rather than by everyone searching their page.
 
-#import "booklet-common.typ" as bc
-#import "cutout-common.typ": brand-font, brand-gold, brand-lockup, token-font
+#import "cutout-common.typ": brand-font, brand-gold, brand-lockup
 #import "ledger-common.typ": (
   check-columns, counter-dot, counters-per-colour, palette-for, palettes,
-  strip-bar, strip-fill, strip-stroke,
+  strip-bar, strip-fill, strip-stroke, token-text as common-token-text,
 )
 
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
@@ -58,24 +57,15 @@
 #let header_title_size = 11.5pt
 #let lockup_baseline_shift = lockup_width * 8 / 197.4
 
-// One printed token: a word, or --- for the punctuation marks, which are
-// prefixes and followers like any other, since what follows "." is how a
-// sentence starts --- the same symbol tile the booklets use. A bare full stop
-// in a cell is a speck: easy to read as an empty cell, and hard to tell from
-// a comma across a table. The tile is a square at the size of the words
-// beside it, so it is both legible and the mark a reader who has seen a
-// booklet already knows.
-#let token-text(t, size: 13pt, fill: black, weight: "bold") = if (
-  t in punct-chars
-) {
-  text(
-    font: token-font,
-    fill: fill,
-    bc.punct-box(t, size: size, weight: weight, stroke-color: fill),
-  )
-} else {
-  text(font: token-font, size: size, weight: weight, fill: fill, t)
-}
+// One printed token, word or symbol tile (see ledger-common.typ), for the
+// marks this set kept as tokens.
+#let token-text(t, size: 13pt, fill: black, weight: "bold") = common-token-text(
+  t,
+  punct-chars,
+  size: size,
+  fill: fill,
+  weight: weight,
+)
 
 // The prefix as it prints: the context tokens, spaced.
 #let prefix-text(prefix, size: 13pt, fill: black) = {
@@ -425,6 +415,10 @@
     The CLI writes #raw("counters.pdf") beside this file: print it double-sided
     (either binding works) and cut the squares apart for
     #context counters-per-colour() of each colour per sheet.
+    #if prefill != "tallies" [
+      It also writes #raw("text.pdf"), the text as the tokeniser read it, for
+      the training round: print one per group.
+    ]
   ]
 
   let training = if prefill == "tallies" [
@@ -437,12 +431,14 @@
   ] else [
     == Training
 
-    One person reads the text aloud, a pair of tokens at a time: the prefix,
-    then the word after it. Whoever holds that prefix finds its row, finds the
-    follower (writing it into the next empty cell if it is new) and adds one
-    tally mark to that follower's strip. Then the reader moves along by one
-    token, so the word just tallied becomes the next prefix. Punctuation is a
-    token like any other: a full stop has followers, and so has a comma.
+    One person reads the text aloud from #raw("text.pdf"), a pair of tokens at a
+    time: the prefix, then the word after it. Whoever holds that prefix finds
+    its row, finds the follower (writing it into the next empty cell if it is
+    new) and adds one tally mark to that follower's strip. Then the reader moves
+    along by one token, so the word just tallied becomes the next prefix.
+    Punctuation is a token like any other: a full stop has followers, and so has
+    a comma. The text page numbers every token, so a group that loses its place
+    can say where it was.
 
     When the text runs out, the tallies are the model.
   ]

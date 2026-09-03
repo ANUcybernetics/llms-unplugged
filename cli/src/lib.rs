@@ -25,7 +25,8 @@ pub use cutouts::{
 };
 pub use error::{Error, Result};
 pub use ledger::{
-    Follower, LedgerEntry, LedgerSet, LedgerSheet, deal_into_ledgers, ledger_entries,
+    Follower, LedgerEntry, LedgerSet, LedgerSheet, TextToken, deal_into_ledgers, ledger_entries,
+    text_documents,
 };
 pub use model::{
     Book, ContextTable, Model, ModelSummary, MostCommonNgram, MostPopularContext, ProcessingStats,

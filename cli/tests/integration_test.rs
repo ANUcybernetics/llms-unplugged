@@ -1457,6 +1457,12 @@ fn test_ledger_subcommand_end_to_end() -> io::Result<()> {
         if let Some(pages) = pdf_pages(&counters) {
             assert_eq!(pages, 2, "counters print double-sided from two pages");
         }
+        // And the text for the reader, as the tokeniser saw it.
+        let text = out_dir.join("text.pdf");
+        assert!(text.exists(), "no text.pdf written");
+        if let Some(pages) = pdf_pages(&text) {
+            assert_eq!(pages, 1, "a short text is one page");
+        }
     }
     // Each level prints everything the one before it did and more --- the
     // follower words, then the tally marks --- so the files grow in step.
@@ -1465,16 +1471,21 @@ fn test_ledger_subcommand_end_to_end() -> io::Result<()> {
         "prefill levels should add ink, got sizes {sizes:?}"
     );
 
+    let blank_dir = temp.path().join("blank");
     let output = Command::new(cli_exe())
         .arg("ledger")
         .arg("--blank")
         .arg("--output")
-        .arg(&out_dir)
+        .arg(&blank_dir)
         .output()?;
     assert!(output.status.success(), "blank failed: {output:?}");
-    if let Some(pages) = pdf_pages(&out_dir.join("ledger.pdf")) {
+    if let Some(pages) = pdf_pages(&blank_dir.join("ledger.pdf")) {
         assert_eq!(pages, 1, "a blank set has no brief");
     }
+    assert!(
+        !blank_dir.join("text.pdf").exists(),
+        "a blank set has no text to print"
+    );
     Ok(())
 }
 

@@ -35,6 +35,7 @@ const TEMPLATE_FILES: &[(&str, &[u8])] = &[
         "ledger-counters.typ",
         include_bytes!("../ledger-counters.typ"),
     ),
+    ("ledger-text.typ", include_bytes!("../ledger-text.typ")),
     ("lockup-light.svg", include_bytes!("../lockup-light.svg")),
     (
         "lockup-light-1.svg",

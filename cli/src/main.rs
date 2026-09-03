@@ -3,7 +3,7 @@ use llms_unplugged::{
     Book, BookletJson, CjkMode, Corpus, CutoutSet, LedgerSet, LedgerSheet, Metadata, Model,
     Normalizer, NormalizerConfig, ProcessingStats, SampleError, SheetSet, append_tool_tokens,
     deal_into_ledgers, deal_into_sheets, ledger_entries, repeat_cutout_tokens,
-    shuffle_cutout_tokens, split_entries_into_books, write_json,
+    shuffle_cutout_tokens, split_entries_into_books, text_documents, write_json,
 };
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
@@ -844,6 +844,7 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
             columns: args.columns,
             rows_per_page: args.rows,
             sheets: vec![LedgerSheet::blank(); args.sheets.unwrap_or(1)],
+            text: Vec::new(),
         }
     } else {
         let CutoutSet { metadata, tokens } = load_cutout_set(
@@ -920,6 +921,7 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
             columns: args.columns,
             rows_per_page: args.rows,
             sheets,
+            text: text_documents(&tokens),
         }
     };
 
@@ -956,6 +958,13 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
         &args.output.join("counters.pdf"),
     )?;
     eprintln!("  print counters.pdf double-sided, one copy per sheet of counters wanted");
+
+    // The text as the tokeniser saw it, for the reader in the training
+    // round. Blank sheets carry no corpus, so there is nothing to print.
+    if set.metadata.is_some() {
+        typst::compile_template("ledger-text.typ", &inputs, &args.output.join("text.pdf"))?;
+        eprintln!("  print text.pdf for whoever reads the text aloud during training");
+    }
     Ok(())
 }
 

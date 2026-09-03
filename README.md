@@ -155,7 +155,9 @@ are dropped; apostrophes inside contractions are preserved.
   with a one-page facilitator brief, then one page per sheet. A `counters.pdf`
   of coloured squares to cut up lands beside it: print it double-sided (the
   layout is symmetric, so either binding works) for 8 counters of each of the
-  twelve colours per A4 sheet.
+  twelve colours per A4 sheet. So does a `text.pdf`: the text as the tokeniser
+  read it, one token per box with a running number under each, for whoever
+  reads it aloud in the training round.
   - `--sheets <N>`: the group size. Omit it and the count follows the corpus at
     the `--rows` density
   - `--prefill prefixes|followers` (default `prefixes`): what the sheets come

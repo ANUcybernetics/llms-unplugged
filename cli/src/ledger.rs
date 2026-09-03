@@ -108,6 +108,61 @@ impl LedgerSheet {
     }
 }
 
+/// One token of the training text as the text page prints it.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+pub struct TextToken {
+    pub text: String,
+    /// False for a token the tokeniser dropped (a digit run, a roman
+    /// numeral): printed dimmed and unnumbered, so a reader skips it and can
+    /// see what the rows never counted.
+    pub keep: bool,
+}
+
+/// The text the entries were counted from, one list per document, exactly
+/// as the tokeniser saw it: lowercased, punctuation split off, dropped
+/// tokens flagged. This is what the text page prints, so a group training
+/// by hand reads the tokens the sheets were built from rather than doing
+/// the tokenisation in their head from a plain printout.
+///
+/// A document starts at a kept token with no context that follows a token
+/// which had one: the leading run of each document is the n-1 tokens that
+/// nothing can match against, and the run is one document's. Dropped
+/// tokens directly before such a start go with it, since they were read
+/// from the same page.
+pub fn text_documents(tokens: &[Cutout]) -> Vec<Vec<TextToken>> {
+    let mut documents: Vec<Vec<TextToken>> = Vec::new();
+    let mut pending: Vec<TextToken> = Vec::new();
+    let mut last_kept_had_context = false;
+    for token in tokens {
+        let text_token = TextToken {
+            text: token.text.clone(),
+            keep: token.is_kept(),
+        };
+        if !token.is_kept() {
+            pending.push(text_token);
+            continue;
+        }
+        let starts_document = token.context().is_empty() && last_kept_had_context;
+        if documents.is_empty() || starts_document {
+            documents.push(Vec::new());
+        }
+        let document = documents.last_mut().expect("a document to add to");
+        document.append(&mut pending);
+        document.push(text_token);
+        last_kept_had_context = !token.context().is_empty();
+    }
+    if !pending.is_empty() {
+        if documents.is_empty() {
+            documents.push(Vec::new());
+        }
+        documents
+            .last_mut()
+            .expect("a document")
+            .append(&mut pending);
+    }
+    documents
+}
+
 /// The wire shape of `ledger.json`.
 #[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct LedgerSet {
@@ -120,6 +175,9 @@ pub struct LedgerSet {
     pub columns: usize,
     pub rows_per_page: usize,
     pub sheets: Vec<LedgerSheet>,
+    /// The training text by document (see [`text_documents`]); empty for
+    /// blank sheets.
+    pub text: Vec<Vec<TextToken>>,
 }
 
 /// Deal ledger entries into `num_sheets` sheets: contiguous runs of the
@@ -251,6 +309,22 @@ mod tests {
         assert_eq!(entry("a", &[("b", 1); 4]).rows(4), 1);
         assert_eq!(entry("a", &[("b", 1); 5]).rows(4), 2);
         assert_eq!(entry("a", &[("b", 1); 9]).rows(4), 3);
+    }
+
+    #[test]
+    fn text_documents_split_at_each_leading_run_and_keep_dropped_tokens() {
+        let mut tokens = tokens_for("one 2 two . three");
+        tokens.extend(tokens_for("four five"));
+        let docs = text_documents(&tokens);
+        let words = |doc: &[TextToken]| {
+            doc.iter()
+                .map(|t| format!("{}{}", t.text, if t.keep { "" } else { "*" }))
+                .collect::<Vec<_>>()
+                .join(" ")
+        };
+        assert_eq!(docs.len(), 2);
+        assert_eq!(words(&docs[0]), "one 2* two . three");
+        assert_eq!(words(&docs[1]), "four five");
     }
 
     #[test]
