@@ -1,5 +1,11 @@
 <script lang="ts">
-  import { entriesFromTokens, LEDGER_COLUMNS, LEDGER_PALETTES, splitTokens } from "../lib/ledger";
+  import {
+    entriesFromTokens,
+    LEDGER_COLUMNS,
+    LEDGER_PALETTE,
+    type PaletteEntry,
+    splitTokens,
+  } from "../lib/ledger";
   import LedgerRow from "./LedgerRow.svelte";
 
   interface Props {
@@ -12,7 +18,8 @@
      */
     step?: number;
     columns?: number;
-    palettes?: number;
+    /** The room's counter colours (the CLI's --palette). */
+    palette?: readonly PaletteEntry[];
     id?: string;
   }
 
@@ -20,7 +27,7 @@
     tokens: tokenString,
     step = -1,
     columns = LEDGER_COLUMNS,
-    palettes = LEDGER_PALETTES.length,
+    palette = LEDGER_PALETTE,
     id = "tally",
   }: Props = $props();
 
@@ -58,7 +65,7 @@
         >one mark beside <strong>{follower}</strong> in the row for <strong>{prefix}</strong></span
       >
     </p>
-    <LedgerRow {entry} {columns} {palettes} {fresh} id="{id}-row" />
+    <LedgerRow {entry} {columns} {palette} {fresh} id="{id}-row" />
   {/if}
 </div>
 

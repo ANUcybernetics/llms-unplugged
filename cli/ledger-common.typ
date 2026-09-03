@@ -1,10 +1,10 @@
 // Copyright (c) 2025 Ben Swift
 // Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
 //
-// The counter palettes for the ledger family, shared by ledger.typ (the
-// sheets, whose tally strips take these colours) and ledger-counters.typ
-// (the printable counters themselves), so the strip a participant matches
-// against and the counter in their hand come from one definition.
+// What ledger.typ (the sheets, whose tally strips take the counter colours)
+// and ledger-counters.typ (the printable counters themselves) share, so the
+// strip a participant matches against and the counter in their hand are drawn
+// by one piece of code from one list of colours.
 
 #import "booklet-common.typ" as bc
 #import "cutout-common.typ": token-font
@@ -31,93 +31,69 @@
   text(font: token-font, size: size, weight: weight, fill: fill, t)
 }
 
-// ===== The counter palettes =====
+// ===== The counter palette =====
 //
-// Three palettes of `columns` colours, cycling down the rows. A prefix
-// spilling onto a second or third row therefore has up to 3 × `columns`
-// distinct strips, and the bag can tell them apart.
+// The colours a room has counters in come in as data: the CLI's --palette
+// writes them into ledger.json as `(name, hex)` entries, and everything that
+// needs a colour --- the strips, the counters page, the brief's key --- reads
+// that one list. Nothing here knows a colour by name, so a set printed for a
+// bag of eight balls is a different JSON list rather than a different
+// template.
 //
-// Twelve colours with everyday names, so a counter can be matched to a strip
-// by name as well as by eye. Red, blue, green and yellow are the four every
-// set of maths counters has, so a bought set works too --- but the expected
-// counters are the ones ledger-counters.typ prints in exactly these values.
-// On the sheets the dot beside each strip is set in the full colour and the
-// strip behind the tallies in a tint light enough to write on.
-//
-// Red, blue, green, purple, brown, grey and black take their values from the
-// cutouts palette in cutout-common.typ, whose swatches were chosen on printed
-// (CMYK) distance and sit at the xkcd-survey centroid of their names; see the
-// notes there. The rest are set by hand: pink is lighter than that palette's
-// magenta, which printed too close to purple; orange is a light one, because
-// a dark orange printed too close to red (the reason the cutouts palette has
-// none); yellow, white and teal are not in that palette at all.
-#let palettes = (
-  (
-    (color: oklch(57.9%, 0.238, 29deg), name: "red"),
-    (color: oklch(47.2%, 0.241, 263deg), name: "blue"),
-    (color: oklch(61.0%, 0.205, 142deg), name: "green"),
-    (color: rgb("#eab308"), name: "yellow"),
-  ),
-  (
-    (color: oklch(68%, 0.21, 355deg), name: "pink"),
-    (color: oklch(45.2%, 0.195, 316deg), name: "purple"),
-    (color: luma(0), name: "black"),
-    (color: rgb("#ffffff"), name: "white"),
-  ),
-  (
-    (color: rgb("#fb923c"), name: "orange"),
-    (color: oklch(38.6%, 0.089, 62deg), name: "brown"),
-    (color: oklch(62.9%, 0.008, 145deg), name: "grey"),
-    (color: rgb("#0891b2"), name: "teal"),
-  ),
-)
-// Twelve colours is as many as a bag can tell apart by name, so the palettes
-// cap the column count rather than stretching to meet it.
-#let palette-size = palettes.at(0).len()
+// The list is flat and the rows cycle through it `columns` at a time: twelve
+// colours at four columns give a prefix three rows of distinct strips, eight
+// give two. The CLI drops any colour past the last whole row, so the length
+// always divides.
+#let read-palette(data) = data.palette.map(e => (
+  color: rgb(e.hex),
+  name: e.name,
+))
 
-// How many of the three a set cycles: the CLI's --palettes. A room whose
-// counters come in eight colours prints with two, and everything downstream
-// --- the row colours, the counters page, the brief's key and counts ---
-// reads this rather than the full table.
-#let palette-count = int(sys.inputs.at("palettes", default: "3"))
-#let palettes-in-use = palettes.slice(0, palette-count)
+#let palette-cycles(palette, columns) = calc.floor(palette.len() / columns)
 
-#let check-columns(columns) = assert(
-  columns <= palette-size,
-  message: "ledger: no palette for more than "
-    + str(palettes.at(0).len())
-    + " columns",
+#let check-columns(palette, columns) = assert(
+  palette-cycles(palette, columns) >= 1,
+  message: "ledger: the palette has fewer colours than there are columns",
 )
 
-#let palette-for(row, columns) = (
-  palettes-in-use.at(calc.rem(row, palette-count)).slice(0, columns)
-)
+#let palette-for(palette, row, columns) = {
+  let k = calc.rem(row, palette-cycles(palette, columns))
+  palette.slice(k * columns, count: columns)
+}
 
-// The strip behind the tallies: a tint faint enough to be written over in pen
-// and read through. Kept much lighter than it needs to look on screen ---
-// these print CMYK, which lays the colour down heavier than a monitor shows
-// it, and the strip's job is to be a ground, not a block of colour. The bar
-// down its leading edge carries the colour that a counter is matched against.
+// A colour light enough that a bar of it would be invisible on paper and a
+// tint of it indistinguishable from the page: white, and anything near it.
+// The one property the templates read off a colour, so that white counters
+// need no special case by name.
+#let pale(entry) = oklab(entry.color).components().first() > 90%
+
+// The strip behind the tallies: the colour's hue at a fixed pale lightness
+// and a fraction of its chroma, so every strip in a set is equally faint
+// whatever the colour is and equally easy to write over in pen. Lighter than
+// it needs to look on screen --- these print CMYK, which lays the colour down
+// heavier than a monitor shows it, and the strip's job is to be a ground, not
+// a block of colour. The bar down its leading edge carries the colour that a
+// counter is matched against.
 //
-// Black and white counters need special casing on paper: a black tint is
-// grey, and a white strip is the page.
-#let strip-fill(entry) = if entry.name == "white" { white } else if (
-  entry.name == "black"
-) { luma(240) } else { color.mix((entry.color, 12%), (white, 88%)) }
+// A pale colour has no tint to give: its strip is the page, and the dashed
+// outline below is what gives it an area to write in.
+#let strip-fill(entry) = if pale(entry) { white } else {
+  let (_, chroma, hue, ..) = oklch(entry.color).components()
+  oklch(94%, chroma * 0.15, hue)
+}
 
 // One saturated edge rather than a box: a bar down the strip's left side.
 // The bar is the colour cue --- what a counter drawn from the bag is matched
 // against --- so it is wide enough to read as the colour rather than as a
 // line of it, which a hairline of a dark hue is not. The other three sides
-// are the tint's own edges. White has no bar to draw --- a white rule on
-// paper is nothing --- so it keeps a hairline outline, which is also what
-// gives its strip an area to write in.
+// are the tint's own edges. A pale colour has no bar to draw --- a white rule
+// on paper is nothing --- so it keeps a hairline outline instead.
 // Named, because the strip's own padding is measured off it: a box stroke is
 // drawn centred on the edge, so half the bar sits inside the box and the
 // tally marks have to start clear of it.
 #let strip-bar = 5pt
 
-#let strip-stroke(entry) = if entry.name == "white" {
+#let strip-stroke(entry) = if pale(entry) {
   (rest: (paint: luma(140), thickness: 0.5pt, dash: "dashed"))
 } else { (left: strip-bar + entry.color, rest: none) }
 
@@ -137,24 +113,32 @@
 // rather than along a hairline; the brief in ledger.typ tells the facilitator
 // how many of each colour a sheet yields, so the numbers live here where both
 // can see them.
-// One palette out and back is eight squares across a portrait A4.
-#let counter-cell = 19mm
+// One palette out and back is `2 * columns` squares across the page, at 19mm
+// each unless a wide palette needs them smaller to fit.
 #let counter-gap = 4mm
 #let counter-margin = 10mm
 
-// Rows of counters on the page: as many as fit, rounded down to a multiple
-// of twice the palette count, because the palettes cycle down the rows and
-// the row order has to be a palindrome (see ledger-counters.typ), so each
-// half of the page needs a whole number of cycles. Needs `context` for the
-// page size.
-#let counter-rows() = {
+#let counter-cell(columns) = calc.min(
+  19mm,
+  (page.width - 2 * counter-margin - (2 * columns - 1) * counter-gap)
+    / (2 * columns),
+)
+
+// Rows of counters on the page: as many as fit, rounded down to a multiple of
+// twice the number of palettes, because the palettes cycle down the rows and
+// the row order has to be a palindrome (see ledger-counters.typ), so each half
+// of the page needs a whole number of cycles. Needs `context` for the page
+// size.
+#let counter-rows(columns, cycles) = {
+  let cell = counter-cell(columns)
   let rows = calc.floor(
-    (page.height - 2 * counter-margin + counter-gap)
-      / (counter-cell + counter-gap),
+    (page.height - 2 * counter-margin + counter-gap) / (cell + counter-gap),
   )
-  rows - calc.rem(rows, 2 * palette-count)
+  rows - calc.rem(rows, 2 * cycles)
 }
 
 // Each colour appears twice in its row and its palette takes an equal share
 // of the rows.
-#let counters-per-colour() = 2 * counter-rows() / palette-count
+#let counters-per-colour(columns, cycles) = (
+  2 * counter-rows(columns, cycles) / cycles
+)

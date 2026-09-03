@@ -1583,8 +1583,8 @@ fn test_max_tokens_cuts_each_input() -> io::Result<()> {
     Ok(())
 }
 
-/// A prefix with more followers than the three row palettes can colour is
-/// warned about by name.
+/// A prefix with more followers than the palette can colour is warned about
+/// by name.
 #[test]
 fn test_ledger_cli_warns_about_a_prefix_past_twelve_followers() -> io::Result<()> {
     let temp = TempDir::new()?;
@@ -1603,5 +1603,159 @@ fn test_ledger_cli_warns_about_a_prefix_past_twelve_followers() -> io::Result<()
             && stderr.contains("'the' (13)"),
         "stderr: {stderr}"
     );
+    Ok(())
+}
+
+/// The palette comes in as data: eight colours make two rows of four, which
+/// is what the sheets carry, what the counters page prints and what the
+/// "colours repeat" warning counts against.
+#[test]
+fn test_ledger_cli_takes_the_palette_as_json() -> io::Result<()> {
+    let temp = TempDir::new()?;
+    let words: Vec<String> = ('a'..='i').map(|c| format!("the {c}")).collect();
+    let input = write_sample_corpus(temp.path(), "corpus.txt", &words.join(" "))?;
+    let out_dir = temp.path().join("out");
+    let palette = temp.path().join("eight.json");
+    let eight = r##"[
+        {"name": "red", "hex": "#e50002"},
+        {"name": "blue", "hex": "#0043df"},
+        {"name": "green", "hex": "#129f01"},
+        {"name": "yellow", "hex": "#eab308"},
+        {"name": "pink", "hex": "#f5519f"},
+        {"name": "purple", "hex": "#7d1e9c"},
+        {"name": "black", "hex": "#000000"},
+        {"name": "white", "hex": "#ffffff"}
+    ]"##;
+    std::fs::write(&palette, eight)?;
+
+    let output = Command::new(cli_exe())
+        .arg("ledger")
+        .args(["-i", input.to_str().unwrap(), "--json-only"])
+        .arg("--palette")
+        .arg(format!("@{}", palette.display()))
+        .arg("--output")
+        .arg(&out_dir)
+        .output()?;
+    assert!(output.status.success(), "ledger failed: {output:?}");
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(
+        stderr.contains("1 prefix(es) have more than 8 followers") && stderr.contains("'the' (9)"),
+        "an eight-colour room repeats after two rows: {stderr}"
+    );
+
+    let json: serde_json::Value =
+        serde_json::from_reader(BufReader::new(File::open(out_dir.join("ledger.json"))?))?;
+    let names: Vec<&str> = json["palette"]
+        .as_array()
+        .expect("a palette")
+        .iter()
+        .map(|e| e["name"].as_str().expect("a name"))
+        .collect();
+    assert_eq!(
+        names,
+        [
+            "red", "blue", "green", "yellow", "pink", "purple", "black", "white"
+        ]
+    );
+    assert_eq!(json["palette"][0]["hex"], "#e50002");
+
+    // Inline JSON says the same thing as a file of it.
+    let inline = Command::new(cli_exe())
+        .arg("ledger")
+        .args(["-i", input.to_str().unwrap(), "--json-only"])
+        .args(["--palette", eight])
+        .arg("--output")
+        .arg(temp.path().join("inline"))
+        .output()?;
+    assert!(
+        inline.status.success(),
+        "inline --palette failed: {inline:?}"
+    );
+    let inline_json: serde_json::Value = serde_json::from_reader(BufReader::new(File::open(
+        temp.path().join("inline").join("ledger.json"),
+    )?))?;
+    assert_eq!(inline_json["palette"], json["palette"]);
+    Ok(())
+}
+
+/// A palette too small for the row, or one that names a colour twice, is a
+/// bad flag rather than a sheet nobody can read.
+#[test]
+fn test_ledger_cli_rejects_an_unusable_palette() -> io::Result<()> {
+    let temp = TempDir::new()?;
+    let input = write_sample_corpus(temp.path(), "corpus.txt", "one two three")?;
+    let run = |palette: &str| -> io::Result<std::process::Output> {
+        Command::new(cli_exe())
+            .arg("ledger")
+            .args(["-i", input.to_str().unwrap(), "--json-only"])
+            .args(["--palette", palette])
+            .arg("--output")
+            .arg(temp.path().join("out"))
+            .output()
+    };
+
+    let small = run(r##"[{"name": "red", "hex": "#ff0000"}]"##)?;
+    assert!(!small.status.success(), "one colour cannot fill four cells");
+    assert!(
+        String::from_utf8_lossy(&small.stderr).contains("at least one colour per column"),
+        "stderr: {}",
+        String::from_utf8_lossy(&small.stderr)
+    );
+
+    let duplicate = run(
+        r##"[{"name": "red", "hex": "#ff0000"}, {"name": "red", "hex": "#0000ff"},
+            {"name": "green", "hex": "#00ff00"}, {"name": "grey", "hex": "#888888"}]"##,
+    )?;
+    assert!(
+        !duplicate.status.success(),
+        "two 'red' strips are ambiguous"
+    );
+    assert!(
+        String::from_utf8_lossy(&duplicate.stderr).contains("names 'red' twice"),
+        "stderr: {}",
+        String::from_utf8_lossy(&duplicate.stderr)
+    );
+
+    let bad_hex = run(
+        r##"[{"name": "red", "hex": "crimson"}, {"name": "blue", "hex": "#0000ff"},
+            {"name": "green", "hex": "#00ff00"}, {"name": "grey", "hex": "#888888"}]"##,
+    )?;
+    assert!(!bad_hex.status.success(), "'crimson' colours nothing");
+    assert!(
+        String::from_utf8_lossy(&bad_hex.stderr).contains("not a hex value"),
+        "stderr: {}",
+        String::from_utf8_lossy(&bad_hex.stderr)
+    );
+    Ok(())
+}
+
+/// Colours past the last whole row reach no strip, so they are dropped and
+/// the facilitator is told which ones.
+#[test]
+fn test_ledger_cli_drops_colours_past_the_last_whole_row() -> io::Result<()> {
+    let temp = TempDir::new()?;
+    let input = write_sample_corpus(temp.path(), "corpus.txt", "one two three")?;
+    let out_dir = temp.path().join("out");
+    let output = Command::new(cli_exe())
+        .arg("ledger")
+        .args(["-i", input.to_str().unwrap(), "--json-only"])
+        .args([
+            "--palette",
+            r##"[{"name": "red", "hex": "#ff0000"}, {"name": "blue", "hex": "#0000ff"},
+                {"name": "green", "hex": "#00ff00"}, {"name": "grey", "hex": "#888888"},
+                {"name": "teal", "hex": "#0891b2"}]"##,
+        ])
+        .arg("--output")
+        .arg(&out_dir)
+        .output()?;
+    assert!(output.status.success(), "ledger failed: {output:?}");
+    assert!(
+        String::from_utf8_lossy(&output.stderr).contains("never reach a strip: teal"),
+        "stderr: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    let json: serde_json::Value =
+        serde_json::from_reader(BufReader::new(File::open(out_dir.join("ledger.json"))?))?;
+    assert_eq!(json["palette"].as_array().expect("a palette").len(), 4);
     Ok(())
 }

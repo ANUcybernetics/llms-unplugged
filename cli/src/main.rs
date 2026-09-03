@@ -1,9 +1,10 @@
 use clap::{Args, Parser, Subcommand, ValueEnum};
 use llms_unplugged::{
     Book, BookletJson, CjkMode, Corpus, CutoutSet, LedgerSet, LedgerSheet, Metadata, Model,
-    Normalizer, NormalizerConfig, ProcessingStats, SampleError, SheetSet, append_tool_tokens,
-    deal_into_ledgers, deal_into_sheets, ledger_entries, repeat_cutout_tokens,
-    shuffle_cutout_tokens, split_entries_into_books, text_documents, write_json,
+    Normalizer, NormalizerConfig, PaletteEntry, ProcessingStats, SampleError, SheetSet,
+    append_tool_tokens, check_palette, deal_into_ledgers, deal_into_sheets, default_palette,
+    ledger_entries, palette_cycles, repeat_cutout_tokens, shuffle_cutout_tokens,
+    split_entries_into_books, text_documents, write_json,
 };
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
@@ -375,19 +376,20 @@ struct LedgerArgs {
     #[arg(short = 's', long = "sheets", value_name = "N")]
     sheets: Option<usize>,
 
-    /// How many of the three strip palettes the sheets cycle down their
-    /// rows (default 3, twelve colours). A room whose counters come in eight
-    /// colours prints with 2: the sheets, the counters page and the brief
-    /// then use only the first two palettes, and a prefix needs more than
-    /// two rows before its colours repeat.
-    #[arg(long, default_value_t = 3, value_parser = clap::value_parser!(u8).range(1..=3))]
-    palettes: u8,
+    /// The counter colours the room has, as a JSON array of {"name": ...,
+    /// "hex": ...} entries --- inline, or @path to a file. The default is the
+    /// twelve in ledger-palette.json. The list is flat and the rows cycle
+    /// through it `--columns` at a time, so twelve colours give a prefix
+    /// three rows of distinct strips and eight give two; colours past the
+    /// last whole row are dropped.
+    #[arg(long, value_name = "JSON|@FILE")]
+    palette: Option<String>,
 
-    /// Follower cells on a row (default 4, the most the palettes allow). A
-    /// prefix with more followers than this continues onto the rows below,
-    /// whose tally strips take the next of three palettes, so three rows give
-    /// twelve distinct colours. A fourth row repeats the first row's colours:
-    /// the command warns about any prefix that needs one.
+    /// Follower cells on a row (default 4). A prefix with more followers than
+    /// this continues onto the rows below, whose tally strips take the next
+    /// `--columns` colours of the palette; once it is used up the colours
+    /// start again, and the command warns about any prefix that runs that
+    /// far.
     #[arg(long, default_value_t = 4)]
     columns: usize,
 
@@ -828,6 +830,44 @@ fn report_budget(title: &str, kept_tokens: usize, budget: Option<usize>) {
     }
 }
 
+/// The palette a set prints in: the bundled default, a JSON array on the
+/// command line, or one read from `@path`. Cut back to whole rows, since a
+/// colour that no row reaches is a counter nobody can be asked to draw.
+fn load_palette(spec: Option<&str>, columns: usize) -> Result<Vec<PaletteEntry>, CliError> {
+    let mut palette = match spec {
+        None => default_palette(),
+        Some(spec) => {
+            let json = match spec.strip_prefix('@') {
+                Some(path) => fs::read_to_string(path).map_err(|err| {
+                    CliError::InvalidArgs(format!("--palette cannot read {path}: {err}"))
+                })?,
+                None => spec.to_string(),
+            };
+            serde_json::from_str(&json).map_err(|err| {
+                CliError::InvalidArgs(format!(
+                    "--palette is not a JSON array of {{\"name\", \"hex\"}} entries: {err}"
+                ))
+            })?
+        }
+    };
+    // Reported as the bad flag it is, rather than through the "error
+    // processing input file" path the library errors take.
+    check_palette(&palette, columns).map_err(|err| CliError::InvalidArgs(err.to_string()))?;
+
+    let in_use = palette_cycles(&palette, columns) * columns;
+    if palette.len() > in_use {
+        let dropped: Vec<&str> = palette[in_use..].iter().map(|e| e.name.as_str()).collect();
+        eprintln!(
+            "Warning: {} colour(s) sit past the last whole row of {columns} and never reach a \
+             strip: {}. Leave them out of --palette, or set --columns to divide the palette.",
+            dropped.len(),
+            dropped.join(", ")
+        );
+        palette.truncate(in_use);
+    }
+    Ok(palette)
+}
+
 fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
     if args.sheets == Some(0) {
         return Err(CliError::InvalidArgs(
@@ -845,12 +885,16 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
         ));
     }
 
+    let palette = load_palette(args.palette.as_deref(), args.columns)?;
+    let cycles = palette_cycles(&palette, args.columns);
+
     let set = if args.blank {
         LedgerSet {
             metadata: None,
             title: args.labels.title.clone().unwrap_or_default(),
             columns: args.columns,
             rows_per_page: args.rows,
+            palette,
             sheets: vec![LedgerSheet::blank(); args.sheets.unwrap_or(1)],
             text: Vec::new(),
         }
@@ -873,10 +917,9 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
 
         // The tall prefixes are the corpus's commonest, so the list is
         // Zipfian too: name the worst few and count the rest.
-        let palettes = usize::from(args.palettes);
         let mut tall: Vec<&llms_unplugged::LedgerEntry> = entries
             .iter()
-            .filter(|e| e.rows(args.columns) > palettes)
+            .filter(|e| e.rows(args.columns) > cycles)
             .collect();
         tall.sort_by_key(|e| std::cmp::Reverse(e.followers.len()));
         if !tall.is_empty() {
@@ -889,9 +932,10 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
             eprintln!(
                 "Warning: {} prefix(es) have more than {} followers and spill onto a row where \
                  the tally colours repeat those of the first: {}{}. A shorter text \
-                 (--max-tokens) keeps every prefix to {palettes} row(s).",
+                 (--max-tokens), or more colours in --palette, keeps every prefix to {cycles} \
+                 row(s).",
                 tall.len(),
-                palettes * args.columns,
+                cycles * args.columns,
                 named.join(", "),
                 if more > 0 {
                     format!(" and {more} more")
@@ -929,6 +973,7 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
             metadata: Some(metadata),
             columns: args.columns,
             rows_per_page: args.rows,
+            palette,
             sheets,
             text: text_documents(&tokens),
         }
@@ -947,7 +992,6 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
         ("paper_size".to_string(), args.paper_size.clone()),
         ("json_path".to_string(), typst::abs_path_string(&json_path)),
         ("prefill".to_string(), args.prefill.as_str().to_string()),
-        ("palettes".to_string(), args.palettes.to_string()),
         // Which tokens the sheet sets in a symbol tile rather than as a word.
         // Presentation, so it travels as an input like `prefill` rather than
         // in the JSON --- but sourced from the tokeniser, so a custom
@@ -964,7 +1008,7 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
     // binding --- puts every square's colour on both of its faces.
     let counter_inputs: Vec<(String, String)> = inputs
         .iter()
-        .filter(|(k, _)| k == "paper_size" || k == "palettes")
+        .filter(|(k, _)| k == "paper_size" || k == "json_path")
         .cloned()
         .collect();
     typst::compile_template(

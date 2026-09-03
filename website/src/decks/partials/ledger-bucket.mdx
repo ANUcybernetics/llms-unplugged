@@ -44,7 +44,7 @@ Two draws per word: the bucket picks the group, the group's bag picks the word. 
 
 ## The word is `the`
 
-<LedgerBucket prefix="the" groups={BUCKET_GROUPS} empty />
+<LedgerBucket prefix="the" groups={BUCKET_GROUPS} palette={PALETTE} empty />
 
 ---
 
@@ -52,7 +52,7 @@ Two draws per word: the bucket picks the group, the group's bag picks the word. 
 
 ## Everyone throws
 
-<LedgerBucket prefix="the" groups={BUCKET_GROUPS} />
+<LedgerBucket prefix="the" groups={BUCKET_GROUPS} palette={PALETTE} />
 
 ---
 
@@ -60,15 +60,15 @@ Two draws per word: the bucket picks the group, the group's bag picks the word. 
 
 ## Draw one
 
-<LedgerBucket prefix="the" groups={BUCKET_GROUPS} drawn={3} />
+<LedgerBucket prefix="the" groups={BUCKET_GROUPS} palette={PALETTE} drawn={3} />
 
 ---
 
 ## That group draws the word
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_THE_VOLCANO} palettes={2} highlight={1} />
-  <LedgerBag entry={ROW_THE_VOLCANO} palettes={2} drawn={1} />
+  <LedgerRow entry={ROW_THE_VOLCANO} palette={PALETTE} highlight={1} />
+  <LedgerBag entry={ROW_THE_VOLCANO} palette={PALETTE} drawn={1} />
 </div>
 
 the class story grows by one word --- and the new word is the next one we hunt for

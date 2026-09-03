@@ -30,8 +30,8 @@ Walk through the next slides slowly --- the mechanics are simple but the hand-ov
 <LedgerPage text="I" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_I} firstRow={2} palettes={2} />
-  <LedgerBag entry={ROW_I} firstRow={2} palettes={2} empty />
+  <LedgerRow entry={ROW_I} firstRow={2} palette={PALETTE} />
+  <LedgerBag entry={ROW_I} firstRow={2} palette={PALETTE} empty />
 </div>
 
 ---
@@ -43,8 +43,8 @@ Walk through the next slides slowly --- the mechanics are simple but the hand-ov
 <LedgerPage text="I" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_I} firstRow={2} palettes={2} />
-  <LedgerBag entry={ROW_I} firstRow={2} palettes={2} />
+  <LedgerRow entry={ROW_I} firstRow={2} palette={PALETTE} />
+  <LedgerBag entry={ROW_I} firstRow={2} palette={PALETTE} />
 </div>
 
 ```notes
@@ -60,8 +60,8 @@ Nineteen balls go in: eight red for "am", nine blue for "do", two green for "wou
 <LedgerPage text="I do" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_I} firstRow={2} palettes={2} highlight={1} />
-  <LedgerBag entry={ROW_I} firstRow={2} palettes={2} drawn={1} />
+  <LedgerRow entry={ROW_I} firstRow={2} palette={PALETTE} highlight={1} />
+  <LedgerBag entry={ROW_I} firstRow={2} palette={PALETTE} drawn={1} />
 </div>
 
 ---
@@ -73,7 +73,7 @@ Nineteen balls go in: eight red for "am", nine blue for "do", two green for "wou
 <LedgerPage text="I do not" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_DO} firstRow={2} palettes={2} highlight={0} />
+  <LedgerRow entry={ROW_DO} firstRow={2} palette={PALETTE} highlight={0} />
 </div>
 
 no bag needed: after `do` this text only ever said `not`
@@ -87,7 +87,7 @@ no bag needed: after `do` this text only ever said `not`
 <LedgerPage text="I do not like" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_NOT} firstRow={1} palettes={2} highlight={0} />
+  <LedgerRow entry={ROW_NOT} firstRow={1} palette={PALETTE} highlight={0} />
 </div>
 
 ---
@@ -99,8 +99,8 @@ no bag needed: after `do` this text only ever said `not`
 <LedgerPage text="I do not like" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_LIKE} firstRow={4} palettes={2} />
-  <LedgerBag entry={ROW_LIKE} firstRow={4} palettes={2} />
+  <LedgerRow entry={ROW_LIKE} firstRow={4} palette={PALETTE} />
+  <LedgerBag entry={ROW_LIKE} firstRow={4} palette={PALETTE} />
 </div>
 
 ---
@@ -112,8 +112,8 @@ no bag needed: after `do` this text only ever said `not`
 <LedgerPage text="I do not like them" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_LIKE} firstRow={4} palettes={2} highlight={2} />
-  <LedgerBag entry={ROW_LIKE} firstRow={4} palettes={2} drawn={2} />
+  <LedgerRow entry={ROW_LIKE} firstRow={4} palette={PALETTE} highlight={2} />
+  <LedgerBag entry={ROW_LIKE} firstRow={4} palette={PALETTE} drawn={2} />
 </div>
 
 ---
@@ -125,8 +125,8 @@ no bag needed: after `do` this text only ever said `not`
 <LedgerPage text="I do not like them" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_THEM} firstRow={5} palettes={2} />
-  <LedgerBag entry={ROW_THEM} firstRow={5} palettes={2} />
+  <LedgerRow entry={ROW_THEM} firstRow={5} palette={PALETTE} />
+  <LedgerBag entry={ROW_THEM} firstRow={5} palette={PALETTE} />
 </div>
 
 ```notes
@@ -142,8 +142,8 @@ no bag needed: after `do` this text only ever said `not`
 <LedgerPage text="I do not like them in" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_THEM} firstRow={5} palettes={2} highlight={3} />
-  <LedgerBag entry={ROW_THEM} firstRow={5} palettes={2} drawn={3} />
+  <LedgerRow entry={ROW_THEM} firstRow={5} palette={PALETTE} highlight={3} />
+  <LedgerBag entry={ROW_THEM} firstRow={5} palette={PALETTE} drawn={3} />
 </div>
 
 ---
@@ -155,7 +155,7 @@ no bag needed: after `do` this text only ever said `not`
 <LedgerPage text="I do not like them in a" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_IN} firstRow={3} palettes={2} highlight={0} />
+  <LedgerRow entry={ROW_IN} firstRow={3} palette={PALETTE} highlight={0} />
 </div>
 
 ---
@@ -167,8 +167,8 @@ no bag needed: after `do` this text only ever said `not`
 <LedgerPage text="I do not like them in a mouse" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_A} firstRow={4} palettes={2} highlight={1} />
-  <LedgerBag entry={ROW_A} firstRow={4} palettes={2} drawn={1} />
+  <LedgerRow entry={ROW_A} firstRow={4} palette={PALETTE} highlight={1} />
+  <LedgerBag entry={ROW_A} firstRow={4} palette={PALETTE} drawn={1} />
 </div>
 
 ---
@@ -180,8 +180,8 @@ no bag needed: after `do` this text only ever said `not`
 <LedgerPage text="I do not like them in a mouse ?" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_MOUSE} firstRow={0} palettes={2} highlight={0} />
-  <LedgerBag entry={ROW_MOUSE} firstRow={0} palettes={2} drawn={0} />
+  <LedgerRow entry={ROW_MOUSE} firstRow={0} palette={PALETTE} highlight={0} />
+  <LedgerBag entry={ROW_MOUSE} firstRow={0} palette={PALETTE} drawn={0} />
 </div>
 
 ```notes

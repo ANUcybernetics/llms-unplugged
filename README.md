@@ -148,30 +148,34 @@ are dropped; apostrophes inside contractions are preserved.
   every follower. Training is tallying by hand; generation is a bag of
   counters, one per tally mark in the colour of its strip, so the counter drawn
   names the follower. The strips are coloured by column rather than by word,
-  and three palettes cycle down the rows, so a prefix that runs past the
-  columns continues onto the rows below and still gives the bag distinct
-  colours, twelve in all. The prefixes are dealt across a group's sheets in alphabetical runs,
+  and the room's counter colours cycle down the rows a rowful at a time, so a
+  prefix that runs past the columns continues onto the rows below and still
+  gives the bag distinct colours. The prefixes are dealt across a group's sheets in alphabetical runs,
   each sheet's header naming the first and last prefix it holds. The PDF leads
   with a one-page facilitator brief, then one page per sheet. A `counters.pdf`
   of coloured squares to cut up lands beside it: print it double-sided (the
-  layout is symmetric, so either binding works) for 8 counters of each of the
-  twelve colours per A4 sheet. So does a `text.pdf`: the text as the tokeniser
+  layout is symmetric, so either binding works) for 8 counters of each colour
+  per A4 sheet. So does a `text.pdf`: the text as the tokeniser
   read it, one token per box with a running number under each, for whoever
   reads it aloud in the training round.
   - `--sheets <N>`: the group size. Omit it and the count follows the corpus at
     the `--rows` density
-  - `--palettes <N>`: how many of the three strip palettes the rows cycle
-    (default 3, twelve colours); a room with counters in eight colours prints
-    with 2
+  - `--palette <JSON|@FILE>`: the colours the room's counters come in, as a
+    JSON array of `{"name": ..., "hex": ...}` entries --- inline, or `@` a
+    file of them. Everything that needs a colour reads this list: the strips,
+    their printed names, the counters page and the brief's key and counts.
+    The default is the twelve in `cli/ledger-palette.json`; a room with balls
+    in eight colours passes `@cli/ledger-palette-eight.json`, or its own list
   - `--prefill prefixes|followers` (default `prefixes`): what the sheets come
     printed with. `prefixes` leaves the followers to be discovered as the text
     is read; `followers` leaves only the tallies to make
   - `--blank`: sheets of empty rows with no corpus (one, unless `--sheets`),
     for a group training on a text of its own
-  - `--columns <N>` (default and maximum 4), `--rows <N>` (default 12):
-    follower cells on a row and rows on a page. The command warns about any
-    prefix with more than three times the column count of followers, since its
-    fourth row repeats the first row's colours
+  - `--columns <N>` (default 4), `--rows <N>` (default 12): follower cells on
+    a row and rows on a page. The rows cycle through the palette `--columns`
+    at a time, so twelve colours colour three rows and eight colour two; the
+    command warns about any prefix that runs past them, where the colours
+    repeat
   - `--n <N>`, `--title`, `--author`, `--paper-size` as for `sheets`
 
 Every subcommand also takes `--max-tokens <N>`, which reads only the first N
@@ -212,6 +216,8 @@ For large trigram models, use the `-b` flag to split across multiple books.
 - `cli/` - Rust CLI tool and booklet generation pipeline
   - `src/` - Rust source code for N-gram processing and CLI
   - `book.typ` - Main booklet template
+  - `ledger-palette.json` - The ledger's default counter colours, and
+    `ledger-palette-eight.json` for a room with balls in eight of them
 - `data/` - Input text corpora (\*.txt files with YAML frontmatter)
 - `handouts/` - Printable materials (worksheets, designer references)
 - `website/` - Project website source (Astro)

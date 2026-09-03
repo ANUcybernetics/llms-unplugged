@@ -75,14 +75,15 @@ group's text had.
 ## You will need
 
 - the pre-tallied _Green Eggs and Ham_ set, one per group: the first 150
-  tokens, five sheets, two palettes (`llms_unplugged ledger -i
-data/green-eggs-and-ham.txt --max-tokens 150 --sheets 5 --palettes 2
---prefill tallies`)
+  tokens, five sheets, eight colours (`llms_unplugged ledger -i
+data/green-eggs-and-ham.txt --max-tokens 150 --sheets 5 --palette
+@cli/ledger-palette-eight.json --prefill tallies`)
 - one training set per group, each from a different `data/school-day-*.txt`
-  text, printed with `--prefill prefixes --palettes 2`, plus its `text.pdf`
-- soft balls in the eight colours of the first two palettes (red, blue, green,
-  yellow, pink, purple, black, white), at least eleven of each per group, and
-  a cloth bag per group
+  text, printed with the same `--palette` and `--prefill prefixes`, plus its
+  `text.pdf`
+- soft balls in that palette's eight colours (red, blue, green, yellow, pink,
+  purple, black, white), at least eleven of each per group, and a cloth bag
+  per group
 - a bucket for the room, and butchers paper for the class story
 - pen and paper per group, a whiteboard, a projector, and access to a chatbot
   for part 1

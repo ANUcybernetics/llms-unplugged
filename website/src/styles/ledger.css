@@ -1,9 +1,10 @@
 /* Shared styles for the ledger widgets (LedgerRow, LedgerBag, LedgerTraining,
    LedgerBucket, LedgerSheets): the pieces of a printed ledger sheet as
-   cli/ledger.typ prints it, drawn on the paper ground the cutouts use. Colour
-   values are the --ledger-<name> tokens in common.css; each strip sets --c to
-   its own and tints itself from it, so a strip on a slide is the strip on the
-   sheet. Import beside widgets.css in any deck that uses these widgets. */
+   cli/ledger.typ prints it, drawn on the paper ground the cutouts use. The
+   colours come from the set's palette (src/lib/ledger.ts, which is the CLI's
+   --palette), so each strip sets --c to its own value and tints itself from
+   it exactly as ledger-common.typ does. Import beside widgets.css in any deck
+   that uses these widgets. */
 
 /* A token as the sheet prints it: bold, on paper. */
 .ledger-token {
@@ -40,25 +41,26 @@
   vertical-align: -0.1em;
 }
 
-/* The tally strip: a tint of its colour to write on, and a bar down the
-   leading edge in the full colour, which is what a counter is matched
-   against. White is the page with a dashed edge; black tints to grey. */
+/* The tally strip: a tint of its colour to write on --- the same hue at a
+   fixed pale lightness and a fraction of its chroma that ledger-common.typ
+   uses, so every strip is equally faint whatever the colour --- and a bar
+   down the leading edge in the full colour, which is what a counter is
+   matched against. A pale colour (white, and anything near it) has no tint to
+   give and no bar to draw, so its strip is the page with a dashed edge; the
+   widget adds .pale, since the palette is data and no colour is special by
+   name. */
 .ledger-strip {
-  --c: var(--ledger-red);
+  --c: #888;
 
   position: relative;
-  background: color-mix(in oklab, var(--c) 12%, white);
+  background: oklch(from var(--c) 94% calc(c * 0.15) h);
   border-left: 0.3em solid var(--c);
   min-block-size: 2.4em;
 }
 
-.ledger-strip[data-colour="white"] {
+.ledger-strip.pale {
   background: #fff;
   border: 1px dashed rgb(0 0 0 / 45%);
-}
-
-.ledger-strip[data-colour="black"] {
-  background: #f0f0f0;
 }
 
 /* The colour's name in the strip's corner, as the sheet prints it. */
@@ -75,7 +77,7 @@
 /* One counter (a ball): a disc in the full colour with a hairline so the
    white one is visible. */
 .ledger-counter {
-  --c: var(--ledger-red);
+  --c: #888;
 
   display: inline-block;
   inline-size: 1em;

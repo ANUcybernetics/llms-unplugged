@@ -1,5 +1,12 @@
 <script lang="ts">
-  import { layoutCells, LEDGER_COLUMNS, LEDGER_PALETTES, type LedgerEntry } from "../lib/ledger";
+  import {
+    isPale,
+    layoutCells,
+    LEDGER_COLUMNS,
+    LEDGER_PALETTE,
+    type LedgerEntry,
+    type PaletteEntry,
+  } from "../lib/ledger";
 
   interface Props {
     /** The prefix and its followers with counts (see src/lib/ledger.ts). */
@@ -7,13 +14,13 @@
     columns?: number;
     /**
      * The physical row of the page the entry starts on. Strips are coloured
-     * by column and the palettes cycle down the page's rows, so this is what
-     * decides which palette the row prints in; pass the real row so the
+     * by column and the palette cycles down the page's rows, so this is what
+     * decides which colours the row prints in; pass the real row so the
      * slide shows the colours the sheet in the room has.
      */
     firstRow?: number;
-    /** How many of the three palettes the sheet cycles (the CLI's --palettes). */
-    palettes?: number;
+    /** The room's counter colours (the CLI's --palette). */
+    palette?: readonly PaletteEntry[];
     /** Print the follower words (a "followers" or "tallies" sheet). */
     showFollowers?: boolean;
     /** Draw the tally marks (a "tallies" sheet). */
@@ -30,7 +37,7 @@
     entry,
     columns = LEDGER_COLUMNS,
     firstRow = 0,
-    palettes = LEDGER_PALETTES.length,
+    palette = LEDGER_PALETTE,
     showFollowers = true,
     showTallies = true,
     highlight,
@@ -38,7 +45,7 @@
     id = "ledger-row",
   }: Props = $props();
 
-  const rows = $derived(layoutCells(entry, columns, firstRow, palettes));
+  const rows = $derived(layoutCells(entry, columns, firstRow, palette));
   // Cell ids carry the prefix, so auto-animate matches cells only between
   // frames of the same row (load the bag, then draw) and crossfades when the
   // walkthrough moves to another prefix. Matching "them"'s cells to "in"'s
@@ -110,8 +117,8 @@
           class="ledger-strip"
           class:dim={highlight !== undefined && highlight !== cell.index}
           class:lit={highlight === cell.index}
-          style="--c: var(--ledger-{cell.colour})"
-          data-colour={cell.colour}
+          class:pale={isPale(cell.colour.hex)}
+          style="--c: {cell.colour.hex}"
           role="cell"
           data-id={cellId(`s${cell.index}`)}
         >
@@ -122,7 +129,7 @@
               {/each}
             </span>
           {/if}
-          <span class="ledger-strip-name">{cell.colour}</span>
+          <span class="ledger-strip-name">{cell.colour.name}</span>
         </div>
       {/each}
     </div>

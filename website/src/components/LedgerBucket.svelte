@@ -1,8 +1,10 @@
 <script lang="ts">
+  import { colourNamed, LEDGER_PALETTE, type PaletteEntry } from "../lib/ledger";
+
   interface Group {
     /** What the room calls the group. */
     name: string;
-    /** The group's ball colour: a ledger palette name (red, blue, ...). */
+    /** The group's ball colour, by name: one of the palette's colours. */
     colour: string;
     /** How many marks the group's row for the prefix carries: balls it throws in. */
     count: number;
@@ -16,10 +18,21 @@
     drawn?: number;
     /** Show the bucket before anyone has thrown. */
     empty?: boolean;
+    /** The room's counter colours (the CLI's --palette), which name the balls. */
+    palette?: readonly PaletteEntry[];
     id?: string;
   }
 
-  let { prefix, groups, drawn, empty = false, id = "bucket" }: Props = $props();
+  let {
+    prefix,
+    groups,
+    drawn,
+    empty = false,
+    palette = LEDGER_PALETTE,
+    id = "bucket",
+  }: Props = $props();
+
+  const hex = (name: string) => colourNamed(name, palette).hex;
 
   // Every group's balls, in group order, packed into rows from the bottom
   // of the bucket up. The drawn ball is the first of its group's.
@@ -49,7 +62,7 @@
   <ul class="groups" aria-label="what each group throws in for {prefix}">
     {#each groups as g, gi (gi)}
       <li class:drawn={drawn === gi} data-id="{id}-g{gi}">
-        <span class="ledger-counter" style="--c: var(--ledger-{g.colour})"></span>
+        <span class="ledger-counter" style="--c: {hex(g.colour)}"></span>
         <span class="gname">{g.name}</span>
         <span class="gcount">{g.count === 0 ? "no row" : `× ${g.count}`}</span>
       </li>
@@ -65,7 +78,7 @@
           cy={b.y}
           r={R}
           class="ball"
-          style="--c: var(--ledger-{b.colour})"
+          style="--c: {hex(b.colour)}"
           data-id="{id}-b{b.i}"
         />
       {/each}
@@ -76,7 +89,7 @@
         cy="30"
         r={R + 4}
         class="ball drawn"
-        style="--c: var(--ledger-{balls[drawnIndex].colour})"
+        style="--c: {hex(balls[drawnIndex].colour)}"
         data-id="{id}-b{drawnIndex}"
       />
     {/if}

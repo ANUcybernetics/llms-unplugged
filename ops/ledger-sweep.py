@@ -16,17 +16,22 @@ subcommand across a range of token budgets and prints one row per budget:
 
 `widest` is the most followers any prefix has, `rows` how many ledger rows
 that prefix takes at the column count, `colours` how many counter colours the
-set needs (rows times columns, capped at the palettes in use), `max_count` the
-largest single tally, and `max_row` the most tallies on one prefix, which is
-how many balls of one group colour the bucket finale can ask a group for.
+set needs (rows times columns, capped at the palette the set was built with),
+`max_count` the largest single tally, and `max_row` the most tallies on one
+prefix, which is how many balls of one group colour the bucket finale can ask
+a group for.
 
 The sweep stops at the first budget the text is shorter than, printing that
 row as the whole text.
 
+Pass the room's palette through with `--palette` exactly as the `ledger`
+subcommand takes it (inline JSON or @file), so the colour count is the one
+that room has.
+
 Usage:
   ops/ledger-sweep.py data/green-eggs-and-ham.txt
   ops/ledger-sweep.py data/one.txt --start 60 --stop 200 --step 20
-  ops/ledger-sweep.py data/*.txt --start 60 --stop 100 --step 20
+  ops/ledger-sweep.py data/*.txt --palette @cli/ledger-palette-eight.json
 """
 
 from __future__ import annotations
@@ -45,7 +50,13 @@ DEFAULT_CLI = REPO / "cli" / "target" / "release" / "llms_unplugged"
 app = typer.Typer(add_completion=False)
 
 
-def ledger_json(cli: Path, corpus: Path, budget: int | None, columns: int) -> dict:
+def ledger_json(
+    cli: Path,
+    corpus: Path,
+    budget: int | None,
+    columns: int,
+    palette: str | None,
+) -> dict:
     """Run the ledger subcommand JSON-only and return ledger.json."""
     with tempfile.TemporaryDirectory() as out:
         cmd = [
@@ -59,22 +70,27 @@ def ledger_json(cli: Path, corpus: Path, budget: int | None, columns: int) -> di
             "-o",
             out,
         ]
+        if palette is not None:
+            cmd += ["--palette", palette]
         if budget is not None:
             cmd += ["--max-tokens", str(budget)]
         subprocess.run(cmd, check=True, capture_output=True)
         return json.loads((Path(out) / "ledger.json").read_text())
 
 
-def stats(data: dict, columns: int, palettes: int) -> dict:
+def stats(data: dict, columns: int) -> dict:
     entries = [e for sheet in data["sheets"] for page in sheet["pages"] for e in page]
     widest = max((len(e["followers"]) for e in entries), default=0)
     rows = max(1, -(-widest // columns))
+    # The palette is flat and the rows cycle through it `columns` at a time,
+    # so this is how many rows the set has distinct colours for.
+    cycles = len(data["palette"]) // columns
     return {
         "tokens": data["metadata"]["total_tokens"],
         "prefixes": len(entries),
         "widest": widest,
         "rows": rows,
-        "colours": min(rows, palettes) * columns,
+        "colours": min(rows, cycles) * columns,
         "max_count": max(
             (f["count"] for e in entries for f in e["followers"]), default=0
         ),
@@ -111,7 +127,10 @@ def sweep(
     stop: Annotated[int, typer.Option(help="Last token budget (inclusive)")] = 400,
     step: Annotated[int, typer.Option(help="Budget step")] = 50,
     columns: Annotated[int, typer.Option(help="Follower cells per row")] = 4,
-    palettes: Annotated[int, typer.Option(help="Palettes the sheets cycle (1-3)")] = 3,
+    palette: Annotated[
+        str | None,
+        typer.Option(help="Counter colours as the ledger subcommand takes them"),
+    ] = None,
     cli: Annotated[
         Path, typer.Option(help="Path to the llms_unplugged binary")
     ] = DEFAULT_CLI,
@@ -125,13 +144,13 @@ def sweep(
         print(corpus)
         print_row(list(COLUMNS))
         for budget in range(start, stop + 1, step):
-            s = stats(ledger_json(cli, corpus, budget, columns), columns, palettes)
+            s = stats(ledger_json(cli, corpus, budget, columns, palette), columns)
             label = str(budget) if s["cut"] else "full"
             print_row([label] + [str(s[k]) for k in COLUMNS[1:]])
             if not s["cut"]:
                 break
         else:
-            s = stats(ledger_json(cli, corpus, None, columns), columns, palettes)
+            s = stats(ledger_json(cli, corpus, None, columns, palette), columns)
             print_row(["full"] + [str(s[k]) for k in COLUMNS[1:]])
         print()
 

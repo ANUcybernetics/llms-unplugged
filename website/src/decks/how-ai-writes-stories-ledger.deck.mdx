@@ -6,6 +6,7 @@ description:
 published: false
 ---
 
+import { LEDGER_PALETTE } from "../lib/ledger";
 import LedgerToken from "../components/LedgerToken.astro";
 import LedgerRow from "../components/LedgerRow.svelte";
 import LedgerBag from "../components/LedgerBag.svelte";
@@ -28,15 +29,19 @@ export const components = { code: LedgerToken };
 
 ```comment
 Every row below is a real row of the sheets in the room: the first 150 tokens
-   of Green Eggs and Ham, dealt across 5 sheets with two palettes ---
-   `llms_unplugged ledger -i data/green-eggs-and-ham.txt --max-tokens 150
-   --sheets 5 --palettes 2 --prefill tallies`. The firstRow passed to each
-   widget is the row's physical position on its sheet, which is what decides
-   its colours, so a regenerated set (a different --max-tokens, a different
-   sheet count) means re-reading the rows and positions off the new sheets.
-   The bucket groups are the school-day texts' rows for "the"
+   of Green Eggs and Ham, dealt across 5 sheets, printed for a room with balls
+   in eight colours --- `llms_unplugged ledger -i data/green-eggs-and-ham.txt
+   --max-tokens 150 --sheets 5 --palette @cli/ledger-palette-eight.json
+   --prefill tallies`, whose palette is the first eight of the CLI's default
+   (cli/ledger-palette.json), which is what PALETTE below slices. The firstRow
+   passed to each widget is the row's physical position on its sheet, which is
+   what decides its colours, so a regenerated set (a different --max-tokens, a
+   different sheet count) means re-reading the rows and positions off the new
+   sheets. The bucket groups are the school-day texts' rows for "the"
    (data/school-day-*.txt), each built with --prefill prefixes for training.
 ```
+
+export const PALETTE = LEDGER_PALETTE.slice(0, 8);
 
 export const ROW_I = {
   prefix: "I",
@@ -164,7 +169,7 @@ Before each delivery:
 - print the pre-tallied Green Eggs set, one per group (5 sheets each, plus the
   brief); print the school-day sets with --prefill prefixes, a different text
   per group, with their text.pdf pages
-- soft balls in the eight colours of the first two palettes, at least 11 of
+- soft balls in the palette's eight colours, at least 11 of
   each per group, one bag per group, one bucket for the room
 - a few "predict the next word" prompts for the whiteboard
 ```

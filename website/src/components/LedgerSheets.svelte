@@ -1,5 +1,11 @@
 <script lang="ts">
-  import { LEDGER_COLUMNS, LEDGER_PALETTES, paletteFor } from "../lib/ledger";
+  import {
+    isPale,
+    LEDGER_COLUMNS,
+    LEDGER_PALETTE,
+    type PaletteEntry,
+    paletteFor,
+  } from "../lib/ledger";
 
   interface Props {
     /** Each sheet's first and last prefix, as its header prints them. */
@@ -9,7 +15,8 @@
     /** Index of the sheet to light, the one that holds the prefix in question. */
     highlight?: number;
     columns?: number;
-    palettes?: number;
+    /** The room's counter colours (the CLI's --palette). */
+    palette?: readonly PaletteEntry[];
   }
 
   let {
@@ -17,7 +24,7 @@
     holders,
     highlight,
     columns = LEDGER_COLUMNS,
-    palettes = LEDGER_PALETTES.length,
+    palette = LEDGER_PALETTE,
   }: Props = $props();
   const ROWS = 4;
 </script>
@@ -37,9 +44,12 @@
       {#each Array.from({ length: ROWS }) as _, r (r)}
         <div class="row" style="--columns: {columns}">
           <span class="stub"></span>
-          {#each paletteFor(r, columns, palettes) as colour (colour)}
+          {#each paletteFor(r, columns, palette) as colour (colour.name)}
             <span class="cell"></span>
-            <span class="ledger-strip mini" style="--c: var(--ledger-{colour})" data-colour={colour}
+            <span
+              class="ledger-strip mini"
+              class:pale={isPale(colour.hex)}
+              style="--c: {colour.hex}"
             ></span>
           {/each}
         </div>

@@ -32,6 +32,14 @@ pub enum Error {
     #[error("Corpus has no {context_size}-token contexts; cannot place tool '{name}'")]
     NoContextsForTool { name: String, context_size: usize },
     #[error(
+        "--palette has {colours} colour(s) but a row has {columns} cells; give it at least one colour per column"
+    )]
+    LedgerPaletteTooSmall { colours: usize, columns: usize },
+    #[error("--palette names '{name}' twice; a drawn counter has to name one strip")]
+    LedgerPaletteDuplicate { name: String },
+    #[error("--palette colour '{name}' is '{hex}', which is not a hex value like #ff0000")]
+    LedgerPaletteBadHex { name: String, hex: String },
+    #[error(
         "'{prefix}' needs {rows} ledger rows but a page holds {rows_per_page}; use more --columns or --rows"
     )]
     LedgerEntryTooTall {

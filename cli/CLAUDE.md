@@ -25,7 +25,8 @@ text file → Rust CLI → model.json → Typst → PDF booklet
 - `src/ledger.rs` - `LedgerEntry` (a prefix and its followers with counts, in
   first-appearance order), the alphabetical row-balanced deal across a group's
   sheets and the pagination that never splits an entry; `LedgerSet` is the
-  `ledger.json` shape
+  `ledger.json` shape. `PaletteEntry` and the palette checks live here too,
+  with the default list embedded from `ledger-palette.json`
 - `src/output.rs` - `Metadata` and `BookletJson`, the `model.json` shape
 - `src/error.rs` - the lib's `Error` enum; `main` keys the frontmatter help on
   `Error::is_frontmatter`
@@ -48,9 +49,10 @@ text file → Rust CLI → model.json → Typst → PDF booklet
   gated on `metadata.documents`, which is why `CutoutsMetadata` carries a
   document count that a `--title` override cannot hide
 - `ledger.typ` - Ledger template: one row per prefix, follower cells split into
-  a word area and a tally strip, strips coloured by column with three row
-  palettes cycling. Twelve nameable colours, four a palette (the bag is matched
-  against a dot and a name on the strip), which caps `columns` at four. Tallies
+  a word area and a tally strip, strips coloured by column with the set's
+  palette cycling down the rows `columns` at a time. The palette comes from
+  `ledger.json` (the CLI's `--palette`), and the bag is matched against a dot
+  and a name printed on the strip. Tallies
   are drawn as five-bar gates whose unit shrinks to fit the largest count in the
   entry, so one prefix's strips share a scale and the ink on them is
   proportional to the counts. `word_fr`/`strip_fr` set the strip's shape: 1.47
@@ -59,9 +61,12 @@ text file → Rust CLI → model.json → Typst → PDF booklet
   `--prefill` is a Typst input rather than part of the JSON, so one set prints
   at any level. Opens with a one-page facilitator brief unless the set is
   `--blank`
-- `ledger-common.typ` - The three row palettes and the counter-sheet geometry,
-  shared by the two ledger templates so the strip on a sheet, the printed
-  counter and the brief's per-sheet yield come from one definition
+- `ledger-common.typ` - Reading the palette out of `ledger.json`, the strip
+  and counter drawing, and the counter-sheet geometry, shared by the two
+  ledger templates so the strip on a sheet, the printed counter and the
+  brief's per-sheet yield come from one definition. No colour or colour name
+  is written down here: a pale colour (white, and anything near it) gets a
+  dashed outline instead of a tint and a bar, which is decided by lightness
 - `ledger-counters.typ` - The counters to cut up and draw from the bag, written
   to `counters.pdf` beside every `ledger.pdf`. Two identical pages laid out as a
   palindrome both ways, so it prints double-sided under either binding with
@@ -206,14 +211,19 @@ port and rebuild the wasm.
   `tallies` is the whole sheet filled in, so the group skips training and goes
   straight to generating. `--blank` prints empty rows with no corpus, and so
   conflicts with `--prefill` rather than silently outranking it
-- `--palettes` (ledger only, 1-3, default 3) - How many of the three strip
-  palettes the sheets cycle down their rows; the counters page and the brief's
-  key and counts follow it. A room whose balls come in eight colours prints
-  with 2
+- `--palette` (ledger only, JSON array or `@file`) - The colours the room's
+  counters come in, as `{"name", "hex"}` entries; the default is
+  `ledger-palette.json`, which `src/ledger.rs` embeds and the website's
+  `LEDGER_PALETTE` mirrors. The list travels in `ledger.json`, so the sheets,
+  the counters page, the brief's key and counts and the deck widgets all read
+  one list. It is flat: the rows cycle it `--columns` at a time, and colours
+  past the last whole row are dropped with a warning. A room whose balls come
+  in eight colours passes `@ledger-palette-eight.json`, the first eight of the
+  default, which the school workshop's deck and lesson both print with
 - `--columns` / `--rows` (ledger only, defaults 4 and 12) - Follower cells on a
   row and rows on a page. A prefix with more followers than columns continues
-  onto the next row; the command warns when one needs more rows than there are
-  palettes, where the colours repeat
+  onto the next row; the command warns when one needs more rows than the
+  palette has colours for, where the colours repeat
 - `--columns` / `--font-size` (sheets only) - The rest of the sheet density.
   Columns default to 4 for bigrams and narrow as n grows. Pairs too wide for
   their column take two columns, so nothing wraps into the row below --- which

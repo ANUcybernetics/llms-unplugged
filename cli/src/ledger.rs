@@ -9,11 +9,73 @@
 
 use std::collections::HashMap;
 
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use crate::cutouts::{Cutout, CutoutsMetadata};
 use crate::error::{Error, Result};
 use crate::text::sort_key;
+
+/// One counter colour: the name a participant calls it by --- printed in the
+/// corner of every strip it colours, so a room need not agree on what
+/// "purple" looks like --- and the value it prints in.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PaletteEntry {
+    pub name: String,
+    pub hex: String,
+}
+
+/// The colours a room has counters in, as `--palette` takes them: the default
+/// twelve unless a set says otherwise. The file is the one place they are
+/// written down --- the sheets, the counters page, the brief and the website
+/// widgets all read this list rather than a copy of it.
+const DEFAULT_PALETTE_JSON: &str = include_str!("../ledger-palette.json");
+
+pub fn default_palette() -> Vec<PaletteEntry> {
+    serde_json::from_str(DEFAULT_PALETTE_JSON).expect("the bundled palette parses")
+}
+
+/// Whole palettes of `columns` colours the list holds. The list is flat and
+/// the rows cycle through it a palette at a time, so twelve colours at four
+/// columns give a prefix three rows of distinct strips and eight give two.
+/// Colours past the last whole palette cannot be reached by any row.
+pub fn palette_cycles(palette: &[PaletteEntry], columns: usize) -> usize {
+    palette.len() / columns
+}
+
+/// Check a palette can colour a sheet of `columns` columns: fewer colours
+/// than columns leaves a cell without a strip, two counters of one name
+/// cannot be told apart when one is drawn, and a value neither Typst nor a
+/// browser can read colours nothing.
+pub fn check_palette(palette: &[PaletteEntry], columns: usize) -> Result<()> {
+    if palette.len() < columns {
+        return Err(Error::LedgerPaletteTooSmall {
+            colours: palette.len(),
+            columns,
+        });
+    }
+    let mut seen = std::collections::HashSet::new();
+    for entry in palette {
+        if !seen.insert(entry.name.as_str()) {
+            return Err(Error::LedgerPaletteDuplicate {
+                name: entry.name.clone(),
+            });
+        }
+        if !is_hex_colour(&entry.hex) {
+            return Err(Error::LedgerPaletteBadHex {
+                name: entry.name.clone(),
+                hex: entry.hex.clone(),
+            });
+        }
+    }
+    Ok(())
+}
+
+/// `#rgb`, `#rrggbb` or their alpha forms: what `rgb()` takes in Typst and
+/// what a browser takes in CSS, since the same string colours both.
+fn is_hex_colour(hex: &str) -> bool {
+    let digits = hex.strip_prefix('#').unwrap_or("");
+    matches!(digits.len(), 3 | 4 | 6 | 8) && digits.chars().all(|c| c.is_ascii_hexdigit())
+}
 
 /// One continuation of a context and how often it followed it.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
@@ -174,6 +236,9 @@ pub struct LedgerSet {
     pub title: String,
     pub columns: usize,
     pub rows_per_page: usize,
+    /// The counter colours the strips take, cycling a palette of `columns`
+    /// down the rows (see [`palette_cycles`]).
+    pub palette: Vec<PaletteEntry>,
     pub sheets: Vec<LedgerSheet>,
     /// The training text by document (see [`text_documents`]); empty for
     /// blank sheets.
@@ -280,6 +345,52 @@ mod tests {
                 })
                 .collect(),
         }
+    }
+
+    #[test]
+    fn the_default_palette_is_twelve_named_hex_colours() {
+        let palette = default_palette();
+        assert_eq!(palette.len(), 12);
+        assert_eq!(
+            palette[0],
+            PaletteEntry {
+                name: "red".to_string(),
+                hex: "#e50002".to_string(),
+            }
+        );
+        assert!(check_palette(&palette, 4).is_ok());
+        // Twelve colours are three rows of four, two of six, and cannot fill
+        // a row of five without leaving two colours unreachable.
+        assert_eq!(palette_cycles(&palette, 4), 3);
+        assert_eq!(palette_cycles(&palette, 6), 2);
+        assert_eq!(palette_cycles(&palette, 5), 2);
+    }
+
+    #[test]
+    fn a_palette_needs_a_colour_per_column_and_distinct_names() {
+        let entry = |name: &str, hex: &str| PaletteEntry {
+            name: name.to_string(),
+            hex: hex.to_string(),
+        };
+        let good = vec![entry("red", "#f00"), entry("blue", "#0000ff")];
+        assert!(check_palette(&good, 2).is_ok());
+        assert!(matches!(
+            check_palette(&good, 3),
+            Err(Error::LedgerPaletteTooSmall {
+                colours: 2,
+                columns: 3
+            })
+        ));
+        let twice = vec![entry("red", "#f00"), entry("red", "#0000ff")];
+        assert!(matches!(
+            check_palette(&twice, 2),
+            Err(Error::LedgerPaletteDuplicate { .. })
+        ));
+        let unreadable = vec![entry("red", "crimson"), entry("blue", "#0000ff")];
+        assert!(matches!(
+            check_palette(&unreadable, 2),
+            Err(Error::LedgerPaletteBadHex { .. })
+        ));
     }
 
     #[test]

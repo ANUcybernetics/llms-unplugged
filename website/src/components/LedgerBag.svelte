@@ -1,12 +1,19 @@
 <script lang="ts">
-  import { bagFor, LEDGER_COLUMNS, LEDGER_PALETTES, type LedgerEntry } from "../lib/ledger";
+  import {
+    bagFor,
+    LEDGER_COLUMNS,
+    LEDGER_PALETTE,
+    type LedgerEntry,
+    type PaletteEntry,
+  } from "../lib/ledger";
 
   interface Props {
     /** The row whose marks load the bag. */
     entry: LedgerEntry;
     columns?: number;
     firstRow?: number;
-    palettes?: number;
+    /** The room's counter colours (the CLI's --palette). */
+    palette?: readonly PaletteEntry[];
     /**
      * Follower index of the counter drawn: it rises out of the bag with a
      * gold ring, and the label names its colour and word. Omit for a bag
@@ -22,13 +29,13 @@
     entry,
     columns = LEDGER_COLUMNS,
     firstRow = 0,
-    palettes = LEDGER_PALETTES.length,
+    palette = LEDGER_PALETTE,
     drawn,
     empty = false,
     id = "ledger-bag",
   }: Props = $props();
 
-  const counters = $derived(bagFor(entry, columns, firstRow, palettes));
+  const counters = $derived(bagFor(entry, columns, firstRow, palette));
   // The one counter that comes out: the first of the drawn follower's.
   const drawnIndex = $derived(
     drawn === undefined ? -1 : counters.findIndex((c) => c.index === drawn),
@@ -68,7 +75,7 @@
           cy={c.y}
           r={R}
           class="counter"
-          style="--c: var(--ledger-{c.colour})"
+          style="--c: {c.colour.hex}"
           data-id="{id}-c{c.k}"
         />
       {/each}
@@ -79,15 +86,15 @@
         cy="14"
         r={R + 3}
         class="counter drawn"
-        style="--c: var(--ledger-{drawnCounter.colour})"
+        style="--c: {drawnCounter.colour.hex}"
         data-id="{id}-c{drawnIndex}"
       />
     {/if}
   </svg>
   <div class="label" data-id="{id}-label">
     {#if drawnCounter}
-      <span class="ledger-counter" style="--c: var(--ledger-{drawnCounter.colour})"></span>
-      <span class="name">{drawnCounter.colour}</span>
+      <span class="ledger-counter" style="--c: {drawnCounter.colour.hex}"></span>
+      <span class="name">{drawnCounter.colour.name}</span>
       <span class="word">{drawnCounter.follower.text}</span>
     {:else if empty}
       <span class="hint">empty</span>
