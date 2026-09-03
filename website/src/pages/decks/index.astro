@@ -24,9 +24,16 @@ const claimed = new Set(
 );
 
 // Any remaining decks (event one-offs, works in progress) still get listed
-// unless their frontmatter says `listed: false`.
+// unless their frontmatter says `listed: false` --- or `published: false`,
+// which drops the deck's route from production builds, so a link to it
+// would be a link to nothing.
 const decksDir = path.resolve("src/decks");
 const others: Array<{ slug: string; title: string }> = [];
+
+const hidden = (data: unknown): boolean => {
+  const flags = data as { listed?: boolean; published?: boolean };
+  return flags.listed === false || flags.published === false;
+};
 
 for (const entry of fs.readdirSync(decksDir, { withFileTypes: true })) {
   if (entry.isDirectory()) {
@@ -37,7 +44,7 @@ for (const entry of fs.readdirSync(decksDir, { withFileTypes: true })) {
       const name = match[1];
       const raw = fs.readFileSync(path.join(dirPath, file), "utf-8");
       const { data } = parseDeckFrontmatter(raw, entry.name);
-      if ((data as { listed?: boolean }).listed === false) continue;
+      if (hidden(data)) continue;
       const slug = name === "slides" ? entry.name : `${entry.name}/${name}`;
       if (claimed.has(slug)) continue;
       others.push({ slug, title: data.title ?? name });
@@ -48,7 +55,7 @@ for (const entry of fs.readdirSync(decksDir, { withFileTypes: true })) {
     const name = match[1];
     const raw = fs.readFileSync(path.join(decksDir, entry.name), "utf-8");
     const { data } = parseDeckFrontmatter(raw, name);
-    if ((data as { listed?: boolean }).listed === false) continue;
+    if (hidden(data)) continue;
     if (claimed.has(name)) continue;
     others.push({ slug: name, title: data.title ?? name });
   }
