@@ -1,0 +1,228 @@
+---
+title: LLMs Unplugged — How AI writes stories (ledger)
+description:
+  A 90-minute school workshop (ages 10-16) using paper ledger sheets and a bag
+  of coloured balls to discover how AI writes stories
+---
+
+import LedgerToken from "../components/LedgerToken.astro";
+import LedgerRow from "../components/LedgerRow.svelte";
+import LedgerBag from "../components/LedgerBag.svelte";
+import LedgerPage from "../components/LedgerPage.svelte";
+import LedgerTraining from "../components/LedgerTraining.svelte";
+import LedgerBucket from "../components/LedgerBucket.svelte";
+import LedgerSheets from "../components/LedgerSheets.svelte";
+import Timer from "../components/Timer.astro";
+import PresenterGrid from "../components/PresenterGrid.astro";
+import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
+import BgMusic from "../components/BgMusic.astro";
+import CopyButton from "../components/CopyButton.astro";
+import "../styles/widgets.css";
+import "../styles/ledger.css";
+import "./how-ai-writes-stories-ledger.deck.css";
+
+<BgMusic />
+
+export const components = { code: LedgerToken };
+
+```comment
+Every row below is a real row of the sheets in the room: the first 150 tokens
+   of Green Eggs and Ham, dealt across 5 sheets with two palettes ---
+   `llms_unplugged ledger -i data/green-eggs-and-ham.txt --max-tokens 150
+   --sheets 5 --palettes 2 --prefill tallies`. The firstRow passed to each
+   widget is the row's physical position on its sheet, which is what decides
+   its colours, so a regenerated set (a different --max-tokens, a different
+   sheet count) means re-reading the rows and positions off the new sheets.
+   The bucket groups are the school-day texts' rows for "the"
+   (data/school-day-*.txt), each built with --prefill prefixes for training.
+```
+
+export const ROW_I = {
+  prefix: "I",
+  followers: [
+    { text: "am", count: 8 },
+    { text: "do", count: 9 },
+    { text: "would", count: 2 },
+  ],
+};
+
+export const ROW_DO = { prefix: "do", followers: [{ text: "not", count: 9 }] };
+
+export const ROW_NOT = {
+  prefix: "not",
+  followers: [{ text: "like", count: 11 }],
+};
+
+export const ROW_LIKE = {
+  prefix: "like",
+  followers: [
+    { text: "that", count: 1 },
+    { text: "green", count: 3 },
+    { text: "them", count: 11 },
+  ],
+};
+
+export const ROW_THEM = {
+  prefix: "them",
+  followers: [
+    { text: ",", count: 2 },
+    { text: "here", count: 3 },
+    { text: "anywhere", count: 2 },
+    { text: "in", count: 2 },
+    { text: "with", count: 2 },
+  ],
+};
+
+export const ROW_IN = { prefix: "in", followers: [{ text: "a", count: 2 }] };
+
+export const ROW_A = {
+  prefix: "a",
+  followers: [
+    { text: "house", count: 2 },
+    { text: "mouse", count: 2 },
+  ],
+};
+
+export const ROW_MOUSE = {
+  prefix: "mouse",
+  followers: [
+    { text: "?", count: 1 },
+    { text: ".", count: 1 },
+  ],
+};
+
+export const SHEET_RANGES = [
+  ["!", "am"],
+  ["and", "ham"],
+  ["here", "like"],
+  ["mouse", "them"],
+  ["there", "you"],
+];
+
+export const GE_OPENING =
+  "I am Sam . I am Sam . Sam I am . that Sam I am ! that Sam I am ! I do not like that Sam I am !";
+
+export const BUCKET_GROUPS = [
+  { name: "the bell", colour: "red", count: 8 },
+  { name: "the dog", colour: "blue", count: 6 },
+  { name: "the rain", colour: "green", count: 5 },
+  { name: "the volcano", colour: "yellow", count: 7 },
+  { name: "the bus", colour: "pink", count: 7 },
+];
+
+export const ROW_THE_VOLCANO = {
+  prefix: "the",
+  followers: [
+    { text: "teacher", count: 3 },
+    { text: "volcano", count: 1 },
+    { text: "foam", count: 1 },
+    { text: "desk", count: 1 },
+    { text: "floor", count: 1 },
+  ],
+};
+
+```comment
+Boilerplate prompt + fill-in fields for the "ask one to write us a story"
+   slide (see yr5-6-what-is-ai.mdx). The year level is a field here, since this
+   deck runs anywhere from year 5 to year 10.
+```
+
+export const STORY_PROMPT = [
+  "Write a funny, exciting two-paragraph story featuring [TEACHER NAME] as the hero. The story must naturally incorporate the following three words or ideas: [WORD 1], [WORD 2], and [WORD 3].",
+  "The story should be concise and engaging for [YEAR LEVEL] students in Australia. Include:",
+  "A surprising problem, mystery, or adventure.",
+  "[TEACHER NAME] taking bold action to solve the problem.",
+  "Humour that would make [YEAR LEVEL] students laugh.",
+  "A memorable twist, showdown, or unexpected ending.",
+  "Creative use of the three required words or ideas (avoid simply mentioning them).",
+  "Use energetic language and imaginative situations similar to an action-comedy adventure. Keep the story school-appropriate, positive, and easy to read aloud in class.",
+].join("\n");
+
+export const STORY_FIELDS = [
+  { token: "[TEACHER NAME]", label: "Teacher", size: 18 },
+  { token: "[YEAR LEVEL]", label: "Year level", size: 10 },
+  { token: "[WORD 1]", label: "Word 1", size: 18 },
+  { token: "[WORD 2]", label: "Word 2", size: 18 },
+  { token: "[WORD 3]", label: "Word 3", size: 18 },
+];
+
+```comment
+90-minute workshop for students aged 10-16, in groups of 4-5. Generation comes
+before training on purpose: a group that has drawn words out of a finished
+sheet knows what the marks are for before it makes any. Seven parts:
+  Part 1 (12 min)  What is AI? (yr5-6-what-is-ai)
+  Part 2 (8 min)   Warm-up + words (yr5-6-pattern-warmup + yr5-6-definitions)
+  Part 3 (5 min)   Read the sheet (ledger-read)
+  Part 4 (20 min)  Generation + shareback (ledger-generation)
+  Part 5 (25 min)  Training on a new text, then a short generation (ledger-training)
+  Part 6 (10 min)  One story, all together (ledger-bucket --- drop if running over)
+  Part 7 (5 min)   Wrap-up + Q&A (yr5-6-wrap-up)
+Allow 5 min for arrival/settle/introductions before Part 1.
+
+Before each delivery:
+- print the pre-tallied Green Eggs set, one per group (5 sheets each, plus the
+  brief); print the school-day sets with --prefill prefixes, a different text
+  per group, with their text.pdf pages
+- soft balls in the eight colours of the first two palettes, at least 11 of
+  each per group, one bag per group, one bucket for the room
+- a few "predict the next word" prompts for the whiteboard
+```
+
+{/* _class: hero */}
+
+# LLMs Unplugged
+
+## How AI writes stories
+
+![bg](./assets/bg-ledger-title.avif)
+
+```notes
+Open warm: today we'll find out how AI writes stories, and write some ourselves with paper and a bag of balls. No computers.
+```
+
+---
+
+{/* @include ./partials/ack-country.mdx */}
+
+---
+
+{/* @include ./partials/presenters.mdx */}
+
+---
+
+{/* @include ./partials/yr5-6-what-is-ai.mdx */}
+
+---
+
+{/* @include ./partials/yr5-6-pattern-warmup.mdx */}
+
+---
+
+{/* @include ./partials/yr5-6-definitions.mdx */}
+
+---
+
+{/* @include ./partials/ledger-read.mdx */}
+
+---
+
+{/* @include ./partials/ledger-generation.mdx */}
+
+---
+
+{/* @include ./partials/ledger-training.mdx */}
+
+---
+
+{/* @include ./partials/ledger-bucket.mdx */}
+
+---
+
+{/* @include ./partials/yr5-6-wrap-up.mdx */}
+
+---
+
+{/* _class: socy-logo */}
+
+<SocyLogo />
+<p class="socy-url">www.llmsunplugged.org</p>

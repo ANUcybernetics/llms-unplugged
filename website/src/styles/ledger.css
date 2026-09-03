@@ -1,0 +1,87 @@
+/* Shared styles for the ledger widgets (LedgerRow, LedgerBag, LedgerTraining,
+   LedgerBucket, LedgerSheets): the pieces of a printed ledger sheet as
+   cli/ledger.typ prints it, drawn on the paper ground the cutouts use. Colour
+   values are the --ledger-<name> tokens in common.css; each strip sets --c to
+   its own and tints itself from it, so a strip on a slide is the strip on the
+   sheet. Import beside widgets.css in any deck that uses these widgets. */
+
+/* A token as the sheet prints it: bold, on paper. */
+.ledger-token {
+  font-weight: 700;
+  color: var(--paper-ink, #1a1a1a);
+  white-space: nowrap;
+}
+
+/* A token named in prose (a backtick in the ledger decks, via LedgerToken):
+   the word on a scrap of the paper it is printed on, so it matches the sheet
+   rather than the cutouts' per-word palette. */
+.ledger-inline {
+  display: inline-block;
+  padding: 0.05em 0.35em;
+  border-radius: 4px;
+  background: var(--paper-ground, #fff);
+  border: 1px solid var(--paper-edge, rgb(0 0 0 / 22%));
+  color: var(--paper-ink, #1a1a1a);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* A punctuation mark in its symbol tile (booklet-common.typ's punct-box): a
+   square at the size of the words beside it, so a full stop is not a speck. */
+.ledger-punct {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1em;
+  block-size: 1em;
+  border: 1px solid currentcolor;
+  border-radius: 0.12em;
+  line-height: 1;
+  vertical-align: -0.1em;
+}
+
+/* The tally strip: a tint of its colour to write on, and a bar down the
+   leading edge in the full colour, which is what a counter is matched
+   against. White is the page with a dashed edge; black tints to grey. */
+.ledger-strip {
+  --c: var(--ledger-red);
+
+  position: relative;
+  background: color-mix(in oklab, var(--c) 12%, white);
+  border-left: 0.3em solid var(--c);
+  min-block-size: 2.4em;
+}
+
+.ledger-strip[data-colour="white"] {
+  background: #fff;
+  border: 1px dashed rgb(0 0 0 / 45%);
+}
+
+.ledger-strip[data-colour="black"] {
+  background: #f0f0f0;
+}
+
+/* The colour's name in the strip's corner, as the sheet prints it. */
+.ledger-strip-name {
+  position: absolute;
+  right: 0.3em;
+  bottom: 0.15em;
+  font-size: 0.5em;
+  font-weight: 400;
+  color: rgb(0 0 0 / 60%);
+  letter-spacing: 0.02em;
+}
+
+/* One counter (a ball): a disc in the full colour with a hairline so the
+   white one is visible. */
+.ledger-counter {
+  --c: var(--ledger-red);
+
+  display: inline-block;
+  inline-size: 1em;
+  block-size: 1em;
+  border-radius: 50%;
+  background: var(--c);
+  border: 1px solid rgb(0 0 0 / 55%);
+  vertical-align: middle;
+}

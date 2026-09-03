@@ -1,0 +1,88 @@
+{/* _class: hero */}
+
+# One story, all together
+
+![bg](./assets/bg-bucket.avif)
+
+```notes
+Optional section --- drop if running short on time. Put the bucket in the middle of the room and give each group a colour: every ball they throw is that colour.
+```
+
+---
+
+## Five texts, five models
+
+![bg right:40%](./assets/bg-five-texts.avif)
+
+each group trained on a different text, so each group's row for `the` is different
+
+together the class has a **bigger model** than any one group
+
+```notes
+Ask each group what came after "the" in their text. Nobody has "volcano" except the volcano group; nobody has "bus" except the bus group. The class as a whole knows all of them.
+```
+
+---
+
+## The bucket
+
+![bg right:40%](./assets/bg-bucket.avif)
+
+I'll call out the word we're on
+
+if your sheets have a row for it, throw in **one ball of your group's colour for every mark on that row**
+
+I draw one ball --- that group draws from **their own bag** to get the next word
+
+```notes
+Two draws per word: the bucket picks the group, the group's bag picks the word. Groups without the row throw nothing. A group whose text used the word a lot throws more balls and gets picked more --- the more your text said it, the more say you get.
+```
+
+---
+
+{/* _animate: bucket */}
+
+## The word is `the`
+
+<LedgerBucket prefix="the" groups={BUCKET_GROUPS} empty />
+
+---
+
+{/* _animate: bucket */}
+
+## Everyone throws
+
+<LedgerBucket prefix="the" groups={BUCKET_GROUPS} />
+
+---
+
+{/* _animate: bucket */}
+
+## Draw one
+
+<LedgerBucket prefix="the" groups={BUCKET_GROUPS} drawn={3} />
+
+---
+
+## That group draws the word
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_THE_VOLCANO} palettes={2} highlight={1} />
+  <LedgerBag entry={ROW_THE_VOLCANO} palettes={2} drawn={1} />
+</div>
+
+the class story grows by one word --- and the new word is the next one we hunt for
+
+```notes
+Write the class story on butchers paper as it grows. Keep going for a few sentences; a word only one group has (volcano, bus, dog) is the fun moment --- the class model can say things most groups never saw.
+```
+
+---
+
+{/* _class: hero */}
+
+# One story, all together
+
+![bg](./assets/bg-bucket.avif)
+
+<Timer minutes={10} overlay />

@@ -1,0 +1,105 @@
+---
+title: How AI writes stories with a bag of balls
+description:
+  A 90-minute school lesson (ages 10-16) where students generate stories from
+  a finished paper language model, then train their own from a new text and
+  pool the class's models in a shared bucket.
+audience: ages 10-16 (years 5-10)
+duration: 90 minutes
+flavour: ledger
+decks:
+  - slug: how-ai-writes-stories-ledger
+    label: How AI writes stories, ledger version (90 min)
+modules:
+  - training
+  - generation
+order: 3
+status: untested
+---
+
+import UsingTheSlides from "../../components/UsingTheSlides.astro";
+
+A sibling of [How AI writes stories](/lessons/how-ai-writes-stories/) that
+swaps the paper cutouts for **ledger sheets**: a table with one row per word,
+tally marks beside each word that followed it, and a coloured strip beside
+every tally. Generation is a bag of soft coloured balls---one ball per tally
+mark, in the strip's colour, draw one and read the word beside that
+colour---so the maths of "more common means more likely" is done by the bag.
+Training is tallying by hand from a printed text.
+
+The order is flipped on purpose. Groups start with a **finished** model and
+generate from it, so when they train their own from a new text they already
+know what every mark is for.
+
+## Lesson plan
+
+Allow five minutes for arrival and settling before part 1. Part 6 is designed
+to be dropped if you're running over.
+
+| Part | What happens                                                           | Time   |
+| ---- | ---------------------------------------------------------------------- | ------ |
+| 1    | **What is AI?** --- discussion, plus an AI writes the class a story    | 12 min |
+| 2    | **Warm-up** --- predict the next word, then four key words             | 8 min  |
+| 3    | **Read the sheet** --- one row read aloud as a sentence                | 5 min  |
+| 4    | **Generation** --- stories from the pre-tallied sheets, then shareback | 20 min |
+| 5    | **Training** --- tally a new text onto blank sheets, generate again    | 25 min |
+| 6    | **One story, all together** --- the class pools its models (optional)  | 10 min |
+| 7    | **Wrap-up** --- what did we learn? Q&A                                 | 5 min  |
+
+**Part 3** is the beat the cutouts lesson doesn't have: before anyone touches
+a ball, one row of the sheet is read aloud as a sentence ("after _I_, this
+text said _do_ nine times"). Every group then finds a row of their own and
+does the same. The colours are explained last: a strip's colour names its
+column, and the balls come in those colours.
+
+**Part 4** runs the [Generation](/modules/generation/) module with the bag.
+Every group starts from the same word, so the shareback can ask why five
+groups holding the same model wrote five different stories.
+
+**Part 5** answers "where did the marks come from?" by having each group make
+their own. Every group gets a different short text (the five school-day texts
+that ship with the CLI) and a set of sheets with the words printed and the
+strips empty; one person reads the text two words at a time from the numbered
+printout and the group tallies. A short generation round follows, from the
+word _the_.
+
+**Part 6** pools the models. A bucket goes in the middle of the room, each
+group has a ball colour, and for the current word every group with a row for
+it throws in one ball per mark on that row. The ball drawn picks the group;
+that group draws from its own bag to pick the word. Groups whose text used a
+word more often get more say, and the class story can contain words only one
+group's text had.
+
+## You will need
+
+- the pre-tallied _Green Eggs and Ham_ set, one per group: the first 150
+  tokens, five sheets, two palettes (`llms_unplugged ledger -i
+data/green-eggs-and-ham.txt --max-tokens 150 --sheets 5 --palettes 2
+--prefill tallies`)
+- one training set per group, each from a different `data/school-day-*.txt`
+  text, printed with `--prefill prefixes --palettes 2`, plus its `text.pdf`
+- soft balls in the eight colours of the first two palettes (red, blue, green,
+  yellow, pink, purple, black, white), at least eleven of each per group, and
+  a cloth bag per group
+- a bucket for the room, and butchers paper for the class story
+- pen and paper per group, a whiteboard, a projector, and access to a chatbot
+  for part 1
+
+## Before you deliver
+
+- run the sweep script (`ops/ledger-sweep.py`) if you change the text or its
+  length: no prefix may run past two rows with eight colours, and the largest
+  tally count is how many balls of one colour a group can need
+- give every group a different school-day text---the finale has nothing to
+  pool if they all trained on the same one
+- the story slide in part 1 has fill-in boxes for the teacher's name, the year
+  level, and the three class words
+
+<UsingTheSlides
+  decks={[
+    {
+      slug: "how-ai-writes-stories-ledger",
+      label: "How AI writes stories, ledger version (90 min)",
+    },
+  ]}
+/>

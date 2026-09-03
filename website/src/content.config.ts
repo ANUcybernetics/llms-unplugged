@@ -44,7 +44,7 @@ const sessionSchema = z.object({
   // metadata, never part of the title.
   audience: z.string(),
   duration: z.string(),
-  flavour: z.enum(["grid", "cutouts", "sheets"]),
+  flavour: z.enum(["grid", "cutouts", "sheets", "ledger"]),
   // The deck(s) that back this lesson, in the order they should be offered.
   decks: z.array(z.object({ slug: z.string(), label: z.string() })),
   // Module slugs this lesson runs --- drives the "Used in" box on module

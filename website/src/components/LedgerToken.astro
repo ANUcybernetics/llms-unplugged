@@ -1,0 +1,12 @@
+---
+// Wired up in the ledger decks via an MDX `components` override on `code`,
+// so a backticked word renders as the sheet prints it --- bold on a scrap of
+// paper --- rather than in the cutouts' per-word palette (see Token.astro).
+// Punctuation gets the symbol tile the sheets use.
+const text = (await Astro.slots.render("default")).trim();
+const PUNCT = new Set([".", ",", "!", "?", ";", ":"]);
+---
+
+<span class="ledger-inline"
+  >{PUNCT.has(text) ? <span class="ledger-punct">{text}</span> : text}</span
+>

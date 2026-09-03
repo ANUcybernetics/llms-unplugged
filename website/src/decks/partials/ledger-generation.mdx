@@ -1,0 +1,261 @@
+{/* _class: hero */}
+
+# Generation
+
+![bg](./assets/bg-chain.avif)
+
+---
+
+## Your goal
+
+![bg right:40%](./assets/bg-bag-draw.avif)
+
+write down a starting word, then repeat:
+
+1. find the row for the last word you wrote
+2. **load the bag**: one ball per mark, in the colour of its strip
+3. **draw one** without looking --- its colour names the next word
+4. write it down, tip the bag out, and hand over to whoever has the next row
+
+```notes
+Walk through the next slides slowly --- the mechanics are simple but the hand-over ("who has the next row?") is where groups stall. Assign one person to be the writer.
+```
+
+---
+
+{/* _animate: draw */}
+
+## Start with a word
+
+<LedgerPage text="I" />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_I} firstRow={2} palettes={2} />
+  <LedgerBag entry={ROW_I} firstRow={2} palettes={2} empty />
+</div>
+
+---
+
+{/* _animate: draw */}
+
+## Load the bag
+
+<LedgerPage text="I" />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_I} firstRow={2} palettes={2} />
+  <LedgerBag entry={ROW_I} firstRow={2} palettes={2} />
+</div>
+
+```notes
+Nineteen balls go in: eight red for "am", nine blue for "do", two green for "would". The bag now holds the row's counts --- the more marks, the more balls, the more likely.
+```
+
+---
+
+{/* _animate: draw */}
+
+## Draw one
+
+<LedgerPage text="I do" fresh />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_I} firstRow={2} palettes={2} highlight={1} />
+  <LedgerBag entry={ROW_I} firstRow={2} palettes={2} drawn={1} />
+</div>
+
+---
+
+{/* _animate: draw */}
+
+## Only one place to go
+
+<LedgerPage text="I do not" fresh />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_DO} firstRow={2} palettes={2} highlight={0} />
+</div>
+
+no bag needed: after `do` this text only ever said `not`
+
+---
+
+{/* _animate: draw */}
+
+## Only one place to go
+
+<LedgerPage text="I do not like" fresh />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_NOT} firstRow={1} palettes={2} highlight={0} />
+</div>
+
+---
+
+{/* _animate: draw */}
+
+## Load the bag
+
+<LedgerPage text="I do not like" />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_LIKE} firstRow={4} palettes={2} />
+  <LedgerBag entry={ROW_LIKE} firstRow={4} palettes={2} />
+</div>
+
+---
+
+{/* _animate: draw */}
+
+## Draw one
+
+<LedgerPage text="I do not like them" fresh />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_LIKE} firstRow={4} palettes={2} highlight={2} />
+  <LedgerBag entry={ROW_LIKE} firstRow={4} palettes={2} drawn={2} />
+</div>
+
+---
+
+{/* _animate: draw */}
+
+## Load the bag
+
+<LedgerPage text="I do not like them" />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_THEM} firstRow={5} palettes={2} />
+  <LedgerBag entry={ROW_THEM} firstRow={5} palettes={2} />
+</div>
+
+```notes
+"them" has five followers, so it spills onto a second row --- and the second row's strips take the other set of colours, so every follower still has its own colour. Eleven balls: two pink, three purple, two black, two white, two red.
+```
+
+---
+
+{/* _animate: draw */}
+
+## Draw one
+
+<LedgerPage text="I do not like them in" fresh />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_THEM} firstRow={5} palettes={2} highlight={3} />
+  <LedgerBag entry={ROW_THEM} firstRow={5} palettes={2} drawn={3} />
+</div>
+
+---
+
+{/* _animate: draw */}
+
+## Only one place to go
+
+<LedgerPage text="I do not like them in a" fresh />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_IN} firstRow={3} palettes={2} highlight={0} />
+</div>
+
+---
+
+{/* _animate: draw */}
+
+## Load the bag, draw one
+
+<LedgerPage text="I do not like them in a mouse" fresh />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_A} firstRow={4} palettes={2} highlight={1} />
+  <LedgerBag entry={ROW_A} firstRow={4} palettes={2} drawn={1} />
+</div>
+
+---
+
+{/* _animate: draw */}
+
+## Load the bag, draw one
+
+<LedgerPage text="I do not like them in a mouse ?" fresh />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_MOUSE} firstRow={0} palettes={2} highlight={0} />
+  <LedgerBag entry={ROW_MOUSE} firstRow={0} palettes={2} drawn={0} />
+</div>
+
+```notes
+Eight draws in, and we've got a sentence the book never said. The book has "in a house?" and "with a mouse?"; the model has glued them together, because it only ever knows what comes next, one word at a time. Stop at a full stop or a question mark you like, or keep going.
+```
+
+---
+
+{/* _class: impact */}
+
+_"I do not like them in a mouse?"_
+
+a hint of the original, not a copy
+
+---
+
+## You will need
+
+![bg right:40%](./assets/bg-generation-supplies.avif)
+
+**with your group**
+
+your five sheets (one each) and the bag of balls
+
+pen and paper for the story
+
+**everyone starts with the same word:** `I`
+
+```notes
+Same starting word for every group, on purpose: the shareback compares what the same model did in different hands.
+```
+
+---
+
+## Activity
+
+![bg right:40%](./assets/bg-activity-generation.avif)
+
+generate as much story as you can --- when you hit a `.` or `?` you like, start a new sentence from any word
+
+```notes
+Circulate. Common stalls: forgetting to tip the bag out between draws (the balls from the last row are still in there); a row with no marks at all (the word only ever ended the text --- start again from any word); arguing about which strip a colour is (read the name printed in the strip's corner).
+```
+
+---
+
+{/* _class: hero */}
+
+# Generation
+
+![bg](./assets/bg-chain.avif)
+
+<Timer minutes={12} overlay />
+
+---
+
+{/* _class: hero */}
+
+# Shareback
+
+![bg](./assets/bg-shareback-generation.avif)
+
+---
+
+## Same model, different stories
+
+![bg right:40%](./assets/bg-information-flow-generation.avif)
+
+every group started from `I` --- read out your first sentence
+
+why aren't they the same?
+
+could any group's model write a story about a **crocodile**?
+
+```notes
+Two probes. First: the same sheets in five groups gave five different stories --- the bag is random, and a model that's asked twice gives two answers (the wrap-up comes back to this). Second: no crocodile anywhere on any sheet, so the model cannot say it. It only has the words, and the pairs, that its text had. Then the hinge: so where did these marks come from? Someone counted. Next section: you're the ones counting.
+```

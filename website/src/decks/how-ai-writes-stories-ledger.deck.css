@@ -1,0 +1,15 @@
+/* The ledger deck's generation walkthrough: a row and its bag side by side,
+   under the story-so-far line, all glided between frames by auto-animate. */
+.reveal .ledger-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5em;
+  margin-inline: auto;
+}
+
+/* Inside the step the row and bag cluster around the centre together, rather
+   than the row's own auto margins pushing the bag to the edge. */
+.reveal .ledger-step .ledger-row {
+  margin-inline: 0;
+}
