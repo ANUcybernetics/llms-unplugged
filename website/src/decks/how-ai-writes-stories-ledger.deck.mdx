@@ -28,17 +28,22 @@ import "./how-ai-writes-stories-ledger.deck.css";
 export const components = { code: LedgerToken };
 
 ```comment
-Every row below is a real row of the sheets in the room: the first 150 tokens
-   of Green Eggs and Ham, dealt across 5 sheets, printed for a room with balls
-   in eight colours --- `llms_unplugged ledger -i data/green-eggs-and-ham.txt
-   --max-tokens 150 --sheets 5 --palette @cli/ledger-palette-eight.json
-   --prefill tallies`, whose palette is the first eight of the CLI's default
+Every group generates from a different picture book (see the lesson entry for
+   the five sets), and the slides walk through one of them: every ROW_* below
+   is a real row of the Green Eggs and Ham set, the first 100 tokens dealt
+   across 5 sheets, printed for a room with balls in eight colours ---
+   `llms_unplugged ledger -i data/green-eggs-and-ham.txt --max-tokens 100
+   --sheets 5 --palette @cli/ledger-palette-eight.json --prefill tallies`,
+   whose palette is the first eight of the CLI's default
    (cli/ledger-palette.json), which is what PALETTE below slices. The firstRow
    passed to each widget is the row's physical position on its sheet, which is
    what decides its colours, so a regenerated set (a different --max-tokens, a
    different sheet count) means re-reading the rows and positions off the new
-   sheets. The bucket groups are the school-day texts' rows for "the"
-   (data/school-day-*.txt), each built with --prefill prefixes for training.
+   sheets. No Green Eggs prefix runs past one row at 100 tokens, so the
+   two-row slide borrows ROW_A_BEAR from the Bear Hunt set (same command,
+   data/were-going-on-a-bear-hunt.txt). The bucket groups are the school-day
+   texts' rows for "the" (data/school-day-*.txt), each built with --prefill
+   prefixes for training.
 ```
 
 export const PALETTE = LEDGER_PALETTE.slice(0, 8);
@@ -47,16 +52,22 @@ export const ROW_I = {
   prefix: "I",
   followers: [
     { text: "am", count: 8 },
-    { text: "do", count: 9 },
+    { text: "do", count: 5 },
     { text: "would", count: 2 },
   ],
 };
 
-export const ROW_DO = { prefix: "do", followers: [{ text: "not", count: 9 }] };
+export const ROW_WOULD = {
+  prefix: "would",
+  followers: [
+    { text: "you", count: 2 },
+    { text: "not", count: 2 },
+  ],
+};
 
 export const ROW_NOT = {
   prefix: "not",
-  followers: [{ text: "like", count: 11 }],
+  followers: [{ text: "like", count: 7 }],
 };
 
 export const ROW_LIKE = {
@@ -64,46 +75,51 @@ export const ROW_LIKE = {
   followers: [
     { text: "that", count: 1 },
     { text: "green", count: 3 },
-    { text: "them", count: 11 },
+    { text: "them", count: 5 },
   ],
 };
 
-export const ROW_THEM = {
-  prefix: "them",
-  followers: [
-    { text: ",", count: 2 },
-    { text: "here", count: 3 },
-    { text: "anywhere", count: 2 },
-    { text: "in", count: 2 },
-    { text: "with", count: 2 },
-  ],
+export const ROW_GREEN = {
+  prefix: "green",
+  followers: [{ text: "eggs", count: 3 }],
 };
 
-export const ROW_IN = { prefix: "in", followers: [{ text: "a", count: 2 }] };
-
-export const ROW_A = {
-  prefix: "a",
-  followers: [
-    { text: "house", count: 2 },
-    { text: "mouse", count: 2 },
-  ],
+export const ROW_EGGS = {
+  prefix: "eggs",
+  followers: [{ text: "and", count: 3 }],
 };
 
-export const ROW_MOUSE = {
-  prefix: "mouse",
+export const ROW_AND = {
+  prefix: "and",
+  followers: [{ text: "ham", count: 3 }],
+};
+
+export const ROW_HAM = {
+  prefix: "ham",
   followers: [
     { text: "?", count: 1 },
-    { text: ".", count: 1 },
+    { text: ".", count: 2 },
   ],
 };
 
 export const SHEET_RANGES = [
   ["!", "am"],
-  ["and", "ham"],
-  ["here", "like"],
-  ["mouse", "them"],
-  ["there", "you"],
+  ["and", "eggs"],
+  ["green", "like"],
+  ["not", "that"],
+  ["them", "you"],
 ];
+
+export const ROW_A_BEAR = {
+  prefix: "a",
+  followers: [
+    { text: "bear", count: 2 },
+    { text: "big", count: 2 },
+    { text: "beautiful", count: 2 },
+    { text: "river", count: 1 },
+    { text: "deep", count: 1 },
+  ],
+};
 
 export const GE_OPENING =
   "I am Sam . I am Sam . Sam I am . that Sam I am ! that Sam I am ! I do not like that Sam I am !";
@@ -166,11 +182,12 @@ sheet knows what the marks are for before it makes any. Seven parts:
 Allow 5 min for arrival/settle/introductions before Part 1.
 
 Before each delivery:
-- print the pre-tallied Green Eggs set, one per group (5 sheets each, plus the
-  brief); print the school-day sets with --prefill prefixes, a different text
-  per group, with their text.pdf pages
-- soft balls in the palette's eight colours, at least 11 of
-  each per group, one bag per group, one bucket for the room
+- print the pre-tallied picture-book sets (5 sheets each, plus the brief), a
+  different book per group; print the school-day sets with --prefill
+  prefixes, a different text per group, with their text.pdf pages
+- soft balls in the palette's eight colours, at least 8 of each per group
+  (the largest tally in any set), one bag and one tub per group, one bucket
+  for the room
 - a few "predict the next word" prompts for the whiteboard
 ```
 

@@ -13,3 +13,9 @@
 .reveal .ledger-step .ledger-row {
   margin-inline: 0;
 }
+
+/* Several rows read top to bottom, for a run of hand-overs shown at once. */
+.reveal .ledger-step.ledger-stack {
+  flex-direction: column;
+  gap: 0.6em;
+}

@@ -1,9 +1,9 @@
 ---
 title: How AI writes stories with a bag of balls
 description:
-  A 90-minute school lesson (ages 10-16) where students generate stories from
-  a finished paper language model, then train their own from a new text and
-  pool the class's models in a shared bucket.
+  A 90-minute school lesson (ages 10-16) where students generate stories from a
+  finished paper language model, then train their own from a new text and pool
+  the class's models in a shared bucket.
 audience: ages 10-16 (years 5-10)
 duration: 90 minutes
 flavour: ledger
@@ -21,22 +21,23 @@ status: untested
 listed: false
 ---
 
-A sibling of [How AI writes stories](/lessons/how-ai-writes-stories/) that
-swaps the paper cutouts for **ledger sheets**: a table with one row per word,
-tally marks beside each word that followed it, and a coloured strip beside
-every tally. Generation is a bag of soft coloured balls---one ball per tally
-mark, in the strip's colour, draw one and read the word beside that
-colour---so the maths of "more common means more likely" is done by the bag.
-Training is tallying by hand from a printed text.
+A sibling of [How AI writes stories](/lessons/how-ai-writes-stories/) that swaps
+the paper cutouts for **ledger sheets**: a table with one row per word, tally
+marks beside each word that followed it, and a coloured strip beside every
+tally. Generation is a bag of soft coloured balls---one ball per tally mark, in
+the strip's colour, draw one and read the word beside that colour---so the maths
+of "more common means more likely" is done by the bag. Training is tallying by
+hand from a printed text.
 
 The order is flipped on purpose. Groups start with a **finished** model and
-generate from it, so when they train their own from a new text they already
-know what every mark is for.
+generate from it, so when they train their own from a new text they already know
+what every mark is for. Every group's finished model is a different picture
+book, so the shareback can hear the book in each group's story.
 
 ## Lesson plan
 
-Allow five minutes for arrival and settling before part 1. Part 6 is designed
-to be dropped if you're running over.
+Allow five minutes for arrival and settling before part 1. Part 6 is designed to
+be dropped if you're running over.
 
 | Part | What happens                                                           | Time   |
 | ---- | ---------------------------------------------------------------------- | ------ |
@@ -48,52 +49,64 @@ to be dropped if you're running over.
 | 6    | **One story, all together** --- the class pools its models (optional)  | 10 min |
 | 7    | **Wrap-up** --- what did we learn? Q&A                                 | 5 min  |
 
-**Part 3** is the beat the cutouts lesson doesn't have: before anyone touches
-a ball, one row of the sheet is read aloud as a sentence ("after _I_, this
-text said _do_ nine times"). Every group then finds a row of their own and
-does the same. The colours are explained last: a strip's colour names its
-column, and the balls come in those colours.
+**Part 3** is the beat the cutouts lesson doesn't have: before anyone touches a
+ball, one row of the sheet is read aloud as a sentence ("after _I_, this book
+said _am_ eight times"). Every group then finds a row of their own and does the
+same. The colours are explained last: a strip's colour names its column, and the
+balls come in those colours.
 
-**Part 4** runs the [Generation](/modules/generation/) module with the bag.
-Every group starts from the same word, so the shareback can ask why five
-groups holding the same model wrote five different stories.
+**Part 4** runs the [Generation](/modules/generation/) module with the bag. The
+slides walk through one book (_Green Eggs and Ham_) draw by draw, then every
+group generates from its own. The shareback asks the room to guess each group's
+book from its first sentence, and asks two groups holding the same book why
+their stories differ.
 
 **Part 5** answers "where did the marks come from?" by having each group make
 their own. Every group gets a different short text (the five school-day texts
 that ship with the CLI) and a set of sheets with the words printed and the
 strips empty; one person reads the text two words at a time from the numbered
-printout and the group tallies. A short generation round follows, from the
-word _the_.
+printout and the group tallies. A short generation round follows, from the word
+_the_.
 
-**Part 6** pools the models. A bucket goes in the middle of the room, each
-group has a ball colour, and for the current word every group with a row for
-it throws in one ball per mark on that row. The ball drawn picks the group;
-that group draws from its own bag to pick the word. Groups whose text used a
-word more often get more say, and the class story can contain words only one
-group's text had.
+**Part 6** pools the models. A bucket goes in the middle of the room, each group
+has a ball colour, and for the current word every group with a row for it throws
+in one ball per mark on that row. The ball drawn picks the group; that group
+draws from its own bag to pick the word. Groups whose text used a word more
+often get more say, and the class story can contain words only one group's text
+had. With more than five groups, the groups that trained on the same text share
+a colour and throw together.
 
 ## You will need
 
-- the pre-tallied _Green Eggs and Ham_ set, one per group: the first 150
-  tokens, five sheets, eight colours (`llms_unplugged ledger -i
-data/green-eggs-and-ham.txt --max-tokens 150 --sheets 5 --palette
-@cli/ledger-palette-eight.json --prefill tallies`)
+- one pre-tallied picture-book set per group, five sheets and eight colours, a
+  different book per group. The five that fit a bag of eight colours are built
+  with
+  `llms_unplugged ledger -i data/<book>.txt --max-tokens 100 --sheets 5 --palette @cli/ledger-palette-eight.json --prefill tallies`:
+  - `green-eggs-and-ham` (the book the slides walk through)
+  - `the-cat-in-the-hat`
+  - `the-very-hungry-caterpillar`
+  - `were-going-on-a-bear-hunt`
+  - `fun-with-dick-and-jane`, at `--max-tokens 80` (its full stop has eight
+    followers by then, and more by 90)
 - one training set per group, each from a different `data/school-day-*.txt`
   text, printed with the same `--palette` and `--prefill prefixes`, plus its
   `text.pdf`
 - soft balls in that palette's eight colours (red, blue, green, yellow, pink,
-  purple, black, white), at least eleven of each per group, and a cloth bag
-  per group
+  purple, black, white), at least eight of each per group (the largest tally in
+  any set), a cloth bag per group, and a tub per group to tip the bag back into
+  between draws
 - a bucket for the room, and butchers paper for the class story
 - pen and paper per group, a whiteboard, a projector, and access to a chatbot
   for part 1
 
 ## Before you deliver
 
-- run the sweep script (`ops/ledger-sweep.py`) if you change the text or its
+- run the sweep script (`ops/ledger-sweep.py`) if you change a text or its
   length: no prefix may run past two rows with eight colours, and the largest
   tally count is how many balls of one colour a group can need
-- give every group a different school-day text---the finale has nothing to
-  pool if they all trained on the same one
+- with more than five groups, books and school-day texts repeat; spread the
+  repeats so that groups sharing a book aren't side by side
+- give the volcano text to a group you'll be near: it is the one training text
+  with a five-follower word, so its group meets the second-row rule
 - the story slide in part 1 has fill-in boxes for the teacher's name, the year
   level, and the three class words
