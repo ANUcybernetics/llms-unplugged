@@ -7,19 +7,20 @@ description:
 audience: ages 10-16 (years 5-10)
 duration: 90 minutes
 flavour: ledger
-# The deck is published: false until the first room trial, so nothing here
-# may link it: decks and modules are empty (the production build's link
-# checker fails on a route the deck does not emit, and the modules list would
-# advertise this lesson from the module pages). At publish time, restore
-#   decks: [{ slug: how-ai-writes-stories-ledger, label: "How AI writes stories, ledger version (90 min)" }]
+# Unlisted until the first room trial: the deck is built (and linked below)
+# but the modules list stays empty, since it would advertise this lesson from
+# the module pages. At listing time, restore
 #   modules: [training, generation]
-# the UsingTheSlides block at the end, and flip the deck's published flag.
-decks: []
+decks:
+  - slug: how-ai-writes-stories-ledger
+    label: How AI writes stories, ledger version (90 min)
 modules: []
 order: 3
 status: untested
 listed: false
 ---
+
+import UsingTheSlides from "../../components/UsingTheSlides.astro";
 
 A sibling of [How AI writes stories](/lessons/how-ai-writes-stories/) that swaps
 the paper cutouts for **ledger sheets**: a table with one row per word, tally
@@ -110,3 +111,12 @@ a colour and throw together.
   with a five-follower word, so its group meets the second-row rule
 - the story slide in part 1 has fill-in boxes for the teacher's name, the year
   level, and the three class words
+
+<UsingTheSlides
+  decks={[
+    {
+      slug: "how-ai-writes-stories-ledger",
+      label: "How AI writes stories, ledger version (90 min)",
+    },
+  ]}
+/>
