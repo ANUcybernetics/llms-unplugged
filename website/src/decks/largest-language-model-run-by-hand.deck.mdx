@@ -1,0 +1,249 @@
+---
+title: The largest language model ever run by hand
+description:
+  A 12--15 minute session in which a hall becomes a bigram language model built
+  from three anonymous books and generates a sentence nobody wrote, then learns
+  what it just did
+listed: false
+---
+
+import Timer from "../components/Timer.astro";
+import "../styles/widgets.css";
+
+```comment
+Standalone deck for running the search-sheet activity with a whole room,
+written for the NeurIPS 2026 Education Track and reusable anywhere the
+audience is a hall rather than a table. The paper and the run guide live in
+research-papers/llms-unplugged-neurips-2026-education/.
+
+TED-style: the speaking carries it and the slides are cues, not visual aids.
+Two slide grammars carry nearly all of it --- a full-bleed image with nothing
+on it, and one line in white over the artwork (`_class: hero`). Only four
+slides carry real text: the algorithm, the role mapping, the three-book
+reveal and the loop-everything-modifies slide.
+
+The reveal is the spine: the three source books are never named until the
+reveal slide, and nothing on the printed sheets names them either. Hemingway
+then Poe then Seuss, because Seuss is the biggest recognition hit and has to
+land last.
+
+Running order (12:00 target against a 14--15 minute slot; the run is where
+spare time goes):
+  0:00  why we are doing this (sheets go out)   (slides 1-3)
+  1:35  what you've just been given             (slide 4)
+  2:35  seed it, then the algorithm             (slide 5)
+  3:20  run the room                            (slide 6)
+  7:20  what just happened                      (slides 7-9)
+  9:20  three books                             (slide 10)
+ 10:35  the loop, and the close                 (slides 11-13)
+
+Per-slide notes hold the beats to hit --- rehearsal cues, not a script.
+```
+
+{/* _class: hero */}
+
+# The largest language model ever run by hand
+
+![bg](./assets/bg-title-wide.avif)
+
+```notes
+hands up: used a language model this week. Keep them up if you could explain to a ten-year-old what it did.
+
+most hands go down. We're going to fix that in the next twelve minutes, and you're going to do most of the work.
+```
+
+---
+
+![bg](./assets/bg-two-stories.avif)
+
+```notes
+two stories about these things: one says it's basically a mind, the other says it's just autocomplete.
+
+opposites doing the same job: beyond you or beneath you, either way don't look inside.
+```
+
+---
+
+{/* _class: hero */}
+
+it's hard to have an opinion\
+on a machine you've never seen **inside**
+
+![bg](./assets/bg-machine-interior-wide.avif)
+
+```notes
+cue the house lights up and the sheets going out: together we're going to look inside a language model
+
+take one, pass the rest along, try not to leave any that aren't in someone's hand
+```
+
+---
+
+{/* _class: hero */}
+
+a page of **token pairs** --- a word, and the word before it
+
+![bg](./assets/bg-cutouts-overview.avif)
+
+```notes
+hold one up: a sheet of token pairs, mostly words but some punctuation
+
+the first token in each pair is boxed, the second isn't; the colours will make sense shortly
+
+10s to scan your sheet, then eyes up
+```
+
+---
+
+## the algorithm
+
+![bg right:40%](./assets/bg-algorithm-generation.avif)
+
+1. I **call out** the last token we wrote (and its colour)
+2. **hands up** if it's the _boxed_ token on your page
+3. I **pick a hand at random** --- you read out the token beside it
+4. I **write it down**, and we go again
+
+```notes
+describe the algorithm (reading from the screen is fine)
+
+then call for a volunteer and get the first pair: boxed token first, both go on the board
+```
+
+---
+
+```comment
+The board slide. No words and no `.hero` class: the artwork is the deck's
+own whiteboard surface, so the slide reads as a blank board with the timer
+sitting on it. Write on it with the annotation layer (⇧W), NOT the board
+itself (W) --- the board is an opaque layer over the slide and would take the
+timer with it.
+```
+
+![bg](./assets/deco-whiteboard.avif)
+
+<Timer minutes={4} overlay />
+
+```notes
+shift-W, write the seed, go. Four minutes, 12-15 tokens, write BIG (back of the hall).
+
+repeat every token back into the mic before writing it. Pick hands near the front or an aisle, where the answer carries.
+```
+
+---
+
+{/* _class: hero */}
+
+we just ran a **language model**
+
+![bg](./assets/bg-div-reception.avif)
+
+```notes
+not an analogy: the mechanism, at human speed
+```
+
+---
+
+## what role did you play?
+
+![bg right:40%](./assets/bg-core-insight-portrait.avif)
+
+the pairs on your page → the **parameters** of the model
+
+the hands in the air → the **probability distribution** over next tokens
+
+my random pick → **sampling**
+
+the sentence I wrote → **generation**
+
+```notes
+read from the slide
+
+about 6k token pairs (parameters): not quite the trillion or so of a frontier model, but the same loop
+```
+
+---
+
+{/* _class: hero */}
+
+the sentence we wrote is in **no book**
+
+![bg](./assets/bg-chain.avif)
+
+```notes
+nobody wrote it: no lookup in a database of sentences, nobody searched the web
+
+everything was decided by the token pairs on our collective sheets; so where did they come from?
+```
+
+---
+
+## three books
+
+{/* prettier-ignore */}
+<p class="corpus-a fragment">“He was an old man who fished alone in a skiff in the Gulf Stream.”<br /><span class="corpus-attribution">— Ernest Hemingway, <em>The Old Man and the Sea</em> (1952)</span></p>
+<p class="corpus-c fragment">“TRUE! nervous, very, very dreadfully nervous I had been and am.”<br /><span class="corpus-attribution">— Edgar Allan Poe, <em>The Tell-Tale Heart</em> (1843)</span></p>
+<p class="corpus-b fragment">“The sun did not shine. It was too wet to play.”<br /><span class="corpus-attribution">— Dr. Seuss, <em>The Cat in the Hat</em> (1957)</span></p>
+
+```notes
+each token pair came from one of these three books (read them out one by one)
+
+the sheets never said which book a pair came from, and the model couldn't tell either
+
+it worked because the books share contexts: "the", "said", "I", "old man" (Hemingway and Poe both have one)
+```
+
+---
+
+## everything else this week modifies this loop
+
+![bg right:40%](./assets/bg-algorithm-generation.avif)
+
+**test-time scaling** → draw more samples before you commit
+
+**RL with verifiable rewards** → change what the distribution is trained towards
+
+**speculative decoding** → let a small model draw the sample, a big one check it
+
+**an LLM judge** → point the loop at another loop's output
+
+```notes
+a language model is a distribution over the next token, and generation is sampling from it and feeding the sample back in. You just did that.
+
+every concept on today's programme is a modification of that loop. Now you have somewhere to hang them.
+```
+
+---
+
+{/* _class: hero */}
+
+a hall full of people just did\
+the thing you're told needs a **data centre**
+
+![bg](./assets/bg-hall-generation-wide.avif)
+
+```notes
+who now thinks they could give a better answer to a ten-year-old?
+
+it still requires simplification, but it's not beyond you, and it's not beneath you to understand
+```
+
+---
+
+{/* _class: hero */}
+
+it doesn't make you an expert
+
+it makes you **harder to bullsh\*t**
+
+<div class="deck-url">llmsunplugged.org</div>
+
+![bg](./assets/bg-trigrams-banner.avif)
+
+```notes
+this doesn't make you an expert: a billion dollars in your pocket won't get you a frontier model from scratch
+
+but it might make you... (look at the slide)
+
+everything you need to run this yourself, at any size, is at llmsunplugged.org
+```
