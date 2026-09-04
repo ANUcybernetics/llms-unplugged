@@ -27,17 +27,17 @@ export const OVERVIEW_TOKENS =
 Boilerplate prompt + fill-in fields for the "ask one to write us a story"
    slide. The CopyButton renders an input per field; the presenter types the
    teacher name and three student words, then copies the filled-in prompt
-   straight into ChatGPT. Year level and city are baked into the prompt --- edit
-   them here if a delivery differs. The prompt is built from an array so the
-   copied text has clean newlines and no source indentation.
+   straight into ChatGPT. The year level is a field too, so nothing about the
+   room is baked in. The prompt is built from an array so the copied text has
+   clean newlines and no source indentation.
 ```
 
 export const STORY_PROMPT = [
   "Write a funny, exciting two-paragraph story featuring [TEACHER NAME] as the hero. The story must naturally incorporate the following three words or ideas: [WORD 1], [WORD 2], and [WORD 3].",
-  "The story should be concise and engaging for Year 5 students (around 11 years old) in Canberra, Australia. Include:",
+  "The story should be concise and engaging for [YEAR LEVEL] students in Australia. Include:",
   "A surprising problem, mystery, or adventure.",
   "[TEACHER NAME] taking bold action to solve the problem.",
-  "Humour that would make Year 5 students laugh.",
+  "Humour that would make [YEAR LEVEL] students laugh.",
   "A memorable twist, showdown, or unexpected ending.",
   "Creative use of the three required words or ideas (avoid simply mentioning them).",
   "Use energetic language and imaginative situations similar to an action-comedy adventure. Keep the story school-appropriate, positive, and easy to read aloud in class.",
@@ -45,6 +45,7 @@ export const STORY_PROMPT = [
 
 export const STORY_FIELDS = [
   { token: "[TEACHER NAME]", label: "Teacher", size: 18 },
+  { token: "[YEAR LEVEL]", label: "Year level", size: 10 },
   { token: "[WORD 1]", label: "Word 1", size: 18 },
   { token: "[WORD 2]", label: "Word 2", size: 18 },
   { token: "[WORD 3]", label: "Word 3", size: 18 },
