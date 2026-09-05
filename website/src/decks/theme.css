@@ -119,6 +119,26 @@
   animation-delay: 0.2s;
 }
 
+/* Title-slide subtitle (language-model-by-show-of-hands): the session title
+   split at its colon, "LLMs Unplugged" as the hero h1 and the session's own
+   name under the gold rule the h1 draws. The shared theme's `h1 + h2` sets
+   that second line in light grey at heading weight, which over artwork reads
+   as a second title arguing with the first; this is the treatment a titleless
+   hero gives a spoken line, a step down in size so the branding stays the
+   loudest thing on the slide. */
+.reveal .slides section.hero h1 + h2 {
+  margin-block-start: 1.25rem;
+  color: var(--anu-white);
+  font-size: 2.2rem;
+  font-weight: 300;
+  opacity: 0.92;
+}
+
+/* Following the h1 and its rule into the frame, in that order. */
+.reveal .slides section.hero.present h1 + h2 {
+  animation: hero-fade-up 0.6s ease 0.4s both;
+}
+
 /* Site URL under the exit line on the closing hero slide
    (visionaries-showcase slide 14): said once from stage, but a hall of
    general public needs it written down too. A div rather than a p, so the
@@ -230,6 +250,31 @@
   font-size: 2.85rem;
   line-height: 1.25;
   text-wrap: balance;
+}
+
+/* The three-book reveal (language-model-by-show-of-hands). Three voices told
+   apart by the build rather than by ink: they arrive one at a time, and the
+   colour of a quote is not allowed to mean anything --- the sheets are coded
+   by token, not by book, and the whole point of the reveal is that the model
+   could not tell the books apart at all. So all three take the deck's own
+   white, marked in the margin by the short gold rule the hero title draws
+   under itself, stood on its side. Sized like a quote slide rather than body
+   copy: a hall has to read these, and recognise them. */
+.reveal .slides section .corpus-quote {
+  margin-block-end: 1.75rem;
+  border-inline-start: 4px solid var(--at-primary);
+  padding-inline-start: 1.5rem;
+  color: var(--anu-white);
+  font-size: 2.75rem;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.reveal .slides section .corpus-quote .corpus-attribution {
+  display: block;
+  margin-block-start: 0.4rem;
+  color: var(--color-text-muted);
+  font-size: 0.5em;
 }
 
 /* Speaker notes are rendered as <div class="notes"> for a11y (not
