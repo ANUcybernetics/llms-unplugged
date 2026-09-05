@@ -256,15 +256,18 @@
 
     + *Call out the last #prev-words-phrase* on the board.
     + *Hands up* from everyone holding a matching #pair-noun --- one hand each.
-    + *Pick a raised hand at random* --- whoever shouts first is the fastest
-      reader, not a sample of the text --- and ask for its next token.
+    + *Pick a raised hand* --- whoever shouts first is the fastest reader, not a
+      sample of the text --- and have that person choose one of their matching
+      #pair-noun-plural and read out its next token.
     + The scribe writes that token up. It is part of the next context. Repeat.
 
     == What to watch for
 
-    *The hands are the probability distribution.* Every #pair-noun sits with
-    exactly one person, so a common continuation puts more hands in the air than
-    a rare one. Nobody has to explain weighted sampling; the room performs it.
+    *The hands approximate the probability distribution.* Every #pair-noun sits
+    with exactly one person, so a common continuation puts more hands in the air
+    than a rare one; someone holding several matches still raises one hand, so
+    it is close rather than exact. Nobody has to explain weighted sampling; the
+    room is performing it.
 
     *Nobody holds the model.* No single sheet can continue the text on its own.
     One hand is not a stall --- but no hands at all means an empty seat, so
