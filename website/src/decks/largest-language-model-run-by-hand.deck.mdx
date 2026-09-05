@@ -1,9 +1,9 @@
 ---
-title: The largest language model ever run by hand
+title: "The room is the language model: What n-grams reveal about LLMs"
 description:
-  A twelve-minute session in which a hall becomes a bigram language model built
-  from three anonymous books and generates a sentence nobody wrote, then learns
-  what it just did
+  A twelve-minute session in which a room runs a bigram language model, then
+  examines what n-gram statistics reveal about neural LLMs and where they fall
+  short
 listed: false
 ---
 
@@ -19,38 +19,38 @@ research-papers/llms-unplugged-neurips-2026-education/.
 TED-style: the speaking carries it and the slides are cues, not visual aids.
 Two slide grammars carry nearly all of it --- a full-bleed image with nothing
 on it, and one line in white over the artwork (`_class: hero`). Only four
-slides carry real text: the algorithm, the role mapping, the three-book
-reveal and the loop-everything-modifies slide.
+slides carry explanatory text: the algorithm, the role mapping, the three-book
+reveal and the comparison with neural models.
 
 The reveal is the spine: the three source books are never named until the
 reveal slide, and nothing on the printed sheets names them either. Hemingway
 then Poe then Seuss, because Seuss is the biggest recognition hit and has to
 land last.
 
-Running order (12:00 target; the run is where spare time goes. Given fifteen,
-run twice from different seeds; given eight, sheets out during the changeover,
-open on slide 4, run held to three minutes, one beat each after):
+Running order (12:00 target; preserve two minutes for the comparison. Given
+fifteen, add a short second run; for a shorter slot, distribute sheets during
+the changeover and shorten the run):
   0:00  why we are doing this (sheets go out)   (slides 1-3)
   1:35  what you've just been given             (slide 4)
   2:35  seed it, then the algorithm             (slide 5)
   3:20  run the room                            (slide 6)
   7:20  what just happened                      (slides 7-9)
-  9:20  three books                             (slide 10)
- 10:35  the loop, and the close                 (slides 11-13)
+  8:30  three books                             (slide 10)
+  9:40  compare, discuss, and close              (slides 11-13)
 
 Per-slide notes hold the beats to hit --- rehearsal cues, not a script.
 ```
 
 {/* _class: hero */}
 
-# The largest language model ever run by hand
+# The room is the language model
 
 ![bg](./assets/bg-title-wide.avif)
 
 ```notes
-hands up: used a language model this week. Keep them up if you could explain to a ten-year-old what it did.
+What n-grams reveal about LLMs. Recent research uses counts of word sequences to investigate neural language models. We're going to make those counts visible by holding a model between us.
 
-most hands go down. We're going to fix that in the next twelve minutes, and you're going to do most of the work.
+In twelve minutes we'll generate some text, then examine what our small model explains and where the comparison stops.
 ```
 
 ---
@@ -102,13 +102,15 @@ the first token in each pair is boxed, the second isn't; the colours will make s
 
 1. I **call out** the last token we wrote (and its colour)
 2. **hands up** if it's the _boxed_ token on your page
-3. I **pick a hand at random** --- you read out the token beside it
+3. I **pick a hand** --- choose a matching pair and read its next token
 4. I **write it down**, and we go again
 
 ```notes
 describe the algorithm (reading from the screen is fine)
 
 then call for a volunteer and get the first pair: boxed token first, both go on the board
+
+Sampling caveat: one hand per person approximates sampling occurrences. Someone with two matches has the same chance of being selected as someone with one; even choosing uniformly among their pairs underweights each occurrence. Keep the activity simple and acknowledge this if asked.
 ```
 
 ---
@@ -140,7 +142,7 @@ we just ran a **language model**
 ![bg](./assets/bg-div-reception.avif)
 
 ```notes
-not an analogy: the mechanism, at human speed
+we ran generation from a prepared bigram model; the sheets were made before the session
 ```
 
 ---
@@ -149,30 +151,30 @@ not an analogy: the mechanism, at human speed
 
 ![bg right:40%](./assets/bg-core-insight-portrait.avif)
 
-the pairs on your page → the **parameters** of the model
+the pairs on your page → the model's **counts**
 
-the hands in the air → the **probability distribution** over next tokens
+the matching pairs → possible **continuations**
 
-my random pick → **sampling**
+choosing a continuation → **sampling**
 
 the sentence I wrote → **generation**
 
 ```notes
 read from the slide
 
-about 6k token pairs (parameters): not quite the trillion or so of a frontier model, but the same loop
+about 6k observed token pairs, stored explicitly. Neural model weights are learned numerical parameters, not a list of observed pairs. We'll compare them after the reveal.
 ```
 
 ---
 
 {/* _class: hero */}
 
-the sentence we wrote is in **no book**
+where did our **words** come from?
 
 ![bg](./assets/bg-chain.avif)
 
 ```notes
-nobody wrote it: no lookup in a database of sentences, nobody searched the web
+we generated the sequence one token at a time; we didn't select a complete sentence from a list. A generated passage can still repeat something from the corpus.
 
 everything was decided by the token pairs on our collective sheets; so where did they come from?
 ```
@@ -196,55 +198,54 @@ it worked because the books share contexts: "the", "said", "I", "old man" (Hemin
 
 ---
 
-## everything else this week modifies this loop
+## what carries over to LLMs?
 
 ![bg right:40%](./assets/bg-algorithm-generation.avif)
 
-**test-time scaling** → draw more samples before you commit
+our model: **explicit counts**, one token of context
 
-**RL with verifiable rewards** → change what the distribution is trained towards
+neural models: **learned representations**, much longer context
 
-**speculative decoding** → let a small model draw the sample, a big one check it
-
-**an LLM judge** → point the loop at another loop's output
+both: generate successive tokens from **conditional distributions**
 
 ```notes
-a language model is a distribution over the next token, and generation is sampling from it and feeding the sample back in. You just did that.
+Recent n-gram research asks which neural-model predictions corpus statistics capture, and where they diverge. Our room makes the counts inspectable; it does not reproduce a transformer's internal computation.
 
-every concept on today's programme is a modification of that loop. Now you have somewhere to hang them.
+[Nguyen (NeurIPS 2024)](https://papers.nips.cc/paper_files/paper/2024/hash/b1c446eebd9a317dd0e96b16908c821a-Abstract-Conference.html) compares n-gram rulesets with transformer predictions: 79% top-token agreement on TinyStories, 68% on Wikipedia in the studied models. Agreement on one token does not mean identical distributions.
+
+[Svete and Cotterell (NAACL 2024)](https://aclanthology.org/2024.naacl-long.381/) show transformers with hard or sparse attention can represent any n-gram model. This is a capacity result, not a claim about how trained models work.
+
+[Infini-gram (COLM 2024)](https://arxiv.org/abs/2401.17377) scales counts to five trillion tokens and unbounded context lengths, using them to analyse and improve neural models. Choose one example to explain aloud; the links let educators follow all three afterwards.
 ```
 
 ---
 
 {/* _class: hero */}
 
-a hall full of people just did\
-the thing you're told needs a **data centre**
+would **more copies** make our model more capable?
 
 ![bg](./assets/bg-hall-generation-wide.avif)
 
 ```notes
-who now thinks they could give a better answer to a ten-year-old?
+Give the room time to answer. More complete copies repeat the same evidence and leave the underlying count proportions unchanged. More people holding identical sheets do not add context or knowledge.
 
-it still requires simplification, but it's not beyond you, and it's not beneath you to understand
+Then ask why locally plausible fragments can lose coherence as the sequence grows. Our model only conditions on the last token; it cannot use an earlier topic or subject to choose the next continuation. Longer context changes what predictions can depend on.
+
+Use these answers as an informal check: can participants explain what our model does, and identify a limit of transferring that explanation to neural LLMs?
 ```
 
 ---
 
 {/* _class: hero */}
 
-it doesn't make you an expert
-
-it makes you **harder to bullsh\*t**
+run it again, with your **own learners**
 
 <div class="deck-url">llmsunplugged.org</div>
 
 ![bg](./assets/bg-trigrams-banner.avif)
 
 ```notes
-this doesn't make you an expert: a billion dollars in your pocket won't get you a frontier model from scratch
+The wider LLMs Unplugged suite has lessons and extensions for longer context, sampling and learning from feedback. The conference package adapts the established activity and adds this comparison with recent research.
 
-but it might make you... (look at the slide)
-
-everything you need to run this yourself, at any size, is at llmsunplugged.org
+The materials are at llmsunplugged.org. You can reuse the room activity, then choose an extension for your learners.
 ```
