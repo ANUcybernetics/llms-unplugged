@@ -3,18 +3,73 @@ import { getCollection } from "astro:content";
 import PageLayout from "../../layouts/PageLayout.astro";
 import fs from "node:fs";
 import path from "node:path";
-import { parseDeckFrontmatter } from "astromotion/src/meta.ts";
+import {
+  parseDeckFrontmatter,
+  type DeckFrontmatter,
+} from "astromotion/src/meta.ts";
 
 // Decks grouped by the lesson they back (from the lessons collection), so
 // this page points visitors at the lesson pages --- which carry the timings,
 // prep notes, and materials lists --- rather than at bare slide links.
-const lessons = (await getCollection("lessons"))
-  .filter((l) => l.data.listed !== false)
-  .toSorted((a, b) => a.data.order - b.data.order);
+//
+// A deck's own frontmatter has the last word on whether it appears here, even
+// when a listed lesson or talk claims it (a talk keeps its "as delivered"
+// record decks in its list, linked from the talk page only). `listed: false`
+// keeps a deck out of the indexes; `published: false` drops its route from
+// production builds, so a link to it would be a link to nothing.
+const decksDir = path.resolve("src/decks");
+const decks = new Map<string, DeckFrontmatter>();
 
-const talks = (await getCollection("talks"))
-  .filter((t) => t.data.listed !== false)
-  .toSorted((a, b) => a.data.order - b.data.order);
+const readDeck = (file: string, slugFor: (name: string) => string) => {
+  const match = path.basename(file).match(/^(.+)\.deck\.mdx$/);
+  if (!match) return;
+  const slug = slugFor(match[1]);
+  const { data } = parseDeckFrontmatter(fs.readFileSync(file, "utf-8"), slug);
+  decks.set(slug, data);
+};
+
+for (const entry of fs.readdirSync(decksDir, { withFileTypes: true })) {
+  const entryPath = path.join(decksDir, entry.name);
+  if (entry.isDirectory()) {
+    for (const file of fs.readdirSync(entryPath)) {
+      readDeck(path.join(entryPath, file), (name) =>
+        name === "slides" ? entry.name : `${entry.name}/${name}`,
+      );
+    }
+  } else if (entry.isFile()) {
+    readDeck(entryPath, (name) => name);
+  }
+}
+
+const hidden = (slug: string): boolean => {
+  const data = decks.get(slug);
+  return data?.listed === false || data?.published === false;
+};
+
+const withVisibleDecks = <
+  T extends { data: { decks: Array<{ slug: string }> } },
+>(
+  entries: T[],
+): T[] =>
+  entries.map((entry) => ({
+    ...entry,
+    data: {
+      ...entry.data,
+      decks: entry.data.decks.filter((d) => !hidden(d.slug)),
+    },
+  }));
+
+const lessons = withVisibleDecks(
+  (await getCollection("lessons"))
+    .filter((l) => l.data.listed !== false)
+    .toSorted((a, b) => a.data.order - b.data.order),
+);
+
+const talks = withVisibleDecks(
+  (await getCollection("talks"))
+    .filter((t) => t.data.listed !== false)
+    .toSorted((a, b) => a.data.order - b.data.order),
+);
 
 const claimed = new Set(
   [
@@ -23,43 +78,11 @@ const claimed = new Set(
   ].flatMap((l) => l.data.decks.map((d) => d.slug)),
 );
 
-// Any remaining decks (event one-offs, works in progress) still get listed
-// unless their frontmatter says `listed: false` --- or `published: false`,
-// which drops the deck's route from production builds, so a link to it
-// would be a link to nothing.
-const decksDir = path.resolve("src/decks");
-const others: Array<{ slug: string; title: string }> = [];
-
-const hidden = (data: unknown): boolean => {
-  const flags = data as { listed?: boolean; published?: boolean };
-  return flags.listed === false || flags.published === false;
-};
-
-for (const entry of fs.readdirSync(decksDir, { withFileTypes: true })) {
-  if (entry.isDirectory()) {
-    const dirPath = path.join(decksDir, entry.name);
-    for (const file of fs.readdirSync(dirPath)) {
-      const match = file.match(/^(.+)\.deck\.mdx$/);
-      if (!match) continue;
-      const name = match[1];
-      const raw = fs.readFileSync(path.join(dirPath, file), "utf-8");
-      const { data } = parseDeckFrontmatter(raw, entry.name);
-      if (hidden(data)) continue;
-      const slug = name === "slides" ? entry.name : `${entry.name}/${name}`;
-      if (claimed.has(slug)) continue;
-      others.push({ slug, title: data.title ?? name });
-    }
-  } else if (entry.isFile()) {
-    const match = entry.name.match(/^(.+)\.deck\.mdx$/);
-    if (!match) continue;
-    const name = match[1];
-    const raw = fs.readFileSync(path.join(decksDir, entry.name), "utf-8");
-    const { data } = parseDeckFrontmatter(raw, name);
-    if (hidden(data)) continue;
-    if (claimed.has(name)) continue;
-    others.push({ slug: name, title: data.title ?? name });
-  }
-}
+// Any remaining decks (event one-offs, works in progress) still get listed.
+const others = [...decks]
+  .filter(([slug]) => !claimed.has(slug) && !hidden(slug))
+  .map(([slug, data]) => ({ slug, title: data.title ?? slug }))
+  .toSorted((a, b) => a.slug.localeCompare(b.slug));
 ---
 
 <PageLayout
