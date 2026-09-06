@@ -17,8 +17,8 @@ Supporting directories:
 
 - `data/` - Input text corpora (\*.txt files with YAML frontmatter). Gitignored
   apart from `frankenstein.txt`, `sycophancy.txt` and the original
-  `school-day-*.txt` set (five 60-70 token texts for ledger training); the full set, with
-  provenance and cleaning recipes, is the private
+  `school-day-*.txt` set (five 60-70 token texts for ledger training); the full
+  set, with provenance and cleaning recipes, is the private
   [llms-unplugged-corpora](https://github.com/benswift/llms-unplugged-corpora)
   repo --- clone it and copy `texts/*.txt` in here
 - `backlog/` - Task management (use `backlog` CLI tool)
