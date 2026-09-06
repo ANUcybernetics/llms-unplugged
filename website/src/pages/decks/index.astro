@@ -46,18 +46,22 @@ const hidden = (slug: string): boolean => {
   return data?.listed === false || data?.published === false;
 };
 
+// Sessions with nothing visible to link are dropped rather than rendered as
+// a bare heading.
 const withVisibleDecks = <
   T extends { data: { decks: Array<{ slug: string }> } },
 >(
   entries: T[],
 ): T[] =>
-  entries.map((entry) => ({
-    ...entry,
-    data: {
-      ...entry.data,
-      decks: entry.data.decks.filter((d) => !hidden(d.slug)),
-    },
-  }));
+  entries
+    .map((entry) => ({
+      ...entry,
+      data: {
+        ...entry.data,
+        decks: entry.data.decks.filter((d) => !hidden(d.slug)),
+      },
+    }))
+    .filter((entry) => entry.data.decks.length > 0);
 
 const lessons = withVisibleDecks(
   (await getCollection("lessons"))
@@ -71,11 +75,11 @@ const talks = withVisibleDecks(
     .toSorted((a, b) => a.data.order - b.data.order),
 );
 
+// A deck claimed by an unlisted lesson or talk falls through to "Other decks",
+// so the deck's own flag governs whether it appears and the session only
+// governs where.
 const claimed = new Set(
-  [
-    ...(await getCollection("lessons")),
-    ...(await getCollection("talks")),
-  ].flatMap((l) => l.data.decks.map((d) => d.slug)),
+  [...lessons, ...talks].flatMap((l) => l.data.decks.map((d) => d.slug)),
 );
 
 // Any remaining decks (event one-offs, works in progress) still get listed.
