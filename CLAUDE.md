@@ -7,77 +7,32 @@ manual (pen-and-paper) and automated tools.
 
 ## Project structure
 
-This repository has three main parts:
-
-- **`cli/`** - Rust CLI tool for generating N-gram models and PDF booklets
-- **`handouts/`** - Typst standalone materials (worksheets, designer references)
-- **`website/`** - Project website (Astro) including all lessons
-
-Supporting directories:
-
-- `data/` - Input text corpora (\*.txt files with YAML frontmatter). Gitignored
-  apart from `frankenstein.txt`, `sycophancy.txt` and the original
-  `school-day-*.txt` set (five 60-70 token texts for ledger training); the full
-  set, with provenance and cleaning recipes, is the private
+- `cli/` --- Rust CLI tool for generating N-gram models and PDF booklets
+- `handouts/` --- Typst standalone materials (worksheets, designer references)
+- `website/` --- project website (Astro), including all lessons
+- `data/` --- input text corpora (`*.txt` with YAML frontmatter). Gitignored
+  apart from `frankenstein.txt`, `sycophancy.txt` and the `school-day-*.txt`
+  set; the full set, with provenance and cleaning recipes, is the private
   [llms-unplugged-corpora](https://github.com/benswift/llms-unplugged-corpora)
   repo --- clone it and copy `texts/*.txt` in here
-- `backlog/` - Task management (use `backlog` CLI tool)
+- `backlog/` --- task management
 
-## Core workflow
+The README documents the CLI subcommands and their options; read it rather than
+guessing flags.
 
-```
-text file → Rust CLI → model.json → Typst → PDF booklet
-```
-
-## Quick start
+## Commands
 
 ```bash
-# Build CLI tool
-cd cli && cargo build --release
-
-# Generate a booklet
-./cli/target/release/llms_unplugged pdf -i data/frankenstein.txt -n 2
-
-# Generate token cutouts for the cutouts lesson variant
-./cli/target/release/llms_unplugged cutouts -i data/sycophancy.txt -n 2
-
-# Same, but double-sided so cutouts read on either face
-# (print with "flip on short edge" binding; assumes a4 landscape)
-./cli/target/release/llms_unplugged cutouts -i data/sycophancy.txt -n 2 --duplex
-
-# Generate per-participant search sheets: the same activity without the
-# cutting. The corpus is shuffled and dealt round-robin into one page each,
-# so the room collectively holds the model.
-./cli/target/release/llms_unplugged sheets -i data/the-cat-in-the-hat.txt -n 2 --sheets 24
-
-# Build handouts
-cd handouts && make
-
-# Run website dev server
-cd website && pnpm run dev
-```
-
-## Testing
-
-```bash
-# CLI tests
-cd cli && cargo test
-
-# Website tests
+cd cli && cargo build --release   # build the CLI
+cd cli && cargo test              # CLI tests
+cd handouts && make               # build handout PDFs
+cd website && pnpm run dev        # website dev server
+# website tests --- build first: test/build.test.ts reads dist/
 cd website && pnpm run build && pnpm test
 ```
 
-## General conventions
+## Conventions
 
-- Use `backlog` CLI for task management (never edit task files directly)
+- Use the `backlog` CLI for task management; never edit task files directly
 - Test output must be pristine (zero failures)
 - Format Typst files with `typstyle --wrap-text`
-- Never create files unless necessary---prefer editing existing ones
-
-## Notes
-
-- Project teaches human-scale AI concepts
-- Designed for physical dice-based text generation
-- Part of ANU Cybernetic Studio research
-- The website is now powered by Astro, but was previously an eleventy (11ty)
-  site --- the `11ty` git tag is the last commit with the eleventy site
