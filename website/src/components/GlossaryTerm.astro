@@ -12,51 +12,70 @@ if (!entry) {
   throw new Error(`Glossary term not found: "${id}"`);
 }
 
+// One popover per term per page: the first use renders it, later uses of the
+// same term render only a button targeting it. Astro.locals lives for one page
+// render, so the set resets between pages.
+const locals = Astro.locals as { glossaryPopovers?: Set<string> };
+locals.glossaryPopovers ??= new Set();
+const renderPopover = !locals.glossaryPopovers.has(id);
+locals.glossaryPopovers.add(id);
+
 const popoverId = `glossary-${id}`;
 ---
 
-<span class="glossary-term-wrapper">
-  <button
+{
+  /* The wrapper is inline, so the child tags must stay adjacent: whitespace
+     between them renders as a stray space in the sentence. The popover has no
+     tooltip role because it contains a focusable link, and popover semantics
+     already announce it. data-pagefind-ignore keeps the description out of
+     the page's search index. */
+}
+<span class="glossary-term-wrapper"
+  ><button
     class="glossary-term"
     popovertarget={popoverId}
     popovertargetaction="toggle"
     aria-label={`${entry.term} (glossary term)`}
-  >
-    <slot>{entry.term}</slot>
-  </button>
-  <!-- no tooltip role: the popover contains a focusable link, and popover
-       semantics already announce it -->
-  <span popover id={popoverId} class="glossary-popover">
-    <strong class="glossary-popover-term">{entry.term}</strong>
-    <span class="glossary-popover-desc">{entry.description}</span>
-    <a href={`/glossary/#${id}`} class="glossary-popover-link"
-      >View in glossary</a
-    >
-  </span>
-</span>
+    ><slot>{entry.term}</slot></button
+  >{
+    renderPopover && (
+      <span
+        popover
+        id={popoverId}
+        class="glossary-popover"
+        data-pagefind-ignore
+      >
+        <strong class="glossary-popover-term">{entry.term}</strong>
+        <span class="glossary-popover-desc">{entry.description}</span>
+        <a href={`/glossary/#${id}`} class="glossary-popover-link">
+          View in glossary
+        </a>
+      </span>
+    )
+  }</span
+>
 
 <script>
-  // JS fallback for browsers without CSS Anchor Positioning
+  // JS fallback for browsers without CSS Anchor Positioning: place the popover
+  // under whichever button invoked it (a term used twice on a page shares one
+  // popover, so the invoker has to be tracked rather than assumed).
   if (!CSS.supports("position-area", "bottom span-right")) {
-    document.addEventListener(
-      "toggle",
-      (e) => {
-        const popover = e.target as HTMLElement;
-        if (
-          !popover.classList.contains("glossary-popover") ||
-          !popover.matches(":popover-open")
-        )
-          return;
-
-        const btn = popover.previousElementSibling as HTMLElement;
-        if (!btn) return;
-
+    document.addEventListener("click", (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>(
+        ".glossary-term",
+      );
+      if (!btn) return;
+      const popover = document.getElementById(
+        btn.getAttribute("popovertarget") ?? "",
+      );
+      if (!popover) return;
+      requestAnimationFrame(() => {
+        if (!popover.matches(":popover-open")) return;
         const rect = btn.getBoundingClientRect();
         popover.style.top = `${rect.bottom + 6}px`;
         popover.style.left = `${Math.max(8, rect.left)}px`;
-      },
-      true,
-    );
+      });
+    });
   }
 </script>
 
@@ -104,7 +123,7 @@ const popoverId = `glossary-${id}`;
 
     max-width: 22rem;
     padding: 0.75rem 1rem;
-    background: var(--color-bg-elevated, #1a1a1a);
+    background: var(--at-bg-elevated);
     border: 1px solid var(--at-border);
     border-radius: var(--at-border-radius);
     color: var(--at-text);
