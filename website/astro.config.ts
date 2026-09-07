@@ -137,7 +137,11 @@ export default defineConfig({
     }),
     astromotion({
       theme: "./src/decks/theme.css",
-      fontVariables: ["--font-libertinus-serif"],
+      // The theme registers Public Sans and Roboto Mono for its own pages but
+      // decks only get the fonts named here, so without the first two a deck
+      // falls back to the system sans-serif everywhere the font isn't
+      // installed --- including the CI overflow check.
+      fontVariables: ["--font-libertinus-serif", "--font-public-sans", "--font-roboto-mono"],
       favicon: "/favicon.svg",
     }),
   ],
