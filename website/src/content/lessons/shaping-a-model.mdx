@@ -21,15 +21,16 @@ listed: true
 ---
 
 import Callout from "../../components/Callout.astro";
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
-People talk about a chatbot's personality as though it were a temperament: this
+People talk about a <GlossaryTerm id="chatbot">chatbot</GlossaryTerm>'s personality as though it were a temperament: this
 one's warm, that one's a suck-up, the other one lectures you. But a model's
 personality is a property of what shaped it, and everything that shaped it was a
 decision somebody made.
 
 This lesson makes those decisions concrete by handing them to the room. After
 building the paper model, participants shape it three different ways: they
-change the training data and watch the model turn sycophantic; they run a
+change the <GlossaryTerm id="training-data">training data</GlossaryTerm> and watch the model turn sycophantic; they run a
 preference round where human judges reward some outputs over others, and then
 watch the model learn to game the judges; and they retrain a model on its own
 generated text and count what's left of the vocabulary. Every one of those opens
@@ -69,32 +70,32 @@ that suit your group.
 
 ## How it goes
 
-The first 40 minutes are the standard build: tally word pairs into the grid,
+The first 40 minutes are the standard build: tally word pairs into the <GlossaryTerm id="grid">grid</GlossaryTerm>,
 then roll a d10 and generate. Everything after that is a modification to a model
 the room owns, which keeps the ethics discussion concrete.
 
-**Sycophancy** is the data route. Groups tally a sheet of flattering, agreeable
+**<GlossaryTerm id="sycophancy">Sycophancy</GlossaryTerm>** is the data route. Groups tally a sheet of flattering, agreeable
 phrases into their existing grid and generate again. The model starts
 complimenting them. Nobody wrote a rule saying "be agreeable": the data said it,
 repeatedly, and the counts did the rest. And if you scraped the whole internet,
 what else did you tally in without meaning to?
 
-**RLHF** is the other route to the same place, and it runs as a game show. Two
+**<GlossaryTerm id="rlhf">RLHF</GlossaryTerm>** is the other route to the same place, and it runs as a game show. Two
 tables start with identical copies of the grid, each with its own judging panel
 and a sealed brief (one panel wants clear English, the other wants surprise and
 rhythm). Each round the table generates three candidates from a shared seed
 word, the panel ranks them, and the scorer bumps the counts behind the winner
 and docks the loser. Three rounds later both tables generate from the same seed
 and read the results side by side: two models from one grid, separated only by
-who held the scorecard. Then the reward-hacking round: one panel is secretly
+who held the scorecard. Then the <GlossaryTerm id="reward-hacking">reward-hacking</GlossaryTerm> round: one panel is secretly
 briefed to reward flattery, and the generators, who never see the brief, watch
 their model reach for agreeable phrases on its own.
 
-**Synthetic Data** runs as a relay around the room. Group one generates text
+**<GlossaryTerm id="synthetic-data">Synthetic Data</GlossaryTerm>** runs as a relay around the room. Group one generates text
 from their model and passes it to group two as training data; group two trains
 on it, generates, and passes on again. Keep a running vocabulary count on
 butchers paper at each hop. The line goes down, sometimes gently and sometimes
-off a cliff, and that's model collapse.
+off a cliff, and that's <GlossaryTerm id="model-collapse">model collapse</GlossaryTerm>.
 
 The close pulls the three sections together: different mechanisms, the same
 outcome, and in every case a person somewhere chose the data, the reward, or the

@@ -3,6 +3,7 @@ import PageLayout from "../../layouts/PageLayout.astro";
 import NewsCards from "../../components/NewsCards.astro";
 import UpcomingSessions from "../../components/UpcomingSessions.astro";
 import Callout from "../../components/Callout.astro";
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
 ---
 
 <PageLayout
@@ -13,10 +14,10 @@ import Callout from "../../components/Callout.astro";
 
   <p>
     If your students are asking you about AI (they are), you can answer by
-    building a language model with them, on paper. The activities suit upper
-    primary through secondary, in any discipline: no coding, no software to vet,
-    no accounts, and no maths beyond counting and percentages. One lesson is
-    enough for you and your students to see how it works.
+    building a <GlossaryTerm id="language-model">language model</GlossaryTerm> with
+    them, on paper. The activities suit upper primary through secondary, in any discipline:
+    no coding, no software to vet, no accounts, and no maths beyond counting and percentages.
+    One lesson is enough for you and your students to see how it works.
   </p>
 
   <h2 id="which-lesson">Which lesson?</h2>
@@ -63,7 +64,7 @@ import Callout from "../../components/Callout.astro";
             <a href="/lessons/my-first-language-model/"
               >My First Language Model</a
             > (90-minute or 2-hour version) &mdash; adds a printed pre-trained model,
-            then agents
+            then <GlossaryTerm id="agent">agents</GlossaryTerm>
           </td>
         </tr>
         <tr>
@@ -79,7 +80,9 @@ import Callout from "../../components/Callout.astro";
           <td>3 hours</td>
           <td>
             <a href="/lessons/build-break-extend/">Build, break, extend</a>
-            &mdash; cutouts, sycophancy, tool use and a poetry slam
+            &mdash; cutouts, <GlossaryTerm id="sycophancy"
+              >sycophancy</GlossaryTerm
+            >, <GlossaryTerm id="tool-use">tool use</GlossaryTerm> and a poetry slam
           </td>
         </tr>
         <tr>

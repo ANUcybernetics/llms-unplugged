@@ -8,6 +8,7 @@ description:
 
 import { Image } from "astro:assets";
 import headshotBen from "../assets/images/headshot-ben-3.avif";
+import GlossaryTerm from "../components/GlossaryTerm.astro";
 
 # Frequently asked questions
 
@@ -24,8 +25,8 @@ import headshotBen from "../assets/images/headshot-ben-3.avif";
 
 Honestly, the short answer (these days) is yes. The long answer is more
 complicated---AI is a term that has been applied to many different algorithmic
-techniques and systems over the years. But today (in the mid-2020s) Large
-Language Models have kindof sucked all the air out of the room when it comes to
+techniques and systems over the years. But today (in the mid-2020s) <GlossaryTerm id="llm">Large
+Language Models</GlossaryTerm> have kindof sucked all the air out of the room when it comes to
 AI, so that's mostly what we're talking about here. I (Ben) do like to use the
 term LLM rather than AI whenever I can, because I think it's more specific and
 accurate.
@@ -61,8 +62,8 @@ has a "you will need" section.
 
 Not any more---the lessons are now maintained as web pages only, and they print
 reasonably well straight from your browser if you need hard copies. The
-printable artefacts for the hands-on activities (pre-generated booklets and
-cutout sheets) are on the [tools page](/tools/).
+printable artefacts for the hands-on activities (pre-generated <GlossaryTerm id="booklet">booklets</GlossaryTerm> and <GlossaryTerm id="cutouts">cutout sheets</GlossaryTerm>) are on the [tools
+page](/tools/).
 
 ## Can I use these materials in my school classroom?
 
@@ -107,10 +108,10 @@ a black box.
 
 ## How do these activities relate to ChatGPT, Claude, and other LLMs?
 
-Modern LLMs use the same fundamental principle: predict the next token based on
-context. The differences are scale (billions of parameters vs dozens) and
-learned vs hand-counted statistics. The core mechanism---weighted random
-selection based on patterns in training data---is identical.
+Modern LLMs use the same fundamental principle: predict the next <GlossaryTerm id="token">token</GlossaryTerm> based on <GlossaryTerm id="context-window">context</GlossaryTerm>. The differences are
+scale (billions of <GlossaryTerm id="parameters">parameters</GlossaryTerm> vs
+dozens) and learned vs hand-counted statistics. The core mechanism--- <GlossaryTerm id="weighted-random-sampling">weighted random selection</GlossaryTerm>
+based on patterns in <GlossaryTerm id="training-data">training data</GlossaryTerm>---is identical.
 
 ## Can I generate my own booklets from custom text?
 

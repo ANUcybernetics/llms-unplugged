@@ -493,7 +493,6 @@
     model's personality.
   activity: adding tallies from a second text to a finished grid
   related:
-    - supervised-fine-tuning
     - post-training
     - lora
     - base-model
@@ -530,30 +529,15 @@
     Pre-training teaches the model how language works; post-training shapes
     its behaviour: following instructions, answering rather than continuing,
     refusing some requests, working carefully through problems. Supervised
-    fine-tuning, RLHF and RLVR are all post-training techniques.
+    fine-tuning (imitating example conversations), RLHF and RLVR are all
+    post-training techniques.
   related:
     - pre-training
-    - supervised-fine-tuning
     - rlhf
     - rlvr
   see:
     - label: RLHF
       href: /modules/rlhf/
-
-- id: supervised-fine-tuning
-  term: Supervised fine-tuning (SFT)
-  category: shaping-behaviour
-  description: >-
-    Post-training on demonstrations: pairs of an input and the output you
-    want. The model learns to imitate them. It's the simplest form of
-    post-training and usually the first step, before reinforcement-learning
-    techniques such as RLHF or RLVR.
-  synonyms:
-    - SFT
-  related:
-    - post-training
-    - fine-tuning
-    - rlhf
 
 - id: rlhf
   term: RLHF (Reinforcement Learning from Human Feedback)

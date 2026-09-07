@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { globSync, readFileSync } from "node:fs";
 import {
   CATEGORIES,
   getGlossaryByCategory,
@@ -80,5 +81,38 @@ describe("getGlossaryByCategory", () => {
   it("all entries are accounted for", () => {
     const allFromCategories = getGlossaryByCategory().flatMap((c) => c.entries);
     expect(allFromCategories.length).toBe(loadGlossary().length);
+  });
+});
+
+describe("glossary usage", () => {
+  // Every entry must be reachable from somewhere on the site, either as a
+  // GlossaryTerm popover or a link to its anchor. An entry nothing points at
+  // is a definition for something the site never mentions, and it drifts.
+  it("every entry is referenced from site content", () => {
+    const files = globSync("src/**/*.{mdx,md,astro}").filter((f) => !f.endsWith("glossary.astro"));
+    const referenced = new Set<string>();
+    for (const f of files) {
+      const text = readFileSync(f, "utf-8");
+      for (const m of text.matchAll(/GlossaryTerm\s+id="([a-z0-9-]+)"/g)) referenced.add(m[1]);
+      for (const m of text.matchAll(/\/glossary\/#([a-z0-9-]+)/g)) referenced.add(m[1]);
+    }
+    const orphans = loadGlossary()
+      .map((e) => e.id)
+      .filter((id) => !referenced.has(id));
+    expect(
+      orphans,
+      `Glossary entries nothing on the site refers to:\n${orphans.join("\n")}`,
+    ).toEqual([]);
+  });
+
+  it("every GlossaryTerm id in content exists", () => {
+    const ids = new Set(loadGlossary().map((e) => e.id));
+    const unknown: string[] = [];
+    for (const f of globSync("src/**/*.{mdx,md,astro}")) {
+      for (const m of readFileSync(f, "utf-8").matchAll(/GlossaryTerm\s+id="([a-z0-9-]+)"/g)) {
+        if (!ids.has(m[1])) unknown.push(`${f}: ${m[1]}`);
+      }
+    }
+    expect(unknown).toEqual([]);
   });
 });

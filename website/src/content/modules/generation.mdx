@@ -37,11 +37,7 @@ running the [Weighted Randomness](/modules/weighted-randomness/) module first.
 
 </Variant>
 
-Use a pre-trained (hand-built) <GlossaryTerm id="bigram-model">bigram model</GlossaryTerm> to generate new text through
-
-<GlossaryTerm id="weighted-random-sampling">
-  weighted random sampling
-</GlossaryTerm>
+Use a pre-trained (hand-built) <GlossaryTerm id="bigram-model">bigram model</GlossaryTerm> to generate new text through <GlossaryTerm id="weighted-random-sampling">weighted random sampling</GlossaryTerm>
 .
 
 <Variant is="grid">
@@ -102,7 +98,7 @@ goal: keep going and write a whole story.
 
 <Variant is="grid">
 
-A language model proposes several possible next words along with how likely each
+A <GlossaryTerm id="language-model">language model</GlossaryTerm> proposes several possible next words along with how likely each
 is. Dice rolls pick among those options, and repeating the process word by word
 yields fluent text.
 
@@ -110,7 +106,7 @@ yields fluent text.
 
 <Variant is="cutouts">
 
-The chain grows like dominoes: write a word, find a cutout whose previous-word
+The chain grows like dominoes: write a word, find a <GlossaryTerm id="cutouts">cutout</GlossaryTerm> whose previous-word
 box matches it, write that cutout's next word, then hunt for the next match.
 The spread already encodes the weights---common previous words appear on more
 cutouts, and your eye naturally lands on next words that appear more often. So
@@ -123,7 +119,7 @@ sampling---no dice required.
 
 <Variant is="grid">
 
-1. Choose a starting word from the first column of your grid.
+1. Choose a starting word from the first column of your <GlossaryTerm id="grid">grid</GlossaryTerm>.
 2. Look at that word's row to find all possible next words and their counts.
 3. Roll dice weighted by the counts (see
    [Weighted Randomness](/modules/weighted-randomness/)).
@@ -299,13 +295,13 @@ perform it by hand.
 
 ### Connection to current LLMs
 
-This generation process is identical to how current LLMs produce text:
+This <GlossaryTerm id="generation">generation</GlossaryTerm> process is identical to how current <GlossaryTerm id="llm">LLMs</GlossaryTerm> produce text:
 
 - **sequential generation**: both generate one word at a time
 - **probabilistic sampling**: both use weighted random selection (exactly like
   your dice or cutouts spread)
-- **<GlossaryTerm id="probability-distribution">probability distribution</GlossaryTerm>**: neural network outputs probabilities for all
-  50,000+ possible next tokens
+- **<GlossaryTerm id="probability-distribution">probability distribution</GlossaryTerm>**: <GlossaryTerm id="neural-network">neural network</GlossaryTerm> outputs probabilities for all
+  50,000+ possible next <GlossaryTerm id="token">tokens</GlossaryTerm>
 - **no planning**: neither looks ahead---just picks the next word
 - **variability**: same <GlossaryTerm id="prompt">prompt</GlossaryTerm> can produce different outputs due to randomness
 

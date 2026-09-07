@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import PageLayout from "../layouts/PageLayout.astro";
+import GlossaryTerm from "../components/GlossaryTerm.astro";
 import libraryCollection from "../assets/images/library-collection.avif";
 import libraryTitlePage from "../assets/images/library-title-page.avif";
 ---
@@ -20,9 +21,11 @@ import libraryTitlePage from "../assets/images/library-title-page.avif";
   />
 
   <p>
-    The <em>LLMs Unplugged Library</em> is a collection of pre-trained language models
-    in printed, hardbound book form. Each volume contains <a
-      href="/glossary/#n-gram-model">n-gram</a
+    The <em>LLMs Unplugged Library</em> is a collection of pre-trained <GlossaryTerm
+      id="language-model">language models</GlossaryTerm
+    >
+    in printed, hardbound book form. Each volume contains <GlossaryTerm
+      id="n-gram-model">n-gram</GlossaryTerm
     > frequency tables typeset from a classic work of literature&mdash;the same statistical
     patterns that underpin modern LLMs, but at human scale. You can hold the entire
     model in your hands and use it to generate new text with pen, paper, and dice.
@@ -53,11 +56,13 @@ import libraryTitlePage from "../assets/images/library-title-page.avif";
   <p>
     The distinctive feature is the curation. Each volume is built from a
     specific literary work (or the collected works of an author), then typeset
-    in bigram, trigram, and 4-gram variants. The progression across volumes
-    makes the fundamental trade-off between model size and output quality
-    legible without a single chart: a trigram model of <em>Frankenstein</em> produces
-    noticeably more coherent text than the bigram version, but the book is considerably
-    thicker. Pick up a Hemingway bigram and you get terse, punchy fragments; the
+    in <GlossaryTerm id="bigram-model">bigram</GlossaryTerm>, <GlossaryTerm
+      id="trigram-model">trigram</GlossaryTerm
+    >, and 4-gram variants. The progression across volumes makes the fundamental
+    trade-off between model size and output quality legible without a single
+    chart: a trigram model of <em>Frankenstein</em> produces noticeably more coherent
+    text than the bigram version, but the book is considerably thicker. Pick up a
+    Hemingway bigram and you get terse, punchy fragments; the
     <em>Cloudstreet</em> model wanders into something more sprawling. The model
     <em>is</em> the text it was trained on, in a way that&rsquo;s immediately legible.
   </p>
@@ -65,8 +70,9 @@ import libraryTitlePage from "../assets/images/library-title-page.avif";
   <p>
     Current volumes include Mary Shelley&rsquo;s <em>Frankenstein</em>, Tim
     Winton&rsquo;s <em>Cloudstreet</em>, the collected works of Ernest
-    Hemingway, and a synthetic dataset (<a
-      href="https://huggingface.co/datasets/roneneldan/TinyStories"
+    Hemingway, and a <GlossaryTerm id="synthetic-data"
+      >synthetic dataset</GlossaryTerm
+    > (<a href="https://huggingface.co/datasets/roneneldan/TinyStories"
       >TinyStories</a
     >) for comparison. Published by Cybernetic Studio Press under CC BY-NC-SA
     4.0.

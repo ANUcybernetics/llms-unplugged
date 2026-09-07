@@ -19,8 +19,8 @@ keyIdea:
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 import Callout from "../../components/Callout.astro";
 
-A bigram only ever looks at the word before. But the page in front of you holds
-everything you've written so far, and that's context the model can use. This
+A <GlossaryTerm id="bigram-model">bigram</GlossaryTerm> only ever looks at the word before. But the page in front of you holds
+everything you've written so far, and that's <GlossaryTerm id="context-window">context</GlossaryTerm> the model can use. This
 module adds two rules that read that page. Neither one changes the model itself,
 which makes them a hands-on version
 of <GlossaryTerm id="in-context-learning">in-context learning</GlossaryTerm>.
@@ -72,7 +72,7 @@ the word that followed it: `apple`. Do it again from `apple` and you get `moon`,
 then `five`, then `apple`…
 
 You've completed the pattern `moon five apple`, which appears nowhere in the
-training text and which the base model has no row for. The model picked up your
+training text and which the <GlossaryTerm id="base-model">base model</GlossaryTerm> has no row for. The model picked up your
 invented rule from a single example, with no retraining at all. Now turn the
 rule off and generate from the base model alone: the pattern disappears.
 
@@ -185,11 +185,11 @@ models already fall into.
 
 This module is a hands-on version of three things modern models do.
 
-**Induction heads.** These are an identified circuit inside transformers, and
+**Induction heads.** These are an identified circuit inside <GlossaryTerm id="transformer">transformers</GlossaryTerm>, and
 one of the main mechanisms behind in-context learning:
 an <GlossaryTerm id="induction-head">induction head</GlossaryTerm> finds an earlier
 place where the current token appeared and copies what came after it---exactly
-your scan-back-and-copy rule. It's why few-shot prompting works: give an LLM a
+your scan-back-and-copy rule. It's why few-shot prompting works: give an <GlossaryTerm id="llm">LLM</GlossaryTerm> a
 few "input → output" examples and it continues the pattern. Researchers detect
 these circuits by feeding a model a random sequence repeated twice and checking
 that it predicts the second copy far better than the first, which is the machine
@@ -207,5 +207,5 @@ words); attention is learned and content-sensitive, and can decide on the fly
 which earlier words matter.
 
 **Repetition.** Real models get stuck on rails too, which is why generation
-settings include repetition penalties: a deliberate _down_-weighting of recent
+settings include <GlossaryTerm id="repetition-penalty">repetition penalties</GlossaryTerm>: a deliberate _down_-weighting of recent
 words, the opposite of the boost you added.

@@ -18,14 +18,14 @@ import Callout from "../../components/Callout.astro";
 import PretrainedGenerationWidget from "../../components/widgets/PretrainedGenerationWidget.svelte";
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
-Use a (slightly larger) pre-trained model booklet to generate new text through
-weighted random sampling.
+Use a (slightly larger) pre-trained model booklet to generate new text through <GlossaryTerm id="weighted-random-sampling">weighted random sampling</GlossaryTerm>
+.
 
 ![](../../assets/images/hero-pretrained-generation.avif)
 
 ## You will need
 
-- a pre-trained model booklet
+- a pre-trained model <GlossaryTerm id="booklet">booklet</GlossaryTerm>
 - a d10 for weighted sampling
 - pen and paper for your generated text
 
@@ -45,7 +45,7 @@ Stretch goal: try to guess the training text before checking the booklet title.
 ## Key idea
 
 Pre-trained models capture patterns from larger datasets. You can use them just
-like your hand-built bigram model: look up the current word, roll dice, choose
+like your hand-built <GlossaryTerm id="bigram-model">bigram model</GlossaryTerm>: look up the current word, roll dice, choose
 the next word, and repeat.
 
 ## Algorithm (quick recap)
@@ -78,7 +78,7 @@ examples to see the algorithm in action.
 
 - can you guess what text the model was trained on from the generated output?
 - how does using a pre-trained model differ from training your own?
-- what vocabulary size does the booklet model have compared to your hand-built
+- what <GlossaryTerm id="vocabulary">vocabulary</GlossaryTerm> size does the booklet model have compared to your hand-built
   model?
 - why might some word combinations feel more natural than others?
 - without looking at the title: can you identify the training text's genre or
@@ -97,7 +97,7 @@ examples to see the algorithm in action.
 
 This module demonstrates the foundation of how people interact with modern AI:
 
-- **<GlossaryTerm id="pre-training">pre-training</GlossaryTerm>**: companies train massive models on huge text corpora (like
+- **<GlossaryTerm id="pre-training">pre-training</GlossaryTerm>**: companies train massive models on huge text <GlossaryTerm id="training-data">corpora</GlossaryTerm> (like
   your booklet model, but with trillions of words)
 - **LLM-as-a-service**: users generate text without seeing or modifying the
   underlying model (just like using the booklet)
@@ -112,8 +112,8 @@ Your hand-built model from [Training](/modules/training/) gives you insight into
 what's inside the booklet, but you don't need that knowledge to generate text.
 This separation is why companies like OpenAI can provide AI services: they do
 the expensive training once, then millions of users perform text generation. The
-booklet captures thousands of training examples in a portable format, just as
-neural networks compress training data into billions of parameters.
+booklet captures thousands of training examples in a portable format, just as <GlossaryTerm id="neural-network">neural networks</GlossaryTerm> compress
+training data into billions of <GlossaryTerm id="parameters">parameters</GlossaryTerm>.
 
 ## Interactive widget
 

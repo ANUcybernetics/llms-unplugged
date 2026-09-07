@@ -45,7 +45,7 @@ Part 2 is optional and needs materials of its own; they're listed there.
 
 ## Your goal
 
-Generate from a bigram and a trigram model of the same book, then say what
+Generate from a bigram and a <GlossaryTerm id="trigram-model">trigram model</GlossaryTerm> of the same book, then say what
 changed in the text and in the booklet. Stretch goal: build a trigram by hand,
 watch it run into a wall, then build a _skip grid_ that recovers some of the
 benefit for far less cost.
@@ -61,7 +61,7 @@ attention.
 
 ## Part 1: two booklets, one book
 
-No training and no cutting: hand out both booklets and generate. Ten minutes,
+No training and no cutting: hand out both <GlossaryTerm id="booklet">booklets</GlossaryTerm> and generate. Ten minutes,
 and it works with any group that can already roll a booklet.
 
 1. **Generate from the bigram booklet.** Pick a starting word, look up its
@@ -168,7 +168,7 @@ The trigram is expensive because it tracks the two previous words _jointly_, in
 one table indexed by the whole pair. The skip grid tracks them _separately_ and
 adds the evidence together.
 
-You keep two bigram-sized grids:
+You keep two bigram-sized <GlossaryTerm id="grid">grids</GlossaryTerm>:
 
 - the **previous-word grid**: your ordinary bigram (the word one back → the next
   word)
@@ -181,7 +181,7 @@ words without the combinatorial blow-up.
 
 <Callout type="tip" title="Why this is cheaper">
 
-A trigram table can have up to (vocabulary size)² rows---one per possible word
+A trigram table can have up to (<GlossaryTerm id="vocabulary">vocabulary</GlossaryTerm> size)² rows---one per possible word
 pair. The two skip-grid tables have at most (vocabulary size) rows _each_. You
 trade the ability to track exact pairs for two cheap tables you can actually
 fill in.
@@ -286,13 +286,13 @@ so it can decide when the combination matters.
 
 ### Connection to current LLMs
 
-This module bridges simple word-pair models and modern transformers along two
+This module bridges simple word-pair models and modern <GlossaryTerm id="transformer">transformers</GlossaryTerm> along two
 threads.
 
 The trigram shows the **context-length trade-off**: longer context sharpens
 predictions, but the number of possible contexts---and the data you need to
 cover them---grows exponentially. Current models use context windows of hundreds
-of thousands of tokens, which is only possible because they don't store an
+of thousands of <GlossaryTerm id="token">tokens</GlossaryTerm>, which is only possible because they don't store an
 explicit count for every possible context the way an n-gram table does.
 
 The skip grid shows the first step _beyond_ counting exact contexts: mixing in

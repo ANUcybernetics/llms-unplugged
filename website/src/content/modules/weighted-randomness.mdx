@@ -103,10 +103,10 @@ This module introduces weighted random sampling before students encounter
 language models. While not specific to LLMs, this operation is fundamental to
 how they work:
 
-- **generation mechanism**: every time an LLM produces a word, it's performing
+- **generation mechanism**: every time an <GlossaryTerm id="llm">LLM</GlossaryTerm> produces a word, it's performing
   weighted random sampling from a probability distribution
-- **probability distributions**: neural networks output probabilities for
-  thousands of possible next tokens; these probabilities become the "weights"
+- **probability distributions**: <GlossaryTerm id="neural-network">neural networks</GlossaryTerm> output probabilities for
+  thousands of possible next <GlossaryTerm id="token">tokens</GlossaryTerm>; these probabilities become the "weights"
   for sampling
 - **physical intuition**: dice and tokens make the mathematics tangible---when
   students later learn about "sampling from a distribution," they'll have

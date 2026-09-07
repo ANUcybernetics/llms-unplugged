@@ -18,16 +18,17 @@ order: 21
 ---
 
 import UsingTheSlides from "../../components/UsingTheSlides.astro";
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
 A talk, not a workshop: the only thing the audience does is hold a
-[search sheet](/modules/search-sheets/) and put a hand up. The room runs a
-bigram model of _The Cat in the Hat_ for five minutes, maps what it did onto the
-real vocabulary (tokens, parameters, distribution, sampling), sees the same
-model in grid form, and then watches three scales grow---context, training text,
-learned numbers---from the paper model to a frontier LLM, without pretending the
-two are the same kind of machine. It ends on the claim that you can't build
-Claude, but twenty minutes of paper and hands in the air makes you harder to
-fool.
+[search sheet](/modules/search-sheets/) and put a hand up. The room runs a <GlossaryTerm id="bigram-model">bigram model</GlossaryTerm> of _The Cat in the
+Hat_ for five minutes, maps what it did onto the real vocabulary (<GlossaryTerm id="token">tokens</GlossaryTerm>, <GlossaryTerm id="parameters">parameters</GlossaryTerm>, <GlossaryTerm id="probability-distribution">distribution</GlossaryTerm>, <GlossaryTerm id="weighted-random-sampling">sampling</GlossaryTerm>), sees the
+same model in <GlossaryTerm id="grid">grid</GlossaryTerm> form, and then watches
+three scales grow---context, training text, learned numbers---from the paper
+model to a frontier <GlossaryTerm id="llm">LLM</GlossaryTerm>, without
+pretending the two are the same kind of machine. It ends on the claim that you
+can't build Claude, but twenty minutes of paper and hands in the air makes you
+harder to fool.
 
 We gave it at ANU in August 2026, straight after Tim Bell's introduction to CS
 Unplugged; the Bandura quote it opens with had been on his screen fifteen
@@ -47,7 +48,7 @@ event-specific close.
 
 ## You will need
 
-- one search sheet per attendee, sized to the head count: the ready-to-print
+- one <GlossaryTerm id="search-sheets">search sheet</GlossaryTerm> per attendee, sized to the head count: the ready-to-print
   [Cat in the Hat set](/tools/#search-sheets) holds 36 sheets (or A5 two-up), or
   deal your own with
   `llms_unplugged sheets -i data/the-cat-in-the-hat.txt -n 2 --sheets <count>`

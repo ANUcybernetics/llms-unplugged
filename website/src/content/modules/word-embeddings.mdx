@@ -20,7 +20,7 @@ import EmbeddingWidget from "../../components/widgets/EmbeddingWidget.svelte";
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 import LmGrid from "../../components/LmGrid.astro";
 
-Your bigram grid already holds an opinion about every word in it: the row says
+Your bigram <GlossaryTerm id="grid">grid</GlossaryTerm> already holds an opinion about every word in it: the row says
 what tends to follow that word, the column says what tends to come before it.
 Two words with much the same row and much the same column are, as far as the
 model is concerned, the same kind of word. This module finds a pair like that
@@ -168,9 +168,9 @@ still the idea behind every embedding in every modern model: words used in the
 same contexts tend to mean similar things.
 
 - **counts versus learned vectors**: your row is a count vector---one number per
-  word in your vocabulary, nearly all of them zero, every number a tally you
+  word in your <GlossaryTerm id="vocabulary">vocabulary</GlossaryTerm>, nearly all of them zero, every number a tally you
   wrote down yourself. A real embedding is _learned_: a few hundred to several
-  thousand numbers, none of them a count of anything, nudged during training
+  thousand numbers, none of them a count of anything, nudged during <GlossaryTerm id="training">training</GlossaryTerm>
   until words used alike end up near each other.
 - **learning is what makes it generalise**: this is the point
   [Search Sheets](/modules/search-sheets/) sets up. Your grid rates any pair it
@@ -186,7 +186,7 @@ same contexts tend to mean similar things.
   that it works for some analogies and not others, and that the usual evaluation
   excludes the three input words from the candidate answers, which flatters the
   result.
-- **modern embeddings are contextual**: in an LLM a word's vector is computed
+- **modern embeddings are contextual**: in an <GlossaryTerm id="llm">LLM</GlossaryTerm> a word's vector is computed
   from the sentence it appears in, so the `bank` of a river and the `bank` that
   holds your money get different vectors.
 

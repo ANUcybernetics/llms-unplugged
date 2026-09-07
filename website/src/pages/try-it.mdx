@@ -11,6 +11,7 @@ import Callout from "../components/Callout.astro";
 import TrainingWidget from "../components/widgets/TrainingWidget.svelte";
 import GenerationWidget from "../components/widgets/GenerationWidget.svelte";
 import SeedTrainingText from "../components/SeedTrainingText.svelte";
+import GlossaryTerm from "../components/GlossaryTerm.astro";
 
 <SeedTrainingText
   client:load
@@ -23,8 +24,8 @@ import SeedTrainingText from "../components/SeedTrainingText.svelte";
 
 Twenty minutes, one person, a pen, some paper and something random: a ten-sided
 die if you have one, otherwise a coin, or the random-number function on your
-phone. By the end you'll have built a language model, used it to write a
-sentence nobody has written before, and seen what ChatGPT is doing when it
+phone. By the end you'll have built a <GlossaryTerm id="language-model">language model</GlossaryTerm>, used it to write a
+sentence nobody has written before, and seen what <GlossaryTerm id="chatbot">ChatGPT</GlossaryTerm> is doing when it
 writes one.
 
 ## 1. Pick a text
@@ -43,7 +44,7 @@ own:
 `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,` `spot` `,` `run` `.`
 `jump` `,` `spot` `,` `jump` `.`
 
-Now draw a grid: one row and one column for each distinct word (here that's
+Now draw a <GlossaryTerm id="grid">grid</GlossaryTerm>: one row and one column for each distinct word (here that's
 `see`, `spot`, `run`, `jump`, `.` and `,`, so six rows and six columns). Read
 through the text one pair of neighbouring words at a time---`see`→`spot`,
 `spot`→`run`, `run`→`.`, and so on---and for each pair put a tally mark in the
@@ -90,11 +91,11 @@ get a different sentence.
 
 ## What you just did
 
-- the grid is the **model**; its tallies are the **parameters** (a frontier
+- the grid is the **model**; its tallies are the **<GlossaryTerm id="parameters">parameters</GlossaryTerm>** (a frontier
   model has about a trillion of them, same idea)
-- reading through the text and tallying was **training**
-- the tallies in a row are a **probability distribution** over the next word
-- the roll was **sampling**, and the sentence is **generation**
+- reading through the text and tallying was **<GlossaryTerm id="training">training</GlossaryTerm>**
+- the tallies in a row are a **<GlossaryTerm id="probability-distribution">probability distribution</GlossaryTerm>** over the next word
+- the roll was **<GlossaryTerm id="weighted-random-sampling">sampling</GlossaryTerm>**, and the sentence is **<GlossaryTerm id="generation">generation</GlossaryTerm>**
 
 Every reply from Claude or ChatGPT is produced by that loop: look at the
 context, weigh the options, pick one, write it down. What's different is the
@@ -110,7 +111,7 @@ learns about one word onto related ones. It's still words in, words out.
   [Pre-trained Model Generation](/modules/pretrained-generation/) module walks
   through it.
 - **change its voice without changing the model**: the
-  [Sampling](/modules/sampling/) module has a temperature dial and eight house
+  [Sampling](/modules/sampling/) module has a <GlossaryTerm id="temperature">temperature</GlossaryTerm> dial and eight house
   rules, haiku and alliteration among them.
 - **do it with other people**: the [lessons](/lessons/) are the same activities
   with slides, timings and presenter notes, for a classroom, a workshop, or a

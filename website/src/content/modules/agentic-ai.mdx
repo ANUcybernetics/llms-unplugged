@@ -51,7 +51,7 @@ keep generating_. Here the tool is a text message to a friend.
 
 ## The recipe
 
-1. **Generate** from your model as usual, rolling for each next token.
+1. **Generate** from your model as usual, rolling for each next <GlossaryTerm id="token">token</GlossaryTerm>.
 2. When you land on a **punctuation token** (`.`, `,`, `!`, `?`), pause. That's
    a tool call.
 3. Text **What comes next? "[the sentence so far]…"** (everything since the last
@@ -78,7 +78,7 @@ generating from `.`:
 
 The punctuation is the trigger, the question plus the sentence so far is the
 tool's input, and the reply is the tool's result. The reply's words probably
-aren't in your model's vocabulary, which is why you resume from the punctuation
+aren't in your model's <GlossaryTerm id="vocabulary">vocabulary</GlossaryTerm>, which is why you resume from the punctuation
 you rolled rather than from the friend's last word: the model can always
 continue from `.`, but it has no row for `river`.
 
@@ -142,7 +142,8 @@ an <GlossaryTerm id="llm">LLM</GlossaryTerm> agent is something that "runs tools
 a loop to achieve a goal"---and that's exactly what your model just did.
 
 <GlossaryTerm id="tool-use">Tool use</GlossaryTerm> (also called "function
-calling") is how modern AI assistants act in the world:
+calling") is how modern <GlossaryTerm id="chatbot">AI assistants</GlossaryTerm>
+act in the world:
 
 - **the agentic loop**: generate → detect a tool call → execute the tool → feed
   the result back → continue generating, exactly like your punctuation-and-text
@@ -159,7 +160,7 @@ calling") is how modern AI assistants act in the world:
 The key insight: the model doesn't know anything the tool returns---it only
 learns when to ask. A real model does differ in one way: it reads the tool's
 result and conditions on it, whereas your bigram carries on from the punctuation
-as if the reply never happened, because one word of context can't hold it.
+as if the reply never happened, because one word of <GlossaryTerm id="context-window">context</GlossaryTerm> can't hold it.
 Everything the friend contributed is in the transcript, but not in the model's
 next choice. The [In-context Learning](/modules/in-context-learning/) module is
 where the text you've already written starts to feed back in.

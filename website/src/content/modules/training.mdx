@@ -76,7 +76,7 @@ faces, so students never have to flip a face-down card.
 
 <Variant is="grid">
 
-Produce a grid that captures the patterns in your input text data. This grid is
+Produce a <GlossaryTerm id="grid">grid</GlossaryTerm> that captures the patterns in your input text data. This grid is
 your bigram language model. Stretch goal: keep training your model on more input
 text.
 
@@ -84,7 +84,7 @@ text.
 
 <Variant is="cutouts">
 
-Spread your printed token cutouts out on a table. Each cutout shows a next
+Spread your printed <GlossaryTerm id="cutouts">token cutouts</GlossaryTerm> out on a table. Each cutout shows a next
 word together with its previous word (the word that came before it). The
 whole spread of cutouts _is_ your language model---every (previous, next)
 pair from your training text is sitting somewhere on the table.
@@ -95,7 +95,7 @@ pair from your training text is sitting somewhere on the table.
 
 <Variant is="grid">
 
-Language models learn by counting patterns in text. Training means building a
+Language models learn by counting patterns in text. <GlossaryTerm id="training">Training</GlossaryTerm> means building a
 model (filling out the grid) to track which words follow other words.
 
 </Variant>
@@ -119,7 +119,7 @@ doing the maths.
 1. **Preprocess your text**
    - convert everything to lowercase
    - treat words and single punctuation marks (`.` `,` `!` `?` `;` `:`) as
-     separate "words"; ignore paired punctuation like quotes and brackets, and
+     separate "<GlossaryTerm id="token">words</GlossaryTerm>"; ignore paired punctuation like quotes and brackets, and
      ignore whitespace
 2. **Set up your grid**
    - take the first word from your text
@@ -220,7 +220,7 @@ context, they work as either "call out your answer" or "discuss with your
 neighbour and share-back" questions.
 
 - why is a language model called a "language model"? What does it mean to "model language"?
-- what's the best/clearest explanation you've ever heard about how Large Language Models (e.g. ChatGPT, Claude) actually work? What's the _weirdest_ explanation you've ever heard?
+- what's the best/clearest explanation you've ever heard about <GlossaryTerm id="llm">Large Language Models</GlossaryTerm> (e.g. ChatGPT, Claude) actually work? What's the _weirdest_ explanation you've ever heard?
 - when was the first <GlossaryTerm id="language-model">language model</GlossaryTerm> ever created? How similar/different was it to modern LLMs?
 - _activity_: get everyone to stand up, then have them sit down if they've never used ChatGPT, Claude, or a similar LLM. Then ask if they've used it in the last month/week/day/hour/5mins. At the end, everyone should be sitting down.
 
@@ -245,7 +245,7 @@ activity itself.
 - what can you tell about the input text by looking at which (previous, next)
   pairs show up most often in the spread?
 - why does `see→spot` appear twice while `run→,` appears only once?
-- how does including punctuation as separate tokens help capture sentence
+- how does including punctuation as separate <GlossaryTerm id="token">tokens</GlossaryTerm> help capture sentence
   structure?
 - what would happen if you trained on more text---how would the spread change?
 - how could you use these cutouts to generate _new_ text in the style of your
@@ -274,13 +274,13 @@ activity itself.
 
 ### Connection to current LLMs
 
-This counting process is exactly what happens during the "training" phase of
+This counting process is exactly what happens during the "<GlossaryTerm id="training">training</GlossaryTerm>" phase of
 language models:
 
-- **training data**: your paragraph vs trillions of words from the internet
+- **<GlossaryTerm id="training-data">training data</GlossaryTerm>**: your paragraph vs trillions of words from the internet
 - **learning/training process**: hand counting vs automated counting by
   computers
-- **storage**: your paper model vs billions of parameters in memory
+- **storage**: your paper model vs billions of <GlossaryTerm id="parameters">parameters</GlossaryTerm> in memory
 
 The key insight: "training" a language model means counting patterns in text.
 Your hand-built model contains the same type of information that current LLMs

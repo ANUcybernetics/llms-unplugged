@@ -51,7 +51,7 @@ down, it sticks to the favourites; turned up, it treats every option as roughly
 equal. A version you can run by hand has four settings:
 
 - **cold**: no dice; take the option with the highest count (if there's a tie,
-  roll among the tied ones). This is _greedy_ decoding.
+  roll among the tied ones). This is <GlossaryTerm id="greedy-sampling">greedy decoding</GlossaryTerm>.
 - **normal**: roll on the counts exactly as they are, as in
   [Generation](/modules/generation/).
 - **hot**: before you roll, add 1 to _every_ option's count, then roll on the
@@ -161,7 +161,7 @@ In pairs, design a poetry language model from scratch. Three decisions, all of
 them already on this page:
 
 - **training text**: a [pre-trained booklet](/modules/pretrained-generation/),
-  your own [grid](/modules/training/), or a cutouts spread
+  your own [grid](/modules/training/), or a <GlossaryTerm id="cutouts">cutouts spread</GlossaryTerm>
 - **temperature**: cold, normal, hot, or boiling
 - **house rules**: one or more of the truncation strategies above, or a rule you
   invent yourself
@@ -194,9 +194,9 @@ fifteen minutes with applause.
 ### Discussion (5 min)
 
 What was the hardest part of designing your model? The hardest part of preparing
-a performance from someone else's card? And how does this relate to Claude or
-ChatGPT---similarities and differences? Two words to name here are _temperature_
-(the same dial, on a much bigger model) and _prompt engineering_ (wording an
+a performance from someone else's card? And how does this relate to <GlossaryTerm id="chatbot">Claude or
+ChatGPT</GlossaryTerm>---similarities and differences? Two words to name here are _temperature_
+(the same dial, on a much bigger model) and <GlossaryTerm id="prompt">prompt engineering</GlossaryTerm> (wording an
 input to get the output you want, which is what a model card is).
 
 <Callout type="tip" title="What counts as done">
@@ -234,9 +234,9 @@ have done their job.
 
 ### Connection to current LLMs
 
-Current LLMs use these same mechanisms, though the specific strategies differ.
+Current <GlossaryTerm id="llm">LLMs</GlossaryTerm> use these same mechanisms, though the specific strategies differ.
 
-- **Temperature control:** a real model scores every possible next token, and
+- **Temperature control:** a real model scores every possible next <GlossaryTerm id="token">token</GlossaryTerm>, and
   the temperature parameter divides those scores _before_ they're turned into
   probabilities. Below 1 the distribution sharpens towards the favourite; above
   1 it flattens. Your dial does the same job with counts: cold is temperature
@@ -244,7 +244,7 @@ Current LLMs use these same mechanisms, though the specific strategies differ.
   sits in between. LLMs apply it computationally before every token.
 - **Truncation techniques in modern LLMs:** <GlossaryTerm id="top-k-sampling">top-k sampling</GlossaryTerm> (only consider k most
   likely tokens), <GlossaryTerm id="top-p-sampling">top-p/nucleus sampling</GlossaryTerm> (consider tokens until cumulative
-  probability reaches p), repetition penalties, frequency penalties, and
+  probability reaches p), <GlossaryTerm id="repetition-penalty">repetition penalties</GlossaryTerm>, frequency penalties, and
   presence penalties all prune options before sampling.
 - **Truncation techniques in this module:** greedy, haiku, non-sequitur,
   no-repeat, alliteration, top-k, alphabet chain, and short/long are designed
@@ -253,7 +253,7 @@ Current LLMs use these same mechanisms, though the specific strategies differ.
   APIs.
 
 Your paper model demonstrates that "creativity" in AI comes from two controls:
-adjusting temperature (probability distribution shape) and applying truncation
+adjusting temperature (<GlossaryTerm id="probability-distribution">probability distribution</GlossaryTerm> shape) and applying truncation
 strategies (which tokens to exclude). The same trained model can produce
 scholarly essays (low temperature, strict truncation) or wild poetry (high
 temperature, constraint-based truncation) just by changing these parameters. The

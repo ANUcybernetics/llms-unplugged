@@ -18,7 +18,7 @@ import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
 <VariantToggle client:load />
 
-Demonstrate how adding repetitive sycophantic phrases to your training data
+Demonstrate how adding repetitive sycophantic phrases to your <GlossaryTerm id="training-data">training data</GlossaryTerm>
 steers the model toward over-agreeable, flattering output---no <GlossaryTerm id="rlhf">RLHF</GlossaryTerm>
 required.
 
@@ -54,7 +54,7 @@ to your printing batch.
 
 <Variant is="grid">
 
-Tally the sycophancy phrases into your existing grid, regenerate text from the
+Tally the sycophancy phrases into your existing <GlossaryTerm id="grid">grid</GlossaryTerm>, regenerate text from the
 same starting word as before, and observe how the output drifts toward agreement
 and flattery.
 
@@ -62,7 +62,7 @@ and flattery.
 
 <Variant is="cutouts">
 
-Add sycophancy cutouts to your existing spread, regenerate text from the same
+Add sycophancy <GlossaryTerm id="cutouts">cutouts</GlossaryTerm> to your existing spread, regenerate text from the same
 starting word as before, and observe how the output drifts toward agreement and
 flattery.
 
@@ -70,16 +70,17 @@ flattery.
 
 ## Key idea
 
-Sycophancy in real LLMs comes from two main sources: <GlossaryTerm id="rlhf">RLHF</GlossaryTerm>
-reward hacking (human raters tend to prefer agreeable answers) and biased
-training data (the internet is full of flattery). This activity demonstrates the
-second source directly: when you tip the training data toward sycophantic
-phrases, the model's generated text starts mirroring them.
+In real <GlossaryTerm id="llm">LLMs</GlossaryTerm>, <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm> comes
+from two main sources: <GlossaryTerm id="rlhf">RLHF</GlossaryTerm> <GlossaryTerm id="reward-hacking">reward hacking</GlossaryTerm>
+(human raters tend to prefer agreeable answers) and biased training data (the
+internet is full of flattery). This activity demonstrates the second source
+directly: when you tip the training data toward sycophantic phrases, the model's
+generated text starts mirroring them.
 
 ## The sycophancy phrases
 
 These are the phrases you'll fold into your model. Each is shown as the sequence
-of tokens the model sees---lowercased, with punctuation and contracted endings
+of <GlossaryTerm id="token">tokens</GlossaryTerm> the model sees---lowercased, with punctuation and contracted endings
 (`'re`, `'s`) treated as their own tokens, exactly as in
 [Training](/modules/training/):
 
@@ -190,7 +191,7 @@ same thing.
 
 The phrases above integrate cleanly because their previous words---`i`, `that`,
 `you`, and `.`---are high-frequency tokens already present in most models, so the
-new material hooks into the existing vocabulary during generation. If you write
+new material hooks into the existing <GlossaryTerm id="vocabulary">vocabulary</GlossaryTerm> during generation. If you write
 your own, follow the same recipe: start each phrase with a common word, end it
 with `.`, and repeat it several times so the new transitions carry strong weight.
 
@@ -217,7 +218,7 @@ activity:
   Anthropic and others has shown this pattern across multiple frontier models.
 - **Pre-training data biases**: a lot of internet text contains sycophantic
   patterns---customer-service replies, social-media validation, and so
-  on---which the model picks up during pre-training before any RLHF.
+  on---which the model picks up during <GlossaryTerm id="pre-training">pre-training</GlossaryTerm> before any RLHF.
 
 Your activity simulates the second mechanism. The first is harder to demo
 without running [RLHF](/modules/rlhf/) on top.

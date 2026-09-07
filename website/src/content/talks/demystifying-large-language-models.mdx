@@ -18,6 +18,7 @@ order: 20
 ---
 
 import UsingTheSlides from "../../components/UsingTheSlides.astro";
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
 TED-style: the speaking carries it and the slides are cues, not visual aids. The
 audience is handed [search sheets](/modules/search-sheets/) as the house lights
@@ -53,7 +54,7 @@ the sentence you were going to say.
 
 ## You will need
 
-- one search sheet per seat, dealt from the three texts together, with the title
+- one <GlossaryTerm id="search-sheets">search sheet</GlossaryTerm> per seat, dealt from the three texts together, with the title
   and author left off every sheet (the CLI's `sheets` subcommand takes `--title`
   and `--author` overrides); the deck's comment block has the exact recipe, and
   the deal is seeded so it's reproducible
@@ -68,7 +69,7 @@ the sentence you were going to say.
   can't start until nearly everyone is holding one
 - pick loud seeds in case you need to restart; the deck notes list them for each
   text
-- write big: fifteen tokens at whiteboard size is the whole output, and the back
+- write big: fifteen <GlossaryTerm id="token">tokens</GlossaryTerm> at whiteboard size is the whole output, and the back
   row has to be able to read it
 - the deck leaves out the ANU-at-80 slides that closed the first delivery;
   they were for that event only

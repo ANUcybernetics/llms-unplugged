@@ -21,20 +21,20 @@ listed: true
 ---
 
 import Callout from "../../components/Callout.astro";
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
-Once a room has built a bigram model and rolled dice through it, the question
-comes up on its own: this thing only ever looks at the word before, so how does
-ChatGPT hold a conversation? There are three answers. A real model looks at more
-than one word of context, it can say things it never saw in training, and it has
-been taught to answer rather than merely continue.
+Once a room has built a <GlossaryTerm id="bigram-model">bigram model</GlossaryTerm> and rolled dice through it, the question
+comes up on its own: this thing only ever looks at the word before, so how does <GlossaryTerm id="chatbot">ChatGPT</GlossaryTerm> hold a conversation? There are
+three answers. A real model looks at more than one word of <GlossaryTerm id="context-window">context</GlossaryTerm>, it can say things it
+never saw in training, and it has been taught to answer rather than merely
+continue.
 
 This lesson takes the first two and runs them by hand. Participants build the
 grid model as usual, then add two rules that read back over the page they've
-already written (in-context learning), and finally turn each word's row of
-counts into a vector and measure how close two words are (word embeddings). No
-new maths beyond counting and subtraction, and no code, but by the end the words
-_attention_ and _embedding_ mean something concrete rather than something you've
-heard on a podcast.
+already written (<GlossaryTerm id="in-context-learning">in-context learning</GlossaryTerm>), and finally turn each word's row of
+counts into a vector and measure how close two words are (word <GlossaryTerm id="embedding">embeddings</GlossaryTerm>). No
+new maths beyond counting and subtraction, and no code, but by the end the words <GlossaryTerm id="attention-mechanism">attention</GlossaryTerm> and <GlossaryTerm id="embedding">embedding</GlossaryTerm> mean something concrete
+rather than something you've heard on a podcast.
 
 <Callout type="info">
 
@@ -69,12 +69,12 @@ in the back half carry the widgets you'll want on the projector.
 
 The first hour is the fundamentals, and it's the same first hour as
 [My First Language Model](/lessons/my-first-language-model/): tally word pairs
-into the grid, then roll a d10 to generate text from your own counts. If your
+into the <GlossaryTerm id="grid">grid</GlossaryTerm>, then roll a d10 to generate text from your own counts. If your
 group has already done that, you can compress it hard; 20 minutes of rebuild is
 usually enough to get everyone's hands back in. Don't skip it, though, because
 the back half needs a filled-in grid to work on.
 
-The pre-trained booklet round is here for a practical reason as well as a
+The pre-trained <GlossaryTerm id="booklet">booklet</GlossaryTerm> round is here for a practical reason as well as a
 conceptual one. The in-context rules only bite when the model has a decent
 vocabulary behind it, and a booklet trained on a whole book gives a much better
 demo than a grid built from two pages. Hand out booklets, let people generate a

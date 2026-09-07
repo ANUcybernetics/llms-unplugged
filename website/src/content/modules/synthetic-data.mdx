@@ -41,7 +41,7 @@ And a whiteboard for the chain of numbers at the end.
 ## Your goal
 
 Send a text all the way down the chain and hear what comes out the far end.
-Stretch goal: work out which link the vocabulary fell off a cliff at, and why
+Stretch goal: work out which link the <GlossaryTerm id="vocabulary">vocabulary</GlossaryTerm> fell off a cliff at, and why
 that one.
 
 ## Key idea
@@ -65,7 +65,7 @@ downstream has to be reconstructed from sixty words.
 ## Each link in the chain
 
 1. **Train a fresh model** on the text you were handed, using the
-   [Training](/modules/training/) algorithm. Start a new grid; don't add to an
+   [Training](/modules/training/) algorithm. Start a new <GlossaryTerm id="grid">grid</GlossaryTerm>; don't add to an
    old one. This model's only knowledge is the previous group's output.
 2. **Generate about sixty words** from your new grid, as in
    [Generation](/modules/generation/).
@@ -197,7 +197,7 @@ parallel down opposite sides of the room and compare the two far ends.
 
 The relay is a hand-run version of the experiment in Shumailov et al., "AI
 models collapse when trained on recursively generated data" (_Nature_, July
-2024). They fine-tuned a language model on its own output, over and over, and
+2024). They <GlossaryTerm id="fine-tuning">fine-tuned</GlossaryTerm> a language model on its own output, over and over, and
 watched the same thing the board shows: the distribution narrows generation by
 generation, and **the tails go first**. Low-probability events---rare words,
 unusual constructions---are exactly what a finite sample is most likely to miss,
@@ -214,7 +214,7 @@ But synthetic data is not poison, and the relay is a worst case rather than
 normal practice. Synthetic data is used deliberately and successfully in at
 least two ways:
 
-- **distillation**: a large, strong model generates training data for a smaller
+- **<GlossaryTerm id="distillation">distillation</GlossaryTerm>**: a large, strong model generates training data for a smaller
   one, which then performs far better than it would on scraped text of the same
   volume. The data comes from a model _above_ the one being trained, so the
   chain doesn't close on itself.
@@ -233,8 +233,8 @@ those conditions and synthetic data becomes one of the more useful tools going.
 <Callout type="info" title="How this differs from a neural model">
 
 Your grid can only emit a word it has literally seen, so vocabulary loss down
-the chain is total and immediate. A neural model spreads what it learns across
-shared parameters, so it can still produce a word in a context it never saw,
+the chain is total and immediate. A <GlossaryTerm id="neural-network">neural model</GlossaryTerm> spreads what it learns across
+shared <GlossaryTerm id="parameters">parameters</GlossaryTerm>, so it can still produce a word in a context it never saw,
 and real collapse is correspondingly gentler and takes more generations. The
 direction is the same, but the fall is nowhere near as steep.
 

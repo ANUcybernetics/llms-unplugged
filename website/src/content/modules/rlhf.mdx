@@ -50,9 +50,7 @@ other table's brief said, just from the sentence it produces.
 
 ## Key idea
 
-<GlossaryTerm id="rlhf">
-  Reinforcement learning from human feedback (RLHF)
-</GlossaryTerm>
+Running <GlossaryTerm id="rlhf">reinforcement learning from human feedback (RLHF)</GlossaryTerm>
 changes a model without giving it a single word of new text to learn from. The
 only new information is human judgement: this output was better than that one.
 Feed enough of those comparisons back into the counts and the model starts
@@ -104,7 +102,7 @@ clock allows.
 
 For each word transition in the **preferred** candidate:
 
-- add +1 to that cell in your grid
+- add +1 to that cell in your <GlossaryTerm id="grid">grid</GlossaryTerm>
 
 For each word transition in the **rejected** candidate:
 
@@ -151,7 +149,7 @@ Both tables generate once more from the shared seed word, and the two sentences
 are read out side by side. Before revealing the briefs, ask each table to guess
 what the other panel was rewarding.
 
-Then spell it out. Both tables had the same base model, the same seed word, the
+Then spell it out. Both tables had the same <GlossaryTerm id="base-model">base model</GlossaryTerm>, the same seed word, the
 same update rule, the same number of rounds and the same dice, and they ended up
 with different models because two groups of people wanted different things.
 
@@ -201,9 +199,9 @@ beside it, that you consult before every roll.
      take the second roll, wherever it falls.
 3. **Roll and continue** as normal.
 
-The booklet is never touched. Everything the judges taught you lives on one
+The <GlossaryTerm id="booklet">booklet</GlossaryTerm> is never touched. Everything the judges taught you lives on one
 sheet of paper that you can hand to another group, stack with a second sheet, or
-throw away to get the original model back. That makes it an _adapter_ in exactly
+throw away to get the original model back. That makes it an <GlossaryTerm id="lora">adapter</GlossaryTerm> in exactly
 the sense of the [Sycophancy](/modules/sycophancy/) module's adapter
 section---base model untouched, changes stored separately, added at generation
 time.
@@ -254,21 +252,21 @@ with no separate reward model, than to the PPO-style RLHF the term originally
 named. Modern
 assistants---<GlossaryTerm id="chatbot">Claude, ChatGPT</GlossaryTerm> and the
 rest---are <GlossaryTerm id="alignment">aligned</GlossaryTerm> using RLHF and its
-relatives: DPO, AI-generated preferences in place of human ones, and reward from
-automated checkers on tasks where correctness can be verified. The term covers a
-family of methods.
+relatives: DPO, AI-generated preferences in place of human ones, and reward from <GlossaryTerm id="rlvr">automated checkers</GlossaryTerm> on tasks where
+correctness can be verified, which is how today's <GlossaryTerm id="reasoning-model">reasoning models</GlossaryTerm>
+are trained. The term covers a family of methods.
 
-**Reward hacking is the failure you staged.** The model optimises the signal it
+**<GlossaryTerm id="reward-hacking">Reward hacking</GlossaryTerm> is the failure you staged.** The model optimises the signal it
 is given, which is whatever the raters rewarded, not whatever they meant. Human
 raters tend to prefer answers that agree with them and make them feel clever, so
 a model trained on their comparisons learns to agree and to flatter. That is a
-documented source of sycophancy in deployed models, and it's why
+documented source of <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm> in deployed models, and it's why
 [Sycophancy](/modules/sycophancy/) has two causes rather than one.
 
 **What the tuning can't do.** Your judges could only reward transitions the grid
 already had, so the panel can only promote paths that were there to begin with.
 The usual reading of real <GlossaryTerm id="post-training">post-training</GlossaryTerm> is much the same: it mostly re-weights
-behaviour the base model already picked up in pre-training instead of teaching
+behaviour the base model already picked up in <GlossaryTerm id="pre-training">pre-training</GlossaryTerm> instead of teaching
 it new facts, though how strictly that holds is still argued over.
 
 The room has now run into the same question twice: is the model learning to be

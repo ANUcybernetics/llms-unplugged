@@ -28,7 +28,7 @@ word at a time with hands in the air.
 
 ## You will need
 
-- one search sheet per person---the [Materials](/tools/#search-sheets) page has
+- one <GlossaryTerm id="search-sheets">search sheet</GlossaryTerm> per person---the [Materials](/tools/#search-sheets) page has
   ready-to-print sets, or [generate your own](/tools/#generate-your-own) from
   any text, sized to your head count
 - a whiteboard (or a slide you can write on) for the growing text
@@ -52,13 +52,13 @@ twice from the same seed and compare the two sentences.
 
 ## Key idea
 
-Each sheet holds a shuffled handful of token pairs from the text: a boxed
+Each sheet holds a shuffled handful of <GlossaryTerm id="token">token</GlossaryTerm> pairs from the text: a boxed
 _previous_ word and the word that followed it. No single sheet can continue the
 text on its own. But ask the room "who has `the`?" and a forest of hands goes
 up; ask for a rare word and you get two. The number of hands for each
-continuation is how often it happens in the text---so the show of hands _is_ the
-probability distribution, without anyone counting anything. Pick a hand at
-random and you've sampled from it.
+continuation is how often it happens in the text---so the show of hands _is_ the <GlossaryTerm id="probability-distribution">probability distribution</GlossaryTerm>
+, without anyone counting anything. Pick a hand at random and you've sampled
+from it.
 
 ## The algorithm
 
@@ -102,11 +102,11 @@ back.
 
 Everything the jargon describes, the room just did:
 
-- each word on your sheet → a **token**
-- the sheets, together → the **parameters** of the **model**
-- the hands in the air → the **probability distribution** over next tokens
-- the random pick → **sampling**
-- the sentence on the board → **generation**
+- each word on your sheet → a **<GlossaryTerm id="token">token</GlossaryTerm>**
+- the sheets, together → the **<GlossaryTerm id="parameters">parameters</GlossaryTerm>** of the **<GlossaryTerm id="language-model">model</GlossaryTerm>**
+- the hands in the air → the **<GlossaryTerm id="probability-distribution">probability distribution</GlossaryTerm>** over next tokens
+- the random pick → **<GlossaryTerm id="weighted-random-sampling">sampling</GlossaryTerm>**
+- the sentence on the board → **<GlossaryTerm id="generation">generation</GlossaryTerm>**
 
 And the sentence is in no book: nobody wrote it, and there was no lookup and no
 database of sentences. It came out of a pile of paper and a series of random
@@ -157,7 +157,7 @@ is the building: nobody trained this model, so pair them with
 The room ran the actual mechanism, at human speed. A frontier model differs in
 three ways worth saying out loud:
 
-- **it looks at more than one word of context.** One word back is why the room's
+- **it looks at more than one word of <GlossaryTerm id="context-window">context</GlossaryTerm>.** One word back is why the room's
   sentence wandered: when you called `the`, nobody could tell whether the text
   had just said "sat in the" or "hit the". A real model looks back over the
   whole conversation ([More Context](/modules/more-context/) is the next step).
@@ -166,11 +166,11 @@ three ways worth saying out loud:
   numbers instead of separate cells, so what it learns about `cat` reaches `dog`
   ([Word Embeddings](/modules/word-embeddings/)).
 - **it's been taught to answer.** Ask the room a question and it continues the
-  question. Turning that into something that answers you is another round of
-  training, on conversations ([RLHF](/modules/rlhf/)).
+  question. Turning that into something that answers you is another round of <GlossaryTerm id="post-training">training</GlossaryTerm>, on conversations
+  ([RLHF](/modules/rlhf/)).
 
 None of those changes the loop: look at the context, weigh the options, pick
-one, write it down. Every reply from Claude or ChatGPT is produced one token at
+one, write it down. Every reply from <GlossaryTerm id="chatbot">Claude or ChatGPT</GlossaryTerm> is produced one token at
 a time that way. The scale is the other difference: a room of thirty holds a
 couple of thousand token pairs, and a frontier model holds on the order of a
 trillion learned numbers. It doesn't make you an expert. It does make you harder
