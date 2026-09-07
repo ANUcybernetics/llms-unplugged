@@ -443,7 +443,7 @@
     - base-model
   see:
     - label: Sycophancy (adapters)
-      href: /modules/sycophancy/#adapters-this-trick-has-a-name
+      href: /modules/sycophancy/#adapters
     - label: Synthetic Data
       href: /modules/synthetic-data/
 
@@ -456,7 +456,7 @@
     domain-specific shift.
   see:
     - label: Sycophancy (adapters)
-      href: /modules/sycophancy/#adapters-this-trick-has-a-name
+      href: /modules/sycophancy/#adapters
 
 - id: lora
   term: LoRA (Low-Rank Adaptation)
@@ -466,7 +466,7 @@
     "adaptation layer" rather than modifying all the original parameters.
   see:
     - label: Sycophancy (adapters)
-      href: /modules/sycophancy/#adapters-this-trick-has-a-name
+      href: /modules/sycophancy/#adapters
 
 - id: agentic-ai
   term: Agentic AI
