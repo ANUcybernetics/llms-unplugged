@@ -66,7 +66,10 @@ text file → Rust CLI → model.json → Typst → PDF booklet
   ledger templates so the strip on a sheet, the printed counter and the
   brief's per-sheet yield come from one definition. No colour or colour name
   is written down here: a pale colour (white, and anything near it) gets a
-  dashed outline instead of a tint and a bar, which is decided by lightness
+  dashed outline instead of a tint and a bar, which is decided by lightness.
+  Copied into the website with the three ledger templates
+  (`website/scripts/copy-cli-templates.ts`) for the browser generator, which
+  builds its `ledger.json` through `process_text_for_ledger` in `src/wasm.rs`
 - `ledger-counters.typ` - The counters to cut up and draw from the bag, written
   to `counters.pdf` beside every `ledger.pdf`. Two identical pages laid out as a
   palindrome both ways, so it prints double-sided under either binding with

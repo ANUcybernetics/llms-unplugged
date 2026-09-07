@@ -425,12 +425,12 @@
       cycles * columns,
     ) colours, at least #max-count of each: that is the most times any one
     follower appears in this text, and so the most counters of one colour a
-    single draw can need. The CLI writes #raw("counters.pdf") beside this file:
-    print it double-sided (either binding works) and cut the squares apart for
+    single draw can need. The set comes with #raw("counters.pdf"): print it
+    double-sided (either binding works) and cut the squares apart for
     #context counters-per-colour(columns, cycles) of each colour per sheet.
     #if prefill != "tallies" [
-      It also writes #raw("text.pdf"), the text as the tokeniser read it, for
-      the training round: print one per group.
+      It also comes with #raw("text.pdf"), the text as the tokeniser read it,
+      for the training round: print one per group.
     ]
   ]
 

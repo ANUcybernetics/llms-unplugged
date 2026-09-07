@@ -1,12 +1,15 @@
-//! Browser entry points for the website's in-browser booklet and cutouts
-//! generation. Thin wrappers over the same types the CLI uses (`Normalizer`,
-//! `Model`, `CutoutSet`, `BookletJson`), so the website and the printed
-//! artefacts can never drift apart.
+//! Browser entry points for the website's in-browser booklet, cutouts and
+//! ledger generation. Thin wrappers over the same types the CLI uses
+//! (`Normalizer`, `Model`, `CutoutSet`, `LedgerSet`, `BookletJson`), so the
+//! website and the printed artefacts can never drift apart.
 
 use wasm_bindgen::prelude::*;
 
 use crate::corpus::Frontmatter;
 use crate::cutouts::CutoutSet;
+use crate::ledger::{
+    DEFAULT_COLUMNS, DEFAULT_ROWS, LedgerSet, check_palette, default_palette, trim_palette,
+};
 use crate::model::Model;
 use crate::output::{BookletJson, Metadata};
 use crate::text::{CjkMode, Normalizer, NormalizerConfig};
@@ -28,7 +31,11 @@ fn check_n(n: usize) -> Result<(), JsValue> {
 }
 
 fn to_json(value: &impl serde::Serialize) -> Result<String, JsValue> {
-    serde_json::to_string(value).map_err(|e| JsValue::from_str(&e.to_string()))
+    serde_json::to_string(value).map_err(js_error)
+}
+
+fn js_error(err: impl std::fmt::Display) -> JsValue {
+    JsValue::from_str(&err.to_string())
 }
 
 /// Tokenise arbitrary text into a flat list, using the same normaliser the
@@ -98,4 +105,42 @@ pub fn process_text_for_cutouts(
         n,
     );
     to_json(&set)
+}
+
+/// The `ledger.json` for a ledger set, as a JSON string for the in-browser
+/// Typst compiler: the sheets, the counters page and the text page all read
+/// it. `colours` is how many of the default palette the room's counters come
+/// in, taken from the front of the list and cut back to whole rows of the
+/// default columns, exactly as the CLI's `--palette` would be. `sheets` pins
+/// the group size; absent, the count follows the corpus at the default rows a
+/// page.
+#[wasm_bindgen]
+pub fn process_text_for_ledger(
+    content: &str,
+    title: &str,
+    author: &str,
+    n: usize,
+    colours: usize,
+    sheets: Option<usize>,
+) -> Result<String, JsValue> {
+    check_n(n)?;
+    if sheets == Some(0) {
+        return Err(JsValue::from_str("sheets must be at least 1"));
+    }
+    let mut palette = default_palette();
+    palette.truncate(colours);
+    check_palette(&palette, DEFAULT_COLUMNS).map_err(js_error)?;
+    trim_palette(&mut palette, DEFAULT_COLUMNS);
+
+    let lines: Vec<&str> = content.lines().collect();
+    let set = CutoutSet::from_text(
+        title.to_string(),
+        author.to_string(),
+        &lines,
+        config(CjkMode::Words),
+        n,
+    );
+    let ledger = LedgerSet::from_cutouts(set, sheets, DEFAULT_COLUMNS, DEFAULT_ROWS, palette)
+        .map_err(js_error)?;
+    to_json(&ledger)
 }

@@ -16,6 +16,17 @@ export function process_text_for_booklet(content: string, title: string, author:
 export function process_text_for_cutouts(content: string, title: string, author: string, n: number): string;
 
 /**
+ * The `ledger.json` for a ledger set, as a JSON string for the in-browser
+ * Typst compiler: the sheets, the counters page and the text page all read
+ * it. `colours` is how many of the default palette the room's counters come
+ * in, taken from the front of the list and cut back to whole rows of the
+ * default columns, exactly as the CLI's `--palette` would be. `sheets` pins
+ * the group size; absent, the count follows the corpus at the default rows a
+ * page.
+ */
+export function process_text_for_ledger(content: string, title: string, author: string, n: number, colours: number, sheets?: number | null): string;
+
+/**
  * Tokenise arbitrary text into a flat list, using the same normaliser the
  * booklet pipeline uses so the widgets and the printed booklets agree on token
  * boundaries. `word_mode` picks jieba word segmentation (true) or per-character
@@ -31,6 +42,7 @@ export interface InitOutput {
     readonly memory: WebAssembly.Memory;
     readonly process_text_for_booklet: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => [number, number, number, number];
     readonly process_text_for_cutouts: (a: number, b: number, c: number, d: number, e: number, f: number, g: number) => [number, number, number, number];
+    readonly process_text_for_ledger: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number) => [number, number, number, number];
     readonly tokenize: (a: number, b: number, c: number) => [number, number];
     readonly init_panic_hook: () => void;
     readonly rust_zstd_wasm_shim_calloc: (a: number, b: number) => number;

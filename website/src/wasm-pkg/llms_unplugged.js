@@ -74,6 +74,47 @@ export function process_text_for_cutouts(content, title, author, n) {
 }
 
 /**
+ * The `ledger.json` for a ledger set, as a JSON string for the in-browser
+ * Typst compiler: the sheets, the counters page and the text page all read
+ * it. `colours` is how many of the default palette the room's counters come
+ * in, taken from the front of the list and cut back to whole rows of the
+ * default columns, exactly as the CLI's `--palette` would be. `sheets` pins
+ * the group size; absent, the count follows the corpus at the default rows a
+ * page.
+ * @param {string} content
+ * @param {string} title
+ * @param {string} author
+ * @param {number} n
+ * @param {number} colours
+ * @param {number | null} [sheets]
+ * @returns {string}
+ */
+export function process_text_for_ledger(content, title, author, n, colours, sheets) {
+    let deferred5_0;
+    let deferred5_1;
+    try {
+        const ptr0 = passStringToWasm0(content, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ptr1 = passStringToWasm0(title, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len1 = WASM_VECTOR_LEN;
+        const ptr2 = passStringToWasm0(author, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len2 = WASM_VECTOR_LEN;
+        const ret = wasm.process_text_for_ledger(ptr0, len0, ptr1, len1, ptr2, len2, n, colours, isLikeNone(sheets) ? Number.MAX_SAFE_INTEGER : (sheets) >>> 0);
+        var ptr4 = ret[0];
+        var len4 = ret[1];
+        if (ret[3]) {
+            ptr4 = 0; len4 = 0;
+            throw takeFromExternrefTable0(ret[2]);
+        }
+        deferred5_0 = ptr4;
+        deferred5_1 = len4;
+        return getStringFromWasm0(ptr4, len4);
+    } finally {
+        wasm.__wbindgen_free(deferred5_0, deferred5_1, 1);
+    }
+}
+
+/**
  * Tokenise arbitrary text into a flat list, using the same normaliser the
  * booklet pipeline uses so the widgets and the printed booklets agree on token
  * boundaries. `word_mode` picks jieba word segmentation (true) or per-character
@@ -167,6 +208,10 @@ function getUint8ArrayMemory0() {
         cachedUint8ArrayMemory0 = new Uint8Array(wasm.memory.buffer);
     }
     return cachedUint8ArrayMemory0;
+}
+
+function isLikeNone(x) {
+    return x === undefined || x === null;
 }
 
 function passStringToWasm0(arg, malloc, realloc) {
