@@ -6,6 +6,7 @@ import { siteConfig, themeLogo, footerOverrides } from "../site-config";
 import faviconAsset from "../assets/favicon.svg";
 import "../styles/global.css";
 import "../styles/widgets.css";
+import "../styles/glossary.css";
 
 interface Props {
   title: string;
@@ -60,3 +61,7 @@ const fullTitle =
   </div>
   <slot />
 </ThemeBaseLayout>
+
+<script>
+  import "../scripts/glossary-popover";
+</script>

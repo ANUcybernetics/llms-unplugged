@@ -21,15 +21,17 @@ const renderPopover = !locals.glossaryPopovers.has(id);
 locals.glossaryPopovers.add(id);
 
 const popoverId = `glossary-${id}`;
+
+// This component renders inline inside a sentence, so its template is one
+// node with the child tags kept adjacent: whitespace between top-level nodes
+// or between the wrapper's children is emitted as text and shows up as a
+// stray space next to the term. Styles live in src/styles/glossary.css and
+// the positioning fallback in src/scripts/glossary-popover.ts for the same
+// reason. The popover has no tooltip role because it contains a focusable
+// link, and popover semantics already announce it. data-pagefind-ignore keeps
+// the description out of the page's search index.
 ---
 
-{
-  /* The wrapper is inline, so the child tags must stay adjacent: whitespace
-     between them renders as a stray space in the sentence. The popover has no
-     tooltip role because it contains a focusable link, and popover semantics
-     already announce it. data-pagefind-ignore keeps the description out of
-     the page's search index. */
-}
 <span class="glossary-term-wrapper"
   ><button
     class="glossary-term"
@@ -54,104 +56,3 @@ const popoverId = `glossary-${id}`;
     )
   }</span
 >
-
-<script>
-  // JS fallback for browsers without CSS Anchor Positioning: place the popover
-  // under whichever button invoked it (a term used twice on a page shares one
-  // popover, so the invoker has to be tracked rather than assumed).
-  if (!CSS.supports("position-area", "bottom span-right")) {
-    document.addEventListener("click", (e) => {
-      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>(
-        ".glossary-term",
-      );
-      if (!btn) return;
-      const popover = document.getElementById(
-        btn.getAttribute("popovertarget") ?? "",
-      );
-      if (!popover) return;
-      requestAnimationFrame(() => {
-        if (!popover.matches(":popover-open")) return;
-        const rect = btn.getBoundingClientRect();
-        popover.style.top = `${rect.bottom + 6}px`;
-        popover.style.left = `${Math.max(8, rect.left)}px`;
-      });
-    });
-  }
-</script>
-
-<style>
-  .glossary-term-wrapper {
-    display: inline;
-  }
-
-  .glossary-term {
-    all: unset;
-    cursor: help;
-    text-decoration: underline;
-    text-decoration-style: dotted;
-    text-decoration-color: var(--at-text-muted);
-    text-underline-offset: 0.15em;
-    text-decoration-thickness: 1px;
-    color: inherit;
-    font: inherit;
-  }
-
-  .glossary-term:hover,
-  .glossary-term:focus-visible {
-    text-decoration-color: var(--at-accent);
-  }
-
-  .glossary-term:focus-visible {
-    outline: 2px solid var(--at-accent);
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
-
-  .glossary-popover {
-    /* Popover top-layer positioning */
-    position: fixed;
-    inset: unset;
-    margin: 0;
-
-    /* CSS Anchor Positioning: uses the implicit anchor (the invoking button) */
-    position-area: bottom span-right;
-    position-try-fallbacks:
-      top span-right,
-      bottom span-left,
-      top span-left;
-    margin-top: 0.375rem;
-
-    max-width: 22rem;
-    padding: 0.75rem 1rem;
-    background: var(--at-bg-elevated);
-    border: 1px solid var(--at-border);
-    border-radius: var(--at-border-radius);
-    color: var(--at-text);
-    font-size: 0.8rem;
-    line-height: 1.5;
-    box-shadow: 0 4px 16px rgb(0 0 0 / 40%);
-
-    flex-direction: column;
-    gap: 0.375rem;
-  }
-
-  .glossary-popover:popover-open {
-    display: flex;
-  }
-
-  .glossary-popover-term {
-    color: var(--at-accent);
-    font-size: 0.85rem;
-  }
-
-  .glossary-popover-desc {
-    color: var(--at-text-secondary);
-  }
-
-  .glossary-popover-link {
-    font-size: 0.75rem;
-    color: var(--at-accent);
-    text-decoration: underline;
-    align-self: flex-end;
-  }
-</style>
