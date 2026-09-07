@@ -2,10 +2,15 @@ import { describe, expect, it } from "vitest";
 import {
   appendLog,
   clearError,
+  type CompileRequest,
   type CompilerState,
   createInitialState,
+  LEDGER_COLOUR_CHOICES,
+  type LedgerDocument,
+  outputFilename,
   sanitiseFilename,
   setError,
+  templateFor,
 } from "../src/lib/typstCompiler";
 
 describe("createInitialState", () => {
@@ -84,5 +89,67 @@ describe("sanitiseFilename", () => {
 
   it("preserves numbers", () => {
     expect(sanitiseFilename("Chapter 1: The Beginning")).toBe("chapter-1--the-beginning");
+  });
+});
+
+const request: CompileRequest = {
+  text: "",
+  title: "Green Eggs and Ham",
+  author: "",
+  ngramSize: 2,
+  workflow: "booklet",
+  outputType: "pdf",
+  ledger: { colours: 8, prefill: "prefixes", document: "sheets" },
+};
+
+describe("templateFor", () => {
+  it("routes the booklet and cutouts workflows to their templates", () => {
+    expect(templateFor(request)).toEqual({
+      path: "/book.typ",
+      inputs: { json_path: "/model.json" },
+    });
+    expect(templateFor({ ...request, workflow: "cutouts" }).path).toBe("/cutouts.typ");
+  });
+
+  it("routes each ledger document to its own template", () => {
+    const ledger = { ...request, workflow: "ledger" as const };
+    const pathFor = (document: LedgerDocument) =>
+      templateFor({ ...ledger, ledger: { ...ledger.ledger, document } }).path;
+    expect(pathFor("sheets")).toBe("/ledger.typ");
+    expect(pathFor("counters")).toBe("/ledger-counters.typ");
+    expect(pathFor("text")).toBe("/ledger-text.typ");
+  });
+
+  it("passes the prefill to the sheets only, since it is all that prints rows", () => {
+    const ledger = { ...request, workflow: "ledger" as const };
+    expect(
+      templateFor({ ...ledger, ledger: { ...ledger.ledger, prefill: "tallies" } }).inputs,
+    ).toEqual({ json_path: "/model.json", prefill: "tallies" });
+    expect(
+      templateFor({ ...ledger, ledger: { ...ledger.ledger, document: "counters" } }).inputs,
+    ).toEqual({ json_path: "/model.json" });
+  });
+});
+
+describe("outputFilename", () => {
+  it("names a booklet or cutouts after the workflow", () => {
+    expect(outputFilename(request)).toBe("green-eggs-and-ham-booklet-2gram.pdf");
+    expect(outputFilename({ ...request, workflow: "cutouts", ngramSize: 3 })).toBe(
+      "green-eggs-and-ham-cutouts-3gram.pdf",
+    );
+  });
+
+  it("names each of a ledger set's documents", () => {
+    const ledger = { ...request, workflow: "ledger" as const };
+    expect(outputFilename(ledger)).toBe("green-eggs-and-ham-ledger-sheets-2gram.pdf");
+    expect(outputFilename({ ...ledger, ledger: { ...ledger.ledger, document: "counters" } })).toBe(
+      "green-eggs-and-ham-ledger-counters-2gram.pdf",
+    );
+  });
+});
+
+describe("LEDGER_COLOUR_CHOICES", () => {
+  it("offers whole rows of strips out of the default palette", () => {
+    expect(LEDGER_COLOUR_CHOICES).toEqual([4, 8, 12]);
   });
 });

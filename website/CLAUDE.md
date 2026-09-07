@@ -98,6 +98,14 @@ ASTROMOTION_CHROME_ARGS=--no-sandbox pnpm exec astromotion-pdf <slug> \
 ../ops/bucket-sync.py manifest   # then commit the refreshed manifest
 ```
 
+The `/tools/` page compiles the CLI's own Typst templates in the browser
+(`src/lib/typstCompiler.ts`) against JSON the wasm bundle builds, so a printed
+artefact and a browser-generated one come off the same code. A new template
+needs registering in three places --- `scripts/copy-cli-templates.ts`,
+`src/templates/index.ts` and the VFS in `typstCompiler.ts` ---
+which `test/typstTemplateAssets.test.ts` checks;
+`test/ledgerTemplates.test.ts` then compiles the ledger set end to end.
+
 `src/wasm-pkg/` is committed wasm-bindgen output built from `../cli` --- rebuild
 with `mise run wasm-build` from the repo root after Rust changes.
 `test/wasmPkg.test.ts` asserts the committed bundle matches current Rust

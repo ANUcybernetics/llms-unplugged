@@ -41,10 +41,13 @@ pen-and-paper grid approach needs nothing more than a pencil and a d10 die.
 built from the [modules](https://www.llmsunplugged.org/modules/), with slides,
 presenter notes, timings and materials lists.
 
-**Want to create your own N-gram booklet?** You can
-[generate booklets online](https://www.llmsunplugged.org/tools/) directly in
-your browser---no installation required. If you prefer working offline or want
-to customise the output, build the CLI tool from source (see below).
+**Want to create your own materials?** You can
+[generate them online](https://www.llmsunplugged.org/tools/) directly in your
+browser---no installation required. Paste any text and get a booklet, a set of
+cutouts, or a ledger set (sheets, counters and the training text), with the
+counter colours set to match what your room has. If you prefer working offline
+or want the options the browser does not expose, build the CLI tool from source
+(see below).
 
 ## Creating your own N-gram booklets
 
@@ -165,7 +168,9 @@ are dropped; apostrophes inside contractions are preserved.
     file of them. Everything that needs a colour reads this list: the strips,
     their printed names, the counters page and the brief's key and counts.
     The default is the twelve in `cli/ledger-palette.json`; a room with balls
-    in eight colours passes `@cli/ledger-palette-eight.json`, or its own list
+    in eight colours passes `@cli/ledger-palette-eight.json`, or its own list.
+    The website's generator offers the first four, eight or twelve of the
+    default rather than an arbitrary list
   - `--prefill prefixes|followers` (default `prefixes`): what the sheets come
     printed with. `prefixes` leaves the followers to be discovered as the text
     is read; `followers` leaves only the tallies to make

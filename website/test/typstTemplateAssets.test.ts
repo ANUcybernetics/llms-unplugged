@@ -18,7 +18,13 @@ const websiteSrc = resolve(process.cwd(), "src");
 // The templates typstCompiler.ts registers as compilation entry points. Note
 // that tokenized-cutouts.typ is registered under a different VFS name
 // (/cutouts.typ), so its relative imports resolve against the VFS root.
-const ENTRY_TEMPLATES = ["book.typ", "tokenized-cutouts.typ"];
+const ENTRY_TEMPLATES = [
+  "book.typ",
+  "tokenized-cutouts.typ",
+  "ledger.typ",
+  "ledger-counters.typ",
+  "ledger-text.typ",
+];
 
 const readCli = (name: string) => readFileSync(resolve(cliDir, name), "utf-8");
 
@@ -57,6 +63,7 @@ describe("typst template assets", () => {
     // A regex that silently stopped matching would make every assertion below
     // vacuously true, so pin the ones we know about.
     expect(dependencies).toContain("cutout-common.typ");
+    expect(dependencies).toContain("ledger-common.typ");
     expect(dependencies).toContain("socy-logo-bw.svg");
     expect(dependencies).toContain("lockup-light.svg");
   });

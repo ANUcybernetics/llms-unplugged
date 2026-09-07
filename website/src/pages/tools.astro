@@ -203,6 +203,30 @@ import TypstCompiler from "../components/TypstCompiler.svelte";
     </ul>
   </Callout>
 
+  <h2 id="ledgers">Ledgers</h2>
+
+  <p>
+    A third way to hold the model on paper: a landscape sheet with one row per
+    prefix, a cell for each word that followed it, and a coloured tally strip
+    beside every cell. Training is tallying by hand while somebody reads the
+    text aloud. Generation is a bag of counters: one counter per tally mark in
+    the colour of its strip, draw one, read the word beside that colour. The bag
+    does the weighted sampling, so nobody has to explain it. The strips are
+    coloured by column rather than by word, so one set of counters serves every
+    row.
+  </p>
+
+  <p>
+    The generator below builds a ledger set from any text: the sheets, dealt
+    across a group in alphabetical runs with a one-page facilitator brief in
+    front; a page of counters to print double-sided and cut up; and the training
+    text as the tokeniser read it, numbered, for whoever reads it aloud. Set the
+    number of counter colours to match what your room has &mdash; four, eight or
+    all twelve of the standard set &mdash; and whether the sheets come printed
+    with only the prefixes, the prefixes and their followers, or the whole
+    trained model as an answer key.
+  </p>
+
   <h2 id="generate-your-own">Generate your own</h2>
 
   <p>
@@ -221,7 +245,7 @@ import TypstCompiler from "../components/TypstCompiler.svelte";
     </li>
     <li>
       <strong>Choose options</strong>: select the n-gram size and output type
-      (booklet or cutouts)
+      (booklet, cutouts or ledger)
     </li>
     <li><strong>Generate</strong>: preview as SVG or download as PDF</li>
   </ol>

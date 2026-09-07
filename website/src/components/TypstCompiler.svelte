@@ -7,9 +7,13 @@
     type CompilerState,
     createInitialState,
     initCompiler,
+    LEDGER_COLOUR_CHOICES,
+    type LedgerDocument,
+    type LedgerPrefill,
     type Status,
     type Workflow,
   } from "../lib/typstCompiler";
+  import { isPale, LEDGER_COLUMNS, LEDGER_PALETTE } from "../lib/ledger";
 
   let compilerState = $state<CompilerState>(createInitialState());
   let inputText = $state("");
@@ -18,6 +22,13 @@
   let ngramSize = $state(2);
   let workflow = $state<Workflow>("booklet");
   let fileName = $state("");
+  // The ledger's own knobs: the room's counter colours (the default palette's
+  // first so many), what the rows come printed with, and the group size.
+  let ledgerColours = $state(LEDGER_COLOUR_CHOICES.at(-1)!);
+  let ledgerPrefill = $state<LedgerPrefill>("prefixes");
+  let ledgerSheets = $state<number | null>(null);
+
+  let ledgerPalette = $derived(LEDGER_PALETTE.slice(0, ledgerColours));
 
   let hasInput = $derived(inputText.trim().length > 0 && inputTitle.trim().length > 0);
   let isReady = $derived(compilerState.status === "ready");
@@ -105,17 +116,40 @@
     }
   }
 
-  function handleCompile(outputType: "svg" | "pdf") {
+  function handleCompile(outputType: "svg" | "pdf", document: LedgerDocument = "sheets") {
     if (!isReady || !hasInput) return;
     compileDocument(
-      inputText,
-      inputTitle,
-      inputAuthor,
-      ngramSize,
-      workflow,
-      outputType,
+      {
+        text: inputText,
+        title: inputTitle,
+        author: inputAuthor,
+        ngramSize,
+        workflow,
+        outputType,
+        ledger: {
+          colours: ledgerColours,
+          prefill: ledgerPrefill,
+          // An empty box binds to null, and the min= on a number input is
+          // advisory: anything under one means "as many as the text fills".
+          sheets: ledgerSheets !== null && ledgerSheets >= 1 ? ledgerSheets : undefined,
+          document,
+        },
+      },
       updateState,
     );
+  }
+
+  // What each choice leaves the room to do; the labels are too short to say it
+  // and a select truncates anything longer.
+  const PREFILL_HINTS: Record<LedgerPrefill, string> = {
+    prefixes: "the followers and their tallies are discovered as the text is read",
+    followers: "the followers are printed, so only the tallies are left to make",
+    tallies: "the whole trained model, printed: a worked example or an answer key",
+  };
+
+  function rowsWord(colours: number): string {
+    const rows = colours / LEDGER_COLUMNS;
+    return rows === 1 ? "one row of strips" : `${rows} rows of strips`;
   }
 
   function statusLabel(status: Status): string {
@@ -215,18 +249,77 @@
         <select id="typst-workflow-select" bind:value={workflow} disabled={!isReady}>
           <option value="booklet">Booklet (dice lookup tables)</option>
           <option value="cutouts">Cutouts (printable token cards)</option>
+          <option value="ledger">Ledger (tally sheets and counters)</option>
         </select>
       </div>
     </div>
+
+    {#if workflow === "ledger"}
+      <div class="option-row ledger-options">
+        <div class="option-group">
+          <label for="typst-ledger-colours-select">Counter colours</label>
+          <select id="typst-ledger-colours-select" bind:value={ledgerColours} disabled={!isReady}>
+            {#each LEDGER_COLOUR_CHOICES as colours (colours)}
+              <option value={colours}>{colours} colours ({rowsWord(colours)})</option>
+            {/each}
+          </select>
+          <ul class="swatches" aria-label="The counter colours in use">
+            {#each ledgerPalette as colour (colour.name)}
+              <li
+                class="swatch"
+                class:pale={isPale(colour.hex)}
+                style:background={colour.hex}
+                title={colour.name}
+              >
+                <span class="visually-hidden">{colour.name}</span>
+              </li>
+            {/each}
+          </ul>
+        </div>
+        <div class="option-group">
+          <label for="typst-ledger-prefill-select">Printed on the sheets</label>
+          <select id="typst-ledger-prefill-select" bind:value={ledgerPrefill} disabled={!isReady}>
+            <option value="prefixes">Prefixes only</option>
+            <option value="followers">Prefixes and followers</option>
+            <option value="tallies">Everything</option>
+          </select>
+          <p class="hint">{PREFILL_HINTS[ledgerPrefill]}</p>
+        </div>
+        <div class="option-group">
+          <label for="typst-ledger-sheets-input">Sheets (group size)</label>
+          <input
+            id="typst-ledger-sheets-input"
+            type="number"
+            min="1"
+            step="1"
+            bind:value={ledgerSheets}
+            placeholder="As many as the text fills"
+            disabled={!isReady}
+          />
+        </div>
+      </div>
+    {/if}
   </div>
 
   <div class="controls">
     <button disabled={!isReady || !hasInput} onclick={() => handleCompile("svg")}>
-      Preview (SVG)
+      {workflow === "ledger" ? "Preview sheets (SVG)" : "Preview (SVG)"}
     </button>
-    <button disabled={!isReady || !hasInput} onclick={() => handleCompile("pdf")}>
-      Download PDF
-    </button>
+    {#if workflow === "ledger"}
+      <button disabled={!isReady || !hasInput} onclick={() => handleCompile("pdf", "sheets")}>
+        Download sheets PDF
+      </button>
+      <button disabled={!isReady || !hasInput} onclick={() => handleCompile("pdf", "counters")}>
+        Download counters PDF
+      </button>
+      <button disabled={!isReady || !hasInput} onclick={() => handleCompile("pdf", "text")}>
+        Download text PDF
+      </button>
+    {:else}
+      <button disabled={!isReady || !hasInput} onclick={() => handleCompile("pdf")}>
+        Download PDF
+      </button>
+    {/if}
   </div>
 
   {#if compilerState.errorMessage}
@@ -490,6 +583,62 @@
     gap: 1rem;
   }
 
+  .ledger-options {
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 1rem;
+  }
+
+  .option-group input[type="number"] {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--at-border);
+    border-radius: var(--at-border-radius);
+    font-size: 0.9rem;
+    background: var(--at-bg);
+    color: var(--at-text);
+  }
+
+  .option-group input[type="number"]:disabled {
+    background: var(--at-bg-alt);
+    cursor: not-allowed;
+  }
+
+  /* The colours the strips will print in, so the count reads as a palette. */
+  .swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin: 0.35rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .swatch {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--at-text) 25%, transparent);
+  }
+
+  .swatch.pale {
+    border-style: dashed;
+  }
+
+  .hint {
+    margin: 0.1rem 0 0;
+    font-size: 0.8rem;
+    line-height: 1.35;
+    color: var(--at-text-secondary);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
   .controls {
     display: flex;
     flex-wrap: wrap;
@@ -560,7 +709,8 @@
 
   @media (max-width: 640px) {
     .metadata-inputs,
-    .option-row {
+    .option-row,
+    .ledger-options {
       grid-template-columns: 1fr;
     }
   }

@@ -10,13 +10,19 @@ const destDir = resolve(__dirname, "../src/templates");
 // browser compiler resolves the same files the CLI does. book.typ imports
 // booklet-common.typ (shared booklet typography); tokenized-cutouts.typ
 // imports cutout-common.typ (the shared palette, token renderers and brand
-// lockup), which in turn loads lockup-light.svg; without any of these, the
-// corresponding workflow fails to compile.
+// lockup), which in turn loads lockup-light.svg; the three ledger templates
+// share ledger-common.typ, which imports both of those. Without any of these,
+// the corresponding workflow fails to compile (test/typstTemplateAssets.test.ts
+// checks the list against the templates' imports).
 const templates = [
   "book.typ",
   "booklet-common.typ",
   "tokenized-cutouts.typ",
   "cutout-common.typ",
+  "ledger.typ",
+  "ledger-counters.typ",
+  "ledger-text.typ",
+  "ledger-common.typ",
   "lockup-light.svg",
 ];
 
