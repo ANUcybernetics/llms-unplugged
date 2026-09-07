@@ -532,6 +532,12 @@
   margin-block-end: 1rem;
 }
 
+/* The quote is a markdown paragraph inside the Voice block; the block owns
+   the spacing. */
+.reveal .voice p {
+  margin-block: 0;
+}
+
 /* A slide section is a grid, so a blockquote's own top margin stacks on the
    preceding paragraph's bottom margin instead of collapsing with it. The
    paragraph rhythm already separates them, and the accent dash marks the
@@ -540,10 +546,12 @@
   margin-block-start: 0;
 }
 
-/* A one-line `<p class="voice">…</p>` in MDX is inline JSX inside a markdown
-   paragraph, so the page carries `<p><p class="voice">…</p></p>` and the
-   browser splits it into an empty paragraph either side of the real one. Their
-   margins cost the slide ~40px; drop them. */
+/* A one-line raw `<p class="fragment">…</p>` in MDX is inline JSX inside a
+   markdown paragraph, so the page carries `<p><p class="fragment">…</p></p>`
+   and the browser splits it into an empty paragraph either side of the real
+   one. Their margins cost a slide ~15px each. The definitions, wrap-up,
+   corpus-quote and socy-url lines still use that form (the Voice component
+   shows the block form that avoids it); until they move, hide the debris. */
 .reveal .slides section p:empty {
   display: none;
 }

@@ -1,0 +1,16 @@
+---
+// A line in a participant's voice --- something people in the room have said
+// about a real model --- set as a quoted aside above the figure that answers
+// it. Use the block form so MDX treats it as flow content and the quote gets
+// its own paragraph inside:
+//
+//   <Voice>
+//   "it wrote something genuinely new---how?"
+//   </Voice>
+//
+// A one-line `<p class="voice">…</p>` is inline JSX inside a markdown
+// paragraph, which nests a <p> in a <p>; the browser then splits it into an
+// empty paragraph either side of the real one.
+---
+
+<div class="voice"><slot /></div>
