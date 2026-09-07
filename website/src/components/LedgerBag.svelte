@@ -114,8 +114,8 @@
   }
 
   svg {
-    inline-size: 12em;
-    block-size: 12em;
+    inline-size: 11.5em;
+    block-size: 11.5em;
   }
 
   .sack {

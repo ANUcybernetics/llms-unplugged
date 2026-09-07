@@ -90,7 +90,7 @@
      so matching lengths mean "both grew", not "these quantities are equal". */
   .model-scale-bars {
     display: grid;
-    gap: 1.35rem;
+    gap: 1rem;
     inline-size: min(100%, 54rem);
     color: var(--color-text);
   }
@@ -111,7 +111,7 @@
 
   .metric {
     display: grid;
-    gap: 0.45rem;
+    gap: 0.35rem;
   }
 
   .metric-heading {
@@ -129,7 +129,7 @@
   }
 
   .track {
-    block-size: 2.4rem;
+    block-size: 2.1rem;
     overflow: hidden;
     border: 2px solid var(--color-border);
     background: var(--color-bg-soft);

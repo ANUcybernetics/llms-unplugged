@@ -247,7 +247,7 @@
    nearer the size of a quote slide, so lift them above the 2.25rem body
    measure. The attribution line rides along at its own 0.8em. */
 .reveal .slides section :is(.corpus-a, .corpus-b, .corpus-c) {
-  font-size: 2.85rem;
+  font-size: 2.6rem;
   line-height: 1.25;
   text-wrap: balance;
 }
@@ -463,6 +463,12 @@
   align-items: center;
 }
 
+/* A row of five or more cutouts wraps at slide width and doubles its height;
+   set a touch smaller it stays on one line. */
+.reveal .cutout-row:has(> :nth-child(5)) {
+  font-size: 0.875em;
+}
+
 /* Paper-cutout container — visual analogue of one printed cutout, with the
    previous-word pill(s) inline with a free-standing next word (matching the
    horizontal layout of the printed token cells in cli/tokenized-cutouts.typ).
@@ -524,6 +530,22 @@
   color: var(--color-text-secondary);
   font-style: italic;
   margin-block-end: 1rem;
+}
+
+/* A slide section is a grid, so a blockquote's own top margin stacks on the
+   preceding paragraph's bottom margin instead of collapsing with it. The
+   paragraph rhythm already separates them, and the accent dash marks the
+   quote. */
+.reveal .slides section blockquote {
+  margin-block-start: 0;
+}
+
+/* A one-line `<p class="voice">…</p>` in MDX is inline JSX inside a markdown
+   paragraph, so the page carries `<p><p class="voice">…</p></p>` and the
+   browser splits it into an empty paragraph either side of the real one. Their
+   margins cost the slide ~40px; drop them. */
+.reveal .slides section p:empty {
+  display: none;
 }
 
 /* "answering isn't a thing it does": the question we put to their grid, and the
