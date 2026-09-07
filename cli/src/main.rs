@@ -1,10 +1,10 @@
 use clap::{Args, Parser, Subcommand, ValueEnum};
 use llms_unplugged::{
-    Book, BookletJson, CjkMode, Corpus, CutoutSet, LedgerSet, LedgerSheet, Metadata, Model,
-    Normalizer, NormalizerConfig, PaletteEntry, ProcessingStats, SampleError, SheetSet,
-    append_tool_tokens, check_palette, deal_into_ledgers, deal_into_sheets, default_palette,
-    ledger_entries, palette_cycles, repeat_cutout_tokens, shuffle_cutout_tokens,
-    split_entries_into_books, text_documents, write_json,
+    Book, BookletJson, CjkMode, Corpus, CutoutSet, LEDGER_DEFAULT_COLUMNS, LEDGER_DEFAULT_ROWS,
+    LedgerSet, Metadata, Model, Normalizer, NormalizerConfig, PaletteEntry, ProcessingStats,
+    SampleError, SheetSet, append_tool_tokens, check_palette, deal_into_sheets, default_palette,
+    palette_cycles, repeat_cutout_tokens, shuffle_cutout_tokens, split_entries_into_books,
+    trim_palette, write_json,
 };
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
@@ -143,7 +143,7 @@ struct PdfArgs {
     paper_size: String,
 
     /// Number of columns passed to Typst
-    #[arg(long, default_value_t = 4)]
+    #[arg(long, default_value_t = LEDGER_DEFAULT_COLUMNS)]
     columns: usize,
 
     /// Force a subtitle instead of using metadata subtitle from JSON
@@ -390,13 +390,13 @@ struct LedgerArgs {
     /// `--columns` colours of the palette; once it is used up the colours
     /// start again, and the command warns about any prefix that runs that
     /// far.
-    #[arg(long, default_value_t = 4)]
+    #[arg(long, default_value_t = LEDGER_DEFAULT_COLUMNS)]
     columns: usize,
 
     /// Rows on a page (default 12). Rows share the page height, so this is
     /// how much room a hand gets to write in; it also decides the sheet count
     /// unless `--sheets` pins it.
-    #[arg(long, default_value_t = 12)]
+    #[arg(long, default_value_t = LEDGER_DEFAULT_ROWS)]
     rows: usize,
 
     /// What the sheets come printed with. There is nothing to prefill without
@@ -854,16 +854,14 @@ fn load_palette(spec: Option<&str>, columns: usize) -> Result<Vec<PaletteEntry>,
     // processing input file" path the library errors take.
     check_palette(&palette, columns).map_err(|err| CliError::InvalidArgs(err.to_string()))?;
 
-    let in_use = palette_cycles(&palette, columns) * columns;
-    if palette.len() > in_use {
-        let dropped: Vec<&str> = palette[in_use..].iter().map(|e| e.name.as_str()).collect();
+    let dropped = trim_palette(&mut palette, columns);
+    if !dropped.is_empty() {
         eprintln!(
             "Warning: {} colour(s) sit past the last whole row of {columns} and never reach a \
              strip: {}. Leave them out of --palette, or set --columns to divide the palette.",
             dropped.len(),
             dropped.join(", ")
         );
-        palette.truncate(in_use);
     }
     Ok(palette)
 }
@@ -886,97 +884,30 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
     }
 
     let palette = load_palette(args.palette.as_deref(), args.columns)?;
-    let cycles = palette_cycles(&palette, args.columns);
 
     let set = if args.blank {
-        LedgerSet {
-            metadata: None,
-            title: args.labels.title.clone().unwrap_or_default(),
-            columns: args.columns,
-            rows_per_page: args.rows,
+        LedgerSet::blank(
+            args.labels.title.clone().unwrap_or_default(),
+            args.sheets.unwrap_or(1),
+            args.columns,
+            args.rows,
             palette,
-            sheets: vec![LedgerSheet::blank(); args.sheets.unwrap_or(1)],
-            text: Vec::new(),
-        }
+        )
     } else {
-        let CutoutSet { metadata, tokens } = load_cutout_set(
+        let cutouts = load_cutout_set(
             &args.input,
             &args.tokenizer.config(),
             args.n,
             args.labels.title.as_deref(),
             args.labels.author.as_deref(),
         )?;
-        eprintln!("Processed '{}' by {}", metadata.title, metadata.author);
-
-        let entries = ledger_entries(&tokens);
-        let total_rows: usize = entries.iter().map(|e| e.rows(args.columns)).sum();
-        let num_sheets = args
-            .sheets
-            .unwrap_or_else(|| total_rows.div_ceil(args.rows).max(1));
-        let sheets = deal_into_ledgers(&entries, num_sheets, args.columns, args.rows)?;
-
-        // The tall prefixes are the corpus's commonest, so the list is
-        // Zipfian too: name the worst few and count the rest.
-        let mut tall: Vec<&llms_unplugged::LedgerEntry> = entries
-            .iter()
-            .filter(|e| e.rows(args.columns) > cycles)
-            .collect();
-        tall.sort_by_key(|e| std::cmp::Reverse(e.followers.len()));
-        if !tall.is_empty() {
-            let named: Vec<String> = tall
-                .iter()
-                .take(5)
-                .map(|e| format!("'{}' ({})", e.prefix.join(" "), e.followers.len()))
-                .collect();
-            let more = tall.len().saturating_sub(named.len());
-            eprintln!(
-                "Warning: {} prefix(es) have more than {} followers and spill onto a row where \
-                 the tally colours repeat those of the first: {}{}. A shorter text \
-                 (--max-tokens), or more colours in --palette, keeps every prefix to {cycles} \
-                 row(s).",
-                tall.len(),
-                cycles * args.columns,
-                named.join(", "),
-                if more > 0 {
-                    format!(" and {more} more")
-                } else {
-                    String::new()
-                }
-            );
-        }
-
-        let rows: Vec<usize> = sheets.iter().map(|s| s.rows(args.columns)).collect();
         eprintln!(
-            "Dealt {} prefixes ({total_rows} rows) across {num_sheets} sheet(s), {}--{} rows \
-             each, {} rows a page",
-            entries.len(),
-            rows.iter().min().unwrap_or(&0),
-            rows.iter().max().unwrap_or(&0),
-            args.rows
+            "Processed '{}' by {}",
+            cutouts.metadata.title, cutouts.metadata.author
         );
-        if args.sheets.is_none() {
-            eprintln!(
-                "Sheet count follows the corpus at this density --- pass --sheets to pin it, or \
-                 --rows to change it."
-            );
-        }
-        let empty = sheets.iter().filter(|s| s.range.is_none()).count();
-        if empty > 0 {
-            eprintln!(
-                "Warning: {empty} sheet(s) came out empty --- the corpus has fewer prefixes than \
-                 sheets."
-            );
-        }
-
-        LedgerSet {
-            title: metadata.title.clone(),
-            metadata: Some(metadata),
-            columns: args.columns,
-            rows_per_page: args.rows,
-            palette,
-            sheets,
-            text: text_documents(&tokens),
-        }
+        let set = LedgerSet::from_cutouts(cutouts, args.sheets, args.columns, args.rows, palette)?;
+        report_ledger_deal(&set, args.sheets.is_some());
+        set
     };
 
     fs::create_dir_all(&args.output)?;
@@ -1025,6 +956,61 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
         eprintln!("  print text.pdf for whoever reads the text aloud during training");
     }
     Ok(())
+}
+
+/// Say how a corpus was dealt: the prefixes that run past the palette, the
+/// rows per sheet, and any sheet that came out empty.
+fn report_ledger_deal(set: &LedgerSet, sheets_pinned: bool) {
+    let cycles = palette_cycles(&set.palette, set.columns);
+    // The tall prefixes are the corpus's commonest, so the list is Zipfian
+    // too: name the worst few and count the rest.
+    let tall = set.tall_entries();
+    if !tall.is_empty() {
+        let named: Vec<String> = tall
+            .iter()
+            .take(5)
+            .map(|e| format!("'{}' ({})", e.prefix.join(" "), e.followers.len()))
+            .collect();
+        let more = tall.len().saturating_sub(named.len());
+        eprintln!(
+            "Warning: {} prefix(es) have more than {} followers and spill onto a row where \
+             the tally colours repeat those of the first: {}{}. A shorter text \
+             (--max-tokens), or more colours in --palette, keeps every prefix to {cycles} \
+             row(s).",
+            tall.len(),
+            cycles * set.columns,
+            named.join(", "),
+            if more > 0 {
+                format!(" and {more} more")
+            } else {
+                String::new()
+            }
+        );
+    }
+
+    let rows: Vec<usize> = set.sheets.iter().map(|s| s.rows(set.columns)).collect();
+    eprintln!(
+        "Dealt {} prefixes ({} rows) across {} sheet(s), {}--{} rows each, {} rows a page",
+        set.entries().count(),
+        set.total_rows(),
+        set.sheets.len(),
+        rows.iter().min().unwrap_or(&0),
+        rows.iter().max().unwrap_or(&0),
+        set.rows_per_page
+    );
+    if !sheets_pinned {
+        eprintln!(
+            "Sheet count follows the corpus at this density --- pass --sheets to pin it, or \
+             --rows to change it."
+        );
+    }
+    let empty = set.sheets.iter().filter(|s| s.range.is_none()).count();
+    if empty > 0 {
+        eprintln!(
+            "Warning: {empty} sheet(s) came out empty --- the corpus has fewer prefixes than \
+             sheets."
+        );
+    }
 }
 
 /// An RNG seeded from `seed`, or from system entropy when no seed is given.

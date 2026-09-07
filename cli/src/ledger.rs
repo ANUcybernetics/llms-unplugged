@@ -11,7 +11,7 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 
-use crate::cutouts::{Cutout, CutoutsMetadata};
+use crate::cutouts::{Cutout, CutoutSet, CutoutsMetadata};
 use crate::error::{Error, Result};
 use crate::text::sort_key;
 
@@ -40,6 +40,19 @@ pub fn default_palette() -> Vec<PaletteEntry> {
 /// Colours past the last whole palette cannot be reached by any row.
 pub fn palette_cycles(palette: &[PaletteEntry], columns: usize) -> usize {
     palette.len() / columns
+}
+
+/// Follower cells on a row and rows on a page unless a set says otherwise:
+/// the CLI's defaults, and what the website's generator prints at.
+pub const DEFAULT_COLUMNS: usize = 4;
+pub const DEFAULT_ROWS: usize = 12;
+
+/// Cut a palette back to whole rows of `columns`, returning the names of the
+/// colours dropped: a colour past the last whole row is one no strip ever
+/// takes, and so a counter nobody can be asked to draw.
+pub fn trim_palette(palette: &mut Vec<PaletteEntry>, columns: usize) -> Vec<String> {
+    let in_use = palette_cycles(palette, columns) * columns;
+    palette.drain(in_use..).map(|e| e.name).collect()
 }
 
 /// Check a palette can colour a sheet of `columns` columns: fewer colours
@@ -245,6 +258,77 @@ pub struct LedgerSet {
     pub text: Vec<Vec<TextToken>>,
 }
 
+impl LedgerSet {
+    /// The set for a corpus: its entries dealt across `num_sheets` sheets, or
+    /// across as many as the corpus fills at `rows_per_page` when no count is
+    /// pinned. The one constructor both the CLI and the website go through,
+    /// so a sheet printed from either is the same sheet.
+    pub fn from_cutouts(
+        set: CutoutSet,
+        num_sheets: Option<usize>,
+        columns: usize,
+        rows_per_page: usize,
+        palette: Vec<PaletteEntry>,
+    ) -> Result<Self> {
+        let CutoutSet { metadata, tokens } = set;
+        let entries = ledger_entries(&tokens);
+        let total_rows: usize = entries.iter().map(|e| e.rows(columns)).sum();
+        let num_sheets = num_sheets.unwrap_or_else(|| total_rows.div_ceil(rows_per_page).max(1));
+        let sheets = deal_into_ledgers(&entries, num_sheets, columns, rows_per_page)?;
+        Ok(Self {
+            title: metadata.title.clone(),
+            metadata: Some(metadata),
+            columns,
+            rows_per_page,
+            palette,
+            sheets,
+            text: text_documents(&tokens),
+        })
+    }
+
+    /// Sheets of empty rows with no corpus, for a group training on a text of
+    /// its own.
+    pub fn blank(
+        title: String,
+        num_sheets: usize,
+        columns: usize,
+        rows_per_page: usize,
+        palette: Vec<PaletteEntry>,
+    ) -> Self {
+        Self {
+            metadata: None,
+            title,
+            columns,
+            rows_per_page,
+            palette,
+            sheets: vec![LedgerSheet::blank(); num_sheets],
+            text: Vec::new(),
+        }
+    }
+
+    /// Every entry across every sheet, in the dealt (dictionary) order.
+    pub fn entries(&self) -> impl Iterator<Item = &LedgerEntry> {
+        self.sheets.iter().flat_map(LedgerSheet::entries)
+    }
+
+    /// The physical rows the set takes, across every sheet.
+    pub fn total_rows(&self) -> usize {
+        self.sheets.iter().map(|s| s.rows(self.columns)).sum()
+    }
+
+    /// Entries that run past the palette, so their later rows repeat the
+    /// colours of the first: the corpus's commonest prefixes, widest first.
+    pub fn tall_entries(&self) -> Vec<&LedgerEntry> {
+        let cycles = palette_cycles(&self.palette, self.columns);
+        let mut tall: Vec<&LedgerEntry> = self
+            .entries()
+            .filter(|e| e.rows(self.columns) > cycles)
+            .collect();
+        tall.sort_by_key(|e| std::cmp::Reverse(e.followers.len()));
+        tall
+    }
+}
+
 /// Deal ledger entries into `num_sheets` sheets: contiguous runs of the
 /// alphabetical order, cut so every sheet carries about the same number of
 /// physical rows. Row count rather than entry count, because the common
@@ -391,6 +475,72 @@ mod tests {
             check_palette(&unreadable, 2),
             Err(Error::LedgerPaletteBadHex { .. })
         ));
+    }
+
+    #[test]
+    fn trim_palette_drops_colours_past_the_last_whole_row() {
+        let mut palette = default_palette();
+        assert!(trim_palette(&mut palette, 4).is_empty());
+        assert_eq!(palette.len(), 12);
+        assert_eq!(trim_palette(&mut palette, 5), vec!["grey", "teal"]);
+        assert_eq!(palette.len(), 10);
+    }
+
+    #[test]
+    fn a_set_from_cutouts_follows_the_corpus_unless_sheets_are_pinned() {
+        let set = |sheets| {
+            let cutouts = CutoutSet::from_text(
+                "T".to_string(),
+                "A".to_string(),
+                &["see spot run . see spot jump . run , spot"],
+                NormalizerConfig::default(),
+                2,
+            );
+            LedgerSet::from_cutouts(cutouts, sheets, 4, 3, default_palette()).unwrap()
+        };
+        // Six prefixes, one row each, at three rows a page: the sheet count
+        // follows the rows.
+        let free = set(None);
+        let rows = free.total_rows();
+        assert_eq!(free.sheets.len(), rows.div_ceil(3));
+        assert_eq!(free.entries().count(), 6);
+        assert_eq!(free.text.len(), 1);
+        assert_eq!(free.metadata.as_ref().unwrap().title, "T");
+
+        let pinned = set(Some(2));
+        assert_eq!(pinned.sheets.len(), 2);
+        assert_eq!(pinned.total_rows(), rows);
+        assert!(pinned.tall_entries().is_empty());
+    }
+
+    #[test]
+    fn tall_entries_are_those_past_the_palette_widest_first() {
+        let set = LedgerSet {
+            metadata: None,
+            title: String::new(),
+            columns: 4,
+            rows_per_page: 12,
+            palette: default_palette().into_iter().take(4).collect(),
+            sheets: vec![
+                LedgerSheet::new(
+                    vec![
+                        entry("a", &[("x", 1); 5]),
+                        entry("b", &[("x", 1); 4]),
+                        entry("c", &[("x", 1); 9]),
+                    ],
+                    4,
+                    12,
+                )
+                .unwrap(),
+            ],
+            text: Vec::new(),
+        };
+        let tall: Vec<&str> = set
+            .tall_entries()
+            .iter()
+            .map(|e| e.prefix[0].as_str())
+            .collect();
+        assert_eq!(tall, vec!["c", "a"]);
     }
 
     #[test]
