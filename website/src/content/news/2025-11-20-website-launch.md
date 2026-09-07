@@ -28,5 +28,5 @@ We've got big plans for these resources going forward:
 - suggested assessment tasks (if you're into that sort of thing)
 
 Stay tuned for upcoming events, new lessons, and other updates. You can also
-subscribe to the [RSS feed](https://www.llmsunplugged.org/feed.rss) to get
+subscribe to the [RSS feed](/feed.xml) to get
 notified when we post news.

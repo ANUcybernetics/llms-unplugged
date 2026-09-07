@@ -23,7 +23,7 @@ I bumped it to 14 (still hand-tuned, two lightness levels) and that helped, but
 really this is a solved problem and I was reinventing it badly.
 
 The new palette is algorithmically generated using
-[Glasbey-style](https://en.wikipedia.org/wiki/Glasbey_palette) greedy max-min
+[Glasbey-style](https://doi.org/10.1002/col.20327) greedy max-min
 selection in OKLab. The algorithm samples 200k candidate colours uniformly from
 the sRGB gamut, converts them to OKLab (which is perceptually uniform by design,
 so plain Euclidean distance corresponds to perceived difference), then
