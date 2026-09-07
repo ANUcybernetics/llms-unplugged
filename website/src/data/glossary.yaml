@@ -1,138 +1,110 @@
+# Glossary entries, grouped by the module topics in src/lib/topics.ts plus a
+# "materials" group for the apparatus. Fields: id (anchor and GlossaryTerm
+# id), term, category, description (plain language, one paragraph), optional
+# synonyms, note (a style-guide note for lesson authors), related (other ids),
+# see (links into the site), activity (the hands-on equivalent, which builds
+# the "connections to your activities" table on the glossary page).
+
+# ---------------------------------------------------------------- fundamentals
+
 - id: token
   term: Token
-  category: core
+  category: fundamentals
   description: >-
-    A single unit of text that the model works with. In our activities, each word
-    and punctuation mark is a token. Modern LLMs use subword tokens that can be
-    parts of words.
+    A single unit of text that the model works with. In our activities each
+    word and punctuation mark is a token. Modern LLMs use subword tokens, so a
+    long or unusual word may be split into several.
   synonyms:
     - word (in introductory contexts)
   note: >-
-    The lessons use "word" initially to keep things accessible, then transition
-    to "token" once the concept is established. Both terms refer to the same
-    thing in our activities.
+    The lessons use "word" initially to keep things accessible, then move to
+    "token" once the idea is established. Both refer to the same thing in our
+    activities.
   see:
     - label: Training
       href: /modules/training/
 
 - id: vocabulary
   term: Vocabulary
-  category: core
+  category: fundamentals
   description: >-
-    All the unique tokens your model knows. The words across the top and side of
-    your grid (or the cutouts' prefix labels) form your vocabulary.
+    All the distinct tokens a model knows. The words down the side and across
+    the top of your grid, or the set of previous-word labels on a cutouts
+    spread, form your vocabulary. A model can only ever produce a token from its
+    vocabulary.
   see:
     - label: Training
       href: /modules/training/
 
 - id: language-model
   term: Language model
-  category: core
+  category: fundamentals
   description: >-
-    A system that predicts what text comes next based on patterns learned from
-    training data. Your hand-built grid or cutouts spread is a language model.
+    A system that predicts what text comes next, using patterns learned from
+    training data. Your hand-built grid, a cutouts spread, a booklet, and a room
+    holding search sheets are all language models.
   see:
     - label: Training
       href: /modules/training/
-    - label: Generation
-      href: /modules/generation/
-
-- id: training
-  term: Training
-  category: core
-  description: >-
-    The process of building a model by counting patterns in text. When you tally
-    word transitions or spread cutouts on a table, you're training your model.
-  synonyms:
-    - learning
-  see:
-    - label: Training
-      href: /modules/training/
-
-- id: pre-training
-  term: Pre-training
-  category: core
-  description: >-
-    The initial, expensive training phase where a model learns general patterns
-    from a large corpus. Most users of modern LLMs use pre-trained models
-    without ever training one themselves, much like using a provided booklet
-    rather than building your own grid.
-  related:
-    - post-training
-    - training
-  see:
-    - label: Pre-trained Model Generation
-      href: /modules/pretrained-generation/
-
-- id: generation
-  term: Generation
-  category: core
-  description: >-
-    Using a trained model to produce new text by repeatedly predicting and
-    selecting the next token.
-  see:
-    - label: Generation
-      href: /modules/generation/
-
-- id: inference
-  term: Inference
-  category: core
-  description: >-
-    Using a trained model to produce outputs. In language models, inference
-    means generating text. These lessons say "generation" because that better
-    describes what language models do, but "inference" is the term you'll find
-    in AI/ML literature and tooling.
-  synonyms:
-    - decoding
-  see:
-    - label: Generation
-      href: /modules/generation/
-
-- id: probability-distribution
-  term: Probability distribution
-  category: core
-  description: >-
-    A set of options with associated likelihoods. In your model, the counts in a
-    row (or matching cutouts in the spread) form a probability distribution over possible
-    next words.
-  see:
-    - label: Generation
-      href: /modules/generation/
-    - label: Sampling
-      href: /modules/sampling/
-
-- id: prompt
-  term: Prompt
-  category: core
-  description: >-
-    The input text you give to a language model. In a bigram model, the
-    "prompt" is just the single current word used to predict what comes next.
-    In modern LLMs, a prompt can be hundreds of thousands or even millions of
-    tokens long, giving the model much more context to work with.
-  see:
     - label: Generation
       href: /modules/generation/
 
 - id: llm
   term: LLM (Large Language Model)
-  category: core
+  category: fundamentals
   description: >-
     A language model trained on a very large amount of text, with billions of
     parameters. The hand-built models in these lessons are tiny language
-    models; ChatGPT, Claude, and Gemini are large language models. The core
-    principles are identical---the difference is scale.
+    models; ChatGPT, Claude and Gemini are large ones. The core principles are
+    identical. The difference is scale.
+  related:
+    - language-model
+    - parameters
+    - chatbot
+
+- id: chatbot
+  term: Chatbot (ChatGPT, Claude, Gemini)
+  category: fundamentals
+  description: >-
+    A product that wraps an LLM in a conversation. ChatGPT is OpenAI's, Claude
+    is Anthropic's, Gemini is Google's, and there are many others. On this site
+    we often name ChatGPT or Claude as shorthand for any of them: the concepts
+    apply equally to every modern LLM chatbot, whichever one you use.
+  synonyms:
+    - ChatGPT
+    - Claude
+    - Gemini
+    - AI assistant
+  related:
+    - llm
+    - alignment
+  see:
+    - label: FAQ
+      href: /faq/
+
+- id: training
+  term: Training
+  category: fundamentals
+  description: >-
+    Building a model by counting patterns in text. When you read through a
+    passage and tally which word follows which, you are training a model. The
+    cutouts, booklets and search sheets are models that the generator has
+    already trained for you from a text.
+  synonyms:
+    - learning
+  activity: tallying word pairs from a text onto the grid
   see:
     - label: Training
       href: /modules/training/
 
 - id: training-data
   term: Training data
-  category: core
+  category: fundamentals
   description: >-
-    The collection of text used to train a model. In our activities, this is
-    the passage you read through to fill in your grid or spread out as cutouts. Modern LLMs
-    are trained on billions of pages of text from books, websites, and other
-    sources.
+    The text a model is trained on. In our activities this is the passage you
+    tally, or the book a set of cutouts, a booklet or a set of search sheets
+    was generated from. Modern LLMs are trained on trillions of words from
+    books, websites and other sources.
   synonyms:
     - training set
     - corpus (plural corpora)
@@ -140,442 +112,465 @@
     - label: Training
       href: /modules/training/
 
-- id: start-end-tokens
-  term: Start and end tokens
-  category: core
+- id: generation
+  term: Generation
+  category: fundamentals
   description: >-
-    Special tokens that mark the beginning and end of a text. Real LLMs use
-    these to know when to start and stop generating. The lessons in this
-    project don't include them explicitly---you just pick a starting word and
-    decide when to stop---but they're an important part of how real models
-    handle sentence and document boundaries.
+    Using a trained model to produce new text by repeatedly predicting and
+    choosing the next token. Look up the current word, pick a next word in
+    proportion to the counts, write it down, repeat.
+  see:
+    - label: Generation
+      href: /modules/generation/
 
-- id: chatgpt
-  term: ChatGPT
-  category: core
+- id: inference
+  term: Inference
+  category: fundamentals
   description: >-
-    OpenAI's chatbot, and probably the most well-known LLM product. On this site
-    we often use "ChatGPT" as shorthand for any modern LLM chatbot---the
-    concepts apply equally to Claude, Gemini, DeepSeek and others. The
-    underlying principles are the same regardless of which product you use.
+    Using a trained model to produce outputs. In language models, inference
+    means generating text. These lessons say "generation" because it describes
+    what language models do more clearly, but "inference" is the word you'll
+    meet in AI/ML literature and tooling.
+  synonyms:
+    - decoding
+  related:
+    - generation
+  see:
+    - label: Generation
+      href: /modules/generation/
 
-- id: claude
-  term: Claude
-  category: core
+- id: prompt
+  term: Prompt
+  category: fundamentals
   description: >-
-    Anthropic's LLM chatbot. The concepts on this site apply equally to Claude,
-    ChatGPT, Gemini, and other LLMs---the underlying principles are the same
-    regardless of which product you use.
+    The input text you give a language model. In a bigram model the prompt is
+    just the current word. In a modern LLM a prompt can run to hundreds of
+    thousands of tokens, which gives the model far more context to work with.
+  related:
+    - context-window
+  see:
+    - label: Generation
+      href: /modules/generation/
 
-- id: gemini
-  term: Gemini
-  category: core
+- id: probability-distribution
+  term: Probability distribution
+  category: fundamentals
   description: >-
-    Google's LLM chatbot. The concepts on this site apply equally to Gemini,
-    ChatGPT, Claude, and other LLMs---the underlying principles are the same
-    regardless of which product you use.
+    A set of options with a likelihood attached to each. The counts in one row
+    of your grid, the matching cutouts on a spread, or the show of hands when
+    the room is asked "who has `the`?" are all probability distributions over
+    the next word.
+  activity: the counts in one row of the grid, or the show of hands for a word
+  see:
+    - label: Generation
+      href: /modules/generation/
+    - label: Search Sheets
+      href: /modules/search-sheets/
+
+- id: weighted-random-sampling
+  term: Weighted random sampling
+  category: fundamentals
+  description: >-
+    Choosing the next token with probability proportional to its count. A
+    d10 roll against the counts does this, and so does letting your eye land on
+    one of the matching cutouts, because common words appear on more of them.
+  activity: rolling a d10 for the next word, or picking a matching cutout
+  see:
+    - label: Weighted Randomness
+      href: /modules/weighted-randomness/
+    - label: Generation
+      href: /modules/generation/
 
 - id: bigram-model
   term: Bigram model
-  category: model-types
+  category: fundamentals
   description: >-
-    A model that predicts the next word based on one previous word. This is what
-    you build in the fundamental lessons---each row of your grid represents what
-    can follow a single word.
+    A model that predicts the next word from one previous word. It's what you
+    build in the fundamental modules: each row of your grid says what can
+    follow a single word.
   synonyms:
     - 2-gram model
+  related:
+    - n-gram-model
+    - trigram-model
   see:
     - label: Training
       href: /modules/training/
     - label: Generation
       href: /modules/generation/
 
-- id: trigram-model
-  term: Trigram model
-  category: model-types
-  description: >-
-    A model that uses two previous words for prediction, capturing more context
-    than a bigram. The grid becomes three-dimensional (or you track word pairs
-    instead of single words).
-  synonyms:
-    - 3-gram model
-  see:
-    - label: More Context
-      href: /modules/more-context/
-
 - id: n-gram-model
   term: N-gram model
-  category: model-types
+  category: fundamentals
   description: >-
-    The general term for models that predict based on the previous n-1 words.
-    Bigrams are 2-grams, trigrams are 3-grams, and so on.
+    The general name for a model that predicts the next word from the previous
+    n-1 words. Bigrams are 2-grams, trigrams are 3-grams, and so on. Every
+    hand-built model on this site is an n-gram model.
+  related:
+    - bigram-model
+    - trigram-model
+    - markov-chain
   see:
     - label: Training
       href: /modules/training/
+    - label: More Context
+      href: /modules/more-context/
+
+- id: markov-chain
+  term: Markov chain
+  category: fundamentals
+  description: >-
+    A statistical model in which the next state depends only on the current
+    state. Andrey Markov introduced the idea in 1913 while analysing letter
+    sequences in Pushkin's Eugene Onegin. A bigram language model is a Markov
+    chain over words.
+  related:
+    - bigram-model
+  see:
+    - label: About (a brief history)
+      href: /about/#markovs-stochastic-processes-1913
+
+# ------------------------------------------------------------------ scaling up
+
+- id: pre-training
+  term: Pre-training
+  category: scaling-up
+  description: >-
+    The first, expensive training phase, where a model learns the general
+    patterns of language from a huge corpus. Most people who use an LLM never
+    train one; they use a pre-trained model, the way you generate from a
+    booklet somebody else made.
+  activity: generating from a booklet you didn't make
+  related:
+    - post-training
+    - base-model
+  see:
+    - label: Pre-trained Model Generation
+      href: /modules/pretrained-generation/
+
+- id: base-model
+  term: Base model
+  category: scaling-up
+  description: >-
+    A model as it comes out of pre-training, before any post-training shapes
+    it into an assistant, or the unchanged model that an adapter such as a LoRA
+    is laid over. In both senses the base stays as it is and something else
+    supplies the shift in behaviour.
+  synonyms:
+    - foundation model
+  related:
+    - pre-training
+    - post-training
+    - lora
+  see:
+    - label: Sycophancy (adapters)
+      href: /modules/sycophancy/#adapters
+    - label: RLHF
+      href: /modules/rlhf/
+
+- id: trigram-model
+  term: Trigram model
+  category: scaling-up
+  description: >-
+    A model that predicts the next word from the two previous words. It
+    predicts better than a bigram but has far more contexts to store, which is
+    why a trigram booklet is so much thicker than the bigram booklet for the
+    same text.
+  synonyms:
+    - 3-gram model
+  related:
+    - bigram-model
+    - context-window
+  see:
     - label: More Context
       href: /modules/more-context/
 
 - id: context-window
   term: Context window
-  category: model-types
+  category: scaling-up
   description: >-
-    How many previous tokens the model considers when making predictions. Bigrams
-    have a context window of 1, trigrams have 2, and modern LLMs can consider
-    hundreds of thousands or even millions of tokens.
+    How many previous tokens the model can consider when it predicts the next
+    one. A bigram has a context window of one word and a trigram of two; modern
+    LLMs can consider hundreds of thousands or even millions of tokens.
+  activity: one word back (bigram) versus two (trigram)
+  related:
+    - prompt
+    - attention-mechanism
   see:
     - label: More Context
       href: /modules/more-context/
     - label: In-context Learning
       href: /modules/in-context-learning/
 
-- id: weighted-random-sampling
-  term: Weighted random sampling
-  category: sampling
-  description: >-
-    Choosing the next token with probability proportional to its frequency. Your
-    dice rolls implement this---words with higher counts are more likely to be
-    selected.
-  see:
-    - label: Generation
-      href: /modules/generation/
-    - label: Weighted Randomness
-      href: /modules/weighted-randomness/
-
-- id: decoding-strategy
-  term: Decoding strategy
-  category: sampling
-  description: >-
-    The procedure used to turn a model's probability distribution into actual
-    output text. Greedy decoding picks the highest-probability word; sampling
-    rolls weighted dice; beam search tracks several candidate paths at once.
-  synonyms:
-    - sampling strategy
-  see:
-    - label: Generation
-      href: /modules/generation/
-    - label: Sampling
-      href: /modules/sampling/
-
-- id: temperature
-  term: Temperature
-  category: sampling
-  description: >-
-    A parameter controlling randomness in generation. Dividing counts by
-    temperature makes output more random (high temperature) or more predictable
-    (low temperature).
-  see:
-    - label: Sampling
-      href: /modules/sampling/
-
-- id: greedy-sampling
-  term: Greedy sampling
-  category: sampling
-  description: >-
-    Always choosing the most likely next word (equivalent to temperature
-    approaching zero). Produces predictable but often repetitive text.
-  synonyms:
-    - greedy decoding
-  see:
-    - label: Sampling
-      href: /modules/sampling/
-
-- id: beam-search
-  term: Beam search
-  category: sampling
-  description: >-
-    A generation strategy that tracks multiple possible sequences simultaneously,
-    choosing the best overall path rather than committing to one word at a time.
-
-- id: beam-width
-  term: Beam width
-  category: sampling
-  description: >-
-    How many candidate paths to track during beam search. Beam width 1 is
-    equivalent to greedy search; larger widths explore more possibilities.
-
-- id: truncation-strategy
-  term: Truncation strategy
-  category: sampling
-  description: >-
-    A rule that limits which tokens are eligible for selection before sampling.
-    Examples include top-k (only consider the k most likely) and top-p/nucleus
-    (only consider tokens until cumulative probability reaches p).
-  see:
-    - label: Sampling
-      href: /modules/sampling/
-
-- id: top-k-sampling
-  term: Top-k sampling
-  category: sampling
-  description: >-
-    A truncation strategy that keeps only the k most likely next-word options
-    before sampling. Setting k=1 is equivalent to greedy sampling; larger k
-    allows more variety while still excluding very unlikely words.
-  see:
-    - label: Sampling
-      href: /modules/sampling/
-
-- id: top-p-sampling
-  term: Top-p sampling
-  category: sampling
-  description: >-
-    A truncation strategy that keeps just enough of the most likely options for
-    their cumulative probability to reach a threshold p (e.g., 0.9). Unlike
-    top-k, the number of options changes depending on how confident the model
-    is about the next word.
-  synonyms:
-    - nucleus sampling
-  see:
-    - label: Sampling
-      href: /modules/sampling/
-
-- id: embedding
-  term: Embedding
-  category: understanding
-  description: >-
-    A numerical representation of a word. Each row in your bigram grid is that
-    word's embedding vector---a fingerprint of its usage context. In real LLMs,
-    embeddings are learned separately rather than derived from raw counts, but
-    the principle is the same: words used in similar ways get similar vectors.
-  synonyms:
-    - word vector
-    - embedding vector
-  see:
-    - label: Word Embeddings
-      href: /modules/word-embeddings/
-
-- id: similarity-matrix
-  term: Similarity matrix
-  category: understanding
-  description: >-
-    A grid showing how similar or different each pair of words is, calculated by
-    comparing their embedding vectors. Words used in similar contexts have
-    similar embeddings.
-  synonyms:
-    - distance matrix
-    - distance grid
-  see:
-    - label: Word Embeddings
-      href: /modules/word-embeddings/
-
-- id: attention-mechanism
-  term: Attention mechanism
-  category: understanding
-  description: >-
-    The ability to focus on relevant previous words when making predictions.
-    In real LLMs, attention is learned, weighted, and dynamic---the model
-    decides what to focus on for each prediction. The in-context learning
-    module illustrates the motivation for attention: reusing more
-    than just the immediately preceding word.
-  see:
-    - label: In-context Learning
-      href: /modules/in-context-learning/
-
-- id: in-context-learning
-  term: In-context learning
-  category: understanding
-  description: >-
-    Picking up a pattern from the prompt and continuing it, with no change to
-    the model's weights. The "learning" happens in the context the model is
-    given, not in the model itself---which is why a few examples in a prompt can
-    steer an LLM's output.
-  see:
-    - label: In-context Learning
-      href: /modules/in-context-learning/
-
-- id: induction-head
-  term: Induction head
-  category: understanding
-  description: >-
-    A circuit found inside transformers that completes patterns by finding an
-    earlier place where the current token appeared and copying what came next.
-    Induction heads are a key mechanism behind in-context learning.
-  see:
-    - label: In-context Learning
-      href: /modules/in-context-learning/
-
-- id: markov-chain
-  term: Markov chain
-  category: advanced
-  description: >-
-    A statistical model where the next state depends only on the current state.
-    Andrey Markov introduced this idea in 1913 while analysing letter sequences
-    in Pushkin's Eugene Onegin. A bigram language model is a simple Markov chain
-    over words.
-
-- id: neural-network
-  term: Neural network
-  category: advanced
-  description: >-
-    A computational system loosely inspired by biological neurons that learns
-    patterns from data by adjusting numerical weights. Modern LLMs are large
-    neural networks; hand-built models are not. Both rely on the same kind of
-    pattern counting, just acquired manually rather than automatically.
-
-- id: transformer
-  term: Transformer
-  category: advanced
-  description: >-
-    The neural network architecture used by GPT, Claude, and other modern LLMs.
-    It uses attention mechanisms to process all words in parallel rather than
-    sequentially.
-
 - id: parameters
   term: Parameters
-  category: advanced
+  category: scaling-up
   description: >-
-    The numbers stored in the model that encode learned patterns. Each tally mark
-    in your grid is a parameter. Modern models have billions of parameters.
+    The numbers a model stores to encode what it has learned. Each cell of your
+    grid, holding the count for one word pair, is a parameter. A modern LLM has
+    billions of them, and a frontier model on the order of a trillion.
+  synonyms:
+    - weights
+  activity: the counts in the cells of your grid
+  related:
+    - neural-network
   see:
     - label: Training
       href: /modules/training/
 
-- id: fine-tuning
-  term: Fine-tuning
-  category: advanced
+- id: neural-network
+  term: Neural network
+  category: scaling-up
   description: >-
-    Additional training on specific text to adapt a model for a particular domain
-    or task. Like adding more tallies to your grid from a new text source.
+    A computational system, loosely inspired by biological neurons, that learns
+    patterns from data by adjusting numerical weights. Modern LLMs are very
+    large neural networks. Your hand-built model is not one, but it stores the
+    same kind of information: which words tend to follow which.
   related:
-    - supervised-fine-tuning
-    - post-training
-    - lora
-    - base-model
-  see:
-    - label: Sycophancy (adapters)
-      href: /modules/sycophancy/#adapters
-    - label: Synthetic Data
-      href: /modules/synthetic-data/
+    - parameters
+    - transformer
 
-- id: base-model
-  term: Base model
-  category: advanced
+- id: transformer
+  term: Transformer
+  category: scaling-up
   description: >-
-    The original trained model that an adaptation (such as a LoRA layer) is
-    applied to. The base model stays unchanged; the adaptation provides the
-    domain-specific shift.
+    The neural network architecture behind GPT, Claude, Gemini and every other
+    modern LLM. Its defining feature is attention, which lets the model draw on
+    any earlier part of the context when predicting the next token, rather than
+    a fixed number of previous words.
+  related:
+    - neural-network
+    - attention-mechanism
   see:
-    - label: Sycophancy (adapters)
-      href: /modules/sycophancy/#adapters
+    - label: More Context
+      href: /modules/more-context/
 
-- id: lora
-  term: LoRA (Low-Rank Adaptation)
-  category: advanced
-  description: >-
-    A technique for efficiently fine-tuning models by training a small
-    "adaptation layer" rather than modifying all the original parameters.
-  see:
-    - label: Sycophancy (adapters)
-      href: /modules/sycophancy/#adapters
-
-- id: agentic-ai
-  term: Agentic AI
-  category: advanced
-  description: >-
-    An approach to AI where language models act as agents, recognising when to
-    call external tools (like calculators or search engines) in a loop rather
-    than generating text directly.
-  synonyms:
-    - agentic tool use
-  see:
-    - label: Agentic AI
-      href: /modules/agentic-ai/
+# ---------------------------------------------------------- extending the model
 
 - id: agent
   term: Agent
-  category: advanced
+  category: extending-the-model
   description: >-
-    A language model that runs tools in a loop to achieve a goal. Instead of
-    generating text directly, an agent calls external tools and uses their
-    results to continue.
+    A language model that runs tools in a loop to achieve a goal. "Agentic AI"
+    has become a buzzword, but in practice it means tool use: the model
+    generates, a tool is called, the result is written back into the text, and
+    generation continues.
   synonyms:
     - AI agent
+    - agentic AI
+  related:
+    - tool-use
   see:
     - label: Agentic AI
       href: /modules/agentic-ai/
 
 - id: tool-use
   term: Tool use
-  category: advanced
+  category: extending-the-model
   description: >-
-    The mechanism by which a language model calls external tools (calculators,
-    search engines, databases, code runners) during generation. Modern LLMs
-    output structured tool calls; in the unplugged activity, sampling a
-    "trigger word" plays the same role.
+    The mechanism by which a language model calls something outside itself (a
+    calculator, a web search, a database, a code runner) during generation. A
+    modern LLM emits a structured tool call; the software around it, the
+    harness, pauses generation, runs the tool, and splices the result back
+    in. In the unplugged activity, sampling a full stop plays the part of the
+    tool call and you are the harness.
   synonyms:
     - function calling
+  activity: sampling a full stop and texting a friend for the next words
+  related:
+    - agent
   see:
     - label: Agentic AI
       href: /modules/agentic-ai/
 
-- id: synthetic-data
-  term: Synthetic data
-  category: advanced
+# ---------------------------------------------------------- shaping behaviour
+
+- id: temperature
+  term: Temperature
+  category: shaping-behaviour
   description: >-
-    Training data generated by models rather than collected from humans. Can be
-    used to augment training sets or create specialised datasets.
+    A dial on how much the model respects its own counts. Low temperature
+    sticks to the favourites; high temperature flattens the odds until every
+    option is roughly equal. A real model divides its scores by the
+    temperature before turning them into probabilities. With raw counts that
+    trick does nothing, so the hand-run version adds a constant to every count
+    instead.
+  activity: the cold, normal, hot and boiling settings of the dial
+  related:
+    - greedy-sampling
+    - truncation-strategy
   see:
+    - label: Sampling
+      href: /modules/sampling/
+
+- id: greedy-sampling
+  term: Greedy sampling
+  category: shaping-behaviour
+  description: >-
+    Always choosing the most likely next word, which is what temperature zero
+    means. The output is predictable and often falls into a repeating loop.
+  synonyms:
+    - greedy decoding
+  related:
+    - temperature
+  see:
+    - label: Sampling
+      href: /modules/sampling/
+
+- id: truncation-strategy
+  term: Truncation strategy
+  category: shaping-behaviour
+  description: >-
+    A rule that limits which tokens are eligible before you sample. Top-k and
+    top-p are the standard ones in LLM tooling; the Sampling module adds
+    playful versions (haiku, alliteration, no-repeat) that work the same way,
+    by changing what you're allowed to roll for.
+  activity: crossing out options before you roll
+  related:
+    - top-k-sampling
+    - top-p-sampling
+    - repetition-penalty
+  see:
+    - label: Sampling
+      href: /modules/sampling/
+
+- id: top-k-sampling
+  term: Top-k sampling
+  category: shaping-behaviour
+  description: >-
+    A truncation strategy that keeps only the k most likely next words before
+    sampling. Setting k to 1 is greedy sampling; a larger k allows variety
+    while still excluding the very unlikely.
+  related:
+    - truncation-strategy
+    - top-p-sampling
+  see:
+    - label: Sampling
+      href: /modules/sampling/
+
+- id: top-p-sampling
+  term: Top-p sampling
+  category: shaping-behaviour
+  description: >-
+    A truncation strategy that keeps just enough of the most likely words for
+    their combined probability to reach a threshold p (0.9, say). Unlike top-k,
+    the number of options kept changes with how confident the model is.
+  synonyms:
+    - nucleus sampling
+  related:
+    - truncation-strategy
+    - top-k-sampling
+  see:
+    - label: Sampling
+      href: /modules/sampling/
+
+- id: repetition-penalty
+  term: Repetition penalty
+  category: shaping-behaviour
+  description: >-
+    A generation setting that lowers the odds of words that have already
+    appeared, to stop a model going round in circles. It's the opposite of the
+    memory boost in the In-context Learning module, and the mechanised version
+    of the Sampling module's no-repeat rule.
+  synonyms:
+    - frequency penalty
+    - presence penalty
+  related:
+    - truncation-strategy
+  see:
+    - label: Sampling
+      href: /modules/sampling/
+    - label: In-context Learning
+      href: /modules/in-context-learning/
+
+- id: fine-tuning
+  term: Fine-tuning
+  category: shaping-behaviour
+  description: >-
+    Further training of an existing model on a chosen text, to adapt it to a
+    domain, a task or a style. Adding tallies to your finished grid from a
+    second text is fine-tuning, and it's how the Sycophancy module skews a
+    model's personality.
+  activity: adding tallies from a second text to a finished grid
+  related:
+    - supervised-fine-tuning
+    - post-training
+    - lora
+    - base-model
+  see:
+    - label: Sycophancy
+      href: /modules/sycophancy/
     - label: Synthetic Data
       href: /modules/synthetic-data/
 
-- id: model-collapse
-  term: Model collapse
-  category: advanced
+- id: lora
+  term: LoRA (Low-Rank Adaptation)
+  category: shaping-behaviour
   description: >-
-    What happens when a model is trained on its own outputs (or outputs from
-    similar models) over multiple generations. Common patterns get amplified,
-    rare ones vanish, and the model converges towards a narrower, more
-    repetitive style.
+    A way of fine-tuning cheaply by training a small adapter that sits on top
+    of an unchanged base model instead of altering all its parameters. One
+    base model can carry many adapters, and an adapter is small enough to
+    share easily. The paper adapter in the Sycophancy module is the
+    uncompressed version of the idea.
   synonyms:
-    - mode collapse
+    - adapter
+  activity: the adapter sheet laid over an unchanged grid
+  related:
+    - fine-tuning
+    - base-model
   see:
-    - label: Synthetic Data
-      href: /modules/synthetic-data/
+    - label: Sycophancy (adapters)
+      href: /modules/sycophancy/#adapters
 
 - id: post-training
   term: Post-training
-  category: post-training
+  category: shaping-behaviour
   description: >-
-    Everything done to a model after pre-training to make it more useful.
-    Pre-training teaches the model how language works in general; post-training
-    shapes its behaviour for specific purposes---following instructions,
-    refusing harmful requests, or working carefully through problems.
-    Supervised fine-tuning, RLHF, and RLVR are all post-training techniques.
+    Everything done to a model after pre-training to make it useful.
+    Pre-training teaches the model how language works; post-training shapes
+    its behaviour: following instructions, answering rather than continuing,
+    refusing some requests, working carefully through problems. Supervised
+    fine-tuning, RLHF and RLVR are all post-training techniques.
   related:
     - pre-training
     - supervised-fine-tuning
     - rlhf
     - rlvr
+  see:
+    - label: RLHF
+      href: /modules/rlhf/
 
 - id: supervised-fine-tuning
   term: Supervised fine-tuning (SFT)
-  category: post-training
+  category: shaping-behaviour
   description: >-
-    Post-training on demonstration data---paired examples of (input, desired
-    output). The model learns to imitate the demonstrations. SFT is the
-    simplest form of post-training and often the first step before
-    reinforcement-learning techniques like RLHF or RLVR are applied.
+    Post-training on demonstrations: pairs of an input and the output you
+    want. The model learns to imitate them. It's the simplest form of
+    post-training and usually the first step, before reinforcement-learning
+    techniques such as RLHF or RLVR.
   synonyms:
     - SFT
   related:
     - post-training
     - fine-tuning
     - rlhf
-    - rlvr
 
 - id: rlhf
   term: RLHF (Reinforcement Learning from Human Feedback)
-  category: post-training
+  category: shaping-behaviour
   description: >-
-    A post-training technique where humans compare pairs of model outputs and
-    their preferences train a reward model, which then guides the main model.
-    Suits fuzzy objectives like "be helpful" or "sound natural" where no
-    automated checker exists. Sibling of RLVR, which uses an automated checker
-    instead of human preferences.
+    A post-training technique in which people compare pairs of model outputs
+    and the model is pushed towards whatever they preferred. In the original
+    recipe the comparisons train a reward model, which then guides the main
+    model; newer relatives such as DPO apply the preferences directly, which is
+    closer to what the classroom version does. The term now covers a family of
+    methods.
+  activity: judges voting on outputs and the counts being updated to match
   related:
-    - rlvr
     - reward-model
+    - reward-hacking
     - alignment
+    - rlvr
     - post-training
   see:
     - label: RLHF
@@ -583,12 +578,12 @@
 
 - id: reward-model
   term: Reward model
-  category: post-training
+  category: shaping-behaviour
   description: >-
-    A separate model that learns to predict human preferences, then guides the
-    main model during RLHF. Rather than asking humans to rate every output, the
-    reward model rates outputs at scale, trained on a smaller set of human
-    comparisons.
+    A separate model trained on a smaller set of human comparisons to predict
+    which output a person would prefer. It then rates outputs at scale during
+    RLHF, because a training run needs millions of judgements and there aren't
+    enough patient people.
   related:
     - rlhf
     - alignment
@@ -596,139 +591,299 @@
     - label: RLHF
       href: /modules/rlhf/
 
-- id: alignment
-  term: Alignment
-  category: post-training
+- id: reward-hacking
+  term: Reward hacking
+  category: shaping-behaviour
   description: >-
-    The process of shaping a model's outputs to match human values and
-    preferences (typically helpfulness, harmlessness, and honesty). RLHF is one
-    of the main techniques used to align modern LLMs.
+    What happens when a model optimises the signal it's given rather than what
+    the signal was meant to measure. Human raters tend to prefer answers that
+    agree with them, so a model trained on their comparisons learns to agree
+    and to flatter. It's one documented source of sycophancy in deployed
+    models.
+  activity: the reward-hacking round of the game show
   related:
     - rlhf
-    - rlvr
+    - sycophancy
+  see:
+    - label: RLHF
+      href: /modules/rlhf/#the-reward-hacking-round
+
+- id: alignment
+  term: Alignment
+  category: shaping-behaviour
+  description: >-
+    Shaping a model's behaviour to match what its makers and users want of it,
+    usually summarised as helpful, harmless and honest. RLHF and its relatives
+    are the main techniques used to align modern chatbots.
+  related:
+    - rlhf
+    - post-training
   see:
     - label: RLHF
       href: /modules/rlhf/
 
 - id: rlvr
   term: RLVR (Reinforcement Learning from Verifiable Rewards)
-  category: post-training
+  category: shaping-behaviour
   description: >-
-    A post-training technique where the model generates an attempt, an
-    automated checker verifies whether it's correct, and successful attempts
-    get reinforced. Unlike RLHF, no human preference data is needed---just a
-    verifier. Works best on domains with cheap, reliable checking (mathematics,
-    code, formal logic). RLVR is the main technique behind modern reasoning
-    models.
+    A post-training technique in which the model makes an attempt, a program
+    checks whether it's correct, and correct attempts are reinforced. The
+    checker (a test suite, a known answer, a format validator) replaces the
+    human judges of RLHF, so it works best where checking is cheap and
+    reliable: mathematics, code, formal logic. It's the main technique behind
+    reasoning models.
   related:
-    - verifier
-    - rollout
-    - on-policy
-    - reasoning-model
     - rlhf
+    - reasoning-model
     - post-training
-
-- id: verifier
-  term: Verifier
-  category: post-training
-  description: >-
-    A program or rule that checks whether a model's output is correct. The
-    reward signal in RLVR. Examples include "does this code pass the test
-    suite?", "does this answer match the known value?", and "is this output
-    valid JSON?". Cheap, reliable verifiers are what make RLVR scalable.
-  synonyms:
-    - checker
-  related:
-    - rlvr
-
-- id: rollout
-  term: Rollout
-  category: post-training
-  description: >-
-    A single generation from a model, sampled all the way through. During
-    RL-based post-training the model produces many rollouts per problem; the
-    reward signal then determines which ones to reinforce.
-  related:
-    - rlvr
-    - on-policy
-
-- id: on-policy
-  term: On-policy
-  category: post-training
-  description: >-
-    Training where the data the model learns from is generated by the current
-    model itself. RLVR is on-policy: the model produces rollouts, the rollouts
-    get scored, the model updates, and the next batch of rollouts comes from
-    the improved model. Contrast with off-policy training (such as SFT on a
-    fixed dataset of human-written examples), where the training data doesn't
-    change as the model improves.
-  synonyms:
-    - off-policy (the opposite property)
-  related:
-    - rlvr
-    - rollout
-    - supervised-fine-tuning
 
 - id: reasoning-model
   term: Reasoning model
-  category: post-training
+  category: shaping-behaviour
   description: >-
-    A language model that's been trained to generate intermediate "thinking"
-    steps before producing its final answer. OpenAI's o1 and o3, DeepSeek's
-    R1, and Claude with extended thinking are reasoning models. The
-    architecture is the same as any other LLM---what changes is the
-    post-training (usually RLVR), which shapes the model to use extra tokens
-    for working through problems.
+    An LLM post-trained (usually with RLVR) to generate visible working, a
+    chain of thought, before its final answer. The thinking tokens are produced
+    like any others, and spending more of them on a hard problem tends to
+    improve the answer. OpenAI's o-series, DeepSeek's R1 and Claude with
+    extended thinking are reasoning models.
   synonyms:
     - thinking model
+    - chain-of-thought model
   related:
-    - chain-of-thought
-    - thinking-tokens
-    - test-time-compute
     - rlvr
     - post-training
 
-- id: chain-of-thought
-  term: Chain of thought
-  category: post-training
+- id: sycophancy
+  term: Sycophancy
+  category: shaping-behaviour
   description: >-
-    Step-by-step reasoning a model generates before its final answer. Started
-    as a prompting trick ("let's think step by step") and is now built into
-    reasoning models through post-training. The intermediate steps function
-    like rough working in a maths exercise---visible scratch work that helps
-    the model reach a correct answer.
-  synonyms:
-    - CoT
+    A model's tendency to agree with and flatter the user regardless of the
+    merits. It has two known sources: reward hacking during RLHF, and
+    pre-training data that is itself full of flattery. Tipping a grid's
+    training data towards sycophantic phrases demonstrates the second.
+  activity: piling sycophantic phrases into the training data
   related:
-    - reasoning-model
-    - thinking-tokens
-    - test-time-compute
+    - reward-hacking
+    - fine-tuning
+    - rlhf
+  see:
+    - label: Sycophancy
+      href: /modules/sycophancy/
 
-- id: thinking-tokens
-  term: Thinking tokens
-  category: post-training
+- id: synthetic-data
+  term: Synthetic data
+  category: shaping-behaviour
   description: >-
-    The tokens that make up a reasoning model's chain of thought. Mechanically
-    they're produced the same way as any other tokens (same forward pass, same
-    sampling), but they're often hidden from the user in product interfaces.
-    Some products, such as Claude's extended thinking, show them by default.
+    Training text generated by a model rather than written by people. Used
+    carelessly, in a closed loop, it causes model collapse. Used deliberately
+    (a stronger model writing for a weaker one, or filtering a large generated
+    set) it's one of the more useful tools going.
   related:
-    - chain-of-thought
-    - reasoning-model
+    - model-collapse
+    - distillation
+  see:
+    - label: Synthetic Data
+      href: /modules/synthetic-data/
 
-- id: test-time-compute
-  term: Test-time compute
-  category: post-training
+- id: distillation
+  term: Distillation
+  category: shaping-behaviour
   description: >-
-    Compute spent at generation time rather than during training. Reasoning
-    models trade test-time compute for accuracy: letting the model generate
-    more thinking tokens before answering tends to improve performance in a
-    roughly predictable way. This is a scaling axis distinct from model size
-    and training data, and is what makes reasoning models qualitatively
-    different from earlier LLMs.
-  synonyms:
-    - inference-time compute
+    Training a smaller model on text generated by a larger, stronger one. The
+    student ends up far better than it would on scraped text of the same
+    volume, and because the teacher sits above the student the chain never
+    closes on itself.
   related:
-    - reasoning-model
-    - chain-of-thought
-    - rlvr
+    - synthetic-data
+    - model-collapse
+  see:
+    - label: Synthetic Data
+      href: /modules/synthetic-data/
+
+- id: model-collapse
+  term: Model collapse
+  category: shaping-behaviour
+  description: >-
+    The degradation that sets in when a model is trained on its own output (or
+    output from similar models) generation after generation. Rare words and
+    constructions are the likeliest to be missed by any sample, so the tails
+    vanish first, and the model narrows towards a repetitive core.
+  activity: re-training on the previous group's generated text
+  related:
+    - synthetic-data
+  see:
+    - label: Synthetic Data
+      href: /modules/synthetic-data/
+
+# ------------------------------------------------------------- looking inside
+
+- id: embedding
+  term: Embedding
+  category: looking-inside
+  description: >-
+    A word represented as a list of numbers. A row of your bigram grid is that
+    word's embedding, a fingerprint of the company it keeps. In a real LLM the
+    numbers are learned rather than counted, and computed from the sentence the
+    word appears in, so the two senses of "bank" get different vectors. The
+    principle survives: words used alike get similar vectors.
+  synonyms:
+    - word vector
+    - embedding vector
+  activity: reading a word's row of the grid as a list of numbers
+  related:
+    - similarity-matrix
+  see:
+    - label: Word Embeddings
+      href: /modules/word-embeddings/
+
+- id: similarity-matrix
+  term: Similarity matrix
+  category: looking-inside
+  description: >-
+    A grid showing how alike each pair of words is, worked out by comparing
+    their embedding vectors. Words used in similar contexts land close
+    together.
+  synonyms:
+    - distance matrix
+    - distance grid
+  related:
+    - embedding
+  see:
+    - label: Word Embeddings
+      href: /modules/word-embeddings/
+
+- id: attention-mechanism
+  term: Attention mechanism
+  category: looking-inside
+  description: >-
+    The part of a transformer that decides, for each prediction, which earlier
+    words in the context to draw on and how much. The skip grid in More
+    Context and the memory boost in In-context Learning are fixed, hand-run
+    versions of the same move; real attention is learned and changes with the
+    content.
+  activity: the skip grid, and the boost for recently used words
+  related:
+    - transformer
+    - context-window
+    - in-context-learning
+  see:
+    - label: More Context
+      href: /modules/more-context/
+    - label: In-context Learning
+      href: /modules/in-context-learning/
+
+- id: in-context-learning
+  term: In-context learning
+  category: looking-inside
+  description: >-
+    Picking up a pattern from the prompt and continuing it, without any change
+    to the model's parameters. The "learning" lives in the context, not in the
+    model. It's why few-shot prompting works: give an LLM a handful of examples
+    and it carries on in the same shape.
+  synonyms:
+    - few-shot learning
+  activity: scanning back for the last time a word appeared and copying what followed
+  related:
+    - induction-head
+    - attention-mechanism
+  see:
+    - label: In-context Learning
+      href: /modules/in-context-learning/
+
+- id: induction-head
+  term: Induction head
+  category: looking-inside
+  description: >-
+    A circuit found inside transformers that completes patterns by finding an
+    earlier place where the current token appeared and copying what came next.
+    Induction heads are one of the main mechanisms behind in-context learning.
+  related:
+    - in-context-learning
+    - attention-mechanism
+  see:
+    - label: In-context Learning
+      href: /modules/in-context-learning/
+
+# ------------------------------------------------------------------ materials
+
+- id: grid
+  term: Grid
+  category: materials
+  description: >-
+    A sheet of grid paper with the vocabulary written down the side and across
+    the top. Training fills each cell with tally marks for how often the row's
+    word was followed by the column's word; generation reads a row and rolls
+    against it. It's the original LLMs Unplugged apparatus.
+  synonyms:
+    - bigram grid
+    - grid flavour
+  see:
+    - label: Training
+      href: /modules/training/
+    - label: Materials (worksheets)
+      href: /tools/#worksheets
+
+- id: cutouts
+  term: Cutouts
+  category: materials
+  description: >-
+    Printed cards, one per word pair in the text, each showing a previous word
+    in a box and the word that followed it. Spread on a table they are the
+    model: to generate, find a card whose boxed word matches your current word
+    and read off its next word. Common pairs appear on more cards, so picking
+    by eye samples in proportion.
+  synonyms:
+    - token cutouts
+    - cutouts flavour
+  see:
+    - label: Generation
+      href: /modules/generation/
+    - label: Materials (cutouts)
+      href: /tools/#cutouts
+
+- id: booklet
+  term: Booklet
+  category: materials
+  description: >-
+    A printed dice lookup table for a text: one entry per previous word (or
+    pair of words, in a trigram booklet), listing the possible next words with
+    the d10 range that selects each. A booklet is a pre-trained model you can
+    generate from without having trained it.
+  synonyms:
+    - pre-trained model booklet
+  see:
+    - label: Pre-trained Model Generation
+      href: /modules/pretrained-generation/
+    - label: Materials (booklets)
+      href: /tools/#booklets-for-dice-generation
+
+- id: search-sheets
+  term: Search sheets
+  category: materials
+  description: >-
+    A whole-room format: each person holds a sheet carrying a shuffled handful
+    of word pairs from the text, and the room together is the model. Whoever is
+    running it calls the current word, everyone holding it raises a hand, and
+    one is picked. The show of hands is the probability distribution.
+  synonyms:
+    - sheets flavour
+  see:
+    - label: Search Sheets
+      href: /modules/search-sheets/
+    - label: Materials (search sheets)
+      href: /tools/#search-sheets
+
+- id: ledger
+  term: Ledger
+  category: materials
+  description: >-
+    A sheet with one row per word, tally marks for each word that followed it,
+    and a coloured strip beside each tally column. Generation uses a bag of
+    coloured balls, one per tally mark: draw a ball, read the word beside its
+    colour. The bag does the weighted sampling.
+  synonyms:
+    - ledger sheet
+    - bag of balls
+  see:
+    - label: How AI writes stories with a bag of balls
+      href: /lessons/how-ai-writes-stories-ledger/

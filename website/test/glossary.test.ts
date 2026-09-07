@@ -4,6 +4,7 @@ import {
   getGlossaryByCategory,
   getGlossaryEntry,
   loadGlossary,
+  resolveRelated,
 } from "../src/lib/glossary";
 describe("glossary data", () => {
   it("loads all entries", () => {
@@ -55,18 +56,18 @@ describe("getGlossaryEntry", () => {
     expect(getGlossaryEntry("nonexistent")).toBeUndefined();
   });
 
-  it("has a chatgpt entry with a meaningful description", () => {
-    const entry = getGlossaryEntry("chatgpt");
-    expect(entry).toBeDefined();
-    expect(entry!.description.trim().length).toBeGreaterThan(20);
+  it("resolves every related id", () => {
+    for (const entry of loadGlossary()) {
+      expect(() => resolveRelated(entry.related)).not.toThrow();
+    }
   });
 });
 
 describe("getGlossaryByCategory", () => {
-  it("returns categories in data order", () => {
-    const categories = getGlossaryByCategory();
-    expect(categories.length).toBeGreaterThan(0);
-    expect(categories[0].slug).toBe("core");
+  it("returns categories in topic order, materials last", () => {
+    const slugs = getGlossaryByCategory().map((c) => c.slug);
+    expect(slugs[0]).toBe("fundamentals");
+    expect(slugs.at(-1)).toBe("materials");
   });
 
   it("each category has entries", () => {

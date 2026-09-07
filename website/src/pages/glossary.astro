@@ -1,20 +1,26 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
-import { getGlossaryByCategory, resolveRelated } from "../lib/glossary";
+import {
+  getGlossaryByCategory,
+  loadGlossary,
+  resolveRelated,
+} from "../lib/glossary";
 
 const categories = getGlossaryByCategory();
+const activities = loadGlossary().filter((e) => e.activity);
 ---
 
 <PageLayout
   title="Glossary"
-  description="Key terms and concepts used in LLMs Unplugged, with plain-language explanations and links to relevant lessons."
+  description="Key terms and concepts used in LLMs Unplugged, with plain-language explanations and links to the relevant modules."
 >
   <h1>Glossary</h1>
 
   <p>
     This glossary connects the hands-on activities in LLMs Unplugged with the
-    technical terms used in modern language models. Each entry provides a plain
-    language explanation and links to relevant lessons.
+    technical terms used for modern language models. Each entry gives a plain
+    language explanation and links to the modules where the idea is used. The
+    groups follow the module topics, with the apparatus at the end.
   </p>
 
   {
@@ -27,7 +33,7 @@ const categories = getGlossaryByCategory();
             <p>{entry.description}</p>
             {entry.synonyms && (
               <p class="glossary-meta">
-                <em>Synonyms:</em> {entry.synonyms.join(", ")}
+                <em>Also called:</em> {entry.synonyms.join(", ")}
               </p>
             )}
             {entry.note && (
@@ -65,6 +71,14 @@ const categories = getGlossaryByCategory();
 
   <h2>Connections to your activities</h2>
 
+  <p>
+    The things you do with paper, dice and cutouts each stand in for an
+    operation inside a real language model. The main difference is scale: your
+    grid holds dozens of counts, a frontier model holds on the order of a
+    trillion learned numbers, and the counts are learned rather than tallied by
+    hand.
+  </p>
+
   <table>
     <thead>
       <tr>
@@ -73,111 +87,18 @@ const categories = getGlossaryByCategory();
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Tallying word pairs</td>
-        <td
-          >Counting <a href="#n-gram-model">n-grams</a> during <a
-            href="#training">training</a
-          ></td
-        >
-      </tr>
-      <tr>
-        <td>Rolling dice for next word</td>
-        <td
-          >Sampling from a <a href="#probability-distribution"
-            >probability distribution</a
-          ></td
-        >
-      </tr>
-      <tr>
-        <td>Grid rows/columns</td>
-        <td>Weight matrices in <a href="#neural-network">neural networks</a></td
-        >
-      </tr>
-      <tr>
-        <td>Adding context columns</td>
-        <td>Learning <a href="#attention-mechanism">attention</a> patterns</td>
-      </tr>
-      <tr>
-        <td>Calculating word distances</td>
-        <td>Computing <a href="#embedding">embedding</a> similarities</td>
-      </tr>
-      <tr>
-        <td>Dividing tallies by temperature</td>
-        <td>Applying <a href="#temperature">temperature</a> to logits</td>
-      </tr>
-      <tr>
-        <td>Keeping top beam paths</td>
-        <td>
-          <a href="#beam-search">Beam search</a> with specified <a
-            href="#beam-width">beam width</a
-          >
-        </td>
-      </tr>
-      <tr>
-        <td>Picking matching cutouts</td>
-        <td><a href="#weighted-random-sampling">Weighted random sampling</a></td
-        >
-      </tr>
-      <tr>
-        <td>Training on new text</td>
-        <td><a href="#fine-tuning">Fine-tuning</a> on domain-specific data</td>
-      </tr>
-      <tr>
-        <td>Updating counts from votes</td>
-        <td
-          ><a href="#rlhf">RLHF</a> using a <a href="#reward-model"
-            >reward model</a
-          ></td
-        >
-      </tr>
-      <tr>
-        <td>Sampling a trigger word</td>
-        <td
-          ><a href="#tool-use">Tool use</a> by an <a href="#agent">agent</a></td
-        >
-      </tr>
-      <tr>
-        <td>Re-training on generated text</td>
-        <td
-          ><a href="#model-collapse">Model collapse</a> from <a
-            href="#synthetic-data">synthetic data</a
-          ></td
-        >
-      </tr>
+      {
+        activities.map((entry) => (
+          <tr>
+            <td>{entry.activity}</td>
+            <td>
+              <a href={`#${entry.id}`}>{entry.term}</a>
+            </td>
+          </tr>
+        ))
+      }
     </tbody>
   </table>
-
-  <h2>Key insights</h2>
-
-  <ol>
-    <li>
-      <strong>Scale is the main difference:</strong> your small grid vs billions of
-      parameters, but the core concepts are identical.
-    </li>
-    <li>
-      <strong>Randomness creates variety:</strong> both your dice and modern LLMs
-      use controlled randomness to avoid repetitive output.
-    </li>
-    <li>
-      <strong>Context improves prediction:</strong> more context (bigram &rarr; trigram
-      &rarr; transformer) enables better text generation.
-    </li>
-    <li>
-      <strong>Embeddings capture meaning:</strong> words used similarly get similar
-      vectors, whether hand-calculated or learned by neural networks.
-    </li>
-    <li>
-      <strong>Training is just counting:</strong> at its core, training means observing
-      patterns in data---exactly what you did with tally marks.
-    </li>
-  </ol>
-
-  <p>
-    The hands-on activities demonstrate the fundamental operations of language
-    models. The main advances in modern AI come from doing these same operations
-    at massive scale with learned (rather than hand-crafted) patterns.
-  </p>
 </PageLayout>
 
 <style>

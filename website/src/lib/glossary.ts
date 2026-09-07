@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse } from "yaml";
+import { TOPIC_KEYS, topicLabels } from "./topics";
 
 export interface GlossaryEntry {
   id: string;
@@ -11,16 +12,18 @@ export interface GlossaryEntry {
   note?: string;
   see?: { label: string; href: string }[];
   related?: string[];
+  /** The hands-on equivalent; builds the activities table on the glossary page. */
+  activity?: string;
 }
 
+// Glossary groups are the module topics, in their display order, plus the
+// apparatus. Entries render in this order regardless of data order.
 const CATEGORIES: Record<string, string> = {
-  core: "Core concepts",
-  "model-types": "Model types",
-  sampling: "Sampling and generation",
-  understanding: "Understanding and meaning",
-  advanced: "Advanced concepts",
-  "post-training": "Post-training and reasoning",
+  ...topicLabels,
+  materials: "Materials",
 };
+
+const CATEGORY_ORDER = [...TOPIC_KEYS, "materials"];
 
 let cached: GlossaryEntry[] | null = null;
 
@@ -51,19 +54,11 @@ export function getGlossaryByCategory(): {
   entries: GlossaryEntry[];
 }[] {
   const all = loadGlossary();
-  const seen = new Set<string>();
-  const order: string[] = [];
-  for (const entry of all) {
-    if (!seen.has(entry.category)) {
-      seen.add(entry.category);
-      order.push(entry.category);
-    }
-  }
-  return order.map((cat) => ({
-    label: CATEGORIES[cat] ?? cat,
+  return CATEGORY_ORDER.map((cat) => ({
+    label: CATEGORIES[cat],
     slug: cat,
     entries: all.filter((e) => e.category === cat),
-  }));
+  })).filter((c) => c.entries.length > 0);
 }
 
-export { CATEGORIES };
+export { CATEGORIES, CATEGORY_ORDER };
