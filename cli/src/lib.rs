@@ -26,8 +26,9 @@ pub use cutouts::{
 pub use error::{Error, Result};
 pub use ledger::{
     DEFAULT_COLUMNS as LEDGER_DEFAULT_COLUMNS, DEFAULT_ROWS as LEDGER_DEFAULT_ROWS, Follower,
-    LedgerEntry, LedgerSet, LedgerSheet, PaletteEntry, TextToken, check_palette, deal_into_ledgers,
-    default_palette, ledger_entries, palette_cycles, text_documents, trim_palette,
+    FollowerCut, LedgerEntry, LedgerSet, LedgerSheet, PaletteEntry, TextToken, check_palette,
+    deal_into_ledgers, default_palette, ledger_entries, palette_cycles, text_documents,
+    trim_palette, truncate_followers,
 };
 pub use model::{
     Book, ContextTable, Model, ModelSummary, MostCommonNgram, MostPopularContext, ProcessingStats,

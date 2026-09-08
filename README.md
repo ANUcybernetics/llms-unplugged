@@ -179,9 +179,24 @@ are dropped; apostrophes inside contractions are preserved.
   - `--columns <N>` (default 4), `--rows <N>` (default 12): follower cells on
     a row and rows on a page. The rows cycle through the palette `--columns`
     at a time, so twelve colours colour three rows and eight colour two; the
-    command warns about any prefix that runs past them, where the colours
+    command warns about any prefix that runs past them
+  - `--max-followers <N>`: keep only the `N` commonest followers of each
+    prefix and drop the rest, which is top-k sampling applied to the sheet.
+    Set it to `--columns` and every prefix fits one row however long the
+    text, so a set can be sized for the vocabulary it should have rather than
+    cut back until its widest row fits. Survivors keep the order the sheet
+    prints them in, and a row always keeps at least one follower. The tallies
+    printed are then the kept followers' counts, so a `--prefill tallies`
+    sheet is no longer what tallying that text by hand would produce, where the colours
     repeat
   - `--n <N>`, `--title`, `--author`, `--paper-size` as for `sheets`
+
+The command also warns when a set has a context that can be drawn but has no
+row of its own --- almost always the text's last token, when the budget leaves
+it appearing nowhere else. A group that reaches one has nothing to look up, so
+it is worth clearing (usually with a different `--max-tokens`) before printing.
+`ops/ledger-sweep.py` sweeps budgets and reports the same thing in its `dead`
+column, alongside the row and colour counts a room would need.
 
 Every subcommand also takes `--max-tokens <N>`, which reads only the first N
 tokens of the text (of each text, when several are given). The activities

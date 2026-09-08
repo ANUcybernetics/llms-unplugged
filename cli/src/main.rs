@@ -1,10 +1,10 @@
 use clap::{Args, Parser, Subcommand, ValueEnum};
 use llms_unplugged::{
-    Book, BookletJson, CjkMode, Corpus, CutoutSet, LEDGER_DEFAULT_COLUMNS, LEDGER_DEFAULT_ROWS,
-    LedgerSet, Metadata, Model, Normalizer, NormalizerConfig, PaletteEntry, ProcessingStats,
-    SampleError, SheetSet, append_tool_tokens, check_palette, deal_into_sheets, default_palette,
-    palette_cycles, repeat_cutout_tokens, shuffle_cutout_tokens, split_entries_into_books,
-    trim_palette, write_json,
+    Book, BookletJson, CjkMode, Corpus, CutoutSet, FollowerCut, LEDGER_DEFAULT_COLUMNS,
+    LEDGER_DEFAULT_ROWS, LedgerSet, Metadata, Model, Normalizer, NormalizerConfig, PaletteEntry,
+    ProcessingStats, SampleError, SheetSet, append_tool_tokens, check_palette, deal_into_sheets,
+    default_palette, palette_cycles, repeat_cutout_tokens, shuffle_cutout_tokens,
+    split_entries_into_books, trim_palette, write_json,
 };
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
@@ -398,6 +398,15 @@ struct LedgerArgs {
     /// unless `--sheets` pins it.
     #[arg(long, default_value_t = LEDGER_DEFAULT_ROWS)]
     rows: usize,
+
+    /// Keep only this many followers per prefix, dropping the rarest --- top-k
+    /// sampling applied to the sheet. Set it to `--columns` and every prefix
+    /// fits one row however long the text, so a set can be sized for its
+    /// vocabulary rather than cut back until its widest row fits. The tallies
+    /// printed are then the kept followers' counts, so a `--prefill tallies`
+    /// sheet no longer matches what tallying that text by hand would produce.
+    #[arg(long, value_name = "N")]
+    max_followers: Option<usize>,
 
     /// What the sheets come printed with. There is nothing to prefill without
     /// a corpus, so this and --blank are mutually exclusive.
@@ -882,6 +891,11 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
             "--rows must be at least 1".to_string(),
         ));
     }
+    if args.max_followers == Some(0) {
+        return Err(CliError::InvalidArgs(
+            "--max-followers must be at least 1".to_string(),
+        ));
+    }
 
     let palette = load_palette(args.palette.as_deref(), args.columns)?;
 
@@ -905,8 +919,15 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
             "Processed '{}' by {}",
             cutouts.metadata.title, cutouts.metadata.author
         );
-        let set = LedgerSet::from_cutouts(cutouts, args.sheets, args.columns, args.rows, palette)?;
-        report_ledger_deal(&set, args.sheets.is_some());
+        let (set, cut) = LedgerSet::from_cutouts(
+            cutouts,
+            args.sheets,
+            args.columns,
+            args.rows,
+            palette,
+            args.max_followers,
+        )?;
+        report_ledger_deal(&set, args.sheets.is_some(), cut, args.max_followers);
         set
     };
 
@@ -960,7 +981,41 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
 
 /// Say how a corpus was dealt: the prefixes that run past the palette, the
 /// rows per sheet, and any sheet that came out empty.
-fn report_ledger_deal(set: &LedgerSet, sheets_pinned: bool) {
+fn report_ledger_deal(
+    set: &LedgerSet,
+    sheets_pinned: bool,
+    cut: FollowerCut,
+    max_followers: Option<usize>,
+) {
+    if cut.entries > 0 {
+        let max = max_followers.unwrap_or_default();
+        eprintln!(
+            "Kept the {max} commonest follower(s) of {} prefix(es), dropping {} rarer \
+             one(s). The sheets are no longer the whole count of the text.",
+            cut.entries, cut.followers
+        );
+    }
+
+    // A group that draws a dead end finds no row to look up, which reads as
+    // the activity being broken rather than as the model ending. Where the
+    // cut falls decides whether there is one, so it is worth saying every
+    // time rather than leaving it to be discovered in a classroom.
+    let dead = set.dead_ends();
+    if !dead.is_empty() {
+        let named: Vec<String> = dead.iter().take(5).map(|d| format!("'{d}'")).collect();
+        let more = dead.len().saturating_sub(named.len());
+        eprintln!(
+            "Warning: {} context(s) can be drawn but have no row of their own, so a group that              reaches one has nowhere to look: {}{}. Usually the text's last token --- a different              --max-tokens generally clears it.",
+            dead.len(),
+            named.join(", "),
+            if more > 0 {
+                format!(" and {more} more")
+            } else {
+                String::new()
+            }
+        );
+    }
+
     let cycles = palette_cycles(&set.palette, set.columns);
     // The tall prefixes are the corpus's commonest, so the list is Zipfian
     // too: name the worst few and count the rest.
@@ -975,8 +1030,8 @@ fn report_ledger_deal(set: &LedgerSet, sheets_pinned: bool) {
         eprintln!(
             "Warning: {} prefix(es) have more than {} followers and spill onto a row where \
              the tally colours repeat those of the first: {}{}. A shorter text \
-             (--max-tokens), or more colours in --palette, keeps every prefix to {cycles} \
-             row(s).",
+             (--max-tokens), more colours in --palette, or dropping the rarest followers \
+             (--max-followers) keeps every prefix to {cycles} row(s).",
             tall.len(),
             cycles * set.columns,
             named.join(", "),

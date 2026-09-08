@@ -7,7 +7,7 @@
 //! The types here are the wire shape of `ledger.json`, which `ledger.typ`
 //! reads.
 
-use std::collections::HashMap;
+use std::collections::{BTreeSet, HashMap, HashSet};
 
 use serde::{Deserialize, Serialize};
 
@@ -141,6 +141,43 @@ pub fn ledger_entries(tokens: &[Cutout]) -> Vec<LedgerEntry> {
     entries
 }
 
+/// How much a `--max-followers` cut took: entries trimmed, followers dropped.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub struct FollowerCut {
+    pub entries: usize,
+    pub followers: usize,
+}
+
+/// Keep only the `max` commonest followers of every entry and drop the rest,
+/// which is top-k sampling done to the sheet rather than to the draw: a row
+/// too wide for its columns loses its rarest continuations instead of
+/// continuing onto a second row.
+///
+/// The survivors keep first-appearance order --- the order the sheet prints
+/// them in --- so only the membership changes, not the layout. Ties at the
+/// cut go to whichever the text produced first, since the sort is stable and
+/// the entries arrive in that order.
+///
+/// A row always keeps at least one follower, so this can never empty a row
+/// and never turns a prefix into a dead end; see [`LedgerSet::dead_ends`].
+pub fn truncate_followers(entries: &mut [LedgerEntry], max: usize) -> FollowerCut {
+    let mut cut = FollowerCut::default();
+    for entry in entries.iter_mut().filter(|e| e.followers.len() > max) {
+        let mut order: Vec<usize> = (0..entry.followers.len()).collect();
+        order.sort_by_key(|&i| std::cmp::Reverse(entry.followers[i].count));
+        let keep: HashSet<usize> = order.into_iter().take(max).collect();
+        cut.entries += 1;
+        cut.followers += entry.followers.len() - max;
+        let mut i = 0;
+        entry.followers.retain(|_| {
+            let keep_this = keep.contains(&i);
+            i += 1;
+            keep_this
+        });
+    }
+    cut
+}
+
 /// One participant's sheet: a contiguous alphabetical run of entries, so the
 /// header can say which prefixes it holds and "who has *the*?" is answered by
 /// reading the ranges rather than by everyone searching. Split into pages of
@@ -269,21 +306,31 @@ impl LedgerSet {
         columns: usize,
         rows_per_page: usize,
         palette: Vec<PaletteEntry>,
-    ) -> Result<Self> {
+        max_followers: Option<usize>,
+    ) -> Result<(Self, FollowerCut)> {
         let CutoutSet { metadata, tokens } = set;
-        let entries = ledger_entries(&tokens);
+        let mut entries = ledger_entries(&tokens);
+        // Before the deal, since dropping followers changes how many rows an
+        // entry takes and the deal balances sheets by row.
+        let cut = match max_followers {
+            Some(max) => truncate_followers(&mut entries, max),
+            None => FollowerCut::default(),
+        };
         let total_rows: usize = entries.iter().map(|e| e.rows(columns)).sum();
         let num_sheets = num_sheets.unwrap_or_else(|| total_rows.div_ceil(rows_per_page).max(1));
         let sheets = deal_into_ledgers(&entries, num_sheets, columns, rows_per_page)?;
-        Ok(Self {
-            title: metadata.title.clone(),
-            metadata: Some(metadata),
-            columns,
-            rows_per_page,
-            palette,
-            sheets,
-            text: text_documents(&tokens),
-        })
+        Ok((
+            Self {
+                title: metadata.title.clone(),
+                metadata: Some(metadata),
+                columns,
+                rows_per_page,
+                palette,
+                sheets,
+                text: text_documents(&tokens),
+            },
+            cut,
+        ))
     }
 
     /// Sheets of empty rows with no corpus, for a group training on a text of
@@ -326,6 +373,31 @@ impl LedgerSet {
             .collect();
         tall.sort_by_key(|e| std::cmp::Reverse(e.followers.len()));
         tall
+    }
+
+    /// Contexts the sheets can reach but cannot continue from: a follower
+    /// whose successor context has no row of its own, so a group that draws
+    /// it goes looking for a row that was never printed and stalls.
+    ///
+    /// Almost always the corpus's last token, when the cut leaves it
+    /// appearing nowhere else --- which makes this a property of where
+    /// `--max-tokens` lands rather than of the text, and so worth checking
+    /// every time a set is built. Truncating followers cannot add one (a row
+    /// keeps at least one follower, and no row is ever removed), only take
+    /// them out of reach.
+    pub fn dead_ends(&self) -> Vec<String> {
+        let contexts: HashSet<&[String]> = self.entries().map(|e| e.prefix.as_slice()).collect();
+        let mut out = BTreeSet::new();
+        for entry in self.entries() {
+            for follower in &entry.followers {
+                let mut next: Vec<String> = entry.prefix[1..].to_vec();
+                next.push(follower.text.clone());
+                if !contexts.contains(next.as_slice()) {
+                    out.insert(next.join(" "));
+                }
+            }
+        }
+        out.into_iter().collect()
     }
 }
 
@@ -487,6 +559,104 @@ mod tests {
     }
 
     #[test]
+    fn truncation_keeps_the_commonest_followers_in_sheet_order() {
+        // "a" is followed by one×3, two×2, three×2, four×1, in that order.
+        let mut entries = ledger_entries(&tokens_for(
+            "a one . a one . a one . a two . a two . a three . a three . a four",
+        ));
+        let a = |es: &[LedgerEntry]| {
+            es.iter()
+                .find(|e| e.prefix == ["a"])
+                .expect("a row for 'a'")
+                .followers
+                .iter()
+                .map(|f| (f.text.clone(), f.count))
+                .collect::<Vec<_>>()
+        };
+        assert_eq!(a(&entries).len(), 4);
+
+        let cut = truncate_followers(&mut entries, 3);
+        assert_eq!(
+            cut,
+            FollowerCut {
+                entries: 1,
+                followers: 1
+            }
+        );
+        // "four" goes, being rarest; the survivors keep the order the sheet
+        // prints them in rather than coming back sorted by count.
+        assert_eq!(
+            a(&entries),
+            vec![
+                ("one".to_string(), 3),
+                ("two".to_string(), 2),
+                ("three".to_string(), 2)
+            ]
+        );
+
+        // A tie at the cut goes to whichever the text produced first.
+        let cut = truncate_followers(&mut entries, 2);
+        assert_eq!(
+            a(&entries),
+            vec![("one".to_string(), 3), ("two".to_string(), 2)]
+        );
+        assert_eq!(cut.followers, 1);
+    }
+
+    #[test]
+    fn truncation_never_empties_a_row_or_adds_a_dead_end() {
+        let set = |max| {
+            let cutouts = CutoutSet::from_text(
+                "T".to_string(),
+                "A".to_string(),
+                &["see spot run . see spot jump . see spot sit . see spot . run , spot"],
+                NormalizerConfig::default(),
+                2,
+            );
+            LedgerSet::from_cutouts(cutouts, Some(2), 4, 12, default_palette(), max)
+                .unwrap()
+                .0
+        };
+        let whole = set(None);
+        let cut = set(Some(1));
+        // Every row survives the cut with something in it, so the prefixes a
+        // group can look up are unchanged...
+        assert_eq!(cut.entries().count(), whole.entries().count());
+        assert!(cut.entries().all(|e| !e.followers.is_empty()));
+        // ...and pruning followers only takes contexts out of reach.
+        let whole_dead: std::collections::HashSet<String> = whole.dead_ends().into_iter().collect();
+        assert!(cut.dead_ends().iter().all(|d| whole_dead.contains(d)));
+    }
+
+    #[test]
+    fn a_last_token_appearing_nowhere_else_is_a_dead_end() {
+        let set = |text: &str| {
+            let cutouts = CutoutSet::from_text(
+                "T".to_string(),
+                "A".to_string(),
+                &[text],
+                NormalizerConfig::default(),
+                2,
+            );
+            LedgerSet::from_cutouts(cutouts, Some(1), 4, 12, default_palette(), None)
+                .unwrap()
+                .0
+        };
+        // "jump" ends the text and appears nowhere else, so it is drawable
+        // but has no row: a group reaching it has nothing to look up.
+        assert_eq!(
+            set("see spot run . see spot jump").dead_ends(),
+            vec!["jump".to_string()]
+        );
+        // Cycle back to the opening word and every draw has somewhere to go.
+        assert!(
+            set("see spot run . see spot run . see")
+                .dead_ends()
+                .is_empty()
+        );
+    }
+
+    #[test]
     fn a_set_from_cutouts_follows_the_corpus_unless_sheets_are_pinned() {
         let set = |sheets| {
             let cutouts = CutoutSet::from_text(
@@ -496,7 +666,9 @@ mod tests {
                 NormalizerConfig::default(),
                 2,
             );
-            LedgerSet::from_cutouts(cutouts, sheets, 4, 3, default_palette()).unwrap()
+            LedgerSet::from_cutouts(cutouts, sheets, 4, 3, default_palette(), None)
+                .unwrap()
+                .0
         };
         // Six prefixes, one row each, at three rows a page: the sheet count
         // follows the rows.

@@ -140,7 +140,10 @@ pub fn process_text_for_ledger(
         config(CjkMode::Words),
         n,
     );
-    let ledger = LedgerSet::from_cutouts(set, sheets, DEFAULT_COLUMNS, DEFAULT_ROWS, palette)
-        .map_err(js_error)?;
+    // The browser generator prints whole rows: no --max-followers, so a wide
+    // prefix continues onto the row below as it always has.
+    let (ledger, _cut) =
+        LedgerSet::from_cutouts(set, sheets, DEFAULT_COLUMNS, DEFAULT_ROWS, palette, None)
+            .map_err(js_error)?;
     to_json(&ledger)
 }
