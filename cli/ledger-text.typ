@@ -73,20 +73,32 @@
 // full stop and a comma each their own token to the eye, and what keeps
 // "sam-i-am" from reading as three; the number is for finding the place
 // again. A dropped token gets a dash where its number would be.
+//
+// The glyph sits in a fixed-height, vertically centred band rather than on
+// its own line: a punctuation mark comes in its symbol tile, which is a box
+// of its own and taller than a word's line, so without the band the marks
+// print as taller boxes than the words beside them and the reader's eye
+// snags on every full stop.
+#let token-size = 12pt
+#let token-band = 5.2mm
+
 #let token-box(t, index) = box(
   inset: (x: 1.4mm, y: 1.1mm),
   stroke: 0.4pt + if t.keep { luma(160) } else { luma(215) },
   radius: 1.2mm,
   stack(
     dir: ttb,
-    spacing: 1mm,
-    align(
-      center,
-      token-text(
-        t.text,
-        punct-chars,
-        size: 12pt,
-        fill: if t.keep { black } else { luma(170) },
+    spacing: 0.8mm,
+    box(
+      height: token-band,
+      align(
+        horizon,
+        token-text(
+          t.text,
+          punct-chars,
+          size: token-size,
+          fill: if t.keep { black } else { luma(170) },
+        ),
       ),
     ),
     align(
