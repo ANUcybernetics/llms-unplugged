@@ -12,14 +12,26 @@ colour a single draw can need per group. Both numbers fall as the text is cut
 shorter, and neither is obvious from the text itself, so this runs the `ledger`
 subcommand across a range of token budgets and prints one row per budget:
 
-    budget  tokens  prefixes  widest  rows  colours  max_count  max_row
+    budget  tokens  prefixes  widest  rows  colours  max_count  max_row  dead
 
 `widest` is the most followers any prefix has, `rows` how many ledger rows
-that prefix takes at the column count, `colours` how many counter colours the
-set needs (rows times columns, capped at the palette the set was built with),
-`max_count` the largest single tally, and `max_row` the most tallies on one
-prefix, which is how many balls of one group colour the bucket finale can ask
-a group for.
+that prefix takes at the column count, `max_count` the largest single tally,
+and `max_row` the most tallies on one prefix, which is how many counters of
+one group colour a group can be asked for at once.
+
+`colours` is how many counter colours the room actually needs: the strips are
+coloured by column and the palette cycles down each page a rowful at a time,
+so a page long enough to come back round uses every colour in the palette
+whether or not any single prefix is wide enough to need them. Capping
+followers narrows a row, not a page --- print with a shorter --palette to
+narrow the room.
+
+`dead` counts the contexts a group can draw but has no row for --- almost
+always the text's last token, when the budget leaves it appearing nowhere
+else. A group that reaches one stalls with nothing to look up, so a budget
+with a non-zero `dead` is the wrong budget however good its other numbers
+are. It moves with the cut rather than with the text, so neighbouring
+budgets are usually fine.
 
 The sweep stops at the first budget the text is shorter than, printing that
 row as the whole text.
@@ -56,6 +68,7 @@ def ledger_json(
     budget: int | None,
     columns: int,
     palette: str | None,
+    max_followers: int | None,
 ) -> dict:
     """Run the ledger subcommand JSON-only and return ledger.json."""
     with tempfile.TemporaryDirectory() as out:
@@ -74,29 +87,72 @@ def ledger_json(
             cmd += ["--palette", palette]
         if budget is not None:
             cmd += ["--max-tokens", str(budget)]
-        subprocess.run(cmd, check=True, capture_output=True)
+        if max_followers is not None:
+            cmd += ["--max-followers", str(max_followers)]
+        done = subprocess.run(cmd, capture_output=True, text=True, check=False)
+        if done.returncode != 0:
+            # A budget the set cannot be built at (an entry taller than a
+            # page, say) is a fact about that budget, not a reason to abandon
+            # the sweep --- print it in place and carry on to the next.
+            raise LedgerFailed(done.stderr.strip().splitlines()[-1])
         return json.loads((Path(out) / "ledger.json").read_text())
+
+
+class LedgerFailed(Exception):
+    """The ledger subcommand refused a budget; the message says why."""
+
+
+def dead_ends(entries: list[dict]) -> list[str]:
+    """Contexts reachable as a continuation that have no row of their own.
+
+    The successor of (prefix, follower) is the prefix shifted along by one
+    with the follower appended, which for bigrams is just the follower.
+    """
+    contexts = {tuple(e["prefix"]) for e in entries}
+    out = set()
+    for e in entries:
+        for f in e["followers"]:
+            nxt = tuple(e["prefix"][1:]) + (f["text"],)
+            if nxt not in contexts:
+                out.add(" ".join(nxt))
+    return sorted(out)
+
+
+def colours_used(data: dict, columns: int) -> int:
+    """Counter colours any strip in the set takes.
+
+    The palette cycles down a page by physical row, so this counts the row
+    positions the pages actually reach rather than the rows one prefix needs.
+    """
+    cycles = max(1, len(data["palette"]) // columns)
+    reached = set()
+    for sheet in data["sheets"]:
+        for page in sheet["pages"]:
+            row = 0
+            for e in page:
+                for r in range(max(1, -(-len(e["followers"]) // columns))):
+                    reached.add((row + r) % cycles)
+                row += max(1, -(-len(e["followers"]) // columns))
+    return len(reached) * columns
 
 
 def stats(data: dict, columns: int) -> dict:
     entries = [e for sheet in data["sheets"] for page in sheet["pages"] for e in page]
     widest = max((len(e["followers"]) for e in entries), default=0)
     rows = max(1, -(-widest // columns))
-    # The palette is flat and the rows cycle through it `columns` at a time,
-    # so this is how many rows the set has distinct colours for.
-    cycles = len(data["palette"]) // columns
     return {
         "tokens": data["metadata"]["total_tokens"],
         "prefixes": len(entries),
         "widest": widest,
         "rows": rows,
-        "colours": min(rows, cycles) * columns,
+        "colours": colours_used(data, columns),
         "max_count": max(
             (f["count"] for e in entries for f in e["followers"]), default=0
         ),
         "max_row": max(
             (sum(f["count"] for f in e["followers"]) for e in entries), default=0
         ),
+        "dead": len(dead_ends(entries)),
         # Absent when the budget was not needed: the text was shorter.
         "cut": "max_tokens" in data["metadata"],
     }
@@ -111,6 +167,7 @@ COLUMNS = (
     "colours",
     "max_count",
     "max_row",
+    "dead",
 )
 
 
@@ -131,6 +188,10 @@ def sweep(
         str | None,
         typer.Option(help="Counter colours as the ledger subcommand takes them"),
     ] = None,
+    max_followers: Annotated[
+        int | None,
+        typer.Option(help="Cap followers per prefix, as the ledger subcommand does"),
+    ] = None,
     cli: Annotated[
         Path, typer.Option(help="Path to the llms_unplugged binary")
     ] = DEFAULT_CLI,
@@ -144,14 +205,25 @@ def sweep(
         print(corpus)
         print_row(list(COLUMNS))
         for budget in range(start, stop + 1, step):
-            s = stats(ledger_json(cli, corpus, budget, columns, palette), columns)
+            try:
+                data = ledger_json(cli, corpus, budget, columns, palette, max_followers)
+            except LedgerFailed as failed:
+                print(f"{budget:>6}  {failed}")
+                continue
+            s = stats(data, columns)
             label = str(budget) if s["cut"] else "full"
             print_row([label] + [str(s[k]) for k in COLUMNS[1:]])
             if not s["cut"]:
                 break
         else:
-            s = stats(ledger_json(cli, corpus, None, columns, palette), columns)
-            print_row(["full"] + [str(s[k]) for k in COLUMNS[1:]])
+            try:
+                data = ledger_json(cli, corpus, None, columns, palette, max_followers)
+            except LedgerFailed as failed:
+                print(f"{'full':>6}  {failed}")
+            else:
+                print_row(
+                    ["full"] + [str(stats(data, columns)[k]) for k in COLUMNS[1:]]
+                )
         print()
 
 
