@@ -108,11 +108,16 @@
     color: #fff;
   }
 
+  /* Fixed width and centred content: the sentence changes length at every
+     step, and a content-sized line would re-centre and drag the whole
+     walkthrough sideways under auto-animate. */
   .pair {
     display: flex;
+    justify-content: center;
     align-items: center;
     gap: 0.5em;
     margin: 0;
+    inline-size: min(100%, 46rem);
     font-size: 0.95em;
   }
 

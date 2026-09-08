@@ -22,6 +22,11 @@
     drawn?: number;
     /** Show the bag empty: the row is there, nothing has gone in yet. */
     empty?: boolean;
+    /**
+     * Load only the first `loaded` followers' counters, for a slide sequence
+     * that fills the bag one colour at a time. Omit to load the whole row.
+     */
+    loaded?: number;
     id?: string;
   }
 
@@ -32,6 +37,7 @@
     palette = LEDGER_PALETTE,
     drawn,
     empty = false,
+    loaded,
     id = "ledger-bag",
   }: Props = $props();
 
@@ -43,21 +49,26 @@
   const drawnCounter = $derived(drawnIndex >= 0 ? counters[drawnIndex] : null);
 
   // Counters sit in rows inside the bag's body, bottom row first, so a bag
-  // with a few counters looks part-full rather than floating.
+  // with a few counters looks part-full rather than floating. Every counter's
+  // place is fixed by the whole row's bag, never by how many are on screen:
+  // a partly-loaded bag and a drawn-from one hold the rest exactly where the
+  // full bag had them, so auto-animate moves only the counter that left.
   const PER_ROW = 7;
   const R = 11;
-  function place(k: number): { x: number; y: number } {
+  function place(k: number, total: number): { x: number; y: number } {
     const row = Math.floor(k / PER_ROW);
     const col = k % PER_ROW;
-    const inRow = Math.min(PER_ROW, counters.length - (drawnIndex >= 0 ? 1 : 0) - row * PER_ROW);
+    const inRow = Math.min(PER_ROW, total - row * PER_ROW);
     const x = 120 + (col - (inRow - 1) / 2) * 25;
     return { x, y: 206 - row * 24 };
   }
+  const inBag = $derived(
+    loaded === undefined ? counters.length : counters.filter((c) => c.index < loaded).length,
+  );
   const pile = $derived(
     counters
-      .map((c, k) => ({ ...c, k }))
-      .filter((c) => c.k !== drawnIndex)
-      .map((c, k) => ({ ...c, ...place(k) })),
+      .map((c, k) => ({ ...c, k, ...place(k, counters.length) }))
+      .filter((c) => c.k < inBag && c.k !== drawnIndex),
   );
 </script>
 
@@ -96,10 +107,10 @@
       <span class="ledger-counter" style="--c: {drawnCounter.colour.hex}"></span>
       <span class="name">{drawnCounter.colour.name}</span>
       <span class="word">{drawnCounter.follower.text}</span>
-    {:else if empty}
+    {:else if empty || inBag === 0}
       <span class="hint">empty</span>
     {:else}
-      <span class="hint">{counters.length} counters, one per mark</span>
+      <span class="hint">{inBag} counters, one per mark</span>
     {/if}
   </div>
 </div>

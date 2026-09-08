@@ -29,6 +29,9 @@
     highlight?: number;
     /** Follower index whose newest mark is drawn in gold: the one just added. */
     fresh?: number;
+    /** Drop the paper ground and the centring margin: the row is one line of
+     * a sheet that is itself the paper (LedgerSheet), not a free-standing one. */
+    bare?: boolean;
     /** data-id stem, so Reveal auto-animate can match the cells across slides. */
     id?: string;
   }
@@ -42,6 +45,7 @@
     showTallies = true,
     highlight,
     fresh,
+    bare = false,
     id = "ledger-row",
   }: Props = $props();
 
@@ -91,7 +95,9 @@
 {/snippet}
 
 <div
-  class="ledger-row paper-ground"
+  class="ledger-row"
+  class:paper-ground={!bare}
+  class:bare
   style="--columns: {columns}"
   data-id={id}
   role="table"
@@ -143,12 +149,21 @@
     display: inline-grid;
     padding: 0;
     margin-inline: auto;
-    font-size: 1.3rem;
+    font-size: var(--row-size, 1.3rem);
   }
 
+  .ledger-row.bare {
+    margin-inline: 0;
+  }
+
+  /* Fixed track widths, not minmax(_, auto): a row sized to its own words is
+     a different width for every prefix, so the walkthrough's frames would
+     re-centre the row (and the bag beside it) on every slide and auto-animate
+     would slide the lot sideways. Every row the same width means only the
+     things that actually changed move. */
   .prow {
     display: grid;
-    grid-template-columns: 5em repeat(var(--columns), minmax(4.6em, auto) 4.2em);
+    grid-template-columns: var(--stub, 6em) repeat(var(--columns), var(--cell, 5.6em) 4.2em);
     grid-auto-rows: 2.9em;
     align-items: stretch;
   }

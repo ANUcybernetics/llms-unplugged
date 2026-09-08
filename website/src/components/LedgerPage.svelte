@@ -35,12 +35,17 @@
 </div>
 
 <style>
+  /* A fixed box, not one that grows with the story: a content-sized line
+     re-centres every time a word is added, which slides every word already
+     written and reads as the new word landing in the middle rather than at
+     the end. */
   .page {
     display: flex;
     align-items: baseline;
     gap: 0.8em;
     padding: 0.45em 0.9em;
     margin-inline: auto;
+    inline-size: min(100%, 44rem);
     font-size: 1.4rem;
   }
 
