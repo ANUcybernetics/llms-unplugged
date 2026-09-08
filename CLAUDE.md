@@ -17,6 +17,8 @@ manual (pen-and-paper) and automated tools.
   [llms-unplugged-corpora](https://github.com/benswift/llms-unplugged-corpora)
   repo --- clone it and copy `texts/*.txt` in here
 - `backlog/` --- task management
+- `Makefile` --- per-lesson workshop packs: `make pack-<slug>` zips everything
+  that lesson needs printed into `out/packs/`, and holds the exact CLI runs
 
 The README documents the CLI subcommands and their options; read it rather than
 guessing flags.
@@ -27,6 +29,7 @@ guessing flags.
 cd cli && cargo build --release   # build the CLI
 cd cli && cargo test              # CLI tests
 cd handouts && make               # build handout PDFs
+make pack-<lesson-slug>           # zip a lesson's printouts into out/packs/
 cd website && pnpm run dev        # website dev server
 # website tests --- build first: test/build.test.ts reads dist/
 cd website && pnpm run build && pnpm test

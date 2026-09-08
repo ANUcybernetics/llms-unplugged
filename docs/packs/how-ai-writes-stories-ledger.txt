@@ -1,0 +1,48 @@
+How AI writes stories (ledger) --- what to print
+================================================
+
+A 90-minute workshop for groups of 4-5. Everything here is A4 landscape.
+Print one set per group; with more than five groups the sets repeat, so
+spread the repeats around the room rather than seating two groups with the
+same book side by side.
+
+The lesson entry, with timings and the rest of the materials list:
+https://www.llmsunplugged.org/lessons/how-ai-writes-stories-ledger/
+
+
+generation/  --- one book per group, already tallied
+-----------------------------------------------------
+Each folder holds:
+  ledger.pdf     a facilitator brief, then five sheets. Print single-sided
+                 and hand out one sheet per person.
+  counters.pdf   coloured squares to cut up, if you have no counters.
+                 Print double-sided (either binding) --- one page gives
+                 eight of each colour.
+
+Every set is capped at four followers a word, so every word sits on one row.
+Four of the books are cut to their first 140 tokens; Green Eggs and Ham is
+held at 100, because the slides walk through that set row by row.
+
+
+training/  --- one text per group, tallies left to make
+--------------------------------------------------------
+Each folder holds:
+  ledger.pdf     brief plus five sheets with the words printed and the
+                 strips empty. One sheet per person.
+  counters.pdf   as above.
+  text.pdf       the text as the tokeniser read it, numbered token by
+                 token. One copy per group, for whoever reads aloud.
+
+Give every group a different text --- the finale pools them, and it only
+works if no two groups hold the same model.
+
+
+Also needed, not in this pack
+------------------------------
+- counters in eight colours (red, blue, green, yellow, pink, purple, black,
+  white), at least eight of each per group, a bag and a tub per group
+- butchers paper for the class story, pen and paper per group
+- a projector, a whiteboard, and a chatbot for part 1
+
+Rebuild this pack with `make pack-how-ai-writes-stories-ledger` in the
+llms-unplugged repo.

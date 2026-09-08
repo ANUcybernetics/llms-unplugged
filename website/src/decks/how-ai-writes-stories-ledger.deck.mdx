@@ -35,7 +35,11 @@ Every group generates from a different picture book (see the lesson entry for
    `llms_unplugged ledger -i data/green-eggs-and-ham.txt --max-tokens 100
    --sheets 5 --palette @cli/ledger-palette-eight.json --prefill tallies`,
    whose palette is the first eight of the CLI's default
-   (cli/ledger-palette.json), which is what PALETTE below slices. The firstRow
+   (cli/ledger-palette.json), which is what PALETTE below slices. The Makefile
+   prints this set at exactly these settings, and holds Green Eggs at 100
+   tokens while the other four books go to 140 for that reason: at 140 the
+   counts and row positions --- so the strip colours --- no longer match what
+   is below, and every ROW_* would have to be re-read off the new sheets. The firstRow
    passed to each widget is the row's physical position on its sheet, which is
    what decides its colours, so a regenerated set (a different --max-tokens, a
    different sheet count) means re-reading the rows and positions off the new
@@ -233,17 +237,20 @@ sheet knows what the marks are for before it makes any. Seven parts:
   Part 7 (5 min)   Wrap-up + Q&A (yr5-6-wrap-up)
 Allow 5 min for arrival/settle/introductions before Part 1.
 
-The sets are printed with four counter colours, and every text is chosen so
-that no word has more than four followers: one row per word, no continuation
-rows. The slides for the two-row case are parked in ledger-generation, ready
-for a set that needs them.
+Every set is built so that no word has more than four followers: one row per
+word, no continuation rows. The slides for the two-row case are parked in
+ledger-generation, ready for a set that needs them.
 
 Before each delivery:
-- print the pre-tallied picture-book sets (5 sheets each, plus the brief), a
-  different book per group; print the school-day sets with --prefill
-  prefixes, a different text per group, with their text.pdf pages
-- counters in the palette's colours, at least 8 of each per group (the largest
-  tally in any set), one bag and one tub per group
+- run `make pack-how-ai-writes-stories-ledger` in the repo. It builds every
+  set this workshop needs --- the five pre-tallied picture books for the
+  generation round and the five school-day training sets, each with its
+  counters page and the training texts with their numbered text pages --- and
+  zips them into out/packs/ with a README saying what to print. The Makefile
+  holds the exact commands; don't rebuild them by hand.
+- counters in the palette's eight colours, at least 8 of each per group (the
+  largest tally in any set), one bag and one tub per group
+- butchers paper for the class story
 - a few "predict the next word" prompts for the whiteboard
 ```
 

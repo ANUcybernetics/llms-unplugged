@@ -79,21 +79,13 @@ group's model could.
 ## You will need
 
 - one pre-tallied picture-book set per group, five sheets and eight colours, a
-  different book per group. Built with
-  `llms_unplugged ledger -i data/<book>.txt --max-tokens <N> --sheets 5 --palette @cli/ledger-palette-eight.json --prefill tallies`.
-  The budget is per book: it is the longest run of the text in which no word
-  has more than four followers, which is what keeps every word to a single row
-  (`ops/ledger-sweep.py` finds it):
-  - `green-eggs-and-ham` at `--max-tokens 100` (the book the slides walk
-    through)
-  - `the-very-hungry-caterpillar` at `--max-tokens 80`
-  - `were-going-on-a-bear-hunt` at `--max-tokens 55`
-  - `fun-with-dick-and-jane` at `--max-tokens 50`
-  - `the-cat-in-the-hat` at `--max-tokens 40`
-- one training set per group, each from a different `data/originals/school-day-*.txt`
-  text, printed with the same `--palette` and `--prefill prefixes`, plus its
-  `text.pdf`
-- counters in that palette's eight colours (red, blue, green, yellow, pink,
+  different book per group: `green-eggs-and-ham` (the book the slides walk
+  through), `the-very-hungry-caterpillar`, `were-going-on-a-bear-hunt`,
+  `fun-with-dick-and-jane` and `the-cat-in-the-hat`
+- one training set per group, each from a different
+  `data/originals/school-day-*.txt` text, with the words printed and the strips
+  empty, plus its `text.pdf`
+- counters in the palette's eight colours (red, blue, green, yellow, pink,
   purple, black, white), at least eight of each per group (the largest tally in
   any set), a cloth bag per group, and a tub per group to tip the bag back into
   between draws
@@ -101,12 +93,25 @@ group's model could.
 - pen and paper per group, a whiteboard, a projector, and access to a <GlossaryTerm id="chatbot">chatbot</GlossaryTerm>
   for part 1
 
+## Printing it
+
+`make pack-how-ai-writes-stories-ledger` in the
+[repo](https://github.com/ANUcybernetics/llms-unplugged) builds every set above
+and zips them into `out/packs/`, with a README naming what to print and how many
+copies. The `Makefile` holds the exact commands, so the sets are the same every
+delivery rather than rebuilt from memory.
+
+Every picture-book set is built with `--max-followers 4`, which drops each
+word's rarest continuations so that every word fits a single row however long
+the text. The token budget is then free to be chosen for the model rather than
+for the widest row: 140 for four of the books, and 100 for _Green Eggs and Ham_,
+which the slides walk through row by row and so has to stay the set they were
+written against. Change either number and re-run `ops/ledger-sweep.py` --- its
+`dead` column is the one that matters, since a group that draws a word with no
+row of its own stalls with nothing to look up.
+
 ## Before you deliver
 
-- run the sweep script (`ops/ledger-sweep.py`) if you change a text or its
-  length: no word in any set may have more than four followers (the slides and
-  the sheets assume one row per word), and the largest tally count is how many
-  counters of one colour a group can need
 - with more than five groups, books and school-day texts repeat; spread the
   repeats so that groups sharing a book aren't side by side
 - the story slide in part 1 has fill-in boxes for the teacher's name, the year

@@ -49,6 +49,17 @@ counter colours set to match what your room has. If you prefer working offline
 or want the options the browser does not expose, build the CLI tool from source
 (see below).
 
+## Printing a workshop
+
+`make pack-<lesson-slug>` builds every printout one lesson needs and zips it
+into `out/packs/`, with a README naming what to print and how many copies. The
+`Makefile` holds the exact `llms_unplugged` runs for each lesson, so a delivery
+is a download rather than a page of commands retyped from the lesson entry:
+
+```bash
+make pack-how-ai-writes-stories-ledger
+```
+
 ## Creating your own N-gram booklets
 
 Process any text corpus into a typeset N-gram model booklet for dice-based text
