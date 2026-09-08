@@ -7,9 +7,8 @@
 
 # but keep frankenstein.txt as the example corpus used in the docs
 !/data/frankenstein.txt
-# and sycophancy.txt for the sycophancy lesson activity
-!/data/sycophancy.txt
-!/data/school-day-*.txt
+# and every text written for an activity rather than sourced from somewhere
+!/data/originals/
 
 # default model name
 model.json

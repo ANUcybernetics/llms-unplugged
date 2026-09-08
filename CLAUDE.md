@@ -11,8 +11,9 @@ manual (pen-and-paper) and automated tools.
 - `handouts/` --- Typst standalone materials (worksheets, designer references)
 - `website/` --- project website (Astro), including all lessons
 - `data/` --- input text corpora (`*.txt` with YAML frontmatter). Gitignored
-  apart from `frankenstein.txt`, `sycophancy.txt` and the `school-day-*.txt`
-  set; the full set, with provenance and cleaning recipes, is the private
+  apart from `frankenstein.txt` (the docs example) and `data/originals/`, the
+  texts written for the activities themselves rather than sourced from
+  somewhere; the rest, with provenance and cleaning recipes, is the private
   [llms-unplugged-corpora](https://github.com/benswift/llms-unplugged-corpora)
   repo --- clone it and copy `texts/*.txt` in here
 - `backlog/` --- task management

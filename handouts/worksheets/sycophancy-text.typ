@@ -3,7 +3,7 @@
 //
 // Training-data sheet for the sycophancy section of the grid workshop: pairs
 // tally this flattery corpus into their existing grid, then regenerate. The
-// corpus text is read at compile time from data/sycophancy.txt (the single
+// corpus text is read at compile time from data/originals/sycophancy.txt (the single
 // source of truth, also consumed by the CLI), so there is nothing to keep in
 // sync here. Requires the project root to be the repo root: the Makefile passes
 // `--root ..`.
@@ -34,7 +34,7 @@ everything, and treat each punctuation mark as its own token.
   // Read the corpus from the source of truth, strip the YAML frontmatter, and
   // flow the sentences into one paragraph.
   #(
-    read("/data/sycophancy.txt")
+    read("/data/originals/sycophancy.txt")
       .replace(regex("(?s)^---.*?---\n"), "")
       .trim()
       .replace("\n", " ")

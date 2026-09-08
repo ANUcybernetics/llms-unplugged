@@ -121,12 +121,12 @@ cargo build --release
 ./target/release/llms_unplugged sample -i ../data/frankenstein.txt -p "the" -t 30 --seed 42
 
 # Generate token cutouts (single-sided)
-./target/release/llms_unplugged cutouts -i ../data/sycophancy.txt -n 2
+./target/release/llms_unplugged cutouts -i ../data/originals/sycophancy.txt -n 2
 
 # Generate double-sided cutouts: each cutout page is paired with a mirrored
 # back so the same cutouts appear on both faces of each sheet. Print with
 # "flip on short edge" binding. Currently assumes a4 landscape.
-./target/release/llms_unplugged cutouts -i ../data/sycophancy.txt -n 2 --duplex
+./target/release/llms_unplugged cutouts -i ../data/originals/sycophancy.txt -n 2 --duplex
 
 # Generate per-participant search sheets: no cutting, one page each. The corpus
 # is shuffled and dealt round-robin, so the room collectively holds the model.

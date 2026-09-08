@@ -11,7 +11,7 @@ all: $(PDF_FILES)
 
 # SOURCE_DATE_EPOCH=0 ensures reproducible builds (no timestamp metadata).
 # --root .. is the repo root so worksheets can read shared corpora in data/
-# (e.g. sycophancy-text.typ reads data/sycophancy.txt as its source of truth).
+# (e.g. sycophancy-text.typ reads data/originals/sycophancy.txt as its source of truth).
 $(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.typ
 	@echo "Processing typst $<..."
 	@mkdir -p $(dir $@)
@@ -20,7 +20,7 @@ $(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.typ
 # Extra (non-.typ) prerequisites: files a worksheet reads at compile time,
 # which the pattern rule above can't see --- without these, editing the data
 # leaves a stale PDF that `publish` would happily ship.
-$(OUTPUT_DIR)/worksheets/sycophancy-text.pdf: ../data/sycophancy.txt
+$(OUTPUT_DIR)/worksheets/sycophancy-text.pdf: ../data/originals/sycophancy.txt
 $(OUTPUT_DIR)/worksheets/grid.pdf: worksheets/title-logo.svg
 
 clean:
