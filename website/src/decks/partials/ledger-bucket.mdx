@@ -5,7 +5,7 @@
 ![bg](./assets/bg-bucket.avif)
 
 ```notes
-Optional section --- drop if running short on time. Put the bucket in the middle of the room and give each group a colour: every ball they throw is that colour. With more than five groups, the groups that trained on the same text share a colour and throw together --- they hold the same model, so pooling their throws is the maths anyway.
+Optional section --- drop if running short on time. Butchers paper up the front for the class story; every group keeps its own sheets, bag and tub.
 ```
 
 ---
@@ -25,44 +25,38 @@ Ask each group what came after "the" in their text. Nobody has "volcano" except 
 
 ---
 
-## The bucket
+## The same word, five different rows
+
+<div class="ledger-stack">
+  <LedgerRow entry={ROW_THE_BELL} firstRow={4} palette={PALETTE} />
+  <LedgerRow entry={ROW_THE_BUS} firstRow={5} palette={PALETTE} />
+  <LedgerRow entry={ROW_THE_DOG} firstRow={7} palette={PALETTE} />
+  <LedgerRow entry={ROW_THE_RAIN} firstRow={0} palette={PALETTE} />
+  <LedgerRow entry={ROW_THE_VOLCANO} firstRow={0} palette={PALETTE} />
+</div>
+
+same word, five models, five different answers
+
+```notes
+Read down the followers and you can name the text from them: bell and key, bus and air, classroom and dog, roof and sun, volcano and foam. Nobody's row is wrong --- each one is an honest count of the text that group read.
+```
+
+---
+
+## How we'll do it
 
 ![bg right:40%](./assets/bg-bucket.avif)
 
 I'll call out the word we're on
 
-if your sheets have a row for it, throw in **one ball of your group's colour for
-every mark on that row**
+**hands up** if your sheets have a row for it --- I'll pick a group
 
-I draw one ball --- that group draws from **their own bag** to get the next word
+that group loads their bag from that row and draws: their word is the **class's
+next word**
 
 ```notes
-Two draws per word: the bucket picks the group, the group's bag picks the word. Groups without the row throw nothing. A group whose text used the word a lot throws more balls and gets picked more --- the more your text said it, the more say you get.
+Two steps per word: the show of hands picks the group, the group's bag picks the word. Spread the picks around --- a group with a rare word is worth choosing when you want the class story to surprise people. Write each word on the butchers paper as it lands, and the word you just wrote is the next one you call.
 ```
-
----
-
-{/* _animate: bucket */}
-
-## The word is `the`
-
-<LedgerBucket prefix="the" groups={BUCKET_GROUPS} palette={PALETTE} empty />
-
----
-
-{/* _animate: bucket */}
-
-## Everyone throws
-
-<LedgerBucket prefix="the" groups={BUCKET_GROUPS} palette={PALETTE} />
-
----
-
-{/* _animate: bucket */}
-
-## Draw one
-
-<LedgerBucket prefix="the" groups={BUCKET_GROUPS} palette={PALETTE} drawn={3} />
 
 ---
 
@@ -77,7 +71,7 @@ the class story grows by one word --- and the new word is the next one we hunt
 for
 
 ```notes
-Write the class story on butchers paper as it grows. Keep going for a few sentences; a word only one group has (volcano, bus, dog) is the fun moment --- the class model can say things most groups never saw.
+Six counters, and blue comes out: "volcano". Keep going for a few sentences; a word only one group has (volcano, bus, dog) is the fun moment --- the class model can say things most groups never saw.
 ```
 
 ---

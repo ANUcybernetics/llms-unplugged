@@ -5,20 +5,36 @@
 ![bg](./assets/bg-ledger-title.avif)
 
 ```notes
-Hand out the sheets now, one per person: every group gets a different picture book. Keep the bags of balls back until the activity slide --- nobody is told what the colours mean yet, and a bag on the table is a bag on the floor.
+Hand out the sheets now, one per person. Keep the bags of counters back until the activity slide --- nobody is told what the colours mean yet, and a bag on the table is a bag on the floor.
 ```
 
 ---
 
+{/* _animate: sheet */}
+
 ## This is a language model
 
-<LedgerRow entry={ROW_I} firstRow={3} palette={PALETTE} />
+<LedgerSheet entries={SHEET_THREE} palette={PALETTE} />
 
-one row of it, anyway: after the word `I`, this book said `am` eight times, `do`
-five times, and `would` twice
+one sheet of it: a word down the left, and beside it every word that came next
 
 ```notes
-Read the row aloud as a sentence before saying anything about colours. The Green Eggs groups can find this exact row (it's on the "green → like" sheet); every other group finds the row for a word they like in their own book and reads it the same way. The marks are counts: how many times the book went from this word to that one. That's the entire model --- a table of "what usually comes next".
+Take your time here. Left column: words from the book. Along each row: the words that followed, and a mark for every time the book did it. That's the whole thing --- no rules, no grammar, just a count of what came next. Let them look at it before you touch a single row.
+```
+
+---
+
+{/* _animate: sheet */}
+
+## One row at a time
+
+<LedgerSheet entries={SHEET_THREE} palette={PALETTE} focus={3} />
+
+after the word `I`, this book said `am` eight times, `do` five times, and
+`would` twice
+
+```notes
+Read the row aloud as a sentence. The Green Eggs groups can find this exact row; every other group finds the row for a word they like in their own book and reads it the same way. Two or three groups read theirs out.
 ```
 
 ---
@@ -41,10 +57,10 @@ These are the Green Eggs headers; every book deals differently, so each group pr
 
 <LedgerRow entry={ROW_I} firstRow={3} palette={PALETTE} highlight={1} />
 
-each strip has a colour, and the balls in your bag come in the same colours
+each strip has a colour, and the counters in your bag come in the same colours
 
-a purple ball means **the word beside the purple strip**
+a purple counter means **the word beside the purple strip**
 
 ```notes
-Now the colours. Hold up a purple ball: on this row, purple means "do". On a different row purple means something else --- the colour names the column, not the word. That's why one bag of balls works for every row, and for every book in the room.
+Now the colours. Hold up a purple counter: on this row, purple means "do". On a different row purple means something else --- the colour names the column, not the word. That's why one bag of counters works for every row, and for every book in the room.
 ```

@@ -1,10 +1,17 @@
 /* The ledger deck's generation walkthrough: a row and its bag side by side,
-   under the story-so-far line, all glided between frames by auto-animate. */
+   under the story-so-far line, all glided between frames by auto-animate.
+
+   A fixed two-track grid rather than a centred flex row: the bag's column is
+   held open even on a frame that has no bag ("only one place to go"), so the
+   row keeps its place across the whole walkthrough and auto-animate is left
+   with only the changes that matter --- the counters going in, the one coming
+   out, the word landing on the page. */
 .reveal .ledger-step {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 15rem;
   align-items: center;
   justify-content: center;
-  gap: 1em;
+  gap: 1rem;
   margin-inline: auto;
 }
 
@@ -12,10 +19,19 @@
    than the row's own auto margins pushing the bag to the edge. */
 .reveal .ledger-step .ledger-row {
   margin-inline: 0;
+  --row-size: 1.15rem;
 }
 
-/* Several rows read top to bottom, for a run of hand-overs shown at once. */
-.reveal .ledger-step.ledger-stack {
+/* Several rows read top to bottom, for a set of rows compared at once (the
+   five groups' rows for the same word in the finale). */
+.reveal .ledger-stack {
+  display: flex;
   flex-direction: column;
-  gap: 0.6em;
+  align-items: center;
+  gap: 0.3rem;
+  margin-inline: auto;
+}
+
+.reveal .ledger-stack .ledger-row {
+  --row-size: 1rem;
 }

@@ -13,7 +13,7 @@
 write down a starting word, then repeat:
 
 1. find the row for the last word you wrote
-2. **load the bag**: one ball per mark, in the colour of its strip
+2. **load the bag**: one counter per mark, in the colour of its strip
 3. **draw one** without looking --- its colour names the next word
 4. write it down, tip the bag back into the tub, and hand over to whoever has
    the next row
@@ -35,6 +35,10 @@ Walk through the next slides slowly --- the mechanics are simple but the hand-ov
   <LedgerBag entry={ROW_I} firstRow={3} palette={PALETTE} empty />
 </div>
 
+```notes
+Somebody has the row for "I". Three words ever followed it in this book, and the bag is empty.
+```
+
 ---
 
 {/* _animate: draw */}
@@ -44,12 +48,63 @@ Walk through the next slides slowly --- the mechanics are simple but the hand-ov
 <LedgerPage text="I" />
 
 <div class="ledger-step">
+  <LedgerRow entry={ROW_I} firstRow={3} palette={PALETTE} highlight={0} />
+  <LedgerBag entry={ROW_I} firstRow={3} palette={PALETTE} loaded={1} />
+</div>
+
+```notes
+First cell: "am", eight marks, pink strip. Count them out --- eight pink counters into the bag.
+```
+
+---
+
+{/* _animate: draw */}
+
+## Load the bag
+
+<LedgerPage text="I" />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_I} firstRow={3} palette={PALETTE} highlight={1} />
+  <LedgerBag entry={ROW_I} firstRow={3} palette={PALETTE} loaded={2} />
+</div>
+
+```notes
+Next cell: "do", five marks, purple strip. Five purple counters.
+```
+
+---
+
+{/* _animate: draw */}
+
+## Load the bag
+
+<LedgerPage text="I" />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_I} firstRow={3} palette={PALETTE} highlight={2} />
+  <LedgerBag entry={ROW_I} firstRow={3} palette={PALETTE} loaded={3} />
+</div>
+
+```notes
+Last cell: "would", two marks, black strip. Two black counters, and the row is in the bag.
+```
+
+---
+
+{/* _animate: draw */}
+
+## The bag is the row
+
+<LedgerPage text="I" />
+
+<div class="ledger-step">
   <LedgerRow entry={ROW_I} firstRow={3} palette={PALETTE} />
   <LedgerBag entry={ROW_I} firstRow={3} palette={PALETTE} />
 </div>
 
 ```notes
-Fifteen balls go in: eight pink for "am", five purple for "do", two black for "would". The bag now holds the row's counts --- the more marks, the more balls, the more likely.
+Fifteen counters for fifteen marks. The bag now holds the row's counts --- the more marks, the more counters, the more likely. Ask before you draw: which colour do you think will come out?
 ```
 
 ---
@@ -58,15 +113,15 @@ Fifteen balls go in: eight pink for "am", five purple for "do", two black for "w
 
 ## Draw one
 
-<LedgerPage text="I would" fresh />
+<LedgerPage text="I am" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_I} firstRow={3} palette={PALETTE} highlight={2} />
-  <LedgerBag entry={ROW_I} firstRow={3} palette={PALETTE} drawn={2} />
+  <LedgerRow entry={ROW_I} firstRow={3} palette={PALETTE} highlight={0} />
+  <LedgerBag entry={ROW_I} firstRow={3} palette={PALETTE} drawn={0} />
 </div>
 
 ```notes
-Black: the two-in-fifteen chance came up. Unlikely isn't impossible --- that's the bag doing its job.
+Pink: the likeliest one, eight chances in fifteen. Write "am" down, tip the bag back into the tub, and pass to whoever has the row for "am".
 ```
 
 ---
@@ -75,15 +130,49 @@ Black: the two-in-fifteen chance came up. Unlikely isn't impossible --- that's t
 
 ## Load the bag, draw one
 
-<LedgerPage text="I would not" fresh />
+<LedgerPage text="I am !" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_WOULD} firstRow={2} palette={PALETTE} highlight={1} />
-  <LedgerBag entry={ROW_WOULD} firstRow={2} palette={PALETTE} drawn={1} />
+  <LedgerRow entry={ROW_AM} firstRow={4} palette={PALETTE} highlight={2} />
+  <LedgerBag entry={ROW_AM} firstRow={4} palette={PALETTE} drawn={2} />
 </div>
 
 ```notes
-Four balls, two red and two blue: a coin toss between "you" and "not".
+Seven counters: two red for "Sam", two blue for ".", three green for "!". Green comes out, and an exclamation mark is a word like any other --- the sentence ends here.
+```
+
+---
+
+{/* _animate: draw */}
+
+## Every word equally likely
+
+<LedgerPage text="I am ! would" fresh />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_BANG} firstRow={0} palette={PALETTE} highlight={2} />
+  <LedgerBag entry={ROW_BANG} firstRow={0} palette={PALETTE} drawn={2} />
+</div>
+
+```notes
+One mark each: three counters, three words, a three-way tie. Green again --- but green meant "!" a moment ago and means "would" now. The colour names the column, not the word.
+```
+
+---
+
+{/* _animate: draw */}
+
+## A coin toss
+
+<LedgerPage text="I am ! would you" fresh />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_WOULD} firstRow={2} palette={PALETTE} highlight={0} />
+  <LedgerBag entry={ROW_WOULD} firstRow={2} palette={PALETTE} drawn={0} />
+</div>
+
+```notes
+Four counters, two red and two blue: an even split between "you" and "not". Red.
 ```
 
 ---
@@ -92,60 +181,16 @@ Four balls, two red and two blue: a coin toss between "you" and "not".
 
 ## Only one place to go
 
-<LedgerPage text="I would not like" fresh />
+<LedgerPage text="I am ! would you like" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_NOT} firstRow={0} palette={PALETTE} highlight={0} />
+  <LedgerRow entry={ROW_YOU} firstRow={3} palette={PALETTE} highlight={0} />
 </div>
 
-no bag needed: after `not` this book only ever said `like`
-
----
-
-{/* _animate: draw */}
-
-## Load the bag
-
-<LedgerPage text="I would not like" />
-
-<div class="ledger-step">
-  <LedgerRow entry={ROW_LIKE} firstRow={4} palette={PALETTE} />
-  <LedgerBag entry={ROW_LIKE} firstRow={4} palette={PALETTE} />
-</div>
-
----
-
-{/* _animate: draw */}
-
-## Draw one
-
-<LedgerPage text="I would not like green" fresh />
-
-<div class="ledger-step">
-  <LedgerRow entry={ROW_LIKE} firstRow={4} palette={PALETTE} highlight={1} />
-  <LedgerBag entry={ROW_LIKE} firstRow={4} palette={PALETTE} drawn={1} />
-</div>
+no bag needed: after `you` this book only ever said `like`
 
 ```notes
-A blue ball, and the word beside the blue strip is "green". Say it out loud: the colour names the column, not the word. Someone always laughs here, which is the point.
-```
-
----
-
-{/* _animate: draw */}
-
-## Three in a row with only one place to go
-
-<LedgerPage text="I would not like green eggs and ham" fresh />
-
-<div class="ledger-step ledger-stack">
-  <LedgerRow entry={ROW_GREEN} firstRow={0} palette={PALETTE} highlight={0} />
-  <LedgerRow entry={ROW_EGGS} firstRow={3} palette={PALETTE} highlight={0} />
-  <LedgerRow entry={ROW_AND} firstRow={0} palette={PALETTE} highlight={0} />
-</div>
-
-```notes
-Three hand-overs, no bag: "green" only ever went to "eggs", "eggs" to "and", "and" to "ham". The model is on rails through the book's favourite phrase.
+A one-word row needs no draw at all. Groups will hit a few of these and they speed things up.
 ```
 
 ---
@@ -154,42 +199,91 @@ Three hand-overs, no bag: "green" only ever went to "eggs", "eggs" to "and", "an
 
 ## Load the bag, draw one
 
-<LedgerPage text="I would not like green eggs and ham ." fresh />
+<LedgerPage text="I am ! would you like them" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_HAM} firstRow={1} palette={PALETTE} highlight={1} />
-  <LedgerBag entry={ROW_HAM} firstRow={1} palette={PALETTE} drawn={1} />
+  <LedgerRow entry={ROW_LIKE} firstRow={4} palette={PALETTE} highlight={2} />
+  <LedgerBag entry={ROW_LIKE} firstRow={4} palette={PALETTE} drawn={2} />
 </div>
 
 ```notes
-Three balls: one pink for "?", two purple for ".". Nine draws in, and we've got a sentence these hundred words never said. The book says "I would not like them here or there" and "I do not like green eggs and ham"; the model has glued them together, because it only ever knows what comes next, one word at a time. Stop at a full stop or a question mark you like, or keep going.
+Nine counters: one red for "that", three blue for "green", five green for "them". The likeliest wins this time.
+```
+
+---
+
+{/* _animate: draw */}
+
+## Load the bag, draw one
+
+<LedgerPage text="I am ! would you like them anywhere" fresh />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_THEM} firstRow={0} palette={PALETTE} highlight={2} />
+  <LedgerBag entry={ROW_THEM} firstRow={0} palette={PALETTE} drawn={2} />
+</div>
+
+```notes
+Five counters: two red for the comma, two blue for "here", one green for "anywhere". The one-in-five comes up. Unlikely isn't impossible --- that's the bag doing its job.
+```
+
+---
+
+{/* _animate: draw */}
+
+## Only one place to go
+
+<LedgerPage text="I am ! would you like them anywhere ." fresh />
+
+<div class="ledger-step">
+  <LedgerRow
+    entry={ROW_ANYWHERE}
+    firstRow={1}
+    palette={PALETTE}
+    highlight={0}
+  />
+</div>
+
+```notes
+After "anywhere" this book only ever stopped. Eight draws in, and we have a sentence these hundred words never said: the book says "would you like them here or there?" and "I would not like them anywhere.", and the model has glued the two together, because it only ever knows what comes next, one word at a time. Stop at a full stop or a question mark you like, or keep going.
 ```
 
 ---
 
 {/* _class: impact */}
 
-_"I would not like green eggs and ham."_
+_"I am! Would you like them anywhere."_
 
 a hint of the original, not a copy
 
----
-
-## A word with lots of followers
-
-<div class="ledger-step">
-  <LedgerRow entry={ROW_A_BEAR} firstRow={3} palette={PALETTE} />
-  <LedgerBag entry={ROW_A_BEAR} firstRow={3} palette={PALETTE} />
-</div>
-
-more than four followers spill onto the **row below**, where the word is printed
-again in grey
-
-the second row's strips take the **other four colours**, so every follower still
-has its own --- load the bag from **both rows**
-
 ```notes
-This is the Bear Hunt row for "a": eight balls from two rows, two pink, two purple, two black, one white, one red. Every book but Green Eggs has a row or two like this, so every group will meet one. The mistake to watch for is loading only the top row.
+Read it aloud with feeling. Then: which bits sound like Dr Seuss? Which bits are new? Nobody wrote this sentence --- the counting did.
+```
+
+```comment
+Parked, not deleted: the two-row slide, for a set whose words run past four
+followers. Every text in the room is currently chosen so no word does, so the
+room only ever sees one row per word and the rule below would be noise. Restore
+this slide --- along with the matching bullet in ledger-training's "Things that
+catch people out" and the "loading only the top row" stall in the activity
+notes --- the day a set needs it.
+
+  ## A word with lots of followers
+
+  <div class="ledger-step">
+    <LedgerRow entry={ROW_A_BEAR} firstRow={3} palette={PALETTE} />
+    <LedgerBag entry={ROW_A_BEAR} firstRow={3} palette={PALETTE} />
+  </div>
+
+  more than four followers spill onto the **row below**, where the word is
+  printed again in grey
+
+  the second row's strips take the **other four colours**, so every follower
+  still has its own --- load the bag from **both rows**
+
+  Notes: this is the Bear Hunt row for "a" --- eight counters from two rows,
+  two pink, two purple, two black, one white, one red. The mistake to watch
+  for is loading only the top row.
 ```
 
 ---
@@ -200,14 +294,14 @@ This is the Bear Hunt row for "a": eight balls from two rows, two pink, two purp
 
 **with your group**
 
-your five sheets (one each), the bag, and the tub of balls
+your sheets (one each), the bag, and the tub of counters
 
 pen and paper for the story
 
-**every group has a different book** --- start from any word on your sheets
+start from **any word** on your sheets
 
 ```notes
-Hand out the bags and tubs now. Five books in the room, so with more than five groups some share a book --- that's fine, and the shareback uses it. The row for "." is the honest place to start (it says how the book starts sentences), but any word will do.
+Hand out the bags and tubs now. The row for "." is the honest place to start (it says how the book starts sentences), but any word will do.
 ```
 
 ---
@@ -220,7 +314,7 @@ generate as much story as you can --- when you hit a `.` or `?` you like, start
 a new sentence from any word
 
 ```notes
-Circulate. Common stalls: forgetting to tip the bag back into the tub between draws (the balls from the last row are still in there); loading only the top row of a two-row word; a row with no marks at all (the word only ever ended the text --- start again from any word); arguing about which strip a colour is (read the name printed in the strip's corner).
+Circulate. Common stalls: forgetting to tip the bag back into the tub between draws (the counters from the last row are still in there); a row with no marks at all (the word only ever ended the text --- start again from any word); arguing about which strip a colour is (read the name printed in the strip's corner).
 ```
 
 ---

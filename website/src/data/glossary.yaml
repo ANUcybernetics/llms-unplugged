@@ -863,13 +863,13 @@
   description: >-
     A sheet with one row per word, tally marks for each word that followed it,
     and a coloured strip beside each tally column. Generation uses a bag of
-    coloured balls, one per tally mark: draw a ball, read the word beside its
-    colour. The bag does the weighted sampling.
+    coloured counters, one per tally mark: draw a counter, read the word beside
+    its colour. The bag does the weighted sampling.
   synonyms:
     - ledger sheet
-    - bag of balls
+    - bag of counters
   see:
-    - label: How AI writes stories with a bag of balls
+    - label: How AI writes stories with a bag of counters
       href: /lessons/how-ai-writes-stories-ledger/
     - label: Ledger materials
       href: /tools/#ledgers
