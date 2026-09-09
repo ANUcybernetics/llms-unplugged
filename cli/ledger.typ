@@ -3,14 +3,14 @@
 //
 // Training is tallying: read the text a pair at a time, find the prefix's row,
 // find (or write in) the follower, add a mark to its strip. Generation is a
-// bag of counters: for the current prefix, put one counter into the bag per
+// cup of counters: for the current prefix, put one counter into the cup per
 // tally mark, in the colour of that follower's strip; draw one; read the
 // follower whose strip is that colour. The strips are coloured by column, not
 // by word, so one set of counters serves every row. The room's counter
 // colours come in as data (the CLI's --palette, carried in ledger.json) and
 // the rows cycle through them a palette at a time, which is what lets a
 // prefix with more followers than columns continue onto the rows below and
-// still hand the bag distinct colours.
+// still hand the cup distinct colours.
 //
 // A set is dealt across a group's sheets in alphabetical runs, and each sheet
 // says in its header which prefixes it holds, so "who has _the_?" is answered
@@ -171,7 +171,7 @@
 // spills over its neighbours. It shrinks to fit `budget` --- the largest
 // count anywhere in the entry --- rather than this follower's own count, so
 // one prefix's strips are all drawn at one size and the ink on them is
-// proportional to the counts, which is the claim the bag makes. Below the
+// proportional to the counts, which is the claim the cup makes. Below the
 // floor the marks would be a smudge, so a count that will not fit even there
 // prints as a numeral.
 #let tally_unit_max = 1.1mm
@@ -387,11 +387,16 @@
 
     == The colours
 
-    The strips are coloured by column, not by word, and cycle through #cycles
-    #if cycles == 1 [set] else [sets] of #columns down the rows --- so a prefix
-    that runs to #cycles rows has #str(
-      cycles * columns,
-    ) different colours and the bag can tell them apart.
+    The strips are coloured by column, not by word.
+    #if cycles == 1 [
+      There is one set of #columns colours and every row takes it, in the same
+      order, so a counter's colour always names the same place in the row.
+    ] else [
+      They cycle through #cycles sets of #columns down the rows --- so a prefix
+      that runs to #cycles rows has #str(
+        cycles * columns,
+      ) different colours and the cup can tell them apart.
+    ]
     #if prefill != "tallies" [
       Don't explain the colours until the generation round; during training they
       are just stripes.
@@ -421,7 +426,7 @@
       ))),
     ))
 
-    *Bring* one bag per group and counters in these #str(
+    *Bring* one cup per group and counters in these #str(
       cycles * columns,
     ) colours, at least #max-count of each: that is the most times any one
     follower appears in this text, and so the most counters of one colour a
@@ -462,23 +467,23 @@
     == Generation
 
     + *Pick a starting prefix* and find its row.
-    + *Load the bag*: for every tally mark on that row, put in one counter in
+    + *Fill the cup*: for every tally mark on that row, put in one counter in
       the colour of that mark's strip.
     + *Draw one counter* without looking. Its colour names a strip on that row;
       the follower beside it is the next word. Write it down.
-    + *Empty the bag.* The word just written is the new prefix: find whoever
+    + *Empty the cup.* The word just written is the new prefix: find whoever
       holds it and hand over. Repeat until you hit a full stop you like, or for
       as long as you like.
 
-    A row with a single follower needs no bag: there is only one place to go. A
+    A row with a single follower needs no cup: there is only one place to go. A
     row whose strips are all empty is a dead end --- the prefix only ever ended
     the text --- so start again from any prefix.
 
     == What to watch for
 
-    *The bag is the probability distribution.* A follower with five marks goes
-    into the bag five times and comes out about five times as often as one with
-    one mark. Nobody has to explain weighted sampling; the bag performs it.
+    *The cup is the probability distribution.* A follower with five marks goes
+    into the cup five times and comes out about five times as often as one with
+    one mark. Nobody has to explain weighted sampling; the cup performs it.
 
     *Nobody holds the model.* Every hand-over is a lookup in someone else's
     sheet, and the text the group writes down is the group generating, not any

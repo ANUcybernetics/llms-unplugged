@@ -19,16 +19,16 @@ Each folder holds:
                  Print double-sided (either binding) --- one page gives
                  eight of each colour.
 
-Every set is capped at four followers a word, so every word sits on one row.
-Four of the books are cut to their first 140 tokens; Green Eggs and Ham is
-held at 100, because the slides walk through that set row by row.
+Every set is capped at four followers a word and cut to its first 140 tokens,
+so every word sits on one row of four coloured boxes. The slides walk through
+the Fun with Dick and Jane set row by row.
 
 
 training/  --- one text per group, tallies left to make
 --------------------------------------------------------
 Each folder holds:
   ledger.pdf     brief plus five sheets with the words printed and the
-                 strips empty. One sheet per person.
+                 boxes empty. One sheet per person.
   counters.pdf   as above.
   text.pdf       the text as the tokeniser read it, numbered token by
                  token. One copy per group, for whoever reads aloud.
@@ -39,8 +39,8 @@ works if no two groups hold the same model.
 
 Also needed, not in this pack
 ------------------------------
-- counters in eight colours (red, blue, green, yellow, pink, purple, black,
-  white), at least eight of each per group, a bag and a tub per group
+- counters in four colours (red, blue, green, yellow), at least six of each
+  per group, a paper cup and a tub per group
 - butchers paper for the class story, pen and paper per group
 - a projector, a whiteboard, and a chatbot for part 1
 

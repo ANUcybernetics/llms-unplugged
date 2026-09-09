@@ -51,7 +51,7 @@ text file → Rust CLI → model.json → Typst → PDF booklet
 - `ledger.typ` - Ledger template: one row per prefix, follower cells split into
   a word area and a tally strip, strips coloured by column with the set's
   palette cycling down the rows `columns` at a time. The palette comes from
-  `ledger.json` (the CLI's `--palette`), and the bag is matched against a dot
+  `ledger.json` (the CLI's `--palette`), and a counter is matched against a dot
   and a name printed on the strip. Tallies
   are drawn as five-bar gates whose unit shrinks to fit the largest count in the
   entry, so one prefix's strips share a scale and the ink on them is
@@ -70,7 +70,7 @@ text file → Rust CLI → model.json → Typst → PDF booklet
   Copied into the website with the three ledger templates
   (`website/scripts/copy-cli-templates.ts`) for the browser generator, which
   builds its `ledger.json` through `process_text_for_ledger` in `src/wasm.rs`
-- `ledger-counters.typ` - The counters to cut up and draw from the bag, written
+- `ledger-counters.typ` - The counters to cut up and draw from the cup, written
   to `counters.pdf` beside every `ledger.pdf`. Two identical pages laid out as a
   palindrome both ways, so it prints double-sided under either binding with
   every square the same colour on both faces --- no qpdf rotation step, unlike

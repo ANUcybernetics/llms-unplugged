@@ -37,7 +37,7 @@
 // writes them into ledger.json as `(name, hex)` entries, and everything that
 // needs a colour --- the strips, the counters page, the brief's key --- reads
 // that one list. Nothing here knows a colour by name, so a set printed for a
-// bag of eight balls is a different JSON list rather than a different
+// cup of eight counters is a different JSON list rather than a different
 // template.
 //
 // The list is flat and the rows cycle through it `columns` at a time: twelve
@@ -83,7 +83,7 @@
 }
 
 // One saturated edge rather than a box: a bar down the strip's left side.
-// The bar is the colour cue --- what a counter drawn from the bag is matched
+// The bar is the colour cue --- what a counter drawn from the cup is matched
 // against --- so it is wide enough to read as the colour rather than as a
 // line of it, which a hairline of a dark hue is not. The other three sides
 // are the tint's own edges. A pale colour has no bar to draw --- a white rule

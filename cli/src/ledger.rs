@@ -1,7 +1,7 @@
 //! The ledger: a corpus's model as a table of rows, one per context, each
 //! with its continuations across a fixed number of columns and a tally strip
 //! beside every continuation. Participants train by tallying and generate by
-//! drawing counters from a bag --- the strips are coloured by column, so the
+//! drawing counters from a cup --- the strips are coloured by column, so the
 //! counter drawn names the column to read.
 //!
 //! The types here are the wire shape of `ledger.json`, which `ledger.typ`

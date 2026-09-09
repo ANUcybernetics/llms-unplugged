@@ -37,7 +37,7 @@ enum Commands {
     /// cutting).
     Sheets(SheetsArgs),
     /// Generate ledger sheets: one row per prefix with tally strips, for
-    /// training by hand and generating with counters drawn from a bag.
+    /// training by hand and generating with counters drawn from a cup.
     Ledger(LedgerArgs),
     /// Sample text from an N-gram model built in-memory from a corpus.
     Sample(SampleArgs),
@@ -955,7 +955,7 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
     ];
     typst::compile_template("ledger.typ", &inputs, &args.output.join("ledger.pdf"))?;
 
-    // The counters to cut up and draw from the bag: two identical pages laid
+    // The counters to cut up and draw from the cup: two identical pages laid
     // out symmetrically, so printing the file double-sided --- on either
     // binding --- puts every square's colour on both of its faces.
     let counter_inputs: Vec<(String, String)> = inputs

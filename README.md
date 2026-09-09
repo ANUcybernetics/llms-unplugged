@@ -178,8 +178,9 @@ are dropped; apostrophes inside contractions are preserved.
     JSON array of `{"name": ..., "hex": ...}` entries --- inline, or `@` a
     file of them. Everything that needs a colour reads this list: the strips,
     their printed names, the counters page and the brief's key and counts.
-    The default is the twelve in `cli/ledger-palette.json`; a room with balls
-    in eight colours passes `@cli/ledger-palette-eight.json`, or its own list.
+    The default is the twelve in `cli/ledger-palette.json`; a room with
+    counters in four or eight colours passes `@cli/ledger-palette-four.json`
+    or `@cli/ledger-palette-eight.json`, or its own list.
     The website's generator offers the first four, eight or twelve of the
     default rather than an arbitrary list
   - `--prefill prefixes|followers` (default `prefixes`): what the sheets come
@@ -247,8 +248,9 @@ For large trigram models, use the `-b` flag to split across multiple books.
 - `cli/` - Rust CLI tool and booklet generation pipeline
   - `src/` - Rust source code for N-gram processing and CLI
   - `book.typ` - Main booklet template
-  - `ledger-palette.json` - The ledger's default counter colours, and
-    `ledger-palette-eight.json` for a room with balls in eight of them
+  - `ledger-palette.json` - The ledger's default counter colours, with
+    `ledger-palette-four.json` and `ledger-palette-eight.json` for a room with
+    counters in four or eight of them
 - `data/` - Input text corpora (\*.txt files with YAML frontmatter)
 - `handouts/` - Printable materials (worksheets, designer references)
 - `website/` - Project website source (Astro)

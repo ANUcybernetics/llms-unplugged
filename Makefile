@@ -44,12 +44,12 @@ endef
 # keeps every word to a single row whatever the budget; the budget itself is
 # what decides whether the set has a word the sheets can draw but have no row
 # for, so it comes from ops/ledger-sweep.py's `dead` column and not from
-# taste. 140 clears it for four of the five books.
+# taste. 140 clears it for all five books.
 #
-# Green Eggs is the exception, and stays at 100: the deck walks through this
-# set row by row, and at 140 the counts and row positions --- so the strip
-# colours --- no longer match the slides. Move it and the walkthrough's
-# ROW_* constants have to be re-read off the new sheets.
+# The room has counters in four colours, so the palette is four and every row
+# takes the same four --- a row's colours no longer depend on where it sits on
+# the page. The deck walks through the Dick and Jane set row by row, so its
+# ROW_* constants have to be re-read off the sheets if this recipe changes.
 #
 # Training: one school-day text per group, prefixes printed and the tallies
 # left to make, plus the numbered text page for whoever reads aloud.
@@ -61,14 +61,13 @@ endef
 # more room each row gets to write in.
 LEDGER_SLUG := how-ai-writes-stories-ledger
 LEDGER_DIR := $(PACKS)/$(LEDGER_SLUG)
-LEDGER_PALETTE := @cli/ledger-palette-eight.json
+LEDGER_PALETTE := @cli/ledger-palette-four.json
 LEDGER_SHEETS := 5
 LEDGER_BOOKS := green-eggs-and-ham the-very-hungry-caterpillar \
 	were-going-on-a-bear-hunt fun-with-dick-and-jane the-cat-in-the-hat
 LEDGER_TEXTS := bell bus dog rain volcano
 
 LEDGER_BUDGET := 140
-LEDGER_BUDGET_green-eggs-and-ham := 100
 
 # The most rows any one sheet was dealt. Every entry takes one row here
 # (--max-followers matches the default --columns), so a sheet's rows are its
@@ -99,7 +98,7 @@ pack-$(LEDGER_SLUG): $(CLI)
 	@mkdir -p $(LEDGER_DIR)
 	$(foreach book,$(LEDGER_BOOKS),$(call build_ledger,generation: $(book),\
 		data/$(book).txt,$(LEDGER_DIR)/generation/$(book),\
-		--max-tokens $(or $(LEDGER_BUDGET_$(book)),$(LEDGER_BUDGET)) \
+		--max-tokens $(LEDGER_BUDGET) \
 		--max-followers 4 --prefill tallies)$(newline))
 	$(foreach text,$(LEDGER_TEXTS),$(call build_ledger,training: school-day-$(text),\
 		data/originals/school-day-$(text).txt,\

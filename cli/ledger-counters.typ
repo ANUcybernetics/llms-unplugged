@@ -1,5 +1,5 @@
 // Printable counters for the ledger activity: a page of coloured squares in
-// the set's palette, to cut up and draw from a bag. The colours are the ones
+// the set's palette, to cut up and draw from a cup. The colours are the ones
 // the sheets print, read from the same ledger.json.
 //
 // The page is symmetric under a flip about either axis: every row is one
@@ -9,7 +9,7 @@
 // That is what makes it print double-sided with no imposition step: the PDF
 // is two identical pages, and whichever edge the printer flips on, each square
 // lands on a square of its own colour on the back. A counter drawn from the
-// bag then reads the same whichever face is up. Print it duplex, as many
+// cup then reads the same whichever face is up. Print it duplex, as many
 // copies as the brief asks for.
 
 #import "ledger-common.typ": (
