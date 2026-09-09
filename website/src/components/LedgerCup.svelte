@@ -1,6 +1,6 @@
 <script lang="ts">
   import {
-    bagFor,
+    cupFor,
     LEDGER_COLUMNS,
     LEDGER_PALETTE,
     type LedgerEntry,
@@ -8,23 +8,23 @@
   } from "../lib/ledger";
 
   interface Props {
-    /** The row whose marks load the bag. */
+    /** The row whose marks load the cup. */
     entry: LedgerEntry;
     columns?: number;
     firstRow?: number;
     /** The room's counter colours (the CLI's --palette). */
     palette?: readonly PaletteEntry[];
     /**
-     * Follower index of the counter drawn: it rises out of the bag with a
-     * gold ring, and the label names its colour and word. Omit for a bag
+     * Follower index of the counter drawn: it rises out of the cup with a
+     * gold ring, and the label names its colour and word. Omit for a cup
      * that is loaded but not yet drawn from.
      */
     drawn?: number;
-    /** Show the bag empty: the row is there, nothing has gone in yet. */
+    /** Show the cup empty: the row is there, nothing has gone in yet. */
     empty?: boolean;
     /**
      * Load only the first `loaded` followers' counters, for a slide sequence
-     * that fills the bag one colour at a time. Omit to load the whole row.
+     * that fills the cup one colour at a time. Omit to load the whole row.
      */
     loaded?: number;
     id?: string;
@@ -38,47 +38,72 @@
     drawn,
     empty = false,
     loaded,
-    id = "ledger-bag",
+    id = "ledger-cup",
   }: Props = $props();
 
-  const counters = $derived(bagFor(entry, columns, firstRow, palette));
+  const counters = $derived(cupFor(entry, columns, firstRow, palette));
   // The one counter that comes out: the first of the drawn follower's.
   const drawnIndex = $derived(
     drawn === undefined ? -1 : counters.findIndex((c) => c.index === drawn),
   );
   const drawnCounter = $derived(drawnIndex >= 0 ? counters[drawnIndex] : null);
 
-  // Counters sit in rows inside the bag's body, bottom row first, so a bag
-  // with a few counters looks part-full rather than floating. Every counter's
-  // place is fixed by the whole row's bag, never by how many are on screen:
-  // a partly-loaded bag and a drawn-from one hold the rest exactly where the
-  // full bag had them, so auto-animate moves only the counter that left.
-  const PER_ROW = 7;
-  const R = 11;
-  function place(k: number, total: number): { x: number; y: number } {
-    const row = Math.floor(k / PER_ROW);
-    const col = k % PER_ROW;
-    const inRow = Math.min(PER_ROW, total - row * PER_ROW);
-    const x = 120 + (col - (inRow - 1) / 2) * 25;
-    return { x, y: 206 - row * 24 };
+  // The cup's interior, as the drawing below tapers it: half-width TOP_HALF
+  // at TOP_Y, narrowing to BOT_HALF at BOT_Y. Counters are packed bottom-up
+  // inside that taper, inset by PAD on every side, so a full cup still has
+  // paper showing around its counters however many the row holds.
+  const R = 10;
+  const GAP = 3;
+  const PAD = 9;
+  const TOP_Y = 70;
+  const TOP_HALF = 80;
+  const BOT_Y = 228;
+  const BOT_HALF = 54;
+
+  function halfWidth(y: number): number {
+    const t = (y - TOP_Y) / (BOT_Y - TOP_Y);
+    return TOP_HALF + t * (BOT_HALF - TOP_HALF);
   }
-  const inBag = $derived(
+
+  // Every counter's place is fixed by the whole row's cup, never by how many
+  // are on screen: a partly-loaded cup and a drawn-from one hold the rest
+  // exactly where the full cup had them, so auto-animate moves only the
+  // counter that left. A row wider than the cup can hold is packed anyway,
+  // in rows that run past the rim rather than out through the sides --- but
+  // no set in the room comes close (the widest is ten counters, three rows).
+  function pack(total: number): { x: number; y: number }[] {
+    const pitch = 2 * R + GAP;
+    const places: { x: number; y: number }[] = [];
+    let y = BOT_Y - PAD - R;
+    while (places.length < total) {
+      // The row is only as wide as its narrowest point, which is its base.
+      const half = halfWidth(y + R) - PAD;
+      const capacity = Math.max(1, Math.floor((2 * half + GAP) / pitch));
+      const n = Math.min(capacity, total - places.length);
+      for (let c = 0; c < n; c++) places.push({ x: 120 + (c - (n - 1) / 2) * pitch, y });
+      y -= pitch;
+    }
+    return places;
+  }
+
+  const places = $derived(pack(counters.length));
+  const inCup = $derived(
     loaded === undefined ? counters.length : counters.filter((c) => c.index < loaded).length,
   );
   const pile = $derived(
     counters
-      .map((c, k) => ({ ...c, k, ...place(k, counters.length) }))
-      .filter((c) => c.k < inBag && c.k !== drawnIndex),
+      .map((c, k) => ({ ...c, k, ...places[k] }))
+      .filter((c) => c.k < inCup && c.k !== drawnIndex),
   );
 </script>
 
-<div class="bag" data-id={id}>
-  <svg viewBox="0 0 240 240" role="img" aria-label="a bag of counters for {entry.prefix}">
+<div class="cup" data-id={id}>
+  <svg viewBox="0 0 240 240" role="img" aria-label="a cup of counters for {entry.prefix}">
     <path
-      class="sack"
-      d="M 72 62 Q 62 40 92 30 L 148 30 Q 178 40 168 62 Q 222 120 212 198 Q 206 232 120 232 Q 34 232 28 198 Q 18 120 72 62 Z"
+      class="paper"
+      d="M 38 64 L 66 220 Q 68 231 80 231 L 160 231 Q 172 231 174 220 L 202 64 Z"
     />
-    <path class="tie" d="M 66 62 Q 120 74 174 62" />
+    <ellipse class="inside" cx="120" cy="64" rx="82" ry="13" />
     {#if !empty}
       {#each pile as c (c.k)}
         <circle
@@ -94,7 +119,7 @@
     {#if drawnCounter}
       <circle
         cx="120"
-        cy="14"
+        cy="16"
         r={R + 3}
         class="counter drawn"
         style="--c: {drawnCounter.colour.hex}"
@@ -107,16 +132,16 @@
       <span class="ledger-counter" style="--c: {drawnCounter.colour.hex}"></span>
       <span class="name">{drawnCounter.colour.name}</span>
       <span class="word">{drawnCounter.follower.text}</span>
-    {:else if empty || inBag === 0}
+    {:else if empty || inCup === 0}
       <span class="hint">empty</span>
     {:else}
-      <span class="hint">{inBag} counters, one per mark</span>
+      <span class="hint">{inCup} counters, one per mark</span>
     {/if}
   </div>
 </div>
 
 <style>
-  .bag {
+  .cup {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
@@ -129,15 +154,15 @@
     block-size: 11.5em;
   }
 
-  .sack {
-    fill: #e9dfc9;
+  .paper {
+    fill: #f4efe4;
     stroke: #3a3020;
     stroke-width: 2;
     stroke-linejoin: round;
   }
 
-  .tie {
-    fill: none;
+  .inside {
+    fill: #ddd3bd;
     stroke: #3a3020;
     stroke-width: 2;
   }

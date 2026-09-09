@@ -862,14 +862,14 @@
   category: materials
   description: >-
     A sheet with one row per word, tally marks for each word that followed it,
-    and a coloured strip beside each tally column. Generation uses a bag of
+    and a coloured box around each tally column. Generation uses a cup of
     coloured counters, one per tally mark: draw a counter, read the word beside
-    its colour. The bag does the weighted sampling.
+    its colour. The cup does the weighted sampling.
   synonyms:
     - ledger sheet
-    - bag of counters
+    - cup of counters
   see:
-    - label: How AI writes stories with a bag of counters
+    - label: How AI writes stories with a cup of counters
       href: /lessons/how-ai-writes-stories-ledger/
     - label: Ledger materials
       href: /tools/#ledgers

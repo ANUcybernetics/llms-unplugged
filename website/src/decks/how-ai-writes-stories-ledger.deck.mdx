@@ -1,14 +1,14 @@
 ---
 title: LLMs Unplugged — How AI writes stories (ledger)
 description:
-  A 90-minute school workshop (ages 10-16) using paper ledger sheets and a bag
+  A 90-minute school workshop (ages 10-16) using paper ledger sheets and a cup
   of coloured counters to discover how AI writes stories
 ---
 
 import { LEDGER_PALETTE } from "../lib/ledger";
 import LedgerToken from "../components/LedgerToken.astro";
 import LedgerRow from "../components/LedgerRow.svelte";
-import LedgerBag from "../components/LedgerBag.svelte";
+import LedgerCup from "../components/LedgerCup.svelte";
 import LedgerPage from "../components/LedgerPage.svelte";
 import LedgerTraining from "../components/LedgerTraining.svelte";
 import LedgerSheet from "../components/LedgerSheet.svelte";
@@ -30,149 +30,161 @@ export const components = { code: LedgerToken };
 ```comment
 Every group generates from a different picture book (see the lesson entry for
    the five sets), and the slides walk through one of them: every ROW_* below
-   is a real row of the Green Eggs and Ham set, the first 100 tokens dealt
-   across 5 sheets, printed for a room with counters in eight colours ---
-   `llms_unplugged ledger -i data/green-eggs-and-ham.txt --max-tokens 100
-   --sheets 5 --palette @cli/ledger-palette-eight.json --prefill tallies`,
-   whose palette is the first eight of the CLI's default
-   (cli/ledger-palette.json), which is what PALETTE below slices. The Makefile
-   prints this set at exactly these settings, and holds Green Eggs at 100
-   tokens while the other four books go to 140 for that reason: at 140 the
-   counts and row positions --- so the strip colours --- no longer match what
-   is below, and every ROW_* would have to be re-read off the new sheets. The firstRow
-   passed to each widget is the row's physical position on its sheet, which is
-   what decides its colours, so a regenerated set (a different --max-tokens, a
-   different sheet count) means re-reading the rows and positions off the new
-   sheets. SHEET_THREE is that set's third sheet entire, in the order the deal
-   printed it. ROW_A_BEAR, for the parked two-row slide, comes from the Bear
-   Hunt set (same command, data/were-going-on-a-bear-hunt.txt). The five
-   ROW_THE_* are the school-day texts' rows for "the" (data/originals/school-day-*.txt),
-   each set built with --prefill prefixes for training.
+   is a real row of the Fun with Dick and Jane set, the first 140 tokens dealt
+   across 5 sheets, printed for a room with counters in four colours ---
+   `llms_unplugged ledger -i data/fun-with-dick-and-jane.txt --max-tokens 140
+   --sheets 5 --palette @cli/ledger-palette-four.json --max-followers 4
+   --prefill tallies`, which is the recipe the Makefile runs for every book.
+   Four colours at four columns is a single palette cycle, so every row on
+   every sheet takes the same four and no widget here needs to know where its
+   row sits on the page. Change the book or the budget and the counts below
+   have to be re-read off the new sheets. SHEET_THREE is that set's third
+   sheet entire, in the order the deal printed it. The five ROW_THE_* are the
+   school-day texts' rows for "the" (data/originals/school-day-*.txt), each
+   set built with --prefill prefixes for training.
 ```
 
-export const PALETTE = LEDGER_PALETTE.slice(0, 8);
+export const PALETTE = LEDGER_PALETTE.slice(0, 4);
 
 ```comment
-Sheet 3 of the Green Eggs set, "green" to "like": the sheet the walkthrough
-   opens on. Its rows sit at physical rows 0-4, which is where their colours
-   come from, and "I" is row 3.
+Sheet 3 of the Dick and Jane set, "I" to "me": the sheet the walkthrough opens
+   on, and "it" --- the one row with all four colours in use --- is row 2.
 ```
-
-export const ROW_GREEN = {
-  prefix: "green",
-  followers: [{ text: "eggs", count: 3 }],
-};
-
-export const ROW_HAM = {
-  prefix: "ham",
-  followers: [
-    { text: "?", count: 1 },
-    { text: ".", count: 2 },
-  ],
-};
-
-export const ROW_HERE = {
-  prefix: "here",
-  followers: [{ text: "or", count: 2 }],
-};
 
 export const ROW_I = {
   prefix: "I",
+  followers: [{ text: "can", count: 1 }],
+};
+
+export const ROW_IS = {
+  prefix: "is",
   followers: [
-    { text: "am", count: 8 },
-    { text: "do", count: 5 },
-    { text: "would", count: 2 },
+    { text: "fun", count: 1 },
+    { text: "father", count: 1 },
+    { text: "not", count: 2 },
+    { text: "Dick", count: 1 },
   ],
 };
 
-export const ROW_LIKE = {
-  prefix: "like",
+export const ROW_IT = {
+  prefix: "it",
   followers: [
-    { text: "that", count: 1 },
-    { text: "green", count: 3 },
-    { text: "them", count: 5 },
+    { text: "go", count: 5 },
+    { text: "comes", count: 1 },
+    { text: ".", count: 1 },
+    { text: "is", count: 2 },
   ],
 };
 
-export const SHEET_THREE = [ROW_GREEN, ROW_HAM, ROW_HERE, ROW_I, ROW_LIKE];
+export const ROW_JANE = {
+  prefix: "Jane",
+  followers: [{ text: "said", count: 3 }],
+};
+
+export const ROW_LOOK = {
+  prefix: "look",
+  followers: [
+    { text: ",", count: 1 },
+    { text: "!", count: 2 },
+  ],
+};
+
+export const ROW_LOOKS = {
+  prefix: "looks",
+  followers: [{ text: "funny", count: 1 }],
+};
+
+export const ROW_ME = {
+  prefix: "me",
+  followers: [{ text: "run", count: 1 }],
+};
+
+export const SHEET_THREE = [
+  ROW_I,
+  ROW_IS,
+  ROW_IT,
+  ROW_JANE,
+  ROW_LOOK,
+  ROW_LOOKS,
+  ROW_ME,
+];
 
 ```comment
-The rest of the generation walkthrough, off the other sheets:
-   "I am ! would you like them anywhere ." --- a sentence stitched from three
-   the book actually says. Row positions: am 4, ! 0 (sheet 1); anywhere 1
-   (sheet 2); would 2, you 3, them 0 (sheet 5).
+The rest of the generation walkthrough, off the other sheets: "see it go up ,
+   down it comes ." --- a sentence stitched from two the book actually says.
+   ROW_IT is drawn from twice, which is the point of the second visit.
 ```
 
-export const ROW_AM = {
-  prefix: "am",
+export const ROW_SEE = {
+  prefix: "see",
   followers: [
-    { text: "Sam", count: 2 },
+    { text: "it", count: 5 },
+    { text: "me", count: 1 },
+    { text: "Spot", count: 1 },
+  ],
+};
+
+export const ROW_GO = {
+  prefix: "go",
+  followers: [
+    { text: "look", count: 1 },
     { text: ".", count: 2 },
-    { text: "!", count: 3 },
+    { text: "up", count: 3 },
   ],
 };
 
-export const ROW_BANG = {
-  prefix: "!",
+export const ROW_UP = {
+  prefix: "up",
   followers: [
-    { text: "that", count: 1 },
-    { text: "I", count: 1 },
-    { text: "would", count: 1 },
+    { text: ".", count: 3 },
+    { text: ",", count: 4 },
   ],
 };
 
-export const ROW_WOULD = {
-  prefix: "would",
+export const ROW_COMMA = {
+  prefix: ",",
   followers: [
-    { text: "you", count: 2 },
-    { text: "not", count: 2 },
+    { text: "said", count: 3 },
+    { text: "look", count: 2 },
+    { text: "up", count: 3 },
+    { text: "down", count: 2 },
   ],
 };
 
-export const ROW_YOU = {
-  prefix: "you",
-  followers: [{ text: "like", count: 2 }],
-};
-
-export const ROW_THEM = {
-  prefix: "them",
+export const ROW_DOWN = {
+  prefix: "down",
   followers: [
-    { text: ",", count: 2 },
-    { text: "here", count: 2 },
-    { text: "anywhere", count: 1 },
+    { text: ",", count: 1 },
+    { text: ".", count: 1 },
+    { text: "it", count: 1 },
   ],
 };
 
-export const ROW_ANYWHERE = {
-  prefix: "anywhere",
+export const ROW_COMES = {
+  prefix: "comes",
   followers: [{ text: ".", count: 1 }],
 };
 
 export const SHEET_RANGES = [
-  ["!", "am"],
-  ["and", "eggs"],
-  ["green", "like"],
-  ["not", "that"],
-  ["them", "you"],
+  ["!", "down"],
+  ["father", "guess"],
+  ["I", "me"],
+  ["mother", "Sally"],
+  ["see", "yes"],
 ];
 
-export const ROW_A_BEAR = {
-  prefix: "a",
-  followers: [
-    { text: "bear", count: 2 },
-    { text: "big", count: 2 },
-    { text: "beautiful", count: 2 },
-    { text: "river", count: 1 },
-    { text: "deep", count: 1 },
-  ],
-};
+```comment
+The opening of the set's text as the tokeniser read it, for the training
+   walkthrough. The pair "see it" comes round again at step 8, which is the
+   slide that shows a mark landing on a row that already has one.
+```
 
-export const GE_OPENING =
-  "I am Sam . I am Sam . Sam I am . that Sam I am ! that Sam I am ! I do not like that Sam I am !";
+export const DJ_OPENING =
+  "see it go look , said Dick . see it go . see it go up . Jane said , oh , look !";
 
 ```comment
 The five school-day texts' rows for "the", for the finale: same word, five
-   different models. Physical rows: bell 4, bus 5, dog 7, rain 0, volcano 0.
+   different models.
 ```
 
 export const ROW_THE_BELL = {
@@ -237,9 +249,9 @@ sheet knows what the marks are for before it makes any. Seven parts:
   Part 7 (5 min)   Wrap-up + Q&A (yr5-6-wrap-up)
 Allow 5 min for arrival/settle/introductions before Part 1.
 
-Every set is built so that no word has more than four followers: one row per
-word, no continuation rows. The slides for the two-row case are parked in
-ledger-generation, ready for a set that needs them.
+Every set is built so that no word has more than four followers, and the room's
+palette is those same four colours, so every row is one row of red, blue, green
+and yellow --- there are no continuation rows and no second palette to explain.
 
 Before each delivery:
 - run `make pack-how-ai-writes-stories-ledger` in the repo. It builds every
@@ -248,8 +260,8 @@ Before each delivery:
   counters page and the training texts with their numbered text pages --- and
   zips them into out/packs/ with a README saying what to print. The Makefile
   holds the exact commands; don't rebuild them by hand.
-- counters in the palette's eight colours, at least 8 of each per group (the
-  largest tally in any set), one bag and one tub per group
+- counters in four colours (red, blue, green, yellow), at least 6 of each per
+  group (the largest tally in any set), one paper cup and one tub per group
 - butchers paper for the class story
 - a few "predict the next word" prompts for the whiteboard
 ```
@@ -263,7 +275,7 @@ Before each delivery:
 ![bg](./assets/bg-ledger-title.avif)
 
 ```notes
-Open warm: today we'll find out how AI writes stories, and write some ourselves with paper and a bag of counters. No computers.
+Open warm: today we'll find out how AI writes stories, and write some ourselves with paper and a cup of counters. No computers.
 ```
 
 ---

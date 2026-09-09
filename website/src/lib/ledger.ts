@@ -1,5 +1,5 @@
 // The ledger activity's shapes, for the deck widgets that draw a printed
-// sheet, its bag of counters and the shared bucket. Mirrors cli/src/ledger.rs:
+// sheet, its cup of counters and the shared bucket. Mirrors cli/src/ledger.rs:
 // the printed sheet is the ground truth, so a widget colours a strip the way
 // ledger.typ does --- by column, cycling through a flat palette a row at a
 // time --- and takes its colours from the same list the CLI writes into
@@ -167,14 +167,14 @@ export function entriesFromTokens(tokens: string[], upTo = Infinity): LedgerEntr
   return entries;
 }
 
-/** The bag for an entry: one counter per tally mark, in its strip's colour. */
+/** The cup for an entry: one counter per tally mark, in its strip's colour. */
 export interface Counter {
   colour: PaletteEntry;
   follower: Follower;
   index: number;
 }
 
-export function bagFor(
+export function cupFor(
   entry: LedgerEntry,
   columns = LEDGER_COLUMNS,
   firstRow = 0,

@@ -14,12 +14,12 @@ The sheets were finished when they arrived. Now the reveal: somebody made every 
 
 ## Start with a text
 
-<LedgerTraining tokens={GE_OPENING} palette={PALETTE} />
+<LedgerTraining tokens={DJ_OPENING} palette={PALETTE} />
 
 lowercase everything, and note that `.` and `!` are words too
 
 ```notes
-This is the start of Green Eggs and Ham as the sheets saw it: every full stop and exclamation mark is its own word. (This text keeps "I" and "Sam" capitalised because the book always does.)
+This is the start of Fun with Dick and Jane as the sheets saw it: every full stop and exclamation mark is its own word. (Names stay capitalised because the book always capitalises them.)
 ```
 
 ---
@@ -28,7 +28,7 @@ This is the start of Green Eggs and Ham as the sheets saw it: every full stop an
 
 ## Read it two words at a time
 
-<LedgerTraining tokens={GE_OPENING} step={0} palette={PALETTE} />
+<LedgerTraining tokens={DJ_OPENING} step={0} palette={PALETTE} />
 
 ---
 
@@ -36,7 +36,7 @@ This is the start of Green Eggs and Ham as the sheets saw it: every full stop an
 
 ## Move along by one
 
-<LedgerTraining tokens={GE_OPENING} step={1} palette={PALETTE} />
+<LedgerTraining tokens={DJ_OPENING} step={1} palette={PALETTE} />
 
 ---
 
@@ -44,7 +44,7 @@ This is the start of Green Eggs and Ham as the sheets saw it: every full stop an
 
 ## Move along by one
 
-<LedgerTraining tokens={GE_OPENING} step={2} palette={PALETTE} />
+<LedgerTraining tokens={DJ_OPENING} step={2} palette={PALETTE} />
 
 ---
 
@@ -52,18 +52,22 @@ This is the start of Green Eggs and Ham as the sheets saw it: every full stop an
 
 ## Move along by one
 
-<LedgerTraining tokens={GE_OPENING} step={3} palette={PALETTE} />
-
----
-
-{/* _animate: tally */}
-
-## Move along by one
-
-<LedgerTraining tokens={GE_OPENING} step={4} palette={PALETTE} />
+<LedgerTraining tokens={DJ_OPENING} step={3} palette={PALETTE} />
 
 ```notes
-Five pairs in: the row for "I" already has two marks beside "am", and the second word of each pair became the first word of the next. Keep going until the text runs out and the marks are the model. Then, for the Green Eggs groups: check the "I am" count on your printed sheet --- eight marks --- against the text. Those eight are the eight times the book says "I am" in its first 100 words. Every other group's sheets were made the same way from their book.
+Four pairs in, four rows have their first mark. Every second word of a pair becomes the first word of the next, so the text is read once and every pair in it gets counted.
+```
+
+---
+
+{/* _animate: tally */}
+
+## The same pair comes round again
+
+<LedgerTraining tokens={DJ_OPENING} step={8} palette={PALETTE} />
+
+```notes
+Skip ahead four pairs, to the second time this text says "see it": the mark goes beside "it" in the row for "see", which already has one. That's how a count builds --- the common pairs collect marks, the rare ones don't. Then, for the Dick and Jane groups: check the "see it" count on your printed sheet --- five marks --- against the whole text. Every other group's sheets were made the same way from their book.
 ```
 
 ---
@@ -92,13 +96,13 @@ Hand out the school-day texts, one per group (a different one each --- that matt
 
 `.` is a word: the row for `.` says how sentences **start**
 
-a new follower goes in the **next empty cell** --- don't skip cells, the colours
-are by column
+a new word goes in the **next empty box** --- don't skip boxes, the colours go
+in order
 
 if the word isn't on your sheet, **read the headers**
 
 ```notes
-The empty-cell rule is the one to watch: a group that leaves a gap has broken the colour-to-column link and the bag will name the wrong word later. Every text is chosen so no word runs past four followers, so no group should ever need a second row; if one thinks it does, they have missed a cell.
+The empty-box rule is the one to watch: a group that leaves a gap has broken the colour-to-word link and the cup will name the wrong word later. Every text is chosen so no word gets more than four words after it, so four boxes are always enough; if a group thinks they need a fifth, they have missed one.
 ```
 
 ---

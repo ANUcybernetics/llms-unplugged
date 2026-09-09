@@ -1,11 +1,13 @@
-/* The ledger deck's generation walkthrough: a row and its bag side by side,
-   under the story-so-far line, all glided between frames by auto-animate.
+/* The ledger deck's generation walkthrough: a row and its cup side by side,
+   under the story-so-far line.
 
-   A fixed two-track grid rather than a centred flex row: the bag's column is
-   held open even on a frame that has no bag ("only one place to go"), so the
-   row keeps its place across the whole walkthrough and auto-animate is left
-   with only the changes that matter --- the counters going in, the one coming
-   out, the word landing on the page. */
+   A fixed two-track grid rather than a centred flex row: the cup's column is
+   held open even on a frame that has no cup ("only one place to go"), so the
+   row sits in the same place on every frame of the walkthrough and the eye
+   has only the row's own contents to follow. The one run of frames that does
+   animate --- filling the cup for "see", then drawing from it --- needs the
+   same thing, so auto-animate is left with only the counters going in and the
+   one coming out. */
 .reveal .ledger-step {
   display: grid;
   grid-template-columns: auto 15rem;
@@ -34,4 +36,10 @@
 
 .reveal .ledger-stack .ledger-row {
   --row-size: 1rem;
+}
+
+/* A whole sheet is seven rows here, one more than fits at the widget's own
+   size once the slide has a heading and a line of prose under it. */
+.reveal [data-id="ledger-sheet"] {
+  font-size: 1rem;
 }

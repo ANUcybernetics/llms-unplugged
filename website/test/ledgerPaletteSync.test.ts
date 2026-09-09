@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
-  bagFor,
+  cupFor,
   entriesFromTokens,
   isPale,
   layoutCells,
@@ -74,7 +74,7 @@ describe("ledger entries", () => {
     expect(rows[1][1].follower).toBeNull();
   });
 
-  it("loads the bag with one counter per mark in the strip's colour", () => {
+  it("loads the cup with one counter per mark in the strip's colour", () => {
     const entry = {
       prefix: "I",
       followers: [
@@ -82,7 +82,7 @@ describe("ledger entries", () => {
         { text: "do", count: 1 },
       ],
     };
-    expect(bagFor(entry).map((c) => `${c.colour.name}:${c.follower.text}`)).toEqual([
+    expect(cupFor(entry).map((c) => `${c.colour.name}:${c.follower.text}`)).toEqual([
       "red:am",
       "red:am",
       "blue:do",

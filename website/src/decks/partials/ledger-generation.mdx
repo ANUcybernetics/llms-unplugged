@@ -4,286 +4,246 @@
 
 ![bg](./assets/bg-chain.avif)
 
----
-
-## Your goal
-
-![bg right:40%](./assets/bg-bag-draw.avif)
-
-write down a starting word, then repeat:
-
-1. find the row for the last word you wrote
-2. **load the bag**: one counter per mark, in the colour of its strip
-3. **draw one** without looking --- its colour names the next word
-4. write it down, tip the bag back into the tub, and hand over to whoever has
-   the next row
-
 ```notes
-Walk through the next slides slowly --- the mechanics are simple but the hand-over ("who has the next row?") is where groups stall. Give every group four jobs: a reader (finds the row), a loader, a drawer, and a writer. If you have a real bag and a visualiser, do the draws for real and use the slides as the backup.
+Walk through the next slides slowly --- the mechanics are simple but the hand-over ("who has the next row?") is where groups stall. Give every group four jobs: a reader (finds the row), a filler, a drawer, and a writer. If you have a real cup and a visualiser, do the draws for real and use the slides as the backup.
 ```
 
 ---
 
-{/* _animate: draw */}
+{/* _animate: cup-see */}
 
 ## Start with a word
 
-<LedgerPage text="I" />
+<LedgerPage text="see" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_I} firstRow={3} palette={PALETTE} />
-  <LedgerBag entry={ROW_I} firstRow={3} palette={PALETTE} empty />
+  <LedgerRow entry={ROW_SEE} palette={PALETTE} />
+  <LedgerCup entry={ROW_SEE} palette={PALETTE} empty />
 </div>
 
 ```notes
-Somebody has the row for "I". Three words ever followed it in this book, and the bag is empty.
+Somebody has the row for "see". Three words ever followed it in this book, and the cup is empty.
 ```
 
 ---
 
-{/* _animate: draw */}
+{/* _animate: cup-see */}
 
-## Load the bag
+## Fill the cup
 
-<LedgerPage text="I" />
+<LedgerPage text="see" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_I} firstRow={3} palette={PALETTE} highlight={0} />
-  <LedgerBag entry={ROW_I} firstRow={3} palette={PALETTE} loaded={1} />
+  <LedgerRow entry={ROW_SEE} palette={PALETTE} highlight={0} />
+  <LedgerCup entry={ROW_SEE} palette={PALETTE} loaded={1} />
 </div>
 
 ```notes
-First cell: "am", eight marks, pink strip. Count them out --- eight pink counters into the bag.
+First word in the row: "it", five tally marks, red box. Count them out --- five red counters into the cup.
 ```
 
 ---
 
-{/* _animate: draw */}
+{/* _animate: cup-see */}
 
-## Load the bag
+## Fill the cup
 
-<LedgerPage text="I" />
+<LedgerPage text="see" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_I} firstRow={3} palette={PALETTE} highlight={1} />
-  <LedgerBag entry={ROW_I} firstRow={3} palette={PALETTE} loaded={2} />
+  <LedgerRow entry={ROW_SEE} palette={PALETTE} highlight={1} />
+  <LedgerCup entry={ROW_SEE} palette={PALETTE} loaded={2} />
 </div>
 
 ```notes
-Next cell: "do", five marks, purple strip. Five purple counters.
+Next word: "me", one mark, blue box. One blue counter.
 ```
 
 ---
 
-{/* _animate: draw */}
+{/* _animate: cup-see */}
 
-## Load the bag
+## Fill the cup
 
-<LedgerPage text="I" />
+<LedgerPage text="see" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_I} firstRow={3} palette={PALETTE} highlight={2} />
-  <LedgerBag entry={ROW_I} firstRow={3} palette={PALETTE} loaded={3} />
+  <LedgerRow entry={ROW_SEE} palette={PALETTE} highlight={2} />
+  <LedgerCup entry={ROW_SEE} palette={PALETTE} loaded={3} />
 </div>
 
 ```notes
-Last cell: "would", two marks, black strip. Two black counters, and the row is in the bag.
+Last word: "Spot", one mark, green box. One green counter, and the row is in the cup.
 ```
 
 ---
 
-{/* _animate: draw */}
+{/* _animate: cup-see */}
 
-## The bag is the row
+## The cup is the row
 
-<LedgerPage text="I" />
+<LedgerPage text="see" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_I} firstRow={3} palette={PALETTE} />
-  <LedgerBag entry={ROW_I} firstRow={3} palette={PALETTE} />
+  <LedgerRow entry={ROW_SEE} palette={PALETTE} />
+  <LedgerCup entry={ROW_SEE} palette={PALETTE} />
 </div>
 
 ```notes
-Fifteen counters for fifteen marks. The bag now holds the row's counts --- the more marks, the more counters, the more likely. Ask before you draw: which colour do you think will come out?
+Seven counters for seven marks. The cup now holds the row's counts --- the more marks, the more counters, the more likely. Ask before you draw: which colour do you think will come out?
 ```
 
 ---
 
-{/* _animate: draw */}
+{/* _animate: cup-see */}
 
 ## Draw one
 
-<LedgerPage text="I am" fresh />
+<LedgerPage text="see it" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_I} firstRow={3} palette={PALETTE} highlight={0} />
-  <LedgerBag entry={ROW_I} firstRow={3} palette={PALETTE} drawn={0} />
+  <LedgerRow entry={ROW_SEE} palette={PALETTE} highlight={0} />
+  <LedgerCup entry={ROW_SEE} palette={PALETTE} drawn={0} />
 </div>
 
 ```notes
-Pink: the likeliest one, eight chances in fifteen. Write "am" down, tip the bag back into the tub, and pass to whoever has the row for "am".
+Red: the likeliest one, five chances in seven. Write "it" down, tip the cup back into the tub, and pass to whoever has the row for "it".
 ```
 
 ---
 
-{/* _animate: draw */}
+## Fill the cup, draw one
 
-## Load the bag, draw one
-
-<LedgerPage text="I am !" fresh />
+<LedgerPage text="see it go" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_AM} firstRow={4} palette={PALETTE} highlight={2} />
-  <LedgerBag entry={ROW_AM} firstRow={4} palette={PALETTE} drawn={2} />
+  <LedgerRow entry={ROW_IT} palette={PALETTE} highlight={0} />
+  <LedgerCup entry={ROW_IT} palette={PALETTE} drawn={0} />
 </div>
 
 ```notes
-Seven counters: two red for "Sam", two blue for ".", three green for "!". Green comes out, and an exclamation mark is a word like any other --- the sentence ends here.
+Nine counters: five red for "go", one blue for "comes", one green for the full stop, two yellow for "is". Red again, and this row is worth pausing on --- we come back to it in a minute.
 ```
 
 ---
 
-{/* _animate: draw */}
+## Fill the cup, draw one
+
+<LedgerPage text="see it go up" fresh />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_GO} palette={PALETTE} highlight={2} />
+  <LedgerCup entry={ROW_GO} palette={PALETTE} drawn={2} />
+</div>
+
+```notes
+Six counters: one red for "look", two blue for the full stop, three green for "up". Green comes out.
+```
+
+---
+
+## Fill the cup, draw one
+
+<LedgerPage text="see it go up ," fresh />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_UP} palette={PALETTE} highlight={1} />
+  <LedgerCup entry={ROW_UP} palette={PALETTE} drawn={1} />
+</div>
+
+```notes
+Seven counters, three red and four blue. Blue wins, and a comma is a word like any other --- it goes on the page.
+```
+
+---
+
+## Fill the cup, draw one
+
+<LedgerPage text="see it go up , down" fresh />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_COMMA} palette={PALETTE} highlight={3} />
+  <LedgerCup entry={ROW_COMMA} palette={PALETTE} drawn={3} />
+</div>
+
+```notes
+The biggest cup yet: ten counters across all four colours. Yellow has two of the ten and comes out anyway. Unlikely isn't impossible --- that's the cup doing its job.
+```
+
+---
 
 ## Every word equally likely
 
-<LedgerPage text="I am ! would" fresh />
+<LedgerPage text="see it go up , down it" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_BANG} firstRow={0} palette={PALETTE} highlight={2} />
-  <LedgerBag entry={ROW_BANG} firstRow={0} palette={PALETTE} drawn={2} />
+  <LedgerRow entry={ROW_DOWN} palette={PALETTE} highlight={2} />
+  <LedgerCup entry={ROW_DOWN} palette={PALETTE} drawn={2} />
 </div>
 
 ```notes
-One mark each: three counters, three words, a three-way tie. Green again --- but green meant "!" a moment ago and means "would" now. The colour names the column, not the word.
+One mark each: three counters, three words, and no word is favoured. Green comes out --- but green meant "up" a moment ago and means "it" now. The colour names the place in the row, not the word.
 ```
 
 ---
 
-{/* _animate: draw */}
+## The same row, a different word
 
-## A coin toss
-
-<LedgerPage text="I am ! would you" fresh />
+<LedgerPage text="see it go up , down it comes" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_WOULD} firstRow={2} palette={PALETTE} highlight={0} />
-  <LedgerBag entry={ROW_WOULD} firstRow={2} palette={PALETTE} drawn={0} />
+  <LedgerRow entry={ROW_IT} palette={PALETTE} highlight={1} />
+  <LedgerCup entry={ROW_IT} palette={PALETTE} drawn={1} />
 </div>
 
 ```notes
-Four counters, two red and two blue: an even split between "you" and "not". Red.
+Back on the row for "it", the same nine counters as before --- and this time the one blue counter comes out. Same row, same cup, different word. Hold onto this one: it is the answer to "why didn't two groups with the same book write the same story?"
 ```
 
 ---
-
-{/* _animate: draw */}
 
 ## Only one place to go
 
-<LedgerPage text="I am ! would you like" fresh />
+<LedgerPage text="see it go up , down it comes ." fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_YOU} firstRow={3} palette={PALETTE} highlight={0} />
+  <LedgerRow entry={ROW_COMES} palette={PALETTE} highlight={0} />
 </div>
 
-no bag needed: after `you` this book only ever said `like`
+no cup needed: after `comes` this book only ever said `.`
 
 ```notes
-A one-word row needs no draw at all. Groups will hit a few of these and they speed things up.
-```
-
----
-
-{/* _animate: draw */}
-
-## Load the bag, draw one
-
-<LedgerPage text="I am ! would you like them" fresh />
-
-<div class="ledger-step">
-  <LedgerRow entry={ROW_LIKE} firstRow={4} palette={PALETTE} highlight={2} />
-  <LedgerBag entry={ROW_LIKE} firstRow={4} palette={PALETTE} drawn={2} />
-</div>
-
-```notes
-Nine counters: one red for "that", three blue for "green", five green for "them". The likeliest wins this time.
-```
-
----
-
-{/* _animate: draw */}
-
-## Load the bag, draw one
-
-<LedgerPage text="I am ! would you like them anywhere" fresh />
-
-<div class="ledger-step">
-  <LedgerRow entry={ROW_THEM} firstRow={0} palette={PALETTE} highlight={2} />
-  <LedgerBag entry={ROW_THEM} firstRow={0} palette={PALETTE} drawn={2} />
-</div>
-
-```notes
-Five counters: two red for the comma, two blue for "here", one green for "anywhere". The one-in-five comes up. Unlikely isn't impossible --- that's the bag doing its job.
-```
-
----
-
-{/* _animate: draw */}
-
-## Only one place to go
-
-<LedgerPage text="I am ! would you like them anywhere ." fresh />
-
-<div class="ledger-step">
-  <LedgerRow
-    entry={ROW_ANYWHERE}
-    firstRow={1}
-    palette={PALETTE}
-    highlight={0}
-  />
-</div>
-
-```notes
-After "anywhere" this book only ever stopped. Eight draws in, and we have a sentence these hundred words never said: the book says "would you like them here or there?" and "I would not like them anywhere.", and the model has glued the two together, because it only ever knows what comes next, one word at a time. Stop at a full stop or a question mark you like, or keep going.
+A one-word row needs no draw at all. Groups will hit a few of these and they speed things up. Eight draws in, and we have a sentence this book never said: it says "See it go up." and it says "Down it comes.", and the model has glued the two together, because it only ever knows what comes next, one word at a time. Stop at a full stop or a question mark you like, or keep going.
 ```
 
 ---
 
 {/* _class: impact */}
 
-_"I am! Would you like them anywhere."_
+_"See it go up, down it comes."_
 
 a hint of the original, not a copy
 
 ```notes
-Read it aloud with feeling. Then: which bits sound like Dr Seuss? Which bits are new? Nobody wrote this sentence --- the counting did.
+Read it aloud with feeling. Then: which bits sound like the book? Which bits are new? Nobody wrote this sentence --- the counting did.
 ```
 
-```comment
-Parked, not deleted: the two-row slide, for a set whose words run past four
-followers. Every text in the room is currently chosen so no word does, so the
-room only ever sees one row per word and the rule below would be noise. Restore
-this slide --- along with the matching bullet in ledger-training's "Things that
-catch people out" and the "loading only the top row" stall in the activity
-notes --- the day a set needs it.
+---
 
-  ## A word with lots of followers
+## Your turn
 
-  <div class="ledger-step">
-    <LedgerRow entry={ROW_A_BEAR} firstRow={3} palette={PALETTE} />
-    <LedgerBag entry={ROW_A_BEAR} firstRow={3} palette={PALETTE} />
-  </div>
+![bg right:40%](./assets/bg-bag-draw.avif)
 
-  more than four followers spill onto the **row below**, where the word is
-  printed again in grey
+write down a starting word, then repeat:
 
-  the second row's strips take the **other four colours**, so every follower
-  still has its own --- load the bag from **both rows**
+1. **find the row** for the last word you wrote
+2. **fill the cup**: one counter for every tally mark, each in its word's colour
+3. **draw one** without looking --- its colour tells you the next word
+4. **write it down**, tip the cup back into the tub, and pass the job to
+   whoever has that word's row
 
-  Notes: this is the Bear Hunt row for "a" --- eight counters from two rows,
-  two pink, two purple, two black, one white, one red. The mistake to watch
-  for is loading only the top row.
+```notes
+This is the whole loop on one slide --- leave it up while they work. Four jobs per group: a reader who finds the row, a filler, a drawer, and a writer.
 ```
 
 ---
@@ -294,14 +254,14 @@ notes --- the day a set needs it.
 
 **with your group**
 
-your sheets (one each), the bag, and the tub of counters
+your sheets (one each), the cup, and the tub of counters
 
 pen and paper for the story
 
 start from **any word** on your sheets
 
 ```notes
-Hand out the bags and tubs now. The row for "." is the honest place to start (it says how the book starts sentences), but any word will do.
+Hand out the cups and tubs now. The row for "." is the honest place to start (it says how the book starts sentences), but any word will do.
 ```
 
 ---
@@ -314,7 +274,7 @@ generate as much story as you can --- when you hit a `.` or `?` you like, start
 a new sentence from any word
 
 ```notes
-Circulate. Common stalls: forgetting to tip the bag back into the tub between draws (the counters from the last row are still in there); a row with no marks at all (the word only ever ended the text --- start again from any word); arguing about which strip a colour is (read the name printed in the strip's corner).
+Circulate. Common stalls: forgetting to tip the cup back into the tub between draws (the counters from the last row are still in there); a row with no marks at all (the word only ever ended the text --- start again from any word); arguing about which box a colour is (read the name printed in the box's corner).
 ```
 
 ---
@@ -337,7 +297,7 @@ Circulate. Common stalls: forgetting to tip the bag back into the tub between dr
 
 ---
 
-## Different books, different stories
+## No two stories the same
 
 ![bg right:40%](./assets/bg-information-flow-generation.avif)
 
@@ -348,5 +308,5 @@ two groups with the **same book**: why aren't your stories the same?
 could any group's model write a story about a **crocodile**?
 
 ```notes
-Pick four or five groups, not all of them. Three probes. First: the stories sound like their books, because the model only has the words, and the pairs, that its book had. Second: two groups with the same sheets gave two different stories --- the bag is random, and a model that's asked twice gives two answers (the wrap-up comes back to this). Third: no crocodile anywhere on any sheet, so no model in the room can say it. Then the hinge: so where did these marks come from? Someone counted. Next section: you're the ones counting.
+Pick four or five groups, not all of them. Three probes. First: the stories sound like their books, because the model only has the words, and the pairs, that its book had. Second: two groups with the same sheets gave two different stories --- the cup is random, and a model that's asked twice gives two answers (the wrap-up comes back to this). Third: no crocodile anywhere on any sheet, so no model in the room can say it. Then the hinge: so where did these marks come from? Someone counted. Next section: you're the ones counting.
 ```

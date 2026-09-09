@@ -1,5 +1,5 @@
 ---
-title: How AI writes stories with a bag of counters
+title: How AI writes stories with a cup of counters
 description:
   A 90-minute school lesson (ages 10-16) where students generate stories from a
   finished paper language model, then train their own from a new text and pool
@@ -25,10 +25,10 @@ import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
 A sibling of [How AI writes stories](/lessons/how-ai-writes-stories/) that swaps
 the paper <GlossaryTerm id="cutouts">cutouts</GlossaryTerm> for **<GlossaryTerm id="ledger">ledger sheets</GlossaryTerm>**: a table with one row per word, tally
-marks beside each word that followed it, and a coloured strip beside every
-tally. <GlossaryTerm id="generation">Generation</GlossaryTerm> is a bag of coloured counters---one counter per tally mark, in
-the strip's colour, draw one and read the word beside that colour---so the maths
-of "more common means more likely" is done by the bag. <GlossaryTerm id="training">Training</GlossaryTerm> is tallying by
+marks beside each word that followed it, and a coloured box around every
+tally. <GlossaryTerm id="generation">Generation</GlossaryTerm> is a cup of coloured counters---one counter per tally mark, in
+the box's colour, draw one and read the word beside that colour---so the maths
+of "more common means more likely" is done by the cup. <GlossaryTerm id="training">Training</GlossaryTerm> is tallying by
 hand from a printed text.
 
 The order is flipped on purpose. Groups start with a **finished** model and
@@ -53,12 +53,12 @@ be dropped if you're running over.
 
 **Part 3** is the beat the cutouts lesson doesn't have: before anyone touches a
 counter, a whole sheet goes up on the screen, then one row of it is read aloud as
-a sentence ("after _I_, this book said _am_ eight times"). Every group then finds
-a row of their own and does the same. The colours are explained last: a strip's
-colour names its column, and the counters come in those colours.
+a sentence ("after _it_, this book said _go_ five times"). Every group then finds
+a row of their own and does the same. The colours are explained last: a box's
+colour names its place in the row, and the counters come in those four colours.
 
-**Part 4** runs the [Generation](/modules/generation/) module with the bag. The
-slides walk through one book (_Green Eggs and Ham_) draw by draw, then every
+**Part 4** runs the [Generation](/modules/generation/) module with the cup. The
+slides walk through one book (_Fun with Dick and Jane_) draw by draw, then every
 group generates from its own. The shareback asks the room to guess each group's
 book from its first sentence, and asks two groups holding the same book why
 their stories differ.
@@ -66,29 +66,28 @@ their stories differ.
 **Part 5** answers "where did the marks come from?" by having each group make
 their own. Every group gets a different short text (the five school-day texts
 that ship with the CLI) and a set of sheets with the words printed and the
-strips empty; one person reads the text two words at a time from the numbered
+boxes empty; one person reads the text two words at a time from the numbered
 printout and the group tallies. A short generation round follows, from the word
 _the_.
 
 **Part 6** pools the models, on butchers paper up the front. Call out the word
 the class story is on; every group whose sheets have a row for it puts a hand up;
-pick one, and that group draws from its own bag to give the next word. The class
+pick one, and that group draws from its own cup to give the next word. The class
 story can contain words only one group's text had, so it says things no single
 group's model could.
 
 ## You will need
 
-- one pre-tallied picture-book set per group, five sheets and eight colours, a
-  different book per group: `green-eggs-and-ham` (the book the slides walk
-  through), `the-very-hungry-caterpillar`, `were-going-on-a-bear-hunt`,
-  `fun-with-dick-and-jane` and `the-cat-in-the-hat`
+- one pre-tallied picture-book set per group, five sheets and four colours, a
+  different book per group: `fun-with-dick-and-jane` (the book the slides walk
+  through), `green-eggs-and-ham`, `the-very-hungry-caterpillar`,
+  `were-going-on-a-bear-hunt` and `the-cat-in-the-hat`
 - one training set per group, each from a different
-  `data/originals/school-day-*.txt` text, with the words printed and the strips
+  `data/originals/school-day-*.txt` text, with the words printed and the boxes
   empty, plus its `text.pdf`
-- counters in the palette's eight colours (red, blue, green, yellow, pink,
-  purple, black, white), at least eight of each per group (the largest tally in
-  any set), a cloth bag per group, and a tub per group to tip the bag back into
-  between draws
+- counters in four colours (red, blue, green, yellow), at least six of each per
+  group (the largest tally in any set), a paper cup per group, and a tub per
+  group to tip the cup back into between draws
 - butchers paper for the class story
 - pen and paper per group, a whiteboard, a projector, and access to a <GlossaryTerm id="chatbot">chatbot</GlossaryTerm>
   for part 1
@@ -103,12 +102,13 @@ delivery rather than rebuilt from memory.
 
 Every picture-book set is built with `--max-followers 4`, which drops each
 word's rarest continuations so that every word fits a single row however long
-the text. The token budget is then free to be chosen for the model rather than
-for the widest row: 140 for four of the books, and 100 for _Green Eggs and Ham_,
-which the slides walk through row by row and so has to stay the set they were
-written against. Change either number and re-run `ops/ledger-sweep.py` --- its
+the text. Four followers and four counter colours mean one palette per row, so
+every row on every sheet is red, blue, green, yellow in that order. The token
+budget is then free to be chosen for the model rather than for the widest row:
+140 for all five books. Change it and re-run `ops/ledger-sweep.py` --- its
 `dead` column is the one that matters, since a group that draws a word with no
-row of its own stalls with nothing to look up.
+row of its own stalls with nothing to look up --- and re-read the slides'
+walkthrough rows off the new _Fun with Dick and Jane_ sheets.
 
 ## Before you deliver
 
