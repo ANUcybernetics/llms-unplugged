@@ -40,6 +40,13 @@ endef
 # ---------------------------------------------------------------------------
 # How AI writes stories (ledger)
 #
+# The zip is a handful of PDFs at the top level, one per thing you print, so a
+# delivery is "print these" rather than a walk through ten folders. The CLI
+# writes one directory per set, so the sets are built into a staging directory
+# and the pieces gathered out of it: the five books' sheets concatenated, the
+# five texts' pages concatenated, one blank sheet, one counters page (every set
+# generates the same one --- it depends only on the palette).
+#
 # Generation: one pre-tallied picture book per group. --max-followers 4 is what
 # keeps every word to a single row whatever the budget; the budget itself is
 # what decides whether the set has a word the sheets can draw but have no row
@@ -51,18 +58,24 @@ endef
 # the page. The deck walks through the Dick and Jane set row by row, so its
 # ROW_* constants have to be re-read off the sheets if this recipe changes.
 #
-# Training: one school-day text per group, prefixes printed and the tallies
-# left to make, plus the numbered text page for whoever reads aloud.
+# Training: blank sheets, and the numbered text page for whoever reads aloud.
+# The words are written as the group meets them, so one sheet serves every
+# text; LEDGER_BLANK_ROWS x 5 sheets has to cover the largest school-day
+# vocabulary (38 prefixes).
 #
-# Each set is built twice. --rows decides both the sheet count and how much
-# page a row gets, and a set dealt fewer rows than the default 12 prints the
-# rest blank --- so the first run reports the deal, and the second prints it
-# at the density that deal needs: full pages, and the smaller the model the
-# more room each row gets to write in.
+# Each generation set is built twice. --rows decides both the sheet count and
+# how much page a row gets, and a set dealt fewer rows than the default 12
+# prints the rest blank --- so the first run reports the deal, and the second
+# prints it at the density that deal needs: full pages, and the smaller the
+# model the more room each row gets to write in.
+#
+# Needs jq and qpdf on PATH alongside the CLI's own typst toolchain.
 LEDGER_SLUG := how-ai-writes-stories-ledger
 LEDGER_DIR := $(PACKS)/$(LEDGER_SLUG)
+LEDGER_STAGE := $(LEDGER_DIR)/.build
 LEDGER_PALETTE := @cli/ledger-palette-four.json
 LEDGER_SHEETS := 5
+LEDGER_BLANK_ROWS := 10
 LEDGER_BOOKS := green-eggs-and-ham the-very-hungry-caterpillar \
 	were-going-on-a-bear-hunt fun-with-dick-and-jane the-cat-in-the-hat
 LEDGER_TEXTS := bell bus dog rain volcano
@@ -88,25 +101,56 @@ define build_ledger
 	@./$(CLI) ledger -i $(2) --sheets $(LEDGER_SHEETS) --palette $(LEDGER_PALETTE) \
 		--json-only -o $(3) $(4) >/dev/null
 	@./$(CLI) ledger -i $(2) --sheets $(LEDGER_SHEETS) --palette $(LEDGER_PALETTE) \
-		--rows $$(jq '$(LEDGER_ROWS_JQ)' $(3)/ledger.json) -o $(3) $(4)
-	@rm -f $(3)/ledger.json
+		--rows $$(jq '$(LEDGER_ROWS_JQ)' $(3)/ledger.json) -o $(3) $(4) >/dev/null
+endef
+
+# The training sets are here only for their text.pdf, so one plain run each.
+# $(1) label, $(2) corpus path, $(3) output dir
+define build_text
+	@echo "$(1)"
+	@./$(CLI) ledger -i $(2) --sheets $(LEDGER_SHEETS) --palette $(LEDGER_PALETTE) \
+		--max-followers 4 -o $(3) >/dev/null
+endef
+
+# Append "- pages A-B --- name" for each file, so the README's page map is read
+# off the PDFs that went into the concatenation rather than assumed.
+# $(1) README, $(2) heading, $(3) space-separated name:file pairs
+define page_map
+	@printf '\n## %s\n\n' "$(2)" >> $(1)
+	@first=1; for pair in $(3); do \
+		name=$${pair%%:*}; file=$${pair#*:}; \
+		n=$$(qpdf --show-npages "$$file"); last=$$((first + n - 1)); \
+		if [ "$$n" -eq 1 ]; then printf -- '- page %s --- %s\n' "$$first" "$$name" >> $(1); \
+		else printf -- '- pages %s-%s --- %s\n' "$$first" "$$last" "$$name" >> $(1); fi; \
+		first=$$((last + 1)); \
+	done
 endef
 
 .PHONY: pack-$(LEDGER_SLUG)
 pack-$(LEDGER_SLUG): $(CLI)
 	@rm -rf $(LEDGER_DIR)
-	@mkdir -p $(LEDGER_DIR)
+	@mkdir -p $(LEDGER_STAGE)
 	$(foreach book,$(LEDGER_BOOKS),$(call build_ledger,generation: $(book),\
-		data/$(book).txt,$(LEDGER_DIR)/generation/$(book),\
-		--max-tokens $(LEDGER_BUDGET) \
-		--max-followers 4 --prefill tallies)$(newline))
-	$(foreach text,$(LEDGER_TEXTS),$(call build_ledger,training: school-day-$(text),\
-		data/originals/school-day-$(text).txt,\
-		$(LEDGER_DIR)/training/school-day-$(text),\
-		--max-followers 4 --prefill prefixes)$(newline))
-	@# The generation sets come pre-tallied, so nobody reads their text aloud
-	@# and the text page would only be the book reproduced --- which is not
-	@# ours to put in a zip. The training texts are ours, and keep theirs.
-	@find $(LEDGER_DIR)/generation -name 'text.pdf' -delete
-	@cp docs/packs/$(LEDGER_SLUG).txt $(LEDGER_DIR)/README.txt
+		data/$(book).txt,$(LEDGER_STAGE)/$(book),\
+		--max-tokens $(LEDGER_BUDGET) --max-followers 4 --prefill tallies)$(newline))
+	$(foreach text,$(LEDGER_TEXTS),$(call build_text,training text: school-day-$(text),\
+		data/originals/school-day-$(text).txt,$(LEDGER_STAGE)/school-day-$(text))$(newline))
+	@echo "training sheet: blank"
+	@./$(CLI) ledger --blank --palette $(LEDGER_PALETTE) --rows $(LEDGER_BLANK_ROWS) \
+		-o $(LEDGER_STAGE)/blank >/dev/null
+	@qpdf --empty --pages \
+		$(foreach book,$(LEDGER_BOOKS),$(LEDGER_STAGE)/$(book)/ledger.pdf) \
+		-- $(LEDGER_DIR)/generation-ledgers.pdf
+	@qpdf --empty --pages \
+		$(foreach text,$(LEDGER_TEXTS),$(LEDGER_STAGE)/school-day-$(text)/text.pdf) \
+		-- $(LEDGER_DIR)/training-texts.pdf
+	@cp $(LEDGER_STAGE)/blank/ledger.pdf $(LEDGER_DIR)/training-sheets.pdf
+	@# Every set writes the same counters page; it depends only on the palette.
+	@cp $(LEDGER_STAGE)/blank/counters.pdf $(LEDGER_DIR)/counters.pdf
+	@cp docs/packs/$(LEDGER_SLUG).md $(LEDGER_DIR)/README.md
+	$(call page_map,$(LEDGER_DIR)/README.md,Page map --- generation-ledgers.pdf,\
+		$(foreach book,$(LEDGER_BOOKS),$(book):$(LEDGER_STAGE)/$(book)/ledger.pdf))
+	$(call page_map,$(LEDGER_DIR)/README.md,Page map --- training-texts.pdf,\
+		$(foreach text,$(LEDGER_TEXTS),school-day-$(text):$(LEDGER_STAGE)/school-day-$(text)/text.pdf))
+	@rm -rf $(LEDGER_STAGE)
 	$(call zip_pack,$(LEDGER_SLUG))

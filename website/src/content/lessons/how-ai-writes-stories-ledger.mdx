@@ -65,9 +65,11 @@ their stories differ.
 
 **Part 5** answers "where did the marks come from?" by having each group make
 their own. Every group gets a different short text (the five school-day texts
-that ship with the CLI) and a set of sheets with the words printed and the
-boxes empty; one person reads the text two words at a time from the numbered
-printout and the group tallies. A short generation round follows, from the word
+that ship with the CLI) and blank sheets; one person reads the text two words
+at a time from the numbered printout, and the group writes each new word into a
+spare row and tallies beside it. Nothing is printed on the sheets, so agree
+first that a new word is claimed out loud --- two people keeping counts of the
+same word is the one mistake that breaks a group's model. A short generation round follows, from the word
 _the_.
 
 **Part 6** pools the models, on butchers paper up the front. Call out the word
@@ -82,9 +84,8 @@ group's model could.
   different book per group: `fun-with-dick-and-jane` (the book the slides walk
   through), `green-eggs-and-ham`, `the-very-hungry-caterpillar`,
   `were-going-on-a-bear-hunt` and `the-cat-in-the-hat`
-- one training set per group, each from a different
-  `data/originals/school-day-*.txt` text, with the words printed and the boxes
-  empty, plus its `text.pdf`
+- blank sheets, one per person, and a different `data/originals/school-day-*.txt`
+  text page per group
 - counters in four colours (red, blue, green, yellow), at least six of each per
   group (the largest tally in any set), a paper cup per group, and a tub per
   group to tip the cup back into between draws
@@ -95,10 +96,12 @@ group's model could.
 ## Printing it
 
 `make pack-how-ai-writes-stories-ledger` in the
-[repo](https://github.com/ANUcybernetics/llms-unplugged) builds every set above
-and zips them into `out/packs/`, with a README naming what to print and how many
-copies. The `Makefile` holds the exact commands, so the sets are the same every
-delivery rather than rebuilt from memory.
+[repo](https://github.com/ANUcybernetics/llms-unplugged) zips four PDFs into
+`out/packs/`: the five picture-book models one after another, one blank sheet,
+the five numbered text pages, and the counters page. The README that comes with
+them says what to print and which pages go to which group. The `Makefile` holds
+the exact commands, so the sets are the same every delivery rather than rebuilt
+from memory.
 
 Every picture-book set is built with `--max-followers 4`, which drops each
 word's rarest continuations so that every word fits a single row however long
