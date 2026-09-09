@@ -36,16 +36,33 @@
   luma(0)
 } else { white }
 
+// Once a square is cut out its name is the only thing on it, and it is read
+// across a table, so size the name to the square rather than fixing a point
+// size. The width is estimated from the letter count rather than measured:
+// the browser compiler has a different set of fonts from the CLI's, and a
+// measured size would make the same set print differently in the two. Public
+// Sans runs a little over half an em per lowercase letter, so a name of n
+// letters fills about 0.55n em; give the longest one 78% of the cell, capped
+// so a palette of short names doesn't print a giant word.
+#let label-size(palette, cell) = {
+  let longest = calc.max(1, ..palette.map(e => e.name.len()))
+  calc.min(0.78 * cell / (0.55 * longest), cell / 3.4)
+}
+
 // A counter light enough to be the page is nothing unless something marks its
 // edge; the same lightness test the strips use for their outline.
-#let counter(entry, cell) = box(
+#let counter(entry, cell, size) = box(
   width: cell,
   height: cell,
   fill: entry.color,
   stroke: if pale(entry) {
     (paint: luma(150), thickness: 0.5pt, dash: "dashed")
   } else { none },
-  align(center + horizon, text(size: 8pt, fill: label-fill(entry), entry.name)),
+  align(center + horizon, text(
+    size: size,
+    fill: label-fill(entry),
+    entry.name,
+  )),
 )
 
 // A palette out and back: each of its colours twice, in mirror positions.
@@ -60,6 +77,7 @@
 #let page-of-counters() = context {
   let rows = counter-rows(columns, cycles)
   let cell = counter-cell(columns)
+  let size = label-size(palette, cell)
   let row-of(i) = mirrored(palette-for(
     palette,
     palette-index(i, rows),
@@ -70,7 +88,9 @@
     rows: rows,
     // The gutter is the cut guide: anywhere in the white does.
     gutter: counter-gap,
-    ..range(rows).map(i => row-of(i).map(e => counter(e, cell))).flatten(),
+    ..range(rows)
+      .map(i => row-of(i).map(e => counter(e, cell, size)))
+      .flatten(),
   ))
 }
 

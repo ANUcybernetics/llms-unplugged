@@ -220,9 +220,10 @@ port and rebuild the wasm.
   `LEDGER_PALETTE` mirrors. The list travels in `ledger.json`, so the sheets,
   the counters page, the brief's key and counts and the deck widgets all read
   one list. It is flat: the rows cycle it `--columns` at a time, and colours
-  past the last whole row are dropped with a warning. A room whose balls come
-  in eight colours passes `@ledger-palette-eight.json`, the first eight of the
-  default, which the school workshop's deck and lesson both print with
+  past the last whole row are dropped with a warning. A room whose counters
+  come in four or eight colours passes `@ledger-palette-four.json` or
+  `@ledger-palette-eight.json`, the first four or eight of the default; the
+  school workshop's deck, lesson and pack all print with the four
 - `--columns` / `--rows` (ledger only, defaults 4 and 12) - Follower cells on a
   row and rows on a page. A prefix with more followers than columns continues
   onto the next row; the command warns when one needs more rows than the
