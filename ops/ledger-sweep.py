@@ -43,7 +43,7 @@ that room has.
 Usage:
   ops/ledger-sweep.py data/green-eggs-and-ham.txt
   ops/ledger-sweep.py data/one.txt --start 60 --stop 200 --step 20
-  ops/ledger-sweep.py data/*.txt --palette @cli/ledger-palette-eight.json
+  ops/ledger-sweep.py data/*.txt --palette @cli/ledger-palette-four.json
 """
 
 from __future__ import annotations
