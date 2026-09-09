@@ -79,16 +79,24 @@
 // of its own and taller than a word's line, so without the band the marks
 // print as taller boxes than the words beside them and the reader's eye
 // snags on every full stop.
-#let token-size = 12pt
-#let token-band = 5.2mm
+// Half again the size these numbers were drawn against: the reader holds
+// this page and reads off it aloud, and at BASE-SIZE the text sat in the top
+// quarter of it. Not larger --- the page does not have to be full, and every
+// text this activity uses has to stay on one page, whatever its words happen
+// to be. Everything below is in units of K, so TOKEN-SIZE is the only number
+// to move.
+#let base-size = 12pt
+#let token-size = 1.5 * base-size
+#let k = token-size / base-size
+#let token-band = 5.2mm * k
 
 #let token-box(t, index) = box(
-  inset: (x: 1.4mm, y: 1.1mm),
+  inset: (x: 1.4mm * k, y: 1.1mm * k),
   stroke: 0.4pt + if t.keep { luma(160) } else { luma(215) },
-  radius: 1.2mm,
+  radius: 1.2mm * k,
   stack(
     dir: ttb,
-    spacing: 0.8mm,
+    spacing: 0.8mm * k,
     box(
       height: token-band,
       align(
@@ -104,7 +112,7 @@
     align(
       center,
       text(
-        size: 6pt,
+        size: 6pt * k,
         fill: luma(150),
         if index == none { sym.dash.en } else { str(index) },
       ),
@@ -119,7 +127,7 @@
     line(length: 100%, stroke: 0.4pt + luma(200))
     v(3mm)
   }
-  par(leading: 2.4mm, {
+  par(leading: 2.4mm * k, {
     for t in document {
       if t.keep {
         index.step()
