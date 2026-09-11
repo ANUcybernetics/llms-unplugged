@@ -51,19 +51,18 @@ define zip_pack
 endef
 
 # A talk's slides, and the presenter guide (each slide followed by its
-# speaker-notes page). Two exports because astromotion-pdf produces one PDF per
-# run, and each run builds and previews the site --- so this is the slow half
-# of a talk pack. --no-sandbox because the export drives headless Chrome, which
-# will not start as root or in a container without it.
+# speaker-notes page). One run emits both, sharing the site build and preview
+# server (astromotion >= 0.29); the captures are still separate, and decktape's
+# per-slide pauses are most of the time, so this is the slow half of a talk
+# pack either way. --no-sandbox because the export drives headless Chrome,
+# which will not start as root or in a container without it.
 #
 # $(1) deck slug, $(2) destination directory
 define deck_pdfs
-	@echo "slides: $(1)"
+	@echo "slides and presenter guide: $(1)"
 	@cd website && ASTROMOTION_CHROME_ARGS=--no-sandbox pnpm exec astromotion-pdf $(1) \
-		$(abspath $(2))/slides.pdf >/dev/null
-	@echo "presenter guide: $(1)"
-	@cd website && ASTROMOTION_CHROME_ARGS=--no-sandbox pnpm exec astromotion-pdf $(1) \
-		$(abspath $(2))/presenter-guide.pdf --notes >/dev/null
+		--slides=$(abspath $(2))/slides.pdf \
+		--notes=$(abspath $(2))/presenter-guide.pdf >/dev/null
 endef
 
 # ---------------------------------------------------------------------------
