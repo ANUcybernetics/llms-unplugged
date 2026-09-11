@@ -254,13 +254,15 @@ palette is those same four colours, so every row is one row of red, blue, green
 and yellow --- there are no continuation rows and no second palette to explain.
 
 Before each delivery:
-- run `make pack-how-ai-writes-stories-ledger` in the repo. It zips four PDFs
-  into out/packs/ --- the five pre-tallied picture books for the generation
-  round, one blank sheet for training, the five numbered text pages, and the
-  counters page --- with a README saying what to print and which pages go to
-  which group. The Makefile holds the exact commands; don't rebuild them by
+- print the pack: https://pdf.llmsunplugged.org/packs/how-ai-writes-stories-ledger.zip
+  --- five PDFs (the five pre-tallied picture books for the generation round,
+  one blank sheet for training, the five numbered text pages, the counters page,
+  and the one-page instruction sheet) with a README saying what to print and
+  which pages go to which group. Rebuild it with
+  `make pack-how-ai-writes-stories-ledger` in the repo if the sets change and
+  re-upload; the Makefile holds the exact commands, so don't rebuild them by
   hand.
-- counters in four colours (red, blue, green, yellow), at least 6 of each per
+- counters in four colours (red, blue, green, yellow), at least 10 of each per
   group (the largest tally in any set), one paper cup and one tub per group
 - butchers paper for the class story
 - a few "predict the next word" prompts for the whiteboard

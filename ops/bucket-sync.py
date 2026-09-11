@@ -41,10 +41,16 @@ listing --- UsingTheSlides.astro and the build's PDF link check both read it,
 so an upload isn't finished until `manifest` has run and the JSON is
 committed.
 
+`packs/<lesson-slug>.zip` --- a workshop pack built by `make pack-<slug>`, so
+that a delivery is one download rather than four printed from a checkout ---
+is the one non-PDF this serves, and goes up under an explicit `--key`. The
+manifest stays PDFs only: it exists to make `<a href="...pdf">` checkable at
+build time, and nothing on the site links a pack.
+
 Usage:
   ops/bucket-sync.py setup                  # upload robots.txt (idempotent)
   ops/bucket-sync.py upload DIR             # upload a tree; keys relative to DIR
-  ops/bucket-sync.py upload --key KEY FILE  # upload one file under an explicit key
+  ops/bucket-sync.py upload --key KEY FILE  # upload one PDF or pack zip under a key
   ops/bucket-sync.py manifest               # bucket listing -> pdf-manifest.json
   ops/bucket-sync.py verify [KEY]           # check the served origin
 """
@@ -78,6 +84,10 @@ Disallow:
 # guide keeps its key across rebuilds), so they must not be cached as
 # immutable the way slop.university's content-addressed PDFs are.
 CACHE_CONTROL = "public, max-age=3600"
+
+# What the bucket serves, by extension. A directory upload is a tree of PDFs;
+# a pack zip goes up one at a time under its own key.
+CONTENT_TYPES = {".pdf": "application/pdf", ".zip": "application/zip"}
 
 
 def client():
@@ -142,10 +152,10 @@ def upload(args: list[str]) -> None:
 
     if key is not None:
         path = Path(args[0])
-        if not path.is_file() or path.suffix != ".pdf":
-            sys.exit(f"not a PDF file: {path}")
-        if not key.endswith(".pdf"):
-            sys.exit(f"key must end in .pdf: {key}")
+        if not path.is_file() or path.suffix not in CONTENT_TYPES:
+            sys.exit(f"not a PDF or pack zip: {path}")
+        if Path(key).suffix != path.suffix:
+            sys.exit(f"key must end in {path.suffix}: {key}")
         pairs = [(path, key)]
     else:
         if len(args) != 1 or not Path(args[0]).is_dir():
@@ -163,7 +173,10 @@ def upload(args: list[str]) -> None:
             str(p),
             bucket,
             k,
-            ExtraArgs={"ContentType": "application/pdf", "CacheControl": CACHE_CONTROL},
+            ExtraArgs={
+                "ContentType": CONTENT_TYPES[p.suffix],
+                "CacheControl": CACHE_CONTROL,
+            },
         )
         return k
 
@@ -212,8 +225,9 @@ def verify(sample: str | None) -> None:
             r = fetch(url)
             ctype = r.headers.get("Content-Type")
             print(f"{sample}: HTTP {r.status}, Content-Type: {ctype}")
-            if ctype != "application/pdf":
-                print("  Content-Type: FAILED (wanted application/pdf)")
+            wanted = CONTENT_TYPES.get(Path(sample).suffix)
+            if ctype != wanted:
+                print(f"  Content-Type: FAILED (wanted {wanted})")
                 ok = False
         except urllib.error.URLError as e:
             print(f"{sample}: FAILED --- {e}")
