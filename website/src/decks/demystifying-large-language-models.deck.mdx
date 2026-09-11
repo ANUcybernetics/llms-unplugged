@@ -28,11 +28,20 @@ read it out, cut it rather than the sentence you were going to say.
 The reveal is the spine: the three source books are never named until the
 three-book slide, and nothing on the printed sheets names them either. Deal
 all three texts together, and print with `--title` and `--author` overrides
-so no sheet carries a book's name. Hemingway then Poe then Seuss, because
-Seuss is the biggest recognition hit and has to land last.
-(The Visionaries deal used the-old-man-and-the-sea-excerpt, the-tell-tale-
-heart and the-cat-in-the-hat, in that input order, --seed 42; see `make
-showcase` in cli/.)
+so no sheet carries a book's name. Reveal Hemingway then Poe then Seuss,
+because Seuss is the biggest recognition hit and has to land last.
+
+Before each delivery:
+- print the pack:
+  https://pdf.llmsunplugged.org/packs/demystifying-large-language-models.zip
+  --- the slides, this presenter guide, the 120 search sheets and the lectern
+  brief, with a README saying what to print and how many copies. Rebuild it
+  with `make pack-demystifying-large-language-models` in the repo and
+  re-upload; the Makefile holds the exact deal (three texts in a pinned input
+  order, --seed 42), so a reprint matches the copies already in a hall. Don't
+  rebuild the sheets by hand.
+- ushers briefed to hand the sheets out on slide 4, fast
+- a whiteboard, or the annotation layer, and a pen that writes big
 
 Running order (target 13:00 against a 15:00 slot; the run is where the
 spare time goes --- 4:30 on the board is fine, 5:00 if the room is with
