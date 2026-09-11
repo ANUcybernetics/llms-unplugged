@@ -215,7 +215,10 @@ pack-$(LEDGER_SLUG): $(CLI)
 #
 # --title and --author are what keep the sources off the page: the brief prints
 # whatever the corpus metadata says, and joined real titles would spoil the
-# reveal on the first sheet handed out.
+# reveal on the first sheet handed out. The title names the corpus rather than
+# the talk, because it lands in a sentence as well as in the sheet header ---
+# "dealt from <title> by <author>" --- and the header already carries the
+# project's name in the lockup beside it.
 #
 # 120 sheets at the Cat in the Hat density. Pinning --sheets makes the count
 # the participant count rather than something the corpus decides, and 120 is
@@ -263,7 +266,7 @@ pack-$(DEMYST_SLUG): $(CLI)
 	@./$(CLI) sheets $(DEMYST_INPUTS) -o $(DEMYST_STAGE) -n 2 \
 		--sheets $(DEMYST_SHEETS) --rows 16 --font-size 19.2pt --seed 42 \
 		--brief separate \
-		--title "Demystifying large language models" --author "three authors" >/dev/null
+		--title "three unnamed books" --author "three authors" >/dev/null
 	@mv $(DEMYST_STAGE)/sheets.pdf $(DEMYST_DIR)/search-sheets.pdf
 	@# `--brief separate`: the brief is for the lectern and never goes into the
 	@# handout stack, so it is a file of its own rather than page 1.
