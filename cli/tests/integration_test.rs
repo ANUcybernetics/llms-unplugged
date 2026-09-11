@@ -1489,6 +1489,90 @@ fn test_ledger_subcommand_end_to_end() -> io::Result<()> {
     Ok(())
 }
 
+/// A pack of sets wants one instruction sheet rather than the same brief in
+/// front of every set, and its sheets bound double-sided: `--brief` moves the
+/// brief out, `--even-pages` keeps one set's sheets off the next one's leaf.
+#[test]
+fn test_ledger_brief_and_even_pages() -> io::Result<()> {
+    if !typst_available() {
+        eprintln!("Skipping test_ledger_brief_and_even_pages: 'typst' not found in PATH.");
+        return Ok(());
+    }
+
+    let temp = TempDir::new()?;
+    let input = write_sample_corpus(
+        temp.path(),
+        "corpus.txt",
+        "the cat sat on the mat and the cat ate the rat then the cat sat again \
+         while the dog watched the cat and the rat ran past the mat",
+    )?;
+
+    let ledger = |dir: &Path, extra: &[&str]| -> io::Result<()> {
+        let output = Command::new(cli_exe())
+            .arg("ledger")
+            .arg("-i")
+            .arg(&input)
+            .arg("--sheets")
+            .arg("3")
+            .arg("--output")
+            .arg(dir)
+            .args(extra)
+            .output()?;
+        assert!(
+            output.status.success(),
+            "ledger failed: {}",
+            String::from_utf8_lossy(&output.stderr)
+        );
+        Ok(())
+    };
+
+    // Three sheets of one page each: the brief makes four pages, dropping it
+    // three, and padding those three to an even count four again.
+    let with_brief = temp.path().join("with-brief");
+    ledger(&with_brief, &[])?;
+    let without = temp.path().join("without");
+    ledger(&without, &["--brief", "none"])?;
+    let padded = temp.path().join("padded");
+    ledger(&padded, &["--brief", "none", "--even-pages"])?;
+    if let (Some(brief), Some(none), Some(even)) = (
+        pdf_pages(&with_brief.join("ledger.pdf")),
+        pdf_pages(&without.join("ledger.pdf")),
+        pdf_pages(&padded.join("ledger.pdf")),
+    ) {
+        assert_eq!(brief, 4, "a brief plus one page per sheet");
+        assert_eq!(none, 3, "--brief none leaves the sheets alone");
+        assert_eq!(even, 4, "--even-pages pads an odd set to a whole leaf");
+    }
+
+    // The pack brief is its own file, and the sheets beside it carry none.
+    let pack = temp.path().join("pack");
+    ledger(&pack, &["--brief", "pack", "--brief-counters", "9"])?;
+    assert!(pack.join("brief.pdf").exists(), "no brief.pdf written");
+    if let (Some(sheets), Some(brief)) = (
+        pdf_pages(&pack.join("ledger.pdf")),
+        pdf_pages(&pack.join("brief.pdf")),
+    ) {
+        assert_eq!(sheets, 3, "the pack brief comes out of the sheets");
+        assert_eq!(brief, 1, "the brief is one page");
+    }
+
+    // The counter claim belongs to the pack brief, so it needs one.
+    let stray = Command::new(cli_exe())
+        .arg("ledger")
+        .arg("-i")
+        .arg(&input)
+        .arg("--brief-counters")
+        .arg("9")
+        .arg("--output")
+        .arg(temp.path().join("stray"))
+        .output()?;
+    assert!(
+        !stray.status.success(),
+        "--brief-counters without --brief pack should fail"
+    );
+    Ok(())
+}
+
 /// Page count via pdfinfo, or `None` when poppler isn't installed.
 fn pdf_pages(pdf: &Path) -> Option<usize> {
     let output = Command::new("pdfinfo").arg(pdf).output().ok()?;

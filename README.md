@@ -167,11 +167,12 @@ are dropped; apostrophes inside contractions are preserved.
   bag distinct colours. The prefixes are dealt across a group's sheets in
   alphabetical runs, each sheet's header naming the first and last prefix it
   holds. The PDF leads with a one-page facilitator brief, then one page per
-  sheet. A `counters.pdf` of coloured squares to cut up lands beside it: print
-  it double-sided (the layout is symmetric, so either binding works) for 8
-  counters of each colour per A4 sheet. So does a `text.pdf`: the text as the
-  tokeniser read it, one token per box with a running number under each, for
-  whoever reads it aloud in the training round.
+  sheet; `--brief` moves that brief or drops it. A `counters.pdf` of coloured
+  squares to cut up lands beside it: print it double-sided (the layout is
+  symmetric, so either binding works) for 8 counters of each colour per A4
+  sheet. So does a `text.pdf`: the text as the tokeniser read it, one token per
+  box with a running number under each, for whoever reads it aloud in the
+  training round.
   - `--sheets <N>`: the group size. Omit it and the count follows the corpus at
     the `--rows` density
   - `--palette <JSON|@FILE>`: the colours the room's counters come in, as a JSON
@@ -188,6 +189,19 @@ are dropped; apostrophes inside contractions are preserved.
     is read; `followers` leaves only the tallies to make
   - `--blank`: sheets of empty rows with no corpus (one, unless `--sheets`), for
     a group training on a text of its own
+  - `--brief sheets|pack|none` (default `sheets`): where the facilitator brief
+    goes. `sheets` is the first page of `ledger.pdf`, describing this set.
+    `pack` writes it to its own `brief.pdf` and leaves `ledger.pdf` the sheets
+    alone; that brief describes the activity rather than the set it was built
+    from --- no corpus named and no statistics quoted --- so one copy is the
+    instruction sheet for a pack of several sets. `none` drops it
+  - `--brief-counters <N>` (with `--brief pack`): the largest tally anywhere in
+    the pack, which no one set of it knows, for the brief to ask the room to
+    bring that many counters of each colour. Left out, it asks for enough
+    without naming a number
+  - `--even-pages`: pad the sheets to an even page count, so a set printed
+    double-sided ends on a whole leaf and the next set bound after it starts on
+    a fresh one
   - `--columns <N>` (default 4), `--rows <N>` (default 12): follower cells on a
     row and rows on a page. The rows cycle through the palette `--columns` at a
     time, so twelve colours colour three rows and eight colour two; the command

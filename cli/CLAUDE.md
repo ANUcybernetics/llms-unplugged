@@ -59,7 +59,9 @@ text file → Rust CLI → model.json → Typst → PDF booklet
   rectangle at the default twelve rows a page, which a very different `--rows`
   moves off golden since rows share the page height. `--prefill` is a Typst
   input rather than part of the JSON, so one set prints at any level. Opens with
-  a one-page facilitator brief unless the set is `--blank`
+  a one-page facilitator brief unless the set is `--blank`; `--brief` moves it
+  into its own `brief.pdf` (written for a pack of sets, so corpus-neutral) or
+  drops it, via the `part`/`brief_scope` inputs
 - `ledger-common.typ` - Reading the palette out of `ledger.json`, the strip and
   counter drawing, and the counter-sheet geometry, shared by the two ledger
   templates so the strip on a sheet, the printed counter and the brief's

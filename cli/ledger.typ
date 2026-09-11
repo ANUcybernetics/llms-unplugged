@@ -31,6 +31,20 @@
 // all). Presentation rather than data, so it is an input and not part of the
 // JSON: the same set prints at any level.
 #let prefill = sys.inputs.at("prefill", default: "prefixes")
+// Which part of the document to render: the brief then the sheets ("all", the
+// default and what a single set prints), the sheets alone ("sheets"), or the
+// brief alone ("brief") --- one instruction sheet for a pack of several sets,
+// so the sheets themselves carry no page nobody hands out.
+#let part = sys.inputs.at("part", default: "all")
+// A "pack" brief serves a pack of sets rather than the one it was built from,
+// so it names no corpus, quotes no statistics and describes both a
+// pre-tallied and a blank sheet. The counters claim is the one number it
+// cannot work out for itself, so it comes in as an input.
+#let brief_scope = sys.inputs.at("brief_scope", default: "set")
+#let brief_counters = sys.inputs.at("brief_counters", default: "")
+// Pad the sheets to an even page count, so a set printed double-sided ends on
+// a whole leaf and whatever is bound after it starts on a fresh one.
+#let even_pages = sys.inputs.at("even_pages", default: "false") == "true"
 // Every level from "followers" up prints the follower words.
 #let prints_followers = prefill in ("followers", "tallies")
 // The marks the sheet sets in a symbol tile. An input rather than JSON for
@@ -322,8 +336,12 @@
 
 // ===== The facilitator brief =====
 
-// The brief is one page, printed once, and only when there is a corpus to
-// describe: blank sheets are handed to a group that already knows the game.
+// The brief is one page, printed once. A set brief describes the set it was
+// built from, so it needs a corpus: blank sheets are handed to a group that
+// already knows the game. A pack brief describes the activity and nothing
+// else, so it serves a pack of sets --- and can be built off a blank set,
+// which has no corpus to name.
+//
 // "the first 300 tokens of _Title_" when the set was read under a budget,
 // else just the title: a facilitator should know a set is not the whole text.
 #let corpus-phrase(metadata) = if "max_tokens" in metadata [the first
@@ -331,7 +349,9 @@
     metadata.at("documents", default: 1) > 1
   ) [each of] #emph(metadata.title)] else [#emph(metadata.title)]
 
-#let brief() = {
+// `standalone` is the brief on its own in its own file, which needs no
+// pagebreak to get off the sheets that would otherwise follow it.
+#let brief(standalone: false) = {
   set page(footer: align(
     center,
     text(fill: brand-gold, size: 9pt, "www.llmsunplugged.org"),
@@ -339,13 +359,10 @@
   show heading: set block(above: 1.4em, below: 0.8em)
   set par(justify: false)
 
-  let n-prefix = if sheets.len() > 0 {
-    let e = sheets.map(s => s.pages.flatten()).flatten().first()
-    e.prefix.len()
-  } else { 1 }
-  let prefix-noun = if n-prefix == 1 [prefix word] else [#(
-      str(n-prefix) + "-word"
-    ) prefix]
+  // A pack brief reads nothing off the set it was built from but the palette:
+  // the counts below are the set's own, and quoting one set's numbers on the
+  // sheet that fronts five of them would be wrong four times over.
+  let pack = brief_scope == "pack"
   let entries = sheets.map(s => s.pages.flatten()).flatten()
   let prefixes = entries.len()
   let max-count = calc.max(
@@ -353,6 +370,10 @@
     ..entries.map(e => e.followers.map(f => f.count)).flatten(),
   )
   let max-followers = calc.max(0, ..entries.map(e => e.followers.len()))
+  let prefix-noun = if entries.len() == 0 [prefix] else {
+    let n-prefix = entries.first().prefix.len()
+    if n-prefix == 1 [prefix word] else [#(str(n-prefix) + "-word") prefix]
+  }
 
   let prefill-sentence = if prefill == "tallies" [
     The rows come complete: prefixes, followers, and the tally marks this text
@@ -372,18 +393,33 @@
     [= Ledger sheets: how to run the activity], brand-lockup(width: 45mm),
   )
 
-  let brief-what = [
+  let opening = if pack [
+    A *ledger sheet* is one page of a model: rows, one per prefix, dealt across
+    a group's sheets in alphabetical runs so that the group holds the whole
+    model between them and no one member of it does. Each sheet's header says
+    the first and last prefix it holds, so a group can find any prefix by
+    reading headers rather than by everyone searching their own page. Hand out
+    one sheet per person.
+  ] else [
     The pages after this one are #sheets.len() *ledger sheets* built from
     #corpus-phrase(metadata) by #metadata.author. Together they are the model:
     #prefixes rows, one per #prefix-noun, dealt across the sheets in
     alphabetical runs. Each sheet's header says the first and last prefix it
     holds, so a group of #sheets.len() can find any prefix by reading headers.
     Print one-sided and hand out one sheet per person.
+  ]
+
+  let brief-what = [
+    #opening
 
     A row is a prefix followed by #columns *follower cells*. Each cell has room
     for a follower word and, beside it, a coloured *tally strip*. A prefix with
     more than #columns followers continues onto the row below, where its prefix
-    is repeated in grey. #prefill-sentence
+    is repeated in grey. #if pack [
+      A sheet comes either pre-tallied --- prefixes, followers and the marks
+      some text produced, a model trained and ready to generate from --- or
+      blank, for a group to train on a text of its own.
+    ] else [#prefill-sentence]
 
     == The colours
 
@@ -397,7 +433,7 @@
         cycles * columns,
       ) different colours and the cup can tell them apart.
     ]
-    #if prefill != "tallies" [
+    #if not pack and prefill != "tallies" [
       Don't explain the colours until the generation round; during training they
       are just stripes.
     ]
@@ -428,18 +464,27 @@
 
     *Bring* one cup per group and counters in these #str(
       cycles * columns,
-    ) colours, at least #max-count of each: that is the most times any one
-    follower appears in this text, and so the most counters of one colour a
-    single draw can need. The set comes with #raw("counters.pdf"): print it
+    ) colours, #if pack and brief_counters == "" [
+      enough of each that a row's heaviest tally can be counted into the cup.
+    ] else [
+      at least #if pack { brief_counters } else { max-count } of each: that is
+      the most times any one follower appears in #if pack [these sets] else [
+        this text
+      ], and so the most counters of one colour a single draw can need.
+    ]
+    #if pack [The pack] else [The set] comes with #raw("counters.pdf"): print it
     double-sided (either binding works) and cut the squares apart for
     #context counters-per-colour(columns, cycles) of each colour per sheet.
-    #if prefill != "tallies" [
+    #if not pack and prefill != "tallies" [
       It also comes with #raw("text.pdf"), the text as the tokeniser read it,
       for the training round: print one per group.
     ]
   ]
 
-  let training = if prefill == "tallies" [
+  // A pack has both a pre-tallied set and blank sheets in it, so the pack
+  // brief always describes training: which round a given sheet is for is
+  // plain from whether its rows have words in them.
+  let training = if not pack and prefill == "tallies" [
     == Already trained
 
     These sheets are the finished model: the marks on them are the counts the
@@ -449,14 +494,16 @@
   ] else [
     == Training
 
-    One person reads the text aloud from #raw("text.pdf"), a pair of tokens at a
-    time: the prefix, then the word after it. Whoever holds that prefix finds
-    its row, finds the follower (writing it into the next empty cell if it is
-    new) and adds one tally mark to that follower's strip. Then the reader moves
-    along by one token, so the word just tallied becomes the next prefix.
-    Punctuation is a token like any other: a full stop has followers, and so has
-    a comma. The text page numbers every token, so a group that loses its place
-    can say where it was.
+    One person reads the text aloud from #if pack [their group's text
+      page] else [
+      #raw("text.pdf")
+    ], a pair of tokens at a time: the prefix, then the word after it. Whoever
+    holds that prefix finds its row, finds the follower (writing it into the
+    next empty cell if it is new) and adds one tally mark to that follower's
+    strip. Then the reader moves along by one token, so the word just tallied
+    becomes the next prefix. Punctuation is a token like any other: a full stop
+    has followers, and so has a comma. The text page numbers every token, so a
+    group that loses its place can say where it was.
 
     When the text runs out, the tallies are the model.
   ]
@@ -489,11 +536,14 @@
     sheet, and the text the group writes down is the group generating, not any
     one of them.
 
-    #text(size: 9pt, fill: muted)[
-      #metadata.total_tokens tokens, #metadata.unique_tokens unique #sym.dot.c
-      #prefixes prefixes, the widest with #max-followers followers #sym.dot.c
-      #calc.round(metadata.entropy, digits: 2) bits/token #sym.dot.c perplexity
-      #calc.round(metadata.perplexity, digits: 1)
+    #if not pack [
+      #text(size: 9pt, fill: muted)[
+        #metadata.total_tokens tokens, #metadata.unique_tokens unique #sym.dot.c
+        #prefixes prefixes, the widest with #max-followers followers #sym.dot.c
+        #calc.round(metadata.entropy, digits: 2) bits/token #sym.dot.c
+        perplexity
+        #calc.round(metadata.perplexity, digits: 1)
+      ]
     ]
   ]
 
@@ -503,28 +553,51 @@
     align: top,
     brief-what, brief-how,
   )
-  pagebreak()
+  if not standalone { pagebreak() }
 }
-
-#if metadata != none { brief() }
 
 // ===== The sheets =====
 
-#counter(page).update(1)
-#set page(footer: sheet-footer)
+#let sheet-pages() = {
+  counter(page).update(1)
+  set page(footer: sheet-footer)
 
-#for (i, sheet) in sheets.enumerate() {
-  if i > 0 { pagebreak(weak: false) }
-  for (p, entries) in sheet.pages.enumerate() {
-    if p > 0 { pagebreak(weak: false) }
-    block(
-      width: 100%,
-      height: 100%,
-      grid(
-        rows: (auto, 1fr),
-        sheet-header(sheet),
-        rows-grid(physical-rows(entries)),
-      ),
-    )
+  for (i, sheet) in sheets.enumerate() {
+    if i > 0 { pagebreak(weak: false) }
+    for (p, entries) in sheet.pages.enumerate() {
+      if p > 0 { pagebreak(weak: false) }
+      block(
+        width: 100%,
+        height: 100%,
+        grid(
+          rows: (auto, 1fr),
+          sheet-header(sheet),
+          rows-grid(physical-rows(entries)),
+        ),
+      )
+    }
   }
+
+  // Pad to an even page count for double-sided printing. The parity has to be
+  // the physical one, which the page counter is not (it is reset above), and
+  // asking for the current page inside the block that adds a page never
+  // settles --- so it is read off a marker sitting on the last sheet page,
+  // which cannot move. The padding page is left without a footer: a numbered
+  // back face reads as a page that failed to print.
+  if even_pages {
+    [#std.metadata(none)<last-sheet-page>]
+    context {
+      if calc.odd(query(<last-sheet-page>).last().location().page()) {
+        pagebreak(weak: false)
+        set page(footer: none)
+      }
+    }
+  }
+}
+
+#if part == "brief" {
+  brief(standalone: true)
+} else {
+  if part == "all" and metadata != none { brief() }
+  sheet-pages()
 }

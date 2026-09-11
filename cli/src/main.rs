@@ -340,6 +340,32 @@ impl Prefill {
     }
 }
 
+/// Where the facilitator brief goes. One set prints it as its own first page;
+/// a pack of sets wants one instruction sheet for all of them instead, and no
+/// page in a set's sheets that nobody hands out.
+#[derive(ValueEnum, Debug, Clone, Copy, PartialEq, Eq)]
+enum Brief {
+    /// The first page of ledger.pdf, describing this set.
+    Sheets,
+    /// Its own brief.pdf, describing the activity rather than this set: no
+    /// corpus named and no statistics quoted, so one copy fronts a pack of
+    /// sets. ledger.pdf is then the sheets alone.
+    Pack,
+    /// No brief at all; ledger.pdf is the sheets alone.
+    None,
+}
+
+impl Brief {
+    /// What `part` the sheets are compiled under: the whole document, or the
+    /// sheets on their own.
+    fn sheets_part(self) -> &'static str {
+        match self {
+            Brief::Sheets => "all",
+            Brief::Pack | Brief::None => "sheets",
+        }
+    }
+}
+
 #[derive(Args, Debug, Clone)]
 struct LedgerArgs {
     /// Input text file to process. Repeat for a multi-document corpus; document
@@ -412,6 +438,25 @@ struct LedgerArgs {
     /// a corpus, so this and --blank are mutually exclusive.
     #[arg(long, value_enum, default_value_t = Prefill::Prefixes, conflicts_with = "blank")]
     prefill: Prefill,
+
+    /// Where the facilitator brief goes: the first page of ledger.pdf
+    /// (default), its own corpus-neutral brief.pdf for a pack of sets, or
+    /// nowhere.
+    #[arg(long, value_enum, default_value_t = Brief::Sheets)]
+    brief: Brief,
+
+    /// The most counters of one colour a single draw can need, for a
+    /// `--brief pack` brief to ask the room to bring: the largest tally
+    /// anywhere in the pack, which no one set of it knows. Left out, the brief
+    /// asks for enough without naming a number.
+    #[arg(long, value_name = "N")]
+    brief_counters: Option<usize>,
+
+    /// Pad the sheets out to an even page count, so a set printed
+    /// double-sided ends on a whole leaf and whatever is bound after it ---
+    /// another set's sheets, in a pack --- starts on a fresh one.
+    #[arg(long)]
+    even_pages: bool,
 
     /// Paper size for PDF (default: a4); the sheets are always landscape
     #[arg(long, default_value = "a4")]
@@ -896,6 +941,11 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
             "--max-followers must be at least 1".to_string(),
         ));
     }
+    if args.brief_counters.is_some() && args.brief != Brief::Pack {
+        return Err(CliError::InvalidArgs(
+            "--brief-counters is the pack brief's counter claim; it needs --brief pack".to_string(),
+        ));
+    }
 
     let palette = load_palette(args.palette.as_deref(), args.columns)?;
 
@@ -953,7 +1003,24 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
             args.tokenizer.config().punctuation(),
         ),
     ];
-    typst::compile_template("ledger.typ", &inputs, &args.output.join("ledger.pdf"))?;
+
+    let mut sheet_inputs = inputs.clone();
+    sheet_inputs.push(("part".to_string(), args.brief.sheets_part().to_string()));
+    sheet_inputs.push(("even_pages".to_string(), args.even_pages.to_string()));
+    typst::compile_template("ledger.typ", &sheet_inputs, &args.output.join("ledger.pdf"))?;
+
+    // The pack brief: the same template, rendered as the brief alone and
+    // written beside the sheets rather than in front of them.
+    if args.brief == Brief::Pack {
+        let mut brief_inputs = inputs.clone();
+        brief_inputs.push(("part".to_string(), "brief".to_string()));
+        brief_inputs.push(("brief_scope".to_string(), "pack".to_string()));
+        if let Some(counters) = args.brief_counters {
+            brief_inputs.push(("brief_counters".to_string(), counters.to_string()));
+        }
+        typst::compile_template("ledger.typ", &brief_inputs, &args.output.join("brief.pdf"))?;
+        eprintln!("  print brief.pdf once: the instruction sheet for the whole pack");
+    }
 
     // The counters to cut up and draw from the cup: two identical pages laid
     // out symmetrically, so printing the file double-sided --- on either
