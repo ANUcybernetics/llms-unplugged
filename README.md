@@ -159,63 +159,62 @@ are dropped; apostrophes inside contractions are preserved.
     it.
 - `ledger` - Generate ledger sheets: the model as a table with one row per
   prefix, each row holding follower cells with a coloured tally strip beside
-  every follower. Training is tallying by hand; generation is a bag of
-  counters, one per tally mark in the colour of its strip, so the counter drawn
-  names the follower. The strips are coloured by column rather than by word,
-  and the room's counter colours cycle down the rows a rowful at a time, so a
-  prefix that runs past the columns continues onto the rows below and still
-  gives the bag distinct colours. The prefixes are dealt across a group's sheets in alphabetical runs,
-  each sheet's header naming the first and last prefix it holds. The PDF leads
-  with a one-page facilitator brief, then one page per sheet. A `counters.pdf`
-  of coloured squares to cut up lands beside it: print it double-sided (the
-  layout is symmetric, so either binding works) for 8 counters of each colour
-  per A4 sheet. So does a `text.pdf`: the text as the tokeniser
-  read it, one token per box with a running number under each, for whoever
-  reads it aloud in the training round.
+  every follower. Training is tallying by hand; generation is a bag of counters,
+  one per tally mark in the colour of its strip, so the counter drawn names the
+  follower. The strips are coloured by column rather than by word, and the
+  room's counter colours cycle down the rows a rowful at a time, so a prefix
+  that runs past the columns continues onto the rows below and still gives the
+  bag distinct colours. The prefixes are dealt across a group's sheets in
+  alphabetical runs, each sheet's header naming the first and last prefix it
+  holds. The PDF leads with a one-page facilitator brief, then one page per
+  sheet. A `counters.pdf` of coloured squares to cut up lands beside it: print
+  it double-sided (the layout is symmetric, so either binding works) for 8
+  counters of each colour per A4 sheet. So does a `text.pdf`: the text as the
+  tokeniser read it, one token per box with a running number under each, for
+  whoever reads it aloud in the training round.
   - `--sheets <N>`: the group size. Omit it and the count follows the corpus at
     the `--rows` density
-  - `--palette <JSON|@FILE>`: the colours the room's counters come in, as a
-    JSON array of `{"name": ..., "hex": ...}` entries --- inline, or `@` a
-    file of them. Everything that needs a colour reads this list: the strips,
-    their printed names, the counters page and the brief's key and counts.
-    The default is the twelve in `cli/ledger-palette.json`; a room with
-    counters in four or eight colours passes `@cli/ledger-palette-four.json`
-    or `@cli/ledger-palette-eight.json`, or its own list.
-    The website's generator offers the first four, eight or twelve of the
-    default rather than an arbitrary list
+  - `--palette <JSON|@FILE>`: the colours the room's counters come in, as a JSON
+    array of `{"name": ..., "hex": ...}` entries --- inline, or `@` a file of
+    them. Everything that needs a colour reads this list: the strips, their
+    printed names, the counters page and the brief's key and counts. The default
+    is the twelve in `cli/ledger-palette.json`; a room with counters in four or
+    eight colours passes `@cli/ledger-palette-four.json` or
+    `@cli/ledger-palette-eight.json`, or its own list. The website's generator
+    offers the first four, eight or twelve of the default rather than an
+    arbitrary list
   - `--prefill prefixes|followers` (default `prefixes`): what the sheets come
     printed with. `prefixes` leaves the followers to be discovered as the text
     is read; `followers` leaves only the tallies to make
-  - `--blank`: sheets of empty rows with no corpus (one, unless `--sheets`),
-    for a group training on a text of its own
-  - `--columns <N>` (default 4), `--rows <N>` (default 12): follower cells on
-    a row and rows on a page. The rows cycle through the palette `--columns`
-    at a time, so twelve colours colour three rows and eight colour two; the
-    command warns about any prefix that runs past them
-  - `--max-followers <N>`: keep only the `N` commonest followers of each
-    prefix and drop the rest, which is top-k sampling applied to the sheet.
-    Set it to `--columns` and every prefix fits one row however long the
-    text, so a set can be sized for the vocabulary it should have rather than
-    cut back until its widest row fits. Survivors keep the order the sheet
-    prints them in, and a row always keeps at least one follower. The tallies
-    printed are then the kept followers' counts, so a `--prefill tallies`
-    sheet is no longer what tallying that text by hand would produce, where the colours
-    repeat
+  - `--blank`: sheets of empty rows with no corpus (one, unless `--sheets`), for
+    a group training on a text of its own
+  - `--columns <N>` (default 4), `--rows <N>` (default 12): follower cells on a
+    row and rows on a page. The rows cycle through the palette `--columns` at a
+    time, so twelve colours colour three rows and eight colour two; the command
+    warns about any prefix that runs past them
+  - `--max-followers <N>`: keep only the `N` commonest followers of each prefix
+    and drop the rest, which is top-k sampling applied to the sheet. Set it to
+    `--columns` and every prefix fits one row however long the text, so a set
+    can be sized for the vocabulary it should have rather than cut back until
+    its widest row fits. Survivors keep the order the sheet prints them in, and
+    a row always keeps at least one follower. The tallies printed are then the
+    kept followers' counts, so a `--prefill tallies` sheet is no longer what
+    tallying that text by hand would produce, where the colours repeat
   - `--n <N>`, `--title`, `--author`, `--paper-size` as for `sheets`
 
-The command also warns when a set has a context that can be drawn but has no
-row of its own --- almost always the text's last token, when the budget leaves
-it appearing nowhere else. A group that reaches one has nothing to look up, so
-it is worth clearing (usually with a different `--max-tokens`) before printing.
+The command also warns when a set has a context that can be drawn but has no row
+of its own --- almost always the text's last token, when the budget leaves it
+appearing nowhere else. A group that reaches one has nothing to look up, so it
+is worth clearing (usually with a different `--max-tokens`) before printing.
 `ops/ledger-sweep.py` sweeps budgets and reports the same thing in its `dead`
 column, alongside the row and colour counts a room would need.
 
 Every subcommand also takes `--max-tokens <N>`, which reads only the first N
-tokens of the text (of each text, when several are given). The activities
-scale with the text --- a ledger row per prefix, a search sheet per so many
-pairs --- so this is how to size them without editing the corpus file; the
-briefs say "the first N tokens of" so nobody mistakes the set for the whole
-text.
+tokens of the text (of each text, when several are given). The activities scale
+with the text --- a ledger row per prefix, a search sheet per so many pairs ---
+so this is how to size them without editing the corpus file; the briefs say "the
+first N tokens of" so nobody mistakes the set for the whole text.
+
 - `sample` - Build an N-gram model in memory from a corpus and sample text from
   it. Useful as a sanity check on the model without printing a booklet.
   - `--input <FILE>`, `--n <N>` (default 2)
@@ -238,8 +237,8 @@ text file → Rust CLI → model.json → Typst → PDF booklet
 The Rust tool (`cli/src/`) loads the corpus, tokenises it with a normaliser
 whose casing rules are decided across the whole text, and counts the N-grams
 into a model whose entries and statistics are written out as `model.json`. The
-Typst template (`cli/book.typ`) reads that file and typesets it into a
-printable booklet with guide words, proper pagination, and dice-roll ranges.
+Typst template (`cli/book.typ`) reads that file and typesets it into a printable
+booklet with guide words, proper pagination, and dice-roll ranges.
 
 For large trigram models, use the `-b` flag to split across multiple books.
 
