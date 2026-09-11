@@ -44,8 +44,14 @@ endef
 # delivery is "print these" rather than a walk through ten folders. The CLI
 # writes one directory per set, so the sets are built into a staging directory
 # and the pieces gathered out of it: the five books' sheets concatenated, the
-# five texts' pages concatenated, one blank sheet, one counters page (every set
-# generates the same one --- it depends only on the palette).
+# five texts' pages concatenated, one blank sheet, one counters page and one
+# instruction sheet (every set generates the same counters page --- it depends
+# only on the palette --- and the sheets are built `--brief none` so the pack's
+# one `--brief pack` instruction sheet is the only copy).
+#
+# The books' sheets are padded to an even page count (`--even-pages`), so the
+# concatenation prints double-sided with each book starting on a fresh leaf and
+# no leaf holding two groups' books.
 #
 # Generation: one pre-tallied picture book per group. --max-followers 4 is what
 # keeps every word to a single row whatever the budget; the budget itself is
@@ -86,6 +92,12 @@ LEDGER_BUDGET := 140
 # (--max-followers matches the default --columns), so a sheet's rows are its
 # entries.
 LEDGER_ROWS_JQ := [.sheets[] | [.pages[][]] | length] | max
+
+# The most counters of one colour a single draw can need: the largest tally
+# anywhere in the pack, read across all five books (`jq -s`). A set's own brief
+# works this out for itself; the pack's instruction sheet fronts five sets, so
+# it takes the number as an input.
+LEDGER_COUNTERS_JQ := [.[].sheets[].pages[][].followers[].count] | max
 
 # $(foreach) joins its expansions with a space, which would run the last line
 # of one set's recipe into the first line of the next; this puts the newline
@@ -132,11 +144,15 @@ pack-$(LEDGER_SLUG): $(CLI)
 	@mkdir -p $(LEDGER_STAGE)
 	$(foreach book,$(LEDGER_BOOKS),$(call build_ledger,generation: $(book),\
 		data/$(book).txt,$(LEDGER_STAGE)/$(book),\
-		--max-tokens $(LEDGER_BUDGET) --max-followers 4 --prefill tallies)$(newline))
+		--max-tokens $(LEDGER_BUDGET) --max-followers 4 --prefill tallies \
+		--brief none --even-pages)$(newline))
 	$(foreach text,$(LEDGER_TEXTS),$(call build_text,training text: school-day-$(text),\
 		data/originals/school-day-$(text).txt,$(LEDGER_STAGE)/school-day-$(text))$(newline))
-	@echo "training sheet: blank"
+	@echo "training sheet: blank, and the pack's instruction sheet"
 	@./$(CLI) ledger --blank --palette $(LEDGER_PALETTE) --rows $(LEDGER_BLANK_ROWS) \
+		--brief pack --brief-counters \
+		$$(jq -s '$(LEDGER_COUNTERS_JQ)' \
+			$(foreach book,$(LEDGER_BOOKS),$(LEDGER_STAGE)/$(book)/ledger.json)) \
 		-o $(LEDGER_STAGE)/blank >/dev/null
 	@qpdf --empty --pages \
 		$(foreach book,$(LEDGER_BOOKS),$(LEDGER_STAGE)/$(book)/ledger.pdf) \
@@ -145,6 +161,7 @@ pack-$(LEDGER_SLUG): $(CLI)
 		$(foreach text,$(LEDGER_TEXTS),$(LEDGER_STAGE)/school-day-$(text)/text.pdf) \
 		-- $(LEDGER_DIR)/training-texts.pdf
 	@cp $(LEDGER_STAGE)/blank/ledger.pdf $(LEDGER_DIR)/training-sheets.pdf
+	@cp $(LEDGER_STAGE)/blank/brief.pdf $(LEDGER_DIR)/instructions.pdf
 	@# Every set writes the same counters page; it depends only on the palette.
 	@cp $(LEDGER_STAGE)/blank/counters.pdf $(LEDGER_DIR)/counters.pdf
 	@cp docs/packs/$(LEDGER_SLUG).md $(LEDGER_DIR)/README.md
