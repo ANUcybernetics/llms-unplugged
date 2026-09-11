@@ -169,9 +169,9 @@
     #columns(2, gutter: 2em)[
       These pages contain #if "max_tokens" in doc_metadata [the first
         #doc_metadata.max_tokens tokens of] else [the text]
-      #emph(doc_metadata.title) by #doc_metadata.author. Each *cutout* shows a *next word* paired with the
-      *previous #prev-words-phrase* that came immediately before it in the
-      original text.
+      #emph(doc_metadata.title) by #doc_metadata.author. Each *cutout* shows a
+      *next word* paired with the *previous #prev-words-phrase* that came
+      immediately before it in the original text.
 
       #align(center)[
         #block(
