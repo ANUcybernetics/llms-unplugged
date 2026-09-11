@@ -1544,15 +1544,15 @@ fn test_ledger_brief_and_even_pages() -> io::Result<()> {
         assert_eq!(even, 4, "--even-pages pads an odd set to a whole leaf");
     }
 
-    // The pack brief is its own file, and the sheets beside it carry none.
+    // The generic brief is its own file, and the sheets beside it carry none.
     let pack = temp.path().join("pack");
-    ledger(&pack, &["--brief", "pack", "--brief-counters", "9"])?;
+    ledger(&pack, &["--brief", "generic", "--brief-counters", "9"])?;
     assert!(pack.join("brief.pdf").exists(), "no brief.pdf written");
     if let (Some(sheets), Some(brief)) = (
         pdf_pages(&pack.join("ledger.pdf")),
         pdf_pages(&pack.join("brief.pdf")),
     ) {
-        assert_eq!(sheets, 3, "the pack brief comes out of the sheets");
+        assert_eq!(sheets, 3, "the generic brief comes out of the sheets");
         assert_eq!(brief, 1, "the brief is one page");
     }
 
@@ -1568,8 +1568,79 @@ fn test_ledger_brief_and_even_pages() -> io::Result<()> {
         .output()?;
     assert!(
         !stray.status.success(),
-        "--brief-counters without --brief pack should fail"
+        "--brief-counters without --brief generic should fail"
     );
+    Ok(())
+}
+
+/// Every handout that opens with a brief answers `--brief` the same way: bound
+/// in front, beside it as brief.pdf, or not at all. `generic` is the ledger's
+/// alone, since the other briefs are built around a worked example from the
+/// corpus.
+#[test]
+fn test_brief_flag_is_shared_by_the_handout_commands() -> io::Result<()> {
+    if !typst_available() {
+        eprintln!("Skipping test_brief_flag_is_shared_by_the_handout_commands: no 'typst'.");
+        return Ok(());
+    }
+
+    let temp = TempDir::new()?;
+    let input = write_sample_corpus(
+        temp.path(),
+        "corpus.txt",
+        "the cat sat on the mat and the cat ate the rat then the cat sat again \
+         while the dog watched the cat and the rat ran past the mat",
+    )?;
+
+    let run = |command: &str, dir: &Path, extra: &[&str]| -> io::Result<bool> {
+        Ok(Command::new(cli_exe())
+            .arg(command)
+            .arg("-i")
+            .arg(&input)
+            .arg("--output")
+            .arg(dir)
+            .args(extra)
+            .output()?
+            .status
+            .success())
+    };
+
+    for (command, handout) in [("sheets", "sheets.pdf"), ("cutouts", "cutouts.pdf")] {
+        let bound = temp.path().join(format!("{command}-bound"));
+        let separate = temp.path().join(format!("{command}-separate"));
+        let none = temp.path().join(format!("{command}-none"));
+        assert!(run(command, &bound, &[])?, "{command} --brief bound");
+        assert!(
+            run(command, &separate, &["--brief", "separate"])?,
+            "{command} --brief separate"
+        );
+        assert!(run(command, &none, &["--brief", "none"])?, "{command} none");
+
+        assert!(!bound.join("brief.pdf").exists(), "{command}: bound in");
+        assert!(separate.join("brief.pdf").exists(), "{command}: beside it");
+        assert!(!none.join("brief.pdf").exists(), "{command}: dropped");
+
+        // The brief comes off the front and lands in its own file, so the
+        // handout is the same length either way it is left out.
+        if let (Some(bound), Some(separate), Some(none)) = (
+            pdf_pages(&bound.join(handout)),
+            pdf_pages(&separate.join(handout)),
+            pdf_pages(&none.join(handout)),
+        ) {
+            assert_eq!(
+                separate, none,
+                "{command}: the brief's page is the only cut"
+            );
+            assert!(bound > separate, "{command}: bound carries the brief");
+        }
+
+        // Only the ledger's brief has a corpus-neutral form.
+        let generic = temp.path().join(format!("{command}-generic"));
+        assert!(
+            !run(command, &generic, &["--brief", "generic"])?,
+            "{command} should refuse --brief generic"
+        );
+    }
     Ok(())
 }
 

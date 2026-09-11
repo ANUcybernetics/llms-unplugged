@@ -195,24 +195,19 @@ SHOWCASE_INPUTS := \
 # on A4. Past it, wide pairs start taking two column slots each and the sheet
 # count runs away --- 21pt needs 195 sheets for the same corpus, 24pt needs
 # 196 even after dropping to three columns.
-$(SHOWCASE_DIR)/sheets.pdf: tokenized-sheets.typ cutout-common.typ $(BRAND_ASSETS) $(TOOL)
+#
+# The brief is for the lectern and never goes into the handout stack, so
+# --brief separate writes it beside the sheets rather than in front of them.
+# Nothing here needs to know how long it ran to.
+$(SHOWCASE_DIR)/brief.pdf $(SHOWCASE_DIR)/participants.pdf &: tokenized-sheets.typ \
+		cutout-common.typ $(BRAND_ASSETS) $(TOOL)
 	mkdir -p $(SHOWCASE_DIR)
 	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) TYPST_BIN=$(TYPST_BIN) $(TOOL) sheets \
 		$(SHOWCASE_INPUTS) --output $(SHOWCASE_DIR) -n 2 \
 		--sheets $(SHOWCASE_SHEETS) --rows 15 --font-size 19.2pt --seed 42 \
+		--brief separate \
 		--title "Ben Swift — ANU Visionaries Showcase" --author "three authors"
-
-# The brief is for the lectern and never goes into the handout stack, so it
-# comes off the front. Its length is whatever the brief runs to for this
-# corpus, so it is counted back from the end rather than hard-coded --- editing
-# the brief must not silently start slicing sheets off.
-$(SHOWCASE_DIR)/brief.pdf: $(SHOWCASE_DIR)/sheets.pdf
-	qpdf $< --pages . 1-$$(($$(qpdf --show-npages $<) - $(SHOWCASE_SHEETS))) -- \
-		--deterministic-id $@
-
-$(SHOWCASE_DIR)/participants.pdf: $(SHOWCASE_DIR)/sheets.pdf
-	qpdf $< --pages . $$(($$(qpdf --show-npages $<) - $(SHOWCASE_SHEETS) + 1))-z -- \
-		--deterministic-id $@
+	mv $(SHOWCASE_DIR)/sheets.pdf $(SHOWCASE_DIR)/participants.pdf
 
 # Handed out at full A4, not imposed two-up onto A5. The imposition halves the
 # paper but it also scales the page by 1/sqrt(2), which takes 19.2pt type down

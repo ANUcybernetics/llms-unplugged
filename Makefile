@@ -47,7 +47,7 @@ endef
 # five texts' pages concatenated, one blank sheet, one counters page and one
 # instruction sheet (every set generates the same counters page --- it depends
 # only on the palette --- and the sheets are built `--brief none` so the pack's
-# one `--brief pack` instruction sheet is the only copy).
+# one `--brief generic` instruction sheet is the only copy).
 #
 # The books' sheets are padded to an even page count (`--even-pages`), so the
 # concatenation prints double-sided with each book starting on a fresh leaf and
@@ -150,7 +150,7 @@ pack-$(LEDGER_SLUG): $(CLI)
 		data/originals/school-day-$(text).txt,$(LEDGER_STAGE)/school-day-$(text))$(newline))
 	@echo "training sheet: blank, and the pack's instruction sheet"
 	@./$(CLI) ledger --blank --palette $(LEDGER_PALETTE) --rows $(LEDGER_BLANK_ROWS) \
-		--brief pack --brief-counters \
+		--brief generic --brief-counters \
 		$$(jq -s '$(LEDGER_COUNTERS_JQ)' \
 			$(foreach book,$(LEDGER_BOOKS),$(LEDGER_STAGE)/$(book)/ledger.json)) \
 		-o $(LEDGER_STAGE)/blank >/dev/null

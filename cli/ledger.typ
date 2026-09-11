@@ -31,13 +31,14 @@
 // all). Presentation rather than data, so it is an input and not part of the
 // JSON: the same set prints at any level.
 #let prefill = sys.inputs.at("prefill", default: "prefixes")
-// Which part of the document to render: the brief then the sheets ("all", the
-// default and what a single set prints), the sheets alone ("sheets"), or the
-// brief alone ("brief") --- one instruction sheet for a pack of several sets,
-// so the sheets themselves carry no page nobody hands out.
+// Which part of the document to render, the contract every template that
+// opens with a brief shares: the brief then the handout ("all", the default
+// and what a single set prints), the handout alone ("handout"), or the brief
+// alone ("brief") --- one instruction sheet for a pack of several sets, so
+// the sheets themselves carry no page nobody hands out.
 #let part = sys.inputs.at("part", default: "all")
-// A "pack" brief serves a pack of sets rather than the one it was built from,
-// so it names no corpus, quotes no statistics and describes both a
+// A "generic" brief serves a pack of sets rather than the one it was built
+// from, so it names no corpus, quotes no statistics and describes both a
 // pre-tallied and a blank sheet. The counters claim is the one number it
 // cannot work out for itself, so it comes in as an input.
 #let brief_scope = sys.inputs.at("brief_scope", default: "set")
@@ -362,7 +363,7 @@
   // A pack brief reads nothing off the set it was built from but the palette:
   // the counts below are the set's own, and quoting one set's numbers on the
   // sheet that fronts five of them would be wrong four times over.
-  let pack = brief_scope == "pack"
+  let generic = brief_scope == "generic"
   let entries = sheets.map(s => s.pages.flatten()).flatten()
   let prefixes = entries.len()
   let max-count = calc.max(
@@ -393,7 +394,7 @@
     [= Ledger sheets: how to run the activity], brand-lockup(width: 45mm),
   )
 
-  let opening = if pack [
+  let opening = if generic [
     A *ledger sheet* is one page of a model: rows, one per prefix, dealt across
     a group's sheets in alphabetical runs so that the group holds the whole
     model between them and no one member of it does. Each sheet's header says
@@ -415,7 +416,7 @@
     A row is a prefix followed by #columns *follower cells*. Each cell has room
     for a follower word and, beside it, a coloured *tally strip*. A prefix with
     more than #columns followers continues onto the row below, where its prefix
-    is repeated in grey. #if pack [
+    is repeated in grey. #if generic [
       A sheet comes either pre-tallied --- prefixes, followers and the marks
       some text produced, a model trained and ready to generate from --- or
       blank, for a group to train on a text of its own.
@@ -433,7 +434,7 @@
         cycles * columns,
       ) different colours and the cup can tell them apart.
     ]
-    #if not pack and prefill != "tallies" [
+    #if not generic and prefill != "tallies" [
       Don't explain the colours until the generation round; during training they
       are just stripes.
     ]
@@ -464,27 +465,28 @@
 
     *Bring* one cup per group and counters in these #str(
       cycles * columns,
-    ) colours, #if pack and brief_counters == "" [
+    ) colours, #if generic and brief_counters == "" [
       enough of each that a row's heaviest tally can be counted into the cup.
     ] else [
-      at least #if pack { brief_counters } else { max-count } of each: that is
-      the most times any one follower appears in #if pack [these sets] else [
+      at least #if generic { brief_counters } else { max-count } of each: that
+      is the most times any one follower appears in #if generic [these
+        sets] else [
         this text
       ], and so the most counters of one colour a single draw can need.
     ]
-    #if pack [The pack] else [The set] comes with #raw("counters.pdf"): print it
-    double-sided (either binding works) and cut the squares apart for
+    #if generic [The pack] else [The set] comes with #raw("counters.pdf"): print
+    it double-sided (either binding works) and cut the squares apart for
     #context counters-per-colour(columns, cycles) of each colour per sheet.
-    #if not pack and prefill != "tallies" [
+    #if not generic and prefill != "tallies" [
       It also comes with #raw("text.pdf"), the text as the tokeniser read it,
       for the training round: print one per group.
     ]
   ]
 
-  // A pack has both a pre-tallied set and blank sheets in it, so the pack
+  // A pack has both a pre-tallied set and blank sheets in it, so the generic
   // brief always describes training: which round a given sheet is for is
   // plain from whether its rows have words in them.
-  let training = if not pack and prefill == "tallies" [
+  let training = if not generic and prefill == "tallies" [
     == Already trained
 
     These sheets are the finished model: the marks on them are the counts the
@@ -494,7 +496,7 @@
   ] else [
     == Training
 
-    One person reads the text aloud from #if pack [their group's text
+    One person reads the text aloud from #if generic [their group's text
       page] else [
       #raw("text.pdf")
     ], a pair of tokens at a time: the prefix, then the word after it. Whoever
@@ -536,7 +538,7 @@
     sheet, and the text the group writes down is the group generating, not any
     one of them.
 
-    #if not pack [
+    #if not generic [
       #text(size: 9pt, fill: muted)[
         #metadata.total_tokens tokens, #metadata.unique_tokens unique #sym.dot.c
         #prefixes prefixes, the widest with #max-followers followers #sym.dot.c

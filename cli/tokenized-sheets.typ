@@ -28,6 +28,13 @@
 // Get configuration from sys.inputs
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
 #let json_path = sys.inputs.at("json_path", default: "sheets.json")
+// Which part of the document to render, the contract every template that
+// opens with a brief shares: the brief then the handout ("all", the default),
+// the handout alone ("handout"), or the brief alone ("brief") --- the CLI's
+// `--brief`, so a pack of sets can print one instruction sheet instead of one
+// in front of every set.
+#let part = sys.inputs.at("part", default: "all")
+
 #let font_size = eval(sys.inputs.at("font_size", default: "16pt"))
 #let columns_per_sheet = int(sys.inputs.at("columns", default: "4"))
 // Cap on the rows of pairs per page, or 0 for no cap. Uncapped, a sheet takes
@@ -156,7 +163,9 @@
     metadata.at("documents", default: 1) > 1
   ) [each of] #emph(metadata.title)] else [#emph(metadata.title)]
 
-#let instructions-page() = {
+// `standalone` is the brief on its own in its own file, which needs no
+// pagebreak to get off the sheets that would otherwise follow it.
+#let instructions-page(standalone: false) = {
   set page(footer: align(
     center,
     text(
@@ -383,10 +392,14 @@
     ]
   }
 
-  pagebreak()
+  if not standalone { pagebreak() }
 }
 
-#instructions-page()
+#if part == "brief" {
+  instructions-page(standalone: true)
+} else if part == "all" {
+  instructions-page()
+}
 
 // ===== The participant sheets, one page each =====
 
@@ -611,46 +624,48 @@
   )
 }
 
-#for (i, sheet) in sheets.enumerate() {
-  if i > 0 { pagebreak(weak: false) }
+#if part != "brief" {
+  for (i, sheet) in sheets.enumerate() {
+    if i > 0 { pagebreak(weak: false) }
 
-  // `context` for `measure`, for resolving the em-based gutter to a length,
-  // and for the page width the column width is derived from.
-  context {
-    let gutter = column_gap.to-absolute()
-    let usable = page.width - 2 * margin_x
-    let col-width = (
-      (usable - gutter * (columns_per_sheet - 1)) / columns_per_sheet
-    )
-    let items = sheet.map(t => {
-      let body = render-cutout(t)
-      (body: body, span: span-for(body, col-width, gutter, columns_per_sheet))
-    })
-
-    let pages = paginate(pack-rows(items, columns_per_sheet), rows_per_page)
-
-    for (p, page-rows) in pages.enumerate() {
-      if p > 0 { pagebreak(weak: false) }
-
-      // Each page is exactly one page tall. The first splits into an
-      // auto-height header and a `1fr` body that absorbs whatever height the
-      // header leaves; later pages give the whole height to the pairs. Either
-      // way the body has a definite height, which is what lets the pair grid's
-      // own `1fr` rows stretch to the bottom margin instead of trailing off
-      // partway down the page.
-      block(
-        width: 100%,
-        height: 100%,
-        if p == 0 {
-          grid(
-            rows: (auto, 1fr),
-            sheet-header(i),
-            rows-grid(page-rows, columns_per_sheet),
-          )
-        } else {
-          rows-grid(page-rows, columns_per_sheet)
-        },
+    // `context` for `measure`, for resolving the em-based gutter to a length,
+    // and for the page width the column width is derived from.
+    context {
+      let gutter = column_gap.to-absolute()
+      let usable = page.width - 2 * margin_x
+      let col-width = (
+        (usable - gutter * (columns_per_sheet - 1)) / columns_per_sheet
       )
+      let items = sheet.map(t => {
+        let body = render-cutout(t)
+        (body: body, span: span-for(body, col-width, gutter, columns_per_sheet))
+      })
+
+      let pages = paginate(pack-rows(items, columns_per_sheet), rows_per_page)
+
+      for (p, page-rows) in pages.enumerate() {
+        if p > 0 { pagebreak(weak: false) }
+
+        // Each page is exactly one page tall. The first splits into an
+        // auto-height header and a `1fr` body that absorbs whatever height the
+        // header leaves; later pages give the whole height to the pairs. Either
+        // way the body has a definite height, which is what lets the pair grid's
+        // own `1fr` rows stretch to the bottom margin instead of trailing off
+        // partway down the page.
+        block(
+          width: 100%,
+          height: 100%,
+          if p == 0 {
+            grid(
+              rows: (auto, 1fr),
+              sheet-header(i),
+              rows-grid(page-rows, columns_per_sheet),
+            )
+          } else {
+            rows-grid(page-rows, columns_per_sheet)
+          },
+        )
+      }
     }
   }
 }

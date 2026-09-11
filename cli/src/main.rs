@@ -244,6 +244,9 @@ struct CutoutsArgs {
     seed: Option<u64>,
 
     #[command(flatten)]
+    brief: BriefArgs,
+
+    #[command(flatten)]
     tokenizer: TokenizerArgs,
 }
 
@@ -308,6 +311,9 @@ struct SheetsArgs {
     json_only: bool,
 
     #[command(flatten)]
+    brief: BriefArgs,
+
+    #[command(flatten)]
     tokenizer: TokenizerArgs,
 }
 
@@ -340,29 +346,83 @@ impl Prefill {
     }
 }
 
-/// Where the facilitator brief goes. One set prints it as its own first page;
-/// a pack of sets wants one instruction sheet for all of them instead, and no
-/// page in a set's sheets that nobody hands out.
-#[derive(ValueEnum, Debug, Clone, Copy, PartialEq, Eq)]
+/// Where the brief that opens a handout goes --- the ledger's and the sheets'
+/// facilitator brief, the cutouts' instructions page. Bound in front is right
+/// for a set printed on its own; a pack of sets, or a brief that stays on the
+/// lectern, wants it as its own file and no page in the handout that nobody
+/// hands out.
+///
+/// The templates take this as their `part` input, so all three answer the flag
+/// the same way.
+#[derive(ValueEnum, Debug, Clone, Copy, PartialEq, Eq, Default)]
 enum Brief {
-    /// The first page of ledger.pdf, describing this set.
-    Sheets,
+    /// The first page of the handout, describing this set.
+    #[default]
+    Bound,
+    /// Its own brief.pdf, still describing this set; the handout is the
+    /// pages people are given.
+    Separate,
     /// Its own brief.pdf, describing the activity rather than this set: no
     /// corpus named and no statistics quoted, so one copy fronts a pack of
-    /// sets. ledger.pdf is then the sheets alone.
-    Pack,
-    /// No brief at all; ledger.pdf is the sheets alone.
+    /// sets. Ledger only --- the sheets and cutouts briefs are built around a
+    /// worked example from the corpus, which has no corpus-neutral form.
+    Generic,
+    /// No brief at all.
     None,
 }
 
 impl Brief {
-    /// What `part` the sheets are compiled under: the whole document, or the
-    /// sheets on their own.
-    fn sheets_part(self) -> &'static str {
+    /// What `part` the handout is compiled under: the whole document, or the
+    /// handout pages alone.
+    fn handout_part(self) -> &'static str {
         match self {
-            Brief::Sheets => "all",
-            Brief::Pack | Brief::None => "sheets",
+            Brief::Bound => "all",
+            Brief::Separate | Brief::Generic | Brief::None => "handout",
         }
+    }
+
+    /// Whether a brief.pdf is written beside the handout, and what it says.
+    fn own_file_scope(self) -> Option<&'static str> {
+        match self {
+            Brief::Separate => Some("set"),
+            Brief::Generic => Some("generic"),
+            Brief::Bound | Brief::None => Option::None,
+        }
+    }
+
+    /// The `generic` wording only exists for the ledger; every other handout
+    /// would have to invent a worked example that names no corpus.
+    fn reject_generic(self, command: &str) -> Result<(), CliError> {
+        if self == Brief::Generic {
+            return Err(CliError::InvalidArgs(format!(
+                "{command} has no generic brief: --brief separate writes this set's own"
+            )));
+        }
+        Ok(())
+    }
+}
+
+/// The brief flag, shared by every subcommand whose handout opens with one.
+#[derive(Args, Debug, Clone, Default)]
+struct BriefArgs {
+    /// Where the brief goes: bound in front of the handout (default), its own
+    /// brief.pdf beside it, `generic` for a corpus-neutral brief.pdf that
+    /// fronts a pack of sets (ledger only), or `none`.
+    #[arg(long, value_enum, default_value_t = Brief::Bound)]
+    brief: Brief,
+}
+
+impl BriefArgs {
+    fn handout_part(&self) -> &'static str {
+        self.brief.handout_part()
+    }
+
+    fn own_file_scope(&self) -> Option<&'static str> {
+        self.brief.own_file_scope()
+    }
+
+    fn reject_generic(&self, command: &str) -> Result<(), CliError> {
+        self.brief.reject_generic(command)
     }
 }
 
@@ -439,14 +499,11 @@ struct LedgerArgs {
     #[arg(long, value_enum, default_value_t = Prefill::Prefixes, conflicts_with = "blank")]
     prefill: Prefill,
 
-    /// Where the facilitator brief goes: the first page of ledger.pdf
-    /// (default), its own corpus-neutral brief.pdf for a pack of sets, or
-    /// nowhere.
-    #[arg(long, value_enum, default_value_t = Brief::Sheets)]
-    brief: Brief,
+    #[command(flatten)]
+    brief: BriefArgs,
 
     /// The most counters of one colour a single draw can need, for a
-    /// `--brief pack` brief to ask the room to bring: the largest tally
+    /// `--brief generic` brief to ask the room to bring: the largest tally
     /// anywhere in the pack, which no one set of it knows. Left out, the brief
     /// asks for enough without naming a number.
     #[arg(long, value_name = "N")]
@@ -609,6 +666,7 @@ fn run_build_command(args: &BuildArgs) -> Result<(), CliError> {
 }
 
 fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
+    args.brief.reject_generic("cutouts")?;
     if args.repeat == 0 {
         return Err(CliError::InvalidArgs(
             "--repeat must be at least 1".to_string(),
@@ -673,11 +731,23 @@ fn run_cutouts_command(args: &CutoutsArgs) -> Result<(), CliError> {
         inputs.push(("duplex".to_string(), "true".to_string()));
     }
 
+    let mut cutout_inputs = inputs.clone();
+    cutout_inputs.push(("part".to_string(), args.brief.handout_part().to_string()));
     typst::compile_template(
         "tokenized-cutouts.typ",
-        &inputs,
+        &cutout_inputs,
         &args.output.join("cutouts.pdf"),
     )?;
+
+    if args.brief.own_file_scope().is_some() {
+        inputs.push(("part".to_string(), "brief".to_string()));
+        typst::compile_template(
+            "tokenized-cutouts.typ",
+            &inputs,
+            &args.output.join("brief.pdf"),
+        )?;
+        eprintln!("  print brief.pdf once: the instructions, kept out of the cutout stack");
+    }
     Ok(())
 }
 
@@ -701,6 +771,7 @@ const WIDE_PAIR_MARGIN: f64 = 1.08;
 const MAX_ATTEMPTS: usize = 5;
 
 fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
+    args.brief.reject_generic("sheets")?;
     if args.sheets == Some(0) {
         return Err(CliError::InvalidArgs(
             "--sheets must be at least 1".to_string(),
@@ -756,18 +827,37 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
             break;
         }
 
-        let inputs = vec![
+        let mut inputs = vec![
             ("paper_size".to_string(), args.paper_size.clone()),
             ("json_path".to_string(), typst::abs_path_string(&json_path)),
             ("columns".to_string(), columns.to_string()),
             ("rows".to_string(), args.rows.to_string()),
             ("font_size".to_string(), args.font_size.clone()),
         ];
-        typst::compile_template("tokenized-sheets.typ", &inputs, &pdf_path)?;
+        let mut sheet_inputs = inputs.clone();
+        sheet_inputs.push(("part".to_string(), args.brief.handout_part().to_string()));
+        typst::compile_template("tokenized-sheets.typ", &sheet_inputs, &pdf_path)?;
 
-        // The brief in front is one page, and the template is laid out to keep
-        // it there, but a corpus wordy enough to push it to two must not be
-        // read as a spilled sheet --- so the allowance stays at `sheets + 2`.
+        if args.brief.own_file_scope().is_some() {
+            inputs.push(("part".to_string(), "brief".to_string()));
+            typst::compile_template(
+                "tokenized-sheets.typ",
+                &inputs,
+                &args.output.join("brief.pdf"),
+            )?;
+            eprintln!("  print brief.pdf once: the brief, kept out of the handout stack");
+        }
+
+        // A sheet is one page, so the pages beyond the participant count are
+        // sheets that spilled --- plus whatever front matter is bound in. The
+        // brief is laid out to hold to one page, but a corpus wordy enough to
+        // push it to two must not be read as a spill, so a bound brief gets
+        // two pages of allowance and a brief printed elsewhere gets none.
+        let front_matter = if args.brief.handout_part() == "all" {
+            2
+        } else {
+            0
+        };
         let Some(pages) = typst::page_count(&pdf_path) else {
             eprintln!(
                 "Warning: pdfinfo (poppler) not available --- skipping the check that no sheet \
@@ -775,7 +865,7 @@ fn run_sheets_command(args: &SheetsArgs) -> Result<(), CliError> {
             );
             break;
         };
-        let spilled = pages.saturating_sub(num_sheets + 2);
+        let spilled = pages.saturating_sub(num_sheets + front_matter);
         if spilled == 0 {
             break;
         }
@@ -941,9 +1031,10 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
             "--max-followers must be at least 1".to_string(),
         ));
     }
-    if args.brief_counters.is_some() && args.brief != Brief::Pack {
+    if args.brief_counters.is_some() && args.brief.brief != Brief::Generic {
         return Err(CliError::InvalidArgs(
-            "--brief-counters is the pack brief's counter claim; it needs --brief pack".to_string(),
+            "--brief-counters is the generic brief's counter claim; it needs --brief generic"
+                .to_string(),
         ));
     }
 
@@ -1005,21 +1096,21 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
     ];
 
     let mut sheet_inputs = inputs.clone();
-    sheet_inputs.push(("part".to_string(), args.brief.sheets_part().to_string()));
+    sheet_inputs.push(("part".to_string(), args.brief.handout_part().to_string()));
     sheet_inputs.push(("even_pages".to_string(), args.even_pages.to_string()));
     typst::compile_template("ledger.typ", &sheet_inputs, &args.output.join("ledger.pdf"))?;
 
-    // The pack brief: the same template, rendered as the brief alone and
+    // The brief on its own: the same template, rendered as the brief alone and
     // written beside the sheets rather than in front of them.
-    if args.brief == Brief::Pack {
+    if let Some(scope) = args.brief.own_file_scope() {
         let mut brief_inputs = inputs.clone();
         brief_inputs.push(("part".to_string(), "brief".to_string()));
-        brief_inputs.push(("brief_scope".to_string(), "pack".to_string()));
+        brief_inputs.push(("brief_scope".to_string(), scope.to_string()));
         if let Some(counters) = args.brief_counters {
             brief_inputs.push(("brief_counters".to_string(), counters.to_string()));
         }
         typst::compile_template("ledger.typ", &brief_inputs, &args.output.join("brief.pdf"))?;
-        eprintln!("  print brief.pdf once: the instruction sheet for the whole pack");
+        eprintln!("  print brief.pdf once: the instruction sheet for the whole set");
     }
 
     // The counters to cut up and draw from the cup: two identical pages laid

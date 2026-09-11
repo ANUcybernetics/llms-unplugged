@@ -44,11 +44,18 @@
 // Get configuration from sys.inputs
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
 #let json_path = sys.inputs.at("json_path", default: "cutouts.json")
+// Which part of the document to render, the contract every template that
+// opens with a brief shares: the brief then the handout ("all", the default),
+// the handout alone ("handout"), or the brief alone ("brief") --- the CLI's
+// `--brief`, so a pack of sets can print one instruction sheet instead of one
+// in front of every set.
+#let part = sys.inputs.at("part", default: "all")
+
 // Duplex mode: pair every cutout page with a mirrored back page (cells reversed
 // and right-aligned) so the same cutouts appear on both faces of each sheet.
 // Requires "flip on short edge" binding when printed double-sided on a
-// landscape page. An extra blank page is inserted after the instructions so
-// the first cutout sheet is self-contained.
+// landscape page. The front matter is padded to a whole leaf first (see below)
+// so the first cutout sheet is self-contained.
 #let duplex = sys.inputs.at("duplex", default: "false") == "true"
 
 #set text(font: ("Libertinus Serif", "Noto Serif CJK SC"), size: font_size)
@@ -83,7 +90,9 @@
 )
 
 // Instructions page
-#let instructions-page() = {
+// `standalone` is the instructions on their own in their own file, which need
+// no pagebreak to get off the cutout pages that would otherwise follow.
+#let instructions-page(standalone: false) = {
   set text(size: 15pt)
   // Generous space below each heading so headings don't visually crowd the
   // paragraph that follows.
@@ -396,10 +405,14 @@
     )
   ]
 
-  pagebreak()
+  if not standalone { pagebreak() }
 }
 
-#instructions-page()
+#if part == "brief" {
+  instructions-page(standalone: true)
+} else if part == "all" {
+  instructions-page()
+}
 
 // Tighten margins for the cutout pages---5mm horizontal is the reliable floor
 // for most laser printers; vertical margin is derived above so the rows fill
@@ -497,64 +510,77 @@
   })
 }
 
-#if not duplex {
-  // Single-sided: let `#layout` adapt to the actual page width and let Typst
-  // flow the rows naturally across pages. Pagebreaks are not allowed inside
-  // `#layout`, so render normal cutouts and tool-trigger cutouts as two
-  // separate `#layout` blocks separated by a pagebreak.
-  layout(size => {
-    let rows = compute-rows(normal_tokens, size.width)
-    for row in rows { render-row-front(row) }
-    horizontal_cut_line
-  })
-  if tool_tokens.len() > 0 {
-    pagebreak(weak: false)
+#if part != "brief" {
+  // Duplex prints the cutout pages as front/back pairs, so the first of them
+  // has to land on the front of a leaf or every pair straddles two. The
+  // instructions run to two pages and `--brief separate|none` prints none at
+  // all, both of which leave it there --- but a wordy corpus could push them
+  // to three, so the parity is checked rather than assumed.
+  if duplex {
+    context {
+      if calc.even(here().page()) { pagebreak(weak: false) }
+    }
+  }
+
+  if not duplex {
+    // Single-sided: let `#layout` adapt to the actual page width and let Typst
+    // flow the rows naturally across pages. Pagebreaks are not allowed inside
+    // `#layout`, so render normal cutouts and tool-trigger cutouts as two
+    // separate `#layout` blocks separated by a pagebreak.
     layout(size => {
-      let rows = compute-rows(tool_tokens, size.width)
+      let rows = compute-rows(normal_tokens, size.width)
       for row in rows { render-row-front(row) }
       horizontal_cut_line
     })
-  }
-} else {
-  // Duplex: manually paginate so each front page is paired with its mirrored
-  // back. Pagebreaks are not allowed inside `#layout`, so use `#context` and
-  // rely on hard-coded a4-landscape inner dimensions (the only paper size
-  // supported in duplex mode for now).
-  assert(
-    paper_size == "a4",
-    message: "duplex cutouts assume a4 landscape (297mm); other paper sizes would mispack",
-  )
-  context {
-    let max_width = 297mm - 2 * cutout_h_margin
-
-    // Paginate a row list into front/back page pairs. Each `rows_per_page`
-    // chunk produces one front page followed by its mirrored back page, so
-    // every group occupies an even number of sheets — meaning tool-trigger
-    // cutouts always land on a fresh sheet after the normal cutouts.
-    let render-rows-duplex(rows) = {
-      let groups = ()
-      let i = 0
-      while i < rows.len() {
-        let end = calc.min(i + rows_per_page, rows.len())
-        groups.push(rows.slice(i, end))
-        i = end
-      }
-
-      for (g_idx, group) in groups.enumerate() {
-        if g_idx > 0 { pagebreak(weak: false) }
-        for row in group { render-row-front(row) }
-        horizontal_cut_line
-        pagebreak(weak: false)
-        for row in group { render-row-back(row) }
-        horizontal_cut_line
-      }
-    }
-
-    render-rows-duplex(compute-rows(normal_tokens, max_width))
-
     if tool_tokens.len() > 0 {
       pagebreak(weak: false)
-      render-rows-duplex(compute-rows(tool_tokens, max_width))
+      layout(size => {
+        let rows = compute-rows(tool_tokens, size.width)
+        for row in rows { render-row-front(row) }
+        horizontal_cut_line
+      })
+    }
+  } else {
+    // Duplex: manually paginate so each front page is paired with its mirrored
+    // back. Pagebreaks are not allowed inside `#layout`, so use `#context` and
+    // rely on hard-coded a4-landscape inner dimensions (the only paper size
+    // supported in duplex mode for now).
+    assert(
+      paper_size == "a4",
+      message: "duplex cutouts assume a4 landscape (297mm); other paper sizes would mispack",
+    )
+    context {
+      let max_width = 297mm - 2 * cutout_h_margin
+
+      // Paginate a row list into front/back page pairs. Each `rows_per_page`
+      // chunk produces one front page followed by its mirrored back page, so
+      // every group occupies an even number of sheets — meaning tool-trigger
+      // cutouts always land on a fresh sheet after the normal cutouts.
+      let render-rows-duplex(rows) = {
+        let groups = ()
+        let i = 0
+        while i < rows.len() {
+          let end = calc.min(i + rows_per_page, rows.len())
+          groups.push(rows.slice(i, end))
+          i = end
+        }
+
+        for (g_idx, group) in groups.enumerate() {
+          if g_idx > 0 { pagebreak(weak: false) }
+          for row in group { render-row-front(row) }
+          horizontal_cut_line
+          pagebreak(weak: false)
+          for row in group { render-row-back(row) }
+          horizontal_cut_line
+        }
+      }
+
+      render-rows-duplex(compute-rows(normal_tokens, max_width))
+
+      if tool_tokens.len() > 0 {
+        pagebreak(weak: false)
+        render-rows-duplex(compute-rows(tool_tokens, max_width))
+      }
     }
   }
 }
