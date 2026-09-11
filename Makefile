@@ -1,15 +1,25 @@
-# Workshop packs: everything to print for one lesson, in one zip.
+# Delivery packs: everything one lesson or talk needs, in one zip.
 #
 #   make pack-how-ai-writes-stories-ledger
+#   make pack-demystifying-large-language-models
 #
-# lands out/packs/<slug>.zip. A lesson's pack is the list of `llms_unplugged`
-# runs that produce its printouts, plus a README naming what to print and how
-# many copies --- so a delivery is a download rather than a page of commands
-# retyped from the lesson entry. The website's lesson pages describe the
-# materials; this is where the exact runs live.
+# lands out/packs/<slug>.zip. A pack is the list of runs that produce that
+# delivery's materials --- `llms_unplugged` for what gets printed,
+# `astromotion-pdf` for a talk's slides and presenter guide --- plus a README
+# naming what to print and how many copies, so a delivery is a download rather
+# than a page of commands retyped from the website. The website's lesson and
+# talk pages describe the materials; this is where the exact runs live.
 #
-# Adding a lesson: give it a pack-<slug> target that writes into
+# Publish a rebuilt pack, which is what the decks and talk pages link:
+#
+#   ops/bucket-sync.py upload --key packs/<slug>.zip out/packs/<slug>.zip
+#
+# Adding a pack: give it a pack-<slug> target that writes into
 # $(PACKS)/<slug>/ and finishes with `$(call zip_pack,<slug>)`.
+#
+# Needs jq and qpdf on PATH alongside the CLI's own typst toolchain. The talk
+# packs additionally need website/ installed (`pnpm install`) and a
+# Chrome/Chromium, because they export their own deck PDFs.
 
 CLI := cli/target/release/llms_unplugged
 OUT := out
@@ -18,11 +28,14 @@ PACKS := $(OUT)/packs
 .PHONY: help packs clean-packs
 
 help:
-	@echo "make pack-how-ai-writes-stories-ledger   the ledger workshop's printouts"
-	@echo "make packs                               every pack"
-	@echo "make clean-packs                         remove $(PACKS)"
+	@echo "make pack-how-ai-writes-stories-ledger        the ledger workshop's printouts"
+	@echo "make pack-demystifying-large-language-models  the 15-minute talk, end to end"
+	@echo "make pack-unplugged-in-the-age-of-ai          the 20-minute talk, end to end"
+	@echo "make packs                                    every pack"
+	@echo "make clean-packs                              remove $(PACKS)"
 
-packs: pack-how-ai-writes-stories-ledger
+packs: pack-how-ai-writes-stories-ledger pack-demystifying-large-language-models \
+	pack-unplugged-in-the-age-of-ai
 
 clean-packs:
 	rm -rf $(PACKS)
@@ -35,6 +48,22 @@ $(CLI):
 define zip_pack
 	cd $(PACKS) && rm -f $(1).zip && zip -qr $(1).zip $(1)
 	@echo "Wrote $(PACKS)/$(1).zip"
+endef
+
+# A talk's slides, and the presenter guide (each slide followed by its
+# speaker-notes page). Two exports because astromotion-pdf produces one PDF per
+# run, and each run builds and previews the site --- so this is the slow half
+# of a talk pack. --no-sandbox because the export drives headless Chrome, which
+# will not start as root or in a container without it.
+#
+# $(1) deck slug, $(2) destination directory
+define deck_pdfs
+	@echo "slides: $(1)"
+	@cd website && ASTROMOTION_CHROME_ARGS=--no-sandbox pnpm exec astromotion-pdf $(1) \
+		$(abspath $(2))/slides.pdf >/dev/null
+	@echo "presenter guide: $(1)"
+	@cd website && ASTROMOTION_CHROME_ARGS=--no-sandbox pnpm exec astromotion-pdf $(1) \
+		$(abspath $(2))/presenter-guide.pdf --notes >/dev/null
 endef
 
 # ---------------------------------------------------------------------------
@@ -74,8 +103,7 @@ endef
 # prints the rest blank --- so the first run reports the deal, and the second
 # prints it at the density that deal needs: full pages, and the smaller the
 # model the more room each row gets to write in.
-#
-# Needs jq and qpdf on PATH alongside the CLI's own typst toolchain.
+
 LEDGER_SLUG := how-ai-writes-stories-ledger
 LEDGER_DIR := $(PACKS)/$(LEDGER_SLUG)
 LEDGER_STAGE := $(LEDGER_DIR)/.build
@@ -171,3 +199,106 @@ pack-$(LEDGER_SLUG): $(CLI)
 		$(foreach text,$(LEDGER_TEXTS),school-day-$(text):$(LEDGER_STAGE)/school-day-$(text)/text.pdf))
 	@rm -rf $(LEDGER_STAGE)
 	$(call zip_pack,$(LEDGER_SLUG))
+
+# ---------------------------------------------------------------------------
+# Demystifying large language models (15-minute talk)
+#
+# A talk pack, so the zip is what one person needs to give it: the slides, the
+# presenter guide, the sheets the room holds, and the lectern brief. The sheets
+# are the only thing printed in quantity.
+#
+# The deal was pinned for the ANU Visionaries Showcase (15 Aug 2026) and is
+# kept pinned here, so a reprint matches the copies already in a hall. Both the
+# input order and the seed are load-bearing --- the deal is reproducible only
+# from this exact combination. Note that the input order below is not the
+# reveal order the talk uses (Hemingway, then Poe, then Seuss).
+#
+# --title and --author are what keep the sources off the page: the brief prints
+# whatever the corpus metadata says, and joined real titles would spoil the
+# reveal on the first sheet handed out.
+#
+# 120 sheets at the Cat in the Hat density. Pinning --sheets makes the count
+# the participant count rather than something the corpus decides, and 120 is
+# chosen so the set multiplies cleanly into a hall: printed three times for
+# ~360 attendees, every token pair is held by three people, so the proportions
+# are unchanged and one empty seat no longer takes a pair out of the room.
+#
+# 19.2pt is the largest size that still fits most pairs in one of four columns
+# on A4. Past it, wide pairs start taking two column slots each and the sheet
+# count runs away --- 21pt needs 195 sheets for the same corpus, 24pt needs 196
+# even after dropping to three columns.
+#
+# 16 rows, not 15: a wide pair takes two of a row's four slots, and at 15 rows
+# one sheet of this deal wanted a 61st slot and spilled onto a second page ---
+# so one person in the hall would have been searching two pages. 16 rows is 64
+# slots, which fits it. The deal is pinned by --sheets and --seed, so the rows
+# only change how the pairs are laid out, never which sheet a pair lands on.
+#
+# Handed out at full A4, not imposed two-up onto A5. The imposition halves the
+# paper but it also scales the page by 1/sqrt(2), which takes 19.2pt type down
+# to an effective 13.6pt --- and the sheets are read at arm's length, in a
+# darkened hall, by people who have never seen one before. Getting that back
+# through the imposition would need ~27pt source and over 250 sheets, so A4 is
+# both the biggest type and the smallest sheet count. It costs paper, and only
+# paper.
+#
+# Two of the three corpora are gitignored: clone llms-unplugged-corpora and
+# copy its texts into data/ before building this pack.
+
+DEMYST_SLUG := demystifying-large-language-models
+DEMYST_DIR := $(PACKS)/$(DEMYST_SLUG)
+DEMYST_STAGE := $(DEMYST_DIR)/.build
+DEMYST_SHEETS := 120
+DEMYST_INPUTS := \
+	--input data/the-cat-in-the-hat.txt \
+	--input data/the-old-man-and-the-sea-excerpt.txt \
+	--input data/the-tell-tale-heart.txt
+
+.PHONY: pack-$(DEMYST_SLUG)
+pack-$(DEMYST_SLUG): $(CLI)
+	@rm -rf $(DEMYST_DIR)
+	@mkdir -p $(DEMYST_STAGE)
+	$(call deck_pdfs,$(DEMYST_SLUG),$(DEMYST_DIR))
+	@echo "search sheets: three texts, dealt together"
+	@./$(CLI) sheets $(DEMYST_INPUTS) -o $(DEMYST_STAGE) -n 2 \
+		--sheets $(DEMYST_SHEETS) --rows 16 --font-size 19.2pt --seed 42 \
+		--brief separate \
+		--title "Demystifying large language models" --author "three authors" >/dev/null
+	@mv $(DEMYST_STAGE)/sheets.pdf $(DEMYST_DIR)/search-sheets.pdf
+	@# `--brief separate`: the brief is for the lectern and never goes into the
+	@# handout stack, so it is a file of its own rather than page 1.
+	@mv $(DEMYST_STAGE)/brief.pdf $(DEMYST_DIR)/lectern-brief.pdf
+	@cp docs/packs/$(DEMYST_SLUG).md $(DEMYST_DIR)/README.md
+	@rm -rf $(DEMYST_STAGE)
+	$(call zip_pack,$(DEMYST_SLUG))
+
+# ---------------------------------------------------------------------------
+# Unplugged in the age of AI (20-minute talk)
+#
+# One corpus, and the brief bound in front of the handout as page 1 --- this
+# talk's running order has the presenter reading the worked example off it, and
+# the audience sees it too. That makes search-sheets.pdf the same set published
+# as sheets/the-cat-in-the-hat.pdf, built here from the same flags so the pack
+# stands alone.
+#
+# No --sheets: the count follows from the corpus at this density, which is 36.
+# A bigger room deals its own with a --sheets of its own; the talk page says so.
+# --rows 15 and 19.2pt are what keep Cat in the Hat legible when a printer
+# reduces it to A5 for a two-up handout.
+
+AGEOFAI_SLUG := unplugged-in-the-age-of-ai
+AGEOFAI_DIR := $(PACKS)/$(AGEOFAI_SLUG)
+AGEOFAI_STAGE := $(AGEOFAI_DIR)/.build
+
+.PHONY: pack-$(AGEOFAI_SLUG)
+pack-$(AGEOFAI_SLUG): $(CLI)
+	@rm -rf $(AGEOFAI_DIR)
+	@mkdir -p $(AGEOFAI_STAGE)
+	$(call deck_pdfs,$(AGEOFAI_SLUG),$(AGEOFAI_DIR))
+	@echo "search sheets: the-cat-in-the-hat"
+	@./$(CLI) sheets --input data/the-cat-in-the-hat.txt -o $(AGEOFAI_STAGE) -n 2 \
+		--rows 15 --font-size 19.2pt --seed 42 >/dev/null
+	@mv $(AGEOFAI_STAGE)/sheets.pdf $(AGEOFAI_DIR)/search-sheets.pdf
+	@cp docs/packs/$(AGEOFAI_SLUG).md $(AGEOFAI_DIR)/README.md
+	@rm -rf $(AGEOFAI_STAGE)
+	$(call zip_pack,$(AGEOFAI_SLUG))

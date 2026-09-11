@@ -149,13 +149,6 @@ cargo build --release
 # the pdf.llmsunplugged.org bucket via ops/bucket-sync.py)
 make sheets
 
-# Rebuild the one-off ANU Visionaries Showcase set (backlog TASK-140). Three
-# corpora behind a --title/--author override, 120 sheets, pinned seed; lands
-# in out/ rather than the published sets, because the talk withholds its
-# sources. --brief separate writes brief.pdf (A4, lectern, never handed out)
-# beside participants.pdf (120 A4 sheets, printed twice for a 200-seat hall)
-make showcase
-
 # Build all configured booklets
 make booklets
 

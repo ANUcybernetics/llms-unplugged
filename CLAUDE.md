@@ -17,8 +17,9 @@ manual (pen-and-paper) and automated tools.
   [llms-unplugged-corpora](https://github.com/benswift/llms-unplugged-corpora)
   repo --- clone it and copy `texts/*.txt` in here
 - `backlog/` --- task management
-- `Makefile` --- per-lesson workshop packs: `make pack-<slug>` zips everything
-  that lesson needs printed into `out/packs/`, and holds the exact CLI runs
+- `Makefile` --- delivery packs: `make pack-<slug>` zips everything one lesson
+  or talk needs into `out/packs/`, and holds the exact runs (a talk pack also
+  exports its own deck slides and presenter guide)
 
 The README documents the CLI subcommands and their options; read it rather than
 guessing flags.

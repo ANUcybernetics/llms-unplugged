@@ -224,7 +224,8 @@ to say where it goes:
   been. One set printed on its own wants this
 - `separate`: its own `brief.pdf` beside the handout, still describing this set.
   The handout is then only the pages people are given, which is what a brief
-  that stays on the lectern (`make showcase`) and a pack of sets both want
+  that stays on the lectern (`make pack-demystifying-large-language-models`) and
+  a pack of sets both want
 - `generic` (ledger only): its own `brief.pdf`, describing the activity rather
   than this set --- no corpus named, no statistics quoted --- so one copy is the
   instruction sheet for a pack of several sets. The other two briefs are built
