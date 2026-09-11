@@ -196,6 +196,13 @@ SHOWCASE_INPUTS := \
 # count runs away --- 21pt needs 195 sheets for the same corpus, 24pt needs
 # 196 even after dropping to three columns.
 #
+# 16 rows, not 15: a wide pair takes two of a row's four slots, and at 15 rows
+# one sheet of this deal wanted a 61st slot and spilled onto a second page ---
+# so one person in the hall would have been searching two pages. 16 rows is 64
+# slots, which fits it. The deal is pinned by --sheets and --seed, so the rows
+# only change how the pairs are laid out, never which sheet a pair lands on:
+# the type stays at 19.2pt and the rows sit that much closer together.
+#
 # The brief is for the lectern and never goes into the handout stack, so
 # --brief separate writes it beside the sheets rather than in front of them.
 # Nothing here needs to know how long it ran to.
@@ -204,7 +211,7 @@ $(SHOWCASE_DIR)/brief.pdf $(SHOWCASE_DIR)/participants.pdf &: tokenized-sheets.t
 	mkdir -p $(SHOWCASE_DIR)
 	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) TYPST_BIN=$(TYPST_BIN) $(TOOL) sheets \
 		$(SHOWCASE_INPUTS) --output $(SHOWCASE_DIR) -n 2 \
-		--sheets $(SHOWCASE_SHEETS) --rows 15 --font-size 19.2pt --seed 42 \
+		--sheets $(SHOWCASE_SHEETS) --rows 16 --font-size 19.2pt --seed 42 \
 		--brief separate \
 		--title "Ben Swift — ANU Visionaries Showcase" --author "three authors"
 	mv $(SHOWCASE_DIR)/sheets.pdf $(SHOWCASE_DIR)/participants.pdf
