@@ -114,10 +114,26 @@ worker pool. The first render downloads Chrome into `~/.cache/hyperframes`
 `npx hyperframes telemetry disable` (or `HYPERFRAMES_NO_TELEMETRY=1`) has been
 run.
 
-HyperFrames ships its own agent skills (`npx hyperframes skills update` inside
-the project); the keyframes one is worth reading for seek-safe motion beyond
-GSAP, and the talking-head-recut one for lower-thirds and side panels. The rest
-are marketing-video workflows.
+HyperFrames ships twenty agent skills of its own: a `/hyperframes` router,
+creation workflows (product launch, faceless explainer, captions,
+talking-head recut, PR-to-video, motion graphics, music video, slideshow,
+general video) and the domain skills they lean on (core, animation,
+keyframes, creative, CLI, media-use, audio). Don't install them:
+`hyperframes skills update` (and `init` without `HYPERFRAMES_SKIP_SKILLS=1`)
+writes all nine core ones into the user's global `~/.claude/skills`,
+`~/.agents/skills`, `~/.codex/skills` and `~/.gemini/skills`, where they
+load into every session on the machine. This skill already carries the
+composition contract; when one of theirs is needed, fetch its markdown into
+the scratchpad and read it there:
+
+```bash
+curl -sL https://raw.githubusercontent.com/heygen-com/hyperframes/main/skills/<name>/SKILL.md
+```
+
+The two worth reading for our videos are `hyperframes-keyframes` (seek-safe
+motion beyond GSAP: CSS keyframes, WAAPI, SVG draw and morph) and
+`talking-head-recut` (lower-thirds, callouts and side panels synced to a
+transcript).
 
 ## Timeline first
 
