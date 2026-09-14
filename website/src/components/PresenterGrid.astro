@@ -37,16 +37,14 @@ const presenters = [
   id="presenter-grid"
   style="display: grid; grid-template-columns: repeat(4, 1fr); align-content: center; justify-content: center; position: absolute; inset: 0; background: black;"
 >
-  {
-    presenters.map((p) => (
-      <img
-        data-presenter={p.id}
-        src={p.src}
-        alt={p.name}
-        style="width: 100%; aspect-ratio: 1; object-fit: cover;"
-      />
-    ))
-  }
+  {presenters.map((p) => (
+    <img
+      data-presenter={p.id}
+      src={p.src}
+      alt={p.name}
+      style="width: 100%; aspect-ratio: 1; object-fit: cover;"
+    />
+  ))}
 </div>
 
 <script>

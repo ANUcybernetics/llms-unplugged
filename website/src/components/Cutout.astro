@@ -26,23 +26,21 @@ const nextIsTool = tool === "next" || tool === "both";
 
 <span class="cutout-paper">
   <span class="cutout-paper-prev">
-    {
-      prevs.map((word, i) => (
-        <>
-          {i > 0 && " "}
-          <Token tool={prevIsTool}>{word}</Token>
-        </>
-      ))
-    }
+    {prevs.map((word, i) => (
+      <>
+        {i > 0 && " "}
+        <Token tool={prevIsTool}>{word}</Token>
+      </>
+    ))}
   </span>
-  <span class="cutout-paper-next"
-    ><Token next tool={nextIsTool}>{next}</Token></span
-  >
-  {
-    trailing && (
-      <span class="cutout-paper-next">
-        <Token next>{trailing}</Token>
-      </span>
-    )
-  }
+  <span class="cutout-paper-next">
+    <Token next tool={nextIsTool}>
+      {next}
+    </Token>
+  </span>
+  {trailing && (
+    <span class="cutout-paper-next">
+      <Token next>{trailing}</Token>
+    </span>
+  )}
 </span>

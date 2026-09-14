@@ -16,12 +16,12 @@ const talks = (await getCollection("talks"))
   <h1>Talks</h1>
 
   <p>
-    Where a <a href="/lessons/">workshop</a> has every table build its own model,
-    a talk hands the audience a model already dealt across the room on <a
-      href="/modules/search-sheets/">search sheets</a
-    >&mdash;one sheet each&mdash;and runs it from the stage by show of hands. It
-    takes five minutes, needs nothing but the sheets and a whiteboard, and works
-    from a seminar room to a hall of several hundred.
+    Where a <a href="/lessons/">workshop</a> has every table build its own
+    model, a talk hands the audience a model already dealt across the room on{" "}
+    <a href="/modules/search-sheets/">search sheets</a>&mdash;one sheet
+    each&mdash;and runs it from the stage by show of hands. It takes five
+    minutes, needs nothing but the sheets and a whiteboard, and works from a
+    seminar room to a hall of several hundred.
   </p>
 
   <p>
@@ -30,26 +30,24 @@ const talks = (await getCollection("talks"))
   </p>
 
   <div class="at-card-grid at-card-grid--2">
-    {
-      talks.map((talk) => (
-        <Card
-          href={`/talks/${talk.id}/`}
-          title={talk.data.title}
-          headingLevel="h2"
-          image={
-            talk.data.heroImage
-              ? findHeroImage(`hero-${talk.data.heroImage}`)
-              : undefined
-          }
-        >
-          <p class="card-description">{talk.data.description}</p>
-          <p class="card-badges">
-            {talk.data.audience} &middot; {talk.data.duration} &middot;{" "}
-            {talk.data.flavour}
-          </p>
-        </Card>
-      ))
-    }
+    {talks.map((talk) => (
+      <Card
+        href={`/talks/${talk.id}/`}
+        title={talk.data.title}
+        headingLevel="h2"
+        image={
+          talk.data.heroImage
+            ? findHeroImage(`hero-${talk.data.heroImage}`)
+            : undefined
+        }
+      >
+        <p class="card-description">{talk.data.description}</p>
+        <p class="card-badges">
+          {talk.data.audience} &middot; {talk.data.duration} &middot;{" "}
+          {talk.data.flavour}
+        </p>
+      </Card>
+    ))}
   </div>
 </PageLayout>
 

@@ -51,44 +51,42 @@ const isEmpty = sessions.length === 0;
     <div class:list={["us-body", { "us-hidden": isEmpty }]}>
       <h2 class="us-heading">Next sessions</h2>
       <ul class="us-list" role="list">
-        {
-          sessions.map((s) => {
-            const day = (
-              <span class="us-day">
-                {weekdayFmt.format(s.start)} {dateFmt.format(s.start)}
-              </span>
-            );
-            const time = (
-              <span class="us-time">
-                {timeFmt.format(s.start)}&ndash;{timeFmt.format(s.end)}
-              </span>
-            );
-            return (
-              <li class="us-session" data-end={s.end.toISOString()}>
-                {isCard ? (
-                  <a
-                    class="us-link"
-                    href={s.bookingUrl}
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    {day}
-                    <span class="us-meta">
-                      {time}
-                      <span class="us-cta">
-                        Book <span aria-hidden="true">&nearr;</span>
-                      </span>
+        {sessions.map((s) => {
+          const day = (
+            <span class="us-day">
+              {weekdayFmt.format(s.start)} {dateFmt.format(s.start)}
+            </span>
+          );
+          const time = (
+            <span class="us-time">
+              {timeFmt.format(s.start)}&ndash;{timeFmt.format(s.end)}
+            </span>
+          );
+          return (
+            <li class="us-session" data-end={s.end.toISOString()}>
+              {isCard ? (
+                <a
+                  class="us-link"
+                  href={s.bookingUrl}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {day}
+                  <span class="us-meta">
+                    {time}
+                    <span class="us-cta">
+                      Book <span aria-hidden="true">&nearr;</span>
                     </span>
-                  </a>
-                ) : (
-                  <span class="us-when">
-                    {day} {time}
                   </span>
-                )}
-              </li>
-            );
-          })
-        }
+                </a>
+              ) : (
+                <span class="us-when">
+                  {day} {time}
+                </span>
+              )}
+            </li>
+          );
+        })}
       </ul>
       {location && <p class="us-location">{location}</p>}
     </div>

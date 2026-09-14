@@ -28,21 +28,19 @@ if (topic) {
 ---
 
 <div class="at-card-grid at-card-grid--2">
-  {
-    cards.map((module) => (
-      <Card
-        href={`/modules/${module.id}/`}
-        title={module.data.title}
-        image={moduleHeroImage(module.id)}
-      >
-        <p class="card-description">{module.data.description}</p>
-        <p class="card-badges">
-          {module.data.audience} &middot; {module.data.duration} &middot;{" "}
-          {module.data.bases.join(", ")}
-        </p>
-      </Card>
-    ))
-  }
+  {cards.map((module) => (
+    <Card
+      href={`/modules/${module.id}/`}
+      title={module.data.title}
+      image={moduleHeroImage(module.id)}
+    >
+      <p class="card-description">{module.data.description}</p>
+      <p class="card-badges">
+        {module.data.audience} &middot; {module.data.duration} &middot;{" "}
+        {module.data.bases.join(", ")}
+      </p>
+    </Card>
+  ))}
 </div>
 
 <style>

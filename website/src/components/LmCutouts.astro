@@ -48,50 +48,46 @@ const rows: (CutoutEntry | null)[][] = Array.from(
   <table>
     <thead>
       <tr>
-        {
-          Array.from({ length: columns }).map(() => (
-            <>
-              <th>{contextSize > 1 ? "Previous words" : "Previous word"}</th>
-              <th>Next words</th>
-            </>
-          ))
-        }
+        {Array.from({ length: columns }).map(() => (
+          <>
+            <th>{contextSize > 1 ? "Previous words" : "Previous word"}</th>
+            <th>Next words</th>
+          </>
+        ))}
       </tr>
     </thead>
     <tbody>
-      {
-        rows.map((row) => (
-          <tr>
-            {row.map((cell) =>
-              cell ? (
-                <>
-                  <td>
-                    {cell.previousWords.map((p, i) => (
-                      <>
-                        {i > 0 && " "}
-                        <Token>{p}</Token>
-                      </>
-                    ))}
-                  </td>
-                  <td>
-                    {cell.nextWords.map((t, i) => (
-                      <>
-                        {i > 0 && " "}
-                        <Token next>{t}</Token>
-                      </>
-                    ))}
-                  </td>
-                </>
-              ) : (
-                <>
-                  <td />
-                  <td />
-                </>
-              ),
-            )}
-          </tr>
-        ))
-      }
+      {rows.map((row) => (
+        <tr>
+          {row.map((cell) =>
+            cell ? (
+              <>
+                <td>
+                  {cell.previousWords.map((p, i) => (
+                    <>
+                      {i > 0 && " "}
+                      <Token>{p}</Token>
+                    </>
+                  ))}
+                </td>
+                <td>
+                  {cell.nextWords.map((t, i) => (
+                    <>
+                      {i > 0 && " "}
+                      <Token next>{t}</Token>
+                    </>
+                  ))}
+                </td>
+              </>
+            ) : (
+              <>
+                <td />
+                <td />
+              </>
+            ),
+          )}
+        </tr>
+      ))}
     </tbody>
   </table>
 </div>

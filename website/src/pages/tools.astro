@@ -11,9 +11,9 @@ import TypstCompiler from "../components/TypstCompiler.svelte";
   <h1>Materials</h1>
 
   <p>
-    Generate printable materials for <em>LLMs Unplugged</em> activities, matching
-    the different ways of working with language models in our modules. For curated,
-    hardbound editions of the same n-gram models, see the
+    Generate printable materials for <em>LLMs Unplugged</em> activities,
+    matching the different ways of working with language models in our modules.
+    For curated, hardbound editions of the same n-gram models, see the
     <a href="/library/">LLMs Unplugged Library</a>.
   </p>
 
@@ -23,93 +23,107 @@ import TypstCompiler from "../components/TypstCompiler.svelte";
     Dice lookup tables for probabilistic text generation. Each entry shows a
     previous-words context, a dice range, and possible next words&mdash;roll the
     dice and read off the next word. Used in the
-    <a href="/modules/pretrained-generation/">Pre-trained Model Generation</a> module.
+    <a href="/modules/pretrained-generation/">
+      Pre-trained Model Generation
+    </a>{" "}
+    module.
   </p>
 
   <Callout type="info" title="Ready-to-print booklets">
     <ul>
       <li>
-        <a href="https://pdf.llmsunplugged.org/booklets/green-eggs-and-ham.pdf"
-          >Green Eggs and Ham</a
-        > (Dr Seuss, 5 pages)
+        <a href="https://pdf.llmsunplugged.org/booklets/green-eggs-and-ham.pdf">
+          Green Eggs and Ham
+        </a>{" "}
+        (Dr Seuss, 5 pages)
       </li>
       <li>
-        <a href="https://pdf.llmsunplugged.org/booklets/the-cat-in-the-hat.pdf"
-          >The Cat in the Hat</a
-        > (Dr Seuss, 7 pages)
+        <a href="https://pdf.llmsunplugged.org/booklets/the-cat-in-the-hat.pdf">
+          The Cat in the Hat
+        </a>{" "}
+        (Dr Seuss, 7 pages)
       </li>
       <li>
-        <a
-          href="https://pdf.llmsunplugged.org/booklets/green-eggs-and-ham-trigram.pdf"
-          >Green Eggs and Ham</a
-        > (trigram, 6 pages)
+        <a href="https://pdf.llmsunplugged.org/booklets/green-eggs-and-ham-trigram.pdf">
+          Green Eggs and Ham
+        </a>{" "}
+        (trigram, 6 pages)
       </li>
       <li>
-        <a
-          href="https://pdf.llmsunplugged.org/booklets/the-cat-in-the-hat-trigram.pdf"
-          >The Cat in the Hat</a
-        > (trigram, 12 pages)
+        <a href="https://pdf.llmsunplugged.org/booklets/the-cat-in-the-hat-trigram.pdf">
+          The Cat in the Hat
+        </a>{" "}
+        (trigram, 12 pages)
       </li>
       <li>
-        <a href="https://pdf.llmsunplugged.org/booklets/beatles.pdf"
-          >Beatles Lyrics</a
-        > (36 pages)
+        <a href="https://pdf.llmsunplugged.org/booklets/beatles.pdf">
+          Beatles Lyrics
+        </a>{" "}
+        (36 pages)
       </li>
       <li>
-        <a href="https://pdf.llmsunplugged.org/booklets/a-christmas-carol.pdf"
-          >A Christmas Carol</a
-        > (Dickens, 55 pages)
+        <a href="https://pdf.llmsunplugged.org/booklets/a-christmas-carol.pdf">
+          A Christmas Carol
+        </a>{" "}
+        (Dickens, 55 pages)
       </li>
       <li>
-        <a href="https://pdf.llmsunplugged.org/booklets/frankenstein.pdf"
-          >Frankenstein</a
-        >
+        <a href="https://pdf.llmsunplugged.org/booklets/frankenstein.pdf">
+          Frankenstein
+        </a>
         (Shelley, 107 pages)
       </li>
       <li>
-        <a href="https://pdf.llmsunplugged.org/booklets/collected-hemingway.pdf"
-          >Collected Hemingway</a
-        > (397 pages)
+        <a href="https://pdf.llmsunplugged.org/booklets/collected-hemingway.pdf">
+          Collected Hemingway
+        </a>{" "}
+        (397 pages)
       </li>
       <li>
-        <a href="https://pdf.llmsunplugged.org/booklets/jiangnan.pdf"
-          >江南 <em>Jiangnan</em></a
-        > (Han-dynasty folk poem, in Chinese, 5 pages)
+        <a href="https://pdf.llmsunplugged.org/booklets/jiangnan.pdf">
+          江南 <em>Jiangnan</em>
+        </a>{" "}
+        (Han-dynasty folk poem, in Chinese, 5 pages)
       </li>
     </ul>
     <p>
-      A trigram booklet keys each entry on the <em>two</em> previous words rather
-      than one; each one goes with its bigram booklet in the
-      <a href="/modules/more-context/">More Context</a> module&rsquo;s comparison.
+      A trigram booklet keys each entry on the <em>two</em> previous words
+      rather than one; each one goes with its bigram booklet in the
+      <a href="/modules/more-context/">More Context</a> module&rsquo;s
+      comparison.
     </p>
   </Callout>
 
   <p>
     The generator below handles Chinese text too, tokenised into words (or
     single characters, with the toggle) and ordered by pinyin&mdash;see
-    <a href="/news/2026-07-03-chinese-language-support/">the announcement</a> for
-    how the Chinese booklets work.
+    <a href="/news/2026-07-03-chinese-language-support/">
+      the announcement
+    </a>{" "}
+    for how the Chinese booklets work.
   </p>
 
   <h2 id="worksheets">Worksheets</h2>
 
   <p>
-    The printed grid for the <a href="/modules/training/">Training</a> module (grid
-    flavour), and the training text for the
+    The printed grid for the <a href="/modules/training/">Training</a> module
+    (grid flavour), and the training text for the
     <a href="/modules/sycophancy/">Sycophancy</a> module.
   </p>
 
   <Callout type="info" title="Ready-to-print worksheets">
     <ul>
       <li>
-        <a href="https://pdf.llmsunplugged.org/worksheets/grid.pdf"
-          >Bigram grid</a
-        > (A3, one per pair or group)
+        <a href="https://pdf.llmsunplugged.org/worksheets/grid.pdf">
+          Bigram grid
+        </a>{" "}
+        (A3, one per pair or group)
       </li>
       <li>
-        <a href="https://pdf.llmsunplugged.org/worksheets/sycophancy-text.pdf"
-          >Sycophancy training text</a
-        > (one per pair or group; tally it into an existing grid)
+        <a href="https://pdf.llmsunplugged.org/worksheets/sycophancy-text.pdf">
+          Sycophancy training text
+        </a>{" "}
+        (one per pair or group; tally it into an existing grid)
       </li>
     </ul>
   </Callout>
@@ -118,36 +132,37 @@ import TypstCompiler from "../components/TypstCompiler.svelte";
 
   <p>
     Printable token cards for hands-on training. Cut out the tokens, read the
-    previous-word label on each card. Spread them on a table during the <a
-      href="/modules/training/">Training</a
-    > module (cutouts variant) &mdash; or sort them into piles as an optional extension.
+    previous-word label on each card. Spread them on a table during the{" "}
+    <a href="/modules/training/">Training</a> module (cutouts variant) &mdash;
+    or sort them into piles as an optional extension.
   </p>
 
   <Callout type="info" title="Ready-to-print cutouts">
     <p>
       Print these double-sided. They're pre-rotated so the back of each sheet
-      lines up with the front for clean cutting under the default <em
-        >long-edge</em
-      > duplex binding. If your printer comes out misaligned, switch to
+      lines up with the front for clean cutting under the default{" "}
+      <em>long-edge</em> duplex binding. If your printer comes out misaligned,
+      switch to
       <em>short-edge</em> binding instead.
     </p>
     <ul>
       <li>
-        <a href="https://pdf.llmsunplugged.org/cutouts/green-eggs-and-ham.pdf"
-          >Green Eggs and Ham</a
-        > (Dr Seuss, 38 pages)
+        <a href="https://pdf.llmsunplugged.org/cutouts/green-eggs-and-ham.pdf">
+          Green Eggs and Ham
+        </a>{" "}
+        (Dr Seuss, 38 pages)
       </li>
       <li>
-        <a
-          href="https://pdf.llmsunplugged.org/cutouts/where-is-the-green-sheep.pdf"
-          >Where Is the Green Sheep?</a
-        > (Mem Fox and Judy Horacek, 12 pages)
+        <a href="https://pdf.llmsunplugged.org/cutouts/where-is-the-green-sheep.pdf">
+          Where Is the Green Sheep?
+        </a>{" "}
+        (Mem Fox and Judy Horacek, 12 pages)
       </li>
       <li>
-        <a
-          href="https://pdf.llmsunplugged.org/cutouts/were-going-on-a-bear-hunt.pdf"
-          >We&rsquo;re Going on a Bear Hunt</a
-        > (Michael Rosen, 26 pages)
+        <a href="https://pdf.llmsunplugged.org/cutouts/were-going-on-a-bear-hunt.pdf">
+          We&rsquo;re Going on a Bear Hunt
+        </a>{" "}
+        (Michael Rosen, 26 pages)
       </li>
     </ul>
   </Callout>
@@ -160,9 +175,8 @@ import TypstCompiler from "../components/TypstCompiler.svelte";
     searches their own sheet for the word just called out and reads out what
     follows it. Nobody holds the whole model &mdash; it only exists across the
     room &mdash; which makes these a quick way to run generation with a large
-    group and no scissors. The <a href="/modules/search-sheets/"
-      >Search Sheets</a
-    >
+    group and no scissors. The{" "}
+    <a href="/modules/search-sheets/">Search Sheets</a>
     module has the algorithm, running notes and discussion questions.
   </p>
 
@@ -178,27 +192,32 @@ import TypstCompiler from "../components/TypstCompiler.svelte";
     </p>
     <ul>
       <li>
-        <a href="https://pdf.llmsunplugged.org/sheets/green-eggs-and-ham.pdf"
-          >Green Eggs and Ham</a
-        > (Dr Seuss, 15 sheets)
+        <a href="https://pdf.llmsunplugged.org/sheets/green-eggs-and-ham.pdf">
+          Green Eggs and Ham
+        </a>{" "}
+        (Dr Seuss, 15 sheets)
       </li>
       <li>
-        <a href="https://pdf.llmsunplugged.org/sheets/peter-rabbit.pdf"
-          >The Tale of Peter Rabbit</a
-        > (Beatrix Potter, 17 sheets)
+        <a href="https://pdf.llmsunplugged.org/sheets/peter-rabbit.pdf">
+          The Tale of Peter Rabbit
+        </a>{" "}
+        (Beatrix Potter, 17 sheets)
       </li>
       <li>
-        <a href="https://pdf.llmsunplugged.org/sheets/the-cat-in-the-hat.pdf"
-          >The Cat in the Hat</a
-        > (Dr Seuss, 36 sheets; <a
-          href="https://pdf.llmsunplugged.org/sheets/the-cat-in-the-hat-2up-a4.pdf"
-          >A5 sheets two-up on A4</a
-        >)
+        <a href="https://pdf.llmsunplugged.org/sheets/the-cat-in-the-hat.pdf">
+          The Cat in the Hat
+        </a>{" "}
+        (Dr Seuss, 36 sheets;{" "}
+        <a href="https://pdf.llmsunplugged.org/sheets/the-cat-in-the-hat-2up-a4.pdf">
+          A5 sheets two-up on A4
+        </a>
+        )
       </li>
       <li>
-        <a href="https://pdf.llmsunplugged.org/sheets/australia.pdf"
-          >Australia</a
-        > (Simple English Wikipedia, 79 sheets)
+        <a href="https://pdf.llmsunplugged.org/sheets/australia.pdf">
+          Australia
+        </a>{" "}
+        (Simple English Wikipedia, 79 sheets)
       </li>
     </ul>
   </Callout>
@@ -247,23 +266,27 @@ import TypstCompiler from "../components/TypstCompiler.svelte";
       <strong>Choose options</strong>: select the n-gram size and output type
       (booklet, cutouts or ledger)
     </li>
-    <li><strong>Generate</strong>: preview as SVG or download as PDF</li>
+    <li>
+      <strong>Generate</strong>: preview as SVG or download as PDF
+    </li>
   </ol>
 
   <h3>Supported file formats</h3>
 
   <ul>
-    <li><code>.txt</code> &mdash; plain text files</li>
+    <li>
+      <code>.txt</code> &mdash; plain text files
+    </li>
     <li>
       <code>.md</code> &mdash; markdown files (treated as plain text)
     </li>
     <li>
-      <code>.docx</code> &mdash; Microsoft Word documents (text extracted, formatting
-      ignored)
+      <code>.docx</code> &mdash; Microsoft Word documents (text extracted,
+      formatting ignored)
     </li>
     <li>
-      <code>.pdf</code> &mdash; PDF documents (best-effort text extraction; scanned/image-based
-      PDFs won&rsquo;t work)
+      <code>.pdf</code> &mdash; PDF documents (best-effort text extraction;
+      scanned/image-based PDFs won&rsquo;t work)
     </li>
   </ul>
 

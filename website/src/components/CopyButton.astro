@@ -35,29 +35,27 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
 ---
 
 <div class="copy-button" data-copy-button>
-  {
-    fields.length > 0 && (
-      <div class="copy-fields">
-        {fields.map((field) => (
-          <label class="copy-field">
-            <span class="copy-field-label">{field.label}</span>
-            <input
-              type="text"
-              class="copy-field-input"
-              data-copy-field
-              data-token={field.token}
-              value={field.value ?? ""}
-              placeholder={field.hint ?? ""}
-              size={field.size ?? 12}
-              aria-required="true"
-              autocomplete="off"
-              spellcheck="false"
-            />
-          </label>
-        ))}
-      </div>
-    )
-  }
+  {fields.length > 0 && (
+    <div class="copy-fields">
+      {fields.map((field) => (
+        <label class="copy-field">
+          <span class="copy-field-label">{field.label}</span>
+          <input
+            type="text"
+            class="copy-field-input"
+            data-copy-field
+            data-token={field.token}
+            value={field.value ?? ""}
+            placeholder={field.hint ?? ""}
+            size={field.size ?? 12}
+            aria-required="true"
+            autocomplete="off"
+            spellcheck="false"
+          />
+        </label>
+      ))}
+    </div>
+  )}
 
   <button type="button" class="copy-btn" data-copy-trigger>
     <svg
@@ -85,7 +83,9 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
     >
       <path d="M20 6 9 17l-5-5"></path>
     </svg>
-    <span class="copy-label" data-copy-label aria-live="polite">{label}</span>
+    <span class="copy-label" data-copy-label aria-live="polite">
+      {label}
+    </span>
   </button>
 
   <span class="copy-source" data-copy-source hidden set:text={text} />

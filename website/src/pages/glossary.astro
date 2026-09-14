@@ -23,51 +23,49 @@ const activities = loadGlossary().filter((e) => e.activity);
     groups follow the module topics, with the apparatus at the end.
   </p>
 
-  {
-    categories.map(({ label, entries }) => (
-      <>
-        <h2>{label}</h2>
-        {entries.map((entry) => (
-          <div class="glossary-entry" id={entry.id}>
-            <h3>{entry.term}</h3>
-            <p>{entry.description}</p>
-            {entry.synonyms && (
-              <p class="glossary-meta">
-                <em>Also called:</em> {entry.synonyms.join(", ")}
-              </p>
-            )}
-            {entry.note && (
-              <p class="glossary-meta">
-                <em>Style note:</em> {entry.note}
-              </p>
-            )}
-            {entry.related && (
-              <p class="glossary-meta">
-                <em>Related:</em>{" "}
-                {resolveRelated(entry.related).map((rel, i) => (
-                  <>
-                    {i > 0 && ", "}
-                    <a href={`#${rel.id}`}>{rel.term}</a>
-                  </>
-                ))}
-              </p>
-            )}
-            {entry.see && (
-              <p class="glossary-meta">
-                <em>See:</em>{" "}
-                {entry.see.map((link, i) => (
-                  <>
-                    {i > 0 && ", "}
-                    <a href={link.href}>{link.label}</a>
-                  </>
-                ))}
-              </p>
-            )}
-          </div>
-        ))}
-      </>
-    ))
-  }
+  {categories.map(({ label, entries }) => (
+    <>
+      <h2>{label}</h2>
+      {entries.map((entry) => (
+        <div class="glossary-entry" id={entry.id}>
+          <h3>{entry.term}</h3>
+          <p>{entry.description}</p>
+          {entry.synonyms && (
+            <p class="glossary-meta">
+              <em>Also called:</em> {entry.synonyms.join(", ")}
+            </p>
+          )}
+          {entry.note && (
+            <p class="glossary-meta">
+              <em>Style note:</em> {entry.note}
+            </p>
+          )}
+          {entry.related && (
+            <p class="glossary-meta">
+              <em>Related:</em>{" "}
+              {resolveRelated(entry.related).map((rel, i) => (
+                <>
+                  {i > 0 && ", "}
+                  <a href={`#${rel.id}`}>{rel.term}</a>
+                </>
+              ))}
+            </p>
+          )}
+          {entry.see && (
+            <p class="glossary-meta">
+              <em>See:</em>{" "}
+              {entry.see.map((link, i) => (
+                <>
+                  {i > 0 && ", "}
+                  <a href={link.href}>{link.label}</a>
+                </>
+              ))}
+            </p>
+          )}
+        </div>
+      ))}
+    </>
+  ))}
 
   <h2>Connections to your activities</h2>
 
@@ -87,16 +85,14 @@ const activities = loadGlossary().filter((e) => e.activity);
       </tr>
     </thead>
     <tbody>
-      {
-        activities.map((entry) => (
-          <tr>
-            <td>{entry.activity}</td>
-            <td>
-              <a href={`#${entry.id}`}>{entry.term}</a>
-            </td>
-          </tr>
-        ))
-      }
+      {activities.map((entry) => (
+        <tr>
+          <td>{entry.activity}</td>
+          <td>
+            <a href={`#${entry.id}`}>{entry.term}</a>
+          </td>
+        </tr>
+      ))}
     </tbody>
   </table>
 </PageLayout>

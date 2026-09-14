@@ -34,29 +34,27 @@ const rows = vocabulary.map((from) => ({
   <table>
     <thead>
       <tr>
-        <th scope="col"><span class="sr-only">Token</span></th>
-        {
-          vocabulary.map((header) => (
-            <th scope="col">
-              <code>{header}</code>
-            </th>
-          ))
-        }
+        <th scope="col">
+          <span class="sr-only">Token</span>
+        </th>
+        {vocabulary.map((header) => (
+          <th scope="col">
+            <code>{header}</code>
+          </th>
+        ))}
       </tr>
     </thead>
     <tbody>
-      {
-        rows.map((row) => (
-          <tr>
-            <th scope="row">
-              <code>{row.label}</code>
-            </th>
-            {row.cells.map((cell) => (
-              <td>{cell || "\u00A0"}</td>
-            ))}
-          </tr>
-        ))
-      }
+      {rows.map((row) => (
+        <tr>
+          <th scope="row">
+            <code>{row.label}</code>
+          </th>
+          {row.cells.map((cell) => (
+            <td>{cell || "\u00A0"}</td>
+          ))}
+        </tr>
+      ))}
     </tbody>
   </table>
 </div>

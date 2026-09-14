@@ -24,4 +24,6 @@ const styleClass = tool
     : "cutout-previous-word";
 ---
 
-<span class:list={[styleClass, !tool && tokenColorClass(text)]}><slot /></span>
+<span class:list={[styleClass, !tool && tokenColorClass(text)]}>
+  <slot />
+</span>

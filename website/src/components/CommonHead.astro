@@ -25,16 +25,15 @@ const { noindex = false } = Astro.props;
   title="LLMs Unplugged RSS Feed"
   href="/feed.xml"
 />
-{
-  /* Analytics is the only third-party origin; warm the connection early so
-    the deferred script and its event beacons skip the TLS handshake. */
-}
+{/* Analytics is the only third-party origin; warm the connection early so
+    the deferred script and its event beacons skip the TLS handshake. */}
 <link rel="preconnect" href="https://plausible.io" />
 <script
   is:inline
   defer
   data-domain="www.llmsunplugged.org"
-  src="https://plausible.io/js/script.file-downloads.js"></script>
+  src="https://plausible.io/js/script.file-downloads.js"
+></script>
 <script is:inline>
   // Set the grid/cutouts variant attribute before first paint.
   try {

@@ -7,6 +7,6 @@ const text = (await Astro.slots.render("default")).trim();
 const PUNCT = new Set([".", ",", "!", "?", ";", ":"]);
 ---
 
-<span class="ledger-inline"
-  >{PUNCT.has(text) ? <span class="ledger-punct">{text}</span> : text}</span
->
+<span class="ledger-inline">
+  {PUNCT.has(text) ? <span class="ledger-punct">{text}</span> : text}
+</span>

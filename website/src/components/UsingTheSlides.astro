@@ -33,45 +33,42 @@ const anyGuide = decks.some((deck) => guideHref(deck.slug));
 
 <h2 id="using-the-slides">Using the slides</h2>
 
-{
-  decks.length === 1 ? (
-    <p>
-      <a href={`/decks/${decks[0].slug}/`}>Open the slides</a> in your browser
-      &mdash; there's nothing to install or download.
-      {guideHref(decks[0].slug) && (
-        <>
-          There's also a{" "}
-          <a href={guideHref(decks[0].slug)}>presenter guide (PDF)</a>
-          &mdash; every slide followed by a page of its speaker notes &mdash; if
-          you'd rather prepare away from the browser.
-        </>
-      )}
-    </p>
-  ) : (
-    <>
-      <ul>
-        {decks.map((deck) => (
-          <li>
-            <a href={`/decks/${deck.slug}/`}>{deck.label}</a>
-            {guideHref(deck.slug) && (
-              <>
-                {" "}
-                (<a href={guideHref(deck.slug)}>presenter guide PDF</a>)
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
-      {anyGuide && (
-        <p>
-          The presenter guides are PDFs with every slide followed by a page of
-          its speaker notes&mdash;handy if you'd rather prepare away from the
-          browser.
-        </p>
-      )}
-    </>
-  )
-}
+{decks.length === 1 ? (
+  <p>
+    <a href={`/decks/${decks[0].slug}/`}>Open the slides</a> in your browser
+    &mdash; there's nothing to install or download.
+    {guideHref(decks[0].slug) && (
+      <>
+        There's also a{" "}
+        <a href={guideHref(decks[0].slug)}>presenter guide (PDF)</a>
+        &mdash; every slide followed by a page of its speaker notes &mdash; if
+        you'd rather prepare away from the browser.
+      </>
+    )}
+  </p>
+) : (
+  <>
+    <ul>
+      {decks.map((deck) => (
+        <li>
+          <a href={`/decks/${deck.slug}/`}>{deck.label}</a>
+          {guideHref(deck.slug) && (
+            <>
+              {" "}
+              (<a href={guideHref(deck.slug)}>presenter guide PDF</a>)
+            </>
+          )}
+        </li>
+      ))}
+    </ul>
+    {anyGuide && (
+      <p>
+        The presenter guides are PDFs with every slide followed by a page of its
+        speaker notes&mdash;handy if you'd rather prepare away from the browser.
+      </p>
+    )}
+  </>
+)}
 
 <p>
   The slides run in your browser, and every slide carries full presenter
@@ -84,12 +81,12 @@ const anyGuide = decks.some((deck) => guideHref(deck.slug));
     <kbd>f</kbd> toggles fullscreen&mdash;do this before you start presenting
   </li>
   <li>
-    <kbd>s</kbd> opens the speaker view in a separate window, with the presenter notes,
-    a timer, and a preview of the next slide (drag it to your laptop screen and put
-    the slides on the projector)
+    <kbd>s</kbd> opens the speaker view in a separate window, with the presenter
+    notes, a timer, and a preview of the next slide (drag it to your laptop
+    screen and put the slides on the projector)
   </li>
   <li>
-    <kbd>o</kbd> shows an overview of all slides, handy for skipping ahead if you're
-    running short on time
+    <kbd>o</kbd> shows an overview of all slides, handy for skipping ahead if
+    you're running short on time
   </li>
 </ul>

@@ -101,52 +101,46 @@ const others = [...decks]
     slides from there.
   </p>
 
-  {
-    lessons.map((lesson) => (
-      <section>
-        <h2>
-          <a href={`/lessons/${lesson.id}/`}>{lesson.data.title}</a>
-        </h2>
-        <ul>
-          {lesson.data.decks.map((deck) => (
-            <li>
-              <a href={`/decks/${deck.slug}/`}>{deck.label}</a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    ))
-  }
+  {lessons.map((lesson) => (
+    <section>
+      <h2>
+        <a href={`/lessons/${lesson.id}/`}>{lesson.data.title}</a>
+      </h2>
+      <ul>
+        {lesson.data.decks.map((deck) => (
+          <li>
+            <a href={`/decks/${deck.slug}/`}>{deck.label}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
 
-  {
-    talks.map((talk) => (
-      <section>
-        <h2>
-          <a href={`/talks/${talk.id}/`}>{talk.data.title}</a> (talk)
-        </h2>
-        <ul>
-          {talk.data.decks.map((deck) => (
-            <li>
-              <a href={`/decks/${deck.slug}/`}>{deck.label}</a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    ))
-  }
+  {talks.map((talk) => (
+    <section>
+      <h2>
+        <a href={`/talks/${talk.id}/`}>{talk.data.title}</a> (talk)
+      </h2>
+      <ul>
+        {talk.data.decks.map((deck) => (
+          <li>
+            <a href={`/decks/${deck.slug}/`}>{deck.label}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
 
-  {
-    others.length > 0 && (
-      <section>
-        <h2>Other decks</h2>
-        <ul>
-          {others.map((deck) => (
-            <li>
-              <a href={`/decks/${deck.slug}/`}>{deck.title}</a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    )
-  }
+  {others.length > 0 && (
+    <section>
+      <h2>Other decks</h2>
+      <ul>
+        {others.map((deck) => (
+          <li>
+            <a href={`/decks/${deck.slug}/`}>{deck.title}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
 </PageLayout>

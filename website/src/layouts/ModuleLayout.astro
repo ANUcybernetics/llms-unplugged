@@ -61,37 +61,37 @@ const slug = currentPath.split("/").filter(Boolean).pop();
   <div class="print-wordmark" data-pagefind-ignore>
     LLMs Unplugged (c) Ben Swift, Cybernetic Studio - CC BY-NC-SA 4.0
   </div>
-  {
-    /* See BaseLayout: data-pagefind-body opts this page's content into the
-       search index; unlisted modules omit it and drop out of search. */
-  }
+  {/* See BaseLayout: data-pagefind-body opts this page's content into the
+       search index; unlisted modules omit it and drop out of search. */}
   <div class="prose" data-pagefind-body={noindex ? undefined : ""}>
     <ul class="module-meta">
-      <li><strong>Audience</strong> {audience}</li>
-      <li><strong>Duration</strong> {duration}</li>
-      <li><strong>Runs on</strong> {bases.join(", ")}</li>
+      <li>
+        <strong>Audience</strong> {audience}
+      </li>
+      <li>
+        <strong>Duration</strong> {duration}
+      </li>
+      <li>
+        <strong>Runs on</strong> {bases.join(", ")}
+      </li>
     </ul>
-    {
-      keyIdea && (
-        <p class="module-key-idea">
-          <strong>Key idea:</strong> {keyIdea}
-        </p>
-      )
-    }
-    {
-      usedIn.length > 0 && (
-        <p class="module-used-in">
-          Used in{" "}
-          {usedIn.map((lesson, i) => (
-            <>
-              {i > 0 && " and "}
-              <a href={lesson.href}>{lesson.title}</a>
-            </>
-          ))}
-          {" --- ready-to-run lessons and talks that include this module."}
-        </p>
-      )
-    }
+    {keyIdea && (
+      <p class="module-key-idea">
+        <strong>Key idea:</strong> {keyIdea}
+      </p>
+    )}
+    {usedIn.length > 0 && (
+      <p class="module-used-in">
+        Used in{" "}
+        {usedIn.map((lesson, i) => (
+          <>
+            {i > 0 && " and "}
+            <a href={lesson.href}>{lesson.title}</a>
+          </>
+        ))}
+        {" --- ready-to-run lessons and talks that include this module."}
+      </p>
+    )}
     <slot />
   </div>
   <div class="edit-link">

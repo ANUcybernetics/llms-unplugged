@@ -36,31 +36,25 @@ const hero = findHeroImage(`hero-news-${slug}`);
     <article class="prose">
       <header class="news-header">
         <h1 class="news-title">{title}</h1>
-        {
-          (author || date) && (
-            <div class="news-meta">
-              {author && <span class="author">{author}</span>}
-              {author && date && <span class="separator">&middot;</span>}
-              {date && (
-                <time datetime={date.toISOString()}>{formattedDate}</time>
-              )}
-            </div>
-          )
-        }
-        {
-          hero && (
-            <Image
-              class="news-hero"
-              src={hero}
-              alt=""
-              widths={[480, 960, 1440]}
-              sizes="(max-width: 960px) 100vw, 960px"
-              loading="eager"
-              fetchpriority="high"
-              format="avif"
-            />
-          )
-        }
+        {(author || date) && (
+          <div class="news-meta">
+            {author && <span class="author">{author}</span>}
+            {author && date && <span class="separator">&middot;</span>}
+            {date && <time datetime={date.toISOString()}>{formattedDate}</time>}
+          </div>
+        )}
+        {hero && (
+          <Image
+            class="news-hero"
+            src={hero}
+            alt=""
+            widths={[480, 960, 1440]}
+            sizes="(max-width: 960px) 100vw, 960px"
+            loading="eager"
+            fetchpriority="high"
+            format="avif"
+          />
+        )}
       </header>
       <slot />
     </article>

@@ -32,27 +32,22 @@ const popoverId = `glossary-${id}`;
 // the description out of the page's search index.
 ---
 
-<span class="glossary-term-wrapper"
-  ><button
+<span class="glossary-term-wrapper">
+  <button
     class="glossary-term"
     popovertarget={popoverId}
     popovertargetaction="toggle"
     aria-label={`${entry.term} (glossary term)`}
-    ><slot>{entry.term}</slot></button
-  >{
-    renderPopover && (
-      <span
-        popover
-        id={popoverId}
-        class="glossary-popover"
-        data-pagefind-ignore
-      >
-        <strong class="glossary-popover-term">{entry.term}</strong>
-        <span class="glossary-popover-desc">{entry.description}</span>
-        <a href={`/glossary/#${id}`} class="glossary-popover-link">
-          View in glossary
-        </a>
-      </span>
-    )
-  }</span
->
+  >
+    <slot>{entry.term}</slot>
+  </button>
+  {renderPopover && (
+    <span popover id={popoverId} class="glossary-popover" data-pagefind-ignore>
+      <strong class="glossary-popover-term">{entry.term}</strong>
+      <span class="glossary-popover-desc">{entry.description}</span>
+      <a href={`/glossary/#${id}`} class="glossary-popover-link">
+        View in glossary
+      </a>
+    </span>
+  )}
+</span>
