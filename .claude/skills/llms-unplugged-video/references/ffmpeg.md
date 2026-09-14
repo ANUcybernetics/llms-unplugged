@@ -1,5 +1,10 @@
 # ffmpeg recipes
 
+For a video that is entirely a HyperFrames composition, none of this is needed:
+`hyperframes render` encodes and mixes. These recipes are for the other cases:
+staging a recording and its transcript, and splicing a rendered section back
+into an untouched recording (the fallback engine's workflow).
+
 Everything below assumes one frame grid: `FPS` frames per second starting at the
 first frame of the finished video, every part a whole number of frames. Compute
 the frame counts once (from the timeline's boundaries) and cut with `-frames:v`,

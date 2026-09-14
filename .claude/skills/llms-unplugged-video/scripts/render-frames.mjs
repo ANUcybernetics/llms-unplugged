@@ -1,5 +1,6 @@
-// Render an overlay page frame by frame with headless Chrome and pipe the PNGs
-// into ffmpeg. The page is a pure function of time: it exposes
+// The fallback renderer (HyperFrames is the default engine; see SKILL.md).
+// Renders an overlay page frame by frame with headless Chrome and pipes the
+// PNGs into ffmpeg. The page is a pure function of time: it exposes
 //
 //   window.setup(opts)        opts = { script, assets, video, bg } as file:// URLs
 //                             (whichever of --script/--assets/--video/--bg were given)
