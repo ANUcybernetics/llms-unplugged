@@ -37,36 +37,56 @@ isn't. It's the first turn of a dial that ends at ChatGPT.
 counting; you type a prompt and it generates. That's exactly what this booklet
 is: a model somebody else already trained, on a much bigger text than yours.
 
-_Visual: a rendered booklet page---a bold headword, the list of next words with
-thresholds, a diamond or two._
+_Visual: a booklet on the desk, top-down, its cover title hidden under a flat
+card. It opens to a page rendered from the CLI: a bold headword, the list of
+next words beneath it, a threshold beside each._
 
 **BEN (VO):** Each entry is a word. Under it are the words that can follow, each
 with a threshold. Pick a starting word, find its entry, roll a d10, and take the
 first threshold at or above your roll. Write the word down, turn to its entry,
 roll again.
 
-_Visual: StaticPretrainedGeneration stepping through lookups and rolls._
+_Visual: push in on one entry. A d10 face lands beside it; the thresholds light
+from the top until the first one at or above the roll, and its word writes onto
+the paper below. Cut to that word's entry on another page._
 
 **USHINI (VO):** Some words have more than ten options. Look for the diamonds:
 one diamond, one die; two diamonds, roll two and read them as digits, so a five
 and an eight is fifty-eight. Same mechanism, and it scales as far as you want.
 And if an entry has only one option, don't roll---just write it.
 
+_Visual: an entry with two diamonds beside its headword. Two faces land, a five
+and an eight, slide together and read 58; the thresholds light down to the first
+at or above it. Then an entry with one follower: no die, the word writes
+straight on._
+
 **BEN:** As you go, listen to what comes out. It'll sound more like real prose
 than your grid did. And it still won't be _about_ anything. Hold onto that
 question.
+
+_Visual: the paper: the booklet's line so far, above the grid's shorter line
+from the last video, both in pencil._
 
 **USHINI:** Your booklet was trained on a real text---maybe _Frankenstein_, maybe
 _Green Eggs and Ham_. The patterns leak through. Try to guess the book before
 you check the cover.
 
+_Visual: the covered title card; on the paper a few of the generated words light
+in turn, the tells._
+
 **BEN:** One honest note: a real model isn't trained on one book. It's billions
 of pages stitched together from everywhere. The single mystery text is just what
 makes this game playable.
 
+_Visual: the booklet shrinks to a tile; behind it a wall of page tiles fills the
+frame and keeps receding, logarithmically, until the wall is texture._
+
 **USHINI:** And one thing the booklet gets exactly right: you can read every
 number in this model, and generate from it at the kitchen table. Nobody can
 switch it off or quietly change it under you. That's what "open weights" means.
+
+_Visual: the booklet open on a kitchen table, flat top-down, a mug beside it;
+the threshold numbers on the page light one after another down the column._
 
 **BEN (TC):** Grab your booklet and start rolling. If you'd like to make your
 own from any text, the tool's at llmsunplugged.org/tools.

@@ -41,48 +41,60 @@ deck's: "see it go up, down it comes."
 **BEN (TC):** There's a language model on the table in front of you. Not a
 computer. A few sheets of paper.
 
-_Visual: LedgerSheet, the Dick and Jane sheet, full frame._
+_Visual: the desk, top-down: three ledger sheets fanned, a cup, a tub of
+counters in four colours, a pencil and a strip of paper. No screen anywhere._
 
 **USHINI (VO):** Down the left, a word from the book. Beside it, every word that
 ever came next, with a mark for every time it did. That's the whole thing. No
 rules, no grammar. Just a count of what came next.
 
-_Visual: LedgerSheet with the row for "it" in focus._
+_Visual: one sheet full frame, rendered from the real Dick and Jane sheet. The
+left-hand word column lights, then the follower boxes beside one row, then the
+marks in them._
 
 **BEN (VO):** Read one row aloud and it's a sentence. After _it_, this book said
 _go_ five times, _is_ twice, and _comes_ and full stop once each.
 
-_Visual: LedgerSheets fanned out, the alphabetical headers highlighted._
+_Visual: push in on the row for "it". As each follower is spoken its box lifts a
+little and its marks count themselves: go, five; is, two; comes, one; full stop,
+one._
 
 **USHINI (VO):** Each sheet holds a run of words in alphabetical order, and the
 header says which. So nobody searches. Need the row for _see_? Read the headers.
 Who has _see_?
 
-_Visual: LedgerRow for "it", the coloured boxes, then a red counter beside the
-red box._
+_Visual: pull back to the three sheets; their headers light in turn. "see" lands
+on the sheet whose header run covers it, and the other two dim._
 
 **BEN (VO):** Every word in a row sits in a coloured box, and your counters come
 in those same four colours. A red counter means "the word in the red box"---on
 this row. On a different row, red means something else. The colour names the
 place in the row, not the word.
 
-_Visual: LedgerRow for "see" beside an empty LedgerCup; counters dropping in one
-by one as each box highlights._
+_Visual: the row for "it": the four box colours pulse in order, and a red
+counter slides in beside the red box. Cut to a different row: a red counter
+slides in beside a different word._
 
 **USHINI (VO):** Now generate. Somebody has the row for _see_. First box: _it_,
 five marks, red. Five red counters into the cup. Next: _me_, one mark, blue. One
 blue. Last: _Spot_, one mark, green. One green.
 
+_Visual: the row for "see" above the cup, the cup a circle seen from above. As
+each box is named its marks turn into counters of that colour and drop into the
+cup one at a time: five red, one blue, one green._
+
 **BEN (VO):** Seven marks, seven counters. The cup _is_ the row. More marks,
 more counters, more likely. Which colour do you think will come out?
 
-_Visual: a counter drawn---red---and "it" appearing on the page._
+_Visual: the cup holds still with its seven counters; the row's marks and the
+counters share one colour key, five of seven red._
 
 **USHINI (VO):** Red. The likeliest one, five chances in seven. Write down _it_,
 tip the cup back into the tub, and pass the job to whoever has the row for _it_.
 
-_Visual: the chain playing out row by row---"see it go up , down it comes
-."---each row's cup filling and one counter drawn._
+_Visual: one red counter slides out of the cup onto the paper and becomes the
+word "it". The cup tips and the counters slide back to the tub. The paper slides
+across to the sheet that holds the row for "it"._
 
 **BEN (VO):** And round it goes. Most of the time the likely colour comes out.
 Sometimes it doesn't---two chances in ten, and yellow comes out anyway. Unlikely
@@ -90,12 +102,20 @@ isn't impossible; that's the cup doing its job. Come back to the same row later
 and you might get a different word from the same cup. And a row with one word
 needs no draw at all.
 
-_Visual: the generated line, full frame: "See it go up, down it comes."_
+_Visual: the chain at speed, one row per beat: the row lights, counters drop,
+one slides out, the word writes: see it go up , down it comes . On one draw a
+yellow counter comes out of a cup that is mostly red; a return to the row for
+"it" gives a different word; a one-word row skips the cup and writes straight
+on._
 
 **USHINI:** Eight draws in, and here's a sentence this book never said. It says
 "See it go up." It says "Down it comes." The model glued them together, because
 it only ever knows what comes next, one word at a time. Nobody wrote that
 sentence. The counting did.
+
+_Visual: the generated line full frame. The book's two sentences, "See it go
+up." and "Down it comes.", appear above and below it in the book's type, and
+their halves slide together into the line._
 
 **BEN (TC):** Four jobs in your group: a reader who finds the row, a filler, a
 drawer, and a writer. Start from any word on your sheets, and see what your book

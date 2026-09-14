@@ -39,41 +39,60 @@ technology. It isn't. It's the loop you've already run, with one rule added.
 **BEN:** An agent is a model that can pause, get something from outside itself,
 and carry on.
 
-_Visual: the agentic loop---generate, punctuation, pause, phone message out,
-reply in, generation continues._
+_Visual: the desk: booklet, paper, a d10, a phone face-down. Above them a loop
+draws on in one stroke with gold arrowheads: generate, punctuation, pause,
+message out, reply in, continue._
 
 **BEN (VO):** Here's the rule. Generate from your booklet exactly as before,
 rolling for each next word. The moment you roll a punctuation token---a full
 stop, a comma---stop. That's a tool call.
+
+_Visual: the paper: "the cat sat" writing on one word at a time from the
+booklet, a face landing before each. A full stop lands, the pencil stops, the
+full stop pulses, and the phone slides into frame._
 
 **USHINI (VO):** The tool is a text message. Send "What comes next?" and the
 sentence so far---everything since the last full stop---to three friends or
 group chats. Say your text is "the cat sat" and you've just rolled a full stop.
 You text: _What comes next? "the cat sat…"_
 
-_Visual: phone overlay---the message going out to three contacts, one reply
-coming back: "down by the river"._
+_Visual: the phone, top-down: a message types itself, What comes next? "the cat
+sat…", and copies of it slide up to three contact rows. A beat of nothing. One
+reply bubble drops in: down by the river._
 
 **BEN (VO):** The first reply back is your tool result. Write down the whole
 thing---"down by the river"---and then the full stop you rolled. Then keep
 generating, from the full stop.
 
-_Visual: StaticPretrainedGeneration resuming from "."; the spliced text reads
-"the cat sat down by the river."_
+_Visual: the reply's words slide off the phone onto the paper after "the cat
+sat", the full stop follows them, and the booklet page cuts to the full stop's
+entry; a face lands and the pencil moves again._
 
 **USHINI:** Why from the full stop and not from "river"? Because "river" probably
 isn't in your model. It has no entry for it. But it can always continue from a
 full stop.
 
+_Visual: the booklet's page for r: no entry for "river", the gap where it would
+sit lit. Cut to the full stop's entry, present and lit._
+
 **BEN:** Replies take time. If nothing's landed by your next punctuation token,
 leave a gap and fill it in later.
+
+_Visual: the paper: a bracketed gap left after a full stop, the pencil carrying
+on past it; later the reply's words slide into the gap._
 
 **USHINI:** Here's the bit that matters. The model never learned what comes next.
 What it "learned" is when to ask. And the thing that paused it, sent the
 message, and spliced the answer back in---that was you. You were the harness.
 
+_Visual: the loop again, a flat person icon at its centre. As each stage is
+named its arrow lights, and the icon's hand is on every one of them._
+
 **BEN:** Take the person out, and you've got a model acting on its own. That's
 what the coverage means by an agent. So: what would you let it do without asking
 you first?
+
+_Visual: the person icon fades; the loop keeps running on its own, arrows
+lighting in turn._
 
 **USHINI (TC):** Don't answer yet. In a few minutes, you'll _be_ the harness.
