@@ -3,7 +3,9 @@
 **Key idea:** every mark on the sheet came from somebody reading the text two
 words at a time.
 
-**Plays:** How AI writes stories (ledger), start of part 5 (Training).
+**Plays:** How AI writes stories (ledger), start of part 5 (Training). The
+worked pair is _the magpie_, which the book says five times, so the row for
+_the_ carries five marks beside _magpie_ on the printed sheet.
 
 ## Beat sheet
 
@@ -15,11 +17,11 @@ words at a time.
    a mark in that row
 4. move along by one: the second word of this pair is the first word of the
    next, so you read the text once and every pair gets counted
-5. the same pair comes round again: the second _see it_ puts a second mark
-   beside _it_ in the row for _see_. That's how a count builds---common pairs
-   collect marks, rare ones don't
-6. check: the printed sheet says _see it_ five times. Count the book and it's
-   five. Every sheet in the room was made this way
+5. the same pair comes round again: the second _the magpie_ puts a second mark
+   beside _magpie_ in the row for _the_. That's how a count builds---common
+   pairs collect marks, rare ones don't
+6. check: the printed sheet says _the magpie_ five times. Count the book and
+   it's five. Every sheet in the room was made this way
 7. your turn: a new text, blank sheets, the words are yours to write as well as
    the marks. One person reads pairs; whoever has the first word's row marks the
    second
@@ -45,32 +47,33 @@ settles. The sheet slides aside and the book is underneath it._
 **BEN (VO):** Start with a text. Lowercase everything. And notice that full
 stops and exclamation marks are words too---they get their own rows.
 
-_Visual: the opening of Dick and Jane as a row of word tiles above a blank
-sheet. Capitals drop to lowercase; the full stops and exclamation marks split
-into tiles of their own._
+_Visual: the opening of The magpie as a row of word tiles above a blank sheet.
+Capitals drop to lowercase; the full stops and the exclamation mark after
+"Swoop" split into tiles of their own._
 
 **USHINI (VO):** Read it two words at a time. The first word names the row. The
 second word gets a mark in that row. Then move along by one: the second word of
 this pair is the first word of the next. Read the text once, and every pair in
 it gets counted.
 
-_Visual: a bracket over the first two tiles. The first word's row lights on the
-sheet, and a mark draws on beside the second word in that row. The bracket
-slides along by one tile and it happens again._
+_Visual: a bracket over the first two tiles, "the magpie". The row for "the"
+lights on the sheet, and a mark draws on beside "magpie" in that row. The
+bracket slides along by one tile to "magpie is" and it happens again._
 
 **BEN (VO):** Keep going and the same pair comes round again. The second time
-the text says "see it," the mark goes beside _it_ in the row for _see_, which
-already has one. That's how a count builds. Common pairs collect marks; rare
-ones don't.
+the text says "the magpie," the mark goes beside _magpie_ in the row for _the_,
+which already has one. That's how a count builds. Common pairs collect marks;
+rare ones don't.
 
-_Visual: the bracket skips ahead to the second "see it". The row for "see"
-lights, and a second mark draws on beside "it", next to the first._
+_Visual: the bracket skips ahead to the second "the magpie". The row for "the"
+lights, and a second mark draws on beside "magpie", next to the first._
 
-**USHINI:** Check it against your printed sheet. _See it_, five marks. Count the
-book and it's five. Every sheet in this room was made exactly this way.
+**USHINI:** Check it against your printed sheet. _The magpie_, five marks. Count
+the book and it's five. Every sheet in this room was made exactly this way.
 
-_Visual: the printed sheet's five marks beside "it" in the row for "see" light
-one at a time, and the five "see it"s in the book's text light in step._
+_Visual: the printed sheet's five marks beside "magpie" in the row for "the"
+light one at a time, and the five "the magpie"s in the book's text light in
+step._
 
 **BEN:** Now it's your turn, on a new text, with blank sheets. This time the
 words are yours to write as well as the marks. One person reads the text two

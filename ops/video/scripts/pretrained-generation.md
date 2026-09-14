@@ -4,6 +4,10 @@
 lookup rules and sample next words.
 
 **Plays:** My First Language Model, start of the Pre-trained generation section.
+The booklet on screen is the Paterson one (data/the-man-from-snowy-river.txt,
+built with the CLI's `pdf` recipe) and the walk is the deck's: _golden_ (one
+die, roll 4) → _grass_ (two dice, 68) → _grown_ (one die, 6) → _hollow_ (one
+follower, no roll) → _;_.
 
 ## Beat sheet
 
@@ -16,7 +20,7 @@ lookup rules and sample next words.
 4. usage: pick a starting word, find its entry, roll a d10, take the first
    threshold at or above your roll, write the word, go to its entry
 5. scaling beat: BUT some words have more than ten options. The diamonds say how
-   many d10s to roll; read the digits as one number (a 5 and an 8 is 58). Same
+   many d10s to roll; read the digits as one number (a 6 and an 8 is 68). Same
    mechanism, scales as far as you want
 6. single option: no roll needed
 7. what to listen for: it'll sound more like real prose than your grid did, and
@@ -51,12 +55,12 @@ from the top until the first one at or above the roll, and its word writes onto
 the paper below. Cut to that word's entry on another page._
 
 **USHINI (VO):** Some words have more than ten options. Look for the diamonds:
-one diamond, one die; two diamonds, roll two and read them as digits, so a five
-and an eight is fifty-eight. Same mechanism, and it scales as far as you want.
+one diamond, one die; two diamonds, roll two and read them as digits, so a six
+and an eight is sixty-eight. Same mechanism, and it scales as far as you want.
 And if an entry has only one option, don't roll---just write it.
 
-_Visual: an entry with two diamonds beside its headword. Two faces land, a five
-and an eight, slide together and read 58; the thresholds light down to the first
+_Visual: an entry with two diamonds beside its headword. Two faces land, a six
+and an eight, slide together and read 68; the thresholds light down to the first
 at or above it. Then an entry with one follower: no die, the word writes
 straight on._
 

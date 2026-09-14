@@ -47,8 +47,8 @@ message out, reply in, continue._
 rolling for each next word. The moment you roll a punctuation token---a full
 stop, a comma---stop. That's a tool call.
 
-_Visual: the paper: "the cat sat" writing on one word at a time from the
-booklet, a face landing before each. A full stop lands, the pencil stops, the
+_Visual: the paper: "the cat sat" writing on one word at a time, a face
+landing before each. A full stop lands, the pencil stops, the
 full stop pulses, and the phone slides into frame._
 
 **USHINI (VO):** The tool is a text message. Send "What comes next?" and the
@@ -58,22 +58,22 @@ You text: _What comes next? "the cat sat…"_
 
 _Visual: the phone, top-down: a message types itself, What comes next? "the cat
 sat…", and copies of it slide up to three contact rows. A beat of nothing. One
-reply bubble drops in: down by the river._
+reply bubble drops in: out on the verandah._
 
 **BEN (VO):** The first reply back is your tool result. Write down the whole
-thing---"down by the river"---and then the full stop you rolled. Then keep
+thing---"out on the verandah"---and then the full stop you rolled. Then keep
 generating, from the full stop.
 
 _Visual: the reply's words slide off the phone onto the paper after "the cat
 sat", the full stop follows them, and the booklet page cuts to the full stop's
 entry; a face lands and the pencil moves again._
 
-**USHINI:** Why from the full stop and not from "river"? Because "river"
+**USHINI:** Why from the full stop and not from "verandah"? Because "verandah"
 probably isn't in your model. It has no entry for it. But it can always continue
 from a full stop.
 
-_Visual: the booklet's page for r: no entry for "river", the gap where it would
-sit lit. Cut to the full stop's entry, present and lit._
+_Visual: the booklet's page for v: no entry for "verandah", the gap where it
+would sit lit. Cut to the full stop's entry, present and lit._
 
 **BEN:** Replies take time. If nothing's landed by your next punctuation token,
 leave a gap and fill it in later.

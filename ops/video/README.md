@@ -35,7 +35,7 @@ The series is deliberately small: one video per section of the two lessons that
 are actually run, so every video has a slide deck, a printed pack and a room
 trial behind it. Key ideas are the module `keyIdea` frontmatter in
 `website/src/content/modules/`; the walkthroughs follow the deck partials in
-`website/src/decks/partials/` (the _see spot run_ grid, the Dick and Jane ledger
+`website/src/decks/partials/` (the _hop joey hop_ grid, the magpie ledger
 chain), so a video shows the same example the slides show.
 
 ## Production
@@ -151,8 +151,8 @@ has to do the pointing itself, and the visual language is free to be
 reimagined for that. The deck components are a source of truth for _what_ is
 shown, not _how_:
 
-- **same example, same objects.** The video shows the see spot run grid, the
-  Dick and Jane rows, the real booklet page, so the thing on screen is the
+- **same example, same objects.** The video shows the hop joey hop grid, the
+  magpie rows, the real booklet page, so the thing on screen is the
   thing in the participant's hands. Take the data from the decks
   (`website/src/decks/examples.ts`, the `ROW_*` constants, which must match the
   real sheets) and the site's palette and fonts, and build the visuals fresh.

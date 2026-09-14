@@ -33,7 +33,7 @@ novel, whatever it is. That book is your training data. Everything your model
 will ever know comes from those pages.
 
 _Visual: the desk, top-down: an open picture book beside a blank grid sheet and
-a pencil. The book's line, "Run, Spot, run. See Spot run.", lifts off the page
+a pencil. The book's line, "Hop, Joey, hop. See Joey hop.", lifts off the page
 and settles above the grid as a row of word tiles; the rest of the desk dims._
 
 **USHINI (VO):** First step: break the text into individual words, and lowercase
@@ -42,8 +42,8 @@ commas as words too. They get their own row and column, just like the real
 words.
 
 _Visual: the tiles drop to lowercase one at a time; the full stops and commas
-split away from their neighbours into tiles of their own, so the line reads: run
-, spot , run . see spot run ._
+split away from their neighbours into tiles of their own, so the line reads: hop
+, joey , hop . see joey hop ._
 
 **BEN (VO):** Now look at pairs of consecutive words. These are called bigrams.
 If the text says "the cat sat," you've got two bigrams: "the" followed by "cat,"
@@ -51,14 +51,14 @@ and "cat" followed by "sat."
 
 _Visual: a small inset above the tiles: "the cat sat" as three tiles, a bracket
 sliding over "the cat" and then "cat sat", each pair lifting out as it is named.
-The inset fades and the bracket lands on the book's first pair, "run ,"._
+The inset fades and the bracket lands on the book's first pair, "hop ,"._
 
 **BEN (VO):** Your grid has words along the top and down the side. Start at the
 very first word in the text: that's your first row. The word that follows it is
 your first column. Tally the cell where they meet. Each word gets one row and
 one column, so if "the" already has a row you keep tallying into it.
 
-_Visual: the empty grid. "run" slides to the left edge as the first row header,
+_Visual: the empty grid. "hop" slides to the left edge as the first row header,
 "," to the top as the first column header. The row band and the column band
 light gold, the camera pushes in on the cell where they cross, and one tally
 stroke draws on there._

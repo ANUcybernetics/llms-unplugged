@@ -63,7 +63,7 @@ set up the ranges, roll again, and write down the result. Keep going.
 
 _Visual: the new word lifts from the paper to the grid, its row lights, the
 strip rebuilds for that row, a face lands, a word writes. The loop runs twice
-more at double speed, the paper reading "see spot , run . see"._
+more at double speed, the paper reading "see joey , hop . see"._
 
 **BEN:** Two things you might hit. If your current word doesn't have a row---it
 was never the first word of a pair---that's a dead end. Pick a new starting word
@@ -72,13 +72,13 @@ and carry on.
 _Visual: the current word's row lights and holds, empty. The paper's line ends,
 and a new starting word writes on the line below._
 
-**USHINI:** Or you might bounce between the same two words: comma, spot, comma,
-spot. Small models loop a lot, so break out by picking a different valid next
+**USHINI:** Or you might bounce between the same two words: comma, joey, comma,
+joey. Small models loop a lot, so break out by picking a different valid next
 word. Real LLMs do it less because they're bigger, but if you've ever seen
 Claude or ChatGPT repeat itself, that's the same thing at scale.
 
-_Visual: "comma spot comma spot" writing itself along the paper. The strip for
-"," shows "spot" lit on most faces; the pencil takes the other block's word
+_Visual: "comma joey comma joey" writing itself along the paper. The strip for
+"," shows "joey" lit on half the faces; the pencil takes the other block's word
 instead._
 
 **BEN:** Now read back what you generated. It wasn't in the training text---it's

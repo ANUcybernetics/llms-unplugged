@@ -4,14 +4,18 @@
 group's model could.
 
 **Plays:** How AI writes stories (ledger), start of part 6 (One story, all
-together). The five `ROW_THE_*` rows are the five school-day texts: bell, bus,
-dog, rain, volcano.
+together). The five rows for _the_ are the five outdoors training texts
+(data/originals/outdoors-*.txt): beach (sand 2, water 2, dog 3, sun 1), storm
+(sky 2, tin 1, dog 2, rain 1), kookaburra (kookaburra 3, gum 1, cat 2,
+street 1), creek (creek 2, rocks 2, mud 2, yabby 2), bush (track 3, hill 1,
+sun 1, water 1). _Kookaburra_ appears only in the kookaburra text and _yabby_
+only in the creek text.
 
 ## Beat sheet
 
-1. hook: every group trained on a different text. Nobody has _volcano_ except
-   the volcano group. Nobody has _bus_ except the bus group. But the room has
-   all of them
+1. hook: every group trained on a different text. Nobody has _kookaburra_
+   except the kookaburra group. Nobody has _yabby_ except the creek group. But
+   the room has all of them
 2. the same word, five rows: what came after _the_ in your text? Five honest
    counts, five different answers, none of them wrong
 3. the claim: together the class holds a bigger model than any one group
@@ -30,20 +34,22 @@ dog, rain, volcano.
 ## Script
 
 **BEN (TC):** Every group in this room trained on a different text. Nobody has
-_volcano_ except the volcano group. Nobody has _bus_ except the bus group.
+_kookaburra_ except the kookaburra group. Nobody has _yabby_ except the creek
+group.
 
 **USHINI (TC):** But the room has all of them.
 
 _Visual: five rows for "the", one from each text, stacked with the text's name
-beside each: bell, bus, dog, rain, volcano. The followers differ row to row._
+beside each: beach, storm, kookaburra, creek, bush. The followers differ row to
+row._
 
 **USHINI (VO):** Here's the same word, _the_, from five different models. Five
 honest counts of five different texts, five different answers. None of them is
-wrong. And read down the followers and you can name the text: bell and key, bus
-and air, roof and sun.
+wrong. And read down the followers and you can name the text: sand and water,
+sky and rain, kookaburra and gum.
 
 _Visual: the five rows again; as each text is named its telling followers light:
-bell and key, bus and air, roof and sun._
+sand and water, sky and rain, kookaburra and gum._
 
 **BEN (VO):** Together, the class holds a bigger model than any one group. So
 let's generate from it.
@@ -53,26 +59,27 @@ of butchers paper up front._
 
 **USHINI (VO):** Two steps per word, same as always. Call out the word we're on.
 Hands up if your sheets have a row for it---the show of hands picks the group.
-That group reads out its colours and tallies: three red, one blue, one green,
-one yellow. The counters go in the cup up the front, one comes out, and that
-group reads the word beside the colour. The cup picks the word.
+That group reads out its colours and tallies: two red, two blue, two green, two
+yellow. The counters go in the cup up the front, one comes out, and that group
+reads the word beside the colour. The cup picks the word.
 
 _Visual: the word "the" writes on the butchers paper. Tables with a row for it
-light; one is picked and its row slides to the front; its counters drop into the
-front cup, three red, one blue, one green, one yellow; one slides out._
+light; the creek table is picked and its row slides to the front; its counters
+drop into the front cup, two red, two blue, two green, two yellow; one slides
+out._
 
-**BEN (VO):** Blue. That group's blue word is _volcano_. It goes on the class
-story, and _volcano_ is the next word we hunt for.
+**BEN (VO):** Yellow. That group's yellow word is _yabby_. It goes on the class
+story, and _yabby_ is the next word we hunt for.
 
-_Visual: the blue counter lands beside the volcano row's blue box; "volcano"
-writes on the butchers paper, and "volcano" becomes the word the tables are
+_Visual: the yellow counter lands beside the creek row's yellow box; "yabby"
+writes on the butchers paper, and "yabby" becomes the word the tables are
 searched for. Only one table lights._
 
 **USHINI:** And that's the fun of it. A word only one group ever saw just landed
 in everyone's story. The class model can say things most of the room's models
 never could.
 
-_Visual: the butchers paper line so far, "volcano" lit; the four tables that
+_Visual: the butchers paper line so far, "yabby" lit; the four tables that
 never saw it dimmed._
 
 **BEN:** Which is what a big model is. Many texts, pooled into one set of
