@@ -26,11 +26,11 @@ walk through your text and tally up which tokens follow which in a grid
 
 ![bg right:40%](./assets/bg-example.avif)
 
-_"Run, Spot, run. See Spot run."_
+_"Hop, Joey, hop. See Joey hop."_
 
 after tidying up:
 
-`run` `,` `spot` `,` `run` `.` `see` `spot` `run` `.`
+`hop` `,` `joey` `,` `hop` `.` `see` `joey` `hop` `.`
 
 ---
 
@@ -40,19 +40,19 @@ after tidying up:
 
 ---
 
-## Training: `run` &rarr; `,`
+## Training: `hop` &rarr; `,`
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={1} />
 
 ---
 
-## Training: `,` &rarr; `spot`
+## Training: `,` &rarr; `joey`
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={2} />
 
 ---
 
-## Training: `spot` &rarr; `,`
+## Training: `joey` &rarr; `,`
 
 ```notes
 `,` is already in our vocabulary &mdash; no new column needed!
@@ -62,13 +62,13 @@ after tidying up:
 
 ---
 
-## Training: `,` &rarr; `run`
+## Training: `,` &rarr; `hop`
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={4} />
 
 ---
 
-## Training: `run` &rarr; `.`
+## Training: `hop` &rarr; `.`
 
 ```notes
 `.` is a new token &mdash; punctuation gets its own row and column too
@@ -81,7 +81,7 @@ after tidying up:
 ## Complete model
 
 ```notes
-with the rest of the text tallied the same way, the grid is complete. `run` &rarr; `.` came up twice, so its cell has two marks &mdash; those counts are what make some next-words more likely than others.
+with the rest of the text tallied the same way, the grid is complete. `hop` &rarr; `.` came up twice, so its cell has two marks &mdash; those counts are what make some next-words more likely than others.
 ```
 
 <StaticGrid tokens={EXAMPLE_TOKENS} vocabulary={EXAMPLE_VOCAB} step={10} />

@@ -6,12 +6,17 @@
     parseTokens,
     splitTokens,
   } from "../lib/tokens";
-  import { buildModelEntries, findWordForThresholdRoll } from "../lib/modelEntries";
+  import {
+    buildModelEntries,
+    findWordForThresholdRoll,
+    type ModelEntry,
+  } from "../lib/modelEntries";
   import GeneratedSequence from "./GeneratedSequence.svelte";
 
   interface Props {
-    tokens: string;
+    tokens?: string;
     vocabulary?: string;
+    entries?: ModelEntry[];
     sequence: string;
     step: number;
     rolls: string;
@@ -20,15 +25,16 @@
   let {
     tokens: tokenString,
     vocabulary: vocabString,
+    entries: entriesProp,
     sequence: sequenceString,
     step,
     rolls: rollsString,
   }: Props = $props();
 
-  const tokenList = $derived(parseTokens(tokenString));
+  const tokenList = $derived(tokenString ? parseTokens(tokenString) : []);
   const vocab = $derived(vocabString ? splitTokens(vocabString) : getVocabulary(tokenList));
   const model = $derived(buildBigramModel(tokenList));
-  const entries = $derived(buildModelEntries(vocab, model));
+  const entries = $derived(entriesProp ?? buildModelEntries(vocab, model));
   const sequenceTokens = $derived(splitTokens(sequenceString));
   const diceRolls = $derived(splitTokens(rollsString).map((r) => (r === "-" ? null : Number(r))));
 

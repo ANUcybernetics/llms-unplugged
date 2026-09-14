@@ -2,15 +2,15 @@ import { describe, expect, it } from "vitest";
 import {
   EXAMPLE_GENERATION,
   EXAMPLE_GENERATION_ROLLS,
+  EXAMPLE_PRETRAINED_ENTRIES,
   EXAMPLE_PRETRAINED_ROLLS,
   EXAMPLE_PRETRAINED_SEQ,
-  EXAMPLE_TEXT,
   EXAMPLE_TOKENS,
   EXAMPLE_VOCAB,
 } from "../src/decks/examples";
-import { buildBigramModel, getVocabulary, parseTokens, splitTokens } from "../src/lib/tokens";
+import { buildBigramModel, getVocabulary, splitTokens } from "../src/lib/tokens";
 import { computeDiceBands, getRowOptionsInVocabOrder } from "../src/lib/diceBands";
-import { buildModelEntries, findWordForThresholdRoll } from "../src/lib/modelEntries";
+import { findWordForThresholdRoll } from "../src/lib/modelEntries";
 
 // The grid decks walk through a worked generation example slide by slide:
 // StaticGeneration shows each roll and the word it picks, and DiceStrip shows
@@ -59,10 +59,7 @@ describe("grid deck generation walk", () => {
 });
 
 describe("pre-trained deck generation walk", () => {
-  const tokens = parseTokens(EXAMPLE_TEXT);
-  const vocab = getVocabulary(tokens);
-  const model = buildBigramModel(tokens);
-  const entries = buildModelEntries(vocab, model);
+  const entries = EXAMPLE_PRETRAINED_ENTRIES;
   const sequence = splitTokens(EXAMPLE_PRETRAINED_SEQ);
   const rolls = splitTokens(EXAMPLE_PRETRAINED_ROLLS);
 

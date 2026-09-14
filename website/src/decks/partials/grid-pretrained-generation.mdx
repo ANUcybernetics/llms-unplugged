@@ -39,18 +39,19 @@ The booklet's stretch goal is a good hook if the energy needs it: try to guess t
 5. **repeat** from step 2
 ```
 
-use the booklet to generate new text, rolling one or more d10s to choose each next word
+use the booklet to generate new text, rolling one or more d10s to choose each
+next word
 
 ---
 
-## Pre-trained: start with `The`
+## Pre-trained: start with `golden`
 
 ```notes
-a bigger model &mdash; `The` is so common it needs **two** dice (roll two d10s for 00 to 99)
+a bigger model, but `golden` only has three followers &mdash; just **one** die, roll a d10
 ```
 
 <StaticPretrainedGeneration
-  tokens={EXAMPLE_TEXT}
+  entries={EXAMPLE_PRETRAINED_ENTRIES}
   sequence={EXAMPLE_PRETRAINED_SEQ}
   rolls={EXAMPLE_PRETRAINED_ROLLS}
   step={0}
@@ -58,14 +59,14 @@ a bigger model &mdash; `The` is so common it needs **two** dice (roll two d10s f
 
 ---
 
-## Pre-trained: from `cat`
+## Pre-trained: from `grass`
 
 ```notes
-`cat` is rarer than `The` &mdash; just **one** die, roll a d10
+`grass` has twelve followers, so it needs **two** dice (roll two d10s for 00 to 99) &mdash; 68 is past `for`'s 66, so we land on `grown`
 ```
 
 <StaticPretrainedGeneration
-  tokens={EXAMPLE_TEXT}
+  entries={EXAMPLE_PRETRAINED_ENTRIES}
   sequence={EXAMPLE_PRETRAINED_SEQ}
   rolls={EXAMPLE_PRETRAINED_ROLLS}
   step={1}
@@ -73,14 +74,14 @@ a bigger model &mdash; `The` is so common it needs **two** dice (roll two d10s f
 
 ---
 
-## Pre-trained: from `sat`
+## Pre-trained: from `grown`
 
 ```notes
-only one option &mdash; no dice roll needed
+back down to **one** die, roll a d10
 ```
 
 <StaticPretrainedGeneration
-  tokens={EXAMPLE_TEXT}
+  entries={EXAMPLE_PRETRAINED_ENTRIES}
   sequence={EXAMPLE_PRETRAINED_SEQ}
   rolls={EXAMPLE_PRETRAINED_ROLLS}
   step={2}
@@ -88,14 +89,14 @@ only one option &mdash; no dice roll needed
 
 ---
 
-## Pre-trained: from `.`
+## Pre-trained: from `hollow`
 
 ```notes
 only one option &mdash; no dice roll needed
 ```
 
 <StaticPretrainedGeneration
-  tokens={EXAMPLE_TEXT}
+  entries={EXAMPLE_PRETRAINED_ENTRIES}
   sequence={EXAMPLE_PRETRAINED_SEQ}
   rolls={EXAMPLE_PRETRAINED_ROLLS}
   step={3}
@@ -103,32 +104,17 @@ only one option &mdash; no dice roll needed
 
 ---
 
-## Pre-trained: from `The` again
-
-```notes
-**two** dice again &mdash; 63 is past `cat`'s 50, so we land on `dog`
-```
-
-<StaticPretrainedGeneration
-  tokens={EXAMPLE_TEXT}
-  sequence={EXAMPLE_PRETRAINED_SEQ}
-  rolls={EXAMPLE_PRETRAINED_ROLLS}
-  step={4}
-/>
-
----
-
-## Pre-trained: from `dog`
+## Pre-trained: from `;`
 
 ```notes
 and so on...
 ```
 
 <StaticPretrainedGeneration
-  tokens={EXAMPLE_TEXT}
+  entries={EXAMPLE_PRETRAINED_ENTRIES}
   sequence={EXAMPLE_PRETRAINED_SEQ}
   rolls={EXAMPLE_PRETRAINED_ROLLS}
-  step={5}
+  step={4}
 />
 
 ---
@@ -156,7 +142,7 @@ Same as before but from the booklet --- a bigger model, one or more d10s. 8 min,
 ```notes
 Compare with the hand-built model: a bigger training text gives more varied, more natural output. Invite ~5 groups to share back rather than the whole room. ~5 min.
 
-The question to leave hanging as you move on: it reads better, but is it *saying* anything? More data bought fluency and nothing else --- the booklet's output sounds like prose because Frankenstein sounds like prose, and there is still nobody home. That's the same gap they've felt with a real model that answered confidently and wrongly; fluency was never evidence of understanding, and they've now watched it get manufactured out of tally marks. Take one or two answers and move --- the scaling-up section pays this off properly.
+The question to leave hanging as you move on: it reads better, but is it *saying* anything? More data bought fluency and nothing else --- the booklet's output sounds like prose because Paterson sounds like prose, and there is still nobody home. That's the same gap they've felt with a real model that answered confidently and wrongly; fluency was never evidence of understanding, and they've now watched it get manufactured out of tally marks. Take one or two answers and move --- the scaling-up section pays this off properly.
 ```
 
 ---
