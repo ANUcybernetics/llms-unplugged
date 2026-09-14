@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>LLMs Unplugged — Pre-trained generation</title>
+    <link rel="stylesheet" href="kit/kit.css" />
+    <script src="kit/vendor/gsap.min.js"></script>
+    <script src="kit/generated/data.js"></script>
+    <script src="kit/kit.js"></script>
+    <style>
+      html, body { width: 1920px; height: 1080px; }
+    </style>
+  </head>
+  <body>
+    <!-- Pre-trained generation: ops/video/scripts/pretrained-generation.md. The
+         real Paterson booklet (snowy-river) stands in for "a model somebody
+         else trained": golden -> grass -> grown -> hollow -> ; is walked with
+         real entries and real thresholds from kit/generated/data.js
+         (KIT_DATA.booklet), never invented ones. -->
+    <div id="stage" class="stage" data-aspect="landscape" data-composition-id="pretrained-generation"
+         data-start="0" data-duration="123.55" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="123.55" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="123.55" data-track-index="1"></audio>
+    </div>
+    <script>
+      const build = (tl, S, T) => {
+        const K = KIT, D = KIT_DATA;
+        const scene = document.getElementById("scene");
+        const A = S.area;
+
+        // ---- helpers the kit doesn't expose: a page image's lineBox() only
+        // finds a single PDF-extracted line by its exact leading words. We
+        // need a few more views onto that same real data: the raw line (to
+        // read its own word list), a box for one word within a line
+        // (approximated by dividing the line's width evenly, per the brief),
+        // and the union of several lines (an entry that wraps).
+        const findLine = (pg, w0) => {
+          const l = pg.page.lines.find((x) => x.words[0] === w0);
+          if (!l) throw new Error(`"${w0}" not found on ${pg.page.sheet}`);
+          return l;
+        };
+        const boxOf = (pg, l) => {
+          const [x0, y0, x1, y1] = l.bbox;
+          return { x: x0 * pg.k, y: y0 * pg.k, w: (x1 - x0) * pg.k, h: (y1 - y0) * pg.k };
+        };
+        const wordBox = (pg, l, i) => {
+          const [x0, y0, x1, y1] = l.bbox;
+          const n = l.words.length, uw = (x1 - x0) / n;
+          return { x: (x0 + i * uw) * pg.k, y: y0 * pg.k, w: uw * pg.k, h: (y1 - y0) * pg.k };
+        };
+        // K.ring's fixed border+shadow (kit.css) reads fine around a grid
+        // cell but is wide relative to one printed dictionary line on a page
+        // this tightly set (wrapped lines sit almost flush against each
+        // other), so it bleeds into the line above/below. A translucent
+        // highlighter mark (a soft gold fill, multiply-blended) tolerates the
+        // same tight spacing the way a real highlighter pen would: it can
+        // graze the next line without reading as broken. It repositions with
+        // a cut (an instant tl.set, as pageImage's own highlight() does),
+        // never a slide, so it never implies scanning through the text
+        // in between.
+        const marker = (pgObj) => K.el("div", { style: { position: "absolute", background: "var(--gold)", opacity: "0", borderRadius: "5px", mixBlendMode: "multiply" } }, pgObj.wrap);
+        const mark = (m, box, t, pad = 3) =>
+          tl.set(m, { left: `${box.x - pad}px`, top: `${box.y - pad}px`, width: `${box.w + 2 * pad}px`, height: `${box.h + 2 * pad}px` }, t);
+
+        // ---- desk layout: the booklet/page on the left, dice and the
+        // growing pencil line on the right (a notepad beside the booklet)
+        const PW = 760, PH = 740, PX = A.x, PY = A.y;
+        const RX = PX + PW + 40;
+
+        // ---- the closed booklet: its title hidden under a flat card. Shown
+        // closed at the start, opened (crossfade to the real page) in line 1,
+        // brought back closed in line 5, then shrunk to a tile in line 6.
+        const bookL = K.layer(scene, PX, PY);
+        const bookSvg = K.svg("svg", { width: PW, height: PH, viewBox: `0 0 ${PW} ${PH}` }, bookL);
+        K.svg("rect", { x: 0, y: 0, width: PW, height: PH, rx: 10, fill: "var(--paper)" }, bookSvg);
+        K.svg("rect", { x: 0, y: 0, width: 16, height: PH, fill: "rgb(0 0 0 / 18%)" }, bookSvg); // a spine
+        const cardW = PW * 0.56, cardH = PH * 0.2, cardX = (PW - cardW) / 2, cardY = PH * 0.14;
+        K.svg("rect", { x: cardX, y: cardY, width: cardW, height: cardH, rx: 12, fill: "#cdbb8e", stroke: "rgb(0 0 0 / 25%)", "stroke-width": 2 }, bookSvg);
+        K.svg("rect", { x: cardX + 30, y: cardY + cardH / 2 - 3, width: cardW - 60, height: 6, rx: 3, fill: "rgb(0 0 0 / 20%)" }, bookSvg);
+
+        // ---- the real page: sheet 19 carries golden and grass; sheet 21 carries hollow
+        const pg = K.pageImage(scene, "snowy-river", D.booklet.pageOf.golden, { x: PX, y: PY, w: PW, h: PH });
+        gsap.set(pg.el, { opacity: 0 });
+        const pg2 = K.pageImage(scene, "snowy-river", D.booklet.pageOf.hollow, { x: PX, y: PY, w: PW, h: PH });
+        gsap.set(pg2.el, { opacity: 0 });
+        const mark1 = marker(pg); // the current-entry / threshold marker on sheet 19
+        const mark2 = marker(pg2); // same, on sheet 21 (hollow)
+
+        // ---- the notepad: the walk so far, written in pencil as it happens
+        const strip = K.paper(scene, { x: RX, y: A.y + 320, w: 900, h: 140 });
+        const walkWords = K.split(D.grid.pretrainedSeq); // ["golden","grass","grown","hollow",";"]
+        const walkLine = K.pencilLine(strip.el, walkWords, { x: 36, y: 40, size: 56 });
+
+        // ---- the dice, beside the booklet on the desk (not printed on the page)
+        const dieA = K.die(scene, { x: RX + 40, y: A.y + 20, size: 150 });
+        const dieB = K.die(scene, { x: RX + 260, y: A.y + 20, size: 150 });
+        const label68 = K.el("div", { class: "label gold", text: "68", style: { fontSize: "56px", fontWeight: "700" } }, scene);
+        gsap.set(label68, { x: RX + 145, y: A.y + 200, opacity: 0 });
+
+        // ==== line 0 (USHINI, TC): the desk, calm. The closed booklet sits there already. ====
+        K.appear(tl, bookL, 0.2, { y: 20 });
+
+        // ==== line 1 (BEN): the booklet opens; push in on the golden entry; "golden" is the starting word ====
+        const t1open = T.word(1, "booklet");
+        tl.to(bookL, { opacity: 0, duration: 0.4 }, t1open);
+        tl.to(pg.el, { opacity: 1, duration: 0.4 }, t1open);
+        const goldenLine = findLine(pg, "golden"); // ["golden","♦","2|fleece","6|grass"]
+        const goldenBox = boxOf(pg, goldenLine);
+        pg.cut(tl, pg.around(goldenBox, 380), t1open);
+        mark(mark1, goldenBox, t1open);
+        tl.to(mark1, { opacity: 0.4, duration: 0.3 }, t1open + 0.3);
+        K.appear(tl, strip.el, t1open + 0.2, { y: 16 });
+        K.write(tl, walkLine.words[0], T.word(1, "model")); // "golden": the starting word
+
+        // ==== line 2 (BEN, VO): roll a d10 (4); thresholds light from the top,
+        // stopping on 6|grass; write "grass"; cut to grass's own entry ====
+        K.land(tl, dieA, 4, T.word(2, "roll", 1));
+        const fleeceBox = wordBox(pg, goldenLine, 2), grassWordBox = wordBox(pg, goldenLine, 3);
+        mark(mark1, fleeceBox, T.word(2, "first"));
+        mark(mark1, grassWordBox, T.word(2, "above")); // stops on 6|grass
+        const tWriteGrass = T.word(2, "Write");
+        K.write(tl, walkLine.words[1], tWriteGrass);
+        tl.to(dieA.el, { opacity: 0, duration: 0.25 }, tWriteGrass + 0.4);
+        const grassLine = findLine(pg, "grass"); // ["grass","♦♦","23|is","42|and"]
+        const grassBox = boxOf(pg, grassLine);
+        const tTurn = T.word(2, "turn");
+        pg.cut(tl, pg.around(grassBox, 380), tTurn); // "turn to its entry": a cut, not a pan
+        mark(mark1, grassBox, tTurn);
+
+        // ==== line 3 (USHINI): two diamonds -> two dice (6, 8) slide together
+        // as "68"; thresholds light down to 70|grown; write "grown"; crossfade
+        // to the one-follower hollow entry (no die); write "hollow", then ";" ====
+        K.land(tl, dieA, 6, T.word(3, "six"));
+        K.land(tl, dieB, 8, T.word(3, "eight"));
+        const tSlide = T.word(3, "is");
+        tl.to(dieA.el, { x: RX + 100, duration: 0.4, ease: "power2.inOut" }, tSlide);
+        tl.to(dieB.el, { x: RX + 200, duration: 0.4, ease: "power2.inOut" }, tSlide);
+        tl.to(label68, { opacity: 1, duration: 0.3 }, T.word(3, "sixty-eight"));
+        // grass's own thresholds: 23|is, 42|and (same line), then 56|, 61|burnt
+        // 66|for (next line), then 70|grown (the roll of 68 stops here)
+        const isBox = wordBox(pg, grassLine, 2);
+        const line56 = findLine(pg, "56|"), box56 = boxOf(pg, line56); // "56|," splits into two words on extraction
+        const line70 = findLine(pg, "70|grown"), grownBox = wordBox(pg, line70, 0);
+        mark(mark1, isBox, T.word(3, "mechanism,"));
+        mark(mark1, box56, T.word(3, "scales"));
+        mark(mark1, grownBox, T.word(3, "far"));
+        const tWriteGrown = T.word(3, "want");
+        K.write(tl, walkLine.words[2], tWriteGrown);
+        tl.to([dieA.el, dieB.el, label68], { opacity: 0, duration: 0.25 }, tWriteGrown + 0.3);
+        // "an entry has only one option, don't roll, just write it": crossfade to the hollow page
+        const tCross = T.word(3, "entry");
+        tl.to(pg.el, { opacity: 0, duration: 0.4 }, tCross);
+        tl.to(mark1, { opacity: 0, duration: 0.3 }, tCross);
+        tl.to(pg2.el, { opacity: 1, duration: 0.4 }, tCross);
+        const hollowLine = findLine(pg2, "hollow"); // a single-follower entry: no diamond, no threshold printed
+        const hollowBox = boxOf(pg2, hollowLine);
+        pg2.cut(tl, pg2.around(hollowBox, 380), tCross);
+        mark(mark2, hollowBox, tCross);
+        tl.to(mark2, { opacity: 0.4, duration: 0.3 }, tCross + 0.3);
+        K.write(tl, walkLine.words[3], T.word(3, "only")); // "hollow"
+        K.write(tl, walkLine.words[4], T.word(3, "write")); // ";" -- no die, straight on
+        tl.to(mark2, { opacity: 0, duration: 0.3 }, T.end(3) - 0.3);
+
+        // ==== line 4 (BEN): the notepad -- the booklet's line so far, above the
+        // grid's shorter line from the last video, both in pencil ====
+        const t4 = T.start(4);
+        tl.to([pg.el, pg2.el], { opacity: 0, duration: 0.4 }, t4 + 0.1);
+        const strip2 = K.paper(scene, { x: RX, y: A.y + 550 - 60, w: 800, h: 120 });
+        gsap.set(strip2.el, { opacity: 0 });
+        const recapWords = K.split(D.grid.generation); // ["see","joey",",","hop",".","see"], from training-grid
+        const recapLine = K.pencilLine(strip2.el, recapWords, { x: 30, y: 30, size: 46 });
+        gsap.set(recapLine.words, { opacity: 1 }); // already-written text, shown complete for comparison
+        K.appear(tl, strip2.el, T.word(4, "grid"), { y: 14 });
+
+        // ==== line 5 (USHINI): the covered title card again; a few of the
+        // generated words light in turn (the tells) ====
+        tl.to(strip2.el, { opacity: 0, duration: 0.3 }, T.start(5) + 0.1);
+        tl.to(bookL, { opacity: 1, duration: 0.4 }, T.word(5, "booklet"));
+        const tellTimes = [T.word(5, "text,"), T.word(5, "maybe", 1), T.word(5, "Frankenstein,"), T.word(5, "maybe", 2), T.word(5, "Green")];
+        walkLine.words.forEach((w, i) => tl.to(w, { color: "var(--gold-2)", duration: 0.25, yoyo: true, repeat: 1 }, tellTimes[i]));
+
+        // ==== line 6 (BEN): the booklet shrinks to a tile; a wall of blank
+        // page tiles fills the frame and recedes logarithmically to texture
+        // (the training-grid mega-grid technique, applied to the booklet) ====
+        const t6 = T.start(6);
+        K.vanish(tl, [strip.el, strip2.el], t6 + 0.1);
+        const NCELL = 100;
+        const megaL = K.layer(scene, 0, 0);
+        scene.insertBefore(megaL, bookL); // under the booklet, so it sits in its own cell
+        const megaSvg = K.svg("svg", { width: PW * NCELL, height: PH * NCELL, viewBox: `0 0 ${PW * NCELL} ${PH * NCELL}` }, megaL);
+        const defs = K.svg("defs", {}, megaSvg);
+        const pat = K.svg("pattern", { id: "pagewall", width: PW, height: PH, patternUnits: "userSpaceOnUse" }, defs);
+        K.svg("rect", { x: 0, y: 0, width: PW, height: PH, fill: "#e6e1d6" }, pat);
+        K.svg("path", { d: `M ${PW} 0 L 0 0 0 ${PH}`, fill: "none", stroke: "rgb(0 0 0 / 30%)", "stroke-width": 6 }, pat);
+        K.svg("rect", { x: 0, y: 0, width: PW * NCELL, height: PH * NCELL, fill: "url(#pagewall)" }, megaSvg);
+        K.svg("rect", { x: PW * (NCELL / 2), y: PH * (NCELL / 2), width: PW, height: PH, fill: "none", stroke: "var(--gold)", "stroke-width": 26 }, megaSvg);
+        gsap.set(megaL, { opacity: 0, transformOrigin: "0 0" });
+        const megaHome = { x: PX - PW * (NCELL / 2), y: PY - PH * (NCELL / 2) };
+        gsap.set(megaL, { x: megaHome.x, y: megaHome.y });
+        const tBillions = T.word(6, "billions");
+        tl.to(megaL, { opacity: 1, duration: 0.01 }, tBillions - 0.4);
+        const cx = PX + PW / 2, cy = PY + PH / 2;
+        const proxy6 = { p: 0 };
+        const zoom6 = (s) => {
+          gsap.set(bookL, { x: A.cx - (cx - PX) * s, y: A.cy - (cy - PY) * s, scale: s });
+          gsap.set(megaL, { x: A.cx - (cx - megaHome.x) * s, y: A.cy - (cy - megaHome.y) * s, scale: s });
+        };
+        const t7 = T.start(7);
+        const zoomDur = Math.min(3.6, t7 - 0.4 - (tBillions - 0.4));
+        tl.to(proxy6, { p: 1, duration: zoomDur, ease: "power1.inOut", onUpdate() { zoom6(Math.exp(K.lerp(Math.log(1), Math.log(0.012), proxy6.p))); } }, tBillions - 0.4);
+
+        // ==== line 7 (USHINI): cut back to the booklet, open flat on the
+        // kitchen table, a mug beside it; the threshold numbers light one
+        // after another down a real column ====
+        tl.set(megaL, { opacity: 0 }, t7 - 0.05);
+        tl.set(bookL, { x: PX, y: PY, scale: 1, opacity: 0 }, t7 - 0.05);
+        tl.set(pg.el, { opacity: 1 }, t7 - 0.05);
+        pg.cut(tl, pg.fit(), t7 - 0.05);
+        const mugL = K.layer(scene, PX + PW + 40, PY + PH - 220);
+        const mugSvg = K.svg("svg", { width: 220, height: 220, viewBox: "0 0 220 220" }, mugL);
+        K.svg("circle", { cx: 90, cy: 110, r: 70, fill: "#efe6d8", stroke: "rgb(0 0 0 / 30%)", "stroke-width": 4 }, mugSvg);
+        K.svg("path", { d: "M160 80 a40 40 0 0 1 0 80", fill: "none", stroke: "rgb(0 0 0 / 30%)", "stroke-width": 14 }, mugSvg);
+        gsap.set(mugL, { opacity: 0 });
+        K.appear(tl, mugL, T.word(7, "kitchen"), { y: 14 });
+        // a real, long threshold column elsewhere on the same page ("great",
+        // 16 alphabetised followers) stands in for "every number in this model"
+        const greatLine = findLine(pg, "great");
+        const greatBox = boxOf(pg, greatLine);
+        pg.moveTo(tl, pg.around(greatBox, 420), T.word(7, "read"), 0.8);
+        mark(mark1, greatBox, T.word(7, "read"));
+        tl.to(mark1, { opacity: 0.4, duration: 0.2 }, T.word(7, "read"));
+        const columnWords = ["20|affection", "31|blue", "41|concerns", "52|fruition", "62|mosquito", "73|north", "88|struggling", "99|unwieldy"];
+        const columnLines = columnWords.map((w) => findLine(pg, w));
+        const tColStart = T.word(7, "number"), tColEnd = T.word(7, "table");
+        const colStep = (tColEnd - tColStart) / columnLines.length;
+        columnLines.forEach((l, i) => mark(mark1, boxOf(pg, l), tColStart + i * colStep));
+        tl.to(mark1, { opacity: 0, duration: 0.3 }, tColEnd + 0.4);
+        pg.moveTo(tl, pg.fit(), T.end(7) - 0.8, 0.7); // pull back to the flat page before the hand-off
+
+        // ==== line 8 (BEN, TC): hold; the tools link labels the word "tools" ====
+        const label = K.el("div", { class: "label gold", text: "llmsunplugged.org/tools", style: { fontSize: "34px" } }, scene);
+        gsap.set(label, { x: RX, y: PY + PH - 60, opacity: 0 });
+        tl.to(label, { opacity: 1, duration: 0.4 }, T.word(8, "llmsunplugged.org/tools"));
+      };
+      KIT.ready(build).then(({ tl }) => {
+        window.__timelines["pretrained-generation"] = tl;
+      });
+    </script>
+  </body>
+</html>
