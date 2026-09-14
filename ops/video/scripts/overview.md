@@ -1,44 +1,47 @@
 # Overview
 
-**Key idea:** you can run the same next-word loop that ChatGPT runs, by hand,
-and there are two lessons that do it: grid and dice, or ledger sheets and a cup
-of counters.
+**Key idea:** you can run the same next-word loop that Claude or ChatGPT runs,
+by hand, with a picture book, paper and a pen, and the site has the lessons and
+the tools to do it.
 
-**Plays:** website scene-setter, not in class.
+**Plays:** website scene-setter, not in class. Evergreen: it names no lesson,
+age band or running time, so it survives the lessons changing. The concrete
+examples are the materials (grid and die, ledger sheets and cup), which are the
+slowest-moving things on the site.
 
 **Layout:** anything that shares the frame is stacked vertically, never side by
 side, so the portrait variant restacks the same composition.
 
 ## Beat sheet
 
-1. hook: ChatGPT writes one word at a time, picking each from a list of likely
-   next words. That operation, you can do by hand
+1. hook: Claude, ChatGPT: they write one word at a time, picking each from a
+   list of likely next words. That operation, you can do by hand
 2. pushback: BUT ask anyone how it actually works and you get
    hand-waving---shaky foundation for teachers, parents, policymakers
 3. the claim: THEREFORE build the loop yourself. A picture book, paper, a pen,
    and either dice or a cup of counters (School of Cybernetics, ANU)
 4. the loop: train (count which words follow which) → generate (pick the next
    word by those counts, write it down, repeat)
-5. two lessons: _My First Language Model_---grid paper and dice, high school to
-   adults, 60 minutes to two hours: train, generate, then generate from a bigger
-   booklet somebody else trained, then turn it into an agent. _How AI writes
-   stories_---ledger sheets and a cup of counters, ages 10--16, 90 minutes:
-   generate first from a finished model, then train your own, then pool the
-   whole class's models into one story
-6. honesty beat: not a tiny ChatGPT. A real model swaps the tallies for shared
-   numbers, reads the whole conversation instead of one word, trains on
-   trillions of words, and gets a round of post-training so it answers rather
-   than continues. BUT it's the same loop: tokens in, tokens out
+5. two ways on paper: grid paper and a ten-sided die, or ledger sheets and a
+   cup of coloured counters. Either way: train your own, generate from one
+   somebody else trained, then the bigger ideas (a model that pauses to ask for
+   help; a room pooling its models). Runs from upper primary to the boardroom
+6. honesty beat: not a tiny Claude or ChatGPT. A real model swaps the tallies
+   for shared numbers, reads the whole conversation instead of one word, trains
+   on trillions of words, and gets a round of post-training so it answers
+   rather than continues. BUT it's the same loop: tokens in, tokens out
 7. history: Markov 1913, Shannon 1948, straight through to today's frontier
    models
-8. beyond: follow-on lessons on the site go further (Build, break, extend; Under
-   the hood; Shaping a model)
-9. CTA: CC-licensed at llmsunplugged.org; every section has its own video; book
-   us in person
+8. beyond: the site goes further---break a model, look inside one, shape how it
+   behaves (described, never titled)
+9. tools: everything on the site is made by tools that are on the site. Paste
+   in any text and out come the booklets, sheets and cutouts for it
+10. CTA: Creative Commons licence (no clause named) at llmsunplugged.org; every
+    section of every lesson has its own video; book us in person
 
 ## Script
 
-**BEN (TC):** ChatGPT, Claude, all of these tools---they write one word at a
+**BEN (TC):** Claude, ChatGPT, all of these tools---they write one word at a
 time. Predict a word, add it, predict again. That's the whole job.
 
 _Visual: a chat window, a reply typing itself one word at a time, each word
@@ -75,28 +78,27 @@ strokes drawing on as the book's pairs fly into cells; the paper, a word
 writing, a d10 face landing, the next word writing; an arrow back to the top.
 Two arcs labelled train and generate._
 
-**USHINI (VO):** There are two lessons to do it. _My First Language Model_ uses
-grid paper and dice, and suits high school through to adults. In an hour or two
-you train a model, generate from it, then generate from a bigger booklet that
-somebody else trained---and finish by turning it into an agent that texts your
-friends.
+**USHINI (VO):** There are two ways to do it on paper. One is grid paper and a
+ten-sided die: you count word pairs into a grid, then roll your way to a
+sentence. The other is ledger sheets and a cup of coloured counters: more marks,
+more counters, more likely.
 
-_Visual: four vignettes on the desk in sequence: the grid filling; the die
-landing and a word writing; the booklet open at an entry; the phone with a reply
-bubble sliding onto the paper._
+_Visual: two vignettes stacked: the grid filling and a die landing; counters
+dropping into the cup and one sliding out._
 
-**BEN (VO):** _How AI writes stories_ is for ages ten to sixteen. The model is a
-few ledger sheets, and the dice are a cup of coloured counters. You generate
-first, from a finished model, so you know what every mark is for; then you train
-your own from a new text; then the whole class pools its models into one story.
+**BEN (VO):** Either way, you start by training a model of your own. Then you
+generate from one that somebody else trained. And from there the same loop
+takes you to the bigger ideas: a model that pauses to ask for help, or a whole
+room pooling its models into one story. It runs from upper primary to the
+boardroom.
 
-_Visual: three vignettes: counters dropping into the cup and one sliding out; a
-blank sheet gaining a word and a mark; butchers paper up front gaining a line._
+_Visual: three vignettes stacked: the booklet open at an entry; the phone with
+a reply bubble sliding onto the paper; butchers paper up front gaining a line._
 
-**USHINI:** Now, it's not a tiny ChatGPT. A real model swaps the tally marks for
-shared numbers, looks at the whole conversation instead of one word, trains on
-trillions of words, and gets a round of extra training so it answers you rather
-than just continuing.
+**USHINI:** Now, it's not a tiny Claude or ChatGPT. A real model swaps the tally
+marks for shared numbers, looks at the whole conversation instead of one word,
+trains on trillions of words, and gets a round of extra training so it answers
+you rather than just continuing.
 
 _Visual: the grid's tally strokes turn into decimal numbers; the numbers slide
 into one long row that runs off both edges of the frame, and the row scrolls,
@@ -112,16 +114,24 @@ in lockstep, one above the other. Then a timeline draws on as a single stroke,
 unchanged._
 
 **USHINI:** Once you've seen the mechanism on paper---patterns in, new text
-out---the mystery evaporates. And if you want to go further, the site has
-follow-on lessons: break a model, look inside one, shape its personality.
+out---the mystery evaporates. And if you want to go further, the site does:
+break a model, look inside one, shape how it behaves.
 
-_Visual: three lesson cards slide in, stacked: Build, break, extend; Under the
-hood; Shaping a model._
+_Visual: three vignettes stacked: a grid with one cell ringed; the same grid
+with a number in every cell; a booklet page with a line struck out and
+rewritten._
 
-**BEN (TC):** Everything's under a Creative Commons licence at
-llmsunplugged.org. Every section of both lessons has its own short video, so you
-can play them in class. Grab the resources, run the activities, and if you'd
-like us to deliver it in person, get in touch.
+**BEN (VO):** And everything on the site was made by tools that are on the site
+too. Paste in any text you like, and out come the booklets, the sheets and the
+cutouts for it. Your book, your model.
 
-_Visual: llmsunplugged.org in the site's type over the desk, then the eight
-video titles as a stacked list, then the Creative Commons mark._
+_Visual: the tools page: a text pasted into the box, a booklet page rendering
+beneath it, then a ledger sheet._
+
+**USHINI (TC):** It's all under a Creative Commons licence at llmsunplugged.org.
+Every section of every lesson has its own short video, so you can play them in
+class. Grab the resources, run the activities, and if you'd like us to deliver
+it in person, get in touch.
+
+_Visual: llmsunplugged.org in the site's type over the desk, then the section
+videos as a stacked list, then the Creative Commons mark._

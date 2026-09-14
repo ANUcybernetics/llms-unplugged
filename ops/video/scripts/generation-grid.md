@@ -20,7 +20,7 @@ next word according to learned counts.
 8. loop handling: small models bounce between two words a lot---break out by
    picking a different valid next word; LLMs do this too at scale
 9. reveal: the text is new but follows the same patterns---the same next-word
-   sampling loop ChatGPT and Claude run, vastly smaller scale
+   sampling loop Claude or ChatGPT run, vastly smaller scale
 10. CTA: pick a starting word and try it
 
 ## Script
@@ -75,7 +75,7 @@ and a new starting word writes on the line below._
 **USHINI:** Or you might bounce between the same two words: comma, spot, comma,
 spot. Small models loop a lot, so break out by picking a different valid next
 word. Real LLMs do it less because they're bigger, but if you've ever seen
-ChatGPT repeat itself, that's the same thing at scale.
+Claude or ChatGPT repeat itself, that's the same thing at scale.
 
 _Visual: "comma spot comma spot" writing itself along the paper. The strip for
 "," shows "spot" lit on most faces; the pencil takes the other block's word
@@ -83,8 +83,8 @@ instead._
 
 **BEN:** Now read back what you generated. It wasn't in the training text---it's
 new---but it sounds like it could have been, because it follows the same
-patterns. And that's no trick. It's how every large language model works, from
-ChatGPT to Claude: one word at a time, from learned counts.
+patterns. And that's no trick. It's how every large language model works, Claude
+and ChatGPT included: one word at a time, from learned counts.
 
 _Visual: the generated line full frame. Behind it, dimmed, the book's text: the
 line is not in it. Then each pair in the generated line lights its grid cell in

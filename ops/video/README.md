@@ -11,21 +11,24 @@ notes are for whoever is making the videos, not for the website.
 Eight short explainer videos (1--2 minutes each): one overview, and one video
 for each section of the two flagship lessons.
 
-| Slug                     | Lesson / section                                    | Key idea                                                                                  |
-| ------------------------ | --------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `overview`               | scene-setter                                        | you can run the same next-word loop ChatGPT runs, by hand; two lessons do it              |
-| `training-grid`          | My First Language Model, Training                   | language models learn by counting which words follow which                                |
-| `generation-grid`        | My First Language Model, Generation                 | text is generated one word at a time by sampling from learned counts                      |
-| `pretrained-generation`  | My First Language Model, Pre-trained generation     | you can generate from a model you didn't train; follow its lookup rules                   |
-| `agentic-ai`             | My First Language Model, Agentic AI                 | an agent pauses generation, hands off to a tool, and continues with the result spliced in |
-| `generation-ledger`      | How AI writes stories (ledger), Generation          | a cup of counters does the maths: more marks, more counters, more likely                  |
-| `training-ledger`        | How AI writes stories (ledger), Training            | every mark on the sheet came from somebody reading the text two words at a time           |
-| `one-story-all-together` | How AI writes stories (ledger), One story, together | pool everyone's models and the class can say things no single group's model could         |
+| Slug                     | Lesson / section                                    | Key idea                                                                                                |
+| ------------------------ | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `overview`               | scene-setter                                        | you can run the same next-word loop Claude or ChatGPT runs, by hand; the site has the lessons and tools |
+| `training-grid`          | My First Language Model, Training                   | language models learn by counting which words follow which                                              |
+| `generation-grid`        | My First Language Model, Generation                 | text is generated one word at a time by sampling from learned counts                                    |
+| `pretrained-generation`  | My First Language Model, Pre-trained generation     | you can generate from a model you didn't train; follow its lookup rules                                 |
+| `agentic-ai`             | My First Language Model, Agentic AI                 | an agent pauses generation, hands off to a tool, and continues with the result spliced in               |
+| `generation-ledger`      | How AI writes stories (ledger), Generation          | a cup of counters does the maths: more marks, more counters, more likely                                |
+| `training-ledger`        | How AI writes stories (ledger), Training            | every mark on the sheet came from somebody reading the text two words at a time                         |
+| `one-story-all-together` | How AI writes stories (ledger), One story, together | pool everyone's models and the class can say things no single group's model could                       |
 
 Each section video is played at the start of its section: it sets up the
 mechanics, makes the section's key idea land, and hands off to the hands-on
 activity. The Overview is the scene-setter for the website and for a teacher
-deciding which lesson to run. Nothing else on the site (the follow-on lessons,
+deciding which lesson to run. It is evergreen: it names no lesson, age band or
+running time, and its concrete examples are the materials, so it survives the
+lessons changing. Its licence line says "a Creative Commons licence" and names
+no clause, since whether the NC-SA terms stay is an open question. Nothing else on the site (the follow-on lessons,
 the standalone modules) gets a video.
 
 The series is deliberately small: one video per section of the two lessons that
@@ -99,6 +102,10 @@ up _why_ something matters; the animated segments show _how_ it works.
 **Stakes before mechanics.** Each video opens with why this matters---a
 question, a surprising claim, a connection to real-world AI---before getting
 into the setup.
+
+**Naming models.** Where a real product is named, name both: "Claude or
+ChatGPT" (or "Claude, ChatGPT"), never ChatGPT alone. Everywhere else say "AI
+language models" or "large language models".
 
 **Land one key idea per video.** The video should make its key idea land
 viscerally, not just state it. Everything else is setup or reinforcement.

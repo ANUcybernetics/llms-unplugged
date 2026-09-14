@@ -20,7 +20,7 @@ which words follow other words.
 9. FAQ, turning the page: keep going---last word of one page pairs with the
    first word of the next
 10. reveal: the completed grid IS the model---the same kind of information
-    ChatGPT stores (which words follow which), at a vastly smaller scale
+    a large language model stores (which words follow which), at a vastly smaller scale
 11. CTA: start counting
 
 ## Script
@@ -78,7 +78,7 @@ empty._
 
 **BEN:** When you're done, look at what you've got. That grid of tally marks
 _is_ the model---counts of which words follow which. That's the whole thing.
-It's the same kind of information ChatGPT stores, just with billions of
+It's the same kind of information a large language model stores, just with billions of
 word-pairs instead of dozens.
 
 _Visual: the finished grid full frame, then a logarithmic pull-back: the sheet

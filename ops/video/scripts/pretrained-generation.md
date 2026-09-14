@@ -8,8 +8,8 @@ lookup rules and sample next words.
 ## Beat sheet
 
 1. hook: this looks like the exercise you just did, again. It isn't---it's the
-   first turn of a dial that ends at ChatGPT
-2. framing: most people who use ChatGPT never trained it; somebody else did the
+   first turn of a dial that ends at Claude or ChatGPT
+2. framing: most people who use Claude or ChatGPT never trained it; somebody else did the
    counting. That's what this booklet is
 3. booklet mechanics: each entry is a word, with the words that can follow it
    and a threshold for each
@@ -31,9 +31,9 @@ lookup rules and sample next words.
 ## Script
 
 **USHINI (TC):** This next bit looks like the exercise you just did, again. It
-isn't. It's the first turn of a dial that ends at ChatGPT.
+isn't. It's the first turn of a dial that ends at Claude or ChatGPT.
 
-**BEN:** Most people who use ChatGPT never trained it. Somebody else did the
+**BEN:** Most people who use Claude or ChatGPT never trained it. Somebody else did the
 counting; you type a prompt and it generates. That's exactly what this booklet
 is: a model somebody else already trained, on a much bigger text than yours.
 
