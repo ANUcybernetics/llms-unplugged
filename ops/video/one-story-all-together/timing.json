@@ -1,0 +1,1407 @@
+{
+  "slug": "one-story-all-together",
+  "audio": "assets/voice.wav",
+  "duration": 105.932,
+  "lines": [
+    {
+      "i": 0,
+      "speaker": "BEN",
+      "tc": true,
+      "caption": "Every group in this room trained on a different text. Nobody has kookaburra except the kookaburra group. Nobody has yabby except the creek group.",
+      "start": 0.15,
+      "end": 9.0,
+      "words": [
+        {
+          "w": "Every",
+          "start": 0.3,
+          "end": 0.8
+        },
+        {
+          "w": "group",
+          "start": 0.8,
+          "end": 1.08
+        },
+        {
+          "w": "in",
+          "start": 1.08,
+          "end": 1.26
+        },
+        {
+          "w": "this",
+          "start": 1.26,
+          "end": 1.38
+        },
+        {
+          "w": "room",
+          "start": 1.38,
+          "end": 1.66
+        },
+        {
+          "w": "trained",
+          "start": 1.66,
+          "end": 2.0
+        },
+        {
+          "w": "on",
+          "start": 2.0,
+          "end": 2.28
+        },
+        {
+          "w": "a",
+          "start": 2.28,
+          "end": 2.38
+        },
+        {
+          "w": "different",
+          "start": 2.38,
+          "end": 2.62
+        },
+        {
+          "w": "text.",
+          "start": 2.62,
+          "end": 2.98
+        },
+        {
+          "w": "Nobody",
+          "start": 3.28,
+          "end": 3.88
+        },
+        {
+          "w": "has",
+          "start": 3.88,
+          "end": 4.22
+        },
+        {
+          "w": "kookaburra",
+          "start": 4.22,
+          "end": 4.74
+        },
+        {
+          "w": "except",
+          "start": 4.74,
+          "end": 5.08
+        },
+        {
+          "w": "the",
+          "start": 5.08,
+          "end": 5.44
+        },
+        {
+          "w": "kookaburra",
+          "start": 5.44,
+          "end": 5.88
+        },
+        {
+          "w": "group.",
+          "start": 5.88,
+          "end": 6.12
+        },
+        {
+          "w": "Nobody",
+          "start": 6.42,
+          "end": 7.02
+        },
+        {
+          "w": "has",
+          "start": 7.02,
+          "end": 7.34
+        },
+        {
+          "w": "yabby",
+          "start": 7.34,
+          "end": 7.72
+        },
+        {
+          "w": "except",
+          "start": 7.72,
+          "end": 8.04
+        },
+        {
+          "w": "the",
+          "start": 8.04,
+          "end": 8.38
+        },
+        {
+          "w": "creek",
+          "start": 8.38,
+          "end": 8.56
+        },
+        {
+          "w": "group.",
+          "start": 8.56,
+          "end": 8.8
+        }
+      ]
+    },
+    {
+      "i": 1,
+      "speaker": "USHINI",
+      "tc": true,
+      "caption": "But the room has all of them.",
+      "start": 9.47,
+      "end": 11.8,
+      "words": [
+        {
+          "w": "But",
+          "start": 9.62,
+          "end": 10.22
+        },
+        {
+          "w": "the",
+          "start": 10.22,
+          "end": 10.36
+        },
+        {
+          "w": "room",
+          "start": 10.36,
+          "end": 10.62
+        },
+        {
+          "w": "has",
+          "start": 10.62,
+          "end": 10.92
+        },
+        {
+          "w": "all",
+          "start": 10.92,
+          "end": 11.24
+        },
+        {
+          "w": "of",
+          "start": 11.24,
+          "end": 11.4
+        },
+        {
+          "w": "them.",
+          "start": 11.4,
+          "end": 11.6
+        }
+      ]
+    },
+    {
+      "i": 2,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "Here's the same word, the, from five different models. Five honest counts of five different texts, five different answers. None of them is wrong. And read down the followers and you can name the text: sand and water, sky and rain, kookaburra and gum.",
+      "start": 12.97,
+      "end": 31.22,
+      "words": [
+        {
+          "w": "Here's",
+          "start": 13.12,
+          "end": 13.72
+        },
+        {
+          "w": "the",
+          "start": 13.72,
+          "end": 13.8
+        },
+        {
+          "w": "same",
+          "start": 13.8,
+          "end": 14.08
+        },
+        {
+          "w": "word,",
+          "start": 14.08,
+          "end": 14.48
+        },
+        {
+          "w": "the,",
+          "start": 14.6,
+          "end": 14.8
+        },
+        {
+          "w": "from",
+          "start": 14.92,
+          "end": 15.3
+        },
+        {
+          "w": "five",
+          "start": 15.3,
+          "end": 15.56
+        },
+        {
+          "w": "different",
+          "start": 15.56,
+          "end": 15.96
+        },
+        {
+          "w": "models.",
+          "start": 15.96,
+          "end": 16.32
+        },
+        {
+          "w": "Five",
+          "start": 17.22,
+          "end": 17.82
+        },
+        {
+          "w": "honest",
+          "start": 17.82,
+          "end": 18.14
+        },
+        {
+          "w": "counts",
+          "start": 18.14,
+          "end": 18.5
+        },
+        {
+          "w": "of",
+          "start": 18.5,
+          "end": 18.74
+        },
+        {
+          "w": "five",
+          "start": 18.74,
+          "end": 18.94
+        },
+        {
+          "w": "different",
+          "start": 18.94,
+          "end": 19.38
+        },
+        {
+          "w": "texts,",
+          "start": 19.38,
+          "end": 19.8
+        },
+        {
+          "w": "five",
+          "start": 20.06,
+          "end": 20.4
+        },
+        {
+          "w": "different",
+          "start": 20.4,
+          "end": 20.86
+        },
+        {
+          "w": "answers.",
+          "start": 20.86,
+          "end": 21.3
+        },
+        {
+          "w": "None",
+          "start": 22.18,
+          "end": 22.78
+        },
+        {
+          "w": "of",
+          "start": 22.78,
+          "end": 22.94
+        },
+        {
+          "w": "them",
+          "start": 22.94,
+          "end": 23.1
+        },
+        {
+          "w": "is",
+          "start": 23.1,
+          "end": 23.26
+        },
+        {
+          "w": "wrong.",
+          "start": 23.26,
+          "end": 23.5
+        },
+        {
+          "w": "And",
+          "start": 24.14,
+          "end": 24.74
+        },
+        {
+          "w": "read",
+          "start": 24.74,
+          "end": 24.94
+        },
+        {
+          "w": "down",
+          "start": 24.94,
+          "end": 25.22
+        },
+        {
+          "w": "the",
+          "start": 25.22,
+          "end": 25.38
+        },
+        {
+          "w": "followers",
+          "start": 25.38,
+          "end": 25.7
+        },
+        {
+          "w": "and",
+          "start": 25.7,
+          "end": 26.0
+        },
+        {
+          "w": "you",
+          "start": 26.0,
+          "end": 26.1
+        },
+        {
+          "w": "can",
+          "start": 26.1,
+          "end": 26.26
+        },
+        {
+          "w": "name",
+          "start": 26.26,
+          "end": 26.4
+        },
+        {
+          "w": "the",
+          "start": 26.4,
+          "end": 26.64
+        },
+        {
+          "w": "text:",
+          "start": 26.64,
+          "end": 27.0
+        },
+        {
+          "w": "sand",
+          "start": 27.2,
+          "end": 27.76
+        },
+        {
+          "w": "and",
+          "start": 27.76,
+          "end": 27.92
+        },
+        {
+          "w": "water,",
+          "start": 27.92,
+          "end": 28.2
+        },
+        {
+          "w": "sky",
+          "start": 28.4,
+          "end": 28.96
+        },
+        {
+          "w": "and",
+          "start": 28.96,
+          "end": 29.24
+        },
+        {
+          "w": "rain,",
+          "start": 29.24,
+          "end": 29.48
+        },
+        {
+          "w": "kookaburra",
+          "start": 29.7,
+          "end": 30.42
+        },
+        {
+          "w": "and",
+          "start": 30.42,
+          "end": 30.72
+        },
+        {
+          "w": "gum.",
+          "start": 30.72,
+          "end": 31.02
+        }
+      ]
+    },
+    {
+      "i": 3,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Together, the class holds a bigger model than any one group. So let's generate from it.",
+      "start": 32.39,
+      "end": 38.04,
+      "words": [
+        {
+          "w": "Together,",
+          "start": 32.54,
+          "end": 33.1
+        },
+        {
+          "w": "the",
+          "start": 33.3,
+          "end": 33.68
+        },
+        {
+          "w": "class",
+          "start": 33.68,
+          "end": 33.96
+        },
+        {
+          "w": "holds",
+          "start": 33.96,
+          "end": 34.28
+        },
+        {
+          "w": "a",
+          "start": 34.28,
+          "end": 34.42
+        },
+        {
+          "w": "bigger",
+          "start": 34.42,
+          "end": 34.64
+        },
+        {
+          "w": "model",
+          "start": 34.64,
+          "end": 34.94
+        },
+        {
+          "w": "than",
+          "start": 34.94,
+          "end": 35.18
+        },
+        {
+          "w": "any",
+          "start": 35.18,
+          "end": 35.48
+        },
+        {
+          "w": "one",
+          "start": 35.48,
+          "end": 35.66
+        },
+        {
+          "w": "group.",
+          "start": 35.66,
+          "end": 35.94
+        },
+        {
+          "w": "So",
+          "start": 36.18,
+          "end": 36.74
+        },
+        {
+          "w": "let's",
+          "start": 36.74,
+          "end": 37.12
+        },
+        {
+          "w": "generate",
+          "start": 37.12,
+          "end": 37.4
+        },
+        {
+          "w": "from",
+          "start": 37.4,
+          "end": 37.68
+        },
+        {
+          "w": "it.",
+          "start": 37.68,
+          "end": 37.84
+        }
+      ]
+    },
+    {
+      "i": 4,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "Two steps per word, same as always. Call out the word we're on. Hands up if your sheets have a row for it—the show of hands picks the group. That group reads out its colours and tallies: two red, two blue, two green, two yellow. The counters go in the cup up the front, one comes out, and that group reads the word beside the colour. The cup picks the word.",
+      "start": 38.57,
+      "end": 64.62,
+      "words": [
+        {
+          "w": "Two",
+          "start": 38.72,
+          "end": 39.28
+        },
+        {
+          "w": "steps",
+          "start": 39.28,
+          "end": 39.64
+        },
+        {
+          "w": "per",
+          "start": 39.64,
+          "end": 39.9
+        },
+        {
+          "w": "word,",
+          "start": 39.9,
+          "end": 40.24
+        },
+        {
+          "w": "same",
+          "start": 40.38,
+          "end": 40.8
+        },
+        {
+          "w": "as",
+          "start": 40.8,
+          "end": 40.94
+        },
+        {
+          "w": "always.",
+          "start": 40.94,
+          "end": 41.3
+        },
+        {
+          "w": "Call",
+          "start": 42.14,
+          "end": 42.7
+        },
+        {
+          "w": "out",
+          "start": 42.7,
+          "end": 43.0
+        },
+        {
+          "w": "the",
+          "start": 43.0,
+          "end": 43.18
+        },
+        {
+          "w": "word",
+          "start": 43.18,
+          "end": 43.48
+        },
+        {
+          "w": "we're",
+          "start": 43.49,
+          "end": 43.76
+        },
+        {
+          "w": "on.",
+          "start": 43.8,
+          "end": 44.04
+        },
+        {
+          "w": "Hands",
+          "start": 44.76,
+          "end": 45.32
+        },
+        {
+          "w": "up",
+          "start": 45.32,
+          "end": 45.5
+        },
+        {
+          "w": "if",
+          "start": 45.5,
+          "end": 45.7
+        },
+        {
+          "w": "your",
+          "start": 45.7,
+          "end": 45.8
+        },
+        {
+          "w": "sheets",
+          "start": 45.8,
+          "end": 46.12
+        },
+        {
+          "w": "have",
+          "start": 46.12,
+          "end": 46.36
+        },
+        {
+          "w": "a",
+          "start": 46.36,
+          "end": 46.5
+        },
+        {
+          "w": "row",
+          "start": 46.5,
+          "end": 46.66
+        },
+        {
+          "w": "for",
+          "start": 46.66,
+          "end": 46.88
+        },
+        {
+          "w": "it,",
+          "start": 46.88,
+          "end": 47.1
+        },
+        {
+          "w": "the",
+          "start": 47.2,
+          "end": 47.58
+        },
+        {
+          "w": "show",
+          "start": 47.58,
+          "end": 47.78
+        },
+        {
+          "w": "of",
+          "start": 47.78,
+          "end": 47.94
+        },
+        {
+          "w": "hands",
+          "start": 47.94,
+          "end": 48.24
+        },
+        {
+          "w": "picks",
+          "start": 48.24,
+          "end": 48.54
+        },
+        {
+          "w": "the",
+          "start": 48.54,
+          "end": 48.74
+        },
+        {
+          "w": "group.",
+          "start": 48.74,
+          "end": 48.98
+        },
+        {
+          "w": "That",
+          "start": 49.62,
+          "end": 50.18
+        },
+        {
+          "w": "group",
+          "start": 50.18,
+          "end": 50.48
+        },
+        {
+          "w": "reads",
+          "start": 50.48,
+          "end": 50.82
+        },
+        {
+          "w": "out",
+          "start": 50.82,
+          "end": 51.12
+        },
+        {
+          "w": "its",
+          "start": 51.12,
+          "end": 51.28
+        },
+        {
+          "w": "colours",
+          "start": 51.35,
+          "end": 51.51
+        },
+        {
+          "w": "and",
+          "start": 51.58,
+          "end": 51.74
+        },
+        {
+          "w": "tallies:",
+          "start": 51.74,
+          "end": 52.2
+        },
+        {
+          "w": "two",
+          "start": 52.32,
+          "end": 52.72
+        },
+        {
+          "w": "red,",
+          "start": 52.72,
+          "end": 53.06
+        },
+        {
+          "w": "two",
+          "start": 53.24,
+          "end": 53.58
+        },
+        {
+          "w": "blue,",
+          "start": 53.58,
+          "end": 53.92
+        },
+        {
+          "w": "two",
+          "start": 54.08,
+          "end": 54.38
+        },
+        {
+          "w": "green,",
+          "start": 54.38,
+          "end": 54.86
+        },
+        {
+          "w": "two",
+          "start": 54.92,
+          "end": 55.22
+        },
+        {
+          "w": "yellow.",
+          "start": 55.22,
+          "end": 55.56
+        },
+        {
+          "w": "The",
+          "start": 56.26,
+          "end": 56.74
+        },
+        {
+          "w": "counters",
+          "start": 56.74,
+          "end": 57.14
+        },
+        {
+          "w": "go",
+          "start": 57.14,
+          "end": 57.34
+        },
+        {
+          "w": "in",
+          "start": 57.34,
+          "end": 57.54
+        },
+        {
+          "w": "the",
+          "start": 57.54,
+          "end": 57.6
+        },
+        {
+          "w": "cup",
+          "start": 57.6,
+          "end": 57.8
+        },
+        {
+          "w": "up",
+          "start": 57.8,
+          "end": 57.96
+        },
+        {
+          "w": "the",
+          "start": 57.96,
+          "end": 58.06
+        },
+        {
+          "w": "front,",
+          "start": 58.06,
+          "end": 58.42
+        },
+        {
+          "w": "one",
+          "start": 58.56,
+          "end": 58.98
+        },
+        {
+          "w": "comes",
+          "start": 58.98,
+          "end": 59.28
+        },
+        {
+          "w": "out,",
+          "start": 59.28,
+          "end": 59.64
+        },
+        {
+          "w": "and",
+          "start": 59.64,
+          "end": 60.02
+        },
+        {
+          "w": "that",
+          "start": 60.02,
+          "end": 60.36
+        },
+        {
+          "w": "group",
+          "start": 60.36,
+          "end": 60.56
+        },
+        {
+          "w": "reads",
+          "start": 60.56,
+          "end": 60.92
+        },
+        {
+          "w": "the",
+          "start": 60.92,
+          "end": 61.16
+        },
+        {
+          "w": "word",
+          "start": 61.16,
+          "end": 61.42
+        },
+        {
+          "w": "beside",
+          "start": 61.42,
+          "end": 61.74
+        },
+        {
+          "w": "the",
+          "start": 61.74,
+          "end": 62.02
+        },
+        {
+          "w": "colour.",
+          "start": 62.29,
+          "end": 62.71
+        },
+        {
+          "w": "The",
+          "start": 62.84,
+          "end": 63.4
+        },
+        {
+          "w": "cup",
+          "start": 63.4,
+          "end": 63.64
+        },
+        {
+          "w": "picks",
+          "start": 63.64,
+          "end": 63.92
+        },
+        {
+          "w": "the",
+          "start": 63.92,
+          "end": 64.12
+        },
+        {
+          "w": "word.",
+          "start": 64.12,
+          "end": 64.42
+        }
+      ]
+    },
+    {
+      "i": 5,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Yellow. That group's yellow word is yabby. It goes on the class story, and yabby is the next word we hunt for.",
+      "start": 65.85,
+      "end": 73.24,
+      "words": [
+        {
+          "w": "Yellow.",
+          "start": 66.0,
+          "end": 66.56
+        },
+        {
+          "w": "That",
+          "start": 66.82,
+          "end": 67.38
+        },
+        {
+          "w": "group's",
+          "start": 67.38,
+          "end": 67.82
+        },
+        {
+          "w": "yellow",
+          "start": 67.82,
+          "end": 67.98
+        },
+        {
+          "w": "word",
+          "start": 67.98,
+          "end": 68.32
+        },
+        {
+          "w": "is",
+          "start": 68.32,
+          "end": 68.66
+        },
+        {
+          "w": "yabby.",
+          "start": 68.66,
+          "end": 68.98
+        },
+        {
+          "w": "It",
+          "start": 69.12,
+          "end": 69.68
+        },
+        {
+          "w": "goes",
+          "start": 69.68,
+          "end": 69.88
+        },
+        {
+          "w": "on",
+          "start": 69.88,
+          "end": 70.08
+        },
+        {
+          "w": "the",
+          "start": 70.08,
+          "end": 70.14
+        },
+        {
+          "w": "class",
+          "start": 70.14,
+          "end": 70.36
+        },
+        {
+          "w": "story,",
+          "start": 70.36,
+          "end": 70.64
+        },
+        {
+          "w": "and",
+          "start": 70.64,
+          "end": 71.24
+        },
+        {
+          "w": "yabby",
+          "start": 71.24,
+          "end": 71.62
+        },
+        {
+          "w": "is",
+          "start": 71.62,
+          "end": 71.84
+        },
+        {
+          "w": "the",
+          "start": 71.84,
+          "end": 71.96
+        },
+        {
+          "w": "next",
+          "start": 71.96,
+          "end": 72.22
+        },
+        {
+          "w": "word",
+          "start": 72.22,
+          "end": 72.48
+        },
+        {
+          "w": "we",
+          "start": 72.48,
+          "end": 72.7
+        },
+        {
+          "w": "hunt",
+          "start": 72.7,
+          "end": 72.84
+        },
+        {
+          "w": "for.",
+          "start": 72.84,
+          "end": 73.04
+        }
+      ]
+    },
+    {
+      "i": 6,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "And that's the fun of it. A word only one group ever saw just landed in everyone's story. The class model can say things most of the room's models never could.",
+      "start": 73.85,
+      "end": 85.26,
+      "words": [
+        {
+          "w": "And",
+          "start": 74.0,
+          "end": 74.56
+        },
+        {
+          "w": "that's",
+          "start": 74.56,
+          "end": 74.92
+        },
+        {
+          "w": "the",
+          "start": 74.92,
+          "end": 75.0
+        },
+        {
+          "w": "fun",
+          "start": 75.0,
+          "end": 75.32
+        },
+        {
+          "w": "of",
+          "start": 75.32,
+          "end": 75.4
+        },
+        {
+          "w": "it.",
+          "start": 75.4,
+          "end": 75.54
+        },
+        {
+          "w": "A",
+          "start": 76.06,
+          "end": 76.62
+        },
+        {
+          "w": "word",
+          "start": 76.62,
+          "end": 76.88
+        },
+        {
+          "w": "only",
+          "start": 76.88,
+          "end": 77.2
+        },
+        {
+          "w": "one",
+          "start": 77.2,
+          "end": 77.48
+        },
+        {
+          "w": "group",
+          "start": 77.48,
+          "end": 77.84
+        },
+        {
+          "w": "ever",
+          "start": 77.84,
+          "end": 78.16
+        },
+        {
+          "w": "saw",
+          "start": 78.16,
+          "end": 78.5
+        },
+        {
+          "w": "just",
+          "start": 78.5,
+          "end": 78.76
+        },
+        {
+          "w": "landed",
+          "start": 78.76,
+          "end": 79.3
+        },
+        {
+          "w": "in",
+          "start": 79.3,
+          "end": 79.56
+        },
+        {
+          "w": "everyone's",
+          "start": 79.56,
+          "end": 80.14
+        },
+        {
+          "w": "story.",
+          "start": 80.14,
+          "end": 80.4
+        },
+        {
+          "w": "The",
+          "start": 81.1,
+          "end": 81.66
+        },
+        {
+          "w": "class",
+          "start": 81.66,
+          "end": 81.94
+        },
+        {
+          "w": "model",
+          "start": 81.94,
+          "end": 82.26
+        },
+        {
+          "w": "can",
+          "start": 82.26,
+          "end": 82.58
+        },
+        {
+          "w": "say",
+          "start": 82.58,
+          "end": 82.84
+        },
+        {
+          "w": "things",
+          "start": 82.84,
+          "end": 83.1
+        },
+        {
+          "w": "most",
+          "start": 83.1,
+          "end": 83.44
+        },
+        {
+          "w": "of",
+          "start": 83.44,
+          "end": 83.68
+        },
+        {
+          "w": "the",
+          "start": 83.68,
+          "end": 83.78
+        },
+        {
+          "w": "room's",
+          "start": 83.78,
+          "end": 84.14
+        },
+        {
+          "w": "models",
+          "start": 84.14,
+          "end": 84.42
+        },
+        {
+          "w": "never",
+          "start": 84.42,
+          "end": 84.76
+        },
+        {
+          "w": "could.",
+          "start": 84.76,
+          "end": 85.06
+        }
+      ]
+    },
+    {
+      "i": 7,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Which is what a big model is. Many texts, pooled into one set of counts, so it can say things no single text could. And notice: a bigger model still runs one word at a time.",
+      "start": 86.53,
+      "end": 97.66,
+      "words": [
+        {
+          "w": "Which",
+          "start": 86.68,
+          "end": 87.2
+        },
+        {
+          "w": "is",
+          "start": 87.2,
+          "end": 87.32
+        },
+        {
+          "w": "what",
+          "start": 87.32,
+          "end": 87.5
+        },
+        {
+          "w": "a",
+          "start": 87.5,
+          "end": 87.62
+        },
+        {
+          "w": "big",
+          "start": 87.62,
+          "end": 87.84
+        },
+        {
+          "w": "model",
+          "start": 87.84,
+          "end": 88.08
+        },
+        {
+          "w": "is.",
+          "start": 88.08,
+          "end": 88.38
+        },
+        {
+          "w": "Many",
+          "start": 88.62,
+          "end": 89.14
+        },
+        {
+          "w": "texts,",
+          "start": 89.14,
+          "end": 89.58
+        },
+        {
+          "w": "pooled",
+          "start": 89.61,
+          "end": 89.99
+        },
+        {
+          "w": "into",
+          "start": 90.08,
+          "end": 90.4
+        },
+        {
+          "w": "one",
+          "start": 90.4,
+          "end": 90.66
+        },
+        {
+          "w": "set",
+          "start": 90.66,
+          "end": 90.92
+        },
+        {
+          "w": "of",
+          "start": 90.92,
+          "end": 91.04
+        },
+        {
+          "w": "counts,",
+          "start": 91.04,
+          "end": 91.28
+        },
+        {
+          "w": "so",
+          "start": 91.28,
+          "end": 91.84
+        },
+        {
+          "w": "it",
+          "start": 91.84,
+          "end": 91.98
+        },
+        {
+          "w": "can",
+          "start": 91.98,
+          "end": 92.08
+        },
+        {
+          "w": "say",
+          "start": 92.08,
+          "end": 92.3
+        },
+        {
+          "w": "things",
+          "start": 92.3,
+          "end": 92.52
+        },
+        {
+          "w": "no",
+          "start": 92.52,
+          "end": 92.8
+        },
+        {
+          "w": "single",
+          "start": 92.8,
+          "end": 93.14
+        },
+        {
+          "w": "text",
+          "start": 93.14,
+          "end": 93.38
+        },
+        {
+          "w": "could.",
+          "start": 93.38,
+          "end": 93.62
+        },
+        {
+          "w": "And",
+          "start": 93.88,
+          "end": 94.4
+        },
+        {
+          "w": "notice:",
+          "start": 94.4,
+          "end": 94.7
+        },
+        {
+          "w": "a",
+          "start": 94.88,
+          "end": 95.32
+        },
+        {
+          "w": "bigger",
+          "start": 95.32,
+          "end": 95.6
+        },
+        {
+          "w": "model",
+          "start": 95.6,
+          "end": 95.82
+        },
+        {
+          "w": "still",
+          "start": 95.82,
+          "end": 96.1
+        },
+        {
+          "w": "runs",
+          "start": 96.1,
+          "end": 96.4
+        },
+        {
+          "w": "one",
+          "start": 96.4,
+          "end": 96.68
+        },
+        {
+          "w": "word",
+          "start": 96.68,
+          "end": 96.96
+        },
+        {
+          "w": "at",
+          "start": 96.96,
+          "end": 97.12
+        },
+        {
+          "w": "a",
+          "start": 97.12,
+          "end": 97.18
+        },
+        {
+          "w": "time.",
+          "start": 97.18,
+          "end": 97.46
+        }
+      ]
+    },
+    {
+      "i": 8,
+      "speaker": "USHINI",
+      "tc": true,
+      "caption": "Butchers paper up the front. First word: the. Hands up.",
+      "start": 98.0,
+      "end": 104.1,
+      "words": [
+        {
+          "w": "Butchers",
+          "start": 98.15,
+          "end": 98.42
+        },
+        {
+          "w": "paper",
+          "start": 99.12,
+          "end": 99.38
+        },
+        {
+          "w": "up",
+          "start": 99.38,
+          "end": 99.66
+        },
+        {
+          "w": "the",
+          "start": 99.66,
+          "end": 99.78
+        },
+        {
+          "w": "front.",
+          "start": 99.78,
+          "end": 100.08
+        },
+        {
+          "w": "First",
+          "start": 101.02,
+          "end": 101.54
+        },
+        {
+          "w": "word:",
+          "start": 101.54,
+          "end": 102.04
+        },
+        {
+          "w": "the.",
+          "start": 102.08,
+          "end": 102.34
+        },
+        {
+          "w": "Hands",
+          "start": 103.12,
+          "end": 103.64
+        },
+        {
+          "w": "up.",
+          "start": 103.64,
+          "end": 103.9
+        }
+      ]
+    }
+  ]
+}

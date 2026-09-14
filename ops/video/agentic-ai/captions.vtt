@@ -1,0 +1,31 @@
+WEBVTT
+
+00:00:00.150 --> 00:00:17.240
+This is the one that's all over the news. AI agents: models that browse the web, write code, book flights. It sounds like a whole new kind of technology. It isn't. It's the loop you've already run, with one rule added.
+
+00:00:18.350 --> 00:00:23.800
+An agent is a model that can pause, get something from outside itself, and carry on.
+
+00:00:24.610 --> 00:00:36.700
+Here's the rule. Generate from your booklet exactly as before, rolling for each next word. The moment you roll a punctuation token—a full stop, a comma—stop. That's a tool call.
+
+00:00:37.410 --> 00:00:56.560
+The tool is a text message. Send "What comes next?" and the sentence so far—everything since the last full stop—to three friends or group chats. Say your text is "the cat sat" and you've just rolled a full stop. You text: What comes next? "the cat sat…"
+
+00:00:57.730 --> 00:01:07.900
+The first reply back is your tool result. Write down the whole thing—"out on the verandah"—and then the full stop you rolled. Then keep generating, from the full stop.
+
+00:01:08.550 --> 00:01:20.460
+Why from the full stop and not from "verandah"? Because "verandah" probably isn't in your model. It has no entry for it. But it can always continue from a full stop.
+
+00:01:21.950 --> 00:01:28.340
+Replies take time. If nothing's landed by your next punctuation token, leave a gap and fill it in later.
+
+00:01:29.170 --> 00:01:44.640
+Here's the bit that matters. The model never learned what comes next. What it "learned" is when to ask. And the thing that paused it, sent the message, and spliced the answer back in—that was you. You were the harness.
+
+00:01:46.030 --> 00:01:55.800
+Take the person out, and you've got a model acting on its own. That's what the coverage means by an agent. So: what would you let it do without asking you first?
+
+00:01:56.730 --> 00:02:01.020
+Don't answer yet. In a few minutes, you'll be the harness.

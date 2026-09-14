@@ -1,0 +1,25 @@
+WEBVTT
+
+00:00:00.190 --> 00:00:07.680
+Time to train a language model. By the end of this you'll have built one, and it'll fit on a single sheet of paper.
+
+00:00:08.870 --> 00:00:19.280
+There's a book in front of you—a picture book, a chapter from a novel, whatever it is. That book is your training data. Everything your model will ever know comes from those pages.
+
+00:00:20.190 --> 00:00:35.880
+First step: break the text into individual words, and lowercase everything. One quirk worth knowing: treat punctuation like full stops and commas as words too. They get their own row and column, just like the real words.
+
+00:00:37.190 --> 00:00:48.990
+Now look at pairs of consecutive words. These are called bigrams. If the text says "the cat sat," you've got two bigrams: "the" followed by "cat," and "cat" followed by "sat."
+
+00:00:49.070 --> 00:01:06.740
+Your grid has words along the top and down the side. Start at the very first word in the text: that's your first row. The word that follows it is your first column. Tally the cell where they meet. Each word gets one row and one column, so if "the" already has a row you keep tallying into it.
+
+00:01:07.270 --> 00:01:34.540
+Now slide forward by one word. The word that was your "next" becomes your current word. Find its row, find the next word's column, tally. Keep going through the text. Turning the page makes no difference—the last word on one page pairs with the first word on the next. Some cells stack up with tallies, others stay empty, and that's the model learning which words tend to follow which.
+
+00:01:35.790 --> 00:01:50.420
+When you're done, look at what you've got. That grid of tally marks is the model—counts of which words follow which. That's the whole thing. It's the same kind of information a large language model stores, just with billions of word-pairs instead of dozens.
+
+00:01:51.130 --> 00:02:00.420
+It works best in pairs: one reads, one tallies, swap halfway. Your book's in front of you. Start counting.

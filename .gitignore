@@ -37,3 +37,12 @@ website/src/templates/*.typ
 
 # project skills are shared, even though the global ignore hides .claude/*
 !.claude/skills/
+
+# video: the composition kit's rebuilt-from-data.js, and each composition's VO
+# take, render and scratch build output --- see ops/video/README.md
+ops/video/_kit/generated/
+ops/video/*/assets/voice.*
+ops/video/*/renders/
+ops/video/*/node_modules/
+ops/video/*/review.mp4
+ops/video/*/frames/

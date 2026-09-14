@@ -1,0 +1,93 @@
+[
+  {
+    "i": 0,
+    "speaker": "BEN",
+    "tc": true,
+    "caption": "Claude, ChatGPT, all of these tools—they write one word at a time. Predict a word, add it, predict again. That's the whole job.",
+    "tts": "Claude, ChatGPT, all of these tools, they write one word at a time. Predict a word, add it, predict again. That's the whole job."
+  },
+  {
+    "i": 1,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "And yet, ask someone how they actually do it and you'll get hand-waving. Something about \"neural networks,\" maybe \"trained on the internet.\"",
+    "tts": "And yet, ask someone how they actually do it and you'll get hand-waving. Something about \"neural networks,\" maybe \"trained on the internet.\""
+  },
+  {
+    "i": 2,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "That's a shaky foundation for the people making decisions about these tools—teachers, parents, policymakers.",
+    "tts": "That's a shaky foundation for the people making decisions about these tools, teachers, parents, policymakers."
+  },
+  {
+    "i": 3,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "So what if you could build one yourself? Not on a computer. With a picture book, some paper, a pen, and a handful of dice.",
+    "tts": "So what if you could build one yourself? Not on a computer. With a picture book, some paper, a pen, and a handful of dice."
+  },
+  {
+    "i": 4,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "That's LLMs Unplugged, a set of free teaching resources from the School of Cybernetics at the Australian National University.",
+    "tts": "That's LLMs Unplugged, a set of free teaching resources from the School of Cybernetics at the Australian National University."
+  },
+  {
+    "i": 5,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Every lesson is the same loop. First you train: read a text, and count which word follows which. Then you generate: take the last word you wrote, pick the next one according to those counts, write it down, and go again.",
+    "tts": "Every lesson is the same loop. First you train: read a text, and count which word follows which. Then you generate: take the last word you wrote, pick the next one according to those counts, write it down, and go again."
+  },
+  {
+    "i": 6,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "There are two ways to do it on paper. One is grid paper and a ten-sided die: you count word pairs into a grid, then roll your way to a sentence. The other is ledger sheets and a cup of coloured counters: more marks, more counters, more likely.",
+    "tts": "There are two ways to do it on paper. One is grid paper and a ten-sided die: you count word pairs into a grid, then roll your way to a sentence. The other is ledger sheets and a cup of coloured counters: more marks, more counters, more likely."
+  },
+  {
+    "i": 7,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Either way, you start by training a model of your own. Then you generate from one that somebody else trained. And from there the same loop takes you to the bigger ideas: a model that pauses to ask for help, or a whole room pooling its models into one story. It runs from upper primary to the boardroom.",
+    "tts": "Either way, you start by training a model of your own. Then you generate from one that somebody else trained. And from there the same loop takes you to the bigger ideas: a model that pauses to ask for help, or a whole room pooling its models into one story. It runs from upper primary to the boardroom."
+  },
+  {
+    "i": 8,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Now, it's not a tiny Claude or ChatGPT. A real model swaps the tally marks for shared numbers, looks at the whole conversation instead of one word, trains on trillions of words, and gets a round of extra training so it answers you rather than just continuing.",
+    "tts": "Now, it's not a tiny Claude or ChatGPT. A real model swaps the tally marks for shared numbers, looks at the whole conversation instead of one word, trains on trillions of words, and gets a round of extra training so it answers you rather than just continuing."
+  },
+  {
+    "i": 9,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "But it's the same loop. Tokens in, tokens out. And none of it is new: Andrey Markov was doing this by hand in 1913, Claude Shannon in 1948. The line runs straight to today's frontier models.",
+    "tts": "But it's the same loop. Tokens in, tokens out. And none of it is new: Andrey Markov was doing this by hand in 1913, Claude Shannon in 1948. The line runs straight to today's frontier models."
+  },
+  {
+    "i": 10,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Once you've seen the mechanism on paper—patterns in, new text out—the mystery evaporates. And if you want to go further, the site does: break a model, look inside one, shape how it behaves.",
+    "tts": "Once you've seen the mechanism on paper, patterns in, new text out, the mystery evaporates. And if you want to go further, the site does: break a model, look inside one, shape how it behaves."
+  },
+  {
+    "i": 11,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "And everything on the site was made by tools that are on the site too. Paste in any text you like, and out come the booklets, the sheets and the cutouts for it. Your book, your model.",
+    "tts": "And everything on the site was made by tools that are on the site too. Paste in any text you like, and out come the booklets, the sheets and the cutouts for it. Your book, your model."
+  },
+  {
+    "i": 12,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "It's all under a Creative Commons licence at llmsunplugged.org. Every section of every lesson has its own short video, so you can play them in class. Grab the resources, run the activities, and if you'd like us to deliver it in person, get in touch.",
+    "tts": "It's all under a Creative Commons licence at llmsunplugged.org. Every section of every lesson has its own short video, so you can play them in class. Grab the resources, run the activities, and if you'd like us to deliver it in person, get in touch."
+  }
+]

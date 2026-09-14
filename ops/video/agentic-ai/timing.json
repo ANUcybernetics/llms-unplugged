@@ -1,0 +1,1622 @@
+{
+  "slug": "agentic-ai",
+  "audio": "assets/voice.wav",
+  "duration": 123.096,
+  "lines": [
+    {
+      "i": 0,
+      "speaker": "USHINI",
+      "tc": true,
+      "caption": "This is the one that's all over the news. AI agents: models that browse the web, write code, book flights. It sounds like a whole new kind of technology. It isn't. It's the loop you've already run, with one rule added.",
+      "start": 0.15,
+      "end": 17.24,
+      "words": [
+        {
+          "w": "This",
+          "start": 0.3,
+          "end": 0.8
+        },
+        {
+          "w": "is",
+          "start": 0.8,
+          "end": 0.94
+        },
+        {
+          "w": "the",
+          "start": 0.94,
+          "end": 1.06
+        },
+        {
+          "w": "one",
+          "start": 1.06,
+          "end": 1.3
+        },
+        {
+          "w": "that's",
+          "start": 1.3,
+          "end": 1.68
+        },
+        {
+          "w": "all",
+          "start": 1.68,
+          "end": 1.88
+        },
+        {
+          "w": "over",
+          "start": 1.88,
+          "end": 2.28
+        },
+        {
+          "w": "the",
+          "start": 2.28,
+          "end": 2.46
+        },
+        {
+          "w": "news.",
+          "start": 2.46,
+          "end": 2.74
+        },
+        {
+          "w": "AI",
+          "start": 3.56,
+          "end": 4.12
+        },
+        {
+          "w": "agents:",
+          "start": 4.12,
+          "end": 4.62
+        },
+        {
+          "w": "models",
+          "start": 4.86,
+          "end": 5.3
+        },
+        {
+          "w": "that",
+          "start": 5.3,
+          "end": 5.52
+        },
+        {
+          "w": "browse",
+          "start": 5.52,
+          "end": 5.74
+        },
+        {
+          "w": "the",
+          "start": 5.74,
+          "end": 5.94
+        },
+        {
+          "w": "web,",
+          "start": 5.94,
+          "end": 6.16
+        },
+        {
+          "w": "write",
+          "start": 6.36,
+          "end": 6.7
+        },
+        {
+          "w": "code,",
+          "start": 6.7,
+          "end": 7.06
+        },
+        {
+          "w": "book",
+          "start": 7.26,
+          "end": 7.5
+        },
+        {
+          "w": "flights.",
+          "start": 7.5,
+          "end": 7.86
+        },
+        {
+          "w": "It",
+          "start": 8.62,
+          "end": 9.18
+        },
+        {
+          "w": "sounds",
+          "start": 9.18,
+          "end": 9.48
+        },
+        {
+          "w": "like",
+          "start": 9.48,
+          "end": 9.76
+        },
+        {
+          "w": "a",
+          "start": 9.76,
+          "end": 9.92
+        },
+        {
+          "w": "whole",
+          "start": 9.92,
+          "end": 10.08
+        },
+        {
+          "w": "new",
+          "start": 10.08,
+          "end": 10.36
+        },
+        {
+          "w": "kind",
+          "start": 10.36,
+          "end": 10.64
+        },
+        {
+          "w": "of",
+          "start": 10.64,
+          "end": 10.9
+        },
+        {
+          "w": "technology.",
+          "start": 10.9,
+          "end": 11.3
+        },
+        {
+          "w": "It",
+          "start": 12.12,
+          "end": 12.68
+        },
+        {
+          "w": "isn't.",
+          "start": 12.68,
+          "end": 13.22
+        },
+        {
+          "w": "It's",
+          "start": 13.76,
+          "end": 14.32
+        },
+        {
+          "w": "the",
+          "start": 14.32,
+          "end": 14.42
+        },
+        {
+          "w": "loop",
+          "start": 14.42,
+          "end": 14.66
+        },
+        {
+          "w": "you've",
+          "start": 14.66,
+          "end": 14.96
+        },
+        {
+          "w": "already",
+          "start": 14.96,
+          "end": 15.24
+        },
+        {
+          "w": "run,",
+          "start": 15.24,
+          "end": 15.6
+        },
+        {
+          "w": "with",
+          "start": 15.78,
+          "end": 16.16
+        },
+        {
+          "w": "one",
+          "start": 16.16,
+          "end": 16.36
+        },
+        {
+          "w": "rule",
+          "start": 16.36,
+          "end": 16.68
+        },
+        {
+          "w": "added.",
+          "start": 16.68,
+          "end": 17.04
+        }
+      ]
+    },
+    {
+      "i": 1,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "An agent is a model that can pause, get something from outside itself, and carry on.",
+      "start": 18.35,
+      "end": 23.8,
+      "words": [
+        {
+          "w": "An",
+          "start": 18.5,
+          "end": 19.06
+        },
+        {
+          "w": "agent",
+          "start": 19.06,
+          "end": 19.44
+        },
+        {
+          "w": "is",
+          "start": 19.44,
+          "end": 19.7
+        },
+        {
+          "w": "a",
+          "start": 19.7,
+          "end": 19.8
+        },
+        {
+          "w": "model",
+          "start": 19.8,
+          "end": 20.08
+        },
+        {
+          "w": "that",
+          "start": 20.08,
+          "end": 20.26
+        },
+        {
+          "w": "can",
+          "start": 20.26,
+          "end": 20.4
+        },
+        {
+          "w": "pause,",
+          "start": 20.4,
+          "end": 20.72
+        },
+        {
+          "w": "get",
+          "start": 20.94,
+          "end": 21.38
+        },
+        {
+          "w": "something",
+          "start": 21.38,
+          "end": 21.58
+        },
+        {
+          "w": "from",
+          "start": 21.58,
+          "end": 21.9
+        },
+        {
+          "w": "outside",
+          "start": 21.9,
+          "end": 22.18
+        },
+        {
+          "w": "itself,",
+          "start": 22.18,
+          "end": 22.56
+        },
+        {
+          "w": "and",
+          "start": 22.82,
+          "end": 23.14
+        },
+        {
+          "w": "carry",
+          "start": 23.14,
+          "end": 23.36
+        },
+        {
+          "w": "on.",
+          "start": 23.36,
+          "end": 23.6
+        }
+      ]
+    },
+    {
+      "i": 2,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Here's the rule. Generate from your booklet exactly as before, rolling for each next word. The moment you roll a punctuation token—a full stop, a comma—stop. That's a tool call.",
+      "start": 24.61,
+      "end": 36.7,
+      "words": [
+        {
+          "w": "Here's",
+          "start": 24.76,
+          "end": 25.32
+        },
+        {
+          "w": "the",
+          "start": 25.32,
+          "end": 25.46
+        },
+        {
+          "w": "rule.",
+          "start": 25.7,
+          "end": 25.78
+        },
+        {
+          "w": "Generate",
+          "start": 26.28,
+          "end": 26.8
+        },
+        {
+          "w": "from",
+          "start": 26.8,
+          "end": 26.92
+        },
+        {
+          "w": "your",
+          "start": 26.92,
+          "end": 27.08
+        },
+        {
+          "w": "booklet",
+          "start": 27.08,
+          "end": 27.38
+        },
+        {
+          "w": "exactly",
+          "start": 27.38,
+          "end": 27.8
+        },
+        {
+          "w": "as",
+          "start": 27.8,
+          "end": 28.14
+        },
+        {
+          "w": "before,",
+          "start": 28.14,
+          "end": 28.42
+        },
+        {
+          "w": "rolling",
+          "start": 28.66,
+          "end": 29.3
+        },
+        {
+          "w": "for",
+          "start": 29.3,
+          "end": 29.56
+        },
+        {
+          "w": "each",
+          "start": 29.56,
+          "end": 29.82
+        },
+        {
+          "w": "next",
+          "start": 29.82,
+          "end": 30.06
+        },
+        {
+          "w": "word.",
+          "start": 30.06,
+          "end": 30.38
+        },
+        {
+          "w": "The",
+          "start": 30.58,
+          "end": 31.1
+        },
+        {
+          "w": "moment",
+          "start": 31.1,
+          "end": 31.34
+        },
+        {
+          "w": "you",
+          "start": 31.34,
+          "end": 31.54
+        },
+        {
+          "w": "roll",
+          "start": 31.54,
+          "end": 31.76
+        },
+        {
+          "w": "a",
+          "start": 31.76,
+          "end": 31.9
+        },
+        {
+          "w": "punctuation",
+          "start": 31.9,
+          "end": 32.38
+        },
+        {
+          "w": "token,",
+          "start": 32.38,
+          "end": 32.7
+        },
+        {
+          "w": "a",
+          "start": 32.88,
+          "end": 33.24
+        },
+        {
+          "w": "full",
+          "start": 33.24,
+          "end": 33.42
+        },
+        {
+          "w": "stop,",
+          "start": 33.42,
+          "end": 33.66
+        },
+        {
+          "w": "a",
+          "start": 33.82,
+          "end": 34.12
+        },
+        {
+          "w": "comma,",
+          "start": 34.12,
+          "end": 34.38
+        },
+        {
+          "w": "stop.",
+          "start": 34.52,
+          "end": 35.0
+        },
+        {
+          "w": "That's",
+          "start": 35.46,
+          "end": 35.98
+        },
+        {
+          "w": "a",
+          "start": 35.98,
+          "end": 36.06
+        },
+        {
+          "w": "tool",
+          "start": 36.06,
+          "end": 36.26
+        },
+        {
+          "w": "call.",
+          "start": 36.26,
+          "end": 36.5
+        }
+      ]
+    },
+    {
+      "i": 3,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "The tool is a text message. Send \"What comes next?\" and the sentence so far—everything since the last full stop—to three friends or group chats. Say your text is \"the cat sat\" and you've just rolled a full stop. You text: What comes next? \"the cat sat…\"",
+      "start": 37.41,
+      "end": 56.56,
+      "words": [
+        {
+          "w": "The",
+          "start": 37.56,
+          "end": 38.08
+        },
+        {
+          "w": "tool",
+          "start": 38.08,
+          "end": 38.36
+        },
+        {
+          "w": "is",
+          "start": 38.36,
+          "end": 38.64
+        },
+        {
+          "w": "a",
+          "start": 38.64,
+          "end": 38.76
+        },
+        {
+          "w": "text",
+          "start": 38.76,
+          "end": 39.04
+        },
+        {
+          "w": "message.",
+          "start": 39.04,
+          "end": 39.42
+        },
+        {
+          "w": "Send",
+          "start": 40.44,
+          "end": 40.96
+        },
+        {
+          "w": "\"What",
+          "start": 40.96,
+          "end": 41.2
+        },
+        {
+          "w": "comes",
+          "start": 41.2,
+          "end": 41.5
+        },
+        {
+          "w": "next?\"",
+          "start": 41.5,
+          "end": 41.92
+        },
+        {
+          "w": "and",
+          "start": 42.02,
+          "end": 42.26
+        },
+        {
+          "w": "the",
+          "start": 42.26,
+          "end": 42.34
+        },
+        {
+          "w": "sentence",
+          "start": 42.34,
+          "end": 42.64
+        },
+        {
+          "w": "so",
+          "start": 42.64,
+          "end": 42.88
+        },
+        {
+          "w": "far,",
+          "start": 42.88,
+          "end": 43.14
+        },
+        {
+          "w": "everything",
+          "start": 43.36,
+          "end": 43.98
+        },
+        {
+          "w": "since",
+          "start": 43.98,
+          "end": 44.28
+        },
+        {
+          "w": "the",
+          "start": 44.28,
+          "end": 44.5
+        },
+        {
+          "w": "last",
+          "start": 44.5,
+          "end": 44.7
+        },
+        {
+          "w": "full",
+          "start": 44.7,
+          "end": 44.94
+        },
+        {
+          "w": "stop,",
+          "start": 44.94,
+          "end": 45.26
+        },
+        {
+          "w": "to",
+          "start": 45.44,
+          "end": 45.82
+        },
+        {
+          "w": "three",
+          "start": 45.82,
+          "end": 46.04
+        },
+        {
+          "w": "friends",
+          "start": 46.04,
+          "end": 46.42
+        },
+        {
+          "w": "or",
+          "start": 46.42,
+          "end": 46.66
+        },
+        {
+          "w": "group",
+          "start": 46.66,
+          "end": 46.9
+        },
+        {
+          "w": "chats.",
+          "start": 46.9,
+          "end": 47.18
+        },
+        {
+          "w": "Say",
+          "start": 48.12,
+          "end": 48.64
+        },
+        {
+          "w": "your",
+          "start": 48.64,
+          "end": 48.8
+        },
+        {
+          "w": "text",
+          "start": 48.8,
+          "end": 49.14
+        },
+        {
+          "w": "is",
+          "start": 49.14,
+          "end": 49.38
+        },
+        {
+          "w": "\"the",
+          "start": 49.38,
+          "end": 49.54
+        },
+        {
+          "w": "cat",
+          "start": 49.54,
+          "end": 49.76
+        },
+        {
+          "w": "sat\"",
+          "start": 49.76,
+          "end": 50.02
+        },
+        {
+          "w": "and",
+          "start": 50.22,
+          "end": 50.48
+        },
+        {
+          "w": "you've",
+          "start": 50.48,
+          "end": 50.68
+        },
+        {
+          "w": "just",
+          "start": 50.68,
+          "end": 50.9
+        },
+        {
+          "w": "rolled",
+          "start": 50.9,
+          "end": 51.24
+        },
+        {
+          "w": "a",
+          "start": 51.24,
+          "end": 51.4
+        },
+        {
+          "w": "full",
+          "start": 51.4,
+          "end": 51.58
+        },
+        {
+          "w": "stop.",
+          "start": 51.58,
+          "end": 51.9
+        },
+        {
+          "w": "You",
+          "start": 52.52,
+          "end": 53.04
+        },
+        {
+          "w": "text:",
+          "start": 53.04,
+          "end": 53.36
+        },
+        {
+          "w": "What",
+          "start": 53.6,
+          "end": 53.94
+        },
+        {
+          "w": "comes",
+          "start": 53.94,
+          "end": 54.24
+        },
+        {
+          "w": "next?",
+          "start": 54.24,
+          "end": 54.62
+        },
+        {
+          "w": "\"the",
+          "start": 55.2,
+          "end": 55.74
+        },
+        {
+          "w": "cat",
+          "start": 55.74,
+          "end": 56.04
+        },
+        {
+          "w": "sat…\"",
+          "start": 56.04,
+          "end": 56.36
+        }
+      ]
+    },
+    {
+      "i": 4,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "The first reply back is your tool result. Write down the whole thing—\"out on the verandah\"—and then the full stop you rolled. Then keep generating, from the full stop.",
+      "start": 57.73,
+      "end": 67.9,
+      "words": [
+        {
+          "w": "The",
+          "start": 57.88,
+          "end": 58.42
+        },
+        {
+          "w": "first",
+          "start": 58.42,
+          "end": 58.66
+        },
+        {
+          "w": "reply",
+          "start": 58.66,
+          "end": 58.96
+        },
+        {
+          "w": "back",
+          "start": 58.96,
+          "end": 59.28
+        },
+        {
+          "w": "is",
+          "start": 59.28,
+          "end": 59.6
+        },
+        {
+          "w": "your",
+          "start": 59.6,
+          "end": 59.76
+        },
+        {
+          "w": "tool",
+          "start": 59.76,
+          "end": 59.98
+        },
+        {
+          "w": "result.",
+          "start": 59.98,
+          "end": 60.26
+        },
+        {
+          "w": "Write",
+          "start": 60.62,
+          "end": 61.16
+        },
+        {
+          "w": "down",
+          "start": 61.16,
+          "end": 61.36
+        },
+        {
+          "w": "the",
+          "start": 61.36,
+          "end": 61.54
+        },
+        {
+          "w": "whole",
+          "start": 61.54,
+          "end": 61.68
+        },
+        {
+          "w": "thing,",
+          "start": 61.68,
+          "end": 61.98
+        },
+        {
+          "w": "\"out",
+          "start": 62.06,
+          "end": 62.46
+        },
+        {
+          "w": "on",
+          "start": 62.46,
+          "end": 62.62
+        },
+        {
+          "w": "the",
+          "start": 62.62,
+          "end": 62.72
+        },
+        {
+          "w": "verandah\",",
+          "start": 62.91,
+          "end": 63.21
+        },
+        {
+          "w": "and",
+          "start": 63.2,
+          "end": 63.7
+        },
+        {
+          "w": "then",
+          "start": 63.7,
+          "end": 63.86
+        },
+        {
+          "w": "the",
+          "start": 63.86,
+          "end": 64.0
+        },
+        {
+          "w": "full",
+          "start": 64.0,
+          "end": 64.24
+        },
+        {
+          "w": "stop",
+          "start": 64.24,
+          "end": 64.48
+        },
+        {
+          "w": "you",
+          "start": 64.48,
+          "end": 64.68
+        },
+        {
+          "w": "rolled.",
+          "start": 64.68,
+          "end": 64.9
+        },
+        {
+          "w": "Then",
+          "start": 65.16,
+          "end": 65.7
+        },
+        {
+          "w": "keep",
+          "start": 65.7,
+          "end": 66.0
+        },
+        {
+          "w": "generating,",
+          "start": 66.0,
+          "end": 66.42
+        },
+        {
+          "w": "from",
+          "start": 66.72,
+          "end": 67.12
+        },
+        {
+          "w": "the",
+          "start": 67.12,
+          "end": 67.28
+        },
+        {
+          "w": "full",
+          "start": 67.28,
+          "end": 67.46
+        },
+        {
+          "w": "stop.",
+          "start": 67.46,
+          "end": 67.7
+        }
+      ]
+    },
+    {
+      "i": 5,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "Why from the full stop and not from \"verandah\"? Because \"verandah\" probably isn't in your model. It has no entry for it. But it can always continue from a full stop.",
+      "start": 68.55,
+      "end": 80.46,
+      "words": [
+        {
+          "w": "Why",
+          "start": 68.7,
+          "end": 69.24
+        },
+        {
+          "w": "from",
+          "start": 69.24,
+          "end": 69.48
+        },
+        {
+          "w": "the",
+          "start": 69.48,
+          "end": 69.62
+        },
+        {
+          "w": "full",
+          "start": 69.62,
+          "end": 69.82
+        },
+        {
+          "w": "stop",
+          "start": 69.82,
+          "end": 70.22
+        },
+        {
+          "w": "and",
+          "start": 70.28,
+          "end": 70.44
+        },
+        {
+          "w": "not",
+          "start": 70.44,
+          "end": 70.62
+        },
+        {
+          "w": "from",
+          "start": 70.62,
+          "end": 70.88
+        },
+        {
+          "w": "\"verandah\"?",
+          "start": 71.39,
+          "end": 71.79
+        },
+        {
+          "w": "Because",
+          "start": 72.16,
+          "end": 72.7
+        },
+        {
+          "w": "\"verandah\"",
+          "start": 72.7,
+          "end": 73.15
+        },
+        {
+          "w": "probably",
+          "start": 73.24,
+          "end": 73.6
+        },
+        {
+          "w": "isn't",
+          "start": 73.6,
+          "end": 74.26
+        },
+        {
+          "w": "in",
+          "start": 74.26,
+          "end": 74.36
+        },
+        {
+          "w": "your",
+          "start": 74.36,
+          "end": 74.48
+        },
+        {
+          "w": "model.",
+          "start": 74.48,
+          "end": 74.76
+        },
+        {
+          "w": "It",
+          "start": 75.38,
+          "end": 75.92
+        },
+        {
+          "w": "has",
+          "start": 75.92,
+          "end": 76.06
+        },
+        {
+          "w": "no",
+          "start": 76.06,
+          "end": 76.28
+        },
+        {
+          "w": "entry",
+          "start": 76.28,
+          "end": 76.66
+        },
+        {
+          "w": "for",
+          "start": 76.66,
+          "end": 76.92
+        },
+        {
+          "w": "it.",
+          "start": 76.92,
+          "end": 77.1
+        },
+        {
+          "w": "But",
+          "start": 77.72,
+          "end": 78.26
+        },
+        {
+          "w": "it",
+          "start": 78.26,
+          "end": 78.36
+        },
+        {
+          "w": "can",
+          "start": 78.36,
+          "end": 78.5
+        },
+        {
+          "w": "always",
+          "start": 78.5,
+          "end": 78.8
+        },
+        {
+          "w": "continue",
+          "start": 78.8,
+          "end": 79.28
+        },
+        {
+          "w": "from",
+          "start": 79.28,
+          "end": 79.64
+        },
+        {
+          "w": "a",
+          "start": 79.64,
+          "end": 79.76
+        },
+        {
+          "w": "full",
+          "start": 79.76,
+          "end": 79.96
+        },
+        {
+          "w": "stop.",
+          "start": 79.96,
+          "end": 80.26
+        }
+      ]
+    },
+    {
+      "i": 6,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Replies take time. If nothing's landed by your next punctuation token, leave a gap and fill it in later.",
+      "start": 81.95,
+      "end": 88.34,
+      "words": [
+        {
+          "w": "Replies",
+          "start": 82.1,
+          "end": 82.64
+        },
+        {
+          "w": "take",
+          "start": 82.64,
+          "end": 82.84
+        },
+        {
+          "w": "time.",
+          "start": 82.84,
+          "end": 83.2
+        },
+        {
+          "w": "If",
+          "start": 84.62,
+          "end": 84.74
+        },
+        {
+          "w": "nothing's",
+          "start": 84.74,
+          "end": 84.74
+        },
+        {
+          "w": "landed",
+          "start": 84.74,
+          "end": 84.74
+        },
+        {
+          "w": "by",
+          "start": 84.74,
+          "end": 84.88
+        },
+        {
+          "w": "your",
+          "start": 84.88,
+          "end": 85.04
+        },
+        {
+          "w": "next",
+          "start": 85.04,
+          "end": 85.28
+        },
+        {
+          "w": "punctuation",
+          "start": 85.28,
+          "end": 85.78
+        },
+        {
+          "w": "token,",
+          "start": 85.78,
+          "end": 86.12
+        },
+        {
+          "w": "leave",
+          "start": 86.32,
+          "end": 86.86
+        },
+        {
+          "w": "a",
+          "start": 86.86,
+          "end": 87.02
+        },
+        {
+          "w": "gap",
+          "start": 87.02,
+          "end": 87.26
+        },
+        {
+          "w": "and",
+          "start": 87.26,
+          "end": 87.46
+        },
+        {
+          "w": "fill",
+          "start": 87.46,
+          "end": 87.68
+        },
+        {
+          "w": "it",
+          "start": 87.68,
+          "end": 87.8
+        },
+        {
+          "w": "in",
+          "start": 87.8,
+          "end": 87.9
+        },
+        {
+          "w": "later.",
+          "start": 87.9,
+          "end": 88.14
+        }
+      ]
+    },
+    {
+      "i": 7,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "Here's the bit that matters. The model never learned what comes next. What it \"learned\" is when to ask. And the thing that paused it, sent the message, and spliced the answer back in—that was you. You were the harness.",
+      "start": 89.17,
+      "end": 104.64,
+      "words": [
+        {
+          "w": "Here's",
+          "start": 89.32,
+          "end": 89.8
+        },
+        {
+          "w": "the",
+          "start": 89.8,
+          "end": 89.9
+        },
+        {
+          "w": "bit",
+          "start": 89.9,
+          "end": 90.12
+        },
+        {
+          "w": "that",
+          "start": 90.12,
+          "end": 90.3
+        },
+        {
+          "w": "matters.",
+          "start": 90.3,
+          "end": 90.68
+        },
+        {
+          "w": "The",
+          "start": 91.48,
+          "end": 91.96
+        },
+        {
+          "w": "model",
+          "start": 91.96,
+          "end": 92.22
+        },
+        {
+          "w": "never",
+          "start": 92.22,
+          "end": 92.52
+        },
+        {
+          "w": "learned",
+          "start": 92.52,
+          "end": 92.92
+        },
+        {
+          "w": "what",
+          "start": 92.92,
+          "end": 93.14
+        },
+        {
+          "w": "comes",
+          "start": 93.14,
+          "end": 93.44
+        },
+        {
+          "w": "next.",
+          "start": 93.44,
+          "end": 93.82
+        },
+        {
+          "w": "What",
+          "start": 94.68,
+          "end": 95.16
+        },
+        {
+          "w": "it",
+          "start": 95.16,
+          "end": 95.32
+        },
+        {
+          "w": "\"learned\"",
+          "start": 95.32,
+          "end": 95.7
+        },
+        {
+          "w": "is",
+          "start": 95.7,
+          "end": 96.04
+        },
+        {
+          "w": "when",
+          "start": 96.04,
+          "end": 96.22
+        },
+        {
+          "w": "to",
+          "start": 96.22,
+          "end": 96.42
+        },
+        {
+          "w": "ask.",
+          "start": 96.42,
+          "end": 96.78
+        },
+        {
+          "w": "And",
+          "start": 97.48,
+          "end": 97.96
+        },
+        {
+          "w": "the",
+          "start": 97.96,
+          "end": 98.1
+        },
+        {
+          "w": "thing",
+          "start": 98.1,
+          "end": 98.32
+        },
+        {
+          "w": "that",
+          "start": 98.32,
+          "end": 98.5
+        },
+        {
+          "w": "paused",
+          "start": 98.5,
+          "end": 98.8
+        },
+        {
+          "w": "it,",
+          "start": 98.8,
+          "end": 99.04
+        },
+        {
+          "w": "sent",
+          "start": 99.1,
+          "end": 99.48
+        },
+        {
+          "w": "the",
+          "start": 99.48,
+          "end": 99.66
+        },
+        {
+          "w": "message,",
+          "start": 99.66,
+          "end": 99.98
+        },
+        {
+          "w": "and",
+          "start": 100.22,
+          "end": 100.58
+        },
+        {
+          "w": "spliced",
+          "start": 100.58,
+          "end": 101.02
+        },
+        {
+          "w": "the",
+          "start": 101.02,
+          "end": 101.12
+        },
+        {
+          "w": "answer",
+          "start": 101.12,
+          "end": 101.4
+        },
+        {
+          "w": "back",
+          "start": 101.4,
+          "end": 101.62
+        },
+        {
+          "w": "in,",
+          "start": 101.62,
+          "end": 101.92
+        },
+        {
+          "w": "that",
+          "start": 101.98,
+          "end": 102.24
+        },
+        {
+          "w": "was",
+          "start": 102.24,
+          "end": 102.46
+        },
+        {
+          "w": "you.",
+          "start": 102.46,
+          "end": 102.7
+        },
+        {
+          "w": "You",
+          "start": 103.36,
+          "end": 103.84
+        },
+        {
+          "w": "were",
+          "start": 103.84,
+          "end": 103.98
+        },
+        {
+          "w": "the",
+          "start": 103.98,
+          "end": 104.1
+        },
+        {
+          "w": "harness.",
+          "start": 104.1,
+          "end": 104.44
+        }
+      ]
+    },
+    {
+      "i": 8,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Take the person out, and you've got a model acting on its own. That's what the coverage means by an agent. So: what would you let it do without asking you first?",
+      "start": 106.03,
+      "end": 115.8,
+      "words": [
+        {
+          "w": "Take",
+          "start": 106.18,
+          "end": 106.66
+        },
+        {
+          "w": "the",
+          "start": 106.66,
+          "end": 106.8
+        },
+        {
+          "w": "person",
+          "start": 106.8,
+          "end": 107.06
+        },
+        {
+          "w": "out,",
+          "start": 107.06,
+          "end": 107.32
+        },
+        {
+          "w": "and",
+          "start": 107.48,
+          "end": 107.9
+        },
+        {
+          "w": "you've",
+          "start": 107.9,
+          "end": 108.06
+        },
+        {
+          "w": "got",
+          "start": 108.06,
+          "end": 108.2
+        },
+        {
+          "w": "a",
+          "start": 108.2,
+          "end": 108.3
+        },
+        {
+          "w": "model",
+          "start": 108.3,
+          "end": 108.54
+        },
+        {
+          "w": "acting",
+          "start": 108.54,
+          "end": 108.96
+        },
+        {
+          "w": "on",
+          "start": 108.96,
+          "end": 109.18
+        },
+        {
+          "w": "its",
+          "start": 109.18,
+          "end": 109.28
+        },
+        {
+          "w": "own.",
+          "start": 109.28,
+          "end": 109.52
+        },
+        {
+          "w": "That's",
+          "start": 109.92,
+          "end": 110.4
+        },
+        {
+          "w": "what",
+          "start": 110.4,
+          "end": 110.54
+        },
+        {
+          "w": "the",
+          "start": 110.54,
+          "end": 110.66
+        },
+        {
+          "w": "coverage",
+          "start": 110.66,
+          "end": 110.96
+        },
+        {
+          "w": "means",
+          "start": 110.96,
+          "end": 111.3
+        },
+        {
+          "w": "by",
+          "start": 111.3,
+          "end": 111.64
+        },
+        {
+          "w": "an",
+          "start": 111.64,
+          "end": 111.8
+        },
+        {
+          "w": "agent.",
+          "start": 111.8,
+          "end": 112.06
+        },
+        {
+          "w": "So:",
+          "start": 112.4,
+          "end": 112.88
+        },
+        {
+          "w": "what",
+          "start": 113.08,
+          "end": 113.62
+        },
+        {
+          "w": "would",
+          "start": 113.62,
+          "end": 113.78
+        },
+        {
+          "w": "you",
+          "start": 113.78,
+          "end": 113.92
+        },
+        {
+          "w": "let",
+          "start": 113.92,
+          "end": 114.08
+        },
+        {
+          "w": "it",
+          "start": 114.08,
+          "end": 114.18
+        },
+        {
+          "w": "do",
+          "start": 114.18,
+          "end": 114.36
+        },
+        {
+          "w": "without",
+          "start": 114.62,
+          "end": 114.8
+        },
+        {
+          "w": "asking",
+          "start": 114.8,
+          "end": 115.08
+        },
+        {
+          "w": "you",
+          "start": 115.08,
+          "end": 115.32
+        },
+        {
+          "w": "first?",
+          "start": 115.32,
+          "end": 115.6
+        }
+      ]
+    },
+    {
+      "i": 9,
+      "speaker": "USHINI",
+      "tc": true,
+      "caption": "Don't answer yet. In a few minutes, you'll be the harness.",
+      "start": 116.73,
+      "end": 121.02,
+      "words": [
+        {
+          "w": "Don't",
+          "start": 116.88,
+          "end": 117.36
+        },
+        {
+          "w": "answer",
+          "start": 117.36,
+          "end": 117.68
+        },
+        {
+          "w": "yet.",
+          "start": 117.68,
+          "end": 117.9
+        },
+        {
+          "w": "In",
+          "start": 118.62,
+          "end": 119.1
+        },
+        {
+          "w": "a",
+          "start": 119.1,
+          "end": 119.2
+        },
+        {
+          "w": "few",
+          "start": 119.2,
+          "end": 119.38
+        },
+        {
+          "w": "minutes,",
+          "start": 119.38,
+          "end": 119.7
+        },
+        {
+          "w": "you'll",
+          "start": 119.9,
+          "end": 120.26
+        },
+        {
+          "w": "be",
+          "start": 120.26,
+          "end": 120.38
+        },
+        {
+          "w": "the",
+          "start": 120.38,
+          "end": 120.52
+        },
+        {
+          "w": "harness.",
+          "start": 120.52,
+          "end": 120.82
+        }
+      ]
+    }
+  ]
+}

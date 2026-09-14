@@ -1,0 +1,72 @@
+[
+  {
+    "i": 0,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "This is the one that's all over the news. AI agents: models that browse the web, write code, book flights. It sounds like a whole new kind of technology. It isn't. It's the loop you've already run, with one rule added.",
+    "tts": "This is the one that's all over the news. AI agents: models that browse the web, write code, book flights. It sounds like a whole new kind of technology. It isn't. It's the loop you've already run, with one rule added."
+  },
+  {
+    "i": 1,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "An agent is a model that can pause, get something from outside itself, and carry on.",
+    "tts": "An agent is a model that can pause, get something from outside itself, and carry on."
+  },
+  {
+    "i": 2,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Here's the rule. Generate from your booklet exactly as before, rolling for each next word. The moment you roll a punctuation token—a full stop, a comma—stop. That's a tool call.",
+    "tts": "Here's the rule. Generate from your booklet exactly as before, rolling for each next word. The moment you roll a punctuation token, a full stop, a comma, stop. That's a tool call."
+  },
+  {
+    "i": 3,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "The tool is a text message. Send \"What comes next?\" and the sentence so far—everything since the last full stop—to three friends or group chats. Say your text is \"the cat sat\" and you've just rolled a full stop. You text: What comes next? \"the cat sat…\"",
+    "tts": "The tool is a text message. Send \"What comes next?\" and the sentence so far, everything since the last full stop, to three friends or group chats. Say your text is \"the cat sat\" and you've just rolled a full stop. You text: What comes next? \"the cat sat…\""
+  },
+  {
+    "i": 4,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "The first reply back is your tool result. Write down the whole thing—\"out on the verandah\"—and then the full stop you rolled. Then keep generating, from the full stop.",
+    "tts": "The first reply back is your tool result. Write down the whole thing, \"out on the verandah\", and then the full stop you rolled. Then keep generating, from the full stop."
+  },
+  {
+    "i": 5,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Why from the full stop and not from \"verandah\"? Because \"verandah\" probably isn't in your model. It has no entry for it. But it can always continue from a full stop.",
+    "tts": "Why from the full stop and not from \"verandah\"? Because \"verandah\" probably isn't in your model. It has no entry for it. But it can always continue from a full stop."
+  },
+  {
+    "i": 6,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Replies take time. If nothing's landed by your next punctuation token, leave a gap and fill it in later.",
+    "tts": "Replies take time. If nothing's landed by your next punctuation token, leave a gap and fill it in later."
+  },
+  {
+    "i": 7,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Here's the bit that matters. The model never learned what comes next. What it \"learned\" is when to ask. And the thing that paused it, sent the message, and spliced the answer back in—that was you. You were the harness.",
+    "tts": "Here's the bit that matters. The model never learned what comes next. What it \"learned\" is when to ask. And the thing that paused it, sent the message, and spliced the answer back in, that was you. You were the harness."
+  },
+  {
+    "i": 8,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Take the person out, and you've got a model acting on its own. That's what the coverage means by an agent. So: what would you let it do without asking you first?",
+    "tts": "Take the person out, and you've got a model acting on its own. That's what the coverage means by an agent. So: what would you let it do without asking you first?"
+  },
+  {
+    "i": 9,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "Don't answer yet. In a few minutes, you'll be the harness.",
+    "tts": "Don't answer yet. In a few minutes, you'll be the harness."
+  }
+]

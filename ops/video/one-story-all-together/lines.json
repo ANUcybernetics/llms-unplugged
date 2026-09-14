@@ -1,0 +1,65 @@
+[
+  {
+    "i": 0,
+    "speaker": "BEN",
+    "tc": true,
+    "caption": "Every group in this room trained on a different text. Nobody has kookaburra except the kookaburra group. Nobody has yabby except the creek group.",
+    "tts": "Every group in this room trained on a different text. Nobody has kookaburra except the kookaburra group. Nobody has yabby except the creek group."
+  },
+  {
+    "i": 1,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "But the room has all of them.",
+    "tts": "But the room has all of them."
+  },
+  {
+    "i": 2,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Here's the same word, the, from five different models. Five honest counts of five different texts, five different answers. None of them is wrong. And read down the followers and you can name the text: sand and water, sky and rain, kookaburra and gum.",
+    "tts": "Here's the same word, the, from five different models. Five honest counts of five different texts, five different answers. None of them is wrong. And read down the followers and you can name the text: sand and water, sky and rain, kookaburra and gum."
+  },
+  {
+    "i": 3,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Together, the class holds a bigger model than any one group. So let's generate from it.",
+    "tts": "Together, the class holds a bigger model than any one group. So let's generate from it."
+  },
+  {
+    "i": 4,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Two steps per word, same as always. Call out the word we're on. Hands up if your sheets have a row for it—the show of hands picks the group. That group reads out its colours and tallies: two red, two blue, two green, two yellow. The counters go in the cup up the front, one comes out, and that group reads the word beside the colour. The cup picks the word.",
+    "tts": "Two steps per word, same as always. Call out the word we're on. Hands up if your sheets have a row for it, the show of hands picks the group. That group reads out its colours and tallies: two red, two blue, two green, two yellow. The counters go in the cup up the front, one comes out, and that group reads the word beside the colour. The cup picks the word."
+  },
+  {
+    "i": 5,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Yellow. That group's yellow word is yabby. It goes on the class story, and yabby is the next word we hunt for.",
+    "tts": "Yellow. That group's yellow word is yabby. It goes on the class story, and yabby is the next word we hunt for."
+  },
+  {
+    "i": 6,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "And that's the fun of it. A word only one group ever saw just landed in everyone's story. The class model can say things most of the room's models never could.",
+    "tts": "And that's the fun of it. A word only one group ever saw just landed in everyone's story. The class model can say things most of the room's models never could."
+  },
+  {
+    "i": 7,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Which is what a big model is. Many texts, pooled into one set of counts, so it can say things no single text could. And notice: a bigger model still runs one word at a time.",
+    "tts": "Which is what a big model is. Many texts, pooled into one set of counts, so it can say things no single text could. And notice: a bigger model still runs one word at a time."
+  },
+  {
+    "i": 8,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "Butchers paper up the front. First word: the. Hands up.",
+    "tts": "Butchers paper up the front. First word: the. Hands up."
+  }
+]

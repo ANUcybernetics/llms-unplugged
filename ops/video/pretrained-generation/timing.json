@@ -1,0 +1,1682 @@
+{
+  "slug": "pretrained-generation",
+  "audio": "assets/voice.wav",
+  "duration": 123.548,
+  "lines": [
+    {
+      "i": 0,
+      "speaker": "USHINI",
+      "tc": true,
+      "caption": "This next bit looks like the exercise you just did, again. It isn't. It's the first turn of a dial that ends at Claude or ChatGPT.",
+      "start": 0.15,
+      "end": 10.36,
+      "words": [
+        {
+          "w": "This",
+          "start": 0.3,
+          "end": 0.8
+        },
+        {
+          "w": "next",
+          "start": 0.8,
+          "end": 1.08
+        },
+        {
+          "w": "bit",
+          "start": 1.08,
+          "end": 1.32
+        },
+        {
+          "w": "looks",
+          "start": 1.32,
+          "end": 1.48
+        },
+        {
+          "w": "like",
+          "start": 1.48,
+          "end": 1.8
+        },
+        {
+          "w": "the",
+          "start": 1.8,
+          "end": 1.94
+        },
+        {
+          "w": "exercise",
+          "start": 1.94,
+          "end": 2.34
+        },
+        {
+          "w": "you",
+          "start": 2.34,
+          "end": 2.78
+        },
+        {
+          "w": "just",
+          "start": 2.78,
+          "end": 3.02
+        },
+        {
+          "w": "did,",
+          "start": 3.02,
+          "end": 3.34
+        },
+        {
+          "w": "again.",
+          "start": 3.42,
+          "end": 3.76
+        },
+        {
+          "w": "It",
+          "start": 4.58,
+          "end": 5.1
+        },
+        {
+          "w": "isn't.",
+          "start": 5.1,
+          "end": 5.58
+        },
+        {
+          "w": "It's",
+          "start": 6.18,
+          "end": 6.7
+        },
+        {
+          "w": "the",
+          "start": 6.7,
+          "end": 6.76
+        },
+        {
+          "w": "first",
+          "start": 6.76,
+          "end": 7.08
+        },
+        {
+          "w": "turn",
+          "start": 7.08,
+          "end": 7.38
+        },
+        {
+          "w": "of",
+          "start": 7.38,
+          "end": 7.56
+        },
+        {
+          "w": "a",
+          "start": 7.56,
+          "end": 7.66
+        },
+        {
+          "w": "dial",
+          "start": 7.66,
+          "end": 7.98
+        },
+        {
+          "w": "that",
+          "start": 7.98,
+          "end": 8.24
+        },
+        {
+          "w": "ends",
+          "start": 8.24,
+          "end": 8.54
+        },
+        {
+          "w": "at",
+          "start": 8.54,
+          "end": 8.74
+        },
+        {
+          "w": "Claude",
+          "start": 8.74,
+          "end": 9.12
+        },
+        {
+          "w": "or",
+          "start": 9.12,
+          "end": 9.32
+        },
+        {
+          "w": "ChatGPT.",
+          "start": 9.32,
+          "end": 10.16
+        }
+      ]
+    },
+    {
+      "i": 1,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Most people who use Claude or ChatGPT never trained it. Somebody else did the counting; you type a prompt and it generates. That's exactly what this booklet is: a model somebody else already trained, on a much bigger text than yours.",
+      "start": 11.73,
+      "end": 25.6,
+      "words": [
+        {
+          "w": "Most",
+          "start": 11.88,
+          "end": 12.4
+        },
+        {
+          "w": "people",
+          "start": 12.4,
+          "end": 12.68
+        },
+        {
+          "w": "who",
+          "start": 12.68,
+          "end": 12.9
+        },
+        {
+          "w": "use",
+          "start": 12.9,
+          "end": 13.14
+        },
+        {
+          "w": "Claude",
+          "start": 13.14,
+          "end": 13.56
+        },
+        {
+          "w": "or",
+          "start": 13.56,
+          "end": 13.78
+        },
+        {
+          "w": "ChatGPT",
+          "start": 13.78,
+          "end": 14.5
+        },
+        {
+          "w": "never",
+          "start": 14.5,
+          "end": 14.9
+        },
+        {
+          "w": "trained",
+          "start": 14.9,
+          "end": 15.28
+        },
+        {
+          "w": "it.",
+          "start": 15.28,
+          "end": 15.42
+        },
+        {
+          "w": "Somebody",
+          "start": 15.74,
+          "end": 16.26
+        },
+        {
+          "w": "else",
+          "start": 16.26,
+          "end": 16.58
+        },
+        {
+          "w": "did",
+          "start": 16.58,
+          "end": 16.8
+        },
+        {
+          "w": "the",
+          "start": 16.8,
+          "end": 16.9
+        },
+        {
+          "w": "counting;",
+          "start": 16.9,
+          "end": 17.16
+        },
+        {
+          "w": "you",
+          "start": 17.32,
+          "end": 17.84
+        },
+        {
+          "w": "type",
+          "start": 17.84,
+          "end": 18.08
+        },
+        {
+          "w": "a",
+          "start": 18.08,
+          "end": 18.2
+        },
+        {
+          "w": "prompt",
+          "start": 18.2,
+          "end": 18.46
+        },
+        {
+          "w": "and",
+          "start": 18.46,
+          "end": 18.72
+        },
+        {
+          "w": "it",
+          "start": 18.72,
+          "end": 18.82
+        },
+        {
+          "w": "generates.",
+          "start": 18.82,
+          "end": 19.18
+        },
+        {
+          "w": "That's",
+          "start": 19.64,
+          "end": 20.16
+        },
+        {
+          "w": "exactly",
+          "start": 20.16,
+          "end": 20.42
+        },
+        {
+          "w": "what",
+          "start": 20.42,
+          "end": 20.7
+        },
+        {
+          "w": "this",
+          "start": 20.7,
+          "end": 20.88
+        },
+        {
+          "w": "booklet",
+          "start": 20.88,
+          "end": 21.12
+        },
+        {
+          "w": "is:",
+          "start": 21.12,
+          "end": 21.38
+        },
+        {
+          "w": "a",
+          "start": 21.48,
+          "end": 21.98
+        },
+        {
+          "w": "model",
+          "start": 21.98,
+          "end": 22.2
+        },
+        {
+          "w": "somebody",
+          "start": 22.2,
+          "end": 22.5
+        },
+        {
+          "w": "else",
+          "start": 22.5,
+          "end": 22.8
+        },
+        {
+          "w": "already",
+          "start": 22.8,
+          "end": 23.12
+        },
+        {
+          "w": "trained,",
+          "start": 23.12,
+          "end": 23.58
+        },
+        {
+          "w": "on",
+          "start": 23.7,
+          "end": 24.08
+        },
+        {
+          "w": "a",
+          "start": 24.08,
+          "end": 24.16
+        },
+        {
+          "w": "much",
+          "start": 24.16,
+          "end": 24.32
+        },
+        {
+          "w": "bigger",
+          "start": 24.32,
+          "end": 24.62
+        },
+        {
+          "w": "text",
+          "start": 24.62,
+          "end": 24.96
+        },
+        {
+          "w": "than",
+          "start": 24.96,
+          "end": 25.16
+        },
+        {
+          "w": "yours.",
+          "start": 25.16,
+          "end": 25.4
+        }
+      ]
+    },
+    {
+      "i": 2,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Each entry is a word. Under it are the words that can follow, each with a threshold. Pick a starting word, find its entry, roll a d10, and take the first threshold at or above your roll. Write the word down, turn to its entry, roll again.",
+      "start": 26.35,
+      "end": 41.62,
+      "words": [
+        {
+          "w": "Each",
+          "start": 26.5,
+          "end": 27.02
+        },
+        {
+          "w": "entry",
+          "start": 27.02,
+          "end": 27.32
+        },
+        {
+          "w": "is",
+          "start": 27.32,
+          "end": 27.6
+        },
+        {
+          "w": "a",
+          "start": 27.6,
+          "end": 27.74
+        },
+        {
+          "w": "word.",
+          "start": 27.74,
+          "end": 27.96
+        },
+        {
+          "w": "Under",
+          "start": 27.96,
+          "end": 28.74
+        },
+        {
+          "w": "it",
+          "start": 28.74,
+          "end": 28.98
+        },
+        {
+          "w": "are",
+          "start": 28.98,
+          "end": 29.06
+        },
+        {
+          "w": "the",
+          "start": 29.06,
+          "end": 29.14
+        },
+        {
+          "w": "words",
+          "start": 29.14,
+          "end": 29.46
+        },
+        {
+          "w": "that",
+          "start": 29.46,
+          "end": 29.64
+        },
+        {
+          "w": "can",
+          "start": 29.64,
+          "end": 29.76
+        },
+        {
+          "w": "follow,",
+          "start": 29.76,
+          "end": 30.1
+        },
+        {
+          "w": "each",
+          "start": 30.24,
+          "end": 30.74
+        },
+        {
+          "w": "with",
+          "start": 30.74,
+          "end": 30.92
+        },
+        {
+          "w": "a",
+          "start": 30.92,
+          "end": 31.02
+        },
+        {
+          "w": "threshold.",
+          "start": 31.02,
+          "end": 31.34
+        },
+        {
+          "w": "Pick",
+          "start": 31.66,
+          "end": 32.18
+        },
+        {
+          "w": "a",
+          "start": 32.18,
+          "end": 32.32
+        },
+        {
+          "w": "starting",
+          "start": 32.32,
+          "end": 32.58
+        },
+        {
+          "w": "word,",
+          "start": 32.58,
+          "end": 32.88
+        },
+        {
+          "w": "find",
+          "start": 33.04,
+          "end": 33.44
+        },
+        {
+          "w": "its",
+          "start": 33.44,
+          "end": 33.62
+        },
+        {
+          "w": "entry,",
+          "start": 33.62,
+          "end": 33.88
+        },
+        {
+          "w": "roll",
+          "start": 34.04,
+          "end": 34.48
+        },
+        {
+          "w": "a",
+          "start": 34.44,
+          "end": 34.887
+        },
+        {
+          "w": "d10,",
+          "start": 34.84,
+          "end": 35.293
+        },
+        {
+          "w": "and",
+          "start": 35.24,
+          "end": 35.7
+        },
+        {
+          "w": "take",
+          "start": 35.7,
+          "end": 35.88
+        },
+        {
+          "w": "the",
+          "start": 35.88,
+          "end": 36.04
+        },
+        {
+          "w": "first",
+          "start": 36.04,
+          "end": 36.22
+        },
+        {
+          "w": "threshold",
+          "start": 36.22,
+          "end": 36.68
+        },
+        {
+          "w": "at",
+          "start": 36.68,
+          "end": 36.98
+        },
+        {
+          "w": "or",
+          "start": 36.98,
+          "end": 37.18
+        },
+        {
+          "w": "above",
+          "start": 37.18,
+          "end": 37.48
+        },
+        {
+          "w": "your",
+          "start": 37.48,
+          "end": 37.66
+        },
+        {
+          "w": "roll.",
+          "start": 37.66,
+          "end": 37.84
+        },
+        {
+          "w": "Write",
+          "start": 38.2,
+          "end": 38.72
+        },
+        {
+          "w": "the",
+          "start": 38.72,
+          "end": 38.86
+        },
+        {
+          "w": "word",
+          "start": 38.86,
+          "end": 39.06
+        },
+        {
+          "w": "down,",
+          "start": 39.06,
+          "end": 39.36
+        },
+        {
+          "w": "turn",
+          "start": 39.56,
+          "end": 40.0
+        },
+        {
+          "w": "to",
+          "start": 40.0,
+          "end": 40.16
+        },
+        {
+          "w": "its",
+          "start": 40.16,
+          "end": 40.3
+        },
+        {
+          "w": "entry,",
+          "start": 40.3,
+          "end": 40.6
+        },
+        {
+          "w": "roll",
+          "start": 40.78,
+          "end": 41.18
+        },
+        {
+          "w": "again.",
+          "start": 41.18,
+          "end": 41.42
+        }
+      ]
+    },
+    {
+      "i": 3,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "Some words have more than ten options. Look for the diamonds: one diamond, one die; two diamonds, roll two and read them as digits, so a six and an eight is sixty-eight. Same mechanism, and it scales as far as you want. And if an entry has only one option, don't roll—just write it.",
+      "start": 42.47,
+      "end": 63.62,
+      "words": [
+        {
+          "w": "Some",
+          "start": 42.62,
+          "end": 43.14
+        },
+        {
+          "w": "words",
+          "start": 43.14,
+          "end": 43.4
+        },
+        {
+          "w": "have",
+          "start": 43.4,
+          "end": 43.72
+        },
+        {
+          "w": "more",
+          "start": 43.72,
+          "end": 43.96
+        },
+        {
+          "w": "than",
+          "start": 43.96,
+          "end": 44.16
+        },
+        {
+          "w": "ten",
+          "start": 44.16,
+          "end": 44.4
+        },
+        {
+          "w": "options.",
+          "start": 44.4,
+          "end": 44.74
+        },
+        {
+          "w": "Look",
+          "start": 45.76,
+          "end": 46.28
+        },
+        {
+          "w": "for",
+          "start": 46.28,
+          "end": 46.44
+        },
+        {
+          "w": "the",
+          "start": 46.44,
+          "end": 46.54
+        },
+        {
+          "w": "diamonds:",
+          "start": 46.54,
+          "end": 46.86
+        },
+        {
+          "w": "one",
+          "start": 47.14,
+          "end": 47.6
+        },
+        {
+          "w": "diamond,",
+          "start": 47.6,
+          "end": 48.06
+        },
+        {
+          "w": "one",
+          "start": 48.3,
+          "end": 48.66
+        },
+        {
+          "w": "die;",
+          "start": 48.66,
+          "end": 48.96
+        },
+        {
+          "w": "two",
+          "start": 49.18,
+          "end": 49.58
+        },
+        {
+          "w": "diamonds,",
+          "start": 49.58,
+          "end": 50.0
+        },
+        {
+          "w": "roll",
+          "start": 50.26,
+          "end": 50.58
+        },
+        {
+          "w": "two",
+          "start": 50.58,
+          "end": 50.88
+        },
+        {
+          "w": "and",
+          "start": 50.88,
+          "end": 51.1
+        },
+        {
+          "w": "read",
+          "start": 51.1,
+          "end": 51.32
+        },
+        {
+          "w": "them",
+          "start": 51.32,
+          "end": 51.5
+        },
+        {
+          "w": "as",
+          "start": 51.5,
+          "end": 51.68
+        },
+        {
+          "w": "digits,",
+          "start": 51.68,
+          "end": 51.96
+        },
+        {
+          "w": "so",
+          "start": 52.22,
+          "end": 52.66
+        },
+        {
+          "w": "a",
+          "start": 52.66,
+          "end": 52.8
+        },
+        {
+          "w": "six",
+          "start": 52.8,
+          "end": 53.02
+        },
+        {
+          "w": "and",
+          "start": 53.02,
+          "end": 53.26
+        },
+        {
+          "w": "an",
+          "start": 53.26,
+          "end": 53.38
+        },
+        {
+          "w": "eight",
+          "start": 53.38,
+          "end": 53.66
+        },
+        {
+          "w": "is",
+          "start": 53.66,
+          "end": 53.86
+        },
+        {
+          "w": "sixty-eight.",
+          "start": 54.47,
+          "end": 54.83
+        },
+        {
+          "w": "Same",
+          "start": 55.28,
+          "end": 55.8
+        },
+        {
+          "w": "mechanism,",
+          "start": 55.8,
+          "end": 56.22
+        },
+        {
+          "w": "and",
+          "start": 56.42,
+          "end": 56.78
+        },
+        {
+          "w": "it",
+          "start": 56.78,
+          "end": 56.9
+        },
+        {
+          "w": "scales",
+          "start": 56.9,
+          "end": 57.18
+        },
+        {
+          "w": "as",
+          "start": 57.18,
+          "end": 57.56
+        },
+        {
+          "w": "far",
+          "start": 57.56,
+          "end": 57.86
+        },
+        {
+          "w": "as",
+          "start": 57.96,
+          "end": 58.08
+        },
+        {
+          "w": "you",
+          "start": 58.08,
+          "end": 58.22
+        },
+        {
+          "w": "want.",
+          "start": 58.22,
+          "end": 58.5
+        },
+        {
+          "w": "And",
+          "start": 59.18,
+          "end": 59.7
+        },
+        {
+          "w": "if",
+          "start": 59.7,
+          "end": 59.82
+        },
+        {
+          "w": "an",
+          "start": 59.82,
+          "end": 59.94
+        },
+        {
+          "w": "entry",
+          "start": 59.94,
+          "end": 60.24
+        },
+        {
+          "w": "has",
+          "start": 60.24,
+          "end": 60.5
+        },
+        {
+          "w": "only",
+          "start": 60.5,
+          "end": 60.78
+        },
+        {
+          "w": "one",
+          "start": 60.78,
+          "end": 61.04
+        },
+        {
+          "w": "option,",
+          "start": 61.04,
+          "end": 61.42
+        },
+        {
+          "w": "don't",
+          "start": 61.6,
+          "end": 62.14
+        },
+        {
+          "w": "roll,",
+          "start": 62.14,
+          "end": 62.32
+        },
+        {
+          "w": "just",
+          "start": 62.54,
+          "end": 62.86
+        },
+        {
+          "w": "write",
+          "start": 62.86,
+          "end": 63.22
+        },
+        {
+          "w": "it.",
+          "start": 63.22,
+          "end": 63.42
+        }
+      ]
+    },
+    {
+      "i": 4,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "As you go, listen to what comes out. It'll sound more like real prose than your grid did. And it still won't be about anything. Hold onto that question.",
+      "start": 64.59,
+      "end": 74.34,
+      "words": [
+        {
+          "w": "As",
+          "start": 64.74,
+          "end": 65.26
+        },
+        {
+          "w": "you",
+          "start": 65.26,
+          "end": 65.4
+        },
+        {
+          "w": "go,",
+          "start": 65.4,
+          "end": 65.6
+        },
+        {
+          "w": "listen",
+          "start": 65.76,
+          "end": 66.3
+        },
+        {
+          "w": "to",
+          "start": 66.3,
+          "end": 66.56
+        },
+        {
+          "w": "what",
+          "start": 66.56,
+          "end": 66.74
+        },
+        {
+          "w": "comes",
+          "start": 66.74,
+          "end": 66.98
+        },
+        {
+          "w": "out.",
+          "start": 66.98,
+          "end": 67.24
+        },
+        {
+          "w": "It'll",
+          "start": 67.46,
+          "end": 67.98
+        },
+        {
+          "w": "sound",
+          "start": 67.98,
+          "end": 68.24
+        },
+        {
+          "w": "more",
+          "start": 68.24,
+          "end": 68.52
+        },
+        {
+          "w": "like",
+          "start": 68.52,
+          "end": 68.78
+        },
+        {
+          "w": "real",
+          "start": 68.78,
+          "end": 69.02
+        },
+        {
+          "w": "prose",
+          "start": 69.02,
+          "end": 69.3
+        },
+        {
+          "w": "than",
+          "start": 69.3,
+          "end": 69.54
+        },
+        {
+          "w": "your",
+          "start": 69.54,
+          "end": 69.7
+        },
+        {
+          "w": "grid",
+          "start": 69.7,
+          "end": 69.9
+        },
+        {
+          "w": "did.",
+          "start": 69.9,
+          "end": 70.12
+        },
+        {
+          "w": "And",
+          "start": 70.34,
+          "end": 70.86
+        },
+        {
+          "w": "it",
+          "start": 70.86,
+          "end": 70.98
+        },
+        {
+          "w": "still",
+          "start": 70.98,
+          "end": 71.2
+        },
+        {
+          "w": "won't",
+          "start": 71.2,
+          "end": 71.6
+        },
+        {
+          "w": "be",
+          "start": 71.6,
+          "end": 71.72
+        },
+        {
+          "w": "about",
+          "start": 71.72,
+          "end": 71.9
+        },
+        {
+          "w": "anything.",
+          "start": 71.9,
+          "end": 72.3
+        },
+        {
+          "w": "Hold",
+          "start": 72.76,
+          "end": 73.28
+        },
+        {
+          "w": "onto",
+          "start": 73.17,
+          "end": 73.51
+        },
+        {
+          "w": "that",
+          "start": 73.58,
+          "end": 73.74
+        },
+        {
+          "w": "question.",
+          "start": 73.74,
+          "end": 74.14
+        }
+      ]
+    },
+    {
+      "i": 5,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "Your booklet was trained on a real text—maybe Frankenstein, maybe Green Eggs and Ham. The patterns leak through. Try to guess the book before you check the cover.",
+      "start": 75.05,
+      "end": 86.24,
+      "words": [
+        {
+          "w": "Your",
+          "start": 75.2,
+          "end": 75.72
+        },
+        {
+          "w": "booklet",
+          "start": 75.72,
+          "end": 75.98
+        },
+        {
+          "w": "was",
+          "start": 75.98,
+          "end": 76.24
+        },
+        {
+          "w": "trained",
+          "start": 76.24,
+          "end": 76.52
+        },
+        {
+          "w": "on",
+          "start": 76.52,
+          "end": 76.74
+        },
+        {
+          "w": "a",
+          "start": 76.74,
+          "end": 76.84
+        },
+        {
+          "w": "real",
+          "start": 76.84,
+          "end": 77.06
+        },
+        {
+          "w": "text,",
+          "start": 77.06,
+          "end": 77.48
+        },
+        {
+          "w": "maybe",
+          "start": 77.66,
+          "end": 78.08
+        },
+        {
+          "w": "Frankenstein,",
+          "start": 78.08,
+          "end": 78.94
+        },
+        {
+          "w": "maybe",
+          "start": 78.94,
+          "end": 79.54
+        },
+        {
+          "w": "Green",
+          "start": 79.54,
+          "end": 79.84
+        },
+        {
+          "w": "Eggs",
+          "start": 79.84,
+          "end": 80.16
+        },
+        {
+          "w": "and",
+          "start": 80.16,
+          "end": 80.4
+        },
+        {
+          "w": "Ham.",
+          "start": 80.4,
+          "end": 80.64
+        },
+        {
+          "w": "The",
+          "start": 81.26,
+          "end": 81.78
+        },
+        {
+          "w": "patterns",
+          "start": 81.78,
+          "end": 82.22
+        },
+        {
+          "w": "leak",
+          "start": 82.22,
+          "end": 82.5
+        },
+        {
+          "w": "through.",
+          "start": 82.5,
+          "end": 82.8
+        },
+        {
+          "w": "Try",
+          "start": 83.52,
+          "end": 84.04
+        },
+        {
+          "w": "to",
+          "start": 84.04,
+          "end": 84.26
+        },
+        {
+          "w": "guess",
+          "start": 84.26,
+          "end": 84.44
+        },
+        {
+          "w": "the",
+          "start": 84.44,
+          "end": 84.6
+        },
+        {
+          "w": "book",
+          "start": 84.6,
+          "end": 84.78
+        },
+        {
+          "w": "before",
+          "start": 84.78,
+          "end": 85.04
+        },
+        {
+          "w": "you",
+          "start": 85.04,
+          "end": 85.32
+        },
+        {
+          "w": "check",
+          "start": 85.32,
+          "end": 85.58
+        },
+        {
+          "w": "the",
+          "start": 85.58,
+          "end": 85.76
+        },
+        {
+          "w": "cover.",
+          "start": 85.76,
+          "end": 86.04
+        }
+      ]
+    },
+    {
+      "i": 6,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "One honest note: a real model isn't trained on one book. It's billions of pages stitched together from everywhere. The single mystery text is just what makes this game playable.",
+      "start": 87.81,
+      "end": 97.66,
+      "words": [
+        {
+          "w": "One",
+          "start": 87.96,
+          "end": 88.06
+        },
+        {
+          "w": "honest",
+          "start": 88.06,
+          "end": 88.38
+        },
+        {
+          "w": "note:",
+          "start": 88.38,
+          "end": 88.64
+        },
+        {
+          "w": "a",
+          "start": 88.78,
+          "end": 89.18
+        },
+        {
+          "w": "real",
+          "start": 89.18,
+          "end": 89.42
+        },
+        {
+          "w": "model",
+          "start": 89.42,
+          "end": 89.68
+        },
+        {
+          "w": "isn't",
+          "start": 89.68,
+          "end": 90.1
+        },
+        {
+          "w": "trained",
+          "start": 90.1,
+          "end": 90.36
+        },
+        {
+          "w": "on",
+          "start": 90.36,
+          "end": 90.6
+        },
+        {
+          "w": "one",
+          "start": 90.6,
+          "end": 90.78
+        },
+        {
+          "w": "book.",
+          "start": 90.78,
+          "end": 91.0
+        },
+        {
+          "w": "It's",
+          "start": 91.2,
+          "end": 91.76
+        },
+        {
+          "w": "billions",
+          "start": 91.76,
+          "end": 92.04
+        },
+        {
+          "w": "of",
+          "start": 92.04,
+          "end": 92.24
+        },
+        {
+          "w": "pages",
+          "start": 92.24,
+          "end": 92.54
+        },
+        {
+          "w": "stitched",
+          "start": 92.54,
+          "end": 92.94
+        },
+        {
+          "w": "together",
+          "start": 92.94,
+          "end": 93.36
+        },
+        {
+          "w": "from",
+          "start": 93.36,
+          "end": 93.66
+        },
+        {
+          "w": "everywhere.",
+          "start": 93.66,
+          "end": 94.04
+        },
+        {
+          "w": "The",
+          "start": 94.56,
+          "end": 94.84
+        },
+        {
+          "w": "single",
+          "start": 94.84,
+          "end": 95.14
+        },
+        {
+          "w": "mystery",
+          "start": 95.14,
+          "end": 95.36
+        },
+        {
+          "w": "text",
+          "start": 95.36,
+          "end": 95.72
+        },
+        {
+          "w": "is",
+          "start": 95.72,
+          "end": 96.02
+        },
+        {
+          "w": "just",
+          "start": 96.02,
+          "end": 96.28
+        },
+        {
+          "w": "what",
+          "start": 96.28,
+          "end": 96.5
+        },
+        {
+          "w": "makes",
+          "start": 96.5,
+          "end": 96.76
+        },
+        {
+          "w": "this",
+          "start": 96.76,
+          "end": 96.96
+        },
+        {
+          "w": "game",
+          "start": 96.96,
+          "end": 97.18
+        },
+        {
+          "w": "playable.",
+          "start": 97.18,
+          "end": 97.46
+        }
+      ]
+    },
+    {
+      "i": 7,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "And one thing the booklet gets exactly right: you can read every number in this model, and generate from it at the kitchen table. Nobody can switch it off or quietly change it under you. That's what \"open weights\" means.",
+      "start": 98.55,
+      "end": 112.42,
+      "words": [
+        {
+          "w": "And",
+          "start": 98.7,
+          "end": 98.98
+        },
+        {
+          "w": "one",
+          "start": 98.98,
+          "end": 99.16
+        },
+        {
+          "w": "thing",
+          "start": 99.16,
+          "end": 99.46
+        },
+        {
+          "w": "the",
+          "start": 99.46,
+          "end": 99.58
+        },
+        {
+          "w": "booklet",
+          "start": 99.58,
+          "end": 99.82
+        },
+        {
+          "w": "gets",
+          "start": 99.82,
+          "end": 100.12
+        },
+        {
+          "w": "exactly",
+          "start": 100.12,
+          "end": 100.56
+        },
+        {
+          "w": "right:",
+          "start": 100.56,
+          "end": 100.98
+        },
+        {
+          "w": "you",
+          "start": 101.1,
+          "end": 101.64
+        },
+        {
+          "w": "can",
+          "start": 101.64,
+          "end": 101.82
+        },
+        {
+          "w": "read",
+          "start": 101.82,
+          "end": 102.1
+        },
+        {
+          "w": "every",
+          "start": 102.1,
+          "end": 102.4
+        },
+        {
+          "w": "number",
+          "start": 102.4,
+          "end": 102.72
+        },
+        {
+          "w": "in",
+          "start": 102.72,
+          "end": 102.94
+        },
+        {
+          "w": "this",
+          "start": 102.94,
+          "end": 103.08
+        },
+        {
+          "w": "model,",
+          "start": 103.08,
+          "end": 103.42
+        },
+        {
+          "w": "and",
+          "start": 103.42,
+          "end": 103.94
+        },
+        {
+          "w": "generate",
+          "start": 103.94,
+          "end": 104.3
+        },
+        {
+          "w": "from",
+          "start": 104.3,
+          "end": 104.64
+        },
+        {
+          "w": "it",
+          "start": 104.64,
+          "end": 104.76
+        },
+        {
+          "w": "at",
+          "start": 104.76,
+          "end": 104.88
+        },
+        {
+          "w": "the",
+          "start": 104.88,
+          "end": 104.96
+        },
+        {
+          "w": "kitchen",
+          "start": 104.96,
+          "end": 105.24
+        },
+        {
+          "w": "table.",
+          "start": 105.24,
+          "end": 105.58
+        },
+        {
+          "w": "Nobody",
+          "start": 106.44,
+          "end": 107.0
+        },
+        {
+          "w": "can",
+          "start": 107.0,
+          "end": 107.3
+        },
+        {
+          "w": "switch",
+          "start": 107.3,
+          "end": 107.58
+        },
+        {
+          "w": "it",
+          "start": 107.58,
+          "end": 107.72
+        },
+        {
+          "w": "off",
+          "start": 107.72,
+          "end": 107.92
+        },
+        {
+          "w": "or",
+          "start": 107.92,
+          "end": 108.26
+        },
+        {
+          "w": "quietly",
+          "start": 108.26,
+          "end": 108.64
+        },
+        {
+          "w": "change",
+          "start": 108.64,
+          "end": 109.0
+        },
+        {
+          "w": "it",
+          "start": 109.0,
+          "end": 109.24
+        },
+        {
+          "w": "under",
+          "start": 109.24,
+          "end": 109.44
+        },
+        {
+          "w": "you.",
+          "start": 109.44,
+          "end": 109.66
+        },
+        {
+          "w": "That's",
+          "start": 110.44,
+          "end": 111.0
+        },
+        {
+          "w": "what",
+          "start": 111.0,
+          "end": 111.18
+        },
+        {
+          "w": "\"open",
+          "start": 111.18,
+          "end": 111.54
+        },
+        {
+          "w": "weights\"",
+          "start": 111.54,
+          "end": 111.84
+        },
+        {
+          "w": "means.",
+          "start": 111.84,
+          "end": 112.22
+        }
+      ]
+    },
+    {
+      "i": 8,
+      "speaker": "BEN",
+      "tc": true,
+      "caption": "Grab your booklet and start rolling. If you'd like to make your own from any text, the tool's at llmsunplugged.org/tools.",
+      "start": 113.81,
+      "end": 119.85,
+      "words": [
+        {
+          "w": "Grab",
+          "start": 113.96,
+          "end": 114.52
+        },
+        {
+          "w": "your",
+          "start": 114.52,
+          "end": 114.7
+        },
+        {
+          "w": "booklet",
+          "start": 114.7,
+          "end": 115.04
+        },
+        {
+          "w": "and",
+          "start": 115.04,
+          "end": 115.32
+        },
+        {
+          "w": "start",
+          "start": 115.32,
+          "end": 115.56
+        },
+        {
+          "w": "rolling.",
+          "start": 115.56,
+          "end": 115.92
+        },
+        {
+          "w": "If",
+          "start": 116.12,
+          "end": 116.68
+        },
+        {
+          "w": "you'd",
+          "start": 116.68,
+          "end": 116.82
+        },
+        {
+          "w": "like",
+          "start": 116.82,
+          "end": 116.96
+        },
+        {
+          "w": "to",
+          "start": 116.96,
+          "end": 117.12
+        },
+        {
+          "w": "make",
+          "start": 117.12,
+          "end": 117.22
+        },
+        {
+          "w": "your",
+          "start": 117.22,
+          "end": 117.4
+        },
+        {
+          "w": "own",
+          "start": 117.4,
+          "end": 117.62
+        },
+        {
+          "w": "from",
+          "start": 117.7,
+          "end": 117.76
+        },
+        {
+          "w": "any",
+          "start": 117.76,
+          "end": 118.06
+        },
+        {
+          "w": "text,",
+          "start": 118.06,
+          "end": 118.42
+        },
+        {
+          "w": "the",
+          "start": 118.56,
+          "end": 118.94
+        },
+        {
+          "w": "tool's",
+          "start": 118.9,
+          "end": 119.17
+        },
+        {
+          "w": "at",
+          "start": 119.24,
+          "end": 119.4
+        },
+        {
+          "w": "llmsunplugged.org/tools.",
+          "start": 119.49,
+          "end": 119.65
+        }
+      ]
+    }
+  ]
+}

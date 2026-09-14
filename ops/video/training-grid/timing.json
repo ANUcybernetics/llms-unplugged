@@ -1,0 +1,1682 @@
+{
+  "slug": "training-grid",
+  "audio": "assets/voice.wav",
+  "duration": 122.464,
+  "lines": [
+    {
+      "i": 0,
+      "speaker": "USHINI",
+      "tc": true,
+      "caption": "Time to train a language model. By the end of this you'll have built one, and it'll fit on a single sheet of paper.",
+      "start": 0.19,
+      "end": 7.68,
+      "words": [
+        {
+          "w": "Time",
+          "start": 0.34,
+          "end": 0.9
+        },
+        {
+          "w": "to",
+          "start": 0.9,
+          "end": 1.04
+        },
+        {
+          "w": "train",
+          "start": 1.04,
+          "end": 1.32
+        },
+        {
+          "w": "a",
+          "start": 1.32,
+          "end": 1.48
+        },
+        {
+          "w": "language",
+          "start": 1.48,
+          "end": 1.84
+        },
+        {
+          "w": "model.",
+          "start": 1.84,
+          "end": 2.18
+        },
+        {
+          "w": "By",
+          "start": 2.9,
+          "end": 3.42
+        },
+        {
+          "w": "the",
+          "start": 3.42,
+          "end": 3.56
+        },
+        {
+          "w": "end",
+          "start": 3.56,
+          "end": 3.9
+        },
+        {
+          "w": "of",
+          "start": 3.9,
+          "end": 3.98
+        },
+        {
+          "w": "this",
+          "start": 3.98,
+          "end": 4.12
+        },
+        {
+          "w": "you'll",
+          "start": 4.12,
+          "end": 4.38
+        },
+        {
+          "w": "have",
+          "start": 4.38,
+          "end": 4.56
+        },
+        {
+          "w": "built",
+          "start": 4.56,
+          "end": 4.84
+        },
+        {
+          "w": "one,",
+          "start": 4.84,
+          "end": 5.14
+        },
+        {
+          "w": "and",
+          "start": 5.28,
+          "end": 5.72
+        },
+        {
+          "w": "it'll",
+          "start": 5.72,
+          "end": 5.96
+        },
+        {
+          "w": "fit",
+          "start": 5.96,
+          "end": 6.18
+        },
+        {
+          "w": "on",
+          "start": 6.18,
+          "end": 6.4
+        },
+        {
+          "w": "a",
+          "start": 6.4,
+          "end": 6.52
+        },
+        {
+          "w": "single",
+          "start": 6.52,
+          "end": 6.74
+        },
+        {
+          "w": "sheet",
+          "start": 6.74,
+          "end": 7.02
+        },
+        {
+          "w": "of",
+          "start": 7.02,
+          "end": 7.22
+        },
+        {
+          "w": "paper.",
+          "start": 7.22,
+          "end": 7.48
+        }
+      ]
+    },
+    {
+      "i": 1,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "There's a book in front of you—a picture book, a chapter from a novel, whatever it is. That book is your training data. Everything your model will ever know comes from those pages.",
+      "start": 8.87,
+      "end": 19.28,
+      "words": [
+        {
+          "w": "There's",
+          "start": 9.02,
+          "end": 9.54
+        },
+        {
+          "w": "a",
+          "start": 9.54,
+          "end": 9.6
+        },
+        {
+          "w": "book",
+          "start": 9.6,
+          "end": 9.8
+        },
+        {
+          "w": "in",
+          "start": 9.8,
+          "end": 9.92
+        },
+        {
+          "w": "front",
+          "start": 9.92,
+          "end": 10.12
+        },
+        {
+          "w": "of",
+          "start": 10.12,
+          "end": 10.24
+        },
+        {
+          "w": "you,",
+          "start": 10.24,
+          "end": 10.4
+        },
+        {
+          "w": "a",
+          "start": 10.48,
+          "end": 10.86
+        },
+        {
+          "w": "picture",
+          "start": 10.86,
+          "end": 11.14
+        },
+        {
+          "w": "book,",
+          "start": 11.14,
+          "end": 11.32
+        },
+        {
+          "w": "a",
+          "start": 11.48,
+          "end": 11.8
+        },
+        {
+          "w": "chapter",
+          "start": 11.8,
+          "end": 12.06
+        },
+        {
+          "w": "from",
+          "start": 12.06,
+          "end": 12.3
+        },
+        {
+          "w": "a",
+          "start": 12.3,
+          "end": 12.4
+        },
+        {
+          "w": "novel,",
+          "start": 12.4,
+          "end": 12.66
+        },
+        {
+          "w": "whatever",
+          "start": 12.78,
+          "end": 13.28
+        },
+        {
+          "w": "it",
+          "start": 13.28,
+          "end": 13.52
+        },
+        {
+          "w": "is.",
+          "start": 13.52,
+          "end": 13.76
+        },
+        {
+          "w": "That",
+          "start": 13.96,
+          "end": 14.48
+        },
+        {
+          "w": "book",
+          "start": 14.48,
+          "end": 14.74
+        },
+        {
+          "w": "is",
+          "start": 14.74,
+          "end": 15.0
+        },
+        {
+          "w": "your",
+          "start": 15.0,
+          "end": 15.18
+        },
+        {
+          "w": "training",
+          "start": 15.18,
+          "end": 15.5
+        },
+        {
+          "w": "data.",
+          "start": 15.5,
+          "end": 15.76
+        },
+        {
+          "w": "Everything",
+          "start": 16.12,
+          "end": 16.64
+        },
+        {
+          "w": "your",
+          "start": 16.64,
+          "end": 16.94
+        },
+        {
+          "w": "model",
+          "start": 16.94,
+          "end": 17.24
+        },
+        {
+          "w": "will",
+          "start": 17.24,
+          "end": 17.48
+        },
+        {
+          "w": "ever",
+          "start": 17.48,
+          "end": 17.74
+        },
+        {
+          "w": "know",
+          "start": 17.74,
+          "end": 17.96
+        },
+        {
+          "w": "comes",
+          "start": 17.96,
+          "end": 18.26
+        },
+        {
+          "w": "from",
+          "start": 18.26,
+          "end": 18.54
+        },
+        {
+          "w": "those",
+          "start": 18.54,
+          "end": 18.74
+        },
+        {
+          "w": "pages.",
+          "start": 18.74,
+          "end": 19.08
+        }
+      ]
+    },
+    {
+      "i": 2,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "First step: break the text into individual words, and lowercase everything. One quirk worth knowing: treat punctuation like full stops and commas as words too. They get their own row and column, just like the real words.",
+      "start": 20.19,
+      "end": 35.88,
+      "words": [
+        {
+          "w": "First",
+          "start": 20.34,
+          "end": 20.86
+        },
+        {
+          "w": "step:",
+          "start": 20.86,
+          "end": 21.18
+        },
+        {
+          "w": "break",
+          "start": 21.38,
+          "end": 21.86
+        },
+        {
+          "w": "the",
+          "start": 21.86,
+          "end": 22.04
+        },
+        {
+          "w": "text",
+          "start": 22.04,
+          "end": 22.34
+        },
+        {
+          "w": "into",
+          "start": 22.34,
+          "end": 22.6
+        },
+        {
+          "w": "individual",
+          "start": 22.6,
+          "end": 23.0
+        },
+        {
+          "w": "words,",
+          "start": 23.0,
+          "end": 23.6
+        },
+        {
+          "w": "and",
+          "start": 23.8,
+          "end": 24.16
+        },
+        {
+          "w": "lowercase",
+          "start": 24.16,
+          "end": 24.6
+        },
+        {
+          "w": "everything.",
+          "start": 24.6,
+          "end": 25.08
+        },
+        {
+          "w": "One",
+          "start": 25.72,
+          "end": 26.28
+        },
+        {
+          "w": "quirk",
+          "start": 26.28,
+          "end": 26.84
+        },
+        {
+          "w": "worth",
+          "start": 26.84,
+          "end": 27.02
+        },
+        {
+          "w": "knowing:",
+          "start": 27.02,
+          "end": 27.4
+        },
+        {
+          "w": "treat",
+          "start": 27.66,
+          "end": 28.16
+        },
+        {
+          "w": "punctuation",
+          "start": 28.16,
+          "end": 28.8
+        },
+        {
+          "w": "like",
+          "start": 28.8,
+          "end": 29.14
+        },
+        {
+          "w": "full",
+          "start": 29.14,
+          "end": 29.42
+        },
+        {
+          "w": "stops",
+          "start": 29.42,
+          "end": 29.76
+        },
+        {
+          "w": "and",
+          "start": 29.76,
+          "end": 30.04
+        },
+        {
+          "w": "commas",
+          "start": 30.04,
+          "end": 30.46
+        },
+        {
+          "w": "as",
+          "start": 30.46,
+          "end": 30.78
+        },
+        {
+          "w": "words",
+          "start": 30.78,
+          "end": 31.08
+        },
+        {
+          "w": "too.",
+          "start": 31.08,
+          "end": 31.4
+        },
+        {
+          "w": "They",
+          "start": 32.04,
+          "end": 32.6
+        },
+        {
+          "w": "get",
+          "start": 32.6,
+          "end": 32.76
+        },
+        {
+          "w": "their",
+          "start": 32.76,
+          "end": 32.94
+        },
+        {
+          "w": "own",
+          "start": 32.94,
+          "end": 33.2
+        },
+        {
+          "w": "row",
+          "start": 33.2,
+          "end": 33.48
+        },
+        {
+          "w": "and",
+          "start": 33.48,
+          "end": 33.72
+        },
+        {
+          "w": "column,",
+          "start": 33.72,
+          "end": 34.06
+        },
+        {
+          "w": "just",
+          "start": 34.2,
+          "end": 34.7
+        },
+        {
+          "w": "like",
+          "start": 34.7,
+          "end": 34.94
+        },
+        {
+          "w": "the",
+          "start": 34.94,
+          "end": 35.1
+        },
+        {
+          "w": "real",
+          "start": 35.1,
+          "end": 35.3
+        },
+        {
+          "w": "words.",
+          "start": 35.3,
+          "end": 35.68
+        }
+      ]
+    },
+    {
+      "i": 3,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Now look at pairs of consecutive words. These are called bigrams. If the text says \"the cat sat,\" you've got two bigrams: \"the\" followed by \"cat,\" and \"cat\" followed by \"sat.\"",
+      "start": 37.19,
+      "end": 48.99,
+      "words": [
+        {
+          "w": "Now",
+          "start": 37.34,
+          "end": 37.9
+        },
+        {
+          "w": "look",
+          "start": 37.9,
+          "end": 38.08
+        },
+        {
+          "w": "at",
+          "start": 38.08,
+          "end": 38.26
+        },
+        {
+          "w": "pairs",
+          "start": 38.26,
+          "end": 38.48
+        },
+        {
+          "w": "of",
+          "start": 38.48,
+          "end": 38.74
+        },
+        {
+          "w": "consecutive",
+          "start": 38.74,
+          "end": 39.12
+        },
+        {
+          "w": "words.",
+          "start": 39.12,
+          "end": 39.54
+        },
+        {
+          "w": "These",
+          "start": 39.9,
+          "end": 40.46
+        },
+        {
+          "w": "are",
+          "start": 40.46,
+          "end": 40.66
+        },
+        {
+          "w": "called",
+          "start": 40.66,
+          "end": 40.92
+        },
+        {
+          "w": "bigrams.",
+          "start": 40.92,
+          "end": 41.56
+        },
+        {
+          "w": "If",
+          "start": 41.94,
+          "end": 42.22
+        },
+        {
+          "w": "the",
+          "start": 42.22,
+          "end": 42.32
+        },
+        {
+          "w": "text",
+          "start": 42.32,
+          "end": 42.58
+        },
+        {
+          "w": "says",
+          "start": 42.58,
+          "end": 42.82
+        },
+        {
+          "w": "\"the",
+          "start": 42.82,
+          "end": 43.06
+        },
+        {
+          "w": "cat",
+          "start": 43.093,
+          "end": 43.4
+        },
+        {
+          "w": "sat,\"",
+          "start": 43.367,
+          "end": 43.74
+        },
+        {
+          "w": "you've",
+          "start": 43.64,
+          "end": 44.08
+        },
+        {
+          "w": "got",
+          "start": 44.08,
+          "end": 44.24
+        },
+        {
+          "w": "two",
+          "start": 44.24,
+          "end": 44.52
+        },
+        {
+          "w": "bigrams:",
+          "start": 44.52,
+          "end": 45.16
+        },
+        {
+          "w": "\"the\"",
+          "start": 45.16,
+          "end": 45.56
+        },
+        {
+          "w": "followed",
+          "start": 45.56,
+          "end": 45.9
+        },
+        {
+          "w": "by",
+          "start": 45.9,
+          "end": 46.12
+        },
+        {
+          "w": "\"cat,\"",
+          "start": 46.12,
+          "end": 46.46
+        },
+        {
+          "w": "and",
+          "start": 46.56,
+          "end": 47.02
+        },
+        {
+          "w": "\"cat\"",
+          "start": 47.02,
+          "end": 47.22
+        },
+        {
+          "w": "followed",
+          "start": 47.22,
+          "end": 47.54
+        },
+        {
+          "w": "by",
+          "start": 47.54,
+          "end": 47.8
+        },
+        {
+          "w": "\"sat.\"",
+          "start": 48.38,
+          "end": 48.79
+        }
+      ]
+    },
+    {
+      "i": 4,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Your grid has words along the top and down the side. Start at the very first word in the text: that's your first row. The word that follows it is your first column. Tally the cell where they meet. Each word gets one row and one column, so if \"the\" already has a row you keep tallying into it.",
+      "start": 49.07,
+      "end": 66.74,
+      "words": [
+        {
+          "w": "Your",
+          "start": 49.22,
+          "end": 49.78
+        },
+        {
+          "w": "grid",
+          "start": 49.78,
+          "end": 50.0
+        },
+        {
+          "w": "has",
+          "start": 50.0,
+          "end": 50.22
+        },
+        {
+          "w": "words",
+          "start": 50.22,
+          "end": 50.5
+        },
+        {
+          "w": "along",
+          "start": 50.5,
+          "end": 50.86
+        },
+        {
+          "w": "the",
+          "start": 50.86,
+          "end": 51.02
+        },
+        {
+          "w": "top",
+          "start": 51.02,
+          "end": 51.26
+        },
+        {
+          "w": "and",
+          "start": 51.26,
+          "end": 51.48
+        },
+        {
+          "w": "down",
+          "start": 51.48,
+          "end": 51.72
+        },
+        {
+          "w": "the",
+          "start": 51.72,
+          "end": 51.9
+        },
+        {
+          "w": "side.",
+          "start": 51.9,
+          "end": 52.14
+        },
+        {
+          "w": "Start",
+          "start": 52.48,
+          "end": 53.04
+        },
+        {
+          "w": "at",
+          "start": 53.04,
+          "end": 53.36
+        },
+        {
+          "w": "the",
+          "start": 53.36,
+          "end": 53.44
+        },
+        {
+          "w": "very",
+          "start": 53.44,
+          "end": 53.66
+        },
+        {
+          "w": "first",
+          "start": 53.66,
+          "end": 53.94
+        },
+        {
+          "w": "word",
+          "start": 53.94,
+          "end": 54.26
+        },
+        {
+          "w": "in",
+          "start": 54.26,
+          "end": 54.44
+        },
+        {
+          "w": "the",
+          "start": 54.44,
+          "end": 54.46
+        },
+        {
+          "w": "text:",
+          "start": 54.46,
+          "end": 54.8
+        },
+        {
+          "w": "that's",
+          "start": 55.08,
+          "end": 55.5
+        },
+        {
+          "w": "your",
+          "start": 55.5,
+          "end": 55.58
+        },
+        {
+          "w": "first",
+          "start": 55.58,
+          "end": 55.9
+        },
+        {
+          "w": "row.",
+          "start": 55.9,
+          "end": 56.14
+        },
+        {
+          "w": "The",
+          "start": 56.3,
+          "end": 56.86
+        },
+        {
+          "w": "word",
+          "start": 56.86,
+          "end": 57.12
+        },
+        {
+          "w": "that",
+          "start": 57.12,
+          "end": 57.26
+        },
+        {
+          "w": "follows",
+          "start": 57.26,
+          "end": 57.62
+        },
+        {
+          "w": "it",
+          "start": 57.62,
+          "end": 57.88
+        },
+        {
+          "w": "is",
+          "start": 57.88,
+          "end": 58.02
+        },
+        {
+          "w": "your",
+          "start": 58.02,
+          "end": 58.18
+        },
+        {
+          "w": "first",
+          "start": 58.18,
+          "end": 58.46
+        },
+        {
+          "w": "column.",
+          "start": 58.46,
+          "end": 58.74
+        },
+        {
+          "w": "Tally",
+          "start": 59.02,
+          "end": 59.58
+        },
+        {
+          "w": "the",
+          "start": 59.58,
+          "end": 59.78
+        },
+        {
+          "w": "cell",
+          "start": 59.78,
+          "end": 60.06
+        },
+        {
+          "w": "where",
+          "start": 60.06,
+          "end": 60.32
+        },
+        {
+          "w": "they",
+          "start": 60.32,
+          "end": 60.46
+        },
+        {
+          "w": "meet.",
+          "start": 60.46,
+          "end": 60.72
+        },
+        {
+          "w": "Each",
+          "start": 60.88,
+          "end": 61.44
+        },
+        {
+          "w": "word",
+          "start": 61.44,
+          "end": 61.72
+        },
+        {
+          "w": "gets",
+          "start": 61.72,
+          "end": 61.98
+        },
+        {
+          "w": "one",
+          "start": 61.98,
+          "end": 62.22
+        },
+        {
+          "w": "row",
+          "start": 62.22,
+          "end": 62.5
+        },
+        {
+          "w": "and",
+          "start": 62.5,
+          "end": 62.78
+        },
+        {
+          "w": "one",
+          "start": 62.78,
+          "end": 62.96
+        },
+        {
+          "w": "column,",
+          "start": 62.96,
+          "end": 63.3
+        },
+        {
+          "w": "so",
+          "start": 63.4,
+          "end": 63.98
+        },
+        {
+          "w": "if",
+          "start": 63.98,
+          "end": 64.18
+        },
+        {
+          "w": "\"the\"",
+          "start": 64.18,
+          "end": 64.32
+        },
+        {
+          "w": "already",
+          "start": 64.32,
+          "end": 64.62
+        },
+        {
+          "w": "has",
+          "start": 64.62,
+          "end": 64.96
+        },
+        {
+          "w": "a",
+          "start": 64.96,
+          "end": 65.08
+        },
+        {
+          "w": "row",
+          "start": 65.08,
+          "end": 65.26
+        },
+        {
+          "w": "you",
+          "start": 65.26,
+          "end": 65.48
+        },
+        {
+          "w": "keep",
+          "start": 65.48,
+          "end": 65.68
+        },
+        {
+          "w": "tallying",
+          "start": 65.68,
+          "end": 66.18
+        },
+        {
+          "w": "into",
+          "start": 66.18,
+          "end": 66.3
+        },
+        {
+          "w": "it.",
+          "start": 66.3,
+          "end": 66.54
+        }
+      ]
+    },
+    {
+      "i": 5,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "Now slide forward by one word. The word that was your \"next\" becomes your current word. Find its row, find the next word's column, tally. Keep going through the text. Turning the page makes no difference—the last word on one page pairs with the first word on the next. Some cells stack up with tallies, others stay empty, and that's the model learning which words tend to follow which.",
+      "start": 67.27,
+      "end": 94.54,
+      "words": [
+        {
+          "w": "Now",
+          "start": 67.42,
+          "end": 67.98
+        },
+        {
+          "w": "slide",
+          "start": 67.98,
+          "end": 68.26
+        },
+        {
+          "w": "forward",
+          "start": 68.26,
+          "end": 68.76
+        },
+        {
+          "w": "by",
+          "start": 68.76,
+          "end": 69.06
+        },
+        {
+          "w": "one",
+          "start": 69.06,
+          "end": 69.3
+        },
+        {
+          "w": "word.",
+          "start": 69.3,
+          "end": 69.7
+        },
+        {
+          "w": "The",
+          "start": 70.6,
+          "end": 70.88
+        },
+        {
+          "w": "word",
+          "start": 70.88,
+          "end": 71.18
+        },
+        {
+          "w": "that",
+          "start": 71.18,
+          "end": 71.4
+        },
+        {
+          "w": "was",
+          "start": 71.4,
+          "end": 71.56
+        },
+        {
+          "w": "your",
+          "start": 71.56,
+          "end": 71.76
+        },
+        {
+          "w": "\"next\"",
+          "start": 71.76,
+          "end": 72.08
+        },
+        {
+          "w": "becomes",
+          "start": 72.08,
+          "end": 72.46
+        },
+        {
+          "w": "your",
+          "start": 72.46,
+          "end": 72.8
+        },
+        {
+          "w": "current",
+          "start": 72.8,
+          "end": 73.12
+        },
+        {
+          "w": "word.",
+          "start": 73.12,
+          "end": 73.44
+        },
+        {
+          "w": "Find",
+          "start": 74.28,
+          "end": 74.84
+        },
+        {
+          "w": "its",
+          "start": 74.84,
+          "end": 75.0
+        },
+        {
+          "w": "row,",
+          "start": 75.0,
+          "end": 75.24
+        },
+        {
+          "w": "find",
+          "start": 75.46,
+          "end": 75.96
+        },
+        {
+          "w": "the",
+          "start": 75.96,
+          "end": 76.16
+        },
+        {
+          "w": "next",
+          "start": 76.16,
+          "end": 76.34
+        },
+        {
+          "w": "word's",
+          "start": 76.34,
+          "end": 76.82
+        },
+        {
+          "w": "column,",
+          "start": 76.82,
+          "end": 77.1
+        },
+        {
+          "w": "tally.",
+          "start": 77.26,
+          "end": 77.7
+        },
+        {
+          "w": "Keep",
+          "start": 78.34,
+          "end": 78.9
+        },
+        {
+          "w": "going",
+          "start": 78.9,
+          "end": 79.2
+        },
+        {
+          "w": "through",
+          "start": 79.2,
+          "end": 79.56
+        },
+        {
+          "w": "the",
+          "start": 79.56,
+          "end": 79.72
+        },
+        {
+          "w": "text.",
+          "start": 79.72,
+          "end": 80.08
+        },
+        {
+          "w": "Turning",
+          "start": 80.88,
+          "end": 81.44
+        },
+        {
+          "w": "the",
+          "start": 81.44,
+          "end": 81.64
+        },
+        {
+          "w": "page",
+          "start": 81.64,
+          "end": 81.92
+        },
+        {
+          "w": "makes",
+          "start": 81.92,
+          "end": 82.24
+        },
+        {
+          "w": "no",
+          "start": 82.24,
+          "end": 82.52
+        },
+        {
+          "w": "difference,",
+          "start": 82.52,
+          "end": 82.94
+        },
+        {
+          "w": "the",
+          "start": 83.16,
+          "end": 83.72
+        },
+        {
+          "w": "last",
+          "start": 83.72,
+          "end": 83.98
+        },
+        {
+          "w": "word",
+          "start": 83.98,
+          "end": 84.3
+        },
+        {
+          "w": "on",
+          "start": 84.3,
+          "end": 84.52
+        },
+        {
+          "w": "one",
+          "start": 84.52,
+          "end": 84.7
+        },
+        {
+          "w": "page",
+          "start": 84.7,
+          "end": 85.04
+        },
+        {
+          "w": "pairs",
+          "start": 85.113,
+          "end": 85.34
+        },
+        {
+          "w": "with",
+          "start": 85.527,
+          "end": 85.64
+        },
+        {
+          "w": "the",
+          "start": 85.94,
+          "end": 85.94
+        },
+        {
+          "w": "first",
+          "start": 85.94,
+          "end": 85.94
+        },
+        {
+          "w": "word",
+          "start": 85.94,
+          "end": 86.34
+        },
+        {
+          "w": "on",
+          "start": 86.34,
+          "end": 86.6
+        },
+        {
+          "w": "the",
+          "start": 86.6,
+          "end": 86.7
+        },
+        {
+          "w": "next.",
+          "start": 86.7,
+          "end": 86.92
+        },
+        {
+          "w": "Some",
+          "start": 87.8,
+          "end": 88.3
+        },
+        {
+          "w": "cells",
+          "start": 88.3,
+          "end": 88.62
+        },
+        {
+          "w": "stack",
+          "start": 88.62,
+          "end": 88.92
+        },
+        {
+          "w": "up",
+          "start": 88.92,
+          "end": 89.12
+        },
+        {
+          "w": "with",
+          "start": 89.12,
+          "end": 89.28
+        },
+        {
+          "w": "tallies,",
+          "start": 89.28,
+          "end": 89.66
+        },
+        {
+          "w": "others",
+          "start": 89.86,
+          "end": 90.38
+        },
+        {
+          "w": "stay",
+          "start": 90.38,
+          "end": 90.58
+        },
+        {
+          "w": "empty,",
+          "start": 90.58,
+          "end": 91.0
+        },
+        {
+          "w": "and",
+          "start": 91.18,
+          "end": 91.66
+        },
+        {
+          "w": "that's",
+          "start": 91.66,
+          "end": 91.94
+        },
+        {
+          "w": "the",
+          "start": 91.94,
+          "end": 92.06
+        },
+        {
+          "w": "model",
+          "start": 92.06,
+          "end": 92.28
+        },
+        {
+          "w": "learning",
+          "start": 92.28,
+          "end": 92.6
+        },
+        {
+          "w": "which",
+          "start": 92.6,
+          "end": 92.86
+        },
+        {
+          "w": "words",
+          "start": 92.86,
+          "end": 93.16
+        },
+        {
+          "w": "tend",
+          "start": 93.16,
+          "end": 93.52
+        },
+        {
+          "w": "to",
+          "start": 93.52,
+          "end": 93.78
+        },
+        {
+          "w": "follow",
+          "start": 93.78,
+          "end": 94.04
+        },
+        {
+          "w": "which.",
+          "start": 94.04,
+          "end": 94.34
+        }
+      ]
+    },
+    {
+      "i": 6,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "When you're done, look at what you've got. That grid of tally marks is the model—counts of which words follow which. That's the whole thing. It's the same kind of information a large language model stores, just with billions of word-pairs instead of dozens.",
+      "start": 95.79,
+      "end": 110.42,
+      "words": [
+        {
+          "w": "When",
+          "start": 95.94,
+          "end": 96.44
+        },
+        {
+          "w": "you're",
+          "start": 96.44,
+          "end": 96.64
+        },
+        {
+          "w": "done,",
+          "start": 96.64,
+          "end": 96.88
+        },
+        {
+          "w": "look",
+          "start": 97.06,
+          "end": 97.52
+        },
+        {
+          "w": "at",
+          "start": 97.52,
+          "end": 97.68
+        },
+        {
+          "w": "what",
+          "start": 97.68,
+          "end": 97.82
+        },
+        {
+          "w": "you've",
+          "start": 97.82,
+          "end": 98.04
+        },
+        {
+          "w": "got.",
+          "start": 98.04,
+          "end": 98.26
+        },
+        {
+          "w": "That",
+          "start": 98.52,
+          "end": 99.02
+        },
+        {
+          "w": "grid",
+          "start": 99.02,
+          "end": 99.22
+        },
+        {
+          "w": "of",
+          "start": 99.22,
+          "end": 99.36
+        },
+        {
+          "w": "tally",
+          "start": 99.36,
+          "end": 99.66
+        },
+        {
+          "w": "marks",
+          "start": 99.66,
+          "end": 99.82
+        },
+        {
+          "w": "is",
+          "start": 99.82,
+          "end": 100.1
+        },
+        {
+          "w": "the",
+          "start": 100.1,
+          "end": 100.24
+        },
+        {
+          "w": "model,",
+          "start": 100.24,
+          "end": 100.44
+        },
+        {
+          "w": "counts",
+          "start": 100.58,
+          "end": 101.24
+        },
+        {
+          "w": "of",
+          "start": 101.24,
+          "end": 101.38
+        },
+        {
+          "w": "which",
+          "start": 101.38,
+          "end": 101.58
+        },
+        {
+          "w": "words",
+          "start": 101.58,
+          "end": 101.94
+        },
+        {
+          "w": "follow",
+          "start": 101.94,
+          "end": 102.24
+        },
+        {
+          "w": "which.",
+          "start": 102.24,
+          "end": 102.56
+        },
+        {
+          "w": "That's",
+          "start": 102.98,
+          "end": 103.48
+        },
+        {
+          "w": "the",
+          "start": 103.48,
+          "end": 103.58
+        },
+        {
+          "w": "whole",
+          "start": 103.58,
+          "end": 103.82
+        },
+        {
+          "w": "thing.",
+          "start": 103.82,
+          "end": 104.06
+        },
+        {
+          "w": "It's",
+          "start": 104.36,
+          "end": 104.86
+        },
+        {
+          "w": "the",
+          "start": 104.86,
+          "end": 104.96
+        },
+        {
+          "w": "same",
+          "start": 104.96,
+          "end": 105.2
+        },
+        {
+          "w": "kind",
+          "start": 105.2,
+          "end": 105.36
+        },
+        {
+          "w": "of",
+          "start": 105.36,
+          "end": 105.56
+        },
+        {
+          "w": "information",
+          "start": 105.56,
+          "end": 105.88
+        },
+        {
+          "w": "a",
+          "start": 105.88,
+          "end": 106.26
+        },
+        {
+          "w": "large",
+          "start": 106.26,
+          "end": 106.5
+        },
+        {
+          "w": "language",
+          "start": 106.5,
+          "end": 106.84
+        },
+        {
+          "w": "model",
+          "start": 106.84,
+          "end": 107.08
+        },
+        {
+          "w": "stores,",
+          "start": 107.08,
+          "end": 107.42
+        },
+        {
+          "w": "just",
+          "start": 107.64,
+          "end": 108.18
+        },
+        {
+          "w": "with",
+          "start": 108.18,
+          "end": 108.36
+        },
+        {
+          "w": "billions",
+          "start": 108.36,
+          "end": 108.68
+        },
+        {
+          "w": "of",
+          "start": 108.68,
+          "end": 108.92
+        },
+        {
+          "w": "word-pairs",
+          "start": 109.01,
+          "end": 109.32
+        },
+        {
+          "w": "instead",
+          "start": 109.34,
+          "end": 109.72
+        },
+        {
+          "w": "of",
+          "start": 109.72,
+          "end": 109.98
+        },
+        {
+          "w": "dozens.",
+          "start": 109.98,
+          "end": 110.22
+        }
+      ]
+    },
+    {
+      "i": 7,
+      "speaker": "USHINI",
+      "tc": true,
+      "caption": "It works best in pairs: one reads, one tallies, swap halfway. Your book's in front of you. Start counting.",
+      "start": 111.13,
+      "end": 120.42,
+      "words": [
+        {
+          "w": "It",
+          "start": 111.28,
+          "end": 111.78
+        },
+        {
+          "w": "works",
+          "start": 111.78,
+          "end": 112.02
+        },
+        {
+          "w": "best",
+          "start": 112.02,
+          "end": 112.36
+        },
+        {
+          "w": "in",
+          "start": 112.36,
+          "end": 112.58
+        },
+        {
+          "w": "pairs:",
+          "start": 112.58,
+          "end": 112.82
+        },
+        {
+          "w": "one",
+          "start": 113.1,
+          "end": 113.6
+        },
+        {
+          "w": "reads,",
+          "start": 113.6,
+          "end": 113.98
+        },
+        {
+          "w": "one",
+          "start": 114.24,
+          "end": 114.62
+        },
+        {
+          "w": "tallies,",
+          "start": 114.62,
+          "end": 115.06
+        },
+        {
+          "w": "swap",
+          "start": 115.08,
+          "end": 115.8
+        },
+        {
+          "w": "halfway.",
+          "start": 115.8,
+          "end": 116.12
+        },
+        {
+          "w": "Your",
+          "start": 116.92,
+          "end": 117.48
+        },
+        {
+          "w": "book's",
+          "start": 117.48,
+          "end": 117.8
+        },
+        {
+          "w": "in",
+          "start": 117.8,
+          "end": 117.86
+        },
+        {
+          "w": "front",
+          "start": 117.86,
+          "end": 118.12
+        },
+        {
+          "w": "of",
+          "start": 118.12,
+          "end": 118.28
+        },
+        {
+          "w": "you.",
+          "start": 118.28,
+          "end": 118.46
+        },
+        {
+          "w": "Start",
+          "start": 119.26,
+          "end": 119.82
+        },
+        {
+          "w": "counting.",
+          "start": 119.82,
+          "end": 120.22
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+[
+  {
+    "i": 0,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "This next bit looks like the exercise you just did, again. It isn't. It's the first turn of a dial that ends at Claude or ChatGPT.",
+    "tts": "This next bit looks like the exercise you just did, again. It isn't. It's the first turn of a dial that ends at Claude or ChatGPT."
+  },
+  {
+    "i": 1,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Most people who use Claude or ChatGPT never trained it. Somebody else did the counting; you type a prompt and it generates. That's exactly what this booklet is: a model somebody else already trained, on a much bigger text than yours.",
+    "tts": "Most people who use Claude or ChatGPT never trained it. Somebody else did the counting; you type a prompt and it generates. That's exactly what this booklet is: a model somebody else already trained, on a much bigger text than yours."
+  },
+  {
+    "i": 2,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Each entry is a word. Under it are the words that can follow, each with a threshold. Pick a starting word, find its entry, roll a d10, and take the first threshold at or above your roll. Write the word down, turn to its entry, roll again.",
+    "tts": "Each entry is a word. Under it are the words that can follow, each with a threshold. Pick a starting word, find its entry, roll a d10, and take the first threshold at or above your roll. Write the word down, turn to its entry, roll again."
+  },
+  {
+    "i": 3,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Some words have more than ten options. Look for the diamonds: one diamond, one die; two diamonds, roll two and read them as digits, so a six and an eight is sixty-eight. Same mechanism, and it scales as far as you want. And if an entry has only one option, don't roll—just write it.",
+    "tts": "Some words have more than ten options. Look for the diamonds: one diamond, one die; two diamonds, roll two and read them as digits, so a six and an eight is sixty-eight. Same mechanism, and it scales as far as you want. And if an entry has only one option, don't roll, just write it."
+  },
+  {
+    "i": 4,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "As you go, listen to what comes out. It'll sound more like real prose than your grid did. And it still won't be about anything. Hold onto that question.",
+    "tts": "As you go, listen to what comes out. It'll sound more like real prose than your grid did. And it still won't be about anything. Hold onto that question."
+  },
+  {
+    "i": 5,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Your booklet was trained on a real text—maybe Frankenstein, maybe Green Eggs and Ham. The patterns leak through. Try to guess the book before you check the cover.",
+    "tts": "Your booklet was trained on a real text, maybe Frankenstein, maybe Green Eggs and Ham. The patterns leak through. Try to guess the book before you check the cover."
+  },
+  {
+    "i": 6,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "One honest note: a real model isn't trained on one book. It's billions of pages stitched together from everywhere. The single mystery text is just what makes this game playable.",
+    "tts": "One honest note: a real model isn't trained on one book. It's billions of pages stitched together from everywhere. The single mystery text is just what makes this game playable."
+  },
+  {
+    "i": 7,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "And one thing the booklet gets exactly right: you can read every number in this model, and generate from it at the kitchen table. Nobody can switch it off or quietly change it under you. That's what \"open weights\" means.",
+    "tts": "And one thing the booklet gets exactly right: you can read every number in this model, and generate from it at the kitchen table. Nobody can switch it off or quietly change it under you. That's what \"open weights\" means."
+  },
+  {
+    "i": 8,
+    "speaker": "BEN",
+    "tc": true,
+    "caption": "Grab your booklet and start rolling. If you'd like to make your own from any text, the tool's at llmsunplugged.org/tools.",
+    "tts": "Grab your booklet and start rolling. If you'd like to make your own from any text, the tool's at llmsunplugged.org/tools."
+  }
+]

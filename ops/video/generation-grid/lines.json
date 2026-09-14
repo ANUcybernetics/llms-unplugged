@@ -1,0 +1,72 @@
+[
+  {
+    "i": 0,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "You've got a grid full of tally marks. Right now, they're just counts. In about sixty seconds, they're going to write a sentence that has never existed before.",
+    "tts": "You've got a grid full of tally marks. Right now, they're just counts. In about sixty seconds, they're going to write a sentence that has never existed before."
+  },
+  {
+    "i": 1,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Pick any starting word that has a row in your grid, and write it down. That's the beginning of your generated text.",
+    "tts": "Pick any starting word that has a row in your grid, and write it down. That's the beginning of your generated text."
+  },
+  {
+    "i": 2,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Find that word's row and look at the tally marks. Add them up, then assign dice numbers: if \"cat\" has six tallies and \"dog\" has four, that's faces one to six for cat, seven to ten for dog.",
+    "tts": "Find that word's row and look at the tally marks. Add them up, then assign dice numbers: if \"cat\" has six tallies and \"dog\" has four, that's faces one to six for cat, seven to ten for dog."
+  },
+  {
+    "i": 3,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "That mapping is the whole trick. More tallies, more faces, more likely to come up. The die does the random part; the counts do the weighting.",
+    "tts": "That mapping is the whole trick. More tallies, more faces, more likely to come up. The die does the random part; the counts do the weighting."
+  },
+  {
+    "i": 4,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Roll your ten-sided die. Whatever number you land on, look up the matching word and write it down. That's your second word.",
+    "tts": "Roll your ten-sided die. Whatever number you land on, look up the matching word and write it down. That's your second word."
+  },
+  {
+    "i": 5,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Now that new word becomes your current word. Find its row, set up the ranges, roll again, and write down the result. Keep going.",
+    "tts": "Now that new word becomes your current word. Find its row, set up the ranges, roll again, and write down the result. Keep going."
+  },
+  {
+    "i": 6,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Two things you might hit. If your current word doesn't have a row—it was never the first word of a pair—that's a dead end. Pick a new starting word and carry on.",
+    "tts": "Two things you might hit. If your current word doesn't have a row, it was never the first word of a pair, that's a dead end. Pick a new starting word and carry on."
+  },
+  {
+    "i": 7,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Or you might bounce between the same two words: comma, joey, comma, joey. Small models loop a lot, so break out by picking a different valid next word. Real LLMs do it less because they're bigger, but if you've ever seen Claude or ChatGPT repeat itself, that's the same thing at scale.",
+    "tts": "Or you might bounce between the same two words: comma, joey, comma, joey. Small models loop a lot, so break out by picking a different valid next word. Real LLMs do it less because they're bigger, but if you've ever seen Claude or ChatGPT repeat itself, that's the same thing at scale."
+  },
+  {
+    "i": 8,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Now read back what you generated. It wasn't in the training text—it's new—but it sounds like it could have been, because it follows the same patterns. And that's no trick. It's how every large language model works, Claude and ChatGPT included: one word at a time, from learned counts.",
+    "tts": "Now read back what you generated. It wasn't in the training text, it's new, but it sounds like it could have been, because it follows the same patterns. And that's no trick. It's how every large language model works, Claude and ChatGPT included: one word at a time, from learned counts."
+  },
+  {
+    "i": 9,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "Pick a starting word and give it a go. See what your model comes up with.",
+    "tts": "Pick a starting word and give it a go. See what your model comes up with."
+  }
+]

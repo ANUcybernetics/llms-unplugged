@@ -1,0 +1,40 @@
+WEBVTT
+
+00:00:00.220 --> 00:00:09.770
+Claude, ChatGPT, all of these tools—they write one word at a time. Predict a word, add it, predict again. That's the whole job.
+
+00:00:10.400 --> 00:00:19.670
+And yet, ask someone how they actually do it and you'll get hand-waving. Something about "neural networks," maybe "trained on the internet."
+
+00:00:21.000 --> 00:00:27.370
+That's a shaky foundation for the people making decisions about these tools—teachers, parents, policymakers.
+
+00:00:28.060 --> 00:00:37.710
+So what if you could build one yourself? Not on a computer. With a picture book, some paper, a pen, and a handful of dice.
+
+00:00:39.100 --> 00:00:46.770
+That's LLMs Unplugged, a set of free teaching resources from the School of Cybernetics at the Australian National University.
+
+00:00:48.200 --> 00:01:01.550
+Every lesson is the same loop. First you train: read a text, and count which word follows which. Then you generate: take the last word you wrote, pick the next one according to those counts, write it down, and go again.
+
+00:01:02.280 --> 00:01:18.970
+There are two ways to do it on paper. One is grid paper and a ten-sided die: you count word pairs into a grid, then roll your way to a sentence. The other is ledger sheets and a cup of coloured counters: more marks, more counters, more likely.
+
+00:01:20.240 --> 00:01:37.470
+Either way, you start by training a model of your own. Then you generate from one that somebody else trained. And from there the same loop takes you to the bigger ideas: a model that pauses to ask for help, or a whole room pooling its models into one story. It runs from upper primary to the boardroom.
+
+00:01:38.240 --> 00:01:54.970
+Now, it's not a tiny Claude or ChatGPT. A real model swaps the tally marks for shared numbers, looks at the whole conversation instead of one word, trains on trillions of words, and gets a round of extra training so it answers you rather than just continuing.
+
+00:01:56.080 --> 00:02:09.950
+But it's the same loop. Tokens in, tokens out. And none of it is new: Andrey Markov was doing this by hand in 1913, Claude Shannon in 1948. The line runs straight to today's frontier models.
+
+00:02:10.800 --> 00:02:24.610
+Once you've seen the mechanism on paper—patterns in, new text out—the mystery evaporates. And if you want to go further, the site does: break a model, look inside one, shape how it behaves.
+
+00:02:25.220 --> 00:02:36.390
+And everything on the site was made by tools that are on the site too. Paste in any text you like, and out come the booklets, the sheets and the cutouts for it. Your book, your model.
+
+00:02:37.120 --> 00:02:54.410
+It's all under a Creative Commons licence at llmsunplugged.org. Every section of every lesson has its own short video, so you can play them in class. Grab the resources, run the activities, and if you'd like us to deliver it in person, get in touch.

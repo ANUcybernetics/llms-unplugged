@@ -1,0 +1,2397 @@
+{
+  "slug": "overview",
+  "audio": "assets/voice.wav",
+  "duration": 176.364,
+  "lines": [
+    {
+      "i": 0,
+      "speaker": "BEN",
+      "tc": true,
+      "caption": "Claude, ChatGPT, all of these tools—they write one word at a time. Predict a word, add it, predict again. That's the whole job.",
+      "start": 0.22,
+      "end": 9.77,
+      "words": [
+        {
+          "w": "Claude,",
+          "start": 0.37,
+          "end": 1.03
+        },
+        {
+          "w": "ChatGPT,",
+          "start": 1.09,
+          "end": 2.07
+        },
+        {
+          "w": "all",
+          "start": 2.23,
+          "end": 2.69
+        },
+        {
+          "w": "of",
+          "start": 2.69,
+          "end": 2.87
+        },
+        {
+          "w": "these",
+          "start": 2.87,
+          "end": 3.01
+        },
+        {
+          "w": "tools,",
+          "start": 3.01,
+          "end": 3.37
+        },
+        {
+          "w": "they",
+          "start": 3.51,
+          "end": 3.83
+        },
+        {
+          "w": "write",
+          "start": 3.83,
+          "end": 4.07
+        },
+        {
+          "w": "one",
+          "start": 4.07,
+          "end": 4.29
+        },
+        {
+          "w": "word",
+          "start": 4.29,
+          "end": 4.55
+        },
+        {
+          "w": "at",
+          "start": 4.55,
+          "end": 4.67
+        },
+        {
+          "w": "a",
+          "start": 4.67,
+          "end": 4.75
+        },
+        {
+          "w": "time.",
+          "start": 4.75,
+          "end": 5.01
+        },
+        {
+          "w": "Predict",
+          "start": 5.27,
+          "end": 5.79
+        },
+        {
+          "w": "a",
+          "start": 5.79,
+          "end": 6.01
+        },
+        {
+          "w": "word,",
+          "start": 6.01,
+          "end": 6.23
+        },
+        {
+          "w": "add",
+          "start": 6.43,
+          "end": 6.87
+        },
+        {
+          "w": "it,",
+          "start": 6.87,
+          "end": 7.01
+        },
+        {
+          "w": "predict",
+          "start": 7.11,
+          "end": 7.61
+        },
+        {
+          "w": "again.",
+          "start": 7.61,
+          "end": 7.95
+        },
+        {
+          "w": "That's",
+          "start": 8.43,
+          "end": 8.95
+        },
+        {
+          "w": "the",
+          "start": 8.95,
+          "end": 9.05
+        },
+        {
+          "w": "whole",
+          "start": 9.05,
+          "end": 9.29
+        },
+        {
+          "w": "job.",
+          "start": 9.29,
+          "end": 9.57
+        }
+      ]
+    },
+    {
+      "i": 1,
+      "speaker": "USHINI",
+      "tc": true,
+      "caption": "And yet, ask someone how they actually do it and you'll get hand-waving. Something about \"neural networks,\" maybe \"trained on the internet.\"",
+      "start": 10.4,
+      "end": 19.67,
+      "words": [
+        {
+          "w": "And",
+          "start": 10.55,
+          "end": 11.07
+        },
+        {
+          "w": "yet,",
+          "start": 11.07,
+          "end": 11.33
+        },
+        {
+          "w": "ask",
+          "start": 11.53,
+          "end": 12.09
+        },
+        {
+          "w": "someone",
+          "start": 12.09,
+          "end": 12.41
+        },
+        {
+          "w": "how",
+          "start": 12.41,
+          "end": 12.69
+        },
+        {
+          "w": "they",
+          "start": 12.69,
+          "end": 12.87
+        },
+        {
+          "w": "actually",
+          "start": 12.87,
+          "end": 13.25
+        },
+        {
+          "w": "do",
+          "start": 13.25,
+          "end": 13.49
+        },
+        {
+          "w": "it",
+          "start": 13.49,
+          "end": 13.73
+        },
+        {
+          "w": "and",
+          "start": 13.73,
+          "end": 13.91
+        },
+        {
+          "w": "you'll",
+          "start": 13.91,
+          "end": 14.15
+        },
+        {
+          "w": "get",
+          "start": 14.15,
+          "end": 14.35
+        },
+        {
+          "w": "hand-waving.",
+          "start": 15.0,
+          "end": 15.36
+        },
+        {
+          "w": "Something",
+          "start": 15.85,
+          "end": 16.37
+        },
+        {
+          "w": "about",
+          "start": 16.37,
+          "end": 16.63
+        },
+        {
+          "w": "\"neural",
+          "start": 16.63,
+          "end": 17.15
+        },
+        {
+          "w": "networks,\"",
+          "start": 17.15,
+          "end": 17.63
+        },
+        {
+          "w": "maybe",
+          "start": 17.8,
+          "end": 18.18
+        },
+        {
+          "w": "\"trained",
+          "start": 18.45,
+          "end": 18.73
+        },
+        {
+          "w": "on",
+          "start": 18.73,
+          "end": 19.03
+        },
+        {
+          "w": "the",
+          "start": 19.03,
+          "end": 19.11
+        },
+        {
+          "w": "internet.\"",
+          "start": 19.11,
+          "end": 19.47
+        }
+      ]
+    },
+    {
+      "i": 2,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "That's a shaky foundation for the people making decisions about these tools—teachers, parents, policymakers.",
+      "start": 21.0,
+      "end": 27.37,
+      "words": [
+        {
+          "w": "That's",
+          "start": 21.15,
+          "end": 21.67
+        },
+        {
+          "w": "a",
+          "start": 21.67,
+          "end": 21.73
+        },
+        {
+          "w": "shaky",
+          "start": 21.73,
+          "end": 22.03
+        },
+        {
+          "w": "foundation",
+          "start": 22.03,
+          "end": 22.35
+        },
+        {
+          "w": "for",
+          "start": 22.35,
+          "end": 22.87
+        },
+        {
+          "w": "the",
+          "start": 22.87,
+          "end": 22.95
+        },
+        {
+          "w": "people",
+          "start": 22.95,
+          "end": 23.19
+        },
+        {
+          "w": "making",
+          "start": 23.19,
+          "end": 23.45
+        },
+        {
+          "w": "decisions",
+          "start": 23.45,
+          "end": 23.87
+        },
+        {
+          "w": "about",
+          "start": 23.87,
+          "end": 24.27
+        },
+        {
+          "w": "these",
+          "start": 24.27,
+          "end": 24.51
+        },
+        {
+          "w": "tools,",
+          "start": 24.51,
+          "end": 24.77
+        },
+        {
+          "w": "teachers,",
+          "start": 25.01,
+          "end": 25.53
+        },
+        {
+          "w": "parents,",
+          "start": 25.85,
+          "end": 26.39
+        },
+        {
+          "w": "policymakers.",
+          "start": 26.67,
+          "end": 27.17
+        }
+      ]
+    },
+    {
+      "i": 3,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "So what if you could build one yourself? Not on a computer. With a picture book, some paper, a pen, and a handful of dice.",
+      "start": 28.06,
+      "end": 37.71,
+      "words": [
+        {
+          "w": "So",
+          "start": 28.21,
+          "end": 28.77
+        },
+        {
+          "w": "what",
+          "start": 28.77,
+          "end": 29.23
+        },
+        {
+          "w": "if",
+          "start": 29.23,
+          "end": 29.39
+        },
+        {
+          "w": "you",
+          "start": 29.39,
+          "end": 29.51
+        },
+        {
+          "w": "could",
+          "start": 29.51,
+          "end": 29.67
+        },
+        {
+          "w": "build",
+          "start": 29.67,
+          "end": 29.95
+        },
+        {
+          "w": "one",
+          "start": 29.95,
+          "end": 30.13
+        },
+        {
+          "w": "yourself?",
+          "start": 30.13,
+          "end": 30.49
+        },
+        {
+          "w": "Not",
+          "start": 31.37,
+          "end": 31.93
+        },
+        {
+          "w": "on",
+          "start": 31.93,
+          "end": 32.11
+        },
+        {
+          "w": "a",
+          "start": 32.11,
+          "end": 32.25
+        },
+        {
+          "w": "computer.",
+          "start": 32.25,
+          "end": 32.57
+        },
+        {
+          "w": "With",
+          "start": 33.33,
+          "end": 33.89
+        },
+        {
+          "w": "a",
+          "start": 33.89,
+          "end": 34.01
+        },
+        {
+          "w": "picture",
+          "start": 34.01,
+          "end": 34.27
+        },
+        {
+          "w": "book,",
+          "start": 34.27,
+          "end": 34.47
+        },
+        {
+          "w": "some",
+          "start": 34.65,
+          "end": 35.05
+        },
+        {
+          "w": "paper,",
+          "start": 35.05,
+          "end": 35.43
+        },
+        {
+          "w": "a",
+          "start": 35.57,
+          "end": 35.81
+        },
+        {
+          "w": "pen,",
+          "start": 35.81,
+          "end": 36.13
+        },
+        {
+          "w": "and",
+          "start": 36.29,
+          "end": 36.63
+        },
+        {
+          "w": "a",
+          "start": 36.63,
+          "end": 36.71
+        },
+        {
+          "w": "handful",
+          "start": 36.71,
+          "end": 37.03
+        },
+        {
+          "w": "of",
+          "start": 37.03,
+          "end": 37.25
+        },
+        {
+          "w": "dice.",
+          "start": 37.25,
+          "end": 37.51
+        }
+      ]
+    },
+    {
+      "i": 4,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "That's LLMs Unplugged, a set of free teaching resources from the School of Cybernetics at the Australian National University.",
+      "start": 39.1,
+      "end": 46.77,
+      "words": [
+        {
+          "w": "That's",
+          "start": 39.25,
+          "end": 39.81
+        },
+        {
+          "w": "LLMs",
+          "start": 39.78,
+          "end": 40.42
+        },
+        {
+          "w": "Unplugged,",
+          "start": 40.31,
+          "end": 41.03
+        },
+        {
+          "w": "a",
+          "start": 41.03,
+          "end": 41.53
+        },
+        {
+          "w": "set",
+          "start": 41.53,
+          "end": 41.73
+        },
+        {
+          "w": "of",
+          "start": 41.73,
+          "end": 41.89
+        },
+        {
+          "w": "free",
+          "start": 41.89,
+          "end": 42.07
+        },
+        {
+          "w": "teaching",
+          "start": 42.07,
+          "end": 42.39
+        },
+        {
+          "w": "resources",
+          "start": 42.39,
+          "end": 42.75
+        },
+        {
+          "w": "from",
+          "start": 42.75,
+          "end": 43.21
+        },
+        {
+          "w": "the",
+          "start": 43.21,
+          "end": 43.33
+        },
+        {
+          "w": "School",
+          "start": 43.33,
+          "end": 43.55
+        },
+        {
+          "w": "of",
+          "start": 43.55,
+          "end": 43.83
+        },
+        {
+          "w": "Cybernetics",
+          "start": 43.83,
+          "end": 44.51
+        },
+        {
+          "w": "at",
+          "start": 44.51,
+          "end": 45.03
+        },
+        {
+          "w": "the",
+          "start": 45.03,
+          "end": 45.15
+        },
+        {
+          "w": "Australian",
+          "start": 45.15,
+          "end": 45.55
+        },
+        {
+          "w": "National",
+          "start": 45.55,
+          "end": 45.97
+        },
+        {
+          "w": "University.",
+          "start": 45.97,
+          "end": 46.57
+        }
+      ]
+    },
+    {
+      "i": 5,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Every lesson is the same loop. First you train: read a text, and count which word follows which. Then you generate: take the last word you wrote, pick the next one according to those counts, write it down, and go again.",
+      "start": 48.2,
+      "end": 61.55,
+      "words": [
+        {
+          "w": "Every",
+          "start": 48.35,
+          "end": 48.91
+        },
+        {
+          "w": "lesson",
+          "start": 48.91,
+          "end": 49.25
+        },
+        {
+          "w": "is",
+          "start": 49.25,
+          "end": 49.55
+        },
+        {
+          "w": "the",
+          "start": 49.55,
+          "end": 49.67
+        },
+        {
+          "w": "same",
+          "start": 49.67,
+          "end": 49.97
+        },
+        {
+          "w": "loop.",
+          "start": 49.97,
+          "end": 50.21
+        },
+        {
+          "w": "First",
+          "start": 50.53,
+          "end": 51.09
+        },
+        {
+          "w": "you",
+          "start": 51.09,
+          "end": 51.27
+        },
+        {
+          "w": "train:",
+          "start": 51.27,
+          "end": 51.55
+        },
+        {
+          "w": "read",
+          "start": 51.75,
+          "end": 52.27
+        },
+        {
+          "w": "a",
+          "start": 52.27,
+          "end": 52.39
+        },
+        {
+          "w": "text,",
+          "start": 52.39,
+          "end": 52.73
+        },
+        {
+          "w": "and",
+          "start": 52.83,
+          "end": 53.19
+        },
+        {
+          "w": "count",
+          "start": 53.19,
+          "end": 53.41
+        },
+        {
+          "w": "which",
+          "start": 53.41,
+          "end": 53.63
+        },
+        {
+          "w": "word",
+          "start": 53.63,
+          "end": 53.89
+        },
+        {
+          "w": "follows",
+          "start": 53.89,
+          "end": 54.21
+        },
+        {
+          "w": "which.",
+          "start": 54.21,
+          "end": 54.47
+        },
+        {
+          "w": "Then",
+          "start": 54.71,
+          "end": 55.27
+        },
+        {
+          "w": "you",
+          "start": 55.27,
+          "end": 55.43
+        },
+        {
+          "w": "generate:",
+          "start": 55.43,
+          "end": 55.79
+        },
+        {
+          "w": "take",
+          "start": 55.99,
+          "end": 56.43
+        },
+        {
+          "w": "the",
+          "start": 56.43,
+          "end": 56.61
+        },
+        {
+          "w": "last",
+          "start": 56.61,
+          "end": 56.85
+        },
+        {
+          "w": "word",
+          "start": 56.85,
+          "end": 57.09
+        },
+        {
+          "w": "you",
+          "start": 57.27,
+          "end": 57.27
+        },
+        {
+          "w": "wrote,",
+          "start": 57.27,
+          "end": 57.45
+        },
+        {
+          "w": "pick",
+          "start": 57.59,
+          "end": 58.03
+        },
+        {
+          "w": "the",
+          "start": 58.03,
+          "end": 58.17
+        },
+        {
+          "w": "next",
+          "start": 58.17,
+          "end": 58.33
+        },
+        {
+          "w": "one",
+          "start": 58.33,
+          "end": 58.49
+        },
+        {
+          "w": "according",
+          "start": 58.49,
+          "end": 58.73
+        },
+        {
+          "w": "to",
+          "start": 58.73,
+          "end": 58.99
+        },
+        {
+          "w": "those",
+          "start": 58.99,
+          "end": 59.15
+        },
+        {
+          "w": "counts,",
+          "start": 59.15,
+          "end": 59.47
+        },
+        {
+          "w": "write",
+          "start": 59.63,
+          "end": 60.03
+        },
+        {
+          "w": "it",
+          "start": 60.03,
+          "end": 60.21
+        },
+        {
+          "w": "down,",
+          "start": 60.21,
+          "end": 60.45
+        },
+        {
+          "w": "and",
+          "start": 60.59,
+          "end": 60.95
+        },
+        {
+          "w": "go",
+          "start": 60.95,
+          "end": 61.11
+        },
+        {
+          "w": "again.",
+          "start": 61.11,
+          "end": 61.35
+        }
+      ]
+    },
+    {
+      "i": 6,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "There are two ways to do it on paper. One is grid paper and a ten-sided die: you count word pairs into a grid, then roll your way to a sentence. The other is ledger sheets and a cup of coloured counters: more marks, more counters, more likely.",
+      "start": 62.28,
+      "end": 78.97,
+      "words": [
+        {
+          "w": "There",
+          "start": 62.43,
+          "end": 62.91
+        },
+        {
+          "w": "are",
+          "start": 62.91,
+          "end": 63.09
+        },
+        {
+          "w": "two",
+          "start": 63.09,
+          "end": 63.27
+        },
+        {
+          "w": "ways",
+          "start": 63.27,
+          "end": 63.59
+        },
+        {
+          "w": "to",
+          "start": 63.59,
+          "end": 63.81
+        },
+        {
+          "w": "do",
+          "start": 63.81,
+          "end": 63.99
+        },
+        {
+          "w": "it",
+          "start": 63.99,
+          "end": 64.09
+        },
+        {
+          "w": "on",
+          "start": 64.09,
+          "end": 64.21
+        },
+        {
+          "w": "paper.",
+          "start": 64.21,
+          "end": 64.53
+        },
+        {
+          "w": "One",
+          "start": 65.43,
+          "end": 65.91
+        },
+        {
+          "w": "is",
+          "start": 65.91,
+          "end": 66.07
+        },
+        {
+          "w": "grid",
+          "start": 66.07,
+          "end": 66.27
+        },
+        {
+          "w": "paper",
+          "start": 66.27,
+          "end": 66.45
+        },
+        {
+          "w": "and",
+          "start": 66.45,
+          "end": 66.97
+        },
+        {
+          "w": "a",
+          "start": 66.97,
+          "end": 67.11
+        },
+        {
+          "w": "ten-sided",
+          "start": 67.33,
+          "end": 67.52
+        },
+        {
+          "w": "die:",
+          "start": 67.69,
+          "end": 67.93
+        },
+        {
+          "w": "you",
+          "start": 68.09,
+          "end": 68.51
+        },
+        {
+          "w": "count",
+          "start": 68.51,
+          "end": 68.81
+        },
+        {
+          "w": "word",
+          "start": 68.81,
+          "end": 69.01
+        },
+        {
+          "w": "pairs",
+          "start": 69.01,
+          "end": 69.25
+        },
+        {
+          "w": "into",
+          "start": 69.25,
+          "end": 69.69
+        },
+        {
+          "w": "a",
+          "start": 69.69,
+          "end": 69.87
+        },
+        {
+          "w": "grid,",
+          "start": 69.87,
+          "end": 70.17
+        },
+        {
+          "w": "then",
+          "start": 70.25,
+          "end": 70.71
+        },
+        {
+          "w": "roll",
+          "start": 70.71,
+          "end": 71.01
+        },
+        {
+          "w": "your",
+          "start": 71.01,
+          "end": 71.21
+        },
+        {
+          "w": "way",
+          "start": 71.21,
+          "end": 71.43
+        },
+        {
+          "w": "to",
+          "start": 71.43,
+          "end": 71.61
+        },
+        {
+          "w": "a",
+          "start": 71.61,
+          "end": 71.75
+        },
+        {
+          "w": "sentence.",
+          "start": 71.75,
+          "end": 72.05
+        },
+        {
+          "w": "The",
+          "start": 72.95,
+          "end": 73.43
+        },
+        {
+          "w": "other",
+          "start": 73.43,
+          "end": 73.69
+        },
+        {
+          "w": "is",
+          "start": 73.69,
+          "end": 73.85
+        },
+        {
+          "w": "ledger",
+          "start": 73.85,
+          "end": 74.17
+        },
+        {
+          "w": "sheets",
+          "start": 74.17,
+          "end": 74.35
+        },
+        {
+          "w": "and",
+          "start": 74.35,
+          "end": 74.69
+        },
+        {
+          "w": "a",
+          "start": 74.69,
+          "end": 74.79
+        },
+        {
+          "w": "cup",
+          "start": 74.79,
+          "end": 75.01
+        },
+        {
+          "w": "of",
+          "start": 75.01,
+          "end": 75.17
+        },
+        {
+          "w": "coloured",
+          "start": 75.17,
+          "end": 75.43
+        },
+        {
+          "w": "counters:",
+          "start": 75.43,
+          "end": 75.87
+        },
+        {
+          "w": "more",
+          "start": 76.11,
+          "end": 76.59
+        },
+        {
+          "w": "marks,",
+          "start": 76.59,
+          "end": 77.03
+        },
+        {
+          "w": "more",
+          "start": 77.13,
+          "end": 77.41
+        },
+        {
+          "w": "counters,",
+          "start": 77.41,
+          "end": 77.87
+        },
+        {
+          "w": "more",
+          "start": 78.07,
+          "end": 78.41
+        },
+        {
+          "w": "likely.",
+          "start": 78.41,
+          "end": 78.77
+        }
+      ]
+    },
+    {
+      "i": 7,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Either way, you start by training a model of your own. Then you generate from one that somebody else trained. And from there the same loop takes you to the bigger ideas: a model that pauses to ask for help, or a whole room pooling its models into one story. It runs from upper primary to the boardroom.",
+      "start": 80.24,
+      "end": 97.47,
+      "words": [
+        {
+          "w": "Either",
+          "start": 80.39,
+          "end": 80.87
+        },
+        {
+          "w": "way,",
+          "start": 80.87,
+          "end": 81.09
+        },
+        {
+          "w": "you",
+          "start": 81.27,
+          "end": 81.71
+        },
+        {
+          "w": "start",
+          "start": 81.71,
+          "end": 81.99
+        },
+        {
+          "w": "by",
+          "start": 81.99,
+          "end": 82.23
+        },
+        {
+          "w": "training",
+          "start": 82.23,
+          "end": 82.57
+        },
+        {
+          "w": "a",
+          "start": 82.57,
+          "end": 82.77
+        },
+        {
+          "w": "model",
+          "start": 82.77,
+          "end": 83.01
+        },
+        {
+          "w": "of",
+          "start": 83.01,
+          "end": 83.17
+        },
+        {
+          "w": "your",
+          "start": 83.17,
+          "end": 83.27
+        },
+        {
+          "w": "own.",
+          "start": 83.27,
+          "end": 83.53
+        },
+        {
+          "w": "Then",
+          "start": 83.75,
+          "end": 84.23
+        },
+        {
+          "w": "you",
+          "start": 84.23,
+          "end": 84.39
+        },
+        {
+          "w": "generate",
+          "start": 84.39,
+          "end": 84.77
+        },
+        {
+          "w": "from",
+          "start": 84.77,
+          "end": 85.05
+        },
+        {
+          "w": "one",
+          "start": 85.05,
+          "end": 85.31
+        },
+        {
+          "w": "that",
+          "start": 85.31,
+          "end": 85.57
+        },
+        {
+          "w": "somebody",
+          "start": 85.57,
+          "end": 85.85
+        },
+        {
+          "w": "else",
+          "start": 85.85,
+          "end": 86.15
+        },
+        {
+          "w": "trained.",
+          "start": 86.15,
+          "end": 86.45
+        },
+        {
+          "w": "And",
+          "start": 87.17,
+          "end": 87.23
+        },
+        {
+          "w": "from",
+          "start": 87.23,
+          "end": 87.43
+        },
+        {
+          "w": "there",
+          "start": 87.43,
+          "end": 87.69
+        },
+        {
+          "w": "the",
+          "start": 87.77,
+          "end": 87.91
+        },
+        {
+          "w": "same",
+          "start": 87.91,
+          "end": 88.17
+        },
+        {
+          "w": "loop",
+          "start": 88.17,
+          "end": 88.43
+        },
+        {
+          "w": "takes",
+          "start": 88.43,
+          "end": 88.69
+        },
+        {
+          "w": "you",
+          "start": 88.69,
+          "end": 88.89
+        },
+        {
+          "w": "to",
+          "start": 88.89,
+          "end": 89.03
+        },
+        {
+          "w": "the",
+          "start": 89.03,
+          "end": 89.11
+        },
+        {
+          "w": "bigger",
+          "start": 89.11,
+          "end": 89.31
+        },
+        {
+          "w": "ideas:",
+          "start": 89.31,
+          "end": 89.65
+        },
+        {
+          "w": "a",
+          "start": 89.85,
+          "end": 90.37
+        },
+        {
+          "w": "model",
+          "start": 90.37,
+          "end": 90.61
+        },
+        {
+          "w": "that",
+          "start": 90.61,
+          "end": 90.79
+        },
+        {
+          "w": "pauses",
+          "start": 90.79,
+          "end": 91.11
+        },
+        {
+          "w": "to",
+          "start": 91.11,
+          "end": 91.25
+        },
+        {
+          "w": "ask",
+          "start": 91.25,
+          "end": 91.45
+        },
+        {
+          "w": "for",
+          "start": 91.45,
+          "end": 91.61
+        },
+        {
+          "w": "help,",
+          "start": 91.61,
+          "end": 91.91
+        },
+        {
+          "w": "or",
+          "start": 91.95,
+          "end": 92.31
+        },
+        {
+          "w": "a",
+          "start": 92.31,
+          "end": 92.41
+        },
+        {
+          "w": "whole",
+          "start": 92.41,
+          "end": 92.57
+        },
+        {
+          "w": "room",
+          "start": 92.57,
+          "end": 92.83
+        },
+        {
+          "w": "pooling",
+          "start": 92.85,
+          "end": 93.09
+        },
+        {
+          "w": "its",
+          "start": 93.13,
+          "end": 93.35
+        },
+        {
+          "w": "models",
+          "start": 93.35,
+          "end": 93.65
+        },
+        {
+          "w": "into",
+          "start": 93.65,
+          "end": 93.93
+        },
+        {
+          "w": "one",
+          "start": 93.93,
+          "end": 94.17
+        },
+        {
+          "w": "story.",
+          "start": 94.17,
+          "end": 94.43
+        },
+        {
+          "w": "It",
+          "start": 94.73,
+          "end": 95.25
+        },
+        {
+          "w": "runs",
+          "start": 95.25,
+          "end": 95.47
+        },
+        {
+          "w": "from",
+          "start": 95.47,
+          "end": 95.77
+        },
+        {
+          "w": "upper",
+          "start": 95.77,
+          "end": 96.13
+        },
+        {
+          "w": "primary",
+          "start": 96.13,
+          "end": 96.47
+        },
+        {
+          "w": "to",
+          "start": 96.47,
+          "end": 96.77
+        },
+        {
+          "w": "the",
+          "start": 96.77,
+          "end": 96.89
+        },
+        {
+          "w": "boardroom.",
+          "start": 96.89,
+          "end": 97.27
+        }
+      ]
+    },
+    {
+      "i": 8,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "Now, it's not a tiny Claude or ChatGPT. A real model swaps the tally marks for shared numbers, looks at the whole conversation instead of one word, trains on trillions of words, and gets a round of extra training so it answers you rather than just continuing.",
+      "start": 98.24,
+      "end": 114.97,
+      "words": [
+        {
+          "w": "Now,",
+          "start": 98.39,
+          "end": 98.91
+        },
+        {
+          "w": "it's",
+          "start": 99.03,
+          "end": 99.39
+        },
+        {
+          "w": "not",
+          "start": 99.39,
+          "end": 99.57
+        },
+        {
+          "w": "a",
+          "start": 99.57,
+          "end": 99.71
+        },
+        {
+          "w": "tiny",
+          "start": 99.71,
+          "end": 99.99
+        },
+        {
+          "w": "Claude",
+          "start": 99.99,
+          "end": 100.43
+        },
+        {
+          "w": "or",
+          "start": 100.43,
+          "end": 100.61
+        },
+        {
+          "w": "ChatGPT.",
+          "start": 101.3,
+          "end": 101.65
+        },
+        {
+          "w": "A",
+          "start": 102.17,
+          "end": 102.69
+        },
+        {
+          "w": "real",
+          "start": 102.69,
+          "end": 102.93
+        },
+        {
+          "w": "model",
+          "start": 102.93,
+          "end": 103.21
+        },
+        {
+          "w": "swaps",
+          "start": 103.21,
+          "end": 103.67
+        },
+        {
+          "w": "the",
+          "start": 103.67,
+          "end": 103.79
+        },
+        {
+          "w": "tally",
+          "start": 103.79,
+          "end": 104.11
+        },
+        {
+          "w": "marks",
+          "start": 104.11,
+          "end": 104.29
+        },
+        {
+          "w": "for",
+          "start": 104.29,
+          "end": 104.63
+        },
+        {
+          "w": "shared",
+          "start": 104.63,
+          "end": 104.85
+        },
+        {
+          "w": "numbers,",
+          "start": 104.85,
+          "end": 105.17
+        },
+        {
+          "w": "looks",
+          "start": 105.77,
+          "end": 106.03
+        },
+        {
+          "w": "at",
+          "start": 106.03,
+          "end": 106.21
+        },
+        {
+          "w": "the",
+          "start": 106.21,
+          "end": 106.27
+        },
+        {
+          "w": "whole",
+          "start": 106.27,
+          "end": 106.47
+        },
+        {
+          "w": "conversation",
+          "start": 106.47,
+          "end": 106.97
+        },
+        {
+          "w": "instead",
+          "start": 106.97,
+          "end": 107.49
+        },
+        {
+          "w": "of",
+          "start": 107.49,
+          "end": 107.81
+        },
+        {
+          "w": "one",
+          "start": 107.81,
+          "end": 107.95
+        },
+        {
+          "w": "word,",
+          "start": 107.95,
+          "end": 108.33
+        },
+        {
+          "w": "trains",
+          "start": 108.49,
+          "end": 109.09
+        },
+        {
+          "w": "on",
+          "start": 109.09,
+          "end": 109.31
+        },
+        {
+          "w": "trillions",
+          "start": 109.31,
+          "end": 109.67
+        },
+        {
+          "w": "of",
+          "start": 109.67,
+          "end": 109.87
+        },
+        {
+          "w": "words,",
+          "start": 109.87,
+          "end": 110.19
+        },
+        {
+          "w": "and",
+          "start": 110.43,
+          "end": 111.19
+        },
+        {
+          "w": "gets",
+          "start": 111.19,
+          "end": 111.41
+        },
+        {
+          "w": "a",
+          "start": 111.41,
+          "end": 111.53
+        },
+        {
+          "w": "round",
+          "start": 111.53,
+          "end": 111.77
+        },
+        {
+          "w": "of",
+          "start": 111.77,
+          "end": 111.93
+        },
+        {
+          "w": "extra",
+          "start": 111.93,
+          "end": 112.21
+        },
+        {
+          "w": "training",
+          "start": 112.21,
+          "end": 112.61
+        },
+        {
+          "w": "so",
+          "start": 112.61,
+          "end": 112.87
+        },
+        {
+          "w": "it",
+          "start": 112.87,
+          "end": 113.03
+        },
+        {
+          "w": "answers",
+          "start": 113.03,
+          "end": 113.39
+        },
+        {
+          "w": "you",
+          "start": 113.39,
+          "end": 113.65
+        },
+        {
+          "w": "rather",
+          "start": 113.65,
+          "end": 113.85
+        },
+        {
+          "w": "than",
+          "start": 113.85,
+          "end": 114.07
+        },
+        {
+          "w": "just",
+          "start": 114.07,
+          "end": 114.27
+        },
+        {
+          "w": "continuing.",
+          "start": 114.27,
+          "end": 114.77
+        }
+      ]
+    },
+    {
+      "i": 9,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "But it's the same loop. Tokens in, tokens out. And none of it is new: Andrey Markov was doing this by hand in 1913, Claude Shannon in 1948. The line runs straight to today's frontier models.",
+      "start": 116.08,
+      "end": 129.95,
+      "words": [
+        {
+          "w": "But",
+          "start": 116.23,
+          "end": 116.79
+        },
+        {
+          "w": "it's",
+          "start": 116.79,
+          "end": 117.07
+        },
+        {
+          "w": "the",
+          "start": 117.07,
+          "end": 117.15
+        },
+        {
+          "w": "same",
+          "start": 117.15,
+          "end": 117.49
+        },
+        {
+          "w": "loop.",
+          "start": 117.49,
+          "end": 117.75
+        },
+        {
+          "w": "Tokens",
+          "start": 118.17,
+          "end": 118.73
+        },
+        {
+          "w": "in,",
+          "start": 118.73,
+          "end": 118.87
+        },
+        {
+          "w": "tokens",
+          "start": 119.03,
+          "end": 119.51
+        },
+        {
+          "w": "out.",
+          "start": 119.51,
+          "end": 119.87
+        },
+        {
+          "w": "And",
+          "start": 120.05,
+          "end": 120.61
+        },
+        {
+          "w": "none",
+          "start": 120.61,
+          "end": 120.79
+        },
+        {
+          "w": "of",
+          "start": 120.79,
+          "end": 120.91
+        },
+        {
+          "w": "it",
+          "start": 120.91,
+          "end": 121.03
+        },
+        {
+          "w": "is",
+          "start": 121.03,
+          "end": 121.17
+        },
+        {
+          "w": "new:",
+          "start": 121.17,
+          "end": 121.37
+        },
+        {
+          "w": "Andrey",
+          "start": 121.65,
+          "end": 121.85
+        },
+        {
+          "w": "Markov",
+          "start": 122.13,
+          "end": 122.33
+        },
+        {
+          "w": "was",
+          "start": 122.61,
+          "end": 122.81
+        },
+        {
+          "w": "doing",
+          "start": 122.81,
+          "end": 123.03
+        },
+        {
+          "w": "this",
+          "start": 123.03,
+          "end": 123.23
+        },
+        {
+          "w": "by",
+          "start": 123.23,
+          "end": 123.43
+        },
+        {
+          "w": "hand",
+          "start": 123.43,
+          "end": 123.75
+        },
+        {
+          "w": "in",
+          "start": 123.75,
+          "end": 124.01
+        },
+        {
+          "w": "1913,",
+          "start": 124.01,
+          "end": 124.61
+        },
+        {
+          "w": "Claude",
+          "start": 124.89,
+          "end": 125.43
+        },
+        {
+          "w": "Shannon",
+          "start": 125.43,
+          "end": 125.69
+        },
+        {
+          "w": "in",
+          "start": 125.69,
+          "end": 126.05
+        },
+        {
+          "w": "1948.",
+          "start": 126.05,
+          "end": 126.53
+        },
+        {
+          "w": "The",
+          "start": 127.01,
+          "end": 127.57
+        },
+        {
+          "w": "line",
+          "start": 127.57,
+          "end": 127.79
+        },
+        {
+          "w": "runs",
+          "start": 127.79,
+          "end": 128.01
+        },
+        {
+          "w": "straight",
+          "start": 128.01,
+          "end": 128.39
+        },
+        {
+          "w": "to",
+          "start": 128.39,
+          "end": 128.65
+        },
+        {
+          "w": "today's",
+          "start": 128.65,
+          "end": 129.15
+        },
+        {
+          "w": "frontier",
+          "start": 129.15,
+          "end": 129.39
+        },
+        {
+          "w": "models.",
+          "start": 129.39,
+          "end": 129.75
+        }
+      ]
+    },
+    {
+      "i": 10,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "Once you've seen the mechanism on paper—patterns in, new text out—the mystery evaporates. And if you want to go further, the site does: break a model, look inside one, shape how it behaves.",
+      "start": 130.8,
+      "end": 144.61,
+      "words": [
+        {
+          "w": "Once",
+          "start": 130.95,
+          "end": 131.51
+        },
+        {
+          "w": "you've",
+          "start": 131.51,
+          "end": 131.73
+        },
+        {
+          "w": "seen",
+          "start": 131.73,
+          "end": 131.97
+        },
+        {
+          "w": "the",
+          "start": 131.97,
+          "end": 132.13
+        },
+        {
+          "w": "mechanism",
+          "start": 132.13,
+          "end": 132.43
+        },
+        {
+          "w": "on",
+          "start": 132.43,
+          "end": 132.75
+        },
+        {
+          "w": "paper,",
+          "start": 132.75,
+          "end": 133.09
+        },
+        {
+          "w": "patterns",
+          "start": 133.31,
+          "end": 133.81
+        },
+        {
+          "w": "in,",
+          "start": 133.81,
+          "end": 134.13
+        },
+        {
+          "w": "new",
+          "start": 134.27,
+          "end": 134.61
+        },
+        {
+          "w": "text",
+          "start": 134.61,
+          "end": 134.93
+        },
+        {
+          "w": "out,",
+          "start": 134.93,
+          "end": 135.25
+        },
+        {
+          "w": "the",
+          "start": 135.41,
+          "end": 135.75
+        },
+        {
+          "w": "mystery",
+          "start": 135.75,
+          "end": 136.07
+        },
+        {
+          "w": "evaporates.",
+          "start": 136.07,
+          "end": 136.89
+        },
+        {
+          "w": "And",
+          "start": 144.17,
+          "end": 144.41
+        },
+        {
+          "w": "if",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "you",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "want",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "to",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "go",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "further,",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "the",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "site",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "does:",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "break",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "a",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "model,",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "look",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "inside",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "one,",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "shape",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "how",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "it",
+          "start": 144.41,
+          "end": 144.41
+        },
+        {
+          "w": "behaves.",
+          "start": 144.41,
+          "end": 144.41
+        }
+      ]
+    },
+    {
+      "i": 11,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "And everything on the site was made by tools that are on the site too. Paste in any text you like, and out come the booklets, the sheets and the cutouts for it. Your book, your model.",
+      "start": 145.22,
+      "end": 156.39,
+      "words": [
+        {
+          "w": "And",
+          "start": 145.37,
+          "end": 145.85
+        },
+        {
+          "w": "everything",
+          "start": 145.85,
+          "end": 146.19
+        },
+        {
+          "w": "on",
+          "start": 146.19,
+          "end": 146.45
+        },
+        {
+          "w": "the",
+          "start": 146.45,
+          "end": 146.53
+        },
+        {
+          "w": "site",
+          "start": 146.53,
+          "end": 146.77
+        },
+        {
+          "w": "was",
+          "start": 146.77,
+          "end": 146.99
+        },
+        {
+          "w": "made",
+          "start": 146.99,
+          "end": 147.27
+        },
+        {
+          "w": "by",
+          "start": 147.27,
+          "end": 147.43
+        },
+        {
+          "w": "tools",
+          "start": 147.43,
+          "end": 147.75
+        },
+        {
+          "w": "that",
+          "start": 147.75,
+          "end": 147.97
+        },
+        {
+          "w": "are",
+          "start": 147.97,
+          "end": 148.09
+        },
+        {
+          "w": "on",
+          "start": 148.09,
+          "end": 148.33
+        },
+        {
+          "w": "the",
+          "start": 148.33,
+          "end": 148.43
+        },
+        {
+          "w": "site",
+          "start": 148.43,
+          "end": 148.67
+        },
+        {
+          "w": "too.",
+          "start": 148.67,
+          "end": 148.89
+        },
+        {
+          "w": "Paste",
+          "start": 149.25,
+          "end": 149.73
+        },
+        {
+          "w": "in",
+          "start": 149.73,
+          "end": 149.93
+        },
+        {
+          "w": "any",
+          "start": 149.93,
+          "end": 150.17
+        },
+        {
+          "w": "text",
+          "start": 150.17,
+          "end": 150.43
+        },
+        {
+          "w": "you",
+          "start": 150.43,
+          "end": 150.61
+        },
+        {
+          "w": "like,",
+          "start": 150.61,
+          "end": 150.83
+        },
+        {
+          "w": "and",
+          "start": 150.97,
+          "end": 151.45
+        },
+        {
+          "w": "out",
+          "start": 151.45,
+          "end": 151.69
+        },
+        {
+          "w": "come",
+          "start": 151.69,
+          "end": 151.87
+        },
+        {
+          "w": "the",
+          "start": 151.87,
+          "end": 152.03
+        },
+        {
+          "w": "booklets,",
+          "start": 152.03,
+          "end": 152.45
+        },
+        {
+          "w": "the",
+          "start": 152.53,
+          "end": 152.79
+        },
+        {
+          "w": "sheets",
+          "start": 152.79,
+          "end": 153.21
+        },
+        {
+          "w": "and",
+          "start": 153.29,
+          "end": 153.55
+        },
+        {
+          "w": "the",
+          "start": 153.55,
+          "end": 153.63
+        },
+        {
+          "w": "cutouts",
+          "start": 153.63,
+          "end": 153.99
+        },
+        {
+          "w": "for",
+          "start": 153.99,
+          "end": 154.17
+        },
+        {
+          "w": "it.",
+          "start": 154.17,
+          "end": 154.37
+        },
+        {
+          "w": "Your",
+          "start": 154.59,
+          "end": 155.07
+        },
+        {
+          "w": "book,",
+          "start": 155.07,
+          "end": 155.47
+        },
+        {
+          "w": "your",
+          "start": 155.53,
+          "end": 155.87
+        },
+        {
+          "w": "model.",
+          "start": 155.87,
+          "end": 156.19
+        }
+      ]
+    },
+    {
+      "i": 12,
+      "speaker": "USHINI",
+      "tc": true,
+      "caption": "It's all under a Creative Commons licence at llmsunplugged.org. Every section of every lesson has its own short video, so you can play them in class. Grab the resources, run the activities, and if you'd like us to deliver it in person, get in touch.",
+      "start": 157.12,
+      "end": 174.41,
+      "words": [
+        {
+          "w": "It's",
+          "start": 157.27,
+          "end": 157.75
+        },
+        {
+          "w": "all",
+          "start": 157.75,
+          "end": 157.95
+        },
+        {
+          "w": "under",
+          "start": 157.95,
+          "end": 158.33
+        },
+        {
+          "w": "a",
+          "start": 158.33,
+          "end": 158.49
+        },
+        {
+          "w": "Creative",
+          "start": 158.49,
+          "end": 158.81
+        },
+        {
+          "w": "Commons",
+          "start": 158.81,
+          "end": 159.11
+        },
+        {
+          "w": "licence",
+          "start": 159.11,
+          "end": 159.67
+        },
+        {
+          "w": "at",
+          "start": 159.67,
+          "end": 160.15
+        },
+        {
+          "w": "llmsunplugged.org.",
+          "start": 161.06,
+          "end": 161.54
+        },
+        {
+          "w": "Every",
+          "start": 162.45,
+          "end": 162.93
+        },
+        {
+          "w": "section",
+          "start": 162.93,
+          "end": 163.27
+        },
+        {
+          "w": "of",
+          "start": 163.27,
+          "end": 163.55
+        },
+        {
+          "w": "every",
+          "start": 163.55,
+          "end": 163.79
+        },
+        {
+          "w": "lesson",
+          "start": 163.79,
+          "end": 164.17
+        },
+        {
+          "w": "has",
+          "start": 164.17,
+          "end": 164.51
+        },
+        {
+          "w": "its",
+          "start": 164.51,
+          "end": 164.69
+        },
+        {
+          "w": "own",
+          "start": 164.69,
+          "end": 164.89
+        },
+        {
+          "w": "short",
+          "start": 164.89,
+          "end": 165.21
+        },
+        {
+          "w": "video,",
+          "start": 165.21,
+          "end": 165.55
+        },
+        {
+          "w": "so",
+          "start": 165.79,
+          "end": 166.31
+        },
+        {
+          "w": "you",
+          "start": 166.31,
+          "end": 166.43
+        },
+        {
+          "w": "can",
+          "start": 166.43,
+          "end": 166.57
+        },
+        {
+          "w": "play",
+          "start": 166.57,
+          "end": 166.81
+        },
+        {
+          "w": "them",
+          "start": 166.81,
+          "end": 166.99
+        },
+        {
+          "w": "in",
+          "start": 166.99,
+          "end": 167.11
+        },
+        {
+          "w": "class.",
+          "start": 167.11,
+          "end": 167.39
+        },
+        {
+          "w": "Grab",
+          "start": 168.37,
+          "end": 168.85
+        },
+        {
+          "w": "the",
+          "start": 168.85,
+          "end": 169.01
+        },
+        {
+          "w": "resources,",
+          "start": 169.01,
+          "end": 169.39
+        },
+        {
+          "w": "run",
+          "start": 169.73,
+          "end": 170.11
+        },
+        {
+          "w": "the",
+          "start": 170.11,
+          "end": 170.29
+        },
+        {
+          "w": "activities,",
+          "start": 170.29,
+          "end": 170.73
+        },
+        {
+          "w": "and",
+          "start": 171.03,
+          "end": 171.51
+        },
+        {
+          "w": "if",
+          "start": 171.51,
+          "end": 171.63
+        },
+        {
+          "w": "you'd",
+          "start": 171.63,
+          "end": 171.85
+        },
+        {
+          "w": "like",
+          "start": 171.85,
+          "end": 172.03
+        },
+        {
+          "w": "us",
+          "start": 172.03,
+          "end": 172.21
+        },
+        {
+          "w": "to",
+          "start": 172.21,
+          "end": 172.33
+        },
+        {
+          "w": "deliver",
+          "start": 172.33,
+          "end": 172.59
+        },
+        {
+          "w": "it",
+          "start": 172.59,
+          "end": 172.77
+        },
+        {
+          "w": "in",
+          "start": 172.77,
+          "end": 172.89
+        },
+        {
+          "w": "person,",
+          "start": 172.89,
+          "end": 173.29
+        },
+        {
+          "w": "get",
+          "start": 173.43,
+          "end": 173.73
+        },
+        {
+          "w": "in",
+          "start": 173.73,
+          "end": 173.91
+        },
+        {
+          "w": "touch.",
+          "start": 173.91,
+          "end": 174.21
+        }
+      ]
+    }
+  ]
+}

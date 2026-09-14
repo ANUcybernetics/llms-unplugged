@@ -1,0 +1,79 @@
+[
+  {
+    "i": 0,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "Your sheets arrived finished. Every mark was already there. So where did the marks come from?",
+    "tts": "Your sheets arrived finished. Every mark was already there. So where did the marks come from?"
+  },
+  {
+    "i": 1,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Somebody counted. And it's a job you can do yourselves.",
+    "tts": "Somebody counted. And it's a job you can do yourselves."
+  },
+  {
+    "i": 2,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Start with a text. Lowercase everything. And notice that full stops and exclamation marks are words too—they get their own rows.",
+    "tts": "Start with a text. Lowercase everything. And notice that full stops and exclamation marks are words too, they get their own rows."
+  },
+  {
+    "i": 3,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Read it two words at a time. The first word names the row. The second word gets a mark in that row. Then move along by one: the second word of this pair is the first word of the next. Read the text once, and every pair in it gets counted.",
+    "tts": "Read it two words at a time. The first word names the row. The second word gets a mark in that row. Then move along by one: the second word of this pair is the first word of the next. Read the text once, and every pair in it gets counted."
+  },
+  {
+    "i": 4,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Keep going and the same pair comes round again. The second time the text says \"the magpie,\" the mark goes beside magpie in the row for the, which already has one. That's how a count builds. Common pairs collect marks; rare ones don't.",
+    "tts": "Keep going and the same pair comes round again. The second time the text says \"the magpie,\" the mark goes beside magpie in the row for the, which already has one. That's how a count builds. Common pairs collect marks; rare ones don't."
+  },
+  {
+    "i": 5,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Check it against your printed sheet. The magpie, five marks. Count the book and it's five. Every sheet in this room was made exactly this way.",
+    "tts": "Check it against your printed sheet. The magpie, five marks. Count the book and it's five. Every sheet in this room was made exactly this way."
+  },
+  {
+    "i": 6,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Now it's your turn, on a new text, with blank sheets. This time the words are yours to write as well as the marks. One person reads the text two words at a time. Whoever has the row for the first word puts a mark beside the second.",
+    "tts": "Now it's your turn, on a new text, with blank sheets. This time the words are yours to write as well as the marks. One person reads the text two words at a time. Whoever has the row for the first word puts a mark beside the second."
+  },
+  {
+    "i": 7,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Three rules keep your model honest. When you start a row for a new word, say the word out loud, so nobody else starts one too—two people counting the same word splits the model in half. A new word goes in the next empty box, never a skipped one—the colours go in order. And the row for full stop is a real row: it says how sentences start.",
+    "tts": "Three rules keep your model honest. When you start a row for a new word, say the word out loud, so nobody else starts one too, two people counting the same word splits the model in half. A new word goes in the next empty box, never a skipped one, the colours go in order. And the row for full stop is a real row: it says how sentences start."
+  },
+  {
+    "i": 8,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "When you've read the whole text, generate from it. Start from the. It should sound like your text, and nobody else's.",
+    "tts": "When you've read the whole text, generate from it. Start from the. It should sound like your text, and nobody else's."
+  },
+  {
+    "i": 9,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "That's training. Not a computer reading the internet. Somebody counting what came next, a lot.",
+    "tts": "That's training. Not a computer reading the internet. Somebody counting what came next, a lot."
+  },
+  {
+    "i": 10,
+    "speaker": "BEN",
+    "tc": true,
+    "caption": "Reader, grab the text. Two words at a time.",
+    "tts": "Reader, grab the text. Two words at a time."
+  }
+]
