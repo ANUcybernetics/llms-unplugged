@@ -324,9 +324,13 @@ window.KIT = (() => {
         s,
       ),
     );
+    // the reading hints only fit a grid drawn large; a small grid leaves them out
     const corner = svg("g", { class: "ui" }, s);
-    svg("text", { x: head + 10, y: 30, "font-size": 22, fill: "var(--ink-muted)", class: "ui", text: "next →" }, corner);
-    svg("text", { x: 14, y: head + 32, "font-size": 22, fill: "var(--ink-muted)", class: "ui", text: "current ↓" }, corner);
+    if (cell >= 90) {
+      // both hints live inside the blank corner cell, clear of the headers
+      svg("text", { x: head - 12, y: 30, "text-anchor": "end", "font-size": 22, fill: "var(--ink-muted)", class: "ui", text: "next →" }, corner);
+      svg("text", { x: 14, y: head - 14, "font-size": 22, fill: "var(--ink-muted)", class: "ui", text: "current ↓" }, corner);
+    }
     // cells: tally strokes per count, prepped for draw-on, plus a dimmer on top
     const cells = bg.vocab.map((_, r) =>
       bg.vocab.map((_, c) => {
@@ -609,7 +613,7 @@ window.KIT = (() => {
     parent,
     entries,
     palette,
-    { x = 0, y = 0, w = 1600, rowH = 150, header = null, title = "", pad = 24 } = {},
+    { x = 0, y = 0, w = 1600, rowH = 150, header = null, title = "", pad = 24, fontSize = 44, prefixW = 260} = {},
   ) {
     const headH = header ? 90 : 0;
     const H = headH + entries.length * rowH + pad * 2;
@@ -663,7 +667,7 @@ window.KIT = (() => {
       s.__header = hdr;
     }
     const rows = entries.map((e, i) =>
-      ledgerRow(parent, e, palette, { x: 0, y: headH + pad + i * rowH, w, h: rowH, svgParent: s }),
+      ledgerRow(parent, e, palette, { x: 0, y: headH + pad + i * rowH, w, h: rowH, fontSize, prefixW, svgParent: s }),
     );
     for (const r of rows) r.el = g;
     return {

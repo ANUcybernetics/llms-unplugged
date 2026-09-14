@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>LLMs Unplugged — Overview (portrait)</title>
+    <link rel="stylesheet" href="kit/kit.css" />
+    <script src="kit/vendor/gsap.min.js"></script>
+    <script src="kit/generated/data.js"></script>
+    <script src="kit/kit.js"></script>
+    <style>
+      html, body { width: 1080px; height: 1920px; }
+    </style>
+  </head>
+  <body>
+    <!-- Overview, portrait (9:16): same build() as index.html, from
+         overview.js, branching on S.portrait. See that file's Layout note:
+         everything restacks, nothing moves side by side. -->
+    <div id="stage" class="stage" data-aspect="portrait" data-composition-id="overview"
+         data-start="0" data-duration="176.37" data-width="1080" data-height="1920" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="176.37" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="176.37" data-track-index="1"></audio>
+    </div>
+    <script src="overview.js"></script>
+    <script>
+      KIT.ready(build).then(({ tl }) => {
+        window.__timelines["overview"] = tl;
+      });
+    </script>
+  </body>
+</html>
