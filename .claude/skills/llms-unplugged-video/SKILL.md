@@ -86,8 +86,8 @@ HYPERFRAMES_SKIP_SKILLS=1 npx -y hyperframes@latest init <slug> --example blank 
 The composition contract, learnt from its lint:
 
 - the root carries `data-composition-id`, `data-start`, `data-duration`,
-  `data-width`, `data-height` and `data-fps` (25 to match a recording; it
-  defaults to 30)
+  `data-width`, `data-height` and `data-fps` (50 for the explainer series, 25
+  to match a 25p recording; it defaults to 30)
 - every element on the timeline is `class="clip"` with `data-start`,
   `data-duration` and `data-track-index`
 - footage with its own sound is `<video ... data-has-audio="true">`; anything
@@ -107,8 +107,8 @@ Then, every time the composition changes:
 
 ```bash
 npm run check                      # lint + runtime + layout + motion + contrast
-npm run render -- --output ../../out/video/<slug>/<slug>.mp4
-npm run render -- --quality draft --output review.mp4        # fast pass for watching
+npm run render -- --resolution landscape-4k --fps 50 --output ../../out/video/<slug>/<slug>.mp4
+npm run render -- --quality draft --output review.mp4        # 1080p at data-fps, fast pass for watching
 npm run render -- --format png-sequence --output frames      # stills at the beats
 ```
 
