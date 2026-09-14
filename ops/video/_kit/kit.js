@@ -133,7 +133,7 @@ window.KIT = (() => {
     const aspect = root.dataset.aspect || "landscape";
     const W = aspect === "portrait" ? 1080 : 1920,
       H = aspect === "portrait" ? 1920 : 1080;
-    const cap = aspect === "portrait" ? 300 : 170;
+    const cap = aspect === "portrait" ? 300 : 190;
     const m = 60;
     // the scene layer is clipped to the space above the caption band, so a
     // push-in never runs under the captions
@@ -871,11 +871,36 @@ window.KIT = (() => {
     return { el: g, svg: s, path: path[0], stations, cx, cy, rx, ry };
   }
 
+  // A gold ring: the bracket that sits over a pair of tiles, or rings a cell.
+  // Sized once; moved and resized by transform (scaleX/scaleY on a 100x100 box).
+  function ring(parent, { x = 0, y = 0, w = 100, h = 100, stroke = 5, color = "var(--gold)" } = {}) {
+    const g = layer(parent, x, y);
+    const d = el("div", { style: { position: "absolute", left: 0, top: 0, width: `${w}px`, height: `${h}px`, border: `${stroke}px solid ${color}`, borderRadius: "12px", boxShadow: "0 0 0 4px rgb(190 131 14 / 22%)" } }, g);
+    gsap.set(g, { opacity: 0, transformOrigin: "0 0" });
+    return { el: g, box: d, w, h,
+      // land the ring around a box {x, y, w, h} (parent coordinates), padded
+      around: (tl, b, t, dur = 0.45, pad = 10) => tl.to(g, { x: b.x - pad, y: b.y - pad, scaleX: (b.w + 2 * pad) / w, scaleY: (b.h + 2 * pad) / h, duration: dur, ease: "power2.inOut" }, t) };
+  }
+  // the box (parent coordinates) spanning tiles a..b of a tiles() result
+  const spanBox = (tiles, a, b) => {
+    const A = tiles.tiles[a], B = tiles.tiles[b];
+    const x0 = gsap.getProperty(tiles.el, "x"), y0 = gsap.getProperty(tiles.el, "y");
+    const wrapped = B.y !== A.y;
+    return { x: x0 + A.x, y: y0 + A.y, w: wrapped ? A.w : B.x + B.w - A.x, h: A.h };
+  };
+  // a page of a book: paper with the text set large in the book's serif
+  function bookPage(parent, lines, { x = 0, y = 0, w = 800, h = 420, size = 60, pad = 56 } = {}) {
+    const d = el("div", { class: "paper", style: { width: `${w}px`, height: `${h}px`, padding: `${pad}px`, fontFamily: "var(--font-tok)", fontSize: `${size}px`, lineHeight: 1.35 } }, parent);
+    gsap.set(d, { x, y });
+    const ls = lines.map((t) => el("div", { text: t }, d));
+    return { el: d, lines: ls, x, y, w, h };
+  }
+
   // ---------------------------------------------------------------- motion
   // appear/vanish move relative to where the thing already sits ("+=24"), so
   // they never undo a layer's placement
   const appear = (tl, els, t, { dur = 0.5, y = 24, scale = 1, stagger = 0.06, ease = "power3.out" } = {}) =>
-    tl.from(els, { opacity: 0, y: `+=${y}`, scale, duration: dur, stagger, ease }, t);
+    tl.fromTo(els, { opacity: 0, y: `+=${y}`, scale }, { opacity: 1, y: `-=${y}`, scale: 1, duration: dur, stagger, ease, immediateRender: false }, t);
   const vanish = (tl, els, t, { dur = 0.35, y = 0, stagger = 0 } = {}) =>
     tl.to(els, { opacity: 0, ...(y ? { y: `+=${y}` } : {}), duration: dur, stagger, ease: "power2.in" }, t);
   const show = (tl, els, t) => tl.set(els, { opacity: 1 }, t);
@@ -998,6 +1023,9 @@ window.KIT = (() => {
     write,
     pageImage,
     loop,
+    ring,
+    spanBox,
+    bookPage,
     appear,
     vanish,
     show,

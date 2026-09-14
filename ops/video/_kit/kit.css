@@ -28,7 +28,7 @@
   --paper: #fff;                     /* --paper-ground: white, what the sheets print on */
   --paper-edge: rgb(0 0 0 / 22%);
   --ink: #1a1a1a;                    /* --paper-ink */
-  --ink-muted: rgb(0 0 0 / 55%);
+  --ink-muted: rgb(0 0 0 / 64%);
   --pencil: #3a3a3a;                 /* what a participant writes in */
   --font-ui: "Public Sans", sans-serif;
   --font-tok: "Libertinus Serif", serif;   /* what the printed sheets and booklets use */
@@ -63,12 +63,12 @@ body { font-family: var(--font-ui); color: var(--text); }
 .hidden { opacity: 0; }
 
 /* ---- caption band: the script line, whole, in a region nothing else uses ---- */
-.captions { position: absolute; left: 0; right: 0; bottom: 0; height: 170px; background: var(--ground); }
+.captions { position: absolute; left: 0; right: 0; bottom: 0; height: 190px; background: var(--ground); }
 .stage[data-aspect="portrait"] .captions { height: 300px; }
 .caption {
   position: absolute; left: 96px; right: 96px; top: 0; bottom: 0;
   display: flex; align-items: center; justify-content: center; text-align: center;
-  font-size: 40px; line-height: 1.3; font-weight: 400; color: var(--text); text-wrap: balance;
+  font-size: 34px; line-height: 1.3; font-weight: 400; color: var(--text); text-wrap: balance;
   opacity: 0;
 }
 .stage[data-aspect="portrait"] .caption { left: 60px; right: 60px; font-size: 44px; }

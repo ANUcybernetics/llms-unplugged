@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>LLMs Unplugged — Training (grid)</title>
+    <link rel="stylesheet" href="kit/kit.css" />
+    <script src="kit/vendor/gsap.min.js"></script>
+    <script src="kit/generated/data.js"></script>
+    <script src="kit/kit.js"></script>
+    <style>
+      html, body { width: 1920px; height: 1080px; }
+    </style>
+  </head>
+  <body>
+    <!-- Training (grid): ops/video/scripts/training-grid.md. Every beat lands
+         on a word of the voice track (timing.json from align.py); the visuals
+         are the participant's desk: the book, the word tiles, the grid. -->
+    <div id="stage" class="stage" data-aspect="landscape" data-composition-id="training-grid"
+         data-start="0" data-duration="123" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="123" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="123" data-track-index="1"></audio>
+    </div>
+    <script>
+      const build = (tl, S, T) => {
+        const K = KIT, D = KIT_DATA;
+        const scene = document.getElementById("scene");
+        const A = S.area;
+        const END = T.duration;
+
+        // ---- the desk: the book at the left, the grid sheet at the right
+        const tokens = K.split(D.grid.tokens), vocab = K.split(D.grid.vocab);
+        const bg = K.bigrams(tokens, vocab);
+        const book = K.bookPage(scene, ["Hop, Joey, hop.", "See Joey hop."], { x: A.x, y: A.y, w: 940, h: 300, size: 72, pad: 48 });
+        const grid = K.grid(scene, bg, { x: 1110, y: A.y + 10, cell: 118, head: 150 });
+        const cam = K.camera(grid.el, S);
+        // headers appear as the words are met
+        gsap.set([...grid.rowHead, ...grid.colHead], { opacity: 0 });
+        // a pencil on the desk (a flat top-down pencil in gold and paper)
+        const pencilL = K.layer(scene, A.x + 40, A.y + 400);
+        const pencilSvg = K.svg("svg", { width: 640, height: 40, viewBox: "0 0 640 40" }, pencilL);
+        K.svg("polygon", { points: "0 20 36 4 36 36", fill: "#e9dcc5" }, pencilSvg);
+        K.svg("polygon", { points: "0 20 12 15 12 25", fill: "#1a1a1a" }, pencilSvg);
+        K.svg("rect", { x: 36, y: 4, width: 560, height: 32, fill: "var(--gold)" }, pencilSvg);
+        K.svg("rect", { x: 596, y: 4, width: 44, height: 32, rx: 6, fill: "#d98c8c" }, pencilSvg);
+        gsap.set(pencilL, { rotation: -6, transformOrigin: "0 50%" });
+
+        // ---- line 0 (TC): the desk, held. Everything is already in place.
+        K.appear(tl, [book.el, grid.el, pencilL], 0.2, { stagger: 0.15 });
+
+        // ---- line 1: the book is the training data; its line lifts off as tiles
+        const t1 = T.start(1);
+        tl.to(book.lines, { color: "#7a5a12", duration: 0.4 }, T.word(1, "book", 1));
+        tl.to(book.lines, { color: "var(--ink)", duration: 0.6 }, T.word(1, "book", 1) + 1.2);
+        // three tile sets at one slot: raw words, lowercased, then tokenised
+        const raw = ["Hop,", "Joey,", "hop.", "See", "Joey", "hop."];
+        const lower = ["hop,", "joey,", "hop.", "see", "joey", "hop."];
+        const TY = A.y + 480, TX = A.x;
+        const setA = K.tiles(scene, raw, { x: TX, y: TY, size: 38, maxW: 1020, padX: 20 });
+        const setB = K.tiles(scene, lower, { x: TX, y: TY, size: 38, maxW: 1020, padX: 20 });
+        const setC = K.tiles(scene, tokens, { x: TX, y: TY, size: 38, maxW: 1020, padX: 20 });
+        gsap.set([setB.el, setC.el], { opacity: 0 });
+        gsap.set(setA.tiles.map((t) => t.el), { opacity: 0 });
+        // the words lift out of the book: each tile starts over its word on the page and drops to its slot
+        const tLift = T.word(1, "training");
+        setA.tiles.forEach((t, i) => {
+          const fromX = book.x + 60 + (i % 3) * 300 - t.x, fromY = book.y + 70 + Math.floor(i / 3) * 100 - t.y;
+          tl.fromTo(t.el, { opacity: 0, x: t.x + fromX, y: t.y + fromY, scale: 1.2 }, { opacity: 1, x: t.x, y: t.y, scale: 1, duration: 0.7, ease: "power2.inOut" }, tLift + i * 0.12);
+        });
+        tl.to(pencilL, { opacity: 0.35, duration: 0.5 }, tLift);
+
+        // ---- line 2: individual words, lowercase, punctuation as words
+        const tWords = T.word(2, "individual");
+        // "break the text into individual words": the tiles spread apart a touch
+        tl.to(setA.tiles.map((t) => t.el), { x: (i, el) => setA.tiles[i].x + i * 6, duration: 0.5, ease: "power2.out" }, tWords);
+        tl.to(setA.tiles.map((t) => t.el), { x: (i) => setA.tiles[i].x, duration: 0.5, ease: "power2.inOut" }, tWords + 1.6);
+        // "lowercase everything": crossfade A → B
+        const tLower = T.word(2, "lowercase");
+        tl.to(setA.el, { opacity: 0, duration: 0.3 }, tLower + 0.2);
+        tl.to(setB.el, { opacity: 1, duration: 0.3 }, tLower + 0.2);
+        // "treat punctuation ... as words too": the full stops and commas split away
+        const tPunct = T.word(2, "punctuation");
+        tl.to(setB.el, { opacity: 0, duration: 0.25 }, tPunct + 0.3);
+        tl.to(setC.el, { opacity: 1, duration: 0.25 }, tPunct + 0.3);
+        setC.tiles.forEach((t, i) => {
+          if (!K.isPunct(t.text)) return;
+          const prev = setC.tiles[i - 1];
+          tl.fromTo(t.el, { x: prev.x + prev.w - t.w, y: prev.y }, { x: t.x, y: t.y, duration: 0.5, ease: "power2.out" }, tPunct + 0.3 + i * 0.05);
+        });
+        // "their own row and column": the punctuation headers on the grid wink gold, then settle later
+        const tOwn = T.word(2, "row");
+        [1, 3].forEach((c) => {
+          tl.to([grid.colBands[c], grid.rowBands[c]], { opacity: 0.5, duration: 0.3 }, tOwn);
+          tl.to([grid.colBands[c], grid.rowBands[c]], { opacity: 0, duration: 0.5 }, tOwn + 1.4);
+        });
+
+        // ---- line 3: bigrams, on a small inset above the tiles, then the bracket lands on "hop ,"
+        const inset = K.tiles(scene, ["the", "cat", "sat"], { x: TX + 20, y: TY - 130, size: 40 });
+        gsap.set(inset.el, { opacity: 0 });
+        const tInset = T.word(3, "says");
+        K.appear(tl, inset.el, tInset, { y: 16 });
+        const br = K.ring(scene, { w: 100, h: 100 });
+        const b1 = K.spanBox(inset, 0, 1), b2 = K.spanBox(inset, 1, 2);
+        tl.set(br.el, { x: b1.x - 10, y: b1.y - 10, scaleX: (b1.w + 20) / 100, scaleY: (b1.h + 20) / 100 }, tInset);
+        const tPair1 = T.word(3, "the", 3), tPair2 = T.word(3, "cat", 3);
+        tl.to(br.el, { opacity: 1, duration: 0.3 }, tPair1);
+        tl.to([inset.tiles[0].el, inset.tiles[1].el], { y: "-=14", duration: 0.3, yoyo: true, repeat: 1, ease: "power2.out" }, tPair1 + 0.1);
+        br.around(tl, b2, tPair2, 0.4);
+        tl.to([inset.tiles[1].el, inset.tiles[2].el], { y: "-=14", duration: 0.3, yoyo: true, repeat: 1, ease: "power2.out" }, tPair2 + 0.3);
+        // inset away; the bracket drops onto the book's first pair
+        const tLand = tPair2 + 0.9;
+        K.vanish(tl, inset.el, tLand);
+        br.around(tl, K.spanBox(setC, 0, 1), tLand, 0.6);
+
+        // ---- line 4: headers, bands, push in, the first tally
+        const pairs = bg.pairs;
+        const P0 = pairs[0];
+        const rowHeadBox = (r) => ({ x: 1110 + 150 - 22, y: A.y + 10 + 150 + r * 118 + 59 });
+        const colHeadBox = (c) => ({ x: 1110 + 150 + c * 118 + 59, y: A.y + 10 + 150 - 26 });
+        // a tile clone flies to the header slot, then the header text takes over
+        const flyHeader = (tile, box, headEl, t, end = false) => {
+          const clone = K.el("div", { class: `tile${K.isPunct(tile.text) ? " punct" : ""}`, text: tile.text, style: { width: `${tile.w}px`, height: `${tile.h}px`, fontSize: "38px", opacity: 0 } }, scene);
+          const x0 = gsap.getProperty(setC.el, "x") + tile.x, y0 = gsap.getProperty(setC.el, "y") + tile.y;
+          tl.set(clone, { x: x0, y: y0, opacity: 1 }, t);
+          tl.to(clone, { x: box.x - (end ? tile.w : tile.w / 2), y: box.y - tile.h / 2, scale: 0.8, duration: 0.7, ease: "power2.inOut" }, t);
+          tl.to(clone, { opacity: 0, duration: 0.2 }, t + 0.7);
+          tl.to(headEl, { opacity: 1, duration: 0.2 }, t + 0.75);
+        };
+        flyHeader(setC.tiles[P0.i], rowHeadBox(P0.r), grid.rowHead[P0.r], T.word(4, "first", 2) - 0.3, true);
+        flyHeader(setC.tiles[P0.i + 1], colHeadBox(P0.c), grid.colHead[P0.c], T.word(4, "first", 3) - 0.3);
+        const tTally = T.word(4, "Tally");
+        tl.to(grid.rowBands[P0.r], { opacity: 1, duration: 0.3 }, tTally - 0.6);
+        tl.to(grid.colBands[P0.c], { opacity: 1, duration: 0.3 }, tTally - 0.3);
+        const cell0 = grid.cells[P0.r][P0.c];
+        const leftSide = [book.el, setC.el, br.el, pencilL];
+        const pushIn = (cell, t, dur = 0.7) => {
+          tl.to(leftSide, { opacity: 0, duration: 0.3 }, t - 0.1);
+          cam.to(tl, { px: cell.cx, py: cell.cy, s: 1.6, sx: 1100, sy: A.cy }, t, dur);
+        };
+        const pullBack = (t, dur = 0.7) => {
+          cam.reset(tl, t, dur);
+          tl.to([book.el, setC.el, br.el], { opacity: 1, duration: 0.3 }, t + dur - 0.2);
+          tl.to(pencilL, { opacity: 0.35, duration: 0.3 }, t + dur - 0.2);
+        };
+        pushIn(cell0, tTally);
+        K.drawOn(tl, [cell0.strokes[0]], T.word(4, "meet") + 0.1, 0.4, 0);
+        // "each word gets one row and one column": back out
+        pullBack(T.word(4, "Each") + 0.2);
+        tl.to([grid.rowBands[P0.r], grid.colBands[P0.c]], { opacity: 0, duration: 0.4 }, T.word(4, "Each") + 0.8);
+
+        // ---- line 5: slide forward by one, then the rest of the text at speed
+        const P1 = pairs[1];
+        const tSlide = T.word(5, "slide");
+        br.around(tl, K.spanBox(setC, P1.i, P1.i + 1), tSlide, 0.5);
+        flyHeader(setC.tiles[P1.i], rowHeadBox(P1.r), grid.rowHead[P1.r], T.word(5, "row") - 0.4, true);
+        flyHeader(setC.tiles[P1.i + 1], colHeadBox(P1.c), grid.colHead[P1.c], T.word(5, "column") - 0.5);
+        const tTally2 = T.word(5, "tally");
+        tl.to(grid.rowBands[P1.r], { opacity: 1, duration: 0.3 }, tTally2 - 0.6);
+        tl.to(grid.colBands[P1.c], { opacity: 1, duration: 0.3 }, tTally2 - 0.3);
+        const cell1 = grid.cells[P1.r][P1.c];
+        pushIn(cell1, tTally2 - 0.4);
+        K.drawOn(tl, [cell1.strokes[0]], tTally2 + 0.2, 0.4, 0);
+        pullBack(tTally2 + 1.2);
+        tl.to([grid.rowBands[P1.r], grid.colBands[P1.c]], { opacity: 0, duration: 0.4 }, tTally2 + 1.4);
+        // pairs 2..end, one per beat, headers appearing as met; the page edge (". see") without a pause
+        const tRun = T.word(5, "Keep"), tRunEnd = T.word(5, "Some") - 0.6;
+        const rest = pairs.slice(2);
+        const seen = new Set([P0.r, P0.c, P1.r, P1.c]);
+        const step = (tRunEnd - tRun) / rest.length;
+        rest.forEach((p, k) => {
+          const t = tRun + k * step;
+          br.around(tl, K.spanBox(setC, p.i, p.i + 1), t, Math.min(0.4, step * 0.5));
+          if (!seen.has(p.r)) { seen.add(p.r); tl.to(grid.rowHead[p.r], { opacity: 1, duration: 0.3 }, t + 0.15); }
+          if (!seen.has(p.c)) { seen.add(p.c); tl.to(grid.colHead[p.c], { opacity: 1, duration: 0.3 }, t + 0.15); }
+          tl.to([grid.rowBands[p.r], grid.colBands[p.c]], { opacity: 1, duration: 0.2 }, t + 0.1);
+          K.drawOn(tl, [grid.cells[p.r][p.c].strokes[p.nth - 1]], t + 0.35, 0.3, 0);
+          tl.to([grid.rowBands[p.r], grid.colBands[p.c]], { opacity: 0, duration: 0.3 }, t + step * 0.8);
+        });
+        tl.to(br.el, { opacity: 0, duration: 0.3 }, tRunEnd + 0.5);
+        // "Some cells stack up with tallies": the two-stroke cells pulse; "others stay empty"
+        const tStack = T.word(5, "stack");
+        const stacked = grid.cells.flat().filter((c) => c.strokes.length > 1);
+        stacked.forEach((c) => {
+          const ringC = K.ring(scene, { w: 100, h: 100 });
+          tl.set(ringC.el, { x: 1110 + c.x + 6, y: A.y + 10 + c.y + 6, scaleX: (c.w - 12) / 100, scaleY: (c.h - 12) / 100 }, tStack);
+          tl.to(ringC.el, { opacity: 1, duration: 0.3 }, tStack);
+          tl.to(ringC.el, { opacity: 0, duration: 0.4 }, T.word(5, "empty") + 0.6);
+        });
+
+        // ---- line 6: the grid is the model; the logarithmic pull-back
+        const t6 = T.start(6);
+        K.vanish(tl, [book.el, setC.el, pencilL], t6 + 0.2);
+        cam.to(tl, { px: grid.width / 2, py: grid.height / 2, s: 1.2 }, t6 + 0.3, 0.9);
+        // the mega-grid: our sheet is one cell of a grid a hundred times wider
+        const G = grid.width, NCELL = 100;
+        const megaL = K.layer(scene, 0, 0);
+        scene.insertBefore(megaL, grid.el);  // under the grid, so our sheet sits in its cell
+        const megaSvg = K.svg("svg", { width: G * NCELL, height: G * NCELL, viewBox: `0 0 ${G * NCELL} ${G * NCELL}` }, megaL);
+        const defs = K.svg("defs", {}, megaSvg);
+        const pat = K.svg("pattern", { id: "megacell", width: G, height: G, patternUnits: "userSpaceOnUse" }, defs);
+        K.svg("rect", { x: 0, y: 0, width: G, height: G, fill: "#e6e1d6" }, pat);
+        K.svg("path", { d: `M ${G} 0 L 0 0 0 ${G}`, fill: "none", stroke: "rgb(0 0 0 / 40%)", "stroke-width": 8 }, pat);
+        K.svg("rect", { x: 0, y: 0, width: G * NCELL, height: G * NCELL, fill: "url(#megacell)" }, megaSvg);
+        // our sheet's cell, ringed in gold so the eye can follow it down
+        K.svg("rect", { x: G * (NCELL / 2), y: G * (NCELL / 2), width: G, height: G, fill: "none", stroke: "var(--gold)", "stroke-width": 40 }, megaSvg);
+        gsap.set(megaL, { opacity: 0, transformOrigin: "0 0" });
+        // place the mega grid so our grid sits in its middle cell, at the grid's home position
+        const gx = 1110, gy = A.y + 10;
+        const megaHome = { x: gx - G * (NCELL / 2), y: gy - G * (NCELL / 2) };
+        gsap.set(megaL, { x: megaHome.x, y: megaHome.y });
+        const tBillions = T.word(6, "billions");
+        cam.reset(tl, tBillions - 1.2, 0.8);
+        tl.to(megaL, { opacity: 1, duration: 0.01 }, tBillions - 0.4);
+        // both layers zoom out around the grid's centre: our sheet shrinks to a dot among a hundred-wide grid
+        const cx = gx + G / 2, cy = gy + G / 2;
+        const proxy = { p: 0 };
+        const zoom = (s) => {
+          gsap.set(grid.el, { x: A.cx - (cx - gx) * s + (gx - gx), y: A.cy - (cy - gy) * s, scale: s });
+          gsap.set(megaL, { x: A.cx - (cx - megaHome.x) * s, y: A.cy - (cy - megaHome.y) * s, scale: s });
+        };
+        const t7 = T.start(7);
+        const zoomDur = Math.min(3.6, t7 - 0.4 - (tBillions - 0.4));
+        tl.to(proxy, { p: 1, duration: zoomDur, ease: "power1.inOut", onUpdate() { zoom(Math.exp(K.lerp(Math.log(1), Math.log(0.012), proxy.p))); } }, tBillions - 0.4);
+        // hold, then cut back to the sheet on the desk
+        tl.set(megaL, { opacity: 0 }, t7 - 0.05);
+        tl.set(grid.el, { x: gx, y: gy, scale: 1 }, t7 - 0.05);
+        tl.fromTo([book.el, pencilL], { opacity: 0 }, { opacity: 1, duration: 0.01 }, t7 - 0.05);
+        tl.set(pencilL, { opacity: 1 }, t7);
+      };
+      KIT.ready(build).then(({ tl }) => {
+        window.__timelines["training-grid"] = tl;
+      });
+    </script>
+  </body>
+</html>
