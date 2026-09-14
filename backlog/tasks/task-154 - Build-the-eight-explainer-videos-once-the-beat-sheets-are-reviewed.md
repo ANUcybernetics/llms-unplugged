@@ -4,10 +4,11 @@ title: Build the eight explainer videos once the beat sheets are reviewed
 status: To Do
 assignee: []
 created_date: '2026-09-14 04:14'
-updated_date: '2026-09-14 09:21'
+updated_date: '2026-09-14 11:03'
 labels:
   - video
-dependencies: []
+dependencies:
+  - TASK-155
 priority: medium
 ---
 
