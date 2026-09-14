@@ -1,0 +1,537 @@
+{
+ "slug": "motion-test",
+ "audio": null,
+ "duration": 43,
+ "lines": [
+  {
+   "i": 0,
+   "speaker": "BEN",
+   "tc": false,
+   "caption": "Word tiles lift off the page and fly into a cell.",
+   "start": 0.5,
+   "end": 4.5,
+   "words": [
+    {
+     "w": "Word",
+     "start": 0.5,
+     "end": 0.75
+    },
+    {
+     "w": "tiles",
+     "start": 0.8,
+     "end": 1.05
+    },
+    {
+     "w": "lift",
+     "start": 1.1,
+     "end": 1.35
+    },
+    {
+     "w": "off",
+     "start": 1.4,
+     "end": 1.65
+    },
+    {
+     "w": "the",
+     "start": 1.7,
+     "end": 1.95
+    },
+    {
+     "w": "page",
+     "start": 2.0,
+     "end": 2.25
+    },
+    {
+     "w": "and",
+     "start": 2.3,
+     "end": 2.55
+    },
+    {
+     "w": "fly",
+     "start": 2.6,
+     "end": 2.85
+    },
+    {
+     "w": "into",
+     "start": 2.9,
+     "end": 3.15
+    },
+    {
+     "w": "a",
+     "start": 3.1999999999999997,
+     "end": 3.4499999999999997
+    },
+    {
+     "w": "cell.",
+     "start": 3.5,
+     "end": 3.75
+    }
+   ]
+  },
+  {
+   "i": 1,
+   "speaker": "USHINI",
+   "tc": false,
+   "caption": "A row and a column light gold; the camera pushes in and a tally draws on.",
+   "start": 4.5,
+   "end": 8.5,
+   "words": [
+    {
+     "w": "A",
+     "start": 4.5,
+     "end": 4.75
+    },
+    {
+     "w": "row",
+     "start": 4.8,
+     "end": 5.05
+    },
+    {
+     "w": "and",
+     "start": 5.1,
+     "end": 5.35
+    },
+    {
+     "w": "a",
+     "start": 5.4,
+     "end": 5.65
+    },
+    {
+     "w": "column",
+     "start": 5.7,
+     "end": 5.95
+    },
+    {
+     "w": "light",
+     "start": 6.0,
+     "end": 6.25
+    },
+    {
+     "w": "gold;",
+     "start": 6.3,
+     "end": 6.55
+    },
+    {
+     "w": "the",
+     "start": 6.6,
+     "end": 6.85
+    },
+    {
+     "w": "camera",
+     "start": 6.9,
+     "end": 7.15
+    },
+    {
+     "w": "pushes",
+     "start": 7.199999999999999,
+     "end": 7.449999999999999
+    },
+    {
+     "w": "in",
+     "start": 7.5,
+     "end": 7.75
+    },
+    {
+     "w": "and",
+     "start": 7.8,
+     "end": 8.05
+    },
+    {
+     "w": "a",
+     "start": 8.1,
+     "end": 8.35
+    },
+    {
+     "w": "tally",
+     "start": 8.4,
+     "end": 8.65
+    },
+    {
+     "w": "draws",
+     "start": 8.7,
+     "end": 8.95
+    },
+    {
+     "w": "on.",
+     "start": 9.0,
+     "end": 9.25
+    }
+   ]
+  },
+  {
+   "i": 2,
+   "speaker": "BEN",
+   "tc": false,
+   "caption": "The dice strip shades into blocks, and a ten-sided die lands.",
+   "start": 8.5,
+   "end": 12.5,
+   "words": [
+    {
+     "w": "The",
+     "start": 8.5,
+     "end": 8.75
+    },
+    {
+     "w": "dice",
+     "start": 8.8,
+     "end": 9.05
+    },
+    {
+     "w": "strip",
+     "start": 9.1,
+     "end": 9.35
+    },
+    {
+     "w": "shades",
+     "start": 9.4,
+     "end": 9.65
+    },
+    {
+     "w": "into",
+     "start": 9.7,
+     "end": 9.95
+    },
+    {
+     "w": "blocks,",
+     "start": 10.0,
+     "end": 10.25
+    },
+    {
+     "w": "and",
+     "start": 10.3,
+     "end": 10.55
+    },
+    {
+     "w": "a",
+     "start": 10.6,
+     "end": 10.85
+    },
+    {
+     "w": "ten-sided",
+     "start": 10.9,
+     "end": 11.15
+    },
+    {
+     "w": "die",
+     "start": 11.2,
+     "end": 11.45
+    },
+    {
+     "w": "lands.",
+     "start": 11.5,
+     "end": 11.75
+    }
+   ]
+  },
+  {
+   "i": 3,
+   "speaker": "USHINI",
+   "tc": false,
+   "caption": "A ledger row, its marks counting themselves, and counters dropping into the cup.",
+   "start": 12.5,
+   "end": 19,
+   "words": [
+    {
+     "w": "A",
+     "start": 12.5,
+     "end": 12.75
+    },
+    {
+     "w": "ledger",
+     "start": 12.8,
+     "end": 13.05
+    },
+    {
+     "w": "row,",
+     "start": 13.1,
+     "end": 13.35
+    },
+    {
+     "w": "its",
+     "start": 13.4,
+     "end": 13.65
+    },
+    {
+     "w": "marks",
+     "start": 13.7,
+     "end": 13.95
+    },
+    {
+     "w": "counting",
+     "start": 14.0,
+     "end": 14.25
+    },
+    {
+     "w": "themselves,",
+     "start": 14.3,
+     "end": 14.55
+    },
+    {
+     "w": "and",
+     "start": 14.6,
+     "end": 14.85
+    },
+    {
+     "w": "counters",
+     "start": 14.9,
+     "end": 15.15
+    },
+    {
+     "w": "dropping",
+     "start": 15.2,
+     "end": 15.45
+    },
+    {
+     "w": "into",
+     "start": 15.5,
+     "end": 15.75
+    },
+    {
+     "w": "the",
+     "start": 15.8,
+     "end": 16.05
+    },
+    {
+     "w": "cup.",
+     "start": 16.1,
+     "end": 16.35
+    }
+   ]
+  },
+  {
+   "i": 4,
+   "speaker": "BEN",
+   "tc": false,
+   "caption": "One counter slides out onto the paper and becomes the word.",
+   "start": 19,
+   "end": 24,
+   "words": [
+    {
+     "w": "One",
+     "start": 19.0,
+     "end": 19.25
+    },
+    {
+     "w": "counter",
+     "start": 19.3,
+     "end": 19.55
+    },
+    {
+     "w": "slides",
+     "start": 19.6,
+     "end": 19.85
+    },
+    {
+     "w": "out",
+     "start": 19.9,
+     "end": 20.15
+    },
+    {
+     "w": "onto",
+     "start": 20.2,
+     "end": 20.45
+    },
+    {
+     "w": "the",
+     "start": 20.5,
+     "end": 20.75
+    },
+    {
+     "w": "paper",
+     "start": 20.8,
+     "end": 21.05
+    },
+    {
+     "w": "and",
+     "start": 21.1,
+     "end": 21.35
+    },
+    {
+     "w": "becomes",
+     "start": 21.4,
+     "end": 21.65
+    },
+    {
+     "w": "the",
+     "start": 21.7,
+     "end": 21.95
+    },
+    {
+     "w": "word.",
+     "start": 22.0,
+     "end": 22.25
+    }
+   ]
+  },
+  {
+   "i": 5,
+   "speaker": "USHINI",
+   "tc": false,
+   "caption": "A sheet with its header, then a logarithmic pull-back.",
+   "start": 24,
+   "end": 30,
+   "words": [
+    {
+     "w": "A",
+     "start": 24.0,
+     "end": 24.25
+    },
+    {
+     "w": "sheet",
+     "start": 24.3,
+     "end": 24.55
+    },
+    {
+     "w": "with",
+     "start": 24.6,
+     "end": 24.85
+    },
+    {
+     "w": "its",
+     "start": 24.9,
+     "end": 25.15
+    },
+    {
+     "w": "header,",
+     "start": 25.2,
+     "end": 25.45
+    },
+    {
+     "w": "then",
+     "start": 25.5,
+     "end": 25.75
+    },
+    {
+     "w": "a",
+     "start": 25.8,
+     "end": 26.05
+    },
+    {
+     "w": "logarithmic",
+     "start": 26.1,
+     "end": 26.35
+    },
+    {
+     "w": "pull-back.",
+     "start": 26.4,
+     "end": 26.65
+    }
+   ]
+  },
+  {
+   "i": 6,
+   "speaker": "BEN",
+   "tc": false,
+   "caption": "A booklet page, the camera moving to one entry.",
+   "start": 30,
+   "end": 36,
+   "words": [
+    {
+     "w": "A",
+     "start": 30.0,
+     "end": 30.25
+    },
+    {
+     "w": "booklet",
+     "start": 30.3,
+     "end": 30.55
+    },
+    {
+     "w": "page,",
+     "start": 30.6,
+     "end": 30.85
+    },
+    {
+     "w": "the",
+     "start": 30.9,
+     "end": 31.15
+    },
+    {
+     "w": "camera",
+     "start": 31.2,
+     "end": 31.45
+    },
+    {
+     "w": "moving",
+     "start": 31.5,
+     "end": 31.75
+    },
+    {
+     "w": "to",
+     "start": 31.8,
+     "end": 32.05
+    },
+    {
+     "w": "one",
+     "start": 32.1,
+     "end": 32.35
+    },
+    {
+     "w": "entry.",
+     "start": 32.4,
+     "end": 32.65
+    }
+   ]
+  },
+  {
+   "i": 7,
+   "speaker": "USHINI",
+   "tc": false,
+   "caption": "The loop draws on in one stroke, station by station.",
+   "start": 36,
+   "end": 42,
+   "words": [
+    {
+     "w": "The",
+     "start": 36.0,
+     "end": 36.25
+    },
+    {
+     "w": "loop",
+     "start": 36.3,
+     "end": 36.55
+    },
+    {
+     "w": "draws",
+     "start": 36.6,
+     "end": 36.85
+    },
+    {
+     "w": "on",
+     "start": 36.9,
+     "end": 37.15
+    },
+    {
+     "w": "in",
+     "start": 37.2,
+     "end": 37.45
+    },
+    {
+     "w": "one",
+     "start": 37.5,
+     "end": 37.75
+    },
+    {
+     "w": "stroke,",
+     "start": 37.8,
+     "end": 38.05
+    },
+    {
+     "w": "station",
+     "start": 38.1,
+     "end": 38.35
+    },
+    {
+     "w": "by",
+     "start": 38.4,
+     "end": 38.65
+    },
+    {
+     "w": "station.",
+     "start": 38.7,
+     "end": 38.95
+    }
+   ]
+  }
+ ]
+}

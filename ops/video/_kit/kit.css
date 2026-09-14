@@ -1,0 +1,109 @@
+/* The shared look of the LLMs Unplugged explainer videos: the site's palette and
+   type on a 1920x1080 (or 1080x1920) stage, the desk the participant sits at,
+   and the paper objects on it. Values copied from website/src/styles/common.css
+   (gold, ground, text) and website/src/decks/theme.css (paper, the tc-N token
+   palette); those files win if these ever disagree. Every composition links
+   this file through its `kit/` symlink to ops/video/_kit. */
+
+@font-face { font-family: "Public Sans"; src: url("fonts/PublicSans-Regular.otf") format("opentype"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "Public Sans"; src: url("fonts/PublicSans-Italic.otf") format("opentype"); font-weight: 400; font-style: italic; }
+@font-face { font-family: "Public Sans"; src: url("fonts/PublicSans-Medium.otf") format("opentype"); font-weight: 500; font-style: normal; }
+@font-face { font-family: "Public Sans"; src: url("fonts/PublicSans-SemiBold.otf") format("opentype"); font-weight: 600; font-style: normal; }
+@font-face { font-family: "Public Sans"; src: url("fonts/PublicSans-Bold.otf") format("opentype"); font-weight: 700; font-style: normal; }
+@font-face { font-family: "Libertinus Serif"; src: url("fonts/LibertinusSerif-Regular.otf") format("opentype"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "Libertinus Serif"; src: url("fonts/LibertinusSerif-Italic.otf") format("opentype"); font-weight: 400; font-style: italic; }
+@font-face { font-family: "Libertinus Serif"; src: url("fonts/LibertinusSerif-Semibold.otf") format("opentype"); font-weight: 600; font-style: normal; }
+@font-face { font-family: "Libertinus Serif"; src: url("fonts/LibertinusSerif-Bold.otf") format("opentype"); font-weight: 700; font-style: normal; }
+
+:root {
+  --ground: #0d0d0d;                 /* the site's dark ground */
+  --desk: #1c1917;                   /* the table top, a warm near-black */
+  --gold: #be830e;                   /* --anu-gold */
+  --gold-2: #e5a930;                 /* lighter gold for text on the dark ground */
+  --gold-soft: rgb(190 131 14 / 22%);
+  --text: rgb(255 255 255 / 95%);
+  --text-2: rgb(255 255 255 / 78%);
+  --muted: rgb(255 255 255 / 56%);
+  --hairline: rgb(255 255 255 / 18%);
+  --paper: #fff;                     /* --paper-ground: white, what the sheets print on */
+  --paper-edge: rgb(0 0 0 / 22%);
+  --ink: #1a1a1a;                    /* --paper-ink */
+  --ink-muted: rgb(0 0 0 / 55%);
+  --pencil: #3a3a3a;                 /* what a participant writes in */
+  --font-ui: "Public Sans", sans-serif;
+  --font-tok: "Libertinus Serif", serif;   /* what the printed sheets and booklets use */
+  /* ledger counters (cli/ledger-palette-four.json, LEDGER_PALETTE in
+     website/src/lib/ledger.ts) */
+  --counter-red: #e50002;
+  --counter-blue: #0043df;
+  --counter-green: #129f01;
+  --counter-yellow: #eab308;
+}
+
+/* the token palette (website/src/decks/theme.css .tc-N); a word is the colour
+   the hash in kit.js gives it, on screen as on paper */
+.tc-0 { --c: oklch(0% 0 0deg); }
+.tc-1 { --c: oklch(62.9% 0.008 145deg); }
+.tc-2 { --c: oklch(57.9% 0.238 29deg); }
+.tc-3 { --c: oklch(38.6% 0.089 62deg); }
+.tc-4 { --c: oklch(61% 0.205 142deg); }
+.tc-5 { --c: oklch(47.2% 0.241 263deg); }
+.tc-6 { --c: oklch(45.2% 0.195 316deg); }
+.tc-7 { --c: oklch(53.4% 0.221 353deg); }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { overflow: hidden; background: var(--ground); }
+body { font-family: var(--font-ui); color: var(--text); }
+.stage { position: relative; overflow: hidden; background: var(--desk); }
+.stage[data-aspect="landscape"] { width: 1920px; height: 1080px; }
+.stage[data-aspect="portrait"] { width: 1080px; height: 1920px; }
+
+/* Everything animated is absolutely placed and moved by transform/opacity only. */
+.layer { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.hidden { opacity: 0; }
+
+/* ---- caption band: the script line, whole, in a region nothing else uses ---- */
+.captions { position: absolute; left: 0; right: 0; bottom: 0; height: 170px; background: var(--ground); }
+.stage[data-aspect="portrait"] .captions { height: 300px; }
+.caption {
+  position: absolute; left: 96px; right: 96px; top: 0; bottom: 0;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  font-size: 40px; line-height: 1.3; font-weight: 400; color: var(--text); text-wrap: balance;
+  opacity: 0;
+}
+.stage[data-aspect="portrait"] .caption { left: 60px; right: 60px; font-size: 44px; }
+
+/* ---- paper objects ---- */
+.paper {
+  position: absolute; background: var(--paper); color: var(--ink);
+  border-radius: 6px; box-shadow: 0 2px 0 var(--paper-edge), 0 10px 24px rgb(0 0 0 / 45%);
+}
+.paper-strip { height: 120px; }
+.tile {
+  position: absolute; display: flex; align-items: center; justify-content: center;
+  background: var(--paper); color: var(--ink); border-radius: 8px;
+  box-shadow: 0 2px 0 var(--paper-edge), 0 8px 18px rgb(0 0 0 / 40%);
+  font-family: var(--font-tok); font-size: 56px; line-height: 1; white-space: nowrap;
+  transform-origin: 50% 50%;
+}
+.tile.punct { font-weight: 600; }
+.tok { font-family: var(--font-tok); font-weight: 700; color: var(--c); }
+.tok.box { background: var(--c); color: #fff; border-radius: 0.12em; padding: 0.04em 0.18em; }
+
+/* pencil writing on paper */
+.pencil { font-family: var(--font-tok); font-style: italic; color: var(--pencil); font-size: 54px; line-height: 1; white-space: nowrap; }
+.pencil .w { display: inline-block; margin-right: 0.28em; }
+
+/* ---- SVG objects share the same ink and paper ---- */
+svg text { font-family: var(--font-tok); fill: var(--ink); }
+svg .ui { font-family: var(--font-ui); }
+.draw { stroke-linecap: round; stroke-linejoin: round; fill: none; }
+.tally { stroke: var(--ink); stroke-width: 3; }
+.highlight { fill: var(--gold); opacity: 0; }
+.dimmer { fill: var(--desk); opacity: 0; }
+
+/* text on the desk (labels, headings, the wordmark) */
+.label { position: absolute; font-family: var(--font-ui); color: var(--text-2); font-size: 34px; white-space: nowrap; }
+.label.gold { color: var(--gold-2); font-weight: 500; }
+.wordmark { font-family: var(--font-ui); font-weight: 600; font-size: 96px; letter-spacing: -0.02em; color: var(--text); white-space: nowrap; }
+.rule { position: absolute; height: 6px; background: var(--gold); border-radius: 3px; transform-origin: 0 50%; }

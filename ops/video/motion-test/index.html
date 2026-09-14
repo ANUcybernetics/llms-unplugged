@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>LLMs Unplugged — motion test reel</title>
+    <link rel="stylesheet" href="kit/kit.css" />
+    <script src="kit/vendor/gsap.min.js"></script>
+    <script src="kit/generated/data.js"></script>
+    <script src="kit/kit.js"></script>
+    <style>
+      html, body { width: 1920px; height: 1080px; }
+    </style>
+  </head>
+  <body>
+    <!-- The motion-test reel: every kit component through its moves, so the
+         feel of each can be judged before the eight videos are built. The
+         timing.json here is a stand-in with one caption per beat. -->
+    <div id="stage" class="stage" data-aspect="landscape" data-composition-id="motion-test"
+         data-start="0" data-duration="43" data-width="1920" data-height="1080" data-fps="25">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="43" data-track-index="0"></div>
+    </div>
+    <script>
+      const build = (tl, S, T) => {
+        const K = KIT, D = KIT_DATA;
+        const scene = document.getElementById("scene");
+        const A = S.area;
+
+        // ---- beat 1: tiles (0–4.5) and beat 2: grid (0–8.5)
+        const bg = K.bigrams(K.split(D.grid.tokens), K.split(D.grid.vocab));
+        const tl1 = K.tiles(scene, K.split(D.grid.tokens), { x: A.x, y: A.y, size: 52, maxW: 880 });
+        K.appear(tl, tl1.tiles.map((t) => t.el), 0.3, { stagger: 0.07 });
+        const g1 = K.grid(scene, bg, { x: A.x + 1050, y: A.y + 20, cell: 110, head: 150 });
+        K.appear(tl, g1.el, 1.0, { y: 30 });
+        // the pair "hop ," lifts and flies into the cell where hop's row meets ","'s column
+        const pair = [tl1.tiles[0], tl1.tiles[1]];
+        tl.to(pair.map((p) => p.el), { y: -20, scale: 1.08, duration: 0.3, ease: "power2.out" }, 2.0);
+        const cell = g1.at(0, 1);
+        pair.forEach((p, i) => K.flyTo(tl, p, { x: cell.x - 30 + i * 60, y: cell.y }, 2.4, 0.7));
+        tl.to(pair.map((p) => p.el), { scale: 0.3, opacity: 0, duration: 0.3, ease: "power2.in" }, 3.1);
+        K.vanish(tl, tl1.el, 4.2);
+        // row band, column band, push in, draw the tally, pull back
+        tl.to(g1.rowBands[0], { opacity: 1, duration: 0.3 }, 4.6);
+        tl.to(g1.colBands[1], { opacity: 1, duration: 0.3 }, 5.0);
+        const cam1 = K.camera(g1.el, S);
+        cam1.to(tl, { px: g1.cells[0][1].cx, py: g1.cells[0][1].cy, s: 1.8 }, 5.4, 0.7);
+        K.drawOn(tl, g1.cells[0][1].strokes, 6.2, 0.35, 0.1);
+        cam1.reset(tl, 7.3, 0.7);
+        tl.to([g1.rowBands[0], g1.colBands[1]], { opacity: 0, duration: 0.3 }, 7.6);
+        // the rest of the grid fills at speed
+        bg.pairs.slice(1).forEach((p, i) => K.drawOn(tl, [g1.cells[p.r][p.c].strokes[p.nth - 1]], 7.9 + i * 0.12, 0.25, 0));
+        K.vanish(tl, g1.el, 9.5);
+
+        // ---- beat 3: strip and die (8.5–12.5)
+        const bands = K.diceBands(K.rowOptions(bg, bg.idx.get("joey")));
+        const st = K.strip(scene, bands, { x: A.x + 200, y: A.y + 300, face: 110 });
+        K.appear(tl, st.el, 9.0, { y: 20 });
+        st.shade(tl, 9.6);
+        const d1 = K.die(scene, { x: A.x + 1500, y: A.y + 320, size: 160 });
+        K.land(tl, d1, 7, 10.8);
+        st.light(tl, 7, 11.3);
+        K.vanish(tl, [st.el, d1.el], 12.4);
+
+        // ---- beat 4: ledger row, cup, counters (12.5–19)
+        const magpie = D.ledger["the-magpie"];
+        const rows = magpie.sheets.flatMap((s) => s.pages.flat());
+        const dotRow = rows.find((r) => r.prefix[0] === ".");
+        const row = K.ledgerRow(scene, dotRow, D.palette, { x: A.x, y: A.y, w: A.w, h: 150 });
+        K.appear(tl, row.el, 12.7, { y: 20 });
+        row.cells.forEach((c, i) => {
+          tl.to(c.lit, { opacity: 1, duration: 0.2 }, 13.4 + i * 0.9);
+          K.drawOn(tl, c.strokes, 13.5 + i * 0.9, 0.2, 0.06);
+          tl.to(c.lit, { opacity: 0, duration: 0.2 }, 14.1 + i * 0.9);
+        });
+        const cp = K.cup(scene, { x: A.x + 700, y: A.y + 250, r: 190 });
+        K.appear(tl, cp.el, 13.0, { y: 30 });
+        const total = dotRow.followers.reduce((s, f) => s + f.count, 0);
+        let k = 0;
+        row.cells.forEach((c, i) => {
+          for (let n = 0; n < c.follower.count; n++) {
+            const ct = cp.add(c.colour, k, total);
+            tl.fromTo(ct.el, { opacity: 0, x: ct.x, y: ct.y - 220, scale: 1.3 }, { opacity: 1, y: ct.y, scale: 1, duration: 0.45, ease: "power3.out" }, 13.6 + i * 0.9 + n * 0.11);
+            k++;
+          }
+        });
+
+        // ---- beat 5: one counter out onto the paper, becomes the word (19–24)
+        const pp = K.paper(scene, { x: A.x + 1250, y: A.y + 330, w: 560, h: 120 });
+        const pl = K.pencilLine(pp.el, ["it", "sits", "on"], { size: 54 });
+        K.appear(tl, pp.el, 19.0, { y: 20 });
+        const out = K.counter(scene, "red", { x: cp.centre.x - 32, y: cp.centre.y - 32, r: 32 });
+        tl.fromTo(out.el, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1.15, duration: 0.3, ease: "power2.out" }, 19.6);
+        tl.to(out.el, { x: pp.x + 30, y: pp.y + 30, scale: 1, duration: 0.7, ease: "power2.inOut" }, 20.0);
+        tl.to(out.el, { opacity: 0, scale: 0.4, duration: 0.25 }, 20.7);
+        K.write(tl, pl.words[0], 20.75);
+        K.write(tl, pl.words[1], 21.6);
+        K.write(tl, pl.words[2], 22.1);
+        // the cup tips: counters slide back out
+        tl.to(cp.counters, { y: "+=260", opacity: 0, duration: 0.5, stagger: 0.02, ease: "power2.in" }, 22.6);
+        K.vanish(tl, [row.el, cp.el, pp.el, out.el], 23.6);
+
+        // ---- beat 6: a sheet with its header, then a log pull-back (24–30)
+        const s1 = magpie.sheets[0];
+        const sh = K.sheet(scene, s1.pages.flat(), D.palette, { x: A.x + 100, y: A.y, w: 1600, rowH: 130, header: [s1.range[0][0], s1.range[1][0]], title: magpie.title });
+        K.appear(tl, sh.el, 24.2, { y: 30 });
+        sh.rows.forEach((r, i) => r.cells.forEach((c) => K.drawOn(tl, c.strokes, 24.8 + i * 0.25, 0.2, 0.05)));
+        tl.fromTo(sh.headerEl, { fill: "var(--gold)" }, { fill: "var(--ink)", duration: 0.6 }, 25.2);
+        const cam2 = K.camera(sh.el, S);
+        cam2.logZoom(tl, { px: 800, py: 400, from: 1, to: 0.06 }, 26.5, 2.5);
+        K.vanish(tl, sh.el, 29.4);
+
+        // ---- beat 7: a booklet page, the camera moving to an entry (30–36)
+        const pg = K.pageImage(scene, "snowy-river", D.booklet.pageOf.golden, { x: A.x + 420, y: A.y, w: 960, h: A.h });
+        K.appear(tl, pg.el, 30.2, { y: 30 });
+        const box = pg.lineBox(["golden"]);
+        pg.moveTo(tl, pg.around(box, 420), 31.5, 0.8);
+        pg.highlight(box);
+        tl.to(pg.hl, { opacity: 1, duration: 0.25 }, 32.4);
+        tl.to(pg.hl, { opacity: 0, duration: 0.25 }, 34.4);
+        pg.moveTo(tl, pg.fit(), 34.6, 0.8);
+        K.vanish(tl, pg.el, 35.6);
+
+        // ---- beat 8: the loop draws on (36–42)
+        const lp = K.loop(scene, { x: A.x + 450, y: A.y, w: 1000, h: A.h, labels: ["generate", "punctuation", "pause", "message out", "reply in", "continue"] });
+        K.drawOn(tl, [lp.path], 36.3, 2.4, 0, "power1.inOut");
+        lp.stations.forEach((s, i) => {
+          tl.to(s.dot, { opacity: 1, duration: 0.2 }, 36.5 + i * 0.4);
+          tl.to(s.text, { opacity: 1, duration: 0.3 }, 36.6 + i * 0.4);
+        });
+        K.vanish(tl, lp.el, 42.3);
+      };
+      KIT.ready(build).then(({ tl }) => {
+        window.__timelines["motion-test"] = tl;
+      });
+    </script>
+  </body>
+</html>
