@@ -34,22 +34,22 @@
     "typecheck": "astro check && svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
-    "@astrojs/mdx": "^8.0.0",
+    "@astrojs/mdx": "^8.0.1",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
     "@astrojs/svelte": "^9.0.1",
     "@myriaddreamin/typst-ts-renderer": "0.7.0",
     "@myriaddreamin/typst-ts-web-compiler": "0.7.0",
     "@myriaddreamin/typst.ts": "0.7.0",
-    "astro": "^7.3.1",
+    "astro": "^7.3.2",
     "astro-theme-anu": "git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#astro-theme-anu@v0.9.3&path:/packages/astro-theme-anu",
     "astro-theme-university": "github:ANUcybernetics/astro-theme-university#v0.14.6",
     "astromotion": "github:ANUcybernetics/astromotion#v0.29.0",
     "lightningcss": "^1.33.0",
-    "mammoth": "^1.12.2",
+    "mammoth": "^1.12.3",
     "pdfjs-dist": "^6.3.289",
     "svelte": "^5.57.0",
-    "yaml": "^2.9.0"
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
@@ -60,11 +60,11 @@
     "eslint-plugin-perfectionist": "^5.11.0",
     "eslint-plugin-unused-imports": "^4.4.1",
     "jsdom": "^30.0.1",
-    "oxfmt": "^0.66.0",
-    "oxlint": "^1.81.0",
+    "oxfmt": "^0.67.0",
+    "oxlint": "^1.82.0",
     "pagefind": "^1.5.2",
     "prettier": "^3.9.6",
-    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-astro": "^1.0.0",
     "puppeteer-core": "^25.10.0",
     "sharp": "^0.35.4",
     "stylelint": "^17.15.0",
@@ -72,7 +72,7 @@
     "svelte-check": "^4.7.6",
     "tsx": "^4.23.13",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.10"
+    "vitest": "^5.0.0"
   },
   "engines": {
     "node": ">=24",
