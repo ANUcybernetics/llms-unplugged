@@ -124,9 +124,11 @@ Data: `KIT_DATA.grid` (`tokens`, `vocab`, `generation`, `rolls`,
 - Only tweens on the timeline decide what a frame shows: transform, opacity,
   stroke-dashoffset, fill. No CSS transitions, no `call()` side effects, no text
   swaps mid-timeline (prebuild the alternatives and toggle opacity).
-- Something pre-hidden with `gsap.set(el, { opacity: 0 })` is brought in with
-  `K.appear` (a fromTo) or `tl.to`; a bare `tl.from` would animate to the hidden
-  state.
+- Anything not on screen at t=0 is created hidden (`gsap.set(el, { opacity: 0 })`)
+  and brought in with `K.appear` (a fromTo) or `tl.to`: the renderer seeks cold
+  to any frame, so an element that only appears later is visible before its cue
+  unless it starts hidden. A bare `tl.from` on a hidden element would animate
+  to the hidden state.
 - Positions are `x`/`y` transforms set by `K.layer`/`gsap.set`; never tween
   `left`/`top`/`width`/`height`.
 - Every frame must be reproducible: no `Math.random()`, no wall clock.

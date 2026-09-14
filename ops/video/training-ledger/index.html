@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>LLMs Unplugged — Training (ledger)</title>
+    <link rel="stylesheet" href="kit/kit.css" />
+    <script src="kit/vendor/gsap.min.js"></script>
+    <script src="kit/generated/data.js"></script>
+    <script src="kit/kit.js"></script>
+    <style>
+      html, body { width: 1920px; height: 1080px; }
+    </style>
+  </head>
+  <body>
+    <!-- Training (ledger): ops/video/scripts/training-ledger.md. The desk is
+         a printed sheet, the book it was counted from, a hand-built sheet for
+         a new text, and the cup. Every beat lands on the word that names it
+         (timing.json from align.py). -->
+    <div id="stage" class="stage" data-aspect="landscape" data-composition-id="training-ledger"
+         data-start="0" data-duration="130.81" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="130.81" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="130.81" data-track-index="1"></audio>
+    </div>
+    <script>
+      const build = (tl, S, T) => {
+        const K = KIT, D = KIT_DATA;
+        const scene = document.getElementById("scene");
+        const A = S.area;
+
+        // ---- helpers the kit doesn't have (see report) ----------------------
+        // a speech bubble: someone saying a word out loud when they start its row
+        const bubble = (parent, text, { x = 0, y = 0, w = 240, h = 96, size = 36 } = {}) => {
+          const g = K.layer(parent, x, y);
+          const box = K.el("div", { class: "paper", style: { position: "absolute", left: "0", top: "0", width: `${w}px`, height: `${h}px`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-tok)", fontStyle: "italic", fontSize: `${size}px`, color: "var(--ink)" }, text }, g);
+          K.el("div", { style: { position: "absolute", left: `${w / 2 - 16}px`, top: `${h - 2}px`, width: "0", height: "0", borderLeft: "16px solid transparent", borderRight: "16px solid transparent", borderTop: "18px solid var(--paper)" } }, g);
+          gsap.set(g, { opacity: 0 });
+          return { el: g, box };
+        };
+        // a pencil cross-out: the wrong (skipped) box, struck through
+        const crossOut = (parent, { x = 0, y = 0, w = 100, h = 100 } = {}) => {
+          const g = K.layer(parent, x, y);
+          const s = K.svg("svg", { width: w, height: h, viewBox: `0 0 ${w} ${h}` }, g);
+          const paths = K.prepDraw([
+            K.svg("path", { d: `M10 10 L${w - 10} ${h - 10}`, class: "draw", stroke: "#b23b3b", "stroke-width": 9 }, s),
+            K.svg("path", { d: `M${w - 10} 10 L10 ${h - 10}`, class: "draw", stroke: "#b23b3b", "stroke-width": 9 }, s),
+          ]);
+          return { el: g, paths };
+        };
+        // the book's text, small, as spans, so specific word pairs can be highlighted
+        const textPanel = (parent, text, { x = 0, y = 0, w = 700, size = 21, pad = 26 } = {}) => {
+          const p = K.paper(parent, { x, y, w, h: 460 });
+          const inner = K.el("div", { style: { position: "absolute", left: `${pad}px`, top: `${pad}px`, width: `${w - 2 * pad}px`, fontFamily: "var(--font-tok)", fontSize: `${size}px`, lineHeight: "1.6", color: "var(--ink)" } }, p.el);
+          const words = text.trim().split(/\s+/);
+          const spans = words.map((wd) => K.el("span", { text: `${wd} ` }, inner));
+          return { el: p.el, spans, words };
+        };
+        // absolute (scene) box of a K.sheet cell, from the sheet's own x/y and its rowH
+        const cellBox = (sheetX, sheetY, rowH, row, c) => {
+          const cell = row.cells[c];
+          return { x: sheetX + cell.x, y: sheetY + cell.cy - rowH / 2, w: cell.w, h: rowH };
+        };
+        const findRow = (rows, w) => rows.find((r) => r.prefix[0] === w);
+        // the kit's small column-name labels (--ink-muted on a tint) read
+        // under WCAG AA on screen sizes; darken them and the follower word.
+        const fixContrast = (sheetObj) => {
+          sheetObj.rows.forEach((row) => {
+            // SVG text fill must go inline to win over kit.css's `svg text{fill}` rule
+            row.g.querySelectorAll("text.ui").forEach((t) => { t.style.fill = "#4a4a4a"; });
+            row.cells.forEach((c) => c.wordEl && (c.wordEl.style.fill = "#1a1a1a"));
+          });
+        };
+
+        // ---- data --------------------------------------------------------
+        const magpie = D.ledger["the-magpie"];
+        const magpieRows = magpie.sheets.flatMap((s) => s.pages.flat());
+        const eThe = findRow(magpieRows, "the"); // magpie:5, fence:6, postie:4, dog:4
+        const eMagpie = findRow(magpieRows, "magpie"); // is:2, .:3
+        const eIs = findRow(magpieRows, "is"); // back:2, spring:1
+        const eBack = findRow(magpieRows, "back"); // .:2, to:3
+        const finishedEntries = magpie.sheets[4].pages[0]; // the, to, up, watches (printed sheet)
+
+        const beach = D.ledger["outdoors-beach"];
+        const beachRows = beach.sheets.flatMap((s) => s.pages.flat());
+        const eThe2 = findRow(beachRows, "the"); // sand:2, water:2, dog:3, sun:1
+        const eSand = findRow(beachRows, "sand"); // is:1
+        const eDot2 = findRow(beachRows, "."); // a:2, the:3
+
+        const MAGPIE_TEXT = "The magpie is back. It sits on the fence. It watches. Here comes the postie. Down comes the magpie. Swoop! The postie runs, and up it goes, and back to the fence. It sits on the fence. It watches. Here comes the dog. Down comes the magpie. Swoop! The dog runs, and up it goes, and back to the fence. It sits on the fence. It watches. Here comes the postie. Here comes the dog. Down comes the magpie. Swoop! The postie runs, and the dog runs, and up it goes, and back to the fence. It is spring, and the magpie is back.";
+
+        // ==================================================================
+        // line 0 (TC) + line 1: the finished sheet, all drawn; marks bounce
+        // on "counted"; it slides aside to reveal the book underneath.
+        // ==================================================================
+        const bookY = 80, bookX = 80, bookW = 1740;
+        const book = K.bookPage(scene, ["The magpie is back.", "It sits on the fence.", "It watches."], { x: bookX, y: bookY, w: bookW, h: 300, size: 56, pad: 60 });
+        // deliberately underneath the printed sheet until it slides aside
+        book.lines.forEach((l) => l.setAttribute("data-layout-allow-overlap", "true"));
+        const finishedSheet = K.sheet(scene, finishedEntries, D.palette, { x: bookX, y: bookY, w: bookW, rowH: 160, pad: 16, header: null });
+        finishedSheet.rows.forEach((r) => { r.prefixEl.setAttribute("font-size", 54); r.cells.forEach((c) => c.wordEl && c.wordEl.setAttribute("font-size", 54)); });
+        fixContrast(finishedSheet);
+        // every stroke on the finished sheet is already drawn at t=0
+        finishedSheet.rows.forEach((r) => r.cells.forEach((c) => c.strokes.length && gsap.set(c.strokes, { strokeDashoffset: 0 })));
+        // K.appear is a reveal, not a hide: a fromTo added mid-timeline does not
+        // retroactively hide the element on a cold seek() to an earlier time, so
+        // pre-hide explicitly (a real bug this composition's own QA turned up).
+        gsap.set(finishedSheet.el, { opacity: 0 });
+
+        K.appear(tl, finishedSheet.el, 0.2, { y: 24 });
+
+        const tCounted = T.word(1, "counted");
+        finishedSheet.rows.flatMap((r) => r.cells.flatMap((c) => c.strokes)).forEach((p, i) => {
+          const d = K.jitter(i) * 0.35;
+          tl.to(p, { y: -10, duration: 0.16, ease: "power2.out", yoyo: true, repeat: 1 }, tCounted + d);
+        });
+        const tSlide = tCounted + 0.9;
+        tl.to(finishedSheet.el, { x: -1800, duration: 0.7, ease: "power2.inOut" }, tSlide);
+
+        // ==================================================================
+        // line 2: the opening as word tiles above a blank-ish sheet.
+        // ==================================================================
+        const raw = ["The", "magpie", "is", "back.", "It", "sits", "on", "the", "fence.", "It", "watches.", "Here", "comes", "the", "postie.", "Down", "comes", "the", "magpie.", "Swoop!"];
+        const tok = ["the", "magpie", "is", "back", ".", "it", "sits", "on", "the", "fence", ".", "it", "watches", ".", "Here", "comes", "the", "postie", ".", "Down", "comes", "the", "magpie", ".", "Swoop", "!"];
+        const TX = 80, TY = 80;
+        const rawTiles = K.tiles(scene, raw, { x: TX, y: TY, size: 32, gap: 10, padX: 14, maxW: 1740 });
+        const tokTiles = K.tiles(scene, tok, { x: TX, y: TY, size: 32, gap: 10, padX: 14, maxW: 1740 });
+        gsap.set(rawTiles.tiles.map((t) => t.el), { opacity: 0 });
+        gsap.set(tokTiles.el, { opacity: 0 });
+        // punctuation tiles start overlapping the word before them (still "attached")
+        tokTiles.tiles.forEach((t, i) => {
+          if (!K.isPunct(t.text)) return;
+          const prev = tokTiles.tiles[i - 1];
+          gsap.set(t.el, { x: prev.x + prev.w - t.w, y: prev.y });
+          t.el.setAttribute("data-layout-allow-overlap", "true"); // deliberately "attached" until it splits off
+        });
+        const tileTop = TY, tileH = Math.max(rawTiles.height, tokTiles.height);
+        const sheetY2 = tileTop + tileH + 24;
+
+        const trainSheet = K.sheet(scene, [eThe, eMagpie, eIs, eBack], D.palette, { x: TX, y: sheetY2, w: 1740, rowH: 150, pad: 8, header: null });
+        trainSheet.rows.forEach((r) => { r.prefixEl.setAttribute("font-size", 48); r.cells.forEach((c) => c.wordEl && c.wordEl.setAttribute("font-size", 48)); });
+        fixContrast(trainSheet);
+        gsap.set(trainSheet.el, { opacity: 0 });
+
+        const tStart2 = T.word(2, "Start");
+        K.appear(tl, rawTiles.tiles.map((t) => t.el), tStart2, { stagger: 0.03 });
+        K.vanish(tl, book.el, tStart2 + 0.7);
+        tl.to(trainSheet.el, { opacity: 1, duration: 0.5 }, tStart2 + 0.3);
+
+        const tLower = T.word(2, "Lowercase");
+        tl.to(rawTiles.el, { opacity: 0, duration: 0.3 }, tLower);
+        tl.to(tokTiles.el, { opacity: 1, duration: 0.3 }, tLower);
+
+        const tFull = T.word(2, "full");
+        tokTiles.tiles.forEach((t, i) => {
+          if (!K.isPunct(t.text)) return;
+          tl.to(t.el, { x: t.x, y: t.y, duration: 0.4, ease: "power2.out" }, tFull + i * 0.02);
+        });
+
+        // "their own rows": the full stops and the exclamation mark wink gold
+        const tOwn = T.word(2, "own");
+        [4, 10, 13, 18, 23, 25].forEach((i, k) => {
+          const el = tokTiles.tiles[i].el;
+          tl.to(el, { backgroundColor: "#f6eedc", duration: 0.25 }, tOwn + k * 0.03);
+          tl.to(el, { backgroundColor: "#ffffff", duration: 0.4 }, tOwn + 0.55 + k * 0.03);
+        });
+
+        // ==================================================================
+        // lines 3-4: the bracket reads two words at a time; a mark for each
+        // pair; the pair comes round again.
+        // ==================================================================
+        const br = K.ring(scene, { w: 100, h: 100 });
+        const bTheRow = trainSheet.rows[0], bMagpieRow = trainSheet.rows[1];
+
+        const tRead = T.word(3, "Read");
+        br.around(tl, K.spanBox(tokTiles, 0, 1), tRead, 0.01);
+        tl.to(br.el, { opacity: 1, duration: 0.3 }, tRead);
+
+        const tFirst1 = T.word(3, "first", 1);
+        tl.to(bTheRow.lit, { opacity: 1, duration: 0.3 }, tFirst1);
+
+        const tMark1 = T.word(3, "mark", 1);
+        tl.to(bTheRow.cells[0].lit, { opacity: 1, duration: 0.2 }, tMark1);
+        K.drawOn(tl, [bTheRow.cells[0].strokes[0]], tMark1 + 0.1, 0.35, 0);
+        tl.to([bTheRow.lit, bTheRow.cells[0].lit], { opacity: 0, duration: 0.3 }, tMark1 + 0.9);
+
+        const tAlong = T.word(3, "along");
+        br.around(tl, K.spanBox(tokTiles, 1, 2), tAlong, 0.55);
+
+        const tFirst2 = T.word(3, "first", 2);
+        tl.to(bMagpieRow.lit, { opacity: 1, duration: 0.3 }, tFirst2);
+        tl.to(bMagpieRow.cells[0].lit, { opacity: 1, duration: 0.2 }, tFirst2 + 0.2);
+        K.drawOn(tl, [bMagpieRow.cells[0].strokes[0]], tFirst2 + 0.3, 0.35, 0);
+        tl.to([bMagpieRow.lit, bMagpieRow.cells[0].lit], { opacity: 0, duration: 0.3 }, tFirst2 + 1.0);
+
+        // line 4: the same pair comes round again — the bracket skips ahead
+        const tKeep = T.word(4, "Keep");
+        br.around(tl, K.spanBox(tokTiles, 21, 22), tKeep, 0.7);
+
+        const tMagpie4 = T.word(4, "magpie", 1);
+        tl.to(bTheRow.lit, { opacity: 1, duration: 0.3 }, tMagpie4);
+        tl.to(bTheRow.cells[0].lit, { opacity: 1, duration: 0.2 }, tMagpie4 + 0.1);
+        K.drawOn(tl, [bTheRow.cells[0].strokes[1]], tMagpie4 + 0.2, 0.5, 0);
+        const tOne = T.word(4, "one");
+        tl.to([bTheRow.lit, bTheRow.cells[0].lit], { opacity: 0, duration: 0.4 }, tOne + 0.3);
+        tl.to(br.el, { opacity: 0, duration: 0.4 }, tOne + 0.3);
+
+        // ==================================================================
+        // line 5: check it against the printed sheet — five marks, one at a
+        // time, and the five "the magpie"s in the book light in step.
+        // ==================================================================
+        const t5lead = T.start(5) - 0.2;
+        K.vanish(tl, [tokTiles.el, trainSheet.el], t5lead);
+
+        const panelX = 80, panelY = 150, panelW = 760;
+        const panel = textPanel(scene, MAGPIE_TEXT, { x: panelX, y: panelY, w: panelW, size: 21 });
+        gsap.set(panel.el, { opacity: 0 });
+
+        const sheetScale = 950 / 1740, sheetTargetX = panelX + panelW + 30, sheetTargetY = panelY;
+        tl.set(finishedSheet.el, { x: -1800, y: sheetTargetY, scale: sheetScale }, t5lead);
+        tl.to(finishedSheet.el, { x: sheetTargetX, duration: 0.6, ease: "power2.out" }, t5lead + 0.1);
+        tl.to(panel.el, { opacity: 1, duration: 0.5 }, t5lead + 0.2);
+        [1, 2, 3].forEach((i) => tl.to(finishedSheet.rows[i].g, { opacity: 0.22, duration: 0.5 }, t5lead + 0.2));
+
+        // find the five "the magpie" pairs in the book text
+        const norm = (w) => w.replace(/[^a-zA-Z]/g, "").toLowerCase();
+        const magpiePairs = [];
+        for (let i = 0; i + 1 < panel.words.length; i++) {
+          if (norm(panel.words[i]) === "the" && norm(panel.words[i + 1]) === "magpie") magpiePairs.push([i, i + 1]);
+        }
+        const theRowStrokes = finishedSheet.rows[0].cells[0].strokes; // the five marks beside "magpie"
+        const tFive = T.word(5, "five", 1);
+        const step = 1.15;
+        magpiePairs.slice(0, 5).forEach((pair, k) => {
+          const t = tFive + k * step;
+          const stroke = theRowStrokes[k];
+          if (stroke) {
+            tl.set(stroke, { stroke: "#e5a930" }, t);
+            tl.to(stroke, { stroke: "#1a1a1a", duration: 0.5 }, t + 0.18);
+          }
+          tl.to([panel.spans[pair[0]], panel.spans[pair[1]]], { backgroundColor: "#f6e6c2", fontWeight: 700, duration: 0.35 }, t);
+        });
+
+        const t5end = T.end(5) + 0.6;
+        K.vanish(tl, [finishedSheet.el, panel.el], t5end);
+
+        // ==================================================================
+        // lines 6-8: a new text, blank sheets — training on "the beach".
+        // ==================================================================
+        const bSheetX = 80, bSheetY = 100, bRowH = 170;
+        const blankSheet = K.sheet(scene, [eThe2, eSand, eDot2, { prefix: [""], followers: [] }], D.palette, { x: bSheetX, y: bSheetY, w: 1740, rowH: bRowH, pad: 16, header: null });
+        blankSheet.rows.forEach((r) => { r.prefixEl.setAttribute("font-size", 52); r.cells.forEach((c) => c.wordEl && c.wordEl.setAttribute("font-size", 52)); });
+        fixContrast(blankSheet);
+        gsap.set(blankSheet.el, { opacity: 0 });
+        // a blank sheet: the words are yet to be written in, so hide them for now
+        [0, 1, 2].forEach((i) => {
+          gsap.set(blankSheet.rows[i].prefixEl, { opacity: 0 });
+          blankSheet.rows[i].cells.forEach((c) => c.wordEl && gsap.set(c.wordEl, { opacity: 0 }));
+        });
+        const bRowThe = blankSheet.rows[0], bRowSand = blankSheet.rows[1], bRowDot = blankSheet.rows[2];
+
+        const tBlank = T.start(6) + 0.15;
+        tl.to(blankSheet.el, { opacity: 1, duration: 0.5 }, tBlank);
+
+        const tWrite = T.word(6, "write");
+        tl.to(bRowThe.prefixEl, { opacity: 1, duration: 0.3 }, tWrite);
+
+        const tTwo6 = T.word(6, "two");
+        tl.to(bRowThe.cells[0].wordEl, { opacity: 1, duration: 0.3 }, tTwo6);
+
+        const tMark6 = T.word(6, "mark");
+        tl.to(bRowThe.cells[0].lit, { opacity: 1, duration: 0.2 }, tMark6);
+        K.drawOn(tl, [bRowThe.cells[0].strokes[0]], tMark6 + 0.1, 0.3, 0);
+        tl.to(bRowThe.cells[0].lit, { opacity: 0, duration: 0.3 }, tMark6 + 0.9);
+
+        // line 7: three quick cuts — a row starting, next box vs a skipped
+        // one, the row for full stop.
+        const tLoud = T.word(7, "loud");
+        tl.to(bRowSand.prefixEl, { opacity: 1, duration: 0.3 }, tLoud);
+        const sandTop = bSheetY + 16 + 1 * bRowH;
+        const bub = bubble(scene, "sand", { x: bSheetX + 40, y: sandTop - 106, w: 220, h: 90 });
+        tl.to(bub.el, { opacity: 1, duration: 0.25 }, tLoud);
+        tl.to(bub.el, { opacity: 0, duration: 0.3 }, tLoud + 1.5);
+
+        const tNext = T.word(7, "next");
+        const nextBox = cellBox(bSheetX, bSheetY, bRowH, bRowThe, 1);
+        const ring2 = K.ring(scene, { w: 100, h: 100 });
+        ring2.around(tl, nextBox, tNext, 0.4);
+        tl.to(ring2.el, { opacity: 1, duration: 0.01 }, tNext);
+
+        const tSkipped = T.word(7, "skipped");
+        const skipBox = cellBox(bSheetX, bSheetY, bRowH, bRowThe, 3);
+        const cross = crossOut(scene, { x: skipBox.x + 40, y: skipBox.y + 30, w: skipBox.w - 80, h: skipBox.h - 60 });
+        K.drawOn(tl, cross.paths, tSkipped, 0.3, 0.05);
+
+        const tOrder = T.word(7, "order");
+        tl.to([ring2.el, cross.el], { opacity: 0, duration: 0.4 }, tOrder + 0.3);
+
+        const tFull7 = T.word(7, "full");
+        tl.to(bRowDot.prefixEl, { opacity: 1, duration: 0.3 }, tFull7);
+        tl.to(bRowDot.lit, { opacity: 1, duration: 0.3 }, tFull7);
+        bRowDot.cells.forEach((c, i) => {
+          if (!c.follower) return;
+          tl.to(c.wordEl, { opacity: 1, duration: 0.25 }, tFull7 + 0.15 + i * 0.1);
+          K.drawOn(tl, c.strokes, tFull7 + 0.3 + i * 0.1, 0.3, 0.06);
+        });
+        tl.to(bRowDot.lit, { opacity: 0, duration: 0.4 }, tFull7 + 1.6);
+
+        // line 8: read the whole text, generate from "the" — cup, one
+        // counter out, the word writes on the paper.
+        const tWhole = T.word(8, "whole");
+        tl.to(bRowThe.cells[1].wordEl, { opacity: 1, duration: 0.2 }, tWhole);
+        tl.to(bRowThe.cells[2].wordEl, { opacity: 1, duration: 0.2 }, tWhole + 0.1);
+        tl.to(bRowThe.cells[3].wordEl, { opacity: 1, duration: 0.2 }, tWhole + 0.2);
+        K.drawOn(tl, [bRowThe.cells[0].strokes[1]], tWhole + 0.05, 0.25, 0);
+        K.drawOn(tl, bRowThe.cells[1].strokes, tWhole + 0.15, 0.25, 0.08);
+        K.drawOn(tl, bRowThe.cells[2].strokes, tWhole + 0.25, 0.25, 0.08);
+        K.drawOn(tl, bRowThe.cells[3].strokes, tWhole + 0.35, 0.25, 0);
+
+        const tGenerate = T.word(8, "generate");
+        tl.to(blankSheet.el, { scale: 0.6, duration: 0.6, ease: "power2.inOut" }, tGenerate - 0.5);
+
+        const cup = K.cup(scene, { x: 1300, y: 150, r: 170 });
+        gsap.set(cup.el, { opacity: 0 });
+        K.appear(tl, cup.el, tGenerate, { y: 30 });
+        const followers = eThe2.followers; // sand:2, water:2, dog:3, sun:1
+        const total = followers.reduce((s, f) => s + f.count, 0);
+        let greenCounter = null, k = 0;
+        followers.forEach((f, ci) => {
+          const colour = D.palette[ci].name;
+          for (let n = 0; n < f.count; n++) {
+            const ct = cup.add(colour, k, total);
+            tl.fromTo(ct.el, { opacity: 0, x: ct.x, y: ct.y - 220, scale: 1.3 }, { opacity: 1, y: ct.y, scale: 1, duration: 0.4, ease: "power3.out" }, tGenerate + 0.3 + k * 0.09);
+            if (colour === "green" && n === 0) greenCounter = ct;
+            k++;
+          }
+        });
+
+        const tThe8 = T.word(8, "the", 2);
+        tl.to(bRowThe.lit, { opacity: 1, duration: 0.25, yoyo: true, repeat: 1 }, tThe8);
+
+        const paper8 = K.paper(scene, { x: 1100, y: 600, w: 650, h: 150 });
+        const pencil8 = K.pencilLine(paper8.el, ["dog"], { x: 30, y: 45, size: 64 });
+        gsap.set(paper8.el, { opacity: 0 });
+        K.appear(tl, paper8.el, tGenerate + 0.5, { y: 16 });
+
+        const tIt8 = T.word(8, "It", 1);
+        const out = K.counter(scene, "green", { x: cup.centre.x - 32, y: cup.centre.y - 32, r: 32 });
+        gsap.set(out.el, { opacity: 0 });
+        tl.fromTo(out.el, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1.15, duration: 0.3, ease: "power2.out" }, tIt8);
+        tl.to(out.el, { x: paper8.x + 30, y: paper8.y + 30, scale: 1, duration: 0.6, ease: "power2.inOut" }, tIt8 + 0.35);
+
+        const tSound = T.word(8, "sound");
+        K.write(tl, pencil8.words[0], tSound);
+        tl.to(out.el, { opacity: 0, scale: 0.4, duration: 0.25 }, tSound + 0.05);
+
+        // lines 9-10 (TC): hold the desk — nothing more to animate.
+      };
+      KIT.ready(build).then(({ tl }) => {
+        window.__timelines["training-ledger"] = tl;
+      });
+    </script>
+  </body>
+</html>
