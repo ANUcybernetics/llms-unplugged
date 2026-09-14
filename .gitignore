@@ -32,3 +32,6 @@ dogfood-output/
 website/src/templates/*.typ
 
 .worktrees/
+
+# project skills are shared, even though the global ignore hides .claude/*
+!.claude/skills/

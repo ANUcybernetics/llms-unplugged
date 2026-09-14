@@ -17,6 +17,8 @@ manual (pen-and-paper) and automated tools.
   [llms-unplugged-corpora](https://github.com/benswift/llms-unplugged-corpora)
   repo --- clone it and copy `texts/*.txt` in here
 - `backlog/` --- task management
+- `.claude/skills/` --- project skills; `llms-unplugged-video` is the video
+  pipeline (recuts, explainers, animated artefacts)
 - `Makefile` --- delivery packs: `make pack-<slug>` zips everything one lesson
   or talk needs into `out/packs/`, and holds the exact runs (a talk pack also
   exports its own deck slides and presenter guide)

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>LLMs Unplugged title card</title>
+<style>
+  /* The deck's title-slide grammar (website/src/decks/theme.css, `.hero`):
+     full-bleed artwork, a dark scrim rising from the bottom-left, a
+     light-weight white heading with a short gold rule under it. */
+  :root { --gold: #be830e; --gold-2: #e5a930; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { width: 1920px; height: 1080px; overflow: hidden; background: #0d0d0d; font-family: "Public Sans", sans-serif; color: #fff; }
+  #bg { position: absolute; inset: 0; width: 1920px; height: 1080px; object-fit: cover; }
+  #scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgb(13 13 13 / 92%) 0%, rgb(13 13 13 / 70%) 38%, rgb(13 13 13 / 15%) 75%, transparent 100%); }
+  #text { position: absolute; left: 120px; right: 120px; bottom: 120px; }
+  .eyebrow { font-size: 40px; font-weight: 500; color: var(--gold-2); letter-spacing: 0.02em; margin-bottom: 18px; }
+  h1 { font-size: 104px; font-weight: 300; line-height: 1.1; margin: 0; max-width: 1500px; text-wrap: balance; }
+  .rule { width: 96px; height: 6px; background: var(--gold); margin: 34px 0 30px; border-radius: 2px; }
+  h2 { font-size: 40px; font-weight: 400; color: rgb(255 255 255 / 85%); margin: 0; }
+</style>
+</head>
+<body>
+  <img id="bg" />
+  <div id="scrim"></div>
+  <div id="text">
+    <div class="eyebrow" id="eyebrow"></div>
+    <h1 id="heading"></h1>
+    <div class="rule"></div>
+    <h2 id="sub"></h2>
+  </div>
+  <script>
+    // render-frames.mjs still title-card.html title.png --script script.json --bg bg.png
+    // script.json: { "title": { "eyebrow", "heading", "sub" } }; the artwork is
+    // one of the deck backgrounds (avif needs converting to png first).
+    window.setup = async ({ script, bg }) => {
+      const S = script ? await fetch(script).then((r) => r.json()) : {};
+      const t = S.title || {};
+      document.getElementById("eyebrow").textContent = t.eyebrow || "LLMs Unplugged";
+      document.getElementById("heading").textContent = t.heading || "";
+      document.getElementById("sub").textContent = t.sub || "";
+      const img = document.getElementById("bg");
+      if (bg) { img.src = bg; await img.decode(); }
+      await document.fonts.ready;
+    };
+    window.renderFrame = async () => {};
+  </script>
+</body>
+</html>

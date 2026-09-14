@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>LLMs Unplugged video overlay</title>
+<style>
+  /* The deck's look on a 1920x1080 canvas. Values copied from
+     website/src/styles/common.css (gold, ground, text) and
+     website/src/decks/theme.css (the tc-N token palette); those files win if
+     these ever disagree. */
+  :root {
+    --ground: #0d0d0d;
+    --gold: #be830e;          /* --anu-gold */
+    --gold-2: #e5a930;        /* a lighter gold for text on the dark ground */
+    --text: rgb(255 255 255 / 95%);
+    --muted: rgb(255 255 255 / 56%);
+    --hairline: rgb(255 255 255 / 18%);
+    --font-ui: "Public Sans", sans-serif;
+    --font-tok: "Libertinus Serif", serif;   /* what the printed sheets use */
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1920px; height: 1080px; overflow: hidden;
+    background: var(--ground); color: var(--text); font-family: var(--font-ui);
+  }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+  #video { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; background: #000; }
+
+  /* tokens as the sheets print them: a boxed previous word, a bare next word */
+  .tok {
+    font-family: var(--font-tok); font-weight: 700; color: var(--c);
+    display: inline-block; line-height: 1.15; white-space: nowrap;
+    border-radius: 0.1em; padding: 0.05em 0.16em; margin: 0 0.06em;
+  }
+  .tok.box { background: var(--c); color: #fff; }
+  .tc-0 { --c: oklch(0% 0 0deg); }            /* black */
+  .tc-1 { --c: oklch(62.9% 0.008 145deg); }   /* grey */
+  .tc-2 { --c: oklch(57.9% 0.238 29deg); }    /* red */
+  .tc-3 { --c: oklch(38.6% 0.089 62deg); }    /* brown */
+  .tc-4 { --c: oklch(61% 0.205 142deg); }     /* green */
+  .tc-5 { --c: oklch(47.2% 0.241 263deg); }   /* blue */
+  .tc-6 { --c: oklch(45.2% 0.195 316deg); }   /* purple */
+  .tc-7 { --c: oklch(53.4% 0.221 353deg); }   /* magenta */
+
+  /* a panel that fades in; opacity is set per frame, never transitioned */
+  .panel { position: absolute; opacity: 0; }
+  .rule { position: absolute; background: var(--gold); opacity: 0; }
+  .caption { font-size: 30px; height: 60px; line-height: 60px; white-space: nowrap; overflow: hidden; }
+  .caption .count { color: var(--gold-2); font-weight: 500; font-variant-numeric: tabular-nums; }
+
+  /* a page image placed by transform; the highlight box lives in page pixels */
+  /* the right-hand panel: a caption line over a clipped stage the page moves in */
+  #right { left: 980px; top: 20px; width: 920px; height: 1040px; }
+  #rstage { position: relative; width: 920px; height: 960px; margin-top: 20px; overflow: hidden; }
+  #page { position: absolute; left: 0; top: 0; transform-origin: 0 0; opacity: 0; will-change: transform; background: #fff; }
+  #page img { display: block; }
+  #page .hl {
+    position: absolute; border: 3px solid var(--gold); border-radius: 8px;
+    box-shadow: 0 0 0 4px rgb(190 131 14 / 25%), 0 0 24px rgb(190 131 14 / 45%);
+    opacity: 0;
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <video id="video" muted preload="auto" hidden></video>
+  <div class="panel" id="right">
+    <div class="caption"><span id="cap"></span> <span class="count" id="count"></span></div>
+    <div id="rstage">
+      <div id="page"><img id="pageimg" /><div class="hl" id="hl"></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------- helpers ----------
+const $ = (id) => document.getElementById(id);
+const clamp01 = (x) => Math.max(0, Math.min(1, x));
+const ease = (p) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2); // in-out, for camera moves
+const easeOut = (p) => 1 - Math.pow(1 - p, 3);                                   // for things appearing
+const lerp = (a, b, p) => a + (b - a) * p;
+const lerpLog = (a, b, p) => Math.exp(lerp(Math.log(a), Math.log(b), p));         // for scale: an even-feeling zoom
+const ts = (s) => (typeof s === "number" ? s : String(s).split(":").map(Number).reduce((a, p) => a * 60 + p, 0));
+const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+// deterministic per-index jitter for staggered reveals (never Math.random: frames must be reproducible)
+const jitter = (i) => { const x = Math.sin(i * 12.9898 + 78.233) * 43758.5453; return x - Math.floor(x); };
+
+// the token colour hash from website/src/lib/tokenColors.ts (and cli/cutout-common.typ):
+// a word is the same colour here as on the printed sheet and the slide
+function colourIndex(tok) {
+  let h = 14564;
+  for (const ch of tok) h = (h * 7 + ch.codePointAt(0)) % 1000003;
+  return h % 8;
+}
+const tokHtml = (text, boxed) => `<span class="tok tc-${colourIndex(text)}${boxed ? " box" : ""}">${esc(text)}</span>`;
+
+// ---------- page geometry (from pdf-assets.sh output) ----------
+// bbox.json is in PDF points; the page PNGs are that page rendered at some dpi,
+// so pixel = point * (IMG_W / page.w)
+let S, BBOX, IMG_W, IMG_H, base;
+function lineBox(sheet, words) {
+  const page = BBOX[sheet - 1];
+  const line = page.lines.find((l) => l.words.length === words.length && l.words.every((w, i) => w === words[i]));
+  if (!line) throw new Error(`${words.join(" ")} not on sheet ${sheet}`);
+  const k = IMG_W / page.w;
+  const [x0, y0, x1, y1] = line.bbox;
+  return { x: x0 * k, y: y0 * k, w: (x1 - x0) * k, h: (y1 - y0) * k };
+}
+// a crop of the page image shown in a stage of STAGE_W x STAGE_H: {cx, cy, cw, ch} in page pixels
+const STAGE_W = 920, STAGE_H = 960;
+function cropFit() {
+  const s = Math.min(STAGE_W / IMG_W, STAGE_H / IMG_H);
+  return { cw: STAGE_W / s, ch: STAGE_H / s, cx: (IMG_W - STAGE_W / s) / 2, cy: (IMG_H - STAGE_H / s) / 2 };
+}
+function cropAround(box, cw) {
+  const ch = (cw * STAGE_H) / STAGE_W;
+  const cx = Math.max(0, Math.min(IMG_W - cw, box.x + box.w / 2 - cw / 2));
+  const cy = Math.max(0, Math.min(IMG_H - ch, box.y + box.h / 2 - ch / 2));
+  return { cx, cy, cw, ch };
+}
+// a camera move within a page tweens the crop (the point of interest tracks);
+// a page growing out of a small cell tweens its placement instead (see SKILL.md)
+function lerpCrop(a, b, p) {
+  const cw = lerpLog(a.cw, b.cw, p), ch = (cw * STAGE_H) / STAGE_W;
+  return { cw, ch, cx: lerp(a.cx + a.cw / 2, b.cx + b.cw / 2, p) - cw / 2, cy: lerp(a.cy + a.ch / 2, b.cy + b.ch / 2, p) - ch / 2 };
+}
+function placement(c) { const s = STAGE_W / c.cw; return { x: -c.cx * s, y: -c.cy * s, s }; }
+function lerpPlacement(a, b, p) { return { x: lerp(a.x, b.x, p), y: lerp(a.y, b.y, p), s: lerpLog(a.s, b.s, p) }; }
+function place(pl) { $("page").style.transform = `translate(${pl.x}px, ${pl.y}px) scale(${pl.s})`; return pl.s; }
+
+let currentImg = 0;
+function setPageImage(sheet) {
+  if (currentImg === sheet) return;
+  $("pageimg").src = `${base}/pages/sheet-${String(sheet).padStart(3, "0")}.png`;
+  currentImg = sheet;
+}
+
+// ---------- the frame ----------
+// Everything visible is a function of t. No CSS transitions, no state carried
+// between frames beyond which image is loaded.
+function render(t) {
+  // example: hold a page fitted, then move to the line the timeline names
+  if (!S || !S.example) return;
+  const e = S.example;
+  const t0 = ts(e.at), dur = 0.7;
+  setPageImage(e.sheet);
+  const target = cropAround(lineBox(e.sheet, e.words), 335 * (IMG_W / BBOX[e.sheet - 1].w));
+  const p = ease(clamp01((t - t0) / dur));
+  const s = place(placement(lerpCrop(cropFit(), target, p)));
+  $("page").style.opacity = 1;
+  $("right").style.opacity = easeOut(clamp01(t / 0.5));
+  const hl = $("hl"), b = lineBox(e.sheet, e.words), pad = 10 / s + 6;
+  hl.style.left = b.x - pad + "px"; hl.style.top = b.y - pad * 0.6 + "px";
+  hl.style.width = b.w + 2 * pad + "px"; hl.style.height = b.h + 1.2 * pad + "px";
+  hl.style.borderWidth = 3 / s + "px"; hl.style.borderRadius = 8 / s + "px";
+  hl.style.opacity = easeOut(clamp01((t - t0 - dur) / 0.25));
+  $("cap").innerHTML = e.caption ? tokHtml(e.words[0], true) + " " + tokHtml(e.words[1]) : "";
+}
+
+// ---------- driver contract (render-frames.mjs) ----------
+window.setup = async ({ script, assets, video } = {}) => {
+  base = assets;
+  [S, BBOX] = await Promise.all([
+    script ? fetch(script).then((r) => r.json()) : {},
+    assets ? fetch(assets + "/bbox.json").then((r) => r.json()) : [],
+  ]);
+  if (assets) await new Promise((res) => { const im = new Image(); im.onload = () => { IMG_W = im.naturalWidth; IMG_H = im.naturalHeight; res(); }; im.src = assets + "/pages/sheet-001.png"; });
+  if (video) {
+    const v = $("video"); v.hidden = false; v.src = video;
+    await new Promise((res, rej) => { v.onloadeddata = res; v.onerror = () => rej(new Error("video failed to load")); });
+  }
+};
+window.seekVideo = (local) => new Promise((res) => {
+  const v = $("video");
+  if (v.hidden || Math.abs(v.currentTime - local) < 0.001) return res();
+  v.onseeked = () => res();
+  v.currentTime = local;
+});
+window.renderFrame = async (t) => {
+  render(t);
+  const im = $("pageimg");
+  if (im.src) await im.decode().catch(() => {});
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+};
+</script>
+</body>
+</html>
