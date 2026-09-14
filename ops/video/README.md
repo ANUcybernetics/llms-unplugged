@@ -43,10 +43,10 @@ chain), so a video shows the same example the slides show.
 Two phases, one set of scripts.
 
 **Phase 1 (now): animation plus voice-over.** Each video is a HyperFrames
-composition in `ops/video/<slug>/`, assembled from the project's own material
-(the deck widgets, the printed sheets and booklets rendered from the CLI, the
-deck backgrounds, the site's palette and fonts). Ben and Ushini record the
-voice-over. No camera.
+composition in `ops/video/<slug>/`, built from the shared kit in `_kit/` (see
+`_kit/README.md` for the contract) on data that `build-data.py` regenerates
+from `data/` and the deck constants. Ben and Ushini record the voice-over. No
+camera.
 
 **Phase 2 (later): re-cut with footage.** When a shoot happens, Ben and Ushini
 deliver the to-camera lines and the phase-1 cut is re-edited with that footage;
@@ -70,6 +70,26 @@ Re-cutting: a script, its composition and its VO takes are versioned together.
 The script and composition live here; VO takes, footage and renders are binaries
 and live in the bucket under `video/<slug>/`, never in git. A tweak to a line is
 a commit here, a re-record of that line, and a re-render.
+
+## Building
+
+```bash
+ops/video/build-data.py            # ledger sets, booklet, page images -> _kit/generated/
+ops/video/voice.py scratch --all   # scratch voice tracks (edge-tts) -> out/video/<slug>/voice.wav
+ops/video/align.py <slug>          # timing.json + captions.vtt from the voice track
+ops/video/video.py check <slug>    # npm run check, duration synced from timing.json
+ops/video/video.py render <slug>   # 1080p25 draft; --final for the 4K50 master
+ops/video/video.py stills <slug>   # contact sheets of every beat, for review
+ops/video/video.py upload <slug>   # renders, captions, voice -> bucket video/<slug>/
+```
+
+The real takes replace `out/video/<slug>/voice.wav` under the same name; then
+`align.py` and a render. `ops/video/motion-test/` is the reel that runs every
+kit component through its moves.
+
+The printed sheets and booklets are the source of what is shown, not how big:
+a composition draws only the rows it needs, at a size that reads on a
+screen, rather than the print's density.
 
 ## Tone and narrative
 

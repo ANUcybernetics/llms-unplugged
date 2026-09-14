@@ -34,9 +34,13 @@ should feel --- is per video, and lives in that video's composition.
   building its composition, and keep the two in step: a re-cut starts from a
   script edit.
 - `ops/video/<slug>/` --- the HyperFrames project: `index.html` (the
-  composition), `hyperframes.json`, `package.json` with the pinned CLI, and
-  `assets/` (fonts, page images, footage). Commit the composition and the small
-  assets; footage and renders are not committed.
+  composition), `hyperframes.json`, `package.json` with the pinned CLI,
+  `lines.json`/`timing.json`/`captions.vtt` (from `ops/video/align.py`) and
+  `assets/voice.wav` (not committed). The explainer series shares
+  `ops/video/_kit/` (stage, objects, motion helpers, fonts, generated data;
+  its README is the contract) through a `kit -> ../_kit` symlink, because
+  HyperFrames serves only the project root and its lint rejects `../` paths.
+  `ops/video/README.md` lists the build commands.
 - `out/video/<slug>/` --- staged inputs (recording, transcript, page images) and
   renders. `out/` is gitignored; finished videos are published elsewhere (the
   bucket, YouTube).
@@ -94,7 +98,10 @@ The composition contract, learnt from its lint:
   else is `muted`, with a separate `<audio>` clip. The output audio is mixed
   from these; nothing to mux by hand
 - motion is a paused GSAP timeline registered as
-  `window.__timelines[<composition id>]`, which the renderer seeks per frame.
+  `window.__timelines[<composition id>]`, which the renderer seeks per frame;
+  the registration line has to appear literally in the HTML (the lint greps
+  for it), and a GSAP timeline is a thenable, so never resolve a promise with
+  one bare (it waits for the paused timeline to finish: forever).
   Animate transforms and opacity (`x`, `y`, `scale`), never `left`, `top`,
   `width` or `height`: layout properties snap to whole pixels and stutter. CSS
   transitions are not seekable; CSS keyframes are
