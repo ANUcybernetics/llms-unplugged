@@ -146,10 +146,14 @@ shown, not _how_:
   of words lifts out of the sentence and drops into the cell as a tally. Say
   what the viewer is looking at and make the frame agree.
 - **the participant's view.** Prefer the seat at the table (sheet, pencil, cup,
-  booklet, seen from above) over the presenter's view of a slide. The section
+  booklet, flat and top-down) over the presenter's view of a slide. The section
   videos hand off to a physical activity; previewing the physical action is
   the hand-off.
 - **one example followed all the way through**, as the decks already do.
+- **built to the engine's strengths.** Flat vector, transforms and opacity,
+  stroke draw-on, cuts; no physics, blur, slow creeps or photographic texture.
+  The skill's "What this pipeline renders well" is the list; a beat that needs
+  something off it gets a different beat.
 
 Renderable material that does exist in the repo and is worth reusing as
 texture rather than layout: the CLI-rendered booklet pages and ledger sheets,

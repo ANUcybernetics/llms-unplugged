@@ -1,7 +1,6 @@
 ---
 name: llms-unplugged-video
-description:
-  Produces LLMs Unplugged videos --- a talk recording or talking head cut with
+description: Produces LLMs Unplugged videos --- a talk recording or talking head cut with
   animated overlays, an explainer for a module or lesson on the website, a
   screencast of a widget, a clip that animates a printed artefact (search
   sheets, cutouts, ledger pages) or a deck's slides --- as an HTML composition
@@ -169,6 +168,26 @@ are not scaffolding around.
 - when the talk shrinks into a corner to make room for a panel, keep the
   speaker's face inside the crop; `object-fit: cover` on a scaled video element
   is what makes that cheap
+
+## What this pipeline renders well
+
+Chrome draws each frame, ffmpeg only encodes them, so the ceiling is what
+Chrome draws crisply at 25 fps with no motion blur and what 8-bit 4:2:0 H.264
+keeps. Design to the strengths and the result looks deliberate; design against
+them and it looks amateurish however slick the idea.
+
+Reliably good: flat vector (SVG, solid fills, the site's type) tweening
+transform and opacity with easing; a push-in on a group while the rest dims;
+SVG stroke draw-on (`stroke-dashoffset`) for marks, lines and arrows; staggered
+reveals; hard cuts and short crossfades; a logarithmic zoom-out across scales.
+
+Reliably janky: slow creeping pans, which judder and make thin lines and text
+shimmer (move fast and short, or hold still); animated `filter`, `blur` and
+`drop-shadow`; large gradients and photographic texture, which band and moiré
+under the encoder; physics or particles (tumbling counters, bouncing dice);
+perspective or 3D transforms of text; thin saturated lines and small coloured
+text, which bleed in chroma subsampling. A "desk from above" is a flat
+top-down illustration, not a tilted photo.
 
 ## Fallback engine
 
