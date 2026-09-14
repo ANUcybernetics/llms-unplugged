@@ -29,6 +29,11 @@ should feel --- is per video, and lives in that video's composition.
 
 ## Where a video's files go
 
+- `ops/video/README.md` --- the series plan, production phases, tone and
+  composition sources; `ops/video/scripts/<slug>.md` --- each video's beat sheet
+  and script, with the to-camera lines tagged (TC). Read the script before
+  building its composition, and keep the two in step: a re-cut starts from a
+  script edit.
 - `ops/video/<slug>/` --- the HyperFrames project: `index.html` (the
   composition), `hyperframes.json`, `package.json` with the pinned CLI, and
   `assets/` (fonts, page images, footage). Commit the composition and the small
@@ -115,16 +120,15 @@ worker pool. The first render downloads Chrome into `~/.cache/hyperframes`
 run.
 
 HyperFrames ships twenty agent skills of its own: a `/hyperframes` router,
-creation workflows (product launch, faceless explainer, captions,
-talking-head recut, PR-to-video, motion graphics, music video, slideshow,
-general video) and the domain skills they lean on (core, animation,
-keyframes, creative, CLI, media-use, audio). Don't install them:
-`hyperframes skills update` (and `init` without `HYPERFRAMES_SKIP_SKILLS=1`)
-writes all nine core ones into the user's global `~/.claude/skills`,
-`~/.agents/skills`, `~/.codex/skills` and `~/.gemini/skills`, where they
-load into every session on the machine. This skill already carries the
-composition contract; when one of theirs is needed, fetch its markdown into
-the scratchpad and read it there:
+creation workflows (product launch, faceless explainer, captions, talking-head
+recut, PR-to-video, motion graphics, music video, slideshow, general video) and
+the domain skills they lean on (core, animation, keyframes, creative, CLI,
+media-use, audio). Don't install them: `hyperframes skills update` (and `init`
+without `HYPERFRAMES_SKIP_SKILLS=1`) writes all nine core ones into the user's
+global `~/.claude/skills`, `~/.agents/skills`, `~/.codex/skills` and
+`~/.gemini/skills`, where they load into every session on the machine. This
+skill already carries the composition contract; when one of theirs is needed,
+fetch its markdown into the scratchpad and read it there:
 
 ```bash
 curl -sL https://raw.githubusercontent.com/heygen-com/hyperframes/main/skills/<name>/SKILL.md
