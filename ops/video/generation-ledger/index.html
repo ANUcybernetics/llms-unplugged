@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>LLMs Unplugged — Generation (ledger)</title>
+    <link rel="stylesheet" href="kit/kit.css" />
+    <script src="kit/vendor/gsap.min.js"></script>
+    <script src="kit/generated/data.js"></script>
+    <script src="kit/kit.js"></script>
+    <style>
+      html, body { width: 1920px; height: 1080px; }
+    </style>
+  </head>
+  <body>
+    <!-- Generation (ledger): ops/video/scripts/generation-ledger.md. The desk
+         is three ledger sheets, a cup, a tub of counters, a pencil and a
+         paper strip: a cup of counters does the maths for one bigram model,
+         the magpie book. Every beat lands on a word of the voice track. -->
+    <div id="stage" class="stage" data-aspect="landscape" data-composition-id="generation-ledger"
+         data-start="0" data-duration="168.39" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="168.39" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="168.39" data-track-index="1"></audio>
+    </div>
+    <script>
+      const build = (tl, S, T) => {
+        const K = KIT, D = KIT_DATA;
+        const scene = document.getElementById("scene");
+        const A = S.area;
+        const PAL = D.palette; // [red, blue, green, yellow] in column order
+        const M = D.ledger["the-magpie"];
+
+        // ---- find a row by its prefix word anywhere across the sheets
+        const findRow = (word) => {
+          for (let s = 0; s < M.sheets.length; s++) {
+            for (let p = 0; p < M.sheets[s].pages.length; p++) {
+              const rows = M.sheets[s].pages[p];
+              for (let r = 0; r < rows.length; r++) {
+                const entry = rows[r];
+                const pfx = entry.prefix.join ? entry.prefix.join(" ") : entry.prefix;
+                if (pfx === word) return { sheet: s, page: p, row: r, entry };
+              }
+            }
+          }
+          throw new Error(`row "${word}" not found`);
+        };
+        const colOf = (entry, word) => entry.followers.findIndex((f) => f && f.text === word);
+
+        const eThe = findRow("the").entry;
+        const eDot = findRow(".").entry;
+        const eIt = findRow("it").entry;
+        const eSits = findRow("sits").entry;
+        const eOn = findRow("on").entry;
+        const eFence = findRow("fence").entry;
+        const eHere = findRow("Here").entry;
+        const eComes = findRow("comes").entry;
+        const eMagpie = findRow("magpie").entry;
+
+        // ---- inline helpers the kit doesn't have: a tub of counters, a pencil
+        const makeTub = (parent, { x = 0, y = 0, w = 260, h = 170 } = {}) => {
+          const g = K.layer(parent, x, y);
+          const s = K.svg("svg", { width: w, height: h, viewBox: `0 0 ${w} ${h}` }, g);
+          K.svg("rect", { x: 6, y: 6, width: w - 12, height: h - 12, rx: 20, fill: "#efe6d8", stroke: "rgb(0 0 0 / 25%)", "stroke-width": 3 }, s);
+          const seed = [
+            ["red", 0.24, 0.4], ["red", 0.38, 0.64],
+            ["blue", 0.5, 0.36], ["blue", 0.6, 0.62],
+            ["green", 0.72, 0.4], ["yellow", 0.82, 0.62],
+          ];
+          seed.forEach(([c, fx, fy]) => K.svg("circle", { cx: fx * w, cy: fy * h, r: 15, fill: K.COUNTER[c], stroke: "rgb(0 0 0 / 30%)", "stroke-width": 2 }, s));
+          return { el: g, w, h };
+        };
+        const makePencil = (parent) => {
+          const g = K.layer(parent, 0, 0);
+          const s = K.svg("svg", { width: 640, height: 40, viewBox: "0 0 640 40" }, g);
+          K.svg("polygon", { points: "0 20 36 4 36 36", fill: "#e9dcc5" }, s);
+          K.svg("polygon", { points: "0 20 12 15 12 25", fill: "#1a1a1a" }, s);
+          K.svg("rect", { x: 36, y: 4, width: 560, height: 32, fill: "var(--gold)" }, s);
+          K.svg("rect", { x: 596, y: 4, width: 44, height: 32, rx: 6, fill: "#d98c8c" }, s);
+          return g;
+        };
+
+        // ==== the three fanned sheets (sheets 1, 3, 5: !->back, Here->on, the->watches)
+        // wide native canvas so the fixed 44px ledgerRow font never overflows a
+        // cell (e.g. "watches", "postie"); scale down per layout instead.
+        const SHEET_W = 1700, ROW_H = 120;
+        const mkSheet = (idx) => {
+          const s = M.sheets[idx];
+          const header = [s.range[0].join(" "), s.range[1].join(" ")];
+          return K.sheet(scene, s.pages[0], PAL, { x: 0, y: 0, w: SHEET_W, rowH: ROW_H, header, title: M.title });
+        };
+        const sheetBang = mkSheet(0), sheetHere = mkSheet(2), sheetThe = mkSheet(4);
+        const sheets = [sheetBang, sheetHere, sheetThe];
+        sheets.forEach((sh) => {
+          sh.rows.forEach((r) => (r.prefixEl.style.fill = "#1a1a1a"));
+          if (sh.headerEl) sh.headerEl.style.fill = "#1a1a1a";
+        });
+
+        const DESK_SHEETS = [
+          { x: A.x + 20, y: A.y + 10, scale: 0.12, rot: -8 },
+          { x: A.x + 260, y: A.y + 50, scale: 0.12, rot: 3 },
+          { x: A.x + 500, y: A.y + 10, scale: 0.12, rot: 13 },
+        ];
+        const TRIO_SCALE = 0.32, TRIO_GAP = 40, TRIO_W = SHEET_W * TRIO_SCALE;
+        const TRIO_SHEETS = [0, 1, 2].map((i) => ({ x: A.x + 20 + i * (TRIO_W + TRIO_GAP), y: A.y + 40, scale: TRIO_SCALE, rot: 0 }));
+        const FULL_SCALE = 1.02;
+        const FULL_THE = { x: A.cx - (SHEET_W * FULL_SCALE) / 2, y: A.y + 30, scale: FULL_SCALE, rot: 0 };
+
+        sheets.forEach((sh, i) => gsap.set(sh.el, { x: DESK_SHEETS[i].x, y: DESK_SHEETS[i].y, scale: DESK_SHEETS[i].scale, rotation: DESK_SHEETS[i].rot, opacity: 0 }));
+
+        const layoutSheets = (tl, layout, t, dur = 0.55) => {
+          sheets.forEach((sh, i) => {
+            const L = layout[i];
+            if (!L) { tl.to(sh.el, { opacity: 0, duration: dur * 0.7 }, t); return; }
+            tl.to(sh.el, { x: L.x, y: L.y, scale: L.scale, rotation: L.rot || 0, opacity: 1, duration: dur, ease: "power2.inOut" }, t);
+          });
+        };
+        const setSheetsAt = (layout) => sheets.forEach((sh, i) => layout[i] && gsap.set(sh.el, { x: layout[i].x, y: layout[i].y, scale: layout[i].scale, rotation: layout[i].rot || 0 }));
+
+        // ==== the cup, the tub, the pencil, the paper strip
+        const CUP_R = 140;
+        const cup = K.cup(scene, { x: 0, y: 0, r: CUP_R });
+        const CUP_DESK = { x: A.x + 900, y: A.y + 40, scale: 0.42 };
+        const CUP_MAIN = { x: A.cx - 160, y: A.y + 300, scale: 1 };
+        gsap.set(cup.el, { x: CUP_DESK.x, y: CUP_DESK.y, scale: CUP_DESK.scale, opacity: 0 });
+
+        const tub = makeTub(scene, { x: 0, y: 0 });
+        const TUB_DESK = { x: A.x + 1150, y: A.y + 70, scale: 0.42 };
+        const TUB_MAIN = { x: CUP_MAIN.x - 320, y: CUP_MAIN.y + 75, scale: 1 };
+        gsap.set(tub.el, { x: TUB_DESK.x, y: TUB_DESK.y, scale: TUB_DESK.scale, opacity: 0 });
+
+        const pencilDesk = makePencil(scene);
+        const PENCIL_DESK = { x: A.x + 30, y: A.y + 420, scale: 0.6, rot: -6 };
+        const PENCIL_MAIN = { x: A.cx - 750 - 100, y: A.y + 630, scale: 0.6, rot: -6 };
+        gsap.set(pencilDesk, { x: PENCIL_DESK.x, y: PENCIL_DESK.y, scale: PENCIL_DESK.scale, rotation: PENCIL_DESK.rot, opacity: 0, transformOrigin: "0 50%" });
+
+        const GEN_WORDS = ["it", "sits", "on", "the", "fence", ".", "Here", "comes", "the", "magpie", "."];
+        const paperL = K.layer(scene, 0, 0);
+        const paperObj = K.paper(paperL, { x: 0, y: 0, w: 1500, h: 130 });
+        const gen = K.pencilLine(paperObj.el, GEN_WORDS, { x: 34, y: 42, size: 58 });
+        const PAPER_DESK = { x: A.x + 30, y: A.y + 500, scale: 0.55 };
+        const PAPER_MAIN = { x: A.cx - 750, y: A.y + 650, scale: 1 };
+        gsap.set(paperL, { x: PAPER_DESK.x, y: PAPER_DESK.y, scale: PAPER_DESK.scale, opacity: 0 });
+
+        const deskProps = [cup.el, tub.el, pencilDesk, paperL];
+
+        // ==== focus rows: one big K.ledgerRow per prefix we visit, sharing one
+        // slot so a column's box sits at the same screen point on every row
+        const FOCUS_W = 1700, FOCUS_H = 170, FOCUS_X = A.cx - FOCUS_W / 2, FOCUS_Y = A.y + 30;
+        const focusRow = (entry) => {
+          const r = K.ledgerRow(scene, entry, PAL, { x: FOCUS_X, y: FOCUS_Y, w: FOCUS_W, h: FOCUS_H, fontSize: 52, prefixW: 300 });
+          r.prefixEl.style.fill = "#1a1a1a";
+          gsap.set(r.el, { opacity: 0 });
+          return r;
+        };
+        const rowThe = focusRow(eThe), rowDot = focusRow(eDot), rowIt = focusRow(eIt);
+        const rowSits = focusRow(eSits), rowOn = focusRow(eOn), rowFence = focusRow(eFence);
+        const rowHere = focusRow(eHere), rowComes = focusRow(eComes), rowMagpie = focusRow(eMagpie);
+        const focusRows = [rowThe, rowDot, rowIt, rowSits, rowOn, rowFence, rowHere, rowComes, rowMagpie];
+        const setFocus = (tl, row, t, dur = 0.3) => focusRows.forEach((r) => tl.to(r.el, { opacity: r === row ? 1 : 0, duration: dur }, t));
+        const hideFocus = (tl, t, dur = 0.3) => focusRows.forEach((r) => tl.to(r.el, { opacity: 0, duration: dur }, t));
+        // column centres are identical on every focus row (same geometry)
+        const FCOL = rowThe.cells.map((c) => ({ x: FOCUS_X + c.cx, y: FOCUS_Y + c.cy }));
+        // K.ledgerRow preps its tally strokes hidden (for line 2's count-up);
+        // every other row is "already finished", so draw its marks on the
+        // instant it appears (dur 0.01 = a cut, not an animation).
+        const revealMarks = (row, t) => row.cells.forEach((c) => K.drawOn(tl, c.strokes, t, 0.01, 0));
+
+        // a loose counter used beside a box (line 4)
+        const flyCounter = K.counter(scene, "red", { x: 0, y: 0, r: 34 });
+        gsap.set(flyCounter.el, { opacity: 0 });
+        // beside the box (its lower half, clear of the tally marks above), not
+        // below the row
+        const counterAt = (c) => ({ x: FCOL[c].x - 38, y: FCOL[c].y - 18 });
+
+        // the colour-key legend (line 6)
+        const COUNTS_DOT = { red: 7, blue: 4, green: 3, yellow: 3 };
+        const legend = PAL.map((p, i) => {
+          const li = K.layer(scene, CUP_MAIN.x + CUP_R * 2 + 50, CUP_MAIN.y + 10 + i * 62);
+          K.el("div", { style: { position: "absolute", width: "40px", height: "40px", borderRadius: "8px", background: p.hex } }, li);
+          K.el("div", { class: "label", text: `${COUNTS_DOT[p.name]} of 17 — ${p.name}`, style: { position: "absolute", left: "56px", top: "2px", fontSize: "28px" } }, li);
+          gsap.set(li, { opacity: 0 });
+          return li;
+        });
+
+        // the two book pages for the reveal (line 9)
+        const bookTop = K.bookPage(scene, ["Here comes the postie."], { x: A.cx - 620, y: A.y + 30, w: 1240, h: 130, size: 50, pad: 30 });
+        const bookBottom = K.bookPage(scene, ["Down comes the magpie."], { x: A.cx - 620, y: A.y + 610, w: 1240, h: 130, size: 50, pad: 30 });
+        gsap.set([bookTop.el, bookBottom.el], { opacity: 0 });
+
+        // ============================================================ line 0
+        // (TC) the desk, held: three sheets fanned, cup, tub, pencil, paper.
+        setSheetsAt(DESK_SHEETS);
+        tl.to([sheets[0].el, sheets[1].el, sheets[2].el, ...deskProps], { opacity: 1, duration: 0.6, stagger: 0.12 }, 0.25);
+
+        // ============================================================ line 1
+        // one sheet full frame: the left column lights, then a row's boxes,
+        // then its marks.
+        const t1cut = T.start(1) - 0.55;
+        tl.to([...deskProps, sheets[0].el, sheets[1].el], { opacity: 0, duration: 0.35 }, t1cut);
+        tl.to(sheets[2].el, { x: FULL_THE.x, y: FULL_THE.y, scale: FULL_THE.scale, rotation: 0, opacity: 1, duration: 0.7, ease: "power2.inOut" }, t1cut);
+
+        const tLeft = T.word(1, "left");
+        tl.to(sheetThe.rows.map((r) => r.prefixEl), { fill: "#e5a930", duration: 0.35 }, tLeft);
+        tl.to(sheetThe.rows.map((r) => r.prefixEl), { fill: "#1a1a1a", duration: 0.5 }, tLeft + 1.3);
+
+        const tBeside = T.word(1, "Beside");
+        tl.to(sheetThe.rows[0].lit, { opacity: 1, duration: 0.3 }, tBeside);
+        const tMark = T.word(1, "mark");
+        [0, 1, 2, 3].forEach((c) => K.drawOn(tl, sheetThe.rows[0].cells[c].strokes, tMark + c * 0.25, 0.5, 0.06));
+        tl.to(sheetThe.rows[0].lit, { opacity: 0, duration: 0.4 }, T.word(1, "did") + 0.3);
+
+        // ============================================================ line 2
+        // push in on the row for "the"; each follower named lifts and its
+        // marks count themselves.
+        const t2cut = T.start(2) - 0.3;
+        tl.to(sheetThe.el, { opacity: 0, duration: 0.3 }, t2cut);
+        setFocus(tl, rowThe, t2cut + 0.05, 0.35);
+        tl.fromTo(rowThe.el, { scale: 0.9 }, { scale: 1, duration: 0.5, ease: "power2.out" }, t2cut + 0.05);
+
+        const followCount = (row, colIdx, t, windowEnd) => {
+          const cell = row.cells[colIdx];
+          tl.to(cell.lit, { opacity: 1, duration: 0.15 }, t);
+          tl.to(cell.g, { y: "-=8", duration: 0.25, yoyo: true, repeat: 1, ease: "power2.out" }, t + 0.1);
+          const n = cell.strokes.length;
+          const span = Math.max(0.5, windowEnd - t - 0.5);
+          const stag = n > 1 ? span / (n - 1) : 0;
+          K.drawOn(tl, cell.strokes, t + 0.2, 0.3, Math.min(0.32, stag));
+          tl.to(cell.lit, { opacity: 0, duration: 0.3 }, windowEnd - 0.15);
+        };
+        followCount(rowThe, 0, T.word(2, "magpie"), T.word(2, "fence"));
+        followCount(rowThe, 1, T.word(2, "fence"), T.word(2, "postie"));
+        followCount(rowThe, 2, T.word(2, "postie"), T.word(2, "dog"));
+        followCount(rowThe, 3, T.word(2, "dog"), T.end(2));
+
+        // ============================================================ line 3
+        // pull back to the three sheets; headers light in turn; "it" narrows
+        // to the sheet that holds it.
+        const t3 = T.start(3) - 0.35;
+        hideFocus(tl, t3, 0.3);
+        layoutSheets(tl, TRIO_SHEETS, t3, 0.65);
+        tl.to(sheetBang.headerEl, { fill: "#e5a930", duration: 0.3 }, T.word(3, "sheet"));
+        tl.to(sheetBang.headerEl, { fill: "#1a1a1a", duration: 0.4 }, T.word(3, "sheet") + 1.1);
+        tl.to(sheetHere.headerEl, { fill: "#e5a930", duration: 0.3 }, T.word(3, "run"));
+        tl.to(sheetThe.headerEl, { fill: "#e5a930", duration: 0.3 }, T.word(3, "alphabetical"));
+        tl.to(sheetThe.headerEl, { fill: "#1a1a1a", duration: 0.4 }, T.word(3, "alphabetical") + 1.1);
+        const tItSheet = T.word(3, "it");
+        tl.to([sheetBang.el, sheetThe.el], { opacity: 0.35, duration: 0.4 }, tItSheet);
+        tl.to(sheetHere.headerEl, { fill: "#e5a930", duration: 0.3 }, tItSheet);
+
+        // ============================================================ line 4
+        // the row for "it": four boxes pulse in order, a red counter beside
+        // "sits"; cut to the row for "the": red counter beside "magpie".
+        const t4 = T.start(4) - 0.35;
+        layoutSheets(tl, [null, null, null], t4, 0.4);
+        // repark the sheets at their desk layout while hidden, ready for line 10
+        // (tl.set, not a bare gsap.set: HyperFrames re-derives every frame from
+        // the timeline's own tween data, so an out-of-timeline set is invisible
+        // to the renderer)
+        sheets.forEach((sh, i) => tl.set(sh.el, { x: DESK_SHEETS[i].x, y: DESK_SHEETS[i].y, scale: DESK_SHEETS[i].scale, rotation: DESK_SHEETS[i].rot }, t4 + 0.5));
+        setFocus(tl, rowIt, t4 + 0.2, 0.35);
+        revealMarks(rowIt, t4 + 0.2);
+        const tColours = T.word(4, "colours");
+        [0, 1, 2, 3].forEach((c) => {
+          tl.to(rowIt.cells[c].lit, { opacity: 1, duration: 0.2 }, tColours + c * 0.15);
+          tl.to(rowIt.cells[c].lit, { opacity: 0, duration: 0.3 }, tColours + c * 0.15 + 0.35);
+        });
+        const cSits = colOf(eIt, "sits");
+        const tRed1 = T.word(4, "red");
+        gsap.set(flyCounter.el, { x: counterAt(cSits).x, y: counterAt(cSits).y - 30 });
+        tl.to(flyCounter.el, { opacity: 1, y: counterAt(cSits).y, duration: 0.4 }, tRed1);
+        const tDifferent = T.word(4, "different");
+        setFocus(tl, rowThe, tDifferent, 0.3);
+        const tRed2 = T.word(4, "red", 2);
+        tl.to(flyCounter.el, { scale: 1.2, duration: 0.2, yoyo: true, repeat: 1 }, tRed2);
+        tl.to([rowThe.el, flyCounter.el], { opacity: 0, duration: 0.35 }, T.end(4) - 0.2);
+
+        // ============================================================ line 5
+        // the row for full stop above the cup; its marks drop into the cup as
+        // each follower is named: 7 red, 4 blue, 3 green, 3 yellow.
+        const t5 = T.word(5, "finds") - 0.5;
+        setFocus(tl, rowDot, t5, 0.3);
+        revealMarks(rowDot, t5);
+        // move into place while still invisible, then fade in
+        tl.set(cup.el, { x: CUP_MAIN.x, y: CUP_MAIN.y, scale: CUP_MAIN.scale }, t5 - 0.05);
+        tl.set(tub.el, { x: TUB_MAIN.x, y: TUB_MAIN.y, scale: TUB_MAIN.scale }, t5 - 0.05);
+        tl.to([cup.el, tub.el], { opacity: 1, duration: 0.4 }, t5);
+
+        let ci = 0;
+        const dropCounters = (colour, n, t, dur) => {
+          const stag = n > 1 ? dur / (n - 1) : 0;
+          for (let k = 0; k < n; k++) {
+            const item = cup.add(colour, ci, 17);
+            const tt = t + k * stag;
+            tl.fromTo(item.el, { y: Math.max(item.y - 45, 4), opacity: 0 }, { y: item.y, opacity: 1, duration: Math.min(0.35, stag + 0.1) }, tt);
+            ci++;
+          }
+        };
+        const nameCell = (row, colIdx, t) => {
+          tl.to(row.cells[colIdx].lit, { opacity: 1, duration: 0.2 }, t);
+          tl.to(row.cells[colIdx].lit, { opacity: 0, duration: 0.3 }, t + 1.6);
+        };
+        nameCell(rowDot, colOf(eDot, "it"), T.word(5, "it"));
+        dropCounters("red", 7, T.word(5, "seven", 2), 1.9);
+        nameCell(rowDot, colOf(eDot, "Here"), T.word(5, "Here"));
+        dropCounters("blue", 4, T.word(5, "four", 2), 0.75);
+        nameCell(rowDot, colOf(eDot, "Down"), T.word(5, "Down"));
+        dropCounters("green", 3, T.word(5, "three", 2), 0.55);
+        nameCell(rowDot, colOf(eDot, "Swoop"), T.word(5, "Swoop"));
+        dropCounters("yellow", 3, T.word(5, "three", 4), 0.55);
+
+        // ============================================================ line 6
+        // the cup holds still with its seventeen counters; a colour key.
+        tl.to(legend, { opacity: 1, duration: 0.4, stagger: 0.15 }, T.word(6, "Seventeen"));
+
+        // ============================================================ line 7
+        // one red counter slides out onto the paper and becomes "it"; the
+        // cup tips back to the tub; the row for "it" is found.
+        tl.to(legend, { opacity: 0, duration: 0.3 }, T.word(7, "Red") - 0.2);
+        tl.set(paperL, { x: PAPER_MAIN.x, y: PAPER_MAIN.y, scale: PAPER_MAIN.scale }, T.word(7, "Red") - 0.25);
+        tl.set(pencilDesk, { x: PENCIL_MAIN.x, y: PENCIL_MAIN.y, scale: PENCIL_MAIN.scale, rotation: PENCIL_MAIN.rot }, T.word(7, "Red") - 0.25);
+        tl.to([paperL, pencilDesk], { opacity: 1, duration: 0.3 }, T.word(7, "Red") - 0.2);
+
+        const redSlot = cup.slot(0, 17); // the first red counter's cup slot
+        const flyOut = K.counter(scene, "red", { x: cup.centre.x + redSlot.x - CUP_R, y: cup.centre.y + redSlot.y - CUP_R, r: 34 });
+        gsap.set(flyOut.el, { opacity: 0 });
+        tl.to(flyOut.el, { opacity: 1, duration: 0.2 }, T.word(7, "Red"));
+        tl.to(flyOut.el, { x: PAPER_MAIN.x + 34 - 34, y: PAPER_MAIN.y + 42 - 34, duration: 1.2, ease: "power2.inOut" }, T.word(7, "Red") + 0.2);
+        tl.to(flyOut.el, { opacity: 0, duration: 0.15 }, T.word(7, "it,"));
+        K.write(tl, gen.words[0], T.word(7, "it,"));
+
+        tl.to(cup.el, { rotation: -8, duration: 0.3, yoyo: true, repeat: 1 }, T.word(7, "tip"));
+        tl.to(cup.counters, { opacity: 0, duration: 0.35 }, T.word(7, "tub,"));
+
+        tl.to(rowDot.el, { opacity: 0, duration: 0.3 }, T.word(7, "row"));
+        setFocus(tl, rowIt, T.word(7, "row"), 0.3);
+
+        // ============================================================ line 8
+        // the chain at speed: it sits on the fence . Here comes the magpie .
+        const t8 = T.start(8), t8end = T.end(8);
+        const cupDraw = (entry, drawWord, t, dur) => {
+          const total = entry.followers.reduce((s, f) => s + (f ? f.count : 0), 0);
+          const drawCol = colOf(entry, drawWord);
+          let bi = 0;
+          const fillDur = dur * 0.55;
+          entry.followers.forEach((f, c) => {
+            if (!f) return;
+            const stag = f.count > 1 ? fillDur / total : 0;
+            for (let k = 0; k < f.count; k++) {
+              const item = cup.add(PAL[c].name, bi, total);
+              tl.fromTo(item.el, { y: Math.max(item.y - 45, 4), opacity: 0 }, { y: item.y, opacity: 1, duration: 0.2 }, t + bi * (fillDur / total));
+              bi++;
+            }
+          });
+          tl.to(cup.el, { rotation: -8, duration: 0.22, yoyo: true, repeat: 1 }, t + fillDur + 0.1);
+          tl.to(cup.counters, { opacity: 0, duration: 0.25 }, t + fillDur + 0.3);
+          tl.to(cup.el, { opacity: 1 }, t); // keep cup visible through the draw
+          return { col: drawCol };
+        };
+        const straightStep = (row, t, wordIdx, colIdx) => {
+          setFocus(tl, row, t, 0.18);
+          revealMarks(row, t);
+          tl.to(row.cells[colIdx].lit, { opacity: 1, duration: 0.12 }, t + 0.12);
+          K.write(tl, gen.words[wordIdx], t + 0.3);
+          tl.to(row.cells[colIdx].lit, { opacity: 0, duration: 0.2 }, t + 0.55);
+        };
+        const drawStep = (row, entry, t, dur, wordIdx, drawWord) => {
+          setFocus(tl, row, t, 0.18);
+          revealMarks(row, t);
+          gsap.set(cup.el, { opacity: 1 });
+          const { col } = cupDraw(entry, drawWord, t + 0.2, dur);
+          tl.to(row.cells[col].lit, { opacity: 1, duration: 0.15 }, t + dur * 0.75);
+          K.write(tl, gen.words[wordIdx], t + dur * 0.85);
+          tl.to(row.cells[col].lit, { opacity: 0, duration: 0.2 }, t + dur + 0.1);
+        };
+
+        drawStep(rowIt, eIt, t8 + 0.15, 1.0, 1, "sits"); // it -> sits (red)
+        straightStep(rowSits, t8 + 1.6, 2, colOf(eSits, "on")); // sits -> on
+        straightStep(rowOn, t8 + 2.4, 3, colOf(eOn, "the")); // on -> the
+        drawStep(rowThe, eThe, t8 + 3.2, 1.3, 4, "fence"); // the -> fence (blue, likeliest)
+        straightStep(rowFence, t8 + 4.9, 5, colOf(eFence, ".")); // fence -> .
+
+        // full stop, second visit: reveal timed to "blue"
+        const tBlue = T.word(8, "blue");
+        setFocus(tl, rowDot, tBlue - 2.1, 0.2);
+        gsap.set(cup.el, { opacity: 1 });
+        cupDraw(eDot, "Here", tBlue - 1.9, 2.0);
+        tl.to(rowDot.cells[colOf(eDot, "Here")].lit, { opacity: 1, duration: 0.15 }, tBlue - 0.05);
+        K.write(tl, gen.words[6], tBlue);
+        tl.to(rowDot.cells[colOf(eDot, "Here")].lit, { opacity: 0, duration: 0.2 }, tBlue + 0.4);
+
+        straightStep(rowHere, tBlue + 0.6, 7, colOf(eHere, "comes")); // Here -> comes
+        straightStep(rowComes, tBlue + 1.4, 8, colOf(eComes, "the")); // comes -> the
+        drawStep(rowThe, eThe, tBlue + 2.2, 1.1, 9, "magpie"); // the -> magpie (red, different word)
+        drawStep(rowMagpie, eMagpie, tBlue + 3.5, 1.0, 10, "."); // magpie -> . (blue)
+
+        const tSettle = tBlue + 4.7;
+        tl.to([rowMagpie.el, cup.el, tub.el], { opacity: 0, duration: 0.4 }, tSettle);
+        tl.to(paperL, { x: A.cx - 750, y: A.y + 340, duration: 0.6, ease: "power2.inOut" }, tSettle);
+        tl.to(pencilDesk, { opacity: 0, duration: 0.3 }, tSettle); // avoid a stray pencil overlapping the reveal
+
+        // ============================================================ line 9
+        // the generated line full frame; the book's two sentences slide their
+        // halves together into it.
+        const t9 = T.start(9) - 0.4;
+        tl.to(bookTop.el, { opacity: 1, duration: 0.4 }, T.word(9, "postie") - 1.6);
+        tl.to(bookBottom.el, { opacity: 1, duration: 0.4 }, T.word(9, "magpie") - 1.6);
+        const tGlue = T.word(9, "glued");
+        tl.to(bookTop.el, { y: "+=180", opacity: 0, duration: 0.7, ease: "power2.in" }, tGlue);
+        tl.to(bookBottom.el, { y: "-=180", opacity: 0, duration: 0.7, ease: "power2.in" }, tGlue);
+        tl.fromTo(paperL, { scale: 1 }, { scale: 1.05, duration: 0.3, yoyo: true, repeat: 1 }, tGlue + 0.5);
+
+        // ============================================================ line 10
+        // (TC) back to the desk, held.
+        const t10 = T.start(10) - 0.4;
+        tl.to([bookTop.el, bookBottom.el, cup.el, tub.el], { opacity: 0, duration: 0.3 }, t10);
+        tl.set(gen.words, { opacity: 0 }, t10 + 0.05); // a fresh strip, ready for your turn
+        tl.set(paperL, { x: PAPER_DESK.x, y: PAPER_DESK.y, scale: PAPER_DESK.scale }, t10 + 0.05);
+        tl.set(cup.el, { x: CUP_DESK.x, y: CUP_DESK.y, scale: CUP_DESK.scale, rotation: 0 }, t10 + 0.05);
+        tl.set(tub.el, { x: TUB_DESK.x, y: TUB_DESK.y, scale: TUB_DESK.scale }, t10 + 0.05);
+        tl.set(pencilDesk, { x: PENCIL_DESK.x, y: PENCIL_DESK.y, scale: PENCIL_DESK.scale, rotation: PENCIL_DESK.rot }, t10 + 0.05);
+        setFocus(tl, null, t10, 0.3);
+        tl.to([sheets[0].el, sheets[1].el, sheets[2].el, cup.el, tub.el, pencilDesk, paperL], { opacity: 1, duration: 0.6, stagger: 0.08 }, t10 + 0.3);
+      };
+      KIT.ready(build).then(({ tl }) => {
+        window.__timelines["generation-ledger"] = tl;
+      });
+    </script>
+  </body>
+</html>
