@@ -60,8 +60,8 @@ _Visual: the desk, top-down, empty. A picture book, a grid sheet, a pencil, a
 d10, a cup of counters and a ledger sheet slide into place, one per word as it
 is named._
 
-**USHINI (VO):** That's LLMs Unplugged, a set of free teaching resources from the
-School of Cybernetics at the Australian National University.
+**USHINI (VO):** That's LLMs Unplugged, a set of free teaching resources from
+the School of Cybernetics at the Australian National University.
 
 _Visual: the LLMs Unplugged wordmark in the site's type over the desk, the
 School of Cybernetics line beneath it._
@@ -123,4 +123,5 @@ llmsunplugged.org. Every section of both lessons has its own short video, so you
 can play them in class. Grab the resources, run the activities, and if you'd
 like us to deliver it in person, get in touch.
 
-_Visual: llmsunplugged.org in the site's type over the desk, then the eight video titles as a stacked list, then the Creative Commons mark._
+_Visual: llmsunplugged.org in the site's type over the desk, then the eight
+video titles as a stacked list, then the Creative Commons mark._

@@ -58,8 +58,8 @@ _Visual: a flat d10 face lands beside the strip showing its number; the matching
 face on the strip lights; the word above that block writes onto the paper as the
 second word._
 
-**USHINI (VO):** Now that new word becomes your current word. Find _its_ row, set
-up the ranges, roll again, and write down the result. Keep going.
+**USHINI (VO):** Now that new word becomes your current word. Find _its_ row,
+set up the ranges, roll again, and write down the result. Keep going.
 
 _Visual: the new word lifts from the paper to the grid, its row lights, the
 strip rebuilds for that row, a face lands, a word writes. The loop runs twice
@@ -90,5 +90,5 @@ _Visual: the generated line full frame. Behind it, dimmed, the book's text: the
 line is not in it. Then each pair in the generated line lights its grid cell in
 turn, every one present. Cut to the line alone._
 
-**USHINI (TC):** Pick a starting word and give it a go. See what your model comes
-up with.
+**USHINI (TC):** Pick a starting word and give it a go. See what your model
+comes up with.

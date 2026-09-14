@@ -32,9 +32,9 @@ result spliced in.
 
 ## Script
 
-**USHINI (TC):** This is the one that's all over the news. AI agents: models that
-browse the web, write code, book flights. It sounds like a whole new kind of
-technology. It isn't. It's the loop you've already run, with one rule added.
+**USHINI (TC):** This is the one that's all over the news. AI agents: models
+that browse the web, write code, book flights. It sounds like a whole new kind
+of technology. It isn't. It's the loop you've already run, with one rule added.
 
 **BEN:** An agent is a model that can pause, get something from outside itself,
 and carry on.
@@ -68,9 +68,9 @@ _Visual: the reply's words slide off the phone onto the paper after "the cat
 sat", the full stop follows them, and the booklet page cuts to the full stop's
 entry; a face lands and the pencil moves again._
 
-**USHINI:** Why from the full stop and not from "river"? Because "river" probably
-isn't in your model. It has no entry for it. But it can always continue from a
-full stop.
+**USHINI:** Why from the full stop and not from "river"? Because "river"
+probably isn't in your model. It has no entry for it. But it can always continue
+from a full stop.
 
 _Visual: the booklet's page for r: no entry for "river", the gap where it would
 sit lit. Cut to the full stop's entry, present and lit._
@@ -81,8 +81,8 @@ leave a gap and fill it in later.
 _Visual: the paper: a bracketed gap left after a full stop, the pencil carrying
 on past it; later the reply's words slide into the gap._
 
-**USHINI:** Here's the bit that matters. The model never learned what comes next.
-What it "learned" is when to ask. And the thing that paused it, sent the
+**USHINI:** Here's the bit that matters. The model never learned what comes
+next. What it "learned" is when to ask. And the thing that paused it, sent the
 message, and spliced the answer back in---that was you. You were the harness.
 
 _Visual: the loop again, a flat person icon at its centre. As each stage is

@@ -67,9 +67,9 @@ question.
 _Visual: the paper: the booklet's line so far, above the grid's shorter line
 from the last video, both in pencil._
 
-**USHINI:** Your booklet was trained on a real text---maybe _Frankenstein_, maybe
-_Green Eggs and Ham_. The patterns leak through. Try to guess the book before
-you check the cover.
+**USHINI:** Your booklet was trained on a real text---maybe _Frankenstein_,
+maybe _Green Eggs and Ham_. The patterns leak through. Try to guess the book
+before you check the cover.
 
 _Visual: the covered title card; on the paper a few of the generated words light
 in turn, the tells._
