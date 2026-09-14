@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>LLMs Unplugged — Generation (grid)</title>
+    <link rel="stylesheet" href="kit/kit.css" />
+    <script src="kit/vendor/gsap.min.js"></script>
+    <script src="kit/generated/data.js"></script>
+    <script src="kit/kit.js"></script>
+    <style>
+      html, body { width: 1920px; height: 1080px; }
+    </style>
+  </head>
+  <body>
+    <!-- Generation (grid): ops/video/scripts/generation-grid.md. The grid is
+         already finished (all headers, all tallies drawn at t=0); the beats
+         walk the sampling loop that turns those counts into new text on the
+         paper strip beside it. -->
+    <div id="stage" class="stage" data-aspect="landscape" data-composition-id="generation-grid"
+         data-start="0" data-duration="120.44" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="120.44" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="120.44" data-track-index="1"></audio>
+    </div>
+    <script>
+      const build = (tl, S, T) => {
+        const K = KIT, D = KIT_DATA;
+        const scene = document.getElementById("scene");
+        const A = S.area;
+
+        // ---- the real grid: hop , joey , hop . see joey hop . / vocab hop , joey . see
+        const tokens = K.split(D.grid.tokens), vocab = K.split(D.grid.vocab);
+        const bg = K.bigrams(tokens, vocab);
+        const IDX = { hop: 0, comma: 1, joey: 2, dot: 3, see: 4 };
+
+        const GX = 1110, GY = A.y + 10, CELL = 118, HEAD = 150;
+        const grid = K.grid(scene, bg, { x: GX, y: GY, cell: CELL, head: HEAD });
+        const cam = K.camera(grid.el, S);
+        // the grid is finished: every header and every tally is already on the page
+        gsap.set(grid.cells.flat().flatMap((c) => c.strokes), { strokeDashoffset: 0 });
+        // the "next →"/"current ↓" reading hints (kit.js grid()) sit close enough
+        // to row/col 0's header that a short word ("hop") collides with them at
+        // this grid's size; this video doesn't need the reading-direction hint
+        // (training-grid teaches that), so it's hidden rather than resized.
+        gsap.set(grid.svg.querySelector("g.ui"), { opacity: 0 });
+        const rowHeadBox = (r) => ({ x: GX + HEAD - 22, y: GY + HEAD + r * CELL + CELL / 2 });
+
+        // ---- the paper strip beside it: the text as it is generated, and (line
+        // 7) a second line for the loop demonstration
+        const PAPER_X = A.x, PAPER_Y = A.y;
+        const paper = K.paper(scene, { x: PAPER_X, y: PAPER_Y, w: 980, h: 110, lines: 2 });
+        const mainLine = K.pencilLine(paper.el, ["see", "joey", ",", "hop", ".", "see"], { x: 30, y: 22, size: 58 });
+        const loopLine = K.pencilLine(paper.el, [",", "joey", ",", "joey", "hop"], { x: 30, y: 138, size: 50 });
+        // a pencil resting beside the paper
+        const pencilL = K.layer(scene, PAPER_X + 40, PAPER_Y + 240);
+        const pencilSvg = K.svg("svg", { width: 480, height: 32, viewBox: "0 0 480 32" }, pencilL);
+        K.svg("polygon", { points: "0 16 28 3 28 29", fill: "#e9dcc5" }, pencilSvg);
+        K.svg("polygon", { points: "0 16 9 12 9 20", fill: "#1a1a1a" }, pencilSvg);
+        K.svg("rect", { x: 28, y: 3, width: 420, height: 26, fill: "var(--gold)" }, pencilSvg);
+        K.svg("rect", { x: 448, y: 3, width: 32, height: 26, rx: 5, fill: "#d98c8c" }, pencilSvg);
+        gsap.set(pencilL, { rotation: -5, transformOrigin: "0 50%", opacity: 0.4 });
+
+        // ---- the dice strip: one live object, rebuilt (crossfaded) per row
+        const STRIP_X = A.x, STRIP_Y = 300;
+        const stripOpts = { x: STRIP_X, y: STRIP_Y, face: 82, gap: 6, labelSize: 36, pad: 16 };
+        const stripFor = (row) => K.strip(scene, K.diceBands(K.rowOptions(bg, row)), stripOpts);
+        let curStrip = stripFor(IDX.see);
+        gsap.set(curStrip.el, { opacity: 0 });
+        const rebuildStrip = (row) => {
+          const next = stripFor(row);
+          gsap.set(next.el, { opacity: 0 });
+          return next;
+        };
+
+        // ---- the die
+        const die = K.die(scene, { x: STRIP_X + 906 + 10, y: STRIP_Y + 30, size: 120, face: 7 });
+        gsap.set(die.el, { opacity: 0 });
+
+        // ---- a small "row slides out" flourish: the word above its strokes,
+        // recounting into a total, right before the real strip grows in
+        const flourish = K.layer(scene, STRIP_X, STRIP_Y - 92);
+        const fSvg = K.svg("svg", { width: 320, height: 80, viewBox: "0 0 320 80" }, flourish);
+        K.svg("text", { x: 0, y: 30, "font-size": 34, "font-weight": 700, fill: K.tokenColour("joey"), text: "joey" }, fSvg);
+        const seeJoeyCount = bg.counts[IDX.see][IDX.joey];
+        const fStrokes = K.prepDraw(K.tally(fSvg, seeJoeyCount, 100, 8, 32, 10));
+        const fTotal = K.svg("text", { x: 100, y: 66, "font-size": 26, "font-weight": 600, fill: "var(--ink)", text: `= ${seeJoeyCount}` }, fSvg);
+        gsap.set(fTotal, { opacity: 0 });
+        gsap.set(flourish, { opacity: 0 });
+
+        // ---- the spoken cat/dog example: a labelled inset, not real grid data.
+        // diceBands scales faces to 10^digits(total), which breaks a total of
+        // ten into a 100-face split — wrong for this ten-sided-die demo, so the
+        // two bands are hand-built to match the script's "one to six / seven to
+        // ten" instead of routed through K.diceBands. (kit.js gap; noted in report.)
+        const CD_Y = STRIP_Y + 180 + 40;
+        const catDogGroup = K.layer(scene, 0, 0);
+        const cdLabel = K.el("div", { class: "label", text: "e.g. — a row with “cat” (6) and “dog” (4)", style: { left: `${STRIP_X}px`, top: `${CD_Y - 34}px`, fontSize: "26px" } }, catDogGroup);
+        gsap.set(cdLabel, { opacity: 0 });
+        const cdOpts = { x: STRIP_X, y: CD_Y, face: 56, gap: 5, labelSize: 26, pad: 12 };
+        const v1 = K.strip(catDogGroup, [{ word: "cat", count: 6, from: 0, to: 5 }, { word: "dog", count: 4, from: 6, to: 9 }], cdOpts);
+        const v2 = K.strip(catDogGroup, [{ word: "cat", count: 7, from: 0, to: 6 }, { word: "dog", count: 4, from: 7, to: 9 }], cdOpts);
+        gsap.set(v2.el, { opacity: 0 });
+        gsap.set(catDogGroup, { opacity: 0 });
+
+        // ---- helpers -------------------------------------------------------
+        // fly a copy of a written word to a row's header, to sell "that word is
+        // now the row we look up"
+        const sceneBox = scene.getBoundingClientRect();
+        const liftToRow = (span, r, t, dur = 0.5) => {
+          const rect = span.getBoundingClientRect();
+          const fromX = rect.left - sceneBox.left, fromY = rect.top - sceneBox.top;
+          const clone = K.el("div", { class: "pencil", text: span.textContent, style: { position: "absolute", left: "0px", top: "0px", fontSize: "48px" } }, scene);
+          gsap.set(clone, { x: fromX, y: fromY, opacity: 0 });
+          const box = rowHeadBox(r);
+          tl.to(clone, { opacity: 1, duration: 0.12 }, t);
+          tl.to(clone, { x: box.x - 36, y: box.y - 26, scale: 0.65, duration: dur, ease: "power2.inOut" }, t);
+          tl.to(clone, { opacity: 0, duration: 0.18 }, t + dur - 0.1);
+          tl.to(grid.rowHead[r], { scale: 1.3, duration: 0.2, yoyo: true, repeat: 1, transformOrigin: "50% 50%" }, t + dur - 0.15);
+        };
+        const lightRow = (r, t, dur = 0.4, hold = 0.9) => {
+          tl.to(grid.rowBands[r], { opacity: 1, duration: dur * 0.5 }, t);
+          tl.to(grid.rowBands[r], { opacity: 0, duration: dur * 0.5 }, t + hold);
+        };
+
+        // =====================================================================
+        // line 0 (TC): the desk, held — the finished grid, nothing else yet
+        K.appear(tl, grid.el, 0.2);
+
+        // =====================================================================
+        // line 1: pick "see"; it writes; its row lights; camera pushes in
+        K.appear(tl, [paper.el, pencilL], T.word(1, "Pick") - 0.3, { stagger: 0.1 });
+        const tSee = T.word(1, "down", 1);
+        K.write(tl, mainLine.words[0], tSee);
+        tl.to(grid.rowBands[IDX.see], { opacity: 1, duration: 0.3 }, tSee + 0.3);
+        // a modest push (not a hard zoom): "see" is the bottom row, so a big
+        // scale-up would shove the column headers off the top of the canvas
+        cam.to(tl, { px: grid.width / 2, py: HEAD + IDX.see * CELL + CELL / 2, s: 1.05, sx: 1455, sy: 735 }, tSee + 0.5, 0.7);
+
+        // =====================================================================
+        // line 2: find the row, add the tallies, assign dice numbers
+        tl.to(grid.rowBands[IDX.see], { opacity: 0, duration: 0.4 }, T.word(2, "Add") - 0.1);
+        cam.reset(tl, T.word(2, "Add"), 0.6);
+        K.appear(tl, flourish, T.word(2, "up,"), { y: 12 });
+        K.drawOn(tl, fStrokes, T.word(2, "dice"), 0.3, 0.1);
+        tl.to(fTotal, { opacity: 1, duration: 0.2 }, T.word(2, "dice") + 0.3);
+        const tNumbers = T.word(2, "numbers:");
+        K.vanish(tl, flourish, tNumbers);
+        tl.set(curStrip.el, { opacity: 1 }, tNumbers + 0.2);
+        curStrip.shade(tl, tNumbers + 0.2, 0.6, 0.1);
+        // the spoken cat/dog example, beside the real one
+        K.appear(tl, catDogGroup, T.word(2, "cat", 1) - 0.2, { y: 10 });
+        tl.to(cdLabel, { opacity: 1, duration: 0.3 }, T.word(2, "cat", 1) - 0.1);
+        v1.shade(tl, T.word(2, "faces"), 0.9, 0.15);
+
+        // =====================================================================
+        // line 3: the strip alone — one more stroke widens cat's block by a face
+        const tWiden = T.word(3, "tallies,");
+        tl.to(v1.el, { opacity: 0, duration: 0.3 }, tWiden);
+        tl.set(v2.el, { opacity: 1 }, tWiden);
+        v2.shade(tl, tWiden + 0.05, 0.5, 0.1);
+        K.vanish(tl, catDogGroup, T.start(4) - 0.3);
+
+        // =====================================================================
+        // line 4: roll — the die lands, the matching face lights, the word writes
+        const tRoll = T.word(4, "Roll");
+        K.land(tl, die, 7, tRoll);
+        tl.to(die.el, { opacity: 1, duration: 0.01 }, tRoll);
+        curStrip.light(tl, 7, T.word(4, "land"));
+        K.write(tl, mainLine.words[1], T.word(4, "write"));
+        K.vanish(tl, die.el, T.word(4, "That's") + 0.3);
+
+        // =====================================================================
+        // line 5: the loop — joey becomes current, then three more rows fast
+        K.vanish(tl, curStrip.el, T.word(5, "becomes") - 0.1);
+        liftToRow(mainLine.words[1], IDX.joey, T.word(5, "becomes"));
+        lightRow(IDX.joey, T.word(5, "becomes") + 0.3, 0.3, 1.6);
+        curStrip = rebuildStrip(IDX.joey);
+        const tFind = T.word(5, "Find");
+        tl.set(curStrip.el, { opacity: 1 }, tFind);
+        curStrip.shade(tl, tFind, 0.4, 0.08);
+        const tRoll2 = T.word(5, "roll");
+        tl.set(die.el, { opacity: 1 }, tRoll2);
+        K.land(tl, die, 7, tRoll2);
+        curStrip.light(tl, 7, tRoll2);
+        K.write(tl, mainLine.words[2], T.word(5, "write"));
+        K.vanish(tl, curStrip.el, T.word(5, "write") + 0.5);
+        K.vanish(tl, die.el, T.word(5, "write") + 0.5);
+
+        // the loop runs twice more, at double speed, to complete the sentence
+        const tFast = T.word(5, "Keep");
+        const fastStep = (row, face, wordIdx, t) => {
+          liftToRow(mainLine.words[wordIdx - 1], row, t, 0.3);
+          lightRow(row, t + 0.15, 0.2, 0.35);
+          const s = rebuildStrip(row);
+          tl.set(s.el, { opacity: 1 }, t + 0.15);
+          s.shade(tl, t + 0.15, 0.25, 0.05);
+          tl.set(die.el, { opacity: 1 }, t + 0.35);
+          K.land(tl, die, face, t + 0.35);
+          s.light(tl, face, t + 0.35);
+          K.write(tl, mainLine.words[wordIdx], t + 0.5);
+          K.vanish(tl, s.el, t + 0.65);
+          K.vanish(tl, die.el, t + 0.65);
+        };
+        fastStep(IDX.comma, 2, 3, tFast); // "," → hop
+        fastStep(IDX.hop, 6, 4, tFast + 0.75); // hop → "."
+        // "." → see is a dead giveaway (single option), no roll shown
+        lightRow(IDX.dot, tFast + 1.5, 0.2, 0.3);
+        K.write(tl, mainLine.words[5], tFast + 1.65);
+
+        // =====================================================================
+        // line 6: dead end — a different vocabulary makes the point ("the cat sat")
+        const insetTokens = K.split("the cat sat");
+        const bg2 = K.bigrams(insetTokens);
+        const IX2 = { the: 0, cat: 1, sat: 2 };
+        const IGX = A.x, IGY = 310, ICELL = 80, IHEAD = 100;
+        const insetGrid = K.grid(scene, bg2, { x: IGX, y: IGY, cell: ICELL, head: IHEAD });
+        gsap.set(insetGrid.cells.flat().flatMap((c) => c.strokes), { strokeDashoffset: 0 });
+        gsap.set(insetGrid.svg.querySelector("g.ui"), { opacity: 0 });
+        gsap.set(insetGrid.el, { opacity: 0 });
+        const insetLabel = K.el("div", { class: "label", text: "e.g. — a different vocabulary, “the cat sat”", style: { left: `${IGX}px`, top: `${IGY - 34}px`, fontSize: "26px" } }, scene);
+        gsap.set(insetLabel, { opacity: 0 });
+        const insetPaper = K.paper(scene, { x: IGX, y: IGY + IHEAD + 3 * ICELL + 30, w: 340, h: 70, lines: 2 });
+        gsap.set(insetPaper.el, { opacity: 0 });
+        const insetLine1 = K.pencilLine(insetPaper.el, ["the", "cat", "sat"], { x: 16, y: 12, size: 40 });
+        const insetLine2 = K.pencilLine(insetPaper.el, ["cat"], { x: 16, y: 66, size: 36 });
+
+        // main scene rests while the inset takes over
+        K.vanish(tl, [grid.el, paper.el, pencilL], T.start(6) - 0.1);
+        const tIn = T.word(6, "Two");
+        K.appear(tl, [insetGrid.el, insetLabel, insetPaper.el], tIn, { y: 10, stagger: 0.08 });
+        K.write(tl, insetLine1.words[0], tIn + 0.5);
+        tl.to(insetGrid.rowBands[IX2.the], { opacity: 1, duration: 0.2 }, tIn + 0.6);
+        tl.to(insetGrid.rowBands[IX2.the], { opacity: 0, duration: 0.3 }, tIn + 0.95);
+        K.write(tl, insetLine1.words[1], tIn + 1.0);
+        tl.to(insetGrid.rowBands[IX2.cat], { opacity: 1, duration: 0.2 }, tIn + 1.1);
+        tl.to(insetGrid.rowBands[IX2.cat], { opacity: 0, duration: 0.3 }, tIn + 1.45);
+        K.write(tl, insetLine1.words[2], tIn + 1.5);
+        // "sat" is now current — its row is empty. Light it and hold.
+        const tRow = T.word(6, "row,");
+        tl.to(insetGrid.rowBands[IX2.sat], { opacity: 1, duration: 0.3 }, tRow);
+        tl.to(insetGrid.rowBands[IX2.sat], { opacity: 0, duration: 0.4 }, T.word(6, "end.") + 0.3);
+        // the line ends; a new starting word writes on the line below
+        K.write(tl, insetLine2.words[0], T.word(6, "Pick"));
+        K.vanish(tl, [insetGrid.el, insetLabel, insetPaper.el], T.end(6) - 0.2);
+
+        // =====================================================================
+        // line 7: the loop — "," and "joey" bounce; break out with the other word
+        K.appear(tl, [grid.el, paper.el, pencilL], T.start(7), { y: 0, stagger: 0 });
+        const commaStrip = stripFor(IDX.comma);
+        gsap.set(commaStrip.el, { opacity: 0 });
+        const tComma1 = T.word(7, "comma", 1);
+        tl.set(commaStrip.el, { opacity: 1 }, tComma1 - 0.3);
+        commaStrip.shade(tl, tComma1 - 0.3, 0.35, 0.08);
+        tl.to(grid.rowBands[IDX.comma], { opacity: 1, duration: 0.25 }, tComma1);
+        K.write(tl, loopLine.words[0], tComma1);
+        const tJoey1 = T.word(7, "joey", 1);
+        tl.to(grid.rowBands[IDX.comma], { opacity: 0, duration: 0.25 }, tJoey1 - 0.1);
+        tl.to(grid.rowBands[IDX.joey], { opacity: 1, duration: 0.25 }, tJoey1);
+        commaStrip.light(tl, 7, tJoey1);
+        K.write(tl, loopLine.words[1], tJoey1);
+        const tComma2 = T.word(7, "comma", 2);
+        tl.to(grid.rowBands[IDX.joey], { opacity: 0, duration: 0.25 }, tComma2 - 0.1);
+        tl.to(grid.rowBands[IDX.comma], { opacity: 1, duration: 0.25 }, tComma2);
+        K.write(tl, loopLine.words[2], tComma2);
+        const tJoey2 = T.word(7, "joey", 2);
+        tl.to(grid.rowBands[IDX.comma], { opacity: 0, duration: 0.25 }, tJoey2 - 0.1);
+        tl.to(grid.rowBands[IDX.joey], { opacity: 1, duration: 0.25 }, tJoey2);
+        commaStrip.light(tl, 7, tJoey2);
+        K.write(tl, loopLine.words[3], tJoey2);
+        // break out: roll the other block's word (hop) instead
+        const tBreak = T.word(7, "next") + 0.3;
+        tl.to(grid.rowBands[IDX.joey], { opacity: 0, duration: 0.3 }, tBreak - 0.3);
+        commaStrip.light(tl, 2, tBreak);
+        K.write(tl, loopLine.words[4], tBreak);
+        tl.to(grid.rowBands[IDX.comma], { opacity: 1, duration: 0.25 }, tBreak);
+        tl.to(grid.rowBands[IDX.comma], { opacity: 0, duration: 0.4 }, tBreak + 0.9);
+        K.vanish(tl, commaStrip.el, tBreak + 1.2);
+
+        // =====================================================================
+        // line 8: read it back — full frame, behind it the book it wasn't in,
+        // then every pair of the generated line lights its grid cell
+        K.vanish(tl, [paper.el, pencilL, grid.el], T.start(8) - 0.15);
+        const bigLine = K.el("div", { text: D.grid.generation, style: { position: "absolute", left: "50%", top: `${A.y + 140}px`, transform: "translateX(-50%)", whiteSpace: "nowrap", fontSize: "108px", fontFamily: "var(--font-tok)", fontStyle: "italic", color: "var(--text)" } }, scene);
+        gsap.set(bigLine, { opacity: 0 });
+        const bookBg = K.bookPage(scene, ["Hop, Joey, hop.", "See Joey hop."], { x: A.x, y: A.y + 420, w: 900, h: 260, size: 56, pad: 44 });
+        gsap.set(bookBg.el, { opacity: 0 });
+        const tNow = T.word(8, "Now");
+        tl.to(bigLine, { opacity: 1, duration: 0.5 }, tNow);
+        tl.to(bookBg.el, { opacity: 0.35, duration: 0.5 }, tNow + 0.3);
+
+        // "the same next-word sampling loop": bring the grid back and light
+        // each consecutive pair's cell in turn — all five are on the sheet
+        const tCells = T.word(8, "trick.");
+        const tCellsEnd = T.word(8, "included:");
+        // shrunk and moved clear of the big line's row (its bounding box, not just
+        // its ink, spans most of the stage width) so no header text can collide
+        tl.set(grid.el, { x: 1265, y: 360, scale: 0.5 }, tCells - 0.01);
+        tl.to(grid.el, { opacity: 1, duration: 0.3 }, tCells);
+        const genPairs = [
+          [IDX.see, IDX.joey],
+          [IDX.joey, IDX.comma],
+          [IDX.comma, IDX.hop],
+          [IDX.hop, IDX.dot],
+          [IDX.dot, IDX.see],
+        ];
+        const cellStep = (tCellsEnd - tCells - 0.3) / genPairs.length;
+        genPairs.forEach(([r, c], k) => {
+          const t = tCells + 0.3 + k * cellStep;
+          tl.to([grid.rowBands[r], grid.colBands[c]], { opacity: 1, duration: cellStep * 0.35 }, t);
+          tl.to([grid.rowBands[r], grid.colBands[c]], { opacity: 0, duration: cellStep * 0.35 }, t + cellStep * 0.6);
+        });
+        // cut to the line alone
+        tl.set([grid.el, bookBg.el], { opacity: 0 }, T.word(8, "one"));
+
+        // =====================================================================
+        // line 9 (TC): no new visual — hold the line alone, calmly
+      };
+      KIT.ready(build).then(({ tl }) => {
+        window.__timelines["generation-grid"] = tl;
+      });
+    </script>
+  </body>
+</html>
