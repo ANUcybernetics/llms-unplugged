@@ -13,7 +13,7 @@
     ops/video/video.py all [--final]             # check + render every slug
 
 A composition's length is the voice track's: every command first rewrites the
-`data-duration` attributes in index.html (and portrait.html) from
+`data-duration` attributes in index.html (and compositions/portrait.html) from
 timing.json, so re-recording a line and re-running align.py needs no edit
 here. The bucket credentials are the ones ops/bucket-sync.py uses.
 """
@@ -66,7 +66,7 @@ def timing(slug: str) -> dict:
 def sync_duration(slug: str) -> float:
     """Write timing.json's duration (rounded up to 2 dp) into every data-duration."""
     dur = math.ceil(timing(slug)["duration"] * 100) / 100
-    for name in ("index.html", "portrait.html"):
+    for name in ("index.html", "compositions/portrait.html"):
         p = project(slug) / name
         if not p.is_file():
             continue
@@ -110,13 +110,13 @@ def render(slug: str, final: bool = False) -> None:
             "--output",
             str(out / f"{slug}.mp4"),
         )
-        if (project(slug) / "portrait.html").is_file():
+        if (project(slug) / "compositions" / "portrait.html").is_file():
             npm(
                 slug,
                 "render",
                 "--",
                 "--composition",
-                "portrait.html",
+                "compositions/portrait.html",
                 "--resolution",
                 "portrait-4k",
                 "--fps",
@@ -140,13 +140,13 @@ def render(slug: str, final: bool = False) -> None:
             "--output",
             str(out / f"{slug}-draft.mp4"),
         )
-        if (project(slug) / "portrait.html").is_file():
+        if (project(slug) / "compositions" / "portrait.html").is_file():
             npm(
                 slug,
                 "render",
                 "--",
                 "--composition",
-                "portrait.html",
+                "compositions/portrait.html",
                 "--quality",
                 "draft",
                 "--fps",
