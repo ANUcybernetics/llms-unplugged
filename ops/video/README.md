@@ -58,8 +58,10 @@ What this means for the scripts:
   Phase 1 renders them as voice-over anyway; phase 2 is where they get a face.
   Roughly the opening hook and the closing hand-off of each video, and little
   else.
-- each _Visual:_ direction names a real artefact (a deck widget, a sheet, a
-  booklet page) so the composition can be built from it rather than invented.
+- each _Visual:_ direction names the real artefact the participant will hold
+  (the grid, a booklet page, a ledger sheet, the cup) and describes what the
+  viewer sees happen to it. It does not name a deck widget: the deck's
+  components are not the video's building blocks (see "Visuals").
 
 Re-cutting: a script, its composition and its VO takes are versioned together.
 The script and composition live here; VO takes, footage and renders are binaries
@@ -125,25 +127,47 @@ landscape render, so the Overview's beats must not depend on side-by-side
 placement. The phase-2 footage is shot so the to-camera lines survive a centre
 crop; the shoot brief is in Ben's notes.
 
-## Composition sources
+## Visuals
 
-What each phase-1 video is built from. All of it exists in the repo already.
+The videos are not the slide decks with a voice-over. In the room the decks
+work because a presenter points, traces a row with a finger, holds up the
+sheet, waves at the cup. None of that is available here, so the composition
+has to do the pointing itself, and the visual language is free to be
+reimagined for that. The deck components are a source of truth for _what_ is
+shown, not _how_:
 
-- **Overview**: the grid and ledger walkthrough widgets (below), the two decks'
-  hero backgrounds, the train → generate loop, the scaling-up section's
-  `GridZoom` and `ModelScaleBars`.
-- **Training and Generation (grid)**: `StaticGrid` and `StaticGeneration` with
-  the deck's `EXAMPLE_*` data (`website/src/decks/examples.ts`), so the video's
-  grid is the slides' grid.
-- **Pre-trained generation**: `StaticPretrainedGeneration` and a rendered
-  booklet page (diamonds, thresholds) from the CLI.
-- **Agentic AI**: `StaticPretrainedGeneration` for the roll, a phone-message
-  overlay for the tool call, the deck's tool-use backgrounds.
-- **Ledger videos**: `LedgerSheet`, `LedgerRow`, `LedgerCup`, `LedgerPage`,
-  `LedgerTraining`, `LedgerSheets` with the Dick and Jane rows the deck uses
-  (`ROW_SEE`, `ROW_IT`, `ROW_GO`, `ROW_UP`, `ROW_COMMA`, `ROW_DOWN`,
-  `ROW_COMES`) and the five `ROW_THE_*` rows for the finale. Deck rows must be
-  the real sheets' rows; regenerate the set and re-read the constants.
+- **same example, same objects.** The video shows the see spot run grid, the
+  Dick and Jane rows, the real booklet page, so the thing on screen is the
+  thing in the participant's hands. Take the data from the decks
+  (`website/src/decks/examples.ts`, the `ROW_*` constants, which must match the
+  real sheets) and the site's palette and fonts, and build the visuals fresh.
+- **motion replaces gesture.** Where the presenter would point, the frame
+  moves: the camera pushes in on the cell, the rest of the grid dims, the pair
+  of words lifts out of the sentence and drops into the cell as a tally. Say
+  what the viewer is looking at and make the frame agree.
+- **the participant's view.** Prefer the seat at the table (sheet, pencil, cup,
+  booklet, seen from above) over the presenter's view of a slide. The section
+  videos hand off to a physical activity; previewing the physical action is
+  the hand-off.
+- **one example followed all the way through**, as the decks already do.
+
+Renderable material that does exist in the repo and is worth reusing as
+texture rather than layout: the CLI-rendered booklet pages and ledger sheets,
+the deck backgrounds, the fonts and palette.
+
+## Captions
+
+Every video has open captions baked into the composition, for accessibility
+(a classroom TV has no caption toggle) and because the tone rules already make
+each script line a caption: one thing on screen per line. The caption is the
+script line, shown whole for the duration of that line, in the site's type and
+palette, in a caption region the layout reserves so it never covers the grid
+or sheet. No speaker marking, no colour by voice, no word-by-word highlighting.
+
+Timing comes from the VO takes by forced alignment against the script text, so
+re-recording a line re-times its caption with no hand work. The same timing
+data writes a WebVTT sidecar for YouTube and the site's embeds, so closed
+captions exist alongside the open ones.
 
 ## Phase-2 shoot questions
 

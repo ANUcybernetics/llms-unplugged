@@ -4,7 +4,7 @@ title: Build the eight explainer videos once the beat sheets are reviewed
 status: To Do
 assignee: []
 created_date: '2026-09-14 04:14'
-updated_date: '2026-09-14 08:35'
+updated_date: '2026-09-14 08:40'
 labels:
   - video
 dependencies: []
@@ -25,4 +25,6 @@ The series plan, beat sheets and scripts for the eight LLMs Unplugged explainer 
 - [ ] #4 Re-editing a script line and re-rendering that video needs no manual steps beyond re-recording the line
 - [ ] #5 Renders and VO takes live in the bucket under video/<slug>/ and are not committed
 - [ ] #6 The Overview composition also renders a 9:16 variant from an aspect parameter (restacked layout, not a crop); the other seven are 16:9 only
+- [ ] #7 Every composition bakes in open captions (the script line, whole, in the site's type, in a reserved caption region) timed by forced alignment of the VO take against the script, and writes a WebVTT sidecar from the same timing
+- [ ] #8 Compositions build their visuals fresh from the deck data and site styles rather than reusing deck widgets as layout; the frame does the pointing a presenter would do in the room
 <!-- AC:END -->
