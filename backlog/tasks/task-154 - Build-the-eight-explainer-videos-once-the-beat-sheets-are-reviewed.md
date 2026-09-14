@@ -1,10 +1,10 @@
 ---
 id: TASK-154
 title: Build the eight explainer videos once the beat sheets are reviewed
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-09-14 04:14'
-updated_date: '2026-09-14 11:11'
+updated_date: '2026-09-14 21:03'
 labels:
   - video
 dependencies:
@@ -21,16 +21,16 @@ Build the eight LLMs Unplugged explainer videos (Overview, four sections of the 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [x] #1 Ben's beat-sheet comments are applied to ops/video/scripts/*.md and committed before any composition is started
-- [ ] #2 Each of the eight videos has a composition in ops/video/<slug>/ that passes npm run check and renders from the current script and the VO takes
-- [ ] #3 Re-editing a script line and re-rendering that video needs no manual steps beyond re-recording the line
+- [x] #2 Each of the eight videos has a composition in ops/video/<slug>/ that passes npm run check and renders from the current script and the VO takes
+- [x] #3 Re-editing a script line and re-rendering that video needs no manual steps beyond re-recording the line
 - [ ] #4 Renders and VO takes live in the bucket under video/<slug>/ and are not committed
-- [ ] #5 The Overview composition also renders a 9:16 variant from an aspect parameter (restacked layout, not a crop); the other seven are 16:9 only
-- [ ] #6 Every composition bakes in open captions (the script line, whole, in the site's type, in a reserved caption region) timed by forced alignment of the VO take against the script, and writes a WebVTT sidecar from the same timing
-- [ ] #7 Compositions build their visuals fresh from the deck data and site styles rather than reusing deck widgets as layout; the frame does the pointing a presenter would do in the room
+- [x] #5 The Overview composition also renders a 9:16 variant from an aspect parameter (restacked layout, not a crop); the other seven are 16:9 only
+- [x] #6 Every composition bakes in open captions (the script line, whole, in the site's type, in a reserved caption region) timed by forced alignment of the VO take against the script, and writes a WebVTT sidecar from the same timing
+- [x] #7 Compositions build their visuals fresh from the deck data and site styles rather than reusing deck widgets as layout; the frame does the pointing a presenter would do in the room
 - [ ] #8 Final renders are 4K at 50 fps (landscape-4k, portrait-4k for the Overview variant); drafts are 1080p
-- [ ] #9 A shared composition kit (stage, palette and type tokens, desk, tiles, grid, strip, cup, counters, die, caption band, aspect parameter) lives under ops/video/ and every composition uses it; a motion-test reel exercising each component is rendered for Ben before the eight videos are built
+- [x] #9 A shared composition kit (stage, palette and type tokens, desk, tiles, grid, strip, cup, counters, die, caption band, aspect parameter) lives under ops/video/ and every composition uses it; a motion-test reel exercising each component is rendered for Ben before the eight videos are built
 - [ ] #10 training-grid is built first from the kit and its structure is reused by the other seven; Ben reviews the rendered drafts of all eight, not a gate on the first
-- [ ] #11 Every composition renders today from a scratch voice track (TTS or a rough read) with the same alignment path the real VO will use, so the real takes drop in with no composition changes
+- [x] #11 Every composition renders today from a scratch voice track (TTS or a rough read) with the same alignment path the real VO will use, so the real takes drop in with no composition changes
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -45,3 +45,11 @@ Build the eight LLMs Unplugged explainer videos (Overview, four sections of the 
 7. Captions: the band reads the timing JSON; VTT written beside each render.
 8. Final: 4K50 (landscape-4k, portrait-4k for the Overview) once real VO lands; upload renders and takes to the bucket under video/<slug>/.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+2026-09-14: kit (ops/video/_kit, README = the contract), pipeline (build-data.py, voice.py scratch edge-tts, align.py faster-whisper, video.py check/render/stills/upload), motion-test reel and training-grid landed on scratch voices; the other seven compositions are being built to the same template. Ledger deck/pack/lesson page changes split to TASK-156 (after the 2026-09-15 workshop); videos take their ledger data straight from the pack recipes. Alignment on the scratch track: match ratio 0.96–0.99, line-start error mean 0.3–0.4 s (faster-whisper word-boundary jitter); WhisperX is the upgrade path if the real takes need tighter word timing.
+
+2026-09-15: all eight compositions built and checked on the scratch voices (drafts at out/video/<slug>/<slug>-draft.mp4, contact sheets under stills/; overview also renders compositions/portrait.html). Remaining: Ben reviews the drafts (AC10); record the real VO, drop each take in as out/video/<slug>/voice.wav, align.py, video.py render --final (AC8), video.py upload (AC4). Known gaps for the polish pass: build-data.py renders the Paterson booklet pages at 150 dpi, which is soft at 4K (raise to 300 for snowy-river); the agentic-ai phone body is drawn too dark against the desk; alignment jitter ~0.3 s on the scratch track; the overview's line 10 tail has collapsed word times in the scratch alignment so its three vignettes pace by fractions of the line.
+<!-- SECTION:NOTES:END -->

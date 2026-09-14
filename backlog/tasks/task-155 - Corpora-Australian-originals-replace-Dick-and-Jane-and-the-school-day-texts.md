@@ -1,10 +1,10 @@
 ---
 id: TASK-155
 title: 'Corpora: Australian originals replace Dick and Jane and the school-day texts'
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-09-14 11:03'
-updated_date: '2026-09-14 11:11'
+updated_date: '2026-09-14 11:34'
 labels:
   - data
   - ledger
@@ -42,3 +42,9 @@ The ledger walkthrough book (Fun with Dick and Jane) has no cultural pull for an
 5. Booklet: fetch an out-of-copyright Australian text (Paterson, Gutenberg) into data/, build the booklet with the CLI, confirm a diamond entry, set EXAMPLE_TEXT/PRETRAINED_* from it.
 6. Scripts: update the grid, pre-trained, agentic and ledger scripts' spoken examples and Visual: lines to the new texts.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Grid half landed 2026-09-14 (commits 7e98456c, ebfa3e14, 2fdee25b): Paterson data file, joey example, pre-trained walk golden→grass→grown→hollow→;, video scripts. The ledger half (Makefile, ledger deck, lesson page, docs, git rm of school-day texts) is split out to its own task because the ledger deck runs in a workshop on 2026-09-15; the videos build their ledger data from the same recipes via ops/video/build-data.py meanwhile.
+<!-- SECTION:NOTES:END -->
