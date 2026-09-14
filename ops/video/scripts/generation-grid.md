@@ -25,7 +25,7 @@ next word according to learned counts.
 
 ## Script
 
-**EDDIE (TC):** You've got a grid full of tally marks. Right now, they're just
+**USHINI (TC):** You've got a grid full of tally marks. Right now, they're just
 counts. In about sixty seconds, they're going to write a sentence that has never
 existed before.
 
@@ -34,7 +34,7 @@ That's the beginning of your generated text.
 
 _Visual: StaticGeneration, a word selected, its row highlighted in the grid._
 
-**EDDIE (VO):** Find that word's row and look at the tally marks. Add them up,
+**USHINI (VO):** Find that word's row and look at the tally marks. Add them up,
 then assign dice numbers: if "cat" has six tallies and "dog" has four, that's
 faces one to six for cat, seven to ten for dog.
 
@@ -47,14 +47,14 @@ matching word and write it down. That's your second word.
 _Visual: StaticGeneration stepping forward---die landing, next word appearing,
 the current word shifting._
 
-**EDDIE (VO):** Now that new word becomes your current word. Find _its_ row, set
+**USHINI (VO):** Now that new word becomes your current word. Find _its_ row, set
 up the ranges, roll again, and write down the result. Keep going.
 
 **BEN:** Two things you might hit. If your current word doesn't have a row---it
 was never the first word of a pair---that's a dead end. Pick a new starting word
 and carry on.
 
-**EDDIE:** Or you might bounce between the same two words: comma, spot, comma,
+**USHINI:** Or you might bounce between the same two words: comma, spot, comma,
 spot. Small models loop a lot, so break out by picking a different valid next
 word. Real LLMs do it less because they're bigger, but if you've ever seen
 ChatGPT repeat itself, that's the same thing at scale.
@@ -67,5 +67,5 @@ new---but it sounds like it could have been, because it follows the same
 patterns. And that's no trick. It's how every large language model works, from
 ChatGPT to Claude: one word at a time, from learned counts.
 
-**EDDIE (TC):** Pick a starting word and give it a go. See what your model comes
+**USHINI (TC):** Pick a starting word and give it a go. See what your model comes
 up with.

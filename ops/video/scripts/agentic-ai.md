@@ -32,7 +32,7 @@ result spliced in.
 
 ## Script
 
-**EDDIE (TC):** This is the one that's all over the news. AI agents: models that
+**USHINI (TC):** This is the one that's all over the news. AI agents: models that
 browse the web, write code, book flights. It sounds like a whole new kind of
 technology. It isn't. It's the loop you've already run, with one rule added.
 
@@ -46,7 +46,7 @@ reply in, generation continues._
 rolling for each next word. The moment you roll a punctuation token---a full
 stop, a comma---stop. That's a tool call.
 
-**EDDIE (VO):** The tool is a text message. Send "What comes next?" and the
+**USHINI (VO):** The tool is a text message. Send "What comes next?" and the
 sentence so far---everything since the last full stop---to three friends or
 group chats. Say your text is "the cat sat" and you've just rolled a full stop.
 You text: _What comes next? "the cat sat…"_
@@ -61,14 +61,14 @@ generating, from the full stop.
 _Visual: StaticPretrainedGeneration resuming from "."; the spliced text reads
 "the cat sat down by the river."_
 
-**EDDIE:** Why from the full stop and not from "river"? Because "river" probably
+**USHINI:** Why from the full stop and not from "river"? Because "river" probably
 isn't in your model. It has no entry for it. But it can always continue from a
 full stop.
 
 **BEN:** Replies take time. If nothing's landed by your next punctuation token,
 leave a gap and fill it in later.
 
-**EDDIE:** Here's the bit that matters. The model never learned what comes next.
+**USHINI:** Here's the bit that matters. The model never learned what comes next.
 What it "learned" is when to ask. And the thing that paused it, sent the
 message, and spliced the answer back in---that was you. You were the harness.
 
@@ -76,4 +76,4 @@ message, and spliced the answer back in---that was you. You were the harness.
 what the coverage means by an agent. So: what would you let it do without asking
 you first?
 
-**EDDIE (TC):** Don't answer yet. In a few minutes, you'll _be_ the harness.
+**USHINI (TC):** Don't answer yet. In a few minutes, you'll _be_ the harness.

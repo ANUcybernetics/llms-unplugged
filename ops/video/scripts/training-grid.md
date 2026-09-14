@@ -25,7 +25,7 @@ which words follow other words.
 
 ## Script
 
-**EDDIE (TC):** Time to train a language model. By the end of this you'll have
+**USHINI (TC):** Time to train a language model. By the end of this you'll have
 built one, and it'll fit on a single sheet of paper.
 
 **BEN:** There's a book in front of you---a picture book, a chapter from a
@@ -34,7 +34,7 @@ will ever know comes from those pages.
 
 _Visual: a book lying open, then the text highlighted word by word._
 
-**EDDIE (VO):** First step: break the text into individual words, and lowercase
+**USHINI (VO):** First step: break the text into individual words, and lowercase
 everything. One quirk worth knowing: treat punctuation like full stops and
 commas as words too. They get their own row and column, just like the real
 words.
@@ -54,7 +54,7 @@ one column, so if "the" already has a row you keep tallying into it.
 _Visual: StaticGrid animating---tally marks appearing as bigrams are processed,
 the grid gradually filling up._
 
-**EDDIE (VO):** Now slide forward by one word. The word that was your "next"
+**USHINI (VO):** Now slide forward by one word. The word that was your "next"
 becomes your current word. Find its row, find the next word's column, tally.
 Keep going through the text. Turning the page makes no difference---the last
 word on one page pairs with the first word on the next. Some cells stack up with
@@ -66,5 +66,5 @@ _is_ the model---counts of which words follow which. That's the whole thing.
 It's the same kind of information ChatGPT stores, just with billions of
 word-pairs instead of dozens.
 
-**EDDIE (TC):** It works best in pairs: one reads, one tallies, swap halfway.
+**USHINI (TC):** It works best in pairs: one reads, one tallies, swap halfway.
 Your book's in front of you. Start counting.

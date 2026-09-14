@@ -30,7 +30,7 @@ lookup rules and sample next words.
 
 ## Script
 
-**EDDIE (TC):** This next bit looks like the exercise you just did, again. It
+**USHINI (TC):** This next bit looks like the exercise you just did, again. It
 isn't. It's the first turn of a dial that ends at ChatGPT.
 
 **BEN:** Most people who use ChatGPT never trained it. Somebody else did the
@@ -47,7 +47,7 @@ roll again.
 
 _Visual: StaticPretrainedGeneration stepping through lookups and rolls._
 
-**EDDIE (VO):** Some words have more than ten options. Look for the diamonds:
+**USHINI (VO):** Some words have more than ten options. Look for the diamonds:
 one diamond, one die; two diamonds, roll two and read them as digits, so a five
 and an eight is fifty-eight. Same mechanism, and it scales as far as you want.
 And if an entry has only one option, don't roll---just write it.
@@ -56,7 +56,7 @@ And if an entry has only one option, don't roll---just write it.
 than your grid did. And it still won't be _about_ anything. Hold onto that
 question.
 
-**EDDIE:** Your booklet was trained on a real text---maybe _Frankenstein_, maybe
+**USHINI:** Your booklet was trained on a real text---maybe _Frankenstein_, maybe
 _Green Eggs and Ham_. The patterns leak through. Try to guess the book before
 you check the cover.
 
@@ -64,7 +64,7 @@ you check the cover.
 of pages stitched together from everywhere. The single mystery text is just what
 makes this game playable.
 
-**EDDIE:** And one thing the booklet gets exactly right: you can read every
+**USHINI:** And one thing the booklet gets exactly right: you can read every
 number in this model, and generate from it at the kitchen table. Nobody can
 switch it off or quietly change it under you. That's what "open weights" means.
 

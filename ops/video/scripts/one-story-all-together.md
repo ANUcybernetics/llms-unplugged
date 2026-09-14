@@ -32,11 +32,11 @@ dog, rain, volcano.
 **BEN (TC):** Every group in this room trained on a different text. Nobody has
 _volcano_ except the volcano group. Nobody has _bus_ except the bus group.
 
-**EDDIE (TC):** But the room has all of them.
+**USHINI (TC):** But the room has all of them.
 
 _Visual: the five ROW_THE rows stacked---bell, bus, dog, rain, volcano._
 
-**EDDIE (VO):** Here's the same word, _the_, from five different models. Five
+**USHINI (VO):** Here's the same word, _the_, from five different models. Five
 honest counts of five different texts, five different answers. None of them is
 wrong. And read down the followers and you can name the text: bell and key, bus
 and air, roof and sun.
@@ -48,7 +48,7 @@ _Visual: the class-story loop---a word called, hands up, a group picked, its row
 shown, the cup up front filling and drawing, the word landing on butchers
 paper._
 
-**EDDIE (VO):** Two steps per word, same as always. Call out the word we're on.
+**USHINI (VO):** Two steps per word, same as always. Call out the word we're on.
 Hands up if your sheets have a row for it---the show of hands picks the group.
 That group reads out its colours and tallies: three red, one blue, one green,
 one yellow. The counters go in the cup up the front, one comes out, and that
@@ -60,7 +60,7 @@ class story._
 **BEN (VO):** Blue. That group's blue word is _volcano_. It goes on the class
 story, and _volcano_ is the next word we hunt for.
 
-**EDDIE:** And that's the fun of it. A word only one group ever saw just landed
+**USHINI:** And that's the fun of it. A word only one group ever saw just landed
 in everyone's story. The class model can say things most of the room's models
 never could.
 
@@ -68,4 +68,4 @@ never could.
 counts, so it can say things no single text could. And notice: a bigger model
 still runs one word at a time.
 
-**EDDIE (TC):** Butchers paper up the front. First word: _the_. Hands up.
+**USHINI (TC):** Butchers paper up the front. First word: _the_. Hands up.

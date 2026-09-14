@@ -38,19 +38,19 @@ of counters.
 **BEN (TC):** ChatGPT, Claude, all of these tools---they write one word at a
 time. Predict a word, add it, predict again. That's the whole job.
 
-**EDDIE (TC):** And yet, ask someone how they actually do it and you'll get
+**USHINI (TC):** And yet, ask someone how they actually do it and you'll get
 hand-waving. Something about "neural networks," maybe "trained on the internet."
 
 **BEN:** That's a shaky foundation for the people making decisions about these
 tools---teachers, parents, policymakers.
 
-**EDDIE:** So what if you could build one yourself? Not on a computer. With a
+**USHINI:** So what if you could build one yourself? Not on a computer. With a
 picture book, some paper, a pen, and a handful of dice.
 
 _Visual: montage---hands tallying a grid, a d10 rolling, a cup of counters
 tipped out, a ledger row with coloured boxes, text appearing word by word._
 
-**EDDIE (VO):** That's LLMs Unplugged, a set of free teaching resources from the
+**USHINI (VO):** That's LLMs Unplugged, a set of free teaching resources from the
 School of Cybernetics at the Australian National University.
 
 **BEN (VO):** Every lesson is the same loop. First you train: read a text, and
@@ -60,7 +60,7 @@ pick the next one according to those counts, write it down, and go again.
 _Visual: train → generate loop animation; a grid filling with tallies, then a
 die landing and a word appearing._
 
-**EDDIE (VO):** There are two lessons to do it. _My First Language Model_ uses
+**USHINI (VO):** There are two lessons to do it. _My First Language Model_ uses
 grid paper and dice, and suits high school through to adults. In an hour or two
 you train a model, generate from it, then generate from a bigger booklet that
 somebody else trained---and finish by turning it into an agent that texts your
@@ -77,7 +77,7 @@ your own from a new text; then the whole class pools its models into one story.
 _Visual: the ledger deck's sheets, a cup being filled, the class story on
 butchers paper._
 
-**EDDIE:** Now, it's not a tiny ChatGPT. A real model swaps the tally marks for
+**USHINI:** Now, it's not a tiny ChatGPT. A real model swaps the tally marks for
 shared numbers, looks at the whole conversation instead of one word, trains on
 trillions of words, and gets a round of extra training so it answers you rather
 than just continuing.
@@ -86,7 +86,7 @@ than just continuing.
 Andrey Markov was doing this by hand in 1913, Claude Shannon in 1948. The line
 runs straight to today's frontier models.
 
-**EDDIE:** Once you've seen the mechanism on paper---patterns in, new text
+**USHINI:** Once you've seen the mechanism on paper---patterns in, new text
 out---the mystery evaporates. And if you want to go further, the site has
 follow-on lessons: break a model, look inside one, shape its personality.
 

@@ -43,7 +43,7 @@ computer. A few sheets of paper.
 
 _Visual: LedgerSheet, the Dick and Jane sheet, full frame._
 
-**EDDIE (VO):** Down the left, a word from the book. Beside it, every word that
+**USHINI (VO):** Down the left, a word from the book. Beside it, every word that
 ever came next, with a mark for every time it did. That's the whole thing. No
 rules, no grammar. Just a count of what came next.
 
@@ -54,7 +54,7 @@ _go_ five times, _is_ twice, and _comes_ and full stop once each.
 
 _Visual: LedgerSheets fanned out, the alphabetical headers highlighted._
 
-**EDDIE (VO):** Each sheet holds a run of words in alphabetical order, and the
+**USHINI (VO):** Each sheet holds a run of words in alphabetical order, and the
 header says which. So nobody searches. Need the row for _see_? Read the headers.
 Who has _see_?
 
@@ -69,7 +69,7 @@ place in the row, not the word.
 _Visual: LedgerRow for "see" beside an empty LedgerCup; counters dropping in one
 by one as each box highlights._
 
-**EDDIE (VO):** Now generate. Somebody has the row for _see_. First box: _it_,
+**USHINI (VO):** Now generate. Somebody has the row for _see_. First box: _it_,
 five marks, red. Five red counters into the cup. Next: _me_, one mark, blue. One
 blue. Last: _Spot_, one mark, green. One green.
 
@@ -78,7 +78,7 @@ more counters, more likely. Which colour do you think will come out?
 
 _Visual: a counter drawn---red---and "it" appearing on the page._
 
-**EDDIE (VO):** Red. The likeliest one, five chances in seven. Write down _it_,
+**USHINI (VO):** Red. The likeliest one, five chances in seven. Write down _it_,
 tip the cup back into the tub, and pass the job to whoever has the row for _it_.
 
 _Visual: the chain playing out row by row---"see it go up , down it comes
@@ -92,7 +92,7 @@ needs no draw at all.
 
 _Visual: the generated line, full frame: "See it go up, down it comes."_
 
-**EDDIE:** Eight draws in, and here's a sentence this book never said. It says
+**USHINI:** Eight draws in, and here's a sentence this book never said. It says
 "See it go up." It says "Down it comes." The model glued them together, because
 it only ever knows what comes next, one word at a time. Nobody wrote that
 sentence. The counting did.

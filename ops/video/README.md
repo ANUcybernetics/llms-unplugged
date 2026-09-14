@@ -42,10 +42,10 @@ Two phases, one set of scripts.
 **Phase 1 (now): animation plus voice-over.** Each video is a HyperFrames
 composition in `ops/video/<slug>/`, assembled from the project's own material
 (the deck widgets, the printed sheets and booklets rendered from the CLI, the
-deck backgrounds, the site's palette and fonts). Ben and Eddie record the
+deck backgrounds, the site's palette and fonts). Ben and Ushini record the
 voice-over. No camera.
 
-**Phase 2 (later): re-cut with footage.** When a shoot happens, Ben and Eddie
+**Phase 2 (later): re-cut with footage.** When a shoot happens, Ben and Ushini
 deliver the to-camera lines and the phase-1 cut is re-edited with that footage;
 the animation beats stay as they are. Production context and status for the
 shoot live in Ben's notes, not here.
@@ -70,7 +70,7 @@ a commit here, a re-record of that line, and a re-render.
 
 ## Tone and narrative
 
-**Warm authority.** Think Masterclass, not lecture theatre. Ben and Eddie are
+**Warm authority.** Think Masterclass, not lecture theatre. Ben and Ushini are
 sharing something they genuinely find fascinating, not teaching down. The vibe
 is "let me show you something cool" rather than "today we will learn about..."
 Conversational, direct, occasionally self-aware ("you might be thinking this
@@ -183,7 +183,7 @@ captions exist alongside the open ones.
 
 ## Phase-2 shoot questions
 
-- one home framing for the to-camera lines, and whether Ben and Eddie share a
+- one home framing for the to-camera lines, and whether Ben and Ushini share a
   shot or cut between two setups
 - whether the materials (grid, booklet, ledger sheets, cup) are in shot for the
   opening and closing lines

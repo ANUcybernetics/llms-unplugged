@@ -34,7 +34,7 @@ words at a time.
 
 ## Script
 
-**EDDIE (TC):** Your sheets arrived finished. Every mark was already there. So
+**USHINI (TC):** Your sheets arrived finished. Every mark was already there. So
 where did the marks come from?
 
 **BEN:** Somebody counted. And it's a job you can do yourselves.
@@ -48,7 +48,7 @@ stops and exclamation marks are words too---they get their own rows.
 _Visual: LedgerTraining stepping---the first pair highlighted, a mark appearing
 in the first word's row beside the second word._
 
-**EDDIE (VO):** Read it two words at a time. The first word names the row. The
+**USHINI (VO):** Read it two words at a time. The first word names the row. The
 second word gets a mark in that row. Then move along by one: the second word of
 this pair is the first word of the next. Read the text once, and every pair in
 it gets counted.
@@ -61,7 +61,7 @@ the text says "see it," the mark goes beside _it_ in the row for _see_, which
 already has one. That's how a count builds. Common pairs collect marks; rare
 ones don't.
 
-**EDDIE:** Check it against your printed sheet. _See it_, five marks. Count the
+**USHINI:** Check it against your printed sheet. _See it_, five marks. Count the
 book and it's five. Every sheet in this room was made exactly this way.
 
 **BEN:** Now it's your turn, on a new text, with blank sheets. This time the
@@ -72,7 +72,7 @@ second.
 _Visual: a blank ledger sheet; a hand writing a new word into a spare row, then
 a mark beside it._
 
-**EDDIE (VO):** Three rules keep your model honest. When you start a row for a
+**USHINI (VO):** Three rules keep your model honest. When you start a row for a
 new word, say the word out loud, so nobody else starts one too---two people
 counting the same word splits the model in half. A new word goes in the next
 empty box, never a skipped one---the colours go in order. And the row for full
@@ -81,7 +81,7 @@ stop is a real row: it says how sentences start.
 **BEN:** When you've read the whole text, generate from it. Start from _the_. It
 should sound like your text, and nobody else's.
 
-**EDDIE:** That's training. Not a computer reading the internet. Somebody
+**USHINI:** That's training. Not a computer reading the internet. Somebody
 counting what came next, a lot.
 
 **BEN (TC):** Reader, grab the text. Two words at a time.
