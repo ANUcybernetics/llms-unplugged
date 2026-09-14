@@ -4,6 +4,7 @@ title: Build the eight explainer videos once the beat sheets are reviewed
 status: To Do
 assignee: []
 created_date: '2026-09-14 04:14'
+updated_date: '2026-09-14 08:35'
 labels:
   - video
 dependencies: []
@@ -23,4 +24,5 @@ The series plan, beat sheets and scripts for the eight LLMs Unplugged explainer 
 - [ ] #3 Each of the eight videos has a composition in ops/video/<slug>/ that passes npm run check and renders from the current script and the VO takes
 - [ ] #4 Re-editing a script line and re-rendering that video needs no manual steps beyond re-recording the line
 - [ ] #5 Renders and VO takes live in the bucket under video/<slug>/ and are not committed
+- [ ] #6 The Overview composition also renders a 9:16 variant from an aspect parameter (restacked layout, not a crop); the other seven are 16:9 only
 <!-- AC:END -->
