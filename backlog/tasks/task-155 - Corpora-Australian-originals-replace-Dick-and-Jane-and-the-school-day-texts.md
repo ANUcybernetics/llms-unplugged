@@ -4,6 +4,7 @@ title: 'Corpora: Australian originals replace Dick and Jane and the school-day t
 status: To Do
 assignee: []
 created_date: '2026-09-14 11:03'
+updated_date: '2026-09-14 11:11'
 labels:
   - data
   - ledger
@@ -20,13 +21,24 @@ The ledger walkthrough book (Fun with Dick and Jane) has no cultural pull for an
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Ben has approved the six draft texts (or their revisions) before any deck, constant or script changes
-- [ ] #2 the-magpie.txt built with the pack recipe (140 budget, four-colour palette, --max-followers 4) deals every prefix in one row with no follower dropped and ops/ledger-sweep.py reports dead 0
-- [ ] #3 each outdoors text has no prefix wider than four at four columns, the five share a core vocabulary, pooled 'the' has at least 15 followers, and a ledger set for each builds without warnings
-- [ ] #4 Makefile LEDGER_BOOKS and LEDGER_TEXTS use the new texts, the pack builds clean, and the school-day texts are removed
-- [ ] #5 the ledger deck's ROW_* constants are re-read from the magpie and outdoors sheets, the walkthrough chain in the deck partials and the finale's five rows follow the new texts, and pnpm run check passes
-- [ ] #6 the lesson page, pack README and docs no longer mention Dick and Jane or the school-day texts
-- [ ] #7 the grid decks' example is 'Hop, Joey, hop. See Joey hop.' with EXAMPLE_* constants, dice bands and rolls re-derived and the walk still going no-choice, equal, unequal
-- [ ] #8 an out-of-copyright Australian text is added under data/ for the pre-trained booklet, the booklet builds with at least one diamond entry, and the grid decks' pre-trained example comes from it
-- [ ] #9 the eight video scripts in ops/video/scripts name the new texts: the joey line, the booklet's text, the magpie chain, and the outdoors words in the finale
+- [ ] #1 the-magpie.txt built with the pack recipe (140 budget, four-colour palette, --max-followers 4) deals every prefix in one row with no follower dropped and ops/ledger-sweep.py reports dead 0
+- [ ] #2 each outdoors text has no prefix wider than four at four columns, the five share a core vocabulary, pooled 'the' has at least 15 followers, and a ledger set for each builds without warnings
+- [ ] #3 Makefile LEDGER_BOOKS and LEDGER_TEXTS use the new texts, the pack builds clean, and the school-day texts are removed
+- [ ] #4 the ledger deck's ROW_* constants are re-read from the magpie and outdoors sheets, the walkthrough chain in the deck partials and the finale's five rows follow the new texts, and pnpm run check passes
+- [ ] #5 the lesson page, pack README and docs no longer mention Dick and Jane or the school-day texts
+- [ ] #6 the grid decks' example is 'Hop, Joey, hop. See Joey hop.' with EXAMPLE_* constants, dice bands and rolls re-derived and the walk still going no-choice, equal, unequal
+- [ ] #7 an out-of-copyright Australian text is added under data/ for the pre-trained booklet, the booklet builds with at least one diamond entry, and the grid decks' pre-trained example comes from it
+- [ ] #8 the eight video scripts in ops/video/scripts name the new texts: the joey line, the booklet's text, the magpie chain, and the outdoors words in the finale
+- [ ] #9 Ben has signed off the final texts; building proceeds on the drafts meanwhile, since a text change re-flows through data/ and a re-render
 <!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Makefile: LEDGER_BOOKS swaps fun-with-dick-and-jane for the-magpie (data/originals/), LEDGER_TEXTS becomes the outdoors set; make pack-how-ai-writes-stories-ledger; check the brief's counters-per-colour figure.
+2. Re-read ROW_* constants off the built magpie and outdoors ledger.json into the ledger deck; rewrite the walkthrough chain in decks/partials/ledger-*.mdx (a chain that glues two magpie sentences, e.g. 'here comes the magpie'), the finale's five 'the' rows and the unique-word draw; pnpm run check.
+3. Lesson page, docs/packs README, deck notes: replace every Dick and Jane / school-day mention; git rm the school-day texts.
+4. Grid: EXAMPLE_TOKENS/VOCAB/GENERATION in website/src/decks/examples.ts to the joey line (same shape: hop , joey , hop . see joey hop .); confirm the walk and dice bands; decks:check.
+5. Booklet: fetch an out-of-copyright Australian text (Paterson, Gutenberg) into data/, build the booklet with the CLI, confirm a diamond entry, set EXAMPLE_TEXT/PRETRAINED_* from it.
+6. Scripts: update the grid, pre-trained, agentic and ledger scripts' spoken examples and Visual: lines to the new texts.
+<!-- SECTION:PLAN:END -->
