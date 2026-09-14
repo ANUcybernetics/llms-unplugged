@@ -5,8 +5,10 @@
 
 /data/*
 
-# but keep frankenstein.txt as the example corpus used in the docs
+# but keep frankenstein.txt as the example corpus used in the docs, and the
+# public-domain Paterson verse the grid decks' pre-trained booklet is built from
 !/data/frankenstein.txt
+!/data/the-man-from-snowy-river.txt
 # and every text written for an activity rather than sourced from somewhere
 !/data/originals/
 
