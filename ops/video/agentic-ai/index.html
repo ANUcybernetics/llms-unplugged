@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>LLMs Unplugged — Agentic AI</title>
+    <link rel="stylesheet" href="kit/kit.css" />
+    <script src="kit/vendor/gsap.min.js"></script>
+    <script src="kit/generated/data.js"></script>
+    <script src="kit/kit.js"></script>
+    <style>
+      html, body { width: 1920px; height: 1080px; }
+      /* inline helpers this composition needs that the kit doesn't have: a
+         phone (screen, message/reply bubbles, contact rows) and a punctuation
+         token badge. Plain divs, same conventions as kit.css (paper/pencil). */
+      .phone-back { position: absolute; inset: 0; border-radius: 32px; background: #2b2b2b; border: 4px solid #4a4a4a; }
+      .phone-screen { position: absolute; inset: 8px; border-radius: 26px; background: #eceae4; opacity: 0; }
+      .bubble { position: absolute; border-radius: 18px; padding: 14px 18px; font-family: var(--font-ui); font-size: 24px; line-height: 1.32; }
+      .bubble.out { background: var(--gold); color: #241a04; }
+      .bubble.in { background: #ffffff; color: var(--ink); border: 1px solid rgb(0 0 0 / 12%); }
+      .contact-row { position: absolute; height: 56px; border-radius: 28px; background: #ffffff; border: 1px solid rgb(0 0 0 / 12%); opacity: 0; }
+      .contact-row .avatar { position: absolute; left: 9px; top: 9px; width: 38px; height: 38px; border-radius: 50%; background: #b9b2a4; }
+      .stop-badge { position: absolute; left: 0; top: 0; border: 4px solid var(--ink); border-radius: 14px; background: var(--paper); display: flex; align-items: center; justify-content: center; font-family: var(--font-tok); font-weight: 700; font-size: 52px; color: var(--ink); }
+      .fly-word { position: absolute; left: 0; top: 0; font-family: var(--font-tok); font-style: italic; font-size: 54px; color: var(--pencil); white-space: nowrap; }
+    </style>
+  </head>
+  <body>
+    <!-- Agentic AI: ops/video/scripts/agentic-ai.md. The desk: booklet (closed,
+         then a real page image), paper + pencil, a d10, a phone. Every beat
+         lands on a word of the voice track (timing.json from align.py). -->
+    <div id="stage" class="stage" data-aspect="landscape" data-composition-id="agentic-ai"
+         data-start="0" data-duration="123.10" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="123.10" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="123.10" data-track-index="1"></audio>
+    </div>
+    <script>
+      const build = (tl, S, T) => {
+        const K = KIT, D = KIT_DATA;
+        const scene = document.getElementById("scene");
+        const A = S.area;
+
+        // ------------------------------------------------------------ desk
+        // slots, sized to fill S.area: the booklet (cover, then two real
+        // pages) at the left, the die and paper centre-right, the phone
+        // entering from the right. Two loop sizes: a modest one that shares
+        // the frame with the desk (line 1), and a big one that gets the
+        // whole stage to itself once the desk fades (lines 7-8).
+        const BOOK = { x: 80, y: 75, w: 580, h: 750 };
+        const DIE = { x: 740, y: 340, w: 150, h: 150 };
+        const PAPER = { x: 740, y: 520, w: 1080, h: 280 };
+        const PHONE = { x: 1420, y: 70, w: 420, h: 440 };
+        const LOOP_INTRO = { x: 830, y: 50, w: 940, h: 380 };
+        const LOOP_MAIN = { x: 480, y: 65, w: 960, h: 760 };
+        const LOOP_LABELS = ["generate", "punctuation", "pause", "message out", "reply in", "continue"];
+
+        // the closed booklet: a paper rect, nothing on it
+        const bookCover = K.el("div", { class: "paper", style: { width: `${BOOK.w}px`, height: `${BOOK.h}px` } }, scene);
+        gsap.set(bookCover, { x: BOOK.x, y: BOOK.y });
+
+        // the two real booklet pages this video cuts to (built once, cropped
+        // once, toggled by opacity): the "." entry, and the "v" page with the
+        // gap where "verandah" would sort.
+        const periodPage = K.pageImage(scene, "snowy-river", 4, BOOK);
+        const periodBox = periodPage.lineBox(["."]);
+        periodPage.cut(tl, periodPage.around(periodBox, 460), 0);
+        periodPage.highlight(periodBox, 16);
+        gsap.set(periodPage.el, { opacity: 0 });
+
+        const vPage = K.pageImage(scene, "snowy-river", 44, BOOK);
+        const veinBox = vPage.lineBox(["vein"]);
+        const verbatimBox = vPage.lineBox(["verbatim"]);
+        const gapBox = {
+          x: Math.min(veinBox.x, verbatimBox.x),
+          y: veinBox.y + veinBox.h * 0.4,
+          w: Math.max(veinBox.w, verbatimBox.w) + 30,
+          h: verbatimBox.y - veinBox.y,
+        };
+        vPage.cut(tl, vPage.around(gapBox, 400), 0);
+        vPage.highlight(gapBox, 14);
+        gsap.set(vPage.el, { opacity: 0 });
+
+        // the d10
+        const die = K.die(scene, { x: DIE.x, y: DIE.y, size: DIE.w, face: 3 });
+        gsap.set(die.el, { opacity: 0 });
+
+        // a punctuation-token badge that lands next to the die when a
+        // punctuation face is rolled, and later flies onto the paper as the
+        // full stop the reply is followed by (line 2, then line 4).
+        const stopToken = K.el("div", { class: "stop-badge", text: ".", style: { width: "90px", height: "90px" } }, scene);
+        gsap.set(stopToken, { x: DIE.x, y: DIE.y - 110, opacity: 0, transformOrigin: "50% 50%" });
+
+        // the paper: row 1 is "the cat sat", then the reply "out on the
+        // verandah" and the full stop that follows it (line 4); row 2 is a
+        // bracketed gap left after a later full stop (line 6).
+        const paper = K.paper(scene, { x: PAPER.x, y: PAPER.y, w: PAPER.w, h: PAPER.h });
+        const ROW1_Y = 70, ROW2_Y = 200;
+        const pencil = K.pencilLine(paper.el, ["the", "cat", "sat", "out", "on", "the", "verandah", "."], { x: 24, y: ROW1_Y, size: 54 });
+        const spanPos = (i) => {
+          const el = pencil.words[i];
+          return { x: PAPER.x + 24 + el.offsetLeft, y: PAPER.y + ROW1_Y + el.offsetTop };
+        };
+        // fly a temporary word from `from` to word i's real slot, then reveal it
+        const flyToSpan = (from, i, t, dur = 0.65) => {
+          const to = spanPos(i);
+          const clone = K.el("div", { class: "fly-word", text: pencil.words[i].textContent }, scene);
+          gsap.set(clone, { opacity: 0 });
+          tl.set(clone, { x: from.x, y: from.y, opacity: 1 }, t);
+          tl.to(clone, { x: to.x, y: to.y, duration: dur, ease: "power2.inOut" }, t);
+          tl.to(clone, { opacity: 0, duration: 0.12 }, t + dur - 0.08);
+          K.write(tl, pencil.words[i], t + dur - 0.1, 0.22);
+        };
+
+        // row 2: a bracketed gap (line 6). "[" and "]" sit far enough apart
+        // to hold the reply's real words once they land; a short dash right
+        // after stands for the pencil carrying on (never a fabricated word).
+        const GAP_W = 640;
+        const row2 = K.pencilLine(paper.el, ["[", "]"], { x: 24, y: ROW2_Y, size: 54 });
+        row2.words[0].style.marginRight = `${GAP_W}px`;
+        gsap.set(row2.words, { opacity: 0 });
+        const gapLocalX = 24 + row2.words[0].offsetLeft + row2.words[0].offsetWidth + 18;
+        // the reply's own words, appearing in the gap ("fill it in later") —
+        // never an invented word, and tinted gold as the tool's answer
+        const replyRow = K.pencilLine(paper.el, ["out", "on", "the", "verandah"], { x: gapLocalX, y: ROW2_Y, size: 54 });
+        gsap.set(replyRow.words, { opacity: 1 }); // revealed as a group, not word-by-word
+        gsap.set(replyRow.el, { opacity: 0, color: "var(--gold)" });
+        // the dash: pencil resuming past the gap, deliberately not a word
+        const dashX = 24 + row2.words[1].offsetLeft + row2.words[1].offsetWidth + 22;
+        const dash = K.el("div", { style: { position: "absolute", left: `${dashX}px`, top: `${ROW2_Y + 38}px`, width: "46px", height: "6px", background: "var(--pencil)", "border-radius": "3px" } }, paper.el);
+        gsap.set(dash, { opacity: 0, scaleX: 0, transformOrigin: "0 50%" });
+
+        // the phone: face-down back, a screen, a message bubble, three
+        // contact rows, a reply bubble. Starts off-canvas, slides in.
+        const phone = K.layer(scene, S.W + 60, PHONE.y);
+        const phoneBack = K.el("div", { class: "phone-back", style: { width: `${PHONE.w}px`, height: `${PHONE.h}px` } }, phone);
+        const phoneScreen = K.el("div", { class: "phone-screen" }, phone);
+        const msgBubble = K.el("div", { class: "bubble out", style: { left: "20px", top: "20px", width: "380px" } }, phoneScreen);
+        const msgWords = ["What", "comes", "next?", '"the', "cat", 'sat…"'].map((w) => {
+          const s = K.el("span", { text: w + " " }, msgBubble);
+          gsap.set(s, { opacity: 0 });
+          return s;
+        });
+        const contactRows = [0, 1, 2].map((i) => {
+          const r = K.el("div", { class: "contact-row", style: { left: "20px", top: `${130 + i * 66}px`, width: "380px" } }, phoneScreen);
+          K.el("div", { class: "avatar" }, r);
+          return r;
+        });
+        const replyBubble = K.el("div", { class: "bubble in", style: { left: "20px", top: "334px", width: "380px" } }, phoneScreen);
+        replyBubble.textContent = "out on the verandah";
+        gsap.set(replyBubble, { opacity: 0, y: 16 });
+
+        // a small flying dot: a copy of the outgoing message reaching a contact
+        const flyDot = (from, to, t, dur = 0.4) => {
+          const d = K.el("div", { style: { position: "absolute", width: "22px", height: "22px", borderRadius: "50%", background: "var(--gold)", left: "0px", top: "0px", opacity: "0" } }, scene);
+          gsap.set(d, { opacity: 0 });
+          tl.set(d, { x: from.x, y: from.y, opacity: 1 }, t);
+          tl.to(d, { x: to.x, y: to.y, duration: dur, ease: "power1.in" }, t);
+          tl.to(d, { opacity: 0, duration: 0.15 }, t + dur - 0.1);
+        };
+
+        // two loops sharing one label set: a modest one that draws on beside
+        // the desk (line 1), and a big one (~800px tall) that has the whole
+        // stage to itself once the desk fades away (lines 7-8).
+        const loopIntro = K.loop(scene, { ...LOOP_INTRO, labels: LOOP_LABELS });
+        const loopMain = K.loop(scene, { ...LOOP_MAIN, labels: LOOP_LABELS });
+        const iconG = K.svg("g", {}, loopMain.svg);
+        K.svg("circle", { cx: loopMain.cx, cy: loopMain.cy - 46, r: 26, fill: "var(--text)" }, iconG);
+        K.svg("rect", { x: loopMain.cx - 32, y: loopMain.cy - 18, width: 64, height: 82, rx: 26, fill: "var(--text)" }, iconG);
+        gsap.set(iconG, { opacity: 0 });
+        const hands = K.prepDraw(
+          loopMain.stations.map((st) => K.svg("line", { x1: loopMain.cx, y1: loopMain.cy, x2: st.x, y2: st.y, stroke: "var(--gold)", "stroke-width": 6, "stroke-linecap": "round" }, loopMain.svg)),
+        );
+        const lightStation = (i, t, dur = 0.3) => {
+          tl.to([loopMain.stations[i].dot, loopMain.stations[i].text], { opacity: 1, duration: dur }, t);
+          K.drawOn(tl, [hands[i]], t, 0.4, 0);
+        };
+
+        // ============================================================ line 0 (TC)
+        // the hook, held: the desk as it sits, nothing rolled yet. The phone
+        // is off-canvas (clipped by the scene) until it slides in at line 2.
+        K.appear(tl, [bookCover, die.el, paper.el], 0.2, { stagger: 0.15 });
+
+        // ============================================================ line 1
+        // "An agent is a model that can pause, get something from outside
+        // itself, and carry on." — the loop draws on, its six stations
+        // lighting in turn.
+        const tDraw = T.start(1) + 0.25;
+        K.drawOn(tl, [loopIntro.path], tDraw, 2.4, 0, "power1.inOut");
+        const stepL1 = 2.4 / 6;
+        loopIntro.stations.forEach((st, i) => {
+          tl.to([st.dot, st.text], { opacity: 1, duration: 0.28 }, tDraw + 0.35 + i * stepL1);
+        });
+        // fade the intro loop away before the paper takes over; it never
+        // returns (line 7 draws the big loop fresh)
+        const tLoopOut = T.start(2) - 0.35;
+        K.vanish(tl, loopIntro.el, tLoopOut);
+
+        // ============================================================ line 2
+        // "Here's the rule. Generate from your booklet exactly as before,
+        // rolling for each next word. The moment you roll a punctuation
+        // token—a full stop, a comma—stop. That's a tool call."
+        const words012 = [
+          { w: "the", face: 3, t: T.word(2, "rolling") },
+          { w: "cat", face: 8, t: T.word(2, "next") },
+          { w: "sat", face: 5, t: T.word(2, "moment") },
+        ];
+        words012.forEach((it, i) => {
+          K.land(tl, die, it.face, it.t);
+          K.write(tl, pencil.words[i], it.t + 0.5, 0.25);
+        });
+        // rolling the punctuation token: a face lands, the stop badge lands
+        // beside the die and pulses — not yet written, just rolled
+        const tPunctRoll = T.word(2, "punctuation");
+        K.land(tl, die, 0, tPunctRoll);
+        K.appear(tl, stopToken, tPunctRoll + 0.35, { y: 14 });
+        const tStopSecond = T.word(2, "stop", 2); // the imperative "...stop."
+        tl.to(stopToken, { scale: 1.3, duration: 0.25, yoyo: true, repeat: 1, ease: "power2.out" }, tStopSecond);
+        // the phone slides into frame as "That's a tool call" lands
+        const tToolCall = T.word(2, "tool");
+        tl.to(phone, { x: PHONE.x, duration: 0.9, ease: "power2.out" }, tToolCall - 0.5);
+        tl.to(phoneBack, { opacity: 0, duration: 0.4 }, tToolCall + 0.5);
+        tl.to(phoneScreen, { opacity: 1, duration: 0.4 }, tToolCall + 0.5);
+
+        // ============================================================ line 3
+        // the phone, top-down: the message types itself, copies slide to
+        // three contacts, a beat of nothing, one reply drops in.
+        const tSend = T.word(3, "Send");
+        tl.set(msgBubble, { opacity: 1 }, tSend);
+        // "What comes next?" as it's said
+        [T.word(3, "What", 1), T.word(3, "comes", 1), T.word(3, "next", 1)].forEach((t, i) => {
+          tl.to(msgWords[i], { opacity: 1, duration: 0.18 }, t);
+        });
+        // "the cat sat" appended as Ushini gives the worked example
+        [T.word(3, "the", 3), T.word(3, "cat", 1), T.word(3, "sat", 1)].forEach((t, i) => {
+          tl.to(msgWords[3 + i], { opacity: 1, duration: 0.18 }, t);
+        });
+        // only once the message is complete ("Say your text is 'the cat
+        // sat'...") does it make sense to send it: copies slide to the three
+        // contacts, then a beat of nothing, then the reply drops in as
+        // Ushini repeats the message back ("...the cat sat...")
+        const tSendComplete = T.word(3, "sat", 1) + 0.35;
+        const msgOrigin = { x: PHONE.x + 50, y: PHONE.y + 50 };
+        contactRows.forEach((r, i) => {
+          tl.to(r, { opacity: 1, duration: 0.25 }, tSendComplete + i * 0.1);
+          const to = { x: PHONE.x + 24, y: PHONE.y + 130 + i * 66 + 28 };
+          flyDot(msgOrigin, to, tSendComplete + 0.2 + i * 0.15, 0.4);
+        });
+        // a beat of nothing while Ushini recaps; the reply drops in as she
+        // finishes quoting the message back
+        const tReply = T.word(3, "sat", 2) + 0.15;
+        K.appear(tl, replyBubble, tReply, { y: 16, dur: 0.3 });
+
+        // ============================================================ line 4
+        // the reply's words slide off the phone onto the paper after "the
+        // cat sat", the full stop follows; cut to the booklet's "." entry.
+        const replyOrigin = { x: PHONE.x + 40, y: PHONE.y + 350 };
+        const tWrite = T.word(4, "Write");
+        [3, 4, 5, 6].forEach((i, k) => flyToSpan(replyOrigin, i, tWrite + k * 0.55, 0.6));
+        const tRolled = T.word(4, "rolled.");
+        // the stop badge, already rolled, follows the reply words onto the paper
+        tl.to(stopToken, { x: spanPos(7).x, y: spanPos(7).y - 8, duration: 0.6, ease: "power2.inOut" }, tRolled - 0.3);
+        tl.to(stopToken, { opacity: 0, duration: 0.15 }, tRolled + 0.25);
+        K.write(tl, pencil.words[7], tRolled + 0.3, 0.2);
+        // the booklet cuts from its cover to the full stop's entry; the
+        // phone's job is done
+        const tCut = T.word(4, "generating,");
+        tl.to(bookCover, { opacity: 0, duration: 0.15 }, tCut);
+        tl.to(periodPage.el, { opacity: 1, duration: 0.15 }, tCut);
+        tl.to(periodPage.hl, { opacity: 1, duration: 0.3 }, tCut + 0.2);
+        tl.to(phone, { opacity: 0, duration: 0.3 }, tCut);
+        // a face lands and the pencil moves again
+        K.land(tl, die, 6, T.word(4, "stop.", 2) - 0.2);
+
+        // ============================================================ line 5
+        // why from the full stop, not "verandah": the booklet's page for v
+        // has no entry for it; the gap is rung; then cut back to "."
+        const tVerandah1 = T.word(5, "verandah", 1);
+        tl.to(periodPage.el, { opacity: 0, duration: 0.2 }, tVerandah1 - 0.3);
+        tl.to(periodPage.hl, { opacity: 0, duration: 0.2 }, tVerandah1 - 0.3);
+        tl.to(vPage.el, { opacity: 1, duration: 0.2 }, tVerandah1 - 0.3);
+        const tEntry = T.word(5, "entry");
+        tl.to(vPage.hl, { opacity: 1, duration: 0.3 }, tEntry);
+        const tStop2 = T.word(5, "stop", 2); // "...continue from a full stop."
+        tl.to(vPage.el, { opacity: 0, duration: 0.2 }, tStop2 - 0.5);
+        tl.to(vPage.hl, { opacity: 0, duration: 0.2 }, tStop2 - 0.5);
+        tl.to(periodPage.el, { opacity: 1, duration: 0.2 }, tStop2 - 0.5);
+        tl.to(periodPage.hl, { opacity: 1, duration: 0.3 }, tStop2 - 0.2);
+
+        // ============================================================ line 6
+        // replies take time: a bracketed gap, a die landing and a short
+        // pencil dash (never a fabricated word) carrying on past it, then
+        // the reply's own words filling the gap in later.
+        const t6 = T.start(6);
+        tl.to(periodPage.el, { opacity: 0, duration: 0.2 }, t6);
+        tl.to(periodPage.hl, { opacity: 0, duration: 0.2 }, t6);
+        tl.to(bookCover, { opacity: 1, duration: 0.2 }, t6);
+        const tGap = T.word(6, "gap");
+        K.write(tl, row2.words[0], tGap, 0.2);
+        K.write(tl, row2.words[1], tGap + 0.15, 0.2);
+        const tFill = T.word(6, "fill");
+        K.land(tl, die, 4, tFill);
+        tl.to(dash, { opacity: 1, scaleX: 1, duration: 0.3, ease: "power2.out" }, tFill + 0.15);
+        // "later.": the reply's own words — not a placeholder — appear in the gap
+        K.appear(tl, replyRow.el, T.word(6, "later."), { y: 16, dur: 0.45 });
+
+        // ============================================================ line 7
+        // the big loop again, a person icon at its centre; as each stage is
+        // named its station lights, the icon's hand reaching to it. The desk
+        // fades first so the loop has the stage to itself.
+        const t7 = T.start(7);
+        tl.set([bookCover, die.el, paper.el], { opacity: 0 }, t7 - 0.15);
+        K.drawOn(tl, [loopMain.path], t7, 1.0, 0, "power1.inOut");
+        tl.to(loopMain.stations.flatMap((s) => [s.dot, s.text]), { opacity: 0.32, duration: 0.4 }, t7 + 0.5);
+        K.appear(tl, iconG, t7 + 0.3, { y: 0, dur: 0.5 });
+        lightStation(2, T.word(7, "paused")); // pause
+        lightStation(3, T.word(7, "sent")); // message out
+        lightStation(4, T.word(7, "spliced")); // reply in
+
+        // ============================================================ line 8
+        // take the person out; the loop keeps running on its own.
+        const tOut = T.word(8, "out,");
+        K.vanish(tl, [iconG, ...hands], tOut);
+        const cycleStart = tOut + 0.5;
+        const cycleEnd = T.end(8);
+        const steps = 12; // two laps of the six stations
+        const per = (cycleEnd - cycleStart) / steps;
+        for (let n = 0; n < steps; n++) {
+          const st = loopMain.stations[n % 6];
+          const t = cycleStart + n * per;
+          tl.to([st.dot, st.text], { opacity: 1, duration: per * 0.35 }, t);
+          tl.to([st.dot, st.text], { opacity: 0.28, duration: per * 0.5 }, t + per * 0.5);
+        }
+
+        // ============================================================ line 9 (TC)
+        // hold: the loop keeps turning quietly to the end.
+      };
+      KIT.ready(build).then(({ tl }) => {
+        window.__timelines["agentic-ai"] = tl;
+      });
+    </script>
+  </body>
+</html>
