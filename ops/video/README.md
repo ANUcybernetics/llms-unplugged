@@ -111,6 +111,20 @@ Overview is a scene-setter (not played in class); the section videos need to
 work as standalone explainers _and_ as warm-ups that hand off to the physical
 activity.
 
+## Aspect ratio
+
+All eight masters are 16:9: the section videos play on a classroom TV or
+projector and as YouTube embeds, and the deck widgets and sheets they are built
+from are laid out for that canvas. Square would be pillarboxed on the TV and
+still not native in a phone feed, so it is not made.
+
+The Overview is the one video that is short-form content people will meet on a
+phone, so it gets a portrait (9:16) variant as well. That variant is the same
+composition with an aspect parameter and restacked layout, not a crop of the
+landscape render, so the Overview's beats must not depend on side-by-side
+placement. The phase-2 footage is shot so the to-camera lines survive a centre
+crop; the shoot brief is in Ben's notes.
+
 ## Composition sources
 
 What each phase-1 video is built from. All of it exists in the repo already.
