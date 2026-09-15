@@ -109,8 +109,8 @@
   }
 
   /* Fixed width and centred content: the sentence changes length at every
-     step, and a content-sized line would re-centre and drag the whole
-     walkthrough sideways under auto-animate. */
+     step, and a content-sized line would re-centre and shift the whole
+     walkthrough sideways from one step to the next. */
   .pair {
     display: flex;
     justify-content: center;

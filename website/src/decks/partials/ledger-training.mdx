@@ -10,8 +10,6 @@ The sheets were finished when they arrived. Now the reveal: somebody made every 
 
 ---
 
-{/* _animate: tally */}
-
 ## Start with a text
 
 <LedgerTraining tokens={DJ_OPENING} palette={PALETTE} />
@@ -24,15 +22,11 @@ This is the start of Fun with Dick and Jane as the sheets saw it: every full sto
 
 ---
 
-{/* _animate: tally */}
-
 ## Read it two words at a time
 
 <LedgerTraining tokens={DJ_OPENING} step={0} palette={PALETTE} />
 
 ---
-
-{/* _animate: tally */}
 
 ## Move along by one
 
@@ -40,15 +34,11 @@ This is the start of Fun with Dick and Jane as the sheets saw it: every full sto
 
 ---
 
-{/* _animate: tally */}
-
 ## Move along by one
 
 <LedgerTraining tokens={DJ_OPENING} step={2} palette={PALETTE} />
 
 ---
-
-{/* _animate: tally */}
 
 ## Move along by one
 
@@ -60,8 +50,6 @@ Four pairs in, four rows have their first mark. Every second word of a pair beco
 
 ---
 
-{/* _animate: tally */}
-
 ## The same pair comes round again
 
 <LedgerTraining tokens={DJ_OPENING} step={8} palette={PALETTE} />
@@ -72,20 +60,12 @@ Skip ahead four pairs, to the second time this text says "see it": the mark goes
 
 ---
 
-## Train your model
+## A new word after the same word
 
-![bg right:40%](./assets/bg-five-texts.avif)
-
-each group gets a **new text** and **blank sheets** --- this time the words are
-yours to write as well as the marks
-
-one person reads the text **two words at a time**; whoever has the first word's
-row adds a mark beside the second
-
-a word nobody holds yet **starts a new row** on somebody's sheet
+<LedgerTraining tokens={DJ_OPENING} step={10} palette={PALETTE} />
 
 ```notes
-Hand out the school-day texts, one per group (a different one each --- that matters for the finale) and a blank sheet per person. Nothing is printed on them, so settle who takes a new word before you start: whoever has a spare row claims it and says the word out loud, so the group knows where it lives. The reader holds the text page: every word is numbered, so "we're at 23" gets a lost group back on track. Tip: the reader says the pair, then waits for the "done" before moving on.
+Two pairs on, "go" comes round again, but this time a full stop follows it, not "look". The row for "go" already has "look" in its red box, so the full stop takes the next empty box: blue. That's where a row's colours come from --- each new follower gets the next box, in the order the text meets them.
 ```
 
 ---
@@ -108,34 +88,21 @@ Two to watch. The empty-box rule: a group that leaves a gap has broken the colou
 
 ---
 
-{/* _class: hero */}
+## Your turn
 
-# Training
+![bg right:40%](./assets/bg-tally-training.avif)
 
-![bg](./assets/bg-tally-training.avif)
+read your new text **two words at a time**, and for each pair:
+
+1. **find the row** for the first word --- no row yet? start one, and say the
+   word out loud
+2. **find the box** for the second word --- not there yet? write it in the next
+   empty box
+3. **add a mark** in that box
+4. **move along by one**: the second word starts the next pair
 
 <Timer minutes={12} overlay />
 
----
-
-## Generate from your own model
-
-![bg right:40%](./assets/bg-cup-draw.avif)
-
-same rules as before, on the sheets you just filled in
-
-start from `the`
-
 ```notes
-Short round. Every group starts from "the" again, because the finale is going to pool exactly that row. Read out a sentence or two per group: they should sound like their text and nobody else's.
+Leave this up while they work. Hand out the school-day texts, one per group (a different one each --- that matters for the finale) and blank sheets. Nothing is printed on the sheets, so settle who takes a new word before you start: whoever has a spare row claims it and says the word out loud, so the group knows where it lives. The reader holds the text page: every word is numbered, so "we're at 23" gets a lost group back on track. Tip: the reader says the pair, then waits for the "done" before moving on.
 ```
-
----
-
-{/* _class: hero */}
-
-# Generation
-
-![bg](./assets/bg-chain.avif)
-
-<Timer minutes={6} overlay />
