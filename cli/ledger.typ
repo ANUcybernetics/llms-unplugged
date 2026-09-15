@@ -19,7 +19,7 @@
 #import "cutout-common.typ": brand-font, brand-gold, brand-lockup
 #import "ledger-common.typ": (
   check-columns, counter-dot, counters-per-colour, palette-cycles, palette-for,
-  read-palette, strip-bar, strip-fill, strip-stroke,
+  read-palette, strip-bar, strip-fill, strip-rule, strip-stroke,
   token-text as common-token-text,
 )
 
@@ -219,23 +219,19 @@
   }
 })
 
-// The tally strip: tinted to its colour, with a bar down its leading edge in
-// the full colour to match a counter against and the colour's name in the
-// corner so it can be called out --- without the room agreeing on what
-// "purple" looks like in print. The tint gives the strip its area, so it
-// needs no box drawn around it. On a "tallies" sheet the marks fill it; the
-// corner keeps its name, which is what a drawn counter is matched against, so
-// the marks get the strip less that much height.
+// The tally strip: tinted to its colour, with the colour's name in the corner
+// so it can be called out --- without the room agreeing on what "purple" looks
+// like in print. The tint gives the strip its area, so it needs no box drawn
+// around it. On a "tallies" sheet the marks fill it; the corner keeps its
+// name, which is what a drawn counter is matched against, so the marks get the
+// strip less that much height.
 #let strip_label_size = 5.5pt
 #let tally-strip(entry, follower, budget) = box(
   width: 100%,
   height: 100%,
   fill: strip-fill(entry),
   stroke: strip-stroke(entry),
-  // Air around the marks, and on the left enough of it to clear the half of
-  // the colour bar that falls inside the box: a tally drawn hard against the
-  // bar reads as part of it.
-  inset: (left: strip-bar / 2 + 2mm, rest: 2mm),
+  inset: 2mm,
   {
     if prefill == "tallies" and follower != none {
       block(
@@ -252,28 +248,19 @@
 )
 
 // The word cell beside a strip: the follower, if the sheet prints them, else
-// room to write one.
+// room to write one. The strip before it runs right up to the cell, where the
+// rule changes colour, so the word keeps its distance from that tint instead.
 #let follower-cell(follower) = if follower != none and prints_followers {
   align(
     left + horizon,
-    pad(x: 1.5mm, token-text(follower.text, size: 12pt, weight: "regular")),
+    pad(left: 3mm, right: 1.5mm, token-text(
+      follower.text,
+      size: 14pt,
+      weight: "regular",
+    )),
   )
 } else { [] }
 
-// The prefix cell: the prefix on an entry's first row, repeated in grey on
-// the rows after it, nothing on a padding row.
-#let prefix-cell(row) = {
-  let content = if row.entry == none { [] } else if (
-    row.k == 0
-  ) { prefix-text(row.entry.prefix) } else {
-    prefix-text(row.entry.prefix, size: 11pt, fill: luma(140))
-  }
-  align(left + horizon, pad(x: 1.5mm, content))
-}
-
-// One page of rows. The grid takes the whole height it is given, so the rows
-// share it equally: `rows_per_page` is the density knob and the row height
-// follows from it.
 // The word cell against its strip. A strip comes out about as tall as a row,
 // so this ratio is what sets its shape: 1.6 to 1 leaves it a golden rectangle
 // at the default twelve rows a page, wider than tall, which both suits the
@@ -282,6 +269,61 @@
 #let word_fr = 1.47fr
 #let strip_fr = 1fr
 
+// Every cell in a row sits on one rule, drawn at the bottom of the cell: the
+// prefix's in grey, each follower's in its strip's colour. The cells meet edge
+// to edge, so the rules join into one line down the row that changes colour
+// where one follower hands over to the next. Keeping the rule in its own grid
+// row is what lines the prefix's and the followers' up.
+#let ruled(body, rule) = grid(
+  columns: 100%,
+  rows: (1fr, strip-bar),
+  body, rule,
+)
+
+// One follower: the word and its strip on the rule in the strip's colour. The
+// rule is what pairs a word with its strip --- a colour cue on the strip's
+// edge sits as close to the neighbouring word as to its own --- and on a blank
+// sheet it is the line the word is written on.
+#let follower-pair(entry, follower, budget) = ruled(
+  grid(
+    columns: (word_fr, strip_fr),
+    follower-cell(follower), tally-strip(entry, follower, budget),
+  ),
+  strip-rule(entry),
+)
+
+// The prefix cell: the prefix on an entry's first row, repeated in grey on
+// the rows after it, nothing on a padding row. A neutral tint behind every
+// prefix, printed or to be written, sets the column apart from the followers
+// --- the words in both are the same face, and Libertinus has nothing heavier
+// than the bold the prefix is already in --- and is light enough to write on.
+// Its rule is fainter under a row the prefix continues from, so the
+// continuation reads as part of that row.
+#let prefix-cell(row, continued) = {
+  let content = if row.entry == none { [] } else if row.k == 0 {
+    prefix-text(row.entry.prefix, size: 15pt)
+  } else {
+    prefix-text(row.entry.prefix, size: 13pt, fill: luma(140))
+  }
+  box(width: 100%, height: 100%, fill: luma(238), ruled(
+    align(left + horizon, pad(x: 2.5mm, content)),
+    rect(
+      width: 100%,
+      height: 100%,
+      fill: if continued { luma(220) } else { luma(160) },
+      stroke: none,
+    ),
+  ))
+}
+
+// One page of rows. The grid takes the whole height it is given, so the rows
+// share it equally: `rows_per_page` is the density knob and the row height
+// follows from it.
+//
+// No frame and no rules between the follower cells: the strips are a strong
+// enough vertical rhythm to be the columns, and the table is bounded by the
+// header's rule above and the footer below. The one vertical line is between
+// the prefix and its followers.
 #let rows-grid(rows) = {
   let prefix_w = 42mm
   let cells = ()
@@ -291,46 +333,30 @@
     let budget = if row.entry == none { 1 } else {
       calc.max(1, ..row.entry.followers.map(f => f.count))
     }
-    cells.push(grid.cell(x: 0, y: y, prefix-cell(row)))
+    let next = rows.at(y + 1, default: none)
+    let continued = next != none and next.entry != none and next.k > 0
+    // Room above the row's contents, the only space between one row's rule
+    // and the next row's strips.
+    let inset = (top: 1.8mm)
+    cells.push(grid.cell(x: 0, y: y, inset: inset, prefix-cell(row, continued)))
     for c in range(columns) {
       let follower = if row.entry == none { none } else {
         row.entry.followers.at(row.k * columns + c, default: none)
       }
-      cells.push(grid.cell(x: 1 + 2 * c, y: y, follower-cell(follower)))
       cells.push(grid.cell(
-        x: 2 + 2 * c,
+        x: 1 + c,
         y: y,
-        inset: 0.9mm,
-        tally-strip(strips.at(c), follower, budget),
+        inset: inset,
+        follower-pair(strips.at(c), follower, budget),
       ))
     }
   }
 
-  // Rules: a line where one prefix ends and the next begins, a fainter one
-  // between the rows of a single prefix, so a continuation reads as part of
-  // the row above it. A blank sheet has no entries, so every rule is the
-  // heavier one and the parity is left to the strips.
-  //
-  // No frame and no rules between the follower cells: the strips are a strong
-  // enough vertical rhythm to be the columns, and the table is bounded by the
-  // header's rule above and the footer below. Only the two boundaries that
-  // carry meaning get ink --- between prefixes, and between the prefix and
-  // its followers.
-  let hlines = range(1, rows.len()).map(y => {
-    let continues = rows.at(y).entry != none and rows.at(y).k > 0
-    grid.hline(
-      y: y,
-      stroke: if continues { 0.3pt + luma(205) } else { 0.5pt + luma(70) },
-    )
-  })
-  let vlines = (grid.vline(x: 1, stroke: 0.5pt + luma(150)),)
-
   grid(
-    columns: (prefix_w,) + ((word_fr, strip_fr) * columns),
+    columns: (prefix_w,) + (1fr,) * columns,
     rows: (1fr,) * rows.len(),
     inset: 0pt,
-    ..hlines,
-    ..vlines,
+    grid.vline(x: 1, stroke: 0.5pt + luma(150)),
     ..cells,
   )
 }

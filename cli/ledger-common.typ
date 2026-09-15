@@ -72,30 +72,35 @@
 // whatever the colour is and equally easy to write over in pen. Lighter than
 // it needs to look on screen --- these print CMYK, which lays the colour down
 // heavier than a monitor shows it, and the strip's job is to be a ground, not
-// a block of colour. The bar down its leading edge carries the colour that a
-// counter is matched against.
+// a block of colour. The rule under it carries the colour that a counter is
+// matched against.
 //
-// A pale colour has no tint to give: its strip is the page, and the dashed
-// outline below is what gives it an area to write in.
+// A pale colour has no tint to give: its strip is the page, and a dashed
+// outline is what gives it an area to write in, closed along the bottom by
+// the rule.
 #let strip-fill(entry) = if pale(entry) { white } else {
   let (_, chroma, hue, ..) = oklch(entry.color).components()
   oklch(94%, chroma * 0.15, hue)
 }
 
-// One saturated edge rather than a box: a bar down the strip's left side.
-// The bar is the colour cue --- what a counter drawn from the cup is matched
-// against --- so it is wide enough to read as the colour rather than as a
-// line of it, which a hairline of a dark hue is not. The other three sides
-// are the tint's own edges. A pale colour has no bar to draw --- a white rule
-// on paper is nothing --- so it keeps a hairline outline instead.
-// Named, because the strip's own padding is measured off it: a box stroke is
-// drawn centred on the edge, so half the bar sits inside the box and the
-// tally marks have to start clear of it.
-#let strip-bar = 5pt
-
 #let strip-stroke(entry) = if pale(entry) {
-  (rest: (paint: luma(140), thickness: 0.5pt, dash: "dashed"))
-} else { (left: strip-bar + entry.color, rest: none) }
+  (rest: (paint: luma(140), thickness: 0.5pt, dash: "dashed"), bottom: none)
+} else { none }
+
+// The rule under a follower's word and its strip, in the full colour. It is
+// the colour cue --- what a counter drawn from the cup is matched against ---
+// so it is thick enough to read as the colour rather than as a line of it,
+// which a hairline of a dark hue is not. A pale colour would vanish into the
+// page, so its rule is outlined in the strip's dashed hairline.
+#let strip-bar = 4pt
+
+#let strip-rule(entry) = if pale(entry) {
+  rect(width: 100%, height: 100%, fill: white, stroke: (
+    paint: luma(140),
+    thickness: 0.5pt,
+    dash: "dashed",
+  ))
+} else { rect(width: 100%, height: 100%, fill: entry.color, stroke: none) }
 
 // The counter itself, drawn: a dot in the full colour with a hairline so the
 // white one is visible. This is what a participant matches a counter against.
