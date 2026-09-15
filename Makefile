@@ -89,13 +89,13 @@ endef
 #
 # The room has counters in four colours, so the palette is four and every row
 # takes the same four --- a row's colours no longer depend on where it sits on
-# the page. The deck walks through the Dick and Jane set row by row, so its
-# ROW_* constants have to be re-read off the sheets if this recipe changes.
+# the page. The deck walks through the magpie set row by row, so its ROW_*
+# constants have to be re-read off the sheets if this recipe changes.
 #
 # Training: blank sheets, and the numbered text page for whoever reads aloud.
 # The words are written as the group meets them, so one sheet serves every
-# text; LEDGER_BLANK_ROWS x 5 sheets has to cover the largest school-day
-# vocabulary (38 prefixes).
+# text; LEDGER_BLANK_ROWS x 5 sheets has to cover the largest outdoors
+# vocabulary (34 prefixes, the storm).
 #
 # Each generation set is built twice. --rows decides both the sheet count and
 # how much page a row gets, and a set dealt fewer rows than the default 12
@@ -110,8 +110,8 @@ LEDGER_PALETTE := @cli/ledger-palette-four.json
 LEDGER_SHEETS := 5
 LEDGER_BLANK_ROWS := 10
 LEDGER_BOOKS := green-eggs-and-ham the-very-hungry-caterpillar \
-	were-going-on-a-bear-hunt fun-with-dick-and-jane the-cat-in-the-hat
-LEDGER_TEXTS := bell bus dog rain volcano
+	were-going-on-a-bear-hunt the-magpie the-cat-in-the-hat
+LEDGER_TEXTS := beach storm kookaburra creek bush
 
 LEDGER_BUDGET := 140
 
@@ -133,6 +133,9 @@ define newline
 
 
 endef
+
+# A book written for the activities lives in data/originals/, the rest in data/.
+book_src = $(firstword $(wildcard data/originals/$(1).txt) data/$(1).txt)
 
 # $(1) label, $(2) corpus path, $(3) output dir, $(4) extra ledger flags
 define build_ledger
@@ -170,11 +173,11 @@ pack-$(LEDGER_SLUG): $(CLI)
 	@rm -rf $(LEDGER_DIR)
 	@mkdir -p $(LEDGER_STAGE)
 	$(foreach book,$(LEDGER_BOOKS),$(call build_ledger,generation: $(book),\
-		data/$(book).txt,$(LEDGER_STAGE)/$(book),\
+		$(call book_src,$(book)),$(LEDGER_STAGE)/$(book),\
 		--max-tokens $(LEDGER_BUDGET) --max-followers 4 --prefill tallies \
 		--brief none --even-pages)$(newline))
-	$(foreach text,$(LEDGER_TEXTS),$(call build_text,training text: school-day-$(text),\
-		data/originals/school-day-$(text).txt,$(LEDGER_STAGE)/school-day-$(text))$(newline))
+	$(foreach text,$(LEDGER_TEXTS),$(call build_text,training text: outdoors-$(text),\
+		data/originals/outdoors-$(text).txt,$(LEDGER_STAGE)/outdoors-$(text))$(newline))
 	@echo "training sheet: blank, and the pack's instruction sheet"
 	@./$(CLI) ledger --blank --palette $(LEDGER_PALETTE) --rows $(LEDGER_BLANK_ROWS) \
 		--brief generic --brief-counters \
@@ -185,7 +188,7 @@ pack-$(LEDGER_SLUG): $(CLI)
 		$(foreach book,$(LEDGER_BOOKS),$(LEDGER_STAGE)/$(book)/ledger.pdf) \
 		-- $(LEDGER_DIR)/generation-ledgers.pdf
 	@qpdf --empty --pages \
-		$(foreach text,$(LEDGER_TEXTS),$(LEDGER_STAGE)/school-day-$(text)/text.pdf) \
+		$(foreach text,$(LEDGER_TEXTS),$(LEDGER_STAGE)/outdoors-$(text)/text.pdf) \
 		-- $(LEDGER_DIR)/training-texts.pdf
 	@cp $(LEDGER_STAGE)/blank/ledger.pdf $(LEDGER_DIR)/training-sheets.pdf
 	@cp $(LEDGER_STAGE)/blank/brief.pdf $(LEDGER_DIR)/instructions.pdf
@@ -195,7 +198,7 @@ pack-$(LEDGER_SLUG): $(CLI)
 	$(call page_map,$(LEDGER_DIR)/README.md,Page map --- generation-ledgers.pdf,\
 		$(foreach book,$(LEDGER_BOOKS),$(book):$(LEDGER_STAGE)/$(book)/ledger.pdf))
 	$(call page_map,$(LEDGER_DIR)/README.md,Page map --- training-texts.pdf,\
-		$(foreach text,$(LEDGER_TEXTS),school-day-$(text):$(LEDGER_STAGE)/school-day-$(text)/text.pdf))
+		$(foreach text,$(LEDGER_TEXTS),outdoors-$(text):$(LEDGER_STAGE)/outdoors-$(text)/text.pdf))
 	@rm -rf $(LEDGER_STAGE)
 	$(call zip_pack,$(LEDGER_SLUG))
 

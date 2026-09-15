@@ -29,10 +29,11 @@ marks are both theirs to write.
 
 ## training-texts.pdf
 
-The five school-day texts as the tokeniser read them, numbered token by token,
-one page each. Print one page per group and give every group a different text:
-the finale pools them, and it only works if no two groups hold the same model.
-The page map below says which page is which text.
+The five outdoors texts (beach, storm, kookaburra, creek and bush) as the
+tokeniser read them, numbered token by token, one page each. Print one page per
+group and give every group a different text: the finale pools them, and it only
+works if no two groups hold the same model. The page map below says which page
+is which text.
 
 ## counters.pdf
 
