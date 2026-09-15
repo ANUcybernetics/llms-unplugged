@@ -1,41 +1,44 @@
-{/* _class: hero */}
-
-# Generation
-
-![bg](./assets/bg-chain.avif)
-
-```notes
-Walk through the next slides slowly --- the mechanics are simple but the hand-over ("who has the next row?") is where groups stall. Give every group four jobs: a reader (finds the row), a filler, a drawer, and a writer. If you have a real cup and a visualiser, do the draws for real and use the slides as the backup.
-```
-
----
-
-{/* _animate: cup-stop */}
+{/* _animate: gen */}
 
 ## Start after a full stop
 
 <LedgerPage text="" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_STOP} palette={PALETTE} />
-  <LedgerCup entry={ROW_STOP} palette={PALETTE} empty />
+  <LedgerSheet
+    entries={STORY_LEDGER}
+    palette={PALETTE}
+    label="The magpie: the nine rows this story uses"
+    focus="."
+    id="story-sheet"
+  />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} empty id="cup-stop" />
 </div>
 
 ```notes
-A story starts after a full stop, so somebody finds the row for "." --- it says how this book starts its sentences. Four words ever started a sentence here, and the cup is empty.
+Walk through the next slides slowly --- the mechanics are simple but the hand-over ("who has the next row?") is where groups stall. Give every group four jobs: a reader (finds the row), a filler, a drawer, and a writer. If you have a real cup and a visualiser, do the draws for real and use the slides as the backup.
+
+The sheet on screen is nine rows of the magpie's ledger --- the ones this story is going to visit, gathered onto one page; in the room they are spread across the five sheets. A story starts after a full stop, so somebody finds the row for "." --- it says how this book starts its sentences. Four words ever started a sentence here, and the cup is empty.
 ```
 
 ---
 
-{/* _animate: cup-stop */}
+{/* _animate: gen */}
 
 ## Fill the cup
 
 <LedgerPage text="" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_STOP} palette={PALETTE} highlight={0} />
-  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={1} />
+  <LedgerSheet
+    entries={STORY_LEDGER}
+    palette={PALETTE}
+    label="The magpie: the nine rows this story uses"
+    focus="."
+    highlight={0}
+    id="story-sheet"
+  />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={1} id="cup-stop" />
 </div>
 
 ```notes
@@ -44,15 +47,22 @@ First word in the row: "it", seven tally marks, red box. Count them out --- seve
 
 ---
 
-{/* _animate: cup-stop */}
+{/* _animate: gen */}
 
 ## Fill the cup
 
 <LedgerPage text="" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_STOP} palette={PALETTE} highlight={1} />
-  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={2} />
+  <LedgerSheet
+    entries={STORY_LEDGER}
+    palette={PALETTE}
+    label="The magpie: the nine rows this story uses"
+    focus="."
+    highlight={1}
+    id="story-sheet"
+  />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={2} id="cup-stop" />
 </div>
 
 ```notes
@@ -61,15 +71,22 @@ Next word: "Here", four marks, blue box. Four blue counters.
 
 ---
 
-{/* _animate: cup-stop */}
+{/* _animate: gen */}
 
 ## Fill the cup
 
 <LedgerPage text="" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_STOP} palette={PALETTE} highlight={2} />
-  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={3} />
+  <LedgerSheet
+    entries={STORY_LEDGER}
+    palette={PALETTE}
+    label="The magpie: the nine rows this story uses"
+    focus="."
+    highlight={2}
+    id="story-sheet"
+  />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={3} id="cup-stop" />
 </div>
 
 ```notes
@@ -78,15 +95,22 @@ Next: "Down", three marks, green box. Three green counters.
 
 ---
 
-{/* _animate: cup-stop */}
+{/* _animate: gen */}
 
 ## Fill the cup
 
 <LedgerPage text="" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_STOP} palette={PALETTE} highlight={3} />
-  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={4} />
+  <LedgerSheet
+    entries={STORY_LEDGER}
+    palette={PALETTE}
+    label="The magpie: the nine rows this story uses"
+    focus="."
+    highlight={3}
+    id="story-sheet"
+  />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={4} id="cup-stop" />
 </div>
 
 ```notes
@@ -95,15 +119,21 @@ Last word: "Swoop", three marks, yellow box. Three yellow counters, and the row 
 
 ---
 
-{/* _animate: cup-stop */}
+{/* _animate: gen */}
 
 ## The cup is the row
 
 <LedgerPage text="" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_STOP} palette={PALETTE} />
-  <LedgerCup entry={ROW_STOP} palette={PALETTE} />
+  <LedgerSheet
+    entries={STORY_LEDGER}
+    palette={PALETTE}
+    label="The magpie: the nine rows this story uses"
+    focus="."
+    id="story-sheet"
+  />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} id="cup-stop" />
 </div>
 
 ```notes
@@ -112,15 +142,22 @@ Seventeen counters for seventeen marks. The cup now holds the row's counts --- t
 
 ---
 
-{/* _animate: cup-stop */}
+{/* _animate: gen */}
 
 ## Draw one
 
 <LedgerPage text="it" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_STOP} palette={PALETTE} highlight={0} />
-  <LedgerCup entry={ROW_STOP} palette={PALETTE} drawn={0} />
+  <LedgerSheet
+    entries={STORY_LEDGER}
+    palette={PALETTE}
+    label="The magpie: the nine rows this story uses"
+    focus="."
+    highlight={0}
+    id="story-sheet"
+  />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} drawn={0} id="cup-stop" />
 </div>
 
 ```notes
@@ -129,46 +166,69 @@ Red: the likeliest one, seven chances in seventeen. Write "it" down, tip the cup
 
 ---
 
+{/* _animate: gen */}
+
 ## Fill the cup, draw one
 
 <LedgerPage text="it sits" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_IT} palette={PALETTE} highlight={0} />
-  <LedgerCup entry={ROW_IT} palette={PALETTE} drawn={0} />
+  <LedgerSheet
+    entries={STORY_LEDGER}
+    palette={PALETTE}
+    label="The magpie: the nine rows this story uses"
+    focus="it"
+    highlight={0}
+    id="story-sheet"
+  />
+  <LedgerCup entry={ROW_IT} palette={PALETTE} drawn={0} id="cup-it" />
 </div>
 
 ```notes
-Ten counters: three red for "sits", three blue for "watches", three green for "goes", one yellow for "is". Three words tied, and red comes out.
+Down the sheet to the row for "it". Ten counters: three red for "sits", three blue for "watches", three green for "goes", one yellow for "is". Three words tied, and red comes out.
 ```
 
 ---
+
+{/* _animate: gen */}
 
 ## Only one place to go
 
 <LedgerPage text="it sits on the" fresh />
 
-<div class="ledger-stack">
-  <LedgerRow entry={ROW_SITS} palette={PALETTE} highlight={0} />
-  <LedgerRow entry={ROW_ON} palette={PALETTE} highlight={0} />
+<div class="ledger-step">
+  <LedgerSheet
+    entries={STORY_LEDGER}
+    palette={PALETTE}
+    label="The magpie: the nine rows this story uses"
+    focus={["sits", "on"]}
+    highlight={0}
+    id="story-sheet"
+  />
 </div>
 
-no cup needed: after `sits` this book only ever said `on`, and after `on` only
-`the`
-
 ```notes
-A one-word row needs no draw at all. Groups will hit a few of these and they speed things up --- two in a row here.
+No cup needed: after "sits" this book only ever said "on", and after "on" only "the". A one-word row needs no draw at all. Groups will hit a few of these and they speed things up --- two in a row here.
 ```
 
 ---
+
+{/* _animate: gen */}
 
 ## Fill the cup, draw one
 
 <LedgerPage text="it sits on the fence" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_THE} palette={PALETTE} highlight={1} />
-  <LedgerCup entry={ROW_THE} palette={PALETTE} drawn={1} />
+  <LedgerSheet
+    entries={STORY_LEDGER}
+    palette={PALETTE}
+    label="The magpie: the nine rows this story uses"
+    focus="the"
+    highlight={1}
+    id="story-sheet"
+  />
+  <LedgerCup entry={ROW_THE} palette={PALETTE} drawn={1} id="cup-the" />
 </div>
 
 ```notes
@@ -177,30 +237,45 @@ The biggest cup yet: nineteen counters across all four colours --- five red for 
 
 ---
 
+{/* _animate: gen */}
+
 ## Only one place to go
 
 <LedgerPage text="it sits on the fence ." fresh />
 
-<div class="ledger-stack">
-  <LedgerRow entry={ROW_FENCE} palette={PALETTE} highlight={0} />
+<div class="ledger-step">
+  <LedgerSheet
+    entries={STORY_LEDGER}
+    palette={PALETTE}
+    label="The magpie: the nine rows this story uses"
+    focus="fence"
+    highlight={0}
+    id="story-sheet"
+  />
 </div>
 
-after `fence` this book only ever said `.`, and a full stop is a word like any
-other
-
 ```notes
-The full stop goes on the page, and it sends us back to the row we started from.
+After "fence" this book only ever said ".", and a full stop is a word like any other. The full stop goes on the page, and it sends us back to the row we started from.
 ```
 
 ---
+
+{/* _animate: gen */}
 
 ## Unlikely isn't impossible
 
 <LedgerPage text="it sits on the fence . Here" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_STOP} palette={PALETTE} highlight={1} />
-  <LedgerCup entry={ROW_STOP} palette={PALETTE} drawn={1} />
+  <LedgerSheet
+    entries={STORY_LEDGER}
+    palette={PALETTE}
+    label="The magpie: the nine rows this story uses"
+    focus="."
+    highlight={1}
+    id="story-sheet"
+  />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} drawn={1} id="cup-stop-again" />
 </div>
 
 ```notes
@@ -209,30 +284,45 @@ Back on the row for ".", the same seventeen counters as the very first draw, mos
 
 ---
 
+{/* _animate: gen */}
+
 ## Only one place to go
 
 <LedgerPage text="it sits on the fence . Here comes the" fresh />
 
-<div class="ledger-stack">
-  <LedgerRow entry={ROW_HERE} palette={PALETTE} highlight={0} />
-  <LedgerRow entry={ROW_COMES} palette={PALETTE} highlight={0} />
+<div class="ledger-step">
+  <LedgerSheet
+    entries={STORY_LEDGER}
+    palette={PALETTE}
+    label="The magpie: the nine rows this story uses"
+    focus={["Here", "comes"]}
+    highlight={0}
+    id="story-sheet"
+  />
 </div>
 
-after `Here` this book only ever said `comes`, and after `comes` only `the`
-
 ```notes
-Two more one-word rows, straight onto the page.
+After "Here" this book only ever said "comes", and after "comes" only "the". Two more one-word rows, straight onto the page.
 ```
 
 ---
+
+{/* _animate: gen */}
 
 ## The same row, a different word
 
 <LedgerPage text="it sits on the fence . Here comes the magpie" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_THE} palette={PALETTE} highlight={0} />
-  <LedgerCup entry={ROW_THE} palette={PALETTE} drawn={0} />
+  <LedgerSheet
+    entries={STORY_LEDGER}
+    palette={PALETTE}
+    label="The magpie: the nine rows this story uses"
+    focus="the"
+    highlight={0}
+    id="story-sheet"
+  />
+  <LedgerCup entry={ROW_THE} palette={PALETTE} drawn={0} id="cup-the-again" />
 </div>
 
 ```notes
@@ -241,13 +331,22 @@ Back on the row for "the", the same nineteen counters as before --- and this tim
 
 ---
 
+{/* _animate: gen */}
+
 ## Fill the cup, draw one
 
 <LedgerPage text="it sits on the fence . Here comes the magpie ." fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_MAGPIE} palette={PALETTE} highlight={1} />
-  <LedgerCup entry={ROW_MAGPIE} palette={PALETTE} drawn={1} />
+  <LedgerSheet
+    entries={STORY_LEDGER}
+    palette={PALETTE}
+    label="The magpie: the nine rows this story uses"
+    focus="magpie"
+    highlight={1}
+    id="story-sheet"
+  />
+  <LedgerCup entry={ROW_MAGPIE} palette={PALETTE} drawn={1} id="cup-magpie" />
 </div>
 
 ```notes

@@ -1,6 +1,6 @@
 {/* _class: hero */}
 
-# A language model on paper
+# Generation
 
 ![bg](./assets/bg-ledger-title.avif)
 
@@ -24,7 +24,7 @@ Take your time here. Left column: words from the book. Along each row: the words
 
 ## One row at a time
 
-<LedgerSheet entries={SHEET_FIVE} palette={PALETTE} focus={0} />
+<LedgerSheet entries={SHEET_FIVE} palette={PALETTE} focus="the" />
 
 after the word `the`, this book said `magpie` five times, `fence` six times, and
 `postie` and `dog` four times each
@@ -51,7 +51,12 @@ These are the magpie headers; every book deals differently, so each group practi
 
 ## The colours
 
-<LedgerRow entry={ROW_IT} palette={PALETTE} highlight={0} />
+<LedgerSheet
+  entries={SHEET_FIVE}
+  palette={PALETTE}
+  focus={["the", "to", "up", "watches"]}
+  highlight={0}
+/>
 
 every word in a row sits in a coloured box, and your counters come in those same
 four colours
@@ -59,5 +64,5 @@ four colours
 a red counter means **the word in the red box**
 
 ```notes
-Now the colours. Hold up a red counter: on this row, red means "sits". On the row for "the", red means "magpie" --- the colour names the place in the row, not the word. That's why one set of counters works for every row, and for every book in the room. Four colours, always in the same order: red, blue, green, yellow.
+Now the colours. Hold up a red counter: on the row for "the", red means "magpie". On the row for "to", red means "the" --- the colour names the place in the row, not the word. That's why one set of counters works for every row, and for every book in the room. Four colours, always in the same order: red, blue, green, yellow.
 ```

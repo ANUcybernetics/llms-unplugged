@@ -101,7 +101,7 @@
   style="--columns: {columns}"
   data-id={id}
   role="table"
-  aria-label="ledger row for {entry.prefix}"
+  aria-label={entry.prefix ? `ledger row for ${entry.prefix}` : "blank ledger row"}
 >
   {#each rows as cells, r (r)}
     <div class="prow" role="row">
@@ -172,7 +172,7 @@
   .prow {
     display: grid;
     grid-template-columns: var(--stub, 6em) repeat(var(--columns), var(--cell, 5.6em) 4.2em);
-    grid-auto-rows: 2.9em;
+    grid-auto-rows: var(--row-height, 2.9em);
     align-items: stretch;
     padding-block-start: 0.2em;
   }

@@ -1,13 +1,12 @@
-/* The ledger deck's generation walkthrough: a row and its cup side by side,
-   under the story-so-far line.
+/* The ledger deck's generation walkthrough: the story's ledger and its cup
+   side by side, under the story-so-far line.
 
    A fixed two-track grid rather than a centred flex row: the cup's column is
    held open even on a frame that has no cup ("only one place to go"), so the
-   row sits in the same place on every frame of the walkthrough and the eye
-   has only the row's own contents to follow. The one run of frames that does
-   animate --- filling the cup for "see", then drawing from it --- needs the
-   same thing, so auto-animate is left with only the counters going in and the
-   one coming out. */
+   sheet sits in the same place on every frame of the walkthrough and the eye
+   has only the lit row to follow. The whole run auto-animates, so the sheet
+   and the story line are left alone and only the counters going into a cup,
+   the one coming out, and the word landing on the page move. */
 .reveal .ledger-step {
   display: grid;
   grid-template-columns: auto 15rem;
@@ -15,11 +14,15 @@
   justify-content: center;
   gap: 1rem;
   margin-inline: auto;
+
+  /* Nine rows under a heading and the story line. */
+  --sheet-size: 0.95rem;
 }
 
-/* Inside the step the row and bag cluster around the centre together, rather
-   than the row's own auto margins pushing the bag to the edge. */
-.reveal .ledger-step .ledger-row {
+/* A bare row in the step (the finale's call-out) clusters with its cup
+   around the centre rather than its own auto margins pushing the cup to the
+   edge. Direct child only: a sheet's rows take the sheet's size. */
+.reveal .ledger-step > .ledger-row {
   margin-inline: 0;
   --row-size: 1.15rem;
 }
@@ -38,10 +41,10 @@
   --row-size: 1rem;
 }
 
-/* A whole sheet is seven rows here, one more than fits at the widget's own
-   size once the slide has a heading and a line of prose under it. */
+/* A sheet on its own under a heading: four rows, so it can be the size it
+   would be on the desk. */
 .reveal [data-id="ledger-sheet"] {
-  font-size: 1rem;
+  --sheet-size: 1.3rem;
 }
 
 /* Reveal fades in every element of an auto-animate slide that has no data-id
@@ -50,7 +53,7 @@
    into the cup and a word landing on the page. */
 .reveal
   section[data-auto-animate]
-  [data-auto-animate-target^="unmatched"]:not(.counter, .ledger-token) {
+  [data-auto-animate-target^="unmatched"]:not(.counter, .ledger-token, .tok) {
   opacity: 1 !important;
   transition: none !important;
 }
