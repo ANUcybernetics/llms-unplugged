@@ -43,24 +43,49 @@
 
 /* The tally strip: a tint of its colour to write on --- the same hue at a
    fixed pale lightness and a fraction of its chroma that ledger-common.typ
-   uses, so every strip is equally faint whatever the colour --- and a bar
-   down the leading edge in the full colour, which is what a counter is
-   matched against. A pale colour (white, and anything near it) has no tint to
-   give and no bar to draw, so its strip is the page with a dashed edge; the
-   widget adds .pale, since the palette is data and no colour is special by
-   name. */
+   uses, so every strip is equally faint whatever the colour. A pale colour
+   (white, and anything near it) has no tint to give, so its strip is the page
+   with a dashed edge; the widget adds .pale, since the palette is data and no
+   colour is special by name. */
 .ledger-strip {
   --c: #888;
 
   position: relative;
   background: oklch(from var(--c) 94% calc(c * 0.15) h);
-  border-left: 0.3em solid var(--c);
   min-block-size: 2.4em;
 }
 
 .ledger-strip.pale {
   background: #fff;
   border: 1px dashed rgb(0 0 0 / 45%);
+}
+
+/* The rule along the bottom of every cell in a row, as the sheet prints it: a
+   follower's word and its strip sit on one rule in the strip's full colour,
+   which is what pairs them and what a counter is matched against. The cells
+   meet edge to edge, so the rules join into one line that changes colour
+   where one follower hands over to the next. After .ledger-strip.pale, whose
+   border shorthand would otherwise thin a pale strip's rule. */
+.ledger-rule {
+  --c: #888;
+
+  border-bottom: var(--ledger-rule, 0.25em) solid var(--c);
+}
+
+.ledger-rule.pale {
+  border-bottom: var(--ledger-rule, 0.25em) dashed rgb(0 0 0 / 45%);
+}
+
+/* The prefix cell: a neutral tint, to set the column apart from the
+   followers, on a grey rule --- fainter under a row the prefix continues
+   onto the next from. */
+.ledger-prefix {
+  background: #eee;
+  border-bottom: var(--ledger-rule, 0.25em) solid #a0a0a0;
+}
+
+.ledger-prefix.continued {
+  border-bottom-color: #dcdcdc;
 }
 
 /* The colour's name in the strip's corner, as the sheet prints it. */
@@ -74,8 +99,8 @@
   letter-spacing: 0.02em;
 }
 
-/* One counter (a ball): a disc in the full colour with a hairline so the
-   white one is visible. */
+/* One counter (a ball): a disc in the full colour with a hairline so a pale
+   one is visible. */
 .ledger-counter {
   --c: #888;
 

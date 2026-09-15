@@ -104,14 +104,22 @@
   aria-label="ledger row for {entry.prefix}"
 >
   {#each rows as cells, r (r)}
-    <div class="prow" class:continues={r > 0} role="row">
-      <div class="prefix" class:repeat={r > 0} role="rowheader" data-id={cellId(`p${r}`)}>
+    <div class="prow" role="row">
+      <div
+        class="prefix ledger-prefix"
+        class:repeat={r > 0}
+        class:continued={r < rows.length - 1}
+        role="rowheader"
+        data-id={cellId(`p${r}`)}
+      >
         {@render token(entry.prefix)}
       </div>
       {#each cells as cell (cell.index)}
         <div
-          class="word"
+          class="word ledger-rule"
           class:dim={highlight !== undefined && highlight !== cell.index}
+          class:pale={isPale(cell.colour.hex)}
+          style="--c: {cell.colour.hex}"
           role="cell"
           data-id={cellId(`w${cell.index}`)}
         >
@@ -120,7 +128,7 @@
           {/if}
         </div>
         <div
-          class="ledger-strip"
+          class="ledger-strip ledger-rule"
           class:dim={highlight !== undefined && highlight !== cell.index}
           class:lit={highlight === cell.index}
           class:pale={isPale(cell.colour.hex)}
@@ -166,10 +174,7 @@
     grid-template-columns: var(--stub, 6em) repeat(var(--columns), var(--cell, 5.6em) 4.2em);
     grid-auto-rows: 2.9em;
     align-items: stretch;
-  }
-
-  .prow.continues {
-    border-top: 1px solid rgb(0 0 0 / 15%);
+    padding-block-start: 0.2em;
   }
 
   .prefix,
@@ -177,6 +182,12 @@
     display: flex;
     align-items: center;
     padding-inline: 0.5em;
+  }
+
+  /* The strip before a word runs right up to it, where the rule changes
+     colour, so the word keeps its distance from that tint instead. */
+  .word {
+    padding-inline-start: 0.7em;
   }
 
   .prefix {
@@ -198,7 +209,6 @@
   }
 
   .ledger-strip {
-    margin: 0.2em;
     transition: opacity 0.3s;
   }
 

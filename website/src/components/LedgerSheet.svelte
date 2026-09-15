@@ -98,10 +98,6 @@
     transition: opacity 0.3s;
   }
 
-  .line + .line {
-    border-top: 1px solid rgb(0 0 0 / 15%);
-  }
-
   .dim {
     opacity: 0.22;
   }

@@ -43,11 +43,12 @@
       </div>
       {#each Array.from({ length: ROWS }) as _, r (r)}
         <div class="row" style="--columns: {columns}">
-          <span class="stub"></span>
+          <span class="stub ledger-prefix"></span>
           {#each paletteFor(r, columns, palette) as colour (colour.name)}
-            <span class="cell"></span>
+            <span class="cell ledger-rule" class:pale={isPale(colour.hex)} style="--c: {colour.hex}"
+            ></span>
             <span
-              class="ledger-strip mini"
+              class="ledger-strip mini ledger-rule"
               class:pale={isPale(colour.hex)}
               style="--c: {colour.hex}"
             ></span>
@@ -102,22 +103,18 @@
   .row {
     display: grid;
     grid-template-columns: 1.4em repeat(var(--columns), 1fr 0.9em);
-    gap: 0.15em;
     margin-block: 0.2em;
+
+    --ledger-rule: 0.15em;
   }
 
   .stub {
     border-right: 1px solid rgb(0 0 0 / 35%);
   }
 
-  .cell {
-    min-block-size: 0.9em;
-    border-bottom: 1px solid rgb(0 0 0 / 12%);
-  }
-
+  .cell,
   .ledger-strip.mini {
     min-block-size: 0.9em;
-    border-left-width: 0.2em;
   }
 
   .holder {
