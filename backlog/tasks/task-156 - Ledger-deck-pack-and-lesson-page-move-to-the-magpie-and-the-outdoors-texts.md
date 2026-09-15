@@ -1,10 +1,10 @@
 ---
 id: TASK-156
 title: 'Ledger deck, pack and lesson page move to the magpie and the outdoors texts'
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-09-14 11:34'
-updated_date: '2026-09-15 05:42'
+updated_date: '2026-09-15 06:02'
 labels:
   - data
   - ledger
@@ -25,11 +25,13 @@ The ledger half of task-155, held back because the how-ai-writes-stories-ledger 
 - [x] #1 Makefile LEDGER_BOOKS swaps fun-with-dick-and-jane for the-magpie (data/originals/, via a book_src lookup) and LEDGER_TEXTS becomes beach storm kookaburra creek bush with the outdoors- prefix; make pack-how-ai-writes-stories-ledger builds clean and the brief's counters-per-colour figure is checked (magpie max tally 8, max row 19)
 - [x] #2 the deck's ROW_* and SHEET constants are re-read from the built magpie and outdoors ledger.json, the walkthrough chain in decks/partials/ledger-*.mdx follows the videos' chain above, DJ_OPENING becomes the magpie's opening, and the finale's five rows and unique-word draw follow the outdoors texts
 - [x] #3 the lesson page, docs/packs README and the deck's notes no longer mention Dick and Jane or the school-day texts, and the school-day texts are git rm'd
-- [ ] #4 pnpm run check passes and the rebuilt pack is uploaded with ops/bucket-sync.py
+- [x] #4 pnpm run check passes and the rebuilt pack is uploaded with ops/bucket-sync.py
 <!-- AC:END -->
 
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
 Pack, deck, lesson page and docs moved; school-day texts removed; pnpm run check, build and tests pass, and the changed slides were checked in the browser. Remaining: upload the rebuilt pack with ops/bucket-sync.py, held until the 2026-09-15 workshop is over.
+
+Pack rebuilt and uploaded after the workshop; served zip verified against the local build; manifest unchanged (PDFs only).
 <!-- SECTION:NOTES:END -->
