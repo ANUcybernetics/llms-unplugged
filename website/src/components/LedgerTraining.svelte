@@ -92,16 +92,20 @@
      whole height. */
   .training {
     display: grid;
-    grid-template-columns: 21rem auto;
+    grid-template-columns: 18rem auto;
     justify-content: center;
     align-items: start;
     gap: 1rem;
     font-size: 1.25rem;
 
-    /* A sheet filling in wants compact rows (no count here passes five) and
-       a gentle fade, since the rows already filled are part of the point. */
-    --sheet-size: 1rem;
-    --row-height: 2em;
+    /* A sheet filling in wants compact cells (no count here passes two, and
+       no word is long) and a gentle fade, since the rows already filled are
+       part of the point. */
+    --sheet-size: 1.3rem;
+    --row-height: 2.2em;
+    --stub: 5em;
+    --cell: 4.6em;
+    --strip: 3.4em;
     --sheet-dim: 0.45;
   }
 

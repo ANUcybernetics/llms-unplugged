@@ -171,7 +171,9 @@
      things that actually changed move. */
   .prow {
     display: grid;
-    grid-template-columns: var(--stub, 6em) repeat(var(--columns), var(--cell, 5.6em) 4.2em);
+    grid-template-columns:
+      var(--stub, 6em)
+      repeat(var(--columns), var(--cell, 5.6em) var(--strip, 4.2em));
     grid-auto-rows: var(--row-height, 2.9em);
     align-items: stretch;
     padding-block-start: 0.2em;
