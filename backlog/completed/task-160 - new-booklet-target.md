@@ -1,5 +1,5 @@
 ---
-id: task-023
+id: TASK-160
 title: new booklet target
 status: Done
 assignee: []

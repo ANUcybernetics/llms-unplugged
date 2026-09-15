@@ -1,5 +1,5 @@
 ---
-id: task-067
+id: TASK-162
 title:
   update initial news post with more detail about whats coming and timelines
 status: Done

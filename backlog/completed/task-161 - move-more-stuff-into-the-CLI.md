@@ -1,5 +1,5 @@
 ---
-id: task-046
+id: TASK-161
 title: move more stuff into the CLI
 status: Done
 assignee: []
