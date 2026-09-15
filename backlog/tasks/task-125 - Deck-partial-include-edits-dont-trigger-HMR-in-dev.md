@@ -5,7 +5,7 @@ status: Done
 assignee:
   - '@claude'
 created_date: '2026-06-01 01:01'
-updated_date: '2026-06-10 04:38'
+updated_date: '2026-09-15 06:20'
 labels:
   - dx
   - bug
@@ -20,7 +20,7 @@ Editing a deck partial included via the {/* @include ./partials/foo.mdx */} dire
 
 Root cause: @include splices partials via readFileSync at MDX compile time, so partials are not Vite module dependencies of the parent deck. astromotion v0.5.1 already ships and registers a dev plugin (astromotion:watch-includes, src/vite-plugin-watch-includes.ts) that watches the partial files and sends a full-reload on edit --- but Astro / @astrojs/mdx never invalidates the cached compiled .deck.mdx module on the server, so the reload just re-serves stale output. Reproduced on astro 6.4.2 / @astrojs/mdx 6.0.1.
 
-Tracked upstream in the astromotion backlog (its task-2, In Progress): the watch-file plumbing is done, but end-to-end HMR is blocked on the deeper Astro/MDX server-side invalidation, which the upstream findings note affects even direct parent .deck.mdx edits in that setup.
+Tracked upstream in the astromotion backlog (its "Track @include partials as Vite watch dependencies for HMR" task, In Progress): the watch-file plumbing is done, but end-to-end HMR is blocked on the deeper Astro/MDX server-side invalidation, which the upstream findings note affects even direct parent .deck.mdx edits in that setup.
 
 This is the downstream tracker: confirm a clean fix once it lands upstream, and meanwhile scope whether any local-only mitigation exists. Workaround for now: rebuild + preview, or restart the dev server.
 <!-- SECTION:DESCRIPTION:END -->
