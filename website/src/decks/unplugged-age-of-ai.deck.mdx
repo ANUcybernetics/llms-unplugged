@@ -360,14 +360,17 @@ This is the model we made today. Now put its two kinds of scale beside a frontie
 {/* _class: centered */}
 
 <ModelScaleBars
-  contextStart="1 token"
-  trainingStart="1,962 tokens"
-  modelStart="57,600 grid cells"
-  footer="three independent scales · different kinds of model"
+  contextFrom={1}
+  contextFromLabel="1 token"
+  trainingFrom={1962}
+  trainingFromLabel="1,962 tokens"
+  modelFrom={57600}
+  modelFromLabel="57,600 grid cells"
+  footer="one axis, in powers of ten · three independent dials · different kinds of model"
 />
 
 ```notes
-Three independent scales grow. The first is how much the model looks at before each guess. Ours looked at exactly one token --- which is why our sentence wandered --- and Claude looks back over the whole conversation.
+Three independent scales grow. The first is how much the model looks at before each guess. Ours looked at exactly one token --- which is why our sentence wandered --- and Claude looks back over up to a million tokens, the whole conversation and then some.
 
 The second is how much text went past the counter. Ours read 1,962 tokens; fifteen trillion is the published figure for a recent open model's training run. Every one of those tokens went past a counter, the way the book went past yours.
 
