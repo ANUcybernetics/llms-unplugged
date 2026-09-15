@@ -85,7 +85,7 @@ screen, not what fits a printed page.
 - `K.die(parent, { size, face })` → `{ el, texts }`; `K.land(tl, die, face, t)`
   lands it showing `face`
 - `K.ledgerRow(parent, entry, palette, { w, h })` →
-  `{ el, cells[{ lit, strokes, wordEl, box, bar, colour, hex, follower, cx, cy }], prefixEl, lit }`;
+  `{ el, cells[{ lit, strokes, wordEl, box, rule, colour, hex, follower, cx, cy }], prefixEl, lit }`;
   entries come from `KIT_DATA.ledger[name].sheets[].pages[][]`
 - `K.sheet(parent, entries, palette, { w, rowH, header: [from, to], title })` →
   `{ el, rows, headerEl, rowAt(i) }`

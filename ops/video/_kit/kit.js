@@ -433,8 +433,12 @@ window.KIT = (() => {
   }
 
   // A ledger row as the sheets print it (cli/ledger.typ): the prefix in bold
-  // at the left, then one cell per follower: the word, and a strip in the
-  // column's counter colour holding its tally marks.
+  // on a grey tint at the left, then one cell per follower: the word, and a
+  // strip tinted in the column's counter colour holding its tally marks. Every
+  // cell sits on a rule along the bottom of the row --- grey under the prefix,
+  // the full counter colour under a follower's word and strip --- and the
+  // rules meet end to end, so the line changes colour where one follower
+  // hands over to the next.
   const COUNTER = {
     red: "var(--counter-red)",
     blue: "var(--counter-blue)",
@@ -455,8 +459,16 @@ window.KIT = (() => {
     const oy = svgParent ? y : 0;
     const prefix = entry.prefix.join ? entry.prefix.join(" ") : entry.prefix;
     const cellW = (w - prefixW) / 4;
+    // The rule's thickness and the gap above a row's contents, in proportion
+    // to the row as the printed sheet has them.
+    const rule = Math.max(6, Math.round(h * 0.08)),
+      gap = Math.round(h * 0.06);
+    const bodyY = oy + gap,
+      bodyH = h - gap - rule,
+      ruleY = oy + h - rule;
     svg("rect", { x: 0, y: oy, width: w, height: h, fill: "var(--paper)" }, g);
-    svg("line", { x1: 0, y1: oy + h, x2: w, y2: oy + h, stroke: "rgb(0 0 0 / 25%)" }, g);
+    svg("rect", { x: 0, y: bodyY, width: prefixW, height: bodyH, fill: "#eee" }, g);
+    svg("rect", { x: 0, y: ruleY, width: prefixW, height: rule, fill: "#a0a0a0" }, g);
     const prefixEl = svg(
       "text",
       {
@@ -490,11 +502,11 @@ window.KIT = (() => {
     svg(
       "line",
       {
-        x1: prefixW - 20,
-        y1: oy + 8,
-        x2: prefixW - 20,
-        y2: oy + h - 8,
-        stroke: "rgb(0 0 0 / 20%)",
+        x1: prefixW,
+        y1: bodyY,
+        x2: prefixW,
+        y2: oy + h,
+        stroke: "rgb(0 0 0 / 35%)",
       },
       g,
     );
@@ -502,23 +514,25 @@ window.KIT = (() => {
       const f = entry.followers[c];
       const cx = prefixW + c * cellW;
       const cg = svg("g", {}, g);
-      const stripX = cx + cellW * 0.42,
-        stripW = cellW * 0.52;
+      // The strip runs to the cell's right edge, where the rule changes colour;
+      // the next cell's word keeps its distance from it instead.
+      const stripW = cellW * 0.42,
+        stripX = cx + cellW - stripW;
       const box = svg(
         "rect",
-        { x: stripX, y: oy + 12, width: stripW, height: h - 24, fill: TINT[p.name] || "#eee" },
+        { x: stripX, y: bodyY, width: stripW, height: bodyH, fill: TINT[p.name] || "#eee" },
         cg,
       );
-      const bar = svg(
+      const ruleEl = svg(
         "rect",
-        { x: stripX, y: oy + 12, width: 10, height: h - 24, fill: p.hex },
+        { x: cx, y: ruleY, width: cellW, height: rule, fill: p.hex },
         cg,
       );
       svg(
         "text",
         {
           x: stripX + stripW - 8,
-          y: oy + h - 20,
+          y: ruleY - 10,
           "text-anchor": "end",
           "font-size": 16,
           class: "ui",
@@ -533,7 +547,7 @@ window.KIT = (() => {
         wordEl = svg(
           "text",
           {
-            x: cx + 18,
+            x: cx + 24,
             y: oy + h / 2,
             "dominant-baseline": "central",
             "font-size": fontSize,
@@ -545,7 +559,7 @@ window.KIT = (() => {
           svg(
             "rect",
             {
-              x: cx + 12,
+              x: cx + 18,
               y: oy + h / 2 - 26,
               width: 44,
               height: 52,
@@ -556,10 +570,10 @@ window.KIT = (() => {
             },
             cg,
           );
-          wordEl.setAttribute("x", cx + 34);
+          wordEl.setAttribute("x", cx + 40);
           wordEl.setAttribute("text-anchor", "middle");
         }
-        strokes = prepDraw(tally(cg, f.count, stripX + 26, oy + 30, 34, 9));
+        strokes = prepDraw(tally(cg, f.count, stripX + 16, bodyY + 18, 34, 9));
       }
       const lit = svg(
         "rect",
@@ -578,7 +592,7 @@ window.KIT = (() => {
       return {
         g: cg,
         box,
-        bar,
+        rule: ruleEl,
         wordEl,
         strokes,
         lit,
