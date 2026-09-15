@@ -15,6 +15,39 @@
   /* Project-specific token (referenced by widgets.css). */
   --color-bg: var(--anu-dark-grey);
 
+  /* Grid rules, drawn for a projector rather than a laptop panel. Every grid
+     the decks put on the wall --- bigram, context, parameter, attention, the
+     zoom SVG --- rules its cells with these.
+
+     The website's --grid-rule-color is --anu-gold at 30%, and --anu-gold is an
+     ink tuned for white paper: over the #0d0d0d slide ground it measures
+     1.4:1, which a good panel renders beautifully and a lit room erases
+     outright (1.1:1 once ambient light lifts the black floor). --anu-gold-2 is
+     the light-on-dark gold the theme already reaches for on hero and quote
+     slides; at 60% it puts the same hairline at ~5:1, still unmistakably gold
+     and still far below the white tally marks, so the marks keep outranking
+     the grid they sit in.
+
+     Width is a separate axis from contrast: a 1px rule smeared across three
+     projector pixels loses most of its amplitude whatever colour it is. 2px
+     survives the blur. */
+  --grid-rule-color: rgb(from var(--anu-gold-2) r g b / 60%);
+  --grid-rule-width: 2px;
+
+  /* The heavier edge --- a widget's outer frame rather than its inner rules ---
+     rebased on the same light gold for the same reason. */
+  --color-border: rgb(from var(--anu-gold-2) r g b / 75%);
+
+  /* Highlights that fill a cell rather than outline one. Area survives
+     projection and screen-share compression far better than any line does, so
+     these carry the load once the rules are only structure: a washed-out
+     projector still shows a banded row. Gold-2 again --- a 15% wash of the
+     paper-ink gold is invisible on the wall. */
+  --lm-highlight-soft: rgb(from var(--anu-gold-2) r g b / 14%);
+  --lm-highlight-medium: rgb(from var(--anu-gold-2) r g b / 32%);
+  --lm-highlight-strong: rgb(from var(--anu-gold-2) r g b / 45%);
+  --grid-cell-band: rgb(from var(--anu-gold-2) r g b / 22%);
+
   /* Whiteboard (press W): a dark board carrying house artwork rather than
      astromotion's blank light default. The mode only picks astromotion's own
      defaults, so the pen palette is restated here --- white is the ink the

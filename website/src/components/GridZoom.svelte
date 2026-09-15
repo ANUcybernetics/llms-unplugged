@@ -171,15 +171,20 @@
     margin-inline: auto;
   }
 
+  /* The mesh takes the deck's grid-rule colour but sets its own width: these
+     are viewBox units on a block that deliberately degenerates to flat grey at
+     the dense end of the scale run (see `tile` above), so the table rules' 2px
+     would bring that hand-over forward by several steps. 1.5 is the most the
+     coarse grids can carry without the fine ones filling in early. */
   .mesh {
-    stroke: var(--color-divider);
-    stroke-width: 1;
+    stroke: var(--grid-rule-color);
+    stroke-width: 1.5;
   }
 
   .frame {
     fill: none;
     stroke: var(--color-border);
-    stroke-width: 2;
+    stroke-width: 3;
   }
 
   .compare,

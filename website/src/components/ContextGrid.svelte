@@ -98,14 +98,14 @@
   table.context-grid th,
   table.context-grid td {
     padding: 0.06rem 0.25rem;
-    border: 1px solid var(--color-divider);
+    border: var(--grid-rule-width) solid var(--grid-rule-color);
     text-align: center;
   }
 
   /* Reveal strips the last row's bottom border; put it back so the grid closes. */
   table.context-grid tbody tr:last-child th,
   table.context-grid tbody tr:last-child td {
-    border-bottom: 1px solid var(--color-divider);
+    border-bottom: var(--grid-rule-width) solid var(--grid-rule-color);
   }
 
   table.context-grid td.grid-cell {

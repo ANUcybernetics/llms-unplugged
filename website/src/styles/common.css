@@ -18,6 +18,16 @@
   --color-divider: rgb(from var(--anu-gold) r g b / 30%);
   --color-border: rgb(from var(--anu-gold) r g b / 40%);
 
+  /* The rule every grid widget draws between its cells. Split out from
+     --color-divider (which also edges cards and panels) so the decks can
+     redeclare it for a projector without touching the website's chrome ---
+     see the override in src/decks/theme.css. */
+  --grid-rule-color: var(--color-divider);
+  --grid-rule-width: 1px;
+
+  /* Wash behind a grid row or cell a widget is pointing at. */
+  --grid-cell-band: rgb(from var(--anu-gold) r g b / 15%);
+
   /* LM widget highlight colours */
   --lm-highlight-soft: rgb(from var(--anu-gold) r g b / 10%);
   --lm-highlight-medium: rgb(from var(--anu-gold) r g b / 30%);

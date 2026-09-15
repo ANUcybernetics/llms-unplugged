@@ -110,7 +110,7 @@
   }
 
   .entry.highlighted {
-    background: color-mix(in srgb, var(--anu-gold) 15%, transparent);
+    background: var(--grid-cell-band);
   }
 
   .entry-previous-word {

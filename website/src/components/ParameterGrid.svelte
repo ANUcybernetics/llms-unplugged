@@ -70,14 +70,14 @@
   table.parameter-grid th,
   table.parameter-grid td {
     padding: 0.3rem 0.4rem;
-    border: 1px solid var(--color-divider);
+    border: var(--grid-rule-width) solid var(--grid-rule-color);
     text-align: center;
   }
 
   /* Reveal strips the last row's bottom border; put it back so the grid closes. */
   table.parameter-grid tbody tr:last-child th,
   table.parameter-grid tbody tr:last-child td {
-    border-bottom: 1px solid var(--color-divider);
+    border-bottom: var(--grid-rule-width) solid var(--grid-rule-color);
   }
 
   /* The tallies stay visible but recede: what was countable is now the faint
@@ -103,6 +103,6 @@
   td.marked {
     outline: 2px solid var(--anu-gold);
     outline-offset: -2px;
-    background: color-mix(in srgb, var(--anu-gold) 15%, transparent);
+    background: var(--grid-cell-band);
   }
 </style>

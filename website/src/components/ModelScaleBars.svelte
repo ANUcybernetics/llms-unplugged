@@ -104,7 +104,7 @@
 
   .endpoints {
     padding-block-end: 0.2rem;
-    border-block-end: 1px solid var(--color-divider);
+    border-block-end: var(--grid-rule-width) solid var(--grid-rule-color);
     color: var(--color-text-secondary);
     font-size: 1.15rem;
   }

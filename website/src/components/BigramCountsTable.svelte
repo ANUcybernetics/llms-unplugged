@@ -133,10 +133,11 @@
        context" slide overflows the canvas beyond this (0.5rem already ran
        7px past the bottom). */
     padding: 0.45rem 0.4rem;
-    /* Subtle gold-tinted grid lines (the website's bigram grid uses the same
-       token) so cells read as a grid without competing with the gold tally
-       marks and current-cell highlight. */
-    border: 1px solid var(--color-divider);
+    /* Gold-tinted grid lines so cells read as a grid without competing with the
+       tally marks and current-cell highlight. Weight and contrast are the
+       deck's call, not this component's --- theme.css redeclares both for a
+       projector. */
+    border: var(--grid-rule-width) solid var(--grid-rule-color);
   }
 
   /* Reveal's base theme strips the bottom border off the final row
@@ -144,7 +145,7 @@
      grid open along its bottom edge. Put it back so the grid reads as closed. */
   table.bigram-grid tbody tr:last-child td,
   table.bigram-grid tbody tr:last-child th {
-    border-bottom: 1px solid var(--color-divider);
+    border-bottom: var(--grid-rule-width) solid var(--grid-rule-color);
   }
 
   /* Headings fade in as the build reveals each token; the cells they sit in are
@@ -210,7 +211,7 @@
   }
 
   tr.active-row td {
-    background: color-mix(in srgb, var(--anu-gold) 15%, transparent);
+    background: var(--grid-cell-band);
   }
 
   /* Candidate options before a roll: a dashed ring on every cell in play. The

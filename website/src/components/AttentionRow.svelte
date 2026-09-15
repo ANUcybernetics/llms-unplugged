@@ -116,14 +116,14 @@
        weighted ones, so the grid's geometry is identical on all three slides. */
     height: 3.2rem;
     padding: 0.3rem 0.4rem;
-    border: 1px solid var(--color-divider);
+    border: var(--grid-rule-width) solid var(--grid-rule-color);
     text-align: center;
   }
 
   /* Reveal strips the last row's bottom border; put it back so the grid closes. */
   table.attention-grid tbody tr:last-child th,
   table.attention-grid tbody tr:last-child td {
-    border-bottom: 1px solid var(--color-divider);
+    border-bottom: var(--grid-rule-width) solid var(--grid-rule-color);
   }
 
   table.attention-grid td.grid-cell {
