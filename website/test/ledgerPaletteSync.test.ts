@@ -28,7 +28,7 @@ describe("ledger palette sync", () => {
 
   it("cycles the palette a row of colours at a time", () => {
     expect(paletteFor(0).map((c) => c.name)).toEqual(["red", "blue", "green", "yellow"]);
-    expect(paletteFor(1).map((c) => c.name)).toEqual(["pink", "purple", "black", "white"]);
+    expect(paletteFor(1).map((c) => c.name)).toEqual(["pink", "purple", "black", "orange"]);
     expect(paletteFor(3)).toEqual(paletteFor(0));
     expect(paletteFor(0, 3).map((c) => c.name)).toEqual(["red", "blue", "green"]);
     // An eight-colour room cycles two rows, so row 2 is red again.
@@ -36,9 +36,9 @@ describe("ledger palette sync", () => {
     expect(paletteFor(2, 4, eight)).toEqual(paletteFor(0));
   });
 
-  it("calls white pale and the rest not, as the sheet does", () => {
-    const pale = LEDGER_PALETTE.filter((c) => isPale(c.hex)).map((c) => c.name);
-    expect(pale).toEqual(["white"]);
+  it("calls white pale and the default palette's colours not, as the sheet does", () => {
+    expect(isPale("#ffffff")).toBe(true);
+    expect(LEDGER_PALETTE.filter((c) => isPale(c.hex))).toEqual([]);
   });
 });
 

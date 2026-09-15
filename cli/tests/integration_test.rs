@@ -1779,7 +1779,7 @@ fn test_ledger_cli_takes_the_palette_as_json() -> io::Result<()> {
         {"name": "pink", "hex": "#f5519f"},
         {"name": "purple", "hex": "#7d1e9c"},
         {"name": "black", "hex": "#000000"},
-        {"name": "white", "hex": "#ffffff"}
+        {"name": "orange", "hex": "#fb923c"}
     ]"##;
     std::fs::write(&palette, eight)?;
 
@@ -1809,7 +1809,7 @@ fn test_ledger_cli_takes_the_palette_as_json() -> io::Result<()> {
     assert_eq!(
         names,
         [
-            "red", "blue", "green", "yellow", "pink", "purple", "black", "white"
+            "red", "blue", "green", "yellow", "pink", "purple", "black", "orange"
         ]
     );
     assert_eq!(json["palette"][0]["hex"], "#e50002");

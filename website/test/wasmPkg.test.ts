@@ -72,7 +72,7 @@ describe("committed wasm bundle builds ledger sets like the CLI", () => {
       "pink",
       "purple",
       "black",
-      "white",
+      "orange",
     ]);
     // Four prefixes (".", "a", "b", "c" ... "d" only ends the text) in one
     // sheet, since the count follows the text.

@@ -32,11 +32,11 @@ export const LEDGER_PALETTE: readonly PaletteEntry[] = [
   { name: "pink", hex: "#f5519f" },
   { name: "purple", hex: "#7d1e9c" },
   { name: "black", hex: "#000000" },
-  { name: "white", hex: "#ffffff" },
   { name: "orange", hex: "#fb923c" },
   { name: "brown", hex: "#653700" },
   { name: "grey", hex: "#868a86" },
   { name: "teal", hex: "#0891b2" },
+  { name: "lime", hex: "#84cc16" },
 ];
 
 export const LEDGER_COLUMNS = 4;
@@ -78,8 +78,8 @@ export function colourNamed(
 /**
  * A colour's OKLab lightness (0-1), the one property the sheet reads off a
  * colour: ledger-common.typ gives anything above 0.9 --- white, and anything
- * near it --- a dashed outline instead of a bar, since a white rule on paper
- * is nothing.
+ * near it --- a dashed outline instead of a tint and a solid rule, since a
+ * white rule on paper is nothing.
  */
 export function lightness(hex: string): number {
   const digits =

@@ -554,7 +554,7 @@ mod tests {
         let mut palette = default_palette();
         assert!(trim_palette(&mut palette, 4).is_empty());
         assert_eq!(palette.len(), 12);
-        assert_eq!(trim_palette(&mut palette, 5), vec!["grey", "teal"]);
+        assert_eq!(trim_palette(&mut palette, 5), vec!["teal", "lime"]);
         assert_eq!(palette.len(), 10);
     }
 
