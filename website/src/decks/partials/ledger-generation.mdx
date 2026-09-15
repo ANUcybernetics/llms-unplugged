@@ -10,111 +10,128 @@ Walk through the next slides slowly --- the mechanics are simple but the hand-ov
 
 ---
 
-{/* _animate: cup-see */}
+{/* _animate: cup-stop */}
 
-## Start with a word
+## Start after a full stop
 
-<LedgerPage text="see" />
+<LedgerPage text="" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_SEE} palette={PALETTE} />
-  <LedgerCup entry={ROW_SEE} palette={PALETTE} empty />
+  <LedgerRow entry={ROW_STOP} palette={PALETTE} />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} empty />
 </div>
 
 ```notes
-Somebody has the row for "see". Three words ever followed it in this book, and the cup is empty.
+A story starts after a full stop, so somebody finds the row for "." --- it says how this book starts its sentences. Four words ever started a sentence here, and the cup is empty.
 ```
 
 ---
 
-{/* _animate: cup-see */}
+{/* _animate: cup-stop */}
 
 ## Fill the cup
 
-<LedgerPage text="see" />
+<LedgerPage text="" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_SEE} palette={PALETTE} highlight={0} />
-  <LedgerCup entry={ROW_SEE} palette={PALETTE} loaded={1} />
+  <LedgerRow entry={ROW_STOP} palette={PALETTE} highlight={0} />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={1} />
 </div>
 
 ```notes
-First word in the row: "it", five tally marks, red box. Count them out --- five red counters into the cup.
+First word in the row: "it", seven tally marks, red box. Count them out --- seven red counters into the cup.
 ```
 
 ---
 
-{/* _animate: cup-see */}
+{/* _animate: cup-stop */}
 
 ## Fill the cup
 
-<LedgerPage text="see" />
+<LedgerPage text="" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_SEE} palette={PALETTE} highlight={1} />
-  <LedgerCup entry={ROW_SEE} palette={PALETTE} loaded={2} />
+  <LedgerRow entry={ROW_STOP} palette={PALETTE} highlight={1} />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={2} />
 </div>
 
 ```notes
-Next word: "me", one mark, blue box. One blue counter.
+Next word: "Here", four marks, blue box. Four blue counters.
 ```
 
 ---
 
-{/* _animate: cup-see */}
+{/* _animate: cup-stop */}
 
 ## Fill the cup
 
-<LedgerPage text="see" />
+<LedgerPage text="" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_SEE} palette={PALETTE} highlight={2} />
-  <LedgerCup entry={ROW_SEE} palette={PALETTE} loaded={3} />
+  <LedgerRow entry={ROW_STOP} palette={PALETTE} highlight={2} />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={3} />
 </div>
 
 ```notes
-Last word: "Spot", one mark, green box. One green counter, and the row is in the cup.
+Next: "Down", three marks, green box. Three green counters.
 ```
 
 ---
 
-{/* _animate: cup-see */}
+{/* _animate: cup-stop */}
+
+## Fill the cup
+
+<LedgerPage text="" />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_STOP} palette={PALETTE} highlight={3} />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={4} />
+</div>
+
+```notes
+Last word: "Swoop", three marks, yellow box. Three yellow counters, and the row is in the cup.
+```
+
+---
+
+{/* _animate: cup-stop */}
 
 ## The cup is the row
 
-<LedgerPage text="see" />
+<LedgerPage text="" />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_SEE} palette={PALETTE} />
-  <LedgerCup entry={ROW_SEE} palette={PALETTE} />
+  <LedgerRow entry={ROW_STOP} palette={PALETTE} />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} />
 </div>
 
 ```notes
-Seven counters for seven marks. The cup now holds the row's counts --- the more marks, the more counters, the more likely. Ask before you draw: which colour do you think will come out?
+Seventeen counters for seventeen marks. The cup now holds the row's counts --- the more marks, the more counters, the more likely. Ask before you draw: which colour do you think will come out?
 ```
 
 ---
 
-{/* _animate: cup-see */}
+{/* _animate: cup-stop */}
 
 ## Draw one
 
-<LedgerPage text="see it" fresh />
+<LedgerPage text="it" fresh />
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_SEE} palette={PALETTE} highlight={0} />
-  <LedgerCup entry={ROW_SEE} palette={PALETTE} drawn={0} />
+  <LedgerRow entry={ROW_STOP} palette={PALETTE} highlight={0} />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} drawn={0} />
 </div>
 
 ```notes
-Red: the likeliest one, five chances in seven. Write "it" down, tip the cup back into the tub, and pass to whoever has the row for "it".
+Red: the likeliest one, seven chances in seventeen. Write "it" down, tip the cup back into the tub, and pass to whoever has the row for "it".
 ```
 
 ---
 
 ## Fill the cup, draw one
 
-<LedgerPage text="see it go" fresh />
+<LedgerPage text="it sits" fresh />
 
 <div class="ledger-step">
   <LedgerRow entry={ROW_IT} palette={PALETTE} highlight={0} />
@@ -122,105 +139,126 @@ Red: the likeliest one, five chances in seven. Write "it" down, tip the cup back
 </div>
 
 ```notes
-Nine counters: five red for "go", one blue for "comes", one green for the full stop, two yellow for "is". Red again, and this row is worth pausing on --- we come back to it in a minute.
-```
-
----
-
-## Fill the cup, draw one
-
-<LedgerPage text="see it go up" fresh />
-
-<div class="ledger-step">
-  <LedgerRow entry={ROW_GO} palette={PALETTE} highlight={2} />
-  <LedgerCup entry={ROW_GO} palette={PALETTE} drawn={2} />
-</div>
-
-```notes
-Six counters: one red for "look", two blue for the full stop, three green for "up". Green comes out.
-```
-
----
-
-## Fill the cup, draw one
-
-<LedgerPage text="see it go up ," fresh />
-
-<div class="ledger-step">
-  <LedgerRow entry={ROW_UP} palette={PALETTE} highlight={1} />
-  <LedgerCup entry={ROW_UP} palette={PALETTE} drawn={1} />
-</div>
-
-```notes
-Seven counters, three red and four blue. Blue wins, and a comma is a word like any other --- it goes on the page.
-```
-
----
-
-## Fill the cup, draw one
-
-<LedgerPage text="see it go up , down" fresh />
-
-<div class="ledger-step">
-  <LedgerRow entry={ROW_COMMA} palette={PALETTE} highlight={3} />
-  <LedgerCup entry={ROW_COMMA} palette={PALETTE} drawn={3} />
-</div>
-
-```notes
-The biggest cup yet: ten counters across all four colours. Yellow has two of the ten and comes out anyway. Unlikely isn't impossible --- that's the cup doing its job.
-```
-
----
-
-## Every word equally likely
-
-<LedgerPage text="see it go up , down it" fresh />
-
-<div class="ledger-step">
-  <LedgerRow entry={ROW_DOWN} palette={PALETTE} highlight={2} />
-  <LedgerCup entry={ROW_DOWN} palette={PALETTE} drawn={2} />
-</div>
-
-```notes
-One mark each: three counters, three words, and no word is favoured. Green comes out --- but green meant "up" a moment ago and means "it" now. The colour names the place in the row, not the word.
-```
-
----
-
-## The same row, a different word
-
-<LedgerPage text="see it go up , down it comes" fresh />
-
-<div class="ledger-step">
-  <LedgerRow entry={ROW_IT} palette={PALETTE} highlight={1} />
-  <LedgerCup entry={ROW_IT} palette={PALETTE} drawn={1} />
-</div>
-
-```notes
-Back on the row for "it", the same nine counters as before --- and this time the one blue counter comes out. Same row, same cup, different word. Hold onto this one: it is the answer to "why didn't two groups with the same book write the same story?"
+Ten counters: three red for "sits", three blue for "watches", three green for "goes", one yellow for "is". Three words tied, and red comes out.
 ```
 
 ---
 
 ## Only one place to go
 
-<LedgerPage text="see it go up , down it comes ." fresh />
+<LedgerPage text="it sits on the" fresh />
+
+<div class="ledger-stack">
+  <LedgerRow entry={ROW_SITS} palette={PALETTE} highlight={0} />
+  <LedgerRow entry={ROW_ON} palette={PALETTE} highlight={0} />
+</div>
+
+no cup needed: after `sits` this book only ever said `on`, and after `on` only
+`the`
+
+```notes
+A one-word row needs no draw at all. Groups will hit a few of these and they speed things up --- two in a row here.
+```
+
+---
+
+## Fill the cup, draw one
+
+<LedgerPage text="it sits on the fence" fresh />
 
 <div class="ledger-step">
+  <LedgerRow entry={ROW_THE} palette={PALETTE} highlight={1} />
+  <LedgerCup entry={ROW_THE} palette={PALETTE} drawn={1} />
+</div>
+
+```notes
+The biggest cup yet: nineteen counters across all four colours --- five red for "magpie", six blue for "fence", four green for "postie", four yellow for "dog". Blue comes out, and this row is worth pausing on --- we come back to it in a minute.
+```
+
+---
+
+## Only one place to go
+
+<LedgerPage text="it sits on the fence ." fresh />
+
+<div class="ledger-stack">
+  <LedgerRow entry={ROW_FENCE} palette={PALETTE} highlight={0} />
+</div>
+
+after `fence` this book only ever said `.`, and a full stop is a word like any
+other
+
+```notes
+The full stop goes on the page, and it sends us back to the row we started from.
+```
+
+---
+
+## Unlikely isn't impossible
+
+<LedgerPage text="it sits on the fence . Here" fresh />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_STOP} palette={PALETTE} highlight={1} />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} drawn={1} />
+</div>
+
+```notes
+Back on the row for ".", the same seventeen counters as the very first draw, mostly red. Blue has four of the seventeen and comes out anyway. Unlikely isn't impossible --- that's the cup doing its job.
+```
+
+---
+
+## Only one place to go
+
+<LedgerPage text="it sits on the fence . Here comes the" fresh />
+
+<div class="ledger-stack">
+  <LedgerRow entry={ROW_HERE} palette={PALETTE} highlight={0} />
   <LedgerRow entry={ROW_COMES} palette={PALETTE} highlight={0} />
 </div>
 
-no cup needed: after `comes` this book only ever said `.`
+after `Here` this book only ever said `comes`, and after `comes` only `the`
 
 ```notes
-A one-word row needs no draw at all. Groups will hit a few of these and they speed things up. Eight draws in, and we have a sentence this book never said: it says "See it go up." and it says "Down it comes.", and the model has glued the two together, because it only ever knows what comes next, one word at a time. Stop at a full stop or a question mark you like, or keep going.
+Two more one-word rows, straight onto the page.
+```
+
+---
+
+## The same row, a different word
+
+<LedgerPage text="it sits on the fence . Here comes the magpie" fresh />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_THE} palette={PALETTE} highlight={0} />
+  <LedgerCup entry={ROW_THE} palette={PALETTE} drawn={0} />
+</div>
+
+```notes
+Back on the row for "the", the same nineteen counters as before --- and this time red comes out: "magpie", not "fence". Same row, same cup, different word. Hold onto this one: it is the answer to "why didn't two groups with the same book write the same story?"
+```
+
+---
+
+## Fill the cup, draw one
+
+<LedgerPage text="it sits on the fence . Here comes the magpie ." fresh />
+
+<div class="ledger-step">
+  <LedgerRow entry={ROW_MAGPIE} palette={PALETTE} highlight={1} />
+  <LedgerCup entry={ROW_MAGPIE} palette={PALETTE} drawn={1} />
+</div>
+
+```notes
+Five counters: two red for "is", three blue for the full stop. Blue, and the sentence ends. Eleven words in, and we have a sentence this book never said: it says "Here comes the postie." and it says "Down comes the magpie.", and the model has glued the two together, because it only ever knows what comes next, one word at a time. Stop at a full stop or a question mark you like, or keep going.
 ```
 
 ---
 
 {/* _class: impact */}
 
-_"See it go up, down it comes."_
+_"It sits on the fence. Here comes the magpie."_
 
 a hint of the original, not a copy
 

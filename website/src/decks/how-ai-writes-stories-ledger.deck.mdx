@@ -28,211 +28,189 @@ import "./how-ai-writes-stories-ledger.deck.css";
 export const components = { code: LedgerToken };
 
 ```comment
-Every group generates from a different picture book (see the lesson entry for
-   the five sets), and the slides walk through one of them: every ROW_* below
-   is a real row of the Fun with Dick and Jane set, the first 140 tokens dealt
-   across 5 sheets, printed for a room with counters in four colours ---
-   `llms_unplugged ledger -i data/fun-with-dick-and-jane.txt --max-tokens 140
-   --sheets 5 --palette @cli/ledger-palette-four.json --max-followers 4
-   --prefill tallies`, which is the recipe the Makefile runs for every book.
-   Four colours at four columns is a single palette cycle, so every row on
-   every sheet takes the same four and no widget here needs to know where its
-   row sits on the page. Change the book or the budget and the counts below
-   have to be re-read off the new sheets. SHEET_THREE is that set's third
-   sheet entire, in the order the deal printed it. The five ROW_THE_* are the
-   school-day texts' rows for "the" (data/originals/school-day-*.txt), each
-   set built with --prefill prefixes for training.
+Every group generates from a different book (see the lesson entry for the five
+   sets), and the slides walk through one of them: every ROW_* below is a real
+   row of The magpie set (data/originals/the-magpie.txt), the whole 133-token
+   text dealt across 5 sheets, printed for a room with counters in four
+   colours --- `llms_unplugged ledger -i data/originals/the-magpie.txt
+   --max-tokens 140 --sheets 5 --palette @cli/ledger-palette-four.json
+   --max-followers 4 --prefill tallies`, which is the recipe the Makefile runs
+   for every book. Four colours at four columns is a single palette cycle, so
+   every row on every sheet takes the same four and no widget here needs to
+   know where its row sits on the page. Change the book or the budget and the
+   counts below have to be re-read off the new sheets. SHEET_FIVE is that set's
+   fifth sheet entire, in the order the deal printed it. The five ROW_THE_* are
+   the outdoors texts' rows for "the" (data/originals/outdoors-*.txt), each set
+   built with --max-followers 4 for training. The walkthrough follows the
+   generation-ledger and one-story-all-together videos (ops/video/scripts/), so
+   a change here is a change there too.
 ```
 
 export const PALETTE = LEDGER_PALETTE.slice(0, 4);
 
 ```comment
-Sheet 3 of the Dick and Jane set, "I" to "me": the sheet the walkthrough opens
-   on, and "it" --- the one row with all four colours in use --- is row 2.
+Sheet 5 of the magpie set, "the" to "watches": the sheet the walkthrough opens
+   on, and "the" --- the one row with all four colours in use and the most
+   marks --- is row 0.
 ```
 
-export const ROW_I = {
-  prefix: "I",
-  followers: [{ text: "can", count: 1 }],
+export const ROW_THE = {
+  prefix: "the",
+  followers: [
+    { text: "magpie", count: 5 },
+    { text: "fence", count: 6 },
+    { text: "postie", count: 4 },
+    { text: "dog", count: 4 },
+  ],
 };
 
-export const ROW_IS = {
-  prefix: "is",
+export const ROW_TO = {
+  prefix: "to",
+  followers: [{ text: "the", count: 3 }],
+};
+
+export const ROW_UP = {
+  prefix: "up",
+  followers: [{ text: "it", count: 3 }],
+};
+
+export const ROW_WATCHES = {
+  prefix: "watches",
+  followers: [{ text: ".", count: 3 }],
+};
+
+export const SHEET_FIVE = [ROW_THE, ROW_TO, ROW_UP, ROW_WATCHES];
+
+```comment
+The rest of the generation walkthrough, off the other sheets: "it sits on the
+   fence . Here comes the magpie ." --- the book says "Here comes the postie ."
+   and "Down comes the magpie .", and never this. ROW_STOP and ROW_THE are each
+   drawn from twice, which is the point of the second visits.
+```
+
+export const ROW_STOP = {
+  prefix: ".",
   followers: [
-    { text: "fun", count: 1 },
-    { text: "father", count: 1 },
-    { text: "not", count: 2 },
-    { text: "Dick", count: 1 },
+    { text: "it", count: 7 },
+    { text: "Here", count: 4 },
+    { text: "Down", count: 3 },
+    { text: "Swoop", count: 3 },
   ],
 };
 
 export const ROW_IT = {
   prefix: "it",
   followers: [
-    { text: "go", count: 5 },
-    { text: "comes", count: 1 },
-    { text: ".", count: 1 },
-    { text: "is", count: 2 },
+    { text: "sits", count: 3 },
+    { text: "watches", count: 3 },
+    { text: "goes", count: 3 },
+    { text: "is", count: 1 },
   ],
 };
 
-export const ROW_JANE = {
-  prefix: "Jane",
-  followers: [{ text: "said", count: 3 }],
+export const ROW_SITS = {
+  prefix: "sits",
+  followers: [{ text: "on", count: 3 }],
 };
 
-export const ROW_LOOK = {
-  prefix: "look",
-  followers: [
-    { text: ",", count: 1 },
-    { text: "!", count: 2 },
-  ],
+export const ROW_ON = {
+  prefix: "on",
+  followers: [{ text: "the", count: 3 }],
 };
 
-export const ROW_LOOKS = {
-  prefix: "looks",
-  followers: [{ text: "funny", count: 1 }],
+export const ROW_FENCE = {
+  prefix: "fence",
+  followers: [{ text: ".", count: 6 }],
 };
 
-export const ROW_ME = {
-  prefix: "me",
-  followers: [{ text: "run", count: 1 }],
-};
-
-export const SHEET_THREE = [
-  ROW_I,
-  ROW_IS,
-  ROW_IT,
-  ROW_JANE,
-  ROW_LOOK,
-  ROW_LOOKS,
-  ROW_ME,
-];
-
-```comment
-The rest of the generation walkthrough, off the other sheets: "see it go up ,
-   down it comes ." --- a sentence stitched from two the book actually says.
-   ROW_IT is drawn from twice, which is the point of the second visit.
-```
-
-export const ROW_SEE = {
-  prefix: "see",
-  followers: [
-    { text: "it", count: 5 },
-    { text: "me", count: 1 },
-    { text: "Spot", count: 1 },
-  ],
-};
-
-export const ROW_GO = {
-  prefix: "go",
-  followers: [
-    { text: "look", count: 1 },
-    { text: ".", count: 2 },
-    { text: "up", count: 3 },
-  ],
-};
-
-export const ROW_UP = {
-  prefix: "up",
-  followers: [
-    { text: ".", count: 3 },
-    { text: ",", count: 4 },
-  ],
-};
-
-export const ROW_COMMA = {
-  prefix: ",",
-  followers: [
-    { text: "said", count: 3 },
-    { text: "look", count: 2 },
-    { text: "up", count: 3 },
-    { text: "down", count: 2 },
-  ],
-};
-
-export const ROW_DOWN = {
-  prefix: "down",
-  followers: [
-    { text: ",", count: 1 },
-    { text: ".", count: 1 },
-    { text: "it", count: 1 },
-  ],
+export const ROW_HERE = {
+  prefix: "Here",
+  followers: [{ text: "comes", count: 4 }],
 };
 
 export const ROW_COMES = {
   prefix: "comes",
-  followers: [{ text: ".", count: 1 }],
+  followers: [{ text: "the", count: 7 }],
+};
+
+export const ROW_MAGPIE = {
+  prefix: "magpie",
+  followers: [
+    { text: "is", count: 2 },
+    { text: ".", count: 3 },
+  ],
 };
 
 export const SHEET_RANGES = [
-  ["!", "down"],
-  ["father", "guess"],
-  ["I", "me"],
-  ["mother", "Sally"],
-  ["see", "yes"],
+  ["!", "back"],
+  ["comes", "goes"],
+  ["Here", "on"],
+  ["postie", "Swoop"],
+  ["the", "watches"],
 ];
 
 ```comment
 The opening of the set's text as the tokeniser read it, for the training
-   walkthrough. The pair "see it" comes round again at step 8, which is the
-   slide that shows a mark landing on a row that already has one.
+   walkthrough. The pair "the fence" at step 8 is a new word in a row that
+   already has one; "the magpie" comes round again at step 21, the slide that
+   shows a mark landing on a box that already has one.
 ```
 
-export const DJ_OPENING =
-  "see it go look , said Dick . see it go . see it go up . Jane said , oh , look !";
+export const MAGPIE_OPENING =
+  "the magpie is back . it sits on the fence . it watches . Here comes the postie . Down comes the magpie . Swoop !";
 
 ```comment
-The five school-day texts' rows for "the", for the finale: same word, five
+The five outdoors texts' rows for "the", for the finale: same word, five
    different models.
 ```
 
-export const ROW_THE_BELL = {
+export const ROW_THE_BEACH = {
   prefix: "the",
   followers: [
-    { text: "bell", count: 2 },
-    { text: "door", count: 3 },
-    { text: "teacher", count: 2 },
-    { text: "key", count: 1 },
-  ],
-};
-
-export const ROW_THE_BUS = {
-  prefix: "the",
-  followers: [
-    { text: "bus", count: 5 },
-    { text: "floor", count: 1 },
-    { text: "air", count: 1 },
-  ],
-};
-
-export const ROW_THE_DOG = {
-  prefix: "the",
-  followers: [
-    { text: "classroom", count: 1 },
-    { text: "teacher", count: 2 },
-    { text: "dog", count: 2 },
-    { text: "door", count: 1 },
-  ],
-};
-
-export const ROW_THE_RAIN = {
-  prefix: "the",
-  followers: [
-    { text: "rain", count: 2 },
-    { text: "roof", count: 1 },
+    { text: "sand", count: 2 },
+    { text: "water", count: 2 },
+    { text: "dog", count: 3 },
     { text: "sun", count: 1 },
-    { text: "teacher", count: 1 },
   ],
 };
 
-export const ROW_THE_VOLCANO = {
+export const ROW_THE_STORM = {
   prefix: "the",
   followers: [
-    { text: "teacher", count: 3 },
-    { text: "volcano", count: 1 },
-    { text: "desk", count: 1 },
-    { text: "floor", count: 1 },
+    { text: "sky", count: 2 },
+    { text: "tin", count: 1 },
+    { text: "dog", count: 2 },
+    { text: "rain", count: 1 },
+  ],
+};
+
+export const ROW_THE_KOOKABURRA = {
+  prefix: "the",
+  followers: [
+    { text: "kookaburra", count: 3 },
+    { text: "gum", count: 1 },
+    { text: "cat", count: 2 },
+    { text: "street", count: 1 },
+  ],
+};
+
+export const ROW_THE_CREEK = {
+  prefix: "the",
+  followers: [
+    { text: "creek", count: 2 },
+    { text: "rocks", count: 2 },
+    { text: "mud", count: 2 },
+    { text: "yabby", count: 2 },
+  ],
+};
+
+export const ROW_THE_BUSH = {
+  prefix: "the",
+  followers: [
+    { text: "track", count: 3 },
+    { text: "hill", count: 1 },
+    { text: "sun", count: 1 },
+    { text: "water", count: 1 },
   ],
 };
 
