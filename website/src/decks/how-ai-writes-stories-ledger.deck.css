@@ -43,3 +43,14 @@
 .reveal [data-id="ledger-sheet"] {
   font-size: 1rem;
 }
+
+/* Reveal fades in every element of an auto-animate slide that has no data-id
+   match on the slide before, which re-draws the cup's outline, the row and
+   the labels on every step. Only the tokens should move: a counter going
+   into the cup and a word landing on the page. */
+.reveal
+  section[data-auto-animate]
+  [data-auto-animate-target^="unmatched"]:not(.counter, .ledger-token) {
+  opacity: 1 !important;
+  transition: none !important;
+}

@@ -99,8 +99,11 @@
 
 <div class="cup" data-id={id}>
   <svg viewBox="0 0 240 240" role="img" aria-label="a cup of counters for {entry.prefix}">
+    <!-- Matched across slides, so auto-animate treats the counters one by one
+         even when the cup before was empty. -->
     <path
       class="paper"
+      data-id="{id}-paper"
       d="M 38 64 L 66 220 Q 68 231 80 231 L 160 231 Q 172 231 174 220 L 202 64 Z"
     />
     <ellipse class="inside" cx="120" cy="64" rx="82" ry="13" />
