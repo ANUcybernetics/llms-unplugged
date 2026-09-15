@@ -192,6 +192,16 @@ const initialLabel = `${mm}:${String(ss).padStart(2, "0")}`;
     font-size: 11rem;
   }
 
+  /* On a split slide the overlay sits over the image panel (40% of the
+     canvas): shrink it to fit the panel, and halo it so it reads over the
+     artwork. */
+  :global(.split-layout) .timer.overlay .time {
+    font-size: 8rem;
+    text-shadow:
+      0 0 0.3rem rgb(0 0 0 / 90%),
+      0 0 2rem rgb(0 0 0 / 80%);
+  }
+
   .timer-controls {
     display: flex;
     align-items: center;
