@@ -60,8 +60,8 @@ text file → Rust CLI → model.json → Typst → PDF booklet
   moves off golden since rows share the page height. `--prefill` is a Typst
   input rather than part of the JSON, so one set prints at any level. Opens with
   a one-page facilitator brief unless the set is `--blank`, and is the only
-  template with a `brief_scope: generic` --- a brief that names no corpus, for
-  a pack of sets
+  template with a `brief_scope: generic` --- a brief that names no corpus, for a
+  pack of sets
 - `ledger-common.typ` - Reading the palette out of `ledger.json`, the strip and
   counter drawing, and the counter-sheet geometry, shared by the two ledger
   templates so the strip on a sheet, the printed counter and the brief's
@@ -203,15 +203,15 @@ port and rebuild the wasm.
   set: the brief opens with it and every sheet header carries it opposite the
   lockup
 - `--brief bound|separate|generic|none` (cutouts, sheets, ledger; default
-  `bound`) - where the brief that opens the handout goes: in front of it, in
-  its own `brief.pdf` beside it, or nowhere. `generic` is `separate` plus a
-  brief that describes the activity rather than this set, for a pack of sets;
-  ledger only, since the other briefs work a corpus example. The templates
-  take it as their `part` input (`all`/`handout`/`brief`), so all three answer
-  the flag with one code path
-- `--even-pages` (ledger only) - pad the sheets to an even page count, so a
-  set printed double-sided ends on a whole leaf and the next set in a
-  concatenation starts on a fresh one
+  `bound`) - where the brief that opens the handout goes: in front of it, in its
+  own `brief.pdf` beside it, or nowhere. `generic` is `separate` plus a brief
+  that describes the activity rather than this set, for a pack of sets; ledger
+  only, since the other briefs work a corpus example. The templates take it as
+  their `part` input (`all`/`handout`/`brief`), so all three answer the flag
+  with one code path
+- `--even-pages` (ledger only) - pad the sheets to an even page count, so a set
+  printed double-sided ends on a whole leaf and the next set in a concatenation
+  starts on a fresh one
 - `--prefill prefixes|followers|tallies` (ledger only, default `prefixes`) -
   What the rows come printed with, each level adding to the one before it;
   `tallies` is the whole sheet filled in, so the group skips training and goes
