@@ -193,13 +193,15 @@ const initialLabel = `${mm}:${String(ss).padStart(2, "0")}`;
   }
 
   /* On a split slide the overlay sits over the image panel (40% of the
-     canvas): shrink it to fit the panel, and halo it so it reads over the
-     artwork. */
+     canvas): shrink it to fit the panel, and scrim the bottom of the panel so
+     it reads over the artwork. An inset shadow rather than a gradient
+     background, because the panel's image is an inline background-image. */
   :global(.split-layout) .timer.overlay .time {
     font-size: 8rem;
-    text-shadow:
-      0 0 0.3rem rgb(0 0 0 / 90%),
-      0 0 2rem rgb(0 0 0 / 80%);
+  }
+
+  :global(.split-layout:has(.timer.overlay) > .split-image) {
+    box-shadow: inset 0 -16rem 8rem -4rem rgb(0 0 0 / 85%);
   }
 
   .timer-controls {
