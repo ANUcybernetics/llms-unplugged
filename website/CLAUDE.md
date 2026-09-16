@@ -41,16 +41,18 @@ The grid/cutouts variant toggle is pure CSS: a `data-variant` attribute on
 
 The website is responsive; decks are Reveal.js slides in a fixed 1280x720
 viewport scaled to fill the screen. Colour tokens (`--anu-*`, `--color-*`,
-`--lm-highlight-*`) live once in `src/styles/common.css`, and widget component
-styles in `src/styles/widgets.css`; both are imported by `global.css` and by
-`src/decks/theme.css`. Add new shared tokens to `common.css`, and when changing
-colours or widget styles check both consumers.
+`--lm-highlight-*`) live once in `src/styles/common.css`, imported by both
+`global.css` and `src/decks/theme.css`. Widget component styles live in
+`src/styles/widgets.css`, imported by the layouts and by each `.deck.mdx` that
+uses a widget (`ledger.css` likewise, for the ledger decks). Add new shared
+tokens to `common.css`, and when changing colours or widget styles check both
+consumers.
 
 Typography and layout are deliberately independent: root font size (website
 20px, decks 16px), Reveal's `--r-*` variables, layout tokens like
-`--nav-height`, and container queries (decks override widget sizing with
-`:global()` rules per slide instead) all differ by design. Don't try to unify
-them.
+`--nav-height`, and container queries (decks override widget sizing with the
+`.reveal .slides section .lm-widget` rules in `theme.css` instead) all differ by
+design. Don't try to unify them.
 
 **Deck components must not set outer margins.** The slide owns the gaps between
 its children: `astro-theme-university/styles/deck.css` gives every direct child

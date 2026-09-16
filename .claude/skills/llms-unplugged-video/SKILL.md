@@ -14,8 +14,8 @@ description:
 # LLMs Unplugged videos
 
 A video here is an HTML composition: the project's real materials laid out on a
-1920x1080 stage with timing attributes and a seekable animation timeline,
-rendered frame by frame by
+1920x1080 (or 1080x1920 portrait) stage with timing attributes and a seekable
+animation timeline, rendered frame by frame by
 [HyperFrames](https://github.com/heygen-com/hyperframes). Everything on screen
 comes from what the project already makes: the sheets, cutouts and ledger pages
 the CLI prints, the widgets and decks the website ships, the palette and fonts
@@ -72,10 +72,11 @@ kind; the beat structure transfers even when the content doesn't.
   (`assets/title-card.html` shows it).
 - **Fonts**: the site's Public Sans and Libertinus Serif. HyperFrames renders in
   its own downloaded Chrome, which sees no system fonts, so every family the
-  composition uses needs an `@font-face` pointing at a file under
-  `assets/fonts/`; the lint reports a bare family name. (The subsets in
-  `website/src/assets/fonts/` are for the browser Typst compiler and miss glyphs
-  and weights.)
+  composition uses needs an `@font-face` pointing at a file the project serves;
+  the lint reports a bare family name. Kit compositions get this from
+  `kit/kit.css` (files in `_kit/fonts/`); a standalone project copies them into
+  its own `assets/fonts/`. (The subsets in `website/src/assets/fonts/` are for
+  the browser Typst compiler and miss glyphs and weights.)
 
 ## Engine: HyperFrames
 
@@ -111,14 +112,11 @@ The composition contract, learnt from its lint:
   applies it, which keeps it seek-safe. The crop/placement helpers in
   `assets/overlay-template.html` are written for exactly that
 
-Then, every time the composition changes:
-
-```bash
-npm run check                      # lint + runtime + layout + motion + contrast
-npm run render -- --resolution landscape-4k --fps 50 --output ../../out/video/<slug>/<slug>.mp4
-npm run render -- --quality draft --output review.mp4        # 1080p at data-fps, fast pass for watching
-npm run render -- --format png-sequence --output frames      # stills at the beats
-```
+Then, every time the composition changes, build with the commands under
+"Building" in `ops/video/README.md`: `video.py check` and `video.py render` wrap
+the project's `npm run check` (lint + runtime + layout + motion + contrast) and
+`npm run render`, with the composition's duration synced from `timing.json`.
+Only a project outside the kit runs the npm scripts directly.
 
 A simple 1080p composition renders at roughly 25 frames a second across its
 worker pool. The first render downloads Chrome into `~/.cache/hyperframes`
