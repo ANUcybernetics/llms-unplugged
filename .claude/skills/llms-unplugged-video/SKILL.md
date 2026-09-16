@@ -1,6 +1,7 @@
 ---
 name: llms-unplugged-video
-description: Produces LLMs Unplugged videos --- a talk recording or talking head cut with
+description:
+  Produces LLMs Unplugged videos --- a talk recording or talking head cut with
   animated overlays, an explainer for a module or lesson on the website, a
   screencast of a widget, a clip that animates a printed artefact (search
   sheets, cutouts, ledger pages) or a deck's slides --- as an HTML composition
@@ -37,8 +38,8 @@ should feel --- is per video, and lives in that video's composition.
   composition), `hyperframes.json`, `package.json` with the pinned CLI,
   `lines.json`/`timing.json`/`captions.vtt` (from `ops/video/align.py`) and
   `assets/voice.wav` (not committed). The explainer series shares
-  `ops/video/_kit/` (stage, objects, motion helpers, fonts, generated data;
-  its README is the contract) through a `kit -> ../_kit` symlink, because
+  `ops/video/_kit/` (stage, objects, motion helpers, fonts, generated data; its
+  README is the contract) through a `kit -> ../_kit` symlink, because
   HyperFrames serves only the project root and its lint rejects `../` paths.
   `ops/video/README.md` lists the build commands.
 - `out/video/<slug>/` --- staged inputs (recording, transcript, page images) and
@@ -90,8 +91,8 @@ HYPERFRAMES_SKIP_SKILLS=1 npx -y hyperframes@latest init <slug> --example blank 
 The composition contract, learnt from its lint:
 
 - the root carries `data-composition-id`, `data-start`, `data-duration`,
-  `data-width`, `data-height` and `data-fps` (50 for the explainer series, 25
-  to match a 25p recording; it defaults to 30)
+  `data-width`, `data-height` and `data-fps` (50 for the explainer series, 25 to
+  match a 25p recording; it defaults to 30)
 - every element on the timeline is `class="clip"` with `data-start`,
   `data-duration` and `data-track-index`
 - footage with its own sound is `<video ... data-has-audio="true">`; anything
@@ -99,12 +100,12 @@ The composition contract, learnt from its lint:
   from these; nothing to mux by hand
 - motion is a paused GSAP timeline registered as
   `window.__timelines[<composition id>]`, which the renderer seeks per frame;
-  the registration line has to appear literally in the HTML (the lint greps
-  for it), and a GSAP timeline is a thenable, so never resolve a promise with
-  one bare (it waits for the paused timeline to finish: forever).
-  Animate transforms and opacity (`x`, `y`, `scale`), never `left`, `top`,
-  `width` or `height`: layout properties snap to whole pixels and stutter. CSS
-  transitions are not seekable; CSS keyframes are
+  the registration line has to appear literally in the HTML (the lint greps for
+  it), and a GSAP timeline is a thenable, so never resolve a promise with one
+  bare (it waits for the paused timeline to finish: forever). Animate transforms
+  and opacity (`x`, `y`, `scale`), never `left`, `top`, `width` or `height`:
+  layout properties snap to whole pixels and stutter. CSS transitions are not
+  seekable; CSS keyframes are
 - a value the DOM can't tween (a page crop, a highlight box computed from a PDF
   bounding box) is a plain object tweened by GSAP with an `onUpdate` that
   applies it, which keeps it seek-safe. The crop/placement helpers in
@@ -178,14 +179,14 @@ are not scaffolding around.
 
 ## What this pipeline renders well
 
-Chrome draws each frame, ffmpeg only encodes them, so the ceiling is what
-Chrome draws crisply at 25 fps with no motion blur and what 8-bit 4:2:0 H.264
-keeps. Design to the strengths and the result looks deliberate; design against
-them and it looks amateurish however slick the idea.
+Chrome draws each frame, ffmpeg only encodes them, so the ceiling is what Chrome
+draws crisply at 25 fps with no motion blur and what 8-bit 4:2:0 H.264 keeps.
+Design to the strengths and the result looks deliberate; design against them and
+it looks amateurish however slick the idea.
 
 Reliably good: flat vector (SVG, solid fills, the site's type) tweening
-transform and opacity with easing; a push-in on a group while the rest dims;
-SVG stroke draw-on (`stroke-dashoffset`) for marks, lines and arrows; staggered
+transform and opacity with easing; a push-in on a group while the rest dims; SVG
+stroke draw-on (`stroke-dashoffset`) for marks, lines and arrows; staggered
 reveals; hard cuts and short crossfades; a logarithmic zoom-out across scales.
 
 Reliably janky: slow creeping pans, which judder and make thin lines and text
@@ -193,8 +194,8 @@ shimmer (move fast and short, or hold still); animated `filter`, `blur` and
 `drop-shadow`; large gradients and photographic texture, which band and moiré
 under the encoder; physics or particles (tumbling counters, bouncing dice);
 perspective or 3D transforms of text; thin saturated lines and small coloured
-text, which bleed in chroma subsampling. A "desk from above" is a flat
-top-down illustration, not a tilted photo.
+text, which bleed in chroma subsampling. A "desk from above" is a flat top-down
+illustration, not a tilted photo.
 
 ## Fallback engine
 
