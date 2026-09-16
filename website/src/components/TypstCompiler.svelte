@@ -190,7 +190,7 @@
         <input
           type="file"
           accept=".txt,.md,.markdown,.docx,.pdf"
-          class="file-input"
+          class="file-input sr-only"
           onchange={handleFileUpload}
         />
         <span class="file-button">Choose file</span>
@@ -271,7 +271,7 @@
                 style:background={colour.hex}
                 title={colour.name}
               >
-                <span class="visually-hidden">{colour.name}</span>
+                <span class="sr-only">{colour.name}</span>
               </li>
             {/each}
           </ul>
@@ -485,20 +485,6 @@
     cursor: pointer;
   }
 
-  /* Visually hidden but still focusable — display:none would make the file
-     picker unreachable by keyboard and invisible to screen readers. */
-  .file-input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-    border: 0;
-  }
-
   .file-button {
     background: var(--at-bg-alt);
     border: 1px solid var(--at-border);
@@ -628,15 +614,6 @@
     font-size: 0.8rem;
     line-height: 1.35;
     color: var(--at-text-secondary);
-  }
-
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
   }
 
   .controls {

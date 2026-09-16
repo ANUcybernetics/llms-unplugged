@@ -102,12 +102,6 @@
     text-align: center;
   }
 
-  /* Reveal strips the last row's bottom border; put it back so the grid closes. */
-  table.context-grid tbody tr:last-child th,
-  table.context-grid tbody tr:last-child td {
-    border-bottom: var(--grid-rule-width) solid var(--grid-rule-color);
-  }
-
   table.context-grid td.grid-cell {
     width: 12%;
     font-weight: 700;

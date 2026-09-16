@@ -120,12 +120,6 @@
     text-align: center;
   }
 
-  /* Reveal strips the last row's bottom border; put it back so the grid closes. */
-  table.attention-grid tbody tr:last-child th,
-  table.attention-grid tbody tr:last-child td {
-    border-bottom: var(--grid-rule-width) solid var(--grid-rule-color);
-  }
-
   table.attention-grid td.grid-cell {
     font-weight: 700;
     min-width: 2em;

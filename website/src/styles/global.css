@@ -115,6 +115,43 @@
   font-weight: 600;
 }
 
+/* Card lists (lessons, talks, news, the home page): the description and the
+   badge line under a card's title. */
+.card-description {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--at-text-secondary);
+}
+
+.card-badges {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: var(--at-text-secondary);
+}
+
+/* The facts line under a module or lesson title (audience, time, materials). */
+.page-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+  margin: 0 0 1.5rem;
+  padding: 0.75rem 0;
+  border-block: 1px solid var(--at-divider);
+  list-style: none;
+  font-size: 0.95rem;
+  color: var(--at-text-secondary);
+}
+
+.page-meta li {
+  margin: 0;
+}
+
+.page-meta strong {
+  margin-inline-end: 0.35rem;
+  color: var(--at-text);
+}
+
 /* Shared content container. width:100% is load-bearing: .content-container is a
    grid item of .at-main (a subgrid), and `margin-inline: auto` suppresses grid
    stretch — so without an explicit width the item sizes to max-content, and a

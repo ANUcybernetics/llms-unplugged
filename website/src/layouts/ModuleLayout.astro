@@ -64,7 +64,7 @@ const slug = currentPath.split("/").filter(Boolean).pop();
   {/* See BaseLayout: data-pagefind-body opts this page's content into the
        search index; unlisted modules omit it and drop out of search. */}
   <div class="prose" data-pagefind-body={noindex ? undefined : ""}>
-    <ul class="module-meta">
+    <ul class="page-meta">
       <li>
         <strong>Audience</strong> {audience}
       </li>
@@ -104,27 +104,6 @@ const slug = currentPath.split("/").filter(Boolean).pop();
 </SidebarLayout>
 
 <style>
-  .module-meta {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 2rem;
-    margin: 0 0 1.5rem;
-    padding: 0.75rem 0;
-    border-block: 1px solid var(--at-divider);
-    font-size: 0.95rem;
-    color: var(--at-text-secondary);
-  }
-
-  .module-meta li {
-    margin: 0;
-  }
-
-  .module-meta strong {
-    color: var(--at-text);
-    margin-inline-end: 0.35rem;
-  }
-
   .module-key-idea {
     margin: 0 0 1.5rem;
     padding: 0.75rem 1rem;

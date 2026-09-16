@@ -35,7 +35,7 @@ const {
   <div class="content-container">
     <article class="prose">
       <h1>{title}</h1>
-      <ul class="lesson-meta">
+      <ul class="page-meta">
         <li>
           <strong>Audience</strong> {audience}
         </li>
@@ -51,26 +51,3 @@ const {
     </article>
   </div>
 </BaseLayout>
-
-<style>
-  .lesson-meta {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 2rem;
-    margin: 0 0 2rem;
-    padding: 0.75rem 0;
-    border-block: 1px solid var(--at-divider);
-    font-size: 0.95rem;
-    color: var(--at-text-secondary);
-  }
-
-  .lesson-meta li {
-    margin: 0;
-  }
-
-  .lesson-meta strong {
-    color: var(--at-text);
-    margin-inline-end: 0.35rem;
-  }
-</style>

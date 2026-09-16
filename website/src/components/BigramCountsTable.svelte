@@ -140,14 +140,6 @@
     border: var(--grid-rule-width) solid var(--grid-rule-color);
   }
 
-  /* Reveal's base theme strips the bottom border off the final row
-     (.reveal table tbody tr:last-child td { border-bottom: none }), leaving the
-     grid open along its bottom edge. Put it back so the grid reads as closed. */
-  table.bigram-grid tbody tr:last-child td,
-  table.bigram-grid tbody tr:last-child th {
-    border-bottom: var(--grid-rule-width) solid var(--grid-rule-color);
-  }
-
   /* Headings fade in as the build reveals each token; the cells they sit in are
      always present, so the grid keeps its full size and never shifts. */
   table.bigram-grid th code {

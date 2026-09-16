@@ -64,9 +64,10 @@
   color: #000;
 }
 
-/* Visually-hidden text — gives otherwise-empty table-corner headers an
-   accessible name without rendering anything visible (satisfies the
-   empty-table-header a11y rule). */
+/* Visually hidden, still in the accessibility tree and still focusable: the
+   grids' empty corner headers, the tools page's file input and swatch names.
+   (The theme's .visually-hidden is the same rule, but base.css never reaches a
+   deck.) */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -368,6 +369,54 @@
   line-height: 1;
 }
 
+/* The bigram lookup line (PretrainedGenerationWidget, StaticPretrainedGeneration):
+   a previous word, the die indicator, then its next words in threshold order.
+   Sized in em so the deck's font-size override scales the whole line. */
+
+.entry-previous-word {
+  font-weight: 700;
+  font-size: 1.1em;
+}
+
+.entry-previous-word.punctuation {
+  display: inline-block;
+  padding: 0 0.2em;
+  border: 1px solid var(--color-text-muted);
+  border-radius: 2px;
+  font-size: 1em;
+}
+
+.dice-indicator {
+  margin-inline: 0.15em 0.25em;
+  font-size: 0.85em;
+  color: var(--color-text-secondary);
+}
+
+.entry-next-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+  align-items: baseline;
+}
+
+:is(.entries-content, .entries-list) .next-word {
+  padding: 0 0.15em;
+  border-radius: 2px;
+  font-size: 0.9em;
+  transition: background-color 0.2s;
+}
+
+.next-word.punctuation .next-word-text {
+  display: inline-block;
+  padding: 0 0.15em;
+  border: 1px solid var(--color-text-muted);
+  border-radius: 2px;
+}
+
+.threshold {
+  font-weight: 600;
+}
+
 /* Fullscreen layout */
 
 .fullscreen-content.scaled .lm-widget {
@@ -411,7 +460,8 @@
   }
 
   .cutout,
-  .cutout-option {
+  .cutout-option,
+  .next-word {
     transition: none;
   }
 }

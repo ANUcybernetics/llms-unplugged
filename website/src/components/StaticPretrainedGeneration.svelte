@@ -113,54 +113,9 @@
     background: var(--grid-cell-band);
   }
 
-  .entry-previous-word {
-    font-weight: 700;
-    font-size: 1.1em;
-  }
-
-  .entry-previous-word.punctuation {
-    display: inline-block;
-    padding: 0 0.2em;
-    border: 1px solid var(--color-text-muted);
-    border-radius: 2px;
-    font-size: 1em;
-  }
-
-  .dice-indicator {
-    font-size: 0.85em;
-    color: var(--color-text-secondary);
-    margin-left: 0.15em;
-    margin-right: 0.25em;
-  }
-
-  .entry-next-words {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4em;
-    align-items: baseline;
-  }
-
-  .next-word {
-    font-size: 0.9em;
-    padding: 0 0.15em;
-    border-radius: 2px;
-    transition: background-color 0.2s;
-  }
-
   .next-word.selected {
     outline: 2px solid var(--anu-gold);
     outline-offset: 1px;
-  }
-
-  .next-word.punctuation .next-word-text {
-    display: inline-block;
-    padding: 0 0.15em;
-    border: 1px solid var(--color-text-muted);
-    border-radius: 2px;
-  }
-
-  .threshold {
-    font-weight: 600;
   }
 
   .roll-badge {
@@ -171,8 +126,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .entry,
-    .next-word {
+    .entry {
       transition: none;
     }
   }

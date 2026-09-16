@@ -321,59 +321,13 @@
     background: var(--color-brand-soft);
   }
 
-  .entry-previous-word {
-    font-weight: 700;
-    font-size: 1.1rem;
-  }
-
-  .entry-previous-word.punctuation {
-    display: inline-block;
-    padding: 0 0.2em;
-    border: 1px solid var(--color-text-muted);
-    border-radius: 2px;
-    font-size: 1rem;
-  }
-
-  .dice-indicator {
-    font-size: 0.85rem;
-    color: var(--color-text-secondary);
-    margin-left: 0.15em;
-    margin-right: 0.25em;
-  }
-
-  .entry-next-words {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4em;
-    align-items: baseline;
-  }
-
-  .next-word {
-    font-size: 0.9rem;
-    transition: background-color 0.2s;
-    padding: 0 0.15em;
-    border-radius: 2px;
-  }
-
   .next-word.selected {
     background: var(--color-brand-soft);
     color: var(--color-brand);
   }
 
-  .next-word.punctuation .next-word-text {
-    display: inline-block;
-    padding: 0 0.15em;
-    border: 1px solid var(--color-text-muted);
-    border-radius: 2px;
-  }
-
-  .threshold {
-    font-weight: 600;
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .entry,
-    .next-word {
+    .entry {
       transition: none;
     }
   }
