@@ -98,9 +98,12 @@
     font-size: 1.1rem;
   }
 
+  /* Wide gap: the faces within a band sit flush, so the gap between bands is
+     the only cue that they're separate groups --- it has to read from the back
+     of the room. */
   .bands {
     display: flex;
-    gap: 0.6rem;
+    gap: 3rem;
   }
 
   .band {
