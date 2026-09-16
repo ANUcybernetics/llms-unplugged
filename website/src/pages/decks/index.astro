@@ -14,7 +14,7 @@ import {
 //
 // A deck's own frontmatter has the last word on whether it appears here, even
 // when a listed lesson or talk claims it (a talk keeps its "as delivered"
-// record decks in its list, linked from the talk page only). `listed: false`
+// record decks in its list, linked from the talk page only). `unlisted: true`
 // keeps a deck out of the indexes; `published: false` drops its route from
 // production builds, so a link to it would be a link to nothing.
 const decksDir = path.resolve("src/decks");
@@ -43,7 +43,7 @@ for (const entry of fs.readdirSync(decksDir, { withFileTypes: true })) {
 
 const hidden = (slug: string): boolean => {
   const data = decks.get(slug);
-  return data?.listed === false || data?.published === false;
+  return data?.unlisted === true || data?.published === false;
 };
 
 // Sessions with nothing visible to link are dropped rather than rendered as
