@@ -100,8 +100,7 @@ endef
 # Each generation set is built twice. --rows decides both the sheet count and
 # how much page a row gets, and a set dealt fewer rows than the default 12
 # prints the rest blank --- so the first run reports the deal, and the second
-# prints it at the density that deal needs: full pages, and the smaller the
-# model the more room each row gets to write in.
+# prints it at the density that deal needs.
 
 LEDGER_SLUG := how-ai-writes-stories-ledger
 LEDGER_DIR := $(PACKS)/$(LEDGER_SLUG)
@@ -115,10 +114,18 @@ LEDGER_TEXTS := beach storm kookaburra creek bush
 
 LEDGER_BUDGET := 140
 
-# The most rows any one sheet was dealt. Every entry takes one row here
-# (--max-followers matches the default --columns), so a sheet's rows are its
-# entries.
-LEDGER_ROWS_JQ := [.sheets[] | [.pages[][]] | length] | max
+# Rows share the page height, so few rows means tall ones: at 140 tokens across
+# five sheets the sparser books deal five or six rows to a sheet, and a row
+# given a fifth of the page is a tally strip twice as tall as it is wide with
+# the marks stranded in one corner of it. So the sheet is printed at whichever
+# is larger, the rows it was dealt or this floor; the shortfall prints as blank
+# rows at the foot of the page.
+LEDGER_MIN_ROWS := 8
+
+# The most rows any one sheet was dealt, floored. Every entry takes one row
+# here (--max-followers matches the default --columns), so a sheet's rows are
+# its entries.
+LEDGER_ROWS_JQ := [[.sheets[] | [.pages[][]] | length] | max, $(LEDGER_MIN_ROWS)] | max
 
 # The most counters of one colour a single draw can need: the largest tally
 # anywhere in the pack, read across all five books (`jq -s`). A set's own brief
