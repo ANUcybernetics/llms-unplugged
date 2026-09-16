@@ -97,9 +97,15 @@
     background: var(--color-brand-soft);
   }
 
-  @media (width <= 480px) {
+  @container (width <= 480px) {
     .variant-buttons {
       flex-direction: column;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .variant-button {
+      transition: none;
     }
   }
 </style>

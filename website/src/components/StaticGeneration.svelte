@@ -77,7 +77,6 @@
   /* Deck-only component, tuned for the 1280×720 / 16px-root reveal canvas. */
 
   .roll-line {
-    margin: 0 0 0.75rem;
     font-size: 1.4rem;
     min-height: 1.4em; /* reserve the line so the grid never shifts between phases */
   }

@@ -347,7 +347,6 @@
     gap: 0.4em 0.45em;
     align-items: center;
     justify-content: center;
-    margin: 1.5rem 0;
     padding: 0.7em 0.9em;
     font-size: 1.15em;
   }
@@ -369,7 +368,6 @@
   .overview-cutout {
     display: flex;
     justify-content: center;
-    margin-top: 2.5rem;
     font-size: 1.35em;
   }
 
@@ -379,7 +377,6 @@
     gap: 0.4em 0.55em;
     align-items: center;
     justify-content: center;
-    margin: 1rem 0;
     font-size: 0.9em;
   }
 
@@ -392,7 +389,6 @@
     gap: 0.5em 1em;
     align-items: center;
     justify-content: center;
-    margin: 0.5rem 0;
     font-size: 0.85em;
   }
 
@@ -544,7 +540,6 @@
      720px canvas. */
   .cutout-hunt {
     gap: 0.4em 0.8em;
-    margin: 0.25rem 0;
     font-size: 0.72em;
   }
 
