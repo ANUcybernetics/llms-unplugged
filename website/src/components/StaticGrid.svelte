@@ -70,4 +70,10 @@
   .static-grid-tokens code.dimmed {
     opacity: 0.25;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .static-grid-tokens code {
+      transition: none;
+    }
+  }
 </style>

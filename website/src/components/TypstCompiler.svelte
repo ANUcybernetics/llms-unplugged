@@ -462,6 +462,13 @@
     }
   }
 
+  /* Still a spinner, so "busy" stays legible, just not a blur. */
+  @media (prefers-reduced-motion: reduce) {
+    .spinner {
+      animation-duration: 2s;
+    }
+  }
+
   .input-section,
   .options-section {
     margin-bottom: 1.5rem;

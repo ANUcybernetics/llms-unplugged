@@ -127,7 +127,10 @@
     padding: 0.05em 0.25em;
     border-radius: 4px;
     border: 2px solid transparent;
-    transition: all 0.3s;
+    transition:
+      color 0.3s,
+      border-color 0.3s,
+      background-color 0.3s;
   }
 
   .tok.is-ahead {
@@ -172,5 +175,11 @@
   .then,
   .so {
     color: var(--color-text-secondary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tok {
+      transition: none;
+    }
   }
 </style>

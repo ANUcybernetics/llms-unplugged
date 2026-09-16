@@ -123,4 +123,10 @@
     color: var(--paper-ink-muted, rgb(0 0 0 / 55%));
     text-align: center;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sheet {
+      transition: none;
+    }
+  }
 </style>

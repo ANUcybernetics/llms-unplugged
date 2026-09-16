@@ -247,4 +247,10 @@
     stroke: var(--anu-gold);
     stroke-width: 2.4;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ledger-strip {
+      transition: none;
+    }
+  }
 </style>

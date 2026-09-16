@@ -153,4 +153,10 @@
   .dim {
     opacity: var(--sheet-dim, 0.22);
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .line {
+      transition: none;
+    }
+  }
 </style>
