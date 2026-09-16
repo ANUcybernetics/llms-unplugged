@@ -20,8 +20,6 @@ post is for them.
 
 ## Following along online
 
-The slides are here: **[LLMs Unplugged @ ACDICT](/decks/acdict/)**.
-
 I'll be talking mostly to the people in the room, so the online experience will
 be a bit fly-on-the-wall---I won't be watching the chat closely while I present.
 But if you're keen, you can genuinely do the whole thing yourself as we go; it's
