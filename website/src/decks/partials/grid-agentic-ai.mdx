@@ -53,16 +53,22 @@ Walk it slowly: the punctuation is the trigger, the completion prompt plus the s
 
 ---
 
-{/* _class: hero */}
+## Your turn
 
-# Agentic AI
+![bg right:40%](./assets/bg-activity-tool-use.avif)
 
-![bg](./assets/bg-tool-use-banner.avif)
+generate as before, but every punctuation token is a **tool call**:
+
+1. **pause** when you roll a `.` or a `,`
+2. **text** `What comes next? "[sentence so far]..."` to 3 friends or group
+   chats
+3. **write down** the whole first reply, then the punctuation token you rolled
+4. **carry on** generating from that punctuation token
 
 <Timer minutes={10} overlay />
 
 ```notes
-Generate from your model --- on punctuation, text `What comes next? "[sentence so far]..."` to 3 friends and splice in the whole first reply. 10 min --- texting latency is real, so keep groups moving; if a reply hasn't landed by the next punctuation token, back-fill it later. Circulate.
+Leave this up while they work. 10 min --- texting latency is real, so keep groups moving; if a reply hasn't landed by the next punctuation token, back-fill it later. Circulate.
 ```
 
 ---

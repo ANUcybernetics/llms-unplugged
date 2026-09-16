@@ -106,16 +106,22 @@ Three snags worth pre-empting. The sentence boundary isn't a stop: the text is o
 
 ---
 
-{/* _class: hero */}
+## Your turn
 
-# Training
+![bg right:40%](./assets/bg-design-your-model.avif)
 
-![bg](./assets/bg-div-training.avif)
+tidy up your text, then for each pair of tokens:
+
+1. **find the row** for the first token --- no row yet? it gets a row _and_ a
+   column
+2. **find the column** for the second token --- same again if it's new
+3. **add a tally mark** in the cell where they meet
+4. **move along by one**: the second token starts the next pair
 
 <Timer minutes={10} overlay />
 
 ```notes
-Hand out grids; groups tally their own text. 10 min, circulate --- the usual snag is that a token only gets a new row and column the first time it appears.
+This is the whole loop on one slide --- leave it up while they work. Hand out the grids; each group tallies its own text. 10 min, circulate --- the usual snag is that a token only gets a new row and column the first time it appears.
 ```
 
 ---
