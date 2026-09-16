@@ -38,34 +38,6 @@ export const EXAMPLE_GENERATION_ROLLS = "- 7 2 6 - -";
 export const CAT_TOKENS = "look at me ! look at me ! look at me now !";
 export const CAT_VOCAB = "look at me ! now";
 
-// Generalisation --- drives the "it can say what it never saw" beat in
-// scaling-up. `cat` and `dog` do exactly the same job in this text, but a grid
-// stores them as unrelated rows: `cat` has seen both `sat` and `ran`, `dog`
-// only `sat`, so the grid rates "the dog ran" impossible. Pre-tokenised so it
-// can go straight into ParameterGrid, and small enough that the ringed cell is
-// findable from the back of the room.
-export const EXAMPLE_GENERALISE = "the cat sat . the cat ran . the dog sat .";
-export const EXAMPLE_GENERALISE_VOCAB = "the cat sat . ran dog";
-// The same grid as a transformer would fill it: a number in every cell, rows
-// and columns in EXAMPLE_GENERALISE_VOCAB order. Illustrative, not measured ---
-// what has to be true of them is that no cell is empty, that the `cat` and
-// `dog` rows come out near-identical (they do the same job in the text), and
-// that `dog`→`ran` is healthy where the tallies left a hole.
-export const EXAMPLE_GENERALISE_SCORES = [
-  // the:  the   cat   sat    .    ran   dog
-  [0.03, 0.46, 0.04, 0.02, 0.04, 0.41],
-  // cat:
-  [0.04, 0.01, 0.48, 0.03, 0.42, 0.02],
-  // sat:
-  [0.12, 0.02, 0.01, 0.78, 0.04, 0.03],
-  // .:
-  [0.82, 0.05, 0.03, 0.02, 0.04, 0.04],
-  // ran:
-  [0.11, 0.03, 0.03, 0.77, 0.02, 0.04],
-  // dog:
-  [0.05, 0.02, 0.46, 0.03, 0.4, 0.04],
-];
-
 // Pre-trained model --- the room's actual booklet --- drives
 // grid-pretrained-generation (the 90min and 2h decks only). The four entries
 // below are copied verbatim from the booklet JSON, built with:

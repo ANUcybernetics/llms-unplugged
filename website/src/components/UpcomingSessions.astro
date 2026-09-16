@@ -99,10 +99,9 @@ const isEmpty = sessions.length === 0;
 </div>
 
 <style>
-  /* Visibility utility — !important so it wins over the variant display rules
-     below (which are more specific than a bare attribute selector would be). */
+  /* Toggled by the script once it knows whether any session is upcoming. */
   .us-hidden {
-    display: none !important;
+    display: none;
   }
 
   .us-list {

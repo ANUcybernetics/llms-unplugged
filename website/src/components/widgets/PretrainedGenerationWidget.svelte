@@ -137,7 +137,7 @@
 </script>
 
 <FullscreenWrapper>
-  <div class="lm-widget pretrained-generation-widget">
+  <div class="lm-widget">
     <div class="widget-view">
       <div class="widget-section">
         <div class="section-header">

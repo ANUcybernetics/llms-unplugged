@@ -32,13 +32,13 @@ const hero = findHeroImage(`hero-news-${slug}`);
   ogImage={ogImage}
   ogType="article"
 >
-  <div class="content-container news-layout">
+  <div class="content-container">
     <article class="prose">
       <header class="news-header">
         <h1 class="news-title">{title}</h1>
         {(author || date) && (
           <div class="news-meta">
-            {author && <span class="author">{author}</span>}
+            {author && <span>{author}</span>}
             {author && date && <span class="separator">&middot;</span>}
             {date && <time datetime={date.toISOString()}>{formattedDate}</time>}
           </div>

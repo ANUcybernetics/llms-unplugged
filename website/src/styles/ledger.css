@@ -1,4 +1,4 @@
-/* Shared styles for the ledger widgets (LedgerRow, LedgerBag, LedgerTraining,
+/* Shared styles for the ledger widgets (LedgerRow, LedgerCup, LedgerTraining,
    LedgerSheet, LedgerSheets): the pieces of a printed ledger sheet as
    cli/ledger.typ prints it, drawn on the paper ground the cutouts use. The
    colours come from the set's palette (src/lib/ledger.ts, which is the CLI's

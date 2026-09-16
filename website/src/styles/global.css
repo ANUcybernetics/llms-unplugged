@@ -67,14 +67,6 @@
   --at-accent-soft: rgb(from var(--anu-gold) r g b / 14%);
 }
 
-/* Lesson intro block */
-.lesson-intro {
-  border-left: 4px solid var(--at-accent);
-  padding-left: 1rem;
-  margin: 1.25rem 0;
-  font-weight: 500;
-}
-
 /* Tally mark styling */
 .tally {
   font-family: var(--font-mono);
@@ -134,82 +126,6 @@
   max-width: var(--content-max-width);
   margin: 0 auto;
   padding-block: 2rem;
-}
-
-/* Image gallery */
-.image-gallery {
-  display: grid;
-  gap: 1.5rem;
-  margin: 1.5rem 0;
-}
-
-.image-gallery img {
-  width: 100%;
-  object-fit: cover;
-  aspect-ratio: 16 / 9;
-}
-
-@media (width >= 640px) {
-  .image-gallery {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (width >= 960px) {
-  .image-gallery {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* Section with hero image */
-.section-with-image {
-  display: grid;
-  gap: 1.5rem;
-  margin: 2rem 0;
-  padding: 1.5rem 0;
-  border-top: 1px solid var(--at-divider);
-}
-
-.section-with-image:first-of-type {
-  border-top: none;
-  margin-top: 0;
-}
-
-.section-with-image img {
-  width: 100%;
-  object-fit: cover;
-  aspect-ratio: 16 / 9;
-}
-
-.section-with-image .section-content h2:first-child {
-  margin-top: 0;
-  padding-top: 0;
-  border-top: none;
-}
-
-@media (width >= 960px) {
-  .section-with-image {
-    grid-template-columns: 1fr 1.2fr;
-    align-items: start;
-    gap: 2rem;
-  }
-
-  .section-with-image:nth-of-type(even) {
-    grid-template-columns: 1.2fr 1fr;
-  }
-
-  .section-with-image:nth-of-type(even) .section-image {
-    order: 2;
-  }
-
-  .section-with-image:nth-of-type(even) .section-content {
-    order: 1;
-  }
-
-  .section-with-image .section-image {
-    position: sticky;
-    top: calc(var(--nav-height) + 1rem);
-  }
 }
 
 /* Variant toggle: CSS-only show/hide */

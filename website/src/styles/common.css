@@ -4,7 +4,6 @@
   --anu-black: #000;
   --anu-gold: #be830e;
   --anu-gold-2: hsl(from var(--anu-gold) h calc(s - 30) 77);
-  --anu-gold-4: hsl(from var(--anu-gold) h s calc(l + 8));
   --anu-gold-tint: hsl(from var(--anu-gold) h calc(s - 30) 90);
 
   /* Semantic colour tokens */

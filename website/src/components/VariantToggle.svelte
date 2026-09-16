@@ -4,7 +4,7 @@
   let current = $derived(getVariant());
 </script>
 
-<div class="lm-widget variant-toggle">
+<div class="lm-widget">
   <p class="variant-description">
     <strong>Choose your method:</strong> This lesson can be done with either a
     <em>grid</em> (paper and dice) or <em>cutouts</em> (physical tokens). Choose which suits your materials.
@@ -97,7 +97,7 @@
     background: var(--at-accent-soft);
   }
 
-  @media (max-width: 480px) {
+  @media (width <= 480px) {
     .variant-buttons {
       flex-direction: column;
     }

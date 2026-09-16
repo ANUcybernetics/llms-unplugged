@@ -469,7 +469,7 @@
 
   .input-section h3,
   .options-section h3 {
-    margin: 0 0 0.75rem 0;
+    margin: 0 0 0.75rem;
     font-size: 1rem;
     font-weight: 600;
   }
@@ -691,7 +691,7 @@
   .status-log pre {
     margin: 0;
     white-space: pre-wrap;
-    word-break: break-word;
+    overflow-wrap: anywhere;
   }
 
   .preview {
@@ -707,7 +707,7 @@
     height: auto;
   }
 
-  @media (max-width: 640px) {
+  @media (width <= 640px) {
     .metadata-inputs,
     .option-row,
     .ledger-options {

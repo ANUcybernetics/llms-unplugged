@@ -117,7 +117,7 @@
 </script>
 
 <FullscreenWrapper>
-  <div class="lm-widget training-widget">
+  <div class="lm-widget">
     <div class="widget-view">
       <div class="input-row">
         <div class="widget-section">

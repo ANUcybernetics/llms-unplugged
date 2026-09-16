@@ -217,7 +217,7 @@ import doorAttend from "../assets/images/hero-intro.avif";
     align-items: center;
   }
 
-  @media (min-width: 960px) {
+  @media (width >= 960px) {
     .hero {
       grid-template-columns: 1fr 1fr;
       padding: 6rem 1.5rem 3rem;
@@ -266,7 +266,7 @@ import doorAttend from "../assets/images/hero-intro.avif";
     object-fit: cover;
   }
 
-  @media (min-width: 960px) {
+  @media (width >= 960px) {
     .hero-image {
       order: 0;
     }
@@ -293,13 +293,13 @@ import doorAttend from "../assets/images/hero-intro.avif";
   }
 
   /* two-up from tablet, four-up once there's room; never 3 + 1 */
-  @media (min-width: 640px) {
+  @media (width >= 640px) {
     .doors-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  @media (min-width: 1100px) {
+  @media (width >= 1100px) {
     .doors-grid {
       grid-template-columns: repeat(4, 1fr);
     }
@@ -315,5 +315,56 @@ import doorAttend from "../assets/images/hero-intro.avif";
   .start-here {
     margin: 1.5rem 0 0;
     font-size: 1.05rem;
+  }
+
+  /* Section with hero image */
+  .section-with-image {
+    display: grid;
+    gap: 1.5rem;
+    margin: 2rem 0;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--at-divider);
+  }
+
+  .section-with-image:first-of-type {
+    border-top: none;
+    margin-top: 0;
+  }
+
+  .section-with-image img {
+    width: 100%;
+    object-fit: cover;
+    aspect-ratio: 16 / 9;
+  }
+
+  .section-with-image .section-content h2:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  @media (width >= 960px) {
+    .section-with-image {
+      grid-template-columns: 1fr 1.2fr;
+      align-items: start;
+      gap: 2rem;
+    }
+
+    .section-with-image:nth-of-type(even) {
+      grid-template-columns: 1.2fr 1fr;
+    }
+
+    .section-with-image:nth-of-type(even) .section-image {
+      order: 2;
+    }
+
+    .section-with-image:nth-of-type(even) .section-content {
+      order: 1;
+    }
+
+    .section-with-image .section-image {
+      position: sticky;
+      top: calc(var(--nav-height) + 1rem);
+    }
   }
 </style>

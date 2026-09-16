@@ -239,7 +239,7 @@
   .token-text {
     opacity: 0;
     fill: white;
-    font-family: var(--font-roboto-mono, "Roboto Mono", monospace);
+    font-family: var(--font-mono);
     font-weight: 700;
     font-size: 120px;
     transition: opacity 0.4s ease 0.3s;
@@ -253,7 +253,7 @@
 
   .title-label {
     fill: white;
-    font-family: var(--font-roboto-mono, "Roboto Mono", monospace);
+    font-family: var(--font-mono);
     font-weight: 700;
     white-space: pre;
     pointer-events: none;

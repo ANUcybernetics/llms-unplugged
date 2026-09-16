@@ -1,15 +1,9 @@
-/* stylelint-disable import-notation */
 @import "../styles/common.css";
 @import "astro-theme-university/styles/deck.css";
 
-/* This file used to duplicate the bulk of the theme's deck.css
-   (palette tokens, --r-* Reveal.js variables, base slide typography,
-   .impact/.quote/.banner/.centered/.qr-code, etc.). Those are now
-   inherited via the @import above; this file only carries
-   llms-unplugged-specific extensions: the project --color-bg token,
-   speaker-note hiding, .socy-logo zero-padding, the per-token colour
-   palette for cutouts, and the cutout/lm-widget/bigram-grid component
-   styles. */
+/* The decks' extensions to the theme's deck.css: projector-tuned tokens,
+   slide-class refinements, the paper ground and token palette the cutouts
+   share with the printed set, and the deck-size overrides for the widgets. */
 
 :root {
   /* Project-specific token (referenced by widgets.css). */
@@ -310,12 +304,6 @@
   font-size: 0.5em;
 }
 
-/* Speaker notes are rendered as <div class="notes"> for a11y (not
-   <aside>), so Reveal.js's default notes hiding doesn't apply. */
-.reveal .slides section .notes {
-  display: none;
-}
-
 /* socy-logo: zero-padding slide for the animated ANU Society of
    Cybernetics logo (the shared theme has &.anu-logo with the same
    treatment, but the llms-unplugged decks use the socy-logo class). */
@@ -532,18 +520,6 @@
   align-items: baseline;
 }
 
-.reveal .slides .extensions-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5em;
-}
-
-.reveal .slides .extensions-grid img {
-  height: 4.5em;
-  border-radius: 6px;
-  object-fit: cover;
-}
-
 .reveal .slides .fullscreen-button,
 .reveal .slides .controls-strip {
   display: none;
@@ -654,8 +630,7 @@
   gap: 0.5rem;
 }
 
-.reveal .slides section .lm-widget .input-row,
-.reveal .slides section .lm-widget .output-row {
+.reveal .slides section .lm-widget .input-row {
   gap: 0.5rem;
 }
 
@@ -671,7 +646,6 @@
 .reveal .slides section .lm-widget .token,
 .reveal .slides section .lm-widget button,
 .reveal .slides section .lm-widget .speed-control,
-.reveal .slides section .lm-widget .mapping-item,
 .reveal .slides section .lm-widget .dice-value {
   font-size: 1em;
 }
