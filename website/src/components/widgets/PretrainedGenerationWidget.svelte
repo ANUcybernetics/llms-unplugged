@@ -310,7 +310,7 @@
   }
 
   .entry.clickable:hover {
-    background: var(--at-bg-alt);
+    background: var(--color-bg-alt);
   }
 
   .entry.dead-end {
@@ -318,7 +318,7 @@
   }
 
   .entry.highlighted {
-    background: var(--at-accent-soft);
+    background: var(--color-brand-soft);
   }
 
   .entry-previous-word {
@@ -329,14 +329,14 @@
   .entry-previous-word.punctuation {
     display: inline-block;
     padding: 0 0.2em;
-    border: 1px solid var(--at-text-muted);
+    border: 1px solid var(--color-text-muted);
     border-radius: 2px;
     font-size: 1rem;
   }
 
   .dice-indicator {
     font-size: 0.85rem;
-    color: var(--at-text-secondary);
+    color: var(--color-text-secondary);
     margin-left: 0.15em;
     margin-right: 0.25em;
   }
@@ -356,14 +356,14 @@
   }
 
   .next-word.selected {
-    background: var(--at-accent-soft);
-    color: var(--at-accent);
+    background: var(--color-brand-soft);
+    color: var(--color-brand);
   }
 
   .next-word.punctuation .next-word-text {
     display: inline-block;
     padding: 0 0.15em;
-    border: 1px solid var(--at-text-muted);
+    border: 1px solid var(--color-text-muted);
     border-radius: 2px;
   }
 

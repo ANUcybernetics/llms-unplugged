@@ -648,7 +648,7 @@
 
   .controls button {
     background: var(--at-accent);
-    color: white;
+    color: var(--anu-white);
     border: none;
     padding: 0.75rem 1.5rem;
     border-radius: var(--at-border-radius);

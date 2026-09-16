@@ -96,6 +96,6 @@
   }
 
   .roll-none {
-    color: var(--at-text-secondary);
+    color: var(--color-text-secondary);
   }
 </style>

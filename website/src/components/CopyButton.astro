@@ -203,7 +203,7 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
   /* Anchor to the deck root (16px) so em-based sizing is predictable on any
      slide and the button doesn't balloon by inheriting a hero font-size. */
   .copy-button {
-    --copy-invalid: #e2574c;
+    --copy-invalid: var(--at-error, #e2574c);
 
     display: inline-flex;
     flex-direction: column;
@@ -319,6 +319,13 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
 
   .copy-button.copied .copy-icon--idle {
     display: none;
+  }
+
+  /* Clipboard write refused: the button reads as an error until the next try. */
+  .copy-button.copy-failed .copy-btn {
+    opacity: 1;
+    color: var(--copy-invalid);
+    border-color: color-mix(in srgb, var(--copy-invalid) 45%, transparent);
   }
 
   .copy-button.copied .copy-icon--done {

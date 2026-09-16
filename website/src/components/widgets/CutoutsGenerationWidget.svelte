@@ -253,7 +253,7 @@
   }
 
   .cutout.clickable:hover {
-    border-color: var(--at-accent-hover);
+    border-color: var(--anu-gold-2);
   }
 
   .cutout.dead-end {

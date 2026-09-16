@@ -157,7 +157,7 @@
      already tinted, so 15% no longer reads as a band at all. */
   tr.banded td,
   tr.banded th {
-    background: color-mix(in srgb, var(--anu-gold) 32%, transparent);
+    background: var(--grid-cell-band);
   }
 
   /* Once a context is in play the rest of the grid steps back --- still there,

@@ -138,7 +138,7 @@
 
   .header.label {
     font-size: 0.8em;
-    color: rgb(0 0 0 / 55%);
+    color: var(--paper-ink-muted, rgb(0 0 0 / 55%));
     font-style: italic;
   }
 

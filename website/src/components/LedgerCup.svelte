@@ -172,7 +172,7 @@
 
   .counter {
     fill: var(--c);
-    stroke: rgb(0 0 0 / 60%);
+    stroke: rgb(0 0 0 / 55%);
     stroke-width: 1;
   }
 

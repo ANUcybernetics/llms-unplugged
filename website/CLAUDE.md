@@ -46,7 +46,11 @@ viewport scaled to fill the screen. Colour tokens (`--anu-*`, `--color-*`,
 `src/styles/widgets.css`, imported by the layouts and by each `.deck.mdx` that
 uses a widget (`ledger.css` likewise, for the ledger decks). Add new shared
 tokens to `common.css`, and when changing colours or widget styles check both
-consumers.
+consumers. Anything that can land on a slide (the widgets, the grids, the ledger
+and cutout pieces) takes its colours from those project tokens, never the
+theme's `--at-*` set: deck.css defines only a few of them, so an `--at-*` colour
+inside a deck silently falls back. Page chrome that lives inside the theme's
+layout (layouts, pages, callouts, the tools page) uses `--at-*`.
 
 Typography and layout are deliberately independent: root font size (website
 20px, decks 16px), Reveal's `--r-*` variables, layout tokens like

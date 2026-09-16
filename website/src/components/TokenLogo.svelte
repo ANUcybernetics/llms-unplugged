@@ -201,7 +201,7 @@
     position: absolute;
     inset: 0;
     overflow: hidden;
-    background: var(--at-bg);
+    background: var(--color-bg);
   }
 
   .token-logo > svg {
@@ -214,8 +214,8 @@
   }
 
   .brick-bg {
-    fill: var(--at-bg-alt);
-    stroke: var(--at-accent-soft);
+    fill: var(--color-bg-alt);
+    stroke: var(--color-brand-soft);
     stroke-width: 1;
     transition:
       fill 0.4s ease,
@@ -224,7 +224,7 @@
 
   .brick.highlighted .brick-bg,
   .brick-bg.highlighted {
-    fill: var(--tint, #be830e);
+    fill: var(--tint, var(--anu-gold));
     stroke: var(--tint, #d4940f);
   }
 

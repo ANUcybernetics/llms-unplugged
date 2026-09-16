@@ -120,7 +120,7 @@
   .holder {
     margin-block-start: 0.3em;
     font-size: 0.7em;
-    color: rgb(0 0 0 / 55%);
+    color: var(--paper-ink-muted, rgb(0 0 0 / 55%));
     text-align: center;
   }
 </style>

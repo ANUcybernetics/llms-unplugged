@@ -51,7 +51,7 @@
   }
 
   .fullscreen-wrapper.fullscreen {
-    background: var(--at-bg);
+    background: var(--color-bg);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -65,10 +65,10 @@
     right: 0.5rem;
     z-index: 10;
     padding: 0.25rem 0.5rem;
-    border: 1px solid var(--at-border);
+    border: 1px solid var(--color-border);
     border-radius: 0.25rem;
-    background: var(--at-bg);
-    color: var(--at-text);
+    background: var(--color-bg);
+    color: var(--color-text);
     cursor: pointer;
     font-size: 1rem;
     font-family: inherit;

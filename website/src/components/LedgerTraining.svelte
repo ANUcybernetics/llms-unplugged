@@ -140,7 +140,7 @@
 
   .is-follower {
     background: var(--anu-gold);
-    color: #fff;
+    color: var(--paper-ink-invert, #fff);
   }
 
   .pair {
@@ -166,7 +166,7 @@
 
   .pair .is-follower {
     background: var(--anu-gold);
-    color: #fff;
+    color: var(--paper-ink-invert, #fff);
   }
 
   .then,

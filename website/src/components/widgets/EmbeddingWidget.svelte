@@ -126,7 +126,7 @@
   .section-hint {
     font-weight: 400;
     font-style: italic;
-    color: var(--at-text-muted);
+    color: var(--color-text-muted);
     margin-left: 0.5rem;
   }
 </style>

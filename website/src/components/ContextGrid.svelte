@@ -152,7 +152,7 @@
      not. */
   tr.active-row td,
   tr.active-row th {
-    background: color-mix(in srgb, var(--anu-gold) 32%, transparent);
+    background: var(--grid-cell-band);
   }
 
   tr.active-row th {

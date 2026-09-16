@@ -94,7 +94,7 @@
   }
 
   .strip-caption span {
-    color: var(--at-text-secondary);
+    color: var(--color-text-secondary);
     font-size: 1.1rem;
   }
 
@@ -157,7 +157,7 @@
 
   .band-count {
     font-size: 1rem;
-    color: var(--at-text-secondary);
+    color: var(--color-text-secondary);
   }
 
   .strip-result {
@@ -174,7 +174,7 @@
   }
 
   .strip-hint {
-    color: var(--at-text-secondary);
+    color: var(--color-text-secondary);
     font-size: 1.3rem;
   }
 </style>

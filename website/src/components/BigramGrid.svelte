@@ -120,7 +120,7 @@
     cursor: pointer;
   }
   .bigram-grid tr.clickable:hover .row-header {
-    background-color: var(--at-accent-soft);
+    background-color: var(--color-brand-soft);
   }
   .bigram-grid tr.dead-end {
     opacity: 0.4;
@@ -129,7 +129,7 @@
     background-color: var(--lm-highlight-soft);
   }
   .row-header {
-    background-color: var(--at-bg-alt);
+    background-color: var(--color-bg-alt);
     font-weight: 600;
     position: relative;
   }
@@ -140,16 +140,16 @@
     cursor: pointer;
   }
   .row-button:focus-visible {
-    outline: 2px solid var(--at-accent);
+    outline: 2px solid var(--color-brand);
     outline-offset: 1px;
   }
   .row-header.highlight-row {
-    background-color: var(--at-accent-soft);
+    background-color: var(--color-brand-soft);
   }
   .row-indicator {
     position: absolute;
     left: 0.25rem;
-    color: var(--at-accent);
+    color: var(--color-brand);
   }
   .grid-cell.highlight-row {
     background-color: var(--lm-highlight-soft);
@@ -168,7 +168,7 @@
   }
   @keyframes cell-flash {
     0% {
-      background-color: var(--at-accent);
+      background-color: var(--color-brand);
     }
     100% {
       background-color: var(--lm-highlight-strong);
