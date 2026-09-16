@@ -76,58 +76,60 @@ export const EXAMPLE_GENERALISE_SCORES = [
 // River and Other Verses"; JSON at cli/out/json/the-man-from-snowy-river.json,
 // entries shaped `[word, maxRoll, [follower, threshold]...]`). Re-run that and
 // re-read these four entries if the booklet is ever rebuilt. Only the walk's
-// four entries are shown --- `;`'s real entry has far too many followers for a
-// slide, and is the deck's "and so on" step.
-export const EXAMPLE_PRETRAINED_SEQ = "golden grass grown hollow ;";
+// four entries are shown --- `;`'s real entry has 91 followers, far too many
+// for a slide, and is the deck's "and so on" step.
+//
+// The walk is picked for fit as much as for content: every entry has to render
+// on ONE line of StaticPretrainedGeneration, including the "rolled N" badge the
+// active row grows. That caps a two-dice entry at roughly seven short
+// followers. `again` is the widest here and still leaves room for the badge.
+export const EXAMPLE_PRETRAINED_SEQ = "sleep again I'd float ;";
 // One roll per step (a single d10, or two read as tens-then-units for a
 // 00-99 spread); "-" marks a step with a single option (no roll needed).
-// golden --rolled 4--> grass; grass --rolled 68 (a six and an eight), past
-// `for`'s 66--> grown; grown --rolled 6--> hollow; hollow's only follower is
-// `;`, so no roll; `;` is the "and so on" end of the walk.
-export const EXAMPLE_PRETRAINED_ROLLS = "4 68 6 - -";
+// sleep --rolled 7, past `.`'s 6--> again; again --rolled 80 (an eight and a
+// zero), past `as`'s 76--> I'd; I'd --rolled 6, past `like`'s 4--> float;
+// float's only follower is `;`, so no roll; `;` is the "and so on" end of the
+// walk.
+export const EXAMPLE_PRETRAINED_ROLLS = "7 80 6 - -";
 export const EXAMPLE_PRETRAINED_ENTRIES: ModelEntry[] = [
   {
-    previousWord: "golden",
+    previousWord: "sleep",
     totalCount: 10,
     numDice: 1,
     nextWords: [
-      { word: "fleece", count: 0, threshold: 2 },
-      { word: "grass", count: 0, threshold: 6 },
-      { word: "spoil", count: 0, threshold: 9 },
+      { word: ",", count: 0, threshold: 2 },
+      { word: ".", count: 0, threshold: 6 },
+      { word: "again", count: 0, threshold: 7 },
+      { word: "as", count: 0, threshold: 8 },
+      { word: "with", count: 0, threshold: 9 },
     ],
   },
   {
-    previousWord: "grass",
+    previousWord: "again",
     totalCount: 100,
     numDice: 2,
     nextWords: [
-      { word: "is", count: 0, threshold: 23 },
-      { word: "and", count: 0, threshold: 42 },
-      { word: ",", count: 0, threshold: 56 },
-      { word: "burnt", count: 0, threshold: 61 },
-      { word: "for", count: 0, threshold: 66 },
-      { word: "grown", count: 0, threshold: 70 },
-      { word: "in", count: 0, threshold: 75 },
-      { word: "it", count: 0, threshold: 80 },
-      { word: "on", count: 0, threshold: 85 },
-      { word: "thro'", count: 0, threshold: 89 },
-      { word: "till", count: 0, threshold: 94 },
-      { word: "was", count: 0, threshold: 99 },
+      { word: ".", count: 0, threshold: 45 },
+      { word: ",", count: 0, threshold: 61 },
+      { word: "and", count: 0, threshold: 68 },
+      { word: "as", count: 0, threshold: 76 },
+      { word: "I'd", count: 0, threshold: 84 },
+      { word: "made", count: 0, threshold: 91 },
+      { word: "over", count: 0, threshold: 99 },
     ],
   },
   {
-    previousWord: "grown",
+    previousWord: "I'd",
     totalCount: 10,
     numDice: 1,
     nextWords: [
-      { word: "and", count: 0, threshold: 2 },
-      { word: "dull", count: 0, threshold: 4 },
-      { word: "hollow", count: 0, threshold: 7 },
-      { word: "streets", count: 0, threshold: 9 },
+      { word: "like", count: 0, threshold: 4 },
+      { word: "float", count: 0, threshold: 7 },
+      { word: "take", count: 0, threshold: 9 },
     ],
   },
   {
-    previousWord: "hollow",
+    previousWord: "float",
     totalCount: 10,
     numDice: 1,
     nextWords: [{ word: ";", count: 0, threshold: 9 }],
