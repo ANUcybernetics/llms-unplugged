@@ -311,19 +311,6 @@
   padding: 0;
 }
 
-/* Site URL on the closing logo slide, so classrooms delivered by third
-   parties have somewhere to go afterwards. Positioned absolutely because the
-   logo SVG fills the whole 1280x720 canvas. */
-.reveal .slides section.socy-logo .socy-url {
-  position: absolute;
-  inset-block-end: 1.5rem;
-  inset-inline: 0;
-  margin: 0;
-  text-align: center;
-  font-size: 1.25rem;
-  color: var(--anu-gold, #be830e);
-}
-
 /* The paper ground. Everything that depicts a physical cutout — the cutouts
    themselves, the running text they were cut from, the page a participant
    writes on — is rendered on paper, in both deck themes. The slides are dark,
@@ -558,9 +545,9 @@
 /* A one-line raw `<p class="fragment">…</p>` in MDX is inline JSX inside a
    markdown paragraph, so the page carries `<p><p class="fragment">…</p></p>`
    and the browser splits it into an empty paragraph either side of the real
-   one. Their margins cost a slide ~15px each. The definitions, wrap-up,
-   corpus-quote and socy-url lines still use that form (the Voice component
-   shows the block form that avoids it); until they move, hide the debris. */
+   one. Their margins cost a slide ~15px each. The definitions, wrap-up and
+   corpus-quote lines still use that form (the Voice component shows the block
+   form that avoids it); until they move, hide the debris. */
 .reveal .slides section p:empty {
   display: none;
 }
