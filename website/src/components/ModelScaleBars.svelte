@@ -212,7 +212,7 @@
   .model-scale-bars {
     display: grid;
     gap: 0.75rem;
-    inline-size: min(100%, 54rem);
+    inline-size: 100%;
     color: var(--color-text);
   }
 

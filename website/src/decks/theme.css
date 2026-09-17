@@ -581,10 +581,11 @@
    to sit their figure in the middle of the canvas. But `.centered` is
    `place-content: center`, and centring a grid's *inline* axis packs the
    columns to content width: that collapses a `width: 100%` SVG onto its 300px
-   intrinsic default, and it pulls text off the left margin every other slide
-   in the deck shares. Only the block axis is wanted here, so hand the inline
-   axis back its full-width track. */
+   intrinsic default (and the scale bars onto their labels), and it pulls text
+   off the left margin every other slide in the deck shares. Only the block
+   axis is wanted here, so hand the inline axis back its full-width track. */
 .reveal .slides section.centered:has(svg.grid-zoom),
+.reveal .slides section.centered:has(.model-scale-bars),
 .reveal .slides section.centered:has(.qa-compare) {
   justify-content: normal;
 }
