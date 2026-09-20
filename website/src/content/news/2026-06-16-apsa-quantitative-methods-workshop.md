@@ -29,9 +29,7 @@ more applied sessions later in the day.
 
 We did what we always do.[^year5] The participants tallied token frequencies,
 filled in the probability grid, and [generated new text](/modules/generation/)
-by rolling dice against the counts. It's the same statistical machinery that
-sits underneath ChatGPT, slowed right down to human speed and built out of paper
-and dice.
+by rolling dice against the counts.
 
 ![Ben presenting at the front of the room, mid-gesture, with the cut-out token figures on the screen behind him](../../assets/images/apsa-workshop-02.avif)
 
@@ -42,8 +40,8 @@ outside the discipline of Computer Science. Thanks to the co-chairs,
 and
 [Constanza Sanhueza Petrarca](https://cass.anu.edu.au/research/people/dr-constanza-sanhueza-petrarca),
 for the invitation. Thanks too to my co-facilitators Cole and Eddie. If you work
-with a group of researchers who would like an honest, hands-on feel for how
-these models actually work, do [get in touch](/about/#get-in-touch).
+with a group of researchers who would like a hands-on introduction to how these
+models actually work, do [get in touch](/about/#get-in-touch).
 
 [^year5]:
     It is, give or take, the same activity we

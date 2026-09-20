@@ -1,5 +1,5 @@
 ---
-title: LLMs Unplugged now speaks Mandarin Chinese
+title: Mandarin Chinese support for widgets and booklets
 date: 2026-07-03
 author: Ben Swift
 kind: build
@@ -24,13 +24,12 @@ stray symbols, and, as it turns out, every Chinese character. Feed it a whole
 poem and you got an empty model, with nothing to count and nothing to generate
 from.
 
-Fixing that meant deciding what a Chinese token is, and Chinese makes you
-choose. English hides its word boundaries in the spaces. Chinese runs the
-characters together, with no space to split on.
+We had to choose whether to count individual characters or segment the Chinese
+text into words. Unlike English, Chinese doesn't separate words with spaces.
 
-The simplest answer is one token per character. 莲 follows 采, 叶 follows 莲,
-and the dice don't care that the tokens are Chinese. Each character becomes a
-cell in the frequency grid, a cutout card, or a face you can roll for.
+The simplest answer is one token per character. 莲 follows 采, 叶 follows 莲.
+Each character becomes a cell in the frequency grid, a cutout card, or a face
+you can roll for.
 
 Xilian pointed out what that misses. A Chinese word is often two or three
 characters, like 深圳 (Shenzhen) or 金融 (finance). Cutting on every character
@@ -45,10 +44,9 @@ as 深圳 / 最高 / 的 / 楼 / 是 / 平安 / 金融中心, not a run of loose
     or 最高 plus 的, and jieba has to pick one. That there is a choice at all is
     worth a few minutes in a classroom.
 
-Both views are one switch apart. The widgets show a words/characters toggle
-whenever there is Chinese on the page, and the command-line tool takes
-`--cjk word` or `--cjk char`. Characters are the rule you can explain on a
-whiteboard; words are closer to how the language reads.
+You can switch between words and characters in both tools. The widgets show a
+words/characters toggle whenever there is Chinese on the page, and the
+command-line tool takes `--cjk word` or `--cjk char`.
 
 Here's a bigram model trained on _Jiangnan_, a two-thousand-year-old Han-dynasty
 folk poem about picking lotus. Press play to watch it count the words, and use

@@ -28,8 +28,8 @@ Hat tokens ("Eeek!"). The booklets were easier to manage with groups.
 She then presented the activities to 40 teachers at
 [ConASTA](https://asta.edu.au/conasta/), the Australian Science Teachers
 Association's national conference, and put a QR code for this website on her
-slides. The tech teachers were keen on the tokens, but the room struggled to see
-how to fit them into the spaces they actually teach in. A pile of paper slips
+slides. The tech teachers were keen on the tokens, but participants struggled to
+see how to fit the activity into their teaching spaces. A pile of paper slips
 needs time, table space and some confidence that none will end up under the
 furniture. The group suggested posters instead, with the token pairs jumbled and
 stuck around the walls, and Sam pictured A1 sheets in her own small lab. "Space
@@ -37,8 +37,8 @@ is always a premium," she wrote.
 
 [Search sheets](/modules/search-sheets/) came out of that suggestion. Each set
 shuffles every token pair in a text and deals them across a stack of A4 pages.
-Print the pages large and put them on the walls, and you have Sam's posters;
-hand out one page per person instead, and the model exists only across the room.
+Print the pages large and put them on the walls, and you have Sam's posters.
+Alternatively, hand out one page per person so everyone holds part of the model.
 Someone reads out the last word on the board, and everyone with that word on
 their sheet puts a hand up. Whoever gets picked reads out the word that follows
 it. Common continuations get more hands than rare ones, so picking a hand at

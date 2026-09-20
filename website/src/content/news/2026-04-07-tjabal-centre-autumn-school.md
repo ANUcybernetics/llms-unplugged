@@ -59,7 +59,7 @@ a different order.
 There is nothing inherently English (or any other particular language) about a
 language model. The training data determines the output language. Train on
 Luritja, get Luritja out. Train on a Python codebase, get something that looks
-like Python. What goes in is what comes out.
+like Python.
 
 Another group trained on only the English version of _Ngurrparringu_ and their
 language model generated this poem:
@@ -75,15 +75,14 @@ Hat_ into the training mix alongside the English poem:
 > our Tjukurrpa, Cold
 
 "Good fun" and "all if you wish" are Seuss; "mountains" and "Tjukurrpa" are
-Matt. The model samples whatever tokens are in the bucket, and if you mix the
-training data and you mix the output.
+Matt. The model samples whatever tokens are in the bucket, and mixing the
+training texts gives it words from both to draw on.
 
 The corollary is that if a language isn't in the training data, it isn't in the
-outputs either. No representation in, no representation out. When people say
-modern LLMs "know" English better than other languages, they mean those LLMs
-were trained on orders of magnitude more English text than anything else, and
-the tokenisers, evaluations and benchmarks all reflect that choice. It's a
-property of what we fed them.
+outputs either. When people say modern LLMs "know" English better than other
+languages, they mean those LLMs were trained on orders of magnitude more English
+text than anything else, and the tokenisers, evaluations and benchmarks all
+reflect that choice. It's a property of what we fed them.
 
 ![Autumn School students and Ben gathered around a table covered in word tokens](../../assets/images/tjabal-workshop-04.avif)
 

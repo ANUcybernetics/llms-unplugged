@@ -1,30 +1,28 @@
 ---
-title: The whole room holds the model
+title: Search sheets for group text generation
 date: 2026-08-06
 author: Ben Swift
 kind: build
 description:
-  Search sheets are the cutouts activity with the cutting taken out, sized for a
-  room rather than a table. Four ready-to-print sets are on the tools page.
+  Search sheets let a group generate text together, using one printed page per
+  participant. Four ready-to-print sets are on the tools page.
 ---
 
 The [search sheets](/tools/#search-sheets) are the cutouts activity with the
-cutting taken out, and they scale to a room. The CLI shuffles a corpus and deals
-it round-robin into one page per participant, so no two sheets are the same. You
-call out the last token written on the board, everyone scans their own sheet for
-it, and hands go up wherever there's a match. Pick one of those hands at random
-and you have your next token.
+cutting taken out, for groups to use together. The CLI shuffles a corpus and
+deals it round-robin into one page per participant, so no two sheets are the
+same. You call out the last token written on the board, everyone scans their own
+sheet for it, and hands go up wherever there's a match. Pick one of those hands
+at random and you have your next token.
 
-Every token pair in the text was dealt to exactly one person, and the deal
-spreads each context across as many people as it will go. A continuation that
-happens six times puts six hands in the air; a rare one puts up two. The show of
-hands is the probability distribution, without anybody counting anything. Pick
-at random, though. Take whoever shouts first and you're sampling the fastest
-reader instead of the text.
+Every token pair in the text is printed on exactly one sheet. The CLI spreads
+each context across as many sheets as possible, so common continuations tend to
+get more hands than rare ones. Picking a hand at random approximates sampling
+from the model's probability distribution. Take whoever shouts first and you're
+sampling the fastest reader instead of the text.
 
-Nobody holds the whole model. No single sheet can continue the text on its own;
-the model only exists across the whole room, and if somebody is away, some
-contexts draw no hands at all.
+Each participant holds part of the model on their sheet. If someone is absent,
+the group loses access to the token pairs on that page.
 
 Four sets are ready to print:
 [Green Eggs and Ham](https://pdf.llmsunplugged.org/sheets/green-eggs-and-ham.pdf)
@@ -42,38 +40,35 @@ that size. The [tools page](/tools/#generate-your-own) will build a set from any
 text you paste in.
 
 Building these turned up a problem with the
-[generated colour palette](/news/2026-05-24-generating-the-cutout-palette/).
-Sheets set their token pairs at 16pt rather than the cutouts' 36pt, and at that
-size, colours the metric called comfortably distinct kept reading as the same
-colour. Max-min OKLab ΔE counts a lightness step the same as a hue step; a
-scanning eye doesn't. On a small glyph, a lightness step just reads as that
-colour again, darker.
+[generated colour palette](/news/2026-05-24-generating-the-cutout-palette/). The
+sheets use 16pt type for token pairs, compared with 36pt on the cutouts. At that
+size, I struggled to distinguish colours that were well separated by the OKLab
+ΔE metric. The palette included several shades of the same hue, which were hard
+to tell apart when scanning small text.
 
-Fixing it meant asking a different question. A free search for maximally
-distinct colours gets named afterwards, by hand, which is how the palette ended
-up needing words like _ochre_ and _wine_ --- chosen because they were the
-nearest available, not because a room would reach for them. But the name is the
-whole point: "who has _cat_? it's a green one" only works if the room agrees on
-which swatch _green_ means. So the words come first now. Every swatch is pinned
-to a colour word's centroid in the xkcd colour survey --- a couple of hundred
-thousand people naming colours free-form, which is the best evidence there is
-for what a colour word means --- and the search picks the words whose printable
-colours sit furthest apart.
+I changed the search to start with colour names from the xkcd colour survey,
+then select colours that stayed distinguishable in print. Previously, I'd named
+the colours after generating the palette, ending up with names like _ochre_ and
+_wine_. Those were the closest names I could find, but teachers and students
+might call them something else. If a teacher says "who has _cat_? it's a green
+one", everyone needs to know which colour they mean.
 
-That lands on eight: black, grey, red, brown, green, blue, purple, magenta. Six
-print at their survey centroid exactly; only grey and green move, and only far
-enough to stay legible on paper.[^numbers] The cutouts use the same eight now.
-Thirty colours at 36pt was more than anyone can hold at once, and a colour
-nobody can name is a filter nobody can call out.
+Each candidate swatch now starts at the centroid for a colour name in the
+survey, which collected people's free-form names for colours. The search selects
+eight: black, grey, red, brown, green, blue, purple, magenta. Six print at their
+survey centroid exactly; grey and green move just far enough to stay legible on
+paper.[^numbers]
+
+The cutouts now use the same eight colours, so teachers can use the printed key
+to call out a colour alongside a word.
 
 Eight is close to the ceiling, too. The obvious ninth is orange, and a printable
 orange sits ΔE 0.074--0.101 from red once it has been through a CMYK profile ---
 you can have orange or red, not both. Green and turquoise collide the same way,
 as do magenta and pink.
 
-The key prints on the brief, on both the sheets and the cutouts. Call "who has
-_cat_? it's a green one" from the front and the room narrows its search before
-anyone reads a token.
+The key is printed on the brief for both the sheets and the cutouts. Students
+can use it to narrow their search before reading the tokens.
 
 [^numbers]:
     Grey moves ΔE 0.037 from its survey centroid and green 0.050, far enough to

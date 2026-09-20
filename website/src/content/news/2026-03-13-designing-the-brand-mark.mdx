@@ -10,10 +10,8 @@ description:
 
 import TokenLogo from "../../components/TokenLogo.svelte";
 
-Every project should feel like a natural extension of your brand, and for a
-project about demystifying how language models work it felt right to make the
-brand mark _itself_ an explainer. So the LLMs Unplugged brand mark is built from
-the thing that language models actually operate on---tokens.
+The LLMs Unplugged brand mark encodes the five tokens in the project's name as
+dot patterns.
 
 ## Tokenising the title
 
@@ -35,8 +33,7 @@ stay as one piece---it becomes `LL` + `Ms`, which makes a certain kind of sense
 if you squint (capital letters are rare enough that the tokeniser treats them
 separately). "Unplugged" becomes ` Un` + `plug` + `ged`, with that leading space
 on ` Un` showing how [BPE](https://en.wikipedia.org/wiki/Byte_pair_encoding)
-tokenisers encode word boundaries. None of this is obvious until you actually
-look at it, which is kind of the point of the whole project.
+tokenisers encode word boundaries.
 
 ## The word mark
 
@@ -68,9 +65,7 @@ no JavaScript involved. Each of the 16 circles gets its own keyframe animation
 based on how its bit differs across the five tokens, so some circles hold steady
 while others flicker between gold and dim.
 
-It's the kind of thing that nobody will ever notice unprompted (pun intended),
-but once you know what it is, you can't unsee it. Every dot pattern on the site
-is a real token ID rendered the same way.
+Every dot pattern on the site is a real token ID rendered the same way.
 
 ## The five-up
 
@@ -145,11 +140,8 @@ the title tokens emerge from different positions every time.
   <TokenLogo client:visible />
 </div>
 
-The whole thing scales to whatever container you put it in---no pixel
-breakpoints or resize listeners needed. The animation captures the core visual
-metaphor of the project: meaningful text emerging from what looks like a random
-jumble of tokens. It's basically what a language model does, just at a pace
-humans can follow.
+The animation scales to its container without pixel breakpoints or resize
+listeners.
 
 ## Background mode
 

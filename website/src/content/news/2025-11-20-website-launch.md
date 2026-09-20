@@ -6,18 +6,18 @@ kind: build
 description: The LLMs Unplugged website is now live.
 ---
 
-We're excited to announce the launch of this _LLMs Unplugged_ website.
+The _LLMs Unplugged_ website is now live.
 
 All teaching resources are now available for download, including lesson cards
 and instructor notes. See the [homepage](/) for an overview, plus a few
 different "ways in" depending on who you are and what you're looking for.
 
-While the resources themselves are battle-tested and good to go, this website is
-under active development at the moment (Nov '25) so if you find anything missing
-or have any suggestions then do get in touch at
+We've used these resources in workshops, but this website is under active
+development at the moment (Nov '25) so if you find anything missing or have any
+suggestions then do get in touch at
 [ben.swift@anu.edu.au](mailto:ben.swift@anu.edu.au).
 
-We've got big plans for these resources going forward:
+We're working on:
 
 - curriculum mappings (especially to the Australian Curriculum, but potentially
   to other curriculums as well)
@@ -27,5 +27,4 @@ We've got big plans for these resources going forward:
   classroom
 - suggested assessment tasks (if you're into that sort of thing)
 
-Stay tuned for upcoming events, new lessons, and other updates. You can also
-subscribe to the [RSS feed](/feed.xml) to get notified when we post news.
+Subscribe to the [RSS feed](/feed.xml) to get notified when we post news.
