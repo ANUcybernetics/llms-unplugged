@@ -4,19 +4,18 @@ date: 2026-07-03
 author: Ben Swift
 kind: build
 description:
-  The interactive widgets and the booklet generator now segment Mandarin
-  Chinese into words, not just characters. Thanks to Zhang Xilian for the nudge.
+  The interactive widgets and the booklet generator now segment Mandarin Chinese
+  into words, not just characters. Thanks to Zhang Xilian for the nudge.
 ---
 
 import TrainingWidget from "../../components/widgets/TrainingWidget.svelte";
 import Callout from "../../components/Callout.astro";
 
 Recently Zhang Xilian, a master's student at The Education University of Hong
-Kong, wrote to say he was planning to run LLMs Unplugged workshops in China,
-and that the [Training](/modules/training/) and
-[Generation](/modules/generation/) widgets didn't understand Mandarin Chinese.
-Neither did the booklet generator. He was right: paste a line of Chinese into
-any of them and nothing happened.
+Kong, wrote to say he was planning to run LLMs Unplugged workshops in China, and
+that the [Training](/modules/training/) and [Generation](/modules/generation/)
+widgets didn't understand Mandarin Chinese. Neither did the booklet generator.
+He was right: paste a line of Chinese into any of them and nothing happened.
 
 The reason was buried in the tokeniser. To turn text into a model you first cut
 it into tokens, and our tokeniser only recognised the letters `a` to `z`.
@@ -29,27 +28,27 @@ Fixing that meant deciding what a Chinese token is, and Chinese makes you
 choose. English hides its word boundaries in the spaces. Chinese runs the
 characters together, with no space to split on.
 
-The simplest answer is one token per character. 莲 follows 采, 叶 follows 莲, and
-the dice don't care that the tokens are Chinese. Each character becomes a cell in
-the frequency grid, a cutout card, or a face you can roll for.
+The simplest answer is one token per character. 莲 follows 采, 叶 follows 莲,
+and the dice don't care that the tokens are Chinese. Each character becomes a
+cell in the frequency grid, a cutout card, or a face you can roll for.
 
 Xilian pointed out what that misses. A Chinese word is often two or three
-characters, like 深圳 (Shenzhen) or 金融 (finance). Cutting on every character is
-a little like splitting English into its letters. So the tools now segment into
-words by default, using [jieba](https://github.com/fxsjy/jieba), the standard
-open-source Chinese tokeniser he recommended.[^ambiguity] Give it
-深圳最高的楼是平安金融中心 and it comes back as 深圳 / 最高 / 的 / 楼 / 是 / 平安 /
-金融中心, not a run of loose characters.
+characters, like 深圳 (Shenzhen) or 金融 (finance). Cutting on every character
+is a little like splitting English into its letters. So the tools now segment
+into words by default, using [jieba](https://github.com/fxsjy/jieba), the
+standard open-source Chinese tokeniser he recommended.[^ambiguity] Give
+it 深圳最高的楼是平安金融中心 and it comes back
+as 深圳 / 最高 / 的 / 楼 / 是 / 平安 / 金融中心, not a run of loose characters.
 
 [^ambiguity]:
-    The boundaries are not always clean. 最高的 ("tallest") could be one word, or
-    最高 plus 的, and jieba has to pick one. That there is a choice at all is
+    The boundaries are not always clean. 最高的 ("tallest") could be one word,
+    or 最高 plus 的, and jieba has to pick one. That there is a choice at all is
     worth a few minutes in a classroom.
 
 Both views are one switch apart. The widgets show a words/characters toggle
-whenever there is Chinese on the page, and the command-line tool takes `--cjk
-word` or `--cjk char`. Characters are the rule you can explain on a whiteboard;
-words are closer to how the language reads.
+whenever there is Chinese on the page, and the command-line tool takes
+`--cjk word` or `--cjk char`. Characters are the rule you can explain on a
+whiteboard; words are closer to how the language reads.
 
 Here's a bigram model trained on _Jiangnan_, a two-thousand-year-old Han-dynasty
 folk poem about picking lotus. Press play to watch it count the words, and use
@@ -65,13 +64,13 @@ stop 。 are kept as their own tokens, boxed in the model just like the English
 `.` and `,`. A generated line breaks where a real sentence would.
 
 The same segmentation flows through to print. Here's the
-[_Jiangnan_ bigram booklet](https://pdf.llmsunplugged.org/booklets/jiangnan.pdf) as a
-ready-to-print PDF, every dice-lookup entry set in Noto Serif CJK rather than the
-Latin body font. The entries are ordered by pinyin, the way a Chinese dictionary
-sorts them. 电脑 (diannao) files before 手机 (shouji), so a word stays findable
-once a booklet runs long. The [tools page](/tools/) will generate one from any
-text you paste in, Mandarin or otherwise. The bundled fonts cover the simplified
-characters used across mainland China.
+[_Jiangnan_ bigram booklet](https://pdf.llmsunplugged.org/booklets/jiangnan.pdf)
+as a ready-to-print PDF, every dice-lookup entry set in Noto Serif CJK rather
+than the Latin body font. The entries are ordered by pinyin, the way a Chinese
+dictionary sorts them. 电脑 (diannao) files before 手机 (shouji), so a word
+stays findable once a booklet runs long. The [tools page](/tools/) will generate
+one from any text you paste in, Mandarin or otherwise. The bundled fonts cover
+the simplified characters used across mainland China.
 
 <Callout type="note" title="What works, and what's next">
 

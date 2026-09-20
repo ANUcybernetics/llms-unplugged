@@ -1,6 +1,5 @@
 ---
-title: "The AI schools framework is right about the goal — but there's a simpler
-  path"
+title: "The AI schools framework is right about the goal — but there's a simpler path"
 date: 2026-03-20
 author: Ben Swift
 kind: essay
@@ -89,9 +88,10 @@ _overwhelm_ it. Asking teachers to become algorithmic auditors is not support
 LLMs Unplugged is designed so that
 [any teacher can run it](/news/2025-12-12-why-use-an-unplugged-approach-in-your-classroom/),
 regardless of their technical background. You don't need to understand neural
-networks or [transformer architectures](https://jalammar.github.io/illustrated-transformer/). You need to be able to count words, fill in a table, and roll dice.
-The activity builds the teacher's understanding alongside the students' --- and
-it
+networks or
+[transformer architectures](https://jalammar.github.io/illustrated-transformer/).
+You need to be able to count words, fill in a table, and roll dice. The activity
+builds the teacher's understanding alongside the students' --- and it
 [maps directly to existing curriculum outcomes](/news/2026-03-18-curriculum-mapping-example/)
 in maths, digital technologies, and English.
 
@@ -104,11 +104,12 @@ internet connection now has access to today, and often for free.
 ## The simplest path is often the best one
 
 And so I'm clearly not arguing that schools should never use AI tools (I use
-[Claude Code](https://docs.anthropic.com/en/docs/claude-code) _all the time_ for software development), or that the
-framework is wrong to think carefully about how they do. But there's a version
-of AI literacy that doesn't require procurement processes, data protection
-impact assessments, or teachers becoming overnight experts in machine learning.
-It requires paper, dice, and a willingness to get stuck in.
+[Claude Code](https://docs.anthropic.com/en/docs/claude-code) _all the time_ for
+software development), or that the framework is wrong to think carefully about
+how they do. But there's a version of AI literacy that doesn't require
+procurement processes, data protection impact assessments, or teachers becoming
+overnight experts in machine learning. It requires paper, dice, and a
+willingness to get stuck in.
 
 The AI Schools framework asks schools to do hard things. Some of those things
 genuinely are hard. But understanding how language models work doesn't have to

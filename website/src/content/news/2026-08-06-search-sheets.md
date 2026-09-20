@@ -27,17 +27,19 @@ the model only exists across the whole room, and if somebody is away, some
 contexts draw no hands at all.
 
 Four sets are ready to print:
-[Green Eggs and Ham](https://pdf.llmsunplugged.org/sheets/green-eggs-and-ham.pdf) at 15 sheets,
+[Green Eggs and Ham](https://pdf.llmsunplugged.org/sheets/green-eggs-and-ham.pdf)
+at 15 sheets,
 [Peter Rabbit](https://pdf.llmsunplugged.org/sheets/peter-rabbit.pdf) at 17,
-[The Cat in the Hat](https://pdf.llmsunplugged.org/sheets/the-cat-in-the-hat.pdf) at 36
-([A5 sheets two-up on A4](https://pdf.llmsunplugged.org/sheets/the-cat-in-the-hat-2up-a4.pdf)), and
-[Australia](https://pdf.llmsunplugged.org/sheets/australia.pdf) at 79. Print them single-sided
-and hand out one each. The first page is the briefing for whoever is running it,
-and every page after that is a different participant's sheet. Every sheet
-carries the same number of token pairs, so the length of the text decides how
-many sheets there are, and a set only suits a group of about that size. The
-[tools page](/tools/#generate-your-own) will build a set from any text you paste
-in.
+[The Cat in the Hat](https://pdf.llmsunplugged.org/sheets/the-cat-in-the-hat.pdf)
+at 36
+([A5 sheets two-up on A4](https://pdf.llmsunplugged.org/sheets/the-cat-in-the-hat-2up-a4.pdf)),
+and [Australia](https://pdf.llmsunplugged.org/sheets/australia.pdf) at 79. Print
+them single-sided and hand out one each. The first page is the briefing for
+whoever is running it, and every page after that is a different participant's
+sheet. Every sheet carries the same number of token pairs, so the length of the
+text decides how many sheets there are, and a set only suits a group of about
+that size. The [tools page](/tools/#generate-your-own) will build a set from any
+text you paste in.
 
 Building these turned up a problem with the
 [generated colour palette](/news/2026-05-24-generating-the-cutout-palette/).
@@ -79,7 +81,7 @@ anyone reads a token.
     swatch gets used, contrast being symmetric: a token set as coloured text on
     the page, and white text on a colour-filled box. The eight sit 0.151 apart
     at worst on screen and 0.102 once round-tripped through a CMYK profile. The
-    second figure is the one that matters and it can't be derived from the
-    first --- sRGB's vivid blues, greens and purples fall outside CMYK, so the
-    press compresses them toward the gamut boundary and the gaps shrink.
-    Measured against FOGRA47L uncoated, FOGRA39L coated and SNAP newsprint.
+    second figure is the one that matters and it can't be derived from the first
+    --- sRGB's vivid blues, greens and purples fall outside CMYK, so the press
+    compresses them toward the gamut boundary and the gaps shrink. Measured
+    against FOGRA47L uncoated, FOGRA39L coated and SNAP newsprint.
