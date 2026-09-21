@@ -60,7 +60,7 @@
     "eslint-plugin-perfectionist": "^5.11.0",
     "eslint-plugin-unused-imports": "^4.4.1",
     "jsdom": "^30.0.1",
-    "oxfmt": "^0.67.0",
+    "oxfmt": "^0.68.0",
     "oxlint": "^1.82.0",
     "pagefind": "^1.5.2",
     "postcss-html": "^2.0.0",
