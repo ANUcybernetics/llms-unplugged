@@ -4,6 +4,7 @@ title: Port CS Unplugged to a static Astro site on GitHub Pages
 status: To Do
 assignee: []
 created_date: '2026-09-22 22:39'
+updated_date: '2026-09-22 22:48'
 labels:
   - cs-unplugged
   - fellowship
@@ -20,14 +21,18 @@ Move www.csunplugged.org (Django/Postgres/Docker, uccser/cs-unplugged) and class
 
 Contingent on approval from Tim Bell and the current technical maintainers (Jack Morgan and the UC crew). Get their sign-off on scope, hosting and repo ownership before starting any work.
 
+## Hosting split
+
+Code and markup live in the git repo and deploy to GitHub Pages. PDFs and other large binaries live in a public Tigris bucket behind a pdf.* subdomain, the same arrangement as llmsunplugged.org (see ops/bucket-sync.py), so they never enter the Pages artifact or .git. Old URLs get static redirect pages (Astro `redirects`); a large redirect set is fine, broken links are not.
+
 ## Once-off changes to fit the static setup
 
 - topics, unit plans, lessons (junior/senior), curriculum integrations, CT links, glossary, learning outcomes: ~800 English Markdown files plus YAML structure, which Django loads into Postgres at build time. Port to content collections; convert verto tags ({panel}, {image}, {iframe}, {video}) to MDX components
-- printable resources: 20 Python generators (WeasyPrint/Pillow). Production already serves pre-generated PDFs of every option combination, so run the generators as a build step producing static files (a Typst rewrite is a later option)
+- printable resources: 20 Python generators (WeasyPrint/Pillow). Production already serves pre-generated PDFs of every option combination, so run the generators as an offline step and publish the output to the bucket (a Typst rewrite is a later option)
 - at-home and at-a-distance: reveal.js decks with decktape PDF export, which map onto astromotion decks and the print-pdf recipe
 - search: Postgres full-text with content-type filters, replaced by Pagefind with filters
 - translations: 9 UI locales, patchy content coverage (mi 70, fr 54, de 38, es 13, zh_Hans 9 files vs ~800 en). Use the TASK-101 theme i18n with Astro fallback; keep the Crowdin workflow working on Markdown/YAML
-- Classic site: fold in as an archive section (~50 pages, 216 PDFs, ~850 MB; large PDFs may need release assets or LFS rather than the Pages repo)
+- Classic site: fold in as an archive section (~50 pages). Its 216 PDFs total 699 MB; Ghostscript (`-sDEVICE=pdfwrite -dPDFSETTINGS=/printer`, keeping the original when it is not smaller) takes them to 228 MB with no visible change on the page spot-checked. Most of the bloat is the ~20 MB Chinese activity PDFs, PDFium exports that draw every glyph as thousands of duplicated form XObjects (no embedded fonts); these drop to ~3 MB each. Visually diff every page before publishing the compressed set
 - URLs: redirect map from the old /<lang>/topics/... routes and the classic redirects; curricula link to these widely
 
 ## Needs a real backend (separate subdomain, separate deploy)
@@ -48,4 +53,5 @@ The static site must not depend on the backend at build time or for any page exc
 - [ ] #6 Classic activities and their PDFs are reachable from the new site
 - [ ] #7 Programming challenges either run with no backend or run against a separately deployed service at a subdomain, and the static site builds and deploys without it
 - [ ] #8 The site deploys to GitHub Pages from CI, and the UC servers can be retired
+- [ ] #9 PDFs are served from a Tigris bucket, and neither the Pages artifact nor the git history contains them
 <!-- AC:END -->
