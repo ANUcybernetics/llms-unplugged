@@ -1,0 +1,63 @@
+name: CLI Binaries
+
+# Builds the prebuilt CLI that `make archive` puts in the Zenodo bundle. It
+# uploads workflow artifacts rather than attaching to a GitHub release: a
+# published release would fire the GitHub--Zenodo integration and deposit a
+# stray source-only version.
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, target: x86_64-unknown-linux-gnu }
+          - { os: macos-latest, target: aarch64-apple-darwin }
+          - { os: macos-latest, target: x86_64-apple-darwin }
+          - { os: windows-latest, target: x86_64-pc-windows-msvc }
+    steps:
+      - uses: actions/checkout@v7
+
+      # The same pinned toolchain as cli.yml, from the repo-root mise.toml.
+      - uses: jdx/mise-action@v4
+        with:
+          install_args: rust
+
+      - name: Add target
+        run: rustup target add "${{ matrix.target }}"
+
+      - name: Build
+        run: cargo build --manifest-path cli/Cargo.toml --release --locked --target ${{ matrix.target }}
+
+      # Packaged here because artifact upload drops the executable bit.
+      - name: Package
+        shell: bash
+        env:
+          TARGET: ${{ matrix.target }}
+        run: |
+          version=$(sed -n 's/^version = "\(.*\)"/\1/p' cli/Cargo.toml | head -1)
+          name="llms_unplugged-$version-$TARGET"
+          bin="cli/target/$TARGET/release/llms_unplugged"
+          mkdir -p "dist/$name"
+          cp README.md LICENSE "dist/$name/"
+          if [ "$RUNNER_OS" = Windows ]; then
+            cp "$bin.exe" "dist/$name/"
+            (cd dist && 7z a -tzip -bso0 "$name.zip" "$name")
+          else
+            cp "$bin" "dist/$name/"
+            tar czf "dist/$name.tar.gz" -C dist "$name"
+          fi
+          echo "NAME=$name" >> "$GITHUB_ENV"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.NAME }}
+          path: dist/${{ env.NAME }}.*
+          if-no-files-found: error
