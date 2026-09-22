@@ -17,6 +17,9 @@
 # Adding a pack: give it a pack-<slug> target that writes into
 # $(PACKS)/<slug>/ and finishes with `$(call zip_pack,<slug>)`.
 #
+# `make archive`, at the foot of this file, gathers the tested lessons' decks and
+# printables into the bundle deposited on Zenodo.
+#
 # Needs jq and qpdf on PATH alongside the CLI's own typst toolchain. The talk
 # packs additionally need website/ installed (`pnpm install`) and a
 # Chrome/Chromium, because they export their own deck PDFs.
@@ -33,6 +36,7 @@ help:
 	@echo "make pack-unplugged-in-the-age-of-ai          the 20-minute talk, end to end"
 	@echo "make packs                                    every pack"
 	@echo "make clean-packs                              remove $(PACKS)"
+	@echo "make archive                                  the Zenodo bundle and source zip"
 
 packs: pack-how-ai-writes-stories-ledger pack-demystifying-large-language-models \
 	pack-unplugged-in-the-age-of-ai
@@ -57,11 +61,15 @@ endef
 # pack either way. --no-sandbox because the export drives headless Chrome,
 # which will not start as root or in a container without it.
 #
+# DECK_PORT is the preview server's port: `make ... DECK_PORT=4331` when another
+# dev server holds 4321.
+#
 # $(1) deck slug, $(2) destination directory
+DECK_PORT ?= 4321
 define deck_pdfs
 	@echo "slides and presenter guide: $(1)"
 	@cd website && ASTROMOTION_CHROME_ARGS=--no-sandbox pnpm exec astromotion-pdf $(1) \
-		--slides=$(abspath $(2))/slides.pdf \
+		--port=$(DECK_PORT) --slides=$(abspath $(2))/slides.pdf \
 		--notes=$(abspath $(2))/presenter-guide.pdf >/dev/null
 endef
 
@@ -314,3 +322,114 @@ pack-$(AGEOFAI_SLUG): $(CLI)
 	@cp docs/packs/$(AGEOFAI_SLUG).md $(AGEOFAI_DIR)/README.md
 	@rm -rf $(AGEOFAI_STAGE)
 	$(call zip_pack,$(AGEOFAI_SLUG))
+
+# ---------------------------------------------------------------------------
+# Archive: the bundle deposited on Zenodo for each version
+#
+#   make archive
+#
+# lands out/archive/llms-unplugged-<version>.zip (the bundle) and
+# out/archive/llms-unplugged-<version>-source.zip (a `git archive` of the
+# v<version> tag); ops/zenodo-deposit.py uploads both. The version is the CLI
+# crate's.
+#
+# The bundle is a dated snapshot for teachers, not a copy of the repo: only the
+# lessons with a tested deck, each with its slides, presenter guide and
+# printables, plus the prebuilt CLI. The website stays the living reference,
+# and the bundle's README says so. Adding a lesson: give it an archive-<slug>
+# target and list it in ARCHIVE_LESSONS.
+#
+# Printables are fetched from pdf.llmsunplugged.org, so the bundle holds the
+# same files the website links; the ledger lesson's come from its pack. The CLI
+# binaries come from the cli-dist workflow run for the v<version> tag, so push
+# the tag and let that run finish first. Needs gh, curl and the pack
+# dependencies above.
+
+VERSION := $(shell sed -n 's/^version = "\(.*\)"/\1/p' cli/Cargo.toml | head -1)
+ARCHIVE := $(OUT)/archive
+ARCHIVE_NAME := llms-unplugged-$(VERSION)
+ARCHIVE_DIR := $(ARCHIVE)/$(ARCHIVE_NAME)
+PDF_BASE := https://pdf.llmsunplugged.org
+
+ARCHIVE_LESSONS := my-first-language-model how-ai-writes-stories \
+	how-ai-writes-stories-ledger
+
+MFLM_DECKS := my-first-language-model-60min my-first-language-model-90min \
+	my-first-language-model-2h
+MFLM_BOOKLETS := a-christmas-carol beatles collected-hemingway frankenstein \
+	green-eggs-and-ham green-eggs-and-ham-trigram jiangnan the-cat-in-the-hat \
+	the-cat-in-the-hat-trigram
+HAWS_CUTOUTS := green-eggs-and-ham were-going-on-a-bear-hunt where-is-the-green-sheep
+
+# $(1) bucket key, $(2) destination file
+define fetch_pdf
+	@curl -fsSL --retry 3 -o $(2) $(PDF_BASE)/$(1)
+
+endef
+
+# A deck's two PDFs, named for the deck, into a lesson's directory. A capture
+# that never goes network-idle can print a one-page presenter guide without
+# failing, so a guide no longer than its slides fails the build here instead.
+# $(1) deck slug, $(2) lesson directory
+define archive_deck
+	$(call deck_pdfs,$(1),$(2)/.deck-$(1))
+	@s=$$(qpdf --show-npages $(2)/.deck-$(1)/slides.pdf); \
+	g=$$(qpdf --show-npages $(2)/.deck-$(1)/presenter-guide.pdf); \
+	if [ "$$g" -le "$$s" ]; then echo "$(1): presenter guide has $$g pages for $$s slides" >&2; exit 1; fi
+	@mv $(2)/.deck-$(1)/slides.pdf $(2)/$(1)-slides.pdf
+	@mv $(2)/.deck-$(1)/presenter-guide.pdf $(2)/$(1)-presenter-guide.pdf
+	@rm -rf $(2)/.deck-$(1)
+
+endef
+
+.PHONY: archive clean-archive archive-cli $(addprefix archive-,$(ARCHIVE_LESSONS))
+
+archive: $(addprefix archive-,$(ARCHIVE_LESSONS)) archive-cli
+	@sed 's/{{version}}/$(VERSION)/g; s/{{date}}/$(shell date +%Y-%m-%d)/g' \
+		docs/archive/README.md > $(ARCHIVE_DIR)/README.md
+	@cp LICENSE $(ARCHIVE_DIR)/LICENSE
+	@cp handouts/LICENSE $(ARCHIVE_DIR)/LICENSE-CC-BY-SA-4.0
+	@cp CITATION.cff $(ARCHIVE_DIR)/CITATION.cff
+	cd $(ARCHIVE) && rm -f $(ARCHIVE_NAME).zip && zip -qr $(ARCHIVE_NAME).zip $(ARCHIVE_NAME)
+	git archive --format=zip --prefix=$(ARCHIVE_NAME)-source/ v$(VERSION) \
+		-o $(ARCHIVE)/$(ARCHIVE_NAME)-source.zip
+	@echo "Wrote $(ARCHIVE)/$(ARCHIVE_NAME).zip and $(ARCHIVE_NAME)-source.zip"
+
+clean-archive:
+	rm -rf $(ARCHIVE)
+
+archive-my-first-language-model:
+	@rm -rf $(ARCHIVE_DIR)/$(@:archive-%=%)
+	@mkdir -p $(ARCHIVE_DIR)/$(@:archive-%=%)/booklets
+	$(foreach deck,$(MFLM_DECKS),$(call archive_deck,$(deck),$(ARCHIVE_DIR)/$(@:archive-%=%)))
+	$(call fetch_pdf,worksheets/grid.pdf,$(ARCHIVE_DIR)/$(@:archive-%=%)/grid-worksheet.pdf)
+	$(foreach b,$(MFLM_BOOKLETS),$(call fetch_pdf,booklets/$(b).pdf,$(ARCHIVE_DIR)/$(@:archive-%=%)/booklets/$(b).pdf))
+	@# The booklet the 90-minute and 2-hour decks walk through (examples.ts).
+	@# It isn't in the bucket, so it is built here; the CLI names the PDF for
+	@# the corpus, not the target.
+	@$(MAKE) -C cli --no-print-directory out/pdf/the-man-from-snowy-river-2-1.pdf >/dev/null
+	@cp cli/out/pdf/the-man-from-snowy-river.pdf $(ARCHIVE_DIR)/$(@:archive-%=%)/booklets/
+
+archive-how-ai-writes-stories:
+	@rm -rf $(ARCHIVE_DIR)/$(@:archive-%=%)
+	@mkdir -p $(ARCHIVE_DIR)/$(@:archive-%=%)/cutouts
+	$(call archive_deck,how-ai-writes-stories,$(ARCHIVE_DIR)/$(@:archive-%=%))
+	$(foreach c,$(HAWS_CUTOUTS),$(call fetch_pdf,cutouts/$(c).pdf,$(ARCHIVE_DIR)/$(@:archive-%=%)/cutouts/$(c).pdf))
+
+archive-$(LEDGER_SLUG): pack-$(LEDGER_SLUG)
+	@rm -rf $(ARCHIVE_DIR)/$(LEDGER_SLUG)
+	@mkdir -p $(ARCHIVE_DIR)/$(LEDGER_SLUG)
+	$(call archive_deck,$(LEDGER_SLUG),$(ARCHIVE_DIR)/$(LEDGER_SLUG))
+	@cp -r $(LEDGER_DIR) $(ARCHIVE_DIR)/$(LEDGER_SLUG)/printouts
+
+# The workflow uploads one packaged binary per target as its own artifact;
+# `gh run download` unpacks each into a directory named for the artifact.
+archive-cli:
+	@rm -rf $(ARCHIVE_DIR)/cli $(ARCHIVE)/.cli
+	@mkdir -p $(ARCHIVE_DIR)/cli
+	@run=$$(gh run list --workflow cli-dist.yml --branch v$(VERSION) --status success \
+		--limit 1 --json databaseId --jq '.[0].databaseId'); \
+	if [ -z "$$run" ]; then echo "no successful cli-dist run for v$(VERSION); push the tag first" >&2; exit 1; fi; \
+	gh run download $$run --dir $(ARCHIVE)/.cli
+	@mv $(ARCHIVE)/.cli/*/* $(ARCHIVE_DIR)/cli/
+	@rm -rf $(ARCHIVE)/.cli

@@ -1,6 +1,6 @@
 {
   "title": "LLMs Unplugged: Understand how AI language models work by building one yourself.",
-  "description": "Educational materials for teaching how AI language models work by building N-gram models from scratch. Includes structured lesson plans, workshop modules, pen-and-paper exercises with grid templates, and supporting software tools (Rust CLI) that generate dice-powered text generation booklets. A Cybernetic Studio project.",
+  "description": "Educational materials for teaching how AI language models work by building N-gram models from scratch with pen, paper and dice. This deposit is a dated snapshot of the tested lessons: each lesson's slides and presenter guide (with speaker notes) as PDFs, its printables (grid worksheets, pre-trained model booklets, cutouts, ledger sheets), and the prebuilt command-line tool that generates them, alongside the full source. The living version, with every lesson and module and the interactive tools, is at https://www.llmsunplugged.org. A Cybernetic Studio project.",
   "upload_type": "lesson",
   "access_right": "open",
   "license": "cc-by-sa-4.0",

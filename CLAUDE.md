@@ -21,7 +21,8 @@ manual (pen-and-paper) and automated tools.
   pipeline (recuts, explainers, animated artefacts)
 - `Makefile` --- delivery packs: `make pack-<slug>` zips everything one lesson
   or talk needs into `out/packs/`, and holds the exact runs (a talk pack also
-  exports its own deck slides and presenter guide)
+  exports its own deck slides and presenter guide); `make archive` builds the
+  versioned Zenodo bundle, which `ops/zenodo-deposit.py` deposits
 
 The README documents the CLI subcommands and their options; read it rather than
 guessing flags.
