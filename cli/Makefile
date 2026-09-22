@@ -52,7 +52,8 @@ EXAMPLE_TARGETS := \
 	$(PDF_DIR)/collected-hemingway-2-1.pdf \
 	$(PDF_DIR)/a-christmas-carol-2-1.pdf \
 	$(PDF_DIR)/beatles-2-1.pdf \
-	$(PDF_DIR)/jiangnan-2-1.pdf
+	$(PDF_DIR)/jiangnan-2-1.pdf \
+	$(PDF_DIR)/the-man-from-snowy-river-2-1.pdf
 
 # Pre-prepared cutout PDFs served from the website's tools page. All are
 # bigram (n=2), duplex, and post-processed with qpdf to rotate even pages
