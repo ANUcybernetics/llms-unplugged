@@ -1,5 +1,5 @@
 // Copyright (c) 2026 Ben Swift
-// Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
+// Licensed under CC BY-SA 4.0. See handouts/LICENSE for details.
 //
 // Page furniture for the printed worksheets: the word mark, the gold rule
 // and the URL, in the same arrangement the CLI puts on a search sheet or a

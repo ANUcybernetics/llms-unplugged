@@ -1,5 +1,5 @@
 // Copyright (c) 2026 Ben Swift
-// Licensed under CC BY-NC-SA 4.0
+// Licensed under CC BY-SA 4.0
 //
 // "Try it yourself" spread: a worked example of the generation module
 // (pre-trained booklet variant), normalised to a single six-sided dice so

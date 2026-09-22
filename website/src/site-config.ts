@@ -15,7 +15,7 @@ export const siteConfig = defineSiteConfig({
     { text: "News", href: "/news/" },
     { text: "About", href: "/about/" },
   ],
-  licence: "CC-BY-NC-SA-4.0",
+  licence: "CC-BY-SA-4.0",
 
   // Site-wide link-preview card. Pages with artwork of their own override it
   // with a `socialImage` prop; the theme re-encodes both to JPEG, since the

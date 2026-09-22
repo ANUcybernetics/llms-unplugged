@@ -320,8 +320,8 @@ Source code for this project is licensed under the MIT License. See the
 [LICENSE](./LICENSE) file for details.
 
 Documentation (in `handouts/`) and any typeset "N-gram model booklets" are
-licenced under a CC BY-NC-SA 4.0 license. See
-[handouts/LICENSE](./handouts/LICENSE) for the full license text.
+licenced under a CC BY-SA 4.0 licence. See
+[handouts/LICENSE](./handouts/LICENSE) for the full licence text.
 
 Source text licenses used as input for the language model remain as described in
 their original sources.

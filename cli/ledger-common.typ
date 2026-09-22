@@ -1,5 +1,5 @@
 // Copyright (c) 2025 Ben Swift
-// Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
+// Licensed under CC BY-SA 4.0. See handouts/LICENSE for details.
 //
 // What ledger.typ (the sheets, whose tally strips take the counter colours)
 // and ledger-counters.typ (the printable counters themselves) share, so the

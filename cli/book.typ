@@ -1,5 +1,5 @@
 // Copyright (c) 2025 Ben Swift
-// Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
+// Licensed under CC BY-SA 4.0. See handouts/LICENSE for details.
 
 // Get configuration from sys.inputs
 #let paper_size = sys.inputs.at("paper_size", default: "a4")
@@ -145,9 +145,8 @@
     #v(0.5cm)
 
     #text(size: 0.9em)[
-      This work is licensed under a Creative Commons
-      Attribution-NonCommercial-ShareAlike 4.0 International License (CC
-      BY-NC-SA 4.0).
+      This work is licensed under a Creative Commons Attribution-ShareAlike 4.0
+      International License (CC BY-SA 4.0).
     ]
     #v(0.5cm)
 

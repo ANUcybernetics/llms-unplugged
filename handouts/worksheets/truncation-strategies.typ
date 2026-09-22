@@ -1,5 +1,5 @@
 // Copyright (c) 2025 Ben Swift
-// Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
+// Licensed under CC BY-SA 4.0. See handouts/LICENSE for details.
 //
 // One sampling strategy a page, big enough to read from a table: the rules a
 // pair swaps in for "roll and take the first option ≥ your roll".

@@ -19,6 +19,6 @@ export async function GET(context: APIContext) {
       link: `/news/${item.id}/`,
       author: item.data.author,
     })),
-    customData: `<language>en-AU</language><copyright>© Ben Swift, CC BY-NC-SA 4.0</copyright>`,
+    customData: `<language>en-AU</language><copyright>© Ben Swift, CC BY-SA 4.0</copyright>`,
   });
 }

@@ -3,7 +3,7 @@
   "description": "Educational materials for teaching how AI language models work by building N-gram models from scratch. Includes structured lesson plans, workshop modules, pen-and-paper exercises with grid templates, and supporting software tools (Rust CLI) that generate dice-powered text generation booklets. A Cybernetic Studio project.",
   "upload_type": "lesson",
   "access_right": "open",
-  "license": "cc-by-nc-sa-4.0",
+  "license": "cc-by-sa-4.0",
   "creators": [
     {
       "name": "Swift, Ben",

@@ -1,5 +1,5 @@
 // Copyright (c) 2025 Ben Swift
-// Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
+// Licensed under CC BY-SA 4.0. See handouts/LICENSE for details.
 //
 // Ruled paper for writing generated text on, in the project's own furniture
 // so it matches the sheets it is handed out beside.

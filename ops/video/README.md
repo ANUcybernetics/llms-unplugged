@@ -28,8 +28,8 @@ activity. The Overview is the scene-setter for the website and for a teacher
 deciding which lesson to run. It is evergreen: it names no lesson, age band or
 running time, and its concrete examples are the materials, so it survives the
 lessons changing. Its licence line says "a Creative Commons licence" and names
-no clause, since whether the NC-SA terms stay is an open question. Nothing else on the site (the follow-on lessons,
-the standalone modules) gets a video.
+no clause, so a licence change doesn't date it. Nothing else on the site (the
+follow-on lessons, the standalone modules) gets a video.
 
 The series is deliberately small: one video per section of the two lessons that
 are actually run, so every video has a slide deck, a printed pack and a room

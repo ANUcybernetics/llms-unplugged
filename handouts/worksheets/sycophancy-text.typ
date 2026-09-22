@@ -1,5 +1,5 @@
 // Copyright (c) 2025 Ben Swift
-// Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
+// Licensed under CC BY-SA 4.0. See handouts/LICENSE for details.
 //
 // Training-data sheet for the sycophancy section of the grid workshop: pairs
 // tally this flattery corpus into their existing grid, then regenerate. The

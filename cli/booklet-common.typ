@@ -1,5 +1,5 @@
 // Copyright (c) 2025 Ben Swift
-// Licensed under CC BY-NC-SA 4.0. See handouts/LICENSE for details.
+// Licensed under CC BY-SA 4.0. See handouts/LICENSE for details.
 //
 // Shared booklet typography: the punctuation "symbol tile" and the word/entry
 // formatting used by the printed booklets (book.typ) and the try-it-yourself
