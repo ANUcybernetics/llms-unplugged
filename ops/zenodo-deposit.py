@@ -38,6 +38,8 @@ def client() -> httpx.Client:
     return httpx.Client(
         headers={"Authorization": f"Bearer {token}"},
         timeout=httpx.Timeout(60, write=None),
+        # The concept record redirects to its latest version.
+        follow_redirects=True,
     )
 
 
