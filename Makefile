@@ -358,7 +358,7 @@ MFLM_DECKS := my-first-language-model-60min my-first-language-model-90min \
 	my-first-language-model-2h
 MFLM_BOOKLETS := a-christmas-carol beatles collected-hemingway frankenstein \
 	green-eggs-and-ham green-eggs-and-ham-trigram jiangnan the-cat-in-the-hat \
-	the-cat-in-the-hat-trigram
+	the-cat-in-the-hat-trigram the-man-from-snowy-river
 HAWS_CUTOUTS := green-eggs-and-ham were-going-on-a-bear-hunt where-is-the-green-sheep
 
 # $(1) bucket key, $(2) destination file
@@ -404,11 +404,6 @@ archive-my-first-language-model:
 	$(foreach deck,$(MFLM_DECKS),$(call archive_deck,$(deck),$(ARCHIVE_DIR)/$(@:archive-%=%)))
 	$(call fetch_pdf,worksheets/grid.pdf,$(ARCHIVE_DIR)/$(@:archive-%=%)/grid-worksheet.pdf)
 	$(foreach b,$(MFLM_BOOKLETS),$(call fetch_pdf,booklets/$(b).pdf,$(ARCHIVE_DIR)/$(@:archive-%=%)/booklets/$(b).pdf))
-	@# The booklet the 90-minute and 2-hour decks walk through (examples.ts).
-	@# It isn't in the bucket, so it is built here; the CLI names the PDF for
-	@# the corpus, not the target.
-	@$(MAKE) -C cli --no-print-directory out/pdf/the-man-from-snowy-river-2-1.pdf >/dev/null
-	@cp cli/out/pdf/the-man-from-snowy-river.pdf $(ARCHIVE_DIR)/$(@:archive-%=%)/booklets/
 
 archive-how-ai-writes-stories:
 	@rm -rf $(ARCHIVE_DIR)/$(@:archive-%=%)
