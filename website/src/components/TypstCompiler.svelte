@@ -44,6 +44,18 @@
   const MAX_FILE_SIZE = 10 * 1024 * 1024;
   const EXTRACTION_TIMEOUT = 30000;
 
+  function extractWithTimeout<T>(promise: Promise<T>): Promise<T> {
+    return Promise.race([
+      promise,
+      new Promise<never>((_, reject) =>
+        setTimeout(
+          () => reject(new Error("Extraction timed out after 30 seconds")),
+          EXTRACTION_TIMEOUT,
+        ),
+      ),
+    ]);
+  }
+
   async function handleFileUpload(event: Event) {
     const target = event.target as HTMLInputElement;
     const file = target.files?.[0];
@@ -74,18 +86,6 @@
     }
 
     const baseName = file.name.replace(/\.[^.]+$/, "");
-
-    function extractWithTimeout<T>(promise: Promise<T>): Promise<T> {
-      return Promise.race([
-        promise,
-        new Promise<never>((_, reject) =>
-          setTimeout(
-            () => reject(new Error("Extraction timed out after 30 seconds")),
-            EXTRACTION_TIMEOUT,
-          ),
-        ),
-      ]);
-    }
 
     try {
       let content: string;
