@@ -9,6 +9,9 @@ typstyle = "0.14.4"
 jq = "1.8.1"
 # the cutouts-print task also needs qpdf (not in the mise registry):
 # apt install qpdf
+# astromotion-pdf's compressor (`pnpm pdf`), pinned so every machine compresses
+# with the same Ghostscript; astromotion needs 10.07 or later.
+"conda:ghostscript" = "10.08.0"
 
 [tasks]
 test = { run = "cargo test", dir = "cli" }
