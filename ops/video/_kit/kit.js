@@ -44,7 +44,16 @@ window.KIT = (() => {
   }
   // the tc-N palette as literal values (kit.css has the same list), for SVG
   // fills that a contrast checker has to be able to read without CSS variables
-  const TOKEN_COLOURS = ["oklch(0% 0 0deg)", "oklch(62.9% 0.008 145deg)", "oklch(57.9% 0.238 29deg)", "oklch(38.6% 0.089 62deg)", "oklch(61% 0.205 142deg)", "oklch(47.2% 0.241 263deg)", "oklch(45.2% 0.195 316deg)", "oklch(53.4% 0.221 353deg)"];
+  const TOKEN_COLOURS = [
+    "oklch(0% 0 0deg)",
+    "oklch(62.9% 0.008 145deg)",
+    "oklch(57.9% 0.238 29deg)",
+    "oklch(38.6% 0.089 62deg)",
+    "oklch(61% 0.205 142deg)",
+    "oklch(47.2% 0.241 263deg)",
+    "oklch(45.2% 0.195 316deg)",
+    "oklch(53.4% 0.221 353deg)",
+  ];
   const tokenColour = (tok) => TOKEN_COLOURS[colourIndex(tok)];
   const PUNCT = new Set([".", ",", "!", "?", ";", ":"]);
   const isPunct = (t) => PUNCT.has(t);
@@ -224,8 +233,31 @@ window.KIT = (() => {
     const corner = svg("g", { class: "ui" }, s);
     if (cell >= 90) {
       // both hints live inside the blank corner cell, clear of the headers
-      svg("text", { x: head - 12, y: 30, "text-anchor": "end", "font-size": 22, fill: "var(--ink-muted)", class: "ui", text: "next →" }, corner);
-      svg("text", { x: 14, y: head - 14, "font-size": 22, fill: "var(--ink-muted)", class: "ui", text: "current ↓" }, corner);
+      svg(
+        "text",
+        {
+          x: head - 12,
+          y: 30,
+          "text-anchor": "end",
+          "font-size": 22,
+          fill: "var(--ink-muted)",
+          class: "ui",
+          text: "next →",
+        },
+        corner,
+      );
+      svg(
+        "text",
+        {
+          x: 14,
+          y: head - 14,
+          "font-size": 22,
+          fill: "var(--ink-muted)",
+          class: "ui",
+          text: "current ↓",
+        },
+        corner,
+      );
     }
     // cells: tally strokes per count, prepped for draw-on, plus a dimmer on top
     const cells = bg.vocab.map((_, r) =>
@@ -280,49 +312,174 @@ window.KIT = (() => {
 
   // The dice strip: ten faces 0-9 in a row, shaded into blocks per band in the
   // word's token colour, the word above its block.
-  function strip(parent, bands, { x = 0, y = 0, face = 96, gap = 6, labelSize = 40, pad = 20 } = {}) {
+  function strip(
+    parent,
+    bands,
+    { x = 0, y = 0, face = 96, gap = 6, labelSize = 40, pad = 20 } = {},
+  ) {
     const g = layer(parent, x, y);
-    const faces = 10, W = faces * face + (faces - 1) * gap + 2 * pad, H = face + labelSize + 30 + 2 * pad;
+    const faces = 10,
+      W = faces * face + (faces - 1) * gap + 2 * pad,
+      H = face + labelSize + 30 + 2 * pad;
     const s = svg("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}` }, g);
     // the strip sits on paper, so a black block (tc-0) reads against it
     svg("rect", { x: 0, y: 0, width: W, height: H, rx: 8, fill: "var(--paper)" }, s);
-    const fy = pad + labelSize + 30, fx = (i) => pad + i * (face + gap);
-    const faceEls = [], blocks = [], labels = [], nums = [];
+    const fy = pad + labelSize + 30,
+      fx = (i) => pad + i * (face + gap);
+    const faceEls = [],
+      blocks = [],
+      labels = [],
+      nums = [];
     for (let i = 0; i < faces; i++) {
-      faceEls.push(svg("rect", { x: fx(i), y: fy, width: face, height: face, rx: 10, fill: "var(--paper)", stroke: "rgb(0 0 0 / 30%)", "stroke-width": 2 }, s));
+      faceEls.push(
+        svg(
+          "rect",
+          {
+            x: fx(i),
+            y: fy,
+            width: face,
+            height: face,
+            rx: 10,
+            fill: "var(--paper)",
+            stroke: "rgb(0 0 0 / 30%)",
+            "stroke-width": 2,
+          },
+          s,
+        ),
+      );
     }
     for (const b of bands) {
-      const x0 = fx(b.from), x1 = fx(b.to) + face;
-      blocks.push(svg("rect", { x: x0, y: fy, width: x1 - x0, height: face, rx: 10, fill: tokenColour(b.word), opacity: 0 }, s));
-      labels.push(svg("text", { x: (x0 + x1) / 2, y: pad + labelSize, "text-anchor": "middle", "font-size": labelSize, "font-weight": 700, fill: tokenColour(b.word), opacity: 0, text: b.word }, s));
+      const x0 = fx(b.from),
+        x1 = fx(b.to) + face;
+      blocks.push(
+        svg(
+          "rect",
+          {
+            x: x0,
+            y: fy,
+            width: x1 - x0,
+            height: face,
+            rx: 10,
+            fill: tokenColour(b.word),
+            opacity: 0,
+          },
+          s,
+        ),
+      );
+      labels.push(
+        svg(
+          "text",
+          {
+            x: (x0 + x1) / 2,
+            y: pad + labelSize,
+            "text-anchor": "middle",
+            "font-size": labelSize,
+            "font-weight": 700,
+            fill: tokenColour(b.word),
+            opacity: 0,
+            text: b.word,
+          },
+          s,
+        ),
+      );
     }
     // the numbers sit over the blocks: ink on paper, white once a block is under them
     for (let i = 0; i < faces; i++) {
-      nums.push(svg("text", { x: fx(i) + face / 2, y: fy + face / 2, "text-anchor": "middle", "dominant-baseline": "central", "font-size": face * 0.5, class: "ui", "font-weight": 600, fill: "#1a1a1a", text: String(i) }, s));
+      nums.push(
+        svg(
+          "text",
+          {
+            x: fx(i) + face / 2,
+            y: fy + face / 2,
+            "text-anchor": "middle",
+            "dominant-baseline": "central",
+            "font-size": face * 0.5,
+            class: "ui",
+            "font-weight": 600,
+            fill: "#1a1a1a",
+            text: String(i),
+          },
+          s,
+        ),
+      );
     }
     const faceAt = (i) => ({ x: x + fx(i) + face / 2, y: y + fy + face / 2 });
     // shade the strip: blocks grow from the left, word by word, numbers turn white
     const shade = (tl, t, dur = 0.5, stagger = 0.15) => {
       tl.set(blocks, { opacity: 1 }, t);
-      tl.fromTo(blocks, { scaleX: 0, transformOrigin: "0 50%" }, { scaleX: 1 }, t, { dur, stagger, ease: "out-cubic" });
+      tl.fromTo(blocks, { scaleX: 0, transformOrigin: "0 50%" }, { scaleX: 1 }, t, {
+        dur,
+        stagger,
+        ease: "out-cubic",
+      });
       tl.to(labels, { opacity: 1 }, t + 0.1, { dur: 0.3, stagger });
       tl.to(nums, { fill: "#ffffff" }, t + dur * 0.5, { dur: 0.3 });
     };
     // a face lights: the rolled one
-    const light = (tl, i, t) => tl.to(nums[i], { scale: 1.35, transformOrigin: "50% 50%" }, t, { dur: 0.25, yoyo: true });
-    return { el: g, svg: s, width: W, height: H, faces: faceEls, blocks, labels, nums, bands, faceAt, shade, light };
+    const light = (tl, i, t) =>
+      tl.to(nums[i], { scale: 1.35, transformOrigin: "50% 50%" }, t, { dur: 0.25, yoyo: true });
+    return {
+      el: g,
+      svg: s,
+      width: W,
+      height: H,
+      faces: faceEls,
+      blocks,
+      labels,
+      nums,
+      bands,
+      faceAt,
+      shade,
+      light,
+    };
   }
 
   // A flat d10 face: a kite with the number. Lands with appear().
   function die(parent, { x = 0, y = 0, size = 150, face = 7, color = "var(--gold)" } = {}) {
     const g = layer(parent, x, y);
     const s = svg("svg", { width: size, height: size, viewBox: "0 0 100 100" }, g);
-    svg("polygon", { points: "50 2 96 38 50 98 4 38", fill: color, stroke: "rgb(0 0 0 / 35%)", "stroke-width": 2, "stroke-linejoin": "round" }, s);
-    svg("path", { d: "M4 38 L50 60 L96 38 M50 60 L50 98", fill: "none", stroke: "rgb(0 0 0 / 25%)", "stroke-width": 2 }, s);
+    svg(
+      "polygon",
+      {
+        points: "50 2 96 38 50 98 4 38",
+        fill: color,
+        stroke: "rgb(0 0 0 / 35%)",
+        "stroke-width": 2,
+        "stroke-linejoin": "round",
+      },
+      s,
+    );
+    svg(
+      "path",
+      {
+        d: "M4 38 L50 60 L96 38 M50 60 L50 98",
+        fill: "none",
+        stroke: "rgb(0 0 0 / 25%)",
+        "stroke-width": 2,
+      },
+      s,
+    );
     // one text node per face, toggled by opacity (seek-safe; no text swaps)
     const texts = [];
     for (let n = 0; n < 10; n++) {
-      texts.push(svg("text", { x: 50, y: 40, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 34, "font-weight": 700, fill: "#fff", class: "ui", opacity: n === face ? 1 : 0, text: String(n) }, s));
+      texts.push(
+        svg(
+          "text",
+          {
+            x: 50,
+            y: 40,
+            "text-anchor": "middle",
+            "dominant-baseline": "central",
+            "font-size": 34,
+            "font-weight": 700,
+            fill: "#fff",
+            class: "ui",
+            opacity: n === face ? 1 : 0,
+            text: String(n),
+          },
+          s,
+        ),
+      );
     }
     set(g, { transformOrigin: "50% 50%" });
     return { el: g, texts, size };
@@ -419,11 +576,7 @@ window.KIT = (() => {
         { x: stripX, y: bodyY, width: stripW, height: bodyH, fill: TINT[p.name] || "#eee" },
         cg,
       );
-      const ruleEl = svg(
-        "rect",
-        { x: cx, y: ruleY, width: cellW, height: rule, fill: p.hex },
-        cg,
-      );
+      const ruleEl = svg("rect", { x: cx, y: ruleY, width: cellW, height: rule, fill: p.hex }, cg);
       svg(
         "text",
         {
@@ -523,7 +676,17 @@ window.KIT = (() => {
     parent,
     entries,
     palette,
-    { x = 0, y = 0, w = 1600, rowH = 150, header = null, title = "", pad = 24, fontSize = 44, prefixW = 260} = {},
+    {
+      x = 0,
+      y = 0,
+      w = 1600,
+      rowH = 150,
+      header = null,
+      title = "",
+      pad = 24,
+      fontSize = 44,
+      prefixW = 260,
+    } = {},
   ) {
     const headH = header ? 90 : 0;
     const H = headH + entries.length * rowH + pad * 2;
@@ -577,7 +740,15 @@ window.KIT = (() => {
       s.__header = hdr;
     }
     const rows = entries.map((e, i) =>
-      ledgerRow(parent, e, palette, { x: 0, y: headH + pad + i * rowH, w, h: rowH, fontSize, prefixW, svgParent: s }),
+      ledgerRow(parent, e, palette, {
+        x: 0,
+        y: headH + pad + i * rowH,
+        w,
+        h: rowH,
+        fontSize,
+        prefixW,
+        svgParent: s,
+      }),
     );
     for (const r of rows) r.el = g;
     return {
@@ -702,13 +873,49 @@ window.KIT = (() => {
   function pageImage(parent, name, sheetNo, { x = 0, y = 0, w = 900, h = 900 } = {}) {
     const P = KIT_DATA.pages[name];
     const page = P.bbox[sheetNo - 1];
-    const frame = el("div", { class: "paper", style: { width: `${w}px`, height: `${h}px`, overflow: "hidden" } }, parent);
+    const frame = el(
+      "div",
+      { class: "paper", style: { width: `${w}px`, height: `${h}px`, overflow: "hidden" } },
+      parent,
+    );
     set(frame, { x, y });
     // the image and its highlight box live in one wrapper that carries the crop transform
-    const wrap = el("div", { style: { position: "absolute", left: 0, top: 0, transformOrigin: "0 0" } }, frame);
-    const img = el("img", { src: `kit/generated/pages/${name}/pages/sheet-${String(sheetNo).padStart(3, "0")}.png`, style: { position: "absolute", left: 0, top: 0, display: "block", width: `${P.imgW}px`, height: `${P.imgH}px` } }, wrap);
-    const hl = el("div", { style: { position: "absolute", border: "4px solid var(--gold)", borderRadius: "8px", boxShadow: "0 0 0 6px rgb(190 131 14 / 22%)", opacity: 0 } }, wrap);
-    const IW = P.imgW, IH = P.imgH, k = IW / page.w;
+    const wrap = el(
+      "div",
+      { style: { position: "absolute", left: 0, top: 0, transformOrigin: "0 0" } },
+      frame,
+    );
+    const img = el(
+      "img",
+      {
+        src: `kit/generated/pages/${name}/pages/sheet-${String(sheetNo).padStart(3, "0")}.png`,
+        style: {
+          position: "absolute",
+          left: 0,
+          top: 0,
+          display: "block",
+          width: `${P.imgW}px`,
+          height: `${P.imgH}px`,
+        },
+      },
+      wrap,
+    );
+    const hl = el(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          border: "4px solid var(--gold)",
+          borderRadius: "8px",
+          boxShadow: "0 0 0 6px rgb(190 131 14 / 22%)",
+          opacity: 0,
+        },
+      },
+      wrap,
+    );
+    const IW = P.imgW,
+      IH = P.imgH,
+      k = IW / page.w;
     // bbox of the text line whose first words are `words` (PDF points → image px)
     const lineBox = (words) => {
       const L = page.lines.find((l) => words.every((wd, i) => l.words[i] === wd));
@@ -716,25 +923,78 @@ window.KIT = (() => {
       const [x0, y0, x1, y1] = L.bbox;
       return { x: x0 * k, y: y0 * k, w: (x1 - x0) * k, h: (y1 - y0) * k };
     };
-    const fit = () => { const s = Math.min(w / IW, h / IH); return { cw: w / s, ch: h / s, cx: (IW - w / s) / 2, cy: (IH - h / s) / 2 }; };
-    const around = (box, cw) => { const ch = (cw * h) / w; return { cw, ch, cx: clamp(box.x + box.w / 2 - cw / 2, 0, IW - cw), cy: clamp(box.y + box.h / 2 - ch / 2, 0, IH - ch) }; };
+    const fit = () => {
+      const s = Math.min(w / IW, h / IH);
+      return { cw: w / s, ch: h / s, cx: (IW - w / s) / 2, cy: (IH - h / s) / 2 };
+    };
+    const around = (box, cw) => {
+      const ch = (cw * h) / w;
+      return {
+        cw,
+        ch,
+        cx: clamp(box.x + box.w / 2 - cw / 2, 0, IW - cw),
+        cy: clamp(box.y + box.h / 2 - ch / 2, 0, IH - ch),
+      };
+    };
     const state = fit();
-    const placement = (c) => { const s = w / c.cw; return { x: -c.cx * s, y: -c.cy * s, scale: s }; };
+    const placement = (c) => {
+      const s = w / c.cw;
+      return { x: -c.cx * s, y: -c.cy * s, scale: s };
+    };
     const apply = (c) => set(wrap, placement(c));
     apply(state);
     // a camera move within the page tweens the crop (log on width) so the point of interest tracks
     const moveTo = (tl, crop, t, dur = 0.7, ease = "in-out-cubic") => {
       const from = { ...state };
-      tl.sample(wrap, t, dur, (p) => {
-        const cw = Math.exp(lerp(Math.log(from.cw), Math.log(crop.cw), p)), ch = (cw * h) / w;
-        return placement({ cw, ch, cx: lerp(from.cx + from.cw / 2, crop.cx + crop.cw / 2, p) - cw / 2, cy: lerp(from.cy + from.ch / 2, crop.cy + crop.ch / 2, p) - ch / 2 });
-      }, { ease });
-      Object.assign(state, crop);  // build-time bookkeeping for the next move
+      tl.sample(
+        wrap,
+        t,
+        dur,
+        (p) => {
+          const cw = Math.exp(lerp(Math.log(from.cw), Math.log(crop.cw), p)),
+            ch = (cw * h) / w;
+          return placement({
+            cw,
+            ch,
+            cx: lerp(from.cx + from.cw / 2, crop.cx + crop.cw / 2, p) - cw / 2,
+            cy: lerp(from.cy + from.ch / 2, crop.cy + crop.ch / 2, p) - ch / 2,
+          });
+        },
+        { ease },
+      );
+      Object.assign(state, crop); // build-time bookkeeping for the next move
     };
-    const cut = (tl, crop, t) => { tl.set(wrap, placement(crop), t); Object.assign(state, crop); };
+    const cut = (tl, crop, t) => {
+      tl.set(wrap, placement(crop), t);
+      Object.assign(state, crop);
+    };
     // the highlight box in image pixels (it scales with the page)
-    const highlight = (box, pad = 14) => set(hl, { left: box.x - pad, top: box.y - pad * 0.6, width: box.w + 2 * pad, height: box.h + 1.2 * pad });
-    return { el: frame, img, hl, wrap, w, h, IW, IH, k, page, lineBox, fit, around, moveTo, cut, highlight, state };
+    const highlight = (box, pad = 14) =>
+      set(hl, {
+        left: box.x - pad,
+        top: box.y - pad * 0.6,
+        width: box.w + 2 * pad,
+        height: box.h + 1.2 * pad,
+      });
+    return {
+      el: frame,
+      img,
+      hl,
+      wrap,
+      w,
+      h,
+      IW,
+      IH,
+      k,
+      page,
+      lineBox,
+      fit,
+      around,
+      moveTo,
+      cut,
+      highlight,
+      state,
+    };
   }
 
   // A drawn loop (for the overview and the agentic video): an SVG path in gold
@@ -783,24 +1043,69 @@ window.KIT = (() => {
 
   // A gold ring: the bracket that sits over a pair of tiles, or rings a cell.
   // Sized once; moved and resized by transform (scaleX/scaleY on a 100x100 box).
-  function ring(parent, { x = 0, y = 0, w = 100, h = 100, stroke = 5, color = "var(--gold)" } = {}) {
+  function ring(
+    parent,
+    { x = 0, y = 0, w = 100, h = 100, stroke = 5, color = "var(--gold)" } = {},
+  ) {
     const g = layer(parent, x, y);
-    const d = el("div", { style: { position: "absolute", left: 0, top: 0, width: `${w}px`, height: `${h}px`, border: `${stroke}px solid ${color}`, borderRadius: "12px", boxShadow: "0 0 0 4px rgb(190 131 14 / 22%)" } }, g);
+    const d = el(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: `${w}px`,
+          height: `${h}px`,
+          border: `${stroke}px solid ${color}`,
+          borderRadius: "12px",
+          boxShadow: "0 0 0 4px rgb(190 131 14 / 22%)",
+        },
+      },
+      g,
+    );
     set(g, { opacity: 0, transformOrigin: "0 0" });
-    return { el: g, box: d, w, h,
+    return {
+      el: g,
+      box: d,
+      w,
+      h,
       // land the ring around a box {x, y, w, h} (parent coordinates), padded
-      around: (tl, b, t, dur = 0.45, pad = 10) => tl.to(g, { x: b.x - pad, y: b.y - pad, scaleX: (b.w + 2 * pad) / w, scaleY: (b.h + 2 * pad) / h }, t, { dur, ease: "in-out-cubic" }) };
+      around: (tl, b, t, dur = 0.45, pad = 10) =>
+        tl.to(
+          g,
+          { x: b.x - pad, y: b.y - pad, scaleX: (b.w + 2 * pad) / w, scaleY: (b.h + 2 * pad) / h },
+          t,
+          { dur, ease: "in-out-cubic" },
+        ),
+    };
   }
   // the box (parent coordinates) spanning tiles a..b of a tiles() result
   const spanBox = (tiles, a, b) => {
-    const A = tiles.tiles[a], B = tiles.tiles[b];
-    const x0 = get(tiles.el, "x"), y0 = get(tiles.el, "y");
+    const A = tiles.tiles[a],
+      B = tiles.tiles[b];
+    const x0 = get(tiles.el, "x"),
+      y0 = get(tiles.el, "y");
     const wrapped = B.y !== A.y;
     return { x: x0 + A.x, y: y0 + A.y, w: wrapped ? A.w : B.x + B.w - A.x, h: A.h };
   };
   // a page of a book: paper with the text set large in the book's serif
   function bookPage(parent, lines, { x = 0, y = 0, w = 800, h = 420, size = 60, pad = 56 } = {}) {
-    const d = el("div", { class: "paper", style: { width: `${w}px`, height: `${h}px`, padding: `${pad}px`, fontFamily: "var(--font-tok)", fontSize: `${size}px`, lineHeight: 1.35 } }, parent);
+    const d = el(
+      "div",
+      {
+        class: "paper",
+        style: {
+          width: `${w}px`,
+          height: `${h}px`,
+          padding: `${pad}px`,
+          fontFamily: "var(--font-tok)",
+          fontSize: `${size}px`,
+          lineHeight: 1.35,
+        },
+      },
+      parent,
+    );
     set(d, { x, y });
     const ls = lines.map((t) => el("div", { text: t }, d));
     return { el: d, lines: ls, x, y, w, h };
@@ -810,13 +1115,25 @@ window.KIT = (() => {
   // a d10 face landing: scale down onto the desk, ease-out
   const land = (tl, dieObj, face, t, dur = 0.45) => {
     dieObj.texts.forEach((tx, n) => tl.set(tx, { opacity: n === face ? 1 : 0 }, t));
-    return tl.fromTo(dieObj.el, { opacity: 0, scale: 1.5, rotation: -18 }, { opacity: 1, scale: 1, rotation: 0 }, t, { dur, ease: "out-quart" });
+    return tl.fromTo(
+      dieObj.el,
+      { opacity: 0, scale: 1.5, rotation: -18 },
+      { opacity: 1, scale: 1, rotation: 0 },
+      t,
+      { dur, ease: "out-quart" },
+    );
   };
 
   // ---------------------------------------------------------------- boot
   // Fonts must be loaded before anything is measured; the pencil marks the
   // objects collected boil from the start.
-  const FONTS = ['400 20px "Public Sans"', '600 20px "Public Sans"', '400 20px "Libertinus Serif"', '700 20px "Libertinus Serif"', 'italic 400 20px "Libertinus Serif"'];
+  const FONTS = [
+    '400 20px "Public Sans"',
+    '600 20px "Public Sans"',
+    '400 20px "Libertinus Serif"',
+    '700 20px "Libertinus Serif"',
+    'italic 400 20px "Libertinus Serif"',
+  ];
   const ready = (build) =>
     M.ready(
       (tl, S, T) => {
