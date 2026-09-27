@@ -15,14 +15,14 @@ const build = (tl, S, T) => {
   // a group with a nominal size, fitted (contain, centred) into a slot by transform
   const group = (w, h) => {
     const el = K.layer(scene, 0, 0);
-    gsap.set(el, { opacity: 0 });
+    KIT.set(el, { opacity: 0 });
     return { el, w, h };
   };
   const fit = (g, slot, { align = "centre", pad = 0 } = {}) => {
     const s = Math.min((slot.w - 2 * pad) / g.w, (slot.h - 2 * pad) / g.h);
     const x = slot.x + (slot.w - g.w * s) / 2;
     const y = align === "top" ? slot.y + pad : slot.y + (slot.h - g.h * s) / 2;
-    gsap.set(g.el, { x, y, scale: s });
+    KIT.set(g.el, { x, y, scale: s });
     return s;
   };
   // n vertical slots inside the area
@@ -38,8 +38,8 @@ const build = (tl, S, T) => {
   const whole = { x: A.x, y: A.y, w: A.w, h: A.h };
   // a scene shown between two times
   const during = (el, t0, t1, fadeIn = 0.45, fadeOut = 0.35) => {
-    tl.to(el, { opacity: 1, duration: fadeIn, ease: "power2.out" }, t0);
-    if (t1 != null) tl.to(el, { opacity: 0, duration: fadeOut, ease: "power2.in" }, t1 - fadeOut);
+    tl.to(el, { opacity: 1 }, t0, { dur: fadeIn, ease: "out-cubic" });
+    if (t1 != null) tl.to(el, { opacity: 0 }, t1 - fadeOut, { dur: fadeOut, ease: "in-cubic" });
   };
   const label = (
     parent,
@@ -59,7 +59,7 @@ const build = (tl, S, T) => {
       },
       parent,
     );
-    gsap.set(d, { x, y });
+    KIT.set(d, { x, y });
     return d;
   };
   const pencil = (parent, x, y, len = 520) => {
@@ -69,7 +69,7 @@ const build = (tl, S, T) => {
     K.svg("polygon", { points: "0 20 12 15 12 25", fill: "#1a1a1a" }, s);
     K.svg("rect", { x: 36, y: 4, width: len - 40, height: 32, fill: "var(--gold)" }, s);
     K.svg("rect", { x: len - 4, y: 4, width: 44, height: 32, rx: 6, fill: "#d98c8c" }, s);
-    gsap.set(L, { rotation: -6, transformOrigin: "0 50%" });
+    KIT.set(L, { rotation: -6, transformOrigin: "0 50%" });
     return L;
   };
   // a chat window: a dark panel with one reply bubble whose words flow inline
@@ -130,7 +130,7 @@ const build = (tl, S, T) => {
         { text: wd, style: { display: "inline-block", marginRight: "0.3em" } },
         bubble,
       );
-      gsap.set(s, { opacity: 0 });
+      KIT.set(s, { opacity: 0 });
       return s;
     });
     const caret = K.el(
@@ -153,8 +153,8 @@ const build = (tl, S, T) => {
       tl.fromTo(
         s,
         { opacity: 0, y: 6 },
-        { opacity: 1, y: 0, duration: 0.18, ease: "power2.out" },
-        t0 + i * cadence,
+        { opacity: 1, y: 0 },
+        t0 + i * cadence, { dur: 0.18, ease: "out-cubic" },
       ),
     );
   const bg = K.bigrams(K.split(D.grid.tokens), K.split(D.grid.vocab));
@@ -173,9 +173,9 @@ const build = (tl, S, T) => {
   fit(g0, P ? { x: A.x, y: A.y + 200, w: A.w, h: 520 } : whole);
   during(g0.el, 0.1, T.start(3));
   typeWords(c0.spans, T.word(0, "write") - 0.2, 0.34);
-  tl.to(c0.caret, { opacity: 0, duration: 0.2 }, T.word(0, "job"));
+  tl.to(c0.caret, { opacity: 0 }, T.word(0, "job"), { dur: 0.2 });
   // line 1: the window dims; the two phrases people reach for
-  tl.to(c0.el, { opacity: 0.3, duration: 0.5 }, T.start(1));
+  tl.to(c0.el, { opacity: 0.3 }, T.start(1), { dur: 0.5 });
   const g1 = group(1200, 300);
   label(g1.el, "“neural networks”", {
     x: 0,
@@ -193,15 +193,15 @@ const build = (tl, S, T) => {
   }).style.width = "1200px";
   fit(g1, P ? { x: A.x, y: A.y + 800, w: A.w, h: 400 } : { x: A.x, y: A.y + 470, w: A.w, h: 300 });
   tl.set(g1.el, { opacity: 1 }, T.word(1, "neural") - 0.1);
-  gsap.set(g1.el.children[0], { opacity: 0 });
-  gsap.set(g1.el.children[1], { opacity: 0 });
+  KIT.set(g1.el.children[0], { opacity: 0 });
+  KIT.set(g1.el.children[1], { opacity: 0 });
   K.appear(tl, g1.el.children[0], T.word(1, "neural"), { y: 16 });
   K.appear(tl, g1.el.children[1], T.word(1, "trained"), { y: 16 });
-  tl.to(g1.el, { opacity: 0, duration: 0.35 }, T.start(3) - 0.35);
+  tl.to(g1.el, { opacity: 0 }, T.start(3) - 0.35, { dur: 0.35 });
 
   // ---------------------------------------------------------------- line 3: the desk, object by object
   const desk = K.layer(scene, 0, 0);
-  gsap.set(desk, { opacity: 0 });
+  KIT.set(desk, { opacity: 0 });
   const book = K.bookPage(desk, ["The magpie"], { x: 0, y: 0, w: 460, h: 300, size: 64, pad: 48 });
   book.el.style.textAlign = "center";
   book.el.style.paddingTop = "110px";
@@ -230,7 +230,7 @@ const build = (tl, S, T) => {
     ["red", 3],
     ["yellow", 4],
     ["red", 5],
-  ].forEach(([c, i]) => gsap.set(cupD.add(c, i, 6).el, { opacity: 1 }));
+  ].forEach(([c, i]) => KIT.set(cupD.add(c, i, 6).el, { opacity: 1 }));
   const sheetD = K.sheet(desk, magpie.sheets[2].pages.flat().slice(0, 2), D.palette, {
     x: 0,
     y: 0,
@@ -259,7 +259,7 @@ const build = (tl, S, T) => {
         cup: [600, 280],
         sheet: [1000, 460],
       };
-  const place = (el, [x, y]) => gsap.set(el, { x: A.x + x, y: A.y + y });
+  const place = (el, [x, y]) => KIT.set(el, { x: A.x + x, y: A.y + y });
   place(book.el, deskPos.book);
   place(pencilD, deskPos.pencil);
   place(gridD.el, deskPos.grid);
@@ -267,21 +267,14 @@ const build = (tl, S, T) => {
   place(cupD.el, deskPos.cup);
   place(sheetD.el, deskPos.sheet);
   const deskObjs = [book.el, pencilD, gridD.el, dieD.el, cupD.el, sheetD.el];
-  gsap.set(deskObjs, { opacity: 0 });
+  KIT.set(deskObjs, { opacity: 0 });
   tl.set(desk, { opacity: 1 }, T.start(3));
   const slideIn = (el, t, from) =>
     tl.fromTo(
       el,
       { opacity: 0, x: `+=${from[0]}`, y: `+=${from[1]}` },
-      {
-        opacity: 1,
-        x: `-=${from[0]}`,
-        y: `-=${from[1]}`,
-        duration: 0.6,
-        ease: "power3.out",
-        immediateRender: false,
-      },
-      t,
+      { opacity: 1, x: `-=${from[0]}`, y: `-=${from[1]}` },
+      t, { dur: 0.6, ease: "out-quart", immediate: false },
     );
   slideIn(book.el, T.word(3, "picture"), [-300, 0]);
   slideIn(gridD.el, T.word(3, "paper"), [300, 0]);
@@ -334,12 +327,12 @@ const build = (tl, S, T) => {
     scene,
   );
   scene.insertBefore(scrim, g4.el);
-  tl.to(scrim, { opacity: 1, duration: 0.5 }, T.start(4));
-  gsap.set([wm, socy], { opacity: 0 });
+  tl.to(scrim, { opacity: 1 }, T.start(4), { dur: 0.5 });
+  KIT.set([wm, socy], { opacity: 0 });
   tl.set(g4.el, { opacity: 1 }, T.start(4));
   K.appear(tl, wm, T.word(4, "LLMs") - 0.1, { y: 20 });
   K.appear(tl, socy, T.word(4, "School"), { y: 16 });
-  tl.to([g4.el, scrim, desk], { opacity: 0, duration: 0.4 }, T.start(5) - 0.4);
+  tl.to([g4.el, scrim, desk], { opacity: 0 }, T.start(5) - 0.4, { dur: 0.4 });
 
   // ---------------------------------------------------------------- line 5: the loop as one stroke, book → grid → paper → back
   const g5 = group(1500, 820);
@@ -348,42 +341,42 @@ const build = (tl, S, T) => {
   const p5 = K.paper(g5.el, { x: 350, y: 640, w: 800, h: 120 });
   const pl5 = K.pencilLine(p5.el, ["see", "joey", ","], { size: 54, y: 30 });
   const d5 = K.die(g5.el, { x: 1190, y: 620, size: 150, face: 7 });
-  gsap.set(d5.el, { opacity: 0 });
+  KIT.set(d5.el, { opacity: 0 });
   const svg5 = K.svg("svg", { width: 1500, height: 820, viewBox: "0 0 1500 820" }, g5.el);
   const trainPath = K.svg("path", { d: "M 500 90 C 250 90 200 300 240 420 C 280 520 330 580 340 690", class: "draw", stroke: "var(--gold)", "stroke-width": 9 }, svg5);
   const genPath = K.svg("path", { d: "M 1160 690 C 1200 580 1260 520 1270 420 C 1300 300 1250 90 1000 90", class: "draw", stroke: "var(--gold)", "stroke-width": 9 }, svg5);
   K.prepDraw([trainPath, genPath]);
-  const arrow = (x, y, rot) => { const a = K.svg("polygon", { points: "0 -16 30 0 0 16", fill: "var(--gold)", transform: `translate(${x} ${y}) rotate(${rot})` }, svg5); gsap.set(a, { opacity: 0 }); return a; };
+  const arrow = (x, y, rot) => { const a = K.svg("polygon", { points: "0 -16 30 0 0 16", fill: "var(--gold)", transform: `translate(${x} ${y}) rotate(${rot})` }, svg5); KIT.set(a, { opacity: 0 }); return a; };
   const arrowTrain = arrow(340, 690, 90), arrowGen = arrow(1012, 90, 180);
   const trainL = label(g5.el, "train", { x: 40, y: 380, size: 56, gold: true, weight: 500 });
   const genL = label(g5.el, "generate", { x: 1240, y: 380, size: 56, gold: true, weight: 500 });
-  gsap.set([trainL, genL], { opacity: 0 });
+  KIT.set([trainL, genL], { opacity: 0 });
   fit(g5, whole, { pad: 6 });
   during(g5.el, T.start(5), T.start(6));
   // train: the stroke draws from the book to the grid, pairs fly in, tallies draw
   const tTrain = T.word(5, "train");
-  K.drawOn(tl, [trainPath], tTrain - 0.3, 1.0, 0, "power1.inOut");
-  tl.to(arrowTrain, { opacity: 1, duration: 0.2 }, tTrain + 0.6);
-  tl.to(trainL, { opacity: 1, duration: 0.3 }, tTrain);
+  K.drawOn(tl, [trainPath], tTrain - 0.3, 1.0, 0, "in-out-quad");
+  tl.to(arrowTrain, { opacity: 1 }, tTrain + 0.6, { dur: 0.2 });
+  tl.to(trainL, { opacity: 1 }, tTrain, { dur: 0.3 });
   const tCount = T.word(5, "count");
   bg.pairs.forEach((p, i) => {
     const t = tCount + i * 0.28;
     const tile = K.el("div", { class: "tile", text: `${p.from} ${p.to}`, style: { fontSize: "30px", width: "170px", height: "50px" } }, g5.el);
-    gsap.set(tile, { x: 660, y: 110, opacity: 0 });
+    KIT.set(tile, { x: 660, y: 110, opacity: 0 });
     const cell = gr5.cells[p.r][p.c];
-    tl.fromTo(tile, { opacity: 0, x: 660, y: 110, scale: 1 }, { opacity: 1, x: 560 + cell.cx - 85, y: 205 + cell.cy - 25, scale: 0.6, duration: 0.5, ease: "power2.inOut" }, t);
-    tl.to(tile, { opacity: 0, duration: 0.15 }, t + 0.5);
+    tl.fromTo(tile, { opacity: 0, x: 660, y: 110, scale: 1 }, { opacity: 1, x: 560 + cell.cx - 85, y: 205 + cell.cy - 25, scale: 0.6 }, t, { dur: 0.5, ease: "in-out-cubic" });
+    tl.to(tile, { opacity: 0 }, t + 0.5, { dur: 0.15 });
     K.drawOn(tl, [cell.strokes[p.nth - 1]], t + 0.55, 0.25, 0);
   });
   // generate: the stroke continues to the paper, a word writes, a face lands, the next word writes, the arrow returns
   const tGen = T.word(5, "generate");
-  K.drawOn(tl, [genPath], tGen + 0.4, 1.4, 0, "power1.inOut");
-  tl.to(genL, { opacity: 1, duration: 0.3 }, tGen);
+  K.drawOn(tl, [genPath], tGen + 0.4, 1.4, 0, "in-out-quad");
+  tl.to(genL, { opacity: 1 }, tGen, { dur: 0.3 });
   K.write(tl, pl5.words[0], T.word(5, "last"));
   K.land(tl, d5, 7, T.word(5, "pick"));
   K.write(tl, pl5.words[1], T.word(5, "write"));
-  tl.to(arrowGen, { opacity: 1, duration: 0.2 }, T.word(5, "again"));
-  tl.to(d5.el, { opacity: 0, duration: 0.3 }, T.word(5, "again"));
+  tl.to(arrowGen, { opacity: 1 }, T.word(5, "again"), { dur: 0.2 });
+  tl.to(d5.el, { opacity: 0 }, T.word(5, "again"), { dur: 0.3 });
   K.write(tl, pl5.words[2], T.word(5, "again") + 0.4);
 
   // ---------------------------------------------------------------- line 6: two vignettes: the grid and die; the cup
@@ -391,11 +384,11 @@ const build = (tl, S, T) => {
   const g6a = group(900, 700), g6b = group(900, 700);
   const gr6 = K.grid(g6a.el, bg, { x: 60, y: 60, cell: 90, head: 120 });
   const d6 = K.die(g6a.el, { x: 690, y: 480, size: 160, face: 2 });
-  gsap.set(d6.el, { opacity: 0 });
+  KIT.set(d6.el, { opacity: 0 });
   const cup6 = K.cup(g6b.el, { x: 180, y: 90, r: 240 });
   const rowIt = rowOf("it");
   const outC = K.counter(g6b.el, "red", { x: cup6.centre.x - 40, y: cup6.centre.y - 40, r: 40 });
-  gsap.set(outC.el, { opacity: 0 });
+  KIT.set(outC.el, { opacity: 0 });
   fit(g6a, s6a); fit(g6b, s6b);
   during(g6a.el, T.start(6) + 0.3, T.start(7));
   during(g6b.el, T.word(6, "ledger") - 0.2, T.start(7));
@@ -406,12 +399,12 @@ const build = (tl, S, T) => {
   rowIt.followers.forEach((f, ci) => {
     for (let n = 0; n < f.count; n++) {
       const ct = cup6.add(D.palette[ci].name, k6, total6);
-      tl.fromTo(ct.el, { opacity: 0, x: ct.x, y: ct.y - 220, scale: 1.3 }, { opacity: 1, y: ct.y, scale: 1, duration: 0.45, ease: "power3.out" }, T.word(6, "counters") + k6 * 0.12);
+      tl.fromTo(ct.el, { opacity: 0, x: ct.x, y: ct.y - 220, scale: 1.3 }, { opacity: 1, y: ct.y, scale: 1 }, T.word(6, "counters") + k6 * 0.12, { dur: 0.45, ease: "out-quart" });
       k6++;
     }
   });
-  tl.fromTo(outC.el, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1.1, duration: 0.3 }, T.word(6, "likely") - 0.2);
-  tl.to(outC.el, { x: cup6.centre.x + 330, y: cup6.centre.y - 40, scale: 1, duration: 0.6, ease: "power2.inOut" }, T.word(6, "likely") + 0.1);
+  tl.fromTo(outC.el, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1.1 }, T.word(6, "likely") - 0.2, { dur: 0.3 });
+  tl.to(outC.el, { x: cup6.centre.x + 330, y: cup6.centre.y - 40, scale: 1 }, T.word(6, "likely") + 0.1, { dur: 0.6, ease: "in-out-cubic" });
 
   // ---------------------------------------------------------------- line 7: three vignettes: your own model then the booklet; the phone; the butchers paper
   const [s7a, s7b, s7c] = slots(3);
@@ -422,12 +415,12 @@ const build = (tl, S, T) => {
   pg7.moveTo(tl, pg7.around(pg7.lineBox(["golden"]), 560), 0, 0.01);
   pg7.highlight(pg7.lineBox(["golden"]));
   tl.set(pg7.hl, { opacity: 1 }, 0);
-  gsap.set(pg7.el, { opacity: 0 });
+  KIT.set(pg7.el, { opacity: 0 });
   const phone = K.el("div", { style: { position: "absolute", left: "260px", top: "20px", width: "380px", height: "440px", background: "#2a2a2a", borderRadius: "30px", border: "2px solid rgb(255 255 255 / 12%)" } }, g7b.el);
   const bubble7 = K.el("div", { text: "out on the verandah", style: { position: "absolute", left: "28px", top: "300px", padding: "16px 22px", background: "var(--gold)", color: "#111", borderRadius: "16px", fontSize: "28px", fontFamily: "var(--font-ui)", whiteSpace: "nowrap" } }, phone);
   const p7 = K.paper(g7b.el, { x: 20, y: 540, w: 860, h: 120 });
   const pl7 = K.pencilLine(p7.el, ["the", "cat", "sat"], { size: 46, y: 34 });
-  pl7.words.forEach((w) => gsap.set(w, { opacity: 1 }));
+  pl7.words.forEach((w) => KIT.set(w, { opacity: 1 }));
   const reply7 = K.el("div", { text: "out on the verandah", style: { position: "absolute", left: "290px", top: "34px", fontSize: "46px", fontFamily: "var(--font-tok)", fontStyle: "italic", color: "var(--pencil)", opacity: 0, whiteSpace: "nowrap" } }, p7.el);
   const bp = K.paper(g7c.el, { x: 20, y: 120, w: 860, h: 440 });
   const bpl1 = K.pencilLine(bp.el, K.split("the magpie is back ."), { size: 50, y: 60 });
@@ -436,14 +429,14 @@ const build = (tl, S, T) => {
   label(g7c.el, "butchers paper, up the front", { x: 20, y: 70, size: 28 }).style.opacity = 0.75;
   fit(g7a, s7a); fit(g7b, s7b); fit(g7c, s7c);
   during(g7a.el, T.start(7) + 0.3, T.start(8));
-  tl.to(gr7.el, { opacity: 0, duration: 0.4 }, T.word(7, "trained") - 0.2);
-  tl.to(pg7.el, { opacity: 1, duration: 0.4 }, T.word(7, "trained") - 0.1);
+  tl.to(gr7.el, { opacity: 0 }, T.word(7, "trained") - 0.2, { dur: 0.4 });
+  tl.to(pg7.el, { opacity: 1 }, T.word(7, "trained") - 0.1, { dur: 0.4 });
   during(g7b.el, T.word(7, "help") - 0.4, T.start(8));
   during(g7c.el, T.word(7, "room") - 0.3, T.start(8));
-  tl.fromTo(bubble7, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.4 }, T.word(7, "help"));
-  tl.to(bubble7, { x: 40, y: 250, duration: 0.6, ease: "power2.inOut" }, T.word(7, "help") + 0.7);
-  tl.to(bubble7, { opacity: 0, duration: 0.2 }, T.word(7, "help") + 1.25);
-  tl.to(reply7, { opacity: 1, duration: 0.2 }, T.word(7, "help") + 1.3);
+  tl.fromTo(bubble7, { opacity: 0, y: 30 }, { opacity: 1, y: 0 }, T.word(7, "help"), { dur: 0.4 });
+  tl.to(bubble7, { x: 40, y: 250 }, T.word(7, "help") + 0.7, { dur: 0.6, ease: "in-out-cubic" });
+  tl.to(bubble7, { opacity: 0 }, T.word(7, "help") + 1.25, { dur: 0.2 });
+  tl.to(reply7, { opacity: 1 }, T.word(7, "help") + 1.3, { dur: 0.2 });
   [...bpl1.words, ...bpl2.words, ...bpl3.words].forEach((w, i) => K.write(tl, w, T.word(7, "story") - 0.8 + i * 0.16));
 
   // ---------------------------------------------------------------- line 8: tallies become numbers, the numbers become one long row
@@ -479,17 +472,17 @@ const build = (tl, S, T) => {
   const tNum = T.word(8, "numbers");
   tl.to(
     gr8.cells.flat().flatMap((c) => c.strokes),
-    { opacity: 0, duration: 0.4 },
-    tNum,
+    { opacity: 0 },
+    tNum, { dur: 0.4 },
   );
   tl.to(
     nums.map((n) => n.el),
-    { opacity: 1, duration: 0.4, stagger: 0.02 },
-    tNum + 0.1,
+    { opacity: 1 },
+    tNum + 0.1, { dur: 0.4, stagger: 0.02 },
   );
   // the long row: the same numbers repeated, running off both edges and scrolling
   const rowL = K.layer(scene, 0, 0);
-  gsap.set(rowL, { opacity: 0 });
+  KIT.set(rowL, { opacity: 0 });
   const seq = nums.map((n) => n.v.toFixed(2));
   const tilesRow = [];
   for (let i = 0; i < 90; i++) {
@@ -516,19 +509,19 @@ const build = (tl, S, T) => {
       },
       rowL,
     );
-    gsap.set(d, { x: i * 130, y: 0 });
+    KIT.set(d, { x: i * 130, y: 0 });
     tilesRow.push(d);
   }
-  gsap.set(rowL, { x: -400, y: A.y + (P ? 1000 : A.h / 2 - 35) });
+  KIT.set(rowL, { x: -400, y: A.y + (P ? 1000 : A.h / 2 - 35) });
   const tRow = T.word(8, "conversation");
-  tl.to(g8.el, { opacity: 0, duration: 0.4 }, tRow);
-  tl.to(rowL, { opacity: 1, duration: 0.4 }, tRow + 0.2);
+  tl.to(g8.el, { opacity: 0 }, tRow, { dur: 0.4 });
+  tl.to(rowL, { opacity: 1 }, tRow + 0.2, { dur: 0.4 });
   tl.to(
     rowL,
-    { x: -400 - 130 * 60, duration: T.start(9) - tRow - 0.4, ease: "power1.in" },
-    tRow + 0.3,
+    { x: -400 - 130 * 60 },
+    tRow + 0.3, { dur: T.start(9) - tRow - 0.4, ease: "in-quad" },
   );
-  tl.to(rowL, { opacity: 0, duration: 0.3 }, T.start(9) - 0.3);
+  tl.to(rowL, { opacity: 0 }, T.start(9) - 0.3, { dur: 0.3 });
 
   // ---------------------------------------------------------------- line 9: the chat and the pencil in lockstep; the timeline
   const g9 = group(1200, 520);
@@ -540,7 +533,7 @@ const build = (tl, S, T) => {
   const cad = 0.36,
     t9 = T.start(9) + 0.4;
   c9.spans.forEach((s, i) =>
-    tl.fromTo(s, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.18 }, t9 + i * cad),
+    tl.fromTo(s, { opacity: 0, y: 6 }, { opacity: 1, y: 0 }, t9 + i * cad, { dur: 0.18 }),
   );
   pl9.words.forEach((w, i) => K.write(tl, w, t9 + i * cad * 0.82));
   const g9b = group(1500, 300);
@@ -565,14 +558,14 @@ const build = (tl, S, T) => {
     const dot = K.svg("circle", { cx: x, cy: 150, r: 16, fill: "var(--gold)", opacity: 0 }, svg9);
     const t = label(g9b.el, txt, { x: x - 150, y: 190, size: 40, align: "centre", weight: 500 });
     t.style.width = "300px";
-    gsap.set(t, { opacity: 0 });
+    KIT.set(t, { opacity: 0 });
     return { dot, t, x, word };
   });
   const icon = { el: K.layer(g9b.el, 20, 90) };
   const iconSvg = K.svg("svg", { width: 120, height: 120, viewBox: "0 0 120 120" }, icon.el);
   K.svg("path", { d: "M 60 14 A 46 46 0 1 1 18 44", fill: "none", stroke: "var(--gold)", "stroke-width": 9, "stroke-linecap": "round" }, iconSvg);
   K.svg("polygon", { points: "6 30 30 34 14 54", fill: "var(--gold)" }, iconSvg);
-  gsap.set(icon.el, { opacity: 0 });
+  KIT.set(icon.el, { opacity: 0 });
   fit(g9b, P ? { x: A.x, y: A.y + 800, w: A.w, h: 300 } : { x: A.x, y: A.y + 520, w: A.w, h: 300 });
   during(g9b.el, T.word(9, "Markov") - 1.0, T.start(10));
   K.drawOn(
@@ -581,21 +574,17 @@ const build = (tl, S, T) => {
     T.word(9, "Markov") - 0.8,
     T.word(9, "today's") - T.word(9, "Markov") + 1.2,
     0,
-    "power1.inOut",
+    "in-out-quad",
   );
-  tl.to(icon.el, { opacity: 1, duration: 0.2 }, T.word(9, "Markov") - 0.8);
+  tl.to(icon.el, { opacity: 1 }, T.word(9, "Markov") - 0.8, { dur: 0.2 });
   tl.to(
     icon.el,
-    {
-      x: 1440 - 100,
-      duration: T.word(9, "today's") - T.word(9, "Markov") + 1.2,
-      ease: "power1.inOut",
-    },
-    T.word(9, "Markov") - 0.8,
+    { x: 1440 - 100 },
+    T.word(9, "Markov") - 0.8, { dur: T.word(9, "today's") - T.word(9, "Markov") + 1.2, ease: "in-out-quad" },
   );
   stations.forEach((st) => {
     const t = T.word(9, st.word);
-    tl.to(st.dot, { opacity: 1, duration: 0.2 }, t);
+    tl.to(st.dot, { opacity: 1 }, t, { dur: 0.2 });
     K.appear(tl, st.t, t, { y: 10 });
   });
 
@@ -618,9 +607,9 @@ const build = (tl, S, T) => {
   fit(g10a, s10a); fit(g10b, s10b); fit(g10c, s10c);
   const t10a = t10(0.42), t10b = t10(0.62), t10c = t10(0.8);
   during(g10a.el, T.start(10) + 0.3, T.start(11)); during(g10b.el, t10b, T.start(11)); during(g10c.el, t10c, T.start(11));
-  tl.to(ringA.el, { opacity: 1, duration: 0.3 }, t10a + 0.2);
-  tl.fromTo(strike, { scaleX: 0, opacity: 1 }, { scaleX: 1, duration: 0.5, ease: "power2.out" }, t10c + 0.5);
-  tl.to(rewrite, { opacity: 1, duration: 0.3 }, t10c + 1.0);
+  tl.to(ringA.el, { opacity: 1 }, t10a + 0.2, { dur: 0.3 });
+  tl.fromTo(strike, { scaleX: 0, opacity: 1 }, { scaleX: 1 }, t10c + 0.5, { dur: 0.5, ease: "out-cubic" });
+  tl.to(rewrite, { opacity: 1 }, t10c + 1.0, { dur: 0.3 });
 
   // ---------------------------------------------------------------- line 11: the tools page
   const [s11a, s11b, s11c] = slots(3);
@@ -634,7 +623,7 @@ const build = (tl, S, T) => {
   sh11.rows.forEach((r) => r.cells.forEach((c) => K.drawOn(tl, c.strokes, 0, 0.01, 0)));
   fit(g11a, s11a); fit(g11b, s11b); fit(g11c, s11c);
   during(g11a.el, T.start(11), T.start(12));
-  pasted.forEach((d, i) => tl.to(d, { opacity: 1, duration: 0.3 }, T.word(11, "Paste") + i * 0.25));
+  pasted.forEach((d, i) => tl.to(d, { opacity: 1 }, T.word(11, "Paste") + i * 0.25, { dur: 0.3 }));
   during(g11b.el, T.word(11, "booklets") - 0.2, T.start(12));
   during(g11c.el, T.word(11, "sheets") - 0.2, T.start(12));
 
@@ -662,7 +651,7 @@ const build = (tl, S, T) => {
   const list = titles.map((t, i) => {
     const d = label(g12.el, t, { x: 0, y: 150 + i * 56, size: 38, align: "centre" });
     d.style.width = "1400px";
-    gsap.set(d, { opacity: 0 });
+    KIT.set(d, { opacity: 0 });
     return d;
   });
   const cc = K.svg(
@@ -691,7 +680,7 @@ const build = (tl, S, T) => {
     cc,
   );
   const ccL = cc.parentNode;
-  gsap.set([url, ccL], { opacity: 0 });
+  KIT.set([url, ccL], { opacity: 0 });
   fit(g12, P ? { x: A.x, y: A.y + 150, w: A.w, h: 1100 } : whole);
   during(g12.el, T.start(12), null);
   K.appear(tl, url, T.word(12, "llmsunplugged.org") - 0.2, { y: 16 });

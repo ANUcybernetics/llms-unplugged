@@ -1,11 +1,14 @@
 // The composition kit for the LLMs Unplugged explainer videos. Every video is
-// an HTML composition rendered by HyperFrames (see the llms-unplugged-video
-// skill for the contract); this file holds what the eight videos share: the
-// stage and its caption band, the participant's-view objects (word tiles, the
-// grid, dice strip and d10 face, ledger rows and sheets, the cup and counters,
-// paper and pencil writing, a booklet page), and the motion helpers that move
-// them on a paused GSAP timeline. Everything is flat vector that tweens
-// transform, opacity and stroke-dashoffset only; nothing animates layout.
+// an HTML composition rendered by HyperFrames (see ../STYLE.md and the
+// styled-video skill); this file holds what the eight videos share: the
+// participant's-view objects (word tiles, the grid, dice strip and d10 face,
+// ledger rows and sheets, the cup and counters, paper and pencil writing, a
+// booklet page) on top of astromotion's video motion engine (motion/, a
+// symlink to website/node_modules/astromotion/video), which supplies the
+// stage, timing, captions, the Web Animations timeline and the moves.
+// Everything is flat vector that tweens transform, opacity and
+// stroke-dashoffset only; nothing animates layout. Pencil marks (tallies and
+// written words) boil: they redraw a little differently twelve times a second.
 //
 // Data (word lists, ledger rows, booklet entries, page images) comes from
 // kit/generated/data.js, which ops/video/build-data.py writes from data/ and
@@ -13,17 +16,23 @@
 //
 // Usage in a composition:
 //   <link rel="stylesheet" href="kit/kit.css">
-//   <script src="kit/vendor/gsap.min.js"></script>
 //   <script src="kit/generated/data.js"></script>
-//   <script src="kit/kit.js"></script>
-//   ... then KIT.ready(build).then(({ tl }) => { window.__timelines[id] = tl; }):
-//   fonts and timing.json (align.py) load, build(tl, S, T) lays out and
-//   animates, and the composition registers the timeline for the renderer.
+//   <script type="module" src="kit/kit.js"></script>
+//   <script type="module"> ... KIT.ready(build).then(({ tl }) => { window.__timelines[id] = tl; })
+//   fonts and timing.json load, build(tl, S, T) lays out and animates, and
+//   the composition registers the compiled timeline for the renderer.
+
+import * as M from "./motion/motion.js";
 
 window.KIT = (() => {
-  const SVG = "http://www.w3.org/2000/svg";
-  const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
-  const lerp = (a, b, p) => a + (b - a) * p;
+  const { clamp, lerp, set, get, el, svg, layer } = M;
+
+  // pencil marks boil; ready() hands the collected ones to the timeline
+  const PENCIL = [];
+  const pencil = (els, amp = 1) => {
+    PENCIL.push({ els, amp });
+    return els;
+  };
 
   // ---------------------------------------------------------------- tokens
   // The token colour hash from website/src/lib/tokenColors.ts (and
@@ -80,38 +89,6 @@ window.KIT = (() => {
     bg.vocab.map((w, c) => ({ word: w, count: bg.counts[row][c] })).filter((o) => o.count > 0);
 
   // ---------------------------------------------------------------- DOM
-  const el = (tag, attrs = {}, parent) => {
-    const e = document.createElement(tag);
-    for (const [k, v] of Object.entries(attrs)) {
-      if (k === "class") e.className = v;
-      else if (k === "text") e.textContent = v;
-      else if (k === "style") Object.assign(e.style, v);
-      else e.setAttribute(k, v);
-    }
-    if (parent) parent.appendChild(e);
-    return e;
-  };
-  const svg = (tag, attrs = {}, parent) => {
-    const e = document.createElementNS(SVG, tag);
-    for (const [k, v] of Object.entries(attrs)) {
-      if (k === "text") e.textContent = v;
-      // a text's fill goes inline, so the kit.css `svg text { fill }` default never overrides it
-      else if (k === "fill" && tag === "text") e.style.fill = v;
-      else e.setAttribute(k, v);
-    }
-    if (parent) parent.appendChild(e);
-    return e;
-  };
-  const layer = (parent, x = 0, y = 0, cls = "") => {
-    const d = el("div", { class: `layer ${cls}`.trim() }, parent);
-    gsap.set(d, { x, y });
-    return d;
-  };
-  const place = (node, x, y) => {
-    gsap.set(node, { x, y });
-    return node;
-  };
-
   const measure = (() => {
     const ctx = document.createElement("canvas").getContext("2d");
     return (text, font) => {
@@ -121,80 +98,7 @@ window.KIT = (() => {
   })();
 
   // deterministic per-index jitter (never Math.random: frames must reproduce)
-  const jitter = (i) => {
-    const x = Math.sin(i * 12.9898 + 78.233) * 43758.5453;
-    return x - Math.floor(x);
-  };
-
-  // ---------------------------------------------------------------- stage
-  // The stage is the root composition element; the caption band is reserved
-  // at the bottom and `area` is what the scene may use.
-  function stage(root) {
-    const aspect = root.dataset.aspect || "landscape";
-    const W = aspect === "portrait" ? 1080 : 1920,
-      H = aspect === "portrait" ? 1920 : 1080;
-    const cap = aspect === "portrait" ? 300 : 190;
-    const m = 60;
-    // the scene layer is clipped to the space above the caption band, so a
-    // push-in never runs under the captions
-    const scene = root.querySelector(".scene");
-    if (scene) Object.assign(scene.style, { width: `${W}px`, height: `${H - cap}px`, overflow: "hidden" });
-    return {
-      root,
-      aspect,
-      W,
-      H,
-      portrait: aspect === "portrait",
-      captionH: cap,
-      area: { x: m, y: m, w: W - 2 * m, h: H - cap - 2 * m, cx: W / 2, cy: (H - cap) / 2 },
-    };
-  }
-
-  // ---------------------------------------------------------------- timing
-  // timing.json → look-ups for "when is line i said" and "when is word w of
-  // line i said", so a move lands on the word that names it.
-  const norm = (w) => w.toLowerCase().replace(/[^a-z0-9']/g, "");
-  function timing(T) {
-    const lines = T.lines;
-    const line = (i) => {
-      const l = lines[i];
-      if (!l) throw new Error(`no line ${i}`);
-      return l;
-    };
-    // word(i, "fence") → start of the first "fence" in line i; word(i, "fence", 2) → the second
-    const word = (i, w, nth = 1) => {
-      const l = line(i);
-      let n = 0;
-      for (const x of l.words) if (norm(x.w) === norm(w) && ++n === nth) return x.start;
-      throw new Error(`"${w}" (${nth}) not in line ${i}: ${l.caption}`);
-    };
-    const wordEnd = (i, w, nth = 1) => {
-      const l = line(i);
-      let n = 0;
-      for (const x of l.words) if (norm(x.w) === norm(w) && ++n === nth) return x.end;
-      throw new Error(`"${w}" not in line ${i}`);
-    };
-    return {
-      lines,
-      line,
-      start: (i) => line(i).start,
-      end: (i) => line(i).end,
-      word,
-      wordEnd,
-      duration: T.duration,
-    };
-  }
-
-  // The caption band: every line's caption prebuilt, shown whole for the line.
-  function captions(S, T, tl) {
-    const band = el("div", { class: "captions" }, S.root);
-    T.lines.forEach((l) => {
-      const c = el("div", { class: "caption", text: l.caption }, band);
-      tl.set(c, { opacity: 1 }, l.start);
-      tl.set(c, { opacity: 0 }, l.end);
-    });
-    return band;
-  }
+  const jitter = M.hash;
 
   // ---------------------------------------------------------------- objects
   // Word tiles: one paper tile per token, laid out in a row (wrapping into
@@ -225,7 +129,7 @@ window.KIT = (() => {
         },
         g,
       );
-      gsap.set(d, { x: cx, y: cy });
+      set(d, { x: cx, y: cy });
       items.push({ el: d, text: t, x: cx, y: cy, w, h: H, i });
       cx += w + gap;
     });
@@ -254,17 +158,9 @@ window.KIT = (() => {
     }
     return paths;
   }
-  // stroke-dashoffset draw-on needs the length; set up once, hidden
-  function prepDraw(paths) {
-    for (const p of paths) {
-      const L = p.getTotalLength();
-      p.style.strokeDasharray = `${L}`;
-      p.style.strokeDashoffset = `${L}`;
-    }
-    return paths;
-  }
-  const drawOn = (tl, paths, t, dur = 0.35, stagger = 0.08, ease = "power2.out") =>
-    paths.length ? tl.to(paths, { strokeDashoffset: 0, duration: dur, stagger, ease }, t) : tl;
+  // pencil strokes boil, so their dash is padded against the longer jittered copies
+  const prepDraw = (paths) => M.prepDraw(pencil(paths), 4);
+  const drawOn = M.drawOn;
 
   // The grid: row and column headers in the vocab order, tally cells, gold
   // bands to light a row/column and a dimmer to fade the rest. One SVG so the
@@ -408,12 +304,12 @@ window.KIT = (() => {
     // shade the strip: blocks grow from the left, word by word, numbers turn white
     const shade = (tl, t, dur = 0.5, stagger = 0.15) => {
       tl.set(blocks, { opacity: 1 }, t);
-      tl.fromTo(blocks, { scaleX: 0, transformOrigin: "0 50%" }, { scaleX: 1, duration: dur, stagger, ease: "power2.out" }, t);
-      tl.to(labels, { opacity: 1, duration: 0.3, stagger }, t + 0.1);
-      tl.to(nums, { fill: "#ffffff", duration: 0.3 }, t + dur * 0.5);
+      tl.fromTo(blocks, { scaleX: 0, transformOrigin: "0 50%" }, { scaleX: 1 }, t, { dur, stagger, ease: "out-cubic" });
+      tl.to(labels, { opacity: 1 }, t + 0.1, { dur: 0.3, stagger });
+      tl.to(nums, { fill: "#ffffff" }, t + dur * 0.5, { dur: 0.3 });
     };
     // a face lights: the rolled one
-    const light = (tl, i, t) => tl.fromTo(faceEls[i], { opacity: 1 }, { opacity: 1, duration: 0.01 }, t) && tl.to(nums[i], { scale: 1.35, transformOrigin: "50% 50%", duration: 0.25, yoyo: true, repeat: 1 }, t);
+    const light = (tl, i, t) => tl.to(nums[i], { scale: 1.35, transformOrigin: "50% 50%" }, t, { dur: 0.25, yoyo: true });
     return { el: g, svg: s, width: W, height: H, faces: faceEls, blocks, labels, nums, bands, faceAt, shade, light };
   }
 
@@ -428,7 +324,7 @@ window.KIT = (() => {
     for (let n = 0; n < 10; n++) {
       texts.push(svg("text", { x: 50, y: 40, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 34, "font-weight": 700, fill: "#fff", class: "ui", opacity: n === face ? 1 : 0, text: String(n) }, s));
     }
-    gsap.set(g, { transformOrigin: "50% 50%" });
+    set(g, { transformOrigin: "50% 50%" });
     return { el: g, texts, size };
   }
 
@@ -741,7 +637,7 @@ window.KIT = (() => {
           },
           pool,
         );
-        gsap.set(c, { x: p.x, y: p.y, opacity: 0, transformOrigin: "0 0" });
+        set(c, { x: p.x, y: p.y, opacity: 0, transformOrigin: "0 0" });
         counters.push(c);
         return { el: c, x: p.x, y: p.y };
       },
@@ -766,7 +662,7 @@ window.KIT = (() => {
       },
       s,
     );
-    gsap.set(g, { transformOrigin: "50% 50%" });
+    set(g, { transformOrigin: "50% 50%" });
     return { el: g, r };
   }
 
@@ -777,7 +673,7 @@ window.KIT = (() => {
       { class: "paper", style: { width: `${w}px`, height: `${h * lines}px` } },
       parent,
     );
-    gsap.set(d, { x, y });
+    set(d, { x, y });
     return { el: d, w, h, x, y };
   }
   function pencilLine(parent, words, { x = 24, y = 30, size = 54 } = {}) {
@@ -791,19 +687,15 @@ window.KIT = (() => {
     );
     const spans = words.map((w) => {
       const s = el("span", { class: "w", text: w }, d);
-      gsap.set(s, { opacity: 0 });
+      set(s, { opacity: 0 });
       return s;
     });
+    pencil(spans, 0.8);
     return { el: d, words: spans };
   }
   // write words in with a small pencil rise, each at its time
   const write = (tl, span, t, dur = 0.25) =>
-    tl.fromTo(
-      span,
-      { opacity: 0, y: 6 },
-      { opacity: 1, y: 0, duration: dur, ease: "power2.out" },
-      t,
-    );
+    tl.fromTo(span, { opacity: 0, y: 6 }, { opacity: 1, y: 0 }, t, { dur, ease: "out-cubic" });
 
   // A page image (from build-data.py's pdf-assets run) shown in a paper frame,
   // with a crop that tweens: the point of interest tracks as the camera moves.
@@ -811,7 +703,7 @@ window.KIT = (() => {
     const P = KIT_DATA.pages[name];
     const page = P.bbox[sheetNo - 1];
     const frame = el("div", { class: "paper", style: { width: `${w}px`, height: `${h}px`, overflow: "hidden" } }, parent);
-    gsap.set(frame, { x, y });
+    set(frame, { x, y });
     // the image and its highlight box live in one wrapper that carries the crop transform
     const wrap = el("div", { style: { position: "absolute", left: 0, top: 0, transformOrigin: "0 0" } }, frame);
     const img = el("img", { src: `kit/generated/pages/${name}/pages/sheet-${String(sheetNo).padStart(3, "0")}.png`, style: { position: "absolute", left: 0, top: 0, display: "block", width: `${P.imgW}px`, height: `${P.imgH}px` } }, wrap);
@@ -827,21 +719,21 @@ window.KIT = (() => {
     const fit = () => { const s = Math.min(w / IW, h / IH); return { cw: w / s, ch: h / s, cx: (IW - w / s) / 2, cy: (IH - h / s) / 2 }; };
     const around = (box, cw) => { const ch = (cw * h) / w; return { cw, ch, cx: clamp(box.x + box.w / 2 - cw / 2, 0, IW - cw), cy: clamp(box.y + box.h / 2 - ch / 2, 0, IH - ch) }; };
     const state = fit();
-    const apply = (c) => { const s = w / c.cw; gsap.set(wrap, { x: -c.cx * s, y: -c.cy * s, scale: s }); };
+    const placement = (c) => { const s = w / c.cw; return { x: -c.cx * s, y: -c.cy * s, scale: s }; };
+    const apply = (c) => set(wrap, placement(c));
     apply(state);
     // a camera move within the page tweens the crop (log on width) so the point of interest tracks
-    const moveTo = (tl, crop, t, dur = 0.7, ease = "power2.inOut") => {
-      const from = { ...state }; const proxy = { p: 0 };
-      tl.to(proxy, { p: 1, duration: dur, ease, onUpdate() {
-        const p = proxy.p;
+    const moveTo = (tl, crop, t, dur = 0.7, ease = "in-out-cubic") => {
+      const from = { ...state };
+      tl.sample(wrap, t, dur, (p) => {
         const cw = Math.exp(lerp(Math.log(from.cw), Math.log(crop.cw), p)), ch = (cw * h) / w;
-        apply({ cw, ch, cx: lerp(from.cx + from.cw / 2, crop.cx + crop.cw / 2, p) - cw / 2, cy: lerp(from.cy + from.ch / 2, crop.cy + crop.ch / 2, p) - ch / 2 });
-      } }, t);
+        return placement({ cw, ch, cx: lerp(from.cx + from.cw / 2, crop.cx + crop.cw / 2, p) - cw / 2, cy: lerp(from.cy + from.ch / 2, crop.cy + crop.ch / 2, p) - ch / 2 });
+      }, { ease });
       Object.assign(state, crop);  // build-time bookkeeping for the next move
     };
-    const cut = (tl, crop, t) => { const c = { ...crop }; tl.set(wrap, { x: -c.cx * (w / c.cw), y: -c.cy * (w / c.cw), scale: w / c.cw }, t); Object.assign(state, crop); };
+    const cut = (tl, crop, t) => { tl.set(wrap, placement(crop), t); Object.assign(state, crop); };
     // the highlight box in image pixels (it scales with the page)
-    const highlight = (box, pad = 14) => gsap.set(hl, { left: box.x - pad, top: box.y - pad * 0.6, width: box.w + 2 * pad, height: box.h + 1.2 * pad });
+    const highlight = (box, pad = 14) => set(hl, { left: box.x - pad, top: box.y - pad * 0.6, width: box.w + 2 * pad, height: box.h + 1.2 * pad });
     return { el: frame, img, hl, wrap, w, h, IW, IH, k, page, lineBox, fit, around, moveTo, cut, highlight, state };
   }
 
@@ -859,7 +751,7 @@ window.KIT = (() => {
       cy = h / 2;
     // a rounded loop starting at the top, clockwise
     const d = `M ${cx} ${cy - ry} A ${rx} ${ry} 0 1 1 ${cx - 0.01} ${cy - ry}`;
-    const path = prepDraw([svg("path", { d, class: "draw", stroke, "stroke-width": 8 }, s)]);
+    const path = M.prepDraw([svg("path", { d, class: "draw", stroke, "stroke-width": 8 }, s)]);
     const n = labels.length;
     const stations = labels.map((lab, i) => {
       const th = -Math.PI / 2 + (i / n) * Math.PI * 2;
@@ -894,118 +786,45 @@ window.KIT = (() => {
   function ring(parent, { x = 0, y = 0, w = 100, h = 100, stroke = 5, color = "var(--gold)" } = {}) {
     const g = layer(parent, x, y);
     const d = el("div", { style: { position: "absolute", left: 0, top: 0, width: `${w}px`, height: `${h}px`, border: `${stroke}px solid ${color}`, borderRadius: "12px", boxShadow: "0 0 0 4px rgb(190 131 14 / 22%)" } }, g);
-    gsap.set(g, { opacity: 0, transformOrigin: "0 0" });
+    set(g, { opacity: 0, transformOrigin: "0 0" });
     return { el: g, box: d, w, h,
       // land the ring around a box {x, y, w, h} (parent coordinates), padded
-      around: (tl, b, t, dur = 0.45, pad = 10) => tl.to(g, { x: b.x - pad, y: b.y - pad, scaleX: (b.w + 2 * pad) / w, scaleY: (b.h + 2 * pad) / h, duration: dur, ease: "power2.inOut" }, t) };
+      around: (tl, b, t, dur = 0.45, pad = 10) => tl.to(g, { x: b.x - pad, y: b.y - pad, scaleX: (b.w + 2 * pad) / w, scaleY: (b.h + 2 * pad) / h }, t, { dur, ease: "in-out-cubic" }) };
   }
   // the box (parent coordinates) spanning tiles a..b of a tiles() result
   const spanBox = (tiles, a, b) => {
     const A = tiles.tiles[a], B = tiles.tiles[b];
-    const x0 = gsap.getProperty(tiles.el, "x"), y0 = gsap.getProperty(tiles.el, "y");
+    const x0 = get(tiles.el, "x"), y0 = get(tiles.el, "y");
     const wrapped = B.y !== A.y;
     return { x: x0 + A.x, y: y0 + A.y, w: wrapped ? A.w : B.x + B.w - A.x, h: A.h };
   };
   // a page of a book: paper with the text set large in the book's serif
   function bookPage(parent, lines, { x = 0, y = 0, w = 800, h = 420, size = 60, pad = 56 } = {}) {
     const d = el("div", { class: "paper", style: { width: `${w}px`, height: `${h}px`, padding: `${pad}px`, fontFamily: "var(--font-tok)", fontSize: `${size}px`, lineHeight: 1.35 } }, parent);
-    gsap.set(d, { x, y });
+    set(d, { x, y });
     const ls = lines.map((t) => el("div", { text: t }, d));
     return { el: d, lines: ls, x, y, w, h };
   }
 
   // ---------------------------------------------------------------- motion
-  // appear/vanish move relative to where the thing already sits ("+=24"), so
-  // they never undo a layer's placement
-  const appear = (tl, els, t, { dur = 0.5, y = 24, scale = 1, stagger = 0.06, ease = "power3.out" } = {}) =>
-    tl.fromTo(els, { opacity: 0, y: `+=${y}`, scale }, { opacity: 1, y: `-=${y}`, scale: 1, duration: dur, stagger, ease, immediateRender: false }, t);
-  const vanish = (tl, els, t, { dur = 0.35, y = 0, stagger = 0 } = {}) =>
-    tl.to(els, { opacity: 0, ...(y ? { y: `+=${y}` } : {}), duration: dur, stagger, ease: "power2.in" }, t);
-  const show = (tl, els, t) => tl.set(els, { opacity: 1 }, t);
-  const hide = (tl, els, t) => tl.set(els, { opacity: 0 }, t);
   // a d10 face landing: scale down onto the desk, ease-out
   const land = (tl, dieObj, face, t, dur = 0.45) => {
     dieObj.texts.forEach((tx, n) => tl.set(tx, { opacity: n === face ? 1 : 0 }, t));
-    return tl.fromTo(dieObj.el, { opacity: 0, scale: 1.5, rotation: -18 }, { opacity: 1, scale: 1, rotation: 0, duration: dur, ease: "power3.out", overwrite: "auto" }, t);
+    return tl.fromTo(dieObj.el, { opacity: 0, scale: 1.5, rotation: -18 }, { opacity: 1, scale: 1, rotation: 0 }, t, { dur, ease: "out-quart" });
   };
-  // move a tile (or anything) so its centre lands on a point, in parent coords
-  const flyTo = (tl, item, to, t, dur = 0.6, ease = "power2.inOut") =>
-    tl.to(
-      item.el,
-      { x: to.x - item.w / 2, y: to.y - item.h / 2, duration: dur, ease, overwrite: "auto" },
-      t,
-    );
-
-  // Camera: pushes a layer in so that the point (px, py) of the layer (in the
-  // layer's own coordinates) sits at the stage point (sx, sy) at scale s.
-  function camera(layerEl, S) {
-    const home = { x: gsap.getProperty(layerEl, "x"), y: gsap.getProperty(layerEl, "y") };
-    const to = (
-      tl,
-      { px, py, s = 1, sx = S.area.cx, sy = S.area.cy },
-      t,
-      dur = 0.7,
-      ease = "power2.inOut",
-    ) =>
-      tl.to(
-        layerEl,
-        { x: sx - px * s, y: sy - py * s, scale: s, duration: dur, ease, overwrite: "auto" },
-        t,
-      );
-    const reset = (tl, t, dur = 0.7) =>
-      tl.to(
-        layerEl,
-        { x: home.x, y: home.y, scale: 1, duration: dur, ease: "power2.inOut", overwrite: "auto" },
-        t,
-      );
-    // a zoom tweened logarithmically on scale (an even-feeling pull-back)
-    const logZoom = (
-      tl,
-      { px, py, from, to: s1, sx = S.area.cx, sy = S.area.cy },
-      t,
-      dur = 2,
-      ease = "power1.inOut",
-    ) => {
-      const proxy = { p: 0 };
-      return tl.to(
-        proxy,
-        {
-          p: 1,
-          duration: dur,
-          ease,
-          onUpdate() {
-            const s = Math.exp(lerp(Math.log(from), Math.log(s1), proxy.p));
-            gsap.set(layerEl, { x: sx - px * s, y: sy - py * s, scale: s });
-          },
-        },
-        t,
-      );
-    };
-    return { to, reset, logZoom, home };
-  }
 
   // ---------------------------------------------------------------- boot
-  // Fonts must be loaded before anything is measured; then build the timeline
-  // and register it for the renderer.
-  function ready(build) {
-    window.__timelines = window.__timelines || {};
-    const run = (T0) => {
-      window.TIMING = T0;
-      const root = document.querySelector("[data-composition-id]");
-      const S = stage(root);
-      const T = timing(T0);
-      const tl = gsap.timeline({ paused: true });
-      build(tl, S, T);
-      captions(S, T0, tl);
-      tl.seek(0);
-      // wrapped: a GSAP timeline is itself a thenable (it resolves when it
-      // finishes playing), so resolving with it bare would never settle
-      return { tl, S, T };
-    };
-    const fonts = ['400 20px "Public Sans"', '600 20px "Public Sans"', '400 20px "Libertinus Serif"', '700 20px "Libertinus Serif"', 'italic 400 20px "Libertinus Serif"'];
-    const timingSrc = document.querySelector("[data-composition-id]").dataset.timing || "timing.json";
-    return Promise.all([fetch(timingSrc).then((r) => r.json()), ...fonts.map((f) => document.fonts.load(f))]).then(([T0]) => run(T0));
-  }
+  // Fonts must be loaded before anything is measured; the pencil marks the
+  // objects collected boil from the start.
+  const FONTS = ['400 20px "Public Sans"', '600 20px "Public Sans"', '400 20px "Libertinus Serif"', '700 20px "Libertinus Serif"', 'italic 400 20px "Libertinus Serif"'];
+  const ready = (build) =>
+    M.ready(
+      (tl, S, T) => {
+        build(tl, S, T);
+        for (const { els, amp } of PENCIL) tl.boil(els, { amp });
+      },
+      { fonts: FONTS },
+    );
 
   return {
     colourIndex,
@@ -1019,12 +838,14 @@ window.KIT = (() => {
     el,
     svg,
     layer,
-    place,
+    place: M.place,
+    set,
+    get,
     measure,
     jitter,
-    stage,
-    timing,
-    captions,
+    stage: M.stage,
+    timing: M.timing,
+    captions: M.captions,
     tiles,
     tally,
     prepDraw,
@@ -1044,13 +865,13 @@ window.KIT = (() => {
     ring,
     spanBox,
     bookPage,
-    appear,
-    vanish,
-    show,
-    hide,
+    appear: M.appear,
+    vanish: M.vanish,
+    show: M.show,
+    hide: M.hide,
     land,
-    flyTo,
-    camera,
+    flyTo: M.flyTo,
+    camera: M.camera,
     ready,
     COUNTER,
     TINT,

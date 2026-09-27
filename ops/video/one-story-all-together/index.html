@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=1920, height=1080" />
     <title>LLMs Unplugged — One story, all together</title>
     <link rel="stylesheet" href="kit/kit.css" />
-    <script src="kit/vendor/gsap.min.js"></script>
     <script src="kit/generated/data.js"></script>
-    <script src="kit/kit.js"></script>
+    <script type="module" src="kit/kit.js"></script>
     <style>
       html, body { width: 1920px; height: 1080px; }
     </style>
@@ -21,7 +20,7 @@
       <div id="scene" class="clip layer scene" data-start="0" data-duration="105.94" data-track-index="0"></div>
       <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="105.94" data-track-index="1"></audio>
     </div>
-    <script>
+    <script type="module">
       const build = (tl, S, T) => {
         const K = KIT, D = KIT_DATA;
         const scene = document.getElementById("scene");
@@ -40,7 +39,7 @@
         };
         const entries = NAMES.map(entryOf);
         const KOOK = NAMES.indexOf("kookaburra"), CREEK = NAMES.indexOf("creek");
-        const drawn = (row) => row.cells.forEach((c) => { if (c.strokes.length) gsap.set(c.strokes, { strokeDashoffset: 0 }); });
+        const drawn = (row) => row.cells.forEach((c) => { if (c.strokes.length) KIT.set(c.strokes, { strokeDashoffset: 0 }); });
 
         // ---------------------------------------------------------- layout
         const ROW_W = 1550, ROW_H = 130, ROW_X = 240, ROW_Y0 = 100, ROW_STEP = 140;
@@ -56,19 +55,19 @@
           K.ledgerRow(scene, e, PAL, { x: ROW_X, y: ROW_Y0 + i * ROW_STEP, w: ROW_W, h: ROW_H, fontSize: 44 }),
         );
         rows.forEach(drawn);
-        rows.forEach((r) => r.cells.forEach((c) => gsap.set(c.g, { transformOrigin: "50% 50%" })));
+        rows.forEach((r) => r.cells.forEach((c) => KIT.set(c.g, { transformOrigin: "50% 50%" })));
         const labels = NAMES.map((name, i) => {
           const l = K.el("div", { class: "label", text: name, style: { width: "170px", textAlign: "right" } }, scene);
-          gsap.set(l, { x: A.x, y: ROW_Y0 + i * ROW_STEP + ROW_H / 2 - 17 });
+          KIT.set(l, { x: A.x, y: ROW_Y0 + i * ROW_STEP + ROW_H / 2 - 17 });
           return l;
         });
-        gsap.set([...rows.map((r) => r.el), ...labels], { opacity: 0 });
+        KIT.set([...rows.map((r) => r.el), ...labels], { opacity: 0 });
         const pulseLabel = (el, t, dur = 0.5) => {
-          tl.to(el, { color: "#e5a930", duration: dur * 0.4 }, t);
-          tl.to(el, { color: "rgb(255 255 255 / 78%)", duration: dur * 0.6 }, t + dur * 0.4);
+          tl.to(el, { color: "#e5a930" }, t, { dur: dur * 0.4 });
+          tl.to(el, { color: "rgb(255 255 255 / 78%)" }, t + dur * 0.4, { dur: dur * 0.6 });
         };
         const liftCell = (cellG, t) =>
-          tl.to(cellG, { y: "-=18", scale: 1.08, duration: 0.3, yoyo: true, repeat: 1, ease: "power2.out" }, t);
+          tl.to(cellG, { y: "-=18", scale: 1.08 }, t, { dur: 0.3, ease: "out-cubic", yoyo: true });
         // "sand and water" / "sky and rain" / "kookaburra and gum": follower indices per row
         const litPairs = { beach: [0, 1], storm: [0, 3], kookaburra: [0, 1] };
 
@@ -77,25 +76,25 @@
           const cx = TABLE_CX[i], cy = TABLE_CY, size = TABLE_SIZE;
           const boxX = cx - size / 2, boxY = cy - size / 2;
           const el = K.el("div", { style: { position: "absolute", left: 0, top: 0, width: `${size}px`, height: `${size}px`, borderRadius: "50%", background: "#2c2723", boxShadow: "inset 0 0 0 3px rgb(255 255 255 / 10%)" } }, scene);
-          gsap.set(el, { x: boxX, y: boxY });
+          KIT.set(el, { x: boxX, y: boxY });
           const label = K.el("div", { class: "label", text: name, style: { position: "absolute", left: 0, top: `${size + 10}px`, width: `${size}px`, textAlign: "center" } }, scene);
-          gsap.set(label, { x: boxX, y: boxY });
+          KIT.set(label, { x: boxX, y: boxY });
           const ring = K.ring(scene, {});
           const pad = 8, ringS = (size + 2 * pad) / 100;
-          gsap.set(ring.el, { x: boxX - pad, y: boxY - pad, scaleX: ringS, scaleY: ringS });
+          KIT.set(ring.el, { x: boxX - pad, y: boxY - pad, scaleX: ringS, scaleY: ringS });
           return { el, label, ring, ringS, cx, cy, size };
         });
-        gsap.set([...tables.map((t) => t.el), ...tables.map((t) => t.label)], { opacity: 0 });
+        KIT.set([...tables.map((t) => t.el), ...tables.map((t) => t.label)], { opacity: 0 });
 
         const cup = K.cup(scene, { x: CUP_CX - CUP_R - 20, y: CUP_CY - CUP_R - 20, r: CUP_R });
-        gsap.set(cup.el, { opacity: 0 });
+        KIT.set(cup.el, { opacity: 0 });
 
         const paper = K.paper(scene, { x: PAPER_X, y: PAPER_Y, w: PAPER_W, h: PAPER_H });
-        gsap.set(paper.el, { opacity: 0 });
+        KIT.set(paper.el, { opacity: 0 });
         const pencil = K.pencilLine(paper.el, ["the", "yabby"], { x: 40, y: 44, size: 56 });
         const paperRing = K.ring(scene, {});
         const prPad = 14;
-        gsap.set(paperRing.el, { x: PAPER_X - prPad, y: PAPER_Y - prPad, scaleX: (PAPER_W + 2 * prPad) / 100, scaleY: (PAPER_H + 2 * prPad) / 100 });
+        KIT.set(paperRing.el, { x: PAPER_X - prPad, y: PAPER_Y - prPad, scaleX: (PAPER_W + 2 * prPad) / 100, scaleY: (PAPER_H + 2 * prPad) / 100 });
 
         const roomPlan = [...tables.map((t) => t.el), ...tables.map((t) => t.label), cup.el, paper.el];
 
@@ -103,7 +102,7 @@
         const creekEntry = entries[CREEK];
         const creekFront = K.ledgerRow(scene, creekEntry, PAL, { x: FRONT_X, y: FRONT_Y, w: FRONT_W, h: FRONT_H, fontSize: 44 });
         drawn(creekFront);
-        gsap.set(creekFront.el, { opacity: 0 });
+        KIT.set(creekFront.el, { opacity: 0 });
         const CT = tables[CREEK];
         const startScale = 0.18;
         const startX = CT.cx - (FRONT_W / 2) * startScale, startY = CT.cy - (FRONT_H / 2) * startScale;
@@ -141,7 +140,7 @@
           K.svg("text", { x: cx0 + colW / 2, y: POOLED_H * 0.42, "text-anchor": "middle", "font-size": 18, text: p.text }, poolSvg);
           K.svg("text", { x: cx0 + colW / 2, y: POOLED_H * 0.76, "text-anchor": "middle", "font-size": 22, "font-weight": 700, fill: "var(--gold)", text: String(p.count) }, poolSvg);
         });
-        gsap.set(poolG, { opacity: 0 });
+        KIT.set(poolG, { opacity: 0 });
 
         // a huge pattern-filled sheet of row-lines, spanning the full frame width, that our
         // pooled row sits within; it zooms out vertically only, so it stays frame-filling
@@ -156,7 +155,7 @@
         K.svg("line", { x1: 0, y1: megaRowH, x2: megaW, y2: megaRowH, stroke: "rgb(0 0 0 / 15%)", "stroke-width": 2 }, pat);
         K.svg("rect", { x: 0, y: 0, width: megaW, height: megaH, fill: "url(#megarows)" }, megaSvg);
         const megaHomeY = POOLED_Y - (megaH / 2 - POOLED_H / 2);
-        gsap.set(megaL, { x: 0, y: megaHomeY, opacity: 0, transformOrigin: "0 0" });
+        KIT.set(megaL, { x: 0, y: megaHomeY, opacity: 0, transformOrigin: "0 0" });
         const zcx = POOLED_X + POOLED_W / 2, zcy = POOLED_Y + POOLED_H / 2;
 
         // ================================================================
@@ -168,19 +167,19 @@
         liftCell(rows[CREEK].cells[3].g, T.word(0, "yabby"));
         pulseLabel(labels[CREEK], T.word(0, "creek"));
         const tAll = T.word(1, "all");
-        tl.to(rows.map((r) => r.lit), { opacity: 1, duration: 0.2 }, tAll);
-        tl.to(rows.map((r) => r.lit), { opacity: 0, duration: 0.3 }, tAll + 0.5);
+        tl.to(rows.map((r) => r.lit), { opacity: 1 }, tAll, { dur: 0.2 });
+        tl.to(rows.map((r) => r.lit), { opacity: 0 }, tAll + 0.5, { dur: 0.3 });
 
         // ---- line 2: as each text is named, its telling followers light
-        const litOff = (row, cols, t) => cols.forEach((c) => tl.to(row.cells[c].lit, { opacity: 0, duration: 0.25 }, t));
-        tl.to(rows[0].cells[0].lit, { opacity: 1, duration: 0.2 }, T.word(2, "sand"));
-        tl.to(rows[0].cells[1].lit, { opacity: 1, duration: 0.2 }, T.word(2, "water"));
+        const litOff = (row, cols, t) => cols.forEach((c) => tl.to(row.cells[c].lit, { opacity: 0 }, t, { dur: 0.25 }));
+        tl.to(rows[0].cells[0].lit, { opacity: 1 }, T.word(2, "sand"), { dur: 0.2 });
+        tl.to(rows[0].cells[1].lit, { opacity: 1 }, T.word(2, "water"), { dur: 0.2 });
         litOff(rows[0], litPairs.beach, T.word(2, "sky") - 0.2);
-        tl.to(rows[1].cells[0].lit, { opacity: 1, duration: 0.2 }, T.word(2, "sky"));
-        tl.to(rows[1].cells[3].lit, { opacity: 1, duration: 0.2 }, T.word(2, "rain"));
+        tl.to(rows[1].cells[0].lit, { opacity: 1 }, T.word(2, "sky"), { dur: 0.2 });
+        tl.to(rows[1].cells[3].lit, { opacity: 1 }, T.word(2, "rain"), { dur: 0.2 });
         litOff(rows[1], litPairs.storm, T.word(2, "kookaburra") - 0.2);
-        tl.to(rows[2].cells[0].lit, { opacity: 1, duration: 0.2 }, T.word(2, "kookaburra"));
-        tl.to(rows[2].cells[1].lit, { opacity: 1, duration: 0.2 }, T.word(2, "gum"));
+        tl.to(rows[2].cells[0].lit, { opacity: 1 }, T.word(2, "kookaburra"), { dur: 0.2 });
+        tl.to(rows[2].cells[1].lit, { opacity: 1 }, T.word(2, "gum"), { dur: 0.2 });
         litOff(rows[2], litPairs.kookaburra, T.end(2) - 0.2);
 
         // ---- line 3: the room as a flat plan from above
@@ -191,22 +190,22 @@
         // ---- line 4: the word writes, hands go up, the group is picked, it reads out, the cup fills
         K.write(tl, pencil.words[0], T.word(4, "the", 1));
         const tRow = T.word(4, "row");
-        tl.to(tables.map((t) => t.ring.el), { opacity: 1, duration: 0.3 }, tRow);
+        tl.to(tables.map((t) => t.ring.el), { opacity: 1 }, tRow, { dur: 0.3 });
         const tPick = T.word(4, "group", 1);
         tables.forEach((t, i) => {
           if (i === CREEK) return;
-          tl.to([t.el, t.label], { opacity: 0.35, duration: 0.4 }, tPick);
-          tl.to(t.ring.el, { opacity: 0, duration: 0.4 }, tPick);
+          tl.to([t.el, t.label], { opacity: 0.35 }, tPick, { dur: 0.4 });
+          tl.to(t.ring.el, { opacity: 0 }, tPick, { dur: 0.4 });
         });
         tl.fromTo(
           creekFront.el,
           { opacity: 0, x: startX, y: startY, scale: startScale },
-          { opacity: 1, x: FRONT_X, y: FRONT_Y, scale: 1, duration: 1.2, ease: "power2.inOut" },
-          T.word(4, "reads"),
+          { opacity: 1, x: FRONT_X, y: FRONT_Y, scale: 1 },
+          T.word(4, "reads"), { dur: 1.2, ease: "in-out-cubic" },
         );
         const tallyWords = ["red", "blue", "green", "yellow"];
-        tallyWords.forEach((w, c) => tl.to(creekFront.cells[c].lit, { opacity: 1, duration: 0.25 }, T.word(4, w)));
-        tl.to(creekFront.cells.map((c) => c.lit), { opacity: 0, duration: 0.3 }, T.word(4, "counters") - 0.15);
+        tallyWords.forEach((w, c) => tl.to(creekFront.cells[c].lit, { opacity: 1 }, T.word(4, w), { dur: 0.25 }));
+        tl.to(creekFront.cells.map((c) => c.lit), { opacity: 0 }, T.word(4, "counters") - 0.15, { dur: 0.3 });
         const flightStart = T.word(4, "counters") + 0.1, flightStep = 0.18;
         let exitFlight = null;
         flights.forEach((f, k) => {
@@ -214,34 +213,34 @@
           const cellCentre = { x: FRONT_X + creekFront.cells[f.c].cx, y: FRONT_Y + creekFront.cells[f.c].cy };
           const from = centreAt(cellCentre, counterR);
           const clone = K.counter(scene, PAL[f.c].name, { x: from.x, y: from.y, r: counterR });
-          gsap.set(clone.el, { opacity: 0 });
+          KIT.set(clone.el, { opacity: 0 });
           if (f.k === 6) {
             // this is the one that comes back out: keep the clone, never swap to the cup's own element
             exitFlight = { ...f, clone };
           }
           const to = centreAt({ x: cupCentre.x + f.real.x, y: cupCentre.y + f.real.y }, counterR);
-          tl.to(clone.el, { x: to.x, y: to.y, opacity: 1, scale: 0.75, duration: 0.42, ease: "power2.in" }, t);
+          tl.to(clone.el, { x: to.x, y: to.y, opacity: 1, scale: 0.75 }, t, { dur: 0.42, ease: "in-cubic" });
           if (f.k !== 6) {
-            tl.to(clone.el, { opacity: 0, duration: 0.12 }, t + 0.42);
-            tl.to(f.real.el, { opacity: 1, duration: 0.12 }, t + 0.42);
+            tl.to(clone.el, { opacity: 0 }, t + 0.42, { dur: 0.12 });
+            tl.to(f.real.el, { opacity: 1 }, t + 0.42, { dur: 0.12 });
           }
         });
         // "one comes out": the yellow counter pops up out of the cup
         const tComesOut = T.word(4, "comes");
-        tl.to(exitFlight.clone.el, { y: "-=140", scale: 0.85, duration: 0.5, ease: "power2.out" }, tComesOut);
+        tl.to(exitFlight.clone.el, { y: "-=140", scale: 0.85 }, tComesOut, { dur: 0.5, ease: "out-cubic" });
 
         // ---- line 5: it lands, "yabby" writes, and only the creek table is searched
         const yellowCell = creekFront.cells[3];
         const landAt = centreAt({ x: FRONT_X + yellowCell.cx + 150, y: FRONT_Y + yellowCell.cy }, counterR);
-        tl.to(exitFlight.clone.el, { x: landAt.x, y: landAt.y, scale: 1, duration: 0.5, ease: "back.out(1.4)" }, T.word(5, "Yellow"));
+        tl.to(exitFlight.clone.el, { x: landAt.x, y: landAt.y, scale: 1 }, T.word(5, "Yellow"), { dur: 0.5, ease: "out-back(1.4)" });
         K.write(tl, pencil.words[1], T.word(5, "yabby", 1));
-        tl.to(CT.ring.el, { scaleX: CT.ringS * 1.12, scaleY: CT.ringS * 1.12, duration: 0.2, yoyo: true, repeat: 1, ease: "power2.out" }, T.word(5, "yabby", 2));
+        tl.to(CT.ring.el, { scaleX: CT.ringS * 1.12, scaleY: CT.ringS * 1.12 }, T.word(5, "yabby", 2), { dur: 0.2, ease: "out-cubic", yoyo: true });
 
         // ---- line 6: "yabby" lit gold on the paper; the four tables that never saw it dim further
-        tl.to(pencil.words[1], { color: "var(--gold)", duration: 0.4 }, T.word(6, "landed"));
-        tl.to(paperRing.el, { opacity: 0.9, duration: 0.25 }, T.word(6, "story", 1));
-        tl.to(paperRing.el, { opacity: 0, duration: 0.35 }, T.word(6, "story", 1) + 0.5);
-        tables.forEach((t, i) => { if (i !== CREEK) tl.to([t.el, t.label], { opacity: 0.2, duration: 0.4 }, T.word(6, "never")); });
+        tl.to(pencil.words[1], { color: "var(--gold)" }, T.word(6, "landed"), { dur: 0.4 });
+        tl.to(paperRing.el, { opacity: 0.9 }, T.word(6, "story", 1), { dur: 0.25 });
+        tl.to(paperRing.el, { opacity: 0 }, T.word(6, "story", 1) + 0.5, { dur: 0.35 });
+        tables.forEach((t, i) => { if (i !== CREEK) tl.to([t.el, t.label], { opacity: 0.2 }, T.word(6, "never"), { dur: 0.4 }); });
 
         // ---- line 7: the five rows pool into one, pull back logarithmically, one word slides out
         const t7 = T.word(7, "Which");
@@ -249,36 +248,25 @@
         K.appear(tl, [...rows.map((r) => r.el), ...labels], t7 + 0.45, { dur: 0.5, stagger: 0.06 });
         const tPooled = T.word(7, "pooled");
         K.vanish(tl, [...rows.map((r) => r.el), ...labels], tPooled - 0.45);
-        tl.to(poolG, { opacity: 1, duration: 0.35 }, tPooled);
+        tl.to(poolG, { opacity: 1 }, tPooled, { dur: 0.35 });
         const tZoom = T.word(7, "counts");
         tl.set(megaL, { opacity: 1 }, tZoom - 0.05);
-        const zoomProxy = { p: 0 }, zoomDur = 3.2;
-        tl.to(
-          zoomProxy,
-          {
-            p: 1,
-            duration: zoomDur,
-            ease: "power1.inOut",
-            onUpdate() {
-              const s = Math.exp(K.lerp(Math.log(1), Math.log(0.014), zoomProxy.p));
-              gsap.set(poolG, { x: A.cx - (zcx - POOLED_X) * s, y: A.cy - (zcy - POOLED_Y) * s, scale: s });
-              gsap.set(megaL, { x: 0, y: A.cy - (zcy - megaHomeY) * s, scaleX: 1, scaleY: s });
-            },
-          },
-          tZoom,
-        );
+        // the zoom is logarithmic on scale, so every halving takes as long
+        const zoomDur = 3.2, zoomS = (p) => Math.exp(K.lerp(Math.log(1), Math.log(0.014), p));
+        tl.sample(poolG, tZoom, zoomDur, (p) => { const s = zoomS(p); return { x: A.cx - (zcx - POOLED_X) * s, y: A.cy - (zcy - POOLED_Y) * s, scale: s }; }, { ease: "in-out-quad" });
+        tl.sample(megaL, tZoom, zoomDur, (p) => { const s = zoomS(p); return { x: 0, y: A.cy - (zcy - megaHomeY) * s, scaleX: 1, scaleY: s }; }, { ease: "in-out-quad" });
         const tCutBack = tZoom + zoomDur + 0.05;
-        tl.to([poolG, megaL], { opacity: 0, duration: 0.3 }, tCutBack);
-        tl.to(roomPlan, { opacity: 1, duration: 0.4 }, tCutBack + 0.35);
-        tl.to(tables.map((t) => t.ring.el), { opacity: 0, duration: 0.4 }, tCutBack + 0.35);
+        tl.to([poolG, megaL], { opacity: 0 }, tCutBack, { dur: 0.3 });
+        tl.to(roomPlan, { opacity: 1 }, tCutBack + 0.35, { dur: 0.4 });
+        tl.to(tables.map((t) => t.ring.el), { opacity: 0 }, tCutBack + 0.35, { dur: 0.4 });
         // "still one word": one more counter slides out of the cup
         const tFinal = T.word(7, "word");
         const finalFrom = centreAt({ x: cupCentre.x + flights[0].real.x, y: cupCentre.y + flights[0].real.y }, counterR);
         const finalClone = K.counter(scene, PAL[0].name, { x: finalFrom.x, y: finalFrom.y, r: counterR });
-        gsap.set(finalClone.el, { opacity: 0 });
-        tl.to(flights[0].real.el, { opacity: 0, duration: 0.01 }, tFinal);
-        tl.to(finalClone.el, { opacity: 1, duration: 0.01 }, tFinal);
-        tl.to(finalClone.el, { y: "-=150", scale: 0.85, duration: 0.55, ease: "power2.out" }, tFinal);
+        KIT.set(finalClone.el, { opacity: 0 });
+        tl.to(flights[0].real.el, { opacity: 0 }, tFinal, { dur: 0.01 });
+        tl.to(finalClone.el, { opacity: 1 }, tFinal, { dur: 0.01 });
+        tl.to(finalClone.el, { y: "-=150", scale: 0.85 }, tFinal, { dur: 0.55, ease: "out-cubic" });
 
         // ---- line 8 (TC): back to the room plan with the butchers paper, hold
       };
