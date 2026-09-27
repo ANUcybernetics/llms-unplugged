@@ -4,7 +4,7 @@ title: Draft a second explainer series that goes beyond the slides
 status: To Do
 assignee: []
 created_date: '2026-09-27 22:16'
-updated_date: '2026-09-27 22:28'
+updated_date: '2026-09-27 22:47'
 labels:
   - video
 dependencies: []
@@ -50,3 +50,30 @@ Several of the candidate beats need a canvas (p5.js) layer alongside the SVG/Web
 - [ ] #8 The TASK-154 drafts (compositions, scripts, renders) are unchanged
 - [ ] #9 The styled-video skill's guidance on particles and canvas matches what the prototype showed renders well
 <!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+Series proposal (2026-09-28). Ben has agreed the shape; he confirms this written version before scripts start (AC #1).
+
+Shape: four how-it-works videos written as one continuous argument (shared data, shared morphs, each one standalone), so they chain into a long cut, plus three backstory videos. The spine is that every physical format holds the same numbers: grid tallies, ledger marks, counters in the cup, d10 faces and cutout slips are all counts of which word followed which. So each how-it-works video explains the mechanism in whatever form reads best, and only its closing hand-off is format-specific. The ending is a composition parameter (like the Overview's aspect ratio), one render per format.
+
+How-it-works (in long-cut order):
+1. training: models learn by counting which words follow which. Beats: the representation morph (tallies -> ledger marks -> counters -> die faces -> probabilities -> a weight matrix); the same pencil action at machine speed on real corpora (the magpie book, then Frankenstein), where 'billions of word pairs' gets real counts. Endings: grid, ledger.
+2. generation: text is generated one word at a time by sampling from learned counts. Beats: the tree of every text the grid can write, one path taken by the dice; generation is training run backwards (count the pairs in 10,000 generated words and the grid comes back). Endings: grid, ledger, cutouts.
+3. pre-trained generation: you can generate from a model someone else trained. Assumes no prior training, so it also serves the ledger's pre-trained-first order. Beat: the grid's rows peel off into booklet pages (a pre-filled sheet for the ledger). Endings: booklet, ledger.
+4. agentic AI: a tool call is sampled like any other word; generation pauses, the tool runs, and generation continues with the result spliced in. Beat: the die lands on the tool-call face. Ending: grid.
+
+Backstory:
+5. overview (landing page): reworked around the morph and the tree rather than a tour of the materials.
+6. why AI makes things up: a grid trained on two true sentences fluently generates a false one; hallucination falls out of the mechanism. Classroom-ready on its own.
+7. your grid vs Claude or ChatGPT: what's the same and what isn't. A powers-of-ten zoom (grid, booklet, real corpus counts, vocabulary squared) and a sparse real bigram heatmap (why real models can't be bigger tables), then the honest differences: context length, tokens, learned representations, fine-tuning.
+
+Held in reserve: what happens when AI learns from AI (retraining on its own output until the rare pairs die out). Out of scope: search sheets, cutout training, the off-Broadway modules.
+
+Long cut: 1-4 chained under one cold open, built from the same compositions with the per-video hand-offs removed.
+
+Deck alignment: each how-it-works video starts and ends where a contiguous run of deck slides does, so a later ?video deck variant (existing _if: param gating) can swap that run for the embed, with the ending matching that deck's format. No deck changes under this task.
+
+Prototype beat for the canvas layer (AC #5, #6): the tree of possible texts. It's the hardest engine case (thousands of seeded marks, redrawn deterministically on every seek, at 4K) and the beat most likely to survive into a script.
+<!-- SECTION:PLAN:END -->
