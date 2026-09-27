@@ -1,10 +1,10 @@
 ---
 id: TASK-167
 title: Draft a second explainer series that goes beyond the slides
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-09-27 22:16'
-updated_date: '2026-09-27 22:47'
+updated_date: '2026-09-27 22:52'
 labels:
   - video
 dependencies: []
@@ -35,16 +35,16 @@ Ben isn't sure about this shape, so the first deliverable is a proposed series (
 
 Pedagogy stays with Ben: Claude proposes each video's key idea, script, beyond-the-slides beats and reads (following the ben:styled-video skill's gates), and Ben approves before anything is built. A beyond-the-slides beat has to earn its place by what it makes clearer, not by how impressive it looks. Module key ideas live in the keyIdea frontmatter in website/src/content/modules/ (mostly still empty).
 
-Several of the candidate beats need a canvas (p5.js) layer alongside the SVG/Web Animations kit: many marks, continuous fields, generated data. That's an addition to astromotion's video engine (a canvas redrawn as a pure function of t on every seek, seeded and deterministic, pixel density 2 for 4K), released through the anu-theme-sync flow, and proven on one prototype beat before any script depends on it. The new series lives in its own directory tree and bucket prefix, so the TASK-154 compositions, scripts and renders stay as they are.
+Several of the candidate beats need a Canvas 2D layer (plain browser canvas, no p5.js: it would add a dependency for every consumer and its draw loop fights the seek model) alongside the SVG/Web Animations kit: many marks, continuous fields, generated data. That's an addition to astromotion's video engine (a canvas redrawn as a pure function of t on every seek, seeded and deterministic, pixel density 2 for 4K), released through the anu-theme-sync flow, and proven on one prototype beat before any script depends on it. The new series lives in its own directory tree and bucket prefix, so the TASK-154 compositions, scripts and renders stay as they are.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Ben has chosen a series structure (which how-it-works and backstory videos, and which physical formats each covers) from a written proposal, before any script is drafted
+- [x] #1 Ben has chosen a series structure (which how-it-works and backstory videos, and which physical formats each covers) from a written proposal, before any script is drafted
 - [ ] #2 Every video in scope has a proposed script in the ops/video/scripts format (key idea, beat sheet, VO lines, visual directions, draft reads), stored apart from the TASK-154 scripts
 - [ ] #3 Each script says which slide or printed artefact it builds on and justifies each beyond-the-slides beat by the read it makes clearer
 - [ ] #4 Each how-it-works video works standalone and ends by handing off to its activity; each backstory video works standalone and in a classroom
-- [ ] #5 astromotion's video engine supports a deterministic, seekable canvas (p5.js) layer that renders at 4K, is covered by its Chrome tests, and ships in a tagged release
+- [ ] #5 astromotion's video engine supports a deterministic, seekable Canvas 2D layer that renders at 4K, is covered by its Chrome tests, and ships in a tagged release
 - [ ] #6 One beyond-the-slides prototype beat has been rendered at 4K and reviewed by Ben before the series is built
 - [ ] #7 No composition is built for a script whose reads Ben hasn't approved
 - [ ] #8 The TASK-154 drafts (compositions, scripts, renders) are unchanged
