@@ -33,6 +33,11 @@ ROOT = Path(__file__).resolve().parents[2]
 CLI_DIR = ROOT / "cli"
 CLI_BIN = CLI_DIR / "target/release/llms_unplugged"
 PDF_ASSETS = ROOT / ".claude/skills/llms-unplugged-video/scripts/pdf-assets.sh"
+# Page images render at twice the dpi they lay out at, so a push-in stays sharp
+# in a 4K master (Chrome renders the 1920 stage at 2x); imgW/imgH in data.js
+# are in layout pixels, which is what the compositions' crops are measured in.
+PAGE_DPI = 300
+LAYOUT_DPI = 150
 
 BUILD_DIR = ROOT / "out/video/_build"
 GENERATED = ROOT / "ops/video/_kit/generated"
@@ -162,7 +167,7 @@ def build_page_images() -> None:
         (CLI_DIR / "out/pdf/the-man-from-snowy-river.pdf", PAGES / "snowy-river"),
     ]
     for pdf, out_dir in jobs:
-        run([str(PDF_ASSETS), str(pdf), str(out_dir), "--dpi", "150"], cwd=ROOT)
+        run([str(PDF_ASSETS), str(pdf), str(out_dir), "--dpi", str(PAGE_DPI)], cwd=ROOT)
         logger.info(f"pages: {pdf.relative_to(ROOT)} -> {out_dir.relative_to(ROOT)}")
 
 
@@ -186,7 +191,8 @@ def read_pages() -> dict:
     for key in keys:
         bbox = json.loads((PAGES / key / "bbox.json").read_text())
         width, height = png_size(PAGES / key / "pages/sheet-001.png")
-        pages[key] = {"bbox": bbox, "imgW": width, "imgH": height}
+        k = LAYOUT_DPI / PAGE_DPI
+        pages[key] = {"bbox": bbox, "imgW": round(width * k), "imgH": round(height * k)}
     logger.info(f"pages: read bbox + image size for {len(pages)} sets")
     return pages
 
