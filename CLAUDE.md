@@ -17,8 +17,7 @@ manual (pen-and-paper) and automated tools.
   [llms-unplugged-corpora](https://github.com/benswift/llms-unplugged-corpora)
   repo --- clone it and copy `texts/*.txt` in here
 - `backlog/` --- task management
-- `.claude/skills/` --- project skills; `llms-unplugged-video` is the video
-  pipeline (recuts, explainers, animated artefacts)
+- `ops/video/` --- the explainer videos and talk recuts (see "Video style")
 - `Makefile` --- delivery packs: `make pack-<slug>` zips everything one lesson
   or talk needs into `out/packs/`, and holds the exact runs (a talk pack also
   exports its own deck slides and presenter guide); `make archive` builds the
@@ -44,3 +43,8 @@ cd website && pnpm run build && pnpm test
 - Use the `backlog` CLI for task management; never edit task files directly
 - Test output must be pristine (zero failures)
 - Format Typst files with `typstyle --wrap-text`
+
+## Video style
+
+Make videos with the `ben:styled-video` skill. Style guide:
+`ops/video/STYLE.md`; series plan, tone and formats: `ops/video/README.md`.

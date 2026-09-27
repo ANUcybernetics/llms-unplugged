@@ -120,7 +120,7 @@ function cropAround(box, cw) {
   return { cx, cy, cw, ch };
 }
 // a camera move within a page tweens the crop (the point of interest tracks);
-// a page growing out of a small cell tweens its placement instead (see SKILL.md)
+// a page growing out of a small cell tweens its placement instead (see ../STYLE.md)
 function lerpCrop(a, b, p) {
   const cw = lerpLog(a.cw, b.cw, p), ch = (cw * STAGE_H) / STAGE_W;
   return { cw, ch, cx: lerp(a.cx + a.cw / 2, b.cx + b.cw / 2, p) - cw / 2, cy: lerp(a.cy + a.ch / 2, b.cy + b.ch / 2, p) - ch / 2 };

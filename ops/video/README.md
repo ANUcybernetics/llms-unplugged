@@ -3,8 +3,9 @@
 Working notes for the explainer video series: series plan, production phases,
 tone, and what each video is built from. The per-video beat sheets and scripts
 are in `scripts/`; the HyperFrames compositions go in `<slug>/` next to them
-(see the `llms-unplugged-video` skill for the engine and file layout). These
-notes are for whoever is making the videos, not for the website.
+(`STYLE.md` has the file layout, sources of truth and look; the `styled-video`
+skill the method and engine). These notes are for whoever is making the videos,
+not for the website.
 
 ## Series
 

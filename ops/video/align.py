@@ -50,7 +50,7 @@ from loguru import logger
 
 # ctranslate2 doesn't find the pip-installed NVIDIA libraries on its own;
 # preload them so a uv-managed environment works without a system CUDA
-# install. Copied from .claude/skills/llms-unplugged-video/scripts/transcribe.py.
+# install. Copied from the styled-video skill's scripts/transcribe.py.
 for sp in site.getsitepackages():
     for lib in sorted(glob.glob(f"{sp}/nvidia/*/lib/*.so*")):
         try:

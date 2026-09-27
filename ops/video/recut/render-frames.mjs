@@ -1,4 +1,4 @@
-// The fallback renderer (HyperFrames is the default engine; see SKILL.md).
+// The fallback renderer (HyperFrames is the default engine; see ../STYLE.md).
 // Renders an overlay page frame by frame with headless Chrome and pipes the
 // PNGs into ffmpeg. The page is a pure function of time: it exposes
 //
@@ -7,9 +7,9 @@
 //   window.renderFrame(t)     draw the frame for time t (seconds in the timeline)
 //   window.seekVideo(local)   optional: seek an embedded <video> to `local` seconds
 //
-// and this script seeks, screenshots and encodes. See SKILL.md for the
-// contract's reasoning and assets/overlay-template.html for a page that
-// satisfies it.
+// and this script seeks, screenshots and encodes. overlay-template.html (next
+// to this file) is a page that satisfies it; the styled-video skill's
+// references/ffmpeg.md assembles the rendered chunks with the recording.
 //
 //   render-frames.mjs preview <page.html> <t>...        one PNG per time into --out
 //   render-frames.mjs all <page.html> --from <t> --to <t> [--workers N]
@@ -36,7 +36,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const ROOT = process.env.LLMSU_ROOT || resolve(HERE, "../../../..");
+const ROOT = process.env.LLMSU_ROOT || resolve(HERE, "../../..");
 const WEBSITE = resolve(ROOT, "website");
 const require = createRequire(resolve(WEBSITE, "package.json"));
 const puppeteer = require("puppeteer-core");

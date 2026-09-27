@@ -12,7 +12,7 @@
 
 Runs the CLI (building it first if needed), the same ledger and booklet
 recipes as the root Makefile's pack target, turns the resulting PDFs into
-page images with the llms-unplugged-video skill's pdf-assets.sh, and writes
+page images with ops/video/pdf-assets.sh, and writes
 it all into ops/video/_kit/generated/ --- gitignored, since it's rebuilt from
 data/ and website/src/decks/examples.ts on demand. data.js is what a
 composition's <script> tag loads (`window.KIT_DATA = {...}`).
@@ -32,7 +32,7 @@ from loguru import logger
 ROOT = Path(__file__).resolve().parents[2]
 CLI_DIR = ROOT / "cli"
 CLI_BIN = CLI_DIR / "target/release/llms_unplugged"
-PDF_ASSETS = ROOT / ".claude/skills/llms-unplugged-video/scripts/pdf-assets.sh"
+PDF_ASSETS = ROOT / "ops/video/pdf-assets.sh"
 # Page images render at twice the dpi they lay out at, so a push-in stays sharp
 # in a 4K master (Chrome renders the 1920 stage at 2x); imgW/imgH in data.js
 # are in layout pixels, which is what the compositions' crops are measured in.

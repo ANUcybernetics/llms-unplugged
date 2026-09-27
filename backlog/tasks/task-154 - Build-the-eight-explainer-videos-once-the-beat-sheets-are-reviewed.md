@@ -4,7 +4,7 @@ title: Build the eight explainer videos once the beat sheets are reviewed
 status: In Progress
 assignee: []
 created_date: '2026-09-14 04:14'
-updated_date: '2026-09-14 21:03'
+updated_date: '2026-09-27 10:36'
 labels:
   - video
 dependencies:
@@ -52,4 +52,6 @@ Build the eight LLMs Unplugged explainer videos (Overview, four sections of the 
 2026-09-14: kit (ops/video/_kit, README = the contract), pipeline (build-data.py, voice.py scratch edge-tts, align.py faster-whisper, video.py check/render/stills/upload), motion-test reel and training-grid landed on scratch voices; the other seven compositions are being built to the same template. Ledger deck/pack/lesson page changes split to TASK-156 (after the 2026-09-15 workshop); videos take their ledger data straight from the pack recipes. Alignment on the scratch track: match ratio 0.96–0.99, line-start error mean 0.3–0.4 s (faster-whisper word-boundary jitter); WhisperX is the upgrade path if the real takes need tighter word timing.
 
 2026-09-15: all eight compositions built and checked on the scratch voices (drafts at out/video/<slug>/<slug>-draft.mp4, contact sheets under stills/; overview also renders compositions/portrait.html). Remaining: Ben reviews the drafts (AC10); record the real VO, drop each take in as out/video/<slug>/voice.wav, align.py, video.py render --final (AC8), video.py upload (AC4). Known gaps for the polish pass: build-data.py renders the Paterson booklet pages at 150 dpi, which is soft at 4K (raise to 300 for snowy-river); the agentic-ai phone body is drawn too dark against the desk; alignment jitter ~0.3 s on the scratch track; the overview's line 10 tail has collapsed word times in the scratch alignment so its three vignettes pace by fractions of the line.
+
+2026-09-27: engine and skill restructure. Motion is now astromotion's video/ engine (Web Animations API; GSAP removed), reached via ops/video/_kit/motion -> website/node_modules/astromotion/video. The llms-unplugged-video repo skill is replaced by the ben:styled-video plugin skill (method, craft, HyperFrames contract) plus ops/video/STYLE.md (this project's style); recut tools moved to ops/video/recut/, pdf-assets.sh to ops/video/. Every script now carries draft _Reads (draft):_ lists per visual (plus 7 _Reads note:_ flags) for Ben and Ushini to approve before the next build pass; pencil marks (tallies, handwritten words) boil at 12 fps. All eight re-rendered and frame-compared against the GSAP renders: differences are the openings (elements now stay hidden until their appear cue; GSAP's pre-start state depended on seek order) and sub-pixel zoom aliasing.
 <!-- SECTION:NOTES:END -->
