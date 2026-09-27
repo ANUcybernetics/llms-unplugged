@@ -40,13 +40,13 @@ Several of the candidate beats need a canvas (p5.js) layer alongside the SVG/Web
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Every video in scope has a proposed script in the ops/video/scripts format (key idea, beat sheet, VO lines, visual directions, draft reads), stored apart from the TASK-154 scripts
-- [ ] #2 Each script says which slide or printed artefact it builds on and justifies each beyond-the-slides beat by the read it makes clearer
-- [ ] #3 astromotion's video engine supports a deterministic, seekable canvas (p5.js) layer that renders at 4K, is covered by its Chrome tests, and ships in a tagged release
-- [ ] #4 One beyond-the-slides prototype beat has been rendered at 4K and reviewed by Ben before the series is built
-- [ ] #5 No composition is built for a script whose reads Ben hasn't approved
-- [ ] #6 The TASK-154 drafts (compositions, scripts, renders) are unchanged
-- [ ] #7 The styled-video skill's guidance on particles and canvas matches what the prototype showed renders well
-- [ ] #8 Ben has chosen a series structure (which how-it-works and backstory videos, and which physical formats each covers) from a written proposal, before any script is drafted
-- [ ] #9 Each how-it-works video works standalone and ends by handing off to its activity; each backstory video works standalone and in a classroom
+- [ ] #1 Ben has chosen a series structure (which how-it-works and backstory videos, and which physical formats each covers) from a written proposal, before any script is drafted
+- [ ] #2 Every video in scope has a proposed script in the ops/video/scripts format (key idea, beat sheet, VO lines, visual directions, draft reads), stored apart from the TASK-154 scripts
+- [ ] #3 Each script says which slide or printed artefact it builds on and justifies each beyond-the-slides beat by the read it makes clearer
+- [ ] #4 Each how-it-works video works standalone and ends by handing off to its activity; each backstory video works standalone and in a classroom
+- [ ] #5 astromotion's video engine supports a deterministic, seekable canvas (p5.js) layer that renders at 4K, is covered by its Chrome tests, and ships in a tagged release
+- [ ] #6 One beyond-the-slides prototype beat has been rendered at 4K and reviewed by Ben before the series is built
+- [ ] #7 No composition is built for a script whose reads Ben hasn't approved
+- [ ] #8 The TASK-154 drafts (compositions, scripts, renders) are unchanged
+- [ ] #9 The styled-video skill's guidance on particles and canvas matches what the prototype showed renders well
 <!-- AC:END -->
