@@ -4,7 +4,7 @@ title: Draft a second explainer series that goes beyond the slides
 status: In Progress
 assignee: []
 created_date: '2026-09-27 22:16'
-updated_date: '2026-09-27 22:52'
+updated_date: '2026-09-27 22:58'
 labels:
   - video
 dependencies: []
@@ -60,14 +60,16 @@ Shape: four how-it-works videos written as one continuous argument (shared data,
 
 How-it-works (in long-cut order):
 1. training: models learn by counting which words follow which. Beats: the representation morph (tallies -> ledger marks -> counters -> die faces -> probabilities -> a weight matrix); the same pencil action at machine speed on real corpora (the magpie book, then Frankenstein), where 'billions of word pairs' gets real counts. Endings: grid, ledger.
-2. generation: text is generated one word at a time by sampling from learned counts. Beats: the tree of every text the grid can write, one path taken by the dice; generation is training run backwards (count the pairs in 10,000 generated words and the grid comes back). Endings: grid, ledger, cutouts.
-3. pre-trained generation: you can generate from a model someone else trained. Assumes no prior training, so it also serves the ledger's pre-trained-first order. Beat: the grid's rows peel off into booklet pages (a pre-filled sheet for the ledger). Endings: booklet, ledger.
+2. generation: text is generated one word at a time by sampling from learned counts. Never assumes the viewer did the counting, so it also plays where the ledger lesson generates from finished sheets before training. Beats: the tree of every text the grid can write, one path taken by the dice; generation is training run backwards (count the pairs in 10,000 generated words and the grid comes back). Endings: grid, ledger, cutouts.
+3. pre-trained generation: you can generate from a model someone else trained on a much bigger text. Beats: the grid folds into a booklet (rows become entries, empty boxes fall away); why a booklet and not a grid (Paterson: 17 million boxes, 16,460 not empty). Ending: booklet.
 4. agentic AI: a tool call is sampled like any other word; generation pauses, the tool runs, and generation continues with the result spliced in. Beat: the die lands on the tool-call face. Ending: grid.
 
 Backstory:
+Series notes and scripts: ops/video/beyond/ (README.md, scripts/<slug>.md). The worked example throughout is The magpie.
+
 5. overview (landing page): reworked around the morph and the tree rather than a tour of the materials.
-6. why AI makes things up: a grid trained on two true sentences fluently generates a false one; hallucination falls out of the mechanism. Classroom-ready on its own.
-7. your grid vs Claude or ChatGPT: what's the same and what isn't. A powers-of-ten zoom (grid, booklet, real corpus counts, vocabulary squared) and a sparse real bigram heatmap (why real models can't be bigger tables), then the honest differences: context length, tokens, learned representations, fine-tuning.
+6. making things up: a grid trained on two true sentences fluently generates a false one; hallucination falls out of the mechanism. Classroom-ready on its own.
+7. real models (your grid vs Claude or ChatGPT): what's the same and what isn't. A powers-of-ten zoom (grid, booklet, real corpus counts, vocabulary squared) and a sparse real bigram heatmap (why real models can't be bigger tables), then the honest differences: context length, tokens, learned representations, fine-tuning.
 
 Held in reserve: what happens when AI learns from AI (retraining on its own output until the rare pairs die out). Out of scope: search sheets, cutout training, the off-Broadway modules.
 
