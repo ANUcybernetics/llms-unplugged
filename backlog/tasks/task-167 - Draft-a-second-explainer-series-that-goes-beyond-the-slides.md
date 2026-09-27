@@ -4,7 +4,7 @@ title: Draft a second explainer series that goes beyond the slides
 status: In Progress
 assignee: []
 created_date: '2026-09-27 22:16'
-updated_date: '2026-09-27 22:58'
+updated_date: '2026-09-27 23:17'
 labels:
   - video
 dependencies: []
@@ -79,3 +79,9 @@ Deck alignment: each how-it-works video starts and ends where a contiguous run o
 
 Prototype beat for the canvas layer (AC #5, #6): the tree of possible texts. It's the hardest engine case (thousands of seeded marks, redrawn deterministically on every seek, at 4K) and the beat most likely to survive into a script.
 <!-- SECTION:PLAN:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+2026-09-28: Canvas 2D layer committed in astromotion (9fabe4c: video/canvas.js, tl.draw hook, rng, phase; 6 Chrome tests, suite 354/354), not yet released. Tree prototype at ops/video/beyond/prototype-tree/ (untracked until the release: its kit/motion points at the sibling repo) rendered to out/video/beyond/prototype-tree/ at 1080p25 and 4K50; awaiting Ben's review (AC #6). video.py doesn't handle a nested slug (beyond/<slug>); fix before building the series. Canvas craft for AC #9: canvas carries the mass of marks, type stays DOM on top; ink (opacity x width) proportional to probability avoids banding at column junctions; hairlines ~0.5 CSS px are crisp at 4K but haze at 1080p.
+<!-- SECTION:NOTES:END -->
