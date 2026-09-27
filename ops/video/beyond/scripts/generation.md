@@ -16,7 +16,7 @@ AI writes stories (ledger). Cutouts ending: the cutouts decks.
 cutout" run. The model is _The magpie_'s counts, lowercased (the row for full
 stop is it 7, here 4, down 3, swoop 3; for _it_, sits 3, watches 3, goes 3, is
 1; for _the_, fence 6, magpie 5, postie 4, dog 4). The walk is ". it sits on the
-postie .", a sentence the book never says.
+dog .", a sentence the book never says.
 
 ## Beat sheet
 
@@ -28,8 +28,8 @@ postie .", a sentence the book never says.
 4. the draw: whatever you draw with (a cup, a die, a pile of slips) it's the
    same draw. More counts, more chances. One step in each form
 5. single-option rows: no draw needed
-6. the sentence: "It sits on the postie." The book never says it. Nobody wrote
-   it; the counting did
+6. the sentence: "It sits on the dog." The book never says it. Nobody wrote it;
+   the counting did
 7. **beyond:** the tree of every text this model can write from a full stop,
    branch thickness by probability. Your sentence is one path through it
 8. **beyond:** run it ten thousand times and count what comes out: the counts
@@ -80,21 +80,21 @@ written down; 3. its row is next.
 mark a face of a ten-sided die. Roll a one: "sits".
 
 _Visual: the row for "it" (sits 3, watches 3, goes 3, is 1): its ten marks
-become ten die faces in a strip, banded in grid column order as the slides'
-dice bands do: is 0, sits 1--3, watches 4--6, goes 7--9. A d10 face lands on 1;
-the "sits" band lights and "sits" writes onto the strip._
+become ten die faces in a strip, banded in grid column order as the slides' dice
+bands do: is 0, sits 1--3, watches 4--6, goes 7--9. A d10 face lands on 1; the
+"sits" band lights and "sits" writes onto the strip._
 
 _Reads (draft):_ 1. each mark becomes a face of the die; 2. the roll lands in a
 block; 3. that block's word is next.
 
 **USHINI (VO):** Or a pile of slips, one for every pair in the book. "Sits" is
 always followed by "on", and "on" by "the", so no draw at all. Then the row for
-"the": nineteen slips. Pull one out. "Postie".
+"the": nineteen slips. Pull one out. "Dog".
 
 _Visual: "sits" and "on" write straight on with no draw, each row lighting
 briefly with its single follower. Then the row for "the" becomes nineteen paper
 slips in four piles, fence six, magpie five, postie four, dog four; the piles
-shuffle together, one slip slides out and turns over: "the postie"._
+shuffle together, one slip slides out and turns over: "the dog"._
 
 _Reads (draft):_ 1. a row with one word needs no draw; 2. slips work the same
 way as counters and faces; 3. the slip drawn names the next word.
@@ -112,12 +112,12 @@ slip piles, each with its most likely word lit._
 _Reads (draft):_ 1. all three are the same draw; 2. more counts means more
 likely.
 
-**USHINI:** And a full stop to finish. "It sits on the postie." The book never
-says that. It says the magpie sits on the fence. Nobody wrote this sentence; the
+**USHINI:** And a full stop to finish. "It sits on the dog." The book never says
+that. It says the magpie sits on the fence. Nobody wrote this sentence; the
 counting did.
 
-_Visual: the strip reads "it sits on the postie ." Above it, in the book's type,
-"It sits on the fence." and "Here comes the postie."; the halves slide together
+_Visual: the strip reads "it sits on the dog ." Above it, in the book's type,
+"It sits on the fence." and "Here comes the dog."; the halves slide together
 into the generated line._
 
 _Reads (draft):_ 1. this sentence isn't in the book; 2. it's made from pieces
@@ -128,8 +128,8 @@ that are; 3. nobody wrote it.
 _Visual: the strip's words slide into a column at the left edge. From the full
 stop, every path the counts allow grows rightwards, eight words deep: thousands
 of branches, each as thick as it is likely, the likely ones bold, the rare ones
-hairlines. The path "it sits on the postie ." lights gold through the middle of
-it; the rest dims._
+hairlines. The path "it sits on the dog ." lights gold through the middle of it;
+the rest dims._
 
 _Beyond:_ the slides show one walk, so the viewer sees one sentence and has to
 imagine the others. The tree shows them all at once, weighted, and makes the key
