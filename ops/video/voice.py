@@ -91,7 +91,7 @@ def parse_script(md_text: str, slug: str) -> list[dict]:
     paragraphs = [p.strip() for p in re.split(r"\n\s*\n", after) if p.strip()]
     lines = []
     for para in paragraphs:
-        if para.startswith("_Visual"):
+        if para.startswith(("_Visual", "_Reads")):
             continue
         joined = " ".join(line.strip() for line in para.splitlines())
         match = SPEAKER_RE.match(joined)

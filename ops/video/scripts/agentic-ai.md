@@ -43,6 +43,13 @@ _Visual: the desk: booklet, paper, a d10, a phone face-down. Above them a loop
 draws on in one stroke with gold arrowheads: generate, punctuation, pause,
 message out, reply in, continue._
 
+_Reads (draft):_ 1. an agent is the same generation loop; 2. with a pause to
+send a message out and get a reply in.
+
+_Reads note:_ six labelled stages drawing on during one short line asks for more
+reads than the line gives time for; the line names only pause, outside and carry
+on.
+
 **BEN (VO):** Here's the rule. Generate from your booklet exactly as before,
 rolling for each next word. The moment you roll a punctuation token---a full
 stop, a comma---stop. That's a tool call.
@@ -50,6 +57,9 @@ stop, a comma---stop. That's a tool call.
 _Visual: the paper: "the cat sat" writing on one word at a time, a face
 landing before each. A full stop lands, the pencil stops, the
 full stop pulses, and the phone slides into frame._
+
+_Reads (draft):_ 1. generation runs as before, a roll per word; 2. a punctuation
+token means stop; 3. that stop is the tool call.
 
 **USHINI (VO):** The tool is a text message. Send "What comes next?" and the
 sentence so far---everything since the last full stop---to three friends or
@@ -60,6 +70,9 @@ _Visual: the phone, top-down: a message types itself, What comes next? "the cat
 sat…", and copies of it slide up to three contact rows. A beat of nothing. One
 reply bubble drops in: out on the verandah._
 
+_Reads (draft):_ 1. the tool is a text message; 2. it sends the question plus
+the sentence so far; 3. it goes to three people at once.
+
 **BEN (VO):** The first reply back is your tool result. Write down the whole
 thing---"out on the verandah"---and then the full stop you rolled. Then keep
 generating, from the full stop.
@@ -68,6 +81,9 @@ _Visual: the reply's words slide off the phone onto the paper after "the cat
 sat", the full stop follows them, and the booklet page cuts to the full stop's
 entry; a face lands and the pencil moves again._
 
+_Reads (draft):_ 1. the first reply is written down whole; 2. then the full stop
+you rolled; 3. generation carries on from the full stop.
+
 **USHINI:** Why from the full stop and not from "verandah"? Because "verandah"
 probably isn't in your model. It has no entry for it. But it can always continue
 from a full stop.
@@ -75,11 +91,17 @@ from a full stop.
 _Visual: the booklet's page for v: no entry for "verandah", the gap where it
 would sit lit. Cut to the full stop's entry, present and lit._
 
+_Reads (draft):_ 1. the model has no entry for "verandah"; 2. the full stop
+always has one, so continue from there.
+
 **BEN:** Replies take time. If nothing's landed by your next punctuation token,
 leave a gap and fill it in later.
 
 _Visual: the paper: a bracketed gap left after a full stop, the pencil carrying
 on past it; later the reply's words slide into the gap._
+
+_Reads (draft):_ 1. you don't wait for a slow reply; 2. leave a gap, keep going,
+fill it in later.
 
 **USHINI:** Here's the bit that matters. The model never learned what comes
 next. What it "learned" is when to ask. And the thing that paused it, sent the
@@ -88,11 +110,17 @@ message, and spliced the answer back in---that was you. You were the harness.
 _Visual: the loop again, a flat person icon at its centre. As each stage is
 named its arrow lights, and the icon's hand is on every one of them._
 
+_Reads (draft):_ 1. the model only learned when to ask; 2. a person did every
+step of the handoff; 3. that person is the harness.
+
 **BEN:** Take the person out, and you've got a model acting on its own. That's
 what the coverage means by an agent. So: what would you let it do without asking
 you first?
 
 _Visual: the person icon fades; the loop keeps running on its own, arrows
 lighting in turn._
+
+_Reads (draft):_ 1. without the person, the loop runs by itself; 2. that's what
+the news means by an agent.
 
 **USHINI (TC):** Don't answer yet. In a few minutes, you'll _be_ the harness.

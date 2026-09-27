@@ -45,6 +45,9 @@ _Visual: a booklet on the desk, top-down, its cover title hidden under a flat
 card. It opens to a page rendered from the CLI: a bold headword, the list of
 next words beneath it, a threshold beside each._
 
+_Reads (draft):_ 1. someone else did the counting for this model; 2. an entry is
+a word and the words that can follow it; 3. each next word has a threshold.
+
 **BEN (VO):** Each entry is a word. Under it are the words that can follow, each
 with a threshold. Pick a starting word, find its entry, roll a d10, and take the
 first threshold at or above your roll. Write the word down, turn to its entry,
@@ -53,6 +56,8 @@ roll again.
 _Visual: push in on one entry. A d10 face lands beside it; the thresholds light
 from the top until the first one at or above the roll, and its word writes onto
 the paper below. Cut to that word's entry on another page._
+
+_Reads (draft):_ 1. roll, then read down to the first threshold at or above it; 2. that word is the next word; 3. then turn to that word's entry.
 
 **USHINI (VO):** Some words have more than ten options. Look for the diamonds:
 one diamond, one die; two diamonds, roll two and read them as digits, so a six
@@ -64,12 +69,19 @@ and an eight, slide together and read 68; the thresholds light down to the first
 at or above it. Then an entry with one follower: no die, the word writes
 straight on._
 
+_Reads (draft):_ 1. two diamonds means roll two dice; 2. the two dice read as
+one two-digit number; 3. the threshold rule is the same; 4. a single option
+needs no roll.
+
 **BEN:** As you go, listen to what comes out. It'll sound more like real prose
 than your grid did. And it still won't be _about_ anything. Hold onto that
 question.
 
 _Visual: the paper: the booklet's line so far, above the grid's shorter line
 from the last video, both in pencil._
+
+_Reads (draft):_ 1. the booklet's text sounds more like real prose; 2. but it
+still isn't about anything.
 
 **USHINI:** Your booklet was trained on a real text---maybe _Frankenstein_,
 maybe _Green Eggs and Ham_. The patterns leak through. Try to guess the book
@@ -78,6 +90,9 @@ before you check the cover.
 _Visual: the covered title card; on the paper a few of the generated words light
 in turn, the tells._
 
+_Reads (draft):_ 1. the booklet still carries its book's patterns; 2. some words
+give the book away.
+
 **BEN:** One honest note: a real model isn't trained on one book. It's billions
 of pages stitched together from everywhere. The single mystery text is just what
 makes this game playable.
@@ -85,12 +100,18 @@ makes this game playable.
 _Visual: the booklet shrinks to a tile; behind it a wall of page tiles fills the
 frame and keeps receding, logarithmically, until the wall is texture._
 
+_Reads (draft):_ 1. a real model trains on far more than one book; 2. far too
+many pages to see.
+
 **USHINI:** And one thing the booklet gets exactly right: you can read every
 number in this model, and generate from it at the kitchen table. Nobody can
 switch it off or quietly change it under you. That's what "open weights" means.
 
 _Visual: the booklet open on a kitchen table, flat top-down, a mug beside it;
 the threshold numbers on the page light one after another down the column._
+
+_Reads (draft):_ 1. every number in this model can be read; 2. you can run it
+yourself, and nobody can change it; 3. that's what open weights means.
 
 **BEN (TC):** Grab your booklet and start rolling. If you'd like to make your
 own from any text, the tool's at llmsunplugged.org/tools.

@@ -47,11 +47,17 @@ time. Predict a word, add it, predict again. That's the whole job.
 _Visual: a chat window, a reply typing itself one word at a time, each word
 pausing as it lands._
 
+_Reads (draft):_ 1. the reply isn't written all at once; 2. each word is added,
+then the next is predicted.
+
 **USHINI (TC):** And yet, ask someone how they actually do it and you'll get
 hand-waving. Something about "neural networks," maybe "trained on the internet."
 
 _Visual: the chat window dims; over it, in the site's type, the two phrases
 people reach for: "neural networks", "trained on the internet"._
+
+_Reads (draft):_ 1. these are the usual explanations people offer; 2. they name
+things without explaining the mechanism.
 
 **BEN:** That's a shaky foundation for the people making decisions about these
 tools---teachers, parents, policymakers.
@@ -63,11 +69,21 @@ _Visual: the desk, top-down, empty. A picture book, a grid sheet, a pencil, a
 d10, a cup of counters and a ledger sheet slide into place, one per word as it
 is named._
 
+_Reads (draft):_ 1. this is all the equipment it takes; 2. there's no computer
+on the desk.
+
+_Reads note:_ the line names a book, paper, a pen and dice, so the cup of
+counters and the ledger sheet have no word to land on and can't arrive "one per
+word as it is named".
+
 **USHINI (VO):** That's LLMs Unplugged, a set of free teaching resources from
 the School of Cybernetics at the Australian National University.
 
 _Visual: the LLMs Unplugged wordmark in the site's type over the desk, the
 School of Cybernetics line beneath it._
+
+_Reads (draft):_ 1. this is LLMs Unplugged; 2. it comes from the School of
+Cybernetics at ANU.
 
 **BEN (VO):** Every lesson is the same loop. First you train: read a text, and
 count which word follows which. Then you generate: take the last word you wrote,
@@ -78,6 +94,9 @@ strokes drawing on as the book's pairs fly into cells; the paper, a word
 writing, a d10 face landing, the next word writing; an arrow back to the top.
 Two arcs labelled train and generate._
 
+_Reads (draft):_ 1. training: the book's word pairs are counted into the grid; 2. generating: the counts pick the next word, which gets written down; 3. then
+round again from the word just written.
+
 **USHINI (VO):** There are two ways to do it on paper. One is grid paper and a
 ten-sided die: you count word pairs into a grid, then roll your way to a
 sentence. The other is ledger sheets and a cup of coloured counters: more marks,
@@ -85,6 +104,13 @@ more counters, more likely.
 
 _Visual: two vignettes stacked: the grid filling and a die landing; counters
 dropping into the cup and one sliding out._
+
+_Reads (draft):_ 1. one way: count pairs into a grid, then roll a die; 2. the
+other way: counters in a cup, draw one out; 3. more counters for a word, more
+likely it comes out.
+
+_Reads note:_ the ledger vignette shows counters but no marks, so "more marks,
+more counters" has nothing on screen to map to.
 
 **BEN (VO):** Either way, you start by training a model of your own. Then you
 generate from one that somebody else trained. And from there the same loop
@@ -95,6 +121,13 @@ boardroom.
 _Visual: three vignettes stacked: the booklet open at an entry; the phone with
 a reply bubble sliding onto the paper; butchers paper up front gaining a line._
 
+_Reads (draft):_ 1. next, generate from a model somebody else trained; 2. the
+same loop leads to a model that asks for help; 3. and to a whole room pooling
+its models.
+
+_Reads note:_ the line starts with training your own model, but none of the
+three vignettes shows that, so the viewer may map the booklet to "your own".
+
 **USHINI:** Now, it's not a tiny Claude or ChatGPT. A real model swaps the tally
 marks for shared numbers, looks at the whole conversation instead of one word,
 trains on trillions of words, and gets a round of extra training so it answers
@@ -103,6 +136,9 @@ you rather than just continuing.
 _Visual: the grid's tally strokes turn into decimal numbers; the numbers slide
 into one long row that runs off both edges of the frame, and the row scrolls,
 and scrolls._
+
+_Reads (draft):_ 1. real models store numbers, not tally marks; 2. and vastly
+more of them than fits on a sheet.
 
 **BEN:** But it's the same loop. Tokens in, tokens out. And none of it is new:
 Andrey Markov was doing this by hand in 1913, Claude Shannon in 1948. The line
@@ -113,6 +149,10 @@ in lockstep, one above the other. Then a timeline draws on as a single stroke,
 1913 Markov, 1948 Shannon, on to today, the loop icon riding along it
 unchanged._
 
+_Reads (draft):_ 1. the chat reply and the pencil are doing the same thing; 2.
+people have run this loop since Markov in 1913; 3. the loop itself hasn't
+changed since.
+
 **USHINI:** Once you've seen the mechanism on paper---patterns in, new text
 out---the mystery evaporates. And if you want to go further, the site does:
 break a model, look inside one, shape how it behaves.
@@ -121,12 +161,18 @@ _Visual: three vignettes stacked: a grid with one cell ringed; the same grid
 with a number in every cell; a booklet page with a line struck out and
 rewritten._
 
+_Reads (draft):_ 1. you can break a model; 2. you can look inside one; 3. you
+can shape how it behaves.
+
 **BEN (VO):** And everything on the site was made by tools that are on the site
 too. Paste in any text you like, and out come the booklets, the sheets and the
 cutouts for it. Your book, your model.
 
 _Visual: the tools page: a text pasted into the box, a booklet page rendering
 beneath it, then a ledger sheet._
+
+_Reads (draft):_ 1. paste in any text; 2. out come the printable materials for
+that text.
 
 **USHINI (TC):** It's all under a Creative Commons licence at llmsunplugged.org.
 Every section of every lesson has its own short video, so you can play them in
@@ -135,3 +181,6 @@ it in person, get in touch.
 
 _Visual: llmsunplugged.org in the site's type over the desk, then the section
 videos as a stacked list, then the Creative Commons mark._
+
+_Reads (draft):_ 1. it's all at llmsunplugged.org; 2. each lesson section has
+its own video; 3. it's free to use under Creative Commons.

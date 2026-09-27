@@ -36,6 +36,9 @@ _Visual: the finished grid on the desk with a blank strip of paper below it.
 "see" writes onto the paper in pencil; its row lights gold and the camera pushes
 in on the row._
 
+_Reads (draft):_ 1. the generated text starts with a word you choose; 2. that
+word's row is where the next word comes from.
+
 **USHINI (VO):** Find that word's row and look at the tally marks. Add them up,
 then assign dice numbers: if "cat" has six tallies and "dog" has four, that's
 faces one to six for cat, seven to ten for dog.
@@ -45,11 +48,20 @@ above its strokes. The strokes recount into a total under each word. A strip of
 ten die faces appears beneath, and the faces shade into blocks sized by the
 totals, each block in its word's colour._
 
+_Reads (draft):_ 1. only the current word's row matters; 2. each next word's
+tallies are totalled; 3. each word gets die faces in proportion to its tallies.
+
+_Reads note:_ the row for "see" has one follower, joey, so its strip is ten
+faces of one word and can't show the split the line describes with cat and dog.
+
 **BEN (VO):** That mapping is the whole trick. More tallies, more faces, more
 likely to come up. The die does the random part; the counts do the weighting.
 
 _Visual: the strip alone: the block widths are the odds. One stroke added to a
 word widens its block by a face._
+
+_Reads (draft):_ 1. a wider block means a more likely word; 2. one more tally
+means one more face.
 
 **BEN (VO):** Roll your ten-sided die. Whatever number you land on, look up the
 matching word and write it down. That's your second word.
@@ -58,6 +70,8 @@ _Visual: a flat d10 face lands beside the strip showing its number; the matching
 face on the strip lights; the word above that block writes onto the paper as the
 second word._
 
+_Reads (draft):_ 1. the roll picks a face; 2. that face's word is the next word.
+
 **USHINI (VO):** Now that new word becomes your current word. Find _its_ row,
 set up the ranges, roll again, and write down the result. Keep going.
 
@@ -65,12 +79,18 @@ _Visual: the new word lifts from the paper to the grid, its row lights, the
 strip rebuilds for that row, a face lands, a word writes. The loop runs twice
 more at double speed, the paper reading "see joey , hop . see"._
 
+_Reads (draft):_ 1. the new word becomes the current word; 2. the same steps
+repeat: row, faces, roll, write; 3. the text grows one word at a time.
+
 **BEN:** Two things you might hit. If your current word doesn't have a row---it
 was never the first word of a pair---that's a dead end. Pick a new starting word
 and carry on.
 
 _Visual: the current word's row lights and holds, empty. The paper's line ends,
 and a new starting word writes on the line below._
+
+_Reads (draft):_ 1. an empty row means nothing ever followed that word; 2. so
+start again with a new word.
 
 **USHINI:** Or you might bounce between the same two words: comma, joey, comma,
 joey. Small models loop a lot, so break out by picking a different valid next
@@ -81,6 +101,9 @@ _Visual: "comma joey comma joey" writing itself along the paper. The strip for
 "," shows "joey" lit on half the faces; the pencil takes the other block's word
 instead._
 
+_Reads (draft):_ 1. two words can keep leading back to each other; 2. break the
+loop by choosing another valid word.
+
 **BEN:** Now read back what you generated. It wasn't in the training text---it's
 new---but it sounds like it could have been, because it follows the same
 patterns. And that's no trick. It's how every large language model works, Claude
@@ -89,6 +112,9 @@ and ChatGPT included: one word at a time, from learned counts.
 _Visual: the generated line full frame. Behind it, dimmed, the book's text: the
 line is not in it. Then each pair in the generated line lights its grid cell in
 turn, every one present. Cut to the line alone._
+
+_Reads (draft):_ 1. this sentence isn't in the book; 2. but every pair in it is
+in the grid; 3. that's why it sounds like the book.
 
 **USHINI (TC):** Pick a starting word and give it a go. See what your model
 comes up with.

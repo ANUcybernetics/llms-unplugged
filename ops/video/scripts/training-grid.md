@@ -36,6 +36,9 @@ _Visual: the desk, top-down: an open picture book beside a blank grid sheet and
 a pencil. The book's line, "Hop, Joey, hop. See Joey hop.", lifts off the page
 and settles above the grid as a row of word tiles; the rest of the desk dims._
 
+_Reads (draft):_ 1. the book is the training data; 2. this line of words is what
+we'll count.
+
 **USHINI (VO):** First step: break the text into individual words, and lowercase
 everything. One quirk worth knowing: treat punctuation like full stops and
 commas as words too. They get their own row and column, just like the real
@@ -45,6 +48,9 @@ _Visual: the tiles drop to lowercase one at a time; the full stops and commas
 split away from their neighbours into tiles of their own, so the line reads: hop
 , joey , hop . see joey hop ._
 
+_Reads (draft):_ 1. everything becomes lowercase; 2. punctuation marks are words
+too, each its own tile.
+
 **BEN (VO):** Now look at pairs of consecutive words. These are called bigrams.
 If the text says "the cat sat," you've got two bigrams: "the" followed by "cat,"
 and "cat" followed by "sat."
@@ -52,6 +58,9 @@ and "cat" followed by "sat."
 _Visual: a small inset above the tiles: "the cat sat" as three tiles, a bracket
 sliding over "the cat" and then "cat sat", each pair lifting out as it is named.
 The inset fades and the bracket lands on the book's first pair, "hop ,"._
+
+_Reads (draft):_ 1. a bigram is two words side by side; 2. the pairs overlap:
+"cat" is in both; 3. counting starts at the book's first pair, "hop ,".
 
 **BEN (VO):** Your grid has words along the top and down the side. Start at the
 very first word in the text: that's your first row. The word that follows it is
@@ -62,6 +71,8 @@ _Visual: the empty grid. "hop" slides to the left edge as the first row header,
 "," to the top as the first column header. The row band and the column band
 light gold, the camera pushes in on the cell where they cross, and one tally
 stroke draws on there._
+
+_Reads (draft):_ 1. the row is the current word; 2. the column is the next word; 3. one tally where they cross records the pair.
 
 **USHINI (VO):** Now slide forward by one word. The word that was your "next"
 becomes your current word. Find its row, find the next word's column, tally.
@@ -76,6 +87,10 @@ headers appear and the grid fills. At the page edge the bracket spans "." and
 "see" without a pause. By the end a few cells hold two strokes and most are
 empty._
 
+_Reads (draft):_ 1. the next word becomes the current word; 2. every pair gets
+one tally, the same way; 3. a page turn doesn't break a pair; 4. some cells
+collect tallies; most stay empty.
+
 **BEN:** When you're done, look at what you've got. That grid of tally marks
 _is_ the model---counts of which words follow which. That's the whole thing.
 It's the same kind of information a large language model stores, just with billions of
@@ -84,6 +99,9 @@ word-pairs instead of dozens.
 _Visual: the finished grid full frame, then a logarithmic pull-back: the sheet
 shrinks to one cell of a grid a hundred times wider, then to a dot in a grid too
 fine to read. Hold a beat. Cut back to the sheet on the desk._
+
+_Reads (draft):_ 1. this grid of tallies is the whole model; 2. a large language
+model stores the same kind of counts; 3. just at a vastly bigger scale.
 
 **USHINI (TC):** It works best in pairs: one reads, one tallies, swap halfway.
 Your book's in front of you. Start counting.

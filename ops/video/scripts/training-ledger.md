@@ -44,12 +44,18 @@ where did the marks come from?
 _Visual: the finished sheet on the desk; every mark on it lifts a little and
 settles. The sheet slides aside and the book is underneath it._
 
+_Reads (draft):_ 1. every mark on this sheet was made by someone; 2. and it came
+from the book.
+
 **BEN (VO):** Start with a text. Lowercase everything. And notice that full
 stops and exclamation marks are words too---they get their own rows.
 
 _Visual: the opening of The magpie as a row of word tiles above a blank sheet.
 Capitals drop to lowercase; the full stops and the exclamation mark after
 "Swoop" split into tiles of their own._
+
+_Reads (draft):_ 1. everything becomes lowercase; 2. full stops and exclamation
+marks are words too.
 
 **USHINI (VO):** Read it two words at a time. The first word names the row. The
 second word gets a mark in that row. Then move along by one: the second word of
@@ -60,6 +66,9 @@ _Visual: a bracket over the first two tiles, "the magpie". The row for "the"
 lights on the sheet, and a mark draws on beside "magpie" in that row. The
 bracket slides along by one tile to "magpie is" and it happens again._
 
+_Reads (draft):_ 1. the first word of a pair picks the row; 2. the second word
+gets the mark; 3. slide along one: each word starts the next pair.
+
 **BEN (VO):** Keep going and the same pair comes round again. The second time
 the text says "the magpie," the mark goes beside _magpie_ in the row for _the_,
 which already has one. That's how a count builds. Common pairs collect marks;
@@ -68,12 +77,18 @@ rare ones don't.
 _Visual: the bracket skips ahead to the second "the magpie". The row for "the"
 lights, and a second mark draws on beside "magpie", next to the first._
 
+_Reads (draft):_ 1. a repeated pair marks the same box again; 2. that's how a
+count builds.
+
 **USHINI:** Check it against your printed sheet. _The magpie_, five marks. Count
 the book and it's five. Every sheet in this room was made exactly this way.
 
 _Visual: the printed sheet's five marks beside "magpie" in the row for "the"
 light one at a time, and the five "the magpie"s in the book's text light in
 step._
+
+_Reads (draft):_ 1. five marks on the sheet; 2. five times in the book; 3. the
+printed sheets were made this same way.
 
 **BEN:** Now it's your turn, on a new text, with blank sheets. This time the
 words are yours to write as well as the marks. One person reads the text two
@@ -83,6 +98,9 @@ second.
 _Visual: a blank sheet. A new word writes into the word box of the first empty
 row; the next word writes into the row's first (red) box, and a mark draws on
 beside it._
+
+_Reads (draft):_ 1. on a blank sheet you write the words too; 2. a new word
+starts the next empty row; 3. its first follower goes in the red box.
 
 **USHINI (VO):** Three rules keep your model honest. When you start a row for a
 new word, say the word out loud, so nobody else starts one too---two people
@@ -94,11 +112,18 @@ _Visual: three quick cuts on the sheet: a new word's row starting, the word
 shown as a spoken bubble; the next empty box lit and a skipped box crossed
 through; the row for full stop with its followers lit._
 
+_Reads (draft):_ 1. say a new word aloud so nobody starts it twice; 2. fill
+boxes in order, never skip one; 3. the full stop row records how sentences
+start.
+
 **BEN:** When you've read the whole text, generate from it. Start from _the_. It
 should sound like your text, and nobody else's.
 
 _Visual: the new sheet's row for "the": counters drop into the cup, one slides
 out, the first word writes on the paper._
+
+_Reads (draft):_ 1. the new sheet works just like the printed ones; 2. what it
+generates should sound like your text.
 
 **USHINI:** That's training. Not a computer reading the internet. Somebody
 counting what came next, a lot.
