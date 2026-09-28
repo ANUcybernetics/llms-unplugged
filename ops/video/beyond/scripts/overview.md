@@ -1,8 +1,8 @@
 # Overview
 
-**Key idea (draft):** you can run the same next-word loop Claude or ChatGPT
-runs, by hand, with a picture book, paper and a pen; the site has the lessons
-and the tools to do it.
+**Key idea:** LLMs Unplugged allows you to run the same next-word loop
+Claude or ChatGPT runs, by hand, with a picture book, paper and a pen; the site
+has the lessons and the tools to do it.
 
 **Plays:** the website's landing video, not in class. Evergreen, as the TASK-154
 overview is (it names no lesson, age band, running time or licence clause), and
@@ -39,7 +39,7 @@ _Visual: a chat reply typing itself one word at a time, each word pausing as it
 lands. The chat window folds flat onto the desk and becomes a strip of paper,
 the next word writing on in pencil._
 
-_Reads (draft):_ 1. the reply is written one word at a time; 2. the same thing
+_Reads:_ 1. the reply is written one word at a time; 2. the same thing
 can happen on paper.
 
 **USHINI (VO):** Take a picture book. Read it two words at a time, and count
@@ -49,7 +49,7 @@ _Visual: the magpie book opens; its text lifts off as tiles and streams into a
 grid at machine speed, pairs landing as tallies, until the whole book is
 counted._
 
-_Reads (draft):_ 1. the book is read in pairs; 2. the pairs become counts.
+_Reads:_ 1. the book is read in pairs; 2. the pairs become counts.
 
 **BEN (VO):** Then write something new. Take the last word, look at what came
 after it in the book, and draw the next word by those counts. More counts, more
@@ -58,7 +58,7 @@ likely.
 _Visual: the row for "the" lights; its tallies become a die strip; a face lands
 and "dog" writes onto the strip after "it sits on the"._
 
-_Reads (draft):_ 1. the last word's row gives the choices; 2. the counts weight
+_Reads:_ 1. the last word's row gives the choices; 2. the counts weight
 the draw.
 
 **USHINI (VO):** You can count in tally marks, or marks on a ledger. Draw with a
@@ -73,7 +73,7 @@ _Beyond:_ tells a teacher at a glance that the grid, the ledger and the cutouts
 are one lesson in different materials, which the TASK-154 overview needs two
 stacked vignettes and a line of voice-over to say.
 
-_Reads (draft):_ 1. many materials; 2. one model; 3. it's numbers.
+_Reads:_ 1. many materials; 2. one model; 3. it's numbers.
 
 **BEN (VO):** And here's everything this little model could have written.
 
@@ -84,7 +84,7 @@ gold. In the portrait variant the tree grows downward._
 _Beyond:_ the most memorable image in the series, and it says "it's all counts,
 and the dice pick" in one picture.
 
-_Reads (draft):_ 1. the counts hold every sentence; 2. the draw picks one path.
+_Reads:_ 1. the counts hold every sentence; 2. the draw picks one path.
 
 **USHINI:** A real model isn't a tiny grid. It looks at far more than one word,
 and learns from trillions of them. But it's the same loop.
@@ -92,7 +92,7 @@ and learns from trillions of them. But it's the same loop.
 _Visual: the tree pulls back logarithmically until it's a fine mesh; the gold
 path stays lit through it._
 
-_Reads (draft):_ 1. real models are vastly bigger; 2. the loop is the same.
+_Reads:_ 1. real models are vastly bigger; 2. the loop is the same.
 
 **BEN:** And it's not new. In 1913 Andrey Markov went through a Russian poem by
 hand, counting whether a vowel or a consonant came next. Claude Shannon did it
@@ -101,7 +101,7 @@ with words in 1948. We're just letting everyone else have a go.
 _Visual: a timeline draws on as a single stroke, 1913 Markov, 1948 Shannon, on
 to today, a pencil riding along it._
 
-_Reads (draft):_ 1. people have run this loop by hand for over a century.
+_Reads:_ 1. people have run this loop by hand for over a century.
 
 **USHINI (VO):** LLMs Unplugged has the lessons, the slides, the printouts and a
 short video for every step. And the tools that made them: paste in any text you
@@ -110,7 +110,7 @@ like, and out come the grids, the sheets and the booklets for it.
 _Visual: the tools page: a text pasted into the box; a booklet page, a ledger
 sheet and a sheet of cutouts render beneath it._
 
-_Reads (draft):_ 1. the site has everything to run it; 2. any text makes its own
+_Reads:_ 1. the site has everything to run it; 2. any text makes its own
 materials.
 
 **BEN (TC):** It's all free, under a Creative Commons licence, at
@@ -119,4 +119,4 @@ llmsunplugged.org. Grab a picture book, and come and see how it works.
 _Visual: llmsunplugged.org in the site's type over the desk, the magpie book
 beside it._
 
-_Reads (draft):_ 1. it's at llmsunplugged.org; 2. it's free to use.
+_Reads:_ 1. it's at llmsunplugged.org; 2. it's free to use.

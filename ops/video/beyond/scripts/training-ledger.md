@@ -1,6 +1,6 @@
 # Training: ledger
 
-**Key idea (draft):** a language model learns by counting which word follows
+**Key idea:** a language model learns by counting which word follows
 which, and the counts are all it keeps.
 
 **Plays:** How AI writes stories (ledger), start of the "Where did the marks
@@ -42,7 +42,7 @@ picture book whose cover reads The magpie. The sheets slide aside; the book
 opens and its first line lifts off the page as a row of word tiles: "The magpie
 is back. It sits on the fence."_
 
-_Reads (draft):_ 1. the sheets' marks came from a book; 2. this book is what
+_Reads:_ 1. the sheets' marks came from a book; 2. this book is what
 we'll count; 3. its text is now a row of words.
 
 **BEN (VO):** First, lowercase everything. And the full stops and exclamation
@@ -51,7 +51,7 @@ marks count as words too.
 _Visual: the capitals drop to lowercase one tile at a time; the full stops split
 off into tiles of their own, drawn as the kit's filled symbol tiles._
 
-_Reads (draft):_ 1. everything is lowercase; 2. full stops are words, with their
+_Reads:_ 1. everything is lowercase; 2. full stops are words, with their
 own tiles.
 
 _Reads note:_ the printed magpie ledger keeps "Here", "Down" and "Swoop"
@@ -68,7 +68,7 @@ sheet: "the" writes into the first empty row, "magpie" into its red box, and a
 mark draws beside it. The bracket slides one tile to "magpie is": "magpie"
 starts the next row, "is" into its red box, a mark. Then "is back"._
 
-_Reads (draft):_ 1. the first word of the pair finds its row; 2. the second word
+_Reads:_ 1. the first word of the pair finds its row; 2. the second word
 goes in a box on that row; 3. a mark beside it; 4. slide along one, and each
 word starts the next pair.
 
@@ -81,7 +81,7 @@ _Visual: the bracket skips to the second "the": the row for "the" lights, and
 ahead, and each time it lands on "the magpie" or "the fence" a mark draws on in
 that box. The row ends: magpie 5, fence 6, postie 4, dog 4, red to yellow._
 
-_Reads (draft):_ 1. a new follower takes the next empty box; 2. a repeated pair
+_Reads:_ 1. a new follower takes the next empty box; 2. a repeated pair
 marks the same box again; 3. common pairs collect marks.
 
 **USHINI (VO):** That's all training is. Here's the rest of the book, done at
@@ -97,7 +97,7 @@ _Beyond:_ the slides count four pairs and then show the finished sheets, so the
 jump from "one pair" to "the whole model" happens off screen. Running every pair
 of a real book shows there's no other step in between.
 
-_Reads (draft):_ 1. the whole book is counted the same way; 2. a computer does
+_Reads:_ 1. the whole book is counted the same way; 2. a computer does
 nothing different, only faster.
 
 **BEN:** Now look at what it kept. Not the sentences. Not the story. It doesn't
@@ -106,7 +106,7 @@ know what a magpie is. Just counts of what came next.
 _Visual: the book closes and slides off the desk. The finished sheets alone,
 fanned, full frame._
 
-_Reads (draft):_ 1. the book is gone; 2. only the counts are left.
+_Reads:_ 1. the book is gone; 2. only the counts are left.
 
 **USHINI (VO):** And a row of marks is just a row of numbers. The row for "the"
 says five, six, four, four.
@@ -115,7 +115,7 @@ _Visual: push in on the row for "the"; each box's marks count themselves off and
 collapse into a numeral in the box's colour, 5, 6, 4, 4. Pull back as the change
 ripples down every row of every sheet._
 
-_Reads (draft):_ 1. each box's marks are a count; 2. every sheet is a table of
+_Reads:_ 1. each box's marks are a count; 2. every sheet is a table of
 numbers.
 
 **BEN (VO):** When people talk about a model's "weights", this is the kind of
@@ -123,7 +123,7 @@ thing they mean: numbers that came from the text it read.
 
 _Visual: hold on the sheets of numbers._
 
-_Reads (draft):_ 1. that's what model weights are.
+_Reads:_ 1. that's what model weights are.
 
 **USHINI (VO):** Give it a bigger book and nothing changes. This is
 _Frankenstein_. Eighty-five thousand words, and seven thousand rows.
@@ -137,7 +137,7 @@ _Beyond:_ the TASK-154 ledger video never leaves the table; this one fills rows
 from a real book's real pairs, so the scale is a fact the viewer sees rather
 than a gesture.
 
-_Reads (draft):_ 1. a bigger book makes more rows the same way; 2. real books
+_Reads:_ 1. a bigger book makes more rows the same way; 2. real books
 make far more rows than anyone could read.
 
 **BEN:** A real model reads trillions of words, and stores its numbers more
@@ -152,7 +152,7 @@ _Visual: a blank sheet. The row for full stop lights. A follower writes into the
 next empty box, and a gap between boxes flashes and closes. A word writes into a
 new row, and a second, identical row that starts to write below it wipes away._
 
-_Reads (draft):_ 1. full stop has a row; 2. boxes fill in order; 3. one row per
+_Reads:_ 1. full stop has a row; 2. boxes fill in order; 3. one row per
 word.
 
 **BEN (TC):** Reader, grab the text. Two words at a time.

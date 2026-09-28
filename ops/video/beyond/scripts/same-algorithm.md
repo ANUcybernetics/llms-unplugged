@@ -1,6 +1,6 @@
 # Same algorithm
 
-**Key idea (draft):** grid tallies, ledger marks, counters in a cup, cutout
+**Key idea:** grid tallies, ledger marks, counters in a cup, cutout
 slips and plain numbers are one model in different bodies; whatever you draw
 with, it's the same draw.
 
@@ -43,7 +43,7 @@ _Visual: the desk, top-down, split into four quarters, each with one kit: a
 tallied grid and a d10; fanned ledger sheets, a cup and a counter tub; a spread
 of cutouts; an open booklet. All four are the magpie._
 
-_Reads (draft):_ 1. four different kits; 2. the same book behind all of them.
+_Reads:_ 1. four different kits; 2. the same book behind all of them.
 
 _Reads note:_ four quarters is busy for one line; the kits could arrive one per
 sentence instead, which the line's rhythm already allows.
@@ -56,7 +56,7 @@ the centre: magpie 5, fence 6, postie 4, dog 4 in tallies. The tallies redraw as
 ledger boxes, red, blue, green, yellow, each with its marks, the four followers
 holding their places left to right._
 
-_Reads (draft):_ 1. this is one row of the model; 2. the grid and the ledger
+_Reads:_ 1. this is one row of the model; 2. the grid and the ledger
 hold the same four counts.
 
 **USHINI (VO):** In a cup, it's counters. In a pile of cutouts, it's slips of
@@ -71,7 +71,7 @@ _Beyond:_ each deck shows one form, so a room using the grid never sees that the
 ledger, the cup and the cutouts hold the same thing. One continuous morph makes
 them visibly one object, which is what lets the walk below swap forms freely.
 
-_Reads (draft):_ 1. every form holds the same four counts; 2. in the end it's
+_Reads:_ 1. every form holds the same four counts; 2. in the end it's
 just numbers.
 
 _Reads note:_ five forms across two lines is a lot; if the morph can't hold a
@@ -83,7 +83,7 @@ about a third. "Dog" has four, about a fifth.
 _Visual: the four numbers become four widths of one bar, the whole bar the row's
 nineteen; "fence" takes about a third of it, "dog" about a fifth._
 
-_Reads (draft):_ 1. a count out of the row's total is a chance; 2. bigger count,
+_Reads:_ 1. a count out of the row's total is a chance; 2. bigger count,
 bigger share.
 
 **USHINI (VO):** So watch one sentence switch kits at every word. Start after a
@@ -92,7 +92,7 @@ full stop, with a cup: seventeen counters. Draw red: "it".
 _Visual: the row for full stop drops seventeen counters into a cup; a red one
 slides out and "it" writes onto a strip of paper at the bottom of the desk._
 
-_Reads (draft):_ 1. the full stop's row, as a cup; 2. the draw gives "it".
+_Reads:_ 1. the full stop's row, as a cup; 2. the draw gives "it".
 
 **BEN (VO):** The row for "it" has ten marks, so give each mark a face of a
 ten-sided die. Roll a one: "sits". Then "on", and "the", with no choice at all.
@@ -103,7 +103,7 @@ bands are: is 0, sits 1--3, watches 4--6, goes 7--9. A d10 face lands on 1; the
 "sits" band lights and "sits" writes onto the strip. "on" and "the" write
 straight on, each row lighting briefly with its single follower._
 
-_Reads (draft):_ 1. each mark becomes a face of the die; 2. the roll lands in a
+_Reads:_ 1. each mark becomes a face of the die; 2. the roll lands in a
 band; 3. a row with one word needs no draw.
 
 **USHINI (VO):** The row for "the", as nineteen slips. Shuffle, pull one out:
@@ -113,7 +113,7 @@ _Visual: the row for "the" becomes nineteen paper slips in four piles; the piles
 shuffle together, one slip slides out and turns over: "the dog". Then the full
 stop tile writes on: "it sits on the dog ."_
 
-_Reads (draft):_ 1. slips work the same way as counters and faces; 2. the slip
+_Reads:_ 1. slips work the same way as counters and faces; 2. the slip
 drawn names the next word.
 
 **BEN:** Cup, die or slips, it's the same draw. More counts, more chances. The
@@ -126,7 +126,7 @@ _Beyond:_ a room only ever draws one way. Switching forms mid-sentence shows the
 draw is the idea and the kit is incidental, which the slides can't show without
 three decks at once.
 
-_Reads (draft):_ 1. all three are the same draw; 2. the sentence doesn't depend
+_Reads:_ 1. all three are the same draw; 2. the sentence doesn't depend
 on the kit.
 
 **USHINI:** So pick the kit that suits your room. A grid for pairs with a die. A
@@ -138,7 +138,7 @@ _Visual: the four kits return to their quarters; two strips of generated text,
 one from the grid quarter and one from the ledger quarter, slide together in the
 middle._
 
-_Reads (draft):_ 1. the kit is a choice about the room; 2. the models are the
+_Reads:_ 1. the kit is a choice about the room; 2. the models are the
 same kind.
 
 _Reads note:_ the kit-per-room line is the only teacher-facing advice in the

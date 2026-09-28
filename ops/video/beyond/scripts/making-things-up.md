@@ -1,6 +1,6 @@
 # Making things up
 
-**Key idea (draft):** a model that only knows what comes next will say fluent
+**Key idea:** a model that only knows what comes next will say fluent
 things that aren't true, and the likeliest ones aren't the true ones; it's built
 to be likely, not right.
 
@@ -50,7 +50,7 @@ on paper.
 _Visual: the finished magpie grid on the desk, top-down, beside the closed
 picture book._
 
-_Reads (draft):_ 1. this is a model we can check by hand.
+_Reads:_ 1. this is a model we can check by hand.
 
 **USHINI (VO):** First, the book's world. In _The magpie_, the magpie swoops,
 the postie and the dog run, and the fence stays exactly where it is.
@@ -59,7 +59,7 @@ _Visual: the book opens; its lines float up in the book's type, and the three
 facts light in them one at a time: "Down comes the magpie. Swoop!", "The dog
 runs", "It sits on the fence."_
 
-_Reads (draft):_ 1. the book has its own facts; 2. the magpie is the one that
+_Reads:_ 1. the book has its own facts; 2. the magpie is the one that
 swoops.
 
 **BEN (VO):** Now ask the model for a couple of sentences. "Down comes the dog.
@@ -69,7 +69,7 @@ _Visual: the book closes. A strip of paper writes itself one word at a time,
 each word lighting its row on the grid as it lands: "down comes the dog . swoop
 !"_
 
-_Reads (draft):_ 1. the model writes two sentences, one word at a time.
+_Reads:_ 1. the model writes two sentences, one word at a time.
 
 **USHINI:** So the dog swoops. The book never said that. And in the book's
 world, it isn't true.
@@ -78,7 +78,7 @@ _Visual: the strip's words rearrange into a small scene in flat vector: the dog
 mid-air over the fence, a stamp-like red cross beside it; beside that, the
 book's own line "Down comes the magpie. Swoop!" in its type._
 
-_Reads (draft):_ 1. the sentence is fluent; 2. it isn't true in the book.
+_Reads:_ 1. the sentence is fluent; 2. it isn't true in the book.
 
 **BEN (VO):** Look at how it got there. "Down comes the" is in the book. "The
 dog" is in the book. A full stop after "dog", then "swoop", both in the book.
@@ -89,7 +89,7 @@ the matching box on the grid lights and, above, a line of the book where that
 pair occurs. The bracket reaches the end; every pair has a source, and the whole
 sentence has none._
 
-_Reads (draft):_ 1. every pair in the sentence came from the book; 2. the
+_Reads:_ 1. every pair in the sentence came from the book; 2. the
 sentence as a whole didn't; 3. the model only ever checked pairs.
 
 **USHINI (VO):** And it's not bad luck. Rank every sentence this model can write
@@ -104,7 +104,7 @@ _Beyond:_ one bad sentence looks like bad luck; ranking all of them shows the
 model preferring the common over the true, which is the mechanism, not an
 accident.
 
-_Reads (draft):_ 1. every sentence has a likelihood; 2. "Here comes the fence."
+_Reads:_ 1. every sentence has a likelihood; 2. "Here comes the fence."
 is near the top.
 
 **BEN (VO):** The fence never comes anywhere. But it's the third likeliest thing
@@ -115,7 +115,7 @@ often, and a full stop always follows "fence".
 _Visual: "here comes the dog ." lights further down the list, its bar a third
 the length. On the grid, the box for "the fence", six tallies, glows._
 
-_Reads (draft):_ 1. a false sentence outranks a true one; 2. because its pairs
+_Reads:_ 1. a false sentence outranks a true one; 2. because its pairs
 are more common.
 
 **USHINI (VO):** Here's everything it could say in a short sentence.
@@ -130,7 +130,7 @@ _Beyond:_ makes "fluent" and "true" visibly two different things, measured, on a
 model small enough to check by hand. The generation videos show the tree as
 possibility; recoloured, it shows how much of that possibility is invention.
 
-_Reads (draft):_ 1. the model can say many sentences; 2. only a few are the
+_Reads:_ 1. the model can say many sentences; 2. only a few are the
 book's; 3. the rest sound just as right.
 
 **BEN:** Nothing in the loop checks whether a sentence is true. The model is
@@ -145,7 +145,7 @@ _Visual: the tree dims to a texture; from its edges it multiplies outward in a
 logarithmic pull-back until its branches are a fine mesh. Most paths in the mesh
 turn the "true" colour; a scatter of others stay the other colour._
 
-_Reads (draft):_ 1. more context and more text make true continuations
+_Reads:_ 1. more context and more text make true continuations
 likelier; 2. nothing checks.
 
 _Reads note:_ the pull-back's colour split is illustrative, not measured; if

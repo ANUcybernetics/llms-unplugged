@@ -17,7 +17,7 @@ a stage are siblings rather than separate builds. Slugs can repeat the first
 series' (both have a `training-grid`) because this series lives under `beyond/`,
 in its own bucket prefix.
 
-| Slug                         | Format  | Key idea (draft)                                                                              |
+| Slug                         | Format  | Key idea                                                                                      |
 | ---------------------------- | ------- | --------------------------------------------------------------------------------------------- |
 | `training-grid`              | grid    | a language model learns by counting which word follows which, and the counts are all it keeps |
 | `generation-grid`            | grid    | text is written one word at a time, each picked in proportion to the counts                   |
