@@ -4,7 +4,7 @@ title: Draft a second explainer series that goes beyond the slides
 status: In Progress
 assignee: []
 created_date: '2026-09-27 22:16'
-updated_date: '2026-09-28 00:25'
+updated_date: '2026-09-28 00:33'
 labels:
   - video
 dependencies: []
@@ -44,7 +44,7 @@ Several of the candidate beats need a Canvas 2D layer (plain browser canvas, no 
 - [ ] #2 Every video in scope has a proposed script in the ops/video/scripts format (key idea, beat sheet, VO lines, visual directions, draft reads), stored apart from the TASK-154 scripts
 - [ ] #3 Each script says which slide or printed artefact it builds on and justifies each beyond-the-slides beat by the read it makes clearer
 - [ ] #4 Each how-it-works video works standalone and ends by handing off to its activity; each backstory video works standalone and in a classroom
-- [ ] #5 astromotion's video engine supports a deterministic, seekable Canvas 2D layer that renders at 4K, is covered by its Chrome tests, and ships in a tagged release
+- [x] #5 astromotion's video engine supports a deterministic, seekable Canvas 2D layer that renders at 4K, is covered by its Chrome tests, and ships in a tagged release
 - [x] #6 One beyond-the-slides prototype beat has been rendered at 4K and reviewed by Ben before the series is built
 - [ ] #7 No composition is built for a script whose reads Ben hasn't approved
 - [ ] #8 The TASK-154 drafts (compositions, scripts, renders) are unchanged
@@ -86,4 +86,6 @@ Prototype beat for the canvas layer (AC #5, #6): the tree of possible texts. It'
 2026-09-28: Canvas 2D layer committed in astromotion (9fabe4c: video/canvas.js, tl.draw hook, rng, phase; 6 Chrome tests, suite 354/354), not yet released. Tree prototype at ops/video/beyond/prototype-tree/ (untracked until the release: its kit/motion points at the sibling repo) rendered to out/video/beyond/prototype-tree/ at 1080p25 and 4K50; awaiting Ben's review (AC #6). video.py doesn't handle a nested slug (beyond/<slug>); fix before building the series. Canvas craft for AC #9: canvas carries the mass of marks, type stays DOM on top; ink (opacity x width) proportional to probability avoids banding at column junctions; hairlines ~0.5 CSS px are crisp at 4K but haze at 1080p.
 
 2026-09-28: Ben approved the tree prototype (AC #6). Layout option he raised: trim beats like the tree to a squarer frame so a portrait talking-head can sit on the right; decide per beat when the storyboards are drawn.
+
+astromotion v0.34.0 released (Canvas 2D layer) and pinned in website/; the prototype now uses the kit's normal engine link and is committed (bd419857).
 <!-- SECTION:NOTES:END -->
