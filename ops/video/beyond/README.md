@@ -42,6 +42,13 @@ The ledger lesson generates from finished sheets before it trains, so
 plays before `training`. `pretrained-generation` is the booklet: someone else's
 counts from a much bigger text, stored as thresholds.
 
+## Framing
+
+Phase 2 may put a portrait talking-head beside the animation. Beats that could
+sit next to one (the tree, for instance, which compresses horizontally without
+losing its reads) are laid out to survive trimming to a squarer frame on the
+left; which beats get the squarer frame is decided per beat at the storyboard.
+
 ## Deck alignment
 
 Each how-it-works video covers a contiguous run of a deck partial's explanation

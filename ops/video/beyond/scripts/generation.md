@@ -125,11 +125,13 @@ that are; 3. nobody wrote it.
 
 **BEN (VO):** And here's every sentence this model could have written instead.
 
-_Visual: the strip's words slide into a column at the left edge. From the full
-stop, every path the counts allow grows rightwards, eight words deep: thousands
-of branches, each as thick as it is likely, the likely ones bold, the rare ones
-hairlines. The path "it sits on the dog ." lights gold through the middle of it;
-the rest dims._
+_Visual: the strip's words slide into a column at the left edge. The full stop,
+a symbol tile, moves to the root, and every path the counts allow grows
+rightwards, twelve words deep: about five thousand texts on ten thousand
+branches, each as thick as it is likely, the likely ones bold, the rare ones
+hairlines. The first three words deep are labelled. The path "it sits on the dog
+." lights gold through the middle of it, each word flying from the column onto
+its node; the rest dims. (The prototype at `prototype-tree/`.)_
 
 _Beyond:_ the slides show one walk, so the viewer sees one sentence and has to
 imagine the others. The tree shows them all at once, weighted, and makes the key
@@ -137,6 +139,11 @@ idea literal: the counts already hold every text, and the dice only pick a path.
 
 _Reads (draft):_ 1. each branch is a word the counts allow; 2. thicker means
 more likely; 3. your sentence is one path through it.
+
+_Reads note:_ the tree runs on past the full stop into the next sentence (a tree
+of single sentences is only 79 texts, too few to fill it), so "every sentence"
+is slightly wrong for the picture; "everything this model could have written"
+matches it.
 
 **USHINI (VO):** Every roll picks a different path. So run it ten thousand times
 and count what comes out.
