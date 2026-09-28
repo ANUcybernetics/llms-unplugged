@@ -1,0 +1,100 @@
+[
+  {
+    "i": 0,
+    "speaker": "BEN",
+    "tc": true,
+    "caption": "This is a table of counts. In about a minute it's going to write a sentence that nobody has ever written.",
+    "tts": "This is a table of counts. In about a minute it's going to write a sentence that nobody has ever written."
+  },
+  {
+    "i": 1,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Each row is a word from a book, and the tallies say which words came next, and how often. It's the same kind of grid you just filled in.",
+    "tts": "Each row is a word from a book, and the tallies say which words came next, and how often. It's the same kind of grid you just filled in."
+  },
+  {
+    "i": 2,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "A story starts after a full stop, so start at the row for full stop. \"It\" came next seven times, \"here\" four, \"down\" three, \"swoop\" three.",
+    "tts": "A story starts after a full stop, so start at the row for full stop. \"It\" came next seven times, \"here\" four, \"down\" three, \"swoop\" three."
+  },
+  {
+    "i": 3,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Now pick the next word at random, but fairly. Share the ten faces of a die across the row by its tallies. Seventeen tallies won't split into ten exactly, so share them as fairly as you can: \"it\" gets four faces, the others two each.",
+    "tts": "Now pick the next word at random, but fairly. Share the ten faces of a die across the row by its tallies. Seventeen tallies won't split into ten exactly, so share them as fairly as you can: \"it\" gets four faces, the others two each."
+  },
+  {
+    "i": 4,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Roll a two. It's in the band for \"it\". Write it down, and go to the row for \"it\".",
+    "tts": "Roll a two. It's in the band for \"it\". Write it down, and go to the row for \"it\"."
+  },
+  {
+    "i": 5,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "The row for \"it\" has exactly ten tallies, so every tally gets a face of its own. Roll a one: \"sits\".",
+    "tts": "The row for \"it\" has exactly ten tallies, so every tally gets a face of its own. Roll a one: \"sits\"."
+  },
+  {
+    "i": 6,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "\"Sits\" is only ever followed by \"on\", and \"on\" by \"the\". One option, no roll.",
+    "tts": "\"Sits\" is only ever followed by \"on\", and \"on\" by \"the\". One option, no roll."
+  },
+  {
+    "i": 7,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "The row for \"the\" shares its faces four ways. Roll a nine: \"dog\". And after \"dog\", a full stop or \"runs\", five faces each. Roll a three: full stop.",
+    "tts": "The row for \"the\" shares its faces four ways. Roll a nine: \"dog\". And after \"dog\", a full stop or \"runs\", five faces each. Roll a three: full stop."
+  },
+  {
+    "i": 8,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "\"It sits on the dog.\" The book never says that. It says the magpie sits on the fence. Nobody wrote this sentence; the counting did.",
+    "tts": "\"It sits on the dog.\" The book never says that. It says the magpie sits on the fence. Nobody wrote this sentence; the counting did."
+  },
+  {
+    "i": 9,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "And here's everything this model could have written instead.",
+    "tts": "And here's everything this model could have written instead."
+  },
+  {
+    "i": 10,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Every roll picks a different path. So run it ten thousand times and count what comes out.",
+    "tts": "Every roll picks a different path. So run it ten thousand times and count what comes out."
+  },
+  {
+    "i": 11,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Every text different. Every text sounding like the book. That's what Claude or ChatGPT is doing every time it writes a word, with vastly more counts than this.",
+    "tts": "Every text different. Every text sounding like the book. That's what Claude or ChatGPT is doing every time it writes a word, with vastly more counts than this."
+  },
+  {
+    "i": 12,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "On your grid: pick any starting word with a row and write it down. Share the die's faces across its row by the tallies, roll, and write down the word you land on. Then find its row. No row? Pick a new word and carry on.",
+    "tts": "On your grid: pick any starting word with a row and write it down. Share the die's faces across its row by the tallies, roll, and write down the word you land on. Then find its row. No row? Pick a new word and carry on."
+  },
+  {
+    "i": 13,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "Pick a starting word and roll.",
+    "tts": "Pick a starting word and roll."
+  }
+]

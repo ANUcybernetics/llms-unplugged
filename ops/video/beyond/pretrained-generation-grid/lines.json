@@ -1,0 +1,79 @@
+[
+  {
+    "i": 0,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "Most people who use Claude or ChatGPT never trained it. Somebody else did the counting, and they just type and it writes. That's what this booklet is: a model somebody else already trained.",
+    "tts": "Most people who use Claude or ChatGPT never trained it. Somebody else did the counting, and they just type and it writes. That's what this booklet is: a model somebody else already trained."
+  },
+  {
+    "i": 1,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "It looks new, but it isn't. Here's the grid from The magpie. Fold it into a booklet, and every row becomes an entry. The empty boxes just fall away.",
+    "tts": "It looks new, but it isn't. Here's the grid from The magpie. Fold it into a booklet, and every row becomes an entry. The empty boxes just fall away."
+  },
+  {
+    "i": 2,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Take the entry for \"dog\". On the grid you'd share the die's faces: nought to four for a full stop, five to nine for \"runs\". The booklet just writes where each band ends. Four. Nine.",
+    "tts": "Take the entry for \"dog\". On the grid you'd share the die's faces: nought to four for a full stop, five to nine for \"runs\". The booklet just writes where each band ends. Four. Nine."
+  },
+  {
+    "i": 3,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "So roll, and take the first word your roll doesn't go past. Roll a three: that's not past four, so it's a full stop.",
+    "tts": "So roll, and take the first word your roll doesn't go past. Roll a three: that's not past four, so it's a full stop."
+  },
+  {
+    "i": 4,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "The entry for \"the\" runs all the way to ninety-nine. That means two dice, read as one number. A seven and a two is seventy-two: past fifty-seven, not past seventy-eight. \"Dog\".",
+    "tts": "The entry for \"the\" runs all the way to ninety-nine. That means two dice, read as one number. A seven and a two is seventy-two: past fifty-seven, not past seventy-eight. \"Dog\"."
+  },
+  {
+    "i": 5,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Now the booklet on your table. It came from a much bigger book. Start from \"sleep\": one die. Roll a seven: \"again\".",
+    "tts": "Now the booklet on your table. It came from a much bigger book. Start from \"sleep\": one die. Roll a seven: \"again\"."
+  },
+  {
+    "i": 6,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "\"Again\" runs to ninety-nine, so two dice. An eight and a nought: eighty. That's past seventy-six, not past eighty-four: \"I'd\". Roll a six: \"float\". And \"float\" has only one word after it, so no roll at all.",
+    "tts": "\"Again\" runs to ninety-nine, so two dice. An eight and a nought: eighty. That's past seventy-six, not past eighty-four: \"I'd\". Roll a six: \"float\". And \"float\" has only one word after it, so no roll at all."
+  },
+  {
+    "i": 7,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Why a booklet, and not a grid? This book uses about four thousand different words. As a grid, that's sixteen million boxes. Only sixteen thousand of them have anything in them.",
+    "tts": "Why a booklet, and not a grid? This book uses about four thousand different words. As a grid, that's sixteen million boxes. Only sixteen thousand of them have anything in them."
+  },
+  {
+    "i": 8,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "As you go, listen to what comes out. It'll sound more like real prose than your grid did. And it still won't be about anything. Try to guess the book before you check the cover.",
+    "tts": "As you go, listen to what comes out. It'll sound more like real prose than your grid did. And it still won't be about anything. Try to guess the book before you check the cover."
+  },
+  {
+    "i": 9,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "And one thing the booklet gets exactly right: you can read every number in this model, and run it at the kitchen table. Nobody can switch it off or quietly change it under you. That's what \"open weights\" means.",
+    "tts": "And one thing the booklet gets exactly right: you can read every number in this model, and run it at the kitchen table. Nobody can switch it off or quietly change it under you. That's what \"open weights\" means."
+  },
+  {
+    "i": 10,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "Grab your booklet and start rolling. And if you'd like to make your own from any text, the tool's at llmsunplugged.org/tools.",
+    "tts": "Grab your booklet and start rolling. And if you'd like to make your own from any text, the tool's at llmsunplugged.org/tools."
+  }
+]

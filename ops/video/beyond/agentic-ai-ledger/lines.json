@@ -1,0 +1,79 @@
+[
+  {
+    "i": 0,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "This is the one that's all over the news. AI agents: models that browse the web, write code, book flights. It sounds like a whole new kind of technology. It isn't. It's the loop you've already run, with one rule added.",
+    "tts": "This is the one that's all over the news. AI agents: models that browse the web, write code, book flights. It sounds like a whole new kind of technology. It isn't. It's the loop you've already run, with one rule added."
+  },
+  {
+    "i": 1,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Here's the rule. Fill the cup and draw, exactly as before. But the moment you draw a punctuation mark, a full stop, a comma, stop. That's a tool call.",
+    "tts": "Here's the rule. Fill the cup and draw, exactly as before. But the moment you draw a punctuation mark, a full stop, a comma, stop. That's a tool call."
+  },
+  {
+    "i": 2,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "So the model doesn't decide to use a tool. It draws one, like any other word. Some rows almost never call it. Some always do.",
+    "tts": "So the model doesn't decide to use a tool. It draws one, like any other word. Some rows almost never call it. Some always do."
+  },
+  {
+    "i": 3,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Say you've written \"here comes the dog\". The row for \"dog\": two red for a full stop, two blue for \"runs\". Draw one. Red. Full stop. Stop.",
+    "tts": "Say you've written \"here comes the dog\". The row for \"dog\": two red for a full stop, two blue for \"runs\". Draw one. Red. Full stop. Stop."
+  },
+  {
+    "i": 4,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "The tool is a text message. Send \"What comes next?\", and the sentence so far, to three friends or group chats.",
+    "tts": "The tool is a text message. Send \"What comes next?\", and the sentence so far, to three friends or group chats."
+  },
+  {
+    "i": 5,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "The first reply back is your tool result. Write the whole thing down, then the full stop you drew. Then carry on, from the full stop.",
+    "tts": "The first reply back is your tool result. Write the whole thing down, then the full stop you drew. Then carry on, from the full stop."
+  },
+  {
+    "i": 6,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Why from the full stop, and not from \"sandwich\"? Because nobody has a row for \"sandwich\". But there's always a row for a full stop.",
+    "tts": "Why from the full stop, and not from \"sandwich\"? Because nobody has a row for \"sandwich\". But there's always a row for a full stop."
+  },
+  {
+    "i": 7,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Replies take time. If nothing's back by your next punctuation mark, leave a gap and fill it in later.",
+    "tts": "Replies take time. If nothing's back by your next punctuation mark, leave a gap and fill it in later."
+  },
+  {
+    "i": 8,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Here's the bit that matters. The model never learned what comes next after \"the dog\". It only drew when to ask. And the thing that paused it, sent the message, and spliced the answer back in? That was you. You were the harness.",
+    "tts": "Here's the bit that matters. The model never learned what comes next after \"the dog\". It only drew when to ask. And the thing that paused it, sent the message, and spliced the answer back in? That was you. You were the harness."
+  },
+  {
+    "i": 9,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Take the person out, and you've got a model acting on its own. That's what the news means by an agent. So: what would you let it do without asking you first?",
+    "tts": "Take the person out, and you've got a model acting on its own. That's what the news means by an agent. So: what would you let it do without asking you first?"
+  },
+  {
+    "i": 10,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "Don't answer yet. In a few minutes, your group will be the harness.",
+    "tts": "Don't answer yet. In a few minutes, your group will be the harness."
+  }
+]

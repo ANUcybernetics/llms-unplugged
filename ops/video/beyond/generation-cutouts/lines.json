@@ -1,0 +1,86 @@
+[
+  {
+    "i": 0,
+    "speaker": "BEN",
+    "tc": true,
+    "caption": "This is a pile of paper slips. In about a minute it's going to write a sentence that nobody has ever written.",
+    "tts": "This is a pile of paper slips. In about a minute it's going to write a sentence that nobody has ever written."
+  },
+  {
+    "i": 1,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Every slip is a pair of words from a book: the word in the box, and the word that came next. A pair the book says six times gets six slips.",
+    "tts": "Every slip is a pair of words from a book: the word in the box, and the word that came next. A pair the book says six times gets six slips."
+  },
+  {
+    "i": 2,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in its box. This one says \"it\". Write it down.",
+    "tts": "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in its box. This one says \"it\". Write it down."
+  },
+  {
+    "i": 3,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Now find every slip with \"it\" in its box. There are ten. Three say \"sits\", three \"watches\", three \"goes\", and one says \"is\". Pick one without choosing: \"sits\".",
+    "tts": "Now find every slip with \"it\" in its box. There are ten. Three say \"sits\", three \"watches\", three \"goes\", and one says \"is\". Pick one without choosing: \"sits\"."
+  },
+  {
+    "i": 4,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Every \"sits\" slip says \"on\", and every \"on\" slip says \"the\". No choice at all.",
+    "tts": "Every \"sits\" slip says \"on\", and every \"on\" slip says \"the\". No choice at all."
+  },
+  {
+    "i": 5,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "\"The\" has nineteen slips. Pick one: \"dog\". And \"dog\" has four: two full stops, two \"runs\". Pick one: full stop.",
+    "tts": "\"The\" has nineteen slips. Pick one: \"dog\". And \"dog\" has four: two full stops, two \"runs\". Pick one: full stop."
+  },
+  {
+    "i": 6,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "\"It sits on the dog.\" The book never says that. It says the magpie sits on the fence. Nobody wrote this sentence; the slips did, one pair at a time, like dominoes.",
+    "tts": "\"It sits on the dog.\" The book never says that. It says the magpie sits on the fence. Nobody wrote this sentence; the slips did, one pair at a time, like dominoes."
+  },
+  {
+    "i": 7,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "And here's everything this pile could have written instead.",
+    "tts": "And here's everything this pile could have written instead."
+  },
+  {
+    "i": 8,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Every pick sends you down a different path. So chain ten thousand words, cut them back into slips, and sort them.",
+    "tts": "Every pick sends you down a different path. So chain ten thousand words, cut them back into slips, and sort them."
+  },
+  {
+    "i": 9,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Every chain different. Every chain sounding like the book. That's what Claude or ChatGPT is doing every time it writes a word, with vastly more than a pile of slips.",
+    "tts": "Every chain different. Every chain sounding like the book. That's what Claude or ChatGPT is doing every time it writes a word, with vastly more than a pile of slips."
+  },
+  {
+    "i": 10,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Spread your cutouts out. Write down a starting word, find a slip with that word in its box, and write down its next word. Then find a slip that starts with that. The colours help you find the matches fast.",
+    "tts": "Spread your cutouts out. Write down a starting word, find a slip with that word in its box, and write down its next word. Then find a slip that starts with that. The colours help you find the matches fast."
+  },
+  {
+    "i": 11,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "Start chaining.",
+    "tts": "Start chaining."
+  }
+]

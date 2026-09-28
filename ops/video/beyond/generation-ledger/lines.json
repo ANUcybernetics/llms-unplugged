@@ -1,0 +1,100 @@
+[
+  {
+    "i": 0,
+    "speaker": "BEN",
+    "tc": true,
+    "caption": "This is a pile of sheets full of counts. In about a minute it's going to write a sentence that nobody has ever written.",
+    "tts": "This is a pile of sheets full of counts. In about a minute it's going to write a sentence that nobody has ever written."
+  },
+  {
+    "i": 1,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Each row is a word from a book, and the words that came next, with a mark every time. Maybe you did the counting yourselves; maybe the sheets arrived finished. It works the same either way.",
+    "tts": "Each row is a word from a book, and the words that came next, with a mark every time. Maybe you did the counting yourselves; maybe the sheets arrived finished. It works the same either way."
+  },
+  {
+    "i": 2,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Every box has a colour, always in the same order: red, blue, green, yellow. On this row, red means \"magpie\". On another row, red means something else.",
+    "tts": "Every box has a colour, always in the same order: red, blue, green, yellow. On this row, red means \"magpie\". On another row, red means something else."
+  },
+  {
+    "i": 3,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "A story starts after a full stop, so find the row for full stop. Fill a cup with one counter for every mark: seven red for \"it\", four blue for \"here\", three green, three yellow.",
+    "tts": "A story starts after a full stop, so find the row for full stop. Fill a cup with one counter for every mark: seven red for \"it\", four blue for \"here\", three green, three yellow."
+  },
+  {
+    "i": 4,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Seventeen counters. Now draw one without looking. Red: \"it\". Write it down, tip the cup back, and go to the row for \"it\".",
+    "tts": "Seventeen counters. Now draw one without looking. Red: \"it\". Write it down, tip the cup back, and go to the row for \"it\"."
+  },
+  {
+    "i": 5,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "The row for \"it\": three red, three blue, three green, one yellow. Red again: \"sits\".",
+    "tts": "The row for \"it\": three red, three blue, three green, one yellow. Red again: \"sits\"."
+  },
+  {
+    "i": 6,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "\"Sits\" is only ever followed by \"on\", and \"on\" by \"the\". One box, no cup.",
+    "tts": "\"Sits\" is only ever followed by \"on\", and \"on\" by \"the\". One box, no cup."
+  },
+  {
+    "i": 7,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "The row for \"the\" fills the cup with all four colours. Yellow: \"dog\". And after \"dog\", two red for a full stop, two blue for \"runs\". Red: full stop.",
+    "tts": "The row for \"the\" fills the cup with all four colours. Yellow: \"dog\". And after \"dog\", two red for a full stop, two blue for \"runs\". Red: full stop."
+  },
+  {
+    "i": 8,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "\"It sits on the dog.\" The book never says that. It says the magpie sits on the fence. Nobody wrote this sentence; the counting did.",
+    "tts": "\"It sits on the dog.\" The book never says that. It says the magpie sits on the fence. Nobody wrote this sentence; the counting did."
+  },
+  {
+    "i": 9,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "And here's everything this model could have written instead.",
+    "tts": "And here's everything this model could have written instead."
+  },
+  {
+    "i": 10,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Every draw picks a different path. So run it ten thousand times and count what comes out.",
+    "tts": "Every draw picks a different path. So run it ten thousand times and count what comes out."
+  },
+  {
+    "i": 11,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Every story different. Every story sounding like the book. That's what Claude or ChatGPT is doing every time it writes a word, with vastly more counts than this.",
+    "tts": "Every story different. Every story sounding like the book. That's what Claude or ChatGPT is doing every time it writes a word, with vastly more counts than this."
+  },
+  {
+    "i": 12,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Four jobs in your group. A reader finds the row. A filler puts one counter per mark in the cup. A drawer pulls one out. And a writer writes the word down. Tip the cup back every time.",
+    "tts": "Four jobs in your group. A reader finds the row. A filler puts one counter per mark in the cup. A drawer pulls one out. And a writer writes the word down. Tip the cup back every time."
+  },
+  {
+    "i": 13,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "Reader, find the full stop. Let's see what your book says.",
+    "tts": "Reader, find the full stop. Let's see what your book says."
+  }
+]

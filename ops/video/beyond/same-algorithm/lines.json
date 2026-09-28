@@ -1,0 +1,72 @@
+[
+  {
+    "i": 0,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "Four classrooms. One has a grid and a die. One has sheets and a cup of counters. One has a pile of paper slips. One has a booklet. They're all running the same model.",
+    "tts": "Four classrooms. One has a grid and a die. One has sheets and a cup of counters. One has a pile of paper slips. One has a booklet. They're all running the same model."
+  },
+  {
+    "i": 1,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Take one row: the word \"the\", from a picture book called The magpie. On a grid, it's tallies. On a ledger, it's marks in coloured boxes.",
+    "tts": "Take one row: the word \"the\", from a picture book called The magpie. On a grid, it's tallies. On a ledger, it's marks in coloured boxes."
+  },
+  {
+    "i": 2,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "In a cup, it's counters. In a pile of cutouts, it's slips of paper. Or it's just four numbers.",
+    "tts": "In a cup, it's counters. In a pile of cutouts, it's slips of paper. Or it's just four numbers."
+  },
+  {
+    "i": 3,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "And the numbers are chances. \"Fence\" has six of the nineteen, about a third. \"Dog\" has four, about a fifth.",
+    "tts": "And the numbers are chances. \"Fence\" has six of the nineteen, about a third. \"Dog\" has four, about a fifth."
+  },
+  {
+    "i": 4,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "So watch one sentence switch kits at every word. Start after a full stop, with a cup: seventeen counters. Draw red: \"it\".",
+    "tts": "So watch one sentence switch kits at every word. Start after a full stop, with a cup: seventeen counters. Draw red: \"it\"."
+  },
+  {
+    "i": 5,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "The row for \"it\" has ten marks, so give each mark a face of a ten-sided die. Roll a one: \"sits\". Then \"on\", and \"the\", with no choice at all.",
+    "tts": "The row for \"it\" has ten marks, so give each mark a face of a ten-sided die. Roll a one: \"sits\". Then \"on\", and \"the\", with no choice at all."
+  },
+  {
+    "i": 6,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "The row for \"the\", as nineteen slips. Shuffle, pull one out: \"dog\". And a full stop to finish.",
+    "tts": "The row for \"the\", as nineteen slips. Shuffle, pull one out: \"dog\". And a full stop to finish."
+  },
+  {
+    "i": 7,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Cup, die or slips, it's the same draw. More counts, more chances. The sentence can't tell which one you used.",
+    "tts": "Cup, die or slips, it's the same draw. More counts, more chances. The sentence can't tell which one you used."
+  },
+  {
+    "i": 8,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "So pick the kit that suits your room. A grid for pairs with a die. A ledger and a cup for a group sharing the jobs. Slips when you'd rather cut than count. Two rooms on different kits have built the same kind of model, and they can compare stories.",
+    "tts": "So pick the kit that suits your room. A grid for pairs with a die. A ledger and a cup for a group sharing the jobs. Slips when you'd rather cut than count. Two rooms on different kits have built the same kind of model, and they can compare stories."
+  },
+  {
+    "i": 9,
+    "speaker": "BEN",
+    "tc": true,
+    "caption": "And Claude or ChatGPT? Their numbers live in yet another body, billions of them, on a computer. But a model is its numbers, whatever holds them.",
+    "tts": "And Claude or ChatGPT? Their numbers live in yet another body, billions of them, on a computer. But a model is its numbers, whatever holds them."
+  }
+]

@@ -1,0 +1,65 @@
+[
+  {
+    "i": 0,
+    "speaker": "BEN",
+    "tc": true,
+    "caption": "Claude and ChatGPT write one word at a time. Pick a likely next word, write it down, go again. And you can do exactly that, by hand.",
+    "tts": "Claude and ChatGPT write one word at a time. Pick a likely next word, write it down, go again. And you can do exactly that, by hand."
+  },
+  {
+    "i": 1,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Take a picture book. Read it two words at a time, and count which word follows which.",
+    "tts": "Take a picture book. Read it two words at a time, and count which word follows which."
+  },
+  {
+    "i": 2,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Then write something new. Take the last word, look at what came after it in the book, and draw the next word by those counts. More counts, more likely.",
+    "tts": "Then write something new. Take the last word, look at what came after it in the book, and draw the next word by those counts. More counts, more likely."
+  },
+  {
+    "i": 3,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "You can count in tally marks, or marks on a ledger. Draw with a die, a cup of counters or a pile of paper slips. It's the same model every time: just numbers.",
+    "tts": "You can count in tally marks, or marks on a ledger. Draw with a die, a cup of counters or a pile of paper slips. It's the same model every time: just numbers."
+  },
+  {
+    "i": 4,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "And here's everything this little model could have written.",
+    "tts": "And here's everything this little model could have written."
+  },
+  {
+    "i": 5,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "A real model isn't a tiny grid. It looks at far more than one word, and learns from trillions of them. But it's the same loop.",
+    "tts": "A real model isn't a tiny grid. It looks at far more than one word, and learns from trillions of them. But it's the same loop."
+  },
+  {
+    "i": 6,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "And it's not new. In 1913 Andrey Markov went through a Russian poem by hand, counting whether a vowel or a consonant came next. Claude Shannon did it with words in 1948. We're just letting everyone else have a go.",
+    "tts": "And it's not new. In 1913 Andrey Markov went through a Russian poem by hand, counting whether a vowel or a consonant came next. Claude Shannon did it with words in 1948. We're just letting everyone else have a go."
+  },
+  {
+    "i": 7,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "LLMs Unplugged has the lessons, the slides, the printouts and a short video for every step. And the tools that made them: paste in any text you like, and out come the grids, the sheets and the booklets for it.",
+    "tts": "LLMs Unplugged has the lessons, the slides, the printouts and a short video for every step. And the tools that made them: paste in any text you like, and out come the grids, the sheets and the booklets for it."
+  },
+  {
+    "i": 8,
+    "speaker": "BEN",
+    "tc": true,
+    "caption": "It's all free, under a Creative Commons licence, at llmsunplugged.org. Grab a picture book, and come and see how it works.",
+    "tts": "It's all free, under a Creative Commons licence, at llmsunplugged.org. Grab a picture book, and come and see how it works."
+  }
+]

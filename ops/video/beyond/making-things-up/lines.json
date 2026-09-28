@@ -1,0 +1,79 @@
+[
+  {
+    "i": 0,
+    "speaker": "BEN",
+    "tc": true,
+    "caption": "AI models sometimes say things that are flat wrong, and say them with total confidence. People call it hallucinating. Let's watch a model do it, on paper.",
+    "tts": "AI models sometimes say things that are flat wrong, and say them with total confidence. People call it hallucinating. Let's watch a model do it, on paper."
+  },
+  {
+    "i": 1,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "First, the book's world. In The magpie, the magpie swoops, the postie and the dog run, and the fence stays exactly where it is.",
+    "tts": "First, the book's world. In The magpie, the magpie swoops, the postie and the dog run, and the fence stays exactly where it is."
+  },
+  {
+    "i": 2,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Now ask the model for a couple of sentences. \"Down comes the dog. Swoop!\"",
+    "tts": "Now ask the model for a couple of sentences. \"Down comes the dog. Swoop!\""
+  },
+  {
+    "i": 3,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "So the dog swoops. The book never said that. And in the book's world, it isn't true.",
+    "tts": "So the dog swoops. The book never said that. And in the book's world, it isn't true."
+  },
+  {
+    "i": 4,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Look at how it got there. \"Down comes the\" is in the book. \"The dog\" is in the book. A full stop after \"dog\", then \"swoop\", both in the book. Every pair is true. The sentence isn't.",
+    "tts": "Look at how it got there. \"Down comes the\" is in the book. \"The dog\" is in the book. A full stop after \"dog\", then \"swoop\", both in the book. Every pair is true. The sentence isn't."
+  },
+  {
+    "i": 5,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "And it's not bad luck. Rank every sentence this model can write by how likely it is. \"Swoop!\" first. \"It watches.\" Then \"Here comes the fence.\"",
+    "tts": "And it's not bad luck. Rank every sentence this model can write by how likely it is. \"Swoop!\" first. \"It watches.\" Then \"Here comes the fence.\""
+  },
+  {
+    "i": 6,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "The fence never comes anywhere. But it's the third likeliest thing this model says, three times as likely as \"Here comes the dog\", which the book actually says. Why? Because in the book, \"fence\" is what follows \"the\" most often, and a full stop always follows \"fence\".",
+    "tts": "The fence never comes anywhere. But it's the third likeliest thing this model says, three times as likely as \"Here comes the dog\", which the book actually says. Why? Because in the book, \"fence\" is what follows \"the\" most often, and a full stop always follows \"fence\"."
+  },
+  {
+    "i": 7,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Here's everything it could say in a short sentence. Seventy-nine of them. Seven are in the book.",
+    "tts": "Here's everything it could say in a short sentence. Seventy-nine of them. Seven are in the book."
+  },
+  {
+    "i": 8,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Nothing in the loop checks whether a sentence is true. The model is built to be likely, not right.",
+    "tts": "Nothing in the loop checks whether a sentence is true. The model is built to be likely, not right."
+  },
+  {
+    "i": 9,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Real models look at far more than one word, and learn from far more than one book, so the likely thing is usually the true thing. That's why they're right so often. But usually isn't always, and nothing in the loop checks.",
+    "tts": "Real models look at far more than one word, and learn from far more than one book, so the likely thing is usually the true thing. That's why they're right so often. But usually isn't always, and nothing in the loop checks."
+  },
+  {
+    "i": 10,
+    "speaker": "BEN",
+    "tc": true,
+    "caption": "So look back at the sentences you wrote. Which ones are true? And how would you know?",
+    "tts": "So look back at the sentences you wrote. Which ones are true? And how would you know?"
+  }
+]

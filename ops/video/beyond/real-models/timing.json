@@ -1,0 +1,1607 @@
+{
+  "slug": "beyond/real-models",
+  "audio": "assets/voice.wav",
+  "duration": 125.648,
+  "lines": [
+    {
+      "i": 0,
+      "speaker": "USHINI",
+      "tc": true,
+      "caption": "So is your grid a tiny Claude or ChatGPT? Yes and no. Here's exactly which parts are the same, and which aren't.",
+      "start": 0.19,
+      "end": 9.66,
+      "words": [
+        {
+          "w": "So",
+          "start": 0.34,
+          "end": 0.8
+        },
+        {
+          "w": "is",
+          "start": 0.8,
+          "end": 0.94
+        },
+        {
+          "w": "your",
+          "start": 0.94,
+          "end": 1.1
+        },
+        {
+          "w": "grid",
+          "start": 1.1,
+          "end": 1.3
+        },
+        {
+          "w": "a",
+          "start": 1.3,
+          "end": 1.4
+        },
+        {
+          "w": "tiny",
+          "start": 1.4,
+          "end": 1.66
+        },
+        {
+          "w": "Claude",
+          "start": 1.76,
+          "end": 2.0
+        },
+        {
+          "w": "or",
+          "start": 2.12,
+          "end": 2.34
+        },
+        {
+          "w": "ChatGPT?",
+          "start": 3.13,
+          "end": 3.51
+        },
+        {
+          "w": "Yes",
+          "start": 4.14,
+          "end": 4.68
+        },
+        {
+          "w": "and",
+          "start": 4.68,
+          "end": 4.9
+        },
+        {
+          "w": "no.",
+          "start": 4.9,
+          "end": 5.14
+        },
+        {
+          "w": "Here's",
+          "start": 5.94,
+          "end": 6.48
+        },
+        {
+          "w": "exactly",
+          "start": 6.48,
+          "end": 6.88
+        },
+        {
+          "w": "which",
+          "start": 6.88,
+          "end": 7.2
+        },
+        {
+          "w": "parts",
+          "start": 7.2,
+          "end": 7.58
+        },
+        {
+          "w": "are",
+          "start": 7.58,
+          "end": 7.82
+        },
+        {
+          "w": "the",
+          "start": 7.82,
+          "end": 7.94
+        },
+        {
+          "w": "same,",
+          "start": 7.94,
+          "end": 8.3
+        },
+        {
+          "w": "and",
+          "start": 8.3,
+          "end": 8.68
+        },
+        {
+          "w": "which",
+          "start": 8.68,
+          "end": 8.9
+        },
+        {
+          "w": "aren't.",
+          "start": 8.9,
+          "end": 9.46
+        }
+      ]
+    },
+    {
+      "i": 1,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "The same part is the loop. Text goes in. The model gives every possible next word a chance, one gets drawn, it's written down, and round it goes again. Your grid does that. So does Claude.",
+      "start": 10.59,
+      "end": 23.7,
+      "words": [
+        {
+          "w": "The",
+          "start": 10.74,
+          "end": 11.28
+        },
+        {
+          "w": "same",
+          "start": 11.28,
+          "end": 11.52
+        },
+        {
+          "w": "part",
+          "start": 11.52,
+          "end": 11.8
+        },
+        {
+          "w": "is",
+          "start": 11.8,
+          "end": 12.08
+        },
+        {
+          "w": "the",
+          "start": 12.08,
+          "end": 12.22
+        },
+        {
+          "w": "loop.",
+          "start": 12.22,
+          "end": 12.44
+        },
+        {
+          "w": "Text",
+          "start": 12.74,
+          "end": 13.28
+        },
+        {
+          "w": "goes",
+          "start": 13.28,
+          "end": 13.46
+        },
+        {
+          "w": "in.",
+          "start": 13.46,
+          "end": 13.76
+        },
+        {
+          "w": "The",
+          "start": 13.92,
+          "end": 14.46
+        },
+        {
+          "w": "model",
+          "start": 14.46,
+          "end": 14.7
+        },
+        {
+          "w": "gives",
+          "start": 14.7,
+          "end": 14.9
+        },
+        {
+          "w": "every",
+          "start": 14.9,
+          "end": 15.28
+        },
+        {
+          "w": "possible",
+          "start": 15.28,
+          "end": 15.6
+        },
+        {
+          "w": "next",
+          "start": 15.6,
+          "end": 15.9
+        },
+        {
+          "w": "word",
+          "start": 15.9,
+          "end": 16.2
+        },
+        {
+          "w": "a",
+          "start": 16.2,
+          "end": 16.3
+        },
+        {
+          "w": "chance,",
+          "start": 16.3,
+          "end": 16.62
+        },
+        {
+          "w": "one",
+          "start": 16.74,
+          "end": 17.2
+        },
+        {
+          "w": "gets",
+          "start": 17.2,
+          "end": 17.44
+        },
+        {
+          "w": "drawn,",
+          "start": 17.44,
+          "end": 17.76
+        },
+        {
+          "w": "it's",
+          "start": 17.94,
+          "end": 18.38
+        },
+        {
+          "w": "written",
+          "start": 18.38,
+          "end": 18.58
+        },
+        {
+          "w": "down,",
+          "start": 18.58,
+          "end": 18.92
+        },
+        {
+          "w": "and",
+          "start": 19.08,
+          "end": 19.5
+        },
+        {
+          "w": "round",
+          "start": 19.5,
+          "end": 19.72
+        },
+        {
+          "w": "it",
+          "start": 19.72,
+          "end": 19.86
+        },
+        {
+          "w": "goes",
+          "start": 19.86,
+          "end": 20.0
+        },
+        {
+          "w": "again.",
+          "start": 20.0,
+          "end": 20.24
+        },
+        {
+          "w": "Your",
+          "start": 20.52,
+          "end": 21.06
+        },
+        {
+          "w": "grid",
+          "start": 21.06,
+          "end": 21.38
+        },
+        {
+          "w": "does",
+          "start": 21.38,
+          "end": 21.68
+        },
+        {
+          "w": "that.",
+          "start": 21.68,
+          "end": 21.82
+        },
+        {
+          "w": "So",
+          "start": 22.14,
+          "end": 22.78
+        },
+        {
+          "w": "does",
+          "start": 22.78,
+          "end": 23.06
+        },
+        {
+          "w": "Claude.",
+          "start": 23.06,
+          "end": 23.5
+        }
+      ]
+    },
+    {
+      "i": 2,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "What's different is size. Your magpie grid has five hundred and seventy-six boxes.",
+      "start": 24.39,
+      "end": 30.64,
+      "words": [
+        {
+          "w": "What's",
+          "start": 24.54,
+          "end": 25.18
+        },
+        {
+          "w": "different",
+          "start": 25.18,
+          "end": 25.46
+        },
+        {
+          "w": "is",
+          "start": 25.46,
+          "end": 25.74
+        },
+        {
+          "w": "size.",
+          "start": 25.74,
+          "end": 26.06
+        },
+        {
+          "w": "Your",
+          "start": 26.74,
+          "end": 27.38
+        },
+        {
+          "w": "magpie",
+          "start": 27.38,
+          "end": 27.74
+        },
+        {
+          "w": "grid",
+          "start": 27.74,
+          "end": 28.08
+        },
+        {
+          "w": "has",
+          "start": 28.08,
+          "end": 28.5
+        },
+        {
+          "w": "five",
+          "start": 28.468,
+          "end": 28.888
+        },
+        {
+          "w": "hundred",
+          "start": 28.856,
+          "end": 29.276
+        },
+        {
+          "w": "and",
+          "start": 29.244,
+          "end": 29.664
+        },
+        {
+          "w": "seventy-six",
+          "start": 29.632,
+          "end": 30.052
+        },
+        {
+          "w": "boxes.",
+          "start": 30.02,
+          "end": 30.44
+        }
+      ]
+    },
+    {
+      "i": 3,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Frankenstein has seven thousand different words. That's forty-nine million boxes. And look how few have anything in them.",
+      "start": 32.33,
+      "end": 39.84,
+      "words": [
+        {
+          "w": "Frankenstein",
+          "start": 32.48,
+          "end": 33.12
+        },
+        {
+          "w": "has",
+          "start": 33.12,
+          "end": 33.44
+        },
+        {
+          "w": "seven",
+          "start": 33.487,
+          "end": 33.767
+        },
+        {
+          "w": "thousand",
+          "start": 33.853,
+          "end": 34.093
+        },
+        {
+          "w": "different",
+          "start": 34.22,
+          "end": 34.42
+        },
+        {
+          "w": "words.",
+          "start": 34.42,
+          "end": 34.86
+        },
+        {
+          "w": "That's",
+          "start": 35.16,
+          "end": 35.8
+        },
+        {
+          "w": "forty-nine",
+          "start": 35.63,
+          "end": 36.2
+        },
+        {
+          "w": "million",
+          "start": 36.1,
+          "end": 36.6
+        },
+        {
+          "w": "boxes.",
+          "start": 36.6,
+          "end": 37.04
+        },
+        {
+          "w": "And",
+          "start": 37.3,
+          "end": 37.92
+        },
+        {
+          "w": "look",
+          "start": 37.92,
+          "end": 38.12
+        },
+        {
+          "w": "how",
+          "start": 38.12,
+          "end": 38.32
+        },
+        {
+          "w": "few",
+          "start": 38.32,
+          "end": 38.58
+        },
+        {
+          "w": "have",
+          "start": 38.58,
+          "end": 38.84
+        },
+        {
+          "w": "anything",
+          "start": 38.84,
+          "end": 39.22
+        },
+        {
+          "w": "in",
+          "start": 39.22,
+          "end": 39.5
+        },
+        {
+          "w": "them.",
+          "start": 39.5,
+          "end": 39.64
+        }
+      ]
+    },
+    {
+      "i": 4,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "A real model knows about a hundred thousand words and bits of words. One word of context: ten billion boxes. And nearly every one of them empty, because nobody has ever written most pairs.",
+      "start": 40.25,
+      "end": 54.02,
+      "words": [
+        {
+          "w": "A",
+          "start": 40.4,
+          "end": 41.04
+        },
+        {
+          "w": "real",
+          "start": 41.04,
+          "end": 41.28
+        },
+        {
+          "w": "model",
+          "start": 41.28,
+          "end": 41.6
+        },
+        {
+          "w": "knows",
+          "start": 41.6,
+          "end": 41.92
+        },
+        {
+          "w": "about",
+          "start": 41.92,
+          "end": 42.26
+        },
+        {
+          "w": "a",
+          "start": 42.225,
+          "end": 42.565
+        },
+        {
+          "w": "hundred",
+          "start": 42.53,
+          "end": 42.87
+        },
+        {
+          "w": "thousand",
+          "start": 42.835,
+          "end": 43.175
+        },
+        {
+          "w": "words",
+          "start": 43.14,
+          "end": 43.48
+        },
+        {
+          "w": "and",
+          "start": 43.48,
+          "end": 43.86
+        },
+        {
+          "w": "bits",
+          "start": 43.86,
+          "end": 44.08
+        },
+        {
+          "w": "of",
+          "start": 44.08,
+          "end": 44.26
+        },
+        {
+          "w": "words.",
+          "start": 44.26,
+          "end": 44.58
+        },
+        {
+          "w": "One",
+          "start": 45.32,
+          "end": 45.96
+        },
+        {
+          "w": "word",
+          "start": 45.96,
+          "end": 46.3
+        },
+        {
+          "w": "of",
+          "start": 46.3,
+          "end": 46.48
+        },
+        {
+          "w": "context:",
+          "start": 46.48,
+          "end": 46.84
+        },
+        {
+          "w": "ten",
+          "start": 47.03,
+          "end": 47.38
+        },
+        {
+          "w": "billion",
+          "start": 47.58,
+          "end": 47.92
+        },
+        {
+          "w": "boxes.",
+          "start": 47.92,
+          "end": 48.34
+        },
+        {
+          "w": "And",
+          "start": 49.06,
+          "end": 49.7
+        },
+        {
+          "w": "nearly",
+          "start": 49.7,
+          "end": 49.94
+        },
+        {
+          "w": "every",
+          "start": 49.94,
+          "end": 50.3
+        },
+        {
+          "w": "one",
+          "start": 50.3,
+          "end": 50.56
+        },
+        {
+          "w": "of",
+          "start": 50.56,
+          "end": 50.7
+        },
+        {
+          "w": "them",
+          "start": 50.7,
+          "end": 50.84
+        },
+        {
+          "w": "empty,",
+          "start": 50.84,
+          "end": 51.14
+        },
+        {
+          "w": "because",
+          "start": 51.68,
+          "end": 51.88
+        },
+        {
+          "w": "nobody",
+          "start": 51.88,
+          "end": 52.22
+        },
+        {
+          "w": "has",
+          "start": 52.22,
+          "end": 52.6
+        },
+        {
+          "w": "ever",
+          "start": 52.6,
+          "end": 52.86
+        },
+        {
+          "w": "written",
+          "start": 52.86,
+          "end": 53.2
+        },
+        {
+          "w": "most",
+          "start": 53.2,
+          "end": 53.48
+        },
+        {
+          "w": "pairs.",
+          "start": 53.48,
+          "end": 53.82
+        }
+      ]
+    },
+    {
+      "i": 5,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "And that's just one word of context. Your grid only ever looks at the last word. A real model looks at the whole conversation.",
+      "start": 55.19,
+      "end": 63.08,
+      "words": [
+        {
+          "w": "And",
+          "start": 55.34,
+          "end": 55.9
+        },
+        {
+          "w": "that's",
+          "start": 55.9,
+          "end": 56.2
+        },
+        {
+          "w": "just",
+          "start": 56.2,
+          "end": 56.42
+        },
+        {
+          "w": "one",
+          "start": 56.42,
+          "end": 56.72
+        },
+        {
+          "w": "word",
+          "start": 56.72,
+          "end": 57.02
+        },
+        {
+          "w": "of",
+          "start": 57.02,
+          "end": 57.16
+        },
+        {
+          "w": "context.",
+          "start": 57.16,
+          "end": 57.44
+        },
+        {
+          "w": "Your",
+          "start": 57.88,
+          "end": 58.34
+        },
+        {
+          "w": "grid",
+          "start": 58.34,
+          "end": 58.58
+        },
+        {
+          "w": "only",
+          "start": 58.58,
+          "end": 58.84
+        },
+        {
+          "w": "ever",
+          "start": 58.84,
+          "end": 59.22
+        },
+        {
+          "w": "looks",
+          "start": 59.22,
+          "end": 59.54
+        },
+        {
+          "w": "at",
+          "start": 59.54,
+          "end": 59.74
+        },
+        {
+          "w": "the",
+          "start": 59.74,
+          "end": 59.82
+        },
+        {
+          "w": "last",
+          "start": 59.82,
+          "end": 60.04
+        },
+        {
+          "w": "word.",
+          "start": 60.04,
+          "end": 60.34
+        },
+        {
+          "w": "A",
+          "start": 60.54,
+          "end": 61.1
+        },
+        {
+          "w": "real",
+          "start": 61.1,
+          "end": 61.32
+        },
+        {
+          "w": "model",
+          "start": 61.32,
+          "end": 61.58
+        },
+        {
+          "w": "looks",
+          "start": 61.58,
+          "end": 61.92
+        },
+        {
+          "w": "at",
+          "start": 61.92,
+          "end": 62.12
+        },
+        {
+          "w": "the",
+          "start": 62.12,
+          "end": 62.24
+        },
+        {
+          "w": "whole",
+          "start": 62.24,
+          "end": 62.42
+        },
+        {
+          "w": "conversation.",
+          "start": 62.42,
+          "end": 62.88
+        }
+      ]
+    },
+    {
+      "i": 6,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "Here's why that matters. Frankenstein, looking back one word. Then two. Then five.",
+      "start": 63.99,
+      "end": 72.36,
+      "words": [
+        {
+          "w": "Here's",
+          "start": 64.14,
+          "end": 64.7
+        },
+        {
+          "w": "why",
+          "start": 64.7,
+          "end": 64.9
+        },
+        {
+          "w": "that",
+          "start": 64.9,
+          "end": 65.14
+        },
+        {
+          "w": "matters.",
+          "start": 65.14,
+          "end": 65.54
+        },
+        {
+          "w": "Frankenstein,",
+          "start": 66.98,
+          "end": 67.54
+        },
+        {
+          "w": "looking",
+          "start": 67.6,
+          "end": 67.94
+        },
+        {
+          "w": "back",
+          "start": 67.94,
+          "end": 68.24
+        },
+        {
+          "w": "one",
+          "start": 68.24,
+          "end": 68.52
+        },
+        {
+          "w": "word.",
+          "start": 68.52,
+          "end": 68.92
+        },
+        {
+          "w": "Then",
+          "start": 69.66,
+          "end": 70.22
+        },
+        {
+          "w": "two.",
+          "start": 70.22,
+          "end": 70.5
+        },
+        {
+          "w": "Then",
+          "start": 71.28,
+          "end": 71.84
+        },
+        {
+          "w": "five.",
+          "start": 71.84,
+          "end": 72.16
+        }
+      ]
+    },
+    {
+      "i": 7,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "So a real model can't keep a box for every pair. Instead it shares what it learns across words. Look at the magpie: the rows for \"dog\" and \"postie\" are exactly the same. A model that notices that can guess about the postie from what it saw the dog do.",
+      "start": 73.67,
+      "end": 88.58,
+      "words": [
+        {
+          "w": "So",
+          "start": 73.82,
+          "end": 74.38
+        },
+        {
+          "w": "a",
+          "start": 74.38,
+          "end": 74.5
+        },
+        {
+          "w": "real",
+          "start": 74.5,
+          "end": 74.7
+        },
+        {
+          "w": "model",
+          "start": 74.7,
+          "end": 74.98
+        },
+        {
+          "w": "can't",
+          "start": 74.98,
+          "end": 75.36
+        },
+        {
+          "w": "keep",
+          "start": 75.36,
+          "end": 75.54
+        },
+        {
+          "w": "a",
+          "start": 75.54,
+          "end": 75.68
+        },
+        {
+          "w": "box",
+          "start": 75.68,
+          "end": 75.94
+        },
+        {
+          "w": "for",
+          "start": 75.94,
+          "end": 76.18
+        },
+        {
+          "w": "every",
+          "start": 76.18,
+          "end": 76.46
+        },
+        {
+          "w": "pair.",
+          "start": 76.46,
+          "end": 76.74
+        },
+        {
+          "w": "Instead",
+          "start": 77.12,
+          "end": 77.68
+        },
+        {
+          "w": "it",
+          "start": 77.68,
+          "end": 77.88
+        },
+        {
+          "w": "shares",
+          "start": 77.88,
+          "end": 78.2
+        },
+        {
+          "w": "what",
+          "start": 78.2,
+          "end": 78.48
+        },
+        {
+          "w": "it",
+          "start": 78.48,
+          "end": 78.6
+        },
+        {
+          "w": "learns",
+          "start": 78.6,
+          "end": 78.86
+        },
+        {
+          "w": "across",
+          "start": 78.86,
+          "end": 79.12
+        },
+        {
+          "w": "words.",
+          "start": 79.12,
+          "end": 79.54
+        },
+        {
+          "w": "Look",
+          "start": 80.1,
+          "end": 80.38
+        },
+        {
+          "w": "at",
+          "start": 80.38,
+          "end": 80.54
+        },
+        {
+          "w": "the",
+          "start": 80.54,
+          "end": 80.62
+        },
+        {
+          "w": "magpie:",
+          "start": 80.62,
+          "end": 80.96
+        },
+        {
+          "w": "the",
+          "start": 81.66,
+          "end": 81.68
+        },
+        {
+          "w": "rows",
+          "start": 81.68,
+          "end": 81.86
+        },
+        {
+          "w": "for",
+          "start": 81.86,
+          "end": 82.08
+        },
+        {
+          "w": "\"dog\"",
+          "start": 82.08,
+          "end": 82.34
+        },
+        {
+          "w": "and",
+          "start": 82.34,
+          "end": 82.64
+        },
+        {
+          "w": "\"postie\"",
+          "start": 82.64,
+          "end": 83.1
+        },
+        {
+          "w": "are",
+          "start": 83.1,
+          "end": 83.32
+        },
+        {
+          "w": "exactly",
+          "start": 83.32,
+          "end": 83.7
+        },
+        {
+          "w": "the",
+          "start": 83.7,
+          "end": 83.94
+        },
+        {
+          "w": "same.",
+          "start": 83.94,
+          "end": 84.22
+        },
+        {
+          "w": "A",
+          "start": 84.4,
+          "end": 84.92
+        },
+        {
+          "w": "model",
+          "start": 84.92,
+          "end": 85.18
+        },
+        {
+          "w": "that",
+          "start": 85.18,
+          "end": 85.36
+        },
+        {
+          "w": "notices",
+          "start": 85.36,
+          "end": 85.78
+        },
+        {
+          "w": "that",
+          "start": 85.78,
+          "end": 86.02
+        },
+        {
+          "w": "can",
+          "start": 86.02,
+          "end": 86.14
+        },
+        {
+          "w": "guess",
+          "start": 86.14,
+          "end": 86.38
+        },
+        {
+          "w": "about",
+          "start": 86.38,
+          "end": 86.58
+        },
+        {
+          "w": "the",
+          "start": 86.58,
+          "end": 86.72
+        },
+        {
+          "w": "postie",
+          "start": 86.72,
+          "end": 87.14
+        },
+        {
+          "w": "from",
+          "start": 87.14,
+          "end": 87.32
+        },
+        {
+          "w": "what",
+          "start": 87.32,
+          "end": 87.54
+        },
+        {
+          "w": "it",
+          "start": 87.54,
+          "end": 87.64
+        },
+        {
+          "w": "saw",
+          "start": 87.64,
+          "end": 87.8
+        },
+        {
+          "w": "the",
+          "start": 87.8,
+          "end": 88.02
+        },
+        {
+          "w": "dog",
+          "start": 88.02,
+          "end": 88.22
+        },
+        {
+          "w": "do.",
+          "start": 88.22,
+          "end": 88.38
+        }
+      ]
+    },
+    {
+      "i": 8,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "It doesn't use whole words, either. It uses tokens: common words whole, rarer ones in pieces.",
+      "start": 89.19,
+      "end": 97.06,
+      "words": [
+        {
+          "w": "It",
+          "start": 89.34,
+          "end": 89.86
+        },
+        {
+          "w": "doesn't",
+          "start": 89.86,
+          "end": 90.22
+        },
+        {
+          "w": "use",
+          "start": 90.22,
+          "end": 90.44
+        },
+        {
+          "w": "whole",
+          "start": 90.44,
+          "end": 90.68
+        },
+        {
+          "w": "words,",
+          "start": 90.68,
+          "end": 91.1
+        },
+        {
+          "w": "either.",
+          "start": 91.32,
+          "end": 91.7
+        },
+        {
+          "w": "It",
+          "start": 92.42,
+          "end": 92.94
+        },
+        {
+          "w": "uses",
+          "start": 92.94,
+          "end": 93.22
+        },
+        {
+          "w": "tokens:",
+          "start": 93.22,
+          "end": 93.6
+        },
+        {
+          "w": "common",
+          "start": 94.06,
+          "end": 94.58
+        },
+        {
+          "w": "words",
+          "start": 94.58,
+          "end": 94.94
+        },
+        {
+          "w": "whole,",
+          "start": 94.94,
+          "end": 95.24
+        },
+        {
+          "w": "rarer",
+          "start": 95.5,
+          "end": 96.04
+        },
+        {
+          "w": "ones",
+          "start": 96.04,
+          "end": 96.24
+        },
+        {
+          "w": "in",
+          "start": 96.24,
+          "end": 96.56
+        },
+        {
+          "w": "pieces.",
+          "start": 96.56,
+          "end": 96.86
+        }
+      ]
+    },
+    {
+      "i": 9,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "And after all that reading, it gets a second round of training, with people rating its replies. That's what makes it answer your question instead of just carrying on your text.",
+      "start": 98.41,
+      "end": 108.08,
+      "words": [
+        {
+          "w": "And",
+          "start": 98.56,
+          "end": 99.08
+        },
+        {
+          "w": "after",
+          "start": 99.08,
+          "end": 99.32
+        },
+        {
+          "w": "all",
+          "start": 99.32,
+          "end": 99.62
+        },
+        {
+          "w": "that",
+          "start": 99.62,
+          "end": 99.78
+        },
+        {
+          "w": "reading,",
+          "start": 99.78,
+          "end": 100.08
+        },
+        {
+          "w": "it",
+          "start": 100.22,
+          "end": 100.62
+        },
+        {
+          "w": "gets",
+          "start": 100.62,
+          "end": 100.82
+        },
+        {
+          "w": "a",
+          "start": 100.82,
+          "end": 100.94
+        },
+        {
+          "w": "second",
+          "start": 100.94,
+          "end": 101.16
+        },
+        {
+          "w": "round",
+          "start": 101.16,
+          "end": 101.42
+        },
+        {
+          "w": "of",
+          "start": 101.42,
+          "end": 101.56
+        },
+        {
+          "w": "training,",
+          "start": 101.56,
+          "end": 101.78
+        },
+        {
+          "w": "with",
+          "start": 101.96,
+          "end": 102.42
+        },
+        {
+          "w": "people",
+          "start": 102.42,
+          "end": 102.74
+        },
+        {
+          "w": "rating",
+          "start": 102.74,
+          "end": 103.04
+        },
+        {
+          "w": "its",
+          "start": 103.04,
+          "end": 103.26
+        },
+        {
+          "w": "replies.",
+          "start": 103.26,
+          "end": 103.54
+        },
+        {
+          "w": "That's",
+          "start": 104.12,
+          "end": 104.64
+        },
+        {
+          "w": "what",
+          "start": 104.64,
+          "end": 104.76
+        },
+        {
+          "w": "makes",
+          "start": 104.76,
+          "end": 105.02
+        },
+        {
+          "w": "it",
+          "start": 105.02,
+          "end": 105.2
+        },
+        {
+          "w": "answer",
+          "start": 105.2,
+          "end": 105.5
+        },
+        {
+          "w": "your",
+          "start": 105.5,
+          "end": 105.68
+        },
+        {
+          "w": "question",
+          "start": 105.68,
+          "end": 106.04
+        },
+        {
+          "w": "instead",
+          "start": 106.04,
+          "end": 106.4
+        },
+        {
+          "w": "of",
+          "start": 106.4,
+          "end": 106.68
+        },
+        {
+          "w": "just",
+          "start": 106.68,
+          "end": 106.88
+        },
+        {
+          "w": "carrying",
+          "start": 106.88,
+          "end": 107.28
+        },
+        {
+          "w": "on",
+          "start": 107.28,
+          "end": 107.46
+        },
+        {
+          "w": "your",
+          "start": 107.46,
+          "end": 107.6
+        },
+        {
+          "w": "text.",
+          "start": 107.6,
+          "end": 107.88
+        }
+      ]
+    },
+    {
+      "i": 10,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "More context, a smarter way to store it, pieces of words, and a second round of training. None of it changes the loop.",
+      "start": 108.79,
+      "end": 117.0,
+      "words": [
+        {
+          "w": "More",
+          "start": 108.94,
+          "end": 109.46
+        },
+        {
+          "w": "context,",
+          "start": 109.46,
+          "end": 109.92
+        },
+        {
+          "w": "a",
+          "start": 110.16,
+          "end": 110.48
+        },
+        {
+          "w": "smarter",
+          "start": 110.48,
+          "end": 110.8
+        },
+        {
+          "w": "way",
+          "start": 110.8,
+          "end": 111.04
+        },
+        {
+          "w": "to",
+          "start": 111.04,
+          "end": 111.22
+        },
+        {
+          "w": "store",
+          "start": 111.22,
+          "end": 111.46
+        },
+        {
+          "w": "it,",
+          "start": 111.46,
+          "end": 111.7
+        },
+        {
+          "w": "pieces",
+          "start": 111.74,
+          "end": 112.16
+        },
+        {
+          "w": "of",
+          "start": 112.16,
+          "end": 112.38
+        },
+        {
+          "w": "words,",
+          "start": 112.38,
+          "end": 112.78
+        },
+        {
+          "w": "and",
+          "start": 112.94,
+          "end": 113.28
+        },
+        {
+          "w": "a",
+          "start": 113.28,
+          "end": 113.38
+        },
+        {
+          "w": "second",
+          "start": 113.38,
+          "end": 113.68
+        },
+        {
+          "w": "round",
+          "start": 113.68,
+          "end": 113.96
+        },
+        {
+          "w": "of",
+          "start": 113.96,
+          "end": 114.14
+        },
+        {
+          "w": "training.",
+          "start": 114.14,
+          "end": 114.4
+        },
+        {
+          "w": "None",
+          "start": 115.24,
+          "end": 115.72
+        },
+        {
+          "w": "of",
+          "start": 115.72,
+          "end": 115.88
+        },
+        {
+          "w": "it",
+          "start": 115.88,
+          "end": 115.96
+        },
+        {
+          "w": "changes",
+          "start": 115.96,
+          "end": 116.3
+        },
+        {
+          "w": "the",
+          "start": 116.3,
+          "end": 116.56
+        },
+        {
+          "w": "loop.",
+          "start": 116.56,
+          "end": 116.8
+        }
+      ]
+    },
+    {
+      "i": 11,
+      "speaker": "BEN",
+      "tc": true,
+      "caption": "Everything Claude or ChatGPT does, it does one token at a time. Just like you did.",
+      "start": 118.35,
+      "end": 124.26,
+      "words": [
+        {
+          "w": "Everything",
+          "start": 118.5,
+          "end": 118.98
+        },
+        {
+          "w": "Claude",
+          "start": 118.98,
+          "end": 119.46
+        },
+        {
+          "w": "or",
+          "start": 119.46,
+          "end": 119.7
+        },
+        {
+          "w": "ChatGPT",
+          "start": 119.7,
+          "end": 120.38
+        },
+        {
+          "w": "does,",
+          "start": 120.38,
+          "end": 120.8
+        },
+        {
+          "w": "it",
+          "start": 121.0,
+          "end": 121.46
+        },
+        {
+          "w": "does",
+          "start": 121.46,
+          "end": 121.64
+        },
+        {
+          "w": "one",
+          "start": 121.64,
+          "end": 121.88
+        },
+        {
+          "w": "token",
+          "start": 121.88,
+          "end": 122.2
+        },
+        {
+          "w": "at",
+          "start": 122.2,
+          "end": 122.36
+        },
+        {
+          "w": "a",
+          "start": 122.36,
+          "end": 122.44
+        },
+        {
+          "w": "time.",
+          "start": 122.44,
+          "end": 122.74
+        },
+        {
+          "w": "Just",
+          "start": 122.96,
+          "end": 123.44
+        },
+        {
+          "w": "like",
+          "start": 123.44,
+          "end": 123.66
+        },
+        {
+          "w": "you",
+          "start": 123.66,
+          "end": 123.88
+        },
+        {
+          "w": "did.",
+          "start": 123.88,
+          "end": 124.06
+        }
+      ]
+    }
+  ]
+}

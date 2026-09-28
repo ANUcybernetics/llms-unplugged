@@ -1,0 +1,34 @@
+WEBVTT
+
+00:00:00.150 --> 00:00:09.640
+AI models sometimes say things that are flat wrong, and say them with total confidence. People call it hallucinating. Let's watch a model do it, on paper.
+
+00:00:10.590 --> 00:00:19.600
+First, the book's world. In The magpie, the magpie swoops, the postie and the dog run, and the fence stays exactly where it is.
+
+00:00:20.790 --> 00:00:26.260
+Now ask the model for a couple of sentences. "Down comes the dog. Swoop!"
+
+00:00:27.290 --> 00:00:34.180
+So the dog swoops. The book never said that. And in the book's world, it isn't true.
+
+00:00:35.470 --> 00:00:48.120
+Look at how it got there. "Down comes the" is in the book. "The dog" is in the book. A full stop after "dog", then "swoop", both in the book. Every pair is true. The sentence isn't.
+
+00:00:48.530 --> 00:01:00.940
+And it's not bad luck. Rank every sentence this model can write by how likely it is. "Swoop!" first. "It watches." Then "Here comes the fence."
+
+00:01:02.170 --> 00:01:17.800
+The fence never comes anywhere. But it's the third likeliest thing this model says, three times as likely as "Here comes the dog", which the book actually says. Why? Because in the book, "fence" is what follows "the" most often, and a full stop always follows "fence".
+
+00:01:19.050 --> 00:01:26.460
+Here's everything it could say in a short sentence. Seventy-nine of them. Seven are in the book.
+
+00:01:27.730 --> 00:01:33.460
+Nothing in the loop checks whether a sentence is true. The model is built to be likely, not right.
+
+00:01:34.270 --> 00:01:48.820
+Real models look at far more than one word, and learn from far more than one book, so the likely thing is usually the true thing. That's why they're right so often. But usually isn't always, and nothing in the loop checks.
+
+00:01:50.250 --> 00:01:55.720
+So look back at the sentences you wrote. Which ones are true? And how would you know?

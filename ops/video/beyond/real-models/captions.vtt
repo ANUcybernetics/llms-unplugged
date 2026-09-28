@@ -1,0 +1,37 @@
+WEBVTT
+
+00:00:00.190 --> 00:00:09.660
+So is your grid a tiny Claude or ChatGPT? Yes and no. Here's exactly which parts are the same, and which aren't.
+
+00:00:10.590 --> 00:00:23.700
+The same part is the loop. Text goes in. The model gives every possible next word a chance, one gets drawn, it's written down, and round it goes again. Your grid does that. So does Claude.
+
+00:00:24.390 --> 00:00:30.640
+What's different is size. Your magpie grid has five hundred and seventy-six boxes.
+
+00:00:32.330 --> 00:00:39.840
+Frankenstein has seven thousand different words. That's forty-nine million boxes. And look how few have anything in them.
+
+00:00:40.250 --> 00:00:54.020
+A real model knows about a hundred thousand words and bits of words. One word of context: ten billion boxes. And nearly every one of them empty, because nobody has ever written most pairs.
+
+00:00:55.190 --> 00:01:03.080
+And that's just one word of context. Your grid only ever looks at the last word. A real model looks at the whole conversation.
+
+00:01:03.990 --> 00:01:12.360
+Here's why that matters. Frankenstein, looking back one word. Then two. Then five.
+
+00:01:13.670 --> 00:01:28.580
+So a real model can't keep a box for every pair. Instead it shares what it learns across words. Look at the magpie: the rows for "dog" and "postie" are exactly the same. A model that notices that can guess about the postie from what it saw the dog do.
+
+00:01:29.190 --> 00:01:37.060
+It doesn't use whole words, either. It uses tokens: common words whole, rarer ones in pieces.
+
+00:01:38.410 --> 00:01:48.080
+And after all that reading, it gets a second round of training, with people rating its replies. That's what makes it answer your question instead of just carrying on your text.
+
+00:01:48.790 --> 00:01:57.000
+More context, a smarter way to store it, pieces of words, and a second round of training. None of it changes the loop.
+
+00:01:58.350 --> 00:02:04.260
+Everything Claude or ChatGPT does, it does one token at a time. Just like you did.

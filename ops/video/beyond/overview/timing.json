@@ -1,0 +1,1307 @@
+{
+  "slug": "beyond/overview",
+  "audio": "assets/voice.wav",
+  "duration": 95.276,
+  "lines": [
+    {
+      "i": 0,
+      "speaker": "BEN",
+      "tc": true,
+      "caption": "Claude and ChatGPT write one word at a time. Pick a likely next word, write it down, go again. And you can do exactly that, by hand.",
+      "start": 0.22,
+      "end": 9.87,
+      "words": [
+        {
+          "w": "Claude",
+          "start": 0.37,
+          "end": 0.93
+        },
+        {
+          "w": "and",
+          "start": 0.93,
+          "end": 1.13
+        },
+        {
+          "w": "ChatGPT",
+          "start": 1.13,
+          "end": 2.01
+        },
+        {
+          "w": "write",
+          "start": 2.01,
+          "end": 2.29
+        },
+        {
+          "w": "one",
+          "start": 2.29,
+          "end": 2.53
+        },
+        {
+          "w": "word",
+          "start": 2.53,
+          "end": 2.85
+        },
+        {
+          "w": "at",
+          "start": 2.85,
+          "end": 3.03
+        },
+        {
+          "w": "a",
+          "start": 3.03,
+          "end": 3.11
+        },
+        {
+          "w": "time.",
+          "start": 3.11,
+          "end": 3.35
+        },
+        {
+          "w": "Pick",
+          "start": 3.53,
+          "end": 4.05
+        },
+        {
+          "w": "a",
+          "start": 4.05,
+          "end": 4.21
+        },
+        {
+          "w": "likely",
+          "start": 4.21,
+          "end": 4.47
+        },
+        {
+          "w": "next",
+          "start": 4.47,
+          "end": 4.69
+        },
+        {
+          "w": "word,",
+          "start": 4.69,
+          "end": 5.05
+        },
+        {
+          "w": "write",
+          "start": 5.23,
+          "end": 5.69
+        },
+        {
+          "w": "it",
+          "start": 5.69,
+          "end": 5.87
+        },
+        {
+          "w": "down,",
+          "start": 5.87,
+          "end": 6.11
+        },
+        {
+          "w": "go",
+          "start": 6.27,
+          "end": 6.61
+        },
+        {
+          "w": "again.",
+          "start": 6.61,
+          "end": 6.91
+        },
+        {
+          "w": "And",
+          "start": 7.19,
+          "end": 7.71
+        },
+        {
+          "w": "you",
+          "start": 7.71,
+          "end": 7.81
+        },
+        {
+          "w": "can",
+          "start": 7.81,
+          "end": 7.97
+        },
+        {
+          "w": "do",
+          "start": 7.97,
+          "end": 8.13
+        },
+        {
+          "w": "exactly",
+          "start": 8.13,
+          "end": 8.55
+        },
+        {
+          "w": "that,",
+          "start": 8.55,
+          "end": 8.89
+        },
+        {
+          "w": "by",
+          "start": 8.89,
+          "end": 9.29
+        },
+        {
+          "w": "hand.",
+          "start": 9.29,
+          "end": 9.67
+        }
+      ]
+    },
+    {
+      "i": 1,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "Take a picture book. Read it two words at a time, and count which word follows which.",
+      "start": 10.6,
+      "end": 16.59,
+      "words": [
+        {
+          "w": "Take",
+          "start": 10.75,
+          "end": 11.27
+        },
+        {
+          "w": "a",
+          "start": 11.27,
+          "end": 11.43
+        },
+        {
+          "w": "picture",
+          "start": 11.43,
+          "end": 11.71
+        },
+        {
+          "w": "book.",
+          "start": 11.71,
+          "end": 11.89
+        },
+        {
+          "w": "Read",
+          "start": 12.69,
+          "end": 13.21
+        },
+        {
+          "w": "it",
+          "start": 13.21,
+          "end": 13.35
+        },
+        {
+          "w": "two",
+          "start": 13.35,
+          "end": 13.47
+        },
+        {
+          "w": "words",
+          "start": 13.47,
+          "end": 13.85
+        },
+        {
+          "w": "at",
+          "start": 13.85,
+          "end": 14.05
+        },
+        {
+          "w": "a",
+          "start": 14.05,
+          "end": 14.15
+        },
+        {
+          "w": "time,",
+          "start": 14.15,
+          "end": 14.51
+        },
+        {
+          "w": "and",
+          "start": 14.51,
+          "end": 14.89
+        },
+        {
+          "w": "count",
+          "start": 14.89,
+          "end": 15.21
+        },
+        {
+          "w": "which",
+          "start": 15.21,
+          "end": 15.47
+        },
+        {
+          "w": "word",
+          "start": 15.47,
+          "end": 15.75
+        },
+        {
+          "w": "follows",
+          "start": 15.75,
+          "end": 16.13
+        },
+        {
+          "w": "which.",
+          "start": 16.13,
+          "end": 16.39
+        }
+      ]
+    },
+    {
+      "i": 2,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Then write something new. Take the last word, look at what came after it in the book, and draw the next word by those counts. More counts, more likely.",
+      "start": 17.96,
+      "end": 27.37,
+      "words": [
+        {
+          "w": "Then",
+          "start": 18.11,
+          "end": 18.63
+        },
+        {
+          "w": "write",
+          "start": 18.63,
+          "end": 18.93
+        },
+        {
+          "w": "something",
+          "start": 18.93,
+          "end": 19.27
+        },
+        {
+          "w": "new.",
+          "start": 19.27,
+          "end": 19.61
+        },
+        {
+          "w": "Take",
+          "start": 19.85,
+          "end": 20.37
+        },
+        {
+          "w": "the",
+          "start": 20.37,
+          "end": 20.61
+        },
+        {
+          "w": "last",
+          "start": 20.61,
+          "end": 20.79
+        },
+        {
+          "w": "word,",
+          "start": 20.79,
+          "end": 21.13
+        },
+        {
+          "w": "look",
+          "start": 21.29,
+          "end": 21.77
+        },
+        {
+          "w": "at",
+          "start": 21.77,
+          "end": 21.91
+        },
+        {
+          "w": "what",
+          "start": 21.91,
+          "end": 22.03
+        },
+        {
+          "w": "came",
+          "start": 22.03,
+          "end": 22.27
+        },
+        {
+          "w": "after",
+          "start": 22.27,
+          "end": 22.57
+        },
+        {
+          "w": "it",
+          "start": 22.57,
+          "end": 22.69
+        },
+        {
+          "w": "in",
+          "start": 22.69,
+          "end": 22.79
+        },
+        {
+          "w": "the",
+          "start": 22.79,
+          "end": 22.85
+        },
+        {
+          "w": "book,",
+          "start": 22.85,
+          "end": 23.09
+        },
+        {
+          "w": "and",
+          "start": 23.15,
+          "end": 23.57
+        },
+        {
+          "w": "draw",
+          "start": 23.57,
+          "end": 23.79
+        },
+        {
+          "w": "the",
+          "start": 23.79,
+          "end": 23.95
+        },
+        {
+          "w": "next",
+          "start": 23.95,
+          "end": 24.15
+        },
+        {
+          "w": "word",
+          "start": 24.15,
+          "end": 24.47
+        },
+        {
+          "w": "by",
+          "start": 24.47,
+          "end": 24.69
+        },
+        {
+          "w": "those",
+          "start": 24.69,
+          "end": 24.89
+        },
+        {
+          "w": "counts.",
+          "start": 24.89,
+          "end": 25.17
+        },
+        {
+          "w": "More",
+          "start": 25.47,
+          "end": 25.99
+        },
+        {
+          "w": "counts,",
+          "start": 25.99,
+          "end": 26.33
+        },
+        {
+          "w": "more",
+          "start": 26.49,
+          "end": 26.83
+        },
+        {
+          "w": "likely.",
+          "start": 26.83,
+          "end": 27.17
+        }
+      ]
+    },
+    {
+      "i": 3,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "You can count in tally marks, or marks on a ledger. Draw with a die, a cup of counters or a pile of paper slips. It's the same model every time: just numbers.",
+      "start": 27.96,
+      "end": 40.21,
+      "words": [
+        {
+          "w": "You",
+          "start": 28.11,
+          "end": 28.67
+        },
+        {
+          "w": "can",
+          "start": 28.67,
+          "end": 28.85
+        },
+        {
+          "w": "count",
+          "start": 28.85,
+          "end": 29.17
+        },
+        {
+          "w": "in",
+          "start": 29.07,
+          "end": 29.39
+        },
+        {
+          "w": "tally",
+          "start": 29.29,
+          "end": 29.61
+        },
+        {
+          "w": "marks,",
+          "start": 29.61,
+          "end": 29.95
+        },
+        {
+          "w": "or",
+          "start": 30.17,
+          "end": 30.55
+        },
+        {
+          "w": "marks",
+          "start": 30.55,
+          "end": 30.87
+        },
+        {
+          "w": "on",
+          "start": 30.87,
+          "end": 31.05
+        },
+        {
+          "w": "a",
+          "start": 31.05,
+          "end": 31.19
+        },
+        {
+          "w": "ledger.",
+          "start": 31.19,
+          "end": 31.51
+        },
+        {
+          "w": "Draw",
+          "start": 32.13,
+          "end": 32.69
+        },
+        {
+          "w": "with",
+          "start": 32.69,
+          "end": 32.93
+        },
+        {
+          "w": "a",
+          "start": 32.93,
+          "end": 33.05
+        },
+        {
+          "w": "die,",
+          "start": 33.05,
+          "end": 33.29
+        },
+        {
+          "w": "a",
+          "start": 33.47,
+          "end": 33.95
+        },
+        {
+          "w": "cup",
+          "start": 33.95,
+          "end": 34.23
+        },
+        {
+          "w": "of",
+          "start": 34.23,
+          "end": 34.29
+        },
+        {
+          "w": "counters",
+          "start": 34.29,
+          "end": 34.69
+        },
+        {
+          "w": "or",
+          "start": 34.79,
+          "end": 35.07
+        },
+        {
+          "w": "a",
+          "start": 35.07,
+          "end": 35.15
+        },
+        {
+          "w": "pile",
+          "start": 35.15,
+          "end": 35.43
+        },
+        {
+          "w": "of",
+          "start": 35.43,
+          "end": 35.59
+        },
+        {
+          "w": "paper",
+          "start": 35.59,
+          "end": 35.87
+        },
+        {
+          "w": "slips.",
+          "start": 35.87,
+          "end": 36.11
+        },
+        {
+          "w": "It's",
+          "start": 36.99,
+          "end": 37.55
+        },
+        {
+          "w": "the",
+          "start": 37.55,
+          "end": 37.63
+        },
+        {
+          "w": "same",
+          "start": 37.63,
+          "end": 37.91
+        },
+        {
+          "w": "model",
+          "start": 37.91,
+          "end": 38.21
+        },
+        {
+          "w": "every",
+          "start": 38.21,
+          "end": 38.53
+        },
+        {
+          "w": "time:",
+          "start": 38.53,
+          "end": 38.95
+        },
+        {
+          "w": "just",
+          "start": 39.11,
+          "end": 39.59
+        },
+        {
+          "w": "numbers.",
+          "start": 39.59,
+          "end": 40.01
+        }
+      ]
+    },
+    {
+      "i": 4,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "And here's everything this little model could have written.",
+      "start": 41.44,
+      "end": 44.61,
+      "words": [
+        {
+          "w": "And",
+          "start": 41.59,
+          "end": 42.15
+        },
+        {
+          "w": "here's",
+          "start": 42.15,
+          "end": 42.51
+        },
+        {
+          "w": "everything",
+          "start": 42.51,
+          "end": 42.89
+        },
+        {
+          "w": "this",
+          "start": 42.89,
+          "end": 43.23
+        },
+        {
+          "w": "little",
+          "start": 43.23,
+          "end": 43.45
+        },
+        {
+          "w": "model",
+          "start": 43.45,
+          "end": 43.75
+        },
+        {
+          "w": "could",
+          "start": 43.75,
+          "end": 44.01
+        },
+        {
+          "w": "have",
+          "start": 44.01,
+          "end": 44.15
+        },
+        {
+          "w": "written.",
+          "start": 44.15,
+          "end": 44.41
+        }
+      ]
+    },
+    {
+      "i": 5,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "A real model isn't a tiny grid. It looks at far more than one word, and learns from trillions of them. But it's the same loop.",
+      "start": 45.14,
+      "end": 54.55,
+      "words": [
+        {
+          "w": "A",
+          "start": 45.29,
+          "end": 45.85
+        },
+        {
+          "w": "real",
+          "start": 45.85,
+          "end": 46.09
+        },
+        {
+          "w": "model",
+          "start": 46.09,
+          "end": 46.41
+        },
+        {
+          "w": "isn't",
+          "start": 46.41,
+          "end": 46.89
+        },
+        {
+          "w": "a",
+          "start": 46.89,
+          "end": 46.97
+        },
+        {
+          "w": "tiny",
+          "start": 46.97,
+          "end": 47.23
+        },
+        {
+          "w": "grid.",
+          "start": 47.23,
+          "end": 47.53
+        },
+        {
+          "w": "It",
+          "start": 48.21,
+          "end": 48.77
+        },
+        {
+          "w": "looks",
+          "start": 48.77,
+          "end": 48.99
+        },
+        {
+          "w": "at",
+          "start": 48.99,
+          "end": 49.21
+        },
+        {
+          "w": "far",
+          "start": 49.21,
+          "end": 49.41
+        },
+        {
+          "w": "more",
+          "start": 49.41,
+          "end": 49.63
+        },
+        {
+          "w": "than",
+          "start": 49.63,
+          "end": 49.81
+        },
+        {
+          "w": "one",
+          "start": 49.81,
+          "end": 50.03
+        },
+        {
+          "w": "word,",
+          "start": 50.03,
+          "end": 50.45
+        },
+        {
+          "w": "and",
+          "start": 50.45,
+          "end": 50.75
+        },
+        {
+          "w": "learns",
+          "start": 50.75,
+          "end": 51.25
+        },
+        {
+          "w": "from",
+          "start": 51.25,
+          "end": 51.57
+        },
+        {
+          "w": "trillions",
+          "start": 51.57,
+          "end": 51.99
+        },
+        {
+          "w": "of",
+          "start": 51.99,
+          "end": 52.17
+        },
+        {
+          "w": "them.",
+          "start": 52.17,
+          "end": 52.37
+        },
+        {
+          "w": "But",
+          "start": 52.93,
+          "end": 53.49
+        },
+        {
+          "w": "it's",
+          "start": 53.49,
+          "end": 53.67
+        },
+        {
+          "w": "the",
+          "start": 53.67,
+          "end": 53.75
+        },
+        {
+          "w": "same",
+          "start": 53.75,
+          "end": 54.03
+        },
+        {
+          "w": "loop.",
+          "start": 54.03,
+          "end": 54.35
+        }
+      ]
+    },
+    {
+      "i": 6,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "And it's not new. In 1913 Andrey Markov went through a Russian poem by hand, counting whether a vowel or a consonant came next. Claude Shannon did it with words in 1948. We're just letting everyone else have a go.",
+      "start": 55.62,
+      "end": 69.95,
+      "words": [
+        {
+          "w": "And",
+          "start": 55.77,
+          "end": 56.33
+        },
+        {
+          "w": "it's",
+          "start": 56.33,
+          "end": 56.57
+        },
+        {
+          "w": "not",
+          "start": 56.57,
+          "end": 56.75
+        },
+        {
+          "w": "new.",
+          "start": 56.75,
+          "end": 57.01
+        },
+        {
+          "w": "In",
+          "start": 57.17,
+          "end": 57.77
+        },
+        {
+          "w": "1913",
+          "start": 57.77,
+          "end": 58.47
+        },
+        {
+          "w": "Andrey",
+          "start": 58.36,
+          "end": 58.91
+        },
+        {
+          "w": "Markov",
+          "start": 58.95,
+          "end": 59.35
+        },
+        {
+          "w": "went",
+          "start": 59.35,
+          "end": 59.61
+        },
+        {
+          "w": "through",
+          "start": 59.61,
+          "end": 59.79
+        },
+        {
+          "w": "a",
+          "start": 59.79,
+          "end": 59.93
+        },
+        {
+          "w": "Russian",
+          "start": 59.93,
+          "end": 60.17
+        },
+        {
+          "w": "poem",
+          "start": 60.17,
+          "end": 60.47
+        },
+        {
+          "w": "by",
+          "start": 60.47,
+          "end": 60.71
+        },
+        {
+          "w": "hand,",
+          "start": 60.71,
+          "end": 61.01
+        },
+        {
+          "w": "counting",
+          "start": 61.17,
+          "end": 61.75
+        },
+        {
+          "w": "whether",
+          "start": 61.75,
+          "end": 62.05
+        },
+        {
+          "w": "a",
+          "start": 62.05,
+          "end": 62.23
+        },
+        {
+          "w": "vowel",
+          "start": 62.23,
+          "end": 62.47
+        },
+        {
+          "w": "or",
+          "start": 62.47,
+          "end": 62.75
+        },
+        {
+          "w": "a",
+          "start": 62.75,
+          "end": 62.85
+        },
+        {
+          "w": "consonant",
+          "start": 62.85,
+          "end": 63.15
+        },
+        {
+          "w": "came",
+          "start": 63.15,
+          "end": 63.43
+        },
+        {
+          "w": "next.",
+          "start": 63.43,
+          "end": 63.73
+        },
+        {
+          "w": "Claude",
+          "start": 64.11,
+          "end": 64.61
+        },
+        {
+          "w": "Shannon",
+          "start": 64.61,
+          "end": 64.87
+        },
+        {
+          "w": "did",
+          "start": 64.87,
+          "end": 65.19
+        },
+        {
+          "w": "it",
+          "start": 65.19,
+          "end": 65.33
+        },
+        {
+          "w": "with",
+          "start": 65.33,
+          "end": 65.47
+        },
+        {
+          "w": "words",
+          "start": 65.47,
+          "end": 65.81
+        },
+        {
+          "w": "in",
+          "start": 65.81,
+          "end": 66.07
+        },
+        {
+          "w": "1948.",
+          "start": 66.07,
+          "end": 66.57
+        },
+        {
+          "w": "We're",
+          "start": 66.96,
+          "end": 67.37
+        },
+        {
+          "w": "just",
+          "start": 67.85,
+          "end": 68.17
+        },
+        {
+          "w": "letting",
+          "start": 68.17,
+          "end": 68.53
+        },
+        {
+          "w": "everyone",
+          "start": 68.53,
+          "end": 68.95
+        },
+        {
+          "w": "else",
+          "start": 68.95,
+          "end": 69.29
+        },
+        {
+          "w": "have",
+          "start": 69.29,
+          "end": 69.49
+        },
+        {
+          "w": "a",
+          "start": 69.49,
+          "end": 69.59
+        },
+        {
+          "w": "go.",
+          "start": 69.59,
+          "end": 69.75
+        }
+      ]
+    },
+    {
+      "i": 7,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "LLMs Unplugged has the lessons, the slides, the printouts and a short video for every step. And the tools that made them: paste in any text you like, and out come the grids, the sheets and the booklets for it.",
+      "start": 70.47,
+      "end": 84.31,
+      "words": [
+        {
+          "w": "LLMs",
+          "start": 70.62,
+          "end": 70.98
+        },
+        {
+          "w": "Unplugged",
+          "start": 71.65,
+          "end": 72.21
+        },
+        {
+          "w": "has",
+          "start": 72.21,
+          "end": 72.35
+        },
+        {
+          "w": "the",
+          "start": 72.35,
+          "end": 72.49
+        },
+        {
+          "w": "lessons,",
+          "start": 72.49,
+          "end": 72.87
+        },
+        {
+          "w": "the",
+          "start": 73.09,
+          "end": 73.31
+        },
+        {
+          "w": "slides,",
+          "start": 73.31,
+          "end": 73.77
+        },
+        {
+          "w": "the",
+          "start": 73.99,
+          "end": 74.35
+        },
+        {
+          "w": "printouts",
+          "start": 74.35,
+          "end": 74.91
+        },
+        {
+          "w": "and",
+          "start": 74.93,
+          "end": 75.25
+        },
+        {
+          "w": "a",
+          "start": 75.25,
+          "end": 75.33
+        },
+        {
+          "w": "short",
+          "start": 75.33,
+          "end": 75.59
+        },
+        {
+          "w": "video",
+          "start": 75.59,
+          "end": 75.89
+        },
+        {
+          "w": "for",
+          "start": 75.89,
+          "end": 76.25
+        },
+        {
+          "w": "every",
+          "start": 76.25,
+          "end": 76.53
+        },
+        {
+          "w": "step.",
+          "start": 76.53,
+          "end": 76.89
+        },
+        {
+          "w": "And",
+          "start": 77.45,
+          "end": 78.01
+        },
+        {
+          "w": "the",
+          "start": 78.01,
+          "end": 78.11
+        },
+        {
+          "w": "tools",
+          "start": 78.11,
+          "end": 78.41
+        },
+        {
+          "w": "that",
+          "start": 78.41,
+          "end": 78.61
+        },
+        {
+          "w": "made",
+          "start": 78.61,
+          "end": 78.85
+        },
+        {
+          "w": "them:",
+          "start": 78.85,
+          "end": 79.05
+        },
+        {
+          "w": "paste",
+          "start": 79.17,
+          "end": 79.71
+        },
+        {
+          "w": "in",
+          "start": 79.71,
+          "end": 79.89
+        },
+        {
+          "w": "any",
+          "start": 79.89,
+          "end": 80.13
+        },
+        {
+          "w": "text",
+          "start": 80.13,
+          "end": 80.41
+        },
+        {
+          "w": "you",
+          "start": 80.41,
+          "end": 80.59
+        },
+        {
+          "w": "like,",
+          "start": 80.59,
+          "end": 80.89
+        },
+        {
+          "w": "and",
+          "start": 81.03,
+          "end": 81.41
+        },
+        {
+          "w": "out",
+          "start": 81.41,
+          "end": 81.61
+        },
+        {
+          "w": "come",
+          "start": 81.61,
+          "end": 81.79
+        },
+        {
+          "w": "the",
+          "start": 81.79,
+          "end": 81.97
+        },
+        {
+          "w": "grids,",
+          "start": 81.97,
+          "end": 82.39
+        },
+        {
+          "w": "the",
+          "start": 82.43,
+          "end": 82.79
+        },
+        {
+          "w": "sheets",
+          "start": 82.79,
+          "end": 83.13
+        },
+        {
+          "w": "and",
+          "start": 83.13,
+          "end": 83.31
+        },
+        {
+          "w": "the",
+          "start": 83.31,
+          "end": 83.45
+        },
+        {
+          "w": "booklets",
+          "start": 83.45,
+          "end": 83.77
+        },
+        {
+          "w": "for",
+          "start": 83.77,
+          "end": 83.97
+        },
+        {
+          "w": "it.",
+          "start": 83.97,
+          "end": 84.11
+        }
+      ]
+    },
+    {
+      "i": 8,
+      "speaker": "BEN",
+      "tc": true,
+      "caption": "It's all free, under a Creative Commons licence, at llmsunplugged.org. Grab a picture book, and come and see how it works.",
+      "start": 85.32,
+      "end": 93.97,
+      "words": [
+        {
+          "w": "It's",
+          "start": 85.47,
+          "end": 86.03
+        },
+        {
+          "w": "all",
+          "start": 86.03,
+          "end": 86.17
+        },
+        {
+          "w": "free,",
+          "start": 86.17,
+          "end": 86.47
+        },
+        {
+          "w": "under",
+          "start": 86.61,
+          "end": 87.11
+        },
+        {
+          "w": "a",
+          "start": 87.11,
+          "end": 87.27
+        },
+        {
+          "w": "Creative",
+          "start": 87.27,
+          "end": 87.61
+        },
+        {
+          "w": "Commons",
+          "start": 87.61,
+          "end": 87.91
+        },
+        {
+          "w": "licence,",
+          "start": 88.08,
+          "end": 88.46
+        },
+        {
+          "w": "at",
+          "start": 88.55,
+          "end": 89.01
+        },
+        {
+          "w": "llmsunplugged.org.",
+          "start": 89.73,
+          "end": 90.2
+        },
+        {
+          "w": "Grab",
+          "start": 90.91,
+          "end": 91.39
+        },
+        {
+          "w": "a",
+          "start": 91.39,
+          "end": 91.53
+        },
+        {
+          "w": "picture",
+          "start": 91.53,
+          "end": 91.79
+        },
+        {
+          "w": "book,",
+          "start": 91.79,
+          "end": 91.97
+        },
+        {
+          "w": "and",
+          "start": 91.97,
+          "end": 92.51
+        },
+        {
+          "w": "come",
+          "start": 92.51,
+          "end": 92.71
+        },
+        {
+          "w": "and",
+          "start": 92.71,
+          "end": 92.89
+        },
+        {
+          "w": "see",
+          "start": 92.89,
+          "end": 93.11
+        },
+        {
+          "w": "how",
+          "start": 93.11,
+          "end": 93.31
+        },
+        {
+          "w": "it",
+          "start": 93.31,
+          "end": 93.41
+        },
+        {
+          "w": "works.",
+          "start": 93.41,
+          "end": 93.77
+        }
+      ]
+    }
+  ]
+}

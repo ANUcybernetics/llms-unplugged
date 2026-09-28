@@ -1,0 +1,1552 @@
+{
+  "slug": "beyond/making-things-up",
+  "audio": "assets/voice.wav",
+  "duration": 117.1,
+  "lines": [
+    {
+      "i": 0,
+      "speaker": "BEN",
+      "tc": true,
+      "caption": "AI models sometimes say things that are flat wrong, and say them with total confidence. People call it hallucinating. Let's watch a model do it, on paper.",
+      "start": 0.15,
+      "end": 9.64,
+      "words": [
+        {
+          "w": "AI",
+          "start": 0.3,
+          "end": 0.78
+        },
+        {
+          "w": "models",
+          "start": 0.78,
+          "end": 1.04
+        },
+        {
+          "w": "sometimes",
+          "start": 1.04,
+          "end": 1.38
+        },
+        {
+          "w": "say",
+          "start": 1.38,
+          "end": 1.84
+        },
+        {
+          "w": "things",
+          "start": 1.84,
+          "end": 2.16
+        },
+        {
+          "w": "that",
+          "start": 2.16,
+          "end": 2.36
+        },
+        {
+          "w": "are",
+          "start": 2.36,
+          "end": 2.44
+        },
+        {
+          "w": "flat",
+          "start": 2.44,
+          "end": 2.66
+        },
+        {
+          "w": "wrong,",
+          "start": 2.66,
+          "end": 2.9
+        },
+        {
+          "w": "and",
+          "start": 3.04,
+          "end": 3.54
+        },
+        {
+          "w": "say",
+          "start": 3.54,
+          "end": 3.74
+        },
+        {
+          "w": "them",
+          "start": 3.74,
+          "end": 3.96
+        },
+        {
+          "w": "with",
+          "start": 3.96,
+          "end": 4.1
+        },
+        {
+          "w": "total",
+          "start": 4.1,
+          "end": 4.36
+        },
+        {
+          "w": "confidence.",
+          "start": 4.36,
+          "end": 4.74
+        },
+        {
+          "w": "People",
+          "start": 5.16,
+          "end": 5.68
+        },
+        {
+          "w": "call",
+          "start": 5.68,
+          "end": 6.0
+        },
+        {
+          "w": "it",
+          "start": 6.0,
+          "end": 6.3
+        },
+        {
+          "w": "hallucinating.",
+          "start": 6.3,
+          "end": 6.92
+        },
+        {
+          "w": "Let's",
+          "start": 7.36,
+          "end": 7.88
+        },
+        {
+          "w": "watch",
+          "start": 7.88,
+          "end": 7.98
+        },
+        {
+          "w": "a",
+          "start": 7.98,
+          "end": 8.12
+        },
+        {
+          "w": "model",
+          "start": 8.12,
+          "end": 8.34
+        },
+        {
+          "w": "do",
+          "start": 8.34,
+          "end": 8.54
+        },
+        {
+          "w": "it,",
+          "start": 8.54,
+          "end": 8.72
+        },
+        {
+          "w": "on",
+          "start": 8.82,
+          "end": 9.14
+        },
+        {
+          "w": "paper.",
+          "start": 9.14,
+          "end": 9.44
+        }
+      ]
+    },
+    {
+      "i": 1,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "First, the book's world. In The magpie, the magpie swoops, the postie and the dog run, and the fence stays exactly where it is.",
+      "start": 10.59,
+      "end": 19.6,
+      "words": [
+        {
+          "w": "First,",
+          "start": 10.74,
+          "end": 11.26
+        },
+        {
+          "w": "the",
+          "start": 11.44,
+          "end": 11.6
+        },
+        {
+          "w": "book's",
+          "start": 11.6,
+          "end": 11.92
+        },
+        {
+          "w": "world.",
+          "start": 11.92,
+          "end": 12.16
+        },
+        {
+          "w": "In",
+          "start": 12.9,
+          "end": 13.42
+        },
+        {
+          "w": "The",
+          "start": 13.42,
+          "end": 13.56
+        },
+        {
+          "w": "magpie,",
+          "start": 13.56,
+          "end": 13.9
+        },
+        {
+          "w": "the",
+          "start": 14.18,
+          "end": 14.46
+        },
+        {
+          "w": "magpie",
+          "start": 14.46,
+          "end": 14.8
+        },
+        {
+          "w": "swoops,",
+          "start": 14.8,
+          "end": 15.3
+        },
+        {
+          "w": "the",
+          "start": 15.5,
+          "end": 15.76
+        },
+        {
+          "w": "postie",
+          "start": 15.76,
+          "end": 16.22
+        },
+        {
+          "w": "and",
+          "start": 16.22,
+          "end": 16.32
+        },
+        {
+          "w": "the",
+          "start": 16.32,
+          "end": 16.4
+        },
+        {
+          "w": "dog",
+          "start": 16.4,
+          "end": 16.6
+        },
+        {
+          "w": "run,",
+          "start": 16.6,
+          "end": 16.84
+        },
+        {
+          "w": "and",
+          "start": 17.04,
+          "end": 17.46
+        },
+        {
+          "w": "the",
+          "start": 17.46,
+          "end": 17.56
+        },
+        {
+          "w": "fence",
+          "start": 17.56,
+          "end": 17.8
+        },
+        {
+          "w": "stays",
+          "start": 17.8,
+          "end": 18.08
+        },
+        {
+          "w": "exactly",
+          "start": 18.08,
+          "end": 18.54
+        },
+        {
+          "w": "where",
+          "start": 18.54,
+          "end": 18.96
+        },
+        {
+          "w": "it",
+          "start": 18.96,
+          "end": 19.12
+        },
+        {
+          "w": "is.",
+          "start": 19.12,
+          "end": 19.4
+        }
+      ]
+    },
+    {
+      "i": 2,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Now ask the model for a couple of sentences. \"Down comes the dog. Swoop!\"",
+      "start": 20.79,
+      "end": 26.26,
+      "words": [
+        {
+          "w": "Now",
+          "start": 20.94,
+          "end": 21.46
+        },
+        {
+          "w": "ask",
+          "start": 21.46,
+          "end": 21.8
+        },
+        {
+          "w": "the",
+          "start": 21.8,
+          "end": 21.96
+        },
+        {
+          "w": "model",
+          "start": 21.96,
+          "end": 22.22
+        },
+        {
+          "w": "for",
+          "start": 22.22,
+          "end": 22.42
+        },
+        {
+          "w": "a",
+          "start": 22.42,
+          "end": 22.54
+        },
+        {
+          "w": "couple",
+          "start": 22.54,
+          "end": 22.78
+        },
+        {
+          "w": "of",
+          "start": 22.78,
+          "end": 22.88
+        },
+        {
+          "w": "sentences.",
+          "start": 22.88,
+          "end": 23.2
+        },
+        {
+          "w": "\"Down",
+          "start": 23.7,
+          "end": 24.22
+        },
+        {
+          "w": "comes",
+          "start": 24.22,
+          "end": 24.56
+        },
+        {
+          "w": "the",
+          "start": 24.56,
+          "end": 24.8
+        },
+        {
+          "w": "dog.",
+          "start": 24.8,
+          "end": 25.04
+        },
+        {
+          "w": "Swoop!\"",
+          "start": 25.54,
+          "end": 26.06
+        }
+      ]
+    },
+    {
+      "i": 3,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "So the dog swoops. The book never said that. And in the book's world, it isn't true.",
+      "start": 27.29,
+      "end": 34.18,
+      "words": [
+        {
+          "w": "So",
+          "start": 27.44,
+          "end": 27.96
+        },
+        {
+          "w": "the",
+          "start": 27.96,
+          "end": 28.1
+        },
+        {
+          "w": "dog",
+          "start": 28.1,
+          "end": 28.34
+        },
+        {
+          "w": "swoops.",
+          "start": 28.34,
+          "end": 28.86
+        },
+        {
+          "w": "The",
+          "start": 29.42,
+          "end": 29.98
+        },
+        {
+          "w": "book",
+          "start": 29.98,
+          "end": 30.22
+        },
+        {
+          "w": "never",
+          "start": 30.22,
+          "end": 30.46
+        },
+        {
+          "w": "said",
+          "start": 30.46,
+          "end": 30.76
+        },
+        {
+          "w": "that.",
+          "start": 30.76,
+          "end": 31.04
+        },
+        {
+          "w": "And",
+          "start": 31.64,
+          "end": 32.2
+        },
+        {
+          "w": "in",
+          "start": 32.2,
+          "end": 32.34
+        },
+        {
+          "w": "the",
+          "start": 32.34,
+          "end": 32.42
+        },
+        {
+          "w": "book's",
+          "start": 32.42,
+          "end": 32.7
+        },
+        {
+          "w": "world,",
+          "start": 32.7,
+          "end": 33.0
+        },
+        {
+          "w": "it",
+          "start": 33.22,
+          "end": 33.46
+        },
+        {
+          "w": "isn't",
+          "start": 33.46,
+          "end": 33.78
+        },
+        {
+          "w": "true.",
+          "start": 33.78,
+          "end": 33.98
+        }
+      ]
+    },
+    {
+      "i": 4,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Look at how it got there. \"Down comes the\" is in the book. \"The dog\" is in the book. A full stop after \"dog\", then \"swoop\", both in the book. Every pair is true. The sentence isn't.",
+      "start": 35.47,
+      "end": 48.12,
+      "words": [
+        {
+          "w": "Look",
+          "start": 35.62,
+          "end": 36.18
+        },
+        {
+          "w": "at",
+          "start": 36.18,
+          "end": 36.3
+        },
+        {
+          "w": "how",
+          "start": 36.3,
+          "end": 36.46
+        },
+        {
+          "w": "it",
+          "start": 36.46,
+          "end": 36.66
+        },
+        {
+          "w": "got",
+          "start": 36.66,
+          "end": 36.78
+        },
+        {
+          "w": "there.",
+          "start": 36.78,
+          "end": 37.06
+        },
+        {
+          "w": "\"Down",
+          "start": 37.34,
+          "end": 37.9
+        },
+        {
+          "w": "comes",
+          "start": 37.9,
+          "end": 38.22
+        },
+        {
+          "w": "the\"",
+          "start": 38.22,
+          "end": 38.4
+        },
+        {
+          "w": "is",
+          "start": 38.4,
+          "end": 38.68
+        },
+        {
+          "w": "in",
+          "start": 38.68,
+          "end": 38.84
+        },
+        {
+          "w": "the",
+          "start": 38.84,
+          "end": 38.96
+        },
+        {
+          "w": "book.",
+          "start": 38.96,
+          "end": 39.18
+        },
+        {
+          "w": "\"The",
+          "start": 39.3,
+          "end": 39.84
+        },
+        {
+          "w": "dog\"",
+          "start": 39.84,
+          "end": 40.14
+        },
+        {
+          "w": "is",
+          "start": 40.14,
+          "end": 40.42
+        },
+        {
+          "w": "in",
+          "start": 40.42,
+          "end": 40.54
+        },
+        {
+          "w": "the",
+          "start": 40.54,
+          "end": 40.66
+        },
+        {
+          "w": "book.",
+          "start": 40.66,
+          "end": 40.9
+        },
+        {
+          "w": "A",
+          "start": 41.3,
+          "end": 41.58
+        },
+        {
+          "w": "full",
+          "start": 41.58,
+          "end": 41.72
+        },
+        {
+          "w": "stop",
+          "start": 41.72,
+          "end": 41.98
+        },
+        {
+          "w": "after",
+          "start": 41.98,
+          "end": 42.3
+        },
+        {
+          "w": "\"dog\",",
+          "start": 42.3,
+          "end": 42.58
+        },
+        {
+          "w": "then",
+          "start": 42.72,
+          "end": 43.18
+        },
+        {
+          "w": "\"swoop\",",
+          "start": 43.18,
+          "end": 43.7
+        },
+        {
+          "w": "both",
+          "start": 43.7,
+          "end": 44.18
+        },
+        {
+          "w": "in",
+          "start": 44.18,
+          "end": 44.34
+        },
+        {
+          "w": "the",
+          "start": 44.34,
+          "end": 44.42
+        },
+        {
+          "w": "book.",
+          "start": 44.42,
+          "end": 44.6
+        },
+        {
+          "w": "Every",
+          "start": 44.82,
+          "end": 45.38
+        },
+        {
+          "w": "pair",
+          "start": 45.38,
+          "end": 45.66
+        },
+        {
+          "w": "is",
+          "start": 45.66,
+          "end": 45.96
+        },
+        {
+          "w": "true.",
+          "start": 45.96,
+          "end": 46.18
+        },
+        {
+          "w": "The",
+          "start": 46.68,
+          "end": 46.96
+        },
+        {
+          "w": "sentence",
+          "start": 46.96,
+          "end": 47.3
+        },
+        {
+          "w": "isn't.",
+          "start": 47.3,
+          "end": 47.92
+        }
+      ]
+    },
+    {
+      "i": 5,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "And it's not bad luck. Rank every sentence this model can write by how likely it is. \"Swoop!\" first. \"It watches.\" Then \"Here comes the fence.\"",
+      "start": 48.53,
+      "end": 60.94,
+      "words": [
+        {
+          "w": "And",
+          "start": 48.68,
+          "end": 49.24
+        },
+        {
+          "w": "it's",
+          "start": 49.24,
+          "end": 49.44
+        },
+        {
+          "w": "not",
+          "start": 49.44,
+          "end": 49.6
+        },
+        {
+          "w": "bad",
+          "start": 49.6,
+          "end": 49.86
+        },
+        {
+          "w": "luck.",
+          "start": 49.86,
+          "end": 50.16
+        },
+        {
+          "w": "Rank",
+          "start": 51.0,
+          "end": 51.56
+        },
+        {
+          "w": "every",
+          "start": 51.56,
+          "end": 51.84
+        },
+        {
+          "w": "sentence",
+          "start": 51.84,
+          "end": 52.2
+        },
+        {
+          "w": "this",
+          "start": 52.2,
+          "end": 52.58
+        },
+        {
+          "w": "model",
+          "start": 52.58,
+          "end": 52.84
+        },
+        {
+          "w": "can",
+          "start": 52.84,
+          "end": 53.08
+        },
+        {
+          "w": "write",
+          "start": 53.08,
+          "end": 53.42
+        },
+        {
+          "w": "by",
+          "start": 53.42,
+          "end": 53.64
+        },
+        {
+          "w": "how",
+          "start": 53.64,
+          "end": 53.84
+        },
+        {
+          "w": "likely",
+          "start": 53.84,
+          "end": 54.26
+        },
+        {
+          "w": "it",
+          "start": 54.26,
+          "end": 54.42
+        },
+        {
+          "w": "is.",
+          "start": 54.42,
+          "end": 54.68
+        },
+        {
+          "w": "\"Swoop!\"",
+          "start": 55.68,
+          "end": 56.24
+        },
+        {
+          "w": "first.",
+          "start": 56.28,
+          "end": 56.66
+        },
+        {
+          "w": "\"It",
+          "start": 57.38,
+          "end": 57.94
+        },
+        {
+          "w": "watches.\"",
+          "start": 57.94,
+          "end": 58.3
+        },
+        {
+          "w": "Then",
+          "start": 59.18,
+          "end": 59.7
+        },
+        {
+          "w": "\"Here",
+          "start": 59.7,
+          "end": 59.96
+        },
+        {
+          "w": "comes",
+          "start": 59.96,
+          "end": 60.3
+        },
+        {
+          "w": "the",
+          "start": 60.3,
+          "end": 60.52
+        },
+        {
+          "w": "fence.\"",
+          "start": 60.52,
+          "end": 60.74
+        }
+      ]
+    },
+    {
+      "i": 6,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "The fence never comes anywhere. But it's the third likeliest thing this model says, three times as likely as \"Here comes the dog\", which the book actually says. Why? Because in the book, \"fence\" is what follows \"the\" most often, and a full stop always follows \"fence\".",
+      "start": 62.17,
+      "end": 77.8,
+      "words": [
+        {
+          "w": "The",
+          "start": 62.32,
+          "end": 62.84
+        },
+        {
+          "w": "fence",
+          "start": 62.84,
+          "end": 63.12
+        },
+        {
+          "w": "never",
+          "start": 63.12,
+          "end": 63.48
+        },
+        {
+          "w": "comes",
+          "start": 63.48,
+          "end": 63.8
+        },
+        {
+          "w": "anywhere.",
+          "start": 63.8,
+          "end": 64.16
+        },
+        {
+          "w": "But",
+          "start": 64.42,
+          "end": 64.94
+        },
+        {
+          "w": "it's",
+          "start": 64.94,
+          "end": 65.08
+        },
+        {
+          "w": "the",
+          "start": 65.08,
+          "end": 65.16
+        },
+        {
+          "w": "third",
+          "start": 65.16,
+          "end": 65.42
+        },
+        {
+          "w": "likeliest",
+          "start": 65.42,
+          "end": 65.88
+        },
+        {
+          "w": "thing",
+          "start": 65.88,
+          "end": 66.12
+        },
+        {
+          "w": "this",
+          "start": 66.12,
+          "end": 66.3
+        },
+        {
+          "w": "model",
+          "start": 66.3,
+          "end": 66.52
+        },
+        {
+          "w": "says,",
+          "start": 66.52,
+          "end": 66.8
+        },
+        {
+          "w": "three",
+          "start": 66.96,
+          "end": 67.48
+        },
+        {
+          "w": "times",
+          "start": 67.48,
+          "end": 67.76
+        },
+        {
+          "w": "as",
+          "start": 67.76,
+          "end": 68.02
+        },
+        {
+          "w": "likely",
+          "start": 68.02,
+          "end": 68.3
+        },
+        {
+          "w": "as",
+          "start": 68.3,
+          "end": 68.5
+        },
+        {
+          "w": "\"Here",
+          "start": 68.5,
+          "end": 68.72
+        },
+        {
+          "w": "comes",
+          "start": 68.72,
+          "end": 68.98
+        },
+        {
+          "w": "the",
+          "start": 68.98,
+          "end": 69.16
+        },
+        {
+          "w": "dog\",",
+          "start": 69.16,
+          "end": 69.44
+        },
+        {
+          "w": "which",
+          "start": 69.52,
+          "end": 70.04
+        },
+        {
+          "w": "the",
+          "start": 70.04,
+          "end": 70.16
+        },
+        {
+          "w": "book",
+          "start": 70.16,
+          "end": 70.36
+        },
+        {
+          "w": "actually",
+          "start": 70.36,
+          "end": 70.68
+        },
+        {
+          "w": "says.",
+          "start": 70.68,
+          "end": 71.0
+        },
+        {
+          "w": "Why?",
+          "start": 71.34,
+          "end": 71.86
+        },
+        {
+          "w": "Because",
+          "start": 72.22,
+          "end": 72.74
+        },
+        {
+          "w": "in",
+          "start": 72.74,
+          "end": 72.94
+        },
+        {
+          "w": "the",
+          "start": 72.94,
+          "end": 73.0
+        },
+        {
+          "w": "book,",
+          "start": 73.0,
+          "end": 73.28
+        },
+        {
+          "w": "\"fence\"",
+          "start": 73.36,
+          "end": 73.9
+        },
+        {
+          "w": "is",
+          "start": 73.9,
+          "end": 74.12
+        },
+        {
+          "w": "what",
+          "start": 74.12,
+          "end": 74.36
+        },
+        {
+          "w": "follows",
+          "start": 74.36,
+          "end": 74.74
+        },
+        {
+          "w": "\"the\"",
+          "start": 74.74,
+          "end": 74.92
+        },
+        {
+          "w": "most",
+          "start": 74.92,
+          "end": 75.08
+        },
+        {
+          "w": "often,",
+          "start": 75.08,
+          "end": 75.48
+        },
+        {
+          "w": "and",
+          "start": 75.58,
+          "end": 76.02
+        },
+        {
+          "w": "a",
+          "start": 76.02,
+          "end": 76.08
+        },
+        {
+          "w": "full",
+          "start": 76.08,
+          "end": 76.24
+        },
+        {
+          "w": "stop",
+          "start": 76.24,
+          "end": 76.48
+        },
+        {
+          "w": "always",
+          "start": 76.48,
+          "end": 76.86
+        },
+        {
+          "w": "follows",
+          "start": 76.86,
+          "end": 77.36
+        },
+        {
+          "w": "\"fence\".",
+          "start": 77.36,
+          "end": 77.6
+        }
+      ]
+    },
+    {
+      "i": 7,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "Here's everything it could say in a short sentence. Seventy-nine of them. Seven are in the book.",
+      "start": 79.05,
+      "end": 86.46,
+      "words": [
+        {
+          "w": "Here's",
+          "start": 79.2,
+          "end": 79.72
+        },
+        {
+          "w": "everything",
+          "start": 79.72,
+          "end": 80.1
+        },
+        {
+          "w": "it",
+          "start": 80.1,
+          "end": 80.36
+        },
+        {
+          "w": "could",
+          "start": 80.36,
+          "end": 80.5
+        },
+        {
+          "w": "say",
+          "start": 80.5,
+          "end": 80.76
+        },
+        {
+          "w": "in",
+          "start": 80.76,
+          "end": 80.98
+        },
+        {
+          "w": "a",
+          "start": 80.98,
+          "end": 81.08
+        },
+        {
+          "w": "short",
+          "start": 81.08,
+          "end": 81.32
+        },
+        {
+          "w": "sentence.",
+          "start": 81.32,
+          "end": 81.76
+        },
+        {
+          "w": "Seventy-nine",
+          "start": 82.39,
+          "end": 82.84
+        },
+        {
+          "w": "of",
+          "start": 83.46,
+          "end": 83.92
+        },
+        {
+          "w": "them.",
+          "start": 83.92,
+          "end": 84.12
+        },
+        {
+          "w": "Seven",
+          "start": 84.69,
+          "end": 84.9
+        },
+        {
+          "w": "are",
+          "start": 85.46,
+          "end": 85.68
+        },
+        {
+          "w": "in",
+          "start": 85.68,
+          "end": 85.92
+        },
+        {
+          "w": "the",
+          "start": 85.92,
+          "end": 86.02
+        },
+        {
+          "w": "book.",
+          "start": 86.02,
+          "end": 86.26
+        }
+      ]
+    },
+    {
+      "i": 8,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Nothing in the loop checks whether a sentence is true. The model is built to be likely, not right.",
+      "start": 87.73,
+      "end": 93.46,
+      "words": [
+        {
+          "w": "Nothing",
+          "start": 87.88,
+          "end": 88.36
+        },
+        {
+          "w": "in",
+          "start": 88.36,
+          "end": 88.58
+        },
+        {
+          "w": "the",
+          "start": 88.58,
+          "end": 88.64
+        },
+        {
+          "w": "loop",
+          "start": 88.64,
+          "end": 88.88
+        },
+        {
+          "w": "checks",
+          "start": 88.88,
+          "end": 89.12
+        },
+        {
+          "w": "whether",
+          "start": 89.12,
+          "end": 89.46
+        },
+        {
+          "w": "a",
+          "start": 89.46,
+          "end": 89.64
+        },
+        {
+          "w": "sentence",
+          "start": 89.64,
+          "end": 89.94
+        },
+        {
+          "w": "is",
+          "start": 89.94,
+          "end": 90.18
+        },
+        {
+          "w": "true.",
+          "start": 90.18,
+          "end": 90.42
+        },
+        {
+          "w": "The",
+          "start": 90.66,
+          "end": 91.14
+        },
+        {
+          "w": "model",
+          "start": 91.14,
+          "end": 91.4
+        },
+        {
+          "w": "is",
+          "start": 91.4,
+          "end": 91.6
+        },
+        {
+          "w": "built",
+          "start": 91.6,
+          "end": 91.84
+        },
+        {
+          "w": "to",
+          "start": 91.84,
+          "end": 91.96
+        },
+        {
+          "w": "be",
+          "start": 91.96,
+          "end": 92.04
+        },
+        {
+          "w": "likely,",
+          "start": 92.04,
+          "end": 92.38
+        },
+        {
+          "w": "not",
+          "start": 92.56,
+          "end": 93.02
+        },
+        {
+          "w": "right.",
+          "start": 93.02,
+          "end": 93.26
+        }
+      ]
+    },
+    {
+      "i": 9,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "Real models look at far more than one word, and learn from far more than one book, so the likely thing is usually the true thing. That's why they're right so often. But usually isn't always, and nothing in the loop checks.",
+      "start": 94.27,
+      "end": 108.82,
+      "words": [
+        {
+          "w": "Real",
+          "start": 94.42,
+          "end": 94.9
+        },
+        {
+          "w": "models",
+          "start": 94.9,
+          "end": 95.22
+        },
+        {
+          "w": "look",
+          "start": 95.22,
+          "end": 95.5
+        },
+        {
+          "w": "at",
+          "start": 95.5,
+          "end": 95.68
+        },
+        {
+          "w": "far",
+          "start": 95.68,
+          "end": 95.88
+        },
+        {
+          "w": "more",
+          "start": 95.88,
+          "end": 96.08
+        },
+        {
+          "w": "than",
+          "start": 96.08,
+          "end": 96.24
+        },
+        {
+          "w": "one",
+          "start": 96.24,
+          "end": 96.46
+        },
+        {
+          "w": "word,",
+          "start": 96.46,
+          "end": 96.9
+        },
+        {
+          "w": "and",
+          "start": 96.98,
+          "end": 97.34
+        },
+        {
+          "w": "learn",
+          "start": 97.34,
+          "end": 97.6
+        },
+        {
+          "w": "from",
+          "start": 97.6,
+          "end": 97.86
+        },
+        {
+          "w": "far",
+          "start": 97.86,
+          "end": 98.12
+        },
+        {
+          "w": "more",
+          "start": 98.12,
+          "end": 98.34
+        },
+        {
+          "w": "than",
+          "start": 98.34,
+          "end": 98.5
+        },
+        {
+          "w": "one",
+          "start": 98.5,
+          "end": 98.7
+        },
+        {
+          "w": "book,",
+          "start": 98.7,
+          "end": 99.04
+        },
+        {
+          "w": "so",
+          "start": 99.22,
+          "end": 99.7
+        },
+        {
+          "w": "the",
+          "start": 99.7,
+          "end": 99.82
+        },
+        {
+          "w": "likely",
+          "start": 99.82,
+          "end": 100.12
+        },
+        {
+          "w": "thing",
+          "start": 100.12,
+          "end": 100.4
+        },
+        {
+          "w": "is",
+          "start": 100.4,
+          "end": 100.62
+        },
+        {
+          "w": "usually",
+          "start": 100.62,
+          "end": 100.96
+        },
+        {
+          "w": "the",
+          "start": 100.96,
+          "end": 101.2
+        },
+        {
+          "w": "true",
+          "start": 101.2,
+          "end": 101.38
+        },
+        {
+          "w": "thing.",
+          "start": 101.38,
+          "end": 101.66
+        },
+        {
+          "w": "That's",
+          "start": 102.56,
+          "end": 103.04
+        },
+        {
+          "w": "why",
+          "start": 103.04,
+          "end": 103.2
+        },
+        {
+          "w": "they're",
+          "start": 103.33,
+          "end": 103.54
+        },
+        {
+          "w": "right",
+          "start": 103.62,
+          "end": 103.88
+        },
+        {
+          "w": "so",
+          "start": 103.88,
+          "end": 104.14
+        },
+        {
+          "w": "often.",
+          "start": 104.14,
+          "end": 104.56
+        },
+        {
+          "w": "But",
+          "start": 105.26,
+          "end": 105.74
+        },
+        {
+          "w": "usually",
+          "start": 105.74,
+          "end": 106.12
+        },
+        {
+          "w": "isn't",
+          "start": 106.12,
+          "end": 106.56
+        },
+        {
+          "w": "always,",
+          "start": 106.56,
+          "end": 106.86
+        },
+        {
+          "w": "and",
+          "start": 107.22,
+          "end": 107.56
+        },
+        {
+          "w": "nothing",
+          "start": 107.56,
+          "end": 107.86
+        },
+        {
+          "w": "in",
+          "start": 107.86,
+          "end": 108.04
+        },
+        {
+          "w": "the",
+          "start": 108.04,
+          "end": 108.12
+        },
+        {
+          "w": "loop",
+          "start": 108.12,
+          "end": 108.32
+        },
+        {
+          "w": "checks.",
+          "start": 108.32,
+          "end": 108.62
+        }
+      ]
+    },
+    {
+      "i": 10,
+      "speaker": "BEN",
+      "tc": true,
+      "caption": "So look back at the sentences you wrote. Which ones are true? And how would you know?",
+      "start": 110.25,
+      "end": 115.72,
+      "words": [
+        {
+          "w": "So",
+          "start": 110.4,
+          "end": 110.88
+        },
+        {
+          "w": "look",
+          "start": 110.88,
+          "end": 111.1
+        },
+        {
+          "w": "back",
+          "start": 111.1,
+          "end": 111.32
+        },
+        {
+          "w": "at",
+          "start": 111.32,
+          "end": 111.5
+        },
+        {
+          "w": "the",
+          "start": 111.5,
+          "end": 111.54
+        },
+        {
+          "w": "sentences",
+          "start": 111.54,
+          "end": 111.94
+        },
+        {
+          "w": "you",
+          "start": 111.94,
+          "end": 112.22
+        },
+        {
+          "w": "wrote.",
+          "start": 112.22,
+          "end": 112.42
+        },
+        {
+          "w": "Which",
+          "start": 112.8,
+          "end": 113.28
+        },
+        {
+          "w": "ones",
+          "start": 113.28,
+          "end": 113.6
+        },
+        {
+          "w": "are",
+          "start": 113.6,
+          "end": 113.76
+        },
+        {
+          "w": "true?",
+          "start": 113.76,
+          "end": 113.96
+        },
+        {
+          "w": "And",
+          "start": 114.26,
+          "end": 114.74
+        },
+        {
+          "w": "how",
+          "start": 114.74,
+          "end": 114.96
+        },
+        {
+          "w": "would",
+          "start": 114.96,
+          "end": 115.18
+        },
+        {
+          "w": "you",
+          "start": 115.18,
+          "end": 115.3
+        },
+        {
+          "w": "know?",
+          "start": 115.3,
+          "end": 115.52
+        }
+      ]
+    }
+  ]
+}

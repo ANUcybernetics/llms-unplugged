@@ -1,0 +1,1527 @@
+{
+  "slug": "beyond/generation-cutouts",
+  "audio": "assets/voice.wav",
+  "duration": 116.264,
+  "lines": [
+    {
+      "i": 0,
+      "speaker": "BEN",
+      "tc": true,
+      "caption": "This is a pile of paper slips. In about a minute it's going to write a sentence that nobody has ever written.",
+      "start": 0.15,
+      "end": 6.38,
+      "words": [
+        {
+          "w": "This",
+          "start": 0.3,
+          "end": 0.76
+        },
+        {
+          "w": "is",
+          "start": 0.76,
+          "end": 0.94
+        },
+        {
+          "w": "a",
+          "start": 0.94,
+          "end": 1.06
+        },
+        {
+          "w": "pile",
+          "start": 1.06,
+          "end": 1.36
+        },
+        {
+          "w": "of",
+          "start": 1.36,
+          "end": 1.56
+        },
+        {
+          "w": "paper",
+          "start": 1.56,
+          "end": 1.82
+        },
+        {
+          "w": "slips.",
+          "start": 1.82,
+          "end": 2.04
+        },
+        {
+          "w": "In",
+          "start": 2.38,
+          "end": 2.86
+        },
+        {
+          "w": "about",
+          "start": 2.86,
+          "end": 3.06
+        },
+        {
+          "w": "a",
+          "start": 3.06,
+          "end": 3.18
+        },
+        {
+          "w": "minute",
+          "start": 3.18,
+          "end": 3.42
+        },
+        {
+          "w": "it's",
+          "start": 3.42,
+          "end": 3.72
+        },
+        {
+          "w": "going",
+          "start": 3.72,
+          "end": 3.88
+        },
+        {
+          "w": "to",
+          "start": 3.88,
+          "end": 4.06
+        },
+        {
+          "w": "write",
+          "start": 4.06,
+          "end": 4.28
+        },
+        {
+          "w": "a",
+          "start": 4.28,
+          "end": 4.38
+        },
+        {
+          "w": "sentence",
+          "start": 4.38,
+          "end": 4.7
+        },
+        {
+          "w": "that",
+          "start": 4.7,
+          "end": 5.0
+        },
+        {
+          "w": "nobody",
+          "start": 5.0,
+          "end": 5.32
+        },
+        {
+          "w": "has",
+          "start": 5.32,
+          "end": 5.6
+        },
+        {
+          "w": "ever",
+          "start": 5.6,
+          "end": 5.9
+        },
+        {
+          "w": "written.",
+          "start": 5.9,
+          "end": 6.18
+        }
+      ]
+    },
+    {
+      "i": 1,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "Every slip is a pair of words from a book: the word in the box, and the word that came next. A pair the book says six times gets six slips.",
+      "start": 7.09,
+      "end": 16.42,
+      "words": [
+        {
+          "w": "Every",
+          "start": 7.24,
+          "end": 7.72
+        },
+        {
+          "w": "slip",
+          "start": 7.72,
+          "end": 7.98
+        },
+        {
+          "w": "is",
+          "start": 7.98,
+          "end": 8.26
+        },
+        {
+          "w": "a",
+          "start": 8.26,
+          "end": 8.38
+        },
+        {
+          "w": "pair",
+          "start": 8.38,
+          "end": 8.58
+        },
+        {
+          "w": "of",
+          "start": 8.58,
+          "end": 8.72
+        },
+        {
+          "w": "words",
+          "start": 8.72,
+          "end": 9.0
+        },
+        {
+          "w": "from",
+          "start": 9.0,
+          "end": 9.24
+        },
+        {
+          "w": "a",
+          "start": 9.24,
+          "end": 9.34
+        },
+        {
+          "w": "book:",
+          "start": 9.34,
+          "end": 9.58
+        },
+        {
+          "w": "the",
+          "start": 9.7,
+          "end": 10.12
+        },
+        {
+          "w": "word",
+          "start": 10.12,
+          "end": 10.4
+        },
+        {
+          "w": "in",
+          "start": 10.4,
+          "end": 10.54
+        },
+        {
+          "w": "the",
+          "start": 10.54,
+          "end": 10.62
+        },
+        {
+          "w": "box,",
+          "start": 10.62,
+          "end": 10.96
+        },
+        {
+          "w": "and",
+          "start": 11.1,
+          "end": 11.46
+        },
+        {
+          "w": "the",
+          "start": 11.46,
+          "end": 11.58
+        },
+        {
+          "w": "word",
+          "start": 11.58,
+          "end": 11.88
+        },
+        {
+          "w": "that",
+          "start": 11.88,
+          "end": 12.08
+        },
+        {
+          "w": "came",
+          "start": 12.08,
+          "end": 12.3
+        },
+        {
+          "w": "next.",
+          "start": 12.3,
+          "end": 12.64
+        },
+        {
+          "w": "A",
+          "start": 13.32,
+          "end": 13.8
+        },
+        {
+          "w": "pair",
+          "start": 13.8,
+          "end": 14.06
+        },
+        {
+          "w": "the",
+          "start": 14.06,
+          "end": 14.2
+        },
+        {
+          "w": "book",
+          "start": 14.2,
+          "end": 14.4
+        },
+        {
+          "w": "says",
+          "start": 14.4,
+          "end": 14.64
+        },
+        {
+          "w": "six",
+          "start": 14.64,
+          "end": 14.96
+        },
+        {
+          "w": "times",
+          "start": 14.96,
+          "end": 15.26
+        },
+        {
+          "w": "gets",
+          "start": 15.26,
+          "end": 15.64
+        },
+        {
+          "w": "six",
+          "start": 15.64,
+          "end": 15.9
+        },
+        {
+          "w": "slips.",
+          "start": 15.9,
+          "end": 16.22
+        }
+      ]
+    },
+    {
+      "i": 2,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in its box. This one says \"it\". Write it down.",
+      "start": 17.89,
+      "end": 27.72,
+      "words": [
+        {
+          "w": "Choose",
+          "start": 18.04,
+          "end": 18.52
+        },
+        {
+          "w": "a",
+          "start": 18.52,
+          "end": 18.7
+        },
+        {
+          "w": "slip",
+          "start": 18.7,
+          "end": 18.92
+        },
+        {
+          "w": "to",
+          "start": 18.92,
+          "end": 19.12
+        },
+        {
+          "w": "start",
+          "start": 19.12,
+          "end": 19.36
+        },
+        {
+          "w": "from.",
+          "start": 19.36,
+          "end": 19.6
+        },
+        {
+          "w": "A",
+          "start": 19.82,
+          "end": 20.3
+        },
+        {
+          "w": "story",
+          "start": 20.3,
+          "end": 20.62
+        },
+        {
+          "w": "starts",
+          "start": 20.62,
+          "end": 20.92
+        },
+        {
+          "w": "after",
+          "start": 20.92,
+          "end": 21.36
+        },
+        {
+          "w": "a",
+          "start": 21.36,
+          "end": 21.5
+        },
+        {
+          "w": "full",
+          "start": 21.5,
+          "end": 21.66
+        },
+        {
+          "w": "stop,",
+          "start": 21.66,
+          "end": 21.92
+        },
+        {
+          "w": "so",
+          "start": 22.08,
+          "end": 22.52
+        },
+        {
+          "w": "take",
+          "start": 22.52,
+          "end": 22.74
+        },
+        {
+          "w": "one",
+          "start": 22.74,
+          "end": 22.98
+        },
+        {
+          "w": "with",
+          "start": 22.98,
+          "end": 23.2
+        },
+        {
+          "w": "a",
+          "start": 23.2,
+          "end": 23.3
+        },
+        {
+          "w": "full",
+          "start": 23.3,
+          "end": 23.46
+        },
+        {
+          "w": "stop",
+          "start": 23.46,
+          "end": 23.72
+        },
+        {
+          "w": "in",
+          "start": 23.72,
+          "end": 23.92
+        },
+        {
+          "w": "its",
+          "start": 23.92,
+          "end": 24.02
+        },
+        {
+          "w": "box.",
+          "start": 24.02,
+          "end": 24.24
+        },
+        {
+          "w": "This",
+          "start": 24.58,
+          "end": 25.06
+        },
+        {
+          "w": "one",
+          "start": 25.06,
+          "end": 25.26
+        },
+        {
+          "w": "says",
+          "start": 25.26,
+          "end": 25.6
+        },
+        {
+          "w": "\"it\".",
+          "start": 25.6,
+          "end": 25.88
+        },
+        {
+          "w": "Write",
+          "start": 26.64,
+          "end": 27.12
+        },
+        {
+          "w": "it",
+          "start": 27.12,
+          "end": 27.3
+        },
+        {
+          "w": "down.",
+          "start": 27.3,
+          "end": 27.52
+        }
+      ]
+    },
+    {
+      "i": 3,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "Now find every slip with \"it\" in its box. There are ten. Three say \"sits\", three \"watches\", three \"goes\", and one says \"is\". Pick one without choosing: \"sits\".",
+      "start": 28.35,
+      "end": 41.72,
+      "words": [
+        {
+          "w": "Now",
+          "start": 28.5,
+          "end": 29.1
+        },
+        {
+          "w": "find",
+          "start": 29.1,
+          "end": 29.46
+        },
+        {
+          "w": "every",
+          "start": 29.46,
+          "end": 29.9
+        },
+        {
+          "w": "slip",
+          "start": 29.9,
+          "end": 30.22
+        },
+        {
+          "w": "with",
+          "start": 30.22,
+          "end": 30.46
+        },
+        {
+          "w": "\"it\"",
+          "start": 30.46,
+          "end": 30.64
+        },
+        {
+          "w": "in",
+          "start": 30.64,
+          "end": 30.8
+        },
+        {
+          "w": "its",
+          "start": 30.8,
+          "end": 31.0
+        },
+        {
+          "w": "box.",
+          "start": 31.0,
+          "end": 31.26
+        },
+        {
+          "w": "There",
+          "start": 32.24,
+          "end": 32.64
+        },
+        {
+          "w": "are",
+          "start": 32.64,
+          "end": 32.8
+        },
+        {
+          "w": "ten.",
+          "start": 32.8,
+          "end": 33.04
+        },
+        {
+          "w": "Three",
+          "start": 33.82,
+          "end": 34.42
+        },
+        {
+          "w": "say",
+          "start": 34.42,
+          "end": 34.64
+        },
+        {
+          "w": "\"sits\",",
+          "start": 34.64,
+          "end": 35.02
+        },
+        {
+          "w": "three",
+          "start": 35.24,
+          "end": 35.64
+        },
+        {
+          "w": "\"watches\",",
+          "start": 35.64,
+          "end": 36.06
+        },
+        {
+          "w": "three",
+          "start": 36.34,
+          "end": 36.74
+        },
+        {
+          "w": "\"goes\",",
+          "start": 36.74,
+          "end": 37.1
+        },
+        {
+          "w": "and",
+          "start": 37.34,
+          "end": 37.62
+        },
+        {
+          "w": "one",
+          "start": 37.62,
+          "end": 37.88
+        },
+        {
+          "w": "says",
+          "start": 37.88,
+          "end": 38.24
+        },
+        {
+          "w": "\"is\".",
+          "start": 38.24,
+          "end": 38.54
+        },
+        {
+          "w": "Pick",
+          "start": 39.22,
+          "end": 39.82
+        },
+        {
+          "w": "one",
+          "start": 39.82,
+          "end": 40.02
+        },
+        {
+          "w": "without",
+          "start": 40.02,
+          "end": 40.36
+        },
+        {
+          "w": "choosing:",
+          "start": 40.36,
+          "end": 40.88
+        },
+        {
+          "w": "\"sits\".",
+          "start": 41.08,
+          "end": 41.52
+        }
+      ]
+    },
+    {
+      "i": 4,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Every \"sits\" slip says \"on\", and every \"on\" slip says \"the\". No choice at all.",
+      "start": 42.95,
+      "end": 48.94,
+      "words": [
+        {
+          "w": "Every",
+          "start": 43.1,
+          "end": 43.7
+        },
+        {
+          "w": "\"sits\"",
+          "start": 43.7,
+          "end": 43.88
+        },
+        {
+          "w": "slip",
+          "start": 43.88,
+          "end": 44.32
+        },
+        {
+          "w": "says",
+          "start": 44.32,
+          "end": 44.58
+        },
+        {
+          "w": "\"on\",",
+          "start": 44.58,
+          "end": 44.86
+        },
+        {
+          "w": "and",
+          "start": 44.96,
+          "end": 45.48
+        },
+        {
+          "w": "every",
+          "start": 45.48,
+          "end": 45.8
+        },
+        {
+          "w": "\"on\"",
+          "start": 45.8,
+          "end": 46.02
+        },
+        {
+          "w": "slip",
+          "start": 46.02,
+          "end": 46.32
+        },
+        {
+          "w": "says",
+          "start": 46.32,
+          "end": 46.58
+        },
+        {
+          "w": "\"the\".",
+          "start": 46.9,
+          "end": 47.33
+        },
+        {
+          "w": "No",
+          "start": 47.48,
+          "end": 48.08
+        },
+        {
+          "w": "choice",
+          "start": 48.08,
+          "end": 48.32
+        },
+        {
+          "w": "at",
+          "start": 48.32,
+          "end": 48.5
+        },
+        {
+          "w": "all.",
+          "start": 48.5,
+          "end": 48.74
+        }
+      ]
+    },
+    {
+      "i": 5,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "\"The\" has nineteen slips. Pick one: \"dog\". And \"dog\" has four: two full stops, two \"runs\". Pick one: full stop.",
+      "start": 49.45,
+      "end": 60.56,
+      "words": [
+        {
+          "w": "\"The\"",
+          "start": 49.6,
+          "end": 50.2
+        },
+        {
+          "w": "has",
+          "start": 50.2,
+          "end": 50.44
+        },
+        {
+          "w": "nineteen",
+          "start": 50.44,
+          "end": 50.86
+        },
+        {
+          "w": "slips.",
+          "start": 50.86,
+          "end": 51.38
+        },
+        {
+          "w": "Pick",
+          "start": 52.18,
+          "end": 52.78
+        },
+        {
+          "w": "one:",
+          "start": 52.78,
+          "end": 53.02
+        },
+        {
+          "w": "\"dog\".",
+          "start": 53.26,
+          "end": 53.62
+        },
+        {
+          "w": "And",
+          "start": 54.26,
+          "end": 54.86
+        },
+        {
+          "w": "\"dog\"",
+          "start": 54.86,
+          "end": 55.16
+        },
+        {
+          "w": "has",
+          "start": 55.16,
+          "end": 55.46
+        },
+        {
+          "w": "four:",
+          "start": 55.46,
+          "end": 55.74
+        },
+        {
+          "w": "two",
+          "start": 55.94,
+          "end": 56.38
+        },
+        {
+          "w": "full",
+          "start": 56.38,
+          "end": 56.64
+        },
+        {
+          "w": "stops,",
+          "start": 56.64,
+          "end": 57.0
+        },
+        {
+          "w": "two",
+          "start": 57.52,
+          "end": 57.6
+        },
+        {
+          "w": "\"runs\".",
+          "start": 57.6,
+          "end": 57.72
+        },
+        {
+          "w": "Pick",
+          "start": 58.64,
+          "end": 59.2
+        },
+        {
+          "w": "one:",
+          "start": 59.2,
+          "end": 59.44
+        },
+        {
+          "w": "full",
+          "start": 59.64,
+          "end": 60.02
+        },
+        {
+          "w": "stop.",
+          "start": 60.02,
+          "end": 60.36
+        }
+      ]
+    },
+    {
+      "i": 6,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "\"It sits on the dog.\" The book never says that. It says the magpie sits on the fence. Nobody wrote this sentence; the slips did, one pair at a time, like dominoes.",
+      "start": 61.63,
+      "end": 73.04,
+      "words": [
+        {
+          "w": "\"It",
+          "start": 61.78,
+          "end": 62.34
+        },
+        {
+          "w": "sits",
+          "start": 62.34,
+          "end": 62.48
+        },
+        {
+          "w": "on",
+          "start": 62.48,
+          "end": 62.78
+        },
+        {
+          "w": "the",
+          "start": 62.78,
+          "end": 62.9
+        },
+        {
+          "w": "dog.\"",
+          "start": 62.9,
+          "end": 63.12
+        },
+        {
+          "w": "The",
+          "start": 63.64,
+          "end": 64.2
+        },
+        {
+          "w": "book",
+          "start": 64.2,
+          "end": 64.42
+        },
+        {
+          "w": "never",
+          "start": 64.42,
+          "end": 64.7
+        },
+        {
+          "w": "says",
+          "start": 64.7,
+          "end": 64.98
+        },
+        {
+          "w": "that.",
+          "start": 64.98,
+          "end": 65.26
+        },
+        {
+          "w": "It",
+          "start": 65.38,
+          "end": 65.92
+        },
+        {
+          "w": "says",
+          "start": 65.92,
+          "end": 66.16
+        },
+        {
+          "w": "the",
+          "start": 66.16,
+          "end": 66.36
+        },
+        {
+          "w": "magpie",
+          "start": 66.36,
+          "end": 66.7
+        },
+        {
+          "w": "sits",
+          "start": 66.7,
+          "end": 67.02
+        },
+        {
+          "w": "on",
+          "start": 67.02,
+          "end": 67.22
+        },
+        {
+          "w": "the",
+          "start": 67.22,
+          "end": 67.3
+        },
+        {
+          "w": "fence.",
+          "start": 67.3,
+          "end": 67.52
+        },
+        {
+          "w": "Nobody",
+          "start": 67.9,
+          "end": 68.46
+        },
+        {
+          "w": "wrote",
+          "start": 68.46,
+          "end": 68.76
+        },
+        {
+          "w": "this",
+          "start": 68.76,
+          "end": 68.98
+        },
+        {
+          "w": "sentence;",
+          "start": 68.98,
+          "end": 69.28
+        },
+        {
+          "w": "the",
+          "start": 69.48,
+          "end": 69.9
+        },
+        {
+          "w": "slips",
+          "start": 69.9,
+          "end": 70.12
+        },
+        {
+          "w": "did,",
+          "start": 70.12,
+          "end": 70.4
+        },
+        {
+          "w": "one",
+          "start": 70.6,
+          "end": 71.0
+        },
+        {
+          "w": "pair",
+          "start": 71.0,
+          "end": 71.26
+        },
+        {
+          "w": "at",
+          "start": 71.26,
+          "end": 71.46
+        },
+        {
+          "w": "a",
+          "start": 71.46,
+          "end": 71.56
+        },
+        {
+          "w": "time,",
+          "start": 71.56,
+          "end": 71.9
+        },
+        {
+          "w": "like",
+          "start": 71.92,
+          "end": 72.34
+        },
+        {
+          "w": "dominoes.",
+          "start": 72.34,
+          "end": 72.84
+        }
+      ]
+    },
+    {
+      "i": 7,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "And here's everything this pile could have written instead.",
+      "start": 73.57,
+      "end": 76.94,
+      "words": [
+        {
+          "w": "And",
+          "start": 73.72,
+          "end": 74.28
+        },
+        {
+          "w": "here's",
+          "start": 74.28,
+          "end": 74.66
+        },
+        {
+          "w": "everything",
+          "start": 74.66,
+          "end": 75.0
+        },
+        {
+          "w": "this",
+          "start": 75.0,
+          "end": 75.3
+        },
+        {
+          "w": "pile",
+          "start": 75.3,
+          "end": 75.62
+        },
+        {
+          "w": "could",
+          "start": 75.62,
+          "end": 75.98
+        },
+        {
+          "w": "have",
+          "start": 75.98,
+          "end": 76.14
+        },
+        {
+          "w": "written",
+          "start": 76.14,
+          "end": 76.42
+        },
+        {
+          "w": "instead.",
+          "start": 76.42,
+          "end": 76.74
+        }
+      ]
+    },
+    {
+      "i": 8,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Every pick sends you down a different path. So chain ten thousand words, cut them back into slips, and sort them.",
+      "start": 78.25,
+      "end": 85.52,
+      "words": [
+        {
+          "w": "Every",
+          "start": 78.4,
+          "end": 78.96
+        },
+        {
+          "w": "pick",
+          "start": 78.96,
+          "end": 79.26
+        },
+        {
+          "w": "sends",
+          "start": 79.26,
+          "end": 79.48
+        },
+        {
+          "w": "you",
+          "start": 79.48,
+          "end": 79.76
+        },
+        {
+          "w": "down",
+          "start": 79.76,
+          "end": 80.04
+        },
+        {
+          "w": "a",
+          "start": 80.04,
+          "end": 80.16
+        },
+        {
+          "w": "different",
+          "start": 80.16,
+          "end": 80.4
+        },
+        {
+          "w": "path.",
+          "start": 80.4,
+          "end": 80.7
+        },
+        {
+          "w": "So",
+          "start": 80.98,
+          "end": 81.54
+        },
+        {
+          "w": "chain",
+          "start": 81.54,
+          "end": 81.84
+        },
+        {
+          "w": "ten",
+          "start": 81.84,
+          "end": 82.08
+        },
+        {
+          "w": "thousand",
+          "start": 82.08,
+          "end": 82.4
+        },
+        {
+          "w": "words,",
+          "start": 82.4,
+          "end": 82.78
+        },
+        {
+          "w": "cut",
+          "start": 83.0,
+          "end": 83.44
+        },
+        {
+          "w": "them",
+          "start": 83.44,
+          "end": 83.62
+        },
+        {
+          "w": "back",
+          "start": 83.62,
+          "end": 83.84
+        },
+        {
+          "w": "into",
+          "start": 83.84,
+          "end": 84.06
+        },
+        {
+          "w": "slips,",
+          "start": 84.06,
+          "end": 84.38
+        },
+        {
+          "w": "and",
+          "start": 84.58,
+          "end": 84.92
+        },
+        {
+          "w": "sort",
+          "start": 84.92,
+          "end": 85.14
+        },
+        {
+          "w": "them.",
+          "start": 85.14,
+          "end": 85.32
+        }
+      ]
+    },
+    {
+      "i": 9,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "Every chain different. Every chain sounding like the book. That's what Claude or ChatGPT is doing every time it writes a word, with vastly more than a pile of slips.",
+      "start": 86.17,
+      "end": 98.14,
+      "words": [
+        {
+          "w": "Every",
+          "start": 86.32,
+          "end": 86.88
+        },
+        {
+          "w": "chain",
+          "start": 86.88,
+          "end": 87.26
+        },
+        {
+          "w": "different.",
+          "start": 87.52,
+          "end": 87.72
+        },
+        {
+          "w": "Every",
+          "start": 88.48,
+          "end": 88.98
+        },
+        {
+          "w": "chain",
+          "start": 88.98,
+          "end": 89.28
+        },
+        {
+          "w": "sounding",
+          "start": 89.28,
+          "end": 89.68
+        },
+        {
+          "w": "like",
+          "start": 89.68,
+          "end": 90.08
+        },
+        {
+          "w": "the",
+          "start": 90.08,
+          "end": 90.26
+        },
+        {
+          "w": "book.",
+          "start": 90.26,
+          "end": 90.46
+        },
+        {
+          "w": "That's",
+          "start": 91.3,
+          "end": 91.8
+        },
+        {
+          "w": "what",
+          "start": 91.8,
+          "end": 91.94
+        },
+        {
+          "w": "Claude",
+          "start": 91.94,
+          "end": 92.36
+        },
+        {
+          "w": "or",
+          "start": 92.36,
+          "end": 92.52
+        },
+        {
+          "w": "ChatGPT",
+          "start": 92.52,
+          "end": 93.4
+        },
+        {
+          "w": "is",
+          "start": 93.4,
+          "end": 93.86
+        },
+        {
+          "w": "doing",
+          "start": 93.86,
+          "end": 94.12
+        },
+        {
+          "w": "every",
+          "start": 94.12,
+          "end": 94.48
+        },
+        {
+          "w": "time",
+          "start": 94.48,
+          "end": 94.78
+        },
+        {
+          "w": "it",
+          "start": 94.78,
+          "end": 95.0
+        },
+        {
+          "w": "writes",
+          "start": 95.0,
+          "end": 95.26
+        },
+        {
+          "w": "a",
+          "start": 95.26,
+          "end": 95.44
+        },
+        {
+          "w": "word,",
+          "start": 95.44,
+          "end": 95.68
+        },
+        {
+          "w": "with",
+          "start": 95.68,
+          "end": 96.3
+        },
+        {
+          "w": "vastly",
+          "start": 96.3,
+          "end": 96.74
+        },
+        {
+          "w": "more",
+          "start": 96.74,
+          "end": 97.0
+        },
+        {
+          "w": "than",
+          "start": 97.0,
+          "end": 97.2
+        },
+        {
+          "w": "a",
+          "start": 97.2,
+          "end": 97.32
+        },
+        {
+          "w": "pile",
+          "start": 97.32,
+          "end": 97.58
+        },
+        {
+          "w": "of",
+          "start": 97.58,
+          "end": 97.76
+        },
+        {
+          "w": "slips.",
+          "start": 97.76,
+          "end": 97.94
+        }
+      ]
+    },
+    {
+      "i": 10,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Spread your cutouts out. Write down a starting word, find a slip with that word in its box, and write down its next word. Then find a slip that starts with that. The colours help you find the matches fast.",
+      "start": 99.69,
+      "end": 111.98,
+      "words": [
+        {
+          "w": "Spread",
+          "start": 99.84,
+          "end": 100.34
+        },
+        {
+          "w": "your",
+          "start": 100.34,
+          "end": 100.58
+        },
+        {
+          "w": "cutouts",
+          "start": 100.58,
+          "end": 101.04
+        },
+        {
+          "w": "out.",
+          "start": 101.04,
+          "end": 101.28
+        },
+        {
+          "w": "Write",
+          "start": 101.54,
+          "end": 102.04
+        },
+        {
+          "w": "down",
+          "start": 102.04,
+          "end": 102.28
+        },
+        {
+          "w": "a",
+          "start": 102.28,
+          "end": 102.46
+        },
+        {
+          "w": "starting",
+          "start": 102.46,
+          "end": 102.74
+        },
+        {
+          "w": "word,",
+          "start": 102.74,
+          "end": 103.0
+        },
+        {
+          "w": "find",
+          "start": 103.14,
+          "end": 103.62
+        },
+        {
+          "w": "a",
+          "start": 103.62,
+          "end": 103.82
+        },
+        {
+          "w": "slip",
+          "start": 103.82,
+          "end": 104.02
+        },
+        {
+          "w": "with",
+          "start": 104.02,
+          "end": 104.2
+        },
+        {
+          "w": "that",
+          "start": 104.2,
+          "end": 104.38
+        },
+        {
+          "w": "word",
+          "start": 104.38,
+          "end": 104.62
+        },
+        {
+          "w": "in",
+          "start": 104.62,
+          "end": 104.78
+        },
+        {
+          "w": "its",
+          "start": 104.78,
+          "end": 104.88
+        },
+        {
+          "w": "box,",
+          "start": 104.88,
+          "end": 105.22
+        },
+        {
+          "w": "and",
+          "start": 105.3,
+          "end": 105.72
+        },
+        {
+          "w": "write",
+          "start": 105.72,
+          "end": 105.92
+        },
+        {
+          "w": "down",
+          "start": 105.92,
+          "end": 106.18
+        },
+        {
+          "w": "its",
+          "start": 106.18,
+          "end": 106.38
+        },
+        {
+          "w": "next",
+          "start": 106.38,
+          "end": 106.54
+        },
+        {
+          "w": "word.",
+          "start": 106.54,
+          "end": 106.82
+        },
+        {
+          "w": "Then",
+          "start": 107.12,
+          "end": 107.62
+        },
+        {
+          "w": "find",
+          "start": 107.62,
+          "end": 107.96
+        },
+        {
+          "w": "a",
+          "start": 107.96,
+          "end": 108.12
+        },
+        {
+          "w": "slip",
+          "start": 108.12,
+          "end": 108.36
+        },
+        {
+          "w": "that",
+          "start": 108.36,
+          "end": 108.62
+        },
+        {
+          "w": "starts",
+          "start": 108.62,
+          "end": 108.94
+        },
+        {
+          "w": "with",
+          "start": 108.94,
+          "end": 109.12
+        },
+        {
+          "w": "that.",
+          "start": 109.12,
+          "end": 109.28
+        },
+        {
+          "w": "The",
+          "start": 109.44,
+          "end": 109.94
+        },
+        {
+          "w": "colours",
+          "start": 109.84,
+          "end": 110.21
+        },
+        {
+          "w": "help",
+          "start": 110.24,
+          "end": 110.48
+        },
+        {
+          "w": "you",
+          "start": 110.48,
+          "end": 110.68
+        },
+        {
+          "w": "find",
+          "start": 110.68,
+          "end": 110.98
+        },
+        {
+          "w": "the",
+          "start": 110.98,
+          "end": 111.18
+        },
+        {
+          "w": "matches",
+          "start": 111.18,
+          "end": 111.48
+        },
+        {
+          "w": "fast.",
+          "start": 111.48,
+          "end": 111.78
+        }
+      ]
+    },
+    {
+      "i": 11,
+      "speaker": "USHINI",
+      "tc": true,
+      "caption": "Start chaining.",
+      "start": 113.01,
+      "end": 114.34,
+      "words": [
+        {
+          "w": "Start",
+          "start": 113.16,
+          "end": 113.66
+        },
+        {
+          "w": "chaining.",
+          "start": 113.66,
+          "end": 114.14
+        }
+      ]
+    }
+  ]
+}

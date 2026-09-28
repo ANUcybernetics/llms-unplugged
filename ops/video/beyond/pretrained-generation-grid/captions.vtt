@@ -1,0 +1,34 @@
+WEBVTT
+
+00:00:00.150 --> 00:00:13.680
+Most people who use Claude or ChatGPT never trained it. Somebody else did the counting, and they just type and it writes. That's what this booklet is: a model somebody else already trained.
+
+00:00:15.010 --> 00:00:25.240
+It looks new, but it isn't. Here's the grid from The magpie. Fold it into a booklet, and every row becomes an entry. The empty boxes just fall away.
+
+00:00:25.930 --> 00:00:41.833
+Take the entry for "dog". On the grid you'd share the die's faces: nought to four for a full stop, five to nine for "runs". The booklet just writes where each band ends. Four. Nine.
+
+00:00:42.810 --> 00:00:50.380
+So roll, and take the first word your roll doesn't go past. Roll a three: that's not past four, so it's a full stop.
+
+00:00:50.910 --> 00:01:05.500
+The entry for "the" runs all the way to ninety-nine. That means two dice, read as one number. A seven and a two is seventy-two: past fifty-seven, not past seventy-eight. "Dog".
+
+00:01:06.650 --> 00:01:15.520
+Now the booklet on your table. It came from a much bigger book. Start from "sleep": one die. Roll a seven: "again".
+
+00:01:16.770 --> 00:01:34.740
+"Again" runs to ninety-nine, so two dice. An eight and a nought: eighty. That's past seventy-six, not past eighty-four: "I'd". Roll a six: "float". And "float" has only one word after it, so no roll at all.
+
+00:01:36.150 --> 00:01:47.520
+Why a booklet, and not a grid? This book uses about four thousand different words. As a grid, that's sixteen million boxes. Only sixteen thousand of them have anything in them.
+
+00:01:48.090 --> 00:02:00.640
+As you go, listen to what comes out. It'll sound more like real prose than your grid did. And it still won't be about anything. Try to guess the book before you check the cover.
+
+00:02:01.750 --> 00:02:13.520
+And one thing the booklet gets exactly right: you can read every number in this model, and run it at the kitchen table. Nobody can switch it off or quietly change it under you. That's what "open weights" means.
+
+00:02:14.450 --> 00:02:21.710
+Grab your booklet and start rolling. And if you'd like to make your own from any text, the tool's at llmsunplugged.org/tools.

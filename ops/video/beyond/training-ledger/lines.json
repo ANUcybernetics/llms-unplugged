@@ -1,0 +1,86 @@
+[
+  {
+    "i": 0,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "Every mark on these sheets was made by somebody reading. So what did they keep? Let's find out, with a book short enough to read in thirty seconds.",
+    "tts": "Every mark on these sheets was made by somebody reading. So what did they keep? Let's find out, with a book short enough to read in thirty seconds."
+  },
+  {
+    "i": 1,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "First, lowercase everything. And the full stops and exclamation marks count as words too.",
+    "tts": "First, lowercase everything. And the full stops and exclamation marks count as words too."
+  },
+  {
+    "i": 2,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Now read it two words at a time. Find the row for the first word. The second word goes in a box on that row, with a mark beside it. Then slide along by one, and do it again.",
+    "tts": "Now read it two words at a time. Find the row for the first word. The second word goes in a box on that row, with a mark beside it. Then slide along by one, and do it again."
+  },
+  {
+    "i": 3,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "A new word after the same word takes the next empty box. And when a pair comes round again, it gets another mark. By the end, \"the fence\" has six marks, and \"the magpie\" five.",
+    "tts": "A new word after the same word takes the next empty box. And when a pair comes round again, it gets another mark. By the end, \"the fence\" has six marks, and \"the magpie\" five."
+  },
+  {
+    "i": 4,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "That's all training is. Here's the rest of the book, done at the speed a computer does it.",
+    "tts": "That's all training is. Here's the rest of the book, done at the speed a computer does it."
+  },
+  {
+    "i": 5,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Now look at what it kept. Not the sentences. Not the story. It doesn't know what a magpie is. Just counts of what came next.",
+    "tts": "Now look at what it kept. Not the sentences. Not the story. It doesn't know what a magpie is. Just counts of what came next."
+  },
+  {
+    "i": 6,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "And a row of marks is just a row of numbers. The row for \"the\" says five, six, four, four.",
+    "tts": "And a row of marks is just a row of numbers. The row for \"the\" says five, six, four, four."
+  },
+  {
+    "i": 7,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "When people talk about a model's \"weights\", this is the kind of thing they mean: numbers that came from the text it read.",
+    "tts": "When people talk about a model's \"weights\", this is the kind of thing they mean: numbers that came from the text it read."
+  },
+  {
+    "i": 8,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Give it a bigger book and nothing changes. This is Frankenstein. Eighty-five thousand words, and seven thousand rows.",
+    "tts": "Give it a bigger book and nothing changes. This is Frankenstein. Eighty-five thousand words, and seven thousand rows."
+  },
+  {
+    "i": 9,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "A real model reads trillions of words, and stores its numbers more cleverly than a ledger. But the job it's doing is the one you're about to do.",
+    "tts": "A real model reads trillions of words, and stores its numbers more cleverly than a ledger. But the job it's doing is the one you're about to do."
+  },
+  {
+    "i": 10,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Three things catch people out. A full stop is a word, and its row says how sentences start. A new word goes in the next empty box, never skip one. And say a new word out loud when you start its row, so nobody starts it twice.",
+    "tts": "Three things catch people out. A full stop is a word, and its row says how sentences start. A new word goes in the next empty box, never skip one. And say a new word out loud when you start its row, so nobody starts it twice."
+  },
+  {
+    "i": 11,
+    "speaker": "BEN",
+    "tc": true,
+    "caption": "Reader, grab the text. Two words at a time.",
+    "tts": "Reader, grab the text. Two words at a time."
+  }
+]

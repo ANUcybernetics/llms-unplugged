@@ -1,0 +1,86 @@
+[
+  {
+    "i": 0,
+    "speaker": "USHINI",
+    "tc": true,
+    "caption": "So is your grid a tiny Claude or ChatGPT? Yes and no. Here's exactly which parts are the same, and which aren't.",
+    "tts": "So is your grid a tiny Claude or ChatGPT? Yes and no. Here's exactly which parts are the same, and which aren't."
+  },
+  {
+    "i": 1,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "The same part is the loop. Text goes in. The model gives every possible next word a chance, one gets drawn, it's written down, and round it goes again. Your grid does that. So does Claude.",
+    "tts": "The same part is the loop. Text goes in. The model gives every possible next word a chance, one gets drawn, it's written down, and round it goes again. Your grid does that. So does Claude."
+  },
+  {
+    "i": 2,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "What's different is size. Your magpie grid has five hundred and seventy-six boxes.",
+    "tts": "What's different is size. Your magpie grid has five hundred and seventy-six boxes."
+  },
+  {
+    "i": 3,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Frankenstein has seven thousand different words. That's forty-nine million boxes. And look how few have anything in them.",
+    "tts": "Frankenstein has seven thousand different words. That's forty-nine million boxes. And look how few have anything in them."
+  },
+  {
+    "i": 4,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "A real model knows about a hundred thousand words and bits of words. One word of context: ten billion boxes. And nearly every one of them empty, because nobody has ever written most pairs.",
+    "tts": "A real model knows about a hundred thousand words and bits of words. One word of context: ten billion boxes. And nearly every one of them empty, because nobody has ever written most pairs."
+  },
+  {
+    "i": 5,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "And that's just one word of context. Your grid only ever looks at the last word. A real model looks at the whole conversation.",
+    "tts": "And that's just one word of context. Your grid only ever looks at the last word. A real model looks at the whole conversation."
+  },
+  {
+    "i": 6,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Here's why that matters. Frankenstein, looking back one word. Then two. Then five.",
+    "tts": "Here's why that matters. Frankenstein, looking back one word. Then two. Then five."
+  },
+  {
+    "i": 7,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "So a real model can't keep a box for every pair. Instead it shares what it learns across words. Look at the magpie: the rows for \"dog\" and \"postie\" are exactly the same. A model that notices that can guess about the postie from what it saw the dog do.",
+    "tts": "So a real model can't keep a box for every pair. Instead it shares what it learns across words. Look at the magpie: the rows for \"dog\" and \"postie\" are exactly the same. A model that notices that can guess about the postie from what it saw the dog do."
+  },
+  {
+    "i": 8,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "It doesn't use whole words, either. It uses tokens: common words whole, rarer ones in pieces.",
+    "tts": "It doesn't use whole words, either. It uses tokens: common words whole, rarer ones in pieces."
+  },
+  {
+    "i": 9,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "And after all that reading, it gets a second round of training, with people rating its replies. That's what makes it answer your question instead of just carrying on your text.",
+    "tts": "And after all that reading, it gets a second round of training, with people rating its replies. That's what makes it answer your question instead of just carrying on your text."
+  },
+  {
+    "i": 10,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "More context, a smarter way to store it, pieces of words, and a second round of training. None of it changes the loop.",
+    "tts": "More context, a smarter way to store it, pieces of words, and a second round of training. None of it changes the loop."
+  },
+  {
+    "i": 11,
+    "speaker": "BEN",
+    "tc": true,
+    "caption": "Everything Claude or ChatGPT does, it does one token at a time. Just like you did.",
+    "tts": "Everything Claude or ChatGPT does, it does one token at a time. Just like you did."
+  }
+]

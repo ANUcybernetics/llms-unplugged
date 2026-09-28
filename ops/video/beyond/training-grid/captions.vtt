@@ -1,0 +1,37 @@
+WEBVTT
+
+00:00:00.220 --> 00:00:11.250
+Claude or ChatGPT learned everything they know by reading. But what did they actually keep? Let's find out, with a book short enough to read in thirty seconds.
+
+00:00:13.140 --> 00:00:18.870
+First, lowercase everything. And the full stops and exclamation marks count as words too.
+
+00:00:19.580 --> 00:00:32.710
+Now read it two words at a time. The first word gets a row. The second gets a column. Put a tally where they cross. Then slide along by one, and do it again.
+
+00:00:34.110 --> 00:00:42.150
+Keep going, and the same pairs come round again. By the end of the book, "the magpie" has five tallies. "The fence" has six.
+
+00:00:42.940 --> 00:00:49.110
+That's all training is. Here's the rest of the book, done at the speed a computer does it.
+
+00:00:50.280 --> 00:00:59.510
+Now look at what it kept. Not the sentences. Not the story. It doesn't know what a magpie is. Just counts of what came next.
+
+00:01:00.200 --> 00:01:10.810
+And a tally is just a number. The row for "the" says five, six, four, four. Every box on the grid is a number, and most of them are zero.
+
+00:01:12.100 --> 00:01:18.350
+When people talk about a model's "weights", this is the kind of thing they mean: numbers that came from the text it read.
+
+00:01:19.080 --> 00:01:27.990
+Give it a bigger book and nothing changes. This is Frankenstein. Eighty-five thousand words, and seven thousand rows.
+
+00:01:29.220 --> 00:01:37.190
+A real model reads trillions of words, and stores its numbers more cleverly than a grid. But the job it's doing is the one you're about to do.
+
+00:01:37.740 --> 00:01:53.210
+A few tips. Start on any page you like. A full stop is followed by whatever comes next, even over the page. Skip the speech marks. And a new word always gets a new row and a new column.
+
+00:01:54.300 --> 00:02:00.670
+It works best in pairs: one reads, one tallies, swap halfway. Start counting.

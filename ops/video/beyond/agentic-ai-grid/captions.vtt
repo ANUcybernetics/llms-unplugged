@@ -1,0 +1,34 @@
+WEBVTT
+
+00:00:00.150 --> 00:00:17.220
+This is the one that's all over the news. AI agents: models that browse the web, write code, book flights. It sounds like a whole new kind of technology. It isn't. It's the loop you've already run, with one rule added.
+
+00:00:18.590 --> 00:00:28.760
+Here's the rule. Generate from your grid exactly as before. But the moment you roll a punctuation mark, a full stop, a comma, stop. That's a tool call.
+
+00:00:29.470 --> 00:00:40.640
+So the model doesn't decide to use a tool. It rolls one, like any other word. Some rows almost never call it. Some always do.
+
+00:00:41.930 --> 00:00:53.340
+Say you've written "here comes the dog". The row for "dog": nought to four is a full stop, five to nine is "runs". Roll a three. Full stop. Stop.
+
+00:00:54.010 --> 00:01:02.040
+The tool is a text message. Send "What comes next?", and the sentence so far, to three friends or group chats.
+
+00:01:03.270 --> 00:01:11.780
+The first reply back is your tool result. Write the whole thing down, then the full stop you rolled. Then carry on, from the full stop.
+
+00:01:12.450 --> 00:01:22.440
+Why from the full stop, and not from "sandwich"? Because your grid has no row for "sandwich". But it always has one for a full stop.
+
+00:01:23.950 --> 00:01:30.040
+Replies take time. If nothing's back by your next punctuation mark, leave a gap and fill it in later.
+
+00:01:30.850 --> 00:01:47.860
+Here's the bit that matters. The model never learned what comes next after "the dog". It only rolled when to ask. And the thing that paused it, sent the message, and spliced the answer back in? That was you. You were the harness.
+
+00:01:49.270 --> 00:01:58.940
+Take the person out, and you've got a model acting on its own. That's what the news means by an agent. So: what would you let it do without asking you first?
+
+00:01:59.930 --> 00:02:04.220
+Don't answer yet. In a few minutes, you'll be the harness.
