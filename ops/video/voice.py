@@ -13,7 +13,8 @@ the real voice-over is recorded.
     ops/video/voice.py scratch <slug>
     ops/video/voice.py scratch --all
 
-Parses ops/video/scripts/<slug>.md's `## Script` section into spoken lines,
+Parses the script's `## Script` section (ops/video/scripts/<slug>.md, or
+ops/video/beyond/scripts/<name>.md for a `beyond/<name>` slug) into spoken lines,
 writes ops/video/<slug>/lines.json (committed --- align.py and the composition
 both read it), synthesises each line with edge-tts (cached by voice+text
 hash), and assembles them into out/video/<slug>/voice.wav with
@@ -86,12 +87,12 @@ def tts_text(caption: str) -> str:
 
 def parse_script(md_text: str, slug: str) -> list[dict]:
     if "## Script" not in md_text:
-        raise RuntimeError(f"{slug}: no '## Script' heading in scripts/{slug}.md")
+        raise RuntimeError(f"{slug}: no '## Script' heading in its script")
     after = md_text.split("## Script", 1)[1]
     paragraphs = [p.strip() for p in re.split(r"\n\s*\n", after) if p.strip()]
     lines = []
     for para in paragraphs:
-        if para.startswith(("_Visual", "_Reads")):
+        if para.startswith(("_Visual", "_Reads", "_Beyond")):
             continue
         joined = " ".join(line.strip() for line in para.splitlines())
         match = SPEAKER_RE.match(joined)
@@ -113,6 +114,16 @@ def parse_script(md_text: str, slug: str) -> list[dict]:
     if not lines:
         raise RuntimeError(f"{slug}: no spoken lines found under '## Script'")
     return lines
+
+
+def script_path(slug: str) -> Path:
+    """`beyond/<name>` lives in ops/video/beyond/scripts/<name>.md; a plain slug
+    in ops/video/scripts/.
+    """
+    if "/" in slug:
+        series, name = slug.split("/")
+        return ROOT / "ops/video" / series / "scripts" / f"{name}.md"
+    return SCRIPTS_DIR / f"{slug}.md"
 
 
 def cache_path(voice: str, text: str) -> Path:
@@ -228,8 +239,7 @@ def concat_wavs(pieces: list[Path], out_path: Path) -> None:
 
 
 def build_scratch(slug: str) -> float:
-    script_path = SCRIPTS_DIR / f"{slug}.md"
-    lines = parse_script(script_path.read_text(), slug)
+    lines = parse_script(script_path(slug).read_text(), slug)
 
     comp_dir = ROOT / f"ops/video/{slug}"
     comp_dir.mkdir(parents=True, exist_ok=True)

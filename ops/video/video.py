@@ -12,6 +12,9 @@
     ops/video/video.py upload <slug>             # renders, captions and the voice track -> bucket video/<slug>/
     ops/video/video.py all [--final]             # check + render every slug
 
+A slug may be nested (`beyond/<name>`): the composition, out directory and
+bucket prefix nest with it, and the files are named after `<name>`.
+
 A composition's length is the voice track's: every command first rewrites the
 `data-duration` attributes in index.html (and compositions/portrait.html) from
 timing.json, so re-recording a line and re-running align.py needs no edit
@@ -50,6 +53,10 @@ CONTENT_TYPES = {
 }
 
 app = typer.Typer(add_completion=False, no_args_is_help=True)
+
+
+def name(slug: str) -> str:
+    return Path(slug).name
 
 
 def project(slug: str) -> Path:
@@ -108,7 +115,7 @@ def render(slug: str, final: bool = False) -> None:
             "delivery",
             "--quiet",
             "--output",
-            str(out / f"{slug}.mp4"),
+            str(out / f"{name(slug)}.mp4"),
         )
         if (project(slug) / "compositions" / "portrait.html").is_file():
             npm(
@@ -125,7 +132,7 @@ def render(slug: str, final: bool = False) -> None:
                 "delivery",
                 "--quiet",
                 "--output",
-                str(out / f"{slug}-portrait.mp4"),
+                str(out / f"{name(slug)}-portrait.mp4"),
             )
     else:
         npm(
@@ -138,7 +145,7 @@ def render(slug: str, final: bool = False) -> None:
             "25",
             "--quiet",
             "--output",
-            str(out / f"{slug}-draft.mp4"),
+            str(out / f"{name(slug)}-draft.mp4"),
         )
         if (project(slug) / "compositions" / "portrait.html").is_file():
             npm(
@@ -153,17 +160,17 @@ def render(slug: str, final: bool = False) -> None:
                 "25",
                 "--quiet",
                 "--output",
-                str(out / f"{slug}-portrait-draft.mp4"),
+                str(out / f"{name(slug)}-portrait-draft.mp4"),
             )
     vtt = project(slug) / "captions.vtt"
-    (out / f"{slug}.vtt").write_text(vtt.read_text())
+    (out / f"{name(slug)}.vtt").write_text(vtt.read_text())
     print(f"rendered into {out}")
 
 
 @app.command()
 def stills(slug: str, video: str | None = None) -> None:
     """A still at every line start and midpoint, and contact sheets of them."""
-    src = Path(video) if video else OUT / slug / f"{slug}-draft.mp4"
+    src = Path(video) if video else OUT / slug / f"{name(slug)}-draft.mp4"
     if not src.is_file():
         sys.exit(f"render first: {src} is missing")
     out = OUT / slug / "stills"
@@ -222,7 +229,7 @@ def upload(slug: str) -> None:
     out = OUT / slug
     files = [
         p
-        for p in sorted(out.glob(f"{slug}*"))
+        for p in sorted(out.glob(f"{name(slug)}*"))
         if p.suffix in CONTENT_TYPES and "draft" not in p.name
     ]
     files += [p for p in [out / "voice.wav"] if p.is_file()]
