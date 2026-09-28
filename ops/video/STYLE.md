@@ -55,10 +55,14 @@ visual grammar, captions, formats) and wins on anything editorial.
 
 ## The look
 
-- **The participant's seat**: a warm near-black desk seen flat from above, white
-  paper objects on it (word tiles, the grid sheet, ledger sheets, booklet pages,
-  the cup and counters, a pencil), in the site's type. No tilted photos, no
-  perspective.
+- **The participant's seat**: a desk seen flat from above, white paper objects
+  on it (word tiles, the grid sheet, ledger sheets, booklet pages, the cup and
+  counters, a pencil), in the site's type. The desk is the decks' slide ground,
+  so a video sits beside the slides as black and white with gold and the token
+  colours as accents. No tilted photos, no perspective.
+- **Punctuation is a symbol tile**: an enlarged bold mark in a rounded square,
+  as on the printed sheets and the site (the kit's `punctBox`/`punctTile`),
+  wherever a punctuation token appears as a word.
 - **Pencil marks boil**: tallies (on the grid and the ledger) and pencil-written
   words redraw slightly differently twelve times a second, as the kit sets up.
   Everything printed stays crisp: headers, the book's text, sheets, booklet

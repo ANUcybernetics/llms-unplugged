@@ -106,6 +106,73 @@ window.KIT = (() => {
     };
   })();
 
+  // Punctuation as a symbol tile, the way the printed sheets draw it (punct-box
+  // in cli/booklet-common.typ): an enlarged bold mark centred on its ink in a
+  // rounded square, so ".", ",", "!" all read as the same-sized tile. Drawn
+  // into an SVG parent, centred on (x, y), for a word set at `size`. The
+  // colour is currentColor, so it follows the surrounding text's colour.
+  const inkMetrics = (() => {
+    const ctx = document.createElement("canvas").getContext("2d");
+    ctx.textAlign = "center";
+    return (text, font) => {
+      ctx.font = font;
+      return ctx.measureText(text);
+    };
+  })();
+  const PUNCT_BOX = 1.15, // box side, in ems of the surrounding word
+    PUNCT_MARK = 1.3; // the mark's size, in the same ems
+  function punctBox(parent, mark, { x = 0, y = 0, size, colour }) {
+    const side = size * PUNCT_BOX,
+      markSize = size * PUNCT_MARK;
+    const m = inkMetrics(mark, `700 ${markSize}px "Libertinus Serif"`);
+    const g = svg("g", colour ? { style: `color: ${colour}` } : {}, parent);
+    svg(
+      "rect",
+      {
+        x: x - side / 2,
+        y: y - side / 2,
+        width: side,
+        height: side,
+        rx: side * 0.12,
+        fill: "none",
+        stroke: "currentColor",
+        "stroke-width": Math.max(1.5, size * 0.05),
+      },
+      g,
+    );
+    svg(
+      "text",
+      {
+        x: x + (m.actualBoundingBoxLeft - m.actualBoundingBoxRight) / 2,
+        y: y + (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2,
+        "text-anchor": "middle",
+        "font-size": markSize,
+        "font-weight": 700,
+        fill: "currentColor",
+        text: mark,
+      },
+      g,
+    );
+    return g;
+  }
+  // The same tile for HTML: an inline SVG sized in ems, so it scales with the
+  // element's font-size like the word it stands in for.
+  function punctTile(parent, mark) {
+    const U = 100,
+      pad = U * 0.04,
+      side = U * PUNCT_BOX + 2 * pad;
+    const s = svg(
+      "svg",
+      {
+        viewBox: `${-side / 2} ${-side / 2} ${side} ${side}`,
+        style: `width: ${side / U}em; height: ${side / U}em; display: block; overflow: visible`,
+      },
+      parent,
+    );
+    punctBox(s, mark, { size: U });
+    return s;
+  }
+
   // deterministic per-index jitter (never Math.random: frames must reproduce)
   const jitter = M.hash;
 
@@ -124,7 +191,9 @@ window.KIT = (() => {
     let cx = 0,
       cy = 0;
     tokens.forEach((t, i) => {
-      const w = Math.ceil(measure(t, font)) + 2 * padX;
+      const w = isPunct(t)
+        ? Math.ceil(size * PUNCT_BOX) + 2 * padX
+        : Math.ceil(measure(t, font)) + 2 * padX;
       if (cx + w > maxW && cx > 0) {
         cx = 0;
         cy += H + gap;
@@ -133,11 +202,12 @@ window.KIT = (() => {
         "div",
         {
           class: `tile${isPunct(t) ? " punct" : ""}`,
-          text: t,
+          ...(isPunct(t) ? {} : { text: t }),
           style: { width: `${w}px`, height: `${H}px`, fontSize: `${size}px` },
         },
         g,
       );
+      if (isPunct(t)) punctTile(d, t);
       set(d, { x: cx, y: cy });
       items.push({ el: d, text: t, x: cx, y: cy, w, h: H, i });
       cx += w + gap;
@@ -201,33 +271,45 @@ window.KIT = (() => {
     // headers
     const fs = Math.round(cell * 0.42);
     const rowHead = bg.vocab.map((w, r) =>
-      svg(
-        "text",
-        {
-          x: head - 22,
-          y: head + r * cell + cell / 2,
-          "text-anchor": "end",
-          "dominant-baseline": "central",
-          "font-size": fs,
-          "font-weight": isPunct(w) ? 600 : 400,
-          text: w,
-        },
-        s,
-      ),
+      isPunct(w)
+        ? punctBox(s, w, {
+            x: head - 22 - (fs * PUNCT_BOX) / 2,
+            y: head + r * cell + cell / 2,
+            size: fs,
+            colour: "var(--ink)",
+          })
+        : svg(
+            "text",
+            {
+              x: head - 22,
+              y: head + r * cell + cell / 2,
+              "text-anchor": "end",
+              "dominant-baseline": "central",
+              "font-size": fs,
+              text: w,
+            },
+            s,
+          ),
     );
     const colHead = bg.vocab.map((w, c) =>
-      svg(
-        "text",
-        {
-          x: head + c * cell + cell / 2,
-          y: head - 26,
-          "text-anchor": "middle",
-          "font-size": fs,
-          "font-weight": isPunct(w) ? 600 : 400,
-          text: w,
-        },
-        s,
-      ),
+      isPunct(w)
+        ? punctBox(s, w, {
+            x: head + c * cell + cell / 2,
+            y: head - 26 - (fs * PUNCT_BOX) / 2,
+            size: fs,
+            colour: "var(--ink)",
+          })
+        : svg(
+            "text",
+            {
+              x: head + c * cell + cell / 2,
+              y: head - 26,
+              "text-anchor": "middle",
+              "font-size": fs,
+              text: w,
+            },
+            s,
+          ),
     );
     // the reading hints only fit a grid drawn large; a small grid leaves them out
     const corner = svg("g", { class: "ui" }, s);
@@ -1148,6 +1230,8 @@ window.KIT = (() => {
     tokenColour,
     TOKEN_COLOURS,
     isPunct,
+    punctBox,
+    punctTile,
     split,
     bigrams,
     diceBands,

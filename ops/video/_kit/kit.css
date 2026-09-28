@@ -17,7 +17,7 @@
 
 :root {
   --ground: #0d0d0d;                 /* the site's dark ground */
-  --desk: #1c1917;                   /* the table top, a warm near-black */
+  --desk: #0d0d0d;                   /* the table top: the decks' slide ground (--anu-dark-grey) */
   --gold: #be830e;                   /* --anu-gold */
   --gold-2: #e5a930;                 /* lighter gold for text on the dark ground */
   --gold-soft: rgb(190 131 14 / 22%);
@@ -86,7 +86,7 @@ body { font-family: var(--font-ui); color: var(--text); }
   font-family: var(--font-tok); font-size: 56px; line-height: 1; white-space: nowrap;
   transform-origin: 50% 50%;
 }
-.tile.punct { font-weight: 600; }
+.tile.punct { font-weight: 700; }
 .tok { font-family: var(--font-tok); font-weight: 700; color: var(--c); }
 .tok.box { background: var(--c); color: #fff; border-radius: 0.12em; padding: 0.04em 0.18em; }
 
