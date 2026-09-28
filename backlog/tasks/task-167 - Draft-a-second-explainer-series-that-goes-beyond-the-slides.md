@@ -4,7 +4,7 @@ title: Draft a second explainer series that goes beyond the slides
 status: In Progress
 assignee: []
 created_date: '2026-09-27 22:16'
-updated_date: '2026-09-28 00:33'
+updated_date: '2026-09-28 00:37'
 labels:
   - video
 dependencies: []
@@ -48,7 +48,7 @@ Several of the candidate beats need a Canvas 2D layer (plain browser canvas, no 
 - [x] #6 One beyond-the-slides prototype beat has been rendered at 4K and reviewed by Ben before the series is built
 - [ ] #7 No composition is built for a script whose reads Ben hasn't approved
 - [ ] #8 The TASK-154 drafts (compositions, scripts, renders) are unchanged
-- [ ] #9 The styled-video skill's guidance on particles and canvas matches what the prototype showed renders well
+- [x] #9 The styled-video skill's guidance on particles and canvas matches what the prototype showed renders well
 <!-- AC:END -->
 
 ## Implementation Plan
@@ -88,4 +88,6 @@ Prototype beat for the canvas layer (AC #5, #6): the tree of possible texts. It'
 2026-09-28: Ben approved the tree prototype (AC #6). Layout option he raised: trim beats like the tree to a squarer frame so a portrait talking-head can sit on the right; decide per beat when the storyboards are drawn.
 
 astromotion v0.34.0 released (Canvas 2D layer) and pinned in website/; the prototype now uses the kit's normal engine link and is committed (bd419857).
+
+styled-video skill has the canvas guidance the prototype showed (claude-plugin-personal d764c09, not pushed).
 <!-- SECTION:NOTES:END -->
