@@ -4,7 +4,7 @@ title: Draft a second explainer series that goes beyond the slides
 status: In Progress
 assignee: []
 created_date: '2026-09-27 22:16'
-updated_date: '2026-09-28 00:37'
+updated_date: '2026-09-28 01:23'
 labels:
   - video
 dependencies: []
@@ -54,30 +54,43 @@ Several of the candidate beats need a Canvas 2D layer (plain browser canvas, no 
 ## Implementation Plan
 
 <!-- SECTION:PLAN:BEGIN -->
-Series proposal (2026-09-28). Ben has agreed the shape; he confirms this written version before scripts start (AC #1).
+Series (Ben's decisions, 2026-09-28). Notes and scripts live in ops/video/beyond/ (README.md, scripts/<slug>.md); the worked example throughout is The magpie (data/originals/the-magpie.txt, lowercased: 133 tokens, 24 words).
 
-Shape: four how-it-works videos written as one continuous argument (shared data, shared morphs, each one standalone), so they chain into a long cut, plus three backstory videos. The spine is that every physical format holds the same numbers: grid tallies, ledger marks, counters in the cup, d10 faces and cutout slips are all counts of which word followed which. So each how-it-works video explains the mechanism in whatever form reads best, and only its closing hand-off is format-specific. The ending is a composition parameter (like the Overview's aspect ratio), one render per format.
+Twelve videos. The how-it-works videos are single-format, so a teacher running one flavour of workshop sees only that flavour's materials. They're generated from shared kit parts and one structure per stage, so the grid and ledger versions of a stage are cheap siblings, not separate builds. Each covers a contiguous run of its deck partial's explanation slides (section title to "Your turn"), so a later ?video deck variant can swap the run for the embed.
 
-How-it-works (in long-cut order):
-1. training: models learn by counting which words follow which. Beats: the representation morph (tallies -> ledger marks -> counters -> die faces -> probabilities -> a weight matrix); the same pencil action at machine speed on real corpora (the magpie book, then Frankenstein), where 'billions of word pairs' gets real counts. Endings: grid, ledger.
-2. generation: text is generated one word at a time by sampling from learned counts. Never assumes the viewer did the counting, so it also plays where the ledger lesson generates from finished sheets before training. Beats: the tree of every text the grid can write, one path taken by the dice; generation is training run backwards (count the pairs in 10,000 generated words and the grid comes back). Endings: grid, ledger, cutouts.
-3. pre-trained generation: you can generate from a model someone else trained on a much bigger text. Beats: the grid folds into a booklet (rows become entries, empty boxes fall away); why a booklet and not a grid (Paterson: 17 million boxes, 16,460 not empty). Ending: booklet.
-4. agentic AI: a tool call is sampled like any other word; generation pauses, the tool runs, and generation continues with the result spliced in. Beat: the die lands on the tool-call face. Ending: grid.
+Grid:
+1. training-grid: counting word pairs into the grid; the book at machine speed; Frankenstein at scale
+2. generation-grid: sharing the d10's faces across a row by its tallies; the tree of everything the model could write; the convergence beat (10,000 words counted back into a sheet)
+3. pretrained-generation-grid: the booklet; the grid folds into a booklet (rows become entries, empty boxes fall away); why a booklet not a grid (Paterson: 17 million boxes, 16,460 not empty)
+4. agentic-ai-grid: a tool call is a token drawn like any other word (punctuation columns lit); you are the harness
+
+Ledger:
+5. training-ledger: the same training beats on ledger sheets
+6. generation-ledger: the cup; works whether the sheets arrived pre-filled or the room filled them in (no separate pre-trained ledger video); the tree and convergence beats as in the grid version
+7. agentic-ai-ledger: as the grid version, on sheets and the cup; depends on the ledger deck (TASK-168)
+
+Cutouts:
+8. generation-cutouts: matching cutouts (previous-word box, next word), picked at random
+
+Across formats:
+9. same-algorithm: grid tallies, ledger marks, counters, cutouts and numbers are one model; carries the representation morph and the walk that switches forms (both moved out of training/generation). Also the spine of the long cut.
 
 Backstory:
-Series notes and scripts: ops/video/beyond/ (README.md, scripts/<slug>.md). The worked example throughout is The magpie.
+10. overview (landing page, 9:16 variant too): around the morph and the tree
+11. making-things-up: "Down comes the dog. Swoop!"; "Here comes the fence." is the third likeliest sentence (7%) ahead of "Here comes the dog." (2.5%); of 79 short sentences 7 are in the book, carrying about half the probability
+12. real-models: powers of ten on real counts (Frankenstein heatmap 0.08% lit); more context (1-, 2-, 5-word context on Frankenstein); tokens; post-training
 
-5. overview (landing page): reworked around the morph and the tree rather than a tour of the materials.
-6. making things up: a grid trained on two true sentences fluently generates a false one; hallucination falls out of the mechanism. Classroom-ready on its own.
-7. real models (your grid vs Claude or ChatGPT): what's the same and what isn't. A powers-of-ten zoom (grid, booklet, real corpus counts, vocabulary squared) and a sparse real bigram heatmap (why real models can't be bigger tables), then the honest differences: context length, tokens, learned representations, fine-tuning.
+State of the scripts: scripts/training.md and generation.md are full drafts written before the single-format split (they mix forms and carry per-format ### Ending sections); the other five slugs have beat sheets. Ben's line decisions so far: the weights line is "When people talk about a model's 'weights', this is the kind of thing they mean: numbers that came from the text it read."; the tree line is "everything this model could have written"; the generation walk ends ". it sits on the dog ."; the convergence beat stays. All reads are still (draft).
 
-Held in reserve: what happens when AI learns from AI (retraining on its own output until the rare pairs die out). Out of scope: search sheets, cutout training, the off-Broadway modules.
+Next session:
+1. Split training.md and generation.md into their single-format versions (training-grid, training-ledger, generation-grid, generation-ledger, generation-cutouts), each with one ending; move the morph and the mixed-form walk into same-algorithm.md; update the README series table.
+2. Full scripts for the remaining videos, then Ben's line notes and read approvals (he edits the files and deletes "(draft)").
+3. Before any build: voice.py skips _Beyond paragraphs; video.py handles nested beyond/<slug> paths.
+4. Build (styled-video gates), starting from the tree prototype at ops/video/beyond/prototype-tree/ (approved, 4K).
 
-Long cut: 1-4 chained under one cold open, built from the same compositions with the per-video hand-offs removed.
+Settled craft: Canvas 2D layer in astromotion v0.34.0 (video/canvas.js); desk is the decks' #0d0d0d ground; punctuation is a filled symbol tile (kit punctBox/punctTile/punctInPlace); beats like the tree may be laid out to trim to a squarer frame for a portrait talking-head on the right (decided per beat at the storyboard).
 
-Deck alignment: each how-it-works video starts and ends where a contiguous run of deck slides does, so a later ?video deck variant (existing _if: param gating) can swap that run for the embed, with the ending matching that deck's format. No deck changes under this task.
-
-Prototype beat for the canvas layer (AC #5, #6): the tree of possible texts. It's the hardest engine case (thousands of seeded marks, redrawn deterministically on every seek, at 4K) and the beat most likely to survive into a script.
+AC #8 is overtaken: at Ben's request the kit's desk colour and punctuation tiles changed and a training-grid header bug was fixed, so the TASK-154 drafts were re-rendered. Ben to decide whether to reword or drop it.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
