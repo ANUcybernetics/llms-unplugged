@@ -25,8 +25,8 @@ rather than sitting beside it.
    fills in about two seconds. Same action, just faster
 6. what didn't get kept: no sentences, no story, no magpie. Just what came next
 7. **beyond:** the row for _the_ morphs through every body it can take: tallies,
-   ledger marks, counters, cutout slips, then four numbers. Same
-   numbers every time; numbers like these are what "model weights" means
+   ledger marks, counters, cutout slips, then four numbers. Same numbers every
+   time; numbers like these are what "model weights" means
 8. **beyond:** a bigger book at the same speed: _Frankenstein_, seven thousand
    rows. A real model reads trillions of words, but it's the same job
 9. ending (per format): how to count on your grid or your sheets, then go
@@ -104,9 +104,8 @@ Marks on a ledger. Counters in a cup. Slips of paper. Or just four numbers.
 _Visual: the row for "the" lifts out of the sheet and morphs through each form
 as it is named, the four followers holding their places left to right: tally
 strokes; ledger boxes with marks; counters (six, five, four, four) in the four
-ledger colours; cutout
-slips, one per pair, stacked in four piles; and last, four numbers: 0.32, 0.26,
-0.21, 0.21._
+ledger colours; cutout slips, one per pair, stacked in four piles; and last,
+four numbers: 0.32, 0.26, 0.21, 0.21._
 
 _Beyond:_ each deck shows one form, so a room using the grid never sees that the
 ledger, the cup and the cutouts hold the same thing. One continuous morph makes
@@ -117,12 +116,11 @@ matter; 3. in the end it's just numbers.
 
 _Reads note:_ five forms in one line is a lot; if the morph can't hold a beat on
 each, drop the slips here and pick them up in `generation`. The die isn't here
-because the row for "the" totals 19, which the grid's rule shares over two
-dice; `generation` shows the die on the row for "it", which totals exactly
-ten.
+because the row for "the" totals 19, which the grid's rule shares over two dice;
+`generation` shows the die on the row for "it", which totals exactly ten.
 
-**BEN (VO):** When people talk about a model's "weights," they mean numbers like
-these: learned from text, and from nothing else.
+**BEN (VO):** When people talk about a model's "weights", this is the kind of
+thing they mean: numbers that came from the text it read.
 
 _Visual: the four numbers settle into one row of a grid of numbers the size of
 the whole sheet, every cell a decimal, most of them 0._
