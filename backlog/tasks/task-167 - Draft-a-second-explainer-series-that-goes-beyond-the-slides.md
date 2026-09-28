@@ -4,7 +4,7 @@ title: Draft a second explainer series that goes beyond the slides
 status: In Progress
 assignee: []
 created_date: '2026-09-27 22:16'
-updated_date: '2026-09-28 01:23'
+updated_date: '2026-09-28 01:34'
 labels:
   - video
 dependencies: []
@@ -47,7 +47,7 @@ Several of the candidate beats need a Canvas 2D layer (plain browser canvas, no 
 - [x] #5 astromotion's video engine supports a deterministic, seekable Canvas 2D layer that renders at 4K, is covered by its Chrome tests, and ships in a tagged release
 - [x] #6 One beyond-the-slides prototype beat has been rendered at 4K and reviewed by Ben before the series is built
 - [ ] #7 No composition is built for a script whose reads Ben hasn't approved
-- [ ] #8 The TASK-154 drafts (compositions, scripts, renders) are unchanged
+- [ ] #8 The TASK-154 compositions, scripts and renders change only through kit-wide style fixes Ben has asked for, and every such change is re-rendered and checked across all eight
 - [x] #9 The styled-video skill's guidance on particles and canvas matches what the prototype showed renders well
 <!-- AC:END -->
 
@@ -89,8 +89,6 @@ Next session:
 4. Build (styled-video gates), starting from the tree prototype at ops/video/beyond/prototype-tree/ (approved, 4K).
 
 Settled craft: Canvas 2D layer in astromotion v0.34.0 (video/canvas.js); desk is the decks' #0d0d0d ground; punctuation is a filled symbol tile (kit punctBox/punctTile/punctInPlace); beats like the tree may be laid out to trim to a squarer frame for a portrait talking-head on the right (decided per beat at the storyboard).
-
-AC #8 is overtaken: at Ben's request the kit's desk colour and punctuation tiles changed and a training-grid header bug was fixed, so the TASK-154 drafts were re-rendered. Ben to decide whether to reword or drop it.
 <!-- SECTION:PLAN:END -->
 
 ## Implementation Notes
