@@ -79,9 +79,11 @@ function punctTile(ctx, mark, x, y, size, { ink, fill }) {
   ctx.stroke();
   ctx.font = `700 ${size * 1.3}px "Libertinus Serif"`;
   ctx.fillStyle = ink;
-  const m = ctx.measureText(mark);
+  // align and baseline first: the ink metrics are measured against them
+  // (as the kit's punctBox measures with a centred, alphabetic baseline)
   ctx.textAlign = "center";
   ctx.textBaseline = "alphabetic";
+  const m = ctx.measureText(mark);
   ctx.fillText(
     mark,
     x + (m.actualBoundingBoxLeft - m.actualBoundingBoxRight) / 2,
