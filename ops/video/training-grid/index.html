@@ -166,13 +166,14 @@
         // pairs 2..end, one per beat, headers appearing as met; the page edge (". see") without a pause
         const tRun = T.word(5, "Keep"), tRunEnd = T.word(5, "Some") - 0.6;
         const rest = pairs.slice(2);
-        const seen = new Set([P0.r, P0.c, P1.r, P1.c]);
+        // row and column headers are separate elements, so each needs its own record
+        const seenRow = new Set([P0.r, P1.r]), seenCol = new Set([P0.c, P1.c]);
         const step = (tRunEnd - tRun) / rest.length;
         rest.forEach((p, k) => {
           const t = tRun + k * step;
           br.around(tl, K.spanBox(setC, p.i, p.i + 1), t, Math.min(0.4, step * 0.5));
-          if (!seen.has(p.r)) { seen.add(p.r); tl.to(grid.rowHead[p.r], { opacity: 1 }, t + 0.15, { dur: 0.3 }); }
-          if (!seen.has(p.c)) { seen.add(p.c); tl.to(grid.colHead[p.c], { opacity: 1 }, t + 0.15, { dur: 0.3 }); }
+          if (!seenRow.has(p.r)) { seenRow.add(p.r); tl.to(grid.rowHead[p.r], { opacity: 1 }, t + 0.15, { dur: 0.3 }); }
+          if (!seenCol.has(p.c)) { seenCol.add(p.c); tl.to(grid.colHead[p.c], { opacity: 1 }, t + 0.15, { dur: 0.3 }); }
           tl.to([grid.rowBands[p.r], grid.colBands[p.c]], { opacity: 1 }, t + 0.1, { dur: 0.2 });
           K.drawOn(tl, [grid.cells[p.r][p.c].strokes[p.nth - 1]], t + 0.35, 0.3, 0);
           tl.to([grid.rowBands[p.r], grid.colBands[p.c]], { opacity: 0 }, t + step * 0.8, { dur: 0.3 });
