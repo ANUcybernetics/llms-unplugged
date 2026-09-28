@@ -127,7 +127,7 @@
         const grid = K.grid(scene, bg, { x: GX, y: GY, cell: CELL, head: HEAD });
         const N = bg.vocab.length, GW = grid.width;
         rotateCols(grid);
-        K.set(grid.el, { opacity: 0, scale: 1.2 });
+        K.set(grid.el, { opacity: 0 });
         grid.el.setAttribute("data-layout-allow-overflow", "true"); // the camera pushes past the frame
         K.set([...grid.rowHead, ...grid.colHead], { opacity: 0 });
         // the kit's tally groups sit from the cell's left; centre the ones
