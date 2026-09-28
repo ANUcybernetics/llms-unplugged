@@ -8,7 +8,7 @@ splices the result back in.
 
 **Builds on:** `partials/grid-agentic-ai.mdx` from "Agentic AI" through "Worked
 example"; the ending hands off to "Your turn". The slides' worked example is
-"the cat sat" with any model; this video walks _The magpie_'s grid, where 28 of
+"the cat sat" with any model; this video walks _The magpie_'s grid, where 29 of
 the book's 133 words are punctuation and six rows (_fence_, _watches_, _swoop_,
 _runs_, _goes_, _spring_) are only ever followed by it. The walk is ". here
 comes the dog", then the row for _dog_ (full stop 0--4, runs 5--9), roll 3: a
