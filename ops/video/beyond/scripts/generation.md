@@ -123,7 +123,7 @@ into the generated line._
 _Reads (draft):_ 1. this sentence isn't in the book; 2. it's made from pieces
 that are; 3. nobody wrote it.
 
-**BEN (VO):** And here's every sentence this model could have written instead.
+**BEN (VO):** And here's everything this model could have written instead.
 
 _Visual: the strip's words slide into a column at the left edge. The full stop,
 a symbol tile, moves to the root, and every path the counts allow grows
@@ -139,11 +139,6 @@ idea literal: the counts already hold every text, and the dice only pick a path.
 
 _Reads (draft):_ 1. each branch is a word the counts allow; 2. thicker means
 more likely; 3. your sentence is one path through it.
-
-_Reads note:_ the tree runs on past the full stop into the next sentence (a tree
-of single sentences is only 79 texts, too few to fill it), so "every sentence"
-is slightly wrong for the picture; "everything this model could have written"
-matches it.
 
 **USHINI (VO):** Every roll picks a different path. So run it ten thousand times
 and count what comes out.
@@ -161,9 +156,6 @@ can check.
 _Reads (draft):_ 1. the model's output is counted the same way as the book
 was; 2. a short run looks nothing like the book's counts; 3. a long run matches
 them.
-
-_Reads note:_ this is the beat to cut if the video runs long; the tree carries
-the key idea's first half on its own, and this beat carries only the second.
 
 **BEN:** Every text different. Every text sounding like the book. That's what
 Claude or ChatGPT is doing every time it writes a word, with vastly more counts
@@ -209,8 +201,5 @@ word writes, the next match lifts._
 
 _Reads (draft):_ 1. each slip is one pair; 2. match the first word, write the
 second; 3. chain them like dominoes.
-
-_Reads note:_ check with Ben how groups choose between several matching slips;
-the draw only stays fair if the pick is blind.
 
 **BEN (TC):** Start chaining.
