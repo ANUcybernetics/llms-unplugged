@@ -33,9 +33,10 @@ in its own bucket prefix.
 | `real-models`                | ---     | what your grid shares with Claude or ChatGPT, and what it doesn't                             |
 
 `same-algorithm` carries what crosses formats: the morph from tallies to marks
-to counters to cutouts to numbers, and a walk that switches forms. Chained under
-one cold open, it and one format's how-it-works videos (without their hand-offs)
-make the long cut.
+to counters to cutouts to numbers, and a walk that switches forms (the cup for
+the full stop, the die for _it_, the slips for _the_). Chained under one cold
+open, it and one format's how-it-works videos (without their hand-offs) make the
+long cut.
 
 ## One example
 
@@ -66,8 +67,8 @@ for the embedded video.
 ## Scripts
 
 `scripts/<slug>.md`, in the format of `../scripts/`. Each beyond-the-slides beat
-carries a `_Beyond:_` line naming the read it makes clearer than the slides can.
-`training.md` and `generation.md` predate the single-format split and still mix
-forms with a `### Ending: <format>` per format; they get split into the
-per-format slugs above. Before any of these are built, `voice.py` has to learn
-to skip `_Beyond` paragraphs, and `video.py` to handle `beyond/<slug>`.
+carries a `_Beyond:_` line naming the read it makes clearer than the slides can;
+`voice.py` skips it with the `_Visual` and `_Reads` paragraphs. The tools take
+the nested slug (`voice.py scratch beyond/training-grid`,
+`video.py render beyond/training-grid`), and renders go under
+`out/video/beyond/<slug>/` and the bucket's `video/beyond/<slug>/`.
