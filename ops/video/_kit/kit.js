@@ -110,7 +110,9 @@ window.KIT = (() => {
   // in cli/booklet-common.typ): an enlarged bold mark centred on its ink in a
   // rounded square, so ".", ",", "!" all read as the same-sized tile. Drawn
   // into an SVG parent, centred on (x, y), for a word set at `size`. The
-  // colour is currentColor, so it follows the surrounding text's colour.
+  // colour is currentColor, so it follows the surrounding text's colour; the
+  // box is filled with whatever it sits on (paper, unless told otherwise), so
+  // nothing behind it shows through.
   const inkMetrics = (() => {
     const ctx = document.createElement("canvas").getContext("2d");
     ctx.textAlign = "center";
@@ -121,7 +123,7 @@ window.KIT = (() => {
   })();
   const PUNCT_BOX = 1.15, // box side, in ems of the surrounding word
     PUNCT_MARK = 1.3; // the mark's size, in the same ems
-  function punctBox(parent, mark, { x = 0, y = 0, size, colour }) {
+  function punctBox(parent, mark, { x = 0, y = 0, size, colour, fill = "var(--paper)" }) {
     const side = size * PUNCT_BOX,
       markSize = size * PUNCT_MARK;
     const m = inkMetrics(mark, `700 ${markSize}px "Libertinus Serif"`);
@@ -134,7 +136,7 @@ window.KIT = (() => {
         width: side,
         height: side,
         rx: side * 0.12,
-        fill: "none",
+        fill,
         stroke: "currentColor",
         "stroke-width": Math.max(1.5, size * 0.05),
       },
@@ -157,7 +159,7 @@ window.KIT = (() => {
   }
   // The same tile for HTML: an inline SVG sized in ems, so it scales with the
   // element's font-size like the word it stands in for.
-  function punctTile(parent, mark) {
+  function punctTile(parent, mark, { fill } = {}) {
     const U = 100,
       pad = U * 0.04,
       side = U * PUNCT_BOX + 2 * pad;
@@ -169,7 +171,7 @@ window.KIT = (() => {
       },
       parent,
     );
-    punctBox(s, mark, { size: U });
+    punctBox(s, mark, { size: U, fill });
     return s;
   }
 
@@ -186,7 +188,7 @@ window.KIT = (() => {
     textEl.removeAttribute("dominant-baseline");
     textEl.setAttribute("font-size", markSize);
     textEl.setAttribute("font-weight", 700);
-    return svg(
+    const box = svg(
       "rect",
       {
         x: cx - side / 2,
@@ -194,12 +196,15 @@ window.KIT = (() => {
         width: side,
         height: side,
         rx: side * 0.12,
-        fill: "none",
+        fill: "var(--paper)",
         stroke: "var(--ink)",
         "stroke-width": Math.max(1.5, size * 0.05),
       },
       parent,
     );
+    // under the glyph, which the box would otherwise cover
+    textEl.before(box);
+    return box;
   }
 
   // deterministic per-index jitter (never Math.random: frames must reproduce)
