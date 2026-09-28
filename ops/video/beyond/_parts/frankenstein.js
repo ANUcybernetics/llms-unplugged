@@ -441,11 +441,29 @@ export const LEDGER_STYLE = {
 // as a numeral in its colour; further out, the paper, the grey prefix blocks
 // and the coloured boxes; at the far end, a texture of colour. Sheets not yet
 // in use aren't drawn.
+//
+// `far: "dots"` quiets the far end: as sheets shrink past readable
+// (`sw` under about 100 px) the lines cross-fade to flat paper blocks, each box
+// a small dot of its colour somewhere along its line (deterministic), so a
+// big stack reads as a lot of sheets rather than as stripes of thin
+// saturated rules (which bleed and shimmer under H.264). The default,
+// "lines", draws the lines at every scale.
 export function drawLedger(
   ctx,
   M,
   L,
-  { pairs = M.P, x = 0, y = 0, sw = 400, gap = 20, ghost = 0, clip, alpha = 1, style = LEDGER_STYLE } = {},
+  {
+    pairs = M.P,
+    x = 0,
+    y = 0,
+    sw = 400,
+    gap = 20,
+    ghost = 0,
+    clip,
+    alpha = 1,
+    far = "lines",
+    style = LEDGER_STYLE,
+  } = {},
 ) {
   const dpr = ctx.getTransform().a;
   const cw = clip || { x: 0, y: 0, w: ctx.canvas.width / dpr, h: ctx.canvas.height / dpr };
@@ -459,6 +477,11 @@ export function drawLedger(
     rule = Math.max(6, Math.round(150 * 0.08)) * k;
   const counts = countsAt(M, pairs);
   const nSheets = sheetsAt(M, L, pairs);
+  // how far the lines have given way to dots (far: "dots"); the gutters
+  // between sheets close as they do, since a mesh of one-pixel gutters
+  // shimmers too, and the sheets tell apart by their paper's tone instead
+  const dots = far === "dots" ? 1 - smooth(0.04, 0.08, k) : 0;
+  gap *= 1 - dots;
   const origin = (s) => {
     const p = shellPos(s);
     return { sx: x + p.col * (sw + gap), sy: y + p.row * (sh + gap) };
@@ -485,6 +508,10 @@ export function drawLedger(
   ctx.fillStyle = style.paper;
   for (let s = 0; s < nSheets; s++) {
     const { sx, sy } = origin(s);
+    if (dots > 0) {
+      const v = Math.round(255 - dots * 22 * hash01(s * 31 + 5));
+      ctx.fillStyle = `rgb(${v} ${v} ${v})`;
+    }
     if (visible(sx, sy)) {
       if (sw > 60) {
         ctx.beginPath();
@@ -493,6 +520,9 @@ export function drawLedger(
       } else ctx.fillRect(sx, sy, sw, sh);
     }
   }
+  const base = alpha;
+  alpha = base * (1 - dots);
+  ctx.globalAlpha = alpha;
   // entries: the prefix block, the boxes met so far
   const textA = smooth(0.13, 0.2, k),
     fs = 44 * k;
@@ -560,6 +590,27 @@ export function drawLedger(
       ctx.globalAlpha = alpha;
     }
   }
+  if (dots > 0) {
+    ctx.globalAlpha = base * dots * 0.9;
+    const d = Math.max(1.6, rowH * 0.6);
+    for (let c = 0; c < M.m && M.firstPair[c] < pairs; c++) {
+      const box = M.slot[c] % L.columns;
+      const { sx, sy, ly } = lineY(L.lineOf[c]);
+      if (!visible(sx, sy)) continue;
+      // anywhere along its line: kept to its own box, the first box of
+      // every line would line up into columns down the stack
+      const jx = hash01(c) * (L.columns * boxW - d),
+        jy = (hash01(c + 7919) - 0.5) * 0.5 * rowH;
+      ctx.fillStyle = style.colours[box];
+      ctx.fillRect(sx + prefixW + jx, ly + rowH / 2 + jy - d / 2, d, d);
+    }
+  }
   ctx.restore();
   return { sh, rowH, nSheets };
 }
+// deterministic noise in [0, 1) per index (never Math.random: frames reproduce)
+const hash01 = (i) => {
+  let h = Math.imul(i ^ 0x9e3779b9, 0x85ebca6b);
+  h = Math.imul(h ^ (h >>> 13), 0xc2b2ae35);
+  return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+};

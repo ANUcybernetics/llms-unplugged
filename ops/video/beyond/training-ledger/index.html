@@ -449,7 +449,7 @@
           const pairs = t < tFill ? 0 : FR.pairsForSheets(FM, FL, m * m);
           const view = Math.max(V0, Math.ceil(FR.sheetsAt(FM, FL, pairs) ** 0.5), m);
           const s = mosScale(view);
-          FR.drawLedger(ctx, FM, FL, { pairs, x: REG.x, y: REG.y, sw: SW * s, gap: GAP * s, ghost: Math.ceil(view) ** 2, alpha: C.phase(t, tBig, 0.6) });
+          FR.drawLedger(ctx, FM, FL, { pairs, x: REG.x, y: REG.y, sw: SW * s, gap: GAP * s, ghost: Math.ceil(view) ** 2, far: "dots", alpha: C.phase(t, tBig, 0.6) });
         }, { x: 0, y: 0, w: S.W, h: S.H - S.captionH });
         field.el.setAttribute("data-layout-allow-occlusion", "true");
         K.set(field.el, { opacity: 0 });
