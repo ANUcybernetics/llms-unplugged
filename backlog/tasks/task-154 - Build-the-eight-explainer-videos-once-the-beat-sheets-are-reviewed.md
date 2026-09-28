@@ -4,7 +4,7 @@ title: Build the eight explainer videos once the beat sheets are reviewed
 status: In Progress
 assignee: []
 created_date: '2026-09-14 04:14'
-updated_date: '2026-09-27 10:36'
+updated_date: '2026-09-28 00:37'
 labels:
   - video
 dependencies:
@@ -54,4 +54,6 @@ Build the eight LLMs Unplugged explainer videos (Overview, four sections of the 
 2026-09-15: all eight compositions built and checked on the scratch voices (drafts at out/video/<slug>/<slug>-draft.mp4, contact sheets under stills/; overview also renders compositions/portrait.html). Remaining: Ben reviews the drafts (AC10); record the real VO, drop each take in as out/video/<slug>/voice.wav, align.py, video.py render --final (AC8), video.py upload (AC4). Known gaps for the polish pass: build-data.py renders the Paterson booklet pages at 150 dpi, which is soft at 4K (raise to 300 for snowy-river); the agentic-ai phone body is drawn too dark against the desk; alignment jitter ~0.3 s on the scratch track; the overview's line 10 tail has collapsed word times in the scratch alignment so its three vignettes pace by fractions of the line.
 
 2026-09-27: engine and skill restructure. Motion is now astromotion's video/ engine (Web Animations API; GSAP removed), reached via ops/video/_kit/motion -> website/node_modules/astromotion/video. The llms-unplugged-video repo skill is replaced by the ben:styled-video plugin skill (method, craft, HyperFrames contract) plus ops/video/STYLE.md (this project's style); recut tools moved to ops/video/recut/, pdf-assets.sh to ops/video/. Every script now carries draft _Reads (draft):_ lists per visual (plus 7 _Reads note:_ flags) for Ben and Ushini to approve before the next build pass; pencil marks (tallies, handwritten words) boil at 12 fps. All eight re-rendered and frame-compared against the GSAP renders: differences are the openings (elements now stay hidden until their appear cue; GSAP's pre-start state depended on seek order) and sub-pixel zoom aliasing.
+
+2026-09-28: kit-wide style fixes from TASK-167 review: desk is the decks' #0d0d0d ground (was an invented warm #1c1917); punctuation is a filled symbol tile everywhere (kit punctBox/punctTile, ledger rows via punctInPlace). training-grid: row headers for joey, . and see were never revealed (one seen set shared by rows and columns), fixed. All eight drafts re-rendered and contact sheets checked.
 <!-- SECTION:NOTES:END -->
