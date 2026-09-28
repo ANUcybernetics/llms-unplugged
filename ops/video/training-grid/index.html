@@ -84,7 +84,7 @@
         setC.tiles.forEach((t, i) => {
           if (!K.isPunct(t.text)) return;
           const prev = setC.tiles[i - 1];
-          tl.fromTo(t.el, { x: prev.x + prev.w - t.w, y: prev.y }, { x: t.x, y: t.y }, tPunct + 0.3 + i * 0.05, { dur: 0.5, ease: "out-cubic" });
+          tl.fromTo(t.el, { x: prev.x + prev.w - 20, y: prev.y }, { x: t.x, y: t.y }, tPunct + 0.3 + i * 0.05, { dur: 0.5, ease: "out-cubic" });
         });
         // "their own row and column": the punctuation headers on the grid wink gold, then settle later
         const tOwn = T.word(2, "row");
@@ -118,7 +118,9 @@
         const colHeadBox = (c) => ({ x: 1110 + 150 + c * 118 + 59, y: A.y + 10 + 150 - 26 });
         // a tile clone flies to the header slot, then the header text takes over
         const flyHeader = (tile, box, headEl, t, end = false) => {
-          const clone = K.el("div", { class: `tile${K.isPunct(tile.text) ? " punct" : ""}`, text: tile.text, style: { width: `${tile.w}px`, height: `${tile.h}px`, fontSize: "38px", opacity: 0 } }, scene);
+          const punct = K.isPunct(tile.text);
+          const clone = K.el("div", { class: `tile${punct ? " punct" : ""}`, ...(punct ? {} : { text: tile.text }), style: { width: `${tile.w}px`, height: `${tile.h}px`, fontSize: "38px", opacity: 0 } }, scene);
+          if (punct) K.punctTile(clone, tile.text);
           const x0 = KIT.get(setC.el, "x") + tile.x, y0 = KIT.get(setC.el, "y") + tile.y;
           tl.set(clone, { x: x0, y: y0, opacity: 1 }, t);
           tl.to(clone, { x: box.x - (end ? tile.w : tile.w / 2), y: box.y - tile.h / 2, scale: 0.8 }, t, { dur: 0.7, ease: "in-out-cubic" });

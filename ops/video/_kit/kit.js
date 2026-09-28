@@ -173,6 +173,35 @@ window.KIT = (() => {
     return s;
   }
 
+  // Turn an existing SVG text element into a symbol tile in place, centred on
+  // (cx, cy), for rows whose compositions keep animating that text element
+  // (its fill): the element stays the glyph, and the box is drawn beside it.
+  function punctInPlace(textEl, parent, cx, cy, size) {
+    const side = size * PUNCT_BOX,
+      markSize = size * PUNCT_MARK;
+    const m = inkMetrics(textEl.textContent, `700 ${markSize}px "Libertinus Serif"`);
+    textEl.setAttribute("x", cx + (m.actualBoundingBoxLeft - m.actualBoundingBoxRight) / 2);
+    textEl.setAttribute("y", cy + (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2);
+    textEl.setAttribute("text-anchor", "middle");
+    textEl.removeAttribute("dominant-baseline");
+    textEl.setAttribute("font-size", markSize);
+    textEl.setAttribute("font-weight", 700);
+    return svg(
+      "rect",
+      {
+        x: cx - side / 2,
+        y: cy - side / 2,
+        width: side,
+        height: side,
+        rx: side * 0.12,
+        fill: "none",
+        stroke: "var(--ink)",
+        "stroke-width": Math.max(1.5, size * 0.05),
+      },
+      parent,
+    );
+  }
+
   // deterministic per-index jitter (never Math.random: frames must reproduce)
   const jitter = M.hash;
 
@@ -616,24 +645,8 @@ window.KIT = (() => {
       },
       g,
     );
-    if (isPunct(prefix)) {
-      svg(
-        "rect",
-        {
-          x: 14,
-          y: oy + h / 2 - 28,
-          width: 48,
-          height: 56,
-          rx: 6,
-          fill: "none",
-          stroke: "var(--ink)",
-          "stroke-width": 2,
-        },
-        g,
-      );
-      prefixEl.setAttribute("x", 38);
-      prefixEl.setAttribute("text-anchor", "middle");
-    }
+    if (isPunct(prefix))
+      punctInPlace(prefixEl, g, 14 + (fontSize * PUNCT_BOX) / 2, oy + h / 2, fontSize);
     svg(
       "line",
       {
@@ -686,24 +699,8 @@ window.KIT = (() => {
           },
           cg,
         );
-        if (isPunct(f.text)) {
-          svg(
-            "rect",
-            {
-              x: cx + 18,
-              y: oy + h / 2 - 26,
-              width: 44,
-              height: 52,
-              rx: 6,
-              fill: "none",
-              stroke: "var(--ink)",
-              "stroke-width": 2,
-            },
-            cg,
-          );
-          wordEl.setAttribute("x", cx + 40);
-          wordEl.setAttribute("text-anchor", "middle");
-        }
+        if (isPunct(f.text))
+          punctInPlace(wordEl, cg, cx + 18 + (fontSize * PUNCT_BOX) / 2, oy + h / 2, fontSize);
         strokes = prepDraw(tally(cg, f.count, stripX + 16, bodyY + 18, 34, 9));
       }
       const lit = svg(

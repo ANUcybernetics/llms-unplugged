@@ -95,8 +95,7 @@
         const book = K.bookPage(scene, ["The magpie is back.", "It sits on the fence.", "It watches."], { x: bookX, y: bookY, w: bookW, h: 300, size: 56, pad: 60 });
         // deliberately underneath the printed sheet until it slides aside
         book.lines.forEach((l) => l.setAttribute("data-layout-allow-overlap", "true"));
-        const finishedSheet = K.sheet(scene, finishedEntries, D.palette, { x: bookX, y: bookY, w: bookW, rowH: 160, pad: 16, header: null });
-        finishedSheet.rows.forEach((r) => { r.prefixEl.setAttribute("font-size", 54); r.cells.forEach((c) => c.wordEl && c.wordEl.setAttribute("font-size", 54)); });
+        const finishedSheet = K.sheet(scene, finishedEntries, D.palette, { x: bookX, y: bookY, w: bookW, rowH: 160, pad: 16, header: null, fontSize: 54 });
         fixContrast(finishedSheet);
         // every stroke on the finished sheet is already drawn at t=0
         finishedSheet.rows.forEach((r) => r.cells.forEach((c) => c.strokes.length && KIT.set(c.strokes, { strokeDashoffset: 0 })));
@@ -125,18 +124,18 @@
         const tokTiles = K.tiles(scene, tok, { x: TX, y: TY, size: 32, gap: 10, padX: 14, maxW: 1740 });
         KIT.set(rawTiles.tiles.map((t) => t.el), { opacity: 0 });
         KIT.set(tokTiles.el, { opacity: 0 });
-        // punctuation tiles start overlapping the word before them (still "attached")
+        // punctuation tiles start tucked against the word before them (still
+        // "attached"), over its padding only, so the word stays readable
         tokTiles.tiles.forEach((t, i) => {
           if (!K.isPunct(t.text)) return;
           const prev = tokTiles.tiles[i - 1];
-          KIT.set(t.el, { x: prev.x + prev.w - t.w, y: prev.y });
+          KIT.set(t.el, { x: prev.x + prev.w - 14, y: prev.y });
           t.el.setAttribute("data-layout-allow-overlap", "true"); // deliberately "attached" until it splits off
         });
         const tileTop = TY, tileH = Math.max(rawTiles.height, tokTiles.height);
         const sheetY2 = tileTop + tileH + 24;
 
-        const trainSheet = K.sheet(scene, [eThe, eMagpie, eIs, eBack], D.palette, { x: TX, y: sheetY2, w: 1740, rowH: 150, pad: 8, header: null });
-        trainSheet.rows.forEach((r) => { r.prefixEl.setAttribute("font-size", 48); r.cells.forEach((c) => c.wordEl && c.wordEl.setAttribute("font-size", 48)); });
+        const trainSheet = K.sheet(scene, [eThe, eMagpie, eIs, eBack], D.palette, { x: TX, y: sheetY2, w: 1740, rowH: 150, pad: 8, header: null, fontSize: 48 });
         fixContrast(trainSheet);
         KIT.set(trainSheet.el, { opacity: 0 });
 
@@ -246,8 +245,7 @@
         // lines 6-8: a new text, blank sheets — training on "the beach".
         // ==================================================================
         const bSheetX = 80, bSheetY = 100, bRowH = 170;
-        const blankSheet = K.sheet(scene, [eThe2, eSand, eDot2, { prefix: [""], followers: [] }], D.palette, { x: bSheetX, y: bSheetY, w: 1740, rowH: bRowH, pad: 16, header: null });
-        blankSheet.rows.forEach((r) => { r.prefixEl.setAttribute("font-size", 52); r.cells.forEach((c) => c.wordEl && c.wordEl.setAttribute("font-size", 52)); });
+        const blankSheet = K.sheet(scene, [eThe2, eSand, eDot2, { prefix: [""], followers: [] }], D.palette, { x: bSheetX, y: bSheetY, w: 1740, rowH: bRowH, pad: 16, header: null, fontSize: 52 });
         fixContrast(blankSheet);
         KIT.set(blankSheet.el, { opacity: 0 });
         // a blank sheet: the words are yet to be written in, so hide them for now
