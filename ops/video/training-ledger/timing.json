@@ -157,7 +157,7 @@
       "i": 2,
       "speaker": "BEN",
       "tc": false,
-      "caption": "Start with a text. Lowercase everything. And notice that full stops and exclamation marks are words too—they get their own rows.",
+      "caption": "Start with a text. Lowercase everything. And notice that full stops and exclamation marks are words too\u2014they get their own rows.",
       "start": 13.21,
       "end": 21.52,
       "words": [
@@ -673,13 +673,13 @@
         },
         {
           "w": "for",
-          "start": 49.193,
-          "end": 49.427
+          "start": 49.19,
+          "end": 49.43
         },
         {
           "w": "the,",
-          "start": 49.367,
-          "end": 49.713
+          "start": 49.37,
+          "end": 49.71
         },
         {
           "w": "which",
@@ -1108,12 +1108,12 @@
         },
         {
           "w": "the",
-          "start": 81.32,
-          "end": 81.32
+          "start": 80.97,
+          "end": 81.1
         },
         {
           "w": "first",
-          "start": 81.32,
+          "start": 81.1,
           "end": 81.32
         },
         {
@@ -1157,7 +1157,7 @@
       "i": 7,
       "speaker": "USHINI",
       "tc": false,
-      "caption": "Three rules keep your model honest. When you start a row for a new word, say the word out loud, so nobody else starts one too—two people counting the same word splits the model in half. A new word goes in the next empty box, never a skipped one—the colours go in order. And the row for full stop is a real row: it says how sentences start.",
+      "caption": "Three rules keep your model honest. When you start a row for a new word, say the word out loud, so nobody else starts one too\u2014two people counting the same word splits the model in half. A new word goes in the next empty box, never a skipped one\u2014the colours go in order. And the row for full stop is a real row: it says how sentences start.",
       "start": 83.97,
       "end": 107.18,
       "words": [

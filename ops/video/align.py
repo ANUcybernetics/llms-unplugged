@@ -65,6 +65,9 @@ ROOT = Path(__file__).resolve().parents[2]
 START_PAD = 0.15
 END_PAD = 0.2
 EXTRAPOLATE_STEP = 0.25
+SQUASHED = 0.05
+MIN_GAP = 0.3
+BREATH = 0.35
 
 
 def load_model(name: str) -> WhisperModel:
@@ -173,7 +176,48 @@ def align_words(
         )
 
     match_ratio = len(matched) / len(script_norm) if script_norm else 0.0
-    return resolved, match_ratio
+    return spread_collapsed(script_words, resolved), match_ratio
+
+
+def spread_collapsed(
+    words: list[str], resolved: list[tuple[float, float]]
+) -> list[tuple[float, float]]:
+    """Whisper sometimes loses the timing of a stretch of speech and stamps its
+    words with near-zero lengths where it picks up again, at the far end of
+    the silence they were really spoken in (a repeated phrase matched to the
+    wrong copy does the same). Find each run of two or more such words, take in
+    the word it abuts from before, and spread the run across that silence by
+    character count, a breath after the word before it.
+    """
+    out = list(resolved)
+    n = len(out)
+    short = [e - s < SQUASHED for s, e in out]
+    i = 0
+    while i < n:
+        if not short[i]:
+            i += 1
+            continue
+        j = i
+        while j + 1 < n and short[j + 1]:
+            j += 1
+        if j > i:
+            lo_i = i
+            if i > 0 and out[i - 1][1] >= out[i][0] - SQUASHED:
+                lo_i = i - 1
+            if lo_i > 0:
+                gap_start = out[lo_i - 1][1]
+                hi = max(e for _s, e in out[lo_i : j + 1])
+                if out[lo_i][0] - gap_start > MIN_GAP:
+                    lo = gap_start + min(BREATH, (out[lo_i][0] - gap_start) / 4)
+                    weights = [max(len(normalize(w)), 1) for w in words[lo_i : j + 1]]
+                    total = sum(weights)
+                    t = lo
+                    for k, wt in enumerate(weights):
+                        span = (hi - lo) * wt / total
+                        out[lo_i + k] = (t, t + span)
+                        t += span
+        i = j + 1
+    return out
 
 
 def line_boundaries(

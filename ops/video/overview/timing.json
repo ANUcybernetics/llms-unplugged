@@ -7,7 +7,7 @@
       "i": 0,
       "speaker": "BEN",
       "tc": true,
-      "caption": "Claude, ChatGPT, all of these tools—they write one word at a time. Predict a word, add it, predict again. That's the whole job.",
+      "caption": "Claude, ChatGPT, all of these tools\u2014they write one word at a time. Predict a word, add it, predict again. That's the whole job.",
       "start": 0.22,
       "end": 9.77,
       "words": [
@@ -257,7 +257,7 @@
       "i": 2,
       "speaker": "BEN",
       "tc": false,
-      "caption": "That's a shaky foundation for the people making decisions about these tools—teachers, parents, policymakers.",
+      "caption": "That's a shaky foundation for the people making decisions about these tools\u2014teachers, parents, policymakers.",
       "start": 21.0,
       "end": 27.37,
       "words": [
@@ -1782,7 +1782,7 @@
       "i": 10,
       "speaker": "USHINI",
       "tc": false,
-      "caption": "Once you've seen the mechanism on paper—patterns in, new text out—the mystery evaporates. And if you want to go further, the site does: break a model, look inside one, shape how it behaves.",
+      "caption": "Once you've seen the mechanism on paper\u2014patterns in, new text out\u2014the mystery evaporates. And if you want to go further, the site does: break a model, look inside one, shape how it behaves.",
       "start": 130.8,
       "end": 144.61,
       "words": [
@@ -1863,102 +1863,102 @@
         },
         {
           "w": "And",
-          "start": 144.17,
-          "end": 144.41
+          "start": 137.24,
+          "end": 137.53
         },
         {
           "w": "if",
-          "start": 144.41,
-          "end": 144.41
+          "start": 137.53,
+          "end": 137.72
         },
         {
           "w": "you",
-          "start": 144.41,
-          "end": 144.41
+          "start": 137.72,
+          "end": 138.0
         },
         {
           "w": "want",
-          "start": 144.41,
-          "end": 144.41
+          "start": 138.0,
+          "end": 138.39
         },
         {
           "w": "to",
-          "start": 144.41,
-          "end": 144.41
+          "start": 138.39,
+          "end": 138.58
         },
         {
           "w": "go",
-          "start": 144.41,
-          "end": 144.41
+          "start": 138.58,
+          "end": 138.77
         },
         {
           "w": "further,",
-          "start": 144.41,
-          "end": 144.41
+          "start": 138.77,
+          "end": 139.44
         },
         {
           "w": "the",
-          "start": 144.41,
-          "end": 144.41
+          "start": 139.44,
+          "end": 139.73
         },
         {
           "w": "site",
-          "start": 144.41,
-          "end": 144.41
+          "start": 139.73,
+          "end": 140.11
         },
         {
           "w": "does:",
-          "start": 144.41,
-          "end": 144.41
+          "start": 140.11,
+          "end": 140.49
         },
         {
           "w": "break",
-          "start": 144.41,
-          "end": 144.41
+          "start": 140.49,
+          "end": 140.97
         },
         {
           "w": "a",
-          "start": 144.41,
-          "end": 144.41
+          "start": 140.97,
+          "end": 141.06
         },
         {
           "w": "model,",
-          "start": 144.41,
-          "end": 144.41
+          "start": 141.06,
+          "end": 141.54
         },
         {
           "w": "look",
-          "start": 144.41,
-          "end": 144.41
+          "start": 141.54,
+          "end": 141.92
         },
         {
           "w": "inside",
-          "start": 144.41,
-          "end": 144.41
+          "start": 141.92,
+          "end": 142.5
         },
         {
           "w": "one,",
-          "start": 144.41,
-          "end": 144.41
+          "start": 142.5,
+          "end": 142.78
         },
         {
           "w": "shape",
-          "start": 144.41,
-          "end": 144.41
+          "start": 142.78,
+          "end": 143.26
         },
         {
           "w": "how",
-          "start": 144.41,
-          "end": 144.41
+          "start": 143.26,
+          "end": 143.55
         },
         {
           "w": "it",
-          "start": 144.41,
-          "end": 144.41
+          "start": 143.55,
+          "end": 143.74
         },
         {
           "w": "behaves.",
-          "start": 144.41,
+          "start": 143.74,
           "end": 144.41
         }
       ]

@@ -312,7 +312,7 @@
       "i": 2,
       "speaker": "BEN",
       "tc": false,
-      "caption": "Here's the rule. Generate from your booklet exactly as before, rolling for each next word. The moment you roll a punctuation token—a full stop, a comma—stop. That's a tool call.",
+      "caption": "Here's the rule. Generate from your booklet exactly as before, rolling for each next word. The moment you roll a punctuation token\u2014a full stop, a comma\u2014stop. That's a tool call.",
       "start": 24.61,
       "end": 36.7,
       "words": [
@@ -482,7 +482,7 @@
       "i": 3,
       "speaker": "USHINI",
       "tc": false,
-      "caption": "The tool is a text message. Send \"What comes next?\" and the sentence so far—everything since the last full stop—to three friends or group chats. Say your text is \"the cat sat\" and you've just rolled a full stop. You text: What comes next? \"the cat sat…\"",
+      "caption": "The tool is a text message. Send \"What comes next?\" and the sentence so far\u2014everything since the last full stop\u2014to three friends or group chats. Say your text is \"the cat sat\" and you've just rolled a full stop. You text: What comes next? \"the cat sat\u2026\"",
       "start": 37.41,
       "end": 56.56,
       "words": [
@@ -727,7 +727,7 @@
           "end": 56.04
         },
         {
-          "w": "sat…\"",
+          "w": "sat\u2026\"",
           "start": 56.04,
           "end": 56.36
         }
@@ -737,7 +737,7 @@
       "i": 4,
       "speaker": "BEN",
       "tc": false,
-      "caption": "The first reply back is your tool result. Write down the whole thing—\"out on the verandah\"—and then the full stop you rolled. Then keep generating, from the full stop.",
+      "caption": "The first reply back is your tool result. Write down the whole thing\u2014\"out on the verandah\"\u2014and then the full stop you rolled. Then keep generating, from the full stop.",
       "start": 57.73,
       "end": 67.9,
       "words": [
@@ -1088,17 +1088,17 @@
         },
         {
           "w": "If",
-          "start": 84.62,
-          "end": 84.74
+          "start": 83.55,
+          "end": 83.69
         },
         {
           "w": "nothing's",
-          "start": 84.74,
-          "end": 84.74
+          "start": 83.69,
+          "end": 84.32
         },
         {
           "w": "landed",
-          "start": 84.74,
+          "start": 84.32,
           "end": 84.74
         },
         {
@@ -1172,7 +1172,7 @@
       "i": 7,
       "speaker": "USHINI",
       "tc": false,
-      "caption": "Here's the bit that matters. The model never learned what comes next. What it \"learned\" is when to ask. And the thing that paused it, sent the message, and spliced the answer back in—that was you. You were the harness.",
+      "caption": "Here's the bit that matters. The model never learned what comes next. What it \"learned\" is when to ask. And the thing that paused it, sent the message, and spliced the answer back in\u2014that was you. You were the harness.",
       "start": 89.17,
       "end": 104.64,
       "words": [
