@@ -1126,12 +1126,15 @@ window.KIT = (() => {
   }
 
   // A gold ring: the bracket that sits over a pair of tiles, or rings a cell.
-  // Sized once; moved and resized by transform (scaleX/scaleY on a 100x100 box).
+  // Moved and resized with x/y and scaleX/scaleY on a w x h box, as any layer;
+  // the layer doesn't scale, its box takes its size from the scale channels
+  // (.ring in kit.css), so the border and glow stay the same at any size.
   function ring(
     parent,
     { x = 0, y = 0, w = 100, h = 100, stroke = 5, color = "var(--gold)" } = {},
   ) {
     const g = layer(parent, x, y);
+    g.classList.add("ring");
     const d = el(
       "div",
       {
@@ -1139,8 +1142,6 @@ window.KIT = (() => {
           position: "absolute",
           left: 0,
           top: 0,
-          width: `${w}px`,
-          height: `${h}px`,
           border: `${stroke}px solid ${color}`,
           borderRadius: "12px",
           boxShadow: "0 0 0 4px rgb(190 131 14 / 22%)",
@@ -1148,6 +1149,8 @@ window.KIT = (() => {
       },
       g,
     );
+    d.style.setProperty("--w", `${w}px`);
+    d.style.setProperty("--h", `${h}px`);
     set(g, { opacity: 0, transformOrigin: "0 0" });
     return {
       el: g,

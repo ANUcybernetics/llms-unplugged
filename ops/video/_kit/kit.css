@@ -100,6 +100,10 @@ svg .ui { font-family: var(--font-ui); }
 .draw { stroke-linecap: round; stroke-linejoin: round; fill: none; }
 .tally { stroke: var(--ink); stroke-width: 3; }
 .highlight { fill: var(--gold); opacity: 0; }
+/* K.ring: the layer's scale channels size its box rather than scale it, so
+   its border stays one width (the engine's [data-motion] rule sets scale) */
+.ring[data-motion] { scale: none; }
+.ring > div { --sx: inherit; --sy: inherit; width: calc(var(--w) * var(--sx)); height: calc(var(--h) * var(--sy)); }
 .dimmer { fill: var(--desk); opacity: 0; }
 
 /* text on the desk (labels, headings, the wordmark) */
