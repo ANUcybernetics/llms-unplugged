@@ -988,7 +988,13 @@ window.KIT = (() => {
         // the mask's content is in el's own user space, transform included
         o.removeAttribute("transform");
         const id = `kit-glint-${glintId++}`;
-        const m = svg("mask", { id, maskUnits: "userSpaceOnUse" }, el.parentNode);
+        // explicit bounds: a userSpaceOnUse mask otherwise spans only 120% of
+        // the viewport, which clips a line drawn in a tiny overflowing svg
+        const m = svg(
+          "mask",
+          { id, maskUnits: "userSpaceOnUse", x: -1e5, y: -1e5, width: 2e5, height: 2e5 },
+          el.parentNode,
+        );
         svg("rect", { x: -1e5, y: -1e5, width: 2e5, height: 2e5, fill: "#fff" }, m);
         m.append(o);
         el.parentNode.insertBefore(m, el);
