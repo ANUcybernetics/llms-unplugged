@@ -4,7 +4,7 @@ title: Draft a second explainer series that goes beyond the slides
 status: In Progress
 assignee: []
 created_date: '2026-09-27 22:16'
-updated_date: '2026-09-28 10:49'
+updated_date: '2026-09-29 04:10'
 labels:
   - video
 dependencies: []
@@ -69,4 +69,6 @@ Next:
 2026-09-28: training/generation split into single-format scripts; full scripts for all twelve (8a9cfce2). Numbers re-checked against the CLI: Paterson 3,967 words, 16,231 of ~16 million boxes non-empty; Frankenstein 7,023 words, 41,018 of 49 million (0.08%); magpie short sentences 79, 7 in the book, about four draws in ten land on one. Nested-slug tooling in ad6e36bc.
 
 2026-09-28: all twelve compositions built and rendered (drafts + 4K50 masters). Open questions for Ben: real-models' token visual in the script (o200k gives the | mag·pie | swo·oped | unexpectedly, and the video shows that) and 'about a hundred thousand' tokens (o200k is ~200k); pretrained's Paterson continuation is CLI seed 28; generation-grid's ending uses the book's last line as 'your grid'; agentic's slow-reply line replays the same message. Engine/kit bugs worked around, not fixed: astromotion motion.js yoyo returns undefined keyframes (K.strip.light uses yoyo, so TASK-154 may warn); K.appear resets scale; K.ring thickens when scaled; round-capped strokes show a dot before draw-on (possible stray dots in TASK-154 grids); align.py sometimes collapses a run of word times onto one timestamp.
+
+2026-09-29: Ben's review round: boil removed kit-wide; square corners (punctuation box keeps its printed radius); props redrawn as line art per the ANU brand illustration style (K.pencil, iconoir K.icon, CC0 K.outline magpie/dog in _kit/art/, decagon die, rim-only cup) with K.glint travelling outlines; [beat] pauses in the worked-example lines (voice.py). All recorded in ops/video/STYLE.md. TASK-154 compositions restyled too (checked, not re-rendered, at Ben's request). Beyond 4K50 masters re-rendered.
 <!-- SECTION:NOTES:END -->
