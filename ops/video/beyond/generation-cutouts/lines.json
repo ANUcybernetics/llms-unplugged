@@ -18,14 +18,30 @@
     "speaker": "BEN",
     "tc": false,
     "caption": "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in its box. This one says \"it\". Write it down.",
-    "tts": "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in its box. This one says \"it\". Write it down."
+    "tts": "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in its box. This one says \"it\". Write it down.",
+    "parts": [
+      "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in its box.",
+      "This one says \"it\". Write it down."
+    ],
+    "beats": [
+      0.8
+    ]
   },
   {
     "i": 3,
     "speaker": "USHINI",
     "tc": false,
     "caption": "Now find every slip with \"it\" in its box. There are ten. Three say \"sits\", three \"watches\", three \"goes\", and one says \"is\". Pick one without choosing: \"sits\".",
-    "tts": "Now find every slip with \"it\" in its box. There are ten. Three say \"sits\", three \"watches\", three \"goes\", and one says \"is\". Pick one without choosing: \"sits\"."
+    "tts": "Now find every slip with \"it\" in its box. There are ten. Three say \"sits\", three \"watches\", three \"goes\", and one says \"is\". Pick one without choosing: \"sits\".",
+    "parts": [
+      "Now find every slip with \"it\" in its box. There are ten.",
+      "Three say \"sits\", three \"watches\", three \"goes\", and one says \"is\".",
+      "Pick one without choosing: \"sits\"."
+    ],
+    "beats": [
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 4,
@@ -39,7 +55,18 @@
     "speaker": "USHINI",
     "tc": false,
     "caption": "\"The\" has nineteen slips. Pick one: \"dog\". And \"dog\" has four: two full stops, two \"runs\". Pick one: full stop.",
-    "tts": "\"The\" has nineteen slips. Pick one: \"dog\". And \"dog\" has four: two full stops, two \"runs\". Pick one: full stop."
+    "tts": "\"The\" has nineteen slips. Pick one: \"dog\". And \"dog\" has four: two full stops, two \"runs\". Pick one: full stop.",
+    "parts": [
+      "\"The\" has nineteen slips.",
+      "Pick one: \"dog\".",
+      "And \"dog\" has four: two full stops, two \"runs\".",
+      "Pick one: full stop."
+    ],
+    "beats": [
+      0.8,
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 6,
@@ -74,7 +101,16 @@
     "speaker": "BEN",
     "tc": false,
     "caption": "Spread your cutouts out. Write down a starting word, find a slip with that word in its box, and write down its next word. Then find a slip that starts with that. The colours help you find the matches fast.",
-    "tts": "Spread your cutouts out. Write down a starting word, find a slip with that word in its box, and write down its next word. Then find a slip that starts with that. The colours help you find the matches fast."
+    "tts": "Spread your cutouts out. Write down a starting word, find a slip with that word in its box, and write down its next word. Then find a slip that starts with that. The colours help you find the matches fast.",
+    "parts": [
+      "Spread your cutouts out. Write down a starting word, find a slip with that word in its box, and write down its next word.",
+      "Then find a slip that starts with that.",
+      "The colours help you find the matches fast."
+    ],
+    "beats": [
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 11,

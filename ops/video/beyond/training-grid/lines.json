@@ -18,7 +18,18 @@
     "speaker": "USHINI",
     "tc": false,
     "caption": "Now read it two words at a time. The first word gets a row. The second gets a column. Put a tally where they cross. Then slide along by one, and do it again.",
-    "tts": "Now read it two words at a time. The first word gets a row. The second gets a column. Put a tally where they cross. Then slide along by one, and do it again."
+    "tts": "Now read it two words at a time. The first word gets a row. The second gets a column. Put a tally where they cross. Then slide along by one, and do it again.",
+    "parts": [
+      "Now read it two words at a time. The first word gets a row.",
+      "The second gets a column.",
+      "Put a tally where they cross.",
+      "Then slide along by one, and do it again."
+    ],
+    "beats": [
+      0.8,
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 3,

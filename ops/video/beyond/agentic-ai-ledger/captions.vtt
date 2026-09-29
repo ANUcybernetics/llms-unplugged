@@ -9,26 +9,26 @@ Here's the rule. Fill the cup and draw, exactly as before. But the moment you dr
 00:00:30.150 --> 00:00:40.980
 So the model doesn't decide to use a tool. It draws one, like any other word. Some rows almost never call it. Some always do.
 
-00:00:42.230 --> 00:00:53.980
+00:00:42.230 --> 00:00:55.700
 Say you've written "here comes the dog". The row for "dog": two red for a full stop, two blue for "runs". Draw one. Red. Full stop. Stop.
 
-00:00:54.590 --> 00:01:02.680
+00:00:57.150 --> 00:01:05.220
 The tool is a text message. Send "What comes next?", and the sentence so far, to three friends or group chats.
 
-00:01:03.910 --> 00:01:12.340
+00:01:06.490 --> 00:01:15.760
 The first reply back is your tool result. Write the whole thing down, then the full stop you drew. Then carry on, from the full stop.
 
-00:01:13.030 --> 00:01:22.860
+00:01:16.450 --> 00:01:26.300
 Why from the full stop, and not from "sandwich"? Because nobody has a row for "sandwich". But there's always a row for a full stop.
 
-00:01:24.350 --> 00:01:30.480
+00:01:27.790 --> 00:01:33.900
 Replies take time. If nothing's back by your next punctuation mark, leave a gap and fill it in later.
 
-00:01:31.310 --> 00:01:48.280
+00:01:34.730 --> 00:01:51.700
 Here's the bit that matters. The model never learned what comes next after "the dog". It only drew when to ask. And the thing that paused it, sent the message, and spliced the answer back in? That was you. You were the harness.
 
-00:01:49.690 --> 00:01:59.440
+00:01:53.110 --> 00:02:02.820
 Take the person out, and you've got a model acting on its own. That's what the news means by an agent. So: what would you let it do without asking you first?
 
-00:02:00.310 --> 00:02:05.100
+00:02:03.770 --> 00:02:08.520
 Don't answer yet. In a few minutes, your group will be the harness.

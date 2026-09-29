@@ -18,7 +18,16 @@
     "speaker": "USHINI",
     "tc": false,
     "caption": "Take the entry for \"dog\". On the grid you'd share the die's faces: nought to four for a full stop, five to nine for \"runs\". The booklet just writes where each band ends. Four. Nine.",
-    "tts": "Take the entry for \"dog\". On the grid you'd share the die's faces: nought to four for a full stop, five to nine for \"runs\". The booklet just writes where each band ends. Four. Nine."
+    "tts": "Take the entry for \"dog\". On the grid you'd share the die's faces: nought to four for a full stop, five to nine for \"runs\". The booklet just writes where each band ends. Four. Nine.",
+    "parts": [
+      "Take the entry for \"dog\". On the grid you'd share the die's faces: nought to four for a full stop, five to nine for \"runs\".",
+      "The booklet just writes where each band ends.",
+      "Four. Nine."
+    ],
+    "beats": [
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 3,
@@ -32,21 +41,52 @@
     "speaker": "USHINI",
     "tc": false,
     "caption": "The entry for \"the\" runs all the way to ninety-nine. That means two dice, read as one number. A seven and a two is seventy-two: past fifty-seven, not past seventy-eight. \"Dog\".",
-    "tts": "The entry for \"the\" runs all the way to ninety-nine. That means two dice, read as one number. A seven and a two is seventy-two: past fifty-seven, not past seventy-eight. \"Dog\"."
+    "tts": "The entry for \"the\" runs all the way to ninety-nine. That means two dice, read as one number. A seven and a two is seventy-two: past fifty-seven, not past seventy-eight. \"Dog\".",
+    "parts": [
+      "The entry for \"the\" runs all the way to ninety-nine.",
+      "That means two dice, read as one number.",
+      "A seven and a two is seventy-two:",
+      "past fifty-seven, not past seventy-eight. \"Dog\"."
+    ],
+    "beats": [
+      0.8,
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 5,
     "speaker": "BEN",
     "tc": false,
     "caption": "Now the booklet on your table. It came from a much bigger book. Start from \"sleep\": one die. Roll a seven: \"again\".",
-    "tts": "Now the booklet on your table. It came from a much bigger book. Start from \"sleep\": one die. Roll a seven: \"again\"."
+    "tts": "Now the booklet on your table. It came from a much bigger book. Start from \"sleep\": one die. Roll a seven: \"again\".",
+    "parts": [
+      "Now the booklet on your table. It came from a much bigger book. Start from \"sleep\": one die.",
+      "Roll a seven: \"again\"."
+    ],
+    "beats": [
+      0.8
+    ]
   },
   {
     "i": 6,
     "speaker": "USHINI",
     "tc": false,
     "caption": "\"Again\" runs to ninety-nine, so two dice. An eight and a nought: eighty. That's past seventy-six, not past eighty-four: \"I'd\". Roll a six: \"float\". And \"float\" has only one word after it, so no roll at all.",
-    "tts": "\"Again\" runs to ninety-nine, so two dice. An eight and a nought: eighty. That's past seventy-six, not past eighty-four: \"I'd\". Roll a six: \"float\". And \"float\" has only one word after it, so no roll at all."
+    "tts": "\"Again\" runs to ninety-nine, so two dice. An eight and a nought: eighty. That's past seventy-six, not past eighty-four: \"I'd\". Roll a six: \"float\". And \"float\" has only one word after it, so no roll at all.",
+    "parts": [
+      "\"Again\" runs to ninety-nine, so two dice.",
+      "An eight and a nought: eighty.",
+      "That's past seventy-six, not past eighty-four: \"I'd\".",
+      "Roll a six: \"float\".",
+      "And \"float\" has only one word after it, so no roll at all."
+    ],
+    "beats": [
+      0.8,
+      0.8,
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 7,

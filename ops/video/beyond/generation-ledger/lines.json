@@ -18,28 +18,60 @@
     "speaker": "BEN",
     "tc": false,
     "caption": "Every box has a colour, always in the same order: red, blue, green, yellow. On this row, red means \"magpie\". On another row, red means something else.",
-    "tts": "Every box has a colour, always in the same order: red, blue, green, yellow. On this row, red means \"magpie\". On another row, red means something else."
+    "tts": "Every box has a colour, always in the same order: red, blue, green, yellow. On this row, red means \"magpie\". On another row, red means something else.",
+    "parts": [
+      "Every box has a colour, always in the same order: red, blue, green, yellow.",
+      "On this row, red means \"magpie\".",
+      "On another row, red means something else."
+    ],
+    "beats": [
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 3,
     "speaker": "USHINI",
     "tc": false,
     "caption": "A story starts after a full stop, so find the row for full stop. Fill a cup with one counter for every mark: seven red for \"it\", four blue for \"here\", three green, three yellow.",
-    "tts": "A story starts after a full stop, so find the row for full stop. Fill a cup with one counter for every mark: seven red for \"it\", four blue for \"here\", three green, three yellow."
+    "tts": "A story starts after a full stop, so find the row for full stop. Fill a cup with one counter for every mark: seven red for \"it\", four blue for \"here\", three green, three yellow.",
+    "parts": [
+      "A story starts after a full stop, so find the row for full stop. Fill a cup with one counter for every mark:",
+      "seven red for \"it\", four blue for \"here\", three green, three yellow."
+    ],
+    "beats": [
+      0.8
+    ]
   },
   {
     "i": 4,
     "speaker": "BEN",
     "tc": false,
     "caption": "Seventeen counters. Now draw one without looking. Red: \"it\". Write it down, tip the cup back, and go to the row for \"it\".",
-    "tts": "Seventeen counters. Now draw one without looking. Red: \"it\". Write it down, tip the cup back, and go to the row for \"it\"."
+    "tts": "Seventeen counters. Now draw one without looking. Red: \"it\". Write it down, tip the cup back, and go to the row for \"it\".",
+    "parts": [
+      "Seventeen counters.",
+      "Now draw one without looking. Red: \"it\".",
+      "Write it down, tip the cup back, and go to the row for \"it\"."
+    ],
+    "beats": [
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 5,
     "speaker": "USHINI",
     "tc": false,
     "caption": "The row for \"it\": three red, three blue, three green, one yellow. Red again: \"sits\".",
-    "tts": "The row for \"it\": three red, three blue, three green, one yellow. Red again: \"sits\"."
+    "tts": "The row for \"it\": three red, three blue, three green, one yellow. Red again: \"sits\".",
+    "parts": [
+      "The row for \"it\": three red, three blue, three green, one yellow.",
+      "Red again: \"sits\"."
+    ],
+    "beats": [
+      0.8
+    ]
   },
   {
     "i": 6,
@@ -53,7 +85,18 @@
     "speaker": "USHINI",
     "tc": false,
     "caption": "The row for \"the\" fills the cup with all four colours. Yellow: \"dog\". And after \"dog\", two red for a full stop, two blue for \"runs\". Red: full stop.",
-    "tts": "The row for \"the\" fills the cup with all four colours. Yellow: \"dog\". And after \"dog\", two red for a full stop, two blue for \"runs\". Red: full stop."
+    "tts": "The row for \"the\" fills the cup with all four colours. Yellow: \"dog\". And after \"dog\", two red for a full stop, two blue for \"runs\". Red: full stop.",
+    "parts": [
+      "The row for \"the\" fills the cup with all four colours.",
+      "Yellow: \"dog\".",
+      "And after \"dog\", two red for a full stop, two blue for \"runs\".",
+      "Red: full stop."
+    ],
+    "beats": [
+      0.8,
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 8,
@@ -88,7 +131,20 @@
     "speaker": "BEN",
     "tc": false,
     "caption": "Four jobs in your group. A reader finds the row. A filler puts one counter per mark in the cup. A drawer pulls one out. And a writer writes the word down. Tip the cup back every time.",
-    "tts": "Four jobs in your group. A reader finds the row. A filler puts one counter per mark in the cup. A drawer pulls one out. And a writer writes the word down. Tip the cup back every time."
+    "tts": "Four jobs in your group. A reader finds the row. A filler puts one counter per mark in the cup. A drawer pulls one out. And a writer writes the word down. Tip the cup back every time.",
+    "parts": [
+      "Four jobs in your group.",
+      "A reader finds the row.",
+      "A filler puts one counter per mark in the cup.",
+      "A drawer pulls one out.",
+      "And a writer writes the word down. Tip the cup back every time."
+    ],
+    "beats": [
+      0.8,
+      0.8,
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 13,

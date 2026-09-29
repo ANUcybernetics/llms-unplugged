@@ -11,14 +11,31 @@
     "speaker": "BEN",
     "tc": false,
     "caption": "Take one row: the word \"the\", from a picture book called The magpie. On a grid, it's tallies. On a ledger, it's marks in coloured boxes.",
-    "tts": "Take one row: the word \"the\", from a picture book called The magpie. On a grid, it's tallies. On a ledger, it's marks in coloured boxes."
+    "tts": "Take one row: the word \"the\", from a picture book called The magpie. On a grid, it's tallies. On a ledger, it's marks in coloured boxes.",
+    "parts": [
+      "Take one row: the word \"the\", from a picture book called The magpie. On a grid, it's tallies.",
+      "On a ledger, it's marks in coloured boxes."
+    ],
+    "beats": [
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 2,
     "speaker": "USHINI",
     "tc": false,
     "caption": "In a cup, it's counters. In a pile of cutouts, it's slips of paper. Or it's just four numbers.",
-    "tts": "In a cup, it's counters. In a pile of cutouts, it's slips of paper. Or it's just four numbers."
+    "tts": "In a cup, it's counters. In a pile of cutouts, it's slips of paper. Or it's just four numbers.",
+    "parts": [
+      "In a cup, it's counters.",
+      "In a pile of cutouts, it's slips of paper.",
+      "Or it's just four numbers."
+    ],
+    "beats": [
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 3,
@@ -32,21 +49,46 @@
     "speaker": "USHINI",
     "tc": false,
     "caption": "So watch one sentence switch kits at every word. Start after a full stop, with a cup: seventeen counters. Draw red: \"it\".",
-    "tts": "So watch one sentence switch kits at every word. Start after a full stop, with a cup: seventeen counters. Draw red: \"it\"."
+    "tts": "So watch one sentence switch kits at every word. Start after a full stop, with a cup: seventeen counters. Draw red: \"it\".",
+    "parts": [
+      "So watch one sentence switch kits at every word. Start after a full stop, with a cup: seventeen counters.",
+      "Draw red: \"it\"."
+    ],
+    "beats": [
+      0.8
+    ]
   },
   {
     "i": 5,
     "speaker": "BEN",
     "tc": false,
     "caption": "The row for \"it\" has ten marks, so give each mark a face of a ten-sided die. Roll a one: \"sits\". Then \"on\", and \"the\", with no choice at all.",
-    "tts": "The row for \"it\" has ten marks, so give each mark a face of a ten-sided die. Roll a one: \"sits\". Then \"on\", and \"the\", with no choice at all."
+    "tts": "The row for \"it\" has ten marks, so give each mark a face of a ten-sided die. Roll a one: \"sits\". Then \"on\", and \"the\", with no choice at all.",
+    "parts": [
+      "The row for \"it\" has ten marks, so give each mark a face of a ten-sided die.",
+      "Roll a one: \"sits\".",
+      "Then \"on\", and \"the\", with no choice at all."
+    ],
+    "beats": [
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 6,
     "speaker": "USHINI",
     "tc": false,
     "caption": "The row for \"the\", as nineteen slips. Shuffle, pull one out: \"dog\". And a full stop to finish.",
-    "tts": "The row for \"the\", as nineteen slips. Shuffle, pull one out: \"dog\". And a full stop to finish."
+    "tts": "The row for \"the\", as nineteen slips. Shuffle, pull one out: \"dog\". And a full stop to finish.",
+    "parts": [
+      "The row for \"the\", as nineteen slips.",
+      "Shuffle, pull one out: \"dog\".",
+      "And a full stop to finish."
+    ],
+    "beats": [
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 7,

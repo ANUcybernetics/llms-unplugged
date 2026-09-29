@@ -25,7 +25,16 @@
     "speaker": "BEN",
     "tc": false,
     "caption": "Say you've written \"here comes the dog\". The row for \"dog\": nought to four is a full stop, five to nine is \"runs\". Roll a three. Full stop. Stop.",
-    "tts": "Say you've written \"here comes the dog\". The row for \"dog\": nought to four is a full stop, five to nine is \"runs\". Roll a three. Full stop. Stop."
+    "tts": "Say you've written \"here comes the dog\". The row for \"dog\": nought to four is a full stop, five to nine is \"runs\". Roll a three. Full stop. Stop.",
+    "parts": [
+      "Say you've written \"here comes the dog\". The row for \"dog\": nought to four is a full stop, five to nine is \"runs\".",
+      "Roll a three. Full stop.",
+      "Stop."
+    ],
+    "beats": [
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 4,
@@ -39,7 +48,14 @@
     "speaker": "BEN",
     "tc": false,
     "caption": "The first reply back is your tool result. Write the whole thing down, then the full stop you rolled. Then carry on, from the full stop.",
-    "tts": "The first reply back is your tool result. Write the whole thing down, then the full stop you rolled. Then carry on, from the full stop."
+    "tts": "The first reply back is your tool result. Write the whole thing down, then the full stop you rolled. Then carry on, from the full stop.",
+    "parts": [
+      "The first reply back is your tool result. Write the whole thing down, then the full stop you rolled.",
+      "Then carry on, from the full stop."
+    ],
+    "beats": [
+      0.8
+    ]
   },
   {
     "i": 6,

@@ -46,7 +46,16 @@
     "speaker": "USHINI",
     "tc": false,
     "caption": "Here's why that matters. Frankenstein, looking back one word. Then two. Then five.",
-    "tts": "Here's why that matters. Frankenstein, looking back one word. Then two. Then five."
+    "tts": "Here's why that matters. Frankenstein, looking back one word. Then two. Then five.",
+    "parts": [
+      "Here's why that matters. Frankenstein, looking back one word.",
+      "Then two.",
+      "Then five."
+    ],
+    "beats": [
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 7,

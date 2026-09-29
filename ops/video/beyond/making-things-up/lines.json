@@ -32,7 +32,20 @@
     "speaker": "BEN",
     "tc": false,
     "caption": "Look at how it got there. \"Down comes the\" is in the book. \"The dog\" is in the book. A full stop after \"dog\", then \"swoop\", both in the book. Every pair is true. The sentence isn't.",
-    "tts": "Look at how it got there. \"Down comes the\" is in the book. \"The dog\" is in the book. A full stop after \"dog\", then \"swoop\", both in the book. Every pair is true. The sentence isn't."
+    "tts": "Look at how it got there. \"Down comes the\" is in the book. \"The dog\" is in the book. A full stop after \"dog\", then \"swoop\", both in the book. Every pair is true. The sentence isn't.",
+    "parts": [
+      "Look at how it got there.",
+      "\"Down comes the\" is in the book.",
+      "\"The dog\" is in the book.",
+      "A full stop after \"dog\", then \"swoop\", both in the book.",
+      "Every pair is true. The sentence isn't."
+    ],
+    "beats": [
+      0.8,
+      0.8,
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 5,
