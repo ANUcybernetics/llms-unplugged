@@ -540,55 +540,40 @@ window.KIT = (() => {
     };
   }
 
-  // A flat d10 face: a kite with the number. Lands with appear().
-  function die(parent, { x = 0, y = 0, size = 150, face = 7, color = "var(--gold)" } = {}) {
+  // The die: a decagon outline (ten faces) with its number in gold, centred
+  // on the ink rather than the baseline. Lands with land().
+  function die(parent, { x = 0, y = 0, size = 150, face = 7 } = {}) {
     const g = layer(parent, x, y);
     const s = svg("svg", { width: size, height: size, viewBox: "0 0 100 100" }, g);
-    svg(
-      "polygon",
-      {
-        points: "50 2 96 38 50 98 4 38",
-        fill: color,
-        stroke: "rgb(0 0 0 / 35%)",
-        "stroke-width": 2,
-        "stroke-linejoin": "round",
-      },
-      s,
-    );
-    svg(
-      "path",
-      {
-        d: "M4 38 L50 60 L96 38 M50 60 L50 98",
-        fill: "none",
-        stroke: "rgb(0 0 0 / 25%)",
-        "stroke-width": 2,
-      },
-      s,
-    );
+    const pts = Array.from({ length: 10 }, (_, i) => {
+      const a = -Math.PI / 2 + (i * Math.PI) / 5;
+      return `${(50 + 46 * Math.cos(a)).toFixed(2)} ${(50 + 46 * Math.sin(a)).toFixed(2)}`;
+    });
+    const outline = svg("path", { d: `M${pts.join(" L")} Z`, class: "line" }, s);
     // one text node per face, toggled by opacity (seek-safe; no text swaps)
     const texts = [];
     for (let n = 0; n < 10; n++) {
-      texts.push(
-        svg(
-          "text",
-          {
-            x: 50,
-            y: 40,
-            "text-anchor": "middle",
-            "dominant-baseline": "central",
-            "font-size": 34,
-            "font-weight": 700,
-            fill: "#fff",
-            class: "ui",
-            opacity: n === face ? 1 : 0,
-            text: String(n),
-          },
-          s,
-        ),
+      const tx = svg(
+        "text",
+        {
+          x: 50,
+          y: 50,
+          "text-anchor": "middle",
+          "font-size": 44,
+          "font-weight": 600,
+          fill: "var(--gold-2)",
+          class: "ui",
+          opacity: n === face ? 1 : 0,
+          text: String(n),
+        },
+        s,
       );
+      const b = tx.getBBox();
+      tx.setAttribute("y", (50 + 50 - (b.y + b.height / 2)).toFixed(2));
+      texts.push(tx);
     }
     set(g, { transformOrigin: "50% 50%" });
-    return { el: g, texts, size };
+    return { el: g, texts, size, outline };
   }
 
   // A ledger row as the sheets print it (cli/ledger.typ): the prefix in bold
@@ -834,17 +819,13 @@ window.KIT = (() => {
     };
   }
 
-  // The cup seen from above: a circle, counters placed in it deterministically.
+  // The cup seen from above: a rim in line, counters placed in it deterministically.
   function cup(parent, { x = 0, y = 0, r = 170 } = {}) {
     const g = layer(parent, x, y);
     const D = r * 2 + 40;
     const s = svg("svg", { width: D, height: D, viewBox: `0 0 ${D} ${D}` }, g);
-    svg(
-      "circle",
-      { cx: D / 2, cy: D / 2, r: r + 12, fill: "#3a3532", stroke: "#57504b", "stroke-width": 6 },
-      s,
-    );
-    svg("circle", { cx: D / 2, cy: D / 2, r: r, fill: "#2a2624" }, s);
+    const rim = svg("circle", { cx: D / 2, cy: D / 2, r: r + 12, class: "line" }, s);
+    svg("circle", { cx: D / 2, cy: D / 2, r: r, class: "line faint" }, s);
     const pool = svg("g", {}, s);
     const counters = [];
     const cr = Math.round(r * 0.19);
@@ -858,6 +839,7 @@ window.KIT = (() => {
     return {
       el: g,
       svg: s,
+      rim,
       D,
       r,
       cr,
@@ -907,6 +889,126 @@ window.KIT = (() => {
     );
     set(g, { transformOrigin: "50% 50%" });
     return { el: g, r };
+  }
+
+  // ------------------------------------------------------------ line art
+  // Props that aren't paper are white line drawings (ANU brand illustration
+  // style: single-weight fine lines, gold on the part that matters); see
+  // STYLE.md. Class .line (kit.css) is the white line, .line.gold the gold one.
+
+  // an iconoir icon (KIT_DATA.icons, 24x24) at `size` px, in line
+  function icon(parent, name, { x = 0, y = 0, size = 96, gold = false } = {}) {
+    const body = window.KIT_DATA?.icons?.[name];
+    if (!body) throw new Error(`KIT.icon: no icon ${name} (run build-data.py)`);
+    const g = layer(parent, x, y);
+    const s = svg("svg", { width: size, height: size, viewBox: "0 0 24 24", class: "icon" }, g);
+    s.innerHTML = body;
+    if (gold) s.classList.add("gold");
+    return { el: g, svg: s, size, paths: [...s.querySelectorAll("path")] };
+  }
+
+  // a CC0 silhouette (KIT_DATA.art: magpie, dog) as its outline only, fitted
+  // into the box w x h; flip mirrors it, rotate tips it (degrees)
+  function outline(
+    parent,
+    name,
+    { x = 0, y = 0, w = 300, h = 240, flip = false, rotate = 0 } = {},
+  ) {
+    const body = window.KIT_DATA?.art?.[name];
+    if (!body) throw new Error(`KIT.outline: no art ${name} (run build-data.py)`);
+    const g = layer(parent, x, y);
+    const s = svg("svg", { width: w, height: h, viewBox: `0 0 ${w} ${h}`, overflow: "visible" }, g);
+    const fit = svg("g", {}, s);
+    fit.innerHTML = body;
+    const paths = [...fit.querySelectorAll("path")];
+    for (const p of paths) p.setAttribute("class", "line");
+    const b = fit.getBBox();
+    const k = Math.min(w / b.width, h / b.height);
+    fit.setAttribute(
+      "transform",
+      `translate(${w / 2} ${h / 2}) rotate(${rotate}) scale(${flip ? -k : k} ${k}) ` +
+        `translate(${-(b.x + b.width / 2)} ${-(b.y + b.height / 2)})`,
+    );
+    return { el: g, svg: s, paths, w, h };
+  }
+
+  // the pencil: a line drawing with a gold point. (x, y) is the point;
+  // `angle` is the direction the pencil lies from it (degrees, 0 = to the right)
+  function pencil(parent, { x = 0, y = 0, len = 380, angle = 200, width = 36 } = {}) {
+    const g = layer(parent, x, y);
+    const s = svg("svg", { width: 1, height: 1, overflow: "visible" }, g);
+    const h = width / 2,
+      cone = width * 1.5,
+      ferrule = width * 0.4,
+      eraser = width * 0.7;
+    const body = svg("g", { transform: `rotate(${angle})` }, s);
+    const end = len - eraser;
+    svg(
+      "path",
+      { class: "line", d: `M${cone} ${-h} L${end} ${-h} L${end} ${h} L${cone} ${h}` },
+      body,
+    );
+    svg("path", { class: "line faint", d: `M${cone} 0 L${end - ferrule} 0` }, body);
+    svg("path", { class: "line", d: `M${cone} ${-h} L0 0 L${cone} ${h}` }, body);
+    svg(
+      "path",
+      { class: "gold-fill", d: `M${cone * 0.3} ${-h * 0.3} L0 0 L${cone * 0.3} ${h * 0.3} Z` },
+      body,
+    );
+    svg("path", { class: "line", d: `M${end - ferrule} ${-h} L${end - ferrule} ${h}` }, body);
+    svg(
+      "path",
+      { class: "line", d: `M${end} ${-h} L${len} ${-h} L${len} ${h} L${end} ${h}` },
+      body,
+    );
+    return { el: g, len, angle };
+  }
+
+  // Glint: a short segment that travels once round an outline, eased in and
+  // out, then rests; "gold" lays a gold segment over the line, "gap" opens
+  // the line itself (a mask) so what's behind shows through. Drawn on every
+  // seek as a pure function of t (tl.draw). `els` are SVG shapes (a path,
+  // circle, rect, polygon); `from`/`to` bound when it runs.
+  let glintId = 0;
+  const easeInOut = (p) => (p < 0.5 ? 4 * p * p * p : 1 - (-2 * p + 2) ** 3 / 2);
+  function glint(
+    tl,
+    els,
+    { kind = "gold", phase = 0, lap = 3.2, rest = 2.4, seg = 0.09, from = 0, to = Infinity } = {},
+  ) {
+    const runs = [];
+    for (const el of [els].flat()) {
+      const L = el.getTotalLength();
+      const o = el.cloneNode();
+      o.removeAttribute("id");
+      o.setAttribute("class", kind === "gold" ? "glint-gold" : "glint-gap");
+      o.style.strokeDasharray = `${seg * L} ${L}`;
+      if (kind === "gold") el.after(o);
+      else {
+        // the mask's content is in el's own user space, transform included
+        o.removeAttribute("transform");
+        const id = `kit-glint-${glintId++}`;
+        const m = svg("mask", { id, maskUnits: "userSpaceOnUse" }, el.parentNode);
+        svg("rect", { x: -1e5, y: -1e5, width: 2e5, height: 2e5, fill: "#fff" }, m);
+        m.append(o);
+        el.parentNode.insertBefore(m, el);
+        el.setAttribute("mask", `url(#${id})`);
+      }
+      runs.push({ o, L });
+    }
+    tl.draw((t) => {
+      const u = t - from - phase;
+      const k = Math.floor(u / (lap + rest)),
+        w = u - k * (lap + rest);
+      const on = u >= 0 && t < to && w < lap;
+      const off = on ? -easeInOut(w / lap) : 0;
+      const op = on ? Math.min(1, w / 0.4, (lap - w) / 0.4) : 0;
+      for (const r of runs) {
+        r.o.style.strokeDashoffset = `${off * r.L}`;
+        r.o.style.opacity = op;
+      }
+    });
+    return runs;
   }
 
   // Paper and pencil: a strip of paper, and words written on it one by one.
@@ -1230,6 +1332,10 @@ window.KIT = (() => {
     timing: M.timing,
     captions: M.captions,
     tiles,
+    icon,
+    outline,
+    pencil,
+    glint,
     tally,
     prepDraw,
     drawOn,

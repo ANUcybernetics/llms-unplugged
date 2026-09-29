@@ -95,15 +95,15 @@ screen, not what fits a printed page.
   strokes are prepped for `K.drawOn`
 - `K.strip(parent, bands, { face })` →
   `{ el, faces, blocks, labels, nums, shade(tl, t), light(tl, i, t), faceAt(i) }`
-- `K.die(parent, { size, face })` → `{ el, texts }`; `K.land(tl, die, face, t)`
-  lands it showing `face`
+- `K.die(parent, { size, face })` → `{ el, texts, outline }` (a decagon, the
+  number centred on its ink); `K.land(tl, die, face, t)` lands it showing `face`
 - `K.ledgerRow(parent, entry, palette, { w, h })` →
   `{ el, cells[{ lit, strokes, wordEl, box, rule, colour, hex, follower, cx, cy }], prefixEl, lit }`;
   entries come from `KIT_DATA.ledger[name].sheets[].pages[][]`
 - `K.sheet(parent, entries, palette, { w, rowH, header: [from, to], title })` →
   `{ el, rows, headerEl, rowAt(i) }`
 - `K.cup(parent, { r })` →
-  `{ el, add(colour, i, n) → { el, x, y }, counters, centre, cr }`;
+  `{ el, rim, add(colour, i, n) → { el, x, y }, counters, centre, cr }`;
   `K.counter(parent, colour, { r })`
 - `K.paper(parent, { w, h })`, `K.pencilLine(paper.el, words, { size })` →
   `{ el, words[] }`, `K.write(tl, span, t)`
@@ -114,6 +114,15 @@ screen, not what fits a printed page.
   (a real booklet or sheet page from `generated/pages/`)
 - `K.loop(parent, { w, h, labels })` →
   `{ el, path, stations[{ dot, text, x, y }] }`
+- line art (STYLE.md; classes `.line`, `.line.faint`, `.line.gold`,
+  `.gold-fill`): `K.pencil(parent, { x, y, len, angle })` (x, y is the gold
+  point), `K.icon(parent, name, { x, y, size, gold })` → `{ el, svg, paths }`
+  (iconoir: `smartphone-device`, `chat-bubble`, `coffee-cup`, `user`),
+  `K.outline(parent, name, { x, y, w, h, flip, rotate })` → `{ el, paths }` (the
+  CC0 `magpie` and `dog` in `art/`, outline only)
+- `K.glint(tl, shapes, { kind, phase, lap, rest, seg, from, to })`: a segment
+  that travels round an outline and rests, `kind` `"gold"` or `"gap"`; SVG
+  shapes only, never paper or text
 - `K.el`, `K.svg` (a text's `fill` goes inline), `K.layer(parent, x, y)`,
   `K.set(targets, props)` / `K.get(el, prop)` (build-time values),
   `K.tally(g, n, x, y)`, `K.prepDraw(paths)`, `K.colourIndex`, `K.tokenColour`,
@@ -129,10 +138,11 @@ Data: `KIT_DATA.grid` (`tokens`, `vocab`, `generation`, `rolls`,
 `pretrainedSeq`, `pretrainedRolls`, from `website/src/decks/examples.ts`),
 `KIT_DATA.ledger[name]` (`sheets[].range`, `sheets[].pages[][]` entries
 `{ prefix: [w], followers: [{ text, count }] }`, `title`), `KIT_DATA.palette`
-(red, blue, green, yellow: the counter colours, in column order),
-`KIT_DATA.booklet` (`entries[word] = { maxRoll, followers: [[w, threshold]] }`,
-`pageOf[word]`), `KIT_DATA.pages[name]` (`bbox`, `imgW`, `imgH` in 150-dpi
-layout units; the files are 300 dpi).
+(red, blue, green, yellow: the counter colours, in column order), `KIT_DATA.art`
+and `KIT_DATA.icons` (from `art/` and iconoir), `KIT_DATA.booklet`
+(`entries[word] = { maxRoll, followers: [[w, threshold]] }`, `pageOf[word]`),
+`KIT_DATA.pages[name]` (`bbox`, `imgW`, `imgH` in 150-dpi layout units; the
+files are 300 dpi).
 
 ## Rules that keep a render right
 

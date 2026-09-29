@@ -24,6 +24,7 @@ import json
 import re
 import struct
 import subprocess
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import typer
@@ -294,6 +295,43 @@ def read_palette(ledger: dict) -> list[dict]:
     return palette
 
 
+SVG_NS = "{http://www.w3.org/2000/svg}"
+ART_DIR = ROOT / "ops/video/_kit/art"
+ICONOIR = ROOT / "website/node_modules/@iconify-json/iconoir/icons.json"
+ICONS = ["smartphone-device", "chat-bubble", "coffee-cup", "user"]
+
+
+def read_art() -> dict:
+    """Each CC0 silhouette in _kit/art/ as flat <path> elements, every path
+    carrying its groups' transforms: a clipPath or mask takes shapes, not
+    groups, and K.outline restyles them all as one line.
+    """
+    art = {}
+    for f in sorted(ART_DIR.glob("*.svg")):
+        paths = []
+
+        def walk(el: ET.Element, tf: str) -> None:
+            t = f"{tf} {el.get('transform', '')}".strip()
+            if el.tag == SVG_NS + "path" and el.get("d"):
+                attrs = f' transform="{t}"' if t else ""
+                paths.append(f'<path d="{el.get("d")}"{attrs}/>')
+            for child in el:
+                if child.tag in (SVG_NS + "g", SVG_NS + "path"):
+                    walk(child, t)
+
+        walk(ET.parse(f).getroot(), "")
+        art[f.stem] = "".join(paths)
+    logger.info(f"art: {', '.join(art)} from {ART_DIR.relative_to(ROOT)}")
+    return art
+
+
+def read_icons() -> dict:
+    """The iconoir icons the kit draws (24x24 bodies), from the website's
+    @iconify-json/iconoir, so run `pnpm install` in website/ first."""
+    icons = json.loads(ICONOIR.read_text())["icons"]
+    return {name: icons[name]["body"] for name in ICONS}
+
+
 def write_data_js(
     ledger: dict, pages: dict, booklet: dict, grid: dict, palette: list[dict]
 ) -> None:
@@ -303,6 +341,8 @@ def write_data_js(
         "booklet": booklet,
         "grid": grid,
         "palette": palette,
+        "art": read_art(),
+        "icons": read_icons(),
     }
     GENERATED.mkdir(parents=True, exist_ok=True)
     out_path = GENERATED / "data.js"
