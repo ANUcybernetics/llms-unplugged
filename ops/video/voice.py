@@ -119,6 +119,9 @@ def parse_script(md_text: str, slug: str) -> list[dict]:
             "tts": tts_text(caption),
         }
         if pauses:
+            # a [beat] ending the line holds after its last part
+            if not texts[-1]:
+                texts = texts[:-1]
             line["parts"] = [tts_text(t) for t in texts]
             line["beats"] = pauses
         lines.append(line)
