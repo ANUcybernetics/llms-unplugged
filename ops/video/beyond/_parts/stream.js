@@ -57,15 +57,38 @@ export const stripXFor = (strip, i, anchor, x0) => {
 // border stretching with it (a K.ring scaled wide thickens its sides). Two
 // end caps and a top and bottom rule; `at(box)` gives each part's properties
 // for a box in its parent's px, to set, tween or sample.
-export function bracket(parent, { h, pad = 10, stroke = 5, colour = "var(--gold)", cap = 36 } = {}) {
+export function bracket(
+  parent,
+  { h, pad = 10, stroke = 5, colour = "var(--gold)", cap = 36 } = {},
+) {
   const H = h + 2 * pad;
   const g = KIT.layer(parent, 0, 0);
-  const part = (style) => KIT.el("div", { style: { position: "absolute", left: 0, top: 0, ...style } }, g);
+  const part = (style) =>
+    KIT.el("div", { style: { position: "absolute", left: 0, top: 0, ...style } }, g);
   const edge = `${stroke}px solid ${colour}`;
-  const L = part({ width: `${cap}px`, height: `${H}px`, borderLeft: edge, borderTop: edge, borderBottom: edge, borderRadius: "12px 0 0 12px" });
-  const R = part({ width: `${cap}px`, height: `${H}px`, borderRight: edge, borderTop: edge, borderBottom: edge, borderRadius: "0 12px 12px 0" });
+  const L = part({
+    width: `${cap}px`,
+    height: `${H}px`,
+    borderLeft: edge,
+    borderTop: edge,
+    borderBottom: edge,
+    borderRadius: "12px 0 0 12px",
+  });
+  const R = part({
+    width: `${cap}px`,
+    height: `${H}px`,
+    borderRight: edge,
+    borderTop: edge,
+    borderBottom: edge,
+    borderRadius: "0 12px 12px 0",
+  });
   const T = part({ width: "100px", height: `${stroke}px`, background: colour });
-  const B = part({ width: "100px", height: `${stroke}px`, background: colour, top: `${H - stroke}px` });
+  const B = part({
+    width: "100px",
+    height: `${stroke}px`,
+    background: colour,
+    top: `${H - stroke}px`,
+  });
   KIT.set([T, B], { x: cap, transformOrigin: "0 0" });
   KIT.set(g, { opacity: 0 });
   const at = (box) => {

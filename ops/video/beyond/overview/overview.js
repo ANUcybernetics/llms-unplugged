@@ -357,7 +357,12 @@ export const build = (tl, S, T) => {
   );
   // the rest of the book waits off the right edge
   const offScreen = strip.tiles.filter((t, j) => j >= 11 && SX + t.x >= S.W);
-  tl.to(offScreen.map((t) => t.el), { opacity: 1 }, tLift + 0.5, { dur: 0.01 });
+  tl.to(
+    offScreen.map((t) => t.el),
+    { opacity: 1 },
+    tLift + 0.5,
+    { dur: 0.01 },
+  );
   tl.to(bookL, { opacity: 0 }, tLift + 0.6, { dur: 0.4 });
 
   // the grid, drawn large and fitted small
@@ -616,7 +621,13 @@ export const build = (tl, S, T) => {
   // scale) and turns out to be one of many like it (making-tree.js's mesh:
   // copies of its shape, few thick strokes each, receding). The gold keeps
   // going past the tree, one smooth thread through the copies.
-  const ZOOM = { t: T.word(5, "real"), dur: T.word(5, "trillions") + 0.3 - T.word(5, "real"), to: 1 / 7, cx: LW / 2, cy: LH / 2 };
+  const ZOOM = {
+    t: T.word(5, "real"),
+    dur: T.word(5, "trillions") + 0.3 - T.word(5, "real"),
+    to: 1 / 7,
+    cx: LW / 2,
+    cy: LH / 2,
+  };
   const tZ0 = ZOOM.t;
   tl.to(litWords, { opacity: 0 }, tZ0 - 0.4, { dur: 0.3 });
   const M = mesh(tl, wrap, {
@@ -635,10 +646,16 @@ export const build = (tl, S, T) => {
   tl.set(M.el, { opacity: 1 }, tZ0);
   // the real tree shrinks with the mesh and hands over to its centre copy
   K.set(T3.el, { transformOrigin: "0 0" });
-  tl.sample(T3.el, tZ0, ZOOM.dur, (p) => {
-    const z = M.zAt(tZ0 + p * ZOOM.dur);
-    return { x: ZOOM.cx * (1 - z), y: ZOOM.cy * (1 - z), scale: z };
-  }, { ease: "linear", step: 0.005 });
+  tl.sample(
+    T3.el,
+    tZ0,
+    ZOOM.dur,
+    (p) => {
+      const z = M.zAt(tZ0 + p * ZOOM.dur);
+      return { x: ZOOM.cx * (1 - z), y: ZOOM.cy * (1 - z), scale: z };
+    },
+    { ease: "linear", step: 0.005 },
+  );
   tl.to(T3.el, { opacity: 0 }, tZ0 + 0.4, { dur: 1.2, ease: "in-out-quad" });
 
   // the thread: the walk, six more words through the tree, then on in long
@@ -653,7 +670,7 @@ export const build = (tl, S, T) => {
   }
   const thread = T3.pathNodes(ext).map((n) => ({ x: n.x, y: n.y }));
   const TH = box.y1 - box.y0,
-    far = ZOOM.cx + (LW / 2) / ZOOM.to + LW;
+    far = ZOOM.cx + LW / 2 / ZOOM.to + LW;
   for (let x = box.x1 + (box.x1 - box.x0) * 0.35; x < far; x += (box.x1 - box.x0) * 0.35)
     thread.push({ x, y: LH / 2 + (r2() - 0.5) * TH * 0.5 });
   const walkLen = WALK.length - 1; // segments of the thread that are the walk
@@ -662,46 +679,70 @@ export const build = (tl, S, T) => {
     const mx = (xa + xb) / 2;
     if (s >= 1) return ctx.bezierCurveTo(mx, ya, mx, yb, xb, yb);
     const L = (a, b) => a + (b - a) * s;
-    const q1x = L(xa, mx), q1y = ya, rx = mx, ry = L(ya, yb);
-    const q2x = L(q1x, rx), q2y = L(q1y, ry), ux = L(rx, L(mx, xb)), uy = L(ry, yb);
+    const q1x = L(xa, mx),
+      q1y = ya,
+      rx = mx,
+      ry = L(ya, yb);
+    const q2x = L(q1x, rx),
+      q2y = L(q1y, ry),
+      ux = L(rx, L(mx, xb)),
+      uy = L(ry, yb);
     ctx.bezierCurveTo(q1x, q1y, q2x, q2y, L(q2x, ux), L(q2y, uy));
   };
   const tThread = [tZ0 + 0.4, tZ0 + ZOOM.dur + 0.4];
   const tLoop = T.word(5, "same"),
     tLoopEnd = T.end(5) + 0.5;
-  const threadLayer = C.canvas(tl, wrap, (ctx, t) => {
-    if (t < tZ0 - 0.1 || t > T.end(5) + 1.5) return;
-    const z = M.zAt(t);
-    ctx.setTransform(ctx.getTransform().multiply(new DOMMatrix([z, 0, 0, z, ZOOM.cx * (1 - z), ZOOM.cy * (1 - z)])));
-    const px = 1 / z; // one screen px in world units
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    ctx.strokeStyle = `rgb(${GOLD.join(" ")})`;
-    ctx.lineWidth = (4 + z) * px;
-    const segs = thread.length - 1;
-    const upto = walkLen + (segs - walkLen) * C.phase(t, tThread[0], tThread[1] - tThread[0], "in-out-quad");
-    ctx.beginPath();
-    ctx.moveTo(thread[0].x, thread[0].y);
-    for (let i = 1; i <= segs && i - 1 < upto; i++) {
-      const a = thread[i - 1], b = thread[i];
-      curveTo(ctx, a.x, a.y, b.x, b.y, Math.min(1, upto - (i - 1)));
-    }
-    ctx.stroke();
-    // "the same loop": a bright point runs the thread
-    if (t > tLoop && t < tLoopEnd + 0.4) {
-      const u = C.phase(t, tLoop, tLoopEnd - tLoop, "in-out-quad") * segs;
-      const i = Math.min(segs - 1, Math.floor(u)), f = u - i;
-      const a = thread[i], b = thread[i + 1];
-      const mx = (a.x + b.x) / 2;
-      const bx = (1 - f) ** 3 * a.x + 3 * (1 - f) ** 2 * f * mx + 3 * (1 - f) * f * f * mx + f ** 3 * b.x;
-      const by = (1 - f) ** 3 * a.y + 3 * (1 - f) ** 2 * f * a.y + 3 * (1 - f) * f * f * b.y + f ** 3 * b.y;
-      ctx.globalAlpha = 1 - C.phase(t, tLoopEnd, 0.4);
-      ctx.fillStyle = "#fff4d6";
+  const threadLayer = C.canvas(
+    tl,
+    wrap,
+    (ctx, t) => {
+      if (t < tZ0 - 0.1 || t > T.end(5) + 1.5) return;
+      const z = M.zAt(t);
+      ctx.setTransform(
+        ctx
+          .getTransform()
+          .multiply(new DOMMatrix([z, 0, 0, z, ZOOM.cx * (1 - z), ZOOM.cy * (1 - z)])),
+      );
+      const px = 1 / z; // one screen px in world units
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.strokeStyle = `rgb(${GOLD.join(" ")})`;
+      ctx.lineWidth = (4 + z) * px;
+      const segs = thread.length - 1;
+      const upto =
+        walkLen + (segs - walkLen) * C.phase(t, tThread[0], tThread[1] - tThread[0], "in-out-quad");
       ctx.beginPath();
-      ctx.arc(bx, by, 9 * px, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }, { x: 0, y: 0, w: LW, h: LH });
+      ctx.moveTo(thread[0].x, thread[0].y);
+      for (let i = 1; i <= segs && i - 1 < upto; i++) {
+        const a = thread[i - 1],
+          b = thread[i];
+        curveTo(ctx, a.x, a.y, b.x, b.y, Math.min(1, upto - (i - 1)));
+      }
+      ctx.stroke();
+      // "the same loop": a bright point runs the thread
+      if (t > tLoop && t < tLoopEnd + 0.4) {
+        const u = C.phase(t, tLoop, tLoopEnd - tLoop, "in-out-quad") * segs;
+        const i = Math.min(segs - 1, Math.floor(u)),
+          f = u - i;
+        const a = thread[i],
+          b = thread[i + 1];
+        const mx = (a.x + b.x) / 2;
+        const bx =
+          (1 - f) ** 3 * a.x + 3 * (1 - f) ** 2 * f * mx + 3 * (1 - f) * f * f * mx + f ** 3 * b.x;
+        const by =
+          (1 - f) ** 3 * a.y +
+          3 * (1 - f) ** 2 * f * a.y +
+          3 * (1 - f) * f * f * b.y +
+          f ** 3 * b.y;
+        ctx.globalAlpha = 1 - C.phase(t, tLoopEnd, 0.4);
+        ctx.fillStyle = "#fff4d6";
+        ctx.beginPath();
+        ctx.arc(bx, by, 9 * px, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    },
+    { x: 0, y: 0, w: LW, h: LH },
+  );
   K.set(threadLayer.el, { opacity: 0 });
   tl.set(threadLayer.el, { opacity: 1 }, tZ0 - 0.1);
   // the mesh dims under the thread for "the same loop"

@@ -150,12 +150,10 @@ const build = (tl, S, T) => {
   };
   const typeWords = (spans, t0, cadence = 0.32) =>
     spans.forEach((s, i) =>
-      tl.fromTo(
-        s,
-        { opacity: 0, y: 6 },
-        { opacity: 1, y: 0 },
-        t0 + i * cadence, { dur: 0.18, ease: "out-cubic" },
-      ),
+      tl.fromTo(s, { opacity: 0, y: 6 }, { opacity: 1, y: 0 }, t0 + i * cadence, {
+        dur: 0.18,
+        ease: "out-cubic",
+      }),
     );
   const bg = K.bigrams(K.split(D.grid.tokens), K.split(D.grid.vocab));
   const magpie = D.ledger["the-magpie"];
@@ -274,7 +272,8 @@ const build = (tl, S, T) => {
       el,
       { opacity: 0, x: `+=${from[0]}`, y: `+=${from[1]}` },
       { opacity: 1, x: `-=${from[0]}`, y: `-=${from[1]}` },
-      t, { dur: 0.6, ease: "out-quart", immediate: false },
+      t,
+      { dur: 0.6, ease: "out-quart", immediate: false },
     );
   slideIn(book.el, T.word(3, "picture"), [-300, 0]);
   slideIn(gridD.el, T.word(3, "paper"), [300, 0]);
@@ -336,18 +335,56 @@ const build = (tl, S, T) => {
 
   // ---------------------------------------------------------------- line 5: the loop as one stroke, book → grid → paper → back
   const g5 = group(1500, 820);
-  const b5 = K.bookPage(g5.el, ["Hop, Joey, hop.", "See Joey hop."], { x: 510, y: 0, w: 480, h: 170, size: 42, pad: 28 });
+  const b5 = K.bookPage(g5.el, ["Hop, Joey, hop.", "See Joey hop."], {
+    x: 510,
+    y: 0,
+    w: 480,
+    h: 170,
+    size: 42,
+    pad: 28,
+  });
   const gr5 = K.grid(g5.el, bg, { x: 560, y: 205, cell: 60, head: 80 });
   const p5 = K.paper(g5.el, { x: 350, y: 640, w: 800, h: 120 });
   const pl5 = K.pencilLine(p5.el, ["see", "joey", ","], { size: 54, y: 30 });
   const d5 = K.die(g5.el, { x: 1190, y: 620, size: 150, face: 7 });
   KIT.set(d5.el, { opacity: 0 });
   const svg5 = K.svg("svg", { width: 1500, height: 820, viewBox: "0 0 1500 820" }, g5.el);
-  const trainPath = K.svg("path", { d: "M 500 90 C 250 90 200 300 240 420 C 280 520 330 580 340 690", class: "draw", stroke: "var(--gold)", "stroke-width": 9 }, svg5);
-  const genPath = K.svg("path", { d: "M 1160 690 C 1200 580 1260 520 1270 420 C 1300 300 1250 90 1000 90", class: "draw", stroke: "var(--gold)", "stroke-width": 9 }, svg5);
+  const trainPath = K.svg(
+    "path",
+    {
+      d: "M 500 90 C 250 90 200 300 240 420 C 280 520 330 580 340 690",
+      class: "draw",
+      stroke: "var(--gold)",
+      "stroke-width": 9,
+    },
+    svg5,
+  );
+  const genPath = K.svg(
+    "path",
+    {
+      d: "M 1160 690 C 1200 580 1260 520 1270 420 C 1300 300 1250 90 1000 90",
+      class: "draw",
+      stroke: "var(--gold)",
+      "stroke-width": 9,
+    },
+    svg5,
+  );
   K.prepDraw([trainPath, genPath]);
-  const arrow = (x, y, rot) => { const a = K.svg("polygon", { points: "0 -16 30 0 0 16", fill: "var(--gold)", transform: `translate(${x} ${y}) rotate(${rot})` }, svg5); KIT.set(a, { opacity: 0 }); return a; };
-  const arrowTrain = arrow(340, 690, 90), arrowGen = arrow(1012, 90, 180);
+  const arrow = (x, y, rot) => {
+    const a = K.svg(
+      "polygon",
+      {
+        points: "0 -16 30 0 0 16",
+        fill: "var(--gold)",
+        transform: `translate(${x} ${y}) rotate(${rot})`,
+      },
+      svg5,
+    );
+    KIT.set(a, { opacity: 0 });
+    return a;
+  };
+  const arrowTrain = arrow(340, 690, 90),
+    arrowGen = arrow(1012, 90, 180);
   const trainL = label(g5.el, "train", { x: 40, y: 380, size: 56, gold: true, weight: 500 });
   const genL = label(g5.el, "generate", { x: 1240, y: 380, size: 56, gold: true, weight: 500 });
   KIT.set([trainL, genL], { opacity: 0 });
@@ -361,10 +398,24 @@ const build = (tl, S, T) => {
   const tCount = T.word(5, "count");
   bg.pairs.forEach((p, i) => {
     const t = tCount + i * 0.28;
-    const tile = K.el("div", { class: "tile", text: `${p.from} ${p.to}`, style: { fontSize: "30px", width: "170px", height: "50px" } }, g5.el);
+    const tile = K.el(
+      "div",
+      {
+        class: "tile",
+        text: `${p.from} ${p.to}`,
+        style: { fontSize: "30px", width: "170px", height: "50px" },
+      },
+      g5.el,
+    );
     KIT.set(tile, { x: 660, y: 110, opacity: 0 });
     const cell = gr5.cells[p.r][p.c];
-    tl.fromTo(tile, { opacity: 0, x: 660, y: 110, scale: 1 }, { opacity: 1, x: 560 + cell.cx - 85, y: 205 + cell.cy - 25, scale: 0.6 }, t, { dur: 0.5, ease: "in-out-cubic" });
+    tl.fromTo(
+      tile,
+      { opacity: 0, x: 660, y: 110, scale: 1 },
+      { opacity: 1, x: 560 + cell.cx - 85, y: 205 + cell.cy - 25, scale: 0.6 },
+      t,
+      { dur: 0.5, ease: "in-out-cubic" },
+    );
     tl.to(tile, { opacity: 0 }, t + 0.5, { dur: 0.15 });
     K.drawOn(tl, [cell.strokes[p.nth - 1]], t + 0.55, 0.25, 0);
   });
@@ -381,7 +432,8 @@ const build = (tl, S, T) => {
 
   // ---------------------------------------------------------------- line 6: two vignettes: the grid and die; the cup
   const [s6a, s6b] = slots(2);
-  const g6a = group(900, 700), g6b = group(900, 700);
+  const g6a = group(900, 700),
+    g6b = group(900, 700);
   const gr6 = K.grid(g6a.el, bg, { x: 60, y: 60, cell: 90, head: 120 });
   const d6 = K.die(g6a.el, { x: 690, y: 480, size: 160, face: 2 });
   KIT.set(d6.el, { opacity: 0 });
@@ -389,45 +441,124 @@ const build = (tl, S, T) => {
   const rowIt = rowOf("it");
   const outC = K.counter(g6b.el, "red", { x: cup6.centre.x - 40, y: cup6.centre.y - 40, r: 40 });
   KIT.set(outC.el, { opacity: 0 });
-  fit(g6a, s6a); fit(g6b, s6b);
+  fit(g6a, s6a);
+  fit(g6b, s6b);
   during(g6a.el, T.start(6) + 0.3, T.start(7));
   during(g6b.el, T.word(6, "ledger") - 0.2, T.start(7));
-  bg.pairs.forEach((p, i) => K.drawOn(tl, [gr6.cells[p.r][p.c].strokes[p.nth - 1]], T.word(6, "count") + i * 0.18, 0.25, 0));
+  bg.pairs.forEach((p, i) =>
+    K.drawOn(tl, [gr6.cells[p.r][p.c].strokes[p.nth - 1]], T.word(6, "count") + i * 0.18, 0.25, 0),
+  );
   K.land(tl, d6, 2, T.word(6, "roll"));
   let k6 = 0;
   const total6 = rowIt.followers.reduce((s, f) => s + f.count, 0);
   rowIt.followers.forEach((f, ci) => {
     for (let n = 0; n < f.count; n++) {
       const ct = cup6.add(D.palette[ci].name, k6, total6);
-      tl.fromTo(ct.el, { opacity: 0, x: ct.x, y: ct.y - 220, scale: 1.3 }, { opacity: 1, y: ct.y, scale: 1 }, T.word(6, "counters") + k6 * 0.12, { dur: 0.45, ease: "out-quart" });
+      tl.fromTo(
+        ct.el,
+        { opacity: 0, x: ct.x, y: ct.y - 220, scale: 1.3 },
+        { opacity: 1, y: ct.y, scale: 1 },
+        T.word(6, "counters") + k6 * 0.12,
+        { dur: 0.45, ease: "out-quart" },
+      );
       k6++;
     }
   });
-  tl.fromTo(outC.el, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1.1 }, T.word(6, "likely") - 0.2, { dur: 0.3 });
-  tl.to(outC.el, { x: cup6.centre.x + 330, y: cup6.centre.y - 40, scale: 1 }, T.word(6, "likely") + 0.1, { dur: 0.6, ease: "in-out-cubic" });
+  tl.fromTo(
+    outC.el,
+    { opacity: 0, scale: 0.6 },
+    { opacity: 1, scale: 1.1 },
+    T.word(6, "likely") - 0.2,
+    { dur: 0.3 },
+  );
+  tl.to(
+    outC.el,
+    { x: cup6.centre.x + 330, y: cup6.centre.y - 40, scale: 1 },
+    T.word(6, "likely") + 0.1,
+    { dur: 0.6, ease: "in-out-cubic" },
+  );
 
   // ---------------------------------------------------------------- line 7: three vignettes: your own model then the booklet; the phone; the butchers paper
   const [s7a, s7b, s7c] = slots(3);
-  const g7a = group(900, 700), g7b = group(900, 700), g7c = group(900, 700);
+  const g7a = group(900, 700),
+    g7b = group(900, 700),
+    g7c = group(900, 700);
   const gr7 = K.grid(g7a.el, bg, { x: 120, y: 30, cell: 96, head: 130 });
   drawAll(gr7, 0);
-  const pg7 = K.pageImage(g7a.el, "snowy-river", D.booklet.pageOf.golden, { x: 20, y: 40, w: 860, h: 600 });
+  const pg7 = K.pageImage(g7a.el, "snowy-river", D.booklet.pageOf.golden, {
+    x: 20,
+    y: 40,
+    w: 860,
+    h: 600,
+  });
   pg7.moveTo(tl, pg7.around(pg7.lineBox(["golden"]), 560), 0, 0.01);
   pg7.highlight(pg7.lineBox(["golden"]));
   tl.set(pg7.hl, { opacity: 1 }, 0);
   KIT.set(pg7.el, { opacity: 0 });
-  const phone = K.el("div", { style: { position: "absolute", left: "260px", top: "20px", width: "380px", height: "440px", background: "#2a2a2a", borderRadius: "30px", border: "2px solid rgb(255 255 255 / 12%)" } }, g7b.el);
-  const bubble7 = K.el("div", { text: "out on the verandah", style: { position: "absolute", left: "28px", top: "300px", padding: "16px 22px", background: "var(--gold)", color: "#111", borderRadius: "16px", fontSize: "28px", fontFamily: "var(--font-ui)", whiteSpace: "nowrap" } }, phone);
+  const phone = K.el(
+    "div",
+    {
+      style: {
+        position: "absolute",
+        left: "260px",
+        top: "20px",
+        width: "380px",
+        height: "440px",
+        background: "#2a2a2a",
+        borderRadius: "30px",
+        border: "2px solid rgb(255 255 255 / 12%)",
+      },
+    },
+    g7b.el,
+  );
+  const bubble7 = K.el(
+    "div",
+    {
+      text: "out on the verandah",
+      style: {
+        position: "absolute",
+        left: "28px",
+        top: "300px",
+        padding: "16px 22px",
+        background: "var(--gold)",
+        color: "#111",
+        borderRadius: "16px",
+        fontSize: "28px",
+        fontFamily: "var(--font-ui)",
+        whiteSpace: "nowrap",
+      },
+    },
+    phone,
+  );
   const p7 = K.paper(g7b.el, { x: 20, y: 540, w: 860, h: 120 });
   const pl7 = K.pencilLine(p7.el, ["the", "cat", "sat"], { size: 46, y: 34 });
   pl7.words.forEach((w) => KIT.set(w, { opacity: 1 }));
-  const reply7 = K.el("div", { text: "out on the verandah", style: { position: "absolute", left: "290px", top: "34px", fontSize: "46px", fontFamily: "var(--font-tok)", fontStyle: "italic", color: "var(--pencil)", opacity: 0, whiteSpace: "nowrap" } }, p7.el);
+  const reply7 = K.el(
+    "div",
+    {
+      text: "out on the verandah",
+      style: {
+        position: "absolute",
+        left: "290px",
+        top: "34px",
+        fontSize: "46px",
+        fontFamily: "var(--font-tok)",
+        fontStyle: "italic",
+        color: "var(--pencil)",
+        opacity: 0,
+        whiteSpace: "nowrap",
+      },
+    },
+    p7.el,
+  );
   const bp = K.paper(g7c.el, { x: 20, y: 120, w: 860, h: 440 });
   const bpl1 = K.pencilLine(bp.el, K.split("the magpie is back ."), { size: 50, y: 60 });
   const bpl2 = K.pencilLine(bp.el, K.split("it sits on the fence ."), { size: 50, y: 160 });
   const bpl3 = K.pencilLine(bp.el, K.split("Here comes the postie ."), { size: 50, y: 260 });
   label(g7c.el, "butchers paper, up the front", { x: 20, y: 70, size: 28 }).style.opacity = 0.75;
-  fit(g7a, s7a); fit(g7b, s7b); fit(g7c, s7c);
+  fit(g7a, s7a);
+  fit(g7b, s7b);
+  fit(g7c, s7c);
   during(g7a.el, T.start(7) + 0.3, T.start(8));
   tl.to(gr7.el, { opacity: 0 }, T.word(7, "trained") - 0.2, { dur: 0.4 });
   tl.to(pg7.el, { opacity: 1 }, T.word(7, "trained") - 0.1, { dur: 0.4 });
@@ -437,7 +568,9 @@ const build = (tl, S, T) => {
   tl.to(bubble7, { x: 40, y: 250 }, T.word(7, "help") + 0.7, { dur: 0.6, ease: "in-out-cubic" });
   tl.to(bubble7, { opacity: 0 }, T.word(7, "help") + 1.25, { dur: 0.2 });
   tl.to(reply7, { opacity: 1 }, T.word(7, "help") + 1.3, { dur: 0.2 });
-  [...bpl1.words, ...bpl2.words, ...bpl3.words].forEach((w, i) => K.write(tl, w, T.word(7, "story") - 0.8 + i * 0.16));
+  [...bpl1.words, ...bpl2.words, ...bpl3.words].forEach((w, i) =>
+    K.write(tl, w, T.word(7, "story") - 0.8 + i * 0.16),
+  );
 
   // ---------------------------------------------------------------- line 8: tallies become numbers, the numbers become one long row
   const g8 = group(1300, 700);
@@ -473,12 +606,14 @@ const build = (tl, S, T) => {
   tl.to(
     gr8.cells.flat().flatMap((c) => c.strokes),
     { opacity: 0 },
-    tNum, { dur: 0.4 },
+    tNum,
+    { dur: 0.4 },
   );
   tl.to(
     nums.map((n) => n.el),
     { opacity: 1 },
-    tNum + 0.1, { dur: 0.4, stagger: 0.02 },
+    tNum + 0.1,
+    { dur: 0.4, stagger: 0.02 },
   );
   // the long row: the same numbers repeated, running off both edges and scrolling
   const rowL = K.layer(scene, 0, 0);
@@ -516,11 +651,10 @@ const build = (tl, S, T) => {
   const tRow = T.word(8, "conversation");
   tl.to(g8.el, { opacity: 0 }, tRow, { dur: 0.4 });
   tl.to(rowL, { opacity: 1 }, tRow + 0.2, { dur: 0.4 });
-  tl.to(
-    rowL,
-    { x: -400 - 130 * 60 },
-    tRow + 0.3, { dur: T.start(9) - tRow - 0.4, ease: "in-quad" },
-  );
+  tl.to(rowL, { x: -400 - 130 * 60 }, tRow + 0.3, {
+    dur: T.start(9) - tRow - 0.4,
+    ease: "in-quad",
+  });
   tl.to(rowL, { opacity: 0 }, T.start(9) - 0.3, { dur: 0.3 });
 
   // ---------------------------------------------------------------- line 9: the chat and the pencil in lockstep; the timeline
@@ -563,7 +697,17 @@ const build = (tl, S, T) => {
   });
   const icon = { el: K.layer(g9b.el, 20, 90) };
   const iconSvg = K.svg("svg", { width: 120, height: 120, viewBox: "0 0 120 120" }, icon.el);
-  K.svg("path", { d: "M 60 14 A 46 46 0 1 1 18 44", fill: "none", stroke: "var(--gold)", "stroke-width": 9, "stroke-linecap": "round" }, iconSvg);
+  K.svg(
+    "path",
+    {
+      d: "M 60 14 A 46 46 0 1 1 18 44",
+      fill: "none",
+      stroke: "var(--gold)",
+      "stroke-width": 9,
+      "stroke-linecap": "round",
+    },
+    iconSvg,
+  );
   K.svg("polygon", { points: "6 30 30 34 14 54", fill: "var(--gold)" }, iconSvg);
   KIT.set(icon.el, { opacity: 0 });
   fit(g9b, P ? { x: A.x, y: A.y + 800, w: A.w, h: 300 } : { x: A.x, y: A.y + 520, w: A.w, h: 300 });
@@ -577,11 +721,10 @@ const build = (tl, S, T) => {
     "in-out-quad",
   );
   tl.to(icon.el, { opacity: 1 }, T.word(9, "Markov") - 0.8, { dur: 0.2 });
-  tl.to(
-    icon.el,
-    { x: 1440 - 100 },
-    T.word(9, "Markov") - 0.8, { dur: T.word(9, "today's") - T.word(9, "Markov") + 1.2, ease: "in-out-quad" },
-  );
+  tl.to(icon.el, { x: 1440 - 100 }, T.word(9, "Markov") - 0.8, {
+    dur: T.word(9, "today's") - T.word(9, "Markov") + 1.2,
+    ease: "in-out-quad",
+  });
   stations.forEach((st) => {
     const t = T.word(9, st.word);
     tl.to(st.dot, { opacity: 1 }, t, { dur: 0.2 });
@@ -592,36 +735,150 @@ const build = (tl, S, T) => {
   // (the scratch alignment collapses this line's tail onto one time, so the beats pace by fractions of the line)
   const t10 = (f) => T.start(10) + f * (T.end(10) - T.start(10));
   const [s10a, s10b, s10c] = slots(3);
-  const g10a = group(900, 700), g10b = group(900, 700), g10c = group(900, 700);
-  const grA = K.grid(g10a.el, bg, { x: 120, y: 30, cell: 96, head: 130 }); drawAll(grA, 0);
+  const g10a = group(900, 700),
+    g10b = group(900, 700),
+    g10c = group(900, 700);
+  const grA = K.grid(g10a.el, bg, { x: 120, y: 30, cell: 96, head: 130 });
+  drawAll(grA, 0);
   const ringA = K.ring(g10a.el, { w: 100, h: 100 });
   const cA = grA.cells[bg.idx.get("hop")][bg.idx.get(".")];
-  tl.set(ringA.el, { x: 120 + cA.x + 6, y: 30 + cA.y + 6, scaleX: (cA.w - 12) / 100, scaleY: (cA.h - 12) / 100 }, 0);
+  tl.set(
+    ringA.el,
+    { x: 120 + cA.x + 6, y: 30 + cA.y + 6, scaleX: (cA.w - 12) / 100, scaleY: (cA.h - 12) / 100 },
+    0,
+  );
   const grB = K.grid(g10b.el, bg, { x: 120, y: 30, cell: 96, head: 130 });
-  grB.cells.forEach((row, r) => { const total = bg.counts[r].reduce((s, c) => s + c, 0); row.forEach((c, ci) => K.svg("text", { x: c.cx, y: c.cy, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 30, class: "ui", "font-weight": 600, fill: "#1a1a1a", text: (total ? bg.counts[r][ci] / total : 0).toFixed(2) }, grB.svg)); });
-  const pgC = K.pageImage(g10c.el, "snowy-river", D.booklet.pageOf.golden, { x: 20, y: 40, w: 860, h: 600 });
+  grB.cells.forEach((row, r) => {
+    const total = bg.counts[r].reduce((s, c) => s + c, 0);
+    row.forEach((c, ci) =>
+      K.svg(
+        "text",
+        {
+          x: c.cx,
+          y: c.cy,
+          "text-anchor": "middle",
+          "dominant-baseline": "central",
+          "font-size": 30,
+          class: "ui",
+          "font-weight": 600,
+          fill: "#1a1a1a",
+          text: (total ? bg.counts[r][ci] / total : 0).toFixed(2),
+        },
+        grB.svg,
+      ),
+    );
+  });
+  const pgC = K.pageImage(g10c.el, "snowy-river", D.booklet.pageOf.golden, {
+    x: 20,
+    y: 40,
+    w: 860,
+    h: 600,
+  });
   pgC.moveTo(tl, pgC.around(pgC.lineBox(["gold"]), 560), 0, 0.01);
   const boxC = pgC.lineBox(["golden"]);
-  const strike = K.el("div", { style: { position: "absolute", left: `${boxC.x}px`, top: `${boxC.y + boxC.h / 2}px`, width: `${boxC.w}px`, height: "6px", background: "var(--pencil)", transformOrigin: "0 50%", opacity: 0 } }, pgC.wrap);
-  const rewrite = K.el("div", { text: "silver", style: { position: "absolute", left: `${boxC.x + boxC.w + 20}px`, top: `${boxC.y - 8}px`, fontFamily: "var(--font-tok)", fontStyle: "italic", color: "var(--pencil)", fontSize: `${boxC.h * 1.3}px`, opacity: 0 } }, pgC.wrap);
-  fit(g10a, s10a); fit(g10b, s10b); fit(g10c, s10c);
-  const t10a = t10(0.42), t10b = t10(0.62), t10c = t10(0.8);
-  during(g10a.el, T.start(10) + 0.3, T.start(11)); during(g10b.el, t10b, T.start(11)); during(g10c.el, t10c, T.start(11));
+  const strike = K.el(
+    "div",
+    {
+      style: {
+        position: "absolute",
+        left: `${boxC.x}px`,
+        top: `${boxC.y + boxC.h / 2}px`,
+        width: `${boxC.w}px`,
+        height: "6px",
+        background: "var(--pencil)",
+        transformOrigin: "0 50%",
+        opacity: 0,
+      },
+    },
+    pgC.wrap,
+  );
+  const rewrite = K.el(
+    "div",
+    {
+      text: "silver",
+      style: {
+        position: "absolute",
+        left: `${boxC.x + boxC.w + 20}px`,
+        top: `${boxC.y - 8}px`,
+        fontFamily: "var(--font-tok)",
+        fontStyle: "italic",
+        color: "var(--pencil)",
+        fontSize: `${boxC.h * 1.3}px`,
+        opacity: 0,
+      },
+    },
+    pgC.wrap,
+  );
+  fit(g10a, s10a);
+  fit(g10b, s10b);
+  fit(g10c, s10c);
+  const t10a = t10(0.42),
+    t10b = t10(0.62),
+    t10c = t10(0.8);
+  during(g10a.el, T.start(10) + 0.3, T.start(11));
+  during(g10b.el, t10b, T.start(11));
+  during(g10c.el, t10c, T.start(11));
   tl.to(ringA.el, { opacity: 1 }, t10a + 0.2, { dur: 0.3 });
-  tl.fromTo(strike, { scaleX: 0, opacity: 1 }, { scaleX: 1 }, t10c + 0.5, { dur: 0.5, ease: "out-cubic" });
+  tl.fromTo(strike, { scaleX: 0, opacity: 1 }, { scaleX: 1 }, t10c + 0.5, {
+    dur: 0.5,
+    ease: "out-cubic",
+  });
   tl.to(rewrite, { opacity: 1 }, t10c + 1.0, { dur: 0.3 });
 
   // ---------------------------------------------------------------- line 11: the tools page
   const [s11a, s11b, s11c] = slots(3);
-  const g11a = group(900, 700), g11b = group(900, 700), g11c = group(900, 700);
+  const g11a = group(900, 700),
+    g11b = group(900, 700),
+    g11c = group(900, 700);
   const box11 = K.paper(g11a.el, { x: 20, y: 100, w: 860, h: 460 });
   box11.el.style.border = "3px solid var(--gold)";
-  const pasted = ["The magpie is back.", "It sits on the fence. It watches.", "Here comes the postie.", "Down comes the magpie. Swoop!", "The postie runs, and up it goes,", "and back to the fence."].map((t, i) => K.el("div", { text: t, style: { position: "absolute", left: "34px", top: `${34 + i * 66}px`, fontFamily: "var(--font-tok)", fontSize: "40px", color: "var(--ink)", opacity: 0, whiteSpace: "nowrap" } }, box11.el));
-  const pg11 = K.pageImage(g11b.el, "snowy-river", D.booklet.pageOf.golden, { x: 20, y: 40, w: 860, h: 600 });
+  const pasted = [
+    "The magpie is back.",
+    "It sits on the fence. It watches.",
+    "Here comes the postie.",
+    "Down comes the magpie. Swoop!",
+    "The postie runs, and up it goes,",
+    "and back to the fence.",
+  ].map((t, i) =>
+    K.el(
+      "div",
+      {
+        text: t,
+        style: {
+          position: "absolute",
+          left: "34px",
+          top: `${34 + i * 66}px`,
+          fontFamily: "var(--font-tok)",
+          fontSize: "40px",
+          color: "var(--ink)",
+          opacity: 0,
+          whiteSpace: "nowrap",
+        },
+      },
+      box11.el,
+    ),
+  );
+  const pg11 = K.pageImage(g11b.el, "snowy-river", D.booklet.pageOf.golden, {
+    x: 20,
+    y: 40,
+    w: 860,
+    h: 600,
+  });
   pg11.moveTo(tl, pg11.around(pg11.lineBox(["golden"]), 900), 0, 0.01);
-  const sh11 = K.sheet(g11c.el, magpie.sheets[0].pages.flat().slice(0, 3), D.palette, { x: 20, y: 120, w: 860, rowH: 110, fontSize: 32, prefixW: 170, header: [magpie.sheets[0].range[0][0], magpie.sheets[0].range[1][0]], title: magpie.title });
+  const sh11 = K.sheet(g11c.el, magpie.sheets[0].pages.flat().slice(0, 3), D.palette, {
+    x: 20,
+    y: 120,
+    w: 860,
+    rowH: 110,
+    fontSize: 32,
+    prefixW: 170,
+    header: [magpie.sheets[0].range[0][0], magpie.sheets[0].range[1][0]],
+    title: magpie.title,
+  });
   sh11.rows.forEach((r) => r.cells.forEach((c) => K.drawOn(tl, c.strokes, 0, 0.01, 0)));
-  fit(g11a, s11a); fit(g11b, s11b); fit(g11c, s11c);
+  fit(g11a, s11a);
+  fit(g11b, s11b);
+  fit(g11c, s11c);
   during(g11a.el, T.start(11), T.start(12));
   pasted.forEach((d, i) => tl.to(d, { opacity: 1 }, T.word(11, "Paste") + i * 0.25, { dur: 0.3 }));
   during(g11b.el, T.word(11, "booklets") - 0.2, T.start(12));

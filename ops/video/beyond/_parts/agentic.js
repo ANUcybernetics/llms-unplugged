@@ -195,7 +195,11 @@ export function desk(scene, S) {
   const stop = k.el(
     // it lifts out of the model, over the mark it came from (an intended overlap)
     "div",
-    { class: "ag-fly", "data-layout-allow-overlap": "", style: { fontSize: `${NOTE.size}px`, color: "var(--gold)" } },
+    {
+      class: "ag-fly",
+      "data-layout-allow-overlap": "",
+      style: { fontSize: `${NOTE.size}px`, color: "var(--gold)" },
+    },
     scene,
   );
   k.punctTile(stop, ".");
