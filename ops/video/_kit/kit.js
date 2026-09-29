@@ -965,6 +965,295 @@ window.KIT = (() => {
     return { el: g, len, angle };
   }
 
+  // ------------------------------------------------------------- end card
+  // The brand mark as the videos' ending ("tokens to numbers"): the brick
+  // field of the site's TokenLogo, the five title tokens lighting and sliding
+  // in to spell LLMs Unplugged, each flipping to its 4x4 dot grid (its token
+  // id in binary), the five grids flying together into the lockup's grid, the
+  // wordmark beside it and the URL below. Brick geometry and bit patterns are
+  // a port of website/src/lib/token-logo.ts, the wordmark is the lockup's own
+  // outline (KIT_DATA.brand, from website/public/lockup.svg). Starts at t0 and
+  // takes ENDCARD seconds; a stage with data-tail="7" gets it after the voice.
+  const ENDCARD = 7;
+  const TL = {
+    tokens: [
+      { id: 3069, text: "LL", word: 0 },
+      { id: 5765, text: "Ms", word: 0 },
+      { id: 1252, text: " Un", word: 0 },
+      { id: 37729, text: "plug", word: 1 },
+      { id: 2004, text: "ged", word: 1 },
+    ],
+    tints: [
+      "hsl(38, 90%, 38%)",
+      "hsl(42, 85%, 42%)",
+      "hsl(36, 82%, 36%)",
+      "hsl(40, 87%, 40%)",
+      "hsl(44, 80%, 44%)",
+    ],
+    gap: 3,
+    brickH: (540 - 15 * 3) / 16,
+    charW: 12,
+    pad: 10,
+    assCharW: 74,
+    assH: 145,
+    assGap: 14,
+  };
+  const mulberry32 = (seed) => () => {
+    seed |= 0;
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const tokenBits = (id) => Array.from({ length: 16 }, (_, i) => ((id >> (15 - i)) & 1) === 1);
+
+  function endCard(tl, parent, S, t0) {
+    const A = S.area;
+    // the site's reference field is 960x540; scale it to fill the area
+    const k = Math.min(A.w / 960, A.h / 540);
+    const FW = A.w / k,
+      FH = A.h / k;
+    const rng = mulberry32(42);
+    const count = Math.round(((270 * FW * FH) / (960 * 540)) * 1.1);
+    const widthOf = () => {
+      const r = rng();
+      return r < 0.1
+        ? 1
+        : r < 0.3
+          ? 2
+          : r < 0.55
+            ? 3
+            : r < 0.75
+              ? 4
+              : r < 0.88
+                ? 5
+                : r < 0.95
+                  ? 6
+                  : 7;
+    };
+    const titleAt = new Map();
+    while (titleAt.size < 5) {
+      const i = Math.floor(rng() * count);
+      if (!titleAt.has(i)) titleAt.set(i, titleAt.size);
+    }
+    const bricks = Array.from({ length: count }, (_, i) =>
+      titleAt.has(i)
+        ? {
+            id: TL.tokens[titleAt.get(i)].id,
+            chars: TL.tokens[titleAt.get(i)].text.length,
+            ti: titleAt.get(i),
+          }
+        : { id: Math.floor(rng() * 49744) + 256, chars: widthOf(), ti: -1 },
+    );
+    // shuffled rows, as the site lays its field
+    const order = bricks.map((_, i) => i);
+    const sh = mulberry32(7);
+    for (let j = order.length - 1; j > 0; j--) {
+      const q = Math.floor(sh() * (j + 1));
+      [order[j], order[q]] = [order[q], order[j]];
+    }
+    const pos = [];
+    let x = 0,
+      y = 0;
+    for (const i of order) {
+      const w = TL.pad + bricks[i].chars * TL.charW;
+      if (x + w > FW && x > 0) ((x = 0), (y += TL.brickH + TL.gap));
+      pos[i] = { x, y, w, h: TL.brickH };
+      x += w + TL.gap;
+    }
+    // the title, assembled in two lines at the middle
+    const lines = [0, 1].map((wd) =>
+      TL.tokens.map((t, i) => ({ t, i })).filter(({ t }) => t.word === wd),
+    );
+    const ass = [];
+    let cy = (FH - (2 * TL.assH + TL.assGap)) / 2;
+    for (const line of lines) {
+      const lw = line.reduce((n, { t }) => n + t.text.length, 0) * TL.assCharW;
+      let cx = (FW - lw) / 2;
+      for (const { t, i } of line) {
+        const w = t.text.length * TL.assCharW;
+        ass[i] = { x: cx, y: cy, w, h: TL.assH };
+        cx += w;
+      }
+      cy += TL.assH + TL.assGap;
+    }
+
+    const g = layer(parent, A.x, A.y);
+    const s = svg("svg", { width: A.w, height: A.h, viewBox: `0 0 ${FW} ${FH}` }, g);
+    set(g, { opacity: 0 });
+    // the desk, so the end card covers whatever the last scene left
+    svg("rect", { x: 0, y: 0, width: FW, height: FH, fill: "var(--desk)" }, s);
+    const field = svg("g", {}, s);
+    const dotsOf = (parentEl, id, box, on, off) => {
+      const d = svg("g", {}, parentEl);
+      tokenBits(id).forEach((bit, j) =>
+        svg(
+          "circle",
+          {
+            cx: box.x + ((j % 4) * 4.5 + 2.25) * (box.size / 18),
+            cy: box.y + (Math.floor(j / 4) * 4.5 + 2.25) * (box.size / 18),
+            r: 1.5 * (box.size / 18),
+            fill: bit ? on : off,
+          },
+          d,
+        ),
+      );
+      return d;
+    };
+    const plain = [],
+      titles = [];
+    bricks.forEach((b, i) => {
+      const p = pos[i];
+      const bg = svg("g", {}, b.ti < 0 ? field : s);
+      svg("rect", { x: p.x, y: p.y, width: p.w, height: p.h, rx: 3, class: "brick-bg" }, bg);
+      dotsOf(
+        bg,
+        b.id,
+        { x: p.x + (p.w - 18) / 2, y: p.y + (p.h - 18) / 2, size: 18 },
+        "rgb(255 255 255 / 45%)",
+        "rgb(255 255 255 / 10%)",
+      );
+      if (b.ti < 0) plain.push(bg);
+      else titles[b.ti] = { g: bg, p, rect: bg.firstChild };
+    });
+
+    // the lockup: its 28-unit grid (built before the tokens, so the dots
+    // that fly into it land on top), then the wordmark, at the middle
+    const B = window.KIT_DATA.brand;
+    const ls = Math.min(150 / k / B.lockupH, (0.8 * FW) / B.lockupW);
+    const lx = (FW - B.lockupW * ls) / 2,
+      ly = (FH - B.lockupH * ls) / 2 - 20;
+    const lockAt = `translate(${lx} ${ly}) scale(${ls})`;
+    const well = svg(
+      "rect",
+      { width: 28, height: 28, rx: 4, fill: "#1a1a1a" },
+      svg("g", { transform: lockAt }, s),
+    );
+
+    // the assembled faces: a tinted brick, the token's text, and its bit grid
+    const faces = TL.tokens.map((t, i) => {
+      const a = ass[i];
+      const f = svg("g", {}, s);
+      svg("rect", { x: a.x + 3, y: a.y, width: a.w - 6, height: a.h, rx: 6, fill: TL.tints[i] }, f);
+      const label = svg(
+        "text",
+        {
+          x: a.x + a.w / 2,
+          y: a.y + a.h / 2,
+          "text-anchor": "middle",
+          "dominant-baseline": "central",
+          class: "ui",
+          "font-size": a.h * 0.62,
+          "font-weight": 600,
+          fill: "#fff",
+          text: t.text,
+        },
+        f,
+      );
+      const D = a.h * 0.62;
+      const bits = dotsOf(
+        f,
+        t.id,
+        { x: a.x + (a.w - D) / 2, y: a.y + (a.h - D) / 2, size: D },
+        "rgb(255 255 255 / 92%)",
+        "rgb(255 255 255 / 18%)",
+      );
+      set(f, { opacity: 0, transformOrigin: "50% 50%" });
+      set(bits, { opacity: 0 });
+      return { f, label, bits, D, a };
+    });
+
+    // the wordmark moves in an outer group: an animated element's own
+    // transform attribute would be read against its (huge) fill-box
+    const wm = svg("g", {}, s);
+    svg(
+      "path",
+      { d: B.wordmark.d, fill: "#fff" },
+      svg("g", { transform: `${lockAt} ${B.wordmark.transform}` }, wm),
+    );
+    const url = svg(
+      "text",
+      {
+        x: FW / 2,
+        y: ly + B.lockupH * ls + 90,
+        "text-anchor": "middle",
+        class: "ui",
+        "font-size": 44,
+        fill: "var(--gold-2)",
+        text: "llmsunplugged.org",
+      },
+      s,
+    );
+    set([well, wm, url], { opacity: 0 });
+    const lockDot = (j) => ({
+      x: lx + (5 + 6 * (j % 4)) * ls,
+      y: ly + (5 + 6 * Math.floor(j / 4)) * ls,
+    });
+
+    // ---- the timeline
+    tl.to(g, { opacity: 1 }, t0, { dur: 0.6 });
+    // once the card covers the desk, the scene under it goes
+    for (const c of parent.children) if (c !== g) tl.set(c, { opacity: 0 }, t0 + 0.6);
+    // the title tokens light and slide into place
+    titles.forEach(({ rect }, i) =>
+      tl.to(rect, { fill: TL.tints[i] }, t0 + 0.7 + i * 0.08, { dur: 0.3 }),
+    );
+    const tSlide = t0 + 1.2;
+    titles.forEach(({ g: bg, p }, i) => {
+      const a = ass[i];
+      tl.to(bg, { x: a.x - p.x, y: a.y - p.y, opacity: 0 }, tSlide + i * 0.08, {
+        dur: 0.9,
+        ease: "in-out-cubic",
+      });
+      set(bg, { transformOrigin: "0 0" });
+      tl.to(faces[i].f, { opacity: 1 }, tSlide + 0.55 + i * 0.08, { dur: 0.35 });
+    });
+    tl.to(field, { opacity: 0.35 }, tSlide, { dur: 0.6 });
+    // each token flips to its number, as dots
+    const tFlip = t0 + 2.6;
+    faces.forEach(({ f, label, bits }, i) => {
+      const t = tFlip + i * 0.12;
+      tl.to(f, { scaleY: 0 }, t, { dur: 0.16, ease: "in-quad" });
+      tl.set(label, { opacity: 0 }, t + 0.16);
+      tl.set(bits, { opacity: 1 }, t + 0.16);
+      tl.to(f, { scaleY: 1 }, t + 0.16, { dur: 0.2, ease: "out-quad" });
+    });
+    // the five grids fly together into the lockup's grid; "LL" stays
+    const tMerge = t0 + 3.7;
+    tl.to(field, { opacity: 0 }, tMerge, { dur: 0.5 });
+    faces.forEach(({ f, bits, D }, i) => {
+      tl.to(f.firstChild, { opacity: 0 }, tMerge, { dur: 0.35 });
+      [...bits.children].forEach((c, j) => {
+        const to = lockDot(j);
+        const cx = +c.getAttribute("cx"),
+          cyy = +c.getAttribute("cy");
+        set(c, { transformOrigin: "50% 50%" });
+        tl.to(
+          c,
+          { x: to.x - cx, y: to.y - cyy, scale: (2 * ls) / (1.5 * (D / 18)) },
+          tMerge + i * 0.05 + (j % 4) * 0.02,
+          { dur: 0.8, ease: "in-out-cubic" },
+        );
+        if (i > 0) tl.to(c, { opacity: 0 }, tMerge + 0.55 + i * 0.05, { dur: 0.3 });
+        else
+          tl.to(
+            c,
+            { fill: tokenBits(TL.tokens[0].id)[j] ? TL.tints[0] : "rgb(255 255 255 / 8%)" },
+            tMerge + 0.5,
+            { dur: 0.4 },
+          );
+      });
+    });
+    tl.to(well, { opacity: 1 }, tMerge + 0.6, { dur: 0.4 });
+    tl.fromTo(wm, { opacity: 0, x: -12 }, { opacity: 1, x: 0 }, tMerge + 1.0, {
+      dur: 0.6,
+      ease: "out-cubic",
+    });
+    tl.to(url, { opacity: 1 }, tMerge + 1.4, { dur: 0.6 });
+    glint(tl, well, { phase: 0, from: tMerge + 2.0, lap: 1.6, rest: 9 });
+    return { el: g, dur: ENDCARD };
+  }
+
   // Raise: from t, lift el and every positioned layer it sits in above the
   // rest of the scene, so a thing moving into place (a token into its cell, a
   // counter into the cup) travels and lands on top of what it lands on. Each
@@ -1336,7 +1625,17 @@ window.KIT = (() => {
     '700 20px "Libertinus Serif"',
     'italic 400 20px "Libertinus Serif"',
   ];
-  const ready = (build) => M.ready((tl, S, T) => build(tl, S, T), { fonts: FONTS });
+  // a stage with data-tail ends on the end card, after the voice-over;
+  // video.py adds the tail to data-duration
+  const ready = (build) =>
+    M.ready(
+      (tl, S, T) => {
+        build(tl, S, T);
+        if (document.querySelector(".stage")?.dataset.tail)
+          endCard(tl, document.querySelector(".scene"), S, T.duration);
+      },
+      { fonts: FONTS },
+    );
 
   return {
     colourIndex,
@@ -1390,6 +1689,8 @@ window.KIT = (() => {
     land,
     flyTo,
     raise,
+    endCard,
+    ENDCARD,
     camera: M.camera,
     ready,
     COUNTER,

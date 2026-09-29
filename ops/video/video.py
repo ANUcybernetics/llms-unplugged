@@ -71,14 +71,24 @@ def timing(slug: str) -> dict:
 
 
 def sync_duration(slug: str) -> float:
-    """Write timing.json's duration (rounded up to 2 dp) into every data-duration."""
-    dur = math.ceil(timing(slug)["duration"] * 100) / 100
+    """Write timing.json's duration (rounded up to 2 dp), plus the stage's
+    data-tail (the kit's end card) if it has one, into every data-duration."""
+    voice = timing(slug)["duration"]
+    dur = 0.0
     for name in ("index.html", "compositions/portrait.html"):
         p = project(slug) / name
         if not p.is_file():
             continue
         src = p.read_text()
+        tail = re.search(r'data-tail="([0-9.]+)"', src)
+        dur = math.ceil((voice + (float(tail.group(1)) if tail else 0)) * 100) / 100
         new = re.sub(r'data-duration="[0-9.]+"', f'data-duration="{dur:.2f}"', src)
+        # the voice clip's slot stays the voice's own length
+        new = re.sub(
+            r'(<audio\b[^>]*?data-duration=")[0-9.]+"',
+            lambda m: f'{m.group(1)}{math.ceil(voice * 100) / 100:.2f}"',
+            new,
+        )
         if new != src:
             p.write_text(new)
             print(f"{name}: data-duration -> {dur:.2f}")

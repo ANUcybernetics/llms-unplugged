@@ -332,6 +332,24 @@ def read_art() -> dict:
     return art
 
 
+LOCKUP = ROOT / "website/public/lockup.svg"
+
+
+def read_brand() -> dict:
+    """The lockup's wordmark, baked to outlines (website/public/lockup.svg): its
+    path and the transform that places it beside the 28-unit dot grid."""
+    svg = LOCKUP.read_text()
+    m = re.search(r'<g transform="([^"]+)">\s*<path d="([^"]+)"', svg)
+    if not m:
+        raise RuntimeError(f"brand: no wordmark group in {LOCKUP.relative_to(ROOT)}")
+    view = re.search(r'viewBox="0 0 ([\d.]+) ([\d.]+)"', svg)
+    return {
+        "wordmark": {"transform": m.group(1), "d": m.group(2)},
+        "lockupW": float(view.group(1)),
+        "lockupH": float(view.group(2)),
+    }
+
+
 def read_icons() -> dict:
     """The iconoir icons the kit draws (24x24 bodies), from the website's
     @iconify-json/iconoir, so run `pnpm install` in website/ first."""
@@ -350,6 +368,7 @@ def write_data_js(
         "palette": palette,
         "art": read_art(),
         "icons": read_icons(),
+        "brand": read_brand(),
     }
     GENERATED.mkdir(parents=True, exist_ok=True)
     out_path = GENERATED / "data.js"

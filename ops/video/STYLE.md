@@ -102,6 +102,10 @@ visual grammar, captions, formats) and wins on anything editorial.
   whatever was built first ends up underneath.
 - **Gold does the pointing**: row and column bands, rings and highlights are
   `--gold`; dimming the rest of the desk leads the eye.
+- **Every video ends on the brand mark**: the kit's end card (`K.endCard`, on
+  any stage with `data-tail="7"`) plays after the last line: the site's token
+  bricks spell the title, flip to their bit grids, merge into the lockup, and
+  `llmsunplugged.org` in gold below.
 - **Captions** sit in a reserved band below the scene (190 px landscape, 300 px
   portrait), the script line whole, in Public Sans; nothing animates under it.
 - **Stage** 1920x1080 (the Overview also 1080x1920, restacked, never cropped);

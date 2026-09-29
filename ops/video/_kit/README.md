@@ -121,6 +121,9 @@ screen, not what fits a printed page.
   `thumbs-up`, `thumbs-down`),
   `K.outline(parent, name, { x, y, w, h, flip, rotate })` → `{ el, paths }` (the
   CC0 `magpie` and `dog` in `art/`, outline only)
+- `K.endCard(tl, parent, S, t0)`: the brand-mark closer (`K.ENDCARD` seconds);
+  `KIT.ready` adds it after the voice when the stage has `data-tail`, and
+  `video.py` extends the duration by it
 - `K.glint(tl, shapes, { kind, phase, lap, rest, seg, from, to })`: a segment
   that travels round an outline and rests, `kind` `"gold"` or `"gap"`; SVG
   shapes only, never paper or text
