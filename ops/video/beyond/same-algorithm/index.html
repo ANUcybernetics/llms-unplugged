@@ -26,9 +26,9 @@
          booklet (parts/build-same-booklet.py). Every beat lands on a word of
          the voice track. -->
     <div id="stage" class="stage" data-aspect="landscape" data-composition-id="same-algorithm"
-         data-start="0" data-duration="113.81" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="113.81" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="113.81" data-track-index="1"></audio>
+         data-start="0" data-duration="121.71" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="121.71" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="121.71" data-track-index="1"></audio>
     </div>
     <script type="module">
       import { row, morph, jump, slip, slipsFromMarks } from "./parts/morph.js";
@@ -76,14 +76,14 @@
         };
         const writeAll = (strip, t) => strip.words.forEach((sp) => tl.set(sp, { opacity: 1, y: 0 }, t));
 
-        // a flat top-down tub of counters (as generation-ledger draws it)
+        // a top-down tub of counters: its rim in line, the counters in their colours
         const makeTub = (parent, { x = 0, y = 0, w = 260, h = 170 } = {}) => {
           const g = K.layer(parent, x, y);
           const s = K.svg("svg", { width: w, height: h, viewBox: `0 0 ${w} ${h}` }, g);
-          K.svg("rect", { x: 6, y: 6, width: w - 12, height: h - 12, fill: "#efe6d8", stroke: "rgb(0 0 0 / 25%)", "stroke-width": 3 }, s);
+          const rim = K.svg("rect", { x: 6, y: 6, width: w - 12, height: h - 12, class: "line" }, s);
           [["red", 0.24, 0.4], ["red", 0.38, 0.64], ["blue", 0.5, 0.36], ["blue", 0.6, 0.62], ["green", 0.72, 0.4], ["yellow", 0.82, 0.62]]
             .forEach(([c, fx, fy]) => K.svg("circle", { cx: fx * w, cy: fy * h, r: 15, fill: K.COUNTER[c], stroke: "rgb(0 0 0 / 30%)", "stroke-width": 2 }, s));
-          return { el: g, w, h };
+          return { el: g, w, h, rim };
         };
         // a cup holding a row's counters, all in from the start
         const fullCup = (parent, w, { x, y, r = 140 }) => {
@@ -177,6 +177,9 @@
         tl.to(qLedger, { opacity: 1 }, T.word(0, "sheets") - 0.2, { dur: 0.01 });
         tl.fromTo(fan.map((s) => s.el), { opacity: 0, y: "+=30" }, { opacity: 1, y: "-=30" }, T.word(0, "sheets") - 0.2, { dur: 0.5, stagger: 0.12, ease: "out-quart" });
         arrive([qCup.el, qTub.el], T.word(0, "cup"), { stagger: 0.25 });
+        // the die and the cup glint while the other kits arrive
+        K.glint(tl, qDie.outline, { phase: 0.6, from: T.word(0, "die"), to: T.word(0, "They're") });
+        K.glint(tl, qCup.rim, { kind: "gap", phase: 1.8, from: T.word(0, "cup"), to: T.word(0, "They're") });
 
         tl.to(qCut, { opacity: 1 }, T.word(0, "pile") - 0.2, { dur: 0.01 });
         spread.forEach((o, i) => tl.fromTo(o.el, { opacity: 0, y: `-=40` }, { opacity: 1, y: `+=40` }, T.word(0, "pile") - 0.2 + K.jitter(i * 11) * 0.9, { dur: 0.4, ease: "out-cubic" }));
@@ -496,6 +499,7 @@
         arrive(cup7.el, T.word(7, "Cup") - 0.1);
         arrive(strip7.el, T.word(7, "die") - 0.1);
         K.land(tl, die7, 1, T.word(7, "die") + 0.1);
+        K.glint(tl, cup7.rim, { lap: 1.8, from: T.word(7, "die") + 0.3, to: T.word(7, "More") });
         arrive(R7.el, T.word(7, "slips") - 0.1);
         // "the same draw": each form's counts as shares, the same kind of bar
         const tSame7 = T.word(7, "same");

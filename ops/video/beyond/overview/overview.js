@@ -20,10 +20,10 @@ import { row, morph } from "./parts/morph.js";
 import { tree, treeStyle, GOLD } from "./parts/tree.js";
 import { mesh } from "./parts/making-tree.js";
 import { WALK, tenFaces, paperLine } from "./parts/generation-walk.js";
+import { lineCover } from "./parts/lineart.js";
 
 const CSS = `
 .ov-page { font-family: var(--font-tok); color: var(--ink); line-height: 1.45; }
-.ov-cover { display: flex; flex-direction: column; align-items: center; font-family: var(--font-tok); color: var(--ink); }
 .ov-year { position: absolute; left: 0; top: 0; font-family: var(--font-ui); font-weight: 600; color: var(--gold-2); white-space: nowrap; line-height: 1; }
 .ov-name { position: absolute; left: 0; top: 0; font-family: var(--font-ui); color: var(--text-2); white-space: nowrap; line-height: 1; }
 .ov-paste { position: absolute; font-family: var(--font-tok); color: var(--ink); line-height: 1.4; }
@@ -59,67 +59,12 @@ export const build = (tl, S, T) => {
     tl.to(els, { [prop]: on }, t, { dur: 0.2 });
     tl.to(els, { [prop]: off }, t + hold, { dur: 0.35 });
   };
-  // a picture book's cover: the title and a fence along the bottom (as training-grid draws it)
-  const cover = (parent, title, { x = 0, y = 0, w = 520, h = 640 } = {}) => {
-    const d = K.el(
-      "div",
-      {
-        class: "paper ov-cover",
-        style: { width: `${w}px`, height: `${h}px`, padding: `${h * 0.14}px 40px 0` },
-      },
-      parent,
-    );
-    K.el(
-      "div",
-      {
-        text: title,
-        style: { fontSize: `${w * 0.16}px`, fontWeight: 600, lineHeight: 1.1, textAlign: "center" },
-      },
-      d,
-    );
-    const ph = h * 0.3;
-    const s = K.svg(
-      "svg",
-      {
-        width: w,
-        height: ph,
-        viewBox: `0 0 ${w} ${ph}`,
-        style: "position: absolute; left: 0; bottom: 24px",
-      },
-      d,
-    );
-    K.svg("rect", { x: 30, y: ph * 0.45, width: w - 60, height: 10, fill: "#6b6b6b" }, s);
-    K.svg("rect", { x: 30, y: ph * 0.75, width: w - 60, height: 10, fill: "#6b6b6b" }, s);
-    for (let px = 44; px < w - 50; px += 38)
-      K.svg(
-        "path",
-        {
-          d: `M${px} ${ph} L${px} ${ph * 0.22} L${px + 11} ${ph * 0.12} L${px + 22} ${ph * 0.22} L${px + 22} ${ph} Z`,
-          fill: "#8a8a8a",
-        },
-        s,
-      );
-    K.set(d, { x, y });
-    return d;
-  };
-  // a pencil lying at an angle, its point at the layer's origin
+  // a picture book's cover, in line (parts/lineart.js, as training-grid draws it)
+  const cover = lineCover;
+  // the kit's line pencil lying at an angle, its point at the layer's origin
   const pencil = (parent, { len = 300, angle = -40 } = {}) => {
-    const L = K.layer(parent, 0, 0);
-    const s = K.svg(
-      "svg",
-      {
-        width: len + 40,
-        height: 40,
-        viewBox: `0 0 ${len + 40} 40`,
-        style: "position: absolute; left: 0; top: -20px",
-      },
-      L,
-    );
-    K.svg("polygon", { points: "0 20 36 4 36 36", fill: "#e9dcc5" }, s);
-    K.svg("polygon", { points: "0 20 12 15 12 25", fill: "#1a1a1a" }, s);
-    K.svg("rect", { x: 36, y: 4, width: len - 40, height: 32, fill: "var(--gold)" }, s);
-    K.svg("rect", { x: len - 4, y: 4, width: 44, height: 32, fill: "#d98c8c" }, s);
-    K.set(L, { rotation: angle, opacity: 0 });
+    const L = K.pencil(parent, { len, angle, width: 32 }).el;
+    K.set(L, { opacity: 0 });
     return L;
   };
   // a flat card on the desk: a slide or a video frame
@@ -134,8 +79,8 @@ export const build = (tl, S, T) => {
           top: 0,
           width: `${w}px`,
           height: `${h}px`,
-          background: "#1c1c1c",
-          border: "2px solid rgb(255 255 255 / 22%)",
+          background: "var(--desk)",
+          border: "2px solid rgb(255 255 255 / 92%)",
         },
       },
       L,
@@ -181,11 +126,25 @@ export const build = (tl, S, T) => {
         top: 0,
         width: `${CW}px`,
         height: `${CH}px`,
-        background: "#161616",
-        border: "1px solid rgb(255 255 255 / 10%)",
+        background: "var(--desk)",
       },
     },
     panel,
+  );
+  // the window in line; its fill whitens into the strip of paper as it folds
+  K.svg(
+    "rect",
+    { x: 1, y: 1, width: CW - 2, height: CH - 2, class: "line" },
+    K.svg(
+      "svg",
+      {
+        width: CW,
+        height: CH,
+        viewBox: `0 0 ${CW} ${CH}`,
+        style: "position: absolute; left: 0; top: 0; overflow: visible",
+      },
+      panelBg,
+    ),
   );
   K.set(panelBg, { transformOrigin: "50% 50%" });
   const bubble = K.el(
@@ -197,11 +156,32 @@ export const build = (tl, S, T) => {
         right: "40px",
         top: "80px",
         height: "140px",
-        background: "#2b2b2b",
       },
     },
     panel,
   );
+  // the reply bubble in gold line, its tail at the lower left
+  {
+    const BW = CW - 80,
+      BH = 140;
+    K.svg(
+      "path",
+      {
+        d: `M1 1 H${BW - 1} V${BH - 1} H64 L28 ${BH + 34} L34 ${BH - 1} H1 Z`,
+        class: "line gold",
+      },
+      K.svg(
+        "svg",
+        {
+          width: BW,
+          height: BH,
+          viewBox: `0 0 ${BW} ${BH}`,
+          style: "position: absolute; left: 0; top: 0; overflow: visible",
+        },
+        bubble,
+      ),
+    );
+  }
   const typed = ["It", "sits", "on"].map((w) =>
     K.el(
       "span",
@@ -980,12 +960,8 @@ export const build = (tl, S, T) => {
       },
       video,
     );
-    K.svg(
-      "circle",
-      { cx: 240, cy: 135, r: 62, fill: "none", stroke: "var(--gold)", "stroke-width": 6 },
-      s,
-    );
-    K.svg("polygon", { points: "222 105 222 165 272 135", fill: "var(--gold)" }, s);
+    K.svg("circle", { cx: 240, cy: 135, r: 62, class: "line" }, s);
+    K.svg("polygon", { points: "224 108 224 162 268 135", class: "gold-fill" }, s);
   }
   fitIn(video, 480, 270, slot4(3));
   const four = [lesson, slide, printL, video];
@@ -1007,8 +983,8 @@ export const build = (tl, S, T) => {
             top: 0,
             width: `${w}px`,
             height: `${h}px`,
-            background: dark ? "#1c1c1c" : "#f0f0f0",
-            border: dark ? "2px solid rgb(255 255 255 / 16%)" : "1px solid rgb(0 0 0 / 20%)",
+            background: dark ? "var(--desk)" : "#f0f0f0",
+            border: dark ? "2px solid rgb(255 255 255 / 40%)" : "1px solid rgb(0 0 0 / 20%)",
           },
         },
         siteL,
@@ -1162,4 +1138,6 @@ export const build = (tl, S, T) => {
     : { x: 180, y: A.y + 70, w: 440, h: 540 };
   const coverRing = K.ring(endL, { x: cb.x - 14, y: cb.y - 14, w: cb.w + 28, h: cb.h + 28 });
   tl.to(coverRing.el, { opacity: 1 }, T.word(8, "picture"), { dur: 0.3 });
+  // the cover glints once while the voice is on "free", before the address comes up
+  K.glint(tl, endCover.border, { lap: 2.2, from: t8 + 0.5, to: T.word(8, "at") });
 };

@@ -12,7 +12,6 @@
     <style>
       html, body { width: 1920px; height: 1080px; }
       .page { font-family: var(--font-tok); color: var(--ink); line-height: 1.45; }
-      .cover { display: flex; flex-direction: column; align-items: center; font-family: var(--font-tok); color: var(--ink); }
     </style>
   </head>
   <body>
@@ -24,14 +23,15 @@
          real counts filling a table of 7,023 rows (parts/frankenstein.js).
          Every beat lands on a word of the voice track (timing.json). -->
     <div id="stage" class="stage" data-aspect="landscape" data-composition-id="training-grid"
-         data-start="0" data-duration="122.17" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="122.17" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="122.17" data-track-index="1"></audio>
+         data-start="0" data-duration="124.91" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="124.91" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="124.91" data-track-index="1"></audio>
     </div>
     <script type="module">
       import * as C from "./kit/motion/canvas.js";
       import { streamPairs, stepTo, gridLander, pairBox, bracket, bracketSet, bracketTo } from "./parts/stream.js";
       import * as FR from "./parts/frankenstein.js";
+      import { lineCover } from "./parts/lineart.js";
 
       const build = (tl, S, T) => {
         const K = KIT, MG = MAGPIE;
@@ -39,21 +39,8 @@
         const A = S.area;
 
         // ---- objects ------------------------------------------------------
-        // a picture book's cover: the title and a fence along the bottom
-        const cover = (parent, title, { x = 0, y = 0, w = 520, h = 640, sub = "", fence = true } = {}) => {
-          const d = K.el("div", { class: "paper cover", style: { width: `${w}px`, height: `${h}px`, padding: `${h * 0.14}px 40px 0` } }, parent);
-          K.el("div", { text: title, style: { fontSize: `${w * 0.16}px`, fontWeight: 600, lineHeight: 1.1, textAlign: "center" } }, d);
-          if (sub) K.el("div", { text: sub, style: { fontSize: `${w * 0.065}px`, fontStyle: "italic", marginTop: `${w * 0.05}px`, color: "var(--ink-muted)" } }, d);
-          if (fence) {
-            const s = K.svg("svg", { width: w, height: h * 0.3, viewBox: `0 0 ${w} ${h * 0.3}`, style: "position: absolute; left: 0; bottom: 24px" }, d);
-            const ph = h * 0.3;
-            K.svg("rect", { x: 30, y: ph * 0.45, width: w - 60, height: 10, fill: "#6b6b6b" }, s);
-            K.svg("rect", { x: 30, y: ph * 0.75, width: w - 60, height: 10, fill: "#6b6b6b" }, s);
-            for (let px = 44; px < w - 50; px += 38) K.svg("path", { d: `M${px} ${ph} L${px} ${ph * 0.22} L${px + 11} ${ph * 0.12} L${px + 22} ${ph * 0.22} L${px + 22} ${ph} Z`, fill: "#8a8a8a" }, s);
-          }
-          K.set(d, { x, y });
-          return d;
-        };
+        // a picture book's cover, in line (parts/lineart.js)
+        const cover = lineCover;
         // a page of text as word spans, so words can be found, lifted and faded
         const page = (parent, words, { x = 0, y = 0, w = 520, h = 640, size = 52, pad = 56 } = {}) => {
           const d = K.el("div", { class: "paper page", style: { width: `${w}px`, height: `${h}px`, padding: `${pad}px`, fontSize: `${size}px` } }, parent);
@@ -206,6 +193,9 @@
         const bookRing = frame(scene, { x: 700, y: BY, w: 520, h: 640 }, 14);
         tl.to(bookRing.el, { opacity: 1 }, T.word(0, "book"), { dur: 0.3 });
         tl.to(bookRing.el, { opacity: 0 }, T.word(0, "seconds") - 0.1, { dur: 0.3 });
+        // the cover's border and its magpie glint while the book waits
+        K.glint(tl, bookCover.border, { phase: 1.2, from: 0, to: T.word(0, "book") });
+        K.glint(tl, bookCover.art, { phase: 4.2, lap: 3.6, from: 0, to: T.word(0, "book") });
         const tOpen = T.word(0, "seconds");
         tl.to(bookL, { x: 0 }, tOpen, { dur: 0.6, ease: "in-out-cubic" });
         tl.to(bookCover, { scaleX: 0 }, tOpen, { dur: 0.3, ease: "in-quad" });
@@ -423,7 +413,7 @@
         const CORNER = { x: SQ.x, y: SQ.y, s: cell0 / CELL };
         camTo(CORNER, tBig, 1.2);
         // the Frankenstein cover joins the desk
-        const fCover = cover(scene, "Frankenstein", { x: 2000, y: A.y + 110, w: 400, h: 540, sub: "Mary Shelley", fence: false });
+        const fCover = cover(scene, "Frankenstein", { x: 2000, y: A.y + 110, w: 400, h: 540, sub: "Mary Shelley", art: null });
         const edges = [3, 2, 1].map((k) => {
           const e = K.el("div", { class: "paper", style: { width: "400px", height: "540px", background: k % 2 ? "#e9e9e9" : "#f6f6f6" } }, scene);
           fCover.before(e);
@@ -434,6 +424,7 @@
         fCover.setAttribute("data-layout-allow-overflow", "true");
         const FC = { x: 1300, y: A.y + 110 };
         tl.to([fCover, ...edges], { x: (i) => FC.x + (i ? (4 - i) * 7 : 0) }, tBig + 0.2, { dur: 0.9, ease: "out-cubic" });
+        K.glint(tl, fCover.border, { phase: 0.4, from: T.word(8, "rows") + 0.4, to: T.word(9, "But") });
         // the fill: the view grows log-evenly with the words met, the text read
         // is however far the book has to go to meet them
         const tFill = T.word(8, "Frankenstein") - 0.1, tFull = T.word(8, "rows") + 0.1;
@@ -581,6 +572,7 @@
         K.set([...endGrid.rowHead, ...endGrid.colHead], { opacity: 0 });
         K.set([endCover, endGrid.el], { opacity: 0 });
         K.appear(tl, [endCover, endGrid.el], T.word(11, "Start") - 0.3, { y: 24, stagger: 0.15 });
+        K.glint(tl, endCover.border, { from: T.word(11, "Start") + 0.2 });
       };
       KIT.ready(build).then(({ tl }) => {
         window.__timelines["training-grid"] = tl;

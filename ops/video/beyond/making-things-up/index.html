@@ -37,15 +37,16 @@
          The sentence tree and the mesh are ../_parts/making-tree.js, on top of
          ../_parts/tree.js. -->
     <div id="stage" class="stage" data-aspect="landscape" data-composition-id="making-things-up"
-         data-start="0" data-duration="117.10" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="117.10" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="117.10" data-track-index="1"></audio>
+         data-start="0" data-duration="120.69" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="120.69" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="120.69" data-track-index="1"></audio>
     </div>
     <script type="module">
       import { wordTimes, paperLine } from "./parts/generation-walk.js";
       import { magpieGrid } from "./parts/generation-grid.js";
       import { treeStyle, GOLD } from "./parts/tree.js";
       import { sentenceTree, bookSentences, mesh } from "./parts/making-tree.js";
+      import { lineCover } from "./parts/lineart.js";
 
       const build = (tl, S, T) => {
         const K = KIT, MG = MAGPIE;
@@ -110,31 +111,15 @@
         K.set(grid.el, { ...DESK, opacity: 0 });
 
         const COVER = { x: 1300, y: 188, w: 520, h: 514 };
-        const cover = K.layer(scene, COVER.x, COVER.y);
-        {
-          const s = K.svg("svg", { width: COVER.w, height: COVER.h, viewBox: `0 0 ${COVER.w} ${COVER.h}` }, cover);
-          K.svg("rect", { x: 0, y: 0, width: COVER.w, height: COVER.h, fill: "var(--paper)" }, s);
-          K.svg("rect", { x: 0, y: 0, width: 26, height: COVER.h, fill: "var(--gold)" }, s);
-          K.svg("text", { x: COVER.w / 2 + 13, y: 110, "text-anchor": "middle", "font-family": "Libertinus Serif", "font-size": 64, fill: "#1a1a1a", text: "The magpie" }, s);
-          // a flat magpie on a fence rail
-          const b = K.svg("g", { transform: `translate(${COVER.w / 2 + 13} 300)` }, s);
-          K.svg("rect", { x: -190, y: 70, width: 380, height: 16, fill: "#8c8c8c" }, b);
-          K.svg("rect", { x: -150, y: 40, width: 16, height: 120, fill: "#8c8c8c" }, b);
-          K.svg("rect", { x: 134, y: 40, width: 16, height: 120, fill: "#8c8c8c" }, b);
-          K.svg("path", { d: "M-40 30 L-120 70 L-110 82 L-30 52 Z", fill: "#1a1a1a" }, b); // tail
-          K.svg("ellipse", { cx: 0, cy: 20, rx: 62, ry: 42, fill: "#1a1a1a" }, b);
-          K.svg("path", { d: "M-30 10 Q10 -10 42 22 Q10 40 -30 30 Z", fill: "#fff" }, b); // wing patch
-          K.svg("circle", { cx: 52, cy: -30, r: 30, fill: "#1a1a1a" }, b);
-          K.svg("path", { d: "M78 -36 L118 -26 L78 -18 Z", fill: "#9a9a9a" }, b); // beak
-          K.svg("circle", { cx: 60, cy: -36, r: 5, fill: "#fff" }, b);
-          K.svg("path", { d: "M-6 58 L-10 72 M16 58 L14 72", stroke: "#1a1a1a", "stroke-width": 5 }, b);
-        }
+        const cover = lineCover(scene, "The magpie", COVER); // in line (parts/lineart.js)
         K.set(cover, { opacity: 0 });
 
         // ============================================================ line 0
         // (TC) the finished grid and the closed book, side by side
         tl.fromTo(grid.el, { opacity: 0, y: DESK.y + 16 }, { opacity: 1, y: DESK.y }, 0.2, { dur: 0.5, ease: "out-quart" });
         K.appear(tl, cover, 0.6, { y: 16 });
+        K.glint(tl, cover.border, { phase: 0.6, from: 0.6, to: T.start(1) });
+        K.glint(tl, cover.art, { phase: 2.6, from: 0.6, to: T.start(1) });
 
         // ============================================================ line 1
         // the book opens; its lines float up; three facts light, one at a time
@@ -209,35 +194,20 @@
         });
 
         // ============================================================ line 3
-        // so the dog swoops: over the fence, on a card; the book's own line
+        // so the dog swoops: up a gold arc, on a card; the book's own line
         // beside it; a stamp
         const t3 = T.start(3);
         tl.to(grid.el, { opacity: 0 }, t3 - 0.2, { dur: 0.5 });
         const CARD = { x: 170, y: 150, w: 660, h: 440 };
         const card = K.layer(scene, CARD.x, CARD.y);
         const cs = K.svg("svg", { width: CARD.w, height: CARD.h, viewBox: `0 0 ${CARD.w} ${CARD.h}` }, card);
-        K.svg("rect", { x: 0, y: 0, width: CARD.w, height: CARD.h, fill: "var(--paper)" }, cs);
-        K.svg("line", { x1: 30, y1: 400, x2: CARD.w - 30, y2: 400, stroke: "#8c8c8c", "stroke-width": 4 }, cs);
-        for (let px = 70; px < CARD.w - 40; px += 104) K.svg("rect", { x: px, y: 290, width: 18, height: 110, fill: "#8c8c8c" }, cs);
-        K.svg("rect", { x: 50, y: 312, width: CARD.w - 100, height: 14, fill: "#8c8c8c" }, cs);
-        K.svg("rect", { x: 50, y: 356, width: CARD.w - 100, height: 14, fill: "#8c8c8c" }, cs);
-        const dog = K.svg("g", {}, cs);
-        {
-          const ink = "#1a1a1a";
-          const leg = (x1, y1, x2, y2) => K.svg("line", { x1, y1, x2, y2, stroke: ink, "stroke-width": 13, "stroke-linecap": "round" }, dog);
-          K.svg("path", { d: "M-66 -6 Q-104 -34 -96 -62", fill: "none", stroke: ink, "stroke-width": 10, "stroke-linecap": "round" }, dog);
-          leg(40, 14, 96, 40); leg(28, 18, 78, 52); leg(-44, 14, -102, 36); leg(-56, 10, -108, 18);
-          K.svg("ellipse", { cx: 0, cy: 0, rx: 72, ry: 30, fill: ink }, dog);
-          K.svg("circle", { cx: 76, cy: -28, r: 27, fill: ink }, dog);
-          K.svg("ellipse", { cx: 104, cy: -20, rx: 19, ry: 12, fill: ink }, dog);
-          K.svg("path", { d: "M62 -50 L48 -14 L76 -34 Z", fill: "#555" }, dog);
-          K.svg("circle", { cx: 84, cy: -34, r: 4, fill: "#fff" }, dog);
-        }
-        K.set(dog, { x: 330, y: 200, rotation: -8, opacity: 0 });
-        const whoosh = K.prepDraw([
-          K.svg("path", { d: "M70 300 Q140 180 230 190", fill: "none", stroke: "#b0b0b0", "stroke-width": 5, "stroke-linecap": "round", class: "draw" }, cs),
-          K.svg("path", { d: "M90 330 Q170 220 240 222", fill: "none", stroke: "#b0b0b0", "stroke-width": 5, "stroke-linecap": "round", class: "draw" }, cs),
-        ]);
+        K.svg("rect", { x: 1, y: 1, width: CARD.w - 2, height: CARD.h - 2, class: "line" }, cs);
+        // the dog swoops up along a gold arc, tipped to its line (no fence)
+        const arc = K.prepDraw([K.svg("path", { d: "M60 400 Q120 250 250 215", class: "line gold" }, cs)]);
+        const DOGBOX = { w: 250, h: 170 };
+        const dog = K.outline(card, "dog", DOGBOX).el;
+        const dogAt = (cx, cy) => ({ x: cx - DOGBOX.w / 2, y: cy - DOGBOX.h / 2 });
+        K.set(dog, { ...dogAt(330, 200), rotation: -15, opacity: 0, transformOrigin: "50% 50%" });
         const stamp = K.layer(scene, CARD.x + CARD.w - 190, CARD.y + 30);
         {
           const s = K.svg("svg", { width: 170, height: 170, viewBox: "0 0 170 170" }, stamp);
@@ -248,8 +218,8 @@
         K.appear(tl, card, t3 + 0.1, { y: 16 });
         const tSwoop = w(3, "dog") - 0.15;
         tl.to(strip.words[3], { color: "var(--gold)" }, tSwoop, { dur: 0.25 });
-        tl.fromTo(dog, { x: 90, y: 330, rotation: -32, opacity: 0 }, { x: 330, y: 200, rotation: -8, opacity: 1 }, tSwoop + 0.1, { dur: 0.7, ease: "out-cubic" });
-        K.drawOn(tl, whoosh, tSwoop + 0.25, 0.5, 0.08);
+        tl.fromTo(dog, { ...dogAt(90, 330), rotation: -32, opacity: 0 }, { ...dogAt(330, 200), rotation: -15, opacity: 1 }, tSwoop + 0.1, { dur: 0.7, ease: "out-cubic" });
+        K.drawOn(tl, arc, tSwoop + 0.1, 0.6);
         const bookSays = bookLine(["Down", "comes", "the", "magpie", ".", "Swoop", "!"], { size: 60, cx: 1370, y: 330 });
         K.appear(tl, bookSays, w(3, "book") - 0.1, { y: 14 });
         tl.to([3, 5, 6].map((i) => bookSays.children[i]), { color: "var(--gold-2)" }, w(3, "said"), { dur: 0.35 });

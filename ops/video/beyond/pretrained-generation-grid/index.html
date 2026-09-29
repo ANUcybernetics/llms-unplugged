@@ -27,9 +27,9 @@
          again I'd float ;, rolls 7, 80, 6, as the deck does), and its whole
          grid pulled back on a canvas from the CLI's own pairs. -->
     <div id="stage" class="stage" data-aspect="landscape" data-composition-id="pretrained-generation-grid"
-         data-start="0" data-duration="146.00" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="146.00" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="146.00" data-track-index="1"></audio>
+         data-start="0" data-duration="155.78" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="155.78" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="155.78" data-track-index="1"></audio>
     </div>
     <script type="module">
       import * as C from "./kit/motion/canvas.js";
@@ -154,7 +154,7 @@
         const cover = pageEl(1, PW, 0);
         K.set(cover.el, { transformOrigin: "0 50%" });
         const title = union(P[1].words.slice(0, P[1].words.findIndex((w) => w[0] === "A")));
-        const card = K.el("div", { class: "abs", style: { left: `${title[0] - 14}px`, top: `${title[1] - 14}px`, width: `${title[2] - title[0] + 28}px`, height: `${title[3] - title[1] + 28}px`, background: "#cdbb8e", boxShadow: "0 2px 0 rgb(0 0 0 / 25%), 0 8px 18px rgb(0 0 0 / 30%)" } }, cover.el);
+        const card = K.el("div", { class: "abs", style: { left: `${title[0] - 14}px`, top: `${title[1] - 14}px`, width: `${title[2] - title[0] + 28}px`, height: `${title[3] - title[1] + 28}px`, background: "var(--paper)", boxShadow: "0 2px 0 var(--paper-edge), 0 8px 18px rgb(0 0 0 / 30%)" } }, cover.el);
         K.set(card, { transformOrigin: "0% 100%" });
 
         const bcam = camera(bookL, { px: PW * 1.5, py: PH / 2, sx: A.cx, sy: A.cy, s: 0.8 });
@@ -717,13 +717,11 @@
         const colMarks = colNums.map((w) => marker(page35, [w[1], w[2], w[3], w[4]]));
         const tRead = W(9, "read"), tTable = W(9, "table");
         colMarks.forEach((m, k) => tl.to(m, { opacity: 0.45 }, tRead + (k * (tTable - tRead)) / colMarks.length, { dur: 0.12 }));
-        const mug = K.layer(scene, 1540, 470);
-        const mugSvg = K.svg("svg", { width: 240, height: 200, viewBox: "0 0 240 200" }, mug);
-        K.svg("path", { d: "M170 70 a36 36 0 0 1 0 72", fill: "none", stroke: "#d9d2c5", "stroke-width": 16 }, mugSvg);
-        K.svg("circle", { cx: 100, cy: 106, r: 78, fill: "#efe9df" }, mugSvg);
-        K.svg("circle", { cx: 100, cy: 106, r: 62, fill: "#6b4a2e" }, mugSvg);
+        const mugIcon = K.icon(scene, "coffee-cup", { x: 1500, y: 436, size: 280 });
+        const mug = mugIcon.el;
         K.set(mug, { opacity: 0 });
         K.appear(tl, mug, W(9, "kitchen"), { y: 16 });
+        K.glint(tl, mugIcon.paths, { phase: 0.9, from: W(9, "kitchen"), to: W(10, "grab") });
 
         // ================================================================
         // line 10 (TC): grab it and roll. The booklet shuts under its card, as

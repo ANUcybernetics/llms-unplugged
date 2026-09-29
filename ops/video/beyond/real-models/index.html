@@ -16,7 +16,7 @@
       .rm-text .w { display: inline-block; padding: 0 0.12em; margin: 0 0.04em; }
       .rm-text .p { color: var(--ink-muted); }
       .rm-card { position: absolute; background: var(--paper); box-shadow: 0 2px 0 var(--paper-edge), 0 10px 24px rgb(0 0 0 / 45%); }
-      .rm-model { position: absolute; background: #151515; border: 2px solid rgb(255 255 255 / 16%); }
+      .rm-model { position: absolute; background: var(--desk); }
     </style>
   </head>
   <body>
@@ -31,9 +31,9 @@
          (window.REAL_MODELS), which checks them against the CLI and the
          tokeniser. Every beat lands on a word of the voice track. -->
     <div id="stage" class="stage" data-aspect="landscape" data-composition-id="real-models"
-         data-start="0" data-duration="125.65" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="125.65" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="125.65" data-track-index="1"></audio>
+         data-start="0" data-duration="127.59" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="127.59" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="127.59" data-track-index="1"></audio>
     </div>
     <script type="module">
       import * as C from "./kit/motion/canvas.js";
@@ -104,6 +104,8 @@
         const MODEL = { x: 100, y: 102, w: 624, h: 624 }; // the grid's place in the loop
         const modelL = K.layer(scene, MODEL.x, MODEL.y);
         K.el("div", { class: "rm-model", style: { width: `${MODEL.w}px`, height: `${MODEL.h}px` } }, modelL);
+        const modelEdge = K.svg("rect", { x: 1, y: 1, width: MODEL.w - 2, height: MODEL.h - 2, class: "line" },
+          K.svg("svg", { width: MODEL.w, height: MODEL.h, viewBox: `0 0 ${MODEL.w} ${MODEL.h}`, style: "position: absolute; left: 0; top: 0; overflow: visible" }, modelL));
         const glints = (seed, n, t0, t1) => {
           const r = C.rng(seed);
           return Array.from({ length: n }, () => ({ x: r(), y: r(), t: t0 + r() * (t1 - t0), life: 0.9 + r() * 0.9 }));
@@ -536,12 +538,9 @@
         tl.to(rawW, { opacity: 0, y: -10 }, w(9, "second") - 0.1, { dur: 0.3, stagger: 0.03, ease: "in-cubic" });
         // two candidate replies; people rate them
         const thumb = (parent, up, x, y) => {
-          const s = K.svg("svg", { width: 72, height: 72, viewBox: "0 0 24 24", style: `position: absolute; left: ${x}px; top: ${y}px; overflow: visible` }, parent);
-          // Material Symbols' thumb_up (Apache 2.0), turned over for a thumbs-down
-          const g = K.svg("g", up ? {} : { transform: "rotate(180 12 12)" }, s);
-          K.svg("path", { d: "M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z", fill: up ? GOLD2 : "rgb(255 255 255 / 70%)" }, g);
-          K.set(s, { opacity: 0, transformOrigin: "50% 50%" });
-          return s;
+          const ic = K.icon(parent, up ? "thumbs-up" : "thumbs-down", { x, y, size: 72, gold: up });
+          K.set(ic.el, { opacity: 0, transformOrigin: "50% 50%" });
+          return ic.el;
         };
         const card = (toks, y, cls) => {
           const L = K.layer(scene, 360, y);
@@ -619,8 +618,7 @@
         // 4. post-training: the reply people preferred
         {
           const d = K.el("div", { class: "rm-text", text: ANS.join(" "), style: { left: "30px", top: "130px", fontSize: "30px", whiteSpace: "nowrap" } }, minis[3]);
-          const s = K.svg("svg", { width: 64, height: 64, viewBox: "0 0 24 24", style: "position: absolute; left: 30px; top: 40px" }, minis[3]);
-          K.svg("path", { d: "M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z", fill: GOLD }, s);
+          K.icon(minis[3], "thumbs-up", { x: 30, y: 40, size: 64, gold: true });
         }
         const cues = [w(10, "More"), w(10, "smarter"), w(10, "pieces"), w(10, "second")];
         minis.forEach((L, i) => K.appear(tl, L, cues[i] - 0.1, { y: 24 }));
@@ -631,6 +629,7 @@
         K.set(strip11.el, { opacity: 0 });
         tl.set(modelL, { opacity: 0 }, t10);
         K.appear(tl, modelL, tNone - 0.5, { y: 0, scale: 0.96, dur: 0.5 });
+        K.glint(tl, modelEdge, { lap: 2.4, from: tNone + 0.4, to: w(11, "Everything") });
         minis.forEach((L, i) => {
           const t = tNone - 0.3 + i * 0.08;
           tl.to(L, { x: MODEL.x + MODEL.w / 2 - CW * 0.1, y: MODEL.y + MODEL.h / 2 - CH * 0.1, scale: 0.2, opacity: 0 }, t, { dur: 0.6, ease: "in-cubic" });
