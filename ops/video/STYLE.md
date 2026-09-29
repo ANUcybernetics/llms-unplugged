@@ -58,14 +58,41 @@ visual grammar, captions, formats) and wins on anything editorial.
 
 ## The look
 
-- **The participant's seat**: a desk seen flat from above, white paper objects
-  on it (word tiles, the grid sheet, ledger sheets, booklet pages, the cup and
-  counters, a pencil), in the site's type. The desk is the decks' slide ground,
-  so a video sits beside the slides as black and white with gold and the token
-  colours as accents. No tilted photos, no perspective.
+- **The participant's seat**: a desk seen flat from above, with the paper
+  objects on it (word tiles, the grid sheet, ledger sheets, booklet pages,
+  cutout slips, the writing strip), in the site's type. The desk is the decks'
+  slide ground, so a video sits beside the slides as black and white with gold
+  and the token colours as accents. No tilted photos, no perspective.
+- **Paper is white paper**: anything that stands for a printed or written sheet
+  is a white object with square corners, not a drawing.
+- **Everything else is line drawing**, after the ANU brand guidelines'
+  illustration style (§4.7: single-weight fine linework, loose rather than
+  geometric): white lines 2 px at 1080 (4 px in a 4K master), no fills, gold on
+  the one part that matters (a pencil's point, the reply bubble, the die's
+  number, the harness person's head). Not skeuomorphic: the cup is a rim with
+  its counters, the die is a decagon with its number centred on the ink, the
+  phone is a plain outline. Counters stay filled in their four colours, because
+  the colour is the data. A soft `--gold` tint disc (20%) may sit behind a hero
+  drawing.
+- **Where the drawings come from**: iconoir (`@iconify-json/iconoir`, already a
+  website dependency) for utility props at the same line weight, and public
+  domain (CC0) silhouettes drawn as their outline only, never filled or
+  decorated with gold shapes: the dog is openclipart 169096 (standing dog), the
+  magpie PhyloPic's pied currawong (ac6920cc…, the Australian magpie's closest
+  relative with a CC0 silhouette; no CC0 Australian magpie exists). Nothing
+  stands on a drawn fence or ground line.
+- **Square corners**: the ANU theme's `--at-border-radius: 0`, on paper, tiles,
+  rings, bars, bubbles and panels. The one exception is below.
 - **Punctuation is a symbol tile**: an enlarged bold mark in a rounded square,
   as on the printed sheets and the site (the kit's `punctBox`/`punctTile`),
-  wherever a punctuation token appears as a word.
+  wherever a punctuation token appears as a word. Its rounded corner is what the
+  sheets print, so it stays.
+- **Outlines glint**: a significant outline (a drawing, a circle, a panel's
+  border) can carry a slow glint, a short segment (about 9% of its length) that
+  travels once round it with an ease in and out, then rests: in gold over the
+  line, or as a gap in the line that shows what's behind. A few seconds a lap,
+  staggered between objects, never on paper or text; it gives a held frame life
+  without moving anything.
 - **Pencil marks hold still**: tallies and pencil-written words draw on, then
   stay put. No boil, jitter or paper texture: at 4K any frame-to-frame redraw
   reads as wobble, not hand-drawing.
