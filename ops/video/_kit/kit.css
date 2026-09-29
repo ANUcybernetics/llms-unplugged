@@ -122,3 +122,4 @@ svg .ui { font-family: var(--font-ui); }
 .icon path { stroke-width: 2px; vector-effect: non-scaling-stroke; }
 .glint-gold { fill: none; stroke: var(--gold-2); stroke-width: 3px; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 .glint-gap { fill: none; stroke: #000; stroke-width: 6px; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.line.desk { fill: var(--desk); }

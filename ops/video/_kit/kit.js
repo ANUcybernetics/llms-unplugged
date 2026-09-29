@@ -932,7 +932,8 @@ window.KIT = (() => {
     return { el: g, svg: s, paths, w, h };
   }
 
-  // the pencil: a line drawing with a gold point. (x, y) is the point;
+  // the pencil: a line drawing with a gold point, filled with the desk colour
+  // so it reads over white paper too. (x, y) is the point;
   // `angle` is the direction the pencil lies from it (degrees, 0 = to the right)
   function pencil(parent, { x = 0, y = 0, len = 380, angle = 200, width = 36 } = {}) {
     const g = layer(parent, x, y);
@@ -945,11 +946,11 @@ window.KIT = (() => {
     const end = len - eraser;
     svg(
       "path",
-      { class: "line", d: `M${cone} ${-h} L${end} ${-h} L${end} ${h} L${cone} ${h}` },
+      { class: "line desk", d: `M${cone} ${-h} L${end} ${-h} L${end} ${h} L${cone} ${h} Z` },
       body,
     );
     svg("path", { class: "line faint", d: `M${cone} 0 L${end - ferrule} 0` }, body);
-    svg("path", { class: "line", d: `M${cone} ${-h} L0 0 L${cone} ${h}` }, body);
+    svg("path", { class: "line desk", d: `M${cone} ${-h} L0 0 L${cone} ${h} Z` }, body);
     svg(
       "path",
       { class: "gold-fill", d: `M${cone * 0.3} ${-h * 0.3} L0 0 L${cone * 0.3} ${h * 0.3} Z` },
@@ -958,7 +959,7 @@ window.KIT = (() => {
     svg("path", { class: "line", d: `M${end - ferrule} ${-h} L${end - ferrule} ${h}` }, body);
     svg(
       "path",
-      { class: "line", d: `M${end} ${-h} L${len} ${-h} L${len} ${h} L${end} ${h}` },
+      { class: "line desk", d: `M${end} ${-h} L${len} ${-h} L${len} ${h} L${end} ${h} Z` },
       body,
     );
     return { el: g, len, angle };
@@ -978,7 +979,11 @@ window.KIT = (() => {
   ) {
     const runs = [];
     for (const el of [els].flat()) {
-      const L = el.getTotalLength();
+      // non-scaling strokes measure dashes on screen, so the path's own
+      // length is scaled through its transform (and any viewBox) first
+      const ctm = el.getCTM();
+      const L =
+        el.getTotalLength() * (ctm ? Math.sqrt(Math.abs(ctm.a * ctm.d - ctm.b * ctm.c)) : 1);
       const o = el.cloneNode();
       o.removeAttribute("id");
       o.setAttribute("class", kind === "gold" ? "glint-gold" : "glint-gap");
