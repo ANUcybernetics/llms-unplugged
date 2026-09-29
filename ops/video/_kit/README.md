@@ -131,7 +131,9 @@ screen, not what fits a printed page.
 
 Motion: `K.appear(tl, els, t, { dur, y, scale, stagger })`, `K.vanish`,
 `K.show`, `K.hide`, `K.drawOn(tl, paths, t, dur, stagger)`,
-`K.flyTo(tl, item, { x, y }, t)`, `K.camera(layerEl, S)` →
+`K.flyTo(tl, item, { x, y }, t)` (raised for the flight), `K.raise(tl, el, t)`
+(from t, el and its layers sit above the rest of the scene, so a mover lands on
+top of what it lands on), `K.camera(layerEl, S)` →
 `to(tl, { px, py, s, sx, sy }, t, dur)`, `reset(tl, t, dur)`,
 `logZoom(tl, { px, py, from, to }, t, dur)`.
 

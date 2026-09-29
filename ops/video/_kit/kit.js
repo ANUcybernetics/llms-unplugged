@@ -965,6 +965,24 @@ window.KIT = (() => {
     return { el: g, len, angle };
   }
 
+  // Raise: from t, lift el and every positioned layer it sits in above the
+  // rest of the scene, so a thing moving into place (a token into its cell, a
+  // counter into the cup) travels and lands on top of what it lands on. Each
+  // call stacks above the last, so later movers sit over earlier ones.
+  let raiseZ = 100;
+  function raise(tl, el, t) {
+    const z = raiseZ++;
+    for (let n = el; n && !n.classList?.contains("scene"); n = n.parentElement) {
+      if (n instanceof HTMLElement && getComputedStyle(n).position !== "static")
+        tl.set(n, { zIndex: z }, t);
+    }
+  }
+  // flyTo, raised for the flight
+  const flyTo = (tl, item, to, t, dur, ease) => {
+    raise(tl, item.el, t);
+    return M.flyTo(tl, item, to, t, dur, ease);
+  };
+
   // Glint: a short segment that travels once round an outline, eased in and
   // out, then rests; "gold" lays a gold segment over the line, "gap" opens
   // the line itself (a mask) so what's behind shows through. Drawn on every
@@ -1370,7 +1388,8 @@ window.KIT = (() => {
     show: M.show,
     hide: M.hide,
     land,
-    flyTo: M.flyTo,
+    flyTo,
+    raise,
     camera: M.camera,
     ready,
     COUNTER,
