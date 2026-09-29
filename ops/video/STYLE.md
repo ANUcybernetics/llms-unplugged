@@ -96,6 +96,10 @@ visual grammar, captions, formats) and wins on anything editorial.
 - **Pencil marks hold still**: tallies and pencil-written words draw on, then
   stay put. No boil, jitter or paper texture: at 4K any frame-to-frame redraw
   reads as wobble, not hand-drawing.
+- **Movers land on top**: a token flying into a cell, a counter into the cup, a
+  slip onto a pile travels and lands in front of what it lands on, never behind
+  it (`K.raise`; `K.flyTo` does it for you). Build order otherwise decides, and
+  whatever was built first ends up underneath.
 - **Gold does the pointing**: row and column bands, rings and highlights are
   `--gold`; dimming the rest of the desk leads the eye.
 - **Captions** sit in a reserved band below the scene (190 px landscape, 300 px
