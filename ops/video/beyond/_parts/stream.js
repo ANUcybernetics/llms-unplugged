@@ -203,6 +203,7 @@ export function streamPairs(
     KIT.set(s, { x: from.x, y: from.y, opacity: 0 });
     const bend = (hash(k) - 0.5) * 120;
     tl.set(s, { opacity: 1 }, t);
+    KIT.raise(tl, s, t); // over the model it lands on
     tl.sample(
       s,
       t,

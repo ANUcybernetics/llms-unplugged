@@ -387,6 +387,7 @@
           const it = dog.items[k], from = dstrip.faceAt(ends[k]), to = numScreen(dog, it, VIEW(dog));
           const fly = K.el("div", { class: "abs", text: String(ends[k]), style: { fontFamily: "var(--font-tok)", fontWeight: 700, fontSize: "40px", lineHeight: 1, color: "var(--gold-2)" } }, scene);
           const fw = K.measure(String(ends[k]), TOKFONT(40, true));
+          K.raise(tl, fly, t);
           tl.fromTo(fly, { x: from.x - fw / 2, y: from.y - 20, opacity: 0 }, { x: to.x - fw / 2 - 4, y: to.y - 20, opacity: 1 }, t, { dur: 0.6, ease: "in-out-cubic" });
           tl.to(fly, { opacity: 0 }, t + 0.6, { dur: 0.15 });
           tl.to(endRings[k].el, { opacity: 0 }, t, { dur: 0.3 });

@@ -258,6 +258,7 @@ export const build = (tl, S, T) => {
   tl.set(pen, penAt(2), 0);
   tl.to(pen, { opacity: 1 }, T.word(0, "exactly") - 0.2, { dur: 0.3 });
   tl.to(pen, penAt(3), T.word(0, "by"), { dur: 0.35, ease: "in-out-cubic" });
+  K.raise(tl, pen, T.word(0, "by"));
   K.write(tl, paper.words[3], T.word(0, "hand"));
   tl.to(pen, { x: `+=40`, y: "+=6" }, T.word(0, "hand"), { dur: 0.3, ease: "out-quad" });
   tl.to(pen, { opacity: 0 }, T.end(0) + 0.1, { dur: 0.3 });
@@ -468,6 +469,7 @@ export const build = (tl, S, T) => {
     tLook - 0.01,
   );
   tl.to(lift, { opacity: 0.6 }, tLook, { dur: 0.15 });
+  K.raise(tl, lift, tLook);
   tl.to(
     lift,
     { x: RP.x, y: RP.y, rotation: RP.rotation, scaleX: R.W / 100, scaleY: RB / 100 },

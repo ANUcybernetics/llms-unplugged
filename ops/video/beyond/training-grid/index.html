@@ -167,6 +167,7 @@
           const p = onStage(slot.x, slot.y);
           const s = (HFS / 40) * camState.s;
           tl.set(clone, { x: stripX + tile.x, y: SY + tile.y, opacity: 1 }, t);
+          K.raise(tl, clone, t);
           tl.to(clone, { x: p.x - tile.w / 2, y: p.y - tile.h / 2, scale: s, rotation: slot.rot }, t, { dur: 0.6, ease: "in-out-cubic" });
           tl.to(clone, { opacity: 0 }, t + 0.55, { dur: 0.15 });
           tl.to(headEl, { opacity: 1 }, t + 0.55, { dur: 0.2 });

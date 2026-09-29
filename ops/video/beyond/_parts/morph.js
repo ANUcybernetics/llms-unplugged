@@ -336,6 +336,8 @@ export function row(
     K.set(el, { ...at, opacity: 0, scale: 0.6 });
     return { el, w, h: numberSize, at, cx: slotC(c), cy: pileY };
   });
+  // under the slips, which gather into them
+  dom.prepend(...numbers.map((o) => o.el));
 
   return {
     el: root,

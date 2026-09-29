@@ -424,6 +424,7 @@
             const sc = src.w / b.w;
             const from = { x: src.x, y: src.y + (src.h - b.h * sc) / 2, scale: sc };
             tl.fromTo(b.el, { ...from, opacity: 0 }, { opacity: 1 }, t + 0.1 + i * 0.06, { dur: 0.2 });
+            K.raise(tl, b.el, t + 0.1 + i * 0.06);
             tl.fromTo(b.el, from, { x: b.x, y: b.y, scale: 1 }, t + 0.1 + i * 0.06, { dur: 0.7, ease: "in-out-cubic" });
           });
         });
@@ -632,6 +633,7 @@
         K.glint(tl, modelEdge, { lap: 2.4, from: tNone + 0.4, to: w(11, "Everything") });
         minis.forEach((L, i) => {
           const t = tNone - 0.3 + i * 0.08;
+          K.raise(tl, L, t);
           tl.to(L, { x: MODEL.x + MODEL.w / 2 - CW * 0.1, y: MODEL.y + MODEL.h / 2 - CH * 0.1, scale: 0.2, opacity: 0 }, t, { dur: 0.6, ease: "in-cubic" });
         });
         tl.set([...arcs, ...heads, ...stations.flatMap((s) => [s.dot, s.text])], { opacity: 0 }, t10);

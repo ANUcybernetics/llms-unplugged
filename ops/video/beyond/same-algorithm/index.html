@@ -216,6 +216,7 @@
         const bandBox = { x: gx, y: gy + (grid.head + rThe * grid.cell) * G_SCALE, w: grid.width * G_SCALE, h: grid.cell * G_SCALE };
         tl.set(lift, { x: bandBox.x, y: bandBox.y, scaleX: bandBox.w / 100, scaleY: bandBox.h / 100 }, tLift - 0.01);
         tl.to(lift, { opacity: 0.6 }, tLift, { dur: 0.15 });
+        K.raise(tl, lift, tLift + 0.15);
         tl.to(lift, { x: R.x, y: R.y, scaleX: R.W / 100, scaleY: R.geom.bot / 100 }, tLift + 0.15, { dur: 0.8, ease: "in-out-cubic" });
         tl.to(lift, { opacity: 0 }, tLift + 0.85, { dur: 0.4 });
         tl.fromTo(R.el, { opacity: 0 }, { opacity: 1 }, tLift + 0.6, { dur: 0.4 });
@@ -268,6 +269,7 @@
         segs.forEach((s, c) => {
           const N = R.numbers[c];
           const t = tBar + c * 0.12;
+          K.raise(tl, N.el, t);
           tl.to(N.el, { x: s.x0 + 20 - R.x, y: BY + 78 - R.y - 40, scale: 0.4, opacity: 0 }, t, { dur: 0.55, ease: "in-out-cubic" });
           tl.to(s.L, { opacity: 1 }, t + 0.1, { dur: 0.2 });
           tl.to(s.seg, { scaleX: 1 }, t + 0.1, { dur: 0.5, ease: "out-cubic" });
@@ -345,6 +347,7 @@
         const tDraw = T.word(4, "Draw");
         tl.set(cup.counters[3], { opacity: 0 }, tDraw);
         tl.to(drawn.el, { opacity: 1 }, tDraw, { dur: 0.01 });
+        K.raise(tl, drawn.el, tDraw);
         tl.to(drawn.el, { y: CUP_Y - 10 }, tDraw, { dur: 0.35, ease: "out-cubic" });
         const itAt = wordAt(strip, 1);
         tl.to(drawn.el, { x: itAt.x - dr, y: itAt.y - dr }, T.word(4, "red") - 0.1, { dur: 0.6, ease: "in-out-cubic" });
@@ -448,6 +451,7 @@
         // pull one out, turn it over
         const tPull = T.word(6, "pull");
         const OUT = { x: PILE.x + 480 - pulled.w / 2, y: PILE.y + 20 - pulled.h / 2 };
+        K.raise(tl, pulled.el, tPull);
         tl.to(pulled.el, { x: OUT.x, y: OUT.y, rotation: 0, scale: 1.3 }, tPull, { dur: 0.55, ease: "in-out-cubic" });
         const tFlip = T.word(6, "out") + 0.05;
         tl.to(pulled.el, { scaleX: 0 }, tFlip, { dur: 0.14, ease: "in-quad" });

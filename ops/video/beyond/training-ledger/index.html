@@ -191,9 +191,11 @@
           const punct = K.isPunct(tile.text);
           const clone = K.el("div", { class: `tile${punct ? " punct" : ""}`, ...(punct ? {} : { text: tile.text }), style: { width: `${tile.w}px`, height: `${tile.h}px`, fontSize: "40px" } }, scene);
           if (punct) K.punctTile(clone, tile.text);
+          clone.setAttribute("data-layout-allow-overlap", "true"); // it flies in over the sheet's words
           K.set(clone, { opacity: 0 });
           const p = onStage(slot.x, slot.y);
           tl.set(clone, { x: stripX + tile.x, y: SY + tile.y, opacity: 1 }, t);
+          K.raise(tl, clone, t);
           tl.to(clone, { x: p.x - tile.w / 2, y: p.y - tile.h / 2, scale: (44 / 40) * cam.s }, t, { dur: 0.6, ease: "in-out-cubic" });
           tl.to(clone, { opacity: 0 }, t + 0.55, { dur: 0.15 });
           tl.to(els, { opacity: 1 }, t + 0.55, { dur: 0.2 });

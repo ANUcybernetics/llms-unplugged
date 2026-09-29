@@ -163,6 +163,7 @@
         K.set(lineEls, { opacity: 0 });
         const tOpen = w(1, "book's");
         tl.to(grid.el, { opacity: 0, x: DESK.x - 60 }, T.start(1), { dur: 0.6, ease: "in-cubic" });
+        K.raise(tl, cover, T.start(1) + 0.1); // it opens over the page, and shuts over it
         tl.to(cover, { x: PAGE.x, y: PAGE.y + (PAGE.h - COVER.h) / 2 }, T.start(1) + 0.1, { dur: 0.8, ease: "in-out-cubic" });
         tl.to(cover, { scaleX: 0, transformOrigin: "0 50%" }, tOpen + 0.2, { dur: 0.45, ease: "in-quad" });
         tl.set(cover, { opacity: 0 }, tOpen + 0.65);
