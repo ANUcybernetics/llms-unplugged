@@ -17,7 +17,8 @@ Parses the script's `## Script` section (ops/video/scripts/<slug>.md, or
 ops/video/beyond/scripts/<name>.md for a `beyond/<name>` slug) into spoken lines,
 writes ops/video/<slug>/lines.json (committed --- align.py and the composition
 both read it), synthesises each line with edge-tts (cached by voice+text
-hash), and assembles them into out/video/<slug>/voice.wav with
+hash), and assembles them into out/video/<slug>/voice.wav (a `[beat]` inside a
+line is voiced as silence and left out of its caption) with
 out/video/<slug>/voice-lines.json recording each line's true offset, which
 align.py uses to report its own error.
 
@@ -61,6 +62,10 @@ VOICE_FOR_SPEAKER = {
 START_SILENCE = 0.5
 GAP_SILENCE = 0.7
 END_SILENCE = 1.0
+# `[beat]` in a spoken line (or `[beat 1.2]`, seconds) is a held pause: left
+# out of the caption, voiced as silence, and read as a pause in the real take.
+BEAT_SILENCE = 0.8
+BEAT_RE = re.compile(r"\s*\[beat(?:\s+([\d.]+))?\]\s*")
 
 SPEAKER_RE = re.compile(r"^\*\*(BEN|USHINI)(?:\s*\(([A-Za-z]+)\))?:\*\*\s*(.*)$", re.S)
 QUOTE_STRIP = {ord(c): None for c in "‘’“”"}
@@ -101,16 +106,22 @@ def parse_script(md_text: str, slug: str) -> list[dict]:
                 f"{slug}: unrecognised paragraph in script: {joined[:80]!r}"
             )
         speaker, tag, body = match.groups()
-        caption = markdownize(body).strip()
-        lines.append(
-            {
-                "i": len(lines),
-                "speaker": speaker,
-                "tc": tag == "TC",
-                "caption": caption,
-                "tts": tts_text(caption),
-            }
-        )
+        # split at [beat] markers: [text, seconds or None, text, ...]
+        bits = BEAT_RE.split(body)
+        texts = [markdownize(b).strip() for b in bits[0::2]]
+        pauses = [float(d) if d else BEAT_SILENCE for d in bits[1::2]]
+        caption = " ".join(t for t in texts if t)
+        line = {
+            "i": len(lines),
+            "speaker": speaker,
+            "tc": tag == "TC",
+            "caption": caption,
+            "tts": tts_text(caption),
+        }
+        if pauses:
+            line["parts"] = [tts_text(t) for t in texts]
+            line["beats"] = pauses
+        lines.append(line)
     if not lines:
         raise RuntimeError(f"{slug}: no spoken lines found under '## Script'")
     return lines
@@ -136,18 +147,24 @@ async def synth_line(text: str, voice: str, out_path: Path) -> None:
     await communicate.save(str(out_path))
 
 
-async def synth_all(slug: str, lines: list[dict]) -> list[Path]:
+async def synth_all(slug: str, lines: list[dict]) -> list[list[Path]]:
+    """One mp3 per line, or per part of a line with beats."""
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     paths = []
     for line in lines:
         voice = VOICE_FOR_SPEAKER[line["speaker"]]
-        path = cache_path(voice, line["tts"])
-        if path.exists():
-            logger.debug(f"{slug}: line {line['i']} cache hit")
-        else:
-            logger.info(f"{slug}: synthesising line {line['i']} ({line['speaker']})")
-            await synth_line(line["tts"], voice, path)
-        paths.append(path)
+        parts = []
+        for text in line.get("parts", [line["tts"]]):
+            path = cache_path(voice, text)
+            if path.exists():
+                logger.debug(f"{slug}: line {line['i']} cache hit")
+            else:
+                logger.info(
+                    f"{slug}: synthesising line {line['i']} ({line['speaker']})"
+                )
+                await synth_line(text, voice, path)
+            parts.append(path)
+        paths.append(parts)
     return paths
 
 
@@ -256,9 +273,22 @@ def build_scratch(slug: str) -> float:
     try:
         line_wavs = []
         durations = []
-        for line, mp3 in zip(lines, mp3_paths):
+        for line, mp3s in zip(lines, mp3_paths):
             wav = pieces_dir / f"line-{line['i']:03d}.wav"
-            convert_line(mp3, wav)
+            if len(mp3s) == 1:
+                convert_line(mp3s[0], wav)
+            else:
+                # the line's parts with each [beat]'s silence between them
+                bits = []
+                for k, mp3 in enumerate(mp3s):
+                    part = pieces_dir / f"line-{line['i']:03d}-{k}.wav"
+                    convert_line(mp3, part)
+                    bits.append(part)
+                    if k < len(line["beats"]):
+                        beat = pieces_dir / f"line-{line['i']:03d}-{k}-beat.wav"
+                        make_silence(beat, line["beats"][k])
+                        bits.append(beat)
+                concat_wavs(bits, wav)
             durations.append(probe_duration(wav))
             line_wavs.append(wav)
 

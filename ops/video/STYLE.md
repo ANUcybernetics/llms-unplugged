@@ -10,7 +10,10 @@ visual grammar, captions, formats) and wins on anything editorial.
 - `scripts/<slug>.md`: each video's key idea, beat sheet and script, with a
   `_Visual:_` direction and a `_Reads:_` list per stretch of picture. Ben and
   Ushini own the script and approve the reads; a read still marked `(draft)`
-  isn't built. `voice.py` skips `_Visual` and `_Reads` paragraphs.
+  isn't built. `voice.py` skips `_Visual` and `_Reads` paragraphs. A `[beat]`
+  (or `[beat 1.2]`, seconds) inside a spoken line is a held pause for a step to
+  land: left out of the caption, silence in the scratch voice, and a pause in
+  the real read.
 - `<slug>/`: the HyperFrames project: `index.html` (the composition),
   `lines.json`, `timing.json` and `captions.vtt` (from `align.py`),
   `assets/voice.wav` (not committed), and a `kit -> ../_kit` symlink.
