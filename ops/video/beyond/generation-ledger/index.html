@@ -22,9 +22,9 @@
          generation-grid: the walk, the tree and the recount are the shared
          parts in ../_parts/. -->
     <div id="stage" class="stage" data-aspect="landscape" data-composition-id="generation-ledger"
-         data-start="0" data-duration="141.16" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="141.16" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="141.16" data-track-index="1"></audio>
+         data-start="0" data-duration="153.41" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="153.41" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="153.41" data-track-index="1"></audio>
     </div>
     <script type="module">
       import { WALK, wordTimes, paperLine, splice, walkStyle } from "./parts/generation-walk.js";
@@ -103,7 +103,7 @@
         const TUB = { x: 1330, y: 300, w: 320, h: 200 };
         const tubL = K.layer(scene, TUB.x, TUB.y);
         const tubS = K.svg("svg", { width: TUB.w, height: TUB.h, viewBox: `0 0 ${TUB.w} ${TUB.h}` }, tubL);
-        K.svg("rect", { x: 6, y: 6, width: TUB.w - 12, height: TUB.h - 12, fill: "#efe6d8", stroke: "rgb(0 0 0 / 25%)", "stroke-width": 3 }, tubS);
+        const tubLine = K.svg("rect", { x: 6, y: 6, width: TUB.w - 12, height: TUB.h - 12, class: "line" }, tubS);
         [["red", 0.2, 0.35], ["blue", 0.34, 0.62], ["green", 0.48, 0.34], ["yellow", 0.6, 0.64], ["red", 0.72, 0.38], ["blue", 0.84, 0.62], ["green", 0.3, 0.8], ["yellow", 0.8, 0.22]].forEach(([c, fx, fy]) =>
           K.svg("circle", { cx: fx * TUB.w, cy: fy * TUB.h, r: 22, fill: K.COUNTER[c], stroke: "rgb(0 0 0 / 30%)", "stroke-width": 2 }, tubS));
         K.set(tubL, { opacity: 0 });
@@ -431,6 +431,13 @@
         ringOn("reader", tFind - 0.3);
         tl.to(sheets[lDot.sheet].el, { y: END_FAN[lDot.sheet].y - 12, scale: 0.26 }, w(13, "full"), { dur: 0.45, ease: "out-cubic" });
         tl.to(sheets[lDot.sheet].rows[lDot.row].lit, { opacity: 1 }, w(13, "stop") + 0.2, { dur: 0.3 });
+
+        // ---- glints: the cup's rim and the tub as they arrive (line 3), and
+        // again on the held desk at the close
+        K.glint(tl, cup.rim, { from: w(3, "cup") + 0.3, to: w(3, "seven") });
+        K.glint(tl, tubLine, { kind: "gap", phase: 0.8, from: w(3, "cup") + 0.3, to: w(3, "seven") });
+        K.glint(tl, cup.rim, { from: t12 + 0.9, to: w(12, "reader") - 0.3, lap: 2.4 });
+        K.glint(tl, tubLine, { kind: "gap", from: w(13, "stop") + 0.4, to: T.duration, lap: 2.4 });
       };
       KIT.ready(build).then(({ tl }) => {
         window.__timelines["generation-ledger"] = tl;

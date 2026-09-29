@@ -32,7 +32,7 @@ const R2 = { open: 0, reply: [1, 2, 3, 4, 5], close: 6, stop: 7, it: 8, watches:
 // the geometry both videos share, in scene coordinates (the scene is the
 // 1920x890 space above the caption band)
 export const NOTE = { x: 940, y: 560, w: 920, h: 310, size: 40, rowH: 100, pad: 30 };
-export const PHONE = { x: 1440, y: 20, w: 420, h: 450 };
+export const PHONE = { x: 1440, y: 0, w: 440, h: 545 };
 
 let styled = false;
 function style() {
@@ -42,15 +42,9 @@ function style() {
     "style",
     {
       text: `
-      .ag-phone-back { position: absolute; inset: 0; background: #2b2b2b; border: 4px solid #4a4a4a; }
-      .ag-phone-screen { position: absolute; inset: 8px; background: #eceae4; }
-      .ag-bubble { position: absolute; padding: 14px 18px; font-family: var(--font-ui); font-size: 25px; line-height: 1.32; }
-      .ag-bubble.out { background: var(--gold); color: #241a04; }
-      .ag-bubble.in { background: #ffffff; color: var(--ink); border: 1px solid rgb(0 0 0 / 12%); }
-      .ag-contact { position: absolute; height: 56px; background: #ffffff; border: 1px solid rgb(0 0 0 / 12%); }
-      .ag-contact .avatar { position: absolute; left: 9px; top: 9px; width: 38px; height: 38px; border-radius: 50%; background: #b9b2a4; }
-      .ag-contact .bar { position: absolute; left: 60px; top: 22px; height: 12px; background: #d9d4ca; }
-      .ag-dot { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: #8c867b; }
+      .ag-text { position: absolute; display: flex; flex-wrap: wrap; align-content: center; justify-content: center; column-gap: 0.28em; text-align: center; font-family: var(--font-ui); line-height: 1.25; color: var(--text); }
+      .ag-dot { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: var(--gold-2); }
+      .ag-pen path.line { fill: var(--desk); }
       .ag-fly { position: absolute; left: 0; top: 0; }
       .ag-slot { position: absolute; left: 0; top: 0; border: 4px dashed var(--gold-2); }
       .pencil .w.p { vertical-align: -0.3em; }
@@ -91,94 +85,115 @@ function notebook(scene, rows, G = NOTE) {
   return { el: paper.el, lines, pos, G };
 }
 
-// A flat top-down pencil (as the TASK-154 desks draw it), its tip at the
-// layer's origin, lying up and to the right of the point it writes at.
+// The kit's line pencil, its point at the layer's origin, lying up and to the
+// right of the point it writes at.
+// Its outline is knocked out of the desk colour so it reads over the white paper
+// it writes on (white lines alone vanish there).
 function pencil(scene) {
-  const k = K();
-  const g = k.layer(scene, 0, 0);
-  const s = k.svg(
-    "svg",
-    {
-      width: 640,
-      height: 40,
-      viewBox: "0 0 640 40",
-      style: "position: absolute; left: 0; top: -20px; overflow: visible",
-    },
-    g,
-  );
-  k.svg("polygon", { points: "0 20 36 4 36 36", fill: "#e9dcc5" }, s);
-  k.svg("polygon", { points: "0 20 12 15 12 25", fill: "#1a1a1a" }, s);
-  k.svg("rect", { x: 36, y: 4, width: 560, height: 32, fill: "var(--gold)" }, s);
-  k.svg("rect", { x: 596, y: 4, width: 44, height: 32, fill: "#d98c8c" }, s);
-  k.set(g, { scale: 0.34, rotation: -38, transformOrigin: "0 0" });
-  return g;
+  const p = K().pencil(scene, { len: 230, angle: -38, width: 18 });
+  p.el.classList.add("ag-pen");
+  return p.el;
 }
 
-// The phone, top-down: a message types itself, copies fly to three contacts,
-// a reply drops in. Parked off the right edge until it slides in.
-function phone(scene, S, G = PHONE) {
+// K.glint for a shape in a scaled viewBox (an iconoir icon's 24 units drawn at
+// hundreds of px): the glint's stroke is non-scaling, so its dashes are
+// measured on screen, and a dash sized in user units comes out that many times
+// too short. Rescale the runs to screen length; the kit's draw reads r.L.
+export function glint(tl, el, opts = {}) {
+  const sv = el.ownerSVGElement,
+    k = sv.width.baseVal.value / (sv.viewBox.baseVal?.width || sv.width.baseVal.value);
+  const seg = opts.seg ?? 0.09;
+  const runs = K().glint(tl, el, opts);
+  for (const r of runs) {
+    r.L *= k;
+    r.o.style.strokeDasharray = `${seg * r.L} ${r.L}`;
+  }
+  return runs;
+}
+
+// A chat bubble (iconoir's, in line) with its text centred on the circle's
+// centre, not the tail's; `words` are spans, hidden, to type in one by one.
+function bubble(parent, words, { x, y, size, gold = false, box, fontSize = 24 }) {
   const k = K();
-  const el = k.layer(scene, S.W + 60, G.y);
-  const screen = k.el(
-    "div",
-    { class: "ag-phone-back", style: { width: `${G.w}px`, height: `${G.h}px` } },
-    el,
-  );
-  const inner = k.el("div", { class: "ag-phone-screen" }, screen);
-  k.set(inner, { opacity: 0 });
-  const msg = k.el(
-    "div",
-    { class: "ag-bubble out", style: { left: "20px", top: "20px", width: "364px" } },
-    inner,
-  );
-  const msgWords = ["What", "comes", "next?", ...`"here comes the dog…"`.split(" ")].map((w) => {
-    const s = k.el("span", { text: `${w} ` }, msg);
-    k.set(s, { opacity: 0 });
-    return s;
-  });
-  k.set(msg, { opacity: 0 });
-  const contacts = [0, 1, 2].map((i) => {
-    const r = k.el(
-      "div",
-      { class: "ag-contact", style: { left: "20px", top: `${140 + i * 66}px`, width: "364px" } },
-      inner,
-    );
-    k.el("div", { class: "avatar" }, r);
-    k.el("div", { class: "bar", style: { width: `${150 + 60 * k.jitter(i + 3)}px` } }, r);
-    k.set(r, { opacity: 0 });
-    return r;
-  });
-  const reply = k.el(
+  const b = k.icon(parent, "chat-bubble", { x, y, size, gold });
+  b.paths[0].setAttribute("visibility", "hidden"); // the icon's own dots
+  const c = (12 / 24) * size;
+  const text = k.el(
     "div",
     {
-      class: "ag-bubble in",
-      text: REPLY.join(" "),
-      style: { left: "20px", top: "350px", width: "364px" },
+      class: "ag-text",
+      style: {
+        left: `${c - box / 2}px`,
+        top: `${c - box / 2}px`,
+        width: `${box}px`,
+        height: `${box}px`,
+        fontSize: `${fontSize}px`,
+      },
     },
-    inner,
+    b.el,
   );
-  k.set(reply, { opacity: 0 });
-  // three dots: somebody is typing
-  const typing = k.el(
-    "div",
-    { class: "ag-bubble in", style: { left: "20px", top: "350px", width: "96px", height: "54px" } },
-    inner,
+  const spans = words.map((w) => k.el("span", { text: w }, text));
+  return { el: b.el, outline: b.paths[1], text, spans, c };
+}
+
+// The phone and the people it texts, in line: a phone outline, the message
+// in a bubble above it, three friends beside it, and the reply in a gold
+// bubble. All in one layer at G (its top left), parked off the right edge
+// until it slides in. The bubbles' tails point at the phone.
+function phone(scene, S, G = PHONE) {
+  const k = K();
+  const el = k.layer(scene, S.W + 140, G.y);
+  // the phone: iconoir's 24-unit box, its body 10 x 16 units at (7, 4)
+  const PS = 336;
+  const ph = k.icon(el, "smartphone-device", { x: 10 - (7 / 24) * PS, y: 300 - (4 / 24) * PS, size: PS });
+  // the message: "What comes next?" and the sentence so far
+  const out = bubble(el, ["What", "comes", "next?", "\u201chere", "comes", "the", "dog\u2026\u201d"], {
+    x: 59,
+    y: 21,
+    size: 300,
+    box: 176,
+    fontSize: 25,
+  });
+  k.set(out.el, { opacity: 0 });
+  k.set(out.spans, { opacity: 0 });
+  // three friends (or group chats)
+  const contacts = [0, 1, 2].map((i) => {
+    const u = k.icon(el, "user", { x: 356, y: 22 + i * 92, size: 72 });
+    k.set(u.el, { opacity: 0 });
+    return u.el;
+  });
+  // the reply, gold, and somebody typing it
+  const RB = { x: 150, y: 290, size: 250 };
+  // (in a wrapper at the layer's origin, so the callers' y tweens stay relative)
+  const replyW = k.layer(el, 0, 0);
+  const reply = bubble(replyW, REPLY.join(" ").split(" "), { ...RB, gold: true, box: 140, fontSize: 25 });
+  k.set(replyW, { opacity: 0, transformOrigin: `${RB.x + reply.c}px ${RB.y + reply.c}px` });
+  const typing = k.icon(el, "chat-bubble", { ...RB, gold: true });
+  typing.paths[0].setAttribute("visibility", "hidden");
+  const u = RB.size / 24;
+  const dots = [7, 12, 17].map((cx) =>
+    k.el(
+      "div",
+      { class: "ag-dot", style: { left: `${cx * u - 7}px`, top: `${12 * u - 7}px` } },
+      typing.el,
+    ),
   );
-  const dots = [0, 1, 2].map((i) =>
-    k.el("div", { class: "ag-dot", style: { left: `${20 + i * 22}px`, top: "20px" } }, typing),
-  );
-  k.set(typing, { opacity: 0 });
+  k.set(typing.el, { opacity: 0 });
   return {
-    el: el,
-    back: screen,
-    screen: inner,
-    msg,
-    msgWords,
+    el,
+    body: ph.paths[1],
+    screen: out.el,
+    msg: out.text,
+    msgWords: out.spans,
     contacts,
-    reply,
-    typing,
+    reply: replyW,
+    typing: typing.el,
     dots,
     G,
+    // scene points: where a copy leaves for the friends, where the reply's words leave
+    sender: { x: G.x + 150, y: G.y + 300 },
+    friend: (i) => ({ x: G.x + 356 + 36, y: G.y + 22 + i * 92 + 40 }),
+    replyAt: { x: G.x + RB.x + reply.c - 60, y: G.y + RB.y + reply.c - 24 },
     home: { x: G.x, y: G.y },
   };
 }
@@ -277,9 +292,8 @@ export function phoneIn(tl, d, t) {
 // far, to three friends or group chats." A beat of nothing, then one reply.
 export function toolCall(tl, T, d, L) {
   const p = d.phone;
-  const tScreen = T.word(L, "text");
-  tl.to(p.screen, { opacity: 1 }, tScreen, { dur: 0.35 });
-  tl.set(p.msg, { opacity: 1 }, T.word(L, "Send") - 0.1);
+  // "a text message": the message bubble, words typing in as they're said
+  tl.to(p.screen, { opacity: 1 }, T.word(L, "text"), { dur: 0.35 });
   const q = [T.word(L, "What"), T.word(L, "comes"), T.word(L, "next")];
   q.forEach((t, i) => tl.to(p.msgWords[i], { opacity: 1 }, t, { dur: 0.15 }));
   // the sentence so far, copied off the paper as it's named
@@ -293,27 +307,24 @@ export function toolCall(tl, T, d, L) {
   p.msgWords
     .slice(3)
     .forEach((s, i) => tl.to(s, { opacity: 1 }, tSoFar + 0.1 + i * 0.12, { dur: 0.15 }));
-  // three contacts; a copy of the message flies to each
+  // three friends; a copy of the message flies from the phone to each
   const tThree = T.word(L, "three");
   const k = K();
-  const origin = { x: p.G.x + p.G.w - 80, y: p.G.y + 60 };
   p.contacts.forEach((c, i) => {
     tl.to(c, { opacity: 1 }, tThree + i * 0.12, { dur: 0.25 });
     const dot = k.el(
       "div",
       {
         class: "ag-fly",
-        style: { width: "22px", height: "22px", borderRadius: "50%", background: "var(--gold)" },
+        style: { width: "18px", height: "18px", borderRadius: "50%", background: "var(--gold)" },
       },
       d.note.el.parentNode,
     );
     k.set(dot, { opacity: 0 });
-    const t = T.word(L, "friends") + i * 0.18;
-    tl.set(dot, { x: origin.x, y: origin.y, opacity: 1 }, t);
-    tl.to(dot, { x: p.G.x + 36, y: p.G.y + 8 + 140 + i * 66 + 17 }, t, {
-      dur: 0.45,
-      ease: "in-quad",
-    });
+    const t = T.word(L, "friends") + i * 0.18,
+      f = p.friend(i);
+    tl.set(dot, { x: p.sender.x - 9, y: p.sender.y - 9, opacity: 1 }, t);
+    tl.to(dot, { x: f.x - 9, y: f.y - 9 }, t, { dur: 0.45, ease: "in-quad" });
     tl.to(dot, { opacity: 0 }, t + 0.4, { dur: 0.12 });
   });
   // a beat of nothing, then one reply
@@ -335,7 +346,7 @@ export function splice(tl, T, d, L, rolled) {
   const scene = d.note.el.parentNode;
   tl.to(p.reply, { scale: 1.06 }, T.word(L, "reply"), { dur: 0.25, yoyo: true, ease: "out-cubic" });
   const tWrite = T.word(L, "Write");
-  const from = { x: p.G.x + 40, y: p.G.y + 360 };
+  const from = p.replyAt;
   R2.reply.forEach((i, n) => flyWord(tl, scene, d, 1, i, from, tWrite + n * 0.2, 0.6));
   tl.to(d.pen, d.tip(1, R2.reply.at(-1)), tWrite + 0.9, { dur: 0.4, ease: "out-cubic" });
   // then the waiting tile, into its place after the reply
@@ -431,7 +442,7 @@ export function backfill(tl, T, d, L) {
     ease: "out-cubic",
     immediate: false,
   });
-  const from = { x: p.G.x + 40, y: p.G.y + 360 };
+  const from = p.replyAt;
   const scene = d.note.el.parentNode;
   R2.reply.forEach((i, n) => flyWord(tl, scene, d, 1, i, from, tFill + 0.25 + n * 0.14, 0.55));
   return gap;
@@ -457,7 +468,6 @@ export function harnessLoop(parent, { x, y, w, h, labels }) {
   const at = (th) => ({ x: cx + rx * Math.cos(th), y: cy + ry * Math.sin(th) });
   const th = (i) => -Math.PI / 2 + (i / n) * Math.PI * 2;
   const GAP = 0.13; // radians kept clear around each station
-  const gold = "#e5a930";
   const arcs = [],
     heads = [];
   for (let i = 0; i < n; i++) {
@@ -469,10 +479,7 @@ export function harnessLoop(parent, { x, y, w, h, labels }) {
       "path",
       {
         d: `M ${p0.x} ${p0.y} A ${rx} ${ry} 0 0 1 ${p1.x} ${p1.y}`,
-        fill: "none",
-        stroke: gold,
-        "stroke-width": 7,
-        "stroke-linecap": "round",
+        class: "line gold",
       },
       s,
     );
@@ -488,13 +495,14 @@ export function harnessLoop(parent, { x, y, w, h, labels }) {
       tn = Math.hypot(tx, ty);
     const ux = tx / tn,
       uy = ty / tn,
-      S2 = 20;
+      S2 = 16;
     const tip = { x: p1.x + ux * 10, y: p1.y + uy * 10 };
+    // an open arrowhead in line
     const head = k.svg(
-      "polygon",
+      "path",
       {
-        points: `${tip.x} ${tip.y} ${tip.x - ux * S2 - uy * S2 * 0.6} ${tip.y - uy * S2 + ux * S2 * 0.6} ${tip.x - ux * S2 + uy * S2 * 0.6} ${tip.y - uy * S2 - ux * S2 * 0.6}`,
-        fill: gold,
+        d: `M ${tip.x - ux * S2 - uy * S2 * 0.6} ${tip.y - uy * S2 + ux * S2 * 0.6} L ${tip.x} ${tip.y} L ${tip.x - ux * S2 + uy * S2 * 0.6} ${tip.y - uy * S2 - ux * S2 * 0.6}`,
+        class: "line gold",
       },
       s,
     );
@@ -503,7 +511,7 @@ export function harnessLoop(parent, { x, y, w, h, labels }) {
   }
   const stations = labels.map((lab, i) => {
     const p = at(th(i));
-    const dot = k.svg("circle", { cx: p.x, cy: p.y, r: 15, fill: gold }, s);
+    const dot = k.svg("circle", { cx: p.x, cy: p.y, r: 10, class: "gold-fill" }, s);
     const c = Math.cos(th(i)),
       sn = Math.sin(th(i));
     const anchor = c > 0.3 ? "start" : c < -0.3 ? "end" : "middle";
@@ -523,17 +531,27 @@ export function harnessLoop(parent, { x, y, w, h, labels }) {
     k.set([dot, text], { opacity: 0 });
     return { dot, text, x: p.x, y: p.y };
   });
-  // the person, and a hand (a gold line) to every station
-  // (the fill sits on the group, so one tween recolours the whole figure)
-  const person = k.svg("g", { style: "fill: #f2f2f2" }, s);
-  k.svg("circle", { cx, cy: cy - 50, r: 30 }, person);
-  k.svg("rect", { x: cx - 38, y: cy - 14, width: 76, height: 96 }, person);
-  k.set(person, { opacity: 0, transformOrigin: "50% 50%" });
+  // the person: iconoir's `user`, in line, drawn here as two paths so the
+  // head can light gold on its own ("You were the harness"). The outer group
+  // takes the tweens; the inner one holds the icon's 24-unit placement.
+  const PS = 200;
+  const person = k.svg("g", { style: `transform-origin: ${cx}px ${cy}px` }, s);
+  const icon = k.svg(
+    "g",
+    { transform: `translate(${cx - PS / 2} ${cy - PS / 2 + 10}) scale(${PS / 24})` },
+    person,
+  );
+  const body = k.svg("path", { class: "line", d: "M5 20v-1a7 7 0 0 1 7-7a7 7 0 0 1 7 7v1" }, icon);
+  const HEAD = "M12 12a4 4 0 1 0 0-8a4 4 0 0 0 0 8";
+  const head = k.svg("path", { class: "line", d: HEAD }, icon);
+  const goldHead = k.svg("path", { class: "line gold", d: HEAD }, icon);
+  k.set(goldHead, { opacity: 0 });
+  k.set(person, { opacity: 0 });
   const hands = stations.map((st) => {
     const dx = st.x - cx,
       dy = st.y - (cy + 10),
       dn = Math.hypot(dx, dy);
-    const a = { x: cx + (dx / dn) * 70, y: cy + 10 + (dy / dn) * 70 },
+    const a = { x: cx + (dx / dn) * 90, y: cy + 10 + (dy / dn) * 90 },
       b = { x: st.x - (dx / dn) * 28, y: st.y - (dy / dn) * 28 };
     const line = k.svg(
       "line",
@@ -542,10 +560,8 @@ export function harnessLoop(parent, { x, y, w, h, labels }) {
         y1: a.y,
         x2: b.x,
         y2: b.y,
-        stroke: gold,
-        "stroke-width": 5,
-        "stroke-linecap": "round",
-        "stroke-dasharray": "2 12",
+        class: "line gold",
+        "stroke-dasharray": "1 10",
       },
       s,
     );
@@ -554,7 +570,7 @@ export function harnessLoop(parent, { x, y, w, h, labels }) {
   });
   s.insertBefore(person, s.firstChild);
   hands.forEach((l) => s.insertBefore(l, s.firstChild));
-  return { el: g, svg: s, arcs, heads, stations, person, hands, cx, cy };
+  return { el: g, svg: s, arcs, heads, stations, person, body, head, goldHead, hands, cx, cy };
 }
 
 // draw the loop on in one stroke from t over dur, each station and label
@@ -614,9 +630,9 @@ export function harness(tl, T, loop, L, verb) {
   const tYou = T.word(L, "you");
   reach(0, tYou);
   reach(1, tYou + 0.15);
-  // "You were the harness": the person lights gold
+  // "You were the harness": the person's head lights gold
   const tHarness = T.word(L, "harness");
-  tl.to(loop.person, { fill: "#e5a930" }, tHarness - 0.1, { dur: 0.3 });
+  tl.to(loop.goldHead, { opacity: 1 }, tHarness - 0.1, { dur: 0.3 });
   tl.to(loop.person, { scale: 1.12 }, tHarness - 0.1, { dur: 0.3, yoyo: true, ease: "out-cubic" });
   return tAsk;
 }
@@ -629,6 +645,8 @@ export function takeOut(tl, T, loop, L, tEnd) {
   const n = loop.stations.length;
   const t0 = tOut + 0.8,
     per = 0.55;
+  // and a glint runs round it (a gap in the gold)
+  K().glint(tl, loop.arcs, { kind: "gap", from: t0, to: tEnd, lap: 2.4, rest: 1.2, seg: 0.25 });
   for (let m = 0; t0 + m * per < tEnd; m++) {
     const i = m % n,
       t = t0 + m * per;

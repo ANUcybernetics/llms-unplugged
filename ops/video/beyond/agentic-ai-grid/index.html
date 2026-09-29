@@ -20,9 +20,9 @@
          with agentic-ai-ledger in parts/agentic.js. Every beat lands on a word
          of the voice track (timing.json from align.py). -->
     <div id="stage" class="stage" data-aspect="landscape" data-composition-id="agentic-ai-grid"
-         data-start="0" data-duration="126.30" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="126.30" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="126.30" data-track-index="1"></audio>
+         data-start="0" data-duration="129.75" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="129.75" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="129.75" data-track-index="1"></audio>
     </div>
     <script type="module">
       import * as AG from "./parts/agentic.js";
@@ -287,6 +287,13 @@
         tl.set([...d.note.lines.flatMap((l) => l.words)], { opacity: 0 }, t10 - 0.1);
         tl.set(d.pen, d.tip(0, 0, false), t10 - 0.1);
         tl.to([die.el, d.note.el, d.pen], { opacity: 1 }, t10, { dur: 0.6, stagger: 0.1 });
+
+        // glints: the die while the desk is held at the open and the close; the
+        // phone as it arrives, and while it waits for a slow reply
+        AG.glint(tl, die.outline, { from: 0.8, to: tRun - 0.3 });
+        AG.glint(tl, die.outline, { from: t10 + 0.8, to: T.duration, phase: 0.2 });
+        AG.glint(tl, d.phone.body, { from: tStop + 1.1, to: T.word(4, "Send"), phase: 0.3 });
+        AG.glint(tl, d.phone.body, { from: T.word(7, "time"), to: T.word(7, "fill") });
       };
       KIT.ready(build).then(({ tl }) => {
         window.__timelines["agentic-ai-grid"] = tl;
