@@ -109,7 +109,7 @@
         class="prefix ledger-prefix"
         class:repeat={r > 0}
         class:continued={r < rows.length - 1}
-        role="rowheader"
+        role={entry.prefix ? "rowheader" : "cell"}
         data-id={cellId(`p${r}`)}
       >
         {@render token(entry.prefix)}
