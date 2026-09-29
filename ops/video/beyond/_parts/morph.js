@@ -75,7 +75,8 @@ export function slip(parent, prev, next, { size = 34 } = {}) {
   const front = K.el("div", { class: "front" }, el);
   // slips pile and scatter over each other, as paper does: their words may overlap
   for (const t of [token(K, front, prev, true), token(K, front, next, false)])
-    for (const e of [t, ...t.querySelectorAll("text")]) e.setAttribute("data-layout-allow-overlap", "");
+    for (const e of [t, ...t.querySelectorAll("text")])
+      e.setAttribute("data-layout-allow-overlap", "");
   K.set(back, { opacity: 0 });
   return { el, front, back, w, h };
 }
@@ -453,9 +454,16 @@ export function slipsFromMarks(tl, R, t, { pace: p = 1, form = "ledger" } = {}) 
     pile.forEach((o, i) => {
       const ti = t + c * 0.12 * p + i * 0.05 * p;
       const from = R.markPos(c, i, form);
-      tl.set(o.el, { x: from.x - R.x - o.w / 2, y: from.y - R.y - o.h / 2, scale: 0.3 }, ti - 0.002);
+      tl.set(
+        o.el,
+        { x: from.x - R.x - o.w / 2, y: from.y - R.y - o.h / 2, scale: 0.3 },
+        ti - 0.002,
+      );
       tl.to(o.el, { opacity: 1 }, ti, { dur: 0.15 * p });
-      tl.to(o.el, { x: o.pile.x, y: o.pile.y, scale: 1, rotation: o.pile.rotation }, ti, { dur: 0.6 * p, ease: "in-out-cubic" });
+      tl.to(o.el, { x: o.pile.x, y: o.pile.y, scale: 1, rotation: o.pile.rotation }, ti, {
+        dur: 0.6 * p,
+        ease: "in-out-cubic",
+      });
     }),
   );
 }

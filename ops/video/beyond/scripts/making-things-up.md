@@ -1,8 +1,8 @@
 # Making things up
 
-**Key idea:** a model that only knows what comes next will say fluent
-things that aren't true, and the likeliest ones aren't the true ones; it's built
-to be likely, not right.
+**Key idea:** a model that only knows what comes next will say fluent things
+that aren't true, and the likeliest ones aren't the true ones; it's built to be
+likely, not right.
 
 **Plays:** standalone, and in class after generation (any format): the question
 every class asks about AI, answered from the model they just used.
@@ -59,8 +59,7 @@ _Visual: the book opens; its lines float up in the book's type, and the three
 facts light in them one at a time: "Down comes the magpie. Swoop!", "The dog
 runs", "It sits on the fence."_
 
-_Reads:_ 1. the book has its own facts; 2. the magpie is the one that
-swoops.
+_Reads:_ 1. the book has its own facts; 2. the magpie is the one that swoops.
 
 **BEN (VO):** Now ask the model for a couple of sentences. "Down comes the dog.
 Swoop!"
@@ -89,8 +88,8 @@ the matching box on the grid lights and, above, a line of the book where that
 pair occurs. The bracket reaches the end; every pair has a source, and the whole
 sentence has none._
 
-_Reads:_ 1. every pair in the sentence came from the book; 2. the
-sentence as a whole didn't; 3. the model only ever checked pairs.
+_Reads:_ 1. every pair in the sentence came from the book; 2. the sentence as a
+whole didn't; 3. the model only ever checked pairs.
 
 **USHINI (VO):** And it's not bad luck. Rank every sentence this model can write
 by how likely it is. "Swoop!" first. "It watches." Then "Here comes the fence."
@@ -104,8 +103,8 @@ _Beyond:_ one bad sentence looks like bad luck; ranking all of them shows the
 model preferring the common over the true, which is the mechanism, not an
 accident.
 
-_Reads:_ 1. every sentence has a likelihood; 2. "Here comes the fence."
-is near the top.
+_Reads:_ 1. every sentence has a likelihood; 2. "Here comes the fence." is near
+the top.
 
 **BEN (VO):** The fence never comes anywhere. But it's the third likeliest thing
 this model says, three times as likely as "Here comes the dog", which the book
@@ -115,8 +114,8 @@ often, and a full stop always follows "fence".
 _Visual: "here comes the dog ." lights further down the list, its bar a third
 the length. On the grid, the box for "the fence", six tallies, glows._
 
-_Reads:_ 1. a false sentence outranks a true one; 2. because its pairs
-are more common.
+_Reads:_ 1. a false sentence outranks a true one; 2. because its pairs are more
+common.
 
 **USHINI (VO):** Here's everything it could say in a short sentence.
 Seventy-nine of them. Seven are in the book.
@@ -130,8 +129,8 @@ _Beyond:_ makes "fluent" and "true" visibly two different things, measured, on a
 model small enough to check by hand. The generation videos show the tree as
 possibility; recoloured, it shows how much of that possibility is invention.
 
-_Reads:_ 1. the model can say many sentences; 2. only a few are the
-book's; 3. the rest sound just as right.
+_Reads:_ 1. the model can say many sentences; 2. only a few are the book's; 3.
+the rest sound just as right.
 
 **BEN:** Nothing in the loop checks whether a sentence is true. The model is
 built to be likely, not right.
@@ -145,8 +144,8 @@ _Visual: the tree dims to a texture; from its edges it multiplies outward in a
 logarithmic pull-back until its branches are a fine mesh. Most paths in the mesh
 turn the "true" colour; a scatter of others stay the other colour._
 
-_Reads:_ 1. more context and more text make true continuations
-likelier; 2. nothing checks.
+_Reads:_ 1. more context and more text make true continuations likelier; 2.
+nothing checks.
 
 _Reads note:_ the pull-back's colour split is illustrative, not measured; if
 that's a problem, the visual stays on the magpie tree and the line carries the

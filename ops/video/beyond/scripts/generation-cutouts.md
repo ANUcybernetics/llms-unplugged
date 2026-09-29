@@ -1,7 +1,7 @@
 # Generation: cutouts
 
-**Key idea:** text is written one word at a time, each word picked at
-random from the cutouts that match: common pairs have more cutouts, so they're
+**Key idea:** text is written one word at a time, each word picked at random
+from the cutouts that match: common pairs have more cutouts, so they're
 likelier, and every chain comes out different.
 
 **Plays:** start of the Generation section of the cutouts decks.
@@ -48,8 +48,8 @@ and the word that came next. A pair the book says six times gets six slips.
 _Visual: one slip lifts and turns to face the camera: "the" in its box, "fence"
 beside it. Five more "the fence" slips lift out of the spread and stack on it._
 
-_Reads:_ 1. a slip is one pair; 2. the box is the previous word; 3. a
-common pair has many slips.
+_Reads:_ 1. a slip is one pair; 2. the box is the previous word; 3. a common
+pair has many slips.
 
 **BEN (VO):** Choose a slip to start from. A story starts after a full stop, so
 take one with a full stop in its box. This one says "it". Write it down.
@@ -58,8 +58,8 @@ _Visual: the full stop slips light across the spread; one slides out, turns
 over, full stop in its box, "it" beside it. "it" writes onto a strip of paper at
 the bottom of the desk._
 
-_Reads:_ 1. the first slip gives you somewhere to start; 2. its next
-word is written down.
+_Reads:_ 1. the first slip gives you somewhere to start; 2. its next word is
+written down.
 
 **USHINI (VO):** Now find every slip with "it" in its box. There are ten. Three
 say "sits", three "watches", three "goes", and one says "is". Pick one without
@@ -70,8 +70,8 @@ one loose pile, their next words showing: sits, sits, sits, watches, watches,
 watches, goes, goes, goes, is. The pile shuffles, one slip slides out: "it
 sits". "sits" writes onto the strip._
 
-_Reads:_ 1. every slip that matches the last word is a candidate; 2.
-more slips, more chances; 3. the one you pick names the next word.
+_Reads:_ 1. every slip that matches the last word is a candidate; 2. more slips,
+more chances; 3. the one you pick names the next word.
 
 **BEN (VO):** Every "sits" slip says "on", and every "on" slip says "the". No
 choice at all.
@@ -89,8 +89,7 @@ five, postie four, dog four; they shuffle together and a "the dog" slip slides
 out. "dog" writes on. Then the four "dog" slips, and a full stop comes out; the
 full stop tile writes on._
 
-_Reads:_ 1. every word works the same way; 2. a full stop ends the
-sentence.
+_Reads:_ 1. every word works the same way; 2. a full stop ends the sentence.
 
 **BEN:** "It sits on the dog." The book never says that. It says the magpie sits
 on the fence. Nobody wrote this sentence; the slips did, one pair at a time,
@@ -130,8 +129,8 @@ _Beyond:_ one chain can't show that picking is faithful, and "it sounds like the
 book" stays a feeling. Cutting the output back into slips shows the piles
 return, so "sounds like the book" becomes something the viewer can check.
 
-_Reads:_ 1. the output is cut up the same way as the book was; 2. a
-short run looks nothing like the book's piles; 3. a long run matches them.
+_Reads:_ 1. the output is cut up the same way as the book was; 2. a short run
+looks nothing like the book's piles; 3. a long run matches them.
 
 **USHINI:** Every chain different. Every chain sounding like the book. That's
 what Claude or ChatGPT is doing every time it writes a word, with vastly more
@@ -144,8 +143,8 @@ starts with that. The colours help you find the matches fast.
 _Visual: a spread of cutouts; a word writes, the slips whose box colour matches
 light, one lifts, its next word writes, the next match lights._
 
-_Reads:_ 1. match the box, write the next word; 2. colour is a quick way
-to find the matches.
+_Reads:_ 1. match the box, write the next word; 2. colour is a quick way to find
+the matches.
 
 _Reads note:_ the printed cutouts colour the previous-word box, and the slides
 use colour as a quick filter before checking the word; the visual depends on the

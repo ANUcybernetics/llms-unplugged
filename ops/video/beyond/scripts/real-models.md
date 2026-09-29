@@ -1,8 +1,8 @@
 # Real models
 
-**Key idea:** a real model runs the same loop as your grid; what's
-different is how much it looks at, how it stores what it learned, and the extra
-training that makes it answer rather than continue.
+**Key idea:** a real model runs the same loop as your grid; what's different is
+how much it looks at, how it stores what it learned, and the extra training that
+makes it answer rather than continue.
 
 **Plays:** standalone, and in class as the close of a workshop, or before a
 discussion of what real models can and can't do.
@@ -49,8 +49,7 @@ _Visual: the magpie grid on the desk, a paper strip beside it. The loop draws on
 around them in one stroke, gold arrowheads: last word, row, chances, draw,
 write. A word writes on and the loop goes round once more._
 
-_Reads:_ 1. the loop: look up, chances, draw, write; 2. real models run
-it too.
+_Reads:_ 1. the loop: look up, chances, draw, write; 2. real models run it too.
 
 **USHINI (VO):** What's different is size. Your magpie grid has five hundred and
 seventy-six boxes.
@@ -82,8 +81,8 @@ _Beyond:_ "too big for a table" is only believable when you see the table empty
 out as it grows; the heatmap shows that almost every pair has never been seen,
 which is the problem real models are built to solve.
 
-_Reads:_ 1. a real vocabulary makes an impossible grid; 2. the empty
-boxes are the problem.
+_Reads:_ 1. a real vocabulary makes an impossible grid; 2. the empty boxes are
+the problem.
 
 **BEN:** And that's just one word of context. Your grid only ever looks at the
 last word. A real model looks at the whole conversation.
@@ -107,8 +106,8 @@ _Beyond:_ shows both why context helps and why it isn't free: with one book, a
 five-word context can only find the book's own sentences, so it memorises
 instead of generalising.
 
-_Reads:_ 1. more context, better text; 2. too much context for too
-little text just copies the book.
+_Reads:_ 1. more context, better text; 2. too much context for too little text
+just copies the book.
 
 _Reads note:_ the three samples are picked at build time from real CLI runs; the
 lines don't quote them, so any seed that shows the three stages works.
@@ -122,8 +121,8 @@ _Visual: the magpie grid; the rows for "dog" and "postie" light and slide
 together, their tallies lining up box for box: full stop 2, runs 2. A faint
 thread joins the two headers._
 
-_Reads:_ 1. two words can behave the same way; 2. a real model stores
-that likeness instead of every pair.
+_Reads:_ 1. two words can behave the same way; 2. a real model stores that
+likeness instead of every pair.
 
 **USHINI:** It doesn't use whole words, either. It uses tokens: common words
 whole, rarer ones in pieces.
@@ -146,8 +145,8 @@ it ("what do possums eat? what do") and wipes away. A thumbs-up and a thumbs-
 down mark flick beside two candidate replies; the preferred one writes on:
 "mostly insects and worms"._
 
-_Reads:_ 1. a model fresh from reading just continues text; 2. extra
-training with people's ratings makes it answer.
+_Reads:_ 1. a model fresh from reading just continues text; 2. extra training
+with people's ratings makes it answer.
 
 **USHINI:** More context, a smarter way to store it, pieces of words, and a
 second round of training. None of it changes the loop.

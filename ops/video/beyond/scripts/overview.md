@@ -1,8 +1,8 @@
 # Overview
 
-**Key idea:** LLMs Unplugged allows you to run the same next-word loop
-Claude or ChatGPT runs, by hand, with a picture book, paper and a pen; the site
-has the lessons and the tools to do it.
+**Key idea:** LLMs Unplugged allows you to run the same next-word loop Claude or
+ChatGPT runs, by hand, with a picture book, paper and a pen; the site has the
+lessons and the tools to do it.
 
 **Plays:** the website's landing video, not in class. Evergreen, as the TASK-154
 overview is (it names no lesson, age band, running time or licence clause), and
@@ -39,8 +39,8 @@ _Visual: a chat reply typing itself one word at a time, each word pausing as it
 lands. The chat window folds flat onto the desk and becomes a strip of paper,
 the next word writing on in pencil._
 
-_Reads:_ 1. the reply is written one word at a time; 2. the same thing
-can happen on paper.
+_Reads:_ 1. the reply is written one word at a time; 2. the same thing can
+happen on paper.
 
 **USHINI (VO):** Take a picture book. Read it two words at a time, and count
 which word follows which.
@@ -58,8 +58,8 @@ likely.
 _Visual: the row for "the" lights; its tallies become a die strip; a face lands
 and "dog" writes onto the strip after "it sits on the"._
 
-_Reads:_ 1. the last word's row gives the choices; 2. the counts weight
-the draw.
+_Reads:_ 1. the last word's row gives the choices; 2. the counts weight the
+draw.
 
 **USHINI (VO):** You can count in tally marks, or marks on a ledger. Draw with a
 die, a cup of counters or a pile of paper slips. It's the same model every time:

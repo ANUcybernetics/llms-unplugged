@@ -1,8 +1,8 @@
 # Generation: grid
 
-**Key idea:** text is written one word at a time, each word picked at
-random in proportion to the counts: the dice make every text different, and the
-counts make them all sound like the book.
+**Key idea:** text is written one word at a time, each word picked at random in
+proportion to the counts: the dice make every text different, and the counts
+make them all sound like the book.
 
 **Plays:** My First Language Model, start of the Generation section.
 
@@ -51,8 +51,7 @@ came next, and how often. It's the same kind of grid you just filled in.
 _Visual: the row for "the" lights: its four tallied boxes under magpie, fence,
 postie and dog, the rest of the row empty._
 
-_Reads:_ 1. a row is a word; 2. its tallies are what came next and how
-often.
+_Reads:_ 1. a row is a word; 2. its tallies are what came next and how often.
 
 **BEN (VO):** A story starts after a full stop, so start at the row for full
 stop. "It" came next seven times, "here" four, "down" three, "swoop" three.
@@ -60,8 +59,7 @@ stop. "It" came next seven times, "here" four, "down" three, "swoop" three.
 _Visual: the row for full stop slides out of the grid to the middle of the desk,
 its four tallied boxes spread wide._
 
-_Reads:_ 1. start from the full stop's row; 2. "it" has the most
-tallies.
+_Reads:_ 1. start from the full stop's row; 2. "it" has the most tallies.
 
 **USHINI (VO):** Now pick the next word at random, but fairly. Share the ten
 faces of a die across the row by its tallies. Seventeen tallies won't split into
@@ -71,8 +69,8 @@ others two each.
 _Visual: under the row a strip of ten die faces, 0 to 9, bands drawing in left
 to right as they're named: it 0--3, here 4--5, down 6--7, swoop 8--9._
 
-_Reads:_ 1. the die's faces are shared across the row; 2. more tallies,
-more faces; 3. "it" gets the most.
+_Reads:_ 1. the die's faces are shared across the row; 2. more tallies, more
+faces; 3. "it" gets the most.
 
 _Reads note:_ rounding seventeen tallies onto ten faces is a wrinkle the slides
 never meet (the hop joey hop rows divide evenly); the alternative is to start
@@ -84,8 +82,8 @@ the row for "it".
 _Visual: a d10 face lands on 2; the "it" band lights and "it" writes onto a
 strip of paper at the bottom of the desk. The row for "it" lights on the grid._
 
-_Reads:_ 1. the roll lands in a band; 2. that band's word is written
-down; 3. its row is next.
+_Reads:_ 1. the roll lands in a band; 2. that band's word is written down; 3.
+its row is next.
 
 **USHINI (VO):** The row for "it" has exactly ten tallies, so every tally gets a
 face of its own. Roll a one: "sits".
@@ -113,8 +111,7 @@ dog 8--9), a face lands on 9 and "dog" writes on. The row for "dog" splits the
 die in two (full stop 0--4, runs 5--9), a face lands on 3, and the full stop
 tile writes on._
 
-_Reads:_ 1. every row works the same way; 2. a full stop ends the
-sentence.
+_Reads:_ 1. every row works the same way; 2. a full stop ends the sentence.
 
 **BEN:** "It sits on the dog." The book never says that. It says the magpie sits
 on the fence. Nobody wrote this sentence; the counting did.
@@ -123,8 +120,8 @@ _Visual: the strip reads "it sits on the dog ." Above it, in the book's type,
 "It sits on the fence." and "Here comes the dog."; the halves slide together
 into the generated line._
 
-_Reads:_ 1. this sentence isn't in the book; 2. it's made from pieces
-that are; 3. nobody wrote it.
+_Reads:_ 1. this sentence isn't in the book; 2. it's made from pieces that
+are; 3. nobody wrote it.
 
 **USHINI (VO):** And here's everything this model could have written instead.
 
@@ -140,8 +137,8 @@ _Beyond:_ the slides show one walk, so the viewer sees one sentence and has to
 imagine the others. The tree shows them all at once, weighted, and makes the key
 idea literal: the counts already hold every text, and the dice only pick a path.
 
-_Reads:_ 1. each branch is a word the counts allow; 2. thicker means
-more likely; 3. your sentence is one path through it.
+_Reads:_ 1. each branch is a word the counts allow; 2. thicker means more
+likely; 3. your sentence is one path through it.
 
 **BEN (VO):** Every roll picks a different path. So run it ten thousand times
 and count what comes out.
@@ -156,9 +153,8 @@ book" stays a feeling. Counting the model's own output back into a grid shows
 the proportions return, so "sounds like the book" becomes something the viewer
 can check.
 
-_Reads:_ 1. the model's output is counted the same way as the book
-was; 2. a short run looks nothing like the book's counts; 3. a long run matches
-them.
+_Reads:_ 1. the model's output is counted the same way as the book was; 2. a
+short run looks nothing like the book's counts; 3. a long run matches them.
 
 **USHINI:** Every text different. Every text sounding like the book. That's what
 Claude or ChatGPT is doing every time it writes a word, with vastly more counts
@@ -172,7 +168,7 @@ _Visual: a hand-filled grid; a word writes on the strip, its row lights, the
 row's tallies become a strip of die faces, a face lands, the next word writes.
 Then a word whose row is empty: a new starting word writes on after it._
 
-_Reads:_ 1. start from any word with a row; 2. faces by tallies, roll,
-write; 3. no row, pick again.
+_Reads:_ 1. start from any word with a row; 2. faces by tallies, roll, write; 3.
+no row, pick again.
 
 **USHINI (TC):** Pick a starting word and roll.
