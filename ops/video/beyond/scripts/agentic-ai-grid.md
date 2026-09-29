@@ -67,7 +67,8 @@ _Reads:_ 1. a tool call is in the counts like any other word; 2. some rows call
 it more than others.
 
 **BEN (VO):** Say you've written "here comes the dog". The row for "dog": nought
-to four is a full stop, five to nine is "runs". Roll a three. Full stop. Stop.
+to four is a full stop, five to nine is "runs". [beat] Roll a three. Full stop.
+[beat] Stop.
 
 _Visual: the strip reads "here comes the dog"; the row for "dog" lights and its
 die strip draws on (full stop 0--4, runs 5--9). A face lands on 3, the full stop
@@ -86,7 +87,7 @@ _Reads:_ 1. the tool is a text message; 2. it sends the sentence so far; 3. it
 goes to three people at once.
 
 **BEN (VO):** The first reply back is your tool result. Write the whole thing
-down, then the full stop you rolled. Then carry on, from the full stop.
+down, then the full stop you rolled. [beat] Then carry on, from the full stop.
 
 _Visual: the reply's words slide off the phone onto the strip after "here comes
 the dog", the full stop follows them, and the row for full stop lights on the

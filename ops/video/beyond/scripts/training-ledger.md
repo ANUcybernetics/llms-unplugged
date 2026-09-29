@@ -60,8 +60,8 @@ those three capitals so the sheet on screen matches the printed one, or the line
 needs a qualifier.
 
 **USHINI (VO):** Now read it two words at a time. Find the row for the first
-word. The second word goes in a box on that row, with a mark beside it. Then
-slide along by one, and do it again.
+word. [beat] The second word goes in a box on that row, with a mark beside it.
+[beat] Then slide along by one, and do it again.
 
 _Visual: a gold bracket over "the magpie". Beside the tiles a blank ledger
 sheet: "the" writes into the first empty row, "magpie" into its red box, and a

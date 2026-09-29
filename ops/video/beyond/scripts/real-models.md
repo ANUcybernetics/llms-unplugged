@@ -94,7 +94,7 @@ _Reads:_ 1. the grid looks back one word; 2. a real model looks back at
 everything.
 
 **USHINI (VO):** Here's why that matters. _Frankenstein_, looking back one word.
-Then two. Then five.
+[beat] Then two. [beat] Then five.
 
 _Visual: three strips of generated text, one per context length, each writing
 itself on at reading pace from a model built with the CLI on the real book: the

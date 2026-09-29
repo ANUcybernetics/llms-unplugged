@@ -79,9 +79,9 @@ book's own line "Down comes the magpie. Swoop!" in its type._
 
 _Reads:_ 1. the sentence is fluent; 2. it isn't true in the book.
 
-**BEN (VO):** Look at how it got there. "Down comes the" is in the book. "The
-dog" is in the book. A full stop after "dog", then "swoop", both in the book.
-Every pair is true. The sentence isn't.
+**BEN (VO):** Look at how it got there. [beat] "Down comes the" is in the book.
+[beat] "The dog" is in the book. [beat] A full stop after "dog", then "swoop",
+both in the book. [beat] Every pair is true. The sentence isn't.
 
 _Visual: a gold bracket walks along the strip one pair at a time; for each pair,
 the matching box on the grid lights and, above, a line of the book where that

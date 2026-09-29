@@ -52,7 +52,7 @@ _Reads:_ 1. a slip is one pair; 2. the box is the previous word; 3. a common
 pair has many slips.
 
 **BEN (VO):** Choose a slip to start from. A story starts after a full stop, so
-take one with a full stop in its box. This one says "it". Write it down.
+take one with a full stop in its box. [beat] This one says "it". Write it down.
 
 _Visual: the full stop slips light across the spread; one slides out, turns
 over, full stop in its box, "it" beside it. "it" writes onto a strip of paper at
@@ -61,9 +61,9 @@ the bottom of the desk._
 _Reads:_ 1. the first slip gives you somewhere to start; 2. its next word is
 written down.
 
-**USHINI (VO):** Now find every slip with "it" in its box. There are ten. Three
-say "sits", three "watches", three "goes", and one says "is". Pick one without
-choosing: "sits".
+**USHINI (VO):** Now find every slip with "it" in its box. There are ten. [beat]
+Three say "sits", three "watches", three "goes", and one says "is". [beat] Pick
+one without choosing: "sits".
 
 _Visual: the spread dims except the ten "it" slips, which slide together into
 one loose pile, their next words showing: sits, sits, sits, watches, watches,
@@ -81,8 +81,8 @@ all reading "the". "on" and "the" write straight onto the strip._
 
 _Reads:_ 1. when every match says the same word, there's no choice.
 
-**USHINI (VO):** "The" has nineteen slips. Pick one: "dog". And "dog" has four:
-two full stops, two "runs". Pick one: full stop.
+**USHINI (VO):** "The" has nineteen slips. [beat] Pick one: "dog". [beat] And
+"dog" has four: two full stops, two "runs". [beat] Pick one: full stop.
 
 _Visual: the nineteen "the" slips gather into four piles, fence six, magpie
 five, postie four, dog four; they shuffle together and a "the dog" slip slides
@@ -137,8 +137,8 @@ what Claude or ChatGPT is doing every time it writes a word, with vastly more
 than a pile of slips.
 
 **BEN (VO):** Spread your cutouts out. Write down a starting word, find a slip
-with that word in its box, and write down its next word. Then find a slip that
-starts with that. The colours help you find the matches fast.
+with that word in its box, and write down its next word. [beat] Then find a slip
+that starts with that. [beat] The colours help you find the matches fast.
 
 _Visual: a spread of cutouts; a word writes, the slips whose box colour matches
 light, one lifts, its next word writes, the next match lights._

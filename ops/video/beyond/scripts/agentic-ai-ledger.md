@@ -64,7 +64,8 @@ _Reads:_ 1. a tool call is in the counts like any other word; 2. some rows call
 it more than others.
 
 **BEN (VO):** Say you've written "here comes the dog". The row for "dog": two
-red for a full stop, two blue for "runs". Draw one. Red. Full stop. Stop.
+red for a full stop, two blue for "runs". [beat] Draw one. Red. Full stop.
+[beat] Stop.
 
 _Visual: the strip reads "here comes the dog"; the row for "dog" lights and four
 counters drop into the cup. A red one comes out, the full stop box lights gold,
@@ -83,7 +84,7 @@ _Reads:_ 1. the tool is a text message; 2. it sends the sentence so far; 3. it
 goes to three people at once.
 
 **BEN (VO):** The first reply back is your tool result. Write the whole thing
-down, then the full stop you drew. Then carry on, from the full stop.
+down, then the full stop you drew. [beat] Then carry on, from the full stop.
 
 _Visual: the reply's words slide off the phone onto the strip after "here comes
 the dog", the full stop follows them, and the row for full stop lights; its

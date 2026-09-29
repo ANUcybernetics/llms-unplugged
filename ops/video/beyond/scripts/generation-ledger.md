@@ -59,8 +59,8 @@ postie, dog in red, blue, green and yellow boxes, each with its marks._
 _Reads:_ 1. a row is a word; 2. its boxes are what came next and how often.
 
 **BEN (VO):** Every box has a colour, always in the same order: red, blue,
-green, yellow. On this row, red means "magpie". On another row, red means
-something else.
+green, yellow. [beat] On this row, red means "magpie". [beat] On another row,
+red means something else.
 
 _Visual: a red counter slides in beside the row for "the" and the red box
 lights: magpie. The counter slides down to the row for "it", and its red box
@@ -70,8 +70,8 @@ _Reads:_ 1. the boxes run red, blue, green, yellow; 2. a colour names a place in
 the row, not a word.
 
 **USHINI (VO):** A story starts after a full stop, so find the row for full
-stop. Fill a cup with one counter for every mark: seven red for "it", four blue
-for "here", three green, three yellow.
+stop. Fill a cup with one counter for every mark: [beat] seven red for "it",
+four blue for "here", three green, three yellow.
 
 _Visual: the row for full stop slides out of the sheet. Its marks lift off box
 by box, red first, and become counters that drop into a cup seen from above:
@@ -80,8 +80,8 @@ seven red, four blue, three green, three yellow._
 _Reads:_ 1. start from the full stop's row; 2. each mark becomes one counter in
 its box's colour; 3. "it" has the most counters.
 
-**BEN (VO):** Seventeen counters. Now draw one without looking. Red: "it". Write
-it down, tip the cup back, and go to the row for "it".
+**BEN (VO):** Seventeen counters. [beat] Now draw one without looking. Red:
+"it". [beat] Write it down, tip the cup back, and go to the row for "it".
 
 _Visual: a red counter slides out of the cup; the red box on the row lights and
 "it" writes onto a strip of paper at the bottom of the desk. The cup empties.
@@ -91,7 +91,7 @@ _Reads:_ 1. the counter's colour names the next word; 2. that word is written
 down; 3. the cup empties and its row is next.
 
 **USHINI (VO):** The row for "it": three red, three blue, three green, one
-yellow. Red again: "sits".
+yellow. [beat] Red again: "sits".
 
 _Visual: ten counters drop into the cup; a red one comes out and "sits" writes
 onto the strip._
@@ -106,9 +106,9 @@ and "on" and "the" write straight onto the strip._
 
 _Reads:_ 1. a row with one word needs no draw.
 
-**USHINI (VO):** The row for "the" fills the cup with all four colours. Yellow:
-"dog". And after "dog", two red for a full stop, two blue for "runs". Red: full
-stop.
+**USHINI (VO):** The row for "the" fills the cup with all four colours. [beat]
+Yellow: "dog". [beat] And after "dog", two red for a full stop, two blue for
+"runs". [beat] Red: full stop.
 
 _Visual: nineteen counters in four colours drop into the cup; a yellow one comes
 out and "dog" writes on. Then four counters, two red, two blue; a red one comes
@@ -161,9 +161,9 @@ short run looks nothing like the book's counts; 3. a long run matches them.
 what Claude or ChatGPT is doing every time it writes a word, with vastly more
 counts than this.
 
-**BEN (VO):** Four jobs in your group. A reader finds the row. A filler puts one
-counter per mark in the cup. A drawer pulls one out. And a writer writes the
-word down. Tip the cup back every time.
+**BEN (VO):** Four jobs in your group. [beat] A reader finds the row. [beat] A
+filler puts one counter per mark in the cup. [beat] A drawer pulls one out.
+[beat] And a writer writes the word down. Tip the cup back every time.
 
 _Visual: the ledger sheets fanned, the cup, the counter tub, the paper strip:
 each lights in turn as its job is named. The cup tips back into the tub._

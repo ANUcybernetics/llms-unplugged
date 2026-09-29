@@ -49,7 +49,8 @@ _Reads note:_ four quarters is busy for one line; the kits could arrive one per
 sentence instead, which the line's rhythm already allows.
 
 **BEN (VO):** Take one row: the word "the", from a picture book called _The
-magpie_. On a grid, it's tallies. On a ledger, it's marks in coloured boxes.
+magpie_. On a grid, it's tallies. [beat] On a ledger, it's marks in coloured
+boxes. [beat]
 
 _Visual: the quarters slide away and the row for "the" lifts out of the grid to
 the centre: magpie 5, fence 6, postie 4, dog 4 in tallies. The tallies redraw as
@@ -59,8 +60,8 @@ holding their places left to right._
 _Reads:_ 1. this is one row of the model; 2. the grid and the ledger hold the
 same four counts.
 
-**USHINI (VO):** In a cup, it's counters. In a pile of cutouts, it's slips of
-paper. Or it's just four numbers.
+**USHINI (VO):** In a cup, it's counters. [beat] In a pile of cutouts, it's
+slips of paper. [beat] Or it's just four numbers.
 
 _Visual: the marks lift off as counters (five red, six blue, four green, four
 yellow) and drop into four columns; the counters flatten into cutout slips, one
@@ -87,7 +88,7 @@ _Reads:_ 1. a count out of the row's total is a chance; 2. bigger count, bigger
 share.
 
 **USHINI (VO):** So watch one sentence switch kits at every word. Start after a
-full stop, with a cup: seventeen counters. Draw red: "it".
+full stop, with a cup: seventeen counters. [beat] Draw red: "it".
 
 _Visual: the row for full stop drops seventeen counters into a cup; a red one
 slides out and "it" writes onto a strip of paper at the bottom of the desk._
@@ -95,7 +96,8 @@ slides out and "it" writes onto a strip of paper at the bottom of the desk._
 _Reads:_ 1. the full stop's row, as a cup; 2. the draw gives "it".
 
 **BEN (VO):** The row for "it" has ten marks, so give each mark a face of a
-ten-sided die. Roll a one: "sits". Then "on", and "the", with no choice at all.
+ten-sided die. [beat] Roll a one: "sits". [beat] Then "on", and "the", with no
+choice at all.
 
 _Visual: the row for "it" (sits 3, watches 3, goes 3, is 1): its ten marks
 become ten die faces in a strip, banded in grid column order as the slides' dice
@@ -106,8 +108,8 @@ straight on, each row lighting briefly with its single follower._
 _Reads:_ 1. each mark becomes a face of the die; 2. the roll lands in a band; 3.
 a row with one word needs no draw.
 
-**USHINI (VO):** The row for "the", as nineteen slips. Shuffle, pull one out:
-"dog". And a full stop to finish.
+**USHINI (VO):** The row for "the", as nineteen slips. [beat] Shuffle, pull one
+out: "dog". [beat] And a full stop to finish.
 
 _Visual: the row for "the" becomes nineteen paper slips in four piles; the piles
 shuffle together, one slip slides out and turns over: "the dog". Then the full

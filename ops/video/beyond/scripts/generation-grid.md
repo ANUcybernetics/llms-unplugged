@@ -62,9 +62,9 @@ its four tallied boxes spread wide._
 _Reads:_ 1. start from the full stop's row; 2. "it" has the most tallies.
 
 **USHINI (VO):** Now pick the next word at random, but fairly. Share the ten
-faces of a die across the row by its tallies. Seventeen tallies won't split into
-ten exactly, so share them as fairly as you can: "it" gets four faces, the
-others two each.
+faces of a die across the row by its tallies. [beat] Seventeen tallies won't
+split into ten exactly, so share them as fairly as you can: "it" gets four
+faces, the others two each. [beat]
 
 _Visual: under the row a strip of ten die faces, 0 to 9, bands drawing in left
 to right as they're named: it 0--3, here 4--5, down 6--7, swoop 8--9._
@@ -76,8 +76,8 @@ _Reads note:_ rounding seventeen tallies onto ten faces is a wrinkle the slides
 never meet (the hop joey hop rows divide evenly); the alternative is to start
 this walk on a row that divides and keep the rounding for the ending.
 
-**BEN (VO):** Roll a two. It's in the band for "it". Write it down, and go to
-the row for "it".
+**BEN (VO):** Roll a two. [beat] It's in the band for "it". [beat] Write it
+down, and go to the row for "it".
 
 _Visual: a d10 face lands on 2; the "it" band lights and "it" writes onto a
 strip of paper at the bottom of the desk. The row for "it" lights on the grid._
@@ -86,7 +86,7 @@ _Reads:_ 1. the roll lands in a band; 2. that band's word is written down; 3.
 its row is next.
 
 **USHINI (VO):** The row for "it" has exactly ten tallies, so every tally gets a
-face of its own. Roll a one: "sits".
+face of its own. [beat] Roll a one: "sits".
 
 _Visual: the row for "it" (is 1, sits 3, watches 3, goes 3): its ten tallies
 drop one to a face, is 0, sits 1--3, watches 4--6, goes 7--9. A face lands on 1;
@@ -102,9 +102,9 @@ tallied box, and "on" and "the" write straight onto the strip._
 
 _Reads:_ 1. a row with one word needs no roll.
 
-**USHINI (VO):** The row for "the" shares its faces four ways. Roll a nine:
-"dog". And after "dog", a full stop or "runs", five faces each. Roll a three:
-full stop.
+**USHINI (VO):** The row for "the" shares its faces four ways. [beat] Roll a
+nine: "dog". [beat] And after "dog", a full stop or "runs", five faces each.
+[beat] Roll a three: full stop.
 
 _Visual: the row for "the" gets its bands (magpie 0--2, fence 3--5, postie 6--7,
 dog 8--9), a face lands on 9 and "dog" writes on. The row for "dog" splits the
@@ -161,8 +161,9 @@ Claude or ChatGPT is doing every time it writes a word, with vastly more counts
 than this.
 
 **BEN (VO):** On your grid: pick any starting word with a row and write it down.
-Share the die's faces across its row by the tallies, roll, and write down the
-word you land on. Then find its row. No row? Pick a new word and carry on.
+[beat] Share the die's faces across its row by the tallies, roll, and write down
+the word you land on. [beat] Then find its row. No row? Pick a new word and
+carry on.
 
 _Visual: a hand-filled grid; a word writes on the strip, its row lights, the
 row's tallies become a strip of die faces, a face lands, the next word writes.

@@ -52,9 +52,9 @@ off into tiles of their own, drawn as the kit's filled symbol tiles._
 _Reads:_ 1. everything is lowercase; 2. full stops are words, with their own
 tiles.
 
-**USHINI (VO):** Now read it two words at a time. The first word gets a row. The
-second gets a column. Put a tally where they cross. Then slide along by one, and
-do it again.
+**USHINI (VO):** Now read it two words at a time. The first word gets a row.
+[beat] The second gets a column. [beat] Put a tally where they cross. [beat]
+Then slide along by one, and do it again.
 
 _Visual: a gold bracket over "the magpie". Beside the tiles a blank grid sheet:
 "the" writes onto the first row header and the first column header at once, then
