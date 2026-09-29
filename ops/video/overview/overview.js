@@ -62,17 +62,14 @@ const build = (tl, S, T) => {
     KIT.set(d, { x, y });
     return d;
   };
+  // the kit's line pencil in a layer of its own, so place() can move it
   const pencil = (parent, x, y, len = 520) => {
     const L = K.layer(parent, x, y);
-    const s = K.svg("svg", { width: len + 40, height: 40, viewBox: `0 0 ${len + 40} 40` }, L);
-    K.svg("polygon", { points: "0 20 36 4 36 36", fill: "#e9dcc5" }, s);
-    K.svg("polygon", { points: "0 20 12 15 12 25", fill: "#1a1a1a" }, s);
-    K.svg("rect", { x: 36, y: 4, width: len - 40, height: 32, fill: "var(--gold)" }, s);
-    K.svg("rect", { x: len - 4, y: 4, width: 44, height: 32, fill: "#d98c8c" }, s);
-    KIT.set(L, { rotation: -6, transformOrigin: "0 50%" });
+    K.pencil(L, { x: 0, y: 20, len: len + 40, angle: -6 });
     return L;
   };
-  // a chat window: a dark panel with one reply bubble whose words flow inline
+  // a chat window in line: a white-ruled panel with one reply bubble, ruled in
+  // gold, whose words flow inline
   const chat = (parent, words, { w = 1100, h = 420, size = 40 } = {}) => {
     const panel = K.el(
       "div",
@@ -83,8 +80,7 @@ const build = (tl, S, T) => {
           top: 0,
           width: `${w}px`,
           height: `${h}px`,
-          background: "#161616",
-          border: "1px solid rgb(255 255 255 / 10%)",
+          border: "2px solid rgb(255 255 255 / 92%)",
         },
       },
       parent,
@@ -97,8 +93,8 @@ const build = (tl, S, T) => {
           left: "40px",
           top: "34px",
           width: "56px",
-          height: "14px",
-          background: "rgb(255 255 255 / 18%)",
+          height: "0",
+          borderTop: "2px solid rgb(255 255 255 / 40%)",
         },
       },
       panel,
@@ -112,7 +108,7 @@ const build = (tl, S, T) => {
           right: "40px",
           top: "84px",
           padding: "28px 34px",
-          background: "#2b2b2b",
+          border: "2px solid var(--gold-2)",
           fontSize: `${size}px`,
           lineHeight: 1.35,
           color: "var(--text)",
@@ -197,23 +193,24 @@ const build = (tl, S, T) => {
   // ---------------------------------------------------------------- line 3: the desk, object by object
   const desk = K.layer(scene, 0, 0);
   KIT.set(desk, { opacity: 0 });
-  const book = K.bookPage(desk, ["The magpie"], { x: 0, y: 0, w: 460, h: 300, size: 64, pad: 48 });
-  book.el.style.textAlign = "center";
-  book.el.style.paddingTop = "110px";
-  K.el(
-    "div",
+  // the picture book's cover: a line rectangle, the title in the serif, the magpie
+  const book = { el: K.layer(desk, 0, 0) };
+  const coverSvg = K.svg("svg", { width: 460, height: 300, viewBox: "0 0 460 300" }, book.el);
+  const coverRect = K.svg("rect", { x: 1, y: 1, width: 458, height: 298, class: "line" }, coverSvg);
+  K.svg(
+    "text",
     {
-      style: {
-        position: "absolute",
-        left: "48px",
-        right: "48px",
-        top: "205px",
-        height: "4px",
-        background: "var(--gold)",
-      },
+      x: 230,
+      y: 262,
+      "text-anchor": "middle",
+      "font-size": 60,
+      "font-family": "var(--font-tok)",
+      fill: "var(--text)",
+      text: "The magpie",
     },
-    book.el,
+    coverSvg,
   );
+  K.outline(book.el, "magpie", { x: 150, y: 28, w: 160, h: 170, flip: true });
   const gridD = K.grid(desk, bg, { x: 0, y: 0, cell: 70, head: 100 });
   const pencilD = pencil(desk, 0, 0, 460);
   const dieD = K.die(desk, { x: 0, y: 0, size: 150, face: 7 });
@@ -278,6 +275,7 @@ const build = (tl, S, T) => {
   slideIn(dieD.el, T.word(3, "dice"), [0, -200]);
   slideIn(cupD.el, T.word(3, "dice") + 0.35, [0, 200]);
   slideIn(sheetD.el, T.word(3, "dice") + 0.6, [200, 100]);
+  K.glint(tl, coverRect, { from: T.word(3, "picture") + 0.7, to: T.start(4), rest: 99 });
 
   // ---------------------------------------------------------------- line 4: the wordmark over the desk
   const g4 = group(1400, 260);
@@ -461,6 +459,14 @@ const build = (tl, S, T) => {
       k6++;
     }
   });
+  K.glint(tl, d6.outline, { from: T.word(6, "roll") + 0.6, to: T.start(7), lap: 2.8, rest: 99 });
+  K.glint(tl, cup6.rim, {
+    kind: "gap",
+    from: T.word(6, "ledger") + 0.3,
+    to: T.start(7),
+    lap: 2.4,
+    rest: 99,
+  });
   tl.fromTo(
     outC.el,
     { opacity: 0, scale: 0.6 },
@@ -492,38 +498,25 @@ const build = (tl, S, T) => {
   pg7.highlight(pg7.lineBox(["golden"]));
   tl.set(pg7.hl, { opacity: 1 }, 0);
   KIT.set(pg7.el, { opacity: 0 });
-  const phone = K.el(
-    "div",
-    {
-      style: {
-        position: "absolute",
-        left: "260px",
-        top: "20px",
-        width: "380px",
-        height: "440px",
-        background: "#2a2a2a",
-        border: "2px solid rgb(255 255 255 / 12%)",
-      },
-    },
-    g7b.el,
-  );
+  // the phone in line (its body spans y 20-500), the reply as a gold-ruled bubble
+  const phone = K.icon(g7b.el, "smartphone-device", { x: 90, y: -100, size: 720 });
   const bubble7 = K.el(
     "div",
     {
       text: "out on the verandah",
       style: {
         position: "absolute",
-        left: "28px",
-        top: "300px",
-        padding: "16px 22px",
-        background: "var(--gold)",
-        color: "#111",
-        fontSize: "28px",
+        left: "326px",
+        top: "270px",
+        padding: "10px 14px",
+        border: "2px solid var(--gold-2)",
+        color: "var(--text)",
+        fontSize: "24px",
         fontFamily: "var(--font-ui)",
         whiteSpace: "nowrap",
       },
     },
-    phone,
+    g7b.el,
   );
   const p7 = K.paper(g7b.el, { x: 20, y: 540, w: 860, h: 120 });
   const pl7 = K.pencilLine(p7.el, ["the", "cat", "sat"], { size: 46, y: 34 });
@@ -563,6 +556,14 @@ const build = (tl, S, T) => {
   tl.to(bubble7, { x: 40, y: 250 }, T.word(7, "help") + 0.7, { dur: 0.6, ease: "in-out-cubic" });
   tl.to(bubble7, { opacity: 0 }, T.word(7, "help") + 1.25, { dur: 0.2 });
   tl.to(reply7, { opacity: 1 }, T.word(7, "help") + 1.3, { dur: 0.2 });
+  // once the butchers paper has been written
+  K.glint(tl, phone.paths[1], {
+    kind: "gap",
+    from: T.word(7, "story") + 2.0,
+    to: T.start(8),
+    lap: 1.8,
+    rest: 99,
+  });
   [...bpl1.words, ...bpl2.words, ...bpl3.words].forEach((w, i) =>
     K.write(tl, w, T.word(7, "story") - 0.8 + i * 0.16),
   );
@@ -691,18 +692,8 @@ const build = (tl, S, T) => {
   });
   const icon = { el: K.layer(g9b.el, 20, 90) };
   const iconSvg = K.svg("svg", { width: 120, height: 120, viewBox: "0 0 120 120" }, icon.el);
-  K.svg(
-    "path",
-    {
-      d: "M 60 14 A 46 46 0 1 1 18 44",
-      fill: "none",
-      stroke: "var(--gold)",
-      "stroke-width": 9,
-      "stroke-linecap": "round",
-    },
-    iconSvg,
-  );
-  K.svg("polygon", { points: "6 30 30 34 14 54", fill: "var(--gold)" }, iconSvg);
+  K.svg("path", { d: "M 60 14 A 46 46 0 1 1 18 44", class: "line gold" }, iconSvg);
+  K.svg("path", { d: "M 8 43 L 22 33.5 L 26 50", class: "line gold" }, iconSvg);
   KIT.set(icon.el, { opacity: 0 });
   fit(g9b, P ? { x: A.x, y: A.y + 800, w: A.w, h: 300 } : { x: A.x, y: A.y + 520, w: A.w, h: 300 });
   during(g9b.el, T.word(9, "Markov") - 1.0, T.start(10));
@@ -910,11 +901,7 @@ const build = (tl, S, T) => {
     { width: 150, height: 150, viewBox: "0 0 100 100" },
     K.layer(g12.el, 625, 620),
   );
-  K.svg(
-    "circle",
-    { cx: 50, cy: 50, r: 44, fill: "none", stroke: "var(--gold)", "stroke-width": 8 },
-    cc,
-  );
+  const ccRing = K.svg("circle", { cx: 50, cy: 50, r: 44, class: "line gold" }, cc);
   K.svg(
     "text",
     {
@@ -937,4 +924,6 @@ const build = (tl, S, T) => {
   K.appear(tl, url, T.word(12, "llmsunplugged.org") - 0.2, { y: 16 });
   list.forEach((d, i) => K.appear(tl, d, T.word(12, "video") + i * 0.12, { y: 12 }));
   K.appear(tl, ccL, T.word(12, "Creative"), { scale: 0.7, y: 0 });
+  // once the video list is in, the badge's ring glints to the end
+  K.glint(tl, ccRing, { kind: "gap", from: T.word(12, "video") + 1.5 });
 };

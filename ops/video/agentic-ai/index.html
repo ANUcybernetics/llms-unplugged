@@ -9,16 +9,16 @@
     <script type="module" src="kit/kit.js"></script>
     <style>
       html, body { width: 1920px; height: 1080px; }
-      /* inline helpers this composition needs that the kit doesn't have: a
-         phone (screen, message/reply bubbles, contact rows) and a punctuation
-         token badge. Plain divs, same conventions as kit.css (paper/pencil). */
-      .phone-back { position: absolute; inset: 0; background: #2b2b2b; border: 4px solid #4a4a4a; }
-      .phone-screen { position: absolute; inset: 8px; background: #eceae4; opacity: 0; }
-      .bubble { position: absolute; padding: 14px 18px; font-family: var(--font-ui); font-size: 24px; line-height: 1.32; }
-      .bubble.out { background: var(--gold); color: #241a04; }
-      .bubble.in { background: #ffffff; color: var(--ink); border: 1px solid rgb(0 0 0 / 12%); }
-      .contact-row { position: absolute; height: 56px; background: #ffffff; border: 1px solid rgb(0 0 0 / 12%); opacity: 0; }
-      .contact-row .avatar { position: absolute; left: 9px; top: 9px; width: 38px; height: 38px; border-radius: 50%; background: #b9b2a4; }
+      /* inline helpers this composition needs that the kit doesn't have: the
+         phone's screen contents (message/reply bubbles, contact rows) in line,
+         as STYLE.md draws props that aren't paper, and a punctuation token
+         badge. The bubbles hold whole sentences, so they are square-cornered
+         line panels rather than chat-bubble icons. */
+      .phone-screen { position: absolute; inset: 8px; opacity: 0; }
+      .bubble { position: absolute; padding: 14px 18px; font-family: var(--font-ui); font-size: 24px; line-height: 1.32; color: var(--text); }
+      .bubble.out { border: 2px solid rgb(255 255 255 / 92%); }
+      .bubble.in { border: 2px solid var(--gold-2); }
+      .contact-row { position: absolute; height: 56px; border: 2px solid rgb(255 255 255 / 40%); opacity: 0; }
       .stop-badge { position: absolute; left: 0; top: 0; border: 4px solid var(--ink); background: var(--paper); display: flex; align-items: center; justify-content: center; font-family: var(--font-tok); font-weight: 700; font-size: 52px; color: var(--ink); }
       .fly-word { position: absolute; left: 0; top: 0; font-family: var(--font-tok); font-style: italic; font-size: 54px; color: var(--pencil); white-space: nowrap; }
     </style>
@@ -130,7 +130,10 @@
         // the phone: face-down back, a screen, a message bubble, three
         // contact rows, a reply bubble. Starts off-canvas, slides in.
         const phone = K.layer(scene, S.W + 60, PHONE.y);
-        const phoneBack = K.el("div", { class: "phone-back", style: { width: `${PHONE.w}px`, height: `${PHONE.h}px` } }, phone);
+        // the body: a plain line outline with a faint speaker slot at the top
+        const phoneSvg = K.svg("svg", { width: PHONE.w, height: PHONE.h, viewBox: `0 0 ${PHONE.w} ${PHONE.h}`, style: "position: absolute; left: 0; top: 0" }, phone);
+        const phoneBody = K.svg("rect", { x: 1, y: 1, width: PHONE.w - 2, height: PHONE.h - 2, class: "line" }, phoneSvg);
+        K.svg("path", { d: `M${PHONE.w / 2 - 30} ${PHONE.h - 18} L${PHONE.w / 2 + 30} ${PHONE.h - 18}`, class: "line faint" }, phoneSvg);
         const phoneScreen = K.el("div", { class: "phone-screen" }, phone);
         const msgBubble = K.el("div", { class: "bubble out", style: { left: "20px", top: "20px", width: "380px" } }, phoneScreen);
         const msgWords = ["What", "comes", "next?", '"the', "cat", 'sat…"'].map((w) => {
@@ -140,7 +143,7 @@
         });
         const contactRows = [0, 1, 2].map((i) => {
           const r = K.el("div", { class: "contact-row", style: { left: "20px", top: `${130 + i * 66}px`, width: "380px" } }, phoneScreen);
-          K.el("div", { class: "avatar" }, r);
+          K.icon(r, "user", { x: 9, y: 7, size: 38 });
           return r;
         });
         const replyBubble = K.el("div", { class: "bubble in", style: { left: "20px", top: "334px", width: "380px" } }, phoneScreen);
@@ -161,12 +164,22 @@
         // stage to itself once the desk fades away (lines 7-8).
         const loopIntro = K.loop(scene, { ...LOOP_INTRO, labels: LOOP_LABELS });
         const loopMain = K.loop(scene, { ...LOOP_MAIN, labels: LOOP_LABELS });
-        const iconG = K.svg("g", {}, loopMain.svg);
-        K.svg("circle", { cx: loopMain.cx, cy: loopMain.cy - 46, r: 26, fill: "var(--text)" }, iconG);
-        K.svg("rect", { x: loopMain.cx - 32, y: loopMain.cy - 18, width: 64, height: 82, fill: "var(--text)" }, iconG);
+        // the person at the loop's centre: iconoir's user in line, the head in
+        // gold (the harness person's head, STYLE.md); the icon is one path, so
+        // its head subpath is split out and drawn gold on its own
+        const ICON = 150;
+        const iconP = K.icon(loopMain.el, "user", { x: loopMain.cx - ICON / 2, y: loopMain.cy - ICON / 2 - 6, size: ICON });
+        const iconG = iconP.el;
+        iconP.paths[0].setAttribute("d", "M5 20v-1a7 7 0 0 1 7-7v0a7 7 0 0 1 7 7v1");
+        K.svg("path", { d: "M12 12a4 4 0 1 0 0-8a4 4 0 0 0 0 8", fill: "none", stroke: "var(--gold-2)", "stroke-linecap": "round" }, iconP.svg);
         KIT.set(iconG, { opacity: 0 });
+        // the hands reach from just outside the figure to each station
+        const handFrom = (st) => {
+          const dx = st.x - loopMain.cx, dy = st.y - loopMain.cy, d = Math.hypot(dx, dy), r0 = ICON * 0.55;
+          return { x: loopMain.cx + (dx / d) * r0, y: loopMain.cy + (dy / d) * r0 };
+        };
         const hands = K.prepDraw(
-          loopMain.stations.map((st) => K.svg("line", { x1: loopMain.cx, y1: loopMain.cy, x2: st.x, y2: st.y, stroke: "var(--gold)", "stroke-width": 6, "stroke-linecap": "round" }, loopMain.svg)),
+          loopMain.stations.map((st) => { const f = handFrom(st); return K.svg("line", { x1: f.x, y1: f.y, x2: st.x, y2: st.y, stroke: "var(--gold)", "stroke-width": 4, "stroke-linecap": "round" }, loopMain.svg); }),
         );
         const lightStation = (i, t, dur = 0.3) => {
           tl.to([loopMain.stations[i].dot, loopMain.stations[i].text], { opacity: 1 }, t, { dur: dur });
@@ -216,7 +229,6 @@
         // the phone slides into frame as "That's a tool call" lands
         const tToolCall = T.word(2, "tool");
         tl.to(phone, { x: PHONE.x }, tToolCall - 0.5, { dur: 0.9, ease: "out-cubic" });
-        tl.to(phoneBack, { opacity: 0 }, tToolCall + 0.5, { dur: 0.4 });
         tl.to(phoneScreen, { opacity: 1 }, tToolCall + 0.5, { dur: 0.4 });
 
         // ============================================================ line 3
@@ -331,6 +343,14 @@
 
         // ============================================================ line 9 (TC)
         // hold: the loop keeps turning quietly to the end.
+
+        // glints, each bounded to its object's time on screen: the die on the
+        // held desk before anything rolls, the phone's body while it waits for
+        // the reply, and the big loop (a gap in the gold) once the person is out
+        K.glint(tl, die.outline, { kind: "gold", phase: 0.6, from: 0.2, to: T.word(2, "rolling") - 0.3 });
+        K.glint(tl, die.outline, { kind: "gold", phase: 1.5, rest: 3.4, from: T.start(6), to: T.word(6, "fill") - 0.2 });
+        K.glint(tl, phoneBody, { kind: "gold", phase: 0.3, lap: 3.6, from: tSendComplete + 1.0, to: tReply - 0.2 });
+        K.glint(tl, loopMain.path, { kind: "gap", phase: 1.2, lap: 3.6, rest: 3.0, from: tOut, to: T.duration });
       };
       KIT.ready(build).then(({ tl }) => {
         window.__timelines["agentic-ai"] = tl;

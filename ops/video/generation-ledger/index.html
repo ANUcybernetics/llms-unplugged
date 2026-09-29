@@ -59,22 +59,20 @@
         const makeTub = (parent, { x = 0, y = 0, w = 260, h = 170 } = {}) => {
           const g = K.layer(parent, x, y);
           const s = K.svg("svg", { width: w, height: h, viewBox: `0 0 ${w} ${h}` }, g);
-          K.svg("rect", { x: 6, y: 6, width: w - 12, height: h - 12, fill: "#efe6d8", stroke: "rgb(0 0 0 / 25%)", "stroke-width": 3 }, s);
+          const outline = K.svg("rect", { x: 6, y: 6, width: w - 12, height: h - 12, class: "line" }, s);
           const seed = [
             ["red", 0.24, 0.4], ["red", 0.38, 0.64],
             ["blue", 0.5, 0.36], ["blue", 0.6, 0.62],
             ["green", 0.72, 0.4], ["yellow", 0.82, 0.62],
           ];
           seed.forEach(([c, fx, fy]) => K.svg("circle", { cx: fx * w, cy: fy * h, r: 15, fill: K.COUNTER[c], stroke: "rgb(0 0 0 / 30%)", "stroke-width": 2 }, s));
-          return { el: g, w, h };
+          return { el: g, w, h, outline };
         };
+        // the kit's line-art pencil, point at (0, 20) of a 640 x 40 box lying to
+        // the right, so the desk/main transforms (origin at the point) still apply
         const makePencil = (parent) => {
           const g = K.layer(parent, 0, 0);
-          const s = K.svg("svg", { width: 640, height: 40, viewBox: "0 0 640 40" }, g);
-          K.svg("polygon", { points: "0 20 36 4 36 36", fill: "#e9dcc5" }, s);
-          K.svg("polygon", { points: "0 20 12 15 12 25", fill: "#1a1a1a" }, s);
-          K.svg("rect", { x: 36, y: 4, width: 560, height: 32, fill: "var(--gold)" }, s);
-          K.svg("rect", { x: 596, y: 4, width: 44, height: 32, fill: "#d98c8c" }, s);
+          K.pencil(g, { x: 0, y: 20, len: 640, angle: 0, width: 32 });
           return g;
         };
 
@@ -130,7 +128,7 @@
         const pencilDesk = makePencil(scene);
         const PENCIL_DESK = { x: A.x + 30, y: A.y + 420, scale: 0.6, rot: -6 };
         const PENCIL_MAIN = { x: A.cx - 750 - 100, y: A.y + 630, scale: 0.6, rot: -6 };
-        KIT.set(pencilDesk, { x: PENCIL_DESK.x, y: PENCIL_DESK.y, scale: PENCIL_DESK.scale, rotation: PENCIL_DESK.rot, opacity: 0, transformOrigin: "0 50%" });
+        KIT.set(pencilDesk, { x: PENCIL_DESK.x, y: PENCIL_DESK.y, scale: PENCIL_DESK.scale, rotation: PENCIL_DESK.rot, opacity: 0, transformOrigin: "0px 20px" });
 
         const GEN_WORDS = ["it", "sits", "on", "the", "fence", ".", "Here", "comes", "the", "magpie", "."];
         const paperL = K.layer(scene, 0, 0);
@@ -418,6 +416,14 @@
         tl.set(pencilDesk, { x: PENCIL_DESK.x, y: PENCIL_DESK.y, scale: PENCIL_DESK.scale, rotation: PENCIL_DESK.rot }, t10 + 0.05);
         setFocus(tl, null, t10, 0.3);
         tl.to([sheets[0].el, sheets[1].el, sheets[2].el, cup.el, tub.el, pencilDesk, paperL], { opacity: 1 }, t10 + 0.3, { dur: 0.6, stagger: 0.08 });
+
+        // ---- glints: the cup's rim and the tub on the held desk, and the rim
+        // while the full cup holds still (line 6)
+        K.glint(tl, cup.rim, { phase: 0.6, from: 0.8, to: t1cut });
+        K.glint(tl, tub.outline, { kind: "gap", phase: 2.2, from: 0.8, to: t1cut });
+        K.glint(tl, cup.rim, { phase: 0.3, from: T.word(6, "Seventeen") + 0.5, to: T.word(7, "Red") - 0.3 });
+        K.glint(tl, cup.rim, { phase: 0.6, from: t10 + 0.9, to: T.duration });
+        K.glint(tl, tub.outline, { kind: "gap", phase: 2.2, from: t10 + 0.9, to: T.duration });
       };
       KIT.ready(build).then(({ tl }) => {
         window.__timelines["generation-ledger"] = tl;

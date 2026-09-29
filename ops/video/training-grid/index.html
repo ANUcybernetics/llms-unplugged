@@ -35,17 +35,16 @@
         const cam = K.camera(grid.el, S);
         // headers appear as the words are met
         KIT.set([...grid.rowHead, ...grid.colHead], { opacity: 0 });
-        // a pencil on the desk (a flat top-down pencil in gold and paper)
-        const pencilL = K.layer(scene, A.x + 40, A.y + 400);
-        const pencilSvg = K.svg("svg", { width: 640, height: 40, viewBox: "0 0 640 40" }, pencilL);
-        K.svg("polygon", { points: "0 20 36 4 36 36", fill: "#e9dcc5" }, pencilSvg);
-        K.svg("polygon", { points: "0 20 12 15 12 25", fill: "#1a1a1a" }, pencilSvg);
-        K.svg("rect", { x: 36, y: 4, width: 560, height: 32, fill: "var(--gold)" }, pencilSvg);
-        K.svg("rect", { x: 596, y: 4, width: 44, height: 32, fill: "#d98c8c" }, pencilSvg);
-        KIT.set(pencilL, { rotation: -6, transformOrigin: "0 50%" });
+        // a pencil on the desk, in line, its point at the left
+        const pen = K.pencil(scene, { x: A.x + 40, y: A.y + 420, len: 640, angle: -6, width: 32 });
+        const pencilL = pen.el;
 
         // ---- line 0 (TC): the desk, held. Everything is already in place.
         K.appear(tl, [book.el, grid.el, pencilL], 0.2, { stagger: 0.15 });
+        // the pencil's shaft glints while the desk holds, and again at the close
+        const shaft = pencilL.querySelector("path");
+        K.glint(tl, shaft, { phase: 1.6, from: 0, to: T.start(1) });
+        K.glint(tl, shaft, { phase: 1.2, from: T.start(7), to: END });
 
         // ---- line 1: the book is the training data; its line lifts off as tiles
         const t1 = T.start(1);

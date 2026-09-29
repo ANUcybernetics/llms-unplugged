@@ -72,11 +72,14 @@
         // brought back closed in line 5, then shrunk to a tile in line 6.
         const bookL = K.layer(scene, PX, PY);
         const bookSvg = K.svg("svg", { width: PW, height: PH, viewBox: `0 0 ${PW} ${PH}` }, bookL);
-        K.svg("rect", { x: 0, y: 0, width: PW, height: PH, fill: "var(--paper)" }, bookSvg);
-        K.svg("rect", { x: 0, y: 0, width: 16, height: PH, fill: "rgb(0 0 0 / 18%)" }, bookSvg); // a spine
+        // the cover in line: its border, a spine rule, and the title hidden
+        // under a gold-edged card (the part that matters). The desk fill only
+        // occludes, so the cover reads as dark among the page wall in line 6.
+        const cover = K.svg("rect", { x: 1, y: 1, width: PW - 2, height: PH - 2, class: "line", style: "fill: var(--desk)" }, bookSvg);
+        K.svg("path", { d: `M 22 1 L 22 ${PH - 1}`, class: "line faint" }, bookSvg);
         const cardW = PW * 0.56, cardH = PH * 0.2, cardX = (PW - cardW) / 2, cardY = PH * 0.14;
-        K.svg("rect", { x: cardX, y: cardY, width: cardW, height: cardH, fill: "#cdbb8e", stroke: "rgb(0 0 0 / 25%)", "stroke-width": 2 }, bookSvg);
-        K.svg("rect", { x: cardX + 30, y: cardY + cardH / 2 - 3, width: cardW - 60, height: 6, fill: "rgb(0 0 0 / 20%)" }, bookSvg);
+        K.svg("rect", { x: cardX, y: cardY, width: cardW, height: cardH, class: "line gold" }, bookSvg);
+        K.svg("path", { d: `M ${cardX + 30} ${cardY + cardH / 2} L ${cardX + cardW - 30} ${cardY + cardH / 2}`, class: "line faint" }, bookSvg);
 
         // ---- the real page: sheet 19 carries golden and grass; sheet 21 carries hollow
         const pg = K.pageImage(scene, "snowy-river", D.booklet.pageOf.golden, { x: PX, y: PY, w: PW, h: PH });
@@ -99,6 +102,7 @@
 
         // ==== line 0 (USHINI, TC): the desk, calm. The closed booklet sits there already. ====
         K.appear(tl, bookL, 0.2, { y: 20 });
+        K.glint(tl, cover, { phase: 1.4, lap: 3.6, from: 0, to: T.word(1, "booklet") });
 
         // ==== line 1 (BEN): the booklet opens; push in on the golden entry; "golden" is the starting word ====
         const t1open = T.word(1, "booklet");
@@ -136,6 +140,8 @@
         tl.to(dieA.el, { x: RX + 100 }, tSlide, { dur: 0.4, ease: "in-out-cubic" });
         tl.to(dieB.el, { x: RX + 200 }, tSlide, { dur: 0.4, ease: "in-out-cubic" });
         tl.to(label68, { opacity: 1 }, T.word(3, "sixty-eight"), { dur: 0.3 });
+        K.glint(tl, dieA.outline, { phase: 0.3, lap: 2.2, from: T.word(3, "six"), to: T.word(3, "mechanism,") });
+        K.glint(tl, dieB.outline, { kind: "gap", phase: 1.1, lap: 2.2, from: T.word(3, "six"), to: T.word(3, "mechanism,") });
         // grass's own thresholds: 23|is, 42|and (same line), then 56|, 61|burnt
         // 66|for (next line), then 70|grown (the roll of 68 stops here)
         const isBox = wordBox(pg, grassLine, 2);
@@ -214,10 +220,9 @@
         tl.set(bookL, { x: PX, y: PY, scale: 1, opacity: 0 }, t7 - 0.05);
         tl.set(pg.el, { opacity: 1 }, t7 - 0.05);
         pg.cut(tl, pg.fit(), t7 - 0.05);
-        const mugL = K.layer(scene, PX + PW + 40, PY + PH - 220);
-        const mugSvg = K.svg("svg", { width: 220, height: 220, viewBox: "0 0 220 220" }, mugL);
-        K.svg("circle", { cx: 90, cy: 110, r: 70, fill: "#efe6d8", stroke: "rgb(0 0 0 / 30%)", "stroke-width": 4 }, mugSvg);
-        K.svg("path", { d: "M160 80 a40 40 0 0 1 0 80", fill: "none", stroke: "rgb(0 0 0 / 30%)", "stroke-width": 14 }, mugSvg);
+        const mug = K.icon(scene, "coffee-cup", { x: PX + PW + 40, y: PY + PH - 220, size: 200 });
+        const mugL = mug.el;
+        K.glint(tl, mug.paths, { phase: 0.8, from: T.start(8), to: T.duration });
         KIT.set(mugL, { opacity: 0 });
         K.appear(tl, mugL, T.word(7, "kitchen"), { y: 14 });
         // a real, long threshold column elsewhere on the same page ("great",

@@ -16,8 +16,8 @@
          feel of each can be judged before the eight videos are built. The
          timing.json here is a stand-in with one caption per beat. -->
     <div id="stage" class="stage" data-aspect="landscape" data-composition-id="motion-test"
-         data-start="0" data-duration="43" data-width="1920" data-height="1080" data-fps="25">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="43" data-track-index="0"></div>
+         data-start="0" data-duration="49.00" data-width="1920" data-height="1080" data-fps="25">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="49.00" data-track-index="0"></div>
     </div>
     <script type="module">
       const build = (tl, S, T) => {
@@ -58,6 +58,7 @@
         const d1 = K.die(scene, { x: A.x + 1500, y: A.y + 320, size: 160 });
         K.land(tl, d1, 7, 10.8);
         st.light(tl, 7, 11.3);
+        K.glint(tl, d1.outline, { phase: 0.4, lap: 1.2, rest: 5, from: 10.8, to: 12.4 });
         K.vanish(tl, [st.el, d1.el], 12.4);
 
         // ---- beat 4: ledger row, cup, counters (12.5–19)
@@ -73,6 +74,7 @@
         });
         const cp = K.cup(scene, { x: A.x + 700, y: A.y + 250, r: 190 });
         K.appear(tl, cp.el, 13.0, { y: 30 });
+        K.glint(tl, cp.rim, { phase: 1.0, lap: 2.4, from: 13.0, to: 23.6 });
         const total = dotRow.followers.reduce((s, f) => s + f.count, 0);
         let k = 0;
         row.cells.forEach((c, i) => {
@@ -126,7 +128,34 @@
           tl.to(s.dot, { opacity: 1 }, 36.5 + i * 0.4, { dur: 0.2 });
           tl.to(s.text, { opacity: 1 }, 36.6 + i * 0.4, { dur: 0.3 });
         });
+        K.glint(tl, lp.path, { phase: 0.4, lap: 2.4, from: 38.7, to: 42.3 });
         K.vanish(tl, lp.el, 42.3);
+
+        // ---- beat 9: the line art (42.5–49): pencil, phone and bubble, mug,
+        // person, magpie, and the dog tipped along a gold swoop; each glints
+        const art = K.layer(scene, 0, 0);
+        KIT.set(art, { opacity: 0 });
+        const pen = K.pencil(art, { x: A.x + 40, y: A.y + 700, len: 420, angle: -20 });
+        const phone = K.icon(art, "smartphone-device", { x: A.x + 520, y: A.y + 60, size: 300 });
+        const bub = K.icon(art, "chat-bubble", { x: A.x + 800, y: A.y + 40, size: 180, gold: true });
+        // the bubble's text sits on its visual centre, the body circle at
+        // (12, 12) of the icon's 24-unit box; its typing dots make way
+        bub.paths[0].remove();
+        K.el("div", { class: "label", text: "hi", style: { left: `${A.x + 800 + 90 - 40}px`, top: `${A.y + 40 + 90 - 22}px`, width: "80px", textAlign: "center", fontSize: "36px", lineHeight: "44px", color: "var(--gold-2)" } }, art);
+        const mug = K.icon(art, "coffee-cup", { x: A.x + 560, y: A.y + 480, size: 220 });
+        const who = K.icon(art, "user", { x: A.x + 60, y: A.y + 80, size: 260, gold: true });
+        const mag = K.outline(art, "magpie", { x: A.x + 1040, y: A.y + 20, w: 300, h: 340, flip: true });
+        // the swoop: a gold arc with the dog tipped along it
+        const arcS = K.svg("svg", { width: 400, height: 300, viewBox: "0 0 400 300", overflow: "visible" }, K.layer(art, A.x + 1060, A.y + 330));
+        const arc = K.svg("path", { d: "M 0 0 Q 90 330 340 190", class: "line gold" }, arcS);
+        const dog = K.outline(art, "dog", { x: A.x + 1390, y: A.y + 420, w: 320, h: 240, rotate: -18 });
+        K.appear(tl, art, 42.6, { y: 20 });
+        K.glint(tl, pen.el.querySelector("path"), { phase: 0.4, lap: 2.2, from: 42.6 });
+        K.glint(tl, phone.paths, { kind: "gap", phase: 0.9, lap: 2.2, from: 42.6 });
+        K.glint(tl, who.paths, { phase: 1.4, lap: 2.2, from: 42.6 });
+        K.glint(tl, mag.paths, { phase: 1.9, lap: 2.2, from: 42.6 });
+        K.glint(tl, dog.paths, { kind: "gap", phase: 2.4, lap: 2.2, from: 42.6 });
+        K.glint(tl, mug.paths, { phase: 2.9, lap: 2.2, from: 42.6 });
       };
       KIT.ready(build).then(({ tl }) => {
         window.__timelines["motion-test"] = tl;

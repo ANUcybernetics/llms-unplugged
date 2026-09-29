@@ -75,14 +75,16 @@
         const tables = NAMES.map((name, i) => {
           const cx = TABLE_CX[i], cy = TABLE_CY, size = TABLE_SIZE;
           const boxX = cx - size / 2, boxY = cy - size / 2;
-          const el = K.el("div", { style: { position: "absolute", left: 0, top: 0, width: `${size}px`, height: `${size}px`, borderRadius: "50%", background: "#2c2723", boxShadow: "inset 0 0 0 3px rgb(255 255 255 / 10%)" } }, scene);
-          KIT.set(el, { x: boxX, y: boxY });
+          // a table seen from above, in line (STYLE.md: props that aren't paper are line drawings)
+          const el = K.layer(scene, boxX, boxY);
+          const tsvg = K.svg("svg", { width: size, height: size, viewBox: `0 0 ${size} ${size}`, overflow: "visible" }, el);
+          const top = K.svg("circle", { cx: size / 2, cy: size / 2, r: size / 2 - 2, class: "line" }, tsvg);
           const label = K.el("div", { class: "label", text: name, style: { position: "absolute", left: 0, top: `${size + 10}px`, width: `${size}px`, textAlign: "center" } }, scene);
           KIT.set(label, { x: boxX, y: boxY });
           const ring = K.ring(scene, {});
           const pad = 8, ringS = (size + 2 * pad) / 100;
           KIT.set(ring.el, { x: boxX - pad, y: boxY - pad, scaleX: ringS, scaleY: ringS });
-          return { el, label, ring, ringS, cx, cy, size };
+          return { el, top, label, ring, ringS, cx, cy, size };
         });
         KIT.set([...tables.map((t) => t.el), ...tables.map((t) => t.label)], { opacity: 0 });
 
@@ -269,6 +271,12 @@
         tl.to(finalClone.el, { y: "-=150", scale: 0.85 }, tFinal, { dur: 0.55, ease: "out-cubic" });
 
         // ---- line 8 (TC): back to the room plan with the butchers paper, hold
+
+        // glints: the cup's rim while the room plan settles (line 3) and in the
+        // closing hold; the creek table's edge once, in the hold
+        K.glint(tl, cup.rim, { kind: "gold", phase: 0.4, from: t3 + 0.45, to: T.word(4, "row") });
+        K.glint(tl, cup.rim, { kind: "gold", phase: 0.8, lap: 3.6, rest: 3.0, from: T.start(8), to: T.duration });
+        K.glint(tl, CT.top, { kind: "gap", phase: 2.4, lap: 3.4, rest: 4.0, from: T.start(8), to: T.duration });
       };
       KIT.ready(build).then(({ tl }) => {
         window.__timelines["one-story-all-together"] = tl;

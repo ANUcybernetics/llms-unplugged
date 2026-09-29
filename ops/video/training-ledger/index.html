@@ -28,13 +28,18 @@
         const A = S.area;
 
         // ---- helpers the kit doesn't have (see report) ----------------------
-        // a speech bubble: someone saying a word out loud when they start its row
-        const bubble = (parent, text, { x = 0, y = 0, w = 240, h = 96, size = 36 } = {}) => {
-          const g = K.layer(parent, x, y);
-          const box = K.el("div", { class: "paper", style: { position: "absolute", left: "0", top: "0", width: `${w}px`, height: `${h}px`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-tok)", fontStyle: "italic", fontSize: `${size}px`, color: "var(--ink)" }, text }, g);
-          K.el("div", { style: { position: "absolute", left: `${w / 2 - 16}px`, top: `${h - 2}px`, width: "0", height: "0", borderLeft: "16px solid transparent", borderRight: "16px solid transparent", borderTop: "18px solid var(--paper)" } }, g);
+        // a speech bubble: someone saying a word out loud when they start its
+        // row. The kit's line-art chat bubble, its typing dots dropped, the
+        // word centred on the circle's centre (12, 12 of the icon's 24). It
+        // sits on the sheet, so its line is the darker gold, not white.
+        const bubble = (parent, text, { cx = 0, cy = 0, size = 130, font = 36 } = {}) => {
+          const g = K.layer(parent, 0, 0);
+          const ic = K.icon(g, "chat-bubble", { x: cx - size / 2, y: cy - size / 2, size, gold: true });
+          ic.svg.style.color = "var(--gold)";
+          ic.paths[0].remove(); // the three dots
+          const word = K.el("div", { text, style: { position: "absolute", left: `${cx - size / 2}px`, top: `${cy - size / 2}px`, width: `${size}px`, height: `${size}px`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-tok)", fontStyle: "italic", fontSize: `${font}px`, lineHeight: 1, color: "var(--ink)" } }, g);
           KIT.set(g, { opacity: 0 });
-          return { el: g, box };
+          return { el: g, word, outline: ic.paths[1] };
         };
         // a pencil cross-out: the wrong (skipped) box, struck through
         const crossOut = (parent, { x = 0, y = 0, w = 100, h = 100 } = {}) => {
@@ -274,7 +279,7 @@
         const tLoud = T.word(7, "loud");
         tl.to(bRowSand.prefixEl, { opacity: 1 }, tLoud, { dur: 0.3 });
         const sandTop = bSheetY + 16 + 1 * bRowH;
-        const bub = bubble(scene, "sand", { x: bSheetX + 40, y: sandTop - 106, w: 220, h: 90 });
+        const bub = bubble(scene, "sand", { cx: bSheetX + 200, cy: sandTop - 58 });
         tl.to(bub.el, { opacity: 1 }, tLoud, { dur: 0.25 });
         tl.to(bub.el, { opacity: 0 }, tLoud + 1.5, { dur: 0.3 });
 
@@ -350,7 +355,8 @@
         K.write(tl, pencil8.words[0], tSound);
         tl.to(out.el, { opacity: 0, scale: 0.4 }, tSound + 0.05, { dur: 0.25 });
 
-        // lines 9-10 (TC): hold the desk — nothing more to animate.
+        // lines 9-10 (TC): hold the desk; the cup's rim glints while it holds
+        K.glint(tl, cup.rim, { phase: 0.2, from: T.word(8, "sound") + 0.6, to: T.duration });
       };
       KIT.ready(build).then(({ tl }) => {
         window.__timelines["training-ledger"] = tl;

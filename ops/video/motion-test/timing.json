@@ -1,7 +1,7 @@
 {
  "slug": "motion-test",
  "audio": null,
- "duration": 43,
+ "duration": 49,
  "lines": [
   {
    "i": 0,
@@ -530,6 +530,131 @@
      "w": "station.",
      "start": 38.7,
      "end": 38.95
+    }
+   ]
+  },
+  {
+   "i": 8,
+   "speaker": "USHINI",
+   "tc": false,
+   "caption": "The line art: a pencil, a phone, a bubble, a mug, a person, a magpie and a dog, with a glint travelling round.",
+   "start": 42.6,
+   "end": 48.6,
+   "words": [
+    {
+     "w": "The",
+     "start": 42.6,
+     "end": 42.81
+    },
+    {
+     "w": "line",
+     "start": 42.86,
+     "end": 43.07
+    },
+    {
+     "w": "art:",
+     "start": 43.12,
+     "end": 43.33
+    },
+    {
+     "w": "a",
+     "start": 43.38,
+     "end": 43.59
+    },
+    {
+     "w": "pencil,",
+     "start": 43.64,
+     "end": 43.85
+    },
+    {
+     "w": "a",
+     "start": 43.9,
+     "end": 44.11
+    },
+    {
+     "w": "phone,",
+     "start": 44.17,
+     "end": 44.37
+    },
+    {
+     "w": "a",
+     "start": 44.43,
+     "end": 44.63
+    },
+    {
+     "w": "bubble,",
+     "start": 44.69,
+     "end": 44.9
+    },
+    {
+     "w": "a",
+     "start": 44.95,
+     "end": 45.16
+    },
+    {
+     "w": "mug,",
+     "start": 45.21,
+     "end": 45.42
+    },
+    {
+     "w": "a",
+     "start": 45.47,
+     "end": 45.68
+    },
+    {
+     "w": "person,",
+     "start": 45.73,
+     "end": 45.94
+    },
+    {
+     "w": "a",
+     "start": 45.99,
+     "end": 46.2
+    },
+    {
+     "w": "magpie",
+     "start": 46.25,
+     "end": 46.46
+    },
+    {
+     "w": "and",
+     "start": 46.51,
+     "end": 46.72
+    },
+    {
+     "w": "a",
+     "start": 46.77,
+     "end": 46.98
+    },
+    {
+     "w": "dog,",
+     "start": 47.03,
+     "end": 47.24
+    },
+    {
+     "w": "with",
+     "start": 47.3,
+     "end": 47.5
+    },
+    {
+     "w": "a",
+     "start": 47.56,
+     "end": 47.77
+    },
+    {
+     "w": "glint",
+     "start": 47.82,
+     "end": 48.03
+    },
+    {
+     "w": "travelling",
+     "start": 48.08,
+     "end": 48.29
+    },
+    {
+     "w": "round.",
+     "start": 48.34,
+     "end": 48.55
     }
    ]
   }

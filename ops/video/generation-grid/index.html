@@ -51,13 +51,8 @@
         const mainLine = K.pencilLine(paper.el, ["see", "joey", ",", "hop", ".", "see"], { x: 30, y: 22, size: 58 });
         const loopLine = K.pencilLine(paper.el, [",", "joey", ",", "joey", "hop"], { x: 30, y: 138, size: 50 });
         // a pencil resting beside the paper
-        const pencilL = K.layer(scene, PAPER_X + 40, PAPER_Y + 240);
-        const pencilSvg = K.svg("svg", { width: 480, height: 32, viewBox: "0 0 480 32" }, pencilL);
-        K.svg("polygon", { points: "0 16 28 3 28 29", fill: "#e9dcc5" }, pencilSvg);
-        K.svg("polygon", { points: "0 16 9 12 9 20", fill: "#1a1a1a" }, pencilSvg);
-        K.svg("rect", { x: 28, y: 3, width: 420, height: 26, fill: "var(--gold)" }, pencilSvg);
-        K.svg("rect", { x: 448, y: 3, width: 32, height: 26, fill: "#d98c8c" }, pencilSvg);
-        KIT.set(pencilL, { rotation: -5, transformOrigin: "0 50%", opacity: 0.4 });
+        const pencilL = K.pencil(scene, { x: PAPER_X + 40, y: PAPER_Y + 256, len: 480, angle: -3, width: 26 }).el;
+        KIT.set(pencilL, { opacity: 0.4 });
 
         // ---- the dice strip: one live object, rebuilt (crossfaded) per row
         const STRIP_X = A.x, STRIP_Y = 300;
@@ -128,6 +123,7 @@
         // =====================================================================
         // line 1: pick "see"; it writes; its row lights; camera pushes in
         K.appear(tl, [paper.el, pencilL], T.word(1, "Pick") - 0.3, { stagger: 0.1 });
+        K.glint(tl, pencilL.querySelector("path"), { phase: 1.5, from: T.word(1, "Pick"), to: T.start(2) });
         const tSee = T.word(1, "down", 1);
         K.write(tl, mainLine.words[0], tSee);
         tl.to(grid.rowBands[IDX.see], { opacity: 1 }, tSee + 0.3, { dur: 0.3 });
@@ -167,6 +163,7 @@
         curStrip.light(tl, 7, T.word(4, "land"));
         K.write(tl, mainLine.words[1], T.word(4, "write"));
         K.vanish(tl, die.el, T.word(4, "That's") + 0.3);
+        K.glint(tl, die.outline, { phase: 0.5, lap: 2.4, from: tRoll, to: T.word(4, "That's") + 0.3 });
 
         // =====================================================================
         // line 5: the loop — joey becomes current, then three more rows fast
