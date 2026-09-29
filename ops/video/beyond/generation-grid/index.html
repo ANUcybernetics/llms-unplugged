@@ -198,6 +198,7 @@
             const t = tDrop + face * 0.12;
             K.set(L, { ...from, opacity: 0 });
             tl.set(L, { opacity: 1 }, t);
+            K.raise(tl, L, t);
             tl.set(b.strokes[k], { opacity: 0.15 }, t);
             tl.to(L, { x: to.x - 12, y: to.y - 26 }, t, { dur: 0.5, ease: "in-out-cubic" });
             tl.to(L, { opacity: 0 }, t + 0.75, { dur: 0.3 });

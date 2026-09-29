@@ -107,6 +107,7 @@
           K.set(c.el, { ...from, opacity: 0 });
           tl.set(it.el, { opacity: 0 }, t);
           tl.set(c.el, { opacity: 1 }, t);
+          K.raise(tl, c.el, t);
           tl.to(c.el, { x: to.x - cr - 4, y: to.y - cr - 4, scale: 1.3 }, t, { dur: 0.6, ease: "out-cubic" });
           return c;
         };
@@ -172,6 +173,7 @@
         tl.to(sheets.map((s) => s.el), { opacity: 0 }, tRow - 0.5, { dur: 0.35 });
         tl.to(xDog.r.lit, { opacity: 0 }, tRow + 0.3, { dur: 0.2 });
         const from = { x: A_POS[xDog.s].x, y: A_POS[xDog.s].y + rowY(xDog.i) * SS, scale: (SW * SS) / FW };
+        K.raise(tl, fDog.el, tRow - 0.5);
         tl.fromTo(fDog.el, { ...from, opacity: 0 }, { x: FX, y: FY, scale: 1, opacity: 1 }, tRow - 0.5, { dur: 0.7, ease: "in-out-cubic" });
         tl.to(fDog.lit, { opacity: 1 }, tRow + 0.2, { dur: 0.3 });
         tl.to(fDog.lit, { opacity: 0 }, T.word(3, "two") - 0.1, { dur: 0.3 });

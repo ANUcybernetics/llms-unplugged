@@ -295,6 +295,7 @@ export function walkWords(
     if (from) {
       const f = from[i];
       M_set(el, { x: f.x - el.offsetWidth / 2, y: f.y - el.offsetHeight / 2, opacity: 0 });
+      window.KIT.raise(tl, el, times.col);
       tl.to(el, { opacity: 1 }, times.col, { dur: 0.25 });
       tl.to(el, to, times.col + 0.1 + i * 0.05, { dur: 0.6, ease: "in-out-cubic" });
     } else {
@@ -306,6 +307,7 @@ export function walkWords(
   // the first word becomes the root
   const rootEl = column[0];
   tl.to(column.slice(1), { opacity: 0.4 }, times.root - 0.2, { dur: 0.4 });
+  window.KIT.raise(tl, rootEl, times.root);
   tl.to(
     rootEl,
     { x: T3.colX(0) - rootEl.offsetWidth / 2 - 18, y: path[0].y - rootEl.offsetHeight / 2 },
@@ -325,6 +327,8 @@ export function walkWords(
       y: M_get(l, "y") + (l.offsetHeight - el.offsetHeight) / 2,
     };
     const fly = Math.min(0.45, times.step * 1.2);
+    // over its lit label, which fades in under it as it lands
+    window.KIT.raise(tl, el, t - fly + 0.3);
     tl.to(el, { ...to, scale: 0.75, opacity: 1 }, t - fly + 0.3, {
       dur: fly,
       ease: "in-out-cubic",

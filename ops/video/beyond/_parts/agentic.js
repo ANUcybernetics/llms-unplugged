@@ -255,6 +255,7 @@ function flyWord(tl, scene, d, r, i, from, t, dur = 0.6) {
     scene,
   );
   k.set(clone, { opacity: 0 });
+  k.raise(tl, clone, t);
   tl.set(clone, { x: from.x, y: from.y, opacity: 1 }, t);
   tl.to(clone, { x: to.x, y: to.y }, t, { dur, ease: "in-out-cubic" });
   tl.to(clone, { opacity: 0 }, t + dur - 0.06, { dur: 0.1 });
@@ -268,7 +269,7 @@ export function pending(tl, d, from, t0, t1) {
   const k = K();
   const stop = d.stop;
   // over whatever the model drew after desk() (the strip, the focus row)
-  stop.parentNode.appendChild(stop);
+  k.raise(tl, stop, t0);
   const w = stop.offsetWidth,
     h = stop.offsetHeight;
   tl.set(stop, { x: from.x - w / 2, y: from.y - h / 2, scale: 1.3 }, t0);
@@ -284,6 +285,7 @@ export function pending(tl, d, from, t0, t1) {
 
 // the phone slides in over the model's side of the desk (end of line 3)
 export function phoneIn(tl, d, t) {
+  K().raise(tl, d.phone.el, t);
   tl.to(d.phone.el, { x: d.phone.home.x }, t, { dur: 0.8, ease: "out-cubic" });
 }
 
@@ -323,6 +325,7 @@ export function toolCall(tl, T, d, L) {
     k.set(dot, { opacity: 0 });
     const t = T.word(L, "friends") + i * 0.18,
       f = p.friend(i);
+    k.raise(tl, dot, t);
     tl.set(dot, { x: p.sender.x - 9, y: p.sender.y - 9, opacity: 1 }, t);
     tl.to(dot, { x: f.x - 9, y: f.y - 9 }, t, { dur: 0.45, ease: "in-quad" });
     tl.to(dot, { opacity: 0 }, t + 0.4, { dur: 0.12 });
@@ -354,6 +357,7 @@ export function splice(tl, T, d, L, rolled) {
   const slot = d.note.pos(1, R2.stop);
   const w = d.stop.offsetWidth,
     h = d.stop.offsetHeight;
+  K().raise(tl, d.stop, tStop);
   tl.to(d.stop, { x: slot.x + (slot.w - w) / 2, y: slot.y + (slot.h - h) / 2, scale: 1 }, tStop, {
     dur: 0.7,
     ease: "in-out-cubic",

@@ -131,6 +131,7 @@
               const el = flyer(PAL[c].name, from);
               const tk = t + (n > 1 ? (dur * k) / (n - 1) : 0);
               tl.set(el, { opacity: 1 }, tk);
+              K.raise(tl, el, tk);
               tl.set(row.cells[c].strokes[k], { opacity: 0.15 }, tk);
               tl.to(el, { x: CUPC.x - cup.D / 2 + s.x - CR - 4, y: CUPC.y - cup.D / 2 + s.y - CR - 4 }, tk, { dur: 0.55, ease: "in-out-cubic" });
               inCup.push({ el, colour: PAL[c].name, strokes: row.cells[c].strokes[k] });
@@ -142,6 +143,7 @@
           const k = inCup.findIndex((x) => x.colour === PAL[c].name);
           const [pick] = inCup.splice(k, 1);
           const b = boxAt(row, c);
+          K.raise(tl, pick.el, t);
           tl.to(pick.el, { x: b.x - CR - 4, y: FY + 120 + 18, scale: 1.25 }, t, { dur: 0.6, ease: "in-out-cubic" });
           inCup.push(pick); // it goes back with the rest
           lightFor(row.cells[c].lit, t + 0.45, 1.6);
@@ -151,6 +153,7 @@
           tl.to(cup.el, { rotation: 14 }, t, { dur: 0.25, ease: "out-quad" });
           tl.to(cup.el, { rotation: 0 }, t + 0.45, { dur: 0.3, ease: "in-out-quad" });
           inCup.forEach(({ el }, i) => {
+            K.raise(tl, el, t + 0.1 + (i % 7) * 0.02);
             tl.to(el, { x: TUBC.x - CR - 4 + (K.jitter(i) - 0.5) * 160, y: TUBC.y - CR - 4 + (K.jitter(i + 50) - 0.5) * 80, scale: 1 }, t + 0.1 + (i % 7) * 0.02, { dur: 0.45, ease: "in-cubic" });
             tl.to(el, { opacity: 0 }, t + 0.45, { dur: 0.2 });
           });
@@ -186,6 +189,7 @@
         // the sheet's row for "the" becomes the row on the desk (same size, same place)
         const theAt = { x: FULL.x, y: FULL.y + sheetRowY(sThe, where("the").row) };
         tl.fromTo(fThe.el, { x: theAt.x, y: theAt.y, opacity: 0 }, { opacity: 1 }, t2, { dur: 0.01 });
+        K.raise(tl, fThe.el, t2);
         tl.to(sThe.el, { opacity: 0 }, t2 + 0.05, { dur: 0.4 });
         tl.to(fThe.el, { x: FX, y: FY }, t2 + 0.2, { dur: 0.6, ease: "in-out-cubic" });
         ["red", "blue", "green", "yellow"].forEach((c, i) => {
@@ -195,9 +199,11 @@
         const IT_Y = 300;
         const rc = flyer("red", { x: 78, y: FY + 60 });
         K.set(rc, { x: -100 });
+        K.raise(tl, rc, w(2, "red", 2) - 0.2);
         tl.to(rc, { opacity: 1, x: 78 - CR - 4 }, w(2, "red", 2) - 0.2, { dur: 0.45, ease: "out-cubic" });
         lightFor(fThe.cells[0].lit, w(2, "magpie"), 1.4);
         tl.fromTo(fIt.el, { x: FX, y: IT_Y + 40, opacity: 0 }, { y: IT_Y, opacity: 1 }, w(2, "another"), { dur: 0.45, ease: "out-cubic" });
+        K.raise(tl, rc, w(2, "red", 3) - 0.2);
         tl.to(rc, { y: IT_Y + 60 - CR - 4 }, w(2, "red", 3) - 0.2, { dur: 0.55, ease: "in-out-cubic" });
         lightFor(fIt.cells[0].lit, w(2, "means", 2), 1.3);
 
@@ -215,6 +221,7 @@
         const fDot = focus["."];
         tl.to(sDot.rows[dotW.row].lit, { opacity: 1 }, w(3, "row"), { dur: 0.25 });
         const tOut = w(3, "stop", 2) - 0.1;
+        K.raise(tl, fDot.el, tOut);
         tl.fromTo(fDot.el, { x: SD.x, y: SD.y + sheetRowY(sDot, dotW.row) * 0.7, scale: 0.7, opacity: 0 }, { opacity: 1 }, tOut, { dur: 0.01 });
         tl.to(fDot.el, { x: FX, y: FY, scale: 1 }, tOut, { dur: 0.7, ease: "in-out-cubic" });
         tl.to(sDot.el, { opacity: 0, y: SD.y + 120 }, tOut, { dur: 0.5, ease: "in-cubic" });
@@ -413,14 +420,17 @@
           const el = flyer(["red", "blue", "red"][i], TUBC);
           const sl = cup.slot(i, 3);
           tl.set(el, { opacity: 1 }, w(12, "counter") + i * 0.25);
+          K.raise(tl, el, w(12, "counter") + i * 0.25);
           tl.to(el, { x: END_CUP.x + sl.x - CR - 4, y: END_CUP.y + sl.y - CR - 4 }, w(12, "counter") + i * 0.25, { dur: 0.5, ease: "in-out-cubic" });
           return el;
         });
+        K.raise(tl, hops[1], w(12, "pulls"));
         tl.to(hops[1], { x: ECUPC.x + 240 - CR - 4, y: ECUPC.y - 60 - CR - 4, scale: 1.2 }, w(12, "pulls"), { dur: 0.55, ease: "in-out-cubic" });
         K.write(tl, endPaper.words[0], w(12, "writes"));
         tl.to(cup.el, { rotation: 14 }, w(12, "Tip"), { dur: 0.25, ease: "out-quad" });
         tl.to(cup.el, { rotation: 0 }, w(12, "Tip") + 0.45, { dur: 0.3 });
         hops.forEach((el, i) => {
+          K.raise(tl, el, w(12, "Tip") + 0.1 + i * 0.05);
           tl.to(el, { x: TUBC.x - CR - 4 + (i - 1) * 60, y: TUBC.y - CR - 4, scale: 1 }, w(12, "Tip") + 0.1 + i * 0.05, { dur: 0.5, ease: "in-cubic" });
           tl.to(el, { opacity: 0 }, w(12, "Tip") + 0.55, { dur: 0.2 });
         });

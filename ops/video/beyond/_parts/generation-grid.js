@@ -270,6 +270,7 @@ export function liftOut(tl, lr, grid, r, cols, gp, t, { dur = 0.75, stagger = 0.
   ];
   pairs.forEach(([rect, b], i) => {
     const f = from(rect, b);
+    K.raise(tl, b.el, t + i * stagger);
     tl.fromTo(b.el, { ...f, opacity: 0 }, { opacity: 1 }, t + i * stagger, { dur: 0.2 });
     tl.fromTo(b.el, f, { x: b.x, y: b.y, scale: 1 }, t + i * stagger, {
       dur,

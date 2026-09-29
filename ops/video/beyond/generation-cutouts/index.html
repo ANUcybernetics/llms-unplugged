@@ -81,8 +81,13 @@
         const DOMINO = chainAt(1, 798, 12);
 
         // ---- helpers
+        // a slip that moves lands on top of whatever it lands on (fly)
+        const fly = (o, place, t, opts) => {
+          K.raise(tl, o.el, t);
+          tl.to(o.el, place, t, opts);
+        };
         const go = (list, places, t, { dur = 0.6, stagger = 0, ease = "in-out-cubic" } = {}) =>
-          list.forEach((o, i) => tl.to(o.el, places[i], t + i * stagger, { dur, ease }));
+          list.forEach((o, i) => fly(o, places[i], t + i * stagger, { dur, ease }));
         const home = (list, t, layout = TOP) => go(list, list.map((o) => layout[o.k]), t, { dur: 0.55, stagger: 0.02 });
         const light = (list, t, on = true) => tl.to(list.map((o) => o.lit), { opacity: on ? 1 : 0 }, t, { dur: on ? 0.25 : 0.35 });
         // the rest of the spread dims while `keep` is picked out
@@ -111,13 +116,13 @@
           go(list, heap(list, { ...H, mix: 0 }), t0, { dur: 0.45, stagger: 0.012 });
           const mid = (t0 + 0.45 + list.length * 0.012 + tOut) / 2 - 0.12;
           go(list, heap(list, { ...H, mix: 1 }), mid, { dur: 0.24, ease: "in-out-quad" });
-          tl.to(chosen.el, at(chosen, CHOSEN.cx, CHOSEN.cy, CHOSEN.scale), tOut, { dur: 0.5, ease: "out-cubic" });
+          fly(chosen, at(chosen, CHOSEN.cx, CHOSEN.cy, CHOSEN.scale), tOut, { dur: 0.5, ease: "out-cubic" });
           light([chosen], tOut + 0.3);
         };
         // the chosen slip joins the chain; the rest go back to the spread
         const settle = (chosen, rest, t, slot) => {
           light([chosen], t, false);
-          tl.to(chosen.el, { ...CHAIN[slot], opacity: 1 }, t, { dur: 0.6, ease: "in-out-cubic" });
+          fly(chosen, { ...CHAIN[slot], opacity: 1 }, t, { dur: 0.6, ease: "in-out-cubic" });
           chained.push(chosen);
           home(rest, t + 0.05);
         };
@@ -133,10 +138,11 @@
         const hero = tf[0];
         const HERO = at(hero, 960, 430, 1.55);
         dim([], w(1, "Every") + 0.1, 0.3);
-        tl.to(hero.el, { ...HERO, opacity: 1 }, w(1, "Every") + 0.15, { dur: 0.85, ease: "in-out-cubic" });
+        fly(hero, { ...HERO, opacity: 1 }, w(1, "Every") + 0.15, { dur: 0.85, ease: "in-out-cubic" });
         const ring = K.ring(scene, { w: 100, h: 100, stroke: 5 });
         const bPrev = tokenBox(hero, HERO, 0), bNext = tokenBox(hero, HERO, 1);
         tl.set(ring.el, { x: bPrev.x - 12, y: bPrev.y - 12, scaleX: (bPrev.w + 24) / 100, scaleY: (bPrev.h + 24) / 100 }, w(1, "word") - 0.3);
+        K.raise(tl, ring.el, w(1, "word") - 0.3); // over the lifted slip it rings
         tl.to(ring.el, { opacity: 1 }, w(1, "word") - 0.1, { dur: 0.3 });
         ring.around(tl, bNext, w(1, "word", 2) - 0.1, 0.45, 12);
         tl.to(ring.el, { opacity: 0 }, w(1, "A", 3) - 0.2, { dur: 0.35 });
@@ -144,7 +150,7 @@
         tf.slice(1).forEach((o, j) => {
           const t = w(1, "six") - 0.25 + j * 0.12;
           tl.to(o.el, { opacity: 1 }, t, { dur: 0.2 });
-          tl.to(o.el, stackAt[j + 1], t, { dur: 0.7, ease: "in-out-cubic" });
+          fly(o, stackAt[j + 1], t, { dur: 0.7, ease: "in-out-cubic" });
         });
         pulseSlips(tf, stackAt, w(1, "slips") - 0.05, 1.05);
 
@@ -159,11 +165,11 @@
         dim(dots, w(2, "full"));
         light(dots, w(2, "full") + 0.05);
         const s0 = walk[0];
-        tl.to(s0.el, at(s0, CHOSEN.cx, CHOSEN.cy, CHOSEN.scale), w(2, "This") - 0.1, { dur: 0.6, ease: "in-out-cubic" });
+        fly(s0, at(s0, CHOSEN.cx, CHOSEN.cy, CHOSEN.scale), w(2, "This") - 0.1, { dur: 0.6, ease: "in-out-cubic" });
         light(dots.filter((o) => o !== s0), w(2, "This"), false);
         K.write(tl, paper.words[0], w(2, "Write"));
         light([s0], w(2, "down") + 0.2, false);
-        tl.to(s0.el, CHAIN[0], w(2, "down") + 0.2, { dur: 0.6, ease: "in-out-cubic" });
+        fly(s0, CHAIN[0], w(2, "down") + 0.2, { dur: 0.6, ease: "in-out-cubic" });
         chained.push(s0);
         undim(w(2, "down") + 0.3);
 
@@ -232,7 +238,7 @@
         pick(dogs, s5, w(5, "Pick", 2) - 0.1, w(5, "full", 2) - 0.35);
         K.write(tl, paper.words[5], w(5, "stop"));
         light([s5], T.end(5) + 0.2, false);
-        tl.to(s5.el, { ...CHAIN[5], opacity: 1 }, T.end(5) + 0.2, { dur: 0.6, ease: "in-out-cubic" });
+        fly(s5, { ...CHAIN[5], opacity: 1 }, T.end(5) + 0.2, { dur: 0.6, ease: "in-out-cubic" });
 
         // ============================================================ line 6
         // the six slips end to end like dominoes, the strip above them, and
@@ -300,7 +306,7 @@
         const streamC = CV.stream(tl, scene, sim, nAt, { ...STREAM, size: 40 });
         const tShares = w(9, "Every") - 0.1;
         const pilesC = sortPiles(tl, scene, sim, nAt, {
-          x: 0, y: 0, w: 1920, h: 770,
+          x: 0, y: 0, w: 1920, h: 860,
           area: { x: 30, y: 20, w: 1080, h: 740 },
           words: MG.vocab.map(C.canon),
           cols: 6,
@@ -342,12 +348,12 @@
         light(eThes, w(10, "box") - 0.1);
         const ELIFT = { cx: 960, cy: 680, scale: 0.85 };
         const e1 = of("the", "postie")[1];
-        tl.to(e1.el, at(e1, ELIFT.cx, ELIFT.cy, ELIFT.scale), w(10, "and") - 0.1, { dur: 0.55, ease: "out-cubic" });
+        fly(e1, at(e1, ELIFT.cx, ELIFT.cy, ELIFT.scale), w(10, "and") - 0.1, { dur: 0.55, ease: "out-cubic" });
         light(eThes.filter((o) => o !== e1), w(10, "and"), false);
         K.write(tl, endPaper.words[1], w(10, "next"));
         // put it back; the next word's colour
         light([e1], w(10, "Then"), false);
-        tl.to(e1.el, END[e1.k], w(10, "Then"), { dur: 0.5, ease: "in-out-cubic" });
+        fly(e1, END[e1.k], w(10, "Then"), { dur: 0.5, ease: "in-out-cubic" });
         const cPostie = byColour("postie"), ePosties = of("postie");
         undim(w(10, "Then") + 0.1, cPostie);
         dim(cPostie, w(10, "Then") + 0.1, 0.22);
@@ -359,7 +365,7 @@
         // (TC) start chaining: one lifts, its next word is written
         const e2 = of("postie", "runs")[0];
         light(ePosties.filter((o) => o !== e2), w(11, "Start"), false);
-        tl.to(e2.el, at(e2, ELIFT.cx, ELIFT.cy, ELIFT.scale), w(11, "Start") - 0.1, { dur: 0.5, ease: "out-cubic" });
+        fly(e2, at(e2, ELIFT.cx, ELIFT.cy, ELIFT.scale), w(11, "Start") - 0.1, { dur: 0.5, ease: "out-cubic" });
         K.write(tl, endPaper.words[2], w(11, "chaining"));
       };
       KIT.ready(build).then(({ tl }) => {
