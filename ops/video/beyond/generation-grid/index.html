@@ -56,7 +56,7 @@
         // gold boxes over single cells
         const cellLit = (r, c) => {
           const cl = grid.cells[r][c];
-          return K.svg("rect", { x: cl.x + 2, y: cl.y + 2, width: cl.w - 4, height: cl.h - 4, rx: 4, fill: "none", stroke: "var(--gold)", "stroke-width": 3, opacity: 0 }, grid.svg);
+          return K.svg("rect", { x: cl.x + 2, y: cl.y + 2, width: cl.w - 4, height: cl.h - 4, fill: "none", stroke: "var(--gold)", "stroke-width": 3, opacity: 0 }, grid.svg);
         };
 
         // the lifted row's slot, the dice strip, the die, the paper

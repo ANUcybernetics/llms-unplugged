@@ -30,7 +30,7 @@ function style() {
   const s = document.createElement("style");
   s.textContent = `
     .cut-lit {
-      position: absolute; inset: -9px; border: 8px solid var(--gold); border-radius: 10px;
+      position: absolute; inset: -9px; border: 8px solid var(--gold);
       box-shadow: 0 0 0 5px rgb(190 131 14 / 25%);
     }
     .same-slip .tok { display: inline-block; transform-origin: 50% 50%; }

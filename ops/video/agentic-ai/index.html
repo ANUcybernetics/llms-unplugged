@@ -12,14 +12,14 @@
       /* inline helpers this composition needs that the kit doesn't have: a
          phone (screen, message/reply bubbles, contact rows) and a punctuation
          token badge. Plain divs, same conventions as kit.css (paper/pencil). */
-      .phone-back { position: absolute; inset: 0; border-radius: 32px; background: #2b2b2b; border: 4px solid #4a4a4a; }
-      .phone-screen { position: absolute; inset: 8px; border-radius: 26px; background: #eceae4; opacity: 0; }
-      .bubble { position: absolute; border-radius: 18px; padding: 14px 18px; font-family: var(--font-ui); font-size: 24px; line-height: 1.32; }
+      .phone-back { position: absolute; inset: 0; background: #2b2b2b; border: 4px solid #4a4a4a; }
+      .phone-screen { position: absolute; inset: 8px; background: #eceae4; opacity: 0; }
+      .bubble { position: absolute; padding: 14px 18px; font-family: var(--font-ui); font-size: 24px; line-height: 1.32; }
       .bubble.out { background: var(--gold); color: #241a04; }
       .bubble.in { background: #ffffff; color: var(--ink); border: 1px solid rgb(0 0 0 / 12%); }
-      .contact-row { position: absolute; height: 56px; border-radius: 28px; background: #ffffff; border: 1px solid rgb(0 0 0 / 12%); opacity: 0; }
+      .contact-row { position: absolute; height: 56px; background: #ffffff; border: 1px solid rgb(0 0 0 / 12%); opacity: 0; }
       .contact-row .avatar { position: absolute; left: 9px; top: 9px; width: 38px; height: 38px; border-radius: 50%; background: #b9b2a4; }
-      .stop-badge { position: absolute; left: 0; top: 0; border: 4px solid var(--ink); border-radius: 14px; background: var(--paper); display: flex; align-items: center; justify-content: center; font-family: var(--font-tok); font-weight: 700; font-size: 52px; color: var(--ink); }
+      .stop-badge { position: absolute; left: 0; top: 0; border: 4px solid var(--ink); background: var(--paper); display: flex; align-items: center; justify-content: center; font-family: var(--font-tok); font-weight: 700; font-size: 52px; color: var(--ink); }
       .fly-word { position: absolute; left: 0; top: 0; font-family: var(--font-tok); font-style: italic; font-size: 54px; color: var(--pencil); white-space: nowrap; }
     </style>
   </head>
@@ -124,7 +124,7 @@
         KIT.set(replyRow.el, { opacity: 0, color: "var(--gold)" });
         // the dash: pencil resuming past the gap, deliberately not a word
         const dashX = 24 + row2.words[1].offsetLeft + row2.words[1].offsetWidth + 22;
-        const dash = K.el("div", { style: { position: "absolute", left: `${dashX}px`, top: `${ROW2_Y + 38}px`, width: "46px", height: "6px", background: "var(--pencil)", "border-radius": "3px" } }, paper.el);
+        const dash = K.el("div", { style: { position: "absolute", left: `${dashX}px`, top: `${ROW2_Y + 38}px`, width: "46px", height: "6px", background: "var(--pencil)" } }, paper.el);
         KIT.set(dash, { opacity: 0, scaleX: 0, transformOrigin: "0 50%" });
 
         // the phone: face-down back, a screen, a message bubble, three
@@ -163,7 +163,7 @@
         const loopMain = K.loop(scene, { ...LOOP_MAIN, labels: LOOP_LABELS });
         const iconG = K.svg("g", {}, loopMain.svg);
         K.svg("circle", { cx: loopMain.cx, cy: loopMain.cy - 46, r: 26, fill: "var(--text)" }, iconG);
-        K.svg("rect", { x: loopMain.cx - 32, y: loopMain.cy - 18, width: 64, height: 82, rx: 26, fill: "var(--text)" }, iconG);
+        K.svg("rect", { x: loopMain.cx - 32, y: loopMain.cy - 18, width: 64, height: 82, fill: "var(--text)" }, iconG);
         KIT.set(iconG, { opacity: 0 });
         const hands = K.prepDraw(
           loopMain.stations.map((st) => K.svg("line", { x1: loopMain.cx, y1: loopMain.cy, x2: st.x, y2: st.y, stroke: "var(--gold)", "stroke-width": 6, "stroke-linecap": "round" }, loopMain.svg)),

@@ -515,7 +515,7 @@ export function drawLedger(
     if (visible(sx, sy)) {
       if (sw > 60) {
         ctx.beginPath();
-        ctx.roundRect(sx, sy, sw, sh, 8 * k);
+        ctx.rect(sx, sy, sw, sh);
         ctx.fill();
       } else ctx.fillRect(sx, sy, sw, sh);
     }

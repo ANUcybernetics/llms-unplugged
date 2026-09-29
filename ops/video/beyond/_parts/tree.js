@@ -387,7 +387,7 @@ export const TREE_CSS = `
 .tree-word {
   position: absolute; left: 0; top: 0; transform-origin: 50% 50%;
   font-family: var(--font-tok); font-size: 30px; line-height: 1; white-space: nowrap;
-  color: var(--text-2); background: var(--desk); padding: 4px 8px 7px; border-radius: 6px;
+  color: var(--text-2); background: var(--desk); padding: 4px 8px 7px;
 }
 .tree-word.punct { padding: 4px; }
 .tree-word.col { font-size: 40px; color: var(--text); background: none; }

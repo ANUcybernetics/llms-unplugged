@@ -31,12 +31,12 @@ function style() {
     .same-slip { position: absolute; left: 0; top: 0; transform-origin: 50% 50%; }
     .same-slip > .front, .same-slip > .back {
       position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-      gap: 0.3em; background: var(--paper); border: 1.5px solid rgb(0 0 0 / 45%); border-radius: 3px;
+      gap: 0.3em; background: var(--paper); border: 1.5px solid rgb(0 0 0 / 45%);
       box-shadow: 0 1px 0 var(--paper-edge), 0 6px 14px rgb(0 0 0 / 35%);
       font-family: var(--font-tok); line-height: 1; white-space: nowrap;
     }
     .same-slip .back { background: #f4f1ea; }
-    .same-slip .tok.box { padding: 0.06em 0.16em 0.1em; border-radius: 0.1em; }
+    .same-slip .tok.box { padding: 0.06em 0.16em 0.1em; }
     .same-number {
       position: absolute; left: 0; top: 0; font-family: var(--font-ui); font-weight: 600;
       color: var(--text); line-height: 1; white-space: nowrap; transform-origin: 50% 50%;
@@ -144,12 +144,12 @@ export function row(
   // ---- paper: the header band (grid only) and the row itself
   const paperRow = K.svg(
     "rect",
-    { x: 0, y: top, width: W, height: rowH, rx: 8, fill: "var(--paper)" },
+    { x: 0, y: top, width: W, height: rowH, fill: "var(--paper)" },
     s,
   );
   const paperHead = K.svg(
     "rect",
-    { x: 0, y: 0, width: W, height: top + 10, rx: 8, fill: "var(--paper)" },
+    { x: 0, y: 0, width: W, height: top + 10, fill: "var(--paper)" },
     s,
   );
   s.insertBefore(paperHead, paperRow);

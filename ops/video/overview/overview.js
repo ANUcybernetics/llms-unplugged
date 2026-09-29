@@ -68,7 +68,7 @@ const build = (tl, S, T) => {
     K.svg("polygon", { points: "0 20 36 4 36 36", fill: "#e9dcc5" }, s);
     K.svg("polygon", { points: "0 20 12 15 12 25", fill: "#1a1a1a" }, s);
     K.svg("rect", { x: 36, y: 4, width: len - 40, height: 32, fill: "var(--gold)" }, s);
-    K.svg("rect", { x: len - 4, y: 4, width: 44, height: 32, rx: 6, fill: "#d98c8c" }, s);
+    K.svg("rect", { x: len - 4, y: 4, width: 44, height: 32, fill: "#d98c8c" }, s);
     KIT.set(L, { rotation: -6, transformOrigin: "0 50%" });
     return L;
   };
@@ -84,7 +84,6 @@ const build = (tl, S, T) => {
           width: `${w}px`,
           height: `${h}px`,
           background: "#161616",
-          borderRadius: "22px",
           border: "1px solid rgb(255 255 255 / 10%)",
         },
       },
@@ -99,7 +98,6 @@ const build = (tl, S, T) => {
           top: "34px",
           width: "56px",
           height: "14px",
-          borderRadius: "7px",
           background: "rgb(255 255 255 / 18%)",
         },
       },
@@ -115,7 +113,6 @@ const build = (tl, S, T) => {
           top: "84px",
           padding: "28px 34px",
           background: "#2b2b2b",
-          borderRadius: "18px",
           fontSize: `${size}px`,
           lineHeight: 1.35,
           color: "var(--text)",
@@ -505,7 +502,6 @@ const build = (tl, S, T) => {
         width: "380px",
         height: "440px",
         background: "#2a2a2a",
-        borderRadius: "30px",
         border: "2px solid rgb(255 255 255 / 12%)",
       },
     },
@@ -522,7 +518,6 @@ const build = (tl, S, T) => {
         padding: "16px 22px",
         background: "var(--gold)",
         color: "#111",
-        borderRadius: "16px",
         fontSize: "28px",
         fontFamily: "var(--font-ui)",
         whiteSpace: "nowrap",
@@ -636,7 +631,6 @@ const build = (tl, S, T) => {
           justifyContent: "center",
           background: "var(--paper)",
           color: "var(--ink)",
-          borderRadius: "8px",
           fontFamily: "var(--font-ui)",
           fontWeight: 600,
           fontSize: "34px",

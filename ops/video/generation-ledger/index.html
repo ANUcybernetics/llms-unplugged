@@ -59,7 +59,7 @@
         const makeTub = (parent, { x = 0, y = 0, w = 260, h = 170 } = {}) => {
           const g = K.layer(parent, x, y);
           const s = K.svg("svg", { width: w, height: h, viewBox: `0 0 ${w} ${h}` }, g);
-          K.svg("rect", { x: 6, y: 6, width: w - 12, height: h - 12, rx: 20, fill: "#efe6d8", stroke: "rgb(0 0 0 / 25%)", "stroke-width": 3 }, s);
+          K.svg("rect", { x: 6, y: 6, width: w - 12, height: h - 12, fill: "#efe6d8", stroke: "rgb(0 0 0 / 25%)", "stroke-width": 3 }, s);
           const seed = [
             ["red", 0.24, 0.4], ["red", 0.38, 0.64],
             ["blue", 0.5, 0.36], ["blue", 0.6, 0.62],
@@ -74,7 +74,7 @@
           K.svg("polygon", { points: "0 20 36 4 36 36", fill: "#e9dcc5" }, s);
           K.svg("polygon", { points: "0 20 12 15 12 25", fill: "#1a1a1a" }, s);
           K.svg("rect", { x: 36, y: 4, width: 560, height: 32, fill: "var(--gold)" }, s);
-          K.svg("rect", { x: 596, y: 4, width: 44, height: 32, rx: 6, fill: "#d98c8c" }, s);
+          K.svg("rect", { x: 596, y: 4, width: 44, height: 32, fill: "#d98c8c" }, s);
           return g;
         };
 
@@ -175,7 +175,7 @@
         const COUNTS_DOT = { red: 7, blue: 4, green: 3, yellow: 3 };
         const legend = PAL.map((p, i) => {
           const li = K.layer(scene, CUP_MAIN.x + CUP_R * 2 + 50, CUP_MAIN.y + 10 + i * 62);
-          K.el("div", { style: { position: "absolute", width: "40px", height: "40px", borderRadius: "8px", background: p.hex } }, li);
+          K.el("div", { style: { position: "absolute", width: "40px", height: "40px", background: p.hex } }, li);
           K.el("div", { class: "label", text: `${COUNTS_DOT[p.name]} of 17 — ${p.name}`, style: { position: "absolute", left: "56px", top: "2px", fontSize: "28px" } }, li);
           KIT.set(li, { opacity: 0 });
           return li;

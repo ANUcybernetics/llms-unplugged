@@ -118,7 +118,7 @@ export const build = (tl, S, T) => {
     K.svg("polygon", { points: "0 20 36 4 36 36", fill: "#e9dcc5" }, s);
     K.svg("polygon", { points: "0 20 12 15 12 25", fill: "#1a1a1a" }, s);
     K.svg("rect", { x: 36, y: 4, width: len - 40, height: 32, fill: "var(--gold)" }, s);
-    K.svg("rect", { x: len - 4, y: 4, width: 44, height: 32, rx: 6, fill: "#d98c8c" }, s);
+    K.svg("rect", { x: len - 4, y: 4, width: 44, height: 32, fill: "#d98c8c" }, s);
     K.set(L, { rotation: angle, opacity: 0 });
     return L;
   };
@@ -136,7 +136,6 @@ export const build = (tl, S, T) => {
           height: `${h}px`,
           background: "#1c1c1c",
           border: "2px solid rgb(255 255 255 / 22%)",
-          borderRadius: "10px",
         },
       },
       L,
@@ -183,7 +182,6 @@ export const build = (tl, S, T) => {
         width: `${CW}px`,
         height: `${CH}px`,
         background: "#161616",
-        borderRadius: "22px",
         border: "1px solid rgb(255 255 255 / 10%)",
       },
     },
@@ -200,7 +198,6 @@ export const build = (tl, S, T) => {
         top: "80px",
         height: "140px",
         background: "#2b2b2b",
-        borderRadius: "18px",
       },
     },
     panel,
@@ -474,7 +471,6 @@ export const build = (tl, S, T) => {
         width: "100px",
         height: "100px",
         background: "var(--gold)",
-        borderRadius: "4px",
         transformOrigin: "0 0",
       },
     },
@@ -928,7 +924,6 @@ export const build = (tl, S, T) => {
           width: "200px",
           height: "22px",
           background: "var(--gold)",
-          borderRadius: "4px",
         },
       },
       pg,
@@ -944,7 +939,6 @@ export const build = (tl, S, T) => {
             width: `${(i % 3 ? 220 : 250) - ((i * 37) % 70)}px`,
             height: "12px",
             background: "#d6d6d6",
-            borderRadius: "3px",
           },
         },
         pg,
@@ -1013,7 +1007,6 @@ export const build = (tl, S, T) => {
             top: 0,
             width: `${w}px`,
             height: `${h}px`,
-            borderRadius: dark ? "10px" : "3px",
             background: dark ? "#1c1c1c" : "#f0f0f0",
             border: dark ? "2px solid rgb(255 255 255 / 16%)" : "1px solid rgb(0 0 0 / 20%)",
           },
@@ -1090,7 +1083,7 @@ export const build = (tl, S, T) => {
       "div",
       {
         class: "paper",
-        style: { width: `${BKW}px`, height: `${BKH}px`, overflow: "hidden", borderRadius: "3px" },
+        style: { width: `${BKW}px`, height: `${BKH}px`, overflow: "hidden" },
       },
       bk,
     );

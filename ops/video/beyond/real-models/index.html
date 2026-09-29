@@ -13,10 +13,10 @@
     <style>
       html, body { width: 1920px; height: 1080px; }
       .rm-text { position: absolute; font-family: var(--font-tok); color: var(--ink); line-height: 1.45; }
-      .rm-text .w { display: inline-block; border-radius: 6px; padding: 0 0.12em; margin: 0 0.04em; }
+      .rm-text .w { display: inline-block; padding: 0 0.12em; margin: 0 0.04em; }
       .rm-text .p { color: var(--ink-muted); }
-      .rm-card { position: absolute; background: var(--paper); border-radius: 10px; box-shadow: 0 2px 0 var(--paper-edge), 0 10px 24px rgb(0 0 0 / 45%); }
-      .rm-model { position: absolute; background: #151515; border: 2px solid rgb(255 255 255 / 16%); border-radius: 14px; }
+      .rm-card { position: absolute; background: var(--paper); box-shadow: 0 2px 0 var(--paper-edge), 0 10px 24px rgb(0 0 0 / 45%); }
+      .rm-model { position: absolute; background: #151515; border: 2px solid rgb(255 255 255 / 16%); }
     </style>
   </head>
   <body>
@@ -55,8 +55,8 @@
         // a gold outline drawn to a box's size (hidden; tween its opacity).
         // The kit's ring resizes by scaling, which thickens its border, so a
         // box that changes size gets a second outline instead.
-        const outline = (parent, b, { pad = 10, stroke = 5, r = 12 } = {}) => {
-          const d = K.el("div", { style: { position: "absolute", left: 0, top: 0, width: `${b.w + 2 * pad}px`, height: `${b.h + 2 * pad}px`, border: `${stroke}px solid ${GOLD}`, borderRadius: `${r}px`, boxShadow: "0 0 0 4px rgb(190 131 14 / 22%)" } }, parent);
+        const outline = (parent, b, { pad = 10, stroke = 5 } = {}) => {
+          const d = K.el("div", { style: { position: "absolute", left: 0, top: 0, width: `${b.w + 2 * pad}px`, height: `${b.h + 2 * pad}px`, border: `${stroke}px solid ${GOLD}`, boxShadow: "0 0 0 4px rgb(190 131 14 / 22%)" } }, parent);
           K.set(d, { x: b.x - pad, y: b.y - pad, opacity: 0 });
           return d;
         };
@@ -88,8 +88,8 @@
         const cellMark = (r, c, fill) => {
           const cl = grid.cells[r][c];
           const m = K.svg("rect", fill
-            ? { x: cl.x + 4, y: cl.y + 4, width: CELL - 8, height: CELL - 8, rx: 6, fill: GOLD, "fill-opacity": 0.4 }
-            : { x: cl.x + 5, y: cl.y + 5, width: CELL - 10, height: CELL - 10, rx: 8, fill: "none", stroke: GOLD, "stroke-width": 8 }, grid.svg);
+            ? { x: cl.x + 4, y: cl.y + 4, width: CELL - 8, height: CELL - 8, fill: GOLD, "fill-opacity": 0.4 }
+            : { x: cl.x + 5, y: cl.y + 5, width: CELL - 10, height: CELL - 10, fill: "none", stroke: GOLD, "stroke-width": 8 }, grid.svg);
           grid.dimmer.before(m);
           K.set(m, { opacity: 0 });
           return m;
@@ -599,7 +599,7 @@
             K.svg("text", { x: 120, y, "text-anchor": "end", "dominant-baseline": "central", "font-size": 34, "font-weight": 700, text: word }, s);
             MG.rows[word].forEach(([n, count], j) => {
               const x = 150 + j * 110;
-              K.svg("rect", { x, y: y - 32, width: 96, height: 64, rx: 6, fill: "rgb(190 131 14 / 22%)" }, s);
+              K.svg("rect", { x, y: y - 32, width: 96, height: 64, fill: "rgb(190 131 14 / 22%)" }, s);
               if (K.isPunct(n)) K.punctBox(s, n, { x: x + 30, y, size: 26, colour: "var(--ink)", fill: "none" });
               else K.svg("text", { x: x + 30, y, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 26, text: n }, s);
               K.svg("text", { x: x + 76, y, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 26, class: "ui", "font-weight": 600, fill: GOLD, text: String(count) }, s);
@@ -611,7 +611,7 @@
           const split = TK.find((ws) => ws.length > 1);
           let x = 60;
           split.forEach((p) => {
-            const d = K.el("div", { class: "rm-text", text: p, style: { fontSize: "64px", lineHeight: 1, padding: "10px 12px", border: `4px solid ${GOLD}`, borderRadius: "12px" } }, minis[2]);
+            const d = K.el("div", { class: "rm-text", text: p, style: { fontSize: "64px", lineHeight: 1, padding: "10px 12px", border: `4px solid ${GOLD}` } }, minis[2]);
             K.set(d, { x, y: 62 });
             x += d.offsetWidth + 18;
           });

@@ -58,7 +58,7 @@
         for (const x of rows) x.r.lit.setAttribute("fill-opacity", "0.45");
         for (const x of rows) {
           x.mute = K.svg("rect", { x: 0, y: rowY(x.i), width: SW, height: RH, fill: "var(--paper)" }, x.sh.svg);
-          x.outline = K.svg("rect", { x: 5, y: rowY(x.i) + 5, width: SW - 10, height: RH - 10, rx: 10, fill: "none", stroke: "var(--gold)", "stroke-width": 9 }, x.sh.svg);
+          x.outline = K.svg("rect", { x: 5, y: rowY(x.i) + 5, width: SW - 10, height: RH - 10, fill: "none", stroke: "var(--gold)", "stroke-width": 9 }, x.sh.svg);
           K.set([x.mute, x.outline], { opacity: 0 });
         }
         const punctCells = rows.flatMap((x) => x.r.cells.filter((c) => c.follower && K.isPunct(c.follower.text)));

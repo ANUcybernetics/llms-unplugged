@@ -34,7 +34,7 @@ export function magpieGrid(
     H = headH + n * cellH;
   const g = K.layer(parent, x, y);
   const s = K.svg("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}` }, g);
-  K.svg("rect", { x: 0, y: 0, width: W, height: H, rx: 8, fill: "var(--paper)" }, s);
+  K.svg("rect", { x: 0, y: 0, width: W, height: H, fill: "var(--paper)" }, s);
   const band = (a) => {
     const b = K.svg("rect", { ...a, fill: "var(--gold)", "fill-opacity": 0.3, opacity: 0 }, s);
     return b;
@@ -168,7 +168,7 @@ export function liftedRow(
   const mkBox = (w, h, bx) => {
     const L = K.layer(parent, bx, y);
     const s = K.svg("svg", { width: w, height: h, viewBox: `0 0 ${w} ${h}` }, L);
-    K.svg("rect", { x: 0, y: 0, width: w, height: h, rx: 8, fill: "var(--paper)" }, s);
+    K.svg("rect", { x: 0, y: 0, width: w, height: h, fill: "var(--paper)" }, s);
     const lit = K.svg(
       "rect",
       {
@@ -176,7 +176,6 @@ export function liftedRow(
         y: 0,
         width: w,
         height: h,
-        rx: 8,
         fill: "var(--gold)",
         "fill-opacity": 0.35,
         opacity: 0,

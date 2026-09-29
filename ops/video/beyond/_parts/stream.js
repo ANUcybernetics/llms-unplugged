@@ -53,7 +53,7 @@ export const stripXFor = (strip, i, anchor, x0) => {
   return Math.min(x0, anchor - (b.x + b.w / 2));
 };
 
-// The bracket: a gold rounded box that stretches to any width without its
+// The bracket: a gold box that stretches to any width without its
 // border stretching with it (a K.ring scaled wide thickens its sides). Two
 // end caps and a top and bottom rule; `at(box)` gives each part's properties
 // for a box in its parent's px, to set, tween or sample.
@@ -72,7 +72,6 @@ export function bracket(
     borderLeft: edge,
     borderTop: edge,
     borderBottom: edge,
-    borderRadius: "12px 0 0 12px",
   });
   const R = part({
     width: `${cap}px`,
@@ -80,7 +79,6 @@ export function bracket(
     borderRight: edge,
     borderTop: edge,
     borderBottom: edge,
-    borderRadius: "0 12px 12px 0",
   });
   const T = part({ width: "100px", height: `${stroke}px`, background: colour });
   const B = part({

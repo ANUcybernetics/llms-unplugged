@@ -76,19 +76,19 @@ body { font-family: var(--font-ui); color: var(--text); }
 /* ---- paper objects ---- */
 .paper {
   position: absolute; background: var(--paper); color: var(--ink);
-  border-radius: 6px; box-shadow: 0 2px 0 var(--paper-edge), 0 10px 24px rgb(0 0 0 / 45%);
+  box-shadow: 0 2px 0 var(--paper-edge), 0 10px 24px rgb(0 0 0 / 45%);
 }
 .paper-strip { height: 120px; }
 .tile {
   position: absolute; display: flex; align-items: center; justify-content: center;
-  background: var(--paper); color: var(--ink); border-radius: 8px;
+  background: var(--paper); color: var(--ink);
   box-shadow: 0 2px 0 var(--paper-edge), 0 8px 18px rgb(0 0 0 / 40%);
   font-family: var(--font-tok); font-size: 56px; line-height: 1; white-space: nowrap;
   transform-origin: 50% 50%;
 }
 .tile.punct { font-weight: 700; }
 .tok { font-family: var(--font-tok); font-weight: 700; color: var(--c); }
-.tok.box { background: var(--c); color: #fff; border-radius: 0.12em; padding: 0.04em 0.18em; }
+.tok.box { background: var(--c); color: #fff; padding: 0.04em 0.18em; }
 
 /* pencil writing on paper */
 .pencil { font-family: var(--font-tok); font-style: italic; color: var(--pencil); font-size: 54px; line-height: 1; white-space: nowrap; }
@@ -110,4 +110,4 @@ svg .ui { font-family: var(--font-ui); }
 .label { position: absolute; font-family: var(--font-ui); color: var(--text-2); font-size: 34px; white-space: nowrap; }
 .label.gold { color: var(--gold-2); font-weight: 500; }
 .wordmark { font-family: var(--font-ui); font-weight: 600; font-size: 96px; letter-spacing: -0.02em; color: var(--text); white-space: nowrap; }
-.rule { position: absolute; height: 6px; background: var(--gold); border-radius: 3px; transform-origin: 0 50%; }
+.rule { position: absolute; height: 6px; background: var(--gold); transform-origin: 0 50%; }

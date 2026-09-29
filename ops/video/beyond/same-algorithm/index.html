@@ -80,7 +80,7 @@
         const makeTub = (parent, { x = 0, y = 0, w = 260, h = 170 } = {}) => {
           const g = K.layer(parent, x, y);
           const s = K.svg("svg", { width: w, height: h, viewBox: `0 0 ${w} ${h}` }, g);
-          K.svg("rect", { x: 6, y: 6, width: w - 12, height: h - 12, rx: 20, fill: "#efe6d8", stroke: "rgb(0 0 0 / 25%)", "stroke-width": 3 }, s);
+          K.svg("rect", { x: 6, y: 6, width: w - 12, height: h - 12, fill: "#efe6d8", stroke: "rgb(0 0 0 / 25%)", "stroke-width": 3 }, s);
           [["red", 0.24, 0.4], ["red", 0.38, 0.64], ["blue", 0.5, 0.36], ["blue", 0.6, 0.62], ["green", 0.72, 0.4], ["yellow", 0.82, 0.62]]
             .forEach(([c, fx, fy]) => K.svg("circle", { cx: fx * w, cy: fy * h, r: 15, fill: K.COUNTER[c], stroke: "rgb(0 0 0 / 30%)", "stroke-width": 2 }, s));
           return { el: g, w, h };
@@ -141,7 +141,7 @@
           const col = i % 5, rw = Math.floor(i / 5);
           const cx = 90 + col * 175 + (K.jitter(i * 3) - 0.5) * 40, cy = 34 + rw * 58 + (K.jitter(i * 5 + 1) - 0.5) * 12;
           K.set(o.el, { x: cx - o.w / 2, y: cy - o.h / 2, rotation: (K.jitter(i * 7 + 2) - 0.5) * 14, opacity: 0 });
-          o.ring = K.el("div", { style: { position: "absolute", inset: "-5px", border: "4px solid var(--gold)", borderRadius: "6px" } }, o.el);
+          o.ring = K.el("div", { style: { position: "absolute", inset: "-5px", border: "4px solid var(--gold)" } }, o.el);
           K.set(o.ring, { opacity: 0 });
           o.prev = MG.words[i];
           spread.push(o);
@@ -151,7 +151,7 @@
         const BK = SAME_BOOKLET.pages;
         const BK_H = 350, bkScale = BK_H / BK[2].h, BK_W = BK[2].w * bkScale;
         const bookletPage = (n, x) => {
-          const frame = K.el("div", { class: "paper", style: { width: `${BK_W}px`, height: `${BK_H}px`, overflow: "hidden", borderRadius: "3px" } }, qBook);
+          const frame = K.el("div", { class: "paper", style: { width: `${BK_W}px`, height: `${BK_H}px`, overflow: "hidden" } }, qBook);
           K.set(frame, { x, y: 5, opacity: 0 });
           K.el("img", { src: `parts/generated/same-booklet/pages/sheet-00${n}.png`, style: { position: "absolute", left: 0, top: 0, width: `${BK_W}px`, height: `${BK_H}px` } }, frame);
           return frame;
@@ -159,7 +159,7 @@
         const bkLeft = bookletPage(3, QW / 2 - BK_W - 2), bkRight = bookletPage(4, QW / 2 + 2);
         const theLine = BK[3].lines.find((l) => l.words[0] === "the" && l.words.length > 1);
         const [bx0, by0, bx1, by1] = theLine.bbox.map((v) => v * bkScale);
-        const bkRing = K.el("div", { style: { position: "absolute", left: 0, top: 0, width: `${bx1 - bx0 + 12}px`, height: `${by1 - by0 + 10}px`, border: "3px solid var(--gold)", borderRadius: "4px" } }, bkRight);
+        const bkRing = K.el("div", { style: { position: "absolute", left: 0, top: 0, width: `${bx1 - bx0 + 12}px`, height: `${by1 - by0 + 10}px`, border: "3px solid var(--gold)" } }, bkRight);
         K.set(bkRing, { x: bx0 - 6, y: by0 - 5, opacity: 0 });
 
         // -- the book itself, for "the same model"
@@ -207,7 +207,7 @@
         const R = row(scene, "the", MG.rows.the, { x: 120, y: 110 });
         const tLift = T.word(1, "one") - 0.1;
         // a gold band lifts off the grid's row and grows into the big row
-        const lift = K.el("div", { style: { position: "absolute", left: 0, top: 0, width: "100px", height: "100px", background: "var(--gold)", borderRadius: "4px", transformOrigin: "0 0" } }, scene);
+        const lift = K.el("div", { style: { position: "absolute", left: 0, top: 0, width: "100px", height: "100px", background: "var(--gold)", transformOrigin: "0 0" } }, scene);
         K.set(lift, { opacity: 0 });
         const gx = QPOS.grid[0] + 150, gy = QPOS.grid[1] + 6;
         const bandBox = { x: gx, y: gy + (grid.head + rThe * grid.cell) * G_SCALE, w: grid.width * G_SCALE, h: grid.cell * G_SCALE };
@@ -252,7 +252,7 @@
           const x0 = BX + (acc / TOTAL) * BW, sw = (n / TOTAL) * BW;
           acc += n;
           const L = K.layer(scene, x0, BY);
-          const seg = K.el("div", { style: { position: "absolute", left: "2px", top: 0, width: `${sw - 4}px`, height: `${BH}px`, background: PAL[c].hex, borderRadius: "6px" } }, L);
+          const seg = K.el("div", { style: { position: "absolute", left: "2px", top: 0, width: `${sw - 4}px`, height: `${BH}px`, background: PAL[c].hex } }, L);
           const ink = PAL[c].name === "yellow" ? "#1a1a1a" : "#fff";
           const wd = K.el("div", { class: "bar-word", text: w, style: { position: "absolute", left: "20px", top: "22px", fontSize: "44px", color: ink } }, L);
           const nm = K.el("div", { class: "bar-num", text: String(n), style: { position: "absolute", left: "20px", top: "78px", fontSize: "52px", color: ink } }, L);
@@ -279,7 +279,7 @@
         const ghost = (seg, frac, label) => {
           const L = K.layer(scene, seg.x0, BY + BH + 110);
           const w = BW * frac;
-          K.el("div", { style: { position: "absolute", left: "2px", top: 0, width: `${w - 4}px`, height: "30px", border: "3px dashed var(--gold)", borderRadius: "6px" } }, L);
+          K.el("div", { style: { position: "absolute", left: "2px", top: 0, width: `${w - 4}px`, height: "30px", border: "3px dashed var(--gold)" } }, L);
           K.el("div", { class: "frac", text: label, style: { position: "absolute", left: `${w + 18}px`, top: "-8px" } }, L);
           K.set(L, { opacity: 0 });
           return L;
@@ -403,7 +403,7 @@
         const oneRow = (w, tIn, tOut) => {
           const r = row(scene, w, MG.rows[w], { x: A.cx - (300 + 345) / 2, y: 140 });
           jump(tl, r, "grid", tIn - 0.1);
-          const cellLit = K.svg("rect", { x: r.slotX(0) + 4, y: r.geom.top + 4, width: r.geom.slotW - 8, height: r.geom.rowH - 8, rx: 8, fill: "var(--gold)", "fill-opacity": 0.3 }, r.svg);
+          const cellLit = K.svg("rect", { x: r.slotX(0) + 4, y: r.geom.top + 4, width: r.geom.slotW - 8, height: r.geom.rowH - 8, fill: "var(--gold)", "fill-opacity": 0.3 }, r.svg);
           K.set(cellLit, { opacity: 0 });
           tl.to(r.el, { opacity: 1 }, tIn - 0.1, { dur: 0.2 });
           tl.to(cellLit, { opacity: 1 }, tIn + 0.1, { dur: 0.2 });
@@ -485,7 +485,7 @@
             a += n;
             const P = K.layer(L, x0, 0);
             const ink = PAL[c].name === "yellow" ? "#1a1a1a" : "#fff";
-            K.el("div", { style: { position: "absolute", left: "1px", top: 0, width: `${sw - 2}px`, height: "56px", background: PAL[c].hex, borderRadius: "5px" } }, P);
+            K.el("div", { style: { position: "absolute", left: "1px", top: 0, width: `${sw - 2}px`, height: "56px", background: PAL[c].hex } }, P);
             K.el("div", { class: "bar-word", text: word, style: { position: "absolute", left: "10px", top: "15px", fontSize: "28px", color: ink } }, P);
             return P;
           });
@@ -613,7 +613,7 @@
         const tWhatever = T.word(9, "whatever");
         // the row steps back to the middle of the desk on a plate of desk, and the kits
         // come back around it
-        const plate = K.el("div", { style: { position: "absolute", left: 0, top: 0, width: `${R9.W + 60}px`, height: `${R9.H + 20}px`, background: "var(--desk)", borderRadius: "24px", boxShadow: "0 0 0 2px var(--hairline)" } }, scene);
+        const plate = K.el("div", { style: { position: "absolute", left: 0, top: 0, width: `${R9.W + 60}px`, height: `${R9.H + 20}px`, background: "var(--desk)", boxShadow: "0 0 0 2px var(--hairline)" } }, scene);
         scene.insertBefore(plate, R9.el);
         const END_S = 0.52;
         const endAt = { x: A.cx - (R9.W * END_S) / 2, y: A.cy - (R9.H * END_S) / 2 + 10 };

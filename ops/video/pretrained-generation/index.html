@@ -58,7 +58,7 @@
         // a cut (an instant tl.set, as pageImage's own highlight() does),
         // never a slide, so it never implies scanning through the text
         // in between.
-        const marker = (pgObj) => K.el("div", { style: { position: "absolute", background: "var(--gold)", opacity: "0", borderRadius: "5px", mixBlendMode: "multiply" } }, pgObj.wrap);
+        const marker = (pgObj) => K.el("div", { style: { position: "absolute", background: "var(--gold)", opacity: "0", mixBlendMode: "multiply" } }, pgObj.wrap);
         const mark = (m, box, t, pad = 3) =>
           tl.set(m, { left: `${box.x - pad}px`, top: `${box.y - pad}px`, width: `${box.w + 2 * pad}px`, height: `${box.h + 2 * pad}px` }, t);
 
@@ -72,11 +72,11 @@
         // brought back closed in line 5, then shrunk to a tile in line 6.
         const bookL = K.layer(scene, PX, PY);
         const bookSvg = K.svg("svg", { width: PW, height: PH, viewBox: `0 0 ${PW} ${PH}` }, bookL);
-        K.svg("rect", { x: 0, y: 0, width: PW, height: PH, rx: 10, fill: "var(--paper)" }, bookSvg);
+        K.svg("rect", { x: 0, y: 0, width: PW, height: PH, fill: "var(--paper)" }, bookSvg);
         K.svg("rect", { x: 0, y: 0, width: 16, height: PH, fill: "rgb(0 0 0 / 18%)" }, bookSvg); // a spine
         const cardW = PW * 0.56, cardH = PH * 0.2, cardX = (PW - cardW) / 2, cardY = PH * 0.14;
-        K.svg("rect", { x: cardX, y: cardY, width: cardW, height: cardH, rx: 12, fill: "#cdbb8e", stroke: "rgb(0 0 0 / 25%)", "stroke-width": 2 }, bookSvg);
-        K.svg("rect", { x: cardX + 30, y: cardY + cardH / 2 - 3, width: cardW - 60, height: 6, rx: 3, fill: "rgb(0 0 0 / 20%)" }, bookSvg);
+        K.svg("rect", { x: cardX, y: cardY, width: cardW, height: cardH, fill: "#cdbb8e", stroke: "rgb(0 0 0 / 25%)", "stroke-width": 2 }, bookSvg);
+        K.svg("rect", { x: cardX + 30, y: cardY + cardH / 2 - 3, width: cardW - 60, height: 6, fill: "rgb(0 0 0 / 20%)" }, bookSvg);
 
         // ---- the real page: sheet 19 carries golden and grass; sheet 21 carries hollow
         const pg = K.pageImage(scene, "snowy-river", D.booklet.pageOf.golden, { x: PX, y: PY, w: PW, h: PH });

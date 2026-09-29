@@ -42,17 +42,17 @@ function style() {
     "style",
     {
       text: `
-      .ag-phone-back { position: absolute; inset: 0; border-radius: 32px; background: #2b2b2b; border: 4px solid #4a4a4a; }
-      .ag-phone-screen { position: absolute; inset: 8px; border-radius: 26px; background: #eceae4; }
-      .ag-bubble { position: absolute; border-radius: 18px; padding: 14px 18px; font-family: var(--font-ui); font-size: 25px; line-height: 1.32; }
+      .ag-phone-back { position: absolute; inset: 0; background: #2b2b2b; border: 4px solid #4a4a4a; }
+      .ag-phone-screen { position: absolute; inset: 8px; background: #eceae4; }
+      .ag-bubble { position: absolute; padding: 14px 18px; font-family: var(--font-ui); font-size: 25px; line-height: 1.32; }
       .ag-bubble.out { background: var(--gold); color: #241a04; }
       .ag-bubble.in { background: #ffffff; color: var(--ink); border: 1px solid rgb(0 0 0 / 12%); }
-      .ag-contact { position: absolute; height: 56px; border-radius: 28px; background: #ffffff; border: 1px solid rgb(0 0 0 / 12%); }
+      .ag-contact { position: absolute; height: 56px; background: #ffffff; border: 1px solid rgb(0 0 0 / 12%); }
       .ag-contact .avatar { position: absolute; left: 9px; top: 9px; width: 38px; height: 38px; border-radius: 50%; background: #b9b2a4; }
-      .ag-contact .bar { position: absolute; left: 60px; top: 22px; height: 12px; border-radius: 6px; background: #d9d4ca; }
+      .ag-contact .bar { position: absolute; left: 60px; top: 22px; height: 12px; background: #d9d4ca; }
       .ag-dot { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: #8c867b; }
       .ag-fly { position: absolute; left: 0; top: 0; }
-      .ag-slot { position: absolute; left: 0; top: 0; border: 4px dashed var(--gold-2); border-radius: 8px; }
+      .ag-slot { position: absolute; left: 0; top: 0; border: 4px dashed var(--gold-2); }
       .pencil .w.p { vertical-align: -0.3em; }
       `,
     },
@@ -109,7 +109,7 @@ function pencil(scene) {
   k.svg("polygon", { points: "0 20 36 4 36 36", fill: "#e9dcc5" }, s);
   k.svg("polygon", { points: "0 20 12 15 12 25", fill: "#1a1a1a" }, s);
   k.svg("rect", { x: 36, y: 4, width: 560, height: 32, fill: "var(--gold)" }, s);
-  k.svg("rect", { x: 596, y: 4, width: 44, height: 32, rx: 6, fill: "#d98c8c" }, s);
+  k.svg("rect", { x: 596, y: 4, width: 44, height: 32, fill: "#d98c8c" }, s);
   k.set(g, { scale: 0.34, rotation: -38, transformOrigin: "0 0" });
   return g;
 }
@@ -527,7 +527,7 @@ export function harnessLoop(parent, { x, y, w, h, labels }) {
   // (the fill sits on the group, so one tween recolours the whole figure)
   const person = k.svg("g", { style: "fill: #f2f2f2" }, s);
   k.svg("circle", { cx, cy: cy - 50, r: 30 }, person);
-  k.svg("rect", { x: cx - 38, y: cy - 14, width: 76, height: 96, rx: 30 }, person);
+  k.svg("rect", { x: cx - 38, y: cy - 14, width: 76, height: 96 }, person);
   k.set(person, { opacity: 0, transformOrigin: "50% 50%" });
   const hands = stations.map((st) => {
     const dx = st.x - cx,

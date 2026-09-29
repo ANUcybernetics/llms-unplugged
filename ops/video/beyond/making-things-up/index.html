@@ -13,17 +13,17 @@
       .book-line { position: absolute; left: 0; top: 0; font-family: var(--font-tok); line-height: 1; white-space: nowrap; color: var(--text); }
       .book-line .hl { color: var(--gold-2); }
       .page-line { position: relative; white-space: nowrap; }
-      .page-hl { position: absolute; left: 0; top: 0; background: var(--gold); opacity: 0; border-radius: 6px; }
+      .page-hl { position: absolute; left: 0; top: 0; background: var(--gold); opacity: 0; }
       .rank { position: absolute; left: 0; top: 0; font-size: 30px; color: var(--muted); width: 44px; text-align: right; }
       .rank-text { position: absolute; left: 0; top: 0; font-family: var(--font-tok); font-size: 38px; line-height: 1; white-space: nowrap; color: var(--text); }
       .tok { display: inline-block; margin-right: 0.26em; }
       .tok.punct { vertical-align: -0.12em; }
-      .bar { position: absolute; left: 0; top: 0; height: 24px; border-radius: 3px; background: rgb(255 255 255 / 82%); transform-origin: 0 50%; }
+      .bar { position: absolute; left: 0; top: 0; height: 24px; background: rgb(255 255 255 / 82%); transform-origin: 0 50%; }
       .bar.gold { background: var(--gold-2); }
-      .ghost { position: absolute; left: 0; top: 0; height: 32px; border: 3px solid var(--text); border-radius: 4px; }
-      .slot { position: absolute; left: 0; top: 0; border: 3px dashed var(--muted); border-radius: 10px; }
-      .end-label { position: absolute; left: 0; top: 0; font-family: var(--font-tok); font-size: 30px; line-height: 1; white-space: nowrap; color: var(--text); background: var(--desk); padding: 3px 8px 6px; border-radius: 6px; }
-      .crop { position: absolute; left: 0; top: 0; overflow: hidden; border-radius: 8px; }
+      .ghost { position: absolute; left: 0; top: 0; height: 32px; border: 3px solid var(--text); }
+      .slot { position: absolute; left: 0; top: 0; border: 3px dashed var(--muted); }
+      .end-label { position: absolute; left: 0; top: 0; font-family: var(--font-tok); font-size: 30px; line-height: 1; white-space: nowrap; color: var(--text); background: var(--desk); padding: 3px 8px 6px; }
+      .crop { position: absolute; left: 0; top: 0; overflow: hidden; }
     </style>
   </head>
   <body>
@@ -73,7 +73,7 @@
         // a gold box over one cell of a grid
         const cellLit = (g, r, c) => {
           const cl = g.cells[r][c];
-          const e = K.svg("rect", { x: cl.x + 2, y: cl.y + 2, width: cl.w - 4, height: cl.h - 4, rx: 4, fill: "var(--gold)", "fill-opacity": 0.25, stroke: "var(--gold)", "stroke-width": 5, opacity: 0 }, g.svg);
+          const e = K.svg("rect", { x: cl.x + 2, y: cl.y + 2, width: cl.w - 4, height: cl.h - 4, fill: "var(--gold)", "fill-opacity": 0.25, stroke: "var(--gold)", "stroke-width": 5, opacity: 0 }, g.svg);
           return e;
         };
         // a line of tokens in the book's type ("Down comes the magpie. Swoop!"):
@@ -113,8 +113,8 @@
         const cover = K.layer(scene, COVER.x, COVER.y);
         {
           const s = K.svg("svg", { width: COVER.w, height: COVER.h, viewBox: `0 0 ${COVER.w} ${COVER.h}` }, cover);
-          K.svg("rect", { x: 0, y: 0, width: COVER.w, height: COVER.h, rx: 10, fill: "var(--paper)" }, s);
-          K.svg("rect", { x: 0, y: 0, width: 26, height: COVER.h, rx: 6, fill: "var(--gold)" }, s);
+          K.svg("rect", { x: 0, y: 0, width: COVER.w, height: COVER.h, fill: "var(--paper)" }, s);
+          K.svg("rect", { x: 0, y: 0, width: 26, height: COVER.h, fill: "var(--gold)" }, s);
           K.svg("text", { x: COVER.w / 2 + 13, y: 110, "text-anchor": "middle", "font-family": "Libertinus Serif", "font-size": 64, fill: "#1a1a1a", text: "The magpie" }, s);
           // a flat magpie on a fence rail
           const b = K.svg("g", { transform: `translate(${COVER.w / 2 + 13} 300)` }, s);
@@ -216,7 +216,7 @@
         const CARD = { x: 170, y: 150, w: 660, h: 440 };
         const card = K.layer(scene, CARD.x, CARD.y);
         const cs = K.svg("svg", { width: CARD.w, height: CARD.h, viewBox: `0 0 ${CARD.w} ${CARD.h}` }, card);
-        K.svg("rect", { x: 0, y: 0, width: CARD.w, height: CARD.h, rx: 10, fill: "var(--paper)" }, cs);
+        K.svg("rect", { x: 0, y: 0, width: CARD.w, height: CARD.h, fill: "var(--paper)" }, cs);
         K.svg("line", { x1: 30, y1: 400, x2: CARD.w - 30, y2: 400, stroke: "#8c8c8c", "stroke-width": 4 }, cs);
         for (let px = 70; px < CARD.w - 40; px += 104) K.svg("rect", { x: px, y: 290, width: 18, height: 110, fill: "#8c8c8c" }, cs);
         K.svg("rect", { x: 50, y: 312, width: CARD.w - 100, height: 14, fill: "#8c8c8c" }, cs);

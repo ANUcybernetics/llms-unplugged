@@ -15,7 +15,7 @@
       .cellbox { position: absolute; left: 0; top: 0; background: var(--paper); border-right: 1px solid rgb(0 0 0 / 22%); border-bottom: 1px solid rgb(0 0 0 / 22%); }
       .slot { position: absolute; top: 0; display: flex; align-items: center; font-family: var(--font-tok); color: var(--ink); line-height: 1; white-space: nowrap; }
       .num b { font-weight: 700; }
-      .hole { position: absolute; left: 0; top: 0; width: 100px; height: 100px; border-radius: 10px; box-shadow: 0 0 0 4000px rgb(13 13 13 / 74%); transform-origin: 0 0; }
+      .hole { position: absolute; left: 0; top: 0; width: 100px; height: 100px; box-shadow: 0 0 0 4000px rgb(13 13 13 / 74%); transform-origin: 0 0; }
       .pencil .w.p { vertical-align: -0.2em; }
     </style>
   </head>
@@ -103,7 +103,7 @@
         const P = PAT.pages, PW = P[1].w, PH = P[1].h;
         const pageEl = (n, x, y) => {
           const pg = P[n];
-          const d = K.el("div", { class: "paper", style: { width: `${pg.w}px`, height: `${pg.h}px`, overflow: "hidden", borderRadius: "3px" } }, bookL);
+          const d = K.el("div", { class: "paper", style: { width: `${pg.w}px`, height: `${pg.h}px`, overflow: "hidden" } }, bookL);
           K.set(d, { x, y });
           K.el("img", { src: `parts/${pg.img}`, class: "abs", style: { width: `${pg.w}px`, height: `${pg.h}px` } }, d);
           for (const pt of pg.patches) {
@@ -123,7 +123,7 @@
         };
         // a gold highlighter mark on a page, over a box in page points
         const marker = (pgObj, [x0, y0, x1, y1], pad = 1.4) => {
-          const m = K.el("div", { class: "abs", style: { left: `${x0 - pad}px`, top: `${y0 - pad}px`, width: `${x1 - x0 + 2 * pad}px`, height: `${y1 - y0 + 2 * pad}px`, background: "var(--gold)", borderRadius: "1.5px", mixBlendMode: "multiply" } }, pgObj.el);
+          const m = K.el("div", { class: "abs", style: { left: `${x0 - pad}px`, top: `${y0 - pad}px`, width: `${x1 - x0 + 2 * pad}px`, height: `${y1 - y0 + 2 * pad}px`, background: "var(--gold)", mixBlendMode: "multiply" } }, pgObj.el);
           K.set(m, { opacity: 0 });
           return m;
         };
@@ -154,7 +154,7 @@
         const cover = pageEl(1, PW, 0);
         K.set(cover.el, { transformOrigin: "0 50%" });
         const title = union(P[1].words.slice(0, P[1].words.findIndex((w) => w[0] === "A")));
-        const card = K.el("div", { class: "abs", style: { left: `${title[0] - 14}px`, top: `${title[1] - 14}px`, width: `${title[2] - title[0] + 28}px`, height: `${title[3] - title[1] + 28}px`, background: "#cdbb8e", borderRadius: "8px", boxShadow: "0 2px 0 rgb(0 0 0 / 25%), 0 8px 18px rgb(0 0 0 / 30%)" } }, cover.el);
+        const card = K.el("div", { class: "abs", style: { left: `${title[0] - 14}px`, top: `${title[1] - 14}px`, width: `${title[2] - title[0] + 28}px`, height: `${title[3] - title[1] + 28}px`, background: "#cdbb8e", boxShadow: "0 2px 0 rgb(0 0 0 / 25%), 0 8px 18px rgb(0 0 0 / 30%)" } }, cover.el);
         K.set(card, { transformOrigin: "0% 100%" });
 
         const bcam = camera(bookL, { px: PW * 1.5, py: PH / 2, sx: A.cx, sy: A.cy, s: 0.8 });
@@ -187,7 +187,7 @@
         const SPW = 610 * SC, SPH = (24 + 12 * 36 + 24) * SC;
         const spX = A.cx - SPW, spY = A.cy - SPH / 2;
         const spread = [0, 1].map((k) => {
-          const d = K.el("div", { class: "paper", style: { width: `${SPW}px`, height: `${SPH}px`, borderRadius: k ? "0 6px 6px 0" : "6px 0 0 6px" } }, foldL);
+          const d = K.el("div", { class: "paper", style: { width: `${SPW}px`, height: `${SPH}px` } }, foldL);
           K.set(d, { x: spX + k * SPW, y: spY, opacity: 0 });
           return d;
         });
@@ -248,7 +248,7 @@
             it.num = K.el("div", { class: "slot num", style: { width: `${CELL + 2}px`, height: `${CELL}px`, justifyContent: "flex-end", fontSize: `${FS}px` } }, el);
             it.num.innerHTML = `<b>${thr}</b>|`;
             K.set(it.num, { x: x + 1, opacity: 0 });
-            it.mark = K.el("div", { class: "abs", style: { width: `${it.w + 8}px`, height: `${CELL - 4}px`, background: "var(--gold)", borderRadius: "4px", mixBlendMode: "multiply" } }, el);
+            it.mark = K.el("div", { class: "abs", style: { width: `${it.w + 8}px`, height: `${CELL - 4}px`, background: "var(--gold)", mixBlendMode: "multiply" } }, el);
             K.set(it.mark, { x: x - 4, y: 2, opacity: 0 });
             x += it.w + 12;
             return it;
@@ -408,7 +408,7 @@
         // doesn't go past, so it's a full stop.
         const DX = 1250, DY = 120, DS = 170;
         // the dice land on a clear patch of desk beside the entry, never over page text
-        const tray = K.el("div", { class: "abs", style: { width: "470px", height: "330px", background: "var(--desk)", borderRadius: "18px" } }, scene);
+        const tray = K.el("div", { class: "abs", style: { width: "470px", height: "330px", background: "var(--desk)" } }, scene);
         K.set(tray, { x: DX - 50, y: DY - 36, opacity: 0 });
         const trayFor = (t0, t1) => {
           tl.to(tray, { opacity: 1 }, t0 - 0.35, { dur: 0.3 });

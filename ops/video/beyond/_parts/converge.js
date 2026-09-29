@@ -276,7 +276,7 @@ export function shares(
     const sum = counts.reduce((s, c) => s + c, 0);
     ctx.fillStyle = "rgb(255 255 255 / 10%)";
     ctx.beginPath();
-    ctx.roundRect(0, top, w, barH, 8);
+    ctx.rect(0, top, w, barH);
     ctx.fill();
     if (!sum) return;
     let cx = 0;
@@ -286,7 +286,7 @@ export function shares(
         ctx.globalAlpha = alpha;
         ctx.fillStyle = followers[i].colour;
         ctx.beginPath();
-        ctx.roundRect(cx + 1.5, top, Math.max(0, cw - 3), barH, 8);
+        ctx.rect(cx + 1.5, top, Math.max(0, cw - 3), barH);
         ctx.fill();
         ctx.globalAlpha = 1;
         ctx.fillStyle = "#fff";

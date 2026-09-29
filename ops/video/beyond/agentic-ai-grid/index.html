@@ -73,7 +73,7 @@
           return m;
         });
         const outlines = bg.vocab.map((_, r) => {
-          const o = K.svg("rect", { x: 4, y: HEAD + r * CELL + 4, width: GW - 8, height: CELL - 8, rx: 10, fill: "none", stroke: "var(--gold)", "stroke-width": 9 }, grid.svg);
+          const o = K.svg("rect", { x: 4, y: HEAD + r * CELL + 4, width: GW - 8, height: CELL - 8, fill: "none", stroke: "var(--gold)", "stroke-width": 9 }, grid.svg);
           K.set(o, { opacity: 0 });
           return o;
         });

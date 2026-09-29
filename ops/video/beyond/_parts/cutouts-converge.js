@@ -67,7 +67,7 @@ function box(ctx, w, x, y, size) {
   }
   ctx.fillStyle = colour;
   ctx.beginPath();
-  ctx.roundRect(x, y - size * 0.58, bw, size * 1.16, size * 0.1);
+  ctx.rect(x, y - size * 0.58, bw, size * 1.16);
   ctx.fill();
   ctx.font = `700 ${size}px "Libertinus Serif"`;
   ctx.fillStyle = "#fff";
@@ -92,7 +92,7 @@ export function drawSlip(ctx, prev, next, cx, cy, size, { alpha = 1, rot = 0 } =
   ctx.strokeStyle = EDGE;
   ctx.lineWidth = 1.2;
   ctx.beginPath();
-  ctx.roundRect(-w / 2, -h / 2, w, h, 3);
+  ctx.rect(-w / 2, -h / 2, w, h);
   ctx.fill();
   ctx.stroke();
   let x = -w / 2 + size * 0.45;
@@ -123,7 +123,7 @@ function stack(ctx, n, cx, base, w, h, step) {
   for (let j = 0; j < n; j++) {
     const jx = (window.KIT.jitter(j * 7 + Math.round(cx)) - 0.5) * 6;
     ctx.beginPath();
-    ctx.roundRect(cx - w / 2 + jx, base - h - j * step, w, h, 3);
+    ctx.rect(cx - w / 2 + jx, base - h - j * step, w, h);
     ctx.fill();
     ctx.stroke();
   }
@@ -174,7 +174,7 @@ export function sortPiles(
         ctx.strokeStyle = "#be830e";
         ctx.lineWidth = 5;
         ctx.beginPath();
-        ctx.roundRect(c.cx - cw / 2 + 6, c.base - ch + 14, cw - 12, ch - 8, 10);
+        ctx.rect(c.cx - cw / 2 + 6, c.base - ch + 14, cw - 12, ch - 8);
         ctx.stroke();
         ctx.globalAlpha = 1;
       }
@@ -189,7 +189,7 @@ export function sortPiles(
           ctx.strokeStyle = "rgb(255 255 255 / 30%)";
           ctx.lineWidth = 1.5;
           ctx.beginPath();
-          ctx.roundRect(c.cx - sw / 2, c.base - sh, sw, sh, 3);
+          ctx.rect(c.cx - sw / 2, c.base - sh, sw, sh);
           ctx.stroke();
           ctx.restore();
           ctx.globalAlpha = 0.4;
@@ -205,7 +205,7 @@ export function sortPiles(
         ctx.strokeStyle = EDGE;
         ctx.lineWidth = 1.2;
         ctx.beginPath();
-        ctx.roundRect(c.cx - sw / 2, ty - sh / 2, sw, sh, 3);
+        ctx.rect(c.cx - sw / 2, ty - sh / 2, sw, sh);
         ctx.fill();
         ctx.stroke();
         const bw = tokW(ctx, wd, size);

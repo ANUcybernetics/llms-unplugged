@@ -276,7 +276,7 @@ window.KIT = (() => {
       H = head + n * cell;
     const g = layer(parent, x, y);
     const s = svg("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}` }, g);
-    svg("rect", { x: 0, y: 0, width: W, height: H, rx: 8, fill: "var(--paper)" }, s);
+    svg("rect", { x: 0, y: 0, width: W, height: H, fill: "var(--paper)" }, s);
     // bands (under the rules) light a row or column
     const rowBands = bg.vocab.map((_, r) =>
       svg("rect", { x: 0, y: head + r * cell, width: W, height: cell, class: "highlight" }, s),
@@ -397,7 +397,7 @@ window.KIT = (() => {
         };
       }),
     );
-    const dimmer = svg("rect", { x: 0, y: 0, width: W, height: H, rx: 8, class: "dimmer" }, s);
+    const dimmer = svg("rect", { x: 0, y: 0, width: W, height: H, class: "dimmer" }, s);
     dimmer.setAttribute("fill", "var(--paper)");
     return {
       el: g,
@@ -431,7 +431,7 @@ window.KIT = (() => {
       H = face + labelSize + 30 + 2 * pad;
     const s = svg("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}` }, g);
     // the strip sits on paper, so a black block (tc-0) reads against it
-    svg("rect", { x: 0, y: 0, width: W, height: H, rx: 8, fill: "var(--paper)" }, s);
+    svg("rect", { x: 0, y: 0, width: W, height: H, fill: "var(--paper)" }, s);
     const fy = pad + labelSize + 30,
       fx = (i) => pad + i * (face + gap);
     const faceEls = [],
@@ -447,7 +447,6 @@ window.KIT = (() => {
             y: fy,
             width: face,
             height: face,
-            rx: 10,
             fill: "var(--paper)",
             stroke: "rgb(0 0 0 / 30%)",
             "stroke-width": 2,
@@ -467,7 +466,6 @@ window.KIT = (() => {
             y: fy,
             width: x1 - x0,
             height: face,
-            rx: 10,
             fill: tokenColour(b.word),
             opacity: 0,
           },
@@ -707,7 +705,6 @@ window.KIT = (() => {
           y: oy + 4,
           width: cellW - 4,
           height: h - 8,
-          rx: 8,
           fill: "var(--gold)",
           "fill-opacity": 0.3,
           opacity: 0,
@@ -737,7 +734,6 @@ window.KIT = (() => {
         y: oy + 2,
         width: w - 4,
         height: h - 4,
-        rx: 8,
         fill: "var(--gold)",
         "fill-opacity": 0.25,
         opacity: 0,
@@ -768,7 +764,7 @@ window.KIT = (() => {
     const H = headH + entries.length * rowH + pad * 2;
     const g = layer(parent, x, y);
     const s = svg("svg", { width: w, height: H, viewBox: `0 0 ${w} ${H}` }, g);
-    svg("rect", { x: 0, y: 0, width: w, height: H, rx: 8, fill: "var(--paper)" }, s);
+    svg("rect", { x: 0, y: 0, width: w, height: H, fill: "var(--paper)" }, s);
     if (header) {
       svg(
         "text",
@@ -981,7 +977,6 @@ window.KIT = (() => {
         style: {
           position: "absolute",
           border: "4px solid var(--gold)",
-          borderRadius: "8px",
           boxShadow: "0 0 0 6px rgb(190 131 14 / 22%)",
           opacity: 0,
         },
@@ -1134,7 +1129,6 @@ window.KIT = (() => {
           left: 0,
           top: 0,
           border: `${stroke}px solid ${color}`,
-          borderRadius: "12px",
           boxShadow: "0 0 0 4px rgb(190 131 14 / 22%)",
         },
       },
