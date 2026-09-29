@@ -62,6 +62,10 @@ body { font-family: var(--font-ui); color: var(--text); }
 .layer { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
 .hidden { opacity: 0; }
 
+/* the scene is its own stacking context, so a raised mover (K.raise) stacks
+   within it and never over the caption band */
+.scene { isolation: isolate; }
+
 /* ---- caption band: the script line, whole, in a region nothing else uses ---- */
 .captions { position: absolute; left: 0; right: 0; bottom: 0; height: 190px; background: var(--ground); }
 .stage[data-aspect="portrait"] .captions { height: 300px; }
