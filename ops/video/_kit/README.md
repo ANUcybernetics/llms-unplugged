@@ -117,7 +117,8 @@ screen, not what fits a printed page.
 - line art (STYLE.md; classes `.line`, `.line.faint`, `.line.gold`,
   `.gold-fill`): `K.pencil(parent, { x, y, len, angle })` (x, y is the gold
   point), `K.icon(parent, name, { x, y, size, gold })` → `{ el, svg, paths }`
-  (iconoir: `smartphone-device`, `chat-bubble`, `coffee-cup`, `user`),
+  (iconoir: `smartphone-device`, `chat-bubble`, `coffee-cup`, `user`,
+  `thumbs-up`, `thumbs-down`),
   `K.outline(parent, name, { x, y, w, h, flip, rotate })` → `{ el, paths }` (the
   CC0 `magpie` and `dog` in `art/`, outline only)
 - `K.glint(tl, shapes, { kind, phase, lap, rest, seg, from, to })`: a segment

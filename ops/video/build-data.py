@@ -298,7 +298,14 @@ def read_palette(ledger: dict) -> list[dict]:
 SVG_NS = "{http://www.w3.org/2000/svg}"
 ART_DIR = ROOT / "ops/video/_kit/art"
 ICONOIR = ROOT / "website/node_modules/@iconify-json/iconoir/icons.json"
-ICONS = ["smartphone-device", "chat-bubble", "coffee-cup", "user"]
+ICONS = [
+    "smartphone-device",
+    "chat-bubble",
+    "coffee-cup",
+    "user",
+    "thumbs-up",
+    "thumbs-down",
+]
 
 
 def read_art() -> dict:
