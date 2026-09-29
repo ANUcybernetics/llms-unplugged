@@ -271,7 +271,7 @@ export function row(
   });
 
   // ---- tallies: one group per follower, centred in its grid cell, then in
-  // its ledger strip. Pencil, so they boil (K.prepDraw registers them).
+  // its ledger strip, prepped for draw-on.
   const marks = followers.map(([, count], c) => {
     const g = K.svg("g", {}, s);
     const paths = K.prepDraw(K.tally(g, count, 0, 0, tallyH, tallySp));

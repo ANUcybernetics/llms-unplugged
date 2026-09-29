@@ -208,7 +208,6 @@
         });
         // one layer per row: the header cell, its 24 boxes, and (hidden) what the
         // row becomes as an entry: follower labels, thresholds, dice diamonds
-        const pencilPaths = [];
         const rows = entries.map(() => null);
         const rowOf = {};
         entries.forEach(([w, maxRoll, fs], i) => {
@@ -235,7 +234,6 @@
               const span = (g - 1) * 6 * sp + (Math.min(last, 4) - 1) * sp;
               const strokes = K.tally(s, n, (CELL - span) / 2, (CELL - 13) / 2, 13, sp);
               for (const p of strokes) p.style.strokeWidth = "1.5px";
-              pencilPaths.push(...strokes);
             }
             return { el: d, f, n, c };
           });
@@ -261,7 +259,6 @@
           rows[i] = row;
           rowOf[w] = row;
         });
-        tl.boil(pencilPaths, { amp: 0.5 });
         const byGrid = [...rows].sort((a, b) => a.r - b.r);
         // where entry i sits in the spread (booklet order, twelve a page)
         const slotOf = (i) => ({ x: spX + Math.floor(i / 12) * SPW + 22 * SC, y: spY + (24 + (i % 12) * 36) * SC });

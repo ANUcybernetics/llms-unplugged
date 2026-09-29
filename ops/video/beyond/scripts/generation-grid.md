@@ -41,7 +41,7 @@ as the slides' dice bands are.
 sentence that nobody has ever written.
 
 _Visual: the finished magpie grid on the desk, top-down, full frame. Nothing
-moves but the tallies' boil._
+moves._
 
 _Reads:_ 1. this grid is a finished model.
 

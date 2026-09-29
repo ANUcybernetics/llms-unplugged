@@ -5,7 +5,7 @@
 // The kit's K.grid has square cells, and 24 words of square cells leave the
 // headers too small to read at 1080p; this grid has wide, short cells (the
 // same rows, columns, bands and pencil tallies), so the whole model fits one
-// frame. The cells' tallies are the kit's (K.tally, K.prepDraw: they boil).
+// frame. The cells' tallies are the kit's (K.tally, K.prepDraw).
 
 // The grid: `bg` from K.bigrams(words, vocab). Options: cellW, cellH, headW,
 // headH, font (row and column headers), tallies (false for a blank grid).

@@ -56,12 +56,12 @@ new one.
 ```
 
 `KIT.ready` loads the fonts and `timing.json` (from `../align.py`), calls
-`build`, adds the caption band, sets the pencil marks boiling and compiles the
-timeline into Web Animations; the composition registers the compiled controller
-(the lint looks for that line in the HTML). Both scripts are modules, so the
-inline one runs after `kit.js` has defined `KIT`. The portrait variant is a
-second entry file with `data-aspect="portrait"`, 1080x1920 and the same `build`,
-branching on `S.portrait`; render it with
+`build`, adds the caption band and compiles the timeline into Web Animations;
+the composition registers the compiled controller (the lint looks for that line
+in the HTML). Both scripts are modules, so the inline one runs after `kit.js`
+has defined `KIT`. The portrait variant is a second entry file with
+`data-aspect="portrait"`, 1080x1920 and the same `build`, branching on
+`S.portrait`; render it with
 `--composition portrait.html --resolution portrait-4k`.
 
 - `S` (stage): `W`, `H`, `portrait`, `captionH`, `area` =
@@ -92,7 +92,7 @@ screen, not what fits a printed page.
   `K.rowOptions(bg, r)`, `K.diceBands(options)` (the booklet's rounding)
 - `K.grid(parent, bg, { cell, head })` →
   `{ el, cells[r][c]{ strokes, cx, cy, x, y, w, h }, rowBands, colBands, rowHead, colHead, dimmer, width, height, at(r, c) }`;
-  strokes are prepped for `K.drawOn` and boil
+  strokes are prepped for `K.drawOn`
 - `K.strip(parent, bands, { face })` →
   `{ el, faces, blocks, labels, nums, shade(tl, t), light(tl, i, t), faceAt(i) }`
 - `K.die(parent, { size, face })` → `{ el, texts }`; `K.land(tl, die, face, t)`
@@ -106,7 +106,7 @@ screen, not what fits a printed page.
   `{ el, add(colour, i, n) → { el, x, y }, counters, centre, cr }`;
   `K.counter(parent, colour, { r })`
 - `K.paper(parent, { w, h })`, `K.pencilLine(paper.el, words, { size })` →
-  `{ el, words[] }` (the words boil), `K.write(tl, span, t)`
+  `{ el, words[] }`, `K.write(tl, span, t)`
 - `K.bookPage(parent, lines, { w, h, size })`, `K.ring(parent, { w, h })` →
   `{ el, around(tl, box, t, dur, pad) }`, `K.spanBox(tiles, a, b)`
 - `K.pageImage(parent, name, sheetNo, { w, h })` →

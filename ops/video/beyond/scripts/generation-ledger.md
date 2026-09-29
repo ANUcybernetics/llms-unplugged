@@ -45,7 +45,7 @@ same cups.
 going to write a sentence that nobody has ever written.
 
 _Visual: the magpie's ledger sheets fanned on the desk, top-down, full frame.
-Nothing moves but the marks' boil._
+Nothing moves._
 
 _Reads:_ 1. these sheets are a finished model.
 

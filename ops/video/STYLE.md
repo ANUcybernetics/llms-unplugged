@@ -63,10 +63,9 @@ visual grammar, captions, formats) and wins on anything editorial.
 - **Punctuation is a symbol tile**: an enlarged bold mark in a rounded square,
   as on the printed sheets and the site (the kit's `punctBox`/`punctTile`),
   wherever a punctuation token appears as a word.
-- **Pencil marks boil**: tallies (on the grid and the ledger) and pencil-written
-  words redraw slightly differently twelve times a second, as the kit sets up.
-  Everything printed stays crisp: headers, the book's text, sheets, booklet
-  pages, captions. No paper grain or texture layer.
+- **Pencil marks hold still**: tallies and pencil-written words draw on, then
+  stay put. No boil, jitter or paper texture: at 4K any frame-to-frame redraw
+  reads as wobble, not hand-drawing.
 - **Gold does the pointing**: row and column bands, rings and highlights are
   `--gold`; dimming the rest of the desk leads the eye.
 - **Captions** sit in a reserved band below the scene (190 px landscape, 300 px

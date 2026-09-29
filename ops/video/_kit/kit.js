@@ -8,7 +8,7 @@
 // stage, timing, captions, the Web Animations timeline and the moves.
 // Everything is flat vector that tweens transform, opacity and
 // stroke-dashoffset only; nothing animates layout. Pencil marks (tallies and
-// written words) boil: they redraw a little differently twelve times a second.
+// written words) draw on and then hold still.
 //
 // Data (word lists, ledger rows, booklet entries, page images) comes from
 // kit/generated/data.js, which ops/video/build-data.py writes from data/ and
@@ -26,13 +26,6 @@ import * as M from "./motion/motion.js";
 
 window.KIT = (() => {
   const { clamp, lerp, set, get, el, svg, layer } = M;
-
-  // pencil marks boil; ready() hands the collected ones to the timeline
-  const PENCIL = [];
-  const pencil = (els, amp = 1) => {
-    PENCIL.push({ els, amp });
-    return els;
-  };
 
   // ---------------------------------------------------------------- tokens
   // The token colour hash from website/src/lib/tokenColors.ts (and
@@ -271,8 +264,7 @@ window.KIT = (() => {
     }
     return paths;
   }
-  // pencil strokes boil, so their dash is padded against the longer jittered copies
-  const prepDraw = (paths) => M.prepDraw(pencil(paths), 4);
+  const prepDraw = (paths) => M.prepDraw(paths);
   const drawOn = M.drawOn;
 
   // The grid: row and column headers in the vocab order, tally cells, gold
@@ -945,7 +937,6 @@ window.KIT = (() => {
       set(s, { opacity: 0 });
       return s;
     });
-    pencil(spans, 0.8);
     return { el: d, words: spans };
   }
   // write words in with a small pencil rise, each at its time
@@ -1212,8 +1203,7 @@ window.KIT = (() => {
   };
 
   // ---------------------------------------------------------------- boot
-  // Fonts must be loaded before anything is measured; the pencil marks the
-  // objects collected boil from the start.
+  // Fonts must be loaded before anything is measured.
   const FONTS = [
     '400 20px "Public Sans"',
     '600 20px "Public Sans"',
@@ -1221,14 +1211,7 @@ window.KIT = (() => {
     '700 20px "Libertinus Serif"',
     'italic 400 20px "Libertinus Serif"',
   ];
-  const ready = (build) =>
-    M.ready(
-      (tl, S, T) => {
-        build(tl, S, T);
-        for (const { els, amp } of PENCIL) tl.boil(els, { amp });
-      },
-      { fonts: FONTS },
-    );
+  const ready = (build) => M.ready((tl, S, T) => build(tl, S, T), { fonts: FONTS });
 
   return {
     colourIndex,
