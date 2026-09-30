@@ -1,615 +1,650 @@
 {
   "slug": "generation-grid",
   "audio": "assets/voice.wav",
-  "duration": 120.432,
+  "duration": 144.984,
   "lines": [
     {
       "i": 0,
-      "speaker": "USHINI",
+      "speaker": "BEN",
       "tc": true,
-      "caption": "You've got a grid full of tally marks. Right now, they're just counts. In about sixty seconds, they're going to write a sentence that has never existed before.",
+      "caption": "This is a table of counts. In about a minute it's going to write a sentence that nobody has ever written.",
       "start": 0.15,
-      "end": 11.16,
+      "end": 6.14,
       "words": [
         {
-          "w": "You've",
+          "w": "This",
           "start": 0.3,
-          "end": 0.84
+          "end": 0.76
         },
         {
-          "w": "got",
-          "start": 0.84,
-          "end": 1.02
+          "w": "is",
+          "start": 0.76,
+          "end": 0.98
         },
         {
           "w": "a",
-          "start": 1.02,
-          "end": 1.12
+          "start": 0.98,
+          "end": 1.1
         },
         {
-          "w": "grid",
-          "start": 1.12,
-          "end": 1.3
-        },
-        {
-          "w": "full",
-          "start": 1.3,
-          "end": 1.54
+          "w": "table",
+          "start": 1.1,
+          "end": 1.44
         },
         {
           "w": "of",
-          "start": 1.54,
-          "end": 1.76
-        },
-        {
-          "w": "tally",
-          "start": 1.76,
-          "end": 2.04
-        },
-        {
-          "w": "marks.",
-          "start": 2.04,
-          "end": 2.26
-        },
-        {
-          "w": "Right",
-          "start": 3.28,
-          "end": 3.8
-        },
-        {
-          "w": "now,",
-          "start": 3.8,
-          "end": 4.16
-        },
-        {
-          "w": "they're",
-          "start": 4.26,
-          "end": 4.62
-        },
-        {
-          "w": "just",
-          "start": 4.62,
-          "end": 4.88
+          "start": 1.44,
+          "end": 1.6
         },
         {
           "w": "counts.",
-          "start": 4.88,
-          "end": 5.24
+          "start": 1.6,
+          "end": 1.86
         },
         {
           "w": "In",
-          "start": 6.0,
-          "end": 6.52
+          "start": 2.1,
+          "end": 2.62
         },
         {
           "w": "about",
-          "start": 6.52,
-          "end": 6.72
-        },
-        {
-          "w": "sixty",
-          "start": 6.84,
-          "end": 7.16
-        },
-        {
-          "w": "seconds,",
-          "start": 7.16,
-          "end": 7.6
-        },
-        {
-          "w": "they're",
-          "start": 7.88,
-          "end": 8.4
-        },
-        {
-          "w": "going",
-          "start": 8.4,
-          "end": 8.58
-        },
-        {
-          "w": "to",
-          "start": 8.58,
-          "end": 8.84
-        },
-        {
-          "w": "write",
-          "start": 8.84,
-          "end": 9.04
+          "start": 2.62,
+          "end": 2.84
         },
         {
           "w": "a",
-          "start": 9.04,
-          "end": 9.18
+          "start": 2.84,
+          "end": 2.96
+        },
+        {
+          "w": "minute",
+          "start": 2.96,
+          "end": 3.18
+        },
+        {
+          "w": "it's",
+          "start": 3.18,
+          "end": 3.48
+        },
+        {
+          "w": "going",
+          "start": 3.48,
+          "end": 3.64
+        },
+        {
+          "w": "to",
+          "start": 3.64,
+          "end": 3.82
+        },
+        {
+          "w": "write",
+          "start": 3.82,
+          "end": 4.04
+        },
+        {
+          "w": "a",
+          "start": 4.04,
+          "end": 4.14
         },
         {
           "w": "sentence",
-          "start": 9.18,
-          "end": 9.48
+          "start": 4.14,
+          "end": 4.46
         },
         {
           "w": "that",
-          "start": 9.48,
-          "end": 9.78
+          "start": 4.46,
+          "end": 4.76
+        },
+        {
+          "w": "nobody",
+          "start": 4.76,
+          "end": 5.06
         },
         {
           "w": "has",
-          "start": 9.78,
-          "end": 9.92
+          "start": 5.06,
+          "end": 5.38
         },
         {
-          "w": "never",
-          "start": 9.92,
-          "end": 10.2
+          "w": "ever",
+          "start": 5.38,
+          "end": 5.66
         },
         {
-          "w": "existed",
-          "start": 10.2,
-          "end": 10.56
-        },
-        {
-          "w": "before.",
-          "start": 10.56,
-          "end": 10.96
+          "w": "written.",
+          "start": 5.66,
+          "end": 5.94
         }
       ]
     },
     {
       "i": 1,
-      "speaker": "BEN",
+      "speaker": "USHINI",
       "tc": false,
-      "caption": "Pick any starting word that has a row in your grid, and write it down. That's the beginning of your generated text.",
-      "start": 12.39,
-      "end": 19.14,
+      "caption": "Each row is a word from a book, and the tallies say which words came next, and how often. It's the same kind of grid you just filled in.",
+      "start": 6.79,
+      "end": 15.86,
       "words": [
         {
-          "w": "Pick",
-          "start": 12.54,
-          "end": 13.06
-        },
-        {
-          "w": "any",
-          "start": 13.06,
-          "end": 13.3
-        },
-        {
-          "w": "starting",
-          "start": 13.3,
-          "end": 13.64
-        },
-        {
-          "w": "word",
-          "start": 13.64,
-          "end": 13.94
-        },
-        {
-          "w": "that",
-          "start": 13.94,
-          "end": 14.14
-        },
-        {
-          "w": "has",
-          "start": 14.14,
-          "end": 14.28
-        },
-        {
-          "w": "a",
-          "start": 14.28,
-          "end": 14.42
+          "w": "Each",
+          "start": 6.94,
+          "end": 7.46
         },
         {
           "w": "row",
-          "start": 14.42,
-          "end": 14.58
+          "start": 7.46,
+          "end": 7.7
         },
         {
-          "w": "in",
-          "start": 14.58,
-          "end": 14.76
+          "w": "is",
+          "start": 7.7,
+          "end": 7.96
         },
         {
-          "w": "your",
-          "start": 14.76,
-          "end": 14.88
+          "w": "a",
+          "start": 7.96,
+          "end": 8.06
         },
         {
-          "w": "grid,",
-          "start": 14.88,
-          "end": 15.2
+          "w": "word",
+          "start": 8.06,
+          "end": 8.3
+        },
+        {
+          "w": "from",
+          "start": 8.3,
+          "end": 8.5
+        },
+        {
+          "w": "a",
+          "start": 8.5,
+          "end": 8.6
+        },
+        {
+          "w": "book,",
+          "start": 8.6,
+          "end": 8.82
         },
         {
           "w": "and",
-          "start": 15.28,
-          "end": 15.7
-        },
-        {
-          "w": "write",
-          "start": 15.7,
-          "end": 15.9
-        },
-        {
-          "w": "it",
-          "start": 15.9,
-          "end": 16.08
-        },
-        {
-          "w": "down.",
-          "start": 16.08,
-          "end": 16.28
-        },
-        {
-          "w": "That's",
-          "start": 16.72,
-          "end": 17.24
+          "start": 8.82,
+          "end": 9.32
         },
         {
           "w": "the",
-          "start": 17.24,
-          "end": 17.32
+          "start": 9.32,
+          "end": 9.5
         },
         {
-          "w": "beginning",
-          "start": 17.32,
-          "end": 17.66
+          "w": "tallies",
+          "start": 9.5,
+          "end": 9.88
+        },
+        {
+          "w": "say",
+          "start": 9.88,
+          "end": 10.12
+        },
+        {
+          "w": "which",
+          "start": 10.12,
+          "end": 10.36
+        },
+        {
+          "w": "words",
+          "start": 10.36,
+          "end": 10.68
+        },
+        {
+          "w": "came",
+          "start": 10.68,
+          "end": 10.96
+        },
+        {
+          "w": "next,",
+          "start": 10.96,
+          "end": 11.36
+        },
+        {
+          "w": "and",
+          "start": 11.36,
+          "end": 11.72
+        },
+        {
+          "w": "how",
+          "start": 11.72,
+          "end": 11.92
+        },
+        {
+          "w": "often.",
+          "start": 11.92,
+          "end": 12.3
+        },
+        {
+          "w": "It's",
+          "start": 13.0,
+          "end": 13.52
+        },
+        {
+          "w": "the",
+          "start": 13.52,
+          "end": 13.6
+        },
+        {
+          "w": "same",
+          "start": 13.6,
+          "end": 13.88
+        },
+        {
+          "w": "kind",
+          "start": 13.88,
+          "end": 14.12
         },
         {
           "w": "of",
-          "start": 17.66,
-          "end": 18.0
+          "start": 14.12,
+          "end": 14.46
         },
         {
-          "w": "your",
-          "start": 18.0,
-          "end": 18.12
+          "w": "grid",
+          "start": 14.46,
+          "end": 14.62
         },
         {
-          "w": "generated",
-          "start": 18.12,
-          "end": 18.54
+          "w": "you",
+          "start": 14.62,
+          "end": 14.88
         },
         {
-          "w": "text.",
-          "start": 18.54,
-          "end": 18.94
+          "w": "just",
+          "start": 14.88,
+          "end": 15.06
+        },
+        {
+          "w": "filled",
+          "start": 15.06,
+          "end": 15.38
+        },
+        {
+          "w": "in.",
+          "start": 15.38,
+          "end": 15.66
         }
       ]
     },
     {
       "i": 2,
-      "speaker": "USHINI",
+      "speaker": "BEN",
       "tc": false,
-      "caption": "Find that word's row and look at the tally marks. Add them up, then assign dice numbers: if \"cat\" has six tallies and \"dog\" has four, that's faces one to six for cat, seven to ten for dog.",
-      "start": 20.03,
-      "end": 33.04,
+      "caption": "A story starts after a full stop, so start at the row for full stop. \"It\" came next seven times, \"here\" four, \"down\" three, \"swoop\" three.",
+      "start": 16.89,
+      "end": 26.3,
       "words": [
         {
-          "w": "Find",
-          "start": 20.18,
-          "end": 20.7
+          "w": "A",
+          "start": 17.04,
+          "end": 17.56
         },
         {
-          "w": "that",
-          "start": 20.7,
-          "end": 20.84
+          "w": "story",
+          "start": 17.56,
+          "end": 17.86
         },
         {
-          "w": "word's",
-          "start": 20.84,
-          "end": 21.24
+          "w": "starts",
+          "start": 17.86,
+          "end": 18.16
         },
         {
-          "w": "row",
-          "start": 21.24,
-          "end": 21.44
+          "w": "after",
+          "start": 18.16,
+          "end": 18.62
         },
         {
-          "w": "and",
-          "start": 21.44,
-          "end": 21.76
+          "w": "a",
+          "start": 18.62,
+          "end": 18.76
         },
         {
-          "w": "look",
-          "start": 21.76,
-          "end": 21.96
+          "w": "full",
+          "start": 18.76,
+          "end": 18.88
+        },
+        {
+          "w": "stop,",
+          "start": 18.88,
+          "end": 19.18
+        },
+        {
+          "w": "so",
+          "start": 19.18,
+          "end": 19.72
+        },
+        {
+          "w": "start",
+          "start": 19.72,
+          "end": 20.08
         },
         {
           "w": "at",
-          "start": 21.96,
-          "end": 22.12
+          "start": 20.08,
+          "end": 20.28
         },
         {
           "w": "the",
-          "start": 22.12,
-          "end": 22.22
+          "start": 20.28,
+          "end": 20.36
         },
         {
-          "w": "tally",
-          "start": 22.22,
-          "end": 22.5
-        },
-        {
-          "w": "marks.",
-          "start": 22.5,
-          "end": 22.68
-        },
-        {
-          "w": "Add",
-          "start": 23.66,
-          "end": 24.18
-        },
-        {
-          "w": "them",
-          "start": 24.18,
-          "end": 24.36
-        },
-        {
-          "w": "up,",
-          "start": 24.36,
-          "end": 24.6
-        },
-        {
-          "w": "then",
-          "start": 24.7,
-          "end": 25.04
-        },
-        {
-          "w": "assign",
-          "start": 25.04,
-          "end": 25.28
-        },
-        {
-          "w": "dice",
-          "start": 25.28,
-          "end": 25.64
-        },
-        {
-          "w": "numbers:",
-          "start": 25.64,
-          "end": 25.94
-        },
-        {
-          "w": "if",
-          "start": 25.94,
-          "end": 26.38
-        },
-        {
-          "w": "\"cat\"",
-          "start": 26.38,
-          "end": 26.74
-        },
-        {
-          "w": "has",
-          "start": 26.74,
-          "end": 27.14
-        },
-        {
-          "w": "six",
-          "start": 27.08,
-          "end": 27.51
-        },
-        {
-          "w": "tallies",
-          "start": 27.42,
-          "end": 27.88
-        },
-        {
-          "w": "and",
-          "start": 27.88,
-          "end": 28.1
-        },
-        {
-          "w": "\"dog\"",
-          "start": 28.1,
-          "end": 28.38
-        },
-        {
-          "w": "has",
-          "start": 28.38,
-          "end": 28.66
-        },
-        {
-          "w": "four,",
-          "start": 28.76,
-          "end": 29.22
-        },
-        {
-          "w": "that's",
-          "start": 29.14,
-          "end": 29.78
-        },
-        {
-          "w": "faces",
-          "start": 29.78,
-          "end": 30.06
-        },
-        {
-          "w": "one",
-          "start": 30.04,
-          "end": 30.27
-        },
-        {
-          "w": "to",
-          "start": 30.3,
-          "end": 30.48
-        },
-        {
-          "w": "six",
-          "start": 30.5,
-          "end": 30.7
+          "w": "row",
+          "start": 20.36,
+          "end": 20.52
         },
         {
           "w": "for",
-          "start": 30.7,
-          "end": 30.92
+          "start": 20.52,
+          "end": 20.78
         },
         {
-          "w": "cat,",
-          "start": 30.92,
-          "end": 31.16
+          "w": "full",
+          "start": 20.78,
+          "end": 20.96
+        },
+        {
+          "w": "stop.",
+          "start": 20.96,
+          "end": 21.2
+        },
+        {
+          "w": "\"It\"",
+          "start": 21.42,
+          "end": 21.92
+        },
+        {
+          "w": "came",
+          "start": 21.92,
+          "end": 22.16
+        },
+        {
+          "w": "next",
+          "start": 22.16,
+          "end": 22.42
         },
         {
           "w": "seven",
-          "start": 31.41,
-          "end": 31.63
+          "start": 22.42,
+          "end": 22.68
         },
         {
-          "w": "to",
-          "start": 31.9,
-          "end": 32.1
+          "w": "times,",
+          "start": 22.68,
+          "end": 23.16
         },
         {
-          "w": "ten",
-          "start": 32.1,
-          "end": 32.33
+          "w": "\"here\"",
+          "start": 23.3,
+          "end": 23.78
         },
         {
-          "w": "for",
-          "start": 32.3,
-          "end": 32.56
+          "w": "four,",
+          "start": 23.78,
+          "end": 24.04
         },
         {
-          "w": "dog.",
-          "start": 32.56,
-          "end": 32.84
+          "w": "\"down\"",
+          "start": 24.24,
+          "end": 24.72
+        },
+        {
+          "w": "three,",
+          "start": 24.72,
+          "end": 25.06
+        },
+        {
+          "w": "\"swoop\"",
+          "start": 25.26,
+          "end": 25.84
+        },
+        {
+          "w": "three.",
+          "start": 25.84,
+          "end": 26.1
         }
       ]
     },
     {
       "i": 3,
-      "speaker": "BEN",
+      "speaker": "USHINI",
       "tc": false,
-      "caption": "That mapping is the whole trick. More tallies, more faces, more likely to come up. The die does the random part; the counts do the weighting.",
-      "start": 34.13,
-      "end": 43.4,
+      "caption": "Now pick the next word at random, but fairly. Share the ten faces of a die across the row by its tallies. Seventeen tallies won't split into ten exactly, so share them as fairly as you can: \"it\" gets four faces, the others two each.",
+      "start": 27.03,
+      "end": 44.08,
       "words": [
         {
-          "w": "That",
-          "start": 34.28,
-          "end": 34.84
+          "w": "Now",
+          "start": 27.18,
+          "end": 27.7
         },
         {
-          "w": "mapping",
-          "start": 34.84,
-          "end": 35.22
-        },
-        {
-          "w": "is",
-          "start": 35.22,
-          "end": 35.52
+          "w": "pick",
+          "start": 27.7,
+          "end": 27.92
         },
         {
           "w": "the",
-          "start": 35.52,
-          "end": 35.64
+          "start": 27.92,
+          "end": 28.12
         },
         {
-          "w": "whole",
-          "start": 35.64,
-          "end": 35.84
+          "w": "next",
+          "start": 28.12,
+          "end": 28.2
         },
         {
-          "w": "trick.",
-          "start": 35.84,
-          "end": 36.12
+          "w": "word",
+          "start": 28.2,
+          "end": 28.6
         },
         {
-          "w": "More",
-          "start": 36.38,
-          "end": 36.92
+          "w": "at",
+          "start": 28.6,
+          "end": 28.76
         },
         {
-          "w": "tallies,",
-          "start": 36.92,
-          "end": 37.46
+          "w": "random,",
+          "start": 28.76,
+          "end": 29.1
         },
         {
-          "w": "more",
-          "start": 37.5,
-          "end": 37.9
+          "w": "but",
+          "start": 29.1,
+          "end": 29.58
         },
         {
-          "w": "faces,",
-          "start": 37.9,
-          "end": 38.32
+          "w": "fairly.",
+          "start": 29.58,
+          "end": 29.96
         },
         {
-          "w": "more",
-          "start": 38.54,
-          "end": 39.0
+          "w": "Share",
+          "start": 30.74,
+          "end": 31.26
         },
         {
-          "w": "likely",
-          "start": 39.0,
-          "end": 39.36
+          "w": "the",
+          "start": 31.26,
+          "end": 31.44
         },
         {
-          "w": "to",
-          "start": 39.36,
-          "end": 39.56
+          "w": "ten",
+          "start": 31.44,
+          "end": 31.64
         },
         {
-          "w": "come",
-          "start": 39.56,
-          "end": 39.7
+          "w": "faces",
+          "start": 31.64,
+          "end": 32.06
         },
         {
-          "w": "up.",
-          "start": 39.7,
-          "end": 39.9
+          "w": "of",
+          "start": 32.06,
+          "end": 32.34
         },
         {
-          "w": "The",
-          "start": 40.06,
-          "end": 40.52
+          "w": "a",
+          "start": 32.34,
+          "end": 32.44
         },
         {
           "w": "die",
-          "start": 40.52,
-          "end": 40.7
+          "start": 32.44,
+          "end": 32.62
         },
         {
-          "w": "does",
-          "start": 40.7,
-          "end": 40.94
-        },
-        {
-          "w": "the",
-          "start": 40.94,
-          "end": 41.1
-        },
-        {
-          "w": "random",
-          "start": 41.1,
-          "end": 41.42
-        },
-        {
-          "w": "part;",
-          "start": 41.42,
-          "end": 41.68
+          "w": "across",
+          "start": 32.62,
+          "end": 32.88
         },
         {
           "w": "the",
-          "start": 41.86,
-          "end": 42.24
+          "start": 32.88,
+          "end": 33.24
         },
         {
-          "w": "counts",
-          "start": 42.24,
-          "end": 42.52
+          "w": "row",
+          "start": 33.24,
+          "end": 33.4
         },
         {
-          "w": "do",
-          "start": 42.52,
-          "end": 42.72
+          "w": "by",
+          "start": 33.4,
+          "end": 33.62
+        },
+        {
+          "w": "its",
+          "start": 33.62,
+          "end": 33.84
+        },
+        {
+          "w": "tallies.",
+          "start": 33.84,
+          "end": 34.3
+        },
+        {
+          "w": "Seventeen",
+          "start": 36.18,
+          "end": 36.7
+        },
+        {
+          "w": "tallies",
+          "start": 36.7,
+          "end": 37.14
+        },
+        {
+          "w": "won't",
+          "start": 37.14,
+          "end": 37.46
+        },
+        {
+          "w": "split",
+          "start": 37.46,
+          "end": 37.7
+        },
+        {
+          "w": "into",
+          "start": 37.7,
+          "end": 37.96
+        },
+        {
+          "w": "ten",
+          "start": 37.96,
+          "end": 38.24
+        },
+        {
+          "w": "exactly,",
+          "start": 38.24,
+          "end": 38.66
+        },
+        {
+          "w": "so",
+          "start": 38.66,
+          "end": 39.46
+        },
+        {
+          "w": "share",
+          "start": 39.46,
+          "end": 39.78
+        },
+        {
+          "w": "them",
+          "start": 39.78,
+          "end": 39.96
+        },
+        {
+          "w": "as",
+          "start": 39.96,
+          "end": 40.14
+        },
+        {
+          "w": "fairly",
+          "start": 40.14,
+          "end": 40.42
+        },
+        {
+          "w": "as",
+          "start": 40.42,
+          "end": 40.66
+        },
+        {
+          "w": "you",
+          "start": 40.66,
+          "end": 40.76
+        },
+        {
+          "w": "can:",
+          "start": 40.76,
+          "end": 41.04
+        },
+        {
+          "w": "\"it\"",
+          "start": 41.2,
+          "end": 41.52
+        },
+        {
+          "w": "gets",
+          "start": 41.52,
+          "end": 41.8
+        },
+        {
+          "w": "four",
+          "start": 41.8,
+          "end": 41.98
+        },
+        {
+          "w": "faces,",
+          "start": 41.98,
+          "end": 42.42
         },
         {
           "w": "the",
-          "start": 42.72,
-          "end": 42.86
+          "start": 42.66,
+          "end": 42.96
         },
         {
-          "w": "weighting.",
-          "start": 42.86,
-          "end": 43.2
+          "w": "others",
+          "start": 42.96,
+          "end": 43.3
+        },
+        {
+          "w": "two",
+          "start": 43.3,
+          "end": 43.5
+        },
+        {
+          "w": "each.",
+          "start": 43.5,
+          "end": 43.88
         }
       ]
     },
@@ -617,119 +652,104 @@
       "i": 4,
       "speaker": "BEN",
       "tc": false,
-      "caption": "Roll your ten-sided die. Whatever number you land on, look up the matching word and write it down. That's your second word.",
-      "start": 44.03,
-      "end": 51.98,
+      "caption": "Roll a two. It's in the band for \"it\". Write it down, and go to the row for \"it\".",
+      "start": 46.22,
+      "end": 54.67,
       "words": [
         {
           "w": "Roll",
-          "start": 44.18,
-          "end": 44.74
+          "start": 46.37,
+          "end": 46.89
         },
         {
-          "w": "your",
-          "start": 44.74,
-          "end": 44.96
+          "w": "a",
+          "start": 46.89,
+          "end": 47.03
         },
         {
-          "w": "ten-sided",
-          "start": 45.19,
-          "end": 45.41
+          "w": "two.",
+          "start": 47.03,
+          "end": 47.23
         },
         {
-          "w": "die.",
-          "start": 45.64,
-          "end": 45.86
+          "w": "It's",
+          "start": 48.97,
+          "end": 49.49
         },
         {
-          "w": "Whatever",
-          "start": 46.22,
-          "end": 46.78
-        },
-        {
-          "w": "number",
-          "start": 46.78,
-          "end": 47.1
-        },
-        {
-          "w": "you",
-          "start": 47.1,
-          "end": 47.26
-        },
-        {
-          "w": "land",
-          "start": 47.26,
-          "end": 47.42
-        },
-        {
-          "w": "on,",
-          "start": 47.42,
-          "end": 47.68
-        },
-        {
-          "w": "look",
-          "start": 47.78,
-          "end": 48.3
-        },
-        {
-          "w": "up",
-          "start": 48.3,
-          "end": 48.46
+          "w": "in",
+          "start": 49.49,
+          "end": 49.57
         },
         {
           "w": "the",
-          "start": 48.46,
-          "end": 48.58
+          "start": 49.57,
+          "end": 49.69
         },
         {
-          "w": "matching",
-          "start": 48.58,
-          "end": 48.86
+          "w": "band",
+          "start": 49.69,
+          "end": 49.93
         },
         {
-          "w": "word",
-          "start": 48.86,
-          "end": 49.12
+          "w": "for",
+          "start": 49.93,
+          "end": 50.19
         },
         {
-          "w": "and",
-          "start": 49.12,
-          "end": 49.4
+          "w": "\"it\".",
+          "start": 50.19,
+          "end": 50.43
         },
         {
-          "w": "write",
-          "start": 49.4,
-          "end": 49.62
+          "w": "Write",
+          "start": 51.91,
+          "end": 52.43
         },
         {
           "w": "it",
-          "start": 49.62,
-          "end": 49.78
+          "start": 52.43,
+          "end": 52.57
         },
         {
-          "w": "down.",
-          "start": 49.78,
-          "end": 49.96
+          "w": "down,",
+          "start": 52.57,
+          "end": 52.83
         },
         {
-          "w": "That's",
-          "start": 50.36,
-          "end": 50.92
+          "w": "and",
+          "start": 52.83,
+          "end": 53.37
         },
         {
-          "w": "your",
-          "start": 50.92,
-          "end": 51.04
+          "w": "go",
+          "start": 53.37,
+          "end": 53.59
         },
         {
-          "w": "second",
-          "start": 51.04,
-          "end": 51.42
+          "w": "to",
+          "start": 53.59,
+          "end": 53.73
         },
         {
-          "w": "word.",
-          "start": 51.42,
-          "end": 51.78
+          "w": "the",
+          "start": 53.73,
+          "end": 53.85
+        },
+        {
+          "w": "row",
+          "start": 53.85,
+          "end": 54.03
+        },
+        {
+          "w": "for",
+          "start": 54.03,
+          "end": 54.25
+        },
+        {
+          "w": "\"it\".",
+          "start": 54.25,
+          "end": 54.47
         }
       ]
     },
@@ -737,129 +757,114 @@
       "i": 5,
       "speaker": "USHINI",
       "tc": false,
-      "caption": "Now that new word becomes your current word. Find its row, set up the ranges, roll again, and write down the result. Keep going.",
-      "start": 52.65,
-      "end": 62.68,
+      "caption": "The row for \"it\" has exactly ten tallies, so every tally gets a face of its own. Roll a one: \"sits\".",
+      "start": 55.52,
+      "end": 64.41,
       "words": [
         {
-          "w": "Now",
-          "start": 52.8,
-          "end": 53.36
+          "w": "The",
+          "start": 55.67,
+          "end": 56.19
         },
         {
-          "w": "that",
-          "start": 53.36,
-          "end": 53.58
+          "w": "row",
+          "start": 56.19,
+          "end": 56.39
         },
         {
-          "w": "new",
-          "start": 53.58,
-          "end": 53.8
+          "w": "for",
+          "start": 56.39,
+          "end": 56.65
         },
         {
-          "w": "word",
-          "start": 53.8,
-          "end": 54.1
+          "w": "\"it\"",
+          "start": 56.65,
+          "end": 56.97
         },
         {
-          "w": "becomes",
-          "start": 54.1,
-          "end": 54.4
+          "w": "has",
+          "start": 56.97,
+          "end": 57.15
         },
         {
-          "w": "your",
-          "start": 54.4,
-          "end": 54.68
+          "w": "exactly",
+          "start": 57.15,
+          "end": 57.59
         },
         {
-          "w": "current",
-          "start": 54.68,
-          "end": 55.0
+          "w": "ten",
+          "start": 57.59,
+          "end": 57.95
         },
         {
-          "w": "word.",
-          "start": 55.0,
-          "end": 55.32
+          "w": "tallies,",
+          "start": 57.95,
+          "end": 58.47
         },
         {
-          "w": "Find",
-          "start": 56.22,
-          "end": 56.7
+          "w": "so",
+          "start": 58.47,
+          "end": 59.13
+        },
+        {
+          "w": "every",
+          "start": 59.13,
+          "end": 59.45
+        },
+        {
+          "w": "tally",
+          "start": 59.45,
+          "end": 59.87
+        },
+        {
+          "w": "gets",
+          "start": 59.87,
+          "end": 60.09
+        },
+        {
+          "w": "a",
+          "start": 60.09,
+          "end": 60.25
+        },
+        {
+          "w": "face",
+          "start": 60.25,
+          "end": 60.47
+        },
+        {
+          "w": "of",
+          "start": 60.47,
+          "end": 60.61
         },
         {
           "w": "its",
-          "start": 56.7,
-          "end": 56.9
+          "start": 60.61,
+          "end": 60.73
         },
         {
-          "w": "row,",
-          "start": 56.9,
-          "end": 57.14
+          "w": "own.",
+          "start": 60.73,
+          "end": 61.01
         },
         {
-          "w": "set",
-          "start": 57.38,
-          "end": 57.74
+          "w": "Roll",
+          "start": 62.69,
+          "end": 63.21
         },
         {
-          "w": "up",
-          "start": 57.74,
-          "end": 57.94
+          "w": "a",
+          "start": 63.21,
+          "end": 63.37
         },
         {
-          "w": "the",
-          "start": 57.94,
-          "end": 58.06
+          "w": "one:",
+          "start": 63.37,
+          "end": 63.53
         },
         {
-          "w": "ranges,",
-          "start": 58.06,
-          "end": 58.42
-        },
-        {
-          "w": "roll",
-          "start": 58.66,
-          "end": 58.9
-        },
-        {
-          "w": "again,",
-          "start": 58.9,
-          "end": 59.22
-        },
-        {
-          "w": "and",
-          "start": 59.46,
-          "end": 59.86
-        },
-        {
-          "w": "write",
-          "start": 59.86,
-          "end": 60.06
-        },
-        {
-          "w": "down",
-          "start": 60.06,
-          "end": 60.34
-        },
-        {
-          "w": "the",
-          "start": 60.34,
-          "end": 60.54
-        },
-        {
-          "w": "result.",
-          "start": 60.54,
-          "end": 60.82
-        },
-        {
-          "w": "Keep",
-          "start": 61.64,
-          "end": 62.12
-        },
-        {
-          "w": "going.",
-          "start": 62.12,
-          "end": 62.48
+          "w": "\"sits\".",
+          "start": 63.79,
+          "end": 64.21
         }
       ]
     },
@@ -867,179 +872,84 @@
       "i": 6,
       "speaker": "BEN",
       "tc": false,
-      "caption": "Two things you might hit. If your current word doesn't have a row—it was never the first word of a pair—that's a dead end. Pick a new starting word and carry on.",
-      "start": 63.99,
-      "end": 73.46,
+      "caption": "\"Sits\" is only ever followed by \"on\", and \"on\" by \"the\". One option, no roll.",
+      "start": 65.76,
+      "end": 72.17,
       "words": [
         {
-          "w": "Two",
-          "start": 64.14,
-          "end": 64.62
+          "w": "\"Sits\"",
+          "start": 65.91,
+          "end": 66.49
         },
         {
-          "w": "things",
-          "start": 64.62,
-          "end": 64.88
+          "w": "is",
+          "start": 66.49,
+          "end": 66.65
         },
         {
-          "w": "you",
-          "start": 64.88,
-          "end": 65.14
+          "w": "only",
+          "start": 66.65,
+          "end": 66.91
         },
         {
-          "w": "might",
-          "start": 65.14,
-          "end": 65.28
+          "w": "ever",
+          "start": 66.91,
+          "end": 67.19
         },
         {
-          "w": "hit.",
-          "start": 65.28,
-          "end": 65.5
+          "w": "followed",
+          "start": 67.19,
+          "end": 67.59
         },
         {
-          "w": "If",
-          "start": 65.72,
-          "end": 66.2
+          "w": "by",
+          "start": 67.59,
+          "end": 67.79
         },
         {
-          "w": "your",
-          "start": 66.2,
-          "end": 66.36
-        },
-        {
-          "w": "current",
-          "start": 66.36,
-          "end": 66.66
-        },
-        {
-          "w": "word",
-          "start": 66.66,
-          "end": 66.86
-        },
-        {
-          "w": "doesn't",
-          "start": 66.86,
-          "end": 67.22
-        },
-        {
-          "w": "have",
-          "start": 67.22,
-          "end": 67.34
-        },
-        {
-          "w": "a",
-          "start": 67.34,
-          "end": 67.44
-        },
-        {
-          "w": "row,",
-          "start": 67.44,
-          "end": 67.58
-        },
-        {
-          "w": "it",
-          "start": 67.76,
-          "end": 68.24
-        },
-        {
-          "w": "was",
-          "start": 68.24,
-          "end": 68.36
-        },
-        {
-          "w": "never",
-          "start": 68.36,
-          "end": 68.64
-        },
-        {
-          "w": "the",
-          "start": 68.64,
-          "end": 68.82
-        },
-        {
-          "w": "first",
-          "start": 68.82,
-          "end": 69.04
-        },
-        {
-          "w": "word",
-          "start": 69.04,
-          "end": 69.32
-        },
-        {
-          "w": "of",
-          "start": 69.32,
-          "end": 69.46
-        },
-        {
-          "w": "a",
-          "start": 69.46,
-          "end": 69.48
-        },
-        {
-          "w": "pair,",
-          "start": 69.48,
-          "end": 69.72
-        },
-        {
-          "w": "that's",
-          "start": 69.86,
-          "end": 70.36
-        },
-        {
-          "w": "a",
-          "start": 70.36,
-          "end": 70.42
-        },
-        {
-          "w": "dead",
-          "start": 70.42,
-          "end": 70.6
-        },
-        {
-          "w": "end.",
-          "start": 70.6,
-          "end": 70.8
-        },
-        {
-          "w": "Pick",
-          "start": 71.04,
-          "end": 71.52
-        },
-        {
-          "w": "a",
-          "start": 71.52,
-          "end": 71.7
-        },
-        {
-          "w": "new",
-          "start": 71.7,
-          "end": 71.82
-        },
-        {
-          "w": "starting",
-          "start": 71.82,
-          "end": 72.18
-        },
-        {
-          "w": "word",
-          "start": 72.18,
-          "end": 72.5
+          "w": "\"on\",",
+          "start": 67.79,
+          "end": 68.07
         },
         {
           "w": "and",
-          "start": 72.5,
-          "end": 72.76
+          "start": 68.07,
+          "end": 68.69
         },
         {
-          "w": "carry",
-          "start": 72.76,
-          "end": 73.0
+          "w": "\"on\"",
+          "start": 68.69,
+          "end": 68.97
         },
         {
-          "w": "on.",
-          "start": 73.0,
-          "end": 73.26
+          "w": "by",
+          "start": 68.97,
+          "end": 69.15
+        },
+        {
+          "w": "\"the\".",
+          "start": 69.54,
+          "end": 69.92
+        },
+        {
+          "w": "One",
+          "start": 70.11,
+          "end": 70.69
+        },
+        {
+          "w": "option,",
+          "start": 70.69,
+          "end": 71.03
+        },
+        {
+          "w": "no",
+          "start": 71.17,
+          "end": 71.63
+        },
+        {
+          "w": "roll.",
+          "start": 71.63,
+          "end": 71.97
         }
       ]
     },
@@ -1047,269 +957,154 @@
       "i": 7,
       "speaker": "USHINI",
       "tc": false,
-      "caption": "Or you might bounce between the same two words: comma, joey, comma, joey. Small models loop a lot, so break out by picking a different valid next word. Real LLMs do it less because they're bigger, but if you've ever seen Claude or ChatGPT repeat itself, that's the same thing at scale.",
-      "start": 74.17,
-      "end": 94.02,
+      "caption": "The row for \"the\" shares its faces four ways. Roll a nine: \"dog\". And after \"dog\", a full stop or \"runs\", five faces each. Roll a three: full stop.",
+      "start": 72.78,
+      "end": 89.09,
       "words": [
         {
-          "w": "Or",
-          "start": 74.32,
-          "end": 74.8
+          "w": "The",
+          "start": 72.93,
+          "end": 73.51
         },
         {
-          "w": "you",
-          "start": 74.8,
-          "end": 74.92
+          "w": "row",
+          "start": 73.51,
+          "end": 73.65
         },
         {
-          "w": "might",
-          "start": 74.92,
-          "end": 75.14
+          "w": "for",
+          "start": 73.65,
+          "end": 73.93
         },
         {
-          "w": "bounce",
-          "start": 75.14,
-          "end": 75.54
+          "w": "\"the\"",
+          "start": 73.93,
+          "end": 74.31
         },
         {
-          "w": "between",
-          "start": 75.54,
-          "end": 75.82
+          "w": "shares",
+          "start": 74.31,
+          "end": 74.53
         },
         {
-          "w": "the",
-          "start": 75.82,
-          "end": 76.08
+          "w": "its",
+          "start": 74.53,
+          "end": 74.87
         },
         {
-          "w": "same",
-          "start": 76.08,
-          "end": 76.3
+          "w": "faces",
+          "start": 74.87,
+          "end": 75.27
         },
         {
-          "w": "two",
-          "start": 76.3,
-          "end": 76.56
+          "w": "four",
+          "start": 75.27,
+          "end": 75.51
         },
         {
-          "w": "words:",
-          "start": 76.56,
-          "end": 77.02
+          "w": "ways.",
+          "start": 75.51,
+          "end": 75.83
         },
         {
-          "w": "comma,",
-          "start": 77.24,
-          "end": 77.72
-        },
-        {
-          "w": "joey,",
-          "start": 77.78,
-          "end": 78.36
-        },
-        {
-          "w": "comma,",
-          "start": 78.5,
-          "end": 78.96
-        },
-        {
-          "w": "joey.",
-          "start": 79.14,
-          "end": 79.68
-        },
-        {
-          "w": "Small",
-          "start": 80.54,
-          "end": 81.02
-        },
-        {
-          "w": "models",
-          "start": 81.02,
-          "end": 81.32
-        },
-        {
-          "w": "loop",
-          "start": 81.32,
-          "end": 81.62
+          "w": "Roll",
+          "start": 77.67,
+          "end": 78.25
         },
         {
           "w": "a",
-          "start": 81.62,
-          "end": 81.74
+          "start": 78.25,
+          "end": 78.41
         },
         {
-          "w": "lot,",
-          "start": 81.74,
-          "end": 81.94
+          "w": "nine:",
+          "start": 78.41,
+          "end": 78.57
         },
         {
-          "w": "so",
-          "start": 82.12,
-          "end": 82.66
+          "w": "\"dog\".",
+          "start": 78.87,
+          "end": 79.31
         },
         {
-          "w": "break",
-          "start": 82.66,
-          "end": 82.92
+          "w": "And",
+          "start": 80.13,
+          "end": 80.51
         },
         {
-          "w": "out",
-          "start": 82.92,
-          "end": 83.16
+          "w": "after",
+          "start": 81.39,
+          "end": 81.71
         },
         {
-          "w": "by",
-          "start": 83.16,
-          "end": 83.34
-        },
-        {
-          "w": "picking",
-          "start": 83.34,
-          "end": 83.6
+          "w": "\"dog\",",
+          "start": 81.71,
+          "end": 82.01
         },
         {
           "w": "a",
-          "start": 83.6,
-          "end": 83.82
+          "start": 82.27,
+          "end": 82.57
         },
         {
-          "w": "different",
-          "start": 83.82,
-          "end": 84.04
+          "w": "full",
+          "start": 82.57,
+          "end": 82.79
         },
         {
-          "w": "valid",
-          "start": 84.04,
-          "end": 84.32
-        },
-        {
-          "w": "next",
-          "start": 84.32,
-          "end": 84.64
-        },
-        {
-          "w": "word.",
-          "start": 84.64,
-          "end": 85.04
-        },
-        {
-          "w": "Real",
-          "start": 85.94,
-          "end": 86.3
-        },
-        {
-          "w": "LLMs",
-          "start": 86.3,
-          "end": 86.84
-        },
-        {
-          "w": "do",
-          "start": 86.84,
-          "end": 87.04
-        },
-        {
-          "w": "it",
-          "start": 87.04,
-          "end": 87.2
-        },
-        {
-          "w": "less",
-          "start": 87.2,
-          "end": 87.4
-        },
-        {
-          "w": "because",
-          "start": 87.4,
-          "end": 87.66
-        },
-        {
-          "w": "they're",
-          "start": 87.71,
-          "end": 87.97
-        },
-        {
-          "w": "bigger,",
-          "start": 88.02,
-          "end": 88.28
-        },
-        {
-          "w": "but",
-          "start": 88.48,
-          "end": 89.0
-        },
-        {
-          "w": "if",
-          "start": 89.0,
-          "end": 89.14
-        },
-        {
-          "w": "you've",
-          "start": 89.14,
-          "end": 89.34
-        },
-        {
-          "w": "ever",
-          "start": 89.34,
-          "end": 89.56
-        },
-        {
-          "w": "seen",
-          "start": 89.56,
-          "end": 89.84
-        },
-        {
-          "w": "Claude",
-          "start": 89.84,
-          "end": 90.24
+          "w": "stop",
+          "start": 82.79,
+          "end": 83.11
         },
         {
           "w": "or",
-          "start": 90.24,
-          "end": 90.44
+          "start": 83.11,
+          "end": 83.39
         },
         {
-          "w": "ChatGPT",
-          "start": 90.44,
-          "end": 91.24
+          "w": "\"runs\",",
+          "start": 83.39,
+          "end": 83.79
         },
         {
-          "w": "repeat",
-          "start": 91.24,
-          "end": 91.72
+          "w": "five",
+          "start": 84.05,
+          "end": 84.51
         },
         {
-          "w": "itself,",
-          "start": 91.72,
-          "end": 92.08
+          "w": "faces",
+          "start": 84.51,
+          "end": 84.91
         },
         {
-          "w": "that's",
-          "start": 92.4,
-          "end": 92.86
+          "w": "each.",
+          "start": 84.91,
+          "end": 85.19
         },
         {
-          "w": "the",
-          "start": 92.86,
-          "end": 92.94
+          "w": "Roll",
+          "start": 86.95,
+          "end": 87.53
         },
         {
-          "w": "same",
-          "start": 92.94,
-          "end": 93.2
+          "w": "a",
+          "start": 87.53,
+          "end": 87.71
         },
         {
-          "w": "thing",
-          "start": 93.2,
-          "end": 93.44
+          "w": "three:",
+          "start": 87.71,
+          "end": 87.91
         },
         {
-          "w": "at",
-          "start": 93.44,
-          "end": 93.56
+          "w": "full",
+          "start": 88.15,
+          "end": 88.51
         },
         {
-          "w": "scale.",
-          "start": 93.56,
-          "end": 93.82
+          "w": "stop.",
+          "start": 88.51,
+          "end": 88.89
         }
       ]
     },
@@ -1317,354 +1112,714 @@
       "i": 8,
       "speaker": "BEN",
       "tc": false,
-      "caption": "Now read back what you generated. It wasn't in the training text—it's new—but it sounds like it could have been, because it follows the same patterns. And that's no trick. It's how every large language model works, Claude and ChatGPT included: one word at a time, from learned counts.",
-      "start": 95.33,
-      "end": 113.45,
+      "caption": "\"It sits on the dog.\" The book never says that. It says the magpie sits on the fence. Nobody wrote this sentence; the counting did.",
+      "start": 90.12,
+      "end": 99.23,
       "words": [
         {
-          "w": "Now",
-          "start": 95.48,
-          "end": 96.0
+          "w": "\"It",
+          "start": 90.27,
+          "end": 90.83
         },
         {
-          "w": "read",
-          "start": 96.0,
-          "end": 96.24
+          "w": "sits",
+          "start": 90.83,
+          "end": 90.99
         },
         {
-          "w": "back",
-          "start": 96.24,
-          "end": 96.56
+          "w": "on",
+          "start": 90.99,
+          "end": 91.31
         },
         {
-          "w": "what",
-          "start": 96.56,
-          "end": 96.84
+          "w": "the",
+          "start": 91.31,
+          "end": 91.45
         },
         {
-          "w": "you",
-          "start": 96.84,
-          "end": 97.0
+          "w": "dog.\"",
+          "start": 91.45,
+          "end": 91.65
         },
         {
-          "w": "generated.",
-          "start": 97.0,
-          "end": 97.42
+          "w": "The",
+          "start": 92.13,
+          "end": 92.69
+        },
+        {
+          "w": "book",
+          "start": 92.69,
+          "end": 92.95
+        },
+        {
+          "w": "never",
+          "start": 92.95,
+          "end": 93.23
+        },
+        {
+          "w": "says",
+          "start": 93.23,
+          "end": 93.49
+        },
+        {
+          "w": "that.",
+          "start": 93.49,
+          "end": 93.79
         },
         {
           "w": "It",
-          "start": 97.7,
-          "end": 98.22
+          "start": 93.89,
+          "end": 94.45
         },
         {
-          "w": "wasn't",
-          "start": 98.22,
-          "end": 98.52
-        },
-        {
-          "w": "in",
-          "start": 98.52,
-          "end": 98.64
+          "w": "says",
+          "start": 94.45,
+          "end": 94.67
         },
         {
           "w": "the",
-          "start": 98.64,
-          "end": 98.7
+          "start": 94.67,
+          "end": 94.87
         },
         {
-          "w": "training",
-          "start": 98.7,
-          "end": 98.96
+          "w": "magpie",
+          "start": 94.87,
+          "end": 95.21
         },
         {
-          "w": "text,",
-          "start": 98.96,
-          "end": 99.3
+          "w": "sits",
+          "start": 95.21,
+          "end": 95.55
         },
         {
-          "w": "it's",
-          "start": 99.46,
-          "end": 99.82
-        },
-        {
-          "w": "new,",
-          "start": 99.82,
-          "end": 100.02
-        },
-        {
-          "w": "but",
-          "start": 100.18,
-          "end": 100.66
-        },
-        {
-          "w": "it",
-          "start": 100.66,
-          "end": 100.74
-        },
-        {
-          "w": "sounds",
-          "start": 100.74,
-          "end": 101.02
-        },
-        {
-          "w": "like",
-          "start": 101.02,
-          "end": 101.24
-        },
-        {
-          "w": "it",
-          "start": 101.24,
-          "end": 101.4
-        },
-        {
-          "w": "could",
-          "start": 101.4,
-          "end": 101.52
-        },
-        {
-          "w": "have",
-          "start": 101.52,
-          "end": 101.64
-        },
-        {
-          "w": "been,",
-          "start": 101.64,
-          "end": 101.82
-        },
-        {
-          "w": "because",
-          "start": 101.98,
-          "end": 102.48
-        },
-        {
-          "w": "it",
-          "start": 102.48,
-          "end": 102.62
-        },
-        {
-          "w": "follows",
-          "start": 102.62,
-          "end": 102.92
+          "w": "on",
+          "start": 95.55,
+          "end": 95.73
         },
         {
           "w": "the",
-          "start": 102.92,
-          "end": 103.18
+          "start": 95.73,
+          "end": 95.83
         },
         {
-          "w": "same",
-          "start": 103.18,
-          "end": 103.36
+          "w": "fence.",
+          "start": 95.83,
+          "end": 96.05
         },
         {
-          "w": "patterns.",
-          "start": 103.36,
-          "end": 103.66
+          "w": "Nobody",
+          "start": 96.43,
+          "end": 96.99
         },
         {
-          "w": "And",
-          "start": 103.96,
-          "end": 104.48
+          "w": "wrote",
+          "start": 96.99,
+          "end": 97.29
         },
         {
-          "w": "that's",
-          "start": 104.48,
-          "end": 104.8
+          "w": "this",
+          "start": 97.29,
+          "end": 97.53
         },
         {
-          "w": "no",
-          "start": 104.8,
-          "end": 104.92
+          "w": "sentence;",
+          "start": 97.53,
+          "end": 97.85
         },
         {
-          "w": "trick.",
-          "start": 104.92,
-          "end": 105.24
+          "w": "the",
+          "start": 98.09,
+          "end": 98.47
         },
         {
-          "w": "It's",
-          "start": 105.5,
-          "end": 106.02
+          "w": "counting",
+          "start": 98.47,
+          "end": 98.77
         },
         {
-          "w": "how",
-          "start": 106.02,
-          "end": 106.1
-        },
-        {
-          "w": "every",
-          "start": 106.1,
-          "end": 106.42
-        },
-        {
-          "w": "large",
-          "start": 106.42,
-          "end": 106.74
-        },
-        {
-          "w": "language",
-          "start": 106.74,
-          "end": 107.1
-        },
-        {
-          "w": "model",
-          "start": 107.1,
-          "end": 107.32
-        },
-        {
-          "w": "works,",
-          "start": 107.32,
-          "end": 107.66
-        },
-        {
-          "w": "Claude",
-          "start": 107.82,
-          "end": 108.4
-        },
-        {
-          "w": "and",
-          "start": 108.4,
-          "end": 108.66
-        },
-        {
-          "w": "ChatGPT",
-          "start": 108.66,
-          "end": 109.56
-        },
-        {
-          "w": "included:",
-          "start": 109.56,
-          "end": 109.96
-        },
-        {
-          "w": "one",
-          "start": 110.28,
-          "end": 110.8
-        },
-        {
-          "w": "word",
-          "start": 110.8,
-          "end": 111.1
-        },
-        {
-          "w": "at",
-          "start": 111.1,
-          "end": 111.24
-        },
-        {
-          "w": "a",
-          "start": 111.24,
-          "end": 111.34
-        },
-        {
-          "w": "time,",
-          "start": 111.34,
-          "end": 111.64
-        },
-        {
-          "w": "from",
-          "start": 111.68,
-          "end": 112.06
-        },
-        {
-          "w": "learned",
-          "start": 112.32,
-          "end": 112.747
-        },
-        {
-          "w": "counts.",
-          "start": 112.96,
-          "end": 113.433
+          "w": "did.",
+          "start": 98.77,
+          "end": 99.03
         }
       ]
     },
     {
       "i": 9,
       "speaker": "USHINI",
-      "tc": true,
-      "caption": "Pick a starting word and give it a go. See what your model comes up with.",
-      "start": 113.45,
-      "end": 118.64,
+      "tc": false,
+      "caption": "And here's everything this model could have written instead.",
+      "start": 99.88,
+      "end": 103.19,
       "words": [
         {
-          "w": "Pick",
-          "start": 113.6,
-          "end": 114.12
+          "w": "And",
+          "start": 100.03,
+          "end": 100.59
         },
         {
-          "w": "a",
-          "start": 114.12,
-          "end": 114.26
+          "w": "here's",
+          "start": 100.59,
+          "end": 100.95
         },
         {
-          "w": "starting",
-          "start": 114.26,
-          "end": 114.6
+          "w": "everything",
+          "start": 100.95,
+          "end": 101.31
         },
         {
-          "w": "word",
-          "start": 114.6,
-          "end": 114.92
-        },
-        {
-          "w": "and",
-          "start": 114.92,
-          "end": 115.24
-        },
-        {
-          "w": "give",
-          "start": 115.24,
-          "end": 115.42
-        },
-        {
-          "w": "it",
-          "start": 115.42,
-          "end": 115.56
-        },
-        {
-          "w": "a",
-          "start": 115.56,
-          "end": 115.64
-        },
-        {
-          "w": "go.",
-          "start": 115.64,
-          "end": 115.8
-        },
-        {
-          "w": "See",
-          "start": 116.6,
-          "end": 117.06
-        },
-        {
-          "w": "what",
-          "start": 117.06,
-          "end": 117.26
-        },
-        {
-          "w": "your",
-          "start": 117.26,
-          "end": 117.48
+          "w": "this",
+          "start": 101.31,
+          "end": 101.63
         },
         {
           "w": "model",
-          "start": 117.48,
-          "end": 117.74
+          "start": 101.63,
+          "end": 101.95
+        },
+        {
+          "w": "could",
+          "start": 101.95,
+          "end": 102.21
+        },
+        {
+          "w": "have",
+          "start": 102.21,
+          "end": 102.35
+        },
+        {
+          "w": "written",
+          "start": 102.35,
+          "end": 102.63
+        },
+        {
+          "w": "instead.",
+          "start": 102.63,
+          "end": 102.99
+        }
+      ]
+    },
+    {
+      "i": 10,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "Every roll picks a different path. So run it ten thousand times and count what comes out.",
+      "start": 104.5,
+      "end": 110.11,
+      "words": [
+        {
+          "w": "Every",
+          "start": 104.65,
+          "end": 105.21
+        },
+        {
+          "w": "roll",
+          "start": 105.21,
+          "end": 105.49
+        },
+        {
+          "w": "picks",
+          "start": 105.49,
+          "end": 105.79
+        },
+        {
+          "w": "a",
+          "start": 105.79,
+          "end": 106.01
+        },
+        {
+          "w": "different",
+          "start": 106.01,
+          "end": 106.23
+        },
+        {
+          "w": "path.",
+          "start": 106.23,
+          "end": 106.57
+        },
+        {
+          "w": "So",
+          "start": 106.87,
+          "end": 107.43
+        },
+        {
+          "w": "run",
+          "start": 107.43,
+          "end": 107.67
+        },
+        {
+          "w": "it",
+          "start": 107.67,
+          "end": 107.83
+        },
+        {
+          "w": "ten",
+          "start": 107.83,
+          "end": 108.01
+        },
+        {
+          "w": "thousand",
+          "start": 108.01,
+          "end": 108.27
+        },
+        {
+          "w": "times",
+          "start": 108.27,
+          "end": 108.63
+        },
+        {
+          "w": "and",
+          "start": 108.63,
+          "end": 108.99
+        },
+        {
+          "w": "count",
+          "start": 108.99,
+          "end": 109.27
+        },
+        {
+          "w": "what",
+          "start": 109.27,
+          "end": 109.47
         },
         {
           "w": "comes",
-          "start": 117.74,
-          "end": 117.96
+          "start": 109.47,
+          "end": 109.65
         },
         {
-          "w": "up",
-          "start": 117.96,
-          "end": 118.2
+          "w": "out.",
+          "start": 109.65,
+          "end": 109.91
+        }
+      ]
+    },
+    {
+      "i": 11,
+      "speaker": "USHINI",
+      "tc": false,
+      "caption": "Every text different. Every text sounding like the book. That's what Claude or ChatGPT is doing every time it writes a word, with vastly more counts than this.",
+      "start": 110.76,
+      "end": 122.45,
+      "words": [
+        {
+          "w": "Every",
+          "start": 110.91,
+          "end": 111.47
         },
         {
-          "w": "with.",
-          "start": 118.2,
-          "end": 118.44
+          "w": "text",
+          "start": 111.47,
+          "end": 111.77
+        },
+        {
+          "w": "different.",
+          "start": 111.77,
+          "end": 112.13
+        },
+        {
+          "w": "Every",
+          "start": 112.97,
+          "end": 113.53
+        },
+        {
+          "w": "text",
+          "start": 113.53,
+          "end": 113.83
+        },
+        {
+          "w": "sounding",
+          "start": 113.83,
+          "end": 114.25
+        },
+        {
+          "w": "like",
+          "start": 114.25,
+          "end": 114.55
+        },
+        {
+          "w": "the",
+          "start": 114.55,
+          "end": 114.73
+        },
+        {
+          "w": "book.",
+          "start": 114.73,
+          "end": 114.95
+        },
+        {
+          "w": "That's",
+          "start": 115.71,
+          "end": 116.27
+        },
+        {
+          "w": "what",
+          "start": 116.27,
+          "end": 116.43
+        },
+        {
+          "w": "Claude",
+          "start": 116.43,
+          "end": 116.83
+        },
+        {
+          "w": "or",
+          "start": 116.83,
+          "end": 116.99
+        },
+        {
+          "w": "ChatGPT",
+          "start": 116.99,
+          "end": 117.91
+        },
+        {
+          "w": "is",
+          "start": 117.91,
+          "end": 118.33
+        },
+        {
+          "w": "doing",
+          "start": 118.33,
+          "end": 118.55
+        },
+        {
+          "w": "every",
+          "start": 118.55,
+          "end": 118.89
+        },
+        {
+          "w": "time",
+          "start": 118.89,
+          "end": 119.21
+        },
+        {
+          "w": "it",
+          "start": 119.21,
+          "end": 119.45
+        },
+        {
+          "w": "writes",
+          "start": 119.45,
+          "end": 119.69
+        },
+        {
+          "w": "a",
+          "start": 119.69,
+          "end": 119.85
+        },
+        {
+          "w": "word,",
+          "start": 119.87,
+          "end": 120.13
+        },
+        {
+          "w": "with",
+          "start": 120.13,
+          "end": 120.65
+        },
+        {
+          "w": "vastly",
+          "start": 120.65,
+          "end": 121.13
+        },
+        {
+          "w": "more",
+          "start": 121.13,
+          "end": 121.43
+        },
+        {
+          "w": "counts",
+          "start": 121.43,
+          "end": 121.77
+        },
+        {
+          "w": "than",
+          "start": 121.77,
+          "end": 121.99
+        },
+        {
+          "w": "this.",
+          "start": 121.99,
+          "end": 122.25
+        }
+      ]
+    },
+    {
+      "i": 12,
+      "speaker": "BEN",
+      "tc": false,
+      "caption": "On your grid: pick any starting word with a row and write it down. Share the die's faces across its row by the tallies, roll, and write down the word you land on. Then find its row. No row? Pick a new word and carry on.",
+      "start": 123.5,
+      "end": 140.15,
+      "words": [
+        {
+          "w": "On",
+          "start": 123.65,
+          "end": 124.17
+        },
+        {
+          "w": "your",
+          "start": 124.17,
+          "end": 124.35
+        },
+        {
+          "w": "grid:",
+          "start": 124.35,
+          "end": 124.65
+        },
+        {
+          "w": "pick",
+          "start": 124.77,
+          "end": 125.29
+        },
+        {
+          "w": "any",
+          "start": 125.29,
+          "end": 125.57
+        },
+        {
+          "w": "starting",
+          "start": 125.57,
+          "end": 125.93
+        },
+        {
+          "w": "word",
+          "start": 125.93,
+          "end": 126.19
+        },
+        {
+          "w": "with",
+          "start": 126.19,
+          "end": 126.41
+        },
+        {
+          "w": "a",
+          "start": 126.41,
+          "end": 126.51
+        },
+        {
+          "w": "row",
+          "start": 126.51,
+          "end": 126.67
+        },
+        {
+          "w": "and",
+          "start": 126.67,
+          "end": 126.95
+        },
+        {
+          "w": "write",
+          "start": 126.95,
+          "end": 127.25
+        },
+        {
+          "w": "it",
+          "start": 127.25,
+          "end": 127.41
+        },
+        {
+          "w": "down.",
+          "start": 127.41,
+          "end": 127.59
+        },
+        {
+          "w": "Share",
+          "start": 128.81,
+          "end": 129.33
+        },
+        {
+          "w": "the",
+          "start": 129.33,
+          "end": 129.51
+        },
+        {
+          "w": "die's",
+          "start": 129.51,
+          "end": 129.81
+        },
+        {
+          "w": "faces",
+          "start": 129.81,
+          "end": 130.03
+        },
+        {
+          "w": "across",
+          "start": 130.03,
+          "end": 130.43
+        },
+        {
+          "w": "its",
+          "start": 130.43,
+          "end": 130.69
+        },
+        {
+          "w": "row",
+          "start": 130.69,
+          "end": 130.89
+        },
+        {
+          "w": "by",
+          "start": 130.89,
+          "end": 131.11
+        },
+        {
+          "w": "the",
+          "start": 131.11,
+          "end": 131.23
+        },
+        {
+          "w": "tallies,",
+          "start": 131.23,
+          "end": 131.67
+        },
+        {
+          "w": "roll,",
+          "start": 131.73,
+          "end": 132.23
+        },
+        {
+          "w": "and",
+          "start": 132.45,
+          "end": 132.89
+        },
+        {
+          "w": "write",
+          "start": 132.89,
+          "end": 133.13
+        },
+        {
+          "w": "down",
+          "start": 133.13,
+          "end": 133.35
+        },
+        {
+          "w": "the",
+          "start": 133.35,
+          "end": 133.53
+        },
+        {
+          "w": "word",
+          "start": 133.53,
+          "end": 133.71
+        },
+        {
+          "w": "you",
+          "start": 133.71,
+          "end": 133.85
+        },
+        {
+          "w": "land",
+          "start": 133.85,
+          "end": 133.97
+        },
+        {
+          "w": "on.",
+          "start": 133.97,
+          "end": 134.23
+        },
+        {
+          "w": "Then",
+          "start": 135.33,
+          "end": 135.85
+        },
+        {
+          "w": "find",
+          "start": 135.85,
+          "end": 136.23
+        },
+        {
+          "w": "its",
+          "start": 136.23,
+          "end": 136.49
+        },
+        {
+          "w": "row.",
+          "start": 136.49,
+          "end": 136.71
+        },
+        {
+          "w": "No",
+          "start": 137.01,
+          "end": 137.53
+        },
+        {
+          "w": "row?",
+          "start": 137.53,
+          "end": 137.81
+        },
+        {
+          "w": "Pick",
+          "start": 138.07,
+          "end": 138.59
+        },
+        {
+          "w": "a",
+          "start": 138.59,
+          "end": 138.77
+        },
+        {
+          "w": "new",
+          "start": 138.77,
+          "end": 138.87
+        },
+        {
+          "w": "word",
+          "start": 138.87,
+          "end": 139.21
+        },
+        {
+          "w": "and",
+          "start": 139.21,
+          "end": 139.47
+        },
+        {
+          "w": "carry",
+          "start": 139.47,
+          "end": 139.71
+        },
+        {
+          "w": "on.",
+          "start": 139.71,
+          "end": 139.95
+        }
+      ]
+    },
+    {
+      "i": 13,
+      "speaker": "USHINI",
+      "tc": true,
+      "caption": "Pick a starting word and roll.",
+      "start": 140.82,
+      "end": 142.97,
+      "words": [
+        {
+          "w": "Pick",
+          "start": 140.97,
+          "end": 141.49
+        },
+        {
+          "w": "a",
+          "start": 141.49,
+          "end": 141.65
+        },
+        {
+          "w": "starting",
+          "start": 141.65,
+          "end": 141.99
+        },
+        {
+          "w": "word",
+          "start": 141.99,
+          "end": 142.31
+        },
+        {
+          "w": "and",
+          "start": 142.31,
+          "end": 142.59
+        },
+        {
+          "w": "roll.",
+          "start": 142.59,
+          "end": 142.77
         }
       ]
     }

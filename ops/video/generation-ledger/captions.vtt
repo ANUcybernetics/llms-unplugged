@@ -1,34 +1,43 @@
 WEBVTT
 
-00:00:00.150 --> 00:00:06.100
-There's a language model on the table in front of you. Not a computer. A few sheets of paper.
+00:00:00.190 --> 00:00:06.700
+This is a pile of sheets full of counts. In about a minute it's going to write a sentence that nobody has ever written.
 
-00:00:06.850 --> 00:00:22.280
-Down the left, a word from the book. Beside it, every word that ever came next, with a mark for every time it did. That's the whole thing. No rules, no grammar. Just a count of what came next.
+00:00:07.350 --> 00:00:20.180
+Each row is a word from a book, and the words that came next, with a mark every time. Maybe you did the counting yourselves; maybe the sheets arrived finished. It works the same either way.
 
-00:00:23.570 --> 00:00:33.200
-Read one row aloud and it's a sentence. After the, this book said magpie five times, fence six times, postie four times, and dog four times.
+00:00:21.430 --> 00:00:34.980
+Every box has a colour, always in the same order: red, blue, green, yellow. On this row, red means "magpie". On another row, red means something else.
 
-00:00:33.830 --> 00:00:46.660
-Each sheet holds a run of words in alphabetical order, and the header says which. So nobody searches. Need the row for it? Read the headers. Who has it?
+00:00:35.780 --> 00:00:49.880
+A story starts after a full stop, so find the row for full stop. Fill a cup with one counter for every mark: seven red for "it", four blue for "here", three green, three yellow.
 
-00:00:47.830 --> 00:01:02.860
-Every word in a row sits in a coloured box, and your counters come in those same four colours. A red counter means "the word in the red box"—on this row. On a different row, red means something else. The colour names the place in the row, not the word.
+00:00:51.350 --> 00:01:02.560
+Seventeen counters. Now draw one without looking. Red: "it". Write it down, tip the cup back, and go to the row for "it".
 
-00:01:03.450 --> 00:01:31.120
-Now generate. A story starts after a full stop, so somebody finds the row for full stop. First box: it, seven marks, red. Seven red counters into the cup. Next: Here, four marks, blue. Four blue. Down, three marks, green. Three green. And Swoop, three marks, yellow. Three yellow.
+00:01:03.470 --> 00:01:11.500
+The row for "it": three red, three blue, three green, one yellow. Red again: "sits".
 
-00:01:32.690 --> 00:01:42.360
-Seventeen marks, seventeen counters. The cup is the row. More marks, more counters, more likely. Which colour do you think will come out?
+00:01:12.910 --> 00:01:19.040
+"Sits" is only ever followed by "on", and "on" by "the". One box, no cup.
 
-00:01:43.670 --> 00:01:54.240
-Red. The likeliest one, seven chances in seventeen. Write down it, tip the cup back into the tub, and pass the job to whoever has the row for it.
+00:01:19.650 --> 00:01:35.240
+The row for "the" fills the cup with all four colours. Yellow: "dog". And after "dog", two red for a full stop, two blue for "runs". Red: full stop.
 
-00:01:55.210 --> 00:02:15.500
-And round it goes. Most of the time the likely colour comes out. Sometimes it doesn't—four chances in seventeen, and blue comes out anyway. Unlikely isn't impossible; that's the cup doing its job. Come back to the same row later and you might get a different word from the same cup. And a row with one word needs no draw at all.
+00:01:36.330 --> 00:01:45.400
+"It sits on the dog." The book never says that. It says the magpie sits on the fence. Nobody wrote this sentence; the counting did.
 
-00:02:16.150 --> 00:02:36.240
-Eleven words in, and here's a sentence this book never said. It says "Here comes the postie." It says "Down comes the magpie." The model glued them together, because it only ever knows what comes next, one word at a time. Nobody wrote that sentence. The counting did.
+00:01:46.070 --> 00:01:49.360
+And here's everything this model could have written instead.
 
-00:02:36.730 --> 00:02:46.940
-Four jobs in your group: a reader who finds the row, a filler, a drawer, and a writer. Start from any word on your sheets, and see what your book says.
+00:01:50.670 --> 00:01:56.320
+Every draw picks a different path. So run it ten thousand times and count what comes out.
+
+00:01:56.910 --> 00:02:08.960
+Every story different. Every story sounding like the book. That's what Claude or ChatGPT is doing every time it writes a word, with vastly more counts than this.
+
+00:02:10.090 --> 00:02:26.060
+Four jobs in your group. A reader finds the row. A filler puts one counter per mark in the cup. A drawer pulls one out. And a writer writes the word down. Tip the cup back every time.
+
+00:02:27.250 --> 00:02:31.330
+Reader, find the full stop. Let's see what your book says.

@@ -12,8 +12,8 @@
     ops/video/video.py upload <slug>             # renders, captions and the voice track -> bucket video/<slug>/
     ops/video/video.py all [--final]             # check + render every slug
 
-A slug may be nested (`beyond/<name>`): the composition, out directory and
-bucket prefix nest with it, and the files are named after `<name>`.
+A slug may be nested (`v1/<name>`, the first series): the composition, out
+directory and bucket prefix nest with it, and the files are named after `<name>`.
 
 A composition's length is the voice track's: every command first rewrites the
 `data-duration` attributes in index.html (and compositions/portrait.html) from
@@ -39,11 +39,15 @@ SLUGS = [
     "overview",
     "training-grid",
     "generation-grid",
-    "pretrained-generation",
-    "agentic-ai",
-    "generation-ledger",
+    "pretrained-generation-grid",
+    "agentic-ai-grid",
     "training-ledger",
-    "one-story-all-together",
+    "generation-ledger",
+    "agentic-ai-ledger",
+    "generation-cutouts",
+    "same-algorithm",
+    "making-things-up",
+    "real-models",
 ]
 ENV = {**os.environ, "HYPERFRAMES_NO_TELEMETRY": "1"}
 CONTENT_TYPES = {

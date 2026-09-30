@@ -9,35 +9,75 @@ not for the website.
 
 ## Series
 
-Eight short explainer videos (1--2 minutes each): one overview, and one video
-for each section of the two flagship lessons.
+Twelve videos. The how-it-works videos are single-format: a teacher running one
+flavour of workshop sees only that flavour's materials. They are built from
+shared kit parts and one structure per stage, so the grid and ledger versions of
+a stage are siblings rather than separate builds.
 
-| Slug                     | Lesson / section                                    | Key idea                                                                                                |
-| ------------------------ | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `overview`               | scene-setter                                        | you can run the same next-word loop Claude or ChatGPT runs, by hand; the site has the lessons and tools |
-| `training-grid`          | My First Language Model, Training                   | language models learn by counting which words follow which                                              |
-| `generation-grid`        | My First Language Model, Generation                 | text is generated one word at a time by sampling from learned counts                                    |
-| `pretrained-generation`  | My First Language Model, Pre-trained generation     | you can generate from a model you didn't train; follow its lookup rules                                 |
-| `agentic-ai`             | My First Language Model, Agentic AI                 | an agent pauses generation, hands off to a tool, and continues with the result spliced in               |
-| `generation-ledger`      | How AI writes stories (ledger), Generation          | a cup of counters does the maths: more marks, more counters, more likely                                |
-| `training-ledger`        | How AI writes stories (ledger), Training            | every mark on the sheet came from somebody reading the text two words at a time                         |
-| `one-story-all-together` | How AI writes stories (ledger), One story, together | pool everyone's models and the class can say things no single group's model could                       |
+| Slug                         | Format  | Key idea                                                                                      |
+| ---------------------------- | ------- | --------------------------------------------------------------------------------------------- |
+| `training-grid`              | grid    | a language model learns by counting which word follows which, and the counts are all it keeps |
+| `generation-grid`            | grid    | text is written one word at a time, each picked in proportion to the counts                   |
+| `pretrained-generation-grid` | grid    | you can generate from a model someone else trained; a booklet is a grid stored another way    |
+| `agentic-ai-grid`            | grid    | a tool call is a token the model draws like any other; the harness does the rest              |
+| `training-ledger`            | ledger  | as `training-grid`, on ledger sheets                                                          |
+| `generation-ledger`          | ledger  | as `generation-grid`, with the cup; works from pre-filled or self-filled sheets               |
+| `agentic-ai-ledger`          | ledger  | as `agentic-ai-grid`, on sheets and the cup (the deck is TASK-168)                            |
+| `generation-cutouts`         | cutouts | as `generation-grid`, matching cutouts picked at random                                       |
+| `same-algorithm`             | all     | grid tallies, ledger marks, counters, cutouts and numbers are one model                       |
+| `overview`                   | ---     | you can run the same next-word loop Claude or ChatGPT runs, by hand                           |
+| `making-things-up`           | ---     | a model that only knows what comes next can say fluent things that aren't true                |
+| `real-models`                | ---     | what your grid shares with Claude or ChatGPT, and what it doesn't                             |
 
-Each section video is played at the start of its section: it sets up the
+`same-algorithm` carries what crosses formats: the morph from tallies to marks
+to counters to cutouts to numbers, and a walk that switches forms (the cup for
+the full stop, the die for _it_, the slips for _the_). Chained under one cold
+open, it and one format's how-it-works videos (without their hand-offs) make the
+long cut.
+
+The scripts aren't bound to the slides: they refer to the same slides and
+printed artefacts, but they can use explanations a slide can't carry: continuous
+morphs between representations, many-sample simulations and real corpus data at
+scale. Each such beat is marked **beyond** in its beat sheet and carries a
+`_Beyond:_` line naming the read it makes clearer than the slides can
+(`voice.py` skips it with the `_Visual` and `_Reads` paragraphs).
+
+Each how-it-works video is played at the start of its section: it sets up the
 mechanics, makes the section's key idea land, and hands off to the hands-on
 activity. The Overview is the scene-setter for the website and for a teacher
 deciding which lesson to run. It is evergreen: it names no lesson, age band or
 running time, and its concrete examples are the materials, so it survives the
 lessons changing. Its licence line says "a Creative Commons licence" and names
-no clause, so a licence change doesn't date it. Nothing else on the site (the
-follow-on lessons, the standalone modules) gets a video.
+no clause, so a licence change doesn't date it.
 
-The series is deliberately small: one video per section of the two lessons that
-are actually run, so every video has a slide deck, a printed pack and a room
-trial behind it. Key ideas are the module `keyIdea` frontmatter in
-`website/src/content/modules/`; the walkthroughs follow the deck partials in
-`website/src/decks/partials/` (the _hop joey hop_ grid, the magpie ledger
-chain), so a video shows the same example the slides show.
+The first series, eight videos bound to the slides' own walkthroughs (TASK-154),
+is in `v1/` (see `v1/README.md`).
+
+## One example
+
+The worked example throughout is _The magpie_ (`data/originals/the-magpie.txt`:
+133 tokens, 24 words), the ledger lesson's walkthrough book. It is small enough
+to draw as a whole grid and rich enough to have real choices (the row for _the_
+is fence 6, magpie 5, postie 4, dog 4).
+
+The ledger lesson can generate from finished sheets before it trains, so
+`generation-ledger` never assumes the room did the counting, and there is no
+separate pre-trained ledger video. `pretrained-generation-grid` is the booklet:
+someone else's counts from a much bigger text, stored as thresholds.
+
+## Framing
+
+Phase 2 may put a portrait talking-head beside the animation. Beats that could
+sit next to one (the tree, for instance, which compresses horizontally without
+losing its reads) are laid out to survive trimming to a squarer frame on the
+left; which beats get the squarer frame is decided per beat at the storyboard.
+
+## Deck alignment
+
+Each how-it-works video covers a contiguous run of its deck partial's
+explanation slides (from the section title up to its "Your turn"), and says
+which run in its **Builds on** line, so a deck variant can later swap the run
+for the embedded video.
 
 ## Production
 
@@ -45,9 +85,8 @@ Two phases, one set of scripts.
 
 **Phase 1 (now): animation plus voice-over.** Each video is a HyperFrames
 composition in `ops/video/<slug>/`, built from the shared kit in `_kit/` (see
-`_kit/README.md` for the contract) on data that `build-data.py` regenerates
-from `data/` and the deck constants. Ben and Ushini record the voice-over. No
-camera.
+`_kit/README.md` for the contract) on data that `build-data.py` regenerates from
+`data/` and the deck constants. Ben and Ushini record the voice-over. No camera.
 
 **Phase 2 (later): re-cut with footage.** When a shoot happens, Ben and Ushini
 deliver the to-camera lines and the phase-1 cut is re-edited with that footage;
@@ -88,9 +127,9 @@ The real takes replace `out/video/<slug>/voice.wav` under the same name; then
 `align.py` and a render. `ops/video/motion-test/` is the reel that runs every
 kit component through its moves.
 
-The printed sheets and booklets are the source of what is shown, not how big:
-a composition draws only the rows it needs, at a size that reads on a
-screen, rather than the print's density.
+The printed sheets and booklets are the source of what is shown, not how big: a
+composition draws only the rows it needs, at a size that reads on a screen,
+rather than the print's density.
 
 ## Tone and narrative
 
@@ -124,9 +163,9 @@ up _why_ something matters; the animated segments show _how_ it works.
 question, a surprising claim, a connection to real-world AI---before getting
 into the setup.
 
-**Naming models.** Where a real product is named, name both: "Claude or
-ChatGPT" (or "Claude, ChatGPT"), never ChatGPT alone. Everywhere else say "AI
-language models" or "large language models".
+**Naming models.** Where a real product is named, name both: "Claude or ChatGPT"
+(or "Claude, ChatGPT"), never ChatGPT alone. Everywhere else say "AI language
+models" or "large language models".
 
 **Land one key idea per video.** The video should make its key idea land
 viscerally, not just state it. Everything else is setup or reinforcement.
@@ -143,71 +182,71 @@ activity.
 
 ## Format
 
-Masters are 4K at 50 fps (`--resolution landscape-4k --fps 50`; the
-composition stays 1920x1080 and Chrome renders at double DPR). 4K because the
-content is vector and YouTube gives 4K uploads a better codec and bitrate even
-for 1080p viewers; 50 fps because it smooths the camera moves and matches the
-50p the phase-2 footage is shot at, so animation and footage share one frame
-grid. Iterate at 1080p25 with `--quality draft`; render 4K50 only for a cut
-that will be kept.
+Masters are 4K at 50 fps (`--resolution landscape-4k --fps 50`; the composition
+stays 1920x1080 and Chrome renders at double DPR). 4K because the content is
+vector and YouTube gives 4K uploads a better codec and bitrate even for 1080p
+viewers; 50 fps because it smooths the camera moves and matches the 50p the
+phase-2 footage is shot at, so animation and footage share one frame grid.
+Iterate at 1080p25 with `--quality draft`; render 4K50 only for a cut that will
+be kept.
 
-All eight masters are 16:9: the section videos play on a classroom TV or
-projector and as YouTube embeds, and the deck widgets and sheets they are built
-from are laid out for that canvas. Square would be pillarboxed on the TV and
-still not native in a phone feed, so it is not made.
+All masters are 16:9: the section videos play on a classroom TV or projector and
+as YouTube embeds, and the deck widgets and sheets they are built from are laid
+out for that canvas. Square would be pillarboxed on the TV and still not native
+in a phone feed, so it is not made.
 
 The Overview is the one video that is short-form content people will meet on a
-phone, so it gets a portrait (9:16) variant as well (`--resolution portrait-4k`). That variant is the same
-composition with an aspect parameter and restacked layout, not a crop of the
-landscape render, so the Overview's beats must not depend on side-by-side
-placement. The phase-2 footage is shot so the to-camera lines survive a centre
-crop; the shoot brief is in Ben's notes.
+phone, so it gets a portrait (9:16) variant as well
+(`--resolution portrait-4k`). That variant is the same composition with an
+aspect parameter and restacked layout, not a crop of the landscape render, so
+the Overview's beats must not depend on side-by-side placement. The phase-2
+footage is shot so the to-camera lines survive a centre crop; the shoot brief is
+in Ben's notes.
 
 ## Visuals
 
-The videos are not the slide decks with a voice-over. In the room the decks
-work because a presenter points, traces a row with a finger, holds up the
-sheet, waves at the cup. None of that is available here, so the composition
-has to do the pointing itself, and the visual language is free to be
-reimagined for that. The deck components are a source of truth for _what_ is
-shown, not _how_:
+The videos are not the slide decks with a voice-over. In the room the decks work
+because a presenter points, traces a row with a finger, holds up the sheet,
+waves at the cup. None of that is available here, so the composition has to do
+the pointing itself, and the visual language is free to be reimagined for that.
+The deck components are a source of truth for _what_ is shown, not _how_:
 
-- **same example, same objects.** The video shows the hop joey hop grid, the
-  magpie rows, the real booklet page, so the thing on screen is the
-  thing in the participant's hands. Take the data from the decks
+- **same example, same objects.** The video shows the magpie grid and ledger
+  rows, the real booklet page, so the thing on screen is the thing in the
+  participant's hands. Take the data from the decks
   (`website/src/decks/examples.ts`, the `ROW_*` constants, which must match the
   real sheets) and the site's palette and fonts, and build the visuals fresh.
-- **motion replaces gesture.** Where the presenter would point, the frame
-  moves: the camera pushes in on the cell, the rest of the grid dims, the pair
-  of words lifts out of the sentence and drops into the cell as a tally. Say
-  what the viewer is looking at and make the frame agree.
+- **motion replaces gesture.** Where the presenter would point, the frame moves:
+  the camera pushes in on the cell, the rest of the grid dims, the pair of words
+  lifts out of the sentence and drops into the cell as a tally. Say what the
+  viewer is looking at and make the frame agree.
 - **the participant's view.** Prefer the seat at the table (sheet, pencil, cup,
   booklet, flat and top-down) over the presenter's view of a slide. The section
-  videos hand off to a physical activity; previewing the physical action is
-  the hand-off.
+  videos hand off to a physical activity; previewing the physical action is the
+  hand-off.
 - **one example followed all the way through**, as the decks already do.
 - **built to the engine's strengths.** Flat vector, transforms and opacity,
   stroke draw-on, cuts; no physics, blur, slow creeps or photographic texture.
   The skill's "What this pipeline renders well" is the list; a beat that needs
   something off it gets a different beat.
 
-Renderable material that does exist in the repo and is worth reusing as
-texture rather than layout: the CLI-rendered booklet pages and ledger sheets,
-the deck backgrounds, the fonts and palette.
+Renderable material that does exist in the repo and is worth reusing as texture
+rather than layout: the CLI-rendered booklet pages and ledger sheets, the deck
+backgrounds, the fonts and palette.
 
 ## Captions
 
-Every video has open captions baked into the composition, for accessibility
-(a classroom TV has no caption toggle) and because the tone rules already make
-each script line a caption: one thing on screen per line. The caption is the
-script line, shown whole for the duration of that line, in the site's type and
-palette, in a caption region the layout reserves so it never covers the grid
-or sheet. No speaker marking, no colour by voice, no word-by-word highlighting.
+Every video has open captions baked into the composition, for accessibility (a
+classroom TV has no caption toggle) and because the tone rules already make each
+script line a caption: one thing on screen per line. The caption is the script
+line, shown whole for the duration of that line, in the site's type and palette,
+in a caption region the layout reserves so it never covers the grid or sheet. No
+speaker marking, no colour by voice, no word-by-word highlighting.
 
 Timing comes from the VO takes by forced alignment against the script text, so
-re-recording a line re-times its caption with no hand work. The same timing
-data writes a WebVTT sidecar for YouTube and the site's embeds, so closed
-captions exist alongside the open ones.
+re-recording a line re-times its caption with no hand work. The same timing data
+writes a WebVTT sidecar for YouTube and the site's embeds, so closed captions
+exist alongside the open ones.
 
 ## Phase-2 shoot questions
 

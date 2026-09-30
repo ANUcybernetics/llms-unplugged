@@ -3,74 +3,90 @@
     "i": 0,
     "speaker": "USHINI",
     "tc": true,
-    "caption": "Your sheets arrived finished. Every mark was already there. So where did the marks come from?",
-    "tts": "Your sheets arrived finished. Every mark was already there. So where did the marks come from?"
+    "caption": "Every mark on these sheets was made by somebody reading. So what did they keep? Let's find out, with a book short enough to read in thirty seconds.",
+    "tts": "Every mark on these sheets was made by somebody reading. So what did they keep? Let's find out, with a book short enough to read in thirty seconds."
   },
   {
     "i": 1,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Somebody counted. And it's a job you can do yourselves.",
-    "tts": "Somebody counted. And it's a job you can do yourselves."
+    "caption": "First, lowercase everything. And the full stops and exclamation marks count as words too.",
+    "tts": "First, lowercase everything. And the full stops and exclamation marks count as words too."
   },
   {
     "i": 2,
-    "speaker": "BEN",
+    "speaker": "USHINI",
     "tc": false,
-    "caption": "Start with a text. Lowercase everything. And notice that full stops and exclamation marks are words too—they get their own rows.",
-    "tts": "Start with a text. Lowercase everything. And notice that full stops and exclamation marks are words too, they get their own rows."
+    "caption": "Now read it two words at a time. Find the row for the first word. The second word goes in a box on that row, with a mark beside it. Then slide along by one, and do it again.",
+    "tts": "Now read it two words at a time. Find the row for the first word. The second word goes in a box on that row, with a mark beside it. Then slide along by one, and do it again.",
+    "parts": [
+      "Now read it two words at a time. Find the row for the first word.",
+      "The second word goes in a box on that row, with a mark beside it.",
+      "Then slide along by one, and do it again."
+    ],
+    "beats": [
+      0.8,
+      0.8
+    ]
   },
   {
     "i": 3,
-    "speaker": "USHINI",
+    "speaker": "BEN",
     "tc": false,
-    "caption": "Read it two words at a time. The first word names the row. The second word gets a mark in that row. Then move along by one: the second word of this pair is the first word of the next. Read the text once, and every pair in it gets counted.",
-    "tts": "Read it two words at a time. The first word names the row. The second word gets a mark in that row. Then move along by one: the second word of this pair is the first word of the next. Read the text once, and every pair in it gets counted."
+    "caption": "A new word after the same word takes the next empty box. And when a pair comes round again, it gets another mark. By the end, \"the fence\" has six marks, and \"the magpie\" five.",
+    "tts": "A new word after the same word takes the next empty box. And when a pair comes round again, it gets another mark. By the end, \"the fence\" has six marks, and \"the magpie\" five."
   },
   {
     "i": 4,
-    "speaker": "BEN",
+    "speaker": "USHINI",
     "tc": false,
-    "caption": "Keep going and the same pair comes round again. The second time the text says \"the magpie,\" the mark goes beside magpie in the row for the, which already has one. That's how a count builds. Common pairs collect marks; rare ones don't.",
-    "tts": "Keep going and the same pair comes round again. The second time the text says \"the magpie,\" the mark goes beside magpie in the row for the, which already has one. That's how a count builds. Common pairs collect marks; rare ones don't."
+    "caption": "That's all training is. Here's the rest of the book, done at the speed a computer does it.",
+    "tts": "That's all training is. Here's the rest of the book, done at the speed a computer does it."
   },
   {
     "i": 5,
-    "speaker": "USHINI",
+    "speaker": "BEN",
     "tc": false,
-    "caption": "Check it against your printed sheet. The magpie, five marks. Count the book and it's five. Every sheet in this room was made exactly this way.",
-    "tts": "Check it against your printed sheet. The magpie, five marks. Count the book and it's five. Every sheet in this room was made exactly this way."
+    "caption": "Now look at what it kept. Not the sentences. Not the story. It doesn't know what a magpie is. Just counts of what came next.",
+    "tts": "Now look at what it kept. Not the sentences. Not the story. It doesn't know what a magpie is. Just counts of what came next."
   },
   {
     "i": 6,
-    "speaker": "BEN",
+    "speaker": "USHINI",
     "tc": false,
-    "caption": "Now it's your turn, on a new text, with blank sheets. This time the words are yours to write as well as the marks. One person reads the text two words at a time. Whoever has the row for the first word puts a mark beside the second.",
-    "tts": "Now it's your turn, on a new text, with blank sheets. This time the words are yours to write as well as the marks. One person reads the text two words at a time. Whoever has the row for the first word puts a mark beside the second."
+    "caption": "And a row of marks is just a row of numbers. The row for \"the\" says five, six, four, four.",
+    "tts": "And a row of marks is just a row of numbers. The row for \"the\" says five, six, four, four."
   },
   {
     "i": 7,
-    "speaker": "USHINI",
+    "speaker": "BEN",
     "tc": false,
-    "caption": "Three rules keep your model honest. When you start a row for a new word, say the word out loud, so nobody else starts one too—two people counting the same word splits the model in half. A new word goes in the next empty box, never a skipped one—the colours go in order. And the row for full stop is a real row: it says how sentences start.",
-    "tts": "Three rules keep your model honest. When you start a row for a new word, say the word out loud, so nobody else starts one too, two people counting the same word splits the model in half. A new word goes in the next empty box, never a skipped one, the colours go in order. And the row for full stop is a real row: it says how sentences start."
+    "caption": "When people talk about a model's \"weights\", this is the kind of thing they mean: numbers that came from the text it read.",
+    "tts": "When people talk about a model's \"weights\", this is the kind of thing they mean: numbers that came from the text it read."
   },
   {
     "i": 8,
-    "speaker": "BEN",
+    "speaker": "USHINI",
     "tc": false,
-    "caption": "When you've read the whole text, generate from it. Start from the. It should sound like your text, and nobody else's.",
-    "tts": "When you've read the whole text, generate from it. Start from the. It should sound like your text, and nobody else's."
+    "caption": "Give it a bigger book and nothing changes. This is Frankenstein. Eighty-five thousand words, and seven thousand rows.",
+    "tts": "Give it a bigger book and nothing changes. This is Frankenstein. Eighty-five thousand words, and seven thousand rows."
   },
   {
     "i": 9,
-    "speaker": "USHINI",
+    "speaker": "BEN",
     "tc": false,
-    "caption": "That's training. Not a computer reading the internet. Somebody counting what came next, a lot.",
-    "tts": "That's training. Not a computer reading the internet. Somebody counting what came next, a lot."
+    "caption": "A real model reads trillions of words, and stores its numbers more cleverly than a ledger. But the job it's doing is the one you're about to do.",
+    "tts": "A real model reads trillions of words, and stores its numbers more cleverly than a ledger. But the job it's doing is the one you're about to do."
   },
   {
     "i": 10,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Three things catch people out. A full stop is a word, and its row says how sentences start. A new word goes in the next empty box, never skip one. And say a new word out loud when you start its row, so nobody starts it twice.",
+    "tts": "Three things catch people out. A full stop is a word, and its row says how sentences start. A new word goes in the next empty box, never skip one. And say a new word out loud when you start its row, so nobody starts it twice."
+  },
+  {
+    "i": 11,
     "speaker": "BEN",
     "tc": true,
     "caption": "Reader, grab the text. Two words at a time.",

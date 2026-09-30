@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>LLMs Unplugged — Pre-trained generation (grid)</title>
+    <link rel="stylesheet" href="kit/kit.css" />
+    <script src="kit/generated/data.js"></script>
+    <script src="parts/generated/magpie.js"></script>
+    <script src="parts/generated/booklet.js"></script>
+    <script type="module" src="kit/kit.js"></script>
+    <style>
+      html, body { width: 1920px; height: 1080px; }
+      .abs { position: absolute; left: 0; top: 0; }
+      .cellbox { position: absolute; left: 0; top: 0; background: var(--paper); border-right: 1px solid rgb(0 0 0 / 22%); border-bottom: 1px solid rgb(0 0 0 / 22%); }
+      .slot { position: absolute; top: 0; display: flex; align-items: center; font-family: var(--font-tok); color: var(--ink); line-height: 1; white-space: nowrap; }
+      .num b { font-weight: 700; }
+      .hole { position: absolute; left: 0; top: 0; width: 100px; height: 100px; box-shadow: 0 0 0 4000px rgb(13 13 13 / 74%); transform-origin: 0 0; }
+      .pencil .w.p { vertical-align: -0.2em; }
+    </style>
+  </head>
+  <body>
+    <!-- Pre-trained generation (grid): ops/video/scripts/pretrained-generation-grid.md.
+         The magpie grid folds into the magpie booklet as the CLI builds it
+         (parts/generated/booklet.js, checked there against magpie.js); then
+         the room's Paterson booklet, walked on its real printed pages (sleep
+         again I'd float ;, rolls 7, 80, 6, as the deck does), and its whole
+         grid pulled back on a canvas from the CLI's own pairs. -->
+    <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="pretrained-generation-grid"
+         data-start="0" data-duration="162.78" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="162.78" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="155.78" data-track-index="1"></audio>
+    </div>
+    <script type="module">
+      import * as C from "./kit/motion/canvas.js";
+
+      const build = (tl, S, T) => {
+        const K = KIT, MG = MAGPIE, PAT = BOOKLET.paterson;
+        const scene = document.getElementById("scene");
+        const A = S.area;
+        const W = (i, w, n) => T.word(i, w, n);
+
+        // ---- a camera on a layer: a view puts layer point (px, py) at stage
+        // point (sx, sy) at scale s. A move tweens the scale logarithmically and
+        // the tracked point linearly, so the point of interest tracks. Moves and
+        // cuts are added in time order: each starts from the view before it.
+        const camera = (layerEl, v0) => {
+          const place = (v) => ({ x: v.sx - v.px * v.s, y: v.sy - v.py * v.s, scale: v.s });
+          K.set(layerEl, { ...place(v0), transformOrigin: "0 0" });
+          let cur = { ...v0 };
+          return {
+            screen: (v, px, py) => ({ x: v.sx + (px - v.px) * v.s, y: v.sy + (py - v.py) * v.s }),
+            cut(t, v) {
+              tl.set(layerEl, place(v), t);
+              cur = { ...v };
+            },
+            move(t, v, dur = 0.8, ease = "in-out-cubic") {
+              const a = { ...cur };
+              tl.sample(layerEl, t, dur, (p) => place({
+                s: Math.exp(K.lerp(Math.log(a.s), Math.log(v.s), p)),
+                px: K.lerp(a.px, v.px, p), py: K.lerp(a.py, v.py, p),
+                sx: K.lerp(a.sx, v.sx, p), sy: K.lerp(a.sy, v.sy, p),
+              }), { ease });
+              cur = { ...v };
+            },
+          };
+        };
+        // a word as the booklet sets it (punctuation as its symbol tile)
+        const FS = 17, TOKFONT = (size, bold) => `${bold ? 700 : 400} ${size}px "Libertinus Serif"`;
+        const tokW = (w, size = FS, bold = false) => (K.isPunct(w) ? size * 1.23 : K.measure(w, TOKFONT(size, bold)));
+        const tokInto = (e, w) => (K.isPunct(w) ? K.punctTile(e, w) : (e.textContent = w));
+        // dice diamonds as the booklet prints them (drawn, so no glyph can fall back)
+        const diamonds = (parent, n, { x, y, size = 8 }) => {
+          const s = K.svg("svg", { width: n * (size + 3), height: size + 2, viewBox: `0 0 ${n * (size + 3)} ${size + 2}`, style: "position:absolute;overflow:visible" }, parent);
+          const polys = Array.from({ length: n }, (_, i) => K.svg("polygon", { points: `${i * (size + 3) + size / 2} 1 ${i * (size + 3) + size} ${size / 2 + 1} ${i * (size + 3) + size / 2} ${size + 1} ${i * (size + 3)} ${size / 2 + 1}`, fill: "var(--ink)" }, s));
+          K.set(s, { x, y });
+          return { el: s, polys };
+        };
+        // a strip of paper with pencil words; punctuation written as its tile
+        const pencilStrip = (x, y, w, words, size = 54) => {
+          const p = K.paper(scene, { x, y, w, h: size * 2.1 });
+          const line = K.pencilLine(p.el, words, { x: 34, y: size * 0.5, size });
+          line.words.forEach((s, i) => {
+            if (!K.isPunct(words[i])) return;
+            s.textContent = "";
+            s.classList.add("p");
+            K.punctTile(s, words[i]);
+          });
+          K.set(p.el, { opacity: 0 });
+          // a notepad laid over the dimmed booklet: its words may cover the page's
+          for (const w of line.words) for (const e of [w, ...w.querySelectorAll("text")]) e.setAttribute("data-layout-allow-overlap", "");
+          p.el.dataset.layoutAllowOcclusion = "";
+          return { ...p, words: line.words };
+        };
+
+        // ================================================================
+        // The Paterson booklet: real printed pages (1 px = 1 pt), a spread of
+        // pages 34 and 35 under the cover, and the walk's other pages placed
+        // so each walk entry sits exactly where sleep's does: the camera holds
+        // still and the pages turn under it.
+        const bookOuter = K.layer(scene, 0, 0);
+        const bookL = K.layer(bookOuter, 0, 0);
+        const P = PAT.pages, PW = P[1].w, PH = P[1].h;
+        const pageEl = (n, x, y) => {
+          const pg = P[n];
+          const d = K.el("div", { class: "paper", style: { width: `${pg.w}px`, height: `${pg.h}px`, overflow: "hidden" } }, bookL);
+          K.set(d, { x, y });
+          K.el("img", { src: `parts/${pg.img}`, class: "abs", style: { width: `${pg.w}px`, height: `${pg.h}px` } }, d);
+          for (const pt of pg.patches) {
+            const [rx, ry, rw, rh] = pt.region;
+            K.el("img", { src: `parts/${pt.img}`, class: "abs", style: { left: `${rx}px`, top: `${ry}px`, width: `${rw}px`, height: `${rh}px` } }, d);
+          }
+          return { el: d, n, x, y, pg };
+        };
+        // an entry on a page: its words, from the PDF's text layer, in reading order
+        const entryOn = (n, head) => {
+          const pt = P[n].patches.find((p) => p.entry === head);
+          const [bx, by, bw, bh] = pt.box;
+          const ws = P[n].words
+            .filter((w) => w[1] >= bx - 0.5 && w[3] <= bx + bw + 0.5 && w[2] >= by - 0.5 && w[4] <= by + bh + 0.5)
+            .sort((a, b) => Math.round((a[2] + a[4]) / 4) - Math.round((b[2] + b[4]) / 4) || a[1] - b[1]);
+          return { box: pt.box, ws };
+        };
+        // a gold highlighter mark on a page, over a box in page points
+        const marker = (pgObj, [x0, y0, x1, y1], pad = 1.4) => {
+          const m = K.el("div", { class: "abs", style: { left: `${x0 - pad}px`, top: `${y0 - pad}px`, width: `${x1 - x0 + 2 * pad}px`, height: `${y1 - y0 + 2 * pad}px`, background: "var(--gold)", mixBlendMode: "multiply" } }, pgObj.el);
+          K.set(m, { opacity: 0 });
+          return m;
+        };
+        const union = (ws) => [Math.min(...ws.map((w) => w[1])), Math.min(...ws.map((w) => w[2])), Math.max(...ws.map((w) => w[3])), Math.max(...ws.map((w) => w[4]))];
+        // the "thr|word" pair for each of an entry's followers, checked against the booklet data
+        const pairMarks = (pgObj, entry, head) => PAT.walk[head].followers.map(([f, thr]) => {
+          const i = entry.ws.findIndex((w) => w[0].startsWith(`${thr}|`));
+          if (i < 0) throw new Error(`${thr}|${f} not printed in ${head}'s entry`);
+          const w = entry.ws[i];
+          return marker(pgObj, union(w[0] === `${thr}|` ? [w, entry.ws[i + 1]] : [w]));
+        });
+        const diamondMark = (pgObj, entry) => marker(pgObj, union(entry.ws.filter((w) => w[0].startsWith("♦"))));
+
+        const pSleep = PAT.pageOf.sleep;
+        const page34 = pageEl(pSleep - 1, 0, 0);
+        const page35 = pageEl(pSleep, PW, 0);
+        const eSleep = entryOn(pSleep, "sleep");
+        const [sbx, sby] = eSleep.box;
+        const walkPage = (head) => {
+          const n = PAT.pageOf[head], e = entryOn(n, head);
+          const pgObj = pageEl(n, PW + sbx - e.box[0], sby - e.box[1]);
+          K.set(pgObj.el, { opacity: 0 });
+          return { ...pgObj, e };
+        };
+        const pAgain = walkPage("again"), pId = walkPage("I'd"), pFloat = walkPage("float");
+        K.set(page34.el, { transformOrigin: "100% 50%", scaleX: 0 });
+        // the cover, its title under a flat card: guess the book before you check
+        const cover = pageEl(1, PW, 0);
+        K.set(cover.el, { transformOrigin: "0 50%" });
+        const title = union(P[1].words.slice(0, P[1].words.findIndex((w) => w[0] === "A")));
+        const card = K.el("div", { class: "abs", style: { left: `${title[0] - 14}px`, top: `${title[1] - 14}px`, width: `${title[2] - title[0] + 28}px`, height: `${title[3] - title[1] + 28}px`, background: "var(--paper)", boxShadow: "0 2px 0 var(--paper-edge), 0 8px 18px rgb(0 0 0 / 30%)" } }, cover.el);
+        K.set(card, { transformOrigin: "0% 100%" });
+
+        const bcam = camera(bookL, { px: PW * 1.5, py: PH / 2, sx: A.cx, sy: A.cy, s: 0.8 });
+        const CLOSED = { px: PW * 1.5, py: PH / 2, sx: A.cx, sy: A.cy, s: 0.8 };
+        const SPREAD = { px: PW, py: PH / 2, sx: A.cx, sy: A.cy, s: 0.84 };
+        const WALK = { px: PW + sbx, py: sby, sx: 200, sy: 150, s: 6.2 };
+        const flipOpen = (t) => {
+          tl.to(cover.el, { scaleX: 0 }, t, { dur: 0.3, ease: "in-quad" });
+          tl.to(page34.el, { scaleX: 1 }, t + 0.3, { dur: 0.3, ease: "out-quad" });
+        };
+        const flipShut = (t) => {
+          tl.to(page34.el, { scaleX: 0 }, t, { dur: 0.3, ease: "in-quad" });
+          tl.to(cover.el, { scaleX: 1 }, t + 0.3, { dur: 0.3, ease: "out-quad" });
+        };
+
+        // ================================================================
+        // The magpie grid and the booklet it folds into.
+        const vocab = MG.vocab, NV = vocab.length;
+        const entries = BOOKLET.magpie.entries; // [word, maxRoll, [[follower, threshold]…]], booklet order
+        const CELL = 29, HW = 96, HH = 96, GX = 60, GY = 34, DIAW = 24, SC = 1.45;
+        const foldOuter = K.layer(scene, 0, 0);
+        const foldL = K.layer(foldOuter, 0, 0);
+        K.set(foldOuter, { opacity: 0 });
+        const fcam = camera(foldL, { px: 0, py: 0, sx: 0, sy: 0, s: 1 });
+        // the booklet: the column page the rows slide into, then a two-page spread
+        const COLX = 910;
+        const CPW = 830, CPH = NV * CELL + 28;
+        const colPage = K.el("div", { class: "paper", style: { width: `${CPW}px`, height: `${CPH}px`, transformOrigin: "0 0" } }, foldL);
+        K.set(colPage, { x: COLX - 14, y: GY + HH - 14, opacity: 0 });
+        const SPW = 610 * SC, SPH = (24 + 12 * 36 + 24) * SC;
+        const spX = A.cx - SPW, spY = A.cy - SPH / 2;
+        const spread = [0, 1].map((k) => {
+          const d = K.el("div", { class: "paper", style: { width: `${SPW}px`, height: `${SPH}px` } }, foldL);
+          K.set(d, { x: spX + k * SPW, y: spY, opacity: 0 });
+          return d;
+        });
+        const spine = K.el("div", { class: "abs", style: { width: "2px", height: `${SPH}px`, background: "rgb(0 0 0 / 18%)" } }, foldL);
+        K.set(spine, { x: A.cx - 1, y: spY, opacity: 0 });
+        // header row and corner
+        const corner = K.el("div", { class: "cellbox", style: { width: `${HW}px`, height: `${HH}px`, borderRight: "2px solid var(--ink)", borderBottom: "2px solid var(--ink)" } }, foldL);
+        K.set(corner, { x: GX, y: GY });
+        const colHead = K.layer(foldL, GX + HW, GY);
+        const chSvg = K.svg("svg", { width: NV * CELL, height: HH, viewBox: `0 0 ${NV * CELL} ${HH}` }, colHead);
+        K.svg("rect", { x: 0, y: 0, width: NV * CELL, height: HH, fill: "var(--paper)" }, chSvg);
+        K.svg("line", { x1: 0, y1: HH - 1, x2: NV * CELL, y2: HH - 1, stroke: "var(--ink)", "stroke-width": 2 }, chSvg);
+        vocab.forEach((w, c) => {
+          const cx = c * CELL + CELL / 2;
+          if (K.isPunct(w)) K.punctBox(chSvg, w, { x: cx, y: HH - 18, size: 15, colour: "var(--ink)" });
+          else K.svg("text", { transform: `translate(${cx + 5} ${HH - 9}) rotate(-90)`, "font-size": 16, text: w }, chSvg);
+          if (c) K.svg("line", { x1: c * CELL, y1: 0, x2: c * CELL, y2: HH, stroke: "rgb(0 0 0 / 22%)" }, chSvg);
+        });
+        // one layer per row: the header cell, its 24 boxes, and (hidden) what the
+        // row becomes as an entry: follower labels, thresholds, dice diamonds
+        const rows = entries.map(() => null);
+        const rowOf = {};
+        entries.forEach(([w, maxRoll, fs], i) => {
+          const r = vocab.indexOf(w);
+          const counts = new Map(MG.rows[w]);
+          const el = K.layer(foldL, GX, GY + HH + r * CELL);
+          K.set(el, { transformOrigin: "0 0" });
+          const hdr = K.el("div", { class: "cellbox", style: { width: `${HW}px`, height: `${CELL}px`, borderRight: "none" } }, el);
+          const heads = [false, true].map((bold) => {
+            const h = K.el("div", { class: "slot", style: { width: `${HW - 8}px`, height: `${CELL}px`, justifyContent: "flex-end", fontSize: `${FS}px`, fontWeight: bold ? 700 : 400 } }, hdr);
+            tokInto(h, w);
+            return h;
+          });
+          K.set(heads[1], { opacity: 0 });
+          const rule = K.el("div", { class: "abs", style: { width: "2px", height: `${CELL}px`, background: "var(--ink)" } }, el);
+          K.set(rule, { x: HW - 1 });
+          const cells = vocab.map((f, c) => {
+            const d = K.el("div", { class: "cellbox", style: { width: `${CELL}px`, height: `${CELL}px` } }, el);
+            K.set(d, { x: HW + c * CELL });
+            const n = counts.get(f) || 0;
+            if (n) {
+              const s = K.svg("svg", { width: CELL, height: CELL, viewBox: `0 0 ${CELL} ${CELL}`, style: "position:absolute;left:0;top:0;overflow:visible" }, d);
+              const sp = 3, g = Math.ceil(n / 5), last = n - 5 * (g - 1);
+              const span = (g - 1) * 6 * sp + (Math.min(last, 4) - 1) * sp;
+              const strokes = K.tally(s, n, (CELL - span) / 2, (CELL - 13) / 2, 13, sp);
+              for (const p of strokes) p.style.strokeWidth = "1.5px";
+            }
+            return { el: d, f, n, c };
+          });
+          // the entry: each follower's box, then its word; the box later gives way to the threshold
+          let x = HW + DIAW;
+          const items = fs.map(([f, thr]) => {
+            const it = { f, thr, cell: cells[vocab.indexOf(f)], x, lw: tokW(f) };
+            it.w = CELL + 3 + it.lw;
+            it.label = K.el("div", { class: "slot", style: { height: `${CELL}px`, fontSize: `${FS}px` } }, el);
+            tokInto(it.label, f);
+            K.set(it.label, { x: x + CELL + 3, opacity: 0 });
+            it.num = K.el("div", { class: "slot num", style: { width: `${CELL + 2}px`, height: `${CELL}px`, justifyContent: "flex-end", fontSize: `${FS}px` } }, el);
+            it.num.innerHTML = `<b>${thr}</b>|`;
+            K.set(it.num, { x: x + 1, opacity: 0 });
+            it.mark = K.el("div", { class: "abs", style: { width: `${it.w + 8}px`, height: `${CELL - 4}px`, background: "var(--gold)", mixBlendMode: "multiply" } }, el);
+            K.set(it.mark, { x: x - 4, y: 2, opacity: 0 });
+            x += it.w + 12;
+            return it;
+          });
+          const dia = fs.length > 1 ? diamonds(el, String(maxRoll).length, { x: HW + 5, y: CELL / 2 - 5 }) : null;
+          if (dia) K.set(dia.el, { opacity: 0 });
+          const row = { w, i, r, el, hdr, heads, rule, cells, items, dia, entryW: x - 12, maxRoll };
+          rows[i] = row;
+          rowOf[w] = row;
+        });
+        const byGrid = [...rows].sort((a, b) => a.r - b.r);
+        // where entry i sits in the spread (booklet order, twelve a page)
+        const slotOf = (i) => ({ x: spX + Math.floor(i / 12) * SPW + 22 * SC, y: spY + (24 + (i % 12) * 36) * SC });
+
+        // ================================================================
+        // The Paterson grid, on a canvas: every non-empty box from the CLI's
+        // pairs, rows and columns in the order the book first uses each word,
+        // with the magpie grid beside its corner at the same cell size.
+        const NP = PAT.stats.words, cells = PAT.cells, NC = cells.length / 2;
+        const MAGX = -30; // the magpie grid's corner, in Paterson cells (it sits up and left of the big grid)
+
+        // ================================================================
+        // desk furniture on top: the dimmer that frames an entry, the dice strip,
+        // dice, pencil strips, the mug, the tools link
+        const hole = K.el("div", { class: "hole" }, scene);
+        K.set(hole, { opacity: 0 });
+        const holeTo = (t, { x, y, w, h }, dur = 0) => {
+          const v = { x: x - 12, y: y - 12, scaleX: (w + 24) / 100, scaleY: (h + 24) / 100 };
+          dur ? tl.to(hole, v, t, { dur, ease: "in-out-cubic" }) : tl.set(hole, v, t);
+        };
+
+        // ================================================================
+        // line 0 (TC): somebody else did the counting. The closed booklet on the
+        // desk, title under a card; it opens on a spread full of words and numbers.
+        K.appear(tl, bookOuter, 0.2, { y: 20 });
+        flipOpen(W(0, "booklet"));
+        bcam.move(W(0, "booklet"), SPREAD, 0.6);
+        bcam.move(W(0, "model"), { px: PW + 250, py: 330, sx: A.cx, sy: A.cy, s: 2.4 }, 1.1);
+
+        // ================================================================
+        // line 1: the magpie grid folds into a booklet. Each row peels off into
+        // an entry; the empty boxes fall away; the column closes into a spread.
+        tl.to(bookOuter, { x: -1920 }, W(1, "here's"), { dur: 0.7, ease: "in-cubic" });
+        tl.to(foldOuter, { opacity: 1 }, W(1, "grid") - 0.05, { dur: 0.01 });
+        K.appear(tl, [corner, colHead, ...byGrid.map((r) => r.el)], W(1, "grid") - 0.1, { y: 14, stagger: 0.005 });
+        K.appear(tl, colPage, W(1, "booklet"), { y: 0, dur: 0.5 });
+        tl.fromTo(colPage, { x: COLX + 26 }, { x: COLX - 14 }, W(1, "booklet"), { dur: 0.5, ease: "out-cubic", immediate: false });
+        const peel = (row, t, dur, closeT) => {
+          tl.to(row.el, { x: COLX }, t, { dur, ease: "in-out-cubic" });
+          tl.to(row.heads[0], { opacity: 0 }, t + 0.1, { dur: 0.3 });
+          tl.to(row.heads[1], { opacity: 1 }, t + 0.1, { dur: 0.3 });
+          tl.to(row.rule, { opacity: 0 }, t, { dur: 0.3 });
+          tl.to(row.hdr, { backgroundColor: "rgb(255 255 255 / 0%)" }, t + dur, { dur: 0.3 });
+          // the kept boxes close up behind the headword, in the booklet's order, words beside them
+          row.items.forEach((it, k) => {
+            tl.to(it.cell.el, { x: it.x }, closeT + k * 0.04, { dur: 0.5, ease: "in-out-cubic" });
+            tl.to(it.label, { opacity: 1 }, closeT + 0.35 + k * 0.04, { dur: 0.3 });
+          });
+        };
+        const fallAway = (row, t) => row.cells.forEach((c, j) => {
+          if (c.n) return;
+          const dt = t + K.jitter(row.r * 31 + j) * 0.35;
+          tl.to(c.el, { y: 44, opacity: 0 }, dt, { dur: 0.45, ease: "in-quad" });
+        });
+        const first = byGrid[0];
+        peel(first, W(1, "every"), 1.0, W(1, "empty") + 0.55);
+        byGrid.forEach((row) => fallAway(row, W(1, "empty")));
+        tl.to([corner, colHead], { opacity: 0, y: 30 }, W(1, "empty") + 0.3, { dur: 0.5, ease: "in-quad" });
+        const tRest = W(1, "fall") - 0.1;
+        byGrid.slice(1).forEach((row, k) => peel(row, tRest + k * 0.045, 0.6, tRest + k * 0.045));
+        // the column closes up into two pages, in the booklet's (alphabetical) order
+        const tSpread = Math.max(tRest + 23 * 0.045 + 0.7, T.start(2));
+        rows.forEach((row) => {
+          const s = slotOf(row.i);
+          tl.to(row.el, { x: s.x, y: s.y, scale: SC }, tSpread + K.jitter(row.i) * 0.2, { dur: 0.8, ease: "in-out-cubic" });
+        });
+        // the page opens out into the spread under them
+        tl.to(colPage, { x: spX, y: spY, scaleX: (2 * SPW) / CPW, scaleY: SPH / CPH }, tSpread, { dur: 0.8, ease: "in-out-cubic" });
+        tl.set(spread, { opacity: 1 }, tSpread + 0.8);
+        tl.set(colPage, { opacity: 0 }, tSpread + 0.8);
+        tl.to(spine, { opacity: 1 }, tSpread + 0.8, { dur: 0.3 });
+
+        // ================================================================
+        // line 2: the entry for dog. Its two boxes, and the die bands from
+        // generation under them; the booklet keeps only each band's last face.
+        const dog = rowOf.dog;
+        const Z = 2.4, VIEW = (row) => ({ px: slotOf(row.i).x, py: slotOf(row.i).y, sx: 60, sy: 150, s: Z / SC });
+        const rowRect = (row) => ({ x: 60, y: 150, w: (row.entryW + 8) * Z, h: CELL * Z });
+        const tDog = W(2, "dog") - 0.35;
+        fcam.move(tDog, VIEW(dog), 0.8);
+        holeTo(tDog, rowRect(dog));
+        tl.to(hole, { opacity: 1 }, tDog + 0.5, { dur: 0.4 });
+        const bands = K.diceBands(dog.items.map((it) => ({ word: it.f, count: it.cell.n })));
+        const FACE = 72;
+        const dstrip = K.strip(scene, bands, { x: 330, y: 330, face: FACE, labelSize: 40 });
+        K.set(dstrip.el, { opacity: 0 });
+        // the full stop's band label is its symbol tile, not a bare mark
+        const fx = (i) => 20 + i * (FACE + 6);
+        const dotLabel = K.punctBox(dstrip.svg, ".", { x: (fx(bands[0].from) + fx(bands[0].to) + FACE) / 2, y: 20 + 40 - 14, size: 38, colour: "#fff", fill: K.tokenColour(".") });
+        K.set(dotLabel, { opacity: 0 });
+        K.appear(tl, dstrip.el, W(2, "faces"), { y: 16 });
+        const shadeBand = (b, lab, t) => {
+          tl.set(dstrip.blocks[b], { opacity: 1 }, t);
+          tl.fromTo(dstrip.blocks[b], { scaleX: 0, transformOrigin: "0 50%" }, { scaleX: 1 }, t, { dur: 0.5, ease: "out-cubic" });
+          tl.to(lab, { opacity: 1 }, t + 0.1, { dur: 0.3 });
+          const band = bands[b];
+          for (let i = band.from; i <= band.to; i++) tl.to(dstrip.nums[i], { fill: "#ffffff" }, t + 0.25, { dur: 0.3 });
+        };
+        shadeBand(0, dotLabel, W(2, "nought"));
+        shadeBand(1, dstrip.labels[1], W(2, "five"));
+        // "writes where each band ends": the other faces dim, the two ends ring gold
+        const tEnds = W(2, "ends");
+        const ends = bands.map((b) => b.to);
+        dstrip.nums.forEach((n, i) => ends.includes(i) || tl.to(n, { opacity: 0.25 }, tEnds, { dur: 0.4 }));
+        dstrip.blocks.forEach((b) => tl.to(b, { opacity: 0.55 }, tEnds, { dur: 0.4 }));
+        const endRings = ends.map((f, k) => {
+          const ring = K.ring(scene, { w: 100, h: 100 });
+          const c = dstrip.faceAt(f);
+          tl.set(ring.el, { x: c.x - FACE / 2 - 8, y: c.y - FACE / 2 - 8, scaleX: (FACE + 16) / 100, scaleY: (FACE + 16) / 100 }, tEnds);
+          tl.to(ring.el, { opacity: 1 }, tEnds + k * 0.15, { dur: 0.3 });
+          return ring;
+        });
+        // each band end flies up into the entry and takes the place of its box
+        const numScreen = (row, it, v) => fcam.screen(v, slotOf(row.i).x + (it.x + CELL / 2) * SC, slotOf(row.i).y + (CELL / 2) * SC);
+        const convert = (row, t, stagger = 0) => {
+          if (row.dia) tl.to(row.dia.el, { opacity: 1 }, t, { dur: 0.3 });
+          row.items.forEach((it, k) => {
+            const tk = t + k * stagger;
+            tl.to(it.cell.el, { opacity: 0, scale: 0.6, transformOrigin: "50% 50%" }, tk, { dur: 0.3, ease: "in-quad" });
+            if (row.items.length > 1) tl.to(it.num, { opacity: 1 }, tk + 0.2, { dur: 0.3 });
+            // one follower: the booklet prints the word alone, so it closes up
+            else tl.to(it.label, { x: it.x }, tk + 0.15, { dur: 0.4, ease: "in-out-cubic" });
+          });
+        };
+        const flyEnd = (k, t) => {
+          const it = dog.items[k], from = dstrip.faceAt(ends[k]), to = numScreen(dog, it, VIEW(dog));
+          const fly = K.el("div", { class: "abs", text: String(ends[k]), style: { fontFamily: "var(--font-tok)", fontWeight: 700, fontSize: "40px", lineHeight: 1, color: "var(--gold-2)" } }, scene);
+          const fw = K.measure(String(ends[k]), TOKFONT(40, true));
+          K.raise(tl, fly, t);
+          tl.fromTo(fly, { x: from.x - fw / 2, y: from.y - 20, opacity: 0 }, { x: to.x - fw / 2 - 4, y: to.y - 20, opacity: 1 }, t, { dur: 0.6, ease: "in-out-cubic" });
+          tl.to(fly, { opacity: 0 }, t + 0.6, { dur: 0.15 });
+          tl.to(endRings[k].el, { opacity: 0 }, t, { dur: 0.3 });
+          tl.to(it.cell.el, { opacity: 0 }, t + 0.45, { dur: 0.2 });
+          tl.to(it.num, { opacity: 1 }, t + 0.55, { dur: 0.2 });
+        };
+        flyEnd(0, W(2, "four", 2));
+        flyEnd(1, W(2, "nine", 2));
+        tl.to(dog.dia.el, { opacity: 1 }, W(2, "nine", 2) + 0.5, { dur: 0.3 });
+        // back to the whole booklet: every entry trades its boxes for numbers
+        const tBack = T.end(2) + 0.1;
+        K.vanish(tl, dstrip.el, tBack - 0.3);
+        tl.to(hole, { opacity: 0 }, tBack, { dur: 0.3 });
+        fcam.move(tBack, { px: 0, py: 0, sx: 0, sy: 0, s: 1 }, 0.8);
+        rows.filter((r) => r !== dog).forEach((row, k) => convert(row, tBack + 0.7 + k * 0.035, 0.03));
+
+        // ================================================================
+        // line 3: roll a three; read down the numbers; 4 is the first the roll
+        // doesn't go past, so it's a full stop.
+        const DX = 1250, DY = 120, DS = 170;
+        // the dice land on a clear patch of desk beside the entry, never over page text
+        const tray = K.el("div", { class: "abs", style: { width: "470px", height: "330px", background: "var(--desk)" } }, scene);
+        K.set(tray, { x: DX - 50, y: DY - 36, opacity: 0 });
+        const trayFor = (t0, t1) => {
+          tl.to(tray, { opacity: 1 }, t0 - 0.35, { dur: 0.3 });
+          tl.to(tray, { opacity: 0 }, t1, { dur: 0.3 });
+        };
+        const dieA = K.die(scene, { x: DX, y: DY, size: DS }), dieB = K.die(scene, { x: DX + 200, y: DY, size: DS });
+        K.set([dieA.el, dieB.el], { opacity: 0 });
+        const tTake = W(3, "take");
+        fcam.move(tTake, VIEW(dog), 0.8);
+        tl.to(hole, { opacity: 1 }, tTake + 0.5, { dur: 0.4 });
+        const magStrip = pencilStrip(300, 560, 900, ["dog", "."], 60);
+        const magStrip2 = pencilStrip(300, 560, 900, ["the", "dog"], 60);
+        K.appear(tl, magStrip.el, tTake + 0.6, { y: 14 });
+        K.set(magStrip.words[0], { opacity: 1 });
+        K.land(tl, dieA, 3, W(3, "three"));
+        tl.to(dog.items[0].mark, { opacity: 0.45 }, W(3, "four"), { dur: 0.2 });
+        K.write(tl, magStrip.words[1], W(3, "full"));
+
+        // ================================================================
+        // line 4: the entry for the runs to 99: two dice, read as one number.
+        const the = rowOf.the;
+        const tThe = W(4, "entry");
+        tl.to([dieA.el, dog.items[0].mark], { opacity: 0 }, tThe - 0.3, { dur: 0.3 });
+        tl.to(magStrip.el, { opacity: 0 }, tThe - 0.2, { dur: 0.3 });
+        fcam.move(tThe, VIEW(the), 0.8);
+        holeTo(tThe, rowRect(the), 0.8);
+        tl.to(magStrip2.el, { opacity: 1 }, tThe + 0.6, { dur: 0.3 });
+        K.write(tl, magStrip2.words[0], tThe + 0.8);
+        const it99 = the.items.at(-1);
+        tl.to(it99.mark, { opacity: 0.45 }, W(4, "ninety-nine"), { dur: 0.2 });
+        tl.to(it99.mark, { opacity: 0 }, W(4, "two") - 0.1, { dur: 0.3 });
+        tl.to(the.dia.polys, { fill: "var(--gold)" }, W(4, "two"), { dur: 0.3, stagger: 0.12 });
+        tl.set([dieA.el], { x: DX }, W(4, "seven") - 0.1);
+        K.land(tl, dieA, 7, W(4, "seven"));
+        K.land(tl, dieB, 2, W(4, "two", 2));
+        const tJoin = W(4, "seventy-two");
+        tl.to(dieA.el, { x: DX + 60 }, tJoin, { dur: 0.4, ease: "in-out-cubic" });
+        tl.to(dieB.el, { x: DX + 60 + DS * 0.72 }, tJoin, { dur: 0.4, ease: "in-out-cubic" });
+        const rollLabel = (text) => {
+          const e = K.el("div", { class: "label gold", text, style: { fontSize: "72px", fontWeight: 700, width: "300px", textAlign: "center" } }, scene);
+          K.set(e, { x: DX + 60 + DS * 0.86 - 150, y: DY + DS + 16, opacity: 0 });
+          return e;
+        };
+        const l72 = rollLabel("72");
+        tl.to(l72, { opacity: 1 }, tJoin + 0.3, { dur: 0.3 });
+        // read down the numbers: 31, past 57, stop at 78
+        const lightDown = (marks, times, lit = 0.45) => marks.forEach((m, k) => {
+          tl.to(m, { opacity: lit }, times[k], { dur: 0.12 });
+          if (k < marks.length - 1) tl.to(m, { opacity: 0.14 }, times[k + 1], { dur: 0.15 });
+        });
+        lightDown(the.items.slice(0, 3).map((it) => it.mark), [W(4, "past") - 0.3, W(4, "fifty-seven"), W(4, "seventy-eight")]);
+        K.write(tl, magStrip2.words[1], W(4, "dog"));
+
+        // ================================================================
+        // line 5: the booklet on your table. The magpie booklet slides off, the
+        // covered Paterson booklet slides on and opens on sleep: one die, a 7.
+        const t5 = T.start(5);
+        tl.to([dieA.el, dieB.el, l72, magStrip2.el, hole], { opacity: 0 }, t5, { dur: 0.3 });
+        tl.to(foldOuter, { x: -1920 }, t5 + 0.1, { dur: 0.8, ease: "in-cubic" });
+        flipShut(t5 - 0.8);
+        bcam.cut(t5, CLOSED);
+        tl.fromTo(bookOuter, { x: 1920 }, { x: 0 }, t5 + 0.3, { dur: 0.9, ease: "out-cubic", immediate: false });
+        const tSleep = W(5, "start");
+        flipOpen(tSleep);
+        bcam.move(tSleep + 0.15, WALK, 1.2);
+        const walkRect = (e) => ({ x: WALK.sx, y: WALK.sy, w: e.box[2] * WALK.s, h: e.box[3] * WALK.s });
+        holeTo(tSleep, walkRect(eSleep));
+        tl.to(hole, { opacity: 1 }, tSleep + 1.3, { dur: 0.4 });
+        // the notepad: the booklet's line, written as it goes (and carried on later)
+        const tail = PAT.sample.tokens.slice(1); // after the walk's ";": the CLI's own continuation
+        const walkWords = [...K.split(KIT_DATA.grid.pretrainedSeq), ...tail];
+        const wrap = (words, maxW, size) => {
+          const lines = [[]];
+          let x = 0;
+          for (const w of words) {
+            const ww = (K.isPunct(w) ? size * 1.23 : K.measure(w, `italic 400 ${size}px "Libertinus Serif"`)) + size * 0.28;
+            if (x + ww > maxW && lines.at(-1).length) (lines.push([]), (x = 0));
+            lines.at(-1).push(w);
+            x += ww;
+          }
+          return lines;
+        };
+        const NSZ = 48;
+        const noteLines = wrap(walkWords, 1100, NSZ);
+        const notes = noteLines.map((ws, k) => pencilStrip(200, 610, 1170, ws, NSZ));
+        const noteWords = notes.flatMap((n) => n.words);
+        K.appear(tl, notes[0].el, tSleep + 1.2, { y: 14 });
+        K.write(tl, noteWords[0], tSleep + 1.5);
+        const sleepMarks = pairMarks(page35, eSleep, "sleep");
+        const sleepDia = diamondMark(page35, eSleep);
+        tl.to(sleepDia, { opacity: 0.45 }, W(5, "one"), { dur: 0.2 });
+        tl.to(sleepDia, { opacity: 0 }, W(5, "seven") - 0.3, { dur: 0.3 });
+        tl.set(dieA.el, { x: DX }, W(5, "seven") - 0.1);
+        K.land(tl, dieA, 7, W(5, "seven"));
+        const t7 = W(5, "seven") + 0.3;
+        lightDown(sleepMarks.slice(0, 3), [t7, t7 + 0.2, t7 + 0.4]);
+        K.write(tl, noteWords[1], Math.max(W(5, "again"), t7 + 0.55));
+
+        // ================================================================
+        // line 6: again runs to 99 (two dice, 80, I'd); I'd (a 6, float); float
+        // has one word after it, so it writes straight on.
+        const turn = (from, to, t) => {
+          tl.to(from.el, { x: from.x - 30, opacity: 0 }, t, { dur: 0.45, ease: "in-cubic" });
+          tl.fromTo(to.el, { x: to.x + 30, opacity: 0 }, { x: to.x, opacity: 1 }, t + 0.1, { dur: 0.45, ease: "out-cubic", immediate: false });
+        };
+        const tAgain = T.start(6) - 0.4;
+        tl.to([dieA.el, ...sleepMarks], { opacity: 0 }, tAgain - 0.3, { dur: 0.3 });
+        turn(page35, pAgain, tAgain);
+        holeTo(tAgain + 0.1, walkRect(pAgain.e), 0.45);
+        const againMarks = pairMarks(pAgain, pAgain.e, "again");
+        const againDia = diamondMark(pAgain, pAgain.e);
+        tl.to(againMarks.at(-1), { opacity: 0.45 }, W(6, "ninety-nine"), { dur: 0.2 });
+        tl.to(againMarks.at(-1), { opacity: 0 }, W(6, "two") - 0.1, { dur: 0.3 });
+        tl.to(againDia, { opacity: 0.45 }, W(6, "two"), { dur: 0.2 });
+        tl.to(againDia, { opacity: 0 }, W(6, "eight") - 0.2, { dur: 0.3 });
+        tl.set([dieA.el], { x: DX }, W(6, "eight") - 0.1);
+        tl.set([dieB.el], { x: DX + 200 }, W(6, "eight") - 0.1);
+        K.land(tl, dieA, 8, W(6, "eight"));
+        K.land(tl, dieB, 0, W(6, "nought"));
+        const tJoin80 = W(6, "eighty");
+        tl.to(dieA.el, { x: DX + 60 }, tJoin80 - 0.2, { dur: 0.4, ease: "in-out-cubic" });
+        tl.to(dieB.el, { x: DX + 60 + DS * 0.72 }, tJoin80 - 0.2, { dur: 0.4, ease: "in-out-cubic" });
+        const l80 = rollLabel("80");
+        tl.to(l80, { opacity: 1 }, tJoin80, { dur: 0.3 });
+        const t45 = W(6, "that's");
+        lightDown(againMarks.slice(0, 5), [t45, t45 + 0.25, t45 + 0.5, W(6, "seventy-six"), W(6, "eighty-four")]);
+        const tId = W(6, "i'd");
+        K.write(tl, noteWords[2], tId);
+        // I'd: one die, a 6
+        const tTurn2 = tId + 0.55;
+        tl.to([dieA.el, dieB.el, l80], { opacity: 0 }, tTurn2 - 0.2, { dur: 0.3 });
+        turn(pAgain, pId, tTurn2);
+        holeTo(tTurn2 + 0.1, walkRect(pId.e), 0.45);
+        const idMarks = pairMarks(pId, pId.e, "I'd");
+        tl.set(dieA.el, { x: DX }, W(6, "six") - 0.1);
+        K.land(tl, dieA, 6, W(6, "six"));
+        const t6 = W(6, "six") + 0.25;
+        lightDown(idMarks.slice(0, 2), [t6, t6 + 0.2]);
+        K.write(tl, noteWords[3], Math.max(W(6, "float"), t6 + 0.4));
+        // float: a single word after it, no roll
+        const tTurn3 = Math.max(W(6, "float"), t6 + 0.4) + 0.5;
+        tl.to([dieA.el, ...idMarks], { opacity: 0 }, tTurn3 - 0.2, { dur: 0.3 });
+        trayFor(W(3, "three"), tThe - 0.3);
+        trayFor(W(4, "seven"), t5);
+        trayFor(W(5, "seven"), tAgain - 0.3);
+        trayFor(W(6, "eight"), tTurn2 - 0.2);
+        trayFor(W(6, "six"), tTurn3 - 0.2);
+        turn(pId, pFloat, tTurn3);
+        holeTo(tTurn3 + 0.1, walkRect(pFloat.e), 0.45);
+        const floatOnly = marker(pFloat, union(pFloat.e.ws.slice(1)));
+        tl.to(floatOnly, { opacity: 0.45 }, W(6, "only"), { dur: 0.2 });
+        K.write(tl, noteWords[4], W(6, "no"));
+
+        // ================================================================
+        // line 7: why a booklet and not a grid. The magpie grid; the Paterson
+        // grid pulls back from beside it to 16 million boxes; the non-empty ones
+        // glow; the empty ones fall away and the rest gather into a booklet.
+        // "why a booklet": back out to the whole page, then it gives way to the grid
+        tl.to([hole, notes[0].el, floatOnly], { opacity: 0 }, W(7, "why") - 0.3, { dur: 0.4 });
+        bcam.move(W(7, "why") - 0.2, { px: pFloat.x + PW / 2, py: pFloat.y + PH / 2, sx: A.cx, sy: A.cy, s: 0.85 }, 1.0);
+        tl.to(bookOuter, { opacity: 0 }, W(7, "grid") - 0.35, { dur: 0.4 });
+        const tMag = W(7, "grid") - 0.2, tPat = W(7, "this"), tZ0 = W(7, "uses"), tZ1 = W(7, "sixteen") - 0.1;
+        const tGlow = W(7, "sixteen", 2), tFall = T.end(7) - 0.2, tG0 = tFall + 0.35;
+        const s0 = 28, s1 = 740 / NP;
+        const Mc = { x: MAGX + 12, y: MAGX + 12 }, Pc = { x: NP / 2, y: NP / 2 };
+        // zoom about the one fixed point that takes the magpie grid's centre (at
+        // s0) and the Paterson grid's centre (at s1) both to the middle of the stage
+        const Fx = (s0 * Mc.x - s1 * Pc.x) / (s0 - s1), Fy = (s0 * Mc.y - s1 * Pc.y) / (s0 - s1);
+        const Fsx = A.cx - s0 * (Mc.x - Fx), Fsy = A.cy - s0 * (Mc.y - Fy);
+        // the booklet the specks gather into: where the closed booklet sits in line 8
+        const BOOK8 = { px: PW, py: 0, sx: 200, sy: 184, s: 0.62 };
+        const gx0 = 200 + 24, gy0 = 184 + 24, gw = PW * 0.62 - 48, gh = PH * 0.62 - 48;
+        // each speck's place in the booklet: seeded scatter, not a lattice (a regular
+        // dot pattern this fine moirés under the encoder)
+        const scatter = C.rng(213), gtx = new Float32Array(NC), gty = new Float32Array(NC);
+        for (let i = 0; i < NC; i++) (gtx[i] = gx0 + scatter() * gw), (gty[i] = gy0 + scatter() * gh);
+        const rank = new Int32Array(NC);
+        Array.from({ length: NC }, (_, i) => i)
+          .sort((a, b) => cells[2 * a] - cells[2 * b] || cells[2 * a + 1] - cells[2 * b + 1])
+          .forEach((i, k) => (rank[i] = k));
+        const magRows = vocab.map((w) => new Map(MG.rows[w]));
+        const lerpRGB = (a, b, p) => a.map((v, i) => Math.round(v + (b[i] - v) * p));
+        const INK = [26, 26, 26], GOLD = [229, 169, 48];
+        const gridCanvas = C.canvas(tl, scene, (ctx, t) => {
+          const aMag = C.phase(t, tMag, 0.4), aPat = C.phase(t, tPat, 0.5);
+          if (aMag <= 0 || t > tG0 + 1.0) return;
+          const p = C.phase(t, tZ0, tZ1 - tZ0, "in-out-quad");
+          const s = Math.exp(K.lerp(Math.log(s0), Math.log(s1), p));
+          const X = (wx) => Fsx + s * (wx - Fx), Y = (wy) => Fsy + s * (wy - Fy);
+          const glow = C.phase(t, tGlow, 0.7, "in-out-quad"), fall = C.phase(t, tFall, 0.5, "in-quad");
+          const out = C.phase(t, tG0 + 0.5, 0.45);
+          // the Paterson grid: paper, then its rules while they're far enough apart to see
+          const paperA = aPat * (1 - 0.85 * glow) * (1 - fall);
+          if (paperA > 0) {
+            const dy = 50 * fall;
+            ctx.fillStyle = `rgb(255 255 255 / ${paperA})`;
+            ctx.fillRect(X(0), Y(0) + dy, s * NP, s * NP);
+            const ruleA = paperA * 0.35 * K.clamp((s - 3) / 6, 0, 1);
+            if (ruleA > 0) {
+              ctx.strokeStyle = `rgb(0 0 0 / ${ruleA})`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              const i0 = Math.max(0, Math.floor(Fx + (0 - Fsx) / s)), i1 = Math.min(NP, Math.ceil(Fx + (S.W - Fsx) / s));
+              const j0 = Math.max(0, Math.floor(Fy + (0 - Fsy) / s)), j1 = Math.min(NP, Math.ceil(Fy + (890 - Fsy) / s));
+              for (let i = i0; i <= i1; i++) (ctx.moveTo(X(i), Math.max(0, Y(0)) + dy), ctx.lineTo(X(i), Math.min(890, Y(NP)) + dy));
+              for (let j = j0; j <= j1; j++) (ctx.moveTo(Math.max(0, X(0)), Y(j) + dy), ctx.lineTo(Math.min(S.W, X(NP)), Y(j) + dy));
+              ctx.stroke();
+            }
+          }
+          // the non-empty boxes: a mark in the box up close, a speck from afar; gold once they glow
+          if (aPat > 0) {
+            const m = Math.max(s * 0.46, 1.25 + 0.6 * glow);
+            const [r, g, b] = lerpRGB(INK, GOLD, glow);
+            ctx.fillStyle = `rgb(${r} ${g} ${b} / ${aPat * (1 - out)})`;
+            const gather = t > tG0;
+            for (let i = 0; i < NC; i++) {
+              let x = X(cells[2 * i + 1] + 0.5), y = Y(cells[2 * i] + 0.5);
+              if (gather) {
+                const q = C.phase(t, tG0 + (rank[i] / NC) * 0.25, 0.6, "in-out-cubic");
+                x = K.lerp(x, gtx[i], q);
+                y = K.lerp(y, gty[i], q);
+              }
+              if (x < -4 || x > S.W + 4 || y < -4 || y > 894) continue;
+              ctx.fillRect(x - m / 2, y - m / 2, m, m);
+            }
+          }
+          // the magpie grid, the same size box for box, beside the big one's corner
+          const mA = aMag * (1 - C.phase(t, tFall, 0.4));
+          if (mA > 0) {
+            const mx = X(MAGX), my = Y(MAGX), mw = 24 * s;
+            ctx.globalAlpha = mA;
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(mx, my, mw, mw);
+            if (s > 4) {
+              ctx.strokeStyle = "rgb(0 0 0 / 0.22)";
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              for (let i = 0; i <= 24; i++) (ctx.moveTo(mx + i * s, my), ctx.lineTo(mx + i * s, my + mw), ctx.moveTo(mx, my + i * s), ctx.lineTo(mx + mw, my + i * s));
+              ctx.stroke();
+              ctx.strokeStyle = "#1a1a1a";
+              ctx.lineWidth = Math.max(0.6, s * 0.05);
+              ctx.lineCap = "round";
+              ctx.beginPath();
+              vocab.forEach((w, ri) => vocab.forEach((f, ci) => {
+                const n = magRows[ri].get(f) || 0;
+                const sp = s * 0.1, h = s * 0.45, g = Math.ceil(n / 5), last = n - 5 * (g - 1);
+                const span = (g - 1) * 6 * sp + (Math.min(last, 4) - 1) * sp;
+                const x0 = mx + ci * s + (s - span) / 2, y0 = my + ri * s + (s - h) / 2;
+                for (let k = 0; k < n; k++) {
+                  const gx = x0 + Math.floor(k / 5) * 6 * sp, kk = k % 5;
+                  if (kk < 4) (ctx.moveTo(gx + kk * sp, y0), ctx.lineTo(gx + kk * sp, y0 + h));
+                  else (ctx.moveTo(gx - sp * 0.4, y0 + h * 0.9), ctx.lineTo(gx + sp * 3.4, y0 + h * 0.1));
+                }
+              }));
+              ctx.stroke();
+            }
+            // ringed in gold once the pull-back starts, so the eye can follow it down
+            const ringA = C.phase(t, tZ0, 0.4);
+            if (ringA > 0) {
+              ctx.globalAlpha = mA * ringA;
+              ctx.strokeStyle = "#be830e";
+              ctx.lineWidth = 4;
+              ctx.strokeRect(mx - 5, my - 5, mw + 10, mw + 10);
+            }
+            ctx.globalAlpha = 1;
+          }
+        }, { x: 0, y: 0, w: S.W, h: S.H - S.captionH });
+        scene.prepend(gridCanvas.el); // under everything: it only draws while the rest is away
+
+        // ================================================================
+        // line 8: the booklet, closed, with the line so far; it runs on, and a
+        // few of its words give the book away. The card lifts a crack.
+        const t8 = T.start(8);
+        bcam.cut(tFall, BOOK8);
+        tl.set([pAgain.el, pId.el, pFloat.el], { opacity: 0 }, tFall);
+        tl.set(page35.el, { x: PW, opacity: 1 }, tFall);
+        tl.set(page34.el, { scaleX: 0 }, tFall);
+        tl.set(cover.el, { scaleX: 1 }, tFall);
+        // the booklet cross-fades in over the specks as they arrive
+        tl.to(bookOuter, { opacity: 1 }, tG0 + 0.45, { dur: 0.45 });
+        const NX = 680;
+        notes.forEach((n, k) => {
+          tl.set(n.el, { x: NX, y: 180 + k * 130 }, t8);
+          if (k) K.appear(tl, n.el, W(8, "listen") - 0.2 + k * 0.3, { y: 14 });
+          else tl.to(n.el, { opacity: 1 }, tG0 + 0.7, { dur: 0.4 });
+        });
+        const tRun = W(8, "listen"), rest = noteWords.slice(5);
+        rest.forEach((w, k) => K.write(tl, w, tRun + 0.1 + k * ((T.wordEnd(8, "out") + 0.6 - tRun) / rest.length)));
+        const tells = ["station", "mob", "Murray"].map((w) => noteWords[walkWords.indexOf(w)]);
+        const tTell = W(8, "guess");
+        tells.forEach((w, k) => tl.to(w, { color: "var(--gold)" }, tTell + k * 0.4, { dur: 0.25 }));
+        tl.to(card, { rotation: -3.5 }, W(8, "cover"), { dur: 0.35, ease: "out-cubic" });
+        tl.to(card, { rotation: 0 }, W(8, "cover") + 0.8, { dur: 0.45, ease: "in-out-cubic" });
+
+        // ================================================================
+        // line 9: open weights. The booklet open flat, a mug beside it; the
+        // numbers down a column light one after another.
+        const t9 = T.start(9);
+        tl.to(notes.map((n) => n.el), { opacity: 0 }, t9 + 0.1, { dur: 0.4 });
+        const OPEN9 = { px: PW, py: 0, sx: 250, sy: 40, s: 2.0 };
+        flipOpen(t9 + 0.2);
+        bcam.move(t9 + 0.2, OPEN9, 1.0);
+        const colNums = page35.pg.words
+          .filter((w) => /^\d+\|/.test(w[0]) && w[1] >= 192 && w[1] < 318 && w[4] < 380)
+          .sort((a, b) => a[2] - b[2] || a[1] - b[1]);
+        const colMarks = colNums.map((w) => marker(page35, [w[1], w[2], w[3], w[4]]));
+        const tRead = W(9, "read"), tTable = W(9, "table");
+        colMarks.forEach((m, k) => tl.to(m, { opacity: 0.45 }, tRead + (k * (tTable - tRead)) / colMarks.length, { dur: 0.12 }));
+        const mugIcon = K.icon(scene, "coffee-cup", { x: 1500, y: 436, size: 280 });
+        const mug = mugIcon.el;
+        K.set(mug, { opacity: 0 });
+        K.appear(tl, mug, W(9, "kitchen"), { y: 16 });
+        K.glint(tl, mugIcon.paths, { phase: 0.9, from: W(9, "kitchen"), to: W(10, "grab") });
+
+        // ================================================================
+        // line 10 (TC): grab it and roll. The booklet shuts under its card, as
+        // it began; a die lands beside it; the tools link.
+        const t10 = W(10, "grab");
+        tl.to([...colMarks, mug], { opacity: 0 }, t10, { dur: 0.3 });
+        flipShut(t10);
+        bcam.move(t10, { px: PW, py: 0, sx: 330, sy: 108, s: 0.8 }, 0.9);
+        tl.set(dieA.el, { x: 1080, y: 250 }, W(10, "rolling") - 0.1);
+        K.land(tl, dieA, 7, W(10, "rolling"));
+        const link = K.el("div", { class: "label gold", text: "llmsunplugged.org/tools", style: { fontSize: "44px" } }, scene);
+        K.set(link, { x: 900, y: 560, opacity: 0 });
+        K.appear(tl, link, W(10, "llmsunplugged.org/tools"), { y: 12 });
+      };
+      KIT.ready(build).then(({ tl }) => {
+        window.__timelines["pretrained-generation-grid"] = tl;
+      });
+    </script>
+  </body>
+</html>

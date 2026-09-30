@@ -1,31 +1,43 @@
 WEBVTT
 
-00:00:00.150 --> 00:00:11.160
-You've got a grid full of tally marks. Right now, they're just counts. In about sixty seconds, they're going to write a sentence that has never existed before.
+00:00:00.150 --> 00:00:06.140
+This is a table of counts. In about a minute it's going to write a sentence that nobody has ever written.
 
-00:00:12.390 --> 00:00:19.140
-Pick any starting word that has a row in your grid, and write it down. That's the beginning of your generated text.
+00:00:06.790 --> 00:00:15.860
+Each row is a word from a book, and the tallies say which words came next, and how often. It's the same kind of grid you just filled in.
 
-00:00:20.030 --> 00:00:33.040
-Find that word's row and look at the tally marks. Add them up, then assign dice numbers: if "cat" has six tallies and "dog" has four, that's faces one to six for cat, seven to ten for dog.
+00:00:16.890 --> 00:00:26.300
+A story starts after a full stop, so start at the row for full stop. "It" came next seven times, "here" four, "down" three, "swoop" three.
 
-00:00:34.130 --> 00:00:43.400
-That mapping is the whole trick. More tallies, more faces, more likely to come up. The die does the random part; the counts do the weighting.
+00:00:27.030 --> 00:00:44.080
+Now pick the next word at random, but fairly. Share the ten faces of a die across the row by its tallies. Seventeen tallies won't split into ten exactly, so share them as fairly as you can: "it" gets four faces, the others two each.
 
-00:00:44.030 --> 00:00:51.980
-Roll your ten-sided die. Whatever number you land on, look up the matching word and write it down. That's your second word.
+00:00:46.220 --> 00:00:54.670
+Roll a two. It's in the band for "it". Write it down, and go to the row for "it".
 
-00:00:52.650 --> 00:01:02.680
-Now that new word becomes your current word. Find its row, set up the ranges, roll again, and write down the result. Keep going.
+00:00:55.520 --> 00:01:04.410
+The row for "it" has exactly ten tallies, so every tally gets a face of its own. Roll a one: "sits".
 
-00:01:03.990 --> 00:01:13.460
-Two things you might hit. If your current word doesn't have a row—it was never the first word of a pair—that's a dead end. Pick a new starting word and carry on.
+00:01:05.760 --> 00:01:12.170
+"Sits" is only ever followed by "on", and "on" by "the". One option, no roll.
 
-00:01:14.170 --> 00:01:34.020
-Or you might bounce between the same two words: comma, joey, comma, joey. Small models loop a lot, so break out by picking a different valid next word. Real LLMs do it less because they're bigger, but if you've ever seen Claude or ChatGPT repeat itself, that's the same thing at scale.
+00:01:12.780 --> 00:01:29.090
+The row for "the" shares its faces four ways. Roll a nine: "dog". And after "dog", a full stop or "runs", five faces each. Roll a three: full stop.
 
-00:01:35.330 --> 00:01:53.450
-Now read back what you generated. It wasn't in the training text—it's new—but it sounds like it could have been, because it follows the same patterns. And that's no trick. It's how every large language model works, Claude and ChatGPT included: one word at a time, from learned counts.
+00:01:30.120 --> 00:01:39.230
+"It sits on the dog." The book never says that. It says the magpie sits on the fence. Nobody wrote this sentence; the counting did.
 
-00:01:53.450 --> 00:01:58.640
-Pick a starting word and give it a go. See what your model comes up with.
+00:01:39.880 --> 00:01:43.190
+And here's everything this model could have written instead.
+
+00:01:44.500 --> 00:01:50.110
+Every roll picks a different path. So run it ten thousand times and count what comes out.
+
+00:01:50.760 --> 00:02:02.450
+Every text different. Every text sounding like the book. That's what Claude or ChatGPT is doing every time it writes a word, with vastly more counts than this.
+
+00:02:03.500 --> 00:02:20.150
+On your grid: pick any starting word with a row and write it down. Share the die's faces across its row by the tallies, roll, and write down the word you land on. Then find its row. No row? Pick a new word and carry on.
+
+00:02:20.820 --> 00:02:22.970
+Pick a starting word and roll.

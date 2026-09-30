@@ -1,0 +1,67 @@
+{
+ "slug": "prototype-tree",
+ "audio": null,
+ "duration": 18,
+ "lines": [
+  {
+   "i": 0,
+   "speaker": "BEN",
+   "tc": false,
+   "caption": "And here's every sentence this model could have written instead.",
+   "start": 0.4,
+   "end": 4.6,
+   "words": [
+    {
+     "w": "And",
+     "start": 0.4,
+     "end": 0.78
+    },
+    {
+     "w": "here's",
+     "start": 0.82,
+     "end": 1.2
+    },
+    {
+     "w": "every",
+     "start": 1.24,
+     "end": 1.62
+    },
+    {
+     "w": "sentence",
+     "start": 1.66,
+     "end": 2.04
+    },
+    {
+     "w": "this",
+     "start": 2.08,
+     "end": 2.46
+    },
+    {
+     "w": "model",
+     "start": 2.5,
+     "end": 2.88
+    },
+    {
+     "w": "could",
+     "start": 2.92,
+     "end": 3.3
+    },
+    {
+     "w": "have",
+     "start": 3.34,
+     "end": 3.72
+    },
+    {
+     "w": "written",
+     "start": 3.76,
+     "end": 4.14
+    },
+    {
+     "w": "instead.",
+     "start": 4.18,
+     "end": 4.56
+    }
+   ]
+  }
+ ]
+}

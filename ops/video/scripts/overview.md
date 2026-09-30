@@ -1,186 +1,122 @@
 # Overview
 
-**Key idea:** you can run the same next-word loop that Claude or ChatGPT runs,
-by hand, with a picture book, paper and a pen, and the site has the lessons and
-the tools to do it.
+**Key idea:** LLMs Unplugged allows you to run the same next-word loop Claude or
+ChatGPT runs, by hand, with a picture book, paper and a pen; the site has the
+lessons and the tools to do it.
 
-**Plays:** website scene-setter, not in class. Evergreen: it names no lesson,
-age band or running time, so it survives the lessons changing. The concrete
-examples are the materials (grid and die, ledger sheets and cup), which are the
-slowest-moving things on the site.
+**Plays:** the website's landing video, not in class. Evergreen, as the TASK-154
+overview is (it names no lesson, age band, running time or licence clause), and
+the one video with a 9:16 variant, so every beat stacks vertically and nothing
+depends on side-by-side placement.
 
-**Layout:** anything that shares the frame is stacked vertically, never side by
-side, so the portrait variant restacks the same composition.
+**Builds on:** the other videos in this series rather than a deck: the book at
+machine speed from `training-grid`, the morph from `same-algorithm`, the tree
+from the generation videos. The model is _The magpie_.
 
 ## Beat sheet
 
-1. hook: Claude, ChatGPT: they write one word at a time, picking each from a
-   list of likely next words. That operation, you can do by hand
-2. pushback: BUT ask anyone how it actually works and you get
-   hand-waving---shaky foundation for teachers, parents, policymakers
-3. the claim: THEREFORE build the loop yourself. A picture book, paper, a pen,
-   and either dice or a cup of counters (School of Cybernetics, ANU)
-4. the loop: train (count which words follow which) → generate (pick the next
-   word by those counts, write it down, repeat)
-5. two ways on paper: grid paper and a ten-sided die, or ledger sheets and a
-   cup of coloured counters. Either way: train your own, generate from one
-   somebody else trained, then the bigger ideas (a model that pauses to ask for
-   help; a room pooling its models). Runs from upper primary to the boardroom
-6. honesty beat: not a tiny Claude or ChatGPT. A real model swaps the tallies
-   for shared numbers, reads the whole conversation instead of one word, trains
-   on trillions of words, and gets a round of post-training so it answers
-   rather than continues. BUT it's the same loop: tokens in, tokens out
-7. history: Markov 1913, Shannon 1948, straight through to today's frontier
-   models
-8. beyond: the site goes further---break a model, look inside one, shape how it
-   behaves (described, never titled)
-9. tools: everything on the site is made by tools that are on the site. Paste
-   in any text and out come the booklets, sheets and cutouts for it
-10. CTA: Creative Commons licence (no clause named) at llmsunplugged.org; every
-    section of every lesson has its own video; book us in person
+1. hook: Claude or ChatGPT write one word at a time. You can do that by hand
+2. the loop, on the magpie book: count which word follows which (the book
+   streams into a grid at machine speed), then draw the next word by those
+   counts
+3. **beyond:** the morph, compressed: tallies, marks, counters, slips, numbers.
+   A grid, a ledger or a pile of cutouts: one lesson in different materials
+4. **beyond:** the tree: everything the model could write, one path lit. It's
+   all counts, and the dice pick
+5. honest beat: a real model isn't a tiny grid; but it's the same loop, and has
+   been since Markov in 1913 and Shannon in 1948
+6. the site: the lessons, the tools (paste in any text, out come the materials),
+   the videos
+7. CTA: free under a Creative Commons licence at llmsunplugged.org; book us in
+   person
 
 ## Script
 
-**BEN (TC):** Claude, ChatGPT, all of these tools---they write one word at a
-time. Predict a word, add it, predict again. That's the whole job.
+**BEN (TC):** Claude and ChatGPT write one word at a time. Pick a likely next
+word, write it down, go again. And you can do exactly that, by hand.
 
-_Visual: a chat window, a reply typing itself one word at a time, each word
-pausing as it lands._
+_Visual: a chat reply typing itself one word at a time, each word pausing as it
+lands. The chat window folds flat onto the desk and becomes a strip of paper,
+the next word writing on in pencil._
 
-_Reads (draft):_ 1. the reply isn't written all at once; 2. each word is added,
-then the next is predicted.
+_Reads:_ 1. the reply is written one word at a time; 2. the same thing can
+happen on paper.
 
-**USHINI (TC):** And yet, ask someone how they actually do it and you'll get
-hand-waving. Something about "neural networks," maybe "trained on the internet."
+**USHINI (VO):** Take a picture book. Read it two words at a time, and count
+which word follows which.
 
-_Visual: the chat window dims; over it, in the site's type, the two phrases
-people reach for: "neural networks", "trained on the internet"._
+_Visual: the magpie book opens; its text lifts off as tiles and streams into a
+grid at machine speed, pairs landing as tallies, until the whole book is
+counted._
 
-_Reads (draft):_ 1. these are the usual explanations people offer; 2. they name
-things without explaining the mechanism.
+_Reads:_ 1. the book is read in pairs; 2. the pairs become counts.
 
-**BEN:** That's a shaky foundation for the people making decisions about these
-tools---teachers, parents, policymakers.
+**BEN (VO):** Then write something new. Take the last word, look at what came
+after it in the book, and draw the next word by those counts. More counts, more
+likely.
 
-**USHINI:** So what if you could build one yourself? Not on a computer. With a
-picture book, some paper, a pen, and a handful of dice.
+_Visual: the row for "the" lights; its tallies become a die strip; a face lands
+and "dog" writes onto the strip after "it sits on the"._
 
-_Visual: the desk, top-down, empty. A picture book, a grid sheet, a pencil, a
-d10, a cup of counters and a ledger sheet slide into place, one per word as it
-is named._
+_Reads:_ 1. the last word's row gives the choices; 2. the counts weight the
+draw.
 
-_Reads (draft):_ 1. this is all the equipment it takes; 2. there's no computer
-on the desk.
+**USHINI (VO):** You can count in tally marks, or marks on a ledger. Draw with a
+die, a cup of counters or a pile of paper slips. It's the same model every time:
+just numbers.
 
-_Reads note:_ the line names a book, paper, a pen and dice, so the cup of
-counters and the ledger sheet have no word to land on and can't arrive "one per
-word as it is named".
+_Visual: the row for "the" lifts out and morphs, one form per phrase: tallies,
+ledger boxes with marks, counters in a cup, cutout slips in piles, then four
+numbers. In the portrait variant the row runs down the frame instead of across._
 
-**USHINI (VO):** That's LLMs Unplugged, a set of free teaching resources from
-the School of Cybernetics at the Australian National University.
+_Beyond:_ tells a teacher at a glance that the grid, the ledger and the cutouts
+are one lesson in different materials, which the TASK-154 overview needs two
+stacked vignettes and a line of voice-over to say.
 
-_Visual: the LLMs Unplugged wordmark in the site's type over the desk, the
-School of Cybernetics line beneath it._
+_Reads:_ 1. many materials; 2. one model; 3. it's numbers.
 
-_Reads (draft):_ 1. this is LLMs Unplugged; 2. it comes from the School of
-Cybernetics at ANU.
+**BEN (VO):** And here's everything this little model could have written.
 
-**BEN (VO):** Every lesson is the same loop. First you train: read a text, and
-count which word follows which. Then you generate: take the last word you wrote,
-pick the next one according to those counts, write it down, and go again.
+_Visual: the tree from the generation videos: from the full stop, every path the
+counts allow, each branch as thick as it is likely, "it sits on the dog ." lit
+gold. In the portrait variant the tree grows downward._
 
-_Visual: the loop as one drawn stroke, top to bottom: the book; the grid,
-strokes drawing on as the book's pairs fly into cells; the paper, a word
-writing, a d10 face landing, the next word writing; an arrow back to the top.
-Two arcs labelled train and generate._
+_Beyond:_ the most memorable image in the series, and it says "it's all counts,
+and the dice pick" in one picture.
 
-_Reads (draft):_ 1. training: the book's word pairs are counted into the grid; 2. generating: the counts pick the next word, which gets written down; 3. then
-round again from the word just written.
+_Reads:_ 1. the counts hold every sentence; 2. the draw picks one path.
 
-**USHINI (VO):** There are two ways to do it on paper. One is grid paper and a
-ten-sided die: you count word pairs into a grid, then roll your way to a
-sentence. The other is ledger sheets and a cup of coloured counters: more marks,
-more counters, more likely.
+**USHINI:** A real model isn't a tiny grid. It looks at far more than one word,
+and learns from trillions of them. But it's the same loop.
 
-_Visual: two vignettes stacked: the grid filling and a die landing; counters
-dropping into the cup and one sliding out._
+_Visual: the tree pulls back logarithmically until it's a fine mesh; the gold
+path stays lit through it._
 
-_Reads (draft):_ 1. one way: count pairs into a grid, then roll a die; 2. the
-other way: counters in a cup, draw one out; 3. more counters for a word, more
-likely it comes out.
+_Reads:_ 1. real models are vastly bigger; 2. the loop is the same.
 
-_Reads note:_ the ledger vignette shows counters but no marks, so "more marks,
-more counters" has nothing on screen to map to.
+**BEN:** And it's not new. In 1913 Andrey Markov went through a Russian poem by
+hand, counting whether a vowel or a consonant came next. Claude Shannon did it
+with words in 1948. We're just letting everyone else have a go.
 
-**BEN (VO):** Either way, you start by training a model of your own. Then you
-generate from one that somebody else trained. And from there the same loop
-takes you to the bigger ideas: a model that pauses to ask for help, or a whole
-room pooling its models into one story. It runs from upper primary to the
-boardroom.
+_Visual: a timeline draws on as a single stroke, 1913 Markov, 1948 Shannon, on
+to today, a pencil riding along it._
 
-_Visual: three vignettes stacked: the booklet open at an entry; the phone with
-a reply bubble sliding onto the paper; butchers paper up front gaining a line._
+_Reads:_ 1. people have run this loop by hand for over a century.
 
-_Reads (draft):_ 1. next, generate from a model somebody else trained; 2. the
-same loop leads to a model that asks for help; 3. and to a whole room pooling
-its models.
+**USHINI (VO):** LLMs Unplugged has the lessons, the slides, the printouts and a
+short video for every step. And the tools that made them: paste in any text you
+like, and out come the grids, the sheets and the booklets for it.
 
-_Reads note:_ the line starts with training your own model, but none of the
-three vignettes shows that, so the viewer may map the booklet to "your own".
+_Visual: the tools page: a text pasted into the box; a booklet page, a ledger
+sheet and a sheet of cutouts render beneath it._
 
-**USHINI:** Now, it's not a tiny Claude or ChatGPT. A real model swaps the tally
-marks for shared numbers, looks at the whole conversation instead of one word,
-trains on trillions of words, and gets a round of extra training so it answers
-you rather than just continuing.
+_Reads:_ 1. the site has everything to run it; 2. any text makes its own
+materials.
 
-_Visual: the grid's tally strokes turn into decimal numbers; the numbers slide
-into one long row that runs off both edges of the frame, and the row scrolls,
-and scrolls._
+**BEN (TC):** It's all free, under a Creative Commons licence, at
+llmsunplugged.org. Grab a picture book, and come and see how it works.
 
-_Reads (draft):_ 1. real models store numbers, not tally marks; 2. and vastly
-more of them than fits on a sheet.
+_Visual: llmsunplugged.org in the site's type over the desk, the magpie book
+beside it._
 
-**BEN:** But it's the same loop. Tokens in, tokens out. And none of it is new:
-Andrey Markov was doing this by hand in 1913, Claude Shannon in 1948. The line
-runs straight to today's frontier models.
-
-_Visual: the chat reply and a pencil line on paper advancing one word at a time
-in lockstep, one above the other. Then a timeline draws on as a single stroke,
-1913 Markov, 1948 Shannon, on to today, the loop icon riding along it
-unchanged._
-
-_Reads (draft):_ 1. the chat reply and the pencil are doing the same thing; 2.
-people have run this loop since Markov in 1913; 3. the loop itself hasn't
-changed since.
-
-**USHINI:** Once you've seen the mechanism on paper---patterns in, new text
-out---the mystery evaporates. And if you want to go further, the site does:
-break a model, look inside one, shape how it behaves.
-
-_Visual: three vignettes stacked: a grid with one cell ringed; the same grid
-with a number in every cell; a booklet page with a line struck out and
-rewritten._
-
-_Reads (draft):_ 1. you can break a model; 2. you can look inside one; 3. you
-can shape how it behaves.
-
-**BEN (VO):** And everything on the site was made by tools that are on the site
-too. Paste in any text you like, and out come the booklets, the sheets and the
-cutouts for it. Your book, your model.
-
-_Visual: the tools page: a text pasted into the box, a booklet page rendering
-beneath it, then a ledger sheet._
-
-_Reads (draft):_ 1. paste in any text; 2. out come the printable materials for
-that text.
-
-**USHINI (TC):** It's all under a Creative Commons licence at llmsunplugged.org.
-Every section of every lesson has its own short video, so you can play them in
-class. Grab the resources, run the activities, and if you'd like us to deliver
-it in person, get in touch.
-
-_Visual: llmsunplugged.org in the site's type over the desk, then the section
-videos as a stacked list, then the Creative Commons mark._
-
-_Reads (draft):_ 1. it's all at llmsunplugged.org; 2. each lesson section has
-its own video; 3. it's free to use under Creative Commons.
+_Reads:_ 1. it's at llmsunplugged.org; 2. it's free to use.

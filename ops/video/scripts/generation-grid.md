@@ -1,120 +1,175 @@
-# Generation (grid)
+# Generation: grid
 
-**Key idea:** language models generate text one word at a time by sampling the
-next word according to learned counts.
+**Key idea:** text is written one word at a time, each word picked at random in
+proportion to the counts: the dice make every text different, and the counts
+make them all sound like the book.
 
 **Plays:** My First Language Model, start of the Generation section.
 
+**Builds on:** `partials/grid-generation.mdx` from "Generation" through
+"Generated text"; the ending hands off to "Your turn". The model is _The
+magpie_'s grid, lowercased, columns in the order the book first uses each word
+(the row for full stop is it 7, here 4, down 3, swoop 3; for _it_, is 1, sits 3,
+watches 3, goes 3; for _the_, magpie 5, fence 6, postie 4, dog 4; for _dog_,
+full stop 2, runs 2). The walk is ". it sits on the dog .", a sentence the book
+never says, with rolls 2, 1, 9, 3. Faces are shared across a row left to right,
+as the slides' dice bands are.
+
 ## Beat sheet
 
-1. hook: the grid is just counts now---in sixty seconds it'll write a sentence
-   that never existed
-2. pick any starting word that has a row---write it down
-3. find its row, add up the tallies, map to d10 faces (e.g. "cat" 6 tallies,
-   "dog" 4 → faces 1--6 cat, 7--10 dog)
-4. that mapping IS weighted random sampling---more tallies, more faces, more
-   likely. The die does the random part; the counts do the weighting
-5. roll, look up the word, write it down
-6. iterate: new word becomes current, find its row, roll again
-7. dead-end handling: no row? pick a new starting word
-8. loop handling: small models bounce between two words a lot---break out by
-   picking a different valid next word; LLMs do this too at scale
-9. reveal: the text is new but follows the same patterns---the same next-word
-   sampling loop Claude or ChatGPT run, vastly smaller scale
-10. CTA: pick a starting word and try it
+1. hook: a table of counts is about to write a sentence nobody has ever written
+2. the model: a row per word, and what came next, counted; the grid the viewer
+   just filled works the same way
+3. start after a full stop. Share the die's ten faces across the row by its
+   tallies; seventeen tallies won't split exactly, so share as fairly as you
+   can. Roll: "it"
+4. the row for _it_ has exactly ten tallies, a face each. Roll a one: "sits"
+5. single-option rows: no roll needed ("on", "the")
+6. the row for _the_, then _dog_: two more rolls, and a full stop
+7. the sentence: "It sits on the dog." The book never says it. Nobody wrote it;
+   the counting did
+8. **beyond:** the tree of everything this model could have written from a full
+   stop, branch thickness by probability. Your sentence is one path through it
+9. **beyond:** run it ten thousand times and count what comes out: the counts
+   come back. Every text is different, and every text sounds like the book
+10. that's the loop Claude or ChatGPT runs, with vastly more counts
+11. ending: how to roll from your own grid, then go
 
 ## Script
 
-**USHINI (TC):** You've got a grid full of tally marks. Right now, they're just
-counts. In about sixty seconds, they're going to write a sentence that has never
-existed before.
+**BEN (TC):** This is a table of counts. In about a minute it's going to write a
+sentence that nobody has ever written.
 
-**BEN:** Pick any starting word that has a row in your grid, and write it down.
-That's the beginning of your generated text.
+_Visual: the finished magpie grid on the desk, top-down, full frame. Nothing
+moves._
 
-_Visual: the finished grid on the desk with a blank strip of paper below it.
-"see" writes onto the paper in pencil; its row lights gold and the camera pushes
-in on the row._
+_Reads:_ 1. this grid is a finished model.
 
-_Reads (draft):_ 1. the generated text starts with a word you choose; 2. that
-word's row is where the next word comes from.
+**USHINI (VO):** Each row is a word from a book, and the tallies say which words
+came next, and how often. It's the same kind of grid you just filled in.
 
-**USHINI (VO):** Find that word's row and look at the tally marks. Add them up,
-then assign dice numbers: if "cat" has six tallies and "dog" has four, that's
-faces one to six for cat, seven to ten for dog.
+_Visual: the row for "the" lights: its four tallied boxes under magpie, fence,
+postie and dog, the rest of the row empty._
 
-_Visual: the row's cells slide out of the grid into a line, each column word
-above its strokes. The strokes recount into a total under each word. A strip of
-ten die faces appears beneath, and the faces shade into blocks sized by the
-totals, each block in its word's colour._
+_Reads:_ 1. a row is a word; 2. its tallies are what came next and how often.
 
-_Reads (draft):_ 1. only the current word's row matters; 2. each next word's
-tallies are totalled; 3. each word gets die faces in proportion to its tallies.
+**BEN (VO):** A story starts after a full stop, so start at the row for full
+stop. "It" came next seven times, "here" four, "down" three, "swoop" three.
 
-_Reads note:_ the row for "see" has one follower, joey, so its strip is ten
-faces of one word and can't show the split the line describes with cat and dog.
+_Visual: the row for full stop slides out of the grid to the middle of the desk,
+its four tallied boxes spread wide._
 
-**BEN (VO):** That mapping is the whole trick. More tallies, more faces, more
-likely to come up. The die does the random part; the counts do the weighting.
+_Reads:_ 1. start from the full stop's row; 2. "it" has the most tallies.
 
-_Visual: the strip alone: the block widths are the odds. One stroke added to a
-word widens its block by a face._
+**USHINI (VO):** Now pick the next word at random, but fairly. Share the ten
+faces of a die across the row by its tallies. [beat] Seventeen tallies won't
+split into ten exactly, so share them as fairly as you can: "it" gets four
+faces, the others two each. [beat]
 
-_Reads (draft):_ 1. a wider block means a more likely word; 2. one more tally
-means one more face.
+_Visual: under the row a strip of ten die faces, 0 to 9, bands drawing in left
+to right as they're named: it 0--3, here 4--5, down 6--7, swoop 8--9._
 
-**BEN (VO):** Roll your ten-sided die. Whatever number you land on, look up the
-matching word and write it down. That's your second word.
+_Reads:_ 1. the die's faces are shared across the row; 2. more tallies, more
+faces; 3. "it" gets the most.
 
-_Visual: a flat d10 face lands beside the strip showing its number; the matching
-face on the strip lights; the word above that block writes onto the paper as the
-second word._
+_Reads note:_ rounding seventeen tallies onto ten faces is a wrinkle the slides
+never meet (the hop joey hop rows divide evenly); the alternative is to start
+this walk on a row that divides and keep the rounding for the ending.
 
-_Reads (draft):_ 1. the roll picks a face; 2. that face's word is the next word.
+**BEN (VO):** Roll a two. [beat] It's in the band for "it". [beat] Write it
+down, and go to the row for "it".
 
-**USHINI (VO):** Now that new word becomes your current word. Find _its_ row,
-set up the ranges, roll again, and write down the result. Keep going.
+_Visual: a d10 face lands on 2; the "it" band lights and "it" writes onto a
+strip of paper at the bottom of the desk. The row for "it" lights on the grid._
 
-_Visual: the new word lifts from the paper to the grid, its row lights, the
-strip rebuilds for that row, a face lands, a word writes. The loop runs twice
-more at double speed, the paper reading "see joey , hop . see"._
+_Reads:_ 1. the roll lands in a band; 2. that band's word is written down; 3.
+its row is next.
 
-_Reads (draft):_ 1. the new word becomes the current word; 2. the same steps
-repeat: row, faces, roll, write; 3. the text grows one word at a time.
+**USHINI (VO):** The row for "it" has exactly ten tallies, so every tally gets a
+face of its own. [beat] Roll a one: "sits".
 
-**BEN:** Two things you might hit. If your current word doesn't have a row---it
-was never the first word of a pair---that's a dead end. Pick a new starting word
-and carry on.
+_Visual: the row for "it" (is 1, sits 3, watches 3, goes 3): its ten tallies
+drop one to a face, is 0, sits 1--3, watches 4--6, goes 7--9. A face lands on 1;
+the "sits" band lights and "sits" writes onto the strip._
 
-_Visual: the current word's row lights and holds, empty. The paper's line ends,
-and a new starting word writes on the line below._
+_Reads:_ 1. ten tallies, one face each; 2. the roll picks "sits".
 
-_Reads (draft):_ 1. an empty row means nothing ever followed that word; 2. so
-start again with a new word.
+**BEN (VO):** "Sits" is only ever followed by "on", and "on" by "the". One
+option, no roll.
 
-**USHINI:** Or you might bounce between the same two words: comma, joey, comma,
-joey. Small models loop a lot, so break out by picking a different valid next
-word. Real LLMs do it less because they're bigger, but if you've ever seen
-Claude or ChatGPT repeat itself, that's the same thing at scale.
+_Visual: the rows for "sits" and "on" light in turn, each with its single
+tallied box, and "on" and "the" write straight onto the strip._
 
-_Visual: "comma joey comma joey" writing itself along the paper. The strip for
-"," shows "joey" lit on half the faces; the pencil takes the other block's word
-instead._
+_Reads:_ 1. a row with one word needs no roll.
 
-_Reads (draft):_ 1. two words can keep leading back to each other; 2. break the
-loop by choosing another valid word.
+**USHINI (VO):** The row for "the" shares its faces four ways. [beat] Roll a
+nine: "dog". [beat] And after "dog", a full stop or "runs", five faces each.
+[beat] Roll a three: full stop.
 
-**BEN:** Now read back what you generated. It wasn't in the training text---it's
-new---but it sounds like it could have been, because it follows the same
-patterns. And that's no trick. It's how every large language model works, Claude
-and ChatGPT included: one word at a time, from learned counts.
+_Visual: the row for "the" gets its bands (magpie 0--2, fence 3--5, postie 6--7,
+dog 8--9), a face lands on 9 and "dog" writes on. The row for "dog" splits the
+die in two (full stop 0--4, runs 5--9), a face lands on 3, and the full stop
+tile writes on._
 
-_Visual: the generated line full frame. Behind it, dimmed, the book's text: the
-line is not in it. Then each pair in the generated line lights its grid cell in
-turn, every one present. Cut to the line alone._
+_Reads:_ 1. every row works the same way; 2. a full stop ends the sentence.
 
-_Reads (draft):_ 1. this sentence isn't in the book; 2. but every pair in it is
-in the grid; 3. that's why it sounds like the book.
+**BEN:** "It sits on the dog." The book never says that. It says the magpie sits
+on the fence. Nobody wrote this sentence; the counting did.
 
-**USHINI (TC):** Pick a starting word and give it a go. See what your model
-comes up with.
+_Visual: the strip reads "it sits on the dog ." Above it, in the book's type,
+"It sits on the fence." and "Here comes the dog."; the halves slide together
+into the generated line._
+
+_Reads:_ 1. this sentence isn't in the book; 2. it's made from pieces that
+are; 3. nobody wrote it.
+
+**USHINI (VO):** And here's everything this model could have written instead.
+
+_Visual: the strip's words slide into a column at the left edge. The full stop,
+a symbol tile, moves to the root, and every path the counts allow grows
+rightwards, twelve words deep: about five thousand texts on ten thousand
+branches, each as thick as it is likely, the likely ones bold, the rare ones
+hairlines. The first three words deep are labelled. The path "it sits on the dog
+." lights gold through the middle of it, each word flying from the column onto
+its node; the rest dims. (The prototype at `prototype-tree/`.)_
+
+_Beyond:_ the slides show one walk, so the viewer sees one sentence and has to
+imagine the others. The tree shows them all at once, weighted, and makes the key
+idea literal: the counts already hold every text, and the dice only pick a path.
+
+_Reads:_ 1. each branch is a word the counts allow; 2. thicker means more
+likely; 3. your sentence is one path through it.
+
+**BEN (VO):** Every roll picks a different path. So run it ten thousand times
+and count what comes out.
+
+_Visual: the tree fades to a blank grid. Generated words stream past along the
+bottom at machine speed while their pairs are tallied into the blank grid. The
+row for "the" is held up beside the original's: after twenty words it looks
+nothing like it; after ten thousand, the proportions match._
+
+_Beyond:_ one walk can't show that sampling is faithful, and "it sounds like the
+book" stays a feeling. Counting the model's own output back into a grid shows
+the proportions return, so "sounds like the book" becomes something the viewer
+can check.
+
+_Reads:_ 1. the model's output is counted the same way as the book was; 2. a
+short run looks nothing like the book's counts; 3. a long run matches them.
+
+**USHINI:** Every text different. Every text sounding like the book. That's what
+Claude or ChatGPT is doing every time it writes a word, with vastly more counts
+than this.
+
+**BEN (VO):** On your grid: pick any starting word with a row and write it down.
+[beat] Share the die's faces across its row by the tallies, roll, and write down
+the word you land on. [beat] Then find its row. No row? Pick a new word and
+carry on.
+
+_Visual: a hand-filled grid; a word writes on the strip, its row lights, the
+row's tallies become a strip of die faces, a face lands, the next word writes.
+Then a word whose row is empty: a new starting word writes on after it._
+
+_Reads:_ 1. start from any word with a row; 2. faces by tallies, roll, write; 3.
+no row, pick again.
+
+**USHINI (TC):** Pick a starting word and roll.

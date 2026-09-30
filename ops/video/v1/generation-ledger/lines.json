@@ -1,0 +1,79 @@
+[
+  {
+    "i": 0,
+    "speaker": "BEN",
+    "tc": true,
+    "caption": "There's a language model on the table in front of you. Not a computer. A few sheets of paper.",
+    "tts": "There's a language model on the table in front of you. Not a computer. A few sheets of paper."
+  },
+  {
+    "i": 1,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Down the left, a word from the book. Beside it, every word that ever came next, with a mark for every time it did. That's the whole thing. No rules, no grammar. Just a count of what came next.",
+    "tts": "Down the left, a word from the book. Beside it, every word that ever came next, with a mark for every time it did. That's the whole thing. No rules, no grammar. Just a count of what came next."
+  },
+  {
+    "i": 2,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Read one row aloud and it's a sentence. After the, this book said magpie five times, fence six times, postie four times, and dog four times.",
+    "tts": "Read one row aloud and it's a sentence. After the, this book said magpie five times, fence six times, postie four times, and dog four times."
+  },
+  {
+    "i": 3,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Each sheet holds a run of words in alphabetical order, and the header says which. So nobody searches. Need the row for it? Read the headers. Who has it?",
+    "tts": "Each sheet holds a run of words in alphabetical order, and the header says which. So nobody searches. Need the row for it? Read the headers. Who has it?"
+  },
+  {
+    "i": 4,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Every word in a row sits in a coloured box, and your counters come in those same four colours. A red counter means \"the word in the red box\"—on this row. On a different row, red means something else. The colour names the place in the row, not the word.",
+    "tts": "Every word in a row sits in a coloured box, and your counters come in those same four colours. A red counter means \"the word in the red box\", on this row. On a different row, red means something else. The colour names the place in the row, not the word."
+  },
+  {
+    "i": 5,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Now generate. A story starts after a full stop, so somebody finds the row for full stop. First box: it, seven marks, red. Seven red counters into the cup. Next: Here, four marks, blue. Four blue. Down, three marks, green. Three green. And Swoop, three marks, yellow. Three yellow.",
+    "tts": "Now generate. A story starts after a full stop, so somebody finds the row for full stop. First box: it, seven marks, red. Seven red counters into the cup. Next: Here, four marks, blue. Four blue. Down, three marks, green. Three green. And Swoop, three marks, yellow. Three yellow."
+  },
+  {
+    "i": 6,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "Seventeen marks, seventeen counters. The cup is the row. More marks, more counters, more likely. Which colour do you think will come out?",
+    "tts": "Seventeen marks, seventeen counters. The cup is the row. More marks, more counters, more likely. Which colour do you think will come out?"
+  },
+  {
+    "i": 7,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Red. The likeliest one, seven chances in seventeen. Write down it, tip the cup back into the tub, and pass the job to whoever has the row for it.",
+    "tts": "Red. The likeliest one, seven chances in seventeen. Write down it, tip the cup back into the tub, and pass the job to whoever has the row for it."
+  },
+  {
+    "i": 8,
+    "speaker": "BEN",
+    "tc": false,
+    "caption": "And round it goes. Most of the time the likely colour comes out. Sometimes it doesn't—four chances in seventeen, and blue comes out anyway. Unlikely isn't impossible; that's the cup doing its job. Come back to the same row later and you might get a different word from the same cup. And a row with one word needs no draw at all.",
+    "tts": "And round it goes. Most of the time the likely colour comes out. Sometimes it doesn't, four chances in seventeen, and blue comes out anyway. Unlikely isn't impossible; that's the cup doing its job. Come back to the same row later and you might get a different word from the same cup. And a row with one word needs no draw at all."
+  },
+  {
+    "i": 9,
+    "speaker": "USHINI",
+    "tc": false,
+    "caption": "Eleven words in, and here's a sentence this book never said. It says \"Here comes the postie.\" It says \"Down comes the magpie.\" The model glued them together, because it only ever knows what comes next, one word at a time. Nobody wrote that sentence. The counting did.",
+    "tts": "Eleven words in, and here's a sentence this book never said. It says \"Here comes the postie.\" It says \"Down comes the magpie.\" The model glued them together, because it only ever knows what comes next, one word at a time. Nobody wrote that sentence. The counting did."
+  },
+  {
+    "i": 10,
+    "speaker": "BEN",
+    "tc": true,
+    "caption": "Four jobs in your group: a reader who finds the row, a filler, a drawer, and a writer. Start from any word on your sheets, and see what your book says.",
+    "tts": "Four jobs in your group: a reader who finds the row, a filler, a drawer, and a writer. Start from any word on your sheets, and see what your book says."
+  }
+]

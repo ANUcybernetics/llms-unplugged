@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>LLMs Unplugged — Making things up, beyond the slides</title>
+    <link rel="stylesheet" href="kit/kit.css" />
+    <script src="kit/generated/data.js"></script>
+    <script src="parts/generated/magpie.js"></script>
+    <script type="module" src="kit/kit.js"></script>
+    <style>
+      html, body { width: 1920px; height: 1080px; }
+      .book-line { position: absolute; left: 0; top: 0; font-family: var(--font-tok); line-height: 1; white-space: nowrap; color: var(--text); }
+      .book-line .hl { color: var(--gold-2); }
+      .page-line { position: relative; white-space: nowrap; }
+      .page-hl { position: absolute; left: 0; top: 0; background: var(--gold); opacity: 0; }
+      .rank { position: absolute; left: 0; top: 0; font-size: 30px; color: var(--muted); width: 44px; text-align: right; }
+      .rank-text { position: absolute; left: 0; top: 0; font-family: var(--font-tok); font-size: 38px; line-height: 1; white-space: nowrap; color: var(--text); }
+      .tok { display: inline-block; margin-right: 0.26em; }
+      .tok.punct { vertical-align: -0.12em; }
+      .bar { position: absolute; left: 0; top: 0; height: 24px; background: rgb(255 255 255 / 82%); transform-origin: 0 50%; }
+      .bar.gold { background: var(--gold-2); }
+      .ghost { position: absolute; left: 0; top: 0; height: 32px; border: 3px solid var(--text); }
+      .slot { position: absolute; left: 0; top: 0; border: 3px dashed var(--muted); }
+      .end-label { position: absolute; left: 0; top: 0; font-family: var(--font-tok); font-size: 30px; line-height: 1; white-space: nowrap; color: var(--text); background: var(--desk); padding: 3px 8px 6px; }
+      .crop { position: absolute; left: 0; top: 0; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <!-- Making things up, beyond the slides: ops/video/scripts/
+         making-things-up.md. The magpie's grid and its book; the model writes
+         "down comes the dog . swoop !", which the book never says, from pairs
+         the book does say; every sentence it can write, ranked, with "here
+         comes the fence ." third; the tree of all 79, the book's 7 in one
+         colour; and a pull-back to a mesh standing in for a real model
+         (illustrative, not measured: no numbers, axis or legend on it).
+         The sentence tree and the mesh are ../_parts/making-tree.js, on top of
+         ../_parts/tree.js. -->
+    <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="making-things-up"
+         data-start="0" data-duration="127.69" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="127.69" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="120.69" data-track-index="1"></audio>
+    </div>
+    <script type="module">
+      import { wordTimes, paperLine } from "./parts/generation-walk.js";
+      import { magpieGrid } from "./parts/generation-grid.js";
+      import { treeStyle, GOLD } from "./parts/tree.js";
+      import { sentenceTree, bookSentences, mesh } from "./parts/making-tree.js";
+      import { lineCover } from "./parts/lineart.js";
+
+      const build = (tl, S, T) => {
+        const K = KIT, MG = MAGPIE;
+        const scene = document.getElementById("scene");
+        const W = wordTimes(T);
+        const w = W.word;
+        treeStyle();
+
+        // the tree's colours: the book's sentences gold (--gold-2), the rest
+        // receding to grey
+        const BOOK = GOLD, OTHER = [150, 150, 150], WHITE = [255, 255, 255];
+        const css = (c) => `rgb(${c.join(" ")})`;
+        const STAMP = "var(--counter-red)";
+
+        // ---- the model: the magpie, lowercased, columns in first-use order
+        const bg = K.bigrams(MG.words, MG.vocab);
+        const IDX = (word) => bg.idx.get(word);
+        const BOOKS = bookSentences(MG.words);
+
+        // ---- helpers
+        const pulse = (els, t, s = 1.15) => {
+          tl.to(els, { scale: s, transformOrigin: "50% 50%" }, t, { dur: 0.22, ease: "out-quad" });
+          tl.to(els, { scale: 1 }, t + 0.22, { dur: 0.25, ease: "in-out-quad" });
+        };
+        // a gold box over one cell of a grid
+        const cellLit = (g, r, c) => {
+          const cl = g.cells[r][c];
+          const e = K.svg("rect", { x: cl.x + 2, y: cl.y + 2, width: cl.w - 4, height: cl.h - 4, fill: "var(--gold)", "fill-opacity": 0.25, stroke: "var(--gold)", "stroke-width": 5, opacity: 0 }, g.svg);
+          return e;
+        };
+        // a line of tokens in the book's type ("Down comes the magpie. Swoop!"):
+        // no space before a mark; tokens at `hl` in gold
+        const bookLine = (toks, { size = 60, hl = [], cx = 960, y = 0 } = {}) => {
+          const d = K.el("div", { class: "book-line", style: { fontSize: `${size}px` } }, scene);
+          toks.forEach((t, i) => {
+            const sp = (i > 0 && !K.isPunct(t)) ? " " : "";
+            K.el("span", { class: hl.includes(i) ? "hl" : "", text: sp + t }, d);
+          });
+          K.set(d, { x: cx - d.offsetWidth / 2, y, opacity: 0 });
+          return d;
+        };
+        // a sentence as the model writes it: lowercased tokens, marks as tiles
+        const tokenRow = (parent, words, cls) => {
+          const d = K.el("div", { class: cls }, parent);
+          words.forEach((t) => {
+            const s = K.el("span", { class: `tok${K.isPunct(t) ? " punct" : ""}`, ...(K.isPunct(t) ? {} : { text: t }) }, d);
+            if (K.isPunct(t)) {
+              K.punctTile(s, t, { fill: "var(--desk)" });
+              s.firstChild.style.width = "0.9em";
+              s.firstChild.style.height = "0.9em";
+            }
+          });
+          return d;
+        };
+
+        // ---- the grid, finished, and the picture book, closed
+        const grid = magpieGrid(scene, bg);
+        K.set(grid.cells.flat().flatMap((c) => c.strokes), { strokeDashoffset: 0 });
+        const DESK = { x: 60, y: 188, scale: 0.6 };
+        const MID = { x: (1920 - grid.width * 0.62) / 2, y: 106, scale: 0.62 };
+        const END = { x: 60, y: 40, scale: 0.52 };
+        K.set(grid.el, { ...DESK, opacity: 0 });
+
+        const COVER = { x: 1300, y: 188, w: 520, h: 514 };
+        const cover = lineCover(scene, "The magpie", COVER); // in line (parts/lineart.js)
+        K.set(cover, { opacity: 0 });
+
+        // ============================================================ line 0
+        // (TC) the finished grid and the closed book, side by side
+        tl.fromTo(grid.el, { opacity: 0, y: DESK.y + 16 }, { opacity: 1, y: DESK.y }, 0.2, { dur: 0.5, ease: "out-quart" });
+        K.appear(tl, cover, 0.6, { y: 16 });
+        K.glint(tl, cover.border, { phase: 0.6, from: 0.6, to: T.start(1) });
+        K.glint(tl, cover.art, { phase: 2.6, from: 0.6, to: T.start(1) });
+
+        // ============================================================ line 1
+        // the book opens; its lines float up; three facts light, one at a time
+        const PAGE = { x: 230, y: 80, w: 1460, h: 660 };
+        const pageLines = [
+          "The magpie is back. It sits on the fence. It watches.",
+          "Here comes the postie. Down comes the magpie. Swoop!",
+          "The postie runs, and up it goes, and back to the fence.",
+          "It sits on the fence. It watches.",
+          "Here comes the dog. Down comes the magpie. Swoop!",
+          "The dog runs, and up it goes, and back to the fence.",
+          "It sits on the fence. It watches.",
+          "Here comes the postie. Here comes the dog. Down comes the magpie. Swoop!",
+          "The postie runs, and the dog runs, and up it goes, and back to the fence.",
+          "It is spring, and the magpie is back.",
+        ];
+        const page = K.el("div", { class: "paper", style: { width: `${PAGE.w}px`, height: `${PAGE.h}px`, padding: "44px 60px", fontFamily: "var(--font-tok)", fontSize: "38px", lineHeight: 1.5 } }, scene);
+        K.set(page, { x: PAGE.x, y: PAGE.y, opacity: 0 });
+        const lineEls = pageLines.map((t) => K.el("div", { class: "page-line", text: t }, page));
+        // a fact: a gold highlight behind a stretch of one line
+        const fact = (li, text) => {
+          const L = lineEls[li], full = L.textContent, i = full.indexOf(text);
+          L.textContent = "";
+          const a = K.el("span", { text: full.slice(0, i) }, L);
+          const hl = K.el("div", { class: "page-hl" }, L);
+          const m = K.el("span", { text }, L);
+          K.el("span", { text: full.slice(i + text.length) }, L);
+          K.set(hl, { x: m.offsetLeft - 6, y: 4, opacity: 0 });
+          hl.style.width = `${m.offsetWidth + 12}px`;
+          hl.style.height = `${L.offsetHeight - 8}px`;
+          hl.style.zIndex = "-1";
+          L.style.zIndex = "0";
+          L.style.isolation = "isolate";
+          return hl;
+        };
+        const facts = [
+          fact(4, "Down comes the magpie. Swoop!"),
+          fact(5, "The dog runs"),
+          fact(6, "It sits on the fence."),
+        ];
+        K.set(lineEls, { opacity: 0 });
+        const tOpen = w(1, "book's");
+        tl.to(grid.el, { opacity: 0, x: DESK.x - 60 }, T.start(1), { dur: 0.6, ease: "in-cubic" });
+        K.raise(tl, cover, T.start(1) + 0.1); // it opens over the page, and shuts over it
+        tl.to(cover, { x: PAGE.x, y: PAGE.y + (PAGE.h - COVER.h) / 2 }, T.start(1) + 0.1, { dur: 0.8, ease: "in-out-cubic" });
+        tl.to(cover, { scaleX: 0, transformOrigin: "0 50%" }, tOpen + 0.2, { dur: 0.45, ease: "in-quad" });
+        tl.set(cover, { opacity: 0 }, tOpen + 0.65);
+        tl.fromTo(page, { opacity: 0, scale: 0.97 }, { opacity: 1, scale: 1 }, tOpen + 0.2, { dur: 0.45, ease: "out-cubic" });
+        K.appear(tl, lineEls, tOpen + 0.55, { y: 18, stagger: 0.1 });
+        const factTimes = [w(1, "swoops"), w(1, "dog"), w(1, "fence")];
+        facts.forEach((hl, i) => tl.to(hl, { opacity: 0.35 }, factTimes[i] - 0.1, { dur: 0.3 }));
+
+        // ============================================================ line 2
+        // the book closes; the grid returns; the model writes, word by word,
+        // each word lighting its own row
+        const tClose = T.start(2);
+        tl.to(page, { opacity: 0, scale: 0.97 }, tClose, { dur: 0.4, ease: "in-quad" });
+        tl.set(cover, { opacity: 1 }, tClose + 0.25);
+        tl.to(cover, { scaleX: 1 }, tClose + 0.25, { dur: 0.45, ease: "out-quad" });
+        tl.to(cover, { opacity: 0, y: PAGE.y + (PAGE.h - COVER.h) / 2 + 20 }, tClose + 0.7, { dur: 0.4, ease: "in-cubic" });
+        tl.to(grid.el, { ...MID, opacity: 1 }, tClose + 0.9, { dur: 0.8, ease: "in-out-cubic" });
+        const WORDS = ["down", "comes", "the", "dog", ".", "swoop", "!"];
+        const STRIP = { x: 410, y: 670, w: 1100, h: 116 };
+        const strip = paperLine(scene, WORDS, { x: STRIP.x, y: STRIP.y, w: STRIP.w, h: STRIP.h, size: 62 });
+        K.set(strip.el, { opacity: 0 });
+        K.appear(tl, strip.el, w(2, "sentences") - 0.3, { y: 16 });
+        const tw = [w(2, "Down"), w(2, "comes"), w(2, "the", 2), w(2, "dog"), W.wordEnd(2, "dog") + 0.05, w(2, "Swoop"), W.wordEnd(2, "Swoop") + 0.05];
+        WORDS.forEach((word, i) => {
+          K.write(tl, strip.words[i], tw[i]);
+          const band = grid.rowBands[IDX(word)];
+          tl.to(band, { opacity: 1 }, tw[i], { dur: 0.2 });
+          tl.to(band, { opacity: 0 }, i + 1 < WORDS.length ? tw[i + 1] : T.end(2) + 0.3, { dur: 0.25 });
+        });
+
+        // ============================================================ line 3
+        // so the dog swoops: up a gold arc, on a card; the book's own line
+        // beside it; a stamp
+        const t3 = T.start(3);
+        tl.to(grid.el, { opacity: 0 }, t3 - 0.2, { dur: 0.5 });
+        const CARD = { x: 170, y: 150, w: 660, h: 440 };
+        const card = K.layer(scene, CARD.x, CARD.y);
+        const cs = K.svg("svg", { width: CARD.w, height: CARD.h, viewBox: `0 0 ${CARD.w} ${CARD.h}` }, card);
+        K.svg("rect", { x: 1, y: 1, width: CARD.w - 2, height: CARD.h - 2, class: "line" }, cs);
+        // the dog swoops up along a gold arc, tipped to its line (no fence)
+        const arc = K.prepDraw([K.svg("path", { d: "M60 400 Q120 250 250 215", class: "line gold" }, cs)]);
+        const DOGBOX = { w: 250, h: 170 };
+        const dog = K.outline(card, "dog", DOGBOX).el;
+        const dogAt = (cx, cy) => ({ x: cx - DOGBOX.w / 2, y: cy - DOGBOX.h / 2 });
+        K.set(dog, { ...dogAt(330, 200), rotation: -15, opacity: 0, transformOrigin: "50% 50%" });
+        const stamp = K.layer(scene, CARD.x + CARD.w - 190, CARD.y + 30);
+        {
+          const s = K.svg("svg", { width: 170, height: 170, viewBox: "0 0 170 170" }, stamp);
+          K.svg("path", { d: "M30 30 L140 140 M140 30 L30 140", stroke: STAMP, "stroke-width": 26, "stroke-linecap": "round", fill: "none" }, s);
+        }
+        K.set(stamp, { opacity: 0 });
+        K.set(card, { opacity: 0 });
+        K.appear(tl, card, t3 + 0.1, { y: 16 });
+        const tSwoop = w(3, "dog") - 0.15;
+        tl.to(strip.words[3], { color: "var(--gold)" }, tSwoop, { dur: 0.25 });
+        tl.fromTo(dog, { ...dogAt(90, 330), rotation: -32, opacity: 0 }, { ...dogAt(330, 200), rotation: -15, opacity: 1 }, tSwoop + 0.1, { dur: 0.7, ease: "out-cubic" });
+        K.drawOn(tl, arc, tSwoop + 0.1, 0.6);
+        const bookSays = bookLine(["Down", "comes", "the", "magpie", ".", "Swoop", "!"], { size: 60, cx: 1370, y: 330 });
+        K.appear(tl, bookSays, w(3, "book") - 0.1, { y: 14 });
+        tl.to([3, 5, 6].map((i) => bookSays.children[i]), { color: "var(--gold-2)" }, w(3, "said"), { dur: 0.35 });
+        tl.fromTo(stamp, { opacity: 0, scale: 1.6, rotation: -14, transformOrigin: "50% 50%" }, { opacity: 0.92, scale: 1, rotation: -6 }, w(3, "isn't") - 0.05, { dur: 0.3, ease: "out-quart" });
+
+        // ============================================================ line 4
+        // every pair has a source in the book; the whole sentence has none
+        const t4 = T.start(4) - 0.3;
+        tl.to([card, stamp, bookSays], { opacity: 0 }, t4, { dur: 0.4 });
+        tl.to(strip.words[3], { color: "var(--pencil)" }, t4, { dur: 0.3 });
+        tl.to(grid.el, { opacity: 1 }, t4 + 0.3, { dur: 0.5 });
+        const cx = strip.centres();
+        const brk = K.svg("svg", { width: 1920, height: 890, viewBox: "0 0 1920 890", style: "position: absolute; left: 0; top: 0; overflow: visible" }, K.layer(scene, 0, 0));
+        const BY = STRIP.y + STRIP.h + 12;
+        const bracket = (x0, x1, colour = "var(--gold-2)") => {
+          const p = K.svg("path", { d: `M${x0} ${BY} L${x0} ${BY + 16} L${x1} ${BY + 16} L${x1} ${BY}`, fill: "none", stroke: colour, "stroke-width": 5, "stroke-linejoin": "round", "stroke-linecap": "round", opacity: 0 }, brk);
+          return p;
+        };
+        const DOWN = ["Down", "comes", "the", "magpie", "."], DOG = ["Here", "comes", "the", "dog", "."], SWOOP = ["Down", "comes", "the", "magpie", ".", "Swoop", "!"];
+        const pairs = [
+          { src: bookLine(DOWN, { hl: [0, 1], y: 26 }), t: w(4, "Down") },
+          { src: bookLine(DOWN, { hl: [1, 2], y: 26 }), t: w(4, "comes") },
+          { src: bookLine(DOG, { hl: [2, 3], y: 26 }), t: w(4, "The") },
+          { src: bookLine(DOG, { hl: [3, 4], y: 26 }), t: w(4, "full") },
+          { src: bookLine(SWOOP, { hl: [4, 5], y: 26 }), t: w(4, "swoop") },
+          { src: bookLine(SWOOP, { hl: [5, 6], y: 26 }), t: w(4, "both") + 0.35 },
+        ];
+        pairs.forEach((P, i) => {
+          P.br = bracket(cx[i].x - 14, cx[i + 1].x + 14);
+          P.cell = cellLit(grid, IDX(WORDS[i]), IDX(WORDS[i + 1]));
+          const next = i + 1 < pairs.length ? pairs[i + 1].t : w(4, "Every");
+          tl.to([P.br, P.cell, P.src], { opacity: 1 }, P.t, { dur: 0.2 });
+          tl.to(P.src, { opacity: 0 }, next - 0.05, { dur: 0.2 });
+          if (i + 1 < pairs.length) tl.to([P.br, P.cell], { opacity: 0.35 }, next, { dur: 0.2 });
+        });
+        // every pair, all at once
+        const tEvery = w(4, "pair");
+        tl.to(pairs.flatMap((P) => [P.br, P.cell]), { opacity: 1 }, tEvery, { dur: 0.3 });
+        pulse(pairs.map((P) => P.br), tEvery, 1.08);
+        // the sentence: one bracket under it all, and no line in the book
+        const tWhole = w(4, "sentence");
+        const whole = bracket(cx[0].x - 30, cx[6].x + 30, STAMP);
+        whole.setAttribute("transform", "translate(0 26)");
+        const slot = K.el("div", { class: "slot", style: { width: "760px", height: "84px" } }, scene);
+        K.set(slot, { x: 960 - 380, y: 14, opacity: 0 });
+        tl.to(pairs.flatMap((P) => [P.br, P.cell]), { opacity: 0.3 }, tWhole - 0.2, { dur: 0.3 });
+        tl.to(whole, { opacity: 1 }, tWhole - 0.1, { dur: 0.25 });
+        K.appear(tl, slot, tWhole + 0.2, { y: 10 });
+
+        // ============================================================ line 5
+        // every sentence the model can write, ranked by its chance
+        const t5 = T.start(5);
+        tl.to([grid.el, slot, ...pairs.flatMap((P) => [P.br, P.cell])], { opacity: 0 }, t5 - 0.3, { dur: 0.5 });
+        tl.to([strip.el, whole], { opacity: 0 }, w(5, "Rank") - 0.5, { dur: 0.4 });
+        const TREE_BOX = { x0: 150, x1: 1770, y0: 36, y1: 856 };
+        const canvasBox = { x: 0, y: 0, w: S.W, h: S.H - S.captionH };
+        const treeL = K.layer(scene, 0, 0);
+        // the tree's growth is timed here (line 7), but its sentences rank now
+        const tGrow = [w(7, "Here's") - 0.1, w(7, "Seventy-nine") - 0.3];
+        const mk = (colour, dim) => sentenceTree(tl, treeL, { rows: MG.rows, book: BOOKS, box: TREE_BOX, grow: tGrow, colour, dim, canvasBox });
+        const TA = mk(undefined, { t: w(9, "Real"), dur: 0.9, to: 0.5 });
+        const TB = mk((n, { book }) => (book ? BOOK : WHITE));
+        const TC = mk((n, { book }) => (book ? BOOK : OTHER));
+        K.set([TA.el, TB.el, TC.el], { opacity: 0 });
+        const RANKED = TA.ends;
+        const pMax = RANKED[0].p;
+        const ROWS = 12, ROW_H = 58, BAR_W = 540;
+        const LIST = { x: 450, y: 70 };
+        const list = K.layer(scene, LIST.x, LIST.y);
+        const rows = RANKED.slice(0, ROWS).map((s, i) => {
+          const L = K.layer(list, 0, i * ROW_H);
+          const rank = K.el("div", { class: "rank", text: String(i + 1) }, L);
+          K.set(rank, { y: 4 });
+          const txt = tokenRow(L, s.words, "rank-text");
+          K.set(txt, { x: 70, y: 2 });
+          const bar = K.el("div", { class: "bar", style: { width: `${(BAR_W * s.p) / pMax}px` } }, L);
+          K.set(bar, { x: 540, y: 10, scaleX: 0 });
+          const gold = K.el("div", { class: "bar gold", style: { width: `${(BAR_W * s.p) / pMax}px` } }, L);
+          K.set(gold, { x: 540, y: 10, opacity: 0 });
+          K.set(L, { opacity: 0 });
+          return { L, rank, txt, bar, gold, s };
+        });
+        const rankOf = (sentence) => rows.findIndex((r) => r.s.words.join(" ") === sentence);
+        const rFence = rankOf("here comes the fence ."), rDog = rankOf("here comes the dog .");
+        const tRank = w(5, "Rank");
+        rows.forEach((r, i) => {
+          const t = tRank + 0.1 + i * 0.2;
+          tl.fromTo(r.L, { opacity: 0, y: i * ROW_H + 14 }, { opacity: 1, y: i * ROW_H }, t, { dur: 0.35, ease: "out-cubic" });
+          tl.to(r.bar, { scaleX: 1 }, t + 0.15, { dur: 0.5, ease: "out-cubic" });
+        });
+        // the list settles dim; each named sentence lights in turn
+        const tSettle = w(5, "likely") + 0.2;
+        tl.to(rows.map((r) => r.L), { opacity: 0.5 }, tSettle, { dur: 0.5 });
+        const lightRow = (i, t, off) => {
+          tl.to(rows[i].L, { opacity: 1 }, t, { dur: 0.25 });
+          if (off) tl.to(rows[i].L, { opacity: 0.5 }, off, { dur: 0.3 });
+        };
+        lightRow(0, w(5, "Swoop") - 0.1, w(5, "It") - 0.1);
+        lightRow(1, w(5, "It") - 0.1, w(5, "Here") - 0.1);
+        lightRow(rFence, w(5, "Here") - 0.1);
+        tl.to(rows[rFence].txt, { color: "var(--gold-2)" }, w(5, "fence"), { dur: 0.3 });
+        tl.to(rows[rFence].gold, { opacity: 1 }, w(5, "fence"), { dur: 0.3 });
+
+        // ============================================================ line 6
+        // third likeliest; three times "here comes the dog ."; because of the
+        // row for "the", and the row for "fence"
+        pulse(rows[rFence].rank, w(6, "third"), 1.35);
+        tl.to(rows[rFence].rank, { color: "var(--gold-2)" }, w(6, "third"), { dur: 0.25 });
+        const tDog = w(6, "Here") - 0.1;
+        lightRow(rDog, tDog);
+        // the dog's bar, laid along the fence's three times
+        const dogW = (BAR_W * rows[rDog].s.p) / pMax;
+        const ghosts = [0, 1, 2].map((k) => {
+          const g = K.el("div", { class: "ghost", style: { width: `${dogW}px` } }, list);
+          K.set(g, { x: 540, y: rDog * ROW_H + 6, opacity: 0 });
+          const t = tDog + 0.6 + k * 0.3;
+          tl.set(g, { opacity: 1 }, t);
+          tl.to(g, { x: 540 + k * dogW, y: rFence * ROW_H + 6 }, t, { dur: 0.55, ease: "in-out-cubic" });
+          return g;
+        });
+        tl.to(ghosts, { opacity: 0 }, w(6, "Why"), { dur: 0.4 });
+        // the grid's corner, cropped: the row for "the", then the row for "fence"
+        const tWhy = w(6, "Why") + 0.1;
+        tl.to(list, { x: 820 }, tWhy, { dur: 0.8, ease: "in-out-cubic" });
+        const crop = K.el("div", { class: "crop", style: { width: "730px", height: "600px" } }, scene);
+        K.set(crop, { x: 50, y: 110, opacity: 0 });
+        const g2 = magpieGrid(crop, bg, { x: 0, y: 0 });
+        K.set(g2.cells.flat().flatMap((c) => c.strokes), { strokeDashoffset: 0 });
+        K.set(g2.el, { scale: 0.72 });
+        K.appear(tl, crop, tWhy + 0.4, { y: 16 });
+        const theFence = cellLit(g2, IDX("the"), IDX("fence"));
+        const fenceDot = cellLit(g2, IDX("fence"), IDX("."));
+        tl.to(g2.rowBands[IDX("the")], { opacity: 1 }, w(6, "follows") - 0.1, { dur: 0.3 });
+        tl.to(theFence, { opacity: 1 }, w(6, "most"), { dur: 0.3 });
+        pulse(g2.cells[IDX("the")][IDX("fence")].g, w(6, "most") + 0.1, 1.3);
+        tl.to(g2.rowBands[IDX("the")], { opacity: 0 }, w(6, "full") - 0.3, { dur: 0.3 });
+        tl.to(g2.rowBands[IDX("fence")], { opacity: 1 }, w(6, "full") - 0.2, { dur: 0.3 });
+        tl.to(fenceDot, { opacity: 1 }, w(6, "always"), { dur: 0.3 });
+        pulse(g2.cells[IDX("fence")][IDX(".")].g, w(6, "always") + 0.1, 1.3);
+
+        // ============================================================ line 7
+        // the tree of all 79; the book's 7 turn one colour, the rest another
+        const t7 = T.start(7) - 0.9;
+        tl.to([list, crop], { opacity: 0 }, t7, { dur: 0.5 });
+        tl.set(TA.el, { opacity: 1 }, tGrow[0] - 0.05);
+        // word labels for the first three words, as the growth reaches them
+        // (likeliest first; a label that would touch one already placed is left out)
+        const labs = [], boxes = [];
+        const byP = TA.liveNodes.filter((n) => n.depth >= 1 && n.depth <= 3).sort((a, b) => b.p - a.p);
+        for (const n of byP) {
+          const punct = K.isPunct(n.word);
+          const e = K.el("div", { class: `tree-word${punct ? " punct" : ""}`, ...(punct ? {} : { text: n.word }) }, treeL);
+          if (punct) K.punctTile(e, n.word, { fill: "var(--desk)" });
+          const b = { x: n.x - e.offsetWidth / 2, y: n.y - e.offsetHeight / 2, w: e.offsetWidth, h: e.offsetHeight };
+          if (boxes.some((o) => b.x < o.x + o.w && o.x < b.x + b.w && b.y < o.y + o.h + 2 && o.y < b.y + b.h + 2)) {
+            e.remove();
+            continue;
+          }
+          boxes.push(b);
+          K.set(e, { x: b.x, y: b.y, opacity: 0 });
+          tl.to(e, { opacity: 1 }, TA.tAt(n.x - 8), { dur: 0.3 });
+          labs.push(e);
+        }
+        tl.to(labs, { opacity: 0.35 }, tGrow[1], { dur: 0.6 });
+        // a dot at every sentence's end
+        const dotsSvg = K.svg("svg", { width: S.W, height: S.H, viewBox: `0 0 ${S.W} ${S.H}`, style: "position: absolute; left: 0; top: 0; overflow: visible" }, treeL);
+        const byY = [...TA.ends].sort((a, b) => a.node.y - b.node.y);
+        const tDots = w(7, "Seventy-nine");
+        const dots = byY.map((s, i) => {
+          const d = K.svg("circle", { cx: s.node.x, cy: s.node.y, r: 5.5, style: "fill: #fff", opacity: 0 }, dotsSvg);
+          tl.fromTo(d, { opacity: 0, scale: 0.2, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1 }, tDots + i * (1.3 / byY.length), { dur: 0.25, ease: "out-back" });
+          return { d, s };
+        });
+        const tSeven = w(7, "Seven");
+        tl.to(TB.el, { opacity: 1 }, tSeven, { dur: 0.6 });
+        tl.to(dots.filter((o) => o.s.book).map((o) => o.d), { fill: css(BOOK), scale: 1.5 }, tSeven, { dur: 0.35 });
+        const tRest = w(7, "book") + 0.1;
+        tl.to(TC.el, { opacity: 1 }, tRest, { dur: 0.6 });
+        tl.to(dots.filter((o) => !o.s.book).map((o) => o.d), { fill: css(OTHER) }, tRest, { dur: 0.4 });
+
+        // ============================================================ line 8
+        // the likeliest sentences, named at their ends: the invented ones read
+        // as well as the book's
+        const picked = [];
+        for (const s of TA.ends) {
+          if (picked.length >= 6) break;
+          const clash = picked.some((o) => Math.abs(o.node.y - s.node.y) < 40 && Math.abs(o.node.x - s.node.x) < 420);
+          if (!clash) picked.push(s);
+        }
+        const tNames = w(8, "Nothing");
+        const endLabels = picked.map((s, i) => {
+          const e = tokenRow(treeL, s.words, "end-label");
+          K.set(e, { x: s.node.x + 14, y: s.node.y - e.offsetHeight / 2, opacity: 0 });
+          K.appear(tl, e, tNames + i * 0.3, { y: 8 });
+          return e;
+        });
+
+        // ============================================================ line 9
+        // (illustrative) the tree dims to a texture and multiplies outward in
+        // a pull-back; most of the mesh turns the book's colour, a scatter the
+        // other
+        const t9 = w(9, "Real");
+        tl.to([TB.el, TC.el, ...endLabels, ...labs, dotsSvg], { opacity: 0 }, t9, { dur: 0.8 });
+        const ZOOM = { t: w(9, "look"), dur: 4.2, to: 1 / 5, cx: (TREE_BOX.x0 + TREE_BOX.x1) / 2, cy: (TREE_BOX.y0 + TREE_BOX.y1) / 2 };
+        const M = mesh(tl, scene, {
+          nodes: TA.liveNodes,
+          box: TREE_BOX,
+          zoom: ZOOM,
+          tiles: { r: 3, pitch: 1.12 },
+          appear: { t: ZOOM.t + 1.0, dur: 0.8, ring: 0.5 },
+          centre: { in: [ZOOM.t + 0.3, 1.2] },
+          base: OTHER,
+          alpha: 0.6,
+          turn: [
+            { t: w(9, "usually", 2) - 0.1, spread: 0.8, colour: WHITE, share: 0.07, inherit: true },
+            { t: w(9, "usually") - 0.2, spread: 1.4, colour: GOLD, share: 0.93 },
+          ],
+          canvasBox,
+        });
+        K.set(M.el, { opacity: 0 });
+        tl.set(M.el, { opacity: 1 }, ZOOM.t);
+        tl.sample(treeL, ZOOM.t, ZOOM.dur, (p) => {
+          const z = Math.exp(Math.log(ZOOM.to) * p);
+          return { x: ZOOM.cx * (1 - z), y: ZOOM.cy * (1 - z), scale: z };
+        }, { ease: "in-out-cubic" });
+        tl.to(TA.el, { opacity: 0 }, ZOOM.t + 0.3, { dur: 1.2, ease: "in-out-quad" });
+
+        // ============================================================ line 10
+        // (TC) back at the desk: the grid, the book, and sentences you wrote
+        const t10 = T.start(10) - 0.9;
+        tl.to(M.el, { opacity: 0 }, t10, { dur: 0.6 });
+        tl.set(grid.el, { x: END.x, scale: END.scale }, t10);
+        tl.fromTo(grid.el, { opacity: 0, y: END.y + 14 }, { opacity: 1, y: END.y }, t10 + 0.5, { dur: 0.5, ease: "out-quart" });
+        const COVER_END = { x: 1150, y: 40 };
+        tl.set(cover, { x: COVER_END.x, scaleX: 1 }, t10);
+        tl.fromTo(cover, { opacity: 0, y: COVER_END.y + 14 }, { opacity: 1, y: COVER_END.y }, t10 + 0.7, { dur: 0.5, ease: "out-quart" });
+        const yours = [
+          ["down", "comes", "the", "dog", ".", "swoop", "!"],
+          ["it", "sits", "on", "the", "fence", "."],
+          ["here", "comes", "the", "magpie", "is", "back", "."],
+        ];
+        const tYours = w(10, "sentences") - 0.2;
+        const qs = [];
+        yours.forEach((ws, k) => {
+          const pl = paperLine(scene, ws, { x: 60, y: 540 + k * 108, w: 1000, h: 94, size: 50, padX: 30 });
+          K.set(pl.el, { opacity: 0 });
+          K.appear(tl, pl.el, tYours + k * 0.18, { y: 14 });
+          pl.words.forEach((s) => tl.set(s, { opacity: 1 }, tYours + k * 0.18));
+          const last = pl.words.at(-1);
+          const q = K.pencilLine(pl.paper.el, ["?"], { x: 30 + last.offsetLeft + last.offsetWidth + 34, y: (94 - 76) / 2, size: 76 });
+          K.write(tl, q.words[0], w(10, "Which") + k * 0.3);
+          qs.push(q);
+        });
+        const ring = K.ring(scene, { x: COVER_END.x - 14, y: COVER_END.y - 14, w: COVER.w + 28, h: COVER.h + 28 });
+        tl.fromTo(ring.el, { opacity: 0, scale: 1.06, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1 }, w(10, "how") - 0.1, { dur: 0.45, ease: "out-cubic" });
+      };
+      KIT.ready(build).then(({ tl }) => {
+        window.__timelines["making-things-up"] = tl;
+      });
+    </script>
+  </body>
+</html>

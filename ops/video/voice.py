@@ -14,7 +14,7 @@ the real voice-over is recorded.
     ops/video/voice.py scratch --all
 
 Parses the script's `## Script` section (ops/video/scripts/<slug>.md, or
-ops/video/beyond/scripts/<name>.md for a `beyond/<name>` slug) into spoken lines,
+ops/video/v1/scripts/<name>.md for a `v1/<name>` slug) into spoken lines,
 writes ops/video/<slug>/lines.json (committed --- align.py and the composition
 both read it), synthesises each line with edge-tts (cached by voice+text
 hash), and assembles them into out/video/<slug>/voice.wav (a `[beat]` inside a
@@ -42,16 +42,21 @@ ROOT = Path(__file__).resolve().parents[2]
 SCRIPTS_DIR = ROOT / "ops/video/scripts"
 CACHE_DIR = ROOT / "out/video/_tts-cache"
 
-# The eight slugs from ops/video/README.md's series table.
+# The slugs in ops/video/README.md's series table (v1/<slug> for the first
+# series, which --all leaves alone).
 SLUGS = [
     "overview",
     "training-grid",
     "generation-grid",
-    "pretrained-generation",
-    "agentic-ai",
-    "generation-ledger",
+    "pretrained-generation-grid",
+    "agentic-ai-grid",
     "training-ledger",
-    "one-story-all-together",
+    "generation-ledger",
+    "agentic-ai-ledger",
+    "generation-cutouts",
+    "same-algorithm",
+    "making-things-up",
+    "real-models",
 ]
 
 VOICE_FOR_SPEAKER = {
@@ -131,7 +136,7 @@ def parse_script(md_text: str, slug: str) -> list[dict]:
 
 
 def script_path(slug: str) -> Path:
-    """`beyond/<name>` lives in ops/video/beyond/scripts/<name>.md; a plain slug
+    """`v1/<name>` lives in ops/video/v1/scripts/<name>.md; a plain slug
     in ops/video/scripts/.
     """
     if "/" in slug:

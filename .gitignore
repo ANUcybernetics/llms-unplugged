@@ -41,7 +41,7 @@ website/src/templates/*.typ
 # video: the composition kit's rebuilt-from-data.js, and each composition's VO
 # take, render and scratch build output --- see ops/video/README.md
 ops/video/_kit/generated/
-ops/video/beyond/_parts/generated/
+ops/video/_parts/generated/
 ops/video/**/assets/voice.*
 ops/video/**/renders/
 ops/video/**/node_modules/

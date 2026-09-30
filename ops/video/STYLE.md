@@ -2,8 +2,9 @@
 
 The project half of the `styled-video` skill (in Ben's `ben` plugin): the skill
 carries the method and the craft, this file carries what's particular to LLMs
-Unplugged. `README.md` next to it is the series plan (the eight videos, tone,
-visual grammar, captions, formats) and wins on anything editorial.
+Unplugged. `README.md` next to it is the series plan (the videos, tone, visual
+grammar, captions, formats) and wins on anything editorial. `v1/` holds the
+first series, which shares this file and the kit.
 
 ## Where things live
 
@@ -16,7 +17,10 @@ visual grammar, captions, formats) and wins on anything editorial.
   the real read.
 - `<slug>/`: the HyperFrames project: `index.html` (the composition),
   `lines.json`, `timing.json` and `captions.vtt` (from `align.py`),
-  `assets/voice.wav` (not committed), and a `kit -> ../_kit` symlink.
+  `assets/voice.wav` (not committed), and `kit -> ../_kit` and
+  `parts -> ../_parts` symlinks.
+- `_parts/`: beats several videos share (the book at machine speed, the tree,
+  the morph) and the build scripts for their data (`README.md` there).
 - `_kit/`: the shared kit (`README.md` there is its contract): `kit.css` (the
   stage and the paper objects' look), `kit.js` (the objects), `fonts/`,
   `generated/` (gitignored; `build-data.py` writes it), and `motion ->`
@@ -27,6 +31,7 @@ visual grammar, captions, formats) and wins on anything editorial.
   `render-frames.mjs`, `overlay-template.html` (a page it renders, with the crop
   and placement helpers) and `title-card.html` (the deck's hero grammar as a
   still).
+- `v1/`: the first series (`v1/README.md`); its slugs are `v1/<slug>`.
 - `out/video/<slug>/`: renders, stills and staged inputs (gitignored). Finished
   renders, VO takes and footage go to the bucket under `video/<slug>/`, never
   git.

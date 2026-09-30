@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>LLMs Unplugged — Real models, beyond the slides</title>
+    <link rel="stylesheet" href="kit/kit.css" />
+    <script src="kit/generated/data.js"></script>
+    <script src="parts/generated/magpie.js"></script>
+    <script src="parts/generated/frankenstein.js"></script>
+    <script src="parts/generated/real-models.js"></script>
+    <script type="module" src="kit/kit.js"></script>
+    <style>
+      html, body { width: 1920px; height: 1080px; }
+      .rm-text { position: absolute; font-family: var(--font-tok); color: var(--ink); line-height: 1.45; }
+      .rm-text .w { display: inline-block; padding: 0 0.12em; margin: 0 0.04em; }
+      .rm-text .p { color: var(--ink-muted); }
+      .rm-card { position: absolute; background: var(--paper); box-shadow: 0 2px 0 var(--paper-edge), 0 10px 24px rgb(0 0 0 / 45%); }
+      .rm-model { position: absolute; background: var(--desk); }
+    </style>
+  </head>
+  <body>
+    <!-- Real models, beyond the slides: ops/video/scripts/real-models.md.
+         The loop the magpie grid runs, and what a real model changes around
+         it: size (the magpie's 576 boxes, then Frankenstein's 49 million
+         from its real counts, parts/frankenstein.js, then a real vocabulary's
+         ten billion), context (three real CLI samples on Frankenstein),
+         storage (the magpie's identical "dog" and "postie" rows), tokens (a
+         real tokeniser's split) and post-training. The samples, the page,
+         the split and the numbers come from parts/build-real-models.py
+         (window.REAL_MODELS), which checks them against the CLI and the
+         tokeniser. Every beat lands on a word of the voice track. -->
+    <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="real-models"
+         data-start="0" data-duration="134.59" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="134.59" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="127.59" data-track-index="1"></audio>
+    </div>
+    <script type="module">
+      import * as C from "./kit/motion/canvas.js";
+      import * as FR from "./parts/frankenstein.js";
+      import { paperLine } from "./parts/generation-walk.js";
+      import { liftedRow, gridStyle } from "./parts/generation-grid.js";
+
+      const build = (tl, S, T) => {
+        const K = KIT, MG = MAGPIE, RM = REAL_MODELS;
+        const scene = document.getElementById("scene");
+        const w = T.word;
+        gridStyle();
+        const GOLD = "#be830e", GOLD2 = "#e5a930";
+        const pulse = (els, t, s = 1.12) => {
+          tl.to(els, { scale: s, transformOrigin: "50% 50%" }, t, { dur: 0.2, ease: "out-quad" });
+          tl.to(els, { scale: 1 }, t + 0.2, { dur: 0.3, ease: "in-out-quad" });
+        };
+
+        // a gold outline drawn to a box's size (hidden; tween its opacity).
+        // The kit's ring resizes by scaling, which thickens its border, so a
+        // box that changes size gets a second outline instead.
+        const outline = (parent, b, { pad = 10, stroke = 5 } = {}) => {
+          const d = K.el("div", { style: { position: "absolute", left: 0, top: 0, width: `${b.w + 2 * pad}px`, height: `${b.h + 2 * pad}px`, border: `${stroke}px solid ${GOLD}`, boxShadow: "0 0 0 4px rgb(190 131 14 / 22%)" } }, parent);
+          K.set(d, { x: b.x - pad, y: b.y - pad, opacity: 0 });
+          return d;
+        };
+
+        // ---- the magpie grid: the kit's, drawn at 80 px a box and scaled; a
+        // state is the size of a box on stage and where box (0, 0) sits
+        const bg = K.bigrams(MG.words, MG.vocab);
+        const IDX = (word) => bg.idx.get(word);
+        const CELL = 80, HEAD = 160;
+        const grid = K.grid(scene, bg, { cell: CELL, head: HEAD });
+        grid.el.setAttribute("data-layout-allow-overflow", "true");
+        // column words run up the page (training-grid's rotateCols)
+        const hfs = Math.round(CELL * 0.42);
+        grid.colHead.forEach((t, c) => {
+          if (t.tagName !== "text") return;
+          const X = HEAD + c * CELL + CELL / 2 + hfs * 0.33, Y = HEAD - 16;
+          const wrap = K.svg("g", { transform: `rotate(-90 ${X} ${Y})` }, grid.svg);
+          t.before(wrap);
+          wrap.append(t);
+          t.setAttribute("x", X);
+          t.setAttribute("y", Y);
+          t.setAttribute("text-anchor", "start");
+        });
+        K.set(grid.cells.flat().flatMap((c) => c.strokes), { strokeDashoffset: 0 });
+        const gridAt = (c, ox, oy) => ({ x: ox - 2 * c, y: oy - 2 * c, scale: c / CELL });
+        const LOOP = gridAt(24, 148, 150), ALONE = gridAt(30, 600, 110), LEFT = gridAt(28, 200, 120);
+        K.set(grid.el, { ...LOOP, opacity: 0 });
+        // gold over a box: an outline (a chance) or a fill (lit, or drawn)
+        const cellMark = (r, c, fill) => {
+          const cl = grid.cells[r][c];
+          const m = K.svg("rect", fill
+            ? { x: cl.x + 4, y: cl.y + 4, width: CELL - 8, height: CELL - 8, fill: GOLD, "fill-opacity": 0.4 }
+            : { x: cl.x + 5, y: cl.y + 5, width: CELL - 10, height: CELL - 10, fill: "none", stroke: GOLD, "stroke-width": 8 }, grid.svg);
+          grid.dimmer.before(m);
+          K.set(m, { opacity: 0 });
+          return m;
+        };
+        const nonzero = grid.cells.flat().filter((c) => bg.counts[c.r][c.c]);
+        const litAll = nonzero.map((c) => cellMark(c.r, c.c, true));
+        // where a box lands on stage for a grid state
+        const boxOnStage = (st, r, c) => ({ x: st.x + (HEAD + c * CELL) * st.scale, y: st.y + (HEAD + r * CELL) * st.scale, w: CELL * st.scale, h: CELL * st.scale });
+
+        // ---- the model a real model is: a dark box too fine to draw, with
+        // the rare glint (the field of line 4, in miniature)
+        const MODEL = { x: 100, y: 102, w: 624, h: 624 }; // the grid's place in the loop
+        const modelL = K.layer(scene, MODEL.x, MODEL.y);
+        K.el("div", { class: "rm-model", style: { width: `${MODEL.w}px`, height: `${MODEL.h}px` } }, modelL);
+        const modelEdge = K.svg("rect", { x: 1, y: 1, width: MODEL.w - 2, height: MODEL.h - 2, class: "line" },
+          K.svg("svg", { width: MODEL.w, height: MODEL.h, viewBox: `0 0 ${MODEL.w} ${MODEL.h}`, style: "position: absolute; left: 0; top: 0; overflow: visible" }, modelL));
+        const glints = (seed, n, t0, t1) => {
+          const r = C.rng(seed);
+          return Array.from({ length: n }, () => ({ x: r(), y: r(), t: t0 + r() * (t1 - t0), life: 0.9 + r() * 0.9 }));
+        };
+        const drawGlint = (ctx, x, y, a, s = 1) => {
+          ctx.fillStyle = `rgb(229 169 48 / ${0.25 * a})`;
+          ctx.fillRect(x - 3 * s, y - 3 * s, 6 * s, 6 * s);
+          ctx.fillStyle = `rgb(255 236 190 / ${a})`;
+          ctx.fillRect(x - 1.2 * s, y - 1.2 * s, 2.4 * s, 2.4 * s);
+        };
+        // a glint's brightness at t: up quickly, down slowly
+        const glow = (g, t) => {
+          const u = (t - g.t) / g.life;
+          return u < 0 || u > 1 ? 0 : u < 0.2 ? u / 0.2 : 1 - (u - 0.2) / 0.8;
+        };
+        const modelGl = [...glints(11, 60, 21, 25), ...glints(12, 110, 108, 125)];
+        const modelCv = C.canvas(tl, modelL, (ctx, t) => {
+          for (const g of modelGl) {
+            const a = glow(g, t);
+            if (a > 0) drawGlint(ctx, 20 + g.x * (MODEL.w - 40), 20 + g.y * (MODEL.h - 40), a);
+          }
+        }, { w: MODEL.w, h: MODEL.h });
+        modelL.setAttribute("data-layout-allow-occlusion", "true");
+        K.set(modelL, { opacity: 0 });
+
+        // ---- the loop: five stations round an ellipse, arcs between them
+        const LP = { cx: 1330, cy: 300, rx: 330, ry: 170 };
+        const loopL = K.layer(scene, 0, 0);
+        const loopSvg = K.svg("svg", { width: 1920, height: 890, viewBox: "0 0 1920 890", style: "display: block; overflow: visible" }, loopL);
+        const LABELS = ["last word", "row", "chances", "draw", "write"];
+        const th = (i) => ((108 + i * 72) * Math.PI) / 180;
+        const at = (a) => ({ x: LP.cx + LP.rx * Math.cos(a), y: LP.cy + LP.ry * Math.sin(a) });
+        const GAP = 0.2;
+        const arcs = [], heads = [];
+        LABELS.forEach((_, i) => {
+          const a = th(i) + GAP, b = th(i + 1) - GAP - 0.04;
+          const p0 = at(a), p1 = at(b);
+          const path = K.svg("path", { d: `M ${p0.x} ${p0.y} A ${LP.rx} ${LP.ry} 0 0 1 ${p1.x} ${p1.y}`, fill: "none", stroke: GOLD2, "stroke-width": 7, "stroke-linecap": "round" }, loopSvg);
+          M_prep(path);
+          arcs.push(path);
+          // the arrowhead, along the ellipse's tangent at the arc's end
+          const tx = -LP.rx * Math.sin(b), ty = LP.ry * Math.cos(b), tn = Math.hypot(tx, ty);
+          const ux = tx / tn, uy = ty / tn, S2 = 20;
+          const tip = { x: p1.x + ux * 10, y: p1.y + uy * 10 };
+          const head = K.svg("polygon", { points: `${tip.x} ${tip.y} ${tip.x - ux * S2 - uy * S2 * 0.6} ${tip.y - uy * S2 + ux * S2 * 0.6} ${tip.x - ux * S2 + uy * S2 * 0.6} ${tip.y - uy * S2 - ux * S2 * 0.6}`, fill: GOLD2 }, loopSvg);
+          K.set(head, { opacity: 0 });
+          heads.push(head);
+        });
+        function M_prep(p) {
+          const L = p.getTotalLength() + 2;
+          p.style.strokeDasharray = `${L}`;
+          p.style.strokeDashoffset = `${L}`;
+          K.set(p, { opacity: 0 }); // a round cap shows even on a fully offset dash
+        }
+        const stations = LABELS.map((lab, i) => {
+          const p = at(th(i)), c = Math.cos(th(i)), s = Math.sin(th(i));
+          const dot = K.svg("circle", { cx: p.x, cy: p.y, r: 14, fill: GOLD2 }, loopSvg);
+          const text = K.svg("text", { x: p.x + c * 34, y: p.y + s * 34 + (s > 0.3 ? 30 : s < -0.3 ? -8 : 12), "text-anchor": c > 0.3 ? "start" : c < -0.3 ? "end" : "middle", "font-size": 34, class: "ui", fill: "#ffffff", text: lab }, loopSvg);
+          K.set([dot, text], { opacity: 0 });
+          return { dot, text };
+        });
+        // the loop draws on in one stroke, station by station
+        const drawLoop = (t, dur) => {
+          const step = dur / arcs.length;
+          arcs.forEach((a, i) => {
+            tl.to([stations[i].dot, stations[i].text], { opacity: 0.6 }, t + i * step, { dur: 0.2 });
+            tl.set(a, { opacity: 0.6 }, t + i * step + 0.05);
+            tl.to(a, { strokeDashoffset: 0 }, t + i * step + 0.05, { dur: step * 0.9, ease: "linear" });
+            tl.to(heads[i], { opacity: 0.6 }, t + (i + 1) * step - 0.05, { dur: 0.12 });
+          });
+        };
+        // a station and the arc out of it light, then settle
+        const station = (i, t, hold = 0.9) => {
+          const els = [stations[i].dot, stations[i].text, arcs[i], heads[i]];
+          tl.to(els, { opacity: 1 }, t, { dur: 0.15 });
+          tl.to(els, { opacity: 0.6 }, t + hold, { dur: 0.3 });
+          pulse(stations[i].dot, t, 1.5);
+        };
+        // one lap round the loop, stations lit in turn
+        const lap = (t, dur) => LABELS.forEach((_, i) => station(i, t + (i * dur) / 5, dur / 5 + 0.1));
+
+        // ---- the strip the loop writes on
+        const WALK = [".", "it", "sits", "on", "the", "dog", "."];
+        const STRIP = { x: 960, y: 610 };
+        const strip = paperLine(scene, WALK, { x: STRIP.x, y: STRIP.y, w: 860, h: 110, size: 56 });
+        K.set(strip.words.slice(0, 5), { opacity: 1 });
+        K.set(strip.el, { opacity: 0 });
+
+        // ================================================= line 0: the desk
+        // (not K.appear: it would tween the grid's scale back to 1)
+        tl.to(grid.el, { opacity: 1 }, 0.3, { dur: 0.5 });
+        K.appear(tl, strip.el, 0.9, { y: 20 });
+
+        // ================================================= line 1: the loop
+        drawLoop(w(1, "loop") - 0.1, 1.2);
+        // last word: "the"
+        const tIn = w(1, "Text");
+        station(0, tIn, 1.2);
+        tl.to(strip.words[4], { color: GOLD }, tIn, { dur: 0.25 });
+        // its row
+        const rThe = IDX("the"), rDog = IDX("dog");
+        station(1, w(1, "model") - 0.1, 1.0);
+        tl.to(grid.rowBands[rThe], { opacity: 1 }, w(1, "model"), { dur: 0.3 });
+        // every word that has followed it gets a chance
+        const theCols = MG.rows.the.map(([n]) => IDX(n));
+        const theRings = theCols.map((c) => cellMark(rThe, c, false));
+        station(2, w(1, "every") - 0.1, 1.2);
+        tl.to(theRings, { opacity: 1 }, w(1, "every"), { dur: 0.2, stagger: 0.12 });
+        // one is drawn: "dog"
+        const drawDog = cellMark(rThe, IDX("dog"), true);
+        station(3, w(1, "drawn") - 0.2, 1.0);
+        tl.to(drawDog, { opacity: 1 }, w(1, "drawn"), { dur: 0.2 });
+        tl.to(theRings.filter((_, i) => theCols[i] !== IDX("dog")), { opacity: 0 }, w(1, "drawn") + 0.1, { dur: 0.3 });
+        // written down
+        station(4, w(1, "written") - 0.2, 1.0);
+        K.write(tl, strip.words[5], w(1, "written"));
+        tl.to(strip.words[4], { color: "#3a3a3a" }, w(1, "written"), { dur: 0.3 });
+        tl.to([grid.rowBands[rThe], drawDog, ...theRings], { opacity: 0 }, w(1, "and", 1) + 0.1, { dur: 0.3 });
+        // round again, quicker: "dog", its row, a full stop
+        const tRound = w(1, "round");
+        lap(tRound, 1.6);
+        tl.to(strip.words[5], { color: GOLD }, tRound, { dur: 0.2 });
+        tl.to(grid.rowBands[rDog], { opacity: 1 }, tRound + 0.32, { dur: 0.2 });
+        const dogCols = MG.rows.dog.map(([n]) => IDX(n));
+        const dogRings = dogCols.map((c) => cellMark(rDog, c, false));
+        tl.to(dogRings, { opacity: 1 }, tRound + 0.64, { dur: 0.15 });
+        const drawStop = cellMark(rDog, IDX("."), true);
+        tl.to(drawStop, { opacity: 1 }, tRound + 0.96, { dur: 0.15 });
+        K.write(tl, strip.words[6], tRound + 1.28);
+        tl.to(strip.words[5], { color: "#3a3a3a" }, tRound + 1.28, { dur: 0.3 });
+        tl.to([grid.rowBands[rDog], drawStop, ...dogRings], { opacity: 0 }, tRound + 1.9, { dur: 0.3 });
+        // your grid does that; so does Claude: the model becomes a box too
+        // fine to draw, the loop goes round again
+        const gridRing = outline(scene, MODEL, { pad: 12 });
+        tl.to(gridRing, { opacity: 1 }, w(1, "Your") + 0.1, { dur: 0.25 });
+        tl.to(gridRing, { opacity: 0 }, w(1, "So") - 0.2, { dur: 0.3 });
+        const tClaude = w(1, "So");
+        tl.to(grid.el, { opacity: 0.12 }, tClaude, { dur: 0.5 });
+        K.appear(tl, modelL, tClaude, { y: 0, scale: 0.96, dur: 0.6 });
+        lap(tClaude + 0.4, 1.6);
+
+        // ================================================= line 2: the magpie grid alone
+        const t2 = T.start(2) + 0.1;
+        K.vanish(tl, [loopL, strip.el, modelL], t2, { dur: 0.4 });
+        tl.to(grid.el, { ...ALONE, opacity: 1 }, t2 + 0.2, { dur: 0.9, ease: "in-out-cubic" });
+        tl.to(litAll, { opacity: 1 }, w(2, "magpie"), { dur: 0.25, stagger: 0.018 });
+
+        // ================================================= lines 3 and 4: powers of ten
+        // box size on stage, logarithmic: the magpie's 30 px, Frankenstein's
+        // whole table in 720 px, then a hundred-thousand-word table in 720 px
+        const FM = FR.model();
+        const O = { x: 600, y: 110 }, SIDE = 720, VOCAB = 100000;
+        const c0 = 30, c1 = SIDE / FM.n, c2 = SIDE / VOCAB;
+        const tZ1 = w(3, "has"), dZ1 = w(3, "boxes") - tZ1;
+        const tZ2 = w(4, "hundred") - 0.1, dZ2 = w(4, "words", 2) - tZ2;
+        const logC = (a, b, p) => Math.exp(K.lerp(Math.log(a), Math.log(b), p));
+        const cellAt = (t) => t < tZ2
+          ? logC(c0, c1, C.phase(t, tZ1, dZ1, "in-out-cubic"))
+          : logC(c1, c2, C.phase(t, tZ2, dZ2, "in-out-cubic"));
+        // the paper grid shrinks with the table, pinned at its corner
+        const zoomGrid = (a, b, t0, d) => tl.sample(grid.el, t0, d, (p) => gridAt(logC(a, b, p), O.x, O.y), { ease: "in-out-cubic" });
+        zoomGrid(c0, c1, tZ1, dZ1);
+        zoomGrid(c1, c2, tZ2, dZ2);
+        const tFrank = w(3, "Frankenstein") - 0.2, tFieldOff = T.start(5) - 0.5;
+        const bigGl = glints(21, 140, tZ2 + dZ2 * 0.6, tFieldOff);
+        const frame = (ctx, x, y, side, a, colour = "255 255 255") => {
+          ctx.strokeStyle = `rgb(${colour} / ${a})`;
+          ctx.lineWidth = 1.5;
+          ctx.strokeRect(x - 0.75, y - 0.75, side + 1.5, side + 1.5);
+        };
+        const tBillion = w(4, "ten");
+        const field = C.canvas(tl, scene, (ctx, t) => {
+          if (t < tFrank || t > tFieldOff + 0.6) return;
+          const cell = cellAt(t);
+          // a real vocabulary's table: its ground and the rare glint
+          const big = C.phase(t, tZ2, 0.6);
+          if (big > 0) {
+            const ext = VOCAB * cell;
+            ctx.fillStyle = `rgb(255 255 255 / ${0.035 * big})`;
+            ctx.fillRect(O.x, O.y, ext, ext);
+            const hl = C.phase(t, tBillion, 0.3) * (1 - C.phase(t, tBillion + 1.6, 0.6));
+            frame(ctx, O.x, O.y, ext, 0.22 * big * (1 - hl) , "255 255 255");
+            if (hl > 0) frame(ctx, O.x, O.y, ext, hl, "229 169 48");
+            for (const g of bigGl) {
+              const a = glow(g, t);
+              if (a > 0) drawGlint(ctx, O.x + g.x * SIDE, O.y + g.y * SIDE, a);
+            }
+          }
+          FR.drawGrid(ctx, FM, { x: O.x, y: O.y, cell, size: FM.n, headers: false, alpha: C.phase(t, tFrank, 0.6), clip: { x: 0, y: 0, w: S.W, h: S.H - S.captionH } });
+          // Frankenstein's extent, once it's on screen
+          const ext = FM.n * cell;
+          if (ext < 1900) frame(ctx, O.x, O.y, ext, 0.3 * C.phase(t, tFrank, 0.6));
+        }, { x: 0, y: 0, w: S.W, h: S.H - S.captionH });
+        field.el.setAttribute("data-layout-allow-occlusion", "true");
+        K.set(field.el, { opacity: 0 });
+        tl.set(field.el, { opacity: 1 }, tFrank);
+        tl.to(field.el, { opacity: 0 }, tFieldOff, { dur: 0.5 });
+        // the paper grid sits on the table
+        scene.append(grid.el);
+        tl.to(grid.el, { opacity: 0 }, tFieldOff, { dur: 0.5 });
+        tl.set(litAll, { opacity: 0 }, tFieldOff + 0.6);
+
+        // ================================================= line 5: one word back, or all of it
+        const t5 = T.start(5);
+        const STRIP5 = { x: 960 - 860 * 0.75, y: 300, scale: 1.5 };
+        tl.set(strip.el, STRIP5, t5 - 0.3);
+        tl.to(strip.el, { opacity: 1 }, t5 - 0.2, { dur: 0.5 });
+        const last = strip.words[6], rest = strip.words.slice(0, 6);
+        // the outlines sit on the strip, in its (scaled) coordinates
+        const wordBox = (s) => ({ x: 36 + s.offsetLeft, y: (110 - 56) / 2 + s.offsetTop, w: s.offsetWidth, h: s.offsetHeight });
+        const lastBox = wordBox(last);
+        const lastRing = outline(strip.el, lastBox, { pad: 8, stroke: 4 });
+        const tLast = w(5, "last");
+        tl.to(rest, { opacity: 0.25 }, tLast, { dur: 0.4 });
+        tl.to(last, { color: GOLD }, tLast, { dur: 0.3 });
+        tl.to(lastRing, { opacity: 1 }, tLast, { dur: 0.3 });
+        // the whole conversation
+        const tWhole = w(5, "whole");
+        const allBox = { x: 16, y: lastBox.y, w: 860 - 32, h: lastBox.h };
+        const allRing = outline(strip.el, allBox, { pad: 8, stroke: 4 });
+        tl.to(lastRing, { opacity: 0 }, tWhole - 0.1, { dur: 0.3 });
+        tl.to(allRing, { opacity: 1 }, tWhole, { dur: 0.4 });
+        [...strip.words].reverse().forEach((s, k) => tl.to(s, { opacity: 1, color: GOLD }, tWhole + k * 0.06, { dur: 0.3 }));
+
+        // ================================================= line 6: Frankenstein, looking back 1, 2, 5 words
+        const t6 = T.start(6);
+        K.vanish(tl, [strip.el, allRing], t6 - 0.3, { dur: 0.4, y: -20 });
+        // a page of the book: the start of chapter 5
+        const PG = { x: 1250, y: 60, w: 610, h: 770 };
+        const pageL = K.layer(scene, PG.x, PG.y);
+        const pageD = K.el("div", { class: "rm-card rm-text", style: { width: `${PG.w}px`, height: `${PG.h}px`, padding: "46px 44px", fontSize: "30px" } }, pageL);
+        K.el("div", { text: "Chapter 5", style: { fontSize: "34px", fontWeight: 600, marginBottom: "18px" } }, pageD);
+        const para = K.el("div", {}, pageD);
+        const pageWords = RM.page.map((p) => {
+          const s = K.el("span", { class: "w", text: p.w }, para);
+          para.append(" ");
+          return { ...p, el: s };
+        });
+        K.set(pageL, { opacity: 0 });
+        tl.fromTo(pageL, { x: PG.x + 200, opacity: 0 }, { x: PG.x, opacity: 1 }, w(6, "Here's") + 0.2, { dur: 0.7, ease: "out-cubic" });
+        const HL = "rgb(229 169 48 / 45%)", HL0 = "rgb(229 169 48 / 0%)";
+        K.set(pageWords.map((p) => p.el), { backgroundColor: HL0 });
+        // the prompt, lit on the page
+        const tPrompt = w(6, "Frankenstein");
+        tl.to(pageWords.filter((p) => p.k >= 0 && p.k < 5).map((p) => p.el), { backgroundColor: HL }, tPrompt, { dur: 0.3, stagger: 0.06 });
+        // three strips, one per sample
+        const SW = 1130, SH = 170;
+        const strips = RM.samples.map((smp, k) => {
+          const L = K.layer(scene, 60, 90 + k * 235);
+          const d = K.el("div", { class: "rm-card rm-text", style: { width: `${SW}px`, height: `${SH}px`, padding: "24px 30px", fontSize: "33px" } }, L);
+          const mk = (tok, cls) => {
+            const s = K.el("span", { class: `w ${cls}`, text: K.isPunct(tok) ? "" : tok }, d);
+            if (K.isPunct(tok)) {
+              s.style.verticalAlign = "-0.12em";
+              K.punctTile(s, tok);
+              s.firstChild.style.width = "0.85em";
+              s.firstChild.style.height = "0.85em";
+            }
+            d.append(" ");
+            return s;
+          };
+          const prompt = smp.prompt.map((tok) => mk(tok, "p"));
+          const text = smp.text.map((tok) => mk(tok, ""));
+          K.set(text, { opacity: 0 });
+          K.set(L, { opacity: 0 });
+          // the context: a gold rule under the last `context` words of the prompt
+          const ctxW = prompt.slice(-smp.context);
+          const x0 = ctxW[0].offsetLeft, x1 = ctxW.at(-1).offsetLeft + ctxW.at(-1).offsetWidth;
+          const rule = K.el("div", { class: "rule", style: { width: `${x1 - x0}px` } }, L);
+          K.set(rule, { x: x0, y: ctxW[0].offsetTop + ctxW[0].offsetHeight + 1, scaleX: 0 });
+          return { L, prompt, text, rule, smp };
+        });
+        K.appear(tl, strips.map((s) => s.L), tPrompt + 0.2, { y: 16, stagger: 0.12 });
+        const wrote = [w(6, "one"), w(6, "two"), w(6, "five")];
+        strips.forEach((s, k) => {
+          const t = wrote[k];
+          tl.to(s.rule, { scaleX: 1 }, t - 0.1, { dur: 0.35, ease: "out-cubic" });
+          const t0 = t + 0.25, dt = 0.1;
+          s.text.forEach((e, i) => tl.fromTo(e, { opacity: 0, y: 6 }, { opacity: 1, y: 0 }, t0 + i * dt, { dur: 0.2, ease: "out-cubic" }));
+          // the five-word strip copies the book: its words and the page's light together
+          if (k === 2) {
+            K.set([...s.prompt, ...s.text], { backgroundColor: HL0 });
+            tl.to(s.prompt, { backgroundColor: HL }, t, { dur: 0.3 });
+            s.text.forEach((e, i) => {
+              const tw = t0 + i * dt + 0.1;
+              tl.to(e, { backgroundColor: HL }, tw, { dur: 0.2 });
+              const pw = pageWords.find((p) => p.k === i + 5);
+              if (pw) tl.to(pw.el, { backgroundColor: HL }, tw, { dur: 0.2 });
+            });
+          }
+        });
+
+        // ================================================= line 7: dog and postie
+        const t7off = w(7, "Look") - 0.5;
+        K.vanish(tl, [...strips.map((s) => s.L), pageL], t7off, { dur: 0.4, stagger: 0.05 });
+        tl.set(grid.el, LEFT, t7off);
+        tl.to(grid.el, { opacity: 1 }, w(7, "Look"), { dur: 0.5 });
+        const rPostie = IDX("postie");
+        const rows = { dog: rDog, postie: rPostie };
+        const opts = (word) => MG.rows[word].map(([n, count]) => ({ word: n, count }));
+        const RX = 1040, RY = { dog: 110, postie: 500 }, RY2 = { dog: 220, postie: 400 };
+        const lifted = {};
+        ["dog", "postie"].forEach((word) => {
+          const lr = liftedRow(scene, word, opts(word), { x: RX, y: RY[word], headW: 230, boxW: 250, boxH: 170, size: 52 });
+          K.set(lr.all.map((b) => b.el), { opacity: 0 });
+          lr.all.forEach((b) => b.el.setAttribute("data-layout-allow-overlap", "true")); // they fly out over the grid
+          lifted[word] = lr;
+          const t = w(7, word);
+          tl.to(grid.rowBands[rows[word]], { opacity: 1 }, t, { dur: 0.3 });
+          // each box flies out of its cell on the grid
+          const cols = [null, ...MG.rows[word].map(([n]) => IDX(n))];
+          lr.all.forEach((b, i) => {
+            const src = cols[i] === null
+              ? { x: LEFT.x, y: LEFT.y + (HEAD + rows[word] * CELL) * LEFT.scale, w: HEAD * LEFT.scale, h: CELL * LEFT.scale }
+              : boxOnStage(LEFT, rows[word], cols[i]);
+            const sc = src.w / b.w;
+            const from = { x: src.x, y: src.y + (src.h - b.h * sc) / 2, scale: sc };
+            tl.fromTo(b.el, { ...from, opacity: 0 }, { opacity: 1 }, t + 0.1 + i * 0.06, { dur: 0.2 });
+            K.raise(tl, b.el, t + 0.1 + i * 0.06);
+            tl.fromTo(b.el, from, { x: b.x, y: b.y, scale: 1 }, t + 0.1 + i * 0.06, { dur: 0.7, ease: "in-out-cubic" });
+          });
+        });
+        // the rows slide together: box for box, the same
+        const tSame = w(7, "exactly");
+        ["dog", "postie"].forEach((word) => tl.to(lifted[word].all.map((b) => b.el), { y: RY2[word] }, tSame - 0.2, { dur: 0.6, ease: "in-out-cubic" }));
+        const litBoxes = ["dog", "postie"].flatMap((word) => lifted[word].boxes.map((b) => b.lit));
+        tl.to(litBoxes, { opacity: 1 }, w(7, "same"), { dur: 0.25 });
+        tl.to(litBoxes, { opacity: 0 }, w(7, "same") + 1.1, { dur: 0.4 });
+        // a thread joins the two words
+        const thread = K.svg("svg", { width: 1920, height: 890, viewBox: "0 0 1920 890", style: "position: absolute; left: 0; top: 0; overflow: visible" }, K.layer(scene, 0, 0));
+        const hy = (word) => RY2[word] + 85;
+        const threadPath = K.svg("path", { d: `M ${RX - 8} ${hy("dog")} C ${RX - 110} ${hy("dog") + 10}, ${RX - 110} ${hy("postie") - 10}, ${RX - 8} ${hy("postie")}`, fill: "none", stroke: GOLD2, "stroke-width": 4, "stroke-dasharray": "3 10", "stroke-linecap": "round" }, thread);
+        K.set(threadPath, { opacity: 0 });
+        tl.fromTo(threadPath, { opacity: 0 }, { opacity: 0.85 }, w(7, "notices"), { dur: 0.5 });
+        // what it saw the dog do, it guesses for the postie
+        tl.to(lifted.dog.boxes.map((b) => b.lit), { opacity: 1 }, w(7, "saw"), { dur: 0.2 });
+        tl.to(lifted.postie.boxes.map((b) => b.lit), { opacity: 1 }, w(7, "saw") + 0.35, { dur: 0.2 });
+        tl.to(lifted.postie.head.lit, { opacity: 1 }, w(7, "postie", 2), { dur: 0.25 });
+
+        // ================================================= line 8: tokens
+        const t8 = T.start(8) - 0.3;
+        K.vanish(tl, [grid.el, thread.parentNode, ...lifted.dog.all.map((b) => b.el), ...lifted.postie.all.map((b) => b.el)], t8, { dur: 0.4 });
+        tl.to([grid.rowBands[rDog], grid.rowBands[rPostie]], { opacity: 0 }, t8 + 0.4, { dur: 0.1 });
+        // the phrase on a paper strip, each piece its own span, laid out by hand
+        const TK = RM.tokens.split, FS = 84, font = `${FS}px "Libertinus Serif"`;
+        const space = K.measure(" ", font) * 1.6, SEAM = 30, PADT = 22;
+        const pieceW = TK.map((ws) => ws.map((p) => K.measure(p, font)));
+        const wordW = pieceW.map((ps) => ps.reduce((a, b) => a + b, 0));
+        const splitW = TK.reduce((s, ws, i) => s + wordW[i] + (ws.length - 1) * SEAM, 0) + space * (TK.length - 1);
+        const TKY = 330, TKH = 150, tkL = K.layer(scene, 0, TKY);
+        const tkPaper = K.el("div", { class: "paper", style: { width: `${splitW + 260}px`, height: `${TKH}px` } }, tkL);
+        K.set(tkPaper, { x: 960 - (splitW + 260) / 2 });
+        const wholeW = wordW.reduce((a, b) => a + b, 0) + space * (TK.length - 1);
+        let xw = 960 - wholeW / 2, xs = 960 - splitW / 2;
+        const pieces = [];
+        TK.forEach((ws, i) => {
+          let pw = xw, ps = xs;
+          ws.forEach((p, j) => {
+            const s = K.el("div", { class: "rm-text", text: p, style: { fontSize: `${FS}px`, lineHeight: 1 } }, tkL);
+            K.set(s, { x: pw, y: (TKH - FS) / 2 - 6 });
+            pieces.push({ el: s, word: i, j, whole: pw, split: ps, w: pieceW[i][j] });
+            pw += pieceW[i][j];
+            ps += pieceW[i][j] + SEAM;
+          });
+          xw += wordW[i] + space;
+          xs += wordW[i] + (ws.length - 1) * SEAM + space;
+        });
+        K.set(tkL, { opacity: 0 });
+        K.appear(tl, tkL, T.start(8), { y: 20 });
+        const wordRect = (i, key) => {
+          const ps = pieces.filter((p) => p.word === i);
+          return { x: ps[0][key] - 8, y: 20, w: ps.at(-1)[key] + ps.at(-1).w - ps[0][key] + 16, h: TKH - 40 };
+        };
+        const wholeWords = TK.map((ws, i) => (ws.length === 1 ? i : -1)).filter((i) => i >= 0);
+        const splitWords = TK.map((ws, i) => (ws.length > 1 ? i : -1)).filter((i) => i >= 0);
+        // tokens: an outline round each word, as it stands
+        const tTok = w(8, "tokens");
+        const wordRings = TK.map((_, i) => outline(tkL, wordRect(i, "whole"), { pad: 0, stroke: 4 }));
+        wordRings.forEach((r, i) => tl.to(r, { opacity: 1 }, tTok + i * 0.12, { dur: 0.25 }));
+        // common words whole
+        pulse(wholeWords.map((i) => wordRings[i]), w(8, "common"), 1.06);
+        // rarer ones in pieces: every piece slides to its place; a whole
+        // word's outline goes with it, a split word's parts at the seams
+        const tSplit = w(8, "rarer");
+        pieces.forEach((p) => tl.to(p.el, { x: p.split }, tSplit, { dur: 0.6, ease: "in-out-cubic" }));
+        wholeWords.forEach((i) => tl.to(wordRings[i], { x: wordRect(i, "split").x }, tSplit, { dur: 0.6, ease: "in-out-cubic" }));
+        splitWords.forEach((i) => tl.to(wordRings[i], { opacity: 0 }, tSplit, { dur: 0.25 }));
+        pieces.filter((p) => splitWords.includes(p.word)).forEach((p) => {
+          const r = outline(tkL, { x: p.split - 6, y: 20, w: p.w + 12, h: TKH - 40 }, { pad: 0, stroke: 4 });
+          tl.to(r, { opacity: 1 }, tSplit + 0.45, { dur: 0.3 });
+        });
+        tl.to(pieces.filter((p) => splitWords.includes(p.word)).map((p) => p.el), { color: GOLD }, w(8, "pieces"), { dur: 0.3 });
+
+        // ================================================= line 9: a second round of training
+        const t9 = T.start(9) - 0.3;
+        K.vanish(tl, tkL, t9, { dur: 0.4, y: -20 });
+        // the question, on a strip; a model fresh from reading carries it on
+        const Q = ["what", "do", "magpies", "eat", "?"];
+        const RAW = ["what", "do", "possums", "eat", "?", "what", "do"];
+        const ANS = ["mostly", "insects", "and", "worms"];
+        const words = (parent, toks, { size = 60, cls = "" } = {}) => {
+          const d = K.el("div", { class: "rm-text", style: { fontSize: `${size}px`, whiteSpace: "nowrap" } }, parent);
+          return toks.map((tok) => {
+            const s = K.el("span", { class: `w ${cls}`, text: K.isPunct(tok) ? "" : tok }, d);
+            if (K.isPunct(tok)) {
+              s.style.verticalAlign = "-0.12em";
+              K.punctTile(s, tok);
+              s.firstChild.style.width = "0.85em";
+              s.firstChild.style.height = "0.85em";
+            }
+            d.append(" ");
+            return s;
+          });
+        };
+        const QB = { x: 160, y: 110, w: 1600, h: 130 };
+        const qL = K.layer(scene, QB.x, QB.y);
+        K.el("div", { class: "paper", style: { width: `${QB.w}px`, height: `${QB.h}px` } }, qL);
+        const qRow = K.el("div", { style: { position: "absolute", left: "36px", top: "26px" } }, qL);
+        const qW = words(qRow, Q);
+        const rawW = words(qRow, RAW, { cls: "p" });
+        const ansW = words(qRow, ANS);
+        // the raw continuation and the answer both follow the question
+        const qEnd = qW.at(-1).offsetLeft + qW.at(-1).offsetWidth;
+        [rawW, ansW].forEach((ws) => K.set(ws[0].parentNode, { x: qEnd + 18 }));
+        K.set([...rawW, ...ansW], { opacity: 0 });
+        K.set(qL, { opacity: 0 });
+        K.appear(tl, qL, T.start(9), { y: 20 });
+        const tRaw = w(9, "reading") - 0.1;
+        rawW.forEach((e, i) => tl.fromTo(e, { opacity: 0, y: 6 }, { opacity: 1, y: 0 }, tRaw + i * 0.14, { dur: 0.2 }));
+        // it wipes away
+        tl.to(rawW, { opacity: 0, y: -10 }, w(9, "second") - 0.1, { dur: 0.3, stagger: 0.03, ease: "in-cubic" });
+        // two candidate replies; people rate them
+        const thumb = (parent, up, x, y) => {
+          const ic = K.icon(parent, up ? "thumbs-up" : "thumbs-down", { x, y, size: 72, gold: up });
+          K.set(ic.el, { opacity: 0, transformOrigin: "50% 50%" });
+          return ic.el;
+        };
+        const card = (toks, y, cls) => {
+          const L = K.layer(scene, 360, y);
+          const wd = K.el("div", { class: "paper", style: { width: "1060px", height: "120px" } }, L);
+          const row = K.el("div", { style: { position: "absolute", left: "34px", top: "26px" } }, L);
+          const ws = words(row, toks, { size: 54, cls });
+          K.set(L, { opacity: 0 });
+          return { L, ws, card: wd };
+        };
+        const cA = card(RAW, 380, "p"), cB = card(ANS, 560, "");
+        const thDown = thumb(scene, false, 1460, 404), thUp = thumb(scene, true, 1460, 584);
+        const tCards = w(9, "people") - 0.3;
+        K.appear(tl, [cA.L, cB.L], tCards, { y: 16, stagger: 0.15 });
+        const tRate = w(9, "rating");
+        tl.fromTo(thDown, { opacity: 0, scale: 0.4, rotation: -20 }, { opacity: 1, scale: 1, rotation: 0 }, tRate, { dur: 0.35, ease: "out-back" });
+        tl.fromTo(thUp, { opacity: 0, scale: 0.4, rotation: 20 }, { opacity: 1, scale: 1, rotation: 0 }, tRate + 0.3, { dur: 0.35, ease: "out-back" });
+        tl.to(cA.L, { opacity: 0.35 }, w(9, "replies"), { dur: 0.4 });
+        // the preferred reply writes on after the question
+        const tAns = w(9, "answer") - 0.1;
+        ansW.forEach((e, i) => tl.fromTo(e, { opacity: 0, y: 6 }, { opacity: 1, y: 0 }, tAns + i * 0.18, { dur: 0.25 }));
+        pulse(cB.L, tAns - 0.2, 1.03);
+        K.vanish(tl, [cA.L, thDown], w(9, "carrying"), { dur: 0.4, y: 20 });
+
+        // ================================================= line 10: none of it changes the loop
+        const t10 = T.start(10) - 0.2;
+        K.vanish(tl, [qL, cB.L, thUp], t10, { dur: 0.4, y: -20 });
+        // four small cards, one per difference, fly into the model
+        const CW = 390, CH = 230, CY = 280;
+        const mini = (i) => {
+          const L = K.layer(scene, 90 + i * (CW + 56), CY);
+          K.el("div", { class: "rm-card", style: { width: `${CW}px`, height: `${CH}px` } }, L);
+          K.set(L, { opacity: 0 });
+          return L;
+        };
+        const minis = [0, 1, 2, 3].map(mini);
+        // 1. context: the five-word strip's start, the context ruled
+        {
+          const d = K.el("div", { class: "rm-text", style: { left: "26px", top: "36px", width: `${CW - 52}px`, fontSize: "34px" } }, minis[0]);
+          const sp = RM.samples[2].prompt.map((tok) => { const e = K.el("span", { class: "w", text: tok }, d); d.append(" "); return e; });
+          ["that", "I", "beheld", "…"].forEach((tok) => { K.el("span", { class: "w", text: tok }, d); d.append(" "); });
+          // one rule per line the prompt runs over
+          const lines = new Map();
+          sp.forEach((e) => lines.set(e.offsetTop, [...(lines.get(e.offsetTop) || []), e]));
+          for (const es of lines.values()) {
+            const x0 = es[0].offsetLeft, x1 = es.at(-1).offsetLeft + es.at(-1).offsetWidth;
+            const r = K.el("div", { class: "rule", style: { width: `${x1 - x0}px` } }, minis[0]);
+            K.set(r, { x: 26 + x0, y: 36 + es[0].offsetTop + es[0].offsetHeight + 1 });
+          }
+        }
+        // 2. storage: the two rows, the same
+        {
+          const s = K.svg("svg", { width: CW, height: CH, viewBox: `0 0 ${CW} ${CH}`, style: "position: absolute; left: 0; top: 0" }, minis[1]);
+          ["dog", "postie"].forEach((word, k) => {
+            const y = 70 + k * 90;
+            K.svg("text", { x: 120, y, "text-anchor": "end", "dominant-baseline": "central", "font-size": 34, "font-weight": 700, text: word }, s);
+            MG.rows[word].forEach(([n, count], j) => {
+              const x = 150 + j * 110;
+              K.svg("rect", { x, y: y - 32, width: 96, height: 64, fill: "rgb(190 131 14 / 22%)" }, s);
+              if (K.isPunct(n)) K.punctBox(s, n, { x: x + 30, y, size: 26, colour: "var(--ink)", fill: "none" });
+              else K.svg("text", { x: x + 30, y, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 26, text: n }, s);
+              K.svg("text", { x: x + 76, y, "text-anchor": "middle", "dominant-baseline": "central", "font-size": 26, class: "ui", "font-weight": 600, fill: GOLD, text: String(count) }, s);
+            });
+          });
+        }
+        // 3. tokens: a word in pieces
+        {
+          const split = TK.find((ws) => ws.length > 1);
+          let x = 60;
+          split.forEach((p) => {
+            const d = K.el("div", { class: "rm-text", text: p, style: { fontSize: "64px", lineHeight: 1, padding: "10px 12px", border: `4px solid ${GOLD}` } }, minis[2]);
+            K.set(d, { x, y: 62 });
+            x += d.offsetWidth + 18;
+          });
+        }
+        // 4. post-training: the reply people preferred
+        {
+          const d = K.el("div", { class: "rm-text", text: ANS.join(" "), style: { left: "30px", top: "130px", fontSize: "30px", whiteSpace: "nowrap" } }, minis[3]);
+          K.icon(minis[3], "thumbs-up", { x: 30, y: 40, size: 64, gold: true });
+        }
+        const cues = [w(10, "More"), w(10, "smarter"), w(10, "pieces"), w(10, "second")];
+        minis.forEach((L, i) => K.appear(tl, L, cues[i] - 0.1, { y: 24 }));
+        // the model, the loop and the strip come back; the cards go into the model
+        const tNone = w(10, "None");
+        const strip11 = paperLine(scene, [".", "here", "comes", "the", "postie", "."], { x: STRIP.x, y: STRIP.y, w: 860, h: 110, size: 56 });
+        K.set(strip11.words.slice(0, 2), { opacity: 1 });
+        K.set(strip11.el, { opacity: 0 });
+        tl.set(modelL, { opacity: 0 }, t10);
+        K.appear(tl, modelL, tNone - 0.5, { y: 0, scale: 0.96, dur: 0.5 });
+        K.glint(tl, modelEdge, { lap: 2.4, from: tNone + 0.4, to: w(11, "Everything") });
+        minis.forEach((L, i) => {
+          const t = tNone - 0.3 + i * 0.08;
+          K.raise(tl, L, t);
+          tl.to(L, { x: MODEL.x + MODEL.w / 2 - CW * 0.1, y: MODEL.y + MODEL.h / 2 - CH * 0.1, scale: 0.2, opacity: 0 }, t, { dur: 0.6, ease: "in-cubic" });
+        });
+        tl.set([...arcs, ...heads, ...stations.flatMap((s) => [s.dot, s.text])], { opacity: 0 }, t10);
+        arcs.forEach((a) => tl.set(a, { strokeDashoffset: parseFloat(a.style.strokeDasharray) }, t10));
+        tl.set(loopL, { opacity: 1 }, t10);
+        drawLoop(w(10, "changes") - 0.4, 1.0);
+        K.appear(tl, strip11.el, w(10, "changes") - 0.2, { y: 20 });
+
+        // ================================================= line 11: one token at a time
+        const laps = [w(11, "Everything"), w(11, "or") + 0.1, w(11, "it", 1), w(11, "one")];
+        laps.forEach((t, k) => {
+          const d = k < 3 ? 1.05 : 0.8;
+          lap(t, d);
+          K.write(tl, strip11.words[2 + k], t + d * 0.85);
+        });
+        // just like you did: the magpie grid again
+        const tYou = w(11, "Just");
+        tl.set(grid.el, { ...LOOP, opacity: 0 }, t10);
+        tl.to(modelL, { opacity: 0 }, tYou, { dur: 0.6 });
+        tl.to(grid.el, { opacity: 1 }, tYou, { dur: 0.6 });
+      };
+      KIT.ready(build).then(({ tl }) => {
+        window.__timelines["real-models"] = tl;
+      });
+    </script>
+  </body>
+</html>

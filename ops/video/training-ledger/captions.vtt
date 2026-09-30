@@ -1,34 +1,37 @@
 WEBVTT
 
-00:00:00.150 --> 00:00:07.480
-Your sheets arrived finished. Every mark was already there. So where did the marks come from?
+00:00:00.150 --> 00:00:10.180
+Every mark on these sheets was made by somebody reading. So what did they keep? Let's find out, with a book short enough to read in thirty seconds.
 
-00:00:08.770 --> 00:00:12.260
-Somebody counted. And it's a job you can do yourselves.
+00:00:12.150 --> 00:00:17.800
+First, lowercase everything. And the full stops and exclamation marks count as words too.
 
-00:00:13.210 --> 00:00:21.520
-Start with a text. Lowercase everything. And notice that full stops and exclamation marks are words too—they get their own rows.
+00:00:18.550 --> 00:00:31.820
+Now read it two words at a time. Find the row for the first word. The second word goes in a box on that row, with a mark beside it. Then slide along by one, and do it again.
 
-00:00:22.250 --> 00:00:40.420
-Read it two words at a time. The first word names the row. The second word gets a mark in that row. Then move along by one: the second word of this pair is the first word of the next. Read the text once, and every pair in it gets counted.
+00:00:32.870 --> 00:00:44.180
+A new word after the same word takes the next empty box. And when a pair comes round again, it gets another mark. By the end, "the fence" has six marks, and "the magpie" five.
 
-00:00:41.630 --> 00:00:56.120
-Keep going and the same pair comes round again. The second time the text says "the magpie," the mark goes beside magpie in the row for the, which already has one. That's how a count builds. Common pairs collect marks; rare ones don't.
+00:00:45.130 --> 00:00:51.320
+That's all training is. Here's the rest of the book, done at the speed a computer does it.
 
-00:00:56.630 --> 00:01:07.880
-Check it against your printed sheet. The magpie, five marks. Count the book and it's five. Every sheet in this room was made exactly this way.
+00:00:52.450 --> 00:01:01.700
+Now look at what it kept. Not the sentences. Not the story. It doesn't know what a magpie is. Just counts of what came next.
 
-00:01:09.170 --> 00:01:23.260
-Now it's your turn, on a new text, with blank sheets. This time the words are yours to write as well as the marks. One person reads the text two words at a time. Whoever has the row for the first word puts a mark beside the second.
+00:01:02.290 --> 00:01:09.560
+And a row of marks is just a row of numbers. The row for "the" says five, six, four, four.
 
-00:01:23.970 --> 00:01:47.180
-Three rules keep your model honest. When you start a row for a new word, say the word out loud, so nobody else starts one too—two people counting the same word splits the model in half. A new word goes in the next empty box, never a skipped one—the colours go in order. And the row for full stop is a real row: it says how sentences start.
+00:01:10.850 --> 00:01:17.160
+When people talk about a model's "weights", this is the kind of thing they mean: numbers that came from the text it read.
 
-00:01:48.450 --> 00:01:56.180
-When you've read the whole text, generate from it. Start from the. It should sound like your text, and nobody else's.
+00:01:17.830 --> 00:01:26.800
+Give it a bigger book and nothing changes. This is Frankenstein. Eighty-five thousand words, and seven thousand rows.
 
-00:01:56.810 --> 00:02:04.360
-That's training. Not a computer reading the internet. Somebody counting what came next, a lot.
+00:01:28.070 --> 00:01:36.020
+A real model reads trillions of words, and stores its numbers more cleverly than a ledger. But the job it's doing is the one you're about to do.
 
-00:02:05.670 --> 00:02:09.420
+00:01:36.730 --> 00:01:53.420
+Three things catch people out. A full stop is a word, and its row says how sentences start. A new word goes in the next empty box, never skip one. And say a new word out loud when you start its row, so nobody starts it twice.
+
+00:01:54.950 --> 00:01:58.680
 Reader, grab the text. Two words at a time.
