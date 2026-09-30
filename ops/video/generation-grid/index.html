@@ -21,9 +21,9 @@
          counted back into a blank grid. Sibling of generation-ledger: the
          walk, the tree and the recount are the shared parts in ../_parts/. -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="generation-grid"
-         data-start="0" data-duration="151.99" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="151.99" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="144.99" data-track-index="1"></audio>
+         data-start="0" data-duration="149.37" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="149.37" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="142.37" data-track-index="1"></audio>
     </div>
     <script type="module">
       import { WALK, tenFaces, wordTimes, paperLine, splice, walkStyle } from "./parts/generation-walk.js";
@@ -153,7 +153,7 @@
         // ============================================================ line 3
         // the ten faces shared across the row by its tallies
         const sDot = strips["."];
-        K.appear(tl, sDot.el, w(3, "Share"), { y: 16 });
+        K.appear(tl, sDot.el, w(3, "die"), { y: 16 });
         const dotStrokes = lifted["."].boxes.flatMap((b) => b.strokes);
         tl.to(dotStrokes, { opacity: 0.25 }, w(3, "Seventeen"), { dur: 0.2, stagger: 0.04 });
         tl.to(dotStrokes, { opacity: 1 }, w(3, "Seventeen") + 0.2, { dur: 0.2, stagger: 0.04 });
@@ -172,7 +172,7 @@
         pulse(sDot.blocks[0], w(4, "band"), 1.08);
         lightFor(lifted["."].boxes[0].lit, w(4, "band"), 1.2);
         K.appear(tl, paper.el, w(4, "band") + 0.3, { y: 20 });
-        K.write(tl, paper.words[0], w(4, "it", 2));
+        K.write(tl, paper.words[0], w(4, "word"));
         const tToIt = w(4, "row") - 0.3;
         exitRow(lifted["."], tToIt);
         K.vanish(tl, [sDot.el, die.el], tToIt);

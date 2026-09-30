@@ -20,9 +20,9 @@
          with agentic-ai-ledger in parts/agentic.js. Every beat lands on a word
          of the voice track (timing.json from align.py). -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="agentic-ai-grid"
-         data-start="0" data-duration="136.75" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="136.75" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="129.75" data-track-index="1"></audio>
+         data-start="0" data-duration="138.46" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="138.46" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="131.46" data-track-index="1"></audio>
     </div>
     <script type="module">
       import * as AG from "./parts/agentic.js";
@@ -211,9 +211,9 @@
         const tFull = T.word(3, "full", 2);
         ringAt(cellBox(DOG, STOP), tFull - 0.1, 0.35);
         tl.to(ring2.el, { opacity: 0 }, tFull + 0.2, { dur: 0.3 });
-        // the full stop lifts out of the strip; "Stop.": it waits on the paper,
+        // the full stop lifts out of the strip; "So pause.": it waits on the paper,
         // the pencil lifts, and the phone slides in over the strip
-        const tStop = T.word(3, "stop", 3);
+        const tStop = T.word(3, "pause");
         AG.pending(tl, d, labCentre, tFull, tStop - 0.2);
         K.vanish(tl, strip.el, tStop - 0.15, { y: -16 });
         AG.phoneIn(tl, d, tStop + 0.3);

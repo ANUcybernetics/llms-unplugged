@@ -38,7 +38,7 @@ that browse the web, write code, book flights. It sounds like a whole new kind
 of technology. It isn't. It's the loop you've already run, with one rule added.
 
 **BEN (VO):** Here's the rule. Fill the cup and draw, exactly as before. But the
-moment you draw a punctuation mark, a full stop, a comma, stop. That's a tool
+moment you draw a punctuation mark, a full stop or a comma, pause. That's a tool
 call.
 
 _Visual: the magpie's ledger sheets fanned on the desk, the cup and the paper
@@ -65,7 +65,7 @@ it more than others.
 
 **BEN (VO):** Say you've written "here comes the dog". The row for "dog": two
 red for a full stop, two blue for "runs". [beat] Draw one. Red. Full stop.
-[beat] Stop.
+[beat] So pause.
 
 _Visual: the strip reads "here comes the dog"; the row for "dog" lights and four
 counters drop into the cup. A red one comes out, the full stop box lights gold,
@@ -83,8 +83,9 @@ One reply bubble drops in: and it wants my sandwich._
 _Reads:_ 1. the tool is a text message; 2. it sends the sentence so far; 3. it
 goes to three people at once.
 
-**BEN (VO):** The first reply back is your tool result. Write the whole thing
-down, then the full stop you drew. [beat] Then carry on, from the full stop.
+**BEN (VO):** The first reply back, "and it wants my sandwich", is your tool
+result. Write the whole thing down, then the full stop you drew. [beat] Then
+carry on, from the full stop.
 
 _Visual: the reply's words slide off the phone onto the strip after "here comes
 the dog", the full stop follows them, and the row for full stop lights; its

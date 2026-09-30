@@ -47,12 +47,12 @@
     "i": 4,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Seventeen counters. Now draw one without looking. Red: \"it\". Write it down, tip the cup back, and go to the row for \"it\".",
-    "tts": "Seventeen counters. Now draw one without looking. Red: \"it\". Write it down, tip the cup back, and go to the row for \"it\".",
+    "caption": "Seventeen counters. Now draw one without looking. Red: \"it\". Write the word down, tip the cup back, and go to the row for \"it\".",
+    "tts": "Seventeen counters. Now draw one without looking. Red: \"it\". Write the word down, tip the cup back, and go to the row for \"it\".",
     "parts": [
       "Seventeen counters.",
       "Now draw one without looking. Red: \"it\".",
-      "Write it down, tip the cup back, and go to the row for \"it\"."
+      "Write the word down, tip the cup back, and go to the row for \"it\"."
     ],
     "beats": [
       0.8,
@@ -102,8 +102,8 @@
     "i": 8,
     "speaker": "BEN",
     "tc": false,
-    "caption": "\"It sits on the dog.\" The book never says that. It says the magpie sits on the fence. Nobody wrote this sentence; the counting did.",
-    "tts": "\"It sits on the dog.\" The book never says that. It says the magpie sits on the fence. Nobody wrote this sentence; the counting did."
+    "caption": "\"It sits on the dog.\" The book never says that; the magpie sits on the fence. Nobody wrote this sentence; the counting did.",
+    "tts": "\"It sits on the dog.\" The book never says that; the magpie sits on the fence. Nobody wrote this sentence; the counting did."
   },
   {
     "i": 9,

@@ -62,12 +62,12 @@
     "i": 5,
     "speaker": "BEN",
     "tc": false,
-    "caption": "The row for \"it\" has ten marks, so give each mark a face of a ten-sided die. Roll a one: \"sits\". Then \"on\", and \"the\", with no choice at all.",
-    "tts": "The row for \"it\" has ten marks, so give each mark a face of a ten-sided die. Roll a one: \"sits\". Then \"on\", and \"the\", with no choice at all.",
+    "caption": "The row for \"it\" has ten marks, so give each mark a face of a ten-sided die. Roll a one: \"sits\". Then \"on\", and \"the\": only one way to go.",
+    "tts": "The row for \"it\" has ten marks, so give each mark a face of a ten-sided die. Roll a one: \"sits\". Then \"on\", and \"the\": only one way to go.",
     "parts": [
       "The row for \"it\" has ten marks, so give each mark a face of a ten-sided die.",
       "Roll a one: \"sits\".",
-      "Then \"on\", and \"the\", with no choice at all."
+      "Then \"on\", and \"the\": only one way to go."
     ],
     "beats": [
       0.8,

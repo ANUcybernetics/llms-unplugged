@@ -27,9 +27,9 @@
          The walk is six slips, not the script's five: ". it" starts it and
          five picks follow (it sits, sits on, on the, the dog, dog .). -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="generation-cutouts"
-         data-start="0" data-duration="130.46" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="130.46" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="123.46" data-track-index="1"></audio>
+         data-start="0" data-duration="129.93" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="129.93" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="122.93" data-track-index="1"></audio>
     </div>
     <script type="module">
       import { WALK, wordTimes, paperLine, splice, walkStyle } from "./parts/generation-walk.js";
@@ -210,8 +210,8 @@
         light(ons, w(4, "says", 2), false);
         pulse(ons.map((o) => o.nextTok), w(4, "the"), 1.3);
         K.write(tl, paper.words[3], w(4, "the") + 0.1);
-        settle(walk[3], ons.filter((o) => o !== walk[3]), w(4, "choice"), 3);
-        undim(w(4, "all"));
+        settle(walk[3], ons.filter((o) => o !== walk[3]), w(4, "only"), 3);
+        undim(w(4, "way"));
 
         // ============================================================ line 5
         // nineteen "the" slips in four piles; shuffled, "the dog" comes out;
@@ -350,7 +350,7 @@
         const e1 = of("the", "postie")[1];
         fly(e1, at(e1, ELIFT.cx, ELIFT.cy, ELIFT.scale), w(10, "and") - 0.1, { dur: 0.55, ease: "out-cubic" });
         light(eThes.filter((o) => o !== e1), w(10, "and"), false);
-        K.write(tl, endPaper.words[1], w(10, "next"));
+        K.write(tl, endPaper.words[1], w(10, "beside"));
         // put it back; the next word's colour
         light([e1], w(10, "Then"), false);
         fly(e1, END[e1.k], w(10, "Then"), { dur: 0.5, ease: "in-out-cubic" });

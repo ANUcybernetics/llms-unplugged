@@ -81,7 +81,7 @@ _Reads:_ 1. start from the full stop's row; 2. each mark becomes one counter in
 its box's colour; 3. "it" has the most counters.
 
 **BEN (VO):** Seventeen counters. [beat] Now draw one without looking. Red:
-"it". [beat] Write it down, tip the cup back, and go to the row for "it".
+"it". [beat] Write the word down, tip the cup back, and go to the row for "it".
 
 _Visual: a red counter slides out of the cup; the red box on the row lights and
 "it" writes onto a strip of paper at the bottom of the desk. The cup empties.
@@ -116,8 +116,8 @@ out and the full stop tile writes on._
 
 _Reads:_ 1. every row works the same way; 2. a full stop ends the sentence.
 
-**BEN:** "It sits on the dog." The book never says that. It says the magpie sits
-on the fence. Nobody wrote this sentence; the counting did.
+**BEN:** "It sits on the dog." The book never says that; the magpie sits on the
+fence. Nobody wrote this sentence; the counting did.
 
 _Visual: the strip reads "it sits on the dog ." Above it, in the book's type,
 "It sits on the fence." and "Here comes the dog."; the halves slide together

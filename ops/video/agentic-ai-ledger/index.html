@@ -19,9 +19,9 @@
          harness beats (phone, splice, back-fill, the loop) are shared in
          parts/agentic.js. Every beat lands on a word of the voice track. -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="agentic-ai-ledger"
-         data-start="0" data-duration="137.59" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="137.59" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="130.59" data-track-index="1"></audio>
+         data-start="0" data-duration="139.27" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="139.27" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="132.27" data-track-index="1"></audio>
     </div>
     <script type="module">
       import * as AG from "./parts/agentic.js";
@@ -199,7 +199,7 @@
         // "Full stop.": its box lights, and the full stop lifts out of it
         const tFull = T.word(3, "full", 2);
         tl.to(fDog.cells[cStop].lit, { opacity: 1, fillOpacity: 0.6 }, tFull - 0.1, { dur: 0.25 });
-        const tStop = T.word(3, "stop", 3);
+        const tStop = T.word(3, "pause");
         AG.pending(tl, d, wordAt(fDog, cStop), tFull + 0.1, tStop - 0.2);
         AG.phoneIn(tl, d, tStop + 0.3);
         tl.to([fDog.cells[cStop].lit, drawn.el], { opacity: 0 }, T.end(3) + 0.3, { dur: 0.4 });

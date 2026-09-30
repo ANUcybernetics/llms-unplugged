@@ -17,11 +17,11 @@
     "i": 2,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in its box. This one says \"it\". Write it down.",
-    "tts": "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in its box. This one says \"it\". Write it down.",
+    "caption": "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in the box. This one says \"it\". Write that word down.",
+    "tts": "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in the box. This one says \"it\". Write that word down.",
     "parts": [
-      "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in its box.",
-      "This one says \"it\". Write it down."
+      "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in the box.",
+      "This one says \"it\". Write that word down."
     ],
     "beats": [
       0.8
@@ -31,12 +31,12 @@
     "i": 3,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "Now find every slip with \"it\" in its box. There are ten. Three say \"sits\", three \"watches\", three \"goes\", and one says \"is\". Pick one without choosing: \"sits\".",
-    "tts": "Now find every slip with \"it\" in its box. There are ten. Three say \"sits\", three \"watches\", three \"goes\", and one says \"is\". Pick one without choosing: \"sits\".",
+    "caption": "Now find every slip with \"it\" in the box. There are ten. Three say \"sits\", three \"watches\", three \"goes\", and one says \"is\". Pick one at random: \"sits\".",
+    "tts": "Now find every slip with \"it\" in the box. There are ten. Three say \"sits\", three \"watches\", three \"goes\", and one says \"is\". Pick one at random: \"sits\".",
     "parts": [
-      "Now find every slip with \"it\" in its box. There are ten.",
+      "Now find every slip with \"it\" in the box. There are ten.",
       "Three say \"sits\", three \"watches\", three \"goes\", and one says \"is\".",
-      "Pick one without choosing: \"sits\"."
+      "Pick one at random: \"sits\"."
     ],
     "beats": [
       0.8,
@@ -47,8 +47,8 @@
     "i": 4,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Every \"sits\" slip says \"on\", and every \"on\" slip says \"the\". No choice at all.",
-    "tts": "Every \"sits\" slip says \"on\", and every \"on\" slip says \"the\". No choice at all."
+    "caption": "Every \"sits\" slip says \"on\", and every \"on\" slip says \"the\", so there's only one way to go.",
+    "tts": "Every \"sits\" slip says \"on\", and every \"on\" slip says \"the\", so there's only one way to go."
   },
   {
     "i": 5,
@@ -72,8 +72,8 @@
     "i": 6,
     "speaker": "BEN",
     "tc": false,
-    "caption": "\"It sits on the dog.\" The book never says that. It says the magpie sits on the fence. Nobody wrote this sentence; the slips did, one pair at a time, like dominoes.",
-    "tts": "\"It sits on the dog.\" The book never says that. It says the magpie sits on the fence. Nobody wrote this sentence; the slips did, one pair at a time, like dominoes."
+    "caption": "\"It sits on the dog.\" The book never says that; the magpie sits on the fence. Nobody wrote this sentence; the slips did, one pair at a time, like dominoes.",
+    "tts": "\"It sits on the dog.\" The book never says that; the magpie sits on the fence. Nobody wrote this sentence; the slips did, one pair at a time, like dominoes."
   },
   {
     "i": 7,
@@ -100,11 +100,11 @@
     "i": 10,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Spread your cutouts out. Write down a starting word, find a slip with that word in its box, and write down its next word. Then find a slip that starts with that. The colours help you find the matches fast.",
-    "tts": "Spread your cutouts out. Write down a starting word, find a slip with that word in its box, and write down its next word. Then find a slip that starts with that. The colours help you find the matches fast.",
+    "caption": "Spread your cutouts out. Write down a starting word, find a slip with that word in the box, and write down the word beside it. Then find a slip with that new word in the box. The colours help you find the matches fast.",
+    "tts": "Spread your cutouts out. Write down a starting word, find a slip with that word in the box, and write down the word beside it. Then find a slip with that new word in the box. The colours help you find the matches fast.",
     "parts": [
-      "Spread your cutouts out. Write down a starting word, find a slip with that word in its box, and write down its next word.",
-      "Then find a slip that starts with that.",
+      "Spread your cutouts out. Write down a starting word, find a slip with that word in the box, and write down the word beside it.",
+      "Then find a slip with that new word in the box.",
       "The colours help you find the matches fast."
     ],
     "beats": [

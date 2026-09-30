@@ -96,8 +96,8 @@ slides out and "it" writes onto a strip of paper at the bottom of the desk._
 _Reads:_ 1. the full stop's row, as a cup; 2. the draw gives "it".
 
 **BEN (VO):** The row for "it" has ten marks, so give each mark a face of a
-ten-sided die. [beat] Roll a one: "sits". [beat] Then "on", and "the", with no
-choice at all.
+ten-sided die. [beat] Roll a one: "sits". [beat] Then "on", and "the": only one
+way to go.
 
 _Visual: the row for "it" (sits 3, watches 3, goes 3, is 1): its ten marks
 become ten die faces in a strip, banded in grid column order as the slides' dice

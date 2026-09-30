@@ -20,8 +20,8 @@ magpie 5, postie 4, dog 4), 4 with _dog_ (full stop 2, runs 2).
    written
 2. the model: every pair in a book, cut out. A previous word and a next word
 3. choose a starting cutout: ". it" gives you your first two words
-4. find every cutout that starts with _it_: ten of them. Pick one without
-   choosing: "sits". More cutouts for a pair, more chances
+4. find every cutout that starts with _it_: ten of them. Pick one at random:
+   "sits". More cutouts for a pair, more chances
 5. single-option words: every _sits_ cutout says _on_, every _on_ says _the_
 6. _the_: nineteen cutouts, four next words. Pick "dog", then a full stop
 7. the sentence: "It sits on the dog." Not in the book. The chain is like
@@ -52,7 +52,8 @@ _Reads:_ 1. a slip is one pair; 2. the box is the previous word; 3. a common
 pair has many slips.
 
 **BEN (VO):** Choose a slip to start from. A story starts after a full stop, so
-take one with a full stop in its box. [beat] This one says "it". Write it down.
+take one with a full stop in the box. [beat] This one says "it". Write that word
+down.
 
 _Visual: the full stop slips light across the spread; one slides out, turns
 over, full stop in its box, "it" beside it. "it" writes onto a strip of paper at
@@ -61,9 +62,9 @@ the bottom of the desk._
 _Reads:_ 1. the first slip gives you somewhere to start; 2. its next word is
 written down.
 
-**USHINI (VO):** Now find every slip with "it" in its box. There are ten. [beat]
+**USHINI (VO):** Now find every slip with "it" in the box. There are ten. [beat]
 Three say "sits", three "watches", three "goes", and one says "is". [beat] Pick
-one without choosing: "sits".
+one at random: "sits".
 
 _Visual: the spread dims except the ten "it" slips, which slide together into
 one loose pile, their next words showing: sits, sits, sits, watches, watches,
@@ -73,8 +74,8 @@ sits". "sits" writes onto the strip._
 _Reads:_ 1. every slip that matches the last word is a candidate; 2. more slips,
 more chances; 3. the one you pick names the next word.
 
-**BEN (VO):** Every "sits" slip says "on", and every "on" slip says "the". No
-choice at all.
+**BEN (VO):** Every "sits" slip says "on", and every "on" slip says "the", so
+there's only one way to go.
 
 _Visual: the "sits" slips light, all three reading "on"; then the "on" slips,
 all reading "the". "on" and "the" write straight onto the strip._
@@ -91,9 +92,9 @@ full stop tile writes on._
 
 _Reads:_ 1. every word works the same way; 2. a full stop ends the sentence.
 
-**BEN:** "It sits on the dog." The book never says that. It says the magpie sits
-on the fence. Nobody wrote this sentence; the slips did, one pair at a time,
-like dominoes.
+**BEN:** "It sits on the dog." The book never says that; the magpie sits on the
+fence. Nobody wrote this sentence; the slips did, one pair at a time, like
+dominoes.
 
 _Visual: the five slips used lie end to end, each one's next word matching the
 next one's box, and the strip above reads "it sits on the dog ." Above that, in
@@ -137,8 +138,9 @@ what Claude or ChatGPT is doing every time it writes a word, with vastly more
 than a pile of slips.
 
 **BEN (VO):** Spread your cutouts out. Write down a starting word, find a slip
-with that word in its box, and write down its next word. [beat] Then find a slip
-that starts with that. [beat] The colours help you find the matches fast.
+with that word in the box, and write down the word beside it. [beat] Then find a
+slip with that new word in the box. [beat] The colours help you find the matches
+fast.
 
 _Visual: a spread of cutouts; a word writes, the slips whose box colour matches
 light, one lifts, its next word writes, the next match lights._

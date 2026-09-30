@@ -17,18 +17,18 @@
     "i": 2,
     "speaker": "BEN",
     "tc": false,
-    "caption": "A story starts after a full stop, so start at the row for full stop. \"It\" came next seven times, \"here\" four, \"down\" three, \"swoop\" three.",
-    "tts": "A story starts after a full stop, so start at the row for full stop. \"It\" came next seven times, \"here\" four, \"down\" three, \"swoop\" three."
+    "caption": "A story starts after a full stop, so start at the row for full stop. After a full stop, the book has \"it\" seven times, \"here\" four, \"down\" three, \"swoop\" three.",
+    "tts": "A story starts after a full stop, so start at the row for full stop. After a full stop, the book has \"it\" seven times, \"here\" four, \"down\" three, \"swoop\" three."
   },
   {
     "i": 3,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "Now pick the next word at random, but fairly. Share the ten faces of a die across the row by its tallies. Seventeen tallies won't split into ten exactly, so share them as fairly as you can: \"it\" gets four faces, the others two each.",
-    "tts": "Now pick the next word at random, but fairly. Share the ten faces of a die across the row by its tallies. Seventeen tallies won't split into ten exactly, so share them as fairly as you can: \"it\" gets four faces, the others two each.",
+    "caption": "Now pick the next word at random, with a ten-sided die. Seventeen tallies don't split into ten faces exactly, so share them as fairly as you can: \"it\" gets four faces, the others two each.",
+    "tts": "Now pick the next word at random, with a ten-sided die. Seventeen tallies don't split into ten faces exactly, so share them as fairly as you can: \"it\" gets four faces, the others two each.",
     "parts": [
-      "Now pick the next word at random, but fairly. Share the ten faces of a die across the row by its tallies.",
-      "Seventeen tallies won't split into ten exactly, so share them as fairly as you can: \"it\" gets four faces, the others two each."
+      "Now pick the next word at random, with a ten-sided die.",
+      "Seventeen tallies don't split into ten faces exactly, so share them as fairly as you can: \"it\" gets four faces, the others two each."
     ],
     "beats": [
       0.8,
@@ -39,12 +39,12 @@
     "i": 4,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Roll a two. It's in the band for \"it\". Write it down, and go to the row for \"it\".",
-    "tts": "Roll a two. It's in the band for \"it\". Write it down, and go to the row for \"it\".",
+    "caption": "Roll a two. That's in the band for \"it\". Write the word down, and go to the row for \"it\".",
+    "tts": "Roll a two. That's in the band for \"it\". Write the word down, and go to the row for \"it\".",
     "parts": [
       "Roll a two.",
-      "It's in the band for \"it\".",
-      "Write it down, and go to the row for \"it\"."
+      "That's in the band for \"it\".",
+      "Write the word down, and go to the row for \"it\"."
     ],
     "beats": [
       0.8,
@@ -55,10 +55,10 @@
     "i": 5,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "The row for \"it\" has exactly ten tallies, so every tally gets a face of its own. Roll a one: \"sits\".",
-    "tts": "The row for \"it\" has exactly ten tallies, so every tally gets a face of its own. Roll a one: \"sits\".",
+    "caption": "The row for \"it\" has exactly ten tallies, so every tally gets one face. Roll a one: \"sits\".",
+    "tts": "The row for \"it\" has exactly ten tallies, so every tally gets one face. Roll a one: \"sits\".",
     "parts": [
-      "The row for \"it\" has exactly ten tallies, so every tally gets a face of its own.",
+      "The row for \"it\" has exactly ten tallies, so every tally gets one face.",
       "Roll a one: \"sits\"."
     ],
     "beats": [
@@ -94,8 +94,8 @@
     "i": 8,
     "speaker": "BEN",
     "tc": false,
-    "caption": "\"It sits on the dog.\" The book never says that. It says the magpie sits on the fence. Nobody wrote this sentence; the counting did.",
-    "tts": "\"It sits on the dog.\" The book never says that. It says the magpie sits on the fence. Nobody wrote this sentence; the counting did."
+    "caption": "\"It sits on the dog.\" The book never says that; the magpie sits on the fence. Nobody wrote this sentence; the counting did.",
+    "tts": "\"It sits on the dog.\" The book never says that; the magpie sits on the fence. Nobody wrote this sentence; the counting did."
   },
   {
     "i": 9,

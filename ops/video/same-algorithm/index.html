@@ -26,9 +26,9 @@
          booklet (parts/build-same-booklet.py). Every beat lands on a word of
          the voice track. -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="same-algorithm"
-         data-start="0" data-duration="128.71" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="128.71" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="121.71" data-track-index="1"></audio>
+         data-start="0" data-duration="128.73" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="128.73" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="121.73" data-track-index="1"></audio>
     </div>
     <script type="module">
       import { row, morph, jump, slip, slipsFromMarks } from "./parts/morph.js";
@@ -405,7 +405,7 @@
         tl.to(R5.marks[sitsBand].g, { opacity: 1 }, tOne + 0.15, { dur: 0.3 });
         K.write(tl, strip.words[2], T.word(5, "sits"));
 
-        // "Then on, and the, with no choice at all": one-follower rows light and write
+        // "Then on, and the, only one way to go": one-follower rows light and write
         const oneRow = (w, tIn, tOut) => {
           const r = row(scene, w, MG.rows[w], { x: A.cx - (300 + 345) / 2, y: 140 });
           jump(tl, r, "grid", tIn - 0.1);

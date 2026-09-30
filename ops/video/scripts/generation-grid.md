@@ -54,17 +54,17 @@ postie and dog, the rest of the row empty._
 _Reads:_ 1. a row is a word; 2. its tallies are what came next and how often.
 
 **BEN (VO):** A story starts after a full stop, so start at the row for full
-stop. "It" came next seven times, "here" four, "down" three, "swoop" three.
+stop. After a full stop, the book has "it" seven times, "here" four, "down"
+three, "swoop" three.
 
 _Visual: the row for full stop slides out of the grid to the middle of the desk,
 its four tallied boxes spread wide._
 
 _Reads:_ 1. start from the full stop's row; 2. "it" has the most tallies.
 
-**USHINI (VO):** Now pick the next word at random, but fairly. Share the ten
-faces of a die across the row by its tallies. [beat] Seventeen tallies won't
-split into ten exactly, so share them as fairly as you can: "it" gets four
-faces, the others two each. [beat]
+**USHINI (VO):** Now pick the next word at random, with a ten-sided die. [beat]
+Seventeen tallies don't split into ten faces exactly, so share them as fairly as
+you can: "it" gets four faces, the others two each. [beat]
 
 _Visual: under the row a strip of ten die faces, 0 to 9, bands drawing in left
 to right as they're named: it 0--3, here 4--5, down 6--7, swoop 8--9._
@@ -76,8 +76,8 @@ _Reads note:_ rounding seventeen tallies onto ten faces is a wrinkle the slides
 never meet (the hop joey hop rows divide evenly); the alternative is to start
 this walk on a row that divides and keep the rounding for the ending.
 
-**BEN (VO):** Roll a two. [beat] It's in the band for "it". [beat] Write it
-down, and go to the row for "it".
+**BEN (VO):** Roll a two. [beat] That's in the band for "it". [beat] Write the
+word down, and go to the row for "it".
 
 _Visual: a d10 face lands on 2; the "it" band lights and "it" writes onto a
 strip of paper at the bottom of the desk. The row for "it" lights on the grid._
@@ -85,8 +85,8 @@ strip of paper at the bottom of the desk. The row for "it" lights on the grid._
 _Reads:_ 1. the roll lands in a band; 2. that band's word is written down; 3.
 its row is next.
 
-**USHINI (VO):** The row for "it" has exactly ten tallies, so every tally gets a
-face of its own. [beat] Roll a one: "sits".
+**USHINI (VO):** The row for "it" has exactly ten tallies, so every tally gets
+one face. [beat] Roll a one: "sits".
 
 _Visual: the row for "it" (is 1, sits 3, watches 3, goes 3): its ten tallies
 drop one to a face, is 0, sits 1--3, watches 4--6, goes 7--9. A face lands on 1;
@@ -113,8 +113,8 @@ tile writes on._
 
 _Reads:_ 1. every row works the same way; 2. a full stop ends the sentence.
 
-**BEN:** "It sits on the dog." The book never says that. It says the magpie sits
-on the fence. Nobody wrote this sentence; the counting did.
+**BEN:** "It sits on the dog." The book never says that; the magpie sits on the
+fence. Nobody wrote this sentence; the counting did.
 
 _Visual: the strip reads "it sits on the dog ." Above it, in the book's type,
 "It sits on the fence." and "Here comes the dog."; the halves slide together
