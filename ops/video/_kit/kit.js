@@ -970,7 +970,7 @@ window.KIT = (() => {
   // field of the site's TokenLogo, the five title tokens lighting and sliding
   // in to spell LLMs Unplugged, each flipping to its 4x4 dot grid (its token
   // id in binary), the five grids flying together into the lockup's grid, the
-  // wordmark beside it and the URL below. Brick geometry and bit patterns are
+  // wordmark beside it, and the URL and YouTube handle below. Brick geometry and bit patterns are
   // a port of website/src/lib/token-logo.ts, the wordmark is the lockup's own
   // outline (KIT_DATA.brand, from website/public/lockup.svg). Starts at t0 and
   // takes ENDCARD seconds; a stage with data-tail="7" gets it after the voice.
@@ -1171,20 +1171,47 @@ window.KIT = (() => {
       { d: B.wordmark.d, fill: "#fff" },
       svg("g", { transform: `${lockAt} ${B.wordmark.transform}` }, wm),
     );
-    const url = svg(
-      "text",
-      {
-        x: FW / 2,
-        y: ly + B.lockupH * ls + 90,
-        "text-anchor": "middle",
-        class: "ui",
-        "font-size": 44,
-        fill: "var(--gold-2)",
-        text: "llmsunplugged.org",
-      },
-      s,
+    // the contacts under the lockup, one row no wider than it: the URL, a
+    // rule, then the channel as a gold YouTube mark and its handle
+    const FS = 44,
+      mid = -0.36 * FS; // the cap-height middle, for centring marks on the text
+    const row = svg("g", {}, s);
+    const words = (x, text) =>
+      svg("text", { x, y: 0, class: "ui", "font-size": FS, fill: "var(--gold-2)", text }, row);
+    const url = words(0, "llmsunplugged.org");
+    let rx = url.getComputedTextLength() + 0.9 * FS;
+    const rule = svg(
+      "rect",
+      { x: rx, y: mid - 0.5 * FS, width: 2, height: FS, fill: "rgb(229 169 48 / 45%)" },
+      row,
     );
-    set([well, wm, url], { opacity: 0 });
+    rx += 2 + 0.9 * FS;
+    const yh = 0.74 * FS,
+      yw = 1.42 * yh;
+    const yt = svg("g", {}, row);
+    svg(
+      "rect",
+      { x: rx, y: mid - yh / 2, width: yw, height: yh, rx: 0.24 * yh, fill: "var(--gold-2)" },
+      yt,
+    );
+    const px = rx + yw / 2 - 0.1 * yh;
+    svg(
+      "polygon",
+      {
+        points: `${px},${mid - 0.2 * yh} ${px + 0.34 * yh},${mid} ${px},${mid + 0.2 * yh}`,
+        fill: "var(--desk)",
+      },
+      yt,
+    );
+    rx += yw + 0.32 * FS;
+    const handle = words(rx, "@llmsunplugged");
+    const rowW = rx + handle.getComputedTextLength();
+    const rs = Math.min(1, (B.lockupW * ls) / rowW);
+    row.setAttribute(
+      "transform",
+      `translate(${(FW - rowW * rs) / 2} ${ly + B.lockupH * ls + 90}) scale(${rs})`,
+    );
+    set([well, wm, url, rule, yt, handle], { opacity: 0 });
     const lockDot = (j) => ({
       x: lx + (5 + 6 * (j % 4)) * ls,
       y: ly + (5 + 6 * Math.floor(j / 4)) * ls,
@@ -1250,6 +1277,16 @@ window.KIT = (() => {
       ease: "out-cubic",
     });
     tl.to(url, { opacity: 1 }, tMerge + 1.4, { dur: 0.6 });
+    tl.to(rule, { opacity: 1 }, tMerge + 1.6, { dur: 0.4 });
+    set(yt, { transformOrigin: "50% 50%" });
+    tl.fromTo(yt, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1 }, tMerge + 1.75, {
+      dur: 0.45,
+      ease: "out-cubic",
+    });
+    tl.fromTo(handle, { opacity: 0, x: -12 }, { opacity: 1, x: 0 }, tMerge + 1.9, {
+      dur: 0.6,
+      ease: "out-cubic",
+    });
     glint(tl, well, { phase: 0, from: tMerge + 2.0, lap: 1.6, rest: 9 });
     return { el: g, dur: ENDCARD };
   }
