@@ -1,10 +1,10 @@
 ---
 id: TASK-166
-title: Port CS Unplugged to a static Astro site on GitHub Pages
+title: Port CS Unplugged to a static Astro site
 status: To Do
 assignee: []
 created_date: '2026-09-22 22:39'
-updated_date: '2026-09-22 22:48'
+updated_date: '2026-10-01 05:10'
 labels:
   - cs-unplugged
   - fellowship
@@ -17,13 +17,20 @@ priority: low
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Move www.csunplugged.org (Django/Postgres/Docker, uccser/cs-unplugged) and classic.csunplugged.org (Hugo, uccser/cs-unplugged-classic) to one clean static Astro site on astro-theme-university with a CS Unplugged brand layer, hosted on GitHub Pages rather than university infrastructure. It stays a separate site from LLMs Unplugged. Context: the Fellowship of the Unplugged steering-committee discussion (PKB note 1510).
+Move www.csunplugged.org (Django/Postgres/Docker, uccser/cs-unplugged) and classic.csunplugged.org (Hugo, uccser/cs-unplugged-classic) to one clean static Astro site on astro-theme-university with a CS Unplugged brand layer, on static hosting off university infrastructure. It stays a separate site from LLMs Unplugged. Context: the Fellowship of the Unplugged steering-committee discussion (PKB note fellowship-of-the-unplugged).
 
 Contingent on approval from Tim Bell and the current technical maintainers (Jack Morgan and the UC crew). Get their sign-off on scope, hosting and repo ownership before starting any work.
 
+## Decisions
+
+- no database and no backend anywhere: content is files in git, edited through GitHub (editors are assumed comfortable with it), so pull requests and the Crowdin workflow keep working
+- hosting is any static host; Cloudflare is the working pick for its server-side redirect rules. A small monthly cost is acceptable, so don't trade quality for a free tier
+- programming challenges run in the browser with Pyodide; the Jobe server is retired
+- fallbacks, only if the maintainers ask for them: a git-backed form editor (Keystatic, Sveltia CMS; untested against the theme) for editing without git, then EmDash via astro-theme-university/emdash if a real CMS is needed (roles, scheduling, review)
+
 ## Hosting split
 
-Code and markup live in the git repo and deploy to GitHub Pages. PDFs and other large binaries live in a public Tigris bucket behind a pdf.* subdomain, the same arrangement as llmsunplugged.org (see ops/bucket-sync.py), so they never enter the Pages artifact or .git. Old URLs get static redirect pages (Astro `redirects`); a large redirect set is fine, broken links are not.
+Code and markup live in the git repo and deploy to the static host. PDFs and other large binaries live in a public bucket behind a pdf.* subdomain, the same arrangement as llmsunplugged.org (see ops/bucket-sync.py), so they never enter the deploy artifact or .git. Every old URL gets a redirect (host redirect rules, or Astro `redirects` pages); a large redirect set is fine, broken links are not.
 
 ## Once-off changes to fit the static setup
 
@@ -35,23 +42,29 @@ Code and markup live in the git repo and deploy to GitHub Pages. PDFs and other 
 - Classic site: fold in as an archive section (~50 pages). Its 216 PDFs total 699 MB; Ghostscript (`-sDEVICE=pdfwrite -dPDFSETTINGS=/printer`, keeping the original when it is not smaller) takes them to 228 MB with no visible change on the page spot-checked. Most of the bloat is the ~20 MB Chinese activity PDFs, PDFium exports that draw every glyph as thousands of duplicated form XObjects (no embedded fonts); these drop to ~3 MB each. Visually diff every page before publishing the compressed set
 - URLs: redirect map from the old /<lang>/topics/... routes and the classic redirects; curricula link to these widely
 
-## Needs a real backend (separate subdomain, separate deploy)
+## Plugging it in: Pyodide in place of Jobe
 
-- Plugging it in: Python and Blockly programming challenges whose test cases run on a Jobe server via a Django proxy, with attempts saved in the server session. Either keep a minimal Jobe service at a subdomain (not uni-hosted), or remove the backend entirely: Pyodide for Python in the browser, Blockly client-side, attempts in localStorage. Check usage analytics before choosing
-- Django admin: probably unused since content comes from files; confirm with the maintainers before dropping it
+Only Python ever runs on Jobe: the block-based editor generates Python from Blockly client-side (static/js/jobe-editor.js) and the Scratch challenges execute nothing. JobeProxyView is a pass-through, and the test comparison and feedback already run in the browser (static/js/test-code.js). Of 98 programming challenges, 32 have automated test cases: 103 cases, 101 stdin/stdout and 2 function-call.
 
-The static site must not depend on the backend at build time or for any page except the challenges themselves.
+- replace `run_code` with a Pyodide runner returning the same four outcomes (ran, syntax error, time limit exceeded, other error)
+- run it in a Web Worker and terminate the worker on timeout (infinite loops)
+- feed each test case's input as stdin; keep the existing blanking of `input()` prompts so output matches
+- serve the Pyodide files from the site's own origin, not a public CDN (school network filters)
+- attempts move from the Django session (SaveAttemptView) to localStorage
+- check first-load time and memory on old school devices
+
+Django admin: probably unused since content comes from files; confirm with the maintainers before dropping it.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Tim and the technical maintainers have approved the scope, GitHub Pages hosting and repo ownership
+- [ ] #1 Tim and the technical maintainers have approved the scope, static hosting off UC infrastructure, and repo ownership
 - [ ] #2 Every current topic, lesson, curriculum integration and resource page has a static equivalent, and every old URL (including classic redirects) resolves via redirect
 - [ ] #3 All resource PDF combinations the current site serves are downloadable from the static site
 - [ ] #4 Search covers the ported content with content-type filtering
 - [ ] #5 Translated content in every existing locale is published, with English fallback for untranslated pages
 - [ ] #6 Classic activities and their PDFs are reachable from the new site
-- [ ] #7 Programming challenges either run with no backend or run against a separately deployed service at a subdomain, and the static site builds and deploys without it
-- [ ] #8 The site deploys to GitHub Pages from CI, and the UC servers can be retired
-- [ ] #9 PDFs are served from a Tigris bucket, and neither the Pages artifact nor the git history contains them
+- [ ] #7 Every programming challenge with test cases runs and is checked in the browser with Pyodide, with no backend, and an infinite loop reports time limit exceeded
+- [ ] #8 The site deploys to the static host from CI, and the UC servers (including Jobe) can be retired
+- [ ] #9 PDFs are served from a bucket, and neither the deploy artifact nor the git history contains them
 <!-- AC:END -->
