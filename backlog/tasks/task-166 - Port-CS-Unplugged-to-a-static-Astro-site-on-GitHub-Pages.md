@@ -4,7 +4,7 @@ title: Port CS Unplugged to a static Astro site
 status: To Do
 assignee: []
 created_date: '2026-09-22 22:39'
-updated_date: '2026-10-01 05:11'
+updated_date: '2026-10-01 05:14'
 labels:
   - cs-unplugged
   - fellowship
@@ -23,6 +23,7 @@ Contingent on approval from Tim Bell and the current technical maintainers (Jack
 
 ## Decisions
 
+- CS Unplugged keeps its own identity: the brand layer carries its existing name, logo and palette, and LLMs Unplugged keeps its own. The two sites share only the theme package underneath
 - no database and no backend anywhere: content is files in git, edited through GitHub (editors are assumed comfortable with it), so pull requests and the Crowdin workflow keep working
 - hosting is any static host that deploys from the repo; Cloudflare is the working pick for its server-side redirect rules. A small monthly cost is acceptable, so don't trade quality for a free tier
 - programming challenges run in the browser with Pyodide; the Jobe server is retired
