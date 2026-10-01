@@ -4,7 +4,7 @@ title: Port CS Unplugged to a static Astro site
 status: To Do
 assignee: []
 created_date: '2026-09-22 22:39'
-updated_date: '2026-10-01 05:10'
+updated_date: '2026-10-01 05:11'
 labels:
   - cs-unplugged
   - fellowship
@@ -17,14 +17,14 @@ priority: low
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Move www.csunplugged.org (Django/Postgres/Docker, uccser/cs-unplugged) and classic.csunplugged.org (Hugo, uccser/cs-unplugged-classic) to one clean static Astro site on astro-theme-university with a CS Unplugged brand layer, on static hosting off university infrastructure. It stays a separate site from LLMs Unplugged. Context: the Fellowship of the Unplugged steering-committee discussion (PKB note fellowship-of-the-unplugged).
+Move www.csunplugged.org (Django/Postgres/Docker, uccser/cs-unplugged) and classic.csunplugged.org (Hugo, uccser/cs-unplugged-classic) to one clean static Astro site on astro-theme-university with a CS Unplugged brand layer. The aim is a modern, best-practice dev workflow (every change a commit, checks and build in CI, automatic deploys to a static host); it is not about getting the site off UC's infrastructure, and static files can be served from anywhere. It stays a separate site from LLMs Unplugged. Context: the Fellowship of the Unplugged steering-committee discussion (PKB note fellowship-of-the-unplugged).
 
 Contingent on approval from Tim Bell and the current technical maintainers (Jack Morgan and the UC crew). Get their sign-off on scope, hosting and repo ownership before starting any work.
 
 ## Decisions
 
 - no database and no backend anywhere: content is files in git, edited through GitHub (editors are assumed comfortable with it), so pull requests and the Crowdin workflow keep working
-- hosting is any static host; Cloudflare is the working pick for its server-side redirect rules. A small monthly cost is acceptable, so don't trade quality for a free tier
+- hosting is any static host that deploys from the repo; Cloudflare is the working pick for its server-side redirect rules. A small monthly cost is acceptable, so don't trade quality for a free tier
 - programming challenges run in the browser with Pyodide; the Jobe server is retired
 - fallbacks, only if the maintainers ask for them: a git-backed form editor (Keystatic, Sveltia CMS; untested against the theme) for editing without git, then EmDash via astro-theme-university/emdash if a real CMS is needed (roles, scheduling, review)
 
@@ -58,13 +58,13 @@ Django admin: probably unused since content comes from files; confirm with the m
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Tim and the technical maintainers have approved the scope, static hosting off UC infrastructure, and repo ownership
+- [ ] #1 Tim and the technical maintainers have approved the scope, the static hosting and deploy workflow, and repo ownership
 - [ ] #2 Every current topic, lesson, curriculum integration and resource page has a static equivalent, and every old URL (including classic redirects) resolves via redirect
 - [ ] #3 All resource PDF combinations the current site serves are downloadable from the static site
 - [ ] #4 Search covers the ported content with content-type filtering
 - [ ] #5 Translated content in every existing locale is published, with English fallback for untranslated pages
 - [ ] #6 Classic activities and their PDFs are reachable from the new site
 - [ ] #7 Every programming challenge with test cases runs and is checked in the browser with Pyodide, with no backend, and an infinite loop reports time limit exceeded
-- [ ] #8 The site deploys to the static host from CI, and the UC servers (including Jobe) can be retired
+- [ ] #8 Checks and the build run in CI on every change and the site deploys automatically to the static host, with no Django, Postgres or Jobe service needed
 - [ ] #9 PDFs are served from a bucket, and neither the deploy artifact nor the git history contains them
 <!-- AC:END -->
