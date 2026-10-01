@@ -32,7 +32,7 @@ jobs:
       # node + pnpm come from the repo-root mise.toml, so CI resolves the same
       # versions as local dev (pnpm = "latest"; package.json declares a floor
       # via engines.pnpm rather than a packageManager pin).
-      - uses: jdx/mise-action@v4
+      - uses: jdx/mise-action@v5
         with:
           install_args: node pnpm
 
