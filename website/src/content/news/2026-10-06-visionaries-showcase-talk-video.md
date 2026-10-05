@@ -24,7 +24,6 @@ TV has now put the video on YouTube.
   allowfullscreen
 ></iframe>
 
-I've recut the middle section so that a viewer can follow the run. While the
-room works, the screen splits three ways: the stage, the sentence growing on the
-board, and a grid of the sheets. The sheets holding each called-out word light
-up as the hands go up.
+I recut the middle section so the video shows what the room is doing. Alongside
+the stage, the screen shows the sentence growing on the board and a grid of the
+sheets. The sheets holding each called-out word light up as the hands go up.
