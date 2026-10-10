@@ -4,7 +4,7 @@ title: Port CS Unplugged to a static Astro site
 status: To Do
 assignee: []
 created_date: '2026-09-22 22:39'
-updated_date: '2026-10-10 22:58'
+updated_date: '2026-10-10 23:45'
 labels:
   - cs-unplugged
   - fellowship
@@ -25,8 +25,8 @@ Tim Bell and the current technical maintainers (Jack Morgan and the UC crew) hav
 
 - CS Unplugged keeps its own identity: the brand layer carries its existing name, logo and palette, and LLMs Unplugged keeps its own. The two sites share only the theme package underneath
 - no database and no backend anywhere: content is files in git and is edited only through git (no CMS or form editor), so pull requests and the Crowdin workflow keep working
-- hosting is Cloudflare on Ben's org account, chosen for its server-side redirect rules. A small monthly cost is acceptable, so don't trade quality for a free tier
-- the Astro site is a new repo in the ANU Cybernetics GitHub organisation. uccser/cs-unplugged stays untouched as the content source until the spike proves out, then it is transferred or archived
+- hosting is Cloudflare, chosen for its server-side redirect rules, in a new LLMs Unplugged Cloudflare account that holds both sites (not Ben's personal account), deployed with an account-owned API token. A small monthly cost is acceptable, so don't trade quality for a free tier
+- the Astro site is a new repo in a new `llmsunplugged` GitHub organisation, which will hold both projects. The maintainers agreed to the ANU Cybernetics organisation, so confirm the change of home with Tim and Jack before the repo is pushed there. uccser/cs-unplugged stays untouched as the content source until the spike proves out, then it is transferred or archived
 - the spike is a thin vertical slice: the Binary numbers topic end to end (lessons, curriculum integrations and programming challenges, verto tags as MDX components, the binary-cards printable from the bucket, its tested challenges running in Pyodide, Pagefind, redirects for those URLs, CI and deploy)
 - the spike is English only, with locale-ready URLs and content layout; translations follow once the TASK-101 theme i18n lands
 - programming challenges run in the browser with Pyodide; the Jobe server is retired
