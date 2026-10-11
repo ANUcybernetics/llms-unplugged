@@ -4,7 +4,7 @@ title: 'Spike: the CS Unplugged Binary numbers topic end to end as a static Astr
 status: In Progress
 assignee: []
 created_date: '2026-10-10 22:51'
-updated_date: '2026-10-11 01:13'
+updated_date: '2026-10-11 01:18'
 labels:
   - cs-unplugged
   - fellowship
@@ -81,4 +81,6 @@ Progress (11 October 2026), beyond the Binary numbers slice:
 - Upstream's generated Python for the ask-for-a-number block raises a SyntaxWarning on Python 3.14 ('return' in a 'finally' block); the harness now ignores compiler warnings.
 
 Still not ported: the at-home and at-a-distance activities and the general pages (about, principles, people, contact), which are Django templates rather than Markdown.
+
+Printables (11 October 2026): all 20 upstream resources generate offline, 264 PDFs, 250 MB (pixel-painter 93 MB, searching-cards 45 MB, number-hunt 40 MB, sorting-network 38 MB). The print CSS is now upstream's real SCSS compiled with its pinned Bootstrap, and the CS Unplugged heading font is embedded. Four generators use unseeded random (sorting-network, sorting-network-cards, number-hunt, searching-cards); the script seeds them per option combination, and two runs render pixel-identically though the PDF bytes differ. Upstream quirk: number-hunt's sorted and unsorted 'Blank' options share a filename, so 16 option combinations give 14 files. Only page 1 of each resource's default options has been looked at. Footer font falls back to Noto Sans where Open Sans is not installed.
 <!-- SECTION:NOTES:END -->
