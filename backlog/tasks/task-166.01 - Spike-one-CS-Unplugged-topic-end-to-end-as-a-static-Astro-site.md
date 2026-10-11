@@ -4,7 +4,7 @@ title: 'Spike: the CS Unplugged Binary numbers topic end to end as a static Astr
 status: In Progress
 assignee: []
 created_date: '2026-10-10 22:51'
-updated_date: '2026-10-10 23:29'
+updated_date: '2026-10-11 01:07'
 labels:
   - cs-unplugged
   - fellowship
@@ -69,4 +69,6 @@ Local half done on 2026-10-11 in `~/projects/cs-unplugged` (one commit on `main`
 - AC #1, #3, #7: the org repo, the bucket upload and a real CI run and Cloudflare deploy
 - AC #8: Pyodide on an old school device, and the write-up for Tim and the maintainers
 - the only historic unit-plan slug redirected is the literal `unit-plan`; Django accepted any slug there
+
+Decision (11 October 2026): the block-based editor is ported with the upstream Scratch-style custom blocks, for fidelity with the live site. Swapping them for Blockly's built-in blocks is the optional follow-up TASK-166.02.
 <!-- SECTION:NOTES:END -->
