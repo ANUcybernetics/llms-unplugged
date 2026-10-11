@@ -4,7 +4,7 @@ title: 'Spike: the CS Unplugged Binary numbers topic end to end as a static Astr
 status: In Progress
 assignee: []
 created_date: '2026-10-10 22:51'
-updated_date: '2026-10-11 01:07'
+updated_date: '2026-10-11 01:13'
 labels:
   - cs-unplugged
   - fellowship
@@ -71,4 +71,14 @@ Local half done on 2026-10-11 in `~/projects/cs-unplugged` (one commit on `main`
 - the only historic unit-plan slug redirected is the literal `unit-plan`; Django accepted any slug there
 
 Decision (11 October 2026): the block-based editor is ported with the upstream Scratch-style custom blocks, for fidelity with the live site. Swapping them for Blockly's built-in blocks is the optional follow-up TASK-166.02.
+
+Progress (11 October 2026), beyond the Binary numbers slice:
+
+- All seven topics are ported: 802 Markdown files converted, 419 pages built, accessibility and broken-link checks clean. The other six topics needed four converter additions (captioned images, tags split over several lines, author comments, three more named-route link types) and no hand edits.
+- Every Python solution in the new topics passes its own test cases in Pyodide.
+- The block-based editor is ported: Blockly 13 with upstream's custom-blockly-blocks.js and toolbox vendored unchanged (they work on Blockly 13 without edits), generating Python for the same runner. 14 challenges have a block-based page. Checked in a browser: blocks drag from the toolbox, an attempt is saved as workspace XML and restored, and a block program passed its test case. Blockly is its own 800 kB chunk, loaded only on block-based pages.
+- Language counts across all topics: Scratch 98 challenges (pictures only, never run on the site), Python 44, block-based 14.
+- Upstream's generated Python for the ask-for-a-number block raises a SyntaxWarning on Python 3.14 ('return' in a 'finally' block); the harness now ignores compiler warnings.
+
+Still not ported: the at-home and at-a-distance activities and the general pages (about, principles, people, contact), which are Django templates rather than Markdown.
 <!-- SECTION:NOTES:END -->
