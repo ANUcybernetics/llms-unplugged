@@ -4,7 +4,7 @@ title: 'Spike: the CS Unplugged Binary numbers topic end to end as a static Astr
 status: In Progress
 assignee: []
 created_date: '2026-10-10 22:51'
-updated_date: '2026-10-11 01:18'
+updated_date: '2026-10-11 02:07'
 labels:
   - cs-unplugged
   - fellowship
@@ -30,7 +30,7 @@ The topic is Binary numbers, the one that exercises the most of the stack:
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A new repo in the ANU Cybernetics GitHub organisation holds an Astro site on astro-theme-university with a CS Unplugged brand layer
+- [x] #1 A new repo in the ANU Cybernetics GitHub organisation holds an Astro site on astro-theme-university with a CS Unplugged brand layer
 - [x] #2 The Binary numbers topic's lessons, curriculum integrations and programming challenges render from content collections, with their verto tags converted to MDX components
 - [ ] #3 The binary-cards printable's PDF combinations are served from the bucket, not the deploy artifact or git
 - [x] #4 Every Binary numbers programming challenge with test cases, stdin/stdout and function-call, runs and is checked in the browser with Pyodide in a Web Worker, and an infinite loop reports time limit exceeded
@@ -83,4 +83,19 @@ Progress (11 October 2026), beyond the Binary numbers slice:
 Still not ported: the at-home and at-a-distance activities and the general pages (about, principles, people, contact), which are Django templates rather than Markdown.
 
 Printables (11 October 2026): all 20 upstream resources generate offline, 264 PDFs, 250 MB (pixel-painter 93 MB, searching-cards 45 MB, number-hunt 40 MB, sorting-network 38 MB). The print CSS is now upstream's real SCSS compiled with its pinned Bootstrap, and the CS Unplugged heading font is embedded. Four generators use unseeded random (sorting-network, sorting-network-cards, number-hunt, searching-cards); the script seeds them per option combination, and two runs render pixel-identically though the PDF bytes differ. Upstream quirk: number-hunt's sorted and unsorted 'Blank' options share a filename, so 16 option combinations give 14 files. Only page 1 of each resource's default options has been looked at. Footer font falls back to Noto Sans where Open Sans is not installed.
+
+Whole-site port (11 October 2026): the repo is ANUcybernetics/cs-unplugged (private), pushed, and CI passes there (check and build; the deploy steps skip until the RESOURCE_BASE_URL variable and Cloudflare secrets exist). The upstream checkout the scripts read is kept at ~/projects/cs-unplugged-upstream.
+
+Now ported, 463 pages in all, accessibility and broken-link checks clean:
+- general pages (home, about, what is computer science, computational thinking, how do I teach, contact, people, principles) and the MOOCs page, with their prose as MDX; 49 legacy classic-site redirects
+- at-home: 8 activities and the 'Arnold's challenges' question pages, answers checked in the browser exactly as upstream compares them, progress in localStorage
+- at-a-distance: index, delivery guide, 9 lessons and their 9 reveal.js slide decks (converted mechanically from the Django templates, reveal.js 6), upstream's speaker-notes window vendored; the 18 slides and speaker-notes PDFs generate offline (32 MB) and await the bucket like the printables
+
+Findings and loose ends:
+- Vimeo embeds show 'this video isn't available' when viewed from localhost (at-home activity pages and a QR codes slide). Probably a domain allow-list on the Vimeo account; not confirmed. Needs checking on the real domain or with the account owner.
+- At-home step photos upstream are raw phone images (323 MB); the port scales them to 1600px (21 MB).
+- The seven MOOC handout PDFs (5.6 MB) are in the repo with kebab-case names, with redirects from their old addresses (verified locally).
+- Upstream data oddities: the Stroop deck has seven mismatched h1/h2 tags; every at-a-distance lesson icon is commented out; the challenges intro says 'five challenges' where some activities have two or three.
+- Not reproduced: the section jumbotrons, sticky scrollspy sidebars, the language dropdown and 'not available in this language' alerts, and upstream's logging of at-home attempts to the server.
+- Not checked in a browser: four of the nine decks, dark mode, phone widths beyond one header check, keyboard-only use of the at-home challenges and block editor.
 <!-- SECTION:NOTES:END -->
