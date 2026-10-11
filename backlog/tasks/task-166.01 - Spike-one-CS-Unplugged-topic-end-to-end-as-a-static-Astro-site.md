@@ -4,7 +4,7 @@ title: 'Spike: the CS Unplugged Binary numbers topic end to end as a static Astr
 status: In Progress
 assignee: []
 created_date: '2026-10-10 22:51'
-updated_date: '2026-10-11 02:33'
+updated_date: '2026-10-11 02:57'
 labels:
   - cs-unplugged
   - fellowship
@@ -109,4 +109,6 @@ Left blank: durations for at-home and at-a-distance lessons (nothing in the cont
 Not done, held for the cutover: reshaping the upstream YAML itself, and lifting prose-only items ('What you need', key questions) into fields. The at-a-distance index still uses its own suitability boxes in the lesson list.
 
 Duration and age group are now compulsory for every lesson. The at-home and at-a-distance values are best guesses (rule recorded in lesson-metadata.yaml); checking them with the content team is TASK-166.03.
+
+The repo was transferred to llmsunplugged/cs-unplugged (private) on 11 October 2026, once Ben had created the organisation; the old ANUcybernetics URL redirects.
 <!-- SECTION:NOTES:END -->
