@@ -4,7 +4,7 @@ title: 'Spike: the CS Unplugged Binary numbers topic end to end as a static Astr
 status: In Progress
 assignee: []
 created_date: '2026-10-10 22:51'
-updated_date: '2026-10-11 02:27'
+updated_date: '2026-10-11 02:33'
 labels:
   - cs-unplugged
   - fellowship
@@ -107,4 +107,6 @@ For the content team to check, all marked 'inferred' in that file:
 Left blank: durations for at-home and at-a-distance lessons (nothing in the content says how long they take), age groups for at-a-distance lessons, and topics for stroop-effect, information-theory, finite-state-automata and guess-the-sentence, whose subjects have no topic on the site.
 
 Not done, held for the cutover: reshaping the upstream YAML itself, and lifting prose-only items ('What you need', key questions) into fields. The at-a-distance index still uses its own suitability boxes in the lesson list.
+
+Duration and age group are now compulsory for every lesson. The at-home and at-a-distance values are best guesses (rule recorded in lesson-metadata.yaml); checking them with the content team is TASK-166.03.
 <!-- SECTION:NOTES:END -->
