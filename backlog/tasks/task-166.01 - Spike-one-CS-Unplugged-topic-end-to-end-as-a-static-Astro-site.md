@@ -4,7 +4,7 @@ title: 'Spike: the CS Unplugged Binary numbers topic end to end as a static Astr
 status: In Progress
 assignee: []
 created_date: '2026-10-10 22:51'
-updated_date: '2026-10-11 02:07'
+updated_date: '2026-10-11 02:27'
 labels:
   - cs-unplugged
   - fellowship
@@ -98,4 +98,13 @@ Findings and loose ends:
 - Upstream data oddities: the Stroop deck has seven mismatched h1/h2 tags; every at-a-distance lesson icon is commented out; the challenges intro says 'five challenges' where some activities have two or three.
 - Not reproduced: the section jumbotrons, sticky scrollspy sidebars, the language dropdown and 'not available in this language' alerts, and upstream's logging of at-home attempts to the server.
 - Not checked in a browser: four of the nine decks, dark mode, phone widths beyond one header check, keyboard-only use of the at-home challenges and block editor.
+
+Shared lesson schema (11 October 2026): classroom, at-home and at-a-distance lessons now share one summary (src/lib/lessons.ts: format, topics, duration, ages, curriculum areas, suitability), shown by one component on all three lesson templates, and the same fields are search filters (format, topic, ages, duration, suitable for, curriculum area) alongside content type. The content files from upstream are unchanged; what upstream never recorded is in a new hand-written src/content/structure/lesson-metadata.yaml.
+
+For the content team to check, all marked 'inferred' in that file:
+- age groups for all 8 at-home activities (from each activity's 'Skills needed' list and its classroom counterpart): guess-the-sentence and unlocking-the-secret-in-product-codes 8-10 and 11-14, the other six 5-7 and 8-10
+- topic links that no text in the activity backs: mind-reading-magic to Error detection and correction, guess-my-number and find-my-card to Searching algorithms (find-my-card also to Binary numbers), squeezing-pictures to Image representation
+Left blank: durations for at-home and at-a-distance lessons (nothing in the content says how long they take), age groups for at-a-distance lessons, and topics for stroop-effect, information-theory, finite-state-automata and guess-the-sentence, whose subjects have no topic on the site.
+
+Not done, held for the cutover: reshaping the upstream YAML itself, and lifting prose-only items ('What you need', key questions) into fields. The at-a-distance index still uses its own suitability boxes in the lesson list.
 <!-- SECTION:NOTES:END -->
