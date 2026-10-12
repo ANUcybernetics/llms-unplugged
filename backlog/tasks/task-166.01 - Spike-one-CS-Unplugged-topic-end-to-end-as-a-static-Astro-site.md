@@ -4,7 +4,7 @@ title: 'Spike: the CS Unplugged Binary numbers topic end to end as a static Astr
 status: In Progress
 assignee: []
 created_date: '2026-10-10 22:51'
-updated_date: '2026-10-11 02:57'
+updated_date: '2026-10-12 03:00'
 labels:
   - cs-unplugged
   - fellowship
@@ -111,4 +111,6 @@ Not done, held for the cutover: reshaping the upstream YAML itself, and lifting 
 Duration and age group are now compulsory for every lesson. The at-home and at-a-distance values are best guesses (rule recorded in lesson-metadata.yaml); checking them with the content team is TASK-166.03.
 
 The repo was transferred to llmsunplugged/cs-unplugged (private) on 11 October 2026, once Ben had created the organisation; the old ANUcybernetics URL redirects.
+
+Live preview (12 October 2026): https://cs-unplugged.llmsunplugged.workers.dev, in the new llmsunplugged Cloudflare account (workers.dev subdomain llmsunplugged). Deployed by hand from weddle with the PDFs inside the build (LOCAL_PRINTABLES=true, PUBLIC_RESOURCE_BASE_URL=<live address>/static/resources), because R2 is not yet enabled on the account (needs a payment card; API error 10042). 1,553 files, 355 MB, none over the 25 MiB static-asset limit. Checked on the live address: pages 200, / -> /en/ 302, 404 page, classic-site and MOOC-handout 301s, printable and slide PDFs (16 MB one included), a Python challenge run to 'All tests passed', the block editor loading. CI runs green under llmsunplugged/cs-unplugged (run 38197936193); its deploy step is still skipped because RESOURCE_BASE_URL is unset, and a CI deploy would drop the PDFs, so do not set it until they live somewhere outside the build (R2, or a second assets-only Worker). Repo secrets CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID are set. Vimeo: the 'Sorry, this video isn't available' player also appears for the same video on www.csunplugged.org (/en/at-home/mind-reading-magic/, headless Chrome), so it is not caused by the port or the new domain; raise with Tim and Jack.
 <!-- SECTION:NOTES:END -->
