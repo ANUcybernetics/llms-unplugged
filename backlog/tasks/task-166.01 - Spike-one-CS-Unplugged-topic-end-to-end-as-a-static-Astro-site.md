@@ -4,7 +4,7 @@ title: 'Spike: the CS Unplugged Binary numbers topic end to end as a static Astr
 status: In Progress
 assignee: []
 created_date: '2026-10-10 22:51'
-updated_date: '2026-10-12 03:00'
+updated_date: '2026-10-12 04:10'
 labels:
   - cs-unplugged
   - fellowship
@@ -32,11 +32,11 @@ The topic is Binary numbers, the one that exercises the most of the stack:
 <!-- AC:BEGIN -->
 - [x] #1 A new repo in the ANU Cybernetics GitHub organisation holds an Astro site on astro-theme-university with a CS Unplugged brand layer
 - [x] #2 The Binary numbers topic's lessons, curriculum integrations and programming challenges render from content collections, with their verto tags converted to MDX components
-- [ ] #3 The binary-cards printable's PDF combinations are served from the bucket, not the deploy artifact or git
+- [x] #3 The binary-cards printable's PDF combinations are served from the bucket, not the deploy artifact or git
 - [x] #4 Every Binary numbers programming challenge with test cases, stdin/stdout and function-call, runs and is checked in the browser with Pyodide in a Web Worker, and an infinite loop reports time limit exceeded
 - [x] #5 Pagefind search covers the ported pages with content-type filtering
 - [x] #6 The old URLs of the ported pages resolve via server-side redirects
-- [ ] #7 Checks and the build run in CI on every change and the site deploys automatically to Cloudflare
+- [x] #7 Checks and the build run in CI on every change and the site deploys automatically to Cloudflare
 - [ ] #8 Findings are written up for Tim and the maintainers, including Pyodide first-load time and memory on an old school device, and a recommendation on the full port
 <!-- AC:END -->
 
@@ -113,4 +113,6 @@ Duration and age group are now compulsory for every lesson. The at-home and at-a
 The repo was transferred to llmsunplugged/cs-unplugged (private) on 11 October 2026, once Ben had created the organisation; the old ANUcybernetics URL redirects.
 
 Live preview (12 October 2026): https://cs-unplugged.llmsunplugged.workers.dev, in the new llmsunplugged Cloudflare account (workers.dev subdomain llmsunplugged). Deployed by hand from weddle with the PDFs inside the build (LOCAL_PRINTABLES=true, PUBLIC_RESOURCE_BASE_URL=<live address>/static/resources), because R2 is not yet enabled on the account (needs a payment card; API error 10042). 1,553 files, 355 MB, none over the 25 MiB static-asset limit. Checked on the live address: pages 200, / -> /en/ 302, 404 page, classic-site and MOOC-handout 301s, printable and slide PDFs (16 MB one included), a Python challenge run to 'All tests passed', the block editor loading. CI runs green under llmsunplugged/cs-unplugged (run 38197936193); its deploy step is still skipped because RESOURCE_BASE_URL is unset, and a CI deploy would drop the PDFs, so do not set it until they live somewhere outside the build (R2, or a second assets-only Worker). Repo secrets CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID are set. Vimeo: the 'Sorry, this video isn't available' player also appears for the same video on www.csunplugged.org (/en/at-home/mind-reading-magic/, headless Chrome), so it is not caused by the port or the new domain; raise with Tim and Jack.
+
+R2 enabled later on 12 October 2026, superseding the stopgap above: bucket cs-unplugged-files, public at https://pub-09b86e0fac634ddfaee342ee3a93eee1.r2.dev (keys en/<slug>/<file> and slides/en/<lesson>/<file>); 282 PDFs uploaded with wrangler and each checked by size. Repo variable RESOURCE_BASE_URL is set to that address, so pushes to main now deploy from CI (first CI deploy: run 38202539290) and the PDFs are no longer in the site build. Checked live: all 264 printable links on the resource pages return 200, slide and speaker-note PDFs download, and the old /static/resources/ and /static/slides/ addresses 301 to the bucket. The r2.dev address is rate-limited and meant for development; put a custom domain on the bucket at cutover.
 <!-- SECTION:NOTES:END -->
