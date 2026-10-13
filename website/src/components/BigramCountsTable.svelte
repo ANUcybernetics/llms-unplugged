@@ -17,7 +17,9 @@
     dense?: boolean;
     /** Row to band-highlight (the "current" previous-word). */
     activeRow?: string | null;
-    /** Single cell to ring as the chosen/current pair, written [from, to]. */
+    /** Single cell to ring as the chosen/current pair, written [from, to]. Its
+        whole row and column are banded too, so the eye can run from the ringed
+        cell out to both headings. */
     currentCell?: [string, string] | null;
     /** Cells to mark as candidate options (dashed ring), each written
         [from, to]. Used before a dice roll to show every option in play; the
@@ -76,14 +78,19 @@
   </thead>
   <tbody>
     {#each vocab as row}
-      <tr class:active-row={activeRow === row}>
+      <tr class:active-row={activeRow === row || currentCell?.[0] === row}>
         <th scope="row"><code class:unrevealed={!isRevealed(row)}>{row}</code></th>
         {#each vocab as col}
           {@const count = counts.get(row)?.get(col) || 0}
           {@const countB = countsB?.get(row)?.get(col) || 0}
           {@const isCurrent =
             currentCell != null && row === currentCell[0] && col === currentCell[1]}
-          <td class="grid-cell" class:current={isCurrent} class:candidate={isCandidate(row, col)}>
+          <td
+            class="grid-cell"
+            class:current={isCurrent}
+            class:current-col={currentCell?.[1] === col}
+            class:candidate={isCandidate(row, col)}
+          >
             <!-- data-tally lets GridRowToggle's ping effect duplicate the
                  mark in a pseudo-element (content: attr(data-tally)). -->
             {#if countsB}
@@ -202,8 +209,15 @@
     padding: 1.5rem 2rem;
   }
 
-  tr.active-row td {
+  tr.active-row td,
+  td.current-col {
     background: var(--grid-cell-band);
+  }
+
+  /* Where the banded row and column cross: a step stronger, so the chosen
+     cell still stands out from the bands that lead to it. */
+  tr.active-row td.current {
+    background: var(--lm-highlight-strong);
   }
 
   /* Candidate options before a roll: a dashed ring on every cell in play. The
