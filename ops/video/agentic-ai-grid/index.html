@@ -20,9 +20,9 @@
          with agentic-ai-ledger in parts/agentic.js. Every beat lands on a word
          of the voice track (timing.json from align.py). -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="agentic-ai-grid"
-         data-start="0" data-duration="138.46" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="138.46" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="131.46" data-track-index="1"></audio>
+         data-start="0" data-duration="147.81" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="147.81" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="140.81" data-track-index="1"></audio>
     </div>
     <script type="module">
       import * as AG from "./parts/agentic.js";
@@ -234,28 +234,13 @@
         AG.writeAfterStop(tl, d, tIt + 0.2);
         tl.to([ring.el, grid.rowBands[STOP]], { opacity: 0 }, T.start(6) + 0.2, { dur: 0.35 });
 
-        // ============================================================ line 6
-        // "Why from the full stop, and not from 'sandwich'? Because your grid
-        // has no row for 'sandwich'. But it always has one for a full stop."
-        // The row headers are searched top to bottom; the row "sandwich"
-        // would need isn't there. Then the full stop's row, present and lit.
-        AG.ringWords(tl, d, 1, 5, 5, T.word(6, "sandwich") - 0.1, T.word(6, "But") - 0.2);
-        const tSearch = T.word(6, "grid");
-        const per = (T.word(6, "sandwich", 2) - 0.1 - tSearch) / N;
-        bg.vocab.forEach((_, r) => {
-          tl.to(grid.rowBands[r], { opacity: 1 }, tSearch + r * per, { dur: 0.05 });
-          tl.to(grid.rowBands[r], { opacity: 0 }, tSearch + (r + 1) * per + 0.05, { dur: 0.1 });
-        });
-        const tEmpty = T.word(6, "sandwich", 2);
-        tl.to(slotEl, { opacity: 1 }, tEmpty - 0.1, { dur: 0.2 });
-        tl.to(slotEl, { opacity: 0.3 }, tEmpty + 0.5, { dur: 0.25 });
-        tl.to(slotEl, { opacity: 1 }, tEmpty + 0.75, { dur: 0.25 });
-        tl.to(slotEl, { opacity: 0 }, T.word(6, "But"), { dur: 0.3 });
-        const tHas = T.word(6, "one");
-        tl.to(grid.rowBands[STOP], { opacity: 1 }, tHas, { dur: 0.3 });
-        tl.set(ring.el, { x: headBox(STOP).x, y: headBox(STOP).y, scaleX: headBox(STOP).w / 100, scaleY: headBox(STOP).h / 100 }, tHas);
-        tl.to(ring.el, { opacity: 1 }, T.word(6, "full", 2), { dur: 0.25 });
-        tl.to([ring.el, grid.rowBands[STOP]], { opacity: 0 }, T.start(7), { dur: 0.35 });
+        // The missing reply word explains the punctuation restart. The
+        // reply is not part of the context used for the next paper-model draw.
+        AG.ringWords(tl, d, 1, 5, 5, T.word(6, "sandwich"), T.word(6, "restart"));
+        tl.to(slotEl, { opacity: 1 }, T.word(6, "sandwich"), { dur: 0.3 });
+        tl.to(slotEl, { opacity: 0 }, T.word(6, "restart"), { dur: 0.3 });
+        tl.to(grid.rowBands[STOP], { opacity: 1 }, T.word(6, "full"), { dur: 0.3 });
+        tl.to(grid.rowBands[STOP], { opacity: 0 }, T.start(7), { dur: 0.35 });
 
         // ============================================================ line 7
         AG.backfill(tl, T, d, 7);
@@ -266,7 +251,7 @@
         K.vanish(tl, [die.el, d.note.el, d.pen, d.phone.el], t8 - 0.1, { dur: 0.4 });
         const loop = AG.harnessLoop(scene, { x: 950, y: 20, w: 920, h: 850, labels: ["roll", "punctuation", "pause", "message out", "reply in", "carry on"] });
         AG.drawLoop(tl, loop, t8 + 0.4, 1.8);
-        // "never learned what comes next after 'the dog'": the row for "dog"
+        // The row for "dog"
         // holds a full stop and "runs", and nothing else
         const tAfter = T.word(8, "after");
         tl.to(grid.rowBands[DOG], { opacity: 1 }, tAfter, { dur: 0.3 });
@@ -274,10 +259,10 @@
         tl.to([fills[DOG][STOP], fills[DOG][V("runs")]], { opacity: 0.8 }, T.word(8, "dog") + 0.1, { dur: 0.3 });
         const tAsk = AG.harness(tl, T, loop, 8, "rolled");
         tl.to(fills[DOG][V("runs")], { opacity: 0 }, tAsk, { dur: 0.3 });
-        tl.to([grid.rowBands[DOG], fills[DOG][STOP], ...mutes], { opacity: 0 }, T.word(8, "thing"), { dur: 0.5 });
+        tl.to([grid.rowBands[DOG], fills[DOG][STOP], ...mutes], { opacity: 0 }, T.word(8, "You"), { dur: 0.5 });
 
         // ============================================================ line 9
-        // take the person out: the loop runs on its own
+        // Software takes over the harness; the reply can guide a larger model.
         const t10 = T.start(10);
         AG.takeOut(tl, T, loop, 9, t10 - 0.6);
 

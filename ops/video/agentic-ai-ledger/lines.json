@@ -3,8 +3,8 @@
     "i": 0,
     "speaker": "USHINI",
     "tc": true,
-    "caption": "This is the one that's all over the news. AI agents: models that browse the web, write code, book flights. It sounds like a whole new kind of technology. It isn't. It's the loop you've already run, with one rule added.",
-    "tts": "This is the one that's all over the news. AI agents: models that browse the web, write code, book flights. It sounds like a whole new kind of technology. It isn't. It's the loop you've already run, with one rule added."
+    "caption": "An AI agent can use tools, such as a web browser, while it works on a task. We'll add a tool to our paper model: sending a text message. It's a way to see who does what when a model asks for help.",
+    "tts": "An AI agent can use tools, such as a web browser, while it works on a task. We'll add a tool to our paper model: sending a text message. It's a way to see who does what when a model asks for help."
   },
   {
     "i": 1,
@@ -17,8 +17,8 @@
     "i": 2,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "So the model doesn't decide to use a tool. It draws one, like any other word. Some rows almost never call it. Some always do.",
-    "tts": "So the model doesn't decide to use a tool. It draws one, like any other word. Some rows almost never call it. Some always do."
+    "caption": "In our activity, the model draws punctuation like any other word. Some rows never call the tool. Some always do.",
+    "tts": "In our activity, the model draws punctuation like any other word. Some rows never call the tool. Some always do."
   },
   {
     "i": 3,
@@ -61,35 +61,49 @@
     "i": 6,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "Why from the full stop, and not from \"sandwich\"? Because nobody has a row for \"sandwich\". But there's always a row for a full stop.",
-    "tts": "Why from the full stop, and not from \"sandwich\"? Because nobody has a row for \"sandwich\". But there's always a row for a full stop."
+    "caption": "Our sheets have no row for \"sandwich\". We restart from the full stop so we have a row to use. That also means the reply cannot change our model's next choice.",
+    "tts": "Our sheets have no row for \"sandwich\". We restart from the full stop so we have a row to use. That also means the reply cannot change our model's next choice."
   },
   {
     "i": 7,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Replies take time. If nothing's back by your next punctuation mark, leave a gap and fill it in later.",
-    "tts": "Replies take time. If nothing's back by your next punctuation mark, leave a gap and fill it in later."
+    "caption": "Replies take time. If nothing's back, leave a gap before the punctuation mark. Write the mark and keep going from its row. Fill the gap when the first reply arrives.",
+    "tts": "Replies take time. If nothing's back, leave a gap before the punctuation mark. Write the mark and keep going from its row. Fill the gap when the first reply arrives.",
+    "parts": [
+      "Replies take time. If nothing's back, leave a gap before the punctuation mark. Write the mark and keep going from its row.",
+      "Fill the gap when the first reply arrives."
+    ],
+    "beats": [
+      0.8
+    ]
   },
   {
     "i": 8,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "Here's the bit that matters. The model never learned what comes next after \"the dog\". It only drew when to ask. And the thing that paused it, sent the message, and spliced the answer back in? That was you. You were the harness.",
-    "tts": "Here's the bit that matters. The model never learned what comes next after \"the dog\". It only drew when to ask. And the thing that paused it, sent the message, and spliced the answer back in? That was you. You were the harness."
+    "caption": "The model drew a full stop after \"dog\". You paused it, sent the message, and added the reply before carrying on. Those jobs make you the harness: the part that connects the model to its tools.",
+    "tts": "The model drew a full stop after \"dog\". You paused it, sent the message, and added the reply before carrying on. Those jobs make you the harness: the part that connects the model to its tools."
   },
   {
     "i": 9,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Take the person out, and you've got a model acting on its own. That's what the news means by an agent. So: what would you let it do without asking you first?",
-    "tts": "Take the person out, and you've got a model acting on its own. That's what the news means by an agent. So: what would you let it do without asking you first?"
+    "caption": "Software can do those jobs too. In a larger model, the reply can inform what happens next: a search result might lead to another search. Our paper model always carries on from the punctuation row.",
+    "tts": "Software can do those jobs too. In a larger model, the reply can inform what happens next: a search result might lead to another search. Our paper model always carries on from the punctuation row."
   },
   {
     "i": 10,
     "speaker": "USHINI",
     "tc": true,
-    "caption": "Don't answer yet. In a few minutes, your group will be the harness.",
-    "tts": "Don't answer yet. In a few minutes, your group will be the harness."
+    "caption": "What would you let an agent do without asking you first? Pause here and discuss that with your group. Then try the activity, with your group doing the harness's jobs.",
+    "tts": "What would you let an agent do without asking you first? Pause here and discuss that with your group. Then try the activity, with your group doing the harness's jobs.",
+    "parts": [
+      "What would you let an agent do without asking you first? Pause here and discuss that with your group.",
+      "Then try the activity, with your group doing the harness's jobs."
+    ],
+    "beats": [
+      2.0
+    ]
   }
 ]

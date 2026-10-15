@@ -1,34 +1,34 @@
 WEBVTT
 
-00:00:00.150 --> 00:00:17.220
-This is the one that's all over the news. AI agents: models that browse the web, write code, book flights. It sounds like a whole new kind of technology. It isn't. It's the loop you've already run, with one rule added.
+00:00:00.190 --> 00:00:14.440
+An AI agent can use tools, such as a web browser, while it works on a task. We'll add a tool to our paper model: sending a text message. It's a way to see who does what when a model asks for help.
 
-00:00:18.590 --> 00:00:29.040
+00:00:15.850 --> 00:00:26.220
 Here's the rule. Fill the cup and draw, exactly as before. But the moment you draw a punctuation mark, a full stop or a comma, pause. That's a tool call.
 
-00:00:29.770 --> 00:00:40.920
-So the model doesn't decide to use a tool. It draws one, like any other word. Some rows almost never call it. Some always do.
+00:00:26.790 --> 00:00:36.520
+In our activity, the model draws punctuation like any other word. Some rows never call the tool. Some always do.
 
-00:00:42.190 --> 00:00:55.840
+00:00:38.010 --> 00:00:51.420
 Say you've written "here comes the dog". The row for "dog": two red for a full stop, two blue for "runs". Draw one. Red. Full stop. So pause.
 
-00:00:57.150 --> 00:01:05.160
+00:00:52.670 --> 00:01:00.780
 The tool is a text message. Send "What comes next?", and the sentence so far, to three friends or group chats.
 
-00:01:06.450 --> 00:01:17.460
+00:01:02.010 --> 00:01:13.040
 The first reply back, "and it wants my sandwich", is your tool result. Write the whole thing down, then the full stop you drew. Then carry on, from the full stop.
 
-00:01:18.110 --> 00:01:28.000
-Why from the full stop, and not from "sandwich"? Because nobody has a row for "sandwich". But there's always a row for a full stop.
+00:01:13.690 --> 00:01:25.540
+Our sheets have no row for "sandwich". We restart from the full stop so we have a row to use. That also means the reply cannot change our model's next choice.
 
-00:01:29.490 --> 00:01:35.540
-Replies take time. If nothing's back by your next punctuation mark, leave a gap and fill it in later.
+00:01:27.130 --> 00:01:38.320
+Replies take time. If nothing's back, leave a gap before the punctuation mark. Write the mark and keep going from its row. Fill the gap when the first reply arrives.
 
-00:01:36.350 --> 00:01:53.380
-Here's the bit that matters. The model never learned what comes next after "the dog". It only drew when to ask. And the thing that paused it, sent the message, and spliced the answer back in? That was you. You were the harness.
+00:01:39.010 --> 00:01:52.420
+The model drew a full stop after "dog". You paused it, sent the message, and added the reply before carrying on. Those jobs make you the harness: the part that connects the model to its tools.
 
-00:01:54.790 --> 00:02:04.480
-Take the person out, and you've got a model acting on its own. That's what the news means by an agent. So: what would you let it do without asking you first?
+00:01:53.890 --> 00:02:05.560
+Software can do those jobs too. In a larger model, the reply can inform what happens next: a search result might lead to another search. Our paper model always carries on from the punctuation row.
 
-00:02:05.470 --> 00:02:10.220
-Don't answer yet. In a few minutes, your group will be the harness.
+00:02:06.210 --> 00:02:19.280
+What would you let an agent do without asking you first? Pause here and discuss that with your group. Then try the activity, with your group doing the harness's jobs.

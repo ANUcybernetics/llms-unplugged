@@ -14,7 +14,7 @@
 // - splice(): the reply written whole, then the waiting tile (line 5)
 // - backfill(): a slow reply; leave a gap, carry on, fill it in later (line 7)
 // - harnessLoop() / harness(): the loop with a person at its centre, then the
-//   person taken out (lines 8 and 9)
+//   person replaced by software (lines 8 and 9)
 //
 // Every function adds tweens at absolute times the caller's timing.json gives;
 // nothing here reads a clock. The friend's reply is the script's invented one.
@@ -431,14 +431,17 @@ export function backfill(tl, T, d, L) {
     tl.to(dot, { y: -6 }, t, { dur: 0.1, ease: "out-quad" });
     tl.to(dot, { y: 0 }, t + 0.1, { dur: 0.1, ease: "in-quad" });
   }
-  // the gap, bracketed; the pencil carries on past it to the next punctuation mark
+  // Replay the delayed case: hide the old continuation, then reserve the
+  // reply's place BEFORE writing the punctuation and continuing from its row.
+  tl.set([words[R2.stop], words[R2.it], words[R2.watches], words[R2.stop2]], { opacity: 0 }, t0);
+  const tGap = T.word(L, "gap");
   const k = K();
-  k.write(tl, words[R2.open], t0 + 0.5, 0.2);
-  k.write(tl, words[R2.close], t0 + 0.65, 0.2);
-  write(tl, d, 1, R2.watches, T.word(L, "back"));
-  write(tl, d, 1, R2.stop2, T.word(L, "punctuation"));
-  // "leave a gap": the brackets light
-  const gap = ringWords(tl, d, 1, R2.open, R2.close, T.word(L, "gap"), T.end(L) + 0.9);
+  k.write(tl, words[R2.open], tGap, 0.2);
+  k.write(tl, words[R2.close], tGap + 0.2, 0.2);
+  write(tl, d, 1, R2.stop, T.word(L, "Write"));
+  write(tl, d, 1, R2.it, T.word(L, "going"));
+  write(tl, d, 1, R2.watches, T.word(L, "row"));
+  const gap = ringWords(tl, d, 1, R2.open, R2.close, tGap, T.end(L) + 0.9);
   // the reply lands, and fills the gap
   tl.to(p.typing, { opacity: 0 }, tFill - 0.1, { dur: 0.15 });
   tl.fromTo(p.reply, { opacity: 0, y: 16 }, { opacity: 1, y: 0 }, tFill, {
@@ -609,64 +612,47 @@ export function dimStations(tl, loop, t) {
 }
 
 // ------------------------------------------------------------------ lines 8, 9
-// "... It only rolled when to ask. And the thing that paused it, sent the
-// message, and spliced the answer back in? That was you. You were the harness."
-// then "Take the person out ...": the loop runs on its own. `verb` is "rolled"
-// or "drew". Returns the time the model's own steps light (for the caller's
-// model-side highlight).
+// The person performs the harness's jobs. Software can replace that work;
+// a larger model can also use a returned result in its next choice.
 export function harness(tl, T, loop, L, verb) {
-  // the model's own step: roll (or draw), landing on punctuation
   const tAsk = T.word(L, verb);
   lightStation(tl, loop, 0, tAsk);
-  lightStation(tl, loop, 1, T.word(L, "ask"));
-  // the person appears; each hand-off step lights as it's named, the hand on it
-  const tThing = T.word(L, "thing");
-  tl.to(loop.person, { opacity: 1 }, tThing, { dur: 0.4 });
+  lightStation(tl, loop, 1, T.word(L, "stop"));
+  const tYou = T.word(L, "You");
+  tl.to(loop.person, { opacity: 1 }, tYou, { dur: 0.4 });
   const reach = (i, t) => {
     lightStation(tl, loop, i, t);
     tl.to(loop.hands[i], { opacity: 1 }, t, { dur: 0.3 });
   };
   reach(2, T.word(L, "paused"));
   reach(3, T.word(L, "sent"));
-  reach(4, T.word(L, "spliced"));
-  reach(5, T.word(L, "back"));
-  // "That was you": the hand is on the model's steps too (it rolled the die)
-  const tYou = T.word(L, "you");
-  reach(0, tYou);
-  reach(1, tYou + 0.15);
-  // "You were the harness": the person's head lights gold
-  const tHarness = T.word(L, "harness");
-  tl.to(loop.goldHead, { opacity: 1 }, tHarness - 0.1, { dur: 0.3 });
-  tl.to(loop.person, { scale: 1.12 }, tHarness - 0.1, { dur: 0.3, yoyo: true, ease: "out-cubic" });
+  reach(4, T.word(L, "added"));
+  reach(5, T.word(L, "carrying"));
+  tl.to(loop.goldHead, { opacity: 1 }, T.word(L, "harness"), { dur: 0.3 });
   return tAsk;
 }
 
 export function takeOut(tl, T, loop, L, tEnd) {
-  const tOut = T.word(L, "out");
-  tl.to([loop.person, ...loop.hands], { opacity: 0 }, tOut - 0.1, { dur: 0.5, ease: "in-cubic" });
-  dimStations(tl, loop, tOut);
-  // the loop keeps turning, arrows lighting in turn
-  const n = loop.stations.length;
-  const t0 = tOut + 0.8,
-    per = 0.55;
-  // and a glint runs round it (a gap in the gold)
-  K().glint(tl, loop.arcs, { kind: "gap", from: t0, to: tEnd, lap: 2.4, rest: 1.2, seg: 0.25 });
-  for (let m = 0; t0 + m * per < tEnd; m++) {
-    const i = m % n,
-      t = t0 + m * per;
-    tl.to(
-      [loop.stations[i].dot, loop.stations[i].text, loop.arcs[i], loop.heads[i]],
-      { opacity: 1 },
-      t,
-      { dur: 0.15 },
-    );
-    tl.to(
-      [loop.stations[i].dot, loop.stations[i].text, loop.arcs[i], loop.heads[i]],
-      { opacity: 0.45 },
-      t + per,
-      { dur: 0.35 },
-    );
-  }
+  const k = K();
+  const tSoftware = T.word(L, "Software");
+  const panel = k.svg("g", {}, loop.svg);
+  k.svg("rect", { x: loop.cx - 130, y: loop.cy - 55, width: 260, height: 110, class: "line" }, panel);
+  k.svg("text", { x: loop.cx, y: loop.cy + 12, "text-anchor": "middle", "font-size": 38, class: "ui", fill: "var(--text)", text: "software" }, panel);
+  k.set(panel, { opacity: 0 });
+  tl.to(loop.person, { opacity: 0 }, tSoftware, { dur: 0.4 });
+  tl.to(panel, { opacity: 1 }, tSoftware + 0.25, { dur: 0.4 });
+  // Keep the connections: removing a person does not remove the harness.
+  dimStations(tl, loop, tSoftware);
+  const reply = loop.stations[4], choice = loop.stations[0];
+  const feedback = k.svg("g", {}, loop.svg);
+  k.svg("path", { d: `M${reply.x - 15} ${reply.y} Q20 ${reply.y} 20 ${choice.y + 30} L${choice.x - 30} ${choice.y + 30} m-14 -8 l14 8 l-14 8`, class: "line gold" }, feedback);
+  k.svg("text", { x: 36, y: loop.cy - 65, "font-size": 26, class: "ui", fill: "var(--gold-2)", text: "larger model" }, feedback);
+  k.set(feedback, { opacity: 0 });
+  tl.to(feedback, { opacity: 1 }, T.word(L, "reply"), { dur: 0.5 });
+  lightStation(tl, loop, 4, T.word(L, "reply"));
+  lightStation(tl, loop, 0, T.word(L, "next"));
+  tl.to(feedback, { opacity: 0.25 }, T.word(L, "paper"), { dur: 0.4 });
+  lightStation(tl, loop, 1, T.word(L, "punctuation"));
 }
 
 // an opacity-only arrival (K.appear also tweens scale to 1, which would undo

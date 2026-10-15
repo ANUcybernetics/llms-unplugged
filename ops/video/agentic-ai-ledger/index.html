@@ -19,9 +19,9 @@
          harness beats (phone, splice, back-fill, the loop) are shared in
          parts/agentic.js. Every beat lands on a word of the voice track. -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="agentic-ai-ledger"
-         data-start="0" data-duration="139.27" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="139.27" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="132.27" data-track-index="1"></audio>
+         data-start="0" data-duration="148.31" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="148.31" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="141.31" data-track-index="1"></audio>
     </div>
     <script type="module">
       import * as AG from "./parts/agentic.js";
@@ -222,18 +222,18 @@
         AG.writeAfterStop(tl, d, tIt + 0.5);
 
         // ============================================================ line 6
-        // "Why from the full stop, and not from 'sandwich'? Because nobody has a
-        // row for 'sandwich'. But there's always a row for a full stop." The
-        // sheets come back; their row words are read in order, and where
-        // "sandwich" would sort (between "runs" and "sits") there's nothing.
+        // "Our sheets have no row for 'sandwich'. We restart from the full stop
+        // so we have a row to use." The sheets come back; their row words are
+        // read in order, and where "sandwich" would sort (between "runs" and
+        // "sits") there's nothing. Then the full stop's row lights.
         const t6 = T.start(6);
         tl.to([fStop.el, drawn2.el, d.phone.el, ...stopCounters.map((c) => c.el)], { opacity: 0 }, t6 + 0.2, { dur: 0.35 });
         tl.to(cup.el, CUP_A, t6 + 0.4, { dur: 0.6, ease: "in-out-cubic" });
         tl.to(sheets.map((s) => s.el), { opacity: 1 }, t6 + 0.5, { dur: 0.5 });
-        AG.ringWords(tl, d, 1, 5, 5, T.word(6, "sandwich") - 0.1, T.word(6, "But") - 0.2);
+        AG.ringWords(tl, d, 1, 5, 5, T.word(6, "sandwich") - 0.1, T.word(6, "We") - 0.2);
         const xRuns = find("runs"), xSits = find("sits");
         const readTo = rows.indexOf(xRuns);
-        const tRead = T.word(6, "nobody"), tGap = T.word(6, "sandwich", 2);
+        const tRead = T.word(6, "have"), tGap = T.word(6, "sandwich") + 0.3;
         const per = (tGap - 0.2 - tRead) / (readTo + 1);
         rows.slice(0, readTo + 1).forEach((x, n) => {
           tl.to(x.r.prefixEl, { fill: "#be830e" }, tRead + n * per, { dur: 0.05 });
@@ -245,11 +245,10 @@
         tl.to(slotEl, { opacity: 1 }, tGap - 0.1, { dur: 0.2 });
         tl.to(xSits.mute, { opacity: 0.5 }, tGap - 0.1, { dur: 0.2 });
         tl.to(xRuns.mute, { opacity: 0.5 }, tGap - 0.1, { dur: 0.2 });
-        tl.to([slotEl, xSits.mute, xRuns.mute], { opacity: 0 }, T.word(6, "But"), { dur: 0.3 });
+        tl.to([slotEl, xSits.mute, xRuns.mute], { opacity: 0 }, T.word(6, "We"), { dur: 0.3 });
         const xStop = find(".");
-        const tHas = T.word(6, "row", 2);
-        tl.to(xStop.r.lit, { opacity: 1 }, tHas, { dur: 0.3 });
-        tl.to(xStop.outline, { opacity: 1 }, T.word(6, "full", 2), { dur: 0.25 });
+        tl.to(xStop.r.lit, { opacity: 1 }, T.word(6, "full"), { dur: 0.3 });
+        tl.to(xStop.outline, { opacity: 1 }, T.word(6, "row", 2), { dur: 0.25 });
         tl.to([xStop.r.lit, xStop.outline], { opacity: 0 }, T.start(7) - 0.2, { dur: 0.35 });
 
         // ============================================================ line 7
@@ -279,7 +278,7 @@
         tl.to([xDog.r.cells[cStop].lit, xDog.r.cells[cRuns].lit], { opacity: 1, fillOpacity: 0.6 }, T.word(8, "dog") + 0.1, { dur: 0.3 });
         const tAsk = AG.harness(tl, T, loop, 8, "drew");
         tl.to(xDog.r.cells[cRuns].lit, { opacity: 0 }, tAsk, { dur: 0.3 });
-        tl.to([xDog.r.lit, xDog.r.cells[cStop].lit, ...dogMates.map((x) => x.mute)], { opacity: 0 }, T.word(8, "thing"), { dur: 0.5 });
+        tl.to([xDog.r.lit, xDog.r.cells[cStop].lit, ...dogMates.map((x) => x.mute)], { opacity: 0 }, T.word(8, "You"), { dur: 0.5 });
 
         // ============================================================ line 9
         const t10 = T.start(10);
