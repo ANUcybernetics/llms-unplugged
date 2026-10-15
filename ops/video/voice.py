@@ -12,6 +12,7 @@ the real voice-over is recorded.
 
     ops/video/voice.py scratch <slug>
     ops/video/voice.py scratch --all
+    ops/video/voice.py reading          # the booth's reading copy -> out/video/reading-copy*.pdf
 
 Parses the script's `## Script` section (ops/video/scripts/<slug>.md, or
 ops/video/v1/scripts/<name>.md for a `v1/<name>` slug) into spoken lines,
@@ -343,6 +344,49 @@ app = typer.Typer()
 @app.callback()
 def cli() -> None:
     pass
+
+
+@app.command()
+def reading() -> None:
+    """Write the reading copy for the recording booth: every video's spoken
+    lines with their pauses, as out/video/reading-copy.pdf and one copy per
+    speaker with the other voice's lines as cues (ops/video/reading-copy.typ).
+    Edit the wording in the scripts, never in the copy."""
+    videos = []
+    for slug in SLUGS:
+        md = script_path(slug).read_text()
+        title = re.search(r"^# (.+)$", md, re.MULTILINE).group(1)
+        lines = []
+        for line in parse_script(md, slug):
+            # the TTS parts, which read as the caption does: the spoken lines
+            # carry no em dashes or typographic quotes for tts_text to change
+            texts = line.get("parts", [line["caption"]])
+            beats = line.get("beats", [])
+            # only the script's [beat]s are marked; the gap between lines isn't
+            pauses = beats + [None] * (len(texts) - len(beats))
+            lines.append(
+                {
+                    "speaker": line["speaker"],
+                    "parts": [{"text": t, "pause": p} for t, p in zip(texts, pauses)],
+                }
+            )
+        videos.append({"slug": slug, "title": title, "lines": lines})
+
+    out = ROOT / "out/video"
+    out.mkdir(parents=True, exist_ok=True)
+    data = out / "reading-copy.json"
+    data.write_text(json.dumps(videos, indent=1))
+    for speaker, name in [("", "reading-copy"), ("BEN", "reading-copy-ben"),
+                          ("USHINI", "reading-copy-ushini")]:  # fmt: skip
+        pdf = out / f"{name}.pdf"
+        subprocess.run(
+            ["typst", "compile", "--root", str(ROOT)]
+            + ["--input", f"data=/{data.relative_to(ROOT)}"]
+            + ["--input", f"speaker={speaker}"]
+            + [str(ROOT / "ops/video/reading-copy.typ"), str(pdf)],
+            check=True,
+        )
+        logger.info(f"wrote {pdf}")
 
 
 @app.command()

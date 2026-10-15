@@ -116,6 +116,7 @@ a commit here, a re-record of that line, and a re-render.
 ```bash
 ops/video/build-data.py            # ledger sets, booklet, page images -> _kit/generated/
 ops/video/voice.py scratch --all   # scratch voice tracks (edge-tts) -> out/video/<slug>/voice.wav
+ops/video/voice.py reading         # reading copy for the booth -> out/video/reading-copy*.pdf
 ops/video/align.py <slug>          # timing.json + captions.vtt from the voice track
 ops/video/video.py check <slug>    # npm run check, duration synced from timing.json
 ops/video/video.py render <slug>   # 1080p25 draft; --final for the 4K50 master
