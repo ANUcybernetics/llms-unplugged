@@ -5,7 +5,6 @@ description:
   of coloured counters to discover how AI writes stories
 ---
 
-import { LEDGER_PALETTE } from "../lib/ledger";
 import LedgerToken from "../components/LedgerToken.astro";
 import LedgerRow from "../components/LedgerRow.svelte";
 import LedgerCup from "../components/LedgerCup.svelte";
@@ -19,6 +18,30 @@ import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
 import BgMusic from "../components/BgMusic.astro";
 import CopyButton from "../components/CopyButton.astro";
 import { STORY_FIELDS, STORY_PROMPT } from "../lib/storyPrompt";
+import {
+  PALETTE,
+  ROW_THE,
+  ROW_TO,
+  ROW_UP,
+  ROW_WATCHES,
+  SHEET_FIVE,
+  ROW_STOP,
+  ROW_IT,
+  ROW_SITS,
+  ROW_ON,
+  ROW_FENCE,
+  ROW_HERE,
+  ROW_COMES,
+  ROW_MAGPIE,
+  STORY_LEDGER,
+  SHEET_RANGES,
+  MAGPIE_OPENING,
+  ROW_THE_BEACH,
+  ROW_THE_STORM,
+  ROW_THE_KOOKABURRA,
+  ROW_THE_CREEK,
+  ROW_THE_BUSH,
+} from "./ledgerExamples";
 import "../styles/widgets.css";
 import "../styles/ledger.css";
 import "./how-ai-writes-stories-ledger.deck.css";
@@ -26,214 +49,6 @@ import "./how-ai-writes-stories-ledger.deck.css";
 <BgMusic />
 
 export const components = { code: LedgerToken };
-
-```comment
-Every group generates from a different book (see the lesson entry for the five
-   sets), and the slides walk through one of them: every ROW_* below is a real
-   row of The magpie set (data/originals/the-magpie.txt), the whole 133-token
-   text dealt across 5 sheets, printed for a room with counters in four
-   colours --- `llms_unplugged ledger -i data/originals/the-magpie.txt
-   --max-tokens 140 --sheets 5 --palette @cli/ledger-palette-four.json
-   --max-followers 4 --prefill tallies`, which is the recipe the Makefile runs
-   for every book. Four colours at four columns is a single palette cycle, so
-   every row on every sheet takes the same four and no widget here needs to
-   know where its row sits on the page. Change the book or the budget and the
-   counts below have to be re-read off the new sheets. SHEET_FIVE is that set's
-   fifth sheet entire, in the order the deal printed it. The five ROW_THE_* are
-   the outdoors texts' rows for "the" (data/originals/outdoors-*.txt), each set
-   built with --max-followers 4 for training. The walkthrough follows the
-   generation-ledger and one-story-all-together videos (ops/video/v1/scripts/), so
-   a change here is a change there too.
-```
-
-export const PALETTE = LEDGER_PALETTE.slice(0, 4);
-
-```comment
-Sheet 5 of the magpie set, "the" to "watches": the sheet the walkthrough opens
-   on, and "the" --- the one row with all four colours in use and the most
-   marks --- is row 0.
-```
-
-export const ROW_THE = {
-  prefix: "the",
-  followers: [
-    { text: "magpie", count: 5 },
-    { text: "fence", count: 6 },
-    { text: "postie", count: 4 },
-    { text: "dog", count: 4 },
-  ],
-};
-
-export const ROW_TO = {
-  prefix: "to",
-  followers: [{ text: "the", count: 3 }],
-};
-
-export const ROW_UP = {
-  prefix: "up",
-  followers: [{ text: "it", count: 3 }],
-};
-
-export const ROW_WATCHES = {
-  prefix: "watches",
-  followers: [{ text: ".", count: 3 }],
-};
-
-export const SHEET_FIVE = [ROW_THE, ROW_TO, ROW_UP, ROW_WATCHES];
-
-```comment
-The rest of the generation walkthrough, off the other sheets: "it sits on the
-   fence . Here comes the magpie ." --- the book says "Here comes the postie ."
-   and "Down comes the magpie .", and never this. ROW_STOP and ROW_THE are each
-   drawn from twice, which is the point of the second visits.
-```
-
-export const ROW_STOP = {
-  prefix: ".",
-  followers: [
-    { text: "it", count: 7 },
-    { text: "Here", count: 4 },
-    { text: "Down", count: 3 },
-    { text: "Swoop", count: 3 },
-  ],
-};
-
-export const ROW_IT = {
-  prefix: "it",
-  followers: [
-    { text: "sits", count: 3 },
-    { text: "watches", count: 3 },
-    { text: "goes", count: 3 },
-    { text: "is", count: 1 },
-  ],
-};
-
-export const ROW_SITS = {
-  prefix: "sits",
-  followers: [{ text: "on", count: 3 }],
-};
-
-export const ROW_ON = {
-  prefix: "on",
-  followers: [{ text: "the", count: 3 }],
-};
-
-export const ROW_FENCE = {
-  prefix: "fence",
-  followers: [{ text: ".", count: 6 }],
-};
-
-export const ROW_HERE = {
-  prefix: "Here",
-  followers: [{ text: "comes", count: 4 }],
-};
-
-export const ROW_COMES = {
-  prefix: "comes",
-  followers: [{ text: "the", count: 7 }],
-};
-
-export const ROW_MAGPIE = {
-  prefix: "magpie",
-  followers: [
-    { text: "is", count: 2 },
-    { text: ".", count: 3 },
-  ],
-};
-
-```comment
-The nine rows the walkthrough draws from, as one sheet in the deal's order
-   (lowercase alphabetical, punctuation first) so every frame of the
-   walkthrough shows the same ledger and only the lit row moves. Not a sheet
-   any group holds --- the room's copies are spread over the five --- and the
-   slide's label says so.
-```
-
-export const STORY_LEDGER = [
-  ROW_STOP,
-  ROW_COMES,
-  ROW_FENCE,
-  ROW_HERE,
-  ROW_IT,
-  ROW_MAGPIE,
-  ROW_ON,
-  ROW_SITS,
-  ROW_THE,
-];
-
-export const SHEET_RANGES = [
-  ["!", "back"],
-  ["comes", "goes"],
-  ["Here", "on"],
-  ["postie", "Swoop"],
-  ["the", "watches"],
-];
-
-```comment
-The first three sentences of the set's text as the tokeniser read it, for
-   the training walkthrough: short enough that its ten rows fit a sheet at a
-   readable size beside the text. The pair "the fence" at step 8 is a new
-   word in a row that already has one; ". it" comes round again at step 10,
-   the slide that shows a mark landing on a box that already has one.
-```
-
-export const MAGPIE_OPENING =
-  "the magpie is back . it sits on the fence . it watches .";
-
-```comment
-The five outdoors texts' rows for "the", for the finale: same word, five
-   different models.
-```
-
-export const ROW_THE_BEACH = {
-  prefix: "the",
-  followers: [
-    { text: "sand", count: 2 },
-    { text: "water", count: 2 },
-    { text: "dog", count: 3 },
-    { text: "sun", count: 1 },
-  ],
-};
-
-export const ROW_THE_STORM = {
-  prefix: "the",
-  followers: [
-    { text: "sky", count: 2 },
-    { text: "tin", count: 1 },
-    { text: "dog", count: 2 },
-    { text: "rain", count: 1 },
-  ],
-};
-
-export const ROW_THE_KOOKABURRA = {
-  prefix: "the",
-  followers: [
-    { text: "kookaburra", count: 3 },
-    { text: "gum", count: 1 },
-    { text: "cat", count: 2 },
-    { text: "street", count: 1 },
-  ],
-};
-
-export const ROW_THE_CREEK = {
-  prefix: "the",
-  followers: [
-    { text: "creek", count: 2 },
-    { text: "rocks", count: 2 },
-    { text: "mud", count: 2 },
-    { text: "yabby", count: 2 },
-  ],
-};
-
-export const ROW_THE_BUSH = {
-  prefix: "the",
-  followers: [
-    { text: "track", count: 3 },
-    { text: "hill", count: 1 },
-    { text: "sun", count: 1 },
-    { text: "water", count: 1 },
-  ],
-};
 
 ```comment
 90-minute workshop for students aged 10-16, in groups of 4-5. Generation comes
