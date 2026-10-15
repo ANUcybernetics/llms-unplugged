@@ -3,22 +3,22 @@
     "i": 0,
     "speaker": "USHINI",
     "tc": true,
-    "caption": "So is your grid a tiny Claude or ChatGPT? Yes and no. Here's exactly which parts are the same, and which aren't.",
-    "tts": "So is your grid a tiny Claude or ChatGPT? Yes and no. Here's exactly which parts are the same, and which aren't."
+    "caption": "Your grid gives us a way to examine how Claude or ChatGPT generates text. Let's compare the predictions they make.",
+    "tts": "Your grid gives us a way to examine how Claude or ChatGPT generates text. Let's compare the predictions they make."
   },
   {
     "i": 1,
     "speaker": "BEN",
     "tc": false,
-    "caption": "The same part is the loop. Text goes in. The model gives every possible next word a chance, one gets drawn, it's written down, and round it goes again. Your grid does that. So does Claude.",
-    "tts": "The same part is the loop. Text goes in. The model gives every possible next word a chance, one gets drawn, it's written down, and round it goes again. Your grid does that. So does Claude."
+    "caption": "The shared part is the loop. Text goes in. The model assigns every next token a chance. One is drawn, written down, and round it goes again. Your grid uses words as tokens. So do our paper examples.",
+    "tts": "The shared part is the loop. Text goes in. The model assigns every next token a chance. One is drawn, written down, and round it goes again. Your grid uses words as tokens. So do our paper examples."
   },
   {
     "i": 2,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "What's different is size. Your magpie grid has five hundred and seventy-six boxes.",
-    "tts": "What's different is size. Your magpie grid has five hundred and seventy-six boxes."
+    "caption": "We can see a limit of counting in the size of the table. Your magpie grid has five hundred and seventy-six boxes.",
+    "tts": "We can see a limit of counting in the size of the table. Your magpie grid has five hundred and seventy-six boxes."
   },
   {
     "i": 3,
@@ -31,65 +31,74 @@
     "i": 4,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "A real model knows about a hundred thousand words and bits of words. One word of context: ten billion boxes. And nearly every one of them empty, because nobody has ever written most pairs.",
-    "tts": "A real model knows about a hundred thousand words and bits of words. One word of context: ten billion boxes. And nearly every one of them empty, because nobody has ever written most pairs."
+    "caption": "Imagine a vocabulary of a hundred thousand tokens: words and bits of words. A grid for every pair would need ten billion boxes, before we even add more context.",
+    "tts": "Imagine a vocabulary of a hundred thousand tokens: words and bits of words. A grid for every pair would need ten billion boxes, before we even add more context."
   },
   {
     "i": 5,
     "speaker": "BEN",
     "tc": false,
-    "caption": "And that's just one word of context. Your grid only ever looks at the last word. A real model looks at the whole conversation.",
-    "tts": "And that's just one word of context. Your grid only ever looks at the last word. A real model looks at the whole conversation."
+    "caption": "Your grid only looks at the last word. A large language model uses the text available in its context window. That can include earlier messages, but there's a limit to how much fits.",
+    "tts": "Your grid only looks at the last word. A large language model uses the text available in its context window. That can include earlier messages, but there's a limit to how much fits."
   },
   {
     "i": 6,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "Here's why that matters. Frankenstein, looking back one word. Then two. Then five.",
-    "tts": "Here's why that matters. Frankenstein, looking back one word. Then two. Then five.",
+    "caption": "Here's Frankenstein, looking back one word. Then two. Then five. In this last sample, every word comes straight from the book. More context can also mean more copying.",
+    "tts": "Here's Frankenstein, looking back one word. Then two. Then five. In this last sample, every word comes straight from the book. More context can also mean more copying.",
     "parts": [
-      "Here's why that matters. Frankenstein, looking back one word.",
+      "Here's Frankenstein, looking back one word.",
       "Then two.",
-      "Then five."
+      "Then five.",
+      "In this last sample, every word comes straight from the book. More context can also mean more copying."
     ],
     "beats": [
-      0.8,
-      0.8
+      2.0,
+      2.0,
+      3.0
     ]
   },
   {
     "i": 7,
     "speaker": "BEN",
     "tc": false,
-    "caption": "So a real model can't keep a box for every pair. Instead it shares what it learns across words. Look at the magpie: the rows for \"dog\" and \"postie\" are exactly the same. A model that notices that can guess about the postie from what it saw the dog do.",
-    "tts": "So a real model can't keep a box for every pair. Instead it shares what it learns across words. Look at the magpie: the rows for \"dog\" and \"postie\" are exactly the same. A model that notices that can guess about the postie from what it saw the dog do."
+    "caption": "Large language models learn by adjusting weights to improve their predictions. Those weights can capture patterns across different contexts. Look at the magpie: the rows for \"dog\" and \"postie\" are exactly the same. Our grid stores them separately. A neural model can learn similarities like these and use them in combinations it never saw during training.",
+    "tts": "Large language models learn by adjusting weights to improve their predictions. Those weights can capture patterns across different contexts. Look at the magpie: the rows for \"dog\" and \"postie\" are exactly the same. Our grid stores them separately. A neural model can learn similarities like these and use them in combinations it never saw during training."
   },
   {
     "i": 8,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "It doesn't use whole words, either. It uses tokens: common words whole, rarer ones in pieces.",
-    "tts": "It doesn't use whole words, either. It uses tokens: common words whole, rarer ones in pieces."
+    "caption": "It uses tokens, which can be whole words or pieces. Here, \"magpie\" splits into \"mag\" and \"pie\". \"Unexpectedly\" stays whole. The splits depend on the tokeniser.",
+    "tts": "It uses tokens, which can be whole words or pieces. Here, \"magpie\" splits into \"mag\" and \"pie\". \"Unexpectedly\" stays whole. The splits depend on the tokeniser.",
+    "parts": [
+      "It uses tokens, which can be whole words or pieces. Here, \"magpie\" splits into \"mag\" and \"pie\".",
+      "\"Unexpectedly\" stays whole. The splits depend on the tokeniser."
+    ],
+    "beats": [
+      0.8
+    ]
   },
   {
     "i": 9,
     "speaker": "BEN",
     "tc": false,
-    "caption": "And after all that reading, it gets a second round of training, with people rating its replies. That's what makes it answer your question instead of just carrying on your text.",
-    "tts": "And after all that reading, it gets a second round of training, with people rating its replies. That's what makes it answer your question instead of just carrying on your text."
+    "caption": "After learning from reading, a model can get further training. People write example answers, and provide feedback by rating candidate replies. Training on examples and feedback helps it answer questions and follow instructions.",
+    "tts": "After learning from reading, a model can get further training. People write example answers, and provide feedback by rating candidate replies. Training on examples and feedback helps it answer questions and follow instructions."
   },
   {
     "i": 10,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "More context, a smarter way to store it, pieces of words, and a second round of training. None of it changes the loop.",
-    "tts": "More context, a smarter way to store it, pieces of words, and a second round of training. None of it changes the loop."
+    "caption": "Our paper model looks up counts. A large language model computes its predictions using learned weights and the available context. Both can use those predictions to generate text.",
+    "tts": "Our paper model looks up counts. A large language model computes its predictions using learned weights and the available context. Both can use those predictions to generate text."
   },
   {
     "i": 11,
     "speaker": "BEN",
     "tc": true,
-    "caption": "Everything Claude or ChatGPT does, it does one token at a time. Just like you did.",
-    "tts": "Everything Claude or ChatGPT does, it does one token at a time. Just like you did."
+    "caption": "For text generation, we return to the loop: predict the next token, choose one, add it to the text, and repeat.",
+    "tts": "For text generation, we return to the loop: predict the next token, choose one, add it to the text, and repeat."
   }
 ]

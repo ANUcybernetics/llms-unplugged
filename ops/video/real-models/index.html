@@ -31,9 +31,9 @@
          (window.REAL_MODELS), which checks them against the CLI and the
          tokeniser. Every beat lands on a word of the voice track. -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="real-models"
-         data-start="0" data-duration="134.59" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="134.59" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="127.59" data-track-index="1"></audio>
+         data-start="0" data-duration="169.16" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="169.16" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="162.16" data-track-index="1"></audio>
     </div>
     <script type="module">
       import * as C from "./kit/motion/canvas.js";
@@ -121,7 +121,7 @@
           const u = (t - g.t) / g.life;
           return u < 0 || u > 1 ? 0 : u < 0.2 ? u / 0.2 : 1 - (u - 0.2) / 0.8;
         };
-        const modelGl = [...glints(11, 60, 21, 25), ...glints(12, 110, 108, 125)];
+        const modelGl = [...glints(11, 60, T.start(1), T.end(1)), ...glints(12, 110, T.start(10), T.end(11))];
         const modelCv = C.canvas(tl, modelL, (ctx, t) => {
           for (const g of modelGl) {
             const a = glow(g, t);
@@ -135,7 +135,7 @@
         const LP = { cx: 1330, cy: 300, rx: 330, ry: 170 };
         const loopL = K.layer(scene, 0, 0);
         const loopSvg = K.svg("svg", { width: 1920, height: 890, viewBox: "0 0 1920 890", style: "display: block; overflow: visible" }, loopL);
-        const LABELS = ["last word", "row", "chances", "draw", "write"];
+        const LABELS = ["context", "predict", "chances", "draw", "write"];
         const th = (i) => ((108 + i * 72) * Math.PI) / 180;
         const at = (a) => ({ x: LP.cx + LP.rx * Math.cos(a), y: LP.cy + LP.ry * Math.sin(a) });
         const GAP = 0.2;
@@ -260,7 +260,7 @@
         const O = { x: 600, y: 110 }, SIDE = 720, VOCAB = 100000;
         const c0 = 30, c1 = SIDE / FM.n, c2 = SIDE / VOCAB;
         const tZ1 = w(3, "has"), dZ1 = w(3, "boxes") - tZ1;
-        const tZ2 = w(4, "hundred") - 0.1, dZ2 = w(4, "words", 2) - tZ2;
+        const tZ2 = w(4, "hundred") - 0.1, dZ2 = w(4, "bits") - tZ2;
         const logC = (a, b, p) => Math.exp(K.lerp(Math.log(a), Math.log(b), p));
         const cellAt = (t) => t < tZ2
           ? logC(c0, c1, C.phase(t, tZ1, dZ1, "in-out-cubic"))
@@ -270,7 +270,7 @@
         zoomGrid(c0, c1, tZ1, dZ1);
         zoomGrid(c1, c2, tZ2, dZ2);
         const tFrank = w(3, "Frankenstein") - 0.2, tFieldOff = T.start(5) - 0.5;
-        const bigGl = glints(21, 140, tZ2 + dZ2 * 0.6, tFieldOff);
+        const bigGl = []; // hypothetical table: no invented neural-model counts
         const frame = (ctx, x, y, side, a, colour = "255 255 255") => {
           ctx.strokeStyle = `rgb(${colour} / ${a})`;
           ctx.lineWidth = 1.5;
@@ -323,7 +323,12 @@
         tl.to(last, { color: GOLD }, tLast, { dur: 0.3 });
         tl.to(lastRing, { opacity: 1 }, tLast, { dur: 0.3 });
         // the whole conversation
-        const tWhole = w(5, "whole");
+        const tWhole = w(5, "window");
+        const older = K.el("div", { class: "rm-text", text: "earlier messages …", style: { fontSize: "38px", color: "#ffffff" } }, scene);
+        K.set(older, { x: 300, y: 180, opacity: 0 });
+        tl.to(older, { opacity: 0.25 }, w(5, "earlier"), { dur: 0.4 });
+        K.vanish(tl, older, T.start(6) - 0.3, { dur: 0.3 });
+
         const allBox = { x: 16, y: lastBox.y, w: 860 - 32, h: lastBox.h };
         const allRing = outline(strip.el, allBox, { pad: 8, stroke: 4 });
         tl.to(lastRing, { opacity: 0 }, tWhole - 0.1, { dur: 0.3 });
@@ -439,11 +444,11 @@
         const hy = (word) => RY2[word] + 85;
         const threadPath = K.svg("path", { d: `M ${RX - 8} ${hy("dog")} C ${RX - 110} ${hy("dog") + 10}, ${RX - 110} ${hy("postie") - 10}, ${RX - 8} ${hy("postie")}`, fill: "none", stroke: GOLD2, "stroke-width": 4, "stroke-dasharray": "3 10", "stroke-linecap": "round" }, thread);
         K.set(threadPath, { opacity: 0 });
-        tl.fromTo(threadPath, { opacity: 0 }, { opacity: 0.85 }, w(7, "notices"), { dur: 0.5 });
+        tl.fromTo(threadPath, { opacity: 0 }, { opacity: 0.85 }, w(7, "similarities"), { dur: 0.5 });
         // what it saw the dog do, it guesses for the postie
         tl.to(lifted.dog.boxes.map((b) => b.lit), { opacity: 1 }, w(7, "saw"), { dur: 0.2 });
         tl.to(lifted.postie.boxes.map((b) => b.lit), { opacity: 1 }, w(7, "saw") + 0.35, { dur: 0.2 });
-        tl.to(lifted.postie.head.lit, { opacity: 1 }, w(7, "postie", 2), { dur: 0.25 });
+        tl.to(lifted.postie.head.lit, { opacity: 1 }, w(7, "combinations"), { dur: 0.25 });
 
         // ================================================= line 8: tokens
         const t8 = T.start(8) - 0.3;
@@ -486,10 +491,10 @@
         const wordRings = TK.map((_, i) => outline(tkL, wordRect(i, "whole"), { pad: 0, stroke: 4 }));
         wordRings.forEach((r, i) => tl.to(r, { opacity: 1 }, tTok + i * 0.12, { dur: 0.25 }));
         // common words whole
-        pulse(wholeWords.map((i) => wordRings[i]), w(8, "common"), 1.06);
+        pulse(wholeWords.map((i) => wordRings[i]), w(8, "whole"), 1.06);
         // rarer ones in pieces: every piece slides to its place; a whole
         // word's outline goes with it, a split word's parts at the seams
-        const tSplit = w(8, "rarer");
+        const tSplit = w(8, "splits");
         pieces.forEach((p) => tl.to(p.el, { x: p.split }, tSplit, { dur: 0.6, ease: "in-out-cubic" }));
         wholeWords.forEach((i) => tl.to(wordRings[i], { x: wordRect(i, "split").x }, tSplit, { dur: 0.6, ease: "in-out-cubic" }));
         splitWords.forEach((i) => tl.to(wordRings[i], { opacity: 0 }, tSplit, { dur: 0.25 }));
@@ -536,7 +541,7 @@
         const tRaw = w(9, "reading") - 0.1;
         rawW.forEach((e, i) => tl.fromTo(e, { opacity: 0, y: 6 }, { opacity: 1, y: 0 }, tRaw + i * 0.14, { dur: 0.2 }));
         // it wipes away
-        tl.to(rawW, { opacity: 0, y: -10 }, w(9, "second") - 0.1, { dur: 0.3, stagger: 0.03, ease: "in-cubic" });
+        tl.to(rawW, { opacity: 0, y: -10 }, w(9, "further") - 0.1, { dur: 0.3, stagger: 0.03, ease: "in-cubic" });
         // two candidate replies; people rate them
         const thumb = (parent, up, x, y) => {
           const ic = K.icon(parent, up ? "thumbs-up" : "thumbs-down", { x, y, size: 72, gold: up });
@@ -553,8 +558,9 @@
         };
         const cA = card(RAW, 380, "p"), cB = card(ANS, 560, "");
         const thDown = thumb(scene, false, 1460, 404), thUp = thumb(scene, true, 1460, 584);
-        const tCards = w(9, "people") - 0.3;
-        K.appear(tl, [cA.L, cB.L], tCards, { y: 16, stagger: 0.15 });
+        const tCards = w(9, "example");
+        K.appear(tl, cB.L, tCards, { y: 16 });
+        K.appear(tl, cA.L, w(9, "feedback"), { y: 16 });
         const tRate = w(9, "rating");
         tl.fromTo(thDown, { opacity: 0, scale: 0.4, rotation: -20 }, { opacity: 1, scale: 1, rotation: 0 }, tRate, { dur: 0.35, ease: "out-back" });
         tl.fromTo(thUp, { opacity: 0, scale: 0.4, rotation: 20 }, { opacity: 1, scale: 1, rotation: 0 }, tRate + 0.3, { dur: 0.35, ease: "out-back" });
@@ -563,7 +569,7 @@
         const tAns = w(9, "answer") - 0.1;
         ansW.forEach((e, i) => tl.fromTo(e, { opacity: 0, y: 6 }, { opacity: 1, y: 0 }, tAns + i * 0.18, { dur: 0.25 }));
         pulse(cB.L, tAns - 0.2, 1.03);
-        K.vanish(tl, [cA.L, thDown], w(9, "carrying"), { dur: 0.4, y: 20 });
+        K.vanish(tl, [cA.L, thDown], w(9, "instructions"), { dur: 0.4, y: 20 });
 
         // ================================================= line 10: none of it changes the loop
         const t10 = T.start(10) - 0.2;
@@ -621,16 +627,16 @@
           const d = K.el("div", { class: "rm-text", text: ANS.join(" "), style: { left: "30px", top: "130px", fontSize: "30px", whiteSpace: "nowrap" } }, minis[3]);
           K.icon(minis[3], "thumbs-up", { x: 30, y: 40, size: 64, gold: true });
         }
-        const cues = [w(10, "More"), w(10, "smarter"), w(10, "pieces"), w(10, "second")];
+        const cues = [T.start(10), T.start(10) + 0.3, T.start(10) + 0.6, T.start(10) + 0.9];
         minis.forEach((L, i) => K.appear(tl, L, cues[i] - 0.1, { y: 24 }));
         // the model, the loop and the strip come back; the cards go into the model
-        const tNone = w(10, "None");
+        const tNone = w(10, "Both");
         const strip11 = paperLine(scene, [".", "here", "comes", "the", "postie", "."], { x: STRIP.x, y: STRIP.y, w: 860, h: 110, size: 56 });
         K.set(strip11.words.slice(0, 2), { opacity: 1 });
         K.set(strip11.el, { opacity: 0 });
         tl.set(modelL, { opacity: 0 }, t10);
         K.appear(tl, modelL, tNone - 0.5, { y: 0, scale: 0.96, dur: 0.5 });
-        K.glint(tl, modelEdge, { lap: 2.4, from: tNone + 0.4, to: w(11, "Everything") });
+        K.glint(tl, modelEdge, { lap: 2.4, from: tNone + 0.4, to: w(11, "loop") });
         minis.forEach((L, i) => {
           const t = tNone - 0.3 + i * 0.08;
           K.raise(tl, L, t);
@@ -639,18 +645,18 @@
         tl.set([...arcs, ...heads, ...stations.flatMap((s) => [s.dot, s.text])], { opacity: 0 }, t10);
         arcs.forEach((a) => tl.set(a, { strokeDashoffset: parseFloat(a.style.strokeDasharray) }, t10));
         tl.set(loopL, { opacity: 1 }, t10);
-        drawLoop(w(10, "changes") - 0.4, 1.0);
-        K.appear(tl, strip11.el, w(10, "changes") - 0.2, { y: 20 });
+        drawLoop(w(10, "generate") - 0.4, 1.0);
+        K.appear(tl, strip11.el, w(10, "generate") - 0.2, { y: 20 });
 
         // ================================================= line 11: one token at a time
-        const laps = [w(11, "Everything"), w(11, "or") + 0.1, w(11, "it", 1), w(11, "one")];
+        const laps = [w(11, "loop"), w(11, "predict") + 0.1, w(11, "choose"), w(11, "repeat")];
         laps.forEach((t, k) => {
           const d = k < 3 ? 1.05 : 0.8;
           lap(t, d);
           K.write(tl, strip11.words[2 + k], t + d * 0.85);
         });
         // just like you did: the magpie grid again
-        const tYou = w(11, "Just");
+        const tYou = T.end(11) - 0.8;
         tl.set(grid.el, { ...LOOP, opacity: 0 }, t10);
         tl.to(modelL, { opacity: 0 }, tYou, { dur: 0.6 });
         tl.to(grid.el, { opacity: 1 }, tYou, { dur: 0.6 });

@@ -1,125 +1,115 @@
 {
   "slug": "real-models",
   "audio": "assets/voice.wav",
-  "duration": 127.584,
+  "duration": 162.152,
   "lines": [
     {
       "i": 0,
       "speaker": "USHINI",
       "tc": true,
-      "caption": "So is your grid a tiny Claude or ChatGPT? Yes and no. Here's exactly which parts are the same, and which aren't.",
-      "start": 0.19,
-      "end": 9.66,
+      "caption": "Your grid gives us a way to examine how Claude or ChatGPT generates text. Let's compare the predictions they make.",
+      "start": 0.15,
+      "end": 8.54,
       "words": [
         {
-          "w": "So",
-          "start": 0.34,
-          "end": 0.8
-        },
-        {
-          "w": "is",
-          "start": 0.8,
-          "end": 0.94
-        },
-        {
-          "w": "your",
-          "start": 0.94,
-          "end": 1.1
+          "w": "Your",
+          "start": 0.3,
+          "end": 0.76
         },
         {
           "w": "grid",
-          "start": 1.1,
-          "end": 1.32
+          "start": 0.76,
+          "end": 0.94
+        },
+        {
+          "w": "gives",
+          "start": 0.94,
+          "end": 1.22
+        },
+        {
+          "w": "us",
+          "start": 1.22,
+          "end": 1.44
         },
         {
           "w": "a",
-          "start": 1.32,
-          "end": 1.4
+          "start": 1.44,
+          "end": 1.52
         },
         {
-          "w": "tiny",
-          "start": 1.4,
-          "end": 1.66
+          "w": "way",
+          "start": 1.52,
+          "end": 1.74
+        },
+        {
+          "w": "to",
+          "start": 1.74,
+          "end": 1.94
+        },
+        {
+          "w": "examine",
+          "start": 1.94,
+          "end": 2.32
+        },
+        {
+          "w": "how",
+          "start": 2.32,
+          "end": 2.68
         },
         {
           "w": "Claude",
-          "start": 1.76,
-          "end": 2.0
+          "start": 2.73,
+          "end": 3.02
         },
         {
           "w": "or",
-          "start": 2.12,
-          "end": 2.34
+          "start": 3.14,
+          "end": 3.36
         },
         {
-          "w": "ChatGPT?",
-          "start": 3.13,
-          "end": 3.51
+          "w": "ChatGPT",
+          "start": 3.36,
+          "end": 4.24
         },
         {
-          "w": "Yes",
-          "start": 4.14,
-          "end": 4.68
+          "w": "generates",
+          "start": 4.24,
+          "end": 4.82
         },
         {
-          "w": "and",
-          "start": 4.68,
-          "end": 4.9
+          "w": "text.",
+          "start": 4.82,
+          "end": 5.28
         },
         {
-          "w": "no.",
-          "start": 4.9,
-          "end": 5.14
+          "w": "Let's",
+          "start": 6.22,
+          "end": 6.76
         },
         {
-          "w": "Here's",
-          "start": 5.94,
-          "end": 6.48
-        },
-        {
-          "w": "exactly",
-          "start": 6.48,
-          "end": 6.88
-        },
-        {
-          "w": "which",
-          "start": 6.88,
-          "end": 7.2
-        },
-        {
-          "w": "parts",
-          "start": 7.2,
-          "end": 7.58
-        },
-        {
-          "w": "are",
-          "start": 7.58,
-          "end": 7.82
+          "w": "compare",
+          "start": 6.76,
+          "end": 7.04
         },
         {
           "w": "the",
-          "start": 7.82,
-          "end": 7.94
+          "start": 7.04,
+          "end": 7.3
         },
         {
-          "w": "same,",
-          "start": 7.94,
-          "end": 8.3
+          "w": "predictions",
+          "start": 7.3,
+          "end": 7.66
         },
         {
-          "w": "and",
-          "start": 8.3,
-          "end": 8.68
+          "w": "they",
+          "start": 7.66,
+          "end": 8.04
         },
         {
-          "w": "which",
-          "start": 8.68,
-          "end": 8.9
-        },
-        {
-          "w": "aren't.",
-          "start": 8.9,
-          "end": 9.46
+          "w": "make.",
+          "start": 8.04,
+          "end": 8.34
         }
       ]
     },
@@ -127,189 +117,199 @@
       "i": 1,
       "speaker": "BEN",
       "tc": false,
-      "caption": "The same part is the loop. Text goes in. The model gives every possible next word a chance, one gets drawn, it's written down, and round it goes again. Your grid does that. So does Claude.",
-      "start": 10.59,
-      "end": 24.31,
+      "caption": "The shared part is the loop. Text goes in. The model assigns every next token a chance. One is drawn, written down, and round it goes again. Your grid uses words as tokens. So do our paper examples.",
+      "start": 9.59,
+      "end": 23.98,
       "words": [
         {
           "w": "The",
-          "start": 10.74,
-          "end": 11.28
+          "start": 9.74,
+          "end": 10.28
         },
         {
-          "w": "same",
-          "start": 11.28,
-          "end": 11.52
+          "w": "shared",
+          "start": 10.28,
+          "end": 10.56
         },
         {
           "w": "part",
-          "start": 11.52,
-          "end": 11.8
+          "start": 10.56,
+          "end": 10.8
         },
         {
           "w": "is",
-          "start": 11.8,
-          "end": 12.08
+          "start": 10.8,
+          "end": 11.12
         },
         {
           "w": "the",
-          "start": 12.08,
-          "end": 12.22
+          "start": 11.12,
+          "end": 11.24
         },
         {
           "w": "loop.",
-          "start": 12.22,
-          "end": 12.46
+          "start": 11.24,
+          "end": 11.48
         },
         {
           "w": "Text",
-          "start": 12.74,
-          "end": 13.28
+          "start": 11.74,
+          "end": 12.28
         },
         {
           "w": "goes",
-          "start": 13.28,
-          "end": 13.46
+          "start": 12.28,
+          "end": 12.48
         },
         {
           "w": "in.",
-          "start": 13.46,
-          "end": 13.76
+          "start": 12.48,
+          "end": 12.78
         },
         {
           "w": "The",
-          "start": 13.92,
-          "end": 14.46
+          "start": 12.96,
+          "end": 13.5
         },
         {
           "w": "model",
-          "start": 14.46,
-          "end": 14.7
+          "start": 13.5,
+          "end": 13.76
         },
         {
-          "w": "gives",
-          "start": 14.7,
-          "end": 14.9
+          "w": "assigns",
+          "start": 13.76,
+          "end": 14.3
         },
         {
           "w": "every",
-          "start": 14.9,
-          "end": 15.28
-        },
-        {
-          "w": "possible",
-          "start": 15.28,
-          "end": 15.6
+          "start": 14.3,
+          "end": 14.52
         },
         {
           "w": "next",
-          "start": 15.6,
-          "end": 15.9
+          "start": 14.52,
+          "end": 14.78
         },
         {
-          "w": "word",
-          "start": 15.9,
-          "end": 16.2
+          "w": "token",
+          "start": 14.78,
+          "end": 15.14
         },
         {
           "w": "a",
-          "start": 16.2,
-          "end": 16.3
+          "start": 15.14,
+          "end": 15.3
         },
         {
-          "w": "chance,",
-          "start": 16.3,
-          "end": 16.6
+          "w": "chance.",
+          "start": 15.3,
+          "end": 15.56
         },
         {
-          "w": "one",
-          "start": 16.74,
-          "end": 17.2
+          "w": "One",
+          "start": 15.94,
+          "end": 16.38
         },
         {
-          "w": "gets",
-          "start": 17.2,
-          "end": 17.44
+          "w": "is",
+          "start": 16.38,
+          "end": 16.56
         },
         {
           "w": "drawn,",
-          "start": 17.44,
-          "end": 17.76
-        },
-        {
-          "w": "it's",
-          "start": 17.96,
-          "end": 18.38
+          "start": 16.56,
+          "end": 16.86
         },
         {
           "w": "written",
-          "start": 18.38,
-          "end": 18.6
+          "start": 17.06,
+          "end": 17.52
         },
         {
           "w": "down,",
-          "start": 18.6,
-          "end": 18.92
+          "start": 17.52,
+          "end": 17.88
         },
         {
           "w": "and",
-          "start": 19.08,
-          "end": 19.5
+          "start": 18.04,
+          "end": 18.48
         },
         {
           "w": "round",
-          "start": 19.5,
-          "end": 19.72
+          "start": 18.48,
+          "end": 18.72
         },
         {
           "w": "it",
-          "start": 19.72,
-          "end": 19.86
+          "start": 18.72,
+          "end": 18.86
         },
         {
           "w": "goes",
-          "start": 19.86,
-          "end": 20.0
+          "start": 18.86,
+          "end": 19.02
         },
         {
           "w": "again.",
-          "start": 20.0,
-          "end": 20.24
+          "start": 19.02,
+          "end": 19.26
         },
         {
           "w": "Your",
-          "start": 20.52,
-          "end": 21.06
+          "start": 19.58,
+          "end": 20.12
         },
         {
           "w": "grid",
-          "start": 21.06,
-          "end": 21.38
+          "start": 20.12,
+          "end": 20.38
         },
         {
-          "w": "does",
-          "start": 21.38,
-          "end": 21.68
+          "w": "uses",
+          "start": 20.38,
+          "end": 20.68
         },
         {
-          "w": "that.",
-          "start": 21.68,
-          "end": 21.96
+          "w": "words",
+          "start": 20.68,
+          "end": 21.08
+        },
+        {
+          "w": "as",
+          "start": 21.08,
+          "end": 21.42
+        },
+        {
+          "w": "tokens.",
+          "start": 21.42,
+          "end": 21.76
         },
         {
           "w": "So",
-          "start": 21.96,
-          "end": 22.56
+          "start": 22.14,
+          "end": 22.68
         },
         {
-          "w": "does",
-          "start": 22.56,
-          "end": 23.04
+          "w": "do",
+          "start": 22.68,
+          "end": 22.9
         },
         {
-          "w": "Claude.",
-          "start": 23.53,
-          "end": 24.11
+          "w": "our",
+          "start": 22.9,
+          "end": 23.12
+        },
+        {
+          "w": "paper",
+          "start": 23.12,
+          "end": 23.44
+        },
+        {
+          "w": "examples.",
+          "start": 23.44,
+          "end": 23.78
         }
       ]
     },
@@ -317,74 +317,119 @@
       "i": 2,
       "speaker": "USHINI",
       "tc": false,
-      "caption": "What's different is size. Your magpie grid has five hundred and seventy-six boxes.",
-      "start": 24.35,
-      "end": 30.62,
+      "caption": "We can see a limit of counting in the size of the table. Your magpie grid has five hundred and seventy-six boxes.",
+      "start": 24.85,
+      "end": 32.48,
       "words": [
         {
-          "w": "What's",
-          "start": 24.5,
-          "end": 25.18
+          "w": "We",
+          "start": 25.0,
+          "end": 25.54
         },
         {
-          "w": "different",
-          "start": 25.18,
-          "end": 25.46
+          "w": "can",
+          "start": 25.54,
+          "end": 25.68
         },
         {
-          "w": "is",
-          "start": 25.46,
-          "end": 25.74
+          "w": "see",
+          "start": 25.68,
+          "end": 25.92
         },
         {
-          "w": "size.",
-          "start": 25.74,
+          "w": "a",
+          "start": 25.92,
           "end": 26.04
         },
         {
+          "w": "limit",
+          "start": 26.04,
+          "end": 26.26
+        },
+        {
+          "w": "of",
+          "start": 26.26,
+          "end": 26.4
+        },
+        {
+          "w": "counting",
+          "start": 26.4,
+          "end": 26.72
+        },
+        {
+          "w": "in",
+          "start": 26.72,
+          "end": 26.98
+        },
+        {
+          "w": "the",
+          "start": 26.98,
+          "end": 27.08
+        },
+        {
+          "w": "size",
+          "start": 27.08,
+          "end": 27.32
+        },
+        {
+          "w": "of",
+          "start": 27.32,
+          "end": 27.56
+        },
+        {
+          "w": "the",
+          "start": 27.56,
+          "end": 27.66
+        },
+        {
+          "w": "table.",
+          "start": 27.66,
+          "end": 28.02
+        },
+        {
           "w": "Your",
-          "start": 26.7,
-          "end": 27.38
+          "start": 28.02,
+          "end": 29.2
         },
         {
           "w": "magpie",
-          "start": 27.38,
-          "end": 27.74
+          "start": 29.2,
+          "end": 29.58
         },
         {
           "w": "grid",
-          "start": 27.74,
-          "end": 28.08
+          "start": 29.58,
+          "end": 29.94
         },
         {
           "w": "has",
-          "start": 28.08,
-          "end": 28.5
+          "start": 29.94,
+          "end": 30.3
         },
         {
           "w": "five",
-          "start": 28.468,
-          "end": 28.884
+          "start": 30.34,
+          "end": 30.696
         },
         {
           "w": "hundred",
-          "start": 28.856,
-          "end": 29.268
+          "start": 30.74,
+          "end": 31.092
         },
         {
           "w": "and",
-          "start": 29.244,
-          "end": 29.652
+          "start": 31.14,
+          "end": 31.488
         },
         {
           "w": "seventy-six",
-          "start": 29.632,
-          "end": 30.036
+          "start": 31.54,
+          "end": 31.884
         },
         {
           "w": "boxes.",
-          "start": 30.02,
-          "end": 30.42
+          "start": 31.94,
+          "end": 32.28
         }
       ]
     },
@@ -393,98 +438,98 @@
       "speaker": "BEN",
       "tc": false,
       "caption": "Frankenstein has seven thousand different words. That's forty-nine million boxes. And look how few have anything in them.",
-      "start": 32.29,
-      "end": 39.84,
+      "start": 34.21,
+      "end": 41.68,
       "words": [
         {
           "w": "Frankenstein",
-          "start": 32.44,
-          "end": 33.12
+          "start": 34.36,
+          "end": 34.96
         },
         {
           "w": "has",
-          "start": 33.12,
-          "end": 33.44
+          "start": 34.96,
+          "end": 35.26
         },
         {
           "w": "seven",
-          "start": 33.487,
-          "end": 33.767
+          "start": 35.327,
+          "end": 35.587
         },
         {
           "w": "thousand",
-          "start": 33.853,
-          "end": 34.093
+          "start": 35.693,
+          "end": 35.913
         },
         {
           "w": "different",
-          "start": 34.22,
-          "end": 34.42
+          "start": 36.06,
+          "end": 36.24
         },
         {
           "w": "words.",
-          "start": 34.42,
-          "end": 34.82
+          "start": 36.24,
+          "end": 36.64
         },
         {
           "w": "That's",
-          "start": 35.12,
-          "end": 35.8
+          "start": 37.04,
+          "end": 37.64
         },
         {
           "w": "forty-nine",
-          "start": 35.61,
-          "end": 36.2
+          "start": 37.49,
+          "end": 38.04
         },
         {
           "w": "million",
-          "start": 36.1,
-          "end": 36.6
+          "start": 37.94,
+          "end": 38.44
         },
         {
           "w": "boxes.",
-          "start": 36.6,
-          "end": 37.04
+          "start": 38.44,
+          "end": 38.86
         },
         {
           "w": "And",
-          "start": 37.28,
-          "end": 37.92
+          "start": 39.14,
+          "end": 39.74
         },
         {
           "w": "look",
-          "start": 37.92,
-          "end": 38.12
+          "start": 39.74,
+          "end": 39.94
         },
         {
           "w": "how",
-          "start": 38.12,
-          "end": 38.32
+          "start": 39.94,
+          "end": 40.16
         },
         {
           "w": "few",
-          "start": 38.32,
-          "end": 38.58
+          "start": 40.16,
+          "end": 40.42
         },
         {
           "w": "have",
-          "start": 38.58,
-          "end": 38.84
+          "start": 40.42,
+          "end": 40.68
         },
         {
           "w": "anything",
-          "start": 38.84,
-          "end": 39.2
+          "start": 40.68,
+          "end": 41.06
         },
         {
           "w": "in",
-          "start": 39.2,
-          "end": 39.5
+          "start": 41.06,
+          "end": 41.34
         },
         {
           "w": "them.",
-          "start": 39.5,
-          "end": 39.64
+          "start": 41.34,
+          "end": 41.48
         }
       ]
     },
@@ -492,179 +537,154 @@
       "i": 4,
       "speaker": "USHINI",
       "tc": false,
-      "caption": "A real model knows about a hundred thousand words and bits of words. One word of context: ten billion boxes. And nearly every one of them empty, because nobody has ever written most pairs.",
-      "start": 40.23,
-      "end": 54.02,
+      "caption": "Imagine a vocabulary of a hundred thousand tokens: words and bits of words. A grid for every pair would need ten billion boxes, before we even add more context.",
+      "start": 42.47,
+      "end": 53.62,
       "words": [
         {
-          "w": "A",
-          "start": 40.38,
-          "end": 41.06
-        },
-        {
-          "w": "real",
-          "start": 41.06,
-          "end": 41.3
-        },
-        {
-          "w": "model",
-          "start": 41.3,
-          "end": 41.62
-        },
-        {
-          "w": "knows",
-          "start": 41.62,
-          "end": 41.94
-        },
-        {
-          "w": "about",
-          "start": 41.94,
-          "end": 42.28
+          "w": "Imagine",
+          "start": 42.62,
+          "end": 43.22
         },
         {
           "w": "a",
-          "start": 42.24,
-          "end": 42.59
+          "start": 43.22,
+          "end": 43.42
+        },
+        {
+          "w": "vocabulary",
+          "start": 43.42,
+          "end": 43.78
+        },
+        {
+          "w": "of",
+          "start": 43.78,
+          "end": 44.22
+        },
+        {
+          "w": "a",
+          "start": 44.095,
+          "end": 44.5
         },
         {
           "w": "hundred",
-          "start": 42.54,
-          "end": 42.9
+          "start": 44.41,
+          "end": 44.78
         },
         {
           "w": "thousand",
-          "start": 42.84,
-          "end": 43.21
+          "start": 44.725,
+          "end": 45.06
+        },
+        {
+          "w": "tokens:",
+          "start": 45.04,
+          "end": 45.34
         },
         {
           "w": "words",
-          "start": 43.14,
-          "end": 43.52
-        },
-        {
-          "w": "and",
-          "start": 43.52,
-          "end": 43.92
-        },
-        {
-          "w": "bits",
-          "start": 43.92,
-          "end": 44.08
-        },
-        {
-          "w": "of",
-          "start": 44.08,
-          "end": 44.3
-        },
-        {
-          "w": "words.",
-          "start": 44.3,
-          "end": 44.62
-        },
-        {
-          "w": "One",
-          "start": 45.3,
-          "end": 45.98
-        },
-        {
-          "w": "word",
-          "start": 45.98,
+          "start": 45.7,
           "end": 46.3
         },
         {
-          "w": "of",
+          "w": "and",
           "start": 46.3,
-          "end": 46.48
+          "end": 46.58
         },
         {
-          "w": "context:",
-          "start": 46.48,
-          "end": 46.84
+          "w": "bits",
+          "start": 46.58,
+          "end": 46.82
         },
         {
-          "w": "ten",
-          "start": 47.03,
-          "end": 47.38
+          "w": "of",
+          "start": 46.82,
+          "end": 47.0
         },
         {
-          "w": "billion",
-          "start": 47.58,
-          "end": 47.92
+          "w": "words.",
+          "start": 47.0,
+          "end": 47.28
         },
         {
-          "w": "boxes.",
-          "start": 47.92,
-          "end": 48.34
+          "w": "A",
+          "start": 48.26,
+          "end": 48.56
         },
         {
-          "w": "And",
-          "start": 49.02,
-          "end": 49.7
+          "w": "grid",
+          "start": 48.56,
+          "end": 48.76
         },
         {
-          "w": "nearly",
-          "start": 49.7,
-          "end": 49.94
+          "w": "for",
+          "start": 48.76,
+          "end": 48.98
         },
         {
           "w": "every",
-          "start": 49.94,
-          "end": 50.3
+          "start": 48.98,
+          "end": 49.3
         },
         {
-          "w": "one",
-          "start": 50.3,
-          "end": 50.56
+          "w": "pair",
+          "start": 49.3,
+          "end": 49.58
         },
         {
-          "w": "of",
-          "start": 50.56,
+          "w": "would",
+          "start": 49.58,
+          "end": 49.9
+        },
+        {
+          "w": "need",
+          "start": 49.9,
+          "end": 50.14
+        },
+        {
+          "w": "ten",
+          "start": 50.17,
+          "end": 50.43
+        },
+        {
+          "w": "billion",
+          "start": 50.44,
           "end": 50.72
         },
         {
-          "w": "them",
+          "w": "boxes,",
           "start": 50.72,
-          "end": 50.84
-        },
-        {
-          "w": "empty,",
-          "start": 50.84,
           "end": 51.14
         },
         {
-          "w": "because",
+          "w": "before",
+          "start": 51.22,
+          "end": 51.94
+        },
+        {
+          "w": "we",
           "start": 51.94,
-          "end": 52.06
+          "end": 52.18
         },
         {
-          "w": "nobody",
-          "start": 52.06,
-          "end": 52.22
+          "w": "even",
+          "start": 52.18,
+          "end": 52.46
         },
         {
-          "w": "has",
-          "start": 52.22,
-          "end": 52.6
+          "w": "add",
+          "start": 52.46,
+          "end": 52.72
         },
         {
-          "w": "ever",
-          "start": 52.6,
-          "end": 52.86
+          "w": "more",
+          "start": 52.72,
+          "end": 52.98
         },
         {
-          "w": "written",
-          "start": 52.86,
-          "end": 53.2
-        },
-        {
-          "w": "most",
-          "start": 53.2,
-          "end": 53.48
-        },
-        {
-          "w": "pairs.",
-          "start": 53.48,
-          "end": 53.82
+          "w": "context.",
+          "start": 52.98,
+          "end": 53.42
         }
       ]
     },
@@ -672,129 +692,174 @@
       "i": 5,
       "speaker": "BEN",
       "tc": false,
-      "caption": "And that's just one word of context. Your grid only ever looks at the last word. A real model looks at the whole conversation.",
-      "start": 55.19,
-      "end": 63.08,
+      "caption": "Your grid only looks at the last word. A large language model uses the text available in its context window. That can include earlier messages, but there's a limit to how much fits.",
+      "start": 54.89,
+      "end": 65.82,
       "words": [
         {
-          "w": "And",
-          "start": 55.34,
-          "end": 55.9
-        },
-        {
-          "w": "that's",
-          "start": 55.9,
-          "end": 56.2
-        },
-        {
-          "w": "just",
-          "start": 56.2,
-          "end": 56.42
-        },
-        {
-          "w": "one",
-          "start": 56.42,
-          "end": 56.72
-        },
-        {
-          "w": "word",
-          "start": 56.72,
-          "end": 57.02
-        },
-        {
-          "w": "of",
-          "start": 57.02,
-          "end": 57.16
-        },
-        {
-          "w": "context.",
-          "start": 57.16,
-          "end": 57.44
-        },
-        {
           "w": "Your",
-          "start": 57.9,
-          "end": 58.34
+          "start": 55.04,
+          "end": 55.64
         },
         {
           "w": "grid",
-          "start": 58.34,
-          "end": 58.6
+          "start": 55.64,
+          "end": 55.86
         },
         {
           "w": "only",
-          "start": 58.6,
-          "end": 58.82
-        },
-        {
-          "w": "ever",
-          "start": 58.82,
-          "end": 59.24
+          "start": 55.86,
+          "end": 56.12
         },
         {
           "w": "looks",
-          "start": 59.24,
-          "end": 59.54
+          "start": 56.12,
+          "end": 56.52
         },
         {
           "w": "at",
-          "start": 59.54,
-          "end": 59.74
+          "start": 56.52,
+          "end": 56.74
         },
         {
           "w": "the",
-          "start": 59.74,
-          "end": 59.82
+          "start": 56.74,
+          "end": 56.82
         },
         {
           "w": "last",
-          "start": 59.82,
-          "end": 60.04
+          "start": 56.82,
+          "end": 57.04
         },
         {
           "w": "word.",
-          "start": 60.04,
-          "end": 60.34
+          "start": 57.04,
+          "end": 57.38
         },
         {
           "w": "A",
-          "start": 60.6,
-          "end": 61.1
+          "start": 58.02,
+          "end": 58.12
         },
         {
-          "w": "real",
-          "start": 61.1,
-          "end": 61.32
+          "w": "large",
+          "start": 58.12,
+          "end": 58.34
+        },
+        {
+          "w": "language",
+          "start": 58.34,
+          "end": 58.64
         },
         {
           "w": "model",
-          "start": 61.32,
-          "end": 61.58
+          "start": 58.64,
+          "end": 58.92
         },
         {
-          "w": "looks",
-          "start": 61.58,
-          "end": 61.92
-        },
-        {
-          "w": "at",
-          "start": 61.92,
-          "end": 62.12
+          "w": "uses",
+          "start": 58.92,
+          "end": 59.36
         },
         {
           "w": "the",
-          "start": 62.12,
+          "start": 59.36,
+          "end": 59.6
+        },
+        {
+          "w": "text",
+          "start": 59.6,
+          "end": 59.86
+        },
+        {
+          "w": "available",
+          "start": 59.86,
+          "end": 60.16
+        },
+        {
+          "w": "in",
+          "start": 60.16,
+          "end": 60.6
+        },
+        {
+          "w": "its",
+          "start": 60.6,
+          "end": 60.76
+        },
+        {
+          "w": "context",
+          "start": 60.76,
+          "end": 61.06
+        },
+        {
+          "w": "window.",
+          "start": 61.06,
+          "end": 61.36
+        },
+        {
+          "w": "That",
+          "start": 61.6,
           "end": 62.24
         },
         {
-          "w": "whole",
+          "w": "can",
           "start": 62.24,
-          "end": 62.42
+          "end": 62.4
         },
         {
-          "w": "conversation.",
-          "start": 62.42,
-          "end": 62.88
+          "w": "include",
+          "start": 62.4,
+          "end": 62.76
+        },
+        {
+          "w": "earlier",
+          "start": 62.76,
+          "end": 63.12
+        },
+        {
+          "w": "messages,",
+          "start": 63.12,
+          "end": 63.52
+        },
+        {
+          "w": "but",
+          "start": 63.78,
+          "end": 64.28
+        },
+        {
+          "w": "there's",
+          "start": 64.28,
+          "end": 64.46
+        },
+        {
+          "w": "a",
+          "start": 64.46,
+          "end": 64.52
+        },
+        {
+          "w": "limit",
+          "start": 64.52,
+          "end": 64.78
+        },
+        {
+          "w": "to",
+          "start": 64.78,
+          "end": 64.96
+        },
+        {
+          "w": "how",
+          "start": 64.96,
+          "end": 65.12
+        },
+        {
+          "w": "much",
+          "start": 65.12,
+          "end": 65.32
+        },
+        {
+          "w": "fits.",
+          "start": 65.32,
+          "end": 65.62
         }
       ]
     },
@@ -802,74 +867,149 @@
       "i": 6,
       "speaker": "USHINI",
       "tc": false,
-      "caption": "Here's why that matters. Frankenstein, looking back one word. Then two. Then five.",
-      "start": 63.99,
-      "end": 74.24,
+      "caption": "Here's Frankenstein, looking back one word. Then two. Then five. In this last sample, every word comes straight from the book. More context can also mean more copying.",
+      "start": 66.57,
+      "end": 88.09,
       "words": [
         {
           "w": "Here's",
-          "start": 64.14,
-          "end": 64.7
-        },
-        {
-          "w": "why",
-          "start": 64.7,
-          "end": 64.9
-        },
-        {
-          "w": "that",
-          "start": 64.9,
-          "end": 65.14
-        },
-        {
-          "w": "matters.",
-          "start": 65.14,
-          "end": 65.56
+          "start": 66.72,
+          "end": 67.36
         },
         {
           "w": "Frankenstein,",
-          "start": 66.98,
-          "end": 67.54
+          "start": 67.36,
+          "end": 68.0
         },
         {
           "w": "looking",
-          "start": 67.6,
-          "end": 67.94
+          "start": 68.0,
+          "end": 68.44
         },
         {
           "w": "back",
-          "start": 67.94,
-          "end": 68.24
+          "start": 68.44,
+          "end": 68.8
         },
         {
           "w": "one",
-          "start": 68.24,
-          "end": 68.52
+          "start": 68.8,
+          "end": 69.08
         },
         {
           "w": "word.",
-          "start": 68.52,
-          "end": 68.92
+          "start": 69.08,
+          "end": 69.5
         },
         {
           "w": "Then",
-          "start": 70.62,
-          "end": 71.18
+          "start": 69.64,
+          "end": 70.58
         },
         {
           "w": "two.",
-          "start": 71.18,
-          "end": 71.42
+          "start": 72.82,
+          "end": 73.2
         },
         {
           "w": "Then",
-          "start": 73.16,
-          "end": 73.72
+          "start": 73.38,
+          "end": 74.3
         },
         {
           "w": "five.",
-          "start": 73.72,
-          "end": 74.04
+          "start": 76.67,
+          "end": 77.13
+        },
+        {
+          "w": "In",
+          "start": 80.87,
+          "end": 81.51
+        },
+        {
+          "w": "this",
+          "start": 81.51,
+          "end": 81.69
+        },
+        {
+          "w": "last",
+          "start": 81.69,
+          "end": 81.99
+        },
+        {
+          "w": "sample,",
+          "start": 81.99,
+          "end": 82.47
+        },
+        {
+          "w": "every",
+          "start": 82.61,
+          "end": 83.05
+        },
+        {
+          "w": "word",
+          "start": 83.05,
+          "end": 83.35
+        },
+        {
+          "w": "comes",
+          "start": 83.35,
+          "end": 83.63
+        },
+        {
+          "w": "straight",
+          "start": 83.63,
+          "end": 83.95
+        },
+        {
+          "w": "from",
+          "start": 83.95,
+          "end": 84.27
+        },
+        {
+          "w": "the",
+          "start": 84.27,
+          "end": 84.43
+        },
+        {
+          "w": "book.",
+          "start": 84.43,
+          "end": 84.63
+        },
+        {
+          "w": "More",
+          "start": 85.19,
+          "end": 85.83
+        },
+        {
+          "w": "context",
+          "start": 85.83,
+          "end": 86.29
+        },
+        {
+          "w": "can",
+          "start": 86.29,
+          "end": 86.61
+        },
+        {
+          "w": "also",
+          "start": 86.61,
+          "end": 86.93
+        },
+        {
+          "w": "mean",
+          "start": 86.93,
+          "end": 87.23
+        },
+        {
+          "w": "more",
+          "start": 87.23,
+          "end": 87.49
+        },
+        {
+          "w": "copying.",
+          "start": 87.49,
+          "end": 87.89
         }
       ]
     },
@@ -877,259 +1017,289 @@
       "i": 7,
       "speaker": "BEN",
       "tc": false,
-      "caption": "So a real model can't keep a box for every pair. Instead it shares what it learns across words. Look at the magpie: the rows for \"dog\" and \"postie\" are exactly the same. A model that notices that can guess about the postie from what it saw the dog do.",
-      "start": 75.55,
-      "end": 90.52,
+      "caption": "Large language models learn by adjusting weights to improve their predictions. Those weights can capture patterns across different contexts. Look at the magpie: the rows for \"dog\" and \"postie\" are exactly the same. Our grid stores them separately. A neural model can learn similarities like these and use them in combinations it never saw during training.",
+      "start": 89.26,
+      "end": 109.57,
       "words": [
         {
-          "w": "So",
-          "start": 75.7,
-          "end": 76.26
+          "w": "Large",
+          "start": 89.41,
+          "end": 90.05
         },
         {
-          "w": "a",
-          "start": 76.26,
-          "end": 76.44
+          "w": "language",
+          "start": 90.05,
+          "end": 90.37
         },
         {
-          "w": "real",
-          "start": 76.44,
-          "end": 76.64
+          "w": "models",
+          "start": 90.37,
+          "end": 90.71
         },
         {
-          "w": "model",
-          "start": 76.64,
-          "end": 76.88
+          "w": "learn",
+          "start": 90.71,
+          "end": 91.11
         },
         {
-          "w": "can't",
-          "start": 76.88,
-          "end": 77.28
+          "w": "by",
+          "start": 91.11,
+          "end": 91.29
         },
         {
-          "w": "keep",
-          "start": 77.28,
-          "end": 77.48
+          "w": "adjusting",
+          "start": 91.29,
+          "end": 91.67
         },
         {
-          "w": "a",
-          "start": 77.48,
-          "end": 77.58
+          "w": "weights",
+          "start": 91.67,
+          "end": 92.09
         },
         {
-          "w": "box",
-          "start": 77.58,
-          "end": 77.84
+          "w": "to",
+          "start": 92.09,
+          "end": 92.31
         },
         {
-          "w": "for",
-          "start": 77.84,
-          "end": 78.06
+          "w": "improve",
+          "start": 92.31,
+          "end": 92.57
         },
         {
-          "w": "every",
-          "start": 78.06,
-          "end": 78.36
+          "w": "their",
+          "start": 92.57,
+          "end": 92.91
         },
         {
-          "w": "pair.",
-          "start": 78.36,
-          "end": 78.64
+          "w": "predictions.",
+          "start": 92.91,
+          "end": 93.25
         },
         {
-          "w": "Instead",
-          "start": 79.0,
-          "end": 79.56
+          "w": "Those",
+          "start": 93.57,
+          "end": 94.21
         },
         {
-          "w": "it",
-          "start": 79.56,
-          "end": 79.78
-        },
-        {
-          "w": "shares",
-          "start": 79.78,
-          "end": 80.06
-        },
-        {
-          "w": "what",
-          "start": 80.06,
-          "end": 80.38
-        },
-        {
-          "w": "it",
-          "start": 80.38,
-          "end": 80.52
-        },
-        {
-          "w": "learns",
-          "start": 80.52,
-          "end": 80.78
-        },
-        {
-          "w": "across",
-          "start": 80.78,
-          "end": 81.02
-        },
-        {
-          "w": "words.",
-          "start": 81.02,
-          "end": 81.44
-        },
-        {
-          "w": "Look",
-          "start": 81.94,
-          "end": 82.34
-        },
-        {
-          "w": "at",
-          "start": 82.34,
-          "end": 82.46
-        },
-        {
-          "w": "the",
-          "start": 82.46,
-          "end": 82.56
-        },
-        {
-          "w": "magpie:",
-          "start": 82.56,
-          "end": 82.92
-        },
-        {
-          "w": "the",
-          "start": 83.08,
-          "end": 83.56
-        },
-        {
-          "w": "rows",
-          "start": 83.56,
-          "end": 83.78
-        },
-        {
-          "w": "for",
-          "start": 83.78,
-          "end": 84.02
-        },
-        {
-          "w": "\"dog\"",
-          "start": 84.02,
-          "end": 84.28
-        },
-        {
-          "w": "and",
-          "start": 84.28,
-          "end": 84.58
-        },
-        {
-          "w": "\"postie\"",
-          "start": 84.58,
-          "end": 85.04
-        },
-        {
-          "w": "are",
-          "start": 85.04,
-          "end": 85.26
-        },
-        {
-          "w": "exactly",
-          "start": 85.26,
-          "end": 85.62
-        },
-        {
-          "w": "the",
-          "start": 85.62,
-          "end": 85.88
-        },
-        {
-          "w": "same.",
-          "start": 85.88,
-          "end": 86.12
-        },
-        {
-          "w": "A",
-          "start": 86.32,
-          "end": 86.84
-        },
-        {
-          "w": "model",
-          "start": 86.84,
-          "end": 87.12
-        },
-        {
-          "w": "that",
-          "start": 87.12,
-          "end": 87.28
-        },
-        {
-          "w": "notices",
-          "start": 87.28,
-          "end": 87.72
-        },
-        {
-          "w": "that",
-          "start": 87.72,
-          "end": 87.94
+          "w": "weights",
+          "start": 94.21,
+          "end": 94.55
         },
         {
           "w": "can",
-          "start": 87.94,
-          "end": 88.06
+          "start": 94.55,
+          "end": 94.75
         },
         {
-          "w": "guess",
-          "start": 88.06,
-          "end": 88.3
+          "w": "capture",
+          "start": 94.75,
+          "end": 95.07
         },
         {
-          "w": "about",
-          "start": 88.3,
-          "end": 88.5
+          "w": "patterns",
+          "start": 95.07,
+          "end": 95.43
+        },
+        {
+          "w": "across",
+          "start": 95.43,
+          "end": 95.77
+        },
+        {
+          "w": "different",
+          "start": 96.15,
+          "end": 96.15
+        },
+        {
+          "w": "contexts.",
+          "start": 96.15,
+          "end": 96.67
+        },
+        {
+          "w": "Look",
+          "start": 96.99,
+          "end": 97.59
+        },
+        {
+          "w": "at",
+          "start": 97.59,
+          "end": 97.73
         },
         {
           "w": "the",
-          "start": 88.5,
-          "end": 88.66
+          "start": 97.73,
+          "end": 97.81
         },
         {
-          "w": "postie",
-          "start": 88.66,
-          "end": 89.08
+          "w": "magpie:",
+          "start": 97.81,
+          "end": 98.11
         },
         {
-          "w": "from",
-          "start": 89.08,
-          "end": 89.26
+          "w": "the",
+          "start": 98.39,
+          "end": 98.83
         },
         {
-          "w": "what",
-          "start": 89.26,
-          "end": 89.46
+          "w": "rows",
+          "start": 98.83,
+          "end": 99.05
+        },
+        {
+          "w": "for",
+          "start": 99.05,
+          "end": 99.31
+        },
+        {
+          "w": "\"dog\"",
+          "start": 99.31,
+          "end": 99.55
+        },
+        {
+          "w": "and",
+          "start": 99.55,
+          "end": 99.83
+        },
+        {
+          "w": "\"postie\"",
+          "start": 99.83,
+          "end": 100.31
+        },
+        {
+          "w": "are",
+          "start": 100.31,
+          "end": 100.55
+        },
+        {
+          "w": "exactly",
+          "start": 100.55,
+          "end": 100.91
+        },
+        {
+          "w": "the",
+          "start": 100.91,
+          "end": 101.13
+        },
+        {
+          "w": "same.",
+          "start": 101.13,
+          "end": 101.41
+        },
+        {
+          "w": "Our",
+          "start": 101.59,
+          "end": 102.13
+        },
+        {
+          "w": "grid",
+          "start": 102.13,
+          "end": 102.45
+        },
+        {
+          "w": "stores",
+          "start": 102.45,
+          "end": 102.79
+        },
+        {
+          "w": "them",
+          "start": 102.79,
+          "end": 103.15
+        },
+        {
+          "w": "separately.",
+          "start": 103.15,
+          "end": 103.51
+        },
+        {
+          "w": "A",
+          "start": 103.93,
+          "end": 104.35
+        },
+        {
+          "w": "neural",
+          "start": 104.35,
+          "end": 104.57
+        },
+        {
+          "w": "model",
+          "start": 104.57,
+          "end": 104.81
+        },
+        {
+          "w": "can",
+          "start": 104.81,
+          "end": 105.09
+        },
+        {
+          "w": "learn",
+          "start": 105.09,
+          "end": 105.33
+        },
+        {
+          "w": "similarities",
+          "start": 105.33,
+          "end": 105.87
+        },
+        {
+          "w": "like",
+          "start": 105.87,
+          "end": 106.27
+        },
+        {
+          "w": "these",
+          "start": 106.27,
+          "end": 106.55
+        },
+        {
+          "w": "and",
+          "start": 106.55,
+          "end": 106.81
+        },
+        {
+          "w": "use",
+          "start": 106.81,
+          "end": 107.05
+        },
+        {
+          "w": "them",
+          "start": 107.05,
+          "end": 107.25
+        },
+        {
+          "w": "in",
+          "start": 107.25,
+          "end": 107.39
+        },
+        {
+          "w": "combinations",
+          "start": 107.39,
+          "end": 107.73
         },
         {
           "w": "it",
-          "start": 89.46,
-          "end": 89.58
+          "start": 107.73,
+          "end": 108.17
+        },
+        {
+          "w": "never",
+          "start": 108.17,
+          "end": 108.43
         },
         {
           "w": "saw",
-          "start": 89.58,
-          "end": 89.74
+          "start": 108.43,
+          "end": 108.69
         },
         {
-          "w": "the",
-          "start": 89.74,
-          "end": 89.96
+          "w": "during",
+          "start": 108.69,
+          "end": 108.93
         },
         {
-          "w": "dog",
-          "start": 89.96,
-          "end": 90.16
-        },
-        {
-          "w": "do.",
-          "start": 90.16,
-          "end": 90.32
+          "w": "training.",
+          "start": 108.93,
+          "end": 109.37
         }
       ]
     },
@@ -1137,89 +1307,139 @@
       "i": 8,
       "speaker": "USHINI",
       "tc": false,
-      "caption": "It doesn't use whole words, either. It uses tokens: common words whole, rarer ones in pieces.",
-      "start": 91.15,
-      "end": 98.98,
+      "caption": "It uses tokens, which can be whole words or pieces. Here, \"magpie\" splits into \"mag\" and \"pie\". \"Unexpectedly\" stays whole. The splits depend on the tokeniser.",
+      "start": 110.08,
+      "end": 125.43,
       "words": [
         {
           "w": "It",
-          "start": 91.3,
-          "end": 91.82
-        },
-        {
-          "w": "doesn't",
-          "start": 91.82,
-          "end": 92.16
-        },
-        {
-          "w": "use",
-          "start": 92.16,
-          "end": 92.36
-        },
-        {
-          "w": "whole",
-          "start": 92.36,
-          "end": 92.6
-        },
-        {
-          "w": "words,",
-          "start": 92.6,
-          "end": 93.06
-        },
-        {
-          "w": "either.",
-          "start": 93.26,
-          "end": 93.64
-        },
-        {
-          "w": "It",
-          "start": 94.36,
-          "end": 94.88
+          "start": 110.23,
+          "end": 110.83
         },
         {
           "w": "uses",
-          "start": 94.88,
-          "end": 95.16
+          "start": 110.83,
+          "end": 111.13
         },
         {
-          "w": "tokens:",
-          "start": 95.16,
-          "end": 95.54
+          "w": "tokens,",
+          "start": 111.13,
+          "end": 111.51
         },
         {
-          "w": "common",
-          "start": 95.98,
-          "end": 96.5
+          "w": "which",
+          "start": 111.87,
+          "end": 112.33
+        },
+        {
+          "w": "can",
+          "start": 112.33,
+          "end": 112.51
+        },
+        {
+          "w": "be",
+          "start": 112.51,
+          "end": 112.65
+        },
+        {
+          "w": "whole",
+          "start": 112.65,
+          "end": 112.83
         },
         {
           "w": "words",
-          "start": 96.5,
-          "end": 96.88
+          "start": 112.83,
+          "end": 113.23
         },
         {
-          "w": "whole,",
-          "start": 96.88,
-          "end": 97.18
-        },
-        {
-          "w": "rarer",
-          "start": 97.44,
-          "end": 97.98
-        },
-        {
-          "w": "ones",
-          "start": 97.98,
-          "end": 98.18
-        },
-        {
-          "w": "in",
-          "start": 98.18,
-          "end": 98.5
+          "w": "or",
+          "start": 113.23,
+          "end": 113.49
         },
         {
           "w": "pieces.",
-          "start": 98.5,
-          "end": 98.78
+          "start": 113.49,
+          "end": 113.75
+        },
+        {
+          "w": "Here,",
+          "start": 114.65,
+          "end": 115.25
+        },
+        {
+          "w": "\"magpie\"",
+          "start": 115.45,
+          "end": 115.95
+        },
+        {
+          "w": "splits",
+          "start": 115.95,
+          "end": 116.33
+        },
+        {
+          "w": "into",
+          "start": 116.33,
+          "end": 116.73
+        },
+        {
+          "w": "\"mag\"",
+          "start": 116.73,
+          "end": 117.11
+        },
+        {
+          "w": "and",
+          "start": 117.11,
+          "end": 117.55
+        },
+        {
+          "w": "\"pie\".",
+          "start": 117.55,
+          "end": 117.85
+        },
+        {
+          "w": "\"Unexpectedly\"",
+          "start": 120.21,
+          "end": 120.81
+        },
+        {
+          "w": "stays",
+          "start": 120.81,
+          "end": 121.01
+        },
+        {
+          "w": "whole.",
+          "start": 121.01,
+          "end": 121.47
+        },
+        {
+          "w": "The",
+          "start": 122.09,
+          "end": 122.69
+        },
+        {
+          "w": "splits",
+          "start": 122.69,
+          "end": 123.05
+        },
+        {
+          "w": "depend",
+          "start": 123.05,
+          "end": 123.29
+        },
+        {
+          "w": "on",
+          "start": 123.29,
+          "end": 123.75
+        },
+        {
+          "w": "the",
+          "start": 123.75,
+          "end": 123.87
+        },
+        {
+          "w": "tokeniser.",
+          "start": 124.84,
+          "end": 125.23
         }
       ]
     },
@@ -1227,164 +1447,174 @@
       "i": 9,
       "speaker": "BEN",
       "tc": false,
-      "caption": "And after all that reading, it gets a second round of training, with people rating its replies. That's what makes it answer your question instead of just carrying on your text.",
-      "start": 100.35,
-      "end": 110.04,
+      "caption": "After learning from reading, a model can get further training. People write example answers, and provide feedback by rating candidate replies. Training on examples and feedback helps it answer questions and follow instructions.",
+      "start": 125.78,
+      "end": 138.87,
       "words": [
         {
-          "w": "And",
-          "start": 100.5,
-          "end": 101.02
+          "w": "After",
+          "start": 125.93,
+          "end": 126.59
         },
         {
-          "w": "after",
-          "start": 101.02,
-          "end": 101.24
+          "w": "learning",
+          "start": 126.59,
+          "end": 126.91
         },
         {
-          "w": "all",
-          "start": 101.24,
-          "end": 101.54
-        },
-        {
-          "w": "that",
-          "start": 101.54,
-          "end": 101.72
+          "w": "from",
+          "start": 126.91,
+          "end": 127.15
         },
         {
           "w": "reading,",
-          "start": 101.72,
-          "end": 102.02
-        },
-        {
-          "w": "it",
-          "start": 102.18,
-          "end": 102.56
-        },
-        {
-          "w": "gets",
-          "start": 102.56,
-          "end": 102.76
+          "start": 127.15,
+          "end": 127.41
         },
         {
           "w": "a",
-          "start": 102.76,
-          "end": 102.88
+          "start": 127.61,
+          "end": 127.99
         },
         {
-          "w": "second",
-          "start": 102.88,
-          "end": 103.14
+          "w": "model",
+          "start": 127.99,
+          "end": 128.27
         },
         {
-          "w": "round",
-          "start": 103.14,
-          "end": 103.36
+          "w": "can",
+          "start": 128.27,
+          "end": 128.53
         },
         {
-          "w": "of",
-          "start": 103.36,
-          "end": 103.5
+          "w": "get",
+          "start": 128.53,
+          "end": 128.73
         },
         {
-          "w": "training,",
-          "start": 103.5,
-          "end": 103.72
+          "w": "further",
+          "start": 128.73,
+          "end": 129.01
         },
         {
-          "w": "with",
-          "start": 103.9,
-          "end": 104.36
+          "w": "training.",
+          "start": 129.01,
+          "end": 129.37
         },
         {
-          "w": "people",
-          "start": 104.36,
-          "end": 104.66
+          "w": "People",
+          "start": 129.59,
+          "end": 130.21
+        },
+        {
+          "w": "write",
+          "start": 130.21,
+          "end": 130.47
+        },
+        {
+          "w": "example",
+          "start": 130.47,
+          "end": 130.89
+        },
+        {
+          "w": "answers,",
+          "start": 130.89,
+          "end": 131.23
+        },
+        {
+          "w": "and",
+          "start": 131.23,
+          "end": 131.69
+        },
+        {
+          "w": "provide",
+          "start": 131.69,
+          "end": 132.13
+        },
+        {
+          "w": "feedback",
+          "start": 132.13,
+          "end": 132.71
+        },
+        {
+          "w": "by",
+          "start": 132.71,
+          "end": 133.03
         },
         {
           "w": "rating",
-          "start": 104.66,
-          "end": 104.98
+          "start": 133.03,
+          "end": 133.35
         },
         {
-          "w": "its",
-          "start": 104.98,
-          "end": 105.2
+          "w": "candidate",
+          "start": 133.35,
+          "end": 133.79
         },
         {
           "w": "replies.",
-          "start": 105.2,
-          "end": 105.46
+          "start": 133.79,
+          "end": 134.11
         },
         {
-          "w": "That's",
-          "start": 106.06,
-          "end": 106.58
-        },
-        {
-          "w": "what",
-          "start": 106.58,
-          "end": 106.7
-        },
-        {
-          "w": "makes",
-          "start": 106.7,
-          "end": 106.96
-        },
-        {
-          "w": "it",
-          "start": 106.96,
-          "end": 107.14
-        },
-        {
-          "w": "answer",
-          "start": 107.14,
-          "end": 107.44
-        },
-        {
-          "w": "your",
-          "start": 107.44,
-          "end": 107.62
-        },
-        {
-          "w": "question",
-          "start": 107.62,
-          "end": 107.98
-        },
-        {
-          "w": "instead",
-          "start": 107.98,
-          "end": 108.32
-        },
-        {
-          "w": "of",
-          "start": 108.32,
-          "end": 108.6
-        },
-        {
-          "w": "just",
-          "start": 108.6,
-          "end": 108.82
-        },
-        {
-          "w": "carrying",
-          "start": 108.82,
-          "end": 109.22
+          "w": "Training",
+          "start": 134.59,
+          "end": 135.27
         },
         {
           "w": "on",
-          "start": 109.22,
-          "end": 109.4
+          "start": 135.27,
+          "end": 135.45
         },
         {
-          "w": "your",
-          "start": 109.4,
-          "end": 109.52
+          "w": "examples",
+          "start": 135.45,
+          "end": 135.87
         },
         {
-          "w": "text.",
-          "start": 109.52,
-          "end": 109.84
+          "w": "and",
+          "start": 135.87,
+          "end": 136.11
+        },
+        {
+          "w": "feedback",
+          "start": 136.11,
+          "end": 136.49
+        },
+        {
+          "w": "helps",
+          "start": 136.49,
+          "end": 136.89
+        },
+        {
+          "w": "it",
+          "start": 136.89,
+          "end": 137.05
+        },
+        {
+          "w": "answer",
+          "start": 137.05,
+          "end": 137.21
+        },
+        {
+          "w": "questions",
+          "start": 137.21,
+          "end": 137.65
+        },
+        {
+          "w": "and",
+          "start": 137.65,
+          "end": 137.99
+        },
+        {
+          "w": "follow",
+          "start": 137.99,
+          "end": 138.21
+        },
+        {
+          "w": "instructions.",
+          "start": 138.21,
+          "end": 138.67
         }
       ]
     },
@@ -1392,124 +1622,149 @@
       "i": 10,
       "speaker": "USHINI",
       "tc": false,
-      "caption": "More context, a smarter way to store it, pieces of words, and a second round of training. None of it changes the loop.",
-      "start": 110.71,
-      "end": 118.94,
+      "caption": "Our paper model looks up counts. A large language model computes its predictions using learned weights and the available context. Both can use those predictions to generate text.",
+      "start": 139.92,
+      "end": 152.25,
       "words": [
         {
-          "w": "More",
-          "start": 110.86,
-          "end": 111.38
+          "w": "Our",
+          "start": 140.07,
+          "end": 140.41
         },
         {
-          "w": "context,",
-          "start": 111.38,
-          "end": 111.84
+          "w": "paper",
+          "start": 140.41,
+          "end": 140.77
         },
         {
-          "w": "a",
-          "start": 112.12,
-          "end": 112.4
+          "w": "model",
+          "start": 140.77,
+          "end": 141.07
         },
         {
-          "w": "smarter",
-          "start": 112.4,
-          "end": 112.74
+          "w": "looks",
+          "start": 141.07,
+          "end": 141.41
         },
         {
-          "w": "way",
-          "start": 112.74,
-          "end": 112.98
+          "w": "up",
+          "start": 141.41,
+          "end": 141.59
         },
         {
-          "w": "to",
-          "start": 112.98,
-          "end": 113.16
+          "w": "counts.",
+          "start": 141.59,
+          "end": 141.93
         },
         {
-          "w": "store",
-          "start": 113.16,
-          "end": 113.4
+          "w": "A",
+          "start": 142.55,
+          "end": 143.23
         },
         {
-          "w": "it,",
-          "start": 113.4,
-          "end": 113.62
+          "w": "large",
+          "start": 143.23,
+          "end": 143.57
         },
         {
-          "w": "pieces",
-          "start": 113.72,
-          "end": 114.2
+          "w": "language",
+          "start": 143.57,
+          "end": 143.95
         },
         {
-          "w": "of",
-          "start": 114.2,
-          "end": 114.32
+          "w": "model",
+          "start": 143.95,
+          "end": 144.29
         },
         {
-          "w": "words,",
-          "start": 114.32,
-          "end": 114.7
+          "w": "computes",
+          "start": 144.29,
+          "end": 144.95
+        },
+        {
+          "w": "its",
+          "start": 144.95,
+          "end": 145.09
+        },
+        {
+          "w": "predictions",
+          "start": 145.09,
+          "end": 145.51
+        },
+        {
+          "w": "using",
+          "start": 145.51,
+          "end": 146.09
+        },
+        {
+          "w": "learned",
+          "start": 146.09,
+          "end": 146.47
+        },
+        {
+          "w": "weights",
+          "start": 146.47,
+          "end": 146.79
         },
         {
           "w": "and",
-          "start": 114.9,
-          "end": 115.24
-        },
-        {
-          "w": "a",
-          "start": 115.24,
-          "end": 115.32
-        },
-        {
-          "w": "second",
-          "start": 115.32,
-          "end": 115.6
-        },
-        {
-          "w": "round",
-          "start": 115.6,
-          "end": 115.88
-        },
-        {
-          "w": "of",
-          "start": 115.88,
-          "end": 116.06
-        },
-        {
-          "w": "training.",
-          "start": 116.06,
-          "end": 116.3
-        },
-        {
-          "w": "None",
-          "start": 117.2,
-          "end": 117.68
-        },
-        {
-          "w": "of",
-          "start": 117.68,
-          "end": 117.8
-        },
-        {
-          "w": "it",
-          "start": 117.8,
-          "end": 117.9
-        },
-        {
-          "w": "changes",
-          "start": 117.9,
-          "end": 118.22
+          "start": 146.79,
+          "end": 147.23
         },
         {
           "w": "the",
-          "start": 118.22,
-          "end": 118.5
+          "start": 147.23,
+          "end": 147.35
         },
         {
-          "w": "loop.",
-          "start": 118.5,
-          "end": 118.74
+          "w": "available",
+          "start": 147.35,
+          "end": 147.69
+        },
+        {
+          "w": "context.",
+          "start": 147.69,
+          "end": 148.19
+        },
+        {
+          "w": "Both",
+          "start": 149.37,
+          "end": 149.71
+        },
+        {
+          "w": "can",
+          "start": 149.71,
+          "end": 149.95
+        },
+        {
+          "w": "use",
+          "start": 149.95,
+          "end": 150.17
+        },
+        {
+          "w": "those",
+          "start": 150.17,
+          "end": 150.45
+        },
+        {
+          "w": "predictions",
+          "start": 150.45,
+          "end": 150.89
+        },
+        {
+          "w": "to",
+          "start": 150.89,
+          "end": 151.29
+        },
+        {
+          "w": "generate",
+          "start": 151.29,
+          "end": 151.61
+        },
+        {
+          "w": "text.",
+          "start": 151.61,
+          "end": 152.05
         }
       ]
     },
@@ -1517,89 +1772,114 @@
       "i": 11,
       "speaker": "BEN",
       "tc": true,
-      "caption": "Everything Claude or ChatGPT does, it does one token at a time. Just like you did.",
-      "start": 120.31,
-      "end": 126.18,
+      "caption": "For text generation, we return to the loop: predict the next token, choose one, add it to the text, and repeat.",
+      "start": 153.38,
+      "end": 160.65,
       "words": [
         {
-          "w": "Everything",
-          "start": 120.46,
-          "end": 120.94
+          "w": "For",
+          "start": 153.53,
+          "end": 154.21
         },
         {
-          "w": "Claude",
-          "start": 120.94,
-          "end": 121.42
+          "w": "text",
+          "start": 154.21,
+          "end": 154.53
         },
         {
-          "w": "or",
-          "start": 121.42,
-          "end": 121.62
+          "w": "generation,",
+          "start": 154.53,
+          "end": 154.79
         },
         {
-          "w": "ChatGPT",
-          "start": 121.62,
-          "end": 122.32
+          "w": "we",
+          "start": 154.79,
+          "end": 155.47
         },
         {
-          "w": "does,",
-          "start": 122.32,
-          "end": 122.74
+          "w": "return",
+          "start": 155.47,
+          "end": 155.89
+        },
+        {
+          "w": "to",
+          "start": 155.89,
+          "end": 156.09
+        },
+        {
+          "w": "the",
+          "start": 156.09,
+          "end": 156.17
+        },
+        {
+          "w": "loop:",
+          "start": 156.17,
+          "end": 156.39
+        },
+        {
+          "w": "predict",
+          "start": 156.51,
+          "end": 157.07
+        },
+        {
+          "w": "the",
+          "start": 157.07,
+          "end": 157.31
+        },
+        {
+          "w": "next",
+          "start": 157.31,
+          "end": 157.49
+        },
+        {
+          "w": "token,",
+          "start": 157.49,
+          "end": 157.79
+        },
+        {
+          "w": "choose",
+          "start": 157.95,
+          "end": 158.39
+        },
+        {
+          "w": "one,",
+          "start": 158.39,
+          "end": 158.69
+        },
+        {
+          "w": "add",
+          "start": 158.85,
+          "end": 159.21
         },
         {
           "w": "it",
-          "start": 122.94,
-          "end": 123.38
+          "start": 159.21,
+          "end": 159.33
         },
         {
-          "w": "does",
-          "start": 123.38,
-          "end": 123.58
+          "w": "to",
+          "start": 159.33,
+          "end": 159.45
         },
         {
-          "w": "one",
-          "start": 123.58,
-          "end": 123.82
+          "w": "the",
+          "start": 159.45,
+          "end": 159.49
         },
         {
-          "w": "token",
-          "start": 123.82,
-          "end": 124.14
+          "w": "text,",
+          "start": 159.49,
+          "end": 159.81
         },
         {
-          "w": "at",
-          "start": 124.14,
-          "end": 124.3
+          "w": "and",
+          "start": 159.95,
+          "end": 160.27
         },
         {
-          "w": "a",
-          "start": 124.3,
-          "end": 124.38
-        },
-        {
-          "w": "time.",
-          "start": 124.38,
-          "end": 124.68
-        },
-        {
-          "w": "Just",
-          "start": 124.92,
-          "end": 125.4
-        },
-        {
-          "w": "like",
-          "start": 125.4,
-          "end": 125.6
-        },
-        {
-          "w": "you",
-          "start": 125.6,
-          "end": 125.8
-        },
-        {
-          "w": "did.",
-          "start": 125.8,
-          "end": 125.98
+          "w": "repeat.",
+          "start": 160.27,
+          "end": 160.45
         }
       ]
     }
