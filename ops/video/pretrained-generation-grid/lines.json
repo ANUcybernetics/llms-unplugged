@@ -3,15 +3,15 @@
     "i": 0,
     "speaker": "USHINI",
     "tc": true,
-    "caption": "Most people who use Claude or ChatGPT never trained it. Somebody else did the counting, and they just type and it writes. That's what this booklet is: a model somebody else already trained.",
-    "tts": "Most people who use Claude or ChatGPT never trained it. Somebody else did the counting, and they just type and it writes. That's what this booklet is: a model somebody else already trained."
+    "caption": "Most people who use Claude or ChatGPT never trained it. You can use a model somebody else trained. This booklet lets you try that with our counting model.",
+    "tts": "Most people who use Claude or ChatGPT never trained it. You can use a model somebody else trained. This booklet lets you try that with our counting model."
   },
   {
     "i": 1,
     "speaker": "BEN",
     "tc": false,
-    "caption": "It looks new, but it isn't. Here's the grid from The magpie. Fold it into a booklet, and every row becomes an entry. The empty boxes just fall away.",
-    "tts": "It looks new, but it isn't. Here's the grid from The magpie. Fold it into a booklet, and every row becomes an entry. The empty boxes just fall away."
+    "caption": "Here's the grid from The magpie. Fold it into a booklet, and every row becomes an entry. The empty boxes just fall away.",
+    "tts": "Here's the grid from The magpie. Fold it into a booklet, and every row becomes an entry. The empty boxes just fall away."
   },
   {
     "i": 2,
@@ -40,12 +40,12 @@
     "i": 4,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "The entry for \"the\" runs all the way to ninety-nine. That means two dice, read as one number. A seven and a two is seventy-two: past fifty-seven, not past seventy-eight. \"Dog\".",
-    "tts": "The entry for \"the\" runs all the way to ninety-nine. That means two dice, read as one number. A seven and a two is seventy-two: past fifty-seven, not past seventy-eight. \"Dog\".",
+    "caption": "The entry for \"the\" runs all the way to ninety-nine. That means two rolls, read as one number. Roll seven, then two. Seventy-two: past fifty-seven, not past seventy-eight. \"Dog\".",
+    "tts": "The entry for \"the\" runs all the way to ninety-nine. That means two rolls, read as one number. Roll seven, then two. Seventy-two: past fifty-seven, not past seventy-eight. \"Dog\".",
     "parts": [
       "The entry for \"the\" runs all the way to ninety-nine.",
-      "That means two dice, read as one number.",
-      "A seven and a two is seventy-two:",
+      "That means two rolls, read as one number.",
+      "Roll seven, then two. Seventy-two:",
       "past fifty-seven, not past seventy-eight. \"Dog\"."
     ],
     "beats": [
@@ -72,11 +72,11 @@
     "i": 6,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "\"Again\" runs to ninety-nine, so two dice. An eight and a nought: eighty. That's past seventy-six, not past eighty-four: \"I'd\". Roll a six: \"float\". And \"float\" has only one word after it, so no roll at all.",
-    "tts": "\"Again\" runs to ninety-nine, so two dice. An eight and a nought: eighty. That's past seventy-six, not past eighty-four: \"I'd\". Roll a six: \"float\". And \"float\" has only one word after it, so no roll at all.",
+    "caption": "\"Again\" runs to ninety-nine, so two rolls. Eight, then nought: eighty. That's past seventy-six, not past eighty-four: \"I'd\". Roll a six: \"float\". And \"float\" has only one word after it, so no roll at all.",
+    "tts": "\"Again\" runs to ninety-nine, so two rolls. Eight, then nought: eighty. That's past seventy-six, not past eighty-four: \"I'd\". Roll a six: \"float\". And \"float\" has only one word after it, so no roll at all.",
     "parts": [
-      "\"Again\" runs to ninety-nine, so two dice.",
-      "An eight and a nought: eighty.",
+      "\"Again\" runs to ninety-nine, so two rolls.",
+      "Eight, then nought: eighty.",
       "That's past seventy-six, not past eighty-four: \"I'd\".",
       "Roll a six: \"float\".",
       "And \"float\" has only one word after it, so no roll at all."
@@ -99,15 +99,15 @@
     "i": 8,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "As you go, listen to what comes out. It'll sound more like real prose than your grid did. And it still won't be about anything. Try to guess the book before you check the cover.",
-    "tts": "As you go, listen to what comes out. It'll sound more like real prose than your grid did. And it still won't be about anything. Try to guess the book before you check the cover."
+    "caption": "As you go, listen to what comes out. There are more words to choose from, but each choice still uses only the last word. Try to guess the book before you check the cover.",
+    "tts": "As you go, listen to what comes out. There are more words to choose from, but each choice still uses only the last word. Try to guess the book before you check the cover."
   },
   {
     "i": 9,
     "speaker": "BEN",
     "tc": false,
-    "caption": "And one thing the booklet gets exactly right: you can read every number in this model, and run it at the kitchen table. Nobody can switch it off or quietly change it under you. That's what \"open weights\" means.",
-    "tts": "And one thing the booklet gets exactly right: you can read every number in this model, and run it at the kitchen table. Nobody can switch it off or quietly change it under you. That's what \"open weights\" means."
+    "caption": "You can read every number in this model and run it at the kitchen table. An open-weights model makes its learned numbers available for people to download. With the software and hardware to run it, you can use your own copy.",
+    "tts": "You can read every number in this model and run it at the kitchen table. An open-weights model makes its learned numbers available for people to download. With the software and hardware to run it, you can use your own copy."
   },
   {
     "i": 10,
