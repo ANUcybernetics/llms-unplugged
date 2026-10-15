@@ -1,0 +1,103 @@
+---
+title: LLMs Unplugged — How AI writes stories (ledger, 45 min)
+description:
+  A 45-minute school workshop (ages 10-16) using paper ledger sheets and a cup
+  of coloured counters to discover how AI writes stories
+---
+
+import LedgerToken from "../components/LedgerToken.astro";
+import LedgerRow from "../components/LedgerRow.svelte";
+import LedgerCup from "../components/LedgerCup.svelte";
+import LedgerPage from "../components/LedgerPage.svelte";
+import LedgerTraining from "../components/LedgerTraining.svelte";
+import LedgerSheet from "../components/LedgerSheet.svelte";
+import LedgerSheets from "../components/LedgerSheets.svelte";
+import Timer from "../components/Timer.astro";
+import PresenterGrid from "../components/PresenterGrid.astro";
+import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
+import BgMusic from "../components/BgMusic.astro";
+import {
+  PALETTE,
+  ROW_THE,
+  ROW_STOP,
+  ROW_IT,
+  ROW_MAGPIE,
+  SHEET_FIVE,
+  STORY_LEDGER,
+  SHEET_RANGES,
+  MAGPIE_OPENING,
+} from "./ledgerExamples";
+import "../styles/widgets.css";
+import "../styles/ledger.css";
+import "./how-ai-writes-stories-ledger.deck.css";
+
+<BgMusic />
+
+export const components = { code: LedgerToken };
+
+```comment
+The 90-minute ledger deck cut to 45 minutes by dropping whole partials
+(yr5-6-what-is-ai, yr5-6-pattern-warmup and ledger-bucket) and swapping
+ledger-training for ledger-training-quick, where the whole room trains one row
+("the") by ear instead of groups tallying a new text. Five parts:
+  Part 1 (4 min)   Words (yr5-6-definitions --- form groups of 4-5 before this)
+  Part 2 (5 min)   Read the sheet (ledger-read)
+  Part 3 (20 min)  Generation + shareback (ledger-generation)
+  Part 4 (6 min)   Where did the marks come from? (ledger-training-quick)
+  Part 5 (5 min)   Wrap-up + Q&A (yr5-6-wrap-up)
+
+Two partials point back at dropped beats: the definitions notes tie "AI" to the
+story a chatbot wrote, and the wrap-up suggests re-running the Part 1 chatbot
+story. Skip those tie-backs.
+
+Before each delivery: print the pre-tallied picture-book sets, the counters
+page and the instruction sheet from the 90-minute deck's pack (see that deck's
+comment); the blank sheets, the outdoors text pages and the butchers paper
+aren't needed. A whiteboard and a helper to tally for part 4.
+```
+
+{/* _class: hero */}
+
+# LLMs Unplugged
+
+## How AI writes stories
+
+![bg](./assets/bg-ledger-title.avif)
+
+```notes
+Open warm: today we'll find out how AI writes stories, and write some ourselves with paper and a cup of counters. No computers. Get them into groups of 4-5 now --- they stay in those groups all session.
+```
+
+---
+
+{/* @include ./partials/ack-country.mdx */}
+
+---
+
+{/* @include ./partials/presenters.mdx */}
+
+---
+
+{/* @include ./partials/yr5-6-definitions.mdx */}
+
+---
+
+{/* @include ./partials/ledger-read.mdx */}
+
+---
+
+{/* @include ./partials/ledger-generation.mdx */}
+
+---
+
+{/* @include ./partials/ledger-training-quick.mdx */}
+
+---
+
+{/* @include ./partials/yr5-6-wrap-up.mdx */}
+
+---
+
+{/* _class: socy-logo */}
+
+<SocyLogo />
