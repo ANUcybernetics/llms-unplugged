@@ -4,7 +4,7 @@
 # dependencies = [
 #   "typer>=0.15",
 #   "loguru>=0.7",
-#   "edge-tts>=6.1",
+#   "edge-tts>=7.3.1",
 # ]
 # ///
 """Build a scratch voice track from a video's script, so timing exists before
