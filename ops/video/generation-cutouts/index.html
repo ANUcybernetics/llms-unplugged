@@ -13,30 +13,15 @@
     </style>
   </head>
   <body>
-    <!-- Generation (cutouts), beyond the slides: ops/video/scripts/
-         generation-cutouts.md. The magpie's 132 cutouts write ". it sits on
-         the dog ." one slip at a time (the slips whose box matches the last
-         word gather, one comes out, its next word is written); the slips used
-         lie end to end like dominoes; then the tree of everything they could
-         have written, and ten thousand words of their own writing cut back
-         into slips and sorted into piles. Sibling of generation-grid and
-         generation-ledger: the walk, the tree and the text are the shared
-         parts in ../_parts/; the slips are cutouts-slips.js, the piles
-         cutouts-converge.js.
-
-         The walk is six slips, not the script's five: ". it" starts it and
-         five picks follow (it sits, sits on, on the, the dog, dog .). -->
+    <!-- A worked sentence, a four-way choice, then the classroom activity. -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="generation-cutouts"
-         data-start="0" data-duration="129.93" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="129.93" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="122.93" data-track-index="1"></audio>
+         data-start="0" data-duration="144.08" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="144.08" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="137.08" data-track-index="1"></audio>
     </div>
     <script type="module">
       import { WALK, wordTimes, paperLine, splice, walkStyle } from "./parts/generation-walk.js";
-      import { tree, labels, walkWords, samplePaths, treeStyle, GOLD } from "./parts/tree.js";
-      import * as CV from "./parts/converge.js";
       import { cutouts, spread, row, piles, heap, at, tokenBox } from "./parts/cutouts-slips.js";
-      import { sortPiles, rowPiles } from "./parts/cutouts-converge.js";
 
       const build = (tl, S, T) => {
         const K = KIT, MG = MAGPIE;
@@ -44,7 +29,7 @@
         const A = S.area;
         const W = wordTimes(T);
         const w = W.word;
-        treeStyle(), walkStyle();
+        walkStyle();
 
         // ---- the cutouts: one slip per pair, the "the fence" slips on top
         // (they lift across the spread first)
@@ -119,11 +104,10 @@
           fly(chosen, at(chosen, CHOSEN.cx, CHOSEN.cy, CHOSEN.scale), tOut, { dur: 0.5, ease: "out-cubic" });
           light([chosen], tOut + 0.3);
         };
-        // the chosen slip joins the chain; the rest go back to the spread
+        // Every selected slip returns after its word has been recorded.
         const settle = (chosen, rest, t, slot) => {
           light([chosen], t, false);
-          fly(chosen, { ...CHAIN[slot], opacity: 1 }, t, { dur: 0.6, ease: "in-out-cubic" });
-          chained.push(chosen);
+          home([chosen], t);
           home(rest, t + 0.05);
         };
 
@@ -169,8 +153,7 @@
         light(dots.filter((o) => o !== s0), w(2, "This"), false);
         K.write(tl, paper.words[0], w(2, "Write"));
         light([s0], w(2, "down") + 0.2, false);
-        fly(s0, CHAIN[0], w(2, "down") + 0.2, { dur: 0.6, ease: "in-out-cubic" });
-        chained.push(s0);
+        home([s0], w(2, "back"));
         undim(w(2, "down") + 0.3);
 
         // ============================================================ line 3
@@ -187,9 +170,9 @@
           pulseSlips(g, g.map((o) => IT_ROW[its.indexOf(o)]), w(3, said) - 0.05, 1.12);
         });
         const s1 = walk[1];
-        pick(its, s1, w(3, "Pick") - 0.1, w(3, "sits", 2) - 0.45);
+        pick(its, s1, w(3, "Shuffle") - 0.1, w(3, "sits", 2) - 0.45);
         K.write(tl, paper.words[1], w(3, "sits", 2) + 0.1);
-        settle(s1, its.filter((o) => o !== s1), T.end(3) + 0.1, 1);
+        settle(s1, its.filter((o) => o !== s1), w(3, "back"), 1);
         undim(T.end(3) + 0.4);
 
         // ============================================================ line 4
@@ -238,7 +221,7 @@
         pick(dogs, s5, w(5, "Pick", 2) - 0.1, w(5, "full", 2) - 0.35);
         K.write(tl, paper.words[5], w(5, "stop"));
         light([s5], T.end(5) + 0.2, false);
-        fly(s5, { ...CHAIN[5], opacity: 1 }, T.end(5) + 0.2, { dur: 0.6, ease: "in-out-cubic" });
+        home([s5], T.end(5) + 0.2);
 
         // ============================================================ line 6
         // the six slips end to end like dominoes, the strip above them, and
@@ -249,78 +232,42 @@
         const PAPER_MID = { x: PAPER.x, y: 574, scale: 1 };
         tl.to(paper.el, { x: PAPER_MID.x, y: PAPER_MID.y }, t6 + 0.1, { dur: 0.8, ease: "in-out-cubic" });
         go(walk, DOMINO, t6 + 0.1, { dur: 0.8, stagger: 0.04 });
-        splice(tl, scene, { cx: 960, y: 290, size: 68, times: { show: w(6, "book") - 0.1, pieces: w(6, "sits", 2), join: w(6, "Nobody") } });
+        splice(tl, scene, { cx: 960, y: 290, size: 68, times: { show: w(6, "book") - 0.1, pieces: w(6, "fence"), join: w(6, "dog") } });
         const sp = scene.querySelectorAll(".splice-word");
         // one pair at a time: each slip's next word is the next slip's box
         walk.forEach((o, i) => {
-          const t = w(6, "one") + i * 0.2;
+          const t = w(6, "ended") + i * 0.2;
           tl.to(o.lit, { opacity: 1 }, t, { dur: 0.2 });
           tl.to(o.lit, { opacity: 0 }, t + 0.45, { dur: 0.3 });
         });
-        // like dominoes: a tip runs down the chain
-        walk.forEach((o, i) => {
-          const t = w(6, "dominoes") + i * 0.08;
-          tl.to(o.el, { rotation: -7 }, t, { dur: 0.14, ease: "out-quad" });
-          tl.to(o.el, { rotation: 0 }, t + 0.14, { dur: 0.3, ease: "in-out-quad" });
+        // Four choices after "the", shown at a scale that can be read.
+        const forkStart = T.start(7);
+        tl.to([paper.el, ...sp, ...els(walk)], { opacity: 0 }, forkStart - 0.4, { dur: 0.4 });
+        const fork = K.layer(scene, 0, 0);
+        const forkSvg = K.svg("svg", { width: 1920, height: 860, viewBox: "0 0 1920 860" }, fork);
+        const forkRoot = K.svg("text", { x: 420, y: 445, fill: "var(--text)", "font-size": 58, "font-family": "var(--font-tok)" }, forkSvg);
+        forkRoot.textContent = "the";
+        K.set(fork, { opacity: 0 });
+        tl.to(fork, { opacity: 1 }, forkStart, { dur: 0.3 });
+        const forkPaths = {};
+        const counts = [5, 6, 4, 4];
+        ["magpie", "fence", "postie", "dog"].forEach((word, i) => {
+          const y = 170 + i * 170;
+          const path = K.svg("path", { d: `M 550 425 C 950 425, 950 ${y}, 1310 ${y}`, fill: "none", stroke: "var(--text)", "stroke-width": counts[i] * 3 }, forkSvg);
+          const label = K.svg("text", { x: 1340, y: y + 20, fill: "var(--text)", "font-size": 58, "font-family": "var(--font-tok)" }, forkSvg);
+          label.textContent = word;
+          K.set([path, label], { opacity: 0 });
+          tl.to([path, label], { opacity: 1 }, w(7, word), { dur: 0.35 });
+          forkPaths[word] = path;
         });
-
-        // ============================================================ line 7
-        // everything the pile could have written: the tree, the walk in gold
-        const tCol = T.end(6) + 0.15;
-        const box = { x0: 250, x1: A.x + A.w - 10, y0: A.y + 16, y1: A.y + A.h - 16 };
-        const tGrow = [w(7, "here's"), w(8, "Every") - 0.7];
-        const tWalk = w(8, "Every") - 0.35, STEP = 0.3;
-        const tFade = w(8, "chain") - 0.1;
-        const paths = samplePaths(MG.rows, { n: 3, seed: 11, avoid: WALK });
-        const tOther = w(8, "different");
-        const T3 = tree(tl, scene, {
-          rows: MG.rows,
-          box,
-          grow: tGrow,
-          dim: { t: tGrow[1] - 0.3, to: 0.35 },
-          paths: [
-            { words: WALK, colour: GOLD, t0: tWalk, step: STEP },
-            ...paths.map((p, i) => ({ words: p, colour: [255, 255, 255], width: 3.5, t0: tOther + i * 0.22, step: 0.07, out: tOther + i * 0.22 + 1.0 })),
-          ],
-          canvasBox: { x: 0, y: 0, w: S.W, h: S.H - S.captionH },
-        });
-        K.set(T3.el, { opacity: 0 });
-        tl.set(T3.el, { opacity: 1 }, tGrow[0] - 0.05);
-        const lab = labels(tl, scene, T3, { from: 1, to: 3 });
-        tl.to([...lab.values()], { opacity: 0.25 }, tGrow[1] - 0.3, { dur: 0.8 });
-        const from = [{ x: paper.centres(PAPER_MID)[0].x - 90, y: paper.centres(PAPER_MID)[0].y }, ...paper.centres(PAPER_MID)];
-        tl.to([paper.el, ...sp, ...els(walk)], { opacity: 0 }, tCol, { dur: 0.4 });
-        const ww = walkWords(tl, scene, T3, WALK, { from, colX: A.x + 40, labels: lab, times: { col: tCol, root: w(7, "And") - 0.1, walk: tWalk, step: STEP } });
-        tl.to([T3.el, ...lab.values(), ...ww.all], { opacity: 0 }, tFade, { dur: 0.5 });
-
-        // ============================================================ lines 8-9
-        // chain ten thousand words, cut them back into slips, sort them into
-        // piles by their box; the "the" piles beside the book's. The rows in
-        // their printed casing, so the stream and the piles read as the slips
-        // do (the same draws as the siblings' seed 37: twenty words give "the"
-        // three postie and nothing else).
-        const CROWS = Object.fromEntries(Object.entries(MG.rows).map(([a, r]) => [C.canon(a), r.map(([b, n]) => [C.canon(b), n])]));
-        const sim = CV.simulate(CROWS, { n: 10000, seed: 37 });
-        const nAt = CV.schedule({ t0: w(8, "cut") - 0.3, t1: w(9, "different"), short: 20, hold: w(9, "sounding") - 0.5, t2: w(9, "book") + 0.2, long: 10000 });
-        const STREAM = { x: 40, y: 772, w: 1840, h: 80 };
-        const streamC = CV.stream(tl, scene, sim, nAt, { ...STREAM, size: 40 });
-        const tShares = w(9, "Every") - 0.1;
-        const pilesC = sortPiles(tl, scene, sim, nAt, {
-          x: 0, y: 0, w: 1920, h: 860,
-          area: { x: 30, y: 20, w: 1080, h: 740 },
-          words: MG.vocab.map(C.canon),
-          cols: 6,
-          from: { x: STREAM.x + STREAM.w - 90, y: STREAM.y + STREAM.h / 2 },
-          hi: { word: "the", t: tShares },
-        });
-        const theC = rowPiles(tl, scene, sim, nAt, {
-          x: 1190, y: 40, w: 700, h: 700, row: "the",
-          followers: CROWS.the,
-          labels: (t, k) => ["the “the” slips cut from the book", `the “the” slips from ${Math.floor(k).toLocaleString("en-AU")} words it wrote`],
-        });
-        K.set([streamC.el, pilesC.el, theC.el], { opacity: 0 });
-        tl.to([streamC.el, pilesC.el], { opacity: 1 }, tFade + 0.3, { dur: 0.4 });
-        tl.to(theC.el, { opacity: 1 }, tShares, { dur: 0.4 });
+        const highlight = (word, t0, t1) => {
+          tl.to(forkPaths[word], { stroke: "var(--gold)" }, t0, { dur: 0.2 });
+          if (t1) tl.to(forkPaths[word], { stroke: "var(--text)" }, t1, { dur: 0.2 });
+        };
+        highlight("dog", T.start(8), w(8, "different"));
+        highlight("fence", w(8, "different"), w(8, "dog"));
+        highlight("dog", w(8, "dog"));
+        tl.to(fork, { opacity: 0 }, T.start(10) - 0.5, { dur: 0.4 });
 
         // ============================================================ line 10
         // the hand-off: the cutouts spread out again; a starting word; the
@@ -329,7 +276,6 @@
         // lights
         const t10 = T.start(10) - 0.5;
         chained.length = 0; // the walk's slips are back in the spread
-        tl.to([streamC.el, pilesC.el, theC.el], { opacity: 0 }, t10, { dur: 0.4 });
         all.forEach((o) => {
           tl.set(o.el, heap([o], { cx: 960, cy: 320, scale: 0.42, spreadX: 60, spreadY: 30, rot: 20, mix: 3 })[0], t10 + 0.3);
           tl.set(o.lit, { opacity: 0 }, t10 + 0.3);
@@ -348,15 +294,19 @@
         light(eThes, w(10, "box") - 0.1);
         const ELIFT = { cx: 960, cy: 680, scale: 0.85 };
         const e1 = of("the", "postie")[1];
-        fly(e1, at(e1, ELIFT.cx, ELIFT.cy, ELIFT.scale), w(10, "and") - 0.1, { dur: 0.55, ease: "out-cubic" });
-        light(eThes.filter((o) => o !== e1), w(10, "and"), false);
+        const endHeap = heap(eThes, { cx: 960, cy: 420, scale: 0.65, mix: 0 });
+        go(eThes, endHeap, w(10, "Shuffle"), { dur: 0.45 });
+        go(eThes, heap(eThes, { cx: 960, cy: 420, scale: 0.65, mix: 1 }), w(10, "pick"), { dur: 0.35 });
+        fly(e1, at(e1, ELIFT.cx, ELIFT.cy, ELIFT.scale), w(10, "looking"), { dur: 0.55, ease: "out-cubic" });
+        light(eThes.filter((o) => o !== e1), w(10, "looking"), false);
         K.write(tl, endPaper.words[1], w(10, "beside"));
+        home(eThes.filter((o) => o !== e1), w(10, "back"), END);
         // put it back; the next word's colour
-        light([e1], w(10, "Then"), false);
-        fly(e1, END[e1.k], w(10, "Then"), { dur: 0.5, ease: "in-out-cubic" });
+        light([e1], w(10, "back"), false);
+        fly(e1, END[e1.k], w(10, "back"), { dur: 0.5, ease: "in-out-cubic" });
         const cPostie = byColour("postie"), ePosties = of("postie");
-        undim(w(10, "Then") + 0.1, cPostie);
-        dim(cPostie, w(10, "Then") + 0.1, 0.22);
+        undim(w(10, "back") + 0.1, cPostie);
+        dim(cPostie, w(10, "back") + 0.1, 0.22);
         pulseSlips(cPostie, cPostie.map((o) => END[o.k]), w(10, "colours"), 1.15);
         dim(ePosties, w(10, "matches") - 0.1, 0.22);
         light(ePosties, w(10, "matches") - 0.1);

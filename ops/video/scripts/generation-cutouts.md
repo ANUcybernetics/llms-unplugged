@@ -1,8 +1,7 @@
 # Generation: cutouts
 
-**Key idea:** text is written one word at a time, each word picked at random
-from the cutouts that match: common pairs have more cutouts, so they're
-likelier, and every chain comes out different.
+**Key idea:** generate text one word at a time using the book's pair counts.
+Common pairs are more likely; a run can produce a new sentence or repeat one.
 
 **Plays:** start of the Generation section of the cutouts decks.
 
@@ -16,26 +15,20 @@ magpie 5, postie 4, dog 4), 4 with _dog_ (full stop 2, runs 2).
 
 ## Beat sheet
 
-1. hook: a pile of paper slips is about to write a sentence nobody has ever
-   written
-2. the model: every pair in a book, cut out. A previous word and a next word
-3. choose a starting cutout: ". it" gives you your first two words
-4. find every cutout that starts with _it_: ten of them. Pick one at random:
-   "sits". More cutouts for a pair, more chances
-5. single-option words: every _sits_ cutout says _on_, every _on_ says _the_
-6. _the_: nineteen cutouts, four next words. Pick "dog", then a full stop
-7. the sentence: "It sits on the dog." Not in the book. The chain is like
-   dominoes
-8. **beyond:** the tree of everything this pile could have written
-9. **beyond:** chain it ten thousand times and cut the result back into slips:
-   the same piles come back
-10. that's the loop Claude or ChatGPT runs, with vastly more slips
-11. ending: spread your cutouts and start chaining
+1. a pile of slips can generate a sentence absent from the book
+2. each slip records a pair; common pairs have more slips
+3. start after a full stop; record the next word and return the slip
+4. gather every match, shuffle, pick without looking, write and return
+5. continue through "sits on the dog" to a full stop
+6. compare our sentence with the book's
+7. inspect four possible next words after "the"; repeats can happen
+8. connect next-word prediction to real models, distinguishing how they learn
+9. return to the materials and begin the activity
 
 ## Script
 
 **BEN (TC):** This is a pile of paper slips. In about a minute it's going to
-write a sentence that nobody has ever written.
+write a sentence that is not in this book.
 
 _Visual: the desk, top-down, the magpie's cutouts spread across it, previous-
 word boxes up. Nothing moves._
@@ -53,23 +46,24 @@ pair has many slips.
 
 **BEN (VO):** Choose a slip to start from. A story starts after a full stop, so
 take one with a full stop in the box. [beat] This one says "it". Write that word
-down.
+down, then put the slip back.
 
 _Visual: the full stop slips light across the spread; one slides out, turns
 over, full stop in its box, "it" beside it. "it" writes onto a strip of paper at
-the bottom of the desk._
+the bottom of the desk; the selected slip returns to the spread._
 
 _Reads:_ 1. the first slip gives you somewhere to start; 2. its next word is
 written down.
 
 **USHINI (VO):** Now find every slip with "it" in the box. There are ten. [beat]
-Three say "sits", three "watches", three "goes", and one says "is". [beat] Pick
-one at random: "sits".
+Three say "sits", three "watches", three "goes", and one says "is". [beat]
+Shuffle the matching slips. Pick one without looking: "sits". Write it down,
+then put the slip back. You might need it again.
 
 _Visual: the spread dims except the ten "it" slips, which slide together into
 one loose pile, their next words showing: sits, sits, sits, watches, watches,
 watches, goes, goes, goes, is. The pile shuffles, one slip slides out: "it
-sits". "sits" writes onto the strip._
+sits". "sits" writes onto the strip. The slip returns to the spread._
 
 _Reads:_ 1. every slip that matches the last word is a candidate; 2. more slips,
 more chances; 3. the one you pick names the next word.
@@ -92,61 +86,55 @@ full stop tile writes on._
 
 _Reads:_ 1. every word works the same way; 2. a full stop ends the sentence.
 
-**BEN:** "It sits on the dog." The book never says that; the magpie sits on the
-fence. Nobody wrote this sentence; the slips did, one pair at a time, like
-dominoes.
+**BEN:** The book says "It sits on the fence". We've ended up with "It sits on
+the dog". [beat 1.5]
 
-_Visual: the five slips used lie end to end, each one's next word matching the
-next one's box, and the strip above reads "it sits on the dog ." Above that, in
-the book's type, "It sits on the fence." and "Here comes the dog."; the halves
-slide together into the generated line._
+_Visual: the six slips are temporarily brought back from the spread to lie end
+to end, each one's next word matching the next one's box, and the strip above
+reads "it sits on the dog ." Above that, in the book's type, "It sits on the
+fence." and "Here comes the dog."; the halves slide together into the generated
+line._
 
 _Reads:_ 1. the slips chain like dominoes; 2. this sentence isn't in the
 book; 3. it's made from pieces that are.
 
-**USHINI (VO):** And here's everything this pile could have written instead.
+**USHINI (VO):** After "the", we could pick "magpie", "fence", "postie" or
+"dog". [beat] These four branches show those choices; a thicker branch means
+more slips.
 
-_Visual: as in `generation-grid`: the strip's words slide into a column at the
-left edge, the full stop tile moves to the root, and every path the slips allow
-grows rightwards, twelve words deep, each branch as thick as it is likely. The
-path "it sits on the dog ." lights gold; the rest dims._
+_Visual: the completed sentence moves aside. A large "the" branches to four
+words, revealed in order. Branch widths follow the actual sampling weights: 3,
+3, 2, 2 die faces for the grid, or 5, 6, 4, 4 for counters and slips._
 
-_Beyond:_ the slides chain one sentence, so the viewer has to imagine the
-others. The tree shows them all at once, weighted, and makes the key idea
-literal: the pile already holds every text, and the picking only chooses a path.
+_Reads:_ 1. the current word has four possible next words; 2. the sampling
+weights determine how likely each choice is.
 
-_Reads:_ 1. each branch is a word the slips allow; 2. thicker means more
-likely; 3. your sentence is one path through it.
+**BEN (VO):** Another go might take a different branch, or pick "dog" again.
+Repeats are part of the activity. [beat]
 
-**BEN (VO):** Every pick sends you down a different path. So chain ten thousand
-words, cut them back into slips, and sort them.
+_Visual: highlight the branch to "dog", then "fence", then "dog" again, one at a
+time. Hold the final choice._
 
-_Visual: the tree fades. Generated words stream past along the bottom at machine
-speed and cut themselves into slips that sort into piles by their box. The "the"
-piles are held up beside the original's: after twenty words they look nothing
-like it; after ten thousand, the same proportions._
+_Reads:_ 1. another draw can change the word; 2. the same word can recur.
 
-_Beyond:_ one chain can't show that picking is faithful, and "it sounds like the
-book" stays a feeling. Cutting the output back into slips shows the piles
-return, so "sounds like the book" becomes something the viewer can check.
+**USHINI:** Claude or ChatGPT also generates text by repeatedly predicting what
+comes next. It learns those predictions differently, using much more context
+than our last word.
 
-_Reads:_ 1. the output is cut up the same way as the book was; 2. a short run
-looks nothing like the book's piles; 3. a long run matches them.
+_Visual: hold the four-way fork with "the" visible as the current word._
 
-**USHINI:** Every chain different. Every chain sounding like the book. That's
-what Claude or ChatGPT is doing every time it writes a word, with vastly more
-than a pile of slips.
+_Reads:_ 1. this model uses just the last word to choose the next.
 
-**BEN (VO):** Spread your cutouts out. Write down a starting word, find a slip
-with that word in the box, and write down the word beside it. [beat] Then find a
-slip with that new word in the box. [beat] The colours help you find the matches
-fast.
+**BEN (VO):** Spread your cutouts out. Write down a starting word, then find
+every slip with that word in the box. Shuffle them, pick one without looking,
+and write down the word beside it. [beat] Put the slip back. Then find all the
+matches for that new word. [beat] The colours help you find the matches fast.
 
 _Visual: a spread of cutouts; a word writes, the slips whose box colour matches
 light, one lifts, its next word writes, the next match lights._
 
-_Reads:_ 1. match the box, write the next word; 2. colour is a quick way to find
-the matches.
+_Reads:_ 1. gather every matching box; 2. shuffle and pick without looking; 3.
+write the next word and return the slip; 4. colour helps find matches.
 
 _Reads note:_ the printed cutouts colour the previous-word box, and the slides
 use colour as a quick filter before checking the word; the visual depends on the

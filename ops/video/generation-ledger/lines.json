@@ -3,8 +3,8 @@
     "i": 0,
     "speaker": "BEN",
     "tc": true,
-    "caption": "This is a pile of sheets full of counts. In about a minute it's going to write a sentence that nobody has ever written.",
-    "tts": "This is a pile of sheets full of counts. In about a minute it's going to write a sentence that nobody has ever written."
+    "caption": "This is a pile of sheets full of counts. In about a minute it's going to write a sentence that is not in this book.",
+    "tts": "This is a pile of sheets full of counts. In about a minute it's going to write a sentence that is not in this book."
   },
   {
     "i": 1,
@@ -47,15 +47,15 @@
     "i": 4,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Seventeen counters. Now draw one without looking. Red: \"it\". Write the word down, tip the cup back, and go to the row for \"it\".",
-    "tts": "Seventeen counters. Now draw one without looking. Red: \"it\". Write the word down, tip the cup back, and go to the row for \"it\".",
+    "caption": "Seventeen counters. Which colour do you reckon we're most likely to draw? Now draw one without looking. Red: \"it\". Write the word down, empty the cup back into the tub, and go to the row for \"it\".",
+    "tts": "Seventeen counters. Which colour do you reckon we're most likely to draw? Now draw one without looking. Red: \"it\". Write the word down, empty the cup back into the tub, and go to the row for \"it\".",
     "parts": [
-      "Seventeen counters.",
+      "Seventeen counters. Which colour do you reckon we're most likely to draw?",
       "Now draw one without looking. Red: \"it\".",
-      "Write the word down, tip the cup back, and go to the row for \"it\"."
+      "Write the word down, empty the cup back into the tub, and go to the row for \"it\"."
     ],
     "beats": [
-      0.8,
+      2.0,
       0.8
     ]
   },
@@ -102,42 +102,61 @@
     "i": 8,
     "speaker": "BEN",
     "tc": false,
-    "caption": "\"It sits on the dog.\" The book never says that; the magpie sits on the fence. Nobody wrote this sentence; the counting did.",
-    "tts": "\"It sits on the dog.\" The book never says that; the magpie sits on the fence. Nobody wrote this sentence; the counting did."
+    "caption": "The book says \"It sits on the fence\". We've ended up with \"It sits on the dog\".",
+    "tts": "The book says \"It sits on the fence\". We've ended up with \"It sits on the dog\".",
+    "parts": [
+      "The book says \"It sits on the fence\". We've ended up with \"It sits on the dog\"."
+    ],
+    "beats": [
+      1.5
+    ]
   },
   {
     "i": 9,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "And here's everything this model could have written instead.",
-    "tts": "And here's everything this model could have written instead."
+    "caption": "After \"the\", we could pick \"magpie\", \"fence\", \"postie\" or \"dog\". These four branches show those choices; a thicker branch means more counters.",
+    "tts": "After \"the\", we could pick \"magpie\", \"fence\", \"postie\" or \"dog\". These four branches show those choices; a thicker branch means more counters.",
+    "parts": [
+      "After \"the\", we could pick \"magpie\", \"fence\", \"postie\" or \"dog\".",
+      "These four branches show those choices; a thicker branch means more counters."
+    ],
+    "beats": [
+      0.8
+    ]
   },
   {
     "i": 10,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Every draw picks a different path. So run it ten thousand times and count what comes out.",
-    "tts": "Every draw picks a different path. So run it ten thousand times and count what comes out."
+    "caption": "Another go might take a different branch, or pick \"dog\" again. Repeats are part of the activity.",
+    "tts": "Another go might take a different branch, or pick \"dog\" again. Repeats are part of the activity.",
+    "parts": [
+      "Another go might take a different branch, or pick \"dog\" again. Repeats are part of the activity."
+    ],
+    "beats": [
+      0.8
+    ]
   },
   {
     "i": 11,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "Every story different. Every story sounding like the book. That's what Claude or ChatGPT is doing every time it writes a word, with vastly more counts than this.",
-    "tts": "Every story different. Every story sounding like the book. That's what Claude or ChatGPT is doing every time it writes a word, with vastly more counts than this."
+    "caption": "Claude or ChatGPT also generates text by repeatedly predicting what comes next. It learns those predictions differently, using much more context than our last word.",
+    "tts": "Claude or ChatGPT also generates text by repeatedly predicting what comes next. It learns those predictions differently, using much more context than our last word."
   },
   {
     "i": 12,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Four jobs in your group. A reader finds the row. A filler puts one counter per mark in the cup. A drawer pulls one out. And a writer writes the word down. Tip the cup back every time.",
-    "tts": "Four jobs in your group. A reader finds the row. A filler puts one counter per mark in the cup. A drawer pulls one out. And a writer writes the word down. Tip the cup back every time.",
+    "caption": "Four jobs in your group. A reader finds the row. A filler puts one counter per mark in the cup. A drawer pulls one out. And a writer writes the word down. Empty the cup back into the tub every time.",
+    "tts": "Four jobs in your group. A reader finds the row. A filler puts one counter per mark in the cup. A drawer pulls one out. And a writer writes the word down. Empty the cup back into the tub every time.",
     "parts": [
       "Four jobs in your group.",
       "A reader finds the row.",
       "A filler puts one counter per mark in the cup.",
       "A drawer pulls one out.",
-      "And a writer writes the word down. Tip the cup back every time."
+      "And a writer writes the word down. Empty the cup back into the tub every time."
     ],
     "beats": [
       0.8,

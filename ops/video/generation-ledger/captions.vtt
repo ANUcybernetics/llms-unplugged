@@ -1,43 +1,43 @@
 WEBVTT
 
-00:00:00.190 --> 00:00:06.700
-This is a pile of sheets full of counts. In about a minute it's going to write a sentence that nobody has ever written.
+00:00:00.190 --> 00:00:06.420
+This is a pile of sheets full of counts. In about a minute it's going to write a sentence that is not in this book.
 
-00:00:07.350 --> 00:00:20.180
+00:00:07.070 --> 00:00:19.840
 Each row is a word from a book, and the words that came next, with a mark every time. Maybe you did the counting yourselves; maybe the sheets arrived finished. It works the same either way.
 
-00:00:21.430 --> 00:00:34.980
+00:00:21.130 --> 00:00:34.700
 Every box has a colour, always in the same order: red, blue, green, yellow. On this row, red means "magpie". On another row, red means something else.
 
-00:00:35.780 --> 00:00:49.880
+00:00:35.150 --> 00:00:49.560
 A story starts after a full stop, so find the row for full stop. Fill a cup with one counter for every mark: seven red for "it", four blue for "here", three green, three yellow.
 
-00:00:51.350 --> 00:01:02.820
-Seventeen counters. Now draw one without looking. Red: "it". Write the word down, tip the cup back, and go to the row for "it".
+00:00:51.050 --> 00:01:07.560
+Seventeen counters. Which colour do you reckon we're most likely to draw? Now draw one without looking. Red: "it". Write the word down, empty the cup back into the tub, and go to the row for "it".
 
-00:01:03.730 --> 00:01:11.760
+00:01:08.450 --> 00:01:16.500
 The row for "it": three red, three blue, three green, one yellow. Red again: "sits".
 
-00:01:13.170 --> 00:01:19.300
+00:01:17.910 --> 00:01:24.040
 "Sits" is only ever followed by "on", and "on" by "the". One box, no cup.
 
-00:01:19.910 --> 00:01:35.500
+00:01:24.630 --> 00:01:40.260
 The row for "the" fills the cup with all four colours. Yellow: "dog". And after "dog", two red for a full stop, two blue for "runs". Red: full stop.
 
-00:01:36.590 --> 00:01:44.980
-"It sits on the dog." The book never says that; the magpie sits on the fence. Nobody wrote this sentence; the counting did.
+00:01:41.310 --> 00:01:46.600
+The book says "It sits on the fence". We've ended up with "It sits on the dog".
 
-00:01:45.650 --> 00:01:48.920
-And here's everything this model could have written instead.
+00:01:47.770 --> 00:01:58.460
+After "the", we could pick "magpie", "fence", "postie" or "dog". These four branches show those choices; a thicker branch means more counters.
 
-00:01:50.250 --> 00:01:55.900
-Every draw picks a different path. So run it ten thousand times and count what comes out.
+00:01:59.610 --> 00:02:05.680
+Another go might take a different branch, or pick "dog" again. Repeats are part of the activity.
 
-00:01:56.910 --> 00:02:08.540
-Every story different. Every story sounding like the book. That's what Claude or ChatGPT is doing every time it writes a word, with vastly more counts than this.
+00:02:06.430 --> 00:02:18.260
+Claude or ChatGPT also generates text by repeatedly predicting what comes next. It learns those predictions differently, using much more context than our last word.
 
-00:02:09.650 --> 00:02:25.640
-Four jobs in your group. A reader finds the row. A filler puts one counter per mark in the cup. A drawer pulls one out. And a writer writes the word down. Tip the cup back every time.
+00:02:19.330 --> 00:02:36.280
+Four jobs in your group. A reader finds the row. A filler puts one counter per mark in the cup. A drawer pulls one out. And a writer writes the word down. Empty the cup back into the tub every time.
 
-00:02:25.930 --> 00:02:30.980
+00:02:37.230 --> 00:02:41.560
 Reader, find the full stop. Let's see what your book says.

@@ -13,23 +13,15 @@
     </style>
   </head>
   <body>
-    <!-- Generation (grid), beyond the slides: ops/video/scripts/
-         generation-grid.md. The magpie's whole grid writes ". it sits on the
-         dog ." one roll at a time (rows lifted out of the grid, a d10 strip
-         shared by the tallies, a pencil strip); then the tree of everything
-         it could have written, and ten thousand words of its own writing
-         counted back into a blank grid. Sibling of generation-ledger: the
-         walk, the tree and the recount are the shared parts in ../_parts/. -->
+    <!-- A worked sentence, a four-way choice, then the classroom activity. -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="generation-grid"
-         data-start="0" data-duration="149.37" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="149.37" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="142.37" data-track-index="1"></audio>
+         data-start="0" data-duration="154.81" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="154.81" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="147.81" data-track-index="1"></audio>
     </div>
     <script type="module">
       import { WALK, tenFaces, wordTimes, paperLine, splice, walkStyle } from "./parts/generation-walk.js";
       import { magpieGrid, liftedRow, liftOut, gridStyle } from "./parts/generation-grid.js";
-      import { tree, labels, walkWords, samplePaths, treeStyle, GOLD } from "./parts/tree.js";
-      import * as CV from "./parts/converge.js";
 
       const build = (tl, S, T) => {
         const K = KIT, MG = MAGPIE;
@@ -37,7 +29,7 @@
         const A = S.area;
         const W = wordTimes(T);
         const w = W.word;
-        treeStyle(), walkStyle(), gridStyle();
+        walkStyle(), gridStyle();
 
         // ---- the model: the magpie, lowercased, columns in first-use order
         const bg = K.bigrams(MG.words, MG.vocab);
@@ -277,77 +269,42 @@
         K.vanish(tl, [sDog.el, die.el, grid.el], t8);
         const PAPER_MID = { x: (1920 - 1300) / 2, y: 560, scale: 1 };
         tl.to(paper.el, { x: PAPER_MID.x, y: PAPER_MID.y }, t8 + 0.2, { dur: 0.8, ease: "in-out-cubic" });
-        splice(tl, scene, { cx: 960, y: 300, size: 68, times: { show: w(8, "book") - 0.1, pieces: w(8, "sits", 2), join: w(8, "Nobody") } });
+        splice(tl, scene, { cx: 960, y: 300, size: 68, times: { show: w(8, "book") - 0.1, pieces: w(8, "fence"), join: w(8, "dog") } });
         const sp = scene.querySelectorAll(".splice-word");
 
-        // ============================================================ line 9
-        // everything the model could have written: the tree, the walk in gold
-        const tCol = T.end(8) + 0.15;
-        const box = { x0: 250, x1: A.x + A.w - 10, y0: A.y + 16, y1: A.y + A.h - 16 };
-        const tGrow = [w(9, "here's"), w(10, "Every") - 0.7];
-        const tWalk = w(10, "Every") - 0.35, STEP = 0.3;
-        const tFade = w(10, "run") - 0.1;
-        const others = samplePaths(MG.rows, { n: 3, seed: 11, avoid: WALK });
-        const tOther = w(10, "different");
-        const T3 = tree(tl, scene, {
-          rows: MG.rows,
-          box,
-          grow: tGrow,
-          dim: { t: tGrow[1] - 0.3, to: 0.35 },
-          paths: [
-            { words: WALK, colour: GOLD, t0: tWalk, step: STEP },
-            ...others.map((p, i) => ({ words: p, colour: [255, 255, 255], width: 3.5, t0: tOther + i * 0.22, step: 0.07, out: tOther + i * 0.22 + 1.0 })),
-          ],
-          canvasBox: { x: 0, y: 0, w: S.W, h: S.H - S.captionH },
+        // Four choices after "the", shown at a scale that can be read.
+        const forkStart = T.start(9);
+        tl.to([paper.el, ...sp], { opacity: 0 }, forkStart - 0.4, { dur: 0.4 });
+        const fork = K.layer(scene, 0, 0);
+        const forkSvg = K.svg("svg", { width: 1920, height: 860, viewBox: "0 0 1920 860" }, fork);
+        const forkRoot = K.svg("text", { x: 420, y: 445, fill: "var(--text)", "font-size": 58, "font-family": "var(--font-tok)" }, forkSvg);
+        forkRoot.textContent = "the";
+        K.set(fork, { opacity: 0 });
+        tl.to(fork, { opacity: 1 }, forkStart, { dur: 0.3 });
+        const forkPaths = {};
+        const counts = [3, 3, 2, 2];
+        ["magpie", "fence", "postie", "dog"].forEach((word, i) => {
+          const y = 170 + i * 170;
+          const path = K.svg("path", { d: `M 550 425 C 950 425, 950 ${y}, 1310 ${y}`, fill: "none", stroke: "var(--text)", "stroke-width": counts[i] * 3 }, forkSvg);
+          const label = K.svg("text", { x: 1340, y: y + 20, fill: "var(--text)", "font-size": 58, "font-family": "var(--font-tok)" }, forkSvg);
+          label.textContent = word;
+          K.set([path, label], { opacity: 0 });
+          tl.to([path, label], { opacity: 1 }, w(9, word), { dur: 0.35 });
+          forkPaths[word] = path;
         });
-        K.set(T3.el, { opacity: 0 });
-        tl.set(T3.el, { opacity: 1 }, tGrow[0] - 0.05);
-        const lab = labels(tl, scene, T3, { from: 1, to: 3 });
-        tl.to([...lab.values()], { opacity: 0.25 }, tGrow[1] - 0.3, { dur: 0.8 });
-        const from = [{ x: paper.centres(PAPER_MID)[0].x - 90, y: paper.centres(PAPER_MID)[0].y }, ...paper.centres(PAPER_MID)];
-        tl.to([paper.el, ...sp], { opacity: 0 }, tCol, { dur: 0.4 });
-        const ww = walkWords(tl, scene, T3, WALK, { from, colX: A.x + 40, labels: lab, times: { col: tCol, root: w(9, "And") - 0.1, walk: tWalk, step: STEP } });
-        tl.to([T3.el, ...lab.values(), ...ww.all], { opacity: 0 }, tFade, { dur: 0.5 });
-
-        // ============================================================ lines 10-11
-        // run it ten thousand times and count what comes out
-        // the recount samples each next word in exact proportion to the
-        // counts (the model itself), not the d10's rounded bands: the claim
-        // is that the counts come back, and the bands are only how one die
-        // approximates them. Seed 37: its first twenty words give the row
-        // for "the" three postie and nothing else.
-        const sim = CV.simulate(MG.rows, { n: 10000, seed: 37 });
-        const nAt = CV.schedule({ t0: w(10, "count") - 0.3, t1: w(11, "different"), short: 20, hold: w(11, "sounding") - 0.5, t2: w(11, "book") + 0.2, long: 10000 });
-        const BG = { x: 40, y: 36, scale: 0.58 };
-        const blank = magpieGrid(scene, bg, { x: BG.x, y: BG.y, tallies: false });
-        K.set(blank.el, { scale: BG.scale, opacity: 0 });
-        blank.el.setAttribute("data-layout-allow-occlusion", ""); // the recount's marks draw over it
-        tl.to(blank.el, { opacity: 1 }, tFade + 0.3, { dur: 0.5 });
-        const s = BG.scale;
-        const cells = [];
-        bg.vocab.forEach((a, r) => bg.vocab.forEach((b, c) => {
-          const cl = blank.cells[r][c];
-          cells.push({ a, b, x: cl.x * s, y: cl.y * s, w: cl.w * s, h: cl.h * s });
-        }));
-        const markC = CV.marks(tl, scene, sim, nAt, { x: BG.x, y: BG.y, w: blank.width * s, h: blank.height * s, cells, cap: 9, th: blank.cellH * s * 0.58, sp: 3.4, lw: 1.4, font: 11 });
-        const streamC = CV.stream(tl, scene, sim, nAt, { x: 40, y: 600, w: 1840, h: 80, size: 40 });
-        K.set([markC.el, streamC.el], { opacity: 0 });
-        tl.set([markC.el, streamC.el], { opacity: 1 }, tFade + 0.3);
-        const tShares = w(11, "Every") - 0.1;
-        tl.to(blank.rowBands[rThe], { opacity: 1 }, tShares, { dur: 0.3 });
-        const sharesC = CV.shares(tl, scene, sim, nAt, {
-          x: 1190, y: 120, w: 680, h: 380, row: "the",
-          followers: opts("the").map((o) => ({ word: o.word, count: o.count, colour: K.tokenColour(o.word) })),
-          labels: (t, k) => ["the row for “the” in the book", `in ${Math.floor(k).toLocaleString("en-AU")} words it wrote`],
-        });
-        K.set(sharesC.el, { opacity: 0 });
-        tl.to(sharesC.el, { opacity: 1 }, tShares, { dur: 0.4 });
+        const highlight = (word, t0, t1) => {
+          tl.to(forkPaths[word], { stroke: "var(--gold)" }, t0, { dur: 0.2 });
+          if (t1) tl.to(forkPaths[word], { stroke: "var(--text)" }, t1, { dur: 0.2 });
+        };
+        highlight("dog", T.start(10), w(10, "different"));
+        highlight("fence", w(10, "different"), w(10, "dog"));
+        highlight("dog", w(10, "dog"));
+        tl.to(fork, { opacity: 0 }, T.start(12) - 0.5, { dur: 0.4 });
 
         // ============================================================ line 12
         // on your grid: start anywhere with a row; faces, roll, write; no row?
         // pick again. The grid is one the room could fill: the book's last line.
         const t12 = T.start(12) - 0.5;
-        tl.to([blank.el, markC.el, streamC.el, sharesC.el], { opacity: 0 }, t12, { dur: 0.4 });
         const endToks = K.split("it is spring , and the magpie is back .");
         const ebg = K.bigrams(endToks);
         const EI = (word) => ebg.idx.get(word);

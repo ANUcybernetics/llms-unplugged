@@ -13,23 +13,14 @@
     </style>
   </head>
   <body>
-    <!-- Generation (ledger), beyond the slides: ops/video/scripts/
-         generation-ledger.md. The magpie's real ledger sheets write ". it sits
-         on the dog ." one draw at a time (a row's marks become counters in a
-         cup, one comes out, its colour names the word); then the tree of
-         everything they could have written, and ten thousand words of their
-         own writing counted back into a blank sheet. Sibling of
-         generation-grid: the walk, the tree and the recount are the shared
-         parts in ../_parts/. -->
+    <!-- A worked sentence, a four-way choice, then the classroom activity. -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="generation-ledger"
-         data-start="0" data-duration="159.98" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="159.98" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="152.98" data-track-index="1"></audio>
+         data-start="0" data-duration="170.57" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="170.57" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="163.57" data-track-index="1"></audio>
     </div>
     <script type="module">
       import { WALK, wordTimes, paperLine, splice, walkStyle } from "./parts/generation-walk.js";
-      import { tree, labels, walkWords, samplePaths, treeStyle, GOLD } from "./parts/tree.js";
-      import * as CV from "./parts/converge.js";
 
       const build = (tl, S, T) => {
         const K = KIT, D = KIT_DATA, MG = MAGPIE;
@@ -37,7 +28,7 @@
         const A = S.area;
         const W = wordTimes(T);
         const w = W.word;
-        treeStyle(), walkStyle();
+        walkStyle();
         const PAL = D.palette; // red, blue, green, yellow: the boxes' order
         const M = D.ledger["the-magpie"];
 
@@ -240,7 +231,7 @@
         draw(fDot, 0, w(4, "Red") - 0.3);
         K.appear(tl, paper.el, w(4, "Red") + 0.2, { y: 20 });
         K.write(tl, paper.words[0], w(4, "Write"));
-        tipBack(w(4, "tip"));
+        tipBack(w(4, "empty"));
         const tToIt = w(4, "row") - 0.3;
         exitRow(fDot, tToIt);
         enterRow(fIt, tToIt + 0.2);
@@ -303,74 +294,41 @@
         K.vanish(tl, [cup.el, tubL], t8 + 0.1);
         const PAPER_MID = { x: (1920 - 1300) / 2, y: 560, scale: 1 };
         tl.to(paper.el, { x: PAPER_MID.x, y: PAPER_MID.y }, t8 + 0.2, { dur: 0.8, ease: "in-out-cubic" });
-        splice(tl, scene, { cx: 960, y: 300, size: 68, times: { show: w(8, "book") - 0.1, pieces: w(8, "sits", 2), join: w(8, "Nobody") } });
+        splice(tl, scene, { cx: 960, y: 300, size: 68, times: { show: w(8, "book") - 0.1, pieces: w(8, "fence"), join: w(8, "dog") } });
         const sp = scene.querySelectorAll(".splice-word");
 
-        // ============================================================ line 9
-        // everything the model could have written: the tree, the walk in gold
-        const tCol = T.end(8) + 0.15;
-        const box = { x0: 250, x1: A.x + A.w - 10, y0: A.y + 16, y1: A.y + A.h - 16 };
-        const tGrow = [w(9, "here's"), w(10, "Every") - 0.7];
-        const tWalk = w(10, "Every") - 0.35, STEP = 0.3;
-        const tFade = w(10, "run") - 0.1;
-        const others = samplePaths(MG.rows, { n: 3, seed: 11, avoid: WALK });
-        const tOther = w(10, "different");
-        const T3 = tree(tl, scene, {
-          rows: MG.rows,
-          box,
-          grow: tGrow,
-          dim: { t: tGrow[1] - 0.3, to: 0.35 },
-          paths: [
-            { words: WALK, colour: GOLD, t0: tWalk, step: STEP },
-            ...others.map((p, i) => ({ words: p, colour: [255, 255, 255], width: 3.5, t0: tOther + i * 0.22, step: 0.07, out: tOther + i * 0.22 + 1.0 })),
-          ],
-          canvasBox: { x: 0, y: 0, w: S.W, h: S.H - S.captionH },
+        // Four choices after "the", shown at a scale that can be read.
+        const forkStart = T.start(9);
+        tl.to([paper.el, ...sp], { opacity: 0 }, forkStart - 0.4, { dur: 0.4 });
+        const fork = K.layer(scene, 0, 0);
+        const forkSvg = K.svg("svg", { width: 1920, height: 860, viewBox: "0 0 1920 860" }, fork);
+        const forkRoot = K.svg("text", { x: 420, y: 445, fill: "var(--text)", "font-size": 58, "font-family": "var(--font-tok)" }, forkSvg);
+        forkRoot.textContent = "the";
+        K.set(fork, { opacity: 0 });
+        tl.to(fork, { opacity: 1 }, forkStart, { dur: 0.3 });
+        const forkPaths = {};
+        const counts = [5, 6, 4, 4];
+        ["magpie", "fence", "postie", "dog"].forEach((word, i) => {
+          const y = 170 + i * 170;
+          const path = K.svg("path", { d: `M 550 425 C 950 425, 950 ${y}, 1310 ${y}`, fill: "none", stroke: "var(--text)", "stroke-width": counts[i] * 3 }, forkSvg);
+          const label = K.svg("text", { x: 1340, y: y + 20, fill: "var(--text)", "font-size": 58, "font-family": "var(--font-tok)" }, forkSvg);
+          label.textContent = word;
+          K.set([path, label], { opacity: 0 });
+          tl.to([path, label], { opacity: 1 }, w(9, word), { dur: 0.35 });
+          forkPaths[word] = path;
         });
-        K.set(T3.el, { opacity: 0 });
-        tl.set(T3.el, { opacity: 1 }, tGrow[0] - 0.05);
-        const lab = labels(tl, scene, T3, { from: 1, to: 3 });
-        tl.to([...lab.values()], { opacity: 0.25 }, tGrow[1] - 0.3, { dur: 0.8 });
-        const from = [{ x: paper.centres(PAPER_MID)[0].x - 90, y: paper.centres(PAPER_MID)[0].y }, ...paper.centres(PAPER_MID)];
-        tl.to([paper.el, ...sp], { opacity: 0 }, tCol, { dur: 0.4 });
-        const ww = walkWords(tl, scene, T3, WALK, { from, colX: A.x + 40, labels: lab, times: { col: tCol, root: w(9, "And") - 0.1, walk: tWalk, step: STEP } });
-        tl.to([T3.el, ...lab.values(), ...ww.all], { opacity: 0 }, tFade, { dur: 0.5 });
-
-        // ============================================================ lines 10-11
-        // run it ten thousand times and count what comes out, into a blank sheet
-        const sim = CV.simulate(MG.rows, { n: 10000, seed: 37 });
-        const nAt = CV.schedule({ t0: w(10, "count") - 0.3, t1: w(11, "different"), short: 20, hold: w(11, "sounding") - 0.5, t2: w(11, "book") + 0.2, long: 10000 });
-        const BS = { x: 40, y: 40, scale: 0.62 };
-        const blankSheet = M.sheets[where("the").sheet];
-        const blank = K.sheet(scene, blankSheet.pages[0], PAL, { w: SHEET_W, rowH: 120, header: [blankSheet.range[0].join(" "), blankSheet.range[1].join(" ")], title: M.title });
-        K.set(blank.el, { ...BS, opacity: 0 });
-        blank.el.setAttribute("data-layout-allow-occlusion", ""); // the recount's marks draw over it
-        tl.to(blank.el, { opacity: 1 }, tFade + 0.3, { dur: 0.5 });
-        const s = BS.scale;
-        const cells = [];
-        blank.rows.forEach((row, r) => row.cells.forEach((c) => {
-          if (!c.follower) return;
-          const bb = c.box.getBBox();
-          cells.push({ a: row.entry.prefix[0].toLowerCase(), b: c.follower.text.toLowerCase(), x: bb.x * s, y: bb.y * s, w: bb.width * s, h: bb.height * s });
-        }));
-        const markC = CV.marks(tl, scene, sim, nAt, { x: BS.x, y: BS.y, w: SHEET_W * s, h: blank.height * s, cells, cap: 10, th: 22, sp: 5.6, lw: 1.8, font: 17 });
-        const streamC = CV.stream(tl, scene, sim, nAt, { x: 40, y: 600, w: 1840, h: 80, size: 40 });
-        K.set([markC.el, streamC.el], { opacity: 0 });
-        tl.set([markC.el, streamC.el], { opacity: 1 }, tFade + 0.3);
-        const tShares = w(11, "Every") - 0.1;
-        const bRowThe = blank.rows[where("the").row];
-        tl.to(bRowThe.lit, { opacity: 1 }, tShares, { dur: 0.3 });
-        const sharesC = CV.shares(tl, scene, sim, nAt, {
-          x: 1150, y: 110, w: 720, h: 380, row: "the",
-          followers: where("the").entry.followers.map((f, c) => ({ word: f.text, count: f.count, colour: PAL[c].hex })),
-          labels: (t, k) => ["the row for “the” in the book", `in ${Math.floor(k).toLocaleString("en-AU")} words it wrote`],
-        });
-        K.set(sharesC.el, { opacity: 0 });
-        tl.to(sharesC.el, { opacity: 1 }, tShares, { dur: 0.4 });
+        const highlight = (word, t0, t1) => {
+          tl.to(forkPaths[word], { stroke: "var(--gold)" }, t0, { dur: 0.2 });
+          if (t1) tl.to(forkPaths[word], { stroke: "var(--text)" }, t1, { dur: 0.2 });
+        };
+        highlight("dog", T.start(10), w(10, "different"));
+        highlight("fence", w(10, "different"), w(10, "dog"));
+        highlight("dog", w(10, "dog"));
+        tl.to(fork, { opacity: 0 }, T.start(12) - 0.5, { dur: 0.4 });
 
         // ============================================================ line 12
         // four jobs: the reader, the filler, the drawer and the writer
         const t12 = T.start(12) - 0.5;
-        tl.to([blank.el, markC.el, streamC.el, sharesC.el], { opacity: 0 }, t12, { dur: 0.4 });
         const END_FAN = [
           { x: 50, y: 40, scale: 0.22, rotation: -2 },
           { x: 450, y: 50, scale: 0.22, rotation: 2 },
@@ -411,7 +369,7 @@
         ringOn("reader", tReader - 0.3, w(12, "filler") - 0.3);
         ringOn("filler", w(12, "filler") - 0.2, w(12, "drawer") - 0.3);
         ringOn("drawer", w(12, "drawer") - 0.2, w(12, "writer") - 0.3);
-        ringOn("writer", w(12, "writer") - 0.2, w(12, "Tip") - 0.2);
+        ringOn("writer", w(12, "writer") - 0.2, w(12, "Empty") - 0.2);
         const lDot = where(".");
         tl.to(sheets[lDot.sheet].el, { y: END_FAN[lDot.sheet].y - 30 }, w(12, "finds"), { dur: 0.4, ease: "out-cubic" });
         tl.to(sheets[lDot.sheet].el, { y: END_FAN[lDot.sheet].y }, w(12, "filler") - 0.3, { dur: 0.4 });
@@ -424,15 +382,15 @@
           tl.to(el, { x: END_CUP.x + sl.x - CR - 4, y: END_CUP.y + sl.y - CR - 4 }, w(12, "counter") + i * 0.25, { dur: 0.5, ease: "in-out-cubic" });
           return el;
         });
-        K.raise(tl, hops[1], w(12, "pulls"));
-        tl.to(hops[1], { x: ECUPC.x + 240 - CR - 4, y: ECUPC.y - 60 - CR - 4, scale: 1.2 }, w(12, "pulls"), { dur: 0.55, ease: "in-out-cubic" });
+        K.raise(tl, hops[0], w(12, "pulls"));
+        tl.to(hops[0], { x: ECUPC.x + 240 - CR - 4, y: ECUPC.y - 60 - CR - 4, scale: 1.2 }, w(12, "pulls"), { dur: 0.55, ease: "in-out-cubic" });
         K.write(tl, endPaper.words[0], w(12, "writes"));
-        tl.to(cup.el, { rotation: 14 }, w(12, "Tip"), { dur: 0.25, ease: "out-quad" });
-        tl.to(cup.el, { rotation: 0 }, w(12, "Tip") + 0.45, { dur: 0.3 });
+        tl.to(cup.el, { rotation: 14 }, w(12, "Empty"), { dur: 0.25, ease: "out-quad" });
+        tl.to(cup.el, { rotation: 0 }, w(12, "Empty") + 0.45, { dur: 0.3 });
         hops.forEach((el, i) => {
-          K.raise(tl, el, w(12, "Tip") + 0.1 + i * 0.05);
-          tl.to(el, { x: TUBC.x - CR - 4 + (i - 1) * 60, y: TUBC.y - CR - 4, scale: 1 }, w(12, "Tip") + 0.1 + i * 0.05, { dur: 0.5, ease: "in-cubic" });
-          tl.to(el, { opacity: 0 }, w(12, "Tip") + 0.55, { dur: 0.2 });
+          K.raise(tl, el, w(12, "Empty") + 0.1 + i * 0.05);
+          tl.to(el, { x: TUBC.x - CR - 4 + (i - 1) * 60, y: TUBC.y - CR - 4, scale: 1 }, w(12, "Empty") + 0.1 + i * 0.05, { dur: 0.5, ease: "in-cubic" });
+          tl.to(el, { opacity: 0 }, w(12, "Empty") + 0.55, { dur: 0.2 });
         });
 
         // ============================================================ line 13

@@ -3,8 +3,8 @@
     "i": 0,
     "speaker": "BEN",
     "tc": true,
-    "caption": "This is a pile of paper slips. In about a minute it's going to write a sentence that nobody has ever written.",
-    "tts": "This is a pile of paper slips. In about a minute it's going to write a sentence that nobody has ever written."
+    "caption": "This is a pile of paper slips. In about a minute it's going to write a sentence that is not in this book.",
+    "tts": "This is a pile of paper slips. In about a minute it's going to write a sentence that is not in this book."
   },
   {
     "i": 1,
@@ -17,11 +17,11 @@
     "i": 2,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in the box. This one says \"it\". Write that word down.",
-    "tts": "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in the box. This one says \"it\". Write that word down.",
+    "caption": "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in the box. This one says \"it\". Write that word down, then put the slip back.",
+    "tts": "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in the box. This one says \"it\". Write that word down, then put the slip back.",
     "parts": [
       "Choose a slip to start from. A story starts after a full stop, so take one with a full stop in the box.",
-      "This one says \"it\". Write that word down."
+      "This one says \"it\". Write that word down, then put the slip back."
     ],
     "beats": [
       0.8
@@ -31,12 +31,12 @@
     "i": 3,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "Now find every slip with \"it\" in the box. There are ten. Three say \"sits\", three \"watches\", three \"goes\", and one says \"is\". Pick one at random: \"sits\".",
-    "tts": "Now find every slip with \"it\" in the box. There are ten. Three say \"sits\", three \"watches\", three \"goes\", and one says \"is\". Pick one at random: \"sits\".",
+    "caption": "Now find every slip with \"it\" in the box. There are ten. Three say \"sits\", three \"watches\", three \"goes\", and one says \"is\". Shuffle the matching slips. Pick one without looking: \"sits\". Write it down, then put the slip back. You might need it again.",
+    "tts": "Now find every slip with \"it\" in the box. There are ten. Three say \"sits\", three \"watches\", three \"goes\", and one says \"is\". Shuffle the matching slips. Pick one without looking: \"sits\". Write it down, then put the slip back. You might need it again.",
     "parts": [
       "Now find every slip with \"it\" in the box. There are ten.",
       "Three say \"sits\", three \"watches\", three \"goes\", and one says \"is\".",
-      "Pick one at random: \"sits\"."
+      "Shuffle the matching slips. Pick one without looking: \"sits\". Write it down, then put the slip back. You might need it again."
     ],
     "beats": [
       0.8,
@@ -72,39 +72,58 @@
     "i": 6,
     "speaker": "BEN",
     "tc": false,
-    "caption": "\"It sits on the dog.\" The book never says that; the magpie sits on the fence. Nobody wrote this sentence; the slips did, one pair at a time, like dominoes.",
-    "tts": "\"It sits on the dog.\" The book never says that; the magpie sits on the fence. Nobody wrote this sentence; the slips did, one pair at a time, like dominoes."
+    "caption": "The book says \"It sits on the fence\". We've ended up with \"It sits on the dog\".",
+    "tts": "The book says \"It sits on the fence\". We've ended up with \"It sits on the dog\".",
+    "parts": [
+      "The book says \"It sits on the fence\". We've ended up with \"It sits on the dog\"."
+    ],
+    "beats": [
+      1.5
+    ]
   },
   {
     "i": 7,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "And here's everything this pile could have written instead.",
-    "tts": "And here's everything this pile could have written instead."
+    "caption": "After \"the\", we could pick \"magpie\", \"fence\", \"postie\" or \"dog\". These four branches show those choices; a thicker branch means more slips.",
+    "tts": "After \"the\", we could pick \"magpie\", \"fence\", \"postie\" or \"dog\". These four branches show those choices; a thicker branch means more slips.",
+    "parts": [
+      "After \"the\", we could pick \"magpie\", \"fence\", \"postie\" or \"dog\".",
+      "These four branches show those choices; a thicker branch means more slips."
+    ],
+    "beats": [
+      0.8
+    ]
   },
   {
     "i": 8,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Every pick sends you down a different path. So chain ten thousand words, cut them back into slips, and sort them.",
-    "tts": "Every pick sends you down a different path. So chain ten thousand words, cut them back into slips, and sort them."
+    "caption": "Another go might take a different branch, or pick \"dog\" again. Repeats are part of the activity.",
+    "tts": "Another go might take a different branch, or pick \"dog\" again. Repeats are part of the activity.",
+    "parts": [
+      "Another go might take a different branch, or pick \"dog\" again. Repeats are part of the activity."
+    ],
+    "beats": [
+      0.8
+    ]
   },
   {
     "i": 9,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "Every chain different. Every chain sounding like the book. That's what Claude or ChatGPT is doing every time it writes a word, with vastly more than a pile of slips.",
-    "tts": "Every chain different. Every chain sounding like the book. That's what Claude or ChatGPT is doing every time it writes a word, with vastly more than a pile of slips."
+    "caption": "Claude or ChatGPT also generates text by repeatedly predicting what comes next. It learns those predictions differently, using much more context than our last word.",
+    "tts": "Claude or ChatGPT also generates text by repeatedly predicting what comes next. It learns those predictions differently, using much more context than our last word."
   },
   {
     "i": 10,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Spread your cutouts out. Write down a starting word, find a slip with that word in the box, and write down the word beside it. Then find a slip with that new word in the box. The colours help you find the matches fast.",
-    "tts": "Spread your cutouts out. Write down a starting word, find a slip with that word in the box, and write down the word beside it. Then find a slip with that new word in the box. The colours help you find the matches fast.",
+    "caption": "Spread your cutouts out. Write down a starting word, then find every slip with that word in the box. Shuffle them, pick one without looking, and write down the word beside it. Put the slip back. Then find all the matches for that new word. The colours help you find the matches fast.",
+    "tts": "Spread your cutouts out. Write down a starting word, then find every slip with that word in the box. Shuffle them, pick one without looking, and write down the word beside it. Put the slip back. Then find all the matches for that new word. The colours help you find the matches fast.",
     "parts": [
-      "Spread your cutouts out. Write down a starting word, find a slip with that word in the box, and write down the word beside it.",
-      "Then find a slip with that new word in the box.",
+      "Spread your cutouts out. Write down a starting word, then find every slip with that word in the box. Shuffle them, pick one without looking, and write down the word beside it.",
+      "Put the slip back. Then find all the matches for that new word.",
       "The colours help you find the matches fast."
     ],
     "beats": [

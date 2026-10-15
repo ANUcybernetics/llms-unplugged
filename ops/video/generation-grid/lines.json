@@ -3,8 +3,8 @@
     "i": 0,
     "speaker": "BEN",
     "tc": true,
-    "caption": "This is a table of counts. In about a minute it's going to write a sentence that nobody has ever written.",
-    "tts": "This is a table of counts. In about a minute it's going to write a sentence that nobody has ever written."
+    "caption": "This is a table of counts. In about a minute it's going to write a sentence that is not in this book.",
+    "tts": "This is a table of counts. In about a minute it's going to write a sentence that is not in this book."
   },
   {
     "i": 1,
@@ -24,11 +24,11 @@
     "i": 3,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "Now pick the next word at random, with a ten-sided die. Seventeen tallies don't split into ten faces exactly, so share them as fairly as you can: \"it\" gets four faces, the others two each.",
-    "tts": "Now pick the next word at random, with a ten-sided die. Seventeen tallies don't split into ten faces exactly, so share them as fairly as you can: \"it\" gets four faces, the others two each.",
+    "caption": "Now pick the next word at random, with a ten-sided die. Seventeen tallies won't fit exactly onto ten faces. We'll approximate: \"it\" gets four faces, the others two each.",
+    "tts": "Now pick the next word at random, with a ten-sided die. Seventeen tallies won't fit exactly onto ten faces. We'll approximate: \"it\" gets four faces, the others two each.",
     "parts": [
       "Now pick the next word at random, with a ten-sided die.",
-      "Seventeen tallies don't split into ten faces exactly, so share them as fairly as you can: \"it\" gets four faces, the others two each."
+      "Seventeen tallies won't fit exactly onto ten faces. We'll approximate: \"it\" gets four faces, the others two each."
     ],
     "beats": [
       0.8,
@@ -94,29 +94,48 @@
     "i": 8,
     "speaker": "BEN",
     "tc": false,
-    "caption": "\"It sits on the dog.\" The book never says that; the magpie sits on the fence. Nobody wrote this sentence; the counting did.",
-    "tts": "\"It sits on the dog.\" The book never says that; the magpie sits on the fence. Nobody wrote this sentence; the counting did."
+    "caption": "The book says \"It sits on the fence\". We've ended up with \"It sits on the dog\".",
+    "tts": "The book says \"It sits on the fence\". We've ended up with \"It sits on the dog\".",
+    "parts": [
+      "The book says \"It sits on the fence\". We've ended up with \"It sits on the dog\"."
+    ],
+    "beats": [
+      1.5
+    ]
   },
   {
     "i": 9,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "And here's everything this model could have written instead.",
-    "tts": "And here's everything this model could have written instead."
+    "caption": "After \"the\", we could pick \"magpie\", \"fence\", \"postie\" or \"dog\". These four branches show those choices; a thicker branch means more die faces.",
+    "tts": "After \"the\", we could pick \"magpie\", \"fence\", \"postie\" or \"dog\". These four branches show those choices; a thicker branch means more die faces.",
+    "parts": [
+      "After \"the\", we could pick \"magpie\", \"fence\", \"postie\" or \"dog\".",
+      "These four branches show those choices; a thicker branch means more die faces."
+    ],
+    "beats": [
+      0.8
+    ]
   },
   {
     "i": 10,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Every roll picks a different path. So run it ten thousand times and count what comes out.",
-    "tts": "Every roll picks a different path. So run it ten thousand times and count what comes out."
+    "caption": "Another go might take a different branch, or pick \"dog\" again. Repeats are part of the activity.",
+    "tts": "Another go might take a different branch, or pick \"dog\" again. Repeats are part of the activity.",
+    "parts": [
+      "Another go might take a different branch, or pick \"dog\" again. Repeats are part of the activity."
+    ],
+    "beats": [
+      0.8
+    ]
   },
   {
     "i": 11,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "Every text different. Every text sounding like the book. That's what Claude or ChatGPT is doing every time it writes a word, with vastly more counts than this.",
-    "tts": "Every text different. Every text sounding like the book. That's what Claude or ChatGPT is doing every time it writes a word, with vastly more counts than this."
+    "caption": "Claude or ChatGPT also generates text by repeatedly predicting what comes next. It learns those predictions differently, using much more context than our last word.",
+    "tts": "Claude or ChatGPT also generates text by repeatedly predicting what comes next. It learns those predictions differently, using much more context than our last word."
   },
   {
     "i": 12,

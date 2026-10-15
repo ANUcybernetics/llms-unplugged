@@ -1,8 +1,7 @@
 # Generation: ledger
 
-**Key idea:** text is written one word at a time, each word picked at random in
-proportion to the counts: the cup makes every text different, and the counts
-make them all sound like the book.
+**Key idea:** generate text one word at a time using the book's pair counts.
+Common pairs are more likely; a run can produce a new sentence or repeat one.
 
 **Plays:** How AI writes stories (ledger), start of the Generation section.
 Never assumes the room did the counting, so it plays whether the sheets arrived
@@ -20,29 +19,21 @@ same cups.
 
 ## Beat sheet
 
-1. hook: a pile of sheets is about to write a sentence nobody has ever written
-2. the model: a row per word, and what came next, counted. Maybe you did the
-   counting, maybe the sheets arrived finished; it works the same either way
-3. the colours: a counter's colour names a box's place in the row, not a word,
-   so one set of counters works for every row
-4. start after a full stop. Fill the cup, one counter per mark: "it" has seven
-   chances in seventeen. Draw one: "it"
-5. the row for _it_: ten counters, draw red, "sits"
-6. single-option rows: no cup needed ("on", "the")
-7. the row for _the_, then _dog_: two more draws, and a full stop
-8. the sentence: "It sits on the dog." The book never says it. Nobody wrote it;
-   the counting did
-9. **beyond:** the tree of everything this model could have written from a full
-   stop, branch thickness by probability. Your sentence is one path through it
-10. **beyond:** run it ten thousand times and count what comes out: the counts
-    come back
-11. that's the loop Claude or ChatGPT runs, with vastly more counts
-12. ending: four jobs, then go
+1. finished sheets can generate a sentence absent from the book
+2. read a row and its colours; colours name boxes, not fixed words
+3. fill the cup from the full stop's row; predict the likeliest colour, then
+   draw
+4. write the word, empty the cup, find its row and refill
+5. continue through "sits on the dog" to a full stop
+6. compare our sentence with the book's
+7. inspect four possible next words after "the"; repeats can happen
+8. connect next-word prediction to real models, distinguishing how they learn
+9. return to the materials and begin the activity
 
 ## Script
 
 **BEN (TC):** This is a pile of sheets full of counts. In about a minute it's
-going to write a sentence that nobody has ever written.
+going to write a sentence that is not in this book.
 
 _Visual: the magpie's ledger sheets fanned on the desk, top-down, full frame.
 Nothing moves._
@@ -80,8 +71,9 @@ seven red, four blue, three green, three yellow._
 _Reads:_ 1. start from the full stop's row; 2. each mark becomes one counter in
 its box's colour; 3. "it" has the most counters.
 
-**BEN (VO):** Seventeen counters. [beat] Now draw one without looking. Red:
-"it". [beat] Write the word down, tip the cup back, and go to the row for "it".
+**BEN (VO):** Seventeen counters. Which colour do you reckon we're most likely
+to draw? [beat 2] Now draw one without looking. Red: "it". [beat] Write the word
+down, empty the cup back into the tub, and go to the row for "it".
 
 _Visual: a red counter slides out of the cup; the red box on the row lights and
 "it" writes onto a strip of paper at the bottom of the desk. The cup empties.
@@ -116,54 +108,46 @@ out and the full stop tile writes on._
 
 _Reads:_ 1. every row works the same way; 2. a full stop ends the sentence.
 
-**BEN:** "It sits on the dog." The book never says that; the magpie sits on the
-fence. Nobody wrote this sentence; the counting did.
+**BEN:** The book says "It sits on the fence". We've ended up with "It sits on
+the dog". [beat 1.5]
 
 _Visual: the strip reads "it sits on the dog ." Above it, in the book's type,
 "It sits on the fence." and "Here comes the dog."; the halves slide together
 into the generated line._
 
-_Reads:_ 1. this sentence isn't in the book; 2. it's made from pieces that
-are; 3. nobody wrote it.
+_Reads:_ 1. this sentence isn't in the book; 2. it's made from pieces that are.
 
-**USHINI (VO):** And here's everything this model could have written instead.
+**USHINI (VO):** After "the", we could pick "magpie", "fence", "postie" or
+"dog". [beat] These four branches show those choices; a thicker branch means
+more counters.
 
-_Visual: as in `generation-grid`: the strip's words slide into a column at the
-left edge, the full stop tile moves to the root, and every path the counts allow
-grows rightwards, twelve words deep, each branch as thick as it is likely. The
-path "it sits on the dog ." lights gold; the rest dims. (The prototype at
-`prototype-tree/`.)_
+_Visual: the completed sentence moves aside. A large "the" branches to four
+words, revealed in order. Branch widths follow the actual sampling weights: 3,
+3, 2, 2 die faces for the grid, or 5, 6, 4, 4 for counters and slips._
 
-_Beyond:_ the slides show one walk, so the viewer sees one sentence and has to
-imagine the others. The tree shows them all at once, weighted, and makes the key
-idea literal: the counts already hold every text, and the cup only picks a path.
+_Reads:_ 1. the current word has four possible next words; 2. the sampling
+weights determine how likely each choice is.
 
-_Reads:_ 1. each branch is a word the counts allow; 2. thicker means more
-likely; 3. your sentence is one path through it.
+**BEN (VO):** Another go might take a different branch, or pick "dog" again.
+Repeats are part of the activity. [beat]
 
-**BEN (VO):** Every draw picks a different path. So run it ten thousand times
-and count what comes out.
+_Visual: highlight the branch to "dog", then "fence", then "dog" again, one at a
+time. Hold the final choice._
 
-_Visual: the tree fades to a blank ledger sheet. Generated words stream past
-along the bottom at machine speed while their pairs are marked into the blank
-sheet. The row for "the" is held up beside the original's: after twenty words
-its boxes look nothing like it; after ten thousand, the proportions match._
+_Reads:_ 1. another draw can change the word; 2. the same word can recur.
 
-_Beyond:_ one walk can't show that sampling is faithful, and "it sounds like the
-book" stays a feeling. Counting the model's own output back into a sheet shows
-the proportions return, so "sounds like the book" becomes something the viewer
-can check.
+**USHINI:** Claude or ChatGPT also generates text by repeatedly predicting what
+comes next. It learns those predictions differently, using much more context
+than our last word.
 
-_Reads:_ 1. the model's output is counted the same way as the book was; 2. a
-short run looks nothing like the book's counts; 3. a long run matches them.
+_Visual: hold the four-way fork with "the" visible as the current word._
 
-**USHINI:** Every story different. Every story sounding like the book. That's
-what Claude or ChatGPT is doing every time it writes a word, with vastly more
-counts than this.
+_Reads:_ 1. this model uses just the last word to choose the next.
 
 **BEN (VO):** Four jobs in your group. [beat] A reader finds the row. [beat] A
 filler puts one counter per mark in the cup. [beat] A drawer pulls one out.
-[beat] And a writer writes the word down. Tip the cup back every time.
+[beat] And a writer writes the word down. Empty the cup back into the tub every
+time.
 
 _Visual: the ledger sheets fanned, the cup, the counter tub, the paper strip:
 each lights in turn as its job is named. The cup tips back into the tub._

@@ -1,8 +1,7 @@
 # Generation: grid
 
-**Key idea:** text is written one word at a time, each word picked at random in
-proportion to the counts: the dice make every text different, and the counts
-make them all sound like the book.
+**Key idea:** generate text one word at a time using the book's pair counts.
+Common pairs are more likely; a run can produce a new sentence or repeat one.
 
 **Plays:** My First Language Model, start of the Generation section.
 
@@ -17,28 +16,20 @@ as the slides' dice bands are.
 
 ## Beat sheet
 
-1. hook: a table of counts is about to write a sentence nobody has ever written
-2. the model: a row per word, and what came next, counted; the grid the viewer
-   just filled works the same way
-3. start after a full stop. Share the die's ten faces across the row by its
-   tallies; seventeen tallies won't split exactly, so share as fairly as you
-   can. Roll: "it"
-4. the row for _it_ has exactly ten tallies, a face each. Roll a one: "sits"
-5. single-option rows: no roll needed ("on", "the")
-6. the row for _the_, then _dog_: two more rolls, and a full stop
-7. the sentence: "It sits on the dog." The book never says it. Nobody wrote it;
-   the counting did
-8. **beyond:** the tree of everything this model could have written from a full
-   stop, branch thickness by probability. Your sentence is one path through it
-9. **beyond:** run it ten thousand times and count what comes out: the counts
-   come back. Every text is different, and every text sounds like the book
-10. that's the loop Claude or ChatGPT runs, with vastly more counts
-11. ending: how to roll from your own grid, then go
+1. a grid can generate a sentence absent from the book
+2. read the rows, then start after a full stop
+3. approximate seventeen tallies with ten die faces; roll "it"
+4. ten tallies fit exactly: one face each, then roll "sits"
+5. single options give "on" and "the"; two more rolls give "dog" and a full stop
+6. compare our sentence with the book's
+7. inspect four possible next words after "the"; repeats can happen
+8. connect next-word prediction to real models, distinguishing how they learn
+9. return to the materials and begin the activity
 
 ## Script
 
 **BEN (TC):** This is a table of counts. In about a minute it's going to write a
-sentence that nobody has ever written.
+sentence that is not in this book.
 
 _Visual: the finished magpie grid on the desk, top-down, full frame. Nothing
 moves._
@@ -63,18 +54,14 @@ its four tallied boxes spread wide._
 _Reads:_ 1. start from the full stop's row; 2. "it" has the most tallies.
 
 **USHINI (VO):** Now pick the next word at random, with a ten-sided die. [beat]
-Seventeen tallies don't split into ten faces exactly, so share them as fairly as
-you can: "it" gets four faces, the others two each. [beat]
+Seventeen tallies won't fit exactly onto ten faces. We'll approximate: "it" gets
+four faces, the others two each. [beat]
 
 _Visual: under the row a strip of ten die faces, 0 to 9, bands drawing in left
 to right as they're named: it 0--3, here 4--5, down 6--7, swoop 8--9._
 
 _Reads:_ 1. the die's faces are shared across the row; 2. more tallies, more
 faces; 3. "it" gets the most.
-
-_Reads note:_ rounding seventeen tallies onto ten faces is a wrinkle the slides
-never meet (the hop joey hop rows divide evenly); the alternative is to start
-this walk on a row that divides and keep the rounding for the ending.
 
 **BEN (VO):** Roll a two. [beat] That's in the band for "it". [beat] Write the
 word down, and go to the row for "it".
@@ -113,52 +100,41 @@ tile writes on._
 
 _Reads:_ 1. every row works the same way; 2. a full stop ends the sentence.
 
-**BEN:** "It sits on the dog." The book never says that; the magpie sits on the
-fence. Nobody wrote this sentence; the counting did.
+**BEN:** The book says "It sits on the fence". We've ended up with "It sits on
+the dog". [beat 1.5]
 
 _Visual: the strip reads "it sits on the dog ." Above it, in the book's type,
 "It sits on the fence." and "Here comes the dog."; the halves slide together
 into the generated line._
 
-_Reads:_ 1. this sentence isn't in the book; 2. it's made from pieces that
-are; 3. nobody wrote it.
+_Reads:_ 1. this sentence isn't in the book; 2. it's made from pieces that are.
 
-**USHINI (VO):** And here's everything this model could have written instead.
+**USHINI (VO):** After "the", we could pick "magpie", "fence", "postie" or
+"dog". [beat] These four branches show those choices; a thicker branch means
+more die faces.
 
-_Visual: the strip's words slide into a column at the left edge. The full stop,
-a symbol tile, moves to the root, and every path the counts allow grows
-rightwards, twelve words deep: about five thousand texts on ten thousand
-branches, each as thick as it is likely, the likely ones bold, the rare ones
-hairlines. The first three words deep are labelled. The path "it sits on the dog
-." lights gold through the middle of it, each word flying from the column onto
-its node; the rest dims. (The prototype at `prototype-tree/`.)_
+_Visual: the completed sentence moves aside. A large "the" branches to four
+words, revealed in order. Branch widths follow the actual sampling weights: 3,
+3, 2, 2 die faces for the grid, or 5, 6, 4, 4 for counters and slips._
 
-_Beyond:_ the slides show one walk, so the viewer sees one sentence and has to
-imagine the others. The tree shows them all at once, weighted, and makes the key
-idea literal: the counts already hold every text, and the dice only pick a path.
+_Reads:_ 1. the current word has four possible next words; 2. the sampling
+weights determine how likely each choice is.
 
-_Reads:_ 1. each branch is a word the counts allow; 2. thicker means more
-likely; 3. your sentence is one path through it.
+**BEN (VO):** Another go might take a different branch, or pick "dog" again.
+Repeats are part of the activity. [beat]
 
-**BEN (VO):** Every roll picks a different path. So run it ten thousand times
-and count what comes out.
+_Visual: highlight the branch to "dog", then "fence", then "dog" again, one at a
+time. Hold the final choice._
 
-_Visual: the tree fades to a blank grid. Generated words stream past along the
-bottom at machine speed while their pairs are tallied into the blank grid. The
-row for "the" is held up beside the original's: after twenty words it looks
-nothing like it; after ten thousand, the proportions match._
+_Reads:_ 1. another draw can change the word; 2. the same word can recur.
 
-_Beyond:_ one walk can't show that sampling is faithful, and "it sounds like the
-book" stays a feeling. Counting the model's own output back into a grid shows
-the proportions return, so "sounds like the book" becomes something the viewer
-can check.
+**USHINI:** Claude or ChatGPT also generates text by repeatedly predicting what
+comes next. It learns those predictions differently, using much more context
+than our last word.
 
-_Reads:_ 1. the model's output is counted the same way as the book was; 2. a
-short run looks nothing like the book's counts; 3. a long run matches them.
+_Visual: hold the four-way fork with "the" visible as the current word._
 
-**USHINI:** Every text different. Every text sounding like the book. That's what
-Claude or ChatGPT is doing every time it writes a word, with vastly more counts
-than this.
+_Reads:_ 1. this model uses just the last word to choose the next.
 
 **BEN (VO):** On your grid: pick any starting word with a row and write it down.
 [beat] Share the die's faces across its row by the tallies, roll, and write down
