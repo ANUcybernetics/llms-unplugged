@@ -1,8 +1,8 @@
 # Overview
 
-**Key idea:** LLMs Unplugged allows you to run the same next-word loop Claude or
-ChatGPT runs, by hand, with a picture book, paper and a pen; the site has the
-lessons and the tools to do it.
+**Key idea:** a class can build and inspect a counting language model by hand;
+the site provides the materials and explains what this shares with neural text
+generation.
 
 **Plays:** the website's landing video, not in class. Evergreen, as the TASK-154
 overview is (it names no lesson, age band, running time or licence clause), and
@@ -15,25 +15,24 @@ from the generation videos. The model is _The magpie_.
 
 ## Beat sheet
 
-1. hook: Claude or ChatGPT write one word at a time. You can do that by hand
+1. hook: your class can build a model and follow each choice it makes
 2. the loop, on the magpie book: count which word follows which (the book
    streams into a grid at machine speed), then draw the next word by those
    counts
 3. **beyond:** the morph, compressed: tallies, marks, counters, slips, numbers.
    A grid, a ledger or a pile of cutouts: one lesson in different materials
-4. **beyond:** the tree: everything the model could write, one path lit. It's
-   all counts, and the dice pick
-5. honest beat: a real model isn't a tiny grid; but it's the same loop, and has
-   been since Markov in 1913 and Shannon in 1948
+4. **beyond:** a finite tree of possible continuations, with one path lit
+5. the boundary: neural models use more context and learn predictions
+   differently. Markov counted letters in 1913; Shannon generated text in 1948
 6. the site: the lessons, the tools (paste in any text, out come the materials),
    the videos
-7. CTA: free under a Creative Commons licence at llmsunplugged.org; book us in
-   person
+7. invitation: free under a Creative Commons licence at llmsunplugged.org
 
 ## Script
 
-**BEN (TC):** Claude and ChatGPT write one word at a time. Pick a likely next
-word, write it down, go again. And you can do exactly that, by hand.
+**BEN (TC):** Your class can build a language model with a picture book and a
+pencil. Pick a likely next word, write it down, go again. You'll be able to
+follow every choice it makes, by hand.
 
 _Visual: a chat reply typing itself one word at a time, each word pausing as it
 lands. The chat window folds flat onto the desk and becomes a strip of paper,
@@ -62,8 +61,8 @@ _Reads:_ 1. the last word's row gives the choices; 2. the counts weight the
 draw.
 
 **USHINI (VO):** You can count in tally marks, or marks on a ledger. Draw with a
-die, a cup of counters or a pile of paper slips. It's the same model every time:
-just numbers.
+die, a cup of counters or a pile of paper slips. These are different ways to
+hold the same counts.
 
 _Visual: the row for "the" lifts out and morphs, one form per phrase: tallies,
 ledger boxes with marks, counters in a cup, cutout slips in piles, then four
@@ -73,9 +72,10 @@ _Beyond:_ tells a teacher at a glance that the grid, the ledger and the cutouts
 are one lesson in different materials, which the TASK-154 overview needs two
 stacked vignettes and a line of voice-over to say.
 
-_Reads:_ 1. many materials; 2. one model; 3. it's numbers.
+_Reads:_ 1. different materials can hold the same counts.
 
-**BEN (VO):** And here's everything this little model could have written.
+**BEN (VO):** Here are some other sentences this little model could have
+written. Each branch is another possible next word.
 
 _Visual: the tree from the generation videos: from the full stop, every path the
 counts allow, each branch as thick as it is likely, "it sits on the dog ." lit
@@ -84,24 +84,30 @@ gold. In the portrait variant the tree grows downward._
 _Beyond:_ the most memorable image in the series, and it says "it's all counts,
 and the dice pick" in one picture.
 
-_Reads:_ 1. the counts hold every sentence; 2. the draw picks one path.
+_Reads:_ 1. the counts determine which branches are possible; 2. the draw picks
+one path through the displayed continuations.
 
-**USHINI:** A real model isn't a tiny grid. It looks at far more than one word,
-and learns from trillions of them. But it's the same loop.
+**USHINI:** Our model uses the last word. Claude or ChatGPT uses much more of
+the text, and learns to predict by adjusting numbers during training. Choosing
+what comes next is the part of text generation we have in common.
 
-_Visual: the tree pulls back logarithmically until it's a fine mesh; the gold
-path stays lit through it._
+_Visual: the tree gives way to the sentence strip. Only its last word lights for
+our model; the preceding words light together as the voice describes the text
+available to a larger model. Hold on that context, without enlarging the
+counting grid to stand for a neural model._
 
-_Reads:_ 1. real models are vastly bigger; 2. the loop is the same.
+_Reads:_ 1. our model uses one word; 2. larger models use more context and learn
+their predictions differently; 3. both generate text a step at a time.
 
-**BEN:** And it's not new. In 1913 Andrey Markov went through a Russian poem by
-hand, counting whether a vowel or a consonant came next. Claude Shannon did it
-with words in 1948. We're just letting everyone else have a go.
+**BEN:** In 1913 Andrey Markov went through a Russian poem by hand, counting
+whether a vowel or a consonant came next. Claude Shannon generated text using
+word sequences in 1948. Everyone can have a go at that with a book.
 
 _Visual: a timeline draws on as a single stroke, 1913 Markov, 1948 Shannon, on
 to today, a pencil riding along it._
 
-_Reads:_ 1. people have run this loop by hand for over a century.
+_Reads:_ 1. Markov counted letter patterns in 1913; 2. Shannon generated text
+from word sequences in 1948.
 
 **USHINI (VO):** LLMs Unplugged has the lessons, the slides, the printouts and a
 short video for every step. And the tools that made them: paste in any text you

@@ -1,28 +1,28 @@
 WEBVTT
 
-00:00:00.220 --> 00:00:09.870
-Claude and ChatGPT write one word at a time. Pick a likely next word, write it down, go again. And you can do exactly that, by hand.
+00:00:00.150 --> 00:00:11.080
+Your class can build a language model with a picture book and a pencil. Pick a likely next word, write it down, go again. You'll be able to follow every choice it makes, by hand.
 
-00:00:10.600 --> 00:00:16.590
+00:00:11.810 --> 00:00:17.800
 Take a picture book. Read it two words at a time, and count which word follows which.
 
-00:00:17.960 --> 00:00:27.370
+00:00:19.150 --> 00:00:28.560
 Then write something new. Take the last word, look at what came after it in the book, and draw the next word by those counts. More counts, more likely.
 
-00:00:27.960 --> 00:00:40.210
-You can count in tally marks, or marks on a ledger. Draw with a die, a cup of counters or a pile of paper slips. It's the same model every time: just numbers.
+00:00:29.150 --> 00:00:41.100
+You can count in tally marks, or marks on a ledger. Draw with a die, a cup of counters or a pile of paper slips. These are different ways to hold the same counts.
 
-00:00:41.440 --> 00:00:44.610
-And here's everything this little model could have written.
+00:00:42.450 --> 00:00:48.720
+Here are some other sentences this little model could have written. Each branch is another possible next word.
 
-00:00:45.140 --> 00:00:54.550
-A real model isn't a tiny grid. It looks at far more than one word, and learns from trillions of them. But it's the same loop.
+00:00:49.410 --> 00:01:04.220
+Our model uses the last word. Claude or ChatGPT uses much more of the text, and learns to predict by adjusting numbers during training. Choosing what comes next is the part of text generation we have in common.
 
-00:00:55.620 --> 00:01:09.950
-And it's not new. In 1913 Andrey Markov went through a Russian poem by hand, counting whether a vowel or a consonant came next. Claude Shannon did it with words in 1948. We're just letting everyone else have a go.
+00:01:05.350 --> 00:01:18.980
+In 1913 Andrey Markov went through a Russian poem by hand, counting whether a vowel or a consonant came next. Claude Shannon generated text using word sequences in 1948. Everyone can have a go at that with a book.
 
-00:01:10.470 --> 00:01:24.310
+00:01:19.470 --> 00:01:33.300
 LLMs Unplugged has the lessons, the slides, the printouts and a short video for every step. And the tools that made them: paste in any text you like, and out come the grids, the sheets and the booklets for it.
 
-00:01:25.320 --> 00:01:33.970
+00:01:34.450 --> 00:01:42.960
 It's all free, under a Creative Commons licence, at llmsunplugged.org. Grab a picture book, and come and see how it works.

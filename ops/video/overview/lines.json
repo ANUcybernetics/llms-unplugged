@@ -3,8 +3,8 @@
     "i": 0,
     "speaker": "BEN",
     "tc": true,
-    "caption": "Claude and ChatGPT write one word at a time. Pick a likely next word, write it down, go again. And you can do exactly that, by hand.",
-    "tts": "Claude and ChatGPT write one word at a time. Pick a likely next word, write it down, go again. And you can do exactly that, by hand."
+    "caption": "Your class can build a language model with a picture book and a pencil. Pick a likely next word, write it down, go again. You'll be able to follow every choice it makes, by hand.",
+    "tts": "Your class can build a language model with a picture book and a pencil. Pick a likely next word, write it down, go again. You'll be able to follow every choice it makes, by hand."
   },
   {
     "i": 1,
@@ -24,29 +24,29 @@
     "i": 3,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "You can count in tally marks, or marks on a ledger. Draw with a die, a cup of counters or a pile of paper slips. It's the same model every time: just numbers.",
-    "tts": "You can count in tally marks, or marks on a ledger. Draw with a die, a cup of counters or a pile of paper slips. It's the same model every time: just numbers."
+    "caption": "You can count in tally marks, or marks on a ledger. Draw with a die, a cup of counters or a pile of paper slips. These are different ways to hold the same counts.",
+    "tts": "You can count in tally marks, or marks on a ledger. Draw with a die, a cup of counters or a pile of paper slips. These are different ways to hold the same counts."
   },
   {
     "i": 4,
     "speaker": "BEN",
     "tc": false,
-    "caption": "And here's everything this little model could have written.",
-    "tts": "And here's everything this little model could have written."
+    "caption": "Here are some other sentences this little model could have written. Each branch is another possible next word.",
+    "tts": "Here are some other sentences this little model could have written. Each branch is another possible next word."
   },
   {
     "i": 5,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "A real model isn't a tiny grid. It looks at far more than one word, and learns from trillions of them. But it's the same loop.",
-    "tts": "A real model isn't a tiny grid. It looks at far more than one word, and learns from trillions of them. But it's the same loop."
+    "caption": "Our model uses the last word. Claude or ChatGPT uses much more of the text, and learns to predict by adjusting numbers during training. Choosing what comes next is the part of text generation we have in common.",
+    "tts": "Our model uses the last word. Claude or ChatGPT uses much more of the text, and learns to predict by adjusting numbers during training. Choosing what comes next is the part of text generation we have in common."
   },
   {
     "i": 6,
     "speaker": "BEN",
     "tc": false,
-    "caption": "And it's not new. In 1913 Andrey Markov went through a Russian poem by hand, counting whether a vowel or a consonant came next. Claude Shannon did it with words in 1948. We're just letting everyone else have a go.",
-    "tts": "And it's not new. In 1913 Andrey Markov went through a Russian poem by hand, counting whether a vowel or a consonant came next. Claude Shannon did it with words in 1948. We're just letting everyone else have a go."
+    "caption": "In 1913 Andrey Markov went through a Russian poem by hand, counting whether a vowel or a consonant came next. Claude Shannon generated text using word sequences in 1948. Everyone can have a go at that with a book.",
+    "tts": "In 1913 Andrey Markov went through a Russian poem by hand, counting whether a vowel or a consonant came next. Claude Shannon generated text using word sequences in 1948. Everyone can have a go at that with a book."
   },
   {
     "i": 7,

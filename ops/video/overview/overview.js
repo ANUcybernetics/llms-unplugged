@@ -7,9 +7,8 @@
 //
 // It compresses the series' beats rather than rebuilding them: the book at
 // machine speed (parts/stream.js), the morph (parts/morph.js, its steps cued
-// on this line's words), the tree (parts/tree.js) and its pull-back into
-// copies of itself (parts/making-tree.js's mesh). The gold thread through the
-// pull-back and "the site" (lessons, tools, videos, drawn from the kit's
+// on this line's words) and the tree (parts/tree.js). The context comparison
+// and "the site" (lessons, tools, videos, drawn from the kit's
 // paper objects) are its own. The tools beat pastes in The kookaburra, another of the
 // ledger books, whose sheets come from the kit and whose grid and booklet
 // come from parts/build-overview.py (window.OVERVIEW).
@@ -18,7 +17,6 @@ import * as C from "./kit/motion/canvas.js";
 import { streamPairs, gridLander, pairBox, bracket, bracketSet } from "./parts/stream.js";
 import { row, morph } from "./parts/morph.js";
 import { tree, treeStyle, GOLD } from "./parts/tree.js";
-import { mesh } from "./parts/making-tree.js";
 import { WALK, tenFaces, paperLine } from "./parts/generation-walk.js";
 import { lineCover } from "./parts/lineart.js";
 
@@ -222,8 +220,8 @@ export const build = (tl, S, T) => {
   K.set(caret, { x: 36, opacity: 0 });
   K.set(panel, { opacity: 0 });
   K.appear(tl, panel, 0.25, { y: 16 });
-  const tType = [T.word(0, "write"), T.word(0, "Pick"), T.word(0, "write", 2)];
-  const tFold = T.word(0, "And", 2);
+  const tType = [T.word(0, "Pick"), T.word(0, "write"), T.word(0, "again")];
+  const tFold = T.word(0, "You'll");
   // the caret blinks while it waits, jumps after each word as it lands
   for (let t = 0.6, on = true; t < tFold; t += 0.42, on = !on)
     tl.set(caret, { opacity: on ? 1 : 0 }, t);
@@ -256,7 +254,7 @@ export const build = (tl, S, T) => {
     return { x: c.x - 10, y: c.y + 22 };
   };
   tl.set(pen, penAt(2), 0);
-  tl.to(pen, { opacity: 1 }, T.word(0, "exactly") - 0.2, { dur: 0.3 });
+  tl.to(pen, { opacity: 1 }, T.word(0, "follow") - 0.2, { dur: 0.3 });
   tl.to(pen, penAt(3), T.word(0, "by"), { dur: 0.35, ease: "in-out-cubic" });
   K.raise(tl, pen, T.word(0, "by"));
   K.write(tl, paper.words[3], T.word(0, "hand"));
@@ -546,7 +544,7 @@ export const build = (tl, S, T) => {
     colour: tLedger + 0.6,
     counters: T.word(3, "cup"),
     slips: T.word(3, "pile"),
-    numbers: T.word(3, "just") - 0.1,
+    numbers: T.word(3, "counts") - 0.1,
   });
   // one model: the same four followers, whatever they're made of
   followerText.forEach((e, c) =>
@@ -566,7 +564,7 @@ export const build = (tl, S, T) => {
   if (P) K.set(wrap, { rotation: 90 });
   const toStage = (u, v) => (P ? { x: A.x + A.w - v, y: A.y + u } : { x: A.x + u, y: A.y + v });
   const box = { x0: 70, x1: LW - 30, y0: 10, y1: LH - 10 };
-  const tGrow = [T.word(4, "here's") - 0.1, T.word(4, "written")];
+  const tGrow = [T.word(4, "Here") - 0.1, T.word(4, "written")];
   const tWalk = T.word(4, "written") + 0.05,
     STEP = 0.15;
   const T3 = tree(tl, wrap, {
@@ -595,138 +593,19 @@ export const build = (tl, S, T) => {
     return e;
   });
 
-  // the pull-back: the tree shrinks about the frame's centre (logarithmic on
-  // scale) and turns out to be one of many like it (making-tree.js's mesh:
-  // copies of its shape, few thick strokes each, receding). The gold keeps
-  // going past the tree, one smooth thread through the copies.
-  const ZOOM = {
-    t: T.word(5, "real"),
-    dur: T.word(5, "trillions") + 0.3 - T.word(5, "real"),
-    to: 1 / 7,
-    cx: LW / 2,
-    cy: LH / 2,
-  };
-  const tZ0 = ZOOM.t;
-  tl.to(litWords, { opacity: 0 }, tZ0 - 0.4, { dur: 0.3 });
-  const M = mesh(tl, wrap, {
-    nodes: T3.nodes,
-    box,
-    zoom: ZOOM,
-    tiles: { r: 4, pitch: 1.12 },
-    appear: { t: tZ0 + 0.8, dur: 0.8, ring: 0.45 },
-    centre: { in: [tZ0 + 0.4, 1.2] },
-    alpha: 0.45,
-    minP: 0.02,
-    minW: 2,
-    canvasBox: { x: 0, y: 0, w: LW, h: LH },
+  // Compare the context used for a prediction without depicting an LLM as
+  // a larger copy of the counting tree.
+  const tContext = T.start(5);
+  tl.to([T3.el, ...litWords], { opacity: 0 }, tContext, { dur: 0.4 });
+  const context = paperLine(scene, ["It", "sits", "on", "the"], {
+    x: P ? 60 : 410, y: P ? 700 : 330, w: P ? 960 : 1100, h: 116, size: 62,
   });
-  K.set(M.el, { opacity: 0 });
-  tl.set(M.el, { opacity: 1 }, tZ0);
-  // the real tree shrinks with the mesh and hands over to its centre copy
-  K.set(T3.el, { transformOrigin: "0 0" });
-  tl.sample(
-    T3.el,
-    tZ0,
-    ZOOM.dur,
-    (p) => {
-      const z = M.zAt(tZ0 + p * ZOOM.dur);
-      return { x: ZOOM.cx * (1 - z), y: ZOOM.cy * (1 - z), scale: z };
-    },
-    { ease: "linear", step: 0.005 },
-  );
-  tl.to(T3.el, { opacity: 0 }, tZ0 + 0.4, { dur: 1.2, ease: "in-out-quad" });
-
-  // the thread: the walk, six more words through the tree, then on in long
-  // smooth curves past the edge of the widest view
-  const ext = [...WALK];
-  const r2 = C.rng(48);
-  while (ext.length <= T3.DEPTH) {
-    const opts = MG.rows[ext.at(-1)];
-    const total = opts.reduce((s, [, c]) => s + c, 0);
-    let x = r2() * total;
-    ext.push(opts.find(([, c]) => (x -= c) < 0)[0]);
-  }
-  const thread = T3.pathNodes(ext).map((n) => ({ x: n.x, y: n.y }));
-  const TH = box.y1 - box.y0,
-    far = ZOOM.cx + LW / 2 / ZOOM.to + LW;
-  for (let x = box.x1 + (box.x1 - box.x0) * 0.35; x < far; x += (box.x1 - box.x0) * 0.35)
-    thread.push({ x, y: LH / 2 + (r2() - 0.5) * TH * 0.5 });
-  const walkLen = WALK.length - 1; // segments of the thread that are the walk
-  // the level-tangent curve the tree draws its branches with, up to s
-  const curveTo = (ctx, xa, ya, xb, yb, s = 1) => {
-    const mx = (xa + xb) / 2;
-    if (s >= 1) return ctx.bezierCurveTo(mx, ya, mx, yb, xb, yb);
-    const L = (a, b) => a + (b - a) * s;
-    const q1x = L(xa, mx),
-      q1y = ya,
-      rx = mx,
-      ry = L(ya, yb);
-    const q2x = L(q1x, rx),
-      q2y = L(q1y, ry),
-      ux = L(rx, L(mx, xb)),
-      uy = L(ry, yb);
-    ctx.bezierCurveTo(q1x, q1y, q2x, q2y, L(q2x, ux), L(q2y, uy));
-  };
-  const tThread = [tZ0 + 0.4, tZ0 + ZOOM.dur + 0.4];
-  const tLoop = T.word(5, "same"),
-    tLoopEnd = T.end(5) + 0.5;
-  const threadLayer = C.canvas(
-    tl,
-    wrap,
-    (ctx, t) => {
-      if (t < tZ0 - 0.1 || t > T.end(5) + 1.5) return;
-      const z = M.zAt(t);
-      ctx.setTransform(
-        ctx
-          .getTransform()
-          .multiply(new DOMMatrix([z, 0, 0, z, ZOOM.cx * (1 - z), ZOOM.cy * (1 - z)])),
-      );
-      const px = 1 / z; // one screen px in world units
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-      ctx.strokeStyle = `rgb(${GOLD.join(" ")})`;
-      ctx.lineWidth = (4 + z) * px;
-      const segs = thread.length - 1;
-      const upto =
-        walkLen + (segs - walkLen) * C.phase(t, tThread[0], tThread[1] - tThread[0], "in-out-quad");
-      ctx.beginPath();
-      ctx.moveTo(thread[0].x, thread[0].y);
-      for (let i = 1; i <= segs && i - 1 < upto; i++) {
-        const a = thread[i - 1],
-          b = thread[i];
-        curveTo(ctx, a.x, a.y, b.x, b.y, Math.min(1, upto - (i - 1)));
-      }
-      ctx.stroke();
-      // "the same loop": a bright point runs the thread
-      if (t > tLoop && t < tLoopEnd + 0.4) {
-        const u = C.phase(t, tLoop, tLoopEnd - tLoop, "in-out-quad") * segs;
-        const i = Math.min(segs - 1, Math.floor(u)),
-          f = u - i;
-        const a = thread[i],
-          b = thread[i + 1];
-        const mx = (a.x + b.x) / 2;
-        const bx =
-          (1 - f) ** 3 * a.x + 3 * (1 - f) ** 2 * f * mx + 3 * (1 - f) * f * f * mx + f ** 3 * b.x;
-        const by =
-          (1 - f) ** 3 * a.y +
-          3 * (1 - f) ** 2 * f * a.y +
-          3 * (1 - f) * f * f * b.y +
-          f ** 3 * b.y;
-        ctx.globalAlpha = 1 - C.phase(t, tLoopEnd, 0.4);
-        ctx.fillStyle = "#fff4d6";
-        ctx.beginPath();
-        ctx.arc(bx, by, 9 * px, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    },
-    { x: 0, y: 0, w: LW, h: LH },
-  );
-  K.set(threadLayer.el, { opacity: 0 });
-  tl.set(threadLayer.el, { opacity: 1 }, tZ0 - 0.1);
-  // the mesh dims under the thread for "the same loop"
-  tl.to(M.el, { opacity: 0.45 }, tLoop - 0.2, { dur: 0.6, ease: "in-out-quad" });
-  const tTreeOut = T.end(5) + 0.4;
-  tl.to([M.el, threadLayer.el], { opacity: 0 }, tTreeOut, { dur: 0.45 });
+  K.set(context.el, { opacity: 0 });
+  context.words.forEach((word) => K.set(word, { opacity: 0.3 }));
+  arrive(context.el, T.word(5, "last") - 0.3);
+  tl.to(context.words[3], { opacity: 1, color: "#be830e" }, T.word(5, "last"), { dur: 0.3 });
+  tl.to(context.words, { opacity: 1, color: "#be830e" }, T.word(5, "more"), { dur: 0.5, stagger: 0.12 });
+  tl.to(context.el, { opacity: 0 }, T.end(5) + 0.2, { dur: 0.4 });
 
   // ================================================================ line 6
   // a timeline draws on as one stroke, a pencil riding it: 1913 Markov,
@@ -857,12 +736,12 @@ export const build = (tl, S, T) => {
   K.appear(
     tl,
     pair.tiles.map((t) => t.el),
-    T.word(6, "words"),
+    T.word(6, "word"),
     { y: 12, stagger: 0.12 },
   );
   const pairBr = bracket(tlL, { h: pair.size, pad: 8 });
   bracketSet(tl, pairBr, { x: pairAt.x, y: pairAt.y, w: pair.width, h: pair.size }, 0);
-  tl.to(pairBr.el, { opacity: 1 }, T.word(6, "words") + 0.35, { dur: 0.25 });
+  tl.to(pairBr.el, { opacity: 1 }, T.word(6, "word") + 0.35, { dur: 0.25 });
   // today: everyone else's go, the strip of paper with its sentence
   tl.to(dots[2], { opacity: 1 }, T.word(6, "everyone"), { dur: 0.2 });
   pulse(dots[2], T.word(6, "everyone"), 1.4);
