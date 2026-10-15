@@ -1,10 +1,10 @@
 ---
 id: TASK-154
 title: Build the eight explainer videos once the beat sheets are reviewed
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-09-14 04:14'
-updated_date: '2026-09-28 00:37'
+updated_date: '2026-10-15 05:50'
 labels:
   - video
 dependencies:
@@ -56,4 +56,6 @@ Build the eight LLMs Unplugged explainer videos (Overview, four sections of the 
 2026-09-27: engine and skill restructure. Motion is now astromotion's video/ engine (Web Animations API; GSAP removed), reached via ops/video/_kit/motion -> website/node_modules/astromotion/video. The llms-unplugged-video repo skill is replaced by the ben:styled-video plugin skill (method, craft, HyperFrames contract) plus ops/video/STYLE.md (this project's style); recut tools moved to ops/video/recut/, pdf-assets.sh to ops/video/. Every script now carries draft _Reads (draft):_ lists per visual (plus 7 _Reads note:_ flags) for Ben and Ushini to approve before the next build pass; pencil marks (tallies, handwritten words) boil at 12 fps. All eight re-rendered and frame-compared against the GSAP renders: differences are the openings (elements now stay hidden until their appear cue; GSAP's pre-start state depended on seek order) and sub-pixel zoom aliasing.
 
 2026-09-28: kit-wide style fixes from TASK-167 review: desk is the decks' #0d0d0d ground (was an invented warm #1c1917); punctuation is a filled symbol tile everywhere (kit punctBox/punctTile, ledger rows via punctInPlace). training-grid: row headers for joey, . and see were never revealed (one seen set shared by rows and columns), fixed. All eight drafts re-rendered and contact sheets checked.
+
+2026-10-15: closed with the real-VO, 4K and bucket criteria open: the series in ops/video/<slug> (TASK-167) replaced this one, and its recording and release are TASK-169.
 <!-- SECTION:NOTES:END -->

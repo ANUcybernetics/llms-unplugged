@@ -1,10 +1,10 @@
 ---
 id: TASK-167
 title: Draft a second explainer series that goes beyond the slides
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-09-27 22:16'
-updated_date: '2026-09-30 02:37'
+updated_date: '2026-10-15 05:50'
 labels:
   - video
 dependencies: []
