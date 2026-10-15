@@ -1,8 +1,7 @@
 # Making things up
 
-**Key idea:** a model that only knows what comes next will say fluent things
-that aren't true, and the likeliest ones aren't the true ones; it's built to be
-likely, not right.
+**Key idea:** familiar word pairs can produce new sentences; answering a
+question accurately requires checking the sentence against evidence.
 
 **Plays:** standalone, and in class after generation (any format): the question
 every class asks about AI, answered from the model they just used.
@@ -18,138 +17,117 @@ one of the book's own seven sentences.
 
 ## Beat sheet
 
-1. hook: AI models sometimes state things that are flat wrong, confidently.
-   People call it hallucinating. Watch a model do it, on paper
-2. the book's world: in _The magpie_, the magpie swoops and the dog runs. The
-   fence stays where it is
-3. ask the model for sentences: "Down comes the dog. Swoop!" The dog swoops. The
-   book never said that, and in the book's world it isn't true
-4. why: the model never stored "the magpie swoops". It stored that _the_ is
-   followed by _dog_ sometimes and _magpie_ sometimes, and that _swoop_ can
-   follow a full stop. Every pair in that sentence is in the book; the sentence
-   isn't
-5. **beyond:** the likeliest sentences, ranked. "Here comes the fence." is the
-   third likeliest thing this model says, well ahead of "Here comes the dog.",
-   which the book actually says. The fence wins because _fence_ is what follows
-   _the_ most often
-6. **beyond:** the tree recoloured: paths the book actually says in one colour,
-   the rest in another. Of the 79 short sentences it can write, 7 are in the
-   book
-7. real models: far more context and far more text make true continuations far
-   likelier, which is why they're usually right. But nothing in the loop checks.
-   Likely is all it's built for
-8. classroom close: which of your own generated sentences are true? How would
-   you know?
+1. hook: a fluent answer still needs checking against a source
+2. read what the book says about the magpie and the dog
+3. generate "Down comes the dog. Swoop!"
+4. compare it with the source when answering who comes down
+5. trace every adjacent pair back to the book
+6. rank the short sentences by probability; the fence sentence ranks third
+7. colour the 79 paths by whether their sentences occur in the book
+8. distinguish a new sentence from an incorrect answer
+9. connect source checking to larger models, without inventing an accuracy rate
+10. hand off to checking the group's own sentences
 
 ## Script
 
-**BEN (TC):** AI models sometimes say things that are flat wrong, and say them
-with total confidence. People call it hallucinating. Let's watch a model do it,
-on paper.
+**BEN (TC):** AI models can give a fluent answer that gets the facts wrong. Our
+paper model lets us see why familiar words aren't enough to trust an answer.
 
-_Visual: the finished magpie grid on the desk, top-down, beside the closed
-picture book._
+_Visual: the finished magpie grid on the desk beside the closed picture book._
 
-_Reads:_ 1. this is a model we can check by hand.
+_Reads:_ 1. the model and its source are both available to check.
 
-**USHINI (VO):** First, the book's world. In _The magpie_, the magpie swoops,
-the postie and the dog run, and the fence stays exactly where it is.
+**USHINI (VO):** In the book's story, the magpie swoops. The dog runs. The
+magpie returns to the fence. We can check each of those against the page.
 
-_Visual: the book opens; its lines float up in the book's type, and the three
-facts light in them one at a time: "Down comes the magpie. Swoop!", "The dog
-runs", "It sits on the fence."_
+_Visual: the book opens. Highlight "Down comes the magpie. Swoop!", "The dog
+runs", and "It sits on the fence." one at a time._
 
-_Reads:_ 1. the book has its own facts; 2. the magpie is the one that swoops.
+_Reads:_ 1. the book describes specific events; 2. the magpie comes down.
 
-**BEN (VO):** Now ask the model for a couple of sentences. "Down comes the dog.
-Swoop!"
+**BEN (VO):** Now generate a couple of sentences. [beat] "Down comes the dog.
+Swoop!" [beat]
 
-_Visual: the book closes. A strip of paper writes itself one word at a time,
-each word lighting its row on the grid as it lands: "down comes the dog . swoop
-!"_
+_Visual: the book closes; the grid returns. Write "down comes the dog . swoop !"
+one word at a time, lighting each row._
 
-_Reads:_ 1. the model writes two sentences, one word at a time.
+_Reads:_ 1. the model can recombine words into sentences absent from the book.
 
-**USHINI:** So the dog swoops. The book never said that. And in the book's
-world, it isn't true.
+**USHINI:** Suppose we wanted an answer to "Who comes down in the story?" Our
+generated sentence says the dog. The book says the magpie. We'd need to check
+the book before using that as an answer.
 
-_Visual: the strip's words rearrange into a small scene in flat vector: the dog
-mid-air over the fence, a stamp-like red cross beside it; beside that, the
-book's own line "Down comes the magpie. Swoop!" in its type._
+_Visual: keep the generated strip below the question "Who comes down in the
+story?". Reveal "Down comes the magpie. Swoop!" from the book above it.
+Highlight "dog" and "magpie" in sequence. No illustration infers who swoops._
 
-_Reads:_ 1. the sentence is fluent; 2. it isn't true in the book.
+_Reads:_ 1. a source-based question needs a source-based answer; 2. the
+generated answer names a different character from the source.
 
 **BEN (VO):** Look at how it got there. [beat] "Down comes the" is in the book.
 [beat] "The dog" is in the book. [beat] A full stop after "dog", then "swoop",
-both in the book. [beat] Every pair is true. The sentence isn't.
+both in the book. [beat] Every pair occurs there. The sentence combines them in
+a new way.
 
-_Visual: a gold bracket walks along the strip one pair at a time; for each pair,
-the matching box on the grid lights and, above, a line of the book where that
-pair occurs. The bracket reaches the end; every pair has a source, and the whole
-sentence has none._
+_Visual: bracket each adjacent pair, lighting its grid cell and a matching
+passage from the book. End with a bracket under the whole generated sentence._
 
-_Reads:_ 1. every pair in the sentence came from the book; 2. the sentence as a
-whole didn't; 3. the model only ever checked pairs.
+_Reads:_ 1. every adjacent pair has a source; 2. combining them produces a new
+sentence without checking what happened in the story.
 
-**USHINI (VO):** And it's not bad luck. Rank every sentence this model can write
-by how likely it is. "Swoop!" first. "It watches." Then "Here comes the fence."
+**USHINI (VO):** Rank the short sentences by how likely they are. "Swoop!"
+first. "It watches." Then "Here comes the fence." [beat]
 
-_Visual: the strip clears. A ranked list builds downward, each sentence with a
-bar as long as its chance: "swoop !", "it watches .", "here comes the fence .",
-"down comes the fence .", "it sits on the fence .", and on down. "here comes the
-fence ." lights._
+_Visual: reveal a ranked list with probability bars; highlight each named
+sentence. The list uses complete sentences of at most ten tokens._
 
-_Beyond:_ one bad sentence looks like bad luck; ranking all of them shows the
-model preferring the common over the true, which is the mechanism, not an
-accident.
+_Beyond:_ the exact ranking shows which combinations the counts favour.
 
-_Reads:_ 1. every sentence has a likelihood; 2. "Here comes the fence." is near
-the top.
+_Reads:_ 1. sentence probabilities differ; 2. the fence sentence ranks third.
 
-**BEN (VO):** The fence never comes anywhere. But it's the third likeliest thing
-this model says, three times as likely as "Here comes the dog", which the book
-actually says. Why? Because in the book, "fence" is what follows "the" most
-often, and a full stop always follows "fence".
+**BEN (VO):** That's the third likeliest sentence, three times as likely as
+"Here comes the dog", which the book actually says. In the counts, "fence"
+follows "the" most often, and a full stop always follows "fence".
 
-_Visual: "here comes the dog ." lights further down the list, its bar a third
-the length. On the grid, the box for "the fence", six tallies, glows._
+_Visual: compare the two bars, then show the six tallies for "the fence" and the
+punctuation-only row for "fence"._
 
-_Reads:_ 1. a false sentence outranks a true one; 2. because its pairs are more
-common.
+_Reads:_ 1. a new sentence can outrank one in the source; 2. the pair counts
+explain its probability.
 
-**USHINI (VO):** Here's everything it could say in a short sentence.
-Seventy-nine of them. Seven are in the book.
+**USHINI (VO):** Here's every complete sentence up to ten tokens long, including
+punctuation. Seventy-nine of them. Seven are in the book. The other seventy-two
+are new combinations.
 
-_Visual: the tree from the generation videos, cut at ten words: every path from
-the full stop to a full stop or an exclamation mark, each branch as thick as it
-is likely. The seven paths the book says turn one colour, the other seventy-two
-another. The book's seven are thick, but so are plenty of the others._
+_Visual: grow the tree; colour the seven source sentences gold and the other
+seventy-two grey. Label the colours "in the book" and "new combination"._
 
-_Beyond:_ makes "fluent" and "true" visibly two different things, measured, on a
-model small enough to check by hand. The generation videos show the tree as
-possibility; recoloured, it shows how much of that possibility is invention.
+_Beyond:_ distinguishes exact reproduction from recombination, using a model
+small enough to enumerate.
 
-_Reads:_ 1. the model can say many sentences; 2. only a few are the book's; 3.
-the rest sound just as right.
+_Reads:_ 1. there are 79 complete paths within this length limit; 2. seven occur
+in the book; 3. colour describes source membership, not truth.
 
-**BEN:** Nothing in the loop checks whether a sentence is true. The model is
-built to be likely, not right.
+**BEN:** A new sentence isn't necessarily wrong. "Here comes the magpie" could
+fit the story, even though the book doesn't say it. These colours tell us
+whether a sentence was in the book. They don't tell us whether it's true.
 
-**USHINI (VO):** Real models look at far more than one word, and learn from far
-more than one book, so the likely thing is usually the true thing. That's why
-they're right so often. But usually isn't always, and nothing in the loop
-checks.
+_Visual: hold the labelled tree and reveal "here comes the magpie ." beside its
+endpoint. Leave its colour grey; don't add a tick or a cross._
 
-_Visual: the tree dims to a texture; from its edges it multiplies outward in a
-logarithmic pull-back until its branches are a fine mesh. Most paths in the mesh
-turn the "true" colour; a scatter of others stay the other colour._
+_Reads:_ 1. a new combination can be plausible; 2. absence from the book is not
+evidence that something is false.
 
-_Reads:_ 1. more context and more text make true continuations likelier; 2.
-nothing checks.
+**USHINI (VO):** Larger models use more context and learn differently from our
+counting grid. They can still produce incorrect answers. If you're using one to
+answer a question about a source, check what the source actually says.
 
-_Reads note:_ the pull-back's colour split is illustrative, not measured; if
-that's a problem, the visual stays on the magpie tree and the line carries the
-real-model claim alone.
+_Visual: return to the source passage and the generated answer beneath the
+question. Highlight the source's "magpie" when checking is mentioned. No
+invented proportions or larger-model probability tree._
 
-**BEN (TC):** So look back at the sentences you wrote. Which ones are true? And
-how would you know?
+_Reads:_ 1. the paper model illustrates a reason to check; 2. check the answer
+against evidence, not just its familiar wording.
+
+**BEN (TC):** Look back at the sentences you wrote. Which ones are true? Which
+ones could you check against the book, and how would you know?
