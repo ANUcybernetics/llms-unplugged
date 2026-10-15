@@ -71,7 +71,6 @@
   .last {
     outline: 2px solid var(--anu-gold);
     outline-offset: 3px;
-    border-radius: 3px;
   }
 
   .fresh {

@@ -125,7 +125,6 @@
 
   .tok {
     padding: 0.05em 0.25em;
-    border-radius: 4px;
     border: 2px solid transparent;
     transition:
       color 0.3s,
@@ -162,7 +161,6 @@
 
   .pair .ledger-token {
     padding: 0.05em 0.35em;
-    border-radius: 4px;
     border: 2px solid transparent;
     background: var(--paper-ground);
   }

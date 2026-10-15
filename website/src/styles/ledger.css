@@ -19,7 +19,6 @@
 .ledger-inline {
   display: inline-block;
   padding: 0.05em 0.35em;
-  border-radius: 4px;
   background: var(--paper-ground, #fff);
   border: 1px solid var(--paper-edge, rgb(0 0 0 / 22%));
   color: var(--paper-ink, #1a1a1a);
@@ -95,7 +94,7 @@
   bottom: 0.15em;
   font-size: 0.5em;
   font-weight: 400;
-  color: rgb(0 0 0 / 60%);
+  color: rgb(0 0 0 / 71%);
   letter-spacing: 0.02em;
 }
 
