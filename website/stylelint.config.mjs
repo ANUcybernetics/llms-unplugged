@@ -29,6 +29,9 @@ export default {
         "keyframes-name-pattern": "^(-global-)?[a-z][a-z0-9-]*$",
         "rule-empty-line-before": null,
         "at-rule-empty-line-before": null,
+        // stylelint 17.16 flags inline style="..." attributes as misplaced
+        // declarations when parsed through postcss-html.
+        "no-invalid-position-declaration": null,
       },
     },
   ],
