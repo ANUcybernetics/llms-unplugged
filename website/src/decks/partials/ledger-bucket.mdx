@@ -63,8 +63,13 @@ Two steps per word, same as always: the show of hands picks the group, the cup p
 ## They call it out, we draw it
 
 <div class="ledger-step">
-  <LedgerRow entry={ROW_THE_CREEK} palette={PALETTE} highlight={3} />
-  <LedgerCup entry={ROW_THE_CREEK} palette={PALETTE} drawn={3} />
+  <LedgerRow
+    entry={ROW_THE_CREEK}
+    palette={PALETTE}
+    highlight={3}
+    counters={{ cup: "cup-creek", drawn: 3 }}
+  />
+  <LedgerCup entry={ROW_THE_CREEK} palette={PALETTE} drawn={3} id="cup-creek" />
 </div>
 
 the class story grows by one word --- and the new word is the next one we hunt

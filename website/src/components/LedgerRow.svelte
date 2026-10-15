@@ -1,5 +1,6 @@
 <script lang="ts">
   import {
+    cupFor,
     isPale,
     layoutCells,
     LEDGER_COLUMNS,
@@ -29,6 +30,16 @@
     highlight?: number;
     /** Follower index whose newest mark is drawn in gold: the one just added. */
     fresh?: number;
+    /**
+     * The row's counters, shared with a LedgerCup by data-id (`cup` is the
+     * cup's id). `lifted`: that follower's marks fade and a counter for each
+     * sits over its box, ready to fly into the cup on the next frame.
+     * `drawn`: the counter that came out of the cup lands on that follower's
+     * box, so its position names the word.
+     */
+    counters?: { cup: string; lifted?: number; drawn?: number };
+    /** Each box's marks as a number, in the box's colour. */
+    numbers?: boolean;
     /** Drop the paper ground and the centring margin: the row is one line of
      * a sheet that is itself the paper (LedgerSheet), not a free-standing one. */
     bare?: boolean;
@@ -45,6 +56,8 @@
     showTallies = true,
     highlight,
     fresh,
+    counters,
+    numbers = false,
     bare = false,
     id = "ledger-row",
   }: Props = $props();
@@ -56,6 +69,10 @@
   // would slide them across the canvas, which reads as nonsense and leaves
   // transformed boxes in the row's scroll area while the frame settles.
   const cellId = (suffix: string) => `${id}-${entry.prefix}-${suffix}`;
+  // Every counter with its place in the cup, which is its data-id.
+  const cup = $derived(
+    counters ? cupFor(entry, columns, firstRow, palette).map((c, k) => ({ ...c, k })) : [],
+  );
   const PUNCT = new Set([".", ",", "!", "?", ";", ":"]);
 
   // One five-bar gate per five marks, as cli/ledger.typ draws them: four
@@ -136,12 +153,35 @@
           role="cell"
           data-id={cellId(`s${cell.index}`)}
         >
-          {#if cell.follower && showTallies}
-            <span class="marks">
+          {#if cell.follower && showTallies && numbers}
+            <span class="count" data-id={cellId(`n${cell.index}`)}>{cell.follower.count}</span>
+          {:else if cell.follower && showTallies}
+            <span class="marks" class:lifted={counters?.lifted === cell.index}>
               {#each gates(cell.follower.count) as g, k (k)}
                 {@render gate(g.marks, fresh === cell.index && g.last)}
               {/each}
             </span>
+          {/if}
+          {#if counters?.lifted === cell.index}
+            <span class="counters">
+              {#each cup.filter((c) => c.index === cell.index) as c (c.k)}
+                <span
+                  class="ledger-counter"
+                  style="--c: {c.colour.hex}"
+                  data-id="{counters.cup}-c{c.k}"
+                ></span>
+              {/each}
+            </span>
+          {/if}
+          {#if counters?.drawn === cell.index}
+            {@const c = cup.find((c) => c.index === cell.index)}
+            {#if c}
+              <span
+                class="ledger-counter drawn"
+                style="--c: {c.colour.hex}"
+                data-id="{counters.cup}-c{c.k}"
+              ></span>
+            {/if}
           {/if}
           <span class="ledger-strip-name">{cell.colour.name}</span>
         </div>
@@ -230,6 +270,47 @@
     flex-wrap: wrap;
     align-content: flex-start;
     gap: 0.15em 0.2em;
+  }
+
+  .marks.lifted {
+    opacity: 0.15;
+  }
+
+  /* Counters sit on top of the box they belong to: movers land in front. */
+  .counters {
+    position: absolute;
+    inset: 0.25em 0.35em 0.75em 0.5em;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 0.15em;
+  }
+
+  .counters .ledger-counter {
+    inline-size: 0.7em;
+    block-size: 0.7em;
+  }
+
+  .ledger-counter.drawn {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    z-index: 1;
+    translate: -50% -60%;
+    inline-size: 1.15em;
+    block-size: 1.15em;
+    box-shadow: 0 0 0 3px var(--anu-gold);
+  }
+
+  /* The box's colour, darkened to read on its own tint. */
+  .count {
+    position: absolute;
+    inset: 0 0 0.5em;
+    display: grid;
+    place-items: center;
+    font-size: 1.4em;
+    font-weight: 700;
+    color: oklch(from var(--c) 42% c h);
   }
 
   .gate {

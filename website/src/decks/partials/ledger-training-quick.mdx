@@ -34,9 +34,11 @@ The magpie is back. It sits on the fence. It watches. Here comes the postie. Dow
 
 ---
 
+{/* _animate: quick-the */}
+
 ## Check the sheet
 
-<LedgerRow entry={ROW_THE} palette={PALETTE} />
+<LedgerRow entry={ROW_THE} palette={PALETTE} id="quick-the" />
 
 the same marks as the magpie group's sheet: **5, 6, 4, 4**
 
@@ -44,4 +46,18 @@ a computer did this for **every word** in **every book**
 
 ```notes
 Compare the whiteboard with the row: magpie 5, fence 6, postie 4, dog 4. Every row on every group's sheets was made exactly this way; the only difference is that a computer read the books. Real AI does the same thing with a huge amount of text.
+```
+
+---
+
+{/* _animate: quick-the */}
+
+## A row of marks is a row of numbers
+
+<LedgerRow entry={ROW_THE} palette={PALETTE} numbers id="quick-the" />
+
+after **the**: magpie 5, fence 6, postie 4, dog 4
+
+```notes
+Same row, the marks counted up. A computer keeps its model as numbers like these, not tally marks --- but it's the same model.
 ```

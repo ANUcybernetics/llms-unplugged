@@ -36,9 +36,10 @@ The sheet on screen is nine rows of the magpie's ledger --- the ones this story 
     label="The magpie: the nine rows this story uses"
     focus="."
     highlight={0}
+    counters={{ cup: "cup-stop", lifted: 0 }}
     id="story-sheet"
   />
-  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={1} id="cup-stop" />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={0} id="cup-stop" />
 </div>
 
 ```notes
@@ -60,9 +61,10 @@ First word in the row: "it", seven tally marks, red box. Count them out --- seve
     label="The magpie: the nine rows this story uses"
     focus="."
     highlight={1}
+    counters={{ cup: "cup-stop", lifted: 1 }}
     id="story-sheet"
   />
-  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={2} id="cup-stop" />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={1} id="cup-stop" />
 </div>
 
 ```notes
@@ -84,9 +86,10 @@ Next word: "Here", four marks, blue box. Four blue counters.
     label="The magpie: the nine rows this story uses"
     focus="."
     highlight={2}
+    counters={{ cup: "cup-stop", lifted: 2 }}
     id="story-sheet"
   />
-  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={3} id="cup-stop" />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={2} id="cup-stop" />
 </div>
 
 ```notes
@@ -108,9 +111,10 @@ Next: "Down", three marks, green box. Three green counters.
     label="The magpie: the nine rows this story uses"
     focus="."
     highlight={3}
+    counters={{ cup: "cup-stop", lifted: 3 }}
     id="story-sheet"
   />
-  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={4} id="cup-stop" />
+  <LedgerCup entry={ROW_STOP} palette={PALETTE} loaded={3} id="cup-stop" />
 </div>
 
 ```notes
@@ -155,6 +159,7 @@ Seventeen counters for seventeen marks. The cup now holds the row's counts --- t
     label="The magpie: the nine rows this story uses"
     focus="."
     highlight={0}
+    counters={{ cup: "cup-stop", drawn: 0 }}
     id="story-sheet"
   />
   <LedgerCup entry={ROW_STOP} palette={PALETTE} drawn={0} id="cup-stop" />
@@ -179,6 +184,7 @@ Red: the likeliest one, seven chances in seventeen. Write "it" down, tip the cup
     label="The magpie: the nine rows this story uses"
     focus="it"
     highlight={0}
+    counters={{ cup: "cup-it", drawn: 0 }}
     id="story-sheet"
   />
   <LedgerCup entry={ROW_IT} palette={PALETTE} drawn={0} id="cup-it" />
@@ -226,6 +232,7 @@ No cup needed: after "sits" this book only ever said "on", and after "on" only "
     label="The magpie: the nine rows this story uses"
     focus="the"
     highlight={1}
+    counters={{ cup: "cup-the", drawn: 1 }}
     id="story-sheet"
   />
   <LedgerCup entry={ROW_THE} palette={PALETTE} drawn={1} id="cup-the" />
@@ -273,6 +280,7 @@ After "fence" this book only ever said ".", and a full stop is a word like any o
     label="The magpie: the nine rows this story uses"
     focus="."
     highlight={1}
+    counters={{ cup: "cup-stop-again", drawn: 1 }}
     id="story-sheet"
   />
   <LedgerCup entry={ROW_STOP} palette={PALETTE} drawn={1} id="cup-stop-again" />
@@ -320,6 +328,7 @@ After "Here" this book only ever said "comes", and after "comes" only "the". Two
     label="The magpie: the nine rows this story uses"
     focus="the"
     highlight={0}
+    counters={{ cup: "cup-the-again", drawn: 0 }}
     id="story-sheet"
   />
   <LedgerCup entry={ROW_THE} palette={PALETTE} drawn={0} id="cup-the-again" />
@@ -344,6 +353,7 @@ Back on the row for "the", the same nineteen counters as before --- and this tim
     label="The magpie: the nine rows this story uses"
     focus="magpie"
     highlight={1}
+    counters={{ cup: "cup-magpie", drawn: 1 }}
     id="story-sheet"
   />
   <LedgerCup entry={ROW_MAGPIE} palette={PALETTE} drawn={1} id="cup-magpie" />

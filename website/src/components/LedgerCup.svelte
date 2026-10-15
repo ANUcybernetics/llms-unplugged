@@ -15,9 +15,9 @@
     /** The room's counter colours (the CLI's --palette). */
     palette?: readonly PaletteEntry[];
     /**
-     * Follower index of the counter drawn: it rises out of the cup with a
-     * gold ring, and the label names its colour and word. Omit for a cup
-     * that is loaded but not yet drawn from.
+     * Follower index of the counter drawn: it leaves the cup for its box on
+     * the row (LedgerRow's `counters.drawn`), and the label names its colour.
+     * Omit for a cup that is loaded but not yet drawn from.
      */
     drawn?: number;
     /** Show the cup empty: the row is there, nothing has gone in yet. */
@@ -48,93 +48,57 @@
   );
   const drawnCounter = $derived(drawnIndex >= 0 ? counters[drawnIndex] : null);
 
-  // The cup's interior, as the drawing below tapers it: half-width TOP_HALF
-  // at TOP_Y, narrowing to BOT_HALF at BOT_Y. Counters are packed bottom-up
-  // inside that taper, inset by PAD on every side, so a full cup still has
-  // paper showing around its counters however many the row holds.
-  const R = 10;
-  const GAP = 3;
-  const PAD = 9;
-  const TOP_Y = 70;
-  const TOP_HALF = 80;
-  const BOT_Y = 228;
-  const BOT_HALF = 54;
+  // The cup seen from above, as the videos draw it (ops/video/STYLE.md): a
+  // rim in line with the counters filled in their colours. Counters are laid
+  // on a sunflower spiral, which fills a circle evenly for any count. Every
+  // counter's place is fixed by the whole row's cup, never by how many are on
+  // screen, so a partly-loaded cup and a drawn-from one hold the rest exactly
+  // where the full cup had them and auto-animate moves only the counters that
+  // arrived or left.
+  //
+  // The counters are HTML, not SVG, and their data-ids (`${id}-c${k}`, k the
+  // counter's place in cupFor) are shared with LedgerRow's `counters`: a
+  // row's lifted counters fly from its box into the cup, and the drawn one
+  // flies out of the cup onto its box.
+  const FACE = 11.5;
+  const COUNTER = 1.05;
+  const REACH = FACE / 2 - 0.45 - COUNTER / 2 - 0.3;
 
-  function halfWidth(y: number): number {
-    const t = (y - TOP_Y) / (BOT_Y - TOP_Y);
-    return TOP_HALF + t * (BOT_HALF - TOP_HALF);
+  function slot(i: number, n: number): { x: number; y: number } {
+    const k = i + 0.5;
+    const r = Math.sqrt(k / Math.max(n, 1)) * REACH;
+    const th = k * 2.399963 + 0.7;
+    return { x: FACE / 2 + r * Math.cos(th), y: FACE / 2 + r * Math.sin(th) };
   }
 
-  // Every counter's place is fixed by the whole row's cup, never by how many
-  // are on screen: a partly-loaded cup and a drawn-from one hold the rest
-  // exactly where the full cup had them, so auto-animate moves only the
-  // counter that left. A row wider than the cup can hold is packed anyway,
-  // in rows that run past the rim rather than out through the sides --- but
-  // no set in the room comes close (the widest is ten counters, three rows).
-  function pack(total: number): { x: number; y: number }[] {
-    const pitch = 2 * R + GAP;
-    const places: { x: number; y: number }[] = [];
-    let y = BOT_Y - PAD - R;
-    while (places.length < total) {
-      // The row is only as wide as its narrowest point, which is its base.
-      const half = halfWidth(y + R) - PAD;
-      const capacity = Math.max(1, Math.floor((2 * half + GAP) / pitch));
-      const n = Math.min(capacity, total - places.length);
-      for (let c = 0; c < n; c++) places.push({ x: 120 + (c - (n - 1) / 2) * pitch, y });
-      y -= pitch;
-    }
-    return places;
-  }
-
-  const places = $derived(pack(counters.length));
   const inCup = $derived(
     loaded === undefined ? counters.length : counters.filter((c) => c.index < loaded).length,
   );
   const pile = $derived(
     counters
-      .map((c, k) => ({ ...c, k, ...places[k] }))
+      .map((c, k) => ({ ...c, k, ...slot(k, counters.length) }))
       .filter((c) => c.k < inCup && c.k !== drawnIndex),
   );
 </script>
 
-<div class="cup" data-id={id}>
-  <svg viewBox="0 0 240 240" role="img" aria-label="a cup of counters for {entry.prefix}">
-    <!-- Matched across slides, so auto-animate treats the counters one by one
-         even when the cup before was empty. -->
-    <path
-      class="paper"
-      data-id="{id}-paper"
-      d="M 38 64 L 66 220 Q 68 231 80 231 L 160 231 Q 172 231 174 220 L 202 64 Z"
-    />
-    <ellipse class="inside" cx="120" cy="64" rx="82" ry="13" />
+<div class="cup" data-id={id} style="--face: {FACE}em; --counter: {COUNTER}em">
+  <div class="face" role="img" aria-label="a cup of counters for {entry.prefix}">
+    <!-- Matched across slides, so the rim holds still while counters move. -->
+    <span class="rim" data-id="{id}-rim"></span>
     {#if !empty}
       {#each pile as c (c.k)}
-        <circle
-          cx={c.x}
-          cy={c.y}
-          r={R}
-          class="counter"
-          style="--c: {c.colour.hex}"
+        <span
+          class="ledger-counter"
+          style="--c: {c.colour.hex}; left: {c.x}em; top: {c.y}em"
           data-id="{id}-c{c.k}"
-        />
+        ></span>
       {/each}
     {/if}
-    {#if drawnCounter}
-      <circle
-        cx="120"
-        cy="16"
-        r={R + 3}
-        class="counter drawn"
-        style="--c: {drawnCounter.colour.hex}"
-        data-id="{id}-c{drawnIndex}"
-      />
-    {/if}
-  </svg>
+  </div>
   <div class="label" data-id="{id}-label">
     {#if drawnCounter}
       <span class="ledger-counter" style="--c: {drawnCounter.colour.hex}"></span>
       <span class="name">{drawnCounter.colour.name}</span>
-      <span class="word">{drawnCounter.follower.text}</span>
     {:else if empty || inCup === 0}
       <span class="hint">empty</span>
     {:else}
@@ -148,37 +112,37 @@
     display: inline-flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.2em;
+    gap: 0.4em;
     font-size: 1.2rem;
   }
 
-  svg {
-    inline-size: 11.5em;
-    block-size: 11.5em;
+  .face {
+    position: relative;
+    inline-size: var(--face);
+    block-size: var(--face);
   }
 
-  .paper {
-    fill: #f4efe4;
-    stroke: #3a3020;
-    stroke-width: 2;
-    stroke-linejoin: round;
+  /* The rim: one line in the slide's ink, and a fainter one inside it. */
+  .rim {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--color-text);
+    border-radius: 50%;
   }
 
-  .inside {
-    fill: #ddd3bd;
-    stroke: #3a3020;
-    stroke-width: 2;
+  .rim::after {
+    content: "";
+    position: absolute;
+    inset: 0.4em;
+    border: 1px solid var(--color-text-muted);
+    border-radius: 50%;
   }
 
-  .counter {
-    fill: var(--c);
-    stroke: rgb(0 0 0 / 55%);
-    stroke-width: 1;
-  }
-
-  .counter.drawn {
-    stroke: var(--anu-gold);
-    stroke-width: 3;
+  .face .ledger-counter {
+    position: absolute;
+    inline-size: var(--counter);
+    block-size: var(--counter);
+    translate: -50% -50%;
   }
 
   .label {
@@ -191,12 +155,6 @@
 
   .name {
     color: var(--color-text-secondary);
-  }
-
-  .word {
-    font-weight: 700;
-    color: var(--anu-gold);
-    font-size: 1.3em;
   }
 
   .hint {
