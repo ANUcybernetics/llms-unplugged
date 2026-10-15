@@ -1,37 +1,37 @@
 WEBVTT
 
-00:00:00.220 --> 00:00:11.250
-Claude or ChatGPT learned everything they know by reading. But what did they actually keep? Let's find out, with a book short enough to read in thirty seconds.
+00:00:00.150 --> 00:00:07.140
+We can train a language model with a pencil and a book. Our book is short enough to read in thirty seconds.
 
-00:00:13.140 --> 00:00:18.850
-First, lowercase everything. And the full stops and exclamation marks count as words too.
+00:00:08.470 --> 00:00:19.960
+Treat capitals and lowercase as the same word, even on printed sheets. "The" and "the" go in the same row. Full stops and exclamation marks count as words too.
 
-00:00:19.580 --> 00:00:35.430
-Now read it two words at a time. The first word gets a row. The second gets a column. Put a tally where they cross. Then slide along by one, and do it again.
+00:00:20.710 --> 00:00:40.800
+Now read it two words at a time. Add each new word to both edges of the grid. The first word gets a row. The second gets a column. Put a tally where they cross. Then slide along by one, and do it again.
 
-00:00:36.660 --> 00:00:44.890
+00:00:41.950 --> 00:00:50.260
 Keep going, and the same pairs come round again. By the end of the book, "the magpie" has five tallies. "The fence" has six.
 
-00:00:45.700 --> 00:00:51.850
-That's all training is. Here's the rest of the book, done at the speed a computer does it.
+00:00:50.910 --> 00:00:58.080
+For our model, training means counting pairs. Here's the rest of the book, counted by a computer.
 
-00:00:53.040 --> 00:01:02.250
-Now look at what it kept. Not the sentences. Not the story. It doesn't know what a magpie is. Just counts of what came next.
+00:00:59.330 --> 00:01:06.520
+We can put the book away now. The grid has counts for each pair of words, and that's what we'll use to write.
 
-00:01:02.880 --> 00:01:13.550
+00:01:07.190 --> 00:01:17.840
 And a tally is just a number. The row for "the" says five, six, four, four. Every box on the grid is a number, and most of them are zero.
 
-00:01:14.840 --> 00:01:21.090
-When people talk about a model's "weights", this is the kind of thing they mean: numbers that came from the text it read.
+00:01:19.190 --> 00:01:27.520
+Large language models also have numbers called weights. Those weights are adjusted during training to improve predictions; they aren't counts of word pairs.
 
-00:01:21.800 --> 00:01:30.750
-Give it a bigger book and nothing changes. This is Frankenstein. Eighty-five thousand words, and seven thousand rows.
+00:01:28.230 --> 00:01:37.140
+We can count a bigger book the same way. This is Frankenstein. Eighty-five thousand words, and seven thousand rows.
 
-00:01:32.020 --> 00:01:39.930
-A real model reads trillions of words, and stores its numbers more cleverly than a grid. But the job it's doing is the one you're about to do.
+00:01:38.510 --> 00:01:46.700
+Large language models train on much more text, learning patterns that help predict what comes next. Our counts let us try prediction by hand.
 
-00:01:40.500 --> 00:01:55.930
+00:01:47.270 --> 00:02:02.740
 A few tips. Start on any page you like. A full stop is followed by whatever comes next, even over the page. Skip the speech marks. And a new word always gets a new row and a new column.
 
-00:01:57.340 --> 00:02:03.430
+00:02:03.830 --> 00:02:10.180
 It works best in pairs: one reads, one tallies, swap halfway. Start counting.

@@ -41,9 +41,9 @@
            a line, continuing onto the lines below) five lines to a sheet, in
            reading order; the CLI prints no such set -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="training-ledger"
-         data-start="0" data-duration="127.06" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="127.06" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="120.06" data-track-index="1"></audio>
+         data-start="0" data-duration="135.49" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="135.49" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="128.49" data-track-index="1"></audio>
     </div>
     <script type="module">
       import * as C from "./kit/motion/canvas.js";
@@ -267,6 +267,14 @@
           tl.to(setA.tiles[i].el, { opacity: 0, y: 14 }, t, { dur: 0.25, ease: "in-quad" });
           tl.fromTo(setB.tiles[i].el, { opacity: 0, y: -14 }, { opacity: 1, y: 0 }, t + 0.1, { dur: 0.3, ease: "out-cubic" });
         });
+        const caseRow = K.tiles(scene, ["the"], { ...TS, x: 420, y: 210 });
+        K.set(caseRow.el, { opacity: 0 });
+        const caseCopies = K.tiles(scene, ["The", "the"], { ...TS, x: 260, y: 130 });
+        K.set(caseCopies.el, { opacity: 0 });
+        K.appear(tl, caseCopies.el, T.word(1, "The", 2), { y: 12 });
+        K.appear(tl, caseRow.el, T.word(1, "same", 2), { y: 12 });
+        caseCopies.tiles.forEach((tile) => tl.to(tile.el, { x: 160, y: 80, opacity: 0 }, T.word(1, "row"), { dur: 0.6, ease: "in-out-cubic" }));
+        K.vanish(tl, caseRow.el, T.word(1, "full") - 0.4, { dur: 0.3 });
         const tSplit = T.word(1, "full");
         tl.set(setB.tiles.map((t) => t.el), { opacity: 0 }, tSplit);
         fromA.forEach((a, j) => {
@@ -366,17 +374,17 @@
         tl.to(br.el, { opacity: 0 }, res.end + 0.3, { dur: 0.4 });
 
         // ==== line 5: what it kept
-        const tSent = T.word(5, "sentences");
+        const tSent = T.word(5, "book");
         strip.tiles.forEach((tile, i) => {
           const sx = stripX + tile.x;
           if (sx < -200 || sx > 2100) { tl.set(tile.el, { opacity: 0 }, tSent); return; }
           tl.to(tile.el, { opacity: 0, y: 40 }, tSent + (sx / 1920) * 0.4, { dur: 0.35, ease: "in-cubic" });
         });
-        const tStory = T.word(5, "story");
+        const tStory = T.word(5, "away");
         tl.to(leftPage, { scaleX: 0 }, tStory, { dur: 0.3, ease: "in-quad" });
         tl.set(bookCover, { opacity: 1 }, tStory + 0.3);
         tl.to(bookCover, { scaleX: 1 }, tStory + 0.3, { dur: 0.3, ease: "out-quad" });
-        tl.to(bookL, { x: 2300 }, T.word(5, "magpie") - 0.2, { dur: 0.8, ease: "in-cubic" });
+        tl.to(bookL, { x: 2300 }, T.word(5, "now") + 0.5 - 0.2, { dur: 0.8, ease: "in-cubic" });
         const MOS_W = 3 * SW + 2 * GAP, MOS_H = 2 * SH + GAP;
         const FULL = { x: 960 - (MOS_W * 0.365) / 2, y: 445 - (MOS_H * 0.365) / 2, s: 0.365 };
         camTo(FULL, T.word(5, "counts") - 0.2, 0.9);
@@ -429,11 +437,11 @@
         });
         const FC = { x: 1460, y: A.y + 110 };
         tl.to([fCover, ...edges], { x: (i) => FC.x + (i ? (4 - i) * 7 : 0) }, tBig + 0.2, { dur: 0.9, ease: "out-cubic" });
-        K.glint(tl, fCover.border, { phase: 0.4, from: T.word(8, "rows") + 0.4, to: T.word(9, "But") });
+        K.glint(tl, fCover.border, { phase: 0.4, from: T.word(8, "rows") + 0.4, to: T.word(9, "Our") });
         const tFill = T.word(8, "Frankenstein") - 0.1, tFull = T.word(8, "rows") + 0.1;
         const mFill = (t) => Math.exp(K.lerp(Math.log(1), Math.log(Math.sqrt(FL.nSheets)), C.phase(t, tFill, tFull - tFill, "in-out-quad")));
         tl.to(ledL, { opacity: 0 }, tFill + 0.1, { dur: 0.6 });
-        const tFold = T.word(9, "But");
+        const tFold = T.word(9, "Our");
         const field = C.canvas(tl, scene, (ctx, t) => {
           if (t < tBig || t > tFold + 1.2) return;
           const m = mFill(t);
@@ -452,8 +460,8 @@
         tl.to(field.el, { x: FC.x - REG.x * fs, y: FC.y - REG.y * fs, scale: fs, opacity: 0 }, tFold, { dur: 0.9, ease: "in-out-cubic" });
         const coverRing = frame(scene, { x: FC.x, y: FC.y, w: 400, h: 540 }, 14);
         tl.to(coverRing.el, { opacity: 1 }, tFold + 0.7, { dur: 0.3 });
-        tl.to(coverRing.el, { opacity: 0 }, T.word(9, "do") + 0.2, { dur: 0.3 });
-        tl.to([fCover, ...edges], { x: "+=700" }, T.word(9, "do") + 0.3, { dur: 0.6, ease: "in-cubic" });
+        tl.to(coverRing.el, { opacity: 0 }, T.word(9, "hand") + 0.2, { dur: 0.3 });
+        tl.to([fCover, ...edges], { x: "+=700" }, T.word(9, "hand") + 0.3, { dur: 0.6, ease: "in-cubic" });
 
         // ==== line 10: three things catch people out, on a blank sheet
         const tipEntries = [

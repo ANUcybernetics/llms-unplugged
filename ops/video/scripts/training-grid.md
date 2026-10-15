@@ -1,7 +1,7 @@
 # Training: grid
 
-**Key idea:** a language model learns by counting which word follows which, and
-the counts are all it keeps.
+**Key idea:** our bigram model learns by counting pairs of words; large language
+models learn their prediction weights differently.
 
 **Plays:** My First Language Model, start of the Training section.
 
@@ -14,27 +14,25 @@ participant's grid does.
 
 ## Beat sheet
 
-1. hook: Claude or ChatGPT learned from reading. What did it actually keep? Find
-   out with a book short enough to read in thirty seconds
-2. the text: lowercase everything; punctuation marks are words too
+1. hook: train a small language model with a pencil and a short book
+2. the text: capitals and lowercase count as the same word; punctuation counts
+   too
 3. two words at a time: the first word's row, the second word's column, a tally
    where they cross; slide along one
 4. the same pair comes round again: _the magpie_ five times, _the fence_ six.
    Common pairs collect tallies
 5. **beyond:** the rest of the book at machine speed; the whole 24-word grid
    fills in about two seconds. Same action, just faster
-6. what didn't get kept: no sentences, no story, no magpie. Just what came next
-7. the tallies are numbers, and numbers like these are what "model weights"
-   means
+6. put the book away; the counts are enough to generate with this model
+7. the tallies are numbers; neural model weights are learned differently
 8. **beyond:** a bigger book at the same speed: _Frankenstein_, seven thousand
-   rows. A real model reads trillions of words, but it's the same job
+   rows. Contrast counting pairs with learning to predict from examples
 9. ending: the tips, then go
 
 ## Script
 
-**USHINI (TC):** Claude or ChatGPT learned everything they know by reading. But
-what did they actually keep? Let's find out, with a book short enough to read in
-thirty seconds.
+**USHINI (TC):** We can train a language model with a pencil and a book. Our
+book is short enough to read in thirty seconds.
 
 _Visual: the desk, top-down, empty except for a picture book. Its cover reads
 The magpie. It opens and its first line lifts off the page as a row of word
@@ -43,18 +41,21 @@ tiles: "The magpie is back. It sits on the fence."_
 _Reads:_ 1. this book is what the model will learn from; 2. its text is now a
 row of words.
 
-**BEN (VO):** First, lowercase everything. And the full stops and exclamation
+**BEN (VO):** Treat capitals and lowercase as the same word, even on printed
+sheets. "The" and "the" go in the same row. [beat] Full stops and exclamation
 marks count as words too.
 
-_Visual: the capitals drop to lowercase one tile at a time; the full stops split
-off into tiles of their own, drawn as the kit's filled symbol tiles._
+_Visual: the capitalised and lowercase forms of "the" meet above one row
+labelled "the"; keep the printed page unchanged. Then the full stops split off
+into tiles of their own, drawn as the kit's filled symbol tiles._
 
-_Reads:_ 1. everything is lowercase; 2. full stops are words, with their own
-tiles.
+_Reads:_ 1. capitals and lowercase use the same row, including printed words; 2.
+full stops have their own tiles.
 
-**USHINI (VO):** Now read it two words at a time. The first word gets a row.
-[beat] The second gets a column. [beat] Put a tally where they cross. [beat]
-Then slide along by one, and do it again.
+**USHINI (VO):** Now read it two words at a time. Add each new word to both
+edges of the grid. [beat] The first word gets a row. [beat] The second gets a
+column. [beat] Put a tally where they cross. [beat] Then slide along by one, and
+do it again.
 
 _Visual: a gold bracket over "the magpie". Beside the tiles a blank grid sheet:
 "the" writes onto the first row header and the first column header at once, then
@@ -66,9 +67,6 @@ _Reads:_ 1. the first word of the pair picks the row; 2. the second word picks
 the column; 3. the tally goes where they cross; 4. slide along one, and each
 word starts the next pair.
 
-_Reads note:_ a new word joining both edges at once is a fourth thing on top of
-row, column and tally; the first pair carries it, and the ending says it again.
-
 **BEN (VO):** Keep going, and the same pairs come round again. By the end of the
 book, "the magpie" has five tallies. "The fence" has six.
 
@@ -79,8 +77,8 @@ fence 6, postie 4, dog 4._
 _Reads:_ 1. a repeated pair marks the same box again; 2. common pairs collect
 tallies.
 
-**USHINI (VO):** That's all training is. Here's the rest of the book, done at
-the speed a computer does it.
+**USHINI (VO):** For our model, training means counting pairs. Here's the rest
+of the book, counted by a computer.
 
 _Visual: the bracket accelerates until it's a blur along the tiles; pairs fly
 into the grid faster than the eye can follow, rows and columns appearing as new
@@ -91,11 +89,11 @@ _Beyond:_ the slides count five pairs and then show the finished grid, so the
 jump from "one pair" to "the whole model" happens off screen. Running every pair
 of a real book shows there's no other step in between.
 
-_Reads:_ 1. the whole book is counted the same way; 2. a computer does nothing
-different, only faster; 3. most boxes stay empty.
+_Reads:_ 1. the whole book is counted the same way; 2. a computer can run this
+counting algorithm faster; 3. most boxes stay empty.
 
-**BEN:** Now look at what it kept. Not the sentences. Not the story. It doesn't
-know what a magpie is. Just counts of what came next.
+**BEN:** We can put the book away now. [beat] The grid has counts for each pair
+of words, and that's what we'll use to write.
 
 _Visual: the book closes and slides off the desk. The finished grid alone, full
 frame._
@@ -112,15 +110,17 @@ grid, every box becoming its count, the empty ones a faint 0._
 _Reads:_ 1. each box's tallies are a count; 2. the whole grid is a table of
 numbers; 3. most of them are zero.
 
-**BEN (VO):** When people talk about a model's "weights", this is the kind of
-thing they mean: numbers that came from the text it read.
+**BEN (VO):** Large language models also have numbers called weights. Those
+weights are adjusted during training to improve predictions; they aren't counts
+of word pairs.
 
 _Visual: hold on the table of numbers. The nonzero numbers lift very slightly
 brighter than the zeros._
 
-_Reads:_ 1. that's what model weights are.
+_Reads:_ 1. these numbers are counts; 2. neural model weights are learned by
+adjusting predictions, as the narration explains.
 
-**USHINI (VO):** Give it a bigger book and nothing changes. This is
+**USHINI (VO):** We can count a bigger book the same way. This is
 _Frankenstein_. Eighty-five thousand words, and seven thousand rows.
 
 _Visual: the table shrinks to a corner of a much bigger one, filling at the same
@@ -134,8 +134,8 @@ the viewer sees rather than a gesture.
 _Reads:_ 1. a bigger book makes a bigger table the same way; 2. real books make
 tables far too big to read.
 
-**BEN:** A real model reads trillions of words, and stores its numbers more
-cleverly than a grid. But the job it's doing is the one you're about to do.
+**BEN:** Large language models train on much more text, learning patterns that
+help predict what comes next. Our counts let us try prediction by hand.
 
 **USHINI (VO):** A few tips. Start on any page you like. A full stop is followed
 by whatever comes next, even over the page. Skip the speech marks. And a new

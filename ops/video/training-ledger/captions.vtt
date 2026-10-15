@@ -3,35 +3,35 @@ WEBVTT
 00:00:00.150 --> 00:00:10.180
 Every mark on these sheets was made by somebody reading. So what did they keep? Let's find out, with a book short enough to read in thirty seconds.
 
-00:00:12.150 --> 00:00:17.800
-First, lowercase everything. And the full stops and exclamation marks count as words too.
+00:00:11.490 --> 00:00:22.980
+Treat capitals and lowercase as the same word, even on printed sheets. "The" and "the" go in the same row. Full stops and exclamation marks count as words too.
 
-00:00:18.550 --> 00:00:31.820
+00:00:23.730 --> 00:00:38.800
 Now read it two words at a time. Find the row for the first word. The second word goes in a box on that row, with a mark beside it. Then slide along by one, and do it again.
 
-00:00:32.870 --> 00:00:44.180
+00:00:39.950 --> 00:00:51.180
 A new word after the same word takes the next empty box. And when a pair comes round again, it gets another mark. By the end, "the fence" has six marks, and "the magpie" five.
 
-00:00:45.130 --> 00:00:51.320
-That's all training is. Here's the rest of the book, done at the speed a computer does it.
+00:00:52.130 --> 00:00:59.180
+For our model, training means counting pairs. Here's the rest of the book, counted by a computer.
 
-00:00:52.450 --> 00:01:01.700
-Now look at what it kept. Not the sentences. Not the story. It doesn't know what a magpie is. Just counts of what came next.
+00:01:00.490 --> 00:01:07.680
+We can put the book away now. The sheets have counts for each pair of words, and that's what we'll use to write.
 
-00:01:02.290 --> 00:01:09.560
+00:01:08.270 --> 00:01:15.520
 And a row of marks is just a row of numbers. The row for "the" says five, six, four, four.
 
-00:01:10.850 --> 00:01:17.160
-When people talk about a model's "weights", this is the kind of thing they mean: numbers that came from the text it read.
+00:01:16.910 --> 00:01:25.260
+Large language models also have numbers called weights. Those weights are adjusted during training to improve predictions; they aren't counts of word pairs.
 
-00:01:17.830 --> 00:01:26.800
-Give it a bigger book and nothing changes. This is Frankenstein. Eighty-five thousand words, and seven thousand rows.
+00:01:26.030 --> 00:01:34.860
+We can count a bigger book the same way. This is Frankenstein. Eighty-five thousand words, and seven thousand rows.
 
-00:01:28.070 --> 00:01:36.020
-A real model reads trillions of words, and stores its numbers more cleverly than a ledger. But the job it's doing is the one you're about to do.
+00:01:36.210 --> 00:01:44.420
+Large language models train on much more text, learning patterns that help predict what comes next. Our counts let us try prediction by hand.
 
-00:01:36.730 --> 00:01:53.420
+00:01:45.110 --> 00:02:01.840
 Three things catch people out. A full stop is a word, and its row says how sentences start. A new word goes in the next empty box, never skip one. And say a new word out loud when you start its row, so nobody starts it twice.
 
-00:01:54.950 --> 00:01:58.680
+00:02:03.430 --> 00:02:07.120
 Reader, grab the text. Two words at a time.

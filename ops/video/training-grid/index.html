@@ -23,9 +23,9 @@
          real counts filling a table of 7,023 rows (parts/frankenstein.js).
          Every beat lands on a word of the voice track (timing.json). -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="training-grid"
-         data-start="0" data-duration="131.91" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="131.91" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="124.91" data-track-index="1"></audio>
+         data-start="0" data-duration="138.72" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="138.72" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="131.72" data-track-index="1"></audio>
     </div>
     <script type="module">
       import * as C from "./kit/motion/canvas.js";
@@ -116,6 +116,7 @@
         rotateCols(grid);
         K.set(grid.el, { opacity: 0 });
         grid.el.setAttribute("data-layout-allow-overflow", "true"); // the camera pushes past the frame
+        grid.el.setAttribute("data-layout-allow-occlusion", "true"); // and the rows it pushes past go under the captions
         K.set([...grid.rowHead, ...grid.colHead], { opacity: 0 });
         // the kit's tally groups sit from the cell's left; centre the ones
         // with more than five strokes so the second group stays in its box
@@ -228,6 +229,14 @@
           tl.to(setA.tiles[i].el, { opacity: 0, y: 14 }, t, { dur: 0.25, ease: "in-quad" });
           tl.fromTo(setB.tiles[i].el, { opacity: 0, y: -14 }, { opacity: 1, y: 0 }, t + 0.1, { dur: 0.3, ease: "out-cubic" });
         });
+        const caseRow = K.tiles(scene, ["the"], { ...TS, x: 420, y: 210 });
+        K.set(caseRow.el, { opacity: 0 });
+        const caseCopies = K.tiles(scene, ["The", "the"], { ...TS, x: 260, y: 130 });
+        K.set(caseCopies.el, { opacity: 0 });
+        K.appear(tl, caseCopies.el, T.word(1, "The", 2), { y: 12 });
+        K.appear(tl, caseRow.el, T.word(1, "same", 2), { y: 12 });
+        caseCopies.tiles.forEach((tile) => tl.to(tile.el, { x: 160, y: 80, opacity: 0 }, T.word(1, "row"), { dur: 0.6, ease: "in-out-cubic" }));
+        K.vanish(tl, caseRow.el, T.word(1, "full") - 0.4, { dur: 0.3 });
         const tSplit = T.word(1, "full");
         tl.set(setB.tiles.map((t) => t.el), { opacity: 0 }, tSplit);
         fromA.forEach((a, j) => {
@@ -246,10 +255,10 @@
         tl.to(br.el, { opacity: 1 }, tTwo, { dur: 0.3 });
         tl.to([strip.tiles[0].el, strip.tiles[1].el], { y: -10 }, tTwo + 0.1, { dur: 0.25, ease: "out-cubic", yoyo: true });
         // the first word: its row (and, being new, its column too)
-        joinEdges(0, T.word(2, "first") - 0.1);
+        joinEdges(0, T.word(2, "Add") + 0.2);
         tl.to(grid.rowBands[0], { opacity: 1 }, T.word(2, "row"), { dur: 0.3 });
         // the second word: its column (and its row)
-        joinEdges(1, T.word(2, "second") - 0.1);
+        joinEdges(1, T.word(2, "both") + 0.2);
         tl.to(grid.colBands[1], { opacity: 1 }, T.word(2, "column"), { dur: 0.3 });
         // the tally where they cross
         const cell01 = grid.cells[0][1];
@@ -333,18 +342,18 @@
         // ==== line 5: what it kept: not the sentences, not the story
         const t5 = T.start(5);
         const stripEls = strip.tiles.map((t) => t.el);
-        const tSent = T.word(5, "sentences");
+        const tSent = T.word(5, "book");
         stripEls.forEach((e, i) => {
           const sx = stripX + strip.tiles[i].x;
           if (sx < -200 || sx > 2100) { tl.set(e, { opacity: 0 }, tSent); return; }
           tl.to(e, { opacity: 0, y: 40 }, tSent + (sx / 1920) * 0.4, { dur: 0.35, ease: "in-cubic" });
         });
         // the book closes and slides off the desk
-        const tStory = T.word(5, "story");
+        const tStory = T.word(5, "away");
         tl.to(leftPage, { scaleX: 0 }, tStory, { dur: 0.3, ease: "in-quad" });
         tl.set(bookCover, { opacity: 1 }, tStory + 0.3);
         tl.to(bookCover, { scaleX: 1 }, tStory + 0.3, { dur: 0.3, ease: "out-quad" });
-        tl.to(bookL, { x: 2300 }, T.word(5, "magpie") - 0.2, { dur: 0.8, ease: "in-cubic" });
+        tl.to(bookL, { x: 2300 }, T.word(5, "now") + 0.5 - 0.2, { dur: 0.8, ease: "in-cubic" });
         // the grid alone, full frame
         const FULL = { x: 960 - (GW * 0.37) / 2, y: A.y, s: 0.37 };
         camTo(FULL, T.word(5, "counts") - 0.2, 0.9);
@@ -425,13 +434,13 @@
         fCover.setAttribute("data-layout-allow-overflow", "true");
         const FC = { x: 1300, y: A.y + 110 };
         tl.to([fCover, ...edges], { x: (i) => FC.x + (i ? (4 - i) * 7 : 0) }, tBig + 0.2, { dur: 0.9, ease: "out-cubic" });
-        K.glint(tl, fCover.border, { phase: 0.4, from: T.word(8, "rows") + 0.4, to: T.word(9, "But") });
+        K.glint(tl, fCover.border, { phase: 0.4, from: T.word(8, "rows") + 0.4, to: T.word(9, "Our") });
         // the fill: the view grows log-evenly with the words met, the text read
         // is however far the book has to go to meet them
         const tFill = T.word(8, "Frankenstein") - 0.1, tFull = T.word(8, "rows") + 0.1;
         const Vfill = (t) => Math.exp(K.lerp(Math.log(12), Math.log(FM.n), C.phase(t, tFill, tFull - tFill, "in-out-quad")));
         tl.to(grid.el, { opacity: 0 }, tFill + 0.1, { dur: 0.6 });
-        const tBackIn = T.word(9, "But") + 0.3;
+        const tBackIn = T.word(9, "Our") + 0.3;
         const field = C.canvas(tl, scene, (ctx, t) => {
           if (t < tBig || t > tBackIn + 1) return;
           const v = Vfill(t);
@@ -448,12 +457,12 @@
         scene.append(grid.el);
 
         // ==== line 9: a real model reads trillions; the table folds into the book
-        const tFold = T.word(9, "But");
+        const tFold = T.word(9, "Our");
         const fs = 400 / SQ.side;
         tl.to(field.el, { x: FC.x - SQ.x * fs, y: FC.y - SQ.y * fs, scale: fs, opacity: 0 }, tFold, { dur: 0.9, ease: "in-out-cubic" });
         const coverRing = frame(scene, { x: FC.x, y: FC.y, w: 400, h: 540 }, 14);
         tl.to(coverRing.el, { opacity: 1 }, tFold + 0.7, { dur: 0.3 });
-        tl.to(coverRing.el, { opacity: 0 }, T.word(9, "do") + 0.2, { dur: 0.3 });
+        tl.to(coverRing.el, { opacity: 0 }, T.word(9, "hand") + 0.2, { dur: 0.3 });
 
         // ==== line 10: tips, on a page of Frankenstein and a blank grid
         const t10 = T.start(10);

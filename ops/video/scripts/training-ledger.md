@@ -1,7 +1,7 @@
 # Training: ledger
 
-**Key idea:** a language model learns by counting which word follows which, and
-the counts are all it keeps.
+**Key idea:** our bigram model learns by counting pairs of words; large language
+models learn their prediction weights differently.
 
 **Plays:** How AI writes stories (ledger), start of the "Where did the marks
 come from?" section. The lesson usually generates from finished sheets first, so
@@ -18,17 +18,18 @@ boxes red, blue, green, yellow in the order each row meets its followers).
 
 1. hook: every mark on a ledger sheet was made by somebody reading. Find out
    what they kept, with a book short enough to read in thirty seconds
-2. the text: lowercase everything; punctuation marks are words too
+2. the text: capitals and lowercase count as the same word; punctuation counts
+   too
 3. two words at a time: find the first word's row, the second word goes in its
    box, add a mark; slide along one
 4. a new word after the same word takes the next empty box; the same pair comes
    round again and collects marks (_the fence_ six, _the magpie_ five)
 5. **beyond:** the rest of the book at machine speed; all five sheets fill in
    about two seconds. Same action, just faster
-6. what didn't get kept: no sentences, no story, no magpie. Just what came next
-7. the marks are numbers, and numbers like these are what "model weights" means
+6. put the book away; the counts are enough to generate with this model
+7. the marks are numbers; neural model weights are learned differently
 8. **beyond:** a bigger book at the same speed: _Frankenstein_, seven thousand
-   rows. A real model reads trillions of words, but it's the same job
+   rows. Contrast counting pairs with learning to predict from examples
 9. ending: the three things that catch people out, then go
 
 ## Script
@@ -45,19 +46,16 @@ is back. It sits on the fence."_
 _Reads:_ 1. the sheets' marks came from a book; 2. this book is what we'll
 count; 3. its text is now a row of words.
 
-**BEN (VO):** First, lowercase everything. And the full stops and exclamation
+**BEN (VO):** Treat capitals and lowercase as the same word, even on printed
+sheets. "The" and "the" go in the same row. [beat] Full stops and exclamation
 marks count as words too.
 
-_Visual: the capitals drop to lowercase one tile at a time; the full stops split
-off into tiles of their own, drawn as the kit's filled symbol tiles._
+_Visual: the capitalised and lowercase forms of "the" meet above one row
+labelled "the"; keep the printed page unchanged. Then the full stops split off
+into tiles of their own, drawn as the kit's filled symbol tiles._
 
-_Reads:_ 1. everything is lowercase; 2. full stops are words, with their own
-tiles.
-
-_Reads note:_ the printed magpie ledger keeps "Here", "Down" and "Swoop"
-capitalised (the book only ever writes them that way); either the tiles keep
-those three capitals so the sheet on screen matches the printed one, or the line
-needs a qualifier.
+_Reads:_ 1. capitals and lowercase use the same row, including printed words; 2.
+full stops have their own tiles.
 
 **USHINI (VO):** Now read it two words at a time. Find the row for the first
 word. [beat] The second word goes in a box on that row, with a mark beside it.
@@ -84,8 +82,8 @@ that box. The row ends: magpie 5, fence 6, postie 4, dog 4, red to yellow._
 _Reads:_ 1. a new follower takes the next empty box; 2. a repeated pair marks
 the same box again; 3. common pairs collect marks.
 
-**USHINI (VO):** That's all training is. Here's the rest of the book, done at
-the speed a computer does it.
+**USHINI (VO):** For our model, training means counting pairs. Here's the rest
+of the book, counted by a computer.
 
 _Visual: the bracket accelerates until it's a blur along the tiles; pairs fly
 into the sheets faster than the eye can follow, new rows starting as new words
@@ -97,11 +95,11 @@ _Beyond:_ the slides count four pairs and then show the finished sheets, so the
 jump from "one pair" to "the whole model" happens off screen. Running every pair
 of a real book shows there's no other step in between.
 
-_Reads:_ 1. the whole book is counted the same way; 2. a computer does nothing
-different, only faster.
+_Reads:_ 1. the whole book is counted the same way; 2. a computer can run this
+counting algorithm faster.
 
-**BEN:** Now look at what it kept. Not the sentences. Not the story. It doesn't
-know what a magpie is. Just counts of what came next.
+**BEN:** We can put the book away now. [beat] The sheets have counts for each
+pair of words, and that's what we'll use to write.
 
 _Visual: the book closes and slides off the desk. The finished sheets alone,
 fanned, full frame._
@@ -117,14 +115,16 @@ ripples down every row of every sheet._
 
 _Reads:_ 1. each box's marks are a count; 2. every sheet is a table of numbers.
 
-**BEN (VO):** When people talk about a model's "weights", this is the kind of
-thing they mean: numbers that came from the text it read.
+**BEN (VO):** Large language models also have numbers called weights. Those
+weights are adjusted during training to improve predictions; they aren't counts
+of word pairs.
 
 _Visual: hold on the sheets of numbers._
 
-_Reads:_ 1. that's what model weights are.
+_Reads:_ 1. these numbers are counts; 2. neural model weights are learned by
+adjusting predictions, as the narration explains.
 
-**USHINI (VO):** Give it a bigger book and nothing changes. This is
+**USHINI (VO):** We can count a bigger book the same way. This is
 _Frankenstein_. Eighty-five thousand words, and seven thousand rows.
 
 _Visual: the five sheets shrink to a corner of a stack of ledger rows that keeps
@@ -139,8 +139,8 @@ than a gesture.
 _Reads:_ 1. a bigger book makes more rows the same way; 2. real books make far
 more rows than anyone could read.
 
-**BEN:** A real model reads trillions of words, and stores its numbers more
-cleverly than a ledger. But the job it's doing is the one you're about to do.
+**BEN:** Large language models train on much more text, learning patterns that
+help predict what comes next. Our counts let us try prediction by hand.
 
 **USHINI (VO):** Three things catch people out. A full stop is a word, and its
 row says how sentences start. A new word goes in the next empty box, never skip
