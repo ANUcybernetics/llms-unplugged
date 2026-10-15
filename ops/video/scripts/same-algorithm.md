@@ -1,8 +1,8 @@
 # Same algorithm
 
 **Key idea:** grid tallies, ledger marks, counters in a cup, cutout slips and
-plain numbers are one model in different bodies; whatever you draw with, it's
-the same draw.
+plain numbers can represent the same counts. Dice approximate probabilities when
+the counts do not divide evenly onto their faces.
 
 **Plays:** standalone, for teachers choosing a kit and for rooms that have used
 more than one; in class after a second format, or when two groups on different
@@ -26,12 +26,11 @@ The walk is the how-it-works videos' ". it sits on the dog .".
    time
 3. the numbers are chances: _fence_ six in nineteen, about a third
 4. **beyond:** one walk that switches forms at every step: the cup for the full
-   stop, the die for _it_, the slips for _the_. The sentence doesn't notice
-5. cup, die or slips, it's the same draw. More counts, more chances
+   stop, the die for _it_, the slips for _the_ and _dog_
+5. the same counts guide each draw; a die sometimes needs rounding
 6. so pick the kit that suits the room; two rooms on different kits built the
    same kind of thing, and can compare stories
-7. close: Claude or ChatGPT keep their numbers in yet another body; the idea is
-   the same
+7. close: try another kit with the same book and compare the results
 
 ## Script
 
@@ -87,8 +86,8 @@ nineteen; "fence" takes about a third of it, "dog" about a fifth._
 _Reads:_ 1. a count out of the row's total is a chance; 2. bigger count, bigger
 share.
 
-**USHINI (VO):** So watch one sentence switch kits at every word. Start after a
-full stop, with a cup: seventeen counters. [beat] Draw red: "it".
+**USHINI (VO):** Watch one sentence use all three kits. Start after a full stop,
+with a cup: seventeen counters. [beat] Draw red: "it".
 
 _Visual: the row for full stop drops seventeen counters into a cup; a red one
 slides out and "it" writes onto a strip of paper at the bottom of the desk._
@@ -109,17 +108,20 @@ _Reads:_ 1. each mark becomes a face of the die; 2. the roll lands in a band; 3.
 a row with one word needs no draw.
 
 **USHINI (VO):** The row for "the", as nineteen slips. [beat] Shuffle, pull one
-out: "dog". [beat] And a full stop to finish.
+out: "dog". [beat] Put it back. Now the four "dog" slips: two say "runs", two
+have a full stop. [beat] Shuffle and draw: full stop.
 
 _Visual: the row for "the" becomes nineteen paper slips in four piles; the piles
-shuffle together, one slip slides out and turns over: "the dog". Then the full
-stop tile writes on: "it sits on the dog ."_
+shuffle together, one slip slides out and turns over: "the dog". After the word
+is written, the slip returns. The four "dog" slips appear, shuffle, and a "dog
+." slip is drawn. Its full stop writes on: "it sits on the dog ."_
 
 _Reads:_ 1. slips work the same way as counters and faces; 2. the slip drawn
 names the next word.
 
-**BEN:** Cup, die or slips, it's the same draw. More counts, more chances. The
-sentence can't tell which one you used.
+**BEN:** Cup, die or slips, we use the same counts to choose the next word. Ten
+die faces sometimes need rounding; counters and reusable slips can match the
+counts exactly.
 
 _Visual: the three forms side by side for a beat, the cup, the die strip, the
 slip piles, each with its most likely word lit; the finished strip below them._
@@ -128,8 +130,8 @@ _Beyond:_ a room only ever draws one way. Switching forms mid-sentence shows the
 draw is the idea and the kit is incidental, which the slides can't show without
 three decks at once.
 
-_Reads:_ 1. all three are the same draw; 2. the sentence doesn't depend on the
-kit.
+_Reads:_ 1. all three use the same counts; 2. a die sometimes approximates the
+probabilities; 3. counters and reusable slips preserve them exactly.
 
 **USHINI:** So pick the kit that suits your room. A grid for pairs with a die. A
 ledger and a cup for a group sharing the jobs. Slips when you'd rather cut than
@@ -145,6 +147,5 @@ _Reads:_ 1. the kit is a choice about the room; 2. the models are the same kind.
 _Reads note:_ the kit-per-room line is the only teacher-facing advice in the
 series and could date if the lessons change; cut it if this plays in class.
 
-**BEN (TC):** And Claude or ChatGPT? Their numbers live in yet another body,
-billions of them, on a computer. But a model is its numbers, whatever holds
-them.
+**BEN (TC):** You can try another kit with the same book. Keep the counts and
+change how you draw from them, then compare what you write.

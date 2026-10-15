@@ -26,9 +26,9 @@
          booklet (parts/build-same-booklet.py). Every beat lands on a word of
          the voice track. -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="same-algorithm"
-         data-start="0" data-duration="128.73" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="128.73" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="121.73" data-track-index="1"></audio>
+         data-start="0" data-duration="135.84" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="135.84" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="128.84" data-track-index="1"></audio>
     </div>
     <script type="module">
       import { row, morph, jump, slip, slipsFromMarks } from "./parts/morph.js";
@@ -139,7 +139,7 @@
         for (let i = 0; i < 30; i++) {
           const o = slip(qCut, MG.words[i], MG.words[i + 1], { size: 24 });
           const col = i % 5, rw = Math.floor(i / 5);
-          const cx = 90 + col * 175 + (K.jitter(i * 3) - 0.5) * 40, cy = 34 + rw * 58 + (K.jitter(i * 5 + 1) - 0.5) * 12;
+          const cx = 90 + col * 182 + (K.jitter(i * 3) - 0.5) * 24, cy = 34 + rw * 58 + (K.jitter(i * 5 + 1) - 0.5) * 12;
           K.set(o.el, { x: cx - o.w / 2, y: cy - o.h / 2, rotation: (K.jitter(i * 7 + 2) - 0.5) * 14, opacity: 0 });
           o.ring = K.el("div", { style: { position: "absolute", inset: "-5px", border: "4px solid var(--gold)" } }, o.el);
           K.set(o.ring, { opacity: 0 });
@@ -460,8 +460,24 @@
         tl.to(pulled.el, { scaleX: 1.3 }, tFlip + 0.14, { dur: 0.14, ease: "out-quad" });
         K.write(tl, strip.words[5], T.word(6, "dog"));
         tl.to(all6.filter((o) => o !== pulled).map((o) => o.el), { opacity: 0.35 }, T.word(6, "dog"), { dur: 0.3 });
-        // "a full stop to finish"
-        K.write(tl, strip.words[6], T.word(6, "full"));
+        // Return the slip, then draw the punctuation from the dog's own pool.
+        const tReturn = T.word(6, "back");
+        tl.to(pulled.el, { x: PILE.x - pulled.w / 2, y: PILE.y - pulled.h / 2, scale: 1 }, tReturn, { dur: 0.45 });
+        K.vanish(tl, R6.el, T.word(6, "Now") - 0.1, { dur: 0.3 });
+        const dogSlips = row(scene, "dog", MG.rows.dog, { x: 450, y: 90, slipSize: 52 });
+        jump(tl, dogSlips, "slips", 1);
+        K.set(dogSlips.svg, { opacity: 0 });
+        tl.to(dogSlips.el, { opacity: 1 }, T.word(6, "four"), { dur: 0.4 });
+        const dogPool = dogSlips.slips.flat();
+        dogPool.forEach((o, i) => {
+          const t = T.word(6, "Shuffle", 2);
+          tl.to(o.el, { x: 400 + i * 12, y: 300 + i * 6, rotation: (i - 1.5) * 8 }, t, { dur: 0.45 });
+        });
+        const dotSlip = dogSlips.slips[0][0];
+        K.raise(tl, dotSlip.el, T.word(6, "draw"));
+        tl.to(dotSlip.el, { x: 850, y: 350, rotation: 0 }, T.word(6, "draw"), { dur: 0.5 });
+        K.write(tl, strip.words[6], T.word(6, "full", 2));
+        K.vanish(tl, dogSlips.el, T.end(6) + 0.3, { dur: 0.4 });
         K.vanish(tl, R6.el, T.end(6) + 0.3, { dur: 0.4 });
 
         // ============================================================ line 7
@@ -503,7 +519,7 @@
         arrive(cup7.el, T.word(7, "Cup") - 0.1);
         arrive(strip7.el, T.word(7, "die") - 0.1);
         K.land(tl, die7, 1, T.word(7, "die") + 0.1);
-        K.glint(tl, cup7.rim, { lap: 1.8, from: T.word(7, "die") + 0.3, to: T.word(7, "More") });
+        K.glint(tl, cup7.rim, { lap: 1.8, from: T.word(7, "die") + 0.3, to: T.word(7, "Ten") });
         arrive(R7.el, T.word(7, "slips") - 0.1);
         // "the same draw": each form's counts as shares, the same kind of bar
         const tSame7 = T.word(7, "same");
@@ -520,11 +536,11 @@
         tl.to(R7.slips.filter((_, i) => i !== 1).flat().map((o) => o.el), { opacity: 0.35 }, tMore + 0.3, { dur: 0.3 });
         tl.to(R7.slips[1].map((o) => o.el), { y: "-=16" }, tMore + 0.3, { dur: 0.3, ease: "out-cubic" });
         // "The sentence can't tell": the forms step back, the strip steps up
-        const tSent = T.word(7, "sentence");
+        const tSent = T.word(7, "rounding");
         const forms7 = [cup7.el, strip7.el, die7.el, R7.el, bar7a.el, bar7c.el];
         tl.to(forms7, { opacity: 0.3 }, tSent, { dur: 0.4 });
         tl.to(strip.el, { y: 640 }, tSent, { dur: 0.5, ease: "in-out-cubic" });
-        tl.to(strip.el, { scale: 1.05 }, T.word(7, "tell"), { dur: 0.3, yoyo: true });
+        tl.to(strip.el, { scale: 1.05 }, T.word(7, "exactly"), { dur: 0.3 });
 
         // ============================================================ line 8
         // the kits come back to their quarters; each lit as it's named; two rooms' strips meet
@@ -560,75 +576,10 @@
         tl.to(storyB.el, { y: 440 }, tCompare, { dur: 0.45, ease: "in-out-cubic" });
 
         // ============================================================ line 9
-        // (TC) the row's numbers, then a field of billions around them; a model
-        // is its numbers, whatever holds them: the kits come back around them
-        const t9 = T.start(9) - 0.4;
-        K.vanish(tl, [storyA.el, storyB.el, ...Object.values(QUARTERS)], t9, { dur: 0.4 });
-        const R9 = row(scene, "the", MG.rows.the, { x: 120, y: 60 });
-        jump(tl, R9, "numbers", 1);
-        const R9C = { x: A.cx, y: 60 + R9.H / 2 - 40 };
-        tl.to(R9.el, { opacity: 1 }, T.word(9, "Claude") - 0.2, { dur: 0.4 });
-        // the zoom: the row shrinks into a field of numbers (log scale), then back
-        const tBody = T.word(9, "another"), tBack = T.word(9, "But");
-        const Z1 = 0.22; // the field's digits stay about 11 px or more at 1080p, so the lattice never aliases
-        const zoomS = (p) => Math.exp(K.lerp(0, Math.log(Z1), p));
-        const zIn = tBody, zInDur = T.word(9, "computer") - tBody, zOutDur = 0.9;
-        const place = (s) => ({ x: R9C.x - (R9C.x - 120) * s, y: R9C.y - (R9C.y - 60) * s, scale: s });
-        K.set(R9.el, { transformOrigin: "0 0" });
-        tl.sample(R9.el, zIn, zInDur, (p) => place(zoomS(p)), { ease: "in-out-quad" });
-        tl.sample(R9.el, tBack, zOutDur, (p) => place(zoomS(1 - p)), { ease: "in-out-cubic" });
-        const scaleAt = (t) => {
-          if (t <= zIn) return 1;
-          if (t < zIn + zInDur) return zoomS(K.lerp(0, 1, easeAt("in-out-quad", (t - zIn) / zInDur)));
-          if (t <= tBack) return Z1;
-          if (t < tBack + zOutDur) return zoomS(1 - easeAt("in-out-cubic", (t - tBack) / zOutDur));
-          return 1;
-        };
-        // the field: numbers on a lattice that shrinks with the row, so it reads
-        // as one zoom; the row's own box stays clear
-        const rng = C.rng(9);
-        const CELL = 110;
-        const digits = Array.from({ length: 4000 }, () => String(1 + Math.floor(rng() * 9)));
-        const fieldH = S.H - S.captionH;
-        const field = C.canvas(tl, scene, (ctx, t) => {
-          const a = C.phase(t, zIn - 0.2, 0.6, "out-quad") * (1 - C.phase(t, tBack, 0.8, "in-quad"));
-          if (a <= 0) return;
-          const s = scaleAt(t);
-          const cell = CELL * s;
-          const box = { x0: R9C.x - (R9C.x - 120) * s - 10 * s, y0: R9C.y - (R9C.y - 60) * s - 10 * s };
-          box.x1 = box.x0 + (R9.W + 20) * s;
-          box.y1 = box.y0 + (R9.H + 20) * s;
-          ctx.fillStyle = `rgb(255 255 255 / ${(0.55 * a).toFixed(3)})`;
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          ctx.font = `600 ${Math.max(3, cell * 0.5).toFixed(2)}px "Public Sans"`;
-          const nx = Math.ceil(R9C.x / cell) + 1, ny = Math.ceil(fieldH / cell) + 1;
-          for (let j = -ny; j <= ny; j++) {
-            const y = R9C.y + j * cell;
-            if (y < -cell || y > fieldH + cell) continue;
-            for (let i = -nx; i <= nx; i++) {
-              const x = R9C.x + i * cell;
-              if (x > box.x0 && x < box.x1 && y > box.y0 && y < box.y1) continue;
-              ctx.fillText(digits[((i + 5000) * 7919 + (j + 5000) * 104729) % digits.length], x, y);
-            }
-          }
-        }, { x: 0, y: 0, w: S.W, h: fieldH, density: 1 });
-        // the canvas is only up while it draws (a raster counts as opaque to the layout check)
-        K.set(field.el, { opacity: 0 });
-        tl.set(field.el, { opacity: 1 }, zIn - 0.2);
-        tl.set(field.el, { opacity: 0 }, tBack + 0.9);
-        // "whatever holds them": the four kits come back around the numbers, dimmed
-        const tWhatever = T.word(9, "whatever");
-        // the row steps back to the middle of the desk on a plate of desk, and the kits
-        // come back around it
-        const plate = K.el("div", { style: { position: "absolute", left: 0, top: 0, width: `${R9.W + 60}px`, height: `${R9.H + 20}px`, background: "var(--desk)", boxShadow: "0 0 0 2px var(--hairline)" } }, scene);
-        scene.insertBefore(plate, R9.el);
-        const END_S = 0.52;
-        const endAt = { x: A.cx - (R9.W * END_S) / 2, y: A.cy - (R9.H * END_S) / 2 + 10 };
-        K.set(plate, { x: endAt.x - 30 * END_S, y: endAt.y - 10 * END_S, scale: END_S, transformOrigin: "0 0", opacity: 0 });
-        tl.to(R9.el, { ...endAt, scale: END_S }, tWhatever - 0.2, { dur: 0.7, ease: "in-out-cubic" });
-        tl.to(plate, { opacity: 1 }, tWhatever + 0.3, { dur: 0.3 });
-        tl.to(Object.values(QUARTERS), { opacity: 0.4 }, tWhatever + 0.3, { dur: 0.6, stagger: 0.1 });
+        // Return to the actual kits and invite another run of the experiment.
+        const t9 = T.start(9);
+        tl.to([storyA.el, storyB.el], { opacity: 0 }, t9, { dur: 0.4 });
+        tl.to(Object.values(QUARTERS), { opacity: 1 }, T.word(9, "another"), { dur: 0.5, stagger: 0.1 });
       };
       KIT.ready(build).then(({ tl }) => {
         window.__timelines["same-algorithm"] = tl;

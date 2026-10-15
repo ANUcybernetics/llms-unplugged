@@ -48,10 +48,10 @@
     "i": 4,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "So watch one sentence switch kits at every word. Start after a full stop, with a cup: seventeen counters. Draw red: \"it\".",
-    "tts": "So watch one sentence switch kits at every word. Start after a full stop, with a cup: seventeen counters. Draw red: \"it\".",
+    "caption": "Watch one sentence use all three kits. Start after a full stop, with a cup: seventeen counters. Draw red: \"it\".",
+    "tts": "Watch one sentence use all three kits. Start after a full stop, with a cup: seventeen counters. Draw red: \"it\".",
     "parts": [
-      "So watch one sentence switch kits at every word. Start after a full stop, with a cup: seventeen counters.",
+      "Watch one sentence use all three kits. Start after a full stop, with a cup: seventeen counters.",
       "Draw red: \"it\"."
     ],
     "beats": [
@@ -78,14 +78,16 @@
     "i": 6,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "The row for \"the\", as nineteen slips. Shuffle, pull one out: \"dog\". And a full stop to finish.",
-    "tts": "The row for \"the\", as nineteen slips. Shuffle, pull one out: \"dog\". And a full stop to finish.",
+    "caption": "The row for \"the\", as nineteen slips. Shuffle, pull one out: \"dog\". Put it back. Now the four \"dog\" slips: two say \"runs\", two have a full stop. Shuffle and draw: full stop.",
+    "tts": "The row for \"the\", as nineteen slips. Shuffle, pull one out: \"dog\". Put it back. Now the four \"dog\" slips: two say \"runs\", two have a full stop. Shuffle and draw: full stop.",
     "parts": [
       "The row for \"the\", as nineteen slips.",
       "Shuffle, pull one out: \"dog\".",
-      "And a full stop to finish."
+      "Put it back. Now the four \"dog\" slips: two say \"runs\", two have a full stop.",
+      "Shuffle and draw: full stop."
     ],
     "beats": [
+      0.8,
       0.8,
       0.8
     ]
@@ -94,8 +96,8 @@
     "i": 7,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Cup, die or slips, it's the same draw. More counts, more chances. The sentence can't tell which one you used.",
-    "tts": "Cup, die or slips, it's the same draw. More counts, more chances. The sentence can't tell which one you used."
+    "caption": "Cup, die or slips, we use the same counts to choose the next word. Ten die faces sometimes need rounding; counters and reusable slips can match the counts exactly.",
+    "tts": "Cup, die or slips, we use the same counts to choose the next word. Ten die faces sometimes need rounding; counters and reusable slips can match the counts exactly."
   },
   {
     "i": 8,
@@ -108,7 +110,7 @@
     "i": 9,
     "speaker": "BEN",
     "tc": true,
-    "caption": "And Claude or ChatGPT? Their numbers live in yet another body, billions of them, on a computer. But a model is its numbers, whatever holds them.",
-    "tts": "And Claude or ChatGPT? Their numbers live in yet another body, billions of them, on a computer. But a model is its numbers, whatever holds them."
+    "caption": "You can try another kit with the same book. Keep the counts and change how you draw from them, then compare what you write.",
+    "tts": "You can try another kit with the same book. Keep the counts and change how you draw from them, then compare what you write."
   }
 ]
