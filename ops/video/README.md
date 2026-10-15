@@ -14,20 +14,20 @@ flavour of workshop sees only that flavour's materials. They are built from
 shared kit parts and one structure per stage, so the grid and ledger versions of
 a stage are siblings rather than separate builds.
 
-| Slug                         | Format  | Key idea                                                                                      |
-| ---------------------------- | ------- | --------------------------------------------------------------------------------------------- |
-| `training-grid`              | grid    | a language model learns by counting which word follows which, and the counts are all it keeps |
-| `generation-grid`            | grid    | text is written one word at a time, each picked in proportion to the counts                   |
-| `pretrained-generation-grid` | grid    | you can generate from a model someone else trained; a booklet is a grid stored another way    |
-| `agentic-ai-grid`            | grid    | a tool call is a token the model draws like any other; the harness does the rest              |
-| `training-ledger`            | ledger  | as `training-grid`, on ledger sheets                                                          |
-| `generation-ledger`          | ledger  | as `generation-grid`, with the cup; works from pre-filled or self-filled sheets               |
-| `agentic-ai-ledger`          | ledger  | as `agentic-ai-grid`, on sheets and the cup (the deck is TASK-168)                            |
-| `generation-cutouts`         | cutouts | as `generation-grid`, matching cutouts picked at random                                       |
-| `same-algorithm`             | all     | grid tallies, ledger marks, counters, cutouts and numbers are one model                       |
-| `overview`                   | ---     | you can run the same next-word loop Claude or ChatGPT runs, by hand                           |
-| `making-things-up`           | ---     | a model that only knows what comes next can say fluent things that aren't true                |
-| `real-models`                | ---     | what your grid shares with Claude or ChatGPT, and what it doesn't                             |
+| Slug                         | Format  | Key idea                                                                                     |
+| ---------------------------- | ------- | -------------------------------------------------------------------------------------------- |
+| `training-grid`              | grid    | our bigram model learns by counting pairs; neural models learn their predictions differently |
+| `generation-grid`            | grid    | text is written one word at a time, each picked in proportion to the counts                  |
+| `pretrained-generation-grid` | grid    | you can generate from a model someone else trained; a booklet is a grid stored another way   |
+| `agentic-ai-grid`            | grid    | a person connects the paper model to a tool; software can do those jobs for a larger model   |
+| `training-ledger`            | ledger  | as `training-grid`, on ledger sheets                                                         |
+| `generation-ledger`          | ledger  | as `generation-grid`, with the cup; works from pre-filled or self-filled sheets              |
+| `agentic-ai-ledger`          | ledger  | as `agentic-ai-grid`, on sheets and the cup (the deck is TASK-168)                           |
+| `generation-cutouts`         | cutouts | as `generation-grid`, matching cutouts picked at random                                      |
+| `same-algorithm`             | all     | grid tallies, ledger marks, counters, cutouts and numbers are one model                      |
+| `overview`                   | ---     | build a model by hand and inspect its choices, then compare it with neural text generation   |
+| `making-things-up`           | ---     | a model that only knows what comes next can say fluent things that aren't true               |
+| `real-models`                | ---     | what your grid shares with Claude or ChatGPT, and what it doesn't                            |
 
 `same-algorithm` carries what crosses formats: the morph from tallies to marks
 to counters to cutouts to numbers, and a walk that switches forms (the cup for
@@ -36,11 +36,13 @@ open, it and one format's how-it-works videos (without their hand-offs) make the
 long cut.
 
 The scripts aren't bound to the slides: they refer to the same slides and
-printed artefacts, but they can use explanations a slide can't carry: continuous
-morphs between representations, many-sample simulations and real corpus data at
-scale. Each such beat is marked **beyond** in its beat sheet and carries a
-`_Beyond:_` line naming the read it makes clearer than the slides can
-(`voice.py` skips it with the `_Visual` and `_Reads` paragraphs).
+printed artefacts, but they can use continuous morphs between representations
+and real corpus data at scale. The introductory generation videos use a four-way
+branch so viewers can follow one choice before trying it themselves. The
+Overview and Making things up use larger trees with explicit limits. Each such
+beat is marked **beyond** in its beat sheet and carries a `_Beyond:_` line
+naming the read it makes clearer than the slides can (`voice.py` skips it with
+the `_Visual` and `_Reads` paragraphs).
 
 Each how-it-works video is played at the start of its section: it sets up the
 mechanics, makes the section's key idea land, and hands off to the hands-on
