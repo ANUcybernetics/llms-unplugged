@@ -29,7 +29,7 @@ as the slides' dice bands are.
 ## Script
 
 **BEN (TC):** This is a table of counts. In about a minute it's going to write a
-sentence that is not in this book.
+sentence that isn't in the book.
 
 _Visual: the finished magpie grid on the desk, top-down, full frame. Nothing
 moves._
@@ -120,17 +120,17 @@ words, revealed in order. Branch widths follow the actual sampling weights: 3,
 _Reads:_ 1. the current word has four possible next words; 2. the sampling
 weights determine how likely each choice is.
 
-**BEN (VO):** Another go might take a different branch, or pick "dog" again.
-Repeats are part of the activity. [beat]
+**BEN (VO):** Run it again and you might get a different sentence, or the same
+one. That's fine: likely words just come up more often. [beat]
 
 _Visual: highlight the branch to "dog", then "fence", then "dog" again, one at a
 time. Hold the final choice._
 
 _Reads:_ 1. another draw can change the word; 2. the same word can recur.
 
-**USHINI:** Claude or ChatGPT also generates text by repeatedly predicting what
-comes next. It learns those predictions differently, using much more context
-than our last word.
+**USHINI:** Claude and ChatGPT write this way too, one piece at a time. They
+just look at far more than the last word, and they learn their numbers rather
+than counting them.
 
 _Visual: hold the four-way fork with "the" visible as the current word._
 

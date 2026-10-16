@@ -28,7 +28,7 @@ magpie 5, postie 4, dog 4), 4 with _dog_ (full stop 2, runs 2).
 ## Script
 
 **BEN (TC):** This is a pile of paper slips. In about a minute it's going to
-write a sentence that is not in this book.
+write a sentence that isn't in the book.
 
 _Visual: the desk, top-down, the magpie's cutouts spread across it, previous-
 word boxes up. Nothing moves._
@@ -68,8 +68,8 @@ sits". "sits" writes onto the strip. The slip returns to the spread._
 _Reads:_ 1. every slip that matches the last word is a candidate; 2. more slips,
 more chances; 3. the one you pick names the next word.
 
-**BEN (VO):** Every "sits" slip says "on", and every "on" slip says "the", so
-there's only one way to go.
+**BEN (VO):** Every "sits" slip says "on". [beat] And every "on" slip says
+"the", so there's only one way to go.
 
 _Visual: the "sits" slips light, all three reading "on"; then the "on" slips,
 all reading "the". "on" and "the" write straight onto the strip._
@@ -109,17 +109,17 @@ words, revealed in order. Branch widths follow the actual sampling weights: 3,
 _Reads:_ 1. the current word has four possible next words; 2. the sampling
 weights determine how likely each choice is.
 
-**BEN (VO):** Another go might take a different branch, or pick "dog" again.
-Repeats are part of the activity. [beat]
+**BEN (VO):** Run it again and you might get a different sentence, or the same
+one. That's fine: likely words just come up more often. [beat]
 
 _Visual: highlight the branch to "dog", then "fence", then "dog" again, one at a
 time. Hold the final choice._
 
 _Reads:_ 1. another draw can change the word; 2. the same word can recur.
 
-**USHINI:** Claude or ChatGPT also generates text by repeatedly predicting what
-comes next. It learns those predictions differently, using much more context
-than our last word.
+**USHINI:** Claude and ChatGPT write this way too, one piece at a time. They
+just look at far more than the last word, and they learn their numbers rather
+than counting them.
 
 _Visual: hold the four-way fork with "the" visible as the current word._
 

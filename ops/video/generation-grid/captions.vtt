@@ -1,43 +1,43 @@
 WEBVTT
 
-00:00:00.150 --> 00:00:05.860
-This is a table of counts. In about a minute it's going to write a sentence that is not in this book.
+00:00:00.150 --> 00:00:05.800
+This is a table of counts. In about a minute it's going to write a sentence that isn't in the book.
 
-00:00:06.530 --> 00:00:15.540
+00:00:06.450 --> 00:00:15.440
 Each row is a word from a book, and the tallies say which words came next, and how often. It's the same kind of grid you just filled in.
 
-00:00:16.630 --> 00:00:27.100
+00:00:16.850 --> 00:00:27.020
 A story starts after a full stop, so start at the row for full stop. After a full stop, the book has "it" seven times, "here" four, "down" three, "swoop" three.
 
-00:00:27.730 --> 00:00:41.640
+00:00:27.930 --> 00:00:41.580
 Now pick the next word at random, with a ten-sided die. Seventeen tallies won't fit exactly onto ten faces. We'll approximate: "it" gets four faces, the others two each.
 
-00:00:42.340 --> 00:00:52.580
+00:00:43.930 --> 00:00:52.520
 Roll a two. That's in the band for "it". Write the word down, and go to the row for "it".
 
-00:00:53.450 --> 00:01:02.160
+00:00:53.630 --> 00:01:02.060
 The row for "it" has exactly ten tallies, so every tally gets one face. Roll a one: "sits".
 
-00:01:03.470 --> 00:01:09.920
+00:01:03.650 --> 00:01:09.860
 "Sits" is only ever followed by "on", and "on" by "the". One option, no roll.
 
-00:01:10.810 --> 00:01:26.860
+00:01:10.750 --> 00:01:26.780
 The row for "the" shares its faces four ways. Roll a nine: "dog". And after "dog", a full stop or "runs", five faces each. Roll a three: full stop.
 
-00:01:26.860 --> 00:01:33.180
+00:01:27.810 --> 00:01:33.100
 The book says "It sits on the fence". We've ended up with "It sits on the dog".
 
-00:01:34.270 --> 00:01:45.380
+00:01:34.310 --> 00:01:45.320
 After "the", we could pick "magpie", "fence", "postie" or "dog". These four branches show those choices; a thicker branch means more die faces.
 
-00:01:46.790 --> 00:01:52.660
-Another go might take a different branch, or pick "dog" again. Repeats are part of the activity.
+00:01:46.950 --> 00:01:54.020
+Run it again and you might get a different sentence, or the same one. That's fine: likely words just come up more often.
 
-00:01:53.490 --> 00:02:05.260
-Claude or ChatGPT also generates text by repeatedly predicting what comes next. It learns those predictions differently, using much more context than our last word.
+00:01:54.870 --> 00:02:05.140
+Claude and ChatGPT write this way too, one piece at a time. They just look at far more than the last word, and they learn their numbers rather than counting them.
 
-00:02:06.290 --> 00:02:22.980
+00:02:06.450 --> 00:02:22.820
 On your grid: pick any starting word with a row and write it down. Share the die's faces across its row by the tallies, roll, and write down the word you land on. Then find its row. No row? Pick a new word and carry on.
 
-00:02:23.630 --> 00:02:25.800
+00:02:23.530 --> 00:02:25.680
 Pick a starting word and roll.

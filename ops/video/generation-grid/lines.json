@@ -3,8 +3,8 @@
     "i": 0,
     "speaker": "BEN",
     "tc": true,
-    "caption": "This is a table of counts. In about a minute it's going to write a sentence that is not in this book.",
-    "tts": "This is a table of counts. In about a minute it's going to write a sentence that is not in this book."
+    "caption": "This is a table of counts. In about a minute it's going to write a sentence that isn't in the book.",
+    "tts": "This is a table of counts. In about a minute it's going to write a sentence that isn't in the book."
   },
   {
     "i": 1,
@@ -121,10 +121,10 @@
     "i": 10,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Another go might take a different branch, or pick \"dog\" again. Repeats are part of the activity.",
-    "tts": "Another go might take a different branch, or pick \"dog\" again. Repeats are part of the activity.",
+    "caption": "Run it again and you might get a different sentence, or the same one. That's fine: likely words just come up more often.",
+    "tts": "Run it again and you might get a different sentence, or the same one. That's fine: likely words just come up more often.",
     "parts": [
-      "Another go might take a different branch, or pick \"dog\" again. Repeats are part of the activity."
+      "Run it again and you might get a different sentence, or the same one. That's fine: likely words just come up more often."
     ],
     "beats": [
       0.8
@@ -134,8 +134,8 @@
     "i": 11,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "Claude or ChatGPT also generates text by repeatedly predicting what comes next. It learns those predictions differently, using much more context than our last word.",
-    "tts": "Claude or ChatGPT also generates text by repeatedly predicting what comes next. It learns those predictions differently, using much more context than our last word."
+    "caption": "Claude and ChatGPT write this way too, one piece at a time. They just look at far more than the last word, and they learn their numbers rather than counting them.",
+    "tts": "Claude and ChatGPT write this way too, one piece at a time. They just look at far more than the last word, and they learn their numbers rather than counting them."
   },
   {
     "i": 12,

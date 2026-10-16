@@ -1,15 +1,15 @@
 {
   "slug": "generation-ledger",
   "audio": "assets/voice.wav",
-  "duration": 163.568,
+  "duration": 163.424,
   "lines": [
     {
       "i": 0,
       "speaker": "BEN",
       "tc": true,
-      "caption": "This is a pile of sheets full of counts. In about a minute it's going to write a sentence that is not in this book.",
+      "caption": "This is a pile of sheets full of counts. In about a minute it's going to write a sentence that isn't in the book.",
       "start": 0.19,
-      "end": 6.42,
+      "end": 6.36,
       "words": [
         {
           "w": "This",
@@ -29,11 +29,11 @@
         {
           "w": "pile",
           "start": 1.04,
-          "end": 1.3
+          "end": 1.32
         },
         {
           "w": "of",
-          "start": 1.3,
+          "start": 1.32,
           "end": 1.5
         },
         {
@@ -58,32 +58,32 @@
         },
         {
           "w": "In",
-          "start": 2.7,
+          "start": 2.66,
           "end": 3.18
         },
         {
           "w": "about",
           "start": 3.18,
-          "end": 3.36
+          "end": 3.38
         },
         {
           "w": "a",
-          "start": 3.36,
-          "end": 3.52
+          "start": 3.38,
+          "end": 3.5
         },
         {
           "w": "minute",
-          "start": 3.52,
+          "start": 3.5,
           "end": 3.74
         },
         {
           "w": "it's",
           "start": 3.74,
-          "end": 4.06
+          "end": 4.04
         },
         {
           "w": "going",
-          "start": 4.06,
+          "start": 4.04,
           "end": 4.2
         },
         {
@@ -109,32 +109,27 @@
         {
           "w": "that",
           "start": 5.04,
-          "end": 5.32
+          "end": 5.36
         },
         {
-          "w": "is",
-          "start": 5.32,
-          "end": 5.44
-        },
-        {
-          "w": "not",
-          "start": 5.44,
-          "end": 5.66
+          "w": "isn't",
+          "start": 5.36,
+          "end": 5.8
         },
         {
           "w": "in",
-          "start": 5.66,
-          "end": 5.84
+          "start": 5.8,
+          "end": 5.88
         },
         {
-          "w": "this",
-          "start": 5.84,
-          "end": 6.0
+          "w": "the",
+          "start": 5.88,
+          "end": 5.96
         },
         {
           "w": "book.",
-          "start": 6.0,
-          "end": 6.22
+          "start": 5.96,
+          "end": 6.16
         }
       ]
     },
@@ -143,188 +138,188 @@
       "speaker": "USHINI",
       "tc": false,
       "caption": "Each row is a word from a book, and the words that came next, with a mark every time. Maybe you did the counting yourselves; maybe the sheets arrived finished. It works the same either way.",
-      "start": 7.07,
-      "end": 19.84,
+      "start": 6.97,
+      "end": 19.78,
       "words": [
         {
           "w": "Each",
-          "start": 7.22,
-          "end": 7.7
+          "start": 7.12,
+          "end": 7.64
         },
         {
           "w": "row",
-          "start": 7.7,
-          "end": 7.94
+          "start": 7.64,
+          "end": 7.86
         },
         {
           "w": "is",
-          "start": 7.94,
-          "end": 8.16
+          "start": 7.86,
+          "end": 8.1
         },
         {
           "w": "a",
-          "start": 8.16,
-          "end": 8.28
+          "start": 8.1,
+          "end": 8.22
         },
         {
           "w": "word",
-          "start": 8.28,
-          "end": 8.52
+          "start": 8.22,
+          "end": 8.44
         },
         {
           "w": "from",
-          "start": 8.52,
-          "end": 8.72
+          "start": 8.44,
+          "end": 8.64
         },
         {
           "w": "a",
-          "start": 8.72,
-          "end": 8.82
+          "start": 8.64,
+          "end": 8.74
         },
         {
           "w": "book,",
-          "start": 8.82,
-          "end": 9.08
+          "start": 8.74,
+          "end": 9.04
         },
         {
           "w": "and",
-          "start": 9.08,
+          "start": 9.1,
           "end": 9.46
         },
         {
           "w": "the",
           "start": 9.46,
-          "end": 9.62
+          "end": 9.56
         },
         {
           "w": "words",
-          "start": 9.62,
-          "end": 9.98
+          "start": 9.56,
+          "end": 9.9
         },
         {
           "w": "that",
-          "start": 9.98,
-          "end": 10.18
+          "start": 9.9,
+          "end": 10.1
         },
         {
           "w": "came",
-          "start": 10.18,
-          "end": 10.4
+          "start": 10.1,
+          "end": 10.32
         },
         {
           "w": "next,",
-          "start": 10.4,
-          "end": 10.8
+          "start": 10.32,
+          "end": 10.76
         },
         {
           "w": "with",
-          "start": 10.8,
-          "end": 11.2
+          "start": 10.86,
+          "end": 11.12
         },
         {
           "w": "a",
-          "start": 11.2,
-          "end": 11.3
+          "start": 11.12,
+          "end": 11.22
         },
         {
           "w": "mark",
-          "start": 11.3,
-          "end": 11.54
+          "start": 11.22,
+          "end": 11.48
         },
         {
           "w": "every",
-          "start": 11.54,
-          "end": 11.88
+          "start": 11.48,
+          "end": 11.8
         },
         {
           "w": "time.",
-          "start": 11.88,
-          "end": 12.24
+          "start": 11.8,
+          "end": 12.16
         },
         {
           "w": "Maybe",
-          "start": 13.08,
-          "end": 13.56
+          "start": 12.98,
+          "end": 13.5
         },
         {
           "w": "you",
-          "start": 13.56,
-          "end": 13.76
+          "start": 13.5,
+          "end": 13.7
         },
         {
           "w": "did",
-          "start": 13.76,
-          "end": 13.96
+          "start": 13.7,
+          "end": 13.88
         },
         {
           "w": "the",
-          "start": 13.96,
-          "end": 14.04
+          "start": 13.88,
+          "end": 14.0
         },
         {
           "w": "counting",
-          "start": 14.04,
-          "end": 14.36
+          "start": 14.0,
+          "end": 14.28
         },
         {
           "w": "yourselves;",
-          "start": 14.36,
-          "end": 14.76
+          "start": 14.28,
+          "end": 14.68
         },
         {
           "w": "maybe",
-          "start": 15.2,
-          "end": 15.68
+          "start": 15.1,
+          "end": 15.6
         },
         {
           "w": "the",
-          "start": 15.68,
-          "end": 15.88
+          "start": 15.6,
+          "end": 15.8
         },
         {
           "w": "sheets",
-          "start": 15.88,
-          "end": 16.14
+          "start": 15.8,
+          "end": 16.08
         },
         {
           "w": "arrived",
-          "start": 16.14,
-          "end": 16.44
+          "start": 16.08,
+          "end": 16.38
         },
         {
           "w": "finished.",
-          "start": 16.44,
-          "end": 16.94
+          "start": 16.38,
+          "end": 16.88
         },
         {
           "w": "It",
-          "start": 17.76,
-          "end": 18.24
+          "start": 17.68,
+          "end": 18.2
         },
         {
           "w": "works",
-          "start": 18.24,
-          "end": 18.54
+          "start": 18.2,
+          "end": 18.46
         },
         {
           "w": "the",
-          "start": 18.54,
-          "end": 18.76
+          "start": 18.46,
+          "end": 18.7
         },
         {
           "w": "same",
-          "start": 18.76,
-          "end": 19.04
+          "start": 18.7,
+          "end": 18.96
         },
         {
           "w": "either",
-          "start": 19.04,
-          "end": 19.34
+          "start": 18.96,
+          "end": 19.26
         },
         {
           "w": "way.",
-          "start": 19.34,
-          "end": 19.64
+          "start": 19.26,
+          "end": 19.58
         }
       ]
     },
@@ -333,143 +328,143 @@
       "speaker": "BEN",
       "tc": false,
       "caption": "Every box has a colour, always in the same order: red, blue, green, yellow. On this row, red means \"magpie\". On another row, red means something else.",
-      "start": 21.13,
-      "end": 34.7,
+      "start": 21.05,
+      "end": 34.6,
       "words": [
         {
           "w": "Every",
-          "start": 21.28,
-          "end": 21.76
+          "start": 21.2,
+          "end": 21.72
         },
         {
           "w": "box",
-          "start": 21.76,
-          "end": 22.06
+          "start": 21.72,
+          "end": 21.98
         },
         {
           "w": "has",
-          "start": 22.06,
-          "end": 22.24
+          "start": 21.98,
+          "end": 22.16
         },
         {
           "w": "a",
-          "start": 22.24,
-          "end": 22.34
+          "start": 22.16,
+          "end": 22.26
         },
         {
           "w": "colour,",
-          "start": 22.45,
-          "end": 22.79
+          "start": 22.26,
+          "end": 22.5
         },
         {
           "w": "always",
-          "start": 22.66,
-          "end": 23.24
+          "start": 22.62,
+          "end": 23.18
         },
         {
           "w": "in",
-          "start": 23.24,
-          "end": 23.46
+          "start": 23.18,
+          "end": 23.42
         },
         {
           "w": "the",
-          "start": 23.46,
-          "end": 23.52
+          "start": 23.42,
+          "end": 23.46
         },
         {
           "w": "same",
-          "start": 23.52,
-          "end": 23.72
+          "start": 23.46,
+          "end": 23.64
         },
         {
           "w": "order:",
-          "start": 23.72,
-          "end": 23.98
+          "start": 23.64,
+          "end": 23.9
         },
         {
           "w": "red,",
-          "start": 24.16,
-          "end": 24.64
+          "start": 24.1,
+          "end": 24.62
         },
         {
           "w": "blue,",
-          "start": 24.84,
-          "end": 25.28
+          "start": 24.78,
+          "end": 25.22
         },
         {
           "w": "green,",
-          "start": 25.5,
-          "end": 26.02
+          "start": 25.42,
+          "end": 25.96
         },
         {
           "w": "yellow.",
-          "start": 26.22,
-          "end": 26.74
+          "start": 26.16,
+          "end": 26.66
         },
         {
           "w": "On",
-          "start": 27.78,
-          "end": 28.34
+          "start": 27.72,
+          "end": 28.28
         },
         {
           "w": "this",
-          "start": 28.34,
-          "end": 28.58
+          "start": 28.28,
+          "end": 28.5
         },
         {
           "w": "row,",
-          "start": 28.58,
-          "end": 28.88
+          "start": 28.5,
+          "end": 28.8
         },
         {
           "w": "red",
-          "start": 29.06,
-          "end": 29.56
+          "start": 28.98,
+          "end": 29.48
         },
         {
           "w": "means",
-          "start": 29.56,
-          "end": 29.82
+          "start": 29.48,
+          "end": 29.76
         },
         {
           "w": "\"magpie\".",
-          "start": 29.82,
-          "end": 30.3
+          "start": 29.76,
+          "end": 30.22
         },
         {
           "w": "On",
-          "start": 31.8,
-          "end": 32.36
+          "start": 31.72,
+          "end": 32.28
         },
         {
           "w": "another",
-          "start": 32.36,
-          "end": 32.6
+          "start": 32.28,
+          "end": 32.52
         },
         {
           "w": "row,",
-          "start": 32.6,
-          "end": 32.88
+          "start": 32.52,
+          "end": 32.8
         },
         {
           "w": "red",
-          "start": 33.04,
-          "end": 33.58
+          "start": 32.98,
+          "end": 33.5
         },
         {
           "w": "means",
-          "start": 33.58,
-          "end": 33.84
+          "start": 33.5,
+          "end": 33.76
         },
         {
           "w": "something",
-          "start": 33.84,
-          "end": 34.14
+          "start": 33.76,
+          "end": 34.06
         },
         {
           "w": "else.",
-          "start": 34.14,
-          "end": 34.5
+          "start": 34.06,
+          "end": 34.4
         }
       ]
     },
@@ -478,183 +473,183 @@
       "speaker": "USHINI",
       "tc": false,
       "caption": "A story starts after a full stop, so find the row for full stop. Fill a cup with one counter for every mark: seven red for \"it\", four blue for \"here\", three green, three yellow.",
-      "start": 35.15,
-      "end": 49.56,
+      "start": 35.47,
+      "end": 49.5,
       "words": [
         {
           "w": "A",
-          "start": 35.3,
-          "end": 35.86
+          "start": 35.62,
+          "end": 35.8
         },
         {
           "w": "story",
-          "start": 35.86,
-          "end": 36.14
+          "start": 35.8,
+          "end": 36.06
         },
         {
           "w": "starts",
-          "start": 36.14,
-          "end": 36.48
+          "start": 36.06,
+          "end": 36.42
         },
         {
           "w": "after",
-          "start": 36.48,
-          "end": 37.02
+          "start": 36.42,
+          "end": 36.94
         },
         {
           "w": "a",
-          "start": 37.02,
-          "end": 37.2
+          "start": 36.94,
+          "end": 37.12
         },
         {
           "w": "full",
-          "start": 37.2,
-          "end": 37.36
+          "start": 37.12,
+          "end": 37.28
         },
         {
           "w": "stop,",
-          "start": 37.36,
-          "end": 37.68
+          "start": 37.28,
+          "end": 37.6
         },
         {
           "w": "so",
-          "start": 37.88,
-          "end": 38.34
+          "start": 37.8,
+          "end": 38.26
         },
         {
           "w": "find",
-          "start": 38.34,
-          "end": 38.66
+          "start": 38.26,
+          "end": 38.58
         },
         {
           "w": "the",
-          "start": 38.66,
-          "end": 38.84
+          "start": 38.58,
+          "end": 38.76
         },
         {
           "w": "row",
-          "start": 38.84,
-          "end": 39.0
+          "start": 38.76,
+          "end": 38.92
         },
         {
           "w": "for",
-          "start": 39.0,
-          "end": 39.24
+          "start": 38.92,
+          "end": 39.16
         },
         {
           "w": "full",
-          "start": 39.24,
-          "end": 39.48
+          "start": 39.16,
+          "end": 39.4
         },
         {
           "w": "stop.",
-          "start": 39.48,
-          "end": 39.76
+          "start": 39.4,
+          "end": 39.68
         },
         {
           "w": "Fill",
-          "start": 40.48,
-          "end": 41.04
+          "start": 40.4,
+          "end": 40.96
         },
         {
           "w": "a",
-          "start": 41.04,
-          "end": 41.14
+          "start": 40.96,
+          "end": 41.08
         },
         {
           "w": "cup",
-          "start": 41.14,
-          "end": 41.32
+          "start": 41.08,
+          "end": 41.26
         },
         {
           "w": "with",
-          "start": 41.32,
-          "end": 41.58
+          "start": 41.26,
+          "end": 41.52
         },
         {
           "w": "one",
-          "start": 41.58,
-          "end": 41.78
+          "start": 41.52,
+          "end": 41.72
         },
         {
           "w": "counter",
-          "start": 41.78,
-          "end": 42.2
+          "start": 41.72,
+          "end": 42.14
         },
         {
           "w": "for",
-          "start": 42.2,
-          "end": 42.46
+          "start": 42.14,
+          "end": 42.38
         },
         {
           "w": "every",
-          "start": 42.46,
-          "end": 42.76
+          "start": 42.38,
+          "end": 42.68
         },
         {
           "w": "mark:",
-          "start": 42.76,
-          "end": 43.02
+          "start": 42.68,
+          "end": 42.96
         },
         {
           "w": "seven",
-          "start": 44.84,
-          "end": 45.4
+          "start": 44.76,
+          "end": 45.32
         },
         {
           "w": "red",
-          "start": 45.4,
-          "end": 45.62
+          "start": 45.32,
+          "end": 45.54
         },
         {
           "w": "for",
-          "start": 45.62,
-          "end": 45.8
+          "start": 45.54,
+          "end": 45.74
         },
         {
           "w": "\"it\",",
-          "start": 45.8,
-          "end": 46.08
+          "start": 45.74,
+          "end": 46.02
         },
         {
           "w": "four",
-          "start": 46.22,
-          "end": 46.64
+          "start": 46.16,
+          "end": 46.56
         },
         {
           "w": "blue",
-          "start": 46.64,
-          "end": 46.88
+          "start": 46.56,
+          "end": 46.82
         },
         {
           "w": "for",
-          "start": 46.88,
-          "end": 47.12
+          "start": 46.82,
+          "end": 47.04
         },
         {
           "w": "\"here\",",
-          "start": 47.12,
-          "end": 47.42
+          "start": 47.04,
+          "end": 47.36
         },
         {
           "w": "three",
-          "start": 47.66,
-          "end": 48.14
+          "start": 47.6,
+          "end": 48.04
         },
         {
           "w": "green,",
-          "start": 48.14,
-          "end": 48.58
+          "start": 48.04,
+          "end": 48.5
         },
         {
           "w": "three",
-          "start": 48.66,
-          "end": 49.06
+          "start": 48.6,
+          "end": 48.98
         },
         {
           "w": "yellow.",
-          "start": 49.06,
-          "end": 49.36
+          "start": 48.98,
+          "end": 49.3
         }
       ]
     },
@@ -663,193 +658,193 @@
       "speaker": "BEN",
       "tc": false,
       "caption": "Seventeen counters. Which colour do you reckon we're most likely to draw? Now draw one without looking. Red: \"it\". Write the word down, empty the cup back into the tub, and go to the row for \"it\".",
-      "start": 51.05,
-      "end": 67.56,
+      "start": 50.99,
+      "end": 67.49,
       "words": [
         {
           "w": "Seventeen",
-          "start": 51.2,
-          "end": 51.76
+          "start": 51.14,
+          "end": 51.7
         },
         {
           "w": "counters.",
-          "start": 51.76,
-          "end": 52.24
+          "start": 51.7,
+          "end": 52.1
         },
         {
           "w": "Which",
-          "start": 52.62,
-          "end": 53.18
+          "start": 52.56,
+          "end": 53.12
         },
         {
           "w": "colour",
-          "start": 53.07,
-          "end": 53.47
+          "start": 53.12,
+          "end": 53.46
         },
         {
           "w": "do",
-          "start": 53.52,
-          "end": 53.76
+          "start": 53.46,
+          "end": 53.68
         },
         {
           "w": "you",
-          "start": 53.76,
-          "end": 53.92
+          "start": 53.68,
+          "end": 53.84
         },
         {
           "w": "reckon",
-          "start": 53.92,
-          "end": 54.2
+          "start": 53.84,
+          "end": 54.12
         },
         {
           "w": "we're",
-          "start": 54.22,
-          "end": 54.49
+          "start": 54.14,
+          "end": 54.41
         },
         {
           "w": "most",
-          "start": 54.52,
-          "end": 54.78
+          "start": 54.44,
+          "end": 54.7
         },
         {
           "w": "likely",
-          "start": 54.78,
-          "end": 55.14
+          "start": 54.7,
+          "end": 55.06
         },
         {
           "w": "to",
-          "start": 55.14,
-          "end": 55.36
+          "start": 55.06,
+          "end": 55.3
         },
         {
           "w": "draw?",
-          "start": 55.36,
-          "end": 55.56
+          "start": 55.3,
+          "end": 55.5
         },
         {
           "w": "Now",
-          "start": 58.48,
-          "end": 58.56
+          "start": 57.81,
+          "end": 58.33
         },
         {
           "w": "draw",
-          "start": 58.56,
-          "end": 58.74
+          "start": 58.33,
+          "end": 58.69
         },
         {
           "w": "one",
-          "start": 58.74,
-          "end": 59.02
+          "start": 58.69,
+          "end": 58.97
         },
         {
           "w": "without",
-          "start": 59.02,
-          "end": 59.4
+          "start": 58.97,
+          "end": 59.35
         },
         {
           "w": "looking.",
-          "start": 59.4,
-          "end": 59.82
+          "start": 59.35,
+          "end": 59.75
         },
         {
           "w": "Red:",
-          "start": 60.18,
-          "end": 60.7
+          "start": 60.09,
+          "end": 60.61
         },
         {
           "w": "\"it\".",
-          "start": 60.86,
-          "end": 61.22
+          "start": 60.79,
+          "end": 61.15
         },
         {
           "w": "Write",
-          "start": 62.86,
-          "end": 63.38
+          "start": 62.79,
+          "end": 63.31
         },
         {
           "w": "the",
-          "start": 63.38,
-          "end": 63.52
+          "start": 63.31,
+          "end": 63.43
         },
         {
           "w": "word",
-          "start": 63.52,
-          "end": 63.7
+          "start": 63.43,
+          "end": 63.63
         },
         {
           "w": "down,",
-          "start": 63.7,
-          "end": 64.0
+          "start": 63.63,
+          "end": 63.93
         },
         {
           "w": "empty",
-          "start": 64.16,
-          "end": 64.64
+          "start": 64.07,
+          "end": 64.57
         },
         {
           "w": "the",
-          "start": 64.64,
-          "end": 64.84
+          "start": 64.57,
+          "end": 64.75
         },
         {
           "w": "cup",
-          "start": 64.84,
-          "end": 65.04
+          "start": 64.75,
+          "end": 64.97
         },
         {
           "w": "back",
-          "start": 65.04,
-          "end": 65.24
+          "start": 64.97,
+          "end": 65.17
         },
         {
           "w": "into",
-          "start": 65.24,
-          "end": 65.46
+          "start": 65.17,
+          "end": 65.39
         },
         {
           "w": "the",
-          "start": 65.46,
-          "end": 65.62
+          "start": 65.39,
+          "end": 65.53
         },
         {
           "w": "tub,",
-          "start": 65.62,
-          "end": 65.86
+          "start": 65.53,
+          "end": 65.81
         },
         {
           "w": "and",
-          "start": 65.96,
-          "end": 66.38
+          "start": 65.89,
+          "end": 66.29
         },
         {
           "w": "go",
-          "start": 66.38,
-          "end": 66.54
+          "start": 66.29,
+          "end": 66.45
         },
         {
           "w": "to",
-          "start": 66.54,
-          "end": 66.68
+          "start": 66.45,
+          "end": 66.59
         },
         {
           "w": "the",
-          "start": 66.68,
-          "end": 66.78
+          "start": 66.59,
+          "end": 66.71
         },
         {
           "w": "row",
-          "start": 66.78,
-          "end": 66.94
+          "start": 66.71,
+          "end": 66.87
         },
         {
           "w": "for",
-          "start": 66.94,
-          "end": 67.14
+          "start": 66.87,
+          "end": 67.07
         },
         {
           "w": "\"it\".",
-          "start": 67.14,
-          "end": 67.36
+          "start": 67.07,
+          "end": 67.29
         }
       ]
     },
@@ -858,83 +853,83 @@
       "speaker": "USHINI",
       "tc": false,
       "caption": "The row for \"it\": three red, three blue, three green, one yellow. Red again: \"sits\".",
-      "start": 68.45,
-      "end": 76.5,
+      "start": 68.58,
+      "end": 76.43,
       "words": [
         {
           "w": "The",
-          "start": 68.6,
-          "end": 69.12
+          "start": 68.73,
+          "end": 69.03
         },
         {
           "w": "row",
-          "start": 69.12,
-          "end": 69.32
+          "start": 69.03,
+          "end": 69.25
         },
         {
           "w": "for",
-          "start": 69.32,
-          "end": 69.62
+          "start": 69.25,
+          "end": 69.55
         },
         {
           "w": "\"it\":",
-          "start": 69.62,
-          "end": 69.86
+          "start": 69.55,
+          "end": 69.79
         },
         {
           "w": "three",
-          "start": 69.92,
-          "end": 70.16
+          "start": 69.85,
+          "end": 70.09
         },
         {
           "w": "red,",
-          "start": 70.16,
-          "end": 70.46
+          "start": 70.09,
+          "end": 70.37
         },
         {
           "w": "three",
-          "start": 70.62,
-          "end": 71.08
+          "start": 70.55,
+          "end": 71.01
         },
         {
           "w": "blue,",
-          "start": 71.08,
-          "end": 71.38
+          "start": 71.01,
+          "end": 71.29
         },
         {
           "w": "three",
-          "start": 71.56,
-          "end": 71.96
+          "start": 71.49,
+          "end": 71.89
         },
         {
           "w": "green,",
-          "start": 71.96,
-          "end": 72.38
+          "start": 71.89,
+          "end": 72.31
         },
         {
           "w": "one",
-          "start": 72.46,
-          "end": 72.74
+          "start": 72.39,
+          "end": 72.67
         },
         {
           "w": "yellow.",
-          "start": 72.74,
-          "end": 73.14
+          "start": 72.67,
+          "end": 73.07
         },
         {
           "w": "Red",
-          "start": 74.88,
-          "end": 75.4
+          "start": 74.79,
+          "end": 75.31
         },
         {
           "w": "again:",
-          "start": 75.4,
-          "end": 75.6
+          "start": 75.31,
+          "end": 75.51
         },
         {
           "w": "\"sits\".",
-          "start": 75.94,
-          "end": 76.3
+          "start": 75.83,
+          "end": 76.23
         }
       ]
     },
@@ -943,83 +938,83 @@
       "speaker": "BEN",
       "tc": false,
       "caption": "\"Sits\" is only ever followed by \"on\", and \"on\" by \"the\". One box, no cup.",
-      "start": 77.91,
-      "end": 84.04,
+      "start": 77.84,
+      "end": 83.97,
       "words": [
         {
           "w": "\"Sits\"",
-          "start": 78.06,
-          "end": 78.58
+          "start": 77.99,
+          "end": 78.51
         },
         {
           "w": "is",
-          "start": 78.58,
-          "end": 78.76
+          "start": 78.51,
+          "end": 78.67
         },
         {
           "w": "only",
-          "start": 78.76,
-          "end": 79.02
+          "start": 78.67,
+          "end": 78.91
         },
         {
           "w": "ever",
-          "start": 79.02,
-          "end": 79.3
+          "start": 78.91,
+          "end": 79.21
         },
         {
           "w": "followed",
-          "start": 79.3,
-          "end": 79.68
+          "start": 79.21,
+          "end": 79.61
         },
         {
           "w": "by",
-          "start": 79.68,
-          "end": 79.9
+          "start": 79.61,
+          "end": 79.83
         },
         {
           "w": "\"on\",",
-          "start": 79.9,
-          "end": 80.2
+          "start": 79.83,
+          "end": 80.11
         },
         {
           "w": "and",
-          "start": 80.28,
-          "end": 80.84
+          "start": 80.21,
+          "end": 80.77
         },
         {
           "w": "\"on\"",
-          "start": 80.84,
-          "end": 81.1
+          "start": 80.77,
+          "end": 81.03
         },
         {
           "w": "by",
-          "start": 81.1,
-          "end": 81.26
+          "start": 81.03,
+          "end": 81.19
         },
         {
           "w": "\"the\".",
-          "start": 81.71,
-          "end": 82.05
+          "start": 81.65,
+          "end": 81.99
         },
         {
           "w": "One",
-          "start": 82.32,
-          "end": 82.84
+          "start": 82.27,
+          "end": 82.79
         },
         {
           "w": "box,",
-          "start": 82.84,
-          "end": 83.08
+          "start": 82.79,
+          "end": 83.01
         },
         {
           "w": "no",
-          "start": 83.32,
-          "end": 83.58
+          "start": 83.25,
+          "end": 83.51
         },
         {
           "w": "cup.",
-          "start": 83.58,
-          "end": 83.84
+          "start": 83.51,
+          "end": 83.77
         }
       ]
     },
@@ -1028,153 +1023,153 @@
       "speaker": "USHINI",
       "tc": false,
       "caption": "The row for \"the\" fills the cup with all four colours. Yellow: \"dog\". And after \"dog\", two red for a full stop, two blue for \"runs\". Red: full stop.",
-      "start": 84.63,
-      "end": 100.26,
+      "start": 84.78,
+      "end": 100.17,
       "words": [
         {
           "w": "The",
-          "start": 84.78,
-          "end": 85.3
+          "start": 84.93,
+          "end": 85.23
         },
         {
           "w": "row",
-          "start": 85.3,
-          "end": 85.52
+          "start": 85.23,
+          "end": 85.43
         },
         {
           "w": "for",
-          "start": 85.52,
-          "end": 85.78
+          "start": 85.43,
+          "end": 85.71
         },
         {
           "w": "\"the\"",
-          "start": 85.78,
-          "end": 86.06
+          "start": 85.71,
+          "end": 85.99
         },
         {
           "w": "fills",
-          "start": 86.06,
-          "end": 86.26
+          "start": 85.99,
+          "end": 86.19
         },
         {
           "w": "the",
-          "start": 86.26,
-          "end": 86.56
+          "start": 86.19,
+          "end": 86.49
         },
         {
           "w": "cup",
-          "start": 86.56,
-          "end": 86.8
+          "start": 86.49,
+          "end": 86.69
         },
         {
           "w": "with",
-          "start": 86.8,
-          "end": 87.06
+          "start": 86.69,
+          "end": 86.99
         },
         {
           "w": "all",
-          "start": 87.06,
-          "end": 87.26
+          "start": 87.27,
+          "end": 87.27
         },
         {
           "w": "four",
-          "start": 87.26,
-          "end": 87.52
+          "start": 87.27,
+          "end": 87.37
         },
         {
           "w": "colours.",
-          "start": 88.51,
-          "end": 88.92
+          "start": 87.37,
+          "end": 87.83
         },
         {
           "w": "Yellow:",
-          "start": 89.76,
-          "end": 90.32
+          "start": 89.61,
+          "end": 90.19
         },
         {
           "w": "\"dog\".",
-          "start": 90.5,
-          "end": 90.9
+          "start": 90.45,
+          "end": 90.83
         },
         {
           "w": "And",
-          "start": 92.48,
-          "end": 93.04
+          "start": 92.37,
+          "end": 92.95
         },
         {
           "w": "after",
-          "start": 93.04,
-          "end": 93.36
+          "start": 92.95,
+          "end": 93.29
         },
         {
           "w": "\"dog\",",
-          "start": 93.36,
-          "end": 93.72
+          "start": 93.29,
+          "end": 93.59
         },
         {
           "w": "two",
-          "start": 93.92,
-          "end": 94.24
+          "start": 93.85,
+          "end": 94.15
         },
         {
           "w": "red",
-          "start": 94.24,
-          "end": 94.54
+          "start": 94.15,
+          "end": 94.47
         },
         {
           "w": "for",
-          "start": 94.54,
-          "end": 94.76
+          "start": 94.47,
+          "end": 94.69
         },
         {
           "w": "a",
-          "start": 94.76,
-          "end": 94.86
+          "start": 94.69,
+          "end": 94.79
         },
         {
           "w": "full",
-          "start": 94.86,
-          "end": 95.04
+          "start": 94.79,
+          "end": 94.97
         },
         {
           "w": "stop,",
-          "start": 95.04,
-          "end": 95.4
+          "start": 94.97,
+          "end": 95.35
         },
         {
           "w": "two",
-          "start": 95.56,
-          "end": 95.9
+          "start": 95.47,
+          "end": 95.81
         },
         {
           "w": "blue",
-          "start": 95.9,
-          "end": 96.18
+          "start": 95.81,
+          "end": 96.11
         },
         {
           "w": "for",
-          "start": 96.16,
-          "end": 96.47
+          "start": 96.11,
+          "end": 96.31
         },
         {
           "w": "\"runs\".",
-          "start": 96.42,
-          "end": 96.76
+          "start": 96.31,
+          "end": 96.69
         },
         {
           "w": "Red:",
-          "start": 98.66,
-          "end": 99.22
+          "start": 98.57,
+          "end": 99.15
         },
         {
           "w": "full",
-          "start": 99.38,
-          "end": 99.72
+          "start": 99.31,
+          "end": 99.63
         },
         {
           "w": "stop.",
-          "start": 99.72,
-          "end": 100.06
+          "start": 99.63,
+          "end": 99.97
         }
       ]
     },
@@ -1183,93 +1178,93 @@
       "speaker": "BEN",
       "tc": false,
       "caption": "The book says \"It sits on the fence\". We've ended up with \"It sits on the dog\".",
-      "start": 101.31,
-      "end": 106.6,
+      "start": 101.48,
+      "end": 106.55,
       "words": [
         {
           "w": "The",
-          "start": 101.46,
-          "end": 102.02
+          "start": 101.63,
+          "end": 101.93
         },
         {
           "w": "book",
-          "start": 102.02,
-          "end": 102.22
+          "start": 101.93,
+          "end": 102.13
         },
         {
           "w": "says",
-          "start": 102.22,
-          "end": 102.46
+          "start": 102.13,
+          "end": 102.39
         },
         {
           "w": "\"It",
-          "start": 102.46,
-          "end": 102.76
+          "start": 102.39,
+          "end": 102.69
         },
         {
           "w": "sits",
-          "start": 102.76,
-          "end": 102.9
+          "start": 102.69,
+          "end": 102.83
         },
         {
           "w": "on",
-          "start": 102.9,
-          "end": 103.18
+          "start": 102.83,
+          "end": 103.11
         },
         {
           "w": "the",
-          "start": 103.18,
-          "end": 103.28
+          "start": 103.11,
+          "end": 103.21
         },
         {
           "w": "fence\".",
-          "start": 103.28,
-          "end": 103.5
+          "start": 103.21,
+          "end": 103.45
         },
         {
           "w": "We've",
-          "start": 104.18,
-          "end": 104.74
+          "start": 104.09,
+          "end": 104.67
         },
         {
           "w": "ended",
-          "start": 104.74,
-          "end": 104.98
+          "start": 104.67,
+          "end": 104.93
         },
         {
           "w": "up",
-          "start": 104.98,
-          "end": 105.18
+          "start": 104.93,
+          "end": 105.11
         },
         {
           "w": "with",
-          "start": 105.18,
-          "end": 105.42
+          "start": 105.11,
+          "end": 105.35
         },
         {
           "w": "\"It",
-          "start": 105.42,
-          "end": 105.64
+          "start": 105.35,
+          "end": 105.59
         },
         {
           "w": "sits",
-          "start": 105.64,
-          "end": 105.8
+          "start": 105.59,
+          "end": 105.73
         },
         {
           "w": "on",
-          "start": 105.8,
-          "end": 106.08
+          "start": 105.73,
+          "end": 106.01
         },
         {
           "w": "the",
-          "start": 106.08,
-          "end": 106.18
+          "start": 106.01,
+          "end": 106.11
         },
         {
           "w": "dog\".",
-          "start": 106.18,
-          "end": 106.4
+          "start": 106.11,
+          "end": 106.35
         }
       ]
     },
@@ -1278,118 +1273,118 @@
       "speaker": "USHINI",
       "tc": false,
       "caption": "After \"the\", we could pick \"magpie\", \"fence\", \"postie\" or \"dog\". These four branches show those choices; a thicker branch means more counters.",
-      "start": 107.77,
-      "end": 118.46,
+      "start": 107.68,
+      "end": 118.43,
       "words": [
         {
           "w": "After",
-          "start": 107.92,
-          "end": 108.48
+          "start": 107.83,
+          "end": 108.41
         },
         {
           "w": "\"the\",",
-          "start": 108.48,
-          "end": 108.64
+          "start": 108.41,
+          "end": 108.57
         },
         {
           "w": "we",
-          "start": 108.8,
-          "end": 109.06
+          "start": 108.73,
+          "end": 108.99
         },
         {
           "w": "could",
-          "start": 109.06,
-          "end": 109.24
+          "start": 108.99,
+          "end": 109.17
         },
         {
           "w": "pick",
-          "start": 109.24,
-          "end": 109.46
+          "start": 109.17,
+          "end": 109.37
         },
         {
           "w": "\"magpie\",",
-          "start": 109.46,
-          "end": 109.96
+          "start": 109.37,
+          "end": 109.89
         },
         {
           "w": "\"fence\",",
-          "start": 110.14,
-          "end": 110.56
+          "start": 110.07,
+          "end": 110.49
         },
         {
           "w": "\"postie\"",
-          "start": 110.74,
-          "end": 111.06
+          "start": 110.67,
+          "end": 111.27
         },
         {
           "w": "or",
-          "start": 111.34,
-          "end": 111.56
+          "start": 111.27,
+          "end": 111.49
         },
         {
           "w": "\"dog\".",
-          "start": 111.56,
-          "end": 111.92
+          "start": 111.49,
+          "end": 111.85
         },
         {
           "w": "These",
-          "start": 113.54,
-          "end": 114.1
+          "start": 113.45,
+          "end": 114.03
         },
         {
           "w": "four",
-          "start": 114.1,
-          "end": 114.32
+          "start": 114.03,
+          "end": 114.25
         },
         {
           "w": "branches",
-          "start": 114.32,
-          "end": 114.78
+          "start": 114.25,
+          "end": 114.69
         },
         {
           "w": "show",
-          "start": 114.78,
-          "end": 115.1
+          "start": 114.69,
+          "end": 115.01
         },
         {
           "w": "those",
-          "start": 115.1,
-          "end": 115.38
+          "start": 115.01,
+          "end": 115.29
         },
         {
           "w": "choices;",
-          "start": 115.38,
-          "end": 115.72
+          "start": 115.29,
+          "end": 115.65
         },
         {
           "w": "a",
-          "start": 116.14,
-          "end": 116.7
+          "start": 116.0,
+          "end": 116.096
         },
         {
           "w": "thicker",
-          "start": 116.7,
-          "end": 116.94
+          "start": 116.096,
+          "end": 116.771
         },
         {
           "w": "branch",
-          "start": 116.94,
-          "end": 117.28
+          "start": 116.771,
+          "end": 117.35
         },
         {
           "w": "means",
-          "start": 117.28,
-          "end": 117.54
+          "start": 117.35,
+          "end": 117.41
         },
         {
           "w": "more",
-          "start": 117.54,
-          "end": 117.88
+          "start": 117.41,
+          "end": 117.81
         },
         {
           "w": "counters.",
-          "start": 117.88,
-          "end": 118.26
+          "start": 117.81,
+          "end": 118.23
         }
       ]
     },
@@ -1397,94 +1392,124 @@
       "i": 10,
       "speaker": "BEN",
       "tc": false,
-      "caption": "Another go might take a different branch, or pick \"dog\" again. Repeats are part of the activity.",
-      "start": 119.61,
-      "end": 125.68,
+      "caption": "Run it again and you might get a different sentence, or the same one. That's fine: likely words just come up more often.",
+      "start": 119.92,
+      "end": 127.03,
       "words": [
         {
-          "w": "Another",
-          "start": 119.76,
-          "end": 120.4
+          "w": "Run",
+          "start": 120.07,
+          "end": 120.37
         },
         {
-          "w": "go",
-          "start": 120.4,
-          "end": 120.78
+          "w": "it",
+          "start": 120.37,
+          "end": 120.51
+        },
+        {
+          "w": "again",
+          "start": 120.51,
+          "end": 120.67
+        },
+        {
+          "w": "and",
+          "start": 120.85,
+          "end": 121.07
+        },
+        {
+          "w": "you",
+          "start": 121.07,
+          "end": 121.15
         },
         {
           "w": "might",
-          "start": 120.78,
-          "end": 120.96
+          "start": 121.15,
+          "end": 121.35
         },
         {
-          "w": "take",
-          "start": 120.96,
-          "end": 121.24
+          "w": "get",
+          "start": 121.35,
+          "end": 121.55
         },
         {
           "w": "a",
-          "start": 121.24,
-          "end": 121.36
+          "start": 121.55,
+          "end": 121.67
         },
         {
           "w": "different",
-          "start": 121.36,
-          "end": 121.6
+          "start": 121.67,
+          "end": 121.87
         },
         {
-          "w": "branch,",
-          "start": 121.6,
-          "end": 121.96
+          "w": "sentence,",
+          "start": 121.87,
+          "end": 122.37
         },
         {
           "w": "or",
-          "start": 122.1,
-          "end": 122.52
-        },
-        {
-          "w": "pick",
-          "start": 122.52,
-          "end": 122.72
-        },
-        {
-          "w": "\"dog\"",
-          "start": 122.72,
-          "end": 123.0
-        },
-        {
-          "w": "again.",
-          "start": 123.0,
-          "end": 123.34
-        },
-        {
-          "w": "Repeats",
-          "start": 123.76,
-          "end": 124.4
-        },
-        {
-          "w": "are",
-          "start": 124.4,
-          "end": 124.54
-        },
-        {
-          "w": "part",
-          "start": 124.54,
-          "end": 124.84
-        },
-        {
-          "w": "of",
-          "start": 124.84,
-          "end": 125.02
+          "start": 122.47,
+          "end": 122.79
         },
         {
           "w": "the",
-          "start": 125.02,
-          "end": 125.12
+          "start": 122.79,
+          "end": 122.91
         },
         {
-          "w": "activity.",
-          "start": 125.12,
-          "end": 125.48
+          "w": "same",
+          "start": 122.91,
+          "end": 123.13
+        },
+        {
+          "w": "one.",
+          "start": 123.13,
+          "end": 123.35
+        },
+        {
+          "w": "That's",
+          "start": 123.67,
+          "end": 124.15
+        },
+        {
+          "w": "fine:",
+          "start": 124.15,
+          "end": 124.45
+        },
+        {
+          "w": "likely",
+          "start": 124.89,
+          "end": 125.37
+        },
+        {
+          "w": "words",
+          "start": 125.37,
+          "end": 125.61
+        },
+        {
+          "w": "just",
+          "start": 125.61,
+          "end": 125.97
+        },
+        {
+          "w": "come",
+          "start": 125.97,
+          "end": 126.19
+        },
+        {
+          "w": "up",
+          "start": 126.19,
+          "end": 126.37
+        },
+        {
+          "w": "more",
+          "start": 126.37,
+          "end": 126.53
+        },
+        {
+          "w": "often.",
+          "start": 126.53,
+          "end": 126.83
         }
       ]
     },
@@ -1492,134 +1517,164 @@
       "i": 11,
       "speaker": "USHINI",
       "tc": false,
-      "caption": "Claude or ChatGPT also generates text by repeatedly predicting what comes next. It learns those predictions differently, using much more context than our last word.",
-      "start": 126.43,
-      "end": 138.26,
+      "caption": "Claude and ChatGPT write this way too, one piece at a time. They just look at far more than the last word, and they learn their numbers rather than counting them.",
+      "start": 127.88,
+      "end": 138.15,
       "words": [
         {
           "w": "Claude",
-          "start": 126.58,
-          "end": 127.22
+          "start": 128.03,
+          "end": 128.51
         },
         {
-          "w": "or",
-          "start": 127.22,
-          "end": 127.36
+          "w": "and",
+          "start": 128.51,
+          "end": 128.65
         },
         {
           "w": "ChatGPT",
-          "start": 127.36,
-          "end": 128.34
+          "start": 128.65,
+          "end": 129.55
         },
         {
-          "w": "also",
-          "start": 128.34,
-          "end": 128.92
+          "w": "write",
+          "start": 129.55,
+          "end": 129.83
         },
         {
-          "w": "generates",
-          "start": 128.92,
-          "end": 129.46
+          "w": "this",
+          "start": 129.83,
+          "end": 130.07
         },
         {
-          "w": "text",
-          "start": 129.46,
-          "end": 129.9
+          "w": "way",
+          "start": 130.07,
+          "end": 130.29
         },
         {
-          "w": "by",
-          "start": 129.9,
-          "end": 130.22
+          "w": "too,",
+          "start": 130.29,
+          "end": 130.61
         },
         {
-          "w": "repeatedly",
-          "start": 130.22,
-          "end": 130.7
+          "w": "one",
+          "start": 130.77,
+          "end": 131.21
         },
         {
-          "w": "predicting",
-          "start": 130.7,
-          "end": 131.2
+          "w": "piece",
+          "start": 131.21,
+          "end": 131.49
         },
         {
-          "w": "what",
-          "start": 131.2,
-          "end": 131.54
+          "w": "at",
+          "start": 131.49,
+          "end": 131.71
         },
         {
-          "w": "comes",
-          "start": 131.54,
-          "end": 131.82
+          "w": "a",
+          "start": 131.71,
+          "end": 131.81
         },
         {
-          "w": "next.",
-          "start": 131.82,
-          "end": 132.16
+          "w": "time.",
+          "start": 131.81,
+          "end": 132.11
         },
         {
-          "w": "It",
-          "start": 132.78,
-          "end": 133.42
+          "w": "They",
+          "start": 132.83,
+          "end": 133.31
         },
         {
-          "w": "learns",
-          "start": 133.42,
-          "end": 133.68
+          "w": "just",
+          "start": 133.31,
+          "end": 133.49
         },
         {
-          "w": "those",
-          "start": 133.68,
-          "end": 133.96
+          "w": "look",
+          "start": 133.49,
+          "end": 133.77
         },
         {
-          "w": "predictions",
-          "start": 133.96,
-          "end": 134.44
+          "w": "at",
+          "start": 133.77,
+          "end": 133.91
         },
         {
-          "w": "differently,",
-          "start": 134.44,
-          "end": 134.96
-        },
-        {
-          "w": "using",
-          "start": 135.2,
-          "end": 135.72
-        },
-        {
-          "w": "much",
-          "start": 135.72,
-          "end": 136.08
+          "w": "far",
+          "start": 133.91,
+          "end": 134.09
         },
         {
           "w": "more",
-          "start": 136.08,
-          "end": 136.38
-        },
-        {
-          "w": "context",
-          "start": 136.38,
-          "end": 136.84
+          "start": 134.09,
+          "end": 134.33
         },
         {
           "w": "than",
-          "start": 136.84,
-          "end": 137.14
+          "start": 134.33,
+          "end": 134.51
         },
         {
-          "w": "our",
-          "start": 137.14,
-          "end": 137.36
+          "w": "the",
+          "start": 134.51,
+          "end": 134.63
         },
         {
           "w": "last",
-          "start": 137.36,
-          "end": 137.7
+          "start": 134.63,
+          "end": 134.83
         },
         {
-          "w": "word.",
-          "start": 137.7,
-          "end": 138.06
+          "w": "word,",
+          "start": 134.83,
+          "end": 135.27
+        },
+        {
+          "w": "and",
+          "start": 135.43,
+          "end": 135.87
+        },
+        {
+          "w": "they",
+          "start": 135.87,
+          "end": 135.99
+        },
+        {
+          "w": "learn",
+          "start": 135.99,
+          "end": 136.29
+        },
+        {
+          "w": "their",
+          "start": 136.29,
+          "end": 136.47
+        },
+        {
+          "w": "numbers",
+          "start": 136.47,
+          "end": 136.77
+        },
+        {
+          "w": "rather",
+          "start": 136.77,
+          "end": 137.07
+        },
+        {
+          "w": "than",
+          "start": 137.07,
+          "end": 137.35
+        },
+        {
+          "w": "counting",
+          "start": 137.35,
+          "end": 137.67
+        },
+        {
+          "w": "them.",
+          "start": 137.67,
+          "end": 137.95
         }
       ]
     },
@@ -1628,213 +1683,213 @@
       "speaker": "BEN",
       "tc": false,
       "caption": "Four jobs in your group. A reader finds the row. A filler puts one counter per mark in the cup. A drawer pulls one out. And a writer writes the word down. Empty the cup back into the tub every time.",
-      "start": 139.33,
-      "end": 156.28,
+      "start": 139.34,
+      "end": 156.13,
       "words": [
         {
           "w": "Four",
-          "start": 139.48,
-          "end": 140.12
+          "start": 139.49,
+          "end": 139.97
         },
         {
           "w": "jobs",
-          "start": 140.12,
-          "end": 140.44
+          "start": 139.97,
+          "end": 140.27
         },
         {
           "w": "in",
-          "start": 140.44,
-          "end": 140.78
+          "start": 140.27,
+          "end": 140.63
         },
         {
           "w": "your",
-          "start": 140.78,
-          "end": 140.94
+          "start": 140.63,
+          "end": 140.79
         },
         {
           "w": "group.",
-          "start": 140.94,
-          "end": 141.22
+          "start": 140.79,
+          "end": 141.07
         },
         {
           "w": "A",
-          "start": 142.1,
-          "end": 142.74
+          "start": 142.17,
+          "end": 142.65
         },
         {
           "w": "reader",
-          "start": 142.74,
-          "end": 143.04
+          "start": 142.65,
+          "end": 142.85
         },
         {
           "w": "finds",
-          "start": 143.04,
-          "end": 143.48
+          "start": 142.85,
+          "end": 143.29
         },
         {
           "w": "the",
-          "start": 143.48,
-          "end": 143.74
+          "start": 143.29,
+          "end": 143.57
         },
         {
           "w": "row.",
-          "start": 143.74,
-          "end": 143.86
+          "start": 143.57,
+          "end": 143.69
         },
         {
           "w": "A",
-          "start": 144.88,
-          "end": 145.52
+          "start": 144.89,
+          "end": 145.37
         },
         {
           "w": "filler",
-          "start": 145.52,
-          "end": 145.76
+          "start": 145.37,
+          "end": 145.57
         },
         {
           "w": "puts",
-          "start": 145.76,
-          "end": 146.02
+          "start": 145.57,
+          "end": 145.83
         },
         {
           "w": "one",
-          "start": 146.02,
-          "end": 146.32
+          "start": 145.83,
+          "end": 146.15
         },
         {
           "w": "counter",
-          "start": 146.32,
-          "end": 146.66
+          "start": 146.15,
+          "end": 146.51
         },
         {
           "w": "per",
-          "start": 146.66,
-          "end": 146.84
+          "start": 146.51,
+          "end": 146.67
         },
         {
           "w": "mark",
-          "start": 146.84,
-          "end": 147.08
+          "start": 146.67,
+          "end": 146.93
         },
         {
           "w": "in",
-          "start": 147.08,
-          "end": 147.28
+          "start": 146.93,
+          "end": 147.13
         },
         {
           "w": "the",
-          "start": 147.28,
-          "end": 147.34
+          "start": 147.13,
+          "end": 147.17
         },
         {
           "w": "cup.",
-          "start": 147.34,
-          "end": 147.52
+          "start": 147.2,
+          "end": 147.42
         },
         {
           "w": "A",
-          "start": 147.7,
-          "end": 148.1
+          "start": 147.27,
+          "end": 147.67
         },
         {
           "w": "drawer",
-          "start": 149.02,
-          "end": 149.28
+          "start": 147.67,
+          "end": 149.13
         },
         {
           "w": "pulls",
-          "start": 149.28,
-          "end": 149.58
+          "start": 149.13,
+          "end": 149.41
         },
         {
           "w": "one",
-          "start": 149.58,
-          "end": 149.92
+          "start": 149.41,
+          "end": 149.79
         },
         {
           "w": "out.",
-          "start": 149.92,
-          "end": 150.26
+          "start": 149.79,
+          "end": 150.11
         },
         {
           "w": "And",
-          "start": 151.22,
-          "end": 151.74
+          "start": 151.03,
+          "end": 151.59
         },
         {
           "w": "a",
-          "start": 151.74,
-          "end": 151.84
+          "start": 151.59,
+          "end": 151.69
         },
         {
           "w": "writer",
-          "start": 151.84,
-          "end": 152.12
+          "start": 151.69,
+          "end": 151.97
         },
         {
           "w": "writes",
-          "start": 152.12,
-          "end": 152.44
+          "start": 151.97,
+          "end": 152.31
         },
         {
           "w": "the",
-          "start": 152.44,
-          "end": 152.66
+          "start": 152.31,
+          "end": 152.51
         },
         {
           "w": "word",
-          "start": 152.66,
-          "end": 152.86
+          "start": 152.51,
+          "end": 152.71
         },
         {
           "w": "down.",
-          "start": 152.86,
-          "end": 153.14
+          "start": 152.71,
+          "end": 153.01
         },
         {
           "w": "Empty",
-          "start": 153.52,
-          "end": 154.04
+          "start": 153.33,
+          "end": 153.89
         },
         {
           "w": "the",
-          "start": 154.04,
-          "end": 154.2
+          "start": 153.89,
+          "end": 154.05
         },
         {
           "w": "cup",
-          "start": 154.2,
-          "end": 154.4
+          "start": 154.05,
+          "end": 154.27
         },
         {
           "w": "back",
-          "start": 154.4,
-          "end": 154.66
+          "start": 154.27,
+          "end": 154.51
         },
         {
           "w": "into",
-          "start": 154.66,
-          "end": 154.9
+          "start": 154.51,
+          "end": 154.75
         },
         {
           "w": "the",
-          "start": 154.9,
-          "end": 155.06
+          "start": 154.75,
+          "end": 154.93
         },
         {
           "w": "tub",
-          "start": 155.06,
-          "end": 155.32
+          "start": 154.93,
+          "end": 155.19
         },
         {
           "w": "every",
-          "start": 155.32,
-          "end": 155.68
+          "start": 155.19,
+          "end": 155.51
         },
         {
           "w": "time.",
-          "start": 155.68,
-          "end": 156.08
+          "start": 155.51,
+          "end": 155.93
         }
       ]
     },
@@ -1843,63 +1898,63 @@
       "speaker": "USHINI",
       "tc": true,
       "caption": "Reader, find the full stop. Let's see what your book says.",
-      "start": 157.23,
-      "end": 161.56,
+      "start": 157.04,
+      "end": 161.41,
       "words": [
         {
           "w": "Reader,",
-          "start": 157.38,
-          "end": 157.9
+          "start": 157.19,
+          "end": 157.75
         },
         {
           "w": "find",
-          "start": 157.9,
-          "end": 158.38
+          "start": 157.75,
+          "end": 158.23
         },
         {
           "w": "the",
-          "start": 158.38,
-          "end": 158.56
+          "start": 158.23,
+          "end": 158.41
         },
         {
           "w": "full",
-          "start": 158.56,
-          "end": 158.74
+          "start": 158.41,
+          "end": 158.59
         },
         {
           "w": "stop.",
-          "start": 158.74,
-          "end": 159.02
+          "start": 158.59,
+          "end": 158.87
         },
         {
           "w": "Let's",
-          "start": 159.94,
-          "end": 160.46
+          "start": 159.75,
+          "end": 160.31
         },
         {
           "w": "see",
-          "start": 160.46,
-          "end": 160.5
+          "start": 160.31,
+          "end": 160.35
         },
         {
           "w": "what",
-          "start": 160.5,
-          "end": 160.72
+          "start": 160.35,
+          "end": 160.57
         },
         {
           "w": "your",
-          "start": 160.72,
-          "end": 160.94
+          "start": 160.57,
+          "end": 160.77
         },
         {
           "w": "book",
-          "start": 160.94,
-          "end": 161.12
+          "start": 160.77,
+          "end": 160.97
         },
         {
           "w": "says.",
-          "start": 161.12,
-          "end": 161.36
+          "start": 160.97,
+          "end": 161.21
         }
       ]
     }

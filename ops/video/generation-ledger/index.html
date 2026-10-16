@@ -15,9 +15,9 @@
   <body>
     <!-- A worked sentence, a four-way choice, then the classroom activity. -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="generation-ledger"
-         data-start="0" data-duration="170.57" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="170.57" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="163.57" data-track-index="1"></audio>
+         data-start="0" data-duration="170.43" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="170.43" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="163.43" data-track-index="1"></audio>
     </div>
     <script type="module">
       import { WALK, wordTimes, paperLine, splice, walkStyle } from "./parts/generation-walk.js";
@@ -322,8 +322,8 @@
           if (t1) tl.to(forkPaths[word], { stroke: "var(--text)" }, t1, { dur: 0.2 });
         };
         highlight("dog", T.start(10), w(10, "different"));
-        highlight("fence", w(10, "different"), w(10, "dog"));
-        highlight("dog", w(10, "dog"));
+        highlight("fence", w(10, "different"), w(10, "same"));
+        highlight("dog", w(10, "same"));
         tl.to(fork, { opacity: 0 }, T.start(12) - 0.5, { dur: 0.4 });
 
         // ============================================================ line 12
