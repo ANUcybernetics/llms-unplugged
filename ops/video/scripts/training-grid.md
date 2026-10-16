@@ -54,8 +54,8 @@ full stops have their own tiles.
 
 **USHINI (VO):** Now read it two words at a time. Add each new word to both
 edges of the grid. [beat] The first word gets a row. [beat] The second gets a
-column. [beat] Put a tally where they cross. [beat] Then slide along by one, and
-do it again.
+column. [beat] Put a tally where they cross. [beat] Then slide along by one,
+[beat] and do it again.
 
 _Visual: a gold bracket over "the magpie". Beside the tiles a blank grid sheet:
 "the" writes onto the first row header and the first column header at once, then
@@ -110,9 +110,9 @@ grid, every box becoming its count, the empty ones a faint 0._
 _Reads:_ 1. each box's tallies are a count; 2. the whole grid is a table of
 numbers; 3. most of them are zero.
 
-**BEN (VO):** Large language models also have numbers called weights. Those
-weights are adjusted during training to improve predictions; they aren't counts
-of word pairs.
+**BEN (VO):** When people talk about a model's "weights", they mean numbers like
+these, set by the text it read. An LLM's weights aren't tallies of pairs, but
+they do the same job: predicting what comes next.
 
 _Visual: hold on the table of numbers. The nonzero numbers lift very slightly
 brighter than the zeros._
@@ -134,8 +134,9 @@ the viewer sees rather than a gesture.
 _Reads:_ 1. a bigger book makes a bigger table the same way; 2. real books make
 tables far too big to read.
 
-**BEN:** Large language models train on much more text, learning patterns that
-help predict what comes next. Our counts let us try prediction by hand.
+**BEN:** A large language model reads trillions of words, and it doesn't keep a
+box for every pair. But it's training for the same job: guessing what comes
+next. Yours fits on a desk.
 
 **USHINI (VO):** A few tips. Start on any page you like. A full stop is followed
 by whatever comes next, even over the page. Skip the speech marks. And a new

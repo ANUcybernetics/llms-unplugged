@@ -31,9 +31,11 @@
       "The first word gets a row.",
       "The second gets a column.",
       "Put a tally where they cross.",
-      "Then slide along by one, and do it again."
+      "Then slide along by one,",
+      "and do it again."
     ],
     "beats": [
+      0.8,
       0.8,
       0.8,
       0.8,
@@ -79,8 +81,8 @@
     "i": 7,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Large language models also have numbers called weights. Those weights are adjusted during training to improve predictions; they aren't counts of word pairs.",
-    "tts": "Large language models also have numbers called weights. Those weights are adjusted during training to improve predictions; they aren't counts of word pairs."
+    "caption": "When people talk about a model's \"weights\", they mean numbers like these, set by the text it read. An LLM's weights aren't tallies of pairs, but they do the same job: predicting what comes next.",
+    "tts": "When people talk about a model's \"weights\", they mean numbers like these, set by the text it read. An LLM's weights aren't tallies of pairs, but they do the same job: predicting what comes next."
   },
   {
     "i": 8,
@@ -93,8 +95,8 @@
     "i": 9,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Large language models train on much more text, learning patterns that help predict what comes next. Our counts let us try prediction by hand.",
-    "tts": "Large language models train on much more text, learning patterns that help predict what comes next. Our counts let us try prediction by hand."
+    "caption": "A large language model reads trillions of words, and it doesn't keep a box for every pair. But it's training for the same job: guessing what comes next. Yours fits on a desk.",
+    "tts": "A large language model reads trillions of words, and it doesn't keep a box for every pair. But it's training for the same job: guessing what comes next. Yours fits on a desk."
   },
   {
     "i": 10,

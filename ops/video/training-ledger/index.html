@@ -41,9 +41,9 @@
            a line, continuing onto the lines below) five lines to a sheet, in
            reading order; the CLI prints no such set -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="training-ledger"
-         data-start="0" data-duration="135.49" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="135.49" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="128.49" data-track-index="1"></audio>
+         data-start="0" data-duration="144.63" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="144.63" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="137.63" data-track-index="1"></audio>
     </div>
     <script type="module">
       import * as C from "./kit/motion/canvas.js";
@@ -318,9 +318,9 @@
         // ==== line 3: a new follower takes the next box; pairs come round again
         const t3 = T.start(3);
         K.appear(tl, strip.tiles.slice(11).map((t) => t.el), t3 - 0.4, { y: 12, stagger: 0.012, dur: 0.35 });
-        tl.to(row0.lit, { opacity: 1 }, T.word(3, "same") , { dur: 0.3 });
+        tl.to(row0.lit, { opacity: 1 }, T.word(3, "different") , { dur: 0.3 });
         const theP = P.filter((p) => p.from === "the").slice(1);
-        const slowT = [T.word(3, "new") - 0.3, T.word(3, "when") - 0.35, T.word(3, "round") - 0.3];
+        const slowT = [T.word(3, "different") - 0.3, T.word(3, "when", 2) - 0.35, T.word(3, "round") - 0.3];
         const fastT0 = T.word(3, "mark") + 0.3, fastT1 = T.word(3, "fence") - 0.35;
         const theTimes = [...slowT, ...Array.from({ length: theP.length - 3 }, (_, k) => fastT0 + (fastT1 - fastT0) * Math.pow(k / (theP.length - 4), 0.75))];
         theP.forEach((p, k) => {
@@ -437,11 +437,11 @@
         });
         const FC = { x: 1460, y: A.y + 110 };
         tl.to([fCover, ...edges], { x: (i) => FC.x + (i ? (4 - i) * 7 : 0) }, tBig + 0.2, { dur: 0.9, ease: "out-cubic" });
-        K.glint(tl, fCover.border, { phase: 0.4, from: T.word(8, "rows") + 0.4, to: T.word(9, "Our") });
+        K.glint(tl, fCover.border, { phase: 0.4, from: T.word(8, "rows") + 0.4, to: T.word(9, "But") });
         const tFill = T.word(8, "Frankenstein") - 0.1, tFull = T.word(8, "rows") + 0.1;
         const mFill = (t) => Math.exp(K.lerp(Math.log(1), Math.log(Math.sqrt(FL.nSheets)), C.phase(t, tFill, tFull - tFill, "in-out-quad")));
         tl.to(ledL, { opacity: 0 }, tFill + 0.1, { dur: 0.6 });
-        const tFold = T.word(9, "Our");
+        const tFold = T.word(9, "But");
         const field = C.canvas(tl, scene, (ctx, t) => {
           if (t < tBig || t > tFold + 1.2) return;
           const m = mFill(t);
@@ -460,8 +460,8 @@
         tl.to(field.el, { x: FC.x - REG.x * fs, y: FC.y - REG.y * fs, scale: fs, opacity: 0 }, tFold, { dur: 0.9, ease: "in-out-cubic" });
         const coverRing = frame(scene, { x: FC.x, y: FC.y, w: 400, h: 540 }, 14);
         tl.to(coverRing.el, { opacity: 1 }, tFold + 0.7, { dur: 0.3 });
-        tl.to(coverRing.el, { opacity: 0 }, T.word(9, "hand") + 0.2, { dur: 0.3 });
-        tl.to([fCover, ...edges], { x: "+=700" }, T.word(9, "hand") + 0.3, { dur: 0.6, ease: "in-cubic" });
+        tl.to(coverRing.el, { opacity: 0 }, T.word(9, "desk") + 0.2, { dur: 0.3 });
+        tl.to([fCover, ...edges], { x: "+=700" }, T.word(9, "desk") + 0.3, { dur: 0.6, ease: "in-cubic" });
 
         // ==== line 10: three things catch people out, on a blank sheet
         const tipEntries = [

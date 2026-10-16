@@ -59,7 +59,7 @@ full stops have their own tiles.
 
 **USHINI (VO):** Now read it two words at a time. Find the row for the first
 word. [beat] The second word goes in a box on that row, with a mark beside it.
-[beat] Then slide along by one, and do it again.
+[beat] Then slide along by one, [beat] and do it again.
 
 _Visual: a gold bracket over "the magpie". Beside the tiles a blank ledger
 sheet: "the" writes into the first empty row, "magpie" into its red box, and a
@@ -70,9 +70,9 @@ _Reads:_ 1. the first word of the pair finds its row; 2. the second word goes in
 a box on that row; 3. a mark beside it; 4. slide along one, and each word starts
 the next pair.
 
-**BEN (VO):** A new word after the same word takes the next empty box. And when
-a pair comes round again, it gets another mark. By the end, "the fence" has six
-marks, and "the magpie" five.
+**BEN (VO):** When a different word follows "the", it takes the next empty box.
+[beat] And when a pair comes round again, it gets another mark. By the end, "the
+fence" has six marks, and "the magpie" five.
 
 _Visual: the bracket skips to the second "the": the row for "the" lights, and
 "fence" writes into the blue box beside the red "magpie". Then the bracket skips
@@ -115,9 +115,9 @@ ripples down every row of every sheet._
 
 _Reads:_ 1. each box's marks are a count; 2. every sheet is a table of numbers.
 
-**BEN (VO):** Large language models also have numbers called weights. Those
-weights are adjusted during training to improve predictions; they aren't counts
-of word pairs.
+**BEN (VO):** When people talk about a model's "weights", they mean numbers like
+these, set by the text it read. An LLM's weights aren't tallies of pairs, but
+they do the same job: predicting what comes next.
 
 _Visual: hold on the sheets of numbers._
 
@@ -139,13 +139,14 @@ than a gesture.
 _Reads:_ 1. a bigger book makes more rows the same way; 2. real books make far
 more rows than anyone could read.
 
-**BEN:** Large language models train on much more text, learning patterns that
-help predict what comes next. Our counts let us try prediction by hand.
+**BEN:** A large language model reads trillions of words, and it doesn't keep a
+box for every pair. But it's training for the same job: guessing what comes
+next. Yours fits on a desk.
 
 **USHINI (VO):** Three things catch people out. A full stop is a word, and its
-row says how sentences start. A new word goes in the next empty box, never skip
-one. And say a new word out loud when you start its row, so nobody starts it
-twice.
+row says how sentences start. A word that's new to the row goes in the next
+empty box; never skip one. And say a new word out loud when you start its row,
+so nobody starts it twice.
 
 _Visual: a blank sheet. The row for full stop lights. A follower writes into the
 next empty box, and a gap between boxes flashes and closes. A word writes into a
@@ -153,4 +154,4 @@ new row, and a second, identical row that starts to write below it wipes away._
 
 _Reads:_ 1. full stop has a row; 2. boxes fill in order; 3. one row per word.
 
-**BEN (TC):** Reader, grab the text. Two words at a time.
+**BEN (TC):** Pick a reader to grab the text. Two words at a time.

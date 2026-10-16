@@ -6,32 +6,32 @@ Every mark on these sheets was made by somebody reading. So what did they keep? 
 00:00:11.490 --> 00:00:22.980
 Treat capitals and lowercase as the same word, even on printed sheets. "The" and "the" go in the same row. Full stops and exclamation marks count as words too.
 
-00:00:23.730 --> 00:00:38.800
+00:00:23.970 --> 00:00:40.520
 Now read it two words at a time. Find the row for the first word. The second word goes in a box on that row, with a mark beside it. Then slide along by one, and do it again.
 
-00:00:39.950 --> 00:00:51.180
-A new word after the same word takes the next empty box. And when a pair comes round again, it gets another mark. By the end, "the fence" has six marks, and "the magpie" five.
+00:00:41.950 --> 00:00:54.180
+When a different word follows "the", it takes the next empty box. And when a pair comes round again, it gets another mark. By the end, "the fence" has six marks, and "the magpie" five.
 
-00:00:52.130 --> 00:00:59.180
+00:00:55.310 --> 00:01:02.200
 For our model, training means counting pairs. Here's the rest of the book, counted by a computer.
 
-00:01:00.490 --> 00:01:07.680
+00:01:03.790 --> 00:01:10.660
 We can put the book away now. The sheets have counts for each pair of words, and that's what we'll use to write.
 
-00:01:08.270 --> 00:01:15.520
+00:01:11.530 --> 00:01:18.500
 And a row of marks is just a row of numbers. The row for "the" says five, six, four, four.
 
-00:01:16.910 --> 00:01:25.260
-Large language models also have numbers called weights. Those weights are adjusted during training to improve predictions; they aren't counts of word pairs.
+00:01:19.850 --> 00:01:31.120
+When people talk about a model's "weights", they mean numbers like these, set by the text it read. An LLM's weights aren't tallies of pairs, but they do the same job: predicting what comes next.
 
-00:01:26.030 --> 00:01:34.860
+00:01:32.030 --> 00:01:40.580
 We can count a bigger book the same way. This is Frankenstein. Eighty-five thousand words, and seven thousand rows.
 
-00:01:36.210 --> 00:01:44.420
-Large language models train on much more text, learning patterns that help predict what comes next. Our counts let us try prediction by hand.
+00:01:42.250 --> 00:01:52.740
+A large language model reads trillions of words, and it doesn't keep a box for every pair. But it's training for the same job: guessing what comes next. Yours fits on a desk.
 
-00:01:45.110 --> 00:02:01.840
-Three things catch people out. A full stop is a word, and its row says how sentences start. A new word goes in the next empty box, never skip one. And say a new word out loud when you start its row, so nobody starts it twice.
+00:01:53.390 --> 00:02:10.960
+Three things catch people out. A full stop is a word, and its row says how sentences start. A word that's new to the row goes in the next empty box; never skip one. And say a new word out loud when you start its row, so nobody starts it twice.
 
-00:02:03.430 --> 00:02:07.120
-Reader, grab the text. Two words at a time.
+00:02:12.350 --> 00:02:16.240
+Pick a reader to grab the text. Two words at a time.

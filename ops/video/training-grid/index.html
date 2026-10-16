@@ -23,9 +23,9 @@
          real counts filling a table of 7,023 rows (parts/frankenstein.js).
          Every beat lands on a word of the voice track (timing.json). -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="training-grid"
-         data-start="0" data-duration="138.72" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="138.72" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="131.72" data-track-index="1"></audio>
+         data-start="0" data-duration="145.72" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="145.72" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="138.72" data-track-index="1"></audio>
     </div>
     <script type="module">
       import * as C from "./kit/motion/canvas.js";
@@ -434,13 +434,13 @@
         fCover.setAttribute("data-layout-allow-overflow", "true");
         const FC = { x: 1300, y: A.y + 110 };
         tl.to([fCover, ...edges], { x: (i) => FC.x + (i ? (4 - i) * 7 : 0) }, tBig + 0.2, { dur: 0.9, ease: "out-cubic" });
-        K.glint(tl, fCover.border, { phase: 0.4, from: T.word(8, "rows") + 0.4, to: T.word(9, "Our") });
+        K.glint(tl, fCover.border, { phase: 0.4, from: T.word(8, "rows") + 0.4, to: T.word(9, "But") });
         // the fill: the view grows log-evenly with the words met, the text read
         // is however far the book has to go to meet them
         const tFill = T.word(8, "Frankenstein") - 0.1, tFull = T.word(8, "rows") + 0.1;
         const Vfill = (t) => Math.exp(K.lerp(Math.log(12), Math.log(FM.n), C.phase(t, tFill, tFull - tFill, "in-out-quad")));
         tl.to(grid.el, { opacity: 0 }, tFill + 0.1, { dur: 0.6 });
-        const tBackIn = T.word(9, "Our") + 0.3;
+        const tBackIn = T.word(9, "But") + 0.3;
         const field = C.canvas(tl, scene, (ctx, t) => {
           if (t < tBig || t > tBackIn + 1) return;
           const v = Vfill(t);
@@ -457,12 +457,12 @@
         scene.append(grid.el);
 
         // ==== line 9: a real model reads trillions; the table folds into the book
-        const tFold = T.word(9, "Our");
+        const tFold = T.word(9, "But");
         const fs = 400 / SQ.side;
         tl.to(field.el, { x: FC.x - SQ.x * fs, y: FC.y - SQ.y * fs, scale: fs, opacity: 0 }, tFold, { dur: 0.9, ease: "in-out-cubic" });
         const coverRing = frame(scene, { x: FC.x, y: FC.y, w: 400, h: 540 }, 14);
         tl.to(coverRing.el, { opacity: 1 }, tFold + 0.7, { dur: 0.3 });
-        tl.to(coverRing.el, { opacity: 0 }, T.word(9, "hand") + 0.2, { dur: 0.3 });
+        tl.to(coverRing.el, { opacity: 0 }, T.word(9, "desk") + 0.2, { dur: 0.3 });
 
         // ==== line 10: tips, on a page of Frankenstein and a blank grid
         const t10 = T.start(10);
