@@ -2,7 +2,7 @@
 import type { ImageMetadata } from "astro";
 import ThemeBaseLayout from "astro-theme-university/layouts/BaseLayout.astro";
 import CommonHead from "../components/CommonHead.astro";
-import { siteConfig, themeLogo, footerOverrides } from "../site-config";
+import { siteConfig, themeLogo, footerMeta } from "../site-config";
 import faviconAsset from "../assets/favicon.svg";
 import "../styles/global.css";
 import "../styles/widgets.css";
@@ -45,7 +45,7 @@ const fullTitle =
   logoDark={themeLogo}
   mainAttrs={noindex ? {} : { "data-pagefind-body": "" }}
   {...siteConfig}
-  {...footerOverrides}
+  meta={footerMeta(Astro.url.pathname)}
   socialImage={ogImage ?? siteConfig.socialImage}
   socialImageAlt={ogImage ? undefined : siteConfig.socialImageAlt}
   socialType={ogType}

@@ -214,3 +214,9 @@
     margin-top: 18mm;
   }
 }
+
+/* GitHub source link at the end of the footer meta line (src/lib/source-link.ts). */
+.at-footer-meta .source-link svg {
+  display: inline;
+  vertical-align: -0.125em;
+}

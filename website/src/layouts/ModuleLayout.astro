@@ -2,7 +2,7 @@
 import type { ImageMetadata } from "astro";
 import SidebarLayout from "astro-theme-university/layouts/SidebarLayout.astro";
 import CommonHead from "../components/CommonHead.astro";
-import { siteConfig, themeLogo, footerOverrides } from "../site-config";
+import { siteConfig, themeLogo, footerMeta } from "../site-config";
 import { getModuleSidebar } from "../lib/module-sidebar";
 import faviconAsset from "../assets/favicon.svg";
 import "../styles/global.css";
@@ -36,7 +36,6 @@ const {
 } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/$/, "") + "/";
 const sidebar = await getModuleSidebar();
-const slug = currentPath.split("/").filter(Boolean).pop();
 ---
 
 <SidebarLayout
@@ -49,7 +48,7 @@ const slug = currentPath.split("/").filter(Boolean).pop();
   logo={themeLogo}
   logoDark={themeLogo}
   {...siteConfig}
-  {...footerOverrides}
+  meta={footerMeta(Astro.url.pathname)}
   socialImage={ogImage ?? siteConfig.socialImage}
   socialImageAlt={ogImage ? undefined : siteConfig.socialImageAlt}
   socialType="article"
@@ -94,13 +93,6 @@ const slug = currentPath.split("/").filter(Boolean).pop();
     )}
     <slot />
   </div>
-  <div class="edit-link">
-    <a
-      href={`https://github.com/ANUcybernetics/llms-unplugged/edit/main/website/src/content/modules/${slug}.mdx`}
-    >
-      Edit this page on GitHub
-    </a>
-  </div>
 </SidebarLayout>
 
 <style>
@@ -117,13 +109,6 @@ const slug = currentPath.split("/").filter(Boolean).pop();
     margin: 0 0 1.5rem;
     font-size: 0.95rem;
     color: var(--at-text-secondary);
-  }
-
-  .edit-link {
-    margin-top: 3rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--at-divider);
-    font-size: 0.875rem;
   }
 </style>
 

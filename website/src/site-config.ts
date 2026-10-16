@@ -1,6 +1,7 @@
 import { defineSiteConfig } from "astro-theme-university/types";
 import logo from "./assets/favicon.svg";
 import ogImage from "./assets/og-image.jpg";
+import { sourceLinkHtml } from "./lib/source-link";
 
 export const siteConfig = defineSiteConfig({
   name: "LLMs Unplugged",
@@ -26,17 +27,20 @@ export const siteConfig = defineSiteConfig({
 
 export const themeLogo = logo;
 
-// Footer overrides — passed directly to BaseLayout (not part of SiteConfig).
-// astro-theme-university ships no institutional footer defaults (this site
-// never wanted the ANU footer — it used `institutional: false` under the old
-// astro-theme-anu theme), so the footer is just the licence line plus the
-// custom meta line below. Meta strings render as HTML, so inline anchors are
-// allowed.
-export const footerOverrides = {
-  meta: [
+// Footer meta lines — passed directly to BaseLayout (not part of SiteConfig).
+// astro-theme-university ships no institutional footer defaults, so the footer
+// is just the licence line plus these. Meta strings render as HTML, so inline
+// anchors are allowed. The last line ends with a link to the page's source.
+export function footerMeta(pathname: string): string[] {
+  return [
     'LLMs Unplugged is a <a href="https://cybernetics.anu.edu.au/cybernetic-studio/">Cybernetic Studio</a> project at the ANU School of Cybernetics, made by <a href="https://benswift.me">Ben Swift</a>.',
-    // Glossary and FAQ moved out of the main nav in the July 2026 restructure;
-    // the Library followed in August (it's linked from Materials and About).
-    '<a href="/glossary/">Glossary</a> &middot; <a href="/faq/">FAQ</a> &middot; <a href="/library/">Library</a>',
-  ],
-};
+    [
+      '<a href="/glossary/">Glossary</a>',
+      '<a href="/faq/">FAQ</a>',
+      '<a href="/library/">Library</a>',
+      sourceLinkHtml(pathname),
+    ]
+      .filter(Boolean)
+      .join(" &middot; "),
+  ];
+}
