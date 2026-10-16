@@ -1,34 +1,34 @@
 WEBVTT
 
-00:00:00.150 --> 00:00:08.260
-AI models can give a fluent answer that gets the facts wrong. Our paper model lets us see why familiar words aren't enough to trust an answer.
+00:00:00.420 --> 00:00:10.030
+AI models sometimes give an answer that sounds right and isn't. People call it hallucinating. Our paper model can do it too, and we can check it against the book.
 
-00:00:08.770 --> 00:00:19.900
+00:00:10.880 --> 00:00:21.690
 In the book's story, the magpie swoops. The dog runs. The magpie returns to the fence. We can check each of those against the page.
 
-00:00:21.170 --> 00:00:27.160
+00:00:23.220 --> 00:00:28.950
 Now generate a couple of sentences. "Down comes the dog. Swoop!"
 
-00:00:29.020 --> 00:00:42.150
+00:00:30.930 --> 00:00:43.920
 Suppose we wanted an answer to "Who comes down in the story?" Our generated sentence says the dog. The book says the magpie. We'd need to check the book before using that as an answer.
 
-00:00:43.440 --> 00:01:00.670
-Look at how it got there. "Down comes the" is in the book. "The dog" is in the book. A full stop after "dog", then "swoop", both in the book. Every pair occurs there. The sentence combines them in a new way.
+00:00:45.210 --> 00:01:02.420
+Look at how it got there. "Down comes the" is in the book. "The dog" is in the book. A full stop after "dog", then "swoop", both in the book. Every pair is in the book. The sentence isn't.
 
-00:01:01.420 --> 00:01:10.770
+00:01:03.470 --> 00:01:12.700
 Rank the short sentences by how likely they are. "Swoop!" first. "It watches." Then "Here comes the fence."
 
-00:01:12.140 --> 00:01:23.690
+00:01:14.070 --> 00:01:25.620
 That's the third likeliest sentence, three times as likely as "Here comes the dog", which the book actually says. In the counts, "fence" follows "the" most often, and a full stop always follows "fence".
 
-00:01:24.820 --> 00:01:37.190
+00:01:26.750 --> 00:01:39.120
 Here's every complete sentence up to ten tokens long, including punctuation. Seventy-nine of them. Seven are in the book. The other seventy-two are new combinations.
 
-00:01:38.640 --> 00:01:51.110
+00:01:40.930 --> 00:01:53.040
 A new sentence isn't necessarily wrong. "Here comes the magpie" could fit the story, even though the book doesn't say it. These colours tell us whether a sentence was in the book. They don't tell us whether it's true.
 
-00:01:52.000 --> 00:02:05.510
+00:01:53.950 --> 00:02:07.420
 Larger models use more context and learn differently from our counting grid. They can still produce incorrect answers. If you're using one to answer a question about a source, check what the source actually says.
 
-00:02:06.980 --> 00:02:14.270
+00:02:08.890 --> 00:02:16.180
 Look back at the sentences you wrote. Which ones are true? Which ones could you check against the book, and how would you know?

@@ -3,8 +3,8 @@
     "i": 0,
     "speaker": "BEN",
     "tc": true,
-    "caption": "AI models can give a fluent answer that gets the facts wrong. Our paper model lets us see why familiar words aren't enough to trust an answer.",
-    "tts": "AI models can give a fluent answer that gets the facts wrong. Our paper model lets us see why familiar words aren't enough to trust an answer."
+    "caption": "AI models sometimes give an answer that sounds right and isn't. People call it hallucinating. Our paper model can do it too, and we can check it against the book.",
+    "tts": "AI models sometimes give an answer that sounds right and isn't. People call it hallucinating. Our paper model can do it too, and we can check it against the book."
   },
   {
     "i": 1,
@@ -39,16 +39,18 @@
     "i": 4,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Look at how it got there. \"Down comes the\" is in the book. \"The dog\" is in the book. A full stop after \"dog\", then \"swoop\", both in the book. Every pair occurs there. The sentence combines them in a new way.",
-    "tts": "Look at how it got there. \"Down comes the\" is in the book. \"The dog\" is in the book. A full stop after \"dog\", then \"swoop\", both in the book. Every pair occurs there. The sentence combines them in a new way.",
+    "caption": "Look at how it got there. \"Down comes the\" is in the book. \"The dog\" is in the book. A full stop after \"dog\", then \"swoop\", both in the book. Every pair is in the book. The sentence isn't.",
+    "tts": "Look at how it got there. \"Down comes the\" is in the book. \"The dog\" is in the book. A full stop after \"dog\", then \"swoop\", both in the book. Every pair is in the book. The sentence isn't.",
     "parts": [
       "Look at how it got there.",
       "\"Down comes the\" is in the book.",
       "\"The dog\" is in the book.",
       "A full stop after \"dog\", then \"swoop\", both in the book.",
-      "Every pair occurs there. The sentence combines them in a new way."
+      "Every pair is in the book.",
+      "The sentence isn't."
     ],
     "beats": [
+      0.8,
       0.8,
       0.8,
       0.8,

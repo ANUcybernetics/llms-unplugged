@@ -30,8 +30,9 @@ one of the book's own seven sentences.
 
 ## Script
 
-**BEN (TC):** AI models can give a fluent answer that gets the facts wrong. Our
-paper model lets us see why familiar words aren't enough to trust an answer.
+**BEN (TC):** AI models sometimes give an answer that sounds right and isn't.
+People call it hallucinating. Our paper model can do it too, and we can check it
+against the book.
 
 _Visual: the finished magpie grid on the desk beside the closed picture book._
 
@@ -66,8 +67,7 @@ generated answer names a different character from the source.
 
 **BEN (VO):** Look at how it got there. [beat] "Down comes the" is in the book.
 [beat] "The dog" is in the book. [beat] A full stop after "dog", then "swoop",
-both in the book. [beat] Every pair occurs there. The sentence combines them in
-a new way.
+both in the book. [beat] Every pair is in the book. [beat] The sentence isn't.
 
 _Visual: bracket each adjacent pair, lighting its grid cell and a matching
 passage from the book. End with a bracket under the whole generated sentence._
