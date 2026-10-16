@@ -150,8 +150,9 @@ _Reads:_ 1. the booklet has a larger vocabulary; 2. it still uses one word of
 context; 3. its vocabulary gives clues to the source book.
 
 **BEN:** You can read every number in this model and run it at the kitchen
-table. An open-weights model makes its learned numbers available for people to
-download. With the software and hardware to run it, you can use your own copy.
+table. "Open weights" means the same thing for a real model: its numbers are
+published, so with the right computer you can download your own copy and run it.
+Nobody can quietly change your copy.
 
 _Visual: the booklet open on a kitchen table, flat top-down, a mug beside it;
 the numbers on the page light one after another down the column._

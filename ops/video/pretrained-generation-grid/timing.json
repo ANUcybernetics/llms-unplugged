@@ -1,19 +1,19 @@
 {
   "slug": "pretrained-generation-grid",
   "audio": "assets/voice.wav",
-  "duration": 152.052,
+  "duration": 153.948,
   "lines": [
     {
       "i": 0,
       "speaker": "USHINI",
       "tc": true,
       "caption": "Most people who use Claude or ChatGPT never trained it. You can use a model somebody else trained. This booklet lets you try that with our counting model.",
-      "start": 0.15,
+      "start": 0.37,
       "end": 11.28,
       "words": [
         {
           "w": "Most",
-          "start": 0.3,
+          "start": 0.52,
           "end": 0.88
         },
         {
@@ -283,12 +283,12 @@
       "speaker": "USHINI",
       "tc": false,
       "caption": "Take the entry for \"dog\". On the grid you'd share the die's faces: nought to four for a full stop, five to nine for \"runs\". The booklet just writes where each band ends. Four. Nine.",
-      "start": 21.49,
+      "start": 21.69,
       "end": 38.827,
       "words": [
         {
           "w": "Take",
-          "start": 21.64,
+          "start": 21.84,
           "end": 22.2
         },
         {
@@ -468,12 +468,12 @@
       "speaker": "BEN",
       "tc": false,
       "caption": "So roll, and take the first word your roll doesn't go past. Roll a three: that's not past four, so it's a full stop.",
-      "start": 39.81,
+      "start": 40.17,
       "end": 47.68,
       "words": [
         {
           "w": "So",
-          "start": 39.96,
+          "start": 40.32,
           "end": 40.56
         },
         {
@@ -598,12 +598,12 @@
       "speaker": "USHINI",
       "tc": false,
       "caption": "The entry for \"the\" runs all the way to ninety-nine. That means two rolls, read as one number. Roll seven, then two. Seventy-two: past fifty-seven, not past seventy-eight. \"Dog\".",
-      "start": 48.25,
+      "start": 48.55,
       "end": 67.74,
       "words": [
         {
           "w": "The",
-          "start": 48.4,
+          "start": 48.7,
           "end": 49.0
         },
         {
@@ -753,12 +753,12 @@
       "speaker": "BEN",
       "tc": false,
       "caption": "Now the booklet on your table. It came from a much bigger book. Start from \"sleep\": one die. Roll a seven: \"again\".",
-      "start": 68.89,
+      "start": 69.23,
       "end": 78.62,
       "words": [
         {
           "w": "Now",
-          "start": 69.04,
+          "start": 69.38,
           "end": 69.68
         },
         {
@@ -873,12 +873,12 @@
       "speaker": "USHINI",
       "tc": false,
       "caption": "\"Again\" runs to ninety-nine, so two rolls. Eight, then nought: eighty. That's past seventy-six, not past eighty-four: \"I'd\". Roll a six: \"float\". And \"float\" has only one word after it, so no roll at all.",
-      "start": 79.83,
+      "start": 80.05,
       "end": 101.48,
       "words": [
         {
           "w": "\"Again\"",
-          "start": 79.98,
+          "start": 80.2,
           "end": 80.62
         },
         {
@@ -1058,12 +1058,12 @@
       "speaker": "BEN",
       "tc": false,
       "caption": "Why a booklet, and not a grid? This book uses about four thousand different words. As a grid, that's sixteen million boxes. Only sixteen thousand of them have anything in them.",
-      "start": 102.61,
+      "start": 102.91,
       "end": 114.24,
       "words": [
         {
           "w": "Why",
-          "start": 102.76,
+          "start": 103.06,
           "end": 103.36
         },
         {
@@ -1223,12 +1223,12 @@
       "speaker": "USHINI",
       "tc": false,
       "caption": "As you go, listen to what comes out. There are more words to choose from, but each choice still uses only the last word. Try to guess the book before you check the cover.",
-      "start": 114.75,
+      "start": 115.11,
       "end": 126.36,
       "words": [
         {
           "w": "As",
-          "start": 114.9,
+          "start": 115.26,
           "end": 115.5
         },
         {
@@ -1329,11 +1329,11 @@
         {
           "w": "only",
           "start": 121.82,
-          "end": 122.16
+          "end": 122.14
         },
         {
           "w": "the",
-          "start": 122.16,
+          "start": 122.14,
           "end": 122.38
         },
         {
@@ -1389,11 +1389,11 @@
         {
           "w": "the",
           "start": 125.74,
-          "end": 125.9
+          "end": 125.88
         },
         {
           "w": "cover.",
-          "start": 125.9,
+          "start": 125.88,
           "end": 126.16
         }
       ]
@@ -1402,13 +1402,13 @@
       "i": 9,
       "speaker": "BEN",
       "tc": false,
-      "caption": "You can read every number in this model and run it at the kitchen table. An open-weights model makes its learned numbers available for people to download. With the software and hardware to run it, you can use your own copy.",
-      "start": 127.49,
-      "end": 139.72,
+      "caption": "You can read every number in this model and run it at the kitchen table. \"Open weights\" means the same thing for a real model: its numbers are published, so with the right computer you can download your own copy and run it. Nobody can quietly change your copy.",
+      "start": 127.71,
+      "end": 141.64,
       "words": [
         {
           "w": "You",
-          "start": 127.64,
+          "start": 127.86,
           "end": 128.16
         },
         {
@@ -1439,26 +1439,26 @@
         {
           "w": "this",
           "start": 129.34,
-          "end": 129.5
+          "end": 129.48
         },
         {
           "w": "model",
-          "start": 129.5,
+          "start": 129.48,
           "end": 129.72
         },
         {
           "w": "and",
           "start": 129.72,
-          "end": 130.02
+          "end": 130.0
         },
         {
           "w": "run",
-          "start": 130.02,
-          "end": 130.24
+          "start": 130.0,
+          "end": 130.22
         },
         {
           "w": "it",
-          "start": 130.24,
+          "start": 130.22,
           "end": 130.4
         },
         {
@@ -1479,137 +1479,177 @@
         {
           "w": "table.",
           "start": 130.9,
-          "end": 131.24
+          "end": 131.22
         },
         {
-          "w": "An",
-          "start": 131.48,
-          "end": 131.98
+          "w": "\"Open",
+          "start": 131.58,
+          "end": 132.08
         },
         {
-          "w": "open-weights",
-          "start": 131.98,
-          "end": 132.54
+          "w": "weights\"",
+          "start": 132.08,
+          "end": 132.42
         },
         {
-          "w": "model",
-          "start": 132.54,
-          "end": 132.74
-        },
-        {
-          "w": "makes",
-          "start": 132.74,
-          "end": 133.12
-        },
-        {
-          "w": "its",
-          "start": 133.12,
-          "end": 133.34
-        },
-        {
-          "w": "learned",
-          "start": 133.34,
-          "end": 133.59
-        },
-        {
-          "w": "numbers",
-          "start": 133.56,
-          "end": 133.84
-        },
-        {
-          "w": "available",
-          "start": 133.84,
-          "end": 134.18
-        },
-        {
-          "w": "for",
-          "start": 134.18,
-          "end": 134.58
-        },
-        {
-          "w": "people",
-          "start": 134.58,
-          "end": 134.82
-        },
-        {
-          "w": "to",
-          "start": 134.82,
-          "end": 135.04
-        },
-        {
-          "w": "download.",
-          "start": 135.04,
-          "end": 135.26
-        },
-        {
-          "w": "With",
-          "start": 135.74,
-          "end": 136.26
+          "w": "means",
+          "start": 132.42,
+          "end": 132.68
         },
         {
           "w": "the",
-          "start": 136.26,
-          "end": 136.42
+          "start": 132.68,
+          "end": 132.92
         },
         {
-          "w": "software",
-          "start": 136.42,
-          "end": 136.76
+          "w": "same",
+          "start": 132.92,
+          "end": 133.18
         },
         {
-          "w": "and",
-          "start": 136.76,
-          "end": 137.04
+          "w": "thing",
+          "start": 133.18,
+          "end": 133.4
         },
         {
-          "w": "hardware",
-          "start": 137.04,
-          "end": 137.4
+          "w": "for",
+          "start": 133.4,
+          "end": 133.6
         },
         {
-          "w": "to",
-          "start": 137.4,
-          "end": 137.62
+          "w": "a",
+          "start": 133.6,
+          "end": 133.7
         },
         {
-          "w": "run",
-          "start": 137.62,
-          "end": 137.78
+          "w": "real",
+          "start": 133.7,
+          "end": 133.9
         },
         {
-          "w": "it,",
-          "start": 137.78,
-          "end": 137.94
+          "w": "model:",
+          "start": 133.9,
+          "end": 134.14
+        },
+        {
+          "w": "its",
+          "start": 134.42,
+          "end": 134.78
+        },
+        {
+          "w": "numbers",
+          "start": 134.78,
+          "end": 135.1
+        },
+        {
+          "w": "are",
+          "start": 135.1,
+          "end": 135.24
+        },
+        {
+          "w": "published,",
+          "start": 135.24,
+          "end": 135.56
+        },
+        {
+          "w": "so",
+          "start": 135.76,
+          "end": 136.16
+        },
+        {
+          "w": "with",
+          "start": 136.16,
+          "end": 136.3
+        },
+        {
+          "w": "the",
+          "start": 136.3,
+          "end": 136.38
+        },
+        {
+          "w": "right",
+          "start": 136.38,
+          "end": 136.54
+        },
+        {
+          "w": "computer",
+          "start": 136.54,
+          "end": 136.88
         },
         {
           "w": "you",
-          "start": 138.0,
-          "end": 138.46
+          "start": 136.88,
+          "end": 137.16
         },
         {
           "w": "can",
-          "start": 138.46,
-          "end": 138.6
+          "start": 137.16,
+          "end": 137.34
         },
         {
-          "w": "use",
-          "start": 138.6,
-          "end": 138.8
+          "w": "download",
+          "start": 137.34,
+          "end": 137.68
         },
         {
           "w": "your",
-          "start": 138.8,
-          "end": 139.02
+          "start": 137.68,
+          "end": 137.98
         },
         {
           "w": "own",
-          "start": 139.02,
-          "end": 139.24
+          "start": 137.98,
+          "end": 138.18
+        },
+        {
+          "w": "copy",
+          "start": 138.18,
+          "end": 138.46
+        },
+        {
+          "w": "and",
+          "start": 138.46,
+          "end": 138.74
+        },
+        {
+          "w": "run",
+          "start": 138.74,
+          "end": 138.94
+        },
+        {
+          "w": "it.",
+          "start": 138.94,
+          "end": 139.08
+        },
+        {
+          "w": "Nobody",
+          "start": 139.4,
+          "end": 139.92
+        },
+        {
+          "w": "can",
+          "start": 139.92,
+          "end": 140.22
+        },
+        {
+          "w": "quietly",
+          "start": 140.22,
+          "end": 140.62
+        },
+        {
+          "w": "change",
+          "start": 140.62,
+          "end": 140.98
+        },
+        {
+          "w": "your",
+          "start": 140.98,
+          "end": 141.18
         },
         {
           "w": "copy.",
-          "start": 139.24,
-          "end": 139.52
+          "start": 141.18,
+          "end": 141.44
         }
       ]
     },
@@ -1618,113 +1658,113 @@
       "speaker": "USHINI",
       "tc": true,
       "caption": "Grab your booklet and start rolling. And if you'd like to make your own from any text, the tool's at llmsunplugged.org/tools.",
-      "start": 140.49,
-      "end": 147.77,
+      "start": 142.41,
+      "end": 149.67,
       "words": [
         {
           "w": "Grab",
-          "start": 140.64,
-          "end": 141.16
+          "start": 142.56,
+          "end": 143.08
         },
         {
           "w": "your",
-          "start": 141.16,
-          "end": 141.36
+          "start": 143.08,
+          "end": 143.26
         },
         {
           "w": "booklet",
-          "start": 141.36,
-          "end": 141.7
+          "start": 143.26,
+          "end": 143.58
         },
         {
           "w": "and",
-          "start": 141.7,
-          "end": 142.04
+          "start": 143.58,
+          "end": 143.92
         },
         {
           "w": "start",
-          "start": 142.04,
-          "end": 142.3
+          "start": 143.92,
+          "end": 144.18
         },
         {
           "w": "rolling.",
-          "start": 142.3,
-          "end": 142.74
+          "start": 144.18,
+          "end": 144.66
         },
         {
           "w": "And",
-          "start": 143.48,
-          "end": 144.0
+          "start": 145.38,
+          "end": 145.9
         },
         {
           "w": "if",
-          "start": 144.0,
-          "end": 144.12
+          "start": 145.9,
+          "end": 146.02
         },
         {
           "w": "you'd",
-          "start": 144.12,
-          "end": 144.36
+          "start": 146.02,
+          "end": 146.26
         },
         {
           "w": "like",
-          "start": 144.36,
-          "end": 144.54
+          "start": 146.26,
+          "end": 146.44
         },
         {
           "w": "to",
-          "start": 144.54,
-          "end": 144.7
+          "start": 146.44,
+          "end": 146.6
         },
         {
           "w": "make",
-          "start": 144.7,
-          "end": 144.86
+          "start": 146.6,
+          "end": 146.76
         },
         {
           "w": "your",
-          "start": 144.86,
-          "end": 145.04
+          "start": 146.76,
+          "end": 146.94
         },
         {
           "w": "own",
-          "start": 145.04,
-          "end": 145.32
+          "start": 146.94,
+          "end": 147.2
         },
         {
           "w": "from",
-          "start": 145.32,
-          "end": 145.56
+          "start": 147.2,
+          "end": 147.44
         },
         {
           "w": "any",
-          "start": 145.56,
-          "end": 145.82
+          "start": 147.44,
+          "end": 147.7
         },
         {
           "w": "text,",
-          "start": 145.82,
-          "end": 146.22
+          "start": 147.7,
+          "end": 148.1
         },
         {
           "w": "the",
-          "start": 146.4,
-          "end": 146.8
+          "start": 148.34,
+          "end": 148.74
         },
         {
           "w": "tool's",
-          "start": 146.77,
-          "end": 147.06
+          "start": 148.67,
+          "end": 148.98
         },
         {
           "w": "at",
-          "start": 147.14,
-          "end": 147.32
+          "start": 149.0,
+          "end": 149.22
         },
         {
           "w": "llmsunplugged.org/tools.",
-          "start": 147.39,
-          "end": 147.57
+          "start": 149.25,
+          "end": 149.47
         }
       ]
     }

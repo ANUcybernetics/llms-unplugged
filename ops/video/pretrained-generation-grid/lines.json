@@ -106,8 +106,8 @@
     "i": 9,
     "speaker": "BEN",
     "tc": false,
-    "caption": "You can read every number in this model and run it at the kitchen table. An open-weights model makes its learned numbers available for people to download. With the software and hardware to run it, you can use your own copy.",
-    "tts": "You can read every number in this model and run it at the kitchen table. An open-weights model makes its learned numbers available for people to download. With the software and hardware to run it, you can use your own copy."
+    "caption": "You can read every number in this model and run it at the kitchen table. \"Open weights\" means the same thing for a real model: its numbers are published, so with the right computer you can download your own copy and run it. Nobody can quietly change your copy.",
+    "tts": "You can read every number in this model and run it at the kitchen table. \"Open weights\" means the same thing for a real model: its numbers are published, so with the right computer you can download your own copy and run it. Nobody can quietly change your copy."
   },
   {
     "i": 10,
