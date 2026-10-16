@@ -51,8 +51,8 @@ counted._
 _Reads:_ 1. the book is read in pairs; 2. the pairs become counts.
 
 **BEN (VO):** Then write something new. Take the last word, look at what came
-after it in the book, and draw the next word by those counts. More counts, more
-likely.
+after it in the book, and draw the next word by those counts. [beat 1.2] More
+counts, more likely.
 
 _Visual: the row for "the" lights; its tallies become a die strip; a face lands
 and "dog" writes onto the strip after "it sits on the"._

@@ -18,7 +18,14 @@
     "speaker": "BEN",
     "tc": false,
     "caption": "Then write something new. Take the last word, look at what came after it in the book, and draw the next word by those counts. More counts, more likely.",
-    "tts": "Then write something new. Take the last word, look at what came after it in the book, and draw the next word by those counts. More counts, more likely."
+    "tts": "Then write something new. Take the last word, look at what came after it in the book, and draw the next word by those counts. More counts, more likely.",
+    "parts": [
+      "Then write something new. Take the last word, look at what came after it in the book, and draw the next word by those counts.",
+      "More counts, more likely."
+    ],
+    "beats": [
+      1.2
+    ]
   },
   {
     "i": 3,

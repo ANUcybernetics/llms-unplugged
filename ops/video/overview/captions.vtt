@@ -6,23 +6,23 @@ Your class can build a language model with a picture book and a pencil. Pick a l
 00:00:11.810 --> 00:00:17.800
 Take a picture book. Read it two words at a time, and count which word follows which.
 
-00:00:19.150 --> 00:00:28.560
+00:00:19.170 --> 00:00:29.820
 Then write something new. Take the last word, look at what came after it in the book, and draw the next word by those counts. More counts, more likely.
 
-00:00:29.150 --> 00:00:41.100
+00:00:30.710 --> 00:00:42.380
 You can count in tally marks, or marks on a ledger. Draw with a die, a cup of counters or a pile of paper slips. These are different ways to hold the same counts.
 
-00:00:42.450 --> 00:00:48.720
+00:00:43.910 --> 00:00:50.000
 Here are some other sentences this little model could have written. Each branch is another possible next word.
 
-00:00:49.410 --> 00:01:04.220
+00:00:50.930 --> 00:01:05.480
 Our model uses the last word. Claude or ChatGPT uses much more of the text, and learns to predict by adjusting numbers during training. Choosing what comes next is the part of text generation we have in common.
 
-00:01:05.350 --> 00:01:18.980
+00:01:07.120 --> 00:01:20.260
 In 1913 Andrey Markov went through a Russian poem by hand, counting whether a vowel or a consonant came next. Claude Shannon generated text using word sequences in 1948. Everyone can have a go at that with a book.
 
-00:01:19.470 --> 00:01:33.300
+00:01:20.730 --> 00:01:34.580
 LLMs Unplugged has the lessons, the slides, the printouts and a short video for every step. And the tools that made them: paste in any text you like, and out come the grids, the sheets and the booklets for it.
 
-00:01:34.450 --> 00:01:42.960
+00:01:35.630 --> 00:01:44.240
 It's all free, under a Creative Commons licence, at llmsunplugged.org. Grab a picture book, and come and see how it works.

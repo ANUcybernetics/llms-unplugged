@@ -516,7 +516,7 @@ export const build = (tl, S, T) => {
     shadeBand(i, t);
   });
   // roll: nine, the band for "dog"; it writes on after "the"
-  const tRoll = T.word(2, "counts") - 0.15;
+  const tRoll = T.wordEnd(2, "counts") + 0.4;
   K.land(tl, die, 9, tRoll);
   pulse(dstrip.nums[9], tRoll + 0.35, 1.4);
   flash(followerText[3], "fill", "#be830e", "#1a1a1a", tRoll + 0.35, 0.8);
