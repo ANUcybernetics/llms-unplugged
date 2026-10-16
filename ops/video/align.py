@@ -220,6 +220,37 @@ def spread_collapsed(
     return out
 
 
+def plausible_length(word: str) -> float:
+    return 0.12 + 0.06 * max(len(normalize(word)), 1)
+
+
+def tighten_line_openings(
+    words: list[str], word_line_of: list[int], resolved: list[tuple[float, float]]
+) -> list[tuple[float, float]]:
+    """Whisper (or interpolation across a [beat]) stretches a line's opening
+    words back over the silence before it, which starts the line's caption and
+    cues seconds early. Find the line's first word of plausible length, and lay
+    the words before it back from its start at plausible lengths.
+    """
+    out = list(resolved)
+    firsts = [
+        i for i in range(len(words)) if i == 0 or word_line_of[i] != word_line_of[i - 1]
+    ]
+    for f in firsts:
+        k = f
+        while (
+            k + 1 < len(words)
+            and word_line_of[k + 1] == word_line_of[f]
+            and out[k][1] - out[k][0] > 1.5 * plausible_length(words[k])
+        ):
+            k += 1
+        t = out[k][0]
+        for i in range(k - 1, f - 1, -1):
+            out[i] = (max(out[i][0], t - plausible_length(words[i])), t)
+            t = out[i][0]
+    return out
+
+
 def line_boundaries(
     lines: list[dict], word_line_of: list[int], resolved: list[tuple[float, float]]
 ) -> tuple[list[float], list[float]]:
@@ -300,6 +331,7 @@ def main(
     logger.info(f"{slug}: transcript has {len(transcript_words)} words")
 
     resolved, match_ratio = align_words(script_words, transcript_words)
+    resolved = tighten_line_openings(script_words, word_line_of, resolved)
     starts, ends = line_boundaries(lines, word_line_of, resolved)
 
     duration = probe_duration(audio_path)

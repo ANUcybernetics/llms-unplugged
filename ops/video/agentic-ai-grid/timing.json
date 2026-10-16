@@ -388,12 +388,12 @@
       "speaker": "USHINI",
       "tc": false,
       "caption": "In our activity, the model rolls punctuation like any other word. Some rows never call the tool. Some always do.",
-      "start": 26.45,
+      "start": 26.81,
       "end": 36.14,
       "words": [
         {
           "w": "In",
-          "start": 26.6,
+          "start": 26.96,
           "end": 27.2
         },
         {
@@ -658,12 +658,12 @@
       "speaker": "USHINI",
       "tc": false,
       "caption": "The tool is a text message. Send \"What comes next?\", and the sentence so far, to three friends or group chats.",
-      "start": 52.01,
+      "start": 52.31,
       "end": 60.14,
       "words": [
         {
           "w": "The",
-          "start": 52.16,
+          "start": 52.46,
           "end": 52.76
         },
         {
@@ -773,12 +773,12 @@
       "speaker": "BEN",
       "tc": false,
       "caption": "The first reply back, \"and it wants my sandwich\", is your tool result. Write the whole thing down, then the full stop you rolled. Then carry on, from the full stop.",
-      "start": 61.31,
+      "start": 61.57,
       "end": 72.46,
       "words": [
         {
           "w": "The",
-          "start": 61.46,
+          "start": 61.72,
           "end": 62.02
         },
         {
@@ -938,12 +938,12 @@
       "speaker": "USHINI",
       "tc": false,
       "caption": "Our grid has no row for \"sandwich\". We restart from the full stop so we have a row to use. That also means the reply cannot change our model's next choice.",
-      "start": 73.13,
+      "start": 73.39,
       "end": 84.96,
       "words": [
         {
           "w": "Our",
-          "start": 73.28,
+          "start": 73.54,
           "end": 73.84
         },
         {
@@ -1263,12 +1263,12 @@
       "speaker": "USHINI",
       "tc": false,
       "caption": "The model rolled a full stop after \"dog\". You paused it, sent the message, and added the reply before carrying on. Those jobs make you the harness: the part that connects the model to its tools.",
-      "start": 98.45,
+      "start": 98.71,
       "end": 111.9,
       "words": [
         {
           "w": "The",
-          "start": 98.6,
+          "start": 98.86,
           "end": 99.16
         },
         {
@@ -1638,12 +1638,12 @@
       "speaker": "USHINI",
       "tc": true,
       "caption": "What would you let an agent do without asking you first? Pause here and discuss that with your group. Then try the activity, with your group doing the harness's jobs.",
-      "start": 125.71,
+      "start": 125.91,
       "end": 138.76,
       "words": [
         {
           "w": "What",
-          "start": 125.86,
+          "start": 126.06,
           "end": 126.42
         },
         {
