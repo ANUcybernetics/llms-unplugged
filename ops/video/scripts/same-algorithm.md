@@ -47,8 +47,8 @@ _Reads:_ 1. four different kits; 2. the same book behind all of them.
 _Reads note:_ four quarters is busy for one line; the kits could arrive one per
 sentence instead, which the line's rhythm already allows.
 
-**BEN (VO):** Take one row: the word "the", from a picture book called _The
-magpie_. On a grid, it's tallies. [beat] On a ledger, it's marks in coloured
+**BEN (VO):** Take one row from a picture book called _The magpie_: the row for
+"the". On a grid, it's tallies. [beat] On a ledger, it's marks in coloured
 boxes. [beat]
 
 _Visual: the quarters slide away and the row for "the" lifts out of the grid to
@@ -78,7 +78,7 @@ _Reads note:_ five forms across two lines is a lot; if the morph can't hold a
 beat on each, the slips come out here and appear only in the walk.
 
 **BEN (VO):** And the numbers are chances. "Fence" has six of the nineteen,
-about a third. "Dog" has four, about a fifth.
+about a third. [beat] "Dog" has four, about a fifth.
 
 _Visual: the four numbers become four widths of one bar, the whole bar the row's
 nineteen; "fence" takes about a third of it, "dog" about a fifth._
@@ -133,10 +133,10 @@ three decks at once.
 _Reads:_ 1. all three use the same counts; 2. a die sometimes approximates the
 probabilities; 3. counters and reusable slips preserve them exactly.
 
-**USHINI:** So pick the kit that suits your room. A grid for pairs with a die. A
-ledger and a cup for a group sharing the jobs. Slips when you'd rather cut than
-count. Two rooms on different kits have built the same kind of model, and they
-can compare stories.
+**USHINI:** So pick the kit that suits your room. A grid and a die for working
+in pairs. A ledger and a cup for a group sharing the jobs. Slips when you'd
+rather cut than count. Two rooms on different kits have built the same kind of
+model, and they can compare stories.
 
 _Visual: the four kits return to their quarters; two strips of generated text,
 one from the grid quarter and one from the ledger quarter, slide together in the
@@ -147,5 +147,5 @@ _Reads:_ 1. the kit is a choice about the room; 2. the models are the same kind.
 _Reads note:_ the kit-per-room line is the only teacher-facing advice in the
 series and could date if the lessons change; cut it if this plays in class.
 
-**BEN (TC):** You can try another kit with the same book. Keep the counts and
-change how you draw from them, then compare what you write.
+**BEN (TC):** Whatever holds the counts, it's the same model. Swap kits with the
+room next door, keep the book, and compare what you write.

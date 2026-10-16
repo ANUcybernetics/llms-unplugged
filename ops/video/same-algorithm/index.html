@@ -26,9 +26,9 @@
          booklet (parts/build-same-booklet.py). Every beat lands on a word of
          the voice track. -->
     <div id="stage" class="stage" data-tail="7" data-aspect="landscape" data-composition-id="same-algorithm"
-         data-start="0" data-duration="135.84" data-width="1920" data-height="1080" data-fps="50">
-      <div id="scene" class="clip layer scene" data-start="0" data-duration="135.84" data-track-index="0"></div>
-      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="128.84" data-track-index="1"></audio>
+         data-start="0" data-duration="138.40" data-width="1920" data-height="1080" data-fps="50">
+      <div id="scene" class="clip layer scene" data-start="0" data-duration="138.40" data-track-index="0"></div>
+      <audio id="voice" class="clip" src="assets/voice.wav" data-start="0" data-duration="131.40" data-track-index="1"></audio>
     </div>
     <script type="module">
       import { row, morph, jump, slip, slipsFromMarks } from "./parts/morph.js";
@@ -579,7 +579,7 @@
         // Return to the actual kits and invite another run of the experiment.
         const t9 = T.start(9);
         tl.to([storyA.el, storyB.el], { opacity: 0 }, t9, { dur: 0.4 });
-        tl.to(Object.values(QUARTERS), { opacity: 1 }, T.word(9, "another"), { dur: 0.5, stagger: 0.1 });
+        tl.to(Object.values(QUARTERS), { opacity: 1 }, T.word(9, "Swap"), { dur: 0.5, stagger: 0.1 });
       };
       KIT.ready(build).then(({ tl }) => {
         window.__timelines["same-algorithm"] = tl;
