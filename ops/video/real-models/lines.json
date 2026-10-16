@@ -3,15 +3,15 @@
     "i": 0,
     "speaker": "USHINI",
     "tc": true,
-    "caption": "Your grid gives us a way to examine how Claude or ChatGPT generates text. Let's compare the predictions they make.",
-    "tts": "Your grid gives us a way to examine how Claude or ChatGPT generates text. Let's compare the predictions they make."
+    "caption": "So how much is your grid like Claude or ChatGPT? Here's which parts are the same, and which aren't.",
+    "tts": "So how much is your grid like Claude or ChatGPT? Here's which parts are the same, and which aren't."
   },
   {
     "i": 1,
     "speaker": "BEN",
     "tc": false,
-    "caption": "The shared part is the loop. Text goes in. The model assigns every next token a chance. One is drawn, written down, and round it goes again. Your grid uses words as tokens. So do our paper examples.",
-    "tts": "The shared part is the loop. Text goes in. The model assigns every next token a chance. One is drawn, written down, and round it goes again. Your grid uses words as tokens. So do our paper examples."
+    "caption": "The shared part is the loop. Text goes in. The model assigns every next token a chance. One is drawn, written down, and round it goes again. Your grid does that. So do Claude and ChatGPT.",
+    "tts": "The shared part is the loop. Text goes in. The model assigns every next token a chance. One is drawn, written down, and round it goes again. Your grid does that. So do Claude and ChatGPT."
   },
   {
     "i": 2,
@@ -63,8 +63,8 @@
     "i": 7,
     "speaker": "BEN",
     "tc": false,
-    "caption": "Large language models learn by adjusting weights to improve their predictions. Those weights can capture patterns across different contexts. Look at the magpie: the rows for \"dog\" and \"postie\" are exactly the same. Our grid stores them separately. A neural model can learn similarities like these and use them in combinations it never saw during training.",
-    "tts": "Large language models learn by adjusting weights to improve their predictions. Those weights can capture patterns across different contexts. Look at the magpie: the rows for \"dog\" and \"postie\" are exactly the same. Our grid stores them separately. A neural model can learn similarities like these and use them in combinations it never saw during training."
+    "caption": "A large language model learns by nudging its weights to predict better, and those weights can share what they learn. Look at the magpie: the rows for \"dog\" and \"postie\" are exactly the same. Our grid stores them separately. A model that spots this can guess about the postie from what it saw the dog do.",
+    "tts": "A large language model learns by nudging its weights to predict better, and those weights can share what they learn. Look at the magpie: the rows for \"dog\" and \"postie\" are exactly the same. Our grid stores them separately. A model that spots this can guess about the postie from what it saw the dog do."
   },
   {
     "i": 8,
@@ -91,14 +91,14 @@
     "i": 10,
     "speaker": "USHINI",
     "tc": false,
-    "caption": "Our paper model looks up counts. A large language model computes its predictions using learned weights and the available context. Both can use those predictions to generate text.",
-    "tts": "Our paper model looks up counts. A large language model computes its predictions using learned weights and the available context. Both can use those predictions to generate text."
+    "caption": "So: much more context, weights learned rather than counted, pieces of words, and extra training. Our paper model looks its numbers up; a large language model calculates them.",
+    "tts": "So: much more context, weights learned rather than counted, pieces of words, and extra training. Our paper model looks its numbers up; a large language model calculates them."
   },
   {
     "i": 11,
     "speaker": "BEN",
     "tc": true,
-    "caption": "For text generation, we return to the loop: predict the next token, choose one, add it to the text, and repeat.",
-    "tts": "For text generation, we return to the loop: predict the next token, choose one, add it to the text, and repeat."
+    "caption": "But when it writes, it's still the loop you ran: pick the next token, write it down, go again.",
+    "tts": "But when it writes, it's still the loop you ran: pick the next token, write it down, go again."
   }
 ]

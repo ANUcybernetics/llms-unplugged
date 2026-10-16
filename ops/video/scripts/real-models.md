@@ -29,12 +29,12 @@ magpie, the rows for _dog_ and _postie_ are identical (full stop 2, runs 2).
 
 ## Script
 
-**USHINI (TC):** Your grid gives us a way to examine how Claude or ChatGPT
-generates text. Let's compare the predictions they make.
+**USHINI (TC):** So how much is your grid like Claude or ChatGPT? Here's which
+parts are the same, and which aren't.
 
 **BEN (VO):** The shared part is the loop. Text goes in. The model assigns every
 next token a chance. One is drawn, written down, and round it goes again. Your
-grid uses words as tokens. So do our paper examples.
+grid does that. So do Claude and ChatGPT.
 
 _Visual: the magpie grid on the desk, a paper strip beside it. The loop draws on
 around them in one stroke, gold arrowheads: last word, row, chances, draw,
@@ -106,11 +106,11 @@ the final sample copies the passage shown.
 _Reads note:_ the three samples are picked at build time from real CLI runs; the
 lines don't quote them, so any seed that shows the three stages works.
 
-**BEN (VO):** Large language models learn by adjusting weights to improve their
-predictions. Those weights can capture patterns across different contexts. Look
-at the magpie: the rows for "dog" and "postie" are exactly the same. Our grid
-stores them separately. A neural model can learn similarities like these and use
-them in combinations it never saw during training.
+**BEN (VO):** A large language model learns by nudging its weights to predict
+better, and those weights can share what they learn. Look at the magpie: the
+rows for "dog" and "postie" are exactly the same. Our grid stores them
+separately. A model that spots this can guess about the postie from what it saw
+the dog do.
 
 _Visual: the magpie grid; the rows for "dog" and "postie" light and slide
 together, their tallies lining up box for box: full stop 2, runs 2. A faint
@@ -147,9 +147,9 @@ insects and worms"._
 _Reads:_ 1. an example demonstrates answering a question; 2. feedback compares
 candidate replies; 3. both can guide further training.
 
-**USHINI:** Our paper model looks up counts. A large language model computes its
-predictions using learned weights and the available context. Both can use those
-predictions to generate text.
+**USHINI:** So: much more context, weights learned rather than counted, pieces
+of words, and extra training. Our paper model looks its numbers up; a large
+language model calculates them.
 
-**BEN (TC):** For text generation, we return to the loop: predict the next
-token, choose one, add it to the text, and repeat.
+**BEN (TC):** But when it writes, it's still the loop you ran: pick the next
+token, write it down, go again.

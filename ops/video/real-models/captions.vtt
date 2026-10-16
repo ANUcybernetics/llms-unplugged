@@ -1,37 +1,37 @@
 WEBVTT
 
-00:00:00.150 --> 00:00:08.540
-Your grid gives us a way to examine how Claude or ChatGPT generates text. Let's compare the predictions they make.
+00:00:00.410 --> 00:00:07.540
+So how much is your grid like Claude or ChatGPT? Here's which parts are the same, and which aren't.
 
-00:00:09.590 --> 00:00:23.980
-The shared part is the loop. Text goes in. The model assigns every next token a chance. One is drawn, written down, and round it goes again. Your grid uses words as tokens. So do our paper examples.
+00:00:08.690 --> 00:00:22.560
+The shared part is the loop. Text goes in. The model assigns every next token a chance. One is drawn, written down, and round it goes again. Your grid does that. So do Claude and ChatGPT.
 
-00:00:24.850 --> 00:00:32.480
+00:00:23.570 --> 00:00:30.960
 We can see a limit of counting in the size of the table. Your magpie grid has five hundred and seventy-six boxes.
 
-00:00:34.210 --> 00:00:41.680
+00:00:32.670 --> 00:00:40.160
 Frankenstein has seven thousand different words. That's forty-nine million boxes. And look how few have anything in them.
 
-00:00:42.470 --> 00:00:53.620
+00:00:40.950 --> 00:00:52.100
 Imagine a vocabulary of a hundred thousand tokens: words and bits of words. A grid for every pair would need ten billion boxes, before we even add more context.
 
-00:00:54.890 --> 00:01:05.820
+00:00:53.610 --> 00:01:04.300
 Your grid only looks at the last word. A large language model uses the text available in its context window. That can include earlier messages, but there's a limit to how much fits.
 
-00:01:06.570 --> 00:01:28.090
+00:01:05.130 --> 00:01:26.540
 Here's Frankenstein, looking back one word. Then two. Then five. In this last sample, every word comes straight from the book. More context can also mean more copying.
 
-00:01:29.260 --> 00:01:49.570
-Large language models learn by adjusting weights to improve their predictions. Those weights can capture patterns across different contexts. Look at the magpie: the rows for "dog" and "postie" are exactly the same. Our grid stores them separately. A neural model can learn similarities like these and use them in combinations it never saw during training.
+00:01:28.030 --> 00:01:44.800
+A large language model learns by nudging its weights to predict better, and those weights can share what they learn. Look at the magpie: the rows for "dog" and "postie" are exactly the same. Our grid stores them separately. A model that spots this can guess about the postie from what it saw the dog do.
 
-00:01:50.080 --> 00:02:05.430
+00:01:45.660 --> 00:02:00.640
 It uses tokens, which can be whole words or pieces. Here, "magpie" splits into "mag" and "pie". "Unexpectedly" stays whole. The splits depend on the tokeniser.
 
-00:02:05.780 --> 00:02:18.870
+00:02:01.170 --> 00:02:14.100
 After learning from reading, a model can get further training. People write example answers, and provide feedback by rating candidate replies. Training on examples and feedback helps it answer questions and follow instructions.
 
-00:02:19.920 --> 00:02:32.250
-Our paper model looks up counts. A large language model computes its predictions using learned weights and the available context. Both can use those predictions to generate text.
+00:02:15.550 --> 00:02:27.300
+So: much more context, weights learned rather than counted, pieces of words, and extra training. Our paper model looks its numbers up; a large language model calculates them.
 
-00:02:33.380 --> 00:02:40.650
-For text generation, we return to the loop: predict the next token, choose one, add it to the text, and repeat.
+00:02:28.530 --> 00:02:34.020
+But when it writes, it's still the loop you ran: pick the next token, write it down, go again.
