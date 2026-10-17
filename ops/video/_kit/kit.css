@@ -1,28 +1,32 @@
-/* The shared look of the LLMs Unplugged explainer videos: the site's palette and
-   type on a 1920x1080 (or 1080x1920) stage, the desk the participant sits at,
-   and the paper objects on it. Values copied from website/src/styles/common.css
-   (gold, ground, text) and website/src/decks/theme.css (paper, the tc-N token
+/* The shared look of the LLMs Unplugged explainer videos: the paper objects on
+   the participant's desk, standing on astromotion's video stage (motion/
+   stage.css: the stage, the caption band, Public Sans) in the ANU brand
+   (brand/video/anu.css). Values copied from website/src/styles/common.css
+   (ground, text) and website/src/decks/theme.css (paper, the tc-N token
    palette); those files win if these ever disagree. Every composition links
    this file through its `kit/` symlink to ops/video/_kit. */
 
-@font-face { font-family: "Public Sans"; src: url("fonts/PublicSans-Regular.otf") format("opentype"); font-weight: 400; font-style: normal; }
-@font-face { font-family: "Public Sans"; src: url("fonts/PublicSans-Italic.otf") format("opentype"); font-weight: 400; font-style: italic; }
-@font-face { font-family: "Public Sans"; src: url("fonts/PublicSans-Medium.otf") format("opentype"); font-weight: 500; font-style: normal; }
-@font-face { font-family: "Public Sans"; src: url("fonts/PublicSans-SemiBold.otf") format("opentype"); font-weight: 600; font-style: normal; }
-@font-face { font-family: "Public Sans"; src: url("fonts/PublicSans-Bold.otf") format("opentype"); font-weight: 700; font-style: normal; }
+@import url("motion/stage.css");
+@import url("brand/video/anu.css");
+
 @font-face { font-family: "Libertinus Serif"; src: url("fonts/LibertinusSerif-Regular.otf") format("opentype"); font-weight: 400; font-style: normal; }
 @font-face { font-family: "Libertinus Serif"; src: url("fonts/LibertinusSerif-Italic.otf") format("opentype"); font-weight: 400; font-style: italic; }
 @font-face { font-family: "Libertinus Serif"; src: url("fonts/LibertinusSerif-Semibold.otf") format("opentype"); font-weight: 600; font-style: normal; }
 @font-face { font-family: "Libertinus Serif"; src: url("fonts/LibertinusSerif-Bold.otf") format("opentype"); font-weight: 700; font-style: normal; }
 
 :root {
-  --ground: #0d0d0d;                 /* the site's dark ground */
-  --desk: #0d0d0d;                   /* the table top: the decks' slide ground (--anu-dark-grey) */
-  --gold: #be830e;                   /* --anu-gold */
-  --gold-2: #e5a930;                 /* lighter gold for text on the dark ground */
+  /* the stage's tokens, set to the site's: its dark ground and caption size */
+  --video-ground: #0d0d0d;
+  --video-text-2: rgb(255 255 255 / 78%);
+  --video-caption-size: 34px;
+  --video-caption-inset: 96px;
+  --ground: var(--video-ground);
+  --desk: var(--video-ground);       /* the table top: the decks' slide ground (--anu-dark-grey) */
+  --gold: var(--video-accent);       /* --anu-gold */
+  --gold-2: var(--video-accent-2);   /* lighter gold for text on the dark ground */
   --gold-soft: rgb(190 131 14 / 22%);
-  --text: rgb(255 255 255 / 95%);
-  --text-2: rgb(255 255 255 / 78%);
+  --text: var(--video-text);
+  --text-2: var(--video-text-2);
   --muted: rgb(255 255 255 / 56%);
   --hairline: rgb(255 255 255 / 18%);
   --paper: #fff;                     /* --paper-ground: white, what the sheets print on */
@@ -30,7 +34,7 @@
   --ink: #1a1a1a;                    /* --paper-ink */
   --ink-muted: rgb(0 0 0 / 64%);
   --pencil: #3a3a3a;                 /* what a participant writes in */
-  --font-ui: "Public Sans", sans-serif;
+  --font-ui: var(--video-font);
   --font-tok: "Libertinus Serif", serif;   /* what the printed sheets and booklets use */
   /* ledger counters (cli/ledger-palette-four.json, LEDGER_PALETTE in
      website/src/lib/ledger.ts) */
@@ -50,32 +54,6 @@
 .tc-5 { --c: oklch(47.2% 0.241 263deg); }
 .tc-6 { --c: oklch(45.2% 0.195 316deg); }
 .tc-7 { --c: oklch(53.4% 0.221 353deg); }
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { overflow: hidden; background: var(--ground); }
-body { font-family: var(--font-ui); color: var(--text); }
-.stage { position: relative; overflow: hidden; background: var(--desk); }
-.stage[data-aspect="landscape"] { width: 1920px; height: 1080px; }
-.stage[data-aspect="portrait"] { width: 1080px; height: 1920px; }
-
-/* Everything animated is absolutely placed and moved by transform/opacity only. */
-.layer { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
-.hidden { opacity: 0; }
-
-/* the scene is its own stacking context, so a raised mover (K.raise) stacks
-   within it and never over the caption band */
-.scene { isolation: isolate; }
-
-/* ---- caption band: the script line, whole, in a region nothing else uses ---- */
-.captions { position: absolute; left: 0; right: 0; bottom: 0; height: 190px; background: var(--ground); }
-.stage[data-aspect="portrait"] .captions { height: 300px; }
-.caption {
-  position: absolute; left: 96px; right: 96px; top: 0; bottom: 0;
-  display: flex; align-items: center; justify-content: center; text-align: center;
-  font-size: 34px; line-height: 1.3; font-weight: 400; color: var(--text); text-wrap: balance;
-  opacity: 0;
-}
-.stage[data-aspect="portrait"] .caption { left: 60px; right: 60px; font-size: 36px; }
 
 /* ---- paper objects ---- */
 .paper {

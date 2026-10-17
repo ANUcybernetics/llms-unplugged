@@ -22,11 +22,11 @@ first series, which shares this file and the kit.
 - `_parts/`: beats several videos share (the book at machine speed, the tree,
   the morph) and the build scripts for their data (`README.md` there).
 - `_kit/`: the shared kit (`README.md` there is its contract): `kit.css` (the
-  stage and the paper objects' look), `kit.js` (the objects), `fonts/`,
-  `generated/` (gitignored; `build-data.py` writes it), and `motion ->`
-  astromotion's `video/` engine as installed in `website/node_modules`, so the
-  engine's version is the website's astromotion pin. Run `pnpm install` in
-  `website/` before building a video.
+  paper objects' look, on astromotion's video stage in the ANU brand), `kit.js`
+  (the objects), `fonts/`, `generated/` (gitignored; `build-data.py` writes
+  it), and two symlinks into `website/node_modules`: `motion ->` astromotion's
+  `video/` engine and `brand ->` astro-theme-anu, so their versions are the
+  website's pins. Run `pnpm install` in `website/` before building a video.
 - `recut/`: the talk-recording recut path: the fallback frame renderer
   `render-frames.mjs`, `overlay-template.html` (a page it renders, with the crop
   and placement helpers) and `title-card.html` (the deck's hero grammar as a
@@ -41,10 +41,11 @@ first series, which shares this file and the kit.
 
 ## Sources of truth
 
-- **Palette and type**: `website/src/styles/common.css` (gold, ground, text) and
-  `website/src/decks/theme.css` (paper, the eight `tc-N` token colours).
-  `_kit/kit.css` carries copies with pointers back; the CSS wins if they
-  disagree.
+- **Palette and type**: astro-theme-anu's `video/anu.css` (gold, text) on
+  astromotion's `video/stage.css` (the stage, the caption band, Public Sans);
+  `website/src/styles/common.css` (the dark ground) and
+  `website/src/decks/theme.css` (paper, the eight `tc-N` token colours), which
+  `_kit/kit.css` copies with pointers back; the CSS wins if they disagree.
 - **Token colours**: the hash in `website/src/lib/tokenColors.ts` (matched by
   `cli/cutout-common.typ`) decides a word's colour on a slide and on paper;
   `kit.js` ports it. Never pick a colour for a word.
@@ -56,9 +57,9 @@ first series, which shares this file and the kit.
   and every text line's bounding box, so a highlight lands on a word from the
   PDF's own text layer, never by eye. Page images render at 300 dpi and lay out
   in 150-dpi units, so they stay sharp in a 4K push-in.
-- **Fonts**: Public Sans and Libertinus Serif, from `_kit/fonts/` (full OTFs;
-  the subsets in `website/src/assets/fonts/` are for the browser Typst compiler
-  and miss glyphs and weights).
+- **Fonts**: Public Sans from astromotion's `video/fonts/`, Libertinus Serif
+  from `_kit/fonts/` (full OTFs; the subsets in `website/src/assets/fonts/` are
+  for the browser Typst compiler and miss glyphs and weights).
 - **Deck artwork**: `website/src/decks/assets/bg-*.avif` (`avifdec` to PNG).
 
 ## The look

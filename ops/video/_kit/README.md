@@ -1,11 +1,13 @@
 # Composition kit
 
 What every explainer video composition (`ops/video/<slug>/index.html`) is built
-from. `kit.css` and `kit.js` are the shared look and objects, `fonts/` the type,
-`generated/` (gitignored, written by `../build-data.py`) the data and page
-images, and `motion/` a symlink to astromotion's video engine as installed in
-`website/node_modules` (its `README.md` is the timeline API; run `pnpm install`
-in `website/` first). A composition reaches the kit through its `kit -> ../_kit`
+from. `kit.css` and `kit.js` are the shared look and objects, `fonts/` the
+serif, `generated/` (gitignored, written by `../build-data.py`) the data and
+page images, and `motion/` and `brand/` symlinks to astromotion and
+astro-theme-anu as installed in `website/node_modules` (run `pnpm install` in
+`website/` first). `motion/README.md` is the timeline API and the stage, brand
+and kit contract: `kit.css` imports `motion/stage.css` and
+`brand/video/anu.css`, then sets the site's tokens over them. A composition reaches the kit through its `kit -> ../_kit`
 symlink because HyperFrames serves only the project root: paths are
 `kit/kit.css`, `kit/kit.js`, `kit/generated/data.js`.
 `../training-grid/index.html` is the worked example; read it before writing a
