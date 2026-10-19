@@ -19,9 +19,9 @@ participant's grid does.
    too
 3. two words at a time: the first word's row, the second word's column, a tally
    where they cross; slide along one
-4. the same pair comes round again: _the magpie_ five times, _the fence_ six.
+4. the same pair comes round again: _the magpie_ six times, _the fence_ four.
    Common pairs collect tallies
-5. **beyond:** the rest of the book at machine speed; the whole 24-word grid
+5. **beyond:** the rest of the book at machine speed; the whole 23-word grid
    fills in about two seconds. Same action, just faster
 6. put the book away; the counts are enough to generate with this model
 7. the tallies are numbers; neural model weights are learned differently
@@ -36,18 +36,18 @@ book is short enough to read in thirty seconds.
 
 _Visual: the desk, top-down, empty except for a picture book. Its cover reads
 The magpie. It opens and its first line lifts off the page as a row of word
-tiles: "The magpie is back. It sits on the fence."_
+tiles: "It is spring. It sits on the fence."_
 
 _Reads:_ 1. this book is what the model will learn from; 2. its text is now a
 row of words.
 
 **BEN (VO):** Treat capitals and lowercase as the same word, even on printed
-sheets. "The" and "the" go in the same row. [beat] Full stops and exclamation
+sheets. "It" and "it" go in the same row. [beat] Full stops and exclamation
 marks count as words too.
 
-_Visual: the capitalised and lowercase forms of "the" meet above one row
-labelled "the"; keep the printed page unchanged. Then the full stops split off
-into tiles of their own, drawn as the kit's filled symbol tiles._
+_Visual: the capitalised and lowercase forms of "it" meet above one row labelled
+"it"; keep the printed page unchanged. Then the full stops split off into tiles
+of their own, drawn as the kit's filled symbol tiles._
 
 _Reads:_ 1. capitals and lowercase use the same row, including printed words; 2.
 full stops have their own tiles.
@@ -57,22 +57,22 @@ edges of the grid. [beat] The first word gets a row. [beat] The second gets a
 column. [beat] Put a tally where they cross. [beat] Then slide along by one,
 [beat] and do it again.
 
-_Visual: a gold bracket over "the magpie". Beside the tiles a blank grid sheet:
-"the" writes onto the first row header and the first column header at once, then
-"magpie" onto both edges; a tally stroke draws where the row for "the" meets the
-column for "magpie". The bracket slides one tile to "magpie is": "is" joins both
-edges, a tally at magpie--is. Then "is back"._
+_Visual: a gold bracket over "it is". Beside the tiles a blank grid sheet: "it"
+writes onto the first row header and the first column header at once, then "is"
+onto both edges; a tally stroke draws where the row for "it" meets the column
+for "is". The bracket slides one tile to "is spring": "spring" joins both edges,
+a tally at is--spring. Then "spring ."_
 
 _Reads:_ 1. the first word of the pair picks the row; 2. the second word picks
 the column; 3. the tally goes where they cross; 4. slide along one, and each
 word starts the next pair.
 
 **BEN (VO):** Keep going, and the same pairs come round again. By the end of the
-book, "the magpie" has five tallies. "The fence" has six.
+book, "the magpie" has six tallies. "The fence" has four.
 
 _Visual: the bracket skips ahead; each time it lands on "the magpie" or "the
-fence" the row for "the" lights and a stroke draws on. The row ends: magpie 5,
-fence 6, postie 4, dog 4._
+fence" the row for "the" lights and a stroke draws on. The row ends: fence 4,
+postie 4, magpie 6, dog 4._
 
 _Reads:_ 1. a repeated pair marks the same box again; 2. common pairs collect
 tallies.
@@ -82,7 +82,7 @@ of the book, counted by a computer.
 
 _Visual: the bracket accelerates until it's a blur along the tiles; pairs fly
 into the grid faster than the eye can follow, rows and columns appearing as new
-words turn up, until the whole book is counted: 24 rows by 24 columns, most
+words turn up, until the whole book is counted: 23 rows by 23 columns, most
 boxes empty, a few thick with tallies. About two seconds of motion, then hold._
 
 _Beyond:_ the slides count five pairs and then show the finished grid, so the
@@ -100,11 +100,11 @@ frame._
 
 _Reads:_ 1. the book is gone; 2. only the counts are left.
 
-**USHINI (VO):** And a tally is just a number. The row for "the" says five, six,
-four, four. Every box on the grid is a number, and most of them are zero.
+**USHINI (VO):** And a tally is just a number. The row for "the" says four,
+four, six, four. Every box on the grid is a number, and most of them are zero.
 
 _Visual: push in on the row for "the"; its tallies count themselves off and
-collapse into numerals, 5, 6, 4, 4. Pull back as the change ripples across the
+collapse into numerals, 4, 4, 6, 4. Pull back as the change ripples across the
 grid, every box becoming its count, the empty ones a faint 0._
 
 _Reads:_ 1. each box's tallies are a count; 2. the whole grid is a table of

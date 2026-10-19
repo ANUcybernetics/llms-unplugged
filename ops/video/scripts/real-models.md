@@ -9,10 +9,10 @@ discussion of what real models can and can't do.
 
 **Builds on:** the "language of language models" slides at the end of each grid
 partial and `partials/scaling-up.mdx`. Numbers are from `data/` via the CLI: the
-magpie (24 words, 576 boxes), _Frankenstein_ (7,023 words, 49 million boxes,
+magpie (23 words, 529 boxes), _Frankenstein_ (7,023 words, 49 million boxes,
 41,018 of them not empty: 0.08%). A real model's vocabulary is on the order of a
 hundred thousand tokens, so ten billion boxes for one word of context. In the
-magpie, the rows for _dog_ and _postie_ are identical (full stop 2, runs 2).
+magpie, the rows for _dog_ and _postie_ are identical (full stop 3, "and" 1).
 
 ## Beat sheet
 
@@ -43,9 +43,9 @@ write. A word writes on and the loop goes round once more._
 _Reads:_ 1. the loop: look up, chances, draw, write; 2. real models run it too.
 
 **USHINI (VO):** We can see a limit of counting in the size of the table. Your
-magpie grid has five hundred and seventy-six boxes.
+magpie grid has five hundred and twenty-nine boxes.
 
-_Visual: the magpie grid alone, 24 by 24, its tallied boxes lit._
+_Visual: the magpie grid alone, 23 by 23, its tallied boxes lit._
 
 _Reads:_ 1. a small book makes a small grid.
 
@@ -113,7 +113,7 @@ separately. A model that spots this can guess about the postie from what it saw
 the dog do.
 
 _Visual: the magpie grid; the rows for "dog" and "postie" light and slide
-together, their tallies lining up box for box: full stop 2, runs 2. A faint
+together, their tallies lining up box for box: full stop 3, "and" 1. A faint
 thread joins the two headers._
 
 _Reads:_ 1. two words can behave the same way; 2. our grid stores separate

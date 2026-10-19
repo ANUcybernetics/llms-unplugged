@@ -8,11 +8,11 @@ result back in.
 
 **Builds on:** `partials/grid-agentic-ai.mdx` from "Agentic AI" through "Worked
 example"; the ending hands off to "Your turn". The slides' worked example is
-"the cat sat" with any model; this video walks _The magpie_'s grid, where 29 of
-the book's 133 words are punctuation and six rows (_fence_, _watches_, _swoop_,
-_runs_, _goes_, _spring_) are only ever followed by it. The walk is ". here
-comes the dog", then the row for _dog_ (full stop 0--4, runs 5--9), roll 3: a
-tool call. The friend's reply ("and it wants my sandwich") is invented.
+"the cat sat" with any model; this video walks _The magpie_'s grid, where 19 of
+the book's 100 words are punctuation and four rows (_fence_, _watches_,
+_spring_, _magpie_) are only ever followed by it. The walk is ". here comes the
+dog", then the row for _dog_ (full stop 0--7, _and_ 8--9), roll 3: a tool call.
+The friend's reply ("and it wants my sandwich") is invented.
 
 ## Beat sheet
 
@@ -54,9 +54,9 @@ stop is a tool call.
 word. Some rows never call the tool. Some always do.
 
 _Visual: down the gold columns, each row's punctuation tallies brighten in
-proportion to that row's share: the rows for "fence", "watches" and "runs" light
-fully (nothing else ever follows them); "magpie" and "dog" light partway; "the"
-and "it" stay dark._
+proportion to that row's share: the rows for "fence", "watches", "spring" and
+"magpie" light fully (nothing else ever follows them); "dog" and "postie" light
+partway; "the" and "it" stay dark._
 
 _Beyond:_ the punctuation counts show where this activity calls the tool. Real
 models generate tool requests as text too, but learn to do so differently; they
@@ -66,12 +66,12 @@ _Reads:_ 1. a tool call is in the counts like any other word; 2. some rows call
 it more than others.
 
 **BEN (VO):** Say you've written "here comes the dog". The row for "dog": nought
-to four is a full stop, five to nine is "runs". [beat] Roll a three. Full stop.
+to seven is a full stop, eight or nine is "and". [beat] Roll a three. Full stop.
 [beat] So pause.
 
 _Visual: the strip reads "here comes the dog"; the row for "dog" lights and its
-die strip draws on (full stop 0--4, runs 5--9). A face lands on 3, the full stop
-band lights gold, the pencil stops, and a phone slides into frame._
+die strip draws on (full stop 0--7, "and" 8--9). A face lands on 3, the full
+stop band lights gold, the pencil stops, and a phone slides into frame._
 
 _Reads:_ 1. an ordinary roll; 2. it lands on punctuation; 3. generation pauses.
 

@@ -10,12 +10,11 @@ no separate pre-trained ledger video.
 
 **Builds on:** `partials/ledger-read.mdx` plus `partials/ledger-generation.mdx`
 up to its "Your turn", which the ending hands off to. The model is _The
-magpie_'s real ledger (the row for full stop is it 7 red, here 4 blue, down 3
-green, swoop 3 yellow; for _it_, sits 3 red, watches 3 blue, goes 3 green, is 1
-yellow; for _the_, magpie 5 red, fence 6 blue, postie 4 green, dog 4 yellow; for
-_dog_, full stop 2 red, runs 2 blue). The walk is ". it sits on the dog .", a
-sentence the book never says; the deck's own walk draws differently from the
-same cups.
+magpie_'s real ledger (the row for full stop is it 6 red, here 3 blue, down 3
+green, back 3 yellow; for _it_, is 1 red, sits 4 blue, watches 2 green; for
+_the_, fence 4 red, postie 4 blue, magpie 6 green, dog 4 yellow; for _dog_, full
+stop 3 red, and 1 blue). The walk is ". it sits on the dog .", a sentence the
+book never says; the deck's own walk draws differently from the same cups.
 
 ## Beat sheet
 
@@ -44,35 +43,35 @@ _Reads:_ 1. these sheets are a finished model.
 with a mark every time. Maybe you did the counting yourselves; maybe the sheets
 arrived finished. It works the same either way.
 
-_Visual: the sheets gather into one; the row for "the" lights: magpie, fence,
-postie, dog in red, blue, green and yellow boxes, each with its marks._
+_Visual: the sheets gather into one; the row for "the" lights: fence, postie,
+magpie, dog in red, blue, green and yellow boxes, each with its marks._
 
 _Reads:_ 1. a row is a word; 2. its boxes are what came next and how often.
 
 **BEN (VO):** Every box has a colour, always in the same order: red, blue,
-green, yellow. [beat] On this row, red means "magpie". [beat] On another row,
-red means something else.
+green, yellow. [beat] On this row, red means "fence". [beat] On another row, red
+means something else.
 
 _Visual: a red counter slides in beside the row for "the" and the red box
-lights: magpie. The counter slides down to the row for "it", and its red box
-lights: sits._
+lights: fence. The counter slides down to the row for "it", and its red box
+lights: is._
 
 _Reads:_ 1. the boxes run red, blue, green, yellow; 2. a colour names a place in
 the row, not a word.
 
 **USHINI (VO):** A story starts after a full stop, so find the row for full
-stop. Fill a cup with one counter for every mark: [beat] seven red for "it",
-four blue for "here", three green, three yellow.
+stop. Fill a cup with one counter for every mark: [beat] six red for "it", three
+blue for "here", three green, three yellow.
 
 _Visual: the row for full stop slides out of the sheet. Its marks lift off box
-by box, red first, and become counters that drop into a cup seen from above:
-seven red, four blue, three green, three yellow._
+by box, red first, and become counters that drop into a cup seen from above: six
+red, three blue, three green, three yellow._
 
 _Reads:_ 1. start from the full stop's row; 2. each mark becomes one counter in
 its box's colour; 3. "it" has the most counters.
 
-**BEN (VO):** Seventeen counters. Which colour do you reckon we're most likely
-to draw? [beat 2] Now draw one without looking. Red: "it". [beat] Write the word
+**BEN (VO):** Fifteen counters. Which colour do you reckon we're most likely to
+draw? [beat 2] Now draw one without looking. Red: "it". [beat] Write the word
 down, empty the cup back into the tub, and go to the row for "it".
 
 _Visual: a red counter slides out of the cup; the red box on the row lights and
@@ -82,13 +81,13 @@ The row for "it" lights._
 _Reads:_ 1. the counter's colour names the next word; 2. that word is written
 down; 3. the cup empties and its row is next.
 
-**USHINI (VO):** The row for "it": three red, three blue, three green, one
-yellow. [beat] Red again: "sits".
+**USHINI (VO):** The row for "it": one red, four blue, two green. [beat] Blue
+this time: "sits".
 
-_Visual: ten counters drop into the cup; a red one comes out and "sits" writes
-onto the strip._
+_Visual: seven counters drop into the cup; a blue one comes out and "sits"
+writes onto the strip._
 
-_Reads:_ 1. a new row fills a new cup; 2. red on this row means "sits".
+_Reads:_ 1. a new row fills a new cup; 2. blue on this row means "sits".
 
 **BEN (VO):** "Sits" is only ever followed by "on", and "on" by "the". One box,
 no cup.
@@ -99,12 +98,12 @@ and "on" and "the" write straight onto the strip._
 _Reads:_ 1. a row with one word needs no draw.
 
 **USHINI (VO):** The row for "the" fills the cup with all four colours. [beat]
-Yellow: "dog". [beat] And after "dog", two red for a full stop, two blue for
-"runs". [beat] Red: full stop.
+Yellow: "dog". [beat] And after "dog", three red for a full stop, one blue for
+"and". [beat] Red: full stop.
 
-_Visual: nineteen counters in four colours drop into the cup; a yellow one comes
-out and "dog" writes on. Then four counters, two red, two blue; a red one comes
-out and the full stop tile writes on._
+_Visual: eighteen counters in four colours drop into the cup; a yellow one comes
+out and "dog" writes on. Then four counters, three red, one blue; a red one
+comes out and the full stop tile writes on._
 
 _Reads:_ 1. every row works the same way; 2. a full stop ends the sentence.
 
@@ -117,13 +116,12 @@ into the generated line._
 
 _Reads:_ 1. this sentence isn't in the book; 2. it's made from pieces that are.
 
-**USHINI (VO):** After "the", we could pick "magpie", "fence", "postie" or
+**USHINI (VO):** After "the", we could pick "fence", "postie", "magpie" or
 "dog". [beat] These four branches show those choices; a thicker branch means
 more counters.
 
 _Visual: the completed sentence moves aside. A large "the" branches to four
-words, revealed in order. Branch widths follow the actual sampling weights: 3,
-3, 2, 2 die faces for the grid, or 5, 6, 4, 4 for counters and slips._
+words, revealed in order. Branch widths follow the actual counters: 4, 4, 6, 4._
 
 _Reads:_ 1. the current word has four possible next words; 2. the sampling
 weights determine how likely each choice is.

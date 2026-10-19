@@ -10,7 +10,7 @@ result back in.
 (TASK-168); its recipe follows `partials/grid-agentic-ai.mdx`, so this script
 mirrors `agentic-ai-grid` on the magpie's real ledger. Settle the "Builds on"
 run once that deck lands. The walk is ". here comes the dog", then the row for
-_dog_ (two red for full stop, two blue for _runs_): red comes out, a tool call.
+_dog_ (three red for full stop, one blue for _and_): red comes out, a tool call.
 The friend's reply ("and it wants my sandwich") is invented.
 
 ## Beat sheet
@@ -54,8 +54,8 @@ stop is a tool call.
 word. Some rows never call the tool. Some always do.
 
 _Visual: the gold boxes brighten by their row's share: the rows for "fence",
-"watches" and "runs" light fully, their only box punctuation; "magpie" and "dog"
-light partway; "the" and "it" have no gold box at all._
+"watches", "spring" and "magpie" light fully, every box punctuation; "dog" and
+"postie" light partway; "the" and "it" have no gold box at all._
 
 _Beyond:_ the punctuation counts show where this activity calls the tool. Real
 models generate tool requests as text too, but learn to do so differently; they
@@ -64,9 +64,9 @@ are not trained by counting punctuation pairs._
 _Reads:_ 1. a tool call is in the counts like any other word; 2. some rows call
 it more than others.
 
-**BEN (VO):** Say you've written "here comes the dog". The row for "dog": two
-red for a full stop, two blue for "runs". [beat] Draw one. Red. Full stop.
-[beat] So pause.
+**BEN (VO):** Say you've written "here comes the dog". The row for "dog": three
+red for a full stop, one blue for "and". [beat] Draw one. Red. Full stop. [beat]
+So pause.
 
 _Visual: the strip reads "here comes the dog"; the row for "dog" lights and four
 counters drop into the cup. A red one comes out, the full stop box lights gold,

@@ -11,11 +11,11 @@ open with one format's how-it-works videos (without their hand-offs).
 
 **Builds on:** no single deck run; it joins the grid, ledger and cutouts
 generation partials, whose forms it puts side by side. The model is _The
-magpie_: the row for _the_ (magpie 5, fence 6, postie 4, dog 4, in the order the
+magpie_: the row for _the_ (fence 4, postie 4, magpie 6, dog 4, in the order the
 book first uses them: the grid's column order and the ledger's red, blue, green,
-yellow), the row for full stop (it 7, here 4, down 3, swoop 3) and the row for
-_it_ (sits 3, watches 3, goes 3, is 1: exactly ten, so a d10 needs no rounding).
-The walk is the how-it-works videos' ". it sits on the dog .".
+yellow), the row for full stop (it 6, here 3, down 3, back 3) and the row for
+_it_ (is 1, sits 4, watches 2: seven, which a d10 can't divide, so the die
+rounds). The walk is the how-it-works videos' ". it sits on the dog .".
 
 ## Beat sheet
 
@@ -24,7 +24,7 @@ The walk is the how-it-works videos' ". it sits on the dog .".
 2. **beyond:** the row for _the_ morphs through every body it can take: tallies,
    ledger marks, counters, cutout slips, then four numbers. Same numbers every
    time
-3. the numbers are chances: _fence_ six in nineteen, about a third
+3. the numbers are chances: _magpie_ six in eighteen, exactly a third
 4. **beyond:** one walk that switches forms at every step: the cup for the full
    stop, the die for _it_, the slips for _the_ and _dog_
 5. the same counts guide each draw; a die sometimes needs rounding
@@ -52,7 +52,7 @@ sentence instead, which the line's rhythm already allows.
 boxes. [beat]
 
 _Visual: the quarters slide away and the row for "the" lifts out of the grid to
-the centre: magpie 5, fence 6, postie 4, dog 4 in tallies. The tallies redraw as
+the centre: fence 4, postie 4, magpie 6, dog 4 in tallies. The tallies redraw as
 ledger boxes, red, blue, green, yellow, each with its marks, the four followers
 holding their places left to right._
 
@@ -62,10 +62,10 @@ same four counts.
 **USHINI (VO):** In a cup, it's counters. [beat] In a pile of cutouts, it's
 slips of paper. [beat] Or it's just four numbers.
 
-_Visual: the marks lift off as counters (five red, six blue, four green, four
+_Visual: the marks lift off as counters (four red, four blue, six green, four
 yellow) and drop into four columns; the counters flatten into cutout slips, one
-per pair, stacked in four piles; the piles collapse into four numbers: 5, 6,
-4, 4._
+per pair, stacked in four piles; the piles collapse into four numbers: 4, 4,
+6, 4._
 
 _Beyond:_ each deck shows one form, so a room using the grid never sees that the
 ledger, the cup and the cutouts hold the same thing. One continuous morph makes
@@ -77,41 +77,41 @@ numbers.
 _Reads note:_ five forms across two lines is a lot; if the morph can't hold a
 beat on each, the slips come out here and appear only in the walk.
 
-**BEN (VO):** And the numbers are chances. "Fence" has six of the nineteen,
-about a third. [beat] "Dog" has four, about a fifth.
+**BEN (VO):** And the numbers are chances. "Magpie" has six of the eighteen,
+exactly a third. [beat] "Dog" has four, about a fifth.
 
 _Visual: the four numbers become four widths of one bar, the whole bar the row's
-nineteen; "fence" takes about a third of it, "dog" about a fifth._
+eighteen; "magpie" takes exactly a third of it, "dog" about a fifth._
 
 _Reads:_ 1. a count out of the row's total is a chance; 2. bigger count, bigger
 share.
 
 **USHINI (VO):** Watch one sentence use all three kits. Start after a full stop,
-with a cup: seventeen counters. [beat] Draw red: "it".
+with a cup: fifteen counters. [beat] Draw red: "it".
 
-_Visual: the row for full stop drops seventeen counters into a cup; a red one
+_Visual: the row for full stop drops fifteen counters into a cup; a red one
 slides out and "it" writes onto a strip of paper at the bottom of the desk._
 
 _Reads:_ 1. the full stop's row, as a cup; 2. the draw gives "it".
 
-**BEN (VO):** The row for "it" has ten marks, so give each mark a face of a
-ten-sided die. [beat] Roll a one: "sits". [beat] Then "on", and "the": only one
-way to go.
+**BEN (VO):** The row for "it" has seven marks, so give them the faces of a
+ten-sided die, rounding as we go. [beat] Roll a one: "sits". [beat] Then "on",
+and "the": only one way to go.
 
-_Visual: the row for "it" (sits 3, watches 3, goes 3, is 1): its ten marks
-become ten die faces in a strip, banded in grid column order as the slides' dice
-bands are: is 0, sits 1--3, watches 4--6, goes 7--9. A d10 face lands on 1; the
-"sits" band lights and "sits" writes onto the strip. "on" and "the" write
-straight on, each row lighting briefly with its single follower._
+_Visual: the row for "it" (is 1, sits 4, watches 2): its seven marks share ten
+die faces in a strip, banded in grid column order and rounded as the slides'
+dice bands are: is 0, sits 1--6, watches 7--9. A d10 face lands on 1; the "sits"
+band lights and "sits" writes onto the strip. "on" and "the" write straight on,
+each row lighting briefly with its single follower._
 
-_Reads:_ 1. each mark becomes a face of the die; 2. the roll lands in a band; 3.
-a row with one word needs no draw.
+_Reads:_ 1. the marks share out the faces of the die; 2. the roll lands in a
+band; 3. a row with one word needs no draw.
 
-**USHINI (VO):** The row for "the", as nineteen slips. [beat] Shuffle, pull one
-out: "dog". [beat] Put it back. Now the four "dog" slips: two say "runs", two
-have a full stop. [beat] Shuffle and draw: full stop.
+**USHINI (VO):** The row for "the", as eighteen slips. [beat] Shuffle, pull one
+out: "dog". [beat] Put it back. Now the four "dog" slips: three have a full
+stop, one says "and". [beat] Shuffle and draw: full stop.
 
-_Visual: the row for "the" becomes nineteen paper slips in four piles; the piles
+_Visual: the row for "the" becomes eighteen paper slips in four piles; the piles
 shuffle together, one slip slides out and turns over: "the dog". After the word
 is written, the slip returns. The four "dog" slips appear, shuffle, and a "dog
 ." slip is drawn. Its full stop writes on: "it sits on the dog ."_

@@ -18,12 +18,12 @@ boxes red, blue, green, yellow in the order each row meets its followers).
 
 1. hook: every mark on a ledger sheet was made by somebody reading. Find out
    what they kept, with a book short enough to read in thirty seconds
-2. the text: capitals and lowercase count as the same word; punctuation counts
-   too
+2. the text: capitals and lowercase count as the same word (this book never
+   writes a word both ways, most books do); punctuation counts too
 3. two words at a time: find the first word's row, the second word goes in its
    box, add a mark; slide along one
 4. a new word after the same word takes the next empty box; the same pair comes
-   round again and collects marks (_the fence_ six, _the magpie_ five)
+   round again and collects marks (_the magpie_ six, _the fence_ four)
 5. **beyond:** the rest of the book at machine speed; all five sheets fill in
    about two seconds. Same action, just faster
 6. put the book away; the counts are enough to generate with this model
@@ -40,31 +40,32 @@ seconds.
 
 _Visual: the desk, top-down: a fan of finished ledger sheets, and beside them a
 picture book whose cover reads The magpie. The sheets slide aside; the book
-opens and its first line lifts off the page as a row of word tiles: "The magpie
-is back. It sits on the fence."_
+opens and its first line lifts off the page as a row of word tiles: "It is
+spring. It sits on the fence."_
 
 _Reads:_ 1. the sheets' marks came from a book; 2. this book is what we'll
 count; 3. its text is now a row of words.
 
-**BEN (VO):** Treat capitals and lowercase as the same word, even on printed
-sheets. "The" and "the" go in the same row. [beat] Full stops and exclamation
-marks count as words too.
+**BEN (VO):** Treat capitals and lowercase as the same word. This book never
+writes a word both ways, but most books do: "The" and "the" go in the same row.
+[beat] Full stops and exclamation marks count as words too.
 
 _Visual: the capitalised and lowercase forms of "the" meet above one row
-labelled "the"; keep the printed page unchanged. Then the full stops split off
-into tiles of their own, drawn as the kit's filled symbol tiles._
+labelled "the", as they would in another book; keep the printed page unchanged.
+Then the full stops split off into tiles of their own, drawn as the kit's filled
+symbol tiles._
 
-_Reads:_ 1. capitals and lowercase use the same row, including printed words; 2.
-full stops have their own tiles.
+_Reads:_ 1. capitals and lowercase use the same row; 2. full stops have their
+own tiles.
 
 **USHINI (VO):** Now read it two words at a time. Find the row for the first
 word. [beat] The second word goes in a box on that row, with a mark beside it.
 [beat] Then slide along by one, [beat] and do it again.
 
-_Visual: a gold bracket over "the magpie". Beside the tiles a blank ledger
-sheet: "the" writes into the first empty row, "magpie" into its red box, and a
-mark draws beside it. The bracket slides one tile to "magpie is": "magpie"
-starts the next row, "is" into its red box, a mark. Then "is back"._
+_Visual: a gold bracket over "it is". Beside the tiles a blank ledger sheet:
+"it" writes into the first empty row, "is" into its red box, and a mark draws
+beside it. The bracket slides one tile to "is spring": "is" starts the next row,
+"spring" into its red box, a mark. Then "spring ."_
 
 _Reads:_ 1. the first word of the pair finds its row; 2. the second word goes in
 a box on that row; 3. a mark beside it; 4. slide along one, and each word starts
@@ -72,12 +73,13 @@ the next pair.
 
 **BEN (VO):** When a different word follows "the", it takes the next empty box.
 [beat] And when a pair comes round again, it gets another mark. By the end, "the
-fence" has six marks, and "the magpie" five.
+magpie" has six marks, and "the fence" four.
 
-_Visual: the bracket skips to the second "the": the row for "the" lights, and
-"fence" writes into the blue box beside the red "magpie". Then the bracket skips
-ahead, and each time it lands on "the magpie" or "the fence" a mark draws on in
-that box. The row ends: magpie 5, fence 6, postie 4, dog 4, red to yellow._
+_Visual: the bracket skips to "the fence": "the" starts its row, and "fence"
+writes into the red box. It skips on to "the postie": the row for "the" lights,
+and "postie" writes into the blue box beside the red "fence". Then the bracket
+skips ahead, and each time it lands on a pair beginning "the" a mark draws on in
+that box. The row ends: fence 4, postie 4, magpie 6, dog 4, red to yellow._
 
 _Reads:_ 1. a new follower takes the next empty box; 2. a repeated pair marks
 the same box again; 3. common pairs collect marks.
@@ -88,7 +90,7 @@ of the book, counted by a computer.
 _Visual: the bracket accelerates until it's a blur along the tiles; pairs fly
 into the sheets faster than the eye can follow, new rows starting as new words
 turn up and spilling onto a second sheet and a third, until the whole book is
-counted: 24 rows across five sheets, some rows with one box, some with all four,
+counted: 23 rows across five sheets, some rows with one box, some with all four,
 thick with marks. About two seconds of motion, then hold._
 
 _Beyond:_ the slides count four pairs and then show the finished sheets, so the
@@ -107,10 +109,10 @@ fanned, full frame._
 _Reads:_ 1. the book is gone; 2. only the counts are left.
 
 **USHINI (VO):** And a row of marks is just a row of numbers. The row for "the"
-says five, six, four, four.
+says four, four, six, four.
 
 _Visual: push in on the row for "the"; each box's marks count themselves off and
-collapse into a numeral in the box's colour, 5, 6, 4, 4. Pull back as the change
+collapse into a numeral in the box's colour, 4, 4, 6, 4. Pull back as the change
 ripples down every row of every sheet._
 
 _Reads:_ 1. each box's marks are a count; 2. every sheet is a table of numbers.

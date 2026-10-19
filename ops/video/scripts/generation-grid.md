@@ -8,18 +8,18 @@ Common pairs are more likely; a run can produce a new sentence or repeat one.
 **Builds on:** `partials/grid-generation.mdx` from "Generation" through
 "Generated text"; the ending hands off to "Your turn". The model is _The
 magpie_'s grid, lowercased, columns in the order the book first uses each word
-(the row for full stop is it 7, here 4, down 3, swoop 3; for _it_, is 1, sits 3,
-watches 3, goes 3; for _the_, magpie 5, fence 6, postie 4, dog 4; for _dog_,
-full stop 2, runs 2). The walk is ". it sits on the dog .", a sentence the book
-never says, with rolls 2, 1, 9, 3. Faces are shared across a row left to right,
-as the slides' dice bands are.
+(the row for full stop is it 6, here 3, down 3, back 3; for _it_, is 1, sits 4,
+watches 2; for _the_, fence 4, postie 4, magpie 6, dog 4; for _dog_, full stop
+3, and 1). The walk is ". it sits on the dog .", a sentence the book never says,
+with rolls 2, 1, 9, 3. Faces are shared across a row left to right, as the
+slides' dice bands are.
 
 ## Beat sheet
 
 1. a grid can generate a sentence absent from the book
 2. read the rows, then start after a full stop
-3. approximate seventeen tallies with ten die faces; roll "it"
-4. ten tallies fit exactly: one face each, then roll "sits"
+3. approximate fifteen tallies with ten die faces; roll "it"
+4. seven tallies need rounding too: "sits" gets six faces; roll "sits"
 5. single options give "on" and "the"; two more rolls give "dog" and a full stop
 6. compare our sentence with the book's
 7. inspect four possible next words after "the"; repeats can happen
@@ -45,8 +45,8 @@ postie and dog, the rest of the row empty._
 _Reads:_ 1. a row is a word; 2. its tallies are what came next and how often.
 
 **BEN (VO):** A story starts after a full stop, so start at the row for full
-stop. After a full stop, the book has "it" seven times, "here" four, "down"
-three, "swoop" three.
+stop. After a full stop, the book has "it" six times, "here" three, "down"
+three, "back" three.
 
 _Visual: the row for full stop slides out of the grid to the middle of the desk,
 its four tallied boxes spread wide._
@@ -54,11 +54,11 @@ its four tallied boxes spread wide._
 _Reads:_ 1. start from the full stop's row; 2. "it" has the most tallies.
 
 **USHINI (VO):** Now pick the next word at random, with a ten-sided die. [beat]
-Seventeen tallies won't fit exactly onto ten faces. We'll approximate: "it" gets
+Fifteen tallies won't fit exactly onto ten faces. We'll approximate: "it" gets
 four faces, the others two each. [beat]
 
 _Visual: under the row a strip of ten die faces, 0 to 9, bands drawing in left
-to right as they're named: it 0--3, here 4--5, down 6--7, swoop 8--9._
+to right as they're named: it 0--3, here 4--5, down 6--7, back 8--9._
 
 _Reads:_ 1. the die's faces are shared across the row; 2. more tallies, more
 faces; 3. "it" gets the most.
@@ -72,14 +72,14 @@ strip of paper at the bottom of the desk. The row for "it" lights on the grid._
 _Reads:_ 1. the roll lands in a band; 2. that band's word is written down; 3.
 its row is next.
 
-**USHINI (VO):** The row for "it" has exactly ten tallies, so every tally gets
-one face. [beat] Roll a one: "sits".
+**USHINI (VO):** The row for "it" has seven tallies, so we round again: "sits"
+gets six faces. [beat] Roll a one: "sits".
 
-_Visual: the row for "it" (is 1, sits 3, watches 3, goes 3): its ten tallies
-drop one to a face, is 0, sits 1--3, watches 4--6, goes 7--9. A face lands on 1;
-the "sits" band lights and "sits" writes onto the strip._
+_Visual: the row for "it" (is 1, sits 4, watches 2): its seven tallies share the
+ten faces, is 0, sits 1--6, watches 7--9. A face lands on 1; the "sits" band
+lights and "sits" writes onto the strip._
 
-_Reads:_ 1. ten tallies, one face each; 2. the roll picks "sits".
+_Reads:_ 1. seven tallies, rounded onto ten faces; 2. the roll picks "sits".
 
 **BEN (VO):** "Sits" is only ever followed by "on", and "on" by "the". One
 option, no roll.
@@ -90,12 +90,12 @@ tallied box, and "on" and "the" write straight onto the strip._
 _Reads:_ 1. a row with one word needs no roll.
 
 **USHINI (VO):** The row for "the" shares its faces four ways. [beat] Roll a
-nine: "dog". [beat] And after "dog", a full stop or "runs", five faces each.
+nine: "dog". [beat] And after "dog", a full stop gets eight faces and "and" two.
 [beat] Roll a three: full stop.
 
-_Visual: the row for "the" gets its bands (magpie 0--2, fence 3--5, postie 6--7,
+_Visual: the row for "the" gets its bands (fence 0--1, postie 2--3, magpie 4--7,
 dog 8--9), a face lands on 9 and "dog" writes on. The row for "dog" splits the
-die in two (full stop 0--4, runs 5--9), a face lands on 3, and the full stop
+die unevenly (full stop 0--7, and 8--9), a face lands on 3, and the full stop
 tile writes on._
 
 _Reads:_ 1. every row works the same way; 2. a full stop ends the sentence.
@@ -114,8 +114,8 @@ _Reads:_ 1. this sentence isn't in the book; 2. it's made from pieces that are.
 more die faces.
 
 _Visual: the completed sentence moves aside. A large "the" branches to four
-words, revealed in order. Branch widths follow the actual sampling weights: 3,
-3, 2, 2 die faces for the grid, or 5, 6, 4, 4 for counters and slips._
+words, revealed in order. Branch widths follow the actual sampling weights: 4,
+2, 2, 2 die faces for the grid, or 6, 4, 4, 4 for counters and slips._
 
 _Reads:_ 1. the current word has four possible next words; 2. the sampling
 weights determine how likely each choice is.

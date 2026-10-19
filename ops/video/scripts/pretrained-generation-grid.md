@@ -9,7 +9,7 @@ aren't empty.
 **Builds on:** `partials/grid-pretrained-generation.mdx` from "Pre-trained
 generation" through "Pre-trained: from `;`"; the ending hands off to "Your
 turn". The fold uses _The magpie_'s booklet as the CLI builds it (the entry for
-_dog_ is full stop 4, runs 9 on one die; for _the_, fence 31, magpie 57, dog 78,
+_dog_ is full stop 7, and 9 on one die; for _the_, magpie 32, dog 55, fence 77,
 postie 99 on two). The booklet the room holds is the Paterson one
 (`data/the-man-from-snowy-river.txt`: 3,967 words, so about 16 million boxes as
 a grid, 16,231 of them not empty), and the walk is the deck's: _sleep again I'd
@@ -65,38 +65,38 @@ _Reads:_ 1. each row becomes an entry; 2. the empty boxes are gone; 3. nothing
 else is lost.
 
 **USHINI (VO):** Take the entry for "dog". On the grid you'd share the die's
-faces: nought to four for a full stop, five to nine for "runs". [beat] The
-booklet just writes where each band ends. [beat] Four. Nine.
+faces: nought to seven for a full stop, eight and nine for "and". [beat] The
+booklet just writes where each band ends. [beat] Seven. Nine.
 
 _Visual: push in on the row for "dog" before it folds: its two tallied boxes,
-and under them the die strip from `generation-grid`, full stop 0--4, runs 5--9.
-The strip slides into the entry and shrinks to its band ends: full stop 4,
-runs 9._
+and under them the die strip from `generation-grid`, full stop 0--7, and 8--9.
+The strip slides into the entry and shrinks to its band ends: full stop 7,
+and 9._
 
 _Reads:_ 1. the die bands are the same as before; 2. the booklet keeps only the
 last face of each band.
 
 **BEN (VO):** So roll, and take the first word your roll doesn't go past. Roll a
-three: that's not past four, so it's a full stop.
+three: that's not past seven, so it's a full stop.
 
-_Visual: a face lands on 3 beside the entry; the numbers light from the top, 4
+_Visual: a face lands on 3 beside the entry; the numbers light from the top, 7
 lights and stops, and the full stop tile writes onto a strip of paper._
 
 _Reads:_ 1. read down the numbers; 2. the first one your roll doesn't go past
 names the word.
 
 **USHINI (VO):** The entry for "the" runs all the way to ninety-nine. [beat]
-That means two rolls, read as one number. [beat] Roll seven, then two.
-Seventy-two: [beat] past fifty-seven, not past seventy-eight. "Dog".
+That means two rolls, read as one number. [beat] Roll four, then five.
+Forty-five: [beat] past thirty-two, not past fifty-five. "Dog".
 
-_Visual: the entry for "the": fence 31, magpie 57, dog 78, postie 99. The faces
-land one at a time, 7 then 2, slide together and read 72; the numbers light down
-to 78 and "dog" writes on._
+_Visual: the entry for "the": magpie 32, dog 55, fence 77, postie 99. The faces
+land one at a time, 4 then 5, slide together and read 45; the numbers light down
+to 55 and "dog" writes on._
 
 _Reads:_ 1. numbers past nine mean two rolls; 2. the two results read as one
 number; 3. the rule is the same.
 
-_Reads note:_ this is where nineteen tallies stop needing rounding: a hundred
+_Reads note:_ this is where eighteen tallies stop needing rounding: a hundred
 faces share them almost exactly, which quietly answers the rounding in
 `generation-grid`; say so in a line only if the grid video keeps its rounding.
 
