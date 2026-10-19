@@ -58,9 +58,9 @@ is in `v1/` (see `v1/README.md`).
 ## One example
 
 The worked example throughout is _The magpie_ (`data/originals/the-magpie.txt`:
-133 tokens, 24 words), the ledger lesson's walkthrough book. It is small enough
+100 tokens, 23 words), the ledger lesson's walkthrough book. It is small enough
 to draw as a whole grid and rich enough to have real choices (the row for _the_
-is fence 6, magpie 5, postie 4, dog 4).
+is fence 4, postie 4, magpie 6, dog 4).
 
 The ledger lesson can generate from finished sheets before it trains, so
 `generation-ledger` never assumes the room did the counting, and there is no

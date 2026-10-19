@@ -8,8 +8,8 @@
 
 Every video that walks The magpie loads it (`<script
 src="parts/generated/magpie.js">` → `window.MAGPIE`). The videos lowercase
-everything, so the CLI's "Here", "Down" and "Swoop" merge into their rows;
-the counts are checked against the CLI's ledger.json (run
+everything, so a word the CLI keeps capitalised merges into its row; the
+counts are checked against the CLI's ledger.json (run
 ops/video/build-data.py first), merged the same way, and this fails if they
 disagree.
 
