@@ -8,7 +8,7 @@ import { LEDGER_PALETTE, type LedgerEntry } from "../lib/ledger";
 
 // Every group generates from a different book (see the lesson entry for the five
 // sets), and the slides walk through one of them: every ROW_* below is a real
-// row of The magpie set (data/originals/the-magpie.txt), the whole 102-token
+// row of The magpie set (data/originals/the-magpie.txt), the whole 100-token
 // text dealt across 5 sheets, printed for a room with counters in four
 // colours --- `llms_unplugged ledger -i data/originals/the-magpie.txt
 // --max-tokens 140 --sheets 5 --palette @cli/ledger-palette-four.json
@@ -23,8 +23,8 @@ import { LEDGER_PALETTE, type LedgerEntry } from "../lib/ledger";
 // the deal printed it. The five ROW_THE_* are the outdoors texts' rows for
 // "the" (data/originals/outdoors-*.txt), each set built with --max-followers 4
 // for training. The walkthrough follows the generation-ledger and
-// one-story-all-together videos (ops/video/v1/scripts/), so a change here is a
-// change there too.
+// same-algorithm videos (ops/video/scripts/), so a change here is a change
+// there too.
 
 export const PALETTE = LEDGER_PALETTE.slice(0, 4);
 
@@ -68,7 +68,7 @@ export const ROW_STOP: LedgerEntry = {
   prefix: ".",
   followers: [
     { text: "It", count: 6 },
-    { text: "Here", count: 4 },
+    { text: "Here", count: 3 },
     { text: "Down", count: 3 },
     { text: "Back", count: 3 },
   ],
@@ -100,12 +100,12 @@ export const ROW_FENCE: LedgerEntry = {
 
 export const ROW_HERE: LedgerEntry = {
   prefix: "Here",
-  followers: [{ text: "comes", count: 4 }],
+  followers: [{ text: "comes", count: 3 }],
 };
 
 export const ROW_COMES: LedgerEntry = {
   prefix: "comes",
-  followers: [{ text: "the", count: 4 }],
+  followers: [{ text: "the", count: 3 }],
 };
 
 export const ROW_MAGPIE: LedgerEntry = {

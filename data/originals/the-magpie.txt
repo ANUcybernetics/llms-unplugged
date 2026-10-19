@@ -4,4 +4,4 @@ author: LLMs Unplugged
 url: https://www.llmsunplugged.org/lessons/how-ai-writes-stories-ledger
 ---
 
-It is spring. It sits on the fence. It watches. Here comes the postie. Down swoops the magpie! Off runs the postie. Back goes the magpie. It sits on the fence. Here comes the dog. Down swoops the magpie! Off runs the dog. Back goes the magpie. It sits on the fence. Here comes the postie. Here comes the dog. Down swoops the magpie! Off run the postie and the dog. Back goes the magpie. It sits on the fence. It watches.
+It is spring. It sits on the fence. It watches. Here comes the postie. Down swoops the magpie! Off runs the postie. Back goes the magpie. It sits on the fence. Here comes the dog. Down swoops the magpie! Off runs the dog. Back goes the magpie. It sits on the fence. Here comes the postie and the dog. Down swoops the magpie! Off run the dog and the postie. Back goes the magpie. It sits on the fence. It watches.
