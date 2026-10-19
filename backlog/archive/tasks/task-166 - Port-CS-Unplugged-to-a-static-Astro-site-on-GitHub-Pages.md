@@ -4,7 +4,7 @@ title: Port CS Unplugged to a static Astro site
 status: To Do
 assignee: []
 created_date: '2026-09-22 22:39'
-updated_date: '2026-10-10 23:45'
+updated_date: '2026-10-19 23:13'
 labels:
   - cs-unplugged
   - fellowship
@@ -71,3 +71,9 @@ Django admin is dropped: content comes from files.
 - [ ] #8 Checks and the build run in CI on every change and the site deploys automatically to the static host, with no Django, Postgres or Jobe service needed
 - [ ] #9 PDFs are served from a bucket, and neither the deploy artifact nor the git history contains them
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Moved to the llmsunplugged/cs-unplugged backlog on 20 October 2026 (~/projects/cs-unplugged): 166 became decision-001 plus TASK-006 (cutover) and TASK-007 (classic site), 166.02 became TASK-005, 166.03 became TASK-004.
+<!-- SECTION:NOTES:END -->

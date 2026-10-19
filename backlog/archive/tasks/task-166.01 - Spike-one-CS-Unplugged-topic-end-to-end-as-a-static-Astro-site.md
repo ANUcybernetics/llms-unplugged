@@ -1,10 +1,10 @@
 ---
 id: TASK-166.01
 title: 'Spike: the CS Unplugged Binary numbers topic end to end as a static Astro site'
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-10-10 22:51'
-updated_date: '2026-10-12 04:10'
+updated_date: '2026-10-19 23:13'
 labels:
   - cs-unplugged
   - fellowship
@@ -116,3 +116,9 @@ Live preview (12 October 2026): https://cs-unplugged.llmsunplugged.workers.dev, 
 
 R2 enabled later on 12 October 2026, superseding the stopgap above: bucket cs-unplugged-files, public at https://pub-09b86e0fac634ddfaee342ee3a93eee1.r2.dev (keys en/<slug>/<file> and slides/en/<lesson>/<file>); 282 PDFs uploaded with wrangler and each checked by size. Repo variable RESOURCE_BASE_URL is set to that address, so pushes to main now deploy from CI (first CI deploy: run 38202539290) and the PDFs are no longer in the site build. Checked live: all 264 printable links on the resource pages return 200, slide and speaker-note PDFs download, and the old /static/resources/ and /static/slides/ addresses 301 to the bucket. The r2.dev address is rate-limited and meant for development; put a custom domain on the bucket at cutover.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+The spike proved out and became the whole-site port, now in its own repo: llmsunplugged/cs-unplugged (~/projects/cs-unplugged), live at https://cs-unplugged.llmsunplugged.workers.dev and deploying from CI. AC #8 is superseded: Tim Bell reviews the live site directly, and the old-device Pyodide measurement moved to that repo's TASK-003. Open work is tracked in that repo's backlog from 20 October 2026.
+<!-- SECTION:FINAL_SUMMARY:END -->

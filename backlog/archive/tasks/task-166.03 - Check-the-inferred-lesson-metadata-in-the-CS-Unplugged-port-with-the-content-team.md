@@ -6,6 +6,7 @@ title: >-
 status: To Do
 assignee: []
 created_date: '2026-10-11 02:32'
+updated_date: '2026-10-19 23:13'
 labels:
   - cs-unplugged
 dependencies: []
@@ -36,3 +37,9 @@ Four lessons have no topic because their subject has none on the site: stroop-ef
 - [ ] #4 A decision is recorded for the four lessons with no topic
 - [ ] #5 No entry in lesson-metadata.yaml still lists a field under inferred
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Moved to the llmsunplugged/cs-unplugged backlog on 20 October 2026 (~/projects/cs-unplugged): 166 became decision-001 plus TASK-006 (cutover) and TASK-007 (classic site), 166.02 became TASK-005, 166.03 became TASK-004.
+<!-- SECTION:NOTES:END -->

@@ -6,6 +6,7 @@ title: >-
 status: To Do
 assignee: []
 created_date: '2026-10-11 01:07'
+updated_date: '2026-10-19 23:13'
 labels:
   - cs-unplugged
 dependencies: []
@@ -33,3 +34,9 @@ Optional, and not to be started before the port is live and Tim Bell and the mai
 - [ ] #4 The block pictures in the challenge hints show the blocks the editor now offers
 - [ ] #5 Attempts saved with the custom blocks either still load or are discarded without an error
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Moved to the llmsunplugged/cs-unplugged backlog on 20 October 2026 (~/projects/cs-unplugged): 166 became decision-001 plus TASK-006 (cutover) and TASK-007 (classic site), 166.02 became TASK-005, 166.03 became TASK-004.
+<!-- SECTION:NOTES:END -->
