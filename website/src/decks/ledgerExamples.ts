@@ -8,92 +8,94 @@ import { LEDGER_PALETTE, type LedgerEntry } from "../lib/ledger";
 
 // Every group generates from a different book (see the lesson entry for the five
 // sets), and the slides walk through one of them: every ROW_* below is a real
-// row of The magpie set (data/originals/the-magpie.txt), the whole 133-token
+// row of The magpie set (data/originals/the-magpie.txt), the whole 102-token
 // text dealt across 5 sheets, printed for a room with counters in four
 // colours --- `llms_unplugged ledger -i data/originals/the-magpie.txt
 // --max-tokens 140 --sheets 5 --palette @cli/ledger-palette-four.json
 // --max-followers 4 --prefill tallies`, which is the recipe the Makefile runs
 // for every book. Four colours at four columns is a single palette cycle, so
 // every row on every sheet takes the same four and no widget here needs to
-// know where its row sits on the page. Change the book or the budget and the
-// counts below have to be re-read off the new sheets. SHEET_FIVE is that set's
-// fifth sheet entire, in the order the deal printed it. The five ROW_THE_* are
-// the outdoors texts' rows for "the" (data/originals/outdoors-*.txt), each set
-// built with --max-followers 4 for training. The walkthrough follows the
-// generation-ledger and one-story-all-together videos (ops/video/v1/scripts/), so
-// a change here is a change there too.
+// know where its row sits on the page. The text is written so that no count
+// passes six (the counters come six to a colour) and no word that starts a
+// sentence also turns up inside one, so the row for "." keeps its capitals.
+// Change the book or the budget and the counts below have to be re-read off
+// the new sheets. SHEET_FIVE is that set's fifth sheet entire, in the order
+// the deal printed it. The five ROW_THE_* are the outdoors texts' rows for
+// "the" (data/originals/outdoors-*.txt), each set built with --max-followers 4
+// for training. The walkthrough follows the generation-ledger and
+// one-story-all-together videos (ops/video/v1/scripts/), so a change here is a
+// change there too.
 
 export const PALETTE = LEDGER_PALETTE.slice(0, 4);
 
-// Sheet 5 of the magpie set, "the" to "watches": the sheet the walkthrough opens
-// on, and "the" --- the one row with all four colours in use and the most
-// marks --- is row 0.
+// Sheet 5 of the magpie set, "spring" to "watches": the sheet the walkthrough
+// opens on. "the" --- the one row with all four colours in use and the most
+// marks --- is row 2.
+
+export const ROW_SPRING: LedgerEntry = {
+  prefix: "spring",
+  followers: [{ text: ".", count: 1 }],
+};
+
+export const ROW_SWOOPS: LedgerEntry = {
+  prefix: "swoops",
+  followers: [{ text: "the", count: 3 }],
+};
 
 export const ROW_THE: LedgerEntry = {
   prefix: "the",
   followers: [
-    { text: "magpie", count: 5 },
-    { text: "fence", count: 6 },
+    { text: "fence", count: 4 },
     { text: "postie", count: 4 },
+    { text: "magpie", count: 6 },
     { text: "dog", count: 4 },
   ],
 };
 
-export const ROW_TO: LedgerEntry = {
-  prefix: "to",
-  followers: [{ text: "the", count: 3 }],
-};
-
-export const ROW_UP: LedgerEntry = {
-  prefix: "up",
-  followers: [{ text: "it", count: 3 }],
-};
-
 export const ROW_WATCHES: LedgerEntry = {
   prefix: "watches",
-  followers: [{ text: ".", count: 3 }],
+  followers: [{ text: ".", count: 2 }],
 };
 
-export const SHEET_FIVE = [ROW_THE, ROW_TO, ROW_UP, ROW_WATCHES];
+export const SHEET_FIVE = [ROW_SPRING, ROW_SWOOPS, ROW_THE, ROW_WATCHES];
 
-// The rest of the generation walkthrough, off the other sheets: "it sits on the
+// The rest of the generation walkthrough, off the other sheets: "It sits on the
 // fence . Here comes the magpie ." --- the book says "Here comes the postie ."
-// and "Down comes the magpie .", and never this. ROW_STOP and ROW_THE are each
+// and "Back goes the magpie .", and never this. ROW_STOP and ROW_THE are each
 // drawn from twice, which is the point of the second visits.
 
 export const ROW_STOP: LedgerEntry = {
   prefix: ".",
   followers: [
-    { text: "it", count: 7 },
+    { text: "It", count: 6 },
     { text: "Here", count: 4 },
     { text: "Down", count: 3 },
-    { text: "Swoop", count: 3 },
+    { text: "Back", count: 3 },
   ],
 };
 
 export const ROW_IT: LedgerEntry = {
-  prefix: "it",
+  prefix: "It",
   followers: [
-    { text: "sits", count: 3 },
-    { text: "watches", count: 3 },
-    { text: "goes", count: 3 },
     { text: "is", count: 1 },
+    { text: "sits", count: 4 },
+    { text: "watches", count: 2 },
   ],
 };
 
 export const ROW_SITS: LedgerEntry = {
   prefix: "sits",
-  followers: [{ text: "on", count: 3 }],
+  followers: [{ text: "on", count: 4 }],
 };
 
 export const ROW_ON: LedgerEntry = {
   prefix: "on",
-  followers: [{ text: "the", count: 3 }],
+  followers: [{ text: "the", count: 4 }],
 };
 
 export const ROW_FENCE: LedgerEntry = {
   prefix: "fence",
-  followers: [{ text: ".", count: 6 }],
+  followers: [{ text: ".", count: 4 }],
 };
 
 export const ROW_HERE: LedgerEntry = {
@@ -103,13 +105,13 @@ export const ROW_HERE: LedgerEntry = {
 
 export const ROW_COMES: LedgerEntry = {
   prefix: "comes",
-  followers: [{ text: "the", count: 7 }],
+  followers: [{ text: "the", count: 4 }],
 };
 
 export const ROW_MAGPIE: LedgerEntry = {
   prefix: "magpie",
   followers: [
-    { text: "is", count: 2 },
+    { text: "!", count: 3 },
     { text: ".", count: 3 },
   ],
 };
@@ -133,20 +135,20 @@ export const STORY_LEDGER = [
 ];
 
 export const SHEET_RANGES = [
-  ["!", "back"],
-  ["comes", "goes"],
-  ["Here", "on"],
-  ["postie", "Swoop"],
-  ["the", "watches"],
+  ["!", "comes"],
+  ["dog", "Here"],
+  ["is", "Off"],
+  ["on", "sits"],
+  ["spring", "watches"],
 ];
 
 // The first three sentences of the set's text as the tokeniser read it, for
-// the training walkthrough: short enough that its ten rows fit a sheet at a
-// readable size beside the text. The pair "the fence" at step 8 is a new
-// word in a row that already has one; ". it" comes round again at step 10,
-// the slide that shows a mark landing on a box that already has one.
+// the training walkthrough: short enough that its nine rows fit a sheet at a
+// readable size beside the text. The pair "It sits" at step 4 is a new word
+// in a row that already has one; ". It" comes round again at step 9, the
+// slide that shows a mark landing on a box that already has one.
 
-export const MAGPIE_OPENING = "the magpie is back . it sits on the fence . it watches .";
+export const MAGPIE_OPENING = "It is spring . It sits on the fence . It watches .";
 
 // The five outdoors texts' rows for "the", for the finale: same word, five
 // different models.

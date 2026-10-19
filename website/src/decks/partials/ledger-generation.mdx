@@ -43,7 +43,7 @@ The sheet on screen is nine rows of the magpie's ledger --- the ones this story 
 </div>
 
 ```notes
-First word in the row: "it", seven tally marks, red box. Count them out --- seven red counters into the cup.
+First word in the row: "It", six tally marks, red box. Count them out --- six red counters into the cup.
 ```
 
 ---
@@ -118,7 +118,7 @@ Next: "Down", three marks, green box. Three green counters.
 </div>
 
 ```notes
-Last word: "Swoop", three marks, yellow box. Three yellow counters, and the row is in the cup.
+Last word: "Back", three marks, yellow box. Three yellow counters, and the row is in the cup.
 ```
 
 ---
@@ -141,7 +141,7 @@ Last word: "Swoop", three marks, yellow box. Three yellow counters, and the row 
 </div>
 
 ```notes
-Seventeen counters for seventeen marks. The cup now holds the row's counts --- the more marks, the more counters, the more likely. Ask before you draw: which colour do you think will come out?
+Sixteen counters for sixteen marks. The cup now holds the row's counts --- the more marks, the more counters, the more likely. Ask before you draw: which colour do you think will come out?
 ```
 
 ---
@@ -150,7 +150,7 @@ Seventeen counters for seventeen marks. The cup now holds the row's counts --- t
 
 ## Draw one
 
-<LedgerPage text="it" fresh />
+<LedgerPage text="It" fresh />
 
 <div class="ledger-step">
   <LedgerSheet
@@ -166,7 +166,7 @@ Seventeen counters for seventeen marks. The cup now holds the row's counts --- t
 </div>
 
 ```notes
-Red: the likeliest one, seven chances in seventeen. Write "it" down, tip the cup back into the tub, and pass to whoever has the row for "it".
+Red: the likeliest one, six chances in sixteen. Write "It" down, tip the cup back into the tub, and pass to whoever has the row for "It".
 ```
 
 ---
@@ -175,23 +175,23 @@ Red: the likeliest one, seven chances in seventeen. Write "it" down, tip the cup
 
 ## Fill the cup, draw one
 
-<LedgerPage text="it sits" fresh />
+<LedgerPage text="It sits" fresh />
 
 <div class="ledger-step">
   <LedgerSheet
     entries={STORY_LEDGER}
     palette={PALETTE}
     label="The magpie: the nine rows this story uses"
-    focus="it"
-    highlight={0}
-    counters={{ cup: "cup-it", drawn: 0 }}
+    focus="It"
+    highlight={1}
+    counters={{ cup: "cup-it", drawn: 1 }}
     id="story-sheet"
   />
-  <LedgerCup entry={ROW_IT} palette={PALETTE} drawn={0} id="cup-it" />
+  <LedgerCup entry={ROW_IT} palette={PALETTE} drawn={1} id="cup-it" />
 </div>
 
 ```notes
-Down the sheet to the row for "it". Ten counters: three red for "sits", three blue for "watches", three green for "goes", one yellow for "is". Three words tied, and red comes out.
+Down the sheet to the row for "It". Seven counters: one red for "is", four blue for "sits", two green for "watches". Blue, the likeliest, comes out.
 ```
 
 ---
@@ -200,7 +200,7 @@ Down the sheet to the row for "it". Ten counters: three red for "sits", three bl
 
 ## Only one place to go
 
-<LedgerPage text="it sits on the" fresh />
+<LedgerPage text="It sits on the" fresh />
 
 <div class="ledger-step">
   <LedgerSheet
@@ -223,7 +223,7 @@ No cup needed: after "sits" this book only ever said "on", and after "on" only "
 
 ## Fill the cup, draw one
 
-<LedgerPage text="it sits on the fence" fresh />
+<LedgerPage text="It sits on the fence" fresh />
 
 <div class="ledger-step">
   <LedgerSheet
@@ -231,15 +231,15 @@ No cup needed: after "sits" this book only ever said "on", and after "on" only "
     palette={PALETTE}
     label="The magpie: the nine rows this story uses"
     focus="the"
-    highlight={1}
-    counters={{ cup: "cup-the", drawn: 1 }}
+    highlight={0}
+    counters={{ cup: "cup-the", drawn: 0 }}
     id="story-sheet"
   />
-  <LedgerCup entry={ROW_THE} palette={PALETTE} drawn={1} id="cup-the" />
+  <LedgerCup entry={ROW_THE} palette={PALETTE} drawn={0} id="cup-the" />
 </div>
 
 ```notes
-The biggest cup yet: nineteen counters across all four colours --- five red for "magpie", six blue for "fence", four green for "postie", four yellow for "dog". Blue comes out, and this row is worth pausing on --- we come back to it in a minute.
+The biggest cup yet: eighteen counters across all four colours --- four red for "fence", four blue for "postie", six green for "magpie", four yellow for "dog". Red comes out, and this row is worth pausing on --- we come back to it in a minute.
 ```
 
 ---
@@ -248,7 +248,7 @@ The biggest cup yet: nineteen counters across all four colours --- five red for 
 
 ## Only one place to go
 
-<LedgerPage text="it sits on the fence ." fresh />
+<LedgerPage text="It sits on the fence ." fresh />
 
 <div class="ledger-step">
   <LedgerSheet
@@ -271,7 +271,7 @@ After "fence" this book only ever said ".", and a full stop is a word like any o
 
 ## Unlikely isn't impossible
 
-<LedgerPage text="it sits on the fence . Here" fresh />
+<LedgerPage text="It sits on the fence . Here" fresh />
 
 <div class="ledger-step">
   <LedgerSheet
@@ -287,7 +287,7 @@ After "fence" this book only ever said ".", and a full stop is a word like any o
 </div>
 
 ```notes
-Back on the row for ".", the same seventeen counters as the very first draw, mostly red. Blue has four of the seventeen and comes out anyway. Unlikely isn't impossible --- that's the cup doing its job.
+Back on the row for ".", the same sixteen counters as the very first draw, mostly red. Blue has four of the sixteen and comes out anyway. Unlikely isn't impossible --- that's the cup doing its job.
 ```
 
 ---
@@ -296,7 +296,7 @@ Back on the row for ".", the same seventeen counters as the very first draw, mos
 
 ## Only one place to go
 
-<LedgerPage text="it sits on the fence . Here comes the" fresh />
+<LedgerPage text="It sits on the fence . Here comes the" fresh />
 
 <div class="ledger-step">
   <LedgerSheet
@@ -319,7 +319,7 @@ After "Here" this book only ever said "comes", and after "comes" only "the". Two
 
 ## The same row, a different word
 
-<LedgerPage text="it sits on the fence . Here comes the magpie" fresh />
+<LedgerPage text="It sits on the fence . Here comes the magpie" fresh />
 
 <div class="ledger-step">
   <LedgerSheet
@@ -327,15 +327,15 @@ After "Here" this book only ever said "comes", and after "comes" only "the". Two
     palette={PALETTE}
     label="The magpie: the nine rows this story uses"
     focus="the"
-    highlight={0}
-    counters={{ cup: "cup-the-again", drawn: 0 }}
+    highlight={2}
+    counters={{ cup: "cup-the-again", drawn: 2 }}
     id="story-sheet"
   />
-  <LedgerCup entry={ROW_THE} palette={PALETTE} drawn={0} id="cup-the-again" />
+  <LedgerCup entry={ROW_THE} palette={PALETTE} drawn={2} id="cup-the-again" />
 </div>
 
 ```notes
-Back on the row for "the", the same nineteen counters as before --- and this time red comes out: "magpie", not "fence". Same row, same cup, different word. Hold onto this one: it is the answer to "why didn't two groups with the same book write the same story?"
+Back on the row for "the", the same eighteen counters as before --- and this time green comes out: "magpie", not "fence". Same row, same cup, different word. Hold onto this one: it is the answer to "why didn't two groups with the same book write the same story?"
 ```
 
 ---
@@ -344,7 +344,7 @@ Back on the row for "the", the same nineteen counters as before --- and this tim
 
 ## Fill the cup, draw one
 
-<LedgerPage text="it sits on the fence . Here comes the magpie ." fresh />
+<LedgerPage text="It sits on the fence . Here comes the magpie ." fresh />
 
 <div class="ledger-step">
   <LedgerSheet
@@ -360,7 +360,7 @@ Back on the row for "the", the same nineteen counters as before --- and this tim
 </div>
 
 ```notes
-Five counters: two red for "is", three blue for the full stop. Blue, and the sentence ends. Eleven words in, and we have a sentence this book never said: it says "Here comes the postie." and it says "Down comes the magpie.", and the model has glued the two together, because it only ever knows what comes next, one word at a time. Stop at a full stop or a question mark you like, or keep going.
+Six counters: three red for "!", three blue for the full stop. Blue, and the sentence ends. Eleven words in, and we have a sentence this book never said: it says "Here comes the postie." and it says "Back goes the magpie.", and the model has glued the two together, because it only ever knows what comes next, one word at a time. Stop at a full stop or a question mark you like, or keep going.
 ```
 
 ---
@@ -369,7 +369,7 @@ Five counters: two red for "is", three blue for the full stop. Blue, and the sen
 
 _"It sits on the fence. Here comes the magpie."_
 
-the book said _"Here comes the postie."_ and _"Down comes the magpie."_
+the book said _"Here comes the postie."_ and _"Back goes the magpie."_
 
 a hint of the original, not a copy
 
