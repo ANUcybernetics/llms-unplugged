@@ -103,7 +103,7 @@ endef
 # Training: blank sheets, and the numbered text page for whoever reads aloud.
 # The words are written as the group meets them, so one sheet serves every
 # text; LEDGER_BLANK_ROWS x 5 sheets has to cover the largest outdoors
-# vocabulary (34 prefixes, the storm).
+# vocabulary (33 prefixes, the storm and the kookaburra).
 #
 # Each generation set is built twice. --rows decides both the sheet count and
 # how much page a row gets, and a set dealt fewer rows than the default 12
