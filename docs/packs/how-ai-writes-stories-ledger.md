@@ -42,7 +42,7 @@ binding works) --- one copy gives 24 of each colour.
 
 ## Also needed, not in this pack
 
-- counters in four colours (red, blue, green, yellow), at least ten of each per
+- counters in four colours (red, blue, green, yellow), at least six of each per
   group, a paper cup and a tub per group
 - butchers paper for the class story, pen and paper per group
 - a projector, a whiteboard, and a chatbot for part 1

@@ -1,0 +1,7 @@
+---
+title: The wombat
+author: LLMs Unplugged
+url: https://www.llmsunplugged.org/lessons/how-ai-writes-stories-ledger
+---
+
+Night falls. Out comes the wombat. It sniffs and sniffs. It eats the grass. Along comes a fox. Back runs the wombat, down into its hole. It waits. Out comes the wombat. It eats the grass and the roots. Along comes an owl. Back runs the wombat, down into its hole. It waits and waits. Out comes the wombat and eats the roots. Along comes the sun. Back walks the wombat, down into its warm hole. It sleeps.

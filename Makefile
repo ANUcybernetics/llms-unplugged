@@ -116,7 +116,7 @@ LEDGER_STAGE := $(LEDGER_DIR)/.build
 LEDGER_PALETTE := @cli/ledger-palette-four.json
 LEDGER_SHEETS := 5
 LEDGER_BLANK_ROWS := 10
-LEDGER_BOOKS := green-eggs-and-ham the-very-hungry-caterpillar \
+LEDGER_BOOKS := the-wombat the-very-hungry-caterpillar \
 	were-going-on-a-bear-hunt the-magpie the-cat-in-the-hat
 LEDGER_TEXTS := beach storm kookaburra creek bush
 
