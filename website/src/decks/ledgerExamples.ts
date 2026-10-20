@@ -61,8 +61,8 @@ export const SHEET_FIVE = [ROW_SPRING, ROW_SWOOPS, ROW_THE, ROW_WATCHES];
 
 // The rest of the generation walkthrough, off the other sheets: "It sits on the
 // fence . Here comes the magpie ." --- the book says "Here comes the postie ."
-// and "Back goes the magpie .", and never this. ROW_STOP and ROW_THE are each
-// drawn from twice, which is the point of the second visits.
+// and "Back goes the magpie .", and never this. ROW_THE is drawn from twice,
+// which is the point of the second visit.
 
 export const ROW_STOP: LedgerEntry = {
   prefix: ".",

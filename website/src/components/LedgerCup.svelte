@@ -95,7 +95,9 @@
       {/each}
     {/if}
   </div>
-  <div class="label" data-id="{id}-label">
+  <!-- No data-id: matched, auto-animate would stretch the old label into the
+       new one. Unmatched, it changes the moment the counters start to move. -->
+  <div class="label">
     {#if drawnCounter}
       <span class="ledger-counter" style="--c: {drawnCounter.colour.hex}"></span>
       <span class="name">{drawnCounter.colour.name}</span>

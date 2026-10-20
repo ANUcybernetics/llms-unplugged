@@ -37,7 +37,7 @@
     /** Follower index whose newest mark is drawn in gold on the focused rows. */
     fresh?: number;
     /** Counters for the first focused row (see LedgerRow's `counters`). */
-    counters?: { cup: string; lifted?: number; drawn?: number };
+    counters?: { cup: string; lifted?: number | "all"; drawn?: number };
     /**
      * Physical rows the sheet has printed on it. Entries that don't fill
      * them are followed by blank rows, as a sheet still being filled in has.

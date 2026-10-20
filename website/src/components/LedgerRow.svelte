@@ -33,11 +33,12 @@
     /**
      * The row's counters, shared with a LedgerCup by data-id (`cup` is the
      * cup's id). `lifted`: that follower's marks fade and a counter for each
-     * sits over its box, ready to fly into the cup on the next frame.
+     * sits over its box, ready to fly into the cup on the next frame; "all"
+     * lifts every follower's at once.
      * `drawn`: the counter that came out of the cup lands on that follower's
      * box, so its position names the word.
      */
-    counters?: { cup: string; lifted?: number; drawn?: number };
+    counters?: { cup: string; lifted?: number | "all"; drawn?: number };
     /** Each box's marks as a number, in the box's colour. */
     numbers?: boolean;
     /** Drop the paper ground and the centring margin: the row is one line of
@@ -73,6 +74,7 @@
   const cup = $derived(
     counters ? cupFor(entry, columns, firstRow, palette).map((c, k) => ({ ...c, k })) : [],
   );
+  const isLifted = (index: number) => counters?.lifted === "all" || counters?.lifted === index;
   const PUNCT = new Set([".", ",", "!", "?", ";", ":"]);
 
   // One five-bar gate per five marks, as cli/ledger.typ draws them: four
@@ -156,13 +158,13 @@
           {#if cell.follower && showTallies && numbers}
             <span class="count" data-id={cellId(`n${cell.index}`)}>{cell.follower.count}</span>
           {:else if cell.follower && showTallies}
-            <span class="marks" class:lifted={counters?.lifted === cell.index}>
+            <span class="marks" class:lifted={isLifted(cell.index)}>
               {#each gates(cell.follower.count) as g, k (k)}
                 {@render gate(g.marks, fresh === cell.index && g.last)}
               {/each}
             </span>
           {/if}
-          {#if counters?.lifted === cell.index}
+          {#if counters && isLifted(cell.index)}
             <span class="counters">
               {#each cup.filter((c) => c.index === cell.index) as c (c.k)}
                 <span
