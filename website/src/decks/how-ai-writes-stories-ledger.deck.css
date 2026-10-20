@@ -41,10 +41,15 @@
   --row-size: 1rem;
 }
 
-/* A sheet on its own under a heading: four rows, so it can be the size it
-   would be on the desk. */
+/* A sheet on its own under a heading: four rows and no caption, so it takes
+   the full width of the slide. */
 .reveal [data-id="ledger-sheet"] {
-  --sheet-size: 1.3rem;
+  --sheet-size: 1.5rem;
+}
+
+/* The quick training's one row ("the"), alone under its heading. */
+.reveal .ledger-row[data-id="quick-the"] {
+  --row-size: 1.55rem;
 }
 
 /* Reveal fades in every element of an auto-animate slide that has no data-id

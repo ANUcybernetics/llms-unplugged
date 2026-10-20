@@ -22,12 +22,15 @@ This is the start of The magpie. Read it two words at a time: find the row for t
 
 ## Listen for "the"
 
-<LedgerRow entry={ROW_THE} palette={PALETTE} showTallies={false} />
-
-every time you hear **the**, shout the word that comes **next**
+<LedgerRow
+  entry={ROW_THE}
+  palette={PALETTE}
+  showTallies={false}
+  id="quick-the"
+/>
 
 ```notes
-Read The magpie aloud, slowly, leaning on every "the" (18 of them). The room shouts the next word; a helper tallies it on the whiteboard in four boxes --- fence, postie, magpie, dog, in that order. About 90 seconds.
+Tell the room: every time you hear "the", shout the word that comes next. Read The magpie aloud, slowly, leaning on every "the" (18 of them). The room shouts the next word; a helper tallies it on the whiteboard in four boxes --- fence, postie, magpie, dog, in that order. About 90 seconds.
 
 It is spring. It sits on the fence. It watches. Here comes the postie. Down swoops the magpie! Off runs the postie. Back goes the magpie. It sits on the fence. Here comes the dog. Down swoops the magpie! Off runs the dog. Back goes the magpie. It sits on the fence. Here comes the postie and the dog. Down swoops the magpie! Off run the dog and the postie. Back goes the magpie. It sits on the fence. It watches.
 ```
@@ -40,12 +43,8 @@ It is spring. It sits on the fence. It watches. Here comes the postie. Down swoo
 
 <LedgerRow entry={ROW_THE} palette={PALETTE} id="quick-the" />
 
-the same marks as the magpie group's sheet: **4, 4, 6, 4**
-
-a computer did this for **every word** in **every book**
-
 ```notes
-Compare the whiteboard with the row: fence 4, postie 4, magpie 6, dog 4. Every row on every group's sheets was made exactly this way; the only difference is that a computer read the books. Real AI does the same thing with a huge amount of text.
+Compare the whiteboard with the row: fence 4, postie 4, magpie 6, dog 4 --- the same marks as the magpie group's sheet. Every row on every group's sheets was made exactly this way; the only difference is that a computer read the books. Real AI does the same thing with a huge amount of text.
 ```
 
 ---
@@ -55,8 +54,6 @@ Compare the whiteboard with the row: fence 4, postie 4, magpie 6, dog 4. Every r
 ## A row of marks is a row of numbers
 
 <LedgerRow entry={ROW_THE} palette={PALETTE} numbers id="quick-the" />
-
-after **the**: fence 4, postie 4, magpie 6, dog 4
 
 ```notes
 Same row, the marks counted up. A computer keeps its model as numbers like these, not tally marks --- but it's the same model.
