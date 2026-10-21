@@ -44,7 +44,7 @@
     "astro": "^7.4.1",
     "astro-theme-anu": "git+https://gitlab.anu.edu.au/u2548636/astro-theme-anu.git#astro-theme-anu@v0.10.0&path:/packages/astro-theme-anu",
     "astro-theme-university": "github:ANUcybernetics/astro-theme-university#v0.23.1",
-    "astromotion": "github:ANUcybernetics/astromotion#v0.37.0",
+    "astromotion": "github:ANUcybernetics/astromotion#v0.37.1",
     "lightningcss": "^1.33.0",
     "mammoth": "^1.13.0",
     "pdfjs-dist": "^6.4.299",
