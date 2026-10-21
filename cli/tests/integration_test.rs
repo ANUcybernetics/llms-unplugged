@@ -1231,6 +1231,47 @@ fn test_ledger_cli_deals_prefixes_alphabetically() -> io::Result<()> {
     Ok(())
 }
 
+/// The ledger lowercases every word but "I", even one the corpus only ever
+/// capitalises: a picture book's sentence-initial words would otherwise keep
+/// their capitals on the sheets.
+#[test]
+fn test_ledger_cli_lowercases_all_but_i() -> io::Result<()> {
+    let temp = TempDir::new()?;
+    let input = write_sample_corpus(
+        temp.path(),
+        "corpus.txt",
+        "It is spring . I see Sally . It sits .",
+    )?;
+    let out_dir = temp.path().join("out");
+
+    let output = Command::new(cli_exe())
+        .arg("ledger")
+        .arg("-i")
+        .arg(&input)
+        .arg("--json-only")
+        .arg("--output")
+        .arg(&out_dir)
+        .output()?;
+    assert!(output.status.success(), "ledger failed: {output:?}");
+
+    let json: serde_json::Value =
+        serde_json::from_reader(BufReader::new(File::open(out_dir.join("ledger.json"))?))?;
+    let mut prefixes: Vec<&str> = json["sheets"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .flat_map(|s| s["pages"].as_array().unwrap())
+        .flat_map(|p| p.as_array().unwrap())
+        .map(|e| e["prefix"][0].as_str().unwrap())
+        .collect();
+    prefixes.sort_unstable();
+    assert_eq!(
+        prefixes,
+        vec![".", "I", "is", "it", "sally", "see", "sits", "spring"]
+    );
+    Ok(())
+}
+
 #[test]
 fn test_ledger_cli_blank_sheets_need_no_corpus() -> io::Result<()> {
     let temp = TempDir::new()?;

@@ -137,7 +137,7 @@ pub fn process_text_for_ledger(
         title.to_string(),
         author.to_string(),
         &lines,
-        config(CjkMode::Words),
+        config(CjkMode::Words).lowercase_all(),
         n,
     );
     // The browser generator prints whole rows: no --max-followers, so a wide

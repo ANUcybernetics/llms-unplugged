@@ -55,6 +55,10 @@ pub struct NormalizerConfig {
     /// ledger row per prefix, a search sheet per so many pairs --- and this
     /// is the knob that sizes them without editing the corpus file.
     max_tokens: Option<usize>,
+    /// Keep a word's capitals when the corpus only ever writes it one way
+    /// (see [`Normalizer::for_corpus`]); off, every word but the allowlist is
+    /// lowercased.
+    corpus_casing: bool,
 }
 
 impl Default for NormalizerConfig {
@@ -69,6 +73,19 @@ impl NormalizerConfig {
             punctuation: punctuation.into_iter().collect(),
             cjk_mode,
             max_tokens: None,
+            corpus_casing: true,
+        }
+    }
+
+    /// The same settings, lowercasing every word but the allowlist (the
+    /// pronoun "I") whatever the corpus does. The ledger's choice: a short
+    /// picture book writes its sentence-initial words only ever capitalised,
+    /// and corpus casing would keep them that way on the sheets.
+    #[must_use]
+    pub fn lowercase_all(self) -> Self {
+        Self {
+            corpus_casing: false,
+            ..self
         }
     }
 
@@ -126,9 +143,13 @@ impl Normalizer {
 
     /// A normaliser whose casing follows the corpus: a word that only ever
     /// appears one way keeps that form ("Sally", "NASA"), a word that appears
-    /// both ways is lowercased ("The"/"the" → "the").
+    /// both ways is lowercased ("The"/"the" → "the"). A config built with
+    /// [`NormalizerConfig::lowercase_all`] skips this and lowercases them all.
     pub fn for_corpus<S: AsRef<str>>(config: NormalizerConfig, lines: &[S]) -> Self {
         let bare = Self::new(config);
+        if !bare.config.corpus_casing {
+            return bare;
+        }
         let words = lines
             .iter()
             .flat_map(|line| bare.extract_raw_words(line.as_ref()));
@@ -739,6 +760,16 @@ mod tests {
         // "The" at the start of sentences plus "the" mid-sentence is mixed.
         let map = case_map(&["The", "the", "the"]);
         assert_eq!(map.get("the"), None);
+    }
+
+    #[test]
+    fn lowercase_all_ignores_corpus_casing_but_keeps_i() {
+        let lines = ["It is spring. I see Sally.", "It sits."];
+        let corpus = Normalizer::for_corpus(NormalizerConfig::default().lowercase_all(), &lines);
+        assert_eq!(
+            corpus.normalize_line(lines[0]),
+            vec!["it", "is", "spring", ".", "I", "see", "sally", "."]
+        );
     }
 
     #[test]

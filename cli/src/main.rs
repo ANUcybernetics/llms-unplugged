@@ -1051,7 +1051,7 @@ fn run_ledger_command(args: &LedgerArgs) -> Result<(), CliError> {
     } else {
         let cutouts = load_cutout_set(
             &args.input,
-            &args.tokenizer.config(),
+            &args.tokenizer.config().lowercase_all(),
             args.n,
             args.labels.title.as_deref(),
             args.labels.author.as_deref(),
