@@ -49,7 +49,7 @@
   const PUNCT = new Set([".", ",", "!", "?", ";", ":"]);
 </script>
 
-<div class="training">
+<div class="training" data-id={id}>
   <div class="reading">
     <div class="text paper-ground" data-id="{id}-text">
       {#each tokens as t, i (i)}
@@ -63,16 +63,6 @@
         >
       {/each}
     </div>
-    {#if prefix !== undefined && follower !== undefined}
-      <p class="pair" data-id="{id}-pair">
-        <span class="ledger-token is-prefix">{prefix}</span>
-        <span class="then">then</span>
-        <span class="ledger-token is-follower">{follower}</span>
-      </p>
-      <p class="so">
-        one mark beside <strong>{follower}</strong> in the row for <strong>{prefix}</strong>
-      </p>
-    {/if}
   </div>
   <LedgerSheet
     {entries}
@@ -143,36 +133,6 @@
   .is-follower {
     background: var(--anu-gold);
     color: var(--paper-ink-invert, #fff);
-  }
-
-  .pair {
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-    margin: 0;
-    font-size: 0.95em;
-  }
-
-  .so {
-    margin: 0;
-    font-size: 0.85em;
-    line-height: 1.3;
-  }
-
-  .pair .ledger-token {
-    padding: 0.05em 0.35em;
-    border: 2px solid transparent;
-    background: var(--paper-ground);
-  }
-
-  .pair .is-follower {
-    background: var(--anu-gold);
-    color: var(--paper-ink-invert, #fff);
-  }
-
-  .then,
-  .so {
-    color: var(--color-text-secondary);
   }
 
   @media (prefers-reduced-motion: reduce) {

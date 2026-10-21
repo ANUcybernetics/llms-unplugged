@@ -10,12 +10,38 @@ The sheets were finished when they arrived. Now the reveal: somebody made every 
 
 ---
 
+{/* _animate: quick-train */}
+
 ## Read it two words at a time
 
-<LedgerTraining tokens={MAGPIE_OPENING} step={1} palette={PALETTE} />
+<LedgerTraining
+  tokens={MAGPIE_OPENING}
+  step={0}
+  rows={2}
+  palette={PALETTE}
+  id="quick-train"
+/>
 
 ```notes
-This is the start of The magpie. Read it two words at a time: find the row for the first word, put a mark beside the second, then move along by one. A new word after the same word takes the next empty box, so a row's colours are the order the text met its followers.
+This is the start of The magpie. Read it two words at a time: "It", then "is". It's the first time we've seen "It", so it gets a new row; "is" goes in the row's first box, with one mark beside it.
+```
+
+---
+
+{/* _animate: quick-train */}
+
+## Read it two words at a time
+
+<LedgerTraining
+  tokens={MAGPIE_OPENING}
+  step={1}
+  rows={2}
+  palette={PALETTE}
+  id="quick-train"
+/>
+
+```notes
+Move along by one: "is", then "spring". The second word of the last pair is the first word of this one, so the text is read once and every pair in it gets counted. A new row for "is", "spring" in its first box, one mark.
 ```
 
 ---

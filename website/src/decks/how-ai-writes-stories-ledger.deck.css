@@ -53,6 +53,16 @@
   --sheets-size: 1.08rem;
 }
 
+/* The quick training's first two pairs: a two-row sheet, so the text goes
+   above it rather than beside, and both take the full width. */
+.reveal .training[data-id="quick-train"] {
+  grid-template-columns: auto;
+  gap: 1.5rem;
+  font-size: 1.6rem;
+
+  --sheet-size: 1.8rem;
+}
+
 /* The quick training's one row ("the"), alone under its heading. */
 .reveal .ledger-row[data-id="quick-the"] {
   --row-size: 1.55rem;

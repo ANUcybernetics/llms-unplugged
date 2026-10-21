@@ -252,7 +252,11 @@
     font-weight: 400;
   }
 
+  /* The row's track sets the height, not ledger.css's free-standing strip
+     minimum: a sheet with a shorter --row-height would otherwise push its
+     strips, and their rules, below the word cells beside them. */
   .ledger-strip {
+    min-block-size: 0;
     transition: opacity 0.3s;
   }
 
