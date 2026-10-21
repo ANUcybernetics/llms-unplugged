@@ -5,7 +5,7 @@
 ![bg](./assets/bg-tally-training.avif)
 
 ```notes
-The sheets were finished when they arrived. Now the reveal: somebody made every mark by reading the text. We'll make one row together, all at once.
+The sheets were finished when they arrived. Now the reveal: somebody made every mark by reading the text. We'll build the start of one sheet together, pair by pair, then make one row all at once.
 ```
 
 ---
@@ -17,7 +17,7 @@ The sheets were finished when they arrived. Now the reveal: somebody made every 
 <LedgerTraining
   tokens={MAGPIE_OPENING}
   step={0}
-  rows={2}
+  rows={1}
   palette={PALETTE}
   id="quick-train"
 />
@@ -46,6 +46,168 @@ Move along by one: "is", then "spring". The second word of the last pair is the 
 
 ---
 
+{/* _animate: quick-train */}
+
+## Read it two words at a time
+
+<LedgerTraining
+  tokens={MAGPIE_OPENING}
+  step={2}
+  rows={3}
+  palette={PALETTE}
+  id="quick-train"
+/>
+
+```notes
+"spring", then ".". A full stop is a word like any other, so it goes in the box like any other.
+```
+
+---
+
+{/* _animate: quick-train */}
+
+## Read it two words at a time
+
+<LedgerTraining
+  tokens={MAGPIE_OPENING}
+  step={3}
+  rows={4}
+  palette={PALETTE}
+  id="quick-train"
+/>
+
+```notes
+".", then "It". Now the full stop gets a row of its own --- and that row is how this book starts its sentences.
+```
+
+---
+
+{/* _animate: quick-train */}
+
+## Read it two words at a time
+
+<LedgerTraining
+  tokens={MAGPIE_OPENING}
+  step={4}
+  rows={4}
+  palette={PALETTE}
+  id="quick-train"
+/>
+
+```notes
+"It", then "sits". The row for "It" already has "is" in its red box. "sits" is new after "It", so it takes the next empty box: blue. That's where a row's colours come from --- each new follower gets the next box, in the order the text meets them.
+```
+
+---
+
+{/* _animate: quick-train */}
+
+## Read it two words at a time
+
+<LedgerTraining
+  tokens={MAGPIE_OPENING}
+  step={5}
+  rows={5}
+  palette={PALETTE}
+  id="quick-train"
+/>
+
+```notes
+From here, let the room call each pair before you click. "sits", then "on": a new row.
+```
+
+---
+
+{/* _animate: quick-train */}
+
+## Read it two words at a time
+
+<LedgerTraining
+  tokens={MAGPIE_OPENING}
+  step={6}
+  rows={6}
+  palette={PALETTE}
+  id="quick-train"
+/>
+
+```notes
+"on", then "the".
+```
+
+---
+
+{/* _animate: quick-train */}
+
+## Read it two words at a time
+
+<LedgerTraining
+  tokens={MAGPIE_OPENING}
+  step={7}
+  rows={7}
+  palette={PALETTE}
+  id="quick-train"
+/>
+
+```notes
+"the", then "fence".
+```
+
+---
+
+{/* _animate: quick-train */}
+
+## Read it two words at a time
+
+<LedgerTraining
+  tokens={MAGPIE_OPENING}
+  step={8}
+  rows={8}
+  palette={PALETTE}
+  id="quick-train"
+/>
+
+```notes
+"fence", then ".". The row for "fence" gets the full stop.
+```
+
+---
+
+{/* _animate: quick-train */}
+
+## Read it two words at a time
+
+<LedgerTraining
+  tokens={MAGPIE_OPENING}
+  step={9}
+  rows={8}
+  palette={PALETTE}
+  id="quick-train"
+/>
+
+```notes
+".", then "It" --- and we've seen this pair before. No new box: a second mark beside "It" in the row for ".". That's how a count builds: the common pairs collect marks, the rare ones don't.
+```
+
+---
+
+{/* _animate: quick-train */}
+
+## Read it two words at a time
+
+<LedgerTraining
+  tokens={MAGPIE_OPENING}
+  step={10}
+  rows={8}
+  palette={PALETTE}
+  id="quick-train"
+/>
+
+```notes
+"It", then "watches": the third word ever to follow "It", so it takes the third box, green. Every row on every group's sheets was made exactly this way, pair by pair, through the whole book.
+```
+
+---
+
 ## Listen for "the"
 
 <LedgerRow
@@ -63,24 +225,10 @@ It is spring. It sits on the fence. It watches. Here comes the postie. Down swoo
 
 ---
 
-{/* _animate: quick-the */}
-
 ## Check the sheet
 
 <LedgerRow entry={ROW_THE} palette={PALETTE} id="quick-the" />
 
 ```notes
-Compare the whiteboard with the row: fence 4, postie 4, magpie 6, dog 4 --- the same marks as the magpie group's sheet. Every row on every group's sheets was made exactly this way; the only difference is that a computer read the books. Real AI does the same thing with a huge amount of text.
-```
-
----
-
-{/* _animate: quick-the */}
-
-## A row of marks is a row of numbers
-
-<LedgerRow entry={ROW_THE} palette={PALETTE} numbers id="quick-the" />
-
-```notes
-Same row, the marks counted up. A computer keeps its model as numbers like these, not tally marks --- but it's the same model.
+Compare the whiteboard with the row: fence 4, postie 4, magpie 6, dog 4 --- the same marks as the magpie group's sheet. Every row on every group's sheets was made exactly this way; the only difference is that a computer read the books, and keeps the counts as numbers rather than tally marks. Real AI does the same thing with a huge amount of text.
 ```

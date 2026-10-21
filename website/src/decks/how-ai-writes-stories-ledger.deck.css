@@ -45,7 +45,7 @@
 /* A sheet on its own under a heading: four rows and no caption, so it takes
    the full width of the slide. */
 .reveal [data-id="ledger-sheet"] {
-  --sheet-size: 1.5rem;
+  --sheet-size: 1.35rem;
 }
 
 /* The five sheets of a group's set, side by side across the full width. */
@@ -53,14 +53,14 @@
   --sheets-size: 1.08rem;
 }
 
-/* The quick training's first two pairs: a two-row sheet, so the text goes
-   above it rather than beside, and both take the full width. */
+/* The quick training's opening pairs: the text on one line above a sheet
+   that only ever reaches eight rows, so both take the full width. */
 .reveal .training[data-id="quick-train"] {
   grid-template-columns: auto;
-  gap: 1.5rem;
+  gap: 1rem;
   font-size: 1.6rem;
 
-  --sheet-size: 1.8rem;
+  --sheet-size: 1.35rem;
 }
 
 /* The quick training's one row ("the"), alone under its heading. */
