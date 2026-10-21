@@ -53,14 +53,16 @@
   --sheets-size: 1.08rem;
 }
 
-/* The quick training's opening pairs: the text on one line above a sheet
-   that only ever reaches eight rows, so both take the full width. */
-.reveal .training[data-id="quick-train"] {
+/* The quick training's opening pairs: no heading, the text on one line
+   above a sheet that only ever reaches eight rows, so both take the full
+   width; the rows are a little shorter so all eight fit the height. */
+.reveal .training[data-training="quick-train"] {
   grid-template-columns: auto;
-  gap: 1rem;
+  gap: 1.5rem;
   font-size: 1.6rem;
 
-  --sheet-size: 1.35rem;
+  --sheet-size: 1.8rem;
+  --row-height: 2em;
 }
 
 /* The quick training's one row ("the"), alone under its heading. */

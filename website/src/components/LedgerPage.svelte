@@ -57,9 +57,13 @@
     letter-spacing: 0.06em;
   }
 
+  /* Baseline, not the default stretch: a punctuation tile is taller than a
+     word, and stretched words would grow (and auto-animate would squash them)
+     whenever one arrives on the line. */
   .words {
     display: flex;
     flex-wrap: wrap;
+    align-items: baseline;
     gap: 0.3em 0.5em;
     font-style: italic;
   }

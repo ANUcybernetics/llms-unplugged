@@ -46,12 +46,17 @@
   const entry = $derived(entries.find((e) => e.prefix === prefix));
   const fresh = $derived(entry?.followers.findIndex((f) => f.text === follower));
   const sheetRows = $derived(rows ?? entriesFromTokens(tokens).length);
+  // Auto-animate scales a matched element from its old box to its new one,
+  // which stretches everything inside it. A sheet that grows a row between
+  // steps is a different sheet as far as the matching goes (the row count is
+  // in its id), so it swaps rather than stretches; same-sized steps still
+  // match. The root has no data-id for the same reason.
   const PUNCT = new Set([".", ",", "!", "?", ";", ":"]);
 </script>
 
-<div class="training" data-id={id}>
+<div class="training" data-training={id}>
   <div class="reading">
-    <div class="text paper-ground" data-id="{id}-text">
+    <div class="text" data-id="{id}-text">
       {#each tokens as t, i (i)}
         <span
           class="tok ledger-token"
@@ -72,7 +77,7 @@
     rows={sheetRows}
     focus={prefix}
     {fresh}
-    id="{id}-sheet"
+    id="{id}-sheet-{sheetRows}"
   />
 </div>
 
@@ -105,15 +110,19 @@
     gap: 0.6em;
   }
 
+  /* The text being read is slide text, not paper: it is the book, and the
+     sheet is the thing being made from it. */
   .text {
     display: flex;
     flex-wrap: wrap;
     gap: 0.35em 0.4em;
-    padding: 0.6em 0.8em;
     font-size: 1em;
+    color: var(--color-text);
   }
 
+  /* In the slide's ink, not .ledger-token's paper ink. */
   .tok {
+    color: var(--color-text);
     padding: 0.05em 0.25em;
     border: 2px solid transparent;
     transition:
@@ -123,7 +132,7 @@
   }
 
   .tok.is-ahead {
-    color: rgb(0 0 0 / 35%);
+    color: var(--color-text-muted);
   }
 
   .is-prefix {
@@ -132,7 +141,7 @@
 
   .is-follower {
     background: var(--anu-gold);
-    color: var(--paper-ink-invert, #fff);
+    color: #000;
   }
 
   @media (prefers-reduced-motion: reduce) {
