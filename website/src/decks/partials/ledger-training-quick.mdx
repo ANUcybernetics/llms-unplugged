@@ -14,6 +14,37 @@ The sheets were finished when they arrived. Now the reveal: somebody made every 
 
 <LedgerTraining
   tokens={MAGPIE_OPENING}
+  source={MAGPIE_OPENING_SOURCE}
+  rows={1}
+  palette={PALETTE}
+  id="quick-train"
+/>
+
+```notes
+This is the start of The magpie, as the book writes it.
+```
+
+---
+
+{/* _animate: quick-train */}
+
+<LedgerTraining
+  tokens={MAGPIE_OPENING}
+  rows={1}
+  palette={PALETTE}
+  id="quick-train"
+/>
+
+```notes
+Before anything gets counted, the text is split into words: every word made lowercase (except "I"), and every full stop split off as a word of its own. That's how the computer read the books too, and why the sheets are all in lowercase.
+```
+
+---
+
+{/* _animate: quick-train */}
+
+<LedgerTraining
+  tokens={MAGPIE_OPENING}
   step={0}
   rows={1}
   palette={PALETTE}
@@ -21,7 +52,7 @@ The sheets were finished when they arrived. Now the reveal: somebody made every 
 />
 
 ```notes
-This is the start of The magpie. Read it two words at a time: "It", then "is". It's the first time we've seen "It", so it gets a new row; "is" goes in the row's first box, with one mark beside it.
+Now read it two words at a time: "it", then "is". It's the first time we've seen "it", so it gets a new row; "is" goes in the row's first box, with one mark beside it.
 ```
 
 ---
@@ -69,7 +100,7 @@ Move along by one: "is", then "spring". The second word of the last pair is the 
 />
 
 ```notes
-".", then "It". Now the full stop gets a row of its own --- and that row is how this book starts its sentences.
+".", then "it". Now the full stop gets a row of its own --- and that row is how this book starts its sentences.
 ```
 
 ---
@@ -85,7 +116,7 @@ Move along by one: "is", then "spring". The second word of the last pair is the 
 />
 
 ```notes
-"It", then "sits". The row for "It" already has "is" in its red box. "sits" is new after "It", so it takes the next empty box: blue. That's where a row's colours come from --- each new follower gets the next box, in the order the text meets them.
+"it", then "sits". The row for "it" already has "is" in its red box. "sits" is new after "it", so it takes the next empty box: blue. That's where a row's colours come from --- each new follower gets the next box, in the order the text meets them.
 ```
 
 ---
@@ -165,7 +196,7 @@ From here, let the room call each pair before you click. "sits", then "on": a ne
 />
 
 ```notes
-".", then "It" --- and we've seen this pair before. No new box: a second mark beside "It" in the row for ".". That's how a count builds: the common pairs collect marks, the rare ones don't.
+".", then "it" --- and we've seen this pair before. No new box: a second mark beside "it" in the row for ".". That's how a count builds: the common pairs collect marks, the rare ones don't.
 ```
 
 ---
@@ -181,12 +212,12 @@ From here, let the room call each pair before you click. "sits", then "on": a ne
 />
 
 ```notes
-"It", then "watches": the third word ever to follow "It", so it takes the third box, green. Every row on every group's sheets was made exactly this way, pair by pair, through the whole book.
+"it", then "watches": the third word ever to follow "it", so it takes the third box, green. Every row on every group's sheets was made exactly this way, pair by pair, through the whole book.
 ```
 
 ---
 
-## Listen for "the"
+## Listen for the word “the”
 
 <LedgerRow
   entry={ROW_THE}

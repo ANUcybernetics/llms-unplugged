@@ -12,6 +12,13 @@
     /** The training text, space-separated and already tokenised. */
     tokens: string;
     /**
+     * The same text as the book writes it. Given, the line shows this
+     * instead of the tokens, over an empty sheet: the frame before the
+     * tokeniser reads it. Each word carries its first token's data-id, so the
+     * next frame's tokens grow out of the words they came from.
+     */
+    source?: string;
+    /**
      * Which pair is being tallied: the tokens at `step` and `step + 1`. The
      * sheet below shows the marks the text has produced up to and including
      * this pair, with the new one in gold. -1 shows the text over a blank
@@ -32,6 +39,7 @@
 
   let {
     tokens: tokenString,
+    source,
     step = -1,
     columns = LEDGER_COLUMNS,
     palette = LEDGER_PALETTE,
@@ -52,21 +60,44 @@
   // in its id), so it swaps rather than stretches; same-sized steps still
   // match. The root has no data-id for the same reason.
   const PUNCT = new Set([".", ",", "!", "?", ";", ":"]);
+  // A written word makes one token, plus one per punctuation mark trailing
+  // it ("spring." is "spring" and "."); its data-id is the first of them.
+  const written = $derived.by(() => {
+    let next = 0;
+    return (source ?? "")
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((word) => {
+        const at = next;
+        let trailing = 0;
+        while (trailing < word.length - 1 && PUNCT.has(word[word.length - 1 - trailing])) {
+          trailing++;
+        }
+        next += 1 + trailing;
+        return { word, at };
+      });
+  });
 </script>
 
 <div class="training" data-training={id}>
   <div class="reading">
     <div class="text" data-id="{id}-text">
-      {#each tokens as t, i (i)}
-        <span
-          class="tok ledger-token"
-          class:is-prefix={i === step}
-          class:is-follower={i === step + 1}
-          class:is-ahead={i > step + 1}
-          data-id="{id}-t{i}"
-          >{#if PUNCT.has(t)}<span class="ledger-punct">{t}</span>{:else}{t}{/if}</span
-        >
-      {/each}
+      {#if source !== undefined}
+        {#each written as w (w.at)}
+          <span class="tok ledger-token" data-id="{id}-t{w.at}">{w.word}</span>
+        {/each}
+      {:else}
+        {#each tokens as t, i (i)}
+          <span
+            class="tok ledger-token"
+            class:is-prefix={i === step}
+            class:is-follower={step >= 0 && i === step + 1}
+            class:is-ahead={step >= 0 && i > step + 1}
+            data-id="{id}-t{i}"
+            >{#if PUNCT.has(t)}<span class="ledger-punct">{t}</span>{:else}{t}{/if}</span
+          >
+        {/each}
+      {/if}
     </div>
   </div>
   <LedgerSheet

@@ -59,23 +59,23 @@ export const ROW_WATCHES: LedgerEntry = {
 
 export const SHEET_FIVE = [ROW_SPRING, ROW_SWOOPS, ROW_THE, ROW_WATCHES];
 
-// The rest of the generation walkthrough, off the other sheets: "It sits on the
-// fence . Here comes the magpie ." --- the book says "Here comes the postie ."
-// and "Back goes the magpie .", and never this. ROW_THE is drawn from twice,
+// The rest of the generation walkthrough, off the other sheets: "it sits on the
+// fence . here comes the magpie ." --- the book says "here comes the postie ."
+// and "back goes the magpie .", and never this. ROW_THE is drawn from twice,
 // which is the point of the second visit.
 
 export const ROW_STOP: LedgerEntry = {
   prefix: ".",
   followers: [
-    { text: "It", count: 6 },
-    { text: "Here", count: 3 },
-    { text: "Down", count: 3 },
-    { text: "Back", count: 3 },
+    { text: "it", count: 6 },
+    { text: "here", count: 3 },
+    { text: "down", count: 3 },
+    { text: "back", count: 3 },
   ],
 };
 
 export const ROW_IT: LedgerEntry = {
-  prefix: "It",
+  prefix: "it",
   followers: [
     { text: "is", count: 1 },
     { text: "sits", count: 4 },
@@ -99,7 +99,7 @@ export const ROW_FENCE: LedgerEntry = {
 };
 
 export const ROW_HERE: LedgerEntry = {
-  prefix: "Here",
+  prefix: "here",
   followers: [{ text: "comes", count: 3 }],
 };
 
@@ -136,19 +136,21 @@ export const STORY_LEDGER = [
 
 export const SHEET_RANGES = [
   ["!", "comes"],
-  ["dog", "Here"],
-  ["is", "Off"],
+  ["dog", "here"],
+  ["is", "off"],
   ["on", "sits"],
   ["spring", "watches"],
 ];
 
-// The first three sentences of the set's text as the tokeniser read it, for
-// the training walkthrough: short enough that its nine rows fit a sheet at a
-// readable size beside the text. The pair "It sits" at step 4 is a new word
-// in a row that already has one; ". It" comes round again at step 9, the
+// The first three sentences of the set's text, as the book writes them and as
+// the tokeniser read them (lowercased, the full stops split off), for the
+// training walkthrough: short enough that its nine rows fit a sheet at a
+// readable size beside the text. The pair "it sits" at step 4 is a new word
+// in a row that already has one; ". it" comes round again at step 9, the
 // slide that shows a mark landing on a box that already has one.
 
-export const MAGPIE_OPENING = "It is spring . It sits on the fence . It watches .";
+export const MAGPIE_OPENING_SOURCE = "It is spring. It sits on the fence. It watches.";
+export const MAGPIE_OPENING = "it is spring . it sits on the fence . it watches .";
 
 // The five outdoors texts' rows for "the", for the finale: same word, five
 // different models.

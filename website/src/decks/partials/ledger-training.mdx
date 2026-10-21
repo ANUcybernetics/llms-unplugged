@@ -10,12 +10,30 @@ The sheets were finished when they arrived. Now the reveal: somebody made every 
 
 ---
 
+{/* _animate: train-text */}
+
+## Start with a text
+
+<LedgerTraining
+  tokens={MAGPIE_OPENING}
+  source={MAGPIE_OPENING_SOURCE}
+  palette={PALETTE}
+/>
+
+```notes
+This is the start of The magpie as the book writes it, beside a blank sheet with a row for every word the text will need.
+```
+
+---
+
+{/* _animate: train-text */}
+
 ## Start with a text
 
 <LedgerTraining tokens={MAGPIE_OPENING} palette={PALETTE} />
 
 ```notes
-This is the start of The magpie as the sheets saw it, beside a blank sheet with a row for every word the text will need. Every full stop and exclamation mark is its own word. (A word the book writes both ways, like "The" and "the", is written small on the sheets; The magpie never does that, so its words keep the capitals they have.)
+Before anything gets counted, the text is split into words: every word made lowercase (except "I"), and every full stop and exclamation mark split off as a word of its own. That's how the computer read the books too, and why the sheets are all in lowercase.
 ```
 
 ---
@@ -53,7 +71,7 @@ Four pairs in, four rows have their first mark. Every second word of a pair beco
 <LedgerTraining tokens={MAGPIE_OPENING} step={4} palette={PALETTE} />
 
 ```notes
-One more pair: the second "It". The row for "It" already has "is" in its red box, but this time "sits" follows it, so "sits" takes the next empty box: blue. That's where a row's colours come from --- each new follower gets the next box, in the order the text meets them.
+One more pair: the second "it". The row for "it" already has "is" in its red box, but this time "sits" follows it, so "sits" takes the next empty box: blue. That's where a row's colours come from --- each new follower gets the next box, in the order the text meets them.
 ```
 
 ---
@@ -63,7 +81,7 @@ One more pair: the second "It". The row for "It" already has "is" in its red box
 <LedgerTraining tokens={MAGPIE_OPENING} step={9} palette={PALETTE} />
 
 ```notes
-Skip ahead to the next full stop: the next sentence starts with "It" too, so the mark goes beside "It" in the row for ".", which already has one. That's how a count builds --- the common pairs collect marks, the rare ones don't. Then, for the magpie groups: check the "It" count in the row for "." on your printed sheet --- six marks --- against the whole text. Every other group's sheets were made the same way from their book.
+Skip ahead to the next full stop: the next sentence starts with "it" too, so the mark goes beside "it" in the row for ".", which already has one. That's how a count builds --- the common pairs collect marks, the rare ones don't. Then, for the magpie groups: check the "it" count in the row for "." on your printed sheet --- six marks --- against the whole text. Every other group's sheets were made the same way from their book.
 ```
 
 ---
