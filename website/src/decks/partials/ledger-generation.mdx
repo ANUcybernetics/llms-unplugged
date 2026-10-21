@@ -1,6 +1,12 @@
-{/* _animate: gen */}
+{/* _class: hero */}
 
-## Start with any word
+# Worked example
+
+![bg](./assets/bg-generation-chain.avif)
+
+---
+
+{/* _animate: gen */}
 
 <LedgerPage text="It" fresh />
 
@@ -25,8 +31,6 @@ The sheet on screen is nine rows of the magpie's ledger --- the ones this story 
 
 {/* _animate: gen */}
 
-## Fill the cup
-
 <LedgerPage text="It" />
 
 <div class="ledger-step">
@@ -49,8 +53,6 @@ First word in the row: "is", one tally mark, red box. One red counter into the c
 ---
 
 {/* _animate: gen */}
-
-## Fill the cup
 
 <LedgerPage text="It" />
 
@@ -75,8 +77,6 @@ Next word: "sits", four marks, blue box. Four blue counters.
 
 {/* _animate: gen */}
 
-## Fill the cup
-
 <LedgerPage text="It" />
 
 <div class="ledger-step">
@@ -100,8 +100,6 @@ Last word: "watches", two marks, green box. Two green counters, and the row is i
 
 {/* _animate: gen */}
 
-## The cup is the row
-
 <LedgerPage text="It" />
 
 <div class="ledger-step">
@@ -122,8 +120,6 @@ Seven counters for seven marks. The cup now holds the row's counts --- the more 
 ---
 
 {/* _animate: gen */}
-
-## Draw one
 
 <LedgerPage text="It sits" fresh />
 
@@ -148,8 +144,6 @@ Blue: the likeliest one, four chances in seven. Write "sits" down, tip the cup b
 
 {/* _animate: gen */}
 
-## Only one place to go
-
 <LedgerPage text="It sits on" fresh />
 
 <div class="ledger-step">
@@ -171,8 +165,6 @@ No cup needed: after "sits" this book only ever said "on". A one-word row needs 
 
 {/* _animate: gen */}
 
-## Only one place to go
-
 <LedgerPage text="It sits on the" fresh />
 
 <div class="ledger-step">
@@ -193,8 +185,6 @@ And after "on", only ever "the". Another one-word row, straight onto the page.
 ---
 
 {/* _animate: gen */}
-
-## Fill the cup
 
 <LedgerPage text="It sits on the" />
 
@@ -218,8 +208,6 @@ The biggest row yet: all four boxes have marks. One counter for every mark, each
 
 {/* _animate: gen */}
 
-## Fill the cup
-
 <LedgerPage text="It sits on the" />
 
 <div class="ledger-step">
@@ -240,8 +228,6 @@ Eighteen counters across all four colours --- four red for "fence", four blue fo
 ---
 
 {/* _animate: gen */}
-
-## Draw one
 
 <LedgerPage text="It sits on the fence" fresh />
 
@@ -266,8 +252,6 @@ Red comes out, and this row is worth pausing on --- we come back to it in a minu
 
 {/* _animate: gen */}
 
-## Only one place to go
-
 <LedgerPage text="It sits on the fence ." fresh />
 
 <div class="ledger-step">
@@ -288,8 +272,6 @@ After "fence" this book only ever said ".", and a full stop is a word like any o
 ---
 
 {/* _animate: gen */}
-
-## Fill the cup
 
 <LedgerPage text="It sits on the fence ." />
 
@@ -313,8 +295,6 @@ The row for "." says how this book starts its sentences: four words ever started
 
 {/* _animate: gen */}
 
-## Fill the cup
-
 <LedgerPage text="It sits on the fence ." />
 
 <div class="ledger-step">
@@ -335,8 +315,6 @@ Fifteen counters: six red for "It", and three each of blue for "Here", green for
 ---
 
 {/* _animate: gen */}
-
-## Unlikely isn't impossible
 
 <LedgerPage text="It sits on the fence . Here" fresh />
 
@@ -361,8 +339,6 @@ Blue has three of the fifteen and comes out anyway. Unlikely isn't impossible --
 
 {/* _animate: gen */}
 
-## Only one place to go
-
 <LedgerPage text="It sits on the fence . Here comes" fresh />
 
 <div class="ledger-step">
@@ -384,8 +360,6 @@ After "Here" this book only ever said "comes".
 
 {/* _animate: gen */}
 
-## Only one place to go
-
 <LedgerPage text="It sits on the fence . Here comes the" fresh />
 
 <div class="ledger-step">
@@ -406,8 +380,6 @@ And after "comes", only ever "the". Two more one-word rows, straight onto the pa
 ---
 
 {/* _animate: gen */}
-
-## Fill the cup
 
 <LedgerPage text="It sits on the fence . Here comes the" />
 
@@ -431,8 +403,6 @@ Back on the row for "the". Same row, so the same counters go in.
 
 {/* _animate: gen */}
 
-## Fill the cup
-
 <LedgerPage text="It sits on the fence . Here comes the" />
 
 <div class="ledger-step">
@@ -453,8 +423,6 @@ The same eighteen counters as before.
 ---
 
 {/* _animate: gen */}
-
-## The same row, a different word
 
 <LedgerPage text="It sits on the fence . Here comes the magpie" fresh />
 
@@ -479,8 +447,6 @@ This time green comes out: "magpie", not "fence". Same row, same cup, different 
 
 {/* _animate: gen */}
 
-## Fill the cup
-
 <LedgerPage text="It sits on the fence . Here comes the magpie" />
 
 <div class="ledger-step">
@@ -503,8 +469,6 @@ Two words ever came after "magpie".
 
 {/* _animate: gen */}
 
-## Fill the cup
-
 <LedgerPage text="It sits on the fence . Here comes the magpie" />
 
 <div class="ledger-step">
@@ -525,8 +489,6 @@ Six counters: three red for "!", three blue for the full stop.
 ---
 
 {/* _animate: gen */}
-
-## Draw one
 
 <LedgerPage text="It sits on the fence . Here comes the magpie ." fresh />
 
@@ -573,7 +535,7 @@ write down a starting word, then repeat:
 4. **write it down**, tip the cup back into the tub, and pass the job to whoever
    has that word's row
 
-<Timer minutes={12} overlay />
+<Timer minutes={10} overlay />
 
 ```notes
 This is the whole loop on one slide --- leave it up while they work. Hand out the cups and tubs now. Four jobs per group: a reader who finds the row, a filler, a drawer, and a writer. Any word will do to start, and when they hit a "." or "?" they like, they can keep going or start again from any word.

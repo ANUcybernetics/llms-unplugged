@@ -68,7 +68,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 0.8em;
-    font-size: 1rem;
+    font-size: var(--sheets-size, 1rem);
   }
 
   .sheet {

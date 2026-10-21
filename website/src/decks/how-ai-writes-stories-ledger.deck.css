@@ -15,8 +15,9 @@
   gap: 1rem;
   margin-inline: auto;
 
-  /* Nine rows under a heading and the story line. */
-  --sheet-size: 0.95rem;
+  /* Nine rows under the story line; the walkthrough's frames have no
+     heading, so the sheet takes the height a heading would have used. */
+  --sheet-size: 1.12rem;
 }
 
 /* A bare row in the step (the finale's call-out) clusters with its cup
@@ -45,6 +46,11 @@
    the full width of the slide. */
 .reveal [data-id="ledger-sheet"] {
   --sheet-size: 1.5rem;
+}
+
+/* The five sheets of a group's set, side by side across the full width. */
+.reveal .sheets {
+  --sheets-size: 1.08rem;
 }
 
 /* The quick training's one row ("the"), alone under its heading. */
