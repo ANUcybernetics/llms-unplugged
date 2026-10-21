@@ -4,6 +4,7 @@ title: 'Record, mix and publish the twelve explainer videos'
 status: To Do
 assignee: []
 created_date: '2026-10-15 05:50'
+updated_date: '2026-10-21 02:27'
 labels:
   - video
 dependencies:
@@ -29,3 +30,9 @@ Take the twelve-video series (ops/video/<slug>, scripts in ops/video/scripts/, s
 - [ ] #8 All twelve are on YouTube at @llmsunplugged with the VTT captions, descriptions and the Uppbeat credits
 - [ ] #9 Each video is embedded on its module or lesson page, and the Overview on the landing page
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Consider updating how the videos show ledgers and their animations to match the Oct 2026 ledger deck rework (commits 62ee756d..716a8934), which Ben thinks is an improvement: lowercase sheets except I, a tokenise step (text as written → lowercase tokens with the full stops split off) before training, the sheet built pair by pair with rows added as they're met, one row per frame for one-word rows, and a separate fill step before every cup draw. Book text is shown as plain text distinct from the paper ledger, and the cup label changes instantly while the counters fly.
+<!-- SECTION:NOTES:END -->
