@@ -42,7 +42,7 @@ _Reads:_ 1. the reply is written one word at a time; 2. the same thing can
 happen on paper.
 
 **USHINI (VO):** Take a picture book. Read it two words at a time, and count
-which word follows which.
+the number of times one word follows another.
 
 _Visual: the magpie book opens; its text lifts off as tiles and streams into a
 grid at machine speed, pairs landing as tallies, until the whole book is
@@ -60,9 +60,8 @@ and "dog" writes onto the strip after "it sits on the"._
 _Reads:_ 1. the last word's row gives the choices; 2. the counts weight the
 draw.
 
-**USHINI (VO):** You can count in tally marks, or marks on a ledger. Draw with a
-die, a cup of counters or a pile of paper slips. These are different ways to
-hold the same counts.
+**USHINI (VO):** You can count using tally marks, or marks on a ledger. You can
+select the next word using a die, a cup of counters or a pile of paper slips.
 
 _Visual: the row for "the" lifts out and morphs, one form per phrase: tallies,
 ledger boxes with marks, counters in a cup, cutout slips in piles, then four
@@ -87,9 +86,11 @@ and the dice pick" in one picture.
 _Reads:_ 1. the counts determine which branches are possible; 2. the draw picks
 one path through the displayed continuations.
 
-**USHINI:** Our model uses the last word. Claude or ChatGPT uses much more of
-the text, and learns to predict by adjusting numbers during training. Choosing
-what comes next is the part of text generation we have in common.
+**USHINI:** Our model generates its next word based on the last word it
+produced. Claude or ChatGPT uses much more its previous text to generate its
+next word, and learns to predict by adjusting numbers during the training
+process. Choosing what word comes next is the part of text generation our models
+have in common with Claude and ChatGPT.
 
 _Visual: the tree gives way to the sentence strip. Only its last word lights for
 our model; the preceding words light together as the voice describes the text
@@ -110,8 +111,8 @@ _Reads:_ 1. Markov counted letter patterns in 1913; 2. Shannon generated text
 from word sequences in 1948.
 
 **USHINI (VO):** LLMs Unplugged has the lessons, the slides, the printouts and a
-short video for every step. And the tools that made them: paste in any text you
-like, and out come the grids, the sheets and the booklets for it.
+short video for every activity. It also has the tools that made them: paste in
+any text you like, and out come the grids, the sheets and the booklets for it.
 
 _Visual: the tools page: a text pasted into the box; a booklet page, a ledger
 sheet and a sheet of cutouts render beneath it._

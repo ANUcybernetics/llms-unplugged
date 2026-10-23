@@ -64,9 +64,11 @@ threshold rule is the die-face rule in disguise.
 _Reads:_ 1. each row becomes an entry; 2. the empty boxes are gone; 3. nothing
 else is lost.
 
-**USHINI (VO):** Take the entry for "dog". On the grid you'd share the die's
-faces: nought to seven for a full stop, eight and nine for "and". [beat] The
-booklet just writes where each band ends. [beat] Seven. Nine.
+**USHINI (VO):** Take the entry for "dog". When using the grid, we would
+associate the next possible word with a band of faces on our dice: nought to
+seven for a full stop, eight and nine for "and". [beat] The booklet just
+represents these associations with the last number in each band. [beat] Seven.
+Nine.
 
 _Visual: push in on the row for "dog" before it folds: its two tallied boxes,
 and under them the die strip from `generation-grid`, full stop 0--7, and 8--9.
@@ -86,8 +88,9 @@ _Reads:_ 1. read down the numbers; 2. the first one your roll doesn't go past
 names the word.
 
 **USHINI (VO):** The entry for "the" runs all the way to ninety-nine. [beat]
-That means two rolls, read as one number. [beat] Roll four, then five.
-Forty-five: [beat] past thirty-two, not past fifty-five. "Dog".
+That means we need two dice-rolls, read as one number. [beat] Roll four, then
+five. Forty-five: [beat] that's greater than thirty-two, but less than
+fifty-five. "Dog".
 
 _Visual: the entry for "the": magpie 32, dog 55, fence 77, postie 99. The faces
 land one at a time, 4 then 5, slide together and read 45; the numbers light down
@@ -109,10 +112,10 @@ numbers light down to 7 and "again" writes onto the strip._
 
 _Reads:_ 1. this is the booklet the viewer holds; 2. same rule, one die.
 
-**USHINI (VO):** "Again" runs to ninety-nine, so two rolls. [beat] Eight, then
-nought: eighty. [beat] That's past seventy-six, not past eighty-four: "I'd".
-[beat] Roll a six: "float". [beat] And "float" has only one word after it, so no
-roll at all.
+**USHINI (VO):** "Again" runs to ninety-nine, so we need two dice-rolls. [beat]
+Eight, then zero: eighty. [beat] That's greater than seventy-six, and less than
+eighty-four: "I'd". [beat] Roll a six: "float". [beat] And "float" has only one
+word after it, so we don't need to roll.
 
 _Visual: the entry for "again" (full stop 45, comma 61, and 68, as 76, I'd 84,
 made 91, over 99): two faces land, 8 and 0, read 80; the numbers light down to

@@ -54,9 +54,9 @@ its four tallied boxes spread wide._
 
 _Reads:_ 1. start from the full stop's row; 2. "it" has the most tallies.
 
-**USHINI (VO):** Now pick the next word at random, with a ten-sided die. [beat]
-Fifteen tallies won't fit exactly onto ten faces, so we'll approximate: "it" gets
-four faces and the other words get two faces each. [beat]
+**USHINI (VO):** Now pick the next word at random, using a ten-sided die. [beat]
+Fifteen tallies won't fit exactly onto ten faces, so we'll approximate: "it"
+gets four faces and the other words get two faces each. [beat]
 
 _Visual: under the row a strip of ten die faces, 0 to 9, bands drawing in left
 to right as they're named: it 0--3, here 4--5, down 6--7, back 8--9._
@@ -91,8 +91,8 @@ tallied box, and "on" and "the" write straight onto the strip._
 _Reads:_ 1. a row with one word needs no roll.
 
 **USHINI (VO):** The row for "the" shares its faces four ways. [beat] Roll a
-nine: "dog". [beat] And after "dog", a full stop gets eight faces and "and" two.
-[beat] Roll a three: full stop.
+nine: "dog". [beat] And after "dog", a full stop gets eight faces and "and" gets
+two. [beat] Roll a three: full stop.
 
 _Visual: the row for "the" gets its bands (fence 0--1, postie 2--3, magpie 4--7,
 dog 8--9), a face lands on 9 and "dog" writes on. The row for "dog" splits the
@@ -110,7 +110,7 @@ into the generated line._
 
 _Reads:_ 1. this sentence isn't in the book; 2. it's made from pieces that are.
 
-**USHINI (VO):** After "the", we could pick "magpie", "fence", "postie" or
+**USHINI (VO):** After "the", we could generate "magpie", "fence", "postie" or
 "dog". [beat] These four branches show those choices; a thicker branch means
 more die faces are allocated.
 
