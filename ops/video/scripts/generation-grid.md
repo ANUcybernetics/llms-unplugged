@@ -36,8 +36,9 @@ moves._
 
 _Reads:_ 1. this grid is a finished model.
 
-**USHINI (VO):** Each row is a word from a book, and the tallies say which words
-came next, and how often. It's the same kind of grid you just filled in.
+**USHINI (VO):** Each row is a word from a book, and the tallies indicate how
+frequently the words in the columns followed the word in the row. It's the same
+kind of grid you just filled in.
 
 _Visual: the row for "the" lights: its four tallied boxes under magpie, fence,
 postie and dog, the rest of the row empty._
@@ -54,8 +55,8 @@ its four tallied boxes spread wide._
 _Reads:_ 1. start from the full stop's row; 2. "it" has the most tallies.
 
 **USHINI (VO):** Now pick the next word at random, with a ten-sided die. [beat]
-Fifteen tallies won't fit exactly onto ten faces. We'll approximate: "it" gets
-four faces, the others two each. [beat]
+Fifteen tallies won't fit exactly onto ten faces, so we'll approximate: "it" gets
+four faces and the other words get two faces each. [beat]
 
 _Visual: under the row a strip of ten die faces, 0 to 9, bands drawing in left
 to right as they're named: it 0--3, here 4--5, down 6--7, back 8--9._
@@ -111,7 +112,7 @@ _Reads:_ 1. this sentence isn't in the book; 2. it's made from pieces that are.
 
 **USHINI (VO):** After "the", we could pick "magpie", "fence", "postie" or
 "dog". [beat] These four branches show those choices; a thicker branch means
-more die faces.
+more die faces are allocated.
 
 _Visual: the completed sentence moves aside. A large "the" branches to four
 words, revealed in order. Branch widths follow the actual sampling weights: 4,

@@ -38,9 +38,9 @@ float ;_, rolls 7, 80, 6.
 
 ## Script
 
-**USHINI (TC):** Most people who use Claude or ChatGPT never trained it. You can
-use a model somebody else trained. This booklet lets you try that with our
-counting model.
+**USHINI (TC):** Most people who use Claude or ChatGPT have never trained it
+themselves. This booklet represents a model someone else trained and it can be
+used to generate new text.
 
 _Visual: a booklet on the desk, top-down, its cover title hidden under a flat
 card. It opens to a page rendered from the CLI: bold headwords, the words that
@@ -139,9 +139,9 @@ booklet makes the storage choice obvious. It also pays off in `real-models`.
 _Reads:_ 1. as a grid, this model is enormous; 2. almost every box is empty; 3.
 the booklet keeps only the ones that aren't.
 
-**USHINI:** As you go, listen to what comes out. There are more words to choose
-from, but each choice still uses only the last word. Try to guess the book
-before you check the cover.
+**USHINI:** As you go, listen to what comes out. This model has a lot more words
+to choose from, but each choice still depends only on the last word. Try to
+guess the book before you check the cover.
 
 _Visual: the strip: the booklet's line so far. A few of its words light in turn,
 the tells; the card over the cover lifts a crack and settles back._
@@ -162,4 +162,5 @@ make learned parameters available; 3. running a downloaded model also needs
 software and suitable hardware.
 
 **USHINI (TC):** Grab your booklet and start rolling. And if you'd like to make
-your own from any text, the tool's at llmsunplugged.org/tools.
+your own booklet from any text you like, you can find the tool's to do that at
+llmsunplugged.org/tools.

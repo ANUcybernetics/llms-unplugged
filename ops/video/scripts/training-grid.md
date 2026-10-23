@@ -52,10 +52,11 @@ of their own, drawn as the kit's filled symbol tiles._
 _Reads:_ 1. capitals and lowercase use the same row, including printed words; 2.
 full stops have their own tiles.
 
-**USHINI (VO):** Now read it two words at a time. Add each new word to both
-edges of the grid. [beat] The first word gets a row. [beat] The second gets a
-column. [beat] Put a tally where they cross. [beat] Then slide along by one,
-[beat] and do it again.
+**USHINI (VO):** Now read the book two words at a time. Add each new word you
+encounter to the column and row headers of the grid. [beat] Locate the first
+word within the rows. [beat] Then locate the second word within the columns.
+[beat] Put a tally where they cross. [beat] Then slide along by one word, [beat]
+and do it again.
 
 _Visual: a gold bracket over "it is". Beside the tiles a blank grid sheet: "it"
 writes onto the first row header and the first column header at once, then "is"
@@ -77,8 +78,9 @@ postie 4, magpie 6, dog 4._
 _Reads:_ 1. a repeated pair marks the same box again; 2. common pairs collect
 tallies.
 
-**USHINI (VO):** For our model, training means counting pairs. Here's the rest
-of the book, counted by a computer.
+**USHINI (VO):** The process of training our language model involves counting
+how frequently one word follows another in the book. Here's the rest of the
+book, counted by a computer.
 
 _Visual: the bracket accelerates until it's a blur along the tiles; pairs fly
 into the grid faster than the eye can follow, rows and columns appearing as new
@@ -100,8 +102,9 @@ frame._
 
 _Reads:_ 1. the book is gone; 2. only the counts are left.
 
-**USHINI (VO):** And a tally is just a number. The row for "the" says four,
-four, six, four. Every box on the grid is a number, and most of them are zero.
+**USHINI (VO):** The tallies in our grid are just numbers. The row for "the" has
+boxes containing four, four, six, and four. Most of the boxes in our grid are
+zero.
 
 _Visual: push in on the row for "the"; its tallies count themselves off and
 collapse into numerals, 4, 4, 6, 4. Pull back as the change ripples across the
@@ -139,8 +142,8 @@ box for every pair. But it's training for the same job: guessing what comes
 next. Yours fits on a desk.
 
 **USHINI (VO):** A few tips. Start on any page you like. A full stop is followed
-by whatever comes next, even over the page. Skip the speech marks. And a new
-word always gets a new row and a new column.
+by whatever comes next, even if it's over the page. Skip the speech marks. And a
+new word always gets a new row and a new column.
 
 _Visual: a blank grid sheet on the desk beside a page of text. A pair that
 straddles the page turn is bracketed across the fold, and its tally goes in.

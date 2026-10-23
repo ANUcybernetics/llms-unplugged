@@ -37,8 +37,8 @@ The friend's reply ("and it wants my sandwich") is invented.
 ## Script
 
 **USHINI (TC):** An AI agent can use tools, such as a web browser, while it
-works on a task. We'll add a tool to our paper model: sending a text message.
-It's a way to see who does what when a model asks for help.
+works on a task. To understand the difference between the model and a tool, we
+will add a tool to our paper model: sending a text message.
 
 **BEN (VO):** Here's the rule. Generate from your grid exactly as before. But
 the moment you roll a punctuation mark, a full stop or a comma, pause. That's a
@@ -50,8 +50,10 @@ columns for full stop, comma and exclamation mark light gold, top to bottom._
 _Reads:_ 1. generation is the same as before; 2. punctuation means stop; 3. that
 stop is a tool call.
 
-**USHINI (VO):** In our activity, the model rolls punctuation like any other
-word. Some rows never call the tool. Some always do.
+**USHINI (VO):** In our activity, the model can generate punctuation the same
+way it generates any other word. Some rows in the grid don't correspond to any
+punctuation and therefore they don't trigger a tool call. This model has a lot
+more words to choose from, but each choice still depends on only the last word.
 
 _Visual: down the gold columns, each row's punctuation tallies brighten in
 proportion to that row's share: the rows for "fence", "watches", "spring" and
@@ -60,7 +62,7 @@ partway; "the" and "it" stay dark._
 
 _Beyond:_ the punctuation counts show where this activity calls the tool. Real
 models generate tool requests as text too, but learn to do so differently; they
-are not trained by counting punctuation pairs._
+are not trained by counting punctuation pairs.
 
 _Reads:_ 1. a tool call is in the counts like any other word; 2. some rows call
 it more than others.
@@ -75,8 +77,8 @@ stop band lights gold, the pencil stops, and a phone slides into frame._
 
 _Reads:_ 1. an ordinary roll; 2. it lands on punctuation; 3. generation pauses.
 
-**USHINI (VO):** The tool is a text message. Send "What comes next?", and the
-sentence so far, to three friends or group chats.
+**USHINI (VO):** The tool is a text message. Send the text you've generated so
+far followed by "What comes next?", to three friends or group chats.
 
 _Visual: the phone, top-down: a message types itself, What comes next? "here
 comes the dog…", and copies slide up to three contact rows. A beat of nothing.
@@ -96,9 +98,9 @@ grid; a face lands and the pencil moves again._
 _Reads:_ 1. the first reply is written down whole; 2. then the full stop you
 rolled; 3. generation carries on from the full stop.
 
-**USHINI:** Our grid has no row for "sandwich". We restart from the full stop so
-we have a row to use. That also means the reply cannot change our model's next
-choice.
+**USHINI:** Our grid has no row for the word "sandwich". We restart the
+generation process from the full stop so we have a valid row to find in our
+grid. That means the reply cannot change our model's next choice.
 
 _Visual: the grid's row headers scroll past, and the gap where "sandwich" would
 be lights empty. Cut to the row for full stop, present and lit._
