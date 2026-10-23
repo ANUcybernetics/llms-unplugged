@@ -158,6 +158,31 @@ import doorAttend from "../assets/images/hero-intro.avif";
 
     <div class="section-with-image">
       <div class="section-image">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/4tI0BRPNOac"
+          title="The Visionaries Among Us: LLMs Unplugged by Dr Ben Swift"
+          loading="lazy"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+      </div>
+      <div class="section-content">
+        <h2>Can it work with a whole hall?</h2>
+        <p>
+          In a workshop everyone builds their own model, but the same idea works
+          as a fifteen-minute talk. At the ANU Visionaries Among Us Showcase in
+          August 2026 we handed each of about 360 people a{" "}
+          <a href="/modules/search-sheets/">search sheet</a>, and the hall spent
+          four minutes writing a sentence by show of hands, one word at a time.
+          The slides, sheets and running order are on the{" "}
+          <a href="/talks/demystifying-large-language-models/">talk page</a>.
+        </p>
+      </div>
+    </div>
+
+    <div class="section-with-image">
+      <div class="section-image">
         <Image src={headshotBen} alt="Ben Swift" loading="lazy" format="avif" />
       </div>
       <div class="section-content">
@@ -331,8 +356,11 @@ import doorAttend from "../assets/images/hero-intro.avif";
     margin-top: 0;
   }
 
-  .section-with-image img {
+  .section-with-image img,
+  .section-with-image iframe {
+    display: block;
     width: 100%;
+    border: 0;
     object-fit: cover;
     aspect-ratio: 16 / 9;
   }
