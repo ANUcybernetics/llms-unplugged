@@ -13,9 +13,9 @@
 #import "../cli/cutout-common.typ": brand-font, brand-gold, brand-lockup
 
 #let lockup_width = 34mm
-// The lockup's own artwork sits 8/197.4 of its width below the baseline;
+// The lockup's own artwork sits 8/195.9 of its width below the baseline;
 // shifting by that much sets it on the line with the title beside it.
-#let lockup_baseline_shift = lockup_width * 8 / 197.4
+#let lockup_baseline_shift = lockup_width * 8 / 195.9
 
 // The running header: the mark, the sheet's title opposite it, and the gold
 // rule under both.

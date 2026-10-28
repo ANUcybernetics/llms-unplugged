@@ -174,7 +174,7 @@ const LOCKUP_BASELINE = (TILE.box + LOCKUP_CAP_HEIGHT) / 2 - LOCKUP_DESCENDER_LI
 const LOCKUP_W = Math.round((LOCKUP_TEXT_X + WORDMARK_ADVANCE * WORDMARK_SCALE) * 10) / 10;
 
 /**
- * The favicon grid with the title set beside it in Public Sans Bold: the
+ * The favicon grid with the title set beside it in Public Sans SemiBold: the
  * horizontal lockup for headers, footers, letterhead and slide corners, where
  * the square marks don't fit and the dot patterns alone don't say who this is.
  *

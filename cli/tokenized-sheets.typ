@@ -477,8 +477,8 @@
 
 // Set to the wordmark's own cap height rather than to the pairs: the two sit
 // on one line and read as one piece of header furniture, where `--font-size`
-// is a density knob that moves with the corpus. The lockup is 197.4 units wide
-// by 28 tall with a 14-unit cap, so at 40mm that cap is 2.84mm, which Public
+// is a density knob that moves with the corpus. The lockup is 195.9 units wide
+// by 28 tall with a 14-unit cap, so at 40mm that cap is 2.86mm, which Public
 // Sans (cap height 0.7em) reaches at 11.5pt.
 #let header_title_size = 11.5pt
 
@@ -487,7 +487,7 @@
 // which is the room its descenders need. Dropping the box by those 8 units
 // puts the mark's baseline on the line's own, so the title beside it shares a
 // baseline with the word "Unplugged" rather than sitting under it.
-#let lockup_baseline_shift = lockup_width * 8 / 197.4
+#let lockup_baseline_shift = lockup_width * 8 / 195.9
 
 // `box` around the lockup, and `par.spacing` zeroed, because an image is
 // inline content: it opens a paragraph, so the rule under it inherited 1.2em

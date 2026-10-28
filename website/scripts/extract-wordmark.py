@@ -7,7 +7,7 @@
 
 Two faces:
 
-- the title "LLMs Unplugged" in Public Sans Bold, the ANU brand face, for the
+- the title "LLMs Unplugged" in Public Sans SemiBold, the ANU brand face, for the
   horizontal lockup;
 - the five token labels in Monaspace Argon Bold --- the family the printed
   booklet sets its wordmark in --- for the bricks of the word mark.
@@ -35,7 +35,7 @@ OUT = Path("scripts/wordmark-path.ts")
 EM = 1000
 FONT_DIR = Path.home() / ".local" / "share" / "fonts"
 
-TITLE_FONT = FONT_DIR / "PublicSans-otf" / "PublicSans-Bold.otf"
+TITLE_FONT = FONT_DIR / "PublicSans-otf" / "PublicSans-SemiBold.otf"
 TITLE = "LLMs Unplugged"
 
 TOKEN_FONT = FONT_DIR / "MonaspaceArgon-static" / "MonaspaceArgon-Bold.otf"
@@ -108,7 +108,7 @@ OUT.write_text(f'''// Lettering for the brand marks, baked to outlines so the SV
 // Coordinates are in a {EM}-unit em with the baseline at y=0 and y growing
 // downwards, the SVG convention.
 
-// --- The title, in Public Sans Bold: the lockup's wordmark ---------------
+// --- The title, in Public Sans SemiBold: the lockup's wordmark -----------
 
 /** Advance width of the whole wordmark. */
 export const WORDMARK_ADVANCE = {title_advance:.1f};
@@ -135,7 +135,7 @@ export interface TokenLabel {{
   path: string;
 }}
 
-/** In title order: LL, Ms, {TOKEN_LABELS[2]}, plug, ged. */
+/** In title order: LL, Ms, <space>Un, plug, ged. */
 export const TOKEN_LABELS: TokenLabel[] = [
 {token_entries}
 ];

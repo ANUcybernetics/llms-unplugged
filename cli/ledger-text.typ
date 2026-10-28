@@ -39,7 +39,7 @@
 // ===== Header =====
 
 #let lockup_width = 36mm
-#let lockup_baseline_shift = lockup_width * 8 / 197.4
+#let lockup_baseline_shift = lockup_width * 8 / 195.9
 
 #block(width: 100%, below: 0pt, {
   set par(leading: 0pt, spacing: 0pt)

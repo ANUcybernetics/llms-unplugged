@@ -76,7 +76,7 @@
 #let header_gap = 2mm
 #let lockup_width = 36mm
 #let header_title_size = 11.5pt
-#let lockup_baseline_shift = lockup_width * 8 / 197.4
+#let lockup_baseline_shift = lockup_width * 8 / 195.9
 
 // One printed token, word or symbol tile (see ledger-common.typ), for the
 // marks this set kept as tokens.
