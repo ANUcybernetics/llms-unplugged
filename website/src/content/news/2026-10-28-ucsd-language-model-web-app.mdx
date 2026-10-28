@@ -1,0 +1,67 @@
+---
+title: A web version of the grid, from UC San Diego
+date: 2026-10-28
+author: Ben Swift
+kind: announcement
+description:
+  Ismael Villegas Molina has built a web app that walks his UCSD AI literacy
+  students through training and sampling an LLMs Unplugged-style grid.
+published: true
+---
+
+import TrainingWidget from "../../components/widgets/TrainingWidget.svelte";
+import GenerationWidget from "../../components/widgets/GenerationWidget.svelte";
+import SeedTrainingText from "../../components/SeedTrainingText.svelte";
+
+<SeedTrainingText
+  client:load
+  text="sam i am. i am sam. i do not like green eggs and ham."
+/>
+
+I (Ben) met
+[Ismael Villegas Molina](https://sites.google.com/ucsd.edu/cs-ed-research-group/home)
+at [ACE 2026](https://aceconference2026.github.io/) in Melbourne in February,
+where we presented
+[the LLMs Unplugged paper](https://pdf.llmsunplugged.org/ace2026-llms-unplugged.pdf).
+He's a PhD candidate in computer science and engineering at UC San Diego, and is
+now teaching an AI literacy course for non-computing majors. For that course
+he's built
+[Build Your Own Language Model](https://sites.google.com/ucsd.edu/myfirstlanguagemodel),
+a web app that walks through the same steps as
+[My First Language Model](/lessons/my-first-language-model/). He describes it as
+
+> a little web app I made with heavy influence to what you have over at LLMs
+> Unplugged!
+
+Starting from a preset text (_Green Eggs and Ham_ by default) or one you paste
+in, you step through it a word pair at a time. At each step the app highlights
+the current word in blue and the word after it in green, then adds a tally to
+the grid. Once the grid is full, you choose a start word and roll for the next
+one, the app showing you the weighted die behind each roll.
+
+Our own training widget does the same job, so here it is on Ismael's default
+text. Press play to watch the grid fill up one word pair at a time.
+
+<TrainingWidget client:visible />
+
+Then roll for a sentence:
+
+<GenerationWidget client:visible />
+
+Ismael's app works best alongside the paper version. Tallying by hand is the point of
+the activity, but once students have built a grid themselves, the app lets them
+run several training texts in a few minutes and compare the results. Ismael has
+also added unigram and n-gram pages, where students can change how many
+preceding words the model looks at. The [more context](/modules/more-context/)
+module makes the same comparison on paper, with bigram and trigram booklets of
+the same book.
+
+Ismael is bringing the paper activity into the course itself:
+
+> I'm also asking my TA to use the LLMs Unplugged as a discussion section for
+> our students, I think it's going to be a hit!
+
+I'm keen to hear how the two versions work together.
+Thanks, Ismael, for building the app and letting us share it. If you've adapted
+the materials for your own classes, we'd love to hear about it, so please
+[get in touch](/about/#get-in-touch).
