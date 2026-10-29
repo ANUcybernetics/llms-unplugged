@@ -117,6 +117,8 @@ export default defineConfig({
     svelte(),
     universityTheme({
       name: "LLMs Unplugged",
+      // CITATION.cff sits at the repo root, one level above the Astro project
+      citation: "../CITATION.cff",
       llmsTxt: true,
       // ANU brand palette from the branding package — loads the gold palette
       // and the legacy --anu-* aliases that the site's own CSS (deck theme,
