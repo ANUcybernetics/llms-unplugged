@@ -413,9 +413,39 @@
     - greedy decoding
   related:
     - temperature
+    - beam-search
   see:
     - label: Sampling
       href: /modules/sampling/
+
+- id: beam-search
+  term: Beam search
+  category: shaping-behaviour
+  description: >-
+    A way of generating that keeps several partial sentences going at once,
+    scores each by how likely the whole sentence is, and picks the most likely
+    finished one. It finds more likely sentences than greedy generation, which
+    is not the same as better ones.
+  activity: crossing out all but the top few candidate sentences at each step
+  related:
+    - beam-width
+    - greedy-sampling
+  see:
+    - label: Beam Search
+      href: /modules/beam-search/
+
+- id: beam-width
+  term: Beam width
+  category: shaping-behaviour
+  description: >-
+    How many candidate sentences beam search keeps at each step. A beam width
+    of 1 is greedy generation; a wider beam looks further ahead at the cost of
+    more bookkeeping.
+  related:
+    - beam-search
+  see:
+    - label: Beam Search
+      href: /modules/beam-search/
 
 - id: truncation-strategy
   term: Truncation strategy

@@ -1,0 +1,213 @@
+---
+title: Beam Search
+description:
+  Keep several candidate sentences alive at once, score each by how likely the
+  whole thing is, and find out why the most likely sentence isn't always the
+  best one.
+order: 5
+audience: years 9 and up
+duration: 30-40 min
+bases: [grid, booklet]
+status: experimental
+topic: shaping-behaviour
+keyIdea:
+  Beam search looks ahead before committing, keeping the few most likely partial
+  sentences instead of one, and picks the most likely complete sentence.
+---
+
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
+
+Every generation method so far picks one word, commits to it, and moves on. <GlossaryTerm id="beam-search">Beam search</GlossaryTerm> holds off: it keeps a handful of partial sentences going at once, scores each by how likely the whole sentence is, and only chooses once the sentences are finished. It finds more likely sentences than picking the favourite at each step. Whether they are better sentences is a different question, and the magpie answers it.
+
+![](../../assets/images/hero-beam-search.avif)
+
+## You will need
+
+- the magpie model below (or your own grid from [Training](/modules/training/))
+- a sheet of paper or a whiteboard to track the beams, or strips of paper (one
+  per candidate sentence)
+- a calculator, optional: the scores are fractions, and comparing them is easier
+  as decimals
+
+## Your goal
+
+Run beam search with a <GlossaryTerm id="beam-width">beam width</GlossaryTerm> of 2 from two starting points, and compare each result with <GlossaryTerm id="greedy-sampling">greedy</GlossaryTerm> generation from the same start. Stretch goal: run it on a pre-trained booklet and try different beam widths.
+
+## Key idea
+
+Picking the most likely next word at every step doesn't always give the most
+likely sentence: a popular word can lead somewhere uncertain. Beam search keeps
+the few best partial sentences at each step, so it can find a sentence that
+starts with a less popular word. The catch is that the most likely sentence
+isn't always a good one.
+
+## The magpie model
+
+This is the bigram model of _The magpie_, the short story the
+[cup-of-counters lesson](/lessons/how-ai-writes-stories-ledger/) walks through.
+Each row gives a word, how many times something followed it, and what followed.
+A word's **share** of a row is its count divided by the row total: after `the`,
+`magpie` has a share of 6/18.
+
+| word      | total | followed by                                |
+| --------- | ----- | ------------------------------------------ |
+| `.`       | 15    | `It` 6, `Back` 3, `Down` 3, `Here` 3       |
+| `!`       | 3     | `Off` 3                                    |
+| `It`      | 7     | `sits` 4, `watches` 2, `is` 1              |
+| `is`      | 1     | `spring` 1                                 |
+| `spring`  | 1     | `.` 1                                      |
+| `sits`    | 4     | `on` 4                                     |
+| `on`      | 4     | `the` 4                                    |
+| `watches` | 2     | `.` 2                                      |
+| `Here`    | 3     | `comes` 3                                  |
+| `comes`   | 3     | `the` 3                                    |
+| `Down`    | 3     | `swoops` 3                                 |
+| `swoops`  | 3     | `the` 3                                    |
+| `Back`    | 3     | `goes` 3                                   |
+| `goes`    | 3     | `the` 3                                    |
+| `Off`     | 3     | `runs` 2, `run` 1                          |
+| `runs`    | 2     | `the` 2                                    |
+| `run`     | 1     | `the` 1                                    |
+| `the`     | 18    | `magpie` 6, `dog` 4, `fence` 4, `postie` 4 |
+| `magpie`  | 6     | `!` 3, `.` 3                               |
+| `dog`     | 4     | `.` 3, `and` 1                             |
+| `postie`  | 4     | `.` 3, `and` 1                             |
+| `fence`   | 4     | `.` 4                                      |
+| `and`     | 2     | `the` 2                                    |
+
+The words are written as the model sees them: `Here` and `here` would be
+different words, and `.` and `!` are words too.
+
+## Algorithm
+
+A **beam** is one partial sentence plus its score. The score is how likely that
+whole sentence is: multiply together the share of every word you've added. A
+sentence is **finished** when it reaches `.` or `!`.
+
+1. **Start:** one beam, holding your starting words, with a score of 1.
+2. **Expand:** for every unfinished beam, write out each word that can follow
+   its last word, with the new score (the beam's score times that word's share).
+   Finished beams carry over unchanged.
+3. **Prune:** keep the _k_ highest-scoring candidates, where _k_ is the beam
+   width. If there's a tie for the last place, keep all the tied ones.
+4. **Repeat** from step 2 until every beam you kept is finished.
+5. **Choose** the finished sentence with the highest score.
+
+A beam width of 1 is greedy generation: take the most likely word every time,
+the "cold" setting in [Sampling](/modules/sampling/).
+
+## Worked example: "Here comes the..."
+
+Start from `Here comes the`, with a beam width of 2. Both of those words have
+only one option, so the score is still 1.
+
+**Expand `the`.** Four candidates:
+
+| candidate    | score |
+| ------------ | ----- |
+| `the magpie` | 6/18  |
+| `the dog`    | 4/18  |
+| `the fence`  | 4/18  |
+| `the postie` | 4/18  |
+
+**Prune.** `the magpie` is first, and the other three tie for second place, so
+all four survive.
+
+**Expand each beam.** After `magpie` the next word is a coin toss between `!`
+and `.`, so each of those halves the score. After `dog` and `postie`, `.` takes
+three of the four counts. After `fence` there is only ever `.`:
+
+| candidate        | score             |
+| ---------------- | ----------------- |
+| `the fence .`    | 4/18 × 4/4 = 4/18 |
+| `the magpie !`   | 6/18 × 3/6 = 3/18 |
+| `the magpie .`   | 6/18 × 3/6 = 3/18 |
+| `the dog .`      | 4/18 × 3/4 = 3/18 |
+| `the postie .`   | 4/18 × 3/4 = 3/18 |
+| `the dog and`    | 4/18 × 1/4 = 1/18 |
+| `the postie and` | 4/18 × 1/4 = 1/18 |
+
+**Prune.** The top two places go to `the fence .` and the four-way tie at 3/18;
+the two `and` beams are cut. Every surviving beam is finished, so stop.
+
+The winner is **"Here comes the fence."**
+
+Greedy generation (beam width 1) takes `magpie` at the first step, because it's
+the most popular word after `the`, and ends on "Here comes the magpie!" with a
+score of 3/18. Beam search found a sentence that is a third more likely. In the
+story, though, fences don't come anywhere.
+
+## Your turn: "It..."
+
+Start from `It` with a beam width of 2 and run the algorithm until every beam is
+finished. Then run greedy from `It` and compare.
+
+Beam search picks **"It watches."** (2/7) over "It sits on the magpie!" (2/21, the greedy answer) and over "It sits on the fence." (8/63), which is a line straight out of the book. "It sits on the fence." gets pruned on the way: at the moment it's a candidate, `It sits on the magpie` is still ahead of it, and the cut is made before anyone sees how each sentence ends.
+
+"It watches." wins because it's short. Every word you add multiplies the score
+by a share of 1 or less, so a longer sentence can only lose ground. Beam search
+on its own favours short sentences.
+
+## Tracking beams in practice
+
+- **Whiteboard:** one line per candidate, with its score at the end. Cross out
+  the pruned ones at each step, so the board shows the whole search afterwards.
+- **Paper strips:** write each candidate on a strip with its score. At each
+  step, line the strips up by score and set aside everything below the cut.
+- **People:** with a beam width of 2 or 3, one person holds each beam and reads
+  out its candidates; the group decides which survive.
+
+## Going further
+
+Run beam search on a [pre-trained booklet](/modules/pretrained-generation/). A
+word's share is the fraction of the die faces that land on it: count the faces
+in its range and divide by the faces on the die. Try beam widths of 1, 2 and 3
+from the same starting word. Does a wider beam ever change the answer? Does it
+ever make it worse?
+
+## Instructor notes
+
+### Discussion questions
+
+- why did greedy miss "Here comes the fence."? At which step did it go wrong?
+- "Here comes the fence." is the most likely sentence. Is it the best one? What
+  does the model not know that you do?
+- why does "It watches." beat a longer sentence? How could you change the
+  scoring so that long sentences get a fair go?
+- "It sits on the fence." got pruned even though it would have scored better
+  than the beam that cut it. Would a wider beam have saved it? What does a wider
+  beam cost?
+- when would you want the single most likely output (translating a sentence,
+  transcribing speech), and when would you rather roll the dice?
+
+### Troubleshooting
+
+- **"There's a tie for the last place."** Keep all the tied candidates, as in
+  top-k in [Sampling](/modules/sampling/). This can make the beam wider than _k_
+  for a step or two; it narrows again at the next cut.
+- **"One beam finished early."** It stays in the running with the same score,
+  and takes up one of the _k_ places. It doesn't expand any further.
+- **"The fractions are getting ugly."** Use a calculator and decimals to two
+  places, or keep every score over a common denominator, as the worked example
+  does with eighteenths.
+- **"Our model has no ties and no dead ends, so nothing interesting happens."**
+  Beam search only differs from greedy where a popular word leads somewhere
+  uncertain. Look for a row whose favourite is followed by a split row, next to
+  a less popular word that is followed by a sure thing.
+
+### Connection to current LLMs
+
+Beam search is a decoding strategy, a rule for turning a model's next-word chances into text, separate from the model itself. Real implementations work the same way as your whiteboard, with two differences. The model scores every <GlossaryTerm id="token">token</GlossaryTerm> in its vocabulary at each step, so a beam of width 5 means expanding five beams into hundreds of thousands of candidates and keeping five. And they add the logarithms of the shares instead of multiplying the shares, because multiplying hundreds of small numbers runs out of decimal places.
+
+Beam search is the standard choice where there's roughly one right answer:
+machine translation and speech recognition, where you want the most likely
+transcription. It's usually run with a length penalty, for the reason "It watches."
+won: the score is divided by something that grows with the sentence length, so
+longer sentences aren't punished just for being longer.
+
+Chatbots like <GlossaryTerm id="chatbot">Claude or ChatGPT</GlossaryTerm> mostly
+don't use it. They sample, with the temperature and truncation controls from
+[Sampling](/modules/sampling/). When researchers ran beam search on open-ended
+text, they found
+[the most likely text is bland and repetitive, and nothing like what people write](https://arxiv.org/abs/1904.09751).
+The magpie's "Here comes the fence." is the same result on a small scale.

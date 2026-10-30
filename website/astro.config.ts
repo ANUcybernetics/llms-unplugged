@@ -60,6 +60,7 @@ export default defineConfig({
     // modules). Slugs are unchanged; every old /lessons/<slug>/ URL redirects
     // to its /modules/<slug>/ counterpart.
     "/lessons/agentic-ai/": "/modules/agentic-ai/",
+    "/lessons/beam-search/": "/modules/beam-search/",
     "/lessons/generation/": "/modules/generation/",
     "/lessons/in-context-memory/": "/modules/in-context-learning/",
     "/lessons/induction-heads/": "/modules/in-context-learning/",

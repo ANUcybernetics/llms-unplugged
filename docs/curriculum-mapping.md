@@ -63,6 +63,7 @@ secondary (Years 11--12) is out of scope.
 | Generation                   | fundamentals          | 5--6, 7--8  | Mathematics, Digital Technologies                  |
 | Pre-trained Model Generation | scaling up            | 5--6, 7--8  | Digital Technologies                               |
 | Sampling                     | controlling output    | 7--8, 9--10 | Mathematics, Digital Technologies                  |
+| Beam Search                  | controlling output    | 9--10       | Mathematics, Digital Technologies                  |
 | More Context                 | scaling up            | 7--8, 9--10 | Digital Technologies, Mathematics                  |
 | In-context Memory            | how models understand | 7--8, 9--10 | Digital Technologies                               |
 | Induction Heads              | how models understand | 9--10       | Digital Technologies                               |
@@ -165,6 +166,23 @@ Temperature and truncation strategies for controlling text output.
   - `AC9M9P02` --- relative frequencies from data to estimate probabilities.
 - **General capabilities:** Critical and Creative Thinking (Analysing >
   Evaluating reasoning); Numeracy.
+
+### [Beam Search](https://www.llmsunplugged.org/modules/beam-search/)
+
+Keep several candidate sentences alive, score each by its probability, and
+compare the most likely sentence with greedy generation.
+
+- **Best fit:** Years 9--10
+- **Primary**
+  - `AC9M9P01` --- list all outcomes for compound events using lists, tree
+    diagrams and tables (each beam is a branch, its score a compound
+    probability).
+  - `AC9TDI8P06` --- trace algorithms to predict output for a given input.
+- **Secondary**
+  - `AC9TDI10P05` --- design algorithms with nested control structures and
+    logical operators.
+- **General capabilities:** Critical and Creative Thinking (Inquiring,
+  Analysing); Numeracy.
 
 ### [More Context](https://www.llmsunplugged.org/modules/more-context/)
 
@@ -328,7 +346,7 @@ with these strands:
 - **Processes and production skills > Defining problems**: Pre-trained
   Generation, Sampling.
 - **Processes and production skills > Designing and tracing algorithms**:
-  Generation, Sampling.
+  Generation, Sampling, Beam Search.
 - **Processes and production skills > Implementing programs**: Generation, More
   Context, In-context Memory, Induction Heads, Agentic AI, LoRA.
 - **Processes and production skills > Evaluating solutions**: RLHF, Synthetic
@@ -340,8 +358,8 @@ descriptions still need a separate teaching vehicle.
 
 ### Mathematics
 
-- **Probability (Years 5--10)**: Weighted Randomness, Generation, Sampling, More
-  Context, In-context Memory, RLHF.
+- **Probability (Years 5--10)**: Weighted Randomness, Generation, Sampling, Beam
+  Search, More Context, In-context Memory, RLHF.
 - **Statistics (Years 5--8)**: Training (categorising and describing data).
 - **Number / Algebra**: light touch only.
 - **Space**: only via Word Embeddings (vectors and distance).
@@ -439,6 +457,8 @@ Probability:
   simulations; compare predictions with observed results.
 - `AC9M8P02` (Year 8) --- determine all possible combinations and use these to
   determine probabilities.
+- `AC9M9P01` (Year 9) --- list all outcomes for compound events using lists,
+  tree diagrams and tables.
 - `AC9M9P02` (Year 9) --- use relative frequencies from data to estimate
   probabilities; adjust probabilities based on collected data.
 
@@ -487,6 +507,8 @@ Processes and production skills:
   make predictions.
 - `AC9TDI10P03` (Year 10) --- model and query entities and their relationships
   using structured data.
+- `AC9TDI10P05` (Year 10) --- design algorithms with nested control structures
+  and logical operators.
 - `AC9TDI10P06` (Year 10) --- validate algorithms and programs by comparing
   output against a range of test cases.
 - `AC9TDI10P08` (Year 10) --- generate, modify, communicate and critically
