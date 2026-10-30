@@ -424,8 +424,7 @@
   description: >-
     A way of generating that keeps several partial sentences going at once,
     scores each by how likely the whole sentence is, and picks the most likely
-    finished one. It finds more likely sentences than greedy generation, which
-    is not the same as better ones.
+    finished one.
   activity: crossing out all but the top few candidate sentences at each step
   related:
     - beam-width

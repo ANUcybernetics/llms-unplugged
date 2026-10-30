@@ -17,7 +17,7 @@ keyIdea:
 
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
-Every generation method so far picks one word, commits to it, and moves on. <GlossaryTerm id="beam-search">Beam search</GlossaryTerm> holds off: it keeps a handful of partial sentences going at once, scores each by how likely the whole sentence is, and only chooses once the sentences are finished. It finds more likely sentences than picking the favourite at each step. Whether they are better sentences is a different question, and the magpie answers that too.
+Every generation method so far picks one word, commits to it, and moves on. <GlossaryTerm id="beam-search">Beam search</GlossaryTerm> holds off: it keeps a handful of partial sentences going at once, scores each by how likely the whole sentence is, and only chooses once the sentences are finished. The examples use a short story about a magpie, written so that beam search and greedy generation disagree.
 
 ![](../../assets/images/hero-beam-search.avif)
 
@@ -37,14 +37,14 @@ Run beam search with a <GlossaryTerm id="beam-width">beam width</GlossaryTerm> o
 ## Key idea
 
 Picking the most likely next word at every step doesn't always give the most
-likely sentence: a popular word can lead somewhere uncertain. Beam search keeps
-the few best partial sentences at each step, so it can find a sentence that
-starts with a less popular word. The catch is that the most likely sentence
+likely sentence, because a popular word can lead somewhere uncertain. Beam
+search keeps the few best partial sentences at each step, so it can find a
+sentence that starts with a less popular word. The most likely sentence still
 isn't always a good one.
 
 ## The magpie's nest
 
-The examples on this page use a short story written for this module:
+The story:
 
 > It is morning. The magpie sings. It flies to the tree. It sits in the nest.
 > Here comes the cat. Down swoops the magpie! Off runs the cat. The magpie
@@ -150,9 +150,8 @@ The winner is **"It sleeps in the nest."**, with a score of 4/17.
 
 Greedy generation (beam width 1) takes `magpie` at the first step, because it's
 the most popular word after `the`, and ends on "It sleeps in the magpie sings."
-with a score of 3/17. Beam search held on to `nest` for one more step, long
-enough to see that it leads somewhere certain, and found a sentence that is both
-more likely and makes sense.
+with a score of 3/17. Keeping `nest` for one more step was enough: `nest` is
+always followed by `.`, so its score held while the magpie's halved.
 
 ## Your turn: "It..."
 
@@ -166,8 +165,7 @@ moment it's a candidate, `It flies to the magpie` is ahead of it, and the cut is
 made before anyone sees how each sentence ends.
 
 "It is morning." wins because it's short. Every word you add multiplies the
-score by a share of 1 or less, so a longer sentence can only lose ground. Beam
-search on its own favours short sentences.
+score by a share of 1 or less, so a longer sentence can only lose ground.
 
 ## Tracking beams in practice
 
@@ -231,4 +229,4 @@ transcription. It's usually run with a length penalty, for the reason "It is
 morning." won: the score is divided by something that grows with the sentence
 length, so longer sentences aren't punished just for being longer.
 
-Chatbots like <GlossaryTerm id="chatbot">Claude or ChatGPT</GlossaryTerm> mostly don't use it. They sample, with the temperature and truncation controls from [Sampling](/modules/sampling/). When researchers ran beam search on open-ended text, they found [the most likely text is bland and repetitive, and nothing like what people write](https://arxiv.org/abs/1904.09751). "Here comes the nest." is the same result on a small scale.
+Chatbots like <GlossaryTerm id="chatbot">Claude or ChatGPT</GlossaryTerm> mostly don't use it. They sample, with the temperature and truncation controls from [Sampling](/modules/sampling/). When researchers ran beam search on open-ended text, they found [the most likely text is bland and repetitive, and nothing like what people write](https://arxiv.org/abs/1904.09751).
