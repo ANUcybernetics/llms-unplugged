@@ -17,13 +17,14 @@ keyIdea:
 
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
-Every generation method so far picks one word, commits to it, and moves on. <GlossaryTerm id="beam-search">Beam search</GlossaryTerm> holds off: it keeps a handful of partial sentences going at once, scores each by how likely the whole sentence is, and only chooses once the sentences are finished. It finds more likely sentences than picking the favourite at each step. Whether they are better sentences is a different question, and the magpie answers it.
+Every generation method so far picks one word, commits to it, and moves on. <GlossaryTerm id="beam-search">Beam search</GlossaryTerm> holds off: it keeps a handful of partial sentences going at once, scores each by how likely the whole sentence is, and only chooses once the sentences are finished. It finds more likely sentences than picking the favourite at each step. Whether they are better sentences is a different question, and the magpie answers that too.
 
 ![](../../assets/images/hero-beam-search.avif)
 
 ## You will need
 
-- the magpie model below (or your own grid from [Training](/modules/training/))
+- the model of _The magpie's nest_ below (or your own grid from
+  [Training](/modules/training/))
 - a sheet of paper or a whiteboard to track the beams, or strips of paper (one
   per candidate sentence)
 - a calculator, optional: the scores are fractions, and comparing them is easier
@@ -41,42 +42,58 @@ the few best partial sentences at each step, so it can find a sentence that
 starts with a less popular word. The catch is that the most likely sentence
 isn't always a good one.
 
-## The magpie model
+## The magpie's nest
 
-This is the bigram model of _The magpie_, the short story the
-[cup-of-counters lesson](/lessons/how-ai-writes-stories-ledger/) walks through.
-Each row gives a word, how many times something followed it, and what followed.
-A word's **share** of a row is its count divided by the row total: after `the`,
-`magpie` has a share of 6/18.
+The examples on this page use a short story written for this module:
 
-| word      | total | followed by                                |
-| --------- | ----- | ------------------------------------------ |
-| `.`       | 15    | `It` 6, `Back` 3, `Down` 3, `Here` 3       |
-| `!`       | 3     | `Off` 3                                    |
-| `It`      | 7     | `sits` 4, `watches` 2, `is` 1              |
-| `is`      | 1     | `spring` 1                                 |
-| `spring`  | 1     | `.` 1                                      |
-| `sits`    | 4     | `on` 4                                     |
-| `on`      | 4     | `the` 4                                    |
-| `watches` | 2     | `.` 2                                      |
-| `Here`    | 3     | `comes` 3                                  |
-| `comes`   | 3     | `the` 3                                    |
-| `Down`    | 3     | `swoops` 3                                 |
-| `swoops`  | 3     | `the` 3                                    |
-| `Back`    | 3     | `goes` 3                                   |
-| `goes`    | 3     | `the` 3                                    |
-| `Off`     | 3     | `runs` 2, `run` 1                          |
-| `runs`    | 2     | `the` 2                                    |
-| `run`     | 1     | `the` 1                                    |
-| `the`     | 18    | `magpie` 6, `dog` 4, `fence` 4, `postie` 4 |
-| `magpie`  | 6     | `!` 3, `.` 3                               |
-| `dog`     | 4     | `.` 3, `and` 1                             |
-| `postie`  | 4     | `.` 3, `and` 1                             |
-| `fence`   | 4     | `.` 4                                      |
-| `and`     | 2     | `the` 2                                    |
+> It is morning. The magpie sings. It flies to the tree. It sits in the nest.
+> Here comes the cat. Down swoops the magpie! Off runs the cat. The magpie
+> warbles. It flies back to the nest. Here comes the rain. It hides in the nest.
+> The rain stops. The magpie sings. It flies to the tree. The magpie eats a
+> worm. The sun sets. It sleeps in the nest. It is morning. The magpie sings.
 
-The words are written as the model sees them: `Here` and `here` would be
-different words, and `.` and `!` are words too.
+Here is its bigram model. Each row gives a word, how many times something
+followed it, and what followed. A word's **share** of a row is its count divided
+by the row total: after `the`, `magpie` has a share of 6/17.
+
+| word      | total | followed by                                                |
+| --------- | ----- | ---------------------------------------------------------- |
+| `It`      | 8     | `flies` 3, `is` 2, `hides` 1, `sits` 1, `sleeps` 1         |
+| `is`      | 2     | `morning` 2                                                |
+| `morning` | 2     | `.` 2                                                      |
+| `.`       | 17    | `It` 7, `the` 7, `Here` 2, `Down` 1                        |
+| `the`     | 17    | `magpie` 6, `nest` 4, `cat` 2, `rain` 2, `tree` 2, `sun` 1 |
+| `magpie`  | 6     | `sings` 3, `!` 1, `eats` 1, `warbles` 1                    |
+| `sings`   | 3     | `.` 3                                                      |
+| `flies`   | 3     | `to` 2, `back` 1                                           |
+| `to`      | 3     | `the` 3                                                    |
+| `tree`    | 2     | `.` 2                                                      |
+| `sits`    | 1     | `in` 1                                                     |
+| `in`      | 3     | `the` 3                                                    |
+| `nest`    | 4     | `.` 4                                                      |
+| `Here`    | 2     | `comes` 2                                                  |
+| `comes`   | 2     | `the` 2                                                    |
+| `cat`     | 2     | `.` 2                                                      |
+| `Down`    | 1     | `swoops` 1                                                 |
+| `swoops`  | 1     | `the` 1                                                    |
+| `!`       | 1     | `Off` 1                                                    |
+| `Off`     | 1     | `runs` 1                                                   |
+| `runs`    | 1     | `the` 1                                                    |
+| `warbles` | 1     | `.` 1                                                      |
+| `back`    | 1     | `to` 1                                                     |
+| `rain`    | 2     | `.` 1, `stops` 1                                           |
+| `hides`   | 1     | `in` 1                                                     |
+| `stops`   | 1     | `.` 1                                                      |
+| `eats`    | 1     | `a` 1                                                      |
+| `a`       | 1     | `worm` 1                                                   |
+| `worm`    | 1     | `.` 1                                                      |
+| `sun`     | 1     | `sets` 1                                                   |
+| `sets`    | 1     | `.` 1                                                      |
+| `sleeps`  | 1     | `in` 1                                                     |
+
+`.` and `!` are words too. `The` at the start of a sentence is counted as `the`,
+since it's the same word; `It` keeps its capital because the story never uses
+it mid-sentence.
 
 ## Algorithm
 
@@ -96,57 +113,61 @@ sentence is **finished** when it reaches `.` or `!`.
 A beam width of 1 is greedy generation: take the most likely word every time,
 the "cold" setting in [Sampling](/modules/sampling/).
 
-## Worked example: "Here comes the..."
+## Worked example: "It sleeps in the..."
 
-Start from `Here comes the`, with a beam width of 2. Both of those words have
-only one option, so the score is still 1.
+Start from `It sleeps in the`, with a beam width of 2. Those starting words
+are given, so the score starts at 1.
 
-**Expand `the`.** Four candidates:
+**Expand `the`.** Six candidates:
 
 | candidate    | score |
 | ------------ | ----- |
-| `the magpie` | 6/18  |
-| `the dog`    | 4/18  |
-| `the fence`  | 4/18  |
-| `the postie` | 4/18  |
+| `the magpie` | 6/17  |
+| `the nest`   | 4/17  |
+| `the cat`    | 2/17  |
+| `the rain`   | 2/17  |
+| `the tree`   | 2/17  |
+| `the sun`    | 1/17  |
 
-**Prune.** `the magpie` is first, and the other three tie for second place, so
-all four survive.
+**Prune.** Keep `the magpie` and `the nest`; the other four are cut.
 
-**Expand each beam.** After `magpie` the next word is a coin toss between `!`
-and `.`, so each of those halves the score. After `dog` and `postie`, `.` takes
-three of the four counts. After `fence` there is only ever `.`:
+**Expand each beam.** After `magpie` the story goes four ways, and `sings` has
+half of the row. After `nest` there is only ever `.`:
 
-| candidate        | score             |
-| ---------------- | ----------------- |
-| `the fence .`    | 4/18 × 4/4 = 4/18 |
-| `the magpie !`   | 6/18 × 3/6 = 3/18 |
-| `the magpie .`   | 6/18 × 3/6 = 3/18 |
-| `the dog .`      | 4/18 × 3/4 = 3/18 |
-| `the postie .`   | 4/18 × 3/4 = 3/18 |
-| `the dog and`    | 4/18 × 1/4 = 1/18 |
-| `the postie and` | 4/18 × 1/4 = 1/18 |
+| candidate            | score             |
+| -------------------- | ----------------- |
+| `the nest .`         | 4/17 × 4/4 = 4/17 |
+| `the magpie sings`   | 6/17 × 3/6 = 3/17 |
+| `the magpie !`       | 6/17 × 1/6 = 1/17 |
+| `the magpie eats`    | 6/17 × 1/6 = 1/17 |
+| `the magpie warbles` | 6/17 × 1/6 = 1/17 |
 
-**Prune.** The top two places go to `the fence .` and the four-way tie at 3/18;
-the two `and` beams are cut. Every surviving beam is finished, so stop.
+**Prune.** Keep `the nest .` and `the magpie sings`. One more step finishes
+`the magpie sings .` at 3/17 (`sings` is always followed by `.`), and every
+beam is finished.
 
-The winner is **"Here comes the fence."**
+The winner is **"It sleeps in the nest."**, with a score of 4/17.
 
 Greedy generation (beam width 1) takes `magpie` at the first step, because it's
-the most popular word after `the`, and ends on "Here comes the magpie!" with a
-score of 3/18. Beam search found a sentence that is a third more likely. In the
-story, though, fences don't come anywhere.
+the most popular word after `the`, and ends on "It sleeps in the magpie sings."
+with a score of 3/17. Beam search held on to `nest` for one more step, long
+enough to see that it leads somewhere certain, and found a sentence that is both
+more likely and makes sense.
 
 ## Your turn: "It..."
 
 Start from `It` with a beam width of 2 and run the algorithm until every beam is
 finished. Then run greedy from `It` and compare.
 
-Beam search picks **"It watches."** (2/7) over "It sits on the magpie!" (2/21, the greedy answer) and over "It sits on the fence." (8/63), which is a line straight out of the book. "It sits on the fence." gets pruned on the way: at the moment it's a candidate, `It sits on the magpie` is still ahead of it, and the cut is made before anyone sees how each sentence ends.
+Greedy writes "It flies to the magpie sings." (3/68). Beam search picks **"It is
+morning."** (1/4), the shortest sentence the model can make from `It`. On the
+way it prunes "It flies to the tree.", a line straight out of the story: at the
+moment it's a candidate, `It flies to the magpie` is ahead of it, and the cut is
+made before anyone sees how each sentence ends.
 
-"It watches." wins because it's short. Every word you add multiplies the score
-by a share of 1 or less, so a longer sentence can only lose ground. Beam search
-on its own favours short sentences.
+"It is morning." wins because it's short. Every word you add multiplies the
+score by a share of 1 or less, so a longer sentence can only lose ground. Beam
+search on its own favours short sentences.
 
 ## Tracking beams in practice
 
@@ -159,8 +180,12 @@ on its own favours short sentences.
 
 ## Going further
 
-Run beam search on a [pre-trained booklet](/modules/pretrained-generation/). A
-word's share is the fraction of the die faces that land on it: count the faces
+Start from `Here comes the`. Beam search runs exactly as in the worked example
+and finds the most likely sentence: "Here comes the nest." Is it a good
+sentence?
+
+Then run beam search on a [pre-trained booklet](/modules/pretrained-generation/).
+A word's share is the fraction of the die faces that land on it: count the faces
 in its range and divide by the faces on the die. Try beam widths of 1, 2 and 3
 from the same starting word. Does a wider beam ever change the answer? Does it
 ever make it worse?
@@ -169,14 +194,13 @@ ever make it worse?
 
 ### Discussion questions
 
-- why did greedy miss "Here comes the fence."? At which step did it go wrong?
-- "Here comes the fence." is the most likely sentence. Is it the best one? What
-  does the model not know that you do?
-- why does "It watches." beat a longer sentence? How could you change the
-  scoring so that long sentences get a fair go?
-- "It sits on the fence." got pruned even though it would have scored better
-  than the beam that cut it. Would a wider beam have saved it? What does a wider
-  beam cost?
+- why did greedy miss "It sleeps in the nest."? At which step did it go wrong?
+- "Here comes the nest." is the most likely sentence from `Here comes the`. Is
+  it the best one? What does the model not know that you do?
+- why does "It is morning." beat every longer sentence? How could you change
+  the scoring so that long sentences get a fair go?
+- "It flies to the tree." got pruned even though it's a line from the story.
+  Would a wider beam have saved it? What does a wider beam cost?
 - when would you want the single most likely output (translating a sentence,
   transcribing speech), and when would you rather roll the dice?
 
@@ -184,16 +208,18 @@ ever make it worse?
 
 - **"There's a tie for the last place."** Keep all the tied candidates, as in
   top-k in [Sampling](/modules/sampling/). This can make the beam wider than _k_
-  for a step or two; it narrows again at the next cut.
+  for a step or two; it narrows again at the next cut. The magpie's nest has no
+  ties at any cut in the examples on this page, but your own grid might.
 - **"One beam finished early."** It stays in the running with the same score,
   and takes up one of the _k_ places. It doesn't expand any further.
 - **"The fractions are getting ugly."** Use a calculator and decimals to two
   places, or keep every score over a common denominator, as the worked example
-  does with eighteenths.
+  does with seventeenths.
 - **"Our model has no ties and no dead ends, so nothing interesting happens."**
   Beam search only differs from greedy where a popular word leads somewhere
   uncertain. Look for a row whose favourite is followed by a split row, next to
-  a less popular word that is followed by a sure thing.
+  a less popular word that is followed by a sure thing. In the magpie's nest
+  that's `magpie` (split four ways) next to `nest` (always `.`).
 
 ### Connection to current LLMs
 
@@ -201,13 +227,8 @@ Beam search is a decoding strategy, a rule for turning a model's next-word chanc
 
 Beam search is the standard choice where there's roughly one right answer:
 machine translation and speech recognition, where you want the most likely
-transcription. It's usually run with a length penalty, for the reason "It watches."
-won: the score is divided by something that grows with the sentence length, so
-longer sentences aren't punished just for being longer.
+transcription. It's usually run with a length penalty, for the reason "It is
+morning." won: the score is divided by something that grows with the sentence
+length, so longer sentences aren't punished just for being longer.
 
-Chatbots like <GlossaryTerm id="chatbot">Claude or ChatGPT</GlossaryTerm> mostly
-don't use it. They sample, with the temperature and truncation controls from
-[Sampling](/modules/sampling/). When researchers ran beam search on open-ended
-text, they found
-[the most likely text is bland and repetitive, and nothing like what people write](https://arxiv.org/abs/1904.09751).
-The magpie's "Here comes the fence." is the same result on a small scale.
+Chatbots like <GlossaryTerm id="chatbot">Claude or ChatGPT</GlossaryTerm> mostly don't use it. They sample, with the temperature and truncation controls from [Sampling](/modules/sampling/). When researchers ran beam search on open-ended text, they found [the most likely text is bland and repetitive, and nothing like what people write](https://arxiv.org/abs/1904.09751). "Here comes the nest." is the same result on a small scale.

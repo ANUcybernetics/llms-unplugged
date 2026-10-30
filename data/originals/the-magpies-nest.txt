@@ -1,0 +1,7 @@
+---
+title: The magpie's nest
+author: LLMs Unplugged
+url: https://www.llmsunplugged.org/modules/beam-search/
+---
+
+It is morning. The magpie sings. It flies to the tree. It sits in the nest. Here comes the cat. Down swoops the magpie! Off runs the cat. The magpie warbles. It flies back to the nest. Here comes the rain. It hides in the nest. The rain stops. The magpie sings. It flies to the tree. The magpie eats a worm. The sun sets. It sleeps in the nest. It is morning. The magpie sings.
