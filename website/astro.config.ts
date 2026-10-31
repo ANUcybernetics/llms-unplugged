@@ -96,6 +96,10 @@ export default defineConfig({
     "/lessons/basic-generation/": "/modules/generation/",
     "/lessons/trigram-model/": "/modules/more-context/",
     "/lessons/context-columns/": "/modules/more-context/",
+    // June 2026: trigram became More Context; intro's icebreakers moved into
+    // Training's instructor notes.
+    "/lessons/trigram/": "/modules/more-context/",
+    "/lessons/intro/": "/modules/training/",
     "/topics/": "/modules/",
     "/topics/fundamentals/": "/modules/#fundamentals",
     "/topics/scaling-up/": "/modules/#scaling-up",
@@ -103,6 +107,8 @@ export default defineConfig({
     "/topics/how-models-understand/": "/modules/#looking-inside",
     "/topics/adaptation-and-data/": "/modules/#shaping-behaviour",
     "/slides/studio-workshop-2h/": "/decks/my-first-language-model-2h/",
+    // The ACE 2026 talk deck moved to benswift.me (June 2026).
+    "/decks/ace-26/": "https://benswift.me/decks/llms-unplugged-ace-2026/",
   },
   fonts: [
     {
