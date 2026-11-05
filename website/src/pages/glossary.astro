@@ -1,10 +1,6 @@
 ---
 import PageLayout from "../layouts/PageLayout.astro";
-import {
-  getGlossaryByCategory,
-  loadGlossary,
-  resolveRelated,
-} from "../lib/glossary";
+import { getGlossaryByCategory, loadGlossary, resolveRelated } from "../lib/glossary";
 
 const categories = getGlossaryByCategory();
 const activities = loadGlossary().filter((e) => e.activity);
@@ -17,64 +13,51 @@ const activities = loadGlossary().filter((e) => e.activity);
   <h1>Glossary</h1>
 
   <p>
-    This glossary connects the hands-on activities in LLMs Unplugged with the
-    technical terms used for modern language models. Each entry gives a plain
-    language explanation and links to the modules where the idea is used. The
-    groups follow the module topics, with the apparatus at the end.
+    This glossary connects the hands-on activities in LLMs Unplugged with the technical terms used
+    for modern language models. Each entry gives a plain language explanation and links to the
+    modules where the idea is used. The groups follow the module topics, with the apparatus at the
+    end.
   </p>
 
   {categories.map(({ label, entries }) => (
     <>
       <h2>{label}</h2>
-      {entries.map((entry) => (
-        <div class="glossary-entry" id={entry.id}>
-          <h3>{entry.term}</h3>
-          <p>{entry.description}</p>
-          {entry.synonyms && (
-            <p class="glossary-meta">
-              <em>Also called:</em> {entry.synonyms.join(", ")}
-            </p>
-          )}
-          {entry.note && (
-            <p class="glossary-meta">
-              <em>Style note:</em> {entry.note}
-            </p>
-          )}
-          {entry.related && (
-            <p class="glossary-meta">
-              <em>Related:</em>{" "}
-              {resolveRelated(entry.related).map((rel, i) => (
-                <>
-                  {i > 0 && ", "}
-                  <a href={`#${rel.id}`}>{rel.term}</a>
-                </>
-              ))}
-            </p>
-          )}
-          {entry.see && (
-            <p class="glossary-meta">
-              <em>See:</em>{" "}
-              {entry.see.map((link, i) => (
-                <>
-                  {i > 0 && ", "}
-                  <a href={link.href}>{link.label}</a>
-                </>
-              ))}
-            </p>
-          )}
-        </div>
-      ))}
+      {entries.map((entry) => <div class="glossary-entry" id={entry.id}>
+        <h3>{entry.term}</h3>
+        <p>{entry.description}</p>
+        {entry.synonyms && <p class="glossary-meta">
+          <em>Also called:</em> {entry.synonyms.join(", ")}
+        </p>}
+        {entry.note && <p class="glossary-meta"><em>Style note:</em> {entry.note}</p>}
+        {entry.related && <p class="glossary-meta">
+          <em>Related:</em>{" "}
+          {resolveRelated(entry.related).map((rel, i) => (
+            <>
+              {i > 0 && ", "}
+              <a href={`#${rel.id}`}>{rel.term}</a>
+            </>
+          ))}
+        </p>}
+        {entry.see && <p class="glossary-meta">
+          <em>See:</em>{" "}
+          {entry.see.map((link, i) => (
+            <>
+              {i > 0 && ", "}
+              <a href={link.href}>{link.label}</a>
+            </>
+          ))}
+        </p>}
+      </div>)}
     </>
   ))}
 
   <h2>Connections to your activities</h2>
 
   <p>
-    The things you do with paper, dice and cutouts each stand in for an
-    operation inside a real language model. The main difference is scale: your
-    grid holds dozens of counts, a frontier model holds on the order of a
-    trillion learned numbers, and the counts are learned rather than tallied by
-    hand.
+    The things you do with paper, dice and cutouts each stand in for an operation inside a real
+    language model. The main difference is scale: your grid holds dozens of counts, a frontier model
+    holds on the order of a trillion learned numbers, and the counts are learned rather than tallied
+    by hand.
   </p>
 
   <table>
@@ -85,14 +68,12 @@ const activities = loadGlossary().filter((e) => e.activity);
       </tr>
     </thead>
     <tbody>
-      {activities.map((entry) => (
-        <tr>
-          <td>{entry.activity}</td>
-          <td>
-            <a href={`#${entry.id}`}>{entry.term}</a>
-          </td>
-        </tr>
-      ))}
+      {activities.map((entry) => <tr>
+        <td>{entry.activity}</td>
+        <td>
+          <a href={`#${entry.id}`}>{entry.term}</a>
+        </td>
+      </tr>)}
     </tbody>
   </table>
 </PageLayout>

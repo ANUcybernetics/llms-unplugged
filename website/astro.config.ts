@@ -49,11 +49,7 @@ export default defineConfig({
       ],
     },
   },
-  // Astro's compression (true) strips newline-only whitespace between inline
-  // elements, which deletes meaningful spaces wherever Prettier wraps a line at
-  // an <a>/<em>/<strong> boundary in an .astro template ("then\n<a>" renders as
-  // "then<a>").
-  compressHTML: false,
+  compressHTML: true,
   redirects: {
     // The July 2026 restructure renamed the per-activity pages from "lessons"
     // to "modules" (a lesson is now a deck-backed workshop journey built from

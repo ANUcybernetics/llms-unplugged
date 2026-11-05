@@ -19,12 +19,7 @@ const { noindex = false } = Astro.props;
 
 <meta name="theme-color" content="#be830e" />
 {noindex && <meta name="robots" content="noindex" />}
-<link
-  rel="alternate"
-  type="application/rss+xml"
-  title="LLMs Unplugged RSS Feed"
-  href="/feed.xml"
-/>
+<link rel="alternate" type="application/rss+xml" title="LLMs Unplugged RSS Feed" href="/feed.xml" />
 {/* Analytics is the only third-party origin; warm the connection early so
     the deferred script and its event beacons skip the TLS handshake. */}
 <link rel="preconnect" href="https://plausible.io" />

@@ -14,9 +14,7 @@ export async function getStaticPaths() {
 const { talk } = Astro.props;
 const { Content } = await render(talk);
 
-const ogImage = talk.data.heroImage
-  ? findHeroImage(`hero-${talk.data.heroImage}`)
-  : undefined;
+const ogImage = talk.data.heroImage ? findHeroImage(`hero-${talk.data.heroImage}`) : undefined;
 ---
 
 <LessonLayout

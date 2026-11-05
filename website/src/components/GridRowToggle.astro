@@ -22,9 +22,7 @@
   };
 
   document.addEventListener("click", (e) => {
-    const row = (e.target as Element | null)?.closest?.(
-      "table.bigram-grid.row-toggle tbody tr",
-    );
+    const row = (e.target as Element | null)?.closest?.("table.bigram-grid.row-toggle tbody tr");
     row?.classList.toggle("row-picked");
   });
 

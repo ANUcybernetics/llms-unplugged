@@ -11,7 +11,7 @@ paper, and dice. No computers required.
 - MDX --- lessons and news with embedded components
 - TypeScript
 - [pnpm](https://pnpm.io) --- package manager
-- oxlint + oxfmt (with Prettier for `.astro`/`.svelte`) and Vitest
+- oxlint + oxfmt and Vitest
 
 ## Development
 

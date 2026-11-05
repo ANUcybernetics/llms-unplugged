@@ -22,10 +22,8 @@ const ogImage = moduleHeroImage(module.id);
 // in" box. Talks live under /talks/ and are labelled as such.
 const usesModule = (l: { data: { listed?: boolean; modules: string[] } }) =>
   l.data.listed !== false && l.data.modules.includes(module.id);
-const byOrder = (
-  a: { data: { order: number } },
-  b: { data: { order: number } },
-) => a.data.order - b.data.order;
+const byOrder = (a: { data: { order: number } }, b: { data: { order: number } }) =>
+  a.data.order - b.data.order;
 const usedIn = [
   ...(await getCollection("lessons"))
     .filter(usesModule)

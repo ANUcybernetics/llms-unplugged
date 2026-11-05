@@ -96,12 +96,6 @@ importers:
       postcss-html:
         specifier: ^2.0.0
         version: 2.0.0(postcss@8.5.30)
-      prettier:
-        specifier: ^3.9.10
-        version: 3.9.10
-      prettier-plugin-astro:
-        specifier: ^1.1.2
-        version: 1.1.2(prettier@3.9.10)
       puppeteer-core:
         specifier: ^25.16.0
         version: 25.16.0
@@ -5262,7 +5256,8 @@ snapshots:
   '@pagefind/windows-x64@1.6.0':
     optional: true
 
-  '@prettier/parse-srcset@3.1.0': {}
+  '@prettier/parse-srcset@3.1.0':
+    optional: true
 
   '@puppeteer/browsers@3.2.6':
     dependencies:
@@ -7647,6 +7642,7 @@ snapshots:
       '@prettier/parse-srcset': 3.1.0
       prettier: 3.9.10
       sass-formatter: 0.8.0
+    optional: true
 
   prettier@3.9.10: {}
 
@@ -7929,7 +7925,8 @@ snapshots:
     dependencies:
       queue-microtask: 1.2.3
 
-  s.color@0.0.15: {}
+  s.color@0.0.15:
+    optional: true
 
   sade@1.8.1:
     dependencies:
@@ -7940,6 +7937,7 @@ snapshots:
   sass-formatter@0.8.0:
     dependencies:
       suf-log: 2.5.3
+    optional: true
 
   satteri@0.10.5:
     dependencies:
@@ -8152,6 +8150,7 @@ snapshots:
   suf-log@2.5.3:
     dependencies:
       s.color: 0.0.15
+    optional: true
 
   supports-color@10.2.2: {}
 

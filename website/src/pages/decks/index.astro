@@ -3,10 +3,7 @@ import { getCollection } from "astro:content";
 import PageLayout from "../../layouts/PageLayout.astro";
 import fs from "node:fs";
 import path from "node:path";
-import {
-  parseDeckFrontmatter,
-  type DeckFrontmatter,
-} from "astromotion/src/meta.ts";
+import { parseDeckFrontmatter, type DeckFrontmatter } from "astromotion/src/meta.ts";
 
 // Decks grouped by the lesson they back (from the lessons collection), so
 // this page points visitors at the lesson pages --- which carry the timings,
@@ -48,9 +45,7 @@ const hidden = (slug: string): boolean => {
 
 // Sessions with nothing visible to link are dropped rather than rendered as
 // a bare heading.
-const withVisibleDecks = <
-  T extends { data: { decks: Array<{ slug: string }> } },
->(
+const withVisibleDecks = <T extends { data: { decks: Array<{ slug: string }> } }>(
   entries: T[],
 ): T[] =>
   entries
@@ -78,9 +73,7 @@ const talks = withVisibleDecks(
 // A deck claimed by an unlisted lesson or talk falls through to "Other decks",
 // so the deck's own flag governs whether it appears and the session only
 // governs where.
-const claimed = new Set(
-  [...lessons, ...talks].flatMap((l) => l.data.decks.map((d) => d.slug)),
-);
+const claimed = new Set([...lessons, ...talks].flatMap((l) => l.data.decks.map((d) => d.slug)));
 
 // Any remaining decks (event one-offs, works in progress) still get listed.
 const others = [...decks]
@@ -96,51 +89,36 @@ const others = [...decks]
   <h1>Slide decks</h1>
 
   <p>
-    Each deck belongs to a <a href="/lessons/">lesson</a>&mdash;start from the
-    lesson page for timings, prep notes, and the materials list, then open the
-    slides from there.
+    Each deck belongs to a <a href="/lessons/">lesson</a>&mdash;start from the lesson page for
+    timings, prep notes, and the materials list, then open the slides from there.
   </p>
 
-  {lessons.map((lesson) => (
-    <section>
-      <h2>
-        <a href={`/lessons/${lesson.id}/`}>{lesson.data.title}</a>
-      </h2>
-      <ul>
-        {lesson.data.decks.map((deck) => (
-          <li>
-            <a href={`/decks/${deck.slug}/`}>{deck.label}</a>
-          </li>
-        ))}
-      </ul>
-    </section>
-  ))}
+  {lessons.map((lesson) => <section>
+    <h2>
+      <a href={`/lessons/${lesson.id}/`}>{lesson.data.title}</a>
+    </h2>
+    <ul>
+      {lesson.data.decks.map((deck) => <li>
+        <a href={`/decks/${deck.slug}/`}>{deck.label}</a>
+      </li>)}
+    </ul>
+  </section>)}
 
-  {talks.map((talk) => (
-    <section>
-      <h2>
-        <a href={`/talks/${talk.id}/`}>{talk.data.title}</a> (talk)
-      </h2>
-      <ul>
-        {talk.data.decks.map((deck) => (
-          <li>
-            <a href={`/decks/${deck.slug}/`}>{deck.label}</a>
-          </li>
-        ))}
-      </ul>
-    </section>
-  ))}
+  {talks.map((talk) => <section>
+    <h2><a href={`/talks/${talk.id}/`}>{talk.data.title}</a> (talk)</h2>
+    <ul>
+      {talk.data.decks.map((deck) => <li>
+        <a href={`/decks/${deck.slug}/`}>{deck.label}</a>
+      </li>)}
+    </ul>
+  </section>)}
 
-  {others.length > 0 && (
-    <section>
-      <h2>Other decks</h2>
-      <ul>
-        {others.map((deck) => (
-          <li>
-            <a href={`/decks/${deck.slug}/`}>{deck.title}</a>
-          </li>
-        ))}
-      </ul>
-    </section>
-  )}
+  {others.length > 0 && <section>
+    <h2>Other decks</h2>
+    <ul>
+      {others.map((deck) => <li>
+        <a href={`/decks/${deck.slug}/`}>{deck.title}</a>
+      </li>)}
+    </ul>
+  </section>}
 </PageLayout>

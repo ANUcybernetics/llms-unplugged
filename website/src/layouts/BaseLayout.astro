@@ -27,8 +27,7 @@ const {
   noindex,
 } = Astro.props;
 
-const fullTitle =
-  title === "LLMs Unplugged" ? title : `${title} | LLMs Unplugged`;
+const fullTitle = title === "LLMs Unplugged" ? title : `${title} | LLMs Unplugged`;
 ---
 
 {/* data-pagefind-body on the theme's <main> scopes the Pagefind index to
@@ -54,9 +53,7 @@ const fullTitle =
     <CommonHead noindex={noindex} />
   </Fragment>
 
-  <div class="print-wordmark" data-pagefind-ignore>
-    LLMs Unplugged (c) Ben Swift - CC BY-SA 4.0
-  </div>
+  <div class="print-wordmark" data-pagefind-ignore>LLMs Unplugged (c) Ben Swift - CC BY-SA 4.0</div>
   <slot />
 </ThemeBaseLayout>
 

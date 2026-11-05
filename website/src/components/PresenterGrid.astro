@@ -35,14 +35,21 @@ const presenters = [
 
 <div
   id="presenter-grid"
-  style="display: grid; grid-template-columns: repeat(4, 1fr); place-content: center; position: absolute; inset: 0; background: black;"
+  style="
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    place-content: center;
+    position: absolute;
+    inset: 0;
+    background: black;
+  "
 >
   {presenters.map((p) => (
     <img
       data-presenter={p.id}
       src={p.src}
       alt={p.name}
-      style="width: 100%; aspect-ratio: 1; object-fit: cover;"
+      style="width: 100%; aspect-ratio: 1; object-fit: cover"
     />
   ))}
 </div>
@@ -55,16 +62,10 @@ const presenters = [
   // a 1280x720 slide allows for however many remain.
   const grid = document.getElementById("presenter-grid");
   if (grid) {
-    const wanted = (
-      new URLSearchParams(location.search).get("presenters") || ""
-    ).toLowerCase();
+    const wanted = (new URLSearchParams(location.search).get("presenters") || "").toLowerCase();
     const shown: HTMLElement[] = [];
-    for (const img of grid.querySelectorAll<HTMLElement>(
-      "img[data-presenter]",
-    )) {
-      const pos = wanted
-        ? wanted.indexOf(img.dataset.presenter ?? "")
-        : shown.length;
+    for (const img of grid.querySelectorAll<HTMLElement>("img[data-presenter]")) {
+      const pos = wanted ? wanted.indexOf(img.dataset.presenter ?? "") : shown.length;
       if (wanted && pos === -1) {
         img.style.display = "none";
       } else {

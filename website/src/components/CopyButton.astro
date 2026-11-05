@@ -35,27 +35,23 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
 ---
 
 <div class="copy-button" data-copy-button>
-  {fields.length > 0 && (
-    <div class="copy-fields">
-      {fields.map((field) => (
-        <label class="copy-field">
-          <span class="copy-field-label">{field.label}</span>
-          <input
-            type="text"
-            class="copy-field-input"
-            data-copy-field
-            data-token={field.token}
-            value={field.value ?? ""}
-            placeholder={field.hint ?? ""}
-            size={field.size ?? 12}
-            aria-required="true"
-            autocomplete="off"
-            spellcheck="false"
-          />
-        </label>
-      ))}
-    </div>
-  )}
+  {fields.length > 0 && <div class="copy-fields">
+    {fields.map((field) => <label class="copy-field">
+      <span class="copy-field-label">{field.label}</span>
+      <input
+        type="text"
+        class="copy-field-input"
+        data-copy-field
+        data-token={field.token}
+        value={field.value ?? ""}
+        placeholder={field.hint ?? ""}
+        size={field.size ?? 12}
+        aria-required="true"
+        autocomplete="off"
+        spellcheck="false"
+      />
+    </label>)}
+  </div>}
 
   <button type="button" class="copy-btn" data-copy-trigger>
     <svg
@@ -102,9 +98,7 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
     if (!btn || !source) return;
 
     const template = source.textContent ?? "";
-    const fieldInputs = Array.from(
-      root.querySelectorAll<HTMLInputElement>("[data-copy-field]"),
-    );
+    const fieldInputs = Array.from(root.querySelectorAll<HTMLInputElement>("[data-copy-field]"));
     const idleLabel = labelEl?.textContent ?? "Copy";
     let resetTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -159,8 +153,7 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
         // execCommand is deprecated but is the only copy path in an insecure
         // context. Narrow the type so its deprecated lib.dom signature doesn't
         // surface as a type-checker hint.
-        const exec = (document as { execCommand?: (id: string) => boolean })
-          .execCommand;
+        const exec = (document as { execCommand?: (id: string) => boolean }).execCommand;
         const ok = exec ? exec.call(document, "copy") : false;
         document.body.removeChild(ta);
         return ok;
@@ -188,9 +181,7 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
   }
 
   const boot = () =>
-    document
-      .querySelectorAll<HTMLElement>("[data-copy-button]")
-      .forEach(initCopyButton);
+    document.querySelectorAll<HTMLElement>("[data-copy-button]").forEach(initCopyButton);
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
@@ -310,11 +301,7 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
   .copy-button.copied .copy-btn {
     opacity: 1;
     color: var(--at-accent, currentColor);
-    border-color: color-mix(
-      in srgb,
-      var(--at-accent, currentColor) 45%,
-      transparent
-    );
+    border-color: color-mix(in srgb, var(--at-accent, currentColor) 45%, transparent);
   }
 
   .copy-button.copied .copy-icon--idle {

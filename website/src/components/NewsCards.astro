@@ -15,10 +15,7 @@ interface Props {
 const { limit, headingLevel = "h3", kinds } = Astro.props;
 
 const allNews = (
-  await getCollection(
-    "news",
-    ({ data }) => data.published && (!kinds || kinds.includes(data.kind)),
-  )
+  await getCollection("news", ({ data }) => data.published && (!kinds || kinds.includes(data.kind)))
 ).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 const news = limit ? allNews.slice(0, limit) : allNews;
@@ -31,17 +28,15 @@ const news = limit ? allNews.slice(0, limit) : allNews;
       month: "long",
       day: "numeric",
     });
-    return (
-      <Card
-        href={`/news/${item.id}/`}
-        title={item.data.title}
-        image={findHeroImage(`hero-news-${item.id}`)}
-        headingLevel={headingLevel}
-      >
-        <p class="card-description">{item.data.description}</p>
-        <span class="card-meta">{dateLabel}</span>
-      </Card>
-    );
+    return <Card
+      href={`/news/${item.id}/`}
+      title={item.data.title}
+      image={findHeroImage(`hero-news-${item.id}`)}
+      headingLevel={headingLevel}
+    >
+      <p class="card-description">{item.data.description}</p>
+      <span class="card-meta">{dateLabel}</span>
+    </Card>;
   })}
 </div>
 

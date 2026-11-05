@@ -4,9 +4,8 @@ Astro 7 static site with Svelte 5 (runes) components for interactive language
 model demonstrations, plus astromotion slide decks. MDX content, TypeScript,
 pnpm, Vitest, oxlint, stylelint.
 
-Formatting is oxfmt for everything except `.astro`, which oxfmt cannot parse ---
-those go through Prettier with `prettier-plugin-astro`. `pnpm run format` runs
-both; keep both.
+Formatting is oxfmt for everything, `.astro` included (`"astro": true` in
+`.oxfmtrc.json`).
 
 ## Dev server
 
