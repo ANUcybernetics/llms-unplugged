@@ -1,5 +1,5 @@
 [tools]
-node = "24"
+node = "26"
 pnpm = "latest"
 # components/targets declared so a fresh install (CI's mise-action) gets
 # everything cli.yml needs; a bare version string installs neither
