@@ -7,3 +7,9 @@ allowBuilds:
 minimumReleaseAgeExclude:
   - astro
   - "@astrojs/*"
+
+overrides:
+  # eslint, @eslint/config-array and @typescript-eslint/typescript-estree
+  # (via @e18e/eslint-plugin, eslint-plugin-perfectionist) pin minimatch ^10;
+  # GHSA-g3hv-75wg-m249 is patched in >=11.0.1. Drop once they allow >=11.0.1.
+  minimatch: ^11.0.1
