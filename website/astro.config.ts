@@ -49,9 +49,9 @@ export default defineConfig({
       ],
     },
   },
-  // The default (true) strips newline-only whitespace between inline elements,
-  // which deletes meaningful spaces wherever Prettier wraps a line at an
-  // <a>/<em>/<strong> boundary in an .astro template ("then\n<a>" renders as
+  // Astro's compression (true) strips newline-only whitespace between inline
+  // elements, which deletes meaningful spaces wherever Prettier wraps a line at
+  // an <a>/<em>/<strong> boundary in an .astro template ("then\n<a>" renders as
   // "then<a>").
   compressHTML: false,
   redirects: {
