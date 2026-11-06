@@ -12,6 +12,7 @@ on:
       - "cli/**"
       - ".github/workflows/deploy-website.yml"
       - "mise.toml"
+      - "mise.lock"
   workflow_dispatch:
 
 permissions:

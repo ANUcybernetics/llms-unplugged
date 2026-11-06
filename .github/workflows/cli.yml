@@ -6,12 +6,14 @@ on:
     paths:
       - 'cli/**'
       - 'mise.toml'
+      - 'mise.lock'
       - '.github/workflows/cli.yml'
   pull_request:
     branches: [main]
     paths:
       - 'cli/**'
       - 'mise.toml'
+      - 'mise.lock'
   workflow_dispatch:
 
 jobs:
