@@ -11,7 +11,7 @@ dependencies: []
 modified_files:
   - cli/src/main.rs
   - cli/tests/integration_test.rs
-  - cli/CLAUDE.md
+  - cli/AGENTS.md
   - website/src/decks/visionaries-showcase.deck.mdx
 priority: high
 ---

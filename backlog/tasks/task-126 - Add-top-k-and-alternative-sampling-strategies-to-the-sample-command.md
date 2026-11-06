@@ -17,5 +17,5 @@ Migrated from the old root TODO.md. The sample subcommand currently does plain w
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [ ] #1 sample supports a top-k flag that restricts sampling to the k most likely next tokens
-- [ ] #2 documented in cli/CLAUDE.md and README
+- [ ] #2 documented in cli/AGENTS.md and README
 <!-- AC:END -->
