@@ -60,7 +60,7 @@ export default defineConfig({
     "/lessons/generation/": "/modules/generation/",
     "/lessons/in-context-memory/": "/modules/in-context-learning/",
     "/lessons/induction-heads/": "/modules/in-context-learning/",
-    "/lessons/lora/": "/modules/sycophancy/#adapters-this-trick-has-a-name",
+    "/lessons/lora/": "/modules/sycophancy/#adapters",
     "/lessons/more-context/": "/modules/more-context/",
     "/lessons/pretrained-generation/": "/modules/pretrained-generation/",
     "/lessons/rlhf/": "/modules/rlhf/",
@@ -76,7 +76,7 @@ export default defineConfig({
     // module; LoRA folded into Sycophancy as its "adapters" section.
     "/modules/in-context-memory/": "/modules/in-context-learning/",
     "/modules/induction-heads/": "/modules/in-context-learning/",
-    "/modules/lora/": "/modules/sycophancy/#adapters-this-trick-has-a-name",
+    "/modules/lora/": "/modules/sycophancy/#adapters",
     // The workshop-formats page was superseded by the lessons index (its
     // "Going deeper" format seeds task-131).
     "/workshops/": "/lessons/",
