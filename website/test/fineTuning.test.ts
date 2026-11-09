@@ -4,8 +4,8 @@ import { join } from "node:path";
 import { buildBigramModel, parseTokens } from "../src/lib/tokens";
 
 // The Fine-tuning and LoRA module fine-tunes the model of The magpie's nest on
-// The owl and the moon, and makes claims about the combined rows, the scaled
-// adapter, the strip pairs and the sentences each version can write. These
+// The kookaburra and the possum, and makes claims about the combined rows,
+// the scaled adapter, the strip pairs and the sentences each version can write. These
 // tests rebuild both models with the CLI-matching tokeniser and check every
 // one of those claims against the page.
 
@@ -14,14 +14,14 @@ const storyTokens = (path: string) => parseTokens(read(path).split("---")[2]);
 
 const MODULE = read("src/content/modules/fine-tuning.mdx");
 const baseTokens = storyTokens("../data/originals/the-magpies-nest.txt");
-const owlTokens = storyTokens("../data/originals/the-owl-and-the-moon.txt");
+const newTokens = storyTokens("../data/originals/the-kookaburra-and-the-possum.txt");
 
 type Counts = Map<string, Map<string, number>>;
 type Strips = { when: Record<string, number>; what: Record<string, number> };
 
 const toCounts = (tokens: string[]): Counts => buildBigramModel(tokens).counts;
 const base = toCounts(baseTokens);
-const adapter = toCounts(owlTokens);
+const adapter = toCounts(newTokens);
 
 function get(counts: Counts, from: string, to: string): number {
   return counts.get(from)?.get(to) ?? 0;
@@ -57,8 +57,8 @@ function fromStrips(pairs: Strips[]): Counts {
 const rowOf = (counts: Counts, word: string): Record<string, number> =>
   Object.fromEntries([...(counts.get(word) ?? new Map())].filter(([, n]) => n > 0));
 
-// "The owl sits in the nest." -> the owl sits in the nest . (the sentence-start
-// "The" is the same token as "the", as in Training).
+// "The kookaburra sits in the nest." -> the kookaburra sits in the nest .
+// (the sentence-start "The" is the same token as "the", as in Training).
 const sentence = (s: string) =>
   s
     .toLowerCase()
@@ -81,10 +81,10 @@ function printedRow(word: string, total: number) {
   );
 }
 
-const pairA: Strips = { when: { the: 1 }, what: { owl: 4, moon: 2 } };
+const pairA: Strips = { when: { the: 1 }, what: { kookaburra: 4, possum: 2 } };
 const pairB: Strips = {
-  when: { owl: 1, moon: 1 },
-  what: { flies: 1, sits: 1, sings: 1, sleeps: 1, sets: 1 },
+  when: { kookaburra: 1, possum: 1 },
+  what: { flies: 1, sits: 1, sings: 1, eats: 1, sleeps: 1, hides: 1 },
 };
 
 describe("Fine-tuning and LoRA module", () => {
@@ -92,16 +92,16 @@ describe("Fine-tuning and LoRA module", () => {
     expect(printedRow("the", 17)).toEqual(rowOf(base, "the"));
   });
 
-  it("fine-tuning in place gives the printed `the`, `owl` and `moon` rows", () => {
+  it("fine-tuning in place gives the printed `the`, `kookaburra` and `possum` rows", () => {
     const tuned = combine([base, 1], [adapter, 1]);
-    expect(printedRow("the", 25)).toEqual(rowOf(tuned, "the"));
-    expect(rowOf(tuned, "owl")).toEqual({ flies: 1, sits: 1, sings: 1, sleeps: 1 });
-    expect(rowOf(tuned, "moon")).toEqual({ ".": 1, sets: 1 });
+    expect(printedRow("the", 27)).toEqual(rowOf(tuned, "the"));
+    expect(rowOf(tuned, "kookaburra")).toEqual({ flies: 1, sits: 1, sings: 1, eats: 1 });
+    expect(rowOf(tuned, "possum")).toEqual({ sleeps: 1, hides: 1 });
   });
 
   it("the adapter at three times gives the claimed `the` row", () => {
     const scaled = rowOf(combine([base, 1], [adapter, 3]), "the");
-    const claim = MODULE.match(/the `the` row becomes (.+?) \((\d+) in total\)/)!;
+    const claim = MODULE.match(/the `the` row becomes (.+?) \((\d+) in total\)/s)!;
     const printed = Object.fromEntries(
       Array.from(claim[1].matchAll(/`(\S+)` (\d+)/g), ([, w, n]) => [w, Number(n)]),
     );
@@ -110,59 +110,62 @@ describe("Fine-tuning and LoRA module", () => {
   });
 
   it("the base already has every adapter tally the strips leave out", () => {
-    const listed = MODULE.match(/the magpie's grid already has (.+?)\. What's actually new/s)![1];
-    const pairs = Array.from(listed.matchAll(/`(\S+) → (\S+)`/g), ([, a, b]) => [a, b]);
-    expect(pairs).toHaveLength(10);
-    for (const [from, to] of pairs)
-      expect(get(base, from, to), `${from} → ${to}`).toBeGreaterThan(0);
-
-    const covered = new Set(["the owl", "the moon"]);
-    for (const [from, row] of adapter) {
-      for (const [to] of row) {
-        const key = `${from} ${to}`;
-        const inStrips = covered.has(key) || from === "owl" || from === "moon";
-        if (!inStrips) expect(pairs.map((p) => p.join(" "))).toContain(key);
-      }
+    const listed = MODULE.match(
+      /the magpie's grid already has (.+?)\. Only two patterns are new/s,
+    )![1];
+    const pairs = Array.from(listed.matchAll(/`(\S+) → (\S+)`/g), ([, a, b]) => `${a} ${b}`);
+    expect(pairs).toHaveLength(15);
+    for (const pair of pairs) {
+      const [from, to] = pair.split(" ");
+      expect(get(base, from, to), pair).toBeGreaterThan(0);
     }
+
+    const newWords = new Set(["kookaburra", "possum"]);
+    const leftOut = [...adapter].flatMap(([from, row]) =>
+      [...row.keys()]
+        .filter((to) => !newWords.has(from) && !(from === "the" && newWords.has(to)))
+        .map((to) => `${from} ${to}`),
+    );
+    expect(leftOut.toSorted()).toEqual(pairs.toSorted());
   });
 
-  it("pair A reproduces the adapter's `the` row exactly, pair B blends owl and moon", () => {
+  it("pair A reproduces the adapter's `the` row, pair B blends the two animals", () => {
     const strips = fromStrips([pairA, pairB]);
     expect(rowOf(strips, "the")).toEqual({
-      owl: get(adapter, "the", "owl"),
-      moon: get(adapter, "the", "moon"),
+      kookaburra: get(adapter, "the", "kookaburra"),
+      possum: get(adapter, "the", "possum"),
     });
-    expect(rowOf(strips, "owl")).toEqual(pairB.what);
-    expect(rowOf(strips, "moon")).toEqual(pairB.what);
-    expect(get(strips, "owl", "sets")).toBe(1);
-    expect(get(adapter, "owl", "sets")).toBe(0);
-    expect(get(strips, "moon", ".")).toBe(0);
-    expect(get(adapter, "moon", ".")).toBe(1);
+    expect(rowOf(strips, "kookaburra")).toEqual(pairB.what);
+    expect(rowOf(strips, "possum")).toEqual(pairB.what);
+    expect(get(adapter, "possum", "flies")).toBe(0);
+    expect(get(adapter, "kookaburra", "hides")).toBe(0);
   });
 
   it("counts the sheet, the strips and their non-zero numbers as claimed", () => {
-    const vocab = new Set([...baseTokens, ...owlTokens]);
+    const vocab = new Set([...baseTokens, ...newTokens]);
     expect(vocab.size).toBe(34);
     expect(MODULE).toContain("34 words down the side and 34 along the top, which is 1,156 cells");
-    expect(MODULE).toContain("four strips of 34, so 136 numbers, and only ten of them aren't zero");
+    expect(MODULE).toContain(
+      "four strips of 34, so 136 numbers, and only eleven of them aren't zero",
+    );
     const nonZero = [pairA, pairB].flatMap((p) => [
       ...Object.values(p.when),
       ...Object.values(p.what),
     ]);
-    expect(nonZero.filter((n) => n !== 0)).toHaveLength(10);
+    expect(nonZero.filter((n) => n !== 0)).toHaveLength(11);
   });
 
   it("each version can write the sentences the page claims, and no more", () => {
     const tuned = combine([base, 1], [adapter, 1]);
     const withStrips = combine([base, 1], [fromStrips([pairA, pairB]), 1]);
 
-    const owlInNest = sentence("The owl sits in the nest.");
-    expect(canWrite(tuned, owlInNest)).toBe(true);
-    expect(contains(baseTokens, owlInNest) || contains(owlTokens, owlInNest)).toBe(false);
+    const inTheNest = sentence("The kookaburra sits in the nest.");
+    expect(canWrite(tuned, inTheNest)).toBe(true);
+    expect(contains(baseTokens, inTheNest) || contains(newTokens, inTheNest)).toBe(false);
 
-    const moonSings = sentence("The moon sings.");
-    expect(canWrite(withStrips, moonSings)).toBe(true);
-    expect(canWrite(tuned, moonSings)).toBe(false);
+    const possumSings = sentence("The possum sings.");
+    expect(canWrite(withStrips, possumSings)).toBe(true);
+    expect(canWrite(tuned, possumSings)).toBe(false);
 
     // Every word the strips can produce already has a row in the base, so
     // generation with the strips never reaches a dead end.
@@ -172,19 +175,28 @@ describe("Fine-tuning and LoRA module", () => {
   it("a single pair mixes the patterns up, and a lone what strip is blunter still", () => {
     const one = fromStrips([
       {
-        when: { the: 1, owl: 1, moon: 1 },
-        what: { owl: 4, moon: 2, flies: 1, sits: 1, sings: 1, sleeps: 1, sets: 1 },
+        when: { the: 1, kookaburra: 1, possum: 1 },
+        what: {
+          kookaburra: 4,
+          possum: 2,
+          flies: 1,
+          sits: 1,
+          sings: 1,
+          eats: 1,
+          sleeps: 1,
+          hides: 1,
+        },
       },
     ]);
     expect(get(one, "the", "sits")).toBeGreaterThan(0);
-    expect(get(one, "owl", "owl")).toBeGreaterThan(0);
+    expect(get(one, "possum", "possum")).toBeGreaterThan(0);
 
     const everyRow = Object.fromEntries(Array.from(base.keys(), (w) => [w, 1]));
     const bias = combine(
       [base, 1],
-      [fromStrips([{ when: everyRow, what: { owl: 1, moon: 1 } }]), 1],
+      [fromStrips([{ when: everyRow, what: { kookaburra: 1, possum: 1 } }]), 1],
     );
-    expect(canWrite(bias, ["It", "owl"])).toBe(true);
-    expect(canWrite(bias, sentence("the magpie moon"))).toBe(true);
+    expect(canWrite(bias, ["It", "possum"])).toBe(true);
+    expect(canWrite(bias, sentence("the magpie kookaburra"))).toBe(true);
   });
 });

@@ -1,7 +1,0 @@
----
-title: The owl and the moon
-author: LLMs Unplugged
-url: https://www.llmsunplugged.org/modules/fine-tuning/
----
-
-The owl flies to the moon. The moon sets. The owl sits in the tree. The owl sings. The owl sleeps in the tree.

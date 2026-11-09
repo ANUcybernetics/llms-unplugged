@@ -1,0 +1,7 @@
+---
+title: The kookaburra and the possum
+author: LLMs Unplugged
+url: https://www.llmsunplugged.org/modules/fine-tuning/
+---
+
+The kookaburra flies to the tree. The possum sleeps in the nest. The kookaburra sits in the tree. The kookaburra sings. The possum hides in the tree. The kookaburra eats a worm.
