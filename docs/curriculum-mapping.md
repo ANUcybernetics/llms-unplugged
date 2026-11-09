@@ -68,7 +68,7 @@ secondary (Years 11--12) is out of scope.
 | In-context Memory            | how models understand | 7--8, 9--10 | Digital Technologies                               |
 | Induction Heads              | how models understand | 9--10       | Digital Technologies                               |
 | Word Embeddings              | how models understand | 9--10       | Mathematics, Digital Technologies                  |
-| LoRA                         | model tuning          | 9--10       | Digital Technologies                               |
+| Fine-tuning and LoRA         | model tuning          | 9--10       | Digital Technologies                               |
 | Synthetic Data               | model tuning          | 9--10       | Digital Technologies, Critical & Creative Thinking |
 | Agentic AI                   | controlling output    | 9--10       | Digital Technologies                               |
 | RLHF                         | model tuning          | 9--10       | Digital Technologies, Ethical Understanding        |
@@ -253,14 +253,15 @@ Treat each word's row in the bigram grid as a vector; measure similarity.
 - **General capabilities:** Numeracy; Critical and Creative Thinking
   (Generating > Considering alternatives).
 
-### [LoRA](https://www.llmsunplugged.org/modules/sycophancy/#adapters-this-trick-has-a-name)
+### [Fine-tuning and LoRA](https://www.llmsunplugged.org/modules/fine-tuning/)
 
-Add a lightweight adaptation layer to retarget a trained base model.
+Shift a trained base model toward a new text three ways: tally it in, keep it
+on an adapter sheet, and squeeze the adapter into low-rank strips.
 
 - **Best fit:** Years 9--10
 - **Primary**
   - `AC9TDI10P08` --- generate, modify, communicate and critically evaluate
-    alternative designs (the LoRA design choice itself).
+    alternative designs (fine-tune in place, adapter sheet or strips).
   - `AC9TDI10P06` --- validate algorithms and programs by comparing output
     against a range of test cases.
 - **Secondary**
@@ -348,9 +349,9 @@ with these strands:
 - **Processes and production skills > Designing and tracing algorithms**:
   Generation, Sampling, Beam Search.
 - **Processes and production skills > Implementing programs**: Generation, More
-  Context, In-context Memory, Induction Heads, Agentic AI, LoRA.
+  Context, In-context Memory, Induction Heads, Agentic AI, Fine-tuning and LoRA.
 - **Processes and production skills > Evaluating solutions**: RLHF, Synthetic
-  Data, Sycophancy, LoRA.
+  Data, Sycophancy, Fine-tuning and LoRA.
 
 The set does **not** substantively cover: networks and protocols, cyber security
 threat models, user-interface design, or project management. Those content

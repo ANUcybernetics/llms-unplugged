@@ -60,7 +60,7 @@ export default defineConfig({
     "/lessons/generation/": "/modules/generation/",
     "/lessons/in-context-memory/": "/modules/in-context-learning/",
     "/lessons/induction-heads/": "/modules/in-context-learning/",
-    "/lessons/lora/": "/modules/sycophancy/#adapters",
+    "/lessons/lora/": "/modules/fine-tuning/",
     "/lessons/more-context/": "/modules/more-context/",
     "/lessons/pretrained-generation/": "/modules/pretrained-generation/",
     "/lessons/rlhf/": "/modules/rlhf/",
@@ -72,11 +72,11 @@ export default defineConfig({
     "/lessons/word-embeddings/": "/modules/word-embeddings/",
     // module renamed from "Agentic tool use" (June 2026)
     "/lessons/agentic-tool-use/": "/modules/agentic-ai/",
-    // August 2026: In-context Memory and Induction Heads merged into one
-    // module; LoRA folded into Sycophancy as its "adapters" section.
+    // In-context Memory and Induction Heads merged into one module; LoRA is
+    // now Fine-tuning and LoRA.
     "/modules/in-context-memory/": "/modules/in-context-learning/",
     "/modules/induction-heads/": "/modules/in-context-learning/",
-    "/modules/lora/": "/modules/sycophancy/#adapters",
+    "/modules/lora/": "/modules/fine-tuning/",
     // The workshop-formats page was superseded by the lessons index (its
     // "Going deeper" format seeds task-131).
     "/workshops/": "/lessons/",

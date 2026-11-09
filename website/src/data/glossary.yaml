@@ -263,8 +263,8 @@
     - post-training
     - lora
   see:
-    - label: Sycophancy (adapters)
-      href: /modules/sycophancy/#adapters
+    - label: Fine-tuning and LoRA
+      href: /modules/fine-tuning/
     - label: RLHF
       href: /modules/rlhf/
 
@@ -526,6 +526,8 @@
     - lora
     - base-model
   see:
+    - label: Fine-tuning and LoRA
+      href: /modules/fine-tuning/
     - label: Sycophancy
       href: /modules/sycophancy/
     - label: Synthetic Data
@@ -536,19 +538,37 @@
   category: shaping-behaviour
   description: >-
     A way of fine-tuning cheaply by training a small adapter that sits on top
-    of an unchanged base model instead of altering all its parameters. One
-    base model can carry many adapters, and an adapter is small enough to
-    share easily. The paper adapter in the Sycophancy module is the
-    uncompressed version of the idea.
+    of an unchanged base model instead of altering all its parameters. The
+    adapter is stored as a few pairs of thin strips of numbers whose products
+    add up to the change, so it's tiny next to the model. One base model can
+    carry many adapters, and each can be scaled, swapped or removed.
   synonyms:
     - adapter
-  activity: the adapter sheet laid over an unchanged grid
+  activity: an adapter sheet over an unchanged grid, squeezed into when and what strips
   related:
     - fine-tuning
+    - rank
     - base-model
   see:
-    - label: Sycophancy (adapters)
-      href: /modules/sycophancy/#adapters
+    - label: Fine-tuning and LoRA
+      href: /modules/fine-tuning/
+
+- id: rank
+  term: Rank
+  category: shaping-behaviour
+  description: >-
+    The number of strip pairs a LoRA adapter is stored as. Each pair holds one
+    pattern: a when strip picks the current words it applies to and a what
+    strip picks the next words it pushes toward. More pairs keep more patterns
+    apart, at the cost of more numbers to store.
+  synonyms:
+    - low rank
+  activity: counting the when and what strip pairs in an adapter
+  related:
+    - lora
+  see:
+    - label: Fine-tuning and LoRA
+      href: /modules/fine-tuning/
 
 - id: post-training
   term: Post-training

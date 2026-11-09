@@ -1,0 +1,171 @@
+---
+title: Fine-tuning and LoRA
+description:
+  Teach a finished model a new text without starting again. Tally it straight
+  in, keep it on a separate adapter sheet you can turn up or take off, then
+  squeeze the adapter into a few strips of numbers, the way LoRA does.
+order: 10
+audience: years 9 and up
+duration: 40-50 min
+bases: [grid]
+status: experimental
+topic: shaping-behaviour
+keyIdea:
+  Fine-tuning is a little more training on top of a finished model. Keep the
+  change on its own sheet and you can scale it, swap it or remove it; squeeze it
+  into strips and it gets tiny, at the cost of blending the new patterns
+  together.
+---
+
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
+import LmGrid from "../../components/LmGrid.astro";
+
+Giving a language model a new job doesn't mean building a new one. You take a finished model and train it a little more on the new material, which is called <GlossaryTerm id="fine-tuning">fine-tuning</GlossaryTerm>. This module does it three ways on the same model, each cheaper than the last: tally the new text straight into the grid, keep it on a separate sheet, then shrink that sheet down to a few strips of numbers. The last one is <GlossaryTerm id="lora">LoRA</GlossaryTerm>, which is how most people customise a model today.
+
+![](../../assets/images/hero-fine-tuning.avif)
+
+## You will need
+
+- a trained grid to use as the <GlossaryTerm id="base-model">base model</GlossaryTerm>: the model of _The magpie's nest_ from [Beam Search](/modules/beam-search/) for the worked example, or your own grid from [Training](/modules/training/)
+- a short new text with a different subject: _The owl and the moon_ below, or your own
+- a blank [grid template](https://pdf.llmsunplugged.org/worksheets/grid.pdf) for the adapter sheet, plus a strip of paper or two
+- a d10 (or similar), plus pen and paper, as per [Generation](/modules/generation/)
+
+## Your goal
+
+Shift a trained model toward a new text three ways and compare what each one costs and what it writes. Stretch goal: squeeze an adapter of your own into strips and count how many numbers you saved.
+
+## Key idea
+
+Training on a new text adds tallies to a model you already have. If you write those tallies on a separate sheet instead of into the grid, you get an _adapter_: you add it on when you generate, turn it up or down, swap it for another, or take it off and have the original model back. A LoRA adapter goes one step further and stores the sheet as a few pairs of strips, which is far smaller but can't keep every pattern apart.
+
+## The base model and the new text
+
+The base model is _The magpie's nest_. Its full table is in [Beam Search](/modules/beam-search/); this page only needs a few of its rows. Here's the `the` row:
+
+| word  | total | followed by                                                |
+| ----- | ----- | ---------------------------------------------------------- |
+| `the` | 17    | `magpie` 6, `nest` 4, `cat` 2, `rain` 2, `tree` 2, `sun` 1 |
+
+The new text is a short story written for this module:
+
+> The owl flies to the moon. The moon sets. The owl sits in the tree. The owl
+> sings. The owl sleeps in the tree.
+
+Its tallies on their own grid:
+
+<LmGrid tokens="the owl flies to the moon . the moon sets . the owl sits in the tree . the owl sings . the owl sleeps in the tree ." />
+
+This is the adapter sheet. Two words are new to the magpie's model, `owl` and `moon`, so the base grid needs a row and a column for each before anything can be added to it.
+
+## 1. Fine-tune in place
+
+Tally the owl story straight into the base grid, as in [Training](/modules/training/). The `the` row becomes:
+
+| word  | total | followed by                                                                   |
+| ----- | ----- | ----------------------------------------------------------------------------- |
+| `the` | 25    | `magpie` 6, `nest` 4, `owl` 4, `tree` 4, `cat` 2, `moon` 2, `rain` 2, `sun` 1 |
+
+and the new `owl` and `moon` rows come straight from the adapter sheet: `owl` is followed by `flies`, `sits`, `sings` or `sleeps` (1 each), and `moon` by `.` or `sets` (1 each).
+
+Generate a few sentences. Most still sound like the magpie, but now and then the owl turns up, sometimes in a sentence neither story contains, such as "The owl sits in the nest." (`owl → sits` came from the owl story and `the → nest` from the magpie's.)
+
+This is the most thorough of the three ways, and the one you can't undo. Once the tallies are in, nothing on the grid says which ones came from the owl.
+
+## 2. Keep it on an adapter sheet
+
+Start again from the base grid and leave it alone. The owl story's tallies stay on their own sheet, with the same headers as the base grid. To generate:
+
+1. Find the current word's row on the base grid.
+2. Find its row on the adapter sheet, if it has one.
+3. Add the two rows together, cell by cell, and roll on the combined counts.
+
+At full strength this gives exactly the in-place model from step 1. The difference is what else you can do with a separate sheet:
+
+- **Scale it.** Count every adapter tally three times, and the `the` row becomes `owl` 12, `tree` 8, `moon` 6, `magpie` 6, `nest` 4, `cat` 2, `rain` 2, `sun` 1 (41 in total), so `owl` or `moon` comes up nearly half the time. Count it zero times and you have the magpie back. To make it gentler than full strength, count every _base_ tally twice instead.
+- **Swap it.** Tally a different story on a different sheet and use that instead.
+- **Stack two.** Add both sheets to the base row. Turn each one down a bit, or the base gets drowned out.
+- **Fold it in.** Copy the adapter's tallies into the grid when you're sure you want them for good. That's step 1 again.
+
+The scale is the same knob as the strength slider on the image-generator LoRAs people download and share.
+
+## 3. Squeeze it into strips
+
+An adapter sheet the size of the base grid is a lot of paper for five sentences. Most of it is either empty or a copy of something the base already knows: the magpie's grid already has `. → the`, `to → the`, `in → the`, `flies → to`, `sits → in`, `sleeps → in`, `sings → .`, `sets → .`, `tree → .` and `the → tree`. What's actually new is two things: after `the` comes something from the night (`owl` or `moon`), and after one of those comes something it does.
+
+A LoRA adapter stores each pattern like that as a pair of strips:
+
+- a **when** strip down the side, with a number for each current word that the pattern applies to
+- a **what** strip along the top, with a number for each next word it pushes toward
+
+The adapter's count for a cell is its _when_ number times its _what_ number. Each pair of strips is one pattern, and the number of pairs is the adapter's <GlossaryTerm id="rank">rank</GlossaryTerm>.
+
+**Pair A: after `the`, something from the night.**
+
+- when: `the` 1
+- what: `owl` 4, `moon` 2
+
+**Pair B: after something from the night, something it does.**
+
+- when: `owl` 1, `moon` 1
+- what: `flies` 1, `sits` 1, `sings` 1, `sleeps` 1, `sets` 1
+
+Pair A gives `the → owl` 4 and `the → moon` 2, exactly as on the adapter sheet. Pair B multiplies out to a little grid of its own:
+
+|        | `flies` | `sits` | `sings` | `sleeps` | `sets` |
+| ------ | ------- | ------ | ------- | -------- | ------ |
+| `owl`  | 1       | 1      | 1       | 1        | 1      |
+| `moon` | 1       | 1      | 1       | 1        | 1      |
+
+That's close to the sheet but not the same. Pair B gives `owl` and `moon` the same row, so the moon can now fly, sit, sing and sleep, the owl can set, and `moon → .` has gone. The strips have kept "night things do things" and lost which night thing does what.
+
+To generate, read the current word's base row, then look the word up in each _when_ strip. Wherever its number isn't zero, multiply it by every number in that pair's _what_ strip and add the results to the row. Then roll as usual.
+
+From `the`, pair A puts `moon` in the running; from `moon`, pair B is the whole row. So the strips can write "The moon sings." That sentence is in neither story, and the adapter sheet could never produce it.
+
+The strips are much smaller than the sheet. The adapter sheet for the magpie and the owl has 34 words down the side and 34 along the top, which is 1,156 cells. Pairs A and B written out in full are four strips of 34, so 136 numbers, and only ten of them aren't zero.
+
+Two pairs is the fewest that keeps the patterns apart. Squeeze both into a single pair: when `the` 1, `owl` 1, `moon` 1; what `owl` 4, `moon` 2, `flies` 1, `sits` 1, `sings` 1, `sleeps` 1, `sets` 1. Now every one of those rows gets the same push, and the model writes "the sits" and "owl owl". One pair of strips can only hold one pattern.
+
+## Going further: one strip only
+
+Throw away the _when_ strip and keep only a _what_ strip, say `owl` 1, `moon` 1, added to every row whatever the current word is. It's the cheapest adapter of all, two numbers, and the bluntest: it writes "It owl" and "the magpie moon". Some model services let programmers set exactly this kind of everywhere-nudge on chosen words, often called a logit bias.
+
+## Your turn
+
+1. Take your own grid from [Training](/modules/training/) as the base, and write or find five short sentences on a different subject (a recipe, a sports report, a song).
+2. Tally them onto a separate sheet with the same headers, adding a row and a column for any new words on both.
+3. Generate a few sentences with the adapter at full strength and at three times. Then take it off and check you have your base model back.
+4. Squeeze the adapter into strips. Cross out every tally the base grid already has. Group the rows that are left by what they push toward; each group is one pair, with the group's rows on the _when_ strip and what they push toward on the _what_ strip.
+5. Generate with the strips, and count how many numbers you're storing compared with the adapter sheet.
+
+## Instructor notes
+
+### Discussion questions
+
+- the fine-tuned model wrote "The owl sits in the nest." Neither story contains that sentence, so where did it come from?
+- when would you rather fine-tune in place, and when would you keep an adapter sheet?
+- how far do you have to turn the adapter up before the model stops sounding like the magpie at all?
+- the strips wrote "The moon sings." Is that a mistake, or has the model learned something?
+- why can't one pair of strips hold both patterns? How many pairs would it take to store the owl story's adapter exactly?
+- you can make an image LoRA of a person from about twenty photos. What could go wrong, and who should get a say?
+- if a company sells access to its model, why might it let customers make adapters instead of changing the model itself?
+
+### Troubleshooting
+
+- **"The new text has words the base grid doesn't."** Add a row and a column for each, on both the grid and the adapter sheet, so the two always have the same headers. A word that has no row in the base gets its row entirely from the adapter.
+- **"We generated a word that has no row anywhere."** Write `.` and start a new sentence. In the worked example this can't happen, because every word the strips can produce already has a row in the base.
+- **"The scaled totals are awkward to roll."** Roll as in [Weighted Randomness](/modules/weighted-randomness/), with a bigger die or two dice if the total is large.
+- **"We can't find any patterns to put on strips."** The new text is probably too much like the base. Pick something on a different subject, so the new tallies point at new words.
+
+### Connection to current LLMs
+
+Every step that turns a <GlossaryTerm id="base-model">base model</GlossaryTerm> into a <GlossaryTerm id="chatbot">chatbot</GlossaryTerm> is fine-tuning: training on example conversations, then on human preferences (see [RLHF](/modules/rlhf/)), then reinforcement learning on problems with checkable answers. The model companies that publish their recipes, such as [Ai2 with Olmo 3](https://allenai.org/blog/olmo3), describe changing the whole model at each of those steps. That's step 1 on this page, at enormous scale.
+
+Adapters are what everyone else uses. [The paper that introduced LoRA](https://arxiv.org/abs/2106.09685) cut the number of numbers to train by 10,000 times for a model the size of GPT-3. Google's Gemini tuning service asks customers for an ["adapter size" of 1, 2, 4, 8 or 16](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/model-reference/tuning), which is the number of strip pairs. Apple lets app developers train adapters for the model on its phones, and [each adapter only works with the exact model version it was trained for](https://developer.apple.com/apple-intelligence/foundation-models-adapter/), just as your adapter sheet only makes sense on a grid with the same headers. Hobbyists train LoRAs on a single gaming graphics card, and in image generation a LoRA made from about twenty pictures of a character or an art style is something people share online, set to less than full strength and stack with others.
+
+[Thinking Machines found](https://thinkingmachines.ai/blog/lora/) that LoRA matches changing the whole model when the new training data is modest, and falls behind when there's more to learn than the strips have room for. For reinforcement learning, even a single pair was enough. An earlier study put the trade-off in its title, [LoRA learns less and forgets less](https://arxiv.org/abs/2405.09673): it picks up less of the new material than changing the whole model does, and keeps more of what the base could already do.
+
+A real LoRA's strips work the way yours do. One reads the current input and the other writes to the output, and each pair adds the product of the two. The differences are where they live and how they're found. A real model has adapters inside every layer, not one on the final grid, and their numbers are learned by the same training process as the rest of the model rather than read off a sheet by eye.
+
+Fine-tuning reaches further than the text it was trained on. Researchers fine-tuned models on a narrow task, writing insecure computer code, and [the models became misaligned on unrelated questions too](https://www.nature.com/articles/s41586-025-09937-5). [Ten well-chosen examples were enough to undo a model's safety training](https://arxiv.org/abs/2310.03693). The [Sycophancy](/modules/sycophancy/) module is a deliberately nasty adapter of the same kind.
