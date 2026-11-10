@@ -29,7 +29,7 @@ To give a language model a new job, you take a finished model and train it a lit
 - a trained grid to use as the <GlossaryTerm id="base-model">base model</GlossaryTerm>: the model of _The magpie's nest_ from [Beam Search](/modules/beam-search/) for the worked example, or your own grid from [Training](/modules/training/)
 - a short new text: _The kookaburra and the possum_ below, or your own
 - a blank [grid template](https://pdf.llmsunplugged.org/worksheets/grid.pdf) for the adapter sheet, plus a strip of paper or two
-- a d10 (or similar), plus pen and paper, as per [Generation](/modules/generation/)
+- a d20 and a d6, plus pen and paper, as per [Generation](/modules/generation/)
 
 ## Your goal
 
@@ -175,7 +175,7 @@ This is the data route to <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm
 
 - **"The new text has words the base grid doesn't."** Add a row and a column for each, on both the grid and the adapter sheet, so the two always have the same headers. A word that has no row in the base gets its row entirely from the adapter.
 - **"We generated a word that has no row anywhere."** Write `.` and start a new sentence. In the worked example this can't happen, because every word the strips can produce already has a row in the base.
-- **"The scaled totals are awkward to roll."** Roll as in [Weighted Randomness](/modules/weighted-randomness/), with a bigger die or two dice if the total is large.
+- **"The row total is bigger than the die."** Number the row's options by their counts, roll the d20 and roll again if it comes up higher than the total. Past 20, roll the d6 with the d20: on 1 or 2 add nothing, on 3 or 4 add 20, on 5 or 6 add 40. That covers every row on this page, the biggest being the `the` row with the adapter counted three times (47).
 - **"We can't find any patterns to put on strips."** The new text is probably too much like the base. Pick something on a different subject, so the new tallies point at new words.
 
 ### Connection to current LLMs

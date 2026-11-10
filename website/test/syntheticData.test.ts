@@ -39,6 +39,8 @@ function generate(m: Counts, r: () => number): string[] {
   return out;
 }
 
+const total = (sheet: Counts, w: string) => [...sheet.get(w)!.values()].reduce((a, b) => a + b, 0);
+
 const knows = (m: Counts) =>
   [...m.values()].filter((row) => [...row.values()].some((n) => n > 0)).length;
 const used = (text: string[]) => new Set(text).size;
@@ -107,6 +109,23 @@ describe("Synthetic Data module", () => {
   it("the accumulate chain never loses a word and barely changes the words it uses", () => {
     for (const [k] of accumulate) expect(k).toBe(new Set(STORY).size);
     expect(accumulate[0][1] - accumulate.at(-1)![1]).toBeLessThan(2);
+  });
+
+  it("the accumulate sheet's big rows pass 20 after link A and stay within a d20 and a d6", () => {
+    const r = rng(22);
+    for (let t = 0; t < 500; t++) {
+      const sheet = train(STORY);
+      for (let link = 0; link < LINKS; link++) {
+        tallyInto(sheet, [".", ...generate(sheet, r)]);
+        if (link === 0)
+          for (const w of [".", "the"]) expect(total(sheet, w), w).toBeGreaterThan(20);
+      }
+      for (const w of sheet.keys()) expect(total(sheet, w), w).toBeLessThanOrEqual(60);
+    }
+    expect(MODULE).toContain(
+      "The accumulate sheet's `.` and `the` rows pass 20 as soon as link A has tallied its words",
+    );
+    expect(MODULE).toContain("on 1 or 2 add nothing, on 3 or 4 add 20, on 5 or 6 add 40");
   });
 
   it("the words lost first appeared once in the story", () => {
