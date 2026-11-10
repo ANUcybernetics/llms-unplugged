@@ -157,8 +157,7 @@ act in the world:
 - **chaining**: real agents make many tool calls in sequence, planning and
   adjusting as results come in
 
-The key insight: the model doesn't know anything the tool returns---it only
-learns when to ask. A real model does differ in one way: it reads the tool's
+The model doesn't know anything the tool returns, only when to ask. A real model does differ in one way: it reads the tool's
 result and conditions on it, whereas your bigram carries on from the punctuation
 as if the reply never happened, because one word of <GlossaryTerm id="context-window">context</GlossaryTerm> can't hold it.
 Everything the friend contributed is in the transcript, but not in the model's

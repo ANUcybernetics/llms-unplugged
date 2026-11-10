@@ -84,12 +84,12 @@ sheet that can be turned up or taken off. Then comes the nasty adapter: three
 lines of flattery, tallied onto their own sheet. Each group counts the adapter
 once, three times or nine times and counts the flattering sentences in ten, and
 the board shows the count climbing with the dose. Nobody wrote a rule saying
-"be agreeable": the data said it, and the counts did the rest. Skip the strips
+"be agreeable"; the flattering text in the data was enough. Skip the strips
 (the LoRA part) if time is short.
 
 **Rewards** gives every group the same goal, sentences about the magpie, and one of two ways to judge them. Half the groups rank their sentences as a panel; the other half check them against a rule card. Three rounds later the rule-card groups pass their check far more often, and much of what passes is nonsense, which is <GlossaryTerm id="reward-hacking">reward hacking</GlossaryTerm>. Then the whole room votes thumbs up or down on what a model says about them, and watches it learn to flatter: the route to <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm> that runs through rewards instead of data.
 
-**<GlossaryTerm id="synthetic-data">Synthetic Data</GlossaryTerm>** runs two kinds of relay at once. Every group starts a chain and passes it one group along at each link, so nobody waits. In a replace chain, each group trains a fresh model on the last group's output and passes on its own; in an accumulate chain, every group adds its output to the same sheet, on top of the story's tallies. Keep the counts for every chain on butchers paper. The replace chains forget words at every link, which is <GlossaryTerm id="model-collapse">model collapse</GlossaryTerm>, and the accumulate chains don't.
+**<GlossaryTerm id="synthetic-data">Synthetic Data</GlossaryTerm>** runs two kinds of relay at once. Every group starts a chain and passes it one group along at each link, so nobody waits. In a replace chain, each group trains a fresh model on the last group's output and passes on its own; in an accumulate chain, every group adds its output to the same sheet, on top of the story's tallies. Keep the counts for every chain on butchers paper. The replace chains forget words at every link, which is <GlossaryTerm id="model-collapse">model collapse</GlossaryTerm>; the accumulate chains lose none.
 
 The close pulls the three together: three mechanisms, and in every case a person
 somewhere chose the data, the reward or the shortcut.

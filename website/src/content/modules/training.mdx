@@ -107,8 +107,7 @@ word together with the word it follows in the training text. The trick: if
 `spot` follows `see` 40% of the time in the training text, then 40% of the
 cutouts with `see` as the previous word will have `spot` as the next word.
 Whichever matching cutout your eye lands on, you've sampled in proportion to
-the original distribution---no dice, no probability tables, the spread is
-doing the maths.
+the original distribution, with no dice or probability tables.
 
 </Variant>
 
@@ -266,7 +265,7 @@ activity itself.
 <Variant is="cutouts">
 
 - **"Some cutouts are duplicates---is that a mistake?"** No---repeated cutouts
-  are exactly the point. If `see→spot` appears twice in the training text, you
+  are expected. If `see→spot` appears twice in the training text, you
   should see two `see→spot` cutouts on the table. The repetition is what makes
   common pairs easier to spot during generation.
 
@@ -282,9 +281,9 @@ language models:
   computers
 - **storage**: your paper model vs billions of <GlossaryTerm id="parameters">parameters</GlossaryTerm> in memory
 
-The key insight: "training" a language model means counting patterns in text.
-Your hand-built model contains the same type of information that current LLMs
-store---at a vastly smaller scale.
+"Training" a language model means counting patterns in text. Your hand-built
+model contains the same type of information that current LLMs store, at a
+vastly smaller scale.
 
 <Variant is="cutouts">
 

@@ -3,8 +3,7 @@ title: Synthetic Data
 description:
   Run two relays side by side. In one, each link trains a fresh model on the
   last link's output; in the other, everyone adds their output to the same
-  sheet, on top of the real story. One chain forgets its words and the other
-  doesn't.
+  sheet, on top of the real story. Only the first chain forgets its words.
 order: 12
 audience: years 9 and up
 duration: 30-40 min
@@ -124,7 +123,7 @@ part of training, used carefully:
 - **generate and filter**: produce a lot of attempts and keep only those a checker, a verifier or a person accepts, as in the filter variation above
 - **written to order**: [TinyStories](https://arxiv.org/abs/2305.07759) is a corpus of simple stories written by a larger model, and small models trained on it write fluent English at sizes where models trained on web text don't. There's a TinyStories volume in the [LLMs Unplugged Library](/library/), so you can roll dice against a model trained on synthetic data
 
-Collapse is still a live concern, because of provenance. A growing share of the text on the web is model output, most of it unlabelled, so anyone training on scraped text today trains on some of it whether they mean to or not. Keeping track of where training text came from, and keeping plenty of human-written text in the mix, is the accumulate chain's lesson at scale.
+Collapse is still a live concern. A growing share of the text on the web is model output, most of it unlabelled, so anyone training on scraped text today trains on some of it whether they mean to or not. Keeping track of where training text came from, and keeping plenty of human-written text in the mix, is what the accumulate chain does.
 
 <Callout type="info" title="How this differs from a neural model">
 

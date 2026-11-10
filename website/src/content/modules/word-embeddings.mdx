@@ -20,7 +20,7 @@ import EmbeddingWidget from "../../components/widgets/EmbeddingWidget.svelte";
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 import LmGrid from "../../components/LmGrid.astro";
 
-Your bigram <GlossaryTerm id="grid">grid</GlossaryTerm> already holds an opinion about every word in it: the row says
+Your bigram <GlossaryTerm id="grid">grid</GlossaryTerm> already describes every word in it: the row says
 what tends to follow that word, the column says what tends to come before it.
 Two words with much the same row and much the same column are, as far as the
 model is concerned, the same kind of word. This module finds a pair like that
@@ -61,8 +61,8 @@ think behave most alike:
 - compare **columns**: which two words follow the same words?
 
 A twin pair matches on both. Write your guess down before you go any further.
-Committing to a prediction is what makes the next two steps worth doing; an
-unwritten guess has a way of becoming whatever the answer turns out to be.
+Committing to a prediction is what makes the next two steps worth doing,
+because an unwritten guess tends to become whatever the answer turns out to be.
 
 ## The swap test (5 min)
 
@@ -164,7 +164,7 @@ count them, which is the grid again, the long way round.
 
 The idea you just used by hand has a name and a date. The linguist J.R. Firth
 put it in 1957 as "you shall know a word by the company it keeps", and it's
-still the idea behind every embedding in every modern model: words used in the
+still the idea behind modern embeddings: words used in the
 same contexts tend to mean similar things.
 
 - **counts versus learned vectors**: your row is a count vector---one number per
@@ -189,6 +189,3 @@ same contexts tend to mean similar things.
 - **modern embeddings are contextual**: in an <GlossaryTerm id="llm">LLM</GlossaryTerm> a word's vector is computed
   from the sentence it appears in, so the `bank` of a river and the `bank` that
   holds your money get different vectors.
-
-What survives all of that is the move you made on paper: turn a word into a list
-of numbers, and "these two behave alike" becomes something you can measure.

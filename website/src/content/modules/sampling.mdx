@@ -19,10 +19,10 @@ import Callout from "../../components/Callout.astro";
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
 When generating text, your model offers several options for the next word.
-Sampling strategies decide which one to pick---and the strategy you choose can
-change the character of the output dramatically, without changing the
-underlying model at all. The same grid or cutouts spread can produce flat prose,
-structured poetry, or pure nonsense, depending entirely on how you sample.
+Sampling strategies decide which one to pick, and the strategy you choose can
+change the character of the output without changing the model. The same grid or
+cutouts spread can produce flat prose, structured poetry, or pure nonsense,
+depending on how you sample.
 
 ![](../../assets/images/hero-sampling.avif)
 
@@ -41,12 +41,11 @@ perform in the [poetry slam](#poetry-slam).
 ## Key idea
 
 Sampling choices---<GlossaryTerm id="temperature">temperature</GlossaryTerm> and <GlossaryTerm id="truncation-strategy">truncation</GlossaryTerm>---can make the same model sound
-cautious, wild, repetitive, or inventive. Tweaking the sampler changes the
-output without retraining anything.
+cautious, wild, repetitive, or inventive.
 
 ## Temperature
 
-Temperature is a dial on how much the model respects its own counts. Turned
+Temperature is a dial on how closely the model follows its own counts. Turned
 down, it sticks to the favourites; turned up, it treats every option as roughly
 equal. A version you can run by hand has four settings:
 
@@ -63,12 +62,12 @@ Example with counts `spot` (4), `run` (2), `jump` (1), `.` (1):
 - cold → `spot`, every time
 - normal → `spot` 4 in 8, `run` 2 in 8, `jump` and `.` 1 in 8 each
 - hot → counts become 5, 3, 2, 2, so `spot` 5 in 12, `run` 3 in 12, `jump` and
-  `.` 2 in 12 each: the rare words have doubled their chances
+  `.` 2 in 12 each, so the rare words have gone from 1 in 8 to 1 in 6
 - boiling → 1 in 4 each
 
 Turn the dial up further by adding 2 (or 3) to every count instead of 1; the
 bigger the number you add, the closer you get to boiling. Dividing every count
-by the same number won't do it: that leaves the odds exactly where they were.
+by the same number won't do it, because that leaves the odds exactly where they were.
 
 ## Truncation strategies
 
@@ -155,7 +154,7 @@ length (short mode) or above it (long mode). If nothing qualifies, re-roll.
 ## Poetry slam
 
 This uses everything above: design a poetry model, hand it to another pair, and
-see what they make of it. Allow about an hour---20 minutes to design, 10 to
+see what they make of it. Allow about an hour: 20 minutes to design, 10 to
 prepare, 15 for the slam, 5 to talk about it.
 
 ### Design your model (20 min)
@@ -206,8 +205,7 @@ input to get the output you want, which is what a model card is).
 
 The model card plus the other pair's performance is the completion task. A model
 that produced something strange has still succeeded, as long as the recipe was
-followable. The strangeness belongs to the model, and the pair performing it
-have done their job.
+followable, and the pair performing it have done their job.
 
 </Callout>
 
@@ -251,15 +249,11 @@ Current <GlossaryTerm id="llm">LLMs</GlossaryTerm> use these same mechanisms, th
   presence penalties all prune options before sampling.
 - **Truncation techniques in this module:** greedy, haiku, non-sequitur,
   no-repeat, alliteration, top-k, alphabet chain, and short/long are designed
-  for dice-based sampling but embody the same idea---changing which tokens are
+  for dice-based sampling but work on the same idea, changing which tokens are
   eligible before you roll. Top-k directly mirrors the top-k parameter in LLM
   APIs.
 
-Your paper model demonstrates that "creativity" in AI comes from two controls:
-adjusting temperature (<GlossaryTerm id="probability-distribution">probability distribution</GlossaryTerm> shape) and applying truncation
-strategies (which tokens to exclude). The same trained model can produce
-scholarly essays (low temperature, strict truncation) or wild poetry (high
-temperature, constraint-based truncation) just by changing these parameters. The
-key insight: generation control is as important as training data. Creative
-output comes not from the model itself, but from how you control temperature and
-which tokens you truncate from consideration.
+Your paper model has two controls: temperature (the shape of the <GlossaryTerm id="probability-distribution">probability distribution</GlossaryTerm>) and truncation
+(which tokens to exclude). The same trained model can produce scholarly essays
+(low temperature, strict truncation) or wild poetry (high temperature,
+constraint-based truncation) just by changing these parameters.

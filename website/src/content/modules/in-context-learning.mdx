@@ -57,7 +57,7 @@ word.
 - **Memory**: give recently-used words a small boost. This keeps a story about a
   dog being about the dog.
 
-The model never retrains. The "learning" lives in the context, not the counts.
+The model never retrains, and the "learning" lives in the context.
 
 ## Part 1: finish the pattern
 
@@ -82,14 +82,14 @@ rule off and generate from the base model alone: the pattern disappears.
 2. **Scan back** through your written output to the most recent earlier time
    that same word appeared.
 3. If you find one, the word that **followed** it is your _induction candidate_.
-4. **Blend with the base model**: roll a die---mostly copy the candidate,
-   occasionally generate from the model as normal. If there's no earlier
+4. **Blend with the base model**: roll a die, and mostly copy the candidate
+   but occasionally generate from the model as normal. If there's no earlier
    occurrence, there's no candidate; just generate.
 5. Write the word down and repeat.
 
 <Callout type="info" title="Falling back to the model">
 
-If you _always_ copy, the model just replays whatever pattern it's in---its own
+If you _always_ copy, the model just replays whatever pattern it's in, which is its own
 way of getting stuck on rails. Keeping a chance of falling back to the base
 model lets it break out and start something new.
 
@@ -101,8 +101,7 @@ matching cutouts, or look up the booklet entry.
 
 ## Part 2: stay on topic
 
-The induction rule is exact: the word matches or it doesn't. The memory rule is
-softer. Mention a dog, and two words later a bigram has already forgotten. Real
+The induction rule needs an exact match. The memory rule is softer. Mention a dog, and two words later a bigram has already forgotten. Real
 language reuses what came before, so we keep a running list of recent words and
 tilt the odds toward them.
 
@@ -110,7 +109,7 @@ tilt the odds toward them.
 
 1. **Keep a memory list** of the last eight or so words you've written
    (underline them, or jot them on a sticky note).
-2. **Find the model's candidates** for the next word as you normally would---the
+2. **Find the model's candidates** for the next word as you normally would: the
    row in your grid, the matching cutouts, the booklet entry.
 3. **Boost any candidate that's also in memory** (see below for how, per base).
 4. **Pick** from the boosted candidates, write the word down, add it to memory,
@@ -188,7 +187,7 @@ This module is a hands-on version of three things modern models do.
 **Induction heads.** These are an identified circuit inside <GlossaryTerm id="transformer">transformers</GlossaryTerm>, and
 one of the main mechanisms behind in-context learning:
 an <GlossaryTerm id="induction-head">induction head</GlossaryTerm> finds an earlier
-place where the current token appeared and copies what came after it---exactly
+place where the current token appeared and copies what came after it, which is
 your scan-back-and-copy rule. It's why few-shot prompting works: give an <GlossaryTerm id="llm">LLM</GlossaryTerm> a
 few "input → output" examples and it continues the pattern. Researchers detect
 these circuits by feeding a model a random sequence repeated twice and checking
@@ -199,7 +198,7 @@ behaviour is the same idea.
 
 **Attention.** A bigram looks back one word; your memory looks back over
 everything you've generated and lets it influence the next choice. That's the
-heart of
+idea behind
 the <GlossaryTerm id="attention-mechanism">attention mechanism</GlossaryTerm>: when
 predicting the next word, the model reaches back across the whole context and
 weights what it finds. Your memory is a crude, fixed version (boost recent

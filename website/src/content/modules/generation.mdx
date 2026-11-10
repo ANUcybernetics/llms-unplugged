@@ -108,10 +108,10 @@ yields fluent text.
 
 The chain grows like dominoes: write a word, find a <GlossaryTerm id="cutouts">cutout</GlossaryTerm> whose previous-word
 box matches it, write that cutout's next word, then hunt for the next match.
-The spread already encodes the weights---common previous words appear on more
+The spread already encodes the weights: common previous words appear on more
 cutouts, and your eye naturally lands on next words that appear more often. So
 scanning for matching cutouts and picking one visually _is_ weighted random
-sampling---no dice required.
+sampling, with no dice required.
 
 </Variant>
 
@@ -134,19 +134,19 @@ sampling---no dice required.
 It's a colour-matching game: the colour of the word you just wrote is the
 colour of the previous-word box you look for next.
 
-1. **Pick a starting word**---choose any word that appears as a previous word
+1. **Pick a starting word**: choose any word that appears as a previous word
    on at least one cutout
-2. **Find candidates**---scan the spread for cutouts whose previous-word box
+2. **Find candidates**: scan the spread for cutouts whose previous-word box
    matches your current word's colour, then verify the word itself matches
    before committing (two unrelated words can occasionally share a colour)
-3. **Pick one cutout**---visually pick any matching cutout (your eye will tend
+3. **Pick one cutout**: visually pick any matching cutout (your eye will tend
    to land on cutouts whose next words are common, because there are more of
-   them---that's weighted sampling for free)
+   them, which is weighted sampling for free)
 4. **Write down the next word** from the cutout you picked
 5. **Put the cutout back** in the spread (this matters: removing it would
    change the model's distribution for next time)
-6. The word you just wrote becomes your new current word---go back to step 2
-7. **Keep going** as long as you like---if no cutouts match your current
+6. The word you just wrote becomes your new current word, so go back to step 2
+7. **Keep going** as long as you like; if no cutouts match your current
    word, just pick a new starting word and carry on. Stop when you've
    generated enough text
 
@@ -184,22 +184,22 @@ Using the cutouts spread from the example in [Training](/modules/training/):
 
 <LmCutouts tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
 
-- start with `see`---write it down
+- start with `see` and write it down
 - scan for cutouts with `see` as the previous word (look for boxes in `see`'s
-  colour)---both have `spot` as the next word, so pick one and write down `spot`
-- scan for `spot` cutouts---4 matches (1 `run`, 1 `jump`, 2 `,`). Pick
+  colour); both have `spot` as the next word, so pick one and write down `spot`
+- scan for `spot` cutouts: 4 matches (1 `run`, 1 `jump`, 2 `,`). Pick
   visually. Your eye is more likely to land on a comma because there are two
-  of them, but for variety let's say `run`---write it down
-- scan for `run` cutouts---3 matches (2 `.`, 1 `,`). Two-thirds chance of
-  `.`---let's say `.`---write it down
-- scan for `.` cutouts---3 matches (one each of `see`, `run`, `jump`). Let's
-  say `see`---write it down
-- back to scanning for `see` cutouts---both are `spot`, so write down `spot`... and so on
+  of them, but for variety let's say `run`; write it down
+- scan for `run` cutouts: 3 matches (2 `.`, 1 `,`). Two-thirds chance of
+  `.`; let's say `.` and write it down
+- scan for `.` cutouts: 3 matches (one each of `see`, `run`, `jump`). Let's
+  say `see` and write it down
+- back to scanning for `see` cutouts: both are `spot`, so write down `spot`... and so on
 
 After the above steps, the generated text is _"see spot run. see spot"_
 
 Notice how the randomness comes from your eye landing somewhere on the
-spread---you don't need dice. Previous words with more cutouts of the same
+spread, so you don't need dice. Previous words with more cutouts of the same
 next word are more likely to produce that word: both `see` cutouts have
 `spot` as the next word, so generation from `see` always produces `spot`.
 
@@ -257,13 +257,13 @@ perform it by hand.
 - **"Every row only has one tally mark---there's nothing to roll for."** If the
   group didn't get very far in [Training](/modules/training/) and no row has more
   than one tally mark, the generation algorithm won't be very
-  interesting---there will only ever be one option for the next word and they'll
+  interesting: there will only ever be one option for the next word and they'll
   be stuck on rails. In this case, either encourage them to go back and do a bit
   more training, or just have them add some extra tally marks to the grid
-  wherever they like. This isn't as much like cheating as it might seem---it's
+  wherever they like. This isn't as much like cheating as it might seem; it's
   really just an example of using [Synthetic Data](/modules/synthetic-data/).
 - **"I landed on a word that doesn't have its own row."** This can happen if a
-  word only ever appeared as the _last_ word in the training text---it has a
+  word only ever appeared as the _last_ word in the training text, so it has a
   column (other words lead to it) but no row (it never leads to anything). Just
   pick any other word that does have a row and continue from there.
 - **"We're stuck in a loop."** With small models it's common to bounce between
@@ -279,11 +279,11 @@ perform it by hand.
   random about this."** If the spread is small and each previous word only
   matches a single cutout, generation will feel deterministic. Either go back
   and train on more text, or add a few extra cutouts (writing them out by
-  hand is fine). This isn't really cheating---it's an example of
+  hand is fine). This isn't really cheating; it's an example of
   [Synthetic Data](/modules/synthetic-data/).
 - **"I picked a next word that doesn't appear as a previous word anywhere on
   the table."** This can happen if a word only ever appeared as the _last_
-  word in the training text---it shows up as a next word but never as a
+  word in the training text, so it shows up as a next word but never as a
   previous one. Just pick a different starting word that does appear on the
   spread and continue from there.
 - **"We keep going back and forth between the same two words."** With small
@@ -302,16 +302,13 @@ This <GlossaryTerm id="generation">generation</GlossaryTerm> process is identica
   your dice or cutouts spread)
 - **<GlossaryTerm id="probability-distribution">probability distribution</GlossaryTerm>**: <GlossaryTerm id="neural-network">neural network</GlossaryTerm> outputs probabilities for all
   50,000+ possible next <GlossaryTerm id="token">tokens</GlossaryTerm>
-- **no planning**: neither looks ahead---just picks the next word
+- **no planning**: neither looks ahead, it just picks the next word
 - **variability**: same <GlossaryTerm id="prompt">prompt</GlossaryTerm> can produce different outputs due to randomness
 
-The fact: sophisticated AI responses emerge from this simple process repeated
-thousands of times. Your paper model demonstrates that language generation is
-fundamentally about sampling from learned probability distributions. The
-randomness is why LLMs give different responses to the same prompt and why
-language models can be creative rather than repetitive. These physical sampling
-methods demonstrate the exact mathematical operation happening billions of times
-per second inside modern language models.
+Sophisticated AI responses emerge from this simple process repeated thousands
+of times. Your paper model shows that language generation is sampling from
+learned probability distributions, and the randomness is why LLMs give
+different responses to the same prompt.
 
 <Variant is="grid">
 
