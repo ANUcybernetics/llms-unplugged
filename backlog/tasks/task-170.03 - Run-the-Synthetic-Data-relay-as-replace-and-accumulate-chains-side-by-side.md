@@ -4,8 +4,8 @@ title: Run the Synthetic Data relay as replace and accumulate chains side by sid
 status: To Do
 assignee: []
 created_date: '2026-11-09T23:50:00Z'
-updated_date: '2026-11-10T03:47:00Z'
-due_date: '2026-11-28'
+updated_date: '2026-11-10T03:58:00Z'
+due_date: '2026-11-27'
 labels:
   - website
   - modules
@@ -48,5 +48,5 @@ Set the module's order so it sorts after Fine-tuning and the rewards module in S
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-Timing (Nov 2026): this rewrites the Synthetic Data page in place, and James Prather teaches it in the week of 30 Nov. Land it before then only if he has said he wants the new version; otherwise land it after 4 Dec, and TASK-171 fixes the current page for his week.
+Timing (Nov 2026): this rewrites the Synthetic Data page in place, and James Prather teaches it in the week of 30 Nov; aim to land it by 27 Nov (his time). If it isn't ready, TASK-171 fixes the current page for his week and this lands after 4 Dec.
 <!-- SECTION:NOTES:END -->

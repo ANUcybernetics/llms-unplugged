@@ -6,8 +6,8 @@ title: >-
 status: To Do
 assignee: []
 created_date: '2026-11-09T23:50:00Z'
-updated_date: '2026-11-10T03:47:00Z'
-due_date: '2026-11-14'
+updated_date: '2026-11-10T03:58:00Z'
+due_date: '2026-11-13'
 labels:
   - website
   - modules
@@ -49,5 +49,5 @@ URL: /modules/rewards/. The old RLHF URLs redirect there once TASK-170.04 retire
 ## Implementation Notes
 
 <!-- SECTION:NOTES:BEGIN -->
-Timing (Nov 2026): James Prather runs this in his RLHF week (16 Nov, US central time), so the core (human panel vs rule card, with the leash) needs to be live by 14 Nov Canberra time, and the thumbs-up round by 21 Nov for his Sycophancy week. If the rule card's gap doesn't produce a reliable hack in simulation by 13 Nov, don't ship the core for his week: he runs the RLHF page with TASK-171's fixes, and this module lands after his semester. Publish it at /modules/rewards/ alongside the current RLHF page, which stays unchanged at /modules/rlhf/ until TASK-170.04 redirects it.
+Timing (Nov 2026): James Prather runs this in his RLHF week (16 Nov, US central time), so the core (human panel vs rule card, with the leash) needs to be live by 13 Nov his time (14 Nov Canberra), and the thumbs-up round by 20 Nov for his Sycophancy week. If the rule card's gap doesn't produce a reliable hack in simulation by then, don't ship the core for his week: TASK-171 fixes the RLHF page for him, and this module lands after his semester. Publish it at /modules/rewards/ alongside the current RLHF page, which stays at /modules/rlhf/ until TASK-170.04 redirects it.
 <!-- SECTION:NOTES:END -->

@@ -6,7 +6,7 @@ title: >-
 status: To Do
 assignee: []
 created_date: '2026-11-09T23:50:00Z'
-updated_date: '2026-11-10T03:49:00Z'
+updated_date: '2026-11-10T03:58:00Z'
 labels:
   - website
   - modules
@@ -25,9 +25,9 @@ The three shaping-behaviour modules (RLHF, Sycophancy, Synthetic Data) have had 
 
 Proposed shape (Nov 2026): three modules become two plus a fold, as the subtasks describe. Shaping behaviour ends up as Sampling, Beam Search, Fine-tuning and LoRA (with the sycophancy adapter), the rewards module, and Synthetic Data, and Shaping a model becomes the half-day lesson for Years 9 and up in place of Build, break, extend.
 
-Timing: James Prather (Abilene Christian University, Texas) teaches RLHF, Sycophancy and Synthetic Data from the live pages in the weeks of 16, 23 and 30 Nov 2026, and if the new versions are better his class should get them. So the work runs in two stages:
+Timing: James Prather (Abilene Christian University, Texas) teaches RLHF, Sycophancy and Synthetic Data in the weeks of 16, 23 and 30 Nov 2026, and his class should get the new versions. Only Sycophancy has been run with a class, so the current pages are no safer than their replacements. The work runs in two stages:
 
-- before each of his weeks, land the new version alongside the old page: TASK-171 fixes the current pages first (by 13 Nov), then the rewards module core by 14 Nov and its thumbs-up round by 21 Nov (170.01), Fine-tuning's sycophancy section by 21 Nov (170.02), and Synthetic Data by 28 Nov if he wants it (170.03). He chooses which version to run each week; anything not ready in time waits, and he uses the fixed current page
+- before each of his weeks, put the new version up alongside the old page: the rewards module core by 13 Nov (his time) and its thumbs-up round by 20 Nov (170.01), Fine-tuning's sycophancy section by 20 Nov (170.02), and Synthetic Data by 27 Nov (170.03). If one slips, TASK-171 fixes the current page for that week instead
 - after his semester (from 11 Dec), TASK-170.04 folds in his feedback and retires the old pages, Sycophancy and Build, break, extend
 
 Ledger forms of these activities depend on TASK-143; write the grid version first and describe the ledger (counters in/out of the cup) as an option.

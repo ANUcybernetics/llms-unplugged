@@ -4,8 +4,8 @@ title: Fold Sycophancy's training-data route into Fine-tuning as an adapter sect
 status: To Do
 assignee: []
 created_date: '2026-11-09T23:50:00Z'
-updated_date: '2026-11-10T03:47:00Z'
-due_date: '2026-11-21'
+updated_date: '2026-11-10T03:58:00Z'
+due_date: '2026-11-20'
 labels:
   - website
   - modules
