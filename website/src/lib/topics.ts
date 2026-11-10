@@ -38,5 +38,5 @@ export const topicDescriptions: Record<Topic, string> = {
   "shaping-behaviour":
     "Change what a model says without changing the mechanism: the sampler, the training data, the judges, and its own output.",
   "looking-inside":
-    "Two things a real model does that a bigram can't---learn from the page in front of it, and know that cat is like dog---run by hand.",
+    "Two things a real model does that a bigram can't—learn from the page in front of it, and know that cat is like dog—run by hand.",
 };

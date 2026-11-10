@@ -120,6 +120,27 @@ describe("Astro Build", () => {
     expect(bad, `Pages with bad <title>:\n${bad.join("\n")}`).toEqual([]);
   });
 
+  // Markdown turns `---` into an em dash, but frontmatter strings and .astro
+  // template text aren't Markdown: there it reaches the page as three hyphens
+  // unless the content schema's `prose` (or the author) converts it.
+  it("has no literal --- where an em dash was meant", () => {
+    const htmlFiles = globSync(join(DIST_DIR, "**/*.html"));
+    const bad: string[] = [];
+
+    for (const file of htmlFiles) {
+      const content = readFileSync(file, "utf-8")
+        .replace(/<(script|style|pre|code)\b[\s\S]*?<\/\1>/g, "")
+        .replace(/<!--[\s\S]*?-->/g, "");
+      const text = Array.from(content.matchAll(/>([^<]+)</g), (m) => m[1]);
+      const attrs = Array.from(content.matchAll(/\s(?:content|alt|title)="([^"]*)"/g), (m) => m[1]);
+      for (const s of [...text, ...attrs]) {
+        if (/[^\s-]\s?---\s?[^\s-]/.test(s)) bad.push(`${file}: ${s.trim().slice(0, 80)}`);
+      }
+    }
+
+    expect(bad, `Literal --- in rendered text:\n${bad.join("\n")}`).toEqual([]);
+  });
+
   // Regression test for ISSUE-003 from the 2026-04-13 dogfood audit: the nav
   // overflowed at mobile widths because every nav item was visible inline.
   // The nav now ships a hamburger toggle; if someone removes it, this fails.

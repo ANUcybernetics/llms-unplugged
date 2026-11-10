@@ -3,14 +3,18 @@ import { file, glob } from "astro/loaders";
 import { z } from "astro/zod";
 import { TOPIC_KEYS } from "./lib/topics";
 
+// Frontmatter strings are rendered as plain text, so the `---` that Markdown
+// turns into an em dash in a page's body has to be turned into one here.
+const prose = z.string().transform((s) => s.replaceAll("---", "—"));
+
 const modules = defineCollection({
   loader: glob({ pattern: "**/*.mdx", base: "src/content/modules" }),
   schema: z.object({
-    title: z.string(),
-    description: z.string(),
+    title: prose,
+    description: prose,
     topic: z.enum(TOPIC_KEYS),
     order: z.number(),
-    keyIdea: z.string().optional(),
+    keyIdea: prose.optional(),
     // Card/badge metadata, matching what lessons carry, so a visitor can tell
     // age fit, time and materials from the index rather than the page.
     audience: z.string(),
@@ -42,8 +46,8 @@ const modules = defineCollection({
 // collections because each renders at the URL its path implies (/lessons/,
 // /talks/), which the theme's llms.txt generator relies on.
 const sessionSchema = z.object({
-  title: z.string(),
-  description: z.string(),
+  title: prose,
+  description: prose,
   // Card/badge metadata: name the experience; duration and apparatus are
   // metadata, never part of the title.
   audience: z.string(),
@@ -79,8 +83,8 @@ const talks = defineCollection({
 const news = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/news" }),
   schema: z.object({
-    title: z.string(),
-    description: z.string(),
+    title: prose,
+    description: prose,
     date: z.coerce.date(),
     author: z.string(),
     // What kind of post this is, so audience pages can pull the evergreen
