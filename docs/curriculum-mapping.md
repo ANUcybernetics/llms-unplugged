@@ -73,11 +73,10 @@ local code. Senior secondary (Years 11--12) is out of scope.
 | More Context                 | scaling up          | 7--8, 9--10 | Digital Technologies, Mathematics                  |
 | In-context Learning          | looking inside      | 7--8, 9--10 | Digital Technologies                               |
 | Word Embeddings              | looking inside      | 9--10       | Mathematics, Digital Technologies                  |
-| Fine-tuning and LoRA         | shaping behaviour   | 9--10       | Digital Technologies                               |
+| Fine-tuning and LoRA         | shaping behaviour   | 9--10       | Digital Technologies, Ethical Understanding        |
 | Synthetic Data               | shaping behaviour   | 9--10       | Digital Technologies, Critical & Creative Thinking |
 | Agentic AI                   | extending the model | 9--10       | Digital Technologies                               |
-| RLHF                         | shaping behaviour   | 9--10       | Digital Technologies, Ethical Understanding        |
-| Sycophancy                   | shaping behaviour   | 9--10       | Digital Technologies, Ethical Understanding        |
+| Rewards                      | shaping behaviour   | 9--10       | Digital Technologies, Ethical Understanding        |
 
 ## Artificial intelligence in the curriculum
 
@@ -100,16 +99,16 @@ each is in the [competency reference](#ai-elaborations).
 | -------------------------------------- | --------------------------------------------------- | ----------------------- | -------------------------------------------------------------------------------------- |
 | How models learn from data             | 5--6: `6P10_E3`, `8K01_E4`, `8P01_E5`, `10P02_E4`   | Year 8 (near match)     | Training, Fine-tuning and LoRA, Synthetic Data                                         |
 | Generating output and prompting        | 7--8: `8P11_E5`, `8P11_E6`                          | Year 8 (near match)     | Generation, Search Sheets, Pre-trained Model Generation, Sampling, In-context Learning |
-| Checking AI output                     | 5--6: `6P06_E4`, `8P08_E3`                          | Year 9                  | in part: Generation, Beam Search, RLHF                                                 |
-| Bias and limitations                   | 7--8: `8P01_E5`, `10P01_E6`, `10P10_E4`, `10P10_E5` | Year 10                 | Training, Sycophancy, RLHF, Synthetic Data                                             |
+| Checking AI output                     | 5--6: `6P06_E4`, `8P08_E3`                          | Year 9                  | in part: Generation, Beam Search, Rewards                                              |
+| Bias and limitations                   | 7--8: `8P01_E5`, `10P01_E6`, `10P10_E4`, `10P10_E5` | Year 10                 | Training, Fine-tuning and LoRA, Rewards, Synthetic Data                                |
 | Predictive models and machine learning | 7--8: `8P02_E4`, `10P02_E4`, `10P02_E5`             | not named               | in part: Training, Fine-tuning and LoRA                                                |
 | Misuse, privacy and security           | 5--6: `6P10_E3`, `8P10_E4`, `8P14_E5`, `10P13_E3`   | Year 10                 | none yet                                                                               |
 
 The first, second and fourth themes are what the modules are for. Students train
 a model from data by hand, generate from it one word at a time, and watch it
 fail in ways they can trace back to the tallies. Two themes are covered in part.
-The modules have students compare and rank a model's outputs, but never check
-one against an authoritative source. And the model students build generates
+The modules have students rank a model's outputs and check them against a rule,
+but never against an authoritative source. And the model students build generates
 text, where the curriculum's examples of machine learning are classifiers.
 Nothing in the modules yet addresses misuse, privacy and security.
 
@@ -319,7 +318,8 @@ Treat each word's row in the bigram grid as a vector; measure similarity.
 ### [Fine-tuning and LoRA](https://www.llmsunplugged.org/modules/fine-tuning/)
 
 Shift a trained base model toward a new text three ways: tally it in, keep it on
-an adapter sheet, and squeeze the adapter into low-rank strips.
+an adapter sheet, and squeeze the adapter into low-rank strips. Then turn up a
+flattering adapter and measure how much flattery each strength produces.
 
 - **Best fit:** Years 9--10
 - **Primary**
@@ -327,13 +327,21 @@ an adapter sheet, and squeeze the adapter into low-rank strips.
     alternative designs (fine-tune in place, adapter sheet or strips).
   - `AC9TDI10P06` --- validate algorithms and programs by comparing output
     against a range of test cases.
+  - `AC9TDI8P02` / `AC9TDI10P02` --- analyse and visualise data to draw
+    conclusions and make predictions (the flattering adapter's dose-response,
+    plotted on the board).
 - **Secondary**
   - `AC9TDI10P09` --- implement, modify and debug modular programs.
-- **General capabilities:** Critical and Creative Thinking.
+  - `AC9E10LY03` --- analyse and evaluate how language features are used to
+    implicitly or explicitly represent values, beliefs and attitudes.
+- **General capabilities:** Critical and Creative Thinking; Ethical
+  Understanding (Understanding ethical concepts > Examining values).
 
 ### [Synthetic Data](https://www.llmsunplugged.org/modules/synthetic-data/)
 
-Generate synthetic text, retrain on it, observe drift and collapse.
+Run two relays side by side: one where each link trains a fresh model on the
+last link's output, and one where every link adds its output to the same sheet,
+on top of the real text. Compare what each model can still say.
 
 - **Best fit:** Years 9--10
 - **Primary**
@@ -361,9 +369,11 @@ Turn the model into an agent by giving it access to external tools.
 - **General capabilities:** Digital Literacy (Investigating > Locate, generate
   and access data); Critical and Creative Thinking.
 
-### [RLHF](https://www.llmsunplugged.org/modules/rlhf/)
+### [Rewards](https://www.llmsunplugged.org/modules/rewards/)
 
-Use human preferences to adjust the model's weights.
+Tune the same model toward the same goal with a human panel at one table and a
+rule card at the other, watch the rule get gamed, then let the room's thumbs-up
+votes teach a model to flatter.
 
 - **Best fit:** Years 9--10
 - **Primary**
@@ -371,30 +381,14 @@ Use human preferences to adjust the model's weights.
     future impact and opportunities for enterprise.
   - `AC9TDI8P10` --- evaluate existing and student solutions against the design
     criteria and possible future impact.
+  - `AC9TDI10P06` --- validate algorithms and programs by comparing their output
+    against a range of test cases (the rule card is an automatic test, and the
+    rule table shows what it misses).
 - **Secondary**
   - `AC9M9P02` --- calculate relative frequencies from collected data to
-    estimate probabilities (the judges' rankings change the counts the roll is
-    made on).
+    estimate probabilities (pass rates before and after the rounds).
 - **General capabilities:** Ethical Understanding (Decision-making and actions);
   Critical and Creative Thinking (Reflecting > Thinking about thinking).
-
-### [Sycophancy](https://www.llmsunplugged.org/modules/sycophancy/)
-
-Skew the model toward over-agreeable output by piling in flattering training
-data.
-
-- **Best fit:** Years 9--10
-- **Primary**
-  - `AC9TDI8P02` / `AC9TDI10P02` --- analyse and visualise data to draw
-    conclusions and make predictions (here, predicting how a model will behave
-    from its training set).
-  - `AC9TDI10P14` --- apply the Australian Privacy Principles to critique
-    digital systems (the module extends naturally into data-source critique).
-- **Secondary**
-  - `AC9E10LY03` --- analyse and evaluate how language features are used to
-    implicitly or explicitly represent values, beliefs and attitudes.
-- **General capabilities:** Ethical Understanding (Understanding ethical
-  concepts > Examining values); Critical and Creative Thinking.
 
 ## Coverage summary by strand
 
@@ -406,17 +400,17 @@ with these strands:
 - **Knowledge and understanding > Representation of data**: covered by Training,
   More Context, In-context Learning, Word Embeddings.
 - **Processes and production skills > Acquiring, storing and validating data**:
-  Training, Synthetic Data, Sycophancy.
+  Training, Synthetic Data.
 - **Processes and production skills > Analysing and visualising data**:
-  Training, Sycophancy.
+  Training, Fine-tuning and LoRA.
 - **Processes and production skills > Defining problems**: Pre-trained
   Generation, Sampling.
 - **Processes and production skills > Designing and tracing algorithms**:
   Generation, Sampling, Beam Search.
 - **Processes and production skills > Implementing programs**: Generation, More
   Context, In-context Learning, Agentic AI, Fine-tuning and LoRA.
-- **Processes and production skills > Evaluating solutions**: RLHF, Synthetic
-  Data, Sycophancy, Fine-tuning and LoRA.
+- **Processes and production skills > Evaluating solutions**: Rewards,
+  Synthetic Data, Fine-tuning and LoRA.
 
 The set does **not** substantively cover: networks and protocols, cyber security
 threat models (including the misuse of AI systems), user-interface design, or
@@ -426,7 +420,7 @@ vehicle.
 ### Mathematics
 
 - **Probability (Years 5--10)**: Weighted Randomness, Generation, Sampling, Beam
-  Search, More Context, In-context Learning, RLHF.
+  Search, More Context, In-context Learning, Rewards.
 - **Statistics (Years 5--8)**: Training (categorising and describing data).
 - **Number / Algebra**: light touch only.
 - **Space**: only via Word Embeddings (vectors and distance).
@@ -437,8 +431,8 @@ vehicle.
   longer include a dedicated sentence-structure vehicle; Training (specialist
   vocabulary) and Word Embeddings (vocabulary and meaning) contribute.
 - **Literature / Literacy strands**: light touch, mostly through critical
-  analysis of generated vs. source text in Generation, Sycophancy, Synthetic
-  Data.
+  analysis of generated vs. source text in Generation, Fine-tuning and LoRA
+  (the flattering adapter) and Synthetic Data.
 
 ## General capabilities
 
@@ -458,9 +452,9 @@ students to _do_ the thinking, not just learn about it.
   underpin the fundamentals modules.
 - **Literacy** --- _Composing texts_ (generated output) and _Comprehending
   texts_ (source corpus selection and analysis) are present throughout.
-- **Ethical Understanding** --- RLHF, Sycophancy, and Synthetic Data are
-  designed to surface ethical issues around training data, feedback, and data
-  quality.
+- **Ethical Understanding** --- Rewards, Fine-tuning and LoRA's flattering
+  adapter, and Synthetic Data are designed to surface ethical issues around
+  training data, rewards and feedback, and where data comes from.
 
 ## Suggested programs
 
@@ -494,8 +488,9 @@ algorithm-design content descriptions for Years 7--8.
 1. More Context (recap, if not previously seen)
 2. Word Embeddings --- `AC9TDI10K02`, `AC9TDI10P03`
 3. Synthetic Data --- `AC9TDI10P10`, `AC9TDI10P01`
-4. RLHF --- `AC9TDI10P10` + Ethical Understanding
-5. Sycophancy --- `AC9TDI10P14` + Ethical Understanding
+4. Fine-tuning and LoRA, with the flattering adapter --- `AC9TDI10P08`,
+   `AC9TDI10P02` + Ethical Understanding
+5. Rewards --- `AC9TDI10P10`, `AC9TDI10P06` + Ethical Understanding
 
 Co-teach with English (analysing language and values) and HASS / Civics (data
 ethics and decision-making).
@@ -610,9 +605,6 @@ Processes and production skills:
 - `AC9TDI10P10` (Years 9--10) --- evaluate existing and student solutions
   against the design criteria, user stories, possible future impact and
   opportunities for enterprise.
-- `AC9TDI10P14` (Years 9--10) --- apply the Australian Privacy Principles to
-  critique and manage the digital footprint that existing systems and student
-  solutions collect.
 
 #### AI elaborations
 
@@ -694,7 +686,7 @@ Literacy:
   direct hook is the Years 3--4 elaboration on predictive text
   (`AC9TDI4P06_E4`).
 - **Senior secondary (11--12)**: out of scope. Some modules (especially
-  Synthetic Data, RLHF, Word Embeddings) would extend naturally into the Digital
+  Synthetic Data, Rewards, Word Embeddings) would extend naturally into the Digital
   Solutions / Software Engineering / Specialist Mathematics syllabi, but those
   syllabi are state-specific and not mapped here.
 - **Assessment**: this document maps _teaching_ coverage, not assessment

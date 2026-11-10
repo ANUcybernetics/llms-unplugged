@@ -1,0 +1,243 @@
+---
+title: Synthetic Data (relay)
+description:
+  Run a relay around the room. Each group trains only on the text the group
+  before it generated, and nobody after the first ever sees the original. Watch
+  the vocabulary shrink at every link in the chain.
+order: 92
+audience: years 9 and up
+duration: 30 min
+bases: [grid, booklet]
+status: experimental
+topic: shaping-behaviour
+listed: false
+replacedBy: synthetic-data
+keyIdea:
+  Every pass through a model is a lossy copy of the last one. Rare words go
+  first, favourite pairs take over, and after a few generations very little of
+  the original is left.
+---
+
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
+import Callout from "../../components/Callout.astro";
+
+One group's output is the next group's <GlossaryTerm id="training-data">training data</GlossaryTerm>, all the way down a chain of four to six groups. Only the group at the head ever sees the original text; every group after it trains on <GlossaryTerm id="synthetic-data">synthetic data</GlossaryTerm>. Read the generations back in order at the end, put the numbers on the board, and you can hear <GlossaryTerm id="model-collapse">model collapse</GlossaryTerm> happen in half an hour.
+
+![](../../assets/images/hero-synthetic-data.avif)
+
+## You will need
+
+For every group:
+
+- a printed [grid template](https://pdf.llmsunplugged.org/worksheets/grid.pdf) (or grid paper) for a fresh model
+- a d10, pen and paper
+- one sheet to pass on, carrying the group's generated text and nothing else
+
+For the group at the head of the chain, one of:
+
+- a [pre-trained booklet](/modules/pretrained-generation/)---recommended, because the vocabulary is richer and there is no training time to burn, or
+- a grid the group built earlier in [Training](/modules/training/)
+
+And a whiteboard for the chain of numbers at the end.
+
+## Your goal
+
+Send a text all the way down the chain and hear what comes out the far end.
+Stretch goal: work out which link the <GlossaryTerm id="vocabulary">vocabulary</GlossaryTerm> fell off a cliff at, and why
+that one.
+
+## Key idea
+
+A model can only ever produce words it was trained on, and any sixty-word sample
+misses some of them. So each generation is a slightly poorer copy of the one
+before it. Words that appeared once are the likeliest to be missed, so the rare
+tail goes first, while common pairs get sampled again and again until they are
+most of the text. Every group runs the algorithm correctly and the text degrades
+anyway.
+
+## Set up the chain
+
+Sit four to six groups in a chain and label them A, B, C and so on. Group A is
+the only one with access to the original.
+
+One rule: **a group passes on its generated text and nothing else.** No title,
+no author, no summary, no glimpse of the grid it came from. Everything
+downstream has to be reconstructed from sixty words.
+
+## Each link in the chain
+
+1. **Train a fresh model** on the text you were handed, using the
+   [Training](/modules/training/) algorithm. Start a new <GlossaryTerm id="grid">grid</GlossaryTerm>; don't add to an
+   old one. This model's only knowledge is the previous group's output.
+2. **Generate about sixty words** from your new grid, as in
+   [Generation](/modules/generation/).
+3. **Count**, before you pass anything on: how many _distinct_ words were in the
+   text you were given, and how many are in the text you produced. Write both on
+   your sheet.
+4. **Pass on the generated text only**, and keep your grid---you'll want it for
+   the discussion.
+
+Group A skips step 1. It already has a model, so it rolls straight into step 2.
+
+<Callout type="tip" title="Why sixty words">
+
+Sixty words is roughly five minutes of dice rolls, and it leaves the next group
+somewhere near forty distinct words---small enough to train a grid from in five
+minutes, big enough that the chain doesn't lock into a two-word loop on the
+first pass. On a six-group chain with thirty minutes, drop to forty-five words
+per pass rather than cutting a group.
+
+</Callout>
+
+## While you wait
+
+The relay is sequential, so the groups upstream finish first and group A waits
+the longest. Give them something to do:
+
+- run **Joker mode** (below) as a wildcard round
+- **predict the last group's text**: write two lines of what you think will come
+  out the far end, fold it over, and compare at the readback
+- count how many of the words in your own output also appeared in the text you
+  were given---the overlap is what survived one pass
+
+## The readback
+
+Read the generations aloud in order, A to last, with no commentary in between.
+Let the room hear the drift on its own, then read out the original.
+
+## Put the numbers on the board
+
+Draw the chain as a table: generation, distinct words in, distinct words out.
+Each group's "in" should match the previous group's "out"---if two numbers
+disagree, someone miscounted, and it's worth finding which.
+
+A chain looks something like this (your numbers will be different):
+
+| generation | distinct in | distinct out |
+| ---------- | ----------- | ------------ |
+| A          | (booklet)   | 41           |
+| B          | 41          | 32           |
+| C          | 32          | 24           |
+| D          | 24          | 15           |
+| E          | 15          | 9            |
+
+Three things to point at:
+
+- the numbers fall at nearly every link, and faster than anyone expects
+- the words that vanished at each step are mostly the ones that appeared once
+- somewhere down the chain a pair like `and the` starts repeating, and once a
+  short loop takes over the chain has **locked**: everything downstream is that
+  loop
+
+If the chain locks at link two, that's still a result. Say so, and note that a
+real model reads billions of words rather than sixty, which is why it takes many
+more generations to get to the same place.
+
+## Joker mode
+
+Skip the training entirely and invent a model from nothing:
+
+- invent any words you like for the rows and columns---real, made-up, whatever
+- add tally marks anywhere, in any amounts
+- generate about sixty words from this random grid
+- hand it to the next group in the chain, who train on it exactly as usual
+
+Run a Joker chain alongside the real one and compare the far ends. Both narrow
+towards a handful of favourite pairs, because the algorithm is what narrows,
+whatever the source. The book chain still ends with words that mean something,
+and the Joker chain never had any.
+
+## Instructor notes
+
+### Timing
+
+For a five-group chain in thirty minutes:
+
+- 3 min: brief the room, seat the chain, hand out grids
+- 4 min: group A generates from the booklet
+- 20 min: four links at about five minutes each, running down the chain, with
+  the upstream groups on Joker mode or predictions
+- 3 min: readback, A to last
+
+The board and the discussion run past thirty minutes, so leave room for them.
+Because this is a relay, the wall clock is set by the length of the chain, not
+by the size of the class: four links fit comfortably, six needs closer to forty
+minutes or a shorter passage. With more than six groups, run two chains in
+parallel down opposite sides of the room and compare the two far ends.
+
+### Discussion questions
+
+- what patterns from the original survived all the way to the end of the chain?
+- what new patterns appeared that were in no earlier generation?
+- how does vocabulary shrink along the chain? Which words went first, and why
+  those ones?
+- can you identify the link where a loop or a repetition took over?
+- if the chain ran for ten more groups, what would the last text look like?
+- group A: how much of your text can you recognise in the last group's?
+- did any group make a mistake? Would you be able to tell from the output alone?
+- what would you have to add at each link to stop the chain narrowing?
+- (joker mode) can a completely random model produce anything coherent? Why or
+  why not?
+- (joker mode) does randomness compound down the chain, or does some structure
+  emerge?
+
+### Classroom variations
+
+- **keep some real data.** At each link, mix the sixty synthetic words with
+  sixty fresh words from the original text before training. The chain holds up
+  far better, and this is the actual mitigation in the research literature.
+- **secret original.** Don't say what group A trained on until the readback, and
+  ask the last group to guess the source from what reached them.
+- **short chain, deeper count.** Three groups, 120 words per pass, counting
+  distinct word _pairs_ rather than distinct words. Pairs collapse faster than
+  words do.
+- **the control.** Have one group generate a second sixty words from group A's
+  model rather than from a retrained one. It stays as good as A's text, which
+  shows the damage comes from retraining, not from generating.
+
+### Connection to current LLMs
+
+The relay is a hand-run version of the experiment in Shumailov et al., "AI
+models collapse when trained on recursively generated data" (_Nature_, July
+2024). They <GlossaryTerm id="fine-tuning">fine-tuned</GlossaryTerm> a language model on its own output, over and over, and
+watched the same thing the board shows: the distribution narrows generation by
+generation, and **the tails go first**. Low-probability events---rare words,
+unusual constructions---are exactly what a finite sample is most likely to miss,
+so they disappear before anything else, and once they are gone no later
+generation can bring them back.
+
+That matters outside the classroom because of **provenance**. The share of
+model-generated text on the web is growing, most of it is unlabelled, and
+detecting it reliably after the fact is not a solved problem---so a corpus
+scraped today contains model output whether or not the people scraping it want
+it to. Tracking where training text came from has become part of the job.
+
+But synthetic data is not poison, and the relay is a worst case rather than
+normal practice. Synthetic data is used deliberately and successfully in at
+least two ways:
+
+- **<GlossaryTerm id="distillation">distillation</GlossaryTerm>**: a large, strong model generates training data for a smaller
+  one, which then performs far better than it would on scraped text of the same
+  volume. The data comes from a model _above_ the one being trained, so the
+  chain doesn't close on itself.
+- **curated or filtered synthetic sets**: generate a lot, then keep only what
+  passes a filter, a verifier or a human. TinyStories is entirely synthetic---a
+  corpus of simple children's stories written by a larger model---and small
+  models trained on it write fluent, coherent English at sizes where models
+  trained on scraped web text produce mush. There is a TinyStories volume in the
+  [LLMs Unplugged Library](/library/), so you can roll dice against a model
+  trained on synthetic data and judge the output yourself.
+
+The difference is the loop. Your chain had no curation, no filtering, no fresh
+human text and no model stronger than the one being trained; break any one of
+those conditions and synthetic data becomes one of the more useful tools going.
+
+<Callout type="info" title="How this differs from a neural model">
+
+Your grid can only emit a word it has literally seen, so vocabulary loss down
+the chain is total and immediate. A <GlossaryTerm id="neural-network">neural model</GlossaryTerm> spreads what it learns across
+shared <GlossaryTerm id="parameters">parameters</GlossaryTerm>, so it can still produce a word in a context it never saw,
+and real collapse is correspondingly gentler and takes more generations. The
+direction is the same, but the fall is nowhere near as steep.
+
+</Callout>

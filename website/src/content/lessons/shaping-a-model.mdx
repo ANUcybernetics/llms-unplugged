@@ -84,25 +84,9 @@ and the board shows the count climbing with the dose. Nobody wrote a rule saying
 "be agreeable": the data said it, and the counts did the rest. Skip the strips
 (the LoRA part) if time is short.
 
-**Rewards** pairs the groups up into two
-tables with the same goal, sentences about the magpie. One table's panel ranks
-its sentences; the other table checks them against a rule card. Three rounds
-later the rule table passes its check far more often, and much of what passes is
-nonsense, which is
+**Rewards** pairs the groups up into two tables with the same goal, sentences about the magpie. One table's panel ranks its sentences; the other table checks them against a rule card. Three rounds later the rule table passes its check far more often, and much of what passes is nonsense, which is <GlossaryTerm id="reward-hacking">reward hacking</GlossaryTerm>. Then the whole room votes thumbs up or down on what a model says about them, and watches it learn to flatter: the route to <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm> that runs through rewards instead of data.
 
-<GlossaryTerm id="reward-hacking">reward hacking</GlossaryTerm>. Then the whole
-room votes thumbs up or down on what a model says about them, and watches it
-learn to flatter: the route to
-<GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm> that runs through
-rewards instead of data.
-
-**<GlossaryTerm id="synthetic-data">Synthetic Data</GlossaryTerm>** runs as a
-relay around the room. Each group trains on what the group before it generated
-and passes on its own output. Keep a running count of distinct words on butchers
-paper at each link. When each model trains only on the last one's output, the
-count falls; that's
-
-<GlossaryTerm id="model-collapse">model collapse</GlossaryTerm>.
+**<GlossaryTerm id="synthetic-data">Synthetic Data</GlossaryTerm>** runs two relays side by side. In one, each group trains a fresh model on the last group's output and passes on its own; in the other, every group adds its output to the same sheet, on top of the story's tallies. Keep the counts for both chains on butchers paper. The first chain forgets words at every link, which is <GlossaryTerm id="model-collapse">model collapse</GlossaryTerm>, and the second doesn't.
 
 The close pulls the three together: three mechanisms, and in every case a person
 somewhere chose the data, the reward or the shortcut.
