@@ -6,7 +6,7 @@ title: >-
 status: To Do
 assignee: []
 created_date: '2026-11-09T23:50:00Z'
-updated_date: '2026-11-10T03:58:00Z'
+updated_date: '2026-11-10T04:30:00Z'
 labels:
   - website
   - modules
@@ -31,3 +31,9 @@ The known errors in each page:
 - [ ] #1 Each current page James runs in place of a missed replacement has its known errors fixed, with any numeric claim checked by a simulation test
 - [ ] #2 pnpm run check passes
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Nov 2026: all three replacements went live before James's first week (Rewards, Fine-tuning's flattering adapter, two-chain Synthetic Data), so nothing here is needed unless James chooses to run one of the old pages from its deep link. If he does, fix that page using the error list above.
+<!-- SECTION:NOTES:END -->

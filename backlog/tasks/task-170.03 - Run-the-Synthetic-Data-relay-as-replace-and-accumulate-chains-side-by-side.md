@@ -1,10 +1,10 @@
 ---
 id: TASK-170.03
 title: Run the Synthetic Data relay as replace and accumulate chains side by side
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-11-09T23:50:00Z'
-updated_date: '2026-11-10T04:03:00Z'
+updated_date: '2026-11-10T04:26:00Z'
 due_date: '2026-11-27'
 labels:
   - website
@@ -39,10 +39,10 @@ Set the module's order so it sorts after Fine-tuning and the rewards module in S
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 The page runs a replace chain and an accumulate chain and compares their far ends
-- [ ] #2 The example table and timing claims match a test that simulates the chains
-- [ ] #3 Connection to current LLMs covers accumulate vs replace and current synthetic-data practice, with links
-- [ ] #4 The page counts rows on the sheet as well as distinct words in the output
+- [x] #1 The page runs a replace chain and an accumulate chain and compares their far ends
+- [x] #2 The example table and timing claims match a test that simulates the chains
+- [x] #3 Connection to current LLMs covers accumulate vs replace and current synthetic-data practice, with links
+- [x] #4 The page counts rows on the sheet as well as distinct words in the output
 <!-- AC:END -->
 
 ## Implementation Notes
@@ -50,3 +50,9 @@ Set the module's order so it sorts after Fine-tuning and the rewards module in S
 <!-- SECTION:NOTES:BEGIN -->
 Timing (Nov 2026): James Prather teaches this in the week of 30 Nov; aim to land it by 27 Nov (his time). The new version takes /modules/synthetic-data/; keep the current page at an unlisted copy so James can still run it from a deep link until TASK-170.04 deletes it.
 <!-- SECTION:NOTES:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Synthetic Data now runs a replace chain and an accumulate chain side by side (commit 871b5264). Both start from The magpie's nest rather than The Cat in the Hat, at forty words a link, so the lesson uses one story throughout and a link fits in about ten minutes. The accumulate chain is the faithful Gerstgrasser version: one sheet starting from the story's own tallies, each link adding its output. Typical counts (words the model knows / words it used): replace 32/18, 17/14, 14/12, 12/10; accumulate 32 throughout, 18 then 17. test/syntheticData.test.ts runs both chains 4,000 times and checks the table and claims; the ten-minute link timing is an estimate, not simulated. Filter and Joker chains are variations. The old relay page is unlisted at /modules/synthetic-data-relay/ with replacedBy: synthetic-data.
+<!-- SECTION:FINAL_SUMMARY:END -->

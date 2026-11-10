@@ -3,10 +3,10 @@ id: TASK-170
 title: >-
   Rework RLHF, Sycophancy and Synthetic Data around current post-training
   practice
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-11-09T23:50:00Z'
-updated_date: '2026-11-10T04:03:00Z'
+updated_date: '2026-11-10T04:26:00Z'
 labels:
   - website
   - modules
@@ -37,12 +37,12 @@ Every numeric claim on the reworked pages should be checked by a test that simul
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 RLHF is replaced by a rewards module (subtask)
-- [ ] #2 Sycophancy's data route lives in Fine-tuning (subtask)
-- [ ] #3 Synthetic Data runs replace and accumulate chains side by side (subtask)
-- [ ] #4 RLHF, Sycophancy, the old Synthetic Data page and Build, break, extend are unlisted, with no links to them from the rest of the site, but still load at their deep links
-- [ ] #5 Shaping a model is re-cut as the half-day lesson for Years 9 and up, and the educators page offers it where it offered Build, break, extend
-- [ ] #6 Curriculum mapping (module cards, AI themes table) and glossary match the new structure
+- [x] #1 RLHF is replaced by a rewards module (subtask)
+- [x] #2 Sycophancy's data route lives in Fine-tuning (subtask)
+- [x] #3 Synthetic Data runs replace and accumulate chains side by side (subtask)
+- [x] #4 RLHF, Sycophancy, the old Synthetic Data page and Build, break, extend are unlisted, with no links to them from the rest of the site, but still load at their deep links
+- [x] #5 Shaping a model is re-cut as the half-day lesson for Years 9 and up, and the educators page offers it where it offered Build, break, extend
+- [x] #6 Curriculum mapping (module cards, AI themes table) and glossary match the new structure
 - [ ] #7 After James's semester the unlisted pages are deleted and redirected (TASK-170.04)
-- [ ] #8 pnpm run check passes
+- [x] #8 pnpm run check passes
 <!-- AC:END -->

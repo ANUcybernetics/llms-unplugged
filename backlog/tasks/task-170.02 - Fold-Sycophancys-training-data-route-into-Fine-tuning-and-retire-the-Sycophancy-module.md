@@ -1,10 +1,10 @@
 ---
 id: TASK-170.02
 title: Fold Sycophancy's training-data route into Fine-tuning as an adapter section
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-11-09T23:50:00Z'
-updated_date: '2026-11-10T04:03:00Z'
+updated_date: '2026-11-10T04:26:00Z'
 due_date: '2026-11-20'
 labels:
   - website
@@ -25,7 +25,13 @@ Timing: ready by 21 Nov (Canberra time) so James Prather can use it with the rew
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Fine-tuning has a sycophancy section using the printable sycophancy sheet's actual phrases, tallied as an adapter
-- [ ] #2 Any claim about the dose-response round is checked by a simulation test
-- [ ] #3 The Sycophancy page is unlisted but still loads at /modules/sycophancy/ until TASK-170.04
+- [x] #1 Fine-tuning has a sycophancy section using the printable sycophancy sheet's actual phrases, tallied as an adapter
+- [x] #2 Any claim about the dose-response round is checked by a simulation test
+- [x] #3 The Sycophancy page is unlisted but still loads at /modules/sycophancy/ until TASK-170.04
 <!-- AC:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Fine-tuning and LoRA has 'A nasty adapter: flattery' (commit 39cf17f3): three lines from the printable sycophancy sheet tallied onto an adapter sheet, hooking into the magpie's model after ., ! and is. Dose-response at strengths 0, 1, 2 and 4 gives about 0, 1.5, 2.5 and 4 flattering sentences in ten; test/fineTuning.test.ts checks the quotes against data/originals/sycophancy.txt, the eight new words, the hooks and the counts. The 250-poisoned-documents link was dropped rather than adding a trigger-word variation. Sycophancy is unlisted with replacedBy: fine-tuning; its inbound links (glossary, Materials page, Agentic AI) now point at Fine-tuning or Rewards. Build, break, extend is unlisted and points at Shaping a model.
+<!-- SECTION:FINAL_SUMMARY:END -->
