@@ -6,7 +6,8 @@ title: >-
 status: To Do
 assignee: []
 created_date: '2026-11-09T23:50:00Z'
-updated_date: '2026-11-10T03:43:00Z'
+updated_date: '2026-11-10T03:47:00Z'
+due_date: '2026-11-14'
 labels:
   - website
   - modules
@@ -33,7 +34,7 @@ Problems in the current RLHF page that the new module must not inherit (found by
 - the reveal compares one sentence per table, which is mostly dice noise; compare the seed word's rows side by side instead
 - five-minute rounds with one or two generators are too short on a grid (every update changes the dice ranges); one generator per candidate, in parallel
 
-Keep the URL: decide whether the module keeps the /modules/rlhf/ slug or gets a new one with a redirect.
+URL: /modules/rewards/. The old RLHF URLs redirect there once TASK-170.04 retires the RLHF page.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
@@ -42,5 +43,11 @@ Keep the URL: decide whether the module keeps the /modules/rlhf/ slug or gets a 
 - [ ] #2 The page includes a leash rule and says what happens without it
 - [ ] #3 A test simulates the rounds as written and checks every claim the page makes about how fast the models drift
 - [ ] #4 Connection to current LLMs covers RLHF, DPO, RLVR and the GPT-4o sycophancy rollback, with links
-- [ ] #5 Old RLHF URLs resolve to the new module
+- [ ] #5 The module is live at /modules/rewards/, with the current RLHF page left in place for TASK-170.04 to redirect
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Timing (Nov 2026): James Prather runs this in his RLHF week (16 Nov, US central time), so the core (human panel vs rule card, with the leash) needs to be live by 14 Nov Canberra time, and the thumbs-up round by 21 Nov for his Sycophancy week. If the rule card's gap doesn't produce a reliable hack in simulation by 13 Nov, don't ship the core for his week: he runs the RLHF page with TASK-171's fixes, and this module lands after his semester. Publish it at /modules/rewards/ alongside the current RLHF page, which stays unchanged at /modules/rlhf/ until TASK-170.04 redirects it.
+<!-- SECTION:NOTES:END -->

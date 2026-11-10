@@ -1,12 +1,11 @@
 ---
 id: TASK-170.02
-title: >-
-  Fold Sycophancy's training-data route into Fine-tuning and retire Sycophancy
-  and Build, break, extend
+title: Fold Sycophancy's training-data route into Fine-tuning as an adapter section
 status: To Do
 assignee: []
 created_date: '2026-11-09T23:50:00Z'
-updated_date: '2026-11-10T03:43:00Z'
+updated_date: '2026-11-10T03:47:00Z'
+due_date: '2026-11-21'
 labels:
   - website
   - modules
@@ -21,16 +20,12 @@ Adding flattery phrases and getting flattery back is close to circular, and the 
 
 Worth carrying into the new section: a dose-response measurement (apply the adapter at 0, 1, 2 or 4 times, count flattering sentences in ten generations, plot on the board). Don't link it to the Oct 2025 Anthropic/UK AISI/Turing finding that about 250 poisoned documents can backdoor a model regardless of size as it stands: on a grid the proportion of poisoned text matters, not the count, so the link runs backwards. Either add a rare trigger-word variation (a word that never appears in the base text, whose few tallies fire every time it's rolled however big the grid) and link that, or drop the reference.
 
-Build, break, extend retires with Sycophancy. It has been run once, isn't a constraint on the new structure, and Shaping a model takes its half-day slot (see TASK-170). Sycophancy's piloted status came from that run, and the lesson is why the module needed a cutouts form; neither carries over, so the Fine-tuning section can stay grid-only.
-
-Known bugs in the current page, moot once it is retired: its phrase list is the pre-July-2026 LLM-trope set, not the picture-book-crossover text in data/originals/sycophancy.txt that the printable sheet uses; its example "i am absolutely right" needs am → absolutely, which no phrase contains.
+Timing: ready by 21 Nov (Canberra time) so James Prather can use it with the rewards module's thumbs-up round in his Sycophancy week (23 Nov; US Thanksgiving week, so possibly a short one). His class ran Fine-tuning and LoRA the week of 9 Nov, so this section is a return to a sheet they know. The section is additive: the Sycophancy page stays live and unchanged until TASK-170.04 retires it, and the section can stay grid-only (Build, break, extend, the one cutouts lesson that used Sycophancy, retires in 170.04 too).
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
 - [ ] #1 Fine-tuning has a sycophancy section using the printable sycophancy sheet's actual phrases, tallied as an adapter
-- [ ] #2 /modules/sycophancy/ and /lessons/sycophancy/ redirect to the page that now covers it
-- [ ] #3 Build, break, extend is retired: its deck, the sycophancy deck partials and any slides only it uses are removed, and /lessons/build-break-extend/ and its deck URL redirect to Shaping a model
-- [ ] #4 The educators page, Materials page, glossary, other modules and decks no longer link to Sycophancy or Build, break, extend
-- [ ] #5 Any claim about the dose-response round is checked by a simulation test
+- [ ] #2 Any claim about the dose-response round is checked by a simulation test
+- [ ] #3 The Sycophancy page is untouched (beyond TASK-171's fixes) until TASK-170.04
 <!-- AC:END -->

@@ -4,7 +4,8 @@ title: Run the Synthetic Data relay as replace and accumulate chains side by sid
 status: To Do
 assignee: []
 created_date: '2026-11-09T23:50:00Z'
-updated_date: '2026-11-10T03:43:00Z'
+updated_date: '2026-11-10T03:47:00Z'
+due_date: '2026-11-28'
 labels:
   - website
   - modules
@@ -43,3 +44,9 @@ Set the module's order so it sorts after Fine-tuning and the rewards module in S
 - [ ] #3 Connection to current LLMs covers accumulate vs replace and current synthetic-data practice, with links
 - [ ] #4 The page counts rows on the sheet as well as distinct words in the output
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Timing (Nov 2026): this rewrites the Synthetic Data page in place, and James Prather teaches it in the week of 30 Nov. Land it before then only if he has said he wants the new version; otherwise land it after 4 Dec, and TASK-171 fixes the current page for his week.
+<!-- SECTION:NOTES:END -->
