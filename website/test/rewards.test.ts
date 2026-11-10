@@ -9,9 +9,12 @@ import {
   panelTable,
   rates,
   rng,
+  ruleRounds,
   ruleTable,
+  slips,
   STORY_PAIRS,
   thumbsUp,
+  thumbsUpCup,
   TRIALS,
 } from "./utils/rewardsSim";
 
@@ -43,6 +46,12 @@ function magpieShare(m: Counts) {
 function cupShare(votes: number, seed: number) {
   const r = rng(seed);
   return mean(Array.from({ length: TRIALS }, () => thumbsUp(r, votes, 1)));
+}
+
+// Did the passes fail to climb from round one to round three, summed over these tables?
+function stalls(xs: number[][]) {
+  const sum = (i: number) => xs.reduce((s, p) => s + p[i], 0);
+  return sum(2) <= sum(0);
 }
 
 describe("Rewards module", () => {
@@ -99,6 +108,59 @@ describe("Rewards module", () => {
     expect(ruleAhead / TRIALS).toBeGreaterThan(0.7);
   });
 
+  it("the rule table's `the` row ends up about two-thirds magpie, from about a third", () => {
+    const r = rng(10);
+    const share = mean(Array.from({ length: TRIALS }, () => magpieShare(ruleTable(r))));
+    expect(magpieShare(BASE)).toBeGreaterThan(0.3);
+    expect(magpieShare(BASE)).toBeLessThan(0.4);
+    expect(share).toBeGreaterThan(0.6);
+    expect(share).toBeLessThan(0.72);
+    expect(MODULE).toContain(
+      "typically `magpie` is about two-thirds of the row by now, where it started at about a third",
+    );
+  });
+
+  it("the rule table's passes climb from one or two of five to two or three", () => {
+    const r = rng(11);
+    const logs = Array.from({ length: TRIALS }, () => ruleRounds(r).passed);
+    const first = mean(logs.map((p) => p[0]));
+    const third = mean(logs.map((p) => p[2]));
+    expect(first).toBeGreaterThan(1.3);
+    expect(first).toBeLessThan(1.9);
+    expect(third).toBeGreaterThan(2.4);
+    expect(third).toBeLessThan(3);
+    expect(MODULE).toContain(
+      "usually one or two of the five in the first round and two or three in the third",
+    );
+    // one table's count stalls or dips about a third of the time; three
+    // tables' counts added together do so about half as often
+    const alone = logs.filter((p) => stalls([p])).length / TRIALS;
+    const threes = Array.from({ length: Math.floor(TRIALS / 3) }, (_, i) =>
+      logs.slice(3 * i, 3 * i + 3),
+    );
+    const together = threes.filter(stalls).length / threes.length;
+    expect(alone).toBeGreaterThan(0.25);
+    expect(together).toBeLessThan(0.2);
+    expect(MODULE).toContain("One table's count can stall or dip");
+  });
+
+  it("a d6 with the d20 covers every row the rule table grows", () => {
+    const r = rng(12);
+    let past20 = 0;
+    for (let t = 0; t < TRIALS; t++) {
+      const totals = Array.from(ruleTable(r).values(), (row) =>
+        [...row.values()].reduce((a, b) => a + b, 0),
+      );
+      past20 += +(Math.max(...totals) > 20);
+      expect(Math.max(...totals)).toBeLessThanOrEqual(60);
+    }
+    // not a rare case: a fair share of tables finish with a row past the d20
+    expect(past20 / TRIALS).toBeGreaterThan(0.1);
+    expect(MODULE).toContain(
+      "If a row grows past 20, roll the d6 with the d20: on 1 or 2 add nothing, on 3 or 4 add 20, on 5 or 6 add 40",
+    );
+  });
+
   it("without the leash, three rounds rub out about a quarter of the story's pairs", () => {
     const r = rng(5);
     const gone = Array.from({ length: TRIALS }, () => {
@@ -129,6 +191,12 @@ describe("Rewards module", () => {
     expect(eighteen).toBeGreaterThan(0.7);
     expect(eighteen).toBeLessThan(0.8);
     expect(cupShare(36, 9)).toBeGreaterThan(0.8);
+    // three votes each for a group of six, and the slips that takes
+    const r = rng(13);
+    const sizes = Array.from({ length: TRIALS }, () => slips(thumbsUpCup(r, 18)));
+    expect(sizes.filter((n) => n <= 25).length / TRIALS).toBeGreaterThan(0.99);
+    expect(MODULE).toContain("about twenty-five small slips of paper for each group of six");
+    expect(MODULE).toContain("A group of six has cast eighteen votes.");
     expect(MODULE).toContain(
       "after about eighteen votes `right`, `clever` and `kind` fill about three-quarters of the cup, up from half; by about thirty-six votes they fill more than four-fifths of it",
     );

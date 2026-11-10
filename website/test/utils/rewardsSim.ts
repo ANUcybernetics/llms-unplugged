@@ -83,15 +83,21 @@ export function update(m: Counts, s: Sentence, delta: number, leash: Leash) {
 export const CANDIDATES = 5;
 export const ROUNDS = 3;
 
-export function ruleTable(r: Rng, leash: Leash = "on", rounds = ROUNDS): Counts {
+// The rule table's rounds, with the tally it keeps: how many of each round's
+// five sentences passed.
+export function ruleRounds(r: Rng, leash: Leash = "on", rounds = ROUNDS) {
   const m = copy(BASE);
+  const passed: number[] = [];
   for (let i = 0; i < rounds; i++) {
-    for (const s of Array.from({ length: CANDIDATES }, () => sentence(m, r))) {
-      update(m, s, passes(s) ? 1 : -1, leash);
-    }
+    const round = Array.from({ length: CANDIDATES }, () => sentence(m, r));
+    passed.push(round.filter(passes).length);
+    for (const s of round) update(m, s, passes(s) ? 1 : -1, leash);
   }
-  return m;
+  return { model: m, passed };
 }
+
+export const ruleTable = (r: Rng, leash: Leash = "on", rounds = ROUNDS): Counts =>
+  ruleRounds(r, leash, rounds).model;
 
 // A stand-in for the panel: it prefers finished sentences about the magpie
 // that make sense, and its members don't fully agree (the noise).
@@ -151,13 +157,19 @@ export const P_UP: Record<Answer, number> = {
   rude: 0.05,
 };
 
-export function thumbsUp(r: Rng, voters: number, rounds: number) {
+export function thumbsUpCup(r: Rng, votes: number) {
   const cup = new Map<Answer, number>(ANSWERS.map((a) => [a, 1]));
-  for (let i = 0; i < rounds * voters; i++) {
+  for (let i = 0; i < votes; i++) {
     const drawn = pick(cup, r) as Answer;
     const up = r() < P_UP[drawn];
     cup.set(drawn, Math.max(1, cup.get(drawn)! + (up ? 1 : -1)));
   }
-  const total = [...cup.values()].reduce((a, b) => a + b, 0);
-  return [...PLEASING].reduce((s, a) => s + cup.get(a)!, 0) / total;
+  return cup;
+}
+
+export const slips = (cup: Map<Answer, number>) => [...cup.values()].reduce((a, b) => a + b, 0);
+
+export function thumbsUp(r: Rng, voters: number, rounds: number) {
+  const cup = thumbsUpCup(r, rounds * voters);
+  return [...PLEASING].reduce((s, a) => s + cup.get(a)!, 0) / slips(cup);
 }
