@@ -228,11 +228,32 @@ describe("Fine-tuning and LoRA module", () => {
       expect(get(flattery, "is", "so")).toBeGreaterThan(0);
     });
 
-    // Ten sentences from `.` at each strength, counting those with `you` or `good`.
-    function flatteringOutOfTen(strength: number, r: ReturnType<typeof rng>) {
+    const newWords = new Set([...flattery.keys()].filter((w) => !baseWords.has(w)));
+
+    it("at three times, the `.` row is the one the page writes out", () => {
+      expect(rowOf(combine([base, 1], [flattery, 3]), ".")).toEqual({
+        It: 7,
+        the: 7,
+        Here: 2,
+        Down: 1,
+        you: 3,
+        good: 3,
+        this: 3,
+      });
+      expect(MODULE).toContain("plus `you` 3, `good` 3 and `this` 3, which is 26 in all");
+      // the d20 and d6 in "You will need" cover every row, at every strength
+      for (const k of [1, 3, 9]) {
+        for (const row of combine([base, 1], [flattery, k]).values()) {
+          expect([...row.values()].reduce((x, y) => x + y, 0)).toBeLessThanOrEqual(60);
+        }
+      }
+    });
+
+    // Sentences from `.` at one strength, counting those with a flattery word.
+    function flattering(strength: number, sentences: number, r: ReturnType<typeof rng>) {
       const model = combine([base, 1], [flattery, strength]);
       let count = 0;
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < sentences; i++) {
         const words: string[] = [];
         let w = ".";
         while (words.length < 12) {
@@ -241,7 +262,7 @@ describe("Fine-tuning and LoRA module", () => {
           words.push(next);
           w = next;
         }
-        count += +(words.includes("you") || words.includes("good"));
+        count += +words.some((x) => newWords.has(x));
       }
       return count;
     }
@@ -250,27 +271,38 @@ describe("Fine-tuning and LoRA module", () => {
       const r = rng(11);
       const runs = 3000;
       const average = (k: number) =>
-        Array.from({ length: runs }, () => flatteringOutOfTen(k, r)).reduce((a, b) => a + b, 0) /
-        runs;
+        Array.from({ length: runs }, () => flattering(k, 10, r)).reduce((x, y) => x + y, 0) / runs;
       expect(average(0)).toBe(0);
       const one = average(1);
-      const two = average(2);
-      const four = average(4);
-      expect(one).toBeGreaterThan(1);
-      expect(one).toBeLessThan(2);
-      expect(two).toBeGreaterThan(2);
-      expect(two).toBeLessThan(3);
-      expect(four).toBeGreaterThan(3.5);
-      expect(four).toBeLessThan(4.5);
+      const three = average(3);
+      const nine = average(9);
+      expect(one).toBeGreaterThan(1.5);
+      expect(one).toBeLessThan(2.5);
+      expect(three).toBeGreaterThan(3.5);
+      expect(three).toBeLessThan(4.5);
+      expect(nine).toBeGreaterThan(6);
+      expect(nine).toBeLessThan(7);
       expect(MODULE).toContain(
-        "Expect none at zero, one or two at full strength, two or three at twice, and about four at four times",
+        "Expect about two sentences in ten at full strength, four at three times and six or seven at nine times",
       );
 
-      // the line usually climbs from full strength to four times, even on ten sentences
-      let climbs = 0;
-      for (let i = 0; i < runs; i++)
-        climbs += +(flatteringOutOfTen(4, r) > flatteringOutOfTen(1, r));
-      expect(climbs / runs).toBeGreaterThan(0.75);
+      // one group per strength lands out of order now and then; two groups'
+      // counts added together rarely do
+      const inOrder = (sentences: number) => {
+        let ok = 0;
+        for (let i = 0; i < runs; i++) {
+          const [x, y, z] = [1, 3, 9].map((k) => flattering(k, sentences, r));
+          ok += +(x <= y && y <= z);
+        }
+        return ok / runs;
+      };
+      const alone = inOrder(10);
+      expect(alone).toBeGreaterThan(0.7);
+      expect(alone).toBeLessThan(0.9);
+      expect(inOrder(20)).toBeGreaterThan(0.88);
+      expect(MODULE).toContain(
+        "one group's count can land out of order; two groups' counts added together rarely do",
+      );
     });
   });
 });

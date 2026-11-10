@@ -61,7 +61,7 @@ This is the adapter sheet. Two words are new to the magpie's model, `kookaburra`
 
 ## 1. Fine-tune in place
 
-Tally the new story straight into the base grid, as in [Training](/modules/training/). The `the` row becomes:
+Tally the new story straight into the base grid, as in [Training](/modules/training/). Use a copy of the grid for this, because step 2 starts again from the original. The `the` row becomes:
 
 | word  | total | followed by                                                                            |
 | ----- | ----- | -------------------------------------------------------------------------------------- |
@@ -144,9 +144,14 @@ An adapter can teach a model things nobody should want it to learn. The [sycopha
 
 Tally them, in that order, onto a fresh adapter sheet with the magpie's headers. Eight words are new (`you`, `are`, `so`, `good`, `for`, `this`, `much` and `fun`), so add a row and a column for each on both sheets. The flattery hooks into the magpie's model in three places: after `.`, where a sentence can now start with `you`, `good` or `this`; after `!`; and after `is`, so _It is_ can carry on _so good._
 
-Then measure the dose. Split the room into four groups and give each a strength: the adapter counted zero, one, two or four times. Each group generates ten sentences, starting from `.` and stopping at the next `.` or `!`, and counts the ones with `you` or `good` in them. Put the four counts on the board in order of strength.
+Then measure the dose. Give each group a strength: the adapter counted once, three times or nine times. With six groups, two take each strength.
 
-Expect none at zero, one or two at full strength, two or three at twice, and about four at four times. Ten sentences is a small sample, so two neighbouring strengths can swap places, but the line climbs. Nothing on the magpie's grid changed. Take the adapter off and the flattery is gone.
+1. **Write out the three rows that change.** Only `.`, `!` and `is` have a row on both sheets, so they are the only rows that depend on the strength. Add each one's adapter counts to its magpie counts, multiplying the adapter counts by your strength first. At three times, the `.` row is the magpie's `It` 7, `the` 7, `Here` 2 and `Down` 1, plus `you` 3, `good` 3 and `this` 3, which is 26 in all. Every other row is read straight off whichever sheet has it.
+2. **Generate ten sentences**, each starting from `.` and stopping at the next `.` or `!`.
+3. **Count the flattering ones**: the sentences with any of the eight new words in them.
+4. **Put the count on the board** under your strength. Where two groups shared a strength, add their counts together.
+
+Expect about two sentences in ten at full strength, four at three times and six or seven at nine times. Ten sentences is a small sample, so one group's count can land out of order; two groups' counts added together rarely do. With the adapter off the count is zero, because the magpie's grid has none of those words. Nothing on that grid changed. Take the adapter off and the flattery is gone.
 
 This is the data route to <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm>: train on enough flattery and the model flatters. The other route runs through rewards, and the thumbs-up round in [Rewards](/modules/rewards/) shows it.
 
