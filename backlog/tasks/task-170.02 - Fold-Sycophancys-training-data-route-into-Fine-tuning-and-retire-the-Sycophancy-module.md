@@ -4,7 +4,7 @@ title: Fold Sycophancy's training-data route into Fine-tuning as an adapter sect
 status: To Do
 assignee: []
 created_date: '2026-11-09T23:50:00Z'
-updated_date: '2026-11-10T03:58:00Z'
+updated_date: '2026-11-10T04:03:00Z'
 due_date: '2026-11-20'
 labels:
   - website
@@ -27,5 +27,5 @@ Timing: ready by 21 Nov (Canberra time) so James Prather can use it with the rew
 <!-- AC:BEGIN -->
 - [ ] #1 Fine-tuning has a sycophancy section using the printable sycophancy sheet's actual phrases, tallied as an adapter
 - [ ] #2 Any claim about the dose-response round is checked by a simulation test
-- [ ] #3 The Sycophancy page is untouched (beyond TASK-171's fixes) until TASK-170.04
+- [ ] #3 The Sycophancy page is unlisted but still loads at /modules/sycophancy/ until TASK-170.04
 <!-- AC:END -->
