@@ -1,18 +1,18 @@
 ---
 title: Shaping a model
 description:
-  A discussion-heavy follow-on. Change a model's training data, change what it
-  gets rewarded for, and feed it its own output---three ways to give a model a
-  personality, all run by hand.
+  A half-day, discussion-heavy follow-on. Train a model on a magpie story, then
+  shape it three ways, with a flattering adapter, with judges and rule cards
+  that reward it, and with its own output fed back as training data.
 audience: years 9 and up; media literacy, ethics, HASS and policy groups
-duration: 2 hours to 2.5 hours
+duration: about 3 hours (a half day)
 flavour: grid
 decks: []
 modules:
   - training
   - generation
-  - sycophancy
-  - rlhf
+  - fine-tuning
+  - rewards
   - synthetic-data
 heroImage: adaptation-and-data
 order: 5
@@ -23,118 +23,121 @@ listed: true
 import Callout from "../../components/Callout.astro";
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
-People talk about a <GlossaryTerm id="chatbot">chatbot</GlossaryTerm>'s personality as though it were a temperament: this
-one's warm, that one's a suck-up, the other one lectures you. But a model's
-personality is a property of what shaped it, and everything that shaped it was a
-decision somebody made.
+People talk about a <GlossaryTerm id="chatbot">chatbot</GlossaryTerm>'s
+personality as though it were a temperament: this one's warm, that one's a
+suck-up, the other one lectures you. But a model's personality is a property of
+what shaped it, and everything that shaped it was a decision somebody made.
 
-This lesson makes those decisions concrete by handing them to the room. After
-building the paper model, participants shape it three different ways: they
-change the <GlossaryTerm id="training-data">training data</GlossaryTerm> and watch the model turn sycophantic; they run a
-preference round where human judges reward some outputs over others, and then
-watch the model learn to game the judges; and they retrain a model on its own
-generated text and count what's left of the vocabulary. Every one of those opens
-a discussion: whose preferences, what counts as good, and what happens to the
-web when models are trained on each other's output.
+This lesson hands those decisions to the room. Everyone trains the same small
+model, from a short story about a magpie, and then shapes it three ways: they
+put a flattering adapter on it and turn it up; they tune it with rewards, from a
+panel of judges at one table and a rule card at the other; and they train new
+models on its output and see what survives. Every one of those opens a
+discussion: whose preferences, what counts as good, and what happens when models
+learn from each other's output.
 
 <Callout type="info">
 
-This sequence is assembled from modules we've each run, but we haven't yet run
-it as a single session. The timings below are estimates. If you deliver it,
-[tell us how it went](/about/#get-in-touch).
+Training and Generation are part of the lessons we run regularly. The three shaping
+modules are newer and haven't been run as a single session, so the timings below
+are estimates. If you deliver it, [tell us how it went](/about/#get-in-touch).
 
 </Callout>
 
 ## Run of show
 
-| Section                                    | Time   |
-| ------------------------------------------ | ------ |
-| Intro                                      | 10 min |
-| [Training](/modules/training/)             | 20 min |
-| [Generation](/modules/generation/)         | 20 min |
-| [Sycophancy](/modules/sycophancy/)         | 20 min |
-| _Break_                                    | 10 min |
-| [RLHF](/modules/rlhf/)                     | 30 min |
-| [Synthetic Data](/modules/synthetic-data/) | 30 min |
-| Discussion and close                       | 10 min |
+| Section                                             | Time   |
+| --------------------------------------------------- | ------ |
+| Intro                                               | 10 min |
+| [Training](/modules/training/), on the magpie story | 20 min |
+| [Generation](/modules/generation/)                  | 20 min |
+| [Fine-tuning and LoRA](/modules/fine-tuning/)       | 35 min |
+| _Break_                                             | 15 min |
+| [Rewards](/modules/rewards/)                        | 45 min |
+| [Synthetic Data](/modules/synthetic-data/)          | 30 min |
+| Discussion and close                                | 15 min |
 
-Two and a half hours as written. For a two-hour slot, drop Synthetic Data and
-fold its question ("what happens when the training data is model output?") into
-the closing discussion. The relay is the section that suffers least from being
-described rather than run, because its punchline is a number.
+About three hours. For a two-hour slot, run Rewards without its thumbs-up round,
+skip the strips in Fine-tuning, and fold Synthetic Data's question ("what
+happens when the training data is model output?") into the closing discussion.
 
 There's no deck for this lesson. Run it from the module pages, which carry the
-algorithms and worked examples. The discussion questions in the instructor notes
-are doing a lot of the work here, so read them ahead of time and pick the ones
-that suit your group.
+rules and worked examples. The discussion questions in their instructor notes do
+a lot of the work here, so read them ahead of time and pick the ones that suit
+your group.
 
 ## How it goes
 
-The first 40 minutes are the standard build: tally word pairs into the <GlossaryTerm id="grid">grid</GlossaryTerm>,
-then roll a d10 and generate. Everything after that is a modification to a model
-the room owns, which keeps the ethics discussion concrete.
+**Training and Generation** use _The magpie's nest_, the 95-word story printed
+in [Beam Search](/modules/beam-search/), as the training text. Each group
+tallies it into a <GlossaryTerm id="grid">grid</GlossaryTerm> and generates from
+it. Using the same short story everywhere means every later section starts from
+a model the room built itself, and the worked examples on the module pages match
+what's on the tables.
 
-**<GlossaryTerm id="sycophancy">Sycophancy</GlossaryTerm>** is the data route. Groups tally a sheet of flattering, agreeable
-phrases into their existing grid and generate again. The model starts
-complimenting them. Nobody wrote a rule saying "be agreeable": the data said it,
-repeatedly, and the counts did the rest. And if you scraped the whole internet,
-what else did you tally in without meaning to?
+**<GlossaryTerm id="fine-tuning">Fine-tuning and LoRA</GlossaryTerm>** teaches
+the finished model a second story, first by tallying it straight in and then on
+a separate adapter sheet that can be turned up or taken off. Then comes the
+nasty adapter: three lines of flattery, tallied onto their own sheet. Each group
+applies it at a different strength and counts the flattering sentences in ten,
+and the board shows the count climbing with the dose. Nobody wrote a rule saying
+"be agreeable": the data said it, and the counts did the rest. Skip the strips
+(the LoRA part) if time is short.
 
-**<GlossaryTerm id="rlhf">RLHF</GlossaryTerm>** is the other route to the same place, and it runs as a game show. Two
-tables start with identical copies of the grid, each with its own judging panel
-and a sealed brief (one panel wants clear English, the other wants surprise and
-rhythm). Each round the table generates three candidates from a shared seed
-word, the panel ranks them, and the scorer bumps the counts behind the winner
-and docks the loser. Three rounds later both tables generate from the same seed
-and read the results side by side: two models from one grid, separated only by
-who held the scorecard. Then the <GlossaryTerm id="reward-hacking">reward-hacking</GlossaryTerm> round: one panel is secretly
-briefed to reward flattery, and the generators, who never see the brief, watch
-their model reach for agreeable phrases on its own.
+**Rewards** pairs the groups up into two
+tables with the same goal, sentences about the magpie. One table's panel ranks
+its sentences; the other table checks them against a rule card. Three rounds
+later the rule table passes its check far more often, and much of what passes is
+nonsense, which is
 
-**<GlossaryTerm id="synthetic-data">Synthetic Data</GlossaryTerm>** runs as a relay around the room. Group one generates text
-from their model and passes it to group two as training data; group two trains
-on it, generates, and passes on again. Keep a running vocabulary count on
-butchers paper at each hop. The line goes down, sometimes gently and sometimes
-off a cliff, and that's <GlossaryTerm id="model-collapse">model collapse</GlossaryTerm>.
+<GlossaryTerm id="reward-hacking">reward hacking</GlossaryTerm>. Then the whole
+room votes thumbs up or down on what a model says about them, and watches it
+learn to flatter: the route to
+<GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm> that runs through
+rewards instead of data.
 
-The close pulls the three sections together: different mechanisms, the same
-outcome, and in every case a person somewhere chose the data, the reward, or the
-shortcut.
+**<GlossaryTerm id="synthetic-data">Synthetic Data</GlossaryTerm>** runs as a
+relay around the room. Each group trains on what the group before it generated
+and passes on its own output. Keep a running count of distinct words on butchers
+paper at each link. When each model trains only on the last one's output, the
+count falls; that's
+
+<GlossaryTerm id="model-collapse">model collapse</GlossaryTerm>.
+
+The close pulls the three together: three mechanisms, and in every case a person
+somewhere chose the data, the reward or the shortcut.
 
 ## You will need
 
-For each pair or small group:
+For each group of three or four:
 
 - a printed [grid template](https://pdf.llmsunplugged.org/worksheets/grid.pdf)
-  (or grid paper), plus a blank one per group for the synthetic-data retrain
-- a d10 die, pens and paper
-- some training text: a few pages of any book
+  (or grid paper) for the magpie model, a second one for the adapter sheet, and
+  one more for the synthetic-data relay
+- a d10 and a d20, pens, pencils and erasers
+- a copy of _The magpie's nest_ (from [Beam Search](/modules/beam-search/))
 - the
   [sycophancy training text sheet](https://pdf.llmsunplugged.org/worksheets/sycophancy-text.pdf)
   (also on the [Materials](/tools/#worksheets) page)
 
 For the room:
 
-- a pre-trained booklet or two from the
-  [Materials](/tools/#booklets-for-dice-generation) page, to seed the first
-  group in the synthetic-data relay with something richer than a two-page grid
-- butchers paper and a marker for the vocabulary count down the relay chain
-- a whiteboard for the RLHF candidates and the judging
+- the rule card and panel brief from [Rewards](/modules/rewards/), one per table
+- a cup and about twenty small slips of paper for the thumbs-up round
+- butchers paper and a marker for the counts down the relay chain
 
 ## Before you deliver
 
-- print the grids, the sycophancy sheets, and at least one booklet
-- brief the two judging panels in secret before the RLHF round---the briefs are
-  on the [RLHF](/modules/rlhf/) page (team clarity, team poetry, and the sealed
-  team-approval brief for the reward-hacking round); don't let the panels
-  compare notes until the reveal
+- print the grids, the story and the sycophancy sheets
+- decide which groups will pair up as the rule table and the panel table in
+  Rewards, and which strength of the flattering adapter each group will run
 - seat the groups in a chain, or at least know the order, so the synthetic-data
   relay passes cleanly without everyone standing up
-- decide in advance how you'll count vocabulary at each hop (distinct words in a
-  fixed-length sample is easiest) and rule the butchers paper up beforehand
-- read the discussion questions in the [RLHF](/modules/rlhf/) and
-  [Synthetic Data](/modules/synthetic-data/) instructor notes and choose two or
-  three; there are more good ones than you'll have time for
+- rule the butchers paper up beforehand for the counts at each link
+- read the discussion questions in the
+  [Fine-tuning and LoRA](/modules/fine-tuning/), [Rewards](/modules/rewards/)
+  and [Synthetic Data](/modules/synthetic-data/) instructor notes and choose two
+  or three from each; there are more good ones than you'll have time for
 
 ## Where to go next
 

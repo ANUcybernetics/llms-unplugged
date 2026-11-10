@@ -6,7 +6,7 @@ description:
   squeeze the adapter into a few strips of numbers, the way LoRA does.
 order: 10
 audience: years 9 and up
-duration: 40-50 min
+duration: 40-50 min (60 with the flattering adapter)
 bases: [grid]
 status: experimental
 topic: shaping-behaviour
@@ -132,6 +132,24 @@ Two pairs is the fewest that keeps the patterns apart. Squeeze both into a singl
 
 Throw away the _when_ strip and keep only a _what_ strip, say `kookaburra` 1, `possum` 1, added to every row whatever the current word is. It's the cheapest adapter of all, two numbers, and the bluntest: it writes "It possum" and "the magpie kookaburra". Some model services let programmers nudge chosen words up or down like this, whatever comes before them; it's usually called a logit bias.
 
+## A nasty adapter: flattery
+
+An adapter can teach a model things nobody should want it to learn. The [sycophancy training text sheet](https://pdf.llmsunplugged.org/worksheets/sycophancy-text.pdf) (also on the [Materials](/tools/#worksheets) page) is a page of over-the-top praise. Take three lines from it:
+
+> you are so good. you are so good.
+>
+> good for you! good for you!
+>
+> this is so good. this is so much fun.
+
+Tally them, in that order, onto a fresh adapter sheet with the magpie's headers. Eight words are new (`you`, `are`, `so`, `good`, `for`, `this`, `much` and `fun`), so add a row and a column for each on both sheets. The flattery hooks into the magpie's model in three places: after `.`, where a sentence can now start with `you`, `good` or `this`; after `!`; and after `is`, so _It is_ can carry on _so good._
+
+Then measure the dose. Split the room into four groups and give each a strength: the adapter counted zero, one, two or four times. Each group generates ten sentences, starting from `.` and stopping at the next `.` or `!`, and counts the ones with `you` or `good` in them. Put the four counts on the board in order of strength.
+
+Expect none at zero, one or two at full strength, two or three at twice, and about four at four times. Ten sentences is a small sample, so two neighbouring strengths can swap places, but the line climbs. Nothing on the magpie's grid changed. Take the adapter off and the flattery is gone.
+
+This is the data route to <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm>: train on enough flattery and the model flatters. The other route runs through rewards, and the thumbs-up round in [Rewards](/modules/rewards/) shows it.
+
 ## Your turn
 
 1. Take your own grid from [Training](/modules/training/) as the base, and write or find five short sentences on a different subject (a recipe, a sports report, a song).
@@ -151,6 +169,7 @@ Throw away the _when_ strip and keep only a _what_ strip, say `kookaburra` 1, `p
 - why can't one pair of strips hold both patterns? How many pairs would it take to store the new story's adapter exactly?
 - you can make an image LoRA of a person from about twenty photos. What could go wrong, and who should get a say?
 - if a company sells access to its model, why might it let customers make adapters instead of changing the model itself?
+- the flattering adapter left the magpie's grid untouched. If you could only see what a model wrote, how would you tell whether it had an adapter like that on?
 
 ### Troubleshooting
 
@@ -169,4 +188,4 @@ Most other fine-tuning uses adapters. For a model the size of GPT-3, [the paper 
 
 A real LoRA's strips work the way yours do. One reads the current input and the other writes to the output, and each pair adds the product of the two. The differences are where they live and how they're found. A real model has adapters inside every layer, and their numbers are learned by the same training process as the rest of the model. You read yours off the sheet by eye.
 
-Fine-tuning reaches further than the text it was trained on. Researchers fine-tuned models on a narrow task, writing insecure computer code, and [the models became misaligned on unrelated questions too](https://www.nature.com/articles/s41586-025-09937-5). [Ten well-chosen examples were enough to undo a model's safety training](https://arxiv.org/abs/2310.03693). The phrases in [Sycophancy](/modules/sycophancy/) are a deliberately nasty adapter of the same kind.
+Fine-tuning reaches further than the text it was trained on. Researchers fine-tuned models on a narrow task, writing insecure computer code, and [the models became misaligned on unrelated questions too](https://www.nature.com/articles/s41586-025-09937-5). [Ten well-chosen examples were enough to undo a model's safety training](https://arxiv.org/abs/2310.03693). The flattering adapter on this page is a small, deliberate example of the same kind.

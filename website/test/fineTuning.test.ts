@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { buildBigramModel, parseTokens } from "../src/lib/tokens";
+import { pick, rng } from "./utils/rewardsSim";
 
 // The Fine-tuning and LoRA module fine-tunes the model of The magpie's nest on
 // The kookaburra and the possum, and makes claims about the combined rows,
@@ -198,5 +199,78 @@ describe("Fine-tuning and LoRA module", () => {
     );
     expect(canWrite(bias, ["It", "possum"])).toBe(true);
     expect(canWrite(bias, sentence("the magpie kookaburra"))).toBe(true);
+  });
+
+  describe("the flattering adapter", () => {
+    const quoted = Array.from(
+      MODULE.split("## A nasty adapter: flattery")[1]
+        .split("##")[0]
+        .matchAll(/^> (\S.*)$/gm),
+      ([, line]) => line,
+    );
+    const flattery = toCounts(parseTokens(quoted.join("\n")));
+    const baseWords = new Set(baseTokens);
+
+    it("quotes three lines from the printable sycophancy sheet", () => {
+      expect(quoted).toHaveLength(3);
+      const sheet = read("../data/originals/sycophancy.txt");
+      for (const line of quoted) expect(sheet.split("\n")).toContain(line);
+    });
+
+    it("adds the eight new words the page names, hooked in after `.`, `!` and `is`", () => {
+      const newWords = [...flattery.keys()].filter((w) => !baseWords.has(w));
+      expect(newWords.toSorted()).toEqual(
+        ["you", "are", "so", "good", "for", "this", "much", "fun"].toSorted(),
+      );
+      const hooks = [...flattery.keys()].filter((w) => baseWords.has(w) && flattery.get(w)!.size);
+      expect(hooks.toSorted()).toEqual([".", "!", "is"].toSorted());
+      expect(rowOf(flattery, ".")).toEqual({ you: 1, good: 1, this: 1 });
+      expect(get(flattery, "is", "so")).toBeGreaterThan(0);
+    });
+
+    // Ten sentences from `.` at each strength, counting those with `you` or `good`.
+    function flatteringOutOfTen(strength: number, r: ReturnType<typeof rng>) {
+      const model = combine([base, 1], [flattery, strength]);
+      let count = 0;
+      for (let i = 0; i < 10; i++) {
+        const words: string[] = [];
+        let w = ".";
+        while (words.length < 12) {
+          const next = pick(model.get(w) ?? new Map(), r);
+          if (!next || next === "." || next === "!") break;
+          words.push(next);
+          w = next;
+        }
+        count += +(words.includes("you") || words.includes("good"));
+      }
+      return count;
+    }
+
+    it("the dose-response matches the expected counts on the board", () => {
+      const r = rng(11);
+      const runs = 3000;
+      const average = (k: number) =>
+        Array.from({ length: runs }, () => flatteringOutOfTen(k, r)).reduce((a, b) => a + b, 0) /
+        runs;
+      expect(average(0)).toBe(0);
+      const one = average(1);
+      const two = average(2);
+      const four = average(4);
+      expect(one).toBeGreaterThan(1);
+      expect(one).toBeLessThan(2);
+      expect(two).toBeGreaterThan(2);
+      expect(two).toBeLessThan(3);
+      expect(four).toBeGreaterThan(3.5);
+      expect(four).toBeLessThan(4.5);
+      expect(MODULE).toContain(
+        "Expect none at zero, one or two at full strength, two or three at twice, and about four at four times",
+      );
+
+      // the line usually climbs from full strength to four times, even on ten sentences
+      let climbs = 0;
+      for (let i = 0; i < runs; i++)
+        climbs += +(flatteringOutOfTen(4, r) > flatteringOutOfTen(1, r));
+      expect(climbs / runs).toBeGreaterThan(0.75);
+    });
   });
 });

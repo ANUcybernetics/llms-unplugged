@@ -528,8 +528,6 @@
   see:
     - label: Fine-tuning and LoRA
       href: /modules/fine-tuning/
-    - label: Sycophancy
-      href: /modules/sycophancy/
     - label: Synthetic Data
       href: /modules/synthetic-data/
 
@@ -702,7 +700,7 @@
     agreement and praise highly (OpenAI's April 2025 GPT-4o update went
     sycophantic after adding a thumbs-up reward), and training data that is
     itself full of flattery.
-  activity: a room voting thumbs up or down on what a model says about them
+  activity: a room voting thumbs up or down on what a model says about them, and a flattering adapter turned up
   related:
     - reward-hacking
     - fine-tuning
@@ -710,8 +708,8 @@
   see:
     - label: Rewards
       href: /modules/rewards/
-    - label: Sycophancy
-      href: /modules/sycophancy/
+    - label: Fine-tuning and LoRA
+      href: /modules/fine-tuning/#a-nasty-adapter-flattery
 
 - id: synthetic-data
   term: Synthetic data
