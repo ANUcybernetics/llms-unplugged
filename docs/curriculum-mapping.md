@@ -81,12 +81,13 @@ local code. Senior secondary (Years 11--12) is out of scope.
 
 ## Artificial intelligence in the curriculum
 
-No content description or achievement standard in v9.0 mentions artificial
-intelligence. It appears in the elaborations of Digital Technologies, from Years
-5--6 onwards: 21 elaborations name AI, and two more are about training
-predictive models. Elaborations are optional illustrations of a content
-description, so a school can meet the curriculum without them. They are still
-the clearest statement of what ACARA expects students to understand about AI.
+No Digital Technologies content description or achievement standard in v9.0
+mentions artificial intelligence. It appears in the subject's elaborations, from
+Years 5--6 onwards: 21 elaborations name AI, and two more are about training
+predictive models. (We have not searched the other learning areas.) Elaborations
+are optional illustrations of a content description, so a school can meet the
+curriculum without them. They are still the clearest statement of what ACARA
+expects students to understand about AI.
 
 Seven of the 23 are about AI tools in use (generating a database query,
 summarising a meeting, moderating a site), and the modules don't address them.
