@@ -108,9 +108,9 @@ The first, second and fourth themes are what the modules are for. Students train
 a model from data by hand, generate from it one word at a time, and watch it
 fail in ways they can trace back to the tallies. Two themes are covered in part.
 The modules have students rank a model's outputs and check them against a rule,
-but never against an authoritative source. And the model students build generates
-text, where the curriculum's examples of machine learning are classifiers.
-Nothing in the modules yet addresses misuse, privacy and security.
+but never against an authoritative source. And the model students build
+generates text, where the curriculum's examples of machine learning are
+classifiers. Nothing in the modules yet addresses misuse, privacy and security.
 
 On prompting, the modules explain why the text already on the page steers what a
 model writes next. They don't practise writing prompts for a commercial tool.
@@ -409,8 +409,8 @@ with these strands:
   Generation, Sampling, Beam Search.
 - **Processes and production skills > Implementing programs**: Generation, More
   Context, In-context Learning, Agentic AI, Fine-tuning and LoRA.
-- **Processes and production skills > Evaluating solutions**: Rewards,
-  Synthetic Data, Fine-tuning and LoRA.
+- **Processes and production skills > Evaluating solutions**: Rewards, Synthetic
+  Data, Fine-tuning and LoRA.
 
 The set does **not** substantively cover: networks and protocols, cyber security
 threat models (including the misuse of AI systems), user-interface design, or
@@ -431,8 +431,8 @@ vehicle.
   longer include a dedicated sentence-structure vehicle; Training (specialist
   vocabulary) and Word Embeddings (vocabulary and meaning) contribute.
 - **Literature / Literacy strands**: light touch, mostly through critical
-  analysis of generated vs. source text in Generation, Fine-tuning and LoRA
-  (the flattering adapter) and Synthetic Data.
+  analysis of generated vs. source text in Generation, Fine-tuning and LoRA (the
+  flattering adapter) and Synthetic Data.
 
 ## General capabilities
 
@@ -686,9 +686,9 @@ Literacy:
   direct hook is the Years 3--4 elaboration on predictive text
   (`AC9TDI4P06_E4`).
 - **Senior secondary (11--12)**: out of scope. Some modules (especially
-  Synthetic Data, Rewards, Word Embeddings) would extend naturally into the Digital
-  Solutions / Software Engineering / Specialist Mathematics syllabi, but those
-  syllabi are state-specific and not mapped here.
+  Synthetic Data, Rewards, Word Embeddings) would extend naturally into the
+  Digital Solutions / Software Engineering / Specialist Mathematics syllabi, but
+  those syllabi are state-specific and not mapped here.
 - **Assessment**: this document maps _teaching_ coverage, not assessment
   evidence. Each primary mapping above could plausibly serve as evidence, but
   the assessment task design (rubrics, work samples, moderation) is a separate
