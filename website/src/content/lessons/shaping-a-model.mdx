@@ -5,7 +5,7 @@ description:
   shape it three ways, with a flattering adapter, with judges and rule cards
   that reward it, and with its own output fed back as training data.
 audience: years 9 and up; media literacy, ethics, HASS and policy groups
-duration: about 3 hours (a half day)
+duration: about 3 hours 20 min (a half day)
 flavour: grid
 decks: []
 modules:
@@ -51,13 +51,13 @@ are estimates. If you deliver it, [tell us how it went](/about/#get-in-touch).
 | Intro                                               | 10 min |
 | [Training](/modules/training/), on the magpie story | 20 min |
 | [Generation](/modules/generation/)                  | 20 min |
-| [Fine-tuning and LoRA](/modules/fine-tuning/)       | 35 min |
+| [Fine-tuning and LoRA](/modules/fine-tuning/)       | 45 min |
 | _Break_                                             | 15 min |
 | [Rewards](/modules/rewards/)                        | 45 min |
 | [Synthetic Data](/modules/synthetic-data/)          | 30 min |
 | Discussion and close                                | 15 min |
 
-About three hours. For a two-hour slot, run Rewards without its thumbs-up round,
+About three hours and twenty minutes. For a two-hour slot, run Rewards without its thumbs-up round,
 skip the strips in Fine-tuning, and fold Synthetic Data's question ("what
 happens when the training data is model output?") into the closing discussion.
 
@@ -86,7 +86,7 @@ and the board shows the count climbing with the dose. Nobody wrote a rule saying
 
 **Rewards** gives every group the same goal, sentences about the magpie, and one of two ways to judge them. Half the groups rank their sentences as a panel; the other half check them against a rule card. Three rounds later the rule-card groups pass their check far more often, and much of what passes is nonsense, which is <GlossaryTerm id="reward-hacking">reward hacking</GlossaryTerm>. Then the whole room votes thumbs up or down on what a model says about them, and watches it learn to flatter: the route to <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm> that runs through rewards instead of data.
 
-**<GlossaryTerm id="synthetic-data">Synthetic Data</GlossaryTerm>** runs two relays side by side. In one, each group trains a fresh model on the last group's output and passes on its own; in the other, every group adds its output to the same sheet, on top of the story's tallies. Keep the counts for both chains on butchers paper. The first chain forgets words at every link, which is <GlossaryTerm id="model-collapse">model collapse</GlossaryTerm>, and the second doesn't.
+**<GlossaryTerm id="synthetic-data">Synthetic Data</GlossaryTerm>** runs two kinds of relay at once. Every group starts a chain and passes it one group along at each link, so nobody waits. In a replace chain, each group trains a fresh model on the last group's output and passes on its own; in an accumulate chain, every group adds its output to the same sheet, on top of the story's tallies. Keep the counts for every chain on butchers paper. The replace chains forget words at every link, which is <GlossaryTerm id="model-collapse">model collapse</GlossaryTerm>, and the accumulate chains don't.
 
 The close pulls the three together: three mechanisms, and in every case a person
 somewhere chose the data, the reward or the shortcut.
@@ -95,9 +95,12 @@ somewhere chose the data, the reward or the shortcut.
 
 For each group of three or four:
 
-- a printed [grid template](https://pdf.llmsunplugged.org/worksheets/grid.pdf)
-  (or grid paper) for the magpie model, a second one for the adapter sheet, and
-  one more for the synthetic-data relay
+- three printed
+  [48-word grids](https://pdf.llmsunplugged.org/worksheets/grid-48.pdf): one for
+  the magpie model, which has 32 words and needs room for the new ones, and one
+  for each of the two adapter sheets
+- two [32-word grids](https://pdf.llmsunplugged.org/worksheets/grid.pdf) (or
+  grid paper) for the synthetic-data relay
 - a d6 and a d20, pens, pencils and erasers
 - a copy of _The magpie's nest_ (from [Beam Search](/modules/beam-search/))
 - the
@@ -109,16 +112,17 @@ For the room:
 - a rule card or a panel brief from [Rewards](/modules/rewards/) for each group
 - for the thumbs-up round, a cup and about twenty-five small slips of paper for
   every six people
-- butchers paper and a marker for the counts down the relay chain
+- butchers paper and a marker for the counts down the relay chains
 
 ## Before you deliver
 
 - print the grids, the story and the sycophancy sheets
 - decide which groups get the rule card and which the panel brief in Rewards,
   and which strength of the flattering adapter each group will run
-- seat the groups in a chain, or at least know the order, so the synthetic-data
-  relay passes cleanly without everyone standing up
-- rule the butchers paper up beforehand for the counts at each link
+- know the order the groups pass round in, so the synthetic-data relay passes
+  cleanly without everyone standing up
+- rule the butchers paper up beforehand, with a row for each chain and a column
+  for each link
 - read the discussion questions in the
   [Fine-tuning and LoRA](/modules/fine-tuning/), [Rewards](/modules/rewards/)
   and [Synthetic Data](/modules/synthetic-data/) instructor notes and choose two
