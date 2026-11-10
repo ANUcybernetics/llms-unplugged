@@ -116,6 +116,14 @@ Nothing in the modules yet addresses misuse, privacy and security.
 On prompting, the modules explain why the text already on the page steers what a
 model writes next. They don't practise writing prompts for a commercial tool.
 
+Two earlier elaborations describe predictive text without calling it AI: using
+autocomplete features such as predictive text in messaging apps
+(`AC9TDI4P06_E4`, Years 3--4), and judging the tone of text generated using
+autocomplete (`AC9TDI6P07_E5`, Years 5--6). Predicting the next word from the
+words before it is what the model in Training and Generation does, so these are
+the earliest curriculum hooks for those two modules. Both sit under content
+descriptions about using digital tools, not about how the tools work.
+
 ### New Zealand
 
 New Zealand's proposed Technology curriculum for Years 0--10 (the National
@@ -652,6 +660,13 @@ The seven about AI tools in use, which the modules don't address, are
 `AC9TDI8P02_E3`, `AC9TDI8P12_E5`, `AC9TDI10P08_E3`, `AC9TDI10P10_E1`,
 `AC9TDI10P11_E1`, `AC9TDI10P11_E5` and `AC9TDI10P12_E6`.
 
+The two about predictive text, which don't name AI:
+
+- `AC9TDI4P06_E4` (Years 3--4) --- using autocomplete features in text authoring
+  tools.
+- `AC9TDI6P07_E5` (Years 5--6) --- judging the tone and appropriateness for the
+  intended audience of text generated using autocomplete.
+
 ### English
 
 Language:
@@ -675,7 +690,9 @@ Literacy:
 - **Foundation to Year 4**: not currently mapped. The dice-and-grid mechanics
   are accessible to upper primary, but the content descriptions at F--4
   emphasise concrete materials, not symbolic systems; we recommend treating any
-  F--4 use as enrichment rather than as primary curriculum coverage.
+  F--4 use as enrichment rather than as primary curriculum coverage. The one
+  direct hook is the Years 3--4 elaboration on predictive text
+  (`AC9TDI4P06_E4`).
 - **Senior secondary (11--12)**: out of scope. Some modules (especially
   Synthetic Data, RLHF, Word Embeddings) would extend naturally into the Digital
   Solutions / Software Engineering / Specialist Mathematics syllabi, but those
