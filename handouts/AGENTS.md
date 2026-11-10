@@ -8,12 +8,13 @@ themselves live on the website
 
 ## Directory structure
 
-- `worksheets/` - blank templates (grid, trigram-template,
+- `worksheets/` - blank templates (grid, grid-48, trigram-template,
   truncation-strategies, blank-page)
 - `handout-common.typ` - the worksheets' page furniture (mark, gold rule, URL),
   built on the brand definitions in `cli/cutout-common.typ` so a worksheet and a
-  set of CLI sheets read as one family. `grid.typ` sets its own, being a
-  full-bleed A3 grid with no margins to hang a header on
+  set of CLI sheets read as one family. The grids (`grid-common.typ`, drawn at
+  32 words a side by `grid.typ` and 48 by `grid-48.typ`) set their own, being
+  full-bleed A3 with no margins to hang a header on
 - `try-it-yourself-spread.typ` - designer reference for a glossy-booklet 2-page
   spread: generate-with-a-d6 worked example (model = the opening stanzas of The
   Cat in the Hat, hardcoded in the file; the Seuss corpus stays untracked)
@@ -34,7 +35,7 @@ typst compile --root .. worksheets/sycophancy-text.typ
 
 PDFs are written to `out/` (gitignored).
 
-The grid worksheet and the sycophancy training-text sheet are published under
+The grid worksheets and the sycophancy training-text sheet are published under
 `worksheets/` on pdf.llmsunplugged.org (linked from the lessons and the ACDICT
 news post): `make publish` stages them to `../out/pdfs/worksheets/`; upload with
 `ops/bucket-sync.py upload out/pdfs` from the repo root, then refresh and commit
