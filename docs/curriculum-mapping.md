@@ -19,11 +19,10 @@ themselves have not yet been reviewed by an external curriculum expert.
 LLMs Unplugged teaches the core mechanics of large language models (LLMs)
 through hands-on, pen-and-paper-and-dice activities. The pedagogy is unplugged
 (no computers required) but the concepts are the same ones used in production AI
-systems. This puts the resource in a curriculum sweet spot: it is rigorous
-enough to count as Digital Technologies content, but its activities are also
-legible to Mathematics (probability, statistics), English (language and text
-structure), and the general capabilities (Critical and Creative Thinking,
-Digital Literacy, Ethical Understanding).
+systems. The content is rigorous enough to count as Digital Technologies, and
+the activities also fit Mathematics (probability, statistics), English (language
+and text structure), and the general capabilities (Critical and Creative
+Thinking, Digital Literacy, Ethical Understanding).
 
 The mapping below is meant to help two audiences:
 
@@ -42,23 +41,23 @@ local code. Senior secondary (Years 11--12) is out of scope.
 ## Mapping principles
 
 1. **Anchor to content description codes**, not topic labels. The codes (such as
-   `AC9TDI8P02`) are stable and auditable; topic labels are not. The exception
-   is artificial intelligence, which v9.0 names only in elaborations, so the AI
-   section below cites elaboration codes (such as `AC9TDI8P11_E5`).
+   `AC9TDI8P02`) are stable and auditable. The exception is artificial
+   intelligence, which v9.0 names only in elaborations, so the AI section below
+   cites elaboration codes (such as `AC9TDI8P11_E5`).
 2. **Distinguish primary from secondary alignment.** A _primary_ mapping means
    the module directly addresses the content description and could be used as a
    teaching/assessment vehicle for it. A _secondary_ mapping means the module
    touches on the content but should not be relied on as the main learning
    experience.
 3. **Year band, not exact year.** The materials work best in 5--6, 7--8, and
-   9--10 bands; we recommend bands rather than single years.
+   9--10 bands.
 4. **Cross-curricular by design.** Almost every module maps to more than one
    learning area. We list each alignment under its strongest learning area
    first.
-5. **Be honest about what's out of scope.** LLMs Unplugged does not teach
-   programming syntax, formal computational complexity, or the full mathematical
-   apparatus of probability theory. Where a module stops short of a content
-   description, we say so.
+5. **State what's out of scope.** LLMs Unplugged does not teach programming
+   syntax, formal computational complexity, or the full mathematical apparatus
+   of probability theory. Where a module stops short of a content description,
+   we say so.
 
 ## At-a-glance
 
@@ -152,8 +151,7 @@ capabilities, and a one-line justification per code.
 
 ### [Weighted Randomness](https://www.llmsunplugged.org/modules/weighted-randomness/)
 
-Probability sampling from a target distribution using dice and beads. The
-mathematical bedrock for everything that follows.
+Probability sampling from a target distribution using dice and beads.
 
 - **Best fit:** Years 5--8
 - **Primary**
@@ -210,8 +208,7 @@ Use the trained bigram model to generate new text via weighted sampling.
 ### [Pre-trained Model Generation](https://www.llmsunplugged.org/modules/pretrained-generation/)
 
 Use a pre-built booklet to generate text without training your own model.
-Introduces the consume-vs-build distinction that underpins most real-world AI
-usage.
+Introduces the distinction between using a model and building one.
 
 - **Best fit:** Years 5--8
 - **Primary**
@@ -394,8 +391,8 @@ votes teach a model to flatter.
 
 ### Digital Technologies
 
-Most concentrated coverage. Across the module set, students engage substantively
-with these strands:
+Digital Technologies has the most concentrated coverage. Across the module set,
+students engage substantively with these strands:
 
 - **Knowledge and understanding > Representation of data**: covered by Training,
   More Context, In-context Learning, Word Embeddings.
@@ -436,13 +433,13 @@ vehicle.
 
 ## General capabilities
 
-LLMs Unplugged is unusually rich in GC coverage because the activities require
-students to _do_ the thinking, not just learn about it.
+The activities have students do the thinking themselves, so they exercise the
+general capabilities as well as the content.
 
-- **Digital Literacy** --- the entire course is an extended worked example of
-  "managing and operating" digital systems concepts without screens, with
-  particular strength in _Investigating > Locate, generate and access data_ and
-  _Managing and operating > Manage content, data and information_.
+- **Digital Literacy** --- the course is an extended worked example of "managing
+  and operating" digital systems concepts without screens, with particular
+  strength in _Investigating > Locate, generate and access data_ and _Managing
+  and operating > Manage content, data and information_.
 - **Critical and Creative Thinking** --- _Inquiring_, _Generating ideas,
   possibilities and actions_, _Analysing, synthesising and evaluating reasoning
   and procedures_, and _Reflecting_ are all exercised across the module
