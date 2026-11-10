@@ -28,7 +28,7 @@ One of the questions we hear most from teachers is "where does this fit in the c
 
 ## Other connections
 
-There are also potential connections to English outcomes for language, text structure and organisation --- another thread worth exploring depending on how you frame the activities in your classroom.
+There are also potential connections to English outcomes for language, text structure and organisation, depending on how you frame the activities in your classroom.
 
 For more on how AI connects to the Australian Curriculum, ACARA's [Curriculum Connections](https://www.australiancurriculum.edu.au/resources/curriculum-connections) site includes AI as one of the searchable themes.
 

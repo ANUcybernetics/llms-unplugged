@@ -39,7 +39,7 @@ tokenisers encode word boundaries.
 
 Each of those five tokens becomes a coloured brick in the word mark, arranged on
 two lines to spell out the title. Each brick cycles between its text label and a
-4×4 dot pattern encoding the token ID in binary---more on that below.
+4×4 dot pattern encoding the token ID in binary.
 
 <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden;">
   <TokenLogo client:visible mode="title" />
@@ -70,12 +70,11 @@ Every dot pattern on the site is a real token ID rendered the same way.
 ## The five-up
 
 There's also a static version that lays all five token grids side by side in a
-single row---no animation, just the five bit patterns sitting next to each
-other. It reads left to right as `LL` · `Ms` · `\u00A0Un` · `plug` · `ged`.
+single row, with no animation. It reads left to right as `LL` · `Ms` · `\u00A0Un` · `plug` · `ged`.
 Because it's completely static it works nicely on things like t-shirts and
 stickers where you can't rely on animation.
 
-The first version matches the favicon colour scheme---gold dots on a dark
+The first version matches the favicon colour scheme, with gold dots on a dark
 background, uniform across all five tokens:
 
 <img
@@ -113,15 +112,14 @@ typeface:
 
 The grid holds the bit pattern for `LL` (token 3069), which is the frame the
 favicon rests on before its animation starts. Unlike the favicon, the lockup
-doesn't cycle: at favicon size the flicker is an easter egg nobody notices until
-they do, but in a page header it's a moving object competing with the content
+doesn't cycle: at favicon size the flicker is an easter egg, but in a page header it's a moving object competing with the content
 underneath it. There's an animated version at `/lockup-animated.svg` for hero
 and social contexts where that's the point.
 
 The wordmark is baked to outlines rather than referenced as a font, so the file
 carries its own letterforms and renders identically as an `<img>`, in print, or
 dropped into a design tool with no network access. The background stays
-transparent and the wordmark comes in two colours---white in `/lockup.svg` for
+transparent and the wordmark comes in two colours: white in `/lockup.svg` for
 dark surfaces, near-black in `/lockup-light.svg` for light ones. On ANU gold the
 light variant is the one to reach for; white on gold clears 3:1 but not much
 more.
@@ -147,8 +145,8 @@ listeners.
 
 There's also a stripped-back variant that just shows the shuffling brick grid
 without ever highlighting or assembling the title tokens. It's useful as a
-visual backdrop---we use it behind divider slides in our workshop
-presentations---where you want the token texture without the full animation
+visual backdrop. We use it behind divider slides in our workshop
+presentations, where you want the token texture without the full animation
 competing for attention.
 
 <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden;">

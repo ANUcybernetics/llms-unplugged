@@ -22,7 +22,7 @@ post is for them.
 
 I'll be talking mostly to the people in the room, so the online experience will
 be a bit fly-on-the-wall---I won't be watching the chat closely while I present.
-But if you're keen, you can genuinely do the whole thing yourself as we go; it's
+But if you're keen, you can do the whole thing yourself as we go; it's
 all analogue. You'll need:
 
 - a printed [grid template](https://pdf.llmsunplugged.org/worksheets/grid.pdf) (or any grid

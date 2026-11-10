@@ -20,7 +20,7 @@ He was right: paste a line of Chinese into any of them and nothing happened.
 The reason was buried in the tokeniser. To turn text into a model you first cut
 it into tokens, and our tokeniser only recognised the letters `a` to `z`.
 Everything else was treated as a gap between words and thrown away: digits,
-stray symbols, and, as it turns out, every Chinese character. Feed it a whole
+stray symbols, and every Chinese character. Feed it a whole
 poem and you got an empty model, with nothing to count and nothing to generate
 from.
 
@@ -37,7 +37,7 @@ is a little like splitting English into its letters. So the tools now segment
 into words by default, using [jieba](https://github.com/fxsjy/jieba), the
 standard open-source Chinese tokeniser he recommended.[^ambiguity] Give
 it 深圳最高的楼是平安金融中心 and it comes back
-as 深圳 / 最高 / 的 / 楼 / 是 / 平安 / 金融中心, not a run of loose characters.
+as 深圳 / 最高 / 的 / 楼 / 是 / 平安 / 金融中心.
 
 [^ambiguity]:
     The boundaries are not always clean. 最高的 ("tallest") could be one word,
