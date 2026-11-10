@@ -25,16 +25,16 @@ Two chains start from the same model of the same story. In the **replace** chain
 
 ## You will need
 
-- two copies of the model of _The magpie's nest_: the table in [Rewards](/modules/rewards/) or [Beam Search](/modules/beam-search/), or grids you trained on the story in [Training](/modules/training/)
-- for each link in the replace chain, a blank [grid template](https://pdf.llmsunplugged.org/worksheets/grid.pdf)
-- a d20 and a d6 per link, pens and paper
+- for each table, a copy of the model of _The magpie's nest_: the table in [Rewards](/modules/rewards/) or [Beam Search](/modules/beam-search/), or a grid the table trained on the story in [Training](/modules/training/)
+- blank [grid templates](https://pdf.llmsunplugged.org/worksheets/grid.pdf) or grid paper: one for every link after the first in each replace chain
+- a d20 and a d6 per table, pens and paper
 - a whiteboard for the counts
 
-Each link can be a small group or one person. Split the room into two chains of three or four links.
+A table is three or four people. Every table starts a chain of its own and all the tables work at once, so it takes at least two tables and works with any number.
 
 ## Your goal
 
-Send the same story down two chains and compare what comes out the far ends. Stretch goal: work out which words each chain lost, and why those ones.
+Send the same story down two kinds of chain and compare what comes out the far ends. Stretch goal: work out which words each chain lost, and why those ones.
 
 ## Key idea
 
@@ -42,11 +42,13 @@ A model can only write words it was trained on, and a forty-word sample of a mod
 
 ## Running the chains
 
-Label the links in each chain A, B, C and so on. Both chains start from a copy of the magpie's model.
+Number the tables round the room. Odd-numbered tables start a replace chain and even-numbered tables an accumulate chain. Name each chain after the table that started it (R1, A2, R3 and so on) and write the name on whatever gets passed on.
 
-**Replace chain.** Link A generates from the magpie's model. Every later link:
+Every table is link A of its own chain, starting from its copy of the magpie's model. When all the tables have finished a link, each one passes its chain to the next table round the room and takes the chain coming from the table before. So every table works at every link, and each chain moves one table along at a time. What lands on your table tells you what to do: forty words on their own are a replace chain, and a sheet of tallies is an accumulate chain.
 
-1. **Trains a fresh model** on the text it was handed, as in [Training](/modules/training/). Start a new <GlossaryTerm id="grid">grid</GlossaryTerm>; this model's only knowledge is the previous link's output.
+**Replace chain.** Link A generates forty words from the magpie's model, starting from `.`, and passes them on. Every later link:
+
+1. **Trains a fresh model** on the forty words it was handed, as in [Training](/modules/training/). Start a new <GlossaryTerm id="grid">grid</GlossaryTerm>; this model's only knowledge is the previous link's output.
 2. **Generates forty words** from it, starting from `.`, as in [Generation](/modules/generation/).
 3. **Passes on the forty words and nothing else.** No story, no grid.
 
@@ -60,16 +62,16 @@ In both chains, if you land on a word with nothing after it, write `.` and carry
 
 To roll on a row, number its options by their counts, roll the d20 and roll again if it comes up higher than the row total. The accumulate sheet's `.` and `the` rows pass 20 as soon as link A has tallied its words. For a row that big, roll the d6 with the d20: on 1 or 2 add nothing, on 3 or 4 add 20, on 5 or 6 add 40.
 
-Before passing anything on, each link writes two numbers on the board:
+Before passing anything on, each table writes two numbers on the board, beside its chain's name:
 
 - **words the model knows**: the rows on the sheet it generated from that have at least one count
 - **words it used**: the different words in the forty it generated
 
 ## The board
 
-The chains finish at about the same time, because a replace link trains a small new grid while an accumulate link tallies into a bigger one. Put the two columns side by side.
+Rule the board up with a row for each chain and a column for each link, replace chains at the top. A link takes about the same time in either kind of chain, because a replace link trains a small new grid while an accumulate link tallies into a bigger one, so the tables stay in step.
 
-Typical numbers, averaged over many simulated chains (yours will wobble around them):
+Typical numbers, averaged over many simulated chains (each of yours will wobble around them, and with several chains of each kind the board shows how much):
 
 | link | replace: knows | replace: used | accumulate: knows | accumulate: used |
 | ---- | -------------- | ------------- | ----------------- | ---------------- |
@@ -84,13 +86,13 @@ Three things to point at:
 - the accumulate chain never loses a word, because the story's tallies are still on the sheet. The words it uses barely change
 - the words the replace chain lost first, like `worm`, `sun` and `warbles`, appeared once in the story
 
-Then read the far ends of both chains aloud, and then the story.
+Then each table reads out the last forty words it generated, replace chains first, and someone reads the story.
 
 ## Instructor notes
 
 ### Timing
 
-A link takes about ten minutes either way: a replace link tallies forty words into a fresh grid and then rolls forty more, while an accumulate link rolls forty and then tallies them. Three links fit in thirty minutes with time for the board; four need about forty. The chains run in parallel, so the wall clock is set by the length of a chain, not the size of the class. Links waiting their turn can predict what will come out the far end of each chain and check at the readback.
+A link takes about ten minutes either way: a replace link tallies forty words into a fresh grid and then rolls forty more, while an accumulate link rolls forty and then tallies them. Three links fit in thirty minutes with time for the board; four need about forty. Every table works at every link, so the time is set by the length of a chain, not the size of the class.
 
 ### Discussion questions
 
@@ -103,11 +105,11 @@ A link takes about ten minutes either way: a replace link tallies forty words in
 
 ### Classroom variations
 
-**Filter before you pass on.** In a third chain, each link only passes on sentences that contain `magpie`, the rule card from [Rewards](/modules/rewards/). It's the way much synthetic data is made now: generate a lot, keep what passes a check. What does the filter keep, and what does it throw away?
+**Filter before you pass on.** In one replace chain, each link only passes on sentences that contain `magpie`, the rule card from [Rewards](/modules/rewards/). It's the way much synthetic data is made now: generate a lot, keep what passes a check. What does the filter keep, and what does it throw away?
 
-**Joker mode.** For a link waiting its turn: invent a grid from nothing (made-up words, tallies anywhere), generate forty words and start a third replace chain from them. It narrows the same way as the real one, because the narrowing comes from the sampling, whatever the source.
+**Joker mode.** One table starts its replace chain from a grid it invents (made-up words, tallies anywhere) instead of the magpie's model. That chain narrows the same way as the others, because the narrowing comes from the sampling, whatever the source.
 
-**Start from a booklet.** Run the replace chain from a [pre-trained booklet](/modules/pretrained-generation/) instead of the magpie's model. The bigger vocabulary means a bigger first drop, and the chain takes longer to bottom out.
+**Start from a booklet.** Run a replace chain from a [pre-trained booklet](/modules/pretrained-generation/) instead of the magpie's model. The bigger vocabulary means a bigger first drop, and the chain takes longer to bottom out.
 
 ### Connection to current LLMs
 
