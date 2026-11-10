@@ -166,8 +166,9 @@ three ways worth saying out loud:
   numbers instead of separate cells, so what it learns about `cat` reaches `dog`
   ([Word Embeddings](/modules/word-embeddings/)).
 - **it's been taught to answer.** Ask the room a question and it continues the
-  question. Turning that into something that answers you is another round of <GlossaryTerm id="post-training">training</GlossaryTerm>, on conversations
-  ([RLHF](/modules/rlhf/)).
+  question. Turning that into something that answers you is more <GlossaryTerm id="post-training">training</GlossaryTerm>: first on
+  example conversations ([Fine-tuning and LoRA](/modules/fine-tuning/)), then
+  on rewards ([Rewards](/modules/rewards/)).
 
 None of those changes the loop: look at the context, weigh the options, pick
 one, write it down. Every reply from <GlossaryTerm id="chatbot">Claude or ChatGPT</GlossaryTerm> is produced one token at

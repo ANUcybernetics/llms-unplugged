@@ -26,6 +26,10 @@ const modules = defineCollection({
     // Unlisted modules are reachable only via direct links --- hidden from the
     // sidebar and the /modules index (see src/lib/modules.ts).
     listed: z.boolean().default(true),
+    // Slug of the module that replaces this one. A replaced module is unlisted
+    // and kept only for teachers already running it from a direct link; its
+    // page says what replaced it.
+    replacedBy: z.string().optional(),
   }),
 });
 

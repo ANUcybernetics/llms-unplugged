@@ -15,7 +15,9 @@ import { topicOrder } from "../src/lib/topics";
  *   `/modules/weighted-randomness` but it wasn't reachable from the nav. It is
  *   now intentionally `listed: false`, so the contract is "an unlisted module
  *   must still be linked from a listed module" rather than "must be in the
- *   sidebar".
+ *   sidebar". A module with `replacedBy` is the exception: it is a deliberate
+ *   dead-end, kept for teachers already running it from a direct link, and its
+ *   page links forward to the listed module that replaced it.
  */
 interface ModuleFrontmatter {
   title: string;
@@ -23,6 +25,7 @@ interface ModuleFrontmatter {
   order?: number;
   topic?: string;
   listed?: boolean;
+  replacedBy?: string;
 }
 
 interface Module {
@@ -92,7 +95,7 @@ describe("module consistency", () => {
     const orphans: string[] = [];
 
     for (const [slug, module] of modules) {
-      if (module.data.listed !== false) continue;
+      if (module.data.listed !== false || module.data.replacedBy) continue;
       const linked = listed.some((l) => l.body.includes(`/modules/${slug}`));
       if (!linked) orphans.push(slug);
     }
@@ -101,5 +104,20 @@ describe("module consistency", () => {
       orphans,
       `Unlisted modules with no inbound link from a listed module (dead-ends):\n${orphans.join("\n")}`,
     ).toEqual([]);
+  });
+
+  it("every replaced module is unlisted and names a listed replacement", () => {
+    const modules = loadModules();
+    const bad: string[] = [];
+    for (const [slug, module] of modules) {
+      const target = module.data.replacedBy;
+      if (!target) continue;
+      if (module.data.listed !== false) bad.push(`${slug} is replaced but still listed`);
+      const replacement = modules.get(target);
+      if (!replacement || replacement.data.listed === false) {
+        bad.push(`${slug}: replacedBy '${target}' is not a listed module`);
+      }
+    }
+    expect(bad).toEqual([]);
   });
 });

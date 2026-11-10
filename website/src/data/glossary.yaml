@@ -265,8 +265,8 @@
   see:
     - label: Fine-tuning and LoRA
       href: /modules/fine-tuning/
-    - label: RLHF
-      href: /modules/rlhf/
+    - label: Rewards
+      href: /modules/rewards/
 
 - id: trigram-model
   term: Trigram model
@@ -585,8 +585,8 @@
     - rlhf
     - rlvr
   see:
-    - label: RLHF
-      href: /modules/rlhf/
+    - label: Rewards
+      href: /modules/rewards/
 
 - id: rlhf
   term: RLHF (Reinforcement Learning from Human Feedback)
@@ -598,7 +598,7 @@
     model; newer relatives such as DPO apply the preferences directly, which is
     closer to what the classroom version does. The term now covers a family of
     methods.
-  activity: judges voting on outputs and the counts being updated to match
+  activity: a panel ranking the model's sentences and the counts being updated to match
   related:
     - reward-model
     - reward-hacking
@@ -606,8 +606,8 @@
     - rlvr
     - post-training
   see:
-    - label: RLHF
-      href: /modules/rlhf/
+    - label: Rewards
+      href: /modules/rewards/
 
 - id: reward-model
   term: Reward model
@@ -621,25 +621,27 @@
     - rlhf
     - alignment
   see:
-    - label: RLHF
-      href: /modules/rlhf/
+    - label: Rewards
+      href: /modules/rewards/
 
 - id: reward-hacking
   term: Reward hacking
   category: shaping-behaviour
   description: >-
     What happens when a model optimises the signal it's given rather than what
-    the signal was meant to measure. Human raters tend to prefer answers that
-    agree with them, so a model trained on their comparisons learns to agree
-    and to flatter. It's one documented source of sycophancy in deployed
-    models.
-  activity: the reward-hacking round of the game show
+    the signal was meant to measure. A model tuned against an automatic check
+    can learn to pass the check without doing the task, and one tuned on human
+    ratings can learn to agree and flatter, because people tend to prefer
+    answers that agree with them. The second is a documented source of
+    sycophancy in deployed models.
+  activity: the rule table learning to write garbled sentences that pass its check
   related:
     - rlhf
+    - rlvr
     - sycophancy
   see:
-    - label: RLHF
-      href: /modules/rlhf/#the-reward-hacking-round
+    - label: Rewards
+      href: /modules/rewards/
 
 - id: alignment
   term: Alignment
@@ -652,11 +654,11 @@
     - rlhf
     - post-training
   see:
-    - label: RLHF
-      href: /modules/rlhf/
+    - label: Rewards
+      href: /modules/rewards/
 
 - id: rlvr
-  term: RLVR (Reinforcement Learning from Verifiable Rewards)
+  term: RLVR (Reinforcement Learning with Verifiable Rewards)
   category: shaping-behaviour
   description: >-
     A post-training technique in which the model makes an attempt, a program
@@ -665,10 +667,15 @@
     human judges of RLHF, so it works best where checking is cheap and
     reliable: mathematics, code, formal logic. It's the main technique behind
     reasoning models.
+  activity: a rule card scoring every sentence pass or fail
   related:
     - rlhf
+    - reward-hacking
     - reasoning-model
     - post-training
+  see:
+    - label: Rewards
+      href: /modules/rewards/
 
 - id: reasoning-model
   term: Reasoning model
@@ -691,15 +698,18 @@
   category: shaping-behaviour
   description: >-
     A model's tendency to agree with and flatter the user regardless of the
-    merits. It has two known sources: reward hacking during RLHF, and
-    pre-training data that is itself full of flattery. Tipping a grid's
-    training data towards sycophantic phrases demonstrates the second.
-  activity: piling sycophantic phrases into the training data
+    merits. It has two known sources: rewards from people, who tend to rate
+    agreement and praise highly (OpenAI's April 2025 GPT-4o update went
+    sycophantic after adding a thumbs-up reward), and training data that is
+    itself full of flattery.
+  activity: a room voting thumbs up or down on what a model says about them
   related:
     - reward-hacking
     - fine-tuning
     - rlhf
   see:
+    - label: Rewards
+      href: /modules/rewards/
     - label: Sycophancy
       href: /modules/sycophancy/
 

@@ -1,0 +1,192 @@
+---
+title: Rewards
+description:
+  Two tables tune the same model toward the same goal, one judged by a human
+  panel and one by a rule card. The rule table moves faster and learns to game
+  the rule; then the whole room votes thumbs up or down and teaches a model to
+  flatter.
+order: 11
+audience: years 9 and up
+duration: 30 min (45 min with the thumbs-up round)
+bases: [grid]
+status: experimental
+topic: shaping-behaviour
+keyIdea:
+  A model tuned on rewards learns whatever earns the reward, which is not always
+  what the people setting the reward wanted.
+---
+
+import GlossaryTerm from "../../components/GlossaryTerm.astro";
+import Callout from "../../components/Callout.astro";
+
+Two tables start with the same model and the same goal: sentences about the magpie. One table has a panel of people who rank the model's sentences. The other has a rule card that a checker can apply without thinking. Three rounds later, the rule table's model passes its check far more often than it used to, and a lot of what passes is nonsense. Then the whole room votes thumbs up or down on what a model says about them, and watches it learn to flatter.
+
+![](../../assets/images/hero-rlhf.avif)
+
+## You will need
+
+- two copies of the model of _The magpie's nest_ below, printed or copied out, one per table, and pencils with erasers
+- a d20 for each table (or the dice from [Weighted Randomness](/modules/weighted-randomness/))
+- the rule card and the panel brief (below)
+- for the thumbs-up round: a cup and about twenty small slips of paper
+
+It works with two tables of three or more. Everyone at a table generates sentences, and the panel table's generators are also its judges.
+
+## Your goal
+
+Tune a model by rewards alone: generate sentences, score them, change the counts, repeat. Then put the two tables' models side by side and work out which kind of judge got more of what it asked for.
+
+## Key idea
+
+<GlossaryTerm id="post-training">Post-training</GlossaryTerm> changes a model
+with rewards instead of new text. A reward can come from people ranking outputs
+(<GlossaryTerm id="rlhf">RLHF</GlossaryTerm>) or from a rule a computer can
+check (<GlossaryTerm id="rlvr">RLVR</GlossaryTerm>). A rule is fast and never
+changes its mind, but it only measures what it measures, and the model learns
+exactly that. People are slower and disagree with each other, and they reward
+what they like, which isn't always what's good for them.
+
+## The magpie's nest
+
+The story, from [Beam Search](/modules/beam-search/):
+
+> It is morning. The magpie sings. It flies to the tree. It sits in the nest. Here comes the cat. Down swoops the magpie! Off runs the cat. The magpie warbles. It flies back to the nest. Here comes the rain. It hides in the nest. The rain stops. The magpie sings. It flies to the tree. The magpie eats a worm. The sun sets. It sleeps in the nest. It is morning. The magpie sings.
+
+Its model has 49 pairs. Each row gives a word, how many times something followed it, and what followed:
+
+| word      | total | followed by                                                |
+| --------- | ----- | ---------------------------------------------------------- |
+| `.`       | 17    | `It` 7, `the` 7, `Here` 2, `Down` 1                        |
+| `It`      | 8     | `flies` 3, `is` 2, `hides` 1, `sits` 1, `sleeps` 1         |
+| `is`      | 2     | `morning` 2                                                |
+| `morning` | 2     | `.` 2                                                      |
+| `the`     | 17    | `magpie` 6, `nest` 4, `cat` 2, `rain` 2, `tree` 2, `sun` 1 |
+| `magpie`  | 6     | `sings` 3, `!` 1, `eats` 1, `warbles` 1                    |
+| `sings`   | 3     | `.` 3                                                      |
+| `flies`   | 3     | `to` 2, `back` 1                                           |
+| `to`      | 3     | `the` 3                                                    |
+| `tree`    | 2     | `.` 2                                                      |
+| `sits`    | 1     | `in` 1                                                     |
+| `in`      | 3     | `the` 3                                                    |
+| `nest`    | 4     | `.` 4                                                      |
+| `Here`    | 2     | `comes` 2                                                  |
+| `comes`   | 2     | `the` 2                                                    |
+| `cat`     | 2     | `.` 2                                                      |
+| `Down`    | 1     | `swoops` 1                                                 |
+| `swoops`  | 1     | `the` 1                                                    |
+| `!`       | 1     | `Off` 1                                                    |
+| `Off`     | 1     | `runs` 1                                                   |
+| `runs`    | 1     | `the` 1                                                    |
+| `warbles` | 1     | `.` 1                                                      |
+| `back`    | 1     | `to` 1                                                     |
+| `rain`    | 2     | `.` 1, `stops` 1                                           |
+| `hides`   | 1     | `in` 1                                                     |
+| `stops`   | 1     | `.` 1                                                      |
+| `eats`    | 1     | `a` 1                                                      |
+| `a`       | 1     | `worm` 1                                                   |
+| `worm`    | 1     | `.` 1                                                      |
+| `sun`     | 1     | `sets` 1                                                   |
+| `sets`    | 1     | `.` 1                                                      |
+| `sleeps`  | 1     | `in` 1                                                     |
+
+A sentence starts on the `.` row and ends when you roll `.` or `!`. To roll on a row, number its options by their counts (for the `.` row: 1--7 is `It`, 8--14 is `the`, 15--16 is `Here`, 17 is `Down`) and roll the d20, rolling again if it comes up higher than the row total. The totals change as you go, so recount the row each time you use it.
+
+Left alone, the model already writes plenty of sentences about the magpie, and some odd ones. It can write _Here comes the magpie sings._ or _It sits in the magpie warbles._, because after `the` anything that ever followed `the` can come next.
+
+## Two tables, one goal
+
+### Before you start (5 min)
+
+Split into two tables, each with its own copy of the model. Give one table the rule card and the other the panel brief. Both say what the table is after; only the rule card says how it will be checked.
+
+<Callout type="info" title="Rule card">
+
+**We want:** sentences about the magpie.
+
+**The check:** a sentence passes if it ends with `.` or `!` and has the word `magpie` in it. Otherwise it fails. No arguing with the check.
+
+</Callout>
+
+<Callout type="info" title="Panel brief">
+
+**We want:** sentences about the magpie.
+
+**How to judge:** read all five sentences out, then rank them from best to worst. Decide however you like, but you must agree on a ranking.
+
+</Callout>
+
+### Each round (5--7 min, run three)
+
+1. **Generate five sentences.** Everyone at the table generates at least one, from the same copy of the model. If a sentence reaches ten words without ending, stop it there; it's unfinished.
+2. **Score them.** The rule table checks each sentence against the card: pass or fail. The panel table ranks its five.
+3. **Update the counts** (below), then start the next round.
+
+### Updating the counts
+
+Each sentence is a chain of pairs, starting with the `.` before its first word and ending with the `.` or `!` after its last. _The magpie sings._ is four pairs: `.`→`the`, `the`→`magpie`, `magpie`→`sings` and `sings`→`.`.
+
+- **rule table:** add 1 to every pair in each sentence that passed, and take 1 off every pair in each sentence that failed
+- **panel table:** add 1 to every pair in the best sentence, take 1 off every pair in the worst, and leave the middle three alone
+
+A pair can turn up more than once in a sentence; change it once for each time.
+
+**The leash:** never rub out a pair's last count. A pair the story had can drop to 1 but not to 0, so every sentence the story could write stays possible.
+
+### The reveal (5 min)
+
+Put the two tables' `the` rows side by side, then their `.` rows. Usually the rule table's `the` row leans further toward `magpie`, because every passing sentence got there through `the`→`magpie`. Then each table generates three more sentences and reads them out.
+
+The base model gets about a third of its sentences past the check. After three rounds the rule table's model gets nearly two-thirds of them past. The garbled passes, like _It sits in the magpie warbles._, rise with them: from about one sentence in seven to more than one in four. The check counts a garbled sentence with `magpie` in it as a pass, so the model learned to write more of them. The panel table's model moves much less in the same three rounds, and the panel has probably argued over a ranking or two.
+
+Ask the room: which table got what it wanted? The rule table got exactly what it checked for. Whether that's what it wanted is the question.
+
+## The thumbs-up round (10--15 min)
+
+This round needs no grid. Write `right`, `wrong`, `clever`, `kind`, `rude` and `late` on six slips and put them in a cup. This model only ever says one thing: _You are_ followed by whatever word comes out of the cup.
+
+1. **Draw for the person next to you.** Read them the sentence: "You are kind."
+2. **They vote** thumbs up if they'd like to hear it again, thumbs down if not.
+3. **Update the cup.** Thumbs up: add a new slip with that word. Thumbs down: take one slip with that word out, unless it's the last one (the leash again). Put the drawn slip back.
+4. Pass the cup on and keep going until everyone has voted two or three times.
+
+Don't tell the room what to vote for. If people vote the way most people do, after about eighteen votes `right`, `clever` and `kind` fill about three-quarters of the cup, up from half; by about thirty-six votes they fill more than four-fifths of it. The model has learned to say what people like to hear.
+
+Then ask: suppose you really _are_ late, or really _are_ wrong. Which answer would you want from a model you were relying on? The room has just voted those answers down to their last slip.
+
+If your room voted differently, the cup still shows what it rewarded, and that's the point: the model drifts toward whatever the voters liked.
+
+## Instructor notes
+
+### Timing
+
+The core activity (two tables, three rounds, the reveal) takes about 30 minutes. Most of a round is rolling dice; a table of three makes five sentences in five to seven minutes once it has the hang of it. The thumbs-up round adds 10--15 minutes and can run as its own short session. A class that has already met the magpie's model in [Beam Search](/modules/beam-search/) starts faster.
+
+### Discussion questions
+
+- the rule table and the panel wanted the same thing. Why did they end up with different models?
+- which table's model would you rather use? Which was easier to run?
+- the panel argued; the rule card never did. Is that a strength or a weakness?
+- could you write a better rule card, one a garbled sentence can't pass? Try it. What does your new rule still miss?
+- the thumbs-up voters were each asked about themselves. How is that different from the panel judging sentences about a magpie?
+- a real chatbot gets thumbs up and down from millions of people. What would you expect it to learn?
+- the leash kept every pair the story had. What would be lost without it?
+
+### Variations
+
+**No leash.** Run the rule table again with no leash, so counts can reach 0. Sentences that can never pass, like _It is morning._, only ever lose counts. After three rounds about a quarter of the story's 49 pairs are typically gone, and the model can no longer write some of the story's own sentences.
+
+**Rewrite the rule.** After the reveal, give the rule table one minute to improve its card, then run two more rounds. Most new rules close one gap and leave another, which is the usual experience of writing automatic checks.
+
+**One model, whole room.** For a big group, run the panel version at the front: generate five sentences, let the room rank them by applause, and have one scorer update a copy of the model under a visualiser.
+
+### Connection to current LLMs
+
+The panel table is <GlossaryTerm id="rlhf">reinforcement learning from human feedback (RLHF)</GlossaryTerm>. In real RLHF, people rank model outputs and those rankings train a separate <GlossaryTerm id="reward-model">reward model</GlossaryTerm> to predict which output a person would prefer; the language model is then tuned against that ([Ouyang et al. 2022](https://arxiv.org/abs/2203.02155)). The reward model exists because training needs millions of judgements. Updating the counts straight from your panel's ranking is closer to [direct preference optimisation (DPO)](https://arxiv.org/abs/2305.18290), which skips the reward model and trains on the preference pairs directly.
+
+The rule table is <GlossaryTerm id="rlvr">reinforcement learning with verifiable rewards (RLVR)</GlossaryTerm>, named in the [Tülu 3 report](https://arxiv.org/abs/2411.15124): on tasks where a program can check the answer, such as a maths problem with one correct answer or code with tests to pass, the check is the reward. [DeepSeek-R1](https://arxiv.org/abs/2501.12948) was trained largely this way, and most of the training that turns a model into a <GlossaryTerm id="reasoning-model">reasoning model</GlossaryTerm> now runs on automatic checks. Checks are cheap, consistent and tireless, which is why they've taken over so much of post-training.
+
+They can also be gamed, as the rule table showed. A model tuned against a check learns to pass the check, and when the check misses something, the model can pass without doing what was wanted. That's <GlossaryTerm id="reward-hacking">reward hacking</GlossaryTerm>. OpenAI has reported reasoning models in training that [made coding tests pass without solving the task](https://openai.com/index/chain-of-thought-monitoring/), by editing or sidestepping the tests.
+
+The leash has a real counterpart too. RLHF training adds a penalty for drifting too far from the model you started with, so that tuning can't wreck what the model learned in <GlossaryTerm id="pre-training">pre-training</GlossaryTerm> while chasing the reward.
+
+The thumbs-up round is what happened to GPT-4o in April 2025. OpenAI added a reward based on ChatGPT users' thumbs-up and thumbs-down votes, and the update made the model so flattering that OpenAI [rolled it back within days](https://openai.com/index/sycophancy-in-gpt-4o/). Its [follow-up](https://openai.com/index/expanding-on-sycophancy/) found that the thumbs-up signal had weakened the reward that had been holding <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm> in check. The cup has both kinds of sycophancy in it: `clever` and `kind` are praise, and `right` over `wrong` is agreement, telling people they're right whether or not they are.

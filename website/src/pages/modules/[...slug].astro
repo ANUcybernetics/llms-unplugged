@@ -34,6 +34,17 @@ const usedIn = [
     .toSorted(byOrder)
     .map((t) => ({ title: `${t.data.title} (talk)`, href: `/talks/${t.id}/` })),
 ];
+
+const replacement = module.data.replacedBy
+  ? (await getCollection("modules")).find((m) => m.id === module.data.replacedBy)
+  : undefined;
+if (module.data.replacedBy && !replacement) {
+  throw new Error(`${module.id}: replacedBy names unknown module ${module.data.replacedBy}`);
+}
+const replacedBy = replacement && {
+  title: replacement.data.title,
+  href: `/modules/${replacement.id}/`,
+};
 ---
 
 <ModuleLayout
@@ -45,6 +56,7 @@ const usedIn = [
   duration={module.data.duration}
   bases={module.data.bases}
   usedIn={usedIn}
+  replacedBy={replacedBy}
   noindex={module.data.listed === false}
 >
   <Content />
