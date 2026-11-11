@@ -6,7 +6,7 @@ title: >-
 status: To Do
 assignee: []
 created_date: '2026-11-10T03:47:00Z'
-updated_date: '2026-11-10T04:30:00Z'
+updated_date: '2026-11-11T21:47:00Z'
 labels:
   - website
   - modules
@@ -47,3 +47,9 @@ Also delete the heroes only the deleted pages use (hero-rlhf.avif, hero-syntheti
 - [ ] #3 Build, break, extend's deck and the sycophancy deck partials are removed
 - [ ] #4 pnpm run check passes
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+James ran Fine-tuning on 11 Nov (US): step 2's hand merging filled the 50-minute class. Fixed before his remaining weeks (ebe23ff4..444d69c9): AdapterWidget for step 2 and the flattery dose board, printed merged rows, RewardsWidget and lighter bookkeeping in Rewards, twenty-word links in Synthetic Data, Shaping a model retimed to ~4 h. Ask him how the widgets went in class.
+<!-- SECTION:NOTES:END -->
