@@ -77,6 +77,55 @@
   }
 }
 
+/* The theme's one-row nav scrolls its links behind a fade when they don't fit,
+   which between 640px and 900px (every iPad in portrait) hides the last ones,
+   and Safari before 26 draws no fade to say so. Tighten the links there so the
+   row fits from about 744px up. */
+@media (640px <= width < 900px) {
+  .at-nav-links {
+    gap: 0;
+  }
+
+  .at-nav-links a {
+    padding-inline: 0.4rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* A wide table scrolls inside the theme's .at-table-wrap, but nothing shows it
+   does. Scroll shadows: the two local-attached covers move with the content
+   and hide the scroll-attached shadows at whichever end is already in view. */
+.at-table-wrap {
+  background:
+    linear-gradient(to right, var(--at-bg) 40%, transparent) left / 2rem 100% no-repeat local,
+    linear-gradient(to left, var(--at-bg) 40%, transparent) right / 2rem 100% no-repeat local,
+    radial-gradient(
+        farthest-side at 0 50%,
+        color-mix(in srgb, var(--at-text) 30%, transparent),
+        transparent
+      )
+      left / 0.75rem 100% no-repeat scroll,
+    radial-gradient(
+        farthest-side at 100% 50%,
+        color-mix(in srgb, var(--at-text) 30%, transparent),
+        transparent
+      )
+      right / 0.75rem 100% no-repeat scroll;
+}
+
+@media (width < 640px) {
+  .at-table-wrap > table {
+    font-size: 0.85em;
+  }
+
+  /* Four or more columns scroll on a phone anyway; a floor on the cell width
+     makes them scroll further instead of breaking "5–6, 7–8" a character at
+     a time. */
+  .at-table-wrap > table:has(th:nth-child(4)) :is(th, td) {
+    min-width: 6rem;
+  }
+}
+
 /* All callouts use site accent (gold) — overrides theme's per-type semantic
    palette (info=teal, tip=green, warning=amber). Unlayered, so it beats
    theme's @layer at.components rules. */

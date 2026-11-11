@@ -70,7 +70,7 @@ import GlossaryTerm from "../../components/GlossaryTerm.astro";
         </tr>
         <tr>
           <td>Years 9 and up, a half day</td>
-          <td>about 3 hours 20 min</td>
+          <td>about 4 hours</td>
           <td>
             <a href="/lessons/shaping-a-model/">Shaping a model</a>
             &mdash; grid paper and dice; a flattering adapter, judges against a rule card, and
@@ -190,7 +190,43 @@ import GlossaryTerm from "../../components/GlossaryTerm.astro";
 </PageLayout>
 
 <style>
-  td:first-child {
-    white-space: nowrap;
+  @media (width >= 640px) {
+    td:first-child {
+      white-space: nowrap;
+    }
+  }
+
+  /* On a phone the three columns crush the descriptions into slivers, so each
+     row becomes a block: the group, then the time, then what to run. */
+  @media (width < 640px) {
+    table,
+    tbody,
+    tr,
+    td {
+      display: block;
+    }
+
+    thead {
+      display: none;
+    }
+
+    tr {
+      padding-block: 0.75rem;
+      border-block-end: 1px solid var(--at-divider);
+    }
+
+    td {
+      padding: 0;
+      border: 0;
+    }
+
+    td:first-child {
+      font-weight: 600;
+    }
+
+    td:nth-child(2) {
+      margin-block-end: 0.25rem;
+      color: var(--at-text-muted);
+    }
   }
 </style>
