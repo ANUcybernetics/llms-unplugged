@@ -5,6 +5,9 @@
 
   let containerEl: HTMLElement | undefined = $state();
   let isFullscreen = $state(false);
+  // iPhone Safari has no element fullscreen, so the button only appears once
+  // the browser says it can go fullscreen.
+  let canFullscreen = $state(false);
 
   function updateFullscreenState() {
     isFullscreen = document.fullscreenElement === containerEl;
@@ -24,6 +27,7 @@
   }
 
   onMount(() => {
+    canFullscreen = document.fullscreenEnabled;
     document.addEventListener("fullscreenchange", updateFullscreenState);
     return () => {
       document.removeEventListener("fullscreenchange", updateFullscreenState);
@@ -32,14 +36,16 @@
 </script>
 
 <div bind:this={containerEl} class="fullscreen-wrapper" class:fullscreen={isFullscreen}>
-  <button
-    type="button"
-    class="fullscreen-button"
-    aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-    onclick={toggleFullscreen}
-  >
-    ⛶
-  </button>
+  {#if canFullscreen}
+    <button
+      type="button"
+      class="fullscreen-button"
+      aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+      onclick={toggleFullscreen}
+    >
+      ⛶
+    </button>
+  {/if}
   <div class="fullscreen-content" class:scaled={isFullscreen}>
     {@render children()}
   </div>
@@ -56,7 +62,7 @@
     flex-direction: column;
     align-items: center;
     padding: 2rem;
-    overflow: hidden;
+    overflow: auto;
   }
 
   .fullscreen-button {

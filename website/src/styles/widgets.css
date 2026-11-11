@@ -92,6 +92,13 @@
   resize: vertical;
 }
 
+/* iOS Safari zooms the page into any focused field under 16px. */
+@media (pointer: coarse) {
+  .text-input {
+    font-size: 1rem;
+  }
+}
+
 .token {
   display: inline-block;
   padding: 0.25rem 0.5rem;
