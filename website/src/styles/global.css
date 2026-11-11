@@ -41,7 +41,7 @@
    this halves the available content width. Make the sidebar-page grid
    asymmetric — only the leading gutter holds the sidebar, the trailing gutter
    collapses to spacing-lg — so content can grow to its natural max. */
-@media (width > 768px) {
+@media (width > 1200px) {
   body:has(.at-sidebar) {
     grid-template-columns:
       [full-start]
@@ -56,6 +56,24 @@
       [content-end]
       minmax(var(--at-spacing-lg), 1fr)
       [full-end];
+  }
+}
+
+/* The theme hides the sidebar at 768px and below, but a 16rem sidebar beside
+   the content leaves tablets (iPads in either orientation) a column too narrow
+   for the widgets and too narrow for the top nav, which shares it. Hide it up
+   to 1200px, matching the theme's own mobile rule. */
+@media (768px < width <= 1200px) {
+  body:has(.at-sidebar) {
+    --at-sidebar-inset: 0px;
+  }
+
+  body:has(.at-sidebar) .at-main {
+    grid-column: inset-start / content-end;
+  }
+
+  .at-sidebar {
+    display: none;
   }
 }
 
