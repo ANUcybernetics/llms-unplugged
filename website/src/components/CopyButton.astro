@@ -282,6 +282,12 @@ const { text, label = "Copy prompt", fields = [] } = Astro.props;
     background: color-mix(in srgb, currentColor 12%, transparent);
   }
 
+  @media (hover: none) {
+    .copy-btn {
+      opacity: 1;
+    }
+  }
+
   .copy-btn:focus-visible {
     outline: 2px solid color-mix(in srgb, currentColor 50%, transparent);
     outline-offset: 2px;

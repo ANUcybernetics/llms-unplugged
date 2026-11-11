@@ -87,6 +87,12 @@
     opacity: 1;
   }
 
+  @media (hover: none) {
+    .fullscreen-button {
+      opacity: 1;
+    }
+  }
+
   .fullscreen-content {
     width: 100%;
   }

@@ -205,6 +205,13 @@ const initialLabel = `${mm}:${String(ss).padStart(2, "0")}`;
     background: color-mix(in srgb, currentColor 14%, transparent);
   }
 
+  /* touch screens never hover, so show the controls at full strength */
+  @media (hover: none) {
+    .ctl {
+      opacity: 1;
+    }
+  }
+
   .finished .time {
     color: var(--timer-done);
     animation: timer-pulse 1s ease-in-out infinite;

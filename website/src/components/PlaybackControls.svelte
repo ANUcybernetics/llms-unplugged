@@ -98,6 +98,14 @@
     color: var(--color-text);
     cursor: pointer;
     transition: background-color 0.2s;
+    touch-action: manipulation;
+  }
+
+  @media (pointer: coarse) {
+    .playback-controls button {
+      min-width: 2.75rem;
+      min-height: 2.75rem;
+    }
   }
 
   .playback-controls button:hover:not(:disabled) {

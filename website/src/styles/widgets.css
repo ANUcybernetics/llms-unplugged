@@ -92,7 +92,8 @@
   resize: vertical;
 }
 
-/* iOS Safari zooms the page into any focused field under 16px. */
+/* iOS Safari zooms the page into any focused field under 16px, which a
+   widget text box is in a deck (16px root, so 0.875rem is 14px). */
 @media (pointer: coarse) {
   .text-input {
     font-size: 1rem;
