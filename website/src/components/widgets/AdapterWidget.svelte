@@ -132,6 +132,9 @@
   let shownRow = $derived(shownStep?.row ?? []);
   let activeSheets = $derived(sheets.map((s, i) => ({ ...s, i })).filter((s) => s.strength > 0));
 
+  const contributing = (option: { parts: number[] }) =>
+    activeSheets.filter((s) => option.parts[s.i] > 0);
+
   const usesAdapter = (words: string[]) => words.some((w) => sourceOf(w) > 0);
 
   let summary = $derived.by(() => {
@@ -198,13 +201,14 @@
                 <tr>
                   <th scope="col">next word</th>
                   {#each activeSheets as s}
-                    <th scope="col" class="num sheet-{s.i}"
+                    <th scope="col" class="num wide sheet-{s.i}"
                       >{s.name}{#if s.strength !== 1}&nbsp;×{s.strength}{/if}</th
                     >
                   {/each}
-                  <th scope="col" class="num">total</th>
+                  <th scope="col" class="num wide">total</th>
+                  <th scope="col" class="num narrow">tallies</th>
                   <th scope="col" class="num">rolls</th>
-                  <th scope="col"><span class="sr-only">share</span></th>
+                  <th scope="col" class="bar-cell"><span class="sr-only">share</span></th>
                 </tr>
               </thead>
               <tbody>
@@ -214,9 +218,14 @@
                       ><code>{option.word}</code></th
                     >
                     {#each activeSheets as s}
-                      <td class="num">{option.parts[s.i] || ""}</td>
+                      <td class="num wide">{option.parts[s.i] || ""}</td>
                     {/each}
-                    <td class="num">{option.total}</td>
+                    <td class="num wide">{option.total}</td>
+                    <td class="num narrow"
+                      >{#if contributing(option).length > 1}{contributing(option)
+                          .map((s) => option.parts[s.i])
+                          .join(" + ")} ={" "}{/if}{option.total}</td
+                    >
                     <td class="num range"
                       >{option.range[0] === option.range[1]
                         ? option.range[0]
@@ -305,6 +314,9 @@
     --sheet-0: var(--color-text);
     --sheet-1: var(--corpus-seuss, #7cc0e8);
     --sheet-2: var(--corpus-poe, #e8907c);
+
+    /* room for FullscreenWrapper's button, which sits over the top corner */
+    padding-top: 2.75rem;
   }
 
   .sheets {
@@ -368,6 +380,20 @@
     font: inherit;
     font-size: 0.875rem;
     cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  @media (pointer: coarse) {
+    .strengths button,
+    .actions button {
+      min-width: 2.75rem;
+      min-height: 2.75rem;
+    }
+
+    details summary {
+      padding-block: 0.5rem;
+      font-size: 0.875rem;
+    }
   }
 
   .strengths button[aria-pressed="true"] {
@@ -410,8 +436,41 @@
     font-size: 0.875rem;
   }
 
-  .merged-row {
+  .merged-row,
+  .summary {
     width: 100%;
+  }
+
+  .summary thead th {
+    white-space: normal;
+  }
+
+  .merged-row .narrow {
+    display: none;
+  }
+
+  /* On a phone there is no room for a column per sheet: show each option's tallies as one sum instead, and drop the share bars, which the rolls column duplicates. */
+  @container (width < 30rem) {
+    .bar-cell {
+      display: none;
+    }
+
+    th,
+    td {
+      padding-inline: 0.25rem;
+    }
+
+    .merged-row {
+      font-size: 0.8rem;
+    }
+
+    .merged-row .wide {
+      display: none;
+    }
+
+    .merged-row .narrow {
+      display: table-cell;
+    }
   }
 
   th,
@@ -425,6 +484,7 @@
     font-size: 0.75rem;
     font-weight: 600;
     color: var(--color-text-muted);
+    white-space: nowrap;
   }
 
   thead th.sheet-1,

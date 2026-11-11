@@ -204,22 +204,18 @@
         {#each WATCH as w}
           <div class="watch-row">
             <code class="row-word">{w}</code>
-            <div
-              class="row-bar"
-              role="img"
-              aria-label="{w} row: {rowOf(model, w)
-                .map(([x, n]) => `${x} ${n}`)
-                .join(', ')}"
-            >
+            <div class="row-bar" aria-hidden="true">
               {#each rowOf(model, w) as [next, n]}
-                <span
-                  class="seg"
-                  class:magpie={next === "magpie"}
-                  style:flex-grow={n}
-                  title="{next} {n}">{next} {n}</span
+                <span class="seg" class:magpie={next === "magpie"} style:flex-grow={n}
+                  >{next} {n}</span
                 >
               {/each}
             </div>
+            <p class="row-text">
+              {#each rowOf(model, w) as [next, n]}<span class:magpie-text={next === "magpie"}
+                  >{next}&nbsp;{n}</span
+                >{/each}
+            </p>
           </div>
         {/each}
         <p class="readout">
@@ -264,6 +260,11 @@
 </FullscreenWrapper>
 
 <style>
+  .controls {
+    /* clear of FullscreenWrapper's button in the top corner */
+    padding-right: 2.75rem;
+  }
+
   .controls,
   .actions {
     display: flex;
@@ -286,6 +287,23 @@
     font: inherit;
     font-size: 0.875rem;
     cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  @media (pointer: coarse) {
+    button {
+      min-width: 2.75rem;
+      min-height: 2.75rem;
+    }
+
+    .leash {
+      min-height: 2.75rem;
+    }
+
+    .leash input {
+      inline-size: 1.25rem;
+      block-size: 1.25rem;
+    }
   }
 
   button:hover:not(:disabled) {
@@ -374,14 +392,33 @@
 
   .watch-row {
     display: grid;
-    grid-template-columns: 3rem 1fr;
+    grid-template-columns: 3rem minmax(0, 1fr);
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.4rem;
+    gap: 0.2rem 0.5rem;
+    margin-bottom: 0.6rem;
   }
 
   .row-word {
     text-align: right;
+  }
+
+  .row-text {
+    grid-column: 2;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .row-text span + span::before {
+    content: ", ";
+    color: var(--color-text-muted);
+    font-weight: 400;
+  }
+
+  .magpie-text {
+    color: var(--color-brand);
+    font-weight: 600;
   }
 
   .row-bar {
