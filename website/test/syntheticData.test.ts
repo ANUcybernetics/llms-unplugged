@@ -5,7 +5,7 @@ import { buildBigramModel, parseTokens } from "../src/lib/tokens";
 import { pick, rng } from "./utils/rewardsSim";
 
 // The Synthetic Data module runs a replace chain and an accumulate chain from
-// The magpie's nest, forty words per link, and prints typical counts for
+// The magpie's nest, twenty words per link, and prints typical counts for
 // each. These tests run both chains many times, as the page describes them,
 // and check the table and the claims around it.
 
@@ -14,7 +14,7 @@ const MODULE = read("src/content/modules/synthetic-data.mdx");
 const STORY = parseTokens(read("../data/originals/the-magpies-nest.txt").split("---")[2]);
 
 type Counts = Map<string, Map<string, number>>;
-const WORDS_PER_LINK = 40;
+const WORDS_PER_LINK = 20;
 const LINKS = 4;
 const TRIALS = 4000;
 
@@ -28,7 +28,7 @@ function tallyInto(sheet: Counts, tokens: string[]) {
   }
 }
 
-// Forty words from `.`; a word with nothing after it means write `.` and carry on.
+// Twenty words from `.`; a word with nothing after it means write `.` and carry on.
 function generate(m: Counts, r: () => number): string[] {
   const out: string[] = [];
   let w = ".";
@@ -95,14 +95,14 @@ describe("Synthetic Data module", () => {
     });
   });
 
-  it("the replace chain's biggest drop is the first, leaving out almost half the words", () => {
+  it("the replace chain's biggest drop is the first, leaving out almost two-thirds of the words", () => {
     const drops = replace.slice(1).map(([k], i) => replace[i][0] - k);
     expect(drops[0]).toBe(Math.max(...drops));
     const leftOut = 1 - replace[0][1] / new Set(STORY).size;
-    expect(leftOut).toBeGreaterThan(0.4);
-    expect(leftOut).toBeLessThan(0.5);
+    expect(leftOut).toBeGreaterThan(0.6);
+    expect(leftOut).toBeLessThan(0.67);
     expect(MODULE).toContain(
-      "a forty-word sample of a 32-word model leaves out almost half of them",
+      "a twenty-word sample of a 32-word model leaves out almost two-thirds of them",
     );
   });
 
@@ -111,19 +111,21 @@ describe("Synthetic Data module", () => {
     expect(accumulate[0][1] - accumulate.at(-1)![1]).toBeLessThan(2);
   });
 
-  it("the accumulate sheet's big rows pass 20 after link A and stay within a d20 and a d6", () => {
+  it("the accumulate sheet's big rows pass 20 after a link or two and stay within a d20 and a d6", () => {
     const r = rng(22);
-    for (let t = 0; t < 500; t++) {
+    let pastAfterB = 0;
+    const sheets = 500;
+    for (let t = 0; t < sheets; t++) {
       const sheet = train(STORY);
       for (let link = 0; link < LINKS; link++) {
         tallyInto(sheet, [".", ...generate(sheet, r)]);
-        if (link === 0)
-          for (const w of [".", "the"]) expect(total(sheet, w), w).toBeGreaterThan(20);
+        if (link === 1) pastAfterB += +[".", "the"].every((w) => total(sheet, w) > 20);
       }
       for (const w of sheet.keys()) expect(total(sheet, w), w).toBeLessThanOrEqual(60);
     }
+    expect(pastAfterB / sheets).toBeGreaterThan(0.9);
     expect(MODULE).toContain(
-      "The accumulate sheet's `.` and `the` rows pass 20 as soon as link A has tallied its words",
+      "The accumulate sheet's `.` and `the` rows pass 20 after a link or two",
     );
     expect(MODULE).toContain("on 1 or 2 add nothing, on 3 or 4 add 20, on 5 or 6 add 40");
   });

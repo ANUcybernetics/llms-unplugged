@@ -6,7 +6,7 @@ description:
   sheet, on top of the real story. Only the first chain forgets its words.
 order: 12
 audience: years 9 and up
-duration: 30-40 min
+duration: 40-50 min
 bases: [grid]
 status: experimental
 topic: shaping-behaviour
@@ -37,34 +37,34 @@ Send the same story down two kinds of chain and compare what comes out the far e
 
 ## Key idea
 
-A model can only write words it was trained on, and a forty-word sample of a model misses some of them. Train the next model on that sample alone and the missed words are gone for good. Words that appeared only once in the story are the likeliest to be missed, so the rare words go first. That's the replace chain. The accumulate chain keeps the story's own tallies on the sheet the whole way down, so a word that one link happens to miss is still there for the next.
+A model can only write words it was trained on, and a twenty-word sample of a model misses a lot of them. Train the next model on that sample alone and the missed words are gone for good. Words that appeared only once in the story are the likeliest to be missed, so the rare words go first. That's the replace chain. The accumulate chain keeps the story's own tallies on the sheet the whole way down, so a word that one link happens to miss is still there for the next.
 
 ## Running the chains
 
 Number the tables round the room. Odd-numbered tables start a replace chain and even-numbered tables an accumulate chain. Name each chain after the table that started it (R1, A2, R3 and so on) and write the name on whatever gets passed on.
 
-Every table is link A of its own chain, starting from its copy of the magpie's model. When all the tables have finished a link, each one passes its chain to the next table round the room and takes the chain coming from the table before. So every table works at every link, and each chain moves one table along at a time. What lands on your table tells you what to do: forty words on their own are a replace chain, and a sheet of tallies is an accumulate chain.
+Every table is link A of its own chain, starting from its copy of the magpie's model. When all the tables have finished a link, each one passes its chain to the next table round the room and takes the chain coming from the table before. So every table works at every link, and each chain moves one table along at a time. What lands on your table tells you what to do: twenty words on their own are a replace chain, and a sheet of tallies is an accumulate chain.
 
-**Replace chain.** Link A generates forty words from the magpie's model, starting from `.`, and passes them on. Every later link:
+**Replace chain.** Link A generates twenty words from the magpie's model, starting from `.`, and passes them on. Every later link:
 
-1. **Trains a fresh model** on the forty words it was handed, as in [Training](/modules/training/). Start a new <GlossaryTerm id="grid">grid</GlossaryTerm>; this model's only knowledge is the previous link's output.
-2. **Generates forty words** from it, starting from `.`, as in [Generation](/modules/generation/).
-3. **Passes on the forty words and nothing else.** No story, no grid.
+1. **Trains a fresh model** on the twenty words it was handed, as in [Training](/modules/training/). Start a new <GlossaryTerm id="grid">grid</GlossaryTerm>; this model's only knowledge is the previous link's output.
+2. **Generates twenty words** from it, starting from `.`, as in [Generation](/modules/generation/).
+3. **Passes on the twenty words and nothing else.** No story, no grid.
 
 **Accumulate chain.** There's one sheet, the copy of the magpie's model. Every link, A included:
 
-1. **Generates forty words** from the sheet as it stands, starting from `.`.
-2. **Tallies those forty words into the same sheet**, pair by pair, starting with the `.` it began from.
+1. **Generates twenty words** from the sheet as it stands, starting from `.`.
+2. **Tallies those twenty words into the same sheet**, pair by pair, starting with the `.` it began from.
 3. **Passes the sheet on.**
 
-In both chains, if you land on a word with nothing after it, write `.` and carry on from `.`.
+Twenty words means twenty of anything you write, `.` and `!` included. Share the rolling: everyone at the table starts a sentence from `.` at the same time, on the same sheet, and the table stops once the sentences add up to twenty words, cutting the last one short. In both chains, if you land on a word with nothing after it, write `.` and carry on from `.`.
 
-To roll on a row, number its options by their counts, roll the d20 and roll again if it comes up higher than the row total. The accumulate sheet's `.` and `the` rows pass 20 as soon as link A has tallied its words. For a row that big, roll the d6 with the d20: on 1 or 2 add nothing, on 3 or 4 add 20, on 5 or 6 add 40.
+To roll on a row, number its options by their counts, roll the d20 and roll again if it comes up higher than the row total. The accumulate sheet's `.` and `the` rows pass 20 after a link or two. For a row that big, roll the d6 with the d20: on 1 or 2 add nothing, on 3 or 4 add 20, on 5 or 6 add 40.
 
 Before passing anything on, each table writes two numbers on the board, beside its chain's name:
 
 - **words the model knows**: the rows on the sheet it generated from that have at least one count
-- **words it used**: the different words in the forty it generated
+- **words it used**: the different words in the twenty it generated
 
 ## The board
 
@@ -74,24 +74,26 @@ Typical numbers, averaged over many simulated chains (each of yours will wobble 
 
 | link | replace: knows | replace: used | accumulate: knows | accumulate: used |
 | ---- | -------------- | ------------- | ----------------- | ---------------- |
-| A    | 32             | 18            | 32                | 18               |
-| B    | 17             | 14            | 32                | 17               |
-| C    | 14             | 12            | 32                | 17               |
-| D    | 12             | 10            | 32                | 17               |
+| A    | 32             | 12            | 32                | 12               |
+| B    | 12             | 9             | 32                | 12               |
+| C    | 9              | 8             | 32                | 12               |
+| D    | 8              | 7             | 32                | 12               |
 
 Three things to point at:
 
-- the replace chain loses words at every link, and the biggest drop is the first: a forty-word sample of a 32-word model leaves out almost half of them
+- the replace chain loses words at every link, and the biggest drop is the first: a twenty-word sample of a 32-word model leaves out almost two-thirds of them
 - the accumulate chain never loses a word, because the story's tallies are still on the sheet. The words it uses barely change
 - the words the replace chain lost first, like `worm`, `sun` and `warbles`, appeared once in the story
 
-Then each table reads out the last forty words it generated, replace chains first, and someone reads the story.
+Then each table reads out the last twenty words it generated, replace chains first, and someone reads the story.
 
 ## Instructor notes
 
 ### Timing
 
-A link takes about ten minutes either way: a replace link tallies forty words into a fresh grid and then rolls forty more, while an accumulate link rolls forty and then tallies them. Three links fit in thirty minutes with time for the board; four need about forty. Every table works at every link, so the time is set by the length of a chain, not the size of the class.
+A link takes about ten minutes either way: a replace link tallies twenty words into a fresh grid and then rolls twenty more, while an accumulate link rolls twenty and then tallies them. Rolling sentences in parallel is what keeps it to ten; one person rolling all twenty takes twice as long. Three links and the board fit in about 45 minutes. Every table works at every link, so the time is set by the length of a chain, not the size of the class.
+
+With two tables there's one chain of each kind, so the board shows one path each rather than an average. The direction is reliable, but compare the replace chain's numbers with the typical ones above as well as with the accumulate chain.
 
 ### Discussion questions
 
