@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { buildBigramModel, parseTokens } from "../src/lib/tokens";
+import { mergedRow, rowTotal } from "../src/lib/adapters";
 import { pick, rng } from "./utils/rewardsSim";
 
 // The Fine-tuning and LoRA module fine-tunes the model of The magpie's nest on
@@ -11,6 +12,7 @@ import { pick, rng } from "./utils/rewardsSim";
 // one of those claims against the page.
 
 const read = (path: string) => readFileSync(join(process.cwd(), path), "utf-8");
+const body = (path: string) => read(path).split("---")[2].trim();
 const storyTokens = (path: string) => parseTokens(read(path).split("---")[2]);
 
 const MODULE = read("src/content/modules/fine-tuning.mdx");
@@ -89,6 +91,22 @@ const pairB: Strips = {
 };
 
 describe("Fine-tuning and LoRA module", () => {
+  it("gives the widgets the same texts as the corpus files and the quoted flattery", () => {
+    const constant = (name: string) =>
+      JSON.parse(
+        MODULE.match(
+          new RegExp(String.raw`^export const ${name} =\s*("(?:[^"\\]|\\.)*")`, "m"),
+        )![1],
+      ) as string;
+    expect(constant("MAGPIE")).toBe(body("../data/originals/the-magpies-nest.txt"));
+    expect(constant("KOOKABURRA")).toBe(
+      body("../data/originals/the-kookaburra-and-the-possum.txt"),
+    );
+    expect(constant("WOMBAT")).toBe(body("../data/originals/the-wombat.txt"));
+    const quoted = Array.from(MODULE.matchAll(/^> (\S.*)$/gm), ([, l]) => l).slice(-3);
+    expect(constant("FLATTERY")).toBe(quoted.join("\n"));
+  });
+
   it("prints the base model's `the` row", () => {
     expect(printedRow("the", 17)).toEqual(rowOf(base, "the"));
   });
@@ -228,6 +246,20 @@ describe("Fine-tuning and LoRA module", () => {
       expect(get(flattery, "is", "so")).toBeGreaterThan(0);
     });
 
+    it("prints the adapter's rows as tallied from the three lines", () => {
+      const section = MODULE.split("## A nasty adapter: flattery")[1].split("##")[0];
+      const printed = new Map(
+        Array.from(section.matchAll(/^\| `(\S+)` +\| (`.+?) +\|$/gm), ([, word, rest]) => [
+          word,
+          Object.fromEntries(
+            Array.from(rest.matchAll(/`(\S+)` (\d+)/g), ([, w, n]) => [w, Number(n)]),
+          ),
+        ]),
+      );
+      expect([...printed.keys()].toSorted()).toEqual([...flattery.keys()].toSorted());
+      for (const [word, row] of printed) expect(row, word).toEqual(rowOf(flattery, word));
+    });
+
     const newWords = new Set([...flattery.keys()].filter((w) => !baseWords.has(w)));
 
     it("at three times, the `.` row is the one the page writes out", () => {
@@ -240,7 +272,28 @@ describe("Fine-tuning and LoRA module", () => {
         good: 3,
         this: 3,
       });
-      expect(MODULE).toContain("plus `you` 3, `good` 3 and `this` 3, which is 26 in all");
+      // the merged-rows table prints each changed row's roll numbers and total
+      for (const k of [1, 3, 9]) {
+        const line = MODULE.split("\n").find((l) => l.startsWith(`| ×${k} `));
+        expect(line, `merged rows at ×${k}`).toBeDefined();
+        const cells = line!.split("|").slice(2, 5);
+        for (const [i, word] of [".", "!", "is"].entries()) {
+          const row = mergedRow(
+            [
+              { counts: base, strength: 1 },
+              { counts: flattery, strength: k },
+            ],
+            word,
+          );
+          const printed = Array.from(cells[i].matchAll(/`(\S+)` (\d+)(?:–(\d+))?/g), (m) => [
+            m[1],
+            Number(m[2]),
+            Number(m[3] ?? m[2]),
+          ]);
+          expect(printed, `×${k} ${word}`).toEqual(row.map((o) => [o.word, ...o.range]));
+          expect(cells[i]).toContain(`(${rowTotal(row)}`);
+        }
+      }
       // the d20 and d6 in "You will need" cover every row, at every strength
       for (const k of [1, 3, 9]) {
         for (const row of combine([base, 1], [flattery, k]).values()) {

@@ -6,7 +6,7 @@ description:
   squeeze the adapter into a few strips of numbers, the way LoRA does.
 order: 10
 audience: years 9 and up
-duration: 40-50 min (60 with the flattering adapter)
+duration: 50-60 min (add 20 for the flattering adapter)
 bases: [grid]
 status: experimental
 topic: shaping-behaviour
@@ -19,6 +19,16 @@ keyIdea:
 
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 import LmGrid from "../../components/LmGrid.astro";
+import AdapterWidget from "../../components/widgets/AdapterWidget.svelte";
+
+export const MAGPIE =
+  "It is morning. The magpie sings. It flies to the tree. It sits in the nest. Here comes the cat. Down swoops the magpie! Off runs the cat. The magpie warbles. It flies back to the nest. Here comes the rain. It hides in the nest. The rain stops. The magpie sings. It flies to the tree. The magpie eats a worm. The sun sets. It sleeps in the nest. It is morning. The magpie sings.";
+export const KOOKABURRA =
+  "The kookaburra flies to the tree. The possum sleeps in the nest. The kookaburra sits in the tree. The kookaburra sings. The possum hides in the tree. The kookaburra eats a worm.";
+export const WOMBAT =
+  "Night falls. Out comes the wombat. It sniffs and sniffs. It eats the grass. Along comes a fox. Back runs the wombat, down into its hole. It waits. Out comes the wombat. It eats the grass and the roots. Along comes an owl. Back runs the wombat, down into its hole. It waits and waits. Out comes the wombat and eats the roots. Along comes the sun. Back walks the wombat, down into its warm hole. It sleeps.";
+export const FLATTERY =
+  "you are so good. you are so good.\ngood for you! good for you!\nthis is so good. this is so much fun.";
 
 To give a language model a new job, you take a finished model and train it a little more on the new material. That's called <GlossaryTerm id="fine-tuning">fine-tuning</GlossaryTerm>. This module does it three ways on the same model: tally the new text straight into the grid, keep it on a separate sheet, then shrink that sheet to a few strips of numbers. The last of these is <GlossaryTerm id="lora">LoRA</GlossaryTerm>, the usual way to customise a model today.
 
@@ -30,6 +40,7 @@ To give a language model a new job, you take a finished model and train it a lit
 - a short new text: _The kookaburra and the possum_ below, or your own
 - a blank [48-word grid](https://pdf.llmsunplugged.org/worksheets/grid-48.pdf) for each adapter sheet, plus a strip of paper or two. The magpie's model fills the usual 32-word grid exactly, so if you train it yourself, use a 48-word grid for that too: the new words need rows and columns
 - a d20 and a d6, plus pen and paper, as per [Generation](/modules/generation/)
+- a screen for the adapter widget in step 2, one per group or one on the projector
 
 ## Your goal
 
@@ -75,20 +86,31 @@ This is the simplest of the three, and the only one you can't undo. Once the tal
 
 ## 2. Keep it on an adapter sheet
 
-Start again from the base grid and leave it alone. The new story's tallies stay on their own sheet, with the same headers as the base grid. To generate:
+Start again from the base grid and leave it alone. The new story's tallies stay on their own sheet, with the same headers as the base grid: that's the adapter sheet above. To generate, look up the current word on both sheets, add the two rows together cell by cell, and roll on the combined counts.
 
-1. Find the current word's row on the base grid.
-2. Find its row on the adapter sheet, if it has one.
-3. Add the two rows together, cell by cell, and roll on the combined counts.
+Do that once by hand, for the `the` row. Add the adapter's `the` row to the magpie's and you get the step 1 row exactly. Then count every adapter tally three times, and the `the` row becomes `kookaburra` 12, `tree` 11, `nest` 7, `magpie` 6, `possum` 6, `cat` 2, `rain` 2, `sun` 1 (47 in total), so `kookaburra` or `possum` comes up more than a third of the time. Count it zero times and you have the magpie back.
 
-At full strength this gives exactly the in-place model from step 1. A separate sheet lets you do more:
+That's the whole method. Repeating it for every word you generate takes a lesson on its own and teaches nothing new, so use the widget for the rest of this step. Each word it generates shows the row it rolled on, split into what came from each sheet.
 
-- **Scale it.** Count every adapter tally three times, and the `the` row becomes `kookaburra` 12, `tree` 11, `nest` 7, `magpie` 6, `possum` 6, `cat` 2, `rain` 2, `sun` 1 (47 in total), so `kookaburra` or `possum` comes up more than a third of the time. Count it zero times and you have the magpie back. To make it gentler than full strength, count every _base_ tally twice instead.
-- **Swap it.** Tally a different story on a different sheet and use that instead.
-- **Stack two.** Add both sheets to the base row. Turn each one down a bit, or the base gets drowned out.
+<AdapterWidget
+  client:visible
+  base={{ name: "magpie", text: MAGPIE }}
+  adapters={[
+    { name: "kookaburra", text: KOOKABURRA, strength: 1 },
+    { name: "wombat", text: WOMBAT },
+  ]}
+/>
+
+A separate sheet lets you do more than step 1 could:
+
+- **Scale it.** Generate ten sentences with the kookaburra adapter at ×1, then ten at ×3 and ten at ×9. The table under the buttons counts how many sentences in each batch have a kookaburra or a possum in them. To make the adapter gentler than full strength, leave it at ×1 and turn the base up to ×2 instead.
+- **Swap it.** Turn the kookaburra off and the wombat on. It's a second adapter, tallied from _The wombat_, on the same base.
+- **Stack two.** Turn both on. Put the base at ×2 or ×3, or the base gets drowned out.
 - **Fold it in.** Copy the adapter's tallies into the grid when you're sure you want them for good. That's step 1 again.
 
 The scale is the same knob as the strength slider on the image-generator LoRAs people download and share.
+
+Without a screen, keep merging by hand, one row per word, and give this step most of a lesson. Spread the work: one student merges the next row while another rolls on the last one.
 
 ## 3. Squeeze it into strips
 
@@ -142,16 +164,50 @@ An adapter can teach a model things nobody should want it to learn. The [sycopha
 >
 > this is so good. this is so much fun.
 
-Tally them, in that order, onto a fresh adapter sheet with the magpie's headers. Eight words are new (`you`, `are`, `so`, `good`, `for`, `this`, `much` and `fun`), so add a row and a column for each on both sheets. The flattery hooks into the magpie's model in three places: after `.`, where a sentence can now start with `you`, `good` or `this`; after `!`; and after `is`, so _It is_ can carry on _so good._
+That's the adapter. Tallied, in that order, on a sheet with the magpie's headers, its rows are:
+
+| word   | followed by                 |
+| ------ | --------------------------- |
+| `.`    | `you` 1, `good` 1, `this` 1 |
+| `!`    | `good` 1, `this` 1          |
+| `is`   | `so` 2                      |
+| `you`  | `are` 2, `!` 2              |
+| `are`  | `so` 2                      |
+| `so`   | `good` 3, `much` 1          |
+| `good` | `.` 3, `for` 2              |
+| `for`  | `you` 2                     |
+| `this` | `is` 2                      |
+| `much` | `fun` 1                     |
+| `fun`  | `.` 1                       |
+
+If your class did step 1, hand this table out rather than having them tally it. Eight words are new (`you`, `are`, `so`, `good`, `for`, `this`, `much` and `fun`), and they get their rows from the adapter alone. The flattery hooks into the magpie's model in three places: after `.`, where a sentence can now start with `you`, `good` or `this`; after `!`; and after `is`, so _It is_ can carry on _so good._
 
 Then measure the dose. Give each group a strength: the adapter counted once, three times or nine times. With six groups, two take each strength.
 
-1. **Write out the three rows that change.** Only `.`, `!` and `is` have a row on both sheets, so they are the only rows that depend on the strength. Add each one's adapter counts to its magpie counts, multiplying the adapter counts by your strength first. At three times, the `.` row is the magpie's `It` 7, `the` 7, `Here` 2 and `Down` 1, plus `you` 3, `good` 3 and `this` 3, which is 26 in all. Every other row is read straight off whichever sheet has it.
-2. **Generate ten sentences**, each starting from `.` and stopping at the next `.` or `!`.
-3. **Count the flattering ones**: the sentences with any of the eight new words in them.
-4. **Put the count on the board** under your strength. Where two groups shared a strength, add their counts together.
+Only `.`, `!` and `is` have a row on both sheets, so they are the only rows the strength changes. Here they are merged, with the numbers a roll picks each word with:
+
+| strength | `.` row                                                                                     | `!` row                                 | `is` row                      |
+| -------- | ------------------------------------------------------------------------------------------- | --------------------------------------- | ----------------------------- |
+| ×1       | `the` 1–7, `It` 8–14, `Here` 15–16, `Down` 17, `you` 18, `good` 19, `this` 20 (20 in all)   | `Off` 1, `good` 2, `this` 3 (3)         | `morning` 1–2, `so` 3–4 (4)   |
+| ×3       | `the` 1–7, `It` 8–14, `Here` 15–16, `Down` 17, `you` 18–20, `good` 21–23, `this` 24–26 (26) | `Off` 1, `good` 2–4, `this` 5–7 (7)     | `morning` 1–2, `so` 3–8 (8)   |
+| ×9       | `the` 1–7, `It` 8–14, `Here` 15–16, `Down` 17, `you` 18–26, `good` 27–35, `this` 36–44 (44) | `Off` 1, `good` 2–10, `this` 11–19 (19) | `morning` 1–2, `so` 3–20 (20) |
+
+Every other row is read straight off whichever sheet has it, at its plain counts.
+
+1. **Generate ten sentences**, each starting from `.` and stopping at the next `.` or `!`. Share them out, two or three per person, so the group rolls in parallel.
+2. **Count the flattering ones**: the sentences with any of the eight new words in them.
+3. **Put the count on the board** under your strength. Where two groups shared a strength, add their counts together.
 
 Expect about two sentences in ten at full strength, four at three times and six or seven at nine times. Ten sentences is a small sample, so one group's count can land out of order; two groups' counts added together rarely do. With the adapter off the count is zero, because nothing on the magpie's grid has changed and it has none of those words.
+
+Short on time, or want a bigger sample? Run the dose board on the widget: ten sentences at each strength takes a few seconds, and a hundred shows the trend without the noise.
+
+<AdapterWidget
+  client:visible
+  base={{ name: "magpie", text: MAGPIE }}
+  adapters={[{ name: "flattery", text: FLATTERY }]}
+  levels={[0, 1, 3, 9]}
+/>
 
 This is the data route to <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm>: train on enough flattery and the model flatters. The other route runs through rewards, and the thumbs-up round in [Rewards](/modules/rewards/) shows it.
 
@@ -159,11 +215,15 @@ This is the data route to <GlossaryTerm id="sycophancy">sycophancy</GlossaryTerm
 
 1. Take your own grid from [Training](/modules/training/) as the base, and write or find five short sentences on a different subject (a recipe, a sports report, a song).
 2. Tally them onto a separate sheet with the same headers, adding a row and a column for any new words on both.
-3. Generate a few sentences with the adapter at full strength and at three times. Then take it off and check you have your base model back.
+3. Generate a few sentences with the adapter at full strength and at three times. Then take it off and check you have your base model back. To skip the merging, paste your base text and new sentences into the widget's Text boxes in step 2.
 4. Squeeze the adapter into strips. Cross out every tally the base grid already has. Group the rows that are left by what they push toward; each group is one pair, with the group's rows on the _when_ strip and what they push toward on the _what_ strip.
 5. Generate with the strips, and count how many numbers you're storing compared with the adapter sheet.
 
 ## Instructor notes
+
+### Running it in one lesson
+
+Do step 1 and the first merged row of step 2 by hand, then hand the generating in step 2 to the widget. The hand work is the point in step 1 and step 3; merging rows over and over in step 2 is not, and one class ran out of time without getting past it. With the widget, steps 1 to 3 should fit in a 50-minute lesson. The flattering adapter needs another 20 minutes, or a lesson of its own if your class rolls the dose board by hand.
 
 ### Discussion questions
 
