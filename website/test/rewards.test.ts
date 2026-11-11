@@ -55,6 +55,12 @@ function stalls(xs: number[][]) {
 }
 
 describe("Rewards module", () => {
+  it("gives the widget the story from the corpus file", () => {
+    const quoted = MODULE.match(/^export const MAGPIE =\s*("(?:[^"\\]|\\.)*")/m)![1];
+    const story = read("../data/originals/the-magpies-nest.txt").split("---")[2].trim();
+    expect(JSON.parse(quoted)).toBe(story);
+  });
+
   it("prints The magpie's nest model as the story gives it", () => {
     for (const [word, row] of BASE) {
       if (row.size === 0) continue;
@@ -82,6 +88,21 @@ describe("Rewards module", () => {
     expect(rule.garbled).toBeGreaterThan(0.25);
     expect(rule.garbled).toBeLessThan(0.33);
     expect(MODULE).toContain("from about one sentence in seven to more than one in four");
+  });
+
+  it("ten rounds on the widget take the rule table most of the way", () => {
+    const ten = rates((r) => ruleTable(r, "on", 10), 14);
+    expect(ten.pass).toBeGreaterThan(0.84);
+    expect(ten.pass).toBeLessThan(0.9);
+    expect(ten.garbled / ten.pass).toBeGreaterThan(0.4);
+    expect(ten.garbled / ten.pass).toBeLessThan(0.5);
+    const r = rng(15);
+    const share = mean(Array.from({ length: TRIALS }, () => magpieShare(ruleTable(r, "on", 10))));
+    expect(share).toBeGreaterThan(0.85);
+    expect(share).toBeLessThan(0.92);
+    expect(MODULE).toContain(
+      "By ten rounds about nine sentences in ten pass, `magpie` fills about nine-tenths of the `the` row, and nearly half the passes are garbled",
+    );
   });
 
   it("the panel table barely moves on the same three rounds", () => {

@@ -7,7 +7,7 @@ description:
   flatter.
 order: 11
 audience: years 9 and up
-duration: 30 min (45 min with the thumbs-up round)
+duration: 40 min (55 min with the thumbs-up round)
 bases: [grid]
 status: experimental
 topic: shaping-behaviour
@@ -18,6 +18,10 @@ keyIdea:
 
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 import Callout from "../../components/Callout.astro";
+import RewardsWidget from "../../components/widgets/RewardsWidget.svelte";
+
+export const MAGPIE =
+  "It is morning. The magpie sings. It flies to the tree. It sits in the nest. Here comes the cat. Down swoops the magpie! Off runs the cat. The magpie warbles. It flies back to the nest. Here comes the rain. It hides in the nest. The rain stops. The magpie sings. It flies to the tree. The magpie eats a worm. The sun sets. It sleeps in the nest. It is morning. The magpie sings.";
 
 Two tables start with the same model and the same goal: sentences about the magpie. One table has a panel of people who rank the model's sentences. The other has a rule card that a checker can apply without thinking. Three rounds later, the rule table's model passes its check far more often than it used to, and a lot of what passes is nonsense. Then the whole room votes thumbs up or down on what a model says about them, and watches it learn to flatter.
 
@@ -25,7 +29,7 @@ Two tables start with the same model and the same goal: sentences about the magp
 
 ## You will need
 
-- a copy of the model of _The magpie's nest_ below for each table, printed or copied out, and pencils with erasers
+- a copy of the model of _The magpie's nest_ below for each table, printed or copied out, and a pen each
 - a d20 and a d6 for each table
 - the rule card or the panel brief (below) for each table
 - for the thumbs-up round: a cup and about twenty-five small slips of paper for each group of six
@@ -89,7 +93,7 @@ Its model has 49 pairs. Each row gives a word, how many times something followed
 | `sets`    | 1     | `.` 1                                                      |
 | `sleeps`  | 1     | `in` 1                                                     |
 
-A sentence starts on the `.` row and ends when you roll `.` or `!`. To roll on a row, number its options by their counts (for the `.` row: 1--7 is `It`, 8--14 is `the`, 15--16 is `Here`, 17 is `Down`) and roll the d20, rolling again if it comes up higher than the row total. A row with one option needs no roll, and a row of six or fewer goes faster on the d6. The totals change as you go, so recount the row each time you use it. If a row grows past 20, roll the d6 with the d20: on 1 or 2 add nothing, on 3 or 4 add 20, on 5 or 6 add 40.
+A sentence starts on the `.` row and ends when you roll `.` or `!`. To roll on a row, number its options by their counts (for the `.` row: 1--7 is `It`, 8--14 is `the`, 15--16 is `Here`, 17 is `Down`) and roll the d20, rolling again if it comes up higher than the row total. A row with one option needs no roll, and a row of six or fewer goes faster on the d6. The counts change as you go, so add the row up again each time you roll on it. If a row grows past 20, roll the d6 with the d20: on 1 or 2 add nothing, on 3 or 4 add 20, on 5 or 6 add 40.
 
 Left alone, the model already writes plenty of sentences about the magpie, and some odd ones. It can write _Here comes the magpie sings._ or _It sits in the magpie warbles._, because after `the` anything that ever followed `the` can come next.
 
@@ -115,11 +119,11 @@ Split into tables of three or four, each with its own copy of the model. Give ha
 
 </Callout>
 
-### Each round (5--7 min, run three)
+### Each round (8--10 min, run three)
 
-1. **Generate five sentences.** Everyone at the table generates at least one, from the same copy of the model. If a sentence reaches ten words without ending, stop it there; it's unfinished.
+1. **Generate five sentences.** Everyone at the table rolls a sentence at the same time, from the same copy of the model, until there are five. If a sentence reaches ten words without ending, stop it there; it's unfinished.
 2. **Score them.** The rule table checks each sentence against the card, pass or fail, and writes down how many of the five passed. The panel table ranks its five.
-3. **Update the counts** (below), then start the next round.
+3. **Update the counts** (below), then start the next round. Whoever generated a sentence makes its changes, so the updates happen in parallel too.
 
 ### Updating the counts
 
@@ -128,7 +132,7 @@ Each sentence is a chain of pairs, starting with the `.` before its first word a
 - **rule table:** add 1 to every pair in each sentence that passed, and take 1 off every pair in each sentence that failed
 - **panel table:** add 1 to every pair in the best sentence, take 1 off every pair in the worst, and leave the middle three alone
 
-A pair can turn up more than once in a sentence; change it once for each time.
+A pair can turn up more than once in a sentence; change it once for each time. Cross out the old count and write the new one beside it, and don't bother updating the total column: whoever next rolls on that row adds it up.
 
 **The leash:** never rub out a pair's last count. A pair the story had can drop to 1 but not to 0, so every sentence the story could write stays possible.
 
@@ -141,6 +145,12 @@ Then read out the rule table's passes, round by round: usually one or two of the
 The base model gets about a third of its sentences past the check. After three rounds the rule table's model gets nearly two-thirds of them past. The garbled passes, like _It sits in the magpie warbles._, rise with them: from about one sentence in seven to more than one in four. The check counts a garbled sentence with `magpie` in it as a pass, so the model learned to write more of them. The panel table's model moves much less in the same three rounds, and the panel has probably argued over a ranking or two.
 
 Ask the room: which table got what it wanted? The rule table got exactly what it checked for.
+
+### Keep going on the widget
+
+Three rounds is all a lesson has time for by hand. The widget runs the same rounds on the same model, so the room can see where the rule table was heading. Set it to the rule card, press **Run five rounds** a few times, and test the model against the rule card after each. By ten rounds about nine sentences in ten pass, `magpie` fills about nine-tenths of the `the` row, and nearly half the passes are garbled. In panel mode the room can judge together on the projector: generate five, agree on the best and the worst, and update.
+
+<RewardsWidget client:visible text={MAGPIE} />
 
 ## The thumbs-up round (10--15 min)
 
@@ -161,7 +171,7 @@ If your room voted differently, the cup still shows what that room rewarded, bec
 
 ### Timing
 
-The core activity (two tables, three rounds, the reveal) takes about 30 minutes. Most of a round is rolling dice; a table of three makes five sentences in five to seven minutes once it has the hang of it. The thumbs-up round adds 10--15 minutes and can run as its own short session. A class that has already met the magpie's model in [Beam Search](/modules/beam-search/) starts faster.
+The core activity (two tables, three rounds, the reveal) takes about 40 minutes: five to set up, three rounds of eight to ten, and five for the reveal. Most of a round is rolling dice, so it goes faster when everyone at a table rolls at once and makes their own sentence's changes. The rule table has more changes to make than the panel table, because every sentence it scores moves its counts, so it tends to finish a round a minute or two later. The thumbs-up round adds 10--15 minutes and can run as its own short session. A class that has already met the magpie's model in [Beam Search](/modules/beam-search/) starts faster.
 
 ### Discussion questions
 
@@ -175,11 +185,11 @@ The core activity (two tables, three rounds, the reveal) takes about 30 minutes.
 
 ### Variations
 
-**No leash.** Run the rule table again with no leash, so counts can reach 0. Sentences that can never pass, like _It is morning._, only ever lose counts. After three rounds about a quarter of the story's 49 pairs are typically gone, and the model can no longer write some of the story's own sentences.
+**No leash.** Run the rule table again with no leash, so counts can reach 0. Sentences that can never pass, like _It is morning._, only ever lose counts. After three rounds about a quarter of the story's 49 pairs are typically gone, and the model can no longer write some of the story's own sentences. On the widget, untick the leash and run five rounds to see it.
 
 **Rewrite the rule.** After the reveal, give the rule table one minute to improve its card, then run two more rounds. Most new rules close one gap and leave another, which is the usual experience of writing automatic checks.
 
-**One model, whole room.** For a big group, run the panel version at the front: generate five sentences, let the room rank them by applause, and have one scorer update a copy of the model under a visualiser.
+**One model, whole room.** For a big group, run the panel version at the front: generate five sentences, let the room rank them by applause, and have one scorer update a copy of the model under a visualiser, or use the widget in panel mode.
 
 ### Connection to current LLMs
 

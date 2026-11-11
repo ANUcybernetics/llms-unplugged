@@ -1,16 +1,38 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { buildBigramModel, parseTokens } from "../../src/lib/tokens";
+import {
+  CANDIDATES,
+  copy,
+  type Counts,
+  finished,
+  type Leash,
+  passes,
+  pick,
+  type Sentence,
+  sentence,
+  update as updateWith,
+} from "../../src/lib/rewards";
 
 // Simulation of the Rewards module rounds, shared by rewards.test.ts.
 
 const read = (path: string) => readFileSync(join(process.cwd(), path), "utf-8");
 export const STORY = parseTokens(read("../data/originals/the-magpies-nest.txt").split("---")[2]);
 
-export type Counts = Map<string, Map<string, number>>;
-export type Sentence = { words: string[]; end: string };
+export type { Counts, Leash, Sentence } from "../../src/lib/rewards";
+export {
+  CANDIDATES,
+  copy,
+  END,
+  finished,
+  get,
+  MAX_WORDS,
+  pairs,
+  passes,
+  pick,
+  sentence,
+} from "../../src/lib/rewards";
 
-export const END = new Set([".", "!"]);
 export const VERBS = new Set([
   "is",
   "sings",
@@ -27,7 +49,6 @@ export const VERBS = new Set([
   "sleeps",
 ]);
 export const BASE: Counts = buildBigramModel(STORY).counts;
-export const MAX_WORDS = 10;
 
 export function rng(seed: number) {
   let a = seed;
@@ -40,47 +61,12 @@ export function rng(seed: number) {
 }
 export type Rng = ReturnType<typeof rng>;
 
-export const copy = (m: Counts): Counts => new Map(Array.from(m, ([w, row]) => [w, new Map(row)]));
-export const get = (m: Counts, a: string, b: string) => m.get(a)?.get(b) ?? 0;
-
-export function pick(row: Map<string, number>, r: Rng): string | undefined {
-  const live = [...row].filter(([, n]) => n > 0);
-  let roll = r() * live.reduce((s, [, n]) => s + n, 0);
-  for (const [w, n] of live) if ((roll -= n) < 0) return w;
-  return undefined;
-}
-
-// One candidate: start after a full stop, roll until `.` or `!`.
-export function sentence(m: Counts, r: Rng): Sentence {
-  const words: string[] = [];
-  let w = ".";
-  while (words.length < MAX_WORDS) {
-    const next = pick(m.get(w) ?? new Map(), r);
-    if (next === undefined) return { words, end: "stuck" };
-    if (END.has(next)) return { words, end: next };
-    words.push(next);
-    w = next;
-  }
-  return { words, end: "long" };
-}
-
-export const pairs = ({ words, end }: Sentence) => {
-  const seq = [".", ...words, ...(END.has(end) ? [end] : [])];
-  return seq.slice(1).map((b, i) => [seq[i], b] as const);
-};
-export const finished = (s: Sentence) => END.has(s.end);
-export const passes = (s: Sentence) => finished(s) && s.words.includes("magpie");
 export const garbled = (s: Sentence) => s.words.filter((w) => VERBS.has(w)).length >= 2;
 
-export type Leash = "on" | "off";
 export function update(m: Counts, s: Sentence, delta: number, leash: Leash) {
-  for (const [a, b] of pairs(s)) {
-    const floor = leash === "on" && get(BASE, a, b) > 0 ? 1 : 0;
-    m.get(a)!.set(b, Math.max(floor, get(m, a, b) + delta));
-  }
+  updateWith(m, BASE, s, delta, leash);
 }
 
-export const CANDIDATES = 5;
 export const ROUNDS = 3;
 
 // The rule table's rounds, with the tally it keeps: how many of each round's
