@@ -272,12 +272,16 @@ describe("Fine-tuning and LoRA module", () => {
         good: 3,
         this: 3,
       });
-      // the merged-rows table prints each changed row's roll numbers and total
-      for (const k of [1, 3, 9]) {
-        const line = MODULE.split("\n").find((l) => l.startsWith(`| ×${k} `));
-        expect(line, `merged rows at ×${k}`).toBeDefined();
-        const cells = line!.split("|").slice(2, 5);
-        for (const [i, word] of [".", "!", "is"].entries()) {
+      // each changed row's table prints its roll numbers and total at every strength
+      for (const word of [".", "!", "is"]) {
+        const table = MODULE.split(`| after \`${word}\` |`)[1].split("\n\n")[0].split("\n");
+        const rows = table.slice(2).map((l) =>
+          l
+            .split("|")
+            .slice(1, -1)
+            .map((c) => c.trim()),
+        );
+        for (const [col, k] of [1, 3, 9].entries()) {
           const row = mergedRow(
             [
               { counts: base, strength: 1 },
@@ -285,13 +289,15 @@ describe("Fine-tuning and LoRA module", () => {
             ],
             word,
           );
-          const printed = Array.from(cells[i].matchAll(/`(\S+)` (\d+)(?:–(\d+))?/g), (m) => [
-            m[1],
-            Number(m[2]),
-            Number(m[3] ?? m[2]),
+          const printed = rows
+            .filter((r) => r[0] !== "in all")
+            .map((r) => [r[0].replaceAll("`", ""), r[col + 1]]);
+          const expected = row.map((o) => [
+            o.word,
+            o.range[0] === o.range[1] ? `${o.range[0]}` : `${o.range[0]}–${o.range[1]}`,
           ]);
-          expect(printed, `×${k} ${word}`).toEqual(row.map((o) => [o.word, ...o.range]));
-          expect(cells[i]).toContain(`(${rowTotal(row)}`);
+          expect(printed, `after ${word} at ×${k}`).toEqual(expected);
+          expect(rows.find((r) => r[0] === "in all")![col + 1]).toBe(`${rowTotal(row)}`);
         }
       }
       // the d20 and d6 in "You will need" cover every row, at every strength
