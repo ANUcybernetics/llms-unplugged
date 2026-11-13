@@ -102,69 +102,12 @@ text file → Rust CLI → model.json → Typst → PDF booklet
   along with `lockup-light.svg`
 - `Makefile` - Batch processing for multiple texts/formats
 
-## Essential commands
+## Website sync
 
-```bash
-# Build the tool
-cargo build --release
-
-# Generate JSON
-./target/release/llms_unplugged build -i ../data/frankenstein.txt --n 2 --output out/json/frankenstein-2-1.json
-
-# Generate PDFs (and JSON if needed)
-./target/release/llms_unplugged pdf --target frankenstein-2-1 --input ../data/frankenstein.txt --out-dir out
-
-# Export bigram TSV for spreadsheets
-./target/release/llms_unplugged tsv -i ../data/frankenstein.txt > bigrams.tsv
-
-# Sample text from an in-memory N-gram model built from a corpus
-./target/release/llms_unplugged sample -i ../data/frankenstein.txt -p "the" -t 30 --seed 42
-
-# Generate token cutouts (single-sided)
-./target/release/llms_unplugged cutouts -i ../data/originals/sycophancy.txt -n 2
-
-# Generate double-sided cutouts: each cutout page is paired with a mirrored
-# back so the same cutouts appear on both faces of each sheet. Print with
-# "flip on short edge" binding. Currently assumes a4 landscape.
-./target/release/llms_unplugged cutouts -i ../data/originals/sycophancy.txt -n 2 --duplex
-
-# Generate per-participant search sheets: no cutting, one page each. The corpus
-# is shuffled and dealt round-robin, so the room collectively holds the model.
-./target/release/llms_unplugged sheets -i ../data/the-cat-in-the-hat.txt -n 2 --sheets 24
-
-# Generate ledger sheets for a group of 4: prefixes printed, followers and
-# tallies left to write. --prefill followers prints the followers too, and
-# --prefill tallies the marks as well (the trained model, and the answer key);
-# --blank prints empty rows with no corpus at all.
-./target/release/llms_unplugged ledger -i ../data/green-eggs-and-ham.txt --sheets 4
-
-# Combine documents without introducing artificial bigrams at their boundaries
-./target/release/llms_unplugged sheets -i ../data/one.txt -i ../data/two.txt -n 2 --sheets 100
-
-# Same, but each sheet ordered by context (the "now organise your data" round)
-./target/release/llms_unplugged sheets -i ../data/the-cat-in-the-hat.txt -n 2 --sheets 24 --sort
-
-# Regenerate the pre-prepared search-sheet PDFs (targets are
-# <corpus>-<participants>; PDFs stage to ../out/pdfs/sheets/ for upload to
-# the pdf.llmsunplugged.org bucket via ops/bucket-sync.py)
-make sheets
-
-# Build all configured booklets
-make booklets
-
-# Build workshop booklets
-make workshop
-
-# Run tests
-cargo test
-
-# Rebuild the committed wasm bundle the website ships
-# (website/src/wasm-pkg). Run from the repo root after any Rust change that
-# affects the `wasm` feature --- website/test/wasmPkg.test.ts asserts the
-# committed bundle still matches the Rust behaviour, so a stale bundle fails
-# the website suite.
-mise run wasm-build
-```
+After any Rust change that affects the `wasm` feature, run `mise run wasm-build`
+from the repo root. `website/test/wasmPkg.test.ts` asserts the committed bundle
+(`website/src/wasm-pkg`) still matches the Rust behaviour, so a stale bundle
+fails the website suite.
 
 The tokeniser's behaviour is pinned by a shared fixture
 (`tests/fixtures/tokenization_cases.json`), asserted by both `cargo test` and
@@ -173,127 +116,36 @@ agree). After a deliberate tokeniser change:
 `cargo test regenerate_tokenization_fixture -- --ignored`, then update the TS
 port and rebuild the wasm.
 
-## CLI options
+## Notes beyond `--help`
 
-- `--max-tokens <N>` (every subcommand) - Read only the first N tokens of the
-  text, of each text when several are given. Applied in `Normalizer::tokenize`,
-  the one whole-corpus tokenisation both pipelines read, so it cannot drift
-  between them; casing is still decided over the whole file
-- `-o, --output <file>` - Output JSON file (default: model.json)
-- `-n, --n <N>` - N-gram size: 2 for bigrams, 3 for trigrams (default: 2)
-- `--raw` - Output raw counts without scaling
-- `-b <N>` - Split large models across N books
-- `--book-binding` - Add blank pages for bound book layout (off by default)
-- `--duplex` (cutouts only) - Generate a double-sided PDF where each cutout page
-  is paired with a mirrored back. Requires "flip on short edge" binding when
-  printed. Currently hard-coded to a4 landscape.
-- `--shuffle` / `--seed` (cutouts only) - Emit cutouts in random rather than
-  corpus order, so an uncut page doesn't read as the source text
-- `--sheets <N>` (sheets only) - Pin the number of participants. Omit it and the
-  count follows the corpus at the density `--rows` sets
-- `--rows <N>` (sheets only, default 18) - Rows of pairs on a sheet. Rows
-  stretch to fill the page, so this is the density knob; it also decides the
-  sheet count unless `--sheets` pins it
-- `--sort` (sheets only) - Order each sheet by context instead of shuffling it
-- `--input <PATH>` (all three activity subcommands) - May be repeated for a
-  multi-document corpus; each document keeps its own N-gram boundary
-- `--title <TITLE>` / `--author <AUTHOR>` (all three, via the shared
-  `LabelArgs`) - Override the labels printed on the brief and the sheets (for
-  example, to preserve a source reveal). The title is the one string naming the
-  set: the brief opens with it and every sheet header carries it opposite the
-  lockup
-- `--brief bound|separate|generic|none` (cutouts, sheets, ledger; default
-  `bound`) - where the brief that opens the handout goes: in front of it, in its
-  own `brief.pdf` beside it, or nowhere. `generic` is `separate` plus a brief
-  that describes the activity rather than this set, for a pack of sets; ledger
-  only, since the other briefs work a corpus example. The templates take it as
-  their `part` input (`all`/`handout`/`brief`), so all three answer the flag
-  with one code path
-- `--even-pages` (ledger only) - pad the sheets to an even page count, so a set
-  printed double-sided ends on a whole leaf and the next set in a concatenation
-  starts on a fresh one
-- `--prefill prefixes|followers|tallies` (ledger only, default `prefixes`) -
-  What the rows come printed with, each level adding to the one before it;
-  `tallies` is the whole sheet filled in, so the group skips training and goes
-  straight to generating. `--blank` prints empty rows with no corpus, and so
-  conflicts with `--prefill` rather than silently outranking it
-- `--palette` (ledger only, JSON array or `@file`) - The colours the room's
-  counters come in, as `{"name", "hex"}` entries; the default is
-  `ledger-palette.json`, which `src/ledger.rs` embeds and the website's
-  `LEDGER_PALETTE` mirrors. The list travels in `ledger.json`, so the sheets,
-  the counters page, the brief's key and counts and the deck widgets all read
-  one list. It is flat: the rows cycle it `--columns` at a time, and colours
-  past the last whole row are dropped with a warning. A room whose counters come
-  in four or eight colours passes `@ledger-palette-four.json` or
+`--help` documents every flag; these are the parts it does not say.
+
+- `--max-tokens` is applied in `Normalizer::tokenize`, the one whole-corpus
+  tokenisation both pipelines read, so it cannot drift between them; casing is
+  still decided over the whole file
+- `--brief` reaches the templates as their `part` input
+  (`all`/`handout`/`brief`), so cutouts, sheets and ledger answer the flag with
+  one code path
+- `--palette`: the list travels in `ledger.json`, so the sheets, the counters
+  page, the brief's key and counts and the deck widgets all read one list. The
+  default is `ledger-palette.json`, which `src/ledger.rs` embeds and the
+  website's `LEDGER_PALETTE` mirrors. A room whose counters come in four or
+  eight colours passes `@ledger-palette-four.json` or
   `@ledger-palette-eight.json`, the first four or eight of the default; the
   school workshop's deck, lesson and pack all print with the four
-- `--columns` / `--rows` (ledger only, defaults 4 and 12) - Follower cells on a
-  row and rows on a page. A prefix with more followers than columns continues
-  onto the next row; the command warns when one needs more rows than the palette
-  has colours for, where the colours repeat
-- `--columns` / `--font-size` (sheets only) - The rest of the sheet density.
-  Columns default to 4 for bigrams and narrow as n grows. Pairs too wide for
-  their column take two columns, so nothing wraps into the row below --- which
-  also means a corpus's sheet count depends on its word lengths, so the command
-  compiles, counts pages, and deals again with more sheets if any spilled
-  (`--sheets` pins the count, so that path warns instead)
-
-## Input file format
-
-Text files must include YAML frontmatter (`url` is optional):
-
-```yaml
----
-title: "Title of the Text"
-author: "Author Name"
-url: "https://source.url"
----
-Your text content here...
-```
-
-## Configuration
-
-- Counts are scaled for d10 dice using 10^k-1 scaling (e.g., 0-9, 0-99, 0-999)
-  unless `--raw` is given
-- Paper size and columns are CLI flags (`--paper-size`, `--columns`; defaults a4
-  and 4)
-- book.typ inputs (via `--input key=value`): paper_size, font_size, columns,
-  subtitle, json_path, book_binding
-
-## Testing
-
-Test files in `tests/` cover:
-
-- Capitalization rules
-- Tokenization edge cases
-- Full integration tests
-
-Test output must be pristine with zero failures.
+- sheets: pairs too wide for their column take two columns, so nothing wraps
+  into the row below. A corpus's sheet count therefore depends on its word
+  lengths: the command compiles, counts pages, and deals again with more sheets
+  if any spilled (`--sheets` pins the count, so that path warns instead)
 
 ## Typst details
 
 - Libertinus Serif for the tokens, Public Sans (the website's face) for
   everything that is the project talking: instructions, footers, the word mark.
   Public Sans is a system font here and is bundled for the in-browser compiler
-- Special formatting for punctuation tokens (boxed display)
-- Guide words in headers for navigation
-- Automatic page layout for booklet printing
 - Every PDF is repacked in place with
   `qpdf --object-streams=generate --deterministic-id`, which packs typst's
   uncompressed accessibility tag tree (thousands of `StructElem` dictionaries
   per cutouts/sheets set) into compressed object streams --- roughly a 70% size
   cut with the tags kept. qpdf is optional: without it the command warns and
   leaves the larger file
-
-## Common issues
-
-1. **Guide words** - Header display of first/last entries per page
-2. **Performance** - Large texts may process slowly
-3. **Book splitting** - Use `-b N` flag for trigrams
-4. **Punctuation tokens** - `.`, `,` and friends get special boxed formatting
-
-## Code conventions
-
-- Match existing Rust style and patterns
-- Tests must cover functionality (no mocks)
-- Never commit without running tests
