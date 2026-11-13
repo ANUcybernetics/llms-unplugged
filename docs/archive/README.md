@@ -8,11 +8,9 @@ The website, [www.llmsunplugged.org](https://www.llmsunplugged.org), is the
 living version and always the better reference: it is kept up to date, it has
 every lesson and module (not just the ones here), and it has interactive widgets
 and tools a PDF can't carry. Use this bundle when you need the materials offline
-or want to cite a fixed version.
+or want a fixed version to refer to.
 
-Cite it as the concept DOI
-[10.5281/zenodo.17403824](https://doi.org/10.5281/zenodo.17403824), which always
-resolves to the latest version; `CITATION.cff` has the details.
+To cite LLMs Unplugged, see `CITATION.cff`.
 
 ## What's here
 

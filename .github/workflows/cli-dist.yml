@@ -1,9 +1,7 @@
 name: CLI Binaries
 
-# Builds the prebuilt CLI that `make archive` puts in the Zenodo bundle. It
-# uploads workflow artifacts rather than attaching to a GitHub release: a
-# published release would fire the GitHub--Zenodo integration and deposit a
-# stray source-only version.
+# Builds the prebuilt CLI that `make archive` puts in the dated bundle, as
+# workflow artifacts rather than a GitHub release.
 
 on:
   push:

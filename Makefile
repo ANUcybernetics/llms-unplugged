@@ -18,7 +18,7 @@
 # $(PACKS)/<slug>/ and finishes with `$(call zip_pack,<slug>)`.
 #
 # `make archive`, at the foot of this file, gathers the tested lessons' decks and
-# printables into the bundle deposited on Zenodo.
+# printables into a dated, point-in-time bundle.
 #
 # Needs jq and qpdf on PATH alongside the CLI's own typst toolchain. The talk
 # packs additionally need website/ installed (`pnpm install`) and a
@@ -36,7 +36,7 @@ help:
 	@echo "make pack-unplugged-in-the-age-of-ai          the 20-minute talk, end to end"
 	@echo "make packs                                    every pack"
 	@echo "make clean-packs                              remove $(PACKS)"
-	@echo "make archive                                  the Zenodo bundle and source zip"
+	@echo "make archive                                  a dated bundle and source zip"
 
 packs: pack-how-ai-writes-stories-ledger pack-demystifying-large-language-models \
 	pack-unplugged-in-the-age-of-ai
@@ -324,13 +324,13 @@ pack-$(AGEOFAI_SLUG): $(CLI)
 	$(call zip_pack,$(AGEOFAI_SLUG))
 
 # ---------------------------------------------------------------------------
-# Archive: the bundle deposited on Zenodo for each version
+# Archive: a dated, point-in-time bundle for each version
 #
 #   make archive
 #
 # lands out/archive/llms-unplugged-<version>.zip (the bundle) and
 # out/archive/llms-unplugged-<version>-source.zip (a `git archive` of the
-# v<version> tag); ops/zenodo-deposit.py uploads both. The version is the CLI
+# v<version> tag). The version is the CLI
 # crate's.
 #
 # The bundle is a dated snapshot for teachers, not a copy of the repo: only the
