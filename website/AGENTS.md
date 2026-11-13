@@ -36,8 +36,8 @@ The grid/cutouts variant toggle is pure CSS: a `data-variant` attribute on
 `<html>` plus `.grid-only`/`.cutouts-only` classes, driven by a
 `<Variant is="grid">` Astro component.
 
-When a page is moved or removed, add a redirect in `astro.config.ts` from its old
-path to the page that now covers its content. If nothing does, let it 404
+When a page is moved or removed, add a redirect in `astro.config.ts` from its
+old path to the page that now covers its content. If nothing does, let it 404
 rather than redirecting somewhere unrelated.
 
 ## Styling: website vs decks
