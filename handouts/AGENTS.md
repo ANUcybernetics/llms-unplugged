@@ -7,8 +7,6 @@ themselves live on the website (`website/src/content/lessons/`).
 
 ## Directory structure
 
-- `worksheets/` - blank templates (grid, grid-48, trigram-template,
-  truncation-strategies, blank-page)
 - `handout-common.typ` - the worksheets' page furniture (mark, gold rule, URL),
   built on the brand definitions in `cli/cutout-common.typ` so a worksheet and a
   set of CLI sheets read as one family. The grids (`grid-common.typ`, drawn at
@@ -21,12 +19,6 @@ themselves live on the website (`website/src/content/lessons/`).
 ## Build process
 
 ```bash
-# Build all handouts
-make
-
-# Build single file
-typst compile worksheets/grid.typ
-
 # sycophancy-text.typ reads its corpus from data/originals/sycophancy.txt, so compiling
 # it directly needs the repo root as the project root (the Makefile does this)
 typst compile --root .. worksheets/sycophancy-text.typ
@@ -48,13 +40,4 @@ the try-it-yourself spread A3 landscape at two pages to a sheet.
 Everything here takes its styling from `handout-common.typ` or sets its own; no
 file depends on the `anu` template.
 
-## Dependencies
-
-- Typst compiler
-- fonts installed system-wide (Public Sans, Libertinus Serif)
-
-## Notes
-
-- Materials are designed for physical printing and workshop distribution
-- Emphasis on hands-on activities with dice, tokens, paper
-- When making changes, build the affected file and check the output PDF
+Public Sans and Libertinus Serif must be installed system-wide.
