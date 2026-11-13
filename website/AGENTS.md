@@ -16,7 +16,6 @@ environment, so run it plainly rather than `astro dev &` plus polling for
 
 ## Project structure
 
-- `src/pages/` --- Astro page routes
 - `src/content/modules/` --- module MDX (content collection): the building-block
   activities
 - `src/content/lessons/` --- lesson MDX (content collection): deck-backed
@@ -24,11 +23,6 @@ environment, so run it plainly rather than `astro dev &` plus polling for
 - `src/content/news/` --- news markdown (content collection)
 - `src/decks/` --- `*.deck.mdx` decks, shared `partials/`, `assets/` and
   `theme.css`
-- `src/components/` --- Astro and Svelte components
-- `src/layouts/` --- page layouts
-- `src/lib/` --- shared utilities and stores
-- `src/styles/` --- global CSS
-- `public/` --- static assets (images, favicon, CNAME)
 
 Content collections use Zod schemas in `src/content.config.ts`. Shared state
 (variant, training text, playback) uses Svelte 5 runes in `.svelte.ts` files.
@@ -82,8 +76,6 @@ paragraph in two.
 
 ## Commands
 
-- `pnpm run dev`, `pnpm run build`, `pnpm run test`
-- `pnpm run check` --- typecheck, lint, format check, tests, `decks:check`
 - `pnpm run decks:check` --- checks every slide for content overflowing the
   fixed canvas. Worth running alone after any deck edit or theme bump: the
   build's "Checked N deck(s) --- no structural violations" line is a different
@@ -120,8 +112,6 @@ with `mise run wasm-build` from the repo root after Rust changes.
 `test/wasmPkg.test.ts` asserts the committed bundle matches current Rust
 behaviour via `../cli/tests/fixtures/tokenization_cases.json`, which also pins
 `src/lib/tokens.ts` (the pure-TS port of the CLI tokeniser).
-
-Whenever the linter or checker reports warnings or errors, fix them.
 
 ## Image generation style
 
