@@ -7,27 +7,32 @@ import libraryTitlePage from "../assets/images/library-title-page.avif";
 ---
 
 <PageLayout
-  title="LLMs Unplugged Library"
+  title="The Library of Babble"
   description="Pre-trained language models in printed, hardbound book form — n-gram frequency tables typeset from classic literature that you can use to generate text with pen, paper, and dice."
 >
-  <h1>LLMs Unplugged Library</h1>
+  <h1>The Library of Babble</h1>
 
   <Image
     src={libraryCollection}
-    alt="The LLMs Unplugged Library collection — hardbound volumes in green, purple, brown, and blue lined up on a shelf"
+    alt="The Library of Babble collection — hardbound volumes in green, purple, brown, and blue lined up on a shelf"
     widths={[480, 960, 1440]}
     sizes="(max-width: 960px) 100vw, 960px"
     format="avif"
   />
 
   <p>
-    The <em>LLMs Unplugged Library</em> is a collection of pre-trained{" "}
+    <em>The Library of Babble</em> is a collection of pre-trained{" "}
     <GlossaryTerm id="language-model">language models</GlossaryTerm>
     in printed, hardbound book form. Each volume contains{" "}
     <GlossaryTerm id="n-gram-model">n-gram</GlossaryTerm> frequency tables typeset from a classic
     work of literature&mdash;the same statistical patterns that underpin modern LLMs, but at human
     scale. You can hold the entire model in your hands and use it to generate new text with pen,
     paper, and dice.
+  </p>
+
+  <p>
+    The series was formerly known as the LLMs Unplugged Library. It has a new name to set the
+    printed volumes apart from the LLMs Unplugged website and teaching resources.
   </p>
 
   <Image
@@ -41,12 +46,13 @@ import libraryTitlePage from "../assets/images/library-title-page.avif";
   <h2>A conceptual art piece</h2>
 
   <p>
-    The Library reframes a language model as a physical object&mdash;something bound, shelved, and
-    read rather than queried through a chat window. The technology underneath is identical to the
-    activities elsewhere on this site: a tokeniser counts how often each word follows each context,
-    and those counts are typeset into lookup tables that anyone with a pair of dice can sample from.
-    A workshop booklet is a consumable, printed for an afternoon and recycled afterwards. A Library
-    volume is meant to sit on a shelf, be picked up, and reward closer attention.
+    The Library of Babble reframes a language model as a physical object&mdash;something bound,
+    shelved, and read rather than queried through a chat window. The technology underneath is
+    identical to the activities elsewhere on this site: a tokeniser counts how often each word
+    follows each context, and those counts are typeset into lookup tables that anyone with a pair of
+    dice can sample from. A workshop booklet is a consumable, printed for an afternoon and recycled
+    afterwards. A Library of Babble volume is meant to sit on a shelf, be picked up, and reward
+    closer attention.
   </p>
 
   <p>
@@ -76,8 +82,8 @@ import libraryTitlePage from "../assets/images/library-title-page.avif";
     and cutouts on the <a href="/tools/">Materials</a> page. A Rust CLI tokenises the source text
     and computes n-gram frequency tables, which are exported as JSON and then laid out by a Typst
     template into A4 pages with four columns of frequency data, binding margins for hardcover
-    production, and front matter including a copyright page and usage instructions. The Library
-    volumes are curated, printed, and hardbound as standalone artefacts.
+    production, and front matter including a copyright page and usage instructions. The Library of
+    Babble volumes are curated, printed, and hardbound as standalone artefacts.
   </p>
 
   <p>

@@ -37,7 +37,7 @@ export function footerMeta(pathname: string): string[] {
     [
       '<a href="/glossary/">Glossary</a>',
       '<a href="/faq/">FAQ</a>',
-      '<a href="/library/">Library</a>',
+      '<a href="/library/">Library of Babble</a>',
       sourceLinkHtml(pathname),
     ]
       .filter(Boolean)

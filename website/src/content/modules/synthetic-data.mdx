@@ -123,7 +123,7 @@ part of training, used carefully:
 
 - **<GlossaryTerm id="distillation">distillation</GlossaryTerm>**: a large model writes training text for a smaller one. [DeepSeek-R1](https://arxiv.org/abs/2501.12948)'s worked solutions were used to train much smaller open models, which then reasoned far better than models their size usually do. The data comes from a stronger model, so the chain doesn't close on itself
 - **generate and filter**: produce a lot of attempts and keep only those a checker, a verifier or a person accepts, as in the filter variation above
-- **written to order**: [TinyStories](https://arxiv.org/abs/2305.07759) is a corpus of simple stories written by a larger model, and small models trained on it write fluent English at sizes where models trained on web text don't. There's a TinyStories volume in the [LLMs Unplugged Library](/library/), so you can roll dice against a model trained on synthetic data
+- **written to order**: [TinyStories](https://arxiv.org/abs/2305.07759) is a corpus of simple stories written by a larger model, and small models trained on it write fluent English at sizes where models trained on web text don't. There's a TinyStories volume in the [Library of Babble](/library/), so you can roll dice against a model trained on synthetic data
 
 Collapse is still a live concern. A growing share of the text on the web is model output, most of it unlabelled, so anyone training on scraped text today trains on some of it whether they mean to or not. Keeping track of where training text came from, and keeping plenty of human-written text in the mix, is what the accumulate chain does.
 
