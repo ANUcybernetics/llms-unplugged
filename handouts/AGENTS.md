@@ -3,8 +3,7 @@
 ## Overview
 
 This directory contains Typst-based standalone printable materials. The lessons
-themselves live on the website
-(`website/src/content/lessons/`).
+themselves live on the website (`website/src/content/lessons/`).
 
 ## Directory structure
 
