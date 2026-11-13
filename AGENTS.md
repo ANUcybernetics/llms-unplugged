@@ -41,7 +41,6 @@ cd website && pnpm run build && pnpm test
 ## Conventions
 
 - Use the `backlog` CLI for task management; never edit task files directly
-- Test output must be pristine (zero failures)
 - Format Typst files with `typstyle --wrap-text`
 
 ## House styles
