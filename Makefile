@@ -112,6 +112,7 @@ endef
 
 LEDGER_SLUG := how-ai-writes-stories-ledger
 LEDGER_DIR := $(PACKS)/$(LEDGER_SLUG)
+LEDGER_DECKS := $(LEDGER_SLUG)-60min $(LEDGER_SLUG)-90min
 LEDGER_STAGE := $(LEDGER_DIR)/.build
 LEDGER_PALETTE := @cli/ledger-palette-four.json
 LEDGER_SHEETS := 5
@@ -414,7 +415,7 @@ archive-how-ai-writes-stories:
 archive-$(LEDGER_SLUG): pack-$(LEDGER_SLUG)
 	@rm -rf $(ARCHIVE_DIR)/$(LEDGER_SLUG)
 	@mkdir -p $(ARCHIVE_DIR)/$(LEDGER_SLUG)
-	$(call archive_deck,$(LEDGER_SLUG),$(ARCHIVE_DIR)/$(LEDGER_SLUG))
+	$(foreach deck,$(LEDGER_DECKS),$(call archive_deck,$(deck),$(ARCHIVE_DIR)/$(LEDGER_SLUG)))
 	@cp -r $(LEDGER_DIR) $(ARCHIVE_DIR)/$(LEDGER_SLUG)/printouts
 
 # The workflow uploads one packaged binary per target as its own artifact;

@@ -1,0 +1,83 @@
+---
+title: LLMs Unplugged — How AI writes stories (ledger, 60 min)
+description:
+  A 60-minute ledger-flavour workshop for high schoolers to adults — generate
+  stories from a paper language model with a cup of coloured counters, then see
+  where its tally marks came from
+---
+
+import LedgerToken from "../components/LedgerToken.astro";
+import LedgerRow from "../components/LedgerRow.svelte";
+import LedgerCup from "../components/LedgerCup.svelte";
+import LedgerPage from "../components/LedgerPage.svelte";
+import LedgerTraining from "../components/LedgerTraining.svelte";
+import LedgerSheet from "../components/LedgerSheet.svelte";
+import LedgerSheets from "../components/LedgerSheets.svelte";
+import ModelScaleBars from "../components/ModelScaleBars.svelte";
+import Timer from "../components/Timer.astro";
+import AiVennDiagram from "../components/AiVennDiagram.astro";
+import PresenterGrid from "../components/PresenterGrid.astro";
+import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
+import BgMusic from "../components/BgMusic.astro";
+import UpcomingSessions from "../components/UpcomingSessions.astro";
+import {
+  PALETTE,
+  ROW_THE,
+  ROW_STOP,
+  ROW_IT,
+  ROW_MAGPIE,
+  SHEET_FIVE,
+  STORY_LEDGER,
+  SHEET_RANGES,
+  MAGPIE_OPENING,
+  MAGPIE_OPENING_SOURCE,
+} from "./ledgerExamples";
+import "../styles/widgets.css";
+import "../styles/ledger.css";
+import "./how-ai-writes-stories-ledger.deck.css";
+
+<BgMusic />
+
+export const components = { code: LedgerToken };
+
+```comment
+60-minute workshop in groups of 4-5. Generation comes before training on
+purpose: a group that has drawn words out of a finished sheet knows what the
+marks are for before it sees any being made. The 90-minute deck is this one
+with the groups' own training and the class story added.
+  Preamble (6 min)  title, country, presenters, icebreaker, about
+  Part 1 (6 min)    Read the sheet (ledger-read)
+  Part 2 (22 min)   Generation + shareback (ledger-generation)
+  Part 3 (8 min)    Where did the marks come from? (ledger-training --- the
+                    room builds the start of the magpie's sheet, then trains
+                    the row for "the" by ear)
+  Part 4 (6 min)    Scaling up (scaling-up)
+  Part 5 (10 min)   Questions (denouement)
+
+Before each delivery: print the pre-tallied picture-book sets, the counters
+page and the instruction sheet from the pack (see the 90-minute deck's
+comment); the blank sheets and the outdoors text pages aren't needed. A
+whiteboard and a helper to tally for part 3.
+```
+
+{/* @include ./partials/preamble.mdx */}
+
+---
+
+{/* @include ./partials/ledger-read.mdx */}
+
+---
+
+{/* @include ./partials/ledger-generation.mdx */}
+
+---
+
+{/* @include ./partials/ledger-training.mdx */}
+
+---
+
+{/* @include ./partials/scaling-up.mdx */}
+
+---
+
+{/* @include ./partials/denouement.mdx */}

@@ -1,6 +1,9 @@
 # How AI writes stories (ledger) --- what to print
 
-A 90-minute workshop for groups of 4-5. Everything here is A4 landscape.
+For the 60- and 90-minute workshops, in groups of 4-5. Everything here is A4
+landscape. The 60-minute workshop needs only `instructions.pdf`,
+`generation-ledgers.pdf` and `counters.pdf`: its training round is done together,
+on the whiteboard.
 
 ## instructions.pdf
 
@@ -24,7 +27,7 @@ seating two groups with the same book side by side.
 ## training-sheets.pdf
 
 One blank sheet: empty rows, four coloured boxes each, no words. Print one per
-person --- five to a group --- for the training round, where the words and the
+person --- five to a group --- for the 90-minute workshop's training round, where the words and the
 marks are both theirs to write.
 
 ## training-texts.pdf
@@ -44,8 +47,8 @@ binding works) --- one copy gives 24 of each colour.
 
 - counters in four colours (red, blue, green, yellow), at least six of each per
   group, a paper cup and a tub per group
-- butchers paper for the class story, pen and paper per group
-- a projector, a whiteboard, and a chatbot for part 1
+- butchers paper for the class story (90 minutes), pen and paper per group
+- a projector and a whiteboard
 
 ## More
 

@@ -105,6 +105,8 @@ export default defineConfig({
     "/slides/studio-workshop-2h/": "/decks/my-first-language-model-2h/",
     // The ACE 2026 talk deck moved to benswift.me (June 2026).
     "/decks/ace-26/": "https://benswift.me/decks/llms-unplugged-ace-2026/",
+    "/decks/how-ai-writes-stories-ledger/": "/decks/how-ai-writes-stories-ledger-90min/",
+    "/decks/how-ai-writes-stories-ledger-45min/": "/decks/how-ai-writes-stories-ledger-60min/",
   },
   fonts: [
     {
