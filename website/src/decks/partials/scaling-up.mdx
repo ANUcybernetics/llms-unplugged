@@ -5,7 +5,7 @@
 ![bg](./assets/bg-information-flow.avif)
 
 ```notes
-The reassurance beat: what they built isn't a cartoon of an LLM, it's the real mechanism at human scale --- look at the context, weigh every possible next word, pick one at random, write it down, repeat. So what's actually different?
+The reassurance beat: what they built isn't a cartoon of an LLM, it's the real mechanism at human scale --- look at the context, weigh every possible next word, roll the dice, write it down, repeat. So what's actually different?
 
 Two slides: every dial turned up, a very long way, and the one difference that isn't about size at all (which text, not how much). Then the closer. The deeper story --- why a grid can't be scaled, what a real model does instead --- has lessons on the website that do it properly; name those rather than explaining. ~3 min.
 ```
@@ -15,7 +15,6 @@ Two slides: every dial turned up, a very long way, and the one difference that i
 ## Now turn everything up
 
 <ModelScaleBars
-  startLabel="a paper model"
   contextFrom={1}
   contextFromLabel="1 word"
   trainingFrom={84489}
@@ -26,11 +25,11 @@ Two slides: every dial turned up, a very long way, and the one difference that i
 />
 
 ```notes
-Ask before you explain, because this slide is where their most common complaint lives: hands up if you've told one of these things not to do something and it did it anyway. Take two answers. Then the honest account: your instruction didn't fall off the end of a one-word window --- it's in the context, all of it, every time. It's one more stretch of text competing with everything else in the window, weighted rather than obeyed: "it read your instruction and something else won". What the model is looking at right now is all that shapes what comes next --- that much their paper model taught them straight.
+Ask before you explain, because this slide is where their most common complaint lives: hands up if you've told one of these things not to do something and it did it anyway. Take two answers. Then the honest account: your instruction didn't fall off the end of a one-word window --- it's in the context, all of it, every time. It's one more stretch of text competing with everything else in the window, weighted rather than obeyed: "it read your instruction and something else won". What the model is looking at right now is all that shapes what comes next --- that much their grid taught them straight.
 
-Then the three dials, and let the sweep do the talking --- every bar runs at the same pace per zero, so the longer one is the bigger jump. The axis is shared and it's powers of ten: thousand, million, billion, trillion. Context: their paper model looked at one word; Claude looks at up to a million tokens, the whole conversation and then some. Training text: one novel, about 84,000 words, against fifteen trillion tokens, the published figure for a recent open model's training run --- about 180 million copies of the novel, roughly 5.7 million years at the pace they just worked. Model size: a grid for that one novel has 49 million cells, and a frontier model has about a trillion parameters (the exact figure for the closed ones is unpublished, so "about that, and nobody outside will tell you" is the honest answer).
+Then the three dials, and let the sweep do the talking --- every bar runs at the same pace per zero, so the longer one is the bigger jump. The axis is shared and it's powers of ten: thousand, million, billion, trillion. Context: their grid looked at one word; Claude looks at up to a million tokens, the whole conversation and then some. Training text: one novel, about 84,000 words, against fifteen trillion tokens, the published figure for a recent open model's training run --- about 180 million copies of the novel, roughly 5.7 million years at the pace they just worked. Model size: their novel-grid has 49 million cells, and a frontier model has about a trillion parameters (the exact figure for the closed ones is unpublished, so "about that, and nobody outside will tell you" is the honest answer).
 
-One sentence on why this isn't just their paper model, inflated, because somebody will ask. The website's grid tool, run on that whole novel, fills 0.08% of the table --- one cell in twelve hundred --- and reading *more* makes it emptier, because every new word adds a whole row and column. A trillion-cell grid would be blank. A transformer's numbers are shared instead: every pattern is smeared across billions of them, so a sentence about a cat helps with a sentence about a dog, and it says things nobody ever wrote. That's why turning the dials up keeps working --- make it bigger, feed it more, let it look at more, and it gets better in a way you can measure, predictably enough to plan a training run around. Nobody fully knows why that holds, and that regularity, more than any single clever idea, is why the last five years of AI happened. Each dial has a lesson on the website.
+One sentence on why this isn't just their grid, inflated, because somebody will ask. Their tool, run on that whole novel, fills 0.08% of the table --- one cell in twelve hundred --- and reading *more* makes it emptier, because every new word adds a whole row and column. A trillion-cell grid would be blank. A transformer's numbers are shared instead: every pattern is smeared across billions of them, so a sentence about a cat helps with a sentence about a dog, and it says things nobody ever wrote. That's why turning the dials up keeps working --- make it bigger, feed it more, let it look at more, and it gets better in a way you can measure, predictably enough to plan a training run around. Nobody fully knows why that holds, and that regularity, more than any single clever idea, is why the last five years of AI happened. Each dial has a lesson on the website.
 ```
 
 ---
@@ -54,9 +53,9 @@ training on examples of instructions being followed
 ```notes
 The dials are done, and this is deliberately not a fourth --- it isn't about *how much*, it's about *which text*. Say that as you arrive: "and one thing that isn't a matter of size at all".
 
-No heading --- read the prompt out, then the first reply, and let the room get there. That's GPT-3, straight out of pre-training, and it's doing exactly what their paper model does: continuing the text. Where on the internet does "explain X to a 6 year old" turn up? In lists of homework prompts and writing exercises --- so the likeliest thing to come next is another one. It isn't broken or being unhelpful; nothing in "predict what comes next" has any notion of a question and an answer.
+No heading --- read the prompt out, then the first reply, and let the room get there. That's GPT-3, straight out of pre-training, and it's doing exactly what their grid does: continuing the text. Where on the internet does "explain X to a 6 year old" turn up? In lists of homework prompts and writing exercises --- so the likeliest thing to come next is another one. It isn't broken or being unhelpful; nothing in "predict what comes next" has any notion of a question and an answer.
 
-Then the second reply. That's the same model after post-training (OpenAI published this pair in January 2022, as InstructGPT --- the step just before ChatGPT). They trained it a bit more on examples of people writing out good responses to instructions, then had people rank its attempts and nudged it towards the ones they preferred. Same predict-the-next-word loop, same random choice --- just more text to learn from, of a particular kind, so what tends to follow an instruction is now a response to it. Every chatbot they use has been through this second round; pre-training gives it the language, post-training gives it the habit of answering.
+Then the second reply. That's the same model after post-training (OpenAI published this pair in January 2022, as InstructGPT --- the step just before ChatGPT). They trained it a bit more on examples of people writing out good responses to instructions, then had people rank its attempts and nudged it towards the ones they preferred. Same predict-the-next-word loop, same dice --- just more text to learn from, of a particular kind, so what tends to follow an instruction is now a response to it. Every chatbot they use has been through this second round; pre-training gives it the language, post-training gives it the habit of answering.
 
 One aside, if the room is with you and you're not behind. Having people rank its answers is where sycophancy comes from: ask who's had one of these cave the moment they pushed back, agreeing when they were the one who had it wrong. Raters, faced with two replies, tended to prefer the agreeable one, so agreeing got reinforced --- and nowhere in any of this is a fact marked true or false. Agreement from one of these is not evidence you were right. It's a good moment, but it's a second point; the slide stands without it.
 ```
@@ -68,5 +67,5 @@ One aside, if the room is with you and you're not behind. Having people rank its
 still just **tokens in** → **tokens out**
 
 ```notes
-If they keep one sentence, this is it: a frontier model is their loop --- look at the context, weigh the options, pick one at random, write it down --- with every dial turned up, the tallies swapped for shared numbers, and a round of manners on top. Every reply from Claude or ChatGPT is sampled one token at a time, exactly like their rolls or draws; that's why "regenerate" gives a different answer. Not their paper model inflated until it worked --- a different kind of machine, running the same loop they ran by hand.
+If they keep one sentence, this is it: a frontier model is their loop --- look at the context, weigh the options, roll the dice, write it down --- with every dial turned up, the tallies swapped for shared numbers, and a round of manners on top. Every reply from Claude or ChatGPT is sampled one token at a time, exactly like their dice rolls; that's why "regenerate" gives a different answer. Not their grid inflated until it worked --- a different kind of machine, running the same loop they ran by hand.
 ```

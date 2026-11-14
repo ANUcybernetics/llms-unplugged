@@ -1,11 +1,11 @@
 ---
 title: How AI writes stories with a cup of counters
 description:
-  A 60- or 90-minute lesson where participants generate stories from a finished
-  paper language model, see how its tally marks were made, and in the longer
-  version train their own from a new text and pool the room's models into one
-  story.
-audience: high school to adults
+  A 60- or 90-minute school lesson (ages 10-16) where students generate stories
+  from a finished paper language model, see how its tally marks were made, and
+  in the longer version train their own from a new text and pool the class's
+  models into one story.
+audience: ages 10-16 (years 5-10)
 duration: 60 or 90 minutes
 flavour: ledger
 decks:
@@ -22,8 +22,8 @@ order: 3
 import UsingTheSlides from "../../components/UsingTheSlides.astro";
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
-A sibling of [My First Language Model](/lessons/my-first-language-model/) that
-swaps the grid and dice for **<GlossaryTerm id="ledger">ledger sheets</GlossaryTerm>**: a table with one row per word, tally
+A sibling of [How AI writes stories](/lessons/how-ai-writes-stories/) that swaps
+the paper <GlossaryTerm id="cutouts">cutouts</GlossaryTerm> for **<GlossaryTerm id="ledger">ledger sheets</GlossaryTerm>**: a table with one row per word, tally
 marks beside each word that followed it, and a coloured box around every
 tally. <GlossaryTerm id="generation">Generation</GlossaryTerm> is a cup of coloured counters---one counter per tally mark, in
 the box's colour, draw one and read the word beside that colour---so the maths
@@ -35,47 +35,47 @@ generate from it, so when they see one being made they already know what every
 mark is for. Every group's finished model is a different picture book, so the
 shareback can hear the book in each group's story.
 
-The two decks open and close the same way as My First Language Model's, and the
-90-minute deck is the 60-minute one with two parts added: groups train their own
-model from a new text, then the room pools its models into one story.
+The 90-minute deck is the 60-minute one with three parts added: a
+predict-the-next-word warm-up, each group training its own model from a new
+text, and the class pooling its models into one story.
 
 ## Lesson plan
 
-Allow five minutes for arrival and settling first, and get the room into groups
-of four or five as people arrive. Part 5 is designed to be dropped if you're
-running over.
+Allow five minutes for arrival and settling first. In the 90-minute
+version, the class story is designed to be dropped if you're running over.
 
-| Part | What happens                                                                     | 60 min | 90 min |
-| ---- | -------------------------------------------------------------------------------- | ------ | ------ |
-|      | **Opening** --- acknowledgement, presenters, a stand-up icebreaker, what's ahead | 6      | 6      |
-| 1    | **Read the sheet** --- one row read aloud as a sentence                          | 6      | 6      |
-| 2    | **Generation** --- stories from the pre-tallied sheets, then shareback           | 22     | 22     |
-| 3    | **Where did the marks come from?** --- the room trains one row together          | 8      | 8      |
-| 4    | **Training** --- each group tallies a new text onto blank sheets                 |        | 15     |
-| 5    | **One story, all together** --- the room pools its models (optional)             |        | 10     |
-| 6    | **Scaling up** --- from a paper model to a frontier one                          | 6      | 6      |
-| 7    | **Questions**                                                                    | 10     | 10     |
+| Part                                                                     | 60 min | 90 min |
+| ------------------------------------------------------------------------ | ------ | ------ |
+| **What is AI?** --- discussion, plus an AI writes the class a story      | 12     | 12     |
+| **Warm-up** --- predict the next word                                    |        | 4      |
+| **Four key words** --- AI, language model, training, generation          | 4      | 4      |
+| **Read the sheet** --- one row read aloud as a sentence                  | 5      | 5      |
+| **Generation** --- stories from the pre-tallied sheets, then shareback   | 22     | 20     |
+| **Where did the marks come from?** --- the class trains one row together | 8      | 8      |
+| **Training** --- each group tallies a new text onto blank sheets         |        | 14     |
+| **One story, all together** --- the class pools its models (optional)    |        | 10     |
+| **Wrap-up** --- what did we learn? Q&A                                   | 6      | 5      |
 
-**Part 1** is the beat the grid lesson doesn't have: before anyone touches a
+**Reading the sheet** is the beat the cutouts lesson doesn't have: before anyone touches a
 counter, a whole sheet goes up on the screen, then one row of it is read aloud as
 a sentence ("after _the_, this book said _magpie_ six times"). Every group then finds
 a row of their own and does the same. The colours are explained last: a box's
 colour names its place in the row, and the counters come in those four colours.
 
-**Part 2** runs the [Generation](/modules/generation/) module with the cup. The
+**Generation** runs the [Generation](/modules/generation/) module with the cup. The
 slides walk through one book (_The magpie_) draw by draw, then every
 group generates from its own. The shareback asks the room to guess each group's
 book from its first sentence, and asks two groups holding the same book why
 their stories differ.
 
-**Part 3** answers "where did the marks come from?" as a whole room. The slides
+**Where did the marks come from?** is answered by the whole class. The slides
 build the start of _The magpie_'s sheet pair by pair, then the presenter reads
-the book aloud, the room shouts the word after every "the", and a helper tallies
+the book aloud, the class shouts the word after every "the", and a helper tallies
 them on the whiteboard. The result matches the magpie group's printed row for
 "the" mark for mark, which is the point: every row on every sheet was made this
 way.
 
-**Part 4** has each group make a model of its own. Every group gets a different
+**Training** (90 minutes) has each group make a model of its own. Every group gets a different
 short text (the five outdoors texts in `data/originals/`) and blank sheets; one
 person reads the text two words at a time from the numbered printout, and the
 group writes each new word into a spare row and tallies beside it. Nothing is
@@ -83,7 +83,7 @@ printed on the sheets, so agree first that a new word is claimed out loud ---
 two people keeping counts of the same word is the one mistake that breaks a
 group's model.
 
-**Part 5** pools those models, on butchers paper up the front. Call out the word
+**One story, all together** pools those models, on butchers paper up the front. Call out the word
 the class story is on; every group whose sheets have a row for it puts a hand up;
 pick one, and that group reads out the colours and tallies on its row. The draw
 happens up the front --- one cup, counted in and drawn while the room watches,
@@ -102,7 +102,8 @@ could.
 - counters in four colours (red, blue, green, yellow), at least six of each per
   group (the largest tally in any set), a paper cup per group, and a tub per
   group to tip the cup back into between draws
-- a whiteboard and a helper to tally on it for part 3, and a projector
+- a whiteboard and a helper to tally on it, a projector, and access to a
+  <GlossaryTerm id="chatbot">chatbot</GlossaryTerm> for the opening
 - for the 90-minute version: blank sheets, one per person, a different
   `data/originals/outdoors-*.txt` text page per group, butchers paper for the
   class story, and pen and paper per group
@@ -132,6 +133,17 @@ walkthrough rows off the new _The magpie_ sheets.
 
 - with more than five groups, books and outdoors texts repeat; spread the
   repeats so that groups sharing a book aren't side by side
+- the story slide in the opening has fill-in boxes for the teacher's name, the
+  year level, and the three class words
+
+## Running it for teachers
+
+To train teachers to run it themselves, add `?teachers` to the deck's URL. The
+workshop stays pitched at their students, so the teachers do it the way their
+class will. It adds one slide after the introductions saying so, and a short
+block before the wrap-up for stepping out of the student role: what running it
+in class takes, where it fits in the Australian Curriculum, and how to answer
+"so is ChatGPT just counting?". Allow an extra 10--15 minutes.
 
 <UsingTheSlides
   decks={[

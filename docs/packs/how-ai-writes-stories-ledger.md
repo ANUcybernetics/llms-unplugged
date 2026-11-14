@@ -48,7 +48,7 @@ binding works) --- one copy gives 24 of each colour.
 - counters in four colours (red, blue, green, yellow), at least six of each per
   group, a paper cup and a tub per group
 - butchers paper for the class story (90 minutes), pen and paper per group
-- a projector and a whiteboard
+- a projector, a whiteboard, and a chatbot for the opening
 
 ## More
 

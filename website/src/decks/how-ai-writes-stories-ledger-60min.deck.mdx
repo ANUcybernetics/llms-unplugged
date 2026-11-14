@@ -1,9 +1,8 @@
 ---
 title: LLMs Unplugged — How AI writes stories (ledger, 60 min)
 description:
-  A 60-minute ledger-flavour workshop for high schoolers to adults — generate
-  stories from a paper language model with a cup of coloured counters, then see
-  where its tally marks came from
+  A 60-minute school workshop (ages 10-16) using paper ledger sheets and a cup
+  of coloured counters to discover how AI writes stories
 ---
 
 import LedgerToken from "../components/LedgerToken.astro";
@@ -13,13 +12,12 @@ import LedgerPage from "../components/LedgerPage.svelte";
 import LedgerTraining from "../components/LedgerTraining.svelte";
 import LedgerSheet from "../components/LedgerSheet.svelte";
 import LedgerSheets from "../components/LedgerSheets.svelte";
-import ModelScaleBars from "../components/ModelScaleBars.svelte";
 import Timer from "../components/Timer.astro";
-import AiVennDiagram from "../components/AiVennDiagram.astro";
 import PresenterGrid from "../components/PresenterGrid.astro";
 import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
 import BgMusic from "../components/BgMusic.astro";
-import UpcomingSessions from "../components/UpcomingSessions.astro";
+import CopyButton from "../components/CopyButton.astro";
+import { STORY_FIELDS, STORY_PROMPT } from "../lib/storyPrompt";
 import {
   PALETTE,
   ROW_THE,
@@ -41,26 +39,60 @@ import "./how-ai-writes-stories-ledger.deck.css";
 export const components = { code: LedgerToken };
 
 ```comment
-60-minute workshop in groups of 4-5. Generation comes before training on
-purpose: a group that has drawn words out of a finished sheet knows what the
-marks are for before it sees any being made. The 90-minute deck is this one
-with the groups' own training and the class story added.
-  Preamble (6 min)  title, country, presenters, icebreaker, about
-  Part 1 (6 min)    Read the sheet (ledger-read)
-  Part 2 (22 min)   Generation + shareback (ledger-generation)
-  Part 3 (8 min)    Where did the marks come from? (ledger-training --- the
-                    room builds the start of the magpie's sheet, then trains
-                    the row for "the" by ear)
-  Part 4 (6 min)    Scaling up (scaling-up)
-  Part 5 (10 min)   Questions (denouement)
+60-minute workshop for students aged 10-16, in groups of 4-5. Generation comes
+before training on purpose: a group that has drawn words out of a finished
+sheet knows what the marks are for before it sees any being made. The
+90-minute deck is this one with a warm-up, each group training on its own
+text, and the class story added.
+  Part 1 (12 min)  What is AI? (yr5-6-what-is-ai --- groups form here)
+  Part 2 (4 min)   Words (yr5-6-definitions)
+  Part 3 (5 min)   Read the sheet (ledger-read)
+  Part 4 (22 min)  Generation + shareback (ledger-generation)
+  Part 5 (8 min)   Where did the marks come from? (ledger-training --- the
+                   room builds the start of the magpie's sheet, then trains
+                   the row for "the" by ear)
+  Part 6 (6 min)   Wrap-up + Q&A (yr5-6-wrap-up)
+`?teachers` adds a slide after the presenters and a block before the wrap-up
+for a room of teachers who'll run it themselves (teachers-intro,
+teachers-ledger); allow 10-15 extra minutes.
 
 Before each delivery: print the pre-tallied picture-book sets, the counters
 page and the instruction sheet from the pack (see the 90-minute deck's
 comment); the blank sheets and the outdoors text pages aren't needed. A
-whiteboard and a helper to tally for part 3.
+whiteboard and a helper to tally for part 5.
 ```
 
-{/* @include ./partials/preamble.mdx */}
+{/* _class: hero */}
+
+# LLMs Unplugged
+
+## How AI writes stories
+
+![bg](./assets/bg-ledger-title.avif)
+
+```notes
+Open warm: today we'll find out how AI writes stories, and write some ourselves with paper and a cup of counters. No computers.
+```
+
+---
+
+{/* @include ./partials/ack-country.mdx */}
+
+---
+
+{/* @include ./partials/presenters.mdx */}
+
+---
+
+{/* @include ./partials/teachers-intro.mdx */}
+
+---
+
+{/* @include ./partials/yr5-6-what-is-ai.mdx */}
+
+---
+
+{/* @include ./partials/yr5-6-definitions.mdx */}
 
 ---
 
@@ -76,8 +108,14 @@ whiteboard and a helper to tally for part 3.
 
 ---
 
-{/* @include ./partials/scaling-up.mdx */}
+{/* @include ./partials/teachers-ledger.mdx */}
 
 ---
 
-{/* @include ./partials/denouement.mdx */}
+{/* @include ./partials/yr5-6-wrap-up.mdx */}
+
+---
+
+{/* _class: socy-logo */}
+
+<SocyLogo />
