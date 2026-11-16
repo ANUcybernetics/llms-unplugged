@@ -68,13 +68,16 @@ CUTOUTS_TARGETS := \
 # Pre-prepared search-sheet PDFs (the cutouts activity minus the cutting).
 # Named for the corpus alone: every set prints at the same density, so how many
 # sheets one holds is however many that corpus needs, and a longer text simply
-# makes a bigger set. The count is in the brief on the front page.
+# makes a bigger set. The count is in the brief on the front page. The 15-minute
+# talk's set is the exception, with a rule of its own below.
 SHEETS_TARGETS := \
 	$(SHEETS_DIR)/green-eggs-and-ham.pdf \
 	$(SHEETS_DIR)/peter-rabbit.pdf \
 	$(SHEETS_DIR)/the-cat-in-the-hat.pdf \
 	$(SHEETS_DIR)/the-cat-in-the-hat-2up-a4.pdf \
-	$(SHEETS_DIR)/australia.pdf
+	$(SHEETS_DIR)/australia.pdf \
+	$(SHEETS_DIR)/demystifying-large-language-models.pdf \
+	$(SHEETS_DIR)/demystifying-large-language-models-brief.pdf
 
 # Cat in the Hat remains legible when reduced to A5 for the two-up handout,
 # provided its source sheets use fewer rows and larger type. Keep this local to
@@ -167,6 +170,70 @@ $(SHEETS_DIR)/the-cat-in-the-hat-2up-a4.pdf: two-up.typ $(SHEETS_DIR)/the-cat-in
 		--input source=$(SHEETS_DIR)/the-cat-in-the-hat.pdf \
 		--input pages=$$(qpdf --show-npages $(SHEETS_DIR)/the-cat-in-the-hat.pdf) \
 		two-up.typ $@
+
+# ===== The 15-minute talk's set (Demystifying large language models) =====
+# One set dealt from three books together, with the books left unnamed: the
+# talk's reveal is which three they were.
+#
+# The deal was pinned for the ANU Visionaries Showcase (15 Aug 2026) and is
+# kept pinned here, so a reprint matches the copies already in a hall. Both the
+# input order and the seed are load-bearing --- the deal is reproducible only
+# from this exact combination. Note that the input order below is not the
+# reveal order the talk uses (Hemingway, then Poe, then Seuss).
+#
+# --title and --author are what keep the sources off the page: the brief prints
+# whatever the corpus metadata says, and joined real titles would spoil the
+# reveal on the first sheet handed out. The title names the corpus rather than
+# the talk, because it lands in a sentence as well as in the sheet header ---
+# "dealt from <title> by <author>" --- and the header already carries the
+# project's name in the lockup beside it.
+#
+# 120 sheets at the Cat in the Hat density. Pinning --sheets makes the count
+# the participant count rather than something the corpus decides, and 120 is
+# chosen so the set multiplies cleanly into a hall: printed three times for
+# ~360 attendees, every token pair is held by three people, so the proportions
+# are unchanged and one empty seat no longer takes a pair out of the room.
+#
+# 19.2pt is the largest size that still fits most pairs in one of four columns
+# on A4. Past it, wide pairs start taking two column slots each and the sheet
+# count runs away --- 21pt needs 195 sheets for the same corpus, 24pt needs 196
+# even after dropping to three columns.
+#
+# 16 rows, not 15: a wide pair takes two of a row's four slots, and at 15 rows
+# one sheet of this deal wanted a 61st slot and spilled onto a second page ---
+# so one person in the hall would have been searching two pages. 16 rows is 64
+# slots, which fits it. The deal is pinned by --sheets and --seed, so the rows
+# only change how the pairs are laid out, never which sheet a pair lands on.
+#
+# Handed out at full A4, not imposed two-up onto A5. The imposition halves the
+# paper but it also scales the page by 1/sqrt(2), which takes 19.2pt type down
+# to an effective 13.6pt --- and the sheets are read at arm's length, in a
+# darkened hall, by people who have never seen one before. Getting that back
+# through the imposition would need ~27pt source and over 250 sheets, so A4 is
+# both the biggest type and the smallest sheet count. It costs paper, and only
+# paper.
+#
+# The brief is a file of its own (`--brief separate`): it is for the lectern
+# and never goes into the handout stack.
+#
+# All three corpora are gitignored: clone llms-unplugged-corpora and copy its
+# texts into data/ first.
+
+DEMYST_SHEETS := $(SHEETS_DIR)/demystifying-large-language-models.pdf
+DEMYST_BRIEF := $(SHEETS_DIR)/demystifying-large-language-models-brief.pdf
+DEMYST_INPUTS := \
+	--input $(DATA_DIR)/the-cat-in-the-hat.txt \
+	--input $(DATA_DIR)/the-old-man-and-the-sea-excerpt.txt \
+	--input $(DATA_DIR)/the-tell-tale-heart.txt
+
+$(DEMYST_SHEETS) $(DEMYST_BRIEF) &: tokenized-sheets.typ cutout-common.typ $(BRAND_ASSETS) $(TOOL)
+	$(eval WORK_DIR := $(OUT_DIR)/sheets/demystifying-large-language-models)
+	mkdir -p $(WORK_DIR) $(SHEETS_DIR)
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) TYPST_BIN=$(TYPST_BIN) $(TOOL) sheets $(DEMYST_INPUTS) \
+		--output $(WORK_DIR) -n 2 --sheets 120 --rows 16 --font-size 19.2pt --seed 42 \
+		--brief separate --title "three unnamed books" --author "three authors"
+	cp $(WORK_DIR)/sheets.pdf $(DEMYST_SHEETS)
+	cp $(WORK_DIR)/brief.pdf $(DEMYST_BRIEF)
 
 # Default target to build all booklets
 .PHONY: booklets
