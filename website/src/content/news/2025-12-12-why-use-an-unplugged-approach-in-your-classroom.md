@@ -25,7 +25,7 @@ good prompt, or here are some broad questions to discuss about training data and
 bias. But I've looked at a lot of these resources and most of them don't even
 try to explain how they work. To some extent that's understandable---they're the
 product of millions of person-hours of R&D and many _billions_ of GPU-hours of
-number crunching in datacenters worldwide. But there are heaps of other complex
+number crunching in data centres worldwide. But there are heaps of other complex
 machines & systems that we still work hard to explain to students (all the way
 down to primary level) in age appropriate ways. Why should AI and LLMs be any
 different?
@@ -33,14 +33,14 @@ different?
 That's why I created these _LLMs Unplugged_ resources. Although I'm an academic
 computer scientist and AI researcher by day, I've also got primary-aged kids of
 my own. And I want them to grow up seeing that these tools aren't just
-black-boxes that work by deep voodoo magicl; they're made by humans and used by
+black-boxes that work by deep voodoo magic; they're made by humans and used by
 humans and can be understood and interrogated as such.
 
 I really do think that any teacher can (with a bit of training) have the
 confidence to use the LLMs Unplugged resources to show their students how to
 build their _own_ language model. You might not be able to answer all the tricky
 questions that come your way afterwards (isn't that always true!) but you'll
-have opened up the AI black box in a way that just memorizing a few prompting
+have opened up the AI black box in a way that just memorising a few prompting
 tips doesn't.
 
 If you'd like to find out more about how to use these resources, please

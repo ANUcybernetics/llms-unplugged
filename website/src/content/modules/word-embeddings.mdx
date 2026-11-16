@@ -111,8 +111,8 @@ you're confident isn't, and check the numbers agree with your ears.
 This distance compares rows only---what follows each word. The column evidence
 you used in step 1 doesn't appear in it at all, and the widget below has the
 same blind spot. On a short text it rarely changes the answer, but two words
-could share a row and differ completely in their columns, and neither the sum
-nor the widget would notice.
+could share a row and differ completely in their columns and still come out at
+distance 0.
 
 </Callout>
 
@@ -124,11 +124,11 @@ the <GlossaryTerm id="similarity-matrix">similarity matrix</GlossaryTerm>. The
 text box is shared with the [Training](/modules/training/) widget, so you can
 paste your own text in and compare it with the grid on your desk.
 
-This is the one module where the screen is the better apparatus, and it's worth
-saying so to the class. Seven words means 21 pairs; ten words means 45. Working
-through all of them is an afternoon of arithmetic that teaches nothing new after
-the third pair. The one distance you did on paper is there so you know what the
-numbers mean, and the machine can do the rest.
+This is the one module where the screen does the heavy lifting; tell the class
+why. Seven words means 21 pairs; ten words means 45. Working through all of
+them is an afternoon of arithmetic that teaches nothing new after the third
+pair. The one distance you did on paper is there so you know what the numbers
+mean, and the machine can do the rest.
 
 Notice what the widget turns up in the worked example that most rooms don't
 guess: `ran` and `slept` sit at distance 0, because each one only ever appears
@@ -182,10 +182,9 @@ same contexts tend to mean similar things.
   company with.
 - **the famous analogy**: king − man + woman ≈ queen, from the word2vec work of
   Mikolov and colleagues in 2013. The vectors come out arranged so that
-  arithmetic on them lands somewhere sensible. Worth showing, with the caveat
-  that it works for some analogies and not others, and that the usual evaluation
-  excludes the three input words from the candidate answers, which flatters the
-  result.
+  arithmetic on them lands somewhere sensible. It works for some analogies and
+  not others, and the usual evaluation excludes the three input words from the
+  candidate answers, which flatters the result.
 - **modern embeddings are contextual**: in an <GlossaryTerm id="llm">LLM</GlossaryTerm> a word's vector is computed
   from the sentence it appears in, so the `bank` of a river and the `bank` that
   holds your money get different vectors.

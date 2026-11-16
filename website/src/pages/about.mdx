@@ -23,35 +23,28 @@ The same models also exist as hardbound books: the
 [Library of Babble](/library/) is a small conceptual-art press run of <GlossaryTerm id="n-gram-model">n-gram</GlossaryTerm> frequency tables typeset
 from classic literature.
 
-These resources build on a rich history of unplugged computing education (and
-hands-on education in general). If you're interested in where these ideas came
-from---or where to go next---this is the reading list.
+If you're interested in where these ideas came from, or where to go next, here
+is the reading list.
 
 ## CS Unplugged
 
-For over two decades, [CS Unplugged](https://csunplugged.org) has demonstrated
-that core computing concepts can be taught effectively without computers.
-Through carefully designed hands-on activities, learners from primary school
-through to adult education have explored algorithms, data structures, and
-computational thinking. The approach strips away the distractions of syntax and
-tooling, allowing learners to focus on underlying principles.
+Since the 1990s, [CS Unplugged](https://csunplugged.org) has taught computing
+concepts without computers: algorithms, data structures and binary, done with
+cards, string and chalk on the playground. Leaving the screen out gets syntax
+and tooling out of the way so students can see the mechanism underneath. And it
+works (the
+[research literature](https://scholar.google.com/scholar?q=cs%20unplugged) has
+the receipts).
 
-More importantly: it works (the
-[literature](https://scholar.google.com/scholar?q=cs%20unplugged) has receipts).
-Making learning these concepts both effective and fun is possible, and CS
-Unplugged has proven that at scale.
-
-_LLMs Unplugged_ applies this same philosophy to language models. Rather than
-explaining <GlossaryTerm id="transformer">transformers</GlossaryTerm> through mathematics or implementing <GlossaryTerm id="neural-network">neural networks</GlossaryTerm> in
-code, participants count word patterns in a text, record them as tally marks on <GlossaryTerm id="grid">grid paper</GlossaryTerm> or physical piles of paper <GlossaryTerm id="cutouts">cutouts</GlossaryTerm>, then roll dice to generate
-new text from those patterns. This hands-on approach makes sophisticated AI
-concepts accessible to anyone, regardless of technical background.
+_LLMs Unplugged_ takes the same approach to language models. Rather than
+starting with <GlossaryTerm id="transformer">transformers</GlossaryTerm> or <GlossaryTerm id="neural-network">neural networks</GlossaryTerm> in
+code, participants count word patterns in a text, record them as tally marks on <GlossaryTerm id="grid">grid paper</GlossaryTerm> or paper <GlossaryTerm id="cutouts">cutouts</GlossaryTerm>, and roll dice to generate
+new text from those counts.
 
 ## AI Unplugged resources
 
-As machine learning and artificial intelligence became more prominent in public
-discourse, educators naturally extended the unplugged approach to these fields,
-for example:
+Educators have extended the unplugged approach to machine learning and AI as
+well:
 
 - [AI Unplugged](https://www.aiunplugged.org) by Lindner, Seegerer and Romeike
 - Northwestern University's
@@ -59,19 +52,17 @@ for example:
 - [CS In Schools](https://csinschools.io/) by Toan Huynh and Hugh Williams has
   some material on AI Unplugged<sup><a href="#fn-counting-bigrams">1</a></sup>
 
-These collections cover classification, clustering, computer vision, and
-artificial neural network concepts. However, they contain limited material
-specifically about language models and especially text generation---a gap that
-became particularly acute after ChatGPT's November 2022 release shifted what
-"AI" means to most people. _LLMs Unplugged_ aims to fill that gap.
+Those collections cover classification, clustering, computer vision and neural
+networks, but have very little on language models or text generation. Since
+ChatGPT arrived in November 2022, text generation is what most people mean when
+they say "AI", and _LLMs Unplugged_ was built to cover that part directly.
 
 ![Workshop participants building language models with pen and paper](../assets/images/workshop-1.avif)
 
 ## Historical foundations
 
-The [n-gram language models](https://en.wikipedia.org/wiki/N-gram) participants
-build in these workshops have a lineage stretching back over a century. This
-is well-established mathematics applied by hand.
+The [n-gram language models](https://en.wikipedia.org/wiki/N-gram) in these
+workshops are more than a century old.
 
 ### Markov's stochastic processes (1913)
 
@@ -90,16 +81,16 @@ entropy and redundancy in language, connecting statistical patterns to
 fundamental limits on compression.
 
 Shannon was the first to systematically generate synthetic text using
-these models---starting with random letters (0-gram), then letter frequencies
-(1-gram), then letter pairs (2-gram), and progressively higher orders. This
-generative approach revealed how increasing context length produces increasingly
-realistic text, a finding that remains central to modern language models.
+these models: starting with random letters (0-gram), then letter frequencies
+(1-gram), then letter pairs (2-gram), and progressively higher orders. Each
+extra word of context made the generated text read more like real English, the
+same trade-off you see in the [More Context](/modules/more-context/) module.
 
 Shannon's work was itself "unplugged". He counted transitions
 by hand, calculated probabilities manually, and generated synthetic text using
 hand-drawn tables and selection based on frequencies. Modern LLMs use the same
-fundamental approach but at vastly greater scale and with learned rather than
-hand-crafted statistics.
+fundamental approach at vastly greater scale, with learned rather than
+hand-counted statistics.
 
 ### Connection to modern LLMs
 
@@ -115,16 +106,9 @@ current language models. The differences are mostly about scale:
 - **<GlossaryTerm id="context-window">context windows</GlossaryTerm>**: bigrams and trigrams versus 128,000+ token windows, but
   longer context always enables better prediction
 
-Modern advances come from doing these same operations at massive scale with
-neural networks that learn patterns automatically. But the fundamental
-insight---that language structure can be captured through statistical
-dependencies and revealed through synthetic generation---comes directly from
-Shannon's mid-twentieth-century work and the unplugged methods he used to
-explore these ideas.
-
-When you roll dice and generate sentences in an _LLMs Unplugged_ workshop,
-you're taking part in a tradition of hands-on exploration that goes back to the
-origins of information theory.
+Modern LLMs do the same operations at huge scale with neural networks that learn
+the patterns rather than counting exact word pairs. The core idea, though, is
+still Shannon's 1948 table-and-random-lookup experiment.
 
 ![Counting word transitions to build a statistical language model](../assets/images/workshop-2.avif)
 
@@ -139,19 +123,15 @@ political dimensions of emerging technologies.
 
 ![LLMs Unplugged workshop in action](../assets/images/workshop-3.avif)
 
-_LLMs Unplugged_ reflects the School's commitment to making sophisticated
-technical concepts accessible to diverse audiences and fostering critical
-engagement with AI systems that increasingly mediate how we work, learn, and
-communicate. Understanding how these systems actually work, by running one
-yourself, is what we're all about.
+Understanding how these systems actually work, by running one yourself, is what
+we're all about.
 
 ## Acknowledgements
 
-This work has benefited enormously from the input and facilitation help of Eddie
-Aloise King and Cole Cooney and other SoCy staff, plus feedback from hundreds of
-participants across diverse audiences---school students through to senior
-executives in the Australian Public Service. Iterating on these materials with
-real learners has been invaluable.
+Thanks to Eddie Aloise King, Cole Cooney and other SoCy staff for their input
+and facilitation, and to the hundreds of workshop participants---from primary
+school students to senior executives in the Australian Public Service---whose
+feedback shaped these materials.
 
 ## Get in touch
 

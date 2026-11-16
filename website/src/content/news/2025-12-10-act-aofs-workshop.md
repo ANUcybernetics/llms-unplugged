@@ -3,14 +3,14 @@ title: ACT Academy of Future Skills workshop
 date: 2025-12-10
 author: Ben Swift
 kind: report
-description: Working through LLMs Unplugged with ACT specialty STEM teachers
+description: Working through LLMs Unplugged with ACT specialist STEM teachers
 ---
 
 This morning we hosted the
 [ACT Academy of Future Skills](https://canberradaily.com.au/new-future-skills-academy-for-north-canberra/)
 for an _LLMs Unplugged_ workshop---was great to think about how this could be
 used to support teachers in the ACT (and beyond) in teaching the next generation
-how language models actually work. A pleasure to share with and and get feedback
+how language models actually work. A pleasure to share with and get feedback
 from such a great team of passionate educators.
 
 If you're involved with a group of teachers who would similarly like to come and
