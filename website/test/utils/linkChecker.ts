@@ -6,7 +6,8 @@ import { PDF_BASE } from "../../src/lib/pdfs";
 const manifestKeys = new Set<string>(manifest);
 
 export function extractPdfLinks(html: string): string[] {
-  const pdfLinkRegex = /href="([^"]*\.pdf)"/g;
+  // PDFs, and the lessons' pack zips, which the bucket serves alongside them.
+  const pdfLinkRegex = /href="([^"]*\.(?:pdf|zip))"/g;
   const links: string[] = [];
   let match;
   while ((match = pdfLinkRegex.exec(html)) !== null) {

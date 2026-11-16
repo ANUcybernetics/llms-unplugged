@@ -55,9 +55,7 @@ the sentence you were going to say.
 ## You will need
 
 - one <GlossaryTerm id="search-sheets">search sheet</GlossaryTerm> per seat, dealt from the three texts together, with the title
-  and author left off every sheet (the CLI's `sheets` subcommand takes `--title`
-  and `--author` overrides); the deck's comment block has the exact recipe, and
-  the deal is seeded so it's reproducible
+  and author left off every sheet (see "Printing it" below)
 - ushers to hand the sheets out on cue, fast: "take one, pass the rest along"
 - a whiteboard, or the deck's annotation layer, to write the growing sentence
   where the back of the hall can read it
@@ -74,16 +72,21 @@ the sentence you were going to say.
 - the deck leaves out the ANU-at-80 slides that closed the first delivery;
   they were for that event only
 
-## Everything in one download
+## Printing it
 
-[The pack](https://pdf.llmsunplugged.org/packs/demystifying-large-language-models.zip)
-is the whole talk: the slides, a presenter guide (every slide followed by its
-speaker notes), the 120 search sheets with the titles left off, and the lectern
-brief. Its README says what to print and how many copies. `make
-pack-demystifying-large-language-models` in the
-[repo](https://github.com/ANUcybernetics/llms-unplugged) rebuilds it, and the
-`Makefile` holds the exact deal --- so a reprint matches the copies already in a
-hall rather than being dealt afresh.
+[The 120 search sheets](https://pdf.llmsunplugged.org/sheets/demystifying-large-language-models.pdf)
+cover a room of 120. For a bigger hall, print the whole set again rather than
+dealing more sheets: three copies covers about 360, every token pair is then
+held by three people, the proportions are unchanged, and one empty seat no
+longer takes a pair out of the room. Print single-sided at full A4, not two-up
+on A5: the sheets are read at arm's length, in a darkened hall, by people who
+have never seen one before.
+
+[The lectern brief](https://pdf.llmsunplugged.org/sheets/demystifying-large-language-models-brief.pdf)
+is a page of its own, so it never ends up in the handout stack. The deal is
+pinned in `cli/Makefile` in the
+[repo](https://github.com/ANUcybernetics/llms-unplugged), so a reprint matches
+the copies already in a hall rather than being dealt afresh.
 
 <UsingTheSlides
   decks={[

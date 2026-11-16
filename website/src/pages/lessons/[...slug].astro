@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import LessonLayout from "../../layouts/LessonLayout.astro";
 import { findHeroImage } from "../../lib/hero-images";
+import { packUrl } from "../../lib/pdfs";
 
 export async function getStaticPaths() {
   const lessons = await getCollection("lessons");
@@ -25,6 +26,7 @@ const ogImage = lesson.data.heroImage ? findHeroImage(`hero-${lesson.data.heroIm
   duration={lesson.data.duration}
   flavour={lesson.data.flavour}
   noindex={lesson.data.listed === false}
+  pack={packUrl(lesson.id)}
 >
   <Content />
 </LessonLayout>

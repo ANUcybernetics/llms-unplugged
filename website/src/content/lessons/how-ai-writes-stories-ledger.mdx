@@ -110,14 +110,15 @@ could.
 
 ## Printing it
 
-`make pack-how-ai-writes-stories-ledger` in the
-[repo](https://github.com/ANUcybernetics/llms-unplugged) zips five PDFs into
-`out/packs/`: the five picture-book models one after another, one blank sheet,
-the five numbered text pages, the counters page, and a one-page instruction
-sheet. The README that comes with them says what to print and which pages go to
-which group; the 60-minute version needs only the picture books, the counters
-and the instructions. The `Makefile` holds the exact commands, so the sets are
-the same every delivery rather than rebuilt from memory.
+The [printouts download](https://pdf.llmsunplugged.org/packs/how-ai-writes-stories-ledger.zip)
+holds five PDFs: the five picture-book models one after another, one blank
+sheet, the five numbered text pages, the counters page, and a one-page
+instruction sheet. Its README says what to print and which pages go to which
+group; the 60-minute version needs only the picture books, the counters and the
+instructions. `make pack-how-ai-writes-stories-ledger` in the
+[repo](https://github.com/ANUcybernetics/llms-unplugged) rebuilds it, and the
+`Makefile` holds the exact commands, so the sets are the same every delivery
+rather than rebuilt from memory.
 
 Every picture-book set is built with `--max-followers 4`, which drops each
 word's rarest continuations so that every word fits a single row however long

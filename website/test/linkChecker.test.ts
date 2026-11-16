@@ -22,6 +22,11 @@ describe("linkChecker", () => {
       expect(extractPdfLinks(html)).toEqual(["/first.pdf", "/second.pdf", "relative/third.pdf"]);
     });
 
+    it("extracts pack zip links", () => {
+      const html = '<a href="https://pdf.llmsunplugged.org/packs/lesson.zip">Pack</a>';
+      expect(extractPdfLinks(html)).toEqual(["https://pdf.llmsunplugged.org/packs/lesson.zip"]);
+    });
+
     it("returns empty array when no PDF links", () => {
       const html = '<a href="/page.html">Page</a><a href="/image.png">Image</a>';
       expect(extractPdfLinks(html)).toEqual([]);

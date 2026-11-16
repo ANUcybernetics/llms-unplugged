@@ -52,9 +52,8 @@ Wikipedia article on Australia. The Cat in the Hat set Sam asked for has
 also comes as
 [A5 sheets printed two-up on A4](https://pdf.llmsunplugged.org/sheets/the-cat-in-the-hat-2up-a4.pdf).
 The first page of every set is a brief for whoever is running it. The
-[talks](/talks/) use the same sheets, and each comes as a single download with
-slides, presenter notes, sheets and brief (here's
-[the pack for the 15-minute talk](https://pdf.llmsunplugged.org/packs/demystifying-large-language-models.zip)).
+[talks](/talks/) use the same sheets (here's
+[the set for the 15-minute talk](https://pdf.llmsunplugged.org/sheets/demystifying-large-language-models.pdf)).
 
 Thanks to Sam for doing the cutting, running the sessions and writing up such
 detailed notes. If you have adapted _LLMs Unplugged_ for your own classroom,

@@ -1,4 +1,5 @@
-// PDFs (booklets, cutouts, sheets, worksheets, presenter guides) are served
+// PDFs (booklets, cutouts, sheets, worksheets, presenter guides) and the
+// lessons' pack zips are served
 // from a Tigris bucket fronted by pdf.llmsunplugged.org, not from this site's
 // public/ directory.
 //
@@ -21,3 +22,10 @@ const keys = new Set<string>(manifest);
 export const pdfUrl = (key: string): string => `${PDF_BASE}/${key}`;
 
 export const hasPdf = (key: string): boolean => keys.has(key);
+
+// A lesson's delivery pack (`make pack-<slug>` in the repo root), or null until
+// the manifest lists it.
+export const packUrl = (lessonSlug: string): string | null => {
+  const key = `packs/${lessonSlug}.zip`;
+  return keys.has(key) ? pdfUrl(key) : null;
+};

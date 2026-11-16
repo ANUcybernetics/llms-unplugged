@@ -1,6 +1,7 @@
 ---
 import type { ImageMetadata } from "astro";
 import BaseLayout from "./BaseLayout.astro";
+import Callout from "../components/Callout.astro";
 
 interface Props {
   title: string;
@@ -11,6 +12,8 @@ interface Props {
   duration: string;
   flavour: "grid" | "cutouts" | "sheets" | "ledger";
   noindex?: boolean;
+  /** URL of the lesson's printout pack (see packUrl in lib/pdfs.ts). */
+  pack?: string | null;
 }
 
 const {
@@ -22,6 +25,7 @@ const {
   duration,
   flavour,
   noindex,
+  pack,
 } = Astro.props;
 ---
 
@@ -43,6 +47,12 @@ const {
           {flavour}
         </li>
       </ul>
+      {pack && <Callout type="tip" title="Printouts">
+        <p>
+          <a href={pack}>Download the printouts (zip)</a> for every length of this lesson. The
+          README inside says which length needs what.
+        </p>
+      </Callout>}
       <slot />
     </article>
   </div>
