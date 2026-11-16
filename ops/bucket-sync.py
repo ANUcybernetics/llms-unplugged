@@ -41,16 +41,18 @@ listing --- UsingTheSlides.astro and the build's PDF link check both read it,
 so an upload isn't finished until `manifest` has run and the JSON is
 committed.
 
-`packs/<lesson-slug>.zip` --- a workshop pack built by `make pack-<slug>`, so
-that a delivery is one download rather than four printed from a checkout ---
+`packs/<lesson-slug>.zip` --- a lesson's printouts built by `make
+pack-<slug>`, so that a delivery is one download rather than a dozen PDFs ---
 is the one non-PDF this serves, and goes up under an explicit `--key`. The
-manifest stays PDFs only: it exists to make `<a href="...pdf">` checkable at
-build time, and nothing on the site links a pack.
+manifest lists the packs alongside the PDFs: a lesson page shows its pack's
+download link only once the manifest has it, and the link check verifies it
+like any PDF.
 
 Usage:
   ops/bucket-sync.py setup                  # upload robots.txt (idempotent)
   ops/bucket-sync.py upload DIR             # upload a tree; keys relative to DIR
   ops/bucket-sync.py upload --key KEY FILE  # upload one PDF or pack zip under a key
+  ops/bucket-sync.py delete KEY...          # remove keys a link no longer points at
   ops/bucket-sync.py manifest               # bucket listing -> pdf-manifest.json
   ops/bucket-sync.py verify [KEY]           # check the served origin
 """
@@ -188,13 +190,24 @@ def upload(args: list[str]) -> None:
     print("\nnow run `ops/bucket-sync.py manifest` and commit the updated manifest")
 
 
+def delete(keys: list[str]) -> None:
+    if not keys:
+        sys.exit("usage: delete KEY...")
+    s3 = client()
+    for key in keys:
+        s3.head_object(Bucket=bucket_name(), Key=key)  # fail on a mistyped key
+        s3.delete_object(Bucket=bucket_name(), Key=key)
+        print(f"deleted {key}")
+    print("\nnow run `ops/bucket-sync.py manifest` and commit the updated manifest")
+
+
 def manifest() -> None:
     s3 = client()
     keys: list[str] = []
     paginator = s3.get_paginator("list_objects_v2")
     for page in paginator.paginate(Bucket=bucket_name()):
         for obj in page.get("Contents", []):
-            if obj["Key"].endswith(".pdf"):
+            if obj["Key"].endswith(".pdf") or obj["Key"].startswith("packs/"):
                 keys.append(obj["Key"])
     keys.sort()
     MANIFEST_PATH.write_text(json.dumps(keys, indent=2) + "\n")
@@ -245,6 +258,8 @@ def main() -> None:
         setup()
     elif cmd == "upload":
         upload(rest)
+    elif cmd == "delete":
+        delete(rest)
     elif cmd == "manifest":
         manifest()
     elif cmd == "verify":
