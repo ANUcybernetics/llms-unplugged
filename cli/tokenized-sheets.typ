@@ -420,12 +420,15 @@
 // running to two pages gets two distinct numbers instead of two pages reading
 // alike: a participant can tell which half they are holding, and anyone
 // collating the stack can see that a page is missing. The counter is reset
-// after the instructions, so the first sheet page is page 1.
+// after the instructions, so the first sheet page is page 1. A one-page set has
+// no stack to collate, so it carries the URL alone.
 #let sheet-footer = align(
   center,
   context text(font: brand-font, fill: luma(150), size: 8pt)[
-    #counter(page).display()
-    #sym.dash.em www.llmsunplugged.org
+    #if counter(page).final().first() > 1 [
+      #counter(page).display() #sym.dash.em
+    ]
+    www.llmsunplugged.org
   ],
 )
 
