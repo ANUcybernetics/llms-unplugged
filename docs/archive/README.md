@@ -33,21 +33,21 @@ versions.
 
 ### how-ai-writes-stories
 
-[A 90-minute primary-school lesson](https://www.llmsunplugged.org/lessons/how-ai-writes-stories/)
-(years 5--6): students build paper language models from picture-book cutouts and
-use them to write stories.
-
-- `cutouts/` --- token cutouts from three picture books; print two or three
-  books' worth and cut them into strips before the lesson
-
-### how-ai-writes-stories-ledger
-
-[The same lesson with a cup of counters](https://www.llmsunplugged.org/lessons/how-ai-writes-stories-ledger/)
+[A 60- or 90-minute school lesson](https://www.llmsunplugged.org/lessons/how-ai-writes-stories/)
 (ages 10--16): groups generate stories from a finished ledger model by drawing
 coloured counters, then train their own.
 
 - `printouts/` --- everything to print, with its own `README.md` saying how many
   copies of each and which pages go to which group
+
+### how-ai-writes-stories-cutouts
+
+[A 90-minute primary-school lesson](https://www.llmsunplugged.org/lessons/how-ai-writes-stories-cutouts/)
+(years 5--6): students build paper language models from picture-book cutouts and
+use them to write stories.
+
+- `cutouts/` --- token cutouts from three picture books; print two or three
+  books' worth and cut them into strips before the lesson
 
 ### cli
 

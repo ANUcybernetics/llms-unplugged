@@ -1,6 +1,6 @@
 import { LEDGER_PALETTE, type LedgerEntry } from "../lib/ledger";
 
-// Worked-example data shared by the ledger decks (how-ai-writes-stories-ledger-60min
+// Worked-example data shared by the ledger decks (how-ai-writes-stories-60min
 // and -90min), so each deck is a thin shell that differs only
 // by title and which partials it includes. Component imports still live in
 // each deck: `@include` splices a partial into a slide body, so it can't

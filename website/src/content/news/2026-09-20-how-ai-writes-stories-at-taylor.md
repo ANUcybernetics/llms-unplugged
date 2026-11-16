@@ -10,7 +10,7 @@ published: false
 ---
 
 Last Tuesday (15 September), we visited Taylor Primary School to run the new
-[ledger version of How AI Writes Stories](/lessons/how-ai-writes-stories-ledger/)
+[ledger version of How AI Writes Stories](/lessons/how-ai-writes-stories/)
 with 70 Year 5/6 kids. The session went well, and we came away with a collection
 of hand-built language models.
 
@@ -32,5 +32,5 @@ probabilities onto dice rolls, as they do with the grids.
 
 Thanks to the Taylor Primary team for having us. If you'd like to try the
 ledgers with your students, the
-[lesson page has the plan and slides](/lessons/how-ai-writes-stories-ledger/),
+[lesson page has the plan and slides](/lessons/how-ai-writes-stories/),
 or [get in touch](/about/#get-in-touch) to organise a workshop.

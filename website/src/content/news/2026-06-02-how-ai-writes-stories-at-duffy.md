@@ -21,7 +21,7 @@ students, and we weren't sure how they'd find the model-building activity.
 
 ![Duffy Primary Year 5 students seated facing the front of the room as two facilitators present a slide headed "Writing"](../../assets/images/duffy-workshop-01.avif)
 
-We ran the [cutouts version of the activity](/decks/how-ai-writes-stories/):
+We ran the [cutouts version of the activity](/decks/how-ai-writes-stories-cutouts/):
 students sorted word cards into buckets, then built new sentences by drawing
 cutouts one at a time.
 

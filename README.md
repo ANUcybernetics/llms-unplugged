@@ -58,7 +58,7 @@ is a download rather than a page of commands retyped from the lesson entry:
 
 ```bash
 make pack-my-first-language-model
-make pack-how-ai-writes-stories-ledger
+make pack-how-ai-writes-stories
 ```
 
 ## Creating your own N-gram booklets

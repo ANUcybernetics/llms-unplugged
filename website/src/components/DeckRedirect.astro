@@ -1,0 +1,28 @@
+---
+// A redirect page for an old deck URL that keeps the query string and hash
+// (see src/lib/deckRedirects.ts). Without JavaScript it falls back to a plain
+// meta refresh, which loses them.
+import { DECK_REDIRECTS } from "../lib/deckRedirects";
+
+const from = Astro.url.pathname.replace(/\/?$/, "/");
+const to = DECK_REDIRECTS[from];
+if (!to) throw new Error(`DeckRedirect: no target for ${from}`);
+const canonical = new URL(to, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting to {to}</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={canonical} />
+    <script is:inline define:vars={{ to }}>
+      location.replace(to + location.search + location.hash);
+    </script>
+    <noscript><meta http-equiv="refresh" content={`0;url=${to}`} /></noscript>
+  </head>
+  <body>
+    <a href={to}>This deck has moved to {to}</a>
+  </body>
+</html>

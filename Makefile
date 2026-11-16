@@ -2,7 +2,7 @@
 # it runs at.
 #
 #   make pack-my-first-language-model
-#   make pack-how-ai-writes-stories-ledger
+#   make pack-how-ai-writes-stories
 #
 # lands out/packs/<slug>.zip, where <slug> is the lesson's slug. A pack is the
 # list of runs that produce the lesson's printouts plus a README naming what to
@@ -33,12 +33,12 @@ PACKS := $(OUT)/packs
 
 help:
 	@echo "make pack-my-first-language-model       the grid workshop's printouts"
-	@echo "make pack-how-ai-writes-stories-ledger  the ledger workshop's printouts"
+	@echo "make pack-how-ai-writes-stories         the ledger workshop's printouts"
 	@echo "make packs                              every pack"
 	@echo "make clean-packs                        remove $(PACKS)"
 	@echo "make archive                            a dated bundle and source zip"
 
-packs: pack-my-first-language-model pack-how-ai-writes-stories-ledger
+packs: pack-my-first-language-model pack-how-ai-writes-stories
 
 clean-packs:
 	rm -rf $(PACKS)
@@ -110,7 +110,7 @@ endef
 # prints the rest blank --- so the first run reports the deal, and the second
 # prints it at the density that deal needs.
 
-LEDGER_SLUG := how-ai-writes-stories-ledger
+LEDGER_SLUG := how-ai-writes-stories
 LEDGER_DIR := $(PACKS)/$(LEDGER_SLUG)
 LEDGER_DECKS := $(LEDGER_SLUG)-60min $(LEDGER_SLUG)-90min
 LEDGER_STAGE := $(LEDGER_DIR)/.build
@@ -282,7 +282,7 @@ ARCHIVE := $(OUT)/archive
 ARCHIVE_NAME := llms-unplugged-$(VERSION)
 ARCHIVE_DIR := $(ARCHIVE)/$(ARCHIVE_NAME)
 ARCHIVE_LESSONS := my-first-language-model how-ai-writes-stories \
-	how-ai-writes-stories-ledger
+	how-ai-writes-stories-cutouts
 
 HAWS_CUTOUTS := green-eggs-and-ham were-going-on-a-bear-hunt where-is-the-green-sheep
 
@@ -323,10 +323,10 @@ archive-$(MFLM_SLUG): pack-$(MFLM_SLUG)
 	$(foreach deck,$(MFLM_DECKS),$(call archive_deck,$(deck),$(ARCHIVE_DIR)/$(MFLM_SLUG)))
 	@cp -r $(MFLM_DIR) $(ARCHIVE_DIR)/$(MFLM_SLUG)/printouts
 
-archive-how-ai-writes-stories:
+archive-how-ai-writes-stories-cutouts:
 	@rm -rf $(ARCHIVE_DIR)/$(@:archive-%=%)
 	@mkdir -p $(ARCHIVE_DIR)/$(@:archive-%=%)/cutouts
-	$(call archive_deck,how-ai-writes-stories,$(ARCHIVE_DIR)/$(@:archive-%=%))
+	$(call archive_deck,how-ai-writes-stories-cutouts,$(ARCHIVE_DIR)/$(@:archive-%=%))
 	$(foreach c,$(HAWS_CUTOUTS),$(call fetch_pdf,cutouts/$(c).pdf,$(ARCHIVE_DIR)/$(@:archive-%=%)/cutouts/$(c).pdf))
 
 archive-$(LEDGER_SLUG): pack-$(LEDGER_SLUG)

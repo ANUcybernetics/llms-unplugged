@@ -1,7 +1,7 @@
 ---
 title: The storm
 author: LLMs Unplugged
-url: https://www.llmsunplugged.org/lessons/how-ai-writes-stories-ledger
+url: https://www.llmsunplugged.org/lessons/how-ai-writes-stories
 ---
 
 The sky goes dark. Then wind comes up and leaves go everywhere. Then rain comes down on the tin roof, and it is loud. The dog hides under a bed. It is very dark. Then the rain stops, the sky is clear, and then frogs start up. The dog stays under a bed.

@@ -19,7 +19,7 @@ across NSW. Henry, a lecturer in UNSW's School of Computer Science and
 Engineering, invited us and organised the day.
 
 We ran the
-[ledger version of How AI Writes Stories](/lessons/how-ai-writes-stories-ledger/).
+[ledger version of How AI Writes Stories](/lessons/how-ai-writes-stories/).
 Each session ran for 45 minutes, which is tight for the full activity. Students
 tallied word pairs from a picture book onto their ledgers, then generated new
 text by drawing coloured counters from a cup.

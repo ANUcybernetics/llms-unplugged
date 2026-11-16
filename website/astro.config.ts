@@ -5,6 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import svelte from "@astrojs/svelte";
 import universityTheme from "astro-theme-university";
 import { astromotion, deckRemarkPlugins } from "astromotion";
+import { DECK_REDIRECTS } from "./src/lib/deckRedirects";
 
 // Paths of unlisted (`listed: false`) modules and lessons, so the sitemap can
 // skip them. The config runs before the content layer exists, so this scans
@@ -105,8 +106,10 @@ export default defineConfig({
     "/slides/studio-workshop-2h/": "/decks/my-first-language-model-2h/",
     // The ACE 2026 talk deck moved to benswift.me (June 2026).
     "/decks/ace-26/": "https://benswift.me/decks/llms-unplugged-ace-2026/",
-    "/decks/how-ai-writes-stories-ledger/": "/decks/how-ai-writes-stories-ledger-90min/",
-    "/decks/how-ai-writes-stories-ledger-45min/": "/decks/how-ai-writes-stories-ledger-60min/",
+    // The ledger lesson became the main How AI writes stories (November 2026);
+    // the cutouts lesson took the -cutouts slug. Old deck URLs are in
+    // src/lib/deckRedirects.ts, which keeps their query strings.
+    "/lessons/how-ai-writes-stories-ledger/": "/lessons/how-ai-writes-stories/",
   },
   fonts: [
     {
@@ -146,5 +149,15 @@ export default defineConfig({
       theme: "./src/decks/theme.css",
       favicon: "/favicon.svg",
     }),
+    {
+      name: "deck-redirects",
+      hooks: {
+        "astro:config:setup": ({ injectRoute }) => {
+          for (const pattern of Object.keys(DECK_REDIRECTS)) {
+            injectRoute({ pattern, entrypoint: "./src/components/DeckRedirect.astro" });
+          }
+        },
+      },
+    },
   ],
 });

@@ -1,4 +1,4 @@
-# How AI writes stories (ledger) --- what to print
+# How AI writes stories --- what to print
 
 For the 60- and 90-minute workshops, in groups of 4-5. Everything here is A4
 landscape. The 60-minute workshop needs only `instructions.pdf`,
@@ -53,7 +53,7 @@ binding works) --- one copy gives 24 of each colour.
 ## More
 
 The lesson entry, with timings and the rest of the materials list:
-<https://www.llmsunplugged.org/lessons/how-ai-writes-stories-ledger/>
+<https://www.llmsunplugged.org/lessons/how-ai-writes-stories/>
 
-Rebuild this pack with `make pack-how-ai-writes-stories-ledger` in the
+Rebuild this pack with `make pack-how-ai-writes-stories` in the
 llms-unplugged repo.
