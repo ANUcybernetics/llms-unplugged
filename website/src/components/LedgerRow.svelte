@@ -333,11 +333,42 @@
   .gate line.fresh {
     stroke: var(--anu-gold);
     stroke-width: 2.4;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  /* The mark just made pops in once its frame is the one on screen. Keyed to
+     .present, not to the element appearing: every slide's markup is in the
+     page from load, so a plain animation would have played out long before
+     anyone saw it. The delay lets the frame's auto-animate settle first. */
+  :global(.reveal section.present) .gate line.fresh {
+    animation: tally-pop 0.55s cubic-bezier(0.34, 1.8, 0.64, 1) 0.25s both;
+  }
+
+  @keyframes tally-pop {
+    0% {
+      scale: 0;
+      stroke-width: 6;
+    }
+
+    60% {
+      scale: 1.5;
+      stroke-width: 4;
+    }
+
+    100% {
+      scale: 1;
+      stroke-width: 2.4;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .ledger-strip {
       transition: none;
+    }
+
+    :global(.reveal section.present) .gate line.fresh {
+      animation: none;
     }
   }
 </style>

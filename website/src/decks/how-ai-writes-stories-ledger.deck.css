@@ -29,7 +29,7 @@
 }
 
 /* Several rows read top to bottom, for a set of rows compared at once (the
-   five groups' rows for the same word in the finale). */
+   the training texts' rows for the same word in the finale). */
 .reveal .ledger-stack {
   display: flex;
   flex-direction: column;
@@ -43,9 +43,11 @@
 }
 
 /* A sheet on its own under a heading: four rows and no caption, so it takes
-   the full width of the slide. */
+   the full content width of the slide. The sheet's tracks are fixed in em
+   (46.6em across, padding included), so the width is set through its size:
+   1120px of content on the fixed 1280px canvas. */
 .reveal [data-id="ledger-sheet"] {
-  --sheet-size: 1.35rem;
+  --sheet-size: calc(1120px / 46.6);
 }
 
 /* The five sheets of a group's set, side by side across the full width. */
@@ -65,8 +67,9 @@
   --row-height: 2em;
 }
 
-/* The quick training's one row ("the"), alone under its heading. */
-.reveal .ledger-row[data-id="quick-the"] {
+/* The quick training's row for "the", alone under its heading, then over
+   the sheet's row for the whole book, both at the full content width. */
+.reveal .ledger-row[data-id^="quick-the"] {
   --row-size: 1.55rem;
 }
 

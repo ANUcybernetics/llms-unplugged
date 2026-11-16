@@ -34,6 +34,8 @@
      * in from the top rather than the sheet growing.
      */
     rows?: number;
+    /** Draw the sheet. Off for the frames that are only about the text. */
+    sheet?: boolean;
     id?: string;
   }
 
@@ -44,6 +46,7 @@
     columns = LEDGER_COLUMNS,
     palette = LEDGER_PALETTE,
     rows,
+    sheet = true,
     id = "tally",
   }: Props = $props();
 
@@ -100,16 +103,18 @@
       {/if}
     </div>
   </div>
-  <LedgerSheet
-    {entries}
-    {columns}
-    {palette}
-    range={null}
-    rows={sheetRows}
-    focus={prefix}
-    {fresh}
-    id="{id}-sheet-{sheetRows}"
-  />
+  {#if sheet}
+    <LedgerSheet
+      {entries}
+      {columns}
+      {palette}
+      range={null}
+      rows={sheetRows}
+      focus={prefix}
+      {fresh}
+      id="{id}-sheet-{sheetRows}"
+    />
+  {/if}
 </div>
 
 <style>

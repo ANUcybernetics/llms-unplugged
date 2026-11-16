@@ -15,13 +15,13 @@ The sheets were finished when they arrived. Now the reveal: somebody made every 
 <LedgerTraining
   tokens={MAGPIE_OPENING}
   source={MAGPIE_OPENING_SOURCE}
-  rows={1}
+  sheet={false}
   palette={PALETTE}
   id="quick-train"
 />
 
 ```notes
-This is the start of The magpie, as the book writes it.
+This is the start of The magpie, as the book writes it. No sheet yet: training starts with nothing but the text.
 ```
 
 ---
@@ -30,7 +30,7 @@ This is the start of The magpie, as the book writes it.
 
 <LedgerTraining
   tokens={MAGPIE_OPENING}
-  rows={1}
+  sheet={false}
   palette={PALETTE}
   id="quick-train"
 />
@@ -52,7 +52,7 @@ Before anything gets counted, the text is split into words: every word made lowe
 />
 
 ```notes
-Now read it two words at a time: "it", then "is". It's the first time we've seen "it", so it gets a new row; "is" goes in the row's first box, with one mark beside it.
+Now the sheet comes out, empty, and we read the text two words at a time: "it", then "is". It's the first time we've seen "it", so it gets a new row; "is" goes in the row's first box, with one mark beside it.
 ```
 
 ---
@@ -220,26 +220,30 @@ From here, let the room call each pair before you click. "sits", then "on": a ne
 ## Listen for the word “the”
 
 <LedgerRow
-  entry={ROW_THE}
+  entry={ROW_THE_FIRST_HALF}
   palette={PALETTE}
   showTallies={false}
   id="quick-the"
 />
 
-> It is spring. It sits on **the** fence. It watches. Here comes **the** postie. Down swoops **the** magpie! Off runs **the** postie. Back goes **the** magpie. It sits on **the** fence. Here comes **the** dog. Down swoops **the** magpie! Off runs **the** dog. Back goes **the** magpie. It sits on **the** fence. Here comes **the** postie and **the** dog. Down swoops **the** magpie! Off run **the** dog and **the** postie. Back goes **the** magpie. It sits on **the** fence. It watches.
+> It is spring. It sits on **the** fence. It watches. Here comes **the** postie. Down swoops **the** magpie! Off runs **the** postie. Back goes **the** magpie. It sits on **the** fence. Here comes **the** dog. Down swoops **the** magpie! Off runs **the** dog. Back goes **the** magpie.
 
 ```notes
-Tell the room: every time you hear "the", shout the word that comes next. Read The magpie aloud, slowly, leaning on every "the" (18 of them). The room shouts the next word; a helper tallies it on the whiteboard in four boxes --- fence, postie, magpie, dog, in that order. About 90 seconds. The whole book is on the slide, every "the" in bold.
+Tell the room: every time you hear "the", shout the word that comes next. Read the first half of The magpie aloud, slowly, leaning on every "the" (ten of them). The room shouts the next word; a helper tallies it on the whiteboard in four boxes --- fence, postie, magpie, dog, in that order. About 45 seconds. Every "the" is in bold on the slide.
 ```
 
 ---
 
 ## Check the sheet
 
-<LedgerRow entry={ROW_THE} palette={PALETTE} id="quick-the" />
+<div class="ledger-stack">
+  <LedgerRow entry={ROW_THE_FIRST_HALF} palette={PALETTE} id="quick-the" />
+  <LedgerRow entry={ROW_THE} palette={PALETTE} id="quick-the-sheet" />
+</div>
 
-> It is spring. It sits on **the** fence. It watches. Here comes **the** postie. Down swoops **the** magpie! Off runs **the** postie. Back goes **the** magpie. It sits on **the** fence. Here comes **the** dog. Down swoops **the** magpie! Off runs **the** dog. Back goes **the** magpie. It sits on **the** fence. Here comes **the** postie and **the** dog. Down swoops **the** magpie! Off run **the** dog and **the** postie. Back goes **the** magpie. It sits on **the** fence. It watches.
+half the book on the whiteboard, the whole book on the magpie sheet: the same
+words in the same boxes, and more marks
 
 ```notes
-Compare the whiteboard with the row: fence 4, postie 4, magpie 6, dog 4 --- the same marks as the magpie group's sheet. Every row on every group's sheets was made exactly this way; the only difference is that a computer read the books, and keeps the counts as numbers rather than tally marks. Real AI does the same thing with a huge amount of text.
+Compare the whiteboard with the top row: fence 2, postie 2, magpie 4, dog 2. Underneath is the magpie group's printed row, made from the whole book: the same four words in the same colours, with more marks because the book keeps going. Every row on every group's sheets was made exactly this way; the only difference is that a computer read the books, and keeps the counts as numbers rather than tally marks. Real AI does the same thing with a huge amount of text.
 ```

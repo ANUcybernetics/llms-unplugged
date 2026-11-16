@@ -20,9 +20,9 @@ import { LEDGER_PALETTE, type LedgerEntry } from "../lib/ledger";
 // sentence also turns up inside one, so the row for "." keeps its capitals.
 // Change the book or the budget and the counts below have to be re-read off
 // the new sheets. SHEET_FIVE is that set's fifth sheet entire, in the order
-// the deal printed it. The five ROW_THE_* are the outdoors texts' rows for
-// "the" (data/originals/outdoors-*.txt), each set built with --max-followers 4
-// for training. The walkthrough follows the generation-ledger and
+// the deal printed it. The ROW_THE_* at the end are the training texts' rows
+// for "the" (the Makefile's LEDGER_TEXTS), each set built with
+// --max-followers 4 for training. The walkthrough follows the generation-ledger and
 // same-algorithm videos (ops/video/scripts/), so a change here is a change
 // there too.
 
@@ -149,11 +149,25 @@ export const SHEET_RANGES = [
 // in a row that already has one; ". it" comes round again at step 9, the
 // slide that shows a mark landing on a box that already has one.
 
+// The row the first half of the book makes, which the room tallies by ear
+// (ledger-training.mdx quotes that half): the sheet's four words in the sheet's order,
+// with fewer marks than the whole book gave ROW_THE.
+
+export const ROW_THE_FIRST_HALF: LedgerEntry = {
+  prefix: "the",
+  followers: [
+    { text: "fence", count: 2 },
+    { text: "postie", count: 2 },
+    { text: "magpie", count: 4 },
+    { text: "dog", count: 2 },
+  ],
+};
+
 export const MAGPIE_OPENING_SOURCE = "It is spring. It sits on the fence. It watches.";
 export const MAGPIE_OPENING = "it is spring . it sits on the fence . it watches .";
 
-// The five outdoors texts' rows for "the", for the finale: same word, five
-// different models.
+// The training texts' rows for "the", for the finale: same word, a different
+// model per text.
 
 export const ROW_THE_BEACH: LedgerEntry = {
   prefix: "the",
@@ -202,5 +216,14 @@ export const ROW_THE_BUSH: LedgerEntry = {
     { text: "hill", count: 1 },
     { text: "sun", count: 1 },
     { text: "water", count: 1 },
+  ],
+};
+
+export const ROW_THE_BALL: LedgerEntry = {
+  prefix: "the",
+  followers: [
+    { text: "blue", count: 1 },
+    { text: "kitten", count: 2 },
+    { text: "ball", count: 1 },
   ],
 };
