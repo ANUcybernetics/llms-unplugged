@@ -13,6 +13,7 @@ interface Props {
   description?: string;
   ogImage?: ImageMetadata | string;
   frontmatter?: Frontmatter;
+  noindex?: boolean;
 }
 
 const { frontmatter } = Astro.props;
@@ -27,7 +28,7 @@ if (!title) {
 }
 ---
 
-<BaseLayout title={title} description={description} ogImage={ogImage}>
+<BaseLayout title={title} description={description} ogImage={ogImage} noindex={Astro.props.noindex}>
   <div class="content-container">
     <article class="prose">
       <slot />

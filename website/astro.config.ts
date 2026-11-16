@@ -147,6 +147,7 @@ export default defineConfig({
       // unlisted modules/lessons are reachable only via direct links.
       filter: (page) =>
         !page.includes("/decks/") &&
+        !page.includes("/talks/") &&
         !unlistedPaths.some((p) => page.endsWith(p)),
     }),
     astromotion({
