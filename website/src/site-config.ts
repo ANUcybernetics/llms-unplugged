@@ -13,7 +13,6 @@ export const siteConfig = defineSiteConfig({
     // the word teachers search for.
     { text: "Materials", href: "/tools/" },
     { text: "For educators", href: "/educators/" },
-    { text: "News", href: "/news/" },
     { text: "About", href: "/about/" },
   ],
   licence: "CC-BY-SA-4.0",
@@ -35,6 +34,7 @@ export function footerMeta(pathname: string): string[] {
   return [
     'LLMs Unplugged is a <a href="https://cybernetics.anu.edu.au/cybernetic-studio/">Cybernetic Studio</a> project at the ANU School of Cybernetics, made by <a href="https://benswift.me">Ben Swift</a>.',
     [
+      '<a href="/news/">News</a>',
       '<a href="/glossary/">Glossary</a>',
       '<a href="/faq/">FAQ</a>',
       '<a href="/library/">Library of Babble</a>',

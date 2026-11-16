@@ -171,12 +171,11 @@ import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
   <h2 id="in-classrooms">In classrooms</h2>
 
-  <p>
-    Where it's been run, and what happened&mdash;from a Year 5 class at Duffy Primary to a
-    pre-service teacher's Year 7/8 class with a Yoda monologue for training text:
-  </p>
+  <p>The latest reports from classrooms and workshops:</p>
 
-  <NewsCards kinds={["report"]} />
+  <NewsCards kinds={["report"]} limit={3} />
+
+  <p><a href="/news/">All the news &rarr;</a></p>
 
   <h2 id="tell-us">Tell us how it went</h2>
 
