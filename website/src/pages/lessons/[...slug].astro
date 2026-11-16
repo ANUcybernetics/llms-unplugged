@@ -27,6 +27,7 @@ const ogImage = lesson.data.heroImage ? findHeroImage(`hero-${lesson.data.heroIm
   flavour={lesson.data.flavour}
   noindex={lesson.data.listed === false}
   pack={packUrl(lesson.id)}
+  decks={lesson.data.decks}
 >
   <Content />
 </LessonLayout>

@@ -16,6 +16,7 @@ decks:
 modules:
   - training
   - generation
+heroImage: ledger-stories
 order: 2
 ---
 
@@ -113,20 +114,8 @@ holds the five picture-book models one after another, one blank sheet, the six
 training texts (one to a page, and two to a page to cut in half), the counters
 page and a one-page instruction sheet. Its README says what to print and which pages go to which
 group; the 60-minute version needs only the picture books, the counters and the
-instructions. `make pack-how-ai-writes-stories` in the
-[repo](https://github.com/ANUcybernetics/llms-unplugged) rebuilds it, and the
-`Makefile` holds the exact commands, so the sets are the same every delivery
-rather than rebuilt from memory.
-
-Every picture-book set is built with `--max-followers 4`, which drops each
-word's rarest continuations so that every word fits a single row however long
-the text. Four followers and four counter colours mean one palette per row, so
-every row on every sheet is red, blue, green, yellow in that order. The token
-budget is then free to be chosen for the model rather than for the widest row:
-140 for all five books. Change it and re-run `ops/ledger-sweep.py` --- its
-`dead` column is the one that matters, since a group that draws a word with no
-row of its own stalls with nothing to look up --- and re-read the slides'
-walkthrough rows off the new _The magpie_ sheets.
+instructions. To make sheets from a book of your own, use the generator on the
+[Materials](/tools/#generate-your-own) page.
 
 ## Before you deliver
 

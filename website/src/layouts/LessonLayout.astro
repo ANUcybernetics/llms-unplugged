@@ -14,6 +14,8 @@ interface Props {
   noindex?: boolean;
   /** URL of the lesson's printout pack (see packUrl in lib/pdfs.ts). */
   pack?: string | null;
+  /** The lesson's decks; labels end in the length, e.g. "... (60 min)". */
+  decks?: Array<{ slug: string; label: string }>;
 }
 
 const {
@@ -26,7 +28,22 @@ const {
   flavour,
   noindex,
   pack,
+  decks = [],
 } = Astro.props;
+
+// "My First Language Model (60 min)" -> "60 min"
+const shortLabel = (label: string) => label.match(/\(([^)]+)\)\s*$/)?.[1] ?? label;
+
+// One string, so no formatter-inserted whitespace lands before the comma.
+const deckLinks = decks
+  .map(
+    (deck) =>
+      `<a href="/decks/${deck.slug}/">${decks.length === 1 ? deck.label : shortLabel(deck.label)}</a>`,
+  )
+  .join(" · ");
+const slidesHtml =
+  decks.length > 0 &&
+  `${decks.length === 1 ? "Open the slides" : "Slides"}: ${deckLinks}, with full presenter notes (more under <a href="#using-the-slides">using the slides</a>).`;
 ---
 
 <BaseLayout
@@ -47,11 +64,21 @@ const {
           {flavour}
         </li>
       </ul>
-      {pack && <Callout type="tip" title="Printouts">
-        <p>
+      {(decks.length > 0 || pack) && <Callout
+        type="tip"
+        title={
+          decks.length > 0 && pack
+            ? "Slides and printouts"
+            : decks.length > 0
+              ? "Slides"
+              : "Printouts"
+        }
+      >
+        {slidesHtml && <p set:html={slidesHtml} />}
+        {pack && <p>
           <a href={pack}>Download the printouts (zip)</a> for every length of this lesson. The
           README inside says which length needs what.
-        </p>
+        </p>}
       </Callout>}
       <slot />
     </article>

@@ -7,24 +7,36 @@ import { findHeroImage } from "../../lib/hero-images";
 const lessons = (await getCollection("lessons"))
   .filter((l) => l.data.listed !== false)
   .toSorted((a, b) => a.data.order - b.data.order);
+
+// Lessons with decks are run from their slides; the rest are run from the
+// module pages.
+const withSlides = lessons.filter((l) => l.data.decks.length > 0);
+const fromModules = lessons.filter((l) => l.data.decks.length === 0);
 ---
 
 <PageLayout
   title="Lessons"
-  description="LLMs Unplugged lessons: complete workshop sessions with timings, prep notes and materials lists."
+  description="LLMs Unplugged lessons: complete sessions with slides, presenter notes, printouts, timings and materials lists."
 >
   <h1>Lessons</h1>
 
   <p>
-    A lesson is a complete session: a sequence of <a href="/modules/">modules</a> with timings, prep
-    notes, and a materials list. Pick the one that fits your group.
+    A lesson is a complete session, built from <a href="/modules/">modules</a>, with timings, prep
+    notes and a materials list. Pick the one that fits your group's age and the time you have.
+  </p>
+
+  <h2 id="with-slides">Lessons with slides</h2>
+
+  <p>
+    Each of these comes with slides and full presenter notes, a printouts download and a lesson
+    plan.
   </p>
 
   <div class="at-card-grid at-card-grid--2">
-    {lessons.map((lesson) => <Card
+    {withSlides.map((lesson) => <Card
       href={`/lessons/${lesson.id}/`}
       title={lesson.data.title}
-      headingLevel="h2"
+      headingLevel="h3"
       image={lesson.data.heroImage ? findHeroImage(`hero-${lesson.data.heroImage}`) : undefined}
     >
       <p class="card-description">{lesson.data.description}</p>
@@ -35,11 +47,27 @@ const lessons = (await getCollection("lessons"))
     </Card>)}
   </div>
 
+  <h2 id="from-the-modules">Longer sessions from the modules</h2>
+
   <p>
-    Not sure where to start? Each card above gives the audience and length, so pick the one that
-    fits your room. If you'd rather assemble your own session from the parts, browse the
-    <a href="/modules/">modules</a>. Giving a talk rather than running a workshop? The
-    <a href="/talks/">talks</a> hand the whole audience a model on search sheets and run it from the
-    stage.
+    Follow-ons for groups who've done one of the lessons above. They have no slides: you run them
+    from the module pages, which carry the rules, worked examples and instructor notes.
   </p>
+
+  <div class="at-card-grid at-card-grid--2">
+    {fromModules.map((lesson) => <Card
+      href={`/lessons/${lesson.id}/`}
+      title={lesson.data.title}
+      headingLevel="h3"
+      image={lesson.data.heroImage ? findHeroImage(`hero-${lesson.data.heroImage}`) : undefined}
+    >
+      <p class="card-description">{lesson.data.description}</p>
+      <p class="card-badges">
+        {lesson.data.audience} &middot; {lesson.data.duration} &middot;{" "}
+        {lesson.data.flavour}
+      </p>
+    </Card>)}
+  </div>
+
+  <p>To put together a session of your own, browse the <a href="/modules/">modules</a>.</p>
 </PageLayout>
