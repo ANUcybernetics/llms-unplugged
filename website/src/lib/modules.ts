@@ -9,7 +9,7 @@ export type Module = CollectionEntry<"modules">;
  * so a module's placement is defined once --- by its `topic` and `order`
  * frontmatter --- rather than in hand-maintained lists.
  *
- * Modules with `listed: false` (e.g. weighted-randomness) are reachable only
+ * Modules with `listed: false` are reachable only
  * via direct links from other modules and are omitted from every listing
  * surface.
  */

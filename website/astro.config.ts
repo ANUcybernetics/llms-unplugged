@@ -69,7 +69,7 @@ export default defineConfig({
     "/lessons/sycophancy/": "/modules/sycophancy/",
     "/lessons/synthetic-data/": "/modules/synthetic-data/",
     "/lessons/training/": "/modules/training/",
-    "/lessons/weighted-randomness/": "/modules/weighted-randomness/",
+    "/lessons/weighted-randomness/": "/modules/generation/",
     "/lessons/word-embeddings/": "/modules/word-embeddings/",
     // module renamed from "Agentic tool use" (June 2026)
     "/lessons/agentic-tool-use/": "/modules/agentic-ai/",
@@ -78,6 +78,8 @@ export default defineConfig({
     "/modules/in-context-memory/": "/modules/in-context-learning/",
     "/modules/induction-heads/": "/modules/in-context-learning/",
     "/modules/lora/": "/modules/fine-tuning/",
+    // Weighted Randomness dropped: Generation teaches the same sampling.
+    "/modules/weighted-randomness/": "/modules/generation/",
     // The workshop-formats page was superseded by the lessons index (its
     // "Going deeper" format seeds task-131).
     "/workshops/": "/lessons/",
@@ -143,7 +145,9 @@ export default defineConfig({
     sitemap({
       // Decks are interactive Reveal.js presentations, not indexable pages;
       // unlisted modules/lessons are reachable only via direct links.
-      filter: (page) => !page.includes("/decks/") && !unlistedPaths.some((p) => page.endsWith(p)),
+      filter: (page) =>
+        !page.includes("/decks/") &&
+        !unlistedPaths.some((p) => page.endsWith(p)),
     }),
     astromotion({
       theme: "./src/decks/theme.css",

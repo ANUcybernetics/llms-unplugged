@@ -26,18 +26,6 @@ import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
 <VariantToggle client:load options={["grid", "ledger", "cutouts"]} />
 
-<Variant is="grid">
-
-<Callout type="tip" title="Weighted randomness">
-
-This module involves rolling dice to sample from weighted probability
-distributions. If your students need extra support with this concept, consider
-running the [Weighted Randomness](/modules/weighted-randomness/) module first.
-
-</Callout>
-
-</Variant>
-
 Use a pre-trained (hand-built) <GlossaryTerm id="bigram-model">bigram model</GlossaryTerm> to generate new text through <GlossaryTerm id="weighted-random-sampling">weighted random sampling</GlossaryTerm>
 .
 
@@ -152,8 +140,7 @@ sampling, with no dice required.
 
 1. Choose a starting word from the first column of your <GlossaryTerm id="grid">grid</GlossaryTerm>.
 2. Look at that word's row to find all possible next words and their counts.
-3. Roll dice weighted by the counts (see
-   [Weighted Randomness](/modules/weighted-randomness/)).
+3. Roll dice weighted by the counts.
 4. Write down the chosen word and make it your new starting word.
 5. Repeat from step 2 until you hit a natural stopping point (e.g., `.`) or your
    desired length.

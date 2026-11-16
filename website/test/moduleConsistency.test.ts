@@ -11,11 +11,8 @@ import { topicOrder } from "../src/lib/topics";
  *   `topic`/`order` frontmatter (via src/lib/modules.ts), so the only invariant
  *   to police here is that the frontmatter is well-formed and that no module
  *   becomes an unreachable dead-end.
- * - ISSUE-002 (2026-04-13 dogfood audit): the glossary linked to
- *   `/modules/weighted-randomness` but it wasn't reachable from the nav. It is
- *   now intentionally `listed: false`, so the contract is "an unlisted module
- *   must still be linked from a listed module" rather than "must be in the
- *   sidebar". A module with `replacedBy` is the exception: it is a deliberate
+ * - An unlisted (`listed: false`) module must still be linked from a listed
+ *   module, rather than being in the sidebar. A module with `replacedBy` is the exception: it is a deliberate
  *   dead-end, kept for teachers already running it from a direct link, and its
  *   page links forward to the listed module that replaced it.
  */

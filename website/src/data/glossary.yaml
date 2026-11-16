@@ -176,8 +176,6 @@
     one of the matching cutouts, because common words appear on more of them.
   activity: rolling a d10 for the next word, or picking a matching cutout
   see:
-    - label: Weighted Randomness
-      href: /modules/weighted-randomness/
     - label: Generation
       href: /modules/generation/
 

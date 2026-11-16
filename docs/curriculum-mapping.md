@@ -63,7 +63,6 @@ local code. Senior secondary (Years 11--12) is out of scope.
 
 | Module                       | Topic               | Best fit    | Strongest learning areas                           |
 | ---------------------------- | ------------------- | ----------- | -------------------------------------------------- |
-| Weighted Randomness          | fundamentals        | 5--6, 7--8  | Mathematics                                        |
 | Training                     | fundamentals        | 5--6, 7--8  | Digital Technologies, Mathematics                  |
 | Generation                   | fundamentals        | 5--6, 7--8  | Mathematics, Digital Technologies                  |
 | Pre-trained Model Generation | scaling up          | 5--6, 7--8  | Digital Technologies                               |
@@ -149,26 +148,6 @@ have not mapped the modules to New Zealand's statements one by one.
 Each module gets a card with: year band, primary codes, secondary codes, general
 capabilities, and a one-line justification per code.
 
-### [Weighted Randomness](https://www.llmsunplugged.org/modules/weighted-randomness/)
-
-Probability sampling from a target distribution using dice and beads.
-
-- **Best fit:** Years 5--8
-- **Primary**
-  - `AC9M5P02` --- conduct repeated chance experiments with equally and not
-    equally likely outcomes; use frequency to compare and estimate likelihood.
-  - `AC9M6P02` --- run simulations with increasing trials; compare observed with
-    expected results.
-  - `AC9M7P02` --- conduct repeated chance experiments and run simulations;
-    compare predictions with observed results.
-- **Secondary**
-  - `AC9M6P01` --- probabilities lie on numerical scales; use fractions,
-    decimals and percentages.
-  - `AC9TDI6K03` --- digital systems represent data using numbers (because dice
-    rolls _are_ the number representation here).
-- **General capabilities:** Numeracy (recognising and using patterns and
-  relationships); Critical and Creative Thinking (Inquiring).
-
 ### [Training](https://www.llmsunplugged.org/modules/training/)
 
 Build a bigram model by counting which words follow which in a corpus.
@@ -196,6 +175,8 @@ Use the trained bigram model to generate new text via weighted sampling.
 - **Primary**
   - `AC9M5P02`, `AC9M7P01` --- sample space and assigning probabilities to
     outcomes.
+  - `AC9M6P02` --- run simulations with increasing trials; compare observed with
+    expected results (how often each word comes up against its tallies).
   - `AC9TDI6P05` --- implement algorithms with control structures and input (the
     generation loop).
 - **Secondary**
@@ -416,7 +397,7 @@ vehicle.
 
 ### Mathematics
 
-- **Probability (Years 5--10)**: Weighted Randomness, Generation, Sampling, Beam
+- **Probability (Years 5--10)**: Generation, Sampling, Beam
   Search, More Context, In-context Learning, Rewards.
 - **Statistics (Years 5--8)**: Training (categorising and describing data).
 - **Number / Algebra**: light touch only.
@@ -458,24 +439,22 @@ general capabilities as well as the content.
 Three concrete sequences that an administrator could slot into a year-long
 program.
 
-### Year 5--6: "How computers make text" (4 modules, ~5 hours)
+### Year 5--6: "How computers make text" (3 modules, ~4.5 hours)
 
-1. Weighted Randomness --- `AC9M6P02`
-2. Training --- `AC9TDI6P05`
-3. Generation --- `AC9M6P02`, `AC9TDI6P05`
-4. Pre-trained Model Generation --- `AC9TDI6P05`
+1. Training --- `AC9TDI6P05`
+2. Generation --- `AC9M6P02`, `AC9TDI6P05`
+3. Pre-trained Model Generation --- `AC9TDI6P05`
 
 Sits cleanly in a Digital Technologies unit on data representation and
 algorithms; Mathematics teacher can co-teach the probability components.
 
-### Year 7--8 Digital Technologies: "Data and AI" (6 modules, ~8 hours)
+### Year 7--8 Digital Technologies: "Data and AI" (5 modules, ~7.5 hours)
 
-1. Weighted Randomness
-2. Training --- `AC9TDI8P01`, `AC9TDI8P02`
-3. Generation --- `AC9TDI8P06`
-4. Sampling --- `AC9TDI8P05`
-5. More Context --- `AC9TDI8P03`, `AC9TDI8P09`
-6. In-context Learning --- `AC9TDI8P03`, `AC9TDI8P09`
+1. Training --- `AC9TDI8P01`, `AC9TDI8P02`
+2. Generation --- `AC9TDI8P06`
+3. Sampling --- `AC9TDI8P05`
+4. More Context --- `AC9TDI8P03`, `AC9TDI8P09`
+5. In-context Learning --- `AC9TDI8P03`, `AC9TDI8P09`
 
 Delivers most of the "Data and information" knowledge band plus the
 algorithm-design content descriptions for Years 7--8.
