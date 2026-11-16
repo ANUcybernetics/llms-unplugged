@@ -42,10 +42,13 @@
   --row-size: 1rem;
 }
 
-/* The training texts' followers run longer than the picture books'
-   ("kookaburra"), so their word boxes are wider than a sheet's. */
+/* The training texts' rows for "the", alone under their heading: their
+   followers run longer than the picture books' ("kookaburra"), so the word
+   boxes are wider than a sheet's, and the rows take the full content width
+   (50.8em across at these boxes). */
 .reveal .ledger-stack.long-words .ledger-row {
   --cell: 7em;
+  --row-size: calc(1120px / 50.8);
 }
 
 /* A sheet on its own under a heading: four rows and no caption, so it takes
