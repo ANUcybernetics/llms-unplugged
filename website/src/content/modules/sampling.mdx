@@ -7,7 +7,7 @@ description:
 order: 4
 audience: years 7 and up
 duration: 20-30 min (60 min with the slam)
-bases: [grid, booklet]
+bases: [grid, ledger, booklet]
 status: experimental
 topic: shaping-behaviour
 keyIdea:
@@ -29,7 +29,8 @@ depending on how you sample.
 ## You will need
 
 - a completed model from an earlier module
-- pen, paper, and dice as per [Generation](/modules/generation/) (grid method)
+- pen, paper, and dice as per [Generation](/modules/generation/) (grid method),
+  or the ledger sheets and a cup of counters (ledger method)
 
 ## Your goal
 
@@ -80,6 +81,18 @@ When using a [pre-trained booklet](/modules/pretrained-generation/), the next-wo
 candidates are already sorted from most likely to least likely. This makes
 several strategies easier: greedy = pick the first option, non-sequitur = pick
 the last option, and top-k = only roll among the first k options.
+
+</Callout>
+
+<Callout type="tip" title="Ledger shortcuts">
+
+With [ledger sheets](/modules/generation/) and a cup of counters, the dial and
+the cut both happen as you fill the cup. Cold = no draw: take the box with the
+most marks. Hot = add one extra counter of each colour in use on the row, and
+boiling = put in just one counter of each colour in use. Top-k = only the k
+boxes with the most marks go in the cup. The printed picture-book sets are
+already top-4: each word keeps only its four most common followers, so it fits
+one row of four boxes.
 
 </Callout>
 
