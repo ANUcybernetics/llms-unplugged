@@ -42,6 +42,12 @@
   --row-size: 1rem;
 }
 
+/* The training texts' followers run longer than the picture books'
+   ("kookaburra"), so their word boxes are wider than a sheet's. */
+.reveal .ledger-stack.long-words .ledger-row {
+  --cell: 7em;
+}
+
 /* A sheet on its own under a heading: four rows and no caption, so it takes
    the full content width of the slide. The sheet's tracks are fixed in em
    (46.6em across, padding included), so the width is set through its size:
