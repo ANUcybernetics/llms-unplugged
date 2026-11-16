@@ -33,7 +33,8 @@ round, where the words and the marks are both theirs to write.
 ## training-texts.pdf
 
 The five outdoors texts (beach, storm, kookaburra, creek and bush) as the
-tokeniser read them, numbered token by token, one page each. Print one page per
+tokeniser read them, one page each. A solid box marks where a word starts a new
+row, a dashed box one whose row is already on the sheet. Print one page per
 group and give every group a different text: the finale pools them, and it only
 works if no two groups hold the same model. The page map below says which page
 is which text.

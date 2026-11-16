@@ -1,9 +1,9 @@
 // The training text as the tokeniser read it, for whoever reads it aloud in
 // the ledger's training round: every token in its own box, lowercased, the
-// punctuation split off into the symbol tile the sheets use, and a running
-// number under each so a group that loses its place can say where it was.
-// Dropped tokens print dimmed and unnumbered: the rows never counted them,
-// so the reader skips them.
+// punctuation split off into the symbol tile the sheets use. Read as the
+// first of a pair, a token in a solid box starts a new row on the sheet and
+// one in a dashed box means finding the row it already has. Dropped tokens
+// print dimmed: the rows never counted them, so the reader skips them.
 //
 // Without this page the reader tokenises in their head from a plain printout
 // --- lowercasing, peeling the full stop off the last word --- and the sheets
@@ -66,17 +66,20 @@
 #text(size: 9pt, fill: luma(90))[
   #kept tokens. Read it aloud a pair at a time --- a token, then the one after
   it --- and then move along by one, so the token just read second is read first
-  next time.
+  next time. When a token in a solid box comes first in the pair, start a new
+  row for it; a dashed box means its row is already on the sheet.
 ]
 
 #v(3mm)
 
 // ===== The tokens =====
 
-// One token in its box, with its number beneath. The box is what makes a
-// full stop and a comma each their own token to the eye, and what keeps
-// "sam-i-am" from reading as three; the number is for finding the place
-// again. A dropped token gets a dash where its number would be.
+// One token in its box. The box is what makes a full stop and a comma each
+// their own token to the eye, and what keeps "sam-i-am" from reading as three.
+// Its border says what the token does as the first of a pair: solid and darker
+// where it starts a new row, dashed and lighter where its row is already on
+// the sheet. Solid against dashed survives a greyscale printer, where a colour
+// difference would not.
 //
 // The glyph sits in a fixed-height, vertically centred band rather than on
 // its own line: a punctuation mark comes in its symbol tile, which is a box
@@ -94,37 +97,66 @@
 #let k = token-size / base-size
 #let token-band = 5.2mm * k
 
-#let token-box(t, index) = box(
+// Per document, per token: does reading this token as the start of a pair
+// open a new row on the sheet? A row is a prefix (the n-1 kept tokens ending
+// here), and it is new the first time that prefix is followed by anything ---
+// counted across every document, since the sheets pool them. Dropped tokens
+// are skipped, as the counting skips them, and a document's last kept token
+// starts no pair, so neither ever opens a row.
+#let context-len = {
+  let entries = data.sheets.map(sheet => sheet.pages.flatten()).flatten()
+  if entries.len() > 0 { entries.first().prefix.len() } else { 1 }
+}
+#let opens-row = {
+  let seen = (:)
+  let flags = ()
+  for document in documents {
+    let doc-flags = document.map(t => false)
+    let kept = range(document.len()).filter(i => document.at(i).keep)
+    for (j, i) in kept.enumerate() {
+      if j + 1 < kept.len() and j + 1 >= context-len {
+        let key = kept
+          .slice(j + 1 - context-len, j + 1)
+          .map(k => document.at(k).text)
+          .join("\u{1f}")
+        if key not in seen {
+          seen.insert(key, true)
+          doc-flags.at(i) = true
+        }
+      }
+    }
+    flags.push(doc-flags)
+  }
+  flags
+}
+
+#let token-box(t, new-row) = box(
   inset: (x: 1.4mm * k, y: 1.1mm * k),
-  stroke: 0.4pt + if t.keep { luma(160) } else { luma(215) },
+  stroke: if not t.keep {
+    0.4pt + luma(215)
+  } else if new-row {
+    (paint: luma(90), thickness: 0.7pt)
+  } else {
+    (paint: luma(150), thickness: 0.5pt, dash: "dashed")
+  },
   radius: 1.2mm * k,
-  stack(
-    dir: ttb,
-    spacing: 0.8mm * k,
-    box(
-      height: token-band,
-      align(
-        horizon,
-        token-text(
-          t.text,
-          punct-chars,
-          size: token-size,
-          fill: if t.keep { black } else { luma(170) },
-        ),
-      ),
-    ),
+  // In a stack, which has no text baseline, so every token box sits on its
+  // bottom edge. Left bare, each box aligns to its content's baseline, and a
+  // punctuation tile's is not a word's.
+  stack(box(
+    height: token-band,
     align(
-      center,
-      text(
-        size: 6pt * k,
-        fill: luma(150),
-        if index == none { sym.dash.en } else { str(index) },
+      horizon,
+      token-text(
+        t.text,
+        punct-chars,
+        size: token-size,
+        fill: if t.keep { black } else { luma(170) },
       ),
     ),
-  ),
+  )),
 )
 
-#let index = counter("token")
 #for (d, document) in documents.enumerate() {
   if d > 0 {
     v(3mm)
@@ -132,13 +164,8 @@
     v(3mm)
   }
   par(leading: 2.4mm * k, {
-    for t in document {
-      if t.keep {
-        index.step()
-        context token-box(t, index.get().first())
-      } else {
-        token-box(t, none)
-      }
+    for (i, t) in document.enumerate() {
+      token-box(t, opens-row.at(d).at(i))
       [ ]
     }
   })

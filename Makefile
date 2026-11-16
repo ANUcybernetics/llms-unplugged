@@ -100,7 +100,7 @@ endef
 # the page. The deck walks through the magpie set row by row, so its ROW_*
 # constants have to be re-read off the sheets if this recipe changes.
 #
-# Training: blank sheets, and the numbered text page for whoever reads aloud.
+# Training: blank sheets, and the text page for whoever reads aloud.
 # The words are written as the group meets them, so one sheet serves every
 # text; LEDGER_BLANK_ROWS x 5 sheets has to cover the largest outdoors
 # vocabulary (33 prefixes, the storm and the kookaburra).

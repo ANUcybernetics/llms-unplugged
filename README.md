@@ -171,8 +171,9 @@ are dropped; apostrophes inside contractions are preserved.
   sheet. A `counters.pdf` of coloured squares to cut up lands beside it: print
   it double-sided (the layout is symmetric, so either binding works) for 8
   counters of each colour per A4 sheet. So does a `text.pdf`: the text as the
-  tokeniser read it, one token per box with a running number under each, for
-  whoever reads it aloud in the training round.
+  tokeniser read it, one token per box, for whoever reads it aloud in the
+  training round. A solid box marks where a token, read as the first of a pair,
+  starts a new row; a dashed box marks one whose row is already on the sheet.
   - `--sheets <N>`: the group size. Omit it and the count follows the corpus at
     the `--rows` density
   - `--palette <JSON|@FILE>`: the colours the room's counters come in, as a JSON
