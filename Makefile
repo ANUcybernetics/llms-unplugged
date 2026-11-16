@@ -162,12 +162,16 @@ define build_ledger
 		--rows $$(jq '$(LEDGER_ROWS_JQ)' $(3)/ledger.json) -o $(3) $(4) >/dev/null
 endef
 
-# The training sets are here only for their text.pdf, so one plain run each.
+# The training sets are here only for their text.pdf, so one plain run each at
+# A4, and one at A5 for the two-up copy (typeset at A5 rather than shrunk from
+# A4, so the tokens keep their size). Every outdoors text fits one A5 page.
 # $(1) label, $(2) corpus path, $(3) output dir
 define build_text
 	@echo "$(1)"
 	@./$(CLI) ledger -i $(2) --sheets $(LEDGER_SHEETS) --palette $(LEDGER_PALETTE) \
 		--max-followers 4 -o $(3) >/dev/null
+	@./$(CLI) ledger -i $(2) --sheets $(LEDGER_SHEETS) --palette $(LEDGER_PALETTE) \
+		--max-followers 4 --paper-size a5 -o $(3)/a5 >/dev/null
 endef
 
 # Append "- pages A-B --- name" for each file, so the README's page map is read
@@ -206,6 +210,14 @@ pack-$(LEDGER_SLUG): $(CLI)
 	@qpdf --empty --pages \
 		$(foreach text,$(LEDGER_TEXTS),$(LEDGER_STAGE)/outdoors-$(text)/text.pdf) \
 		-- $(LEDGER_DIR)/training-texts.pdf
+	@qpdf --empty --pages \
+		$(foreach text,$(LEDGER_TEXTS),$(LEDGER_STAGE)/outdoors-$(text)/a5/text.pdf) \
+		-- $(LEDGER_STAGE)/training-texts-a5.pdf
+	@# Two A5 pages side by side on A4 landscape, to cut down the middle.
+	@typst compile --root . \
+		--input source=/$(LEDGER_STAGE)/training-texts-a5.pdf \
+		--input pages=$$(qpdf --show-npages $(LEDGER_STAGE)/training-texts-a5.pdf) \
+		cli/two-up.typ $(LEDGER_DIR)/training-texts-2up.pdf
 	@cp $(LEDGER_STAGE)/blank/ledger.pdf $(LEDGER_DIR)/training-ledgers.pdf
 	@cp $(LEDGER_STAGE)/blank/brief.pdf $(LEDGER_DIR)/instructions.pdf
 	@# Every set writes the same counters page; it depends only on the palette.

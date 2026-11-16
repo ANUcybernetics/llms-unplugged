@@ -39,6 +39,12 @@ group and give every group a different text: the finale pools them, and it only
 works if no two groups hold the same model. The page map below says which page
 is which text.
 
+## training-texts-2up.pdf
+
+The same five texts in the same order, typeset at A5 and printed two to an A4
+sheet: print single-sided, then guillotine each sheet down the middle. Three
+sheets give all five texts, with the right half of the last one blank.
+
 ## counters.pdf
 
 Coloured squares to cut up, if you have no counters. Print double-sided (either
