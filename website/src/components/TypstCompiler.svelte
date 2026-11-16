@@ -248,8 +248,8 @@
         <label for="typst-workflow-select">Output type</label>
         <select id="typst-workflow-select" bind:value={workflow} disabled={!isReady}>
           <option value="booklet">Booklet (dice lookup tables)</option>
-          <option value="cutouts">Cutouts (printable token cards)</option>
           <option value="ledger">Ledger (tally sheets and counters)</option>
+          <option value="cutouts">Cutouts (printable token cards)</option>
         </select>
       </div>
     </div>

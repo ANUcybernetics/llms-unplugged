@@ -6,7 +6,7 @@ import TypstCompiler from "../components/TypstCompiler.svelte";
 
 <PageLayout
   title="Materials"
-  description="Ready-to-print booklets, token cutouts, search sheets and worksheets for LLMs Unplugged—or generate your own from any text, in your browser."
+  description="Ready-to-print booklets, worksheets, ledger sheets, search sheets and token cutouts for LLMs Unplugged—or generate your own from any text, in your browser."
 >
   <h1>Materials</h1>
 
@@ -122,41 +122,37 @@ import TypstCompiler from "../components/TypstCompiler.svelte";
     </ul>
   </Callout>
 
-  <h2 id="cutouts">Cutouts</h2>
+  <h2 id="ledgers">Ledgers</h2>
 
   <p>
-    Printable token cards for hands-on training. Cut out the tokens, read the previous-word label on
-    each card. Spread them on a table during the{" "} <a href="/modules/training/">Training</a>
-    module (cutouts variant) &mdash; or sort them into piles as an optional extension.
+    A ledger holds the model on a landscape sheet with one row per prefix, a cell for each word that
+    followed it, and a coloured tally box beside every cell. Training is tallying by hand while
+    somebody reads the text aloud. Generation is a cup of counters: one counter per tally mark in
+    the colour of its box, draw one, read the word beside that colour. The cup does the weighted
+    sampling, so nobody has to explain it. The boxes are coloured by column rather than by word, so
+    one set of counters serves every row.
   </p>
 
-  <Callout type="info" title="Ready-to-print cutouts">
+  <Callout type="info" title="Ready-to-print ledger sets">
     <p>
-      Print these double-sided. They're pre-rotated so the back of each sheet lines up with the
-      front for clean cutting under the default{" "} <em>long-edge</em> duplex binding. If your
-      printer comes out misaligned, switch to <em>short-edge</em> binding instead.
+      <a href="https://pdf.llmsunplugged.org/packs/how-ai-writes-stories.zip">
+        The printouts for How AI writes stories
+      </a
+      >{" "} (zip): five pre-tallied picture books, blank training sheets, six training texts, a
+      counters page and an instruction sheet, with a README saying what to print. The
+      <a href="/lessons/how-ai-writes-stories/">lesson page</a> has the plan.
     </p>
-    <ul>
-      <li>
-        <a href="https://pdf.llmsunplugged.org/cutouts/green-eggs-and-ham.pdf">
-          Green Eggs and Ham
-        </a
-        >{" "} (Dr Seuss, 38 pages)
-      </li>
-      <li>
-        <a href="https://pdf.llmsunplugged.org/cutouts/where-is-the-green-sheep.pdf">
-          Where Is the Green Sheep?
-        </a
-        >{" "} (Mem Fox and Judy Horacek, 12 pages)
-      </li>
-      <li>
-        <a href="https://pdf.llmsunplugged.org/cutouts/were-going-on-a-bear-hunt.pdf">
-          We&rsquo;re Going on a Bear Hunt
-        </a
-        >{" "} (Michael Rosen, 26 pages)
-      </li>
-    </ul>
   </Callout>
+
+  <p>
+    The generator below builds a ledger set from any text: the sheets, dealt across a group in
+    alphabetical runs with a one-page facilitator brief in front; a page of counters to print
+    double-sided and cut up; and the training text as the tokeniser read it, marked where each word
+    starts a new row, for whoever reads it aloud. Set the number of counter colours to match what
+    your room has &mdash; four, eight or all twelve of the standard set &mdash; and whether the
+    sheets come printed with only the prefixes, the prefixes and their followers, or the whole
+    trained model as an answer key.
+  </p>
 
   <h2 id="search-sheets">Search sheets</h2>
 
@@ -208,37 +204,41 @@ import TypstCompiler from "../components/TypstCompiler.svelte";
     </ul>
   </Callout>
 
-  <h2 id="ledgers">Ledgers</h2>
+  <h2 id="cutouts">Cutouts</h2>
 
   <p>
-    A third way to hold the model on paper: a landscape sheet with one row per prefix, a cell for
-    each word that followed it, and a coloured tally box beside every cell. Training is tallying by
-    hand while somebody reads the text aloud. Generation is a cup of counters: one counter per tally
-    mark in the colour of its box, draw one, read the word beside that colour. The cup does the
-    weighted sampling, so nobody has to explain it. The boxes are coloured by column rather than by
-    word, so one set of counters serves every row.
+    Printable token cards for hands-on training. Cut out the tokens, read the previous-word label on
+    each card. Spread them on a table during the{" "} <a href="/modules/training/">Training</a>
+    module (cutouts variant) &mdash; or sort them into piles as an optional extension.
   </p>
 
-  <Callout type="info" title="Ready-to-print ledger sets">
+  <Callout type="info" title="Ready-to-print cutouts">
     <p>
-      <a href="https://pdf.llmsunplugged.org/packs/how-ai-writes-stories.zip">
-        The printouts for How AI writes stories
-      </a
-      >{" "} (zip): five pre-tallied picture books, blank training sheets, six training texts, a
-      counters page and an instruction sheet, with a README saying what to print. The
-      <a href="/lessons/how-ai-writes-stories/">lesson page</a> has the plan.
+      Print these double-sided. They're pre-rotated so the back of each sheet lines up with the
+      front for clean cutting under the default{" "} <em>long-edge</em> duplex binding. If your
+      printer comes out misaligned, switch to <em>short-edge</em> binding instead.
     </p>
+    <ul>
+      <li>
+        <a href="https://pdf.llmsunplugged.org/cutouts/green-eggs-and-ham.pdf">
+          Green Eggs and Ham
+        </a
+        >{" "} (Dr Seuss, 38 pages)
+      </li>
+      <li>
+        <a href="https://pdf.llmsunplugged.org/cutouts/where-is-the-green-sheep.pdf">
+          Where Is the Green Sheep?
+        </a
+        >{" "} (Mem Fox and Judy Horacek, 12 pages)
+      </li>
+      <li>
+        <a href="https://pdf.llmsunplugged.org/cutouts/were-going-on-a-bear-hunt.pdf">
+          We&rsquo;re Going on a Bear Hunt
+        </a
+        >{" "} (Michael Rosen, 26 pages)
+      </li>
+    </ul>
   </Callout>
-
-  <p>
-    The generator below builds a ledger set from any text: the sheets, dealt across a group in
-    alphabetical runs with a one-page facilitator brief in front; a page of counters to print
-    double-sided and cut up; and the training text as the tokeniser read it, marked where each word
-    starts a new row, for whoever reads it aloud. Set the number of counter colours to match what
-    your room has &mdash; four, eight or all twelve of the standard set &mdash; and whether the
-    sheets come printed with only the prefixes, the prefixes and their followers, or the whole
-    trained model as an answer key.
-  </p>
 
   <h2 id="generate-your-own">Generate your own</h2>
 
