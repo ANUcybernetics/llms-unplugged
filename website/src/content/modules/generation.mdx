@@ -6,7 +6,7 @@ description:
 order: 2
 audience: years 5 and up
 duration: 20 min
-bases: [grid, cutouts]
+bases: [grid, ledger, cutouts]
 status: tested
 topic: fundamentals
 keyIdea:
@@ -19,11 +19,12 @@ import Variant from "../../components/Variant.astro";
 import Callout from "../../components/Callout.astro";
 import LmGrid from "../../components/LmGrid.astro";
 import LmCutouts from "../../components/LmCutouts.astro";
+import LmLedger from "../../components/LmLedger.astro";
 import GenerationWidget from "../../components/widgets/GenerationWidget.svelte";
 import CutoutsGenerationWidget from "../../components/widgets/CutoutsGenerationWidget.svelte";
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
-<VariantToggle client:load />
+<VariantToggle client:load options={["grid", "ledger", "cutouts"]} />
 
 <Variant is="grid">
 
@@ -62,6 +63,23 @@ Use a pre-trained (hand-built) <GlossaryTerm id="bigram-model">bigram model</Glo
 
 </Variant>
 
+<Variant is="ledger">
+
+For each group of four or five:
+
+- your group's ledger sheets: the ones you filled in during
+  [Training](/modules/training/), or a pre-tallied picture-book set
+- counters in four colours (red, blue, green, yellow), at least as many of
+  each as the biggest tally on your sheets
+- a paper cup to draw from, and a tub to tip it back into
+- pen and paper for writing down the generated text
+
+The [How AI writes stories](/lessons/how-ai-writes-stories/) printouts have
+five pre-tallied picture-book sets, a page of counters to print and cut if you
+don't have plastic ones, and a one-page instruction sheet for each group.
+
+</Variant>
+
 <Variant is="cutouts">
 
 For each pair (or group) of students:
@@ -85,6 +103,13 @@ write a whole story.
 
 </Variant>
 
+<Variant is="ledger">
+
+Generate new text from your ledger sheets, one counter at a time. Stretch goal:
+keep going and write a whole story.
+
+</Variant>
+
 <Variant is="cutouts">
 
 Generate new text by walking the spread: pick a starting word, find the
@@ -101,6 +126,12 @@ goal: keep going and write a whole story.
 A <GlossaryTerm id="language-model">language model</GlossaryTerm> proposes several possible next words along with how likely each
 is. Dice rolls pick among those options, and repeating the process word by word
 yields fluent text.
+
+</Variant>
+
+<Variant is="ledger">
+
+The cup does the maths. A row's tally marks go into the cup as counters, one for every mark, so a word with more marks has more counters in the cup and is more likely to come out. Drawing a counter without looking is <GlossaryTerm id="weighted-random-sampling">weighted random sampling</GlossaryTerm>, with no dice and no percentages.
 
 </Variant>
 
@@ -126,6 +157,23 @@ sampling, with no dice required.
 4. Write down the chosen word and make it your new starting word.
 5. Repeat from step 2 until you hit a natural stopping point (e.g., `.`) or your
    desired length.
+
+</Variant>
+
+<Variant is="ledger">
+
+1. Write down a starting word.
+2. **Find the row** for the current word (each sheet's header shows the
+   alphabetical run of words it holds).
+3. **Fill the cup**: one counter for every tally mark, each in the colour of
+   its word's box.
+4. **Draw one** without looking. Its colour names a box on the row, and the
+   word in that box is your next word.
+5. **Write it down**: it's the new current word. Tip the cup back into the
+   tub, and pass the job to whoever has that word's row.
+6. Repeat from step 2 until you reach a natural stopping point (e.g., `.`) or
+   your desired length. A row with only one word on it needs no draw: just
+   write that word down.
 
 </Variant>
 
@@ -175,6 +223,38 @@ Using the same bigram model from the example in [Training](/modules/training/):
 - `see` → `spot`; it's the only option, so write down `spot`... and so on
 
 After the above steps, the generated text is _"see spot run. see spot"_
+
+</Variant>
+
+<Variant is="ledger">
+
+Using the ledger from the example in [Training](/modules/training/), with the
+row for `spot` and its cup:
+
+<LmLedger
+  tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ."
+  focus="spot"
+  cup="spot"
+/>
+
+- start with `see` and write it down
+- the row for `see` has one word on it, `spot`; there's nothing to draw, so
+  write down `spot`
+- the row for `spot` has `run` (1 mark, red), `jump` (1, blue) and `,` (2,
+  green), so one red, one blue and two green counters go in the cup. Green is
+  the likeliest, two chances in four, but let's say red comes out: write down
+  `run` and tip the cup back into the tub
+- the row for `run` has `.` (2, red) and `,` (1, blue); three counters, and
+  let's say red comes out, so write down `.`
+- the row for `.` has `see`, `run` and `jump`, one mark each; one red, one
+  blue and one green counter, and let's say red: write down `see`
+- back to the row for `see`: write down `spot`... and so on
+
+After the above steps, the generated text is _"see spot run. see spot"_
+
+Red meant `run` on the row for `spot` and `.` on the row for `run`. A colour
+names a place on the row, not a word, which is why one set of counters works
+for every row and every book.
 
 </Variant>
 
@@ -240,6 +320,17 @@ perform it by hand.
 
 </Variant>
 
+<Variant is="ledger">
+
+- how does the starting word affect your generated text?
+- why does the cup have to be emptied between draws?
+- what happens on a row with only one word on it?
+- two groups with the same sheets: why aren't their stories the same?
+- does the generated text sound like the original training text? Which bits
+  are new?
+
+</Variant>
+
 <Variant is="cutouts">
 
 - how does the starting word affect your generated text?
@@ -273,6 +364,21 @@ perform it by hand.
 
 </Variant>
 
+<Variant is="ledger">
+
+- **"The counters from the last row are still in the cup."** Tip the cup back
+  into the tub after every draw. Leftover counters change the odds, and can
+  name a box the current row doesn't have.
+- **"This word's row has no marks."** The word only ever ended the text, so
+  nothing ever came after it. Start again from any word.
+- **"Which box is this colour?"** The boxes always run red, blue, green, yellow
+  from the left, and the printed sheets name the colour in the corner of each
+  box.
+- **"Everyone's waiting on one person."** Give the group four jobs: a reader
+  who finds the row, a filler who loads the cup, a drawer, and a writer.
+
+</Variant>
+
 <Variant is="cutouts">
 
 - **"Every previous word only has one matching cutout---there's nothing
@@ -299,7 +405,7 @@ This <GlossaryTerm id="generation">generation</GlossaryTerm> process is identica
 
 - **sequential generation**: both generate one word at a time
 - **probabilistic sampling**: both use weighted random selection (exactly like
-  your dice or cutouts spread)
+  your dice, cup or cutouts spread)
 - **<GlossaryTerm id="probability-distribution">probability distribution</GlossaryTerm>**: <GlossaryTerm id="neural-network">neural network</GlossaryTerm> outputs probabilities for all
   50,000+ possible next <GlossaryTerm id="token">tokens</GlossaryTerm>
 - **no planning**: neither looks ahead, it just picks the next word
@@ -316,6 +422,24 @@ Note: in AI/ML more broadly, this process of using a trained model to produce
 outputs is commonly called "<GlossaryTerm id="inference">inference</GlossaryTerm>"---you may encounter this term in other
 contexts. In these teaching resources we use "generation" specifically because
 it more clearly describes what language models do: they generate text.
+
+</Variant>
+
+<Variant is="ledger">
+
+### Comparison to dice method
+
+The cup and the dice method produce equivalent results:
+
+- dice rolls with weighted probabilities select from options based on counts
+- the cup holds one counter per count, so a draw selects from the same options
+  with the same weights
+- the cup makes the probability tangible: if the row for `the` has four marks
+  beside `cat` and one beside `dog`, four of the five counters name `cat`, and
+  you can see and feel which is likelier before you draw
+
+The cup method avoids percentages and dice ranges, which is why it suits
+primary and junior secondary classes.
 
 </Variant>
 
@@ -346,6 +470,13 @@ starting word, then press Play or Step to watch the dice roll and text being
 generated. You can also edit the training text to create your own model.
 
 <GenerationWidget client:visible />
+
+</Variant>
+
+<Variant is="ledger">
+
+The generation widget samples from the same model with a d10: choose **Grid**
+above to step through it.
 
 </Variant>
 

@@ -6,7 +6,7 @@ description:
 order: 1
 audience: years 5 and up
 duration: 20 min
-bases: [grid, cutouts]
+bases: [grid, ledger, cutouts]
 status: tested
 topic: fundamentals
 keyIdea:
@@ -18,12 +18,13 @@ import VariantToggle from "../../components/VariantToggle.svelte";
 import Variant from "../../components/Variant.astro";
 import LmGrid from "../../components/LmGrid.astro";
 import LmCutouts from "../../components/LmCutouts.astro";
+import LmLedger from "../../components/LmLedger.astro";
 import TrainingWidget from "../../components/widgets/TrainingWidget.svelte";
 import CutoutsTrainingWidget from "../../components/widgets/CutoutsTrainingWidget.svelte";
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 import Callout from "../../components/Callout.astro";
 
-<VariantToggle client:load />
+<VariantToggle client:load options={["grid", "ledger", "cutouts"]} />
 
 Build a <GlossaryTerm id="bigram-model">bigram language model</GlossaryTerm> that tracks which words follow which other words
 in text.
@@ -31,6 +32,12 @@ in text.
 <Variant is="grid">
 
 ![](../../assets/images/hero-grid-training.avif)
+
+</Variant>
+
+<Variant is="ledger">
+
+![](../../decks/assets/bg-tally-training.avif)
 
 </Variant>
 
@@ -48,6 +55,20 @@ in text.
 - pen or pencil
 - a printed [grid template](https://pdf.llmsunplugged.org/worksheets/grid.pdf) (or any grid
   paper)
+
+</Variant>
+
+<Variant is="ledger">
+
+For each group of four or five:
+
+- a short text to train on, printed
+- blank [ledger sheets](/tools/#ledgers), one per person
+- a pen each
+
+The [How AI writes stories](/lessons/how-ai-writes-stories/) printouts have six
+short training texts, with every word boxed so the reader can see whether it
+starts a new row, and the blank sheets to go with them.
 
 </Variant>
 
@@ -82,6 +103,14 @@ text.
 
 </Variant>
 
+<Variant is="ledger">
+
+Fill a set of <GlossaryTerm id="ledger">ledger sheets</GlossaryTerm> with the
+word pairs in your text. The filled-in sheets are your bigram language model.
+Stretch goal: keep training your model on more input text.
+
+</Variant>
+
 <Variant is="cutouts">
 
 Spread your printed <GlossaryTerm id="cutouts">token cutouts</GlossaryTerm> out on a table. Each cutout shows a next
@@ -97,6 +126,12 @@ pair from your training text is sitting somewhere on the table.
 
 Language models learn by counting patterns in text. <GlossaryTerm id="training">Training</GlossaryTerm> means building a
 model (filling out the grid) to track which words follow other words.
+
+</Variant>
+
+<Variant is="ledger">
+
+Language models learn by counting patterns in text. On a ledger, <GlossaryTerm id="training">training</GlossaryTerm> means giving every word a row, and tallying beside it each word that came next in the text.
 
 </Variant>
 
@@ -130,6 +165,24 @@ the original distribution, with no dice or probability tables.
      row and column for it)
    - shift along by one word (so the second word becomes your "first" word) and
      repeat until you've gone through the entire text
+
+</Variant>
+
+<Variant is="ledger">
+
+1. **Preprocess your text**
+   - convert everything to lowercase (except "I")
+   - treat words and single punctuation marks (`.` `,` `!` `?` `;` `:`) as
+     separate words
+2. **Read the text two words at a time**, and for each pair:
+   - **find the row** for the first word; no row yet? start one on the next
+     spare row, and say the word out loud so the group knows who has it
+   - **find the box** for the second word on that row; not there yet? write it
+     in the next empty box (the boxes fill from the left: red, blue, green,
+     yellow)
+   - **add a tally mark** in that box
+   - **move along by one**: the second word starts the next pair
+3. **Keep going** until you reach the end of the text
 
 </Variant>
 
@@ -167,6 +220,28 @@ After the first two words (`see` `spot`) the model looks like:
 After the full text the model looks like:
 
 <LmGrid tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
+
+</Variant>
+
+<Variant is="ledger">
+
+Original text: _"See Spot run. See Spot jump. Run, Spot, run. Jump, Spot,
+jump."_
+
+Preprocessed text: `see` `spot` `run` `.` `see` `spot` `jump` `.` `run` `,`
+`spot` `,` `run` `.` `jump` `,` `spot` `,` `jump` `.`
+
+After the first pair (`see` `spot`) the ledger has one row:
+
+<LmLedger tokens="see spot" />
+
+After the full text it has a row for every word, in alphabetical order:
+
+<LmLedger tokens="see spot run . see spot jump . run , spot , run . jump , spot , jump ." />
+
+Each row's boxes are in the order the text met them. After `spot` the text
+said `run` first, so `run` took the red box; `,` came third, and with two marks
+it's the most common word after `spot`.
 
 </Variant>
 
@@ -239,6 +314,16 @@ activity itself.
 
 </Variant>
 
+<Variant is="ledger">
+
+- what can you tell about the input text from the rows with the most marks?
+- why do the boxes have to fill from the left, with no gaps?
+- are there any other ways you could have written down this exact same model?
+- how could you use these sheets to generate _new_ text in the style of your
+  training text?
+
+</Variant>
+
 <Variant is="cutouts">
 
 - what can you tell about the input text by looking at which (previous, next)
@@ -259,6 +344,21 @@ activity itself.
 - **"Do I add a new row/column for every word?"** No---each new word only gets a
   new row and column the first time you see it. After that, just find the
   existing row and column and add a tally mark.
+
+</Variant>
+
+<Variant is="ledger">
+
+- **"Two of us started a row for the same word."** The marks are now split
+  across two rows, so neither count is right. Add one row's marks into the
+  other and cross the spare row out. Saying each new word out loud as you claim
+  its row stops this happening.
+- **"We skipped a box."** Move the word into the empty box. In generation a
+  counter's colour names a box, so a gap makes the colours point at the wrong
+  words.
+- **"We need a fifth box."** The training texts are written so that no word
+  is ever followed by more than four different words, so four boxes are always
+  enough. A fifth means a word has been written into the row twice.
 
 </Variant>
 
@@ -285,6 +385,21 @@ language models:
 model contains the same type of information that current LLMs store, at a
 vastly smaller scale.
 
+<Variant is="ledger">
+
+### Comparison to grid method
+
+A ledger and a grid hold the same model:
+
+- a row of the ledger is the grid's row for that word with the empty cells left
+  out
+- a tally beside `spot` on the row for `see` is the tally in row `see`, column
+  `spot` of the grid
+- the printed picture-book sets keep only each word's four most common
+  followers, so every word fits on one row of four boxes however long the book
+
+</Variant>
+
 <Variant is="cutouts">
 
 ### Comparison to grid method
@@ -307,6 +422,13 @@ Step through the training process at your own pace. Enter your own text or use
 the example, then press Play or Step to watch the model being built.
 
 <TrainingWidget client:visible />
+
+</Variant>
+
+<Variant is="ledger">
+
+The training widget counts the same pairs into a grid: choose **Grid** above to
+step through it.
 
 </Variant>
 

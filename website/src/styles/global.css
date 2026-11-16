@@ -233,8 +233,9 @@
 }
 
 /* Variant toggle: CSS-only show/hide */
-[data-variant="grid"] .cutouts-only,
-[data-variant="cutouts"] .grid-only {
+[data-variant="grid"] :is(.ledger-only, .cutouts-only),
+[data-variant="ledger"] :is(.grid-only, .cutouts-only),
+[data-variant="cutouts"] :is(.grid-only, .ledger-only) {
   display: none;
 }
 

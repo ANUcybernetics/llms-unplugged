@@ -30,12 +30,12 @@ const { noindex = false } = Astro.props;
   src="https://plausible.io/js/script.file-downloads.js"
 ></script>
 <script is:inline>
-  // Set the grid/cutouts variant attribute before first paint.
+  // Set the grid/ledger/cutouts variant attribute before first paint.
   try {
     const v = localStorage.getItem("llms-unplugged-variant");
     document.documentElement.setAttribute(
       "data-variant",
-      v === "grid" || v === "cutouts" ? v : "grid",
+      ["grid", "ledger", "cutouts"].includes(v) ? v : "grid",
     );
   } catch {
     document.documentElement.setAttribute("data-variant", "grid");

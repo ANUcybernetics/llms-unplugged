@@ -1,0 +1,69 @@
+---
+// A ledger sheet for module pages, counted from a token string the way LmGrid
+// and LmCutouts are, so all three variants of a module can share one worked
+// example. Rows are in alphabetical order (the CLI's deal) and the palette is
+// the four counter colours the ledger lesson uses, so every row prints red,
+// blue, green, yellow. `cup` adds that row's cup of counters beside the sheet.
+import LedgerSheet from "./LedgerSheet.svelte";
+import LedgerCup from "./LedgerCup.svelte";
+import { entriesFromTokens, LEDGER_PALETTE, splitTokens } from "../lib/ledger";
+import "../styles/ledger.css";
+
+interface Props {
+  tokens: string;
+  /** Prefix of the row to keep lit; the rest of the sheet fades back. */
+  focus?: string;
+  /** Prefix of the row whose cup of counters is shown beside the sheet. */
+  cup?: string;
+  /** Count only the first `upTo` word pairs, for a sheet partway through training. */
+  upTo?: number;
+}
+
+const { tokens, focus, cup, upTo } = Astro.props;
+
+const palette = LEDGER_PALETTE.slice(0, 4);
+const entries = entriesFromTokens(splitTokens(tokens), upTo).toSorted((a, b) =>
+  a.prefix.toLowerCase() < b.prefix.toLowerCase() ? -1 : 1,
+);
+const cupEntry = cup === undefined ? undefined : entries.find((e) => e.prefix === cup);
+---
+
+<div class="lm-ledger">
+  <LedgerSheet {entries} {palette} {focus} range={null} />
+  {cupEntry && <LedgerCup entry={cupEntry} {palette} id={`cup-${cup}`} />}
+</div>
+
+<style>
+  .lm-ledger {
+    --paper-ground: #fff;
+    --paper-edge: rgb(0 0 0 / 22%);
+    --paper-ink: #1a1a1a;
+    --paper-ink-invert: #fff;
+    --paper-ink-muted: rgb(0 0 0 / 55%);
+
+    /* The sheet is sized in em from --sheet-size (set for slides); the prose
+       column is narrower than a slide, so a smaller size fits it, and a
+       phone-width column scrolls rather than pushing the page wide. */
+    --sheet-size: 0.62rem;
+
+    max-width: 100%;
+    overflow-x: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-block: 1.5rem;
+  }
+
+  /* The cup is em-sized like the sheet, and set for slides the same way. */
+  .lm-ledger :global(.cup) {
+    font-size: 0.7rem;
+  }
+
+  .lm-ledger :global(.paper-ground) {
+    background: var(--paper-ground);
+    border: 1px solid var(--paper-edge);
+    border-radius: 6px;
+  }
+</style>

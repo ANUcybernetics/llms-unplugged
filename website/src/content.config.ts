@@ -21,7 +21,7 @@ const modules = defineCollection({
     duration: z.string(),
     // What the activity runs on. "sheets" is the whole-room search-sheet
     // format; "dice" is the apparatus-only warm-up.
-    bases: z.array(z.enum(["grid", "cutouts", "booklet", "sheets", "dice"])).min(1),
+    bases: z.array(z.enum(["grid", "ledger", "cutouts", "booklet", "sheets", "dice"])).min(1),
     // How road-tested the module is, for the maintainers' own bookkeeping; it
     // is not rendered anywhere on the site. tested: part of a regularly
     // delivered lesson deck; piloted: run in a room at least once;
