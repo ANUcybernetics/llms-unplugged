@@ -25,11 +25,15 @@
 #set page(
   paper: paper_size,
   margin: 12mm,
+  // A one-page text carries the URL alone; a page number only helps a text
+  // long enough to be read off several pages.
   footer: align(
     center,
     context text(fill: luma(150), size: 8pt)[
-      #counter(page).display()
-      #sym.dash.em www.llmsunplugged.org
+      #if counter(page).final().first() > 1 [
+        #counter(page).display() #sym.dash.em
+      ]
+      www.llmsunplugged.org
     ],
   ),
 )

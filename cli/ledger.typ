@@ -135,12 +135,15 @@
 // The number is the page counter rather than the sheet index, so a sheet
 // running to two pages gets two distinct numbers instead of two pages reading
 // alike. The counter is reset after the facilitator brief, so the first sheet
-// page is page 1.
+// page is page 1. A one-page set (a blank sheet, printed once per person) has
+// nothing to put back in order, so it carries the URL alone.
 #let sheet-footer = align(
   center,
   context text(fill: luma(150), size: 8pt)[
-    #counter(page).display()
-    #sym.dash.em www.llmsunplugged.org
+    #if counter(page).final().first() > 1 [
+      #counter(page).display() #sym.dash.em
+    ]
+    www.llmsunplugged.org
   ],
 )
 

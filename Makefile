@@ -206,7 +206,7 @@ pack-$(LEDGER_SLUG): $(CLI)
 	@qpdf --empty --pages \
 		$(foreach text,$(LEDGER_TEXTS),$(LEDGER_STAGE)/outdoors-$(text)/text.pdf) \
 		-- $(LEDGER_DIR)/training-texts.pdf
-	@cp $(LEDGER_STAGE)/blank/ledger.pdf $(LEDGER_DIR)/training-sheets.pdf
+	@cp $(LEDGER_STAGE)/blank/ledger.pdf $(LEDGER_DIR)/training-ledgers.pdf
 	@cp $(LEDGER_STAGE)/blank/brief.pdf $(LEDGER_DIR)/instructions.pdf
 	@# Every set writes the same counters page; it depends only on the palette.
 	@cp $(LEDGER_STAGE)/blank/counters.pdf $(LEDGER_DIR)/counters.pdf

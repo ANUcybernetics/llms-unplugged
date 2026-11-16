@@ -2,8 +2,8 @@
 
 For the 60- and 90-minute workshops, in groups of 4-5. Everything here is A4
 landscape. The 60-minute workshop needs only `instructions.pdf`,
-`generation-ledgers.pdf` and `counters.pdf`: its training round is done together,
-on the whiteboard.
+`generation-ledgers.pdf` and `counters.pdf`: its training round is done
+together, on the whiteboard.
 
 ## instructions.pdf
 
@@ -24,11 +24,11 @@ print single-sided if you'd rather every person had their own. With more than
 five groups the books repeat, so spread the repeats around the room rather than
 seating two groups with the same book side by side.
 
-## training-sheets.pdf
+## training-ledgers.pdf
 
-One blank sheet: empty rows, four coloured boxes each, no words. Print one per
-person --- five to a group --- for the 90-minute workshop's training round, where the words and the
-marks are both theirs to write.
+One blank ledger sheet: empty rows, four coloured boxes each, no words. Print
+one per person --- five to a group --- for the 90-minute workshop's training
+round, where the words and the marks are both theirs to write.
 
 ## training-texts.pdf
 
@@ -55,5 +55,5 @@ binding works) --- one copy gives 24 of each colour.
 The lesson entry, with timings and the rest of the materials list:
 <https://www.llmsunplugged.org/lessons/how-ai-writes-stories/>
 
-Rebuild this pack with `make pack-how-ai-writes-stories` in the
-llms-unplugged repo.
+Rebuild this pack with `make pack-how-ai-writes-stories` in the llms-unplugged
+repo.
