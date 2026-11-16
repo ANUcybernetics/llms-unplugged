@@ -150,8 +150,8 @@ export const SHEET_RANGES = [
 // slide that shows a mark landing on a box that already has one.
 
 // The row the first half of the book makes, which the room tallies by ear
-// (ledger-training.mdx quotes that half): the sheet's four words in the sheet's order,
-// with fewer marks than the whole book gave ROW_THE.
+// (ledger-training.mdx quotes that half): ROW_THE's four words in the same
+// order, with fewer marks.
 
 export const ROW_THE_FIRST_HALF: LedgerEntry = {
   prefix: "the",

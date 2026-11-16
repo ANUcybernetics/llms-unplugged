@@ -73,9 +73,9 @@
   --row-height: 2em;
 }
 
-/* The quick training's row for "the", alone under its heading, then over
-   the sheet's row for the whole book, both at the full content width. */
-.reveal .ledger-row[data-id^="quick-the"] {
+/* The quick training's row for "the", alone under its heading at the full
+   content width. */
+.reveal .ledger-row[data-id="quick-the"] {
   --row-size: 1.55rem;
 }
 
