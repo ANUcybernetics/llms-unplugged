@@ -32,8 +32,9 @@ round, where the words and the marks are both theirs to write.
 
 ## training-texts.pdf
 
-The five outdoors texts (beach, storm, kookaburra, creek and bush) as the
-tokeniser read them, one page each. A solid box marks where a word starts a new
+Six short texts as the tokeniser read them, one page each: five outdoors texts
+(beach, storm, kookaburra, creek and bush) and an excerpt from _Fun with Dick
+and Jane_ (the big blue ball). A solid box marks where a word starts a new
 row, a dashed box one whose row is already on the sheet. Print one page per
 group and give every group a different text: the finale pools them, and it only
 works if no two groups hold the same model. The page map below says which page
@@ -41,9 +42,9 @@ is which text.
 
 ## training-texts-2up.pdf
 
-The same five texts in the same order, typeset at A5 and printed two to an A4
+The same six texts in the same order, typeset at A5 and printed two to an A4
 sheet: print single-sided, then guillotine each sheet down the middle. Three
-sheets give all five texts, with the right half of the last one blank.
+sheets give all six.
 
 ## counters.pdf
 

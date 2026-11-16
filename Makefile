@@ -102,7 +102,7 @@ endef
 #
 # Training: blank sheets, and the text page for whoever reads aloud.
 # The words are written as the group meets them, so one sheet serves every
-# text; LEDGER_BLANK_ROWS x 5 sheets has to cover the largest outdoors
+# text; LEDGER_BLANK_ROWS x 5 sheets has to cover the largest training-text
 # vocabulary (33 prefixes, the storm and the kookaburra).
 #
 # Each generation set is built twice. --rows decides both the sheet count and
@@ -119,7 +119,12 @@ LEDGER_SHEETS := 5
 LEDGER_BLANK_ROWS := 10
 LEDGER_BOOKS := the-wombat the-very-hungry-caterpillar \
 	were-going-on-a-bear-hunt the-magpie the-cat-in-the-hat
-LEDGER_TEXTS := beach storm kookaburra creek bush
+# Six texts, so the two-up copy fills three sheets. Five are outdoors texts
+# written for the lesson; the sixth is an excerpt from Fun with Dick and Jane,
+# cut where every word still fits one four-colour row (see its entry in the
+# corpora repo's manifest).
+LEDGER_TEXTS := outdoors-beach outdoors-storm outdoors-kookaburra outdoors-creek \
+	outdoors-bush the-big-blue-ball
 
 LEDGER_BUDGET := 140
 
@@ -164,7 +169,7 @@ endef
 
 # The training sets are here only for their text.pdf, so one plain run each at
 # A4, and one at A5 for the two-up copy (typeset at A5 rather than shrunk from
-# A4, so the tokens keep their size). Every outdoors text fits one A5 page.
+# A4, so the tokens keep their size). Every training text fits one A5 page.
 # $(1) label, $(2) corpus path, $(3) output dir
 define build_text
 	@echo "$(1)"
@@ -196,8 +201,8 @@ pack-$(LEDGER_SLUG): $(CLI)
 		$(call book_src,$(book)),$(LEDGER_STAGE)/$(book),\
 		--max-tokens $(LEDGER_BUDGET) --max-followers 4 --prefill tallies \
 		--brief none --even-pages)$(newline))
-	$(foreach text,$(LEDGER_TEXTS),$(call build_text,training text: outdoors-$(text),\
-		data/originals/outdoors-$(text).txt,$(LEDGER_STAGE)/outdoors-$(text))$(newline))
+	$(foreach text,$(LEDGER_TEXTS),$(call build_text,training text: $(text),\
+		$(call book_src,$(text)),$(LEDGER_STAGE)/$(text))$(newline))
 	@echo "training sheet: blank, and the pack's instruction sheet"
 	@./$(CLI) ledger --blank --palette $(LEDGER_PALETTE) --rows $(LEDGER_BLANK_ROWS) \
 		--brief generic --brief-counters \
@@ -208,10 +213,10 @@ pack-$(LEDGER_SLUG): $(CLI)
 		$(foreach book,$(LEDGER_BOOKS),$(LEDGER_STAGE)/$(book)/ledger.pdf) \
 		-- $(LEDGER_DIR)/generation-ledgers.pdf
 	@qpdf --empty --pages \
-		$(foreach text,$(LEDGER_TEXTS),$(LEDGER_STAGE)/outdoors-$(text)/text.pdf) \
+		$(foreach text,$(LEDGER_TEXTS),$(LEDGER_STAGE)/$(text)/text.pdf) \
 		-- $(LEDGER_DIR)/training-texts.pdf
 	@qpdf --empty --pages \
-		$(foreach text,$(LEDGER_TEXTS),$(LEDGER_STAGE)/outdoors-$(text)/a5/text.pdf) \
+		$(foreach text,$(LEDGER_TEXTS),$(LEDGER_STAGE)/$(text)/a5/text.pdf) \
 		-- $(LEDGER_STAGE)/training-texts-a5.pdf
 	@# Two A5 pages side by side on A4 landscape, to cut down the middle.
 	@typst compile --root . \
@@ -226,7 +231,7 @@ pack-$(LEDGER_SLUG): $(CLI)
 	$(call page_map,$(LEDGER_DIR)/README.md,Page map --- generation-ledgers.pdf,\
 		$(foreach book,$(LEDGER_BOOKS),$(book):$(LEDGER_STAGE)/$(book)/ledger.pdf))
 	$(call page_map,$(LEDGER_DIR)/README.md,Page map --- training-texts.pdf,\
-		$(foreach text,$(LEDGER_TEXTS),outdoors-$(text):$(LEDGER_STAGE)/outdoors-$(text)/text.pdf))
+		$(foreach text,$(LEDGER_TEXTS),$(text):$(LEDGER_STAGE)/$(text)/text.pdf))
 	@rm -rf $(LEDGER_STAGE)
 	$(call zip_pack,$(LEDGER_SLUG))
 
