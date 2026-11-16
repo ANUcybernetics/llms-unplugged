@@ -18,10 +18,10 @@ manual (pen-and-paper) and automated tools.
   repo --- clone it and copy `texts/*.txt` in here
 - `backlog/` --- task management
 - `ops/video/` --- the explainer videos and talk recuts (see "House styles")
-- `Makefile` --- delivery packs: `make pack-<slug>` zips everything one lesson
-  or talk needs into `out/packs/`, and holds the exact runs (a talk pack also
-  exports its own deck slides and presenter guide); `make archive` builds a
-  dated, point-in-time bundle of the tested lessons' printables and the CLI
+- `Makefile` --- delivery packs: `make pack-<lesson-slug>` zips every printout
+  a lesson needs into `out/packs/` (only My first language model and the ledger
+  lesson have one); `make archive` builds a dated, point-in-time bundle of the
+  tested lessons' printables and the CLI
 
 The README documents the CLI subcommands and their options; read it rather than
 guessing flags.

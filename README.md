@@ -51,12 +51,13 @@ or want the options the browser does not expose, build the CLI tool from source
 
 ## Printing a workshop
 
-`make pack-<lesson-slug>` builds every printout one lesson needs and zips it
-into `out/packs/`, with a README naming what to print and how many copies. The
-`Makefile` holds the exact `llms_unplugged` runs for each lesson, so a delivery
+`make pack-<lesson-slug>` gathers every printout one lesson needs, for every
+length it runs at, and zips it into `out/packs/` with a README saying what to
+print for which length. The lesson page links the published pack, so a delivery
 is a download rather than a page of commands retyped from the lesson entry:
 
 ```bash
+make pack-my-first-language-model
 make pack-how-ai-writes-stories-ledger
 ```
 
@@ -224,7 +225,7 @@ to say where it goes:
   been. One set printed on its own wants this
 - `separate`: its own `brief.pdf` beside the handout, still describing this set.
   The handout is then only the pages people are given, which is what a brief
-  that stays on the lectern (`make pack-demystifying-large-language-models`) and
+  that stays on the lectern (the 15-minute talk's set in `cli/Makefile`) and
   a pack of sets both want
 - `generic` (ledger only): its own `brief.pdf`, describing the activity rather
   than this set --- no corpus named, no statistics quoted --- so one copy is the

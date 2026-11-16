@@ -1,18 +1,20 @@
-# Delivery packs: everything one lesson or talk needs, in one zip.
+# Delivery packs: every printout one lesson needs, in one zip, for every length
+# it runs at.
 #
+#   make pack-my-first-language-model
 #   make pack-how-ai-writes-stories-ledger
-#   make pack-demystifying-large-language-models
 #
-# lands out/packs/<slug>.zip. A pack is the list of runs that produce that
-# delivery's materials --- `llms_unplugged` for what gets printed,
-# `astromotion-pdf` for a talk's slides and presenter guide --- plus a README
-# naming what to print and how many copies, so a delivery is a download rather
-# than a page of commands retyped from the website. The website's lesson and
-# talk pages describe the materials; this is where the exact runs live.
+# lands out/packs/<slug>.zip, where <slug> is the lesson's slug. A pack is the
+# list of runs that produce the lesson's printouts plus a README naming what to
+# print for which length, so a delivery is a download rather than a page of
+# commands retyped from the website. The lesson pages describe the materials;
+# this is where the exact runs live.
 #
-# Publish a rebuilt pack, which is what the decks and talk pages link:
+# Publish a rebuilt pack, then refresh the manifest --- the lesson page shows
+# its download link only once the manifest lists packs/<slug>.zip:
 #
 #   ops/bucket-sync.py upload --key packs/<slug>.zip out/packs/<slug>.zip
+#   ops/bucket-sync.py manifest
 #
 # Adding a pack: give it a pack-<slug> target that writes into
 # $(PACKS)/<slug>/ and finishes with `$(call zip_pack,<slug>)`.
@@ -20,9 +22,8 @@
 # `make archive`, at the foot of this file, gathers the tested lessons' decks and
 # printables into a dated, point-in-time bundle.
 #
-# Needs jq and qpdf on PATH alongside the CLI's own typst toolchain. The talk
-# packs additionally need website/ installed (`pnpm install`) and a
-# Chrome/Chromium, because they export their own deck PDFs.
+# Needs jq, qpdf and curl on PATH alongside the CLI's own typst toolchain, and
+# the untracked corpora in data/ (see AGENTS.md).
 
 CLI := cli/target/release/llms_unplugged
 OUT := out
@@ -31,15 +32,13 @@ PACKS := $(OUT)/packs
 .PHONY: help packs clean-packs
 
 help:
-	@echo "make pack-how-ai-writes-stories-ledger        the ledger workshop's printouts"
-	@echo "make pack-demystifying-large-language-models  the 15-minute talk, end to end"
-	@echo "make pack-unplugged-in-the-age-of-ai          the 20-minute talk, end to end"
-	@echo "make packs                                    every pack"
-	@echo "make clean-packs                              remove $(PACKS)"
-	@echo "make archive                                  a dated bundle and source zip"
+	@echo "make pack-my-first-language-model       the grid workshop's printouts"
+	@echo "make pack-how-ai-writes-stories-ledger  the ledger workshop's printouts"
+	@echo "make packs                              every pack"
+	@echo "make clean-packs                        remove $(PACKS)"
+	@echo "make archive                            a dated bundle and source zip"
 
-packs: pack-how-ai-writes-stories-ledger pack-demystifying-large-language-models \
-	pack-unplugged-in-the-age-of-ai
+packs: pack-my-first-language-model pack-how-ai-writes-stories-ledger
 
 clean-packs:
 	rm -rf $(PACKS)
@@ -54,12 +53,13 @@ define zip_pack
 	@echo "Wrote $(PACKS)/$(1).zip"
 endef
 
-# A talk's slides, and the presenter guide (each slide followed by its
-# speaker-notes page). One run emits both, sharing the site build and preview
-# server (astromotion >= 0.29); the captures are still separate, and decktape's
-# per-slide pauses are most of the time, so this is the slow half of a talk
-# pack either way. --no-sandbox because the export drives headless Chrome,
-# which will not start as root or in a container without it.
+# A deck's slides, and the presenter guide (each slide followed by its
+# speaker-notes page), for the archive. One run emits both, sharing the site
+# build and preview server (astromotion >= 0.29); the captures are still
+# separate, and decktape's per-slide pauses are most of the time, so this is
+# the slow part of `make archive`. Needs website/ installed (`pnpm install`)
+# and a Chrome/Chromium; --no-sandbox because the export drives headless
+# Chrome, which will not start as root or in a container without it.
 #
 # DECK_PORT is the preview server's port: `make ... DECK_PORT=4331` when another
 # dev server holds 4321.
@@ -219,110 +219,41 @@ pack-$(LEDGER_SLUG): $(CLI)
 	$(call zip_pack,$(LEDGER_SLUG))
 
 # ---------------------------------------------------------------------------
-# Demystifying large language models (15-minute talk)
+# My first language model (grid)
 #
-# A talk pack, so the zip is what one person needs to give it: the slides, the
-# presenter guide, the sheets the room holds, and the lectern brief. The sheets
-# are the only thing printed in quantity.
+# Unlike the ledger pack, nothing here is built for the pack: every file is a
+# published PDF, fetched from the bucket, so the pack holds the same files the
+# lesson page and the Materials page link and can never drift from them. Each
+# is built by its own Makefile --- the worksheets by handouts/, the booklets by
+# cli/ --- and a rebuilt one goes to the bucket before the pack is rebuilt.
 #
-# The deal was pinned for the ANU Visionaries Showcase (15 Aug 2026) and is
-# kept pinned here, so a reprint matches the copies already in a hall. Both the
-# input order and the seed are load-bearing --- the deal is reproducible only
-# from this exact combination. Note that the input order below is not the
-# reveal order the talk uses (Hemingway, then Poe, then Seuss).
-#
-# --title and --author are what keep the sources off the page: the brief prints
-# whatever the corpus metadata says, and joined real titles would spoil the
-# reveal on the first sheet handed out. The title names the corpus rather than
-# the talk, because it lands in a sentence as well as in the sheet header ---
-# "dealt from <title> by <author>" --- and the header already carries the
-# project's name in the lockup beside it.
-#
-# 120 sheets at the Cat in the Hat density. Pinning --sheets makes the count
-# the participant count rather than something the corpus decides, and 120 is
-# chosen so the set multiplies cleanly into a hall: printed three times for
-# ~360 attendees, every token pair is held by three people, so the proportions
-# are unchanged and one empty seat no longer takes a pair out of the room.
-#
-# 19.2pt is the largest size that still fits most pairs in one of four columns
-# on A4. Past it, wide pairs start taking two column slots each and the sheet
-# count runs away --- 21pt needs 195 sheets for the same corpus, 24pt needs 196
-# even after dropping to three columns.
-#
-# 16 rows, not 15: a wide pair takes two of a row's four slots, and at 15 rows
-# one sheet of this deal wanted a 61st slot and spilled onto a second page ---
-# so one person in the hall would have been searching two pages. 16 rows is 64
-# slots, which fits it. The deal is pinned by --sheets and --seed, so the rows
-# only change how the pairs are laid out, never which sheet a pair lands on.
-#
-# Handed out at full A4, not imposed two-up onto A5. The imposition halves the
-# paper but it also scales the page by 1/sqrt(2), which takes 19.2pt type down
-# to an effective 13.6pt --- and the sheets are read at arm's length, in a
-# darkened hall, by people who have never seen one before. Getting that back
-# through the imposition would need ~27pt source and over 250 sheets, so A4 is
-# both the biggest type and the smallest sheet count. It costs paper, and only
-# paper.
-#
-# Two of the three corpora are gitignored: clone llms-unplugged-corpora and
-# copy its texts into data/ before building this pack.
+# The booklets are the bigram ones that print at a workshop-friendly length.
+# The trigram booklets belong to the More context module, Collected Hemingway
+# runs to 397 pages, and Jiangnan is for a Chinese-speaking room; all of them
+# stay on the Materials page.
 
-DEMYST_SLUG := demystifying-large-language-models
-DEMYST_DIR := $(PACKS)/$(DEMYST_SLUG)
-DEMYST_STAGE := $(DEMYST_DIR)/.build
-DEMYST_SHEETS := 120
-DEMYST_INPUTS := \
-	--input data/the-cat-in-the-hat.txt \
-	--input data/the-old-man-and-the-sea-excerpt.txt \
-	--input data/the-tell-tale-heart.txt
+MFLM_SLUG := my-first-language-model
+MFLM_DIR := $(PACKS)/$(MFLM_SLUG)
+MFLM_DECKS := $(MFLM_SLUG)-60min $(MFLM_SLUG)-90min $(MFLM_SLUG)-2h
+MFLM_BOOKLETS := green-eggs-and-ham the-cat-in-the-hat the-man-from-snowy-river \
+	beatles a-christmas-carol frankenstein
+PDF_BASE := https://pdf.llmsunplugged.org
 
-.PHONY: pack-$(DEMYST_SLUG)
-pack-$(DEMYST_SLUG): $(CLI)
-	@rm -rf $(DEMYST_DIR)
-	@mkdir -p $(DEMYST_STAGE)
-	$(call deck_pdfs,$(DEMYST_SLUG),$(DEMYST_DIR))
-	@echo "search sheets: three texts, dealt together"
-	@./$(CLI) sheets $(DEMYST_INPUTS) -o $(DEMYST_STAGE) -n 2 \
-		--sheets $(DEMYST_SHEETS) --rows 16 --font-size 19.2pt --seed 42 \
-		--brief separate \
-		--title "three unnamed books" --author "three authors" >/dev/null
-	@mv $(DEMYST_STAGE)/sheets.pdf $(DEMYST_DIR)/search-sheets.pdf
-	@# `--brief separate`: the brief is for the lectern and never goes into the
-	@# handout stack, so it is a file of its own rather than page 1.
-	@mv $(DEMYST_STAGE)/brief.pdf $(DEMYST_DIR)/lectern-brief.pdf
-	@cp docs/packs/$(DEMYST_SLUG).md $(DEMYST_DIR)/README.md
-	@rm -rf $(DEMYST_STAGE)
-	$(call zip_pack,$(DEMYST_SLUG))
+# $(1) bucket key, $(2) destination file
+define fetch_pdf
+	@curl -fsSL --retry 3 -o $(2) $(PDF_BASE)/$(1)
 
-# ---------------------------------------------------------------------------
-# Unplugged in the age of AI (20-minute talk)
-#
-# One corpus, and the brief bound in front of the handout as page 1 --- this
-# talk's running order has the presenter reading the worked example off it, and
-# the audience sees it too. That makes search-sheets.pdf the same set published
-# as sheets/the-cat-in-the-hat.pdf, built here from the same flags so the pack
-# stands alone.
-#
-# No --sheets: the count follows from the corpus at this density, which is 36.
-# A bigger room deals its own with a --sheets of its own; the talk page says so.
-# --rows 15 and 19.2pt are what keep Cat in the Hat legible when a printer
-# reduces it to A5 for a two-up handout.
+endef
 
-AGEOFAI_SLUG := unplugged-in-the-age-of-ai
-AGEOFAI_DIR := $(PACKS)/$(AGEOFAI_SLUG)
-AGEOFAI_STAGE := $(AGEOFAI_DIR)/.build
-
-.PHONY: pack-$(AGEOFAI_SLUG)
-pack-$(AGEOFAI_SLUG): $(CLI)
-	@rm -rf $(AGEOFAI_DIR)
-	@mkdir -p $(AGEOFAI_STAGE)
-	$(call deck_pdfs,$(AGEOFAI_SLUG),$(AGEOFAI_DIR))
-	@echo "search sheets: the-cat-in-the-hat"
-	@./$(CLI) sheets --input data/the-cat-in-the-hat.txt -o $(AGEOFAI_STAGE) -n 2 \
-		--rows 15 --font-size 19.2pt --seed 42 >/dev/null
-	@mv $(AGEOFAI_STAGE)/sheets.pdf $(AGEOFAI_DIR)/search-sheets.pdf
-	@cp docs/packs/$(AGEOFAI_SLUG).md $(AGEOFAI_DIR)/README.md
-	@rm -rf $(AGEOFAI_STAGE)
-	$(call zip_pack,$(AGEOFAI_SLUG))
+.PHONY: pack-$(MFLM_SLUG)
+pack-$(MFLM_SLUG):
+	@rm -rf $(MFLM_DIR)
+	@mkdir -p $(MFLM_DIR)/booklets
+	$(call fetch_pdf,worksheets/grid.pdf,$(MFLM_DIR)/grid.pdf)
+	$(call fetch_pdf,worksheets/green-eggs-and-ham-text.pdf,$(MFLM_DIR)/training-text.pdf)
+	$(foreach b,$(MFLM_BOOKLETS),$(call fetch_pdf,booklets/$(b).pdf,$(MFLM_DIR)/booklets/$(b).pdf))
+	@cp docs/packs/$(MFLM_SLUG).md $(MFLM_DIR)/README.md
+	$(call zip_pack,$(MFLM_SLUG))
 
 # ---------------------------------------------------------------------------
 # Archive: a dated, point-in-time bundle for each version
@@ -341,32 +272,19 @@ pack-$(AGEOFAI_SLUG): $(CLI)
 # target and list it in ARCHIVE_LESSONS.
 #
 # Printables are fetched from pdf.llmsunplugged.org, so the bundle holds the
-# same files the website links; the ledger lesson's come from its pack. The CLI
-# binaries come from the cli-dist workflow run for the v<version> tag, so push
-# the tag and let that run finish first. Needs gh, curl and the pack
-# dependencies above.
+# same files the website links; the two lessons with a pack take theirs from
+# it. The CLI binaries come from the cli-dist workflow run for the v<version>
+# tag, so push the tag and let that run finish first. Needs gh, curl and the
+# pack dependencies above.
 
 VERSION := $(shell sed -n 's/^version = "\(.*\)"/\1/p' cli/Cargo.toml | head -1)
 ARCHIVE := $(OUT)/archive
 ARCHIVE_NAME := llms-unplugged-$(VERSION)
 ARCHIVE_DIR := $(ARCHIVE)/$(ARCHIVE_NAME)
-PDF_BASE := https://pdf.llmsunplugged.org
-
 ARCHIVE_LESSONS := my-first-language-model how-ai-writes-stories \
 	how-ai-writes-stories-ledger
 
-MFLM_DECKS := my-first-language-model-60min my-first-language-model-90min \
-	my-first-language-model-2h
-MFLM_BOOKLETS := a-christmas-carol beatles collected-hemingway frankenstein \
-	green-eggs-and-ham green-eggs-and-ham-trigram jiangnan the-cat-in-the-hat \
-	the-cat-in-the-hat-trigram the-man-from-snowy-river
 HAWS_CUTOUTS := green-eggs-and-ham were-going-on-a-bear-hunt where-is-the-green-sheep
-
-# $(1) bucket key, $(2) destination file
-define fetch_pdf
-	@curl -fsSL --retry 3 -o $(2) $(PDF_BASE)/$(1)
-
-endef
 
 # A deck's two PDFs, named for the deck, into a lesson's directory. A capture
 # that never goes network-idle can print a one-page presenter guide without
@@ -399,12 +317,11 @@ archive: $(addprefix archive-,$(ARCHIVE_LESSONS)) archive-cli
 clean-archive:
 	rm -rf $(ARCHIVE)
 
-archive-my-first-language-model:
-	@rm -rf $(ARCHIVE_DIR)/$(@:archive-%=%)
-	@mkdir -p $(ARCHIVE_DIR)/$(@:archive-%=%)/booklets
-	$(foreach deck,$(MFLM_DECKS),$(call archive_deck,$(deck),$(ARCHIVE_DIR)/$(@:archive-%=%)))
-	$(call fetch_pdf,worksheets/grid.pdf,$(ARCHIVE_DIR)/$(@:archive-%=%)/grid-worksheet.pdf)
-	$(foreach b,$(MFLM_BOOKLETS),$(call fetch_pdf,booklets/$(b).pdf,$(ARCHIVE_DIR)/$(@:archive-%=%)/booklets/$(b).pdf))
+archive-$(MFLM_SLUG): pack-$(MFLM_SLUG)
+	@rm -rf $(ARCHIVE_DIR)/$(MFLM_SLUG)
+	@mkdir -p $(ARCHIVE_DIR)/$(MFLM_SLUG)
+	$(foreach deck,$(MFLM_DECKS),$(call archive_deck,$(deck),$(ARCHIVE_DIR)/$(MFLM_SLUG)))
+	@cp -r $(MFLM_DIR) $(ARCHIVE_DIR)/$(MFLM_SLUG)/printouts
 
 archive-how-ai-writes-stories:
 	@rm -rf $(ARCHIVE_DIR)/$(@:archive-%=%)
