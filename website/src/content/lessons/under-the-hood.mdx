@@ -20,7 +20,6 @@ status: untested
 listed: true
 ---
 
-import Callout from "../../components/Callout.astro";
 import GlossaryTerm from "../../components/GlossaryTerm.astro";
 
 Once a room has built a <GlossaryTerm id="bigram-model">bigram model</GlossaryTerm> and rolled dice through it, the question
@@ -34,14 +33,6 @@ grid model as usual, then add two rules that read back over the page they've
 already written (<GlossaryTerm id="in-context-learning">in-context learning</GlossaryTerm>), and finally turn each word's row of
 counts into a vector and measure how close two words are (word <GlossaryTerm id="embedding">embeddings</GlossaryTerm>). No
 new maths beyond counting and subtraction, and no code, but by the end the words <GlossaryTerm id="attention-mechanism">attention</GlossaryTerm> and <GlossaryTerm id="embedding">embedding</GlossaryTerm> mean something concrete.
-
-<Callout type="info">
-
-This sequence is assembled from modules we've each run, but we haven't yet run
-it as a single session. The timings below are estimates. If you deliver it,
-[tell us how it went](/about/#get-in-touch).
-
-</Callout>
 
 ## Run of show
 
