@@ -21,6 +21,7 @@ $(OUTPUT_DIR)/%.pdf: $(INPUT_DIR)/%.typ
 # which the pattern rule above can't see --- without these, editing the data
 # leaves a stale PDF that `publish` would happily ship.
 $(OUTPUT_DIR)/worksheets/sycophancy-text.pdf: ../data/originals/sycophancy.txt
+$(OUTPUT_DIR)/worksheets/green-eggs-and-ham-text.pdf: ../data/green-eggs-and-ham.txt
 $(OUTPUT_DIR)/worksheets/grid.pdf $(OUTPUT_DIR)/worksheets/grid-48.pdf: worksheets/grid-common.typ worksheets/title-logo.svg
 
 clean:
@@ -32,7 +33,8 @@ clean:
 # manifest (see that script's header).
 PUBLISH_DIR = ../out/pdfs/worksheets
 PUBLISHED = $(OUTPUT_DIR)/worksheets/grid.pdf $(OUTPUT_DIR)/worksheets/grid-48.pdf \
-	$(OUTPUT_DIR)/worksheets/sycophancy-text.pdf
+	$(OUTPUT_DIR)/worksheets/sycophancy-text.pdf \
+	$(OUTPUT_DIR)/worksheets/green-eggs-and-ham-text.pdf
 
 publish: $(PUBLISHED)
 	mkdir -p $(PUBLISH_DIR)

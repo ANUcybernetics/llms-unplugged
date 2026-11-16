@@ -19,16 +19,18 @@ themselves live on the website (`website/src/content/lessons/`).
 ## Build process
 
 ```bash
-# sycophancy-text.typ reads its corpus from data/originals/sycophancy.txt, so compiling
-# it directly needs the repo root as the project root (the Makefile does this)
+# the training-text sheets read their corpus from data/, so compiling one
+# directly needs the repo root as the project root (the Makefile does this)
 typst compile --root .. worksheets/sycophancy-text.typ
 ```
 
 PDFs are written to `out/` (gitignored).
 
-The grid worksheets and the sycophancy training-text sheet are published under
-`worksheets/` on pdf.llmsunplugged.org (linked from the lessons and the ACDICT
-news post): `make publish` stages them to `../out/pdfs/worksheets/`; upload with
+The grid worksheets and the two training-text sheets (sycophancy, and the
+opening of _Green Eggs and Ham_, which reads the untracked
+`data/green-eggs-and-ham.txt`) are published under `worksheets/` on
+pdf.llmsunplugged.org (linked from the lessons and the ACDICT news post):
+`make publish` stages them to `../out/pdfs/worksheets/`; upload with
 `ops/bucket-sync.py upload out/pdfs` from the repo root, then refresh and commit
 the manifest (see that script's header).
 
