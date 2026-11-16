@@ -38,9 +38,10 @@ the output; and the challenges and opportunities of AI in classrooms. The
 original quote also framed it as CS Unplugged as a design philosophy, and
 AI at human scale.
 
-Corpus: The Cat in the Hat and Green Eggs and Ham, as two documents (no
-pair straddles the join), dealt into 50 sheets. Bring two full copies to
-cover up to 100, and hand out all of the first before starting the second:
+Corpus: The Cat in the Hat and Hemingway's Cat in the Rain (1925), both
+complete, as two documents (no pair straddles the join), dealt into 50
+sheets. Shared words, "cat" above all, let the sentence cross between
+them. Bring two full copies to cover up to 100, and hand out all of the first before starting the second:
 a part-used second copy counts its pairs twice. The numbers on the "between
 us" slide, the zoom slide and the scale slides are for this corpus at n=2;
 if you swap it, rebuild them from the set's sheets.json metadata.
@@ -77,11 +78,11 @@ Nation; drop the slide if the conference opening has already done one.
 Before delivery:
   - print the sheets, one per attendee, and have them ready to hand out:
       llms_unplugged sheets -i data/the-cat-in-the-hat.txt \
-        -i data/green-eggs-and-ham.txt -n 2 --sheets 50 --rows 16 \
+        -i data/cat-in-the-rain.txt -n 2 --sheets 50 --rows 18 \
         --font-size 19.2pt --seed 42
-    (51 pages: the brief, then 50 sheets of 58-59 pairs, one page each;
+    (51 pages: the brief, then 50 sheets of 65-66 pairs, one page each;
     print single-sided, two copies of pages 2-51). The built set is
-    https://pdf.llmsunplugged.org/sheets/the-cat-in-the-hat-and-green-eggs-and-ham-50.pdf
+    https://pdf.llmsunplugged.org/sheets/the-cat-in-the-hat-and-cat-in-the-rain-50.pdf
   - keep the brief (page 1 of the PDF) on the lectern --- it carries the
     worked example and the loud seeds
   - the board slide uses the annotation layer (⇧W); have a scribe lined up
@@ -179,7 +180,7 @@ the sentence we wrote
 is **not in either book**
 
 ```notes
-Check it if you like --- unless we got very unlucky, that exact sentence isn't in The Cat in the Hat or Green Eggs and Ham. Nobody wrote it. There was no lookup and no database of sentences. It came out of a pile of paper and a series of coin tosses.
+Check it if you like --- unless we got very unlucky, that exact sentence isn't in The Cat in the Hat or Cat in the Rain. Nobody wrote it. There was no lookup and no database of sentences. It came out of a pile of paper and a series of coin tosses.
 
 That's the whole trick, and you have now watched it happen from the inside.
 ```
@@ -190,12 +191,12 @@ That's the whole trick, and you have now watched it happen from the inside.
 
 ![bg right:40%](./assets/bg-participants.avif)
 
-**2,945** words · **260** distinct · **2,943** token pairs dealt round the room
+**3,278** words · **496** distinct · **3,276** token pairs dealt round the room
 
 no single sheet has the whole picture
 
 ```notes
-Every one of the 2,943 word-pairs in the two books is on exactly one sheet in each set of fifty, and the deal deliberately spreads each context across as many people as it will go. So the model wasn't in my laptop and it wasn't on anyone's sheet --- for the last five minutes it existed only across the whole room. If somebody had stayed home, part of it would be missing and some contexts would draw no hands at all.
+Every one of the 3,276 word-pairs in the two books is on exactly one sheet in each set of fifty, and the deal deliberately spreads each context across as many people as it will go. So the model wasn't in my laptop and it wasn't on anyone's sheet --- for the last five minutes it existed only across the whole room. If somebody had stayed home, part of it would be missing and some contexts would draw no hands at all.
 
 That's not a metaphor for how a model is distributed. It's literally where the model was.
 ```
@@ -269,18 +270,18 @@ None of these changed the loop. Look at the context, weigh the options, pick one
 {/* _class: centered */}
 
 <GridZoom
-  cells={67600}
+  cells={246016}
   label="the whole room, as a grid"
-  detail="260 distinct tokens · 67,600 cells"
+  detail="496 distinct tokens · 246,016 cells"
   compareCells={25}
   compareLabel="the line on the last slide"
-  note="6.8 m² of paper — roughly this stage"
+  note="24.6 m² of paper — roughly this stage"
 />
 
 ```notes
-Read the caption. The little gold square is the slide you were just looking at; the big one is all of us. 260 distinct tokens, so 67,600 cells, and only about 1,200 of them have a tally in them at all. The rest are empty --- pairs the books never made, which the model treats as impossible.
+Read the caption. The little gold square is the slide you were just looking at; the big one is all of us. 496 distinct tokens, so 246,016 cells, and only about 1,800 of them have a tally in them at all. The rest are empty --- pairs the books never made, which the model treats as impossible.
 
-At one centimetre per cell that's a square about two and a half metres on a side. Roughly this stage.
+At one centimetre per cell that's a square about five metres on a side. Roughly this stage.
 
 This is the model we made today. Now put its two kinds of scale beside a frontier LLM. *[next slide]*
 ```
@@ -292,19 +293,19 @@ This is the model we made today. Now put its two kinds of scale beside a frontie
 <ModelScaleBars
   contextFrom={1}
   contextFromLabel="1 token"
-  trainingFrom={2945}
-  trainingFromLabel="2,945 tokens"
-  modelFrom={67600}
-  modelFromLabel="67,600 grid cells"
+  trainingFrom={3278}
+  trainingFromLabel="3,278 tokens"
+  modelFrom={246016}
+  modelFromLabel="246,016 grid cells"
   footer="one axis, in powers of ten · three independent dials · different kinds of model"
 />
 
 ```notes
 Three independent scales grow. The first is how much the model looks at before each guess. Ours looked at exactly one token --- which is why our sentence wandered --- and Claude looks back over up to a million tokens, the whole conversation and then some.
 
-The second is how much text went past the counter. Ours read 2,945 tokens; fifteen trillion is the published figure for a recent open model's training run. Every one of those tokens went past a counter, the way the books went past yours.
+The second is how much text went past the counter. Ours read 3,278 tokens; fifteen trillion is the published figure for a recent open model's training run. Every one of those tokens went past a counter, the way the books went past yours.
 
-The third is how many learned numbers the model contains. Ours had a 260 by 260 grid: 67,600 places a count could live. A trillion parameters is the right order of magnitude for a frontier model, and the honest answer for the closed ones is "about that, and nobody outside will tell you".
+The third is how many learned numbers the model contains. Ours had a 496 by 496 grid: 246,016 places a count could live. A trillion parameters is the right order of magnitude for a frontier model, and the honest answer for the closed ones is "about that, and nobody outside will tell you".
 
 The bars have separate scales because these quantities can be changed independently. And the endpoints are different kinds of model: grid cells on the left, neural-network parameters on the right. This is a scale comparison, not a claim that one is a compressed version of the other.
 ```
