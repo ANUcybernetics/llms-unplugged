@@ -153,6 +153,7 @@ export default defineConfig({
     astromotion({
       theme: "./src/decks/theme.css",
       favicon: "/favicon.svg",
+      head: "./src/components/DeckHeadExtra.astro",
     }),
     {
       name: "deck-redirects",

@@ -8,6 +8,9 @@ import PageLayout from "../layouts/PageLayout.astro";
     <p>The page you're looking for doesn't exist.</p>
     <a href="/">Back to homepage</a>
   </div>
+  <script is:inline>
+    window.plausible("404", { props: { path: document.location.pathname } });
+  </script>
 </PageLayout>
 
 <style>

@@ -120,6 +120,25 @@ describe("Astro Build", () => {
     expect(bad, `Pages with bad <title>:\n${bad.join("\n")}`).toEqual([]);
   });
 
+  // Every page carries the Plausible snippet, decks included (via
+  // astromotion's `head` option); only redirect stubs go without. Decks also
+  // need the slide listener, and the 404 page its event.
+  it("loads analytics on every page that isn't a redirect", () => {
+    const missing = globSync(join(DIST_DIR, "**/*.html")).filter((file) => {
+      const html = readFileSync(file, "utf-8");
+      const redirect = /http-equiv="refresh"/i.test(html);
+      return !redirect && !html.includes("plausible.io/js/script.file-downloads.js");
+    });
+    expect(missing, `Pages without analytics:\n${missing.join("\n")}`).toEqual([]);
+
+    const deck = readFileSync(
+      join(DIST_DIR, "decks/my-first-language-model-60min/index.html"),
+      "utf-8",
+    );
+    expect(deck).toContain("astromotion:slidechange");
+    expect(readFileSync(join(DIST_DIR, "404.html"), "utf-8")).toContain('plausible("404"');
+  });
+
   // Markdown turns `---` into an em dash, but frontmatter strings and .astro
   // template text aren't Markdown: there it reaches the page as three hyphens
   // unless the content schema's `prose` (or the author) converts it.

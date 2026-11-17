@@ -8,6 +8,7 @@ import {
   ledgerTemplate,
   ledgerTextTemplate,
 } from "../templates";
+import { trackEvent } from "./analytics";
 import { LEDGER_COLUMNS, LEDGER_PALETTE, paletteCycles } from "./ledger";
 // Fonts the templates reference, all bundled locally. The subset faces come from
 // the system fonts via scripts/subset-booklet-fonts.py; the full faces are the
@@ -313,6 +314,11 @@ export async function compileDocument(
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+      // A blob: download, which Plausible's file-download tracking can't see.
+      trackEvent("Generate PDF", {
+        workflow:
+          request.workflow === "ledger" ? `ledger ${request.ledger.document}` : request.workflow,
+      });
       onUpdate((s) => ({
         ...appendLog(s, "PDF generated and download started!"),
         status: "ready",

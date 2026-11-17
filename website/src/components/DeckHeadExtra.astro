@@ -1,0 +1,26 @@
+---
+// Rendered into every deck <head> by astromotion's `head` option.
+import Analytics from "./Analytics.astro";
+---
+
+<Analytics />
+<script is:inline>
+  // A "Slide View" event for each slide that stays up for DWELL_MS, so paging
+  // through to where you left off doesn't count the slides in between.
+  // `slide` leads with the number (stable within a deck version) and adds the
+  // heading (stable across edits); `params` records the URL flags such as
+  // ?teachers, which change which slides a deck shows and so their numbers.
+  {
+    const DWELL_MS = 5000;
+    const params = [...new URLSearchParams(location.search).keys()].sort().join(", ") || "none";
+    let pending;
+    document.addEventListener("astromotion:slidechange", (event) => {
+      clearTimeout(pending);
+      const { index, title } = event.detail;
+      const slide = title ? `${index}: ${title.slice(0, 80)}` : String(index);
+      pending = setTimeout(() => {
+        window.plausible("Slide View", { props: { slide, params } });
+      }, DWELL_MS);
+    });
+  }
+</script>
