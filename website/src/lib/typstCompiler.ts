@@ -236,7 +236,11 @@ export function templateFor(request: CompileRequest): {
           return { path: "/ledger-counters.typ", inputs };
         case "text":
           return { path: "/ledger-text.typ", inputs };
+        default:
+          throw new Error("Unknown ledger document");
       }
+    default:
+      throw new Error("Unknown workflow");
   }
 }
 

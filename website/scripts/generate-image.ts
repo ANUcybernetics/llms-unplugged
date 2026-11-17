@@ -152,4 +152,4 @@ async function main() {
   process.exit(ok ? 0 : 1);
 }
 
-main();
+await main();

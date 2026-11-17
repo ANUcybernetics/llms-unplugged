@@ -15,7 +15,7 @@ export type Module = CollectionEntry<"modules">;
  */
 async function listedModules(): Promise<Module[]> {
   const all = await getCollection("modules");
-  return all.filter((m) => m.data.listed !== false).toSorted((a, b) => a.data.order - b.data.order);
+  return all.filter((m) => m.data.listed).toSorted((a, b) => a.data.order - b.data.order);
 }
 
 /** Listed modules for a single topic, in display order. */

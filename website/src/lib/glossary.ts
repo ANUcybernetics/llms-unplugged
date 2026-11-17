@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { z } from "astro/zod";
 import { parse } from "yaml";
 import { TOPIC_KEYS, topicLabels } from "./topics";
 
@@ -25,12 +26,28 @@ const CATEGORIES: Record<string, string> = {
 
 const CATEGORY_ORDER = [...TOPIC_KEYS, "materials"];
 
+const glossaryEntrySchema = z.object({
+  id: z.string(),
+  term: z.string(),
+  category: z.string(),
+  description: z.string(),
+  synonyms: z.array(z.string()).optional(),
+  note: z.string().optional(),
+  see: z.array(z.object({ label: z.string(), href: z.string() })).optional(),
+  related: z.array(z.string()).optional(),
+  activity: z.string().optional(),
+}) satisfies z.ZodType<GlossaryEntry>;
+
 let cached: GlossaryEntry[] | null = null;
 
 export function loadGlossary(): GlossaryEntry[] {
   if (cached) return cached;
   const raw = fs.readFileSync(path.join(process.cwd(), "src/data/glossary.yaml"), "utf-8");
-  cached = parse(raw) as GlossaryEntry[];
+  const result = z.array(glossaryEntrySchema).safeParse(parse(raw));
+  if (!result.success) {
+    throw new Error(`src/data/glossary.yaml is malformed:\n${z.prettifyError(result.error)}`);
+  }
+  cached = result.data;
   return cached;
 }
 

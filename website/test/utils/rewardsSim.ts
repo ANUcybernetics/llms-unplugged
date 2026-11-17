@@ -146,7 +146,9 @@ export const P_UP: Record<Answer, number> = {
 export function thumbsUpCup(r: Rng, votes: number) {
   const cup = new Map<Answer, number>(ANSWERS.map((a) => [a, 1]));
   for (let i = 0; i < votes; i++) {
-    const drawn = pick(cup, r) as Answer;
+    const picked = pick(cup, r);
+    const drawn = ANSWERS.find((a) => a === picked);
+    if (!drawn) throw new Error("thumbsUpCup: pick returned no answer from a non-empty cup");
     const up = r() < P_UP[drawn];
     cup.set(drawn, Math.max(1, cup.get(drawn)! + (up ? 1 : -1)));
   }

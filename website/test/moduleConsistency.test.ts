@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { globSync, readFileSync } from "node:fs";
+import { z } from "astro/zod";
 import { parse } from "yaml";
 import { loadGlossary } from "../src/lib/glossary";
 import { topicOrder } from "../src/lib/topics";
@@ -16,14 +17,15 @@ import { topicOrder } from "../src/lib/topics";
  *   dead-end, kept for teachers already running it from a direct link, and its
  *   page links forward to the listed module that replaced it.
  */
-interface ModuleFrontmatter {
-  title: string;
-  description: string;
-  order?: number;
-  topic?: string;
-  listed?: boolean;
-  replacedBy?: string;
-}
+const moduleFrontmatterSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  order: z.number().optional(),
+  topic: z.string().optional(),
+  listed: z.boolean().optional(),
+  replacedBy: z.string().optional(),
+});
+type ModuleFrontmatter = z.infer<typeof moduleFrontmatterSchema>;
 
 interface Module {
   data: ModuleFrontmatter;
@@ -33,7 +35,11 @@ interface Module {
 function parseModule(source: string): Module {
   const match = /^---\n(.*?)\n---\n(.*)$/s.exec(source);
   if (!match) throw new Error("module is missing YAML frontmatter");
-  return { data: parse(match[1]) as ModuleFrontmatter, body: match[2] };
+  const frontmatter = moduleFrontmatterSchema.safeParse(parse(match[1]));
+  if (!frontmatter.success) {
+    throw new Error(`module frontmatter is malformed:\n${z.prettifyError(frontmatter.error)}`);
+  }
+  return { data: frontmatter.data, body: match[2] };
 }
 
 function loadModules(): Map<string, Module> {

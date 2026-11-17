@@ -25,7 +25,7 @@ describe("typst.ts wasm init", () => {
   beforeAll(() => {
     globalThis.fetch = (...args: Parameters<typeof realFetch>) => {
       const [input] = args;
-      const url = typeof input === "string" ? input : (input as Request).url;
+      const url = input instanceof Request ? input.url : String(input);
       throw new Error(`typst.ts attempted a network fetch: ${url}`);
     };
   });

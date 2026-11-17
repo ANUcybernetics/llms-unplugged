@@ -94,6 +94,9 @@ export function createPretrainedGenerationMachine(
 
         case "complete":
           return state;
+
+        default:
+          throw new Error("Unknown generation phase");
       }
     },
 

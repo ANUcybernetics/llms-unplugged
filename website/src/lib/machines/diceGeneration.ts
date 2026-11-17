@@ -83,6 +83,9 @@ export function createDiceGenerationMachine(
 
         case "complete":
           return state;
+
+        default:
+          throw new Error("Unknown generation phase");
       }
     },
 

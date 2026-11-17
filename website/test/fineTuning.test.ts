@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { z as zod } from "astro/zod";
 import { buildBigramModel, parseTokens } from "../src/lib/tokens";
 import { mergedRow, rowTotal } from "../src/lib/adapters";
 import { pick, rng } from "./utils/rewardsSim";
@@ -93,11 +94,15 @@ const pairB: Strips = {
 describe("Fine-tuning and LoRA module", () => {
   it("gives the widgets the same texts as the corpus files and the quoted flattery", () => {
     const constant = (name: string) =>
-      JSON.parse(
-        MODULE.match(
-          new RegExp(String.raw`^export const ${name} =\s*("(?:[^"\\]|\\.)*")`, "m"),
-        )![1],
-      ) as string;
+      zod
+        .string()
+        .parse(
+          JSON.parse(
+            MODULE.match(
+              new RegExp(String.raw`^export const ${name} =\s*("(?:[^"\\]|\\.)*")`, "m"),
+            )![1],
+          ),
+        );
     expect(constant("MAGPIE")).toBe(body("../data/originals/the-magpies-nest.txt"));
     expect(constant("KOOKABURRA")).toBe(
       body("../data/originals/the-kookaburra-and-the-possum.txt"),

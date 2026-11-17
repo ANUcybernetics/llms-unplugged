@@ -3,7 +3,7 @@ export type Variant = "grid" | "ledger" | "cutouts";
 export const VARIANTS: readonly Variant[] = ["grid", "ledger", "cutouts"];
 
 function isVariant(v: unknown): v is Variant {
-  return VARIANTS.includes(v as Variant);
+  return VARIANTS.some((variant) => variant === v);
 }
 
 const STORAGE_KEY = "llms-unplugged-variant";

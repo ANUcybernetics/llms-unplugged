@@ -170,7 +170,7 @@ export function assembledLayout(bricks: Brick[], width: number, height: number):
     );
   }
 
-  const lines = [...words.keys()].toSorted();
+  const lines = [...words.keys()].toSorted((a, b) => a - b);
   const totalH = lines.length * ASSEMBLED_H + (lines.length - 1) * ASSEMBLED_LINE_GAP;
   let cy = (height - totalH) / 2;
 
@@ -197,7 +197,7 @@ export function titleOnlyLayout(width: number, height: number): Pos[] {
     if (!wordGroups.has(t.word)) wordGroups.set(t.word, []);
     wordGroups.get(t.word)!.push(t);
   }
-  const lines = [...wordGroups.keys()].toSorted().map((w) => wordGroups.get(w)!);
+  const lines = [...wordGroups.keys()].toSorted((a, b) => a - b).map((w) => wordGroups.get(w)!);
 
   const lineGap = 10;
   const rowH = (height - (lines.length - 1) * lineGap) / lines.length;

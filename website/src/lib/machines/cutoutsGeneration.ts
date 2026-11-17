@@ -68,6 +68,9 @@ export function createCutoutsGenerationMachine(
 
         case "complete":
           return state;
+
+        default:
+          throw new Error("Unknown generation phase");
       }
     },
 

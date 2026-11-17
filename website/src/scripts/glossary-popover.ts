@@ -5,7 +5,8 @@
 // component so the component renders as a single inline node.
 if (!CSS.supports("position-area", "bottom span-right")) {
   document.addEventListener("click", (e) => {
-    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>(".glossary-term");
+    if (!(e.target instanceof Element)) return;
+    const btn = e.target.closest<HTMLButtonElement>(".glossary-term");
     if (!btn) return;
     const popover = document.getElementById(btn.getAttribute("popovertarget") ?? "");
     if (!popover) return;
