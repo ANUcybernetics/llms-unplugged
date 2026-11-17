@@ -28,18 +28,18 @@ const popoverId = `glossary-${id}`;
 // stray space next to the term. Styles live in src/styles/glossary.css and
 // the positioning fallback in src/scripts/glossary-popover.ts for the same
 // reason. The popover has no tooltip role because it contains a focusable
-// link, and popover semantics already announce it. data-pagefind-ignore keeps
+// link, and popover semantics already announce it. The "(glossary term)" cue
+// is visually hidden text rather than an aria-label: the slot often words the
+// term differently from the entry ("booklets" for Booklet), and an aria-label
+// built from the entry would drop the visible text from the accessible name
+// (axe's label-content-name-mismatch). data-pagefind-ignore keeps the cue and
 // the description out of the page's search index.
 ---
 
 <span class="glossary-term-wrapper">
-  <button
-    class="glossary-term"
-    popovertarget={popoverId}
-    popovertargetaction="toggle"
-    aria-label={`${entry.term} (glossary term)`}
-  >
-    <slot>{entry.term}</slot>
+  <button class="glossary-term" popovertarget={popoverId} popovertargetaction="toggle">
+    <slot>{entry.term}</slot
+    ><span class="visually-hidden" data-pagefind-ignore> (glossary term)</span>
   </button>
   {renderPopover && <span popover id={popoverId} class="glossary-popover" data-pagefind-ignore>
     <strong class="glossary-popover-term">{entry.term}</strong>
