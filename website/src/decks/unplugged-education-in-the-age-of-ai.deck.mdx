@@ -29,7 +29,7 @@ failure AI is manufacturing. Unplugged is the old cure (make the mechanism
 visible, at human scale), and it matters more now. This is not a talk about
 AI being stupid: the real systems are extraordinary, and the paper model is
 the same loop at a scale you can see, so the key concepts can be taught to
-students today. Every "look what the paper one can't do" beat must point at
+students. Every "look what the paper one can't do" beat must point at
 the concept, not at a failing of real models. The room runs a language
 model, then sees training data, bias and design decisions in what it just
 made. Claude is more than a model in 2026: it is a model in a harness that
@@ -57,9 +57,14 @@ Running order (target 45:00, then questions):
   0:26  What Claude does differently, at scale, and
         what that makes possible                       (~5 min)
   0:31  The room becomes an agent                      (~8 min)
-  0:39  Unplugged in your classroom                    (~3 min)
-  0:42  Back to Bandura, the claim, the QR             (~3 min)
-  0:45  Questions                                      (~15 min)
+  0:39  COMP4020: what agents can do, what students
+        had to learn                                   (~3 min)
+  0:42  Unplugged in your classroom                    (~3 min)
+  0:45  Back to Bandura, the claim, the QR             (~3 min)
+  0:48  Questions                                      (~12 min)
+This is three minutes over the 45; if questions need the full 15, trim the
+"astonishing" slide (COMP4020 makes the same case first-hand) or shorten the
+agent round to two tool calls.
 
 The Bandura quote (slide 2) is the deck's only fragment build: two clicks
 light up the two clauses in turn, and the second is the one the whole talk
@@ -369,7 +374,7 @@ still just **words in** → **words out**
 ```notes
 Every reply from Claude or ChatGPT is produced one word at a time, by the loop you just ran with your hand in the air.
 
-That's not a put-down. It's the astonishing part: something you can run on paper, at a scale you can see, is at the heart of what you just saw on the last slide. And it's why the concepts are teachable now. The core of it fits in a classroom.
+That's not a put-down. It's the astonishing part: something you can run on paper, at a scale you can see, is at the heart of what you just saw on the last slide. And it's why the concepts are teachable. The core of it fits in a classroom.
 
 Which raises a question. If the model only ever writes words, how does Claude send an email, or book a flight, or fix the bug in your code?
 ```
@@ -461,6 +466,51 @@ One more thing worth thirty seconds. Our model ignored the word from the inbox: 
 
 ---
 
+## this semester: COMP4020, Agentic Coding Studio
+
+![bg right:40%](./assets/bg-design-challenge.avif)
+
+**128** ANU students, undergraduate and postgraduate
+
+**three** apps each, built with a coding agent and deployed: **380+** in all
+
+the last one **full-stack**: a real database, live on the web
+
+```comment
+Counts from the tutors repo, 18 Nov 2026: 128 active enrolments; 127, 128
+and 127 submissions for A1, A2 and the final project. Student work examples
+to come from Ben --- check consent (the course has a human-ethics protocol)
+or anonymise before showing any.
+```
+
+```notes
+Some evidence that the real ones are as good as I've been saying, from my own teaching. This year I ran a new course at ANU where every student builds software with a coding agent. Not a demo: each of them designed, built and shipped three working web apps over the semester, the last one with a real database behind it, live on the web for anyone to use.
+
+A one-semester unit where every student ships a full-stack app with an agent is only possible because the agents are that good.
+```
+
+---
+
+## what they had to learn
+
+![bg right:40%](./assets/bg-chain.avif)
+
+the **context**: what the agent can see, and what it can't
+
+the **tools**: what it may run, and when it has to ask
+
+the **loop**: tests and checks that tell it when it's wrong
+
+```notes
+And here's the part that matters for this room. The course doesn't teach tricks for a particular tool; one of its learning outcomes is to explain how these agents work. To use them well, students had to understand what kind of thing they were working with.
+
+What it can see: the context window, the same idea as our one word of context, scaled up. What it may do: tools and permissions, the round we just ran. And the loop: the agent writes, a test runs, the result goes back into the text, it tries again. That's the harness, and building a good one is a big part of the course.
+
+Every one of those you've just acted out on paper. The concepts my university students needed to work with agents are the ones your students can act out in a lesson.
+```
+
+---
+
 {/* _class: impact */}
 
 the question has moved
@@ -483,12 +533,12 @@ the tools will change by next term
 
 the **concepts** underneath won't
 
-and you can teach them **today**
+and they fit on **paper**
 
 ```notes
 That's the case for unplugged in your classroom. Teaching students to use this term's AI tool is teaching to a moving target. The concepts underneath --- tokens, a distribution, sampling, training data, design decisions, a harness running tools in a loop --- hold still, and you've just seen every one of them on paper.
 
-That's new. A few years ago the honest answer to "how does it work?" was a university course. Today the key ideas fit in a lesson, and the systems built on them are the most capable software most of your students will ever use. Now is the time to teach them.
+The systems built on those ideas are the most capable software most of your students will ever use, and the ideas themselves fit in a lesson.
 ```
 
 ---
