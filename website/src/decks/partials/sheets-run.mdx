@@ -43,15 +43,19 @@ own whiteboard surface (the same asset the board paints, on the same dark
 ground), so the slide reads as a blank board with the timer sitting on it.
 Write on it with the annotation layer (⇧W), NOT the board itself (W) ---
 the board is an opaque layer over the slide and would take the timer with
-it.
+it. Without a pen, click the slide and type: BoardText is a large text box
+that stays invisible until it has words in it (Escape gives the arrow keys
+back).
 ```
 
 ![bg](./assets/deco-whiteboard.avif)
 
+<BoardText />
+
 <Timer minutes={4} overlay />
 
 ```notes
-Shift-W, write the volunteer's two words, call out the second of them, go. Four minutes, 12--15 tokens, write BIG for the back of the room. No commentary between hands going up and a word landing on the board.
+Shift-W (or click the board and type), write the volunteer's two words, call out the second of them, go. Four minutes, 12--15 tokens, write BIG for the back of the room. No commentary between hands going up and a word landing on the board.
 
 Narrate two things, once each, without stopping the flow. The hands are the distribution: call a common word and a forest goes up; call a rare one and you get two. Nobody here has been taught weighted sampling and the room is doing it anyway --- the number of hands is how often that continuation happens in the text. (Pedant's footnote, only if a pedant asks: someone holding several matches for one context raises one hand, which flattens the busiest words slightly.) And the choosing is a coin toss: when five hands are up, the four I don't pick were all real continuations. Different pick, different sentence. Same reason the "regenerate" button gives a different answer.
 

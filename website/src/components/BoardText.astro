@@ -1,0 +1,82 @@
+---
+/**
+ * A large, borderless text box over a board slide, for typing the room's
+ * sentence when there's no pen. Escape hands the keys back to the deck. What
+ * you type is mirrored to every other copy of the deck open in the same
+ * browser (the speaker view's previews included), so it can be typed in
+ * either window.
+ */
+interface Props {
+  placeholder?: string;
+}
+
+const { placeholder = "type the room's words here" } = Astro.props;
+---
+
+<textarea
+  class="board-text"
+  data-board-text
+  aria-label="The room's sentence"
+  placeholder={placeholder}
+  spellcheck="false"
+  autocomplete="off"
+  autocapitalize="off"
+></textarea>
+
+<script>
+  const channel = new BroadcastChannel(`board-text:${location.pathname}`);
+  const boxes = () => [...document.querySelectorAll<HTMLTextAreaElement>("[data-board-text]")];
+
+  channel.addEventListener(
+    "message",
+    ({ data }: MessageEvent<{ index: number; value: string }>) => {
+      const box = boxes()[data.index];
+      if (box && box.value !== data.value) box.value = data.value;
+    },
+  );
+
+  boxes().forEach((box, index) => {
+    box.addEventListener("input", () => channel.postMessage({ index, value: box.value }));
+    // Reveal ignores keys typed into a form field, so without this there'd be
+    // no way back to the arrow keys short of clicking off the box.
+    box.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") box.blur();
+    });
+  });
+</script>
+
+<style>
+  /* Fills the board above the dice (bottom-left) and the overlay timer
+     (bottom-right). !important for the same reason as Timer's overlay:
+     astromotion makes every child of a slide with a background relative. */
+  .board-text {
+    position: absolute !important;
+    inset: 2.5rem 3rem 13rem;
+    z-index: 4;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    resize: none;
+    background: none;
+    color: var(--color-text);
+    caret-color: var(--anu-gold);
+    font-family: var(--r-heading-font);
+    font-size: 4.25rem;
+    font-weight: 600;
+    line-height: 1.25;
+    text-align: left;
+  }
+
+  /* Faint until it has focus, so the projected board stays blank. */
+  .board-text::placeholder {
+    color: var(--color-text-muted);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .board-text:hover::placeholder,
+  .board-text:focus::placeholder {
+    opacity: 1;
+  }
+</style>

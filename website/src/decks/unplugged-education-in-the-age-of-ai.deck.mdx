@@ -8,6 +8,7 @@ unlisted: true
 ---
 
 import ModelScaleBars from "../components/ModelScaleBars.svelte";
+import BoardText from "../components/BoardText.astro";
 import Timer from "../components/Timer.astro";
 import SocyLogo from "astro-theme-anu/components/SocyLogo.astro";
 import BgMusic from "../components/BgMusic.astro";
@@ -426,16 +427,18 @@ Write the word they give you, then the full stop, and carry on from the full sto
 
 ```comment
 The agent board. Same treatment as the run's board slide: no words, the
-whiteboard artwork, the timer on top, and the annotation layer (⇧W) for
-writing.
+whiteboard artwork, the timer on top, and the annotation layer (⇧W) or
+the BoardText box for writing.
 ```
 
 ![bg](./assets/deco-whiteboard.avif)
 
+<BoardText />
+
 <Timer minutes={3} overlay />
 
 ```notes
-Shift-W, write the last two words of the room's sentence, call out the last one, go. Three minutes, two or three tool calls, then stop.
+Shift-W (or click the board and type), write the last two words of the room's sentence, call out the last one, go. Three minutes, two or three tool calls, then stop.
 
 If a minute goes by with no end-of-sentence token, skip ahead: "say we just landed on a full stop", and make the call.
 
