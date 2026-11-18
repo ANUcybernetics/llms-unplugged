@@ -20,90 +20,21 @@ export const runMinutes = 5; // the board timer in partials/sheets-run.mdx
 
 ```comment
 The keynote at the Quantum Victoria STEM Conference, Macleod (Melbourne),
-Friday 20 Nov 2026: a 60-minute slot, ~45 minutes of talk then ~15 of
-questions, to ~70-120 STEM teachers in the lecture theatre. Built on the
-generic 20-minute talk (unplugged-in-the-age-of-ai.deck.mdx); like that one
-it is a talk, not a workshop --- the audience hold a search sheet and put a
-hand up, and for one round a few of them check their email. The room-run is
-the shared partial sheets-run.mdx.
+Friday 20 Nov 2026: a 60-minute slot, about 45 minutes of talk then
+questions, to 70-120 STEM teachers in the lecture theatre. A talk, not a
+workshop: everyone holds a search sheet and puts a hand up, and for the agent
+round a few of them check their email.
 
 The argument: Bandura's "nor believe they can do much to influence" is the
-failure AI is manufacturing. Unplugged is the old cure (make the mechanism
-visible, at human scale), and it matters more now. This is not a talk about
-AI being stupid: the real systems are extraordinary, and the paper model is
-the same loop at a scale you can see, so the key concepts can be taught to
-students. Every "look what the paper one can't do" beat must point at
-the concept, not at a failing of real models. The room runs a language
-model, then sees training data, bias and design decisions in what it just
-made. Claude is more than a model in 2026: it is a model in a harness that
-calls tools, so the room runs a second round as an agent, and the question
-moves from what it says to what it is allowed to do --- the place where a
-teacher, a school or a student can have a say. The classroom section turns
-that into practice.
+failure AI is manufacturing, and unplugged (the mechanism made visible, at
+human scale) is the cure. Not a talk about AI being stupid: the real systems
+are extraordinary, and the paper model is the same loop at a scale you can
+see. Every "look what the paper one can't do" beat points at a concept, not
+at a failing of real models.
 
-Corpus: The Cat in the Hat and Hemingway's Cat in the Rain (1925), both
-complete, as two documents (no pair straddles the join), dealt into 50
-sheets. Shared words, "cat" above all, let the sentence cross between
-them. Two full copies cover up to 100; hand out all of the first before
-starting the second, because a part-used second copy counts its pairs
-twice. The numbers on the "two books" slide, the she/he slide and the scale
-slide are for this corpus at n=2; if you swap it, rebuild them from the
-set's sheets.json metadata.
-
-Running order (target 45:00, then questions):
-  0:00  Acknowledgement, title                         (~2 min)
-  0:02  Bandura, what we get told                      (~3 min)
-  0:05  Unplugged, the inside of the machine           (~2 min)
-  0:07  Run the room                                   (~11 min)
-  0:18  What you can now see: the books, she and he,
-        who chose                                      (~8 min)
-  0:26  What Claude does differently, at scale, and
-        what that makes possible                       (~5 min)
-  0:31  The room becomes an agent                      (~8 min)
-  0:39  COMP4020: what agents can do, what students
-        had to learn                                   (~3 min)
-  0:42  Unplugged in your classroom                    (~3 min)
-  0:45  Back to Bandura, the claim, the QR             (~3 min)
-  0:48  Questions                                      (~12 min)
-This is three minutes over the 45; if questions need the full 15, trim the
-"astonishing" slide (COMP4020 makes the same case first-hand) or shorten the
-agent round to two tool calls.
-
-The Bandura quote (slide 2) is the deck's only fragment build: two clicks
-light up the two clauses in turn, and the second is the one the whole talk
-is aimed at. It is repeated, already lit, on the "back to Bandura" slide to
-close the loop.
-
-The scale slide makes one claim only: compared with the paper model, a
-frontier LLM looks at vastly more context, has seen vastly more training
-text and contains vastly more learned numbers. Those quantities scale
-independently, and the machinery is different, so the bars deliberately do
-not share an axis. Do not turn this into an argument that transformers are
-a more parameter-efficient n-gram; that is true in an important sense, but
-it is not this talk's point.
-
-The Acknowledgement of Country is to the Wurundjeri people of the Kulin
-Nation; drop the slide if the conference opening has already done one.
-
-Before delivery:
-  - print the sheets, one per attendee, and have them ready to hand out:
-      llms_unplugged sheets -i data/the-cat-in-the-hat.txt \
-        -i data/cat-in-the-rain.txt -n 2 --sheets 50 --rows 18 \
-        --font-size 19.2pt --seed 42 --title "Quantum Victoria"
-    (51 pages: the brief, then 50 sheets of 65-66 pairs, one page each;
-    print single-sided, two copies of pages 2-51). The built set is
-    https://pdf.llmsunplugged.org/sheets/the-cat-in-the-hat-and-cat-in-the-rain-50.pdf
-  - keep the brief (page 1 of the PDF) on the lectern --- it carries the
-    worked example and the loud seeds
-  - the board slides use the annotation layer (⇧W); have a scribe lined up
-    if you would rather not write and talk
-  - the agent round needs volunteers with their phones; brief Cole to be
-    the fallback inbox if no hand goes up
-
-Vocabulary: a *token* is one word or punctuation mark --- the sense the
-workshop and the printed sheets both use. A *token pair* is two of them, the
-boxed one and the one that follows. The partial's first slide says the
-words; the role-mapping slide makes them stick. Never call the pair a token.
+Corpus: The Cat in the Hat and Hemingway's Cat in the Rain, as two
+documents, dealt into 50 sheets (printed). The numbers on the "two books",
+she/he and scale slides are for this corpus at n=2.
 ```
 
 {/* @include ./partials/ack-country.mdx */}
