@@ -284,32 +284,6 @@ Real models are made of decisions like these, made by people at companies: what 
 
 ---
 
-## three things Claude\* does that we didn't
-
-![bg right:40%](./assets/bg-attention.avif)
-
-it looks at **more than one word** of context
-
-it can say what it **never saw**---`cat` teaches it about `dog`
-
-it's been taught to **answer**, not just continue
-
-```notes
-The asterisk is yours to explain, in one line: Claude here means any frontier model --- ChatGPT, Gemini, Llama. Nothing on this slide is specific to Anthropic's; I just need a name to point at.
-
-Say each in a sentence, resist explaining any of them; each one has a full module on the website and none of them fits in this talk.
-
-One word of context is why our sentence wandered --- when I called `the`, nobody could tell whether we'd just written "sat in the" or "hit the". Claude looks back over the whole conversation.
-
-Our model rates any pair it never saw as flatly impossible, however sensible. A real model spreads what it learns across billions of numbers instead of separate cells, so what it learns about `cat` reaches `dog`.
-
-And ours only ever continues text. Ask it a question and it continues the question --- that's not it refusing, answering just isn't a thing it does. Turning that into something that answers you is another round of training, on conversations.
-
-None of these changed the loop. Look at the context, weigh the options, pick one, write it down.
-```
-
----
-
 {/* _class: centered */}
 
 <ModelScaleBars
