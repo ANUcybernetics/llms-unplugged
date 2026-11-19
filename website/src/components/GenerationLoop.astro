@@ -6,13 +6,36 @@
  * settles on a sampled one, and that token flies into the row before the next
  * fan opens. Each step samples afresh, so it never repeats exactly.
  *
+ * `tools` turns the loop into an agent's: every few tokens the newest tile is
+ * a tool call. A request runs down a wire, through a permission gate, to a
+ * tool below the row, and the result comes back up as a tile of its own that
+ * joins the row before generation carries on. Now and then the gate shuts and
+ * a hollow "declined" tile comes back instead.
+ *
+ * `inject` (with `tools`) makes every result a foreign one: it lands in a
+ * different colour, and the next few fans and picks carry that colour, fading
+ * out over three tokens. No call is declined in this mode.
+ *
  * Runs only while its slide is the current one and the tab is visible. With
  * prefers-reduced-motion it draws a single still frame.
  */
+interface Props {
+  tools?: boolean;
+  inject?: boolean;
+}
+
+const { tools = false, inject = false } = Astro.props;
 const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
 ---
 
-<div class="generation-loop" data-generation-loop data-uid={uid} aria-hidden="true">
+<div
+  class="generation-loop"
+  data-generation-loop
+  data-uid={uid}
+  data-tools={tools ? "" : undefined}
+  data-inject={tools && inject ? "" : undefined}
+  aria-hidden="true"
+>
   <svg viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">
     <defs>
       <pattern id={`${uid}-lattice`} width="90" height="90" patternUnits="userSpaceOnUse">
@@ -48,6 +71,7 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
     <g mask={`url(#${uid}-mask)`}>
       <g data-row></g>
     </g>
+    <g data-station></g>
     <g data-fan></g>
     <circle class="head" data-head r="9" filter={`url(#${uid}-glow)`}></circle>
   </svg>
@@ -64,6 +88,17 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
   const FAN_X = 900; // left edge of the candidate column
   const FAN_PITCH = 88; // vertical spacing between candidates
   const SHADES = 4; // fill classes .s0 .. .s3
+
+  // The tool, in `tools` mode: a wire drops from the newest tile, through a
+  // permission gate, to a box below the row.
+  const WIRE_X = HEAD_X - 24; // inside the newest tile, whatever its width
+  const WIRE_TOP = ROW_Y + TILE_H / 2 + 10;
+  const GATE_Y = 475;
+  const BOX_W = 168;
+  const BOX_H = 108;
+  const BOX_Y = 556; // top edge
+  const BOX_CY = BOX_Y + BOX_H / 2;
+  const TAINT_STEPS = 3; // tokens an injected result goes on colouring
 
   const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
   const rand = (lo: number, hi: number) => lo + Math.random() * (hi - lo);
@@ -134,6 +169,9 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
     const head = root.querySelector<SVGCircleElement>("[data-head]")!;
     const glow = `url(#${uid}-glow)`;
     const slide = root.closest("section");
+    const tools = "tools" in root.dataset;
+    const inject = "inject" in root.dataset;
+    const station = root.querySelector<SVGGElement>("[data-station]")!;
 
     head.setAttribute("cx", String(HEAD_X + GAP + 4));
     head.setAttribute("cy", String(ROW_Y));
@@ -151,12 +189,35 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
       rowEnd += GAP + width;
     };
 
-    const newTile = (width: number, parent: Element) =>
+    // How many more tokens the last injected tool result will colour.
+    let taint = 0;
+    const tainted = () => (taint > 0 ? ` t${taint}` : "");
+
+    const newTile = (width: number, parent: Element, extra = "") =>
       el(
         "rect",
-        { width, height: TILE_H, rx: 14, class: `tile s${randInt(0, SHADES - 1)}` },
+        { width, height: TILE_H, rx: 14, class: `tile s${randInt(0, SHADES - 1)}${extra}` },
         parent,
       );
+
+    /** Hand a tile sitting just right of the head to the row, and make room. */
+    const land = async (tile: SVGRectElement, width: number) => {
+      tile.removeAttribute("filter");
+      tile.classList.remove("lit");
+      tile.classList.add("landed");
+      addToRow(tile, width);
+      tile.style.opacity = "";
+      const nextOffset = HEAD_X - rowEnd;
+      await move(row, `translateX(${offset}px)`, `translateX(${nextOffset}px)`, 520);
+      offset = nextOffset;
+      setTimeout(() => tile.classList.remove("landed"), 900);
+
+      // Drop tiles that have scrolled off the left.
+      for (const old of [...row.children] as SVGRectElement[]) {
+        const right = Number(old.getAttribute("x")) + Number(old.getAttribute("width")) + offset;
+        if (right < -40) old.remove();
+      }
+    };
 
     // Start with a row already written, so the first frame (and a printed
     // one) isn't empty.
@@ -181,12 +242,12 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
           "path",
           {
             d: `M${ox} ${ROW_Y} C${ox + 110} ${ROW_Y} ${FAN_X - 120} ${y} ${FAN_X - 6} ${y}`,
-            class: "curve",
+            class: `curve${tainted()}`,
             "stroke-width": (1.5 + p * 12).toFixed(2),
           },
           fan,
         );
-        const tile = newTile(width, fan);
+        const tile = newTile(width, fan, tainted());
         tile.setAttribute("x", String(FAN_X));
         tile.setAttribute("y", String(y - TILE_H / 2));
         tile.style.opacity = "0";
@@ -244,23 +305,80 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
         ),
       ]);
 
-      // Hand it to the row, then slide the row along to make room.
-      chosen.tile.removeAttribute("filter");
-      chosen.tile.classList.remove("lit");
-      chosen.tile.classList.add("landed");
-      addToRow(chosen.tile, chosen.width);
-      chosen.tile.style.opacity = "";
-      const nextOffset = HEAD_X - rowEnd;
-      await move(row, `translateX(${offset}px)`, `translateX(${nextOffset}px)`, 520);
-      offset = nextOffset;
+      await land(chosen.tile, chosen.width);
       fan.replaceChildren();
-      setTimeout(() => chosen.tile.classList.remove("landed"), 900);
+      if (taint > 0) taint -= 1;
+    }
 
-      // Drop tiles that have scrolled off the left.
-      for (const tile of [...row.children] as SVGRectElement[]) {
-        const right = Number(tile.getAttribute("x")) + Number(tile.getAttribute("width")) + offset;
-        if (right < -40) tile.remove();
+    // The tool's furniture, drawn once and lit as each call passes through.
+    let gate: SVGCircleElement | undefined;
+    let box: SVGRectElement | undefined;
+    let pulse: SVGCircleElement | undefined;
+    if (tools) {
+      el("path", { d: `M${WIRE_X} ${WIRE_TOP}V${BOX_Y}`, class: "wire" }, station);
+      box = el(
+        "rect",
+        { x: WIRE_X - BOX_W / 2, y: BOX_Y, width: BOX_W, height: BOX_H, rx: 16, class: "box" },
+        station,
+      );
+      // An envelope: the tool is something outside the model, like an inbox.
+      const ex = WIRE_X - 44;
+      const ey = BOX_CY - 28;
+      el(
+        "path",
+        { d: `M${ex} ${ey}h88v56h-88zM${ex} ${ey}l44 30l44 -30`, class: "glyph" },
+        station,
+      );
+      gate = el("circle", { cx: WIRE_X, cy: GATE_Y, r: 17, class: "gate" }, station);
+      pulse = el("circle", { cx: WIRE_X, cy: WIRE_TOP, r: 10, class: "pulse" }, station);
+    }
+
+    /** The newest tile calls the tool; what comes back joins the row. */
+    async function toolCall() {
+      if (!gate || !box || !pulse) return;
+      const caller = row.lastElementChild;
+      caller?.classList.add("call");
+      await sleep(420);
+
+      // The request runs down the wire to the permission gate.
+      const atGate = `translateY(${GATE_Y - WIRE_TOP}px)`;
+      const declined = !inject && Math.random() < 0.25;
+      pulse.style.opacity = "1";
+      await move(pulse, "translateY(0px)", atGate, 420, "ease-in");
+      gate.classList.add(declined ? "shut" : "open");
+      await sleep(declined ? 620 : 240);
+
+      if (!declined) {
+        await move(pulse, atGate, `translateY(${BOX_Y - WIRE_TOP}px)`, 360, "ease-out");
+        box.classList.add("lit");
+        await sleep(560);
       }
+      pulse.style.opacity = "0";
+      pulse.style.transform = "";
+
+      // The result (or the refusal) comes back as a tile and joins the row.
+      const kind = declined ? "declined" : inject ? "foreign" : "result";
+      const fromY = declined ? GATE_Y : BOX_CY;
+      const width = tileWidth();
+      const x = WIRE_X - width / 2;
+      const tile = el(
+        "rect",
+        { x, y: fromY - TILE_H / 2, width, height: TILE_H, rx: 14, class: `tile ${kind}` },
+        fan,
+      );
+      tile.style.opacity = "0";
+      await fade(tile, 1, 220);
+      await move(
+        tile,
+        "translate(0px, 0px)",
+        `translate(${HEAD_X + GAP - x}px, ${ROW_Y - fromY}px)`,
+        640,
+        "cubic-bezier(.5,0,.2,1)",
+      );
+      gate.classList.remove("open", "shut");
+      box.classList.remove("lit");
+      await land(tile, width);
+      if (kind === "foreign") taint = TAINT_STEPS;
     }
 
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -278,9 +396,18 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
     }
 
     void (async () => {
+      let untilCall = randInt(2, 3);
       for (;;) {
-        if (live()) await step();
-        else await sleep(300);
+        if (!live()) {
+          await sleep(300);
+          continue;
+        }
+        await step();
+        if (!tools) continue;
+        untilCall -= 1;
+        if (untilCall > 0) continue;
+        await toolCall();
+        untilCall = randInt(2, 3);
       }
     })();
   }
@@ -297,6 +424,11 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
     inset: 0;
     margin: 0;
     background: var(--anu-black);
+
+    --tool: var(--anu-teal-3);
+    /* Outside the deck's palette on purpose: copper sits too near the gold
+       tiles to read as foreign on a projector. */
+    --foreign: oklch(64% 0.23 18deg);
   }
 
   svg {
@@ -368,5 +500,96 @@ const uid = `gl-${Math.random().toString(36).slice(2, 8)}`;
 
   .head {
     fill: var(--anu-gold-2);
+  }
+
+  /* An injected result's colour carries into the next few tokens, fading. */
+  :global(.generation-loop .tile:is(.t1, .t2, .t3)) {
+    fill: color-mix(in oklab, var(--foreign) var(--taint), var(--anu-gold));
+  }
+
+  :global(.generation-loop .curve:is(.t1, .t2, .t3)) {
+    stroke: color-mix(in oklab, var(--foreign) var(--taint), var(--anu-gold));
+  }
+
+  :global(.generation-loop .t3) {
+    --taint: 100%;
+  }
+
+  :global(.generation-loop .t2) {
+    --taint: 65%;
+  }
+
+  :global(.generation-loop .t1) {
+    --taint: 35%;
+  }
+
+  /* The tile that asked for the tool keeps its ring in the row. */
+  :global(.generation-loop .tile.call) {
+    stroke: var(--tool);
+    stroke-width: 5;
+  }
+
+  :global(.generation-loop .tile.result) {
+    fill: var(--tool);
+  }
+
+  :global(.generation-loop .tile.foreign) {
+    fill: var(--foreign);
+  }
+
+  :global(.generation-loop .tile.declined) {
+    fill: var(--anu-black);
+    stroke: var(--anu-white);
+    stroke-width: 3;
+    stroke-dasharray: 9 7;
+  }
+
+  :global(.generation-loop .wire) {
+    fill: none;
+    stroke: #8a8a8a;
+    stroke-width: 4;
+    stroke-dasharray: 3 11;
+    stroke-linecap: round;
+  }
+
+  :global(.generation-loop :is(.box, .gate)) {
+    fill: var(--anu-black);
+    stroke: #b5b5b5;
+    stroke-width: 4;
+    transition:
+      fill 0.2s,
+      stroke 0.2s;
+  }
+
+  :global(.generation-loop .glyph) {
+    fill: none;
+    stroke: var(--anu-gold-tint);
+    stroke-width: 4;
+    stroke-linejoin: round;
+  }
+
+  :global(.generation-loop .box.lit) {
+    stroke: var(--tool);
+    filter: drop-shadow(0 0 10px var(--tool));
+  }
+
+  :global(.generation-loop[data-inject] .box.lit) {
+    stroke: var(--foreign);
+    filter: drop-shadow(0 0 10px var(--foreign));
+  }
+
+  :global(.generation-loop .gate.open) {
+    fill: var(--tool);
+    stroke: var(--tool);
+  }
+
+  :global(.generation-loop .gate.shut) {
+    fill: var(--anu-white);
+    stroke: var(--anu-white);
+  }
+
+  :global(.generation-loop .pulse) {
+    fill: var(--anu-gold-2);
+    opacity: 0;
   }
 </style>
