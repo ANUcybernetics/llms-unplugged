@@ -253,23 +253,24 @@ Now compare this model's scale with a frontier LLM. *[next slide]*
 {/* _class: centered */}
 
 <ModelScaleBars
+  startLabel="the room's model"
   contextFrom={1}
   contextFromLabel="1 token"
   trainingFrom={1962}
   trainingFromLabel="1,962 tokens"
-  modelFrom={57600}
-  modelFromLabel="57,600 grid cells"
+  modelFrom={1961}
+  modelFromLabel="1,961 token pairs"
   footer="one axis, in powers of ten · three independent dials · different kinds of model"
 />
 
 ```notes
-Three independent quantities scale up. The first is how much context the model looks at before each guess. Ours looked at one token, which is why our sentence wandered; Claude looks back over up to a million tokens.
+Three independent dials separate our room from a frontier LLM. First, context window: how much text the model sees before each guess. We looked one token back; Claude looks back up to a million tokens.
 
-The second is how much text went past the counter. Ours read 1,962 tokens; Thinking Machines trained its open-weights Inkling model (July 2026) on forty-five trillion.
+Second, training data: how many tokens went past the counter. Ours saw 1,962 tokens; Thinking Machines' open-weights Inkling model (July 2026) trained on forty-five trillion.
 
-The third is how many learned numbers the model contains. Ours had a 240 by 240 grid: 57,600 places a count could live. Claude Fable 5 is estimated at about five trillion parameters; Anthropic doesn't publish the figure.
+Third, model size: we held 1,961 token pairs on paper, where Claude Fable 5 is estimated at about five trillion learned parameters (Anthropic doesn't publish the figure).
 
-The bars have separate scales because these quantities can be changed independently, and the endpoints are different kinds of model: grid cells on the left, neural-network parameters on the right.
+Each bar has its own scale because the three dials move independently, and the endpoints are different architectures: lookup counts on the left, neural network weights on the right.
 ```
 
 ---
