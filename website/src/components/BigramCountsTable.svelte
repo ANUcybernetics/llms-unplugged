@@ -9,7 +9,7 @@
     /** Bigrams from a second source text, tallied in a contrasting colour.
         When set, `bigrams` tallies render gold and these render blue, so a
         two-corpus grid shows at a glance which book each count came from
-        (the visionaries-showcase deck's hybrid corpus). A cell holding counts
+        (a hybrid corpus). A cell holding counts
         from both sources renders both, side by side. */
     bigramsB?: [string, string][] | null;
     /** Compact sizing for large vocabularies (the 26×26 hybrid grid), where

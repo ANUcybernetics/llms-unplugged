@@ -474,9 +474,10 @@
   }
 }
 
-/* Source colour coding for the visionaries-showcase reveal: Hemingway gold,
-   Seuss blue, Poe rose. One per source book, so the three quotes read as three
-   voices rather than one list. The colours carry no further meaning --- the
+/* Source colour coding for the three-book reveal in
+   demystifying-large-language-models: Hemingway gold, Seuss blue, Poe rose.
+   One per source book, so the three quotes read as three voices rather than
+   one list. The colours carry no further meaning --- the
    sheets are coded by token, not by book, and the point of the reveal is that
    the model could not tell the books apart at all.
 

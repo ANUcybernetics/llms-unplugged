@@ -27,7 +27,7 @@ export const EXAMPLE_GENERATION = "see joey , hop . see";
 export const EXAMPLE_GENERATION_ROLLS = "- 7 2 6 - -";
 
 // Cat-in-the-Hat excerpt --- drives the single "the same model, drawn as a
-// grid" slide in the unplugged-age-of-ai talk, where the room is holding search
+// grid" slide in the unplugged-in-the-age-of-ai talk, where the room is holding search
 // sheets dealt from that book. Using a line they can place ("Look at me! Look at
 // me! Look at me now!") rather than the abstract Hop-Joey text means the grid on
 // screen and the paper on their lap are visibly the same model, just at

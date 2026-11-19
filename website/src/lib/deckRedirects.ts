@@ -13,8 +13,8 @@ export const DECK_REDIRECTS: Record<string, string> = {
   "/decks/grid-2h/": "/decks/my-first-language-model-2h/",
   "/decks/grid-60min/": "/decks/my-first-language-model-60min/",
   "/decks/cutouts-yr5-6/": "/decks/how-ai-writes-stories-cutouts/",
-  // As-delivered talk records (published: false), superseded by their
-  // reusable versions.
+  // Talk decks folded into the three that remain.
   "/decks/unplugged-age-of-ai/": "/decks/unplugged-in-the-age-of-ai/",
   "/decks/visionaries-showcase/": "/decks/demystifying-large-language-models/",
+  "/decks/language-model-by-show-of-hands/": "/decks/demystifying-large-language-models/",
 };
